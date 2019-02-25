@@ -31,7 +31,7 @@ class Person
     public $name;
 
     /**
-     * The slots in which this person is currently appearing.
+     * The slots in which this person is currently appearing, or blank.
      *
      * @ORM\OneToMany(targetEntity="Slot", mappedBy="person")
      */
