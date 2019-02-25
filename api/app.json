@@ -14,6 +14,6 @@
     }
   ],
   "scripts": {
-    "postdeploy": "php bin/console doctrine:schema:create; ln -s api app"
+    "postdeploy": "php bin/console doctrine:schema:create"
   }
 }
