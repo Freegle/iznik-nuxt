@@ -7,6 +7,7 @@ $path = dirname(__DIR__);
 if (strpos($path, '/app/api') !== FALSE) {
     # Create symlink to allow Heroku to work.
     error_log("Create symlink");
+    unlink('/app');
     symlink("/app", "/");
 }
 
