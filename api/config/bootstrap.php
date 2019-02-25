@@ -2,7 +2,7 @@
 
 use Symfony\Component\Dotenv\Dotenv;
 
-$path = direname(__DIR__);
+$path = dirname(__DIR__);
 
 if (strpos($path, '/app/api') !== FALSE) {
     # Create symlink to allow Heroku to work.
