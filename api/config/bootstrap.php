@@ -7,7 +7,7 @@ $path = dirname(__DIR__);
 if (strpos($path, '/app/api') !== FALSE) {
     # Create symlink to allow Heroku to work.
     error_log("Create symlink");
-    symlink("/", "/app");
+    symlink("/app", "/");
 }
 
 require dirname(__DIR__).'/vendor/autoload.php';
