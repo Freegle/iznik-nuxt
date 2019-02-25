@@ -2,15 +2,6 @@
 
 use Symfony\Component\Dotenv\Dotenv;
 
-$path = dirname(__DIR__);
-
-if (strpos($path, '/app/api') !== FALSE) {
-    # Create symlink to allow Heroku to work.
-    error_log("Create symlink");
-    unlink('/app');
-    symlink("/app", "/");
-}
-
 require dirname(__DIR__).'/vendor/autoload.php';
 
 // Load cached env vars if the .env.local.php file exists
