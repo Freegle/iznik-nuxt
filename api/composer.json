@@ -50,7 +50,7 @@
             "@auto-scripts",
             "php artisan clear-compiled",
             "php artisan optimize",
-            "chmod -R 777 public/"
+            "chmod -R 777 api/"
         ],
         "post-update-cmd": [
             "@auto-scripts"
