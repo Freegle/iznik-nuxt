@@ -16,6 +16,8 @@ if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? $_ENV['TRUSTED_HOSTS'] ?? false
     Request::setTrustedHosts([$trustedHosts]);
 }
 
+$request = $this->requestStack->getCurrentRequest();
+
 Request::setTrustedProxies(
     // trust *all* requests - necessary for platform.sh
     ['127.0.0.1', $request->server->get('REMOTE_ADDR')],
