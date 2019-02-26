@@ -12,8 +12,6 @@ if ($_SERVER['APP_DEBUG']) {
     Debug::enable();
 }
 
-dump($_SERVER);
-
 if ($trustedProxies = $_SERVER['TRUSTED_PROXIES'] ?? $_ENV['TRUSTED_PROXIES'] ?? false) {
     Request::setTrustedProxies(explode(',', $trustedProxies), Request::HEADER_X_FORWARDED_ALL);
 }
@@ -22,6 +20,7 @@ if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? $_ENV['TRUSTED_HOSTS'] ?? false
     Request::setTrustedHosts([$trustedHosts]);
 }
 
+// Allow anyone to connect to this API; needed for platform.sh.
 Request::setTrustedHosts([]);
 
 $kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
