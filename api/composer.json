@@ -48,8 +48,6 @@
         },
         "post-install-cmd": [
             "@auto-scripts",
-            "php artisan clear-compiled",
-            "php artisan optimize",
             "chmod -R 777 public/"
         ],
         "post-update-cmd": [
