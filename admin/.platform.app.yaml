@@ -42,7 +42,7 @@ hooks:
   build: |
     set -e
     yarn install
-    chmod +x bin/console
+    chmod +x api/bin/console
     npm run build
   deploy: |
     npm run buildenvvar
