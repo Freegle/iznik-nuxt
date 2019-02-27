@@ -2,12 +2,12 @@
 
 namespace Application\Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration,
+use Doctrine\Migrations\AbstractMigration,
     Doctrine\DBAL\Schema\Schema;
 
 class Version00001 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->addSql('');
         $this->addSql('');
@@ -18,7 +18,7 @@ class Version00001 extends AbstractMigration
         $this->addSql("ALTER TABLE slot ADD CONSTRAINT FK_AC0E2067217BBB47 FOREIGN KEY (person_id) REFERENCES person (id);");
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->addSql("ALTER TABLE slot DROP FOREIGN KEY FK_AC0E206764D218E FOREIGN KEY (location_id) REFERENCES location (id);");
         $this->addSql("ALTER TABLE slot DROP FOREIGN KEY FK_AC0E2067217BBB47 FOREIGN KEY (person_id) REFERENCES person (id);");
