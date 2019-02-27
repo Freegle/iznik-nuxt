@@ -1,13 +1,23 @@
 <?php
 
-namespace Application\Migrations;
+declare(strict_types=1);
 
-use Doctrine\Migrations\AbstractMigration,
-    Doctrine\DBAL\Schema\Schema;
+namespace DoctrineMigrations;
 
-class Version00001 extends AbstractMigration
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
+
+/**
+ * Auto-generated Migration: Please modify to your needs!
+ */
+final class Version20190227190726 extends AbstractMigration
 {
-    public function up(Schema $schema): void
+    public function getDescription() : string
+    {
+        return 'Initialise schema';
+    }
+
+    public function up(Schema $schema) : void
     {
         $this->addSql("CREATE TABLE location (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, slots_required INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;");
         $this->addSql("CREATE TABLE person (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;");
@@ -16,7 +26,7 @@ class Version00001 extends AbstractMigration
         $this->addSql("ALTER TABLE slot ADD CONSTRAINT FK_AC0E2067217BBB47 FOREIGN KEY (person_id) REFERENCES person (id);");
     }
 
-    public function down(Schema $schema): void
+    public function down(Schema $schema) : void
     {
         $this->addSql("ALTER TABLE slot DROP FOREIGN KEY FK_AC0E206764D218E FOREIGN KEY (location_id) REFERENCES location (id);");
         $this->addSql("ALTER TABLE slot DROP FOREIGN KEY FK_AC0E2067217BBB47 FOREIGN KEY (person_id) REFERENCES person (id);");
