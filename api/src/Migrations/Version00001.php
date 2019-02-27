@@ -1,9 +1,9 @@
 <?php
 
-namespace DoctrineMigrations;
+namespace Application\Migrations;
 
-use DoctrineDBALMigrationsAbstractMigration,
-    DoctrineDBALSchemaSchema;
+use Doctrine\DBAL\Migrations\AbstractMigration,
+    Doctrine\DBAL\Schema\Schema;
 
 class Version00001 extends AbstractMigration
 {
