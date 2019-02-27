@@ -6,12 +6,14 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "api-platform/api-pack": "^1.1",
+        "doctrine/doctrine-migrations-bundle": "^2.0",
         "guzzlehttp/guzzle": "^6.3",
         "platformsh/symfonyflex-bridge": "^1.5",
         "symfony/console": "4.2.*",
         "symfony/dotenv": "4.2.*",
         "symfony/flex": "^1.1",
         "symfony/framework-bundle": "4.2.*",
+        "symfony/maker-bundle": "^1.11",
         "symfony/yaml": "4.2.*"
     },
     "require-dev": {

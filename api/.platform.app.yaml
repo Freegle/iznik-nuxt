@@ -50,3 +50,4 @@ hooks:
     bin/console --env=prod assets:install --no-debug
   deploy: |
     bin/console --env=prod cache:clear
+    bin/console doctrine:migrations:migrate
