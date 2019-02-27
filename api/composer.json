@@ -7,6 +7,7 @@
         "ext-iconv": "*",
         "api-platform/api-pack": "^1.1",
         "guzzlehttp/guzzle": "^6.3",
+        "platformsh/symfonyflex-bridge": "^1.5",
         "symfony/console": "4.2.*",
         "symfony/dotenv": "4.2.*",
         "symfony/flex": "^1.1",

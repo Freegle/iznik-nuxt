@@ -122,6 +122,9 @@
     "phpdocumentor/type-resolver": {
         "version": "0.4.0"
     },
+    "platformsh/symfonyflex-bridge": {
+        "version": "1.5.0"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
