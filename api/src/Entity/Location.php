@@ -31,7 +31,7 @@ class Location
     public $name;
 
     /**
-     * @var integer The required number of slots for this hospital
+     * @var integer The required number of slots for this location
      *
      * @ORM\Column(type="integer")
      */

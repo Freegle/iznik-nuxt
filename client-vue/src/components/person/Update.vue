@@ -1,5 +1,8 @@
 <template>
   <div>
+    <button
+      class="btn btn-danger float-right mt-2"
+      @click="del">Delete</button>
     <h1>Edit {{ item && item['@id'] }}</h1>
 
     <div
@@ -38,14 +41,6 @@
       :values="item"
       :errors="violations"
       :initial-values="retrieved" />
-
-    <router-link
-      v-if="item"
-      :to="{ name: 'PersonList' }"
-      class="btn btn-default">Back to list</router-link>
-    <button
-      class="btn btn-danger"
-      @click="del">Delete</button>
   </div>
 </template>
 

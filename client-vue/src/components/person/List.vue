@@ -2,9 +2,14 @@
   <div>
     <h1>Person List</h1>
 
+
+    <router-link
+      :to="{ name: 'PersonCreate' }"
+      class="btn btn-primary">Create a person</router-link>
+
     <div
       v-if="isLoading"
-      class="alert alert-info">Loading...</div>
+      class="alert alert-info mt-2">Loading...</div>
     <div
       v-if="deletedItem"
       class="alert alert-success">{{ deletedItem['@id'] }} deleted.</div>
@@ -39,13 +44,11 @@
       &nbsp;
     </span>
 
-    <div class="table-responsive">
+    <div class="table-responsive mt-2">
       <table class="table table-striped table-hover">
         <thead>
           <tr>
-            <th>Id</th>
-            <th>name</th>
-            <th>slots</th>
+            <th>Name</th>
             <th colspan="2" />
           </tr>
         </thead>
@@ -57,37 +60,12 @@
               <router-link
                 v-if="item"
                 :to="{name: 'PersonShow', params: { id: item['@id'] }}">
-                {{ item['@id'] }}
-              </router-link>
-            </td>
-            <td>
-              <router-link
-                v-if="item"
-                :to="{name: 'PersonShow', params: { id: item['@id'] }}">
                 {{ item['name'] }}
               </router-link>
             </td>
             <td>
-              <router-link
-                v-if="item"
-                :to="{name: 'PersonShow', params: { id: item['@id'] }}">
-                {{ item['slots'] }}
-              </router-link>
-            </td>
-            <td>
-              <router-link
-                :to="{name: 'PersonShow', params: { id: item['@id'] }}">
-                <span
-                  class="fa fa-search"
-                  aria-hidden="true" />
-                <span class="sr-only">Show</span>
-              </router-link>
-            </td>
-            <td>
               <router-link :to="{name: 'PersonUpdate', params: { id: item['@id'] }}">
-                <span
-                  class="fa fa-pencil"
-                  aria-hidden="true" />
+                <font-awesome-icon aria-hidden="true" icon="edit" />
                 <span class="sr-only">Edit</span>
               </router-link>
             </td>
@@ -95,10 +73,6 @@
         </tbody>
       </table>
     </div>
-
-    <router-link
-      :to="{ name: 'PersonCreate' }"
-      class="btn btn-primary">Create</router-link>
   </div>
 </template>
 
