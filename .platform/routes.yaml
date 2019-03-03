@@ -1,0 +1,18 @@
+https://{default}/:
+  cache:
+    cookies:
+    - '*'
+    default_ttl: 0
+    enabled: true
+    headers:
+    - Accept
+    - Accept-Language
+  ssi:
+    enabled: false
+  type: upstream
+  upstream: admin:http
+
+https://api.{default}/:
+  type: upstream
+  # the first part should be your project name
+  upstream: "api:http"
