@@ -14,11 +14,8 @@ services:
       - db
     env_file:
       - ./api/.env
-    # Comment out these volumes in production
     volumes:
       - ./api:/srv/api:rw,cached
-      # If you develop on Linux, uncomment the following line to use a bind-mounted host directory instead
-      # - ./api/var:/srv/api/var:rw
 
   api:
     image: ${CONTAINER_REGISTRY_BASE}/nginx
@@ -31,7 +28,6 @@ services:
         - ${CONTAINER_REGISTRY_BASE}/varnish
     depends_on:
       - php
-    # Comment out this volume in production
     volumes:
       - ./api/public:/srv/api/public:ro
     ports:
@@ -56,7 +52,6 @@ services:
       - "8081:80"
 
   db:
-    # In production, you may want to use a managed database service
     image: mysql:5.7
     environment:
       - MYSQL_ROOT_PASSWORD=root
@@ -65,14 +60,10 @@ services:
       - MYSQL_PASSWORD=rota123
     volumes:
       - db-data:/var/lib/mysql:rw
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
     ports:
       - "3306:3306"
 
   client:
-    # Use a static website hosting service in production
-    # See https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md#deployment
     image: ${CONTAINER_REGISTRY_BASE}/client
     build:
       context: ./client
@@ -84,11 +75,9 @@ services:
       - ./client:/usr/src/client:rw,cached
       - /usr/src/client/node_modules
     ports:
-      - "80:3000"
+      - "82:8080"
 
   admin:
-    # Use a static website hosting service in production
-    # See https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md#deployment
     image: ${CONTAINER_REGISTRY_BASE}/admin
     build:
       context: ./admin
@@ -102,6 +91,20 @@ services:
     env_file:
       - ./client/.env
 
+  client-vue:
+    image: ${CONTAINER_REGISTRY_BASE}/client-vue
+    build:
+      context: ./client-vue
+      cache_from:
+        - ${CONTAINER_REGISTRY_BASE}/client-vue
+    volumes:
+      - ./client-vue:/usr/src/client-vue:rw,cached
+      - /usr/src/client-vue/node_modules
+    ports:
+      - "80:8080"
+    env_file:
+      - ./client-vue/.env
+
   h2-proxy:
     # Don't use this proxy in prod
     build:
@@ -109,6 +112,7 @@ services:
     depends_on:
       - client
       - admin
+      - client-vue
       - api
       - cache-proxy
     ports:
