@@ -15,9 +15,28 @@ import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+import { faCoffee, faChild, faCircle, faArchive, faEdit } from '@fortawesome/free-solid-svg-icons'
+
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from '@fortawesome/vue-fontawesome'
+
+library.add(
+  faCoffee,
+  faChild,
+  faCircle,
+  faArchive,
+  faEdit
+)
+
 Vue.use(Vuex);
 Vue.use(VueRouter);
 Vue.use(BootstrapVue);
+
+Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.component('font-awesome-layers', FontAwesomeLayers)
+Vue.component('font-awesome-layers-text', FontAwesomeLayersText)
+
+Vue.config.productionTip = false
 
 const store = new Vuex.Store({
   modules: {
