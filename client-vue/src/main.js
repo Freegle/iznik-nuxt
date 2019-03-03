@@ -11,8 +11,13 @@ import LocationRoutes from './router/location';
 import PersonRoutes from './router/person';
 import SlotRoutes from './router/slot';
 
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
 Vue.use(Vuex);
 Vue.use(VueRouter);
+Vue.use(BootstrapVue);
 
 const store = new Vuex.Store({
   modules: {
@@ -21,8 +26,6 @@ const store = new Vuex.Store({
     slot
   }
 });
-
-console.log("Store", store);
 
 const router = new VueRouter({
   mode: 'history',

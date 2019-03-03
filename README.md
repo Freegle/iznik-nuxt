@@ -11,10 +11,31 @@ It's also a demonstration of using [API Platform](https://api-platform.com/), wh
 
 We then deploy this to Heroku, integrated with this repository, so that we get a nice deployment mechanism.
 
-Deploying API to Heroku
-===
+Developing
+==
 
-As per Platform API instructions, then set up a pipeline from the git repositoring using 
+To develop the client, you'll need a server which provides the API the client uses.  You can start one using:
+
+`docker-compose up -d`
+
+You then can see the API at 
+
+http://localhost:8080/
+
+Then you can run the client in development mode:
+
+`cd client-vue
+npm run dev`
+
+Deploying
+==
+
+You'll need to deploy both the server and the client.
+
+Deploying the server to Heroku
+==
+
+As per Platform API instructions, then set up a pipeline to the api subfolder from the git repository using the instructions at 
 
 https://github.com/timanovsky/subdir-heroku-buildpack
 
@@ -25,7 +46,8 @@ You may need to create the database:
 `heroku run php bin/console doctrine:database:create`
 
 `heroku run php bin/console doctrine:schema:update --force`
- 
-To update code:
 
-`git push heroku master`
+Deploying the client to Heroku
+=== 
+
+TBD
