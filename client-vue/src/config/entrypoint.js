@@ -1,1 +1,1 @@
-export const ENTRYPOINT = 'http://api';
+export const ENTRYPOINT = 'http://localhost:8080';

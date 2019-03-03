@@ -3,9 +3,9 @@ import Vuex from 'vuex';
 import VueRouter from 'vue-router';
 import App from './App.vue';
 
-import Location from './store/modules/Location';
-import Person from './store/modules/Person';
-import Slot from './store/modules/Slot';
+import location from './store/modules/Location';
+import person from './store/modules/Person';
+import slot from './store/modules/Slot';
 
 import LocationRoutes from './router/location';
 import PersonRoutes from './router/person';
@@ -16,11 +16,13 @@ Vue.use(VueRouter);
 
 const store = new Vuex.Store({
   modules: {
-    Location,
-    Person,
-    Slot
+    location,
+    person,
+    slot
   }
 });
+
+console.log("Store", store);
 
 const router = new VueRouter({
   mode: 'history',
