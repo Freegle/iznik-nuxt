@@ -61,6 +61,9 @@ module.exports = {
             en: {
               locations: {
                 new: 'Add new location'
+              },
+              people: {
+                new: 'Add new person'
               }
             },
             fr: {}
