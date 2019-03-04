@@ -50,4 +50,6 @@ You may need to create the database:
 Deploying the client to Heroku
 === 
 
-TBD
+As per Platform API instructions, then set up a pipeline to the client-vue subfolder from the git repository using the instructions at 
+
+https://github.com/timanovsky/subdir-heroku-buildpack
