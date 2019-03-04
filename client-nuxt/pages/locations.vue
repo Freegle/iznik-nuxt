@@ -5,7 +5,11 @@
       <b-btn variant="success" class="mb-2 mt-2" :to="'/locations/new'">
         {{ $t('locations.new') }}
       </b-btn>
-      <b-table striped hover :items="list" :fields="fields" />
+      <b-table striped hover :items="list" :fields="fields">
+        <template slot="actions">
+          <fa icon="trash-alt" />
+        </template>
+      </b-table>
     </b-col>
   </b-row>
 </template>
@@ -28,6 +32,10 @@ export default {
       {
         key: 'slotsRequired',
         label: 'People Required'
+      },
+      {
+        key: 'actions',
+        label: 'Actions'
       }
     ]
   },

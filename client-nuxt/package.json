@@ -25,7 +25,8 @@
     "lodash.merge": "^4.6.1",
     "nuxt": "^2.4.0",
     "nuxt-fontawesome": "^0.4.0",
-    "nuxt-i18n": "^5.8.5"
+    "nuxt-i18n": "^5.8.5",
+    "vuex-persistedstate": "^2.5.4"
   },
   "devDependencies": {
     "nodemon": "^1.18.9",

@@ -30,7 +30,11 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '~/plugins/bootstrap'
+    // Bootstrap for styling.
+    '~/plugins/bootstrap',
+
+    // Persisting to storage is a client-side feature.
+    { src: '~/plugins/vuex-persistedstate', ssr: false }
   ],
 
   /*
