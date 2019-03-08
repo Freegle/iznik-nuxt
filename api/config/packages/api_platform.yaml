@@ -8,14 +8,17 @@ parameters:
 api_platform:
     mapping:
         paths: ['%kernel.project_dir%/src/Entity']
-    title: Rota API
+    title: Hello API Platform
     version: 1.0.0
-#    Disable Varnish - not supported on Heroku
-#    http_cache:
-#        invalidation:
-#            enabled: true
-#            varnish_urls: ['%env(VARNISH_URL)%']
-#        max_age: 0
-#        shared_max_age: 3600
-#        vary: ['Content-Type', 'Authorization']
-#        public: true
+    # Varnish integration - not supported on Heroku
+    # http_cache:
+    #     invalidation:
+    #         enabled: true
+    #         varnish_urls: ['%env(VARNISH_URL)%']
+    #     max_age: 0
+    #     shared_max_age: 3600
+    #     vary: ['Content-Type', 'Authorization']
+    #     public: true
+    # Mercure integration, remove if unwanted
+    mercure:
+        hub_url: '%env(MERCURE_SUBSCRIBE_URL)%'

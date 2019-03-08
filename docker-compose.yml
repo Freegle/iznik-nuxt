@@ -1,33 +1,36 @@
 version: '3.4'
 
+x-cache:
+  &cache
+  cache_from:
+    - ${CONTAINER_REGISTRY_BASE}/php
+    - ${CONTAINER_REGISTRY_BASE}/nginx
+    - ${CONTAINER_REGISTRY_BASE}/varnish
+
 services:
   php:
     image: ${CONTAINER_REGISTRY_BASE}/php
     build:
       context: ./api
       target: api_platform_php
-      cache_from:
-        - ${CONTAINER_REGISTRY_BASE}/php
-        - ${CONTAINER_REGISTRY_BASE}/nginx
-        - ${CONTAINER_REGISTRY_BASE}/varnish
+      <<: *cache
     depends_on:
       - db
-    env_file:
-      - ./api/.env
+    # Comment out these volumes in production
     volumes:
       - ./api:/srv/api:rw,cached
+      # If you develop on Linux, uncomment the following line to use a bind-mounted host directory instead
+      # - ./api/var:/srv/api/var:rw
 
   api:
     image: ${CONTAINER_REGISTRY_BASE}/nginx
     build:
       context: ./api
       target: api_platform_nginx
-      cache_from:
-        - ${CONTAINER_REGISTRY_BASE}/php
-        - ${CONTAINER_REGISTRY_BASE}/nginx
-        - ${CONTAINER_REGISTRY_BASE}/varnish
+      <<: *cache
     depends_on:
       - php
+    # Comment out this volume in production
     volumes:
       - ./api/public:/srv/api/public:ro
     ports:
@@ -38,10 +41,7 @@ services:
     build:
       context: ./api
       target: api_platform_varnish
-      cache_from:
-        - ${CONTAINER_REGISTRY_BASE}/php
-        - ${CONTAINER_REGISTRY_BASE}/nginx
-        - ${CONTAINER_REGISTRY_BASE}/varnish
+      <<: *cache
     depends_on:
       - api
     volumes:
@@ -63,7 +63,22 @@ services:
     ports:
       - "3306:3306"
 
+  mercure:
+    # In production, you may want to use the managed version of Mercure, https://mercure.rocks
+    image: dunglas/mercure
+    environment:
+      # You should definitely change all these values in production
+      - JWT_KEY=!UnsecureChangeMe!
+      - ALLOW_ANONYMOUS=1
+      - CORS_ALLOWED_ORIGINS=*
+      - PUBLISH_ALLOWED_ORIGINS=http://localhost:1337,https://localhost:1338
+      - DEMO=1
+    ports:
+      - "1337:80"
+
   client:
+    # Use a static website hosting service in production
+    # See https://facebook.github.io/create-react-app/docs/deployment
     image: ${CONTAINER_REGISTRY_BASE}/client
     build:
       context: ./client
@@ -75,9 +90,23 @@ services:
       - ./client:/usr/src/client:rw,cached
       - /usr/src/client/node_modules
     ports:
-      - "82:8080"
+      - "82:3000"
+
+  client-nuxt:
+    image: ${CONTAINER_REGISTRY_BASE}/client-nuxt
+    build:
+      context: ./client-nuxt
+      cache_from:
+        - ${CONTAINER_REGISTRY_BASE}/client-nuxt
+    volumes:
+      - ./client-nuxt:/usr/src/client-nuxt:rw,cached
+      - /usr/src/client-nuxt/node_modules
+    ports:
+      - "80:8080"
 
   admin:
+    # Use a static website hosting service in production
+    # See https://facebook.github.io/create-react-app/docs/deployment
     image: ${CONTAINER_REGISTRY_BASE}/admin
     build:
       context: ./admin
@@ -88,8 +117,6 @@ services:
       - /usr/src/admin/node_modules
     ports:
       - "81:3000"
-    env_file:
-      - ./client/.env
 
   client-nuxt:
     image: ${CONTAINER_REGISTRY_BASE}/client-nuxt
@@ -109,8 +136,8 @@ services:
       context: ./h2-proxy
     depends_on:
       - client
-      - admin
       - client-nuxt
+      - admin
       - api
       - cache-proxy
     ports:
@@ -118,19 +145,6 @@ services:
       - "444:444"
       - "8443:8443"
       - "8444:8444"
-
-  mercure:
-    # In production, you may want to use the managed version of Mercure, https://mercure.rocks
-    image: dunglas/mercure
-    environment:
-      # You should definitely change all these values in production
-      - JWT_KEY=!UnsecureChangeMe!
-      - ALLOW_ANONYMOUS=1
-      - CORS_ALLOWED_ORIGINS=*
-      - PUBLISH_ALLOWED_ORIGINS=http://localhost:1337,https://localhost:1338
-      - DEMO=1
-    ports:
-      - "1337:80"
 
 volumes:
   db-data: {}
