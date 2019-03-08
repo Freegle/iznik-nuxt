@@ -33,11 +33,13 @@ export const actions = {
     })
   },
   async show({ commit }, params) {
-    await this.$axios.get(`/locations/${params.location_id}`).then(res => {
-      if (res.status === 200) {
-        commit('mergeLocations', res.data)
-      }
-    })
+    await this.$axios
+      .get(process.env.API + `/locations/${params.location_id}`)
+      .then(res => {
+        if (res.status === 200) {
+          commit('mergeLocations', res.data)
+        }
+      })
   },
   async set({ commit }, locations) {
     await commit('set', locations)
@@ -49,12 +51,19 @@ export const actions = {
     await commit('add', location)
   },
   create({ commit }, params) {
-    return this.$axios.post(`/locations`, { location: params })
+    // console.log('Add location', location)
+    // await this.$axios.post(process.env.API + '/locations/', location).then(res => {
+    //   console.log('Post returned', res)
+    //   if (res.status === 200) {
+    //     commit('add', location)
+    //   }
+    // })
+    return this.$axios.post(process.env.API + `/locations`, params)
   },
   update({ commit }, params) {
-    return this.$axios.put(`/locations/${params.id}`, { location: params })
+    return this.$axios.put(process.env.API + `/locations/${params.id}`, params)
   },
   delete({ commit }, params) {
-    return this.$axios.delete(`/locations/${params.id}`)
+    return this.$axios.delete(process.env.API + `/locations/${params.id}`)
   }
 }
