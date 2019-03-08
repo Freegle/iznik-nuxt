@@ -91,19 +91,17 @@ services:
     env_file:
       - ./client/.env
 
-  client-vue:
-    image: ${CONTAINER_REGISTRY_BASE}/client-vue
+  client-nuxt:
+    image: ${CONTAINER_REGISTRY_BASE}/client-nuxt
     build:
-      context: ./client-vue
+      context: ./client-nuxt
       cache_from:
-        - ${CONTAINER_REGISTRY_BASE}/client-vue
+        - ${CONTAINER_REGISTRY_BASE}/client-nuxt
     volumes:
-      - ./client-vue:/usr/src/client-vue:rw,cached
-      - /usr/src/client-vue/node_modules
+      - ./client-nuxt:/usr/src/client-nuxt:rw,cached
+      - /usr/src/client-nuxt/node_modules
     ports:
       - "80:8080"
-    env_file:
-      - ./client-vue/.env
 
   h2-proxy:
     # Don't use this proxy in prod
@@ -112,7 +110,7 @@ services:
     depends_on:
       - client
       - admin
-      - client-vue
+      - client-nuxt
       - api
       - cache-proxy
     ports:
@@ -120,6 +118,19 @@ services:
       - "444:444"
       - "8443:8443"
       - "8444:8444"
+
+  mercure:
+    # In production, you may want to use the managed version of Mercure, https://mercure.rocks
+    image: dunglas/mercure
+    environment:
+      # You should definitely change all these values in production
+      - JWT_KEY=!UnsecureChangeMe!
+      - ALLOW_ANONYMOUS=1
+      - CORS_ALLOWED_ORIGINS=*
+      - PUBLISH_ALLOWED_ORIGINS=http://localhost:1337,https://localhost:1338
+      - DEMO=1
+    ports:
+      - "1337:80"
 
 volumes:
   db-data: {}

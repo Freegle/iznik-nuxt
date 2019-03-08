@@ -24,7 +24,7 @@ http://localhost:8080/
 
 Then you can run the client in development mode:
 
-`cd client-vue
+`cd client-nuxt
 npm run dev`
 
 Deploying
@@ -50,6 +50,6 @@ You may need to create the database:
 Deploying the client to Heroku
 === 
 
-As per Platform API instructions, then set up a pipeline to the client-vue subfolder from the git repository using the instructions at 
+As per Platform API instructions, then set up a pipeline to the client-nuxt subfolder from the git repository using the instructions at 
 
 https://github.com/timanovsky/subdir-heroku-buildpack

@@ -10,7 +10,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
  * A person who can fill one or more slots.
  *
  * @ORM\Entity
- * @ApiResource
+ * @ApiResource(mercure=true)
  */
 class Person
 {

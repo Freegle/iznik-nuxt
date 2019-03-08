@@ -9,7 +9,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
  * A slot links a person and a location for a particular month.
  *
  * @ORM\Entity
- * @ApiResource
+ * @ApiResource(mercure=true)
  */
 class Slot
 {

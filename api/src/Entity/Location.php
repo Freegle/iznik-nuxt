@@ -10,7 +10,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
  * A physical location such as a hospital.
  *
  * @ORM\Entity
- * @ApiResource
+ * @ApiResource(mercure=true)
  */
 class Location
 {
