@@ -6,6 +6,11 @@ parameters:
     env(VARNISH_URL): ''
 
 api_platform:
+    swagger:
+         api_keys:
+             apiKey:
+                name: Authorization
+                type: header
     mapping:
         paths: ['%kernel.project_dir%/src/Entity']
     title: Hello API Platform

@@ -9,6 +9,7 @@
         "api-platform/core": "^2.4@beta",
         "doctrine/doctrine-migrations-bundle": "^2.0",
         "guzzlehttp/guzzle": "^6.3",
+        "lexik/jwt-authentication-bundle": "^2.6",
         "platformsh/symfonyflex-bridge": "^1.5",
         "symfony/console": "4.2.*",
         "symfony/dotenv": "4.2.*",
