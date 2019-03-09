@@ -12,15 +12,11 @@
 
       <b-collapse id="nav_collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item>
-            <nuxt-link to="/locations">
-              Locations
-            </nuxt-link>
+          <b-nav-item to="/locations">
+            Locations
           </b-nav-item>
-          <b-nav-item>
-            <nuxt-link to="/people">
-              People
-            </nuxt-link>
+          <b-nav-item to="/people">
+            People
           </b-nav-item>
         </b-navbar-nav>
       </b-collapse>

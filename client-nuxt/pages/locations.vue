@@ -15,7 +15,7 @@
     </b-row>
 
     <b-modal id="add" ok-title="Save" title="Add new Location" @ok="save">
-      <p class="my-4">
+      <span class="my-4">
         <b-form>
           <b-form-group label="Name:" label-for="name">
             <b-form-input
@@ -36,7 +36,7 @@
             />
           </b-form-group>
         </b-form>
-      </p>
+      </span>
     </b-modal>
   </div>
 </template>
