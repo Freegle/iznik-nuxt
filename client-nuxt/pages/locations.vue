@@ -7,8 +7,9 @@
           {{ $t('locations.new') }}
         </b-btn>
         <b-table striped hover :items="list" :fields="fields">
-          <template slot="actions">
-            <fa icon="trash-alt" />
+          <template slot="actions" scope="environment">
+            <a href="#" @click="setItem(environment.item)"><fa v-b-modal.delete icon="trash-alt" /></a>
+            <a href="#" @click="setItem(environment.item)"><fa icon="edit" /></a>
           </template>
         </b-table>
       </b-col>
@@ -38,6 +39,16 @@
         </b-form>
       </span>
     </b-modal>
+
+    <b-modal
+      v-if="item"
+      id="delete"
+      ok-title="Delete"
+      :title="'Delete ' + item.name + '?'"
+      @ok="destroy"
+    >
+      <p>Are you sure?</p>
+    </b-modal>
   </div>
 </template>
 
@@ -47,6 +58,7 @@ import { mapState } from 'vuex'
 export default {
   data() {
     return {
+      item: null,
       form: {
         name: '',
         slotsRequired: 0
@@ -84,7 +96,13 @@ export default {
         .then(() => this.$store.dispatch('locations/get'))
     },
     save(evt) {
-      this.$store.dispatch('locations/create', this.form)
+      this.$store
+        .dispatch('locations/create', this.form)
+        .then(() => this.$store.dispatch('locations/get'))
+    },
+    setItem(item) {
+      this.id = item.id
+      this.item = item
     }
   }
 }
