@@ -9,27 +9,27 @@
         <b-table striped hover :items="list" :fields="fields">
           <template slot="actions" scope="environment">
             <a href="#" @click="setItem(environment.item)"><fa v-b-modal.delete icon="trash-alt" /></a>
-            <a href="#" @click="setItem(environment.item)"><fa icon="edit" /></a>
+            <a href="#" @click="setItem(environment.item)"><fa v-b-modal.edit icon="edit" /></a>
           </template>
         </b-table>
       </b-col>
     </b-row>
 
-    <b-modal id="add" ok-title="Save" title="Add new Location" @ok="save">
+    <b-modal id="add" ok-title="Save" title="Add new Location" @ok="create">
       <span class="my-4">
         <b-form>
-          <b-form-group label="Name:" label-for="name">
+          <b-form-group label="Name:" label-for="add-name">
             <b-form-input
-              id="name"
+              id="add-name"
               v-model="form.name"
               type="text"
               required
               placeholder="Enter the name"
             />
           </b-form-group>
-          <b-form-group label="Number of slots:" label-for="slots">
+          <b-form-group label="Number of slots:" label-for="add-slots">
             <b-form-input
-              id="slots"
+              id="add-slots"
               v-model="form.slotsRequired"
               type="number"
               required
@@ -49,11 +49,43 @@
     >
       <p>Are you sure?</p>
     </b-modal>
+
+    <b-modal
+      v-if="item"
+      id="edit"
+      ok-title="Save"
+      :title="'Edit ' + item.name"
+      @ok="save"
+    >
+      <span class="my-4">
+        <b-form>
+          <b-form-group label="Name:" label-for="edit-name">
+            <b-form-input
+              id="edit-name"
+              v-model="item.name"
+              type="text"
+              required
+              placeholder="Enter the name"
+            />
+          </b-form-group>
+          <b-form-group label="Number of slots:" label-for="edit-slots">
+            <b-form-input
+              id="edit-slots"
+              v-model.number="item.slotsRequired"
+              type="number"
+              required
+              placeholder="Enter the number of slots for this location"
+            />
+          </b-form-group>
+        </b-form>
+      </span>
+    </b-modal>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import cloneDeep from 'lodash.cloneDeep'
 
 export default {
   data() {
@@ -95,14 +127,21 @@ export default {
         .dispatch('locations/delete', { id: this.id })
         .then(() => this.$store.dispatch('locations/get'))
     },
-    save(evt) {
+    create(evt) {
       this.$store
         .dispatch('locations/create', this.form)
         .then(() => this.$store.dispatch('locations/get'))
     },
     setItem(item) {
       this.id = item.id
-      this.item = item
+
+      // We have to cloneDeep to avoid mutating the store.
+      this.item = cloneDeep(item)
+    },
+    save(evt) {
+      this.$store
+        .dispatch('locations/update', this.item)
+        .then(() => this.$store.dispatch('locations/get'))
     }
   }
 }

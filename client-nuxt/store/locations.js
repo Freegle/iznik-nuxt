@@ -31,7 +31,6 @@ export const actions = {
         commit('set', res.data)
 
         if (process.client) {
-          console.log('Look for mercure', res)
           // Subscribe for Mercure updates.
           // Extract the hub URL from the Link header
           const hubUrl = res.headers.link.match(
@@ -71,13 +70,6 @@ export const actions = {
     await commit('add', location)
   },
   create({ commit }, params) {
-    // console.log('Add location', location)
-    // await this.$axios.post(process.env.API + '/locations/', location).then(res => {
-    //   console.log('Post returned', res)
-    //   if (res.status === 200) {
-    //     commit('add', location)
-    //   }
-    // })
     return this.$axios.post(process.env.API + `/locations`, params)
   },
   update({ commit }, params) {
