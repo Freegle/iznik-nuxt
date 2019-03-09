@@ -29,6 +29,26 @@ export const actions = {
     await this.$axios.get(process.env.API + '/locations.json').then(res => {
       if (res.status === 200) {
         commit('set', res.data)
+
+        if (process.client) {
+          console.log('Look for mercure', res)
+          // Subscribe for Mercure updates.
+          // Extract the hub URL from the Link header
+          const hubUrl = res.headers.link.match(
+            /<([^>]+)>;\s+rel=(?:mercure|"[^"]*mercure[^"]*")/
+          )[1]
+
+          console.log('Got hub', hubUrl)
+          // Append the topic(s) to subscribe as query parameter
+          const h = new URL(hubUrl)
+          // h.searchParams.append('topic', '/locations/{id}')
+          h.searchParams.append('topic', 'http://{domain}/{+anything}')
+
+          // Subscribe to updates
+          const es = new EventSource(h.toString())
+          es.onerror = e => console.error('Event error', e)
+          es.onmessage = e => console.log(e.data)
+        }
       }
     })
   },
