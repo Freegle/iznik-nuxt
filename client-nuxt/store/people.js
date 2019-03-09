@@ -33,11 +33,13 @@ export const actions = {
     })
   },
   async show({ commit }, params) {
-    await this.$axios.get(`/people/${params.person_id}`).then(res => {
-      if (res.status === 200) {
-        commit('mergePeople', res.data)
-      }
-    })
+    await this.$axios
+      .get(process.env.API + `/people/${params.person_id}`)
+      .then(res => {
+        if (res.status === 200) {
+          commit('mergePeople', res.data)
+        }
+      })
   },
   async set({ commit }, people) {
     await commit('set', people)
@@ -49,12 +51,12 @@ export const actions = {
     await commit('add', person)
   },
   create({ commit }, params) {
-    return this.$axios.post(`/people`, { person: params })
+    return this.$axios.post(process.env.API + '/people', params)
   },
   update({ commit }, params) {
-    return this.$axios.put(`/people/${params.id}`, { person: params })
+    return this.$axios.put(process.env.API + `/people/${params.id}`, params)
   },
   delete({ commit }, params) {
-    return this.$axios.delete(`/people/${params.id}`)
+    return this.$axios.delete(process.env.API + `/people/${params.id}`)
   }
 }

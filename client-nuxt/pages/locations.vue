@@ -8,8 +8,8 @@
         </b-btn>
         <b-table striped hover :items="list" :fields="fields">
           <template slot="actions" scope="environment">
-            <a href="#" @click="setItem(environment.item)"><fa v-b-modal.delete icon="trash-alt" /></a>
-            <a href="#" @click="setItem(environment.item)"><fa v-b-modal.edit icon="edit" /></a>
+            <a href="#" class="mr-2" @click="setItem(environment.item)"><fa v-b-modal.delete size="lg" icon="trash-alt" /></a>
+            <a href="#" class="mr-2" @click="setItem(environment.item)"><fa v-b-modal.edit size="lg" icon="edit" /></a>
           </template>
         </b-table>
       </b-col>
