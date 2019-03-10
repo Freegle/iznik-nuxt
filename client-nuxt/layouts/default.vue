@@ -1,11 +1,9 @@
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" variant="info">
-      <b-navbar-brand>
-        <nuxt-link to="/">
-          <fa icon="calendar-alt" />
-          Rotavator
-        </nuxt-link>
+      <b-navbar-brand to="/">
+        <fa icon="calendar-alt" />
+        Rotavator
       </b-navbar-brand>
 
       <b-navbar-toggle target="nav_collapse" />

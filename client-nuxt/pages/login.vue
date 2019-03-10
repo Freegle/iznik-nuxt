@@ -61,7 +61,6 @@ export default {
           password: this.password
         })
         .then(() => {
-          console.log('Displatched login, route', this.$store.state)
           this.$router.push({
             path: '/locations'
           })
