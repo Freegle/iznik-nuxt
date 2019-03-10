@@ -87,3 +87,9 @@ nav .navbar-nav li a.nuxt-link-active {
   color: white !important;
 }
 </style>
+
+<script>
+export default {
+  middleware: 'authenticated'
+}
+</script>

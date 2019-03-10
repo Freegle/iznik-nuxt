@@ -17,6 +17,7 @@
         "symfony/framework-bundle": "4.2.*",
         "symfony/maker-bundle": "^1.11",
         "symfony/mercure-bundle": "^0.1.1",
+        "symfony/security-bundle": "4.2.*",
         "symfony/yaml": "4.2.*"
     },
     "require-dev": {

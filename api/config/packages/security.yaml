@@ -1,41 +1,28 @@
 # app/config/packages/security.yaml
 security:
     encoders:
-        App\Entity\User: bcrypt
+        App\Entity\User:
+            algorithm: argon2i
+
+    providers:
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
 
     role_hierarchy:
         ROLE_READER: ROLE_USER
         ROLE_ADMIN: ROLE_READER
 
-    providers:
-        jwt:
-            lexik_jwt: ~
-
     firewalls:
-        login:
-            pattern:  ^/login
-            stateless: true
-            anonymous: true
-            provider: jwt
-            json_login:
-                check_path: /login_check
-                username_path: email
-                password_path: password
-                success_handler: lexik_jwt_authentication.handler.authentication_success
-                failure_handler: lexik_jwt_authentication.handler.authentication_failure
-
         main:
-            pattern:   ^/
-            provider: jwt
-            stateless: true
-            anonymous: true
-            guard:
-                authenticators:
-                    - lexik_jwt_authentication.jwt_token_authenticator
-
+            anonymous: ~
+            form_login:
+                login_path: login
+                check_path: login_check
         dev:
-            pattern:  ^/(_(profiler|wdt)|css|images|js)/
-            security: false
+           pattern:  ^/(_(profiler|wdt)|css|images|js)/
+           security: false
 
     access_control:
         # Allow access to the main API page (/) and login page anonymously, otherwise require us to be
