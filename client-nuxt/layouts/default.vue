@@ -6,15 +6,21 @@
         Rotavator
       </b-navbar-brand>
 
-      <b-navbar-toggle target="nav_collapse" />
+      <b-navbar-toggle v-if="showMenu" target="nav_collapse" />
 
-      <b-collapse id="nav_collapse" is-nav>
+      <b-collapse v-if="showMenu" id="nav_collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item to="/locations">
             Locations
           </b-nav-item>
           <b-nav-item to="/people">
             People
+          </b-nav-item>
+        </b-navbar-nav>
+
+        <b-navbar-nav class="ml-auto">
+          <b-nav-item @click="logout">
+            Logout
           </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
@@ -88,6 +94,24 @@ nav .navbar-nav li a.nuxt-link-active {
 
 <script>
 export default {
-  middleware: 'authenticated'
+  middleware: 'authenticated',
+
+  computed: {
+    showMenu() {
+      const loggedin = this.$store.state.session.loggedin
+      console.log('Show menu?', this.$store.state, loggedin)
+      return loggedin
+    }
+  },
+
+  methods: {
+    logout() {
+      this.$store.dispatch('session/logout').then(() => {
+        this.$router.push({
+          path: '/login'
+        })
+      })
+    }
+  }
 }
 </script>

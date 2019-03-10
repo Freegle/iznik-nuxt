@@ -30,10 +30,17 @@ export const actions = {
         console.log('Login success')
         commit('login')
         console.log('Committed login')
-        this.$router.push('/locations')
       } else {
         console.error(res)
       }
+    })
+  },
+
+  async logout({ commit }) {
+    console.log('Logout')
+    await this.$axios.get('/logout').then(res => {
+      console.log('Logout returned', res)
+      commit('logout')
     })
   }
 }
