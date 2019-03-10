@@ -4,10 +4,11 @@ export const state = () => ({
 })
 
 export const mutations = {
-  login() {
+  login(state) {
     state.loggedin = true
+    console.log('Record logged in')
   },
-  logout() {
+  logout(state) {
     state.loggedin = false
   }
 }
@@ -28,6 +29,8 @@ export const actions = {
       if (res.status === 200) {
         console.log('Login success')
         commit('login')
+        console.log('Committed login')
+        this.$router.push('/locations')
       } else {
         console.error(res)
       }

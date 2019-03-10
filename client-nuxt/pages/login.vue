@@ -60,7 +60,12 @@ export default {
           email: this.email,
           password: this.password
         })
-        .then(() => this.$router.push('/locations'))
+        .then(() => {
+          console.log('Displatched login, route', this.$store.state)
+          this.$router.push({
+            path: '/locations'
+          })
+        })
     }
   }
 }
