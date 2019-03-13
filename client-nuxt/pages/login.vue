@@ -32,6 +32,13 @@
     </b-row>
     <b-row>
       <b-col offset-sm="1" xs="12" lg="3">
+        <b-form-checkbox v-model="rememberme" value="true" unchecked-value="false">
+          Remember me
+        </b-form-checkbox>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col offset-sm="1" xs="12" lg="3">
         <b-btn v-b-modal.add variant="success" class="mb-2 mt-2" @click="postLogin()">
           Login
         </b-btn>
@@ -43,22 +50,30 @@
 
 <script>
 export default {
-  middleware: 'notAuthenticated',
-
   data() {
     return {
       email: '',
       password: '',
+      rememberme: false,
       error: null
+    }
+  },
+
+  computed: {
+    isAuthenticated() {
+      console.log('Check authenticated')
+      return this.$store.getters['security/isAuthenticated']
     }
   },
 
   methods: {
     postLogin() {
+      console.log('REmember?', this.rememberme)
       this.$store
-        .dispatch('session/login', {
+        .dispatch('security/login', {
           email: this.email,
-          password: this.password
+          password: this.password,
+          _remember_me: this.rememberme
         })
         .then(() => {
           this.$router.push({

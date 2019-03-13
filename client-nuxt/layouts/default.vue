@@ -94,13 +94,14 @@ nav .navbar-nav li a.nuxt-link-active {
 
 <script>
 export default {
-  middleware: 'authenticated',
+  middleware: 'security',
 
   computed: {
     showMenu() {
-      const loggedin = this.$store.state.session.loggedin
-      console.log('Show menu?', this.$store.state, loggedin)
-      return loggedin
+      // const loggedin = this.$store.state.session.loggedin
+      // console.log('Show menu?', this.$store.state, loggedin)
+
+      return true
     }
   },
 

@@ -20,7 +20,9 @@ security:
             form_login:
                 # We use form login.  We don't use symfony for the form, nuxt handles that, but this gives us
                 # the server side handling of the POST.
-                login_path: login
+                #
+                # This will cause a redirect loop if you access it via a browser.  So don't.
+                login_path: /login
                 check_path: login_check
                 default_target_path: /
             remember_me:
@@ -32,10 +34,9 @@ security:
         dev:
            pattern:  ^/(_(profiler|wdt)|css|images|js)/
            security: false
-#
-#    access_control:
-#        # Allow access to the main API page (/) and login page anonymously, otherwise require us to be
-#        # authenticated.
-#        - { path: ^/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
-#        - { path: ^/$, roles: [ IS_AUTHENTICATED_ANONYMOUSLY ] }
-#        - { path: ^/.*, roles: [ IS_AUTHENTICATED_FULLY ] }
+
+    access_control:
+        # Allow access to the main API page (/) and login page anonymously, otherwise require us to be
+        # authenticated.
+        - { path: ^/login.*, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/.*, roles: [ IS_AUTHENTICATED_FULLY ] }
