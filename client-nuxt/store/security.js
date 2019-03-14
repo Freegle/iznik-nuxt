@@ -4,7 +4,7 @@ export default {
     isLoading: false,
     error: null,
     isAuthenticated: false,
-    roles: []
+    token: null
   },
   getters: {
     isLoading(state) {
@@ -31,21 +31,20 @@ export default {
       state.isLoading = true
       state.error = null
       state.isAuthenticated = false
-      state.roles = []
     },
-    AUTHENTICATING_SUCCESS(state, roles) {
+    AUTHENTICATING_SUCCESS(state, token) {
       console.log('Authenticated')
       state.isLoading = false
       state.error = null
       state.isAuthenticated = true
-      state.roles = roles
+      state.token = token
     },
     AUTHENTICATING_ERROR(state, error) {
       console.log('Authentication failed', error)
       state.isLoading = false
       state.error = error
       state.isAuthenticated = false
-      state.roles = []
+      state.token = null
     },
     PROVIDING_DATA_ON_REFRESH_SUCCESS(state, payload) {
       console.log('Authenticating refresh')
@@ -58,21 +57,18 @@ export default {
   actions: {
     async login({ commit }, params) {
       console.log('Login', params)
-      const bodyFormData = new FormData()
-      bodyFormData.set('_username', params.email)
-      bodyFormData.set('_password', params.password)
 
-      await this.$axios({
-        method: 'POST',
-        url: process.env.API + '/login_check',
-        data: bodyFormData,
-        config: { headers: { 'Content-Type': 'multipart/form-data' } },
-        redirect: 'manual'
-      })
+      await this.$axios
+        .post(process.env.API + '/login_check', {
+          email: params.email,
+          password: params.password
+        })
         .then(res => {
           if (res.status === 200) {
-            console.log('Login success')
-            commit('AUTHENTICATING_SUCCESS')
+            // The login succeeded.  Save our JWT token.
+
+            console.log('Login success', res)
+            commit('AUTHENTICATING_SUCCESS', res.data.token)
             console.log('Committed login')
           } else {
             console.error(res)

@@ -15,22 +15,24 @@ security:
         ROLE_ADMIN: ROLE_READER
 
     firewalls:
-        main:
-            anonymous: ~
-            form_login:
-                # We use form login.  We don't use symfony for the form, nuxt handles that, but this gives us
-                # the server side handling of the POST.
-                #
-                # This will cause a redirect loop if you access it via a browser.  So don't.
-                login_path: /login
-                check_path: login_check
-                default_target_path: /
-            remember_me:
-                secret:   '%kernel.secret%'
-                lifetime: 604800 # 1 week in seconds
-                path:     /
-            logout:
-                path:     /login
+        login:
+            pattern:  ^/login
+            stateless: true
+            anonymous: true
+            json_login:
+                check_path:               /login_check
+                username_path:            email
+                password_path:            password
+                success_handler:          lexik_jwt_authentication.handler.authentication_success
+                failure_handler:          lexik_jwt_authentication.handler.authentication_failure
+
+        api:
+            pattern:   ^/
+            stateless: true
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
+
         dev:
            pattern:  ^/(_(profiler|wdt)|css|images|js)/
            security: false
@@ -38,6 +40,5 @@ security:
     access_control:
         # Allow access to the main API page (/) and login page anonymously, otherwise require us to be
         # authenticated.
-        - { path: ^/login.*, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/me, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/.*, roles: [ IS_AUTHENTICATED_FULLY ] }
