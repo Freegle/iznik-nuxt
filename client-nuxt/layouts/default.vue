@@ -10,6 +10,9 @@
 
       <b-collapse v-if="showMenu" id="nav_collapse" is-nav>
         <b-navbar-nav>
+          <b-nav-item to="/grid">
+            Grid
+          </b-nav-item>
           <b-nav-item to="/locations">
             Locations
           </b-nav-item>
@@ -98,10 +101,12 @@ export default {
 
   computed: {
     showMenu() {
-      // const loggedin = this.$store.state.session.loggedin
-      // console.log('Show menu?', this.$store.state, loggedin)
-
-      return true
+      // We only show the menu if we are logged in, or if we're not yet sure.  The latter prevents flicker when
+      // switching pages and logged in.
+      return (
+        this.$store.state.security.isLoading ||
+        this.$store.state.security.isAuthenticated
+      )
     }
   },
 

@@ -6,25 +6,6 @@ export default {
     isAuthenticated: false,
     token: null
   },
-  getters: {
-    isLoading(state) {
-      return state.isLoading
-    },
-    hasError(state) {
-      return state.error !== null
-    },
-    error(state) {
-      return state.error
-    },
-    isAuthenticated(state) {
-      return state.isAuthenticated
-    },
-    hasRole(state) {
-      return role => {
-        return state.roles.indexOf(role) !== -1
-      }
-    }
-  },
   mutations: {
     AUTHENTICATING(state) {
       console.log('Authenticating')
@@ -48,13 +29,6 @@ export default {
       state.error = error
       state.isAuthenticated = false
       state.token = null
-    },
-    PROVIDING_DATA_ON_REFRESH_SUCCESS(state, payload) {
-      console.log('Authenticating refresh')
-      state.isLoading = false
-      state.error = null
-      state.isAuthenticated = payload.isAuthenticated
-      state.roles = payload.roles
     }
   },
   actions: {
@@ -90,10 +64,6 @@ export default {
         console.log('Logout returned', res)
         commit('AUTHENTICATING')
       })
-    },
-
-    onRefresh({ commit }, payload) {
-      commit('PROVIDING_DATA_ON_REFRESH_SUCCESS', payload)
     }
   }
 }
