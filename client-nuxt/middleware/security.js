@@ -22,11 +22,14 @@ export default function({ store, redirect }) {
     })
     .then(response => {
       console.log('Got session', response)
-      store.commit('security/AUTHENTICATING_SUCCESS', response)
+      store.commit('security/AUTHENTICATING_SUCCESS', null)
     })
     .catch(() => {
       console.log('Got error')
-      store.commit('security/AUTHENTICATING_ERROR')
+      if (store.state.security.isAuthenticated) {
+        store.commit('security/AUTHENTICATING_ERROR')
+      }
+
       return redirect('/login')
     })
 }

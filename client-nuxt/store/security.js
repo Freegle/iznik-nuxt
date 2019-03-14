@@ -37,7 +37,10 @@ export default {
       state.isLoading = false
       state.error = null
       state.isAuthenticated = true
-      state.token = token
+
+      if (token) {
+        state.token = token
+      }
     },
     AUTHENTICATING_ERROR(state, error) {
       console.log('Authentication failed', error)
