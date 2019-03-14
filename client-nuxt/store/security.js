@@ -8,13 +8,11 @@ export default {
   },
   mutations: {
     AUTHENTICATING(state) {
-      console.log('Authenticating')
       state.isLoading = true
       state.error = null
       state.isAuthenticated = false
     },
     AUTHENTICATING_SUCCESS(state, token) {
-      console.log('Authenticated')
       state.isLoading = false
       state.error = null
       state.isAuthenticated = true
@@ -24,17 +22,21 @@ export default {
       }
     },
     AUTHENTICATING_ERROR(state, error) {
-      console.log('Authentication failed', error)
       state.isLoading = false
       state.error = error
+      state.isAuthenticated = false
+      state.token = null
+    },
+    LOGOUT(state) {
+      state.isLoading = false
+      state.error = null
       state.isAuthenticated = false
       state.token = null
     }
   },
   actions: {
     async login({ commit }, params) {
-      console.log('Login', params)
-
+      // We post to the server with the email and password.  If successful this will return a JWT token.
       await this.$axios
         .post(process.env.API + '/login_check', {
           email: params.email,
@@ -42,27 +44,19 @@ export default {
         })
         .then(res => {
           if (res.status === 200) {
-            // The login succeeded.  Save our JWT token.
-
-            console.log('Login success', res)
+            // The login succeeded.  Record that, and if we've asked to remember then save our JWT token.
             commit('AUTHENTICATING_SUCCESS', res.data.token)
-            console.log('Committed login')
           } else {
-            console.error(res)
+            // The login failed.
             commit('AUTHENTICATING_ERROR')
           }
         })
-        .catch(err => {
-          console.log('Login failed', err)
-          commit('AUTHENTICATING_ERROR')
-        })
     },
 
-    async logout({ commit }) {
-      console.log('Logout')
-      await this.$axios.get(process.env.API + '/logout').then(res => {
-        console.log('Logout returned', res)
-        commit('AUTHENTICATING')
+    logout({ commit }) {
+      return new Promise((resolve, reject) => {
+        commit('LOGOUT')
+        resolve()
       })
     }
   }

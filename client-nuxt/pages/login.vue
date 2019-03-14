@@ -39,7 +39,7 @@
     </b-row>
     <b-row>
       <b-col offset-sm="1" xs="12" lg="3">
-        <b-btn v-b-modal.add variant="success" class="mb-2 mt-2" @click="postLogin()">
+        <b-btn v-b-modal.add variant="success" class="mb-2 mt-2" @click="login()">
           Login
         </b-btn>
       </b-col>
@@ -61,24 +61,26 @@ export default {
 
   computed: {
     isAuthenticated() {
-      console.log('Check authenticated')
       return this.$store.getters['security/isAuthenticated']
     }
   },
 
   methods: {
-    postLogin() {
-      console.log('REmember?', this.rememberme)
+    login() {
       this.$store
         .dispatch('security/login', {
           email: this.email,
           password: this.password,
-          _remember_me: this.rememberme
+          rememberme: this.rememberme
         })
         .then(() => {
+          // TODO Move to the grid page.
           this.$router.push({
             path: '/locations'
           })
+        })
+        .catch(() => {
+          // TODO
         })
     }
   }
