@@ -39,4 +39,5 @@ security:
         # Allow access to the main API page (/) and login page anonymously, otherwise require us to be
         # authenticated.
         - { path: ^/login.*, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/me, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/.*, roles: [ IS_AUTHENTICATED_FULLY ] }

@@ -66,7 +66,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import cloneDeep from 'lodash.cloneDeep'
+import cloneDeep from 'lodash.clonedeep'
 
 export default {
   data() {

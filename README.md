@@ -53,3 +53,8 @@ Deploying the client to Heroku
 As per Platform API instructions, then set up a pipeline to the client-nuxt subfolder from the git repository using the instructions at 
 
 https://github.com/timanovsky/subdir-heroku-buildpack
+
+Troubleshooting
+===
+
+* Getting invalid reference format on docker-compose up?  Make sure you're in the top level, not under /api

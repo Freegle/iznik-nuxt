@@ -5,7 +5,7 @@ export default function({ store, redirect }) {
   store.commit('security/AUTHENTICATING')
 
   return axios
-    .get(process.env.API + '/locations')
+    .get(process.env.API + '/me')
     .then(response => {
       console.log('Got session', response)
       store.commit('security/AUTHENTICATING_SUCCESS', response)
