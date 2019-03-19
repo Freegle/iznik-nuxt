@@ -128,5 +128,5 @@ module.exports = {
   // We have some configuration to ensure that we handle both SSR and being logged in.
   serverMiddleware: ['~/serverMiddleware'],
 
-  forceSPAOn: ['/login', '/locations']
+  forceSPAOn: ['/login', '/locations', '/people']
 }
