@@ -120,5 +120,9 @@ module.exports = {
 
   env: {
     API: 'http://localhost:8080'
-  }
+  },
+
+  serverMiddleware: [
+    '~/serverMiddleware'
+  ]
 }

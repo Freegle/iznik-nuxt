@@ -1,10 +1,12 @@
 export default {
   namespaced: true,
-  state: {
-    isLoading: false,
-    error: null,
-    isAuthenticated: false,
-    token: null
+  state: () => {
+    return {
+      isLoading: false,
+      error: null,
+      isAuthenticated: false,
+      token: null
+    }
   },
   mutations: {
     AUTHENTICATING(state) {
@@ -19,6 +21,7 @@ export default {
 
       if (token) {
         state.token = token
+        console.log('Save token', token)
       }
     },
     AUTHENTICATING_ERROR(state, error) {
@@ -34,6 +37,15 @@ export default {
       state.token = null
     }
   },
+  getters: {
+    token: state => {
+      console.log('Token getter', state)
+      return state.token
+    },
+    authenticated: state => {
+      return state.isAuthenticated
+    }
+  },
   actions: {
     async login({ commit }, params) {
       // We post to the server with the email and password.  If successful this will return a JWT token.
@@ -43,6 +55,7 @@ export default {
           password: params.password
         })
         .then(res => {
+          console.log('Login returned', res)
           if (res.status === 200) {
             // The login succeeded.  Record that, and if we've asked to remember then save our JWT token.
             commit('AUTHENTICATING_SUCCESS', res.data.token)

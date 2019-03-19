@@ -103,11 +103,6 @@ export default {
     showMenu() {
       // We only show the menu if we are logged in, or if we're not yet sure.  The latter prevents flicker when
       // switching pages and logged in.
-      console.log(
-        'Show menu?',
-        this.$store.state.security.isLoading,
-        this.$store.state.security.isAuthenticated
-      )
       return (
         this.$store.state.security.isLoading ||
         this.$store.state.security.isAuthenticated

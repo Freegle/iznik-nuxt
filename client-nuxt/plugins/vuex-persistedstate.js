@@ -3,20 +3,18 @@
 import createPersistedState from 'vuex-persistedstate'
 
 export default ({ app, store, $axios, isHMR }) => {
-  // Just in case nuxt.config.js gets a change in ssr:false when adding this plugin.
-  // Notice isClient is deprecated, instead use process.browser.
+  // We can only do this on the client side.
   if (process.browser) {
-    // In case of HMR, mutation occurs before nuxtReady, so previously saved state
-    // gets replaced with original state received from server. So, we've to skip HMR.
-    // Also nuxtReady event fires for HMR as well, which results multiple registration of
-    // vuex-persistedstate plugin
+    // When we're doing HMR (Hot Module Reload), the store mutation happens before the nuxtReady event, which
+    // means that any previously saved state will be replaced by state from the server.  We don't want that, so
+    // skip HMR.
     if (isHMR) return
+
     createPersistedState({
       key: 'rotavator',
 
-      // An array of any paths to partially persist the state.
-      // Paths are using dots to indicate nestedness.
-      paths: ['menu.hidden', 'localization.locale']
-    })(store) // vuex plugins can be connected to store, even after creation
+      // List the store paths that we want to persist.
+      paths: ['localization.locale', 'security', 'locations', 'people', 'slots']
+    })(store)
   }
 }

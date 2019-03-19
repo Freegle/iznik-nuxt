@@ -2,7 +2,7 @@
   <!-- Default form login -->
   <form>
     <p class="h4 offset-sm-1">
-      Please login
+      Please log in
     </p>
     <b-row>
       <b-col offset-sm="1" xs="12" lg="3">
