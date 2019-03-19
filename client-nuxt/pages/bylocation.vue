@@ -11,6 +11,19 @@
         <b-table striped hover :items="slots" :fields="columns" />
       </b-col>
     </b-row>
+    <b-row>
+      <b-col>
+        <hr>
+        <p>Here are the people.  Drag them into a cell.</p>
+        <b-list-group horizontal>
+          <b-list-group-item v-for="person in people" :key="person.id">
+            <b-button variant="info">
+              {{ person.name }}
+            </b-button>
+          </b-list-group-item>
+        </b-list-group>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
@@ -41,9 +54,22 @@ export default {
       'Nov',
       'Dec'
     ],
+
+    people: function() {
+      const people = this.$store.state.people.list
+      const ret = []
+
+      for (let i = 0; i < people.length; i++) {
+        ret.push(people[i])
+      }
+
+      return ret
+    },
+
     slots: function() {
       const locations = this.$store.state.locations.list
       const locsById = []
+      const taken = []
 
       for (let i = 0; i < locations.length; i++) {
         const location = locations[i]
@@ -77,11 +103,10 @@ export default {
             Location: location.name + ' #' + slotRequired
           }
 
-          console.log('Months', this.columns.length)
           // We have a cell per month.
           for (let month = 1; month < this.columns.length; month++) {
             // Now find any active slots for this location and month
-            row[this.columns[month]] = null
+            // row[this.columns[month]] = null
 
             for (
               let slotScan = 0;
@@ -91,12 +116,17 @@ export default {
               const slot = slots['hydra:member'][slotScan]
 
               // We only want a slot to appear once in the display
-              if (!slot.hasOwnProperty('taken') && slot.person) {
+              if (!taken.hasOwnProperty(slot.id) && slot.person) {
                 const slotDate = new Date(slot.month)
 
                 if (slotDate.getMonth() === month) {
                   if (slot.location === '/locations/' + location.id) {
-                    console.log('Found slot', slot.id, month, locationId)
+                    console.log(
+                      'Found slot',
+                      slot.id,
+                      this.columns[month],
+                      locationId
+                    )
                     const personId = slot.person.substring(
                       slot.person.lastIndexOf('/') + 1
                     )
@@ -104,7 +134,7 @@ export default {
                     console.log('Found person', personId, peopleById)
                     row[this.columns[month]] = peopleById[personId].name
 
-                    slot.taken = true
+                    taken[slot.id] = true
                   }
                 }
               }
