@@ -120,8 +120,9 @@ export default {
       }
     ]
   },
-  async asyncData({ app, params, store }) {
-    await store.dispatch('locations/get')
+  mounted() {
+    // Now the page is loaded, update the store.  This way we get fast render that will pick up server changes.
+    this.$store.dispatch('locations/get')
   },
   methods: {
     destroy() {

@@ -96,8 +96,9 @@ export default {
       }
     ]
   },
-  async fetch({ store }) {
-    await store.dispatch('people/get')
+  mounted() {
+    // Now the page is loaded, update the store.  This way we get fast render that will pick up server changes.
+    this.$store.dispatch('people/get')
   },
   methods: {
     destroy() {
