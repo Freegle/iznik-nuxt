@@ -1,4 +1,5 @@
 import axios from 'axios'
+import jwtDecode from 'jwt-decode'
 
 export default function({ route, store, redirect }) {
   // This is a page we can only view when logged in.
@@ -11,7 +12,15 @@ export default function({ route, store, redirect }) {
   const token = store.getters['security/token']
 
   if (token) {
-    axios.defaults.headers.common.Authorization = 'Bearer ' + token.toString()
+    // We have a token, but check whether it's expired.
+    // TODO Would be nice to render the page optimistically if we have a token.
+    const dec = jwtDecode(token)
+
+    const now = new Date().getTime() / 1000
+
+    if (dec.exp < now) {
+      axios.defaults.headers.common.Authorization = 'Bearer ' + token.toString()
+    }
   } else {
     axios.defaults.headers.common.Authorization = null
   }
