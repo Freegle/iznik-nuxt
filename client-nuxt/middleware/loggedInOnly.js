@@ -1,7 +1,6 @@
 import axios from 'axios'
 
 export default function({ route, store, redirect }) {
-  console.log('loggedInOnly Middleware')
   // This is a page we can only view when logged in.
   //
   // We want to check if we are already logged in by querying the server using any token that we have in the store,
@@ -10,7 +9,6 @@ export default function({ route, store, redirect }) {
 
   // Add token header if we have it.
   const token = store.getters['security/token']
-  console.log('Token on other page?', token)
 
   if (token) {
     axios.defaults.headers.common.Authorization = 'Bearer ' + token.toString()

@@ -1,8 +1,6 @@
 import axios from 'axios'
 
 export default function({ route, store, redirect }) {
-  console.log('login Middleware')
-
   // In this case we can only be running on the client side, because serverMiddleware forces SPA mode for this
   // path.
   //
@@ -13,7 +11,6 @@ export default function({ route, store, redirect }) {
 
   // Add token header if we have it.
   const token = store.getters['security/token']
-  console.log('Token on login page?', token)
 
   if (token) {
     axios.defaults.headers.common.Authorization = 'Bearer ' + token.toString()
@@ -26,12 +23,11 @@ export default function({ route, store, redirect }) {
       redirect: 'manual'
     })
     .then(response => {
-      console.log('Got session', response)
       store.commit('security/AUTHENTICATING_SUCCESS', response.data.token)
       return redirect('/')
     })
     .catch(() => {
-      console.log('Got error')
+      console.error('Got error')
       store.commit('security/AUTHENTICATING_ERROR')
     })
 }
