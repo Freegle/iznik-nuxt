@@ -76,16 +76,19 @@ module.exports = {
       }
     ],
 
-    ['nuxt-fontawesome', {
-      component: 'fa',
-      imports: [
-        //import whole set
-        {
-          set: '@fortawesome/free-solid-svg-icons',
-          icons: ['fas']
-        }
-      ]
-    }],
+    [
+      'nuxt-fontawesome',
+      {
+        component: 'fa',
+        imports: [
+          // import whole set
+          {
+            set: '@fortawesome/free-solid-svg-icons',
+            icons: ['fas']
+          }
+        ]
+      }
+    ]
   ],
 
   /*
@@ -122,7 +125,8 @@ module.exports = {
     API: 'http://localhost:8080'
   },
 
-  serverMiddleware: [
-    '~/serverMiddleware'
-  ]
+  // We have some configuration to ensure that we handle both SSR and being logged in.
+  serverMiddleware: ['~/serverMiddleware'],
+
+  forceSPAOn: ['/login', '/locations']
 }

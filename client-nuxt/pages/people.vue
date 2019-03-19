@@ -69,6 +69,8 @@ import { mapState } from 'vuex'
 import cloneDeep from 'lodash.clonedeep'
 
 export default {
+  middleware: 'loggedInOnly',
+
   data() {
     return {
       item: null,

@@ -7,6 +7,8 @@ export default function(req, res, next) {
     // token which is persisted in local storage.
     console.log("Force SPA")
     res.spa = true
+  } else {
+    console.log("Allow SSR")
   }
 
   next()

@@ -97,8 +97,6 @@ nav .navbar-nav li a.nuxt-link-active {
 
 <script>
 export default {
-  middleware: 'security',
-
   computed: {
     showMenu() {
       // We only show the menu if we are logged in, or if we're not yet sure.  The latter prevents flicker when
