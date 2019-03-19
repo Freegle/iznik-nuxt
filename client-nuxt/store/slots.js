@@ -1,5 +1,6 @@
 import merge from 'lodash.merge'
 import assign from 'lodash.assign'
+// import { mapGetters } from 'vuex'
 
 export const state = () => ({
   list: [],
@@ -26,18 +27,20 @@ export const mutations = {
 
 export const actions = {
   async get({ commit }) {
-    await this.$axios.get(`/slots`).then(res => {
+    await this.$axios.get(process.env.API + `/slots`).then(res => {
       if (res.status === 200) {
         commit('set', res.data)
       }
     })
   },
   async show({ commit }, params) {
-    await this.$axios.get(`/slots/${params.slot_id}`).then(res => {
-      if (res.status === 200) {
-        commit('mergeSlots', res.data)
-      }
-    })
+    await this.$axios
+      .get(process.env.API + `/slots/${params.slot_id}`)
+      .then(res => {
+        if (res.status === 200) {
+          commit('mergeSlots', res.data)
+        }
+      })
   },
   async set({ commit }, slots) {
     await commit('set', slots)
@@ -49,12 +52,23 @@ export const actions = {
     await commit('add', slot)
   },
   create({ commit }, params) {
-    return this.$axios.post(`/slots`, { slot: params })
+    return this.$axios.post(process.env.API + `/slots`, { slot: params })
   },
   update({ commit }, params) {
-    return this.$axios.put(`/slots/${params.id}`, { slot: params })
+    return this.$axios.put(process.env.API + `/slots/${params.id}`, {
+      slot: params
+    })
   },
   delete({ commit }, params) {
-    return this.$axios.delete(`/slots/${params.id}`)
+    return this.$axios.delete(process.env.API + `/slots/${params.id}`)
+  }
+}
+
+export const gettters = {
+  // computed: {
+  //   ...mapGetters(['grid'])
+  // },
+  grid: state => {
+    console.log('Grid state', state)
   }
 }

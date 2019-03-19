@@ -39,7 +39,6 @@ export default {
   },
   getters: {
     token: state => {
-      console.log('Token getter', state)
       return state.token
     },
     authenticated: state => {

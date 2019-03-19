@@ -10,8 +10,8 @@
 
       <b-collapse v-if="showMenu" id="nav_collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item to="/grid">
-            Grid
+          <b-nav-item to="/bylocation">
+            By Location
           </b-nav-item>
           <b-nav-item to="/locations">
             Locations
