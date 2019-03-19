@@ -7,10 +7,8 @@ export default function({ store, redirect }) {
   const token = store.state.security.token
 
   if (token) {
-    console.log('Add token')
     axios.defaults.headers.common.Authorization = 'Bearer ' + token.toString()
   } else {
-    console.log('Null token')
     axios.defaults.headers.common.Authorization = null
   }
 
