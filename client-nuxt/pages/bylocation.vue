@@ -10,12 +10,11 @@
       <b-col>
         <b-table id="table" striped hover :items="slots" :fields="columns">
           <template v-for="month in columns" :slot="month" slot-scope="data">
-            <span :key="month" />
-            <drop :key="month" @drop="drop">
-              <b-btn v-if="data.item[month]" variant="info">
-                {{ data.item[month] }}
+            <drop :key="data.item.id + '-' + data.item.Location + '-' + month" @drop="drop(month, data, ...arguments)">
+              <b-btn v-if="data.item[month].person" variant="info">
+                {{ data.item[month].person.name }}
               </b-btn>
-              <b-btn v-if="!data.item[month]" variant="secondary" />
+              <b-btn v-if="!data.item[month].person" variant="secondary" />
             </drop>
           </template>
         </b-table>
@@ -93,8 +92,6 @@ export default {
         locsById[location.id] = location
       }
 
-      console.log('Locations id', locsById)
-
       const people = this.$store.state.people.list
       const peopleById = []
 
@@ -117,13 +114,17 @@ export default {
         ) {
           // First column is the location
           const row = {
+            id: locationId,
             Location: location.name + ' #' + slotRequired
           }
 
           // We have a cell per month.
           for (let month = 1; month < this.columns.length; month++) {
             // Now find any active slots for this location and month
-            // row[this.columns[month]] = null
+            row[this.columns[month]] = {
+              id: slotRequired * 12 + month,
+              person: null
+            }
 
             for (
               let slotScan = 0;
@@ -143,7 +144,7 @@ export default {
                       slot.person.lastIndexOf('/') + 1
                     )
 
-                    row[this.columns[month]] = peopleById[personId].name
+                    row[this.columns[month]].person = peopleById[personId]
 
                     taken[slot.id] = true
                   }
@@ -169,8 +170,14 @@ export default {
   },
 
   methods: {
-    drop(data) {
-      console.log('Drop', data)
+    drop(month, data, dropped) {
+      console.log('Month', month)
+      console.log('Data', data)
+      const loc = data.item.Location
+      console.log('Loc', loc)
+      const person = dropped
+      console.log('Person', person)
+      // const loc = item.item.Location
     }
   }
 }
