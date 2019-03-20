@@ -34,7 +34,8 @@ module.exports = {
     '~/plugins/bootstrap',
 
     // Persisting to storage is a client-side feature.
-    { src: '~/plugins/vuex-persistedstate', ssr: false }
+    { src: '~/plugins/vuex-persistedstate', ssr: false },
+    { src: '~plugins/vue-drag-drop.js', ssr: false }
   ],
 
   /*

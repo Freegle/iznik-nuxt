@@ -2,13 +2,110 @@
   <div>
     <b-row>
       <b-col>
-        <h1>Grid</h1>
+        <h1>By Location</h1>
         <p>This shows who is working at each location in each month.</p>
       </b-col>
     </b-row>
     <b-row>
       <b-col>
-        <b-table striped hover :items="slots" :fields="columns" />
+        <b-table id="table" striped hover :items="slots" :fields="columns">
+          <template slot="Jan" slot-scope="data">
+            <drop @drop="drop">
+              <b-btn v-if="data.item.Jan" variant="info">
+                {{ data.item.Jan }}
+              </b-btn>
+              <b-btn v-if="!data.item.Jan" variant="secondary" />
+            </drop>
+          </template>
+          <template slot="Feb" slot-scope="data">
+            <drop @drop="drop">
+              <b-btn v-if="data.item.Feb" variant="info">
+                {{ data.item.Feb }}
+              </b-btn>
+              <b-btn v-if="!data.item.Feb" variant="secondary" />
+            </drop>
+          </template>
+          <template slot="Mar" slot-scope="data">
+            <drop @drop="drop">
+              <b-btn v-if="data.item.Mar" variant="info">
+                {{ data.item.Mar }}
+              </b-btn>
+              <b-btn v-if="!data.item.Mar" variant="secondary" />
+            </drop>
+          </template>
+          <template slot="Apr" slot-scope="data">
+            <drop @drop="drop">
+              <b-btn v-if="data.item.Apr" variant="info">
+                {{ data.item.Apr }}
+              </b-btn>
+              <b-btn v-if="!data.item.Apr" variant="secondary" />
+            </drop>
+          </template>
+          <template slot="May" slot-scope="data">
+            <drop @drop="drop">
+              <b-btn v-if="data.item.May" variant="info">
+                {{ data.item.May }}
+              </b-btn>
+              <b-btn v-if="!data.item.May" variant="secondary" />
+            </drop>
+          </template>
+          <template slot="Jun" slot-scope="data">
+            <drop @drop="drop">
+              <b-btn v-if="data.item.Jun" variant="info">
+                {{ data.item.Jun }}
+              </b-btn>
+              <b-btn v-if="!data.item.Jun" variant="secondary" />
+            </drop>
+          </template>
+          <template slot="Jul" slot-scope="data">
+            <drop @drop="drop">
+              <b-btn v-if="data.item.Jul" variant="info">
+                {{ data.item.Jul }}
+              </b-btn>
+              <b-btn v-if="!data.item.Jul" variant="secondary" />
+            </drop>
+          </template>
+          <template slot="Aug" slot-scope="data">
+            <drop @drop="drop">
+              <b-btn v-if="data.item.Aug" variant="info">
+                {{ data.item.Aug }}
+              </b-btn>
+              <b-btn v-if="!data.item.Aug" variant="secondary" />
+            </drop>
+          </template>
+          <template slot="Sep" slot-scope="data">
+            <drop @drop="drop">
+              <b-btn v-if="data.item.Sep" variant="info">
+                {{ data.item.Sep }}
+              </b-btn>
+              <b-btn v-if="!data.item.Sep" variant="secondary" />
+            </drop>
+          </template>
+          <template slot="Oct" slot-scope="data">
+            <drop @drop="drop">
+              <b-btn v-if="data.item.Oct" variant="info">
+                {{ data.item.Oct }}
+              </b-btn>
+              <b-btn v-if="!data.item.Oct" variant="secondary" />
+            </drop>
+          </template>
+          <template slot="Nov" slot-scope="data">
+            <drop @drop="drop">
+              <b-btn v-if="data.item.Nov" variant="info">
+                {{ data.item.Nov }}
+              </b-btn>
+              <b-btn v-if="!data.item.Nov" variant="secondary" />
+            </drop>
+          </template>
+          <template slot="Dec" slot-scope="data">
+            <drop @drop="drop">
+              <b-btn v-if="data.item.Dec" variant="info">
+                {{ data.item.Dec }}
+              </b-btn>
+              <b-btn v-if="!data.item.Dec" variant="secondary" />
+            </drop>
+          </template>
+        </b-table>
       </b-col>
     </b-row>
     <b-row>
@@ -17,9 +114,11 @@
         <p>Here are the people.  Drag them into a cell.</p>
         <b-list-group horizontal>
           <b-list-group-item v-for="person in people" :key="person.id">
-            <b-button variant="info">
-              {{ person.name }}
-            </b-button>
+            <drag :transfer-data="person">
+              <b-button variant="info">
+                {{ person.name }}
+              </b-button>
+            </drag>
           </b-list-group-item>
         </b-list-group>
       </b-col>
@@ -62,6 +161,11 @@ export default {
       for (let i = 0; i < people.length; i++) {
         ret.push(people[i])
       }
+
+      // Alphabetical.
+      ret.sort(function(a, b) {
+        return (a.name > b.name) - (a.name < b.name)
+      })
 
       return ret
     },
@@ -121,17 +225,11 @@ export default {
 
                 if (slotDate.getMonth() === month) {
                   if (slot.location === '/locations/' + location.id) {
-                    console.log(
-                      'Found slot',
-                      slot.id,
-                      this.columns[month],
-                      locationId
-                    )
+                    console.log(slot.id, this.columns[month], locationId)
                     const personId = slot.person.substring(
                       slot.person.lastIndexOf('/') + 1
                     )
 
-                    console.log('Found person', personId, peopleById)
                     row[this.columns[month]] = peopleById[personId].name
 
                     taken[slot.id] = true
@@ -157,6 +255,20 @@ export default {
     this.$store.dispatch('slots/get')
   },
 
-  methods: {}
+  methods: {
+    drop(data) {
+      console.log('Drop', data)
+    }
+  }
 }
 </script>
+<style>
+.btn-secondary {
+  opacity: 0.2;
+}
+
+.btn {
+  width: 100px !important;
+  height: 37.61px !important;
+}
+</style>
