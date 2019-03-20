@@ -52,7 +52,15 @@ export const actions = {
     await commit('add', slot)
   },
   create({ commit }, params) {
-    return this.$axios.post(process.env.API + `/slots`, { slot: params })
+    // We need to post in ld+json in order to use the relationship info correctly.
+    return this.$axios({
+      method: 'POST',
+      url: process.env.API + `/slots`,
+      data: params,
+      headers: {
+        'Content-Type': 'application/ld+json'
+      }
+    })
   },
   update({ commit }, params) {
     return this.$axios.put(process.env.API + `/slots/${params.id}`, {

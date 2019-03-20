@@ -137,7 +137,7 @@ export default {
               if (!taken.hasOwnProperty(slot.id) && slot.person) {
                 const slotDate = new Date(slot.month)
 
-                if (slotDate.getMonth() === month) {
+                if (slotDate.getMonth() + 1 === month) {
                   if (slot.location === '/locations/' + location.id) {
                     console.log(slot.id, this.columns[month], locationId)
                     const personId = slot.person.substring(
@@ -173,11 +173,44 @@ export default {
     drop(month, data, dropped) {
       console.log('Month', month)
       console.log('Data', data)
-      const loc = data.item.Location
-      console.log('Loc', loc)
+
+      const locations = this.$store.state.locations.list
+      let locid = null
+
+      for (let i = 0; i < locations.length; i++) {
+        const locName = data.item.Location.substring(
+          0,
+          data.item.Location.indexOf('#') - 1
+        )
+        console.log('Compare loc', locations[i].name, locName)
+        if (locations[i].name === locName) {
+          locid = locations[i].id
+        }
+      }
+
       const person = dropped
       console.log('Person', person)
-      // const loc = item.item.Location
+
+      // Set to midday to avoid saving time issues.
+      const date = new Date(
+        new Date().getFullYear(),
+        this.columns.indexOf(month) - 1,
+        1,
+        12,
+        0
+      )
+      console.log('DAte', date)
+
+      const params = {
+        location: '/locations/' + locid,
+        person: '/people/' + person.id,
+        month: date.toISOString()
+      }
+
+      console.log('Params', params)
+      this.$store
+        .dispatch('slots/create', params)
+        .then(() => this.$store.dispatch('slots/get'))
     }
   }
 }
