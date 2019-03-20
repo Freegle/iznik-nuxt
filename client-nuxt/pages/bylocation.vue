@@ -9,100 +9,13 @@
     <b-row>
       <b-col>
         <b-table id="table" striped hover :items="slots" :fields="columns">
-          <template slot="Jan" slot-scope="data">
-            <drop @drop="drop">
-              <b-btn v-if="data.item.Jan" variant="info">
-                {{ data.item.Jan }}
+          <template v-for="month in columns" :slot="month" slot-scope="data">
+            <span :key="month" />
+            <drop :key="month" @drop="drop">
+              <b-btn v-if="data.item[month]" variant="info">
+                {{ data.item[month] }}
               </b-btn>
-              <b-btn v-if="!data.item.Jan" variant="secondary" />
-            </drop>
-          </template>
-          <template slot="Feb" slot-scope="data">
-            <drop @drop="drop">
-              <b-btn v-if="data.item.Feb" variant="info">
-                {{ data.item.Feb }}
-              </b-btn>
-              <b-btn v-if="!data.item.Feb" variant="secondary" />
-            </drop>
-          </template>
-          <template slot="Mar" slot-scope="data">
-            <drop @drop="drop">
-              <b-btn v-if="data.item.Mar" variant="info">
-                {{ data.item.Mar }}
-              </b-btn>
-              <b-btn v-if="!data.item.Mar" variant="secondary" />
-            </drop>
-          </template>
-          <template slot="Apr" slot-scope="data">
-            <drop @drop="drop">
-              <b-btn v-if="data.item.Apr" variant="info">
-                {{ data.item.Apr }}
-              </b-btn>
-              <b-btn v-if="!data.item.Apr" variant="secondary" />
-            </drop>
-          </template>
-          <template slot="May" slot-scope="data">
-            <drop @drop="drop">
-              <b-btn v-if="data.item.May" variant="info">
-                {{ data.item.May }}
-              </b-btn>
-              <b-btn v-if="!data.item.May" variant="secondary" />
-            </drop>
-          </template>
-          <template slot="Jun" slot-scope="data">
-            <drop @drop="drop">
-              <b-btn v-if="data.item.Jun" variant="info">
-                {{ data.item.Jun }}
-              </b-btn>
-              <b-btn v-if="!data.item.Jun" variant="secondary" />
-            </drop>
-          </template>
-          <template slot="Jul" slot-scope="data">
-            <drop @drop="drop">
-              <b-btn v-if="data.item.Jul" variant="info">
-                {{ data.item.Jul }}
-              </b-btn>
-              <b-btn v-if="!data.item.Jul" variant="secondary" />
-            </drop>
-          </template>
-          <template slot="Aug" slot-scope="data">
-            <drop @drop="drop">
-              <b-btn v-if="data.item.Aug" variant="info">
-                {{ data.item.Aug }}
-              </b-btn>
-              <b-btn v-if="!data.item.Aug" variant="secondary" />
-            </drop>
-          </template>
-          <template slot="Sep" slot-scope="data">
-            <drop @drop="drop">
-              <b-btn v-if="data.item.Sep" variant="info">
-                {{ data.item.Sep }}
-              </b-btn>
-              <b-btn v-if="!data.item.Sep" variant="secondary" />
-            </drop>
-          </template>
-          <template slot="Oct" slot-scope="data">
-            <drop @drop="drop">
-              <b-btn v-if="data.item.Oct" variant="info">
-                {{ data.item.Oct }}
-              </b-btn>
-              <b-btn v-if="!data.item.Oct" variant="secondary" />
-            </drop>
-          </template>
-          <template slot="Nov" slot-scope="data">
-            <drop @drop="drop">
-              <b-btn v-if="data.item.Nov" variant="info">
-                {{ data.item.Nov }}
-              </b-btn>
-              <b-btn v-if="!data.item.Nov" variant="secondary" />
-            </drop>
-          </template>
-          <template slot="Dec" slot-scope="data">
-            <drop @drop="drop">
-              <b-btn v-if="data.item.Dec" variant="info">
-                {{ data.item.Dec }}
-              </b-btn>
-              <b-btn v-if="!data.item.Dec" variant="secondary" />
+              <b-btn v-if="!data.item[month]" variant="secondary" />
             </drop>
           </template>
         </b-table>
