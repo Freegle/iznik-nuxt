@@ -32,6 +32,7 @@
               id="add-slots"
               v-model="form.slotsRequired"
               type="number"
+              min="1"
               required
               placeholder="Enter the number of slots for this location"
             />
@@ -73,6 +74,7 @@
               id="edit-slots"
               v-model.number="item.slotsRequired"
               type="number"
+              min="1"
               required
               placeholder="Enter the number of slots for this location"
             />
