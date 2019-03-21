@@ -8,7 +8,7 @@
         </b-btn>
         <b-table striped hover :items="list" :fields="fields">
           <template slot="actions" scope="environment">
-            <a href="#" class="mr-2" @click="setItem(environment.item)"><fa v-b-modal.delete size="lg" icon="trash-alt" /></a>
+            <a href="#" class="mr-2" @click="destroy(environment.item)"><fa v-b-modal.delete size="lg" icon="trash-alt" /></a>
             <a href="#" class="mr-2" @click="edit(environment.item)"><fa v-b-modal.edit size="lg" icon="edit" /></a>
           </template>
         </b-table>
@@ -39,40 +39,37 @@
       </span>
     </b-modal>
 
-    <b-modal
-      v-if="item"
-      id="delete"
-      ok-title="Delete"
-      :title="'Delete ' + item.name + '?'"
-      @ok="destroy"
-    >
-      <p>Are you sure?</p>
-    </b-modal>
 
-    <personModal :key="personToEdit.id" v-bind="personToEdit" />
+    <!--
+    We pass the person to edit down via a computed property, and trigger a re-render by setting a key on the
+    id.
+    -->
+    <personDelete :key="'del' + (personToDelete ? personToDelete.id : null)" v-bind="personToDelete" />
+    <personEdit :key="'edit' + (personToEdit ? personToEdit.id : null)" v-bind="personToEdit" />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import cloneDeep from 'lodash.clonedeep'
-import personModal from '~/components/person-modal.vue'
+import personEdit from '~/components/person-edit.vue'
+import personDelete from '~/components/person-delete.vue'
 
 export default {
   middleware: 'loggedInOnly',
 
   components: {
-    personModal
+    personEdit,
+    personDelete
   },
 
   data() {
     return {
-      item: null,
       form: {
         name: '',
         comments: ''
       },
-      editPerson: null
+      editPerson: null,
+      deletePerson: null
     }
   },
   computed: {
@@ -80,9 +77,14 @@ export default {
       list: state => {
         return state.people.list
       },
+      // We need to use a computed property for the edit/delete, otherwise the component won't get re-rendered when we
+      // decide to operate on a new user.
       personToEdit: function() {
-        console.log('personToEdit', this.editPerson)
         return this.editPerson
+      },
+      personToDelete: function() {
+        console.log('personToDelete', this.deletePerson)
+        return this.deletePerson
       }
     }),
     fields: () => [
@@ -101,27 +103,17 @@ export default {
     this.$store.dispatch('people/get')
   },
   methods: {
-    destroy() {
-      this.$store
-        .dispatch('people/delete', { id: this.id })
-        .then(() => this.$store.dispatch('people/get'))
-    },
     create(evt) {
       this.$store
         .dispatch('people/create', this.form)
         .then(() => this.$store.dispatch('people/get'))
     },
     edit(person) {
-      // We have to cloneDeep to avoid mutating the store.
-      this.editPerson = cloneDeep(person)
-      console.log('Edit', this.personToEdit.id)
+      this.editPerson = person
     },
-    setItem(item) {
-      this.id = item.id
-
-      // We have to cloneDeep to avoid mutating the store.
-      this.item = cloneDeep(item)
-      console.log('Set item')
+    destroy(person) {
+      console.log('Delete', person)
+      this.deletePerson = person
     }
   }
 }

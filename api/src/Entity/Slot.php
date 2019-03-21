@@ -33,6 +33,12 @@ class Slot
      * @var Location The location this slot is for.
      *
      * @ORM\ManyToOne(targetEntity="Location", inversedBy="slots")
+     * @ORM\JoinColumn(
+     *      name="location_id",
+     *      referencedColumnName="id",
+     *      onDelete="CASCADE",
+     *      nullable=false
+     * )
      */
     public $location;
 
@@ -47,6 +53,12 @@ class Slot
      * @var Person The person who is filling this slot, if any.
      *
      * @ORM\ManyToOne(targetEntity="Person", inversedBy="slots")
+     * @ORM\JoinColumn(
+     *      name="person_id",
+     *      referencedColumnName="id",
+     *      onDelete="CASCADE",
+     *      nullable=false
+     * )
      */
     public $person;
 

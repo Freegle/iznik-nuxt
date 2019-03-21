@@ -33,10 +33,22 @@
 <script>
 export default {
   // The model is passed as input to this component via props.  We cannot mutate this.
-  props: ['id', 'name', 'comments'],
+  props: {
+    id: {
+      type: Number,
+      default: 0
+    },
+    name: {
+      type: String,
+      default: ''
+    },
+    comments: {
+      type: String,
+      default: ''
+    }
+  },
   // ...so we return values based on them
   data: function() {
-    console.log('Set data', this.name)
     return {
       mutableName: this.name,
       mutableComments: this.comments
