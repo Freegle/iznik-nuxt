@@ -37,6 +37,13 @@ class Slot
     public $location;
 
     /**
+     * @var int The position of the slot within the location
+     *
+     * @ORM\Column(type="integer")
+     */
+    public $position;
+
+    /**
      * @var Person The person who is filling this slot, if any.
      *
      * @ORM\ManyToOne(targetEntity="Person", inversedBy="slots")

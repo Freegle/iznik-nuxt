@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-row>
+    <b-row class="m-0">
       <b-col>
         <h1>By Location</h1>
         <p>This shows who is working at each location in each month.</p>
@@ -11,23 +11,25 @@
         </b-card>
       </b-col>
     </b-row>
-    <b-row>
+    <b-row class="m-0">
       <b-col>
-        <b-table id="table" striped hover :items="slots" :fields="columns">
-          <template v-for="month in columns" :slot="month" slot-scope="data">
-            <drop :key="data.item.id + '-' + data.item.Location + '-' + month" @drop="drop(month, data, ...arguments)">
-              <drag v-if="data.item[month].person" :transfer-data="data.item[month].slot">
-                <b-btn variant="info">
-                  {{ data.item[month].person.name }}
+        <b-table id="table" striped hover :items="slots" :fields="months">
+          <template v-for="month in months" :slot="month" slot-scope="data">
+            <div v-for="personslot in data.item.columns[month].people" :key="'1-' + month + '-' + personslot.id">
+              <drag :key="'2-' + month + '-' + personslot.id" :transfer-data="personslot">
+                <b-btn variant="info" class="mb-1">
+                  {{ personslot.person.name }}
                 </b-btn>
               </drag>
-              <b-btn v-if="!data.item[month].person" variant="secondary" />
+            </div>
+            <drop :key="'3-' + month" @drop="drop(month, data, ...arguments)">
+              <b-btn variant="secondary" />
             </drop>
           </template>
         </b-table>
       </b-col>
     </b-row>
-    <b-row>
+    <b-row class="m-0">
       <b-col>
         <b-card class="text-center bg-light">
           <drop @drop="remove">
@@ -36,10 +38,10 @@
         </b-card>
       </b-col>
     </b-row>
-    <b-row>
+    <b-row class="m-0">
       <b-col>
         <hr>
-        <p>Here are the people.  Drag them into a cell.</p>
+        <p>Here are the people. Drag them onto one of the grey boxes to add them.</p>
         <b-list-group horizontal>
           <b-list-group-item v-for="person in people" :key="person.id">
             <drag :transfer-data="person">
@@ -55,6 +57,8 @@
 </template>
 
 <script>
+import cloneDeep from 'lodash.clonedeep'
+
 export default {
   middleware: 'loggedInOnly',
 
@@ -63,7 +67,7 @@ export default {
   },
 
   computed: {
-    columns: () => [
+    months: () => [
       {
         key: 'Location',
         sortable: true
@@ -99,14 +103,11 @@ export default {
     },
 
     slots: function() {
+      // This is what we use for rendering.  We have a row per location slot.  The first column is the location name;
+      // within the other cells is a list of people.
+      const ret = []
       const locations = this.$store.state.locations.list
-      const locsById = []
-      const taken = []
-
-      for (let i = 0; i < locations.length; i++) {
-        const location = locations[i]
-        locsById[location.id] = location
-      }
+      const slots = this.$store.state.slots.list
 
       const people = this.$store.state.people.list
       const peopleById = []
@@ -116,30 +117,25 @@ export default {
         peopleById[person.id] = person
       }
 
-      const ret = []
-      const slots = this.$store.state.slots.list
-
-      // We have a row per location slot
+      // We have a row per location slot, with a minimum of one.
       for (let locationId = 0; locationId < locations.length; locationId++) {
         const location = locations[locationId]
 
-        for (
-          let slotRequired = 0;
-          slotRequired < location.slotsRequired;
-          slotRequired++
-        ) {
-          // First column is the location
+        for (let position = 0; position < location.slotsRequired; position++) {
           const row = {
             id: locationId,
-            Location: location.name + ' #' + slotRequired
+            Location: location.name + ' #' + position,
+            location: location,
+            position: position,
+            columns: []
           }
 
-          // We have a cell per month.
-          for (let month = 1; month < this.columns.length; month++) {
-            // Now find any active slots for this location and month
-            row[this.columns[month]] = {
-              id: slotRequired * 12 + month,
-              person: null
+          // First column is the location. We then have a column per month.
+          for (let month = 1; month < this.months.length; month++) {
+            // Now find any active slots for this location, position and month
+            row.columns[this.months[month]] = {
+              month: month,
+              people: []
             }
 
             for (
@@ -147,25 +143,21 @@ export default {
               slotScan < slots['hydra:totalItems'];
               slotScan++
             ) {
-              const slot = slots['hydra:member'][slotScan]
+              const slot = cloneDeep(slots['hydra:member'][slotScan])
+              const slotDate = new Date(slot.month)
 
-              // We only want a slot to appear once in the display
-              if (!taken.hasOwnProperty(slot.id) && slot.person) {
-                const slotDate = new Date(slot.month)
+              if (
+                slot.position === position &&
+                slotDate.getMonth() + 1 === month &&
+                slot.location === '/locations/' + location.id
+              ) {
+                // Gotcha; add this slot to this cell, but put the person in there so we can use the name in render.
+                const personId = slot.person.substring(
+                  slot.person.lastIndexOf('/') + 1
+                )
+                slot.person = peopleById[personId]
 
-                if (slotDate.getMonth() + 1 === month) {
-                  if (slot.location === '/locations/' + location.id) {
-                    const personId = slot.person.substring(
-                      slot.person.lastIndexOf('/') + 1
-                    )
-
-                    row[this.columns[month]].person = peopleById[personId]
-                    row[this.columns[month]].slot = slot
-
-                    taken[slot.id] = true
-                    break
-                  }
-                }
+                row.columns[this.months[month]].people.push(slot)
               }
             }
           }
@@ -185,51 +177,54 @@ export default {
     this.$store.dispatch('people/get')
     this.$store.dispatch('slots/get')
   },
-
   methods: {
     drop(month, data, dropped) {
-      console.log('Month', month)
-      console.log('Data', data)
-
-      const locations = this.$store.state.locations.list
-      let locid = null
-
-      for (let i = 0; i < locations.length; i++) {
-        const locName = data.item.Location.substring(
-          0,
-          data.item.Location.indexOf('#') - 1
-        )
-        console.log('Compare loc', locations[i].name, locName)
-        if (locations[i].name === locName) {
-          locid = locations[i].id
-        }
-      }
-
-      const person = dropped
-      console.log('Person', person)
+      console.log('Drop', arguments)
+      const location = data.item.location
+      const position = data.item.position
 
       // Set to midday to avoid saving time issues.
       const date = new Date(
         new Date().getFullYear(),
-        this.columns.indexOf(month) - 1,
+        this.months.indexOf(month) - 1,
         1,
         12,
         0
       )
-      console.log('DAte', date)
 
-      const params = {
-        location: '/locations/' + locid,
-        person: '/people/' + person.id,
-        month: date.toISOString()
+      if (dropped.hasOwnProperty('person')) {
+        // We are moving a slot.
+        this.$store.dispatch('slots/delete', dropped).then(() => {
+          const person = dropped.person
+
+          const params = {
+            location: '/locations/' + location.id,
+            person: '/people/' + person.id,
+            position: position,
+            month: date.toISOString()
+          }
+
+          console.log('Params', params)
+          this.$store
+            .dispatch('slots/create', params)
+            .then(() => this.$store.dispatch('slots/get'))
+        })
+      } else {
+        // We are adding a slot.
+        const person = dropped
+        const params = {
+          location: '/locations/' + location.id,
+          person: '/people/' + person.id,
+          position: position,
+          month: date.toISOString()
+        }
+
+        console.log('Params', params)
+        this.$store
+          .dispatch('slots/create', params)
+          .then(() => this.$store.dispatch('slots/get'))
       }
-
-      console.log('Params', params)
-      this.$store
-        .dispatch('slots/create', params)
-        .then(() => this.$store.dispatch('slots/get'))
     },
-
     remove(dropped) {
       console.log('Dropped', dropped)
       this.$store
