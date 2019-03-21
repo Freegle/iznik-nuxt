@@ -13,6 +13,9 @@
           <b-nav-item to="/bylocation">
             By Location
           </b-nav-item>
+          <b-nav-item to="/byperson">
+            By Person
+          </b-nav-item>
           <b-nav-item to="/locations">
             Locations
           </b-nav-item>

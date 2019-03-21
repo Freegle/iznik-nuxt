@@ -41,7 +41,7 @@
     <b-row class="m-0">
       <b-col>
         <hr>
-        <p>Here are the people. Drag them onto one of the grey boxes to add them.</p>
+        <p>Here are the people. Drag them onto one of the grey boxes.</p>
         <b-list-group horizontal>
           <b-list-group-item v-for="person in people" :key="person.id">
             <drag :transfer-data="person">
