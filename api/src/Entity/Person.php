@@ -31,6 +31,13 @@ class Person
     public $name;
 
     /**
+     * @var string Comment
+     *
+     * @ORM\Column(type="text")
+     */
+    public $comments;
+
+    /**
      * The slots in which this person is currently appearing, or blank.
      *
      * @ORM\OneToMany(targetEntity="Slot", mappedBy="person")

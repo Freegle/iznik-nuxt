@@ -1,70 +1,39 @@
 <template>
   <section class="container">
-    <div>
-      <logo />
-      <h1 class="title">
-        client-nuxt
-      </h1>
-      <h2 class="subtitle">
-        Rotavator
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green"
-        >Documentation</a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >GitHub</a>
-      </div>
-    </div>
+    <h1>Welcome</h1>
+    <p>This is a simple tool to allow you to do a rota.</p>
+    <ul>
+      <li>You navigate using the links on the bar at the top.</li>
+      <li>
+        First configure the locations where people work in <nuxt-link to="/locations">
+          Locations
+        </nuxt-link>.
+        You can include both real locations and any virtual ones, e.g. to allow people to be unavailable.
+      </li>
+      <li>
+        Then configure the people in <nuxt-link to="/people">
+          Locations
+        </nuxt-link>.
+      </li>
+      <li>
+        Then arrange the rota in <nuxt-link to="/bylocation">
+          By Location
+        </nuxt-link>.  This will stop you
+        double-booking people.
+      </li>
+      <li>
+        You can get a view of what individual people are doing in <nuxt-link to="/byperson">
+          By Person
+        </nuxt-link>.
+      </li>
+    </ul>
   </section>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-
 export default {
   middleware: 'loggedInOnly',
 
-  components: {
-    Logo
-  }
+  components: {}
 }
 </script>
-
-<style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
-</style>

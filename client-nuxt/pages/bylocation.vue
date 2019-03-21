@@ -3,7 +3,7 @@
     <b-row class="m-0">
       <b-col>
         <h1>By Location</h1>
-        <p>This shows who is working at each location in each month.</p>
+        <p>This shows who is working at each location in each month.  You can sort by location - click on the arrow.</p>
         <b-card class="text-center bg-light">
           <drop @drop="remove">
             Drag here to remove an entry

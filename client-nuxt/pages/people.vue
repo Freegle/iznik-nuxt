@@ -23,7 +23,16 @@
               v-model="form.name"
               type="text"
               required
-              placeholder="Enter the name"
+              placeholder="Enter their name"
+            />
+          </b-form-group>
+          <b-form-group label="Comments:" label-for="add-comments">
+            <b-form-textarea
+              id="add-comments"
+              v-model="form.comments"
+              placeholder="Put comments here"
+              rows="10"
+              class="mt-1"
             />
           </b-form-group>
         </b-form>
@@ -58,6 +67,15 @@
               placeholder="Enter the name"
             />
           </b-form-group>
+          <b-form-group label="Comments:" label-for="edit-comments">
+            <b-form-textarea
+              id="edit-comments"
+              v-model="item.comments"
+              placeholder="Put comments here"
+              rows="10"
+              class="mt-1"
+            />
+          </b-form-group>
         </b-form>
       </span>
     </b-modal>
@@ -75,7 +93,8 @@ export default {
     return {
       item: null,
       form: {
-        name: ''
+        name: '',
+        comments: ''
       }
     }
   },

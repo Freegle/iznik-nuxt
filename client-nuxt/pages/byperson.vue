@@ -3,7 +3,10 @@
     <b-row class="m-0">
       <b-col>
         <h1>By Person</h1>
-        <p>This shows where each person is working in each month.  You can't move things on here (do we need to?).</p>
+        <p>
+          This shows where each person is working in each month.  You can't move things on here (do we need to?).  You
+          can sort by person - click on the arrow.
+        </p>
       </b-col>
     </b-row>
     <b-row class="m-0">
