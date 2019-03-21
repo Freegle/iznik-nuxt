@@ -4,7 +4,7 @@
       <b-col>
         <h1>By Location</h1>
         <p>This shows who is working at each location in each month.</p>
-        <b-card class="text-center">
+        <b-card class="text-center bg-light">
           <drop @drop="remove">
             Drag here to remove an entry
           </drop>
@@ -25,6 +25,15 @@
             </drop>
           </template>
         </b-table>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <b-card class="text-center bg-light">
+          <drop @drop="remove">
+            Drag here to remove an entry
+          </drop>
+        </b-card>
       </b-col>
     </b-row>
     <b-row>
