@@ -11,6 +11,7 @@ export default function({ route, store, redirect }) {
 
   // Add token header if we have it.
   const token = store.getters['security/token']
+  console.log('Login middleware token', token)
 
   if (token) {
     axios.defaults.headers.common.Authorization = 'Bearer ' + token.toString()
@@ -24,6 +25,7 @@ export default function({ route, store, redirect }) {
     })
     .then(response => {
       store.commit('security/AUTHENTICATING_SUCCESS', response.data.token)
+      console.log('Redirect')
       return redirect('/')
     })
     .catch(() => {

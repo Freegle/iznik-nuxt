@@ -10,17 +10,17 @@ export default function({ route, store, redirect }) {
 
   // Add token header if we have it.
   const token = store.getters['security/token']
-  console.log('Retrieved token', token)
 
   if (token) {
     // We have a token, but check whether it's expired.
     // TODO Would be nice to render the page optimistically if we have a token.
     const dec = jwtDecode(token)
 
-    const now = new Date().getTime() / 1000
+    const now = new Date().getTime()
 
-    if (dec.exp < now) {
+    if (dec.exp * 1000 > now) {
       axios.defaults.headers.common.Authorization = 'Bearer ' + token.toString()
+    } else {
     }
   } else {
     axios.defaults.headers.common.Authorization = null

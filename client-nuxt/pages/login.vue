@@ -76,10 +76,12 @@ export default {
           rememberme: this.rememberme
         })
         .then(() => {
+          console.log('Login complete')
           // TODO Move to the grid page.
           this.$router.push({
-            path: '/locations'
+            path: '/'
           })
+          console.log('Pushed')
         })
         .catch(() => {
           // TODO
