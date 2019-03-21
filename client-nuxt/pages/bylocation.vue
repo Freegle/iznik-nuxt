@@ -4,6 +4,11 @@
       <b-col>
         <h1>By Location</h1>
         <p>This shows who is working at each location in each month.</p>
+        <b-card class="text-center">
+          <drop @drop="remove">
+            Drag here to remove an entry
+          </drop>
+        </b-card>
       </b-col>
     </b-row>
     <b-row>
@@ -11,9 +16,11 @@
         <b-table id="table" striped hover :items="slots" :fields="columns">
           <template v-for="month in columns" :slot="month" slot-scope="data">
             <drop :key="data.item.id + '-' + data.item.Location + '-' + month" @drop="drop(month, data, ...arguments)">
-              <b-btn v-if="data.item[month].person" variant="info">
-                {{ data.item[month].person.name }}
-              </b-btn>
+              <drag v-if="data.item[month].person" :transfer-data="data.item[month].slot">
+                <b-btn variant="info">
+                  {{ data.item[month].person.name }}
+                </b-btn>
+              </drag>
               <b-btn v-if="!data.item[month].person" variant="secondary" />
             </drop>
           </template>
@@ -139,14 +146,13 @@ export default {
 
                 if (slotDate.getMonth() + 1 === month) {
                   if (slot.location === '/locations/' + location.id) {
-                    console.log(slot.id, this.columns[month], locationId)
                     const personId = slot.person.substring(
                       slot.person.lastIndexOf('/') + 1
                     )
 
                     row[this.columns[month]].person = peopleById[personId]
+                    row[this.columns[month]].slot = slot
 
-                    console.log('Record taken slot', slot.id)
                     taken[slot.id] = true
                     break
                   }
@@ -212,6 +218,13 @@ export default {
       console.log('Params', params)
       this.$store
         .dispatch('slots/create', params)
+        .then(() => this.$store.dispatch('slots/get'))
+    },
+
+    remove(dropped) {
+      console.log('Dropped', dropped)
+      this.$store
+        .dispatch('slots/delete', dropped)
         .then(() => this.$store.dispatch('slots/get'))
     }
   }
