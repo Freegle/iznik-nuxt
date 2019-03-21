@@ -128,9 +128,12 @@ export default {
               const locationId = slot.location.substring(
                 slot.location.lastIndexOf('/') + 1
               )
-              row.columns[this.months[month]].location =
-                locationsById[locationId]
-              console.log('Gotcha', slot)
+
+              const location = locationsById[locationId]
+
+              if (location) {
+                row.columns[this.months[month]].location = location
+              }
             }
           }
         }

@@ -166,7 +166,9 @@ export default {
                 )
                 slot.person = peopleById[personId]
 
-                row.columns[this.months[month]].people.push(slot)
+                if (slot.person) {
+                  row.columns[this.months[month]].people.push(slot)
+                }
               }
             }
           }
