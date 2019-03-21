@@ -8,7 +8,14 @@
     </b-row>
     <b-row class="m-0">
       <b-col>
-        <b-table id="table" striped hover :items="slots" :fields="months">
+        <b-table
+          id="table"
+          :busy="isBusy"
+          striped
+          hover
+          :items="slots"
+          :fields="months"
+        >
           <template v-for="month in months" :slot="month" slot-scope="data">
             <b-btn v-if="data.item.columns[month].location" :key="month" variant="info">
               {{ data.item.columns[month].location.name }}
@@ -28,7 +35,9 @@ export default {
   middleware: 'loggedInOnly',
 
   data() {
-    return {}
+    return {
+      isBusy: false
+    }
   },
 
   computed: {

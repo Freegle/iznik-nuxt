@@ -13,7 +13,14 @@
     </b-row>
     <b-row class="m-0">
       <b-col>
-        <b-table id="table" striped hover :items="slots" :fields="months">
+        <b-table
+          id="table"
+          :busy="isBusy"
+          striped
+          hover
+          :items="slots"
+          :fields="months"
+        >
           <template v-for="month in months" :slot="month" slot-scope="data">
             <div v-for="personslot in data.item.columns[month].people" :key="'1-' + month + '-' + personslot.id">
               <drag :key="'2-' + month + '-' + personslot.id" :transfer-data="personslot">
@@ -63,7 +70,9 @@ export default {
   middleware: 'loggedInOnly',
 
   data() {
-    return {}
+    return {
+      isBusy: false
+    }
   },
 
   computed: {
@@ -178,25 +187,65 @@ export default {
     this.$store.dispatch('slots/get')
   },
   methods: {
+    canDrop(person, month) {
+      // See if we can drop here.  We can't drop if there is already an entry in this month for this person.
+      const slots = this.$store.state.slots.list
+      let canDrop = true
+      month = this.months.indexOf(month)
+
+      for (let slotScan = 0; slotScan < slots['hydra:totalItems']; slotScan++) {
+        const slot = slots['hydra:member'][slotScan]
+        const slotDate = new Date(slot.month)
+        const slotPerson = slot.person
+          ? parseInt(slot.person.substring(slot.person.lastIndexOf('/') + 1))
+          : null
+
+        console.log('Check', slotPerson, slotDate.getMonth(), person.id, month)
+        if (slotPerson === person.id && slotDate.getMonth() + 1 === month) {
+          console.log("Can't")
+          canDrop = false
+        }
+      }
+
+      return canDrop
+    },
+
     drop(month, data, dropped) {
       console.log('Drop', arguments)
       const location = data.item.location
       const position = data.item.position
+      const person = dropped.person
 
-      // Set to midday to avoid saving time issues.
-      const date = new Date(
-        new Date().getFullYear(),
-        this.months.indexOf(month) - 1,
-        1,
-        12,
-        0
-      )
+      if (this.canDrop(person, month)) {
+        // Set to midday to avoid saving time issues.
+        this.isBusy = true
+        const date = new Date(
+          new Date().getFullYear(),
+          this.months.indexOf(month) - 1,
+          1,
+          12,
+          0
+        )
 
-      if (dropped.hasOwnProperty('person')) {
-        // We are moving a slot.
-        this.$store.dispatch('slots/delete', dropped).then(() => {
-          const person = dropped.person
+        if (dropped.hasOwnProperty('person')) {
+          // We are moving a slot.
+          this.$store.dispatch('slots/delete', dropped).then(() => {
+            const params = {
+              location: '/locations/' + location.id,
+              person: '/people/' + person.id,
+              position: position,
+              month: date.toISOString()
+            }
 
+            console.log('Params', params)
+            this.$store
+              .dispatch('slots/create', params)
+              .then(() => this.$store.dispatch('slots/get'))
+              .then(() => (this.isBusy = false))
+          })
+        } else {
+          // We are adding a slot.
+          const person = dropped
           const params = {
             location: '/locations/' + location.id,
             person: '/people/' + person.id,
@@ -208,27 +257,13 @@ export default {
           this.$store
             .dispatch('slots/create', params)
             .then(() => this.$store.dispatch('slots/get'))
-        })
-      } else {
-        // We are adding a slot.
-        const person = dropped
-        const params = {
-          location: '/locations/' + location.id,
-          person: '/people/' + person.id,
-          position: position,
-          month: date.toISOString()
+            .then(() => (this.isBusy = false))
         }
-
-        console.log('Params', params)
-        this.$store
-          .dispatch('slots/create', params)
-          .then(() => this.$store.dispatch('slots/get'))
       }
     },
-    remove(dropped) {
-      console.log('Dropped', dropped)
+    remove(slot) {
       this.$store
-        .dispatch('slots/delete', dropped)
+        .dispatch('slots/delete', slot)
         .then(() => this.$store.dispatch('slots/get'))
     }
   }
