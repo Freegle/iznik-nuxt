@@ -10,6 +10,7 @@ export default function({ route, store, redirect }) {
 
   // Add token header if we have it.
   const token = store.getters['security/token']
+  console.log('Retrieved token', token)
 
   if (token) {
     // We have a token, but check whether it's expired.

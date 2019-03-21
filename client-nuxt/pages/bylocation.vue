@@ -146,7 +146,9 @@ export default {
 
                     row[this.columns[month]].person = peopleById[personId]
 
+                    console.log('Record taken slot', slot.id)
                     taken[slot.id] = true
+                    break
                   }
                 }
               }
