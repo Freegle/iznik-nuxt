@@ -200,7 +200,7 @@ export default {
           ? parseInt(slot.person.substring(slot.person.lastIndexOf('/') + 1))
           : null
 
-        console.log('Check', slotPerson, slotDate.getMonth(), person.id, month)
+        console.log('Check', slotPerson, slotDate.getMonth(), person, month)
         if (slotPerson === person.id && slotDate.getMonth() + 1 === month) {
           console.log("Can't")
           canDrop = false
@@ -214,21 +214,22 @@ export default {
       console.log('Drop', arguments)
       const location = data.item.location
       const position = data.item.position
-      const person = dropped.person
 
-      if (this.canDrop(person, month)) {
-        // Set to midday to avoid saving time issues.
-        this.isBusy = true
-        const date = new Date(
-          new Date().getFullYear(),
-          this.months.indexOf(month) - 1,
-          1,
-          12,
-          0
-        )
+      // Set to midday to avoid saving time issues.
+      this.isBusy = true
+      const date = new Date(
+        new Date().getFullYear(),
+        this.months.indexOf(month) - 1,
+        1,
+        12,
+        0
+      )
 
-        if (dropped.hasOwnProperty('person')) {
-          // We are moving a slot.
+      if (dropped.hasOwnProperty('person')) {
+        // We are moving a slot.
+        const person = dropped.person
+
+        if (this.canDrop(person, month)) {
           this.$store.dispatch('slots/delete', dropped).then(() => {
             const params = {
               location: '/locations/' + location.id,
@@ -244,8 +245,13 @@ export default {
               .then(() => (this.isBusy = false))
           })
         } else {
-          // We are adding a slot.
-          const person = dropped
+          this.isBusy = false
+        }
+      } else {
+        // We are adding a slot.
+        const person = dropped
+
+        if (this.canDrop(person, month)) {
           const params = {
             location: '/locations/' + location.id,
             person: '/people/' + person.id,
@@ -258,6 +264,8 @@ export default {
             .dispatch('slots/create', params)
             .then(() => this.$store.dispatch('slots/get'))
             .then(() => (this.isBusy = false))
+        } else {
+          this.isBusy = false
         }
       }
     },
