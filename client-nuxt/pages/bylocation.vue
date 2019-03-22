@@ -4,11 +4,11 @@
       We pass the person to edit down via a computed property, and trigger a re-render by setting a key on the
       id.
     -->
-    <personEdit :key="'edit' + (personToEdit ? personToEdit.id : null)" v-bind="personToEdit" />
     <b-row class="m-0">
       <b-col>
         <h1>By Location</h1>
         <p>This shows who is working at each location in each month.  You can sort by location - click on the arrow.</p>
+        <p>Click on a person to see and change their details.</p>
         <b-card class="text-center bg-light">
           <drop @drop="remove">
             Drag here to remove an entry
@@ -65,6 +65,7 @@
         </b-list-group>
       </b-col>
     </b-row>
+    <personEdit :key="'edit' + (personToEdit ? personToEdit.id : null)" v-bind="personToEdit" />
   </div>
 </template>
 
@@ -125,7 +126,6 @@ export default {
     // We need to use a computed property for the edit/delete, otherwise the component won't get re-rendered when we
     // decide to operate on a new user.
     personToEdit: function() {
-      console.log('Person to edit', this.editPerson)
       return this.editPerson
     },
 

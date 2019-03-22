@@ -4,6 +4,7 @@
     id="delete"
     ok-title="Delete"
     :title="'Delete ' + name + '?'"
+    visible
     @ok="destroy"
   >
     <p>Are you sure?</p>

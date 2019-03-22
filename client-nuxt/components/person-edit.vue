@@ -1,6 +1,7 @@
 <template>
   <div>
     <b-modal
+      v-if="id"
       id="edit"
       ok-title="Save"
       :title="name"
@@ -30,7 +31,6 @@
         </b-form>
       </span>
     </b-modal>
-    Edit Id {{ id }}
   </div>
 </template>
 <script>
