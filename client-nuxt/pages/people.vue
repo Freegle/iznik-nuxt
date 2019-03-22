@@ -45,7 +45,7 @@
     id.
     -->
     <personDelete :key="'del' + (personToDelete ? personToDelete.id : null)" v-bind="personToDelete" />
-    <personEdit :key="'edit' + (personToEdit ? personToEdit.id : null)" v-bind="personToEdit" />
+    <personEdit v-if="personToEdit" :key="countOfEdits" v-bind="personToEdit" />
   </div>
 </template>
 
@@ -69,6 +69,7 @@ export default {
         comments: ''
       },
       editPerson: null,
+      editCount: 1,
       deletePerson: null
     }
   },
@@ -81,6 +82,10 @@ export default {
       // decide to operate on a new user.
       personToEdit: function() {
         return this.editPerson
+      },
+      countOfEdits: function() {
+        console.log('count of edits', this.editCount)
+        return this.editCount
       },
       personToDelete: function() {
         console.log('personToDelete', this.deletePerson)
@@ -110,6 +115,7 @@ export default {
     },
     edit(person) {
       this.editPerson = person
+      this.editCount++
     },
     destroy(person) {
       console.log('Delete', person)

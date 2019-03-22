@@ -1,5 +1,10 @@
 <template>
   <div>
+    <!--
+      We pass the person to edit down via a computed property, and trigger a re-render by setting a key on the
+      id.
+    -->
+    <personEdit :key="'edit' + (personToEdit ? personToEdit.id : null)" v-bind="personToEdit" />
     <b-row class="m-0">
       <b-col>
         <h1>By Location</h1>
@@ -24,7 +29,7 @@
           <template v-for="month in months" :slot="month" slot-scope="data">
             <div v-for="personslot in data.item.columns[month].people" :key="'1-' + month + '-' + personslot.id">
               <drag :key="'2-' + month + '-' + personslot.id" :transfer-data="personslot">
-                <b-btn variant="info" class="mb-1">
+                <b-btn variant="info" class="mb-1" @click="edit(personslot.person)">
                   {{ personslot.person.name }}
                 </b-btn>
               </drag>
@@ -52,7 +57,7 @@
         <b-list-group horizontal>
           <b-list-group-item v-for="person in people" :key="person.id">
             <drag :transfer-data="person">
-              <b-button variant="info">
+              <b-button variant="info" @click="edit(person)">
                 {{ person.name }}
               </b-button>
             </drag>
@@ -65,13 +70,19 @@
 
 <script>
 import cloneDeep from 'lodash.clonedeep'
+import personEdit from '~/components/person-edit.vue'
 
 export default {
   middleware: 'loggedInOnly',
 
+  components: {
+    personEdit
+  },
+
   data() {
     return {
-      isBusy: false
+      isBusy: false,
+      editPerson: null
     }
   },
 
@@ -109,6 +120,13 @@ export default {
       })
 
       return ret
+    },
+
+    // We need to use a computed property for the edit/delete, otherwise the component won't get re-rendered when we
+    // decide to operate on a new user.
+    personToEdit: function() {
+      console.log('Person to edit', this.editPerson)
+      return this.editPerson
     },
 
     slots: function() {
@@ -177,7 +195,6 @@ export default {
         }
       }
 
-      console.log('Grid', ret)
       return ret
     }
   },
@@ -188,6 +205,7 @@ export default {
     this.$store.dispatch('people/get')
     this.$store.dispatch('slots/get')
   },
+
   methods: {
     canDrop(person, month) {
       // See if we can drop here.  We can't drop if there is already an entry in this month for this person.
@@ -271,10 +289,16 @@ export default {
         }
       }
     },
+
     remove(slot) {
       this.$store
         .dispatch('slots/delete', slot)
         .then(() => this.$store.dispatch('slots/get'))
+    },
+
+    edit(person) {
+      console.log('Edit', person)
+      this.editPerson = person
     }
   }
 }
