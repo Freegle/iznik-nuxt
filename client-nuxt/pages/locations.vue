@@ -27,14 +27,14 @@
               placeholder="Enter the name"
             />
           </b-form-group>
-          <b-form-group label="Number of slots:" label-for="add-slots">
+          <b-form-group label="People required:" label-for="add-slots">
             <b-form-input
               id="add-slots"
               v-model="form.slotsRequired"
               type="number"
               min="1"
               required
-              placeholder="Enter the number of slots for this location"
+              placeholder="Enter the number of people required for this location"
             />
           </b-form-group>
         </b-form>
@@ -69,14 +69,14 @@
               placeholder="Enter the name"
             />
           </b-form-group>
-          <b-form-group label="Number of slots:" label-for="edit-slots">
+          <b-form-group label="People required:" label-for="edit-slots">
             <b-form-input
               id="edit-slots"
               v-model.number="item.slotsRequired"
               type="number"
               min="1"
               required
-              placeholder="Enter the number of slots for this location"
+              placeholder="Enter the number of people required for this location"
             />
           </b-form-group>
         </b-form>
@@ -110,7 +110,8 @@ export default {
     fields: () => [
       {
         key: 'name',
-        label: 'Location'
+        label: 'Location',
+        sortable: true
       },
       {
         key: 'slotsRequired',

@@ -89,7 +89,8 @@ export default {
     fields: () => [
       {
         key: 'name',
-        label: 'Person'
+        label: 'Person',
+        sortable: true
       },
       {
         key: 'actions',
