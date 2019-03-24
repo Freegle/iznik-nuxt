@@ -11,7 +11,7 @@
         <p>Click on a person to see and change their details.</p>
         <b-card class="text-center bg-light">
           <drop @drop="remove">
-            Drag here to remove an entry
+            <fa icon="trash-alt" />&nbsp;Drag an entry here to remove it
           </drop>
         </b-card>
       </b-col>
@@ -45,7 +45,7 @@
       <b-col>
         <b-card class="text-center bg-light">
           <drop @drop="remove">
-            Drag here to remove an entry
+            <fa icon="trash-alt" />&nbsp;Drag an entry here to remove it
           </drop>
         </b-card>
       </b-col>
