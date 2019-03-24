@@ -28,13 +28,21 @@
               class="mt-1"
             />
           </b-form-group>
+          <b-form-group label="Colour" label-for="edit-color">
+            <chrome-picker v-model="colors" @input="updateColour" />
+          </b-form-group>
         </b-form>
       </span>
     </b-modal>
   </div>
 </template>
 <script>
+import { Chrome } from 'vue-color'
+
 export default {
+  components: {
+    'chrome-picker': Chrome
+  },
   // The model is passed as input to this component via props.  We cannot mutate this.
   props: {
     id: {
@@ -45,6 +53,10 @@ export default {
       type: String,
       default: ''
     },
+    colour: {
+      type: String,
+      default: ''
+    },
     comments: {
       type: String,
       default: ''
@@ -52,18 +64,32 @@ export default {
   },
   // ...so we return values based on them
   data: function() {
+    console.log('Colour', this)
     return {
       mutableName: this.name,
-      mutableComments: this.comments
+      mutableComments: this.comments,
+      mutableColour: this.colour,
+      colors: {
+        hex: this.colour ? this.colour : '#194d33',
+        // hsl: { h: 150, s: 0.5, l: 0.2, a: 1 },
+        // hsv: { h: 150, s: 0.66, v: 0.3, a: 1 },
+        // rgba: { r: 25, g: 77, b: 51, a: 1 },
+        a: 1
+      }
     }
   },
   methods: {
+    updateColour: function(colour) {
+      this.mutableColour = colour.hex
+    },
+
     save(evt) {
       this.$store
         .dispatch('people/update', {
           id: this.id,
           name: this.mutableName,
-          comments: this.mutableComments
+          comments: this.mutableComments,
+          colour: this.mutableColour
         })
         .then(() => this.$store.dispatch('people/get'))
     }

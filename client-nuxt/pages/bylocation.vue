@@ -29,7 +29,7 @@
           <template v-for="month in months" :slot="month" slot-scope="data">
             <div v-for="personslot in data.item.columns[month].people" :key="'1-' + month + '-' + personslot.id">
               <drag :key="'2-' + month + '-' + personslot.id" :transfer-data="personslot">
-                <b-btn variant="info" class="mb-1" @click="edit(personslot.person)">
+                <b-btn variant="dark" :style="backgroundColour(personslot.person)" class="mb-1" @click="edit(personslot.person)">
                   {{ personslot.person.name }}
                 </b-btn>
               </drag>
@@ -57,7 +57,7 @@
         <b-list-group horizontal>
           <b-list-group-item v-for="person in people" :key="person.id">
             <drag :transfer-data="person">
-              <b-button variant="info" @click="edit(person)">
+              <b-button :style="backgroundColour(person)" variant="dark" @click="edit(person)">
                 {{ person.name }}
               </b-button>
             </drag>
@@ -83,7 +83,14 @@ export default {
   data() {
     return {
       isBusy: false,
-      editPerson: null
+      editPerson: null,
+      backgroundColour(person) {
+        // We set the colour dynamically
+        const s = {
+          backgroundColor: person.colour + ' !important'
+        }
+        return s
+      }
     }
   },
 

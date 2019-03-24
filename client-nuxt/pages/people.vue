@@ -7,6 +7,9 @@
           {{ $t('people.new') }}
         </b-btn>
         <b-table striped hover :items="list" :fields="fields">
+          <template slot="colour" scope="environment">
+            <b-button variant="dark" :style="backgroundColour(environment.item)" />
+          </template>
           <template slot="actions" scope="environment">
             <a href="#" class="mr-2" @click="destroy(environment.item)"><fa v-b-modal.delete size="lg" icon="trash-alt" /></a>
             <a href="#" class="mr-2" @click="edit(environment.item)"><fa v-b-modal.edit size="lg" icon="edit" /></a>
@@ -53,11 +56,13 @@
 import { mapState } from 'vuex'
 import personEdit from '~/components/person-edit.vue'
 import personDelete from '~/components/person-delete.vue'
+import BButton from 'bootstrap-vue/src/components/button/button'
 
 export default {
   middleware: 'loggedInOnly',
 
   components: {
+    BButton,
     personEdit,
     personDelete
   },
@@ -69,7 +74,14 @@ export default {
         comments: ''
       },
       editPerson: null,
-      deletePerson: null
+      deletePerson: null,
+      backgroundColour(person) {
+        // We set the colour dynamically
+        const s = {
+          backgroundColor: person.colour + ' !important'
+        }
+        return s
+      }
     }
   },
   computed: {
@@ -91,6 +103,10 @@ export default {
         key: 'name',
         label: 'Person',
         sortable: true
+      },
+      {
+        key: 'colour',
+        label: 'Colour'
       },
       {
         key: 'actions',

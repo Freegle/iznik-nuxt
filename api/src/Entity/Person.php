@@ -31,6 +31,13 @@ class Person
     public $name;
 
     /**
+     * @var string The colour for this
+     *
+     * @ORM\Column
+     */
+    public $colour;
+
+    /**
      * @var string Comment
      *
      * @ORM\Column(type="text")
