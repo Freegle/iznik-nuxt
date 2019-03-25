@@ -82,9 +82,15 @@ nav .navbar-nav li a.nuxt-link-active {
   color: white !important;
 }
 
-.navbar .logo {
-  width: 40px !important;
+.navbar a.navbar-brand {
   padding: 0px;
+}
+
+.navbar .logo {
+  width: 58px !important;
+  padding: 0px;
+  margin-top: -5px;
+  margin-bottom: -5px;
 }
 </style>
 
