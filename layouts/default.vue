@@ -4,13 +4,13 @@
       <b-navbar-brand to="/" class="p-0">
         <b-img class="logo" fluid rounded :src="require(`@/static/icon.png`)" alt="Home" />
       </b-navbar-brand>
-      <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
+      <!--<b-navbar-toggle v-if="loggedIn" target="nav_collapse" />-->
 
-      <b-collapse v-if="loggedIn" id="nav_collapse" is-nav>
-        <b-navbar-nav />
+      <!--<b-collapse v-if="loggedIn" id="nav_collapse" is-nav>-->
+      <!--<b-navbar-nav />-->
 
-        <b-navbar-nav class="ml-auto" />
-      </b-collapse>
+      <!--<b-navbar-nav class="ml-auto" />-->
+      <!--</b-collapse>-->
     </b-navbar>
 
     <nuxt class="ml-0" />

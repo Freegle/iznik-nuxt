@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import { interopDefault } from './utils'
 
 const _1f1384c7 = () => interopDefault(import('..\\pages\\login.vue' /* webpackChunkName: "pages_login" */))
+const _7ef49c99 = () => interopDefault(import('..\\pages\\explore\\_id.vue' /* webpackChunkName: "pages_explore__id" */))
 const _556be1b0 = () => interopDefault(import('..\\pages\\index.vue' /* webpackChunkName: "pages_index" */))
 
 Vue.use(Router)
@@ -83,6 +84,10 @@ export function createRouter() {
       path: "/login",
       component: _1f1384c7,
       name: "login___en"
+    }, {
+      path: "/explore/:id?",
+      component: _7ef49c99,
+      name: "explore-id___en"
     }, {
       path: "/",
       component: _556be1b0,
