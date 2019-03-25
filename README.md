@@ -55,9 +55,9 @@ https://github.com/timanovsky/subdir-heroku-buildpack
 
 You may need to create the database:
 
-`heroku run php bin/console doctrine:database:create`
+`heroku run php bin/console doctrine:database:create -a rotavator-api`
 
-`heroku run php bin/console doctrine:schema:update --force`
+`heroku run php bin/console doctrine:schema:update --force -a rotavator-api`
 
 Deploying the client to Heroku
 === 
@@ -65,6 +65,12 @@ Deploying the client to Heroku
 As per Platform API instructions, then set up a pipeline to the client-nuxt subfolder from the git repository using the instructions at 
 
 https://github.com/timanovsky/subdir-heroku-buildpack
+
+`heroku buildpacks:clear -a rotavator-client`
+
+`heroku buildpacks:set https://github.com/timanovsky/subdir-heroku-buildpack -a rotavator-client`
+
+`heroku buildpacks:add heroku/nodejs -a rotavator-client`
 
 Then customise for Nuxt according to https://nuxtjs.org/faq/heroku-deployment/
 
