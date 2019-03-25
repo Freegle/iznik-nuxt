@@ -38,6 +38,9 @@
               class="mt-1"
             />
           </b-form-group>
+          <b-form-group label="Colour" label-for="edit-color">
+            <chrome-picker v-model="colors" @input="updateColour" />
+          </b-form-group>
         </b-form>
       </span>
     </b-modal>
@@ -57,6 +60,7 @@ import { mapState } from 'vuex'
 import personEdit from '~/components/person-edit.vue'
 import personDelete from '~/components/person-delete.vue'
 import BButton from 'bootstrap-vue/src/components/button/button'
+import { Chrome } from 'vue-color'
 
 export default {
   middleware: 'loggedInOnly',
@@ -64,7 +68,8 @@ export default {
   components: {
     BButton,
     personEdit,
-    personDelete
+    personDelete,
+    'chrome-picker': Chrome
   },
 
   data() {
@@ -81,6 +86,10 @@ export default {
           backgroundColor: person.colour + ' !important'
         }
         return s
+      },
+      colors: {
+        hex: this.colour ? this.colour : '#194d33',
+        a: 1
       }
     }
   },
@@ -119,6 +128,10 @@ export default {
     this.$store.dispatch('people/get')
   },
   methods: {
+    updateColour: function(colour) {
+      this.form.colour = colour.hex
+    },
+
     create(evt) {
       this.$store
         .dispatch('people/create', this.form)
