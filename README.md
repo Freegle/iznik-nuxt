@@ -35,11 +35,23 @@ You'll need to deploy both the server and the client.
 Deploying the server to Heroku
 ==
 
-As per Platform API instructions, then set up a pipeline to the api subfolder from the git repository using the instructions at 
+As per Platform API instructions, and enable automatic deploys.  Set the env to production:
+
+`heroku config:set SYMFONY_ENV=prod -a rotavator-api`  
+
+Also set the DATABASE_URL environment variable to be the same as the CLEARDB_DATABASE_URL.
+
+Then set up a pipeline to the api subfolder from the git repository using the instructions at:
 
 https://github.com/timanovsky/subdir-heroku-buildpack
 
-Don't forget to set the DATABASE_URL environment variable.
+`heroku buildpacks:clear -a rotavator-api`
+
+`heroku buildpacks:set https://github.com/timanovsky/subdir-heroku-buildpack -a rotavator-api`
+
+`heroku buildpacks:add heroku/php -a rotavator-api`
+
+`heroku config:set PROJECT_PATH=api -a rotavator-api`
 
 You may need to create the database:
 
@@ -54,7 +66,16 @@ As per Platform API instructions, then set up a pipeline to the client-nuxt subf
 
 https://github.com/timanovsky/subdir-heroku-buildpack
 
+Then customise for Nuxt according to https://nuxtjs.org/faq/heroku-deployment/
+
+`heroku config:set NPM_CONFIG_PRODUCTION=false -a rotavator-client`
+
+`heroku config:set HOST=0.0.0.0 -a rotavator-client`
+
+`heroku config:set NODE_ENV=production -a rotavator-client`
+
 Troubleshooting
 ===
 
+* If you have problems deploying, check that APP_ENV in .env is set to prod. 
 * Getting invalid reference format on docker-compose up?  Make sure you're in the top level, not under /api
