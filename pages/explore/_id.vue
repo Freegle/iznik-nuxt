@@ -1,12 +1,22 @@
 <template>
-  <div>
-    <div v-if="group">
-      <h1>{{ group.namedisplay }}</h1>
-    </div>
+  <div v-if="group">
+    <b-card bg-light>
+      <b-row v-if="group.profile">
+        <b-col cols="1">
+          <b-img rounded thumbnail alt="Community profile picture" :src="group.profile" class="js-pageimage" />
+        </b-col>
+        <b-col>
+          <b-card-title>{{ group.namedisplay }}</b-card-title>
+          <b-card-sub-title>{{ group.tagline }}</b-card-sub-title>
+        </b-col>
+      </b-row>
+    </b-card>
   </div>
 </template>
 <script>
+import BCardTitle from 'bootstrap-vue/src/components/card/card-title'
 export default {
+  components: { BCardTitle },
   data() {
     return {
       id: null,
