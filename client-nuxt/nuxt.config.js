@@ -19,7 +19,7 @@ module.exports = {
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#fff' },
+  loading: { color: '#61AE24' },
 
   /*
   ** Global CSS
@@ -43,7 +43,8 @@ module.exports = {
   ** Nuxt.js modules
   */
   modules: [
-    // Doc: https://axios.nuxtjs.org/usage
+    'nuxt-rfg-icon',
+
     '@nuxtjs/axios',
 
     '@nuxtjs/pwa',
@@ -54,10 +55,6 @@ module.exports = {
           {
             code: 'en',
             iso: 'en-GB'
-          },
-          {
-            code: 'fr',
-            iso: 'fr-FR'
           }
         ],
         defaultLocale: 'en',
@@ -65,14 +62,7 @@ module.exports = {
           fallbackLocale: 'en',
           messages: {
             en: {
-              locations: {
-                new: 'Add new location'
-              },
-              people: {
-                new: 'Add new person'
-              }
-            },
-            fr: {}
+            }
           }
         }
       }
@@ -97,7 +87,6 @@ module.exports = {
   ** Axios module configuration
   */
   axios: {
-    // See https://github.com/nuxt-community/axios-module#options
   },
 
   /*
@@ -124,11 +113,11 @@ module.exports = {
   },
 
   env: {
-    API: process.env.ROTA_API || 'http://localhost:8080'
+    API: process.env.IZNIK_API || 'https://dev.ilovefreegle.org/api'
   },
 
   // We have some configuration to ensure that we handle both SSR and being logged in.
   serverMiddleware: ['~/serverMiddleware'],
 
-  forceSPAOn: ['/login', '/locations', '/people']
+  forceSPAOn: ['/login']
 }

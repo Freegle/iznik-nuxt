@@ -7,7 +7,7 @@ root = true
 [*]
 # Change these settings to your own preference
 indent_style = space
-indent_size = 4
+indent_size = 2
 
 # We recommend you to keep these unchanged
 end_of_line = lf
@@ -32,28 +32,28 @@ trim_trailing_whitespace = false
 
 [*.php]
 indent_style = space
-indent_size = 4
+indent_size = 2
 
 [*.sh]
 indent_style = tab
-indent_size = 4
+indent_size = 2
 
 [*.xml]
 indent_style = space
-indent_size = 4
+indent_size = 2
 
 [*.{yaml,yml}]
 indent_style = space
-indent_size = 4
+indent_size = 2
 trim_trailing_whitespace = false
 
 [.gitmodules]
 indent_style = tab
-indent_size = 4
+indent_size = 2
 
 [.php_cs{,.dist}]
 indent_style = space
-indent_size = 4
+indent_size = 2
 
 [.travis.yml]
 indent_style = space
@@ -69,7 +69,7 @@ indent_size = 2
 
 [Dockerfile]
 indent_style = tab
-indent_size = 4
+indent_size = 2
 
 [package.json]
 indent_style = space
@@ -77,4 +77,4 @@ indent_size = 2
 
 [phpunit.xml{,.dist}]
 indent_style = space
-indent_size = 4
+indent_size = 2

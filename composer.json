@@ -1,6 +1,0 @@
-{
-    "require": {
-        "symfony/apache-pack": "^1.0",
-        "platformsh/symfonyflex-bridge": "^1.5"
-    }
-}

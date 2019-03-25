@@ -2,32 +2,16 @@
   <div>
     <b-navbar toggleable="lg" type="dark" variant="info">
       <b-navbar-brand to="/">
-        <fa icon="calendar-alt" />
-        Rotavator
+        <img src="/static/icon.png"
       </b-navbar-brand>
 
       <b-navbar-toggle v-if="showMenu" target="nav_collapse" />
 
       <b-collapse v-if="showMenu" id="nav_collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item to="/bylocation">
-            By Location
-          </b-nav-item>
-          <b-nav-item to="/byperson">
-            By Person
-          </b-nav-item>
-          <b-nav-item to="/locations">
-            Locations
-          </b-nav-item>
-          <b-nav-item to="/people">
-            People
-          </b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">
-          <b-nav-item @click="logout">
-            Logout
-          </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
