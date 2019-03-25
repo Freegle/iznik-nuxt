@@ -124,7 +124,7 @@ module.exports = {
   },
 
   env: {
-    API: 'http://localhost:8080'
+    API: process.env.ROTA_API || 'http://localhost:8080'
   },
 
   // We have some configuration to ensure that we handle both SSR and being logged in.

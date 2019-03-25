@@ -80,6 +80,8 @@ Then customise for Nuxt according to https://nuxtjs.org/faq/heroku-deployment/
 
 `heroku config:set NODE_ENV=production -a rotavator-client`
 
+`heroku config:set ROTA_API=https://rotavator-api.herokuapp.com -a rotavator-client`
+
 Troubleshooting
 ===
 
