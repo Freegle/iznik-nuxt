@@ -134,6 +134,8 @@ export default {
         .then(() => this.$store.dispatch('locations/get'))
     },
     create(evt) {
+      // TODO For some reason the type is wrong.
+      this.form.slotsRequired = parseInt(this.form.slotsRequired)
       this.$store
         .dispatch('locations/create', this.form)
         .then(() => this.$store.dispatch('locations/get'))
