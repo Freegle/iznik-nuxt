@@ -56,7 +56,7 @@
         "post-install-cmd": [
             "@auto-scripts",
             "chmod -R 777 public/",
-            "chmod -R 777 public/"
+            "chmod -R 777 config/"
         ],
         "post-update-cmd": [
             "@auto-scripts"
