@@ -1,18 +1,15 @@
 <template>
   <div>
-    <b-navbar toggleable="lg" type="dark" variant="info">
-      <b-navbar-brand to="/">
-        <img src="/static/icon.png"
+    <b-navbar toggleable="lg" type="dark" class="ourBack">
+      <b-navbar-brand to="/" class="p-0">
+        <b-img class="logo" fluid rounded :src="require(`@/static/icon.png`)" alt="Home" />
       </b-navbar-brand>
+      <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
 
-      <b-navbar-toggle v-if="showMenu" target="nav_collapse" />
+      <b-collapse v-if="loggedIn" id="nav_collapse" is-nav>
+        <b-navbar-nav />
 
-      <b-collapse v-if="showMenu" id="nav_collapse" is-nav>
-        <b-navbar-nav>
-        </b-navbar-nav>
-
-        <b-navbar-nav class="ml-auto">
-        </b-navbar-nav>
+        <b-navbar-nav class="ml-auto" />
       </b-collapse>
     </b-navbar>
 
@@ -69,6 +66,10 @@ html {
   background-color: #35495e;
 }
 
+.ourBack {
+  background-color: #61ae24 !important;
+}
+
 nav .navbar-nav li a {
   color: #cdcdcd !important;
 }
@@ -80,12 +81,17 @@ nav .navbar-nav li a.nuxt-link-active {
 .navbar-brand a {
   color: white !important;
 }
+
+.navbar .logo {
+  width: 40px !important;
+  padding: 0px;
+}
 </style>
 
 <script>
 export default {
   computed: {
-    showMenu() {
+    loggedIn() {
       // We only show the menu if we are logged in, or if we're not yet sure.  The latter prevents flicker when
       // switching pages and logged in.
       return (
