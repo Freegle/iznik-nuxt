@@ -29,6 +29,13 @@
             <span v-html="safeDescription" />
           </p>
         </b-col>
+        <b-col cols="2">
+          <b-button size="sm" variant="white">
+            <div>
+              <fa icon="question-circle" />&nbsp;Contact&nbsp;volunteers
+            </div>
+          </b-button>
+        </b-col>
       </b-row>
     </b-card>
   </div>
