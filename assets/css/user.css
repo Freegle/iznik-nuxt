@@ -1,0 +1,52 @@
+.btn-primary {
+    background-color: #00A1CB !important;
+    border-color: #006b50 #006b50 hsl(165, 100%, 16%);
+    color: #fff !important;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.59);
+    -webkit-font-smoothing: antialiased;
+}
+
+.btn-success {
+    background-color: #61AE24 !important;
+    background-image: none;
+    border-color: #006b50 #006b50 hsl(165, 100%, 16%);
+    color: #fff !important;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.59);
+    -webkit-font-smoothing: antialiased;
+}
+
+.btn-info {
+    background-color: #D70060 !important;
+    background-image: none;
+    border-color: #006b50 #006b50 hsl(165, 100%, 16%);
+    color: #fff !important;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.59);
+    -webkit-font-smoothing: antialiased;
+}
+
+.btn-default  {
+    background-color: white !important;
+    background-image: none;
+    border-color: #006b50 #006b50 hsl(165, 100%, 16%);
+    color: black !important;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.33);
+    -webkit-font-smoothing: antialiased;
+}
+
+.btn-warning  {
+    background-color: #e38d13 !important;
+    background-image: none;
+    border-color: #006b50 #006b50 hsl(165, 100%, 16%);
+    color: white !important;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.33);
+    -webkit-font-smoothing: antialiased;
+}
+
+.btn-white  {
+    background-color: white !important;
+    border-color: #006b50 #006b50 hsl(165, 100%, 16%);
+    color: black !important;
+    text-shadow: none !important;
+    -webkit-font-smoothing: antialiased;
+    border: 1px black solid !important;
+}

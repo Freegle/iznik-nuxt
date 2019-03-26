@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/rota-api-platform.iml" filepath="$PROJECT_DIR$/.idea/rota-api-platform.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/iznik-nuxt.iml" filepath="$PROJECT_DIR$/.idea/iznik-nuxt.iml" />
     </modules>
   </component>
 </project>

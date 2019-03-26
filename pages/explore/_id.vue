@@ -8,20 +8,25 @@
         <b-col>
           <b-card-title>{{ group.namedisplay }}</b-card-title>
           <b-card-sub-title>{{ group.tagline }}</b-card-sub-title>
+          <b-button v-if="!amAMember" class="mt-1" variant="success">
+            <fa icon="plus" />&nbsp;Join
+          </b-button>
+          <b-button v-if="amAMember" class="mt-1" variant="white">
+            <fa icon="trash-alt" />&nbsp;Leave
+          </b-button>
         </b-col>
       </b-row>
     </b-card>
   </div>
 </template>
 <script>
-import BCardTitle from 'bootstrap-vue/src/components/card/card-title'
 export default {
-  components: { BCardTitle },
   data() {
     return {
       id: null,
       group: null,
-      messages: null
+      messages: null,
+      amAMember: false
     }
   },
   async asyncData({ app, params, store }) {
