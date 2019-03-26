@@ -23,6 +23,10 @@ indent_size = 2
 indent_style = space
 indent_size = 2
 
+[*.vue]
+indent_style = space
+indent_size = 2
+
 [*.json]
 indent_style = space
 indent_size = 2
@@ -61,7 +65,7 @@ indent_size = 2
 
 [composer.json]
 indent_style = space
-indent_size = 4
+indent_size = 2
 
 [docker-compose{,.override}.{yaml,yml}]
 indent_style = space

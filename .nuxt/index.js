@@ -17,6 +17,8 @@ import nuxt_plugin_pluginseo_91175c04 from 'nuxt_plugin_pluginseo_91175c04' // S
 import nuxt_plugin_pluginrouting_1bb186f5 from 'nuxt_plugin_pluginrouting_1bb186f5' // Source: ./nuxt-i18n\\plugin.routing.js (mode: 'all')
 import nuxt_plugin_pluginmain_1ab65ecc from 'nuxt_plugin_pluginmain_1ab65ecc' // Source: ./nuxt-i18n\\plugin.main.js (mode: 'all')
 import nuxt_plugin_axios_c5131a78 from 'nuxt_plugin_axios_c5131a78' // Source: ./axios.js (mode: 'all')
+import nuxt_plugin_moment_20037754 from 'nuxt_plugin_moment_20037754' // Source: ./moment.js (mode: 'all')
+import nuxt_plugin_filters_98405076 from 'nuxt_plugin_filters_98405076' // Source: ..\\plugins\\filters (mode: 'all')
 import nuxt_plugin_bootstrap_0e119090 from 'nuxt_plugin_bootstrap_0e119090' // Source: ..\\plugins\\bootstrap (mode: 'all')
 import nuxt_plugin_vuexpersistedstate_1da59343 from 'nuxt_plugin_vuexpersistedstate_1da59343' // Source: ..\\plugins\\vuex-persistedstate (mode: 'client')
 import nuxt_plugin_vuedragdrop_496cabcd from 'nuxt_plugin_vuedragdrop_496cabcd' // Source: ..\\plugins\\vue-drag-drop.js (mode: 'client')
@@ -165,6 +167,8 @@ async function createApp(ssrContext) {
   if (typeof nuxt_plugin_pluginrouting_1bb186f5 === 'function') await nuxt_plugin_pluginrouting_1bb186f5(app.context, inject)
   if (typeof nuxt_plugin_pluginmain_1ab65ecc === 'function') await nuxt_plugin_pluginmain_1ab65ecc(app.context, inject)
   if (typeof nuxt_plugin_axios_c5131a78 === 'function') await nuxt_plugin_axios_c5131a78(app.context, inject)
+  if (typeof nuxt_plugin_moment_20037754 === 'function') await nuxt_plugin_moment_20037754(app.context, inject)
+  if (typeof nuxt_plugin_filters_98405076 === 'function') await nuxt_plugin_filters_98405076(app.context, inject)
   if (typeof nuxt_plugin_bootstrap_0e119090 === 'function') await nuxt_plugin_bootstrap_0e119090(app.context, inject)
 
   if (process.client) {

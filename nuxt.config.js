@@ -30,6 +30,9 @@ module.exports = {
   ],
 
   plugins: [
+    // Our template formatting utils.
+    '~/plugins/filters',
+
     // Bootstrap for styling.
     '~/plugins/bootstrap',
 
@@ -43,10 +46,9 @@ module.exports = {
   ** Nuxt.js modules
   */
   modules: [
+    '@nuxtjs/moment',
     'nuxt-rfg-icon',
-
     '@nuxtjs/axios',
-
     '@nuxtjs/pwa',
     [
       'nuxt-i18n',
