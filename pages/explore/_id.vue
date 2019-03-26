@@ -2,16 +2,21 @@
   <div v-if="group">
     <b-card bg-light>
       <b-row v-if="group.profile">
-        <b-col cols="1">
+        <b-col lg="2" class="order-0">
           <b-img rounded thumbnail alt="Community profile picture" :src="group.profile" class="js-pageimage" />
-          <b-button v-if="!amAMember" class="mt-1" variant="success">
+          <b-button v-if="!amAMember" class="mt-1 float-right d-lg-none float-lg-none" variant="success">
             <fa icon="plus" />&nbsp;Join
           </b-button>
-          <b-button v-if="amAMember" class="mt-1" variant="white">
+          <b-button v-if="amAMember" class="mt-1 float-right d-lg-none float-lg-none" variant="white">
             <fa icon="trash-alt" />&nbsp;Leave
           </b-button>
+          <b-button class="mt-1 mr-1 d-block d-lg-none float-right" variant="white">
+            <div>
+              <fa icon="question-circle" />&nbsp;Contact&nbsp;volunteers
+            </div>
+          </b-button>
         </b-col>
-        <b-col>
+        <b-col class="order-3 order-lg-1">
           <b-card-title>{{ group.namedisplay }}</b-card-title>
           <b-card-sub-title>{{ group.tagline }}</b-card-sub-title>
           <p class="text-muted small">
@@ -29,12 +34,20 @@
             <span v-html="safeDescription" />
           </p>
         </b-col>
-        <b-col cols="2">
-          <b-button size="sm" variant="white">
-            <div>
-              <fa icon="question-circle" />&nbsp;Contact&nbsp;volunteers
-            </div>
-          </b-button>
+        <b-col lg="2" class="order-1 order-lg-2">
+          <span class="d-none d-lg-block float-right">
+            <b-button class="ml-1 mb-1" variant="white">
+              <div>
+                <fa icon="question-circle" />&nbsp;Contact&nbsp;volunteers
+              </div>
+            </b-button>
+            <b-button v-if="!amAMember" class="ml-1 mb-1" variant="success">
+              <fa icon="plus" />&nbsp;Join
+            </b-button>
+            <b-button v-if="amAMember" class="ml-1 mb-1" variant="white">
+              <fa icon="trash-alt" />&nbsp;Leave
+            </b-button>
+          </span>
         </b-col>
       </b-row>
     </b-card>
