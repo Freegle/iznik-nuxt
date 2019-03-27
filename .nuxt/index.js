@@ -11,13 +11,13 @@ import { createStore } from './store.js'
 
 /* Plugins */
 
-import nuxt_plugin_nuxticons_aa1c5df8 from 'nuxt_plugin_nuxticons_aa1c5df8' // Source: ./nuxt-icons.js (mode: 'all')
-import nuxt_plugin_templatesplugin0efb3d52_651830d6 from 'nuxt_plugin_templatesplugin0efb3d52_651830d6' // Source: ./templates.plugin.0efb3d52.js (mode: 'all')
-import nuxt_plugin_pluginseo_91175c04 from 'nuxt_plugin_pluginseo_91175c04' // Source: ./nuxt-i18n\\plugin.seo.js (mode: 'all')
-import nuxt_plugin_pluginrouting_1bb186f5 from 'nuxt_plugin_pluginrouting_1bb186f5' // Source: ./nuxt-i18n\\plugin.routing.js (mode: 'all')
-import nuxt_plugin_pluginmain_1ab65ecc from 'nuxt_plugin_pluginmain_1ab65ecc' // Source: ./nuxt-i18n\\plugin.main.js (mode: 'all')
-import nuxt_plugin_axios_c5131a78 from 'nuxt_plugin_axios_c5131a78' // Source: ./axios.js (mode: 'all')
-import nuxt_plugin_moment_20037754 from 'nuxt_plugin_moment_20037754' // Source: ./moment.js (mode: 'all')
+import nuxt_plugin_nuxticons_014eaee8 from 'nuxt_plugin_nuxticons_014eaee8' // Source: ./nuxt-icons.js (mode: 'all')
+import nuxt_plugin_templatesplugin761232da_70dd27b0 from 'nuxt_plugin_templatesplugin761232da_70dd27b0' // Source: ./templates.plugin.761232da.js (mode: 'all')
+import nuxt_plugin_pluginseo_6ff95f86 from 'nuxt_plugin_pluginseo_6ff95f86' // Source: ./nuxt-i18n\\plugin.seo.js (mode: 'all')
+import nuxt_plugin_pluginrouting_6f36df06 from 'nuxt_plugin_pluginrouting_6f36df06' // Source: ./nuxt-i18n\\plugin.routing.js (mode: 'all')
+import nuxt_plugin_pluginmain_4ac17412 from 'nuxt_plugin_pluginmain_4ac17412' // Source: ./nuxt-i18n\\plugin.main.js (mode: 'all')
+import nuxt_plugin_axios_410df388 from 'nuxt_plugin_axios_410df388' // Source: ./axios.js (mode: 'all')
+import nuxt_plugin_moment_1e5352dc from 'nuxt_plugin_moment_1e5352dc' // Source: ./moment.js (mode: 'all')
 import nuxt_plugin_filters_98405076 from 'nuxt_plugin_filters_98405076' // Source: ..\\plugins\\filters (mode: 'all')
 import nuxt_plugin_bootstrap_0e119090 from 'nuxt_plugin_bootstrap_0e119090' // Source: ..\\plugins\\bootstrap (mode: 'all')
 import nuxt_plugin_vuexpersistedstate_1da59343 from 'nuxt_plugin_vuexpersistedstate_1da59343' // Source: ..\\plugins\\vuex-persistedstate (mode: 'client')
@@ -161,13 +161,13 @@ async function createApp(ssrContext) {
 
   // Plugin execution
 
-  if (typeof nuxt_plugin_nuxticons_aa1c5df8 === 'function') await nuxt_plugin_nuxticons_aa1c5df8(app.context, inject)
-  if (typeof nuxt_plugin_templatesplugin0efb3d52_651830d6 === 'function') await nuxt_plugin_templatesplugin0efb3d52_651830d6(app.context, inject)
-  if (typeof nuxt_plugin_pluginseo_91175c04 === 'function') await nuxt_plugin_pluginseo_91175c04(app.context, inject)
-  if (typeof nuxt_plugin_pluginrouting_1bb186f5 === 'function') await nuxt_plugin_pluginrouting_1bb186f5(app.context, inject)
-  if (typeof nuxt_plugin_pluginmain_1ab65ecc === 'function') await nuxt_plugin_pluginmain_1ab65ecc(app.context, inject)
-  if (typeof nuxt_plugin_axios_c5131a78 === 'function') await nuxt_plugin_axios_c5131a78(app.context, inject)
-  if (typeof nuxt_plugin_moment_20037754 === 'function') await nuxt_plugin_moment_20037754(app.context, inject)
+  if (typeof nuxt_plugin_nuxticons_014eaee8 === 'function') await nuxt_plugin_nuxticons_014eaee8(app.context, inject)
+  if (typeof nuxt_plugin_templatesplugin761232da_70dd27b0 === 'function') await nuxt_plugin_templatesplugin761232da_70dd27b0(app.context, inject)
+  if (typeof nuxt_plugin_pluginseo_6ff95f86 === 'function') await nuxt_plugin_pluginseo_6ff95f86(app.context, inject)
+  if (typeof nuxt_plugin_pluginrouting_6f36df06 === 'function') await nuxt_plugin_pluginrouting_6f36df06(app.context, inject)
+  if (typeof nuxt_plugin_pluginmain_4ac17412 === 'function') await nuxt_plugin_pluginmain_4ac17412(app.context, inject)
+  if (typeof nuxt_plugin_axios_410df388 === 'function') await nuxt_plugin_axios_410df388(app.context, inject)
+  if (typeof nuxt_plugin_moment_1e5352dc === 'function') await nuxt_plugin_moment_1e5352dc(app.context, inject)
   if (typeof nuxt_plugin_filters_98405076 === 'function') await nuxt_plugin_filters_98405076(app.context, inject)
   if (typeof nuxt_plugin_bootstrap_0e119090 === 'function') await nuxt_plugin_bootstrap_0e119090(app.context, inject)
 

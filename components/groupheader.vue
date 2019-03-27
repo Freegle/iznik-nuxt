@@ -1,6 +1,6 @@
 <template>
   <b-card bg-light>
-    <b-row v-if="profile">
+    <b-row v-if="profile" class="mt-1">
       <b-col lg="2" class="order-0">
         <b-img-lazy rounded thumbnail alt="Community profile picture" :src="profile" class="js-pageimage" />
         <b-button v-if="!amAMember" class="mt-1 float-right d-lg-none float-lg-none" variant="success">

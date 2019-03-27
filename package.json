@@ -1,7 +1,7 @@
 {
-  "name": "client-nuxt",
+  "name": "iznik-nuxt",
   "version": "1.0.0",
-  "description": "Rotavator",
+  "description": "Iznik",
   "author": "Edward Hibbert",
   "private": true,
   "scripts": {

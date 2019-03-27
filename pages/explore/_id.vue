@@ -66,13 +66,13 @@ export default {
     const messages = store.getters['messages/getByGroup'](group.id)
 
     // The messages returned don't have the group object in there, just the id.  Add it.
-    messages.forEach(message => {
-      message.groups.forEach(msggroup => {
-        if (msggroup.groupid === group.id) {
-          msggroup = Object.assign(msggroup, group)
-        }
-      })
-    })
+    // messages.forEach(message => {
+    //   message.groups.forEach(msggroup => {
+    //     if (msggroup.groupid === group.id) {
+    //       msggroup = Object.assign(msggroup, group)
+    //     }
+    //   })
+    // })
 
     return {
       group: group,

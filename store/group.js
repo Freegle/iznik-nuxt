@@ -1,12 +1,14 @@
 export const state = () => ({
-  list: []
+  // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
+  // storage.
+  list: {}
 })
 
 export const mutations = {
   add(state, item) {
     state.list[item.id] = item
   },
-  remove(state, { item }) {
+  remove(state, item) {
     state.list[item.id] = null
   }
 }
@@ -21,9 +23,12 @@ export const getters = {
       const lower = idOrName.toLowerCase()
       let ret = null
 
-      state.list.forEach(group => {
-        if (group.nameshort.toLowerCase() === lower) {
-          ret = group
+      Object.keys(state.list).forEach(key => {
+        const group = state.list[key]
+        if (group) {
+          if (group.nameshort.toLowerCase() === lower) {
+            ret = group
+          }
         }
       })
 
@@ -34,16 +39,14 @@ export const getters = {
 
 export const actions = {
   async fetch({ commit }, params) {
-    await this.$axios
-      .get(process.env.API + '/group', {
-        params: {
-          id: params.id
-        }
-      })
-      .then(res => {
-        if (res.status === 200) {
-          commit('add', res.data.group)
-        }
-      })
+    const res = await this.$axios.get(process.env.API + '/group', {
+      params: {
+        id: params.id
+      }
+    })
+
+    if (res.status === 200) {
+      commit('add', res.data.group)
+    }
   }
 }

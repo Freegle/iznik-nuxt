@@ -1,5 +1,7 @@
 export const state = () => ({
-  list: []
+  // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
+  // storage.
+  list: {}
 })
 
 export const mutations = {
@@ -11,7 +13,7 @@ export const mutations = {
       state.list[item.id] = item
     })
   },
-  remove(state, { item }) {
+  remove(state, item) {
     state.list[item.id] = null
   }
 }
@@ -23,7 +25,8 @@ export const getters = {
   getByGroup: state => groupid => {
     const ret = []
 
-    state.list.forEach(message => {
+    Object.keys(state.list).forEach(key => {
+      const message = state.list[key]
       if (message.groups.length > 0 && message.groups[0].groupid === groupid) {
         ret.push(message)
       }
@@ -35,14 +38,12 @@ export const getters = {
 
 export const actions = {
   async fetch({ commit }, params) {
-    await this.$axios
-      .get(process.env.API + '/messages', {
-        params: params
-      })
-      .then(res => {
-        if (res.status === 200) {
-          commit('addAll', res.data.messages)
-        }
-      })
+    const res = await this.$axios.get(process.env.API + '/messages', {
+      params: params
+    })
+
+    if (res.status === 200) {
+      commit('addAll', res.data.messages)
+    }
   }
 }
