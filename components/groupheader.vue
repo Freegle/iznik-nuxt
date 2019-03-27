@@ -59,7 +59,19 @@ export default {
       type: Number,
       default: 0
     },
+    nameshort: {
+      type: String,
+      default: null
+    },
     namedisplay: {
+      type: String,
+      default: null
+    },
+    tagline: {
+      type: String,
+      default: null
+    },
+    founded: {
       type: String,
       default: null
     },

@@ -24,7 +24,7 @@ export const getters = {
     const ret = []
 
     state.list.forEach(message => {
-      if (message.groups.length > 0 && message.groups[0].id === groupid) {
+      if (message.groups.length > 0 && message.groups[0].groupid === groupid) {
         ret.push(message)
       }
     })
