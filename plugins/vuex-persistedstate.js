@@ -14,7 +14,19 @@ export default ({ app, store, $axios, isHMR }) => {
       key: 'rotavator',
 
       // List the store paths that we want to persist.
-      paths: ['localization.locale', 'security', 'locations', 'people', 'slots']
+      paths: [
+        'localization.locale',
+        'security',
+        'locations',
+        'people',
+        'slots'
+      ],
+
+      reducer: function(state, paths) {
+        // Don't store the messages - they're too big, and too transient.
+        delete state.messages
+        return state
+      }
     })(store)
   }
 }

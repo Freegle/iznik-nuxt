@@ -54,11 +54,25 @@ export default {
 
     const group = store.getters['group/get'](params.id)
 
+    // Now get the approved messages for this group.  We're only interested in showing OFFERs and WANTEDs, and
+    // ask for summary info for speed.
     await store.dispatch('messages/fetch', {
-      groupid: group.id
+      groupid: group.id,
+      collection: 'Approved',
+      summary: true,
+      types: ['Offer', 'Wanted']
     })
 
     const messages = store.getters['messages/getByGroup'](group.id)
+
+    // The messages returned don't have the group object in there, just the id.  Add it.
+    messages.forEach(message => {
+      message.groups.forEach(msggroup => {
+        if (msggroup.groupid === group.id) {
+          msggroup = Object.assign(msggroup, group)
+        }
+      })
+    })
 
     return {
       group: group,
