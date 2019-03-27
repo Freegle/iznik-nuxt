@@ -30,9 +30,8 @@
           <p v-if="!group.description">
             Give and get stuff for free with {{ group.namedisplay }}.  Offer things you don't need, and ask for things you'd like.  Don't just recycle - reuse with Freegle!
           </p>
-          <p v-if="group.description">
-            <span v-html="safeDescription" />
-          </p>
+          <!-- eslint-disable-next-line -->
+          <span v-if="group.description" v-html="safeDescription" />
         </b-col>
         <b-col lg="2" class="order-1 order-lg-2">
           <span class="d-none d-lg-block float-right">
@@ -79,9 +78,16 @@ export default {
     })
 
     const group = store.getters['group/get'](params.id)
-    console.log('Got group', group.nameshort)
+
+    await store.dispatch('messages/fetch', {
+      groupid: params.id
+    })
+
+    const messages = store.getters['messages/getByGroup'](params.id)
+
     return {
-      group: group
+      group: group,
+      messages: messages
     }
   },
   created() {
