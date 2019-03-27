@@ -2,7 +2,7 @@
   <b-card bg-light>
     <b-row v-if="profile">
       <b-col lg="2" class="order-0">
-        <b-img rounded thumbnail alt="Community profile picture" :src="profile" class="js-pageimage" />
+        <b-img-lazy rounded thumbnail alt="Community profile picture" :src="profile" class="js-pageimage" />
         <b-button v-if="!amAMember" class="mt-1 float-right d-lg-none float-lg-none" variant="success">
           <fa icon="plus" />&nbsp;Join
         </b-button>
