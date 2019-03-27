@@ -54,6 +54,8 @@
     "eslint-plugin-promise": ">=4.0.1",
     "eslint-plugin-standard": ">=4.0.0",
     "eslint-plugin-vue": "^5.0.0",
+    "less": "^3.9.0",
+    "less-loader": "^4.1.0",
     "moment-locales-webpack-plugin": "^1.0.7",
     "nodemon": "^1.18.9",
     "prettier": "1.14.3"

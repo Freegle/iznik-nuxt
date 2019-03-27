@@ -1,8 +1,29 @@
 <template>
   <div>
     <groupHeader v-if="group" :key="'group-' + (group ? group.id : null)" v-bind="group" />
+    <b-card variant="default">
+      <b-card-body class="p-0 mb-2">
+        <p class="text-center text-muted">
+          Offer stuff you don't need, or find stuff you want.
+        </p>
+        <b-row>
+          <b-col cols="5">
+            <b-button to="/give" class="mt-1" size="lg" block variant="success">
+              <fa icon="gift" />&nbsp;Give stuff
+            </b-button>
+          </b-col>
+          <b-col cols="2" />
+          <b-col cols="5">
+            <b-button to="/find" class="mt-1" size="lg" block variant="primary">
+              <fa icon="search" />&nbsp;Find stuff
+            </b-button>
+          </b-col>
+        </b-row>
+      </b-card-body>
+    </b-card>
+
     <b-list-group>
-      <b-list-group-item v-for="message in messages" :key="message.id">
+      <b-list-group-item v-for="message in messages" :key="message.id" class="p-0">
         <message v-bind="message" />
       </b-list-group-item>
     </b-list-group>

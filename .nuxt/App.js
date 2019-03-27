@@ -5,7 +5,7 @@ import '..\\node_modules\\@fortawesome\\fontawesome-svg-core\\styles.css'
 
 import '..\\assets\\css\\style.css'
 
-import '..\\assets\\css\\user.css'
+import '..\\assets\\css\\user.less'
 
 import _6f6c098b from '..\\layouts\\default.vue'
 

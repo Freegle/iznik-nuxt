@@ -26,7 +26,7 @@ module.exports = {
   */
   css: [
     '@/assets/css/style.css',
-    '@/assets/css/user.css',
+    '@/assets/css/user.less',
   ],
 
   plugins: [
@@ -111,6 +111,9 @@ module.exports = {
           }
         })
       }
+    },
+    loaders: {
+      less: { javascriptEnabled: true }
     }
   },
 

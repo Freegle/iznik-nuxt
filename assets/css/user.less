@@ -1,13 +1,19 @@
+@colour-success: #61AE24;
+@colour-info: #D70060;
+@colour-warning: #e38d13;
+@colour-header: #1d6607;
+@colour-primary: #00A1CB;
+
 .btn-primary {
-    background-color: #00A1CB !important;
+    background-color: @colour-primary !important;
     border-color: #006b50 #006b50 hsl(165, 100%, 16%);
-    color: #fff !important;
+    color: #fff !important;@colour-success
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.59);
     -webkit-font-smoothing: antialiased;
 }
 
 .btn-success {
-    background-color: #61AE24 !important;
+    background-color: @colour-success !important;
     background-image: none;
     border-color: #006b50 #006b50 hsl(165, 100%, 16%);
     color: #fff !important;
@@ -16,7 +22,7 @@
 }
 
 .btn-info {
-    background-color: #D70060 !important;
+    background-color: @colour-info !important;
     background-image: none;
     border-color: #006b50 #006b50 hsl(165, 100%, 16%);
     color: #fff !important;
@@ -34,7 +40,7 @@
 }
 
 .btn-warning  {
-    background-color: #e38d13 !important;
+    background-color: @colour-warning !important;
     background-image: none;
     border-color: #006b50 #006b50 hsl(165, 100%, 16%);
     color: white !important;
@@ -52,6 +58,15 @@
 }
 
 h1,h2,h3,h4 {
-    color: #1d6607 !important;
+    color: @colour-header !important;
 }
 
+div[variant="success"] .card-header {
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+}
+
+.msgsubj {
+  color: #000080 !important
+}
