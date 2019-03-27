@@ -40,7 +40,6 @@ export const actions = {
         params: params
       })
       .then(res => {
-        console.log('Fetch returned', res)
         if (res.status === 200) {
           commit('addAll', res.data.messages)
         }
