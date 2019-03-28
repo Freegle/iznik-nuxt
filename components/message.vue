@@ -17,8 +17,11 @@
       <span v-for="group in groups" :key="id + '-' + group.id" class="small muted">
         {{ group.arrival | timeago }} on {{ group.namedisplay }}
       </span>
-      <div v-if="safeSnippet">
+      <div v-if="safeSnippet && safeSnippet !== 'null'">
         <h4>{{ safeSnippet }}...</h4>
+      </div>
+      <div v-if="!safeSnippet || safeSnippet === 'null'">
+        <i>There's no description.</i>
       </div>
       <b-button variant="white">
         Read more and reply >>

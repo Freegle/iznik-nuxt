@@ -2,7 +2,8 @@ export const state = () => ({
   // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
   // storage.
   list: {},
-  count: 0,
+
+  ids: [],
 
   // The context from the last fetch, used for fetchMore.
   context: null
@@ -11,11 +12,18 @@ export const state = () => ({
 export const mutations = {
   add(state, item) {
     state.list[item.id] = item
+
+    if (state.ids.indexOf(item.id) !== -1) {
+      state.ids.push(item.id)
+    }
   },
   addAll(state, items) {
     items.forEach(item => {
       state.list[item.id] = item
-      state.count++
+
+      if (state.ids.indexOf(item.id) === -1) {
+        state.ids.push(item.id)
+      }
     })
   },
   remove(state, item) {
@@ -36,8 +44,8 @@ export const getters = {
   getByGroup: state => groupid => {
     const ret = []
 
-    Object.keys(state.list).forEach(key => {
-      const message = state.list[key]
+    state.ids.forEach(id => {
+      const message = state.list[id]
       if (message.groups.length > 0 && message.groups[0].groupid === groupid) {
         ret.push(message)
       }

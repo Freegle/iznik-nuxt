@@ -22,7 +22,7 @@
       </b-card-body>
     </b-card>
 
-    <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
+    <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="200">
       <b-list-group>
         <b-list-group-item v-for="message in messages" :key="message.id" class="p-0">
           <message v-bind="message" />
