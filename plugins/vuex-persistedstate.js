@@ -1,6 +1,7 @@
 // ~/plugins/localStorage
 
 import createPersistedState from 'vuex-persistedstate'
+import cloneDeep from 'lodash.clonedeep'
 
 export default ({ store }) => {
   window.onNuxtReady(() => {
@@ -18,8 +19,9 @@ export default ({ store }) => {
 
       reducer: function(state, paths) {
         // Don't store the messages - they're too big, and too transient.
-        delete state.messages
-        return state
+        const newstate = cloneDeep(state)
+        delete newstate.messages
+        return newstate
       }
     })(store)
   })
