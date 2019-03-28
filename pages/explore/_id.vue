@@ -22,11 +22,13 @@
       </b-card-body>
     </b-card>
 
-    <b-list-group>
-      <b-list-group-item v-for="message in messages" :key="message.id" class="p-0">
-        <message v-bind="message" />
-      </b-list-group-item>
-    </b-list-group>
+    <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
+      <b-list-group>
+        <b-list-group-item v-for="message in messages" :key="message.id" class="p-0">
+          <message v-bind="message" />
+        </b-list-group-item>
+      </b-list-group>
+    </div>
   </div>
 </template>
 <script>
@@ -42,7 +44,9 @@ export default {
     return {
       id: null,
       group: null,
-      messages: null
+      messages: null,
+      busy: false,
+      context: null
     }
   },
   computed: {},
@@ -64,23 +68,40 @@ export default {
     })
 
     const messages = store.getters['messages/getByGroup'](group.id)
-
-    // The messages returned don't have the group object in there, just the id.  Add it.
-    // messages.forEach(message => {
-    //   message.groups.forEach(msggroup => {
-    //     if (msggroup.groupid === group.id) {
-    //       msggroup = Object.assign(msggroup, group)
-    //     }
-    //   })
-    // })
+    const context = store.getters['messages/getContext']()
 
     return {
+      id: group.id,
       group: group,
-      messages: messages
+      messages: messages,
+      context: context
     }
   },
   created() {
     this.id = this.$route.params.id
+  },
+  methods: {
+    loadMore: function() {
+      console.log('loadMore', this.context)
+      this.busy = true
+
+      this.$store
+        .dispatch('messages/fetch', {
+          groupid: this.group.id,
+          collection: 'Approved',
+          summary: true,
+          types: ['Offer', 'Wanted'],
+          context: this.context
+        })
+        .then(() => {
+          this.busy = false
+          this.messages = this.$store.getters['messages/getByGroup'](
+            this.group.id
+          )
+          this.context = this.$store.getters['messages/getContext']()
+          console.log('Now got', this.context)
+        })
+    }
   }
 }
 </script>

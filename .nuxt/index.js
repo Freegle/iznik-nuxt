@@ -20,9 +20,10 @@ import nuxt_plugin_axios_410df388 from 'nuxt_plugin_axios_410df388' // Source: .
 import nuxt_plugin_moment_1e5352dc from 'nuxt_plugin_moment_1e5352dc' // Source: ./moment.js (mode: 'all')
 import nuxt_plugin_filters_98405076 from 'nuxt_plugin_filters_98405076' // Source: ..\\plugins\\filters (mode: 'all')
 import nuxt_plugin_bootstrap_0e119090 from 'nuxt_plugin_bootstrap_0e119090' // Source: ..\\plugins\\bootstrap (mode: 'all')
-import nuxt_plugin_vuexpersistedstate_1da59343 from 'nuxt_plugin_vuexpersistedstate_1da59343' // Source: ..\\plugins\\vuex-persistedstate (mode: 'client')
+import nuxt_plugin_axiosserializer_5514fcd7 from 'nuxt_plugin_axiosserializer_5514fcd7' // Source: ..\\plugins\\axios-serializer.js (mode: 'all')
 import nuxt_plugin_vuedragdrop_496cabcd from 'nuxt_plugin_vuedragdrop_496cabcd' // Source: ..\\plugins\\vue-drag-drop.js (mode: 'client')
 import nuxt_plugin_vuecolor_728cb9a6 from 'nuxt_plugin_vuecolor_728cb9a6' // Source: ..\\plugins\\vue-color (mode: 'client')
+import nuxt_plugin_vueinfinitescroll_5d2c1fcf from 'nuxt_plugin_vueinfinitescroll_5d2c1fcf' // Source: ..\\plugins\\vue-infinite-scroll.js (mode: 'client')
 
 // Component: <NoSsr>
 Vue.component(NoSsr.name, NoSsr)
@@ -170,11 +171,12 @@ async function createApp(ssrContext) {
   if (typeof nuxt_plugin_moment_1e5352dc === 'function') await nuxt_plugin_moment_1e5352dc(app.context, inject)
   if (typeof nuxt_plugin_filters_98405076 === 'function') await nuxt_plugin_filters_98405076(app.context, inject)
   if (typeof nuxt_plugin_bootstrap_0e119090 === 'function') await nuxt_plugin_bootstrap_0e119090(app.context, inject)
+  if (typeof nuxt_plugin_axiosserializer_5514fcd7 === 'function') await nuxt_plugin_axiosserializer_5514fcd7(app.context, inject)
 
   if (process.client) {
-    if (typeof nuxt_plugin_vuexpersistedstate_1da59343 === 'function') await nuxt_plugin_vuexpersistedstate_1da59343(app.context, inject)
     if (typeof nuxt_plugin_vuedragdrop_496cabcd === 'function') await nuxt_plugin_vuedragdrop_496cabcd(app.context, inject)
     if (typeof nuxt_plugin_vuecolor_728cb9a6 === 'function') await nuxt_plugin_vuecolor_728cb9a6(app.context, inject)
+    if (typeof nuxt_plugin_vueinfinitescroll_5d2c1fcf === 'function') await nuxt_plugin_vueinfinitescroll_5d2c1fcf(app.context, inject)
   }
 
   // If server-side, wait for async component to be resolved first

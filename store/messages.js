@@ -1,7 +1,11 @@
 export const state = () => ({
   // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
   // storage.
-  list: {}
+  list: {},
+  count: 0,
+
+  // The context from the last fetch, used for fetchMore.
+  context: null
 })
 
 export const mutations = {
@@ -11,16 +15,23 @@ export const mutations = {
   addAll(state, items) {
     items.forEach(item => {
       state.list[item.id] = item
+      state.count++
     })
   },
   remove(state, item) {
     state.list[item.id] = null
+  },
+  setContext(state, ctx) {
+    state.context = ctx
   }
 }
 
 export const getters = {
   get: state => id => {
     return state.list.includes(id) ? state.list[id] : null
+  },
+  getContext: state => () => {
+    return state.context
   },
   getByGroup: state => groupid => {
     const ret = []
@@ -38,12 +49,19 @@ export const getters = {
 
 export const actions = {
   async fetch({ commit }, params) {
+    if (params.hasOwnProperty('context')) {
+      // Ensure the context is a real object, in case it has been in the store.
+      const ctx = JSON.parse(JSON.stringify(params.context))
+      params.context = ctx
+    }
+
     const res = await this.$axios.get(process.env.API + '/messages', {
       params: params
     })
 
     if (res.status === 200) {
       commit('addAll', res.data.messages)
+      commit('setContext', res.data.context)
     }
   }
 }

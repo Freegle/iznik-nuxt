@@ -38,6 +38,7 @@
     "sanitize-html": "^1.20.0",
     "vue-color": "^2.7.0",
     "vue-drag-drop": "^1.1.4",
+    "vue-infinite-scroll": "^2.0.2",
     "vuex-persistedstate": "^2.5.4"
   },
   "devDependencies": {

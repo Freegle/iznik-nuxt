@@ -36,10 +36,14 @@ module.exports = {
     // Bootstrap for styling.
     '~/plugins/bootstrap',
 
-    // Persisting to storage is a client-side feature.
-    { src: '~/plugins/vuex-persistedstate', ssr: false },
+    // Our parameters serialize differently from axios defaults
+    { src: '~plugins/axios-serializer.js' },
+
+    // Some plugins are client-side features
+    // { src: '~/plugins/vuex-persistedstate', ssr: false },
     { src: '~plugins/vue-drag-drop.js', ssr: false },
-    { src:'~/plugins/vue-color', ssr: false }
+    { src:'~/plugins/vue-color', ssr: false },
+    { src: '~plugins/vue-infinite-scroll.js', ssr: false },
   ],
 
   /*
