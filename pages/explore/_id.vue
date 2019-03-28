@@ -99,7 +99,6 @@ export default {
             this.group.id
           )
           this.context = this.$store.getters['messages/getContext']()
-          console.log('Now got', this.context)
         })
     }
   }

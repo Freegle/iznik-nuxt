@@ -11,6 +11,7 @@ import { createStore } from './store.js'
 
 /* Plugins */
 
+import nuxt_plugin_swplugin_42056456 from 'nuxt_plugin_swplugin_42056456' // Source: ./sw.plugin.js (mode: 'client')
 import nuxt_plugin_nuxticons_014eaee8 from 'nuxt_plugin_nuxticons_014eaee8' // Source: ./nuxt-icons.js (mode: 'all')
 import nuxt_plugin_templatesplugin761232da_70dd27b0 from 'nuxt_plugin_templatesplugin761232da_70dd27b0' // Source: ./templates.plugin.761232da.js (mode: 'all')
 import nuxt_plugin_pluginseo_6ff95f86 from 'nuxt_plugin_pluginseo_6ff95f86' // Source: ./nuxt-i18n\\plugin.seo.js (mode: 'all')
@@ -174,6 +175,7 @@ async function createApp(ssrContext) {
   if (typeof nuxt_plugin_axiosserializer_5514fcd7 === 'function') await nuxt_plugin_axiosserializer_5514fcd7(app.context, inject)
 
   if (process.client) {
+    if (typeof nuxt_plugin_swplugin_42056456 === 'function') await nuxt_plugin_swplugin_42056456(app.context, inject)
     if (typeof nuxt_plugin_vuedragdrop_496cabcd === 'function') await nuxt_plugin_vuedragdrop_496cabcd(app.context, inject)
     if (typeof nuxt_plugin_vuecolor_728cb9a6 === 'function') await nuxt_plugin_vuecolor_728cb9a6(app.context, inject)
     if (typeof nuxt_plugin_vueinfinitescroll_5d2c1fcf === 'function') await nuxt_plugin_vueinfinitescroll_5d2c1fcf(app.context, inject)

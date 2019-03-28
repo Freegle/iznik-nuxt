@@ -40,7 +40,7 @@ module.exports = {
     { src: '~plugins/axios-serializer.js' },
 
     // Some plugins are client-side features
-    { src: '~/plugins/vuex-persistedstate', ssr: false },
+    // { src: '~/plugins/vuex-persistedstate', ssr: false },
     { src: '~plugins/vue-drag-drop.js', ssr: false },
     { src:'~/plugins/vue-color', ssr: false },
     { src: '~plugins/vue-infinite-scroll.js', ssr: false },
