@@ -37,12 +37,12 @@
     <b-col cols="12" lg="6">
       <b-row>
         <b-col cols="10">
-          <h1>Support Me!</h1>
+          <h1>Sponsor Me?</h1>
           <p>
             1 donation = 1 mile sponsored.
           </p>
           <p>
-            If you leave your name when donating then I'll mention you in the blog, and try to take
+            If you share your name and email when donating then I'll mention you in the blog, and try to take
             a picture of something interesting during your mile.
           </p>
           <h3>Miles sponsored: {{ sponsorCount }} raising &pound;{{ raised }}.</h3>
@@ -50,6 +50,25 @@
           <p class="text-muted">
             The blue part of the route on the map isn't sponsored yet; the green is.
           </p>
+          <a target="_blank" rel="noopener" data-realurl="true" href="https://freegle.in/paypalfundraiser" class="js-clickdonate hidden-xs">
+            <span class="btn btn-lg btn-info">
+              <b-img
+                src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg"
+                title="PayPal - The safer, easier way to pay online!"
+                alt="Donate with PayPal button"
+                class="float-left"
+                rounded
+              />&nbsp;Sponsor me!
+            </span>
+          </a>
+          <h3 class="pt-2">
+            Sponsors
+          </h3>
+          <ul class="list-unstyled">
+            <li v-for="(s, i) in sponsorsRecentFirst" :key="'sponsor-' + i">
+              <span class="text-muted">{{ s.timestamp | timeago }}</span> {{ s.name }} &pound;{{ s.amount }}
+            </li>
+          </ul>
         </b-col>
         <b-col cols="2" class="pt-5">
           <vue-thermometer
@@ -66,10 +85,26 @@
 </template>
 
 <script>
+import cloneDeep from 'lodash.clonedeep'
 import SponsorMarker from '../components/SponsorMarker'
 
 export default {
+  head() {
+    return {
+      title: 'Sponsor a Mile!',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content:
+            "I'm doing a sponsored walk for Freegle this summer.  Which mile will you sponsor?"
+        }
+      ]
+    }
+  },
+
   components: { SponsorMarker },
+
   data() {
     return {
       center: { lat: 55.915655, lng: -4.744502 },
@@ -90,6 +125,10 @@ export default {
   computed: {
     sponsorCount() {
       return this.sponsors.length
+    },
+    sponsorsRecentFirst() {
+      const s = cloneDeep(this.sponsors)
+      return s.reverse()
     },
     raised() {
       let sum = 0
@@ -221,7 +260,6 @@ export default {
 
     zoomChanged: function(zoom) {
       this.currentZoom = zoom
-      console.log('Zoomed to', zoom)
     }
   }
 }
