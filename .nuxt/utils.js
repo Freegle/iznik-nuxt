@@ -135,7 +135,7 @@ export async function setContext(app, context) {
       payload: context.payload,
       error: context.error,
       base: '/',
-      env: {"API":"https://dev.ilovefreegle.org/api"}
+      env: {"API":"https://dev.ilovefreegle.org/api","GOOGLE_MAPS_KEY":"AIzaSyCdTSJKGWJUOx2pq1Y0f5in5g4kKAO5dgg"}
     }
     // Only set once
     if (context.req) app.context.req = context.req

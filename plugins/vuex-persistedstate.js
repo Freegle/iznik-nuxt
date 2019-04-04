@@ -21,6 +21,7 @@ export default ({ store }) => {
         // Don't store the messages - they're too big, and too transient.
         const newstate = cloneDeep(state)
         delete newstate.messages
+        delete newstate.stroll
         return newstate
       }
     })(store)

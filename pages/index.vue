@@ -4,6 +4,9 @@
     <nuxt-link to="/explore/EdinburghFreegle">
       EdinburghFreegle
     </nuxt-link>
+    <nuxt-link to="/sponsoramile">
+      Sponsor a Mile
+    </nuxt-link>
   </section>
 </template>
 

@@ -24,10 +24,7 @@ module.exports = {
   /*
   ** Global CSS
   */
-  css: [
-    '@/assets/css/style.css',
-    '@/assets/css/user.less',
-  ],
+  css: ['@/assets/css/style.css', '@/assets/css/user.less'],
 
   plugins: [
     // Our template formatting utils.
@@ -39,11 +36,14 @@ module.exports = {
     // Our parameters serialize differently from axios defaults
     { src: '~plugins/axios-serializer.js' },
 
+    { src: '~/plugins/vuejs-thermometer' },
+
     // Some plugins are client-side features
     { src: '~/plugins/vuex-persistedstate', ssr: false },
     { src: '~plugins/vue-drag-drop.js', ssr: false },
-    { src:'~/plugins/vue-color', ssr: false },
+    { src: '~/plugins/vue-color', ssr: false },
     { src: '~plugins/vue-infinite-scroll.js', ssr: false },
+    { src: '~plugins/vue2-google-maps.js', ssr: false }
   ],
 
   /*
@@ -67,8 +67,7 @@ module.exports = {
         vueI18n: {
           fallbackLocale: 'en',
           messages: {
-            en: {
-            }
+            en: {}
           }
         }
       }
@@ -92,16 +91,14 @@ module.exports = {
   /*
   ** Axios module configuration
   */
-  axios: {
-  },
+  axios: {},
 
   /*
   ** Build configuration
   */
   build: {
-    /*
-    ** You can extend webpack config here
-    */
+    transpile: [/^vue2-google-maps($|\/)/],
+
     extend(config, ctx) {
       // Run ESLint on save
       if (ctx.isDev && ctx.isClient) {
@@ -122,7 +119,8 @@ module.exports = {
   },
 
   env: {
-    API: process.env.IZNIK_API || 'https://dev.ilovefreegle.org/api'
+    API: process.env.IZNIK_API || 'https://dev.ilovefreegle.org/api',
+    GOOGLE_MAPS_KEY: 'AIzaSyCdTSJKGWJUOx2pq1Y0f5in5g4kKAO5dgg'
   },
 
   // We have some configuration to ensure that we handle both SSR and being logged in.
