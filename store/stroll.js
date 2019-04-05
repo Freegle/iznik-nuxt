@@ -2,13 +2,27 @@ export const state = () => ({
   // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
   // storage.
   route: [],
-  sponsors: []
+  sponsors: [],
+  nights: []
 })
 
 export const mutations = {
   add(state, payload) {
     state.route = payload.route
     state.sponsors = payload.sponsors
+    state.nights = []
+
+    for (const night of payload.nights) {
+      state.nights.push({
+        id: night.id,
+        position: {
+          lat: night.lat,
+          lng: night.lng
+        },
+        name: night.name,
+        date: night.date
+      })
+    }
   }
 }
 
@@ -18,6 +32,9 @@ export const getters = {
   },
   sponsors: state => {
     return state.sponsors
+  },
+  nights: state => {
+    return state.nights
   }
 }
 
@@ -28,7 +45,8 @@ export const actions = {
     if (res.status === 200 && res.data.ret === 0) {
       commit('add', {
         route: res.data.route,
-        sponsors: res.data.sponsors
+        sponsors: res.data.sponsors,
+        nights: res.data.nights
       })
     }
   }

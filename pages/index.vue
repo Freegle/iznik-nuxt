@@ -22,15 +22,19 @@
         >
           <gmap-polyline :path.sync="routeSponsored" :options="{ strokeColor:'#008000'}" />
           <gmap-polyline :path.sync="routeUnsponsored" :options="{ strokeColor:'darkblue'}" />
-          <div v-if="currentZoom >= 14" :key="'zoom-' + currentZoom">
+          <div v-if="currentZoom >= 14" :key="'sponsor-' + currentZoom">
             <SponsorMarker v-for="(m,i) in sponsorLocs" :key="'sponsormarker-' + i" :marker="m" />
+          </div>
+          <div v-if="currentZoom >= 13" :key="'nights-' + currentZoom">
+            <NightMarker v-for="(m,i) in nights" :key="'nightmarker-' + i + '-' + currentZoom" :marker="m" />
           </div>
         </GmapMap>
       </no-ssr>
       <p>
         If you're near my route and fancy meeting up, then I'd love that - it's always nice to meet other freeglers and
-        have someone to chat to over my umpteenth veggie lasagne.  Zoom into the map to see where I am on different
-        dates, then drop me a line at <a href="mailto:edward@ehibbert.org.uk">edward@ehibbert.org.uk</a>.
+        have someone to chat to over my umpteenth veggie lasagne.  Zoom into the map until you see the bed icons
+        which show where I am on different nights, then drop me a line at
+        <a href="mailto:edward@ehibbert.org.uk">edward@ehibbert.org.uk</a>.
       </p>
       <b-btn size="lg" variant="success" @click="email">
         <fa icon="envelope" />&nbsp;Get in touch
@@ -52,17 +56,17 @@
           <p class="text-muted">
             The blue part of the route on the map isn't sponsored yet; the green is.
           </p>
-          <a target="_blank" rel="noopener" data-realurl="true" href="https://freegle.in/paypalfundraiser" class="js-clickdonate hidden-xs">
-            <span class="btn btn-lg btn-info">
-              <b-img
-                src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg"
-                title="PayPal - The safer, easier way to pay online!"
-                alt="Donate with PayPal button"
-                class="float-left"
-                rounded
-              />&nbsp;Sponsor me!
-            </span>
-          </a>
+          <!--<a target="_blank" rel="noopener" data-realurl="true" href="https://freegle.in/paypalfundraiser" class="js-clickdonate hidden-xs">-->
+          <span class="btn btn-lg btn-info">
+            <b-img
+              src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg"
+              title="PayPal - The safer, easier way to pay online!"
+              alt="Donate with PayPal button"
+              class="float-left"
+              rounded
+            />&nbsp;Sponsor me!
+          </span>
+          <!--</a>-->
           <h3 class="pt-2">
             Blog
           </h3>
@@ -102,6 +106,7 @@
 <script>
 import cloneDeep from 'lodash.clonedeep'
 import SponsorMarker from '../components/SponsorMarker'
+import NightMarker from '../components/NightMarker'
 
 export default {
   head() {
@@ -118,7 +123,7 @@ export default {
     }
   },
 
-  components: { SponsorMarker },
+  components: { SponsorMarker, NightMarker },
 
   data() {
     return {
@@ -127,6 +132,7 @@ export default {
       zoom: 12,
       route: [],
       sponsors: [],
+      nights: [],
       thermOptions: {
         thermo: {
           color: '#008000'
@@ -229,12 +235,14 @@ export default {
 
     const route = store.getters['stroll/route']
     const sponsors = store.getters['stroll/sponsors']
+    const nights = store.getters['stroll/nights']
 
     return {
       center: { lat: 55.915655, lng: -4.744502 },
       zoom: 12,
       route: route,
-      sponsors: sponsors
+      sponsors: sponsors,
+      nights: nights
     }
   },
 
