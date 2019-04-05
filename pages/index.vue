@@ -11,20 +11,22 @@
         Now it's time to put my hurt and sole into Freegle.  I'm starting on May 14th, from the southernmost point of
         the UK (the Lizard) to the easternmost (Lowestoft Ness).  Here's my route - zoom in for details.
       </p>
-      <GmapMap
-        ref="mymap"
-        :center="center"
-        :zoom="7"
-        map-type-id="terrain"
-        style="width:100%; height: 400px;"
-        @zoom_changed="zoomChanged"
-      >
-        <gmap-polyline :path.sync="routeSponsored" :options="{ strokeColor:'#008000'}" />
-        <gmap-polyline :path.sync="routeUnsponsored" :options="{ strokeColor:'darkblue'}" />
-        <div v-if="currentZoom >= 14" :key="'zoom-' + currentZoom">
-          <SponsorMarker v-for="(m,i) in sponsorLocs" :key="'sponsormarker-' + i" :marker="m" />
-        </div>
-      </GmapMap>
+      <no-ssr placeholder="Map loading...">
+        <GmapMap
+          ref="mymap"
+          :center="center"
+          :zoom="7"
+          map-type-id="terrain"
+          style="width:100%; height: 400px;"
+          @zoom_changed="zoomChanged"
+        >
+          <gmap-polyline :path.sync="routeSponsored" :options="{ strokeColor:'#008000'}" />
+          <gmap-polyline :path.sync="routeUnsponsored" :options="{ strokeColor:'darkblue'}" />
+          <div v-if="currentZoom >= 14" :key="'zoom-' + currentZoom">
+            <SponsorMarker v-for="(m,i) in sponsorLocs" :key="'sponsormarker-' + i" :marker="m" />
+          </div>
+        </GmapMap>
+      </no-ssr>
       <p>
         If you're near my route and fancy meeting up, then I'd love that - it's always nice to meet other freeglers and
         have someone to chat to over my umpteenth veggie lasagne.  Zoom into the map to see where I am on different
@@ -36,7 +38,7 @@
     </b-col>
     <b-col cols="12" lg="6">
       <b-row>
-        <b-col cols="10">
+        <b-col cols="8">
           <h1>Sponsor Me?</h1>
           <p>
             1 donation = 1 mile sponsored.
@@ -62,6 +64,19 @@
             </span>
           </a>
           <h3 class="pt-2">
+            Blog
+          </h3>
+          <p>
+            I'm blogging about this - you can follow me.
+          </p>
+          <p>
+            <a href="https://medium.com/@edwardhibbert" target="_blank">
+              <b-btn variant="primary">
+                View Blog
+              </b-btn>
+            </a>
+          </p>
+          <h3>
             Sponsors
           </h3>
           <ul class="list-unstyled">
@@ -70,7 +85,7 @@
             </li>
           </ul>
         </b-col>
-        <b-col cols="2" class="pt-5">
+        <b-col cols="4" class="pt-5">
           <vue-thermometer
             :value="sponsorCount"
             :min="0"
@@ -224,23 +239,31 @@ export default {
   },
 
   mounted() {
-    // set bounds of the map
-    this.$refs.mymap.$mapPromise.then(map => {
-      const bounds = new window.google.maps.LatLngBounds()
-      for (const marker of this.route) {
-        const myLatLng = new window.google.maps.LatLng({
-          lat: marker.lat,
-          lng: marker.lng
-        })
-        bounds.extend(myLatLng)
-      }
-      map.fitBounds(bounds)
-    })
+    this.setBounds()
   },
 
   methods: {
     email: function() {
       window.location = 'mailto:edward@ehibbert.org.uk'
+    },
+
+    setBounds: function() {
+      if (this.$refs.mymap) {
+        // set bounds of the map
+        this.$refs.mymap.$mapPromise.then(map => {
+          const bounds = new window.google.maps.LatLngBounds()
+          for (const marker of this.route) {
+            const myLatLng = new window.google.maps.LatLng({
+              lat: marker.lat,
+              lng: marker.lng
+            })
+            bounds.extend(myLatLng)
+          }
+          map.fitBounds(bounds)
+        })
+      } else {
+        window.setTimeout(this.setBounds, 100)
+      }
     },
 
     showSponsor: function(marker, idx) {
