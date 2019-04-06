@@ -20,6 +20,15 @@
           style="width:100%; height: 400px;"
           @zoom_changed="zoomChanged"
         >
+          <div slot="visible">
+            <div style="top: 5px; left: 40%; width: calc(100% - 100px); position: absolute; z-index: 100" class="rounded">
+              <GmapAutocomplete
+                placeholder="Search for a place"
+                @place_changed="gotoPlace"
+              />
+            </div>
+          </div>
+
           <gmap-polyline :path.sync="routeSponsored" :options="{ strokeColor:'#008000'}" />
           <gmap-polyline :path.sync="routeUnsponsored" :options="{ strokeColor:'darkblue'}" />
           <div v-if="currentZoom >= 14" :key="'sponsor-' + currentZoom">
@@ -291,6 +300,11 @@ export default {
 
     zoomChanged: function(zoom) {
       this.currentZoom = zoom
+    },
+
+    gotoPlace(place) {
+      this.$refs.mymap.$mapObject.setCenter(place.geometry.location)
+      this.$refs.mymap.$mapObject.fitBounds(place.geometry.viewport)
     }
   }
 }
