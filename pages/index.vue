@@ -142,13 +142,33 @@ export default {
           hid: 'description',
           name: 'description',
           content:
-            "I'm putting my hurt and sole into Freegle by doing a sponsored walk this summer to help Freegle take its next steps.",
-          'og:title': 'Sponsor a Mile!',
-          'og:description':
-            "I'm putting my hurt and sole into Freegle by doing a sponsored walk this summer to help Freegle take its next steps.",
-          'og:image': strollMap,
-          'og:url': 'https://sponsoramile.ilovefreegle.org',
-          'twitter:card': 'summary_large_image'
+            "I'm putting my hurt and sole into Freegle by doing a sponsored walk this summer to help Freegle take its next steps."
+        },
+        {
+          hid: `og:title`,
+          name: 'og:title',
+          content: 'Sponsor a Mile!'
+        },
+        {
+          hid: `og:description`,
+          name: 'og:description',
+          content:
+            "I'm putting my hurt and sole into Freegle by doing a sponsored walk this summer to help Freegle take its next steps."
+        },
+        {
+          hid: `og:image`,
+          name: 'og:image',
+          content: strollMap
+        },
+        {
+          hid: `og:url`,
+          name: 'og:url',
+          content: 'https://sponsoramile.ilovefreegle.org'
+        },
+        {
+          hid: `twitter:card`,
+          name: 'twitter:card',
+          content: 'summary_large_image'
         }
       ]
     }
