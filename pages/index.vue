@@ -19,7 +19,7 @@
           <b-row>
             <b-col cols="8">
               <p>
-                1 donation = 1 mile sponsored.
+                1 donation (of any amount) = 1 mile sponsored
               </p>
               <b-form-group
                 id="fieldset-1"
@@ -142,7 +142,7 @@ export default {
           hid: 'description',
           name: 'description',
           content:
-            "I'm putting my hurt and sole into Freegle by doing a sponsored walk this summer to help Freegle take its next steps."
+            "I'm putting my hurt and sole into Freegle by doing a sponsored walk this summer - to help Freegle take its next steps."
         },
         {
           hid: `og:title`,
@@ -153,7 +153,7 @@ export default {
           hid: `og:description`,
           name: 'og:description',
           content:
-            "I'm putting my hurt and sole into Freegle by doing a sponsored walk this summer to help Freegle take its next steps."
+            "I'm putting my hurt and sole into Freegle by doing a sponsored walk this summer - to help Freegle take its next steps."
         },
         {
           hid: `og:image`,
