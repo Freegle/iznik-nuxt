@@ -1,3 +1,5 @@
+import qs from 'qs'
+
 export const state = () => ({
   // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
   // storage.
@@ -49,5 +51,19 @@ export const actions = {
         nights: res.data.nights
       })
     }
+  },
+
+  async sponsor({ commit }, params) {
+    await this.$axios.post(
+      'https://iznik.modtools.org/api/stroll',
+      qs.stringify({
+        sponsorname: params.sponsorName
+      }),
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      }
+    )
   }
 }

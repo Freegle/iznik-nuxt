@@ -30,6 +30,9 @@ module.exports = {
     // Our template formatting utils.
     '~/plugins/filters',
 
+    // Our directives
+    '~/plugins/directives',
+
     // Bootstrap for styling.
     '~/plugins/bootstrap',
 
@@ -37,6 +40,7 @@ module.exports = {
     { src: '~plugins/axios-serializer.js' },
 
     { src: '~/plugins/vuejs-thermometer' },
+    { src: '~/plugins/qs' },
 
     // Some plugins are client-side features
     { src: '~/plugins/vuex-persistedstate', ssr: false },

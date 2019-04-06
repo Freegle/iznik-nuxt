@@ -9,7 +9,53 @@
       </p>
       <p>
         Now it's time to put my hurt and sole into Freegle.  I'm starting on May 14th, from the southernmost point of
-        the UK (the Lizard) to the easternmost (Lowestoft Ness).  Here's my route - zoom in for details.
+        the UK (the Lizard) to the easternmost (Lowestoft Ness).  Scroll down for my route.
+      </p>
+      <b-card>
+        <b-card-title>
+          {{ sponsorCount }} miles sponsored, {{ thermMax - sponsorCount }} miles to go...
+        </b-card-title>
+        <b-card-body>
+          <b-row>
+            <b-col cols="8">
+              <p>
+                1 donation = 1 mile sponsored.
+              </p>
+              <b-form-group
+                id="fieldset-1"
+                description="This name will appear on the map.  If you want to be anonymous, leave it blank or make up something silly."
+              >
+                <b-form-input v-model="sponsorName" v-focus placeholder="Name your mile" trim />
+              </b-form-group>
+              <b-btn
+                size="lg"
+                variant="info"
+                @click="sponsorClick"
+              >
+                <b-img
+                  src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg"
+                  title="PayPal - The safer, easier way to pay online!"
+                  alt="Donate with PayPal button"
+                  class="float-left"
+                  rounded
+                />&nbsp;Sponsor me!
+              </b-btn>
+            </b-col>
+            <b-col cols="4">
+              <vue-thermometer
+                :value="sponsorCount"
+                :min="0"
+                :max="thermMax"
+                scale=" miles"
+                :options="thermOptions"
+              />
+            </b-col>
+          </b-row>
+        </b-card-body>
+      </b-card>
+      <p class="pt-1">
+        Here's my route.  Zoom right in to see where I am each night and who's sponsored each mile.
+        The blue part isn't sponsored yet; the green part is.
       </p>
       <no-ssr placeholder="Map loading...">
         <GmapMap
@@ -51,36 +97,13 @@
     </b-col>
     <b-col cols="12" lg="6">
       <b-row>
-        <b-col cols="8">
-          <h1>Sponsor Me?</h1>
-          <p>
-            1 donation = 1 mile sponsored.
-          </p>
-          <p>
-            If you share your name and email when donating then I'll mention you in the blog, and try to take
-            a picture of something interesting during your mile.
-          </p>
-          <h3>Miles sponsored: {{ sponsorCount }} raising &pound;{{ raised }}.</h3>
-          <h5>That leaves {{ thermMax - sponsorCount }} miles to go...</h5>
-          <p class="text-muted">
-            The blue part of the route on the map isn't sponsored yet; the green is.
-          </p>
-          <!--<a target="_blank" rel="noopener" data-realurl="true" href="https://freegle.in/paypalfundraiser" class="js-clickdonate hidden-xs">-->
-          <span class="btn btn-lg btn-info">
-            <b-img
-              src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg"
-              title="PayPal - The safer, easier way to pay online!"
-              alt="Donate with PayPal button"
-              class="float-left"
-              rounded
-            />&nbsp;Sponsor me!
-          </span>
-          <!--</a>-->
+        <b-col>
           <h3 class="pt-2">
             Blog
           </h3>
           <p>
-            I'm blogging about this - you can follow me.
+            I'm blogging about this - you can follow me.  Be warned: there will be puns that may hurt worse than my
+            feet.
           </p>
           <p>
             <a href="https://medium.com/@edwardhibbert" target="_blank">
@@ -92,20 +115,12 @@
           <h3>
             Sponsors
           </h3>
+          <p>Here are the people who have kindly sponsored me.</p>
           <ul class="list-unstyled">
             <li v-for="(s, i) in sponsorsRecentFirst" :key="'sponsor-' + i">
-              <span class="text-muted">{{ s.timestamp | timeago }}</span> {{ s.name }} &pound;{{ s.amount }}
+              <span class="text-muted">{{ s.timestamp | timeago }}</span> {{ s.name }}
             </li>
           </ul>
-        </b-col>
-        <b-col cols="4" class="pt-5">
-          <vue-thermometer
-            :value="sponsorCount"
-            :min="0"
-            :max="thermMax"
-            scale=" miles"
-            :options="thermOptions"
-          />
         </b-col>
       </b-row>
     </b-col>
@@ -116,6 +131,7 @@
 import cloneDeep from 'lodash.clonedeep'
 import SponsorMarker from '../components/SponsorMarker'
 import NightMarker from '../components/NightMarker'
+import strollMap from '~/static/strollmap.png'
 
 export default {
   head() {
@@ -126,7 +142,13 @@ export default {
           hid: 'description',
           name: 'description',
           content:
-            "I'm doing a sponsored walk for Freegle this summer.  Which mile will you sponsor?"
+            "I'm putting my hurt and sole into Freegle by doing a sponsored walk this summer to help Freegle take its next steps.",
+          'og:title': 'Sponsor a Mile!',
+          'og:description':
+            "I'm putting my hurt and sole into Freegle by doing a sponsored walk this summer to help Freegle take its next steps.",
+          'og:image': strollMap,
+          'og:url': 'https://sponsoramile.ilovefreegle.org',
+          'twitter:card': 'summary_large_image'
         }
       ]
     }
@@ -144,12 +166,14 @@ export default {
       nights: [],
       thermOptions: {
         thermo: {
-          color: '#008000'
+          color: '#008000',
+          ticksEnabled: false
         }
       },
       infoContent: '',
       infoWindowPos: null,
-      infoWinOpen: false
+      infoWinOpen: false,
+      sponsorName: null
     }
   },
   computed: {
@@ -305,6 +329,16 @@ export default {
     gotoPlace(place) {
       this.$refs.mymap.$mapObject.setCenter(place.geometry.location)
       this.$refs.mymap.$mapObject.fitBounds(place.geometry.viewport)
+    },
+
+    async sponsorClick() {
+      console.log('Sponsor click', this.sponsorName)
+      window.open('https://freegle.in/strollfundraiser', '_blank')
+      await this.$store.dispatch('stroll/sponsor', {
+        sponsorName: this.sponsorName
+      })
+      await this.$store.dispatch('stroll/fetch')
+      this.sponsors = this.$store.getters['stroll/sponsors']
     }
   }
 }
