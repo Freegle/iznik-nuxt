@@ -87,7 +87,8 @@
       </no-ssr>
       <p>
         If you're near my route and fancy meeting up, then I'd love that - it's always nice to meet other freeglers and
-        have someone to chat to over my umpteenth veggie lasagne.  Zoom into the map until you see the bed icons
+        have someone to chat to over my umpteenth veggie lasagne.  Walking company is good too.  Zoom into the map until
+        you see the bed icons
         which show where I am on different nights, then drop me a line at
         <a href="mailto:edward@ehibbert.org.uk">edward@ehibbert.org.uk</a>.
       </p>
