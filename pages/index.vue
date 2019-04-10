@@ -80,15 +80,15 @@
           <div v-if="currentZoom >= 14" :key="'sponsor-' + currentZoom">
             <SponsorMarker v-for="(m,i) in sponsorLocs" :key="'sponsormarker-' + i" :marker="m" />
           </div>
-          <div v-if="currentZoom >= 13" :key="'nights-' + currentZoom">
-            <NightMarker v-for="(m,i) in nights" :key="'nightmarker-' + i + '-' + currentZoom" :marker="m" />
+          <div v-if="currentZoom >= 9" :key="'nights-' + currentZoom">
+            <NightMarker v-for="(m,i) in nights" :key="'nightmarker-' + i + '-' + currentZoom" :marker="m" :current-zoom="currentZoom" />
           </div>
         </GmapMap>
       </no-ssr>
       <p>
         If you're near my route and fancy meeting up, then I'd love that - it's always nice to meet other freeglers and
-        have someone to chat to over my umpteenth veggie lasagne.  Walking company is good too.  Zoom into the map until
-        you see the bed icons, and move your mouse over them to see where I expect to be on different nights, then drop me a line at
+        have someone to chat to over my umpteenth veggie lasagne.  Walking company is good too.  Keep zooming into the map until
+        you see where I expect to be on different nights, then drop me a line at
         <a href="mailto:edward@ehibbert.org.uk">edward@ehibbert.org.uk</a>.
       </p>
       <b-btn size="lg" variant="success" @click="email">
@@ -186,7 +186,7 @@ export default {
   data() {
     return {
       center: { lat: 55.915655, lng: -4.744502 },
-      currentZoom: 12,
+      currentZoom: 1,
       zoom: 12,
       route: [],
       sponsors: [],
