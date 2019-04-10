@@ -88,8 +88,7 @@
       <p>
         If you're near my route and fancy meeting up, then I'd love that - it's always nice to meet other freeglers and
         have someone to chat to over my umpteenth veggie lasagne.  Walking company is good too.  Zoom into the map until
-        you see the bed icons
-        which show where I am on different nights, then drop me a line at
+        you see the bed icons, and move your mouse over them to see where I expect to be on different nights, then drop me a line at
         <a href="mailto:edward@ehibbert.org.uk">edward@ehibbert.org.uk</a>.
       </p>
       <b-btn size="lg" variant="success" @click="email">
@@ -113,6 +112,13 @@
               </b-btn>
             </a>
           </p>
+          <ul class="list-unstyled">
+            <li v-for="(s, i) in posts" :key="'post-' + s.guid">
+              <a :href="s.link" target="_blank">
+                <span v-if="i <= 5" class="text-muted">{{ s.isoDate| timeago }}</span> {{ s.title }}
+              </a>
+            </li>
+          </ul>
           <h3>
             Sponsors
           </h3>
@@ -185,6 +191,7 @@ export default {
       route: [],
       sponsors: [],
       nights: [],
+      posts: [],
       thermOptions: {
         thermo: {
           color: '#008000',
@@ -286,17 +293,21 @@ export default {
 
   async asyncData({ app, params, store }) {
     await store.dispatch('stroll/fetch')
+    await store.dispatch('blog/fetch')
 
     const route = store.getters['stroll/route']
     const sponsors = store.getters['stroll/sponsors']
     const nights = store.getters['stroll/nights']
+    const posts = store.getters['blog/posts']
+    console.log('Posts', posts)
 
     return {
       center: { lat: 55.915655, lng: -4.744502 },
       zoom: 12,
       route: route,
       sponsors: sponsors,
-      nights: nights
+      nights: nights,
+      posts: posts
     }
   },
 

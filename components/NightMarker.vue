@@ -4,7 +4,7 @@
       <fa
         icon="bed"
         class="text-info fa-2x"
-        :title="'Overnight in ' + marker.name"
+        :title="'Overnight in ' + marker.name + ' on ' + marker.date"
       />
     </RichMarker>
   </div>
