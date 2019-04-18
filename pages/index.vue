@@ -1,137 +1,155 @@
 <template>
-  <b-row>
-    <b-col cols="12" lg="6">
-      <h1>Next Steps for Freegle</h1>
-      <p>
-        I'm Edward, and I'm doing a sponsored walk for Freegle.  I put my heart and soul into Freegle, including
-        developing the website (so yeah, blame me).  I just love all the acts of kindness from freeglers making
-        the world a bit better each day.
-      </p>
-      <p>
-        Now it's time to put my hurt and sole into Freegle.  I'm starting on May 14th, from the southernmost point of
-        the UK (the Lizard) to the easternmost (Lowestoft Ness).  Scroll down for my route.
-      </p>
-      <b-card>
-        <b-card-title>
-          {{ sponsorCount }} miles sponsored, {{ thermMax - sponsorCount }} miles to go...
-        </b-card-title>
-        <b-card-body>
-          <b-row>
-            <b-col cols="8">
-              <p>
-                1 donation (of any amount) = 1 mile sponsored
-              </p>
-              <b-form-group
-                id="fieldset-1"
-                description="This name will appear on the map.  If you want to be anonymous, leave it blank or make up something silly."
-              >
-                <b-form-input v-model="sponsorName" v-focus placeholder="Name your mile" trim />
-              </b-form-group>
-              <b-btn
-                size="lg"
-                variant="info"
-                @click="sponsorClick"
-              >
-                <b-img
-                  src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg"
-                  title="PayPal - The safer, easier way to pay online!"
-                  alt="Donate with PayPal button"
-                  class="float-left"
-                  rounded
-                />&nbsp;Sponsor me!
-              </b-btn>
-            </b-col>
-            <b-col cols="4">
-              <vue-thermometer
-                :value="sponsorCount"
-                :min="0"
-                :max="thermMax"
-                scale=" miles"
-                :options="thermOptions"
-              />
-            </b-col>
-          </b-row>
-        </b-card-body>
-      </b-card>
-      <p class="pt-1">
-        Here's my route.  Zoom right in to see where I am each night and who's sponsored each mile.
-        The blue part isn't sponsored yet; the green part is.
-      </p>
-      <no-ssr placeholder="Map loading...">
-        <GmapMap
-          ref="mymap"
-          :center="center"
-          :zoom="7"
-          map-type-id="terrain"
-          style="width:100%; height: 400px;"
-          @zoom_changed="zoomChanged"
-        >
-          <div slot="visible">
-            <div style="top: 5px; left: 40%; width: calc(100% - 100px); position: absolute; z-index: 100" class="rounded">
-              <GmapAutocomplete
-                placeholder="Search for a place"
-                @place_changed="gotoPlace"
-              />
+  <div>
+    <b-row>
+      <b-col>
+        <h1>Next Steps for Freegle</h1>
+        <div>
+          <img class="float-left rounded-circle small img-thumbnail mr-4 mb-4" src="~/static/edward.jpg" alt="Photo of Edward">
+          <p>
+            I'm Edward, and I'm doing a sponsored walk for Freegle.  I put my heart and soul into Freegle, including
+            developing the website (so yeah, blame me).  I just love all the acts of kindness from freeglers making
+            the world a bit better each day.
+          </p>
+        </div>
+        <p>
+          Now it's time to put my hurt and sole into Freegle.  I'm starting on May 14th, from the southernmost point of
+          the UK (the Lizard) to the easternmost (Lowestoft Ness).  Scroll down for my route.
+        </p>
+      </b-col>
+    </b-row>
+    <b-row cols="12" lg="6">
+      <b-col>
+        <b-card>
+          <b-card-title>
+            {{ sponsorCount }} miles sponsored, {{ thermMax - sponsorCount }} miles to go...
+          </b-card-title>
+          <b-card-body>
+            <b-row>
+              <b-col cols="8">
+                <p>
+                  1 donation (of any amount) = 1 mile sponsored
+                </p>
+                <b-form-group
+                  id="fieldset-1"
+                  description="This name will appear on the map.  If you want to be anonymous, leave it blank or make up something silly."
+                >
+                  <b-form-input v-model="sponsorName" v-focus placeholder="Name your mile" trim />
+                </b-form-group>
+                <b-btn
+                  size="lg"
+                  variant="info"
+                  @click="sponsorClick"
+                >
+                  <b-img
+                    src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg"
+                    title="PayPal - The safer, easier way to pay online!"
+                    alt="Donate with PayPal button"
+                    class="float-left"
+                    rounded
+                  />&nbsp;Sponsor me!
+                </b-btn>
+                <p>Other ways to donate <a href="https://ilovefreegle.org/donate">here</a>.</p>
+              </b-col>
+              <b-col cols="4">
+                <vue-thermometer
+                  :value="sponsorCount"
+                  :min="0"
+                  :max="thermMax"
+                  scale=" miles"
+                  :options="thermOptions"
+                />
+              </b-col>
+            </b-row>
+          </b-card-body>
+        </b-card>
+        <p class="pt-1">
+          Here's my route.  Zoom right in to see where I am each night and who's sponsored each mile.
+          The blue part isn't sponsored yet; the green part is.
+        </p>
+        <no-ssr placeholder="Map loading...">
+          <GmapMap
+            ref="mymap"
+            :center="center"
+            :zoom="7"
+            map-type-id="terrain"
+            style="width:100%; height: 400px;"
+            @zoom_changed="zoomChanged"
+          >
+            <div slot="visible">
+              <div style="top: 5px; left: 40%; width: calc(100% - 100px); position: absolute; z-index: 100" class="rounded">
+                <GmapAutocomplete
+                  placeholder="Search for a place"
+                  @place_changed="gotoPlace"
+                />
+              </div>
             </div>
-          </div>
 
-          <gmap-polyline :path.sync="routeSponsored" :options="{ strokeColor:'#008000'}" />
-          <gmap-polyline :path.sync="routeUnsponsored" :options="{ strokeColor:'darkblue'}" />
-          <div v-if="currentZoom >= 14" :key="'sponsor-' + currentZoom">
-            <SponsorMarker v-for="(m,i) in sponsorLocs" :key="'sponsormarker-' + i" :marker="m" />
-          </div>
-          <div v-if="currentZoom >= 9" :key="'nights-' + currentZoom">
-            <NightMarker v-for="(m,i) in nights" :key="'nightmarker-' + i + '-' + currentZoom" :marker="m" :current-zoom="currentZoom" />
-          </div>
-        </GmapMap>
-      </no-ssr>
-      <p>
-        If you're near my route and fancy meeting up, then I'd love that - it's always nice to meet other freeglers and
-        have someone to chat to over my umpteenth veggie lasagne.  Walking company is good too.  Keep zooming into the map until
-        you see where I expect to be on different nights, then drop me a line at
-        <a href="mailto:edward@ehibbert.org.uk">edward@ehibbert.org.uk</a>.
-      </p>
-      <b-btn size="lg" variant="success" @click="email">
-        <fa icon="envelope" />&nbsp;Get in touch
-      </b-btn>
-    </b-col>
-    <b-col cols="12" lg="6">
-      <b-row>
-        <b-col>
-          <h3 class="pt-2">
-            Blog
-          </h3>
-          <p>
-            I'm blogging about this - you can follow me.  Be warned: there will be puns that may hurt worse than my
-            feet.
-          </p>
-          <p>
-            <a href="https://medium.com/@edwardhibbert" target="_blank">
-              <b-btn variant="primary">
-                View Blog
-              </b-btn>
-            </a>
-          </p>
-          <ul class="list-unstyled">
-            <li v-for="(s, i) in posts" :key="'post-' + s.guid">
-              <a :href="s.link" target="_blank">
-                <span v-if="i <= 5" class="text-muted">{{ s.isoDate| timeago }}</span> {{ s.title }}
-              </a>
-            </li>
-          </ul>
-          <h3>
-            Sponsors
-          </h3>
-          <p>Here are the people who have kindly sponsored me.</p>
-          <ul class="list-unstyled">
-            <li v-for="(s, i) in sponsorsRecentFirst" :key="'sponsor-' + i">
-              <span class="text-muted">{{ s.timestamp | timeago }}</span> {{ s.name }}
-            </li>
-          </ul>
-        </b-col>
-      </b-row>
-    </b-col>
-  </b-row>
+            <gmap-polyline :path.sync="routeSponsored" :options="{ strokeColor:'#008000'}" />
+            <gmap-polyline :path.sync="routeUnsponsored" :options="{ strokeColor:'darkblue'}" />
+            <div v-if="currentZoom >= 14" :key="'sponsor-' + currentZoom">
+              <SponsorMarker v-for="(m,i) in sponsorLocs" :key="'sponsormarker-' + i" :marker="m" />
+            </div>
+            <div v-if="currentZoom >= 9" :key="'nights-' + currentZoom">
+              <NightMarker v-for="(m,i) in nights" :key="'nightmarker-' + i + '-' + currentZoom" :marker="m" :current-zoom="currentZoom" />
+            </div>
+          </GmapMap>
+        </no-ssr>
+        <p>
+          If you're near my route and fancy meeting up, then I'd love that - it's always nice to meet other freeglers and
+          have someone to chat to over my umpteenth veggie lasagne.  Walking company is good too.  Keep zooming into the map until
+          you see where I expect to be on different nights, then drop me a line at
+          <a href="mailto:edward@ehibbert.org.uk">edward@ehibbert.org.uk</a>.
+        </p>
+        <b-btn size="lg" variant="success" @click="email">
+          <fa icon="envelope" />&nbsp;Get in touch
+        </b-btn>
+      </b-col>
+      <b-col cols="12" lg="6">
+        <b-row>
+          <b-col>
+            <b-card class="mb-2">
+              <b-card-body>
+                <h3 class="pt-2">
+                  Blog
+                </h3>
+                <p>
+                  I'm blogging about this - you can follow me.  Be warned: there will be puns that may hurt worse than my
+                  feet.
+                </p>
+                <p>
+                  <a href="https://medium.com/@edwardhibbert" target="_blank">
+                    <b-btn variant="primary">
+                      View Blog
+                    </b-btn>
+                  </a>
+                </p>
+                <ul class="list-unstyled">
+                  <li v-for="(s, i) in posts" :key="'post-' + s.guid">
+                    <a :href="s.link" target="_blank">
+                      <span v-if="i <= 5" class="text-muted">{{ s.isoDate| timeago }}</span> {{ s.title }}
+                    </a>
+                  </li>
+                </ul>
+              </b-card-body>
+            </b-card>
+            <b-card>
+              <b-card-body>
+                <h3>
+                  Sponsors
+                </h3>
+                <p>Here are the people who have kindly sponsored me.</p>
+                <ul class="list-unstyled">
+                  <li v-for="(s, i) in sponsorsRecentFirst" :key="'sponsor-' + i">
+                    <span class="text-muted">{{ s.timestamp | timeago }}</span> {{ s.name }}
+                  </li>
+                </ul>
+              </b-card-body>
+            </b-card>
+          </b-col>
+        </b-row>
+      </b-col>
+    </b-row>
+  </div>
 </template>
 
 <script>
