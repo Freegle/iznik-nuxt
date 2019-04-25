@@ -20,12 +20,19 @@ export const getters = {
 
 export const actions = {
   async fetch({ commit }, params) {
-    const feed = await parser.parseURL(
-      'https://www.ilovefreegle.org/medium.php'
-    )
+    try {
+      const feed = await parser.parseURL(
+        'https://www.ilovefreegle.org/medium.php'
+      )
 
-    commit('add', {
-      posts: feed.items
-    })
+      commit('add', {
+        posts: feed.items
+      })
+    } catch (e) {
+      console.error('Blog fetch failed', e.message)
+      setTimeout(() => {
+        this.dispatch('blog/fetch')
+      }, 100)
+    }
   }
 }
