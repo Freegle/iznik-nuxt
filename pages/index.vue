@@ -123,13 +123,15 @@
                     </b-btn>
                   </a>
                 </p>
-                <ul class="list-unstyled">
-                  <li v-for="(s, i) in posts" :key="'post-' + s.guid">
-                    <a :href="s.link" target="_blank">
-                      <span v-if="i <= 5" class="text-muted">{{ s.isoDate| timeago }}</span> {{ s.title }}
-                    </a>
-                  </li>
-                </ul>
+                <no-ssr>
+                  <ul class="list-unstyled">
+                    <li v-for="(s, i) in posts" :key="'post-' + s.guid">
+                      <a :href="s.link" target="_blank">
+                        <span v-if="i <= 5" class="text-muted">{{ s.isoDate| timeago }}</span> {{ s.title }}
+                      </a>
+                    </li>
+                  </ul>
+                </no-ssr>
               </b-card-body>
             </b-card>
             <b-card>
