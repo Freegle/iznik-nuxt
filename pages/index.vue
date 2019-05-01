@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pl-3">
     <b-row>
       <b-col>
         <h1>Next Steps for Freegle</h1>
@@ -107,31 +107,22 @@
       <b-col cols="12" lg="6">
         <b-row>
           <b-col>
-            <b-card class="mb-2">
+            <b-card>
+              <b-card-title>
+                There's a blog
+              </b-card-title>
               <b-card-body>
-                <h3 class="pt-2">
-                  Blog
-                </h3>
-                <p>
-                  I'm blogging about this - you can follow me.  Be warned: there will be puns that may hurt worse than my
-                  feet.
-                </p>
-                <p>
-                  <a href="https://medium.com/@edwardhibbert" target="_blank">
-                    <b-btn variant="primary">
-                      View Blog
-                    </b-btn>
-                  </a>
-                </p>
-                <no-ssr>
-                  <ul class="list-unstyled">
-                    <li v-for="(s, i) in posts" :key="'post-' + s.guid">
-                      <a :href="s.link" target="_blank">
-                        <span v-if="i <= 5" class="text-muted">{{ s.isoDate| timeago }}</span> {{ s.title }}
-                      </a>
-                    </li>
-                  </ul>
-                </no-ssr>
+                <p>Please like the Facebook page, or if you don't do Facebook, find it <a href="https://medium.com/@edwardhibbert" target="_blank">on Medium</a>.</p>
+                <iframe
+                  src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fnextstepsforfreegle&tabs=timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId=219434218079616"
+                  width="340"
+                  height="500"
+                  style="border:none;overflow:hidden"
+                  scrolling="no"
+                  frameborder="0"
+                  allowTransparency="true"
+                  allow="encrypted-media"
+                />
               </b-card-body>
             </b-card>
             <b-card>
@@ -156,6 +147,7 @@
 
 <script>
 import cloneDeep from 'lodash.clonedeep'
+import BCardTitle from 'bootstrap-vue/src/components/card/card-title'
 import SponsorMarker from '../components/SponsorMarker'
 import NightMarker from '../components/NightMarker'
 import strollMap from '~/static/strollmap.png'
@@ -201,7 +193,7 @@ export default {
     }
   },
 
-  components: { SponsorMarker, NightMarker },
+  components: { BCardTitle, SponsorMarker, NightMarker },
 
   data() {
     return {
@@ -211,7 +203,6 @@ export default {
       route: [],
       sponsors: [],
       nights: [],
-      posts: [],
       thermOptions: {
         thermo: {
           color: '#008000',
@@ -313,21 +304,17 @@ export default {
 
   async asyncData({ app, params, store }) {
     await store.dispatch('stroll/fetch')
-    await store.dispatch('blog/fetch')
 
     const route = store.getters['stroll/route']
     const sponsors = store.getters['stroll/sponsors']
     const nights = store.getters['stroll/nights']
-    const posts = store.getters['blog/posts']
-    console.log('Posts', posts)
 
     return {
       center: { lat: 55.915655, lng: -4.744502 },
       zoom: 12,
       route: route,
       sponsors: sponsors,
-      nights: nights,
-      posts: posts
+      nights: nights
     }
   },
 
