@@ -5,13 +5,15 @@ export const state = () => ({
   // storage.
   route: [],
   sponsors: [],
-  nights: []
+  nights: [],
+  total: 0
 })
 
 export const mutations = {
   add(state, payload) {
     state.route = payload.route
     state.sponsors = payload.sponsors
+    state.total = payload.total
     state.nights = []
 
     for (const night of payload.nights) {
@@ -37,6 +39,9 @@ export const getters = {
   },
   nights: state => {
     return state.nights
+  },
+  total: state => {
+    return state.total
   }
 }
 
@@ -48,7 +53,8 @@ export const actions = {
       commit('add', {
         route: res.data.route,
         sponsors: res.data.sponsors,
-        nights: res.data.nights
+        nights: res.data.nights,
+        total: res.data.total
       })
     }
   },

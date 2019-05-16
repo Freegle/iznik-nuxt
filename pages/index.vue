@@ -21,7 +21,7 @@
       <b-col>
         <b-card>
           <b-card-title>
-            {{ sponsorCount }} miles sponsored, {{ thermMax - sponsorCount }} miles to go...
+            {{ sponsorCount }} miles sponsored, {{ thermMax - sponsorCount }} miles to go, &pound;{{ total }} raised
           </b-card-title>
           <b-card-body>
             <b-row>
@@ -224,14 +224,6 @@ export default {
       const s = cloneDeep(this.sponsors)
       return s.reverse()
     },
-    raised() {
-      let sum = 0
-      for (const sponsor of this.sponsors) {
-        sum += sponsor.amount
-      }
-
-      return sum
-    },
     routeSponsored() {
       let dist = 0
       const ret = []
@@ -315,7 +307,8 @@ export default {
       zoom: 12,
       route: route,
       sponsors: sponsors,
-      nights: nights
+      nights: nights,
+      total: store.getters['stroll/total']
     }
   },
 
