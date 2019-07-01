@@ -20,8 +20,11 @@
     <b-row cols="12" lg="6">
       <b-col>
         <b-card>
-          <b-card-title>
+          <b-card-title v-if="thermMax >= sponsorCount">
             {{ sponsorCount }} miles sponsored, {{ thermMax - sponsorCount }} miles to go, &pound;{{ total }} raised
+          </b-card-title>
+          <b-card-title v-if="thermMax < sponsorCount">
+            {{ sponsorCount }} miles sponsored, target exceeded by {{ sponsorCount - thermMax }} miles, &pound;{{ total }} raised
           </b-card-title>
           <b-card-body>
             <b-row>
