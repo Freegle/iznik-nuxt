@@ -17,6 +17,15 @@
         </p>
       </b-col>
     </b-row>
+    <b-row>
+      <b-col>
+        <div class="alert alert-info">
+          I made it!  Thanks to everyone who supported me, by feeding me, walking with me, meeting up, donating,
+          praying for my feet, giving me things to read in the evening, suggesting places to visit, polishing my boots,
+          and reading the blog.
+        </div>
+      </b-col>
+    </b-row>
     <b-row cols="12" lg="6">
       <b-col>
         <b-card>
