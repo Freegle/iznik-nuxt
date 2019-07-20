@@ -57,7 +57,7 @@ export const getters = {
 
 export const actions = {
   async fetch({ commit }, params) {
-    if (params.hasOwnProperty('context')) {
+    if (params.context) {
       // Ensure the context is a real object, in case it has been in the store.
       const ctx = JSON.parse(JSON.stringify(params.context))
       params.context = ctx

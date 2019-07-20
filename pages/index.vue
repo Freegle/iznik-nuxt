@@ -1,6 +1,13 @@
 <template>
   <section class="container">
-    <p>Hello</p>
+    <p>
+      Hello
+      <span
+        v-if="$store.state.auth.user"
+      >
+        {{ $store.state.auth.user.fullname }}
+      </span>
+    </p>
     <nuxt-link to="/explore/EdinburghFreegle">
       EdinburghFreegle
     </nuxt-link>
@@ -9,6 +16,10 @@
 
 <script>
 export default {
-  components: {}
+  components: {},
+
+  mounted: function() {
+    console.log('Mounted - logged in?', this.$auth.$state.loggedIn)
+  }
 }
 </script>

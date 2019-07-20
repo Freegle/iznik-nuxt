@@ -14,13 +14,31 @@
       <ul class="navbar-nav mr-auto" />
       <ul class="nav navbar-nav navbar-right">
         <li>
-          <b-button class="btn-white" @click="signIn">
+          <b-button v-if="$store.state.auth.user" class="btn-white" @click="signOut">
+            Sign out
+          </b-button>
+          <b-button v-else v-b-modal.signInModal class="btn-white">
             Sign in
           </b-button>
         </li>
       </ul>
     </b-navbar>
     <nuxt class="ml-0" />
+    <b-modal id="signInModal" ref="loginModal" title="Sign In">
+      <template slot="default">
+        <b-form-input ref="email" v-model="email" placeholder="Your email address" alt="Email address" />
+        <b-form-input ref="password" v-model="password" type="password" placeholder="Your password" alt="Password" />
+      </template>
+
+      <template slot="modal-footer" slot-scope="{ cancel }">
+        <b-button size="sm" variant="white" @click="cancel()">
+          Cancel
+        </b-button>
+        <b-button size="sm" variant="success" @click="signInNative()">
+          Sign in
+        </b-button>
+      </template>
+    </b-modal>
   </div>
 </template>
 
@@ -99,11 +117,21 @@ nav .navbar-nav li a.nuxt-link-active {
   margin-top: -5px;
   margin-bottom: -5px;
 }
+
+body.modal-open {
+  padding-right: 0px !important;
+}
 </style>
 
 <script>
 export default {
-  components: {},
+  data: function() {
+    return {
+      email: null,
+      password: null
+    }
+  },
+
   computed: {
     loggedIn() {
       // We only show the menu if we are logged in, or if we're not yet sure.  The latter prevents flicker when
@@ -116,8 +144,26 @@ export default {
   },
 
   methods: {
-    signIn() {
-      console.log('Sign in')
+    signOut() {
+      this.$auth.logout()
+    },
+
+    signInNative() {
+      console.log('Sign in', this.email)
+      this.$auth
+        .loginWith('native', {
+          data: {
+            email: this.email,
+            password: this.password
+          }
+        })
+        .then(() => {
+          console.log('Logged in', this.$auth)
+          this.$refs.loginModal.hide()
+        })
+        .catch(e => {
+          console.log('Failed login', e)
+        })
     },
     logout() {
       this.$store.dispatch('security/logout').then(() => {

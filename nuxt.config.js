@@ -1,4 +1,5 @@
 const pkg = require('./package')
+const API = process.env.IZNIK_API || 'https://dev.ilovefreegle.org/api'
 
 module.exports = {
   mode: 'universal',
@@ -39,6 +40,8 @@ module.exports = {
     // Our parameters serialize differently from axios defaults
     { src: '~plugins/axios-serializer.js' },
 
+    // { src: '~plugins/axios-log.js' },
+
     { src: '~/plugins/vuejs-thermometer' },
     { src: '~/plugins/qs' },
 
@@ -57,6 +60,7 @@ module.exports = {
     '@nuxtjs/moment',
     'nuxt-rfg-icon',
     '@nuxtjs/axios',
+    '@nuxtjs/auth',
     '@nuxtjs/pwa',
     [
       'nuxt-i18n',
@@ -104,6 +108,8 @@ module.exports = {
     transpile: [/^vue2-google-maps($|\/)/],
 
     extend(config, ctx) {
+      config.devtool = ctx.isClient ? 'eval-source-map' : 'inline-source-map'
+
       // Run ESLint on save
       if (ctx.isDev && ctx.isClient) {
         config.module.rules.push({
@@ -123,12 +129,20 @@ module.exports = {
   },
 
   env: {
-    API: process.env.IZNIK_API || 'https://dev.ilovefreegle.org/api',
+    API: API,
     GOOGLE_MAPS_KEY: 'AIzaSyCdTSJKGWJUOx2pq1Y0f5in5g4kKAO5dgg'
   },
 
   // We have some configuration to ensure that we handle both SSR and being logged in.
   serverMiddleware: ['~/serverMiddleware'],
 
-  forceSPAOn: ['/login']
+  forceSPAOn: ['/login'],
+
+  auth: {
+    strategies: {
+      native: {
+        _scheme: '~/app/nativeStrategy.js'
+      }
+    }
+  }
 }
