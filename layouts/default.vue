@@ -11,8 +11,15 @@
 
       <!--<b-navbar-nav class="ml-auto" />-->
       <!--</b-collapse>-->
+      <ul class="navbar-nav mr-auto" />
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <b-button class="btn-white" @click="signIn">
+            Sign in
+          </b-button>
+        </li>
+      </ul>
     </b-navbar>
-
     <nuxt class="ml-0" />
   </div>
 </template>
@@ -96,6 +103,7 @@ nav .navbar-nav li a.nuxt-link-active {
 
 <script>
 export default {
+  components: {},
   computed: {
     loggedIn() {
       // We only show the menu if we are logged in, or if we're not yet sure.  The latter prevents flicker when
@@ -108,6 +116,9 @@ export default {
   },
 
   methods: {
+    signIn() {
+      console.log('Sign in')
+    },
     logout() {
       this.$store.dispatch('security/logout').then(() => {
         this.$router.push({
