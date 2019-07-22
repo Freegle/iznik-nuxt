@@ -19,10 +19,8 @@ export const mutations = {
   },
 
   setList(state, groups) {
-    console.log('addList')
     state.list = {}
     for (const group of groups) {
-      console.log('addList', group.nameshort)
       state.list[group.id] = group
     }
   }

@@ -40,7 +40,7 @@ module.exports = {
     // Our parameters serialize differently from axios defaults
     { src: '~plugins/axios-serializer.js' },
 
-    { src: '~plugins/axios-log.js' },
+    // { src: '~plugins/axios-log.js' },
 
     { src: '~/plugins/vuejs-thermometer' },
     { src: '~/plugins/qs' },

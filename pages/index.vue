@@ -10,7 +10,7 @@
     </p>
     <span v-for="group in groups" :key="id + '-' + group.id">
       <nuxt-link :to="'/explore/' + group.nameshort">
-        {{ group.namedisplay }} {{ group.type }}<br>
+        {{ group.namedisplay }}<br>
       </nuxt-link>
     </span>
   </section>
@@ -27,7 +27,6 @@ export default {
 
     groups: state => {
       const groups = []
-      // console.log('Grouplist', state.group.list)
       Object.keys(state.group.list).forEach(key => {
         const group = state.group.list[key]
         groups.push(group)

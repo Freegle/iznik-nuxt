@@ -11,7 +11,6 @@ export default class nativeStrategy {
 
   mounted () {
     const persistent = this.$auth.syncToken(this.name)
-    console.log("Native mount", persistent);
     return this.$auth.fetchUserOnce()
   }
 
@@ -69,7 +68,6 @@ export default class nativeStrategy {
     let groups = []
     for (let group of ret.groups) {
       if (process.env.MODTOOLS || (group.publish && group.type === 'Freegle')) {
-        console.log("Want group", group.nameshort, process.env.MODTOOLS)
         groups.push(group)
       }
     }
