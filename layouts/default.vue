@@ -132,6 +132,11 @@ export default {
     }
   },
 
+  serverPrefetch() {
+    console.log('Server prefetch', this.$auth.user)
+    return this.$auth.fetchUserOnce()
+  },
+
   computed: {
     loggedIn() {
       // We only show the menu if we are logged in, or if we're not yet sure.  The latter prevents flicker when
