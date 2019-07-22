@@ -142,7 +142,6 @@ export default {
   serverPrefetch() {
     // We need to prefetch the session on the server side so that we are logged in, otherwise we'll render the
     // page logged out in what we return to the client, which will cause flicker.
-    console.log('Server prefetch')
     return this.$auth.fetchUser()
   },
 
@@ -167,7 +166,6 @@ export default {
     },
 
     async signInNative() {
-      console.log('Sign in', this.email)
       await this.$auth
         .loginWith('native', {
           data: {
@@ -176,11 +174,10 @@ export default {
           }
         })
         .catch(e => {
-          console.log('Failed login', e)
+          console.error('Failed login', e)
         })
 
       this.$refs.loginModal.hide()
-      this.$cookies.set('X-Iznik-Persistent', this.$auth.getToken())
     },
     logout() {
       this.$store.dispatch('security/logout').then(() => {

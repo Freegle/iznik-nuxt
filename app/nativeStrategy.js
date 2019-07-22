@@ -15,16 +15,6 @@ export default class nativeStrategy {
     return this.$auth.fetchUserOnce()
   }
 
-  _setHeader (persistent) {
-    /// Set our persistent token as a header for all requests.  This will mean the server will pick it up.
-    console.log("Set header", persistent)
-    if (typeof persistent !== 'string') {
-      persistent = JSON.stringify(persistent);
-    }
-
-    this.$auth.ctx.app.$axios.setHeader('X-Iznik-Persistent', persistent)
-  }
-
   async login (params) {
     // Ditch any leftover local tokens before attempting to log in
     await this._logoutLocally()
@@ -40,14 +30,12 @@ export default class nativeStrategy {
     }
 
     let persistent = JSON.stringify(result.persistent)
-    this._setHeader(persistent)
-    this.$auth.setToken(this.name, persistent)
+    this.$auth.setToken(this.name, 'Iznik ' + persistent)
 
     return this.fetchUser()
   }
 
   async fetchUser (params) {
-    console.log("fetchUser")
     let url = process.env.API + '/session'
 
     // We're so vain, we probably think this API call is about us.
@@ -63,8 +51,6 @@ export default class nativeStrategy {
       }
     )
 
-    console.log("Fetched", user ? user.fullname : '-')
-
     // Save off the logged in user.
     this.$auth.setUser(user)
   }
@@ -75,7 +61,7 @@ export default class nativeStrategy {
         params,
         { url: process.env.API + '/session', method: 'DELETE' })
       .catch((e) => {
-        console.log("Logout failed", e)
+        console.error("Logout failed", e)
       })
 
     return this._logoutLocally()
