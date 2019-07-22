@@ -10,23 +10,24 @@ export default class nativeStrategy {
   }
 
   mounted () {
-    console.log("Mounted, sync token")
+    // TODO Do we need this extra user fetch?
     const persistent = this.$auth.syncToken(this.name)
-    console.log("Got token", persistent)
-    this._setHeader(persistent)
     return this.$auth.fetchUserOnce()
   }
 
   _setHeader (persistent) {
     /// Set our persistent token as a header for all requests.  This will mean the server will pick it up.
+    console.log("Set header", persistent)
+    if (typeof persistent !== 'string') {
+      persistent = JSON.stringify(persistent);
+    }
+
     this.$auth.ctx.app.$axios.setHeader('X-Iznik-Persistent', persistent)
   }
 
   async login (params) {
-    console.log("Login with", params);
     // Ditch any leftover local tokens before attempting to log in
     await this._logoutLocally()
-
 
     const result = await this.$auth.request(
       params,
@@ -34,8 +35,6 @@ export default class nativeStrategy {
     )
 
     // The result has a persistent token we can use on future requests.
-    console.log("Login result", result)
-
     if (result.ret !== 0) {
       throw new result
     }
@@ -47,42 +46,13 @@ export default class nativeStrategy {
     return this.fetchUser()
   }
 
-  serialize(obj, prefix) {
-    var str = [],
-      p;
-    for (p in obj) {
-      if (obj.hasOwnProperty(p)) {
-        var k = prefix ? prefix + "[" + p + "]" : p,
-          v = obj[p];
-        str.push((v !== null && typeof v === "object") ?
-          this.serialize(v, k) :
-          encodeURIComponent(k) + "=" + encodeURIComponent(v));
-      }
-    }
-    return str.join("&");
-  }
-
   async fetchUser (params) {
-    console.log("Fetch user");
+    console.log("fetchUser")
     let url = process.env.API + '/session'
-    let token = this.$auth.getToken(this.name)
-    console.log("Got token", token)
 
-    // if (token) {
-    //   // We have to encode up the token the right way for our server.
-    //   token = {
-    //     persistent: JSON.parse(token)
-    //   };
-    //
-    //   let encoded = this.serialize(token)
-    //   url += '?' + encoded
-    // }
-    //
-    // // We're so vain, we probably think this API call is about us.
-    // url += '&components%5B%5D=me'
+    // We're so vain, we probably think this API call is about us.
     url += '?components%5B%5D=me'
 
-    console.log("Await user");
     const user = await this.$auth.requestWith(
       this.name,
       params,
@@ -93,23 +63,25 @@ export default class nativeStrategy {
       }
     )
 
-    console.log("Got user", user)
+    console.log("Fetched", user ? user.fullname : '-')
+
     // Save off the logged in user.
     this.$auth.setUser(user)
   }
 
   async logout (params) {
-    await this.$auth
+    let ret = await this.$auth
       .requestWith(this.name,
         params,
         { url: process.env.API + '/session', method: 'DELETE' })
-      .catch(() => { })
+      .catch((e) => {
+        console.log("Logout failed", e)
+      })
 
     return this._logoutLocally()
   }
 
   async _logoutLocally () {
-    this._setHeader(false)
     return this.$auth.reset()
   }
 }

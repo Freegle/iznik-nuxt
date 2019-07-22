@@ -1,6 +1,6 @@
 export default ({ $axios, store }) => {
   $axios.onRequest(config => {
-    console.log('Making request to ' + config.url)
+    console.log('Making request to ' + JSON.stringify(config))
   })
 
   $axios.onResponse(response => {

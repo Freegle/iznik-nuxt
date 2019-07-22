@@ -3,9 +3,9 @@
     <p>
       Hello
       <span
-        v-if="$store.state.auth.user"
+        v-if="loggedInUser"
       >
-        {{ $store.state.auth.user.fullname }}
+        {{ loggedInUser.fullname }}
       </span>
     </p>
     <nuxt-link to="/explore/EdinburghFreegle">
@@ -18,14 +18,11 @@
 export default {
   components: {},
 
-  created() {
-    console.log('index created', this.$auth.user)
-  },
-  mounted() {
-    console.log('index mounted', this.$store.state.auth.user)
-  },
-  updated() {
-    console.log('index updated', this.$store.state.auth.user)
+  computed: {
+    loggedInUser() {
+      // This needs to be in data to make it reactive.
+      return this.$store.state.auth.user
+    }
   }
 }
 </script>

@@ -22,6 +22,7 @@
     "@nuxtjs/pwa": "^2.6.0",
     "bootstrap": "^4.1.3",
     "bootstrap-vue": "^2.0.0-rc.26",
+    "cookie-universal-nuxt": "^2.0.16",
     "cookieparser": "^0.1.0",
     "cross-env": "^5.2.0",
     "googlemaps-rich-marker-web": "^1.0.3",

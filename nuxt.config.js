@@ -40,7 +40,7 @@ module.exports = {
     // Our parameters serialize differently from axios defaults
     { src: '~plugins/axios-serializer.js' },
 
-    // { src: '~plugins/axios-log.js' },
+    { src: '~plugins/axios-log.js' },
 
     { src: '~/plugins/vuejs-thermometer' },
     { src: '~/plugins/qs' },
@@ -62,6 +62,7 @@ module.exports = {
     '@nuxtjs/axios',
     '@nuxtjs/auth',
     '@nuxtjs/pwa',
+    'cookie-universal-nuxt',
     [
       'nuxt-i18n',
       {
@@ -140,6 +141,7 @@ module.exports = {
 
   auth: {
     strategies: {
+      local: false,
       native: {
         _scheme: '~/app/nativeStrategy.js'
       }

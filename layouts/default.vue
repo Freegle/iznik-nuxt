@@ -2,7 +2,14 @@
   <div>
     <b-navbar toggleable="lg" type="dark" class="ourBack">
       <b-navbar-brand to="/" class="p-0">
-        <b-img class="logo" fluid rounded :src="require(`@/static/icon.png`)" alt="Home" />
+        <b-img
+          class="logo"
+          height="58"
+          width="58"
+          rounded
+          :src="require(`@/static/icon.png`)"
+          alt="Home"
+        />
       </b-navbar-brand>
       <!--<b-navbar-toggle v-if="loggedIn" target="nav_collapse" />-->
 
@@ -133,8 +140,10 @@ export default {
   },
 
   serverPrefetch() {
-    console.log('Server prefetch', this.$auth.user)
-    return this.$auth.fetchUserOnce()
+    // We need to prefetch the session on the server side so that we are logged in, otherwise we'll render the
+    // page logged out in what we return to the client, which will cause flicker.
+    console.log('Server prefetch')
+    return this.$auth.fetchUser()
   },
 
   computed: {
@@ -151,24 +160,27 @@ export default {
   methods: {
     signOut() {
       this.$auth.logout()
+
+      // Remove all cookies, both client and server.  This seems to be necessary to kill off the PHPSESSID cookie
+      // on the server, which would otherwise keep us logged in despite our efforts.
+      this.$cookies.removeAll()
     },
 
-    signInNative() {
+    async signInNative() {
       console.log('Sign in', this.email)
-      this.$auth
+      await this.$auth
         .loginWith('native', {
           data: {
             email: this.email,
             password: this.password
           }
         })
-        .then(() => {
-          console.log('Logged in', this.$auth)
-          this.$refs.loginModal.hide()
-        })
         .catch(e => {
           console.log('Failed login', e)
         })
+
+      this.$refs.loginModal.hide()
+      this.$cookies.set('X-Iznik-Persistent', this.$auth.getToken())
     },
     logout() {
       this.$store.dispatch('security/logout').then(() => {
