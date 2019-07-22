@@ -131,7 +131,8 @@ module.exports = {
 
   env: {
     API: API,
-    GOOGLE_MAPS_KEY: 'AIzaSyCdTSJKGWJUOx2pq1Y0f5in5g4kKAO5dgg'
+    GOOGLE_MAPS_KEY: 'AIzaSyCdTSJKGWJUOx2pq1Y0f5in5g4kKAO5dgg',
+    MODTOOLS: false
   },
 
   // We have some configuration to ensure that we handle both SSR and being logged in.

@@ -10,9 +10,19 @@ export default class nativeStrategy {
   }
 
   mounted () {
-    // TODO Do we need this extra user fetch?
     const persistent = this.$auth.syncToken(this.name)
+    console.log("Native mount", persistent);
     return this.$auth.fetchUserOnce()
+  }
+
+  _setHeader (persistent) {
+    /// Set our persistent token as a header for all requests.  This will mean the server will pick it up.
+    console.log("Set header", persistent)
+    if (typeof persistent !== 'string') {
+      persistent = JSON.stringify(persistent);
+    }
+
+    this.$auth.ctx.app.$axios.defaults.headers.common['Authorization'] = 'Iznik ' + persistent;
   }
 
   async login (params) {
@@ -30,6 +40,7 @@ export default class nativeStrategy {
     }
 
     let persistent = JSON.stringify(result.persistent)
+    this._setHeader(persistent)
     this.$auth.setToken(this.name, 'Iznik ' + persistent)
 
     return this.fetchUser()
@@ -38,21 +49,37 @@ export default class nativeStrategy {
   async fetchUser (params) {
     let url = process.env.API + '/session'
 
-    // We're so vain, we probably think this API call is about us.
-    url += '?components%5B%5D=me'
+    // We're so vain, we probably think this API call is about us.  Grab the groups at the same time.
+    url += '?components%5B%5D=me&components%5B%5D=groups'
 
-    const user = await this.$auth.requestWith(
+    const ret = await this.$auth.requestWith(
       this.name,
       params,
       {
         url: url,
         method: 'GET',
-        propertyName: 'me',
+        propertyName: null,
       }
     )
 
     // Save off the logged in user.
-    this.$auth.setUser(user)
+    this.$auth.setUser(ret.user)
+
+    // Save off the returned groups
+    let groups = []
+    for (let group of ret.groups) {
+      if (process.env.MODTOOLS || (group.publish && group.type === 'Freegle')) {
+        console.log("Want group", group.nameshort, process.env.MODTOOLS)
+        groups.push(group)
+      }
+    }
+
+    this.$auth.ctx.store.commit('group/setList', groups)
+
+    // If we have a persistent token, set it as a default header for all subsequent requests.
+    if (ret.persistent) {
+      this.$auth.ctx.app.$axios.defaults.headers.common['Authorization'] = 'Iznik ' + JSON.stringify(ret.persistent);
+    }
   }
 
   async logout (params) {

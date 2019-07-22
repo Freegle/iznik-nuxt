@@ -7,9 +7,24 @@ export const state = () => ({
 export const mutations = {
   add(state, item) {
     state.list[item.id] = item
+    let count = 0
+    for (const group in state.list) {
+      count += group.id ? 1 : 1
+    }
+    console.log('Added', count)
   },
+
   remove(state, item) {
     state.list[item.id] = null
+  },
+
+  setList(state, groups) {
+    console.log('addList')
+    state.list = {}
+    for (const group of groups) {
+      console.log('addList', group.nameshort)
+      state.list[group.id] = group
+    }
   }
 }
 
@@ -34,6 +49,10 @@ export const getters = {
 
       return ret
     }
+  },
+
+  list: state => () => {
+    return state.list
   }
 }
 
@@ -47,6 +66,22 @@ export const actions = {
 
     if (res.status === 200) {
       commit('add', res.data.group)
+    }
+  },
+
+  async mine({ commit }, params) {
+    const res = await this.$axios.get(process.env.API + '/session', {
+      params: {
+        components: ['groups']
+      }
+    })
+
+    if (res.status === 200 && res.data.ret === 0 && res.data.groups) {
+      for (const group of res.data.groups) {
+        if (process.env.MODTOOLS || group.type === 'Freegle') {
+          commit('add', group)
+        }
+      }
     }
   }
 }
