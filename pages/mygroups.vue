@@ -103,7 +103,7 @@ export default {
       }
 
       this.$store
-        .dispatch('messages/fetch', {
+        .dispatch('messages/fetchMessages', {
           groupid: this.group ? this.group.id : null,
           collection: 'Approved',
           summary: true,

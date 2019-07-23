@@ -64,7 +64,7 @@ export default {
 
     // Now get the approved messages for this group.  We're only interested in showing OFFERs and WANTEDs, and
     // ask for summary info for speed.
-    await store.dispatch('messages/fetch', {
+    await store.dispatch('messages/fetchMessages', {
       groupid: group.id,
       collection: 'Approved',
       summary: true,
@@ -89,7 +89,7 @@ export default {
       this.busy = true
 
       this.$store
-        .dispatch('messages/fetch', {
+        .dispatch('messages/fetchMessages', {
           groupid: this.group ? this.group.id : null,
           collection: 'Approved',
           summary: true,

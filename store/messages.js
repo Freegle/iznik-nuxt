@@ -38,7 +38,17 @@ export const mutations = {
 
 export const getters = {
   get: state => id => {
-    return state.list.includes(id) ? state.list[id] : null
+    let ret = null
+
+    Object.keys(state.list).forEach(key => {
+      console.log('Compare', key, id)
+      if (parseInt(key) === parseInt(id)) {
+        ret = state.list[id]
+      }
+    })
+
+    console.log('Get message', id, state.list, ret)
+    return ret
   },
   getContext: state => () => {
     return state.context
@@ -61,7 +71,7 @@ export const getters = {
 }
 
 export const actions = {
-  async fetch({ commit }, params) {
+  async fetchMessages({ commit }, params) {
     if (params.context) {
       // Ensure the context is a real object, in case it has been in the store.
       const ctx = JSON.parse(JSON.stringify(params.context))
@@ -76,5 +86,13 @@ export const actions = {
       commit('addAll', res.data.messages)
       commit('setContext', res.data.context)
     }
+  },
+
+  async fetch({ commit }, params) {
+    const res = await this.$axios.get(process.env.API + '/message', {
+      params: params
+    })
+
+    commit('add', res.data.message)
   }
 }
