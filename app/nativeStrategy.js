@@ -65,13 +65,16 @@ export default class nativeStrategy {
 
     // Save off the returned groups
     let groups = []
-    for (let group of ret.groups) {
-      if (process.env.MODTOOLS || (group.publish && group.type === 'Freegle')) {
-        groups.push(group)
-      }
-    }
 
-    this.$auth.ctx.store.commit('group/setList', groups)
+    if (ret.groups) {
+      for (let group of ret.groups) {
+        if (process.env.MODTOOLS || (group.publish && group.type === 'Freegle')) {
+          groups.push(group)
+        }
+      }
+
+      this.$auth.ctx.store.commit('group/setList', groups)
+    }
 
     // If we have a persistent token, set it as a default header for all subsequent requests.
     if (ret.persistent) {

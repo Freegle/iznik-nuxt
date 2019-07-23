@@ -12,19 +12,28 @@
         />
       </b-navbar-brand>
       <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
-
       <b-collapse v-if="loggedIn" id="nav_collapse" is-nav>
-        <b-navbar-nav />
-
-        <b-navbar-nav class="ml-auto" />
+        <b-navbar-nav>
+          <b-nav-item class="text-center p-0">
+            <fa icon="coffee" size="2x" /><br>
+            ChitChat
+          </b-nav-item>
+          <b-nav-item class="text-center p-0">
+            <fa icon="users" size="2x" /><br>
+            My&nbsp;Groups
+          </b-nav-item>
+        </b-navbar-nav>
+        <b-navbar-nav class="ml-auto">
+          <b-nav-item class="text-center p-0" @click="signOut()">
+            <fa icon="sign-out-alt" size="2x" /><br>
+            Logout
+          </b-nav-item>
+        </b-navbar-nav>
       </b-collapse>
       <ul class="navbar-nav mr-auto" />
       <ul class="nav navbar-nav navbar-right">
         <li>
-          <b-button v-if="$store.state.auth.user" class="btn-white" @click="signOut">
-            Sign out
-          </b-button>
-          <b-button v-else v-b-modal.signInModal class="btn-white">
+          <b-button v-if="!loggedIn" v-b-modal.signInModal class="btn-white">
             Sign in
           </b-button>
         </li>
@@ -147,12 +156,7 @@ export default {
 
   computed: {
     loggedIn() {
-      // We only show the menu if we are logged in, or if we're not yet sure.  The latter prevents flicker when
-      // switching pages and logged in.
-      return (
-        this.$store.state.security.isLoading ||
-        this.$store.state.security.isAuthenticated
-      )
+      return this.$store.state.auth.user
     }
   },
 
