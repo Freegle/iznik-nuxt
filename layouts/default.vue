@@ -18,7 +18,7 @@
             <fa icon="coffee" size="2x" /><br>
             ChitChat
           </b-nav-item>
-          <b-nav-item class="text-center p-0">
+          <b-nav-item class="text-center p-0" to="/mygroups">
             <fa icon="users" size="2x" /><br>
             My&nbsp;Groups
           </b-nav-item>

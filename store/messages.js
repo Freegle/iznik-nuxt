@@ -52,6 +52,9 @@ export const getters = {
     })
 
     return ret
+  },
+  getAll: state => () => {
+    return state.list
   }
 }
 

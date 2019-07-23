@@ -7,11 +7,6 @@ export const state = () => ({
 export const mutations = {
   add(state, item) {
     state.list[item.id] = item
-    let count = 0
-    for (const group in state.list) {
-      count += group.id ? 1 : 1
-    }
-    console.log('Added', count)
   },
 
   remove(state, item) {
@@ -23,18 +18,28 @@ export const mutations = {
     for (const group of groups) {
       state.list[group.id] = group
     }
+  },
+
+  remember(state, payload) {
+    state['remember-' + payload.id] = payload.val
   }
 }
 
 export const getters = {
   get: state => idOrName => {
+    let ret = null
+
     if (!isNaN(idOrName)) {
       // Numeric - find by id
-      return state.list.includes(idOrName) ? state.list[idOrName] : null
+      Object.keys(state.list).forEach(key => {
+        const group = state.list[key]
+        if (key === idOrName) {
+          ret = group
+        }
+      })
     } else {
       // Not - scan for match
       const lower = idOrName.toLowerCase()
-      let ret = null
 
       Object.keys(state.list).forEach(key => {
         const group = state.list[key]
@@ -44,13 +49,17 @@ export const getters = {
           }
         }
       })
-
-      return ret
     }
+
+    return ret
   },
 
   list: state => () => {
     return state.list
+  },
+
+  remembered: state => id => {
+    return state['remember-' + id]
   }
 }
 

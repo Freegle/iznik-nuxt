@@ -32,7 +32,7 @@
   </div>
 </template>
 <script>
-import groupHeader from '~/components/groupheader.vue'
+import groupHeader from '~/components/groupHeader.vue'
 import message from '~/components/message.vue'
 
 export default {
