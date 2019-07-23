@@ -22,13 +22,12 @@
       </b-card-body>
     </b-card>
 
-    <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="200">
-      <b-list-group>
-        <b-list-group-item v-for="message in messages" :key="message.id" class="p-0">
-          <message v-bind="message" />
-        </b-list-group-item>
-      </b-list-group>
+
+    <div v-for="(message, $index) in messages" :key="$index" class="p-0">
+      <message v-bind="message" />
     </div>
+
+    <infinite-loading @infinite="loadMore" />
   </div>
 </template>
 <script>
@@ -49,7 +48,12 @@ export default {
       context: null
     }
   },
-  computed: {},
+  computed: {
+    messageCount: function() {
+      const count = this.messages ? this.messages.length : 0
+      return count
+    }
+  },
   async asyncData({ app, params, store }) {
     // We have the group id or name in params.id.  Fetch the group.
     await store.dispatch('group/fetch', {
@@ -81,13 +85,12 @@ export default {
     this.id = this.$route.params.id
   },
   methods: {
-    loadMore: function() {
-      console.log('loadMore', this.context)
+    loadMore: function($state) {
       this.busy = true
 
       this.$store
         .dispatch('messages/fetch', {
-          groupid: this.group.id,
+          groupid: this.group ? this.group.id : null,
           collection: 'Approved',
           summary: true,
           types: ['Offer', 'Wanted'],
@@ -95,10 +98,20 @@ export default {
         })
         .then(() => {
           this.busy = false
-          this.messages = this.$store.getters['messages/getByGroup'](
-            this.group.id
-          )
+
+          if (this.group) {
+            this.messages = this.$store.getters['messages/getByGroup'](
+              this.group.id
+            )
+          } else {
+            this.messages = this.$store.getters['messages/getAll']()
+          }
+
           this.context = this.$store.getters['messages/getContext']()
+          $state.loaded()
+        })
+        .catch(() => {
+          $state.complete()
         })
     }
   }

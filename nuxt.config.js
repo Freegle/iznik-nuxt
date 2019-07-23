@@ -49,7 +49,6 @@ module.exports = {
     { src: '~/plugins/vuex-persistedstate', ssr: false },
     { src: '~plugins/vue-drag-drop.js', ssr: false },
     { src: '~/plugins/vue-color', ssr: false },
-    { src: '~plugins/vue-infinite-scroll.js', ssr: false },
     { src: '~plugins/vue-infinite-loading.js', ssr: false },
     { src: '~plugins/vue2-google-maps.js', ssr: false }
   ],

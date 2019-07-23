@@ -3,13 +3,13 @@
     <b-alert show variant="info" class="mt-2">
       <groupSelect id="mygroups" @change="groupChange" />
     </b-alert>
-    <groupHeader v-if="group" :key="'group-' + (group ? group.id : null)" v-bind="group" />
+    <groupHeader v-if="group" :key="groupid" v-bind="group" />
 
-    <div v-for="(message, $index) in messages" :key="'group-' + (group ? group.id : null) + '-message-' + $index" class="p-0">
+    <div v-for="(message, $index) in messages" :key="$index" class="p-0">
       <message v-bind="message" />
     </div>
 
-    <infinite-loading :key="'messagescroll-' + (group ? group.id : null) + '-' + messages.length" @infinite="loadMore" />
+    <infinite-loading :key="groupid" @infinite="loadMore" />
   </div>
 </template>
 <script>
@@ -45,19 +45,19 @@ export default {
     messageCount: function() {
       const count = this.messages ? this.messages.length : 0
       return count
+    },
+
+    groupid: function() {
+      return this.group ? this.group.id : null
     }
   },
-  async asyncData({ app, params, store }) {},
-  created() {},
   methods: {
     groupChange: function() {
-      console.log('Group change')
       this.messages = []
     },
 
     loadMore: function($state) {
       this.busy = true
-      console.log('loadMore', this.group, this.context)
 
       this.$store
         .dispatch('messages/fetch', {
@@ -79,8 +79,6 @@ export default {
           }
 
           this.context = this.$store.getters['messages/getContext']()
-
-          console.log('loaded some', this.messages.length)
           $state.loaded()
         })
         .catch(() => {
