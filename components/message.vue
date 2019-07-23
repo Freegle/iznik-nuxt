@@ -3,7 +3,7 @@
     <b-card class="p-0 mb-1" variant="success">
       <b-card-header class="pl-2 pr-2 clearfix">
         <b-card-title class="msgsubj mb-0">
-          <span v-if="attachments.length > 0" class="float-right">
+          <span v-if="attachments.length > 0" class="float-right clickme" @click="showPhotos">
             <b-img-lazy
               rounded
               thumbnail
@@ -55,8 +55,15 @@
         <b-row>
           <b-col cols="9">
             <b-form-textarea
+              v-if="expanded.type == 'Offer'"
               v-model="reply"
               placeholder="Interested?  Please explain why you'd like it and when you can collect.  Always be polite and helpful."
+              rows="3"
+            />
+            <b-form-textarea
+              v-if="expanded.type == 'Wanted'"
+              v-model="reply"
+              placeholder="Can you help?  If you have what they're looking for, let them know."
               rows="3"
             />
           </b-col>
@@ -75,6 +82,18 @@
         </b-row>
       </b-card-footer>
     </b-card>
+    <b-modal :id="'photoModal-' + id" ref="photoModal" :title="subject" size="lg" no-stacking>
+      <template slot="default">
+        <b-img
+          v-if="expanded"
+          fluid
+          rounded
+          center
+          :src="expanded.attachments[0].path"
+          class="messagePhoto"
+        />
+      </template>
+    </b-modal>
   </div>
 </template>
 <script>
@@ -138,6 +157,12 @@ export default {
       console.log('Fetched', message)
 
       this.expanded = message
+    },
+
+    async showPhotos() {
+      console.log('Show photos')
+      await this.expand()
+      this.$bvModal.show('photoModal-' + this.id)
     }
   }
 }
@@ -159,5 +184,9 @@ img.attachment {
 img.profile {
   max-height: 25px !important;
   max-width: 25px !important;
+}
+
+.messagePhoto {
+  max-height: 600px !important;
 }
 </style>
