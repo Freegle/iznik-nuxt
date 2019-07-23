@@ -48,7 +48,7 @@ export default {
       if (this.all) {
         groups.push({
           value: 0,
-          text: '-- All communities --',
+          text: '-- All groups --',
           selected: this.selectedGroup === 0
         })
       } else {

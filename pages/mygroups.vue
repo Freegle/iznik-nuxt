@@ -3,7 +3,7 @@
     <b-alert show variant="info" class="mt-2">
       <b-row>
         <b-col>
-          <groupSelect id="mygroups" class="float-left" @change="groupChange" />
+          <groupSelect id="mygroups" class="float-left" all @change="groupChange" />
         </b-col>
         <b-col>
           <b-form-select v-model="selectedType" class="float-right" value="All" :options="typeOptions" @change="typeChange" />
@@ -78,6 +78,7 @@ export default {
   methods: {
     groupChange: function() {
       this.messages = []
+      this.context = null
     },
 
     typeChange: function() {
