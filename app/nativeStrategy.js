@@ -16,7 +16,6 @@ export default class nativeStrategy {
 
   _setHeader (persistent) {
     /// Set our persistent token as a header for all requests.  This will mean the server will pick it up.
-    console.log("Set header", persistent)
     if (typeof persistent !== 'string') {
       persistent = JSON.stringify(persistent);
     }
@@ -62,7 +61,7 @@ export default class nativeStrategy {
     )
 
     // Save off the logged in user.
-    this.$auth.setUser(ret.user)
+    this.$auth.setUser(ret.me)
 
     // Save off the returned groups
     let groups = []
