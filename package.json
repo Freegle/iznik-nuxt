@@ -42,6 +42,7 @@
     "vue": "^2.6.10",
     "vue-color": "^2.7.0",
     "vue-drag-drop": "^1.1.4",
+    "vue-infinite-loading": "^2.4.4",
     "vue-infinite-scroll": "^2.0.2",
     "vue2-google-maps": "^0.10.7",
     "vuejs-thermometer": "0.0.4",

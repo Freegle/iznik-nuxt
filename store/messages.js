@@ -1,3 +1,5 @@
+import Vue from 'vue'
+
 export const state = () => ({
   // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
   // storage.
@@ -19,7 +21,7 @@ export const mutations = {
   },
   addAll(state, items) {
     items.forEach(item => {
-      state.list[item.id] = item
+      Vue.set(state.list, item.id, item)
 
       if (state.ids.indexOf(item.id) === -1) {
         state.ids.push(item.id)

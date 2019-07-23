@@ -37,6 +37,8 @@ export default {
           id: this.id,
           val: newval
         })
+
+        this.$emit('change', newval)
       }
     },
 
