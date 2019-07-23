@@ -45,7 +45,7 @@
             title="Profile"
             :src="expanded.fromuser.profile.turl"
           />
-          Posted by {{ fromuser.displayname }}
+          Posted by {{ expanded.fromuser.displayname }}
         </span>
         <span v-if="expanded.replycount" class="float-right small text-muted">
           <fa icon="user" class="d-inline" />&nbsp;<span class="d-inline">{{ expanded.replycount }}&nbsp;freegler<span v-if="expanded.replycount != 1">s</span>&nbsp;replied&nbsp;</span>
@@ -59,12 +59,14 @@
               v-model="reply"
               placeholder="Interested?  Please explain why you'd like it and when you can collect.  Always be polite and helpful."
               rows="3"
+              max-rows="8"
             />
             <b-form-textarea
               v-if="expanded.type == 'Wanted'"
               v-model="reply"
               placeholder="Can you help?  If you have what they're looking for, let them know."
               rows="3"
+              max-rows="8"
             />
           </b-col>
           <b-col cols="3">
