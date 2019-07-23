@@ -33,7 +33,7 @@ export const getters = {
       // Numeric - find by id
       Object.keys(state.list).forEach(key => {
         const group = state.list[key]
-        if (key === idOrName) {
+        if (parseInt(key) === idOrName) {
           ret = group
         }
       })

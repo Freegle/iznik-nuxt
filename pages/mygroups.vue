@@ -37,8 +37,11 @@ export default {
     group: function() {
       // We remember any previously selected group.
       const remembered = this.$store.getters['group/remembered']('mygroups')
+      const ret = remembered
+        ? this.$store.getters['group/get'](remembered)
+        : null
 
-      return remembered ? this.$store.getters['group/get'](remembered) : null
+      return ret
     }
   },
   async asyncData({ app, params, store }) {},
@@ -46,7 +49,7 @@ export default {
   methods: {
     loadMore: function() {
       this.busy = true
-      console.log('loadMore', this.group)
+      console.log('loadMore', this.group, this.context)
 
       this.$store
         .dispatch('messages/fetch', {
