@@ -34,9 +34,6 @@ module.exports = {
     // Our directives
     '~/plugins/directives',
 
-    // Bootstrap for styling.
-    '~/plugins/bootstrap',
-
     // Our parameters serialize differently from axios defaults
     { src: '~plugins/axios-serializer.js' },
 
@@ -57,6 +54,7 @@ module.exports = {
   ** Nuxt.js modules
   */
   modules: [
+    'bootstrap-vue/nuxt',
     '@nuxtjs/moment',
     'nuxt-rfg-icon',
     '@nuxtjs/axios',

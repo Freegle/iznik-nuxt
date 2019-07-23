@@ -1,15 +1,22 @@
 <template>
   <div>
     <b-alert show variant="info" class="mt-2">
-      <groupSelect id="mygroups" @change="groupChange" />
+      <b-row>
+        <b-col>
+          <groupSelect id="mygroups" class="float-left" @change="groupChange" />
+        </b-col>
+        <b-col>
+          <b-form-select v-model="selectedType" class="float-right" value="All" :options="typeOptions" @change="typeChange" />
+        </b-col>
+      </b-row>
     </b-alert>
-    <groupHeader v-if="group" :key="groupid" v-bind="group" />
+    <groupHeader v-if="group" :key="'groupheader-' + groupid" v-bind="group" />
 
-    <div v-for="(message, $index) in messages" :key="$index" class="p-0">
-      <message v-bind="message" />
+    <div v-for="(message, $index) in messages" :key="'messagelist-' + $index" class="p-0">
+      <message v-if="selectedType === 'All' || message.type == selectedType" v-bind="message" />
     </div>
 
-    <infinite-loading :key="groupid" @infinite="loadMore" />
+    <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" @infinite="loadMore" />
   </div>
 </template>
 <script>
@@ -28,7 +35,24 @@ export default {
       id: null,
       messages: [],
       busy: false,
-      context: null
+      context: null,
+      typeOptions: [
+        {
+          value: 'All',
+          text: 'All posts',
+          selected: true
+        },
+        {
+          value: 'Offer',
+          text: 'Just OFFERs'
+        },
+        {
+          value: 'Wanted',
+          text: 'Just WANTEDs'
+        }
+      ],
+      selectedType: 'All',
+      infiniteId: +new Date()
     }
   },
   computed: {
@@ -56,15 +80,33 @@ export default {
       this.messages = []
     },
 
+    typeChange: function() {
+      this.infiniteId++
+    },
+
     loadMore: function($state) {
       this.busy = true
+
+      let types = []
+
+      switch (this.selectedType) {
+        case 'All':
+          types = ['Offer', 'Wanted']
+          break
+        case 'Offer':
+          types = ['Offer']
+          break
+        case 'Wanted':
+          types = ['Wanted']
+          break
+      }
 
       this.$store
         .dispatch('messages/fetch', {
           groupid: this.group ? this.group.id : null,
           collection: 'Approved',
           summary: true,
-          types: ['Offer', 'Wanted'],
+          types: types,
           context: this.context
         })
         .then(() => {

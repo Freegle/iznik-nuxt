@@ -5,7 +5,7 @@
 </template>
 <style>
 select {
-  max-width: 250px !important;
+  max-width: 400px !important;
 }
 </style>
 <script>

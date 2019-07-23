@@ -14,7 +14,7 @@
         </span>
         {{ safeSubject }}
       </b-card-title>
-      <span v-for="group in groups" :key="id + '-' + group.id" class="small muted">
+      <span v-for="group in groups" :key="'message-' + id + '-' + group.id" class="small muted">
         {{ group.arrival | timeago }} on {{ group.namedisplay }}
       </span>
       <div v-if="safeSnippet && safeSnippet !== 'null'">
