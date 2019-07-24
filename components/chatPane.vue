@@ -55,25 +55,27 @@
         </b-col>
       </b-row>
       <b-row class="chatContent">
-        <b-col v-if="chat">
-          <ul v-for="(chatmessage, $index) in chat.chatmessages" :key="'chatmessage-' + $index" class="p-0 pt-1 list-unstyled mb-1">
-            <li>
+        <b-col v-if="chat" :key="'chatmessagelist' + lastFetched">
+          <ul v-for="(chatmessage, $index) in chatmessages" :key="'chatmessage-' + $index" class="p-0 pt-1 list-unstyled mb-1" infinite-wrapper>
+            <li v-if="chatmessage">
               <b-row>
                 <b-col>
                   <div v-if="chatmessage.userid != $store.state.auth.user.id">
-                    <b-img-lazy
-                      rounded="circle"
-                      thumbnail
-                      class="profile p-0 ml-1 mb-1 inline"
-                      alt="Profile picture"
-                      title="Profile"
-                      :src="chat.chatusers[chatmessage.userid].profile.turl"
-                    />
-                    <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > lastmsgseen)">
-                      <b>{{ chatmessage.message }}</b>
-                    </span>
-                    <span v-else>
-                      {{ chatmessage.message }}
+                    <span class="chatMessage">
+                      <b-img-lazy
+                        rounded="circle"
+                        thumbnail
+                        class="profile p-0 ml-1 mb-1 inline"
+                        alt="Profile picture"
+                        title="Profile"
+                        :src="otheruser.profile.turl"
+                      />
+                      <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > lastmsgseen)">
+                        <b>{{ chatmessage.message }}</b>
+                      </span>
+                      <span v-else>
+                        {{ chatmessage.message }}
+                      </span>
                     </span>
                   </div>
                   <div v-else class="float-right">
@@ -92,7 +94,7 @@
                       class="profile p-0 ml-1 mb-1 inline"
                       alt="Profile picture"
                       title="Profile"
-                      :src="chat.chatusers[chatmessage.userid].profile.turl"
+                      :src="me.profile.turl"
                     />
                   </div>
                 </b-col>
@@ -109,6 +111,10 @@
               </b-row>
             </li>
           </ul>
+
+          <infinite-loading direction="top" force-use-infinite-wrapper="true" @infinite="loadMore">
+            <span slot="no-results" />
+          </infinite-loading>
         </b-col>
       </b-row>
       <div class="chatFooter">
@@ -206,10 +212,26 @@ export default {
   },
   data: function() {
     return {
-      chat: null
+      chat: null,
+      chatmessages: [],
+      chatusers: [],
+      lastFetched: new Date(),
+      complete: false
     }
   },
   computed: {
+    me() {
+      // The user who is us
+      if (this.chat) {
+        return this.chat.user1 &&
+          this.chat.user1.id === this.$store.state.auth.user.id
+          ? this.chat.user1
+          : this.chat.user2
+      } else {
+        return null
+      }
+    },
+
     otheruser() {
       // The user who isn't us.
       if (this.chat) {
@@ -235,6 +257,51 @@ export default {
   methods: {
     showInfo() {
       console.log('Show info')
+    },
+    loadMore: function($state) {
+      const currentCount = this.chatmessages.length
+
+      if (this.complete) {
+        // This is a bit weird - calling complete() works here to stop the plugin firing, but not lower down in the
+        // callback.  And we get the error message about no results, so I've overridden it above to be empty.
+        // TODO Figure out what's going on here.  This kinda works but it's hacky.
+        $state.complete()
+      } else {
+        this.busy = true
+        this.$store
+          .dispatch('chatmessages/fetch', {
+            chatid: this.id
+          })
+          .then(() => {
+            try {
+              this.chatmessages = Object.values(
+                this.$store.getters['chatmessages/getMessages'](this.id)
+              )
+              this.chatusers = Object.values(
+                this.$store.getters['chatmessages/getUsers'](this.id)
+              )
+              this.lastFetched = new Date()
+              console.log('Fetched messages', this.chatmessages, this.chatusers)
+
+              if (currentCount === this.chatmessages.length) {
+                console.log('No more, complete')
+                this.complete = true
+                $state.complete()
+              } else {
+                console.log('More to come')
+                $state.loaded()
+              }
+              this.busy = false
+            } catch (e) {
+              console.error(e)
+            }
+          })
+          .catch(e => {
+            console.error(e)
+            this.busy = false
+            $state.complete()
+          })
+      }
     }
   }
 }

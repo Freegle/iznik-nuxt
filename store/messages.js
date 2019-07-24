@@ -47,7 +47,6 @@ export const getters = {
       }
     })
 
-    console.log('Get message', id, state.list, ret)
     return ret
   },
   getContext: state => () => {

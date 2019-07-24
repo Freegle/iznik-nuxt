@@ -51,7 +51,6 @@ export const actions = {
   },
   async fetch({ commit }, params) {
     const chatid = params.id
-    console.log('Fetch chat', chatid)
     const chat = await this.$axios.get(process.env.API + '/chatrooms', {
       params: {
         id: chatid
@@ -59,17 +58,8 @@ export const actions = {
     })
 
     if (chat.status === 200 && chat.data.ret === 0) {
-      const messages = await this.$axios.get(
-        process.env.API + '/chat/rooms/' + chatid + '/messages'
-      )
-
-      if (messages.status === 200 && messages.data.ret === 0) {
-        const chatobj = chat.data.chatroom
-        chatobj.chatmessages = messages.data.chatmessages
-        chatobj.chatusers = messages.data.chatusers
-
-        commit('addRoom', chatobj)
-      }
+      const chatobj = chat.data.chatroom
+      commit('addRoom', chatobj)
     }
   }
 }

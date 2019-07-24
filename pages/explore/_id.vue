@@ -22,7 +22,6 @@
       </b-card-body>
     </b-card>
 
-
     <div v-for="(message, $index) in messages" :key="$index" class="p-0">
       <message v-bind="message" />
     </div>
