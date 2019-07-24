@@ -10,11 +10,11 @@
         </b-btn>
       </span>
       <span v-else>
-        <b-btn variant="success" disabled>
-          <fa icon="thumbs-up" />&nbsp;?
+        <b-btn variant="white">
+          <fa icon="thumbs-up" />&nbsp;0
         </b-btn>
-        <b-btn variant="warning" disabled>
-          <fa icon="thumbs-down" />&nbsp;?
+        <b-btn variant="white">
+          <fa icon="thumbs-down" />&nbsp;0
         </b-btn>
       </span>
     </span>
@@ -25,7 +25,8 @@ export default {
   props: {
     id: {
       type: Number,
-      required: true
+      required: false,
+      default: null
     }
   },
   data: function() {

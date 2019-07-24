@@ -94,7 +94,6 @@
                       title="Profile"
                       :src="chat.chatusers[chatmessage.userid].profile.turl"
                     />
-                    </span>
                   </div>
                 </b-col>
               </b-row>
@@ -125,6 +124,7 @@
         <b-row>
           <b-col class="p-0 pt-1 pb-1">
             <ratings v-if="otheruser" :key="'otheruser-' + (otheruser ? otheruser.id : null)" v-bind="otheruser" />
+            <ratings v-else />
             <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person">
               <fa icon="handshake" />&nbsp;Promise
             </b-btn>
@@ -183,6 +183,7 @@
 .chatFooter {
   order: 4;
   justify-content: flex-end;
+  background-color: white;
 }
 </style>
 <script>
