@@ -24,6 +24,10 @@
           </b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto">
+          <b-nav-item class="text-center p-0" to="/chats">
+            <fa icon="comments" size="2x" /><br>
+            Chats
+          </b-nav-item>
           <b-nav-item class="text-center p-0" @click="signOut()">
             <fa icon="sign-out-alt" size="2x" /><br>
             Logout
@@ -39,7 +43,7 @@
         </li>
       </ul>
     </b-navbar>
-    <nuxt class="ml-0" />
+    <nuxt class="ml-0 pl-1" />
     <b-modal id="signInModal" ref="loginModal" title="Sign In">
       <template slot="default">
         <b-form-input ref="email" v-model="email" placeholder="Your email address" alt="Email address" />

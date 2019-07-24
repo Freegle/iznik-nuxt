@@ -9,7 +9,7 @@ export default ({ store }) => {
       key: 'iznik',
 
       // List the store paths that we want to persist.
-      paths: ['localization.locale', 'security', 'group']
+      paths: ['localization.locale', 'security', 'group', 'chats']
       //
       // reducer: function(state, paths) {
       //   // Don't store the messages - they're too big, and too transient.
