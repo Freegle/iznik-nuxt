@@ -164,6 +164,7 @@
   order: 3;
   justify-content: flex-start;
   flex-grow: 1;
+  overflow-y: scroll;
 }
 
 .chatFooter {
