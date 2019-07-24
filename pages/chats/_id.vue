@@ -50,6 +50,9 @@
                   <span class="pl-0 mb-0 chatname">
                     {{ chat.name }}
                   </span>
+                  <span v-if="chat.unseen">
+                    <b-badge variant="danger">{{ chat.unseen }}</b-badge>
+                  </span>
                   <span class="float-right small text-muted">
                     {{ $moment(chat.lastdate).fromNow() }}
                   </span>

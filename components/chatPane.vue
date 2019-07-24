@@ -18,6 +18,9 @@
                   <!--<span class="visible-xs-inline hidden-sm visible-md-inline hidden-lg js-ratings" />-->
                   <!--<span class="js-count badge badge-unread" style="display: none;"></span>-->
                   <!--&nbsp;-->
+                  <span v-if="chat.unseen">
+                    <b-badge variant="danger">{{ chat.unseen }}</b-badge>
+                  </span>
                   <fa icon="lock" title="This chat is private." class="d-inline" />
                 </b-col>
               </b-row>
