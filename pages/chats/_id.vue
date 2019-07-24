@@ -2,7 +2,7 @@
   <b-col>
     <b-row class="m-0">
       <b-col cols="3" class="chatlist p-0">
-        <ul v-for="(chat, $index) in sortedChats" :key="'chat-' + $index" class="p-0 list-unstyled mb-1">
+        <ul v-for="(chat, $index) in sortedChats" :key="'chat-' + $index" class="p-0 pt-1 list-unstyled mb-1">
           <li :class="{ active: activeChat && chat.id == activeChat.id }">
             <nuxt-link :to="'/chats/' + chat.id" class="nodecor">
               <b-row class="ml-1 mr-1">

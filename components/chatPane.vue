@@ -1,9 +1,9 @@
 <template>
   <no-ssr>
-    <div>
-      <b-row>
+    <div class="chatHolder">
+      <b-row class="chatTitle">
         <b-col v-if="chat">
-          <b-row class="chatTitle">
+          <b-row>
             <b-col cols="6">
               <b-row>
                 <b-col>
@@ -51,15 +51,93 @@
           </b-row>
         </b-col>
       </b-row>
-      <b-row>
+      <b-row class="chatContent">
         <b-col v-if="chat">
-          <ul v-for="(chatmessage, $index) in chat.chatmessages" :key="'chatmessage-' + $index" class="p-0 list-unstyled mb-1">
+          <ul v-for="(chatmessage, $index) in chat.chatmessages" :key="'chatmessage-' + $index" class="p-0 pt-1 list-unstyled mb-1">
             <li>
-              {{ chatmessage.message }}
+              <b-row>
+                <b-col>
+                  <div v-if="chatmessage.userid != $store.state.auth.user.id">
+                    <b-img-lazy
+                      rounded="circle"
+                      thumbnail
+                      class="profile p-0 ml-1 mb-1 inline"
+                      alt="Profile picture"
+                      title="Profile"
+                      :src="chat.chatusers[chatmessage.userid].profile.turl"
+                    />
+                    <span class="chatMessage">
+                      {{ chatmessage.message }}
+                    </span>
+                  </div>
+                  <div v-else class="float-right">
+                    <span class="chatMessage">
+                      {{ chatmessage.message }}
+                    </span>
+                    <b-img-lazy
+                      rounded="circle"
+                      thumbnail
+                      class="profile p-0 ml-1 mb-1 inline"
+                      alt="Profile picture"
+                      title="Profile"
+                      :src="chat.chatusers[chatmessage.userid].profile.turl"
+                    />
+                  </div>
+                </b-col>
+              </b-row>
+              <b-row v-if="!chatmessage.sameaslast" class="text-muted small">
+                <b-col v-if="chatmessage.userid != $store.state.auth.user.id">
+                  {{ $moment(chatmessage.date).fromNow() }}
+                </b-col>
+                <b-col v-else>
+                  <span class="float-right">
+                    {{ $moment(chatmessage.date).fromNow() }}
+                  </span>
+                </b-col>
+              </b-row>
             </li>
           </ul>
         </b-col>
       </b-row>
+      <div class="chatFooter">
+        <b-row>
+          <b-col class="p-0">
+            <b-form-textarea
+              placeholder="Type here..."
+              rows="3"
+              max-rows="8"
+            />
+          </b-col>
+        </b-row>
+        <b-row>
+          <b-col class="p-0 pt-1 pb-1">
+            <b-btn variant="success">
+              <fa icon="thumbs-up" />&nbsp;5
+            </b-btn>
+            <b-btn variant="warning">
+              <fa icon="thumbs-down" />&nbsp;1
+            </b-btn>
+            <b-btn variant="white">
+              <fa icon="handshake" />&nbsp;Promise
+            </b-btn>
+            <b-btn variant="white">
+              <fa icon="address-book" />&nbsp;Address
+            </b-btn>
+            <b-btn variant="white">
+              <fa icon="calendar" />&nbsp;Calendar
+            </b-btn>
+            <b-btn variant="white">
+              <fa icon="info-circle" />&nbsp;Info
+            </b-btn>
+            <b-btn variant="white">
+              <fa icon="bell" />&nbsp;Nudge
+            </b-btn>
+            <b-btn variant="primary" class="float-right">
+              Send&nbsp;&gt;
+            </b-btn>
+          </b-col>
+        </b-row>
+      </div>
     </div>
   </no-ssr>
 </template>
@@ -68,10 +146,34 @@
   min-height: 100vh;
 }
 
+.chatHolder {
+  height: calc(100vh - 74px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .chatTitle {
   background-color: #4895dd;
   color: white;
   font-weight: bold;
+  order: 1;
+}
+
+.chatWarning {
+  order: 2;
+  justify-content: flex-start;
+}
+
+.chatContent {
+  order: 3;
+  justify-content: flex-start;
+  flex-grow: 1;
+}
+
+.chatFooter {
+  order: 4;
+  justify-content: flex-end;
 }
 </style>
 <script>

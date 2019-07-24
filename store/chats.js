@@ -66,6 +66,7 @@ export const actions = {
       if (messages.status === 200 && messages.data.ret === 0) {
         const chatobj = chat.data.chatroom
         chatobj.chatmessages = messages.data.chatmessages
+        chatobj.chatusers = messages.data.chatusers
 
         commit('addRoom', chatobj)
       }
