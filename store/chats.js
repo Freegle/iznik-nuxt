@@ -1,17 +1,13 @@
 export const state = () => ({
   // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
   // storage.
-  list: {}
+  list: {},
+  rooms: {}
 })
 
 export const mutations = {
-  add(state, item) {
-    console.log(item)
-    state.list[item.id] = item
-  },
-
-  remove(state, item) {
-    state.list[item.id] = null
+  addRoom(state, item) {
+    state.rooms[item.id] = item
   },
 
   setList(state, chats) {
@@ -25,9 +21,10 @@ export const mutations = {
 export const getters = {
   get: state => id => {
     let ret = null
+    console.log('Get chat', id)
 
-    Object.keys(state.list).forEach(key => {
-      const chat = state.list[key]
+    Object.keys(state.rooms).forEach(key => {
+      const chat = state.rooms[key]
 
       if (parseInt(key) === parseInt(id)) {
         ret = chat
@@ -43,7 +40,7 @@ export const getters = {
 }
 
 export const actions = {
-  async fetchChats({ commit }, params) {
+  async listChats({ commit }, params) {
     const res = await this.$axios.get(process.env.API + '/chat/rooms', {
       chattypes: ['User2User', 'User2Mod'],
       summary: true
@@ -51,6 +48,32 @@ export const actions = {
 
     if (res.status === 200) {
       commit('setList', res.data.chatrooms)
+    }
+  },
+  async fetch({ commit }, params) {
+    const chatid = params.id
+    console.log('Fetch chat', chatid)
+    const chat = await this.$axios.get(process.env.API + '/chatrooms', {
+      params: {
+        id: chatid
+      }
+    })
+
+    console.log('Fetched chat', chat)
+    if (chat.status === 200 && chat.data.ret === 0) {
+      const messages = await this.$axios.get(
+        process.env.API + '/chat/rooms/' + chatid + '/messages'
+      )
+
+      console.log('Fetched messages', messages)
+
+      if (messages.status === 200 && messages.data.ret === 0) {
+        const chatobj = chat.data.chatroom
+        chatobj.chatmessages = messages.data.chatmessages
+
+        console.log('Gotit', chatobj)
+        commit('addRoom', chatobj)
+      }
     }
   }
 }

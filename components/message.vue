@@ -126,9 +126,6 @@ export default {
     attachments: {
       type: Array,
       default: () => []
-    },
-    fromuser: {
-      default: null
     }
   },
   data: function() {
