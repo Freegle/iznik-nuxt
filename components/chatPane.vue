@@ -69,22 +69,32 @@
                       title="Profile"
                       :src="chat.chatusers[chatmessage.userid].profile.turl"
                     />
-                    <span class="chatMessage">
+                    <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > lastmsgseen)">
+                      <b>{{ chatmessage.message }}</b>
+                    </span>
+                    <span v-else>
                       {{ chatmessage.message }}
                     </span>
                   </div>
                   <div v-else class="float-right">
                     <span class="chatMessage">
-                      {{ chatmessage.message }}
+                      <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > lastmsgseen)">
+                        <b>{{ chatmessage.message }}</b>
+                      </span>
+                      <span v-else>
+                        {{ chatmessage.message }}
+                      </span>
                     </span>
                     <b-img-lazy
-                      rounded="circle"
+                      rounded="
+                        circle"
                       thumbnail
                       class="profile p-0 ml-1 mb-1 inline"
                       alt="Profile picture"
                       title="Profile"
                       :src="chat.chatusers[chatmessage.userid].profile.turl"
                     />
+                    </span>
                   </div>
                 </b-col>
               </b-row>
@@ -115,19 +125,19 @@
         <b-row>
           <b-col class="p-0 pt-1 pb-1">
             <ratings v-if="otheruser" :key="'otheruser-' + (otheruser ? otheruser.id : null)" v-bind="otheruser" />
-            <b-btn variant="white">
+            <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person">
               <fa icon="handshake" />&nbsp;Promise
             </b-btn>
-            <b-btn variant="white">
+            <b-btn v-b-tooltip.hover.top variant="white" title="Send your address">
               <fa icon="address-book" />&nbsp;Address
             </b-btn>
-            <b-btn variant="white">
+            <b-btn v-b-tooltip.hover.top variant="white" title="Update your availability">
               <fa icon="calendar" />&nbsp;Calendar
             </b-btn>
-            <b-btn variant="white">
+            <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler">
               <fa icon="info-circle" />&nbsp;Info
             </b-btn>
-            <b-btn variant="white">
+            <b-btn v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler.">
               <fa icon="bell" />&nbsp;Nudge
             </b-btn>
             <b-btn variant="primary" class="float-right">
@@ -186,6 +196,11 @@ export default {
     id: {
       type: Number,
       required: true
+    },
+    lastmsgseen: {
+      type: Number,
+      required: false,
+      default: null
     }
   },
   data: function() {
