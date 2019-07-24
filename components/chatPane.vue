@@ -111,12 +111,7 @@
         </b-row>
         <b-row>
           <b-col class="p-0 pt-1 pb-1">
-            <b-btn variant="success">
-              <fa icon="thumbs-up" />&nbsp;5
-            </b-btn>
-            <b-btn variant="warning">
-              <fa icon="thumbs-down" />&nbsp;1
-            </b-btn>
+            <ratings v-if="otheruser" :key="'otheruser-' + (otheruser ? otheruser.id : null)" v-bind="otheruser" />
             <b-btn variant="white">
               <fa icon="handshake" />&nbsp;Promise
             </b-btn>
@@ -177,7 +172,12 @@
 }
 </style>
 <script>
+import ratings from '~/components/ratings'
+
 export default {
+  components: {
+    ratings
+  },
   props: {
     id: {
       type: Number,
@@ -187,6 +187,19 @@ export default {
   data: function() {
     return {
       chat: null
+    }
+  },
+  computed: {
+    otheruser() {
+      // The user who isn't us.
+      if (this.chat) {
+        return this.chat.user1 &&
+          this.chat.user1.id === this.$store.state.auth.user.id
+          ? this.chat.user2
+          : this.chat.user1
+      } else {
+        return null
+      }
     }
   },
   async mounted() {
