@@ -2,10 +2,10 @@
   <no-ssr>
     <span class="b-inline">
       <span v-if="user">
-        <b-btn :variant="user.info.ratings.Up > 0 ? 'success' : 'white'">
+        <b-btn :variant="user.info.ratings.Mine === 'Up' ? 'primary' : (user.info.ratings.Up > 0 ? 'success' : 'white')">
           <fa icon="thumbs-up" />&nbsp;{{ user.info.ratings.Up }}
         </b-btn>
-        <b-btn :variant="user.info.ratings.Down > 0 ? 'warning' : 'white'">
+        <b-btn :variant="user.info.ratings.Mine === 'Down' ? 'primary' : (user.info.ratings.Down > 0 ? 'warning' : 'white')">
           <fa icon="thumbs-down" />&nbsp;{{ user.info.ratings.Down }}
         </b-btn>
       </span>
