@@ -21,7 +21,6 @@ export const mutations = {
 export const getters = {
   get: state => id => {
     let ret = null
-    console.log('Get chat', id)
 
     Object.keys(state.rooms).forEach(key => {
       const chat = state.rooms[key]
@@ -59,19 +58,15 @@ export const actions = {
       }
     })
 
-    console.log('Fetched chat', chat)
     if (chat.status === 200 && chat.data.ret === 0) {
       const messages = await this.$axios.get(
         process.env.API + '/chat/rooms/' + chatid + '/messages'
       )
 
-      console.log('Fetched messages', messages)
-
       if (messages.status === 200 && messages.data.ret === 0) {
         const chatobj = chat.data.chatroom
         chatobj.chatmessages = messages.data.chatmessages
 
-        console.log('Gotit', chatobj)
         commit('addRoom', chatobj)
       }
     }
