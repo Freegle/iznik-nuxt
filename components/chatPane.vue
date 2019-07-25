@@ -58,57 +58,7 @@
         <b-col v-if="chat" :key="'chatmessagelist' + lastFetched">
           <ul v-for="(chatmessage, $index) in chatmessages" :key="'chatmessage-' + $index" class="p-0 pt-1 list-unstyled mb-1" infinite-wrapper>
             <li v-if="chatmessage">
-              <b-row>
-                <b-col>
-                  <div v-if="chatmessage.userid != $store.state.auth.user.id">
-                    <span class="chatMessage">
-                      <b-img-lazy
-                        rounded="circle"
-                        thumbnail
-                        class="profile p-0 ml-1 mb-1 inline"
-                        alt="Profile picture"
-                        title="Profile"
-                        :src="otheruser.profile.turl"
-                      />
-                      <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > lastmsgseen)">
-                        <b>{{ chatmessage.message }}</b>
-                      </span>
-                      <span v-else>
-                        {{ chatmessage.message }}
-                      </span>
-                    </span>
-                  </div>
-                  <div v-else class="float-right">
-                    <span class="chatMessage">
-                      <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > lastmsgseen)">
-                        <b>{{ chatmessage.message }}</b>
-                      </span>
-                      <span v-else>
-                        {{ chatmessage.message }}
-                      </span>
-                    </span>
-                    <b-img-lazy
-                      rounded="
-                        circle"
-                      thumbnail
-                      class="profile p-0 ml-1 mb-1 inline"
-                      alt="Profile picture"
-                      title="Profile"
-                      :src="me.profile.turl"
-                    />
-                  </div>
-                </b-col>
-              </b-row>
-              <b-row v-if="!chatmessage.sameaslast" class="text-muted small">
-                <b-col v-if="chatmessage.userid != $store.state.auth.user.id">
-                  {{ $moment(chatmessage.date).fromNow() }}
-                </b-col>
-                <b-col v-else>
-                  <span class="float-right">
-                    {{ $moment(chatmessage.date).fromNow() }}
-                  </span>
-                </b-col>
-              </b-row>
+              <chatMessage :key="'chatmessage-' + chatmessage.id" :chatmessage="chatmessage" :chat="chat" :me="me" :otheruser="otheruser" />
             </li>
           </ul>
 
@@ -193,11 +143,16 @@
 }
 </style>
 <script>
+// TODO It's painfully slow to switch between chats.  Profiling shows it's spending a lot of time in render code,
+// which suggests that I've done something dumb.
+
 import ratings from '~/components/ratings'
+import chatMessage from '~/components/chatMessage.vue'
 
 export default {
   components: {
-    ratings
+    ratings,
+    chatMessage
   },
   props: {
     id: {

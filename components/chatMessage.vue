@@ -1,0 +1,77 @@
+<template>
+  <div>
+    <b-row>
+      <b-col>
+        <div v-if="chatmessage.userid != $store.state.auth.user.id">
+          <span class="chatMessage">
+            <b-img-lazy
+              rounded="circle"
+              thumbnail
+              class="profile p-0 ml-1 mb-1 inline"
+              alt="Profile picture"
+              title="Profile"
+              :src="otheruser.profile.turl"
+            />
+            <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)">
+              <b>{{ chatmessage.message }}</b>
+            </span>
+            <span v-else>
+              {{ chatmessage.message }}
+            </span>
+          </span>
+        </div>
+        <div v-else class="float-right">
+          <span class="chatMessage">
+            <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)">
+              <b>{{ chatmessage.message }}</b>
+            </span>
+            <span v-else>
+              {{ chatmessage.message }}
+            </span>
+          </span>
+          <b-img-lazy
+            rounded="
+                        circle"
+            thumbnail
+            class="profile p-0 ml-1 mb-1 inline"
+            alt="Profile picture"
+            title="Profile"
+            :src="me.profile.turl"
+          />
+        </div>
+      </b-col>
+    </b-row>
+    <b-row v-if="!chatmessage.sameaslast" class="text-muted small">
+      <b-col v-if="chatmessage.userid != $store.state.auth.user.id">
+        {{ $moment(chatmessage.date).fromNow() }}
+      </b-col>
+      <b-col v-else>
+        <span class="float-right">
+          {{ $moment(chatmessage.date).fromNow() }}
+        </span>
+      </b-col>
+    </b-row>
+  </div>
+</template>
+<script>
+export default {
+  props: {
+    chat: {
+      type: Object,
+      required: true
+    },
+    chatmessage: {
+      type: Object,
+      required: true
+    },
+    me: {
+      type: Object,
+      required: true
+    },
+    otheruser: {
+      type: Object,
+      required: true
+    }
+  }
+}
+</script>
