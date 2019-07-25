@@ -4,69 +4,7 @@
       <b-col cols="3" class="chatlist p-0">
         <ul v-for="(chat, $index) in sortedChats" :key="'chat-' + $index" class="p-0 pt-1 list-unstyled mb-1">
           <li :class="{ active: activeChat && chat.id == activeChat.id }">
-            <nuxt-link :to="'/chats/' + chat.id" class="nodecor">
-              <b-row class="ml-1 mr-1">
-                <b-col class="pl-0">
-                  <span v-if="chat.user2 === $store.state.auth.user.id">
-                    <b-img-lazy
-                      v-if="chat.u1imageurl"
-                      rounded="circle"
-                      thumbnail
-                      class="profile p-0 ml-1 mb-1 inline"
-                      alt="Profile picture"
-                      title="Profile"
-                      :src="chat.u1imageurl"
-                    />
-                    <b-img-lazy
-                      v-else
-                      rounded="circle"
-                      thumbnail
-                      class="profile p-0 ml-1 mb-1 inline"
-                      alt="Profile picture"
-                      title="Profile"
-                      src="~/static/placeholder.jpg"
-                    />
-                  </span>
-                  <span v-if="chat.user1 === $store.state.auth.user.id">
-                    <b-img-lazy
-                      v-if="chat.u2imageurl"
-                      rounded="circle"
-                      thumbnail
-                      class="profile p-0 ml-1 mb-1 inline"
-                      alt="Profile picture"
-                      title="Profile"
-                      :src="chat.u2imageurl"
-                    />
-                    <b-img-lazy
-                      v-else
-                      rounded="circle"
-                      thumbnail
-                      class="profile p-0 ml-1 mb-1 inline"
-                      alt="Profile picture"
-                      title="Profile"
-                      src="~/static/placeholder.jpg"
-                    />
-                  </span>
-                  <span class="pl-0 mb-0 chatname">
-                    {{ chat.name }}
-                  </span>
-                  <span v-if="chat.unseen">
-                    <b-badge variant="danger">{{ chat.unseen }}</b-badge>
-                  </span>
-                  <span class="float-right small text-muted">
-                    {{ $moment(chat.lastdate).fromNow() }}
-                  </span>
-                </b-col>
-              </b-row>
-              <b-row>
-                <b-col v-if="chat.snippet" class="pl-4 truncate">
-                  {{ chat.snippet }}
-                </b-col>
-                <b-col v-else class="pl-4">
-                  ...
-                </b-col>
-              </b-row>
-            </nuxt-link>
+            <chatListEntry :key="'chatlistentry-' + chat.id" v-bind="chat" />
           </li>
         </ul>
       </b-col>
@@ -90,11 +28,13 @@
 </style>
 <script>
 import chatPane from '~/components/chatPane.vue'
+import chatListEntry from '~/components/chatListEntry.vue'
 import requestIdleCallback from '~/assets/js/requestIdleCallback'
 
 export default {
   components: {
-    chatPane
+    chatPane,
+    chatListEntry
   },
 
   validate({ params }) {
