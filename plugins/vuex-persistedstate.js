@@ -1,24 +1,11 @@
 // ~/plugins/localStorage
 
 import createPersistedState from 'vuex-persistedstate'
+import requestIdleCallback from '~/assets/js/requestIdleCallback'
+
 // import cloneDeep from 'lodash.clonedeep'
 
 // We defer setting of state to local storage until we're idle.
-const requestIdleCallback =
-  window.requestIdleCallback ||
-  (cb => {
-    const start = Date.now()
-    return setTimeout(() => {
-      const data = {
-        didTimeout: false,
-        timeRemaining() {
-          return Math.max(0, 50 - (Date.now() - start))
-        }
-      }
-      cb(data)
-    }, 1)
-  })
-
 let settingState = null
 let setInProgress = false
 

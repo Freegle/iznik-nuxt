@@ -281,14 +281,11 @@ export default {
                 this.$store.getters['chatmessages/getUsers'](this.id)
               )
               this.lastFetched = new Date()
-              console.log('Fetched messages', this.chatmessages, this.chatusers)
 
               if (currentCount === this.chatmessages.length) {
-                console.log('No more, complete')
                 this.complete = true
                 $state.complete()
               } else {
-                console.log('More to come')
                 $state.loaded()
               }
               this.busy = false

@@ -14,8 +14,6 @@ export const mutations = {
         ? Object.values(payload.messages)
         : payload.messages
 
-    console.log('Merge messages', chatid, state.messages, payload.messages)
-
     state.messages[chatid] = state.messages[chatid]
       ? state.messages[chatid]
       : []
@@ -23,8 +21,6 @@ export const mutations = {
     for (const message of messages) {
       state.messages[chatid][message.id] = message
     }
-
-    console.log('Messages now', chatid, state.messages)
   },
 
   mergeUsers(state, payload) {
@@ -33,29 +29,23 @@ export const mutations = {
       typeof payload.users === 'object'
         ? Object.values(payload.users)
         : payload.users
-    console.log('Merge users', chatid, state.users, users)
 
     state.users[chatid] = state.users[chatid] ? state.users[chatid] : []
 
     for (const user of users) {
       state.users[chatid][user.id] = user
     }
-
-    console.log('Users now', chatid, state.users)
   },
 
   setContext(state, params) {
     state.contexts[params.id] = params.ctx
-    console.log('Context now', params.id, params.ctx)
   }
 }
 
 export const getters = {
   getMessages: state => chatid => {
     chatid = chatid + ''
-    console.log('Get messages', chatid, state.messages)
     const ret = state.messages[chatid] ? state.messages[chatid] : []
-    console.log('Returning', ret)
     return ret
   },
 
@@ -71,7 +61,6 @@ export const getters = {
 export const actions = {
   async fetch({ commit, state }, params) {
     const chatid = params.chatid
-    console.log('Fetch messages', chatid, this.context)
     const messages = await this.$axios.get(
       process.env.API + '/chat/rooms/' + chatid + '/messages',
       {
@@ -81,7 +70,6 @@ export const actions = {
         }
       }
     )
-    console.log('Fetched messages', messages)
 
     if (messages.status === 200 && messages.data.ret === 0) {
       commit('mergeMessages', {

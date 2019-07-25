@@ -41,8 +41,10 @@ export const getters = {
 export const actions = {
   async listChats({ commit }, params) {
     const res = await this.$axios.get(process.env.API + '/chat/rooms', {
-      chattypes: ['User2User', 'User2Mod'],
-      summary: true
+      params: {
+        chattypes: ['User2User', 'User2Mod'],
+        summary: true
+      }
     })
 
     if (res.status === 200) {

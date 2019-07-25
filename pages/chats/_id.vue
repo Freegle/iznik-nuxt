@@ -59,8 +59,8 @@
                 </b-col>
               </b-row>
               <b-row>
-                <b-col v-if="chat.chatmsg" class="pl-4 truncate">
-                  {{ chat.chatmsg }}
+                <b-col v-if="chat.snippet" class="pl-4 truncate">
+                  {{ chat.snippet }}
                 </b-col>
                 <b-col v-else class="pl-4">
                   ...
@@ -90,6 +90,7 @@
 </style>
 <script>
 import chatPane from '~/components/chatPane.vue'
+import requestIdleCallback from '~/assets/js/requestIdleCallback'
 
 export default {
   components: {
@@ -134,9 +135,24 @@ export default {
   },
 
   async asyncData({ app, params, store }) {
-    await store.dispatch('chats/listChats')
+    console.log('Async data')
+    let chats = Object.values(store.getters['chats/list']())
 
-    const chats = Object.values(store.getters['chats/list']())
+    console.log('Currently got', chats)
+
+    if (chats) {
+      // Got some - can start rendering.  Fire off an update to refresh us later if they've changed.  No rush, so
+      // wait for idle.
+      requestIdleCallback(() => {
+        console.log('Fetch latest chats')
+        store.dispatch('chats/listChats')
+      })
+    } else {
+      // Not got any - need to get them before we can proceed.
+      await store.dispatch('chats/listChats')
+    }
+
+    chats = Object.values(store.getters['chats/list']())
 
     let selected = null
 
