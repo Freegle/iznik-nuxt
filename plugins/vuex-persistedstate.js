@@ -39,33 +39,23 @@ export default ({ store }) => {
       // }
 
       setState: (key, state, storage) => {
-        console.log('Consider set state', settingState)
-
         if (settingState) {
-          console.log('Already setting')
           if (!setInProgress) {
             // We're not currently setting the state, we're waiting - so we can overwrite the state we're
             // intending to set with the latest one.  This saves multiple slow calls to set in local storage.
-            console.log('Can overwrite')
             settingState = state
           }
         } else {
           // We're not already setting it.  Queue it up for when we're idle.
-          console.log('Queue for idle')
           settingState = state
         }
 
         requestIdleCallback(() => {
           if (settingState) {
-            console.log('set state now')
             setInProgress = true
             storage.setItem(key, JSON.stringify(state))
             setInProgress = false
             settingState = null
-            console.log('completed set state')
-          } else {
-            // We have already set the latest state in an earlier callback.
-            console.log('Nothing to set')
           }
         })
       }
