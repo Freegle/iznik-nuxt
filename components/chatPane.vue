@@ -285,7 +285,8 @@ export default {
           )
           this.lastFetched = new Date()
 
-          // TODO We also want to trigger an update in the chat list.  What's the right way to do this?
+          // We also want to trigger an update in the chat list.
+          this.$store.dispatch('chats/listChats')
         })
     }
   }
