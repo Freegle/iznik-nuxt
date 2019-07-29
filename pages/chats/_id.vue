@@ -76,28 +76,31 @@ export default {
 
   async asyncData({ app, params, store }) {
     console.log('Async data')
+    let selected = null
     let chats = Object.values(store.getters['chats/list']())
 
     console.log('Currently got', chats)
 
-    if (chats) {
-      // Got some - can start rendering.  Fire off an update to refresh us later if they've changed.  No rush, so
-      // wait for idle.
-      requestIdleCallback(() => {
-        console.log('Fetch latest chats')
-        store.dispatch('chats/listChats')
-      })
+    if (!store.$auth.state.loggedIn) {
+      console.log('Not logged in')
     } else {
-      // Not got any - need to get them before we can proceed.
-      await store.dispatch('chats/listChats')
-    }
+      if (chats) {
+        // Got some - can start rendering.  Fire off an update to refresh us later if they've changed.  No rush, so
+        // wait for idle.
+        requestIdleCallback(() => {
+          console.log('Fetch latest chats')
+          store.dispatch('chats/listChats')
+        })
+      } else {
+        // Not got any - need to get them before we can proceed.
+        await store.dispatch('chats/listChats')
+      }
 
-    chats = Object.values(store.getters['chats/list']())
+      chats = Object.values(store.getters['chats/list']())
 
-    let selected = null
-
-    if (params.id) {
-      selected = chats.find(chat => parseInt(chat.id) === parseInt(params.id))
+      if (params.id) {
+        selected = chats.find(chat => parseInt(chat.id) === parseInt(params.id))
+      }
     }
 
     return {

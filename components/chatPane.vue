@@ -141,6 +141,11 @@
   justify-content: flex-end;
   background-color: white;
 }
+
+img.profile {
+  max-height: 25px !important;
+  max-width: 25px !important;
+}
 </style>
 <script>
 // TODO It's painfully slow to switch between chats.  Profiling shows it's spending a lot of time in render code,
@@ -177,7 +182,7 @@ export default {
   computed: {
     me() {
       // The user who is us
-      if (this.chat) {
+      if (this.chat && this.chat.user1 && this.$store.state.auth.user) {
         return this.chat.user1 &&
           this.chat.user1.id === this.$store.state.auth.user.id
           ? this.chat.user1
@@ -189,7 +194,7 @@ export default {
 
     otheruser() {
       // The user who isn't us.
-      if (this.chat) {
+      if (this.chat && this.chat.user1 && this.$store.state.auth.user) {
         return this.chat.user1 &&
           this.chat.user1.id === this.$store.state.auth.user.id
           ? this.chat.user2

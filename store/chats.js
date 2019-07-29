@@ -7,6 +7,7 @@ export const state = () => ({
 
 export const mutations = {
   addRoom(state, item) {
+    console.log('Add room', item)
     state.rooms[item.id] = item
   },
 
@@ -61,7 +62,15 @@ export const actions = {
 
     if (chat.status === 200 && chat.data.ret === 0) {
       const chatobj = chat.data.chatroom
-      commit('addRoom', chatobj)
+
+      if (chatobj) {
+        // Valid chatid
+        console.log('Trigger add', chatid, chat)
+        commit('addRoom', chatobj)
+      } else {
+        // Invalid - go to list
+        this.$router.push('/chats')
+      }
     }
   }
 }
