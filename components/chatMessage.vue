@@ -3,15 +3,15 @@
     <b-row>
       <b-col>
         <div v-if="chatmessage.userid != $store.state.auth.user.id">
+          <b-img-lazy
+            rounded="circle"
+            thumbnail
+            class="profile p-0 ml-1 mb-1 inline"
+            alt="Profile picture"
+            title="Profile"
+            :src="otheruser.profile.turl"
+          />
           <span class="chatMessage">
-            <b-img-lazy
-              rounded="circle"
-              thumbnail
-              class="profile p-0 ml-1 mb-1 inline"
-              alt="Profile picture"
-              title="Profile"
-              :src="otheruser.profile.turl"
-            />
             <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)">
               <b>{{ emessage }}</b>
             </span>
