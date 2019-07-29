@@ -34,7 +34,7 @@
       </b-row>
       <b-row>
         <b-col v-if="snippet" class="pl-4 truncate">
-          {{ snippet }}
+          {{ esnippet }}
         </b-col>
         <b-col v-else class="pl-4">
           ...
@@ -44,6 +44,8 @@
   </div>
 </template>
 <script>
+import twem from '~/assets/js/twem'
+
 export default {
   props: {
     id: {
@@ -83,6 +85,16 @@ export default {
       type: String,
       required: false,
       default: null
+    }
+  },
+
+  computed: {
+    esnippet() {
+      let ret = twem(this.$twemoji, this.snippet)
+
+      // The way the snippet is constructed might lead to backslashes if we have an emoji.
+      ret = ret.replace(/\\*$/, '') + '...'
+      return ret
     }
   }
 }
