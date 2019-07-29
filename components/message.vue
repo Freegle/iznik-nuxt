@@ -100,6 +100,7 @@
 </template>
 <script>
 import sanitizeHtml from 'sanitize-html'
+import twem from '~/assets/js/twem'
 
 export default {
   props: {
@@ -139,10 +140,14 @@ export default {
       return sanitizeHtml(this.subject)
     },
     safeBody() {
-      return sanitizeHtml(this.textbody)
+      let bod = twem(this.$twemoji, this.textbody)
+      bod = sanitizeHtml(this.textbody)
+      return bod
     },
     safeSnippet() {
-      return sanitizeHtml(this.snippet)
+      let snip = twem(this.$emoji, this.snippet)
+      snip = sanitizeHtml(this.snippet)
+      return snip
     }
   },
   methods: {

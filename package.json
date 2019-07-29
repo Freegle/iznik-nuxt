@@ -43,6 +43,7 @@
     "vue-color": "^2.7.0",
     "vue-drag-drop": "^1.1.4",
     "vue-infinite-loading": "^2.4.4",
+    "vue-twemoji": "^1.0.1",
     "vue2-google-maps": "^0.10.7",
     "vuejs-thermometer": "0.0.4",
     "vuex-persistedstate": "^2.5.4"

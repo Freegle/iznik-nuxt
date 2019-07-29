@@ -41,13 +41,14 @@ module.exports = {
 
     { src: '~/plugins/vuejs-thermometer' },
     { src: '~/plugins/qs' },
+    { src: '~/plugins/twemoji' },
 
     // Some plugins are client-side features
     { src: '~/plugins/vuex-persistedstate', ssr: false },
     { src: '~plugins/vue-drag-drop.js', ssr: false },
     { src: '~/plugins/vue-color', ssr: false },
     { src: '~plugins/vue-infinite-loading.js', ssr: false },
-    { src: '~plugins/vue2-google-maps.js', ssr: false }
+    { src: '~plugins/vue2-google-maps.js', ssr: false },
   ],
 
   /*

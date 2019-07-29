@@ -13,20 +13,20 @@
               :src="otheruser.profile.turl"
             />
             <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)">
-              <b>{{ chatmessage.message }}</b>
+              <b>{{ emessage }}</b>
             </span>
             <span v-else>
-              {{ chatmessage.message }}
+              {{ emessage }}
             </span>
           </span>
         </div>
         <div v-else class="float-right">
           <span class="chatMessage">
             <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)">
-              <b>{{ chatmessage.message }}</b>
+              <b>{{ emessage }}</b>
             </span>
             <span v-else>
-              {{ chatmessage.message }}
+              {{ emessage }}
             </span>
           </span>
           <b-img-lazy
@@ -54,6 +54,8 @@
   </div>
 </template>
 <script>
+import twem from '~/assets/js/twem'
+
 export default {
   props: {
     chat: {
@@ -71,6 +73,11 @@ export default {
     otheruser: {
       type: Object,
       required: true
+    }
+  },
+  computed: {
+    emessage() {
+      return twem(this.$twemoji, this.chatmessage.message)
     }
   }
 }

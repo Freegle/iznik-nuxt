@@ -72,5 +72,7 @@ export const actions = {
         this.$router.push('/chats')
       }
     }
-  }
+  },
+
+  async send({ commit }, params) {}
 }
