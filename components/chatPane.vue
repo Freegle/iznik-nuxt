@@ -54,17 +54,16 @@
           </b-row>
         </b-col>
       </b-row>
-      <b-row class="chatContent">
+      <b-row class="chatContent" infinite-wrapper>
         <b-col v-if="chat" :key="'chatmessagelist' + lastFetched">
-          <ul v-for="(chatmessage, $index) in chatmessages" :key="'chatmessage-' + $index" class="p-0 pt-1 list-unstyled mb-1" infinite-wrapper>
+          <infinite-loading direction="top" npforce-use-infinite-wrapper="true" @infinite="loadMore">
+            <span slot="no-results" />
+          </infinite-loading>
+          <ul v-for="(chatmessage, $index) in chatmessages" :key="'chatmessage-' + $index" class="p-0 pt-1 list-unstyled mb-1">
             <li v-if="chatmessage">
               <chatMessage :key="'chatmessage-' + chatmessage.id" :chatmessage="chatmessage" :chat="chat" :me="me" :otheruser="otheruser" />
             </li>
           </ul>
-
-          <infinite-loading direction="top" force-use-infinite-wrapper="true" @infinite="loadMore">
-            <span slot="no-results" />
-          </infinite-loading>
         </b-col>
       </b-row>
       <div class="chatFooter">
@@ -156,6 +155,7 @@ import Vue from 'vue'
 import ratings from '~/components/ratings'
 import chatMessage from '~/components/chatMessage.vue'
 import twem from '~/assets/js/twem'
+// import requestIdleCallback from '~/assets/js/requestIdleCallback'
 
 export default {
   components: {
@@ -224,6 +224,7 @@ export default {
     },
     loadMore: function($state) {
       const currentCount = this.chatmessages.length
+      console.log('Load more')
 
       if (this.complete) {
         // This is a bit weird - calling complete() works here to stop the plugin firing, but not lower down in the
@@ -245,6 +246,22 @@ export default {
                 this.$store.getters['chatmessages/getUsers'](this.id)
               )
               this.lastFetched = new Date()
+
+              console.log('Loaded from', currentCount)
+              if (currentCount === 0) {
+                // First load.  Scroll to the bottom.
+                // TODO This doesn't work reliably.
+                this.$nextTick(() => {
+                  const container = this.$el.querySelector('.chatContent')
+                  console.log(
+                    'Scroll to bottom',
+                    container,
+                    container.scrollTop,
+                    container.scrollHeight
+                  )
+                  container.scrollTop = container.scrollHeight
+                })
+              }
 
               if (currentCount === this.chatmessages.length) {
                 this.complete = true

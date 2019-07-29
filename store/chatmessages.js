@@ -65,7 +65,7 @@ export const actions = {
       process.env.API + '/chat/rooms/' + chatid + '/messages',
       {
         params: {
-          limit: 10,
+          limit: 30,
           context:
             !params.noContext && state.contexts[chatid]
               ? state.contexts[chatid]
