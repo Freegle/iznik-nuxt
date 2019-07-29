@@ -23,6 +23,10 @@ export default ({ store }) => {
       //   delete newstate.messages
       //   delete newstate.stroll
       //   return newstate
+      //
+      //   // Want the first bit of the newsfeed.
+      //   // Last chat?
+      //   reducer breaks stuff so commented out for now TODO
       // }
 
       setState: (key, state, storage) => {

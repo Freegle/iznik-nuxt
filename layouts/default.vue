@@ -14,7 +14,7 @@
       <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
       <b-collapse v-if="loggedIn" id="nav_collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item class="text-center p-0">
+          <b-nav-item class="text-center p-0" to="/chitchat">
             <fa icon="coffee" size="2x" /><br>
             ChitChat
           </b-nav-item>
