@@ -140,12 +140,12 @@ export default {
       return sanitizeHtml(this.subject)
     },
     safeBody() {
-      let bod = twem(this.$twemoji, this.textbody)
+      let bod = twem.twem(this.$twemoji, this.textbody)
       bod = sanitizeHtml(this.textbody)
       return bod
     },
     safeSnippet() {
-      let snip = twem(this.$emoji, this.snippet)
+      let snip = twem.twem(this.$emoji, this.snippet)
       snip = sanitizeHtml(this.snippet)
       return snip
     }

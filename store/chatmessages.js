@@ -66,7 +66,10 @@ export const actions = {
       {
         params: {
           limit: 10,
-          context: state.contexts[chatid] ? state.contexts[chatid] : null
+          context:
+            !params.noContext && state.contexts[chatid]
+              ? state.contexts[chatid]
+              : null
         }
       }
     )
@@ -80,10 +83,25 @@ export const actions = {
         id: chatid,
         users: messages.data.chatusers
       })
-      commit('setContext', {
-        id: chatid,
-        ctx: messages.data.context ? messages.data.context : null
-      })
+
+      if (!params.noContext) {
+        commit('setContext', {
+          id: chatid,
+          ctx: messages.data.context ? messages.data.context : null
+        })
+      }
     }
+  },
+
+  async send({ commit, dispatch }, params) {
+    params.modtools = process.env.MODTOOLS
+
+    await this.$axios.post(process.env.API + '/chatmessages', params)
+
+    // Get the latest messages back.  Passing no context will fetch the latest.
+    await dispatch('fetch', {
+      chatid: params.roomid,
+      noContext: true
+    })
   }
 }

@@ -90,7 +90,7 @@ export default {
 
   computed: {
     esnippet() {
-      let ret = twem(this.$twemoji, this.snippet)
+      let ret = twem.twem(this.$twemoji, this.snippet)
 
       // The way the snippet is constructed might lead to backslashes if we have an emoji.
       ret = ret.replace(/\\*$/, '') + '...'

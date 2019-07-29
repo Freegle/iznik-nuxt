@@ -71,6 +71,7 @@
         <b-row>
           <b-col class="p-0">
             <b-form-textarea
+              v-model="sendmessage"
               placeholder="Type here..."
               rows="3"
               max-rows="8"
@@ -96,7 +97,7 @@
             <b-btn v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler.">
               <fa icon="bell" />&nbsp;Nudge
             </b-btn>
-            <b-btn variant="primary" class="float-right">
+            <b-btn variant="primary" class="float-right" @click="send">
               Send&nbsp;&gt;
             </b-btn>
           </b-col>
@@ -153,6 +154,7 @@ img.profile {
 
 import ratings from '~/components/ratings'
 import chatMessage from '~/components/chatMessage.vue'
+import twem from '~/assets/js/twem'
 
 export default {
   components: {
@@ -176,7 +178,8 @@ export default {
       chatmessages: [],
       chatusers: [],
       lastFetched: new Date(),
-      complete: false
+      complete: false,
+      sendmessage: null
     }
   },
   computed: {
@@ -259,6 +262,31 @@ export default {
             $state.complete()
           })
       }
+    },
+    send: function() {
+      const msg = this.sendmessage
+
+      // Encode up any emojis.
+      console.log('Send', this.sendmessage, twem.untwem(msg), this.id)
+
+      // Send it
+      this.$store
+        .dispatch('chatmessages/send', {
+          roomid: this.id,
+          message: msg
+        })
+        .then(() => {
+          // The latest messages will be in the store now.  Get them to trigger re-render
+          this.chatmessages = Object.values(
+            this.$store.getters['chatmessages/getMessages'](this.id)
+          )
+          this.chatusers = Object.values(
+            this.$store.getters['chatmessages/getUsers'](this.id)
+          )
+          this.lastFetched = new Date()
+
+          // TODO We also want to trigger an update in the chat list.  What's the right way to do this?
+        })
     }
   }
 }

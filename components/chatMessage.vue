@@ -77,7 +77,7 @@ export default {
   },
   computed: {
     emessage() {
-      return twem(this.$twemoji, this.chatmessage.message)
+      return twem.twem(this.$twemoji, this.chatmessage.message)
     }
   }
 }
