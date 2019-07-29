@@ -152,6 +152,7 @@ img.profile {
 // TODO It's painfully slow to switch between chats.  Profiling shows it's spending a lot of time in render code,
 // which suggests that I've done something dumb.
 
+import Vue from 'vue'
 import ratings from '~/components/ratings'
 import chatMessage from '~/components/chatMessage.vue'
 import twem from '~/assets/js/twem'
@@ -284,6 +285,16 @@ export default {
             this.$store.getters['chatmessages/getUsers'](this.id)
           )
           this.lastFetched = new Date()
+
+          // Scroll to the bottom so we can see it.
+          // TODO This doesn't work reliably.
+          Vue.nextTick(() => {
+            const container = this.$el.querySelector('.chatContent')
+            container.scrollTop = container.scrollHeight
+          })
+
+          // Clear the message now it's sent.
+          this.sendmessage = ''
 
           // We also want to trigger an update in the chat list.
           this.$store.dispatch('chats/listChats')
