@@ -3,7 +3,7 @@
     <b-form-select v-model="selectedGroup" :options="groupOptions" />
   </no-ssr>
 </template>
-<style>
+<style scoped>
 select {
   max-width: 400px !important;
 }

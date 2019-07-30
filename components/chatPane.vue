@@ -105,7 +105,7 @@
     </div>
   </no-ssr>
 </template>
-<style>
+<style scoped>
 .chatpane {
   min-height: 100vh;
 }

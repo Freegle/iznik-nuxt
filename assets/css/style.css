@@ -34,3 +34,7 @@ button {
     background-color: white;
     line-height: 1.75;
 }
+
+.prewrap {
+    white-space: pre-wrap !important;
+}

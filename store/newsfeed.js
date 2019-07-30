@@ -1,7 +1,7 @@
 export const state = () => ({
   // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
   // storage.
-  newsfeed: {},
+  newsfeed: [],
   users: {},
   context: {}
 })
@@ -18,7 +18,7 @@ export const mutations = {
         : payload.newsfeed
 
     for (const item of items) {
-      state.newsfeed[item.id] = item
+      state.newsfeed.push(item)
     }
   },
 
@@ -59,23 +59,34 @@ export const getters = {
 
   users: state => () => {
     return state.users
+  },
+
+  getContext: state => () => {
+    return state.context
   }
 }
 
 export const actions = {
   async fetchFeed({ commit }, params) {
+    params = params || {}
+    if (params.context) {
+      // Ensure the context is a real object, in case it has been in the store.
+      const ctx = JSON.parse(JSON.stringify(params.context))
+      params.context = ctx
+    }
+
+    params.types = [
+      'Message',
+      'CommunityEvent',
+      'VolunteerOpportunity',
+      'Alert',
+      'Story',
+      'AboutMe',
+      'Noticeboard'
+    ]
+
     const res = await this.$axios.get(process.env.API + '/newsfeed', {
-      params: {
-        types: [
-          'Message',
-          'CommunityEvent',
-          'VolunteerOpportunity',
-          'Alert',
-          'Story',
-          'AboutMe',
-          'Noticeboard'
-        ]
-      }
+      params: params
     })
 
     if (res.status === 200) {

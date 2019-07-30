@@ -171,7 +171,7 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
 .card-body {
   padding: 0px;
 }

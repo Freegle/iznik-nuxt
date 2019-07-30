@@ -13,6 +13,15 @@
         <infinite-loading force-use-infinite-wrapper="true" @infinite="loadMore">
           <span slot="no-results" />
         </infinite-loading>
+        <div v-if="!busy">
+          <b-row class="text-center">
+            <b-col>
+              <b-btn variant="white" class="text-center" @click="loadMore">
+                Load more
+              </b-btn>
+            </b-col>
+          </b-row>
+        </div>
       </b-col>
       <b-col cols="3">
         Volunteer ops and ads go here
@@ -42,7 +51,8 @@ export default {
     return {
       id: null,
       newsfeed: null,
-      users: []
+      users: [],
+      busy: false
     }
   },
 
@@ -53,20 +63,40 @@ export default {
   },
 
   methods: {
-    async loadMore() {
+    async loadMore($state) {
+      // TODO Infinite scroll playing up here, which is why we have the Load More button.  Debug and fix.
+      this.busy = true
+
       console.log('Load more')
       if (!this.$store.$auth.state.loggedIn) {
         console.log('Not logged in')
-      } else {
-        await this.$store.dispatch('newsfeed/fetchFeed')
 
-        console.log('Store feed', this.$store.getters['newsfeed/newsfeed']())
-        this.newsfeed = Object.values(
-          this.$store.getters['newsfeed/newsfeed']()
-        )
-        this.users = this.$store.getters['newsfeed/users']()
-        // TODO Handle ID case
-        console.log('Fetched', this.newsfeed, this.users)
+        if ($state.complete) {
+          $state.complete()
+        }
+      } else {
+        try {
+          const context = this.$store.getters['newsfeed/getContext']()
+          await this.$store.dispatch('newsfeed/fetchFeed', {
+            context: context
+          })
+
+          this.newsfeed = this.$store.getters['newsfeed/newsfeed']()
+          this.users = this.$store.getters['newsfeed/users']()
+          // TODO Handle ID case
+
+          if ($state.loaded) {
+            $state.loaded()
+          }
+        } catch (e) {
+          console.log('Load failed', e)
+
+          if ($state.complete) {
+            $state.complete()
+          }
+        }
+
+        this.busy = false
       }
     }
   }
