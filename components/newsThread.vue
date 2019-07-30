@@ -14,6 +14,7 @@
                 title="Profile"
                 :src="users[newsfeed.userid].profile.turl"
               />
+              <fa v-if="users[newsfeed.userid].settings.showmod" icon="leaf" class="showmod text-success" />
               <span class="text-success font-weight-bold pl-2">
                 {{ users[newsfeed.userid].displayname }}
               </span>
@@ -45,6 +46,19 @@
 .profile {
   width: 50px !important;
   height: 50px !important;
+}
+
+.showmod {
+  top: 29px;
+  left: 44px;
+  border-radius: 50%;
+  position: absolute;
+  background-color: white;
+  width: 24px;
+  height: 24px;
+  padding-left: 5px;
+  padding-top: 4px;
+  border: 1px solid green;
 }
 </style>
 <script>

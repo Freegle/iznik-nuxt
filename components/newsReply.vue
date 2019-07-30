@@ -12,6 +12,7 @@
             title="Profile"
             :src="users[reply.userid].profile.turl"
           />
+          <fa v-if="users[reply.userid].settings.showmod" icon="leaf" class="showmodsm text-success" />
           <span class="text-success font-weight-bold pl-2">
             {{ users[reply.userid].displayname }}
           </span>
@@ -45,6 +46,17 @@
 .replytext {
   font-size: 14px;
   line-height: 1.2;
+}
+
+.showmodsm {
+  top: 14px;
+  left: 32px;
+  border-radius: 50%;
+  position: absolute;
+  background-color: white;
+  width: 15px;
+  padding-left: 3px;
+  padding-top: 3px;
 }
 </style>
 <script>
