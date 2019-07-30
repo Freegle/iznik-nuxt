@@ -6,6 +6,7 @@
           <b-col v-if="newsfeed.userid">
             <div>
               <b-img-lazy
+                v-if="users[newsfeed.userid].profile.turl"
                 rounded="circle"
                 thumbnail
                 class="profile p-0 ml-1 mb-1 inline float-left"
@@ -30,6 +31,13 @@
           </b-col>
         </b-row>
       </b-card-text>
+      <div v-if="newsfeed.replies.length > 0" slot="footer">
+        <ul v-for="(entry, $index) in newsfeed.replies" :key="'newsfeed-' + $index" class="p-0 pt-1 list-unstyled mb-1">
+          <li>
+            <newsReply :key="'newsfeedreply-' + newsfeed.id + '-reply-' + entry.id" :reply="entry" :users="users" />
+          </li>
+        </ul>
+      </div>
     </b-card>
   </div>
 </template>
@@ -43,10 +51,12 @@
 // TODO Click to show profile
 import twem from '~/assets/js/twem'
 import newsUserInfo from '~/components/newsUserInfo'
+import newsReply from '~/components/newsReply'
 
 export default {
   components: {
-    newsUserInfo
+    newsUserInfo,
+    newsReply
   },
   props: {
     newsfeed: {
