@@ -28,7 +28,7 @@
         </b-row>
         <b-row v-if="newsfeed.message">
           <b-col>
-            <span class="font-weight-bold prewrap">{{ newsfeed.message }}</span>
+            <span class="font-weight-bold prewrap">{{ emessage }}</span>
           </b-col>
         </b-row>
       </b-card-text>

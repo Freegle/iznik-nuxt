@@ -16,7 +16,7 @@
           <span class="text-success font-weight-bold pl-2">
             {{ users[reply.userid].displayname }}
           </span>
-          <span class="font-weight-bold prewrap replytext">{{ reply.message }}</span>
+          <span class="font-weight-bold prewrap replytext">{{ emessage }}</span>
         </div>
       </b-col>
     </b-row>
