@@ -17,7 +17,7 @@
           <b-row class="text-center">
             <b-col>
               <b-btn variant="white" class="text-center" @click="loadMore">
-                Load more
+                Load more (TODO infinite scroll not working properly)
               </b-btn>
             </b-col>
           </b-row>

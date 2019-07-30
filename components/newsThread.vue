@@ -31,13 +31,72 @@
             <span class="font-weight-bold prewrap">{{ emessage }}</span>
           </b-col>
         </b-row>
+        <b-row class="mt-2">
+          <b-col>
+            <ul class="list-unstyled list-inline">
+              <li class="list-inline-item">
+                <b-btn variant="white" size="sm">
+                  <fa icon="heart" />&nbsp;Love this
+                </b-btn>
+              </li>
+              <li class="list-inline-item">
+                <b-btn variant="white" size="sm">
+                  <fa icon="comment" />&nbsp;Comment
+                </b-btn>
+              </li>
+              <li class="list-inline-item">
+                <span v-if="newsfeed.loves">
+                  <fa icon="heart" class="text-danger" />&nbsp;{{ newsfeed.loves }}
+                </span>
+              </li>
+            </ul>
+          </b-col>
+        </b-row>
       </b-card-text>
-      <div v-if="newsfeed.replies.length > 0" slot="footer">
-        <ul v-for="(entry, $index) in newsfeed.replies" :key="'newsfeed-' + $index" class="p-0 pt-1 list-unstyled mb-1">
-          <li>
-            <newsReply :key="'newsfeedreply-' + newsfeed.id + '-reply-' + entry.id" :reply="entry" :users="users" />
-          </li>
-        </ul>
+      <div slot="footer">
+        <div v-if="newsfeed.replies.length > 0">
+          <ul v-for="(entry, $index) in newsfeed.replies" :key="'newsfeed-' + $index" class="p-0 pt-1 list-unstyled mb-1">
+            <li>
+              <newsReply :key="'newsfeedreply-' + newsfeed.id + '-reply-' + entry.id" :reply="entry" :users="users" />
+            </li>
+          </ul>
+        </div>
+        <span class="text-small">
+          <b-row>
+            <b-col>
+              <b-input-group>
+                <b-input-group-prepend>
+                  <span class="input-group-text pl-1 pr-1">
+                    <b-img-lazy
+                      v-if="me.profile.turl"
+                      rounded="circle"
+                      thumbnail
+                      class="profilesm p-0 m-0 inline float-left"
+                      alt="Profile picture"
+                      title="Profile"
+                      :src="me.profile.turl"
+                    />
+                  </span>
+                </b-input-group-prepend>
+                <b-textarea
+                  ref="threadcomment"
+                  size="sm"
+                  rows="1"
+                  max-rows="8"
+                  maxlength="2048"
+                  spellcheck="true"
+                  placeholder="Write a comment..."
+                  class="p-0 pl-1 pt-1"
+                />
+              </b-input-group>
+            </b-col>
+            <b-col cols="1">
+              <b-btn size="sm" variant="primary" class="float-right">
+                <fa icon="camera" />&nbsp;Photo
+              </b-btn>
+            </b-col>
+          </b-row>
+        </span>
       </div>
     </b-card>
   </div>
@@ -46,6 +105,11 @@
 .profile {
   width: 50px !important;
   height: 50px !important;
+}
+
+.profilesm {
+  width: 25px !important;
+  height: 25px !important;
 }
 
 .showmod {
@@ -63,6 +127,7 @@
 </style>
 <script>
 // TODO Click to show profile
+// TODO Love this function
 import twem from '~/assets/js/twem'
 import newsUserInfo from '~/components/newsUserInfo'
 import newsReply from '~/components/newsReply'
@@ -87,6 +152,9 @@ export default {
       return this.newsfeed.message
         ? twem.twem(this.$twemoji, this.newsfeed.message)
         : null
+    },
+    me() {
+      return this.$store.state.auth.user
     }
   }
 }

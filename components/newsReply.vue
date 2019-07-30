@@ -1,10 +1,10 @@
 <template>
   <div>
     <b-row>
-      <b-col v-if="reply.userid">
+      <b-col v-if="reply.userid && users[reply.userid]">
         <div>
           <b-img-lazy
-            v-if="users[reply.userid] && users[reply.userid].profile"
+            v-if="users[reply.userid].profile"
             rounded="circle"
             thumbnail
             class="profile p-0 ml-1 mb-1 inline float-left"
@@ -19,8 +19,13 @@
           <span class="font-weight-bold prewrap replytext">{{ emessage }}</span>
         </div>
       </b-col>
+      <b-col v-else>
+        <b-alert variant="danger" show>
+          Unknown userid {{ reply.userid }} TODO this is a bug.
+        </b-alert>
+      </b-col>
     </b-row>
-    <b-row v-if="reply.message">
+    <b-row v-if="reply.message && reply.userid && users[reply.userid]">
       <b-col class="pl-8">
         <span class="text-muted small pl-4">
           {{ $moment(reply.timestamp).fromNow() }}
@@ -61,6 +66,8 @@
 </style>
 <script>
 // TODO Click to show profile
+// TODO User tagging
+// TODO Love this function
 import twem from '~/assets/js/twem'
 import newsUserInfo from '~/components/newsUserInfo'
 import newsReply from '~/components/newsReply'
