@@ -20,6 +20,7 @@
               <span class="text-muted small pl-2">
                 {{ $moment(newsfeed.timestamp).fromNow() }}
               </span>
+              <newsUserInfo :user="users[newsfeed.userid]" />
             </div>
           </b-col>
         </b-row>
@@ -39,9 +40,14 @@
 }
 </style>
 <script>
+// TODO Click to show profile
 import twem from '~/assets/js/twem'
+import newsUserInfo from '~/components/newsUserInfo'
 
 export default {
+  components: {
+    newsUserInfo
+  },
   props: {
     newsfeed: {
       type: Object,

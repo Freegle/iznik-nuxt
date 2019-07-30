@@ -42,6 +42,7 @@ module.exports = {
     { src: '~/plugins/vuejs-thermometer' },
     { src: '~/plugins/qs' },
     { src: '~/plugins/twemoji' },
+    { src: '~/plugins/vue2-filters' },
 
     // Some plugins are client-side features
     { src: '~/plugins/vuex-persistedstate', ssr: false },

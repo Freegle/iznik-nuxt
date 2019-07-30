@@ -1,22 +1,35 @@
 <template>
-  <div>
-    <b-alert show variant="info" class="mt-2">
-      <b-row>
-        <b-col>
-          <groupSelect id="mygroups" class="float-left" all @change="groupChange" />
-        </b-col>
-        <b-col>
-          <b-form-select v-model="selectedType" class="float-right" value="All" :options="typeOptions" @change="typeChange" />
-        </b-col>
-      </b-row>
-    </b-alert>
-    <groupHeader v-if="group" :key="'groupheader-' + groupid" v-bind="group" />
+  <b-col>
+    <b-row class="m-0">
+      <b-col cols="3">
+        Community Events go here
+      </b-col>
+      <b-col cols="6" class="p-0" infinite-wrapper>
+        <div>
+          <b-alert show variant="info" class="mt-2">
+            <b-row>
+              <b-col>
+                <groupSelect id="mygroups" class="float-left" all @change="groupChange" />
+              </b-col>
+              <b-col>
+                <b-form-select v-model="selectedType" class="float-right" value="All" :options="typeOptions" @change="typeChange" />
+              </b-col>
+            </b-row>
+          </b-alert>
+          <groupHeader v-if="group" :key="'groupheader-' + groupid" v-bind="group" />
 
-    <div v-for="(message, $index) in messages" :key="'messagelist-' + $index" class="p-0">
-      <message v-if="selectedType === 'All' || message.type == selectedType" v-bind="message" />
-    </div>
+          <div v-for="(message, $index) in messages" :key="'messagelist-' + $index" class="p-0">
+            <message v-if="selectedType === 'All' || message.type == selectedType" v-bind="message" />
+          </div>
 
-    <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" @infinite="loadMore" />
+          <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" @infinite="loadMore" />
+        </div>
+      </b-col>
+      <b-col cols="3">
+        Volunteer ops and ads go here
+      </b-col>
+    </b-row>
+  </b-col>
   </div>
 </template>
 <script>
