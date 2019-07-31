@@ -153,14 +153,35 @@ export const actions = {
     )
 
     if (newsfeed.status === 200 && newsfeed.data.ret === 0) {
-      const id = newsfeed.data.id
-
-      // We want to fetch the item just created if it is the start of a thread, or the thread start if it isn't.
       newsfeedobj = await dispatch('fetch', {
-        id: params.replyto ? params.replyto : id
+        id: params.threadhead
       })
     }
 
     return newsfeedobj
+  },
+
+  async love({ commit, dispatch }, params) {
+    await this.$axios.post(process.env.API + '/newsfeed', {
+      id: params.id,
+      action: 'Love'
+    })
+
+    // We fetch the thread head to force a rerender
+    await dispatch('fetch', {
+      id: params.threadhead
+    })
+  },
+
+  async unlove({ commit, dispatch }, params) {
+    await this.$axios.post(process.env.API + '/newsfeed', {
+      id: params.id,
+      action: 'Unlove'
+    })
+
+    // We fetch the thread head to force a rerender
+    await dispatch('fetch', {
+      id: params.threadhead
+    })
   }
 }

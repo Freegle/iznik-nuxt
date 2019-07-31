@@ -34,6 +34,17 @@
         </span>
         <NewsUserInfo :user="users[reply.userid]" />
         &bull;<span class="text-muted small clickme" @click="replyReply">&nbsp;Reply</span>
+        <span class="text-muted small clickme">
+          <span v-if="!reply.loved" @click="love">
+            &bull;&nbsp;Love this
+          </span>
+          <span v-if="reply.loved" @click="unlove">
+            &bull;&nbsp;Unlove this
+          </span>
+          <span v-if="reply.loves">
+            <fa icon="heart" class="text-danger" />&nbsp;{{ reply.loves }}
+          </span>
+        </span>
       </b-col>
     </b-row>
     <div v-if="reply.replies && reply.replies.length > 0" class="pl-3">
@@ -173,15 +184,13 @@ export default {
     },
     async sendReply() {
       // Encode up any emojis.
-      console.log('Send reply', this.replybox)
-
       if (this.replybox) {
         const msg = twem.untwem(this.replybox)
-        console.log('Now', msg, this.replyingTo)
 
         await this.$store.dispatch('newsfeed/send', {
           message: msg,
-          replyto: this.replyingTo
+          replyto: this.replyingTo,
+          threadhead: this.reply.threadhead
         })
 
         // New message will be shown because it's in the store and we have a computed property.
@@ -193,6 +202,20 @@ export default {
     },
     newlineComment() {
       this.replybox += '\n'
+    },
+    love() {
+      this.$store.dispatch('newsfeed/love', {
+        id: this.reply.id,
+        replyto: this.reply.replyto,
+        threadhead: this.reply.threadhead
+      })
+    },
+    unlove() {
+      this.$store.dispatch('newsfeed/unlove', {
+        id: this.reply.id,
+        replyto: this.reply.replyto,
+        threadhead: this.reply.threadhead
+      })
     }
   }
 }

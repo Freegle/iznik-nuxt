@@ -35,8 +35,11 @@
           <b-col>
             <ul class="list-unstyled list-inline">
               <li class="list-inline-item">
-                <b-btn variant="white" size="sm">
+                <b-btn v-if="!newsfeed.loved" variant="white" size="sm" @click="love">
                   <fa icon="heart" />&nbsp;Love this
+                </b-btn>
+                <b-btn v-if="newsfeed.loved" variant="white" size="sm" @click="unlove">
+                  <fa class="text-danger" icon="heart" />&nbsp;Unlove this
                 </b-btn>
               </li>
               <li class="list-inline-item">
@@ -140,6 +143,7 @@
 // TODO Alt+Enter
 // TODO Delete
 // TODO Edit
+// TODO Some indication of newly added entries
 import twem from '~/assets/js/twem'
 import NewsUserInfo from '~/components/NewsUserInfo'
 import NewsReply from '~/components/NewsReply'
@@ -183,20 +187,17 @@ export default {
       this.$refs.threadcomment.focus()
     },
     focusedComment: function() {
-      console.log('Fcosued on comment')
       this.replyingTo = this.newsfeed.id
     },
     async sendComment() {
       // Encode up any emojis.
-      console.log('Send comment', this.threadcomment)
-
       if (this.threadcomment) {
         const msg = twem.untwem(this.threadcomment)
-        console.log('Now', msg, this.replyingTo)
 
         await this.$store.dispatch('newsfeed/send', {
           message: msg,
-          replyto: this.replyingTo
+          replyto: this.replyingTo,
+          threadhead: this.newsfeed.threadhead
         })
 
         // New message will be shown because it's in the store and we have a computed property.
@@ -207,6 +208,20 @@ export default {
     },
     newlineComment() {
       this.threadcomment += '\n'
+    },
+    love() {
+      this.$store.dispatch('newsfeed/love', {
+        id: this.newsfeed.id,
+        replyto: this.replyingTo,
+        threadhead: this.newsfeed.threadhead
+      })
+    },
+    unlove() {
+      this.$store.dispatch('newsfeed/unlove', {
+        id: this.newsfeed.id,
+        replyto: this.replyingTo,
+        threadhead: this.newsfeed.threadhead
+      })
     }
   }
 }
