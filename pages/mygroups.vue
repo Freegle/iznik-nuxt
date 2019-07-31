@@ -22,7 +22,11 @@
             <message v-if="selectedType === 'All' || message.type == selectedType" v-bind="message" />
           </div>
 
-          <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" @infinite="loadMore" />
+          <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" @infinite="loadMore">
+            <span slot="spinner">
+              <b-img-lazy src="~/static/loader.gif" />
+            </span>
+          </infinite-loading>
         </div>
       </b-col>
       <b-col cols="3">

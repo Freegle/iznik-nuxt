@@ -26,7 +26,11 @@
       <message v-bind="message" />
     </div>
 
-    <infinite-loading @infinite="loadMore" />
+    <infinite-loading @infinite="loadMore">
+      <span slot="spinner">
+        <b-img-lazy src="~/static/loader.gif" />
+      </span>
+    </infinite-loading>
   </div>
 </template>
 <script>

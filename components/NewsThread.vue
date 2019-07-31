@@ -1,5 +1,5 @@
 <template>
-  <div v-if="newsfeed" class="bg-white">
+  <div v-if="newsfeed && newsfeed.visible && !newsfeed.unfollowed" class="bg-white">
     <b-card>
       <b-card-text>
         <b-row>

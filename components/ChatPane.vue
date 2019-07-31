@@ -58,6 +58,9 @@
         <b-col v-if="chat" :key="'chatmessagelist' + lastFetched">
           <infinite-loading direction="top" force-use-infinite-wrapper="true" @infinite="loadMore">
             <span slot="no-results" />
+            <span slot="spinner">
+              <b-img-lazy src="~/static/loader.gif" />
+            </span>
           </infinite-loading>
           <ul v-for="(chatmessage, $index) in chatmessages" :key="'chatmessage-' + $index" class="p-0 pt-1 list-unstyled mb-1">
             <li v-if="chatmessage">
