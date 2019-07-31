@@ -136,7 +136,6 @@
 </style>
 <script>
 // TODO Post photos
-// TODO Use store to speed load
 import newsThread from '~/components/newsThread.vue'
 import twem from '~/assets/js/twem'
 
@@ -215,6 +214,10 @@ export default {
 
   created() {
     this.id = this.$route.params.id
+
+    // Clear the store.  This is to ensure that we remove any delete items, but it does mean that we're not using
+    // the store to improve performance.  TODO
+    this.$store.commit('newsfeed/clearFeed')
   },
 
   methods: {
