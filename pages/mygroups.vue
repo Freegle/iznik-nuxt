@@ -4,7 +4,7 @@
       <b-col cols="3">
         Community Events go here
       </b-col>
-      <b-col cols="6" class="p-0" infinite-wrapper>
+      <b-col cols="6" class="p-0">
         <div>
           <b-alert show variant="info" class="mt-2">
             <b-row>
@@ -22,7 +22,7 @@
             <message v-if="selectedType === 'All' || message.type == selectedType" v-bind="message" />
           </div>
 
-          <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" @infinite="loadMore">
+          <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" force-use-infinite-wrapper="body" @infinite="loadMore">
             <span slot="spinner">
               <b-img-lazy src="~/static/loader.gif" />
             </span>
@@ -35,6 +35,8 @@
     </b-row>
   </b-col>
 </template>
+<style scoped>
+</style>
 <script>
 import GroupSelect from '~/components/GroupSelect.vue'
 import GroupHeader from '~/components/GroupHeader.vue'

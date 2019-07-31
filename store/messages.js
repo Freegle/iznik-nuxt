@@ -1,11 +1,6 @@
-import Vue from 'vue'
-
 export const state = () => ({
-  // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
-  // storage.
-  list: {},
-
-  ids: [],
+  // Use array because we need to store them in the order returned by the server.
+  list: [],
 
   // The context from the last fetch, used for fetchMore.
   context: null
@@ -13,23 +8,28 @@ export const state = () => ({
 
 export const mutations = {
   add(state, item) {
-    state.list[item.id] = item
+    // Remove any existing entry.
+    // TODO Performance not great.
+    state.list = state.list.filter(obj => {
+      return parseInt(obj.id) !== parseInt(item.id)
+    })
 
-    if (state.ids.indexOf(item.id) !== -1) {
-      state.ids.push(item.id)
-    }
+    state.list.push(item)
   },
   addAll(state, items) {
     items.forEach(item => {
-      Vue.set(state.list, item.id, item)
+      // TODO Performance not great.  Items is short, though, so could take advantage of that.
+      state.list = state.list.filter(obj => {
+        return parseInt(obj.id) !== parseInt(item.id)
+      })
 
-      if (state.ids.indexOf(item.id) === -1) {
-        state.ids.push(item.id)
-      }
+      state.list.push(item)
     })
   },
   remove(state, item) {
-    state.list[item.id] = null
+    state.list = state.list.filter(obj => {
+      return parseInt(obj.id) !== parseInt(item.id)
+    })
   },
   setContext(state, ctx) {
     state.context = ctx
@@ -53,13 +53,8 @@ export const getters = {
     return state.context
   },
   getByGroup: state => groupid => {
-    const ret = []
-
-    state.ids.forEach(id => {
-      const message = state.list[id]
-      if (message.groups.length > 0 && message.groups[0].groupid === groupid) {
-        ret.push(message)
-      }
+    const ret = state.list.filter(message => {
+      return message.groups.length > 0 && message.groups[0].groupid === groupid
     })
 
     return ret

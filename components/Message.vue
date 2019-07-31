@@ -117,7 +117,7 @@ export default {
       default: null
     },
     snippet: {
-      type: String,
+      type: [String, Boolean],
       default: null
     },
     groups: {
@@ -145,8 +145,13 @@ export default {
       return bod
     },
     safeSnippet() {
-      let snip = twem.twem(this.$emoji, this.snippet)
-      snip = sanitizeHtml(this.snippet)
+      let snip = null
+
+      if (this.snippet) {
+        snip = twem.twem(this.$emoji, this.snippet)
+        snip = sanitizeHtml(this.snippet)
+      }
+
       return snip
     }
   },

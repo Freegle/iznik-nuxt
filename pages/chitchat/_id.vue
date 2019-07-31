@@ -4,7 +4,7 @@
       <b-col cols="3">
         Community Events go here
       </b-col>
-      <b-col cols="6" class="newsfeedHolder p-0" infinite-wrapper>
+      <b-col cols="6" class="newsfeedHolder p-0">
         <b-card>
           <b-card-text>
             <b-row>
@@ -105,21 +105,12 @@
             <NewsThread :id="entry.id" :key="'newsfeed-' + entry.id" :users="users" />
           </li>
         </ul>
-        <infinite-loading :identifier="infiniteId" force-use-infinite-wrapper="true" @infinite="loadMore">
+        <infinite-loading :identifier="infiniteId" force-use-infinite-wrapper="body" @infinite="loadMore">
           <span slot="no-results" />
           <span slot="spinner">
             <b-img-lazy src="~/static/loader.gif" />
           </span>
         </infinite-loading>
-        <div v-if="!busy">
-          <b-row class="text-center">
-            <b-col>
-              <b-btn variant="white" class="text-center" @click="loadMore">
-                Load more (TODO infinite scroll not working properly)
-              </b-btn>
-            </b-col>
-          </b-row>
-        </div>
       </b-col>
       <b-col cols="3">
         Volunteer ops and ads go here
@@ -225,7 +216,6 @@ export default {
 
   methods: {
     async loadMore($state) {
-      // TODO Infinite scroll playing up here, which is why we have the Load More button.  Debug and fix.
       this.busy = true
 
       console.log('Load more')
