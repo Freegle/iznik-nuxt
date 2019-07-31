@@ -32,15 +32,15 @@
   </b-col>
 </template>
 <script>
-import groupSelect from '~/components/groupSelect.vue'
-import groupHeader from '~/components/groupHeader.vue'
-import message from '~/components/message.vue'
+import GroupSelect from '~/components/GroupSelect.vue'
+import GroupHeader from '~/components/GroupHeader.vue'
+import Message from '~/components/Message.vue'
 
 export default {
   components: {
-    groupHeader,
-    groupSelect,
-    message
+    GroupHeader,
+    GroupSelect,
+    Message
   },
   data() {
     return {

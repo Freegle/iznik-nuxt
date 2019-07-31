@@ -30,8 +30,7 @@
             </span>
           </span>
           <b-img-lazy
-            rounded="
-                        circle"
+            rounded="circle"
             thumbnail
             class="profile p-0 ml-1 mb-1 inline"
             alt="Profile picture"
@@ -53,6 +52,12 @@
     </b-row>
   </div>
 </template>
+<style scoped>
+img.profile {
+  max-height: 25px !important;
+  max-width: 25px !important;
+}
+</style>
 <script>
 import twem from '~/assets/js/twem'
 

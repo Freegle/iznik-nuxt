@@ -61,7 +61,7 @@
           </infinite-loading>
           <ul v-for="(chatmessage, $index) in chatmessages" :key="'chatmessage-' + $index" class="p-0 pt-1 list-unstyled mb-1">
             <li v-if="chatmessage">
-              <chatMessage :key="'chatmessage-' + chatmessage.id" :chatmessage="chatmessage" :chat="chat" :me="me" :otheruser="otheruser" />
+              <ChatMessage :key="'chatmessage-' + chatmessage.id" :chatmessage="chatmessage" :chat="chat" :me="me" :otheruser="otheruser" />
             </li>
           </ul>
         </b-col>
@@ -141,26 +141,21 @@
   justify-content: flex-end;
   background-color: white;
 }
-
-img.profile {
-  max-height: 25px !important;
-  max-width: 25px !important;
-}
 </style>
 <script>
 // TODO It's painfully slow to switch between chats.  Profiling shows it's spending a lot of time in render code,
 // which suggests that I've done something dumb.
 
 import Vue from 'vue'
-import ratings from '~/components/ratings'
-import chatMessage from '~/components/chatMessage.vue'
+import Ratings from '~/components/Ratings'
+import ChatMessage from '~/components/ChatMessage.vue'
 import twem from '~/assets/js/twem'
 // import requestIdleCallback from '~/assets/js/requestIdleCallback'
 
 export default {
   components: {
-    ratings,
-    chatMessage
+    Ratings,
+    ChatMessage
   },
   props: {
     id: {

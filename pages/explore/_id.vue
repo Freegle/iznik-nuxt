@@ -30,8 +30,8 @@
   </div>
 </template>
 <script>
-import groupHeader from '~/components/groupHeader.vue'
-import message from '~/components/message.vue'
+import groupHeader from '~/components/GroupHeader.vue'
+import message from '~/components/Message.vue'
 
 export default {
   components: {

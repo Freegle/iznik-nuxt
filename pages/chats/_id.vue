@@ -4,7 +4,7 @@
       <b-col cols="3" class="chatlist p-0">
         <ul v-for="(chat, $index) in sortedChats" :key="'chat-' + $index" class="p-0 pt-1 list-unstyled mb-1">
           <li :class="{ active: activeChat && chat.id == activeChat.id }">
-            <chatListEntry :key="'chatlistentry-' + chat.id" v-bind="chat" />
+            <ChatListEntry :key="'ChatListEntry-' + chat.id" v-bind="chat" />
           </li>
         </ul>
       </b-col>
@@ -27,14 +27,14 @@
 }
 </style>
 <script>
-import chatPane from '~/components/chatPane.vue'
-import chatListEntry from '~/components/chatListEntry.vue'
+import ChatPane from '~/components/ChatPane.vue'
+import ChatListEntry from '~/components/ChatListEntry.vue'
 import requestIdleCallback from '~/assets/js/requestIdleCallback'
 
 export default {
   components: {
-    chatPane,
-    chatListEntry
+    ChatPane,
+    ChatListEntry
   },
 
   validate({ params }) {

@@ -102,7 +102,7 @@
         </b-row>
         <ul v-for="(entry, $index) in newsfeed" :key="'newsfeed-' + $index + '-area-' + selectedArea" class="p-0 pt-1 list-unstyled mb-1">
           <li>
-            <newsThread :id="entry.id" :key="'newsfeed-' + entry.id" :users="users" />
+            <NewsThread :id="entry.id" :key="'newsfeed-' + entry.id" :users="users" />
           </li>
         </ul>
         <infinite-loading :identifier="infiniteId" force-use-infinite-wrapper="true" @infinite="loadMore">
@@ -136,12 +136,12 @@
 </style>
 <script>
 // TODO Post photos
-import newsThread from '~/components/newsThread.vue'
+import NewsThread from '~/components/NewsThread.vue'
 import twem from '~/assets/js/twem'
 
 export default {
   components: {
-    newsThread
+    NewsThread
   },
 
   validate({ params }) {

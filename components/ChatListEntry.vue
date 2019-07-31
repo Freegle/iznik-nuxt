@@ -43,6 +43,12 @@
     </nuxt-link>
   </div>
 </template>
+<style scoped>
+img.profile {
+  max-height: 25px !important;
+  max-width: 25px !important;
+}
+</style>
 <script>
 import twem from '~/assets/js/twem'
 

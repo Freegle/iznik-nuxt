@@ -22,7 +22,7 @@
               <span class="text-muted small pl-2">
                 {{ $moment(newsfeed.timestamp).fromNow() }}
               </span>
-              <newsUserInfo :user="users[newsfeed.userid]" />
+              <NewsUserInfo :user="users[newsfeed.userid]" />
             </div>
           </b-col>
         </b-row>
@@ -57,7 +57,7 @@
         <div v-if="newsfeed.replies && newsfeed.replies.length > 0">
           <ul v-for="(entry, $index) in newsfeed.replies" :key="'newsfeed-' + $index" class="p-0 pt-1 list-unstyled mb-1">
             <li>
-              <newsReply :key="'newsfeedreply-' + newsfeed.id + '-reply-' + entry.id" :reply="entry" :users="users" />
+              <news-reply :key="'newsfeedreply-' + newsfeed.id + '-reply-' + entry.id" :reply="entry" :users="users" />
             </li>
           </ul>
         </div>
@@ -132,19 +132,22 @@
 }
 </style>
 <script>
+// TODO Show earlier for replies; currently limited to 10
 // TODO Click to show profile
 // TODO Love this function
 // TODO Post photos
 // TODO Report etc menu dropdown
 // TODO Alt+Enter
+// TODO Delete
+// TODO Edit
 import twem from '~/assets/js/twem'
-import newsUserInfo from '~/components/newsUserInfo'
-import newsReply from '~/components/newsReply'
+import NewsUserInfo from '~/components/NewsUserInfo'
+import NewsReply from '~/components/NewsReply'
 
 export default {
   components: {
-    newsUserInfo,
-    newsReply
+    NewsUserInfo,
+    NewsReply
   },
   props: {
     id: {
