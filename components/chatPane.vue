@@ -282,10 +282,10 @@ export default {
       }
     },
     send: function() {
-      const msg = this.sendmessage
+      let msg = this.sendmessage
 
       // Encode up any emojis.
-      console.log('Send', this.sendmessage, twem.untwem(msg), this.id)
+      msg = twem.untwem(msg)
 
       // Send it
       this.$store

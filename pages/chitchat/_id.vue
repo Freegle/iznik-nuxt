@@ -44,7 +44,7 @@
                     <fa icon="pen" />&nbsp;ChitChat
                   </template>
                   <b-card-text>
-                    <b-textarea v-focus rows="2" max-rows="8" placeholder="Chat to nearby freeglers...ask for advice, recommendations, or just have a good old blether.  If you're looking to give or find stuff, please use the OFFER/WANTED tabs.  Everything on here is public." />
+                    <b-textarea v-model="startThread" v-focus rows="2" max-rows="8" placeholder="Chat to nearby freeglers...ask for advice, recommendations, or just have a good old blether.  If you're looking to give or find stuff, please use the OFFER/WANTED tabs.  Everything on here is public." />
                   </b-card-text>
                 </b-tab>
                 <b-tab>
@@ -89,7 +89,7 @@
                         <b-btn variant="primary">
                           Add photo
                         </b-btn>
-                        <b-btn variant="success">
+                        <b-btn variant="success" @click="postIt">
                           Post it!
                         </b-btn>
                       </div>
@@ -136,7 +136,9 @@
 </style>
 <script>
 // TODO Post photos
+// TODO Use store to speed load
 import newsThread from '~/components/newsThread.vue'
+import twem from '~/assets/js/twem'
 
 export default {
   components: {
@@ -154,6 +156,7 @@ export default {
       newsfeed: null,
       users: [],
       busy: false,
+      startThread: null,
       areaOptions: [
         {
           value: 'nearby',
@@ -258,6 +261,23 @@ export default {
       this.infiniteId++
       this.$store.commit('newsfeed/clearFeed')
       this.newsfeed = null
+    },
+
+    async postIt() {
+      let msg = this.startThread
+
+      // Encode up any emojis.
+      msg = twem.untwem(msg)
+
+      await this.$store.dispatch('newsfeed/send', {
+        message: msg
+      })
+
+      // Show the new message
+      this.newsfeed = this.$store.getters['newsfeed/newsfeed']()
+
+      // Clear the textarea now it's sent.
+      this.startThread = null
     }
   }
 }

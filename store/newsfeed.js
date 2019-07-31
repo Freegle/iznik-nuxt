@@ -9,7 +9,7 @@ export const state = () => ({
 
 export const mutations = {
   addNewsfeed(state, item) {
-    state.newsfeed[item.id] = item
+    state.newsfeed.unshift(item)
   },
 
   mergeNewsfeed(state, payload) {
@@ -121,21 +121,42 @@ export const actions = {
       }
     }
   },
+
   async fetch({ commit }, params) {
+    let newsfeedobj = null
+
     const newsfeed = await this.$axios.get(process.env.API + '/newsfeed', {
       params: params
     })
 
     if (newsfeed.status === 200 && newsfeed.data.ret === 0) {
-      const newsfeedobj = newsfeed.data.chatroom
+      newsfeedobj = newsfeed.data.newsfeed
 
       if (newsfeedobj) {
         // Valid id
-        commit('add', newsfeedobj)
-      } else {
-        // Invalid - go to list
-        this.$router.push('/chitchat')
+        commit('addNewsfeed', newsfeedobj)
       }
     }
+
+    return newsfeedobj
+  },
+
+  async send({ commit, dispatch }, params) {
+    let newsfeedobj = null
+
+    const newsfeed = await this.$axios.post(
+      process.env.API + '/newsfeed',
+      params
+    )
+
+    if (newsfeed.status === 200 && newsfeed.data.ret === 0) {
+      const id = newsfeed.data.id
+
+      newsfeedobj = await dispatch('fetch', {
+        id: id
+      })
+    }
+
+    return newsfeedobj
   }
 }
