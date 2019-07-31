@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white">
+  <div v-if="newsfeed" class="bg-white">
     <b-card>
       <b-card-text>
         <b-row>
@@ -40,7 +40,7 @@
                 </b-btn>
               </li>
               <li class="list-inline-item">
-                <b-btn variant="white" size="sm">
+                <b-btn variant="white" size="sm" @click="focusComment">
                   <fa icon="comment" />&nbsp;Comment
                 </b-btn>
               </li>
@@ -80,6 +80,7 @@
                 </b-input-group-prepend>
                 <b-textarea
                   ref="threadcomment"
+                  v-model="threadcomment"
                   size="sm"
                   rows="1"
                   max-rows="8"
@@ -87,10 +88,15 @@
                   spellcheck="true"
                   placeholder="Write a comment..."
                   class="p-0 pl-1 pt-1"
+                  @keydown.enter.exact.prevent
+                  @keyup.enter.exact="sendComment"
+                  @keydown.enter.shift.exact="newlineComment"
+                  @keydown.alt.shift.exact="newlineComment"
+                  @focus="focusedComment"
                 />
               </b-input-group>
             </b-col>
-            <b-col cols="1">
+            <b-col cols="1" class="p-0">
               <b-btn size="sm" variant="primary" class="float-right">
                 <fa icon="camera" />&nbsp;Photo
               </b-btn>
@@ -130,6 +136,7 @@
 // TODO Love this function
 // TODO Post photos
 // TODO Report etc menu dropdown
+// TODO Alt+Enter
 import twem from '~/assets/js/twem'
 import newsUserInfo from '~/components/newsUserInfo'
 import newsReply from '~/components/newsReply'
@@ -140,13 +147,19 @@ export default {
     newsReply
   },
   props: {
-    newsfeed: {
-      type: Object,
+    id: {
+      type: Number,
       required: true
     },
     users: {
       type: Object,
       required: true
+    }
+  },
+  data: function() {
+    return {
+      replyingTo: null,
+      threadcomment: null
     }
   },
   computed: {
@@ -157,6 +170,40 @@ export default {
     },
     me() {
       return this.$store.state.auth.user
+    },
+    newsfeed() {
+      return this.$store.getters['newsfeed/get'](this.id)
+    }
+  },
+  methods: {
+    focusComment: function() {
+      this.$refs.threadcomment.focus()
+    },
+    focusedComment: function() {
+      console.log('Fcosued on comment')
+      this.replyingTo = this.newsfeed.id
+    },
+    async sendComment() {
+      // Encode up any emojis.
+      console.log('Send comment', this.threadcomment)
+
+      if (this.threadcomment) {
+        const msg = twem.untwem(this.threadcomment)
+        console.log('Now', msg, this.replyingTo)
+
+        await this.$store.dispatch('newsfeed/send', {
+          message: msg,
+          replyto: this.replyingTo
+        })
+
+        // New message will be shown because it's in the store and we have a computed property.
+
+        // Clear the textarea now it's sent.
+        this.threadcomment = null
+      }
+    },
+    newlineComment() {
+      this.threadcomment += '\n'
     }
   }
 }

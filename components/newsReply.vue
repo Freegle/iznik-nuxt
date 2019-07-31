@@ -12,11 +12,13 @@
             title="Profile"
             :src="users[reply.userid].profile.turl"
           />
-          <fa v-if="users[reply.userid].settings.showmod" icon="leaf" class="showmodsm text-success" />
-          <span class="text-success font-weight-bold pl-2">
-            {{ users[reply.userid].displayname }}
-          </span>
-          <span class="font-weight-bold prewrap replytext">{{ emessage }}</span>
+          <div>
+            <fa v-if="users[reply.userid].settings.showmod" icon="leaf" class="showmodsm text-success" />
+            <span class="text-success font-weight-bold pl-2">
+              {{ users[reply.userid].displayname }}
+            </span>
+            <span class="font-weight-bold prewrap replytext">{{ emessage }}</span>
+          </div>
         </div>
       </b-col>
       <b-col v-else>
@@ -49,6 +51,7 @@
 }
 
 .replytext {
+  /* TODO Indent second and subsequent lines of reply */
   font-size: 14px;
   line-height: 1.2;
 }

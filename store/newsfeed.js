@@ -9,6 +9,12 @@ export const state = () => ({
 
 export const mutations = {
   addNewsfeed(state, item) {
+    // Remove any existing copy.
+    // TODO Performance is poor here, we're scanning arrays.  Should newsfeed be an object after all?
+    state.newsfeed = state.newsfeed.filter(obj => {
+      return parseInt(obj.id) !== parseInt(item.id)
+    })
+
     state.newsfeed.unshift(item)
   },
 
@@ -50,15 +56,11 @@ export const mutations = {
 
 export const getters = {
   get: state => id => {
-    let ret = null
-
-    Object.keys(state.list).forEach(key => {
-      const entry = state.list[key]
-
-      if (parseInt(key) === parseInt(id)) {
-        ret = entry
-      }
-    })
+    const ret = state.newsfeed
+      ? state.newsfeed.find(item => {
+          return parseInt(item.id) === parseInt(id)
+        })
+      : null
 
     return ret
   },
@@ -153,8 +155,9 @@ export const actions = {
     if (newsfeed.status === 200 && newsfeed.data.ret === 0) {
       const id = newsfeed.data.id
 
+      // We want to fetch the item just created if it is the start of a thread, or the thread start if it isn't.
       newsfeedobj = await dispatch('fetch', {
-        id: id
+        id: params.replyto ? params.replyto : id
       })
     }
 

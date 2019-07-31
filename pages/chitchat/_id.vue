@@ -102,7 +102,7 @@
         </b-row>
         <ul v-for="(entry, $index) in newsfeed" :key="'newsfeed-' + $index + '-area-' + selectedArea" class="p-0 pt-1 list-unstyled mb-1">
           <li>
-            <newsThread :key="'newsfeed-' + entry.id" :newsfeed="entry" :users="users" />
+            <newsThread :id="entry.id" :key="'newsfeed-' + entry.id" :users="users" />
           </li>
         </ul>
         <infinite-loading :identifier="infiniteId" force-use-infinite-wrapper="true" @infinite="loadMore">
