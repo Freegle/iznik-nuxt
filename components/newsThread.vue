@@ -54,7 +54,7 @@
         </b-row>
       </b-card-text>
       <div slot="footer">
-        <div v-if="newsfeed.replies.length > 0">
+        <div v-if="newsfeed.replies && newsfeed.replies.length > 0">
           <ul v-for="(entry, $index) in newsfeed.replies" :key="'newsfeed-' + $index" class="p-0 pt-1 list-unstyled mb-1">
             <li>
               <newsReply :key="'newsfeedreply-' + newsfeed.id + '-reply-' + entry.id" :reply="entry" :users="users" />
@@ -128,6 +128,8 @@
 <script>
 // TODO Click to show profile
 // TODO Love this function
+// TODO Post photos
+// TODO Report etc menu dropdown
 import twem from '~/assets/js/twem'
 import newsUserInfo from '~/components/newsUserInfo'
 import newsReply from '~/components/newsReply'

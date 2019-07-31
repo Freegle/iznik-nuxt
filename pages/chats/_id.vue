@@ -81,7 +81,7 @@ export default {
 
     console.log('Currently got', chats)
 
-    if (!store.$auth.state.loggedIn) {
+    if (!store.$auth.loggedIn) {
       console.log('Not logged in')
     } else {
       if (chats) {

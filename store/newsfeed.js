@@ -3,7 +3,8 @@ export const state = () => ({
   // storage.
   newsfeed: [],
   users: {},
-  context: {}
+  context: {},
+  area: 'nearby'
 })
 
 export const mutations = {
@@ -35,6 +36,15 @@ export const mutations = {
 
   setContext(state, params) {
     state.context = params.ctx
+  },
+
+  area(state, payload) {
+    state.area = payload.area
+  },
+
+  clearFeed(state) {
+    state.newsfeed = []
+    state.context = {}
   }
 }
 
@@ -63,17 +73,28 @@ export const getters = {
 
   getContext: state => () => {
     return state.context
+  },
+
+  area: state => id => {
+    return state.area
   }
 }
 
 export const actions = {
-  async fetchFeed({ commit }, params) {
+  clearFeed({ commit }, params) {
+    commit('clearFeed')
+  },
+
+  async fetchFeed({ commit, state }, params) {
     params = params || {}
     if (params.context) {
       // Ensure the context is a real object, in case it has been in the store.
       const ctx = JSON.parse(JSON.stringify(params.context))
       params.context = ctx
     }
+
+    // Ensure the context has the correct distance we want to see.
+    params.context.distance = state.area
 
     params.types = [
       'Message',
@@ -101,11 +122,8 @@ export const actions = {
     }
   },
   async fetch({ commit }, params) {
-    const id = params.id
     const newsfeed = await this.$axios.get(process.env.API + '/newsfeed', {
-      params: {
-        id: id
-      }
+      params: params
     })
 
     if (newsfeed.status === 200 && newsfeed.data.ret === 0) {

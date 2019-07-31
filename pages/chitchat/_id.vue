@@ -5,12 +5,107 @@
         Community Events go here
       </b-col>
       <b-col cols="6" class="newsfeedHolder p-0" infinite-wrapper>
-        <ul v-for="(entry, $index) in newsfeed" :key="'newsfeed-' + $index" class="p-0 pt-1 list-unstyled mb-1">
+        <b-card>
+          <b-card-text>
+            <b-row>
+              <b-col class="text-center">
+                <h4>
+                  Looking for your own posts?  Click <nuxt-link to="/myposts">
+                    here
+                  </nuxt-link>
+                </h4>
+              </b-col>
+            </b-row>
+            <b-row>
+              <b-col cols="5">
+                <nuxt-link to="/give">
+                  <b-btn block variant="success" class="float-left">
+                    <fa icon="gift" />&nbsp;Give stuff
+                  </b-btn>
+                </nuxt-link>
+              </b-col>
+              <b-col cols="2" />
+              <b-col cols="5">
+                <nuxt-link to="/find">
+                  <b-btn block variant="primary" class="float-right">
+                    <fa icon="search" />&nbsp;Find stuff
+                  </b-btn>
+                </nuxt-link>
+              </b-col>
+            </b-row>
+          </b-card-text>
+        </b-card>
+        <b-row class="mt-2">
+          <b-col>
+            <b-card no-body>
+              <b-tabs card>
+                <b-tab active>
+                  <template slot="title">
+                    <fa icon="pen" />&nbsp;ChitChat
+                  </template>
+                  <b-card-text>
+                    <b-textarea v-focus rows="2" max-rows="8" placeholder="Chat to nearby freeglers...ask for advice, recommendations, or just have a good old blether.  If you're looking to give or find stuff, please use the OFFER/WANTED tabs.  Everything on here is public." />
+                  </b-card-text>
+                </b-tab>
+                <b-tab>
+                  <template slot="title">
+                    <fa icon="gift" />&nbsp;OFFER
+                  </template>
+                  <b-card-text>TODO</b-card-text>
+                </b-tab>
+                <b-tab>
+                  <template slot="title">
+                    <fa icon="search" />&nbsp;WANTED
+                  </template>
+                  <b-card-text>TODO</b-card-text>
+                </b-tab>
+                <b-tab>
+                  <template slot="title">
+                    <fa icon="calendar-alt" />&nbsp;Event
+                  </template>
+                  <b-card-text>TODO</b-card-text>
+                </b-tab>
+                <b-tab>
+                  <template slot="title">
+                    <fa icon="star" />&nbsp;Volunteer
+                  </template>
+                  <b-card-text>TODO</b-card-text>
+                </b-tab>
+              </b-tabs>
+              <hr class="mt-1 mb-1">
+              <b-row>
+                <b-col cols="3" class="pl-4 text-muted">
+                  <div v-if="me.settings.mylocation && me.settings.mylocation.area.name">
+                    <fa icon="map-marker-alt" />&nbsp;{{ me.settings.mylocation.area.name }}
+                  </div>
+                </b-col>
+                <b-col cols="6">
+                  <b-form-select v-model="selectedArea" :options="areaOptions" @change="areaChange" />
+                </b-col>
+                <b-col cols="3">
+                  <b-row>
+                    <b-col>
+                      <div class="float-right pb-1 pr-1">
+                        <b-btn variant="primary">
+                          Add photo
+                        </b-btn>
+                        <b-btn variant="success">
+                          Post it!
+                        </b-btn>
+                      </div>
+                    </b-col>
+                  </b-row>
+                </b-col>
+              </b-row>
+            </b-card>
+          </b-col>
+        </b-row>
+        <ul v-for="(entry, $index) in newsfeed" :key="'newsfeed-' + $index + '-area-' + selectedArea" class="p-0 pt-1 list-unstyled mb-1">
           <li>
             <newsThread :key="'newsfeed-' + entry.id" :newsfeed="entry" :users="users" />
           </li>
         </ul>
-        <infinite-loading force-use-infinite-wrapper="true" @infinite="loadMore">
+        <infinite-loading :identifier="infiniteId" force-use-infinite-wrapper="true" @infinite="loadMore">
           <span slot="no-results" />
         </infinite-loading>
         <div v-if="!busy">
@@ -29,12 +124,18 @@
     </b-row>
   </b-col>
 </template>
-<style>
+<style scoped>
 .newsfeedHolder {
   height: calc(100vh - 74px);
 }
+
+.tab-content,
+.tab-pane {
+  background-color: white;
+}
 </style>
 <script>
+// TODO Post photos
 import newsThread from '~/components/newsThread.vue'
 
 export default {
@@ -52,11 +153,62 @@ export default {
       id: null,
       newsfeed: null,
       users: [],
-      busy: false
+      busy: false,
+      areaOptions: [
+        {
+          value: 'nearby',
+          text: 'Show chitchat from nearby'
+        },
+        {
+          value: 1609,
+          text: 'Show chitchat within 1 mile'
+        },
+        {
+          value: 3128,
+          text: 'Show chitchat within 2 miles'
+        },
+        {
+          value: 8046,
+          text: 'Show chitchat within 5 miles'
+        },
+        {
+          value: 16093,
+          text: 'Show chitchat within 10 miles'
+        },
+        {
+          value: 32186,
+          text: 'Show chitchat within 20 miles'
+        },
+        {
+          value: 80467,
+          text: 'Show chitchat within 50 miles'
+        },
+        {
+          value: 0,
+          text: 'Show chitchat from anywhere'
+        }
+      ],
+      infiniteId: +new Date()
     }
   },
 
-  computed: {},
+  computed: {
+    me() {
+      return this.$store.state.auth.user
+    },
+    selectedArea: {
+      get: function() {
+        const remembered = this.$store.getters['newsfeed/area']()
+
+        return remembered || 0
+      },
+      set: function(newval) {
+        this.$store.commit('newsfeed/area', {
+          area: newval
+        })
+      }
+    }
+  },
 
   created() {
     this.id = this.$route.params.id
@@ -68,7 +220,7 @@ export default {
       this.busy = true
 
       console.log('Load more')
-      if (!this.$store.$auth.state.loggedIn) {
+      if (!this.$store.$auth.loggedIn) {
         console.log('Not logged in')
 
         if ($state.complete) {
@@ -78,7 +230,8 @@ export default {
         try {
           const context = this.$store.getters['newsfeed/getContext']()
           await this.$store.dispatch('newsfeed/fetchFeed', {
-            context: context
+            context: context,
+            distance: this.selectedArea
           })
 
           this.newsfeed = this.$store.getters['newsfeed/newsfeed']()
@@ -98,6 +251,13 @@ export default {
 
         this.busy = false
       }
+    },
+
+    areaChange: function() {
+      console.log('Area change', this.selectedArea)
+      this.infiniteId++
+      this.$store.commit('newsfeed/clearFeed')
+      this.newsfeed = null
     }
   }
 }

@@ -30,7 +30,6 @@
       </b-col>
     </b-row>
   </b-col>
-  </div>
 </template>
 <script>
 import groupSelect from '~/components/groupSelect.vue'
