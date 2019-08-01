@@ -1,21 +1,21 @@
 <template>
   <div>
     <b-row>
-      <b-col v-if="userid && users[userid]">
+      <b-col v-if="reply.userid && users[reply.userid]">
         <div>
           <b-img-lazy
-            v-if="users[userid].profile"
+            v-if="users[reply.userid].profile"
             rounded="circle"
             thumbnail
             class="profile p-0 ml-1 mb-1 inline float-left"
             alt="Profile picture"
             title="Profile"
-            :src="users[userid].profile.turl"
+            :src="users[reply.userid].profile.turl"
           />
           <div>
-            <fa v-if="users[userid].settings.showmod" icon="leaf" class="showmodsm text-success" />
+            <fa v-if="users[reply.userid].settings.showmod" icon="leaf" class="showmodsm text-success" />
             <span class="text-success font-weight-bold pl-2">
-              {{ users[userid].displayname }}
+              {{ users[reply.userid].displayname }}
             </span>
             <span class="font-weight-bold prewrap replytext">{{ emessage }}</span>
           </div>
@@ -23,17 +23,19 @@
       </b-col>
       <b-col v-else>
         <b-alert variant="danger" show>
-          Unknown userid {{ userid }} TODO this is a bug.
+          Unknown userid {{ reply.userid }} TODO this is a bug.
         </b-alert>
       </b-col>
     </b-row>
-    <b-row v-if="reply.message && userid && users[userid]">
+    <b-row v-if="reply.message && reply.userid && users[reply.userid]">
       <b-col class="pl-8">
         <span class="text-muted small pl-4">
           {{ $moment(reply.timestamp).fromNow() }}
         </span>
-        <NewsUserInfo :user="users[userid]" />
-        &bull;<span class="text-muted small clickme" @click="replyReply">&nbsp;Reply</span>
+        <NewsUserInfo :user="users[reply.userid]" />
+        <span v-if="!threadhead.closed">
+          &bull;<span class="text-muted small clickme" @click="replyReply">&nbsp;Reply</span>
+        </span>
         <span class="text-muted small clickme">
           <span v-if="!reply.loved" @click="love">
             &bull;&nbsp;Love this
@@ -139,6 +141,10 @@ export default {
     NewsUserInfo
   },
   props: {
+    threadhead: {
+      type: Object,
+      required: true
+    },
     reply: {
       type: Object,
       required: true
@@ -163,22 +169,6 @@ export default {
       return this.reply.message
         ? twem.twem(this.$twemoji, this.reply.message)
         : null
-    },
-    userid() {
-      // The API returns userid in the summary and user.id when we get an individual object, so we need to
-      // mess about to get the userid.
-      const reply = this.$store.getters['newsfeed/get'](this.id)
-      let ret = null
-
-      if (reply) {
-        if (reply.userid) {
-          ret = reply.userid
-        } else if (reply.user) {
-          ret = reply.user.id
-        }
-      }
-
-      return ret
     }
   },
   methods: {

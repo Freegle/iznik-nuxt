@@ -54,7 +54,7 @@
                   <fa class="text-danger" icon="heart" />&nbsp;Unlove this
                 </b-btn>
               </li>
-              <li class="list-inline-item">
+              <li v-if="!newsfeed.closed" class="list-inline-item">
                 <b-btn variant="white" size="sm" @click="focusComment">
                   <fa icon="comment" />&nbsp;Comment
                 </b-btn>
@@ -75,11 +75,11 @@
         <div v-if="newsfeed.replies && newsfeed.replies.length > 0">
           <ul v-for="(entry, $index) in newsfeed.replies" :key="'newsfeed-' + $index" class="p-0 pt-1 list-unstyled mb-1">
             <li>
-              <news-reply :key="'newsfeedreply-' + newsfeed.id + '-reply-' + entry.id" :reply="entry" :users="users" />
+              <news-reply :key="'newsfeedreply-' + newsfeed.id + '-reply-' + entry.id" :reply="entry" :users="users" :threadhead="newsfeed" />
             </li>
           </ul>
         </div>
-        <span class="text-small">
+        <span v-if="!newsfeed.closed" class="text-small">
           <b-row>
             <b-col>
               <b-input-group>
@@ -121,6 +121,9 @@
             </b-col>
           </b-row>
         </span>
+        <b-alert v-else variant="info" show>
+          This thread is now closed.  Thanks to everyone who contributed.
+        </b-alert>
       </div>
     </b-card>
     <b-modal
