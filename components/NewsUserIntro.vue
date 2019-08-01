@@ -1,0 +1,54 @@
+<template>
+  <b-row>
+    <b-col v-if="userid">
+      <b-img-lazy
+        v-if="users[userid].profile.turl"
+        rounded="circle"
+        thumbnail
+        class="profile p-0 ml-1 mb-1 inline float-left"
+        alt="Profile picture"
+        title="Profile"
+        :src="users[userid].profile.turl"
+      />
+      <fa v-if="users[userid].settings.showmod" icon="leaf" class="showmod text-success" />
+      <span class="text-success font-weight-bold pl-2">
+        {{ users[userid].displayname }}
+      </span>
+      {{ append }}
+      <br>
+      <span class="text-muted small pl-2">
+        {{ $moment(newsfeed.timestamp).fromNow() }}
+      </span>
+      <NewsUserInfo :user="users[userid]" />
+    </b-col>
+  </b-row>
+</template>
+<style scoped>
+</style>
+<script>
+import NewsUserInfo from '~/components/NewsUserInfo'
+
+export default {
+  components: {
+    NewsUserInfo
+  },
+  props: {
+    userid: {
+      type: Number,
+      required: true
+    },
+    users: {
+      type: Object,
+      required: true
+    },
+    newsfeed: {
+      type: Object,
+      required: true
+    },
+    append: {
+      type: String,
+      required: false
+    }
+  }
+}
+</script>

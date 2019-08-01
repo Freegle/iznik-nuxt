@@ -222,7 +222,6 @@ export default {
     },
     loadMore: function($state) {
       const currentCount = this.chatmessages.length
-      console.log('Load more')
 
       if (this.complete) {
         // This is a bit weird - calling complete() works here to stop the plugin firing, but not lower down in the

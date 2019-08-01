@@ -40,7 +40,7 @@
           <b-img-lazy
             rounded="circle"
             thumbnail
-            class="profile p-0 ml-1 mb-1"
+            class="profilesm p-0 ml-1 mb-1"
             alt="Profile picture"
             title="Profile"
             :src="expanded.fromuser.profile.turl"
@@ -187,11 +187,6 @@ h4 {
 img.attachment {
   max-height: 150px !important;
   max-width: 150px !important;
-}
-
-img.profile {
-  max-height: 25px !important;
-  max-width: 25px !important;
 }
 
 .messagePhoto {

@@ -99,16 +99,6 @@
   </div>
 </template>
 <style scoped>
-.profile {
-  width: 25px !important;
-  height: 25px !important;
-}
-
-.profilesm {
-  width: 25px !important;
-  height: 25px !important;
-}
-
 .replytext {
   /* TODO Indent second and subsequent lines of reply */
   font-size: 14px;

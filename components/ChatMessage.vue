@@ -6,33 +6,25 @@
           <b-img-lazy
             rounded="circle"
             thumbnail
-            class="profile p-0 ml-1 mb-1 inline"
+            class="profilesm p-0 ml-1 mb-1 inline"
             alt="Profile picture"
             title="Profile"
             :src="otheruser.profile.turl"
           />
           <span class="chatMessage">
-            <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)">
-              <b>{{ emessage }}</b>
-            </span>
-            <span v-else>
-              {{ emessage }}
-            </span>
+            <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap"><b>{{ emessage }}</b></span>
+            <span v-else class="prewrap">{{ emessage }}</span>
           </span>
         </div>
         <div v-else class="float-right">
           <span class="chatMessage">
-            <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)">
-              <b>{{ emessage }}</b>
-            </span>
-            <span v-else>
-              {{ emessage }}
-            </span>
+            <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap"><b>{{ emessage }}</b></span>
+            <span v-else class="prewrap">{{ emessage }}</span>
           </span>
           <b-img-lazy
             rounded="circle"
             thumbnail
-            class="profile p-0 ml-1 mb-1 inline"
+            class="profilesm p-0 ml-1 mb-1 inline"
             alt="Profile picture"
             title="Profile"
             :src="me.profile.turl"
@@ -53,10 +45,6 @@
   </div>
 </template>
 <style scoped>
-img.profile {
-  max-height: 25px !important;
-  max-width: 25px !important;
-}
 </style>
 <script>
 import twem from '~/assets/js/twem'
@@ -82,7 +70,7 @@ export default {
   },
   computed: {
     emessage() {
-      return twem.twem(this.$twemoji, this.chatmessage.message)
+      return twem.twem(this.$twemoji, this.chatmessage.message).trim()
     }
   }
 }
