@@ -106,8 +106,8 @@
 }
 
 .showmodsm {
-  top: 14px;
-  left: 32px;
+  top: 30px;
+  left: 40px;
   border-radius: 50%;
   position: absolute;
   background-color: white;
