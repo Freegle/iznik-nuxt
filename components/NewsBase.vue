@@ -73,26 +73,6 @@ export default {
     }
   },
   methods: {
-    async sendComment() {
-      // Encode up any emojis.
-      if (this.threadcomment) {
-        const msg = twem.untwem(this.threadcomment)
-
-        await this.$store.dispatch('newsfeed/send', {
-          message: msg,
-          replyto: this.replyingTo,
-          threadhead: this.newsfeed.threadhead
-        })
-
-        // New message will be shown because it's in the store and we have a computed property.
-
-        // Clear the textarea now it's sent.
-        this.threadcomment = null
-      }
-    },
-    newlineComment() {
-      this.threadcomment += '\n'
-    },
     share() {
       // TODO
     }

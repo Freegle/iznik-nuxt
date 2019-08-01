@@ -5,7 +5,7 @@
         <table v-if="users[reply.userid].profile">
           <tbody>
             <tr>
-              <td>
+              <td class="align-top">
                 <b-img-lazy
                   rounded="circle"
                   class="profilemd p-0 ml-1 mb-1 mr-2 inline float-left"
@@ -14,7 +14,7 @@
                   :src="users[reply.userid].profile.turl"
                 />
               </td>
-              <td>
+              <td class="align-top">
                 <fa v-if="users[reply.userid].settings.showmod" icon="leaf" class="showmodsm text-success" />
                 <span class="text-success font-weight-bold">{{ users[reply.userid].displayname }}</span>
                 <span class="font-weight-bold prewrap replytext">{{ emessage }}</span>

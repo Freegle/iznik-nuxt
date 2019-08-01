@@ -7,6 +7,8 @@
         <news-community-event v-else-if="newsfeed.type === 'CommunityEvent'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
         <news-volunteer-opportunity v-else-if="newsfeed.type === 'VolunteerOpportunity'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
         <news-story v-else-if="newsfeed.type === 'Story'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
+        <news-alert v-else-if="newsfeed.type === 'Alert'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
+        <!--noticeboard-->
         <b-alert v-else variant="danger" show>
           Unknown item type {{ newsfeed.type }}
         </b-alert>
@@ -67,11 +69,6 @@
       </div>
     </b-card>
   </div>
-
-  <!-- TODO 'CentralPublicity':-->
-  <!-- TODO 'Alert':-->
-  <!-- TODO 'Story':-->
-  <!-- TODO 'Noticeboard':-->
 </template>
 <style scoped>
 .profilesm {
@@ -88,14 +85,15 @@
 // TODO Delete
 // TODO Edit
 // TODO Some indication of newly added entries
-// TODO Share
 // TODO Click on loves to show who loves them
+import twem from '~/assets/js/twem'
 import NewsReply from '~/components/NewsReply'
 import NewsMessage from '~/components/NewsMessage'
 import NewsAboutMe from '~/components/NewsAboutMe'
 import NewsCommunityEvent from '~/components/NewsCommunityEvent'
 import NewsVolunteerOpportunity from '~/components/NewsVolunteerOpportunity'
 import NewsStory from '~/components/NewsStory'
+import NewsAlert from '~/components/NewsAlert'
 
 export default {
   components: {
@@ -104,7 +102,8 @@ export default {
     NewsAboutMe,
     NewsCommunityEvent,
     NewsVolunteerOpportunity,
-    NewsStory
+    NewsStory,
+    NewsAlert
   },
   props: {
     id: {
@@ -136,6 +135,26 @@ export default {
     },
     focusedComment: function() {
       this.replyingTo = this.newsfeed.id
+    },
+    async sendComment() {
+      // Encode up any emojis.
+      if (this.threadcomment) {
+        const msg = twem.untwem(this.threadcomment)
+
+        await this.$store.dispatch('newsfeed/send', {
+          message: msg,
+          replyto: this.replyingTo,
+          threadhead: this.newsfeed.threadhead
+        })
+
+        // New message will be shown because it's in the store and we have a computed property.
+
+        // Clear the textarea now it's sent.
+        this.threadcomment = null
+      }
+    },
+    newlineComment() {
+      this.threadcomment += '\n'
     }
   }
 }
