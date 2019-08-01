@@ -15,6 +15,9 @@
         {{ users[userid].displayname }}
       </span>
       {{ append }}
+      <span v-if="appendBold">
+        "{{ appendBold }}"
+      </span>
       <br>
       <span class="text-muted small pl-2">
         {{ $moment(newsfeed.timestamp).fromNow() }}
@@ -58,6 +61,10 @@ export default {
       required: true
     },
     append: {
+      type: String,
+      required: false
+    },
+    appendBold: {
       type: String,
       required: false
     }

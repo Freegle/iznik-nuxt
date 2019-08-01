@@ -8,7 +8,7 @@
         <news-volunteer-opportunity v-else-if="newsfeed.type === 'VolunteerOpportunity'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
         <news-story v-else-if="newsfeed.type === 'Story'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
         <news-alert v-else-if="newsfeed.type === 'Alert'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
-        <!--noticeboard-->
+        <news-noticeboard v-else-if="newsfeed.type === 'Noticeboard'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
         <b-alert v-else variant="danger" show>
           Unknown item type {{ newsfeed.type }}
         </b-alert>
@@ -94,6 +94,7 @@ import NewsCommunityEvent from '~/components/NewsCommunityEvent'
 import NewsVolunteerOpportunity from '~/components/NewsVolunteerOpportunity'
 import NewsStory from '~/components/NewsStory'
 import NewsAlert from '~/components/NewsAlert'
+import NewsNoticeboard from '~/components/NewsNoticeboard'
 
 export default {
   components: {
@@ -103,7 +104,8 @@ export default {
     NewsCommunityEvent,
     NewsVolunteerOpportunity,
     NewsStory,
-    NewsAlert
+    NewsAlert,
+    NewsNoticeboard
   },
   props: {
     id: {
