@@ -31,7 +31,7 @@
           lazy
           :src="newsfeed.volunteering.photo.paththumb"
           class="clickme"
-          @click="eventDetails"
+          @click="details"
         />
       </b-col>
     </b-row>

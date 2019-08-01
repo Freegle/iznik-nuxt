@@ -6,6 +6,7 @@
         <news-about-me v-else-if="newsfeed.type === 'AboutMe'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
         <news-community-event v-else-if="newsfeed.type === 'CommunityEvent'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
         <news-volunteer-opportunity v-else-if="newsfeed.type === 'VolunteerOpportunity'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
+        <news-story v-else-if="newsfeed.type === 'Story'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
         <b-alert v-else variant="danger" show>
           Unknown item type {{ newsfeed.type }}
         </b-alert>
@@ -91,7 +92,6 @@
 // TODO Love this function
 // TODO Post photos
 // TODO Report etc menu dropdown
-// TODO Alt+Enter
 // TODO Delete
 // TODO Edit
 // TODO Some indication of newly added entries
@@ -102,6 +102,7 @@ import NewsMessage from '~/components/NewsMessage'
 import NewsAboutMe from '~/components/NewsAboutMe'
 import NewsCommunityEvent from '~/components/NewsCommunityEvent'
 import NewsVolunteerOpportunity from '~/components/NewsVolunteerOpportunity'
+import NewsStory from '~/components/NewsStory'
 
 export default {
   components: {
@@ -109,7 +110,8 @@ export default {
     NewsMessage,
     NewsAboutMe,
     NewsCommunityEvent,
-    NewsVolunteerOpportunity
+    NewsVolunteerOpportunity,
+    NewsStory
   },
   props: {
     id: {
