@@ -18,14 +18,38 @@
               <span class="text-success font-weight-bold pl-2">
                 {{ users[userid].displayname }}
               </span>
+              <span v-if="newsfeed.type === 'AboutMe'">
+                introduced themselves
+              </span>
+              <span v-if="newsfeed.type === 'CommunityEvent'">
+                created an event: <b>{{ newsfeed.communityevent.title }}</b>
+              </span>
               <br>
               <span class="text-muted small pl-2">
                 {{ $moment(newsfeed.timestamp).fromNow() }}
+                <span v-if="newsfeed.communityevent">
+                  on {{ newsfeed.communityevent.groups[0].namedisplay }}
+                </span>
               </span>
-              <NewsUserInfo :user="users[userid]" />
+              <NewsUserInfo v-if="newsfeed.type !== 'CommunityEvent' && newsfeed.type !== 'VolunteerOpportunity'" :user="users[userid]" />
             </div>
           </b-col>
         </b-row>
+        <div v-if="newsfeed.communityevent">
+          <b-row>
+            <b-col>
+              <fa icon="calendar-alt" /> {{ $moment(newsfeed.communityevent.dates[0].start).format('ddd, Do MMMM h:mma') }}
+              <span v-if="newsfeed.communityevent.dates.length > 1" class="text-muted">
+                ...+{{ newsfeed.communityevent.dates.length - 1 }} more {{ newsfeed.communityevent.dates.length | pluralize('date') }}
+              </span>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <fa icon="map-marker" /> {{ newsfeed.communityevent.location }}
+            </b-col>
+          </b-row>
+        </div>
         <b-row v-if="newsfeed.message">
           <b-col>
             <span class="font-weight-bold prewrap">{{ emessage }}</span>
@@ -40,6 +64,18 @@
               lazy
               :src="newsfeed.image.paththumb"
               class="clickme"
+            />
+          </b-col>
+        </b-row>
+        <b-row v-if="newsfeed.communityevent && newsfeed.communityevent.photo">
+          <b-col>
+            <b-img
+              thumbnail
+              rounded
+              lazy
+              :src="newsfeed.communityevent.photo.paththumb"
+              class="clickme"
+              @click="eventDetails"
             />
           </b-col>
         </b-row>
@@ -65,9 +101,17 @@
                 </span>
               </li>
             </ul>
-            <b-btn variant="white" size="sm" class="float-right d-inline-block">
+            <b-btn v-if="newsfeed.type === 'Message'" variant="white" size="sm" class="float-right d-inline-block">
               <fa icon="share-alt" /> Share
             </b-btn>
+            <span v-if="newsfeed.type === 'CommunityEvent'" class="float-right d-inline-block">
+              <b-btn variant="info" size="sm" @click="eventDetails">
+                <fa icon="info-circle" /> More info
+              </b-btn>
+              <b-btn variant="white" size="sm" @click="addEvent">
+                <fa icon="plus" /> Add your event
+              </b-btn>
+            </span>
           </b-col>
         </b-row>
       </b-card-text>
@@ -145,6 +189,12 @@
       </template>
     </b-modal>
   </div>
+
+  <!-- TODO 'VolunteerOpportunity':-->
+  <!-- TODO 'CentralPublicity':-->
+  <!-- TODO 'Alert':-->
+  <!-- TODO 'Story':-->
+  <!-- TODO 'Noticeboard':-->
 </template>
 <style scoped>
 .profile {
@@ -276,6 +326,12 @@ export default {
         replyto: this.replyingTo,
         threadhead: this.newsfeed.threadhead
       })
+    },
+    eventDetails() {
+      // TODO
+    },
+    addEvent() {
+      // TODO
     }
   }
 }

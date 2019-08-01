@@ -208,9 +208,10 @@ export default {
     }
   },
 
-  created() {
+  beforeCreate() {
     // Clear the store.  This is to ensure that we remove any delete items, but it does mean that we're not using
     // the store to improve performance.  TODO
+    console.log('Init hook')
     this.$store.commit('newsfeed/clearFeed')
 
     this.id = this.$route.params.id
