@@ -2,51 +2,52 @@
   <div>
     <b-row>
       <b-col v-if="reply.userid && users[reply.userid]">
-        <div>
-          <b-img-lazy
-            v-if="users[reply.userid].profile"
-            rounded="circle"
-            thumbnail
-            class="profile p-0 ml-1 mb-1 inline float-left"
-            alt="Profile picture"
-            title="Profile"
-            :src="users[reply.userid].profile.turl"
-          />
-          <div>
-            <fa v-if="users[reply.userid].settings.showmod" icon="leaf" class="showmodsm text-success" />
-            <span class="text-success font-weight-bold pl-2">
-              {{ users[reply.userid].displayname }}
-            </span>
-            <span class="font-weight-bold prewrap replytext">{{ emessage }}</span>
-          </div>
-        </div>
+        <table v-if="users[reply.userid].profile">
+          <tbody>
+            <tr>
+              <td>
+                <b-img-lazy
+                  rounded="circle"
+                  class="profilemd p-0 ml-1 mb-1 mr-2 inline float-left"
+                  alt="Profile picture"
+                  title="Profile"
+                  :src="users[reply.userid].profile.turl"
+                />
+              </td>
+              <td>
+                <fa v-if="users[reply.userid].settings.showmod" icon="leaf" class="showmodsm text-success" />
+                <span class="text-success font-weight-bold">{{ users[reply.userid].displayname }}</span>
+                <span class="font-weight-bold prewrap replytext">{{ emessage }}</span>
+                <span v-if="reply.message && reply.userid && users[reply.userid]">
+                  <br>
+                  <span class="text-muted small">
+                    {{ $moment(reply.timestamp).fromNow() }}
+                  </span>
+                  <NewsUserInfo :user="users[reply.userid]" />
+                  <span v-if="!threadhead.closed">
+                    &bull;<span class="text-muted small clickme" @click="replyReply">&nbsp;Reply</span>
+                  </span>
+                  <span class="text-muted small clickme">
+                    <span v-if="!reply.loved" @click="love">
+                      &bull;&nbsp;Love this
+                    </span>
+                    <span v-if="reply.loved" @click="unlove">
+                      &bull;&nbsp;Unlove this
+                    </span>
+                    <span v-if="reply.loves">
+                      <fa icon="heart" class="text-danger" />&nbsp;{{ reply.loves }}
+                    </span>
+                  </span>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </b-col>
       <b-col v-else>
         <b-alert variant="danger" show>
           Unknown userid {{ reply.userid }} TODO this is a bug.
         </b-alert>
-      </b-col>
-    </b-row>
-    <b-row v-if="reply.message && reply.userid && users[reply.userid]">
-      <b-col class="pl-8">
-        <span class="text-muted small pl-4">
-          {{ $moment(reply.timestamp).fromNow() }}
-        </span>
-        <NewsUserInfo :user="users[reply.userid]" />
-        <span v-if="!threadhead.closed">
-          &bull;<span class="text-muted small clickme" @click="replyReply">&nbsp;Reply</span>
-        </span>
-        <span class="text-muted small clickme">
-          <span v-if="!reply.loved" @click="love">
-            &bull;&nbsp;Love this
-          </span>
-          <span v-if="reply.loved" @click="unlove">
-            &bull;&nbsp;Unlove this
-          </span>
-          <span v-if="reply.loves">
-            <fa icon="heart" class="text-danger" />&nbsp;{{ reply.loves }}
-          </span>
-        </span>
       </b-col>
     </b-row>
     <div v-if="reply.replies && reply.replies.length > 0" class="pl-3">
@@ -100,7 +101,6 @@
 </template>
 <style scoped>
 .replytext {
-  /* TODO Indent second and subsequent lines of reply */
   font-size: 14px;
   line-height: 1.2;
 }
