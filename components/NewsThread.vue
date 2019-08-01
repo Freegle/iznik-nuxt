@@ -24,6 +24,9 @@
               <span v-if="newsfeed.type === 'CommunityEvent'">
                 created an event: <b>{{ newsfeed.communityevent.title }}</b>
               </span>
+              <span v-if="newsfeed.type === 'VolunteerOpportunity'">
+                posted a volunteering opportunity: <b>{{ newsfeed.volunteering.title }}</b>
+              </span>
               <br>
               <span class="text-muted small pl-2">
                 {{ $moment(newsfeed.timestamp).fromNow() }}
@@ -50,35 +53,61 @@
             </b-col>
           </b-row>
         </div>
+        <div v-if="newsfeed.volunteering">
+          <b-row>
+            <b-col class="volunteerDescription">
+              <fa icon="info-circle" /> <span>{{ newsfeed.volunteering.description }}</span>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <fa icon="map-marker" /> {{ newsfeed.volunteering.location }}
+            </b-col>
+          </b-row>
+        </div>
         <b-row v-if="newsfeed.message">
           <b-col>
             <span class="font-weight-bold prewrap">{{ emessage }}</span>
           </b-col>
         </b-row>
-        <b-row v-if="newsfeed.image">
-          <b-col>
-            <b-img
-              v-b-modal="'photoModal-' + newsfeed.id"
-              thumbnail
-              rounded
-              lazy
-              :src="newsfeed.image.paththumb"
-              class="clickme"
-            />
-          </b-col>
-        </b-row>
-        <b-row v-if="newsfeed.communityevent && newsfeed.communityevent.photo">
-          <b-col>
-            <b-img
-              thumbnail
-              rounded
-              lazy
-              :src="newsfeed.communityevent.photo.paththumb"
-              class="clickme"
-              @click="eventDetails"
-            />
-          </b-col>
-        </b-row>
+        <div>
+          <b-row v-if="newsfeed.image">
+            <b-col>
+              <b-img
+                v-b-modal="'photoModal-' + newsfeed.id"
+                thumbnail
+                rounded
+                lazy
+                :src="newsfeed.image.paththumb"
+                class="clickme"
+              />
+            </b-col>
+          </b-row>
+          <b-row v-if="newsfeed.communityevent && newsfeed.communityevent.photo">
+            <b-col>
+              <b-img
+                thumbnail
+                rounded
+                lazy
+                :src="newsfeed.communityevent.photo.paththumb"
+                class="clickme"
+                @click="eventDetails"
+              />
+            </b-col>
+          </b-row>
+          <b-row v-if="newsfeed.volunteering && newsfeed.volunteering.photo">
+            <b-col>
+              <b-img
+                thumbnail
+                rounded
+                lazy
+                :src="newsfeed.volunteering.photo.paththumb"
+                class="clickme"
+                @click="eventDetails"
+              />
+            </b-col>
+          </b-row>
+        </div>
         <b-row class="mt-2">
           <b-col>
             <ul class="list-unstyled list-inline d-inline-block">
@@ -108,8 +137,16 @@
               <b-btn variant="info" size="sm" @click="eventDetails">
                 <fa icon="info-circle" /> More info
               </b-btn>
-              <b-btn variant="white" size="sm" @click="addEvent">
+              <b-btn variant="white" size="sm" @click="eventAdd">
                 <fa icon="plus" /> Add your event
+              </b-btn>
+            </span>
+            <span v-if="newsfeed.type === 'VolunteerOpportunity'" class="float-right d-inline-block">
+              <b-btn variant="info" size="sm" @click="volunteerDetails">
+                <fa icon="info-circle" /> More info
+              </b-btn>
+              <b-btn variant="white" size="sm" @click="addVolunteer">
+                <fa icon="plus" /> Add your opportunity
               </b-btn>
             </span>
           </b-col>
@@ -190,7 +227,6 @@
     </b-modal>
   </div>
 
-  <!-- TODO 'VolunteerOpportunity':-->
   <!-- TODO 'CentralPublicity':-->
   <!-- TODO 'Alert':-->
   <!-- TODO 'Story':-->
@@ -218,6 +254,13 @@
   padding-left: 5px;
   padding-top: 4px;
   border: 1px solid green;
+}
+
+.volunteerDescription {
+  width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow-x: hidden;
 }
 </style>
 <script>
@@ -330,7 +373,13 @@ export default {
     eventDetails() {
       // TODO
     },
-    addEvent() {
+    eventAdd() {
+      // TODO
+    },
+    volunteerDetails() {
+      // TODO
+    },
+    volunteerAdd() {
       // TODO
     }
   }
