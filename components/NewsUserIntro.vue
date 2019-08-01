@@ -24,6 +24,18 @@
   </b-row>
 </template>
 <style scoped>
+.showmod {
+  top: 29px;
+  left: 44px;
+  border-radius: 50%;
+  position: absolute;
+  background-color: white;
+  width: 24px;
+  height: 24px;
+  padding-left: 5px;
+  padding-top: 4px;
+  border: 1px solid green;
+}
 </style>
 <script>
 import NewsUserInfo from '~/components/NewsUserInfo'

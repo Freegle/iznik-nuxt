@@ -78,13 +78,6 @@
   width: 25px !important;
   height: 25px !important;
 }
-
-.volunteerDescription {
-  width: 100%;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow-x: hidden;
-}
 </style>
 <script>
 // TODO Show earlier for replies; currently limited to 10
