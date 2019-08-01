@@ -3,26 +3,26 @@
     <b-card>
       <b-card-text>
         <b-row>
-          <b-col v-if="newsfeed.userid">
+          <b-col v-if="userid">
             <div>
               <b-img-lazy
-                v-if="users[newsfeed.userid].profile.turl"
+                v-if="users[userid].profile.turl"
                 rounded="circle"
                 thumbnail
                 class="profile p-0 ml-1 mb-1 inline float-left"
                 alt="Profile picture"
                 title="Profile"
-                :src="users[newsfeed.userid].profile.turl"
+                :src="users[userid].profile.turl"
               />
-              <fa v-if="users[newsfeed.userid].settings.showmod" icon="leaf" class="showmod text-success" />
+              <fa v-if="users[userid].settings.showmod" icon="leaf" class="showmod text-success" />
               <span class="text-success font-weight-bold pl-2">
-                {{ users[newsfeed.userid].displayname }}
+                {{ users[userid].displayname }}
               </span>
               <br>
               <span class="text-muted small pl-2">
                 {{ $moment(newsfeed.timestamp).fromNow() }}
               </span>
-              <NewsUserInfo :user="users[newsfeed.userid]" />
+              <NewsUserInfo :user="users[userid]" />
             </div>
           </b-col>
         </b-row>
@@ -178,6 +178,7 @@
 // TODO Edit
 // TODO Some indication of newly added entries
 // TODO Share
+// TODO Click on loves to show who loves them
 import twem from '~/assets/js/twem'
 import NewsUserInfo from '~/components/NewsUserInfo'
 import NewsReply from '~/components/NewsReply'
@@ -214,6 +215,22 @@ export default {
     },
     newsfeed() {
       return this.$store.getters['newsfeed/get'](this.id)
+    },
+    userid() {
+      // The API returns userid in the summary and user.id when we get an individual object, so we need to
+      // mess about to get the userid.
+      const newsfeed = this.$store.getters['newsfeed/get'](this.id)
+      let ret = null
+
+      if (newsfeed) {
+        if (newsfeed.userid) {
+          ret = newsfeed.userid
+        } else if (newsfeed.user) {
+          ret = newsfeed.user.id
+        }
+      }
+
+      return ret
     }
   },
   methods: {

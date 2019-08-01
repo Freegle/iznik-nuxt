@@ -1,21 +1,21 @@
 <template>
   <div>
     <b-row>
-      <b-col v-if="reply.userid && users[reply.userid]">
+      <b-col v-if="userid && users[userid]">
         <div>
           <b-img-lazy
-            v-if="users[reply.userid].profile"
+            v-if="users[userid].profile"
             rounded="circle"
             thumbnail
             class="profile p-0 ml-1 mb-1 inline float-left"
             alt="Profile picture"
             title="Profile"
-            :src="users[reply.userid].profile.turl"
+            :src="users[userid].profile.turl"
           />
           <div>
-            <fa v-if="users[reply.userid].settings.showmod" icon="leaf" class="showmodsm text-success" />
+            <fa v-if="users[userid].settings.showmod" icon="leaf" class="showmodsm text-success" />
             <span class="text-success font-weight-bold pl-2">
-              {{ users[reply.userid].displayname }}
+              {{ users[userid].displayname }}
             </span>
             <span class="font-weight-bold prewrap replytext">{{ emessage }}</span>
           </div>
@@ -23,16 +23,16 @@
       </b-col>
       <b-col v-else>
         <b-alert variant="danger" show>
-          Unknown userid {{ reply.userid }} TODO this is a bug.
+          Unknown userid {{ userid }} TODO this is a bug.
         </b-alert>
       </b-col>
     </b-row>
-    <b-row v-if="reply.message && reply.userid && users[reply.userid]">
+    <b-row v-if="reply.message && userid && users[userid]">
       <b-col class="pl-8">
         <span class="text-muted small pl-4">
           {{ $moment(reply.timestamp).fromNow() }}
         </span>
-        <NewsUserInfo :user="users[reply.userid]" />
+        <NewsUserInfo :user="users[userid]" />
         &bull;<span class="text-muted small clickme" @click="replyReply">&nbsp;Reply</span>
         <span class="text-muted small clickme">
           <span v-if="!reply.loved" @click="love">
@@ -163,6 +163,22 @@ export default {
       return this.reply.message
         ? twem.twem(this.$twemoji, this.reply.message)
         : null
+    },
+    userid() {
+      // The API returns userid in the summary and user.id when we get an individual object, so we need to
+      // mess about to get the userid.
+      const reply = this.$store.getters['newsfeed/get'](this.id)
+      let ret = null
+
+      if (reply) {
+        if (reply.userid) {
+          ret = reply.userid
+        } else if (reply.user) {
+          ret = reply.user.id
+        }
+      }
+
+      return ret
     }
   },
   methods: {
