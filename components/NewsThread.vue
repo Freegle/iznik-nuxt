@@ -31,9 +31,21 @@
             <span class="font-weight-bold prewrap">{{ emessage }}</span>
           </b-col>
         </b-row>
+        <b-row v-if="newsfeed.image">
+          <b-col>
+            <b-img
+              v-b-modal="'photoModal-' + newsfeed.id"
+              thumbnail
+              rounded
+              lazy
+              :src="newsfeed.image.paththumb"
+              class="clickme"
+            />
+          </b-col>
+        </b-row>
         <b-row class="mt-2">
           <b-col>
-            <ul class="list-unstyled list-inline">
+            <ul class="list-unstyled list-inline d-inline-block">
               <li class="list-inline-item">
                 <b-btn v-if="!newsfeed.loved" variant="white" size="sm" @click="love">
                   <fa icon="heart" />&nbsp;Love this
@@ -53,6 +65,9 @@
                 </span>
               </li>
             </ul>
+            <b-btn variant="white" size="sm" class="float-right d-inline-block">
+              <fa icon="share-alt" /> Share
+            </b-btn>
           </b-col>
         </b-row>
       </b-card-text>
@@ -108,6 +123,24 @@
         </span>
       </div>
     </b-card>
+    <b-modal
+      v-if="newsfeed.image"
+      :id="'photoModal-' + newsfeed.id"
+      ref="photoModal"
+      title="ChitChat Photo"
+      alt="ChitChat Photo"
+      size="lg"
+      no-stacking
+    >
+      <template slot="default">
+        <b-img
+          fluid
+          rounded
+          center
+          :src="newsfeed.image.path"
+        />
+      </template>
+    </b-modal>
   </div>
 </template>
 <style scoped>
@@ -144,6 +177,7 @@
 // TODO Delete
 // TODO Edit
 // TODO Some indication of newly added entries
+// TODO Share
 import twem from '~/assets/js/twem'
 import NewsUserInfo from '~/components/NewsUserInfo'
 import NewsReply from '~/components/NewsReply'

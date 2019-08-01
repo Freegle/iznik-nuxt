@@ -100,17 +100,19 @@
             </b-card>
           </b-col>
         </b-row>
-        <ul v-for="(entry, $index) in newsfeed" :key="'newsfeed-' + $index + '-area-' + selectedArea" class="p-0 pt-1 list-unstyled mb-1">
-          <li>
-            <NewsThread :id="entry.id" :key="'newsfeed-' + entry.id" :users="users" />
-          </li>
-        </ul>
-        <infinite-loading :identifier="infiniteId" force-use-infinite-wrapper="body" @infinite="loadMore">
-          <span slot="no-results" />
-          <span slot="spinner">
-            <b-img-lazy src="~/static/loader.gif" />
-          </span>
-        </infinite-loading>
+        <div class=" p-0 pt-1 mb-1">
+          <ul v-for="(entry, $index) in newsfeed" :key="'newsfeed-' + $index + '-area-' + selectedArea" class="list-unstyled">
+            <li v-if="entry && entry.visible && !entry.unfollowed">
+              <NewsThread :id="entry.id" :key="'newsfeed-' + entry.id" :users="users" />
+            </li>
+          </ul>
+          <infinite-loading :identifier="infiniteId" force-use-infinite-wrapper="body" @infinite="loadMore">
+            <span slot="no-results" />
+            <span slot="spinner">
+              <b-img-lazy src="~/static/loader.gif" />
+            </span>
+          </infinite-loading>
+        </div>
       </b-col>
       <b-col cols="3">
         Volunteer ops and ads go here
@@ -207,11 +209,11 @@ export default {
   },
 
   created() {
-    this.id = this.$route.params.id
-
     // Clear the store.  This is to ensure that we remove any delete items, but it does mean that we're not using
     // the store to improve performance.  TODO
     this.$store.commit('newsfeed/clearFeed')
+
+    this.id = this.$route.params.id
   },
 
   methods: {

@@ -169,7 +169,6 @@ export default {
     },
 
     async showPhotos() {
-      console.log('Show photos')
       await this.expand()
       this.$bvModal.show('photoModal-' + this.id)
     }
