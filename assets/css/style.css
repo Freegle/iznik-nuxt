@@ -38,3 +38,8 @@ button {
 .prewrap {
     white-space: pre-wrap !important;
 }
+
+body {
+    overflow-x: hidden;
+    overflow-y: hidden;
+}

@@ -26,9 +26,16 @@
     <b-row class="mt-2">
       <b-col>
         <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
-        <b-btn variant="white" size="sm" class="float-right d-inline-block" @click="share">
-          <fa icon="share-alt" /> Share
-        </b-btn>
+        <nuxt-link to="/spread">
+          <b-btn
+            variant="primary"
+            size="sm"
+            class="float-right d-inline-block"
+            @click="share"
+          >
+            <fa icon="bullhorn" /> Put up a poster
+          </b-btn>
+        </nuxt-link>
       </b-col>
     </b-row>
   </div>

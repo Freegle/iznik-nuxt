@@ -47,6 +47,7 @@ module.exports = {
     // Some plugins are client-side features
     { src: '~/plugins/vuex-persistedstate', ssr: false },
     { src: '~plugins/vue-drag-drop.js', ssr: false },
+    { src: '~plugins/vue-draggable-resizable.js', ssr: false },
     { src: '~/plugins/vue-color', ssr: false },
     { src: '~plugins/vue-infinite-loading.js', ssr: false },
     { src: '~plugins/vue2-google-maps.js', ssr: false },
@@ -125,7 +126,7 @@ module.exports = {
       }
     },
     loaders: {
-      less: { javascriptEnabled: true }
+      less: { javascriptEnabled: true },
     }
   },
 

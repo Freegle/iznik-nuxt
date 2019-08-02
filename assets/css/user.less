@@ -119,3 +119,17 @@ body {
   height: 25px !important;
 }
 
+// We have to go to some effort to style the resize grip.  We can't have it in a scoped style otherwise it won't
+// apply to the grip, and the image is small enough that it gets inlined into base64, so we can't use an
+// image file - instead we encode it here.
+// TODO - I want this inside the draggable element, but once I put the position: relative in there, then the drag
+// no longer works.
+.handle-tl {
+  content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAAB3RJTUUH4AQLDigeVd0uIAAAAHpJREFUOMvVkDEKgDAMRQuOLoIHcHTUybmb4BW8gPQM4tWfg6mUIJRmUf+W8P9/JM59RkAHBACZK2Dh0ii7GtiiRxcEMQ8yx/ABtBJeZeefCgB6Rd41GZhzp9xhoMmSk+BLZPWDcnJSMJnIqqScrMI2shTYyOqJ3v1OJ4UMEzPeJauEAAAAAElFTkSuQmCC');
+  height: 16px;
+  width: 16px;
+  top: 16px;
+  //position: relative;
+  background-color: blue;
+}
+

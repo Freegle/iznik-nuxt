@@ -43,7 +43,7 @@
         </li>
       </ul>
     </b-navbar>
-    <nuxt class="ml-0 pl-1" />
+    <nuxt class="ml-0 pl-1 pageContent" />
     <b-modal id="signInModal" ref="loginModal" title="Sign In">
       <template slot="default">
         <b-form-input ref="email" v-model="email" placeholder="Your email address" alt="Email address" />
@@ -59,6 +59,7 @@
         </b-button>
       </template>
     </b-modal>
+    <ChatPopups />
   </div>
 </template>
 
@@ -145,7 +146,13 @@ body.modal-open {
 </style>
 
 <script>
+import ChatPopups from '~/components/ChatPopups'
+
 export default {
+  components: {
+    ChatPopups
+  },
+
   data: function() {
     return {
       email: null,
