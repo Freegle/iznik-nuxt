@@ -83,8 +83,8 @@
                 <b-btn v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler.">
                   <fa icon="bell" />
                 </b-btn>
-                <b-btn variant="primary" class="float-right" @click="send">
-                  &gt;&gt;
+                <b-btn variant="primary" class="float-right mr-1" @click="send">
+                  <fa icon="angle-double-right" title="Send" />
                 </b-btn>
               </b-col>
             </b-row>
@@ -100,7 +100,6 @@
   top: initial !important;
   left: initial !important;
   bottom: 0;
-  /*right: 0;*/
   z-index: 900;
   background-color: #f3f0da;
   animation: chatIn 2s;
@@ -113,6 +112,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  border: 1px solid grey;
 }
 
 .chatname {
@@ -125,7 +125,7 @@
 }
 
 .shadow {
-  box-shadow: 1px 3px 5px 3px rgba(0, 0, 0, 0.4);
+  box-shadow: 1px 3px 5px 3px rgba(0, 0, 0, 0.6) !important;
 }
 
 @keyframes chatIn {
