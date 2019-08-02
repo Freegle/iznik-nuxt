@@ -1,11 +1,11 @@
 <template>
   <div>
-    <no-ssr class="chatPopups">
-      <ul v-for="(chat, $index) in chatlist" :key="'popupchat-' + $index" class="p-0 m-0 list-unstyled">
-        <li>
+    <no-ssr>
+      <b-list-group horizontal class="p-0 m-0 list-unstyled chatPopups">
+        <b-list-group-item v-for="(chat, $index) in chatlist" :key="'popupchat-' + $index">
           <ChatPopup :id="chat.id" />
-        </li>
-      </ul>
+        </b-list-group-item>
+      </b-list-group>
     </no-ssr>
   </div>
 </template>

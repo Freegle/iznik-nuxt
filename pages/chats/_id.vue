@@ -75,11 +75,8 @@ export default {
   },
 
   async asyncData({ app, params, store }) {
-    console.log('Async data')
     let selected = null
     let chats = Object.values(store.getters['chats/list']())
-
-    console.log('Currently got', chats)
 
     if (!store.$auth.loggedIn) {
       console.log('Not logged in')
@@ -88,7 +85,6 @@ export default {
         // Got some - can start rendering.  Fire off an update to refresh us later if they've changed.  No rush, so
         // wait for idle.
         requestIdleCallback(() => {
-          console.log('Fetch latest chats')
           store.dispatch('chats/listChats')
         })
       } else {

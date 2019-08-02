@@ -62,11 +62,13 @@ export default {
     },
     append: {
       type: String,
-      required: false
+      required: false,
+      default: ''
     },
     appendBold: {
       type: String,
-      required: false
+      required: false,
+      default: ''
     }
   }
 }

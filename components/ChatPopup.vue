@@ -1,6 +1,6 @@
 <template>
   <no-ssr>
-    <div>
+    <div :style="'position: fixed; right: ' + right + 'px; bottom: 0'">
       <vue-draggable-resizable
         :handles="['tl']"
         :w="width"
@@ -11,6 +11,7 @@
         :prevent-deactivation="true"
         :min-width="320"
         :min-height="400"
+        :style="'right: ' + width"
         @resizing="onResize"
       >
         <div class="shadow chatHolder">
@@ -99,7 +100,7 @@
   top: initial !important;
   left: initial !important;
   bottom: 0;
-  right: 0;
+  /*right: 0;*/
   z-index: 900;
   background-color: #f3f0da;
   animation: chatIn 2s;
@@ -226,6 +227,24 @@ export default {
       return this.chat && this.chat.remember && this.chat.remember.height
         ? this.chat.remember.height
         : 400
+    },
+    right() {
+      let right = 0
+      const popups = Object.values(this.$store.getters['popupchats/list']())
+
+      if (popups) {
+        for (const popup of popups) {
+          const width = popup.width ? parseInt(popup.width) : 320
+          right += width
+
+          if (parseInt(popup.id) === this.id) {
+            break
+          }
+        }
+
+        console.log('Right', this.id, right)
+      }
+      return right
     }
   },
   async mounted() {
