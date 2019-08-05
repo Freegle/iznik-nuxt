@@ -104,6 +104,7 @@ export default {
     },
 
     loadMore: function($state) {
+      console.log('Load more')
       this.busy = true
 
       let types = []
@@ -141,9 +142,12 @@ export default {
 
           this.context = this.$store.getters['messages/getContext']()
           $state.loaded()
+          console.log('Loaded')
         })
         .catch(() => {
+          this.busy = false
           $state.complete()
+          console.log('Complete')
         })
     }
   }
