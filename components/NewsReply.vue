@@ -196,7 +196,7 @@ export default {
         this.showReplyBox = false
       }
     },
-    newlineComment() {
+    newlineReply() {
       this.replybox += '\n'
     },
     love() {

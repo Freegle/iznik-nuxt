@@ -30,7 +30,7 @@
           Give and get stuff for free with {{ namedisplay }}.  Offer things you don't need, and ask for things you'd like.  Don't just recycle - reuse with Freegle!
         </p>
         <!-- eslint-disable-next-line -->
-                <span v-if="description" v-html="safeDescription" />
+                <span v-if="description" v-html="description" />
       </b-col>
       <b-col lg="2" class="order-1 order-lg-2">
         <span class="d-none d-lg-block float-right">
@@ -51,8 +51,6 @@
   </b-card>
 </template>
 <script>
-import sanitizeHtml from 'sanitize-html'
-
 export default {
   props: {
     id: {
@@ -92,12 +90,6 @@ export default {
       default: null
     }
   },
-  computed: {
-    safeDescription() {
-      return sanitizeHtml(this.description, {
-        allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img', 'p', 'a'])
-      })
-    }
-  }
+  computed: {}
 }
 </script>

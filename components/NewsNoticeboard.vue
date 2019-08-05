@@ -41,7 +41,6 @@
   </div>
 </template>
 <script>
-import sanitizeHtml from 'sanitize-html'
 import twem from '~/assets/js/twem'
 import NewsBase from '~/components/NewsBase'
 import NewsUserIntro from '~/components/NewsUserIntro'
@@ -60,8 +59,7 @@ export default {
         info = JSON.parse(this.newsfeed.message)
 
         if (info.description) {
-          let desc = twem.twem(this.$twemoji, info.description)
-          desc = sanitizeHtml(desc)
+          const desc = twem.twem(this.$twemoji, info.description)
           info.description = desc
         }
       } catch (e) {

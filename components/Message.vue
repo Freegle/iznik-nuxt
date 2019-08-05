@@ -14,15 +14,15 @@
             />
             <br>
           </span>
-          {{ safeSubject }}
+          {{ eSubject }}
         </b-card-title>
         <span v-for="group in groups" :key="'message-' + id + '-' + group.id" class="small muted">
           {{ group.arrival | timeago }} on {{ group.namedisplay }}
         </span>
-        <div v-if="safeSnippet && safeSnippet !== 'null' && !expanded">
-          <h4>{{ safeSnippet }}...</h4>
+        <div v-if="eSnippet && eSnippet !== 'null' && !expanded">
+          <h4>{{ eSnippet }}...</h4>
         </div>
-        <div v-if="!safeSnippet || safeSnippet === 'null' && !expanded">
+        <div v-if="!eSnippet || eSnippet === 'null' && !expanded">
           <i>There's no description.</i>
         </div>
         <b-button v-if="!expanded" variant="white" @click="expand">
@@ -99,7 +99,6 @@
   </div>
 </template>
 <script>
-import sanitizeHtml from 'sanitize-html'
 import twem from '~/assets/js/twem'
 
 export default {
@@ -136,20 +135,17 @@ export default {
     }
   },
   computed: {
-    safeSubject() {
-      return sanitizeHtml(this.subject)
+    eSubject() {
+      return twem.twem(this.$twemoji, this.subject)
     },
     safeBody() {
-      let bod = twem.twem(this.$twemoji, this.textbody)
-      bod = sanitizeHtml(this.textbody)
-      return bod
+      return twem.twem(this.$twemoji, this.textbody)
     },
-    safeSnippet() {
+    eSnippet() {
       let snip = null
 
       if (this.snippet) {
         snip = twem.twem(this.$emoji, this.snippet)
-        snip = sanitizeHtml(this.snippet)
       }
 
       return snip
@@ -163,7 +159,6 @@ export default {
       })
 
       const message = this.$store.getters['messages/get'](this.id)
-      console.log('Fetched', message)
 
       this.expanded = message
     },

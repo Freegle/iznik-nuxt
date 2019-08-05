@@ -54,6 +54,10 @@
               placeholder="Type here..."
               rows="3"
               max-rows="8"
+              @keydown.enter.exact.prevent
+              @keyup.enter.exact="send"
+              @keydown.enter.shift.exact="newline"
+              @keydown.alt.shift.exact="newline"
             />
           </b-col>
         </b-row>
@@ -249,6 +253,9 @@ export default {
             $state.complete()
           })
       }
+    },
+    newline: function() {
+      this.sendmessage += '\n'
     },
     send: function() {
       let msg = this.sendmessage
