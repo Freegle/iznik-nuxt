@@ -45,12 +45,13 @@ module.exports = {
     { src: '~/plugins/vue2-filters' },
 
     // Some plugins are client-side features
-    { src: '~/plugins/vuex-persistedstate', ssr: false },
+    { src: '~plugins/vuex-persistedstate', ssr: false },
     { src: '~plugins/vue-drag-drop.js', ssr: false },
     { src: '~plugins/vue-draggable-resizable.js', ssr: false },
-    { src: '~/plugins/vue-color', ssr: false },
+    { src: '~plugins/vue-color', ssr: false },
     { src: '~plugins/vue-infinite-loading.js', ssr: false },
     { src: '~plugins/vue2-google-maps.js', ssr: false },
+    { src: '~plugins/filepond-plugin-image-transform', ssr: false}
   ],
 
   /*

@@ -47,6 +47,24 @@
         </b-col>
       </b-row>
       <div class="chatFooter">
+        <b-row v-if="uploading" class="bg-white">
+          <b-col class="p-0">
+            <file-pond
+              ref="pond"
+              name="photo"
+              allow-multiple="true"
+              accepted-file-types="image/jpeg, image/png, image/gif, image/jpg"
+              :files="myFiles"
+              image-resize-target-width="800"
+              image-resize-target-height="800"
+              image-crop-aspect-ratio="1"
+              label-idle="Drag & Drop photos or <span class=&quot;btn btn-white ction&quot;> Browse </span>"
+              :server="{ process, revert, restore, load, fetch }"
+              @init="photoInit"
+              @processfile="photoProcessed"
+            />
+          </b-col>
+        </b-row>
         <b-row>
           <b-col class="p-0">
             <b-form-textarea
@@ -80,9 +98,17 @@
             <b-btn v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler.">
               <fa icon="bell" />&nbsp;Nudge
             </b-btn>
-            <b-btn variant="primary" class="float-right" @click="send">
+            <b-btn variant="primary" class="float-right ml-1" @click="send">
               Send&nbsp;&gt;
             </b-btn>
+            <b-btn variant="white" class="float-right" @click="photoAdd">
+              <fa icon="camera" />&nbsp;Photo
+            </b-btn>
+          </b-col>
+        </b-row>
+        <b-row v-if="chatBusy">
+          <b-col>
+            <b-img class="float-right" src="~static/loader.gif" />
           </b-col>
         </b-row>
       </div>
@@ -133,15 +159,25 @@
 // TODO Chat dropdown menu for report etc
 
 import Vue from 'vue'
+import vueFilePond from 'vue-filepond'
+import 'filepond/dist/filepond.min.css'
+import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 import Ratings from '~/components/Ratings'
 import ChatMessage from '~/components/ChatMessage.vue'
 import twem from '~/assets/js/twem'
-// import requestIdleCallback from '~/assets/js/requestIdleCallback'
+
+const FilePond = vueFilePond(
+  FilePondPluginFileValidateType,
+  FilePondPluginImagePreview
+)
 
 export default {
   components: {
     Ratings,
-    ChatMessage
+    ChatMessage,
+    FilePond
   },
   props: {
     id: {
@@ -161,7 +197,10 @@ export default {
       chatusers: [],
       lastFetched: new Date(),
       complete: false,
-      sendmessage: null
+      sendmessage: null,
+      uploading: false,
+      myFiles: [],
+      imageid: null
     }
   },
   computed: {
@@ -257,6 +296,32 @@ export default {
     newline: function() {
       this.sendmessage += '\n'
     },
+    _updateAfterSend: function() {
+      this.chatBusy = false
+
+      // The latest messages will be in the store now.  Get them to trigger re-render
+      this.chatmessages = Object.values(
+        this.$store.getters['chatmessages/getMessages'](this.id)
+      )
+      this.chatusers = Object.values(
+        this.$store.getters['chatmessages/getUsers'](this.id)
+      )
+      this.lastFetched = new Date()
+
+      // Scroll to the bottom so we can see it.
+      // TODO This doesn't work reliably.
+      Vue.nextTick(() => {
+        const container = this.$el.querySelector('.chatContent')
+        container.scrollTop = container.scrollHeight
+      })
+
+      // Clear the message now it's sent.
+      this.sendmessage = ''
+
+      // We also want to trigger an update in the chat list.
+      this.$store.dispatch('chats/listChats')
+    },
+
     send: function() {
       let msg = this.sendmessage
 
@@ -264,38 +329,81 @@ export default {
       msg = twem.untwem(msg)
 
       // Send it
+      this.chatBusy = true
       this.$store
         .dispatch('chatmessages/send', {
           roomid: this.id,
           message: msg
         })
-        .then(() => {
-          // The latest messages will be in the store now.  Get them to trigger re-render
-          this.chatmessages = Object.values(
-            this.$store.getters['chatmessages/getMessages'](this.id)
-          )
-          this.chatusers = Object.values(
-            this.$store.getters['chatmessages/getUsers'](this.id)
-          )
-          this.lastFetched = new Date()
-
-          // Scroll to the bottom so we can see it.
-          // TODO This doesn't work reliably.
-          Vue.nextTick(() => {
-            const container = this.$el.querySelector('.chatContent')
-            container.scrollTop = container.scrollHeight
-          })
-
-          // Clear the message now it's sent.
-          this.sendmessage = ''
-
-          // We also want to trigger an update in the chat list.
-          this.$store.dispatch('chats/listChats')
-        })
+        .then(this._updateAfterSend)
     },
     popup() {
       this.$store.dispatch('popupchats/popup', { id: this.chat.id })
-    }
+    },
+    photoAdd() {
+      // Flag that we're uploading.  This will trigger the render of the filepond instance and subsequently the
+      // init callback below.
+      this.uploading = true
+    },
+    photoInit: function() {
+      // We have rendered the filepond instance.  Trigger browse so that they can upload a photo without an
+      // extra click.
+      this.$refs.pond.browse()
+    },
+    async photoProcessed(error, file) {
+      // We have uploaded a photo.  Remove the filepond instance.
+      this.uploading = false
+
+      // Show the chat busy indicator.
+      this.chatBusy = true
+
+      // We have uploaded a photo.  Post a chatmessage referencing it.
+      if (!error) {
+        await this.$store
+          .dispatch('chatmessages/send', {
+            roomid: this.id,
+            imageid: this.imageid
+          })
+          .then(this._updateAfterSend)
+      } else {
+        // TODO
+      }
+    },
+    async process(fieldName, file, metadata, load, error, progress, abort) {
+      const data = new FormData()
+      data.append('photo', file, 'photo')
+      data.append('chatmessage', true)
+      data.append('imgtype', 'ChatMessage')
+
+      const ret = await this.$axios.post(process.env.API + '/image', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+        onUpLoadProgress: e => {
+          progress(e.lengthComputable, e.loaded, e.total)
+        }
+      })
+
+      if (ret.status === 200 && ret.data.ret === 0) {
+        this.imageid = ret.data.id
+        load(ret.data.id)
+      } else {
+        error(
+          ret.status === 200 ? ret.data.status : 'Network error ' + ret.status
+        )
+      }
+
+      return {
+        abort: () => {
+          // We don't need to do anything - the server will tidy up hanging images.
+          abort()
+        }
+      }
+    },
+    load(uniqueFileId, load, error) {},
+    fetch(url, load, error, progress, abort, headers) {},
+    restore(uniqueFileId, load, error, progress, abort, headers) {},
+    revert(uniqueFileId, load, error) {}
   }
 }
 </script>

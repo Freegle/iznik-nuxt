@@ -1,3 +1,5 @@
+import Vue from 'vue'
+
 export const state = () => ({
   // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
   // storage.
@@ -14,12 +16,12 @@ export const mutations = {
         ? Object.values(payload.messages)
         : payload.messages
 
-    state.messages[chatid] = state.messages[chatid]
-      ? state.messages[chatid]
-      : []
+    if (!state.messages[chatid]) {
+      Vue.set(state.messages, chatid, [])
+    }
 
     for (const message of messages) {
-      state.messages[chatid][message.id] = message
+      Vue.set(state.messages[chatid], message.id, message)
     }
   },
 
@@ -30,15 +32,17 @@ export const mutations = {
         ? Object.values(payload.users)
         : payload.users
 
-    state.users[chatid] = state.users[chatid] ? state.users[chatid] : []
+    if (!state.users[chatid]) {
+      Vue.set(state.users, chatid, [])
+    }
 
     for (const user of users) {
-      state.users[chatid][user.id] = user
+      Vue.set(state.users[chatid], user.id, user)
     }
   },
 
   setContext(state, params) {
-    state.contexts[params.id] = params.ctx
+    Vue.set(state.contexts, params.id, params.ctx)
   }
 }
 
