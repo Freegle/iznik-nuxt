@@ -149,5 +149,11 @@ module.exports = {
         _scheme: '~/app/nativeStrategy.js'
       }
     }
+  },
+
+  vue: {
+    config: {
+      performance: true
+    }
   }
 }

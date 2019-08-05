@@ -41,7 +41,7 @@
             </b-col>
           </b-row>
           <b-row class="chatContent m-0" infinite-wrapper>
-            <b-col v-if="chat" :key="'chatmessagelist' + lastFetched">
+            <b-col v-if="chat">
               <infinite-loading direction="top" force-use-infinite-wrapper="true" @infinite="loadMore">
                 <span slot="no-results" />
                 <span slot="spinner">

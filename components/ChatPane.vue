@@ -32,7 +32,7 @@
         </b-col>
       </b-row>
       <b-row class="chatContent" infinite-wrapper>
-        <b-col v-if="chat" :key="'chatmessagelist' + lastFetched">
+        <b-col v-if="chat">
           <infinite-loading direction="top" force-use-infinite-wrapper="true" @infinite="loadMore">
             <span slot="no-results" />
             <span slot="spinner">
@@ -44,6 +44,11 @@
               <ChatMessage :key="'chatmessage-' + chatmessage.id" :chatmessage="chatmessage" :chat="chat" :me="me" :otheruser="otheruser" />
             </li>
           </ul>
+          <b-row v-if="chatBusy">
+            <b-col>
+              <b-img class="float-right" src="~static/loader.gif" />
+            </b-col>
+          </b-row>
         </b-col>
       </b-row>
       <div class="chatFooter">
@@ -104,11 +109,6 @@
             <b-btn variant="white" class="float-right" @click="photoAdd">
               <fa icon="camera" />&nbsp;Photo
             </b-btn>
-          </b-col>
-        </b-row>
-        <b-row v-if="chatBusy">
-          <b-col>
-            <b-img class="float-right" src="~static/loader.gif" />
           </b-col>
         </b-row>
       </div>
@@ -192,6 +192,7 @@ export default {
   },
   data: function() {
     return {
+      chatBusy: false,
       chat: null,
       chatmessages: [],
       chatusers: [],
