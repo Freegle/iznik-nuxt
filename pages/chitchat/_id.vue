@@ -249,11 +249,6 @@ export default {
   },
 
   beforeCreate() {
-    console.log('Newsfeed clear store')
-    // Clear the store.  This is to ensure that we remove any delete items, but it does mean that we're not using
-    // the store to improve performance.  TODO
-    this.$store.commit('newsfeed/clearFeed')
-
     this.id = this.$route.params.id
   },
 

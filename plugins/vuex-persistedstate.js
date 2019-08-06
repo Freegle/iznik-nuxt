@@ -1,9 +1,8 @@
 // ~/plugins/localStorage
 
 import createPersistedState from 'vuex-persistedstate'
+import cloneDeep from 'lodash.clonedeep'
 import requestIdleCallback from '~/assets/js/requestIdleCallback'
-
-// import cloneDeep from 'lodash.clonedeep'
 
 // We defer setting of state to local storage until we're idle.
 let settingState = null
@@ -24,17 +23,18 @@ export default ({ store }) => {
         'newsfeed'
       ],
       //
-      // reducer: function(state, paths) {
-      //   // Don't store the messages - they're too big, and too transient.
-      //   const newstate = cloneDeep(state)
-      //   delete newstate.messages
-      //   delete newstate.stroll
-      //   return newstate
-      //
-      //   // Want the first bit of the newsfeed.
-      //   // Last chat?
-      //   reducer breaks stuff so commented out for now TODO
-      // }
+      reducer: function(state, paths) {
+        // Don't store the messages - they're too big, and too transient.  Nor the newsfeed for similar reasons.
+        // This also means we don't have to worry about how to delete messages which are deleted on the server.
+        // TODO We think this breaks SSR for reasons we don't understand yet.
+        const newstate = cloneDeep(state)
+        delete newstate.messages
+        delete newstate.stroll
+        delete newstate.newsfeed.newsfeed
+        delete newstate.newsfeed.users
+        delete newstate.newsfeed.context
+        return newstate
+      },
 
       setState: (key, state, storage) => {
         if (settingState) {
