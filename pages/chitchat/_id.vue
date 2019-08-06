@@ -216,6 +216,15 @@ export default {
     this.id = this.$route.params.id
   },
 
+  mounted() {
+    // We want this to be our next home page.
+    try {
+      localStorage.setItem('Iznik>lasthomepage', 'news')
+    } catch (e) {
+      console.log('Save last route failed', e)
+    }
+  },
+
   methods: {
     async loadMore($state) {
       this.busy = true

@@ -93,6 +93,14 @@ export default {
       return this.group ? this.group.id : null
     }
   },
+  mounted() {
+    // We want this to be our next home page.
+    try {
+      localStorage.setItem('Iznik>lasthomepage', 'mygroups')
+    } catch (e) {
+      console.log('Save last route failed', e)
+    }
+  },
   methods: {
     groupChange: function() {
       this.messages = []

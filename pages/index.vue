@@ -1,45 +1,36 @@
 <template>
-  <section class="container">
-    <p>
-      Hello
-      <span
-        v-if="loggedInUser"
-      >
-        {{ loggedInUser.fullname }}
-      </span>
-    </p>
-    <span v-for="group in groups" :key="id + '-' + group.id">
-      <nuxt-link :to="'/explore/' + group.nameshort">
-        {{ group.namedisplay }}<br>
-      </nuxt-link>
-    </span>
-  </section>
+  <div />
 </template>
 
 <script>
-import { mapState } from 'vuex'
-
 export default {
   components: {},
 
-  computed: mapState({
-    loggedInUser: state => state.auth.user,
+  mounted() {
+    console.log('Landing page mounted')
+    let route = '/chitchat'
 
-    groups: state => {
-      const groups = []
-      Object.keys(state.group.list).forEach(key => {
-        const group = state.group.list[key]
-        groups.push(group)
-      })
+    if (process.browser && this.$store.state.auth.user) {
+      // On client side we want to load the last page, for logged in users.
+      console.log('On client side')
+      try {
+        const lastRoute = localStorage.getItem('Iznik>lasthomepage')
+        console.log('Got last route', lastRoute)
 
-      groups.sort(function(a, b) {
-        const str1 = a.namedisplay
-        const str2 = b.namedisplay
-        return str1 < str2 ? -1 : str1 > str2 ? 1 : 0
-      })
-
-      return groups
+        if (!lastRoute || lastRoute === 'news') {
+          route = '/chitchat'
+        } else {
+          route = '/mygroups'
+        }
+      } catch (e) {
+        console.log('Exception', e)
+      }
     }
-  })
+
+    console.log('Current', this.$nuxt.path, route)
+    if (this.$nuxt.path !== route) {
+      this.$router.push(route)
+    }
+  }
 }
 </script>
