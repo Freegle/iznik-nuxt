@@ -24,7 +24,7 @@
                     {{ $moment(reply.timestamp).fromNow() }}
                   </span>
                   <NewsUserInfo :user="users[reply.userid]" />
-                  <span v-if="!threadhead.closed">
+                  <span>
                     &bull;<span class="text-muted small clickme" @click="replyReply">&nbsp;Reply</span>
                   </span>
                   <span class="text-muted small clickme">

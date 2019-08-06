@@ -1,5 +1,5 @@
 <template>
-  <ul class="list-unstyled list-inline d-inline-block">
+  <ul v-if="newsfeed" class="list-unstyled list-inline d-inline-block">
     <li class="list-inline-item">
       <b-btn v-if="!newsfeed.loved" variant="white" size="sm" @click="love">
         <fa icon="heart" />&nbsp;Love this

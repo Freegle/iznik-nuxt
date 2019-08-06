@@ -139,11 +139,14 @@ export const actions = {
         // Valid id
         commit('addNewsfeed', newsfeedobj)
 
+        console.log('Posted', newsfeed)
         const user = newsfeed.data.newsfeed.user
 
         if (user) {
           // This will be ourselves, but we might not have it.
-          commit('mergeUsers', [user])
+          commit('mergeUsers', {
+            users: [user]
+          })
         }
       }
     }
@@ -159,9 +162,12 @@ export const actions = {
       params
     )
 
+    console.log('Posted', newsfeed)
+
     if (newsfeed.status === 200 && newsfeed.data.ret === 0) {
+      // The thread head may have been passed (for a reply) or if not, then it's a new thread and the id is returned.
       newsfeedobj = await dispatch('fetch', {
-        id: params.threadhead
+        id: params.threadhead ? params.threadhead : newsfeed.data.id
       })
     }
 
