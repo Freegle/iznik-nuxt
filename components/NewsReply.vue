@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-row>
+    <b-row class="p-0">
       <b-col v-if="reply.userid && users[reply.userid]">
         <table v-if="users[reply.userid].profile">
           <tbody>

@@ -15,7 +15,7 @@
       </b-card-text>
       <div slot="footer">
         <div v-if="newsfeed.replies && newsfeed.replies.length > 0">
-          <ul v-for="(entry, $index) in newsfeed.replies" :key="'newsfeed-' + $index" class="p-0 pt-1 list-unstyled mb-1">
+          <ul v-for="(entry, $index) in newsfeed.replies" :key="'newsfeed-' + $index" class="list-unstyled">
             <li>
               <news-reply :key="'newsfeedreply-' + newsfeed.id + '-reply-' + entry.id" :reply="entry" :users="users" :threadhead="newsfeed" />
             </li>
