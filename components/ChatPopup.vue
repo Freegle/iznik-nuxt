@@ -173,7 +173,6 @@
 }
 </style>
 <script>
-import Vue from 'vue'
 import VueDraggableResizable from 'vue-draggable-resizable'
 import Ratings from '~/components/Ratings'
 import ChatMessage from '~/components/ChatMessage.vue'
@@ -293,9 +292,8 @@ export default {
               this.lastFetched = new Date()
 
               if (currentCount === 0) {
-                // First load.  Scroll to the bottom.
-                // TODO This doesn't work reliably.
-                this.$nextTick(() => {
+                // First load.  Scroll to the bottom when things have sorted themselves out.
+                requestIdleCallback(() => {
                   const container = this.$el.querySelector('.chatContent')
                   container.scrollTop = container.scrollHeight
                 })
@@ -345,8 +343,7 @@ export default {
           this.lastFetched = new Date()
 
           // Scroll to the bottom so we can see it.
-          // TODO This doesn't work reliably.
-          Vue.nextTick(() => {
+          requestIdleCallback(() => {
             const container = this.$el.querySelector('.chatContent')
             container.scrollTop = container.scrollHeight
           })
@@ -359,7 +356,6 @@ export default {
         })
     },
     hide() {
-      console.log('Trigger hide')
       this.$store.dispatch('popupchats/hide', { id: this.chat.id })
     },
     maximise() {

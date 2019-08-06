@@ -158,12 +158,12 @@
 // TODO Chat dropdown warnings
 // TODO Chat dropdown menu for report etc
 
-import Vue from 'vue'
 import vueFilePond from 'vue-filepond'
 import 'filepond/dist/filepond.min.css'
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
+import requestIdleCallback from '~/assets/js/requestIdleCallback'
 import Ratings from '~/components/Ratings'
 import ChatMessage from '~/components/ChatMessage.vue'
 import twem from '~/assets/js/twem'
@@ -268,9 +268,8 @@ export default {
               this.lastFetched = new Date()
 
               if (currentCount === 0) {
-                // First load.  Scroll to the bottom.
-                // TODO This doesn't work reliably.
-                this.$nextTick(() => {
+                // First load.  Scroll to the bottom when things have sorted themselves out.
+                requestIdleCallback(() => {
                   const container = this.$el.querySelector('.chatContent')
                   container.scrollTop = container.scrollHeight
                 })
@@ -310,8 +309,10 @@ export default {
       this.lastFetched = new Date()
 
       // Scroll to the bottom so we can see it.
-      // TODO This doesn't work reliably.
-      Vue.nextTick(() => {
+      // TODO This method, here and in ChatPopup doesn't work reliably.  If you add an image which will cause
+      // further scroll, then we can called before the image has loaded properly.  We might need to add a placeholder
+      // based on the dimensions of the image (which we know at the point we uploaded it).
+      requestIdleCallback(() => {
         const container = this.$el.querySelector('.chatContent')
         container.scrollTop = container.scrollHeight
       })
