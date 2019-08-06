@@ -200,7 +200,6 @@ export default {
 
     // Get the original data
     cleanUp(data) {
-      console.log("Cleanup", data)
       return data ? JSON.parse(JSON.stringify(data)) : null
     },
 
@@ -318,13 +317,18 @@ export default {
 
     selectList(data) {
       // Deep clone of the original object
-      const clean = this.cleanUp(data)
-      // Put the selected data to type (model)
-      this.type = clean[this.anchor]
+      if (!data) {
+        // No data - revert
+        this.type = this.initValue ? this.initValue : null
+      } else {
+        const clean = this.cleanUp(data)
+        // Put the selected data to type (model)
+        this.type = clean[this.anchor]
+        // Callback Event
+        this.onSelect ? this.onSelect(clean) : null
+      }
       // Hide List
       this.showList = false
-      // Callback Event
-      this.onSelect ? this.onSelect(clean) : null
     },
 
     deepValue(obj, path) {

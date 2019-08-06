@@ -93,19 +93,17 @@ export default {
   },
   methods: {
     keydown(e) {
-      console.log('Suppress enter', this.results)
-      if (e.which === 13 && this.results && this.results.length === 1) {
-        // Enter when there are no results breaks things.  This is a bug in the plugin, but this works around it.
-        console.log('Suppress')
-        e.preventDefault()
-        e.stopImmediatePropagation()
-        return false
-      } else if (e.which === 8) {
-        // Backspace means we no longer have a full postcode.  Parent might want to know that we don't have a valid
-        // postcode any more.
-        this.$emit('cleared')
-        this.results = null
-      }
+      // if (e.which === 13 && this.results && this.results.length === 0) {
+      //   // Enter when there are no results breaks things.  This is a bug in the plugin, but this works around it.
+      //   e.preventDefault()
+      //   e.stopImmediatePropagation()
+      //   return false
+      // } else if (e.which === 8) {
+      //   // Backspace means we no longer have a full postcode.  Parent might want to know that we don't have a valid
+      //   // postcode any more.
+      //   this.$emit('cleared')
+      //   this.results = null
+      // }
     },
     process(results) {
       const ret = results.locations.slice(0, 5)
