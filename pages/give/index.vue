@@ -62,7 +62,7 @@
         </b-row>
         <b-row v-if="postcode" class="mt-1">
           <b-col class="text-center">
-            Freegle has local communities for each area.  We'll show your offer on this community:
+            Freegle has local communities for each area.  We'll show your offer on this community first:
           </b-col>
         </b-row>
         <b-row v-if="postcode" class="mt-1">
@@ -75,53 +75,15 @@
             Click on the name above to choose a different community.
           </b-col>
         </b-row>
-        <!--<select class="form-control js-groups"></select>-->
-        <!--<p class="text-muted"></p>-->
-        <!--</b-rowdiv>-->
-        <!--<div class="col-md-3"></div>-->
-        <!--</div>-->
-        <!--<div class="row-fluid js-external" style="display: none">-->
-        <!--<div class="topspace row-fluid">-->
-        <!--<div class="col-md-6 col-md-offset-3 text-center">-->
-        <!--<div class="alert alert-warning">-->
-        <!--This community is on another site.   You can proceed or choose a different community using the dropdown above.-->
-        <!--</div>-->
-        <!--<a href="" data-realurl="true" class="js-toexternal">-->
-        <!--<div class="btn btn-success topspace btn-lg btn-block">-->
-        <!--Proceed >>-->
-        <!--</div>-->
-        <!--</a>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--<div class="topspace row-fluid js-onyahoo" style="display: none">-->
-        <!--<div class="topspace alert alert-warning col-md-6 col-md-offset-3 text-center">-->
-        <!--This will take you to Yahoo Groups.  You can also choose another community on this site using the dropdown above.-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--<div class="row-fluid">-->
-        <!--<div class="col-md-6 col-md-offset-3 text-center">-->
-        <!--<a href="/give/whatisit" class="js-changehomegroup js-next" style="display: none">-->
-        <!--<div class="btn btn-success topspace btn-lg btn-block">Next >></div>-->
-        <!--</a>-->
-        <!--<a href="" data-realurl="true" class="js-toyahoo" style="display: none">-->
-        <!--<div class="btn btn-success topspace btn-lg btn-block">-->
-        <!--<img alt="" src='/images/yahoo.png' class='smallicon' />-->
-        <!--Proceed to Yahoo >>-->
-        <!--</div>-->
-        <!--</a>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--<div class="row-fluid js-yahootoo" style="display: none">-->
-        <!--<div class="col-md-6 col-md-offset-3 text-center">-->
-        <!--<a href="" data-realurl="true" class="js-next">-->
-        <!--<div class="btn btn-white topspace">-->
-        <!--<img alt="" src='/images/yahoo.png' class='smallicon' />-->
-        <!--Or use this community on Yahoo-->
-        <!--</div>-->
-        <!--</a>-->
-        <!--</div>-->
-        <!--</div>-->
+        <b-row v-if="postcode" class="mt-1">
+          <b-col class="text-center mt-4" cols="6" offset="3">
+            <nuxt-link to="/give/whatisit" class="decornone">
+              <b-btn variant="success" size="lg" block>
+                Next >>
+              </b-btn>
+            </nuxt-link>
+          </b-col>
+        </b-row>
       </b-col>
       <b-col cols="0" md="3" />
     </b-row>
@@ -240,6 +202,7 @@ select {
 </style>
 <script>
 // TODO DESIGN When you select a postcode, the button disappears.  I'd like it to do that gracefully.
+// TODO Norfolk and redirection to another site?
 import Postcode from '~/components/Postcode'
 
 export default {
@@ -269,7 +232,6 @@ export default {
         }
       }
 
-      console.log('Options', ret)
       return ret
     }
   },

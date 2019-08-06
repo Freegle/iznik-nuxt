@@ -7,7 +7,7 @@
       anchor="name"
       label=""
       placeholder="Enter postcode"
-      :classes="{ input: 'form-control form-control-lg text-center pcinp' }"
+      :classes="{ input: 'form-control form-control-lg text-center pcinp', list: 'postcodelist' }"
       :min="3"
       :debounce="300"
       :process="process"
@@ -34,6 +34,10 @@
   top: -5px;
   left: -5px;
   position: relative;
+}
+
+.postcodelist {
+  z-index: 900;
 }
 </style>
 <script>
@@ -70,8 +74,8 @@ export default {
         this.$store.state.auth.user.settings.mylocation.name
       )
 
-      // Unfortunately what we have in auth from the session call doesn't contain the groups near the location,
-      // so we need to fetch that.
+      // We want to signal that we have a selected value.  Unfortunately what we have in auth from the session call
+      // doesn't contain the groups near the location, so we need to fetch that.
       const loc = await this.$axios.get(process.env.API + '/locations', {
         params: {
           typeahead: ret
@@ -90,14 +94,16 @@ export default {
   },
   methods: {
     keydown(e) {
-      const input = this.$refs.autocomplete.$refs.input
-
+      console.log('Suppress enter', this.results)
       if (e.which === 13 && this.results && this.results.length === 1) {
         // Enter when there are no results breaks things.  This is a bug in the plugin, but this works around it.
+        console.log('Suppress')
         e.preventDefault()
+        e.stopImmediatePropagation()
         return false
-      } else if (input.value.length === 1) {
-        // Parent might want to know if this input has been cleared out.
+      } else if (e.which === 8) {
+        // Backspace means we no longer have a full postcode.  Parent might want to know that we don't have a valid
+        // postcode any more.
         this.$emit('cleared')
         this.results = null
       }
@@ -113,6 +119,7 @@ export default {
       return ret
     },
     select(pc) {
+      console.log('Selected', pc)
       if (pc.id > 0) {
         this.$emit('selected', pc)
       }
@@ -120,6 +127,7 @@ export default {
     focus() {
       // Show list if we have switched away and come back.
       this.$refs.autocomplete.showList = true
+      console.log('Focus', this.$refs.autocomplete)
     }
   }
 }

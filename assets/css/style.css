@@ -48,3 +48,8 @@ button {
     max-width: 238px;
     margin: 0 auto;
 }
+
+.decornone,
+.decornone:hover{
+    text-decoration: none;
+}
