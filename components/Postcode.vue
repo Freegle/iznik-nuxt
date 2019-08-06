@@ -9,10 +9,9 @@
       placeholder="Enter postcode"
       :classes="{ input: 'form-control form-control-lg text-center pcinp', list: 'postcodelist' }"
       :min="3"
-      :debounce="300"
+      :debounce="100"
       :process="process"
       :on-select="select"
-      :on-focus="focus"
     />
 
     <b-input-group-append>
@@ -110,11 +109,6 @@ export default {
     },
     process(results) {
       const ret = results.locations.slice(0, 5)
-      ret.unshift({
-        id: 0,
-        name: ''
-      })
-
       this.results = ret
       return ret
     },
@@ -123,13 +117,6 @@ export default {
       if (pc.id > 0) {
         this.$emit('selected', pc)
       }
-    },
-    focus() {
-      // Show list if we have switched away and come back.
-      this.$refs.autocomplete.showList = true
-      const input = this.$refs.autocomplete.$refs.input
-      this.$refs.autocomplete.getData(input.value)
-      console.log('Focus', this.$refs.autocomplete, input.value)
     }
   }
 }

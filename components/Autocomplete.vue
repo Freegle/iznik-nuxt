@@ -227,7 +227,6 @@ export default {
       const key = e.keyCode
 
       // Disable when list isn't showing up
-      console.log("Show list?", this.showList)
       if (!this.showList) return
 
       // Key List
@@ -296,6 +295,14 @@ export default {
 
     handleFocus(e) {
       this.focusList = 0
+
+      // Force the list to show.
+      this.showList = true
+      let value = this.$refs.input.value
+      if (value) {
+        this.getData(value)
+      }
+
       // Callback Event
       this.onFocus ? this.onFocus(e) : null
     },
