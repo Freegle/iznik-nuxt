@@ -34,6 +34,9 @@
                   </span>
                   <ratings v-if="otheruser" :key="'otheruser-' + (otheruser ? otheruser.id : null)" size="sm" v-bind="otheruser" class="pl-2" />
                   <span class="pl-3 float-right">
+                    <fa icon="window-maximize" size="lg" class="clickme mt-1" title="Maximise chat window" @click="maximise" />
+                  </span>
+                  <span class="pl-3 float-right">
                     <fa icon="times" size="lg" class="clickme mt-1" title="Hide chat window" @click="hide" />
                   </span>
                 </b-col>
@@ -358,6 +361,10 @@ export default {
     hide() {
       console.log('Trigger hide')
       this.$store.dispatch('popupchats/hide', { id: this.chat.id })
+    },
+    maximise() {
+      this.$store.dispatch('popupchats/hide', { id: this.chat.id })
+      this.$router.push('/chats/' + this.chat.id)
     },
     onResize: function(x, y, width, height) {
       this.$store.dispatch('popupchats/popup', {
