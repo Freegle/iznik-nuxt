@@ -138,6 +138,13 @@ export const actions = {
       if (newsfeedobj) {
         // Valid id
         commit('addNewsfeed', newsfeedobj)
+
+        const user = newsfeed.data.newsfeed.user
+
+        if (user) {
+          // This will be ourselves, but we might not have it.
+          commit('mergeUsers', [user])
+        }
       }
     }
 
