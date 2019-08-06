@@ -153,8 +153,6 @@
 }
 </style>
 <script>
-// TODO It's painfully slow to switch between chats.  Profiling shows it's spending a lot of time in render code,
-// which suggests that I've done something dumb.
 // TODO Chat dropdown warnings
 // TODO Chat dropdown menu for report etc
 
@@ -309,7 +307,7 @@ export default {
       this.lastFetched = new Date()
 
       // Scroll to the bottom so we can see it.
-      // TODO This method, here and in ChatPopup doesn't work reliably.  If you add an image which will cause
+      // TODO DESIGN This method, here and in ChatPopup doesn't work reliably.  If you add an image which will cause
       // further scroll, then we can called before the image has loaded properly.  We might need to add a placeholder
       // based on the dimensions of the image (which we know at the point we uploaded it).
       requestIdleCallback(() => {

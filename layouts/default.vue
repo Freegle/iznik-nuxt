@@ -22,6 +22,10 @@
             <fa icon="users" size="2x" /><br>
             My&nbsp;Groups
           </b-nav-item>
+          <b-nav-item class="text-center p-0" to="/give">
+            <fa icon="gift" size="2x" /><br>
+            Give
+          </b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto">
           <b-nav-item class="text-center p-0" to="/chats">

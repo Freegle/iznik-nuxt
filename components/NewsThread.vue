@@ -84,7 +84,7 @@
 // TODO Report etc menu dropdown
 // TODO Delete
 // TODO Edit
-// TODO Some indication of newly added entries
+// TODO DESIGN Some indication of newly added entries
 // TODO Click on loves to show who loves them
 import twem from '~/assets/js/twem'
 import NewsReply from '~/components/NewsReply'

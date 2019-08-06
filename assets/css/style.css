@@ -38,3 +38,13 @@ button {
 .prewrap {
     white-space: pre-wrap !important;
 }
+
+.fa-bh {
+    font-size: 100px;
+}
+
+/*TODO This gets stripped if we add it into Postcode because the element is added dynamically.  How do we avoid that?*/
+.pcinp {
+    max-width: 238px;
+    margin: 0 auto;
+}

@@ -17,7 +17,7 @@
     </b-row>
   </b-col>
 </template>
-<style>
+<style scoped>
 .chatback {
   background-color: #f3f0da;
 }

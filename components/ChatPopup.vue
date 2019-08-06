@@ -123,7 +123,7 @@
 }
 
 .chatname {
-  /* TODO The ellipsis stuff here isn't working */
+  /* TODO DESIGN The ellipsis stuff here isn't working */
   max-width: 100px;
   text-overflow: ellipsis;
   white-space: nowrap;
