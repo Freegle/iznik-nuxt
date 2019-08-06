@@ -317,6 +317,7 @@ export default {
 
     selectList(data) {
       // Deep clone of the original object
+      let clean = null
       if (!data) {
         // No data - revert
         this.type = this.initValue ? this.initValue : null
@@ -324,11 +325,11 @@ export default {
         const clean = this.cleanUp(data)
         // Put the selected data to type (model)
         this.type = clean[this.anchor]
-        // Callback Event
-        this.onSelect ? this.onSelect(clean) : null
       }
       // Hide List
       this.showList = false
+      // Callback Event
+      this.onSelect ? this.onSelect(clean) : null
     },
 
     deepValue(obj, path) {

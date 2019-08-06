@@ -241,7 +241,7 @@ export default {
     postcodeSelect(pc) {
       console.log('Postcode selected', pc)
       this.postcode = pc
-      this.group = pc.groupsnear ? pc.groupsnear[0].id : null
+      this.group = pc && pc.groupsnear ? pc.groupsnear[0].id : null
     },
     postcodeClear() {
       console.log('postcode cleared')
