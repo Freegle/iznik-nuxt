@@ -41,7 +41,7 @@
 }
 </style>
 <script>
-import Autocomplete from 'vue2-autocomplete-js'
+import Autocomplete from '~/components/Autocomplete'
 // TODO DESIGN Styling of dropdown is weak; improve.
 // TODO Make find location button work
 
@@ -127,7 +127,9 @@ export default {
     focus() {
       // Show list if we have switched away and come back.
       this.$refs.autocomplete.showList = true
-      console.log('Focus', this.$refs.autocomplete)
+      const input = this.$refs.autocomplete.$refs.input
+      this.$refs.autocomplete.getData(input.value)
+      console.log('Focus', this.$refs.autocomplete, input.value)
     }
   }
 }

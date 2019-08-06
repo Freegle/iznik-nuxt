@@ -28,7 +28,7 @@ module.exports = {
   css: [
     '@/assets/css/style.css',
     '@/assets/css/user.less',
-    'vue2-autocomplete-js/dist/style/vue2-autocomplete.css'
+    '@/assets/css/Autocomplete.css'
   ],
 
   plugins: [
@@ -56,7 +56,6 @@ module.exports = {
     { src: '~plugins/vue-infinite-loading.js', ssr: false },
     { src: '~plugins/vue2-google-maps.js', ssr: false },
     { src: '~plugins/filepond-plugin-image-transform', ssr: false},
-    { src: '~plugins/vue2-autocomplete-js', ssr: false},
     { src: '~plugins/vue-debounce', ssr: false}
   ],
 
