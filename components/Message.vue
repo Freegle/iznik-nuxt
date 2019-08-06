@@ -153,7 +153,6 @@ export default {
   },
   methods: {
     async expand() {
-      console.log('Expand')
       await this.$store.dispatch('messages/fetch', {
         id: this.id
       })

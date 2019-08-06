@@ -41,9 +41,8 @@ export const getters = {
     let ret = null
 
     Object.keys(state.list).forEach(key => {
-      console.log('Compare', key, id)
-      if (parseInt(key) === parseInt(id)) {
-        ret = state.list[id]
+      if (parseInt(state.list[key].id) === parseInt(id)) {
+        ret = state.list[key]
       }
     })
 
