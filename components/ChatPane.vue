@@ -57,7 +57,7 @@
             <file-pond
               ref="pond"
               name="photo"
-              allow-multiple="true"
+              allow-multiple="false"
               accepted-file-types="image/jpeg, image/png, image/gif, image/jpg"
               :files="myFiles"
               image-resize-target-width="800"

@@ -44,7 +44,14 @@
                     <fa icon="pen" />&nbsp;ChitChat
                   </template>
                   <b-card-text>
-                    <b-textarea v-model="startThread" v-focus rows="2" max-rows="8" placeholder="Chat to nearby freeglers...ask for advice, recommendations, or just have a good old blether.  If you're looking to give or find stuff, please use the OFFER/WANTED tabs.  Everything on here is public." />
+                    <b-row>
+                      <b-col>
+                        <b-textarea v-model="startThread" v-focus rows="2" max-rows="8" placeholder="Chat to nearby freeglers...ask for advice, recommendations, or just have a good old blether.  If you're looking to give or find stuff, please use the OFFER/WANTED tabs.  Everything on here is public." />
+                      </b-col>
+                      <b-col v-if="imageid" md="auto">
+                        <b-img lazy thumbnail :src="imagethumb" />
+                      </b-col>
+                    </b-row>
                   </b-card-text>
                 </b-tab>
                 <b-tab>
@@ -73,6 +80,24 @@
                 </b-tab>
               </b-tabs>
               <hr class="mt-1 mb-1">
+              <b-row v-if="uploading" class="bg-white">
+                <b-col class="p-0">
+                  <file-pond
+                    ref="pond"
+                    name="photo"
+                    allow-multiple="false"
+                    accepted-file-types="image/jpeg, image/png, image/gif, image/jpg"
+                    :files="myFiles"
+                    image-resize-target-width="800"
+                    image-resize-target-height="800"
+                    image-crop-aspect-ratio="1"
+                    label-idle="Drag & Drop photos or <span class=&quot;btn btn-white ction&quot;> Browse </span>"
+                    :server="{ process, revert, restore, load, fetch }"
+                    @init="photoInit"
+                    @processfile="photoProcessed"
+                  />
+                </b-col>
+              </b-row>
               <b-row>
                 <b-col cols="3" class="pl-4 text-muted">
                   <div v-if="me.settings.mylocation && me.settings.mylocation.area.name">
@@ -86,7 +111,7 @@
                   <b-row>
                     <b-col>
                       <div class="float-right pb-1 pr-1">
-                        <b-btn variant="primary">
+                        <b-btn variant="primary" @click="photoAdd">
                           Add photo
                         </b-btn>
                         <b-btn variant="success" @click="postIt">
@@ -132,12 +157,23 @@
 </style>
 <script>
 // TODO Post photos
+import vueFilePond from 'vue-filepond'
+import 'filepond/dist/filepond.min.css'
+import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 import NewsThread from '~/components/NewsThread.vue'
 import twem from '~/assets/js/twem'
 
+const FilePond = vueFilePond(
+  FilePondPluginFileValidateType,
+  FilePondPluginImagePreview
+)
+
 export default {
   components: {
-    NewsThread
+    NewsThread,
+    FilePond
   },
 
   validate({ params }) {
@@ -186,7 +222,11 @@ export default {
           text: 'Show chitchat from anywhere'
         }
       ],
-      infiniteId: +new Date()
+      infiniteId: +new Date(),
+      uploading: false,
+      myFiles: [],
+      imageid: null,
+      imagethumb: null
     }
   },
 
@@ -262,14 +302,12 @@ export default {
         this.busy = false
       }
     },
-
     areaChange: function() {
       console.log('Area change', this.selectedArea)
       this.infiniteId++
       this.$store.commit('newsfeed/clearFeed')
       this.newsfeed = null
     },
-
     async postIt() {
       let msg = this.startThread
 
@@ -277,7 +315,8 @@ export default {
       msg = twem.untwem(msg)
 
       await this.$store.dispatch('newsfeed/send', {
-        message: msg
+        message: msg,
+        imageid: this.imageid
       })
 
       // Show the new message
@@ -285,7 +324,67 @@ export default {
 
       // Clear the textarea now it's sent.
       this.startThread = null
-    }
+
+      // And any image id
+      this.imageid = null
+    },
+    photoAdd() {
+      // Flag that we're uploading.  This will trigger the render of the filepond instance and subsequently the
+      // init callback below.
+      this.uploading = true
+    },
+    photoInit: function() {
+      // We have rendered the filepond instance.  Trigger browse so that they can upload a photo without an
+      // extra click.
+      this.$refs.pond.browse()
+    },
+    photoProcessed(error, file) {
+      // We have uploaded a photo.  Remove the filepond instance.
+      this.uploading = false
+
+      // Show the chat busy indicator.
+      this.chatBusy = true
+
+      // The imageid is in this.imageid
+      if (error) {
+      }
+    },
+    async process(fieldName, file, metadata, load, error, progress, abort) {
+      const data = new FormData()
+      data.append('photo', file, 'photo')
+      data.append('newsfeed', true)
+      data.append('imgtype', 'Newsfeed')
+
+      const ret = await this.$axios.post(process.env.API + '/image', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+        onUpLoadProgress: e => {
+          progress(e.lengthComputable, e.loaded, e.total)
+        }
+      })
+
+      if (ret.status === 200 && ret.data.ret === 0) {
+        this.imageid = ret.data.id
+        this.imagethumb = ret.data.paththumb
+        load(ret.data.id)
+      } else {
+        error(
+          ret.status === 200 ? ret.data.status : 'Network error ' + ret.status
+        )
+      }
+
+      return {
+        abort: () => {
+          // We don't need to do anything - the server will tidy up hanging images.
+          abort()
+        }
+      }
+    },
+    load(uniqueFileId, load, error) {},
+    fetch(url, load, error, progress, abort, headers) {},
+    restore(uniqueFileId, load, error, progress, abort, headers) {},
+    revert(uniqueFileId, load, error) {}
   }
 }
 </script>
