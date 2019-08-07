@@ -79,7 +79,7 @@
           <b-col class="p-0">
             <b-list-group horizontal class="mb-1">
               <b-list-group-item v-for="(att, $index) in attachments" :key="'image-' + $index" class="bg-transparent p-0">
-                <PostPhoto v-bind="att" />
+                <PostPhoto v-bind="att" @remove="removePhoto" />
               </b-list-group-item>
             </b-list-group>
           </b-col>
@@ -175,6 +175,10 @@ export default {
       }
     },
     attachments() {
+      console.log(
+        'Compute attachments',
+        this.$store.getters['compose/getAttachments']()
+      )
       return this.$store.getters['compose/getAttachments']()
     }
   },
@@ -250,7 +254,10 @@ export default {
     load(uniqueFileId, load, error) {},
     fetch(url, load, error, progress, abort, headers) {},
     restore(uniqueFileId, load, error, progress, abort, headers) {},
-    revert(uniqueFileId, load, error) {}
+    revert(uniqueFileId, load, error) {},
+    removePhoto(id) {
+      this.$store.dispatch('compose/removeAttachment', id)
+    }
   }
 }
 </script>

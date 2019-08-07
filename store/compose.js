@@ -32,9 +32,9 @@ export const mutations = {
   addAttachment(state, attachment) {
     state.attachments.push(attachment)
   },
-  removeAttachment(state, attachment) {
+  removeAttachment(state, id) {
     state.attachments = state.attachments.filter(obj => {
-      return parseInt(obj.id) !== parseInt(attachment.id)
+      return parseInt(obj.id) !== parseInt(id)
     })
   }
 }
@@ -125,6 +125,7 @@ export const actions = {
           console.log('Posted', id)
           id = ret2.data.id
           commit('setMessage', {})
+          commit('setAttachments', [])
         }
       } else {
         // TODO
