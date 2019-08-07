@@ -1,0 +1,116 @@
+<template>
+  <div>
+    <b-row class="m-0">
+      <b-col cols="0" md="3" />
+      <b-col cols="12" md="6">
+        <b-row class="bs-wizard">
+          <b-col cols="4" class="bs-wizard-step">
+            <div class="text-center bs-wizard-stepnum">
+              &nbsp;
+            </div>
+            <div class="progress">
+              <div class="progress-bar" />
+            </div>
+            <a href="#" class="bs-wizard-dot" />
+            <div class="bs-wizard-info text-center">
+              Where are you?
+            </div>
+          </b-col>
+          <b-col cols="4" class="bs-wizard-step">
+            <div class="text-center bs-wizard-stepnum">
+              &nbsp;
+            </div>
+            <div class="progress">
+              <div class="progress-bar" />
+            </div>
+            <a href="#" class="bs-wizard-dot" />
+            <div class="bs-wizard-info text-center">
+              What is it?
+            </div>
+          </b-col>
+          <b-col cols="4" class="bs-wizard-step">
+            <div class="text-center bs-wizard-stepnum">
+              &nbsp;
+            </div>
+            <div class="progress">
+              <div class="progress-bar" />
+            </div>
+            <a href="#" class="bs-wizard-dot active" />
+            <div class="bs-wizard-info text-center">
+              Who are you?
+            </div>
+          </b-col>
+        </b-row>
+
+        <h1 class="text-center">
+          Finally, your email address
+        </h1>
+        <b-row>
+          <b-col class="text-muted text-center">
+            <p>We need your email address to let you know when you have replies.  We won't give your email to anyone else.</p>
+            <p>You will get emails from us, which you can control or turn off from Settings.</p>
+            <b-form-input v-model="email" type="email" size="lg" class="d-inline-block form-control email" placeholder="What's your email address?" />
+          </b-col>
+        </b-row>
+        <b-row v-if="email">
+          <b-col cols="12" md="6" offset-md="3" class="text-center pt-2 mt-2">
+            <b-btn variant="success" size="lg" block @click="next">
+              Freegle it!
+            </b-btn>
+          </b-col>
+        </b-row>
+      </b-col>
+      <b-col cols="0" md="3" />
+    </b-row>
+  </div>
+</template>
+<style scoped>
+.email {
+  max-width: 300px;
+}
+</style>
+<script>
+// TODO Add speech recognition
+export default {
+  components: {},
+  data() {
+    return {
+      id: null
+    }
+  },
+  computed: {
+    email() {
+      let email = null
+      const user = this.$store.state.auth.user
+
+      if (user && user.email) {
+        // If we're logged in, then we have an email from that which takes precedence.
+        email = user.email
+
+        // Save it in case we're logged out next time.
+        this.$store.dispatch('compose/setEmail', email)
+      } else {
+        // See if we have a local email stored from last time we were logged in.
+        email = this.$store.getters['compose/getEmail']()
+      }
+
+      return email
+    }
+  },
+  methods: {
+    next() {
+      this.$store
+        .dispatch('compose/submit')
+        .then(() => {
+          this.$router.push('/give/whatnext')
+        })
+        .catch(e => {
+          // TODO  More generally, need to check all axios requests, and have something consistent in place about
+          // where those errors are caught - in the store or in the calling code - and how the errors are
+          // displayed.
+          console.log('Submit failed', e)
+        })
+    }
+  }
+}
+</script>
