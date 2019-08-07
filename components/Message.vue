@@ -29,24 +29,14 @@
           Read more and reply >>
         </b-button>
       </b-card-header>
-      <b-card-body v-if="expanded">
+      <b-card-body v-if="expanded" class="pl-1">
         <b-alert v-if="expanded.promised" variant="info">
           This item has already been promised to someone.  You can still reply - you might get it if someone
           else drops out.
         </b-alert>
 
         <p>{{ expanded.textbody }}</p>
-        <span v-if="expanded.fromuser" class="text-sm small text-muted">
-          <b-img-lazy
-            rounded="circle"
-            thumbnail
-            class="profilesm p-0 ml-1 mb-1"
-            alt="Profile picture"
-            title="Profile"
-            :src="expanded.fromuser.profile.turl"
-          />
-          Posted by {{ expanded.fromuser.displayname }}
-        </span>
+        <MessageUserInfo v-if="expanded.fromuser" :user="expanded.fromuser" />
         <span v-if="expanded.replycount" class="float-right small text-muted">
           <fa icon="user" class="d-inline" />&nbsp;<span class="d-inline">{{ expanded.replycount }}&nbsp;freegler<span v-if="expanded.replycount != 1">s</span>&nbsp;replied&nbsp;</span>
         </span>
@@ -84,10 +74,16 @@
         </b-row>
       </b-card-footer>
     </b-card>
-    <b-modal :id="'photoModal-' + id" ref="photoModal" :title="subject" size="lg" no-stacking>
+    <b-modal
+      v-if="expanded && expanded.attachments.length"
+      :id="'photoModal-' + id"
+      ref="photoModal"
+      :title="subject"
+      size="lg"
+      no-stacking
+    >
       <template slot="default">
         <b-img
-          v-if="expanded"
           fluid
           rounded
           center
@@ -100,8 +96,12 @@
 </template>
 <script>
 import twem from '~/assets/js/twem'
+import MessageUserInfo from '~/components/MessageUserInfo'
 
 export default {
+  components: {
+    MessageUserInfo
+  },
   props: {
     id: {
       type: Number,
