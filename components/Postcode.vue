@@ -6,7 +6,7 @@
       param="typeahead"
       anchor="name"
       label=""
-      placeholder="Enter postcode"
+      placeholder="Type postcode or..."
       :classes="{ input: 'form-control form-control-lg text-center pcinp', list: 'postcodelist' }"
       :min="3"
       :debounce="100"
@@ -16,7 +16,7 @@
 
     <b-input-group-append>
       <b-button variant="primary" size="lg">
-        <fa icon="map-marker-alt" />&nbsp;Find location
+        <fa icon="map-marker-alt" />&nbsp;Find my location
       </b-button>
     </b-input-group-append>
   </b-input-group>

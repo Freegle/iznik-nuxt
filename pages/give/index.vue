@@ -201,7 +201,6 @@ select {
 }
 </style>
 <script>
-// TODO DESIGN When you select a postcode, the button disappears.  I'd like it to do that gracefully.
 // TODO Norfolk and redirection to another site?
 import Postcode from '~/components/Postcode'
 
