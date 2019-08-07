@@ -11,25 +11,26 @@
     position: absolute;
     list-style: none;
     background: #f8f8f8;
-    padding: 10px 0;
+    padding: 0;
     margin: 0;
     display: inline-block;
     min-width: 15%;
-    margin-top: 10px;
+    margin-top: 0px;
     z-index: 1000;
+    right: 48%;
 }
 
-.autocomplete ul:before{
-    content: "";
-    display: block;
-    position: absolute;
-    height: 0;
-    width: 0;
-    border: 10px solid transparent;
-    border-bottom: 10px solid #f8f8f8;
-    left: 46%;
-    top: -20px
-}
+/*.autocomplete ul:before{*/
+    /*content: "";*/
+    /*display: block;*/
+    /*position: absolute;*/
+    /*height: 0;*/
+    /*width: 0;*/
+    /*border: 10px solid transparent;*/
+    /*border-bottom: 10px solid #f8f8f8;*/
+    /*left: 46%;*/
+    /*top: -20px*/
+/*}*/
 
 .autocomplete ul li a{
     text-decoration: none;

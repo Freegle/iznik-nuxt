@@ -99,12 +99,14 @@
 </style>
 <script>
 // TODO Add speech recognition
+// TODO Image recognition
+// TODO Suppose we end up here, without a postcode in the store?
 export default {
   components: {},
   data() {
     return {
       id: null,
-      attachments: []
+      valid: false
     }
   },
   computed: {
@@ -115,6 +117,7 @@ export default {
       },
       set: function(newValue) {
         this.$store.dispatch('compose/setItem', newValue)
+        this.valid = this.item && this.description
       }
     },
     description: {
@@ -124,7 +127,11 @@ export default {
       },
       set: function(newValue) {
         this.$store.dispatch('compose/setDescription', newValue)
+        this.valid = this.item && this.description
       }
+    },
+    attachments() {
+      return this.$store.getters['compose/getAttachments']()
     }
   },
   methods: {
