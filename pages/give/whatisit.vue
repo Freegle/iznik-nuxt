@@ -86,13 +86,7 @@
         </b-row>
         <b-row>
           <b-col class="pl-0">
-            <b-form-input
-              v-model="item"
-              size="60"
-              maxlength="60"
-              spellcheck="true"
-              placeholder="In a single word or phrase, what is it?"
-            />
+            <PostItem :key="item" :item="item" @selected="itemSelect" @cleared="itemClear" @typed="itemType" />
           </b-col>
         </b-row>
         <b-row>
@@ -110,7 +104,7 @@
             This helps the community grow by showing people what's happening and encouraging them to join.
           </b-col>
         </b-row>
-        <b-row v-if="item && (description || attachments.length)">
+        <b-row v-if="item && (description || attachments.length)" :key="busted">
           <b-col cols="12" md="6" offset-md="3" class="text-center pt-2">
             <b-btn variant="success" size="lg" block @click="next">
               Next >>
@@ -132,6 +126,7 @@ import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 import PostPhoto from '~/components/PostPhoto'
+import PostItem from '~/components/PostItem'
 
 const FilePond = vueFilePond(
   FilePondPluginFileValidateType,
@@ -142,7 +137,8 @@ const FilePond = vueFilePond(
 export default {
   components: {
     FilePond,
-    PostPhoto
+    PostPhoto,
+    PostItem
   },
   data() {
     return {
@@ -150,18 +146,21 @@ export default {
       valid: false,
       uploading: false,
       myFiles: [],
-      image: null
+      image: null,
+      busted: new Date().getTime() // TODO We're having trouble with the logic to get the next button to show.
     }
   },
   computed: {
     item: {
       get: function() {
         const msg = this.$store.getters['compose/getMessage']()
-        return msg ? msg.item : null
+        console.log('Compute item', msg)
+        return msg && msg.item ? msg.item : ''
       },
       set: function(newValue) {
+        console.log('Set item', newValue)
         this.$store.dispatch('compose/setItem', newValue)
-        this.valid = this.item && this.description
+        this.busted = new Date().getTime()
       }
     },
     description: {
@@ -171,14 +170,10 @@ export default {
       },
       set: function(newValue) {
         this.$store.dispatch('compose/setDescription', newValue)
-        this.valid = this.item && this.description
+        this.busted = new Date().getTime()
       }
     },
     attachments() {
-      console.log(
-        'Compute attachments',
-        this.$store.getters['compose/getAttachments']()
-      )
       return this.$store.getters['compose/getAttachments']()
     }
   },
@@ -209,6 +204,7 @@ export default {
       this.uploading = false
 
       this.$store.dispatch('compose/addAttachment', this.image)
+      this.busted = new Date().getTime()
 
       // The imageid is in this.imageid.  Store it.
       if (error) {
@@ -257,6 +253,20 @@ export default {
     revert(uniqueFileId, load, error) {},
     removePhoto(id) {
       this.$store.dispatch('compose/removeAttachment', id)
+    },
+    itemType(value) {
+      this.item = value
+      this.$store.dispatch('compose/setItem', this.item)
+      this.busted = new Date().getTime()
+    },
+    itemSelect(item) {
+      this.item = item.name
+      this.$store.dispatch('compose/setItem', this.item)
+      this.busted = new Date().getTime()
+    },
+    itemClear() {
+      this.item = null
+      this.busted = new Date().getTime()
     }
   }
 }

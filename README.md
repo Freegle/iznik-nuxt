@@ -40,9 +40,8 @@ Rendering solution.
 
 This is still very much a proof of concept.
 * You can log in using email/password only.
-* You'll see a homepage with a list of groups which link to the explore page.
-* The ChitChat, My Groups, Chat pages exist.  They are incomplete, and some areas are mockups.
-* Give/Find/My Posts/Events/Volunteer/Notifications/Spread/Help/Settings don't exist.
+* The ChitChat/My Groups/Chat/Give pages exist.  They are basically functional, but not complete.
+* Find/My Posts/Events/Volunteer/Notifications/Spread/Help/Settings don't exist.
 * I've not checked how it renders on mobile or other screen sizes yet.
 
 This is set to use SPA rather than Universal at the moment, because I find that otherwise I need to restart the server

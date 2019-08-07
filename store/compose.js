@@ -110,7 +110,6 @@ export const actions = {
     let id = null
     try {
       const ret = await this.$axios.put(process.env.API + '/message', data)
-      console.log('Submit returned', ret)
 
       if (ret.status === 200 && ret.data.ret === 0) {
         // We've created a draft.  Submit it
@@ -122,7 +121,6 @@ export const actions = {
 
         if (ret.status === 200 && ret.data.ret === 0) {
           // Success
-          console.log('Posted', id)
           id = ret2.data.id
           commit('setMessage', {})
           commit('setAttachments', [])
