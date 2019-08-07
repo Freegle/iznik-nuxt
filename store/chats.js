@@ -14,8 +14,11 @@ export const mutations = {
 
   setList(state, chats) {
     state.list = {}
-    for (const chat of chats) {
-      Vue.set(state.list, chat.id, chat)
+
+    if (chats) {
+      for (const chat of chats) {
+        Vue.set(state.list, chat.id, chat)
+      }
     }
   }
 }

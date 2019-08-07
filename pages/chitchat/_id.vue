@@ -342,6 +342,7 @@ export default {
 
       // The imageid is in this.imageid
       if (error) {
+        // TODO
       }
     },
     async process(fieldName, file, metadata, load, error, progress, abort) {

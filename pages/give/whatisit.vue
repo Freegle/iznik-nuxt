@@ -47,7 +47,7 @@
         </h1>
         <b-row>
           <b-col cols="auto" class="mt-2 pl-0">
-            <b-btn variant="success" size="lg">
+            <b-btn variant="success" size="lg" @click="photoAdd">
               <fa icon="camera" />&nbsp;Add photos
             </b-btn>
           </b-col>
@@ -55,6 +55,33 @@
             <b-alert variant="info" class="d-none d-md-inline-block float-right" show>
               <fa icon="info-circle" />&nbsp;Please add photos - you'll get a better response.
             </b-alert>
+          </b-col>
+        </b-row>
+        <b-row v-if="uploading" class="bg-white">
+          <b-col class="p-0">
+            <file-pond
+              ref="pond"
+              name="photo"
+              allow-multiple="false"
+              accepted-file-types="image/jpeg, image/png, image/gif, image/jpg"
+              :files="myFiles"
+              image-resize-target-width="800"
+              image-resize-target-height="800"
+              image-crop-aspect-ratio="1"
+              label-idle="Drag & Drop photos or <span class=&quot;btn btn-white ction&quot;> Browse </span>"
+              :server="{ process, revert, restore, load, fetch }"
+              @init="photoInit"
+              @processfile="photoProcessed"
+            />
+          </b-col>
+        </b-row>
+        <b-row v-if="attachments && attachments.length">
+          <b-col class="p-0">
+            <b-list-group horizontal class="mb-1">
+              <b-list-group-item v-for="(att, $index) in attachments" :key="'image-' + $index" class="bg-transparent p-0">
+                <PostPhoto v-bind="att" />
+              </b-list-group-item>
+            </b-list-group>
           </b-col>
         </b-row>
         <b-row>
@@ -95,18 +122,35 @@
     </b-row>
   </div>
 </template>
-<style scoped>
-</style>
 <script>
 // TODO Add speech recognition
 // TODO Image recognition
 // TODO Suppose we end up here, without a postcode in the store?
+import vueFilePond from 'vue-filepond'
+import 'filepond/dist/filepond.min.css'
+import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
+import PostPhoto from '~/components/PostPhoto'
+
+const FilePond = vueFilePond(
+  FilePondPluginFileValidateType,
+  FilePondPluginImagePreview
+)
+
+// TODO Add speech recognition
 export default {
-  components: {},
+  components: {
+    FilePond,
+    PostPhoto
+  },
   data() {
     return {
       id: null,
-      valid: false
+      valid: false,
+      uploading: false,
+      myFiles: [],
+      image: null
     }
   },
   computed: {
@@ -145,7 +189,68 @@ export default {
     async next() {
       await this.save()
       this.$router.push('/give/whoami')
-    }
+    },
+    photoAdd() {
+      // Flag that we're uploading.  This will trigger the render of the filepond instance and subsequently the
+      // init callback below.
+      this.uploading = true
+    },
+    photoInit: function() {
+      // We have rendered the filepond instance.  Trigger browse so that they can upload a photo without an
+      // extra click.
+      this.$refs.pond.browse()
+    },
+    photoProcessed(error, file) {
+      // We have uploaded a photo.  Remove the filepond instance.
+      this.uploading = false
+
+      this.$store.dispatch('compose/addAttachment', this.image)
+
+      // The imageid is in this.imageid.  Store it.
+      if (error) {
+        // TODO
+      }
+    },
+    async process(fieldName, file, metadata, load, error, progress, abort) {
+      const data = new FormData()
+      data.append('photo', file, 'photo')
+      data.append('message', true)
+      data.append('imgtype', 'Message')
+
+      const ret = await this.$axios.post(process.env.API + '/image', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+        onUpLoadProgress: e => {
+          progress(e.lengthComputable, e.loaded, e.total)
+        }
+      })
+
+      if (ret.status === 200 && ret.data.ret === 0) {
+        this.image = {
+          id: ret.data.id,
+          paththumb: ret.data.paththumb,
+          path: ret.data.path
+        }
+
+        load(ret.data.id)
+      } else {
+        error(
+          ret.status === 200 ? ret.data.status : 'Network error ' + ret.status
+        )
+      }
+
+      return {
+        abort: () => {
+          // We don't need to do anything - the server will tidy up hanging images.
+          abort()
+        }
+      }
+    },
+    load(uniqueFileId, load, error) {},
+    fetch(url, load, error, progress, abort, headers) {},
+    restore(uniqueFileId, load, error, progress, abort, headers) {},
+    revert(uniqueFileId, load, error) {}
   }
 }
 </script>

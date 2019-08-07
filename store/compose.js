@@ -92,13 +92,18 @@ export const actions = {
     // In earlier client versions, we remembered existing drafts in case of interruption by user or errors.
     // But we don't need to do that, because our store remembers the contents of the message.  Orphaned drafts will
     // be pruned by the server.
+    const attids = []
+    for (const att in state.attachments) {
+      attids.push(state.attachments[att].id)
+    }
+
     const data = {
       collection: 'Draft',
       locationid: state.postcode.id,
       messagetype: state.message.type,
       item: state.message.item,
       textbody: state.message.description,
-      attachments: [],
+      attachments: attids,
       groupid: state.group
     }
 
