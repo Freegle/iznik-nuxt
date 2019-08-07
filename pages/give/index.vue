@@ -241,11 +241,16 @@ export default {
       console.log('Postcode selected', pc)
       this.postcode = pc
       this.group = pc && pc.groupsnear ? pc.groupsnear[0].id : null
+      this.$store.dispatch('compose/setPostcode', this.postcode)
+      this.$store.dispatch('compose/setGroup', this.group)
+      console.log('Set', this.postcode, this.group)
     },
     postcodeClear() {
       console.log('postcode cleared')
       this.postcode = null
       this.group = null
+      this.$store.dispatch('compose/setPostcode', null)
+      this.$store.dispatch('compose/setGroup', null)
     },
     groupChange() {}
   }

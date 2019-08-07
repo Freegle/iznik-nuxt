@@ -322,7 +322,7 @@ export default {
         // No data - revert
         this.type = this.initValue ? this.initValue : null
       } else {
-        const clean = this.cleanUp(data)
+        clean = this.cleanUp(data)
         // Put the selected data to type (model)
         this.type = clean[this.anchor]
       }
