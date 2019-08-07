@@ -35,6 +35,9 @@ module.exports = {
     // Our template formatting utils.
     '~/plugins/filters',
 
+    // Naming components via HTML comments.
+    '~/mixins/componentNames',
+
     // Our directives
     '~/plugins/directives',
 
