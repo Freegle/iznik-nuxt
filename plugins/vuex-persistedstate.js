@@ -2,11 +2,6 @@
 
 import createPersistedState from 'vuex-persistedstate'
 import cloneDeep from 'lodash.clonedeep'
-import requestIdleCallback from '~/assets/js/requestIdleCallback'
-
-// We defer setting of state to local storage until we're idle.
-let settingState = null
-let setInProgress = false
 
 export default ({ store }) => {
   window.onNuxtReady(() => {
@@ -20,7 +15,8 @@ export default ({ store }) => {
         'group',
         'chats',
         'popupchats',
-        'newsfeed'
+        'newsfeed',
+        'compose'
       ],
       //
       reducer: function(state, paths) {
@@ -34,28 +30,6 @@ export default ({ store }) => {
         delete newstate.newsfeed.users
         delete newstate.newsfeed.context
         return newstate
-      },
-
-      setState: (key, state, storage) => {
-        if (settingState) {
-          if (!setInProgress) {
-            // We're not currently setting the state, we're waiting - so we can overwrite the state we're
-            // intending to set with the latest one.  This saves multiple slow calls to set in local storage.
-            settingState = state
-          }
-        } else {
-          // We're not already setting it.  Queue it up for when we're idle.
-          settingState = state
-        }
-
-        requestIdleCallback(() => {
-          if (settingState) {
-            setInProgress = true
-            storage.setItem(key, JSON.stringify(state))
-            setInProgress = false
-            settingState = null
-          }
-        })
       }
     })(store)
   })
