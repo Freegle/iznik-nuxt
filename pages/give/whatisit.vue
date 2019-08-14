@@ -52,7 +52,7 @@
                 <PostMessage :id="id" type="Offer" />
               </b-card-body>
               <b-card-footer v-if="index === ids.length - 1">
-                <b-btn variant="white" class="mt-2 float-left" @click="deleteItem">
+                <b-btn v-if="ids.length > 1" variant="white" class="mt-2 float-left" @click="deleteItem">
                   <fa icon="trash-alt" />&nbsp;Delete item
                 </b-btn>
                 <b-btn variant="white" class="mt-2 float-right" @click="addItem">
@@ -108,8 +108,6 @@ export default {
         }
       }
 
-      console.log('IDS', ids)
-
       if (ids.length === 0) {
         ids = [-1]
       }
@@ -143,7 +141,9 @@ export default {
   },
   methods: {
     deleteItem() {
-      this.ids.pop()
+      this.$store.dispatch('compose/clearMessage', {
+        id: this.ids[this.ids.length - 1]
+      })
     },
 
     addItem() {

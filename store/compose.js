@@ -33,8 +33,10 @@ export const mutations = {
   setMessage(state, message) {
     Vue.set(state.messages, message.id, message)
   },
+  clearMessage: (state, params) => {
+    Vue.delete(state.messages, params.id)
+  },
   setItem(state, params) {
-    console.log('Set item', params)
     Vue.set(
       state.messages,
       params.id,
@@ -121,6 +123,10 @@ export const actions = {
   },
   removeAttachment({ commit }, params) {
     commit('removeAttachment', params)
+  },
+  clearMessage({ commit }, params) {
+    console.log('clear action', params)
+    commit('clearMessage', params)
   },
   async submit({ commit, state }) {
     // This is the most important bit of code in the client :-).  We have our messages in the compose store.  The
