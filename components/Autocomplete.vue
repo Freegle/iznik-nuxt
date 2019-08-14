@@ -286,9 +286,9 @@ export default {
       // Callback Event
       this.onBlur ? this.onBlur(e) : null
       setTimeout(() => {
-        // // Callback Event
-        // this.onHide ? this.onHide() : null
-        // this.showList = false
+        // Callback Event
+        this.onHide ? this.onHide() : null
+        this.showList = false
       }, 250)
     },
 

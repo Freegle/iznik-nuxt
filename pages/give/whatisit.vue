@@ -94,7 +94,7 @@
             <b-form-textarea
               v-model="description"
               placeholder="Please give a few details if possible, e.g. colour, condition, size etc."
-              rows="6"
+              rows="8"
             />
           </b-col>
         </b-row>
