@@ -70,5 +70,11 @@ button {
     width: 238px;
 }
 
-/*TODO Should we use transitions more, for when elements appear and disappear?  FD currently does, and this grabs */
-/*the attention more, I think*/
+/* TODO I tried adding "appear" transitions, e.g. for elements in chitchat, or messages.  But they then don't
+    show the computed emessage property.  Don't know why */
+.fade-enter-active, .fade-leave-active {
+    transition: opacity 1s;
+}
+.fade-enter, .fade-leave-to {
+    opacity: 0;
+}

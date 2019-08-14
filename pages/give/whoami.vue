@@ -52,13 +52,15 @@
             <b-form-input v-model="email" type="email" size="lg" class="d-inline-block form-control email" placeholder="What's your email address?" />
           </b-col>
         </b-row>
-        <b-row v-if="email">
-          <b-col cols="12" md="6" offset-md="3" class="text-center pt-2 mt-2">
-            <b-btn variant="success" size="lg" block @click="next">
-              Freegle it!
-            </b-btn>
-          </b-col>
-        </b-row>
+        <transition name="fade">
+          <b-row v-if="email">
+            <b-col cols="12" md="6" offset-md="3" class="text-center pt-2 mt-2">
+              <b-btn variant="success" size="lg" block @click="next">
+                Freegle it!
+              </b-btn>
+            </b-col>
+          </b-row>
+        </transition>
       </b-col>
       <b-col cols="0" md="3" />
     </b-row>

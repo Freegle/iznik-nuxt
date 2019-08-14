@@ -53,13 +53,15 @@
             <postcode @selected="postcodeSelect" @cleared="postcodeClear" />
           </b-col>
         </b-row>
-        <b-row v-if="postcode">
-          <b-col class="text-center">
-            <nuxt-link to="/give/whatisit">
-              <fa icon="check-circle" class="text-success mt-2 fa-bh" />
-            </nuxt-link>
-          </b-col>
-        </b-row>
+        <transition name="fade">
+          <b-row v-if="postcode">
+            <b-col class="text-center">
+              <nuxt-link to="/give/whatisit">
+                <fa icon="check-circle" class="text-success mt-2 fa-bh" />
+              </nuxt-link>
+            </b-col>
+          </b-row>
+        </transition>
         <b-row v-if="postcode" class="mt-1">
           <b-col class="text-center">
             Freegle has local communities for each area.  We'll show your offer on this community first:
@@ -75,15 +77,17 @@
             Click on the name above to choose a different community.
           </b-col>
         </b-row>
-        <b-row v-if="postcode" class="mt-1">
-          <b-col class="text-center mt-4" cols="6" offset="3">
-            <nuxt-link to="/give/whatisit" class="decornone">
-              <b-btn variant="success" size="lg" block>
-                Next >>
-              </b-btn>
-            </nuxt-link>
-          </b-col>
-        </b-row>
+        <transition name="fade">
+          <b-row v-if="postcode" class="mt-1">
+            <b-col class="text-center mt-4" cols="6" offset="3">
+              <nuxt-link to="/give/whatisit" class="decornone">
+                <b-btn variant="success" size="lg" block>
+                  Next >>
+                </b-btn>
+              </nuxt-link>
+            </b-col>
+          </b-row>
+        </transition>
       </b-col>
       <b-col cols="0" md="3" />
     </b-row>
