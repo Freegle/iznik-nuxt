@@ -10,11 +10,16 @@ export const state = () => ({
   postcode: null,
   group: null,
   messages: {},
-  attachments: [],
+  attachments: {},
   submitting: 0
 })
 
 export const mutations = {
+  clear(state) {
+    state.messages = {}
+    state.attachments = {}
+  },
+
   setEmail(state, email) {
     state.email = email
     state.emailAt = new Date().getTime()
@@ -29,12 +34,15 @@ export const mutations = {
     Vue.set(state.messages, message.id, message)
   },
   setItem(state, params) {
+    console.log('Set item', params)
     Vue.set(
       state.messages,
       params.id,
       state.messages[params.id] ? state.messages[params.id] : {}
     )
     Vue.set(state.messages[params.id], 'item', params.item)
+    Vue.set(state.messages[params.id], 'type', params.type)
+    Vue.set(state.messages[params.id], 'id', params.id)
   },
   setDescription(state, params) {
     Vue.set(
@@ -43,6 +51,7 @@ export const mutations = {
       state.messages[params.id] ? state.messages[params.id] : {}
     )
     Vue.set(state.messages[params.id], 'description', params.description)
+    Vue.set(state.messages[params.id], 'id', params.id)
   },
   addAttachment(state, params) {
     Vue.set(
@@ -53,11 +62,12 @@ export const mutations = {
     state.attachments[params.id].push(params.attachment)
   },
   removeAttachment(state, params) {
+    console.log('Remove att', params)
     Vue.set(
       state.attachments,
       params.id,
       state.attachments[params.id].filter(obj => {
-        return parseInt(obj.id) !== parseInt(params.id)
+        return parseInt(obj.id) !== parseInt(params.photoid)
       })
     )
   }
@@ -78,6 +88,9 @@ export const getters = {
   },
   getMessage: state => id => {
     return state.messages[id]
+  },
+  getMessages: state => () => {
+    return state.messages
   },
   getAttachments: state => id => {
     return state.attachments[id] ? state.attachments[id] : []
@@ -121,10 +134,18 @@ export const actions = {
     const self = this
 
     for (const [id, message] of Object.entries(state.messages)) {
-      console.log('Submit', id, message)
+      if (message.submitted) {
+        continue
+      }
+
+      console.log('Submit', id, message, state.attachments[message.id])
       const attids = []
-      for (const att in state.attachments[message.id]) {
-        attids.push(state.attachments[att].id)
+
+      if (state.attachments[message.id]) {
+        for (const att in state.attachments[message.id]) {
+          console.log('Got att', att)
+          attids.push(state.attachments[message.id][att].id)
+        }
       }
 
       const data = {
@@ -182,6 +203,7 @@ export const actions = {
     }
 
     await Promise.all(promises)
+    commit('clear')
     console.log('Returning ids', ids)
     return ids
   }

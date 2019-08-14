@@ -88,7 +88,6 @@ export default {
   },
   computed: {
     amAMember() {
-      console.log('amAMember?', this.id)
       return this.$store.getters['group/member'](this.id)
     }
   }
