@@ -28,7 +28,7 @@
           </b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto">
-          <b-nav-item class="text-center p-0" to="/chats">
+          <b-nav-item id="menu-option-chat" class="text-center p-0" to="/chats">
             <fa icon="comments" size="2x" /><br>
             Chats
           </b-nav-item>

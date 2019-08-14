@@ -27,6 +27,7 @@ export const mutations = {
 
 export const getters = {
   get: state => idOrName => {
+    console.log('Get', idOrName, typeof idOrName)
     let ret = null
 
     if (!isNaN(idOrName)) {
@@ -52,6 +53,13 @@ export const getters = {
     }
 
     return ret
+  },
+
+  member: (state, getters) => idOrName => {
+    console.log('group/member', idOrName)
+    const group = getters.get(idOrName)
+    console.log('Got group?', group)
+    return group !== null
   },
 
   list: state => () => {

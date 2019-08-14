@@ -81,15 +81,16 @@ export default {
       type: String,
       default: null
     },
-    amAMember: {
-      type: Boolean,
-      default: false
-    },
     profile: {
       type: String,
       default: null
     }
   },
-  computed: {}
+  computed: {
+    amAMember() {
+      console.log('amAMember?', this.id)
+      return this.$store.getters['group/member'](this.id)
+    }
+  }
 }
 </script>

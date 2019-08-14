@@ -29,14 +29,12 @@ export const mutations = {
     Vue.set(state.messages, message.id, message)
   },
   setItem(state, params) {
-    console.log('setItem mutation', params)
     Vue.set(
       state.messages,
       params.id,
       state.messages[params.id] ? state.messages[params.id] : {}
     )
     Vue.set(state.messages[params.id], 'item', params.item)
-    console.log('Messags now', state.messages)
   },
   setDescription(state, params) {
     Vue.set(
@@ -122,7 +120,6 @@ export const actions = {
     const ids = []
     const self = this
 
-    console.log('Submit list', state.messages)
     for (const [id, message] of Object.entries(state.messages)) {
       console.log('Submit', id, message)
       const attids = []
@@ -139,8 +136,6 @@ export const actions = {
         attachments: attids,
         groupid: state.group
       }
-
-      console.log('Message data', id, data)
 
       const promise = new Promise(function(resolve, reject) {
         self.$axios
