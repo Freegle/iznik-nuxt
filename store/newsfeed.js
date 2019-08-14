@@ -67,7 +67,6 @@ export const getters = {
   },
 
   newsfeed: state => () => {
-    console.log('Return feed', state.newsfeed)
     return state.newsfeed
   },
 

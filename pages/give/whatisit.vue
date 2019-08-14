@@ -154,11 +154,9 @@ export default {
     item: {
       get: function() {
         const msg = this.$store.getters['compose/getMessage']()
-        console.log('Compute item', msg)
         return msg && msg.item ? msg.item : ''
       },
       set: function(newValue) {
-        console.log('Set item', newValue)
         this.$store.dispatch('compose/setItem', newValue)
         this.busted = new Date().getTime()
       }

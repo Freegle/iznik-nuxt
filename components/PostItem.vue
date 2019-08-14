@@ -17,7 +17,6 @@
           maxlength="60"
           spellcheck="true"
           placeholder="In a single word or phrase, what is it?"
-          @change="change"
         />
       </b-col>
     </b-row>
@@ -89,10 +88,13 @@ export default {
       this.$emit('typed', input.value)
     },
     process(results) {
-      const items = results.items.slice(0, 5)
+      const items =
+        results.items.length > 5 ? results.items.slice(0, 5) : results.items
       const ret = []
       for (const item of items) {
-        ret.push(item.item)
+        if (item && item.item) {
+          ret.push(item.item)
+        }
       }
 
       this.results = ret
