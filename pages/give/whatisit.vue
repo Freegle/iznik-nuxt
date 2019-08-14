@@ -142,7 +142,7 @@ export default {
   },
   data() {
     return {
-      id: null,
+      id: -1,
       valid: false,
       uploading: false,
       myFiles: [],
@@ -153,31 +153,39 @@ export default {
   computed: {
     item: {
       get: function() {
-        const msg = this.$store.getters['compose/getMessage']()
+        const msg = this.$store.getters['compose/getMessage'](this.id)
         return msg && msg.item ? msg.item : ''
       },
       set: function(newValue) {
-        this.$store.dispatch('compose/setItem', newValue)
+        console.log('What is it set item', newValue, this.id)
+        this.$store.dispatch('compose/setItem', {
+          id: this.id,
+          item: newValue
+        })
         this.busted = new Date().getTime()
       }
     },
     description: {
       get: function() {
-        const msg = this.$store.getters['compose/getMessage']()
+        const msg = this.$store.getters['compose/getMessage'](this.id)
         return msg ? msg.description : null
       },
       set: function(newValue) {
-        this.$store.dispatch('compose/setDescription', newValue)
+        this.$store.dispatch('compose/setDescription', {
+          id: this.id,
+          description: newValue
+        })
         this.busted = new Date().getTime()
       }
     },
     attachments() {
-      return this.$store.getters['compose/getAttachments']()
+      return this.$store.getters['compose/getAttachments'](this.id)
     }
   },
   methods: {
     save() {
       this.$store.dispatch('compose/setMessage', {
+        id: this.id,
         item: this.item,
         description: this.description,
         type: 'Offer'
@@ -253,13 +261,14 @@ export default {
       this.$store.dispatch('compose/removeAttachment', id)
     },
     itemType(value) {
+      console.log('Typed', value)
       this.item = value
-      this.$store.dispatch('compose/setItem', this.item)
+      this.$store.dispatch('compose/setItem', { id: this.id, item: this.item })
       this.busted = new Date().getTime()
     },
     itemSelect(item) {
       this.item = item.name
-      this.$store.dispatch('compose/setItem', this.item)
+      this.$store.dispatch('compose/setItem', { id: this.id, item: this.item })
       this.busted = new Date().getTime()
     },
     itemClear() {
