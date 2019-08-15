@@ -52,8 +52,8 @@
             <b-form-input v-model="email" type="email" size="lg" class="d-inline-block form-control email" placeholder="What's your email address?" />
           </b-col>
         </b-row>
-        <transition name="fade">
-          <b-row v-if="email">
+        <transition name="fadein">
+          <b-row v-if="email && !submitting">
             <b-col cols="12" md="6" offset-md="3" class="text-center pt-2 mt-2">
               <b-btn variant="success" size="lg" block @click="next">
                 Freegle it!
@@ -61,6 +61,18 @@
             </b-col>
           </b-row>
         </transition>
+        <b-row v-if="submitting">
+          <b-col cols="12" md="6" offset-md="3" class="text-center pt-2 mt-2">
+            <b-progress
+              height="48px"
+              class="mt-2"
+              animate
+              variant="success"
+            >
+              <b-progress-bar :value="progressValue" />
+            </b-progress>
+          </b-col>
+        </b-row>
       </b-col>
       <b-col cols="0" md="3" />
     </b-row>
@@ -77,7 +89,8 @@ export default {
   components: {},
   data() {
     return {
-      id: null
+      id: null,
+      submitting: false
     }
   },
   computed: {
@@ -97,10 +110,17 @@ export default {
       }
 
       return email
+    },
+    progressValue() {
+      const progress = this.$store.getters['compose/getProgress']()
+      console.log('Progress', progress)
+      return progress
     }
   },
   methods: {
     next() {
+      this.submitting = true
+
       this.$store
         .dispatch('compose/submit')
         .then(() => {

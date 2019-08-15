@@ -78,3 +78,10 @@ button {
 .fade-enter, .fade-leave-to {
     opacity: 0;
 }
+
+.fadein-enter-active {
+    transition: opacity 1s;
+}
+.fadein-enter {
+    opacity: 0;
+}

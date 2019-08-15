@@ -11,7 +11,8 @@ export const state = () => ({
   group: null,
   messages: {},
   attachments: {},
-  submitting: 0
+  progress: 1,
+  max: 3
 })
 
 export const mutations = {
@@ -35,6 +36,15 @@ export const mutations = {
   },
   clearMessage: (state, params) => {
     Vue.delete(state.messages, params.id)
+  },
+  initProgress: (state, max) => {
+    state.progress = 1
+    state.max = max + 1
+    console.log('initProgress', max)
+  },
+  incProgress: state => {
+    state.progress++
+    console.log('Inc progress', state.progress)
   },
   setItem(state, params) {
     Vue.set(
@@ -64,7 +74,6 @@ export const mutations = {
     state.attachments[params.id].push(params.attachment)
   },
   removeAttachment(state, params) {
-    console.log('Remove att', params)
     Vue.set(
       state.attachments,
       params.id,
@@ -72,6 +81,9 @@ export const mutations = {
         return parseInt(obj.id) !== parseInt(params.photoid)
       })
     )
+  },
+  setAttachments(state, params) {
+    state.attachments = params
   }
 }
 
@@ -96,6 +108,9 @@ export const getters = {
   },
   getAttachments: state => id => {
     return state.attachments[id] ? state.attachments[id] : []
+  },
+  getProgress: state => () => {
+    return (Math.min(state.progress, state.max - 1) * 100) / state.max
   }
 }
 
@@ -138,8 +153,10 @@ export const actions = {
     const promises = []
     const ids = []
     const self = this
+    const messages = Object.entries(state.messages)
+    commit('initProgress', messages.length * 2)
 
-    for (const [id, message] of Object.entries(state.messages)) {
+    for (const [id, message] of messages) {
       if (message.submitted) {
         continue
       }
@@ -168,6 +185,8 @@ export const actions = {
         self.$axios
           .put(process.env.API + '/message', data)
           .then(function(ret) {
+            commit('incProgress')
+
             if (ret.status === 200 && ret.data.ret === 0) {
               // We've created a draft.  Submit it
               self.$axios
@@ -177,6 +196,7 @@ export const actions = {
                   id: ret.data.id
                 })
                 .then(function(ret2) {
+                  commit('incProgress')
                   if (ret2.status === 200 && ret2.data.ret === 0) {
                     // Success
                     const id = ret2.data.id
