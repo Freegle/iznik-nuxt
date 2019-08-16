@@ -75,6 +75,9 @@ export default {
   methods: {
     share() {
       // TODO
+    },
+    brokenImage(event) {
+      event.target.src = '/static/placeholder.jpg'
     }
   }
 }

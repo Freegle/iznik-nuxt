@@ -12,6 +12,7 @@
                   alt="Profile picture"
                   title="Profile"
                   :src="users[reply.userid].profile.turl"
+                  @error.native="brokenImage"
                 />
               </td>
               <td class="align-top">
@@ -70,6 +71,7 @@
                 alt="Profile picture"
                 title="Profile"
                 :src="me.profile.turl"
+                @error.native="brokenImage"
               />
             </span>
           </b-input-group-prepend>

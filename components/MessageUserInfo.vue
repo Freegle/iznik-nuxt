@@ -7,6 +7,7 @@
         class="profilesm p-0 ml-1 mb-1"
         :alt="'Profile picture for ' + user.displayname"
         :src="user.profile.turl"
+        @error.native="brokenImage"
       />
       Posted by {{ user.displayname }}
       <span v-if="user.info.openoffers + user.info.openwanteds > 0">
@@ -28,6 +29,11 @@ export default {
     user: {
       type: Object,
       required: true
+    }
+  },
+  methods: {
+    brokenImage(event) {
+      event.target.src = '/static/placeholder.jpg'
     }
   }
 }

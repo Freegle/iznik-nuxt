@@ -10,6 +10,7 @@
             alt="Profile picture"
             title="Profile"
             :src="otheruser.profile.turl"
+            @error.native="brokenImage"
           />
           <span :class="emessage ? 'chatMessage' : ''">
             <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap"><b>{{ emessage }}</b></span>
@@ -30,6 +31,7 @@
             alt="Profile picture"
             title="Profile"
             :src="me.profile.turl"
+            @error.native="brokenImage"
           />
         </div>
       </b-col>
@@ -73,6 +75,11 @@ export default {
   computed: {
     emessage() {
       return twem.twem(this.$twemoji, this.chatmessage.message).trim()
+    }
+  },
+  methods: {
+    brokenImage(event) {
+      event.target.src = '/static/placeholder.jpg'
     }
   }
 }

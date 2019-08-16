@@ -10,6 +10,7 @@
           alt="Freegle logo"
           title="Freegle logo"
           :src="require(`@/static/icon.png`)"
+          @error.native="brokenImage"
         />
         <span class="text-success font-weight-bold pl-2">
           Freegle
@@ -75,6 +76,7 @@ export default {
   components: {
     NewsLoveComment
   },
-  extends: NewsBase
+  extends: NewsBase,
+  methods: {}
 }
 </script>
