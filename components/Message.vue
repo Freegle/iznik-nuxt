@@ -7,7 +7,7 @@
             <b-img-lazy
               rounded
               thumbnail
-              class="attachment p-0"
+              class="attachment p-0 square"
               alt="Item picture"
               title="Item picture"
               :src="attachments[0].paththumb"
@@ -178,7 +178,7 @@ h4 {
   color: black !important;
 }
 
-img {
+.square {
   object-fit: cover;
   width: 200px;
   height: 200px;
