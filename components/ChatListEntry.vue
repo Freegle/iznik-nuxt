@@ -19,7 +19,7 @@
             class="profile p-0 ml-1 mb-1 inline"
             alt="Profile picture"
             title="Profile"
-            src="~/static/placeholder.jpg"
+            src="~/static/defaultprofile.png"
           />
           <span class="pl-0 mb-0 chatname">
             {{ name }}

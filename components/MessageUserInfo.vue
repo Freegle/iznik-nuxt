@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     brokenImage(event) {
-      event.target.src = '/static/placeholder.jpg'
+      event.target.src = '/static/defaultprofile.png'
     }
   }
 }

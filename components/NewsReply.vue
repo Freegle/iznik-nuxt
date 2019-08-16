@@ -5,7 +5,7 @@
         <table v-if="users[reply.userid].profile">
           <tbody>
             <tr>
-              <td>
+              <td style="vertical-align: top">
                 <b-img-lazy
                   rounded="circle"
                   class="profilemd p-0 ml-1 mb-1 mr-2 inline float-left"
