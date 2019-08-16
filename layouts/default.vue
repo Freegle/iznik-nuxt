@@ -11,7 +11,6 @@
           alt="Home"
         />
       </b-navbar-brand>
-      <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
       <b-collapse v-if="loggedIn" id="nav_collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item class="text-center p-0" to="/chitchat">
@@ -50,6 +49,7 @@
           </b-button>
         </li>
       </ul>
+      <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
     </b-navbar>
     <nuxt class="ml-0 pl-1 pageContent" />
     <b-modal id="signInModal" ref="loginModal" title="Sign In">
@@ -72,6 +72,7 @@
 </template>
 
 <style scoped>
+/*TODO Make menu dropdown horizontal on mobile*/
 /*TODO Shrink navbar on scroll?*/
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
