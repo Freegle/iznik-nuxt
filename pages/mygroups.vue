@@ -1,10 +1,10 @@
 <template>
   <b-col>
     <b-row class="m-0">
-      <b-col cols="3">
+      <b-col cols="0" md="3">
         Community Events go here
       </b-col>
-      <b-col cols="6" class="p-0">
+      <b-col cols="12" md="6" class="p-0">
         <div>
           <b-alert show variant="info" class="mt-2">
             <b-row>
@@ -29,7 +29,7 @@
           </infinite-loading>
         </div>
       </b-col>
-      <b-col cols="3">
+      <b-col cols="0" md="3">
         Volunteer ops and ads go here
       </b-col>
     </b-row>

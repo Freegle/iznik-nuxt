@@ -1,17 +1,17 @@
 <template>
   <b-col>
     <b-row class="m-0">
-      <b-col cols="3" class="chatlist p-0 bg-white">
+      <b-col cols="12" md="3&quot;" class="chatlist p-0 bg-white">
         <ul v-for="(chat, $index) in sortedChats" :key="'chat-' + $index" class="p-0 pt-1 list-unstyled mb-1">
           <li :class="{ active: activeChat && chat.id == activeChat.id }">
             <ChatListEntry :key="'ChatListEntry-' + chat.id" v-bind="chat" />
           </li>
         </ul>
       </b-col>
-      <b-col cols="6" class="chatback">
+      <b-col cols="12" md="6" class="chatback">
         <chatPane v-if="activeChat" :key="'activechat-' + (activeChat ? activeChat.id : null)" v-bind="activeChat" />
       </b-col>
-      <b-col cols="3">
+      <b-col cols="0" md="3">
         Ads go here
       </b-col>
     </b-row>

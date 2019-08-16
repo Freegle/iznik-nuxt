@@ -178,6 +178,12 @@ h4 {
   color: black !important;
 }
 
+img {
+  object-fit: cover;
+  width: 200px;
+  height: 200px;
+}
+
 img.attachment {
   max-height: 150px !important;
   max-width: 150px !important;
