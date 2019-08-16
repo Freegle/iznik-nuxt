@@ -31,6 +31,9 @@ export const mutations = {
       return parseInt(obj.id) !== parseInt(item.id)
     })
   },
+  clear(state) {
+    state.list = []
+  },
   setContext(state, ctx) {
     state.context = ctx
   }
@@ -87,5 +90,9 @@ export const actions = {
     })
 
     commit('add', res.data.message)
+  },
+
+  clear({ commit }) {
+    commit('clear')
   }
 }

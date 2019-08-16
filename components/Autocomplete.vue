@@ -1,20 +1,28 @@
 <template>
   <div :class="`${getClassName('wrapper')} autocomplete-wrapper`">
-    <input
-      :id="id"
-      ref="input"
-      v-model="type"
-      type="text"
-      :class="`${getClassName('input')} autocomplete-input`"
-      :placeholder="placeholder"
-      :name="name"
-      autocomplete="off"
-      @input="handleInput"
-      @dblclick="handleDoubleClick"
-      @blur="handleBlur"
-      @keydown="handleKeyDown"
-      @focus="handleFocus"
-    >
+    <b-input-group>
+      <input
+        :id="id"
+        ref="input"
+        v-model="type"
+        type="text"
+        :class="`${getClassName('input')} autocomplete-input`"
+        :placeholder="placeholder"
+        :name="name"
+        autocomplete="off"
+        @input="handleInput"
+        @dblclick="handleDoubleClick"
+        @blur="handleBlur"
+        @keydown="handleKeyDown"
+        @focus="handleFocus"
+      >
+
+      <b-input-group-append v-if="searchbutton">
+        <b-button variant="success" size="lg" @click="search">
+          <fa icon="search" />&nbsp;Search
+        </b-button>
+      </b-input-group-append>
+    </b-input-group>
 
     <div
       v-show="showList && json.length"
@@ -145,7 +153,13 @@ export default {
     onBeforeAjax: Function,
     onAjaxProgress: Function,
     onAjaxLoaded: Function,
-    onShouldGetData: Function
+    onShouldGetData: Function,
+
+    searchbutton: {
+      type: String,
+      required: false,
+      default: ""
+    }
   },
 
   data() {
@@ -403,6 +417,10 @@ export default {
           this.json = options
         })
       }
+    },
+
+    search() {
+      this.$emit('search')
     }
   }
 }

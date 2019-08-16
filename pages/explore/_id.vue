@@ -51,12 +51,7 @@ export default {
       context: null
     }
   },
-  computed: {
-    messageCount: function() {
-      const count = this.messages ? this.messages.length : 0
-      return count
-    }
-  },
+  computed: {},
   async asyncData({ app, params, store }) {
     // We have the group id or name in params.id.  Fetch the group.
     await store.dispatch('group/fetch', {

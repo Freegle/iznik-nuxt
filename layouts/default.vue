@@ -26,6 +26,10 @@
             <fa icon="gift" size="2x" /><br>
             Give
           </b-nav-item>
+          <b-nav-item class="text-center p-0" to="/find">
+            <fa icon="search" size="2x" /><br>
+            Find
+          </b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto">
           <b-nav-item id="menu-option-chat" class="text-center p-0" to="/chats">
