@@ -3,7 +3,7 @@
     <b-navbar toggleable="lg" type="dark" class="ourBack">
       <b-navbar-brand to="/" class="p-0">
         <b-img
-          class="logo"
+          class="logo mr-2"
           height="58"
           width="58"
           rounded
