@@ -59,7 +59,8 @@ module.exports = {
     { src: '~plugins/vue-infinite-loading.js', ssr: false },
     { src: '~plugins/vue2-google-maps.js', ssr: false },
     { src: '~plugins/filepond-plugin-image-transform', ssr: false},
-    { src: '~plugins/vue-debounce', ssr: false}
+    { src: '~plugins/vue-debounce', ssr: false},
+    { src: '~plugins/vue-highlight-words', ssr: false}
   ],
 
   /*

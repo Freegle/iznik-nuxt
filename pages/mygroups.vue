@@ -102,6 +102,9 @@ export default {
     } catch (e) {
       console.log('Save last route failed', e)
     }
+
+    // Ensure we have no cached messages for other searches/groups
+    this.$store.dispatch('messages/clear')
   },
   methods: {
     groupChange: function() {

@@ -14,13 +14,30 @@
             />
             <br>
           </span>
-          {{ eSubject }}
+          <Highlighter
+            v-if="matchedon"
+            :search-words="[matchedon.word]"
+            :text-to-highlight="eSubject"
+            highlight-class-name="highlight"
+          />
+          <span v-else>
+            {{ eSubject }}
+          </span>
         </b-card-title>
         <span v-for="group in groups" :key="'message-' + id + '-' + group.id" class="small muted">
           {{ group.arrival | timeago }} on {{ group.namedisplay }}
         </span>
         <div v-if="eSnippet && eSnippet !== 'null' && !expanded">
-          <h4>{{ eSnippet }}...</h4>
+          <h4>
+            <Highlighter
+              v-if="matchedon"
+              :search-words="[matchedon.word]"
+              :text-to-highlight="eSnippet"
+              highlight-class-name="highlight"
+            />
+            <span v-else>{{ eSnippet }}</span>
+            ...
+          </h4>
         </div>
         <div v-if="!eSnippet || eSnippet === 'null' && !expanded">
           <i>There's no description.</i>
@@ -35,7 +52,15 @@
           else drops out.
         </b-alert>
 
-        <p>{{ expanded.textbody }}</p>
+        <p>
+          <Highlighter
+            v-if="matchedon"
+            :search-words="[matchedon.word]"
+            :text-to-highlight="expanded.textbody"
+            highlight-class-name="highlight"
+          /><span v-else>{{ expanded.textbody }}</span>
+        </p>
+
         <MessageUserInfo v-if="expanded.fromuser" :user="expanded.fromuser" />
         <span v-if="expanded.replycount" class="float-right small text-muted">
           <fa icon="user" class="d-inline" />&nbsp;<span class="d-inline">{{ expanded.replycount }}&nbsp;freegler<span v-if="expanded.replycount != 1">s</span>&nbsp;replied&nbsp;</span>
@@ -95,12 +120,14 @@
   </div>
 </template>
 <script>
+import Highlighter from 'vue-highlight-words'
 import twem from '~/assets/js/twem'
 import MessageUserInfo from '~/components/MessageUserInfo'
 
 export default {
   components: {
-    MessageUserInfo
+    MessageUserInfo,
+    Highlighter
   },
   props: {
     id: {
@@ -126,6 +153,10 @@ export default {
     attachments: {
       type: Array,
       default: () => []
+    },
+    matchedon: {
+      type: Object,
+      default: null
     }
   },
   data: function() {
@@ -191,5 +222,10 @@ img.attachment {
 
 .messagePhoto {
   max-height: 600px !important;
+}
+
+.highlight {
+  color: darkorange;
+  background-color: initial;
 }
 </style>
