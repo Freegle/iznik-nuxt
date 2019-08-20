@@ -18,6 +18,7 @@
               :options="options"
               name="radio-inline"
               class="mt-2 mb-2"
+              @change="changetype"
             />
           </b-col>
         </b-row>
@@ -76,7 +77,7 @@
               <message v-if="message.type == searchtype" v-bind="message" />
             </div>
 
-            <infinite-loading @infinite="loadMore">
+            <infinite-loading :key="searchtype" @infinite="loadMore">
               <span slot="no-results" />
               <span slot="no-more" />
               <span slot="spinner">
@@ -202,7 +203,7 @@ export default {
         params = {
           collection: 'Approved',
           summary: true,
-          types: [this.searchtype],
+          messagetype: this.searchtype,
           context: this.context,
           search: term,
           nearlocation: postcode ? postcode.id : null,
@@ -242,6 +243,10 @@ export default {
         .catch(() => {
           $state.complete()
         })
+    },
+    changetype: function() {
+      // Reset the messages to force refetch.
+      this.$store.dispatch('messages/clear')
     }
   }
 }
