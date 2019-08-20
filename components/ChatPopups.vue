@@ -53,7 +53,7 @@ export default {
   },
   async mounted() {
     // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
-    // need to render this pane on the server.
+    // need to render this on the server.
     await this.$store.dispatch('chats/listChats')
     this.chats = Object.values(this.$store.getters['chats/list']())
   },

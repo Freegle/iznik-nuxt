@@ -31,6 +31,23 @@
           </b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto">
+          <b-nav-item id="menu-option-notification" class="text-center p-0" />
+          <b-nav-item-dropdown class="text-center notiflist" lazy>
+            <template slot="button-content">
+              <fa icon="bell" size="2x" /><br>Notifications
+            </template>
+            <b-dropdown-item v-for="(notification, $index) in notifications" :key="'notification-' + $index" href="#">
+              <Notification v-bind="notification" />
+            </b-dropdown-item>
+            <infinite-loading @infinite="loadMore">
+              <span slot="no-results" />
+              <span slot="no-more" />
+              <span slot="spinner">
+                <b-img-lazy src="~/static/loader.gif" />
+              </span>
+            </infinite-loading>
+          </b-nav-item-dropdown>
+
           <b-nav-item id="menu-option-chat" class="text-center p-0" to="/chats">
             <fa icon="comments" size="2x" /><br>
             Chats
@@ -156,16 +173,19 @@ body.modal-open {
 
 <script>
 import ChatPopups from '~/components/ChatPopups'
+import Notification from '~/components/Notification'
 
 export default {
   components: {
-    ChatPopups
+    ChatPopups,
+    Notification
   },
 
   data: function() {
     return {
       email: null,
-      password: null
+      password: null,
+      complete: false
     }
   },
 
@@ -178,7 +198,18 @@ export default {
   computed: {
     loggedIn() {
       return this.$store.state.auth.user
+    },
+    notifications() {
+      const notifications = Object.values(
+        this.$store.getters['notifications/list']()
+      )
+      return notifications
     }
+  },
+
+  async mounted() {
+    await this.$store.dispatch('notifications/clear')
+    await this.$store.dispatch('notifications/list')
   },
 
   methods: {
@@ -204,12 +235,54 @@ export default {
 
       this.$refs.loginModal.hide()
     },
+
     logout() {
       this.$store.dispatch('security/logout').then(() => {
         this.$router.push({
           path: '/login'
         })
       })
+    },
+
+    loadMore: function($state) {
+      console.log('loadMore notifications')
+      const currentCount = this.notifications.length
+
+      if (this.complete) {
+        // This is a bit weird - calling complete() works here to stop the plugin firing, but not lower down in the
+        // callback.  And we get the error message about no results, so I've overridden it above to be empty.
+        // TODO Figure out what's going on here.  This kinda works but it's hacky.
+        $state.complete()
+      } else {
+        this.busy = true
+        this.$store
+          .dispatch('notifications/list', {
+            chatid: this.id
+          })
+          .then(() => {
+            try {
+              const notifications = this.$store.getters['notifications/list']()
+
+              if (currentCount === notifications.length) {
+                this.complete = true
+                $state.complete()
+                console.log('Complete')
+              } else {
+                $state.loaded()
+                console.log('Loaded')
+              }
+              this.busy = false
+            } catch (e) {
+              console.error(e)
+              console.log('Error')
+            }
+          })
+          .catch(e => {
+            console.error(e)
+            this.busy = false
+            $state.complete()
+          })
+      }
     }
   }
 }

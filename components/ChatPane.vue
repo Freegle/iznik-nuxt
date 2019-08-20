@@ -35,7 +35,7 @@
         <b-col v-if="chat">
           <infinite-loading direction="top" force-use-infinite-wrapper="true" @infinite="loadMore">
             <span slot="no-results" />
-            <span slot="no-results" />
+            <span slot="no-more" />
             <span slot="spinner">
               <b-img-lazy src="~/static/loader.gif" />
             </span>
@@ -144,7 +144,7 @@
   order: 3;
   justify-content: flex-start;
   flex-grow: 1;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .chatFooter {

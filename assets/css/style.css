@@ -85,3 +85,8 @@ button {
 .fadein-enter {
     opacity: 0;
 }
+
+.notiflist .dropdown-menu {
+    height: 500px;
+    overflow-y: auto;
+}

@@ -29,6 +29,7 @@ export default ({ store }) => {
         delete newstate.newsfeed.newsfeed
         delete newstate.newsfeed.users
         delete newstate.newsfeed.context
+        delete newstate.chatmessages
 
         // The groupsnear in a postcode only needs the group ids.
         const pc = newstate.compose.postcode
@@ -44,6 +45,14 @@ export default ({ store }) => {
           newstate.compose.postcode.groupsnear = near
         }
 
+        // for (const field of Object.keys(newstate)) {
+        //   console.log(
+        //     'Field',
+        //     field,
+        //     JSON.stringify(newstate[field]).length,
+        //     newstate[field]
+        //   )
+        // }
         return newstate
       }
     })(store)
