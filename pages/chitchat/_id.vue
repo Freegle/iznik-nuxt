@@ -133,6 +133,7 @@
           </ul>
           <infinite-loading :identifier="infiniteId" force-use-infinite-wrapper="body" @infinite="loadMore">
             <span slot="no-results" />
+            <span slot="no-results" />
             <span slot="spinner">
               <b-img-lazy src="~/static/loader.gif" />
             </span>

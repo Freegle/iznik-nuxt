@@ -77,7 +77,10 @@
             </div>
 
             <infinite-loading @infinite="loadMore">
+              <span slot="no-results" />
+              <span slot="no-more" />
               <span slot="spinner">
+                <span slot="no-results" />
                 <b-img-lazy src="~/static/loader.gif" />
               </span>
             </infinite-loading>
@@ -116,7 +119,8 @@ export default {
       source: process.env.API + '/item',
       context: null,
       messages: null,
-      term: null
+      term: null,
+      complete: false
     }
   },
   computed: {},
@@ -190,6 +194,8 @@ export default {
         return
       }
 
+      const currentCount = this.messages ? this.messages.length : 0
+
       let params = null
 
       if (term) {
@@ -199,16 +205,15 @@ export default {
           types: [this.searchtype],
           context: this.context,
           search: term,
-          subaction: 'searchmess',
-          nearlocation: postcode ? postcode.id : null
+          nearlocation: postcode ? postcode.id : null,
+          subaction: 'searchmess'
         }
       } else {
         params = {
           collection: 'Approved',
           summary: true,
           types: [this.searchtype],
-          context: this.context,
-          nearlocation: postcode ? postcode.id : null
+          context: this.context
         }
       }
 
@@ -226,7 +231,13 @@ export default {
           }
 
           this.context = this.$store.getters['messages/getContext']()
-          $state.loaded()
+
+          if (currentCount === this.messages.length) {
+            this.complete = true
+            $state.complete()
+          } else {
+            $state.loaded()
+          }
         })
         .catch(() => {
           $state.complete()

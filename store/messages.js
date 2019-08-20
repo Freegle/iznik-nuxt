@@ -8,22 +8,30 @@ export const state = () => ({
 
 export const mutations = {
   add(state, item) {
-    // Remove any existing entry.
+    // Overwrite any existing entry.
     // TODO Performance not great.
-    state.list = state.list.filter(obj => {
-      return parseInt(obj.id) !== parseInt(item.id)
+    const existing = state.list.findIndex(obj => {
+      return parseInt(obj.id) === parseInt(item.id)
     })
 
-    state.list.push(item)
+    if (existing !== -1) {
+      state.list[existing] = item
+    } else {
+      state.list.push(item)
+    }
   },
   addAll(state, items) {
     items.forEach(item => {
       // TODO Performance not great.  Items is short, though, so could take advantage of that.
-      state.list = state.list.filter(obj => {
-        return parseInt(obj.id) !== parseInt(item.id)
+      const existing = state.list.findIndex(obj => {
+        return parseInt(obj.id) === parseInt(item.id)
       })
 
-      state.list.push(item)
+      if (existing !== -1) {
+        state.list[existing] = item
+      } else {
+        state.list.push(item)
+      }
     })
   },
   remove(state, item) {

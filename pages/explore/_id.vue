@@ -28,6 +28,8 @@
 
     <infinite-loading @infinite="loadMore">
       <span slot="spinner">
+        <span slot="no-results" />
+        <span slot="no-results" />
         <b-img-lazy src="~/static/loader.gif" />
       </span>
     </infinite-loading>

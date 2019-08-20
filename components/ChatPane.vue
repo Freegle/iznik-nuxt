@@ -35,6 +35,7 @@
         <b-col v-if="chat">
           <infinite-loading direction="top" force-use-infinite-wrapper="true" @infinite="loadMore">
             <span slot="no-results" />
+            <span slot="no-results" />
             <span slot="spinner">
               <b-img-lazy src="~/static/loader.gif" />
             </span>
