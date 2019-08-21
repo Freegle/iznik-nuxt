@@ -31,6 +31,15 @@ export default ({ store }) => {
         delete newstate.newsfeed.context
         delete newstate.chatmessages
 
+        // Bound number of notifications
+        if (
+          newstate.notifications &&
+          newstate.notifications.list &&
+          newstate.notifications.list.length > 20
+        ) {
+          newstate.notifications.list.length = 20
+        }
+
         // The groupsnear in a postcode only needs the group ids.
         const pc = newstate.compose.postcode
 
