@@ -4,6 +4,7 @@
       <b-card-header class="pl-2 pr-2 clearfix">
         <b-card-title class="msgsubj mb-0">
           <span v-if="attachments.length > 0" class="float-right clickme" @click="showPhotos">
+            <b-badge v-if="attachments.length > 1" class="photobadge" variant="primary">+{{ attachments.length - 1 }} <fa icon="camera" /></b-badge>
             <b-img-lazy
               rounded
               thumbnail
@@ -227,5 +228,11 @@ img.attachment {
 .highlight {
   color: darkorange;
   background-color: initial;
+}
+
+.photobadge {
+  left: 150px;
+  top: -54px;
+  position: relative;
 }
 </style>
