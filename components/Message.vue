@@ -109,13 +109,24 @@
       no-stacking
     >
       <template slot="default">
-        <b-img
-          fluid
-          rounded
-          center
-          :src="expanded.attachments[0].path"
-          class="messagePhoto"
-        />
+        <b-carousel
+          :id="'message-carousel-' + expanded.id"
+          v-model="slide"
+          :interval="5000"
+          controls
+          indicators
+          img-width="100%"
+        >
+          <b-carousel-slide v-for="(attachment, index) in expanded.attachments" :key="'mesagephohoto-' + index + '-' + attachment.id">
+            <b-img
+              slot="img"
+              center
+              class="d-block img-fluid w-100 messagePhoto"
+              :src="attachment.path"
+              :alt="'Message photo ' + slide"
+            />
+          </b-carousel-slide>
+        </b-carousel>
       </template>
     </b-modal>
   </div>
@@ -163,7 +174,8 @@ export default {
   data: function() {
     return {
       reply: null,
-      expanded: null
+      expanded: null,
+      slide: 0
     }
   },
   computed: {
