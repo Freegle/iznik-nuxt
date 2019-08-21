@@ -53,7 +53,7 @@
           else drops out.
         </b-alert>
 
-        <p class="prewrap">
+        <p class="prewrap pl-1">
           <Highlighter
             v-if="matchedon"
             :search-words="[matchedon.word]"

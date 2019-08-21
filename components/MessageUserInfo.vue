@@ -15,6 +15,9 @@
         <span v-if="user.info.openoffers" class="text-success">
           {{ user.info.openoffers | pluralize([ 'open OFFER', 'open OFFERs' ], { includeNumber: true }) }}
         </span>
+        <span v-if="user.info.openoffers && user.info.openwanteds">
+          &bull;
+        </span>
         <span v-if="user.info.openwanteds" class="text-success">
           {{ user.info.openwanteds | pluralize([ 'open WANTED', 'open WANTEDs' ], { includeNumber: true }) }}
         </span>
