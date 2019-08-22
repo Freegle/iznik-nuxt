@@ -60,7 +60,13 @@ export const getters = {
     return ret
   },
   getContext: state => () => {
-    return state.context
+    let ret = null
+
+    if (state.context && state.context.id) {
+      ret = state.context
+    }
+
+    return ret
   },
   getByGroup: state => groupid => {
     const ret = state.list.filter(message => {
