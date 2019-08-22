@@ -260,7 +260,7 @@ export default {
     try {
       localStorage.setItem('Iznik>lasthomepage', 'news')
     } catch (e) {
-      console.log('Save last route failed', e)
+      console.error('Save last route failed', e)
     }
   },
 
@@ -269,8 +269,6 @@ export default {
       this.busy = true
 
       if (!this.$store.$auth.loggedIn) {
-        console.log('Not logged in')
-
         if ($state.complete) {
           $state.complete()
         }
@@ -290,7 +288,7 @@ export default {
             $state.loaded()
           }
         } catch (e) {
-          console.log('Load failed', e)
+          console.error('Load failed', e)
 
           if ($state.complete) {
             $state.complete()
@@ -301,7 +299,6 @@ export default {
       }
     },
     areaChange: function() {
-      console.log('Area change', this.selectedArea)
       this.infiniteId++
       this.$store.commit('newsfeed/clearFeed')
       this.newsfeed = null

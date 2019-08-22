@@ -50,6 +50,7 @@ module.exports = {
     { src: '~/plugins/qs' },
     { src: '~/plugins/twemoji' },
     { src: '~/plugins/vue2-filters' },
+    { src: '~plugins/axios-token'},
 
     // Some plugins are client-side features
     { src: '~plugins/vuex-persistedstate', ssr: false },
@@ -60,7 +61,7 @@ module.exports = {
     { src: '~plugins/vue2-google-maps.js', ssr: false },
     { src: '~plugins/filepond-plugin-image-transform', ssr: false},
     { src: '~plugins/vue-debounce', ssr: false},
-    { src: '~plugins/vue-highlight-words', ssr: false}
+    { src: '~plugins/vue-highlight-words', ssr: false},
   ],
 
   /*
