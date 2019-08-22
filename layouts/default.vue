@@ -245,7 +245,6 @@ export default {
     },
 
     loadMore: function($state) {
-      console.log('loadMore notifications')
       const currentCount = this.notifications.length
 
       if (this.complete) {

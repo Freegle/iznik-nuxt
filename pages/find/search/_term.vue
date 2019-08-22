@@ -180,11 +180,9 @@ export default {
     },
     search() {
       const term = this.$refs.autocomplete.$refs.input.value
-      console.log('Search for ', term)
       this.$router.push('/find/search/' + term)
     },
     loadMore: function($state) {
-      console.log('Load more')
       this.busy = true
 
       const term = this.$refs.autocomplete.$refs.input.value

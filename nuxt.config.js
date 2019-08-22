@@ -146,11 +146,6 @@ module.exports = {
     MODTOOLS: false
   },
 
-  // We have some configuration to ensure that we handle both SSR and being logged in.
-  serverMiddleware: ['~/serverMiddleware'],
-
-  forceSPAOn: ['/login'],
-
   auth: {
     strategies: {
       local: false,
@@ -164,5 +159,9 @@ module.exports = {
     config: {
       performance: true
     }
+  },
+
+  router: {
+    middleware: ['auth']
   }
 }
