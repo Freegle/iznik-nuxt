@@ -21,9 +21,7 @@ module.exports = {
       repo : 'git@github.com:Freegle/iznik-nuxt.git',
       path : '/var/www/fdnuxt',
       'post-deploy' : 'npm install && pm2 reload ecosystem.config.js',
-      env: {
-        "PORT": "3001"
-      }
+      'node_args' : 'port=3001'
     }
   }
 };
