@@ -9,6 +9,9 @@ module.exports = {
       xp_backoff_restart_delay: 100,
       watch: false,
       max_memory_restart: '1G',
+      env: {
+        "PORT": "1338"
+      }
     }
   ],
 
