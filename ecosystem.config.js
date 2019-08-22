@@ -8,7 +8,10 @@ module.exports = {
       autorestart: true,
       xp_backoff_restart_delay: 100,
       watch: false,
-      max_memory_restart: '1G'
+      max_memory_restart: '1G',
+      env: {
+        post: 3001
+      }
     }
   ],
 
@@ -21,7 +24,6 @@ module.exports = {
       repo : 'git@github.com:Freegle/iznik-nuxt.git',
       path : '/var/www/fdnuxt',
       'post-deploy' : 'npm install && pm2 reload ecosystem.config.js',
-      'node_args' : 'port=3001'
     }
   }
 };
