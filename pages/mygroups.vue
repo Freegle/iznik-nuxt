@@ -23,9 +23,9 @@
           </div>
 
           <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" force-use-infinite-wrapper="body" @infinite="loadMore">
+            <span slot="no-results" />
+            <span slot="no-more" />
             <span slot="spinner">
-              <span slot="no-results" />
-              <span slot="no-more" />
               <b-img-lazy src="~/static/loader.gif" />
             </span>
           </infinite-loading>
@@ -117,8 +117,9 @@ export default {
     },
 
     loadMore: function($state) {
-      console.log('Load more')
       this.busy = true
+
+      const currentCount = this.messages.length
 
       let types = []
 
@@ -145,17 +146,23 @@ export default {
         .then(() => {
           this.busy = false
 
+          let messages
+
           if (this.group) {
-            this.messages = this.$store.getters['messages/getByGroup'](
-              this.group.id
-            )
+            messages = this.$store.getters['messages/getByGroup'](this.group.id)
           } else {
-            this.messages = this.$store.getters['messages/getAll']()
+            messages = this.$store.getters['messages/getAll']()
           }
 
+          this.messages = messages
           this.context = this.$store.getters['messages/getContext']()
-          $state.loaded()
-          console.log('Loaded')
+
+          if (currentCount === messages.length) {
+            this.complete = true
+            $state.complete()
+          } else {
+            $state.loaded()
+          }
         })
         .catch(() => {
           this.busy = false
