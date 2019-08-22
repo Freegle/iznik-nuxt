@@ -29,7 +29,7 @@
           {{ group.arrival | timeago }} on {{ group.namedisplay }}
         </span>
         <div v-if="eSnippet && eSnippet !== 'null' && !expanded">
-          <h4>
+          <h4 class="snippet">
             <Highlighter
               v-if="matchedon"
               :search-words="[matchedon.word]"
@@ -219,7 +219,13 @@ export default {
 }
 
 h4 {
+  color: #000080 !important;
+  font-weight: bold;
+}
+
+h4.snippet {
   color: black !important;
+  font-weight: 500;
 }
 
 .square {
