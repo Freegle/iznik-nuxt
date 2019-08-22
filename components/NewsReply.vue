@@ -16,7 +16,7 @@
                 />
               </td>
               <td class="align-top">
-                <fa v-if="users[reply.userid].settings.showmod" icon="leaf" class="showmodsm text-success" />
+                <v-icon v-if="users[reply.userid].settings.showmod" name="leaf" class="showmodsm text-success" />
                 <span class="text-success font-weight-bold">{{ users[reply.userid].displayname }}</span>
                 <span class="font-weight-bold prewrap replytext">{{ emessage }}</span>
                 <span v-if="reply.message && reply.userid && users[reply.userid]">
@@ -36,7 +36,7 @@
                       &bull;&nbsp;Unlove this
                     </span>
                     <span v-if="reply.loves">
-                      <fa icon="heart" class="text-danger" />&nbsp;{{ reply.loves }}
+                      <v-icon name="heart" class="text-danger" />&nbsp;{{ reply.loves }}
                     </span>
                   </span>
                 </span>
@@ -95,7 +95,7 @@
       </b-col>
       <b-col cols="1" class="p-0">
         <b-btn size="sm" variant="primary" class="float-right">
-          <fa icon="camera" />&nbsp;Photo
+          <v-icon name="camera" />&nbsp;Photo
         </b-btn>
       </b-col>
     </b-row>

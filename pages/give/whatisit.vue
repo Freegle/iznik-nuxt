@@ -53,10 +53,10 @@
               </b-card-body>
               <b-card-footer v-if="index === ids.length - 1">
                 <b-btn v-if="ids.length > 1" variant="white" class="mt-2 float-left" @click="deleteItem">
-                  <fa icon="trash-alt" />&nbsp;Delete item
+                  <v-icon name="trash-alt" />&nbsp;Delete item
                 </b-btn>
                 <b-btn variant="white" class="mt-2 float-right" @click="addItem">
-                  <fa icon="plus" />&nbsp;Add another item
+                  <v-icon name="plus" />&nbsp;Add another item
                 </b-btn>
               </b-card-footer>
             </b-card>

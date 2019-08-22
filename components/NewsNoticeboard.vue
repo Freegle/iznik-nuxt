@@ -33,7 +33,7 @@
             class="float-right d-inline-block"
             @click="share"
           >
-            <fa icon="bullhorn" /> Put up a poster
+            <v-icon name="bullhorn" /> Put up a poster
           </b-btn>
         </nuxt-link>
       </b-col>

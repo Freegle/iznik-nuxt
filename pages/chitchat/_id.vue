@@ -20,7 +20,7 @@
               <b-col cols="5">
                 <nuxt-link to="/give">
                   <b-btn block variant="success" class="float-left">
-                    <fa icon="gift" />&nbsp;Give stuff
+                    <v-icon name="gift" />&nbsp;Give stuff
                   </b-btn>
                 </nuxt-link>
               </b-col>
@@ -28,7 +28,7 @@
               <b-col cols="5">
                 <nuxt-link to="/find">
                   <b-btn block variant="primary" class="float-right">
-                    <fa icon="search" />&nbsp;Find stuff
+                    <v-icon name="search" />&nbsp;Find stuff
                   </b-btn>
                 </nuxt-link>
               </b-col>
@@ -41,7 +41,7 @@
               <b-tabs card>
                 <b-tab active>
                   <template slot="title">
-                    <fa icon="pen" />&nbsp;ChitChat
+                    <v-icon name="pen" />&nbsp;ChitChat
                   </template>
                   <b-card-text>
                     <b-row>
@@ -56,25 +56,25 @@
                 </b-tab>
                 <b-tab>
                   <template slot="title">
-                    <fa icon="gift" />&nbsp;OFFER
+                    <v-icon name="gift" />&nbsp;OFFER
                   </template>
                   <b-card-text>TODO</b-card-text>
                 </b-tab>
                 <b-tab>
                   <template slot="title">
-                    <fa icon="search" />&nbsp;WANTED
+                    <v-icon name="search" />&nbsp;WANTED
                   </template>
                   <b-card-text>TODO</b-card-text>
                 </b-tab>
                 <b-tab>
                   <template slot="title">
-                    <fa icon="calendar-alt" />&nbsp;Event
+                    <v-icon name="calendar-alt" />&nbsp;Event
                   </template>
                   <b-card-text>TODO</b-card-text>
                 </b-tab>
                 <b-tab>
                   <template slot="title">
-                    <fa icon="star" />&nbsp;Volunteer
+                    <v-icon name="star" />&nbsp;Volunteer
                   </template>
                   <b-card-text>TODO</b-card-text>
                 </b-tab>
@@ -101,7 +101,7 @@
               <b-row>
                 <b-col cols="3" class="pl-4 text-muted">
                   <div v-if="me.settings.mylocation && me.settings.mylocation.area.name">
-                    <fa icon="map-marker-alt" />&nbsp;{{ me.settings.mylocation.area.name }}
+                    <v-icon name="map-marker-alt" />&nbsp;{{ me.settings.mylocation.area.name }}
                   </div>
                 </b-col>
                 <b-col cols="6">

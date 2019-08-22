@@ -4,14 +4,14 @@
       <b-col lg="2" class="order-0">
         <b-img-lazy rounded thumbnail alt="Community profile picture" :src="profile" class="js-pageimage" />
         <b-button v-if="!amAMember" class="mt-1 float-right d-lg-none float-lg-none" variant="success">
-          <fa icon="plus" />&nbsp;Join
+          <v-icon name="plus" />&nbsp;Join
         </b-button>
         <b-button v-if="amAMember" class="mt-1 float-right d-lg-none float-lg-none" variant="white">
-          <fa icon="trash-alt" />&nbsp;Leave
+          <v-icon name="trash-alt" />&nbsp;Leave
         </b-button>
         <b-button class="mt-1 mr-1 d-block d-lg-none float-right" variant="white">
           <div>
-            <fa icon="question-circle" />&nbsp;Contact&nbsp;volunteers
+            <v-icon name="question-circle" />&nbsp;Contact&nbsp;volunteers
           </div>
         </b-button>
       </b-col>
@@ -36,14 +36,14 @@
         <span class="d-none d-lg-block float-right">
           <b-button class="ml-1 mb-1" variant="white">
             <div>
-              <fa icon="question-circle" />&nbsp;Contact&nbsp;volunteers
+              <v-icon name="question-circle" />&nbsp;Contact&nbsp;volunteers
             </div>
           </b-button>
           <b-button v-if="!amAMember" class="ml-1 mb-1" variant="success">
-            <fa icon="plus" />&nbsp;Join
+            <v-icon name="plus" />&nbsp;Join
           </b-button>
           <b-button v-if="amAMember" class="ml-1 mb-1" variant="white">
-            <fa icon="trash-alt" />&nbsp;Leave
+            <v-icon name="trash-alt" />&nbsp;Leave
           </b-button>
         </span>
       </b-col>

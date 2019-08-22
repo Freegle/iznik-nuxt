@@ -19,7 +19,7 @@
 
       <b-input-group-append v-if="searchbutton">
         <b-button variant="success" size="lg" @click="search">
-          <fa icon="search" />&nbsp;Search
+          <v-icon name="search" />&nbsp;Search
         </b-button>
       </b-input-group-append>
     </b-input-group>
@@ -171,6 +171,12 @@ export default {
       focusList: '',
       debounceTask: undefined
     }
+  },
+
+  computed: {
+    faSearch() {
+      return faSearch
+    },
   },
 
   watch: {

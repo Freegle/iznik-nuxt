@@ -58,7 +58,7 @@
             </b-col>
             <b-col cols="1" class="p-0">
               <b-btn size="sm" variant="white" class="float-right">
-                <fa icon="camera" />&nbsp;Photo
+                <v-icon name="camera" />&nbsp;Photo
               </b-btn>
             </b-col>
           </b-row>

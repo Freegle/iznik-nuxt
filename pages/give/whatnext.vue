@@ -25,12 +25,12 @@
       <b-col cols="12" md="6" class="mt-2">
         <nuxt-link to="/give/whatisit" class="float-left">
           <b-btn size="lg" variant="info">
-            <fa icon="gift" />&nbsp;Give something else
+            <v-icon name="gift" />&nbsp;Give something else
           </b-btn>
         </nuxt-link>
         <nuxt-link to="/find" class="float-right">
           <b-btn size="lg" variant="primary">
-            <fa icon="search" />&nbsp;Find something
+            <v-icon name="search" />&nbsp;Find something
           </b-btn>
         </nuxt-link>
       </b-col>

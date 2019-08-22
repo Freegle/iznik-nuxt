@@ -18,12 +18,12 @@
                   <span v-if="chat.unseen">
                     <b-badge variant="danger">{{ chat.unseen }}</b-badge>
                   </span>
-                  <fa icon="lock" title="This chat is private." class="d-inline" />
+                  <v-icon name="lock" title="This chat is private." class="d-inline" />
                 </b-col>
               </b-row>
             </b-col>
             <b-col cols="6">
-              <fa icon="window-restore" class="float-right mt-1 pl-1 clickme" title="Popup chat window" @click="popup" />
+              <v-icon name="window-restore" class="float-right mt-1 pl-1 clickme" title="Popup chat window" @click="popup" />
               <b-btn variant="white" size="xs" class="float-right mt-1 mr-2">
                 Mark read
               </b-btn>
@@ -90,25 +90,25 @@
             <ratings v-if="otheruser" :key="'otheruser-' + (otheruser ? otheruser.id : null)" v-bind="otheruser" />
             <ratings v-else />
             <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person">
-              <fa icon="handshake" />&nbsp;Promise
+              <v-icon name="handshake" />&nbsp;Promise
             </b-btn>
             <b-btn v-b-tooltip.hover.top variant="white" title="Send your address">
-              <fa icon="address-book" />&nbsp;Address
+              <v-icon name="address-book" />&nbsp;Address
             </b-btn>
             <b-btn v-b-tooltip.hover.top variant="white" title="Update your availability">
-              <fa icon="calendar-alt" />&nbsp;Calendar
+              <v-icon name="calendar-alt" />&nbsp;Calendar
             </b-btn>
             <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler">
-              <fa icon="info-circle" />&nbsp;Info
+              <v-icon name="info-circle" />&nbsp;Info
             </b-btn>
             <b-btn v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler.">
-              <fa icon="bell" />&nbsp;Nudge
+              <v-icon name="bell" />&nbsp;Nudge
             </b-btn>
             <b-btn variant="primary" class="float-right ml-1" @click="send">
               Send&nbsp;&gt;
             </b-btn>
             <b-btn variant="white" class="float-right" @click="photoAdd">
-              <fa icon="camera" />&nbsp;Photo
+              <v-icon name="camera" />&nbsp;Photo
             </b-btn>
           </b-col>
         </b-row>

@@ -16,7 +16,7 @@
 
     <b-input-group-append>
       <b-button variant="primary" size="lg">
-        <fa icon="map-marker-alt" />&nbsp;Find my location
+        <v-icon name="map-marker-alt" />&nbsp;Find my location
       </b-button>
     </b-input-group-append>
   </b-input-group>

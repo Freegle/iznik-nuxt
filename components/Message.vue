@@ -4,7 +4,7 @@
       <b-card-header class="pl-2 pr-2 clearfix">
         <b-card-title class="msgsubj mb-0">
           <span v-if="attachments.length > 0" class="float-right clickme" @click="showPhotos">
-            <b-badge v-if="attachments.length > 1" class="photobadge" variant="primary">+{{ attachments.length - 1 }} <fa icon="camera" /></b-badge>
+            <b-badge v-if="attachments.length > 1" class="photobadge" variant="primary">+{{ attachments.length - 1 }} <v-icon name="camera" /></b-badge>
             <b-img-lazy
               rounded
               thumbnail
@@ -64,7 +64,7 @@
 
         <MessageUserInfo v-if="expanded.fromuser" :user="expanded.fromuser" />
         <span v-if="expanded.replycount" class="float-right small text-muted">
-          <fa icon="user" class="d-inline" />&nbsp;<span class="d-inline">{{ expanded.replycount }}&nbsp;freegler<span v-if="expanded.replycount != 1">s</span>&nbsp;replied&nbsp;</span>
+          <v-icon name="user" class="d-inline" />&nbsp;<span class="d-inline">{{ expanded.replycount }}&nbsp;freegler<span v-if="expanded.replycount != 1">s</span>&nbsp;replied&nbsp;</span>
         </span>
       </b-card-body>
       <b-card-footer v-if="expanded">
@@ -87,7 +87,7 @@
           </b-col>
           <b-col cols="3">
             <b-btn variant="success">
-              <fa icon="envelope" />&nbsp;Send
+              <v-icon name="envelope" />&nbsp;Send
             </b-btn>
           </b-col>
         </b-row>

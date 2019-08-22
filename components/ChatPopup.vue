@@ -34,10 +34,10 @@
                   </span>
                   <ratings v-if="otheruser" :key="'otheruser-' + (otheruser ? otheruser.id : null)" size="sm" v-bind="otheruser" class="pl-2" />
                   <span class="pl-3 float-right">
-                    <fa icon="window-maximize" size="lg" class="clickme mt-1" title="Maximise chat window" @click="maximise" />
+                    <v-icon name="window-maximize" scale="2" class="clickme mt-1" title="Maximise chat window" @click="maximise" />
                   </span>
                   <span class="pl-3 float-right">
-                    <fa icon="times" size="lg" class="clickme mt-1" title="Hide chat window" @click="hide" />
+                    <v-icon name="times" scale="2" class="clickme mt-1" title="Hide chat window" @click="hide" />
                   </span>
                 </b-col>
               </b-row>
@@ -77,22 +77,22 @@
             <b-row class="m-0">
               <b-col class="p-0 pt-1 pb-1">
                 <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person" class="ml-1">
-                  <fa icon="handshake" />
+                  <v-icon name="handshake" />
                 </b-btn>
                 <b-btn v-b-tooltip.hover.top variant="white" title="Send your address">
-                  <fa icon="address-book" />
+                  <v-icon name="address-book" />
                 </b-btn>
                 <b-btn v-b-tooltip.hover.top variant="white" title="Update your availability">
-                  <fa icon="calendar-alt" />
+                  <v-icon name="calendar-alt" />
                 </b-btn>
                 <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler">
-                  <fa icon="info-circle" />
+                  <v-icon name="info-circle" />
                 </b-btn>
                 <b-btn v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler.">
-                  <fa icon="bell" />
+                  <v-icon name="bell" />
                 </b-btn>
                 <b-btn variant="primary" class="float-right mr-1" @click="send">
-                  <fa icon="angle-double-right" title="Send" />
+                  <v-icon name="angle-double-right" title="Send" />
                 </b-btn>
               </b-col>
             </b-row>

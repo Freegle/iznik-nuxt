@@ -11,7 +11,7 @@
         :src="users[userid].profile.turl"
         @error.native="brokenImage"
       />
-      <fa v-if="users[userid].settings.showmod" icon="leaf" class="showmod text-success" />
+      <v-icon v-if="users[userid].settings.showmod" name="leaf" class="showmod text-success" />
       <span class="text-success font-weight-bold pl-2">
         {{ users[userid].displayname }}
       </span>

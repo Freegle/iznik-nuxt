@@ -2,7 +2,7 @@ const pkg = require('./package')
 const API = process.env.IZNIK_API || 'https://dev.ilovefreegle.org/api'
 
 module.exports = {
-  mode: 'universal',
+  mode: 'spa',
 
   /*
   ** Headers of the page
@@ -50,7 +50,7 @@ module.exports = {
     { src: '~/plugins/qs' },
     { src: '~/plugins/twemoji' },
     { src: '~/plugins/vue2-filters' },
-    { src: '~plugins/axios-token'},
+    { src: '~plugins/axios-token' },
 
     // Some plugins are client-side features
     { src: '~plugins/vuex-persistedstate', ssr: false },
@@ -62,6 +62,7 @@ module.exports = {
     { src: '~plugins/filepond-plugin-image-transform', ssr: false},
     { src: '~plugins/vue-debounce', ssr: false},
     { src: '~plugins/vue-highlight-words', ssr: false},
+    { src: '~plugins/vue-awesome.js', ssr: false },
   ],
 
   /*
@@ -93,20 +94,6 @@ module.exports = {
         }
       }
     ],
-
-    [
-      'nuxt-fontawesome',
-      {
-        component: 'fa',
-        imports: [
-          // import whole set
-          {
-            set: '@fortawesome/free-solid-svg-icons',
-            icons: ['fas']
-          }
-        ]
-      }
-    ]
   ],
 
   /*
@@ -118,6 +105,8 @@ module.exports = {
   ** Build configuration
   */
   build: {
+    analyze: true,
+
     transpile: [/^vue2-google-maps($|\/)/],
 
     extend(config, ctx) {
@@ -136,9 +125,10 @@ module.exports = {
         })
       }
     },
+
     loaders: {
       less: { javascriptEnabled: true },
-    }
+    },
   },
 
   env: {

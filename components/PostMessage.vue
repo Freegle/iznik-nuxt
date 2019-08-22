@@ -3,12 +3,12 @@
     <b-row class="pr-0">
       <b-col cols="auto" class="mt-2 pl-0">
         <b-btn variant="success" size="lg" @click="photoAdd">
-          <fa icon="camera" />&nbsp;Add photos
+          <v-icon name="camera" />&nbsp;Add photos
         </b-btn>
       </b-col>
       <b-col class="text-center mt-2 pr-0">
         <b-alert variant="info" class="d-none d-md-inline-block float-right" show>
-          <fa icon="info-circle" />&nbsp;Please add photos - you'll get a better response.
+          <v-icon name="info-circle" />&nbsp;Please add photos - you'll get a better response.
         </b-alert>
       </b-col>
     </b-row>

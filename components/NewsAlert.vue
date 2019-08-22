@@ -44,7 +44,7 @@
       <b-col>
         <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
         <b-btn variant="white" size="sm" class="float-right d-inline-block" @click="share">
-          <fa icon="share-alt" /> Share
+          <v-icon name="share-alt" /> Share
         </b-btn>
       </b-col>
     </b-row>

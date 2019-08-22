@@ -2,7 +2,7 @@
   <nuxt-link :to="'/profile/' + user.id" class="text-success decornone" :title="'Click to view profile for ' + user.displayname">
     <span class="text-muted small">
       <span v-if="user.publiclocation" class="pl-0">
-        <fa icon="map-marker-alt" />&nbsp;{{ user.publiclocation.display }}
+        <v-icon name="map-marker-alt" />&nbsp;{{ user.publiclocation.display }}
       </span>
       <span v-if="user.activecounts.offers + user.activecounts.wanteds > 0">
         &bull;
@@ -15,13 +15,15 @@
       </span>
       <span v-if="user.settings.showmod">
         &bull;
-        <fa icon="leaf" /> Freegle Volunteer
+        <v-icon name="leaf" /> Freegle Volunteer
       </span>
     </span>
   </nuxt-link>
 </template>
 <script>
 // TODO Link to profile page from OFFERs/WANTEDs
+import 'vue-awesome/icons/leaf'
+
 export default {
   props: {
     user: {

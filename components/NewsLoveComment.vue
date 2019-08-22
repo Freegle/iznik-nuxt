@@ -2,20 +2,20 @@
   <ul v-if="newsfeed" class="list-unstyled list-inline d-inline-block">
     <li class="list-inline-item">
       <b-btn v-if="!newsfeed.loved" variant="white" size="sm" @click="love">
-        <fa icon="heart" />&nbsp;Love this
+        <v-icon name="heart" />&nbsp;Love this
       </b-btn>
       <b-btn v-if="newsfeed.loved" variant="white" size="sm" @click="unlove">
-        <fa class="text-danger" icon="heart" />&nbsp;Unlove this
+        <v-icon name="heart" class="text-danger" />&nbsp;Unlove this
       </b-btn>
     </li>
     <li v-if="!newsfeed.closed" class="list-inline-item">
       <b-btn variant="white" size="sm" @click="focusComment">
-        <fa icon="comment" />&nbsp;Comment
+        <v-icon name="comment" />&nbsp;Comment
       </b-btn>
     </li>
     <li class="list-inline-item">
       <span v-if="newsfeed.loves">
-        <fa icon="heart" class="text-danger" />&nbsp;{{ newsfeed.loves }}
+        <v-icon name="heart" class="text-danger" />&nbsp;{{ newsfeed.loves }}
       </span>
     </li>
   </ul>

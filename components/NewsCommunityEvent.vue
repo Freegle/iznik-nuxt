@@ -12,7 +12,7 @@
           :src="users[userid].profile.turl"
           @error.native="brokenImage"
         />
-        <fa v-if="users[userid].settings.showmod" icon="leaf" class="showmod text-success" />
+        <v-icon v-if="users[userid].settings.showmod" name="leaf" class="showmod text-success" />
         <span class="text-success font-weight-bold pl-2">
           {{ users[userid].displayname }}
         </span>
@@ -46,10 +46,10 @@
         <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
         <span class="float-right d-inline-block">
           <b-btn variant="white" size="sm" @click="add">
-            <fa icon="plus" /> Add your event
+            <v-icon name="plus" /> Add your event
           </b-btn>
           <b-btn variant="primary" size="sm" @click="details">
-            <fa icon="info-circle" /> More info
+            <v-icon name="info-circle" /> More info
           </b-btn>
         </span>
       </b-col>

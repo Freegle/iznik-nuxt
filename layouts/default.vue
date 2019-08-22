@@ -14,19 +14,19 @@
       <b-collapse v-if="loggedIn" id="nav_collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item class="text-center p-0" to="/chitchat">
-            <fa icon="coffee" size="2x" /><br>
+            <v-icon name="coffee" scale="2" /><br>
             ChitChat
           </b-nav-item>
           <b-nav-item class="text-center p-0" to="/mygroups">
-            <fa icon="users" size="2x" /><br>
+            <v-icon name="users" scale="2" /><br>
             My&nbsp;Groups
           </b-nav-item>
           <b-nav-item class="text-center p-0" to="/give">
-            <fa icon="gift" size="2x" /><br>
+            <v-icon name="gift" scale="2" /><br>
             Give
           </b-nav-item>
           <b-nav-item class="text-center p-0" to="/find">
-            <fa icon="search" size="2x" /><br>
+            <v-icon name="search" scale="2" /><br>
             Find
           </b-nav-item>
         </b-navbar-nav>
@@ -34,7 +34,7 @@
           <b-nav-item id="menu-option-notification" class="text-center p-0" />
           <b-nav-item-dropdown class="text-center notiflist" lazy>
             <template slot="button-content">
-              <fa icon="bell" size="2x" /><br>Notifications
+              <v-icon name="bell" scale="2" /><br>Notifications
             </template>
             <b-dropdown-item v-for="(notification, $index) in notifications" :key="'notification-' + $index" href="#">
               <Notification v-bind="notification" />
@@ -49,11 +49,11 @@
           </b-nav-item-dropdown>
 
           <b-nav-item id="menu-option-chat" class="text-center p-0" to="/chats">
-            <fa icon="comments" size="2x" /><br>
+            <v-icon name="comments" scale="2" /><br>
             Chats
           </b-nav-item>
           <b-nav-item class="text-center p-0" @click="signOut()">
-            <fa icon="sign-out-alt" size="2x" /><br>
+            <v-icon name="sign-out-alt" scale="2" /><br>
             Logout
           </b-nav-item>
         </b-navbar-nav>
@@ -168,6 +168,10 @@ nav .navbar-nav li a.nuxt-link-active {
 
 body.modal-open {
   padding-right: 0px !important;
+}
+
+svg.fa-icon {
+  height: 32px;
 }
 </style>
 

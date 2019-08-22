@@ -15,7 +15,6 @@
     "heroku-postbuild": "npm run build"
   },
   "dependencies": {
-    "@fortawesome/free-solid-svg-icons": "^5.9.0",
     "@nuxtjs/auth": "^4.8.1",
     "@nuxtjs/axios": "^5.5.4",
     "@nuxtjs/moment": "^1.2.0",
@@ -43,6 +42,7 @@
     "nuxt-rfg-icon": "^0.6.3",
     "qs": "^6.7.0",
     "vue": "^2.6.10",
+    "vue-awesome": "^3.5.4",
     "vue-color": "^2.7.0",
     "vue-debounce": "^2.0.0",
     "vue-drag-drop": "^1.1.4",

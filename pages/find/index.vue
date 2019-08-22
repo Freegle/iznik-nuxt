@@ -18,7 +18,7 @@
           <b-row v-if="postcode">
             <b-col class="text-center">
               <nuxt-link to="/give/whatisit">
-                <fa icon="check-circle" class="text-success mt-2 fa-bh" />
+                <v-icon name="check-circle" class="text-success mt-2 fa-bh" />
               </nuxt-link>
             </b-col>
           </b-row>

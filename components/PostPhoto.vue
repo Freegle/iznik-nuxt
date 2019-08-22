@@ -1,18 +1,18 @@
 <template>
   <div class="container p-0">
     <fa-layers class="topleft clickme" title="Rotate left">
-      <fa icon="circle" transform="grow-2" />
-      <fa
-        icon="reply"
+      <v-icon name="circle" transform="grow-2" />
+      <v-icon
+        name="reply"
         style="color: white;"
         transform="shrink-3"
         @click="rotateLeft"
       />
     </fa-layers>
     <fa-layers class="topright clickme" title="Rotate right">
-      <fa icon="circle" transform="grow-2" />
-      <fa
-        icon="reply"
+      <v-icon name="circle" transform="grow-2" />
+      <v-icon
+        name="reply"
         class="fa-flip-horizontal"
         style="color: white;"
         transform="shrink-3"
@@ -20,9 +20,9 @@
       />
     </fa-layers>
     <fa-layers class="bottomright clickme" title="Remove this photo">
-      <fa icon="circle" transform="grow-2" />
-      <fa
-        icon="trash-alt"
+      <v-icon name="circle" transform="grow-2" />
+      <v-icon
+        name="trash-alt"
         style="color: white;"
         transform="shrink-3"
         @click="remove"

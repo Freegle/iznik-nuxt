@@ -25,7 +25,7 @@
         <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
         <span class="float-right d-inline-block">
           <b-btn variant="primary" size="sm" @click="introduce">
-            <fa icon="user" /> Introduce yourself
+            <v-icon name="user" /> Introduce yourself
           </b-btn>
         </span>
       </b-col>
