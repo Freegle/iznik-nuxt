@@ -85,11 +85,15 @@ export default {
     }
 
     this.mylocation = ret
-    this.$refs.autocomplete.setValue(ret)
 
-    // We need some fettling of the input keystrokes.
-    const input = this.$refs.autocomplete.$refs.input
-    input.addEventListener('keydown', this.keydown, false)
+    if (this.$refs.autocomplete) {
+      // Might have gone from DOM by now due to navigation.
+      this.$refs.autocomplete.setValue(ret)
+
+      // We need some fettling of the input keystrokes.
+      const input = this.$refs.autocomplete.$refs.input
+      input.addEventListener('keydown', this.keydown, false)
+    }
   },
   methods: {
     keydown(e) {

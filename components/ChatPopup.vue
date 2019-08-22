@@ -1,5 +1,5 @@
 <template>
-  <no-ssr>
+  <client-only>
     <div :style="'position: fixed; right: ' + right + 'px; bottom: 0'">
       <vue-draggable-resizable
         :handles="['tl']"
@@ -100,7 +100,7 @@
         </div>
       </vue-draggable-resizable>
     </div>
-  </no-ssr>
+  </client-only>
 </template>
 <style scoped>
 .vdr {

@@ -7,7 +7,6 @@ export const state = () => ({
 
 export const mutations = {
   add(state, notifications) {
-    console.log('Set', notifications)
     if (notifications) {
       state.list = [...state.list, ...notifications]
     }

@@ -39,6 +39,7 @@
             @click.prevent="selectList(data)"
             @mousemove="mousemove(i)"
           >
+            <!-- eslint-disable-next-line -->
             <div v-if="onShouldRenderChild" v-html="onShouldRenderChild(data)" />
             <div v-if="!onShouldRenderChild">
               <b class="autocomplete-anchor-text">{{ deepValue(data, anchor) }}</b>

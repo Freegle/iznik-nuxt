@@ -1,5 +1,5 @@
 <template>
-  <no-ssr>
+  <client-only>
     <span class="b-inline">
       <span v-if="user">
         <b-btn v-b-tooltip.hover.top :size="size" :variant="user.info.ratings.Mine === 'Up' ? 'primary' : (user.info.ratings.Up > 0 ? 'success' : 'white')" :title="user.info.ratings.Up + ' freegler' + ((user.info.ratings.Up !== 1) ? 's' : '') + '  gave them a thumbs up.  Click to rate.'">
@@ -18,7 +18,7 @@
         </b-btn>
       </span>
     </span>
-  </no-ssr>
+  </client-only>
 </template>
 <script>
 export default {

@@ -1,12 +1,12 @@
 <template>
   <div>
-    <no-ssr>
+    <client-only>
       <b-list-group horizontal class="p-0 m-0 list-unstyled chatPopups">
         <b-list-group-item v-for="(chat, $index) in chatlist" :key="'popupchat-' + $index" class="bg-transparent">
           <ChatPopup :id="chat.id" />
         </b-list-group-item>
       </b-list-group>
-    </no-ssr>
+    </client-only>
   </div>
 </template>
 <style>

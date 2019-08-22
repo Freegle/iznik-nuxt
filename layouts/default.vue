@@ -210,6 +210,18 @@ export default {
   async mounted() {
     await this.$store.dispatch('notifications/clear')
     await this.$store.dispatch('notifications/list')
+
+    if (
+      this.$store.state.auth &&
+      this.$store.state.auth.user &&
+      this.$store.state.auth.user.persistent
+    ) {
+      // We are logged in. Ensure that our session is passed on all API calls.  We also do this in
+      // nativeStrategy when we log in, but we might have rendered the page logged in on the server.
+      const persistent = this.$store.state.auth.user.persistent
+      this.$auth.ctx.app.$axios.defaults.headers.common.Authorization =
+        'Iznik ' + JSON.stringify(persistent)
+    }
   },
 
   methods: {

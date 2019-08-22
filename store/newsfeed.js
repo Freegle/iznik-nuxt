@@ -24,8 +24,10 @@ export const mutations = {
         ? Object.values(payload.newsfeed)
         : payload.newsfeed
 
-    for (const item of items) {
-      state.newsfeed.push(item)
+    if (items) {
+      for (const item of items) {
+        state.newsfeed.push(item)
+      }
     }
   },
 
@@ -35,8 +37,10 @@ export const mutations = {
         ? Object.values(payload.users)
         : payload.users
 
-    for (const item of items) {
-      state.users[item.id] = item
+    if (items) {
+      for (const item of items) {
+        state.users[item.id] = item
+      }
     }
   },
 
@@ -51,7 +55,6 @@ export const mutations = {
   clearFeed(state) {
     state.newsfeed = []
     state.context = {}
-    console.log('Cleared feed', state.newsfeed)
   }
 }
 
@@ -89,7 +92,9 @@ export const actions = {
   },
 
   async fetchFeed({ commit, state }, params) {
-    params = params || {}
+    params = params || {
+      context: {}
+    }
 
     if (params.context) {
       // Ensure the context is a real object, in case it has been in the store.
@@ -98,6 +103,7 @@ export const actions = {
     }
 
     // Ensure the context has the correct distance we want to see.
+    params.context = params.context === null ? {} : params.context
     params.context.distance = state.area
 
     params.types = [
@@ -140,7 +146,6 @@ export const actions = {
         // Valid id
         commit('addNewsfeed', newsfeedobj)
 
-        console.log('Posted', newsfeed)
         const user = newsfeed.data.newsfeed.user
 
         if (user) {
@@ -162,8 +167,6 @@ export const actions = {
       process.env.API + '/newsfeed',
       params
     )
-
-    console.log('Posted', newsfeed)
 
     if (newsfeed.status === 200 && newsfeed.data.ret === 0) {
       // The thread head may have been passed (for a reply) or if not, then it's a new thread and the id is returned.

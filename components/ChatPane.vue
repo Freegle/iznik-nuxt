@@ -1,5 +1,5 @@
 <template>
-  <no-ssr>
+  <client-only>
     <div class="chatHolder">
       <b-row class="chatTitle">
         <b-col v-if="chat">
@@ -114,7 +114,7 @@
         </b-row>
       </div>
     </div>
-  </no-ssr>
+  </client-only>
 </template>
 <style scoped>
 .chatpane {

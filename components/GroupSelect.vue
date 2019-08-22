@@ -1,7 +1,7 @@
 <template>
-  <no-ssr>
+  <client-only>
     <b-form-select v-model="selectedGroup" :options="groupOptions" />
-  </no-ssr>
+  </client-only>
 </template>
 <style scoped>
 select {
