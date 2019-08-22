@@ -60,8 +60,11 @@ export default class nativeStrategy {
       }
     )
 
-    // Save off the logged in user.  Include the persistent token which we may need on the client side.
-    ret.me.persistent = ret.persistent
+    if (ret.me) {
+      // Save off the logged in user.  Include the persistent token which we may need on the client side.
+      ret.me.persistent = ret.persistent
+    }
+
     this.$auth.setUser(ret.me)
 
     // Save off the returned groups
