@@ -152,7 +152,10 @@ module.exports = {
       native: {
         _scheme: '~/app/nativeStrategy.js'
       }
-    }
+    },
+
+    // We have some pages which can be viewed logged in or out so we don't want the build-in redirects.
+    watchLoggedIn: false
   },
 
   vue: {
@@ -160,8 +163,4 @@ module.exports = {
       performance: true
     }
   },
-
-  router: {
-    middleware: ['auth']
-  }
 }

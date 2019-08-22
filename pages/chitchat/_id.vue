@@ -172,6 +172,8 @@ const FilePond = vueFilePond(
 )
 
 export default {
+  middleware: 'auth',
+
   components: {
     NewsThread,
     FilePond

@@ -50,8 +50,6 @@
 
 <script>
 export default {
-  middleware: 'login',
-
   data() {
     return {
       email: '',
@@ -69,6 +67,7 @@ export default {
 
   methods: {
     login() {
+      console.log('Do login')
       this.$store
         .dispatch('security/login', {
           email: this.email,

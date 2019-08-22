@@ -45,6 +45,7 @@ import GroupHeader from '~/components/GroupHeader.vue'
 import Message from '~/components/Message.vue'
 
 export default {
+  middleware: 'auth',
   components: {
     GroupHeader,
     GroupSelect,

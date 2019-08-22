@@ -32,6 +32,8 @@ import ChatListEntry from '~/components/ChatListEntry.vue'
 import requestIdleCallback from '~/assets/js/requestIdleCallback'
 
 export default {
+  middleware: 'auth',
+
   components: {
     ChatPane,
     ChatListEntry

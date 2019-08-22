@@ -25,11 +25,11 @@ export default {
       } catch (e) {
         console.log('Exception', e)
       }
-    }
 
-    console.log('Current', this.$nuxt.path, route)
-    if (this.$nuxt.path !== route) {
-      this.$router.push(route)
+      console.log('Current', this.$nuxt.path, route)
+      if (this.$nuxt.path !== route) {
+        this.$router.push(route)
+      }
     }
   }
 }

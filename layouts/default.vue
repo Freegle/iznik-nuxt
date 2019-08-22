@@ -237,9 +237,11 @@ export default {
     },
 
     logout() {
+      console.log('Logout')
       this.$store.dispatch('security/logout').then(() => {
+        console.log('Now go to home page')
         this.$router.push({
-          path: '/login'
+          path: '/'
         })
       })
     },
