@@ -20,7 +20,7 @@ module.exports = {
       ref  : 'origin/master',
       repo : 'git@github.com:Freegle/iznik-nuxt.git',
       path : '/var/www/fdnuxt',
-      'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production'
+      'post-deploy' : 'npm install && pm2 reload ecosystem.config.js'
     }
   }
 };
