@@ -35,7 +35,6 @@
     "lodash.assign": "^4.2.0",
     "lodash.clonedeep": "^4.5.0",
     "lodash.merge": "^4.6.2",
-    "moment": "^2.24.0",
     "nuxt": "^2.8.1",
     "nuxt-fontawesome": "^0.4.0",
     "nuxt-i18n": "^5.12.7",

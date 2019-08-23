@@ -141,8 +141,6 @@ module.exports = {
   ** Build configuration
   */
   build: {
-    // analyze: true,
-
     transpile: [/^vue2-google-maps($|\/)/],
 
     extend(config, ctx) {
@@ -162,15 +160,37 @@ module.exports = {
       }
     },
 
+    // optimization: {
+    //   splitChunks: {
+    //     chunks: 'all',
+    //     automaticNameDelimiter: '.',
+    //     name: true,
+    //     cacheGroups: {},
+    //     minSize: 100000,
+    //     maxSize: 100000
+    //   }
+    // },
+
     optimization: {
+      runtimeChunk: 'single',
       splitChunks: {
         chunks: 'all',
-        automaticNameDelimiter: '.',
-        name: true,
-        cacheGroups: {},
-        minSize: 100000,
-        maxSize: 100000
-      }
+        maxInitialRequests: Infinity,
+        minSize: 0,
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name (module) {
+              // get the name. E.g. node_modules/packageName/not/this/part.js
+              // or node_modules/packageName
+              const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+
+              // npm package names are URL-safe, but some servers don't like @ symbols
+              return `npm.${packageName.replace('@', '')}`;
+            },
+          },
+        },
+      },
     },
 
     loaders: {
