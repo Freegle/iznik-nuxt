@@ -9,7 +9,6 @@ export default {
   mounted() {
     let route = '/chitchat'
 
-    console.log('Mounted index', this.$store.state.auth)
     if (process.browser && this.$store.state.auth.user) {
       // On client side we want to load the last page, for logged in users.
       try {

@@ -30,15 +30,16 @@
           </b-alert>
         </b-col>
         <b-col cols="12" sm="6" class="mt-2">
-          <iframe src="dummy.html" name="dummy" style="display: none" />
-          <form action="" method="post" target="dummy">
+          <b-form ref="form" action="/" autocomplete="on" method="post" @submit="loginNative">
             <div v-if="existinguser">
               <b-row>
                 <b-col>
                   <b-form-input
+                    id="email"
                     ref="email"
                     v-model="email"
                     v-focus
+                    name="email"
                     placeholder="Your email address"
                     alt="Email address"
                     class="mb-3"
@@ -48,8 +49,10 @@
               <b-row>
                 <b-col>
                   <b-form-input
+                    id="password"
                     ref="password"
                     v-model="password"
+                    name="password"
                     type="password"
                     placeholder="Your password"
                     alt="Password"
@@ -65,7 +68,8 @@
                     size="lg"
                     variant="success"
                     class="mb-2 mt-2"
-                    @click="login()"
+                    type="submit"
+                    value="login"
                   >
                     Sign in with Freegle
                   </b-btn>
@@ -84,7 +88,7 @@
                 </b-col>
               </b-row>
             </div>
-          </form>
+          </b-form>
         </b-col>
       </b-row>
     </b-modal>
@@ -115,7 +119,8 @@ export default {
   },
 
   methods: {
-    async login() {
+    async loginNative(e) {
+      e.preventDefault()
       await this.$auth
         .loginWith('native', {
           data: {
@@ -125,6 +130,8 @@ export default {
         })
         .then(() => {
           // Return to the page, which will re-render now we're logged in.
+          //
+          // TODO Browser needs tricking into asking to remember our email/password, which isn't working yet.
           console.log('Logged in')
           this.$router.back()
         })
