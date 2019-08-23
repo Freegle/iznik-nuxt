@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div v-if="reply.userid && users[reply.userid] && reply.visible">
     <b-row class="p-0">
-      <b-col v-if="reply.userid && users[reply.userid]">
+      <b-col>
         <table v-if="users[reply.userid].profile">
           <tbody>
             <tr>
@@ -44,11 +44,6 @@
             </tr>
           </tbody>
         </table>
-      </b-col>
-      <b-col v-else>
-        <b-alert variant="danger" show>
-          Unknown userid {{ reply.userid }} TODO this is a bug.
-        </b-alert>
       </b-col>
     </b-row>
     <div v-if="reply.replies && reply.replies.length > 0" class="pl-3">
@@ -121,7 +116,6 @@
 <script>
 // TODO Click to show profile
 // TODO User tagging
-// TODO Love this function
 // TODO Delete
 // TODO Edit
 import twem from '~/assets/js/twem'
@@ -170,7 +164,6 @@ export default {
 
       // Can't set focus immediately as not in DOM until re-render.
       this.$nextTick(() => {
-        console.log('Reply', this.$refs)
         this.$refs.replybox.focus()
       })
     },

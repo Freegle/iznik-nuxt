@@ -1,6 +1,6 @@
 <template>
   <b-row>
-    <b-col v-if="userid">
+    <b-col v-if="userid && users[userid]">
       <b-img-lazy
         v-if="users[userid].profile.turl"
         rounded="circle"

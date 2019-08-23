@@ -5,7 +5,7 @@
         Community Events go here
       </b-col>
       <b-col cols="12" md="6" class="newsfeedHolder p-0">
-        <b-card>
+        <b-card v-if="!id">
           <b-card-text>
             <b-row>
               <b-col class="text-center">
@@ -35,7 +35,7 @@
             </b-row>
           </b-card-text>
         </b-card>
-        <b-row class="mt-2">
+        <b-row v-if="!id" class="mt-2">
           <b-col>
             <b-card no-body>
               <b-tabs card>
@@ -157,7 +157,6 @@
 }
 </style>
 <script>
-// TODO Post photos
 import vueFilePond from 'vue-filepond'
 import 'filepond/dist/filepond.min.css'
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
@@ -188,9 +187,7 @@ export default {
 
   data() {
     return {
-      id: null,
       newsfeed: null,
-      users: [],
       busy: false,
       startThread: null,
       areaOptions: [
@@ -250,10 +247,15 @@ export default {
           area: newval
         })
       }
+    },
+    users() {
+      const users = this.$store.getters['newsfeed/users']()
+      return users
     }
   },
 
   beforeCreate() {
+    console.log('beforeCreate', this.$route)
     this.id = this.$route.params.id
   },
 
@@ -277,17 +279,28 @@ export default {
       } else {
         try {
           const context = this.$store.getters['newsfeed/getContext']()
-          await this.$store.dispatch('newsfeed/fetchFeed', {
-            context: context,
-            distance: this.selectedArea
-          })
 
-          this.newsfeed = this.$store.getters['newsfeed/newsfeed']()
-          this.users = this.$store.getters['newsfeed/users']()
-          // TODO Handle ID case
+          if (this.id) {
+            // Just one - fetch it by id.
+            this.newsfeed = [
+              await this.$store.dispatch('newsfeed/fetch', {
+                id: this.id
+              })
+            ]
 
-          if ($state.loaded) {
-            $state.loaded()
+            $state.complete()
+          } else {
+            // Fetch for the area we are interested in.
+            await this.$store.dispatch('newsfeed/fetchFeed', {
+              context: context,
+              distance: this.selectedArea
+            })
+
+            // One need this one entry.
+            this.newsfeed = this.$store.getters['newsfeed/newsfeed']()
+            if ($state.loaded) {
+              $state.loaded()
+            }
           }
         } catch (e) {
           console.error('Load failed', e)

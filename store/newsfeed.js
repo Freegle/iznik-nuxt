@@ -122,7 +122,12 @@ export const actions = {
 
     if (res.status === 200) {
       commit('mergeNewsfeed', res.data)
-      commit('mergeUsers', res.data)
+
+      // We get some users back but might miss some in replies.
+      const users = res.data.users
+      commit('mergeUsers', {
+        users: users
+      })
 
       if (!params || !params.noContext) {
         commit('setContext', {
@@ -149,9 +154,16 @@ export const actions = {
         const user = newsfeed.data.newsfeed.user
 
         if (user) {
-          // This will be ourselves, but we might not have it.
+          const users = {}
+          users[user.id] = user
+
+          // Also add in any users from replies.
+          for (const reply of newsfeed.data.newsfeed.replies) {
+            users[reply.user.id] = reply.user
+          }
+
           commit('mergeUsers', {
-            users: [user]
+            users: users
           })
         }
       }
