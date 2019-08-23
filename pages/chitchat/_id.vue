@@ -255,7 +255,6 @@ export default {
   },
 
   beforeCreate() {
-    console.log('beforeCreate', this.$route)
     this.id = this.$route.params.id
   },
 

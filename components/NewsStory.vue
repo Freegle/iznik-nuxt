@@ -20,7 +20,7 @@
             {{ story }}
           </b-card-text>
         </b-card>
-        <span class="font-weight-bold prewrap">{{ emessage }}</span>
+        <span class="font-weight-bold prewrap forcebreak">{{ emessage }}</span>
       </b-col>
     </b-row>
     <b-row class="mt-2">

@@ -61,8 +61,8 @@
         </b-collapse>
         <ul class="navbar-nav mr-auto" />
         <ul class="nav navbar-nav navbar-right">
-          <li>
-            <b-button v-if="!loggedIn" v-b-modal.signInModal class="btn-white">
+          <li v-if="$route.path !== '/login'">
+            <b-button v-if="!loggedIn" class="btn-white" @click="signIn">
               Sign in
             </b-button>
           </li>
@@ -70,21 +70,6 @@
         <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
       </b-navbar>
       <nuxt class="ml-0 pl-1 pageContent" />
-      <b-modal id="signInModal" ref="loginModal" title="Sign In">
-        <template slot="default">
-          <b-form-input ref="email" v-model="email" placeholder="Your email address" alt="Email address" />
-          <b-form-input ref="password" v-model="password" type="password" placeholder="Your password" alt="Password" />
-        </template>
-
-        <template slot="modal-footer" slot-scope="{ cancel }">
-          <b-button size="sm" variant="white" @click="cancel()">
-            Cancel
-          </b-button>
-          <b-button size="sm" variant="success" @click="signInNative()">
-            Sign in
-          </b-button>
-        </template>
-      </b-modal>
       <ChatPopups />
     </client-only>
   </div>
@@ -92,7 +77,8 @@
 
 <style scoped>
 /*TODO Make menu dropdown horizontal on mobile*/
-/*TODO Shrink navbar on scroll?*/
+/*TODO DESIGN Spacing of icons with different length text is wrong.*/
+/*TODO Shrink navbar on scroll ?*/
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -219,37 +205,19 @@ export default {
   },
 
   methods: {
+    signIn() {
+      this.$router.push('/login')
+    },
+
     signOut() {
       this.$auth.logout()
 
       // Remove all cookies, both client and server.  This seems to be necessary to kill off the PHPSESSID cookie
       // on the server, which would otherwise keep us logged in despite our efforts.
       this.$cookies.removeAll()
-    },
 
-    async signInNative() {
-      await this.$auth
-        .loginWith('native', {
-          data: {
-            email: this.email,
-            password: this.password
-          }
-        })
-        .catch(e => {
-          console.error('Failed login', e)
-        })
-
-      this.$refs.loginModal.hide()
-    },
-
-    logout() {
-      console.log('Logout')
-      this.$store.dispatch('security/logout').then(() => {
-        console.log('Now go to home page')
-        this.$router.push({
-          path: '/'
-        })
-      })
+      // Go to the landing page.
+      this.$router.push('/')
     },
 
     loadMore: function($state) {

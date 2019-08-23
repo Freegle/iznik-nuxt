@@ -1,6 +1,6 @@
 <template>
   <div v-if="newsfeed && newsfeed.visible && !newsfeed.unfollowed" class="bg-white">
-    <b-card>
+    <b-card :style="'background-color:' + backgroundColor">
       <b-card-text>
         <b-dropdown class="float-right" right variant="white">
           <template slot="button-content" />
@@ -135,6 +135,23 @@ export default {
     },
     me() {
       return this.$store.state.auth.user
+    },
+    backgroundColor() {
+      let col
+
+      switch (this.newsfeed.type) {
+        case 'CommunityEvent':
+          col = '#add8e62e'
+          break
+        case 'VolunteerOpportunity':
+          col = '#c3e6cb26'
+          break
+        default:
+          col = 'white'
+          break
+      }
+
+      return col
     }
   },
   methods: {

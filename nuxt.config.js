@@ -2,7 +2,7 @@ const pkg = require('./package')
 const API = process.env.IZNIK_API || 'https://dev.ilovefreegle.org/api'
 
 module.exports = {
-  mode: 'spa',
+  mode: 'universal',
 
   /*
   ** Headers of the page

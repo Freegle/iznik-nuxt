@@ -115,3 +115,14 @@ button {
     font-size: 55px;
     color: red;
 }
+
+.forcebreak {
+  -ms-word-break: break-all;
+
+  /* Non standard for webkit */
+  word-break: break-word;
+
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  hyphens: auto;
+}

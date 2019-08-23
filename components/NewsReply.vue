@@ -18,7 +18,7 @@
               <td class="align-top">
                 <v-icon v-if="users[reply.userid].settings.showmod" name="leaf" class="showmodsm text-success" />
                 <span class="text-success font-weight-bold">{{ users[reply.userid].displayname }}</span>
-                <span class="font-weight-bold prewrap replytext">{{ emessage }}</span>
+                <span class="font-weight-bold prewrap forcebreak replytext">{{ emessage }}</span>
                 <span v-if="reply.message && reply.userid && users[reply.userid]">
                   <br>
                   <span class="text-muted small">

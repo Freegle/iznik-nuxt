@@ -3,7 +3,7 @@
     <NewsUserIntro v-if="userid" :userid="userid" :users="users" :newsfeed="newsfeed" />
     <b-row v-if="newsfeed.message">
       <b-col>
-        <span class="font-weight-bold prewrap">{{ emessage }}</span>
+        <span class="font-weight-bold prewrap forcebreak">{{ emessage }}</span>
       </b-col>
     </b-row>
     <div>
