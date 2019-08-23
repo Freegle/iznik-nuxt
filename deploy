@@ -1,0 +1,2 @@
+pm2 --force deploy production exec 'git checkout -- package-lock.json; git checkout -- static/sw.js'
+pm2 --force deploy production update

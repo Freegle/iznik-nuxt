@@ -2,6 +2,12 @@
   <div v-if="newsfeed && newsfeed.visible && !newsfeed.unfollowed" class="bg-white">
     <b-card>
       <b-card-text>
+        <b-dropdown class="float-right" right variant="white">
+          <template slot="button-content" />
+          <b-dropdown-item :href="'/chitchat/' + newsfeed.id" target="_blank">
+            Open in new window
+          </b-dropdown-item>
+        </b-dropdown>
         <news-message v-if="newsfeed.type === 'Message'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
         <news-about-me v-else-if="newsfeed.type === 'AboutMe'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
         <news-community-event v-else-if="newsfeed.type === 'CommunityEvent'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
