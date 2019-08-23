@@ -23,7 +23,6 @@ module.exports = {
       ref  : 'origin/master',
       repo : 'git@github.com:Freegle/iznik-nuxt.git',
       path : '/var/www/fdnuxt',
-      'pre-deploy-local' : 'git checkout -- package-lock.json; git checkout -- package-lock.json; git checkout -- static/sw.js',
       'post-deploy' : 'npm install && npm run build && pm2 reload ecosystem.config.js',
     }
   }

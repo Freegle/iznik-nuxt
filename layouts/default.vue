@@ -1,90 +1,92 @@
 <template>
   <div>
-    <b-navbar toggleable="lg" type="dark" class="ourBack">
-      <b-navbar-brand to="/" class="p-0">
-        <b-img
-          class="logo mr-2"
-          height="58"
-          width="58"
-          rounded
-          :src="require(`@/static/icon.png`)"
-          alt="Home"
-        />
-      </b-navbar-brand>
-      <b-collapse v-if="loggedIn" id="nav_collapse" is-nav>
-        <b-navbar-nav>
-          <b-nav-item class="text-center p-0" to="/chitchat">
-            <v-icon name="coffee" scale="2" /><br>
-            ChitChat
-          </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/mygroups">
-            <v-icon name="users" scale="2" /><br>
-            My&nbsp;Groups
-          </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/give">
-            <v-icon name="gift" scale="2" /><br>
-            Give
-          </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/find">
-            <v-icon name="search" scale="2" /><br>
-            Find
-          </b-nav-item>
-        </b-navbar-nav>
-        <b-navbar-nav class="ml-auto">
-          <b-nav-item id="menu-option-notification" class="text-center p-0" />
-          <b-nav-item-dropdown class="text-center notiflist" lazy>
-            <template slot="button-content">
-              <v-icon name="bell" scale="2" /><br>Notifications
-            </template>
-            <b-dropdown-item v-for="(notification, $index) in notifications" :key="'notification-' + $index" href="#">
-              <Notification v-bind="notification" />
-            </b-dropdown-item>
-            <infinite-loading @infinite="loadMore">
-              <span slot="no-results" />
-              <span slot="no-more" />
-              <span slot="spinner">
-                <b-img-lazy src="~/static/loader.gif" />
-              </span>
-            </infinite-loading>
-          </b-nav-item-dropdown>
+    <client-only>
+      <b-navbar toggleable="lg" type="dark" class="ourBack">
+        <b-navbar-brand to="/" class="p-0">
+          <b-img
+            class="logo mr-2"
+            height="58"
+            width="58"
+            rounded
+            :src="require(`@/static/icon.png`)"
+            alt="Home"
+          />
+        </b-navbar-brand>
+        <b-collapse v-if="loggedIn" id="nav_collapse" is-nav>
+          <b-navbar-nav>
+            <b-nav-item class="text-center p-0" to="/chitchat">
+              <v-icon name="coffee" scale="2" /><br>
+              ChitChat
+            </b-nav-item>
+            <b-nav-item class="text-center p-0" to="/mygroups">
+              <v-icon name="users" scale="2" /><br>
+              My&nbsp;Groups
+            </b-nav-item>
+            <b-nav-item class="text-center p-0" to="/give">
+              <v-icon name="gift" scale="2" /><br>
+              Give
+            </b-nav-item>
+            <b-nav-item class="text-center p-0" to="/find">
+              <v-icon name="search" scale="2" /><br>
+              Find
+            </b-nav-item>
+          </b-navbar-nav>
+          <b-navbar-nav class="ml-auto">
+            <b-nav-item id="menu-option-notification" class="text-center p-0" />
+            <b-nav-item-dropdown class="text-center notiflist" lazy>
+              <template slot="button-content">
+                <v-icon name="bell" scale="2" /><br>Notifications
+              </template>
+              <b-dropdown-item v-for="(notification, $index) in notifications" :key="'notification-' + $index" href="#">
+                <Notification v-bind="notification" />
+              </b-dropdown-item>
+              <infinite-loading @infinite="loadMore">
+                <span slot="no-results" />
+                <span slot="no-more" />
+                <span slot="spinner">
+                  <b-img-lazy src="~/static/loader.gif" />
+                </span>
+              </infinite-loading>
+            </b-nav-item-dropdown>
 
-          <b-nav-item id="menu-option-chat" class="text-center p-0" to="/chats">
-            <v-icon name="comments" scale="2" /><br>
-            Chats
-          </b-nav-item>
-          <b-nav-item class="text-center p-0" @click="signOut()">
-            <v-icon name="sign-out-alt" scale="2" /><br>
-            Logout
-          </b-nav-item>
-        </b-navbar-nav>
-      </b-collapse>
-      <ul class="navbar-nav mr-auto" />
-      <ul class="nav navbar-nav navbar-right">
-        <li>
-          <b-button v-if="!loggedIn" v-b-modal.signInModal class="btn-white">
+            <b-nav-item id="menu-option-chat" class="text-center p-0" to="/chats">
+              <v-icon name="comments" scale="2" /><br>
+              Chats
+            </b-nav-item>
+            <b-nav-item class="text-center p-0" @click="signOut()">
+              <v-icon name="sign-out-alt" scale="2" /><br>
+              Logout
+            </b-nav-item>
+          </b-navbar-nav>
+        </b-collapse>
+        <ul class="navbar-nav mr-auto" />
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <b-button v-if="!loggedIn" v-b-modal.signInModal class="btn-white">
+              Sign in
+            </b-button>
+          </li>
+        </ul>
+        <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
+      </b-navbar>
+      <nuxt class="ml-0 pl-1 pageContent" />
+      <b-modal id="signInModal" ref="loginModal" title="Sign In">
+        <template slot="default">
+          <b-form-input ref="email" v-model="email" placeholder="Your email address" alt="Email address" />
+          <b-form-input ref="password" v-model="password" type="password" placeholder="Your password" alt="Password" />
+        </template>
+
+        <template slot="modal-footer" slot-scope="{ cancel }">
+          <b-button size="sm" variant="white" @click="cancel()">
+            Cancel
+          </b-button>
+          <b-button size="sm" variant="success" @click="signInNative()">
             Sign in
           </b-button>
-        </li>
-      </ul>
-      <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
-    </b-navbar>
-    <nuxt class="ml-0 pl-1 pageContent" />
-    <b-modal id="signInModal" ref="loginModal" title="Sign In">
-      <template slot="default">
-        <b-form-input ref="email" v-model="email" placeholder="Your email address" alt="Email address" />
-        <b-form-input ref="password" v-model="password" type="password" placeholder="Your password" alt="Password" />
-      </template>
-
-      <template slot="modal-footer" slot-scope="{ cancel }">
-        <b-button size="sm" variant="white" @click="cancel()">
-          Cancel
-        </b-button>
-        <b-button size="sm" variant="success" @click="signInNative()">
-          Sign in
-        </b-button>
-      </template>
-    </b-modal>
-    <ChatPopups />
+        </template>
+      </b-modal>
+      <ChatPopups />
+    </client-only>
   </div>
 </template>
 
