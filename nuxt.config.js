@@ -162,6 +162,17 @@ module.exports = {
       }
     },
 
+    optimization: {
+      splitChunks: {
+        chunks: 'all',
+        automaticNameDelimiter: '.',
+        name: true,
+        cacheGroups: {},
+        minSize: 100000,
+        maxSize: 100000
+      }
+    },
+
     loaders: {
       less: { javascriptEnabled: true },
     },
