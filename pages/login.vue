@@ -1,58 +1,116 @@
 <template>
-  <form>
-    <p class="h4 offset-sm-1">
-      Please log in
-    </p>
-    <b-row>
-      <b-col offset-sm="1" xs="12" lg="3">
-        <b-form-group
-          id="fieldsetHorizontal"
-          label-cols-sm="4"
-          label-cols-lg="3"
-          label="Email"
-          label-for="email"
-        >
-          <b-form-input ref="email" v-model="email" placeholder="Your email address" alt="Email address" />
-        </b-form-group>
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col offset-sm="1" xs="12" lg="3">
-        <b-form-group
-          id="fieldsetHorizontal"
-          label-cols-sm="4"
-          label-cols-lg="3"
-          label="Password"
-          label-for="password"
-        >
-          <b-form-input ref="password" v-model="password" type="password" placeholder="Your password" alt="Password" />
-        </b-form-group>
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col offset-sm="1" xs="12" lg="3">
-        <b-btn v-b-modal.add variant="success" class="mb-2 mt-2" @click="login()">
-          Login
-        </b-btn>
-      </b-col>
-    </b-row>
-  </form>
+  <div>
+    <b-modal
+      id="loginModal"
+      ref="loginModal"
+      title="Let's get freegling!"
+      no-stacking
+      visible
+      size="lg"
+      hide-footer
+    >
+      <b-row>
+        <b-col class="text-center pb-3">
+          You will receive emails, and your name and approximate location will be public.  You can
+          control privacy from Settings.  Read <nuxt-link target="_blank" to="/terms">
+            Terms of Use
+          </nuxt-link> and
+          <nuxt-link target="_blank" to="/privacy">
+            Privacy
+          </nuxt-link> for details.
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col cols="12" sm="6" class="text-center">
+          <b-img center alt="Facebook login" class="signindisabled signinbutton" src="~/static/signinbuttons/facebook.png" />
+          <b-img alt="Google login" class="signindisabled signinbutton" src="~/static/signinbuttons/google.png" />
+          <b-img alt="Yahoo login" class="clickme signinbutton" src="~/static/signinbuttons/yahoo.png" />
+          <b-alert v-if="socialblocked" variant="error">
+            Social login blocked - check your privacy settings
+          </b-alert>
+        </b-col>
+        <b-col cols="12" sm="6" class="mt-2">
+          <iframe src="dummy.html" name="dummy" style="display: none" />
+          <form action="" method="post" target="dummy">
+            <div v-if="existinguser">
+              <b-row>
+                <b-col>
+                  <b-form-input
+                    ref="email"
+                    v-model="email"
+                    v-focus
+                    placeholder="Your email address"
+                    alt="Email address"
+                    class="mb-3"
+                  />
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col>
+                  <b-form-input
+                    ref="password"
+                    v-model="password"
+                    type="password"
+                    placeholder="Your password"
+                    alt="Password"
+                    class="mb-2"
+                  />
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col>
+                  <b-btn
+                    v-b-modal.add
+                    block
+                    size="lg"
+                    variant="success"
+                    class="mb-2 mt-2"
+                    @click="login()"
+                  >
+                    Sign in with Freegle
+                  </b-btn>
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col class="text-center">
+                  <nuxt-link to="/forgot">
+                    I forgot my password
+                  </nuxt-link>
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col class="text-center">
+                  New freegler? <span class="clickme">Sign Up</span>
+                </b-col>
+              </b-row>
+            </div>
+          </form>
+        </b-col>
+      </b-row>
+    </b-modal>
+  </div>
 </template>
-
 <script>
+// TODO DESIGN The existing site has a red vertical line to divide the social signin from the form.  Something like that.
+// Not sure how to do it nicely as the form will appear below on mobile.
+// TODO Signup
+// TODO Lost password
 export default {
   data() {
     return {
       email: '',
       password: '',
       rememberme: false,
-      error: null
+      error: null,
+      socialblocked: false,
+      existinguser: true
     }
   },
 
-  computed: {
-    isAuthenticated() {
-      return this.$store.getters['security/isAuthenticated']
+  mounted: function() {
+    if (this.$store.state.auth.user) {
+      // We are logged in - redirect to home page.  This can happen if we navigate to this URL directly.
+      this.$router.push('/')
     }
   },
 

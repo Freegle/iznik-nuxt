@@ -210,14 +210,19 @@ export default {
     },
 
     signOut() {
-      this.$auth.logout()
-
       // Remove all cookies, both client and server.  This seems to be necessary to kill off the PHPSESSID cookie
       // on the server, which would otherwise keep us logged in despite our efforts.
       this.$cookies.removeAll()
 
       // Go to the landing page.
       this.$router.push('/')
+
+      const self = this
+      this.$nextTick(function() {
+        // Log out after the DOM has updated.  Otherwise what can happen is that we re-render the current page
+        // (not sure why) and fail because we're expecting to be logged in.
+        self.$auth.logout()
+      })
     },
 
     loadMore: function($state) {
