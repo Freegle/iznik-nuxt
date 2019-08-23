@@ -2,7 +2,7 @@ const pkg = require('./package')
 const API = process.env.IZNIK_API || 'https://dev.ilovefreegle.org/api'
 
 module.exports = {
-  mode: 'spa',
+  mode: 'universal',
 
   /*
   ** Headers of the page
@@ -95,6 +95,42 @@ module.exports = {
       }
     ],
   ],
+
+  // We only use some of bootstrap-vue, so by listing it explicitly we can reduce our bundle size.
+  bootstrapVue: {
+    componentPlugins: [
+      'AlertPlugin',
+      'BadgePlugin',
+      'ButtonPlugin',
+      'ButtonGroupPlugin',
+      'CardPlugin',
+      'CarouselPlugin',
+      'CollapsePlugin',
+      'DropdownPlugin',
+      'EmbedPlugin',
+      'FormPlugin',
+      'FormCheckboxPlugin',
+      'FormFilePlugin',
+      'FormGroupPlugin',
+      'FormInputPlugin',
+      'FormRadioPlugin',
+      'FormSelectPlugin',
+      'FormTextareaPlugin',
+      'ImagePlugin',
+      'InputGroupPlugin',
+      'LayoutPlugin',
+      'LinkPlugin',
+      'ListGroupPlugin',
+      'ModalPlugin',
+      'NavPlugin',
+      'NavbarPlugin',
+      'PopoverPlugin',
+      'ProgressPlugin',
+      'TabsPlugin',
+      'TooltipPlugin'
+    ],
+    directivePlugins: ['VBPopoverPlugin', 'VBTooltipPlugin', 'VBScrollspyPlugin']
+  },
 
   /*
   ** Axios module configuration
