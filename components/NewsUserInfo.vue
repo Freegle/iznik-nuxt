@@ -22,8 +22,6 @@
 </template>
 <script>
 // TODO Link to profile page from OFFERs/WANTEDs
-import 'vue-awesome/icons/leaf'
-
 export default {
   props: {
     user: {

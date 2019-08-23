@@ -1,6 +1,6 @@
 <template>
   <div class="container p-0">
-    <fa-layers class="topleft clickme" title="Rotate left">
+    <v-icon label="Rotate left" class="topleft clickme" title="Rotate left">
       <v-icon name="circle" transform="grow-2" />
       <v-icon
         name="reply"
@@ -8,18 +8,17 @@
         transform="shrink-3"
         @click="rotateLeft"
       />
-    </fa-layers>
-    <fa-layers class="topright clickme" title="Rotate right">
+    </v-icon>
+    <v-icon label="Rotate left" class="topright clickme" title="Rotate right" flip="horizontal">
       <v-icon name="circle" transform="grow-2" />
       <v-icon
         name="reply"
-        class="fa-flip-horizontal"
         style="color: white;"
         transform="shrink-3"
         @click="rotateRight"
       />
-    </fa-layers>
-    <fa-layers class="bottomright clickme" title="Remove this photo">
+    </v-icon>
+    <v-icon label="Rotate left" class="bottomright clickme" title="Remove this photo">
       <v-icon name="circle" transform="grow-2" />
       <v-icon
         name="trash-alt"
@@ -27,7 +26,7 @@
         transform="shrink-3"
         @click="remove"
       />
-    </fa-layers>
+    </v-icon>
     <b-img lazy :src="paththumb + '?' + cacheBust" rounded thumbnail class="imagepreview" />
   </div>
 </template>

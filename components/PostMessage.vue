@@ -61,13 +61,16 @@ import 'filepond/dist/filepond.min.css'
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
+import FilePondPluginImageTransform from 'filepond-plugin-image-transform'
 import PostPhoto from '~/components/PostPhoto'
 import PostItem from '~/components/PostItem'
 
 const FilePond = vueFilePond(
   FilePondPluginFileValidateType,
-  FilePondPluginImagePreview
+  FilePondPluginImagePreview,
+  FilePondPluginImageTransform
 )
+
 export default {
   components: {
     FilePond,
