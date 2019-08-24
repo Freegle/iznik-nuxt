@@ -175,10 +175,29 @@ export default {
       console.log('Facebook login')
       await this.$auth
         .loginWith('facebook')
-        .then(() => {
-          // Return to the page, which will re-render now we're logged in.
-          console.log('Done')
-          this.$router.back()
+        .then(async () => {
+          // Succeeded inline.  We should have a Facebook access token in the store.
+          let token = this.$store.state.auth._token
+            ? this.$store.state.auth._token.facebook
+            : null
+          console.log('Got token', token)
+
+          if (token) {
+            token = token.replace('Bearer ')
+
+            // Use this to log in to our server.
+            const ret = await this.$axios.post(process.env.API + '/session', {
+              fblogin: 1,
+              fbaccesstoken: token
+            })
+
+            console.log('Server login returned', ret)
+            if (ret.status === 200 && ret.data.ret === 0 && ret.data.user) {
+              // We have logged in successfully.  Go to whichever back prompted our login.
+              console.log('Logged in Facebook')
+              this.$router.back()
+            }
+          }
         })
         .catch(e => {
           console.error('Failed login', e)
