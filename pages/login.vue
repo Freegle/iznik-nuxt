@@ -142,7 +142,7 @@ export default {
         if (ret.status === 200 && ret.data.ret === 0 && ret.data.user) {
           // We have logged in successfully.  Go to whichever back prompted our login.
           console.log('Logged in Facebook')
-          // this.$router.back()
+          this.$router.back()
         }
       }
     }
@@ -177,8 +177,8 @@ export default {
         .loginWith('facebook')
         .then(() => {
           // Return to the page, which will re-render now we're logged in.
-          // this.$router.back()
           console.log('Done')
+          this.$router.back()
         })
         .catch(e => {
           console.error('Failed login', e)
