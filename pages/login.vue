@@ -181,7 +181,8 @@ export default {
           console.log('Got token', token)
 
           if (token) {
-            token = token.replace('Bearer ')
+            token = token.replace('Bearer ', '')
+            console.log('Trimmed', token)
 
             // Use this to log in to our server.
             const ret = await this.$axios.post(process.env.API + '/session', {
