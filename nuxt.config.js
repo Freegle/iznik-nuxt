@@ -210,6 +210,11 @@ module.exports = {
       local: false,
       native: {
         _scheme: '~/app/nativeStrategy.js'
+      },
+      facebook: {
+        client_id: '134980666550322',
+        userinfo_endpoint: 'https://graph.facebook.com/v2.12/me?fields=email,public_profile',
+        scope: ['public_profile', 'email']
       }
     },
 

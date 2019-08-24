@@ -22,9 +22,9 @@
       </b-row>
       <b-row>
         <b-col cols="12" sm="6" class="text-center">
-          <b-img center alt="Facebook login" class="signindisabled signinbutton" src="~/static/signinbuttons/facebook.png" />
-          <b-img alt="Google login" class="signindisabled signinbutton" src="~/static/signinbuttons/google.png" />
-          <b-img alt="Yahoo login" class="clickme signinbutton" src="~/static/signinbuttons/yahoo.png" />
+          <b-img alt="Facebook login" class="clickme" src="~/static/signinbuttons/facebook.png" @click="loginFacebook" />
+          <b-img alt="Google login" class="signindisabled clickme" src="~/static/signinbuttons/google.png" />
+          <b-img alt="Yahoo login" class="signindisabled clickme" src="~/static/signinbuttons/yahoo.png" />
           <b-alert v-if="socialblocked" variant="error">
             Social login blocked - check your privacy settings
           </b-alert>
@@ -94,6 +94,12 @@
     </b-modal>
   </div>
 </template>
+<style scoped>
+.signindisabled {
+  opacity: 0.2;
+  pointer-events: none;
+}
+</style>
 <script>
 // TODO DESIGN The existing site has a red vertical line to divide the social signin from the form.  Something like that.
 // Not sure how to do it nicely as the form will appear below on mobile.
@@ -134,6 +140,21 @@ export default {
           // TODO Browser needs tricking into asking to remember our email/password, which isn't working yet.
           console.log('Logged in')
           this.$router.back()
+        })
+        .catch(e => {
+          console.error('Failed login', e)
+          // TODO
+        })
+    },
+    async loginFacebook(e) {
+      e.preventDefault()
+      console.log('Facebook login')
+      await this.$auth
+        .loginWith('facebook')
+        .then(() => {
+          // Return to the page, which will re-render now we're logged in.
+          // this.$router.back()
+          console.log('Done')
         })
         .catch(e => {
           console.error('Failed login', e)
