@@ -34,7 +34,7 @@ export default class nativeStrategy {
 
     // The result has a persistent token we can use on future requests.
     if (result.ret !== 0) {
-      throw new Exception(result)
+      throw result
     }
 
     let persistent = JSON.stringify(result.persistent)

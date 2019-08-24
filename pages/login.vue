@@ -113,14 +113,38 @@ export default {
       rememberme: false,
       error: null,
       socialblocked: false,
-      existinguser: true
+      existinguser: true,
+      facebookaccesstoken: null
     }
   },
 
-  mounted: function() {
+  async mounted() {
     if (this.$store.state.auth.user) {
       // We are logged in - redirect to home page.  This can happen if we navigate to this URL directly.
       this.$router.push('/')
+    }
+
+    // If we have logged in with Facebook then we return here with the access token in the URL hash.  Grab it.
+    console.log('Params', this.$route)
+    if (this.$route.hash) {
+      const matches = /#access_token=(.*?)&/.exec(this.$route.hash)
+      console.log('Matches', matches)
+      if (matches.length > 1) {
+        const token = matches[1]
+
+        // Now log in to the server.
+        const ret = await this.$axios.post(process.env.API + '/session', {
+          fblogin: 1,
+          fbaccesstoken: token
+        })
+
+        console.log('Server login returned', ret)
+        if (ret.status === 200 && ret.data.ret === 0 && ret.data.user) {
+          // We have logged in successfully.  Go to whichever back prompted our login.
+          console.log('Logged in Facebook')
+          // this.$router.back()
+        }
+      }
     }
   },
 
@@ -138,7 +162,7 @@ export default {
           // Return to the page, which will re-render now we're logged in.
           //
           // TODO Browser needs tricking into asking to remember our email/password, which isn't working yet.
-          console.log('Logged in')
+          console.log('Logged in native')
           this.$router.back()
         })
         .catch(e => {
