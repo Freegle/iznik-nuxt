@@ -118,34 +118,23 @@ export default {
     }
   },
 
-  async mounted() {
+  mounted() {
     if (this.$store.state.auth.user) {
       // We are logged in - redirect to home page.  This can happen if we navigate to this URL directly.
+      console.log('Already logged in')
       this.$router.push('/')
     }
-
-    // If we have logged in with Facebook then we return here with the access token in the URL hash.  Grab it.
-    console.log('Params', this.$route)
-    if (this.$route.hash) {
-      const matches = /#access_token=(.*?)&/.exec(this.$route.hash)
-      console.log('Matches', matches)
-      if (matches.length > 1) {
-        const token = matches[1]
-
-        // Now log in to the server.
-        const ret = await this.$axios.post(process.env.API + '/session', {
-          fblogin: 1,
-          fbaccesstoken: token
-        })
-
-        console.log('Server login returned', ret)
-        if (ret.status === 200 && ret.data.ret === 0 && ret.data.user) {
-          // We have logged in successfully.  Go to whichever back prompted our login.
-          console.log('Logged in Facebook')
-          this.$router.back()
-        }
-      }
-    }
+    //
+    // // If we have logged in with Facebook then we return here with the access token in the URL hash.  Grab it.
+    // console.log('Params', this.$route)
+    // if (this.$route.hash) {
+    //   const matches = /#access_token=(.*?)&/.exec(this.$route.hash)
+    //   console.log('Matches', matches)
+    //   if (matches.length > 1) {
+    //     const token = matches[1]
+    //     this.loginWithFacebookToken(token)
+    //   }
+    // }
   },
 
   methods: {
@@ -170,40 +159,39 @@ export default {
           // TODO
         })
     },
+    loginWithFacebookToken(token) {
+      // Now use the Facebook access token log in to the server.
+      this.$nextTick(async () => {
+        await this.$auth
+          .loginWith('native', {
+            data: {
+              fblogin: 1,
+              fbaccesstoken: token
+            }
+          })
+          .then(() => {
+            console.log('Done native part of login')
+            this.$auth.fetchUser()
+          })
+          .catch(e => {
+            console.error('Failed login', e)
+            // TODO
+          })
+      })
+    },
     loginFacebook(e) {
       e.preventDefault()
       console.log('Facebook login')
       this.$auth
         .loginWith('facebook')
-        .then(async () => {
+        .then(() => {
           // Succeeded inline.  We should have a Facebook access token in the store.
           let token = this.$auth.getToken('facebook')
           console.log('Got token', token)
 
           if (token) {
             token = token.replace('Bearer ', '')
-            console.log('Trimmed', token)
-
-            // Use this to log in to our server.
-            await this.$axios
-              .post(process.env.API + '/session', {
-                fblogin: 1,
-                fbaccesstoken: token
-              })
-              .then(ret => {
-                console.log('Server login returned', ret)
-                if (ret.status === 200 && ret.data.ret === 0 && ret.data.user) {
-                  // We have logged in successfully.  Go to whichever back prompted our login.
-                  console.log('Logged in Facebook')
-                  this.$router.back()
-                } else {
-                  // TODO
-                }
-              })
-              .catch(e => {
-                console.error('Failed login', e)
-                // TODO
-              })
+            this.loginWithFacebookToken(token)
           }
         })
         .catch(e => {

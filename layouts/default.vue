@@ -189,6 +189,7 @@ export default {
 
   computed: {
     loggedIn() {
+      console.log('Default view loggedIn', this.$store.state.auth.user)
       return this.$store.state.auth.user
     },
     notifications() {

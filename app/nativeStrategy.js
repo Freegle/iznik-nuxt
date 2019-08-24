@@ -65,6 +65,7 @@ export default class nativeStrategy {
       ret.me.persistent = ret.persistent
     }
 
+    console.log("Set user", ret.me)
     this.$auth.setUser(ret.me)
 
     // Save off the returned groups
