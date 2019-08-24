@@ -170,10 +170,10 @@ export default {
           // TODO
         })
     },
-    async loginFacebook(e) {
+    loginFacebook(e) {
       e.preventDefault()
       console.log('Facebook login')
-      await this.$auth
+      this.$auth
         .loginWith('facebook')
         .then(async () => {
           // Succeeded inline.  We should have a Facebook access token in the store.
@@ -185,17 +185,25 @@ export default {
             console.log('Trimmed', token)
 
             // Use this to log in to our server.
-            const ret = await this.$axios.post(process.env.API + '/session', {
-              fblogin: 1,
-              fbaccesstoken: token
-            })
-
-            console.log('Server login returned', ret)
-            if (ret.status === 200 && ret.data.ret === 0 && ret.data.user) {
-              // We have logged in successfully.  Go to whichever back prompted our login.
-              console.log('Logged in Facebook')
-              this.$router.back()
-            }
+            await this.$axios
+              .post(process.env.API + '/session', {
+                fblogin: 1,
+                fbaccesstoken: token
+              })
+              .then(ret => {
+                console.log('Server login returned', ret)
+                if (ret.status === 200 && ret.data.ret === 0 && ret.data.user) {
+                  // We have logged in successfully.  Go to whichever back prompted our login.
+                  console.log('Logged in Facebook')
+                  this.$router.back()
+                } else {
+                  // TODO
+                }
+              })
+              .catch(e => {
+                console.error('Failed login', e)
+                // TODO
+              })
           }
         })
         .catch(e => {
