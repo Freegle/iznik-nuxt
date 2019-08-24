@@ -155,12 +155,13 @@ export default {
           this.$router.back()
         })
         .catch(e => {
-          console.error('Failed login', e)
+          console.error('Failed login 1', e)
           // TODO
         })
     },
     loginWithFacebookToken(token) {
       // Now use the Facebook access token log in to the server.
+      this.$auth.setStrategy('native')
       this.$nextTick(async () => {
         await this.$auth
           .loginWith('native', {
@@ -174,7 +175,7 @@ export default {
             this.$auth.fetchUser()
           })
           .catch(e => {
-            console.error('Failed login', e)
+            console.error('Failed login 2', e)
             // TODO
           })
       })
@@ -195,7 +196,7 @@ export default {
           }
         })
         .catch(e => {
-          console.error('Failed login', e)
+          console.error('Failed login 3', e)
           // TODO
         })
     }
