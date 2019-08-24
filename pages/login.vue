@@ -177,9 +177,7 @@ export default {
         .loginWith('facebook')
         .then(async () => {
           // Succeeded inline.  We should have a Facebook access token in the store.
-          let token = this.$store.state.auth._token
-            ? this.$store.state.auth._token.facebook
-            : null
+          let token = this.$auth.getToken('facebook')
           console.log('Got token', token)
 
           if (token) {
