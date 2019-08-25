@@ -40,33 +40,32 @@ export default class OurFacebookScheme {
     await promise
     console.log("Returned after promise", response)
     if (response.authResponse) {
-      console.log('Welcome!  Fetching your information.... ');
-      Vue.FB.api('/me', function(response) {
-        console.log('Good to see you, ' + response.name + '.');
-      });
+      let accessToken = response.authResponse.accessToken
+      console.log("Now login on server", accessToken)
+
+      const result = await this.$auth.request(
+        {
+          fblogin: 1,
+          fbaccesstoken: accessToken
+        },
+        { url: process.env.API + '/session', method: 'POST' }
+      )
+
+      console.log("Returned", result)
+      if (result.ret !== 0) {
+        console.error("Server login for Facebook failed", result)
+        throw result
+      }
+
+      // The result has a persistent token we can use on future requests.
+      let persistent = JSON.stringify(result.persistent)
+      this._setHeader(persistent)
+      this.$auth.setToken(this.name, 'Iznik ' + persistent)
+      return this.fetchUser()
     } else {
-      console.log('User cancelled login or did not fully authorize.');
+      console.error('User cancelled Facebook login or did not fully authorize.');
+      return(null)
     }
-
-    console.log("Now login on server")
-    const result = await this.$auth.request(
-      {
-        fblogin: 1
-      },
-      { url: process.env.API + '/session', method: 'POST' }
-    )
-
-    console.log("Returned", result)
-    // The result has a persistent token we can use on future requests.
-    if (result.ret !== 0) {
-      throw result
-    }
-
-    let persistent = JSON.stringify(result.persistent)
-    this._setHeader(persistent)
-    this.$auth.setToken(this.name, 'Iznik ' + persistent)
-
-    return this.fetchUser()
   }
 
   async fetchUser (params) {
