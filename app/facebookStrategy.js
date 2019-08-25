@@ -168,7 +168,7 @@ export default class Oauth2Scheme {
 
       console.log("Get hash")
       const hash = parseQuery(this.$auth.ctx.route.hash.substr(1))
-      conole.log("Hash", hash)
+      console.log("Hash", hash)
       const parsedQuery = Object.assign({}, this.$auth.ctx.route.query, hash)
       // accessToken/idToken
       let token = parsedQuery[this.options.token_key || 'access_token']
