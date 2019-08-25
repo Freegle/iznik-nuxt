@@ -159,42 +159,21 @@ export default {
           // TODO
         })
     },
-    loginWithFacebookToken(token) {
-      // Now use the Facebook access token log in to the server.
-      this.$auth.setStrategy('native')
-      this.$nextTick(async () => {
-        await this.$auth
-          .loginWith('native', {
-            data: {
-              fblogin: 1,
-              fbaccesstoken: token
-            }
-          })
-          .then(() => {
-            console.log('Done native part of login')
-            this.$auth.fetchUser()
-          })
-          .catch(e => {
-            console.error('Failed login 2', e)
-            // TODO
-          })
-      })
-    },
     loginFacebook(e) {
       e.preventDefault()
       console.log('Facebook login')
       this.$auth
-        .loginWith('facebook')
+        .loginWith('ourfacebook')
         .then(() => {
           // Succeeded inline.  We should have a Facebook access token in the store.
           console.log('Get token', this)
-          let token = this.$auth.getToken('facebook')
-          console.log('Got token', token)
-
-          if (token) {
-            token = token.replace('Bearer ', '')
-            this.loginWithFacebookToken(token)
-          }
+          // let token = this.$auth.getToken('facebook')
+          // console.log('Got token', token)
+          //
+          // if (token) {
+          //   token = token.replace('Bearer ', '')
+          //   this.loginWithFacebookToken(token)
+          // }
         })
         .catch(e => {
           console.error('Failed login 3', e)
