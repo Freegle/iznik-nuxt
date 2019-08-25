@@ -93,7 +93,6 @@ export default class OurFacebookScheme {
 
     console.log("Set user", ret.me)
     this.$auth.setUser(ret.me)
-    console.log("After set", JSON.stringify(this.$auth.$storage.ctx.store));
 
     // Save off the returned groups
     let groups = []
