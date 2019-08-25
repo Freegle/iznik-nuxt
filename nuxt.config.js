@@ -1,5 +1,6 @@
 const pkg = require('./package')
 const API = process.env.IZNIK_API || 'https://dev.ilovefreegle.org/api'
+const FACEBOOK_APPID = '134980666550322'
 
 module.exports = {
   mode: 'spa',
@@ -62,6 +63,7 @@ module.exports = {
     { src: '~plugins/vue-debounce', ssr: false},
     { src: '~plugins/vue-highlight-words', ssr: false},
     { src: '~plugins/vue-awesome.js', ssr: false },
+    { src: '~plugins/facebook-sdk', ssr: false },
   ],
 
   /*
@@ -201,6 +203,7 @@ module.exports = {
 
   env: {
     API: API,
+    FACEBOOK_APPID: FACEBOOK_APPID,
     GOOGLE_MAPS_KEY: 'AIzaSyCdTSJKGWJUOx2pq1Y0f5in5g4kKAO5dgg',
     MODTOOLS: false
   },
