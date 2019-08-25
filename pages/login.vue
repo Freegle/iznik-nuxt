@@ -8,6 +8,7 @@
       visible
       size="lg"
       hide-footer
+      no-close-on-backdrop
     >
       <b-row>
         <b-col class="text-center pb-3">
@@ -165,15 +166,9 @@ export default {
       this.$auth
         .loginWith('ourfacebook')
         .then(() => {
-          // Succeeded inline.  We should have a Facebook access token in the store.
-          console.log('Get token', this)
-          // let token = this.$auth.getToken('facebook')
-          // console.log('Got token', token)
-          //
-          // if (token) {
-          //   token = token.replace('Bearer ', '')
-          //   this.loginWithFacebookToken(token)
-          // }
+          // Return to the page, which will re-render now we're logged in.
+          console.log('Logged in Facebook')
+          this.$router.back()
         })
         .catch(e => {
           console.error('Failed login 3', e)
