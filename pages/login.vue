@@ -122,20 +122,9 @@ export default {
   mounted() {
     if (this.$store.state.auth.user) {
       // We are logged in - redirect to home page.  This can happen if we navigate to this URL directly.
-      console.log('Already logged in')
-      this.$router.push('/')
+      console.log('Already logged in', this.$store.state.auth)
+      // this.$router.push('/')
     }
-    //
-    // // If we have logged in with Facebook then we return here with the access token in the URL hash.  Grab it.
-    // console.log('Params', this.$route)
-    // if (this.$route.hash) {
-    //   const matches = /#access_token=(.*?)&/.exec(this.$route.hash)
-    //   console.log('Matches', matches)
-    //   if (matches.length > 1) {
-    //     const token = matches[1]
-    //     this.loginWithFacebookToken(token)
-    //   }
-    // }
   },
 
   methods: {
