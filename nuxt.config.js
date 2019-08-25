@@ -213,7 +213,11 @@ module.exports = {
       },
 
       ourfacebook: {
-        _scheme: '~/app/facebookStrategy.js'
+        _scheme: '~/app/facebookStrategy.js',
+        client_id: '134980666550322',
+        userinfo_endpoint: 'https://graph.facebook.com/v2.12/me?fields=email,public_profile',
+        scope: ['public_profile', 'email'],
+        authorization_endpoint:"https://facebook.com/v2.12/dialog/oauth"
       }
     },
 

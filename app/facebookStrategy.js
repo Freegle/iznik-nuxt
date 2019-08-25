@@ -1,9 +1,4 @@
 // Taken from oauth2 but extended for our server.
-const client_id = '134980666550322';
-const userinfo_endpoint = 'https://graph.facebook.com/v2.12/me?fields=email,public_profile';
-const scope = ['public_profile', 'email'];
-const authorization_endpoint = "https://facebook.com/v2.12/dialog/oauth";
-
 import { encodeQuery, parseQuery } from '../utilities'
 
 import nanoid from 'nanoid'
