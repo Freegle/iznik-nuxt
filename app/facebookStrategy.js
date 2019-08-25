@@ -45,8 +45,10 @@ export default class OurFacebookScheme {
 
       const result = await this.$auth.request(
         {
-          fblogin: 1,
-          fbaccesstoken: accessToken
+          data: {
+            fblogin: 1,
+            fbaccesstoken: accessToken
+          }
         },
         { url: process.env.API + '/session', method: 'POST' }
       )
