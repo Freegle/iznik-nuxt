@@ -79,8 +79,9 @@ export default {
   async asyncData({ app, params, store }) {
     let selected = null
     let chats = Object.values(store.getters['chats/list']())
+    const user = store.getters['auth/user']()
 
-    if (!store.$auth.loggedIn) {
+    if (!user) {
       console.log('Not logged in')
     } else {
       if (chats) {

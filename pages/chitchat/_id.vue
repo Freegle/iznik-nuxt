@@ -1,5 +1,5 @@
 <template>
-  <b-col>
+  <div v-if="me">
     <b-row class="m-0">
       <b-col cols="0" md="3">
         Community Events go here
@@ -144,7 +144,7 @@
         Volunteer ops and ads go here
       </b-col>
     </b-row>
-  </b-col>
+  </div>
 </template>
 <style scoped>
 .newsfeedHolder {
@@ -234,7 +234,9 @@ export default {
 
   computed: {
     me() {
-      return this.$store.state.auth.user
+      const user = this.$store.getters['auth/user']()
+      console.log('Calc me', user)
+      return user
     },
     selectedArea: {
       get: function() {
@@ -270,8 +272,9 @@ export default {
   methods: {
     async loadMore($state) {
       this.busy = true
+      const user = this.$store.getters['auth/user']()
 
-      if (!this.$store.$auth.loggedIn) {
+      if (!user) {
         if ($state.complete) {
           $state.complete()
         }

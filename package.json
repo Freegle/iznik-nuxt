@@ -15,7 +15,6 @@
     "heroku-postbuild": "npm run build"
   },
   "dependencies": {
-    "@nuxtjs/auth": "^4.8.1",
     "@nuxtjs/axios": "^5.5.4",
     "@nuxtjs/moment": "^1.2.0",
     "@nuxtjs/pwa": "^2.6.0",

@@ -53,7 +53,7 @@
               <v-icon name="comments" scale="2" /><br>
               Chats
             </b-nav-item>
-            <b-nav-item class="text-center p-0" @click="signOut()">
+            <b-nav-item class="text-center p-0" @click="logOut()">
               <v-icon name="sign-out-alt" scale="2" /><br>
               Logout
             </b-nav-item>
@@ -61,8 +61,8 @@
         </b-collapse>
         <ul class="navbar-nav mr-auto" />
         <ul class="nav navbar-nav navbar-right">
-          <li v-if="$route.path !== '/login'">
-            <b-button v-if="!loggedIn" class="btn-white" @click="signIn">
+          <li>
+            <b-button v-if="!loggedIn" class="btn-white" @click="requestLogin">
               Sign in
             </b-button>
           </li>
@@ -70,7 +70,101 @@
         <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
       </b-navbar>
       <nuxt class="ml-0 pl-1 pageContent" />
-      <ChatPopups />
+      <ChatPopups v-if="loggedIn" />
+      <b-modal
+        v-if="forceLogin || pleaseLogin"
+        id="loginModal"
+        ref="loginModal"
+        title="Let's get freegling!"
+        no-stacking
+        visible
+        size="lg"
+        hide-footer
+        no-close-on-backdrop
+      >
+        <b-row>
+          <b-col class="text-center pb-3">
+            You will receive emails, and your name and approximate location will be public.  You can
+            control privacy from Settings.  Read <nuxt-link target="_blank" to="/terms">
+              Terms of Use
+            </nuxt-link> and
+            <nuxt-link target="_blank" to="/privacy">
+              Privacy
+            </nuxt-link> for details.
+          </b-col>
+        </b-row>
+        <b-row>
+          <b-col cols="12" sm="6" class="text-center">
+            <b-img alt="Facebook login" class="clickme" src="~/static/signinbuttons/facebook.png" @click="loginFacebook" />
+            <b-img alt="Google login" class="signindisabled clickme" src="~/static/signinbuttons/google.png" />
+            <b-img alt="Yahoo login" class="signindisabled clickme" src="~/static/signinbuttons/yahoo.png" />
+            <b-alert v-if="socialblocked" variant="error">
+              Social login blocked - check your privacy settings
+            </b-alert>
+          </b-col>
+          <b-col cols="12" sm="6" class="mt-2">
+            <b-form ref="form" action="/" autocomplete="on" method="post" @submit="loginNative">
+              <div v-if="existinguser">
+                <b-row>
+                  <b-col>
+                    <b-form-input
+                      id="email"
+                      ref="email"
+                      v-model="email"
+                      v-focus
+                      name="email"
+                      placeholder="Your email address"
+                      alt="Email address"
+                      class="mb-3"
+                    />
+                  </b-col>
+                </b-row>
+                <b-row>
+                  <b-col>
+                    <b-form-input
+                      id="password"
+                      ref="password"
+                      v-model="password"
+                      name="password"
+                      type="password"
+                      placeholder="Your password"
+                      alt="Password"
+                      class="mb-2"
+                    />
+                  </b-col>
+                </b-row>
+                <b-row>
+                  <b-col>
+                    <b-btn
+                      v-b-modal.add
+                      block
+                      size="lg"
+                      variant="success"
+                      class="mb-2 mt-2"
+                      type="submit"
+                      value="login"
+                    >
+                      Sign in with Freegle
+                    </b-btn>
+                  </b-col>
+                </b-row>
+                <b-row>
+                  <b-col class="text-center">
+                    <nuxt-link to="/forgot">
+                      I forgot my password
+                    </nuxt-link>
+                  </b-col>
+                </b-row>
+                <b-row>
+                  <b-col class="text-center">
+                    New freegler? <span class="clickme">Sign Up</span>
+                  </b-col>
+                </b-row>
+              </div>
+            </b-form>
+          </b-col>
+        </b-row>
+      </b-modal>
     </client-only>
   </div>
 </template>
@@ -161,9 +255,15 @@ body.modal-open {
 svg.fa-icon {
   height: 32px;
 }
+
+.signindisabled {
+  opacity: 0.2;
+  pointer-events: none;
+}
 </style>
 
 <script>
+import Vue from 'vue'
 import ChatPopups from '~/components/ChatPopups'
 import Notification from '~/components/Notification'
 
@@ -177,7 +277,11 @@ export default {
     return {
       email: null,
       password: null,
-      complete: false
+      complete: false,
+      error: null,
+      socialblocked: false,
+      existinguser: true,
+      pleaseLogin: false
     }
   },
 
@@ -188,8 +292,13 @@ export default {
   },
 
   computed: {
+    forceLogin() {
+      return this.$store.getters['auth/forceLogin']()
+    },
     loggedIn() {
-      return this.$store.state.auth.user
+      const ret = Boolean(this.$store.getters['auth/user']())
+      console.log('Calc logged in ', ret)
+      return ret
     },
     notifications() {
       const notifications = Object.values(
@@ -205,11 +314,69 @@ export default {
   },
 
   methods: {
-    signIn() {
-      this.$router.push('/login')
+    requestLogin() {
+      this.pleaseLogin = true
+    },
+    loginNative(e) {
+      console.log('loginNative')
+      e.preventDefault()
+      e.stopPropagation()
+
+      this.$store
+        .dispatch('auth/login', {
+          email: this.email,
+          password: this.password
+        })
+        .then(() => {
+          // We are now logged in.
+          this.pleaseLogin = false
+        })
+        .catch(e => {
+          // TODO
+          console.error('Native login failed', e)
+        })
+    },
+    async loginFacebook() {
+      console.log('Facebook login')
+      // TODO Do we still have the Chrome on IOS problem?
+      try {
+        let response = null
+        const promise = new Promise(function(resolve, reject) {
+          Vue.FB.login(
+            function(ret) {
+              console.log('Returned in promise', ret)
+              response = ret
+              resolve()
+            },
+            { scope: 'email' }
+          )
+        })
+
+        await promise
+        console.log('Returned after promise', response)
+        if (response.authResponse) {
+          const accessToken = response.authResponse.accessToken
+          console.log('Now login on server', accessToken)
+
+          await this.$store.dispatch('auth/login', {
+            fblogin: 1,
+            fbaccesstoken: accessToken
+          })
+
+          // We are now logged in.
+          console.log('Logged in')
+          this.pleaseLogin = false
+        } else {
+          console.error('Facebook response missing auth', response)
+          throw new Error('Facebook response missing auth')
+        }
+      } catch (e) {
+        // TODO
+        console.error('Native login failed', e)
+      }
     },
 
-    signOut() {
+    logOut() {
       // Remove all cookies, both client and server.  This seems to be necessary to kill off the PHPSESSID cookie
       // on the server, which would otherwise keep us logged in despite our efforts.
       this.$cookies.removeAll()
@@ -217,12 +384,7 @@ export default {
       // Go to the landing page.
       this.$router.push('/')
 
-      const self = this
-      this.$nextTick(function() {
-        // Log out after the DOM has updated.  Otherwise what can happen is that we re-render the current page
-        // (not sure why) and fail because we're expecting to be logged in.
-        self.$auth.logout()
-      })
+      this.$store.dispatch('auth/setUser', null)
     },
 
     loadMore: function($state) {

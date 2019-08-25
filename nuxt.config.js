@@ -74,7 +74,6 @@ module.exports = {
     '@nuxtjs/moment',
     'nuxt-rfg-icon',
     '@nuxtjs/axios',
-    '@nuxtjs/auth',
     '@nuxtjs/pwa',
     'cookie-universal-nuxt',
     [
@@ -206,26 +205,6 @@ module.exports = {
     FACEBOOK_APPID: FACEBOOK_APPID,
     GOOGLE_MAPS_KEY: 'AIzaSyCdTSJKGWJUOx2pq1Y0f5in5g4kKAO5dgg',
     MODTOOLS: false
-  },
-
-  auth: {
-    strategies: {
-      local: false,
-      native: {
-        _scheme: '~/app/nativeStrategy.js'
-      },
-
-      ourfacebook: {
-        _scheme: '~/app/facebookStrategy.js',
-        client_id: '134980666550322',
-        userinfo_endpoint: 'https://graph.facebook.com/v2.12/me?fields=email,public_profile',
-        scope: ['public_profile', 'email'],
-        authorization_endpoint:"https://facebook.com/v2.12/dialog/oauth"
-      }
-    },
-
-    // We have some pages which can be viewed logged in or out so we don't want the build-in redirects.
-    watchLoggedIn: false
   },
 
   vue: {
