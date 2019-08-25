@@ -28,8 +28,17 @@ export default class OurFacebookScheme {
     // Ditch any leftover local tokens before attempting to log in
     await this._logoutLocally()
 
-    let response = await Vue.FB.login()
-    console.log("Returned", response)
+    let response = null
+    let promise = new Promise(function(resolve, reject) {
+      Vue.FB.login(function(ret) {
+        console.log("Returned in promise", ret)
+        response = ret
+        resolve()
+      })
+    })
+
+    await promise
+    console.log("Returned after promise", response)
     if (response.authResponse) {
       console.log('Welcome!  Fetching your information.... ');
       Vue.FB.api('/me', function(response) {
