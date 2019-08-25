@@ -151,88 +151,95 @@ export default class Oauth2Scheme {
   }
 
   async _handleCallback (uri) {
-    console.log("Callback", uri, this.$auth.options.redirect, this.$auth.ctx.route.path)
-    // Handle callback only for specified route
-    if (this.$auth.options.redirect && this.$auth.ctx.route.path !== this.$auth.options.redirect.callback) {
-      console.log("No route match")
-      return
-    }
-    // Callback flow is not supported in static generation
-    if (process.server && process.static) {
-      console.log("No static")
-      return
-    }
+    try {
+      console.log("facebookStrategy callback", uri, this.$auth.options.redirect, this.$auth.ctx.route.path)
+      // Handle callback only for specified route
+      if (this.$auth.options.redirect && this.$auth.ctx.route.path !== this.$auth.options.redirect.callback) {
+        console.log("No route match")
+        return
+      }
+      console.log("Route match")
+      console.log("Process", process)
+      // Callback flow is not supported in static generation
+      if (process.server && process.static) {
+        console.log("No static")
+        return
+      }
 
-    const hash = parseQuery(this.$auth.ctx.route.hash.substr(1))
-    conole.log("Hash", hash)
-    const parsedQuery = Object.assign({}, this.$auth.ctx.route.query, hash)
-    // accessToken/idToken
-    let token = parsedQuery[this.options.token_key || 'access_token']
-    console.log("Token", token)
-    // refresh token
-    let refreshToken = parsedQuery[this.options.refresh_token_key || 'refresh_token']
+      console.log("Get hash")
+      const hash = parseQuery(this.$auth.ctx.route.hash.substr(1))
+      conole.log("Hash", hash)
+      const parsedQuery = Object.assign({}, this.$auth.ctx.route.query, hash)
+      // accessToken/idToken
+      let token = parsedQuery[this.options.token_key || 'access_token']
+      console.log("Token", token)
+      // refresh token
+      let refreshToken = parsedQuery[this.options.refresh_token_key || 'refresh_token']
 
-    // Validate state
-    const state = this.$auth.$storage.getUniversal(this.name + '.state')
-    console.log("State", state)
-    this.$auth.$storage.setUniversal(this.name + '.state', null)
-    if (state && parsedQuery.state !== state) {
-      return
-    }
+      // Validate state
+      const state = this.$auth.$storage.getUniversal(this.name + '.state')
+      console.log("State", state)
+      this.$auth.$storage.setUniversal(this.name + '.state', null)
+      if (state && parsedQuery.state !== state) {
+        return
+      }
 
-    // -- Authorization Code Grant --
-    if (this.options.response_type === 'code' && parsedQuery.code) {
-      console.log("Grant")
-      const data = await this.$auth.request({
-        method: 'post',
-        url: this.options.access_token_endpoint,
-        baseURL: process.server ? undefined : false,
-        data: encodeQuery({
-          code: parsedQuery.code,
-          client_id: this.options.client_id,
-          redirect_uri: this._redirectURI,
-          response_type: this.options.response_type,
-          audience: this.options.audience,
-          grant_type: this.options.grant_type
+      // -- Authorization Code Grant --
+      if (this.options.response_type === 'code' && parsedQuery.code) {
+        console.log("Grant")
+        const data = await this.$auth.request({
+          method: 'post',
+          url: this.options.access_token_endpoint,
+          baseURL: process.server ? undefined : false,
+          data: encodeQuery({
+            code: parsedQuery.code,
+            client_id: this.options.client_id,
+            redirect_uri: this._redirectURI,
+            response_type: this.options.response_type,
+            audience: this.options.audience,
+            grant_type: this.options.grant_type
+          })
         })
-      })
 
-      console.log("Data", data)
+        console.log("Data", data)
 
-      if (data.access_token) {
-        token = data.access_token
+        if (data.access_token) {
+          token = data.access_token
+        }
+
+        if (data.refresh_token) {
+          refreshToken = data.refresh_token
+        }
+
+        console.log("Got token", token)
       }
 
-      if (data.refresh_token) {
-        refreshToken = data.refresh_token
+      if (!token || !token.length) {
+        return
       }
 
-      console.log("Got token", token)
+      // Append token_type
+      if (this.options.token_type) {
+        token = this.options.token_type + ' ' + token
+      }
+
+      // Store token
+      this.$auth.setToken(this.name, token)
+
+      // Set axios token
+      this._setToken(token)
+
+      // Store refresh token
+      if (refreshToken && refreshToken.length) {
+        refreshToken = this.options.token_type + ' ' + refreshToken
+        this.$auth.setRefreshToken(this.name, refreshToken)
+      }
+
+      // Redirect to home
+      this.$auth.redirect('home', true)
+    } catch (e) {
+      console.log("facebookCallback error", e)
     }
-
-    if (!token || !token.length) {
-      return
-    }
-
-    // Append token_type
-    if (this.options.token_type) {
-      token = this.options.token_type + ' ' + token
-    }
-
-    // Store token
-    this.$auth.setToken(this.name, token)
-
-    // Set axios token
-    this._setToken(token)
-
-    // Store refresh token
-    if (refreshToken && refreshToken.length) {
-      refreshToken = this.options.token_type + ' ' + refreshToken
-      this.$auth.setRefreshToken(this.name, refreshToken)
-    }
-
-    // Redirect to home
-    this.$auth.redirect('home', true)
 
     return true // True means a redirect happened
   }
