@@ -39,10 +39,7 @@ Rendering solution.
 # Current Status
 
 This is still very much a proof of concept.
-* You can log in using email/password only.
+* You can log in using email/password and Facebook - not Google/Yahoo yet.
 * The ChitChat/My Groups/Chat/Give pages exist.  They are basically functional, but not complete.
 * Find/My Posts/Events/Volunteer/Notifications/Spread/Help/Settings don't exist.
-* I've not checked how it renders on mobile or other screen sizes yet.
-
-This is set to use SPA rather than Universal at the moment, because I find that otherwise I need to restart the server
-to pick up some changes, which is tedious for dev.  But it will use SSR.
+* I've not checked much how it renders on mobile or other screen sizes yet.

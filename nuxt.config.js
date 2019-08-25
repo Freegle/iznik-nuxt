@@ -3,7 +3,7 @@ const API = process.env.IZNIK_API || 'https://dev.ilovefreegle.org/api'
 const FACEBOOK_APPID = '134980666550322'
 
 module.exports = {
-  mode: 'spa',
+  mode: 'universal',
 
   /*
   ** Headers of the page
