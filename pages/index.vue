@@ -8,9 +8,10 @@ export default {
 
   mounted() {
     let route = '/chitchat'
+    const me = this.$store.getters['auth/user']()
 
-    if (process.browser && this.$store.state.auth.user) {
-      // On client side we want to load the last page, for logged in users.
+    if (process.browser && me) {
+      // Logged in - on client side we want to load the last page, for logged in users.
       try {
         const lastRoute = localStorage.getItem('Iznik>lasthomepage')
 
