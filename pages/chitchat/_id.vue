@@ -165,6 +165,7 @@ import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 import FilePondPluginImageTransform from 'filepond-plugin-image-transform'
 import NewsThread from '~/components/NewsThread.vue'
 import twem from '~/assets/js/twem'
+import forceLogin from '@/mixins/forceLogin.js'
 
 const FilePond = vueFilePond(
   FilePondPluginFileValidateType,
@@ -173,12 +174,11 @@ const FilePond = vueFilePond(
 )
 
 export default {
-  middleware: 'auth',
-
   components: {
     NewsThread,
     FilePond
   },
+  mixins: [forceLogin],
 
   validate({ params }) {
     // Must be a number if present

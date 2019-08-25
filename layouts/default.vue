@@ -285,12 +285,6 @@ export default {
     }
   },
 
-  serverPrefetch() {
-    // We need to prefetch the session on the server side so that we are logged in, otherwise we'll render the
-    // page logged out in what we return to the client, which will cause flicker.
-    return this.$auth.fetchUser()
-  },
-
   computed: {
     forceLogin() {
       return this.$store.getters['auth/forceLogin']()

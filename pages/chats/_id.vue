@@ -30,14 +30,14 @@
 import ChatPane from '~/components/ChatPane.vue'
 import ChatListEntry from '~/components/ChatListEntry.vue'
 import requestIdleCallback from '~/assets/js/requestIdleCallback'
+import forceLogin from '@/mixins/forceLogin.js'
 
 export default {
-  middleware: 'auth',
-
   components: {
     ChatPane,
     ChatListEntry
   },
+  mixins: [forceLogin],
 
   validate({ params }) {
     // Must be a number if present

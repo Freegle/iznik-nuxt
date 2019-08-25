@@ -18,11 +18,10 @@ export default ({ store }) => {
         'newsfeed',
         'compose'
       ],
-      //
+
       reducer: function(state, paths) {
         // Don't store the messages - they're too big, and too transient.  Nor the newsfeed for similar reasons.
         // This also means we don't have to worry about how to delete messages which are deleted on the server.
-        // TODO We think this breaks SSR for reasons we don't understand yet.
         const newstate = cloneDeep(state)
         delete newstate.messages
         delete newstate.stroll

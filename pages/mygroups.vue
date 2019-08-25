@@ -43,14 +43,15 @@
 import GroupSelect from '~/components/GroupSelect.vue'
 import GroupHeader from '~/components/GroupHeader.vue'
 import Message from '~/components/Message.vue'
+import forceLogin from '@/mixins/forceLogin.js'
 
 export default {
-  middleware: 'auth',
   components: {
     GroupHeader,
     GroupSelect,
     Message
   },
+  mixins: [forceLogin],
   data() {
     return {
       id: null,
