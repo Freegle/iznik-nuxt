@@ -44,8 +44,10 @@ export default class Oauth2Scheme {
   }
 
   async mounted () {
+    console.log("facebookStrategy mounted")
     // Sync token
     const token = this.$auth.syncToken(this.name)
+    console.log("Token", token)
     // Set axios token
     if (token) {
       this._setToken(token)
@@ -53,6 +55,7 @@ export default class Oauth2Scheme {
 
     // Handle callbacks on page load
     const redirected = await this._handleCallback()
+    console.log("Redirected", redirected)
 
     if (!redirected) {
       return this.$auth.fetchUserOnce()
