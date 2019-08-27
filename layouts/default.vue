@@ -96,7 +96,7 @@
         <b-row>
           <b-col cols="12" sm="6" class="text-center">
             <b-img alt="Facebook login" class="clickme" src="~/static/signinbuttons/facebook.png" @click="loginFacebook" />
-            <b-img alt="Google login" class="signindisabled clickme" src="~/static/signinbuttons/google.png" />
+            <b-img alt="Google login" :class="'clickme ' + disabled('google')" src="~/static/signinbuttons/google.png" @click="loginGoogle" />
             <b-img alt="Yahoo login" class="signindisabled clickme" src="~/static/signinbuttons/yahoo.png" />
             <b-alert v-if="socialblocked" variant="error">
               Social login blocked - check your privacy settings
@@ -299,6 +299,9 @@ export default {
         this.$store.getters['notifications/list']()
       )
       return notifications
+    },
+    googleDisabled() {
+      return !window.gapi || !window.gapi.client || !window.auth2
     }
   },
 
@@ -308,6 +311,20 @@ export default {
   },
 
   methods: {
+    disabled(type) {
+      // TODO We might compute this the first time before the API has loaded, and therefore still show the
+      // button disabled even after the API has loaded successfully.
+      let ret = false
+      console.log('Check disabled', type)
+      switch (type) {
+        case 'google':
+          ret = !window.gapi || !window.gapi.client
+          break
+      }
+
+      console.log('Returning', ret)
+      return ret ? 'signindisabled' : ''
+    },
     requestLogin() {
       this.pleaseLogin = true
     },
@@ -368,6 +385,36 @@ export default {
         // TODO
         console.error('Native login failed', e)
       }
+    },
+
+    loginGoogle() {
+      const params = {
+        clientid: process.env.GOOGLE_CLIENT_ID,
+        cookiepolicy: 'single_host_origin',
+        callback: async authResult => {
+          console.log('Signin returned', authResult)
+          if (authResult.access_token) {
+            console.log('Signed in')
+
+            await this.$store.dispatch('auth/login', {
+              googleauthcode: authResult.code,
+              googlelogin: true
+            })
+
+            // We are now logged in.
+            console.log('Logged in')
+            this.pleaseLogin = false
+          } else if (authResult.error) {
+            // TODO
+            console.error('There was an error: ' + authResult.error)
+          }
+        },
+        immediate: false,
+        scope: 'profile email',
+        app_package_name: 'org.ilovefreegle.direct'
+      }
+
+      window.gapi.auth.signIn(params)
     },
 
     logOut() {
