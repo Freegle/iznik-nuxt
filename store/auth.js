@@ -38,7 +38,7 @@ export const actions = {
       : null
   },
 
-  async login({ commit }, params) {
+  async login({ commit, dispatch }, params) {
     console.log('Login')
     const res = await this.$axios.post(process.env.API + '/session', params)
     console.log('Returned', res)
@@ -55,7 +55,7 @@ export const actions = {
       commit('setUser', res.data.user)
 
       // We need to fetch the user again to get the groups, which aren't returned by the login API.
-      await this.fetchUser()
+      dispatch('fetchUser')
     } else {
       // Login failed.
       console.error('Login failed', res)
@@ -76,10 +76,10 @@ export const actions = {
     if (res.status === 200 && res.data.ret === 0) {
       console.log('Succeeded')
       // Save the persistent session token.
-      res.data.user.persistent = res.data.persistent
+      res.data.me.persistent = res.data.persistent
 
       // Login succeeded.  Set the user, which will trigger various re-rendering if we were required to be logged in.
-      commit('setUser', res.data.user)
+      commit('setUser', res.data.me)
     } else {
       // Login failed.
       console.error('Fetch user failed')
