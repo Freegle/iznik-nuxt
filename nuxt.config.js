@@ -206,9 +206,7 @@ module.exports = {
     FACEBOOK_APPID: FACEBOOK_APPID,
     GOOGLE_MAPS_KEY: 'AIzaSyCdTSJKGWJUOx2pq1Y0f5in5g4kKAO5dgg',
     GOOGLE_API_KEY: 'AIzaSyArVxoX781qdcbmQZi1PKHX-qa0bPbboH4',
-    GOOGLE_CLIENT_ID: JSON.stringify(
-      '845879623324-vbh39pc09p7342tno6jad28i3obji2aq.apps.googleusercontent.com'
-    ),
+    GOOGLE_CLIENT_ID: '845879623324-l10kvgb07q0hvf39bi854flbh8q7k3ud.apps.googleusercontent.com',
     MODTOOLS: false
   },
 
