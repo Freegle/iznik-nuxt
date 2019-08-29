@@ -6,6 +6,8 @@
   </b-row>
 </template>
 <script>
+const qs = require('querystring')
+
 export default {
   mounted() {
     // We have been redirected here after an attempt to sign in with Yahoo.  We now try again to login
@@ -34,11 +36,19 @@ export default {
     console.log('Got URL params', urlParams)
 
     this.$axios
-      .post(process.env.API + '/session', urlParams)
+      .post(process.env.API + '/session', qs.stringify(urlParams), {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      })
       .then(result => {
         const ret = result.data
         console.log('Yahoologin session login returned', ret)
         if (ret.ret === 0) {
+          // Set the user to store the persistent token.
+          ret.user.persistent = ret.persistent
+          this.$store.dispatch('auth/setUser', ret.user)
+
           // We are logged in.  Get the logged in user
           console.log('Logged in')
           this.$store.dispatch('auth/fetchUser')
@@ -46,7 +56,7 @@ export default {
 
           if (returnto) {
             console.log('Return to', returnto)
-            this.$router.push(returnto)
+            window.location = returnto
           } else {
             this.$router.push('/')
           }

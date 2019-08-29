@@ -447,6 +447,11 @@ export default {
 
       urlParams.yahoologin = true
       urlParams.returnto = document.URL
+      urlParams.host =
+        window.location.protocol +
+        '//' +
+        window.location.hostname +
+        (window.location.port ? ':' + window.location.port : '')
       console.log('Got URL params', urlParams)
 
       this.$axios

@@ -30,6 +30,7 @@ export const actions = {
   },
 
   setUser({ commit }, value) {
+    console.log('setUser', value)
     commit('setUser', value)
 
     // Set or clear our auth token to be used on all API requests.
