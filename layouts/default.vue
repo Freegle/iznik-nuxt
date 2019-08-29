@@ -193,14 +193,15 @@ html {
   margin: 0;
 }
 
-<<<<<<< head .notiflist {
+.notiflist {
   max-width: 100%;
 }
-======= .loginbutton {
+
+.loginbutton {
   width: 303px;
 }
 
->>>>>>>origin/master .button--green {
+.button--green {
   display: inline-block;
   border-radius: 4px;
   border: 1px solid #3b8070;
