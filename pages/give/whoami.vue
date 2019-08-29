@@ -85,8 +85,11 @@
 </style>
 <script>
 // TODO Add speech recognition
+import loginOptional from '@/mixins/loginOptional.js'
+
 export default {
   components: {},
+  mixins: [loginOptional],
   data() {
     return {
       id: null,

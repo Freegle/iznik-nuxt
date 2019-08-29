@@ -65,11 +65,13 @@
 </style>
 <script>
 import GroupHeader from '~/components/GroupHeader.vue'
+import loginOptional from '@/mixins/loginOptional.js'
 
 export default {
   components: {
     GroupHeader
   },
+  mixins: [loginOptional],
   data: function() {
     return {
       show: true

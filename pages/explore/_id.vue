@@ -38,12 +38,14 @@
 <script>
 import groupHeader from '~/components/GroupHeader.vue'
 import message from '~/components/Message.vue'
+import loginOptional from '@/mixins/loginOptional.js'
 
 export default {
   components: {
     groupHeader,
     message
   },
+  mixins: [loginOptional],
   data() {
     return {
       id: null,

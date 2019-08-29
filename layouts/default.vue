@@ -72,7 +72,7 @@
       <nuxt class="ml-0 pl-1 pageContent" />
       <ChatPopups v-if="loggedIn" />
       <b-modal
-        v-if="forceLogin || pleaseLogin"
+        v-if="showModal"
         id="loginModal"
         ref="loginModal"
         title="Let's get freegling!"
@@ -81,6 +81,7 @@
         size="lg"
         hide-footer
         no-close-on-backdrop
+        @hide="modalHide"
       >
         <b-row>
           <b-col class="text-center pb-3">
@@ -95,9 +96,9 @@
         </b-row>
         <b-row>
           <b-col cols="12" sm="6" class="text-center">
-            <b-img alt="Facebook login" class="clickme" src="~/static/signinbuttons/facebook.png" @click="loginFacebook" />
-            <b-img alt="Google login" :class="'clickme ' + disabled('google')" src="~/static/signinbuttons/google.png" @click="loginGoogle" />
-            <b-img alt="Yahoo login" class="signindisabled clickme" src="~/static/signinbuttons/yahoo.png" />
+            <b-img alt="Facebook login" class="loginbutton clickme" src="~/static/signinbuttons/facebook.png" @click="loginFacebook" />
+            <b-img alt="Google login" :class="'loginbutton clickme ' + disabled('google')" src="~/static/signinbuttons/google.png" @click="loginGoogle" />
+            <b-img alt="Yahoo login" class="loginbutton clickme" src="~/static/signinbuttons/yahoo.png" @click="loginYahoo" />
             <b-alert v-if="socialblocked" variant="error">
               Social login blocked - check your privacy settings
             </b-alert>
@@ -192,10 +193,14 @@ html {
   margin: 0;
 }
 
-.notiflist {
+<<<<<<< head .notiflist {
   max-width: 100%;
 }
-.button--green {
+======= .loginbutton {
+  width: 303px;
+}
+
+>>>>>>>origin/master .button--green {
   display: inline-block;
   border-radius: 4px;
   border: 1px solid #3b8070;
@@ -284,17 +289,17 @@ export default {
       error: null,
       socialblocked: false,
       existinguser: true,
-      pleaseLogin: false
+      pleaseLogin: null
     }
   },
 
   computed: {
-    forceLogin() {
-      return this.$store.getters['auth/forceLogin']()
+    showModal() {
+      const forceLogin = this.$store.getters['auth/forceLogin']()
+      return forceLogin || this.pleaseLogin
     },
     loggedIn() {
       const ret = Boolean(this.$store.getters['auth/user']())
-      console.log('Calc logged in ', ret)
       return ret
     },
     notifications() {
@@ -318,18 +323,22 @@ export default {
       // TODO We might compute this the first time before the API has loaded, and therefore still show the
       // button disabled even after the API has loaded successfully.
       let ret = false
-      console.log('Check disabled', type)
       switch (type) {
         case 'google':
           ret = !window.gapi || !window.gapi.client
           break
       }
 
-      console.log('Returning', ret)
       return ret ? 'signindisabled' : ''
     },
     requestLogin() {
-      this.pleaseLogin = true
+      console.log('Request login')
+      this.pleaseLogin = new Date().getTime()
+    },
+    modalHide() {
+      // We've closed the modal.  If we opened it because we'd clicked to do so, that no longer applies.
+      console.log('Modal hide')
+      this.pleaseLogin = false
     },
     loginNative(e) {
       console.log('loginNative')
@@ -418,6 +427,79 @@ export default {
       }
 
       window.gapi.auth.signIn(params)
+    },
+
+    loginYahoo() {
+      // Sadly Yahoo doesn't support a Javascript-only OAuth flow, so far as I can tell.  So what we do is
+      // post to the server, get a redirection URL from there, redirect on here to Yahoo to complete the
+      // signin, and then return to a /yahoologin route.
+      console.log(
+        'Yahoo login',
+        this.$route.query.page,
+        window.location,
+        document.URL
+      )
+      let match
+      const pl = /\+/g // Regex for replacing addition symbol with a space
+      const search = /([^&=]+)=?([^&]*)/g
+      const decode = function(s) {
+        return decodeURIComponent(s.replace(pl, ' '))
+      }
+      const query = window.location.search.substring(1)
+
+      // We want to post to the server to do the login there.  We pass all the URL
+      // parameters we have, which include the OpenID response.
+      const urlParams = {}
+      while ((match = search.exec(query)))
+        urlParams[decode(match[1])] = decode(match[2])
+
+      urlParams.yahoologin = true
+      urlParams.returnto = document.URL
+      urlParams.host =
+        window.location.protocol +
+        '//' +
+        window.location.hostname +
+        (window.location.port ? ':' + window.location.port : '')
+      console.log('Got URL params', urlParams)
+
+      this.$axios
+        .post(process.env.API + '/session', urlParams)
+        .then(result => {
+          const ret = result.data
+
+          console.log('Default Session login returned', ret)
+          if (ret.redirect) {
+            // We are not logged in - we need to redirect to Yahoo
+            //
+            // The URL returned by the server has its hostname in it, but perhaps we are running on a different
+            // host, especially when developing.
+            let url = ret.redirect
+            const apihost = process.env.API.replace('https://', '').replace(
+              '/api',
+              ''
+            )
+            const re = new RegExp(apihost, 'g')
+            url = url.replace(
+              re,
+              window.location.hostname +
+                (window.location.port ? ':' + window.location.port : '')
+            )
+            console.log('Redirect to Yahoo', url)
+            window.location = url
+          } else if (ret.ret === 0) {
+            // We are logged in.  Get the logged in user
+            console.log('Logged in')
+            this.$store.dispatch('auth/fetchUser')
+            this.pleaseLogin = false
+          } else {
+            // TODO
+            console.error('Server login failed', ret)
+          }
+        })
+        .catch(e => {
+          // TODO
+          console.error('Yahoo login failed', e)
+        })
     },
 
     logOut() {

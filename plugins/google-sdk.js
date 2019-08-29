@@ -6,7 +6,6 @@ const VueGoogle = {}
 window.gapiLoaded = false
 
 VueGoogle.install = function install(Vue, options) {
-  console.log('Install google')
   ;(function(d, s, id) {
     const fjs = d.getElementsByTagName(s)[0]
     if (d.getElementById(id)) {
@@ -16,19 +15,14 @@ VueGoogle.install = function install(Vue, options) {
     js.id = id
     js.src = 'https://apis.google.com/js/platform.js'
     js.onload = e => {
-      console.log('Loaded GAPI')
       setTimeout(() => {
-        console.log('Timeout', window.gapi)
         if (window.gapi) {
-          console.log('Init client')
           window.gapi.load('client', {
             callback: function() {
-              console.log('Client loaded')
               window.gapi.client.init({
                 apiKey: process.env.GOOGLE_API_KEY
               })
               window.gapiLoaded = true
-              console.log('Client initialised')
             },
             onerror: function() {
               console.error('gapi.client failed to load!')

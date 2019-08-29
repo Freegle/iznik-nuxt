@@ -43,7 +43,7 @@
 import GroupSelect from '~/components/GroupSelect.vue'
 import GroupHeader from '~/components/GroupHeader.vue'
 import Message from '~/components/Message.vue'
-import forceLogin from '@/mixins/forceLogin.js'
+import loginRequired from '@/mixins/loginRequired.js'
 
 export default {
   components: {
@@ -51,7 +51,7 @@ export default {
     GroupSelect,
     Message
   },
-  mixins: [forceLogin],
+  mixins: [loginRequired],
   data() {
     return {
       id: null,
