@@ -14,14 +14,9 @@
         </div>
       </div>
       <div class="media-body">
-        <span v-if="notification.newsfeed.type == 'Noticeboard'" class="notification-title"><span>{{ notification.fromuser.displayname }} loves your poster</span>
-          <span v-if="noticeboard && noticeboard.name">&quot;<b>{{ noticeboard.name }}</b>&quot;</span>
-        </span>
-        <span v-else>
-          <span class="notification-title"><span>{{ notification.fromuser.displayname }} loves your post</span>
-            <span v-if="notification.newsfeed.message">
-              <br>"<b>{{ notification.newsfeed.message }}</b>"
-            </span>
+        <span class="notification-title"><span>{{ notification.fromuser.displayname }} loves your comment</span>
+          <span v-if="notification.newsfeed.message">
+            <br>"<b>{{ notification.newsfeed.message }}</b>"
           </span>
         </span>
         <div class="notification-meta">

@@ -1,7 +1,7 @@
 <template>
   <div v-if="reply.userid && users[reply.userid] && reply.visible">
     <b-row class="p-0">
-      <b-col>
+      <b-col class="p-0">
         <table v-if="users[reply.userid].profile">
           <tbody>
             <tr>
@@ -54,7 +54,7 @@
       </ul>
     </div>
     <b-row v-if="showReplyBox">
-      <b-col>
+      <b-col class="p-0">
         <b-input-group class="pl-4">
           <b-input-group-prepend>
             <span class="input-group-text pl-1 pr-1">
@@ -103,8 +103,8 @@
 }
 
 .showmodsm {
-  top: 30px;
-  left: 40px;
+  top: 28px;
+  left: 26px;
   border-radius: 50%;
   position: absolute;
   background-color: white;
@@ -138,6 +138,11 @@ export default {
     users: {
       type: Object,
       required: true
+    },
+    scrollTo: {
+      type: String,
+      required: false,
+      default: ''
     }
   },
   data: function() {
@@ -155,6 +160,16 @@ export default {
       return this.reply.message
         ? twem.twem(this.$twemoji, this.reply.message)
         : null
+    }
+  },
+  mounted() {
+    console.log('Consider scroll', this.scrollTo, this.reply.id)
+    if (parseInt(this.scrollTo) === this.reply.id) {
+      // We want to scroll to this reply to make sure it's visible
+      console.log('Scroll to it')
+      this.$el.scrollIntoView()
+
+      // TODO DESIGN Can we have some visual highlighting of the element we've just scrolled to?
     }
   },
   methods: {

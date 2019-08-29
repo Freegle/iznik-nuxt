@@ -128,7 +128,7 @@
         <div class=" p-0 pt-1 mb-1">
           <ul v-for="(entry, $index) in newsfeed" :key="'newsfeed-' + $index + '-area-' + selectedArea" class="list-unstyled">
             <li v-if="entry && entry.visible && !entry.unfollowed">
-              <NewsThread :id="entry.id" :key="'newsfeed-' + entry.id" :users="users" />
+              <NewsThread :id="entry.id" :key="'newsfeed-' + entry.id" :users="users" :scroll-to="scrollTo" />
             </li>
           </ul>
           <infinite-loading :identifier="infiniteId" force-use-infinite-wrapper="body" @infinite="loadMore">
@@ -190,6 +190,7 @@ export default {
       newsfeed: null,
       busy: false,
       startThread: null,
+      scrollTo: null,
       areaOptions: [
         {
           value: 'nearby',
@@ -288,6 +289,30 @@ export default {
                 id: this.id
               })
             ]
+
+            // But maybe this isn't the thread head.
+            const fetched = this.$store.getters['newsfeed/get'](this.id)
+            console.log('Fetched', fetched)
+            if (fetched.threadhead && this.id !== fetched.threadhead) {
+              console.log('Get thread head', fetched.threadhead)
+              this.newsfeed = []
+              this.newsfeed = [
+                await this.$store.dispatch('newsfeed/fetch', {
+                  id: fetched.threadhead
+                })
+              ]
+            } else if (fetched.replyto && this.id !== fetched.replyto) {
+              console.log('Reply to', fetched.replyto)
+              this.newsfeed = []
+              this.newsfeed = [
+                await this.$store.dispatch('newsfeed/fetch', {
+                  id: fetched.replyto
+                })
+              ]
+            }
+
+            this.scrollTo = this.id
+            console.log('Set scrollto', this.id)
 
             $state.complete()
           } else {

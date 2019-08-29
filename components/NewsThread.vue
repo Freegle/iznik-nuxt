@@ -23,7 +23,7 @@
         <div v-if="newsfeed.replies && newsfeed.replies.length > 0">
           <ul v-for="(entry, $index) in newsfeed.replies" :key="'newsfeed-' + $index" class="list-unstyled">
             <li>
-              <news-reply :key="'newsfeedreply-' + newsfeed.id + '-reply-' + entry.id" :reply="entry" :users="users" :threadhead="newsfeed" />
+              <news-reply :key="'newsfeedreply-' + newsfeed.id + '-reply-' + entry.id" :reply="entry" :users="users" :threadhead="newsfeed" :scroll-to="scrollTo" />
             </li>
           </ul>
         </div>
@@ -121,6 +121,11 @@ export default {
     users: {
       type: Object,
       required: true
+    },
+    scrollTo: {
+      type: String,
+      required: false,
+      default: ''
     }
   },
   data: function() {

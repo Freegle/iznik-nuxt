@@ -1,5 +1,5 @@
 <template>
-  <div v-if="notification.fromuser" class="clickme" @click="click">
+  <div v-if="notification.fromuser" class="clickme">
     <div class="media clickme">
       <div class="media-left">
         <div class="media-object">
@@ -14,14 +14,9 @@
         </div>
       </div>
       <div class="media-body">
-        <span v-if="notification.newsfeed.type == 'Noticeboard'" class="notification-title"><span>{{ notification.fromuser.displayname }} loves your poster</span>
-          <span v-if="noticeboard && noticeboard.name">&quot;<b>{{ noticeboard.name }}</b>&quot;</span>
-        </span>
-        <span v-else>
-          <span class="notification-title"><span>{{ notification.fromuser.displayname }} loves your post</span>
-            <span v-if="notification.newsfeed.message">
-              <br>"<b>{{ notification.newsfeed.message }}</b>"
-            </span>
+        <span class="notification-title"><span>{{ notification.fromuser.displayname }} commented </span>
+          <span v-if="notification.newsfeed.message">
+            <br>"<b style="max-width: 200px; overflow-wrap: break-word">{{ notification.newsfeed.message }}</b>"
           </span>
         </span>
         <div class="notification-meta">
@@ -38,8 +33,8 @@
   padding-top: 5px;
 }
 
-li > a {
-  padding-left: 0px;
+.notification-title {
+  max-width: 280px;
 }
 </style>
 <script>
@@ -53,9 +48,6 @@ export default {
   methods: {
     brokenImage(event) {
       event.target.src = '/static/defaultprofile.png'
-    },
-    click() {
-      this.$router.push('/chitchat/' + this.notification.newsfeed.id)
     }
   }
 }

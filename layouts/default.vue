@@ -37,7 +37,7 @@
               <template slot="button-content">
                 <v-icon name="bell" scale="2" /><br>Notifications
               </template>
-              <b-dropdown-item v-for="(notification, $index) in notifications" :key="'notification-' + $index" href="#" class="p-1">
+              <b-dropdown-item v-for="(notification, $index) in notifications" :key="'notification-' + $index" class="p-0 test">
                 <Notification :notification="notification" />
               </b-dropdown-item>
               <infinite-loading @infinite="loadMore">
@@ -48,7 +48,7 @@
                 </span>
               </infinite-loading>
             </b-nav-item-dropdown>
-
+            <a class="d-none dropdown-item" />
             <b-nav-item id="menu-option-chat" class="text-center p-0" to="/chats">
               <v-icon name="comments" scale="2" /><br>
               Chats
@@ -193,6 +193,10 @@ html {
   margin: 0;
 }
 
+.dropdown-item {
+  padding-left: 0px;
+}
+
 .notiflist {
   max-width: 100%;
 }
@@ -269,6 +273,11 @@ svg.fa-icon {
   opacity: 0.2;
   pointer-events: none;
 }
+
+.dropdown-item {
+  padding-left: 0px;
+  padding-right: 0px;
+}
 </style>
 
 <script>
@@ -316,7 +325,7 @@ export default {
 
   async mounted() {
     await this.$store.dispatch('notifications/clear')
-    await this.$store.dispatch('notifications/list')
+    // await this.$store.dispatch('notifications/list')
   },
 
   methods: {

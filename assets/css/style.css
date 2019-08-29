@@ -126,3 +126,10 @@ button {
   -moz-hyphens: auto;
   hyphens: auto;
 }
+
+.notiflist .dropdown-item {
+  width: 300px;
+  max-width: 100%;
+  padding-left: 5px;
+  overflow-wrap: break-word;
+}
