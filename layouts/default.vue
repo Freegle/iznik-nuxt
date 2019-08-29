@@ -33,12 +33,12 @@
           </b-navbar-nav>
           <b-navbar-nav class="ml-auto">
             <b-nav-item id="menu-option-notification" class="text-center p-0" />
-            <b-nav-item-dropdown class="text-center notiflist" lazy>
+            <b-nav-item-dropdown class="text-center notiflist" lazy right>
               <template slot="button-content">
                 <v-icon name="bell" scale="2" /><br>Notifications
               </template>
-              <b-dropdown-item v-for="(notification, $index) in notifications" :key="'notification-' + $index" href="#">
-                <Notification v-bind="notification" />
+              <b-dropdown-item v-for="(notification, $index) in notifications" :key="'notification-' + $index" href="#" class="p-1">
+                <Notification :notification="notification" />
               </b-dropdown-item>
               <infinite-loading @infinite="loadMore">
                 <span slot="no-results" />
@@ -192,6 +192,9 @@ html {
   margin: 0;
 }
 
+.notiflist {
+  max-width: 100%;
+}
 .button--green {
   display: inline-block;
   border-radius: 4px;

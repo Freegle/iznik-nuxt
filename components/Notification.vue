@@ -1,23 +1,22 @@
 <template>
   <div>
-    {{ type }}
+    <notification-loved-post v-if="notification.type === 'LovedPost'" :notification="notification" />
+    <v-else>
+      Unknown notification {{ notification.type }}
+    </v-else>
   </div>
 </template>
 <script>
+import NotificationLovedPost from '~/components/NotificationLovedPost'
+
 export default {
-  components: {},
+  components: {
+    NotificationLovedPost
+  },
+  inheritAttrs: false,
   props: {
-    id: {
-      type: Number,
-      required: true
-    },
-    title: {
-      type: String,
-      required: false,
-      default: null
-    },
-    type: {
-      type: String,
+    notification: {
+      type: Object,
       required: true
     }
   }
