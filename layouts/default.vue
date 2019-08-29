@@ -33,7 +33,7 @@
           </b-navbar-nav>
           <b-navbar-nav class="ml-auto">
             <b-nav-item id="menu-option-notification" class="text-center p-0" />
-            <b-nav-item-dropdown class="text-center notiflist" lazy right>
+            <b-nav-item-dropdown class="text-center notiflist" lazy right @shown="showNotifications">
               <template slot="button-content">
                 <v-icon name="bell" scale="2" /><br>Notifications
               </template>
@@ -534,9 +534,7 @@ export default {
       } else {
         this.busy = true
         this.$store
-          .dispatch('notifications/list', {
-            chatid: this.id
-          })
+          .dispatch('notifications/list')
           .then(() => {
             try {
               const notifications = this.$store.getters['notifications/list']()
@@ -561,6 +559,13 @@ export default {
             $state.complete()
           })
       }
+    },
+
+    showNotifications() {
+      // We want to make sure we have the most up to date notifications.
+      console.log('Click notifications')
+      this.$store.dispatch('notifications/clearContext')
+      this.$store.dispatch('notifications/list')
     }
   }
 }

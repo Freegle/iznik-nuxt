@@ -10,11 +10,11 @@
     />
     <div>
       <p>To help Freegle, <b>{{ users[userid].displayname }}</b> printed a Freegle poster and put it up where people can see it.</p>
-      <p><b>We need your help to get more people freegling</b>.  Could you put one up too?</p>
     </div>
-    <div v-if="info.description" class="prewrap">
-      {{ info.description }}
-    </div>
+    <b-alert v-if="info.description" show variant="info" class="prewrap">
+      <b>"{{ info.description }}"</b>
+    </b-alert>
+    <p><b>We need your help to get more people freegling</b>.  Could you put one up too?</p>
     <iframe
       width="100%"
       height="200"

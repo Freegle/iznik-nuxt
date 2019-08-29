@@ -163,10 +163,8 @@ export default {
     }
   },
   mounted() {
-    console.log('Consider scroll', this.scrollTo, this.reply.id)
     if (parseInt(this.scrollTo) === this.reply.id) {
       // We want to scroll to this reply to make sure it's visible
-      console.log('Scroll to it')
       this.$el.scrollIntoView()
 
       // TODO DESIGN Can we have some visual highlighting of the element we've just scrolled to?
