@@ -89,11 +89,13 @@
 // TODO Add speech recognition
 
 import PostMessage from '~/components/PostMessage'
+import loginOptional from '@/mixins/loginOptional.js'
 
 export default {
   components: {
     PostMessage
   },
+  mixins: [loginOptional],
   data: function() {
     return {}
   },

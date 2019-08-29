@@ -72,7 +72,7 @@
       <nuxt class="ml-0 pl-1 pageContent" />
       <ChatPopups v-if="loggedIn" />
       <b-modal
-        v-if="forceLogin || pleaseLogin"
+        v-if="showModal"
         id="loginModal"
         ref="loginModal"
         title="Let's get freegling!"
@@ -81,6 +81,7 @@
         size="lg"
         hide-footer
         no-close-on-backdrop
+        @hide="modalHide"
       >
         <b-row>
           <b-col class="text-center pb-3">
@@ -285,17 +286,17 @@ export default {
       error: null,
       socialblocked: false,
       existinguser: true,
-      pleaseLogin: false
+      pleaseLogin: null
     }
   },
 
   computed: {
-    forceLogin() {
-      return this.$store.getters['auth/forceLogin']()
+    showModal() {
+      const forceLogin = this.$store.getters['auth/forceLogin']()
+      return forceLogin || this.pleaseLogin
     },
     loggedIn() {
       const ret = Boolean(this.$store.getters['auth/user']())
-      console.log('Calc logged in ', ret)
       return ret
     },
     notifications() {
@@ -319,18 +320,22 @@ export default {
       // TODO We might compute this the first time before the API has loaded, and therefore still show the
       // button disabled even after the API has loaded successfully.
       let ret = false
-      console.log('Check disabled', type)
       switch (type) {
         case 'google':
           ret = !window.gapi || !window.gapi.client
           break
       }
 
-      console.log('Returning', ret)
       return ret ? 'signindisabled' : ''
     },
     requestLogin() {
-      this.pleaseLogin = true
+      console.log('Request login')
+      this.pleaseLogin = new Date().getTime()
+    },
+    modalHide() {
+      // We've closed the modal.  If we opened it because we'd clicked to do so, that no longer applies.
+      console.log('Modal hide')
+      this.pleaseLogin = false
     },
     loginNative(e) {
       console.log('loginNative')

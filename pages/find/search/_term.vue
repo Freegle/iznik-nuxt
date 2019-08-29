@@ -104,12 +104,14 @@
 // TODO Add speech recognition
 import Autocomplete from '~/components/Autocomplete'
 import Message from '~/components/Message.vue'
+import loginOptional from '@/mixins/loginOptional.js'
 
 export default {
   components: {
     Autocomplete,
     Message
   },
+  mixins: [loginOptional],
   data: function() {
     return {
       options: [

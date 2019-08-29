@@ -62,11 +62,13 @@ select {
 <script>
 // TODO Norfolk and redirection to another site?
 import Postcode from '~/components/Postcode'
+import loginOptional from '@/mixins/loginOptional.js'
 
 export default {
   components: {
     Postcode
   },
+  mixins: [loginOptional],
   data() {
     return {
       id: null,

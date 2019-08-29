@@ -165,7 +165,7 @@ import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 import FilePondPluginImageTransform from 'filepond-plugin-image-transform'
 import NewsThread from '~/components/NewsThread.vue'
 import twem from '~/assets/js/twem'
-import forceLogin from '@/mixins/forceLogin.js'
+import loginRequired from '@/mixins/loginRequired.js'
 
 const FilePond = vueFilePond(
   FilePondPluginFileValidateType,
@@ -178,7 +178,7 @@ export default {
     NewsThread,
     FilePond
   },
-  mixins: [forceLogin],
+  mixins: [loginRequired],
 
   validate({ params }) {
     // Must be a number if present
@@ -235,7 +235,6 @@ export default {
   computed: {
     me() {
       const user = this.$store.getters['auth/user']()
-      console.log('Calc me', user)
       return user
     },
     selectedArea: {

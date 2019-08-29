@@ -5,7 +5,6 @@ export const state = () => ({
 
 export const mutations = {
   forceLogin(state, value) {
-    console.log('set forceLogin', value)
     state.forceLogin = value
   },
 
@@ -80,7 +79,10 @@ export const actions = {
       res.data.me.persistent = res.data.persistent
 
       // Login succeeded.  Set the user, which will trigger various re-rendering if we were required to be logged in.
-      commit('setUser', res.data.me)
+      if (res.data.me) {
+        commit('setUser', res.data.me)
+        commit('forceLogin', false)
+      }
     } else {
       // Login failed.
       console.error('Fetch user failed')
