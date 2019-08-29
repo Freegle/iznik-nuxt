@@ -95,9 +95,9 @@
         </b-row>
         <b-row>
           <b-col cols="12" sm="6" class="text-center">
-            <b-img alt="Facebook login" class="clickme" src="~/static/signinbuttons/facebook.png" @click="loginFacebook" />
-            <b-img alt="Google login" :class="'clickme ' + disabled('google')" src="~/static/signinbuttons/google.png" @click="loginGoogle" />
-            <b-img alt="Yahoo login" class="signindisabled clickme" src="~/static/signinbuttons/yahoo.png" />
+            <b-img alt="Facebook login" class="loginbutton clickme" src="~/static/signinbuttons/facebook.png" @click="loginFacebook" />
+            <b-img alt="Google login" :class="'loginbutton clickme ' + disabled('google')" src="~/static/signinbuttons/google.png" @click="loginGoogle" />
+            <b-img alt="Yahoo login" class="loginbutton clickme" src="~/static/signinbuttons/yahoo.png" @click="loginYahoo" />
             <b-alert v-if="socialblocked" variant="error">
               Social login blocked - check your privacy settings
             </b-alert>
@@ -190,6 +190,10 @@ html {
 *:after {
   box-sizing: border-box;
   margin: 0;
+}
+
+.loginbutton {
+  width: 303px;
 }
 
 .button--green {
@@ -415,6 +419,74 @@ export default {
       }
 
       window.gapi.auth.signIn(params)
+    },
+
+    loginYahoo() {
+      // Sadly Yahoo doesn't support a Javascript-only OAuth flow, so far as I can tell.  So what we do is
+      // post to the server, get a redirection URL from there, redirect on here to Yahoo to complete the
+      // signin, and then return to a /yahoologin route.
+      console.log(
+        'Yahoo login',
+        this.$route.query.page,
+        window.location,
+        document.URL
+      )
+      let match
+      const pl = /\+/g // Regex for replacing addition symbol with a space
+      const search = /([^&=]+)=?([^&]*)/g
+      const decode = function(s) {
+        return decodeURIComponent(s.replace(pl, ' '))
+      }
+      const query = window.location.search.substring(1)
+
+      // We want to post to the server to do the login there.  We pass all the URL
+      // parameters we have, which include the OpenID response.
+      const urlParams = {}
+      while ((match = search.exec(query)))
+        urlParams[decode(match[1])] = decode(match[2])
+
+      urlParams.yahoologin = true
+      urlParams.returnto = document.URL
+      console.log('Got URL params', urlParams)
+
+      this.$axios
+        .post(process.env.API + '/session', urlParams)
+        .then(result => {
+          const ret = result.data
+
+          console.log('Default Session login returned', ret)
+          if (ret.redirect) {
+            // We are not logged in - we need to redirect to Yahoo
+            //
+            // The URL returned by the server has its hostname in it, but perhaps we are running on a different
+            // host, especially when developing.
+            let url = ret.redirect
+            const apihost = process.env.API.replace('https://', '').replace(
+              '/api',
+              ''
+            )
+            const re = new RegExp(apihost, 'g')
+            url = url.replace(
+              re,
+              window.location.hostname +
+                (window.location.port ? ':' + window.location.port : '')
+            )
+            console.log('Redirect to Yahoo', url)
+            window.location = url
+          } else if (ret.ret === 0) {
+            // We are logged in.  Get the logged in user
+            console.log('Logged in')
+            this.$store.dispatch('auth/fetchUser')
+            this.pleaseLogin = false
+          } else {
+            // TODO
+            console.error('Server login failed', ret)
+          }
+        })
+        .catch(e => {
+          // TODO
+          console.error('Yahoo login failed', e)
+        })
     },
 
     logOut() {
