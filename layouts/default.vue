@@ -33,7 +33,7 @@
           </b-navbar-nav>
           <b-navbar-nav class="ml-auto">
             <b-nav-item id="menu-option-notification" class="text-center p-0" />
-            <b-nav-item-dropdown class="text-center notiflist" lazy right @shown="showNotifications">
+            <b-nav-item-dropdown class="white text-center notiflist" lazy right @shown="showNotifications">
               <template slot="button-content">
                 <v-icon name="bell" scale="2" /><br>Notifications
               </template>
@@ -185,6 +185,19 @@ html {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
+}
+
+nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: white !important;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-nav .nav-link:focus {
+  color: rgba(255, 255, 255, 0.75) !important;
 }
 
 *,

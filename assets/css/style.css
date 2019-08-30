@@ -125,3 +125,7 @@ button {
 .black {
   color: black
 }
+
+.white, .white > a {
+  color: white !important;
+}
