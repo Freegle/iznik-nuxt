@@ -25,15 +25,10 @@ export default ({ store }) => {
       reducer: function(state, paths) {
         // Earlier we used cloneDeep on the whole thing and then deleted what we didn't need.
         // But cloneDeep is very slow.
-        console.log('Reduce', state)
         const newstate = {}
         for (const key in state) {
           if (keep.indexOf(key) !== -1) {
-            console.log('Keep', key)
             newstate[key] = cloneDeep(state[key])
-            console.log('Cloned')
-          } else {
-            console.log('Skip', key)
           }
         }
 
