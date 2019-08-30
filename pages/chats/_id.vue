@@ -19,7 +19,7 @@
 </template>
 <style scoped>
 .chatback {
-  background-color: #f3f0da;
+  background-color: #f9f7ec;
 }
 
 .active {
