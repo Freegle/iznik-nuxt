@@ -40,7 +40,7 @@
               <b-dropdown-item v-for="(notification, $index) in notifications" :key="'notification-' + $index" class="p-0 test">
                 <Notification :notification="notification" @showModal="showAboutMe" />
               </b-dropdown-item>
-              <infinite-loading @infinite="loadMore">
+              <infinite-loading distance="1000" @infinite="loadMore">
                 <span slot="no-results" />
                 <span slot="no-more" />
                 <span slot="spinner">

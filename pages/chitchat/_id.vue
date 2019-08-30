@@ -131,7 +131,7 @@
               <NewsThread :id="entry.id" :key="'newsfeed-' + entry.id" :users="users" :scroll-to="scrollTo" />
             </li>
           </ul>
-          <infinite-loading :identifier="infiniteId" force-use-infinite-wrapper="body" @infinite="loadMore">
+          <infinite-loading :identifier="infiniteId" force-use-infinite-wrapper="body" distance="1000" @infinite="loadMore">
             <span slot="no-results" />
             <span slot="no-more" />
             <span slot="spinner">

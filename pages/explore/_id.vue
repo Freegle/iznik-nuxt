@@ -26,7 +26,7 @@
       <message v-bind="message" />
     </div>
 
-    <infinite-loading @infinite="loadMore">
+    <infinite-loading distance="1000" @infinite="loadMore">
       <span slot="spinner">
         <span slot="no-results" />
         <span slot="no-more" />
