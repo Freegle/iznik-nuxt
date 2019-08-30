@@ -121,3 +121,7 @@ button {
   padding-left: 5px;
   overflow-wrap: break-word;
 }
+
+.black {
+  color: black
+}

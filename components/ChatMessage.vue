@@ -2,6 +2,7 @@
   <div>
     <chat-message-text v-if="chatmessage.type === 'Default'" :chat="chat" :chatmessage="chatmessage" :me="me" :otheruser="otheruser" />
     <chat-message-image v-else-if="chatmessage.type === 'Image'" :chat="chat" :chatmessage="chatmessage" :me="me" :otheruser="otheruser" />
+    <chat-message-interested v-else-if="chatmessage.type === 'Interested'" :chat="chat" :chatmessage="chatmessage" :me="me" :otheruser="otheruser" />
     <div v-else>
       Unknown chat message type {{ chatmessage.type }}
     </div>
@@ -25,11 +26,13 @@
 
 import ChatMessageText from './ChatMessageText'
 import ChatMessageImage from './ChatMessageImage'
+import ChatMessageInterested from './ChatMessageInterested'
 
 export default {
   components: {
     ChatMessageText,
-    ChatMessageImage
+    ChatMessageImage,
+    ChatMessageInterested
   },
   props: {
     chat: {
