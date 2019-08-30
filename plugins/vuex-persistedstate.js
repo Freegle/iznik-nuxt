@@ -3,40 +3,38 @@
 import createPersistedState from 'vuex-persistedstate'
 import cloneDeep from 'lodash.clonedeep'
 
+// Some store paths we want to persist, either because they're short or valuable.
+//
+// It would be nice to keep the first n notifications, chitchat etc.  But we'd need to think about how this
+// interacted with infinite scroll to make sure we didn't get stuck on old data.
+const keep = [
+  'auth',
+  'localization.locale',
+  'group',
+  'chats',
+  'popupchats',
+  'compose',
+  'i18n'
+]
+
 export default ({ store }) => {
   window.onNuxtReady(() => {
     createPersistedState({
       key: 'iznik',
 
-      // List the store paths that we want to persist.
-      paths: [
-        'localization.locale',
-        'security',
-        'group',
-        'chats',
-        'popupchats',
-        'newsfeed',
-        'compose'
-      ],
-
       reducer: function(state, paths) {
-        // Don't store the messages - they're too big, and too transient.  Nor the newsfeed for similar reasons.
-        // This also means we don't have to worry about how to delete messages which are deleted on the server.
-        const newstate = cloneDeep(state)
-        delete newstate.messages
-        delete newstate.stroll
-        delete newstate.newsfeed.newsfeed
-        delete newstate.newsfeed.users
-        delete newstate.newsfeed.context
-        delete newstate.chatmessages
-
-        // Bound number of notifications
-        if (
-          newstate.notifications &&
-          newstate.notifications.list &&
-          newstate.notifications.list.length > 20
-        ) {
-          newstate.notifications.list.length = 20
+        // Earlier we used cloneDeep on the whole thing and then deleted what we didn't need.
+        // But cloneDeep is very slow.
+        console.log('Reduce', state)
+        const newstate = {}
+        for (const key in state) {
+          if (keep.indexOf(key) !== -1) {
+            console.log('Keep', key)
+            newstate[key] = cloneDeep(state[key])
+            console.log('Cloned')
+          } else {
+            console.log('Skip', key)
+          }
         }
 
         // The groupsnear in a postcode only needs the group ids.
@@ -61,6 +59,7 @@ export default ({ store }) => {
         //     newstate[field]
         //   )
         // }
+
         return newstate
       }
     })(store)
