@@ -6,6 +6,10 @@
     <notification-comment-on-comment v-else-if="notification.type === 'CommentOnCommented'" :notification="notification" />
     <notification-exhort v-else-if="notification.type === 'Exhort'" :notification="notification" />
     <notification-about-me v-else-if="notification.type === 'AboutMe'" :notification="notification" @showModal="showModal" />
+    <notification-membership-pending v-else-if="notification.type === 'MembershipPending'" :notification="notification" />
+    <notification-membership-approved v-else-if="notification.type === 'MembershipApproved'" :notification="notification" />
+    <notification-membership-rejected v-else-if="notification.type === 'MembershipRejected'" :notification="notification" />
+    <span v-else-if="notification.type === 'TryFeed'" />
     <span v-else>
       Unknown notification {{ notification.type }}
     </span>
@@ -18,6 +22,9 @@ import NotificationCommentOnPost from '~/components/NotificationCommentOnPost'
 import NotificationCommentOnComment from '~/components/NotificationCommentOnComment'
 import NotificationExhort from '~/components/NotificationExhort'
 import NotificationAboutMe from '~/components/NotificationAboutMe'
+import NotificationMembershipPending from '~/components/NotificationMembershipPending'
+import NotificationMembershipApproved from '~/components/NotificationMembershipApproved'
+import NotificationMembershipRejected from '~/components/NotificationMembershipRejected'
 
 export default {
   components: {
@@ -26,12 +33,10 @@ export default {
     NotificationCommentOnPost,
     NotificationCommentOnComment,
     NotificationExhort,
-    NotificationAboutMe
-    // TODO Others
-    // const TYPE_TRY_FEED = 'TryFeed';
-    // const TYPE_MEMBERSHIP_PENDING = 'MembershipPending';
-    // const TYPE_MEMBERSHIP_APPROVED = 'MembershipApproved';
-    // const TYPE_MEMBERSHIP_REJECTED = 'MembershipRejected';
+    NotificationAboutMe,
+    NotificationMembershipPending,
+    NotificationMembershipApproved,
+    NotificationMembershipRejected
   },
   inheritAttrs: false,
   props: {
