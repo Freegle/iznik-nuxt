@@ -237,9 +237,10 @@ export default {
       id: this.id
     })
 
-    const chat = this.$store.getters['chats/get'](this.id)
+    const chat = await this.$store.getters['chats/get'](this.id)
     this.chat = chat
   },
+
   methods: {
     showInfo() {
       console.log('Show info')

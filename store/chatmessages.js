@@ -9,6 +9,10 @@ export const state = () => ({
 })
 
 export const mutations = {
+  clearMessages(state) {
+    Object.assign(state.messages, {})
+  },
+
   mergeMessages(state, payload) {
     const chatid = payload.id + ''
     const messages =
@@ -63,6 +67,10 @@ export const getters = {
 }
 
 export const actions = {
+  clearMessages({ commit, state }, params) {
+    commit('clearMessages')
+  },
+
   async fetch({ commit, state }, params) {
     const chatid = params.chatid
     const messages = await this.$axios.get(

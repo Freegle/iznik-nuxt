@@ -76,25 +76,26 @@ module.exports = {
     'nuxt-rfg-icon',
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
-    'cookie-universal-nuxt',
-    [
-      'nuxt-i18n',
-      {
-        locales: [
-          {
-            code: 'en',
-            iso: 'en-GB'
-          }
-        ],
-        defaultLocale: 'en',
-        vueI18n: {
-          fallbackLocale: 'en',
-          messages: {
-            en: {}
-          }
-        }
-      }
-    ],
+    // Removing this as it causes a scalability issue with vue-meta - see https://github.com/nuxt/vue-meta/issues/443
+    // 'cookie-universal-nuxt',
+    // [
+    //   'nuxt-i18n',
+    //   {
+    //     locales: [
+    //       {
+    //         code: 'en',
+    //         iso: 'en-GB'
+    //       }
+    //     ],
+    //     defaultLocale: 'en',
+    //     vueI18n: {
+    //       fallbackLocale: 'en',
+    //       messages: {
+    //         en: {}
+    //       }
+    //     }
+    //   }
+    // ],
   ],
 
   // We only use some of bootstrap-vue, so by listing it explicitly we can reduce our bundle size.
