@@ -24,9 +24,10 @@
       <b-col>
         <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
         <span class="float-right d-inline-block">
-          <b-btn variant="primary" size="sm" @click="introduce">
+          <b-btn variant="primary" size="sm" @click="showModal">
             <v-icon name="user" /> Introduce yourself
           </b-btn>
+          <AboutMeModal ref="modal" />
         </span>
       </b-col>
     </b-row>
@@ -51,19 +52,21 @@
   </div>
 </template>
 <script>
+import AboutMeModal from './AboutMeModal'
 import NewsBase from '~/components/NewsBase'
 import NewsUserIntro from '~/components/NewsUserIntro'
 import NewsLoveComment from '~/components/NewsLoveComment'
 
 export default {
   components: {
+    AboutMeModal,
     NewsUserIntro,
     NewsLoveComment
   },
   extends: NewsBase,
   methods: {
-    introduce() {
-      // TODO
+    showModal() {
+      this.$refs.modal.show()
     }
   }
 }

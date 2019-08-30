@@ -38,7 +38,7 @@
                 <v-icon name="bell" scale="2" /><br>Notifications
               </template>
               <b-dropdown-item v-for="(notification, $index) in notifications" :key="'notification-' + $index" class="p-0 test">
-                <Notification :notification="notification" />
+                <Notification :notification="notification" @showModal="showAboutMe" />
               </b-dropdown-item>
               <infinite-loading @infinite="loadMore">
                 <span slot="no-results" />
@@ -166,6 +166,7 @@
           </b-col>
         </b-row>
       </b-modal>
+      <AboutMeModal ref="modal" />
     </client-only>
   </div>
 </template>
@@ -282,13 +283,15 @@ svg.fa-icon {
 
 <script>
 import Vue from 'vue'
+import AboutMeModal from '~/components/AboutMeModal'
 import ChatPopups from '~/components/ChatPopups'
 import Notification from '~/components/Notification'
 
 export default {
   components: {
     ChatPopups,
-    Notification
+    Notification,
+    AboutMeModal
   },
 
   data: function() {
@@ -349,6 +352,9 @@ export default {
       // We've closed the modal.  If we opened it because we'd clicked to do so, that no longer applies.
       console.log('Modal hide')
       this.pleaseLogin = false
+    },
+    showAboutMe() {
+      this.$refs.modal.show()
     },
     loginNative(e) {
       console.log('loginNative')

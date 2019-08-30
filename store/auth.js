@@ -66,11 +66,13 @@ export const actions = {
   async fetchUser({ commit, store }, params) {
     console.log('Fetch user', store)
 
+    params = params || {
+      components: ['me', 'groups']
+    }
+
     // We're so vain, we probably think this call is about us.
     const res = await this.$axios.get(process.env.API + '/session', {
-      params: {
-        components: ['me', 'groups']
-      }
+      params: params
     })
     console.log('Returned, stored', res)
     if (res.status === 200 && res.data.ret === 0) {
@@ -87,6 +89,27 @@ export const actions = {
       // Login failed.
       console.error('Fetch user failed')
       throw new Error('Fetch user failed')
+    }
+  },
+
+  async saveAboutMe({ commit, store }, value) {
+    const res = await this.$axios.post(
+      process.env.API + '/session',
+      {
+        aboutme: value
+      },
+      {
+        headers: {
+          'X-HTTP-Method-Override': 'PATCH'
+        }
+      }
+    )
+    console.log('Returned', res)
+
+    if (res.status === 200 && res.data.ret === 0) {
+    } else {
+      // TODO
+      console.error('saveAboutMe failed')
     }
   }
 }
