@@ -24,23 +24,32 @@
         on {{ newsfeed.volunteering.groups[0].namedisplay }}
       </b-col>
     </b-row>
-    <b-row v-if="newsfeed.volunteering && newsfeed.volunteering.photo">
-      <b-col>
+    <b-row>
+      <b-col cols="12" lg="8">
+        <span v-if="newsfeed.volunteering.description" class="text-truncate d-block">
+          <v-icon name="info-circle" class="fa-fw" /> {{ newsfeed.volunteering.description }}
+        </span>
+        <span v-if="newsfeed.volunteering.location">
+          <v-icon name="map-marker-alt" class="fa-fw" /> {{ newsfeed.volunteering.location }}
+        </span>
+        <br>
+        <b-btn variant="primary" class="mt-2" @click="details">
+          <v-icon name="info-circle" /> More info
+        </b-btn>
+      </b-col>
+      <b-col cols="12" lg="4">
         <b-img
+          v-if="newsfeed.volunteering.photo"
           thumbnail
           rounded
           lazy
           :src="newsfeed.volunteering.photo.paththumb"
-          class="clickme"
+          class="clickme d-inline-block float-right"
           @click="details"
         />
       </b-col>
     </b-row>
-    <b-row v-else>
-      <b-col class="eventDescription">
-        {{ newsfeed.volunteering.description }}
-      </b-col>
-    </b-row>
+    <hr>
     <b-row class="mt-2">
       <b-col>
         <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
@@ -48,21 +57,12 @@
           <b-btn variant="white" size="sm" @click="add">
             <v-icon name="plus" /> Add your opportunity
           </b-btn>
-          <b-btn variant="primary" size="sm" @click="details">
-            <v-icon name="info-circle" /> More info
-          </b-btn>
         </span>
       </b-col>
     </b-row>
   </div>
 </template>
 <style scoped>
-.eventDescription {
-  width: 100%;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow-x: hidden;
-}
 </style>
 <script>
 import NewsBase from '~/components/NewsBase'

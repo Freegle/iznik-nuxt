@@ -129,3 +129,13 @@ button {
 .white, .white > a {
   color: white !important;
 }
+
+.fa-icon {
+  /* These appear misaligned - fix */
+  margin-bottom: 3px;
+}
+
+.fa-fw {
+  width: 1rem;
+  height: 1rem;
+}

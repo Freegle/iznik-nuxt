@@ -24,23 +24,36 @@
         on {{ newsfeed.communityevent.groups[0].namedisplay }}
       </b-col>
     </b-row>
-    <b-row v-if="newsfeed.communityevent && newsfeed.communityevent.photo">
-      <b-col>
+    <b-row>
+      <b-col cols="12" lg="8">
+        <span v-if="newsfeed.communityevent.description" class="text-truncate d-block">
+          <v-icon name="info-circle" class="fa-fw" /> {{ newsfeed.communityevent.description }}
+        </span>
+        <span v-if="newsfeed.communityevent.location">
+          <v-icon name="map-marker-alt" class="fa-fw" /> {{ newsfeed.communityevent.location }}
+        </span>
+        <span v-if="date">
+          <br>
+          <v-icon name="calendar-alt" /> {{ date.start }} - {{ date.end }}
+        </span>
+        <br>
+        <b-btn variant="primary" class="mt-2" @click="details">
+          <v-icon name="info-circle" /> More info
+        </b-btn>
+      </b-col>
+      <b-col cols="12" lg="4">
         <b-img
+          v-if="newsfeed.communityevent.photo"
           thumbnail
           rounded
           lazy
           :src="newsfeed.communityevent.photo.paththumb"
-          class="clickme"
+          class="clickme d-inline-block float-right"
           @click="details"
         />
       </b-col>
     </b-row>
-    <b-row v-else>
-      <b-col class="eventDescription">
-        {{ newsfeed.communityevent.description }}
-      </b-col>
-    </b-row>
+    <hr>
     <b-row class="mt-2">
       <b-col>
         <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
@@ -48,21 +61,12 @@
           <b-btn variant="white" size="sm" @click="add">
             <v-icon name="plus" /> Add your event
           </b-btn>
-          <b-btn variant="primary" size="sm" @click="details">
-            <v-icon name="info-circle" /> More info
-          </b-btn>
         </span>
       </b-col>
     </b-row>
   </div>
 </template>
 <style scoped>
-.eventDescription {
-  width: 100%;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow-x: hidden;
-}
 </style>
 <script>
 import NewsBase from '~/components/NewsBase'
@@ -73,6 +77,40 @@ export default {
     NewsLoveComment
   },
   extends: NewsBase,
+  computed: {
+    date() {
+      let ret = null
+      const dates = this.newsfeed.communityevent.dates
+      let count = 0
+      const Moment = this.$moment
+
+      if (dates) {
+        for (let i = 0; i < dates.length; i++) {
+          const date = dates[i]
+          if (
+            new Moment().diff(date.end) < 0 ||
+            new Moment().isSame(date.end, 'day')
+          ) {
+            if (count === 0) {
+              const startm = new Moment(date.start)
+              let endm = new Moment(date.end)
+              endm = endm.isSame(startm, 'day')
+                ? endm.format('HH:mm')
+                : endm.format('ddd, Do MMM HH:mm')
+              ret = {
+                start: startm.format('ddd, Do MMM HH:mm'),
+                end: endm
+              }
+            }
+
+            count++
+          }
+        }
+      }
+
+      return ret
+    }
+  },
   methods: {
     add() {
       // TODO

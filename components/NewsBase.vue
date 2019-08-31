@@ -14,13 +14,6 @@
   padding-top: 4px;
   border: 1px solid green;
 }
-
-.volunteerDescription {
-  width: 100%;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow-x: hidden;
-}
 </style>
 <script>
 import twem from '~/assets/js/twem'
