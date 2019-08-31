@@ -102,6 +102,9 @@
 // TODO Highlight search matches
 // TODO Message paging isn't right, the dates are wrong and we get messages added earlier
 // TODO Add speech recognition
+// TODO DESIGN Maybe some kind of border round the search options.
+// TODO DESIGN When you focus on the search box, there's a drop shadow to highlight it, but that only goes round
+//      the input, and not also round the button, which it should.
 import Autocomplete from '~/components/Autocomplete'
 import Message from '~/components/Message.vue'
 import loginOptional from '@/mixins/loginOptional.js'

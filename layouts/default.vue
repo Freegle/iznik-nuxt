@@ -18,6 +18,10 @@
               <v-icon name="coffee" scale="2" /><br>
               ChitChat
             </b-nav-item>
+            <b-nav-item class="text-center p-0" to="/myposts">
+              <v-icon name="home" scale="2" /><br>
+              My&nbsp;Posts
+            </b-nav-item>
             <b-nav-item class="text-center p-0" to="/mygroups">
               <v-icon name="users" scale="2" /><br>
               My&nbsp;Groups
