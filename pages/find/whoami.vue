@@ -135,7 +135,7 @@ export default {
                 id: results[0].groupid
               })
               .then(() => {
-                this.$router.push('/give/whatnext')
+                this.$router.push('/find/whatnext')
               })
           } else {
             // TODO

@@ -48,7 +48,7 @@
       <b-col class="pl-0 pt-1 pr-0">
         <b-form-textarea
           v-model="description"
-          placeholder="Please give a few details if possible, e.g. colour, condition, size etc."
+          :placeholder="placeholder"
           rows="8"
         />
       </b-col>
@@ -123,6 +123,12 @@ export default {
     },
     attachments() {
       return this.$store.getters['compose/getAttachments'](this.id)
+    },
+    placeholder() {
+      const msg = this.$store.getters['compose/getMessage'](this.id)
+      return msg && msg.type === 'Offer'
+        ? 'Please give a few details if possible, e.g. colour, condition, size etc.'
+        : "Please give a few more details about what you're looking for, and why you'd like it."
     }
   },
   methods: {

@@ -12,7 +12,7 @@ export const state = () => ({
   messages: {},
   attachments: {},
   progress: 1,
-  max: 3
+  max: 4
 })
 
 export const mutations = {
@@ -40,11 +40,9 @@ export const mutations = {
   initProgress: (state, max) => {
     state.progress = 1
     state.max = max + 1
-    console.log('initProgress', max)
   },
   incProgress: state => {
     state.progress++
-    console.log('Inc progress', state.progress)
   },
   setItem(state, params) {
     Vue.set(
@@ -143,7 +141,7 @@ export const actions = {
     console.log('clear action', params)
     commit('clearMessage', params)
   },
-  async submit({ commit, state }) {
+  async submit({ commit, state, store }) {
     // This is the most important bit of code in the client :-).  We have our messages in the compose store.  The
     // server has a two stage process - create a draft and submit it, so that's what we do.
     //
@@ -151,10 +149,10 @@ export const actions = {
     // But we don't need to do that, because our store remembers the contents of the message.  Orphaned drafts will
     // be pruned by the server.
     const promises = []
-    const ids = []
+    const results = []
     const self = this
     const messages = Object.entries(state.messages)
-    commit('initProgress', messages.length * 2)
+    commit('initProgress', messages.length * 3)
 
     for (const [id, message] of messages) {
       if (message.submitted) {
@@ -181,6 +179,10 @@ export const actions = {
         groupid: state.group
       }
 
+      Vue.nextTick(() => {
+        commit('incProgress')
+      })
+
       const promise = new Promise(function(resolve, reject) {
         self.$axios
           .put(process.env.API + '/message', data)
@@ -197,16 +199,21 @@ export const actions = {
                 })
                 .then(function(ret2) {
                   commit('incProgress')
+                  console.log('Submitted', ret2)
                   if (ret2.status === 200 && ret2.data.ret === 0) {
                     // Success
-                    const id = ret2.data.id
+                    const groupid = ret2.data.groupid
                     commit('setMessage', {
                       id: message.id,
                       submitted: true
                     })
                     commit('setAttachments', [])
-                    ids.push(id)
-                    resolve()
+                    results.push({
+                      id: message.id,
+                      groupid: groupid
+                    })
+
+                    resolve(groupid)
                   }
                 })
                 .catch(function(e) {
@@ -230,7 +237,8 @@ export const actions = {
 
     await Promise.all(promises)
     commit('clear')
-    console.log('Returning ids', ids)
-    return ids
+
+    console.log('Submit returning', results)
+    return results
   }
 }

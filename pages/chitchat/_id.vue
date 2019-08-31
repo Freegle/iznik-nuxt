@@ -80,7 +80,7 @@
                 </b-tab>
               </b-tabs>
               <hr class="mt-1 mb-1">
-              <b-row v-if="uploading" class="bg-white">
+              <b-row v-if="uploading" class="bg-white m-0">
                 <b-col class="p-0">
                   <file-pond
                     ref="pond"

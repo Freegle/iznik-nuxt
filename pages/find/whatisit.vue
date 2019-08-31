@@ -43,13 +43,13 @@
         </b-row>
 
         <h1 class="text-center">
-          Ok, now tell us about your item
+          So, what are you looking for?
         </h1>
         <ul v-for="(id, index) in ids" :key="'post-' + id" class="p-0 pt-1 list-unstyled">
           <li class="p-0">
             <b-card no-body>
               <b-card-body class="pt-0 pb-1">
-                <PostMessage :id="id" type="Offer" />
+                <PostMessage :id="id" type="Wanted" />
               </b-card-body>
               <b-card-footer v-if="index === ids.length - 1">
                 <b-btn v-if="ids.length > 1" variant="white" class="mt-2 float-left" @click="deleteItem">
@@ -84,7 +84,6 @@
 </template>
 <script>
 // TODO Add speech recognition
-// TODO Image recognition
 // TODO Suppose we end up here, without a postcode in the store?
 
 import PostMessage from '~/components/PostMessage'
@@ -165,7 +164,7 @@ export default {
     },
 
     next() {
-      this.$router.push('/give/whoami')
+      this.$router.push('/find/whoami')
     }
   }
 }
