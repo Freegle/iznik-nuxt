@@ -19,12 +19,12 @@
     <b-row>
       <b-col cols="0" md="3" />
       <b-col cols="12" md="6" class="mt-2">
-        <nuxt-link to="/find/search" class="float-left">
+        <nuxt-link to="/give" class="float-left">
           <b-btn size="lg" variant="info">
             <v-icon name="gift" />&nbsp;Give something else
           </b-btn>
         </nuxt-link>
-        <nuxt-link to="/find" class="float-right">
+        <nuxt-link to="/find/search" class="float-right">
           <b-btn size="lg" variant="primary">
             <v-icon name="search" />&nbsp;Find something
           </b-btn>

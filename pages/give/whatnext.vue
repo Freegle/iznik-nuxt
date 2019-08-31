@@ -28,7 +28,7 @@
             <v-icon name="gift" />&nbsp;Give something else
           </b-btn>
         </nuxt-link>
-        <nuxt-link to="/find" class="float-right">
+        <nuxt-link to="/find/search" class="float-right">
           <b-btn size="lg" variant="primary">
             <v-icon name="search" />&nbsp;Find something
           </b-btn>
