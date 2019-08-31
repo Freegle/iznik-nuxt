@@ -99,7 +99,7 @@
                 </b-col>
               </b-row>
               <b-row>
-                <b-col cols="3" class="pl-4 text-muted">
+                <b-col cols="3" class="pl-4 text-muted pt-2">
                   <div v-if="me.settings.mylocation && me.settings.mylocation.area.name">
                     <v-icon name="map-marker-alt" />&nbsp;{{ me.settings.mylocation.area.name }}
                   </div>

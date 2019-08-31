@@ -7,6 +7,9 @@
           <b-dropdown-item :href="'/chitchat/' + newsfeed.id" target="_blank">
             Open in new window
           </b-dropdown-item>
+          <b-dropdown-item :b-v-modal="'newsEdit' + newsfeed.id" @click="show">
+            Edit your post
+          </b-dropdown-item>
         </b-dropdown>
         <news-message v-if="newsfeed.type === 'Message'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
         <news-about-me v-else-if="newsfeed.type === 'AboutMe'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
@@ -74,6 +77,32 @@
         </b-alert>
       </div>
     </b-card>
+    <b-modal
+      :id="'newsEdit-' + newsfeed.id"
+      ref="editModal"
+      title="Edit your post"
+      size="lg"
+      no-stacking
+    >
+      <template slot="default">
+        <b-textarea
+          ref="editText"
+          v-model="newsfeed.message"
+          rows="8"
+          maxlength="2048"
+          spellcheck="true"
+          placeholder="Edit your post..."
+        />
+      </template>
+      <template slot="modal-footer" slot-scope="{ ok, cancel }">
+        <b-button variant="white" @click="cancel">
+          Cancel
+        </b-button>
+        <b-button variant="success" @click="save">
+          Save
+        </b-button>
+      </template>
+    </b-modal>
   </div>
 </template>
 <style scoped>
@@ -85,11 +114,8 @@
 <script>
 // TODO Show earlier for replies; currently limited to 10
 // TODO Click to show profile
-// TODO Love this function
-// TODO Post photos
 // TODO Report etc menu dropdown
 // TODO Delete
-// TODO Edit
 // TODO DESIGN Some indication of newly added entries
 // TODO Click on loves to show who loves them
 import twem from '~/assets/js/twem'
@@ -185,6 +211,17 @@ export default {
     },
     newlineComment() {
       this.threadcomment += '\n'
+    },
+    show() {
+      this.$refs.editModal.show()
+    },
+    save() {
+      this.$store.dispatch('newsfeed/edit', {
+        id: this.newsfeed.id,
+        message: this.newsfeed.message
+      })
+
+      this.$refs.editModal.hide()
     }
   }
 }

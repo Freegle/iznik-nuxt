@@ -38,6 +38,9 @@
                     <span v-if="reply.loves">
                       <v-icon name="heart" class="text-danger" />&nbsp;{{ reply.loves }}
                     </span>
+                    <span v-if="me.id === reply.userid" v-b-modal="'newsEdit-' + reply.id">
+                      &bull;&nbsp;Edit
+                    </span>
                   </span>
                 </span>
               </td>
@@ -94,6 +97,32 @@
         </b-btn>
       </b-col>
     </b-row>
+    <b-modal
+      :id="'newsEdit-' + reply.id"
+      ref="editModal"
+      title="Edit your post"
+      size="lg"
+      no-stacking
+    >
+      <template slot="default">
+        <b-textarea
+          ref="editText"
+          v-model="reply.message"
+          rows="8"
+          maxlength="2048"
+          spellcheck="true"
+          placeholder="Edit your post..."
+        />
+      </template>
+      <template slot="modal-footer" slot-scope="{ ok, cancel }">
+        <b-button variant="white" @click="cancel">
+          Cancel
+        </b-button>
+        <b-button variant="success" @click="save">
+          Save
+        </b-button>
+      </template>
+    </b-modal>
   </div>
 </template>
 <style scoped>
@@ -117,7 +146,6 @@
 // TODO Click to show profile
 // TODO User tagging
 // TODO Delete
-// TODO Edit
 import twem from '~/assets/js/twem'
 import NewsUserInfo from '~/components/NewsUserInfo'
 import NewsBase from '~/components/NewsBase'
@@ -222,6 +250,14 @@ export default {
         replyto: this.reply.replyto,
         threadhead: this.reply.threadhead
       })
+    },
+    save() {
+      this.$store.dispatch('newsfeed/edit', {
+        id: this.reply.id,
+        message: this.reply.message
+      })
+
+      this.$refs.editModal.hide()
     }
   }
 }

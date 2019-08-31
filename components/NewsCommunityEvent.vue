@@ -29,16 +29,15 @@
         <span v-if="newsfeed.communityevent.description" class="text-truncate d-block">
           <v-icon name="info-circle" class="fa-fw" /> {{ newsfeed.communityevent.description }}
         </span>
-        <span v-if="newsfeed.communityevent.location">
+        <span v-if="newsfeed.communityevent.location" class="text-truncate d-block">
           <v-icon name="map-marker-alt" class="fa-fw" /> {{ newsfeed.communityevent.location }}
         </span>
         <span v-if="date">
-          <br>
           <v-icon name="calendar-alt" /> {{ date.start }} - {{ date.end }}
         </span>
         <br>
         <b-btn variant="primary" class="mt-2" @click="details">
-          <v-icon name="info-circle" /> More info
+          <v-icon name="info-circle" class="fa-fw" /> More info
         </b-btn>
       </b-col>
       <b-col cols="12" lg="4">

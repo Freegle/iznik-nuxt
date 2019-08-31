@@ -212,5 +212,26 @@ export const actions = {
     await dispatch('fetch', {
       id: params.threadhead
     })
+  },
+
+  async edit({ commit, dispatch }, params) {
+    await this.$axios.post(
+      process.env.API + '/newsfeed',
+      {
+        id: params.id,
+        message: params.message,
+        action: 'Edit'
+      },
+      {
+        headers: {
+          'X-HTTP-Method-Override': 'PATCH'
+        }
+      }
+    )
+
+    // We fetch the thread head to force a rerender
+    await dispatch('fetch', {
+      id: params.threadhead
+    })
   }
 }

@@ -46,6 +46,13 @@ export default ({ store }) => {
           newstate.compose.postcode.groupsnear = near
         }
 
+        if (state.newsfeed) {
+          // We don't want to save most newsfeed info, but this controls where we show.
+          newstate.newsfeed = {
+            area: state.newsfeed.area
+          }
+        }
+
         // for (const field of Object.keys(newstate)) {
         //   console.log(
         //     'Field',

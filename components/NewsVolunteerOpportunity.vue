@@ -29,7 +29,7 @@
         <span v-if="newsfeed.volunteering.description" class="text-truncate d-block">
           <v-icon name="info-circle" class="fa-fw" /> {{ newsfeed.volunteering.description }}
         </span>
-        <span v-if="newsfeed.volunteering.location">
+        <span v-if="newsfeed.volunteering.location" class="text-truncate d-block">
           <v-icon name="map-marker-alt" class="fa-fw" /> {{ newsfeed.volunteering.location }}
         </span>
         <br>
