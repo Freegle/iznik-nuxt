@@ -99,6 +99,7 @@ select {
 }
 </style>
 <script>
+// TODO Group selection dropdown
 // TODO Norfolk and redirection to another site?
 import Postcode from '~/components/Postcode'
 import loginOptional from '@/mixins/loginOptional.js'

@@ -18,9 +18,10 @@
             </span>
           </template>
           <b-card-text class="text-center">
-            <span class="text-muted">
+            <p class="text-muted">
               Stuff you're giving away.
-            </span>
+            </p>
+            <b-img-lazy v-if="busy" src="~/static/loader.gif" />
             <div v-for="(message, $index) in messages" :key="$index" class="p-0 text-left mt-1">
               <MyMessage v-if="message.type === 'Offer'" :message="message" :messages="messages" />
             </div>
@@ -49,15 +50,18 @@ export default {
     return {
       id: null,
       messages: [],
-      busy: false,
+      busy: true,
       context: null
     }
   },
   computed: {},
-  mounted() {
+  async mounted() {
     // Ensure we have no cached messages for other searches/groups
     this.$store.dispatch('messages/clear')
     this.loadMore()
+
+    // Fetch the chats.  We need this so that we can find chats with unread messages which relate to our own posts
+    await this.$store.dispatch('chats/listChats')
   },
   methods: {
     async loadMore() {

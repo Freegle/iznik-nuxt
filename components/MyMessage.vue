@@ -7,7 +7,7 @@
           block
           href="#"
           variant="white"
-          class="text-left text-truncate"
+          class="text-left text-truncate noborder"
           @click="toggle"
         >
           <b-btn class="float-right ml-1" variant="white">
@@ -15,14 +15,19 @@
             <v-icon v-else name="caret-up" />
             <template slot="button-content" />
           </b-btn>
+          <span v-if="unseen > 0" class="float-right ml-1">
+            <b-badge variant="danger">
+              <v-icon name="comments" class="fa-fw" /> {{ unseen }} unread
+            </b-badge>
+          </span>
           <span v-if="message.promisecount > 0" class="float-right ml-1">
             <b-badge variant="success">
               <v-icon name="handshake" class="fa-fw" /> Promised
             </b-badge>
           </span>
-          <span v-if="message.replies.length > 0" class="float-right ml-1">
+          <span v-if="message.replycount > 0" class="float-right ml-1">
             <b-badge variant="info">
-              <v-icon name="user" class="fa-fw" /> {{ message.replies.length | pluralize(['reply', 'replies'], { includeNumber: true }) }}
+              <v-icon name="user" class="fa-fw" /> {{ message.replycount | pluralize(['reply', 'replies'], { includeNumber: true }) }}
             </b-badge>
           </span>
           <h3>{{ message.subject }}</h3>
@@ -44,10 +49,13 @@
             </span>
             <p :v-if="expanded">
               <span v-for="group in message.groups" :key="'message-' + message.id + '-' + group.id" class="small muted">
-                {{ group.arrival | timeago }} on {{ group.namedisplay }}
+                {{ group.arrival | timeago }} on {{ group.namedisplay }} <span class="text-faded small"><br>#{{ message.id }}</span>
               </span>
             </p>
             <span class="prewrap">{{ message.textbody }}</span>
+            <span v-for="chat in chats" :key="'chat-' + chat.id">
+              {{ chat.id }}
+            </span>
           </b-card-text>
         </b-card-body>
       </b-collapse>
@@ -104,6 +112,11 @@ img.attachment {
   top: -54px;
   position: relative;
 }
+
+.noborder {
+  border: initial;
+  border-color: initial;
+}
 </style>
 <script>
 // TODO DESIGN How do we use text-truncate with ellipsis to make long subjects look nicer?
@@ -135,6 +148,24 @@ export default {
       }
 
       return count <= this.expandCount
+    },
+    unseen() {
+      // We want all the chats which reference this message.  We fetch them in myposts, here we only need to
+      // get them from the store
+      const chats = Object.values(this.$store.getters['chats/list']())
+      let unseen = 0
+
+      for (const chat of chats) {
+        if (chat.refmsgids) {
+          if (chat.refmsgids.indexOf(this.message.id) !== -1) {
+            // This chat references this message
+            unseen += chat.unseen
+          }
+        }
+      }
+
+      console.log('Returning', unseen)
+      return unseen
     }
   },
   methods: {

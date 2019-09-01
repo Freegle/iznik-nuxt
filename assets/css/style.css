@@ -139,3 +139,7 @@ button {
   width: 1rem;
   height: 1rem;
 }
+
+.text-faded {
+  color: #6c757d70;
+}
