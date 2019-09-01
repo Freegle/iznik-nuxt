@@ -17,7 +17,7 @@
         </span>
         <br>
         <span class="text-muted small pl-2">
-          {{ $moment(newsfeed.timestamp).fromNow() }}
+          {{ $dayjs(newsfeed.timestamp).fromNow() }}
         </span>
       </b-col>
     </b-row>

@@ -22,7 +22,7 @@
                 <span v-if="reply.message && reply.userid && users[reply.userid]">
                   <br>
                   <span class="text-muted small">
-                    {{ $moment(reply.timestamp).fromNow() }}
+                    {{ $dayjs(reply.timestamp).fromNow() }}
                   </span>
                   <NewsUserInfo :user="users[reply.userid]" />
                   <span>

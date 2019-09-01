@@ -1,6 +1,6 @@
 import Vue from 'vue'
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 // These are various formatting utilities which we use in templates.
-Vue.filter('dateonly', val => moment(val).format('Do MMMM, YYYY'))
-Vue.filter('timeago', val => moment(val).fromNow())
+Vue.filter('dateonly', val => dayjs(val).format('Do MMMM, YYYY'))
+Vue.filter('timeago', val => dayjs(val).fromNow())

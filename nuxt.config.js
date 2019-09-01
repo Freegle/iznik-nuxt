@@ -51,7 +51,8 @@ module.exports = {
     { src: '~/plugins/qs' },
     { src: '~/plugins/twemoji' },
     { src: '~/plugins/vue2-filters' },
-    { src: '~plugins/axios-token' },
+    { src: '~/plugins/axios-token' },
+    { src: '~/plugins/dayjs'},
 
     // Some plugins are client-side features
     { src: '~plugins/vuex-persistedstate', ssr: false },
@@ -72,10 +73,10 @@ module.exports = {
   */
   modules: [
     'bootstrap-vue/nuxt',
-    '@nuxtjs/moment',
     'nuxt-rfg-icon',
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
+    'nuxt-dayjs-module'
     // Removing this as it causes a scalability issue with vue-meta - see https://github.com/nuxt/vue-meta/issues/443
     // 'cookie-universal-nuxt',
     // [
@@ -163,22 +164,22 @@ module.exports = {
         })
       }
 
-      // Reduce bootstrap vue size by forcing a transpile.  This shaves a little off the bundle size.
-      config.resolve.alias['bootstrap-vue$'] = 'bootstrap-vue/src/index.js'
-
-      config.module.rules.push(
-        {
-          test: /\.js$/,
-          // Exclude transpiling `node_modules`, except `bootstrap-vue/src`
-          exclude: /node_modules\/(?!bootstrap-vue\/src\/)/,
-          use: {
-            loader: 'babel-loader',
-            options: {
-              presets: ['@babel/preset-env']
-            }
-          }
-        }
-      )
+    //   // Reduce bootstrap vue size by forcing a transpile.  This shaves a little off the bundle size.
+    //   config.resolve.alias['bootstrap-vue$'] = 'bootstrap-vue/src/index.js'
+    //
+    //   config.module.rules.push(
+    //     {
+    //       test: /\.js$/,
+    //       // Exclude transpiling `node_modules`, except `bootstrap-vue/src`
+    //       exclude: /node_modules\/(?!bootstrap-vue\/src\/)/,
+    //       use: {
+    //         loader: 'babel-loader',
+    //         options: {
+    //           presets: ['@babel/preset-env']
+    //         }
+    //       }
+    //     }
+    //   )
     },
 
     // optimization: {

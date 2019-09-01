@@ -61,12 +61,12 @@
     <b-row v-if="!chatmessage.sameaslast" class="text-muted small">
       <b-col v-if="chatmessage.userid != $store.state.auth.user.id">
         <span style="padding-left: 30px">
-          {{ $moment(chatmessage.date).fromNow() }}
+          {{ $dayjs(chatmessage.date).fromNow() }}
         </span>
       </b-col>
       <b-col v-else>
         <span class="float-right" style="padding-right: 30px">
-          {{ $moment(chatmessage.date).fromNow() }}
+          {{ $dayjs(chatmessage.date).fromNow() }}
         </span>
       </b-col>
     </b-row>

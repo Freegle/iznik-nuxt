@@ -19,7 +19,7 @@
         posted a volunteering opportunity: <b>{{ newsfeed.volunteering.title }}</b>
         <br>
         <span class="text-muted small pl-2">
-          {{ $moment(newsfeed.timestamp).fromNow() }}
+          {{ $dayjs(newsfeed.timestamp).fromNow() }}
         </span>
         on {{ newsfeed.volunteering.groups[0].namedisplay }}
       </b-col>

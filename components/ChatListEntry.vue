@@ -27,7 +27,7 @@
           <b-badge variant="danger">{{ unseen }}</b-badge>
         </span>
         <span class="float-right small text-muted">
-          {{ $moment(lastdate).fromNow() }}
+          {{ $dayjs(lastdate).fromNow() }}
         </span>
       </b-col>
     </b-row>

@@ -19,7 +19,7 @@
         created an event: <b>{{ newsfeed.communityevent.title }}</b>
         <br>
         <span class="text-muted small pl-2">
-          {{ $moment(newsfeed.timestamp).fromNow() }}
+          {{ $dayjs(newsfeed.timestamp).fromNow() }}
         </span>
         on {{ newsfeed.communityevent.groups[0].namedisplay }}
       </b-col>
@@ -81,7 +81,7 @@ export default {
       let ret = null
       const dates = this.newsfeed.communityevent.dates
       let count = 0
-      const Moment = this.$moment
+      const Moment = this.$dayjs
 
       if (dates) {
         for (let i = 0; i < dates.length; i++) {
