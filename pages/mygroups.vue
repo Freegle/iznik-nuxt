@@ -22,7 +22,7 @@
             <message v-if="selectedType === 'All' || message.type == selectedType" v-bind="message" />
           </div>
 
-          <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" force-use-infinite-wrapper="body" distance="1000" @infinite="loadMore">
+          <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
             <span slot="no-results" />
             <span slot="no-more" />
             <span slot="spinner">
@@ -52,7 +52,7 @@ export default {
     Message
   },
   mixins: [loginRequired],
-  data() {
+  data: function() {
     return {
       id: null,
       messages: [],
@@ -74,7 +74,8 @@ export default {
         }
       ],
       selectedType: 'All',
-      infiniteId: +new Date()
+      infiniteId: +new Date(),
+      distance: 1000
     }
   },
   computed: {

@@ -131,7 +131,7 @@
               <NewsThread :id="entry.id" :key="'newsfeed-' + entry.id" :users="users" :scroll-to="scrollTo" />
             </li>
           </ul>
-          <infinite-loading :identifier="infiniteId" force-use-infinite-wrapper="body" distance="1000" @infinite="loadMore">
+          <infinite-loading :identifier="infiniteId" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
             <span slot="no-results" />
             <span slot="no-more" />
             <span slot="spinner">
@@ -185,7 +185,7 @@ export default {
     return !params.id || /^\d+$/.test(params.id)
   },
 
-  data() {
+  data: function() {
     return {
       newsfeed: null,
       busy: false,
@@ -229,7 +229,8 @@ export default {
       uploading: false,
       myFiles: [],
       imageid: null,
-      imagethumb: null
+      imagethumb: null,
+      distance: 1000
     }
   },
 

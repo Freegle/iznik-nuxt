@@ -77,7 +77,7 @@
               <message v-if="message.type == searchtype" v-bind="message" />
             </div>
 
-            <infinite-loading :key="searchtype" distance="1000" @infinite="loadMore">
+            <infinite-loading :key="searchtype" :distance="distance" @infinite="loadMore">
               <span slot="no-results" />
               <span slot="no-more" />
               <span slot="spinner">
@@ -126,7 +126,8 @@ export default {
       context: null,
       messages: null,
       term: null,
-      complete: false
+      complete: false,
+      distance: 1000
     }
   },
   computed: {},

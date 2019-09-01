@@ -148,14 +148,13 @@
 // TODO Delete
 import twem from '~/assets/js/twem'
 import NewsUserInfo from '~/components/NewsUserInfo'
-import NewsBase from '~/components/NewsBase'
+// import NewsBase from '~/components/NewsBase'
 
 export default {
   name: 'NewsReply',
   components: {
     NewsUserInfo
   },
-  extends: NewsBase,
   props: {
     threadhead: {
       type: Object,

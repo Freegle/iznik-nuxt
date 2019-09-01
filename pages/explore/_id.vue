@@ -26,7 +26,7 @@
       <message v-bind="message" />
     </div>
 
-    <infinite-loading distance="1000" @infinite="loadMore">
+    <infinite-loading :distance="distance" @infinite="loadMore">
       <span slot="spinner">
         <span slot="no-results" />
         <span slot="no-more" />
@@ -46,13 +46,14 @@ export default {
     message
   },
   mixins: [loginOptional],
-  data() {
+  data: function() {
     return {
       id: null,
       group: null,
       messages: null,
       busy: false,
-      context: null
+      context: null,
+      distance: 1000
     }
   },
   computed: {},
