@@ -143,7 +143,7 @@ module.exports = {
   ** Build configuration
   */
   build: {
-    // analyze: true,
+    analyze: true,
 
     transpile: [/^vue2-google-maps($|\/)/],
 
@@ -162,6 +162,23 @@ module.exports = {
           }
         })
       }
+
+      // Reduce bootstrap vue size by forcing a transpile.  This shaves a little off the bundle size.
+      config.resolve.alias['bootstrap-vue$'] = 'bootstrap-vue/src/index.js'
+
+      config.module.rules.push(
+        {
+          test: /\.js$/,
+          // Exclude transpiling `node_modules`, except `bootstrap-vue/src`
+          exclude: /node_modules\/(?!bootstrap-vue\/src\/)/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env']
+            }
+          }
+        }
+      )
     },
 
     // optimization: {
