@@ -43,7 +43,7 @@
               />
             </span>
             <p :v-if="expanded">
-              <span v-for="group in message.groups" :key="'message-' + id + '-' + group.id" class="small muted">
+              <span v-for="group in message.groups" :key="'message-' + message.id + '-' + group.id" class="small muted">
                 {{ group.arrival | timeago }} on {{ group.namedisplay }}
               </span>
             </p>
