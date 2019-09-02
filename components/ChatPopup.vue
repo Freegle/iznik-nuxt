@@ -16,9 +16,9 @@
       >
         <div class="shadow chatHolder">
           <b-row class="chatTitle m-0">
-            <b-col v-if="chat">
+            <b-col v-if="chat" class="pr-3">
               <b-row>
-                <b-col>
+                <b-col class="p-0 pl-1">
                   <span class="chatname">
                     <span v-if="(chat.chattype == 'User2User' || chat.chattype == 'User2Mod')" class="d-inline">
                       <span @click="showInfo">
@@ -32,12 +32,12 @@
                   <span v-if="chat.unseen">
                     <b-badge variant="danger">{{ chat.unseen }}</b-badge>
                   </span>
-                  <ratings v-if="otheruser" :key="'otheruser-' + (otheruser ? otheruser.id : null)" size="sm" v-bind="otheruser" class="pl-2" />
-                  <span class="pl-3 float-right" @click="hide">
-                    <v-icon name="times" scale="2" class="clickme mt-1" title="Hide chat window" />
+                  <ratings v-if="otheruser" :key="'otheruser-' + (otheruser ? otheruser.id : null)" size="sm" v-bind="otheruser" class="pl-1 pt-1" />
+                  <span class="pl-2 pr-1 float-right" @click="hide">
+                    <v-icon name="times" scale="1.5" class="clickme mt-1" title="Hide chat window" />
                   </span>
-                  <span class="pl-3 float-right" @click="maximise">
-                    <v-icon name="window-maximize" scale="2" class="clickme mt-1" title="Maximise chat window" />
+                  <span class="pl-1 float-right" @click="maximise">
+                    <v-icon name="window-maximize" scale="1.5" class="clickme mt-1" title="Maximise chat window" />
                   </span>
                 </b-col>
               </b-row>
@@ -180,7 +180,6 @@ const Ratings = () => import('~/components/Ratings')
 const ChatMessage = () => import('~/components/ChatMessage.vue')
 
 // TODO DESIGN The maximise icon from font awesome is not obvious.
-// TODO DESIGN The icons don't all fit, so they overflow the title bar.
 
 export default {
   components: {
