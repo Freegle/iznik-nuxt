@@ -3,3 +3,4 @@
 /.nuxt
 /dist
 /node_modules/
+/debug.log
