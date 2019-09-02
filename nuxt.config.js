@@ -144,7 +144,7 @@ module.exports = {
   ** Build configuration
   */
   build: {
-    // analyze: true,
+    analyze: true,
 
     transpile: [/^vue2-google-maps($|\/)/],
 
@@ -165,16 +165,16 @@ module.exports = {
       }
     },
 
-    // optimization: {
-    //   splitChunks: {
-    //     chunks: 'all',
-    //     automaticNameDelimiter: '.',
-    //     name: true,
-    //     cacheGroups: {},
-    //     minSize: 100000,
-    //     maxSize: 100000
-    //   }
-    // },
+    optimization: {
+      splitChunks: {
+        chunks: 'all',
+        automaticNameDelimiter: '.',
+        name: true,
+        cacheGroups: {},
+        minSize: 100000,
+        maxSize: 100000
+      }
+    },
 
     optimization: {
       runtimeChunk: 'single',
