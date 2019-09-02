@@ -48,8 +48,8 @@
               />
             </span>
             <p :v-if="expanded">
-              <span v-for="group in message.groups" :key="'message-' + message.id + '-' + group.id" class="small muted">
-                {{ group.arrival | timeago }} on {{ group.namedisplay }} <span class="text-faded small"><br>#{{ message.id }}</span>
+              <span v-for="group in message.groups" :key="'message-' + message.id + '-' + group.id" class="small text-muted">
+                {{ group.arrival | timeago }} on {{ group.namedisplay }} <span class="text-faded small">#{{ message.id }}</span>
               </span>
             </p>
             <span class="prewrap">{{ message.textbody }}</span>
@@ -114,8 +114,8 @@ img.attachment {
 }
 
 .noborder {
-  border: initial;
-  border-color: initial;
+  border: none !important;
+  border-color: white !important;
 }
 </style>
 <script>

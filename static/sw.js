@@ -3,7 +3,7 @@ importScripts('/_nuxt/workbox.4c4f5ca6.js')
 workbox.precaching.precacheAndRoute([
   {
     "url": "/_nuxt/app.js",
-    "revision": "7be17e5057002d3f3db9b85329b0bb00"
+    "revision": "8233ab45fdc75308ed04cb543f5a1bd2"
   },
   {
     "url": "/_nuxt/commons.app.js",
@@ -143,11 +143,11 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "/_nuxt/pages_chats__id.js",
-    "revision": "c94cae88617186dc78f09a09f6d8e9bf"
+    "revision": "6bc9f5f3150f900b45ccb92e3651a648"
   },
   {
     "url": "/_nuxt/pages_chitchat__id.js",
-    "revision": "b4085c04054b11ac1da362bb8bc06fef"
+    "revision": "a128c72036395e97c427d372f7ad3fae"
   },
   {
     "url": "/_nuxt/pages_explore__id.js",
@@ -195,7 +195,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "/_nuxt/pages_give_index.js",
-    "revision": "2cd2ff943bb0a1976a50828224acd5f7"
+    "revision": "4faafe4d0feea92e3999aba36a4fde9b"
   },
   {
     "url": "/_nuxt/pages_give_whatisit.js",
@@ -219,11 +219,11 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "/_nuxt/pages_mygroups.pages_myposts.js",
-    "revision": "2cbf2e0d77f969164d93f8e55c4e5346"
+    "revision": "1313466524fa147cc77ddde511e9c219"
   },
   {
     "url": "/_nuxt/pages_myposts.js",
-    "revision": "afcda4d8ad254711c2345be7fa952e7c"
+    "revision": "29a4bf2bab452d5f2e876bbf4bdc765a"
   },
   {
     "url": "/_nuxt/pages_yahoologin.js",
