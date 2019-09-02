@@ -132,8 +132,8 @@
   </div>
 </template>
 <script>
+import twem from '~/assets/js/twem'
 const Highlighter = () => import('vue-highlight-words')
-const twem = () => import('~/assets/js/twem')
 const MessageUserInfo = () => import('~/components/MessageUserInfo')
 
 export default {

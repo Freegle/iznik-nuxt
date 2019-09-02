@@ -80,7 +80,7 @@
                 </b-tab>
               </b-tabs>
               <hr class="mt-1 mb-1">
-              <b-row v-if="uploading" class="bg-white m-0">
+              <b-row v-if="uploading" class="bg-white m-0 pondrow">
                 <b-col class="p-0">
                   <file-pond
                     ref="pond"
@@ -160,20 +160,21 @@
 import 'filepond/dist/filepond.min.css'
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
 import loginRequired from '@/mixins/loginRequired.js'
+import twem from '~/assets/js/twem'
+import NewsThread from '~/components/NewsThread.vue'
 const vueFilePond = () => import('vue-filepond')
 const FilePondPluginFileValidateType = () =>
   import('filepond-plugin-file-validate-type')
 const FilePondPluginImagePreview = () => import('filepond-plugin-image-preview')
 const FilePondPluginImageTransform = () =>
   import('filepond-plugin-image-transform')
-const NewsThread = () => import('~/components/NewsThread.vue')
-const twem = () => import('~/assets/js/twem')
 
-const FilePond = vueFilePond(
-  FilePondPluginFileValidateType,
-  FilePondPluginImagePreview,
-  FilePondPluginImageTransform
-)
+const FilePond = () =>
+  vueFilePond(
+    FilePondPluginFileValidateType,
+    FilePondPluginImagePreview,
+    FilePondPluginImageTransform
+  )
 
 export default {
   components: {

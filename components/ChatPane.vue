@@ -159,6 +159,7 @@
 
 import 'filepond/dist/filepond.min.css'
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
+import twem from '~/assets/js/twem'
 const vueFilePond = () => import('vue-filepond')
 const FilePondPluginFileValidateType = () =>
   import('filepond-plugin-file-validate-type')
@@ -168,7 +169,6 @@ const FilePondPluginImageTransform = () =>
 const requestIdleCallback = () => import('~/assets/js/requestIdleCallback')
 const Ratings = () => import('~/components/Ratings')
 const ChatMessage = () => import('~/components/ChatMessage.vue')
-const twem = () => import('~/assets/js/twem')
 
 const FilePond = vueFilePond(
   FilePondPluginFileValidateType,

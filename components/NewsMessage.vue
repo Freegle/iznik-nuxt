@@ -49,7 +49,7 @@
   </div>
 </template>
 <script>
-const NewsBase = () => import('~/components/NewsBase')
+import NewsBase from '~/components/NewsBase'
 const NewsUserIntro = () => import('~/components/NewsUserIntro')
 const NewsLoveComment = () => import('~/components/NewsLoveComment')
 

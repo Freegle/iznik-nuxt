@@ -52,8 +52,8 @@
   </div>
 </template>
 <script>
+import NewsBase from '~/components/NewsBase'
 const AboutMeModal = () => import('./AboutMeModal')
-const NewsBase = () => import('~/components/NewsBase')
 const NewsUserIntro = () => import('~/components/NewsUserIntro')
 const NewsLoveComment = () => import('~/components/NewsLoveComment')
 

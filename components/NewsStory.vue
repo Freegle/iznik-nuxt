@@ -52,8 +52,8 @@
   </div>
 </template>
 <script>
-const twem = () => import('~/assets/js/twem')
-const NewsBase = () => import('~/components/NewsBase')
+import twem from '~/assets/js/twem'
+import NewsBase from '~/components/NewsBase'
 const NewsUserIntro = () => import('~/components/NewsUserIntro')
 const NewsLoveComment = () => import('~/components/NewsLoveComment')
 

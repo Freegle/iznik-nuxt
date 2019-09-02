@@ -48,7 +48,7 @@ img.profile {
 }
 </style>
 <script>
-const twem = () => import('~/assets/js/twem')
+import twem from '~/assets/js/twem'
 
 export default {
   props: {

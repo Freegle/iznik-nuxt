@@ -118,7 +118,7 @@
 // TODO Delete
 // TODO DESIGN Some indication of newly added entries
 // TODO Click on loves to show who loves them
-const twem = () => import('~/assets/js/twem')
+import twem from '~/assets/js/twem'
 const NewsReply = () => import('~/components/NewsReply')
 const NewsMessage = () => import('~/components/NewsMessage')
 const NewsAboutMe = () => import('~/components/NewsAboutMe')
