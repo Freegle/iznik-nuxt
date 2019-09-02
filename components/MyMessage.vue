@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="showOld || !message.outcomes || !message.outcomes.length">
     <b-card no-body class="mb-1 border border-success">
       <b-card-header header-tag="header" class="p-1" role="tab">
         <b-button
@@ -129,6 +129,10 @@ export default {
     },
     messages: {
       type: Array,
+      required: true
+    },
+    showOld: {
+      type: Boolean,
       required: true
     }
   },

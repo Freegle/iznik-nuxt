@@ -16,6 +16,18 @@
             <span>
               <v-icon name="gift" /> Your OFFERs
             </span>
+            <span v-if="oldOfferCount > 0">
+              <span v-if="showOldOffers" class="float-right">
+                <b-btn variant="white" title="Show old OFFERs" @click="toggleOldOffer">
+                  Hide {{ oldOfferCount | pluralize([ 'old OFFER', 'old OFFERs' ], { includeNumber: true }) }}
+                </b-btn>
+              </span>
+              <span v-else class="float-right">
+                <b-btn variant="white" @click="toggleOldOffer">
+                  +{{ oldOfferCount | pluralize([ 'old OFFER', 'old OFFERs' ], { includeNumber: true }) }}
+                </b-btn>
+              </span>
+            </span>
           </template>
           <b-card-text class="text-center">
             <p class="text-muted">
@@ -23,7 +35,7 @@
             </p>
             <b-img-lazy v-if="busy" src="~/static/loader.gif" />
             <div v-for="(message, $index) in messages" :key="$index" class="p-0 text-left mt-1">
-              <MyMessage v-if="message.type === 'Offer'" :message="message" :messages="messages" />
+              <MyMessage v-if="message.type === 'Offer'" :message="message" :messages="messages" :show-old="showOldOffers" />
             </div>
           </b-card-text>
         </b-card>
@@ -51,10 +63,47 @@ export default {
       id: null,
       messages: [],
       busy: true,
-      context: null
+      context: null,
+      showOldOffers: false,
+      showOldWanteds: false
     }
   },
-  computed: {},
+  computed: {
+    oldOfferCount() {
+      let count = 0
+
+      if (this.messages) {
+        for (const message of this.messages) {
+          if (
+            message.type === 'Offer' &&
+            message.outcomes &&
+            message.outcomes.length
+          ) {
+            count++
+          }
+        }
+      }
+
+      return count
+    },
+    oldWantedCount() {
+      let count = 0
+
+      if (this.messages) {
+        for (const message of this.messages) {
+          if (
+            message.type === 'Wanted' &&
+            message.outcomes &&
+            message.outcomes.length
+          ) {
+            count++
+          }
+        }
+      }
+
+      return count
+    }
+  },
   async mounted() {
     // Ensure we have no cached messages for other searches/groups
     this.$store.dispatch('messages/clear')
@@ -94,6 +143,10 @@ export default {
           this.busy = false
           console.log('Complete')
         })
+    },
+
+    toggleOldOffer() {
+      this.showOldOffers = !this.showOldOffers
     }
   }
 }
