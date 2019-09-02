@@ -174,10 +174,10 @@
 }
 </style>
 <script>
-import VueDraggableResizable from 'vue-draggable-resizable'
-import Ratings from '~/components/Ratings'
-import ChatMessage from '~/components/ChatMessage.vue'
-import twem from '~/assets/js/twem'
+const VueDraggableResizable = () => import('vue-draggable-resizable')
+const Ratings = () => import('~/components/Ratings')
+const ChatMessage = () => import('~/components/ChatMessage.vue')
+const twem = () => import('~/assets/js/twem')
 
 export default {
   components: {

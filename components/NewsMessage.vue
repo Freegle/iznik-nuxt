@@ -49,9 +49,9 @@
   </div>
 </template>
 <script>
-import NewsBase from '~/components/NewsBase'
-import NewsUserIntro from '~/components/NewsUserIntro'
-import NewsLoveComment from '~/components/NewsLoveComment'
+const NewsBase = () => import('~/components/NewsBase')
+const NewsUserIntro = () => import('~/components/NewsUserIntro')
+const NewsLoveComment = () => import('~/components/NewsLoveComment')
 
 export default {
   components: {

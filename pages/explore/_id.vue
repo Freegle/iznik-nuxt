@@ -36,9 +36,9 @@
   </div>
 </template>
 <script>
-import groupHeader from '~/components/GroupHeader.vue'
-import message from '~/components/Message.vue'
 import loginOptional from '@/mixins/loginOptional.js'
+const groupHeader = () => import('~/components/GroupHeader.vue')
+const message = () => import('~/components/Message.vue')
 
 export default {
   components: {

@@ -16,7 +16,7 @@
 }
 </style>
 <script>
-import twem from '~/assets/js/twem'
+const twem = () => import('~/assets/js/twem')
 
 export default {
   components: {},

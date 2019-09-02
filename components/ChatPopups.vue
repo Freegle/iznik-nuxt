@@ -18,7 +18,7 @@
 }
 </style>
 <script>
-import ChatPopup from '~/components/ChatPopup'
+const ChatPopup = () => import('~/components/ChatPopup')
 
 export default {
   components: {

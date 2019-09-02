@@ -42,7 +42,7 @@
 }
 </style>
 <script>
-import NewsUserInfo from '~/components/NewsUserInfo'
+const NewsUserInfo = () => import('~/components/NewsUserInfo')
 
 export default {
   components: {

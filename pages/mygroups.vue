@@ -40,10 +40,10 @@
 <style scoped>
 </style>
 <script>
-import GroupSelect from '~/components/GroupSelect.vue'
-import GroupHeader from '~/components/GroupHeader.vue'
-import Message from '~/components/Message.vue'
 import loginRequired from '@/mixins/loginRequired.js'
+const GroupSelect = () => import('~/components/GroupSelect.vue')
+const GroupHeader = () => import('~/components/GroupHeader.vue')
+const Message = () => import('~/components/Message.vue')
 
 export default {
   components: {

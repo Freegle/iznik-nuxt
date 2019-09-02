@@ -7,7 +7,7 @@
   </div>
 </template>
 <script>
-import RichMarker from 'googlemaps-rich-marker-web'
+const RichMarker = () => import('googlemaps-rich-marker-web')
 
 export default {
   props: {

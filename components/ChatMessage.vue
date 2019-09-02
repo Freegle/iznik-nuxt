@@ -24,11 +24,11 @@
 // const TYPE_SCHEDULE = 'Schedule';
 // const TYPE_SCHEDULE_UPDATED = 'ScheduleUpdated';
 
-import ChatMessageText from './ChatMessageText'
-import ChatMessageImage from './ChatMessageImage'
-import ChatMessageInterested from './ChatMessageInterested'
-import ChatMessageCompleted from './ChatMessageCompleted'
-import ChatMessageDateRead from './ChatMessageDateRead'
+const ChatMessageText = () => import('./ChatMessageText')
+const ChatMessageImage = () => import('./ChatMessageImage')
+const ChatMessageInterested = () => import('./ChatMessageInterested')
+const ChatMessageCompleted = () => import('./ChatMessageCompleted')
+const ChatMessageDateRead = () => import('./ChatMessageDateRead')
 
 export default {
   components: {

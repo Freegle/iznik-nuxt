@@ -157,15 +157,17 @@
 }
 </style>
 <script>
-import vueFilePond from 'vue-filepond'
 import 'filepond/dist/filepond.min.css'
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
-import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
-import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
-import FilePondPluginImageTransform from 'filepond-plugin-image-transform'
-import NewsThread from '~/components/NewsThread.vue'
-import twem from '~/assets/js/twem'
 import loginRequired from '@/mixins/loginRequired.js'
+const vueFilePond = () => import('vue-filepond')
+const FilePondPluginFileValidateType = () =>
+  import('filepond-plugin-file-validate-type')
+const FilePondPluginImagePreview = () => import('filepond-plugin-image-preview')
+const FilePondPluginImageTransform = () =>
+  import('filepond-plugin-image-transform')
+const NewsThread = () => import('~/components/NewsThread.vue')
+const twem = () => import('~/assets/js/twem')
 
 const FilePond = vueFilePond(
   FilePondPluginFileValidateType,

@@ -56,14 +56,16 @@
   </div>
 </template>
 <script>
-import vueFilePond from 'vue-filepond'
 import 'filepond/dist/filepond.min.css'
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
-import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
-import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
-import FilePondPluginImageTransform from 'filepond-plugin-image-transform'
-import PostPhoto from '~/components/PostPhoto'
-import PostItem from '~/components/PostItem'
+const vueFilePond = () => import('vue-filepond')
+const FilePondPluginFileValidateType = () =>
+  import('filepond-plugin-file-validate-type')
+const FilePondPluginImagePreview = () => import('filepond-plugin-image-preview')
+const FilePondPluginImageTransform = () =>
+  import('filepond-plugin-image-transform')
+const PostPhoto = () => import('~/components/PostPhoto')
+const PostItem = () => import('~/components/PostItem')
 
 const FilePond = vueFilePond(
   FilePondPluginFileValidateType,

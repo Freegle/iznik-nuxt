@@ -118,15 +118,16 @@
 // TODO Delete
 // TODO DESIGN Some indication of newly added entries
 // TODO Click on loves to show who loves them
-import twem from '~/assets/js/twem'
-import NewsReply from '~/components/NewsReply'
-import NewsMessage from '~/components/NewsMessage'
-import NewsAboutMe from '~/components/NewsAboutMe'
-import NewsCommunityEvent from '~/components/NewsCommunityEvent'
-import NewsVolunteerOpportunity from '~/components/NewsVolunteerOpportunity'
-import NewsStory from '~/components/NewsStory'
-import NewsAlert from '~/components/NewsAlert'
-import NewsNoticeboard from '~/components/NewsNoticeboard'
+const twem = () => import('~/assets/js/twem')
+const NewsReply = () => import('~/components/NewsReply')
+const NewsMessage = () => import('~/components/NewsMessage')
+const NewsAboutMe = () => import('~/components/NewsAboutMe')
+const NewsCommunityEvent = () => import('~/components/NewsCommunityEvent')
+const NewsVolunteerOpportunity = () =>
+  import('~/components/NewsVolunteerOpportunity')
+const NewsStory = () => import('~/components/NewsStory')
+const NewsAlert = () => import('~/components/NewsAlert')
+const NewsNoticeboard = () => import('~/components/NewsNoticeboard')
 
 export default {
   components: {

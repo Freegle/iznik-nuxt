@@ -146,9 +146,9 @@
 // TODO Click to show profile
 // TODO User tagging
 // TODO Delete
-import twem from '~/assets/js/twem'
-import NewsUserInfo from '~/components/NewsUserInfo'
-// import NewsBase from '~/components/NewsBase'
+const twem = () => import('~/assets/js/twem')
+const NewsUserInfo = () => import('~/components/NewsUserInfo')
+// const NewsBase = () => import('~/components/NewsBase')
 
 export default {
   name: 'NewsReply',

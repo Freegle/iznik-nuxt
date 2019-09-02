@@ -16,15 +16,21 @@
   </div>
 </template>
 <script>
-import NotificationLovedPost from '~/components/NotificationLovedPost'
-import NotificationLovedComment from '~/components/NotificationLovedComment'
-import NotificationCommentOnPost from '~/components/NotificationCommentOnPost'
-import NotificationCommentOnComment from '~/components/NotificationCommentOnComment'
-import NotificationExhort from '~/components/NotificationExhort'
-import NotificationAboutMe from '~/components/NotificationAboutMe'
-import NotificationMembershipPending from '~/components/NotificationMembershipPending'
-import NotificationMembershipApproved from '~/components/NotificationMembershipApproved'
-import NotificationMembershipRejected from '~/components/NotificationMembershipRejected'
+const NotificationLovedPost = () => import('~/components/NotificationLovedPost')
+const NotificationLovedComment = () =>
+  import('~/components/NotificationLovedComment')
+const NotificationCommentOnPost = () =>
+  import('~/components/NotificationCommentOnPost')
+const NotificationCommentOnComment = () =>
+  import('~/components/NotificationCommentOnComment')
+const NotificationExhort = () => import('~/components/NotificationExhort')
+const NotificationAboutMe = () => import('~/components/NotificationAboutMe')
+const NotificationMembershipPending = () =>
+  import('~/components/NotificationMembershipPending')
+const NotificationMembershipApproved = () =>
+  import('~/components/NotificationMembershipApproved')
+const NotificationMembershipRejected = () =>
+  import('~/components/NotificationMembershipRejected')
 
 export default {
   components: {

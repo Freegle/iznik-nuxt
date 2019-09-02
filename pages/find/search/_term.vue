@@ -106,8 +106,8 @@
 // TODO DESIGN When you focus on the search box, there's a drop shadow to highlight it, but that only goes round
 //      the input, and not also round the button, which it should.
 import Autocomplete from '~/components/Autocomplete'
-import Message from '~/components/Message.vue'
 import loginOptional from '@/mixins/loginOptional.js'
+const Message = () => import('~/components/Message.vue')
 
 export default {
   components: {

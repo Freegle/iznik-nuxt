@@ -86,8 +86,8 @@
 // TODO Add speech recognition
 // TODO Suppose we end up here, without a postcode in the store?
 
-import PostMessage from '~/components/PostMessage'
 import loginOptional from '@/mixins/loginOptional.js'
+const PostMessage = () => import('~/components/PostMessage')
 
 export default {
   components: {

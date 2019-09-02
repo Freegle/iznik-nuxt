@@ -64,8 +64,8 @@
 }
 </style>
 <script>
-import GroupHeader from '~/components/GroupHeader.vue'
 import loginOptional from '@/mixins/loginOptional.js'
+const GroupHeader = () => import('~/components/GroupHeader.vue')
 
 export default {
   components: {

@@ -65,8 +65,8 @@
 <style scoped>
 </style>
 <script>
-import NewsBase from '~/components/NewsBase'
-import NewsLoveComment from '~/components/NewsLoveComment'
+const NewsBase = () => import('~/components/NewsBase')
+const NewsLoveComment = () => import('~/components/NewsLoveComment')
 
 export default {
   components: {

@@ -132,9 +132,9 @@
   </div>
 </template>
 <script>
-import Highlighter from 'vue-highlight-words'
-import twem from '~/assets/js/twem'
-import MessageUserInfo from '~/components/MessageUserInfo'
+const Highlighter = () => import('vue-highlight-words')
+const twem = () => import('~/assets/js/twem')
+const MessageUserInfo = () => import('~/components/MessageUserInfo')
 
 export default {
   components: {

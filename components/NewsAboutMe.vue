@@ -52,10 +52,10 @@
   </div>
 </template>
 <script>
-import AboutMeModal from './AboutMeModal'
-import NewsBase from '~/components/NewsBase'
-import NewsUserIntro from '~/components/NewsUserIntro'
-import NewsLoveComment from '~/components/NewsLoveComment'
+const AboutMeModal = () => import('./AboutMeModal')
+const NewsBase = () => import('~/components/NewsBase')
+const NewsUserIntro = () => import('~/components/NewsUserIntro')
+const NewsLoveComment = () => import('~/components/NewsLoveComment')
 
 export default {
   components: {

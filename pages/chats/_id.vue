@@ -27,10 +27,10 @@
 }
 </style>
 <script>
-import ChatPane from '~/components/ChatPane.vue'
-import ChatListEntry from '~/components/ChatListEntry.vue'
-import requestIdleCallback from '~/assets/js/requestIdleCallback'
 import loginRequired from '@/mixins/loginRequired.js'
+const ChatPane = () => import('~/components/ChatPane.vue')
+const ChatListEntry = () => import('~/components/ChatListEntry.vue')
+const requestIdleCallback = () => import('~/assets/js/requestIdleCallback')
 
 export default {
   components: {

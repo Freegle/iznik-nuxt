@@ -37,8 +37,8 @@
 <style scoped>
 </style>
 <script>
-import MyMessage from '~/components/MyMessage.vue'
 import loginRequired from '@/mixins/loginRequired.js'
+const MyMessage = () => import('~/components/MyMessage.vue')
 // TODO Availability
 
 export default {
