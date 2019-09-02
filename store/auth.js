@@ -1,6 +1,7 @@
 export const state = () => ({
   forceLogin: false,
-  user: null
+  user: null,
+  userFetched: null
 })
 
 export const mutations = {
@@ -9,7 +10,16 @@ export const mutations = {
   },
 
   setUser(state, user) {
-    state.user = user
+    // We can query the server for different components.  Merge everything we have back in.
+    if (!state.user) {
+      state.user = {}
+    }
+
+    for (const key in user) {
+      state.user[key] = user[key]
+    }
+
+    state.userFetched = new Date().getTime()
   }
 }
 
@@ -29,7 +39,6 @@ export const actions = {
   },
 
   setUser({ commit }, value) {
-    console.log('setUser', value)
     commit('setUser', value)
 
     // Set or clear our auth token to be used on all API requests.
@@ -39,12 +48,9 @@ export const actions = {
   },
 
   async login({ commit, dispatch }, params) {
-    console.log('Login')
     const res = await this.$axios.post(process.env.API + '/session', params)
-    console.log('Returned', res)
 
     if (res.status === 200 && res.data.ret === 0) {
-      console.log('Succeeded')
       // Login no longer required (if it was)
       commit('forceLogin', false)
 
@@ -63,32 +69,39 @@ export const actions = {
     }
   },
 
-  async fetchUser({ commit, store }, params) {
-    console.log('Fetch user', store)
+  async fetchUser({ commit, store, state }, params) {
+    const lastfetch = state.userFetched
 
     params = params || {
       components: ['me', 'groups']
     }
 
-    // We're so vain, we probably think this call is about us.
-    const res = await this.$axios.get(process.env.API + '/session', {
-      params: params
-    })
-    console.log('Returned, stored', res)
-    if (res.status === 200 && res.data.ret === 0) {
-      console.log('Succeeded')
-      // Save the persistent session token.
-      res.data.me.persistent = res.data.persistent
-
-      // Login succeeded.  Set the user, which will trigger various re-rendering if we were required to be logged in.
-      if (res.data.me) {
-        commit('setUser', res.data.me)
-        commit('forceLogin', false)
-      }
+    if (
+      !params.force &&
+      lastfetch &&
+      new Date().getTime() - lastfetch < 30000
+    ) {
+      // We have fetched the user pretty recently.
     } else {
-      // Login failed.
-      console.error('Fetch user failed')
-      throw new Error('Fetch user failed')
+      // We're so vain, we probably think this call is about us.
+      const res = await this.$axios.get(process.env.API + '/session', {
+        params: params
+      })
+
+      if (res.status === 200 && res.data.ret === 0) {
+        // Save the persistent session token.
+        res.data.me.persistent = res.data.persistent
+
+        // Login succeeded.  Set the user, which will trigger various re-rendering if we were required to be logged in.
+        if (res.data.me) {
+          commit('setUser', res.data.me)
+          commit('forceLogin', false)
+        }
+      } else {
+        // Login failed.
+        console.error('Fetch user failed')
+        throw new Error('Fetch user failed')
+      }
     }
   },
 
@@ -104,7 +117,6 @@ export const actions = {
         }
       }
     )
-    console.log('Returned', res)
 
     if (res.status === 200 && res.data.ret === 0) {
     } else {

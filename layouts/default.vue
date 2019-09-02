@@ -539,7 +539,9 @@ export default {
     logOut() {
       // Remove all cookies, both client and server.  This seems to be necessary to kill off the PHPSESSID cookie
       // on the server, which would otherwise keep us logged in despite our efforts.
-      this.$cookies.removeAll()
+      try {
+        this.$cookies.removeAll()
+      } catch (e) {}
 
       // Go to the landing page.
       this.$router.push('/')
