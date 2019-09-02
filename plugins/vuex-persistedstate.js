@@ -87,7 +87,7 @@ export default ({ store }) => {
           }
         } else {
           // We're not already setting it.  Queue it up for when we're idle.
-          console.log('Queue for idle')
+          // console.log('Queue for idle')
           settingState = state
 
           // We start a timeout.  This is because request idle callback can get called pretty rapidly.  This
@@ -95,15 +95,15 @@ export default ({ store }) => {
           setTimeout(() => {
             requestIdleCallback(() => {
               if (settingState) {
-                console.log('set state now')
+                // console.log('set state now')
                 setInProgress = true
                 storage.setItem(key, JSON.stringify(state))
                 setInProgress = false
                 settingState = null
-                console.log('completed set state')
+                // console.log('completed set state')
               } else {
                 // We have already set the latest state in an earlier callback.
-                console.log('Nothing to set')
+                // console.log('Nothing to set')
               }
             })
           }, 5000)

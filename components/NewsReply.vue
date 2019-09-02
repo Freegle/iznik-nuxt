@@ -256,6 +256,9 @@ export default {
       })
 
       this.$refs.editModal.hide()
+    },
+    brokenImage(event) {
+      event.target.src = '/static/defaultprofile.png'
     }
   }
 }
