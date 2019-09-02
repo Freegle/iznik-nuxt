@@ -33,11 +33,11 @@
                     <b-badge variant="danger">{{ chat.unseen }}</b-badge>
                   </span>
                   <ratings v-if="otheruser" :key="'otheruser-' + (otheruser ? otheruser.id : null)" size="sm" v-bind="otheruser" class="pl-2" />
-                  <span class="pl-3 float-right">
-                    <v-icon name="window-maximize" scale="2" class="clickme mt-1" title="Maximise chat window" @click="maximise" />
+                  <span class="pl-3 float-right" @click="hide">
+                    <v-icon name="times" scale="2" class="clickme mt-1" title="Hide chat window" />
                   </span>
-                  <span class="pl-3 float-right">
-                    <v-icon name="times" scale="2" class="clickme mt-1" title="Hide chat window" @click="hide" />
+                  <span class="pl-3 float-right" @click="maximise">
+                    <v-icon name="window-maximize" scale="2" class="clickme mt-1" title="Maximise chat window" />
                   </span>
                 </b-col>
               </b-row>
@@ -179,6 +179,9 @@ const VueDraggableResizable = () => import('vue-draggable-resizable')
 const Ratings = () => import('~/components/Ratings')
 const ChatMessage = () => import('~/components/ChatMessage.vue')
 
+// TODO DESIGN The maximise icon from font awesome is not obvious.
+// TODO DESIGN The icons don't all fit, so they overflow the title bar.
+
 export default {
   components: {
     Ratings,
@@ -211,6 +214,7 @@ export default {
           ? this.chat.user1
           : this.chat.user2
       } else {
+        console.log("Can't find me", this.chat)
         return null
       }
     },
@@ -258,12 +262,28 @@ export default {
   async mounted() {
     // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
     // need to render this pane on the server.
-    const chat = {
-      ...(await this.$store.getters['chats/get'](this.id)),
-      remember: await this.$store.getters['popupchats/get'](this.id)
+    console.log('Popup chat', this.id)
+    await this.$store.dispatch('chats/fetch', {
+      id: this.id
+    })
+    const fetched = this.$store.getters['chats/get'](this.id)
+
+    console.log('Fetched chat', this.id, fetched)
+
+    if (!fetched) {
+      // This is an invalid chatid.  Remove it to stop it causing problems.
+      this.chat = {
+        id: this.id
+      }
+      this.hide()
+    } else {
+      const chat = {
+        ...fetched,
+        remember: await this.$store.getters['popupchats/get'](this.id)
+      }
+      console.log('Fetched chat', chat)
+      this.chat = chat
     }
-    console.log('Fetched chat', chat)
-    this.chat = chat
   },
   methods: {
     showInfo() {
@@ -358,9 +378,11 @@ export default {
         })
     },
     hide() {
+      console.log('Hide chat', this.chat.id)
       this.$store.dispatch('popupchats/hide', { id: this.chat.id })
     },
     maximise() {
+      console.log('Maximise chat', this.chat.id)
       this.$store.dispatch('popupchats/hide', { id: this.chat.id })
       this.$router.push('/chats/' + this.chat.id)
     },

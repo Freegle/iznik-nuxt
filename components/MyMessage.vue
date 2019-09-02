@@ -187,7 +187,7 @@ export default {
 
     replies() {
       // Show the replies with unseen messages first, then most recent
-      console.log('Sort replies', this.message.replies, this)
+      // console.log('Sort replies', this.message.replies, this)
       const self = this
       return [...this.message.replies].sort((a, b) => {
         const aunseen = self.countUnseen(a)
@@ -195,7 +195,7 @@ export default {
         const adate = new Date(a.lastdate).getTime()
         const bdate = new Date(b.lastdate).getTime()
 
-        console.log('Unseen', aunseen, bunseen, adate, bdate)
+        // console.log('Unseen', aunseen, bunseen, adate, bdate)
         if (aunseen !== bunseen) {
           return bunseen - aunseen
         } else {

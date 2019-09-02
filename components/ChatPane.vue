@@ -213,6 +213,7 @@ export default {
   async mounted() {
     // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
     // need to render this pane on the server.
+    console.log('ChatPane', this.id)
     await this.$store.dispatch('chats/fetch', {
       id: this.id
     })

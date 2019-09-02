@@ -104,6 +104,7 @@ export default {
 
   methods: {
     click: function() {
+      console.log('Click for chat', this.id)
       this.$router.push('/chats/' + this.id)
     }
   }

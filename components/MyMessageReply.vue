@@ -29,7 +29,7 @@
         </span>
       </b-col>
       <b-col cols="3">
-        <b-btn variant="primary" class="float-right mb-1">
+        <b-btn variant="primary" class="float-right mb-1" @click="chat">
           <b-badge v-if="unseen > 0" variant="danger">
             {{ unseen }}
           </b-badge>
@@ -43,6 +43,10 @@
   </div>
 </template>
 <script>
+// TODO DESIGN I would like a way of indicating whether the last message, which we have in snippet, came from
+// this user or not.  We can work that out, but I can't think of a way of showing that which is obvious.  On the
+// other hand, the most important messages will be bold because they're unread, and all bold messages will
+// be from the other party, so maybe that's fine as it is.
 export default {
   props: {
     reply: {
@@ -71,6 +75,10 @@ export default {
   methods: {
     brokenImage(event) {
       event.target.src = '/static/defaultprofile.png'
+    },
+    chat() {
+      console.log('Open chat', this.reply.chatid)
+      this.$store.dispatch('popupchats/popup', { id: this.reply.chatid })
     }
   }
 }

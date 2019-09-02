@@ -60,22 +60,27 @@ export const actions = {
   },
   async fetch({ commit }, params) {
     const chatid = params.id
-    const chat = await this.$axios.get(process.env.API + '/chatrooms', {
-      params: {
-        id: chatid
-      }
-    })
 
-    if (chat.status === 200 && chat.data.ret === 0) {
-      const chatobj = chat.data.chatroom
+    if (chatid) {
+      const chat = await this.$axios.get(process.env.API + '/chatrooms', {
+        params: {
+          id: chatid
+        }
+      })
 
-      if (chatobj) {
-        // Valid chatid
-        commit('addRoom', chatobj)
-      } else {
-        // Invalid - go to list
-        this.$router.push('/chats')
+      if (chat.status === 200 && chat.data.ret === 0) {
+        const chatobj = chat.data.chatroom
+
+        if (chatobj) {
+          // Valid chatid
+          commit('addRoom', chatobj)
+        } else {
+          // Invalid
+          console.error('Invalid chat id', chatid)
+        }
       }
+    } else {
+      console.error("Don't fetch null id")
     }
   }
 }
