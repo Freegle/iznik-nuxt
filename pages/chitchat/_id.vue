@@ -82,19 +82,10 @@
               <hr class="mt-1 mb-1">
               <b-row v-if="uploading" class="bg-white m-0 pondrow">
                 <b-col class="p-0">
-                  <file-pond
-                    ref="pond"
-                    name="photo"
-                    allow-multiple="false"
-                    accepted-file-types="image/jpeg, image/png, image/gif, image/jpg"
-                    :files="myFiles"
-                    image-resize-target-width="800"
-                    image-resize-target-height="800"
-                    image-crop-aspect-ratio="1"
-                    label-idle="Drag & Drop photos or <span class=&quot;btn btn-white ction&quot;> Browse </span>"
-                    :server="{ process, revert, restore, load, fetch }"
-                    @init="photoInit"
-                    @processfile="photoProcessed"
+                  <OurFilePond
+                    imgtype="Newsfeed"
+                    imgflag="newsfeed"
+                    @photoProcessed="photoProcessed"
                   />
                 </b-col>
               </b-row>
@@ -157,29 +148,15 @@
 }
 </style>
 <script>
-import 'filepond/dist/filepond.min.css'
-import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
 import loginRequired from '@/mixins/loginRequired.js'
 import twem from '~/assets/js/twem'
 import NewsThread from '~/components/NewsThread.vue'
-const vueFilePond = () => import('vue-filepond')
-const FilePondPluginFileValidateType = () =>
-  import('filepond-plugin-file-validate-type')
-const FilePondPluginImagePreview = () => import('filepond-plugin-image-preview')
-const FilePondPluginImageTransform = () =>
-  import('filepond-plugin-image-transform')
-
-const FilePond = () =>
-  vueFilePond(
-    FilePondPluginFileValidateType,
-    FilePondPluginImagePreview,
-    FilePondPluginImageTransform
-  )
+const OurFilePond = () => import('~/components/OurFilePond')
 
 export default {
   components: {
     NewsThread,
-    FilePond
+    OurFilePond
   },
   mixins: [loginRequired],
 
@@ -230,7 +207,6 @@ export default {
       ],
       infiniteId: +new Date(),
       uploading: false,
-      myFiles: [],
       imageid: null,
       imagethumb: null,
       distance: 1000
@@ -351,34 +327,31 @@ export default {
     async postIt() {
       let msg = this.startThread
 
-      // Encode up any emojis.
-      msg = twem.untwem(msg)
+      if (msg.trim().length) {
+        // Encode up any emojis.
+        msg = twem.untwem(msg)
 
-      await this.$store.dispatch('newsfeed/send', {
-        message: msg,
-        imageid: this.imageid
-      })
+        await this.$store.dispatch('newsfeed/send', {
+          message: msg,
+          imageid: this.imageid
+        })
 
-      // Show the new message
-      this.newsfeed = this.$store.getters['newsfeed/newsfeed']()
+        // Show the new message
+        this.newsfeed = this.$store.getters['newsfeed/newsfeed']()
 
-      // Clear the textarea now it's sent.
-      this.startThread = null
+        // Clear the textarea now it's sent.
+        this.startThread = null
 
-      // And any image id
-      this.imageid = null
+        // And any image id
+        this.imageid = null
+      }
     },
     photoAdd() {
       // Flag that we're uploading.  This will trigger the render of the filepond instance and subsequently the
       // init callback below.
       this.uploading = true
     },
-    photoInit: function() {
-      // We have rendered the filepond instance.  Trigger browse so that they can upload a photo without an
-      // extra click.
-      this.$refs.pond.browse()
-    },
-    photoProcessed(error, file) {
+    photoProcessed(imageid, imagethumb) {
       // We have uploaded a photo.  Remove the filepond instance.
       this.uploading = false
 
@@ -386,46 +359,9 @@ export default {
       this.chatBusy = true
 
       // The imageid is in this.imageid
-      if (error) {
-        // TODO
-      }
-    },
-    async process(fieldName, file, metadata, load, error, progress, abort) {
-      const data = new FormData()
-      data.append('photo', file, 'photo')
-      data.append('newsfeed', true)
-      data.append('imgtype', 'Newsfeed')
-
-      const ret = await this.$axios.post(process.env.API + '/image', data, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-        onUpLoadProgress: e => {
-          progress(e.lengthComputable, e.loaded, e.total)
-        }
-      })
-
-      if (ret.status === 200 && ret.data.ret === 0) {
-        this.imageid = ret.data.id
-        this.imagethumb = ret.data.paththumb
-        load(ret.data.id)
-      } else {
-        error(
-          ret.status === 200 ? ret.data.status : 'Network error ' + ret.status
-        )
-      }
-
-      return {
-        abort: () => {
-          // We don't need to do anything - the server will tidy up hanging images.
-          abort()
-        }
-      }
-    },
-    load(uniqueFileId, load, error) {},
-    fetch(url, load, error, progress, abort, headers) {},
-    restore(uniqueFileId, load, error, progress, abort, headers) {},
-    revert(uniqueFileId, load, error) {}
+      this.imageid = imageid
+      this.imagethumb = imagethumb
+    }
   }
 }
 </script>

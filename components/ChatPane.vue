@@ -55,19 +55,10 @@
       <div class="chatFooter">
         <b-row v-if="uploading" class="bg-white">
           <b-col class="p-0">
-            <file-pond
-              ref="pond"
-              name="photo"
-              allow-multiple="false"
-              accepted-file-types="image/jpeg, image/png, image/gif, image/jpg"
-              :files="myFiles"
-              image-resize-target-width="800"
-              image-resize-target-height="800"
-              image-crop-aspect-ratio="1"
-              label-idle="Drag & Drop photos or <span class=&quot;btn btn-white ction&quot;> Browse </span>"
-              :server="{ process, revert, restore, load, fetch }"
-              @init="photoInit"
-              @processfile="photoProcessed"
+            <OurFilePond
+              imgtype="ChatMessage"
+              imgflag="chatmessage"
+              @photoProcessed="photoProcessed"
             />
           </b-col>
         </b-row>
@@ -157,30 +148,17 @@
 // TODO Chat dropdown warnings
 // TODO Chat dropdown menu for report etc
 
-import 'filepond/dist/filepond.min.css'
-import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
 import twem from '~/assets/js/twem'
-const vueFilePond = () => import('vue-filepond')
-const FilePondPluginFileValidateType = () =>
-  import('filepond-plugin-file-validate-type')
-const FilePondPluginImagePreview = () => import('filepond-plugin-image-preview')
-const FilePondPluginImageTransform = () =>
-  import('filepond-plugin-image-transform')
+const OurFilePond = () => import('~/components/OurFilePond')
 const requestIdleCallback = () => import('~/assets/js/requestIdleCallback')
 const Ratings = () => import('~/components/Ratings')
 const ChatMessage = () => import('~/components/ChatMessage.vue')
-
-const FilePond = vueFilePond(
-  FilePondPluginFileValidateType,
-  FilePondPluginImagePreview,
-  FilePondPluginImageTransform
-)
 
 export default {
   components: {
     Ratings,
     ChatMessage,
-    FilePond
+    OurFilePond
   },
   props: {
     id: {
@@ -203,7 +181,6 @@ export default {
       complete: false,
       sendmessage: null,
       uploading: false,
-      myFiles: [],
       imageid: null,
       distance: 1000
     }
@@ -352,12 +329,7 @@ export default {
       // init callback below.
       this.uploading = true
     },
-    photoInit: function() {
-      // We have rendered the filepond instance.  Trigger browse so that they can upload a photo without an
-      // extra click.
-      this.$refs.pond.browse()
-    },
-    async photoProcessed(error, file) {
+    async photoProcessed(imageid, imagethumb, image) {
       // We have uploaded a photo.  Remove the filepond instance.
       this.uploading = false
 
@@ -365,52 +337,13 @@ export default {
       this.chatBusy = true
 
       // We have uploaded a photo.  Post a chatmessage referencing it.
-      if (!error) {
-        await this.$store
-          .dispatch('chatmessages/send', {
-            roomid: this.id,
-            imageid: this.imageid
-          })
-          .then(this._updateAfterSend)
-      } else {
-        // TODO
-      }
-    },
-    async process(fieldName, file, metadata, load, error, progress, abort) {
-      const data = new FormData()
-      data.append('photo', file, 'photo')
-      data.append('chatmessage', true)
-      data.append('imgtype', 'ChatMessage')
-
-      const ret = await this.$axios.post(process.env.API + '/image', data, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-        onUpLoadProgress: e => {
-          progress(e.lengthComputable, e.loaded, e.total)
-        }
-      })
-
-      if (ret.status === 200 && ret.data.ret === 0) {
-        this.imageid = ret.data.id
-        load(ret.data.id)
-      } else {
-        error(
-          ret.status === 200 ? ret.data.status : 'Network error ' + ret.status
-        )
-      }
-
-      return {
-        abort: () => {
-          // We don't need to do anything - the server will tidy up hanging images.
-          abort()
-        }
-      }
-    },
-    load(uniqueFileId, load, error) {},
-    fetch(url, load, error, progress, abort, headers) {},
-    restore(uniqueFileId, load, error, progress, abort, headers) {},
-    revert(uniqueFileId, load, error) {}
+      await this.$store
+        .dispatch('chatmessages/send', {
+          roomid: this.id,
+          imageid: imageid
+        })
+        .then(this._updateAfterSend)
+    }
   }
 }
 </script>
