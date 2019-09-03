@@ -65,7 +65,6 @@ export default {
       return ret
     },
     refmsg() {
-      console.log('Compute refmsg', this.chatmessage)
       return this.chatmessage.refmsg
         ? this.chatmessage.refmsg
         : {

@@ -76,7 +76,7 @@
             </b-row>
             <b-row class="m-0">
               <b-col class="p-0 pt-1 pb-1">
-                <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person" class="ml-1">
+                <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person" class="ml-1" @click="promise">
                   <v-icon name="handshake" />
                 </b-btn>
                 <b-btn v-b-tooltip.hover.top variant="white" title="Send your address">
@@ -99,6 +99,7 @@
           </div>
         </div>
       </vue-draggable-resizable>
+      <PromiseModal ref="promise" :messages="ouroffers" :selected-message="likelymsg ? likelymsg : 0" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
     </div>
   </client-only>
 </template>
@@ -178,6 +179,7 @@ import twem from '~/assets/js/twem'
 const VueDraggableResizable = () => import('vue-draggable-resizable')
 const Ratings = () => import('~/components/Ratings')
 const ChatMessage = () => import('~/components/ChatMessage.vue')
+const PromiseModal = () => import('./PromiseModal')
 
 // TODO DESIGN The maximise icon from font awesome is not obvious.
 
@@ -185,7 +187,8 @@ export default {
   components: {
     Ratings,
     ChatMessage,
-    VueDraggableResizable
+    VueDraggableResizable,
+    PromiseModal
   },
   props: {
     id: {
@@ -201,7 +204,9 @@ export default {
       lastFetched: new Date(),
       complete: false,
       sendmessage: null,
-      distance: 1000
+      distance: 1000,
+      likelymsg: null,
+      ouroffers: null
     }
   },
   computed: {
@@ -261,13 +266,10 @@ export default {
   async mounted() {
     // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
     // need to render this pane on the server.
-    console.log('Popup chat', this.id)
     await this.$store.dispatch('chats/fetch', {
       id: this.id
     })
     const fetched = this.$store.getters['chats/get'](this.id)
-
-    console.log('Fetched chat', this.id, fetched)
 
     if (!fetched) {
       // This is an invalid chatid.  Remove it to stop it causing problems.
@@ -280,7 +282,6 @@ export default {
         ...fetched,
         remember: await this.$store.getters['popupchats/get'](this.id)
       }
-      console.log('Fetched chat', chat)
       this.chat = chat
     }
   },
@@ -392,6 +393,40 @@ export default {
         height: height
       })
       console.log('Stored', width, height)
+    },
+    promise() {
+      // Show the modal first, as eye candy.
+      this.$refs.promise.show()
+
+      this.$nextTick(async () => {
+        // Get our offers.
+        const me = this.$store.state.auth.user
+        await this.$store.dispatch('messages/clear')
+        await this.$store.dispatch('messages/fetchMessages', {
+          fromuser: me.id,
+          types: ['Offer'],
+          hasoutcome: false,
+          limit: 100,
+          collection: 'AllUser'
+        })
+
+        this.ouroffers = this.$store.getters['messages/getAll']()
+
+        // Find the last message referenced in this chat, if any.  That's the most likely one you'd want to promise,
+        // so it should be the default.
+        this.likelymsg = 0
+
+        for (const msg of this.chatmessages) {
+          if (msg.refmsg) {
+            // Check that it's still in our list of messages
+            for (const ours of this.ouroffers) {
+              if (ours.id === msg.refmsg.id) {
+                this.likelymsg = msg.refmsg.id
+              }
+            }
+          }
+        }
+      })
     }
   }
 }

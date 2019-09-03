@@ -37,7 +37,7 @@ export default {
   components: {},
   props: {
     messages: {
-      type: Array,
+      validator: prop => typeof prop === 'object' || prop === null,
       required: true
     },
     selectedMessage: {
@@ -46,7 +46,7 @@ export default {
       default: 0
     },
     users: {
-      type: Array,
+      validator: prop => typeof prop === 'object' || prop === null,
       required: true
     },
     selectedUser: {
@@ -64,20 +64,22 @@ export default {
     messageOptions() {
       const options = []
 
-      if (this.messages.length > 1) {
-        options.push({
-          value: 0,
-          text: '-- Please choose a message --',
-          selected: this.selectedMessage === 0
-        })
-      }
+      if (this.messages) {
+        if (this.messages.length > 1) {
+          options.push({
+            value: 0,
+            text: '-- Please choose a message --',
+            selected: this.selectedMessage === 0
+          })
+        }
 
-      for (const message of this.messages) {
-        options.push({
-          value: message.id,
-          text: message.subject,
-          selected: this.selectedMessage === message.id
-        })
+        for (const message of this.messages) {
+          options.push({
+            value: message.id,
+            text: message.subject,
+            selected: this.selectedMessage === message.id
+          })
+        }
       }
 
       return options
@@ -85,20 +87,22 @@ export default {
     userOptions() {
       const options = []
 
-      if (this.users.length > 1) {
-        options.push({
-          value: 0,
-          text: '-- Please choose a user --',
-          selected: this.selectedUser === 0
-        })
-      }
+      if (this.users) {
+        if (this.users.length > 1) {
+          options.push({
+            value: 0,
+            text: '-- Please choose a user --',
+            selected: this.selectedUser === 0
+          })
+        }
 
-      for (const user of this.users) {
-        options.push({
-          value: user.id,
-          text: user.displayname,
-          selected: this.selectedUser === user.id
-        })
+        for (const user of this.users) {
+          options.push({
+            value: user.id,
+            text: user.displayname,
+            selected: this.selectedUser === user.id
+          })
+        }
       }
 
       return options

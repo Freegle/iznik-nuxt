@@ -85,6 +85,7 @@
 <style scoped>
 </style>
 <script>
+// TODO Unpromise button
 import ChatBase from '~/components/ChatBase'
 
 export default {

@@ -69,8 +69,8 @@
 <style scoped>
 </style>
 <script>
-import PromiseModal from './PromiseModal'
-import RenegeModal from './RenegeModal'
+const PromiseModal = () => import('./PromiseModal')
+const RenegeModal = () => import('./RenegeModal')
 
 // TODO DESIGN I would like a way of indicating whether the last message, which we have in snippet, came from
 // this user or not.  We can work that out, but I can't think of a way of showing that which is obvious.  On the

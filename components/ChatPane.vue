@@ -23,7 +23,9 @@
               </b-row>
             </b-col>
             <b-col cols="6">
-              <v-icon name="window-restore" class="float-right mt-1 pl-1 clickme" title="Popup chat window" @click="popup" />
+              <span class="float-right pl-1 clickme" title="Popup chat window" @click="popup">
+                <v-icon name="window-restore" />
+              </span>
               <b-btn variant="white" size="xs" class="float-right mt-1 mr-2">
                 Mark read
               </b-btn>
@@ -85,23 +87,24 @@
         </b-row>
         <b-row class="bg-white">
           <b-col class="p-0 pt-1 pb-1">
-            <ratings v-if="otheruser" :key="'otheruser-' + (otheruser ? otheruser.id : null)" v-bind="otheruser" />
-            <ratings v-else />
-            <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person" @click="promise">
-              <v-icon name="handshake" />&nbsp;Promise
-            </b-btn>
-            <b-btn v-b-tooltip.hover.top variant="white" title="Send your address">
-              <v-icon name="address-book" />&nbsp;Address
-            </b-btn>
-            <b-btn v-b-tooltip.hover.top variant="white" title="Update your availability">
-              <v-icon name="calendar-alt" />&nbsp;Calendar
-            </b-btn>
-            <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler">
-              <v-icon name="info-circle" />&nbsp;Info
-            </b-btn>
-            <b-btn v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler.">
-              <v-icon name="bell" />&nbsp;Nudge
-            </b-btn>
+            <span v-if="chat && chat.chattype === 'User2User' && otheruser">
+              <ratings :key="'otheruser-' + otheruser.id" v-bind="otheruser" />
+              <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person" @click="promise">
+                <v-icon name="handshake" />&nbsp;Promise
+              </b-btn>
+              <b-btn v-b-tooltip.hover.top variant="white" title="Send your address">
+                <v-icon name="address-book" />&nbsp;Address
+              </b-btn>
+              <b-btn v-b-tooltip.hover.top variant="white" title="Update your availability">
+                <v-icon name="calendar-alt" />&nbsp;Calendar
+              </b-btn>
+              <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler">
+                <v-icon name="info-circle" />&nbsp;Info
+              </b-btn>
+              <b-btn v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler.">
+                <v-icon name="bell" />&nbsp;Nudge
+              </b-btn>
+            </span>
             <b-btn variant="primary" class="float-right ml-1" @click="send">
               Send&nbsp;&gt;
             </b-btn>
@@ -111,6 +114,7 @@
           </b-col>
         </b-row>
       </div>
+      <PromiseModal ref="promise" :messages="ouroffers" :selected-message="likelymsg ? likelymsg : 0" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
     </div>
   </client-only>
 </template>
@@ -154,18 +158,19 @@
 <script>
 // TODO Chat dropdown warnings
 // TODO Chat dropdown menu for report etc
-
 import twem from '~/assets/js/twem'
 const OurFilePond = () => import('~/components/OurFilePond')
 const requestIdleCallback = () => import('~/assets/js/requestIdleCallback')
 const Ratings = () => import('~/components/Ratings')
 const ChatMessage = () => import('~/components/ChatMessage.vue')
+const PromiseModal = () => import('./PromiseModal')
 
 export default {
   components: {
     Ratings,
     ChatMessage,
-    OurFilePond
+    OurFilePond,
+    PromiseModal
   },
   props: {
     id: {
@@ -189,7 +194,9 @@ export default {
       sendmessage: null,
       uploading: false,
       imageid: null,
-      distance: 1000
+      distance: 1000,
+      likelymsg: null,
+      ouroffers: null
     }
   },
   computed: {
@@ -208,6 +215,7 @@ export default {
     otheruser() {
       // The user who isn't us.
       let ret = null
+      console.log('Calc other user', this.chat)
       if (
         this.chat &&
         this.chat.chattype === 'User2User' &&
@@ -221,6 +229,7 @@ export default {
             : this.chat.user1
       }
 
+      console.log('Other is', ret)
       return ret
     }
   },
@@ -336,6 +345,7 @@ export default {
         .then(this._updateAfterSend)
     },
     popup() {
+      console.log('Popup', this.chat.id)
       this.$store.dispatch('popupchats/popup', { id: this.chat.id })
     },
     photoAdd() {
@@ -359,16 +369,38 @@ export default {
         .then(this._updateAfterSend)
     },
     promise() {
-      // Find the last message referenced in this chat, if any.  That's the most likely one you'd want to promise,
-      // so it should be the default.
-      console.log('Promise')
-      const lastmsg = null
+      // Show the modal first, as eye candy.
+      this.$refs.promise.show()
 
-      for (const msg in this.chatmessages) {
-        console.log('Chat message', msg)
-      }
+      this.$nextTick(async () => {
+        // Get our offers.
+        const me = this.$store.state.auth.user
+        await this.$store.dispatch('messages/clear')
+        await this.$store.dispatch('messages/fetchMessages', {
+          fromuser: me.id,
+          types: ['Offer'],
+          hasoutcome: false,
+          limit: 100,
+          collection: 'AllUser'
+        })
 
-      console.log(lastmsg)
+        this.ouroffers = this.$store.getters['messages/getAll']()
+
+        // Find the last message referenced in this chat, if any.  That's the most likely one you'd want to promise,
+        // so it should be the default.
+        this.likelymsg = 0
+
+        for (const msg of this.chatmessages) {
+          if (msg.refmsg) {
+            // Check that it's still in our list of messages
+            for (const ours of this.ouroffers) {
+              if (ours.id === msg.refmsg.id) {
+                this.likelymsg = msg.refmsg.id
+              }
+            }
+          }
+        }
+      })
     }
   }
 }
