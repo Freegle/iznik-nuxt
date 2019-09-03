@@ -40,7 +40,7 @@
         </b-button>
       </b-card-header>
       <b-collapse :id="'mypost-' + message.id" :visible="expand" role="tabpanel">
-        <b-card-body>
+        <b-card-body class="p-2">
           <b-card-text>
             <span v-if="message.attachments.length > 0" class="float-right clickme" @click="showPhotos">
               <b-badge v-if="message.attachments.length > 1" class="photobadge" variant="primary">+{{ message.attachments.length - 1 }} <v-icon name="camera" /></b-badge>
@@ -58,11 +58,17 @@
                 {{ group.arrival | timeago }} on {{ group.namedisplay }} <span class="text-faded small">#{{ message.id }}</span>
               </span>
             </p>
-            <span class="prewrap">{{ message.textbody }}</span>
-            <hr>
-            <span v-for="reply in replies" :key="'reply-' + reply.id">
-              <MyMessageReply :reply="reply" :chats="chats" />
+            <span class="prewrap">
+              <read-more :text="message.textbody" :max-chars="maxChars" class="nopara" />
             </span>
+            <hr>
+            <table class="table table-borderless table-striped mb-0">
+              <tbody>
+                <tr v-for="reply in replies" :key="'reply-' + reply.id">
+                  <MyMessageReply :reply="reply" :chats="chats" />
+                </tr>
+              </tbody>
+            </table>
           </b-card-text>
         </b-card-body>
       </b-collapse>
@@ -101,13 +107,13 @@
 <style scoped>
 .square {
   object-fit: cover;
-  width: 100px;
-  height: 100px;
+  width: 75px;
+  height: 75px;
 }
 
 img.attachment {
-  max-height: 100px !important;
-  max-width: 100px !important;
+  max-height: 75px !important;
+  max-width: 75px !important;
 }
 
 .messagePhoto {
@@ -156,20 +162,20 @@ export default {
   },
   data: function() {
     return {
-      slide: 0
+      slide: 0,
+      maxChars: 60
     }
   },
   computed: {
     unseen() {
-      // We want all the chats which reference this message.  We fetch them in myposts, here we only need to
+      // We want all the chats from replies.  We fetch them in myposts, here we only need to
       // get them from the store
       const chats = Object.values(this.$store.getters['chats/list']())
       let unseen = 0
 
-      for (const chat of chats) {
-        if (chat.refmsgids) {
-          if (chat.refmsgids.indexOf(this.message.id) !== -1) {
-            // This chat references this message
+      for (const reply of this.message.replies) {
+        for (const chat of chats) {
+          if (chat.id === reply.chatid) {
             unseen += chat.unseen
           }
         }

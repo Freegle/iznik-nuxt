@@ -143,3 +143,8 @@ button {
 .text-faded {
   color: #6c757d70;
 }
+
+.nopara p {
+  margin-bottom: 0;
+  display: inline;
+}

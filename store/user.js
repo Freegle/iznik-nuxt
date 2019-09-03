@@ -46,5 +46,13 @@ export const actions = {
     if (rsp.status === 200 && rsp.data.ret === 0) {
       commit('add', rsp.data.user)
     }
+  },
+
+  async rate({ commit }, params) {
+    await this.$axios.post(process.env.API + '/user', {
+      action: 'Rate',
+      ratee: params.id,
+      rating: params.rating
+    })
   }
 }

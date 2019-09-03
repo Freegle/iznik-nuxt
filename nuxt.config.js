@@ -64,6 +64,7 @@ module.exports = {
     { src: '~plugins/vue-debounce', ssr: false},
     { src: '~plugins/vue-highlight-words', ssr: false},
     { src: '~plugins/vue-awesome.js', ssr: false },
+    { src: '~plugins/vue-read-more', ssr: false },
     { src: '~plugins/facebook-sdk', ssr: false },
     { src: '~plugins/google-sdk', ssr: false },
   ],
