@@ -1,3 +1,5 @@
+import Vue from 'vue'
+
 export const state = () => ({
   // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
   // storage.
@@ -6,13 +8,13 @@ export const state = () => ({
 
 export const mutations = {
   add(state, item) {
-    state.list[item.id] = item
+    Vue.set(state.list, item.id, item)
   },
 
   setList(state, items) {
     state.list = {}
     for (const item of items) {
-      state.list[item.id] = item
+      Vue.set(state.list, item.id, item)
     }
   }
 }
@@ -48,11 +50,19 @@ export const actions = {
     }
   },
 
-  async rate({ commit }, params) {
+  async rate({ commit, dispatch }, params) {
     await this.$axios.post(process.env.API + '/user', {
       action: 'Rate',
       ratee: params.id,
       rating: params.rating
     })
+
+    // Fetch the user back into the store to update any ratings elsewhere
+    await dispatch('fetch', {
+      id: params.id,
+      info: true
+    })
+
+    console.log('Fetched')
   }
 }

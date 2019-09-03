@@ -130,6 +130,10 @@ button {
   color: white !important;
 }
 
+.red {
+  color: red;
+}
+
 .fa-icon {
   /* These appear misaligned - fix */
   margin-bottom: 3px;

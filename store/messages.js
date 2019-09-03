@@ -1,3 +1,5 @@
+import Vue from 'vue'
+
 export const state = () => ({
   // Use array because we need to store them in the order returned by the server.
   list: [],
@@ -15,7 +17,7 @@ export const mutations = {
     })
 
     if (existing !== -1) {
-      state.list[existing] = item
+      Vue.set(state.list, existing, item)
     } else {
       state.list.push(item)
     }
@@ -28,7 +30,7 @@ export const mutations = {
       })
 
       if (existing !== -1) {
-        state.list[existing] = item
+        Vue.set(state.list, existing, item)
       } else {
         state.list.push(item)
       }
@@ -104,6 +106,33 @@ export const actions = {
     })
 
     commit('add', res.data.message)
+  },
+
+  async update({ commit, dispatch }, params) {
+    await this.$axios.post(process.env.API + '/message', params)
+
+    // Fetch back to update store and thereby components
+    await dispatch('fetch', {
+      id: params.id
+    })
+  },
+
+  async promise({ dispatch }, params) {
+    await dispatch(
+      'update',
+      Object.assign(params, {
+        action: 'Promise'
+      })
+    )
+  },
+
+  async renege({ dispatch }, params) {
+    await dispatch(
+      'update',
+      Object.assign(params, {
+        action: 'Renege'
+      })
+    )
   },
 
   clear({ commit }) {

@@ -65,7 +65,7 @@
             <table class="table table-borderless table-striped mb-0">
               <tbody>
                 <tr v-for="reply in replies" :key="'reply-' + reply.id">
-                  <MyMessageReply :reply="reply" :chats="chats" />
+                  <MyMessageReply :reply="reply" :chats="chats" :message="message" />
                 </tr>
               </tbody>
             </table>
@@ -132,10 +132,13 @@ img.attachment {
 }
 </style>
 <script>
+// TODO DESIGN This is better than the old version, but it's still not quite right, in terms of alignment and sizes
+// of things.
 // TODO DESIGN How do we use text-truncate with ellipsis to make long subjects look nicer?  Also we may or may not
 // have reply, promised, unread buttons - seems a shame to truncate if they are not even there.
-// TODO DESIGN Visually the text body of the post needs to be distinguished from the replies.
+// TODO DESIGN The badge and the dropdown arrow are different sizes.
 // TODO When we click to expand, the visible text may be off the top or bottom of the screen.  Need to make it visible.
+// TODO MINOR The caret doesn't toggle when we expand.
 const MyMessageReply = () => import('~/components/MyMessageReply.vue')
 
 export default {

@@ -35,8 +35,12 @@ export default {
     }
   },
   data: function() {
-    return {
-      user: null
+    return {}
+  },
+  computed: {
+    user() {
+      const ret = this.id ? this.$store.getters['user/get'](this.id) : null
+      return ret
     }
   },
   async mounted() {
@@ -46,41 +50,21 @@ export default {
       id: this.id,
       info: true
     })
-
-    this.user = this.$store.getters['user/get'](this.id)
   },
   methods: {
-    up() {
-      this.$store.dispatch('user/rate', {
+    async rate(rating) {
+      await this.$store.dispatch('user/rate', {
         id: this.id,
-        rating: 'Up'
+        rating: rating
       })
-
-      // Handle the calculation on the client rather than wait for the server - make it look zippy.
-      if (this.user.info.ratings.Mine !== 'Up') {
-        if (this.user.info.ratings.Mine === 'Down') {
-          this.user.info.ratings.Down--
-        }
-
-        this.user.info.ratings.Up++
-        this.user.info.ratings.Mine = 'Up'
-      }
     },
 
-    down() {
-      this.$store.dispatch('user/rate', {
-        id: this.id,
-        rating: 'Down'
-      })
+    async up() {
+      await this.rate('Up')
+    },
 
-      if (this.user.info.ratings.Mine !== 'Down') {
-        if (this.user.info.ratings.Mine === 'Up') {
-          this.user.info.ratings.Up--
-        }
-
-        this.user.info.ratings.Down++
-        this.user.info.ratings.Mine = 'Down'
-      }
+    async down() {
+      await this.rate('Down')
     }
   }
 }
