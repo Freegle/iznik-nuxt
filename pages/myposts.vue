@@ -35,7 +35,7 @@
             </p>
             <b-img-lazy v-if="busy" src="~/static/loader.gif" />
             <div v-for="(message, $index) in messages" :key="$index" class="p-0 text-left mt-1">
-              <MyMessage v-if="message.type === 'Offer'" :message="message" :messages="messages" :show-old="showOldOffers" />
+              <MyMessage v-if="message.type === 'Offer'" :message="message" :messages="messages" :show-old="showOldOffers" :expand="expand" />
             </div>
           </b-card-text>
         </b-card>
@@ -65,7 +65,8 @@ export default {
       busy: true,
       context: null,
       showOldOffers: false,
-      showOldWanteds: false
+      showOldWanteds: false,
+      expand: false
     }
   },
   computed: {
@@ -136,7 +137,18 @@ export default {
           this.context = this.$store.getters['messages/getContext']()
 
           if (currentCount !== this.messages.length) {
+            // More to load
             this.loadMore()
+          } else {
+            // Finished.  If the number of active messages is small, expand them.
+            let count = 0
+            for (const message of this.messages) {
+              if (!message.outcomes || message.outcomes.length === 0) {
+                count++
+              }
+            }
+
+            this.expand = count <= 5
           }
         })
         .catch(() => {

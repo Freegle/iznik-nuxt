@@ -16,7 +16,7 @@
             </b-col>
             <b-col cols="4" class="text-right">
               <b-btn class="float-right ml-1" variant="white">
-                <v-icon v-if="!expanded" name="caret-down" />
+                <v-icon v-if="!expand" name="caret-down" />
                 <v-icon v-else name="caret-up" />
                 <template slot="button-content" />
               </b-btn>
@@ -39,7 +39,7 @@
           </b-row>
         </b-button>
       </b-card-header>
-      <b-collapse :id="'mypost-' + message.id" :visible="expanded" role="tabpanel">
+      <b-collapse :id="'mypost-' + message.id" :visible="expand" role="tabpanel">
         <b-card-body>
           <b-card-text>
             <span v-if="message.attachments.length > 0" class="float-right clickme" @click="showPhotos">
@@ -53,7 +53,7 @@
                 :src="message.attachments[0].paththumb"
               />
             </span>
-            <p :v-if="expanded">
+            <p :v-if="expand">
               <span v-for="group in message.groups" :key="'message-' + message.id + '-' + group.id" class="small text-muted">
                 {{ group.arrival | timeago }} on {{ group.namedisplay }} <span class="text-faded small">#{{ message.id }}</span>
               </span>
@@ -68,7 +68,7 @@
       </b-collapse>
     </b-card>
     <b-modal
-      v-if="expanded && message.attachments.length"
+      v-if="expand && message.attachments.length"
       :id="'photoModal-' + message.id"
       ref="photoModal"
       :title="message.subject"
@@ -148,25 +148,18 @@ export default {
     showOld: {
       type: Boolean,
       required: true
+    },
+    expand: {
+      type: Boolean,
+      required: false
     }
   },
   data: function() {
     return {
-      expandCount: 5,
       slide: 0
     }
   },
   computed: {
-    expanded() {
-      let count = 0
-      for (const message of this.messages) {
-        if (message.type === this.message.type) {
-          count++
-        }
-      }
-
-      return count <= this.expandCount
-    },
     unseen() {
       // We want all the chats which reference this message.  We fetch them in myposts, here we only need to
       // get them from the store
