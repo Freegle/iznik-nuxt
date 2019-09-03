@@ -1,5 +1,5 @@
 <template>
-  <div class="clickme" @click="click">
+  <div class="clickme noselect" @click="click">
     <b-row class="ml-1 mr-1">
       <b-col class="pl-0">
         <b-img-lazy
@@ -104,7 +104,6 @@ export default {
 
   methods: {
     click: function() {
-      console.log('Click for chat', this.id)
       this.$router.push('/chats/' + this.id)
     }
   }

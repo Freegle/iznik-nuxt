@@ -50,7 +50,7 @@
           <b-btn v-else variant="success" class="align-middle mt-1 mb-1" @click="promise">
             <v-icon name="handshake" /> Promise
           </b-btn>
-          <b-btn variant="primary" class="align-middle mt-1 mb-1" @click="chat">
+          <b-btn variant="primary" class="align-middle mt-1 mb-1 mr-1" @click="chat">
             <b-badge v-if="unseen > 0" variant="danger">
               {{ unseen }}
             </b-badge>

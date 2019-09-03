@@ -54,7 +54,7 @@
                 We've let them know this is no longer available.
               </span>
               <span v-else>
-                We've let them nknwo you are no longer looking for this.
+                We've let them know you are no longer looking for this.
               </span>
             </b-card-text>
           </b-card>
@@ -64,55 +64,11 @@
   </div>
 </template>
 <style scoped>
-.chatMessage {
-  border: 1px solid lightgrey;
-  border-radius: 10px;
-  padding-top: 2px;
-  padding-bottom: 2px;
-  padding-left: 4px;
-  padding-right: 2px;
-  word-wrap: break-word;
-  line-height: 1.75;
-}
 </style>
 <script>
-import twem from '~/assets/js/twem'
+import ChatBase from '~/components/ChatBase'
 
 export default {
-  props: {
-    chat: {
-      type: Object,
-      required: true
-    },
-    chatmessage: {
-      type: Object,
-      required: true
-    },
-    me: {
-      type: Object,
-      required: true
-    },
-    otheruser: {
-      type: Object,
-      required: true
-    }
-  },
-  computed: {
-    emessage() {
-      return twem.twem(this.$twemoji, this.chatmessage.message).trim()
-    },
-    refmsg() {
-      return this.chatmessage.refmsg
-        ? this.chatmessage.refmsg
-        : {
-            subject: 'A message which no longer exists'
-          }
-    }
-  },
-  methods: {
-    brokenImage(event) {
-      event.target.src = '/static/defaultprofile.png'
-    }
-  }
+  extends: ChatBase
 }
 </script>

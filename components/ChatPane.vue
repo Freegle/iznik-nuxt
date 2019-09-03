@@ -42,7 +42,14 @@
           </infinite-loading>
           <ul v-for="(chatmessage, $index) in chatmessages" :key="'chatmessage-' + $index" class="p-0 pt-1 list-unstyled mb-1">
             <li v-if="chatmessage">
-              <ChatMessage :key="'chatmessage-' + chatmessage.id" :chatmessage="chatmessage" :chat="chat" :me="me" :otheruser="otheruser" />
+              <ChatMessage
+                :key="'chatmessage-' + chatmessage.id"
+                :chatmessage="chatmessage"
+                :chat="chat"
+                :me="me"
+                :otheruser="otheruser"
+                :last="chatmessage.id === chatmessages[chatmessages.length - 1].id"
+              />
             </li>
           </ul>
           <b-row v-if="chatBusy">
@@ -80,7 +87,7 @@
           <b-col class="p-0 pt-1 pb-1">
             <ratings v-if="otheruser" :key="'otheruser-' + (otheruser ? otheruser.id : null)" v-bind="otheruser" />
             <ratings v-else />
-            <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person">
+            <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person" @click="promise">
               <v-icon name="handshake" />&nbsp;Promise
             </b-btn>
             <b-btn v-b-tooltip.hover.top variant="white" title="Send your address">
@@ -200,20 +207,26 @@ export default {
 
     otheruser() {
       // The user who isn't us.
-      if (this.chat && this.chat.user1 && this.$store.state.auth.user) {
-        return this.chat.user1 &&
+      let ret = null
+      if (
+        this.chat &&
+        this.chat.chattype === 'User2User' &&
+        this.chat.user1 &&
+        this.$store.state.auth.user
+      ) {
+        ret =
+          this.chat.user1 &&
           this.chat.user1.id === this.$store.state.auth.user.id
-          ? this.chat.user2
-          : this.chat.user1
-      } else {
-        return null
+            ? this.chat.user2
+            : this.chat.user1
       }
+
+      return ret
     }
   },
   async mounted() {
     // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
     // need to render this pane on the server.
-    console.log('ChatPane', this.id)
     await this.$store.dispatch('chats/fetch', {
       id: this.id
     })
@@ -344,6 +357,18 @@ export default {
           imageid: imageid
         })
         .then(this._updateAfterSend)
+    },
+    promise() {
+      // Find the last message referenced in this chat, if any.  That's the most likely one you'd want to promise,
+      // so it should be the default.
+      console.log('Promise')
+      const lastmsg = null
+
+      for (const msg in this.chatmessages) {
+        console.log('Chat message', msg)
+      }
+
+      console.log(lastmsg)
     }
   }
 }

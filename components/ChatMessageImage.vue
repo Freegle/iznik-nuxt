@@ -63,29 +63,9 @@
 <style scoped>
 </style>
 <script>
+import ChatBase from '~/components/ChatBase'
+
 export default {
-  props: {
-    chat: {
-      type: Object,
-      required: true
-    },
-    chatmessage: {
-      type: Object,
-      required: true
-    },
-    me: {
-      type: Object,
-      required: true
-    },
-    otheruser: {
-      type: Object,
-      required: true
-    }
-  },
-  methods: {
-    brokenImage(event) {
-      event.target.src = '/static/defaultprofile.png'
-    }
-  }
+  extends: ChatBase
 }
 </script>

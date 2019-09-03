@@ -1,5 +1,5 @@
 <template>
-  <b-row v-if="!chatmessage.sameaslast" class="text-muted small">
+  <b-row v-if="!chatmessage.sameaslast || last" class="text-muted small">
     <b-col v-if="chatmessage.userid != $store.state.auth.user.id">
       <span style="padding-left: 30px">
         <v-icon v-if="chatmessage.seenbyall" name="check" class="text-success" />
@@ -22,6 +22,11 @@ export default {
     chatmessage: {
       type: Object,
       required: true
+    },
+    last: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   }
 }

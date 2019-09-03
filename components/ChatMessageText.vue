@@ -6,12 +6,13 @@
           <div class="media-left">
             <div class="media-object">
               <b-img-lazy
+                v-if="othericon"
                 rounded="circle"
                 thumbnail
                 class="profilesm p-0 mb-1 inline mr-1 mt-1"
                 alt="Profile picture"
                 title="Profile"
-                :src="otheruser.profile.turl"
+                :src="othericon"
                 @error.native="brokenImage"
               />
             </div>
@@ -71,36 +72,9 @@
 }
 </style>
 <script>
-import twem from '~/assets/js/twem'
+import ChatBase from '~/components/ChatBase'
 
 export default {
-  props: {
-    chat: {
-      type: Object,
-      required: true
-    },
-    chatmessage: {
-      type: Object,
-      required: true
-    },
-    me: {
-      type: Object,
-      required: true
-    },
-    otheruser: {
-      type: Object,
-      required: true
-    }
-  },
-  computed: {
-    emessage() {
-      return twem.twem(this.$twemoji, this.chatmessage.message).trim()
-    }
-  },
-  methods: {
-    brokenImage(event) {
-      event.target.src = '/static/defaultprofile.png'
-    }
-  }
+  extends: ChatBase
 }
 </script>

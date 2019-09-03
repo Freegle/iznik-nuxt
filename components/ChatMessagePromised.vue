@@ -24,21 +24,12 @@
                 title="Profile"
                 :src="otheruser.profile.turl"
                 @error.native="brokenImage"
-              /> <span class="small black"><b>{{ otheruser.displayname }}</b> has asked about</span>
+              /> <span class="small black">Good news!  You've been promised this:</span>
               <br><h4>
                 {{ refmsg.subject }}
               </h4>
             </b-card-title>
             <b-card-text>
-              <b-alert v-if="refmsg.outcomes && refmsg.outcomes.length" show variant="info">
-                <v-icon name="info-circle" />
-                <span v-if="refmsg.type === 'Offer'">
-                  This is no longer available.
-                </span>
-                <span v-else>
-                  They are no longer looking for this.
-                </span>
-              </b-alert>
               <div :class="emessage ? 'media-body chatMessage' : 'media-body'">
                 <span>
                   <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap"><b>{{ emessage }}</b></span>
@@ -71,21 +62,12 @@
                 title="Profile"
                 :src="me.profile.turl"
                 @error.native="brokenImage"
-              /> <span class="small black">You asked about</span>
+              /> <span class="small black">You promised <b>{{ otheruser.displayname }}</b>:</span>
               <br><h4>
                 {{ refmsg.subject }}
               </h4>
             </b-card-title>
             <b-card-text>
-              <b-alert v-if="refmsg.outcomes && refmsg.outcomes.length" show variant="info">
-                <v-icon name="info-circle" />
-                <span v-if="refmsg.type === 'Offer'">
-                  This is no longer available.
-                </span>
-                <span v-else>
-                  They are no longer looking for this.
-                </span>
-              </b-alert>
               <div :class="emessage ? 'media-body chatMessage' : 'media-body'">
                 <span>
                   <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap"><b>{{ emessage }}</b></span>

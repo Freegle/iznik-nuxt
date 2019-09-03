@@ -3,7 +3,7 @@
     <b-row class="pb-1">
       <b-col>
         <div v-if="chatmessage.userid != $store.state.auth.user.id" class="media">
-          <b-card border-variant="success">
+          <b-card border-variant="warning">
             <b-card-title>
               <b-img
                 v-if="refmsg && refmsg.attachments && refmsg.attachments.length > 0"
@@ -24,21 +24,12 @@
                 title="Profile"
                 :src="otheruser.profile.turl"
                 @error.native="brokenImage"
-              /> <span class="small black"><b>{{ otheruser.displayname }}</b> has asked about</span>
+              /> <span class="small black">Sorry...this is no longer promised to you:</span>
               <br><h4>
                 {{ refmsg.subject }}
               </h4>
             </b-card-title>
             <b-card-text>
-              <b-alert v-if="refmsg.outcomes && refmsg.outcomes.length" show variant="info">
-                <v-icon name="info-circle" />
-                <span v-if="refmsg.type === 'Offer'">
-                  This is no longer available.
-                </span>
-                <span v-else>
-                  They are no longer looking for this.
-                </span>
-              </b-alert>
               <div :class="emessage ? 'media-body chatMessage' : 'media-body'">
                 <span>
                   <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap"><b>{{ emessage }}</b></span>
@@ -50,7 +41,7 @@
           </b-card>
         </div>
         <div v-else class="media float-right">
-          <b-card border-variant="success">
+          <b-card border-variant="warning">
             <b-card-title>
               <b-img
                 v-if="refmsg && refmsg.attachments && refmsg.attachments.length > 0"
@@ -71,21 +62,12 @@
                 title="Profile"
                 :src="me.profile.turl"
                 @error.native="brokenImage"
-              /> <span class="small black">You asked about</span>
+              /> <span class="small black">You cancelled your promise to <b>{{ otheruser.displayname }}</b> for:</span>
               <br><h4>
                 {{ refmsg.subject }}
               </h4>
             </b-card-title>
             <b-card-text>
-              <b-alert v-if="refmsg.outcomes && refmsg.outcomes.length" show variant="info">
-                <v-icon name="info-circle" />
-                <span v-if="refmsg.type === 'Offer'">
-                  This is no longer available.
-                </span>
-                <span v-else>
-                  They are no longer looking for this.
-                </span>
-              </b-alert>
               <div :class="emessage ? 'media-body chatMessage' : 'media-body'">
                 <span>
                   <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap"><b>{{ emessage }}</b></span>
