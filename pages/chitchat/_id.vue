@@ -46,7 +46,7 @@
                   <b-card-text>
                     <b-row>
                       <b-col>
-                        <b-textarea v-model="startThread" v-focus rows="2" max-rows="8" placeholder="Chat to nearby freeglers...ask for advice, recommendations, or just have a good old blether.  If you're looking to give or find stuff, please use the OFFER/WANTED tabs.  Everything on here is public." />
+                        <b-textarea v-model="startThread" rows="2" max-rows="8" placeholder="Chat to nearby freeglers...ask for advice, recommendations, or just have a good old blether.  If you're looking to give or find stuff, please use the OFFER/WANTED tabs.  Everything on here is public." />
                       </b-col>
                       <b-col v-if="imageid" md="auto">
                         <b-img lazy thumbnail :src="imagethumb" />
