@@ -3,13 +3,13 @@
     <b-row class="m-0">
       <b-col cols="12" md="3" class="chatlist p-0 bg-white">
         <ul v-for="(chat, $index) in sortedChats" :key="'chat-' + $index" class="p-0 pt-1 list-unstyled mb-1">
-          <li :class="{ active: activeChat && chat.id == activeChat.id }">
+          <li :class="{ active: selectedChatId && parseInt(chat.id) === parseInt(selectedChatId) }">
             <ChatListEntry :key="'ChatListEntry-' + chat.id" v-bind="chat" />
           </li>
         </ul>
       </b-col>
       <b-col cols="12" md="6" class="chatback">
-        <chatPane v-if="activeChat" :key="'activechat-' + (activeChat ? activeChat.id : null)" v-bind="activeChat" />
+        <chatPane v-if="selectedChatId" v-bind="activeChat" />
       </b-col>
       <b-col cols="0" md="3">
         Ads go here
@@ -46,7 +46,7 @@ export default {
 
   data() {
     return {
-      id: null
+      selectedChatId: null
     }
   },
 
@@ -68,48 +68,45 @@ export default {
 
     activeChat() {
       // Selected chat if present, otherwise first chat if we have one.
-      return this.selectedChat
-        ? this.selectedChat
-        : this.sortedChats
-          ? this.sortedChats[0]
-          : null
+      let ret = null
+
+      if (this.selectedChatId) {
+        // We have selected one - try to find it
+        ret = this.sortedChats.find(
+          chat => parseInt(chat.id) === parseInt(this.selectedChatId)
+        )
+      } else if (this.sortedChats) {
+        // None selected - use the first if we have some.
+        ret = this.sortedChats[0]
+      }
+
+      return ret
     }
   },
 
   async asyncData({ app, params, store }) {
-    let selected = null
     let chats = Object.values(store.getters['chats/list']())
-    const user = store.getters['auth/user']()
 
-    if (!user) {
-      console.log('Not logged in')
+    if (chats) {
+      // Got some - can start rendering.  Fire off an update to refresh us later if they've changed.  No rush, so
+      // wait for idle.
+      requestIdleCallback(() => {
+        store.dispatch('chats/listChats')
+      })
     } else {
-      if (chats) {
-        // Got some - can start rendering.  Fire off an update to refresh us later if they've changed.  No rush, so
-        // wait for idle.
-        requestIdleCallback(() => {
-          store.dispatch('chats/listChats')
-        })
-      } else {
-        // Not got any - need to get them before we can proceed.
-        await store.dispatch('chats/listChats')
-      }
-
-      chats = Object.values(store.getters['chats/list']())
-
-      if (params.id) {
-        selected = chats.find(chat => parseInt(chat.id) === parseInt(params.id))
-      }
+      // Not got any - need to get them before we can proceed.
+      await store.dispatch('chats/listChats')
     }
 
+    chats = Object.values(store.getters['chats/list']())
+
     return {
-      chats: chats,
-      selectedChat: selected
+      chats: chats
     }
   },
 
   created() {
-    this.id = this.$route.params.id
+    this.selectedChatId = this.$route.params.id
   },
   methods: {}
 }

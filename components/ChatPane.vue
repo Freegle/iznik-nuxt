@@ -215,7 +215,7 @@ export default {
     otheruser() {
       // The user who isn't us.
       let ret = null
-      console.log('Calc other user', this.chat)
+
       if (
         this.chat &&
         this.chat.chattype === 'User2User' &&
@@ -229,7 +229,6 @@ export default {
             : this.chat.user1
       }
 
-      console.log('Other is', ret)
       return ret
     }
   },
