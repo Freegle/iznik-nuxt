@@ -1,6 +1,12 @@
 const pkg = require('./package')
-const API = process.env.IZNIK_API || 'https://dev.ilovefreegle.org/api'
 const FACEBOOK_APPID = '134980666550322'
+
+// API is the constant the code uses.
+const API = '/api'
+
+// PROXY_API is where we send it to.  This avoids CORS issues (and removes preflight OPTIONS calls for GETs, which
+// hurt client performance).
+const PROXY_API = process.env.IZNIK_API || 'https://dev.ilovefreegle.org'
 
 module.exports = {
   mode: 'universal',
@@ -139,7 +145,12 @@ module.exports = {
   /*
   ** Axios module configuration
   */
-  axios: {},
+  axios: {
+    proxy: true
+  },
+  proxy: {
+    '/api/': PROXY_API
+  },
 
   /*
   ** Build configuration
