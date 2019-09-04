@@ -3,13 +3,13 @@
     <b-row class="m-0">
       <b-col cols="12" md="3" class="chatlist p-0 bg-white">
         <ul v-for="(chat, $index) in sortedChats" :key="'chat-' + $index" class="p-0 pt-1 list-unstyled mb-1">
-          <li :class="{ active: selectedChatId && parseInt(chat.id) === parseInt(selectedChatId) }">
+          <li :class="{ active: activeChat && parseInt(activeChat.id) === parseInt(chat.id) }">
             <ChatListEntry :key="'ChatListEntry-' + chat.id" v-bind="chat" />
           </li>
         </ul>
       </b-col>
       <b-col cols="12" md="6" class="chatback">
-        <chatPane v-if="selectedChatId" v-bind="activeChat" />
+        <chatPane v-if="activeChat" v-bind="activeChat" />
       </b-col>
       <b-col cols="0" md="3">
         Ads go here
