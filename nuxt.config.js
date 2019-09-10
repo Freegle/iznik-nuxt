@@ -6,7 +6,7 @@ const API = '/api'
 
 // PROXY_API is where we send it to.  This avoids CORS issues (and removes preflight OPTIONS calls for GETs, which
 // hurt client performance).
-const PROXY_API = process.env.IZNIK_API || 'https://dev.ilovefreegle.org'
+const PROXY_API = process.env.IZNIK_API || 'https://iznik.ilovefreegle.org'
 
 module.exports = {
   mode: 'universal',
