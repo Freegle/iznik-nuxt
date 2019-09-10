@@ -18,7 +18,7 @@
           <b-row class="chatTitle m-0">
             <b-col v-if="chat" class="pr-3">
               <b-row>
-                <b-col class="p-0 pl-1">
+                <b-col class="p-0 pl-3">
                   <span class="chatname">
                     <span v-if="(chat.chattype == 'User2User' || chat.chattype == 'User2Mod')" class="d-inline">
                       <span @click="showInfo">
