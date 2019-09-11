@@ -128,7 +128,8 @@ export default {
           summary: true,
           types: ['Offer', 'Wanted'],
           fromuser: me.id,
-          context: this.context
+          context: this.context,
+          limit: 15
         })
         .then(() => {
           this.busy = false
