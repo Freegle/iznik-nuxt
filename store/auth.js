@@ -10,16 +10,21 @@ export const mutations = {
   },
 
   setUser(state, user) {
-    // We can query the server for different components.  Merge everything we have back in.
-    if (!state.user) {
-      state.user = {}
-    }
+    if (user) {
+      // We can query the server for different components.  Merge everything we have back in.
+      if (!state.user) {
+        state.user = {}
+      }
 
-    for (const key in user) {
-      state.user[key] = user[key]
-    }
+      for (const key in user) {
+        state.user[key] = user[key]
+      }
 
-    state.userFetched = new Date().getTime()
+      state.userFetched = new Date().getTime()
+    } else {
+      state.user = null
+      state.userFetched = null
+    }
   }
 }
 
@@ -39,6 +44,7 @@ export const actions = {
   },
 
   setUser({ commit }, value) {
+    console.log('Set user', value)
     commit('setUser', value)
 
     // Set or clear our auth token to be used on all API requests.
