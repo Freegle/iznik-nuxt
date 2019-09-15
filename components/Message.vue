@@ -110,6 +110,7 @@
     >
       <template slot="default">
         <b-carousel
+          v-if="expanded.attachments.length > 1"
           :id="'message-carousel-' + expanded.id"
           v-model="slide"
           :interval="5000"
@@ -127,6 +128,15 @@
             />
           </b-carousel-slide>
         </b-carousel>
+        <div v-else>
+          <b-img
+            slot="img"
+            center
+            class="d-block img-fluid w-100 messagePhoto"
+            :src="attachments[0].path"
+            :alt="'Message photo'"
+          />
+        </div>
       </template>
     </b-modal>
   </div>
