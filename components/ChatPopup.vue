@@ -54,7 +54,14 @@
               </infinite-loading>
               <ul v-for="(chatmessage, $index) in chatmessages" :key="'chatmessage-' + $index" class="p-0 pt-1 list-unstyled mb-1">
                 <li v-if="chatmessage">
-                  <ChatMessage :key="'chatmessage-' + chatmessage.id" :chatmessage="chatmessage" :chat="chat" :me="me" :otheruser="otheruser" />
+                  <ChatMessage
+                    :key="'chatmessage-' + chatmessage.id"
+                    :chatmessage="chatmessage"
+                    :chat="chat"
+                    :me="me"
+                    :otheruser="otheruser"
+                    :last="chatmessage.id === chatmessages[chatmessages.length - 1].id"
+                  />
                 </li>
               </ul>
             </b-col>
@@ -88,7 +95,7 @@
                 <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler">
                   <v-icon name="info-circle" />
                 </b-btn>
-                <b-btn v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler.">
+                <b-btn v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
                   <v-icon name="bell" />
                 </b-btn>
                 <b-btn variant="primary" class="float-right mr-1" @click="send">
@@ -342,6 +349,28 @@ export default {
     newline: function() {
       this.sendmessage += '\n'
     },
+    _updateAfterSend() {
+      // The latest messages will be in the store now.  Get them to trigger re-render
+      this.chatmessages = Object.values(
+        this.$store.getters['chatmessages/getMessages'](this.id)
+      )
+      this.chatusers = Object.values(
+        this.$store.getters['chatmessages/getUsers'](this.id)
+      )
+      this.lastFetched = new Date()
+
+      // Scroll to the bottom so we can see it.
+      requestIdleCallback(() => {
+        const container = this.$el.querySelector('.chatContent')
+        container.scrollTop = container.scrollHeight
+      })
+
+      // Clear the message now it's sent.
+      this.sendmessage = ''
+
+      // We also want to trigger an update in the chat list.
+      this.$store.dispatch('chats/listChats')
+    },
     send: function() {
       let msg = this.sendmessage
 
@@ -354,35 +383,12 @@ export default {
           roomid: this.id,
           message: msg
         })
-        .then(() => {
-          // The latest messages will be in the store now.  Get them to trigger re-render
-          this.chatmessages = Object.values(
-            this.$store.getters['chatmessages/getMessages'](this.id)
-          )
-          this.chatusers = Object.values(
-            this.$store.getters['chatmessages/getUsers'](this.id)
-          )
-          this.lastFetched = new Date()
-
-          // Scroll to the bottom so we can see it.
-          requestIdleCallback(() => {
-            const container = this.$el.querySelector('.chatContent')
-            container.scrollTop = container.scrollHeight
-          })
-
-          // Clear the message now it's sent.
-          this.sendmessage = ''
-
-          // We also want to trigger an update in the chat list.
-          this.$store.dispatch('chats/listChats')
-        })
+        .then(this._updateAfterSend)
     },
     hide() {
-      console.log('Hide chat', this.chat.id)
       this.$store.dispatch('popupchats/hide', { id: this.chat.id })
     },
     maximise() {
-      console.log('Maximise chat', this.chat.id)
       this.$store.dispatch('popupchats/hide', { id: this.chat.id })
       this.$router.push('/chats/' + this.chat.id)
     },
@@ -426,7 +432,16 @@ export default {
             }
           }
         }
+
+        this._updateAfterSend()
       })
+    },
+    async nudge() {
+      await this.$store.dispatch('chatmessages/nudge', {
+        roomid: this.id
+      })
+
+      this._updateAfterSend()
     }
   }
 }

@@ -115,5 +115,17 @@ export const actions = {
       chatid: params.roomid,
       noContext: true
     })
+  },
+
+  async nudge({ commit, dispatch }, params) {
+    await this.$axios.post(process.env.API + '/chatrooms', {
+      id: params.roomid,
+      action: 'Nudge'
+    })
+
+    await dispatch('fetch', {
+      chatid: params.roomid,
+      noContext: true
+    })
   }
 }

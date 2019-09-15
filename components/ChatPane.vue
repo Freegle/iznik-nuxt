@@ -101,7 +101,7 @@
               <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler">
                 <v-icon name="info-circle" />&nbsp;Info
               </b-btn>
-              <b-btn v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler.">
+              <b-btn v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
                 <v-icon name="bell" />&nbsp;Nudge
               </b-btn>
             </span>
@@ -344,7 +344,6 @@ export default {
         .then(this._updateAfterSend)
     },
     popup() {
-      console.log('Popup', this.chat.id)
       this.$store.dispatch('popupchats/popup', { id: this.chat.id })
     },
     photoAdd() {
@@ -399,7 +398,16 @@ export default {
             }
           }
         }
+
+        this._updateAfterSend()
       })
+    },
+    async nudge() {
+      await this.$store.dispatch('chatmessages/nudge', {
+        roomid: this.id
+      })
+
+      this._updateAfterSend()
     }
   }
 }
