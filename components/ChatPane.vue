@@ -98,7 +98,7 @@
               <b-btn v-b-tooltip.hover.top variant="white" title="Update your availability">
                 <v-icon name="calendar-alt" />&nbsp;Calendar
               </b-btn>
-              <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler">
+              <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler" @click="showInfo">
                 <v-icon name="info-circle" />&nbsp;Info
               </b-btn>
               <b-btn v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
@@ -115,6 +115,7 @@
         </b-row>
       </div>
       <PromiseModal ref="promise" :messages="ouroffers" :selected-message="likelymsg ? likelymsg : 0" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
+      <ProfileModal :id="otheruser ? otheruser.id : null" ref="profile" />
     </div>
   </client-only>
 </template>
@@ -164,13 +165,15 @@ const requestIdleCallback = () => import('~/assets/js/requestIdleCallback')
 const Ratings = () => import('~/components/Ratings')
 const ChatMessage = () => import('~/components/ChatMessage.vue')
 const PromiseModal = () => import('./PromiseModal')
+const ProfileModal = () => import('./ProfileModal')
 
 export default {
   components: {
     Ratings,
     ChatMessage,
     OurFilePond,
-    PromiseModal
+    PromiseModal,
+    ProfileModal
   },
   props: {
     id: {
@@ -245,7 +248,7 @@ export default {
 
   methods: {
     showInfo() {
-      console.log('Show info')
+      this.$refs.profile.show()
     },
     loadMore: function($state) {
       const currentCount = this.chatmessages.length

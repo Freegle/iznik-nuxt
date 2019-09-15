@@ -92,7 +92,7 @@
                 <b-btn v-b-tooltip.hover.top variant="white" title="Update your availability">
                   <v-icon name="calendar-alt" />
                 </b-btn>
-                <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler">
+                <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler" @click="showInfo">
                   <v-icon name="info-circle" />
                 </b-btn>
                 <b-btn v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
@@ -107,6 +107,7 @@
         </div>
       </vue-draggable-resizable>
       <PromiseModal ref="promise" :messages="ouroffers" :selected-message="likelymsg ? likelymsg : 0" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
+      <ProfileModal :id="otheruser ? otheruser.id : null" ref="profile" />
     </div>
   </client-only>
 </template>
@@ -187,6 +188,7 @@ const VueDraggableResizable = () => import('vue-draggable-resizable')
 const Ratings = () => import('~/components/Ratings')
 const ChatMessage = () => import('~/components/ChatMessage.vue')
 const PromiseModal = () => import('./PromiseModal')
+const ProfileModal = () => import('./ProfileModal')
 
 // TODO DESIGN The maximise icon from font awesome is not obvious.
 
@@ -195,7 +197,8 @@ export default {
     Ratings,
     ChatMessage,
     VueDraggableResizable,
-    PromiseModal
+    PromiseModal,
+    ProfileModal
   },
   props: {
     id: {
@@ -294,7 +297,7 @@ export default {
   },
   methods: {
     showInfo() {
-      console.log('Show info')
+      this.$refs.profile.show()
     },
     loadMore: function($state) {
       const currentCount = this.chatmessages.length

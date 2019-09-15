@@ -132,6 +132,7 @@ module.exports = {
       'LayoutPlugin',
       'LinkPlugin',
       'ListGroupPlugin',
+      'MediaPlugin',
       'ModalPlugin',
       'NavPlugin',
       'NavbarPlugin',
