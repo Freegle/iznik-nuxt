@@ -27,6 +27,9 @@
         </b-card-title>
         <span v-for="group in groups" :key="'message-' + id + '-' + group.id" class="small muted">
           {{ group.arrival | timeago }} on {{ group.namedisplay }}
+          <span class="text-sm small text-faded">
+            #{{ id }}&nbsp;
+          </span>
         </span>
         <div v-if="eSnippet && eSnippet !== 'null' && !expanded">
           <h4 class="snippet">
@@ -63,7 +66,7 @@
         </p>
 
         <MessageUserInfo v-if="expanded.fromuser" :user="expanded.fromuser" />
-        <span v-if="expanded.replycount" class="float-right small text-muted">
+        <span v-if="expanded.replycount" class="float-right small text-muted mr-1">
           <v-icon name="user" class="d-inline" />&nbsp;<span class="d-inline">{{ expanded.replycount }}&nbsp;freegler<span v-if="expanded.replycount != 1">s</span>&nbsp;replied&nbsp;</span>
         </span>
       </b-card-body>
@@ -89,13 +92,6 @@
             <b-btn variant="success">
               <v-icon name="envelope" />&nbsp;Send
             </b-btn>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col>
-            <span class="text-sm small text-muted float-right">
-              #{{ id }}&nbsp;
-            </span>
           </b-col>
         </b-row>
       </b-card-footer>
