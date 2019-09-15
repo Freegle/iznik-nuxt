@@ -116,11 +116,11 @@
                       id="email"
                       ref="email"
                       v-model="email"
-                      v-focus
                       name="email"
                       placeholder="Your email address"
                       alt="Email address"
                       class="mb-3"
+                      autocomplete="username email"
                     />
                   </b-col>
                 </b-row>
@@ -135,6 +135,7 @@
                       placeholder="Your password"
                       alt="Password"
                       class="mb-2"
+                      autocomplete="current-password"
                     />
                   </b-col>
                 </b-row>
@@ -376,6 +377,7 @@ export default {
     },
     loginNative(e) {
       console.log('loginNative')
+      const self = this
       e.preventDefault()
       e.stopPropagation()
 
@@ -385,8 +387,20 @@ export default {
           password: this.password
         })
         .then(() => {
-          // We are now logged in.
-          this.pleaseLogin = false
+          // We are now logged in. Prompt the browser to remember the credentials.
+          if (window.PasswordCredential) {
+            const c = new window.PasswordCredential(e.target)
+            navigator.credentials
+              .store(c)
+              .then(function() {
+                self.pleaseLogin = false
+              })
+              .catch(err => {
+                console.error('Failed to save credentials', err)
+              })
+          } else {
+            self.pleaseLogin = false
+          }
         })
         .catch(e => {
           // TODO
