@@ -16,7 +16,7 @@
             <div class="float-right">
               <span class="small text-faded float-right">#{{ id }}</span>
               <br>
-              <b-btn variant="white" size="sm" class="float-right mb-1">
+              <b-btn variant="white" size="sm" class="float-right mb-1" :disabled="user.id === myid ? 'true' : ''">
                 <v-icon name="comment" class="d-none d-sm-inline-block" />&nbsp;Message
               </b-btn>
               <br>
@@ -179,6 +179,10 @@ export default {
     }
   },
   computed: {
+    myid() {
+      const me = this.$store.getters['auth/auth']
+      return me ? me.id : null
+    },
     user() {
       const ret = this.id ? this.$store.getters['user/get'](this.id) : null
       return ret

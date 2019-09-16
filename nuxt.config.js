@@ -74,6 +74,7 @@ module.exports = {
     { src: '~plugins/vue-read-more', ssr: false },
     { src: '~plugins/facebook-sdk', ssr: false },
     { src: '~plugins/google-sdk', ssr: false },
+    { src: '~plugins/vue-js-toggle-button', ssr: false },
   ],
 
   /*

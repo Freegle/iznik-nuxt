@@ -57,6 +57,10 @@
               <v-icon name="comments" scale="2" /><br>
               Chats
             </b-nav-item>
+            <b-nav-item class="text-center p-0" to="/settings">
+              <v-icon name="cog" scale="2" /><br>
+              Settings
+            </b-nav-item>
             <b-nav-item class="text-center p-0" @click="logOut()">
               <v-icon name="sign-out-alt" scale="2" /><br>
               Logout

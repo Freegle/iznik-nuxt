@@ -56,8 +56,8 @@ export default {
       this.showModal = false
     },
     async save() {
-      console.log('Save', this.text)
       await this.$store.dispatch('auth/saveAboutMe', this.text)
+      this.$emit('change')
       this.hide()
     }
   }
