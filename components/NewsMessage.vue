@@ -3,7 +3,7 @@
     <NewsUserIntro v-if="userid" :userid="userid" :users="users" :newsfeed="newsfeed" />
     <b-row v-if="newsfeed.message">
       <b-col>
-        <span class="font-weight-bold prewrap forcebreak">{{ emessage }}</span>
+        <read-more :text="emessage" :max-chars="500" class="font-weight-bold prewrap forcebreak nopara" />
       </b-col>
     </b-row>
     <div>
@@ -50,6 +50,7 @@
 </template>
 <script>
 import NewsBase from '~/components/NewsBase'
+
 const NewsUserIntro = () => import('~/components/NewsUserIntro')
 const NewsLoveComment = () => import('~/components/NewsLoveComment')
 
