@@ -82,5 +82,19 @@ export const actions = {
     } else {
       console.error("Don't fetch null id")
     }
+  },
+
+  async markSeen({ commit, getters, dispatch }, params) {
+    const chat = getters.get(params.id)
+
+    if (chat.unseen > 0) {
+      // Record that we have seen the last message, and there are no unseen ones left.
+      await this.$axios.post(process.env.API + '/chatrooms', {
+        id: chat.id,
+        lastmsgseen: chat.lastmsg
+      })
+
+      await dispatch('fetch', params.id)
+    }
   }
 }

@@ -78,6 +78,7 @@
                   @keyup.enter.exact="send"
                   @keydown.enter.shift.exact="newline"
                   @keydown.alt.shift.exact="newline"
+                  @focus="markRead"
                 />
               </b-col>
             </b-row>
@@ -86,10 +87,10 @@
                 <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person" class="ml-1" @click="promise">
                   <v-icon name="handshake" />
                 </b-btn>
-                <b-btn v-b-tooltip.hover.top variant="white" title="Send your address">
+                <b-btn v-b-tooltip.hover.top variant="white" title="Send your address" disabled>
                   <v-icon name="address-book" />
                 </b-btn>
-                <b-btn v-b-tooltip.hover.top variant="white" title="Update your availability">
+                <b-btn v-b-tooltip.hover.top variant="white" title="Update your availability" disabled>
                   <v-icon name="calendar-alt" />
                 </b-btn>
                 <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler" @click="showInfo">
@@ -442,6 +443,13 @@ export default {
     async nudge() {
       await this.$store.dispatch('chatmessages/nudge', {
         roomid: this.id
+      })
+
+      this._updateAfterSend()
+    },
+    async markRead() {
+      await this.$store.dispatch('chats/markSeen', {
+        id: this.id
       })
 
       this._updateAfterSend()

@@ -62,6 +62,7 @@ export default {
         ret = this.chat.group.profile
       }
 
+      console.log('REturn ', ret)
       return ret
     },
     refmsg() {

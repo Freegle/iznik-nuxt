@@ -1,21 +1,33 @@
 <template>
-  <b-col>
-    <b-row class="m-0">
-      <b-col cols="12" md="3" class="chatlist p-0 bg-white">
-        <ul v-for="(chat, $index) in sortedChats" :key="'chat-' + $index" class="p-0 pt-1 list-unstyled mb-1">
-          <li :class="{ active: activeChat && parseInt(activeChat.id) === parseInt(chat.id) }">
-            <ChatListEntry :key="'ChatListEntry-' + chat.id" v-bind="chat" />
-          </li>
-        </ul>
-      </b-col>
-      <b-col cols="12" md="6" class="chatback">
-        <chatPane v-if="activeChat" v-bind="activeChat" />
-      </b-col>
-      <b-col cols="0" md="3">
-        Ads go here
-      </b-col>
-    </b-row>
-  </b-col>
+  <b-row class="m-0">
+    <b-col cols="12" md="3" class="chatlist p-0 bg-white">
+      <b-card class="p-0">
+        <b-card-body class="p-0">
+          <b-row>
+            <b-col>
+              <b-form-input placeholder="Search chats" />
+            </b-col>
+            <b-col>
+              <b-btn class="float-right" variant="white" @click="markAllRead">
+                <v-icon name="check" /> Mark all read
+              </b-btn>
+            </b-col>
+          </b-row>
+        </b-card-body>
+      </b-card>
+      <ul v-for="(chat, $index) in sortedChats" :key="'chat-' + $index" class="p-0 pt-1 list-unstyled mb-1">
+        <li :class="{ active: activeChat && parseInt(activeChat.id) === parseInt(chat.id) }">
+          <ChatListEntry :key="'ChatListEntry-' + chat.id" v-bind="chat" />
+        </li>
+      </ul>
+    </b-col>
+    <b-col cols="12" md="6" class="chatback">
+      <chatPane v-if="activeChat" v-bind="activeChat" />
+    </b-col>
+    <b-col cols="0" md="3">
+      Ads go here
+    </b-col>
+  </b-row>
 </template>
 <style scoped>
 .chatback {
@@ -108,6 +120,16 @@ export default {
   created() {
     this.selectedChatId = this.$route.params.id
   },
-  methods: {}
+  methods: {
+    async markAllRead() {
+      for (const chat of this.sortedChats) {
+        if (chat.unseen) {
+          await this.$store.dispatch('chat/markSeen', {
+            id: chat.id
+          })
+        }
+      }
+    }
+  }
 }
 </script>

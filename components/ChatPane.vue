@@ -26,7 +26,7 @@
               <span class="float-right pl-1 clickme" title="Popup chat window" @click="popup">
                 <v-icon name="window-restore" />
               </span>
-              <b-btn variant="white" size="xs" class="float-right mt-1 mr-2">
+              <b-btn variant="white" size="xs" class="float-right mt-1 mr-2" @click="markRead">
                 Mark read
               </b-btn>
             </b-col>
@@ -82,6 +82,7 @@
               @keyup.enter.exact="send"
               @keydown.enter.shift.exact="newline"
               @keydown.alt.shift.exact="newline"
+              @focus="markRead"
             />
           </b-col>
         </b-row>
@@ -92,10 +93,10 @@
               <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person" @click="promise">
                 <v-icon name="handshake" />&nbsp;Promise
               </b-btn>
-              <b-btn v-b-tooltip.hover.top variant="white" title="Send your address">
+              <b-btn v-b-tooltip.hover.top variant="white" title="Send your address" disabled>
                 <v-icon name="address-book" />&nbsp;Address
               </b-btn>
-              <b-btn v-b-tooltip.hover.top variant="white" title="Update your availability">
+              <b-btn v-b-tooltip.hover.top variant="white" title="Update your availability" disabled>
                 <v-icon name="calendar-alt" />&nbsp;Calendar
               </b-btn>
               <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler" @click="showInfo">
@@ -408,6 +409,13 @@ export default {
     async nudge() {
       await this.$store.dispatch('chatmessages/nudge', {
         roomid: this.id
+      })
+
+      this._updateAfterSend()
+    },
+    async markRead() {
+      await this.$store.dispatch('chats/markSeen', {
+        id: this.id
       })
 
       this._updateAfterSend()
