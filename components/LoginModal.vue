@@ -110,7 +110,7 @@ export default {
       password: null,
       socialblocked: false,
       existinguser: true,
-      showModal: false
+      pleaseShowModal: false
     }
   },
 
@@ -121,20 +121,20 @@ export default {
         !window || !window.gapi || !window.gapi.client || !window.auth2
       console.log('COmpured googl', ret)
       return ret
-    }
-  },
+    },
 
-  async mounted() {
-    await this.$store.dispatch('notifications/clear')
-    // await this.$store.dispatch('notifications/list')
+    showModal() {
+      return this.pleaseShowModal || this.$store.getters['auth/forceLogin']()
+    }
   },
 
   methods: {
     show() {
-      this.showModal = true
+      this.pleaseShowModal = true
     },
     hide() {
       this.showModal = false
+      this.pleaseShowModal = false
     },
     disabled(type) {
       // TODO We might compute this the first time before the API has loaded, and therefore still show the

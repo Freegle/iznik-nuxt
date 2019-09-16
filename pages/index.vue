@@ -3,11 +3,8 @@
 </template>
 
 <script>
-import loginOptional from '@/mixins/loginOptional.js'
-
 export default {
   components: {},
-  mixins: [loginOptional],
 
   mounted() {
     let route = '/chitchat'

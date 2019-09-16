@@ -24,7 +24,7 @@
                 title="Profile"
                 :src="otheruser.profile.turl"
                 @error.native="brokenImage"
-              /> <span class="small black"><b>{{ otheruser.displayname }}</b> has asked about</span>
+              /> <span class="small black"><b>{{ otheruser.displayname }}</b> has asked about:</span>
               <br><h4>
                 {{ refmsg.subject }}
               </h4>
@@ -71,7 +71,7 @@
                 title="Profile"
                 :src="me.profile.turl"
                 @error.native="brokenImage"
-              /> <span class="small black">You asked about</span>
+              /> <span class="small black">You asked about:</span>
               <br><h4>
                 {{ refmsg.subject }}
               </h4>
