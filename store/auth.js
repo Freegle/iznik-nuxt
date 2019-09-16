@@ -21,7 +21,7 @@ export const mutations = {
       }
 
       state.userFetched = new Date().getTime()
-    } else {
+    } else if (state.user) {
       state.user = null
       state.userFetched = null
     }
