@@ -18,7 +18,15 @@
               <td class="align-top">
                 <v-icon v-if="users[reply.userid].settings.showmod" name="leaf" class="showmodsm text-success" />
                 <span class="text-success font-weight-bold">{{ users[reply.userid].displayname }}</span>
-                <read-more :text="emessage" :max-chars="500" class="font-weight-bold prewrap forcebreak replytext nopara" />
+                <span class="font-weight-bold prewrap forcebreak replytext nopara">
+                  <NewsHighlight
+                    :search-words="threadUsers"
+                    :text="emessage"
+                    :max-chars="500"
+                    class="font-weight-bold prewrap forcebreak replytext d-inline"
+                  />
+                </span>
+                <!--                <read-more :text="emessage" :max-chars="500" class="font-weight-bold prewrap forcebreak replytext nopara" />-->
                 <span v-if="reply.message && reply.userid && users[reply.userid]">
                   <span class="text-muted small">
                     {{ $dayjs(reply.timestamp).fromNow() }}
@@ -147,11 +155,13 @@
 // TODO Delete
 import twem from '~/assets/js/twem'
 const NewsUserInfo = () => import('~/components/NewsUserInfo')
+const NewsHighlight = () => import('~/components/NewsHighlight')
 
 export default {
   name: 'NewsReply',
   components: {
-    NewsUserInfo
+    NewsUserInfo,
+    NewsHighlight
   },
   props: {
     threadhead: {
@@ -187,6 +197,13 @@ export default {
       return this.reply.message
         ? twem.twem(this.$twemoji, this.reply.message)
         : null
+    },
+    threadUsers() {
+      const ret = []
+      for (const user in this.users) {
+        ret.push('@' + this.users[user].displayname)
+      }
+      return ret
     }
   },
   mounted() {
