@@ -47,10 +47,10 @@
           <b>&quot;{{ user.info.aboutme.text }}&quot;</b>
         </blockquote>
       </div>
-      <b-card border-variant="success" class="mt-2">
-        <b-card-header class="bg-success white">
+      <b-card border-variant="success" header-bg-variant="success" header-text-variant="white" class="mt-2">
+        <template v-slot:header>
           <v-icon name="info-circle" /> About this freegler
-        </b-card-header>
+        </template>
         <b-card-body class="p-0 pt-1">
           <p v-if="user.info.milesaway">
             <v-icon name="map-marker-alt" class="fa-fw" />
@@ -74,12 +74,12 @@
           </p>
         </b-card-body>
       </b-card>
-      <b-card border-variant="info" class="mt-2">
-        <b-card-header class="bg-info white">
+      <b-card border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
+        <template v-slot:header>
           <v-icon name="chart-bar" />
           <span v-if="user.info.offers + user.info.wanteds + user.info.replies > 0">Activity in the last 90 days</span>
           <span v-else>No recent activity.</span>
-        </b-card-header>
+        </template>
         <b-card-body class="p-0 pt-1">
           <b-row v-if="user.info.offers + user.info.wanteds + user.info.replies > 0">
             <b-col cols="12" md="4">

@@ -1,11 +1,37 @@
 @colour-success: #61AE24;
+@colour-success-bg: #d6e9c6;
+@colour-success-fg: #3c763d;
 @colour-info: #D70060;
+@colour-info-fg: #000080;
+@colour-info-bg: #d9edf7;
 @colour-warning: #e38d13;
 @colour-header: #1d6607;
 @colour-primary: #00A1CB;
 
 .bg-success {
-  background-color: @colour-success !important;
+  background-color: @colour-success-bg !important;
+  color: @colour-success-fg !important;
+}
+
+.border-success {
+  border-color: @colour-success-bg !important;
+}
+
+.card-header.bg-success {
+  border-bottom: 1px solid @colour-success-bg;
+}
+
+.bg-info {
+  background-color: @colour-info-bg !important;
+  color: @colour-info-fg !important;
+}
+
+.border-info {
+  border-color: @colour-info-bg !important;
+}
+
+.card-header.bg-info {
+  border-bottom: 1px solid @colour-info-bg;
 }
 
 .btn-primary {
