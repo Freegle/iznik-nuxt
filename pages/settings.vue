@@ -83,11 +83,97 @@
             </b-row>
           </b-card-body>
         </b-card>
+        <b-card border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
+          <template v-slot:header>
+            <v-icon name="lock" /> Your Account Settings
+          </template>
+          <b-card-body class="p-0 pt-1">
+            <p class="text-muted">
+              This information is private.  Other freeglers can't see it.
+            </p>
+            <b-row>
+              <b-col cols="12" sm="6">
+                <b-form-group
+                  label="Your email address:"
+                >
+                  <b-input-group id="input-email">
+                    <b-input v-model="me.email" placeholder="Your email" label="Your email address" />
+                    <b-input-group-append>
+                      <b-button variant="white" @click="saveEmail">
+                        <v-icon v-if="savingEmail" name="sync" class="text-success fa-spin" />
+                        <v-icon v-else-if="savedEmail" name="check" class="text-success" />
+                        <v-icon v-else name="save" />
+                        Save
+                      </b-button>
+                    </b-input-group-append>
+                  </b-input-group>
+                </b-form-group>
+              </b-col>
+            </b-row>
+            <b-row>
+              <b-col cols="12" sm="6">
+                <b-form-group
+                  label="Your password:"
+                >
+                  <b-input-group id="input-password">
+                    <b-input v-model="me.password" type="password" placeholder="Your password" label="Your password" />
+                    <b-input-group-append>
+                      <b-button variant="white" @click="savePassword">
+                        <v-icon v-if="savingPassword" name="sync" class="text-success fa-spin" />
+                        <v-icon v-else-if="savedPassword" name="check" class="text-success" />
+                        <v-icon v-else name="save" />&nbsp;
+                        Save
+                      </b-button>
+                    </b-input-group-append>
+                  </b-input-group>
+                </b-form-group>
+              </b-col>
+            </b-row>
+            <b-row>
+              <b-col cols="12">
+                <b-form-group
+                  label="Your postcode:"
+                  class="d-inline"
+                >
+                  <b-input-group id="input-postcode">
+                    <postcode @selected="selectPostcode" />
+                  </b-input-group>
+                </b-form-group>
+
+                <b-button variant="white" size="lg" class="mb-2 d-inline" @click="savePostcode">
+                  <v-icon v-if="savingPostcode" name="sync" class="text-success fa-spin" />
+                  <v-icon v-else-if="savedPostcode" name="check" class="text-success" />
+                  <v-icon v-else name="save" />&nbsp;
+                  Save
+                </b-button>
+              </b-col>
+            </b-row>
+            <b-row>
+              <b-col>
+                <b-btn variant="primary" size="lg" to="/unsubscribe">
+                  Unsubscribe
+                </b-btn>
+              </b-col>
+            </b-row>
+          </b-card-body>
+        </b-card>
+        <b-card border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
+          <template v-slot:header>
+            <v-icon name="envelope" /> Your Mail Settings
+          </template>
+          <b-card-body class="p-0 pt-1">
+            <p class="text-muted">
+              You can control the type and frequency of emails we send you.
+            </p>
+            <div v-if="emailSimple" />
+          </b-card-body>
+        </b-card>
       </b-col>
       <b-col cols="0" md="3" />
     </b-row>
     <AboutMeModal ref="aboutmemodal" @change="update" />
     <ProfileModal :id="me ? me.id : null" ref="profilemodal" />
+    <EmailConfirmModal ref="emailconfirm" />
   </div>
 </template>
 <style scoped>
@@ -97,21 +183,32 @@
 }
 </style>
 <script>
+import EmailConfirmModal from '../components/EmailConfirmModal'
 import loginRequired from '@/mixins/loginRequired.js'
 const AboutMeModal = () => import('~/components/AboutMeModal')
 const ProfileModal = () => import('~/components/ProfileModal')
+const Postcode = () => import('~/components/Postcode')
 // const GroupSelect = () => import('~/components/GroupSelect.vue')
 
 export default {
   components: {
+    EmailConfirmModal,
     // GroupSelect,
     AboutMeModal,
-    ProfileModal
+    ProfileModal,
+    Postcode
   },
   mixins: [loginRequired],
   data: function() {
     return {
-      me: null
+      me: null,
+      pc: null,
+      savingPostcode: false,
+      savedPostcode: false,
+      savingEmail: false,
+      savedEmail: false,
+      savingPassword: false,
+      savedPassword: false
     }
   },
   computed: {
@@ -134,6 +231,11 @@ export default {
       }
 
       return ret
+    },
+    emailSimple() {
+      // If we have the same settings on all groups, then we can show a simplified view.
+      console.log('Me', this.me)
+      return false
     }
   },
   async asyncData({ app, params, store }) {
@@ -180,6 +282,60 @@ export default {
       this.me = await this.$store.dispatch('auth/saveAndGet', {
         displayname: this.me.displayname
       })
+    },
+    selectPostcode(pc) {
+      this.pc = pc
+    },
+    async savePassword() {
+      this.savingPassword = true
+
+      if (this.me.password) {
+        this.me = await this.$store.dispatch('auth/saveAndGet', {
+          password: this.me.password
+        })
+      }
+
+      this.savingPassword = false
+      this.savedPassword = true
+      setTimeout(() => {
+        this.savedPassword = false
+      }, 2000)
+    },
+    async saveEmail() {
+      this.savingEmail = true
+
+      if (this.me.email) {
+        const ret = await this.$store.dispatch('auth/saveEmail', {
+          email: this.me.email
+        })
+
+        if (ret && ret.data && ret.data.ret === 10) {
+          this.$refs.emailconfirm.show()
+        }
+      }
+
+      this.savingEmail = false
+      this.savedEmail = true
+      setTimeout(() => {
+        this.savedEmail = false
+      }, 2000)
+    },
+    async savePostcode() {
+      const settings = this.me.settings
+      this.savingPostcode = true
+
+      if (!settings.mylocation || settings.mylocation.id !== this.pc.id) {
+        settings.mylocation = this.pc
+        this.me = await this.$store.dispatch('auth/saveAndGet', {
+          settings: settings
+        })
+      }
+
+      this.savingPostcode = false
+      this.savedPostcode = true
+      setTimeout(() => {
+        this.savedPostcode = false
+      }, 2000)
     }
   }
 }

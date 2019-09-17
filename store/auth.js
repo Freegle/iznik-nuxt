@@ -117,6 +117,25 @@ export const actions = {
     })
   },
 
+  async saveEmail({ commit, dispatch, state }, params) {
+    const res = await this.$axios.post(process.env.API + '/session', params, {
+      headers: {
+        'X-HTTP-Method-Override': 'PATCH'
+      }
+    })
+
+    if (res.status === 200 && res.data.ret === 0) {
+      await dispatch('fetchUser', {
+        components: ['me', 'groups', 'aboutme']
+      })
+    } else {
+      // TODO
+      console.error('saveUser failed')
+    }
+
+    return res
+  },
+
   async saveAndGet({ commit, dispatch, state }, params) {
     const res = await this.$axios.post(process.env.API + '/session', params, {
       headers: {

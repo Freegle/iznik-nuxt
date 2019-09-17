@@ -9,7 +9,7 @@
         :class="`${getClassName('input')} autocomplete-input`"
         :placeholder="placeholder"
         :name="name"
-        autocomplete="off"
+        autocomplete="new-password"
         @input="handleInput"
         @dblclick="handleDoubleClick"
         @blur="handleBlur"
