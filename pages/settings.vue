@@ -5,13 +5,13 @@
       <b-col cols="12" md="6" class="p-0">
         <b-card border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
           <template v-slot:header>
-            <v-icon name="info-circle" /> Your Public Profile
+            <v-icon name="globe-europe" /> Your Public Profile
           </template>
           <b-card-body class="p-0 pt-1">
             <p class="text-muted">
-              <v-icon name="globe-europe" /> This is what other freeglers can see about you.
+              This is what other freeglers can see about you.
               <b-btn variant="success" class="float-right" @click="viewProfile">
-                View Your Profile
+                <v-icon name="eye" /> View Your Profile
               </b-btn>
             </p>
             <b-row>
@@ -37,7 +37,7 @@
                       class="profile"
                       alt="Profile picture"
                       title="Profile"
-                      :src="me.profile.url"
+                      :src="profileurl"
                       @error.native="brokenImage"
                     />
                     <br>
@@ -49,6 +49,7 @@
                       :font-size="14"
                       :sync="true"
                       :labels="{checked: 'Show', unchecked: 'Hide'}"
+                      color="#61AE24"
                       @change="changeUseProfile"
                     />
                     <br>
@@ -117,6 +118,11 @@ export default {
     aboutme() {
       const ret = this.me && this.me.aboutme ? this.me.aboutme.text : ''
       return ret
+    },
+    profileurl() {
+      return this.me && this.useprofile
+        ? this.me.profile.url
+        : '/defaultprofile.png'
     },
     useprofile() {
       let ret = true

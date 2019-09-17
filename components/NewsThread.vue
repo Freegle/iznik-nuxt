@@ -55,7 +55,7 @@
                   max-rows="8"
                   maxlength="2048"
                   spellcheck="true"
-                  placeholder="Write a comment..."
+                  placeholder="Write a comment on this thread..."
                   class="p-0 pl-1 pt-1"
                   @keydown.enter.exact.prevent
                   @keyup.enter.exact="sendComment"
@@ -198,6 +198,11 @@ export default {
       if (this.threadcomment) {
         const msg = twem.untwem(this.threadcomment)
 
+        console.log(
+          'Comment replying this',
+          this.replyingTo,
+          this.newsfeed.threadhead
+        )
         await this.$store.dispatch('newsfeed/send', {
           message: msg,
           replyto: this.replyingTo,

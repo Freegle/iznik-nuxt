@@ -233,5 +233,26 @@ export const actions = {
     await dispatch('fetch', {
       id: params.threadhead
     })
+  },
+
+  async delete({ commit, dispatch }, params) {
+    await this.$axios.post(
+      process.env.API + '/newsfeed',
+      {
+        id: params.id
+      },
+      {
+        headers: {
+          'X-HTTP-Method-Override': 'DELETE'
+        }
+      }
+    )
+
+    if (params.id !== params.threadhead) {
+      // We fetch the thread head to force a rerender
+      await dispatch('fetch', {
+        id: params.threadhead
+      })
+    }
   }
 }

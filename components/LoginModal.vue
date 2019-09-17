@@ -133,7 +133,6 @@ export default {
       this.pleaseShowModal = true
     },
     hide() {
-      this.showModal = false
       this.pleaseShowModal = false
     },
     disabled(type) {
@@ -166,13 +165,13 @@ export default {
             navigator.credentials
               .store(c)
               .then(function() {
-                self.showModal = false
+                self.pleaseShowModal = false
               })
               .catch(err => {
                 console.error('Failed to save credentials', err)
               })
           } else {
-            self.showModal = false
+            self.pleaseShowModal = false
           }
         })
         .catch(e => {
@@ -209,7 +208,7 @@ export default {
 
           // We are now logged in.
           console.log('Logged in')
-          self.showModal = false
+          self.pleaseShowModal = false
         } else {
           console.error('Facebook response missing auth', response)
           throw new Error('Facebook response missing auth')
@@ -236,7 +235,7 @@ export default {
 
             // We are now logged in.
             console.log('Logged in')
-            self.showModal = false
+            self.pleaseShowModal = false
           } else if (authResult.error) {
             // TODO
             console.error('There was an error: ' + authResult.error)
@@ -311,7 +310,7 @@ export default {
             // We are logged in.  Get the logged in user
             console.log('Logged in')
             this.$store.dispatch('auth/fetchUser')
-            self.showModal = false
+            self.pleaseShowModal = false
           } else {
             // TODO
             console.error('Server login failed', ret)

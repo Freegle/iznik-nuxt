@@ -48,6 +48,9 @@
                     <span v-if="me.id === reply.userid" v-b-modal="'newsEdit-' + reply.id">
                       &bull;&nbsp;Edit
                     </span>
+                    <span v-if="me.id === reply.userid || mod" @click="deleteReply">
+                      &bull;&nbsp;Delete
+                    </span>
                   </span>
                 </span>
               </td>
@@ -64,7 +67,7 @@
       </ul>
     </div>
     <b-row v-if="showReplyBox">
-      <b-col class="p-0">
+      <b-col class="p-0 pb-1">
         <b-input-group class="pl-4">
           <b-input-group-prepend>
             <span class="input-group-text pl-1 pr-1">
@@ -88,7 +91,7 @@
             max-rows="8"
             maxlength="2048"
             spellcheck="true"
-            placeholder="Write a reply..."
+            placeholder="Write a reply to this comment..."
             class="p-0 pl-1 pt-1"
             @keydown.enter.exact.prevent
             @keyup.enter.exact="sendReply"
@@ -193,6 +196,15 @@ export default {
     me() {
       return this.$store.state.auth.user
     },
+    mod() {
+      const me = this.me
+      return (
+        me &&
+        (me.systemrole === 'Moderator' ||
+          me.systemrole === 'Admin' ||
+          me.systemrole === 'Support')
+      )
+    },
     emessage() {
       return this.reply.message
         ? twem.twem(this.$twemoji, this.reply.message)
@@ -272,6 +284,12 @@ export default {
       })
 
       this.$refs.editModal.hide()
+    },
+    deleteReply() {
+      this.$store.dispatch('newsfeed/delete', {
+        id: this.reply.id,
+        threadhead: this.reply.threadhead
+      })
     },
     brokenImage(event) {
       event.target.src = '/static/defaultprofile.png'
