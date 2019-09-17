@@ -165,9 +165,68 @@
             <p class="text-muted">
               You can control the type and frequency of emails we send you.
             </p>
-            <div v-if="emailSimple" />
+            <div v-if="simpleSettings && !showAdvanced">
+              <b-form-group
+                label="OFFER and WANTED posts:"
+              >
+                <b-form-select v-model="emailSimple">
+                  <option value="-1">
+                    Immediately
+                  </option>
+                  <option value="0">
+                    Never
+                  </option>
+                  <option value="1">
+                    Every Hour
+                  </option>
+                  <option value="2">
+                    Every 2 Hours
+                  </option>
+                  <option value="4">
+                    Every 4 Hours
+                  </option>
+                  <option value="2">
+                    Every 8 Hours
+                  </option>
+                  <option value="24">
+                    Every day
+                  </option>
+                </b-form-select>
+              </b-form-group>
+              <b-form-group label="Community Event mails:">
+                <toggle-button
+                  v-model="eventSimple"
+                  class="mt-2"
+                  :height="30"
+                  :width="100"
+                  :font-size="14"
+                  :sync="true"
+                  :labels="{checked: 'Weekly', unchecked: 'Off'}"
+                  color="#61AE24"
+                />
+              </b-form-group>
+              <b-form-group label="Volunteer Opportunity mails:">
+                <toggle-button
+                  v-model="volunteeringSimple"
+                  class="mt-2"
+                  :height="30"
+                  :width="100"
+                  :font-size="14"
+                  :sync="true"
+                  :labels="{checked: 'Weekly', unchecked: 'Off'}"
+                  color="#61AE24"
+                />
+              </b-form-group>
+              <div>
+                <hr>
+                <a v-if="!showAdvanced" href="#" @click="toggleAdvanced">
+                  Show advanced settings
+                </a>
+              </div>
+            </div>
           </b-card-body>
         </b-card>
+        <br class="mb-4">
       </b-col>
       <b-col cols="0" md="3" />
     </b-row>
@@ -203,6 +262,7 @@ export default {
     return {
       me: null,
       pc: null,
+      showAdvanced: false,
       savingPostcode: false,
       savedPostcode: false,
       savingEmail: false,
@@ -232,12 +292,90 @@ export default {
 
       return ret
     },
-    emailSimple() {
-      // If we have the same settings on all groups, then we can show a simplified view.
+    checkSimplicity() {
       console.log('Me', this.me)
-      return false
+      let ret = true
+      let emailFrequency = null
+      let communityEvents = null
+      let volunteering = null
+
+      // If we have the same settings on all groups, then we can show a simplified view.
+      if (this.me && this.me.groups) {
+        for (const group of this.me.groups) {
+          if (group.type === 'Freegle') {
+            const mysettings = group.mysettings
+
+            if (mysettings) {
+              console.log(
+                'Check',
+                mysettings.emailfrequency,
+                mysettings.eventsallowed,
+                mysettings.volunteeringallowed
+              )
+              console.log('Vs', emailFrequency, communityEvents, volunteering)
+              if (emailFrequency === null) {
+                emailFrequency = mysettings.emailfrequency
+                communityEvents = mysettings.eventsallowed
+                volunteering = mysettings.volunteeringallowed
+              } else if (
+                emailFrequency !== mysettings.emailfrequency ||
+                communityEvents !== mysettings.eventsallowed ||
+                volunteering !== mysettings.volunteeringallowed
+              ) {
+                console.log('Not simple')
+                ret = false
+                break
+              }
+            }
+          }
+        }
+      }
+
+      console.log('Simple', ret, emailFrequency, communityEvents, volunteering)
+      return {
+        ret: ret,
+        emailFrequency: emailFrequency,
+        communityEvents: communityEvents,
+        volunteering: volunteering
+      }
+    },
+
+    simpleSettings() {
+      const simple = this.checkSimplicity
+      return simple.ret
+    },
+
+    emailSimple: {
+      get: function() {
+        const simple = this.checkSimplicity
+        return simple.emailFrequency
+      },
+      set: function(newValue) {
+        this.changeAllGroups('emailfrequency', newValue)
+      }
+    },
+
+    volunteeringSimple: {
+      get: function() {
+        const simple = this.checkSimplicity
+        return Boolean(simple.volunteering)
+      },
+      set: function(newValue) {
+        this.changeAllGroups('volunteeringallowed', newValue)
+      }
+    },
+
+    eventSimple: {
+      get: function() {
+        const simple = this.checkSimplicity
+        return Boolean(simple.communityEvents)
+      },
+      set: function(newValue) {
+        this.changeAllGroups('eventsallowed', newValue)
+      }
     }
   },
+
   async asyncData({ app, params, store }) {
     await store.dispatch('auth/fetchUser', {
       components: ['me', 'groups', 'aboutme']
@@ -336,6 +474,26 @@ export default {
       setTimeout(() => {
         this.savedPostcode = false
       }, 2000)
+    },
+    toggleAdvanced(e) {
+      e.preventDefault()
+      this.showAdvanced = !this.showAdvanced
+    },
+    async changeAllGroups(param, value) {
+      for (const group of this.me.groups) {
+        if (group.type === 'Freegle') {
+          const params = {
+            userid: this.me.id,
+            groupid: group.id
+          }
+          params[param] = value
+          await this.$store.dispatch('auth/setGroup', params)
+        }
+      }
+
+      await this.$store.dispatch('fetchUser', {
+        components: ['me', 'groups', 'aboutme']
+      })
     }
   }
 }

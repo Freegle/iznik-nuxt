@@ -98,6 +98,10 @@ export const actions = {
         // Save the persistent session token.
         res.data.me.persistent = res.data.persistent
 
+        if (res.data.groups) {
+          res.data.me.groups = res.data.groups
+        }
+
         // Login succeeded.  Set the user, which will trigger various re-rendering if we were required to be logged in.
         if (res.data.me) {
           commit('setUser', res.data.me)
@@ -153,5 +157,13 @@ export const actions = {
     }
 
     return state.user
+  },
+
+  async setGroup({ commit, dispatch, state }, params) {
+    await this.$axios.post(process.env.API + '/memberships', params, {
+      headers: {
+        'X-HTTP-Method-Override': 'PATCH'
+      }
+    })
   }
 }
