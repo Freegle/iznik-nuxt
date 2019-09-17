@@ -163,66 +163,37 @@
           </template>
           <b-card-body class="p-0 pt-1">
             <p class="text-muted">
-              You can control the type and frequency of emails we send you.
+              You can control the type and frequency of regular emails we send you.
             </p>
             <div v-if="simpleSettings && !showAdvanced">
-              <b-form-group
-                label="OFFER and WANTED posts:"
-              >
-                <b-form-select v-model="emailSimple">
-                  <option value="-1">
-                    Immediately
-                  </option>
-                  <option value="0">
-                    Never
-                  </option>
-                  <option value="1">
-                    Every Hour
-                  </option>
-                  <option value="2">
-                    Every 2 Hours
-                  </option>
-                  <option value="4">
-                    Every 4 Hours
-                  </option>
-                  <option value="2">
-                    Every 8 Hours
-                  </option>
-                  <option value="24">
-                    Every day
-                  </option>
-                </b-form-select>
-              </b-form-group>
-              <b-form-group label="Community Event mails:">
-                <toggle-button
-                  v-model="eventSimple"
-                  class="mt-2"
-                  :height="30"
-                  :width="100"
-                  :font-size="14"
-                  :sync="true"
-                  :labels="{checked: 'Weekly', unchecked: 'Off'}"
-                  color="#61AE24"
-                />
-              </b-form-group>
-              <b-form-group label="Volunteer Opportunity mails:">
-                <toggle-button
-                  v-model="volunteeringSimple"
-                  class="mt-2"
-                  :height="30"
-                  :width="100"
-                  :font-size="14"
-                  :sync="true"
-                  :labels="{checked: 'Weekly', unchecked: 'Off'}"
-                  color="#61AE24"
-                />
-              </b-form-group>
               <div>
+                <SettingsGroup :emailfrequency.sync="emailSimple" :volunteeringallowed.sync="volunteeringSimple" :eventsallowed.sync="eventSimple" />
+                <p class="text-muted">
+                  Occasionally we may also send ADMIN mails about the running of Freegle.
+                </p>
                 <hr>
                 <a v-if="!showAdvanced" href="#" @click="toggleAdvanced">
                   Show advanced settings
                 </a>
               </div>
+            </div>
+            <div v-else>
+              <div v-if="me">
+                <div v-for="(group, $index) in me.groups" :key="'settingsgroup-' + $index" class="list-unstyled">
+                  <b-card v-if="group.type === 'Freegle'">
+                    <b-card-title>
+                      <b-img-lazy rounded thumbnail alt="Community profile picture" :src="group.profile" class="float-right groupprofile" />
+                      {{ group.namedisplay }}
+                    </b-card-title>
+                    <b-card-body>
+                      <SettingsGroup :groupid="group.id" :emailfrequency="group.mysettings.emailfrequency" :volunteeringallowed="Boolean(group.mysettings.volunteeringallowed)" :eventsallowed="Boolean(group.mysettings.eventsallowed)" @change="groupChange" />
+                    </b-card-body>
+                  </b-card>
+                </div>
+              </div>
+              <p class="text-muted">
+                Occasionally we may also send ADMIN mails about the running of Freegle.
+              </p>
             </div>
           </b-card-body>
         </b-card>
@@ -240,6 +211,10 @@
   width: 100px !important;
   height: 100px !important;
 }
+
+.groupprofile {
+  height: 50px !important;
+}
 </style>
 <script>
 import EmailConfirmModal from '../components/EmailConfirmModal'
@@ -247,6 +222,8 @@ import loginRequired from '@/mixins/loginRequired.js'
 const AboutMeModal = () => import('~/components/AboutMeModal')
 const ProfileModal = () => import('~/components/ProfileModal')
 const Postcode = () => import('~/components/Postcode')
+const SettingsGroup = () => import('~/components/SettingsGroup')
+
 // const GroupSelect = () => import('~/components/GroupSelect.vue')
 
 export default {
@@ -255,7 +232,8 @@ export default {
     // GroupSelect,
     AboutMeModal,
     ProfileModal,
-    Postcode
+    Postcode,
+    SettingsGroup
   },
   mixins: [loginRequired],
   data: function() {
@@ -293,7 +271,6 @@ export default {
       return ret
     },
     checkSimplicity() {
-      console.log('Me', this.me)
       let ret = true
       let emailFrequency = null
       let communityEvents = null
@@ -306,13 +283,6 @@ export default {
             const mysettings = group.mysettings
 
             if (mysettings) {
-              console.log(
-                'Check',
-                mysettings.emailfrequency,
-                mysettings.eventsallowed,
-                mysettings.volunteeringallowed
-              )
-              console.log('Vs', emailFrequency, communityEvents, volunteering)
               if (emailFrequency === null) {
                 emailFrequency = mysettings.emailfrequency
                 communityEvents = mysettings.eventsallowed
@@ -322,7 +292,6 @@ export default {
                 communityEvents !== mysettings.eventsallowed ||
                 volunteering !== mysettings.volunteeringallowed
               ) {
-                console.log('Not simple')
                 ret = false
                 break
               }
@@ -331,7 +300,6 @@ export default {
         }
       }
 
-      console.log('Simple', ret, emailFrequency, communityEvents, volunteering)
       return {
         ret: ret,
         emailFrequency: emailFrequency,
@@ -382,8 +350,6 @@ export default {
     })
 
     const me = store.getters['auth/user']()
-
-    // useprofile might not be defiled
 
     return {
       me: me
@@ -480,6 +446,7 @@ export default {
       this.showAdvanced = !this.showAdvanced
     },
     async changeAllGroups(param, value) {
+      console.log('Change all', param, value)
       for (const group of this.me.groups) {
         if (group.type === 'Freegle') {
           const params = {
@@ -491,7 +458,20 @@ export default {
         }
       }
 
-      await this.$store.dispatch('fetchUser', {
+      await this.$store.dispatch('auth/fetchUser', {
+        components: ['me', 'groups', 'aboutme']
+      })
+    },
+    async groupChange(e) {
+      console.log('Group change', e)
+      const params = {
+        userid: this.me.id,
+        groupid: e.groupid
+      }
+      params[e.param] = e.val
+      await this.$store.dispatch('auth/setGroup', params)
+
+      await this.$store.dispatch('auth/fetchUser', {
         components: ['me', 'groups', 'aboutme']
       })
     }
