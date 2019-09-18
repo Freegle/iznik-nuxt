@@ -211,9 +211,20 @@
                     <b-card-title>
                       <b-img-lazy rounded thumbnail alt="Community profile picture" :src="group.profile" class="float-right groupprofile" />
                       {{ group.namedisplay }}
+                      <span v-if="group.role === 'Moderator' || group.role === 'Owner'">
+                        <v-icon name="crown" class="text-success" />
+                      </span>
                     </b-card-title>
                     <b-card-body class="p-0 pt-2">
-                      <SettingsGroup :groupid="group.id" :emailfrequency="group.mysettings.emailfrequency" :volunteeringallowed="Boolean(group.mysettings.volunteeringallowed)" :eventsallowed="Boolean(group.mysettings.eventsallowed)" @change="groupChange" />
+                      <SettingsGroup
+                        :groupid="group.id"
+                        :emailfrequency="group.mysettings.emailfrequency"
+                        :volunteeringallowed="Boolean(group.mysettings.volunteeringallowed)"
+                        :eventsallowed="Boolean(group.mysettings.eventsallowed)"
+                        :leave="group.role === 'Member'"
+                        @change="groupChange"
+                        @leave="leaveGroup(group.id)"
+                      />
                     </b-card-body>
                   </b-card>
                 </div>
@@ -389,6 +400,7 @@
 }
 </style>
 <script>
+// TODO Click on group name or icon to go to group once we have /mygroups/id
 import Vue from 'vue'
 import EmailConfirmModal from '../components/EmailConfirmModal'
 import loginRequired from '@/mixins/loginRequired.js'
@@ -712,6 +724,12 @@ export default {
           onholidaytill: null
         })
       }
+    },
+    async leaveGroup(id) {
+      this.me = await this.$store.dispatch('auth/leaveGroup', {
+        userid: this.me.id,
+        groupid: id
+      })
     }
   }
 }

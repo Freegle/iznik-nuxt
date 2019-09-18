@@ -30,7 +30,12 @@
           </b-form-select>
         </b-form-group>
       </b-col>
-      <b-col cols="12" sm="6" />
+      <b-col cols="12" sm="6">
+        <b-btn v-if="leave" variant="white" class="float-right mt-4" @click="leaveGroup">
+          <v-icon v-if="leaving" class="text-success fa-spin" />
+          <v-icon v-else name="trash-alt" /> Leave
+        </b-btn>
+      </b-col>
     </b-row>
     <b-row>
       <b-col cols="12" sm="6">
@@ -85,6 +90,16 @@ export default {
     volunteeringallowed: {
       type: Boolean,
       required: true
+    },
+    leave: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
+  data: function() {
+    return {
+      leaving: false
     }
   },
   methods: {
@@ -103,6 +118,10 @@ export default {
         param: param,
         val: val
       })
+    },
+    leaveGroup: function() {
+      this.leave = true
+      this.$emit('leave')
     }
   }
 }
