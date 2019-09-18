@@ -16,23 +16,23 @@
         <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
         <b-collapse v-if="loggedIn" id="nav_collapse" is-nav>
           <b-navbar-nav>
-            <b-nav-item class="text-center p-0" to="/chitchat">
+            <b-nav-item class="text-center p-0" to="/chitchat" @mousedown="maybeReload('/chitchat')">
               <v-icon name="coffee" scale="2" /><br>
               ChitChat
             </b-nav-item>
-            <b-nav-item class="text-center p-0" to="/myposts">
+            <b-nav-item class="text-center p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
               <v-icon name="home" scale="2" /><br>
               My&nbsp;Posts
             </b-nav-item>
-            <b-nav-item class="text-center p-0" to="/mygroups">
+            <b-nav-item class="text-center p-0" to="/mygroups" @mousedown="maybeReload('/mygroups')">
               <v-icon name="users" scale="2" /><br>
               My&nbsp;Groups
             </b-nav-item>
-            <b-nav-item class="text-center p-0" to="/give">
+            <b-nav-item class="text-center p-0" to="/give" @mousedown="maybeReload('/give')">
               <v-icon name="gift" scale="2" /><br>
               Give
             </b-nav-item>
-            <b-nav-item class="text-center p-0" to="/find">
+            <b-nav-item class="text-center p-0" to="/find" @mousedown="maybeReload('/find')">
               <v-icon name="search" scale="2" /><br>
               Find
             </b-nav-item>
@@ -55,11 +55,11 @@
               </infinite-loading>
             </b-nav-item-dropdown>
             <a class="d-none dropdown-item" />
-            <b-nav-item id="menu-option-chat" class="text-center p-0" to="/chats">
+            <b-nav-item id="menu-option-chat" class="text-center p-0" to="/chats" @mousedown="maybeReload('/chats')">
               <v-icon name="comments" scale="2" /><br>
               Chats
             </b-nav-item>
-            <b-nav-item class="text-center p-0" to="/settings">
+            <b-nav-item class="text-center p-0" to="/settings" @mousedown="maybeReload('/settings')">
               <v-icon name="cog" scale="2" /><br>
               Settings
             </b-nav-item>
@@ -128,31 +128,31 @@
       </b-navbar>
       <b-collapse v-if="loggedIn" id="nav_collapse_mobile" class="w-100 ourBack">
         <b-navbar-nav class="ml-auto flex-row small">
-          <b-nav-item class="text-center p-0 white" to="/chitchat">
+          <b-nav-item class="text-center p-0 white" to="/chitchat" @mousedown="maybeReload('/chitchat')">
             <v-icon name="coffee" scale="2" /><br>
             ChitChat
           </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/myposts">
+          <b-nav-item class="text-center p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
             <v-icon name="home" scale="2" /><br>
             My&nbsp;Posts
           </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/mygroups">
+          <b-nav-item class="text-center p-0" to="/mygroups" @mousedown="maybeReload('/mygroups')">
             <v-icon name="users" scale="2" /><br>
             My&nbsp;Groups
           </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/give">
+          <b-nav-item class="text-center p-0" to="/give" @mousedown="maybeReload('/give')">
             <v-icon name="gift" scale="2" /><br>
             Give
           </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/find">
+          <b-nav-item class="text-center p-0" to="/find" @mousedown="maybeReload('/find')">
             <v-icon name="search" scale="2" /><br>
             Find
           </b-nav-item>
-          <b-nav-item id="menu-option-chat" class="text-center p-0" to="/chats">
+          <b-nav-item id="menu-option-chat" class="text-center p-0" to="/chats" @mousedown="maybeReload('/chats')">
             <v-icon name="comments" scale="2" /><br>
             Chats
           </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/settings">
+          <b-nav-item class="text-center p-0" to="/settings" @mousedown="maybeReload('/settings')">
             <v-icon name="cog" scale="2" /><br>
             Settings
           </b-nav-item>
@@ -163,7 +163,7 @@
         </b-navbar-nav>
       </b-collapse>
 
-      <nuxt class="ml-0 pl-1 pageContent" />
+      <nuxt ref="pageContent" class="ml-0 pl-1 pageContent" />
       <ChatPopups v-if="loggedIn" />
       <LoginModal ref="loginModal" />
       <AboutMeModal ref="modal" />
@@ -398,6 +398,13 @@ export default {
 
     requestLogin() {
       this.$refs.loginModal.show()
+    },
+
+    maybeReload(route) {
+      if (this.$router.currentRoute.path === route) {
+        // We have clicked to route to the page we're already on.  Force a full refresh.
+        window.location.reload(true)
+      }
     }
   }
 }
