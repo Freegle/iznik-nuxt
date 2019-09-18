@@ -32,7 +32,7 @@
     </b-row>
     <b-row>
       <b-col class="pl-0 pr-0">
-        <PostItem :key="item" :item="item" @selected="itemSelect" @cleared="itemClear" @typed="itemType" />
+        <PostItem :item="item" @selected="itemSelect" @cleared="itemClear" @typed="itemType" />
       </b-col>
     </b-row>
     <b-row>
@@ -135,8 +135,6 @@ export default {
         path: image
       }
 
-      console.log('Processed', this.image)
-
       this.$store.dispatch('compose/addAttachment', {
         id: this.id,
         attachment: this.image
@@ -149,7 +147,6 @@ export default {
       })
     },
     itemType(value) {
-      console.log('Item type', value)
       this.item = value
       this.$store.dispatch('compose/setItem', {
         id: this.id,
