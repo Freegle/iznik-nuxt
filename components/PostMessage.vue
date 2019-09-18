@@ -149,6 +149,7 @@ export default {
       })
     },
     itemType(value) {
+      console.log('Item type', value)
       this.item = value
       this.$store.dispatch('compose/setItem', {
         id: this.id,

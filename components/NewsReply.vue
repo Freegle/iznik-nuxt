@@ -234,6 +234,9 @@ export default {
       // Can't set focus immediately as not in DOM until re-render.
       this.$nextTick(() => {
         this.$refs.replybox.focus()
+
+        // Reply with tag.
+        this.replybox = '@' + this.users[this.reply.userid].displayname + ' '
       })
     },
     focusReply: function() {

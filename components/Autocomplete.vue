@@ -228,6 +228,7 @@ export default {
       INPUT EVENTS
     ============================= */
     handleInput(e) {
+      console.log("Handle input");
       const { value } = e.target
       this.showList = true
       // Callback Event
@@ -245,6 +246,7 @@ export default {
 
     handleKeyDown(e) {
       const key = e.keyCode
+      console.log("keydown", key)
 
       // Disable when list isn't showing up
       if (!this.showList) return

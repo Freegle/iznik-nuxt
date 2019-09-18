@@ -85,6 +85,7 @@ export default {
       }
 
       const input = this.$refs.autocomplete.$refs.input
+      console.log('Typed', input.value)
       this.$emit('typed', input.value)
     },
     process(results) {
