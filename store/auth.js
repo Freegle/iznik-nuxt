@@ -149,7 +149,8 @@ export const actions = {
 
     if (res.status === 200 && res.data.ret === 0) {
       await dispatch('fetchUser', {
-        components: ['me', 'groups', 'aboutme']
+        components: ['me', 'groups', 'aboutme', 'phone', 'notifications'],
+        force: true
       })
     } else {
       // TODO

@@ -159,11 +159,11 @@
         </b-card>
         <b-card border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
           <template v-slot:header>
-            <v-icon name="envelope" /> Your Mail Settings
+            <v-icon name="envelope" /> Community Mail Settings
           </template>
           <b-card-body class="p-0 pt-1">
             <p class="text-muted">
-              You can control the type and frequency of regular emails we send you.
+              You can control the type and frequency of emails from your Freegle communities.
             </p>
             <div v-if="simpleSettings && !showAdvanced">
               <div>
@@ -195,6 +195,148 @@
                 Occasionally we may also send ADMIN mails about the running of Freegle.
               </p>
             </div>
+          </b-card-body>
+        </b-card>
+        <b-card border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
+          <template v-slot:header>
+            <v-icon name="bell" /> Chat Notifications
+          </template>
+          <b-card-body class="p-0 pt-1">
+            <p class="text-muted">
+              <v-icon name="lock" /> Other freeglers won't see this.
+            </p>
+            <p class="text-muted">
+              Messages from other freeglers will appear in the <em>Chat</em> section.  We can also notify you
+              in other ways.
+            </p>
+            <b-alert show variant="warning">
+              Email doesn't always get through, so check your spam folders, and check <em>Chat</em> on here occasionally.
+            </b-alert>
+            <hr>
+            <h5>Text Alerts</h5>
+            <b-row>
+              <b-col cols="12" md="8">
+                <b-form-group
+                  class="d-inline"
+                >
+                  <b-input-group>
+                    <b-input v-model="me.phone" placeholder="Your mobile number" />
+                    <b-input-group-append>
+                      <b-button variant="white" @click="savePhone">
+                        <v-icon v-if="savingPhone" name="sync" class="text-success fa-spin" />
+                        <v-icon v-else-if="savedPhone" name="check" class="text-success" />
+                        <v-icon v-else name="save" />
+                        Save
+                      </b-button>
+                    </b-input-group-append>
+                  </b-input-group>
+                </b-form-group>
+              </b-col>
+              <b-col cols-md="4" class="p-1">
+                <b-btn v-if="me.phone" variant="white" class="float-right d-inline mt-4 mr-3" @click="removePhone">
+                  <v-icon v-if="removingPhone" name="sync" class="text-success fa-spin" />
+                  <v-icon v-else-if="removedPhone" name="check" class="text-success" />
+                  <v-icon v-else name="trash-alt" />
+                  Remove
+                </b-btn>
+              </b-col>
+            </b-row>
+            <b-row>
+              <b-col>
+                <b-alert v-if="me.phone" show variant="info">
+                  <p>
+                    It costs Freegle to send these - if you can, please:
+                  </p>
+                  <b-btn variant="primary" to="https://freegle.in/paypalfundraiser" target="_blank">
+                    Donate to help
+                  </b-btn>
+                </b-alert>
+              </b-col>
+            </b-row>
+            <h5>Email Alerts</h5>
+            <p>
+              Mail me chat messages from other freeglers I'm talking to about OFFERs and WANTEDs.
+            </p>
+            <toggle-button
+              v-model="me.settings.notifications.email"
+              :height="30"
+              :width="150"
+              :font-size="14"
+              :sync="true"
+              :labels="{checked: 'Emails On', unchecked: 'Emails Off'}"
+              color="#61AE24"
+              @change="changeNotification($event, 'email')"
+            />
+            <p>
+              We can email you a copy of chat messages you send on here.
+            </p>
+            <toggle-button
+              v-model="me.settings.notifications.emailmine"
+              :height="30"
+              :width="150"
+              :font-size="14"
+              :sync="true"
+              :labels="{checked: 'Email Mine', unchecked: 'Don\'t Email Mine'}"
+              color="#61AE24"
+              @change="changeNotification($event, 'emailmine')"
+            />
+            <p>
+              We can email you if there's an unread notification on here, or about recent ChitChat posts from nearby freeglers.
+            </p>
+            <toggle-button
+              v-model="me.relevantallowed"
+              :height="30"
+              :width="150"
+              :font-size="14"
+              :sync="true"
+              :labels="{checked: 'Send Them', unchecked: 'No Thanks'}"
+              color="#61AE24"
+              @change="changeRelevant"
+            />
+            <h5>Other Alerts</h5>
+            <p>
+              Apps for your
+              <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" target="_blank">Android</a> or
+              <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&mt=8" target="_blank">IOS</a> phone/tablet.
+            </p>
+            <toggle-button
+              v-model="me.settings.notifications.app"
+              :height="30"
+              :width="220"
+              :font-size="14"
+              :sync="true"
+              :labels="{checked: 'App Notifications On', unchecked: 'App Notifications Off'}"
+              color="#61AE24"
+              @change="changeNotification($event, 'app')"
+            />
+            <p>
+              You'll see a popup asking if we can send these. They appear on your taskbar, or on mobile at the top. Also known as "web push" notifications.
+            </p>
+            <toggle-button
+              v-model="me.settings.notifications.push"
+              :height="30"
+              :width="220"
+              :font-size="14"
+              :sync="true"
+              :labels="{checked: 'Browser Popups On', unchecked: 'Browser Popups Off'}"
+              color="#61AE24"
+              @change="changeNotification($event, 'push')"
+            />
+            <p>
+              This is the red bell icon you know and love. They don't show on mobile - Facebook doesn't do that.
+            </p>
+            <toggle-button
+              v-model="me.settings.notifications.facebook"
+              :height="30"
+              :width="220"
+              :font-size="14"
+              :sync="true"
+              :labels="{checked: 'Facebook Notifications On', unchecked: 'Facebook Notifications Off'}"
+              color="#61AE24"
+              @change="changeNotification($event, 'facebook')"
+            />
+            </a>
+            </p>
           </b-card-body>
         </b-card>
         <br class="mb-4">
@@ -246,7 +388,11 @@ export default {
       savingEmail: false,
       savedEmail: false,
       savingPassword: false,
-      savedPassword: false
+      savedPassword: false,
+      savingPhone: false,
+      savedPhone: false,
+      removingPhone: false,
+      removedPhone: false
     }
   },
   computed: {
@@ -346,7 +492,8 @@ export default {
 
   async asyncData({ app, params, store }) {
     await store.dispatch('auth/fetchUser', {
-      components: ['me', 'groups', 'aboutme']
+      components: ['me', 'groups', 'aboutme', 'phone', 'notifications'],
+      force: true
     })
 
     const me = store.getters['auth/user']()
@@ -441,6 +588,36 @@ export default {
         this.savedPostcode = false
       }, 2000)
     },
+    async savePhone() {
+      this.savingPhone = true
+
+      await this.$store.dispatch('auth/saveAndGet', {
+        phone: this.me.phone
+      })
+
+      this.savingPhone = false
+      this.savedPhone = true
+      setTimeout(() => {
+        this.savedPhone = false
+      }, 2000)
+    },
+    async removePhone() {
+      this.removingPhone = true
+
+      setTimeout(() => {
+        this.me.phone = null
+      }, 1000)
+
+      await this.$store.dispatch('auth/saveAndGet', {
+        phone: ''
+      })
+
+      this.removingPhone = false
+      this.removedPhone = true
+      setTimeout(() => {
+        this.removedPhone = false
+      }, 2000)
+    },
     toggleAdvanced(e) {
       e.preventDefault()
       this.showAdvanced = !this.showAdvanced
@@ -463,7 +640,6 @@ export default {
       })
     },
     async groupChange(e) {
-      console.log('Group change', e)
       const params = {
         userid: this.me.id,
         groupid: e.groupid
@@ -473,6 +649,20 @@ export default {
 
       await this.$store.dispatch('auth/fetchUser', {
         components: ['me', 'groups', 'aboutme']
+      })
+    },
+    async changeNotification(e, type) {
+      console.log('Change notification', e, type)
+
+      const settings = this.me.settings
+      settings.notifications[type] = e.value
+      this.me = await this.$store.dispatch('auth/saveAndGet', {
+        settings: settings
+      })
+    },
+    async changeRelevant(e) {
+      this.me = await this.$store.dispatch('auth/saveAndGet', {
+        relevantallowed: e.value
       })
     }
   }
