@@ -2,7 +2,7 @@
   <div>
     <client-only>
       <!-- Navbar for large screens -->
-      <b-navbar toggleable="lg" type="dark" class="ourBack d-none d-md-flex">
+      <b-navbar id="navbar_large" toggleable="lg" type="dark" class="ourBack d-none d-md-flex">
         <b-navbar-brand to="/" class="p-0">
           <b-img
             class="logo mr-2"
@@ -41,7 +41,7 @@
             <b-nav-item id="menu-option-notification" class="text-center p-0" />
             <b-nav-item-dropdown class="white text-center notiflist" lazy right @shown="showNotifications">
               <template slot="button-content">
-                <v-icon name="bell" scale="2" /><br>Notifications
+                <v-icon name="bell" scale="2" class="ml-3" /><br>Notifications
               </template>
               <b-dropdown-item v-for="(notification, $index) in notifications" :key="'notification-' + $index" class="p-0 test">
                 <Notification :notification="notification" @showModal="showAboutMe" />
@@ -79,7 +79,7 @@
         </ul>
       </b-navbar>
       <!-- Navbar for small screens -->
-      <b-navbar toggleable="md" type="dark" class="ourBack d-flex d-md-none">
+      <b-navbar id="navbar_small" toggleable="md" type="dark" class="ourBack d-flex d-md-none">
         <b-navbar-brand to="/" class="p-0">
           <b-img
             class="logo mr-2"
@@ -90,10 +90,9 @@
             alt="Home"
           />
         </b-navbar-brand>
-        <nuxt-link class="text-center p-0 white" to="/chitchat" style="position: absolute; right: 110px;">
-          <v-icon name="coffee" scale="2" /><br>
+        <nuxt-link id="menu-option-chat" class="text-center p-0 white" to="/chats" style="position: absolute; right: 110px;">
+          <v-icon name="comments" scale="2" /><br>
         </nuxt-link>
-        <!--        <b-nav-item id="menu-option-notification" class="text-center p-0" />-->
         <b-dropdown
           class="white text-center notiflist"
           variant="success"
@@ -129,6 +128,10 @@
       </b-navbar>
       <b-collapse v-if="loggedIn" id="nav_collapse_mobile" class="w-100 ourBack">
         <b-navbar-nav class="ml-auto flex-row small">
+          <b-nav-item class="text-center p-0 white" to="/chitchat">
+            <v-icon name="coffee" scale="2" /><br>
+            ChitChat
+          </b-nav-item>
           <b-nav-item class="text-center p-0" to="/myposts">
             <v-icon name="home" scale="2" /><br>
             My&nbsp;Posts
@@ -182,6 +185,11 @@ html {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
+}
+
+#navbar_large .nav-item {
+  width: 90px;
+  text-align: center;
 }
 
 nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
