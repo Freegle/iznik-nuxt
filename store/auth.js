@@ -1,3 +1,5 @@
+let first = true
+
 export const state = () => ({
   forceLogin: false,
   user: null,
@@ -11,15 +13,23 @@ export const mutations = {
     state.forceLogin = value
   },
 
-  setUser(state, user) {
+  setUser(state, user, components) {
     if (user) {
       // We can query the server for different components.  Merge everything we have back in.
       if (!state.user) {
         state.user = {}
       }
 
-      for (const key in user) {
-        state.user[key] = user[key]
+      if (components) {
+        // Just merge in what we fetched; leave other things there.  Otherwise we lose info for some pages.
+        for (const component of components) {
+          state.user[component] = user[component]
+        }
+      } else {
+        // Merge everything, because that's what we fetched.
+        for (const key in user) {
+          state.user[key] = user[key]
+        }
       }
 
       state.userFetched = new Date().getTime()
@@ -77,7 +87,7 @@ export const actions = {
     }
   },
 
-  async fetchUser({ commit, store, state }, params) {
+  async fetchUser({ commit, store, dispatch, state }, params) {
     const lastfetch = state.userFetched
 
     params = params || {
@@ -85,6 +95,7 @@ export const actions = {
     }
 
     if (
+      !first &&
       !params.force &&
       lastfetch &&
       new Date().getTime() - lastfetch < 30000
@@ -92,6 +103,7 @@ export const actions = {
       // We have fetched the user pretty recently.
     } else {
       // We're so vain, we probably think this call is about us.
+      first = false
       const res = await this.$axios.get(process.env.API + '/session', {
         params: params
       })
@@ -102,11 +114,14 @@ export const actions = {
 
         if (res.data.groups) {
           res.data.me.groups = res.data.groups
+          dispatch('group/saveMine', res.data.groups, {
+            root: true
+          })
         }
 
         // Login succeeded.  Set the user, which will trigger various re-rendering if we were required to be logged in.
         if (res.data.me) {
-          commit('setUser', res.data.me)
+          commit('setUser', res.data.me, params.components)
           commit('forceLogin', false)
         }
       } else {

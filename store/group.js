@@ -1,3 +1,7 @@
+import Vue from 'vue'
+
+// TODO We have groups in auth and in here.  Mistake?
+
 export const state = () => ({
   // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
   // storage.
@@ -6,22 +10,22 @@ export const state = () => ({
 
 export const mutations = {
   add(state, item) {
-    state.list[item.id] = item
+    Vue.set(state.list, item.id, item)
   },
 
   remove(state, item) {
-    state.list[item.id] = null
+    Vue.set(state.list, item.id, null)
   },
 
   setList(state, groups) {
     state.list = {}
     for (const group of groups) {
-      state.list[group.id] = group
+      Vue.set(state.list, group.id, group)
     }
   },
 
   remember(state, payload) {
-    state['remember-' + payload.id] = payload.val
+    Vue.set(state, 'remember-' + payload.id, payload.val)
   }
 }
 
@@ -81,7 +85,7 @@ export const actions = {
     }
   },
 
-  async mine({ commit }, params) {
+  async mine({ commit, dispatch }, params) {
     const res = await this.$axios.get(process.env.API + '/session', {
       params: {
         components: ['groups']
@@ -89,10 +93,14 @@ export const actions = {
     })
 
     if (res.status === 200 && res.data.ret === 0 && res.data.groups) {
-      for (const group of res.data.groups) {
-        if (process.env.MODTOOLS || group.type === 'Freegle') {
-          commit('add', group)
-        }
+      dispatch('saveMine', res.data.groups)
+    }
+  },
+
+  saveMine({ commit }, groups) {
+    for (const group of groups) {
+      if (process.env.MODTOOLS || group.type === 'Freegle') {
+        commit('add', group)
       }
     }
   }

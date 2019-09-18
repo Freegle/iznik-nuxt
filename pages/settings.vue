@@ -252,7 +252,7 @@
             </b-alert>
             <hr>
             <h5>Text Alerts</h5>
-            <p>We can set you SMS alerts to your phone.</p>
+            <p>We can send you SMS alerts to your phone.</p>
             <b-row>
               <b-col cols="12" md="8">
                 <b-form-group
@@ -392,7 +392,7 @@
 }
 
 .groupprofile {
-  height: 50px !important;
+  height: 100px !important;
 }
 
 .nocardbot .card-body {
