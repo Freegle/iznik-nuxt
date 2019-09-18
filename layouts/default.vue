@@ -1,7 +1,8 @@
 <template>
   <div>
     <client-only>
-      <b-navbar toggleable="lg" type="dark" class="ourBack">
+      <!-- Navbar for large screens -->
+      <b-navbar toggleable="lg" type="dark" class="ourBack d-none d-md-flex">
         <b-navbar-brand to="/" class="p-0">
           <b-img
             class="logo mr-2"
@@ -12,6 +13,7 @@
             alt="Home"
           />
         </b-navbar-brand>
+        <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
         <b-collapse v-if="loggedIn" id="nav_collapse" is-nav>
           <b-navbar-nav>
             <b-nav-item class="text-center p-0" to="/chitchat">
@@ -75,20 +77,101 @@
             </b-button>
           </li>
         </ul>
-        <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
       </b-navbar>
+      <!-- Navbar for small screens -->
+      <b-navbar toggleable="md" type="dark" class="ourBack d-flex d-md-none">
+        <b-navbar-brand to="/" class="p-0">
+          <b-img
+            class="logo mr-2"
+            height="58"
+            width="58"
+            rounded
+            :src="require(`@/static/icon.png`)"
+            alt="Home"
+          />
+        </b-navbar-brand>
+        <nuxt-link class="text-center p-0 white" to="/chitchat" style="position: absolute; right: 110px;">
+          <v-icon name="coffee" scale="2" /><br>
+        </nuxt-link>
+        <!--        <b-nav-item id="menu-option-notification" class="text-center p-0" />-->
+        <b-dropdown
+          class="white text-center notiflist"
+          variant="success"
+          lazy
+          right
+          style="position: absolute; right: 50px;"
+          @shown="showNotifications"
+        >
+          <template slot="button-content">
+            <v-icon name="bell" scale="2" />
+          </template>
+          <b-dropdown-item v-for="(notification, $index) in notifications" :key="'notification-' + $index" class="p-0 test">
+            <Notification :notification="notification" @showModal="showAboutMe" />
+          </b-dropdown-item>
+          <infinite-loading :distance="distance" @infinite="loadMore">
+            <span slot="no-results" />
+            <span slot="no-more" />
+            <span slot="spinner">
+              <b-img-lazy src="~/static/loader.gif" />
+            </span>
+          </infinite-loading>
+        </b-dropdown>
+        <a class="d-none dropdown-item" />
+        <b-navbar-toggle v-if="loggedIn" target="nav_collapse_mobile" style="position: absolute; right: 0px;" />
+        <ul class="navbar-nav mr-auto" />
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <b-button v-if="!loggedIn" class="btn-white" @click="requestLogin">
+              Sign in
+            </b-button>
+          </li>
+        </ul>
+      </b-navbar>
+      <b-collapse v-if="loggedIn" id="nav_collapse_mobile" class="w-100 ourBack">
+        <b-navbar-nav class="ml-auto flex-row small">
+          <b-nav-item class="text-center p-0" to="/myposts">
+            <v-icon name="home" scale="2" /><br>
+            My&nbsp;Posts
+          </b-nav-item>
+          <b-nav-item class="text-center p-0" to="/mygroups">
+            <v-icon name="users" scale="2" /><br>
+            My&nbsp;Groups
+          </b-nav-item>
+          <b-nav-item class="text-center p-0" to="/give">
+            <v-icon name="gift" scale="2" /><br>
+            Give
+          </b-nav-item>
+          <b-nav-item class="text-center p-0" to="/find">
+            <v-icon name="search" scale="2" /><br>
+            Find
+          </b-nav-item>
+          <b-nav-item id="menu-option-chat" class="text-center p-0" to="/chats">
+            <v-icon name="comments" scale="2" /><br>
+            Chats
+          </b-nav-item>
+          <b-nav-item class="text-center p-0" to="/settings">
+            <v-icon name="cog" scale="2" /><br>
+            Settings
+          </b-nav-item>
+          <b-nav-item class="text-center p-0" @click="logOut()">
+            <v-icon name="sign-out-alt" scale="2" /><br>
+            Logout
+          </b-nav-item>
+        </b-navbar-nav>
+      </b-collapse>
+
       <nuxt class="ml-0 pl-1 pageContent" />
       <ChatPopups v-if="loggedIn" />
       <LoginModal ref="loginModal" />
       <AboutMeModal ref="modal" />
+      <div class="navbar-toggle" style="display: none" />
     </client-only>
   </div>
 </template>
 
 <style scoped>
-/*TODO Make menu dropdown horizontal on mobile*/
-/*TODO DESIGN Spacing of icons with different length text is wrong.*/
-/*TODO Shrink navbar on scroll ?*/
+/*TODO DESIGN Menu dropdown on mobile needs a bit of love.*/
+/*TODO Shrink navbar on scroll? */
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Roboto, 'Helvetica Neue', Arial, sans-serif;
