@@ -59,7 +59,7 @@
               </span>
             </p>
             <span class="prewrap">
-              <read-more :text="message.textbody" :max-chars="maxChars" class="nopara" />
+              <read-more v-if="message && message.textbody" :text="message.textbody" :max-chars="maxChars" class="nopara" />
             </span>
             <hr>
             <table class="table table-borderless table-striped mb-0">

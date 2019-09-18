@@ -20,7 +20,7 @@
             {{ story }}
           </b-card-text>
         </b-card>
-        <read-more :text="emessage" :max-chars="500" class="font-weight-bold prewrap forcebreak nopara" />
+        <read-more v-if="emessage" :text="emessage" :max-chars="500" class="font-weight-bold prewrap forcebreak nopara" />
       </b-col>
     </b-row>
     <b-row class="mt-2">

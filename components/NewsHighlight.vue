@@ -69,7 +69,7 @@ export default {
     formattedString() {
       let valContainer = this.text
 
-      if (!this.isReadMore && this.text.length > this.maxChars) {
+      if (!this.isReadMore && this.text && this.text.length > this.maxChars) {
         valContainer = valContainer.substring(0, this.maxChars) + '...'
       }
 

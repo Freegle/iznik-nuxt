@@ -136,7 +136,7 @@
                   class="d-inline"
                 >
                   <b-input-group id="input-postcode">
-                    <postcode @selected="selectPostcode" />
+                    <postcode :focus="false" @selected="selectPostcode" />
                   </b-input-group>
                 </b-form-group>
 
@@ -185,13 +185,13 @@
                       <b-img-lazy rounded thumbnail alt="Community profile picture" :src="group.profile" class="float-right groupprofile" />
                       {{ group.namedisplay }}
                     </b-card-title>
-                    <b-card-body>
+                    <b-card-body class="p-0 pt-2">
                       <SettingsGroup :groupid="group.id" :emailfrequency="group.mysettings.emailfrequency" :volunteeringallowed="Boolean(group.mysettings.volunteeringallowed)" :eventsallowed="Boolean(group.mysettings.eventsallowed)" @change="groupChange" />
                     </b-card-body>
                   </b-card>
                 </div>
               </div>
-              <p class="text-muted">
+              <p class="text-muted mt-2">
                 Occasionally we may also send ADMIN mails about the running of Freegle.
               </p>
             </div>
