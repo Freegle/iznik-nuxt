@@ -1,58 +1,69 @@
 <template>
   <div>
-    <b-form-group
-      label="OFFER and WANTED posts:"
-    >
-      <b-form-select :value="emailfrequency" @change="(newval) => outcast('emailfrequency', newval)">
-        <option value="-1">
-          Immediately
-        </option>
-        <option value="0">
-          Never
-        </option>
-        <option value="1">
-          Every Hour
-        </option>
-        <option value="2">
-          Every 2 Hours
-        </option>
-        <option value="4">
-          Every 4 Hours
-        </option>
-        <option value="8">
-          Every 8 Hours
-        </option>
-        <option value="24">
-          Every day
-        </option>
-      </b-form-select>
-    </b-form-group>
-    <b-form-group label="Community Event mails:">
-      <toggle-button
-        :value="eventsallowed"
-        class="mt-2"
-        :height="30"
-        :width="100"
-        :font-size="14"
-        :sync="true"
-        :labels="{checked: 'Weekly', unchecked: 'Off'}"
-        color="#61AE24"
-        @change="(newval) => outcast('eventsallowed', newval.value)"
-      />
-    </b-form-group>
-    <b-form-group label="Volunteer Opportunity mails:">
-      <toggle-button
-        :value="volunteeringallowed"
-        class="mt-2"
-        :height="30"
-        :width="100"
-        :font-size="14"
-        :sync="true"
-        :labels="{checked: 'Weekly', unchecked: 'Off'}"
-        color="#61AE24"
-        @change="(newval) => outcast('volunteeringallowed', newval.value)"
-      />
-    </b-form-group>
+    <b-row>
+      <b-col cols="12" sm="6">
+        <b-form-group
+          label="OFFER and WANTED posts:"
+        >
+          <b-form-select :value="emailfrequency" @change="(newval) => outcast('emailfrequency', newval)">
+            <option value="-1">
+              Immediately
+            </option>
+            <option value="0">
+              Never
+            </option>
+            <option value="1">
+              Every Hour
+            </option>
+            <option value="2">
+              Every 2 Hours
+            </option>
+            <option value="4">
+              Every 4 Hours
+            </option>
+            <option value="8">
+              Every 8 Hours
+            </option>
+            <option value="24">
+              Every day
+            </option>
+          </b-form-select>
+        </b-form-group>
+      </b-col>
+      <b-col cols="12" sm="6" />
+    </b-row>
+    <b-row>
+      <b-col cols="12" sm="6">
+        <b-form-group label="Community Event mails:">
+          <toggle-button
+            :value="eventsallowed"
+            class="mt-2"
+            :height="30"
+            :width="100"
+            :font-size="14"
+            :sync="true"
+            :labels="{checked: 'Weekly', unchecked: 'Off'}"
+            color="#61AE24"
+            @change="(newval) => outcast('eventsallowed', newval.value)"
+          />
+        </b-form-group>
+      </b-col>
+      <b-col cols="12" sm="6">
+        <b-form-group label="Volunteer Opportunity mails:">
+          <toggle-button
+            :value="volunteeringallowed"
+            class="mt-2"
+            :height="30"
+            :width="100"
+            :font-size="14"
+            :sync="true"
+            :labels="{checked: 'Weekly', unchecked: 'Off'}"
+            color="#61AE24"
+            @change="(newval) => outcast('volunteeringallowed', newval.value)"
+          />
+        </b-form-group>
+      </b-col>
+    </b-row>
   </div>
 </template>
 <script>

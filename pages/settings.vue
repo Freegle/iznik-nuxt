@@ -161,8 +161,35 @@
           <template v-slot:header>
             <v-icon name="envelope" /> Community Mail Settings
           </template>
+          <p>You can pause regular emails for a while, for example if you're on holiday.</p>
+          <toggle-button
+            v-model="emailsOn"
+            :height="34"
+            :width="150"
+            :font-size="14"
+            :sync="true"
+            :labels="{checked: 'Mails On', unchecked: 'Mails Paused'}"
+            color="#61AE24"
+            @change="changeHolidayToggle"
+          />
+          <span v-if="!emailsOn">
+            <span class="align-top ml-2 mr-2">
+              until
+            </span>
+            <date-picker
+              :value="me.onholidaytill"
+              lang="en"
+              placeholder="Set a date"
+              value-type="format"
+              :not-before="new Date()"
+              :not-after="(new Date()).setDate((new Date()).getDate() + 30)"
+              :confirm="true"
+              :clearable="true"
+              @confirm="changeHolidayDate"
+            />
+          </span>
           <b-card-body class="p-0 pt-1">
-            <p class="text-muted">
+            <p>
               You can control the type and frequency of emails from your Freegle communities.
             </p>
             <div v-if="simpleSettings && !showAdvanced">
@@ -180,7 +207,7 @@
             <div v-else>
               <div v-if="me">
                 <div v-for="(group, $index) in me.groups" :key="'settingsgroup-' + $index" class="list-unstyled">
-                  <b-card v-if="group.type === 'Freegle'">
+                  <b-card v-if="group.type === 'Freegle'" class="nocardbot">
                     <b-card-title>
                       <b-img-lazy rounded thumbnail alt="Community profile picture" :src="group.profile" class="float-right groupprofile" />
                       {{ group.namedisplay }}
@@ -214,6 +241,7 @@
             </b-alert>
             <hr>
             <h5>Text Alerts</h5>
+            <p>We can set you SMS alerts to your phone.</p>
             <b-row>
               <b-col cols="12" md="8">
                 <b-form-group
@@ -284,7 +312,7 @@
               We can email you if there's an unread notification on here, or about recent ChitChat posts from nearby freeglers.
             </p>
             <toggle-button
-              v-model="me.relevantallowed"
+              v-model="relevantallowed"
               :height="30"
               :width="150"
               :font-size="14"
@@ -335,8 +363,6 @@
               color="#61AE24"
               @change="changeNotification($event, 'facebook')"
             />
-            </a>
-            </p>
           </b-card-body>
         </b-card>
         <br class="mb-4">
@@ -357,8 +383,13 @@
 .groupprofile {
   height: 50px !important;
 }
+
+.nocardbot .card-body {
+  padding-bottom: 0px;
+}
 </style>
 <script>
+import Vue from 'vue'
 import EmailConfirmModal from '../components/EmailConfirmModal'
 import loginRequired from '@/mixins/loginRequired.js'
 const AboutMeModal = () => import('~/components/AboutMeModal')
@@ -366,12 +397,9 @@ const ProfileModal = () => import('~/components/ProfileModal')
 const Postcode = () => import('~/components/Postcode')
 const SettingsGroup = () => import('~/components/SettingsGroup')
 
-// const GroupSelect = () => import('~/components/GroupSelect.vue')
-
 export default {
   components: {
     EmailConfirmModal,
-    // GroupSelect,
     AboutMeModal,
     ProfileModal,
     Postcode,
@@ -396,6 +424,15 @@ export default {
     }
   },
   computed: {
+    relevantallowed: {
+      // This is 1/0 in the model whereas we want Boolean.
+      set(val) {
+        Vue.set(this, 'me.relevantallowed', val ? 1 : 0)
+      },
+      get() {
+        return Boolean(this.me.relevantallowed)
+      }
+    },
     aboutme() {
       const ret = this.me && this.me.aboutme ? this.me.aboutme.text : ''
       return ret
@@ -499,7 +536,8 @@ export default {
     const me = store.getters['auth/user']()
 
     return {
-      me: me
+      me: me,
+      emailsOn: !Object.keys(me).includes('onholidaytill')
     }
   },
   methods: {
@@ -623,7 +661,6 @@ export default {
       this.showAdvanced = !this.showAdvanced
     },
     async changeAllGroups(param, value) {
-      console.log('Change all', param, value)
       for (const group of this.me.groups) {
         if (group.type === 'Freegle') {
           const params = {
@@ -652,8 +689,6 @@ export default {
       })
     },
     async changeNotification(e, type) {
-      console.log('Change notification', e, type)
-
       const settings = this.me.settings
       settings.notifications[type] = e.value
       this.me = await this.$store.dispatch('auth/saveAndGet', {
@@ -664,6 +699,19 @@ export default {
       this.me = await this.$store.dispatch('auth/saveAndGet', {
         relevantallowed: e.value
       })
+    },
+    async changeHolidayDate(val) {
+      this.me = await this.$store.dispatch('auth/saveAndGet', {
+        onholidaytill: val
+      })
+    },
+    async changeHolidayToggle(val) {
+      if (val.value) {
+        // Turned mails back on
+        this.me = await this.$store.dispatch('auth/saveAndGet', {
+          onholidaytill: null
+        })
+      }
     }
   }
 }
