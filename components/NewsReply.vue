@@ -133,7 +133,7 @@
         </b-button>
       </template>
     </b-modal>
-    <ProfileModal :id="reply.userid" ref="profilemodal" />
+    <ProfileModal v-if="infoclick" :id="reply.userid" ref="profilemodal" />
   </div>
 </template>
 <style scoped>
@@ -190,7 +190,8 @@ export default {
     return {
       showReplyBox: false,
       replyingTo: null,
-      replybox: null
+      replybox: null,
+      infoclick: false
     }
   },
   computed: {
@@ -229,8 +230,10 @@ export default {
   },
   methods: {
     showInfo() {
-      console.log('Show')
-      this.$refs.profilemodal.show()
+      // We use v-if so that the profile modal is not inserted into the DOM until we have clicked, which saves the
+      // fetch of the user info.
+      this.infoclick = true
+      this.$nextTick(() => this.$refs.profilemodal.show())
     },
     replyReply() {
       this.replyingTo = this.reply.id

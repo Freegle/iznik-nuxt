@@ -25,7 +25,7 @@
         {{ $dayjs(newsfeed.timestamp).fromNow() }}
       </span>
       <NewsUserInfo :user="users[userid]" />
-      <ProfileModal :id="userid" ref="profilemodal" />
+      <ProfileModal v-if="infoclick" :id="userid" ref="profilemodal" />
     </b-col>
   </b-row>
 </template>
@@ -76,9 +76,16 @@ export default {
       default: ''
     }
   },
+  data: function() {
+    return {
+      infoclick: false
+    }
+  },
   methods: {
     showInfo() {
-      console.log('Show')
+      // We use v-if so that the profile modal is not inserted into the DOM until we have clicked, which saves the
+      // fetch of the user info.
+      this.infoclick = true
       this.$refs.profilemodal.show()
     }
   }
