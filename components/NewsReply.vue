@@ -59,7 +59,7 @@
         </table>
       </b-col>
     </b-row>
-    <a v-if="!this.showAllReplies && reply.replies.length > 5" href="#" variant="white" class="mb-3" @click="(e) => { e.preventDefault(); showAllReplies = true }">
+    <a v-if="!showAllReplies && reply.replies.length > 5" href="#" variant="white" class="mb-3" @click="(e) => { e.preventDefault(); showAllReplies = true }">
       Show earlier {{ reply.replies.length | pluralize(['reply', 'replies'], { includeNumber: false }) }} ({{ reply.replies.length - 5 }})
     </a>
     <div v-if="reply.replies && reply.replies.length > 0" class="pl-3">

@@ -11,30 +11,34 @@
           @click="toggle"
         >
           <b-row>
-            <b-col cols="8" class="text-truncate">
-              <h3>{{ message.subject }}</h3>
-            </b-col>
-            <b-col cols="4" class="text-right">
-              <b-btn class="float-right ml-1" variant="white">
-                <v-icon v-if="!expand" name="caret-down" />
-                <v-icon v-else name="caret-up" />
-                <template slot="button-content" />
-              </b-btn>
-              <span v-if="unseen > 0" class="float-right ml-1">
-                <b-badge variant="danger">
-                  <v-icon name="comments" class="fa-fw" /> {{ unseen }} unread
-                </b-badge>
-              </span>
-              <span v-if="message.promisecount > 0" class="float-right ml-1">
-                <b-badge variant="success">
-                  <v-icon name="handshake" class="fa-fw" /> Promised
-                </b-badge>
-              </span>
-              <span v-if="message.replycount > 0" class="float-right ml-1">
-                <b-badge variant="info">
-                  <v-icon name="user" class="fa-fw" /> {{ message.replycount | pluralize(['reply', 'replies'], { includeNumber: true }) }}
-                </b-badge>
-              </span>
+            <b-col>
+              <div class="d-flex">
+                <h3 class="text-wrap flex-shrink-2">
+                  {{ message.subject }}
+                </h3>
+                <div class="flex-grow-1 text-right">
+                  <span v-if="message.replycount > 0" class="ml-1">
+                    <b-badge variant="info">
+                      <v-icon name="user" class="fa-fw" /> {{ message.replycount | pluralize(['reply', 'replies'], { includeNumber: true }) }}
+                    </b-badge>
+                  </span>
+                  <span v-if="message.promisecount > 0" class="ml-1">
+                    <b-badge variant="success">
+                      <v-icon name="handshake" class="fa-fw" /> Promised
+                    </b-badge>
+                  </span>
+                  <span v-if="unseen > 0" class="ml-1">
+                    <b-badge variant="danger">
+                      <v-icon name="comments" class="fa-fw" /> {{ unseen }} unread
+                    </b-badge>
+                  </span>
+                  <b-btn class="ml-1" variant="white">
+                    <v-icon v-if="!expand" name="caret-down" />
+                    <v-icon v-else name="caret-up" />
+                    <template slot="button-content" />
+                  </b-btn>
+                </div>
+              </div>
             </b-col>
           </b-row>
         </b-button>
@@ -134,14 +138,16 @@ img.attachment {
 <script>
 // TODO DESIGN This is better than the old version, but it's still not quite right, in terms of alignment and sizes
 // of things.
-// TODO DESIGN How do we use text-truncate with ellipsis to make long subjects look nicer?  Also we may or may not
-// have reply, promised, unread buttons - seems a shame to truncate if they are not even there.
 // TODO DESIGN The badge and the dropdown arrow are different sizes.
 // TODO When we click to expand, the visible text may be off the top or bottom of the screen.  Need to make it visible.
 // TODO MINOR The caret doesn't toggle when we expand.
+import ResizeText from 'vue-resize-text'
 const MyMessageReply = () => import('~/components/MyMessageReply.vue')
 
 export default {
+  directives: {
+    ResizeText
+  },
   components: {
     MyMessageReply
   },
