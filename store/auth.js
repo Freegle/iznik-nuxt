@@ -31,12 +31,14 @@ export const mutations = {
           state.user[key] = user[key]
         }
       }
-
-      state.userFetched = new Date().getTime()
     } else if (state.user) {
       state.user = null
       state.userFetched = null
     }
+  },
+
+  setFetched(state, val) {
+    state.userFetched = val
   }
 }
 

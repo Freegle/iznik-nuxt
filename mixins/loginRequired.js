@@ -1,7 +1,5 @@
 // We want to force a login.
-import Vue from 'vue'
-
-export default Vue.mixin({
+export default {
   mounted() {
     // We  do this check on the client side.  That's because we have trouble with whether the server is logged
     // in or not, and for our purposes we only really care about SSR for logged out pages, and therefore we don't need to
@@ -34,4 +32,4 @@ export default Vue.mixin({
       })
     }
   }
-})
+}
