@@ -94,7 +94,9 @@ export const actions = {
         lastmsgseen: chat.lastmsg
       })
 
-      await dispatch('fetch', params.id)
+      await dispatch('fetch', {
+        id: params.id
+      })
     }
   }
 }

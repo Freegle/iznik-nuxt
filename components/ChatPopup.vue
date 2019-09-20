@@ -209,7 +209,6 @@ export default {
   },
   data: function() {
     return {
-      chat: null,
       chatmessages: [],
       chatusers: [],
       lastFetched: new Date(),
@@ -232,6 +231,10 @@ export default {
         console.log("Can't find me", this.chat)
         return null
       }
+    },
+
+    chat() {
+      return this.$store.getters['chats/get'](this.id)
     },
 
     otheruser() {
@@ -268,8 +271,6 @@ export default {
             break
           }
         }
-
-        console.log('Right', this.id, right)
       }
       return right
     }
@@ -288,12 +289,6 @@ export default {
         id: this.id
       }
       this.hide()
-    } else {
-      const chat = {
-        ...fetched,
-        remember: await this.$store.getters['popupchats/get'](this.id)
-      }
-      this.chat = chat
     }
   },
   methods: {
@@ -452,7 +447,8 @@ export default {
         id: this.id
       })
 
-      this._updateAfterSend()
+      // We also want to trigger an update in the chat list.
+      this.$store.dispatch('chats/listChats')
     }
   }
 }

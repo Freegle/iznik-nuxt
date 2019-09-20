@@ -160,6 +160,7 @@
 <script>
 // TODO Chat dropdown warnings
 // TODO Chat dropdown menu for report etc
+// TODO Popup confirm first time you use Nudge, so you know what you're doing.
 import twem from '~/assets/js/twem'
 const OurFilePond = () => import('~/components/OurFilePond')
 const requestIdleCallback = () => import('~/assets/js/requestIdleCallback')
@@ -190,7 +191,6 @@ export default {
   data: function() {
     return {
       chatBusy: false,
-      chat: null,
       chatmessages: [],
       chatusers: [],
       lastFetched: new Date(),
@@ -214,6 +214,10 @@ export default {
       } else {
         return null
       }
+    },
+
+    chat() {
+      return this.$store.getters['chats/get'](this.id)
     },
 
     otheruser() {
@@ -242,9 +246,6 @@ export default {
     await this.$store.dispatch('chats/fetch', {
       id: this.id
     })
-
-    const chat = await this.$store.getters['chats/get'](this.id)
-    this.chat = chat
   },
 
   methods: {

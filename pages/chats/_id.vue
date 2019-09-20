@@ -64,6 +64,7 @@ export default {
 
   computed: {
     sortedChats() {
+      console.log('Compute sorted')
       // We sort chats by unread first, then
       const chats = Object.values(this.$store.getters['chats/list']())
 
