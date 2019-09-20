@@ -5,7 +5,7 @@
         <table v-if="users[reply.userid].profile">
           <tbody>
             <tr>
-              <td style="vertical-align: top">
+              <td style="vertical-align: top" class="clickme" title="Click to see their profile" @click="showInfo">
                 <b-img-lazy
                   rounded="circle"
                   class="profilemd p-0 ml-1 mb-1 mr-2 inline float-left"
@@ -17,7 +17,7 @@
               </td>
               <td class="align-top">
                 <v-icon v-if="users[reply.userid].settings.showmod" name="leaf" class="showmodsm text-success" />
-                <span class="text-success font-weight-bold">{{ users[reply.userid].displayname }}</span>
+                <span class="text-success font-weight-bold clickme" title="Click to see their profile" @click="showInfo">{{ users[reply.userid].displayname }}</span>
                 <span class="font-weight-bold prewrap forcebreak replytext nopara">
                   <NewsHighlight
                     :search-words="threadUsers"
@@ -133,6 +133,7 @@
         </b-button>
       </template>
     </b-modal>
+    <ProfileModal :id="reply.userid" ref="profilemodal" />
   </div>
 </template>
 <style scoped>
@@ -153,18 +154,18 @@
 }
 </style>
 <script>
-// TODO Click to show profile
 // TODO User tagging
-// TODO Delete
 import twem from '~/assets/js/twem'
 const NewsUserInfo = () => import('~/components/NewsUserInfo')
 const NewsHighlight = () => import('~/components/NewsHighlight')
+const ProfileModal = () => import('~/components/ProfileModal')
 
 export default {
   name: 'NewsReply',
   components: {
     NewsUserInfo,
-    NewsHighlight
+    NewsHighlight,
+    ProfileModal
   },
   props: {
     threadhead: {
@@ -227,6 +228,10 @@ export default {
     }
   },
   methods: {
+    showInfo() {
+      console.log('Show')
+      this.$refs.profilemodal.show()
+    },
     replyReply() {
       this.replyingTo = this.reply.id
       this.showReplyBox = true

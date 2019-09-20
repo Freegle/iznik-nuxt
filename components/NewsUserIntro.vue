@@ -1,6 +1,6 @@
 <template>
   <b-row>
-    <b-col v-if="userid && users[userid]">
+    <b-col v-if="userid && users[userid]" class="clickme" title="Click to see their profile" @click="showInfo">
       <b-img-lazy
         v-if="users[userid].profile.turl"
         rounded="circle"
@@ -10,6 +10,7 @@
         title="Profile"
         :src="users[userid].profile.turl"
         @error.native="brokenImage"
+        @click="showInfo"
       />
       <v-icon v-if="users[userid].settings.showmod" name="leaf" class="showmod text-success" />
       <span class="text-success font-weight-bold pl-2">
@@ -24,6 +25,7 @@
         {{ $dayjs(newsfeed.timestamp).fromNow() }}
       </span>
       <NewsUserInfo :user="users[userid]" />
+      <ProfileModal :id="userid" ref="profilemodal" />
     </b-col>
   </b-row>
 </template>
@@ -43,10 +45,12 @@
 </style>
 <script>
 const NewsUserInfo = () => import('~/components/NewsUserInfo')
+const ProfileModal = () => import('~/components/ProfileModal')
 
 export default {
   components: {
-    NewsUserInfo
+    NewsUserInfo,
+    ProfileModal
   },
   props: {
     userid: {
@@ -70,6 +74,12 @@ export default {
       type: String,
       required: false,
       default: ''
+    }
+  },
+  methods: {
+    showInfo() {
+      console.log('Show')
+      this.$refs.profilemodal.show()
     }
   }
 }
