@@ -101,6 +101,7 @@
 }
 </style>
 <script>
+// TODO Eye icon to show password for mobile
 import Vue from 'vue'
 
 export default {

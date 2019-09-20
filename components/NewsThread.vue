@@ -23,13 +23,14 @@
         </b-alert>
       </b-card-text>
       <div slot="footer">
-        <div v-if="newsfeed.replies && newsfeed.replies.length > 0">
-          <ul v-for="(entry, $index) in newsfeed.replies" :key="'newsfeed-' + $index" class="list-unstyled">
-            <li>
-              <news-reply :key="'newsfeedreply-' + newsfeed.id + '-reply-' + entry.id" :reply="entry" :users="users" :threadhead="newsfeed" :scroll-to="scrollTo" />
-            </li>
-          </ul>
-        </div>
+        <a v-if="!showAllReplies && newsfeed.replies.length > 10" href="#" variant="white" class="mb-3" @click="(e) => { e.preventDefault(); showAllReplies = true }">
+          Show earlier {{ this.newsfeed.replies.length | pluralize(['reply', 'replies'], { includeNumber: false }) }} ({{ this.newsfeed.replies.length - 10 }})
+        </a>
+        <ul v-for="(entry, $index) in repliestoshow" :key="'newsfeed-' + $index" class="list-unstyled">
+          <li>
+            <news-reply :key="'newsfeedreply-' + newsfeed.id + '-reply-' + entry.id" :reply="entry" :users="users" :threadhead="newsfeed" :scroll-to="scrollTo" />
+          </li>
+        </ul>
         <span v-if="!newsfeed.closed" class="text-small">
           <b-row>
             <b-col>
@@ -112,7 +113,6 @@
 }
 </style>
 <script>
-// TODO Show earlier for replies; currently limited to 10
 // TODO Click to show profile
 // TODO Report etc menu dropdown
 // TODO Delete
@@ -158,7 +158,8 @@ export default {
   data: function() {
     return {
       replyingTo: null,
-      threadcomment: null
+      threadcomment: null,
+      showAllReplies: false
     }
   },
   computed: {
@@ -184,6 +185,20 @@ export default {
       }
 
       return col
+    },
+    repliestoshow() {
+      let ret = []
+
+      if (this.newsfeed.replies && this.newsfeed.replies.length) {
+        if (this.showAllReplies || this.newsfeed.replies.length <= 10) {
+          ret = this.newsfeed.replies
+        } else {
+          // We have to prune what we show.
+          ret = this.newsfeed.replies.slice(-10)
+        }
+      }
+
+      return ret
     }
   },
   methods: {

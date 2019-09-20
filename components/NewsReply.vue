@@ -59,6 +59,9 @@
         </table>
       </b-col>
     </b-row>
+    <a v-if="!this.showAllReplies && reply.replies.length > 5" href="#" variant="white" class="mb-3" @click="(e) => { e.preventDefault(); showAllReplies = true }">
+      Show earlier {{ reply.replies.length | pluralize(['reply', 'replies'], { includeNumber: false }) }} ({{ reply.replies.length - 5 }})
+    </a>
     <div v-if="reply.replies && reply.replies.length > 0" class="pl-3">
       <ul v-for="(entry, $index) in reply.replies" :key="'newsfeed-' + $index" class="p-0 pt-1 pl-1 list-unstyled mb-1 border-left">
         <li>
@@ -191,7 +194,8 @@ export default {
       showReplyBox: false,
       replyingTo: null,
       replybox: null,
-      infoclick: false
+      infoclick: false,
+      showAllReplies: false
     }
   },
   computed: {
@@ -217,6 +221,20 @@ export default {
       for (const user in this.users) {
         ret.push('@' + this.users[user].displayname)
       }
+      return ret
+    },
+    repliestoshow() {
+      let ret = []
+
+      if (this.reply.replies && this.reply.replies.length) {
+        if (this.showAllReplies || this.reply.replies.length <= 5) {
+          ret = this.reply.replies
+        } else {
+          // We have to prune what we show.
+          ret = this.reply.replies.slice(-5)
+        }
+      }
+
       return ret
     }
   },
