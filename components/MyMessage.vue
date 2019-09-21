@@ -141,6 +141,7 @@ img.attachment {
 // TODO DESIGN The badge and the dropdown arrow are different sizes.
 // TODO When we click to expand, the visible text may be off the top or bottom of the screen.  Need to make it visible.
 // TODO MINOR The caret doesn't toggle when we expand.
+// TODO Action buttons - mark received, edit, withdraw, share, repost
 import ResizeText from 'vue-resize-text'
 const MyMessageReply = () => import('~/components/MyMessageReply.vue')
 

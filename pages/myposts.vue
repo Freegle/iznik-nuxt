@@ -30,12 +30,129 @@
             </span>
           </template>
           <b-card-text class="text-center">
-            <p class="text-muted">
+            <p v-if="offers.length > 0" class="text-muted">
               Stuff you're giving away.
             </p>
             <b-img-lazy v-if="busy" src="~/static/loader.gif" />
-            <div v-for="(message, $index) in messages" :key="$index" class="p-0 text-left mt-1">
-              <MyMessage v-if="message.type === 'Offer'" :message="message" :messages="messages" :show-old="showOldOffers" :expand="expand" />
+            <div v-if="busy || offers.length > 0">
+              <div v-for="(message, $index) in offers" :key="$index" class="p-0 text-left mt-1">
+                <MyMessage :message="message" :messages="messages" :show-old="showOldOffers" :expand="expand" />
+              </div>
+            </div>
+            <div v-else>
+              <b-row>
+                <b-col>
+                  <p>Nothing here yet.  Why not...</p>
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col class="text-center">
+                  <b-button to="/give" class="mt-1" size="lg" variant="success">
+                    <v-icon name="gift" />&nbsp;OFFER something
+                  </b-button>
+                </b-col>
+              </b-row>
+            </div>
+          </b-card-text>
+        </b-card>
+        <b-card
+          class="mt-2"
+          border-variant="info"
+          header="info"
+          header-bg-variant="info"
+          header-text-variant="white"
+        >
+          <template slot="header">
+            <span>
+              <v-icon name="search" /> Your WANTEDs
+            </span>
+            <span v-if="oldWantedCount > 0">
+              <span v-if="showOldWanteds" class="float-right">
+                <b-btn variant="white" title="Show old WANTEDs" @click="toggleOldWanted">
+                  Hide {{ oldWantedCount | pluralize([ 'old WANTED', 'old WANTEDs' ], { includeNumber: true }) }}
+                </b-btn>
+              </span>
+              <span v-else class="float-right">
+                <b-btn variant="white" @click="toggleOldWanted">
+                  +{{ oldWantedCount | pluralize([ 'old WANTED', 'old WANTEDs' ], { includeNumber: true }) }}
+                </b-btn>
+              </span>
+            </span>
+          </template>
+          <b-card-text class="text-center">
+            <p v-if="wanteds.length > 0" class="text-muted">
+              Stuff you're trying to find.
+            </p>
+            <b-img-lazy v-if="busy" src="~/static/loader.gif" />
+            <div v-if="busy || wanteds.length > 0">
+              <div v-for="(message, $index) in wanteds" :key="$index" class="p-0 text-left mt-1">
+                <MyMessage :message="message" :messages="messages" :show-old="showOldWanteds" :expand="expand" />
+              </div>
+            </div>
+            <div v-else>
+              <b-row>
+                <b-col>
+                  <p>Nothing here yet.  Why not...</p>
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col cols="5" class="text-center">
+                  <b-button to="/find" class="mt-1" size="lg" variant="primary">
+                    <v-icon name="search" />&nbsp;Find stuff
+                  </b-button>
+                </b-col>
+                <b-col cols="2" />
+                <b-col cols="5" class="text-center">
+                  <b-button to="/find/whatisit" class="mt-1" size="lg" variant="info">
+                    <v-icon name="gift" />&nbsp;Post a WANTED
+                  </b-button>
+                </b-col>
+              </b-row>
+            </div>
+          </b-card-text>
+        </b-card>
+        <b-card
+          class="mt-2"
+          border-variant="info"
+          header="info"
+          header-bg-variant="info"
+          header-text-variant="white"
+        >
+          <template slot="header">
+            <span>
+              <v-icon name="search" /> Your Searches
+            </span>
+          </template>
+          <b-card-text class="text-center">
+            <p v-if="searches.length > 0" class="text-muted">
+              What you've recently searched for - click to search again. These are also email alerts - we'll mail you matching posts.
+            </p>
+            <b-img-lazy v-if="busy" src="~/static/loader.gif" />
+            <ul v-if="busy || searches && Object.keys(searches).length > 0" class="list-group list-group-horizontal flex-wrap">
+              <li v-for="(search, $index) in searches" :key="$index" class="text-left mt-1 list-group-item bg-white border text-nowrap mr-2">
+                <b-btn variant="white d-inline">
+                  <v-icon name="search" /> {{ search.term }}
+                </b-btn>
+                <span class="ml-3 d-inline clickme" @click="deleteSearch(search.id)">
+                  <v-icon v-if="removingSearch === search.id" name="sync" class="text-success fa-spin" />
+                  <v-icon v-else-if="removedSearch === search.id" name="check" class="text-success" />
+                  <v-icon v-else name="trash-alt" title="Delete this search" />
+                </span>
+              </li>
+            </ul>
+            <div v-else>
+              <b-row>
+                <b-col>
+                  <p>Nothing here yet.  Why not...</p>
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col class="text-center">
+                  <b-button to="/find" class="mt-1" size="lg" variant="primary">
+                    <v-icon name="search" />&nbsp;Find stuff
+                  </b-button>
+                </b-col>
+              </b-row>
             </div>
           </b-card-text>
         </b-card>
@@ -52,6 +169,7 @@
 import loginRequired from '@/mixins/loginRequired.js'
 const MyMessage = () => import('~/components/MyMessage.vue')
 // TODO Availability
+// TODO Searches
 
 export default {
   components: {
@@ -66,10 +184,36 @@ export default {
       context: null,
       showOldOffers: false,
       showOldWanteds: false,
-      expand: false
+      expand: false,
+      removingSearch: null,
+      removedSearch: null
     }
   },
   computed: {
+    wanteds() {
+      const ret = []
+
+      for (const message of this.messages) {
+        if (message.type === 'Wanted') {
+          ret.push(message)
+        }
+      }
+
+      return ret
+    },
+
+    offers() {
+      const ret = []
+
+      for (const message of this.messages) {
+        if (message.type === 'Offer') {
+          ret.push(message)
+        }
+      }
+
+      return ret
+    },
+
     oldOfferCount() {
       let count = 0
 
@@ -103,12 +247,21 @@ export default {
       }
 
       return count
+    },
+    searches() {
+      const ret = this.$store.getters['searches/list']()
+      return ret
     }
   },
   async mounted() {
     // Ensure we have no cached messages for other searches/groups
     this.$store.dispatch('messages/clear')
-    this.loadMore()
+    this.loadMore().then(async () => {
+      // Get the searches afterwards otherwise they load first which looks silly as they're less important.
+      this.busy = true
+      await this.$store.dispatch('searches/fetchList')
+      this.busy = false
+    })
 
     // Fetch the chats.  We need this so that we can find chats with unread messages which relate to our own posts
     await this.$store.dispatch('chats/listChats')
@@ -122,8 +275,8 @@ export default {
       const me = this.$store.state.auth.user
       const currentCount = this.messages.length
 
-      this.$store
-        .dispatch('messages/fetchMessages', {
+      try {
+        await this.$store.dispatch('messages/fetchMessages', {
           collection: 'AllUser',
           summary: true,
           types: ['Offer', 'Wanted'],
@@ -131,35 +284,52 @@ export default {
           context: this.context,
           limit: 15
         })
-        .then(() => {
-          this.busy = false
 
-          this.messages = this.$store.getters['messages/getAll']()
-          this.context = this.$store.getters['messages/getContext']()
+        this.busy = false
 
-          if (currentCount !== this.messages.length) {
-            // More to load
-            this.loadMore()
-          } else {
-            // Finished.  If the number of active messages is small, expand them.
-            let count = 0
-            for (const message of this.messages) {
-              if (!message.outcomes || message.outcomes.length === 0) {
-                count++
-              }
+        this.messages = this.$store.getters['messages/getAll']()
+        this.context = this.$store.getters['messages/getContext']()
+
+        if (currentCount !== this.messages.length) {
+          // More to load
+          await this.loadMore()
+        } else {
+          // Finished.  If the number of active messages is small, expand them.
+          let count = 0
+          for (const message of this.messages) {
+            if (!message.outcomes || message.outcomes.length === 0) {
+              count++
             }
-
-            this.expand = count <= 5
           }
-        })
-        .catch(() => {
-          this.busy = false
-          console.log('Complete')
-        })
+
+          this.expand = count <= 5
+        }
+      } catch (e) {
+        this.busy = false
+        console.log('Complete')
+      }
     },
 
     toggleOldOffer() {
       this.showOldOffers = !this.showOldOffers
+    },
+
+    async deleteSearch(id) {
+      this.removingSearch = id
+
+      setTimeout(() => {
+        this.me.phone = null
+      }, 1000)
+
+      await this.$store.dispatch('searches/delete', {
+        id: id
+      })
+
+      this.removingSearch = null
+      this.removedSearch = id
+      setTimeout(() => {
+        this.removedSearch = null
+      }, 2000)
     }
   }
 }

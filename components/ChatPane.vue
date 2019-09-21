@@ -161,6 +161,7 @@
 // TODO Chat dropdown warnings
 // TODO Chat dropdown menu for report etc
 // TODO Popup confirm first time you use Nudge, so you know what you're doing.
+// TODO Warning if you're talking to a spammer, and disable the chat message box.
 import twem from '~/assets/js/twem'
 const OurFilePond = () => import('~/components/OurFilePond')
 const requestIdleCallback = () => import('~/assets/js/requestIdleCallback')
