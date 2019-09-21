@@ -106,6 +106,10 @@ export const actions = {
     } else {
       // We're so vain, we probably think this call is about us.
       first = false
+
+      // Set the time now; this avoids multiple fetches at the start of page loads.
+      commit('setFetched', new Date().getTime())
+
       const res = await this.$axios.get(process.env.API + '/session', {
         params: params
       })

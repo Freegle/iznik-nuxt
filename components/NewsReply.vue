@@ -251,7 +251,9 @@ export default {
       // We use v-if so that the profile modal is not inserted into the DOM until we have clicked, which saves the
       // fetch of the user info.
       this.infoclick = true
-      this.$nextTick(() => this.$refs.profilemodal.show())
+      setTimeout(() => {
+        this.$refs.profilemodal.show()
+      }, 25)
     },
     replyReply() {
       this.replyingTo = this.reply.id

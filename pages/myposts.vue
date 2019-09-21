@@ -253,6 +253,10 @@ export default {
     }
   },
   async mounted() {
+    await this.$store.dispatch('auth/fetchUser', {
+      components: ['me', 'groups']
+    })
+
     // Ensure we have no cached messages for other searches/groups
     this.$store.dispatch('messages/clear')
     this.loadMore().then(async () => {
@@ -260,17 +264,13 @@ export default {
       this.busy = true
       await this.$store.dispatch('searches/fetchList')
       this.busy = false
-    })
 
-    // Fetch the chats.  We need this so that we can find chats with unread messages which relate to our own posts
-    await this.$store.dispatch('chats/listChats')
+      // Fetch the chats.  We need this so that we can find chats with unread messages which relate to our own posts
+      await this.$store.dispatch('chats/listChats')
+    })
   },
   methods: {
     async loadMore() {
-      await this.$store.dispatch('auth/fetchUser', {
-        components: ['me', 'groups']
-      })
-
       const me = this.$store.state.auth.user
       const currentCount = this.messages.length
 

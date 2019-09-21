@@ -86,7 +86,11 @@ export default {
       // We use v-if so that the profile modal is not inserted into the DOM until we have clicked, which saves the
       // fetch of the user info.
       this.infoclick = true
-      this.$refs.profilemodal.show()
+
+      // TODO I tried nextTick here, and the ref wasn't defined in the callback.  So this is a hack.
+      setTimeout(() => {
+        this.$refs.profilemodal.show()
+      }, 25)
     }
   }
 }
