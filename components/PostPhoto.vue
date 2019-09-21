@@ -1,32 +1,35 @@
 <template>
   <div class="container p-0">
-    <v-icon label="Rotate left" class="topleft clickme" title="Rotate left">
-      <v-icon name="circle" transform="grow-2" />
-      <v-icon
-        name="reply"
-        style="color: white;"
-        transform="shrink-3"
-        @click="rotateLeft"
-      />
-    </v-icon>
-    <v-icon label="Rotate left" class="topright clickme" title="Rotate right" flip="horizontal">
-      <v-icon name="circle" transform="grow-2" />
-      <v-icon
-        name="reply"
-        style="color: white;"
-        transform="shrink-3"
-        @click="rotateRight"
-      />
-    </v-icon>
-    <v-icon label="Rotate left" class="bottomright clickme" title="Remove this photo">
-      <v-icon name="circle" transform="grow-2" />
-      <v-icon
-        name="trash-alt"
-        style="color: white;"
-        transform="shrink-3"
-        @click="remove"
-      />
-    </v-icon>
+    <span @click="rotateLeft">
+      <v-icon label="Rotate left" class="topleft clickme" title="Rotate left">
+        <v-icon name="circle" scale="2" />
+        <v-icon
+          name="reply"
+          style="color: white;"
+          transform="shrink-3"
+        />
+      </v-icon>
+    </span>
+    <span @click="rotateRight">
+      <v-icon label="Rotate right" class="topright clickme" title="Rotate right" flip="horizontal">
+        <v-icon name="circle" scale="2" />
+        <v-icon
+          name="reply"
+          style="color: white;"
+          transform="shrink-3"
+        />
+      </v-icon>
+    </span>
+    <span @click="remove">
+      <v-icon label="Rotate left" class="bottomright clickme" title="Remove this photo">
+        <v-icon name="circle" scale="2" />
+        <v-icon
+          name="trash-alt"
+          style="color: white;"
+          transform="shrink-3"
+        />
+      </v-icon>
+    </span>
     <b-img lazy :src="paththumb + '?' + cacheBust" rounded thumbnail class="imagepreview" />
   </div>
 </template>

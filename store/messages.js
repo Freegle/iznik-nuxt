@@ -117,6 +117,19 @@ export const actions = {
     })
   },
 
+  async patch({ commit, dispatch }, params) {
+    await this.$axios.post(process.env.API + '/message', params, {
+      headers: {
+        'X-HTTP-Method-Override': 'PATCH'
+      }
+    })
+
+    // Fetch back to update store and thereby components
+    await dispatch('fetch', {
+      id: params.id
+    })
+  },
+
   async promise({ dispatch }, params) {
     await dispatch(
       'update',

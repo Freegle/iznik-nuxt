@@ -1,6 +1,5 @@
 <template>
   <div>
-    File pond!
     <file-pond
       ref="pond"
       name="photo"

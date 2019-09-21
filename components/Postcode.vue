@@ -7,15 +7,15 @@
       anchor="name"
       label=""
       placeholder="Type postcode or..."
-      :classes="{ input: 'form-control form-control-lg text-center pcinp', list: 'postcodelist' }"
+      :classes="{ input: 'form-control form-control-' + size + ' text-center pcinp', list: 'postcodelist' }"
       :min="3"
       :debounce="100"
       :process="process"
       :on-select="select"
     />
 
-    <b-input-group-append>
-      <b-button variant="primary" size="lg">
+    <b-input-group-append v-if="find">
+      <b-button variant="primary" :size="size">
         <v-icon name="map-marker-alt" />&nbsp;Find my location
       </b-button>
     </b-input-group-append>
@@ -50,6 +50,16 @@ export default {
       type: Boolean,
       required: false,
       default: true
+    },
+    find: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
+    size: {
+      type: String,
+      required: false,
+      default: 'lg'
     }
   },
   data() {

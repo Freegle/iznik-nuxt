@@ -84,8 +84,11 @@ export default {
         this.results = null
       }
 
-      const input = this.$refs.autocomplete.$refs.input
-      this.$emit('typed', input.value)
+      this.$forceNextTick(() => {
+        const input = this.$refs.autocomplete.$refs.input
+        this.$emit('typed', input.value)
+        console.log('Typed', input.value)
+      })
     },
     process(results) {
       const items =

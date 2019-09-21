@@ -104,6 +104,11 @@
                 <v-icon name="trash-alt" /> Withdraw
               </b-btn>
             </b-list-group-item>
+            <b-list-group-item>
+              <b-btn variant="primary" class="d-inline mr-1" @click="edit">
+                <v-icon name="pen" /> Edit
+              </b-btn>
+            </b-list-group-item>
           </b-list-group>
         </b-card-footer>
       </b-collapse>
@@ -139,6 +144,7 @@
     </b-modal>
     <OutcomeModal ref="outcomeModal" :message="message" :users="replyusers" />
     <ShareModal ref="shareModal" :message="message" />
+    <MessageEditModal ref="editModal" :message="message" />
   </div>
 </template>
 <style scoped>
@@ -179,6 +185,7 @@ import ResizeText from 'vue-resize-text'
 const OutcomeModal = () => import('./OutcomeModal')
 const MyMessageReply = () => import('./MyMessageReply.vue')
 const ShareModal = () => import('./ShareModal')
+const MessageEditModal = () => import('./MessageEditModal')
 
 export default {
   directives: {
@@ -187,7 +194,8 @@ export default {
   components: {
     OutcomeModal,
     ShareModal,
-    MyMessageReply
+    MyMessageReply,
+    MessageEditModal
   },
   props: {
     message: {
@@ -306,6 +314,9 @@ export default {
     },
     share() {
       this.$refs.shareModal.show()
+    },
+    edit() {
+      this.$refs.editModal.show()
     }
   }
 }
