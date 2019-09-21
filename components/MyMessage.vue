@@ -73,7 +73,7 @@
                 </tr>
               </tbody>
             </table>
-            <p v-else>
+            <p v-else class="text-muted">
               No replies yet.
             </p>
           </b-card-text>
@@ -82,11 +82,23 @@
           <div class="float-right text-faded">
             #{{ message.id }}
           </div>
-          <div v-if="message.type === 'Offer'">
-            <b-btn variant="success" @click="outcome('Taken')">
-              <v-icon name="check" /> Mark as TAKEN
-            </b-btn>
-          </div>
+          <b-list-group horizontal>
+            <b-list-group-item v-if="message.type === 'Offer'" li>
+              <b-btn variant="success" class="d-inline mr-1" @click="outcome('Taken')">
+                <v-icon name="check" /> Mark as TAKEN
+              </b-btn>
+            </b-list-group-item>
+            <b-list-group-item v-else>
+              <b-btn variant="success" class="d-inline mr-1" @click="outcome('Received')">
+                <v-icon name="check" /> Mark as Received
+              </b-btn>
+            </b-list-group-item>
+            <b-list-group-item>
+              <b-btn variant="white" class="d-inline mr-1" @click="outcome('Withdrawn')">
+                <v-icon name="trash-alt" /> Withdraw
+              </b-btn>
+            </b-list-group-item>
+          </b-list-group>
         </b-card-footer>
       </b-collapse>
     </b-card>

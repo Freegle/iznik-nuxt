@@ -14,7 +14,7 @@
       </b-row>
       <b-row>
         <b-col>
-          <b-select v-model="type">
+          <b-select v-model="type" @change="changeType">
             <option value="Taken">
               Taken by
             </option>
@@ -33,8 +33,18 @@
             v-model="selectedUser"
             autofocus
             :options="userOptions"
-            class="mb-2"
+            :class="'mb-2 ' + (selectedUser === -1 ? 'text-danger' : '')"
           />
+        </b-col>
+      </b-row>
+      <b-row v-if="selectedUser > 0">
+        <b-col class="text-center">
+          <b-card bg-variant="info">
+            <b-card-body>
+              <p>How was this freegler?</p>
+              <Ratings :key="'user-' + selectedUser" v-bind="users[selectedUser]" class="" />
+            </b-card-body>
+          </b-card>
         </b-col>
       </b-row>
       <b-row>
@@ -87,10 +97,19 @@
 select {
   font-weight: bold;
 }
+
+option {
+  color: black !important;
+}
 </style>
 <script>
+import Ratings from './Ratings'
 // TODO DESIGN We really want to push people to select a user.  How can we do that?  Can we force the select open on render?
+// TODO DESIGN The "Please choose" is red but the dropdown shouldn't be.
 export default {
+  components: {
+    Ratings
+  },
   props: {
     message: {
       type: Object,
@@ -99,11 +118,6 @@ export default {
     users: {
       validator: prop => typeof prop === 'object' || prop === null,
       required: true
-    },
-    selectedUser: {
-      type: Number,
-      required: false,
-      default: -1
     }
   },
   data: function() {
@@ -111,32 +125,28 @@ export default {
       showModal: false,
       type: null,
       happiness: null,
-      comments: null
+      comments: null,
+      selectedUser: null
     }
   },
   computed: {
     submitDisabled() {
       const ret = this.type !== 'Withdrawn' && this.selectedUser < 0
-      console.log('Submit disabled', ret, this.type, this.selectedUser)
       return ret
     },
     userOptions() {
       const options = []
 
       if (this.users) {
-        if (this.users.length > 1) {
-          options.push({
-            value: -1,
-            html: "<em>-- Please choose (this isn't public) --</em>",
-            selected: true
-          })
-        }
+        options.push({
+          value: -1,
+          html: "<em>-- Please choose (this isn't public) --</em>"
+        })
 
         for (const user of this.users) {
           options.push({
             value: user.id,
-            text: user.displayname,
-            selected: parseInt(this.selectedMessage) === parseInt(user.id)
+            text: user.displayname
           })
         }
 
@@ -168,11 +178,8 @@ export default {
       this.hide()
     },
 
-    show(type) {
-      this.showModal = true
-      this.type = type
-
-      switch (type) {
+    setComments() {
+      switch (this.type) {
         case 'Taken':
           this.comments = 'Thanks, this has now been taken.'
           break
@@ -185,8 +192,22 @@ export default {
       }
     },
 
+    show(type) {
+      this.showModal = true
+      this.type = type
+      this.setComments()
+
+      console.log('Choose se', this.users.length)
+      this.selectedUser = this.users.length ? -1 : 0
+    },
+
     hide() {
       this.showModal = false
+    },
+
+    changeType() {
+      this.selectedUser = -1
+      this.setComments()
     }
   }
 }

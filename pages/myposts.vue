@@ -168,6 +168,7 @@ import loginRequired from '@/mixins/loginRequired.js'
 const MyMessage = () => import('~/components/MyMessage.vue')
 // TODO Availability
 // TODO Searches
+// TODO DESIGN The section headers (Your OFFERs etc) lack pizzazz.
 
 export default {
   components: {
