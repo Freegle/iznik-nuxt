@@ -56,4 +56,12 @@ require('vue-awesome/icons/users')
 require('vue-awesome/icons/window-maximize')
 require('vue-awesome/icons/window-restore')
 
+require('vue-awesome/icons/brands/facebook')
+require('vue-awesome/icons/brands/google-plus')
+require('vue-awesome/icons/brands/pinterest')
+require('vue-awesome/icons/brands/skype')
+require('vue-awesome/icons/brands/telegram')
+require('vue-awesome/icons/brands/twitter')
+require('vue-awesome/icons/brands/whatsapp')
+
 Vue.component('v-icon', Icon)

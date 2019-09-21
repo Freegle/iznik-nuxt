@@ -3,6 +3,9 @@
     <b-card class="p-0 mb-1" variant="success">
       <b-card-header class="pl-2 pr-2 clearfix">
         <b-card-title class="msgsubj mb-0">
+          <b-btn v-if="expanded" variant="white" class="float-right" title="Share" @click="share">
+            <v-icon name="share-alt" />
+          </b-btn>
           <span v-if="attachments.length > 0" class="float-right clickme" @click="showPhotos">
             <b-badge v-if="attachments.length > 1" class="photobadge" variant="primary">+{{ attachments.length - 1 }} <v-icon name="camera" /></b-badge>
             <b-img-lazy
@@ -140,17 +143,20 @@
         </b-button>
       </template>
     </b-modal>
+    <ShareModal v-if="expanded" ref="shareModal" :message="$props" />
   </div>
 </template>
 <script>
 import twem from '~/assets/js/twem'
 const Highlighter = () => import('vue-highlight-words')
 const MessageUserInfo = () => import('~/components/MessageUserInfo')
+const ShareModal = () => import('./ShareModal')
 
 export default {
   components: {
     MessageUserInfo,
-    Highlighter
+    Highlighter,
+    ShareModal
   },
   props: {
     id: {
@@ -220,6 +226,10 @@ export default {
     async showPhotos() {
       await this.expand()
       this.$bvModal.show('photoModal-' + this.id)
+    },
+
+    share() {
+      this.$refs.shareModal.show()
     }
   }
 }

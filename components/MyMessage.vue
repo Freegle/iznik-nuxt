@@ -80,7 +80,13 @@
         </b-card-body>
         <b-card-footer>
           <div class="float-right text-faded">
-            #{{ message.id }}
+            <b-btn variant="white" title="Share" @click="share">
+              <v-icon name="share-alt" /> Share
+            </b-btn>
+            <br>
+            <nuxt-link :to="'/message/' + message.id" target="_blank" class="text-faded">
+              #{{ message.id }}
+            </nuxt-link>
           </div>
           <b-list-group horizontal>
             <b-list-group-item v-if="message.type === 'Offer'" li>
@@ -132,6 +138,7 @@
       </template>
     </b-modal>
     <OutcomeModal ref="outcomeModal" :message="message" :users="replyusers" />
+    <ShareModal ref="shareModal" :message="message" />
   </div>
 </template>
 <style scoped>
@@ -167,10 +174,11 @@ img.attachment {
 // TODO DESIGN The badge and the dropdown arrow are different sizes.
 // TODO When we click to expand, the visible text may be off the top or bottom of the screen.  Need to make it visible.
 // TODO MINOR The caret doesn't toggle when we expand.
-// TODO Action buttons - mark received, edit, withdraw, share, repost
+// TODO Action buttons - edit, repost
 import ResizeText from 'vue-resize-text'
 const OutcomeModal = () => import('./OutcomeModal')
-const MyMessageReply = () => import('~/components/MyMessageReply.vue')
+const MyMessageReply = () => import('./MyMessageReply.vue')
+const ShareModal = () => import('./ShareModal')
 
 export default {
   directives: {
@@ -178,6 +186,7 @@ export default {
   },
   components: {
     OutcomeModal,
+    ShareModal,
     MyMessageReply
   },
   props: {
@@ -252,7 +261,6 @@ export default {
         }
       }
 
-      console.log('Reply users', ret)
       return ret
     },
 
@@ -294,8 +302,10 @@ export default {
       return unseen
     },
     outcome(type) {
-      console.log(this.$refs)
       this.$refs.outcomeModal.show(type)
+    },
+    share() {
+      this.$refs.shareModal.show()
     }
   }
 }

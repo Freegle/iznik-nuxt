@@ -76,6 +76,7 @@ module.exports = {
     { src: '~plugins/google-sdk', ssr: false },
     { src: '~plugins/vue-js-toggle-button', ssr: false },
     { src: '~plugins/vue2-datepicker', ssr: false },
+    { src: '~plugins/vue-social-sharing', ssr: false },
   ],
 
   /*
@@ -86,7 +87,7 @@ module.exports = {
     'nuxt-rfg-icon',
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
-    'nuxt-dayjs-module'
+    'nuxt-dayjs-module',
     // Removing this as it causes a scalability issue with vue-meta - see https://github.com/nuxt/vue-meta/issues/443
     // 'cookie-universal-nuxt',
     // [
