@@ -188,7 +188,7 @@ html {
 }
 
 #navbar_large .nav-item {
-  width: 90px;
+  width: 95px;
   text-align: center;
 }
 

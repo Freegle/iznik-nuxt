@@ -1,6 +1,6 @@
 <template>
   <div v-if="showOld || !message.outcomes || !message.outcomes.length">
-    <b-card no-body class="mb-1 border border-success">
+    <b-card no-body class="mb-1 border" border-variant="success">
       <b-card-header header-tag="header" class="p-1" role="tab">
         <b-button
           :v-b-toggle="'mypost-' + message.id"
@@ -66,15 +66,28 @@
               <read-more v-if="message && message.textbody" :text="message.textbody" :max-chars="maxChars" class="nopara" />
             </span>
             <hr>
-            <table class="table table-borderless table-striped mb-0">
+            <table v-if="replies.length > 0" class="table table-borderless table-striped mb-0">
               <tbody>
                 <tr v-for="reply in replies" :key="'reply-' + reply.id">
                   <MyMessageReply :reply="reply" :chats="chats" :message="message" />
                 </tr>
               </tbody>
             </table>
+            <p v-else>
+              No replies yet.
+            </p>
           </b-card-text>
         </b-card-body>
+        <b-card-footer>
+          <div class="float-right text-faded">
+            #{{ message.id }}
+          </div>
+          <div v-if="message.type === 'Offer'">
+            <b-btn variant="success" @click="outcome('Taken')">
+              <v-icon name="check" /> Mark as TAKEN
+            </b-btn>
+          </div>
+        </b-card-footer>
       </b-collapse>
     </b-card>
     <b-modal
@@ -106,6 +119,7 @@
         </b-carousel>
       </template>
     </b-modal>
+    <OutcomeModal ref="outcomeModal" :message="message" :users="replyusers" />
   </div>
 </template>
 <style scoped>
@@ -143,6 +157,7 @@ img.attachment {
 // TODO MINOR The caret doesn't toggle when we expand.
 // TODO Action buttons - mark received, edit, withdraw, share, repost
 import ResizeText from 'vue-resize-text'
+const OutcomeModal = () => import('./OutcomeModal')
 const MyMessageReply = () => import('~/components/MyMessageReply.vue')
 
 export default {
@@ -150,6 +165,7 @@ export default {
     ResizeText
   },
   components: {
+    OutcomeModal,
     MyMessageReply
   },
   props: {
@@ -213,6 +229,21 @@ export default {
       })
     },
 
+    replyusers() {
+      const ret = []
+      const retids = []
+
+      for (const reply of this.message.replies) {
+        if (retids.indexOf(reply.user.id) === -1) {
+          ret.push(reply.user)
+          retids[reply.userid] = true
+        }
+      }
+
+      console.log('Reply users', ret)
+      return ret
+    },
+
     chats() {
       // We want all the chats which reference this message.  We fetch them in myposts, here we only need to
       // get them from the store
@@ -249,6 +280,10 @@ export default {
       }
 
       return unseen
+    },
+    outcome(type) {
+      console.log(this.$refs)
+      this.$refs.outcomeModal.show(type)
     }
   }
 }

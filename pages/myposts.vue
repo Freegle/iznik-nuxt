@@ -83,7 +83,6 @@
             <p v-if="wanteds.length > 0" class="text-muted">
               Stuff you're trying to find.
             </p>
-            <b-img-lazy v-if="busy" src="~/static/loader.gif" />
             <div v-if="busy || wanteds.length > 0">
               <div v-for="(message, $index) in wanteds" :key="$index" class="p-0 text-left mt-1">
                 <MyMessage :message="message" :messages="messages" :show-old="showOldWanteds" :expand="expand" />
@@ -127,7 +126,6 @@
             <p v-if="searches.length > 0" class="text-muted">
               What you've recently searched for - click to search again. These are also email alerts - we'll mail you matching posts.
             </p>
-            <b-img-lazy v-if="busy" src="~/static/loader.gif" />
             <ul v-if="busy || searches && Object.keys(searches).length > 0" class="list-group list-group-horizontal flex-wrap">
               <li v-for="(search, $index) in searches" :key="$index" class="text-left mt-1 list-group-item bg-white border text-nowrap mr-2">
                 <b-btn variant="white d-inline">
