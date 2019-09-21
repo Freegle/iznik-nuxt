@@ -292,7 +292,6 @@ export default {
             }
 
             this.scrollTo = this.id
-            console.log('Set scrollto', this.id)
 
             $state.complete()
           } else {

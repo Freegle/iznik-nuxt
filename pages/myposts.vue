@@ -13,9 +13,9 @@
           header-text-variant="white"
         >
           <template slot="header">
-            <span>
-              <v-icon name="gift" /> Your OFFERs
-            </span>
+            <h3 class="d-inline">
+              <v-icon name="gift" scale="2" /> Your OFFERs
+            </h3>
             <span v-if="oldOfferCount > 0">
               <span v-if="showOldOffers" class="float-right">
                 <b-btn variant="white" title="Show old OFFERs" @click="toggleOldOffer">
@@ -33,7 +33,7 @@
             <p v-if="offers.length > 0" class="text-muted">
               Stuff you're giving away.
             </p>
-            <b-img-lazy v-if="busy" src="~/static/loader.gif" />
+            <b-img-lazy v-if="busy && offers.length === 0" src="~/static/loader.gif" />
             <div v-if="busy || offers.length > 0">
               <div v-for="(message, $index) in offers" :key="$index" class="p-0 text-left mt-1">
                 <MyMessage :message="message" :messages="messages" :show-old="showOldOffers" :expand="expand" />
@@ -63,9 +63,9 @@
           header-text-variant="white"
         >
           <template slot="header">
-            <span>
-              <v-icon name="search" /> Your WANTEDs
-            </span>
+            <h3 class="d-inline">
+              <v-icon name="search" scale="2" /> Your WANTEDs
+            </h3>
             <span v-if="oldWantedCount > 0">
               <span v-if="showOldWanteds" class="float-right">
                 <b-btn variant="white" title="Show old WANTEDs" @click="toggleOldWanted">
@@ -118,9 +118,9 @@
           header-text-variant="white"
         >
           <template slot="header">
-            <span>
-              <v-icon name="search" /> Your Searches
-            </span>
+            <h3 class="d-inline">
+              <v-icon name="search" scale="2" /> Your Searches
+            </h3>
           </template>
           <b-card-text class="text-center">
             <p v-if="searches.length > 0" class="text-muted">
@@ -167,8 +167,7 @@
 import loginRequired from '@/mixins/loginRequired.js'
 const MyMessage = () => import('~/components/MyMessage.vue')
 // TODO Availability
-// TODO Searches
-// TODO DESIGN The section headers (Your OFFERs etc) lack pizzazz.
+// TODO Repost, reject and resubmit.
 
 export default {
   components: {

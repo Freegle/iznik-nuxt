@@ -33,7 +33,7 @@
                     </b-badge>
                   </span>
                   <b-btn class="ml-1" variant="white">
-                    <v-icon v-if="!expand" name="caret-down" />
+                    <v-icon v-if="!expanded" name="caret-down" />
                     <v-icon v-else name="caret-up" />
                     <template slot="button-content" />
                   </b-btn>
@@ -43,78 +43,80 @@
           </b-row>
         </b-button>
       </b-card-header>
-      <b-collapse :id="'mypost-' + message.id" :visible="expand" role="tabpanel">
-        <b-card-body class="p-2">
-          <b-card-text>
-            <span v-if="message.attachments.length > 0" class="float-right clickme" @click="showPhotos">
-              <b-badge v-if="message.attachments.length > 1" class="photobadge" variant="primary">+{{ message.attachments.length - 1 }} <v-icon name="camera" /></b-badge>
-              <b-img-lazy
-                rounded
-                thumbnail
-                class="attachment p-0 square mb-1"
-                alt="Item picture"
-                title="Item picture"
-                :src="message.attachments[0].paththumb"
-              />
-            </span>
-            <p :v-if="expand">
-              <span v-for="group in message.groups" :key="'message-' + message.id + '-' + group.id" class="small text-muted">
-                {{ group.arrival | timeago }} on {{ group.namedisplay }} <span class="text-faded small">#{{ message.id }}</span>
+      <b-collapse :id="'mypost-' + message.id" :visible="expanded" role="tabpanel" @show="expanded = true" @hidden="expanded = false">
+        <div v-if="expanded">
+          <b-card-body class="p-2">
+            <b-card-text>
+              <span v-if="message.attachments.length > 0" class="float-right clickme" @click="showPhotos">
+                <b-badge v-if="message.attachments.length > 1" class="photobadge" variant="primary">+{{ message.attachments.length - 1 }} <v-icon name="camera" /></b-badge>
+                <b-img-lazy
+                  rounded
+                  thumbnail
+                  class="attachment p-0 square mb-1"
+                  alt="Item picture"
+                  title="Item picture"
+                  :src="message.attachments[0].paththumb"
+                />
               </span>
-            </p>
-            <span class="prewrap">
-              <read-more v-if="message && message.textbody" :text="message.textbody" :max-chars="maxChars" class="nopara" />
-            </span>
-            <hr>
-            <table v-if="replies.length > 0" class="table table-borderless table-striped mb-0">
-              <tbody>
-                <tr v-for="reply in replies" :key="'reply-' + reply.id">
-                  <MyMessageReply :reply="reply" :chats="chats" :message="message" />
-                </tr>
-              </tbody>
-            </table>
-            <p v-else class="text-muted">
-              No replies yet.
-            </p>
-          </b-card-text>
-        </b-card-body>
-        <b-card-footer>
-          <div class="float-right text-faded">
-            <b-btn variant="white" title="Share" @click="share">
-              <v-icon name="share-alt" /> Share
-            </b-btn>
-            <br>
-            <nuxt-link :to="'/message/' + message.id" target="_blank" class="text-faded">
-              #{{ message.id }}
-            </nuxt-link>
-          </div>
-          <b-list-group horizontal>
-            <b-list-group-item v-if="message.type === 'Offer'" li>
-              <b-btn variant="success" class="d-inline mr-1" @click="outcome('Taken')">
-                <v-icon name="check" /> Mark as TAKEN
+              <p>
+                <span v-for="group in message.groups" :key="'message-' + message.id + '-' + group.id" class="small text-muted">
+                  {{ group.arrival | timeago }} on {{ group.namedisplay }} <span class="text-faded small">#{{ message.id }}</span>
+                </span>
+              </p>
+              <span class="prewrap">
+                <read-more v-if="message && message.textbody" :text="message.textbody" :max-chars="maxChars" class="nopara" />
+              </span>
+              <hr>
+              <table v-if="replies.length > 0" class="table table-borderless table-striped mb-0">
+                <tbody>
+                  <tr v-for="reply in replies" :key="'reply-' + reply.id">
+                    <MyMessageReply :reply="reply" :chats="chats" :message="message" />
+                  </tr>
+                </tbody>
+              </table>
+              <p v-else class="text-muted">
+                No replies yet.
+              </p>
+            </b-card-text>
+          </b-card-body>
+          <b-card-footer>
+            <div class="float-right text-faded">
+              <b-btn variant="white" title="Share" @click="share">
+                <v-icon name="share-alt" /> Share
               </b-btn>
-            </b-list-group-item>
-            <b-list-group-item v-else>
-              <b-btn variant="success" class="d-inline mr-1" @click="outcome('Received')">
-                <v-icon name="check" /> Mark as Received
-              </b-btn>
-            </b-list-group-item>
-            <b-list-group-item>
-              <b-btn variant="white" class="d-inline mr-1" @click="outcome('Withdrawn')">
-                <v-icon name="trash-alt" /> Withdraw
-              </b-btn>
-            </b-list-group-item>
-            <b-list-group-item>
-              <b-btn variant="primary" class="d-inline mr-1" @click="edit">
-                <v-icon name="pen" /> Edit
-              </b-btn>
-            </b-list-group-item>
-          </b-list-group>
-        </b-card-footer>
+              <br>
+              <nuxt-link :to="'/message/' + message.id" target="_blank" class="text-faded">
+                #{{ message.id }}
+              </nuxt-link>
+            </div>
+            <b-list-group horizontal>
+              <b-list-group-item v-if="message.type === 'Offer'" li>
+                <b-btn variant="success" class="d-inline mr-1" @click="outcome('Taken')">
+                  <v-icon name="check" /> Mark as TAKEN
+                </b-btn>
+              </b-list-group-item>
+              <b-list-group-item v-else>
+                <b-btn variant="success" class="d-inline mr-1" @click="outcome('Received')">
+                  <v-icon name="check" /> Mark as Received
+                </b-btn>
+              </b-list-group-item>
+              <b-list-group-item>
+                <b-btn variant="white" class="d-inline mr-1" @click="outcome('Withdrawn')">
+                  <v-icon name="trash-alt" /> Withdraw
+                </b-btn>
+              </b-list-group-item>
+              <b-list-group-item>
+                <b-btn variant="primary" class="d-inline mr-1" @click="edit">
+                  <v-icon name="pen" /> Edit
+                </b-btn>
+              </b-list-group-item>
+            </b-list-group>
+          </b-card-footer>
+        </div>
       </b-collapse>
     </b-card>
     <b-modal
-      v-if="expand && message.attachments.length"
+      v-if="expanded && message.attachments.length"
       :id="'photoModal-' + message.id"
       ref="photoModal"
       :title="message.subject"
@@ -179,8 +181,7 @@ img.attachment {
 // of things.
 // TODO DESIGN The badge and the dropdown arrow are different sizes.
 // TODO When we click to expand, the visible text may be off the top or bottom of the screen.  Need to make it visible.
-// TODO MINOR The caret doesn't toggle when we expand.
-// TODO Action buttons - edit, repost
+// TODO Action buttons - repost
 import ResizeText from 'vue-resize-text'
 const OutcomeModal = () => import('./OutcomeModal')
 const MyMessageReply = () => import('./MyMessageReply.vue')
@@ -218,7 +219,8 @@ export default {
   data: function() {
     return {
       slide: 0,
-      maxChars: 60
+      maxChars: 60,
+      expanded: false
     }
   },
   computed: {
@@ -290,6 +292,9 @@ export default {
 
       return ret
     }
+  },
+  mounted() {
+    this.expanded = this.expand
   },
   methods: {
     toggle() {

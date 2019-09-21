@@ -18,7 +18,6 @@
                   <span v-if="chat.unseen">
                     <b-badge variant="danger">{{ chat.unseen }}</b-badge>
                   </span>
-                  <v-icon name="lock" title="This chat is private." class="d-inline" />
                 </b-col>
               </b-row>
             </b-col>
