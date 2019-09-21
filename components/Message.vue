@@ -75,13 +75,14 @@
       </b-card-body>
       <b-card-footer v-if="expanded">
         <b-row>
-          <b-col cols="9">
+          <b-col class="d-flex">
             <b-form-textarea
               v-if="expanded.type == 'Offer'"
               v-model="reply"
               placeholder="Interested?  Please explain why you'd like it and when you can collect.  Always be polite and helpful."
               rows="3"
               max-rows="8"
+              class="flex-shrink-2"
             />
             <b-form-textarea
               v-if="expanded.type == 'Wanted'"
@@ -89,12 +90,13 @@
               placeholder="Can you help?  If you have what they're looking for, let them know."
               rows="3"
               max-rows="8"
+              class="flex-shrink-2"
             />
-          </b-col>
-          <b-col cols="3">
-            <b-btn variant="success">
-              <v-icon name="envelope" />&nbsp;Send
-            </b-btn>
+            <div class="flex-grow-1 text-right ml-2">
+              <b-btn variant="success">
+                <v-icon name="envelope" />&nbsp;Send
+              </b-btn>
+            </div>
           </b-col>
         </b-row>
       </b-card-footer>
