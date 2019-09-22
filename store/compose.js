@@ -26,7 +26,23 @@ export const mutations = {
     state.emailAt = new Date().getTime()
   },
   setPostcode(state, postcode) {
-    state.postcode = postcode
+    // Want to make sure we don't store too much data.
+    const pc = { ...postcode }
+
+    if (postcode) {
+      pc.groupsnear = []
+
+      for (const group of postcode.groupsnear) {
+        pc.groupsnear.push({
+          id: group.id,
+          nameshort: group.nameshort,
+          namedisplay: group.namedisplay,
+          type: group.type
+        })
+      }
+    }
+
+    state.postcode = pc
   },
   setGroup(state, group) {
     state.group = group
@@ -79,6 +95,9 @@ export const mutations = {
         return parseInt(obj.id) !== parseInt(params.photoid)
       })
     )
+  },
+  setAttachmentsForMessage(state, params) {
+    state.attachments[params.id] = params.attachments
   },
   setAttachments(state, params) {
     state.attachments = params
@@ -134,6 +153,9 @@ export const actions = {
   addAttachment({ commit }, params) {
     commit('addAttachment', params)
   },
+  setAttachmentsForMessage({ commit }, params) {
+    commit('setAttachmentsForMessage', params)
+  },
   removeAttachment({ commit }, params) {
     commit('removeAttachment', params)
   },
@@ -141,18 +163,35 @@ export const actions = {
     console.log('clear action', params)
     commit('clearMessage', params)
   },
-  async submit({ commit, state, store }) {
-    // This is the most important bit of code in the client :-).  We have our messages in the compose store.  The
-    // server has a two stage process - create a draft and submit it, so that's what we do.
+  async submit({ dispatch, commit, state, store }) {
+    // This is the most important bit of code in the client :-).  We have our messages in the compose store.
     //
-    // In earlier client versions, we remembered existing drafts in case of interruption by user or errors.
+    // For messages we've just created, the server has a two stage process - create a draft and submit it, so that's
+    // what we do.
+    //
+    // For messages which we are reposting, we need to edit them to pick up updated, convert them back into a draft,
+    // and then submit them.
+    //
+    // In earlier client versions, we recovered existing drafts from the server in case of interruption by user or errors.
     // But we don't need to do that, because our store remembers the contents of the message.  Orphaned drafts will
     // be pruned by the server.
     const promises = []
     const results = []
     const self = this
     const messages = Object.entries(state.messages)
-    commit('initProgress', messages.length * 3)
+    let steps = 0
+    for (const message of messages) {
+      if (message.id < 0) {
+        // 1) Create draft 2) Submit
+        steps += 2
+      } else {
+        // 1) Edit message 2) Convert to draft 3) Submit
+        steps += 3
+      }
+    }
+
+    // Add an extra step for below to show we've started.
+    commit('initProgress', steps + 1)
 
     for (const [id, message] of messages) {
       if (message.submitted) {
@@ -160,76 +199,154 @@ export const actions = {
       }
 
       console.log('Submit', id, message, state.attachments[message.id])
-      const attids = []
+      let promise
 
-      if (state.attachments[message.id]) {
-        for (const att in state.attachments[message.id]) {
-          console.log('Got att', att)
-          attids.push(state.attachments[message.id][att].id)
+      if (message.id < 0) {
+        // This is a draft we have composed on the client, which doesn't have a corresponding server message yet.
+        const attids = []
+
+        if (state.attachments[message.id]) {
+          for (const att in state.attachments[message.id]) {
+            attids.push(state.attachments[message.id][att].id)
+          }
         }
-      }
 
-      const data = {
-        collection: 'Draft',
-        locationid: state.postcode.id,
-        messagetype: message.type,
-        item: message.item,
-        textbody: message.description,
-        attachments: attids,
-        groupid: state.group
+        const data = {
+          collection: 'Draft',
+          locationid: state.postcode.id,
+          messagetype: message.type,
+          item: message.item,
+          textbody: message.description,
+          attachments: attids,
+          groupid: state.group
+        }
+
+        promise = new Promise(function(resolve, reject) {
+          console.log('Create draft')
+          self.$axios
+            .put(process.env.API + '/message', data)
+            .then(function(ret) {
+              commit('incProgress')
+
+              if (ret.status === 200 && ret.data.ret === 0) {
+                // We've created a draft.  Submit it
+                console.log('Created draft, now submit', ret.data.id)
+
+                self.$axios
+                  .post(process.env.API + '/message', {
+                    action: 'JoinAndPost',
+                    email: state.email,
+                    id: ret.data.id
+                  })
+                  .then(function(ret2) {
+                    commit('incProgress')
+
+                    if (ret2.status === 200 && ret2.data.ret === 0) {
+                      // Success
+                      console.log('Submitted draft OK')
+                      const groupid = ret2.data.groupid
+                      commit('setMessage', {
+                        id: message.id,
+                        submitted: true
+                      })
+                      commit('setAttachments', [])
+                      results.push({
+                        id: message.id,
+                        groupid: groupid
+                      })
+
+                      resolve(groupid)
+                    }
+                  })
+                  .catch(function(e) {
+                    // Failed
+                    console.error('Post of message failed', e)
+                    reject(e)
+                  })
+              } else {
+                console.error('Create of draft failed', ret)
+                reject(ret)
+              }
+            })
+            .catch(function(e) {
+              // TODO
+              console.error('Create of draft failed', e)
+            })
+        })
+      } else {
+        // This is one of our messages which we are reposting.  We need to edit it (to update it from our client
+        // copy), convert it back to draft, and then submit.
+        promise = new Promise(function(resolve, reject) {
+          console.log('Existing message, update on server', message.id)
+          dispatch('messages/patch', message, {
+            root: true
+          }).then(function(ret) {
+            commit('incProgress')
+
+            if (ret.status === 0 && ret.data.ret === 0) {
+              console.log('Updated, now convert back to draft')
+              dispatch(
+                'messages/update',
+                {
+                  id: message.id,
+                  action: 'RejectToDraft'
+                },
+                {
+                  root: true
+                }
+              ).then(function(ret2) {
+                commit('incProgress')
+
+                if (ret2.status === 200 && ret.data.ret === 0) {
+                  console.log('Updated, now submit')
+                  self.$axios
+                    .post(process.env.API + '/message', {
+                      action: 'JoinAndPost',
+                      email: state.email,
+                      id: message.id
+                    })
+                    .then(function(ret2) {
+                      commit('incProgress')
+                      console.log('Submitted', ret2)
+                      if (ret2.status === 200 && ret2.data.ret === 0) {
+                        // Success
+                        const groupid = ret2.data.groupid
+                        commit('setMessage', {
+                          id: message.id,
+                          submitted: true
+                        })
+                        commit('setAttachments', [])
+                        results.push({
+                          id: message.id,
+                          groupid: groupid
+                        })
+
+                        resolve(groupid)
+                      }
+                    })
+                    .catch(function(e) {
+                      // Failed
+                      console.error('Post of message failed', e)
+                      reject(e)
+                    })
+                    .catch(function(e) {
+                      console.error('Edit of existing message failed', e)
+                    })
+                } else {
+                  console.error('Edit of exist message failed', ret2)
+                  reject(ret2)
+                }
+              })
+            } else {
+              console.error('Edit of exist message failed', ret)
+              reject(ret)
+            }
+          })
+        })
       }
 
       Vue.nextTick(() => {
         commit('incProgress')
-      })
-
-      const promise = new Promise(function(resolve, reject) {
-        self.$axios
-          .put(process.env.API + '/message', data)
-          .then(function(ret) {
-            commit('incProgress')
-
-            if (ret.status === 200 && ret.data.ret === 0) {
-              // We've created a draft.  Submit it
-              self.$axios
-                .post(process.env.API + '/message', {
-                  action: 'JoinAndPost',
-                  email: state.email,
-                  id: ret.data.id
-                })
-                .then(function(ret2) {
-                  commit('incProgress')
-                  console.log('Submitted', ret2)
-                  if (ret2.status === 200 && ret2.data.ret === 0) {
-                    // Success
-                    const groupid = ret2.data.groupid
-                    commit('setMessage', {
-                      id: message.id,
-                      submitted: true
-                    })
-                    commit('setAttachments', [])
-                    results.push({
-                      id: message.id,
-                      groupid: groupid
-                    })
-
-                    resolve(groupid)
-                  }
-                })
-                .catch(function(e) {
-                  // Failed
-                  console.error('Post of message failed', e)
-                  reject(e)
-                })
-            } else {
-              console.error('Create of message failed', ret)
-              reject(ret)
-            }
-          })
-          .catch(function(e) {
-            // TODO
-            console.error('Create of message failed', e)
-          })
       })
 
       promises.push(promise)

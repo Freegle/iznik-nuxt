@@ -6,7 +6,6 @@
         <v-icon
           name="reply"
           style="color: white;"
-          transform="shrink-3"
         />
       </v-icon>
     </span>
@@ -16,7 +15,6 @@
         <v-icon
           name="reply"
           style="color: white;"
-          transform="shrink-3"
         />
       </v-icon>
     </span>
@@ -26,7 +24,6 @@
         <v-icon
           name="trash-alt"
           style="color: white;"
-          transform="shrink-3"
         />
       </v-icon>
     </span>

@@ -18,7 +18,7 @@
           <b-row v-if="postcode">
             <b-col class="text-center">
               <nuxt-link to="/give/whatisit">
-                <v-icon name="check-circle" class="text-success mt-2 fa-bh" />
+                <v-icon name="check-circle" class="text-success mt-2 fa-bh" scale="5" />
               </nuxt-link>
             </b-col>
           </b-row>
@@ -100,9 +100,28 @@ export default {
     getLocation() {},
     postcodeSelect(pc) {
       this.postcode = pc
-      this.group = pc && pc.groupsnear ? pc.groupsnear[0].id : null
       this.$store.dispatch('compose/setPostcode', this.postcode)
-      this.$store.dispatch('compose/setGroup', this.group)
+
+      // If we don't have a group currently which is in the list near this postcode, choose the closest.  That
+      // allows people to select further away groups if they wish.
+      const groupid = this.$store.getters['compose/getGroup']()
+
+      if (pc && pc.groupsnear) {
+        let found = false
+        for (const group of pc.groupsnear) {
+          if (parseInt(group.id) === parseInt(groupid)) {
+            found = true
+          }
+        }
+
+        if (!found) {
+          this.group = pc.groupsnear[0].id
+        } else {
+          this.group = groupid
+        }
+
+        this.$store.dispatch('compose/setGroup', this.group)
+      }
     },
     postcodeClear() {
       this.postcode = null

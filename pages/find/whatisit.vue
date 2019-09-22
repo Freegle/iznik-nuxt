@@ -52,12 +52,18 @@
                 <PostMessage :id="id" type="Wanted" />
               </b-card-body>
               <b-card-footer v-if="index === ids.length - 1">
-                <b-btn v-if="ids.length > 1" variant="white" class="mt-2 float-left" @click="deleteItem">
-                  <v-icon name="trash-alt" />&nbsp;Delete item
-                </b-btn>
-                <b-btn variant="white" class="mt-2 float-right" @click="addItem">
-                  <v-icon name="plus" />&nbsp;Add another item
-                </b-btn>
+                <div class="float-left">
+                  <Postcode :focus="false" :find="false" size="md" class="d-inline" @selected="postcodeSelect" />
+                  <ComposeGroup class="d-inline align-top" :width="200" />
+                </div>
+                <div class="ml-auto float-right">
+                  <b-btn v-if="ids.length > 1" variant="white" class="" @click="deleteItem">
+                    <v-icon name="trash-alt" />&nbsp;Delete item
+                  </b-btn>
+                  <b-btn variant="white" class="" @click="addItem">
+                    <v-icon name="plus" />&nbsp;Add another item
+                  </b-btn>
+                </div>
               </b-card-footer>
             </b-card>
           </li>
@@ -88,10 +94,14 @@
 
 import loginOptional from '@/mixins/loginOptional.js'
 const PostMessage = () => import('~/components/PostMessage')
+const Postcode = () => import('~/components/Postcode')
+const ComposeGroup = () => import('~/components/ComposeGroup')
 
 export default {
   components: {
-    PostMessage
+    PostMessage,
+    Postcode,
+    ComposeGroup
   },
   mixins: [loginOptional],
   data: function() {
@@ -105,7 +115,7 @@ export default {
 
       let ids = []
       for (const message of messages) {
-        if (message.id) {
+        if (message.id && message.type === 'Wanted') {
           ids.push(message.id)
         }
       }
@@ -147,7 +157,6 @@ export default {
         id: this.ids[this.ids.length - 1]
       })
     },
-
     addItem() {
       // Find a new id.
       let nextId = -1
@@ -162,7 +171,30 @@ export default {
         description: null
       })
     },
+    postcodeSelect(pc) {
+      this.$store.dispatch('compose/setPostcode', pc)
 
+      // If we don't have a group currently which is in the list near this postcode, choose the closest.  That
+      // allows people to select further away groups if they wish.
+      const groupid = this.$store.getters['compose/getGroup']()
+
+      if (pc && pc.groupsnear) {
+        let found = false
+        for (const group of pc.groupsnear) {
+          if (parseInt(group.id) === parseInt(groupid)) {
+            found = true
+          }
+        }
+
+        if (!found) {
+          this.group = pc.groupsnear[0].id
+        } else {
+          this.group = groupid
+        }
+
+        this.$store.dispatch('compose/setGroup', this.group)
+      }
+    },
     next() {
       this.$router.push('/find/whoami')
     }

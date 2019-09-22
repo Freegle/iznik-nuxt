@@ -167,7 +167,7 @@
 import loginRequired from '@/mixins/loginRequired.js'
 const MyMessage = () => import('~/components/MyMessage.vue')
 // TODO Availability
-// TODO Repost, reject and resubmit.
+// TODO Reject and resubmit.
 
 export default {
   components: {

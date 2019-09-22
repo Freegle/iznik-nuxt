@@ -75,7 +75,7 @@
                 </tbody>
               </table>
               <p v-else class="text-muted">
-                No replies yet.
+                No replies yet. <span v-if="message.willautorepost && message.canrepostat">Will auto-repost {{ message.canrepostat | timeago }}.</span>
               </p>
             </b-card-text>
           </b-card-body>
@@ -108,6 +108,16 @@
               <b-list-group-item>
                 <b-btn variant="primary" class="d-inline mr-1" @click="edit">
                   <v-icon name="pen" /> Edit
+                </b-btn>
+              </b-list-group-item>
+              <b-list-group-item v-if="message.canrepost">
+                <b-btn variant="white" class="d-inline mr-1" @click="repost">
+                  <v-icon name="sync" /> Post Again
+                </b-btn>
+              </b-list-group-item>
+              <b-list-group-item v-else-if="message.canrepostat">
+                <b-btn variant="white" disabled class="d-inline mr-1" title="You will be able to repost this soon">
+                  <v-icon name="sync" /> Post Again <span class="small">{{ message.canrepostat | timeago }}</span>
                 </b-btn>
               </b-list-group-item>
             </b-list-group>
@@ -179,9 +189,9 @@ img.attachment {
 <script>
 // TODO DESIGN This is better than the old version, but it's still not quite right, in terms of alignment and sizes
 // of things.
-// TODO DESIGN The badge and the dropdown arrow are different sizes.
 // TODO When we click to expand, the visible text may be off the top or bottom of the screen.  Need to make it visible.
 // TODO Action buttons - repost
+// TODO MINOR There's a window we've seen in the past where the autorepost hasn't happened yet.  Should say 'soon' if autorepost time is in the past.
 import ResizeText from 'vue-resize-text'
 const OutcomeModal = () => import('./OutcomeModal')
 const MyMessageReply = () => import('./MyMessageReply.vue')
@@ -322,6 +332,23 @@ export default {
     },
     edit() {
       this.$refs.editModal.show()
+    },
+    async repost() {
+      // Add this message to the compose store so that it will show up on the compose page.
+      await this.$store.dispatch('compose/setMessage', {
+        id: this.message.id,
+        item: this.message.item.name.trim(),
+        description: this.message.textbody.trim()
+      })
+
+      await this.$store.dispatch('compose/setAttachmentsForMessage', {
+        id: this.message.id,
+        attachments: this.message.attachments
+      })
+
+      this.$router.push(
+        this.message.type === 'Offer' ? '/give/whatisit' : 'find/whatisit'
+      )
     }
   }
 }

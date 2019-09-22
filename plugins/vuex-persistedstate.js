@@ -37,20 +37,6 @@ export default ({ store }) => {
           }
         }
 
-        // The groupsnear in a postcode only needs the group ids.
-        const pc = newstate.compose.postcode
-
-        if (pc) {
-          const near = []
-          for (const group of pc.groupsnear) {
-            near.push({
-              id: group.id
-            })
-          }
-
-          newstate.compose.postcode.groupsnear = near
-        }
-
         if (state.newsfeed) {
           // We don't want to save most newsfeed info, but this controls where we show.
           newstate.newsfeed = {

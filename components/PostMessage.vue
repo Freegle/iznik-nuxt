@@ -28,10 +28,21 @@
             <PostPhoto v-bind="att" @remove="removePhoto" />
           </b-list-group-item>
         </b-list-group>
+        <hr>
       </b-col>
     </b-row>
     <b-row>
-      <b-col class="pl-0 pr-0">
+      <b-col cols="6" md="3" class="pl-0">
+        <b-form-select v-model="type">
+          <option value="Offer">
+            OFFER
+          </option>
+          <option value="Wanted">
+            WANTED
+          </option>
+        </b-form-select>
+      </b-col>
+      <b-col cols="9" class="pl-0 pr-0">
         <PostItem :item="item" @selected="itemSelect" @cleared="itemClear" @typed="itemType" />
       </b-col>
     </b-row>

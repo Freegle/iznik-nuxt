@@ -109,25 +109,33 @@ export const actions = {
   },
 
   async update({ commit, dispatch }, params) {
-    await this.$axios.post(process.env.API + '/message', params)
+    const ret = await this.$axios.post(process.env.API + '/message', params)
 
-    // Fetch back to update store and thereby components
-    await dispatch('fetch', {
-      id: params.id
-    })
+    if (ret.status === 0 && ret.data.ret === 0) {
+      // Fetch back to update store and thereby components
+      await dispatch('fetch', {
+        id: params.id
+      })
+    }
+
+    return ret
   },
 
   async patch({ commit, dispatch }, params) {
-    await this.$axios.post(process.env.API + '/message', params, {
+    const ret = await this.$axios.post(process.env.API + '/message', params, {
       headers: {
         'X-HTTP-Method-Override': 'PATCH'
       }
     })
 
-    // Fetch back to update store and thereby components
-    await dispatch('fetch', {
-      id: params.id
-    })
+    if (ret.status === 0 && ret.data.ret === 0) {
+      // Fetch back to update store and thereby components
+      await dispatch('fetch', {
+        id: params.id
+      })
+    }
+
+    return ret
   },
 
   async promise({ dispatch }, params) {
