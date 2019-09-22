@@ -196,8 +196,6 @@ export default {
       this.showModal = true
       this.type = type
       this.setComments()
-
-      console.log('Choose se', this.users.length)
       this.selectedUser = this.users.length ? -1 : 0
     },
 

@@ -8,6 +8,7 @@
     <chat-message-reneged v-else-if="chatmessage.type === 'Reneged'" :chat="chat" :chatmessage="chatmessage" :me="me" :otheruser="otheruser" />
     <chat-message-address v-else-if="chatmessage.type === 'Address'" :chat="chat" :chatmessage="chatmessage" :me="me" :otheruser="otheruser" />
     <chat-message-nudge v-else-if="chatmessage.type === 'Nudge'" :chat="chat" :chatmessage="chatmessage" :me="me" :otheruser="otheruser" />
+    <chat-message-mod-mail v-else-if="chatmessage.type === 'ModMail'" :chat="chat" :chatmessage="chatmessage" :me="me" :otheruser="null" />
     <div v-else>
       Unknown chat message type {{ chatmessage.type }}
     </div>
@@ -18,7 +19,6 @@
 </style>
 <script>
 // TODO Other chat message types
-// const TYPE_MODMAIL = 'ModMail';
 // const TYPE_SYSTEM = 'System';
 // const TYPE_REPORTEDUSER = 'ReportedUser';
 // const TYPE_SCHEDULE = 'Schedule';
@@ -33,6 +33,7 @@ const ChatMessageReneged = () => import('./ChatMessageReneged')
 const ChatMessageAddress = () => import('./ChatMessageAddress')
 const ChatMessageNudge = () => import('./ChatMessageNudge')
 const ChatMessageDateRead = () => import('./ChatMessageDateRead')
+const ChatMessageModMail = () => import('./ChatMessageModMail')
 
 export default {
   components: {
@@ -44,7 +45,8 @@ export default {
     ChatMessagePromised,
     ChatMessageAddress,
     ChatMessageReneged,
-    ChatMessageNudge
+    ChatMessageNudge,
+    ChatMessageModMail
   },
   props: {
     chat: {

@@ -111,8 +111,10 @@ export const actions = {
   async update({ commit, dispatch }, params) {
     const ret = await this.$axios.post(process.env.API + '/message', params)
 
-    if (ret.status === 0 && ret.data.ret === 0) {
+    console.log('Update returned', ret)
+    if (ret.status === 200 && ret.data.ret === 0) {
       // Fetch back to update store and thereby components
+      console.log('Fetch back')
       await dispatch('fetch', {
         id: params.id
       })
@@ -128,7 +130,7 @@ export const actions = {
       }
     })
 
-    if (ret.status === 0 && ret.data.ret === 0) {
+    if (ret.status === 200 && ret.data.ret === 0) {
       // Fetch back to update store and thereby components
       await dispatch('fetch', {
         id: params.id

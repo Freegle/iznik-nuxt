@@ -175,6 +175,9 @@ export const actions = {
     // In earlier client versions, we recovered existing drafts from the server in case of interruption by user or errors.
     // But we don't need to do that, because our store remembers the contents of the message.  Orphaned drafts will
     // be pruned by the server.
+    //
+    // TODO Once the old client goes and we only have one set of code to worry about, we should simplify this into a
+    // single server call.
     const promises = []
     const results = []
     const self = this
@@ -283,7 +286,7 @@ export const actions = {
           }).then(function(ret) {
             commit('incProgress')
 
-            if (ret.status === 0 && ret.data.ret === 0) {
+            if (ret.status === 200 && ret.data.ret === 0) {
               console.log('Updated, now convert back to draft')
               dispatch(
                 'messages/update',
@@ -338,7 +341,7 @@ export const actions = {
                 }
               })
             } else {
-              console.error('Edit of exist message failed', ret)
+              console.error('Edit of exist message failed 2', ret)
               reject(ret)
             }
           })

@@ -171,7 +171,8 @@ export default {
       this.$store.dispatch('compose/setMessage', {
         id: --nextId,
         item: null,
-        description: null
+        description: null,
+        type: 'Offer'
       })
     },
     next() {

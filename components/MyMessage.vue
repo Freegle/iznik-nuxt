@@ -15,6 +15,9 @@
               <div class="d-flex">
                 <h3 class="text-wrap flex-shrink-2">
                   {{ message.subject }}
+                  <span v-if="rejected" class="text-danger">
+                    <v-icon name="exclamation-triangle" scale="2" />
+                  </span>
                 </h3>
                 <div class="flex-grow-1 text-right">
                   <span v-if="message.replycount > 0" class="ml-1">
@@ -47,6 +50,9 @@
         <div v-if="expanded">
           <b-card-body class="p-2">
             <b-card-text>
+              <b-alert v-if="rejected" show variant="warning">
+                <v-icon name="exclamation-triangle" scale="2" /> This post has been returned to you.
+              </b-alert>
               <span v-if="message.attachments.length > 0" class="float-right clickme" @click="showPhotos">
                 <b-badge v-if="message.attachments.length > 1" class="photobadge" variant="primary">+{{ message.attachments.length - 1 }} <v-icon name="camera" /></b-badge>
                 <b-img-lazy
@@ -89,7 +95,19 @@
                 #{{ message.id }}
               </nuxt-link>
             </div>
-            <b-list-group horizontal>
+            <b-list-group v-if="rejected" horizontal>
+              <b-list-group-item>
+                <b-btn variant="warning" class="d-inline mr-1" @click="edit">
+                  <v-icon name="pen" /> Edit and Resend
+                </b-btn>
+              </b-list-group-item>
+              <b-list-group-item>
+                <b-btn variant="white" class="d-inline mr-1" @click="outcome('Withdrawn')">
+                  <v-icon name="trash-alt" /> Withdraw
+                </b-btn>
+              </b-list-group-item>
+            </b-list-group>
+            <b-list-group v-else horizontal>
               <b-list-group-item v-if="message.type === 'Offer'" li>
                 <b-btn variant="success" class="d-inline mr-1" @click="outcome('Taken')">
                   <v-icon name="check" /> Mark as TAKEN
@@ -190,7 +208,6 @@ img.attachment {
 // TODO DESIGN This is better than the old version, but it's still not quite right, in terms of alignment and sizes
 // of things.
 // TODO When we click to expand, the visible text may be off the top or bottom of the screen.  Need to make it visible.
-// TODO Action buttons - repost
 // TODO MINOR There's a window we've seen in the past where the autorepost hasn't happened yet.  Should say 'soon' if autorepost time is in the past.
 import ResizeText from 'vue-resize-text'
 const OutcomeModal = () => import('./OutcomeModal')
@@ -249,6 +266,18 @@ export default {
       }
 
       return unseen
+    },
+
+    rejected() {
+      let rejected = false
+
+      for (const group of this.message.groups) {
+        if (group.collection === 'Rejected') {
+          rejected = true
+        }
+      }
+
+      return rejected
     },
 
     replies() {
@@ -338,7 +367,8 @@ export default {
       await this.$store.dispatch('compose/setMessage', {
         id: this.message.id,
         item: this.message.item.name.trim(),
-        description: this.message.textbody.trim()
+        description: this.message.textbody.trim(),
+        type: this.message.type
       })
 
       await this.$store.dispatch('compose/setAttachmentsForMessage', {
