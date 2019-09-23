@@ -36,6 +36,10 @@
               <v-icon name="search" scale="2" /><br>
               Find
             </b-nav-item>
+            <b-nav-item id="menu-option-explore" class="text-center p-0" to="/explore" @mousedown="maybeReload('/explore')">
+              <v-icon name="map-marked-alt" scale="2" /><br>
+              Explore
+            </b-nav-item>
           </b-navbar-nav>
           <b-navbar-nav class="ml-auto">
             <b-nav-item id="menu-option-notification" class="text-center p-0" />
@@ -136,10 +140,6 @@
             <v-icon name="home" scale="2" /><br>
             My&nbsp;Posts
           </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/mygroups" @mousedown="maybeReload('/mygroups')">
-            <v-icon name="users" scale="2" /><br>
-            My&nbsp;Groups
-          </b-nav-item>
           <b-nav-item class="text-center p-0" to="/give" @mousedown="maybeReload('/give')">
             <v-icon name="gift" scale="2" /><br>
             Give
@@ -147,6 +147,14 @@
           <b-nav-item class="text-center p-0" to="/find" @mousedown="maybeReload('/find')">
             <v-icon name="search" scale="2" /><br>
             Find
+          </b-nav-item>
+          <b-nav-item class="text-center p-0" to="/mygroups" @mousedown="maybeReload('/mygroups')">
+            <v-icon name="users" scale="2" /><br>
+            My&nbsp;Groups
+          </b-nav-item>
+          <b-nav-item class="text-center p-0" to="/explore" @mousedown="maybeReload('/explore')">
+            <v-icon name="map-marked-alt" scale="2" /><br>
+            Explore
           </b-nav-item>
           <b-nav-item id="menu-option-chat" class="text-center p-0" to="/chats" @mousedown="maybeReload('/chats')">
             <v-icon name="comments" scale="2" /><br>

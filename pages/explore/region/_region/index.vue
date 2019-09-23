@@ -1,28 +1,23 @@
 <template>
-  <div>
-    <ExploreGroup v-if="id" :id="id" />
-    <ExploreMap v-else />
-  </div>
+  <ExploreMap :region="region" />
 </template>
 <script>
-// TODO Region buttons don't work yet
 import loginOptional from '@/mixins/loginOptional.js'
-const ExploreGroup = () => import('~/components/ExploreGroup.vue')
 const ExploreMap = () => import('~/components/ExploreMap.vue')
 
 export default {
   components: {
-    ExploreGroup,
     ExploreMap
   },
   mixins: [loginOptional],
   data: function() {
     return {
-      id: null
+      region: null
     }
   },
   created() {
-    this.id = this.$route.params.id
+    console.log('Region', this.$route.params)
+    this.region = this.$route.params.region
   }
 }
 </script>
