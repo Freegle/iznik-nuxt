@@ -2,21 +2,19 @@
   <div>
     <RichMarker ref="rich" :key="size" :position="{ lat: group.lat, lng: group.lng }">
       <b-img v-if="size ==='poor'" src="/mapmarker.gif" />
-      <b-card v-if="size === 'rich'" variant="white" class="p-0" style="width:140px">
-        <b-card-body class="text-center p-0">
-          <b-img
-            thumbnail
-            :alt="'Profile picture for ' + group.namedisplay"
-            :src="group.profile ? group.profile : '/icon.png'"
-            class="groupprofile"
-            @error.native="brokenImage"
-          />
-          <br>
-          <h5 class="text-break mt-1">
-            {{ group.namedisplay }}
-          </h5>
-        </b-card-body>
-      </b-card>
+      <div v-if="size === 'rich'" class="text-center">
+        <b-img
+          thumbnail
+          :alt="'Profile picture for ' + group.namedisplay"
+          :src="group.profile ? group.profile : '/icon.png'"
+          class="groupprofile"
+          @error.native="brokenImage"
+        />
+        <br>
+        <h5 class="text-break mt-1 p-2 bg-white text-success border border-success rounded thick">
+          {{ group.namedisplay }}
+        </h5>
+      </div>
     </RichMarker>
   </div>
 </template>
@@ -26,8 +24,13 @@
   width: 100px;
   height: 100px;
 }
+
+.thick {
+  border: 2px solid darkgreen !important;
+}
 </style>
 <script>
+// TODO DESIGN This page is a clutter and needs love.
 import { gmapApi } from 'vue2-google-maps'
 import RichMarker from './RichMarker.vue'
 

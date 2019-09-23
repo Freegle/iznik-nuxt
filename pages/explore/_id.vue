@@ -47,17 +47,19 @@
       <b-row class="m-0">
         <b-col cols="12" md="6" offset-md="3">
           <client-only>
-            <!--            <vue-google-autocomplete-->
-            <!--              id="autocomplete"-->
-            <!--              classname="form-control"-->
-            <!--              placeholder="Enter a location"-->
-            <!--              @placechanged="getAddressData"-->
-            <!--            />-->
+            <vue-google-autocomplete
+              v-if="google"
+              id="autocomplete"
+              classname="form-control"
+              placeholder="Enter a location"
+              country="GB"
+              @placechanged="getAddressData"
+            />
           </client-only>
         </b-col>
       </b-row>
       <b-row class="m-0">
-        <b-col cols="12" md="6" offset-md="3" class="">
+        <b-col cols="12" md="6" offset-md="3" class="mt-2">
           <h5 class="text-center">
             Or choose a region:
           </h5>
@@ -101,7 +103,7 @@
       <b-row class="m-0">
         <b-col v-if="groupsInBounds.length" cols="12" md="6" offset-md="3" class="mt-4">
           <b-card header-bg-variant="success" header-text-variant="white" header="Here's a list of communities:">
-            <b-card-body style="height: 500px; overflow-y: scroll">
+            <b-card-body style="height: 500px; overflow-y: scroll" class="p-0">
               <p>This list will change as you zoom or move around the map.</p>
               <div v-for="(g, index) in groupsInList" :key="'groupsInBounds-' + index">
                 <div class="media clickme">
@@ -117,7 +119,7 @@
                     </div>
                   </div>
                   <div class="media-body">
-                    <b-btn variant="success" class="float-right" :to="'/explore/' + g.nameshort">
+                    <b-btn variant="success" class="float-right mr-1" :to="'/explore/' + g.nameshort">
                       Explore
                     </b-btn>
                     <nuxt-link :to="'/explore/' + g.nameshort">
@@ -167,6 +169,7 @@
 }
 </style>
 <script>
+// TODO Region buttons don't work yet
 import { gmapApi } from 'vue2-google-maps'
 import loginOptional from '@/mixins/loginOptional.js'
 import GroupMarker from '~/components/GroupMarker.vue'
@@ -325,8 +328,23 @@ export default {
         })
     },
     getAddressData: function(addressData, placeResultData, id) {
-      console.log('Autocomplete returned', addressData, placeResultData, id)
-      // this.address = addressData;
+      console.log(
+        'Autocomplete returned',
+        addressData,
+        placeResultData,
+        id,
+        this.$refs.gmap
+      )
+      if (addressData) {
+        this.$refs.gmap.$mapObject.setCenter(
+          new this.google.maps.LatLng(
+            addressData.latitude,
+            addressData.longitude
+          )
+        )
+
+        this.$refs.gmap.$mapObject.setZoom(11)
+      }
     },
     zoomChanged: function(zoom) {
       this.zoom = zoom
