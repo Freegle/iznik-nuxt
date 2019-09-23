@@ -5,7 +5,6 @@
   </div>
 </template>
 <script>
-// TODO Region buttons don't work yet
 import loginOptional from '@/mixins/loginOptional.js'
 const ExploreGroup = () => import('~/components/ExploreGroup.vue')
 const ExploreMap = () => import('~/components/ExploreMap.vue')

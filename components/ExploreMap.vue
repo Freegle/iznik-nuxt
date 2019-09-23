@@ -19,6 +19,7 @@
           <vue-google-autocomplete
             v-if="google"
             id="autocomplete"
+            v-focus
             classname="form-control"
             placeholder="Enter a location"
             country="GB"
@@ -137,6 +138,7 @@
 }
 </style>
 <script>
+// TODO This loads a bit clunkily.
 import { gmapApi } from 'vue2-google-maps'
 import GroupMarker from '~/components/GroupMarker.vue'
 
