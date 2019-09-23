@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <div v-if="newuser">
+    <NewUser :password="newpassword" />
+  </div>
+  <div v-else>
     <b-row class="m-0">
       <b-col cols="0" md="3" />
       <b-col cols="12" md="6">
@@ -40,7 +43,7 @@
         </nuxt-link>
       </b-col>
     </b-row>
-    <b-tooltip :show.sync="show" target="menu-option-chat">
+    <b-tooltip :show.sync="show" target="menu-option-chat" class="d-none d-md-block">
       Replies will appear here<br><br>
 
       You'll also get them by email.  <span class="text-danger font-weight-bold">Check your spam!</span>
@@ -62,29 +65,33 @@
 <script>
 import loginOptional from '@/mixins/loginOptional.js'
 const GroupHeader = () => import('~/components/GroupHeader.vue')
+const NewUser = () => import('~/components/NewUser.vue')
 
 export default {
   components: {
-    GroupHeader
+    GroupHeader,
+    NewUser
   },
   mixins: [loginOptional],
   data: function() {
     return {
-      show: true
+      show: true,
+      newuser: false,
+      newpassword: null
     }
   },
   computed: {
     group() {
       const groupid = this.$store.getters['compose/getGroup']()
-      console.log('Got group', groupid)
       const group = this.$store.getters['group/get'](groupid)
-      console.log('Gives group', group)
       return group
     }
   },
   mounted: function() {
     // Fade out tooltip after a while
     setTimeout(() => (this.show = false), 10000)
+    this.newuser = this.$route.params.newuser
+    this.newpassword = this.$route.params.newpassword
   },
   methods: {}
 }

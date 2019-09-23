@@ -1,6 +1,6 @@
 <template>
   <div v-if="showOld || !message.outcomes || !message.outcomes.length">
-    <b-card no-body class="mb-1 border" border-variant="success">
+    <b-card no-body class="mb-1 border" :border-variant="expanded ? 'primary' : 'success'">
       <b-card-header header-tag="header" class="p-1" role="tab">
         <b-button
           :v-b-toggle="'mypost-' + message.id"

@@ -16,23 +16,23 @@
         <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
         <b-collapse v-if="loggedIn" id="nav_collapse" is-nav>
           <b-navbar-nav>
-            <b-nav-item class="text-center p-0" to="/chitchat" @mousedown="maybeReload('/chitchat')">
+            <b-nav-item id="menu-option-chitchat" class="text-center p-0" to="/chitchat" @mousedown="maybeReload('/chitchat')">
               <v-icon name="coffee" scale="2" /><br>
               ChitChat
             </b-nav-item>
-            <b-nav-item class="text-center p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
+            <b-nav-item id="menu-option-myposts" class="text-center p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
               <v-icon name="home" scale="2" /><br>
               My&nbsp;Posts
             </b-nav-item>
-            <b-nav-item class="text-center p-0" to="/mygroups" @mousedown="maybeReload('/mygroups')">
+            <b-nav-item id="menu-option-mygroups" class="text-center p-0" to="/mygroups" @mousedown="maybeReload('/mygroups')">
               <v-icon name="users" scale="2" /><br>
               My&nbsp;Groups
             </b-nav-item>
-            <b-nav-item class="text-center p-0" to="/give" @mousedown="maybeReload('/give')">
+            <b-nav-item id="menu-option-give" class="text-center p-0" to="/give" @mousedown="maybeReload('/give')">
               <v-icon name="gift" scale="2" /><br>
               Give
             </b-nav-item>
-            <b-nav-item class="text-center p-0" to="/find" @mousedown="maybeReload('/find')">
+            <b-nav-item id="menu-option-find" class="text-center p-0" to="/find" @mousedown="maybeReload('/find')">
               <v-icon name="search" scale="2" /><br>
               Find
             </b-nav-item>
@@ -59,11 +59,11 @@
               <v-icon name="comments" scale="2" /><br>
               Chats
             </b-nav-item>
-            <b-nav-item class="text-center p-0" to="/settings" @mousedown="maybeReload('/settings')">
+            <b-nav-item id="menu-option-settings" class="text-center p-0" to="/settings" @mousedown="maybeReload('/settings')">
               <v-icon name="cog" scale="2" /><br>
               Settings
             </b-nav-item>
-            <b-nav-item class="text-center p-0" @click="logOut()">
+            <b-nav-item id="menu-option-logout" class="text-center p-0" @click="logOut()">
               <v-icon name="sign-out-alt" scale="2" /><br>
               Logout
             </b-nav-item>

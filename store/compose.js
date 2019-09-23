@@ -250,12 +250,16 @@ export const actions = {
                       const groupid = ret2.data.groupid
                       commit('setMessage', {
                         id: message.id,
-                        submitted: true
+                        submitted: true,
+                        item: null,
+                        description: null
                       })
                       commit('setAttachments', [])
                       results.push({
                         id: message.id,
-                        groupid: groupid
+                        groupid: groupid,
+                        newuser: ret2.data.newuser,
+                        newpassword: ret2.data.newpassword
                       })
 
                       resolve(groupid)
@@ -316,12 +320,16 @@ export const actions = {
                         const groupid = ret2.data.groupid
                         commit('setMessage', {
                           id: message.id,
-                          submitted: true
+                          submitted: true,
+                          item: null,
+                          description: null
                         })
                         commit('setAttachments', [])
                         results.push({
                           id: message.id,
-                          groupid: groupid
+                          groupid: groupid,
+                          newuser: ret2.data.newuser,
+                          newpassword: ret2.data.newpassword
                         })
 
                         resolve(groupid)
