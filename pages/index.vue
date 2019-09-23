@@ -51,7 +51,7 @@
           </b-col>
         </b-row>
         <Stories class="mt-4" />
-        <div style="height:200px" />
+        <div style="height:80px" />
       </b-col>
       <b-col cols="0" md="3">
         <b-row>
@@ -71,7 +71,7 @@
       </b-col>
     </b-row>
     <footer>
-      <b-row>
+      <b-row class="m-0">
         <b-col cols="12" md="6" offset-md="3">
           <b-list-group horizontal class="flex justify-content-between mb-2">
             <b-list-item>

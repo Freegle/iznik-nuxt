@@ -2,7 +2,7 @@
   <div>
     <b-card variant="white">
       <h3>Why Freegle?</h3>
-      <p>Here's what freeglers have said recenty:</p>
+      <p>Here's what freeglers have said recently:</p>
       <div v-for="(story, $index) in sortedStories" :key="$index" class="">
         <h5 class="mt-2">
           &quot;{{ story.headline }}&quot;
@@ -12,6 +12,13 @@
           {{ story.date | timeago }} on {{ story.groupname }}
         </span>
       </div>
+      <b-row>
+        <b-col class="text-center">
+          <b-btn variant="white" to="/stories" class="mt-2">
+            Read more stories...
+          </b-btn>
+        </b-col>
+      </b-row>
     </b-card>
   </div>
 </template>
