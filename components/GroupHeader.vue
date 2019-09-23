@@ -9,11 +9,11 @@
         <b-button v-if="amAMember" class="mt-1 float-right d-lg-none float-lg-none" variant="white">
           <v-icon name="trash-alt" />&nbsp;Leave
         </b-button>
-        <b-button class="mt-1 mr-1 d-block d-lg-none float-right" variant="white">
-          <div>
+        <b-link :href="'mailto:' + modsemail">
+          <b-button class="mt-1 mr-1 d-block d-lg-none float-right" variant="white">
             <v-icon name="question-circle" />&nbsp;Contact&nbsp;volunteers
-          </div>
-        </b-button>
+          </b-button>
+        </b-link>
       </b-col>
       <b-col class="order-3 order-lg-1">
         <b-card-title>{{ namedisplay }}</b-card-title>
@@ -34,11 +34,11 @@
       </b-col>
       <b-col lg="2" class="order-1 order-lg-2">
         <span class="d-none d-lg-block float-right">
-          <b-button class="ml-1 mb-1" variant="white">
-            <div>
+          <b-link :href="'mailto:' + modsemail">
+            <b-button class="ml-1 mb-1" variant="white">
               <v-icon name="question-circle" />&nbsp;Contact&nbsp;volunteers
-            </div>
-          </b-button>
+            </b-button>
+          </b-link>
           <b-button v-if="!amAMember" class="ml-1 mb-1" variant="success">
             <v-icon name="plus" />&nbsp;Join
           </b-button>
@@ -84,10 +84,15 @@ export default {
     profile: {
       type: String,
       default: null
+    },
+    modsemail: {
+      type: String,
+      required: true
     }
   },
   computed: {
     amAMember() {
+      console.log('ID is', this.id)
       return this.$store.getters['group/member'](this.id)
     }
   }

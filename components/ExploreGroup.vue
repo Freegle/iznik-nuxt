@@ -2,7 +2,7 @@
   <div>
     <b-row class="m-0">
       <b-col cols="12" md="6" offset-md="3">
-        <groupHeader v-if="group" :key="'group-' + (group ? group.id : null)" v-bind="group" />
+        <groupHeader v-if="group" :id="group.id" :key="'group-' + (group ? group.id : null)" v-bind="group" />
         <b-card variant="default">
           <b-card-body class="p-0 mb-2">
             <p class="text-center text-muted">
@@ -50,7 +50,7 @@ export default {
   },
   props: {
     id: {
-      validator: prop => typeof prop === 'number' || prop === 'String',
+      validator: prop => typeof prop === 'number' || typeof prop === 'string',
       required: true
     }
   },
