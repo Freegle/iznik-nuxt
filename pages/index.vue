@@ -74,36 +74,36 @@
       <b-row class="m-0">
         <b-col cols="12" md="6" offset-md="3">
           <b-list-group horizontal class="flex justify-content-between mb-2">
-            <b-list-item>
+            <b-list-group-item>
               <b-btn variant="white" to="/about">
                 <v-icon name="info-circle" /> About
               </b-btn>
-            </b-list-item>
-            <b-list-item>
+            </b-list-group-item>
+            <b-list-group-item>
               <b-btn variant="white" to="/terms">
                 <v-icon name="book-open" /> Terms
               </b-btn>
-            </b-list-item>
-            <b-list-item>
+            </b-list-group-item>
+            <b-list-group-item>
               <b-btn variant="white" to="/privacy">
                 <v-icon name="lock" /> Privacy
               </b-btn>
-            </b-list-item>
-            <b-list-item>
+            </b-list-group-item>
+            <b-list-group-item>
               <b-btn variant="white" to="/disclaimer">
                 <v-icon name="gavel" /> Disclaimer
               </b-btn>
-            </b-list-item>
-            <b-list-item>
+            </b-list-group-item>
+            <b-list-group-item>
               <b-btn variant="white" to="/donate">
                 <v-icon name="hand-holding-heart" /> Donate
               </b-btn>
-            </b-list-item>
-            <b-list-item>
+            </b-list-group-item>
+            <b-list-group-item>
               <b-btn variant="white" to="/contact">
                 <v-icon name="envelope" /> Contact
               </b-btn>
-            </b-list-item>
+            </b-list-group-item>
           </b-list-group>
           <span class="text-muted">
             Freegle is registered as a charity with HMRC (ref. XT32865).

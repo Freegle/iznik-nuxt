@@ -19,9 +19,9 @@ export const mutations = {
 
   setList(state, groups) {
     state.list = {}
-    for (const group of groups) {
+    groups.forEach(function(group) {
       Vue.set(state.list, group.id, group)
-    }
+    })
   },
 
   remember(state, payload) {
@@ -73,6 +73,16 @@ export const getters = {
 }
 
 export const actions = {
+  async list({ commit }, params) {
+    const res = await this.$axios.get(process.env.API + '/groups', {
+      params: params
+    })
+
+    if (res.status === 200) {
+      commit('setList', res.data.groups)
+    }
+  },
+
   async fetch({ commit }, params) {
     const res = await this.$axios.get(process.env.API + '/group', {
       params: {

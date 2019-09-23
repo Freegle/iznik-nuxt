@@ -78,6 +78,7 @@ module.exports = {
     { src: '~plugins/vue2-datepicker', ssr: false },
     { src: '~plugins/vue-social-sharing', ssr: false },
     { src: '~plugins/vue-force-next-tick', ssr: false },
+    { src: '~plugins/vue-google-autocomplete', ssr: false },
   ],
 
   /*

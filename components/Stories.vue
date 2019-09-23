@@ -30,7 +30,6 @@ export default {
   computed: {
     sortedStories() {
       let stories = this.$store.getters['stories/list']()
-      console.log('Got', stories)
 
       if (stories) {
         stories = Object.values(stories)

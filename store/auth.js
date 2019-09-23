@@ -10,7 +10,9 @@ const NONMIN = ['me', 'groups', 'aboutme', 'phone', 'notifications']
 
 export const mutations = {
   forceLogin(state, value) {
-    state.forceLogin = value
+    if (state.forceLogin !== value) {
+      state.forceLogin = value
+    }
   },
 
   setUser(state, user, components) {

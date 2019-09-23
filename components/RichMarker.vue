@@ -7,13 +7,18 @@
   </div>
 </template>
 <script>
-const RichMarker = () => import('googlemaps-rich-marker-web')
+import RichMarker from 'googlemaps-rich-marker-web'
 
 export default {
   props: {
     position: {
       type: Object,
       default: null
+    }
+  },
+  data: function() {
+    return {
+      marker: null
     }
   },
   mounted() {
@@ -23,7 +28,7 @@ export default {
     createMarker() {
       this.$parent.$parent.$mapPromise.then(map => {
         /* eslint-disable */
-        new RichMarker.RichMarker({
+        this.marker = new RichMarker.RichMarker({
           position: new window.google.maps.LatLng(
             this.position.lat,
             this.position.lng
@@ -38,6 +43,9 @@ export default {
         })
         /* eslint-enable */
       })
+    },
+    getMarker() {
+      return this.marker
     }
   }
 }

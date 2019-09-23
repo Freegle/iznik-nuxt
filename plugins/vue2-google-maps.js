@@ -7,5 +7,7 @@ Vue.use(VueGoogleMaps, {
   load: {
     key: googleMapsKey,
     libraries: 'places,drawing'
-  }
+  },
+
+  autobindAllEvents: true
 })
