@@ -9,7 +9,7 @@ const API = '/api'
 const PROXY_API = process.env.IZNIK_API || 'https://iznik.ilovefreegle.org'
 
 module.exports = {
-  mode: 'universal',
+  mode: 'spa',
 
   /*
   ** Headers of the page

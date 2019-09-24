@@ -113,7 +113,6 @@
 }
 </style>
 <script>
-// TODO Click to show profile
 // TODO Report etc menu dropdown
 // TODO Delete
 // TODO DESIGN Some indication of newly added entries

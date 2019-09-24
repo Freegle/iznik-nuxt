@@ -41,7 +41,6 @@ export const mutations = {
   },
 
   setGroups(state, groups) {
-    console.log('Set groups', groups)
     state.groups = groups
   },
 

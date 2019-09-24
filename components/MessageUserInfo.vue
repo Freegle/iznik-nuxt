@@ -26,7 +26,6 @@
   </nuxt-link>
 </template>
 <script>
-// TODO Link to profile page from OFFERs/WANTEDs
 export default {
   props: {
     user: {

@@ -66,12 +66,7 @@
               </span>
             </span>
           </p>
-          <p v-if="replytime">
-            <v-icon name="clock" class="fa-fw" /> Typically replies in {{ replytime }}.
-          </p>
-          <p v-else>
-            <v-icon name="clock" class="fa-fw" /> We don't know how long they typically take to reply.
-          </p>
+          <ReplyTime :user="user" />
         </b-card-body>
       </b-card>
       <b-card border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
@@ -161,10 +156,12 @@
 // TODO DESIGN Header is messy - wallpaper should fill the whole thing; image should have a border round it with a gap.
 // TODO DESIGN The about me section needs nice big quotes round it.
 const Ratings = () => import('~/components/Ratings')
+const ReplyTime = () => import('~/components/ReplyTime')
 
 export default {
   components: {
-    Ratings
+    Ratings,
+    ReplyTime
   },
   props: {
     id: {
@@ -186,30 +183,6 @@ export default {
     user() {
       const ret = this.id ? this.$store.getters['user/get'](this.id) : null
       return ret
-    },
-    replytime() {
-      if (this.id && this.user && this.user.info && this.user.info.replytime) {
-        let ret
-        const secs = this.user.info.replytime
-
-        if (secs < 60) {
-          ret = Math.round(secs) + ' second'
-        } else if (secs < 60 * 60) {
-          ret = Math.round(secs / 60) + ' minute'
-        } else if (secs < 24 * 60 * 60) {
-          ret = Math.round(secs / 60 / 60) + ' hour'
-        } else {
-          ret = Math.round(secs / 60 / 60 / 24) + ' day'
-        }
-
-        if (ret.indexOf('1 ') !== 0) {
-          ret += 's'
-        }
-
-        return ret
-      }
-
-      return null
     }
   },
   async mounted() {
