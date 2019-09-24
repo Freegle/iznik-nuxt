@@ -1,7 +1,5 @@
 import Vue from 'vue'
 
-// TODO We have groups in auth and in here.  Mistake?
-
 export const state = () => ({
   // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
   // storage.
@@ -58,11 +56,6 @@ export const getters = {
     return ret
   },
 
-  member: (state, getters) => idOrName => {
-    const group = getters.get(idOrName)
-    return group !== null
-  },
-
   list: state => () => {
     return state.list
   },
@@ -92,26 +85,6 @@ export const actions = {
 
     if (res.status === 200) {
       commit('add', res.data.group)
-    }
-  },
-
-  async mine({ commit, dispatch }, params) {
-    const res = await this.$axios.get(process.env.API + '/session', {
-      params: {
-        components: ['groups']
-      }
-    })
-
-    if (res.status === 200 && res.data.ret === 0 && res.data.groups) {
-      dispatch('saveMine', res.data.groups)
-    }
-  },
-
-  saveMine({ commit }, groups) {
-    for (const group of groups) {
-      if (process.env.MODTOOLS || group.type === 'Freegle') {
-        commit('add', group)
-      }
     }
   }
 }

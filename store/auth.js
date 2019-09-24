@@ -3,7 +3,8 @@ let first = true
 export const state = () => ({
   forceLogin: false,
   user: null,
-  userFetched: null
+  userFetched: null,
+  groups: []
 })
 
 const NONMIN = ['me', 'groups', 'aboutme', 'phone', 'notifications']
@@ -39,6 +40,11 @@ export const mutations = {
     }
   },
 
+  setGroups(state, groups) {
+    console.log('Set groups', groups)
+    state.groups = groups
+  },
+
   setFetched(state, val) {
     state.userFetched = val
   }
@@ -51,6 +57,20 @@ export const getters = {
 
   user: state => () => {
     return state.user
+  },
+
+  member: state => id => {
+    let ret = false
+
+    for (const group of state.groups) {
+      console.log('Consider group', group.id, id)
+      if (parseInt(group.id) === parseInt(id)) {
+        console.log('Found', group)
+        ret = group.role ? group.role : group.myrole
+      }
+    }
+
+    return ret
   }
 }
 
@@ -120,11 +140,10 @@ export const actions = {
         // Save the persistent session token.
         res.data.me.persistent = res.data.persistent
 
+        console.log('Fetched', res)
         if (res.data.groups) {
           res.data.me.groups = res.data.groups
-          dispatch('group/saveMine', res.data.groups, {
-            root: true
-          })
+          commit('setGroups', res.data.groups)
         }
 
         // Login succeeded.  Set the user, which will trigger various re-rendering if we were required to be logged in.
@@ -200,6 +219,30 @@ export const actions = {
       {
         headers: {
           'X-HTTP-Method-Override': 'DELETE'
+        }
+      }
+    )
+
+    if (res.status === 200 && res.data.ret === 0) {
+      await dispatch('fetchUser', {
+        components: NONMIN,
+        force: true
+      })
+    } else {
+      // TODO
+      console.error('saveUser failed')
+    }
+
+    return state.user
+  },
+
+  async joinGroup({ commit, dispatch, state }, params) {
+    const res = await this.$axios.post(
+      process.env.API + '/memberships',
+      params,
+      {
+        headers: {
+          'X-HTTP-Method-Override': 'PUT'
         }
       }
     )

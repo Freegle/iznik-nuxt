@@ -102,6 +102,7 @@
       triggers=""
     >
       <br>
+      <!-- eslint-disable-next-line-->
       <span v-html="tooltips[showToolTip].content" />
       <br>
       <b-btn variant="success" class="mt-4" @click="nextTooltip">

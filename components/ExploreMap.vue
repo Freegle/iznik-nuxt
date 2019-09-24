@@ -34,9 +34,9 @@
           Or choose a region:
         </h5>
         <b-list-group horizontal class="flex flex-wrap justify-content-center">
-          <b-list-group-item v-for="region in regions" :key="region" class="p-0 mt-2 ml-2 mr-2">
-            <b-btn variant="white" :to="'/explore/region/' + region">
-              {{ region }}
+          <b-list-group-item v-for="r in regions" :key="r" class="p-0 mt-2 ml-2 mr-2">
+            <b-btn variant="white" :to="'/explore/region/' + r">
+              {{ r }}
             </b-btn>
           </b-list-group-item>
         </b-list-group>
@@ -89,7 +89,7 @@
                   </div>
                 </div>
                 <div class="media-body">
-                  <b-btn variant="success" class="float-right mr-1" :to="'/explore/' + g.nameshort">
+                  <b-btn variant="success" class="float-right mr-2" :to="'/explore/' + g.nameshort">
                     Explore
                   </b-btn>
                   <nuxt-link :to="'/explore/' + g.nameshort">

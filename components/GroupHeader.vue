@@ -3,11 +3,15 @@
     <b-row v-if="profile" class="mt-1">
       <b-col lg="2" class="order-0">
         <b-img-lazy rounded thumbnail alt="Community profile picture" :src="profile" class="js-pageimage" />
-        <b-button v-if="!amAMember" class="mt-1 float-right d-lg-none float-lg-none" variant="success">
-          <v-icon name="plus" />&nbsp;Join
+        <b-button v-if="!amAMember" class="mt-1 float-right d-lg-none float-lg-none" variant="success" @click="join">
+          <v-icon v-if="joiningOrLeaving" name="sync" class="fa-spin" />
+          <v-icon v-else name="plus" />&nbsp;
+          Join
         </b-button>
-        <b-button v-if="amAMember" class="mt-1 float-right d-lg-none float-lg-none" variant="white">
-          <v-icon name="trash-alt" />&nbsp;Leave
+        <b-button v-else-if="amAMember === 'Member'" class="mt-1 float-right d-lg-none float-lg-none" variant="white" @click="leave">
+          <v-icon v-if="joiningOrLeaving" name="sync" class="fa-spin" />
+          <v-icon v-else name="trash-alt" />&nbsp;
+          Leave
         </b-button>
         <b-link :href="'mailto:' + modsemail">
           <b-button class="mt-1 mr-1 d-block d-lg-none float-right" variant="white">
@@ -16,7 +20,10 @@
         </b-link>
       </b-col>
       <b-col class="order-3 order-lg-1">
-        <b-card-title>{{ namedisplay }}</b-card-title>
+        <b-card-title>
+          {{ namedisplay }}
+          <v-icon v-if="amAMember === 'Owner' || amAMember === 'Moderator'" name="crown" class="text-success" :title="'You have role ' + amAMember" />
+        </b-card-title>
         <b-card-sub-title>{{ tagline }}</b-card-sub-title>
         <p class="text-muted small">
           Founded {{ founded | dateonly }}. {{ membercount.toLocaleString() }} current freeglers.
@@ -30,20 +37,23 @@
           Give and get stuff for free with {{ namedisplay }}.  Offer things you don't need, and ask for things you'd like.  Don't just recycle - reuse with Freegle!
         </p>
         <!-- eslint-disable-next-line -->
-                <span v-if="description" v-html="description" />
+        <span v-if="description" v-html="description" />
       </b-col>
-      <b-col lg="2" class="order-1 order-lg-2">
+      <b-col lg="3" class="order-1 order-lg-2">
         <span class="d-none d-lg-block float-right">
           <b-link :href="'mailto:' + modsemail">
             <b-button class="ml-1 mb-1" variant="white">
               <v-icon name="question-circle" />&nbsp;Contact&nbsp;volunteers
             </b-button>
           </b-link>
-          <b-button v-if="!amAMember" class="ml-1 mb-1" variant="success">
-            <v-icon name="plus" />&nbsp;Join
+          <b-button v-if="!amAMember" class="ml-1 mb-1" variant="success" @click="join">
+            <v-icon v-if="joiningOrLeaving" name="sync" class="fa-spin" />
+            <v-icon v-else name="plus" />&nbsp;
+            Join
           </b-button>
-          <b-button v-if="amAMember" class="ml-1 mb-1" variant="white">
-            <v-icon name="trash-alt" />&nbsp;Leave
+          <b-button v-else-if="amAMember === 'Member'" class="ml-1 mb-1" variant="white" @click="leave">
+            <v-icon v-if="joiningOrLeaving" name="sync" class="fa-spin" />
+            <v-icon v-else name="trash-alt" />&nbsp;Leave
           </b-button>
         </span>
       </b-col>
@@ -90,10 +100,40 @@ export default {
       required: true
     }
   },
+  data: function() {
+    return {
+      joiningOrLeaving: false
+    }
+  },
   computed: {
     amAMember() {
-      console.log('ID is', this.id)
-      return this.$store.getters['group/member'](this.id)
+      const member = this.$store.getters['auth/member'](this.id)
+      console.log('Member of', this.id, member)
+      return member
+    }
+  },
+  methods: {
+    async leave() {
+      const me = this.$store.getters['auth/user']()
+      this.joiningOrLeaving = true
+
+      await this.$store.dispatch('auth/leaveGroup', {
+        userid: me.id,
+        groupid: this.id
+      })
+
+      this.joiningOrLeaving = false
+    },
+    async join() {
+      const me = this.$store.getters['auth/user']()
+      this.joiningOrLeaving = true
+
+      await this.$store.dispatch('auth/joinGroup', {
+        userid: me.id,
+        groupid: this.id
+      })
+
+      this.joiningOrLeaving = false
     }
   }
 }
