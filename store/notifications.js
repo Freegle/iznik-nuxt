@@ -114,5 +114,7 @@ export const actions = {
       id: params.id,
       action: 'Seen'
     })
+
+    await dispatch('count')
   }
 }

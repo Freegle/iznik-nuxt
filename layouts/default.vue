@@ -319,7 +319,7 @@ svg.fa-icon {
 
 .notifbadge {
   position: absolute;
-  top: 18px;
+  top: 0px;
   left: 18px;
 }
 </style>
