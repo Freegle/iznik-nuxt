@@ -1,5 +1,5 @@
 <template>
-  <div style="white-space: normal" @click="click">
+  <div style="white-space: normal" :class="notification.seen ? '' : 'bg-info'" @click="click" @mouseover="markSeen">
     <notification-loved-post v-if="notification.type === 'LovedPost'" :notification="notification" />
     <notification-loved-comment v-else-if="notification.type === 'LovedComment'" :notification="notification" />
     <notification-comment-on-post v-else-if="notification.type === 'CommentOnYourPost'" :notification="notification" />
@@ -52,7 +52,16 @@ export default {
     }
   },
   methods: {
+    markSeen() {
+      if (!this.notification.seen) {
+        this.$store.dispatch('notifications/seen', {
+          id: this.notification.id
+        })
+      }
+    },
     click() {
+      this.markSeen()
+
       if (this.notification.url) {
         window.open(this.notification.url)
       } else if (this.notification.newsfeed) {

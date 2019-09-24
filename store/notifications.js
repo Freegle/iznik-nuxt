@@ -31,6 +31,17 @@ export const mutations = {
 
   setList(state, list) {
     state.list = list
+  },
+
+  seen(state, id) {
+    console.log('Seen', id)
+    for (let ix = 0; ix < state.list.length; ix++) {
+      console.log('Compare', state.list[ix].id)
+      if (id === state.list[ix].id) {
+        console.log('Found')
+        state.list[ix].seen = 1
+      }
+    }
   }
 }
 
@@ -72,6 +83,15 @@ export const actions = {
   clearContext({ commit }) {
     commit('setContext', {
       ctx: null
+    })
+  },
+
+  async seen({ commit, dispatch }, params) {
+    commit('seen', params.id)
+
+    await this.$axios.post(process.env.API + '/notification', {
+      id: params.id,
+      action: 'Seen'
     })
   }
 }

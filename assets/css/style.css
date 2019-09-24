@@ -187,3 +187,8 @@ nav .dropdown-toggle {
 legend {
   font-weight: bold !important;
 }
+
+.notpad > a {
+  padding-left: 0px;
+  padding-right: 0px;
+}

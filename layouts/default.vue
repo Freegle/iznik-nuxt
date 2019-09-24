@@ -47,8 +47,8 @@
               <template slot="button-content">
                 <v-icon name="bell" scale="2" class="ml-3" /><br>Notifications
               </template>
-              <b-dropdown-item v-for="(notification, $index) in notifications" :key="'notification-' + $index" class="p-0 test">
-                <Notification :notification="notification" @showModal="showAboutMe" />
+              <b-dropdown-item v-for="(notification, $index) in notifications" :key="'notification-' + $index" class="p-0 notpad">
+                <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
               </b-dropdown-item>
               <infinite-loading :distance="distance" @infinite="loadMore">
                 <span slot="no-results" />
@@ -108,8 +108,8 @@
           <template slot="button-content">
             <v-icon name="bell" scale="2" />
           </template>
-          <b-dropdown-item v-for="(notification, $index) in notifications" :key="'notification-' + $index" class="p-0 test">
-            <Notification :notification="notification" @showModal="showAboutMe" />
+          <b-dropdown-item v-for="(notification, $index) in notifications" :key="'notification-' + $index" class="p-0 notpad">
+            <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
           </b-dropdown-item>
           <infinite-loading :distance="distance" @infinite="loadMore">
             <span slot="no-results" />
