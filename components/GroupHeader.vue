@@ -108,7 +108,6 @@ export default {
   computed: {
     amAMember() {
       const member = this.$store.getters['auth/member'](this.id)
-      console.log('Member of', this.id, member)
       return member
     }
   },

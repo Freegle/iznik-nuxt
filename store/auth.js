@@ -62,9 +62,7 @@ export const getters = {
     let ret = false
 
     for (const group of state.groups) {
-      console.log('Consider group', group.id, id)
       if (parseInt(group.id) === parseInt(id)) {
-        console.log('Found', group)
         ret = group.role ? group.role : group.myrole
       }
     }
@@ -139,7 +137,6 @@ export const actions = {
         // Save the persistent session token.
         res.data.me.persistent = res.data.persistent
 
-        console.log('Fetched', res)
         if (res.data.groups) {
           res.data.me.groups = res.data.groups
           commit('setGroups', res.data.groups)

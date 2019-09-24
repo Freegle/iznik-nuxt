@@ -65,25 +65,11 @@ export default {
     }
   },
 
-  async mounted() {
+  mounted() {
+    // asyncData in the parent has populated the store.
     // We have the group id or name in this.id.  Fetch the group.
-    await this.$store.dispatch('group/fetch', {
-      id: this.id
-    })
-
     this.group = this.$store.getters['group/get'](this.id)
-    this.groupid = this.id
-
-    // Now get the approved messages for this group.  We're only interested in showing OFFERs and WANTEDs, and
-    // ask for summary info for speed.
-    await this.$store.dispatch('messages/fetchMessages', {
-      groupid: this.id,
-      collection: 'Approved',
-      summary: true,
-      types: ['Offer', 'Wanted']
-    })
-
-    this.messages = this.$store.getters['messages/getByGroup'](this.id)
+    this.messages = this.$store.getters['messages/getByGroup'](this.group.id)
     this.context = this.$store.getters['messages/getContext']()
   },
 

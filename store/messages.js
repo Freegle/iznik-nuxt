@@ -72,7 +72,10 @@ export const getters = {
   },
   getByGroup: state => groupid => {
     const ret = state.list.filter(message => {
-      return message.groups.length > 0 && message.groups[0].groupid === groupid
+      return (
+        message.groups.length > 0 &&
+        parseInt(message.groups[0].groupid) === parseInt(groupid)
+      )
     })
 
     return ret

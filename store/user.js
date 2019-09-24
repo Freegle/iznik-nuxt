@@ -62,7 +62,5 @@ export const actions = {
       id: params.id,
       info: true
     })
-
-    console.log('Fetched')
   }
 }
