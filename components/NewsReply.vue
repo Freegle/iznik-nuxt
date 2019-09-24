@@ -26,7 +26,6 @@
                     class="font-weight-bold prewrap forcebreak replytext d-inline"
                   />
                 </span>
-                <!--                <read-more :text="emessage" :max-chars="500" class="font-weight-bold prewrap forcebreak replytext nopara" />-->
                 <span v-if="reply.message && reply.userid && users[reply.userid]">
                   <span class="text-muted small">
                     {{ $dayjs(reply.timestamp).fromNow() }}

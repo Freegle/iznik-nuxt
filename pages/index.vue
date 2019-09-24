@@ -142,11 +142,9 @@ export default {
       this.$store.watch(
         (state, getters) => {
           const user = this.$store.getters['auth/user']()
-          console.log('Watch', user)
           return user
         },
         (newValue, oldValue) => {
-          console.log('Got new', newValue)
           if (newValue) {
             // Logged in - on client side we want to load the last page, for logged in users.
             try {
@@ -158,7 +156,6 @@ export default {
                 route = '/mygroups'
               }
 
-              console.log('Last route', this.$nuxt.path, route)
               if (this.$nuxt.path !== route) {
                 this.$router.push(route)
               }
