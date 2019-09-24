@@ -45,7 +45,13 @@
             <b-nav-item id="menu-option-notification" class="text-center p-0" />
             <b-nav-item-dropdown class="white text-center notiflist" lazy right @shown="showNotifications">
               <template slot="button-content">
-                <v-icon name="bell" scale="2" class="ml-3" /><br>Notifications
+                <div class="notifwrapper ml-3">
+                  <v-icon name="bell" scale="2" />
+                  <b-badge v-if="notificationCount" variant="danger" class="ml-3 notifbadge">
+                    {{ notificationCount }}
+                  </b-badge>
+                </div>
+                Notifications
               </template>
               <b-dropdown-item v-for="(notification, $index) in notifications" :key="'notification-' + $index" class="p-0 notpad">
                 <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
@@ -106,7 +112,12 @@
           @shown="showNotifications"
         >
           <template slot="button-content">
-            <v-icon name="bell" scale="2" />
+            <div class="notifwrapper">
+              <v-icon name="bell" scale="2" class="" />
+              <b-badge v-if="notificationCount" variant="danger" class="notifbadge">
+                {{ notificationCount }}
+              </b-badge>
+            </div>
           </template>
           <b-dropdown-item v-for="(notification, $index) in notifications" :key="'notification-' + $index" class="p-0 notpad">
             <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
@@ -301,6 +312,16 @@ svg.fa-icon {
   padding-left: 0px;
   padding-right: 0px;
 }
+
+.notifwrapper {
+  position: relative;
+}
+
+.notifbadge {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+}
 </style>
 
 <script>
@@ -320,7 +341,8 @@ export default {
   data: function() {
     return {
       complete: false,
-      distance: 1000
+      distance: 1000,
+      notificationPoll: null
     }
   },
 
@@ -334,15 +356,32 @@ export default {
         this.$store.getters['notifications/list']()
       )
       return notifications
+    },
+    notificationCount() {
+      return this.$store.getters['notifications/count']()
     }
   },
 
   async mounted() {
+    // Clear old notifications because they're probably out of date now.
     await this.$store.dispatch('notifications/clear')
-    // await this.$store.dispatch('notifications/list')
+
+    // Poll regularly for new ones.  Would be nice if this was event driven instead but requires server work.
+    this.notificationPoll = setTimeout(this.getNotificationCount, 30000)
+  },
+
+  beforeDestroy() {
+    console.log('Destroy layout')
+    clearTimeout(this.notificationPoll)
   },
 
   methods: {
+    async getNotificationCount() {
+      console.log('Poll for notification count')
+      await this.$store.dispatch('notifications/count')
+      this.notificationPoll = setTimeout(this.getNotificationCount, 30000)
+    },
+
     showAboutMe() {
       this.$refs.modal.show()
     },

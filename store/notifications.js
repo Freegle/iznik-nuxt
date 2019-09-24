@@ -5,7 +5,8 @@ export const state = () => ({
   // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
   // storage.
   list: [],
-  context: null
+  context: null,
+  count: 0
 })
 
 export const mutations = {
@@ -23,6 +24,10 @@ export const mutations = {
       }
       state.list = [...state.list, ...notifications]
     }
+  },
+
+  setCount(state, count) {
+    state.count = count
   },
 
   setContext(state, params) {
@@ -52,6 +57,10 @@ export const getters = {
 
   getContext: state => () => {
     return state.context
+  },
+
+  count: state => () => {
+    return state.count
   }
 }
 
@@ -69,6 +78,18 @@ export const actions = {
       commit('setContext', {
         ctx: res.data.context ? res.data.context : null
       })
+    }
+  },
+
+  async count({ commit, state }, params) {
+    const res = await this.$axios.get(process.env.API + '/notification', {
+      params: {
+        count: true
+      }
+    })
+
+    if (res.status === 200) {
+      commit('setCount', res.data.count)
     }
   },
 
