@@ -24,8 +24,19 @@
                     :text="emessage"
                     :max-chars="500"
                     class="font-weight-bold prewrap forcebreak replytext d-inline"
-                  />
+                  /> <br>
                 </span>
+                <div v-if="reply.image">
+                  <b-img
+                    v-b-modal="'photoModal-' + reply.id"
+                    rounded
+                    class="clickme"
+                    alt="ChitChat photo"
+                    :src="reply.image.paththumb"
+                    style="width: 150px"
+                    @error.native="brokenImage"
+                  />
+                </div>
                 <span v-if="reply.message && reply.userid && users[reply.userid]">
                   <span class="text-muted small">
                     {{ $dayjs(reply.timestamp).fromNow() }}
@@ -109,6 +120,24 @@
         </b-btn>
       </b-col>
     </b-row>
+    <b-modal
+      v-if="reply.image"
+      :id="'photoModal-' + reply.id"
+      ref="photoModal"
+      title="ChitChat Photo"
+      alt="ChitChat Photo"
+      size="lg"
+      no-stacking
+    >
+      <template slot="default">
+        <b-img
+          fluid
+          rounded
+          center
+          :src="reply.image.path"
+        />
+      </template>
+    </b-modal>
     <b-modal
       :id="'newsEdit-' + reply.id"
       ref="editModal"
