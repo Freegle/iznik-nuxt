@@ -41,7 +41,7 @@
               <b-tabs card>
                 <b-tab active class="p-1">
                   <template slot="title">
-                    <v-icon name="pen" /><span class="d-none d-md-block">&nbsp;ChitChat</span>
+                    <v-icon name="pen" tile="ChitChat - ask for recommendations or blether" /><span class="d-none d-lg-inline">&nbsp;ChitChat</span>
                   </template>
                   <b-card-text>
                     <b-row>
@@ -56,25 +56,25 @@
                 </b-tab>
                 <b-tab class="p-1">
                   <template slot="title">
-                    <v-icon name="gift" /><span class="d-none d-md-block">&nbsp;OFFER</span>
+                    <v-icon name="gift" title="OFFER - offer something up to other freeglers" /><span class="d-none d-lg-inline">&nbsp;OFFER</span>
                   </template>
                   <b-card-text>TODO</b-card-text>
                 </b-tab>
                 <b-tab class="p-1">
                   <template slot="title">
-                    <v-icon name="search" /><span class="d-none d-md-block">&nbsp;WANTED</span>
+                    <v-icon name="search" title="WANTED - ask for something from other freeglers" /><span class="d-none d-lg-inline">&nbsp;WANTED</span>
                   </template>
                   <b-card-text>TODO</b-card-text>
                 </b-tab>
                 <b-tab class="p-1">
                   <template slot="title">
-                    <v-icon name="calendar-alt" /><span class="d-none d-md-block">&nbsp;Event</span>
+                    <v-icon name="calendar-alt" title="Advertise a Community Event" /><span class="d-none d-lg-inline">&nbsp;Event</span>
                   </template>
                   <b-card-text>TODO</b-card-text>
                 </b-tab>
                 <b-tab class="p-1">
                   <template slot="title">
-                    <v-icon name="star" /><span class="d-none d-md-block">&nbsp;Volunteer</span>
+                    <v-icon name="star" title="Advertise a Volunteer Opportunity" /><span class="d-none d-lg-inline">&nbsp;Volunteer</span>
                   </template>
                   <b-card-text>TODO</b-card-text>
                 </b-tab>

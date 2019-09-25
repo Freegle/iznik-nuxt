@@ -1,7 +1,7 @@
 <template>
   <div>
-    <b-row class="">
-      <b-col cols="2" class="text-truncate">
+    <b-row>
+      <b-col cols="6" class="text-truncate">
         <span class="">
           <b-img-lazy
             rounded="circle"
@@ -19,23 +19,27 @@
           </span>
         </span>
       </b-col>
-      <b-col cols="2" class="pt-2">
-        <ratings v-bind="reply.user" class="pl-1 pt-1" size="sm" />
+      <b-col cols="6">
+        <ratings v-bind="reply.user" class="pl-1 pt-1 float-right mt-1 mr-1" size="sm" />
       </b-col>
-      <b-col cols="5" class="pt-1" style="line-height: 1">
-        <span v-if="unseen > 0" class="">
+    </b-row>
+    <b-row>
+      <b-col cols="12" xl="6">
+        <span v-if="unseen > 0" class="ml-1 bg-white snippet">
           <b>{{ reply.snippet }}...</b>
         </span>
-        <span v-else class="">
+        <span v-else-if="reply.snippet" class="ml-1 bg-white snippet">
           {{ reply.snippet }}...
         </span>
-        <br>
-        <span class="small text-muted align-middle" :title="$dayjs(reply.lastdate).toLocaleString()">
+        <span v-else class="ml-1">
+          ...
+        </span>
+        <span class="small text-muted align-middle ml-2" :title="$dayjs(reply.lastdate).toLocaleString()">
           {{ $dayjs(reply.lastdate).fromNow() }}
         </span>
       </b-col>
-      <b-col cols="3" class="pl-0">
-        <span class="float-right">
+      <b-col cols="12" xl="6">
+        <span class="float-xl-right ml-2 mt-2 mb-2">
           <b-btn v-if="promised" variant="warning" class="align-middle mt-1 mb-1" @click="unpromise">
             <v-icon>
               <v-icon name="handshake" />
@@ -67,6 +71,16 @@
   </div>
 </template>
 <style scoped>
+.snippet {
+  border: 1px solid lightgrey;
+  border-radius: 10px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 4px;
+  padding-right: 4px;
+  word-wrap: break-word;
+  line-height: 1.75;
+}
 </style>
 <script>
 const PromiseModal = () => import('./PromiseModal')

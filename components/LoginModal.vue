@@ -22,7 +22,7 @@
       </b-col>
     </b-row>
     <b-row>
-      <b-col cols="12" sm="6" class="text-center">
+      <b-col cols="12" lg="6" class="text-center">
         <b-img alt="Facebook login" class="loginbutton clickme" src="~/static/signinbuttons/facebook.png" @click="loginFacebook" />
         <b-img alt="Google login" :class="'loginbutton clickme ' + disabled('google')" src="~/static/signinbuttons/google.png" @click="loginGoogle" />
         <b-img alt="Yahoo login" class="loginbutton clickme" src="~/static/signinbuttons/yahoo.png" @click="loginYahoo" />
@@ -30,7 +30,20 @@
           Social login blocked - check your privacy settings
         </b-alert>
       </b-col>
-      <b-col cols="12" sm="6" class="mt-2">
+      <b-col cols="12" class="d-block d-lg-none">
+        <b-row>
+          <b-col cols="5">
+            <hr class="text-danger pb-2 d-block d-lg-none" style="border-top: 1px solid red">
+          </b-col>
+          <b-col cols="2" class="text-center">
+            <em>Or</em>
+          </b-col>
+          <b-col cols="5">
+            <hr class="text-danger pb-2 d-block d-lg-none" style="border-top: 1px solid red">
+          </b-col>
+        </b-row>
+      </b-col>
+      <b-col cols="12" lg="6" class="mt-0">
         <b-form ref="form" action="/" autocomplete="on" method="post" @submit="loginNative">
           <div v-if="existinguser">
             <b-row>
@@ -101,6 +114,7 @@
 }
 </style>
 <script>
+// TODO Sign Up
 // TODO Eye icon to show password for mobile
 import Vue from 'vue'
 

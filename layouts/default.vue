@@ -2,7 +2,7 @@
   <div>
     <client-only>
       <!-- Navbar for large screens -->
-      <b-navbar id="navbar_large" toggleable="lg" type="dark" class="ourBack d-none d-md-flex">
+      <b-navbar id="navbar_large" toggleable="xl" type="dark" class="ourBack d-none d-xl-flex">
         <b-navbar-brand to="/" class="p-0">
           <b-img
             class="logo mr-2"
@@ -89,8 +89,8 @@
         </ul>
       </b-navbar>
       <!-- Navbar for small screens -->
-      <b-navbar id="navbar_small" toggleable="md" type="dark" class="ourBack d-flex d-md-none">
-        <b-navbar-brand to="/" class="p-0">
+      <b-navbar id="navbar_small" toggleable="xl" type="dark" class="ourBack d-flex justify-content-end d-xl-none">
+        <b-navbar-brand to="/" class="p-0 mr-auto">
           <b-img
             class="logo mr-2"
             height="58"
@@ -103,7 +103,7 @@
 
         <b-dropdown
           v-if="loggedIn"
-          class="white text-center notiflist"
+          class="white text-center notiflist mr-2"
           variant="success"
           lazy
           right
@@ -129,7 +129,7 @@
           </infinite-loading>
         </b-dropdown>
 
-        <nuxt-link v-if="loggedIn" id="menu-option-chat-sm" class="text-white" to="/chats">
+        <nuxt-link v-if="loggedIn" id="menu-option-chat-sm" class="text-white mr-3" to="/chats">
           <v-icon name="comments" scale="2" />
         </nuxt-link>
 
@@ -139,7 +139,7 @@
           </b-button>
         </b-nav-item>
 
-        <b-navbar-nav class="ml-auto">
+        <b-navbar-nav class="">
           <b-navbar-toggle v-if="loggedIn" target="nav_collapse_mobile" />
         </b-navbar-nav>
 

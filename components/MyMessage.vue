@@ -95,7 +95,7 @@
                 #{{ message.id }}
               </nuxt-link>
             </div>
-            <b-list-group v-if="rejected" horizontal>
+            <b-list-group v-if="rejected" horizontal class="flex-wrap">
               <b-list-group-item>
                 <b-btn variant="warning" class="d-inline mr-1" @click="edit">
                   <v-icon name="pen" /> Edit and Resend
@@ -107,7 +107,7 @@
                 </b-btn>
               </b-list-group-item>
             </b-list-group>
-            <b-list-group v-else horizontal>
+            <b-list-group v-else horizontal class="flex-wrap">
               <b-list-group-item v-if="message.type === 'Offer'" li>
                 <b-btn variant="success" class="d-inline mr-1" @click="outcome('Taken')">
                   <v-icon name="check" /> Mark as TAKEN
