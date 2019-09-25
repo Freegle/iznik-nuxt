@@ -1,27 +1,29 @@
 <template>
   <div v-if="newsfeed && newsfeed.visible && !newsfeed.unfollowed" class="bg-white">
-    <b-card :style="'background-color:' + backgroundColor">
-      <b-card-text>
-        <b-dropdown class="float-right" right variant="white">
-          <template slot="button-content" />
-          <b-dropdown-item :href="'/chitchat/' + newsfeed.id" target="_blank">
-            Open in new window
-          </b-dropdown-item>
-          <b-dropdown-item :b-v-modal="'newsEdit' + newsfeed.id" @click="show">
-            Edit your post
-          </b-dropdown-item>
-        </b-dropdown>
-        <news-message v-if="newsfeed.type === 'Message'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
-        <news-about-me v-else-if="newsfeed.type === 'AboutMe'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
-        <news-community-event v-else-if="newsfeed.type === 'CommunityEvent'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
-        <news-volunteer-opportunity v-else-if="newsfeed.type === 'VolunteerOpportunity'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
-        <news-story v-else-if="newsfeed.type === 'Story'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
-        <news-alert v-else-if="newsfeed.type === 'Alert'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
-        <news-noticeboard v-else-if="newsfeed.type === 'Noticeboard'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
-        <b-alert v-else variant="danger" show>
-          Unknown item type {{ newsfeed.type }}
-        </b-alert>
-      </b-card-text>
+    <b-card :style="'background-color:' + backgroundColor" no-body>
+      <b-card-body class="p-1 p-sm-2">
+        <b-card-text>
+          <b-dropdown class="float-right" right variant="white">
+            <template slot="button-content" />
+            <b-dropdown-item :href="'/chitchat/' + newsfeed.id" target="_blank">
+              Open in new window
+            </b-dropdown-item>
+            <b-dropdown-item :b-v-modal="'newsEdit' + newsfeed.id" @click="show">
+              Edit your post
+            </b-dropdown-item>
+          </b-dropdown>
+          <news-message v-if="newsfeed.type === 'Message'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
+          <news-about-me v-else-if="newsfeed.type === 'AboutMe'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
+          <news-community-event v-else-if="newsfeed.type === 'CommunityEvent'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
+          <news-volunteer-opportunity v-else-if="newsfeed.type === 'VolunteerOpportunity'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
+          <news-story v-else-if="newsfeed.type === 'Story'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
+          <news-alert v-else-if="newsfeed.type === 'Alert'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
+          <news-noticeboard v-else-if="newsfeed.type === 'Noticeboard'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
+          <b-alert v-else variant="danger" show>
+            Unknown item type {{ newsfeed.type }}
+          </b-alert>
+        </b-card-text>
+      </b-card-body>
       <div slot="footer">
         <a v-if="!showAllReplies && newsfeed.replies.length > 10" href="#" variant="white" class="mb-3" @click="(e) => { e.preventDefault(); showAllReplies = true }">
           Show earlier {{ newsfeed.replies.length | pluralize(['reply', 'replies'], { includeNumber: false }) }} ({{ newsfeed.replies.length - 10 }})
@@ -33,8 +35,8 @@
         </ul>
         <span v-if="!newsfeed.closed" class="text-small">
           <b-row>
-            <b-col>
-              <b-input-group>
+            <b-col class="d-flex">
+              <b-input-group class="flex-shrink-2">
                 <b-input-group-prepend>
                   <span class="input-group-text pl-1 pr-1">
                     <b-img-lazy
@@ -56,7 +58,7 @@
                   max-rows="8"
                   maxlength="2048"
                   spellcheck="true"
-                  placeholder="Write a comment on this thread..."
+                  placeholder="Write a comment on this thread and hit enter..."
                   class="p-0 pl-1 pt-1"
                   @keydown.enter.exact.prevent
                   @keyup.enter.exact="sendComment"
@@ -65,10 +67,8 @@
                   @focus="focusedComment"
                 />
               </b-input-group>
-            </b-col>
-            <b-col cols="1" class="p-0">
-              <b-btn size="sm" variant="white" class="float-right">
-                <v-icon name="camera" />&nbsp;Photo
+              <b-btn size="sm" variant="white" class="float-right flex-grow-1 ml-1">
+                <v-icon name="camera" /><span class="d-none d-sm-inline">&nbsp;Photo</span>
               </b-btn>
             </b-col>
           </b-row>

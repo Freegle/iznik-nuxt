@@ -1,3 +1,4 @@
+
 @colour-success: #61AE24;
 @colour-success-bg: #d6e9c6;
 @colour-success-fg: #3c763d;
@@ -7,6 +8,13 @@
 @colour-warning: #e38d13;
 @colour-header: #1d6607;
 @colour-primary: #00A1CB;
+
+// TODO Would be nice to use bootstrap mixins for breakpoints, but that's in SCSS and this is in less.  Maybe
+// that can be made to work, or maybe this needs moving to SCSS instead.
+@bootstrap-xs: 576px;
+@bootstrap-sm: 768px;
+@bootstrap-md: 992px;
+@bootstrap-lg: 1200px;
 
 .bg-success {
   background-color: @colour-success-bg !important;
@@ -38,7 +46,7 @@
   background-color: @colour-primary !important;
   border-color: #006b50 #006b50 hsl(165, 100%, 16%);
   color: #fff !important;
-@colour-success text-shadow: 0 - 1 px 0 rgba(0, 0, 0, 0.59);
+  text-shadow: 0 - 1 px 0 rgba(0, 0, 0, 0.59);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -139,18 +147,33 @@ body {
 }
 
 .profile {
-  width: 50px !important;
-  height: 50px !important;
+  width: 30px !important;
+  height: 30px !important;
+
+  @media (min-width: @bootstrap-sm) {
+    width: 50px !important;
+    height: 50px !important;
+  }
 }
 
 .profilemd {
-  width: 35px !important;
-  height: 35px !important;
+  width: 20px !important;
+  height: 20px !important;
+
+  @media (min-width: @bootstrap-sm)  {
+    width: 35px !important;
+    height: 35px !important;
+  }
 }
 
 .profilesm {
-  width: 25px !important;
-  height: 25px !important;
+  width: 15px !important;
+  height: 15px !important;
+
+  @media (min-width: @bootstrap-sm) {
+    width: 25px !important;
+    height: 25px !important;
+  }
 }
 
 // We have to go to some effort to style the resize grip.  We can't have it in a scoped style otherwise it won't

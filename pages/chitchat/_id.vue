@@ -39,9 +39,9 @@
           <b-col>
             <b-card no-body>
               <b-tabs card>
-                <b-tab active>
+                <b-tab active class="p-1">
                   <template slot="title">
-                    <v-icon name="pen" />&nbsp;ChitChat
+                    <v-icon name="pen" /><span class="d-none d-md-block">&nbsp;ChitChat</span>
                   </template>
                   <b-card-text>
                     <b-row>
@@ -54,27 +54,27 @@
                     </b-row>
                   </b-card-text>
                 </b-tab>
-                <b-tab>
+                <b-tab class="p-1">
                   <template slot="title">
-                    <v-icon name="gift" />&nbsp;OFFER
+                    <v-icon name="gift" /><span class="d-none d-md-block">&nbsp;OFFER</span>
                   </template>
                   <b-card-text>TODO</b-card-text>
                 </b-tab>
-                <b-tab>
+                <b-tab class="p-1">
                   <template slot="title">
-                    <v-icon name="search" />&nbsp;WANTED
+                    <v-icon name="search" /><span class="d-none d-md-block">&nbsp;WANTED</span>
                   </template>
                   <b-card-text>TODO</b-card-text>
                 </b-tab>
-                <b-tab>
+                <b-tab class="p-1">
                   <template slot="title">
-                    <v-icon name="calendar-alt" />&nbsp;Event
+                    <v-icon name="calendar-alt" /><span class="d-none d-md-block">&nbsp;Event</span>
                   </template>
                   <b-card-text>TODO</b-card-text>
                 </b-tab>
-                <b-tab>
+                <b-tab class="p-1">
                   <template slot="title">
-                    <v-icon name="star" />&nbsp;Volunteer
+                    <v-icon name="star" /><span class="d-none d-md-block">&nbsp;Volunteer</span>
                   </template>
                   <b-card-text>TODO</b-card-text>
                 </b-tab>
@@ -90,15 +90,37 @@
                 </b-col>
               </b-row>
               <b-row>
-                <b-col cols="3" class="pl-4 text-muted pt-2">
+                <b-col
+                  cols="12"
+                  sm="12"
+                  lg="3"
+                  class="pl-4 text-muted pt-2"
+                  order="3"
+                  order-sm="3"
+                  order-lg="1"
+                >
                   <div v-if="me.settings.mylocation && me.settings.mylocation.area.name">
                     <v-icon name="map-marker-alt" />&nbsp;{{ me.settings.mylocation.area.name }}
                   </div>
                 </b-col>
-                <b-col cols="6">
+                <b-col
+                  col="12"
+                  sm="6"
+                  lg="4"
+                  order="2"
+                  order-sm="1"
+                  order-lg="2"
+                >
                   <b-form-select v-model="selectedArea" :options="areaOptions" @change="areaChange" />
                 </b-col>
-                <b-col cols="3">
+                <b-col
+                  cols="12"
+                  sm="6"
+                  lg="5"
+                  order="1"
+                  order-sm="2"
+                  order-lg="3"
+                >
                   <b-row>
                     <b-col>
                       <div class="float-right pb-1 pr-1">

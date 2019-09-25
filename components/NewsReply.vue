@@ -8,7 +8,7 @@
               <td style="vertical-align: top" class="clickme" title="Click to see their profile" @click="showInfo">
                 <b-img-lazy
                   rounded="circle"
-                  class="profilemd p-0 ml-1 mb-1 mr-2 inline float-left"
+                  class="profilemd p-0 ml-1 mb-1 mr-2 inline float-left mt-2"
                   alt="Profile picture"
                   title="Profile"
                   :src="users[reply.userid].profile.turl"
@@ -79,9 +79,9 @@
         </li>
       </ul>
     </div>
-    <b-row v-if="showReplyBox">
-      <b-col class="p-0 pb-1">
-        <b-input-group class="pl-4">
+    <b-row v-if="showReplyBox" class="mb-2">
+      <b-col class="p-0 pb-1 d-flex ml-4">
+        <b-input-group class="pl-4 flex-shrink-2">
           <b-input-group-prepend>
             <span class="input-group-text pl-1 pr-1">
               <b-img-lazy
@@ -104,7 +104,7 @@
             max-rows="8"
             maxlength="2048"
             spellcheck="true"
-            placeholder="Write a reply to this comment..."
+            placeholder="Write a reply to this comment and hit enter..."
             class="p-0 pl-1 pt-1"
             @keydown.enter.exact.prevent
             @keyup.enter.exact="sendReply"
@@ -113,9 +113,7 @@
             @focus="focusedReply"
           />
         </b-input-group>
-      </b-col>
-      <b-col cols="1" class="p-0">
-        <b-btn size="sm" variant="primary" class="float-right">
+        <b-btn size="sm" variant="white" class="flex-grow-1 float-right ml-1">
           <v-icon name="camera" />&nbsp;Photo
         </b-btn>
       </b-col>

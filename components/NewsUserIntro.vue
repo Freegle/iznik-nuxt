@@ -21,7 +21,7 @@
         "{{ appendBold }}"
       </span>
       <br>
-      <span class="text-muted small pl-2">
+      <span class="text-muted small pl-0 pl-sm-2">
         {{ $dayjs(newsfeed.timestamp).fromNow() }}
       </span>
       <NewsUserInfo :user="users[userid]" />
