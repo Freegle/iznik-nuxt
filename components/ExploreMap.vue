@@ -23,6 +23,7 @@
             classname="form-control"
             placeholder="Enter a location"
             country="GB"
+            types="(regions)"
             @placechanged="getAddressData"
           />
         </client-only>
