@@ -38,8 +38,10 @@ Rendering solution.
 
 # Current Status
 
-This is still very much a proof of concept.
-* You can log in using email/password and Facebook - not Google/Yahoo yet.
-* The ChitChat/My Groups/Chat/Give pages exist.  They are basically functional, but not complete.
-* Find/My Posts/Events/Volunteer/Notifications/Spread/Help/Settings don't exist.
-* I've not checked much how it renders on mobile or other screen sizes yet.
+Mainline function now broadly exists.
+
+Some of the minor pages not directly linked from the menu don't exist yet.
+
+Events/Volunteer Ops/Ads not done.
+
+Mobile tweaking very basic so far.
