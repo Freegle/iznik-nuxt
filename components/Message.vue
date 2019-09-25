@@ -73,7 +73,7 @@
           <v-icon name="user" class="d-inline" />&nbsp;<span class="d-inline">{{ expanded.replycount }}&nbsp;freegler<span v-if="expanded.replycount != 1">s</span>&nbsp;replied&nbsp;</span>
         </span>
       </b-card-body>
-      <b-card-footer v-if="expanded">
+      <b-card-footer v-if="expanded" class="p-1 pt-3">
         <b-row>
           <b-col class="d-flex">
             <b-form-textarea
@@ -92,11 +92,18 @@
               max-rows="8"
               class="flex-shrink-2"
             />
-            <div class="flex-grow-1 text-right ml-2">
+            <div class="flex-grow-1 text-right ml-2 d-none d-md-block">
               <b-btn variant="success">
-                <v-icon name="envelope" />&nbsp;Send
+                Send >>
               </b-btn>
             </div>
+          </b-col>
+        </b-row>
+        <b-row class="d-block d-md-none mt-2">
+          <b-col>
+            <b-btn variant="success" block>
+              Send >>
+            </b-btn>
           </b-col>
         </b-row>
       </b-card-footer>
@@ -149,6 +156,7 @@
   </div>
 </template>
 <script>
+// TODO Focus on textbox when expand.
 import twem from '~/assets/js/twem'
 const Highlighter = () => import('vue-highlight-words')
 const MessageUserInfo = () => import('~/components/MessageUserInfo')

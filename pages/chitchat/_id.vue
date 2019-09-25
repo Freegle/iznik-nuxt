@@ -1,7 +1,7 @@
 <template>
   <div v-if="me">
     <b-row class="m-0">
-      <b-col cols="0" md="3">
+      <b-col cols="0" md="3" class="d-none d-md-block">
         Community Events go here
       </b-col>
       <b-col cols="12" md="6" class="newsfeedHolder p-0">
@@ -131,7 +131,7 @@
           </infinite-loading>
         </div>
       </b-col>
-      <b-col cols="0" md="3">
+      <b-col cols="0" md="3" class="d-none d-md-block">
         Volunteer ops and ads go here
       </b-col>
     </b-row>

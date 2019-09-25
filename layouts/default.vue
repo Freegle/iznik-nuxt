@@ -100,15 +100,13 @@
             alt="Home"
           />
         </b-navbar-brand>
-        <nuxt-link id="menu-option-chat-sm" class="text-center p-0 white" to="/chats" style="position: absolute; right: 110px;">
-          <v-icon name="comments" scale="2" /><br>
-        </nuxt-link>
+
         <b-dropdown
+          v-if="loggedIn"
           class="white text-center notiflist"
           variant="success"
           lazy
           right
-          style="position: absolute; right: 50px;"
           @shown="showNotifications"
         >
           <template slot="button-content">
@@ -130,59 +128,64 @@
             </span>
           </infinite-loading>
         </b-dropdown>
-        <a class="d-none dropdown-item" />
-        <b-navbar-toggle v-if="loggedIn" target="nav_collapse_mobile" style="position: absolute; right: 0px;" />
-        <ul class="navbar-nav mr-auto" />
-        <ul class="nav navbar-nav navbar-right">
-          <li>
-            <b-button v-if="!loggedIn" class="btn-white" @click="requestLogin">
-              Sign in
-            </b-button>
-          </li>
-        </ul>
-      </b-navbar>
-      <b-collapse v-if="loggedIn" id="nav_collapse_mobile" class="w-100 ourBack">
-        <b-navbar-nav class="ml-auto flex-row small">
-          <b-nav-item class="text-center p-0 white" to="/chitchat" @mousedown="maybeReload('/chitchat')">
-            <v-icon name="coffee" scale="2" /><br>
-            ChitChat
-          </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
-            <v-icon name="home" scale="2" /><br>
-            My&nbsp;Posts
-          </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/give" @mousedown="maybeReload('/give')">
-            <v-icon name="gift" scale="2" /><br>
-            Give
-          </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/find" @mousedown="maybeReload('/find')">
-            <v-icon name="search" scale="2" /><br>
-            Find
-          </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/mygroups" @mousedown="maybeReload('/mygroups')">
-            <v-icon name="users" scale="2" /><br>
-            My&nbsp;Groups
-          </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/explore" @mousedown="maybeReload('/explore')">
-            <v-icon name="map-marked-alt" scale="2" /><br>
-            Explore
-          </b-nav-item>
-          <b-nav-item id="menu-option-chat-sm-2" class="text-center p-0" to="/chats" @mousedown="maybeReload('/chats')">
-            <v-icon name="comments" scale="2" /><br>
-            Chats
-          </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/settings" @mousedown="maybeReload('/settings')">
-            <v-icon name="cog" scale="2" /><br>
-            Settings
-          </b-nav-item>
-          <b-nav-item class="text-center p-0" @click="logOut()">
-            <v-icon name="sign-out-alt" scale="2" /><br>
-            Logout
-          </b-nav-item>
-        </b-navbar-nav>
-      </b-collapse>
 
-      <nuxt ref="pageContent" class="ml-0 pl-1 pageContent" />
+        <nuxt-link v-if="loggedIn" id="menu-option-chat-sm" class="text-white" to="/chats">
+          <v-icon name="comments" scale="2" />
+        </nuxt-link>
+
+        <b-nav-item v-if="!loggedIn">
+          <b-button class="btn-white" @click="requestLogin">
+            Sign in
+          </b-button>
+        </b-nav-item>
+
+        <b-navbar-nav class="ml-auto">
+          <b-navbar-toggle v-if="loggedIn" target="nav_collapse_mobile" />
+        </b-navbar-nav>
+
+        <b-collapse v-if="loggedIn" id="nav_collapse_mobile" class="w-100 ourBack">
+          <b-navbar-nav class="ml-auto flex-row flex-wrap small">
+            <b-nav-item class="text-center p-0 white" to="/chitchat" @mousedown="maybeReload('/chitchat')">
+              <v-icon name="coffee" scale="2" /><br>
+              ChitChat
+            </b-nav-item>
+            <b-nav-item class="text-center p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
+              <v-icon name="home" scale="2" /><br>
+              My&nbsp;Posts
+            </b-nav-item>
+            <b-nav-item class="text-center p-0" to="/give" @mousedown="maybeReload('/give')">
+              <v-icon name="gift" scale="2" /><br>
+              Give
+            </b-nav-item>
+            <b-nav-item class="text-center p-0" to="/find" @mousedown="maybeReload('/find')">
+              <v-icon name="search" scale="2" /><br>
+              Find
+            </b-nav-item>
+            <b-nav-item class="text-center p-0" to="/mygroups" @mousedown="maybeReload('/mygroups')">
+              <v-icon name="users" scale="2" /><br>
+              My&nbsp;Groups
+            </b-nav-item>
+            <b-nav-item class="text-center p-0" to="/explore" @mousedown="maybeReload('/explore')">
+              <v-icon name="map-marked-alt" scale="2" /><br>
+              Explore
+            </b-nav-item>
+            <b-nav-item id="menu-option-chat-sm-2" class="text-center p-0" to="/chats" @mousedown="maybeReload('/chats')">
+              <v-icon name="comments" scale="2" /><br>
+              Chats
+            </b-nav-item>
+            <b-nav-item class="text-center p-0" to="/settings" @mousedown="maybeReload('/settings')">
+              <v-icon name="cog" scale="2" /><br>
+              Settings
+            </b-nav-item>
+            <b-nav-item class="text-center p-0" @click="logOut()">
+              <v-icon name="sign-out-alt" scale="2" /><br>
+              Logout
+            </b-nav-item>
+          </b-navbar-nav>
+        </b-collapse>
+      </b-navbar>
+
+      <nuxt ref="pageContent" class="ml-0 pl-1 pr-1 pageContent" />
       <ChatPopups v-if="loggedIn" />
       <LoginModal ref="loginModal" />
       <AboutMeModal ref="modal" />

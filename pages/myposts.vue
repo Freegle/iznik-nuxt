@@ -1,7 +1,7 @@
 <template>
   <b-col>
     <b-row class="m-0">
-      <b-col cols="0" md="3">
+      <b-col cols="0" md="3" class="d-none d-md-block">
         Community Events go here
       </b-col>
       <b-col cols="12" md="6" class="p-0">
@@ -155,7 +155,7 @@
           </b-card-text>
         </b-card>
       </b-col>
-      <b-col cols="0" md="3">
+      <b-col cols="0" md="3" class="d-none d-md-block">
         Volunteer ops and ads go here
       </b-col>
     </b-row>
