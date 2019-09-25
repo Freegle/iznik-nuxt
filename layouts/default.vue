@@ -100,7 +100,7 @@
             alt="Home"
           />
         </b-navbar-brand>
-        <nuxt-link id="menu-option-chat" class="text-center p-0 white" to="/chats" style="position: absolute; right: 110px;">
+        <nuxt-link id="menu-option-chat-sm" class="text-center p-0 white" to="/chats" style="position: absolute; right: 110px;">
           <v-icon name="comments" scale="2" /><br>
         </nuxt-link>
         <b-dropdown
@@ -167,7 +167,7 @@
             <v-icon name="map-marked-alt" scale="2" /><br>
             Explore
           </b-nav-item>
-          <b-nav-item id="menu-option-chat" class="text-center p-0" to="/chats" @mousedown="maybeReload('/chats')">
+          <b-nav-item id="menu-option-chat-sm-2" class="text-center p-0" to="/chats" @mousedown="maybeReload('/chats')">
             <v-icon name="comments" scale="2" /><br>
             Chats
           </b-nav-item>

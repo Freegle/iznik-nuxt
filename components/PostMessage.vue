@@ -58,6 +58,8 @@
   </div>
 </template>
 <script>
+// TODO Image recognition?
+// TODO Not obvious enough why the Next button doesn't appear.  Greyed out?  Indications?
 const OurFilePond = () => import('~/components/OurFilePond')
 const PostPhoto = () => import('~/components/PostPhoto')
 const PostItem = () => import('~/components/PostItem')
