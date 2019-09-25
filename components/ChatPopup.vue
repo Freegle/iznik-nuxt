@@ -185,9 +185,11 @@
 </style>
 <script>
 import twem from '~/assets/js/twem'
+
+// Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
+import ChatMessage from '~/components/ChatMessage.vue'
 const VueDraggableResizable = () => import('vue-draggable-resizable')
 const Ratings = () => import('~/components/Ratings')
-const ChatMessage = () => import('~/components/ChatMessage.vue')
 const PromiseModal = () => import('./PromiseModal')
 const ProfileModal = () => import('./ProfileModal')
 

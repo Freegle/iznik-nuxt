@@ -40,6 +40,8 @@ import Autocomplete from '~/components/Autocomplete'
 // TODO Make find location button work
 // TODO It's quite easy to get the wrong postcode, or think it doesn't match, because of server lag.  Perhaps a busy
 // indicator?
+// TODO Using the debounce option means that if you type fast, you get an end postcode in the input box which isn't
+// looked up.  Bug.
 
 export default {
   components: {

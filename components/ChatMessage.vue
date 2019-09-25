@@ -24,16 +24,18 @@
 // const TYPE_SCHEDULE = 'Schedule';
 // const TYPE_SCHEDULE_UPDATED = 'ScheduleUpdated';
 
-const ChatMessageText = () => import('./ChatMessageText')
-const ChatMessageImage = () => import('./ChatMessageImage')
-const ChatMessageInterested = () => import('./ChatMessageInterested')
-const ChatMessageCompleted = () => import('./ChatMessageCompleted')
-const ChatMessagePromised = () => import('./ChatMessagePromised')
-const ChatMessageReneged = () => import('./ChatMessageReneged')
-const ChatMessageAddress = () => import('./ChatMessageAddress')
-const ChatMessageNudge = () => import('./ChatMessageNudge')
-const ChatMessageDateRead = () => import('./ChatMessageDateRead')
-const ChatMessageModMail = () => import('./ChatMessageModMail')
+// Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
+
+import ChatMessageText from './ChatMessageText'
+import ChatMessageImage from './ChatMessageImage'
+import ChatMessageInterested from './ChatMessageInterested'
+import ChatMessageCompleted from './ChatMessageCompleted'
+import ChatMessagePromised from './ChatMessagePromised'
+import ChatMessageReneged from './ChatMessageReneged'
+import ChatMessageAddress from './ChatMessageAddress'
+import ChatMessageNudge from './ChatMessageNudge'
+import ChatMessageDateRead from './ChatMessageDateRead'
+import ChatMessageModMail from './ChatMessageModMail'
 
 export default {
   components: {

@@ -162,10 +162,12 @@
 // TODO Popup confirm first time you use Nudge, so you know what you're doing.
 // TODO Warning if you're talking to a spammer, and disable the chat message box.
 import twem from '~/assets/js/twem'
+
+// Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
+import ChatMessage from '~/components/ChatMessage.vue'
 const OurFilePond = () => import('~/components/OurFilePond')
 const requestIdleCallback = () => import('~/assets/js/requestIdleCallback')
 const Ratings = () => import('~/components/Ratings')
-const ChatMessage = () => import('~/components/ChatMessage.vue')
 const PromiseModal = () => import('./PromiseModal')
 const ProfileModal = () => import('./ProfileModal')
 

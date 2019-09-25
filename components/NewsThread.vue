@@ -118,7 +118,9 @@
 // TODO DESIGN Some indication of newly added entries
 // TODO Click on loves to show who loves them
 import twem from '~/assets/js/twem'
-const NewsReply = () => import('~/components/NewsReply')
+
+// Use standard import to avoid screen-flicker
+import NewsReply from '~/components/NewsReply'
 const NewsMessage = () => import('~/components/NewsMessage')
 const NewsAboutMe = () => import('~/components/NewsAboutMe')
 const NewsCommunityEvent = () => import('~/components/NewsCommunityEvent')
