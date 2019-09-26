@@ -82,6 +82,7 @@ export default {
     group: function() {
       // We remember any previously selected group.
       const remembered = this.$store.getters['group/remembered']('mygroups')
+      console.log('Compute group', remembered)
       const ret = remembered
         ? this.$store.getters['group/get'](remembered)
         : null
@@ -96,6 +97,20 @@ export default {
 
     groupid: function() {
       return this.group ? this.group.id : null
+    }
+  },
+  watch: {
+    async group(newValue, oldValue) {
+      // We have this watch because we may need to fetch a group that we have remembered.  The mounted()
+      // call may happen before we have restored the persisted state, so we can't initiate the fetch there.
+      //
+      // TODO But this seems very ugly.  Is it right?
+      const remembered = this.$store.getters['group/remembered']('mygroups')
+      if (oldValue === null || oldValue.id !== remembered) {
+        await this.$store.dispatch('group/fetch', {
+          id: remembered
+        })
+      }
     }
   },
   mounted() {

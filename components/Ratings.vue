@@ -7,7 +7,7 @@
           :size="size"
           :variant="user.info.ratings.Mine === 'Up' ? 'primary' : (user.info.ratings.Up > 0 ? 'success' : 'white')"
           :title="user.info.ratings.Up + ' freegler' + ((user.info.ratings.Up !== 1) ? 's' : '') + '  gave them a thumbs up.  Click to rate.'"
-          :disabled="user.id === myid ? 'true' : ''"
+          :disabled="(user.id === myid ? 'true' : undefined)"
           @click="up"
         >
           <v-icon name="thumbs-up" />&nbsp;{{ user.info.ratings.Up }}
@@ -17,7 +17,7 @@
           :size="size"
           :variant="user.info.ratings.Mine === 'Down' ? 'primary' : (user.info.ratings.Down > 0 ? 'warning' : 'white')"
           :title="user.info.ratings.Down + ' freegler' + ((user.info.ratings.Down !== 1) ? 's' : '') + '  gave them a thumbs down.  Click to rate.'"
-          :disabled="user.id === myid ? 'true' : ''"
+          :disabled="user.id === myid ? 'true' : undefined"
           @click="down"
         >
           <v-icon name="thumbs-down" />&nbsp;{{ user.info.ratings.Down }}
@@ -58,7 +58,7 @@ export default {
   },
   computed: {
     myid() {
-      const me = this.$store.getters['auth/auth']
+      const me = this.$store.getters['auth/user']()
       return me ? me.id : null
     },
     user() {

@@ -1,6 +1,6 @@
 <template>
   <b-row class="m-0">
-    <b-col cols="12" md="3" class="chatlist p-0 bg-white">
+    <b-col cols="12" md="3" :class="'chatlist p-0 bg-white ' + (selectedChatId ? 'd-none d-md-block' : '') + ' ' + selectedChatId">
       <b-card class="p-0">
         <b-card-body class="p-0">
           <b-row>
@@ -24,7 +24,7 @@
     <b-col cols="12" md="6" class="chatback">
       <chatPane v-if="activeChat" v-bind="activeChat" />
     </b-col>
-    <b-col cols="0" md="3">
+    <b-col cols="0" md="3" class="d-none d-md-block">
       Ads go here
     </b-col>
   </b-row>

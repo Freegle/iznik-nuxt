@@ -14,7 +14,7 @@
           />
         </b-navbar-brand>
         <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
-        <b-collapse v-if="loggedIn" id="nav_collapse" is-nav>
+        <b-collapse v-if="loggedIn" id="nav_collapse" ref="nav_collapse" is-nav>
           <b-navbar-nav>
             <b-nav-item id="menu-option-chitchat" class="text-center p-0" to="/chitchat" @mousedown="maybeReload('/chitchat')">
               <v-icon name="coffee" scale="2" /><br>
@@ -143,7 +143,7 @@
           <b-navbar-toggle v-if="loggedIn" target="nav_collapse_mobile" />
         </b-navbar-nav>
 
-        <b-collapse v-if="loggedIn" id="nav_collapse_mobile" class="w-100 ourBack">
+        <b-collapse v-if="loggedIn" id="nav_collapse_mobile" ref="nav_collapse_mobile" class="w-100 ourBack">
           <b-navbar-nav class="ml-auto flex-row flex-wrap small">
             <b-nav-item class="text-center p-0 white" to="/chitchat" @mousedown="maybeReload('/chitchat')">
               <v-icon name="coffee" scale="2" /><br>
@@ -185,7 +185,7 @@
         </b-collapse>
       </b-navbar>
 
-      <nuxt ref="pageContent" class="ml-0 pl-1 pr-1 pageContent" />
+      <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent" />
       <ChatPopups v-if="loggedIn" />
       <LoginModal ref="loginModal" />
       <AboutMeModal ref="modal" />
@@ -362,6 +362,20 @@ export default {
     },
     notificationCount() {
       return this.$store.getters['notifications/count']()
+    }
+  },
+
+  watch: {
+    $route() {
+      // Close the dropdown menu when we move around.
+      console.log('Route changed')
+      if (this.$refs.nav_collapse.$el.classList.contains('show')) {
+        this.$root.$emit('bv::toggle::collapse', 'nav_collapse')
+      }
+
+      if (this.$refs.nav_collapse_mobile.$el.classList.contains('show')) {
+        this.$root.$emit('bv::toggle::collapse', 'nav_collapse_mobile')
+      }
     }
   },
 

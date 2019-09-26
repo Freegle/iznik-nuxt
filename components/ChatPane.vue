@@ -4,7 +4,7 @@
       <b-row class="chatTitle">
         <b-col v-if="chat">
           <b-row>
-            <b-col cols="6">
+            <b-col cols="8">
               <b-row>
                 <b-col>
                   <span v-if="(chat.chattype == 'User2User' || chat.chattype == 'User2Mod')" class="d-inline">
@@ -18,14 +18,15 @@
                   <span v-if="chat.unseen">
                     <b-badge variant="danger">{{ chat.unseen }}</b-badge>
                   </span>
+                  <ratings :key="'otheruser-' + otheruser.id" size="sm" v-bind="otheruser" class="mr-2" />
                 </b-col>
               </b-row>
             </b-col>
-            <b-col cols="6">
+            <b-col cols="4">
               <span class="float-right pl-1 clickme" title="Popup chat window" @click="popup">
                 <v-icon name="window-restore" />
               </span>
-              <b-btn variant="white" size="xs" class="float-right mt-1 mr-2" @click="markRead">
+              <b-btn variant="white" size="sm" class="float-right mr-2" @click="markRead">
                 Mark read
               </b-btn>
             </b-col>
@@ -87,30 +88,56 @@
         </b-row>
         <b-row class="bg-white">
           <b-col class="p-0 pt-1 pb-1">
-            <span v-if="chat && chat.chattype === 'User2User' && otheruser">
-              <ratings :key="'otheruser-' + otheruser.id" v-bind="otheruser" />
-              <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person" @click="promise">
-                <v-icon name="handshake" />&nbsp;Promise
+            <div class="d-none d-xl-block">
+              <span v-if="chat && chat.chattype === 'User2User' && otheruser">
+                <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person" @click="promise">
+                  <v-icon name="handshake" />&nbsp;Promise
+                </b-btn>
+                <b-btn v-b-tooltip.hover.top variant="white" title="Send your address" disabled>
+                  <v-icon name="address-book" />&nbsp;Address
+                </b-btn>
+                <b-btn v-b-tooltip.hover.top variant="white" title="Update your availability" disabled>
+                  <v-icon name="calendar-alt" />&nbsp;Calendar
+                </b-btn>
+                <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler" @click="showInfo">
+                  <v-icon name="info-circle" />&nbsp;Info
+                </b-btn>
+                <b-btn v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
+                  <v-icon name="bell" />&nbsp;Nudge
+                </b-btn>
+              </span>
+              <b-btn variant="primary" class="float-right ml-1" @click="send">
+                Send&nbsp;&gt;
               </b-btn>
-              <b-btn v-b-tooltip.hover.top variant="white" title="Send your address" disabled>
-                <v-icon name="address-book" />&nbsp;Address
+              <b-btn variant="white" class="float-right" @click="photoAdd">
+                <v-icon name="camera" />
               </b-btn>
-              <b-btn v-b-tooltip.hover.top variant="white" title="Update your availability" disabled>
-                <v-icon name="calendar-alt" />&nbsp;Calendar
+            </div>
+            <div class="d-block d-xl-none">
+              <span v-if="chat && chat.chattype === 'User2User' && otheruser">
+                <span v-b-tooltip.hover.top title="Promise an item to this person" class="ml-1 mr-2" @click="promise">
+                  <v-icon scale="2" name="handshake" />
+                </span>
+                <span v-b-tooltip.hover.top title="Send your address" disabled class="mr-2">
+                  <v-icon scale="2" name="address-book" />
+                </span>
+                <span v-b-tooltip.hover.top title="Update your availability" disabled class="mr-2">
+                  <v-icon scale="2" name="calendar-alt" />
+                </span>
+                <span v-b-tooltip.hover.top title="Info about this freegler" class="mr-2" @click="showInfo">
+                  <v-icon scale="2" name="info-circle" />
+                </span>
+                <span v-b-tooltip.hover.top title="Waiting for a reply?  Nudge this freegler." class="mr-2" @click="nudge">
+                  <v-icon scale="2" name="bell" />
+                </span>
+              </span>
+              <b-btn variant="primary" class="float-right ml-1 mr-1" @click="send">
+                <v-icon name="angle-double-right" title="Send" />
               </b-btn>
-              <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler" @click="showInfo">
-                <v-icon name="info-circle" />&nbsp;Info
-              </b-btn>
-              <b-btn v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
-                <v-icon name="bell" />&nbsp;Nudge
-              </b-btn>
-            </span>
-            <b-btn variant="primary" class="float-right ml-1" @click="send">
-              Send&nbsp;&gt;
-            </b-btn>
-            <b-btn variant="white" class="float-right" @click="photoAdd">
-              <v-icon name="camera" />&nbsp;Photo
-            </b-btn>
+              <span class="float-right mr-2" @click="photoAdd">
+                <v-icon scale="2" name="camera" />
+              </span>
+            </div>
           </b-col>
         </b-row>
       </div>
