@@ -50,7 +50,7 @@
           <i>There's no description.</i>
         </div>
         <b-button v-if="!expanded" variant="white" @click="expand">
-          Read more and reply >>
+          Read more and reply <v-icon name="angle-double-right" />
         </b-button>
       </b-card-header>
       <b-card-body v-if="expanded" class="pl-1">
@@ -94,7 +94,7 @@
             />
             <div class="flex-grow-1 text-right ml-2 d-none d-md-block">
               <b-btn variant="success">
-                Send >>
+                Send <v-icon name="angle-double-right" />
               </b-btn>
             </div>
           </b-col>
@@ -102,7 +102,7 @@
         <b-row class="d-block d-md-none mt-2">
           <b-col>
             <b-btn variant="success" block>
-              Send >>
+              Send <v-icon name="angle-double-right" />
             </b-btn>
           </b-col>
         </b-row>
@@ -157,6 +157,7 @@
 </template>
 <script>
 // TODO Focus on textbox when expand.
+// TODO Report this post
 import twem from '~/assets/js/twem'
 const Highlighter = () => import('vue-highlight-words')
 const MessageUserInfo = () => import('~/components/MessageUserInfo')

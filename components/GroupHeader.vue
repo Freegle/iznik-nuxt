@@ -33,11 +33,6 @@
             stories
           </nuxt-link>
         </p>
-        <p v-if="!description">
-          Give and get stuff for free with {{ namedisplay }}.  Offer things you don't need, and ask for things you'd like.  Don't just recycle - reuse with Freegle!
-        </p>
-        <!-- eslint-disable-next-line -->
-        <span v-if="description" v-html="description" />
       </b-col>
       <b-col lg="3" class="order-1 order-lg-2">
         <span class="d-none d-lg-block float-right">
@@ -56,6 +51,15 @@
             <v-icon v-else name="trash-alt" />&nbsp;Leave
           </b-button>
         </span>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <p v-if="!description">
+          Give and get stuff for free with {{ namedisplay }}.  Offer things you don't need, and ask for things you'd like.  Don't just recycle - reuse with Freegle!
+        </p>
+        <!-- eslint-disable-next-line -->
+        <span v-if="description" v-html="description" />
       </b-col>
     </b-row>
   </b-card>
