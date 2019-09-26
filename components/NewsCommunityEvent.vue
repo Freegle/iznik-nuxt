@@ -6,19 +6,17 @@
           v-if="users[userid].profile.turl"
           rounded="circle"
           thumbnail
-          class="profile p-0 ml-1 mb-1 inline float-left"
+          class="profile p-0 ml-1 mb-1 inline float-left mr-2"
           alt="Profile picture"
           title="Profile"
           :src="users[userid].profile.turl"
           @error.native="brokenImage"
         />
         <v-icon v-if="users[userid].settings.showmod" name="leaf" class="showmod text-success" />
-        <span class="text-success font-weight-bold pl-2">
-          {{ users[userid].displayname }}
-        </span>
+        <span class="text-success font-weight-bold">{{ users[userid].displayname }}</span>
         created an event: <b>{{ newsfeed.communityevent.title }}</b>
         <br>
-        <span class="text-muted small pl-2">
+        <span class="text-muted small">
           {{ $dayjs(newsfeed.timestamp).fromNow() }}
         </span>
         on {{ newsfeed.communityevent.groups[0].namedisplay }}
