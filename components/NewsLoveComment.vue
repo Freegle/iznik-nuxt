@@ -5,7 +5,7 @@
         <v-icon name="heart" /><span class="d-none d-sm-inline">&nbsp;Love this</span>
       </b-btn>
       <b-btn v-if="newsfeed.loved" variant="white" size="sm" @click="unlove">
-        <v-icon name="heart" class="text-danger" /><span class="d-none d-sm-block">&nbsp;Unlove this</span>
+        <v-icon name="heart" class="text-danger" /><span class="d-none d-sm-inline">&nbsp;Unlove this</span>
       </b-btn>
     </li>
     <li v-if="!newsfeed.closed" class="list-inline-item">
