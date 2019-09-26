@@ -361,6 +361,7 @@ export default {
       return notifications
     },
     notificationCount() {
+      // TODO We also need to change the window title.
       return this.$store.getters['notifications/count']()
     }
   },

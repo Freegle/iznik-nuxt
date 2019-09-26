@@ -257,6 +257,7 @@ export default {
           ret = this.reply.replies
         } else {
           // We have to prune what we show.
+          // TODO But we shouldn't prune away this.scrollTo if set.
           ret = this.reply.replies.slice(-5)
         }
       }
