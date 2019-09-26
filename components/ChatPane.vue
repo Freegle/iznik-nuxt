@@ -4,26 +4,22 @@
       <b-row class="chatTitle">
         <b-col v-if="chat">
           <b-row>
-            <b-col cols="8">
-              <b-row>
-                <b-col>
-                  <span v-if="(chat.chattype == 'User2User' || chat.chattype == 'User2Mod')" class="d-inline">
-                    <span @click="showInfo">
-                      {{ chat.name }}
-                    </span>
-                  </span>
-                  <span v-else class="d-inline">
-                    {{ chat.name }}
-                  </span>
-                  <span v-if="chat.unseen">
-                    <b-badge variant="danger">{{ chat.unseen }}</b-badge>
-                  </span>
-                  <ratings :key="'otheruser-' + otheruser.id" size="sm" v-bind="otheruser" class="mr-2" />
-                </b-col>
-              </b-row>
+            <b-col cols="8" class="p-0 pl-1">
+              <span v-if="(chat.chattype == 'User2User' || chat.chattype == 'User2Mod')" class="d-inline">
+                <span @click="showInfo">
+                  {{ chat.name }}
+                </span>
+              </span>
+              <span v-else class="d-inline">
+                {{ chat.name }}
+              </span>
+              <span v-if="chat.unseen">
+                <b-badge variant="danger">{{ chat.unseen }}</b-badge>
+              </span>
+              <ratings v-if="otheruser" :key="'otheruser-' + otheruser.id" size="sm" v-bind="otheruser" class="mr-2" />
             </b-col>
-            <b-col cols="4">
-              <span class="float-right pl-1 clickme" title="Popup chat window" @click="popup">
+            <b-col cols="4" class="p-0">
+              <span class="float-right pl-1 mr-1 clickme" title="Popup chat window" @click="popup">
                 <v-icon name="window-restore" />
               </span>
               <b-btn variant="white" size="sm" class="float-right mr-2" @click="markRead">

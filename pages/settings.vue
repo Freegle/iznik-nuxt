@@ -10,7 +10,7 @@
           <b-card-body class="p-0 pt-1">
             <p class="text-muted">
               This is what other freeglers can see about you.
-              <b-btn variant="success" class="float-right" @click="viewProfile">
+              <b-btn variant="success" class="float-right d-none d-sm-block" @click="viewProfile">
                 <v-icon name="eye" /> View Your Profile
               </b-btn>
             </p>
@@ -24,6 +24,13 @@
                     </b-button>
                   </b-input-group-append>
                 </b-input-group>
+              </b-col>
+            </b-row>
+            <b-row class="d-block d-sm-none">
+              <b-col>
+                <b-btn variant="success" block class="mt-2" @click="viewProfile">
+                  <v-icon name="eye" /> View Your Profile
+                </b-btn>
               </b-col>
             </b-row>
             <b-row class="mt-2">
@@ -60,8 +67,8 @@
                 </b-card>
               </b-col>
               <b-col cols="12" sm="6" md="8" lg="9">
-                <b-card>
-                  <b-card-body class="text-left p-2">
+                <b-card nobody>
+                  <b-card-body class="text-left p-0 p-sm-2">
                     <div v-if="aboutme">
                       &quot;{{ aboutme }}&quot;
                       <br>
@@ -150,6 +157,7 @@
             </b-row>
             <b-row>
               <b-col>
+                <hr>
                 <b-btn variant="primary" size="lg" to="/unsubscribe">
                   Unsubscribe
                 </b-btn>
