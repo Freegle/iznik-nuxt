@@ -9,7 +9,7 @@
               Open in new window
             </b-dropdown-item>
             <b-dropdown-item :b-v-modal="'newsEdit' + newsfeed.id" @click="show">
-              Edit your post
+              Edit
             </b-dropdown-item>
           </b-dropdown>
           <news-message v-if="newsfeed.type === 'Message'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />

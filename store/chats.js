@@ -47,7 +47,8 @@ export const actions = {
   async listChats({ commit }, params) {
     params = params || {
       chattypes: ['User2User', 'User2Mod'],
-      summary: true
+      summary: true,
+      search: params && params.search ? params.search : null
     }
 
     const res = await this.$axios.get(process.env.API + '/chat/rooms', {

@@ -5,7 +5,7 @@
         <b-card-body class="p-0">
           <b-row>
             <b-col>
-              <b-form-input placeholder="Search chats" />
+              <b-form-input v-model="search" placeholder="Search chats" @update="searchChange" />
             </b-col>
             <b-col>
               <b-btn class="float-right" variant="white" @click="markAllRead">
@@ -58,14 +58,18 @@ export default {
 
   data() {
     return {
-      selectedChatId: null
+      selectedChatId: null,
+      search: null,
+      searching: null,
+      searchlast: null,
+      clientSearch: true
     }
   },
 
   computed: {
     sortedChats() {
       // We sort chats by unread first, then
-      const chats = Object.values(this.$store.getters['chats/list']())
+      let chats = Object.values(this.$store.getters['chats/list']())
 
       chats.sort(function(a, b) {
         if (b.unseen !== a.unseen) {
@@ -74,6 +78,23 @@ export default {
           return new Date(b.lastdate) - new Date(a.lastdate)
         }
       })
+
+      if (this.search && this.clientSearch) {
+        // We apply the search on names in here so that we can respond on the client rapidly while the background server
+        // search is more thorough.
+        const l = this.search.toLowerCase()
+        chats = chats.filter(chat => {
+          if (
+            chat.name.toLowerCase().indexOf(l) !== -1 ||
+            (chat.snippet && chat.snippet.toLowerCase().indexOf(l) !== -1)
+          ) {
+            // Found in the name of the chat (which may include a user
+            return true
+          }
+
+          return false
+        })
+      }
 
       return chats
     },
@@ -128,6 +149,38 @@ export default {
             id: chat.id
           })
         }
+      }
+    },
+    async searchChange(val) {
+      // Trigger a server search
+      if (this.searching) {
+        // Queue until we've finished.
+        this.searchlast = val
+      } else {
+        this.searching = val
+        this.clientSearch = true
+
+        await this.$store.dispatch('chats/listChats', {
+          search: val,
+          summary: true
+        })
+
+        this.chats = Object.values(this.$store.getters['chats/list']())
+        this.clientSearch = false
+
+        while (this.searchlast) {
+          // We have another search queued.
+          const val2 = this.searchlast
+          this.searchlast = null
+          await this.$store.dispatch('chats/listChats', {
+            search: val2,
+            summary: true
+          })
+
+          this.chats = Object.values(this.$store.getters['chats/list']())
+        }
+
+        this.searching = null
       }
     }
   }

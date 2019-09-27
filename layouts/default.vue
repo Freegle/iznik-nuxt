@@ -328,6 +328,7 @@ svg.fa-icon {
 </style>
 
 <script>
+// TODO DESIGN Notification dropdown window isn't wide enough before it's loaded.
 const LoginModal = () => import('~/components/LoginModal')
 const AboutMeModal = () => import('~/components/AboutMeModal')
 const ChatPopups = () => import('~/components/ChatPopups')
