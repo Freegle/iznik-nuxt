@@ -399,11 +399,17 @@ export default {
     $route() {
       // Close the dropdown menu when we move around.
       console.log('Route changed')
-      if (this.$refs.nav_collapse.$el.classList.contains('show')) {
+      if (
+        this.$refs.nav_collapse &&
+        this.$refs.nav_collapse.$el.classList.contains('show')
+      ) {
         this.$root.$emit('bv::toggle::collapse', 'nav_collapse')
       }
 
-      if (this.$refs.nav_collapse_mobile.$el.classList.contains('show')) {
+      if (
+        this.$refs.nav_collapse_mobile &&
+        this.$refs.nav_collapse_mobile.$el.classList.contains('show')
+      ) {
         this.$root.$emit('bv::toggle::collapse', 'nav_collapse_mobile')
       }
     },
