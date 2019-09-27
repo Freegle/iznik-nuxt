@@ -17,7 +17,7 @@
       </b-card>
       <ul v-for="(chat, $index) in sortedChats" :key="'chat-' + $index" class="p-0 pt-1 list-unstyled mb-1">
         <li :class="{ active: activeChat && parseInt(activeChat.id) === parseInt(chat.id) }">
-          <ChatListEntry :key="'ChatListEntry-' + chat.id" v-bind="chat" />
+          <ChatListEntry :id="chat.id" />
         </li>
       </ul>
     </b-col>
@@ -145,7 +145,7 @@ export default {
     async markAllRead() {
       for (const chat of this.sortedChats) {
         if (chat.unseen) {
-          await this.$store.dispatch('chat/markSeen', {
+          await this.$store.dispatch('chats/markSeen', {
             id: chat.id
           })
         }

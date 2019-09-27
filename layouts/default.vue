@@ -66,8 +66,13 @@
             </b-nav-item-dropdown>
             <a class="d-none dropdown-item" />
             <b-nav-item id="menu-option-chat" class="text-center p-0" to="/chats" @mousedown="maybeReload('/chats')">
-              <v-icon name="comments" scale="2" /><br>
-              Chats
+              <div class="notifwrapper">
+                <v-icon name="comments" scale="2" /><br>
+                Chats
+                <b-badge v-if="chatCount" variant="danger" class="ml-3 chatbadge">
+                  {{ chatCount }}
+                </b-badge>
+              </div>
             </b-nav-item>
             <b-nav-item id="menu-option-settings" class="text-center p-0" to="/settings" @mousedown="maybeReload('/settings')">
               <v-icon name="cog" scale="2" /><br>
@@ -130,7 +135,12 @@
         </b-dropdown>
 
         <nuxt-link v-if="loggedIn" id="menu-option-chat-sm" class="text-white mr-3" to="/chats">
-          <v-icon name="comments" scale="2" />
+          <div class="notifwrapper">
+            <v-icon name="comments" scale="2" /><br>
+            <b-badge v-if="chatCount" variant="danger" class="chatbadge">
+              {{ chatCount }}
+            </b-badge>
+          </div>
         </nuxt-link>
 
         <b-nav-item v-if="!loggedIn">
@@ -168,10 +178,6 @@
             <b-nav-item class="text-center p-0" to="/explore" @mousedown="maybeReload('/explore')">
               <v-icon name="map-marked-alt" scale="2" /><br>
               Explore
-            </b-nav-item>
-            <b-nav-item id="menu-option-chat-sm-2" class="text-center p-0" to="/chats" @mousedown="maybeReload('/chats')">
-              <v-icon name="comments" scale="2" /><br>
-              Chats
             </b-nav-item>
             <b-nav-item class="text-center p-0" to="/settings" @mousedown="maybeReload('/settings')">
               <v-icon name="cog" scale="2" /><br>
@@ -325,6 +331,12 @@ svg.fa-icon {
   top: 0px;
   left: 18px;
 }
+
+.chatbadge {
+  position: absolute;
+  top: 0px;
+  left: 25px;
+}
 </style>
 
 <script>
@@ -333,6 +345,7 @@ const LoginModal = () => import('~/components/LoginModal')
 const AboutMeModal = () => import('~/components/AboutMeModal')
 const ChatPopups = () => import('~/components/ChatPopups')
 const Notification = () => import('~/components/Notification')
+const NchanSubscriber = require('nchan')
 
 export default {
   components: {
@@ -346,7 +359,8 @@ export default {
     return {
       complete: false,
       distance: 1000,
-      notificationPoll: null
+      notificationPoll: null,
+      nchan: null
     }
   },
 
@@ -354,6 +368,9 @@ export default {
     loggedIn() {
       const ret = Boolean(this.$store.getters['auth/user']())
       return ret
+    },
+    me() {
+      return this.$store.getters['auth/user']()
     },
     notifications() {
       const notifications = Object.values(
@@ -364,6 +381,17 @@ export default {
     notificationCount() {
       // TODO We also need to change the window title.
       return this.$store.getters['notifications/count']()
+    },
+    chatCount() {
+      // TODO We also need to change the window title.
+      const chats = Object.values(this.$store.getters['chats/list']())
+      let count = 0
+
+      for (const chat of chats) {
+        count += chat.unseen
+      }
+
+      return count
     }
   },
 
@@ -378,6 +406,18 @@ export default {
       if (this.$refs.nav_collapse_mobile.$el.classList.contains('show')) {
         this.$root.$emit('bv::toggle::collapse', 'nav_collapse_mobile')
       }
+    },
+    me(newVal, oldVal) {
+      if (this.nchan) {
+        // Stop old listen.
+        this.nchan.stop()
+      }
+
+      if (newVal) {
+        // We are now logged in.
+        console.log('Start NCHAN from watch')
+        this.startNCHAN(newVal.id)
+      }
     }
   },
 
@@ -387,14 +427,84 @@ export default {
 
     // Poll regularly for new ones.  Would be nice if this was event driven instead but requires server work.
     this.notificationPoll = setTimeout(this.getNotificationCount, 30000)
+
+    const me = this.$store.getters['auth/user']()
+
+    if (me.id) {
+      console.log('Start NCHAN from mount')
+      this.startNCHAN(me.id)
+    }
   },
 
   beforeDestroy() {
     console.log('Destroy layout')
     clearTimeout(this.notificationPoll)
+
+    if (this.nchan) {
+      console.log('Stop NCHAN')
+      this.nchan.stop()
+    }
   },
 
   methods: {
+    startNCHAN(id) {
+      this.nchan = new NchanSubscriber(
+        process.env.CHAT_HOST + '/subscribe?id=' + id,
+        {
+          subscriber: ['websocket', 'eventsource', 'longpoll ']
+        }
+      )
+
+      // We store the last message we got from NCHAN.  This avoids us getting duplicate messages (triggering server
+      // work) when we load up.
+      const lastNCHAN = this.$store.getters['auth/nchan']()
+
+      if (lastNCHAN) {
+        this.nchan.lastMessageId = lastNCHAN.id
+      }
+
+      this.nchan.start()
+
+      this.nchan.on('message', async (ret, meta) => {
+        console.log('NCHAN', ret, meta)
+
+        if (meta.id) {
+          this.$store.dispatch('auth/setNCHAN', {
+            id: meta.id
+          })
+        }
+
+        if (ret) {
+          ret = JSON.parse(ret)
+
+          // We will get notified for both MT and FD chats.  But we only want to react to
+          // the one which this client actually is.
+          const mt =
+            ret && Object.keys(ret).includes('modtools') ? ret.modtools : false
+
+          if (process.env.MODTOOLS === mt && ret && ret.text) {
+            const data = ret.text
+
+            if (data) {
+              if (data.newroom) {
+                // We have been notified that we are now in a new chat.  Load it into the store; once we've
+                // done that then anything else needed will follow.
+                console.log('Load new room', data.newroom)
+                await this.$store.dispatch('chats/fetch', {
+                  id: data.newroom
+                })
+              } else if (data.roomid) {
+                // Activity on this room.  Fetch it.
+                console.log('Activity on room', data.roomid)
+                await this.$store.dispatch('chats/fetch', {
+                  id: data.roomid
+                })
+              }
+            }
+          }
+        }
+      })
+    },
     async getNotificationCount() {
       console.log('Poll for notification count')
       await this.$store.dispatch('notifications/count')
@@ -404,6 +514,7 @@ export default {
     showAboutMe() {
       this.$refs.modal.show()
     },
+
     logOut() {
       // Remove all cookies, both client and server.  This seems to be necessary to kill off the PHPSESSID cookie
       // on the server, which would otherwise keep us logged in despite our efforts.

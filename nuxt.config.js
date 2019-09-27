@@ -8,6 +8,9 @@ const API = '/api'
 // hurt client performance).
 const PROXY_API = process.env.IZNIK_API || 'https://iznik.ilovefreegle.org'
 
+// Long polls interact badly with per-host connection limits so send to here instead.
+const CHAT_HOST = 'https://users.ilovefreegle.org:555'
+
 module.exports = {
   mode: 'universal',
 
@@ -224,6 +227,7 @@ module.exports = {
 
   env: {
     API: API,
+    CHAT_HOST: CHAT_HOST,
     FACEBOOK_APPID: FACEBOOK_APPID,
     GOOGLE_MAPS_KEY: 'AIzaSyCdTSJKGWJUOx2pq1Y0f5in5g4kKAO5dgg',
     GOOGLE_API_KEY: 'AIzaSyArVxoX781qdcbmQZi1PKHX-qa0bPbboH4',

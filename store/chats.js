@@ -3,13 +3,12 @@ import Vue from 'vue'
 export const state = () => ({
   // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
   // storage.
-  list: {},
-  rooms: {}
+  list: {}
 })
 
 export const mutations = {
   addRoom(state, item) {
-    Vue.set(state.rooms, item.id, item)
+    Vue.set(state.list, item.id, item)
   },
 
   setList(state, chats) {
@@ -27,8 +26,8 @@ export const getters = {
   get: state => id => {
     let ret = null
 
-    Object.keys(state.rooms).forEach(key => {
-      const chat = state.rooms[key]
+    Object.keys(state.list).forEach(key => {
+      const chat = state.list[key]
 
       if (parseInt(key) === parseInt(id)) {
         ret = chat

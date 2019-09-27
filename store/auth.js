@@ -4,7 +4,8 @@ export const state = () => ({
   forceLogin: false,
   user: null,
   userFetched: null,
-  groups: []
+  groups: [],
+  nchan: null
 })
 
 const NONMIN = ['me', 'groups', 'aboutme', 'phone', 'notifications']
@@ -46,6 +47,10 @@ export const mutations = {
 
   setFetched(state, val) {
     state.userFetched = val
+  },
+
+  setNCHAN(state, val) {
+    state.nchan = val
   }
 }
 
@@ -68,6 +73,10 @@ export const getters = {
     }
 
     return ret
+  },
+
+  nchan: state => () => {
+    return state.nchan
   }
 }
 
@@ -254,5 +263,9 @@ export const actions = {
     }
 
     return state.user
+  },
+
+  setNCHAN({ commit, dispatch, state }, params) {
+    commit('setNCHAN', params)
   }
 }
