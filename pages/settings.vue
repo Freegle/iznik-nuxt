@@ -193,6 +193,7 @@
               :not-after="(new Date()).setDate((new Date()).getDate() + 30)"
               :confirm="true"
               :clearable="true"
+              class="align-top"
               @confirm="changeHolidayDate"
             />
           </span>
