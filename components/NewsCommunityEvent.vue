@@ -45,7 +45,7 @@
           rounded
           lazy
           :src="newsfeed.communityevent.photo.paththumb"
-          class="clickme d-inline-block float-right"
+          class="clickme d-inline-block mt-2 mt-md-0 float-md-right"
           @click="details"
         />
       </b-col>
