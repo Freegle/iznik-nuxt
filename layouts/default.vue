@@ -430,7 +430,7 @@ export default {
 
     const me = this.$store.getters['auth/user']()
 
-    if (me.id) {
+    if (me && me.id) {
       console.log('Start NCHAN from mount')
       this.startNCHAN(me.id)
     }
