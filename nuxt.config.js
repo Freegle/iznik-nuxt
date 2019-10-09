@@ -2,17 +2,24 @@ const pkg = require('./package')
 const FACEBOOK_APPID = '134980666550322'
 
 // API is the constant the code uses.
-const API = '/api'
+//const API = '/api'
+const API = 'https://iznik.ilovefreegle.org/api'  // CC
 
 // PROXY_API is where we send it to.  This avoids CORS issues (and removes preflight OPTIONS calls for GETs, which
 // hurt client performance).
 const PROXY_API = process.env.IZNIK_API || 'https://iznik.ilovefreegle.org'
 
+console.log("PROXY_API")
+console.log(PROXY_API)
+
+//const httpadapter = require('./node_modules/axios/lib/adapters/http')
+
 // Long polls interact badly with per-host connection limits so send to here instead.
 const CHAT_HOST = 'https://users.ilovefreegle.org:555'
 
 module.exports = {
-  mode: 'universal',
+  //mode: 'universal',
+  mode: 'spa',  // CC
 
   /*
   ** Headers of the page
@@ -156,10 +163,15 @@ module.exports = {
   ** Axios module configuration
   */
   axios: {
+    // CC baseURL: PROXY_API,
     proxy: true
   },
   proxy: {
     '/api/': PROXY_API
+  },
+
+  router: { // CC   // https://nuxtjs.org/api/configuration-router/ 
+    mode: 'hash'    // https://router.vuejs.org/api/#mode
   },
 
   /*
@@ -168,9 +180,17 @@ module.exports = {
   build: {
     // analyze: true,
 
+    publicPath: '/js/', // CC
+
     transpile: [/^vue2-google-maps($|\/)/],
 
     extend(config, ctx) {
+
+      config.plugins.forEach(function (p,ix) {  // CC..
+        console.log(ix+":"+p.constructor.name)
+      })
+      config.plugins = config.plugins.filter((plugin) => plugin.constructor.name !== 'UglifyJsPlugin')  // ..CC
+
       config.devtool = ctx.isClient ? 'eval-source-map' : 'inline-source-map'
 
       // Run ESLint on save
@@ -188,6 +208,7 @@ module.exports = {
     },
 
     optimization: {
+      minimize: false,  // CC
       splitChunks: {
         chunks: 'all',
         automaticNameDelimiter: '.',
@@ -199,6 +220,7 @@ module.exports = {
     },
 
     optimization: {
+      minimize: false,  // CC
       runtimeChunk: 'single',
       splitChunks: {
         chunks: 'all',
