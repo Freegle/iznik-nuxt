@@ -84,6 +84,10 @@ module.exports = {
     { src: '~plugins/vue-google-autocomplete', ssr: false },
   ],
 
+  redirect: [
+    { from: '^/chat/(.*)$', to: '/chats/$1' }
+  ],
+
   /*
   ** Nuxt.js modules
   */
@@ -93,6 +97,7 @@ module.exports = {
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     'nuxt-dayjs-module',
+    '@nuxtjs/redirect-module'
     // Removing this as it causes a scalability issue with vue-meta - see https://github.com/nuxt/vue-meta/issues/443
     // 'cookie-universal-nuxt',
     // [
