@@ -59,14 +59,17 @@ export default {
         })
       }
 
-      Object.keys(this.$store.state.group.list).forEach(key => {
-        const group = this.$store.state.group.list[key]
+      const myGroups = this.$store.getters['auth/groups']()
+      Object.keys(myGroups).forEach(key => {
+        const group = myGroups[key]
 
-        groups.push({
-          value: group.id,
-          text: group.namedisplay,
-          selected: this.selectedGroup === group.id
-        })
+        if (group.type === 'Freegle') {
+          groups.push({
+            value: group.id,
+            text: group.namedisplay,
+            selected: this.selectedGroup === group.id
+          })
+        }
       })
 
       groups.sort(function(a, b) {

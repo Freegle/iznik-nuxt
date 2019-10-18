@@ -13,7 +13,7 @@
           <v-icon v-else name="trash-alt" />&nbsp;
           Leave
         </b-button>
-        <b-link :href="'mailto:' + modsemail">
+        <b-link v-if="modsemail" :href="'mailto:' + modsemail">
           <b-button class="mt-1 mr-1 d-block d-lg-none float-right" variant="white">
             <v-icon name="question-circle" />&nbsp;Contact&nbsp;volunteers
           </b-button>

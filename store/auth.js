@@ -63,6 +63,10 @@ export const getters = {
     return state.user
   },
 
+  groups: state => () => {
+    return state.groups
+  },
+
   member: state => id => {
     let ret = false
 
