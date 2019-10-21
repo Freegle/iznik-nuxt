@@ -28,7 +28,7 @@
           </div>
           <b-img-lazy v-if="event.photo" fluid :src="event.photo.path" />
           <div class="text-center mt-2 mb-2">
-            <b-btn variant="white" size="sm">
+            <b-btn variant="white" size="sm" @click="showInfo">
               <v-icon name="info-circle" /> More info
             </b-btn>
           </div>
@@ -71,7 +71,7 @@
               </div>
               <read-more v-if="description" :text="description" :max-chars="300" class="ml-1 font-weight-bold prewrap forcebreak nopara" />
               <div class="mt-2 mb-2 ml-1">
-                <b-btn variant="white" size="sm">
+                <b-btn variant="white" @click="showInfo">
                   <v-icon name="info-circle" /> More info
                 </b-btn>
               </div>
@@ -91,14 +91,19 @@
         </div>
       </b-card-body>
     </b-card>
+    <CommunityEventModal ref="infomodal" :event="event" />
   </div>
 </template>
 <script>
 // TODO Details
 // TODO Add
+import CommunityEventModal from './CommunityEventModal'
 import twem from '~/assets/js/twem'
 
 export default {
+  components: {
+    CommunityEventModal
+  },
   props: {
     summary: {
       type: Boolean,
@@ -118,6 +123,11 @@ export default {
       desc = desc ? twem.twem(this.$twemoji, desc) : ''
       desc = desc.trim()
       return desc
+    }
+  },
+  methods: {
+    showInfo() {
+      this.$refs.infomodal.show()
     }
   }
 }

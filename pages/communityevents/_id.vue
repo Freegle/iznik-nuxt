@@ -64,7 +64,6 @@ export default {
     this.groupid = this.$route.params.id
   },
   mounted() {
-    console.log('Mounted', this.groupid)
     this.$store.dispatch('communityevents/clear')
 
     if (this.groupid) {

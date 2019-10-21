@@ -12,26 +12,32 @@ function earliestDate(dates) {
     if (atime >= now && (!earliest || atime < earliest)) {
       earliest = atime
       earliestDate = dates[i]
-
-      if (
-        new Moment().diff(earliestDate.end) < 0 ||
-        new Moment().isSame(earliestDate.end, 'day')
-      ) {
-        const startm = new Moment(earliestDate.start)
-        let endm = new Moment(earliestDate.end)
-        endm = endm.isSame(startm, 'day')
-          ? endm.format('HH:mm')
-          : endm.format('ddd, Do MMM HH:mm')
-
-        earliestDate.string = {
-          start: startm.format('ddd, Do MMM HH:mm'),
-          end: endm
-        }
-      }
     }
   }
 
   return earliestDate
+}
+
+function addStrings(item) {
+  // Add human readable versions of each date range.
+  if (item) {
+    for (let i = 0; i < item.dates.length; i++) {
+      const date = item.dates[i]
+      const startm = new Moment(date.start)
+      let endm = new Moment(date.end)
+      endm = endm.isSame(startm, 'day')
+        ? endm.format('HH:mm')
+        : endm.format('ddd, Do MMM HH:mm')
+
+      item.dates[i].string = {
+        start: startm.format('ddd, Do MMM HH:mm'),
+        end: endm,
+        past: new Date().getTime() > new Date(date.start)
+      }
+    }
+  }
+
+  return item
 }
 
 export const state = () => ({
@@ -43,13 +49,13 @@ export const state = () => ({
 export const mutations = {
   add(state, item) {
     item.earliestDate = earliestDate(item.dates)
-    Vue.set(state.list, item.id, item)
+    Vue.set(state.list, item.id, addStrings(item))
   },
 
   addAll(state, items) {
     items.forEach(item => {
       item.earliestDate = earliestDate(item.dates)
-      Vue.set(state.list, item.id, item)
+      Vue.set(state.list, item.id, addStrings(item))
     })
   },
 
@@ -65,7 +71,6 @@ export const mutations = {
   },
 
   setContext(state, params) {
-    console.log('Set context', params.ctx)
     state.context = params.ctx
   }
 }

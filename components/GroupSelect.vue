@@ -18,7 +18,7 @@ export default {
       default: false
     },
     id: {
-      type: String,
+      validator: prop => typeof prop === 'number' || typeof prop === 'string',
       required: true
     }
   },
@@ -83,7 +83,6 @@ export default {
     // Set up a watch on the store.  We do this because initially the store may not have been reloaded from local
     // storage. When it does get initially loaded, or when we change the value above, this watch will fire.
     const current = this.$store.getters['group/remembered'](this.id)
-    console.log('Watch for', this.id, current)
 
     if (current !== undefined) {
       // It has been loaded.
@@ -96,7 +95,6 @@ export default {
       },
       (newValue, oldValue) => {
         this.$emit('change', newValue)
-        console.log('Groupid changed', newValue)
       }
     )
   }

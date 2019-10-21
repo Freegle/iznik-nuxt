@@ -88,6 +88,7 @@ export default {
       this.infoclick = true
 
       // TODO I tried nextTick here, and the ref wasn't defined in the callback.  So this is a hack.
+      // Might relate to use of async import stuff.
       setTimeout(() => {
         this.$refs.profilemodal.show()
       }, 25)
