@@ -39,7 +39,8 @@ Rendering solution.
 # Current Status
 
 This is still very much a proof of concept.
-* You can log in using email/password and Facebook - not Google/Yahoo yet.
-* The ChitChat/My Groups/Chat/Give pages exist.  They are basically functional, but not complete.
-* Find/My Posts/Events/Volunteer/Notifications/Spread/Help/Settings don't exist.
-* I've not checked much how it renders on mobile or other screen sizes yet.
+* You can log in, though the Sign Up half isn't done yet.
+* The ChitChat/My Groups/Chat/Give/Find/My Posts/Notifications/Settings pages exist.  They are basically functional, but not complete.
+* Events/Volunteer/Spread/Help don't exist.  There are lots of other bits and pieces, and many TODOs in the code.
+* We've done a first pass for how it displays on a mobile, but there will be some niggles at different screen sizes.
+* We've tested on Chrome only, and very few mobiles/tablets.
