@@ -193,3 +193,7 @@ legend {
   padding-left: 0px;
   padding-right: 0px;
 }
+
+.sidebar {
+  height: calc(100vh - 100px);
+}

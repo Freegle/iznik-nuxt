@@ -416,7 +416,11 @@ export default {
     me(newVal, oldVal) {
       if (this.nchan) {
         // Stop old listen.
-        this.nchan.stop()
+        try {
+          this.nchan.stop()
+        } catch (e) {}
+
+        this.nchan = null
       }
 
       if (newVal) {
@@ -448,7 +452,11 @@ export default {
 
     if (this.nchan) {
       console.log('Stop NCHAN')
-      this.nchan.stop()
+      try {
+        this.nchan.stop()
+      } catch (e) {}
+
+      this.nchan = null
     }
   },
 
