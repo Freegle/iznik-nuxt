@@ -40,6 +40,10 @@
               <v-icon name="map-marked-alt" scale="2" /><br>
               Explore
             </b-nav-item>
+            <b-nav-item id="menu-option-communityevents" class="text-center p-0" to="/communityevents" @mousedown="maybeReload('/communityevents')">
+              <v-icon name="calendar-alt" scale="2" /><br>
+              Events
+            </b-nav-item>
           </b-navbar-nav>
           <b-navbar-nav class="ml-auto">
             <b-nav-item id="menu-option-notification" class="text-center p-0" />

@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import Moment from 'dayjs'
 
 function earliestDate(dates) {
   // Find the earliest date which is in the future.
@@ -11,6 +12,22 @@ function earliestDate(dates) {
     if (atime >= now && (!earliest || atime < earliest)) {
       earliest = atime
       earliestDate = dates[i]
+
+      if (
+        new Moment().diff(earliestDate.end) < 0 ||
+        new Moment().isSame(earliestDate.end, 'day')
+      ) {
+        const startm = new Moment(earliestDate.start)
+        let endm = new Moment(earliestDate.end)
+        endm = endm.isSame(startm, 'day')
+          ? endm.format('HH:mm')
+          : endm.format('ddd, Do MMM HH:mm')
+
+        earliestDate.string = {
+          start: startm.format('ddd, Do MMM HH:mm'),
+          end: endm
+        }
+      }
     }
   }
 
@@ -29,6 +46,13 @@ export const mutations = {
     Vue.set(state.list, item.id, item)
   },
 
+  addAll(state, items) {
+    items.forEach(item => {
+      item.earliestDate = earliestDate(item.dates)
+      Vue.set(state.list, item.id, item)
+    })
+  },
+
   setList(state, list) {
     state.list = {}
 
@@ -38,6 +62,11 @@ export const mutations = {
         Vue.set(state.list, item.id, item)
       }
     }
+  },
+
+  setContext(state, params) {
+    console.log('Set context', params.ctx)
+    state.context = params.ctx
   }
 }
 
@@ -72,6 +101,16 @@ export const getters = {
         return a.id - b.id
       }
     })
+  },
+
+  getContext: state => () => {
+    let ret = null
+
+    if (state.context && state.context.end) {
+      ret = state.context
+    }
+
+    return ret
   }
 }
 
@@ -82,7 +121,17 @@ export const actions = {
     })
 
     if (res.status === 200) {
-      commit('setList', res.data.communityevents)
+      commit('addAll', res.data.communityevents)
+      commit('setContext', {
+        ctx: res.data.context
+      })
     }
+  },
+  clear({ commit }) {
+    commit('setContext', {
+      ctx: null
+    })
+
+    commit('setList', [])
   }
 }

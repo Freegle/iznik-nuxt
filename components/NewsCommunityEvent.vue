@@ -76,7 +76,7 @@ export default {
   extends: NewsBase,
   computed: {
     date() {
-      // Similar code to CommunityEventSidebar
+      // Similar code to CommunityEvent
       let ret = null
       const dates = this.newsfeed.communityevent.dates
       let count = 0

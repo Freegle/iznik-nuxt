@@ -37,8 +37,6 @@ export default {
           id: this.id,
           val: newval
         })
-
-        this.$emit('change', newval)
       }
     },
 
@@ -48,7 +46,7 @@ export default {
       if (this.all) {
         groups.push({
           value: 0,
-          text: '-- All groups --',
+          text: '-- All my groups --',
           selected: this.selectedGroup === 0
         })
       } else {
@@ -80,6 +78,27 @@ export default {
 
       return groups
     }
+  },
+  mounted() {
+    // Set up a watch on the store.  We do this because initially the store may not have been reloaded from local
+    // storage. When it does get initially loaded, or when we change the value above, this watch will fire.
+    const current = this.$store.getters['group/remembered'](this.id)
+    console.log('Watch for', this.id, current)
+
+    if (current !== undefined) {
+      // It has been loaded.
+      this.$emit('change', current)
+    }
+
+    this.$store.watch(
+      (state, getters) => {
+        return this.$store.getters['group/remembered'](this.id)
+      },
+      (newValue, oldValue) => {
+        this.$emit('change', newValue)
+        console.log('Groupid changed', newValue)
+      }
+    )
   }
 }
 </script>
