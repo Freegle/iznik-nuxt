@@ -1,5 +1,4 @@
 <template>
-  <!--  <div style="position: fixed; bottom: 0; left: 0">-->
   <div>
     <b-card class="bg-transparent border-0">
       <div class="flex-wrap d-flex flex-row justify-content-between text-muted small list-unstyled">

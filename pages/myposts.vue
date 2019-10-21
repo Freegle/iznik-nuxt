@@ -2,7 +2,10 @@
   <b-col>
     <b-row class="m-0">
       <b-col cols="0" md="3" class="d-none d-md-block">
-        Community Events go here
+        <div class="d-flex flex-column sidebar">
+          <CommunityEventSidebar class="justify-content-start flex-grow-1" style="overflow-y: auto" />
+          <BotLeftBox class="justify-content-end flex-shrink-2" />
+        </div>
       </b-col>
       <b-col cols="12" md="6" class="p-0">
         <b-card
@@ -175,12 +178,14 @@
 <script>
 import loginRequired from '@/mixins/loginRequired.js'
 const MyMessage = () => import('~/components/MyMessage.vue')
+const CommunityEventSidebar = () => import('~/components/CommunityEventSidebar')
 // TODO Availability
 // TODO Reject and resubmit.
 
 export default {
   components: {
-    MyMessage
+    MyMessage,
+    CommunityEventSidebar
   },
   mixins: [loginRequired],
   data() {

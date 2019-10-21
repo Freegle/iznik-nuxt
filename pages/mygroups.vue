@@ -2,7 +2,10 @@
   <b-col>
     <b-row class="m-0">
       <b-col cols="0" md="3" class="d-none d-md-block">
-        Community Events go here
+        <div class="d-flex flex-column sidebar">
+          <CommunityEventSidebar class="justify-content-start flex-grow-1" style="overflow-y: auto" />
+          <BotLeftBox class="justify-content-end flex-shrink-2" />
+        </div>
       </b-col>
       <b-col cols="12" md="6" class="p-0">
         <div>
@@ -44,12 +47,14 @@ import loginRequired from '@/mixins/loginRequired.js'
 const GroupSelect = () => import('~/components/GroupSelect.vue')
 const GroupHeader = () => import('~/components/GroupHeader.vue')
 const Message = () => import('~/components/Message.vue')
+const CommunityEventSidebar = () => import('~/components/CommunityEventSidebar')
 
 export default {
   components: {
     GroupHeader,
     GroupSelect,
-    Message
+    Message,
+    CommunityEventSidebar
   },
   mixins: [loginRequired],
   data: function() {
