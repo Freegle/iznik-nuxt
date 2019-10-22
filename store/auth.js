@@ -1,3 +1,6 @@
+// TODO HARD All this loginRequired/loginOptional stuff seems like hard work.  I've seen at least one undiagnosed
+// bug.  Is there really not a better way to do it?  For example, if we used local storage directly, maybe we
+// could simplify some of the issues that arise because the Vuex persisted store is loaded later rather than sooner.
 let first = true
 
 export const state = () => ({
