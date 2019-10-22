@@ -285,6 +285,10 @@ nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
   background-color: #61ae24 !important;
 }
 
+nav li.nav-item {
+  list-style-type: none;
+}
+
 nav .navbar-nav li a {
   color: #cdcdcd !important;
 }
