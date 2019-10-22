@@ -237,5 +237,50 @@ export const actions = {
     }
 
     return ret
+  },
+
+  async setDates({ commit, dispatch }, params) {
+    const promises = []
+
+    for (const date of params.olddates) {
+      console.log('Remove', date)
+      promises.push(
+        this.$axios.post(
+          process.env.API + '/communityevent',
+          {
+            id: params.id,
+            action: 'RemoveDate',
+            dateid: date.id
+          },
+          {
+            headers: {
+              'X-HTTP-Method-Override': 'PATCH'
+            }
+          }
+        )
+      )
+    }
+
+    for (const date of params.newdates) {
+      console.log('Add', date.start, date.end)
+      promises.push(
+        this.$axios.post(
+          process.env.API + '/communityevent',
+          {
+            id: params.id,
+            action: 'AddDate',
+            start: date.start,
+            end: date.end
+          },
+          {
+            headers: {
+              'X-HTTP-Method-Override': 'PATCH'
+            }
+          }
+        )
+      )
+    }
+
+    await Promise.all(promises)
   }
 }

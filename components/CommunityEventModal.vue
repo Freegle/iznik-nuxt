@@ -25,7 +25,11 @@
           <b-alert show variant="info">
             Scroll down past the picture for more information!
           </b-alert>
-          <b-img lazy fluid :src="event.photo.path" class="mb-2" />
+          <b-row>
+            <b-col>
+              <b-img lazy fluid :src="event.photo.path" class="mb-2 w-100" />
+            </b-col>
+          </b-row>
         </div>
         <b-row>
           <b-col cols="4" md="3" class="field">
@@ -154,6 +158,11 @@
           Where is it?
         </label>
         <b-form-input id="location" v-model="event.location" type="text" maxlength="80" placeholder="Where is it being held?  Add a postcode to make sure people can find you!" />
+        <label>
+          When is it?
+        </label>
+        <p>You can add multiple dates if the event occurs several times.</p>
+        <StartEndCollection :dates="event.dates" @change="datesChange" />
         <label for="contactname">
           Contact name:
         </label>
@@ -190,6 +199,8 @@
         Cancel
       </b-button>
       <b-button v-if="editing" variant="success" class="float-right" @click="saveIt">
+        <v-icon v-if="saving" name="sync" class="text-success fa-spin" />
+        <v-icon v-else name="save" />
         <span v-if="event.id">Save Changes</span>
         <span v-else>Add Event</span>
       </b-button>
@@ -206,11 +217,6 @@ label {
   font-weight: bold;
   color: darkgreen;
   margin-top: 10px;
-}
-
-.inpast {
-  text-decoration: line-through;
-  color: #6c757d70;
 }
 
 .topleft {
@@ -238,11 +244,13 @@ label {
 import twem from '~/assets/js/twem'
 const GroupSelect = () => import('~/components/GroupSelect.vue')
 const OurFilePond = () => import('~/components/OurFilePond')
+const StartEndCollection = () => import('~/components/StartEndCollection')
 
 export default {
   components: {
     GroupSelect,
-    OurFilePond
+    OurFilePond,
+    StartEndCollection
   },
   props: {
     event: {
@@ -262,7 +270,9 @@ export default {
       groupid: null,
       uploading: false,
       oldphoto: null,
-      cacheBust: new Date().getTime()
+      olddates: null,
+      cacheBust: new Date().getTime(),
+      saving: false
     }
   },
   computed: {
@@ -275,11 +285,13 @@ export default {
   },
   mounted() {
     this.editing = this.startEdit
-    this.oldphoto = this.event.photo ? this.event.photo.id : null
   },
   methods: {
     show() {
       this.showModal = true
+
+      this.oldphoto = this.event.photo ? this.event.photo.id : null
+      this.olddates = JSON.parse(JSON.stringify(this.event.dates))
 
       // Store the group id we're using for the select to pick up.
       // TODO This seems a poor way to signal it.
@@ -296,11 +308,13 @@ export default {
       this.editing = false
       this.uploading = false
       this.showModal = false
+      this.saving = true
     },
     deleteIt() {},
     async saveIt() {
       // TODO Validation.
-      console.log('Consider photo', this.event.photo)
+      this.saving = true
+
       if (this.event.photo && this.event.photo.id !== this.oldphoto) {
         await this.$store.dispatch('communityevents/setPhoto', {
           id: this.event.id,
@@ -326,6 +340,12 @@ export default {
             })
           }
         }
+
+        await this.$store.dispatch('communityevents/setDates', {
+          id: this.event.id,
+          olddates: this.olddates,
+          newdates: this.event.dates
+        })
 
         await this.$store.dispatch('communityevents/save', this.event)
       } else {
@@ -365,7 +385,6 @@ export default {
         paththumb: imagethumb
       }
 
-      console.log('Save photo', this.event.photo)
       // TODO Handle any OCR returned from the server by putting it in the description.
     },
     rotate(deg) {
@@ -385,6 +404,9 @@ export default {
     },
     rotateRight() {
       this.rotate(-90)
+    },
+    datesChange(dates) {
+      this.event.dates = dates
     }
   }
 }
