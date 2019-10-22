@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="(date, index) in dates" :key="'startend-' + index" :class="date.string && date.string.past ? 'inpast': ''">
+    <div v-for="(date, index) in editableDates" :key="'startend-' + index" :class="date.string && date.string.past ? 'inpast': ''">
       <StartEndDate :start="date.start" :end="date.end" :index="index" @remove="remove(index)" @change="change" />
     </div>
     <b-btn variant="white" class="mt-1" @click="add">
@@ -29,23 +29,32 @@ export default {
       required: true
     }
   },
+  data: function() {
+    return {
+      editableDates: []
+    }
+  },
+  mounted: function() {
+    this.editableDates = this.dates ? this.dates : []
+  },
   methods: {
     remove(index) {
-      if (this.dates.length > 1) {
-        this.dates.splice(index, 1)
-        this.$emit('changed', this.dates)
+      if (this.editableDates.length > 1) {
+        this.editableDates.splice(index, 1)
+        this.$emit('changed', this.editableDates)
       }
     },
     add() {
-      this.dates.push({
+      console.log('Add another date')
+      this.editableDates.push({
         start: null,
         end: null,
         past: false
       })
     },
     change(index, date) {
-      this.dates[index] = date
-      this.$emit('change', this.dates)
+      this.editableDates[index] = date
+      this.$emit('change', this.editableDates)
     }
   }
 }

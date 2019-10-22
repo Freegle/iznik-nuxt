@@ -126,7 +126,7 @@ export const actions = {
     })
 
     if (res.status === 200) {
-      if (params.id) {
+      if (params && params.id) {
         commit('addAll', [res.data.communityevent])
       } else {
         commit('addAll', res.data.communityevents)
@@ -163,6 +163,26 @@ export const actions = {
     }
 
     return ret
+  },
+  async add({ commit, dispatch }, event) {
+    const ret = await this.$axios.post(
+      process.env.API + '/communityevent',
+      event,
+      {
+        headers: {
+          'X-HTTP-Method-Override': 'POST'
+        }
+      }
+    )
+
+    if (ret.status === 200 && ret.data.ret === 0) {
+      // Fetch back to update store and thereby components
+      await dispatch('fetch', {
+        id: ret.data.id
+      })
+    }
+
+    return ret.data.id
   },
   async addGroup({ commit, dispatch }, params) {
     const ret = await this.$axios.post(
@@ -243,7 +263,6 @@ export const actions = {
     const promises = []
 
     for (const date of params.olddates) {
-      console.log('Remove', date)
       promises.push(
         this.$axios.post(
           process.env.API + '/communityevent',
@@ -262,7 +281,6 @@ export const actions = {
     }
 
     for (const date of params.newdates) {
-      console.log('Add', date.start, date.end)
       promises.push(
         this.$axios.post(
           process.env.API + '/communityevent',

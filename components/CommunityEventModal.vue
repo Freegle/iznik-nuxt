@@ -1,6 +1,5 @@
 <template>
   <b-modal
-    v-if="event"
     id="profilemodal"
     v-model="showModal"
     size="lg"
@@ -44,8 +43,10 @@
             When
           </b-col>
           <b-col cols="8" md="9">
-            <div v-for="(date, index) in event.dates" :key="'event-' + event.id + '-' + index + '-' + date.start.toString() + '-' + date.end.toString()" :class="date.string.past ? 'inpast': ''">
-              {{ date.string.start }} - {{ date.string.end }}<br>
+            <div v-for="(date, index) in event.dates" :key="'event-' + event.id + '-' + index + '-' + date.start.toString() + '-' + date.end.toString()" :class="date && date.string && date.string.past ? 'inpast': ''">
+              <span v-if="date && date.string">
+                {{ date.string.start }} - {{ date.string.end }}<br>
+              </span>
             </div>
           </b-col>
         </b-row>
@@ -119,7 +120,7 @@
                   </v-icon>
                 </span>
               </div>
-              <b-img-lazy v-if="event.photo" thumbnail :src="event.photo.paththumb + '?' + cacheBust" />
+              <b-img v-if="event.photo" thumbnail :src="event.photo.paththumb + '?' + cacheBust" />
               <b-img-lazy v-else thumbnail src="~/static/placeholder.jpg" />
             </div>
           </b-col>
@@ -162,7 +163,7 @@
           When is it?
         </label>
         <p>You can add multiple dates if the event occurs several times.</p>
-        <StartEndCollection :dates="event.dates" @change="datesChange" />
+        <StartEndCollection v-if="event.dates" :dates="event.dates" @change="datesChange" />
         <label for="contactname">
           Contact name:
         </label>
@@ -199,7 +200,7 @@
         Cancel
       </b-button>
       <b-button v-if="editing" variant="success" class="float-right" @click="saveIt">
-        <v-icon v-if="saving" name="sync" class="text-success fa-spin" />
+        <v-icon v-if="saving" name="sync" class="fa-spin" />
         <v-icon v-else name="save" />
         <span v-if="event.id">Save Changes</span>
         <span v-else>Add Event</span>
@@ -254,7 +255,7 @@ export default {
   },
   props: {
     event: {
-      type: Object,
+      validator: prop => typeof prop === 'object' || prop === null,
       required: true
     },
     startEdit: {
@@ -283,19 +284,34 @@ export default {
       return desc
     }
   },
-  mounted() {
-    this.editing = this.startEdit
-  },
   methods: {
     show() {
+      this.editing = this.startEdit
       this.showModal = true
 
-      this.oldphoto = this.event.photo ? this.event.photo.id : null
-      this.olddates = JSON.parse(JSON.stringify(this.event.dates))
+      this.oldphoto =
+        this.event && this.event.photo ? this.event.photo.id : null
+      this.olddates =
+        this.event && this.event.dates
+          ? JSON.parse(JSON.stringify(this.event.dates))
+          : null
+
+      // If we don't have any dates, add an empty one so the slot appears for them to fill in.
+      this.event.dates = this.event.dates
+        ? this.event.dates
+        : [
+            {
+              start: null,
+              end: null
+            }
+          ]
+
+      // If we don't have any groups, force a select.
+      this.event.groups = this.event.groups ? this.event.groups : [{ id: 0 }]
 
       // Store the group id we're using for the select to pick up.
       // TODO This seems a poor way to signal it.
-      if (this.event.groups && this.event.groups.length) {
+      if (this.event && this.event.groups && this.event.groups.length) {
         this.$store.commit('group/remember', {
           id: 'editevent',
           val: this.event.groups[0].id
@@ -308,22 +324,22 @@ export default {
       this.editing = false
       this.uploading = false
       this.showModal = false
-      this.saving = true
+      this.saving = false
     },
     deleteIt() {},
     async saveIt() {
       // TODO Validation.
       this.saving = true
 
-      if (this.event.photo && this.event.photo.id !== this.oldphoto) {
-        await this.$store.dispatch('communityevents/setPhoto', {
-          id: this.event.id,
-          photoid: this.event.photo.id
-        })
-      }
-
       if (this.event.id) {
         // This is an edit.
+        if (this.event.photo && this.event.photo.id !== this.oldphoto) {
+          await this.$store.dispatch('communityevents/setPhoto', {
+            id: this.event.id,
+            photoid: this.event.photo.id
+          })
+        }
+
         const oldgroupid = this.event.groups ? this.event.groups[0].id : null
 
         if (this.groupid !== oldgroupid) {
@@ -349,13 +365,39 @@ export default {
 
         await this.$store.dispatch('communityevents/save', this.event)
       } else {
-        // This is an add
-      }
+        // This is an add.  First create it to get the id.
+        const dates = this.event.dates
+        const photoid = this.event.photo ? this.event.photo.id : null
 
-      // Fetch for good luck.
-      await this.$store.dispatch('communityevents/fetch', {
-        id: this.event.id
-      })
+        const eventid = await this.$store.dispatch(
+          'communityevents/add',
+          this.event
+        )
+
+        if (photoid) {
+          await this.$store.dispatch('communityevents/setPhoto', {
+            id: eventid,
+            photoid: photoid
+          })
+        }
+
+        // Save the group.
+        await this.$store.dispatch('communityevents/addGroup', {
+          id: eventid,
+          groupid: this.groupid
+        })
+
+        await this.$store.dispatch('communityevents/setDates', {
+          id: eventid,
+          olddates: [],
+          newdates: dates
+        })
+
+        // Fetch for good luck.
+        await this.$store.dispatch('communityevents/fetch', {
+          id: this.event.id
+        })
+      }
 
       this.hide()
     },

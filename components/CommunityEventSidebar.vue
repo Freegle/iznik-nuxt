@@ -4,23 +4,28 @@
       <b-card-body class="p-0">
         <h4 class="pl-1 pt-1">
           <v-icon name="calendar-alt" scale="2" /> Community Events
-          <b-btn variant="white" class="float-right">
+          <b-btn variant="white" class="float-right" @click="showEventModal">
             <v-icon name="plus" /> Add
           </b-btn>
         </h4>
         <div v-for="(event, $index) in events" :key="$index" class="">
-          <CommunityEvent :summary="true" :event="event" />
+          <CommunityEvent v-if="!event.pending" :summary="true" :event="event" />
         </div>
       </b-card-body>
     </b-card>
+    <CommunityEventModal ref="eventmodal" :event="{}" :start-edit="true" />
   </div>
 </template>
 <script>
-// TODO Add
-// TODO Details
 import CommunityEvent from './CommunityEvent'
+const CommunityEventModal = () => import('~/components/CommunityEventModal')
+
+// TODO Would be nice not to load the modal in except when clicked.  Bit fiddly because of async imports.
 export default {
-  components: { CommunityEvent },
+  components: {
+    CommunityEvent,
+    CommunityEventModal
+  },
   data: function() {
     return {}
   },
@@ -34,6 +39,11 @@ export default {
     setTimeout(() => {
       this.$store.dispatch('communityevents/fetch')
     }, 1000)
+  },
+  methods: {
+    showEventModal() {
+      this.$refs.eventmodal.show()
+    }
   }
 }
 </script>
