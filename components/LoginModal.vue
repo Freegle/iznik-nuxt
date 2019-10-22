@@ -22,14 +22,24 @@
       </b-col>
     </b-row>
     <b-row>
-      <b-col cols="12" lg="6" class="text-center">
+      <b-col cols="12" lg="2" class="text-center">
         <b-img alt="Facebook login" class="loginbutton clickme" src="~/static/signinbuttons/facebook.png" @click="loginFacebook" />
+      </b-col>
+      <b-col cols="12" lg="2" class="text-center">
         <b-img alt="Google login" :class="'loginbutton clickme ' + disabled('google')" src="~/static/signinbuttons/google.png" @click="loginGoogle" />
+      </b-col>
+      <b-col cols="12" lg="2" class="text-center">
         <b-img alt="Yahoo login" class="loginbutton clickme" src="~/static/signinbuttons/yahoo.png" @click="loginYahoo" />
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
         <b-alert v-if="socialblocked" variant="error">
           Social login blocked - check your privacy settings
         </b-alert>
       </b-col>
+    </b-row>
+    <b-row>
       <b-col cols="12" class="d-block d-lg-none">
         <b-row>
           <b-col cols="5">
@@ -116,6 +126,7 @@
 <script>
 // TODO Sign Up
 // TODO Eye icon to show password for mobile
+// TODO DESIGN Doesn't fit screen on mobile.
 import Vue from 'vue'
 
 export default {
