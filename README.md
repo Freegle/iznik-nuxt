@@ -8,7 +8,8 @@ something that looks very much like the existing site, but with a more modern co
 niggles smoothed out.  More significant changes can come later.  
 
 The development has been funded by [Freegle](https://www.ilovefreegle.org) for use in the UK, 
-but it is an open source platform which can be used or adapted by others.
+but it is an open source platform which can be used or adapted by others.  Other contributors very welcome,
+especially those with design/UX expertise.
 
 License
 =======
