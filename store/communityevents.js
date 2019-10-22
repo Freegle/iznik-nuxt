@@ -126,10 +126,15 @@ export const actions = {
     })
 
     if (res.status === 200) {
-      commit('addAll', res.data.communityevents)
-      commit('setContext', {
-        ctx: res.data.context
-      })
+      if (params.id) {
+        commit('addAll', [res.data.communityevent])
+      } else {
+        commit('addAll', res.data.communityevents)
+
+        commit('setContext', {
+          ctx: res.data.context
+        })
+      }
     }
   },
   clear({ commit }) {
@@ -138,5 +143,25 @@ export const actions = {
     })
 
     commit('setList', [])
+  },
+  async save({ commit, dispatch }, event) {
+    const ret = await this.$axios.post(
+      process.env.API + '/communityevent',
+      event,
+      {
+        headers: {
+          'X-HTTP-Method-Override': 'PATCH'
+        }
+      }
+    )
+
+    if (ret.status === 200 && ret.data.ret === 0) {
+      // Fetch back to update store and thereby components
+      await dispatch('fetch', {
+        id: event.id
+      })
+    }
+
+    return ret
   }
 }

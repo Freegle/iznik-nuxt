@@ -105,7 +105,7 @@
         </label>
         <b-textarea
           id="description"
-          v-model="description"
+          v-model="event.description"
           rows="5"
           max-rows="8"
           spellcheck="true"
@@ -148,10 +148,10 @@
       <b-button v-if="!editing" variant="white" class="float-right" @click="cancel">
         Close
       </b-button>
-      <b-button v-if="editing" variant="white" class="float-right" @click="cancel">
+      <b-button v-if="editing" variant="white" class="float-right" @click="dontSave">
         Cancel
       </b-button>
-      <b-button v-if="editing" variant="success" class="float-right" @click="cancel">
+      <b-button v-if="editing" variant="success" class="float-right" @click="saveIt">
         <span v-if="event.id">Save Changes</span>
         <span v-else>Add Event</span>
       </b-button>
@@ -236,6 +236,25 @@ export default {
       this.showModal = false
     },
     deleteIt() {},
+    async saveIt() {
+      // TODO Validation.
+      if (this.event.id) {
+        // This is an edit.
+        await this.$store.dispatch('communityevents/save', this.event)
+      } else {
+        // This is an add
+      }
+
+      this.hide()
+    },
+    async dontSave() {
+      // We may have updated the event during the edit.  Fetch it again to reset those changes.
+      await this.$store.dispatch('communityevents/fetch', {
+        id: this.event.id
+      })
+
+      this.hide()
+    },
     groupChange: function(val) {
       this.groupid = val
     }
