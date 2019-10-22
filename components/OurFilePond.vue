@@ -42,6 +42,11 @@ export default {
     imgflag: {
       type: String,
       required: true
+    },
+    ocr: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
@@ -63,6 +68,7 @@ export default {
       data.append('photo', file, 'photo')
       data.append(this.imgflag, true)
       data.append('imgtype', this.imgtype)
+      data.append('ocr', this.ocr)
 
       const ret = await this.$axios.post(process.env.API + '/image', data, {
         headers: {

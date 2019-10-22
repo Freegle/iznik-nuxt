@@ -393,7 +393,7 @@ export default {
     },
     photoAdd() {
       // Flag that we're uploading.  This will trigger the render of the filepond instance and subsequently the
-      // init callback below.
+      // processed callback below.
       this.uploading = true
     },
     async photoProcessed(imageid, imagethumb, image) {

@@ -163,5 +163,79 @@ export const actions = {
     }
 
     return ret
+  },
+  async addGroup({ commit, dispatch }, params) {
+    const ret = await this.$axios.post(
+      process.env.API + '/communityevent',
+      {
+        id: params.id,
+        action: 'AddGroup',
+        groupid: params.groupid
+      },
+      {
+        headers: {
+          'X-HTTP-Method-Override': 'PATCH'
+        }
+      }
+    )
+
+    if (ret.status === 200 && ret.data.ret === 0) {
+      // Fetch back to update store and thereby components
+      await dispatch('fetch', {
+        id: params.id
+      })
+    }
+
+    return ret
+  },
+
+  async removeGroup({ commit, dispatch }, params) {
+    const ret = await this.$axios.post(
+      process.env.API + '/communityevent',
+      {
+        id: params.id,
+        action: 'RemoveGroup',
+        groupid: params.groupid
+      },
+      {
+        headers: {
+          'X-HTTP-Method-Override': 'PATCH'
+        }
+      }
+    )
+
+    if (ret.status === 200 && ret.data.ret === 0) {
+      // Fetch back to update store and thereby components
+      await dispatch('fetch', {
+        id: params.id
+      })
+    }
+
+    return ret
+  },
+
+  async setPhoto({ commit, dispatch }, params) {
+    const ret = await this.$axios.post(
+      process.env.API + '/communityevent',
+      {
+        id: params.id,
+        action: 'SetPhoto',
+        photoid: params.photoid
+      },
+      {
+        headers: {
+          'X-HTTP-Method-Override': 'PATCH'
+        }
+      }
+    )
+
+    if (ret.status === 200 && ret.data.ret === 0) {
+      // Fetch back to update store and thereby components
+      await dispatch('fetch', {
+        id: params.id
+      })
+    }
+
+    return ret
   }
 }

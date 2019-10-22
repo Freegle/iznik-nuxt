@@ -95,9 +95,47 @@
           </b-col>
           <b-col cols="12" md="6">
             <div class="float-right">
-              <b-img-lazy v-if="event.photo" thumbnail :src="event.photo.paththumb" />
+              <div v-if="event.photo" class="container p-0">
+                <span @click="rotateLeft">
+                  <v-icon label="Rotate left" class="topleft clickme" title="Rotate left">
+                    <v-icon name="circle" scale="2" />
+                    <v-icon
+                      name="reply"
+                      style="color: white;"
+                    />
+                  </v-icon>
+                </span>
+                <span @click="rotateRight">
+                  <v-icon label="Rotate right" class="topright clickme" title="Rotate right" flip="horizontal">
+                    <v-icon name="circle" scale="2" />
+                    <v-icon
+                      name="reply"
+                      style="color: white;"
+                    />
+                  </v-icon>
+                </span>
+              </div>
+              <b-img-lazy v-if="event.photo" thumbnail :src="event.photo.paththumb + '?' + cacheBust" />
               <b-img-lazy v-else thumbnail src="~/static/placeholder.jpg" />
             </div>
+          </b-col>
+        </b-row>
+        <b-row>
+          <b-col>
+            <b-btn variant="white" class="mt-1 float-right" @click="photoAdd">
+              <v-icon name="camera" /> Upload photo
+            </b-btn>
+          </b-col>
+        </b-row>
+        <b-row v-if="uploading">
+          <b-col>
+            <OurFilePond
+              class="bg-white"
+              imgtype="CommunityEvent"
+              imgflag="communitevent"
+              :ocr="true"
+              @photoProcessed="photoProcessed"
+            />
           </b-col>
         </b-row>
         <label for="description">
@@ -174,6 +212,22 @@ label {
   text-decoration: line-through;
   color: #6c757d70;
 }
+
+.topleft {
+  top: 12px;
+  left: 10px;
+  position: absolute;
+}
+
+.topright {
+  top: 12px;
+  right: 10px;
+  position: absolute;
+}
+
+.container {
+  position: relative;
+}
 </style>
 <script>
 // TODO DESIGN This layout is staid table nonsense.  Surely we can make it more appealing?
@@ -183,10 +237,12 @@ label {
 // TODO Wherever we have b-img we should have @brokenImage.  Bet we don't.
 import twem from '~/assets/js/twem'
 const GroupSelect = () => import('~/components/GroupSelect.vue')
+const OurFilePond = () => import('~/components/OurFilePond')
 
 export default {
   components: {
-    GroupSelect
+    GroupSelect,
+    OurFilePond
   },
   props: {
     event: {
@@ -203,7 +259,10 @@ export default {
     return {
       showModal: false,
       editing: false,
-      groupid: null
+      groupid: null,
+      uploading: false,
+      oldphoto: null,
+      cacheBust: new Date().getTime()
     }
   },
   computed: {
@@ -216,6 +275,7 @@ export default {
   },
   mounted() {
     this.editing = this.startEdit
+    this.oldphoto = this.event.photo ? this.event.photo.id : null
   },
   methods: {
     show() {
@@ -233,17 +293,49 @@ export default {
       }
     },
     hide() {
+      this.editing = false
+      this.uploading = false
       this.showModal = false
     },
     deleteIt() {},
     async saveIt() {
       // TODO Validation.
+      console.log('Consider photo', this.event.photo)
+      if (this.event.photo && this.event.photo.id !== this.oldphoto) {
+        await this.$store.dispatch('communityevents/setPhoto', {
+          id: this.event.id,
+          photoid: this.event.photo.id
+        })
+      }
+
       if (this.event.id) {
         // This is an edit.
+        const oldgroupid = this.event.groups ? this.event.groups[0].id : null
+
+        if (this.groupid !== oldgroupid) {
+          // Save the new group, then remove the old group, so it won't get stranded.
+          await this.$store.dispatch('communityevents/addGroup', {
+            id: this.event.id,
+            groupid: this.groupid
+          })
+
+          if (oldgroupid) {
+            await this.$store.dispatch('communityevents/removeGroup', {
+              id: this.event.id,
+              groupid: oldgroupid
+            })
+          }
+        }
+
         await this.$store.dispatch('communityevents/save', this.event)
       } else {
         // This is an add
       }
+
+      // Fetch for good luck.
+      await this.$store.dispatch('communityevents/fetch', {
+        id: this.event.id
+      })
 
       this.hide()
     },
@@ -257,6 +349,42 @@ export default {
     },
     groupChange: function(val) {
       this.groupid = val
+    },
+    photoAdd() {
+      // Flag that we're uploading.  This will trigger the render of the filepond instance and subsequently the
+      // processed callback below.
+      this.uploading = true
+    },
+    photoProcessed(imageid, imagethumb, image) {
+      // We have uploaded a photo.  Remove the filepond instance.
+      this.uploading = false
+
+      this.event.photo = {
+        id: imageid,
+        path: image,
+        paththumb: imagethumb
+      }
+
+      console.log('Save photo', this.event.photo)
+      // TODO Handle any OCR returned from the server by putting it in the description.
+    },
+    rotate(deg) {
+      this.$axios
+        .post(process.env.API + '/image', {
+          id: this.event.photo.id,
+          rotate: deg,
+          bust: new Date().getTime(),
+          communityevent: true
+        })
+        .then(() => {
+          this.cacheBust = new Date().getTime()
+        })
+    },
+    rotateLeft() {
+      this.rotate(90)
+    },
+    rotateRight() {
+      this.rotate(-90)
     }
   }
 }
