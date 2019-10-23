@@ -38,6 +38,8 @@
   </b-row>
 </template>
 <style scoped>
+/*TODO DESIGN This showmod leaf appears in the wrong place on mobile because profile is smaller then.  This should*/
+/*be handled better.  Applies in other places - search for "leaf" to find possibilities.*/
 .showmod {
   top: 29px;
   left: 44px;
