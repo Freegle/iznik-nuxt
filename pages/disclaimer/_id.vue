@@ -41,7 +41,9 @@
         <p>
           If you are unlucky enough to be scammed, please report it to the
           <a href="http://www.actionfraud.police.uk/" target="_blank" rel="noopener">Police</a>, and
-          <a href="/contact">to us</a>.
+          <nuxt-link to="/contact">
+            to us
+          </nuxt-link>.
         </p>
       </b-col>
       <b-col cols="0" md="3" />

@@ -74,7 +74,9 @@
                   <h2>Get Involved!</h2>
                   <p>We're always looking for more volunteers - for local communities, graphics, publicity, improving the website...there's lots to do.</p>
                   <p>
-                    If you'd like to get involved, <a href="/contact">contact your local community</a>.
+                    If you'd like to get involved, <nuxt-link to="/contact">
+                      contact your local community.
+                    </nuxt-link>
                   </p>
                 </b-card-text>
               </b-card-body>
@@ -102,7 +104,9 @@
                   <p>
                     There are lots of good causes out there, many of them for life-threatening conditions, all of them competing
                     for charity funding.  It usually goes to bigger charities than us doing more important work, so we currently rely on
-                    voluntary donations to cover our costs.  You can donate <a href="/donate">here</a>.
+                    voluntary donations to cover our costs.  You can donate <nuxt-link to="/donate">
+                      here.
+                    </nuxt-link>
                   </p>
                   <p>
                     Many current donations come from our volunteers, who are already donating their time and may not be able to
@@ -162,7 +166,9 @@
               <b-card-body>
                 <b-card-text>
                   <p>
-                    If you have questions, please <a href="/contact">contact us</a>
+                    If you have questions, please <nuxt-link to="/contact">
+                      contact us.
+                    </nuxt-link>
                   </p>
                 </b-card-text>
               </b-card-body>

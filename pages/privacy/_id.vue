@@ -11,7 +11,9 @@
           We won’t pass on your email address to anyone else, and other freeglers can't see it.
         </p>
         <p>
-          Other freeglers can see your name, profile picture and approximate location.  If you don't want that, you can change it in <a href="/settings">Settings</a>.
+          Other freeglers can see your name, profile picture and approximate location.  If you don't want that, you can change it in <nuxt-link to="/settings">
+            Settings.</nuxt-ilnk>
+          </nuxt-link>
         </p>
         <p>
           We try to protect you from spammers and fraudsters.  Sometimes our volunteers may read what you write to check
@@ -44,7 +46,11 @@
           We use Google AdSense (on the website). For emails we use AdView. We pass them your IP address, but not your personal information.
         </p>
         <h2>Got questions?</h2>
-        <p>If you have questions, please <a href="/contact">contact us</a>.</p>
+        <p>
+          If you have questions, please <nuxt-link to="/contact">
+            contact us.
+          </nuxt-link>
+        </p>
       </b-col>
       <b-col cols="0" md="3" />
     </b-row>
