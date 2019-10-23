@@ -36,8 +36,7 @@ module.exports = {
   ** Global CSS
   */
   css: [
-    '@/assets/css/style.css',
-    '@/assets/css/user.less',
+    '@/assets/css/global.scss',
     '@/assets/css/Autocomplete.css'
   ],
 

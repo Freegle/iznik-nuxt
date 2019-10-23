@@ -1,49 +1,50 @@
+// Brought in from user.less
 
-@colour-success: #61AE24;
-@colour-success-bg: #d6e9c6;
-@colour-success-fg: #3c763d;
-@colour-info: #D70060;
-@colour-info-fg: #000080;
-@colour-info-bg: #d9edf7;
-@colour-warning: #e38d13;
-@colour-header: #1d6607;
-@colour-primary: #00A1CB;
+$colour-success: #61AE24;
+$colour-success-bg: #d6e9c6;
+$colour-success-fg: #3c763d;
+$colour-info: #D70060;
+$colour-info-fg: #000080;
+$colour-info-bg: #d9edf7;
+$colour-warning: #e38d13;
+$colour-header: #1d6607;
+$colour-primary: #00A1CB;
 
 // TODO Would be nice to use bootstrap mixins for breakpoints, but that's in SCSS and this is in less.  Maybe
 // that can be made to work, or maybe this needs moving to SCSS instead.
-@bootstrap-xs: 576px;
-@bootstrap-sm: 768px;
-@bootstrap-md: 992px;
-@bootstrap-lg: 1200px;
+$bootstrap-xs: 576px;
+$bootstrap-sm: 768px;
+$bootstrap-md: 992px;
+$bootstrap-lg: 1200px;
 
 .bg-success {
-  background-color: @colour-success-bg !important;
-  color: @colour-success-fg !important;
+  background-color: $colour-success-bg !important;
+  color: $colour-success-fg !important;
 }
 
 .border-success {
-  border-color: @colour-success-bg !important;
+  border-color: $colour-success-bg !important;
 }
 
 .card-header.bg-success {
-  border-bottom: 1px solid @colour-success-bg;
+  border-bottom: 1px solid $colour-success-bg;
 }
 
 .bg-info {
-  background-color: @colour-info-bg !important;
-  color: @colour-info-fg !important;
+  background-color: $colour-info-bg !important;
+  color: $colour-info-fg !important;
 }
 
 .border-info {
-  border-color: @colour-info-bg !important;
+  border-color: $colour-info-bg !important;
 }
 
 .card-header.bg-info {
-  border-bottom: 1px solid @colour-info-bg;
+  border-bottom: 1px solid $colour-info-bg;
 }
 
 .btn-primary {
-  background-color: @colour-primary !important;
+  background-color: $colour-primary !important;
   border-color: #006b50 #006b50 hsl(165, 100%, 16%);
   color: #fff !important;
   text-shadow: 0 - 1 px 0 rgba(0, 0, 0, 0.59);
@@ -51,7 +52,7 @@
 }
 
 .btn-success {
-  background-color: @colour-success !important;
+  background-color: $colour-success !important;
   background-image: none;
   border-color: #006b50 #006b50 hsl(165, 100%, 16%);
   color: #fff !important;
@@ -60,7 +61,7 @@
 }
 
 .btn-info {
-  background-color: @colour-info !important;
+  background-color: $colour-info !important;
   background-image: none;
   border-color: #006b50 #006b50 hsl(165, 100%, 16%);
   color: #fff !important;
@@ -78,7 +79,7 @@
 }
 
 .btn-warning {
-  background-color: @colour-warning !important;
+  background-color: $colour-warning !important;
   background-image: none;
   border-color: #006b50 #006b50 hsl(165, 100%, 16%);
   color: white !important;
@@ -150,7 +151,7 @@ body {
   width: 30px !important;
   height: 30px !important;
 
-  @media (min-width: @bootstrap-sm) {
+  @media (min-width: $bootstrap-sm) {
     width: 50px !important;
     height: 50px !important;
   }
@@ -160,7 +161,7 @@ body {
   width: 20px !important;
   height: 20px !important;
 
-  @media (min-width: @bootstrap-sm)  {
+  @media (min-width: $bootstrap-sm)  {
     width: 35px !important;
     height: 35px !important;
   }
@@ -170,7 +171,7 @@ body {
   width: 15px !important;
   height: 15px !important;
 
-  @media (min-width: @bootstrap-sm) {
+  @media (min-width: $bootstrap-sm) {
     width: 25px !important;
     height: 25px !important;
   }
@@ -297,4 +298,208 @@ body {
 }
 .bs-wizard > .bs-wizard-step.disabled a.bs-wizard-dot {
   pointer-events: none;
+}
+
+// Brought in from style.css
+button {
+    white-space: nowrap;
+}
+
+.clickme {
+    cursor: pointer;
+}
+
+.nav-link {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+}
+
+.btn-group-xs > .btn, .btn-xs {
+    padding  : .25rem .4rem;
+    font-size  : .875rem;
+    line-height  : .5;
+    border-radius : .2rem;
+}
+
+.nodecor {
+    text-decoration: none !important;
+    color: black !important;
+}
+
+.prewrap {
+    white-space: pre-wrap !important;
+}
+
+.fa-bh {
+    font-size: 100px;
+}
+
+.decornone,
+.decornone:hover{
+    text-decoration: none;
+}
+
+/*TODO This gets stripped if we add it into Postcode because the element is added dynamically.  How do we avoid that?*/
+.pcinp {
+    max-width: 238px;
+    margin: 0 auto;
+}
+
+.iteminp ul {
+    width: 100% !important;
+    right: 0px !important;
+    padding-right: 15px !important;
+    padding-left: 15px !important;
+}
+
+.postcodelist {
+    z-index: 900;
+}
+
+.postcodelist li {
+    box-shadow: 1px 3px 5px 3px rgba(0, 0, 0, 0.6) !important;
+    width: 238px;
+}
+
+/* TODO I tried adding "appear" transitions, e.g. for elements in chitchat, or messages.  But they then don't
+    show the computed emessage property.  Don't know why */
+.fade-enter-active, .fade-leave-active {
+    transition: opacity 1s;
+}
+.fade-enter, .fade-leave-to {
+    opacity: 0;
+}
+
+.fadein-enter-active {
+    transition: opacity 1s;
+}
+.fadein-enter {
+    opacity: 0;
+}
+
+.notiflist .dropdown-menu {
+    height: 500px;
+    overflow-y: auto;
+}
+
+.navbar .dropdown-toggle:after {
+  content: none;
+}
+
+nav .dropdown-toggle {
+  border: none;
+}
+
+#nav_collapse_mobile .navbar-nav {
+  border-top: 1px solid lightgrey;
+  padding-top: 5px;
+}
+
+#nav_collapse_mobile .nav-item {
+  width: 70px;
+}
+
+#nav_collapse_mobile a.nav-link {
+  color: white;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    height: 100px;
+    width: 100px;
+    outline: black;
+    background-size: 100%, 100%;
+    border-radius: 50%;
+    border: 1px solid black;
+    background-image: none;
+    background-color: white;
+}
+
+.carousel-control-next-icon:after
+{
+    content: '>';
+    font-size: 55px;
+    color: red;
+}
+
+.carousel-control-prev-icon:after {
+    content: '<';
+    font-size: 55px;
+    color: red;
+}
+
+.forcebreak {
+  -ms-word-break: break-all;
+
+  /* Non standard for webkit */
+  word-break: break-word;
+
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  hyphens: auto;
+}
+
+.notiflist .dropdown-item {
+  width: 300px;
+  max-width: 100%;
+  padding-left: 5px;
+  overflow-wrap: break-word;
+}
+
+.black {
+  color: black
+}
+
+.white, .white > a {
+  color: white !important;
+}
+
+.red {
+  color: red;
+}
+
+.fa-icon {
+  /* These appear misaligned - fix */
+  margin-bottom: 3px;
+}
+
+.fa-fw {
+  width: 1rem;
+  height: 1rem;
+}
+
+.text-faded {
+  color: #6c757d70;
+}
+
+.nopara p {
+  margin-bottom: 0;
+  display: inline;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+legend {
+  font-weight: bold !important;
+}
+
+.notpad > a {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.sidebar {
+  height: calc(100vh - 100px);
+}
+
+.mx-datepicker-popup {
+  z-index: 2000 !important;;
 }
