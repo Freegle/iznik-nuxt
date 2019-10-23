@@ -190,6 +190,9 @@
 // TODO Chat dropdown menu for report etc
 // TODO Popup confirm first time you use Nudge, so you know what you're doing.
 // TODO Warning if you're talking to a spammer, and disable the chat message box.
+// TODO DESIGN We have a spinner at the top for our upwards infinite scroll.  But this looks messy when we load a
+// short chat, because we see the messages appear below the spinner and then move upwards once the infinite scroll
+// completes.
 import twem from '~/assets/js/twem'
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
@@ -324,6 +327,7 @@ export default {
               } else {
                 $state.loaded()
               }
+
               this.busy = false
             } catch (e) {
               console.error(e)

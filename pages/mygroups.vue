@@ -35,7 +35,10 @@
         </div>
       </b-col>
       <b-col cols="0" md="3" class="d-none d-md-block">
-        Volunteer ops and ads go here
+        <div class="d-flex flex-column sidebar">
+          <VolunteerOpportunitySidebar class="justify-content-start flex-grow-1" style="overflow-y: auto" />
+          Job ads go here
+        </div>
       </b-col>
     </b-row>
   </b-col>
@@ -48,13 +51,16 @@ const GroupSelect = () => import('~/components/GroupSelect.vue')
 const GroupHeader = () => import('~/components/GroupHeader.vue')
 const Message = () => import('~/components/Message.vue')
 const CommunityEventSidebar = () => import('~/components/CommunityEventSidebar')
+const VolunteerOpportunitySidebar = () =>
+  import('~/components/VolunteerOpportunitySidebar')
 
 export default {
   components: {
     GroupHeader,
     GroupSelect,
     Message,
-    CommunityEventSidebar
+    CommunityEventSidebar,
+    VolunteerOpportunitySidebar
   },
   mixins: [loginRequired],
   data: function() {

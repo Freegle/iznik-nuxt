@@ -7,27 +7,27 @@
   >
     <template slot="modal-header">
       <h4 v-if="editing">
-        <span v-if="event.id">
-          Edit Event
+        <span v-if="volunteering.id">
+          Edit Volunteer Opportunity
         </span>
         <span v-else>
-          Add Event
+          Add Volunteer Opportunity
         </span>
       </h4>
       <span v-else>
-        <h4>{{ event.title }}</h4>
-        <a :href="event.url" target="_blank" class="small">{{ event.url }}</a>
+        <h4>{{ volunteering.title }}</h4>
+        <a :href="volunteering.url" target="_blank" class="small">{{ volunteering.url }}</a>
       </span>
     </template>
     <template slot="default">
       <div v-if="!editing">
-        <div v-if="event.photo">
+        <div v-if="volunteering.photo">
           <b-alert show variant="info">
             Scroll down past the picture for more information!
           </b-alert>
           <b-row>
             <b-col>
-              <b-img lazy fluid :src="event.photo.path" class="mb-2 w-100" />
+              <b-img lazy fluid :src="volunteering.photo.path" class="mb-2 w-100" />
             </b-col>
           </b-row>
         </div>
@@ -36,12 +36,20 @@
             <b>{{ description }}</b>
           </b-col>
         </b-row>
+        <b-row class="mt-2">
+          <b-col cols="4" md="3" class="field">
+            Time commitment
+          </b-col>
+          <b-col cols="8" md="9">
+            {{ volunteering.timecommitment }}
+          </b-col>
+        </b-row>
         <b-row>
           <b-col cols="4" md="3" class="field">
             Where
           </b-col>
           <b-col cols="8" md="9">
-            {{ event.location }}
+            {{ volunteering.location }}
           </b-col>
         </b-row>
         <b-row>
@@ -49,41 +57,41 @@
             When
           </b-col>
           <b-col cols="8" md="9">
-            <div v-for="(date, index) in event.dates" :key="'event-' + event.id + '-' + index + '-' + date.start.toString() + '-' + date.end.toString()" :class="date && date.string && date.string.past ? 'inpast': ''">
+            <div v-for="(date, index) in volunteering.dates" :key="'volunteering-' + volunteering.id + '-' + index + '-' + date.start.toString() + '-' + date.end.toString()" :class="date && date.string && date.string.past ? 'inpast': ''">
               <span v-if="date && date.string">
                 {{ date.string.start }} - {{ date.string.end }}<br>
               </span>
             </div>
           </b-col>
         </b-row>
-        <b-row v-if="event.contactname">
+        <b-row v-if="volunteering.contactname">
           <b-col cols="4" md="3" class="field">
             Contact name
           </b-col>
           <b-col cols="8" md="9">
-            {{ event.contactname }}
+            {{ volunteering.contactname }}
           </b-col>
         </b-row>
-        <b-row v-if="event.contactemail">
+        <b-row v-if="volunteering.contactemail">
           <b-col cols="4" md="3" class="field">
             Contact email
           </b-col>
           <b-col cols="8" md="9">
-            <a :href="'mailto:' + event.contactemail">{{ event.contactemail }}</a>
+            <a :href="'mailto:' + volunteering.contactemail">{{ volunteering.contactemail }}</a>
           </b-col>
         </b-row>
-        <b-row v-if="event.contacturl">
+        <b-row v-if="volunteering.contacturl">
           <b-col cols="4" md="3" class="field">
             Website
           </b-col>
           <b-col cols="8" md="9" class="forcebreak">
-            <a :href="event.contacturl">{{ event.contacturl }}</a>
+            <a :href="volunteering.contacturl">{{ volunteering.contacturl }}</a>
           </b-col>
         </b-row>
 
         <br>
-        <p v-if="event.user" class="text-muted">
-          Posted by {{ event.user.displayname }} <span class="text-faded">(#{{ event.user.id }})</span>
+        <p v-if="volunteering.user" class="text-muted">
+          Posted by {{ volunteering.user.displayname }} <span class="text-faded">(#{{ volunteering.user.id }})</span>
         </p>
       </div>
       <div v-else>
@@ -92,15 +100,15 @@
             <label for="group">
               For which community?
             </label>
-            <groupSelect id="editevent" class="" @change="groupChange" />
+            <groupSelect id="editopportunity" class="" @change="groupChange" />
             <label for="title">
-              What's the event's name?
+              What's the opportunity?
             </label>
-            <b-form-input id="title" v-model="event.title" type="text" maxlength="80" placeholder="Give the event a short title" />
+            <b-form-input id="title" v-model="volunteering.title" type="text" maxlength="80" placeholder="Give the opportunity a short title" />
           </b-col>
           <b-col cols="12" md="6">
             <div class="float-right">
-              <div v-if="event.photo" class="container p-0">
+              <div v-if="volunteering.photo" class="container p-0">
                 <span @click="rotateLeft">
                   <v-icon label="Rotate left" class="topleft clickme" title="Rotate left">
                     <v-icon name="circle" scale="2" />
@@ -120,7 +128,7 @@
                   </v-icon>
                 </span>
               </div>
-              <b-img v-if="event.photo" thumbnail :src="event.photo.paththumb + '?' + cacheBust" />
+              <b-img v-if="volunteering.photo" thumbnail :src="volunteering.photo.paththumb + '?' + cacheBust" />
               <b-img-lazy v-else thumbnail src="~/static/placeholder.jpg" />
             </div>
           </b-col>
@@ -136,8 +144,8 @@
           <b-col>
             <OurFilePond
               class="bg-white"
-              imgtype="CommunityEvent"
-              imgflag="communitevent"
+              imgtype="Volunteering"
+              imgflag="volunteering"
               :ocr="true"
               @photoProcessed="photoProcessed"
             />
@@ -148,42 +156,54 @@
         </label>
         <b-textarea
           id="description"
-          v-model="event.description"
+          v-model="volunteering.description"
           rows="5"
           max-rows="8"
           spellcheck="true"
-          placeholder="Let people know what the event is - why they should come, what to expect, and any admission charge or fee (we only approve free or cheap events)."
+          placeholder="Please let people know what the opportunity is - any organisation which is involved, what you'd like them to do, and why they might like to do it."
+          class="mt-2"
+        />
+        <label for="timecommitment">
+          Time commitment:
+        </label>
+        <b-textarea
+          id="description"
+          v-model="volunteering.timecommitment"
+          rows="2"
+          max-rows="8"
+          spellcheck="true"
+          placeholder="Please let people know what the time commitment is that you're looking for, e.g. how many hours a week, what times of day."
           class="mt-2"
         />
         <label for="location">
           Where is it?
         </label>
-        <b-form-input id="location" v-model="event.location" type="text" maxlength="80" placeholder="Where is it being held?  Add a postcode to make sure people can find you!" />
+        <b-form-input id="location" v-model="volunteering.location" type="text" maxlength="80" placeholder="Where is it being held?  Add a postcode to make sure people can find you!" />
         <label>
           When is it?
         </label>
-        <p>You can add multiple dates if the event occurs several times.</p>
-        <StartEndCollection v-if="event.dates" :dates="event.dates" @change="datesChange" />
+        <p>You can add multiple dates if the opportunity occurs several times.</p>
+        <StartEndCollection v-if="volunteering.dates" :dates="volunteering.dates" @change="datesChange" />
         <label for="contactname">
           Contact name:
         </label>
-        <b-form-input id="contactname" v-model="event.contactname" type="text" maxlength="60" placeholder="Is there a contact person for anyone who wants to find out more? (Optional)" />
+        <b-form-input id="contactname" v-model="volunteering.contactname" type="text" maxlength="60" placeholder="Is there a contact person for anyone who wants to find out more? (Optional)" />
         <label for="contactemail">
           Contact email:
         </label>
-        <b-form-input id="contactemail" v-model="event.contactemail" type="email" placeholder="Can people reach you by email? (Optional)" />
+        <b-form-input id="contactemail" v-model="volunteering.contactemail" type="email" placeholder="Can people reach you by email? (Optional)" />
         <label for="contactphone">
           Contact phone:
         </label>
-        <b-form-input id="contactphone" v-model="event.contactphone" type="tel" placeholder="Can people reach you by phone? (Optional)" />
+        <b-form-input id="contactphone" v-model="volunteering.contactphone" type="tel" placeholder="Can people reach you by phone? (Optional)" />
         <label for="contacturl">
           Web link:
         </label>
-        <b-form-input id="contacturl" v-model="event.contacturl" type="url" placeholder="Is there more information on the web? (Optional)" />
+        <b-form-input id="contacturl" v-model="volunteering.contacturl" type="url" placeholder="Is there more information on the web? (Optional)" />
       </div>
     </template>
     <template slot="modal-footer" slot-scope="{ ok, cancel }">
-      <div v-if="event.canmodify" class="w-100">
+      <div v-if="volunteering.canmodify" class="w-100">
         <b-button v-if="!editing" variant="white" class="float-left" @click="editing = true">
           <v-icon name="pen" />
           Edit
@@ -202,8 +222,8 @@
       <b-button v-if="editing" variant="success" class="float-right" @click="saveIt">
         <v-icon v-if="saving" name="sync" class="fa-spin" />
         <v-icon v-else name="save" />
-        <span v-if="event.id">Save Changes</span>
-        <span v-else>Add Event</span>
+        <span v-if="volunteering.id">Save Changes</span>
+        <span v-else>Add Opportunity</span>
       </b-button>
     </template>
   </b-modal>
@@ -241,8 +261,8 @@ label {
 // TODO Delete
 // TODO Add some form validation using a plugin - see https://bootstrap-vue.js.org/docs/reference/validation/
 // TODO Don't allow submission before image upload complete.
-// TODO Groups which don't support events
-// TODO Wherever we have b-img (throughout the site, not just here) we should have @brokenImage.  Bet we don't.
+// TODO Groups which don't support opportunities
+// TODO We used to have an "apply by" date. It's not clear we need this, so no urgency in re-adding it.
 import twem from '~/assets/js/twem'
 const GroupSelect = () => import('~/components/GroupSelect.vue')
 const OurFilePond = () => import('~/components/OurFilePond')
@@ -255,7 +275,7 @@ export default {
     StartEndCollection
   },
   props: {
-    event: {
+    volunteering: {
       validator: prop => typeof prop === 'object' || prop === null,
       required: true
     },
@@ -279,7 +299,7 @@ export default {
   },
   computed: {
     description() {
-      let desc = this.event.description
+      let desc = this.volunteering.description
       desc = desc ? twem.twem(this.$twemoji, desc) : ''
       desc = desc.trim()
       return desc
@@ -291,15 +311,17 @@ export default {
       this.showModal = true
 
       this.oldphoto =
-        this.event && this.event.photo ? this.event.photo.id : null
+        this.volunteering && this.volunteering.photo
+          ? this.volunteering.photo.id
+          : null
       this.olddates =
-        this.event && this.event.dates
-          ? JSON.parse(JSON.stringify(this.event.dates))
+        this.volunteering && this.volunteering.dates
+          ? JSON.parse(JSON.stringify(this.volunteering.dates))
           : null
 
       // If we don't have any dates, add an empty one so the slot appears for them to fill in.
-      this.event.dates = this.event.dates
-        ? this.event.dates
+      this.volunteering.dates = this.volunteering.dates
+        ? this.volunteering.dates
         : [
             {
               start: null,
@@ -308,17 +330,23 @@ export default {
           ]
 
       // If we don't have any groups, force a select.
-      this.event.groups = this.event.groups ? this.event.groups : [{ id: 0 }]
+      this.volunteering.groups = this.volunteering.groups
+        ? this.volunteering.groups
+        : [{ id: 0 }]
 
       // Store the group id we're using for the select to pick up.
       // TODO This seems a poor way to signal it.
-      if (this.event && this.event.groups && this.event.groups.length) {
+      if (
+        this.volunteering &&
+        this.volunteering.groups &&
+        this.volunteering.groups.length
+      ) {
         this.$store.commit('group/remember', {
-          id: 'editevent',
-          val: this.event.groups[0].id
+          id: 'editopportunity',
+          val: this.volunteering.groups[0].id
         })
 
-        this.groupid = this.event.groups[0].id
+        this.groupid = this.volunteering.groups[0].id
       }
     },
     hide() {
@@ -328,8 +356,8 @@ export default {
       this.saving = false
     },
     async deleteIt() {
-      await this.$store.dispatch('communityevents/delete', {
-        id: this.event.id
+      await this.$store.dispatch('volunteering/delete', {
+        id: this.volunteering.id
       })
 
       this.hide()
@@ -338,80 +366,87 @@ export default {
       // TODO Validation.
       this.saving = true
 
-      if (this.event.id) {
+      if (this.volunteering.id) {
         // This is an edit.
-        if (this.event.photo && this.event.photo.id !== this.oldphoto) {
-          await this.$store.dispatch('communityevents/setPhoto', {
-            id: this.event.id,
-            photoid: this.event.photo.id
+        if (
+          this.volunteering.photo &&
+          this.volunteering.photo.id !== this.oldphoto
+        ) {
+          await this.$store.dispatch('volunteerops/setPhoto', {
+            id: this.volunteering.id,
+            photoid: this.volunteering.photo.id
           })
         }
 
-        const oldgroupid = this.event.groups ? this.event.groups[0].id : null
+        const oldgroupid = this.volunteering.groups
+          ? this.volunteering.groups[0].id
+          : null
 
         if (this.groupid !== oldgroupid) {
           // Save the new group, then remove the old group, so it won't get stranded.
-          await this.$store.dispatch('communityevents/addGroup', {
-            id: this.event.id,
+          await this.$store.dispatch('volunteerops/addGroup', {
+            id: this.volunteering.id,
             groupid: this.groupid
           })
 
           if (oldgroupid) {
-            await this.$store.dispatch('communityevents/removeGroup', {
-              id: this.event.id,
+            await this.$store.dispatch('volunteerops/removeGroup', {
+              id: this.volunteering.id,
               groupid: oldgroupid
             })
           }
         }
 
-        await this.$store.dispatch('communityevents/setDates', {
-          id: this.event.id,
+        await this.$store.dispatch('volunteerops/setDates', {
+          id: this.volunteering.id,
           olddates: this.olddates,
-          newdates: this.event.dates
+          newdates: this.volunteering.dates
         })
 
-        await this.$store.dispatch('communityevents/save', this.event)
+        await this.$store.dispatch('volunteerops/save', this.volunteering)
       } else {
         // This is an add.  First create it to get the id.
-        const dates = this.event.dates
-        const photoid = this.event.photo ? this.event.photo.id : null
+        const dates = this.volunteering.dates
+        const photoid = this.volunteering.photo
+          ? this.volunteering.photo.id
+          : null
 
-        const eventid = await this.$store.dispatch(
-          'communityevents/add',
-          this.event
+        const volunteeringid = await this.$store.dispatch(
+          'volunteerops/add',
+          this.volunteering
         )
 
         if (photoid) {
-          await this.$store.dispatch('communityevents/setPhoto', {
-            id: eventid,
+          await this.$store.dispatch('volunteerops/setPhoto', {
+            id: volunteeringid,
             photoid: photoid
           })
         }
 
         // Save the group.
-        await this.$store.dispatch('communityevents/addGroup', {
-          id: eventid,
+        await this.$store.dispatch('volunteerops/addGroup', {
+          id: volunteeringid,
           groupid: this.groupid
         })
 
-        await this.$store.dispatch('communityevents/setDates', {
-          id: eventid,
+        await this.$store.dispatch('volunteerops/setDates', {
+          id: volunteeringid,
           olddates: [],
           newdates: dates
         })
 
         // Fetch for good luck.
-        await this.$store.dispatch('communityevents/fetch', {
-          id: eventid
+        await this.$store.dispatch('volunteerops/fetch', {
+          id: volunteeringid
         })
       }
 
       this.hide()
     },
     async dontSave() {
-      // We may have updated the event during the edit.  Fetch it again to reset those changes.
-      await this.$store.dispatch('communityevents/fetch', {
-        id: this.event.id
+      // We may have updated the opportunity during the edit.  Fetch it again to reset those changes.
+      await this.$store.dispatch('volunteerops/fetch', {
+        id: this.volunteering.id
       })
 
       this.hide()
@@ -428,7 +463,7 @@ export default {
       // We have uploaded a photo.  Remove the filepond instance.
       this.uploading = false
 
-      this.event.photo = {
+      this.volunteering.photo = {
         id: imageid,
         path: image,
         paththumb: imagethumb
@@ -439,10 +474,10 @@ export default {
     rotate(deg) {
       this.$axios
         .post(process.env.API + '/image', {
-          id: this.event.photo.id,
+          id: this.volunteering.photo.id,
           rotate: deg,
           bust: new Date().getTime(),
-          communityevent: true
+          volunteering: true
         })
         .then(() => {
           this.cacheBust = new Date().getTime()
@@ -455,7 +490,7 @@ export default {
       this.rotate(-90)
     },
     datesChange(dates) {
-      this.event.dates = dates
+      this.volunteering.dates = dates
     }
   }
 }

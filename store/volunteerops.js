@@ -74,7 +74,7 @@ export const mutations = {
     state.context = params.ctx
   },
 
-  delete(state, params) {
+  remove(state, params) {
     delete state.list[params.id]
   }
 }
@@ -101,7 +101,12 @@ export const getters = {
   sortedList: state => () => {
     const k = Object.values(state.list)
     return k.sort(function(a, b) {
-      if (a.earliestDate && b.earliestDate) {
+      // Systemwide (i.e. without groups) come at the top.
+      if (a.groups.length && !b.groups.length) {
+        return -1
+      } else if (!a.groups.length && b.groups.length) {
+        return -1
+      } else if (a.earliestDate && b.earliestDate) {
         return (
           new Date(a.earliestDate.start).getTime() -
           new Date(b.earliestDate.start).getTime()
@@ -125,15 +130,24 @@ export const getters = {
 
 export const actions = {
   async fetch({ commit }, params) {
-    const res = await this.$axios.get(process.env.API + '/communityevent', {
+    if (!params) {
+      params = {
+        systemwide: true
+      }
+    } else if (!params.groupid) {
+      // Not a specific group - get all of them including systemwide ones.
+      params.systemwide = true
+    }
+
+    const res = await this.$axios.get(process.env.API + '/volunteering', {
       params: params
     })
 
     if (res.status === 200) {
       if (params && params.id) {
-        commit('addAll', [res.data.communityevent])
+        commit('addAll', [res.data.volunteering])
       } else {
-        commit('addAll', res.data.communityevents)
+        commit('addAll', res.data.volunteerings)
 
         commit('setContext', {
           ctx: res.data.context
@@ -150,7 +164,7 @@ export const actions = {
   },
   async save({ commit, dispatch }, event) {
     const ret = await this.$axios.post(
-      process.env.API + '/communityevent',
+      process.env.API + '/volunteering',
       event,
       {
         headers: {
@@ -168,9 +182,29 @@ export const actions = {
 
     return ret
   },
+  async add({ commit, dispatch }, event) {
+    const ret = await this.$axios.post(
+      process.env.API + '/volunteering',
+      event,
+      {
+        headers: {
+          'X-HTTP-Method-Override': 'POST'
+        }
+      }
+    )
+
+    if (ret.status === 200 && ret.data.ret === 0) {
+      // Fetch back to update store and thereby components
+      await dispatch('fetch', {
+        id: ret.data.id
+      })
+    }
+
+    return ret.data.id
+  },
   async delete({ commit, dispatch }, params) {
     const ret = await this.$axios.post(
-      process.env.API + '/communityevent',
+      process.env.API + '/volunteering',
       {
         id: params.id
       },
@@ -189,29 +223,9 @@ export const actions = {
 
     return ret
   },
-  async add({ commit, dispatch }, event) {
-    const ret = await this.$axios.post(
-      process.env.API + '/communityevent',
-      event,
-      {
-        headers: {
-          'X-HTTP-Method-Override': 'POST'
-        }
-      }
-    )
-
-    if (ret.status === 200 && ret.data.ret === 0) {
-      // Fetch back to update store and thereby components
-      await dispatch('fetch', {
-        id: ret.data.id
-      })
-    }
-
-    return ret.data.id
-  },
   async addGroup({ commit, dispatch }, params) {
     const ret = await this.$axios.post(
-      process.env.API + '/communityevent',
+      process.env.API + '/volunteering',
       {
         id: params.id,
         action: 'AddGroup',
@@ -236,7 +250,7 @@ export const actions = {
 
   async removeGroup({ commit, dispatch }, params) {
     const ret = await this.$axios.post(
-      process.env.API + '/communityevent',
+      process.env.API + '/volunteering',
       {
         id: params.id,
         action: 'RemoveGroup',
@@ -261,7 +275,7 @@ export const actions = {
 
   async setPhoto({ commit, dispatch }, params) {
     const ret = await this.$axios.post(
-      process.env.API + '/communityevent',
+      process.env.API + '/volunteering',
       {
         id: params.id,
         action: 'SetPhoto',
@@ -290,7 +304,7 @@ export const actions = {
     for (const date of params.olddates) {
       promises.push(
         this.$axios.post(
-          process.env.API + '/communityevent',
+          process.env.API + '/volunteering',
           {
             id: params.id,
             action: 'RemoveDate',
@@ -308,7 +322,7 @@ export const actions = {
     for (const date of params.newdates) {
       promises.push(
         this.$axios.post(
-          process.env.API + '/communityevent',
+          process.env.API + '/volunteering',
           {
             id: params.id,
             action: 'AddDate',

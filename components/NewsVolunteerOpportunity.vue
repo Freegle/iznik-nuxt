@@ -31,7 +31,7 @@
           <v-icon name="map-marker-alt" class="fa-fw" /> {{ newsfeed.volunteering.location }}
         </span>
         <br>
-        <b-btn variant="primary" class="mt-2" @click="details">
+        <b-btn variant="primary" class="mt-2" @click="moreInfo">
           <v-icon name="info-circle" /> More info
         </b-btn>
       </b-col>
@@ -43,7 +43,7 @@
           lazy
           :src="newsfeed.volunteering.photo.paththumb"
           class="clickme d-inline-block mt-2 mt-md-0 float-md-right"
-          @click="details"
+          @click="moreInfo"
         />
       </b-col>
     </b-row>
@@ -52,31 +52,35 @@
       <b-col>
         <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
         <span class="float-right d-inline-block">
-          <b-btn variant="white" size="sm" @click="add">
+          <b-btn variant="white" size="sm" @click="addOpportunity">
             <v-icon name="plus" /> Add your opportunity
           </b-btn>
         </span>
       </b-col>
     </b-row>
+    <VolunteerOpportunityModal ref="addOpportunity" :volunteering="{}" :start-edit="true" />
+    <VolunteerOpportunityModal ref="moreInfo" :volunteering="newsfeed.volunteering" />
   </div>
 </template>
 <style scoped>
 </style>
 <script>
 import NewsBase from '~/components/NewsBase'
+const VolunteerOpportunityModal = () => import('./VolunteerOpportunityModal')
 const NewsLoveComment = () => import('~/components/NewsLoveComment')
 
 export default {
   components: {
+    VolunteerOpportunityModal,
     NewsLoveComment
   },
   extends: NewsBase,
   methods: {
-    add() {
-      // TODO
+    moreInfo() {
+      this.$refs.moreInfo.show()
     },
-    details() {
-      // TODO
+    addOpportunity() {
+      this.$refs.addOpportunity.show()
     }
   }
 }

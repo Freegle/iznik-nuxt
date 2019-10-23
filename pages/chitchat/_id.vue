@@ -157,7 +157,10 @@
         </div>
       </b-col>
       <b-col cols="0" md="3" class="d-none d-md-block">
-        Volunteer ops and ads go here
+        <div class="d-flex flex-column sidebar">
+          <VolunteerOpportunitySidebar class="justify-content-start flex-grow-1" style="overflow-y: auto" />
+          Job ads go here
+        </div>
       </b-col>
     </b-row>
   </div>
@@ -178,11 +181,14 @@ import twem from '~/assets/js/twem'
 import NewsThread from '~/components/NewsThread.vue'
 const CommunityEventSidebar = () =>
   import('../../components/CommunityEventSidebar')
+const VolunteerOpportunitySidebar = () =>
+  import('../../components/VolunteerOpportunitySidebar')
 const OurFilePond = () => import('~/components/OurFilePond')
 const BotLeftBox = () => import('~/components/BotLeftBox')
 
 export default {
   components: {
+    VolunteerOpportunitySidebar,
     CommunityEventSidebar,
     NewsThread,
     OurFilePond,

@@ -44,6 +44,10 @@
               <v-icon name="calendar-alt" scale="2" /><br>
               Events
             </b-nav-item>
+            <b-nav-item id="menu-option-volunteering" class="text-center p-0" to="/volunteering" @mousedown="maybeReload('/volunteering')">
+              <v-icon name="hands-helping" scale="2" /><br>
+              Volunteer
+            </b-nav-item>
           </b-navbar-nav>
           <b-navbar-nav class="ml-auto">
             <b-nav-item id="menu-option-notification" class="text-center p-0" />
