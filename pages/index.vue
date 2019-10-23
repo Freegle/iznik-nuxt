@@ -54,16 +54,26 @@
         <div style="height:80px" />
       </b-col>
       <b-col cols="0" md="3">
-        <b-row>
+        <b-row class="d-none d-md-block">
           <b-col>
             <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" class="float-right" alt="Android app" target="_blank">
               <img alt="Freegle Android app on Google Play" title="Freegle Android app on Google Play" class="img-responsive" src="/en-play-badge.png">
             </a>
           </b-col>
         </b-row>
-        <b-row>
+        <b-row class="d-none d-md-block">
           <b-col>
             <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&amp;mt=8" class="float-right mt-2" alt="IOS app" target="_blank">
+              <img alt="Freegle app for iPhone, iPad, and iPod touch" title="Freegle app for iPhone, iPad, and iPod touch" class="img-responsive" src="/app-store-black-sm.png">
+            </a>
+          </b-col>
+        </b-row>
+        <b-row class="d-block d-md-none">
+          <b-col>
+            <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" class="float-left" alt="Android app" target="_blank">
+              <img alt="Freegle Android app on Google Play" title="Freegle Android app on Google Play" class="img-responsive" src="/en-play-badge.png">
+            </a>
+            <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&amp;mt=8" class="float-right" alt="IOS app" target="_blank">
               <img alt="Freegle app for iPhone, iPad, and iPod touch" title="Freegle app for iPhone, iPad, and iPod touch" class="img-responsive" src="/app-store-black-sm.png">
             </a>
           </b-col>
@@ -71,40 +81,48 @@
       </b-col>
     </b-row>
     <footer>
-      <b-row class="m-0">
+      <b-row class="m-0 mt-2">
         <b-col cols="12" md="6" offset-md="3">
-          <b-list-group horizontal class="flex justify-content-between mb-2">
-            <b-list-group-item>
-              <b-btn variant="white" to="/about">
-                <v-icon name="info-circle" /> About
-              </b-btn>
-            </b-list-group-item>
-            <b-list-group-item>
-              <b-btn variant="white" to="/terms">
-                <v-icon name="book-open" /> Terms
-              </b-btn>
-            </b-list-group-item>
-            <b-list-group-item>
-              <b-btn variant="white" to="/privacy">
-                <v-icon name="lock" /> Privacy
-              </b-btn>
-            </b-list-group-item>
-            <b-list-group-item>
-              <b-btn variant="white" to="/disclaimer">
-                <v-icon name="gavel" /> Disclaimer
-              </b-btn>
-            </b-list-group-item>
-            <b-list-group-item>
-              <b-btn variant="white" to="/donate">
-                <v-icon name="hand-holding-heart" /> Donate
-              </b-btn>
-            </b-list-group-item>
-            <b-list-group-item>
-              <b-btn variant="white" to="/contact">
-                <v-icon name="envelope" /> Contact
-              </b-btn>
-            </b-list-group-item>
-          </b-list-group>
+          <div class="flex justify-content-between mb-2 d-none d-sm-block">
+            <b-btn variant="white" to="/about">
+              <v-icon name="info-circle" /> About
+            </b-btn>
+            <b-btn variant="white" to="/terms">
+              <v-icon name="book-open" /> Terms
+            </b-btn>
+            <b-btn variant="white" to="/privacy">
+              <v-icon name="lock" /> Privacy
+            </b-btn>
+            <b-btn variant="white" to="/disclaimer">
+              <v-icon name="gavel" /> Disclaimer
+            </b-btn>
+            <b-btn variant="white" to="/donate">
+              <v-icon name="hand-holding-heart" /> Donate
+            </b-btn>
+            <b-btn variant="white" to="/contact">
+              <v-icon name="envelope" /> Contact
+            </b-btn>
+          </div>
+          <div class="flex flex-wrap justify-content-between mb-2 d-block d-sm-none">
+            <nuxt-link to="/about">
+              About
+            </nuxt-link>
+            <nuxt-link to="/terms">
+              Terms
+            </nuxt-link>
+            <nuxt-link to="/privacy">
+              Privacy
+            </nuxt-link>
+            <nuxt-link to="/disclaimer">
+              Disclaimer
+            </nuxt-link>
+            <nuxt-link to="/donate">
+              Donate
+            </nuxt-link>
+            <nuxt-link to="/contact">
+              Contact
+            </nuxt-link>
+          </div>
           <span class="text-muted">
             Freegle is registered as a charity with HMRC (ref. XT32865).
           </span>
