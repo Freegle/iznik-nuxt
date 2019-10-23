@@ -12,7 +12,7 @@
         </p>
         <p>
           Other freeglers can see your name, profile picture and approximate location.  If you don't want that, you can change it in <nuxt-link to="/settings">
-            Settings.</nuxt-ilnk>
+            Settings.
           </nuxt-link>
         </p>
         <p>
