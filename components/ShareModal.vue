@@ -91,15 +91,10 @@
     </template>
   </b-modal>
 </template>
-<style scoped>
-select {
-  font-weight: bold;
-}
 
-option {
-  color: black !important;
-}
+<style scoped>
 </style>
+
 <script>
 export default {
   components: {},
