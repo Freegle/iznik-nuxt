@@ -11,9 +11,9 @@
         Please only do this if there's a good reason, so as not to disappoint people.
       </b-alert>
       <p>You're no longer promising:</p>
-      <b-select v-model="selectedMessage" :options="messageOptions" class="mb-2" disabled />
+      <b-select v-model="selectedMessage" :options="messageOptions" class="mb-2 font-weight-bold" disabled />
       <p>...to:</p>
-      <b-select v-model="selectedUser" :options="userOptions" class="mb-2" disabled />
+      <b-select v-model="selectedUser" :options="userOptions" class="mb-2 font-weight-bold" disabled />
     </template>
     <template slot="modal-footer" slot-scope="{ ok, cancel }">
       <b-button variant="white" @click="cancel">
@@ -25,11 +25,10 @@
     </template>
   </b-modal>
 </template>
+
 <style scoped>
-select {
-  font-weight: bold;
-}
 </style>
+
 <script>
 // TODO DESIGN This is a good example of why I can't write mobile apps.  It's a very old-school interface, dropdown
 // lists, whereas perhaps it should be a all funky image-based touch-gesture stuff.

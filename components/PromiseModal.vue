@@ -12,9 +12,9 @@
         You can change your mind later if it doesn't work out, using the  <em>Unpromise</em> button.
       </b-alert>
       <p>You're promising:</p>
-      <b-select v-model="selectedMessage" :options="messageOptions" class="mb-2" />
+      <b-select v-model="selectedMessage" :options="messageOptions" class="mb-2 font-weight-bold" />
       <p>...to:</p>
-      <b-select v-model="selectedUser" :options="userOptions" class="mb-2" />
+      <b-select v-model="selectedUser" :options="userOptions" class="mb-2 font-weight-bold" />
     </template>
     <template slot="modal-footer" slot-scope="{ ok, cancel }">
       <b-button variant="white" @click="cancel">
@@ -26,11 +26,10 @@
     </template>
   </b-modal>
 </template>
+
 <style scoped>
-select {
-  font-weight: bold;
-}
 </style>
+
 <script>
 // TODO DESIGN This is a good example of why I can't write mobile apps.  It's a very old-school interface, dropdown
 // lists, whereas perhaps it should be a all funky image-based touch-gesture stuff.

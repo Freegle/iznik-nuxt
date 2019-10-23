@@ -14,7 +14,7 @@
       </b-row>
       <b-row>
         <b-col>
-          <b-select v-model="type" @change="changeType">
+          <b-select v-model="type" class="font-weight-bold" @change="changeType">
             <option value="Taken">
               Taken by
             </option>
@@ -33,7 +33,7 @@
             v-model="selectedUser"
             autofocus
             :options="userOptions"
-            :class="'mb-2 ' + (selectedUser === -1 ? 'text-danger' : '')"
+            :class="'mb-2 font-weight-bold ' + (selectedUser === -1 ? 'text-danger' : '')"
           />
         </b-col>
       </b-row>
@@ -93,15 +93,13 @@
     </template>
   </b-modal>
 </template>
-<style scoped>
-select {
-  font-weight: bold;
-}
 
+<style scoped>
 option {
   color: black !important;
 }
 </style>
+
 <script>
 import Ratings from './Ratings'
 // TODO DESIGN We really want to push people to select a user.  How can we do that?  Can we force the select open on render?
