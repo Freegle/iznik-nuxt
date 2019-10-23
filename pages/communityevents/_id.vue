@@ -1,5 +1,5 @@
 <template>
-  <b-col>
+  <div>
     <b-row class="m-0">
       <b-col cols="0" md="3" class="d-none d-md-block" />
       <b-col cols="12" md="6" class="p-0">
@@ -11,14 +11,14 @@
               <groupSelect id="communityevents" class="float-left" all @change="groupChange" />
             </b-col>
             <b-col>
-              <b-btn variant="success" class="float-right">
+              <b-btn variant="success" class="float-right" @click="showEventModal">
                 <v-icon name="plus" /> Add an event
               </b-btn>
             </b-col>
           </b-row>
         </div>
         <div v-for="(event, $index) in events" :key="$index" class="mt-2">
-          <CommunityEvent :summary="false" :event="event" />
+          <CommunityEvent v-if="!event.pending" :summary="false" :event="event" />
         </div>
         <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" force-use-infinite-wrapper="body" @infinite="loadMore">
           <span slot="no-results">
@@ -34,17 +34,20 @@
       </b-col>
       <b-col cols="0" md="3" class="d-none d-md-block" />
     </b-row>
-  </b-col>
+    <CommunityEventModal ref="eventmodal" :event="{}" :start-edit="true" />
+  </div>
 </template>
 <script>
 import loginOptional from '@/mixins/loginOptional.js'
 const GroupSelect = () => import('~/components/GroupSelect.vue')
 const CommunityEvent = () => import('~/components/CommunityEvent.vue')
+const CommunityEventModal = () => import('~/components/CommunityEventModal')
 
 export default {
   components: {
     GroupSelect,
-    CommunityEvent
+    CommunityEvent,
+    CommunityEventModal
   },
   mixins: [loginOptional],
   data: function() {
@@ -104,6 +107,10 @@ export default {
       } else {
         $state.loaded()
       }
+    },
+
+    showEventModal() {
+      this.$refs.eventmodal.show()
     }
   }
 }

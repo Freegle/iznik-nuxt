@@ -1,6 +1,5 @@
 <template>
   <b-modal
-    v-if="event"
     id="profilemodal"
     v-model="showModal"
     size="lg"
@@ -25,7 +24,11 @@
           <b-alert show variant="info">
             Scroll down past the picture for more information!
           </b-alert>
-          <b-img lazy fluid :src="event.photo.path" class="mb-2" />
+          <b-row>
+            <b-col>
+              <b-img lazy fluid :src="event.photo.path" class="mb-2 w-100" />
+            </b-col>
+          </b-row>
         </div>
         <b-row>
           <b-col cols="4" md="3" class="field">
@@ -40,8 +43,10 @@
             When
           </b-col>
           <b-col cols="8" md="9">
-            <div v-for="(date, index) in event.dates" :key="'event-' + event.id + '-' + index + '-' + date.start.toString() + '-' + date.end.toString()" :class="date.string.past ? 'inpast': ''">
-              {{ date.string.start }} - {{ date.string.end }}<br>
+            <div v-for="(date, index) in event.dates" :key="'event-' + event.id + '-' + index + '-' + date.start.toString() + '-' + date.end.toString()" :class="date && date.string && date.string.past ? 'inpast': ''">
+              <span v-if="date && date.string">
+                {{ date.string.start }} - {{ date.string.end }}<br>
+              </span>
             </div>
           </b-col>
         </b-row>
@@ -95,9 +100,47 @@
           </b-col>
           <b-col cols="12" md="6">
             <div class="float-right">
-              <b-img-lazy v-if="event.photo" thumbnail :src="event.photo.paththumb" />
+              <div v-if="event.photo" class="container p-0">
+                <span @click="rotateLeft">
+                  <v-icon label="Rotate left" class="topleft clickme" title="Rotate left">
+                    <v-icon name="circle" scale="2" />
+                    <v-icon
+                      name="reply"
+                      style="color: white;"
+                    />
+                  </v-icon>
+                </span>
+                <span @click="rotateRight">
+                  <v-icon label="Rotate right" class="topright clickme" title="Rotate right" flip="horizontal">
+                    <v-icon name="circle" scale="2" />
+                    <v-icon
+                      name="reply"
+                      style="color: white;"
+                    />
+                  </v-icon>
+                </span>
+              </div>
+              <b-img v-if="event.photo" thumbnail :src="event.photo.paththumb + '?' + cacheBust" />
               <b-img-lazy v-else thumbnail src="~/static/placeholder.jpg" />
             </div>
+          </b-col>
+        </b-row>
+        <b-row>
+          <b-col>
+            <b-btn variant="white" class="mt-1 float-right" @click="photoAdd">
+              <v-icon name="camera" /> Upload photo
+            </b-btn>
+          </b-col>
+        </b-row>
+        <b-row v-if="uploading">
+          <b-col>
+            <OurFilePond
+              class="bg-white"
+              imgtype="CommunityEvent"
+              imgflag="communitevent"
+              :ocr="true"
+              @photoProcessed="photoProcessed"
+            />
           </b-col>
         </b-row>
         <label for="description">
@@ -105,7 +148,7 @@
         </label>
         <b-textarea
           id="description"
-          v-model="description"
+          v-model="event.description"
           rows="5"
           max-rows="8"
           spellcheck="true"
@@ -116,6 +159,11 @@
           Where is it?
         </label>
         <b-form-input id="location" v-model="event.location" type="text" maxlength="80" placeholder="Where is it being held?  Add a postcode to make sure people can find you!" />
+        <label>
+          When is it?
+        </label>
+        <p>You can add multiple dates if the event occurs several times.</p>
+        <StartEndCollection v-if="event.dates" :dates="event.dates" @change="datesChange" />
         <label for="contactname">
           Contact name:
         </label>
@@ -148,10 +196,12 @@
       <b-button v-if="!editing" variant="white" class="float-right" @click="cancel">
         Close
       </b-button>
-      <b-button v-if="editing" variant="white" class="float-right" @click="cancel">
+      <b-button v-if="editing" variant="white" class="float-right" @click="dontSave">
         Cancel
       </b-button>
-      <b-button v-if="editing" variant="success" class="float-right" @click="cancel">
+      <b-button v-if="editing" variant="success" class="float-right" @click="saveIt">
+        <v-icon v-if="saving" name="sync" class="fa-spin" />
+        <v-icon v-else name="save" />
         <span v-if="event.id">Save Changes</span>
         <span v-else>Add Event</span>
       </b-button>
@@ -170,9 +220,20 @@ label {
   margin-top: 10px;
 }
 
-.inpast {
-  text-decoration: line-through;
-  color: #6c757d70;
+.topleft {
+  top: 12px;
+  left: 10px;
+  position: absolute;
+}
+
+.topright {
+  top: 12px;
+  right: 10px;
+  position: absolute;
+}
+
+.container {
+  position: relative;
 }
 </style>
 <script>
@@ -183,14 +244,18 @@ label {
 // TODO Wherever we have b-img we should have @brokenImage.  Bet we don't.
 import twem from '~/assets/js/twem'
 const GroupSelect = () => import('~/components/GroupSelect.vue')
+const OurFilePond = () => import('~/components/OurFilePond')
+const StartEndCollection = () => import('~/components/StartEndCollection')
 
 export default {
   components: {
-    GroupSelect
+    GroupSelect,
+    OurFilePond,
+    StartEndCollection
   },
   props: {
     event: {
-      type: Object,
+      validator: prop => typeof prop === 'object' || prop === null,
       required: true
     },
     startEdit: {
@@ -203,7 +268,12 @@ export default {
     return {
       showModal: false,
       editing: false,
-      groupid: null
+      groupid: null,
+      uploading: false,
+      oldphoto: null,
+      olddates: null,
+      cacheBust: new Date().getTime(),
+      saving: false
     }
   },
   computed: {
@@ -214,16 +284,34 @@ export default {
       return desc
     }
   },
-  mounted() {
-    this.editing = this.startEdit
-  },
   methods: {
     show() {
+      this.editing = this.startEdit
       this.showModal = true
+
+      this.oldphoto =
+        this.event && this.event.photo ? this.event.photo.id : null
+      this.olddates =
+        this.event && this.event.dates
+          ? JSON.parse(JSON.stringify(this.event.dates))
+          : null
+
+      // If we don't have any dates, add an empty one so the slot appears for them to fill in.
+      this.event.dates = this.event.dates
+        ? this.event.dates
+        : [
+            {
+              start: null,
+              end: null
+            }
+          ]
+
+      // If we don't have any groups, force a select.
+      this.event.groups = this.event.groups ? this.event.groups : [{ id: 0 }]
 
       // Store the group id we're using for the select to pick up.
       // TODO This seems a poor way to signal it.
-      if (this.event.groups && this.event.groups.length) {
+      if (this.event && this.event.groups && this.event.groups.length) {
         this.$store.commit('group/remember', {
           id: 'editevent',
           val: this.event.groups[0].id
@@ -233,11 +321,134 @@ export default {
       }
     },
     hide() {
+      this.editing = false
+      this.uploading = false
       this.showModal = false
+      this.saving = false
     },
     deleteIt() {},
+    async saveIt() {
+      // TODO Validation.
+      this.saving = true
+
+      if (this.event.id) {
+        // This is an edit.
+        if (this.event.photo && this.event.photo.id !== this.oldphoto) {
+          await this.$store.dispatch('communityevents/setPhoto', {
+            id: this.event.id,
+            photoid: this.event.photo.id
+          })
+        }
+
+        const oldgroupid = this.event.groups ? this.event.groups[0].id : null
+
+        if (this.groupid !== oldgroupid) {
+          // Save the new group, then remove the old group, so it won't get stranded.
+          await this.$store.dispatch('communityevents/addGroup', {
+            id: this.event.id,
+            groupid: this.groupid
+          })
+
+          if (oldgroupid) {
+            await this.$store.dispatch('communityevents/removeGroup', {
+              id: this.event.id,
+              groupid: oldgroupid
+            })
+          }
+        }
+
+        await this.$store.dispatch('communityevents/setDates', {
+          id: this.event.id,
+          olddates: this.olddates,
+          newdates: this.event.dates
+        })
+
+        await this.$store.dispatch('communityevents/save', this.event)
+      } else {
+        // This is an add.  First create it to get the id.
+        const dates = this.event.dates
+        const photoid = this.event.photo ? this.event.photo.id : null
+
+        const eventid = await this.$store.dispatch(
+          'communityevents/add',
+          this.event
+        )
+
+        if (photoid) {
+          await this.$store.dispatch('communityevents/setPhoto', {
+            id: eventid,
+            photoid: photoid
+          })
+        }
+
+        // Save the group.
+        await this.$store.dispatch('communityevents/addGroup', {
+          id: eventid,
+          groupid: this.groupid
+        })
+
+        await this.$store.dispatch('communityevents/setDates', {
+          id: eventid,
+          olddates: [],
+          newdates: dates
+        })
+
+        // Fetch for good luck.
+        await this.$store.dispatch('communityevents/fetch', {
+          id: this.event.id
+        })
+      }
+
+      this.hide()
+    },
+    async dontSave() {
+      // We may have updated the event during the edit.  Fetch it again to reset those changes.
+      await this.$store.dispatch('communityevents/fetch', {
+        id: this.event.id
+      })
+
+      this.hide()
+    },
     groupChange: function(val) {
       this.groupid = val
+    },
+    photoAdd() {
+      // Flag that we're uploading.  This will trigger the render of the filepond instance and subsequently the
+      // processed callback below.
+      this.uploading = true
+    },
+    photoProcessed(imageid, imagethumb, image) {
+      // We have uploaded a photo.  Remove the filepond instance.
+      this.uploading = false
+
+      this.event.photo = {
+        id: imageid,
+        path: image,
+        paththumb: imagethumb
+      }
+
+      // TODO Handle any OCR returned from the server by putting it in the description.
+    },
+    rotate(deg) {
+      this.$axios
+        .post(process.env.API + '/image', {
+          id: this.event.photo.id,
+          rotate: deg,
+          bust: new Date().getTime(),
+          communityevent: true
+        })
+        .then(() => {
+          this.cacheBust = new Date().getTime()
+        })
+    },
+    rotateLeft() {
+      this.rotate(90)
+    },
+    rotateRight() {
+      this.rotate(-90)
+    },
+    datesChange(dates) {
+      this.event.dates = dates
     }
   }
 }

@@ -302,9 +302,7 @@ export default {
 
             // But maybe this isn't the thread head.
             const fetched = this.$store.getters['newsfeed/get'](this.id)
-            console.log('Fetched', fetched)
             if (fetched.threadhead && this.id !== fetched.threadhead) {
-              console.log('Get thread head', fetched.threadhead)
               this.newsfeed = []
               this.newsfeed = [
                 await this.$store.dispatch('newsfeed/fetch', {
@@ -312,7 +310,6 @@ export default {
                 })
               ]
             } else if (fetched.replyto && this.id !== fetched.replyto) {
-              console.log('Reply to', fetched.replyto)
               this.newsfeed = []
               this.newsfeed = [
                 await this.$store.dispatch('newsfeed/fetch', {

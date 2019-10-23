@@ -17,6 +17,8 @@
   </div>
 </template>
 <script>
+// TODO Would be nice to allow multiple in some cases, e.g. message post.
+// TODO DESIGN We should probably hide the drop area - we only use this when triggered from a button.
 import 'filepond/dist/filepond.min.css'
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
 import vueFilePond from 'vue-filepond'
@@ -42,6 +44,11 @@ export default {
     imgflag: {
       type: String,
       required: true
+    },
+    ocr: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
@@ -63,6 +70,7 @@ export default {
       data.append('photo', file, 'photo')
       data.append(this.imgflag, true)
       data.append('imgtype', this.imgtype)
+      data.append('ocr', this.ocr)
 
       const ret = await this.$axios.post(process.env.API + '/image', data, {
         headers: {

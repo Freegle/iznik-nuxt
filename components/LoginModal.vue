@@ -116,6 +116,7 @@
 <script>
 // TODO Sign Up
 // TODO Eye icon to show password for mobile
+// TODO DESIGN Doesn't fit screen on mobile.
 import Vue from 'vue'
 
 export default {

@@ -28,11 +28,11 @@
           </div>
           <b-img-lazy v-if="event.photo" fluid :src="event.photo.path" />
           <div class="text-center mt-2 mb-2">
-            <b-btn variant="white" size="sm" @click="showInfo">
+            <b-btn variant="white" size="sm" @click="showEventModal">
               <v-icon name="info-circle" /> More info
             </b-btn>
           </div>
-          <div v-if="event.groups" class="small text-muted text-center">
+          <div v-if="event.groups && event.groups.length > 0" class="small text-muted text-center">
             Posted on {{ event.groups[0].namedisplay }}
           </div>
         </div>
@@ -65,13 +65,13 @@
                     <v-icon name="users" class="fa-fw" />
                   </div>
                 </div>
-                <div class="media-body ml-2 small">
+                <div v-if="event.groups && event.groups.length > 0" class="media-body ml-2 small">
                   Posted on {{ event.groups[0].namedisplay }}
                 </div>
               </div>
               <read-more v-if="description" :text="description" :max-chars="300" class="ml-1 font-weight-bold prewrap forcebreak nopara" />
               <div class="mt-2 mb-2 ml-1">
-                <b-btn variant="white" @click="showInfo">
+                <b-btn variant="white" @click="showEventModal">
                   <v-icon name="info-circle" /> More info
                 </b-btn>
               </div>
@@ -91,12 +91,10 @@
         </div>
       </b-card-body>
     </b-card>
-    <CommunityEventModal ref="infomodal" :event="event" />
+    <CommunityEventModal ref="eventmodal" :event="event" />
   </div>
 </template>
 <script>
-// TODO Details
-// TODO Add
 import CommunityEventModal from './CommunityEventModal'
 import twem from '~/assets/js/twem'
 
@@ -126,8 +124,8 @@ export default {
     }
   },
   methods: {
-    showInfo() {
-      this.$refs.infomodal.show()
+    showEventModal() {
+      this.$refs.eventmodal.show()
     }
   }
 }

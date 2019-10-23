@@ -126,10 +126,15 @@ export const actions = {
     })
 
     if (res.status === 200) {
-      commit('addAll', res.data.communityevents)
-      commit('setContext', {
-        ctx: res.data.context
-      })
+      if (params && params.id) {
+        commit('addAll', [res.data.communityevent])
+      } else {
+        commit('addAll', res.data.communityevents)
+
+        commit('setContext', {
+          ctx: res.data.context
+        })
+      }
     }
   },
   clear({ commit }) {
@@ -138,5 +143,162 @@ export const actions = {
     })
 
     commit('setList', [])
+  },
+  async save({ commit, dispatch }, event) {
+    const ret = await this.$axios.post(
+      process.env.API + '/communityevent',
+      event,
+      {
+        headers: {
+          'X-HTTP-Method-Override': 'PATCH'
+        }
+      }
+    )
+
+    if (ret.status === 200 && ret.data.ret === 0) {
+      // Fetch back to update store and thereby components
+      await dispatch('fetch', {
+        id: event.id
+      })
+    }
+
+    return ret
+  },
+  async add({ commit, dispatch }, event) {
+    const ret = await this.$axios.post(
+      process.env.API + '/communityevent',
+      event,
+      {
+        headers: {
+          'X-HTTP-Method-Override': 'POST'
+        }
+      }
+    )
+
+    if (ret.status === 200 && ret.data.ret === 0) {
+      // Fetch back to update store and thereby components
+      await dispatch('fetch', {
+        id: ret.data.id
+      })
+    }
+
+    return ret.data.id
+  },
+  async addGroup({ commit, dispatch }, params) {
+    const ret = await this.$axios.post(
+      process.env.API + '/communityevent',
+      {
+        id: params.id,
+        action: 'AddGroup',
+        groupid: params.groupid
+      },
+      {
+        headers: {
+          'X-HTTP-Method-Override': 'PATCH'
+        }
+      }
+    )
+
+    if (ret.status === 200 && ret.data.ret === 0) {
+      // Fetch back to update store and thereby components
+      await dispatch('fetch', {
+        id: params.id
+      })
+    }
+
+    return ret
+  },
+
+  async removeGroup({ commit, dispatch }, params) {
+    const ret = await this.$axios.post(
+      process.env.API + '/communityevent',
+      {
+        id: params.id,
+        action: 'RemoveGroup',
+        groupid: params.groupid
+      },
+      {
+        headers: {
+          'X-HTTP-Method-Override': 'PATCH'
+        }
+      }
+    )
+
+    if (ret.status === 200 && ret.data.ret === 0) {
+      // Fetch back to update store and thereby components
+      await dispatch('fetch', {
+        id: params.id
+      })
+    }
+
+    return ret
+  },
+
+  async setPhoto({ commit, dispatch }, params) {
+    const ret = await this.$axios.post(
+      process.env.API + '/communityevent',
+      {
+        id: params.id,
+        action: 'SetPhoto',
+        photoid: params.photoid
+      },
+      {
+        headers: {
+          'X-HTTP-Method-Override': 'PATCH'
+        }
+      }
+    )
+
+    if (ret.status === 200 && ret.data.ret === 0) {
+      // Fetch back to update store and thereby components
+      await dispatch('fetch', {
+        id: params.id
+      })
+    }
+
+    return ret
+  },
+
+  async setDates({ commit, dispatch }, params) {
+    const promises = []
+
+    for (const date of params.olddates) {
+      promises.push(
+        this.$axios.post(
+          process.env.API + '/communityevent',
+          {
+            id: params.id,
+            action: 'RemoveDate',
+            dateid: date.id
+          },
+          {
+            headers: {
+              'X-HTTP-Method-Override': 'PATCH'
+            }
+          }
+        )
+      )
+    }
+
+    for (const date of params.newdates) {
+      promises.push(
+        this.$axios.post(
+          process.env.API + '/communityevent',
+          {
+            id: params.id,
+            action: 'AddDate',
+            start: date.start,
+            end: date.end
+          },
+          {
+            headers: {
+              'X-HTTP-Method-Override': 'PATCH'
+            }
+          }
+        )
+      )
+    }
+
+    await Promise.all(promises)
   }
 }

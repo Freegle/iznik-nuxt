@@ -3,9 +3,6 @@
     <b-card class="p-0 mb-1" variant="success">
       <b-card-header class="pl-2 pr-2 clearfix">
         <b-card-title class="msgsubj mb-0">
-          <b-btn v-if="expanded" variant="white" class="float-right" title="Share" @click="share">
-            <v-icon name="share-alt" />
-          </b-btn>
           <span v-if="attachments.length > 0" class="float-right clickme" @click="showPhotos">
             <b-badge v-if="attachments.length > 1" class="photobadge" variant="primary">+{{ attachments.length - 1 }} <v-icon name="camera" /></b-badge>
             <b-img-lazy
@@ -18,6 +15,9 @@
             />
             <br>
           </span>
+          <b-btn v-if="expanded" variant="white" class="float-right mr-1" title="Share" @click="share">
+            <v-icon name="share-alt" />
+          </b-btn>
           <Highlighter
             v-if="matchedon"
             :search-words="[matchedon.word]"
