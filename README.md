@@ -45,8 +45,8 @@ Rendering solution.
 
 This is getting close to Beta.
 * You can log in, though the Sign Up half isn't done yet.
-* The ChitChat/My Groups/Chat/Give/Find/My Posts/Notifications/Settings/Events pages exist.  They are basically functional, but not complete.
-* Volunteer/Spread/Help don't exist.  There are lots of other bits and pieces, and many TODOs in the code.
+* The ChitChat/My Groups/Chat/Give/Find/My Posts/Notifications/Settings/Events/Volunteer pages exist.  They are basically functional, but not complete.
+* Spread/Help don't exist.  There are lots of other bits and pieces, and many TODOs in the code.
 * We've done a first pass for how it displays on a mobile, but there will be some niggles at different screen sizes.
 * We've tested on Chrome only, and very few mobiles/tablets.
 
