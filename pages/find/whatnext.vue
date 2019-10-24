@@ -38,7 +38,7 @@
       <b-col class="text-center mt-2">
         <nuxt-link to="/">
           <b-btn variant="white">
-            Continue to Home Page >>
+            Continue to Home Page <v-icon name="angle-double-right" />
           </b-btn>
         </nuxt-link>
       </b-col>

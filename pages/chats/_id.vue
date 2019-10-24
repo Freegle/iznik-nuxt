@@ -1,11 +1,11 @@
 <template>
   <b-row class="m-0">
-    <b-col cols="12" md="3" class="chatlist p-0 bg-white">
+    <b-col cols="12" md="3" :class="'chatlist p-0 bg-white ' + (selectedChatId ? 'd-none d-md-block' : '') + ' ' + selectedChatId">
       <b-card class="p-0">
         <b-card-body class="p-0">
           <b-row>
             <b-col>
-              <b-form-input placeholder="Search chats" />
+              <b-form-input v-model="search" placeholder="Search chats" @update="searchChange" />
             </b-col>
             <b-col>
               <b-btn class="float-right" variant="white" @click="markAllRead">
@@ -17,14 +17,14 @@
       </b-card>
       <ul v-for="(chat, $index) in sortedChats" :key="'chat-' + $index" class="p-0 pt-1 list-unstyled mb-1">
         <li :class="{ active: activeChat && parseInt(activeChat.id) === parseInt(chat.id) }">
-          <ChatListEntry :key="'ChatListEntry-' + chat.id" v-bind="chat" />
+          <ChatListEntry :id="chat.id" />
         </li>
       </ul>
     </b-col>
     <b-col cols="12" md="6" class="chatback">
       <chatPane v-if="activeChat" v-bind="activeChat" />
     </b-col>
-    <b-col cols="0" md="3">
+    <b-col cols="0" md="3" class="d-none d-md-block">
       Ads go here
     </b-col>
   </b-row>
@@ -58,14 +58,18 @@ export default {
 
   data() {
     return {
-      selectedChatId: null
+      selectedChatId: null,
+      search: null,
+      searching: null,
+      searchlast: null,
+      clientSearch: true
     }
   },
 
   computed: {
     sortedChats() {
       // We sort chats by unread first, then
-      const chats = Object.values(this.$store.getters['chats/list']())
+      let chats = Object.values(this.$store.getters['chats/list']())
 
       chats.sort(function(a, b) {
         if (b.unseen !== a.unseen) {
@@ -74,6 +78,23 @@ export default {
           return new Date(b.lastdate) - new Date(a.lastdate)
         }
       })
+
+      if (this.search && this.clientSearch) {
+        // We apply the search on names in here so that we can respond on the client rapidly while the background server
+        // search is more thorough.
+        const l = this.search.toLowerCase()
+        chats = chats.filter(chat => {
+          if (
+            chat.name.toLowerCase().indexOf(l) !== -1 ||
+            (chat.snippet && chat.snippet.toLowerCase().indexOf(l) !== -1)
+          ) {
+            // Found in the name of the chat (which may include a user
+            return true
+          }
+
+          return false
+        })
+      }
 
       return chats
     },
@@ -124,10 +145,42 @@ export default {
     async markAllRead() {
       for (const chat of this.sortedChats) {
         if (chat.unseen) {
-          await this.$store.dispatch('chat/markSeen', {
+          await this.$store.dispatch('chats/markSeen', {
             id: chat.id
           })
         }
+      }
+    },
+    async searchChange(val) {
+      // Trigger a server search
+      if (this.searching) {
+        // Queue until we've finished.
+        this.searchlast = val
+      } else {
+        this.searching = val
+        this.clientSearch = true
+
+        await this.$store.dispatch('chats/listChats', {
+          search: val,
+          summary: true
+        })
+
+        this.chats = Object.values(this.$store.getters['chats/list']())
+        this.clientSearch = false
+
+        while (this.searchlast) {
+          // We have another search queued.
+          const val2 = this.searchlast
+          this.searchlast = null
+          await this.$store.dispatch('chats/listChats', {
+            search: val2,
+            summary: true
+          })
+
+          this.chats = Object.values(this.$store.getters['chats/list']())
+        }
+
+        this.searching = null
       }
     }
   }

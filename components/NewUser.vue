@@ -70,14 +70,14 @@
             </nuxt-link>.
           </li>
           <li>
-            4. You can browse other freeglers' posts in <nuxt-link to="/mygroups">
+            4. You can browse other freeglers' posts in <nuxt-link to="/communities">
               My Groups
             </nuxt-link>.
           </li>
         </ul>
-        <b-btn variant="success" size="lg" to="/mygroups">
+        <b-btn variant="success" size="lg" to="/communities">
           <v-icon name="users" />&nbsp;
-          Continue to My Groups
+          Continue to Communities
         </b-btn>
       </b-col>
     </b-row>
@@ -106,7 +106,7 @@
       <span v-html="tooltips[showToolTip].content" />
       <br>
       <b-btn variant="success" class="mt-4" @click="nextTooltip">
-        Next tip >>
+        Next tip <v-icon name="angle-double-right" />
       </b-btn>
     </b-tooltip>
     <div class="tooltip d-none" />

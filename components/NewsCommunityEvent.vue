@@ -6,19 +6,17 @@
           v-if="users[userid].profile.turl"
           rounded="circle"
           thumbnail
-          class="profile p-0 ml-1 mb-1 inline float-left"
+          class="profile p-0 ml-1 mb-1 inline float-left mr-2"
           alt="Profile picture"
           title="Profile"
           :src="users[userid].profile.turl"
           @error.native="brokenImage"
         />
         <v-icon v-if="users[userid].settings.showmod" name="leaf" class="showmod text-success" />
-        <span class="text-success font-weight-bold pl-2">
-          {{ users[userid].displayname }}
-        </span>
+        <span class="text-success font-weight-bold">{{ users[userid].displayname }}</span>
         created an event: <b>{{ newsfeed.communityevent.title }}</b>
         <br>
-        <span class="text-muted small pl-2">
+        <span class="text-muted small">
           {{ $dayjs(newsfeed.timestamp).fromNow() }}
         </span>
         on {{ newsfeed.communityevent.groups[0].namedisplay }}
@@ -36,7 +34,7 @@
           <v-icon name="calendar-alt" /> {{ date.start }} - {{ date.end }}
         </span>
         <br>
-        <b-btn variant="primary" class="mt-2" @click="details">
+        <b-btn variant="primary" class="mt-2" @click="moreInfo">
           <v-icon name="info-circle" class="fa-fw" /> More info
         </b-btn>
       </b-col>
@@ -47,8 +45,8 @@
           rounded
           lazy
           :src="newsfeed.communityevent.photo.paththumb"
-          class="clickme d-inline-block float-right"
-          @click="details"
+          class="clickme d-inline-block mt-2 mt-md-0 float-md-right"
+          @click="moreInfo"
         />
       </b-col>
     </b-row>
@@ -57,12 +55,14 @@
       <b-col>
         <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
         <span class="float-right d-inline-block">
-          <b-btn variant="white" size="sm" @click="add">
+          <b-btn variant="white" size="sm" @click="addEvent">
             <v-icon name="plus" /> Add your event
           </b-btn>
         </span>
       </b-col>
     </b-row>
+    <CommunityEventModal ref="addEvent" :event="{}" :start-edit="true" />
+    <CommunityEventModal ref="moreInfo" :event="newsfeed.communityevent" />
   </div>
 </template>
 <style scoped>
@@ -70,14 +70,19 @@
 <script>
 import NewsBase from '~/components/NewsBase'
 const NewsLoveComment = () => import('~/components/NewsLoveComment')
+const CommunityEventModal = () => import('~/components/CommunityEventModal')
+
+// TODO Would be nice not to load the modal in except when clicked.  Bit fiddly because of async imports.
 
 export default {
   components: {
-    NewsLoveComment
+    NewsLoveComment,
+    CommunityEventModal
   },
   extends: NewsBase,
   computed: {
     date() {
+      // Similar code to CommunityEvent
       let ret = null
       const dates = this.newsfeed.communityevent.dates
       let count = 0
@@ -111,11 +116,11 @@ export default {
     }
   },
   methods: {
-    add() {
-      // TODO
+    moreInfo() {
+      this.$refs.moreInfo.show()
     },
-    details() {
-      // TODO
+    addEvent() {
+      this.$refs.addEvent.show()
     }
   }
 }

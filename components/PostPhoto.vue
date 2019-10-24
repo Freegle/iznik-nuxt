@@ -19,7 +19,7 @@
       </v-icon>
     </span>
     <span @click="remove">
-      <v-icon label="Rotate left" class="bottomright clickme" title="Remove this photo">
+      <v-icon label="Remove this photo" class="bottomright clickme" title="Remove this photo">
         <v-icon name="circle" scale="2" />
         <v-icon
           name="trash-alt"

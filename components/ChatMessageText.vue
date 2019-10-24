@@ -2,7 +2,7 @@
   <div>
     <b-row class="pb-1">
       <b-col>
-        <div v-if="chatmessage.userid != $store.state.auth.user.id" class="media">
+        <div v-if="chatmessage.userid != $store.state.auth.user.id" class="media float-left">
           <div class="media-left">
             <div class="media-object">
               <b-img-lazy

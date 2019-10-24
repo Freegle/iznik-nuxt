@@ -1,116 +1,119 @@
 <template>
-  <client-only>
-    <div :style="'position: fixed; right: ' + right + 'px; bottom: 0'">
-      <vue-draggable-resizable
-        :handles="['tl']"
-        :w="width"
-        :h="height"
-        :parent="false"
-        :draggable="false"
-        :active="true"
-        :prevent-deactivation="true"
-        :min-width="320"
-        :min-height="400"
-        :style="'right: ' + width"
-        @resizing="onResize"
-      >
-        <div class="shadow chatHolder">
-          <b-row class="chatTitle m-0">
-            <b-col v-if="chat" class="pr-3">
-              <b-row>
-                <b-col class="p-0 pl-3">
-                  <span class="chatname">
-                    <span v-if="(chat.chattype == 'User2User' || chat.chattype == 'User2Mod')" class="d-inline">
-                      <span @click="showInfo">
+  <div v-if="me">
+    <client-only>
+      <div :style="'position: fixed; right: ' + right + 'px; bottom: 0'">
+        <vue-draggable-resizable
+          :handles="['tl']"
+          :w="width"
+          :h="height"
+          :parent="false"
+          :draggable="false"
+          :active="true"
+          :prevent-deactivation="true"
+          :min-width="320"
+          :min-height="400"
+          :style="'right: ' + width"
+          @resizing="onResize"
+        >
+          <div class="shadow chatHolder">
+            <b-row class="chatTitle m-0">
+              <b-col v-if="chat" class="pr-3">
+                <b-row>
+                  <b-col class="p-0 pl-3">
+                    <span class="chatname">
+                      <span v-if="(chat.chattype == 'User2User' || chat.chattype == 'User2Mod')" class="d-inline">
+                        <span @click="showInfo">
+                          {{ chat.name }}
+                        </span>
+                      </span>
+                      <span v-else class="d-inline">
                         {{ chat.name }}
                       </span>
                     </span>
-                    <span v-else class="d-inline">
-                      {{ chat.name }}
+                    <span v-if="chat.unseen">
+                      <b-badge variant="danger">{{ chat.unseen }}</b-badge>
                     </span>
+                    <ratings v-if="otheruser" :key="'otheruser-' + (otheruser ? otheruser.id : null)" size="sm" v-bind="otheruser" class="pl-1 pt-1" />
+                    <span class="pl-2 pr-1 float-right" @click="hide">
+                      <v-icon name="times" scale="1.5" class="clickme mt-1" title="Hide chat window" />
+                    </span>
+                    <span class="pl-1 float-right" @click="maximise">
+                      <v-icon name="window-maximize" scale="1.5" class="clickme mt-1" title="Maximise chat window" />
+                    </span>
+                  </b-col>
+                </b-row>
+              </b-col>
+            </b-row>
+            <b-row class="chatContent m-0" infinite-wrapper>
+              <b-col v-if="chat">
+                <infinite-loading direction="top" force-use-infinite-wrapper="true" :distance="distance" @infinite="loadMore">
+                  <span slot="no-results" />
+                  <span slot="no-more" />
+                  <span slot="spinner">
+                    <b-img-lazy src="~/static/loader.gif" />
                   </span>
-                  <span v-if="chat.unseen">
-                    <b-badge variant="danger">{{ chat.unseen }}</b-badge>
-                  </span>
-                  <ratings v-if="otheruser" :key="'otheruser-' + (otheruser ? otheruser.id : null)" size="sm" v-bind="otheruser" class="pl-1 pt-1" />
-                  <span class="pl-2 pr-1 float-right" @click="hide">
-                    <v-icon name="times" scale="1.5" class="clickme mt-1" title="Hide chat window" />
-                  </span>
-                  <span class="pl-1 float-right" @click="maximise">
-                    <v-icon name="window-maximize" scale="1.5" class="clickme mt-1" title="Maximise chat window" />
-                  </span>
+                </infinite-loading>
+                <ul v-for="(chatmessage, $index) in chatmessages" :key="'chatmessage-' + $index" class="p-0 pt-1 list-unstyled mb-1">
+                  <li v-if="chatmessage">
+                    <ChatMessage
+                      :key="'chatmessage-' + chatmessage.id"
+                      :chatmessage="chatmessage"
+                      :chat="chat"
+                      :me="me"
+                      :otheruser="otheruser"
+                      :last="chatmessage.id === chatmessages[chatmessages.length - 1].id"
+                    />
+                  </li>
+                </ul>
+              </b-col>
+            </b-row>
+            <div class="chatFooter">
+              <b-row class="m-0">
+                <b-col class="p-0">
+                  <b-form-textarea
+                    v-model="sendmessage"
+                    placeholder="Type here..."
+                    rows="2"
+                    max-rows="4"
+                    @keydown.enter.exact.prevent
+                    @keyup.enter.exact="send"
+                    @keydown.enter.shift.exact="newline"
+                    @keydown.alt.shift.exact="newline"
+                    @focus="markRead"
+                  />
                 </b-col>
               </b-row>
-            </b-col>
-          </b-row>
-          <b-row class="chatContent m-0" infinite-wrapper>
-            <b-col v-if="chat">
-              <infinite-loading direction="top" force-use-infinite-wrapper="true" :distance="distance" @infinite="loadMore">
-                <span slot="no-results" />
-                <span slot="no-more" />
-                <span slot="spinner">
-                  <b-img-lazy src="~/static/loader.gif" />
-                </span>
-              </infinite-loading>
-              <ul v-for="(chatmessage, $index) in chatmessages" :key="'chatmessage-' + $index" class="p-0 pt-1 list-unstyled mb-1">
-                <li v-if="chatmessage">
-                  <ChatMessage
-                    :key="'chatmessage-' + chatmessage.id"
-                    :chatmessage="chatmessage"
-                    :chat="chat"
-                    :me="me"
-                    :otheruser="otheruser"
-                    :last="chatmessage.id === chatmessages[chatmessages.length - 1].id"
-                  />
-                </li>
-              </ul>
-            </b-col>
-          </b-row>
-          <div class="chatFooter">
-            <b-row class="m-0">
-              <b-col class="p-0">
-                <b-form-textarea
-                  v-model="sendmessage"
-                  placeholder="Type here..."
-                  rows="2"
-                  max-rows="4"
-                  @keydown.enter.exact.prevent
-                  @keyup.enter.exact="send"
-                  @keydown.enter.shift.exact="newline"
-                  @keydown.alt.shift.exact="newline"
-                  @focus="markRead"
-                />
-              </b-col>
-            </b-row>
-            <b-row class="m-0">
-              <b-col class="p-0 pt-1 pb-1">
-                <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person" class="ml-1" @click="promise">
-                  <v-icon name="handshake" />
-                </b-btn>
-                <b-btn v-b-tooltip.hover.top variant="white" title="Send your address" disabled>
-                  <v-icon name="address-book" />
-                </b-btn>
-                <b-btn v-b-tooltip.hover.top variant="white" title="Update your availability" disabled>
-                  <v-icon name="calendar-alt" />
-                </b-btn>
-                <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler" @click="showInfo">
-                  <v-icon name="info-circle" />
-                </b-btn>
-                <b-btn v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
-                  <v-icon name="bell" />
-                </b-btn>
-                <b-btn variant="primary" class="float-right mr-1" @click="send">
-                  <v-icon name="angle-double-right" title="Send" />
-                </b-btn>
-              </b-col>
-            </b-row>
+              <b-row class="m-0">
+                <b-col class="p-0 pt-1 pb-1">
+                  <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person" class="ml-1" @click="promise">
+                    <v-icon name="handshake" />
+                  </b-btn>
+                  <b-btn v-b-tooltip.hover.top variant="white" title="Send your address" disabled>
+                    <v-icon name="address-book" />
+                  </b-btn>
+                  <b-btn v-b-tooltip.hover.top variant="white" title="Update your availability" disabled>
+                    <v-icon name="calendar-alt" />
+                  </b-btn>
+                  <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler" @click="showInfo">
+                    <v-icon name="info-circle" />
+                  </b-btn>
+                  <b-btn v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
+                    <v-icon name="bell" />
+                  </b-btn>
+                  <b-btn variant="primary" class="float-right mr-1" @click="send">
+                    <v-icon v-if="sending" name="sync" class="fa-spin" title="Sending..." />
+                    <v-icon v-else name="angle-double-right" title="Send" />
+                  </b-btn>
+                </b-col>
+              </b-row>
+            </div>
           </div>
-        </div>
-      </vue-draggable-resizable>
-      <PromiseModal ref="promise" :messages="ouroffers" :selected-message="likelymsg ? likelymsg : 0" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
-      <ProfileModal :id="otheruser ? otheruser.id : null" ref="profile" />
-    </div>
-  </client-only>
+        </vue-draggable-resizable>
+        <PromiseModal ref="promise" :messages="ouroffers" :selected-message="likelymsg ? likelymsg : 0" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
+        <ProfileModal :id="otheruser ? otheruser.id : null" ref="profile" />
+      </div>
+    </client-only>
+  </div>
 </template>
 <style scoped>
 .vdr {
@@ -218,7 +221,8 @@ export default {
       sendmessage: null,
       distance: 1000,
       likelymsg: null,
-      ouroffers: null
+      ouroffers: null,
+      sending: false
     }
   },
   computed: {
@@ -230,7 +234,6 @@ export default {
           ? this.chat.user1
           : this.chat.user2
       } else {
-        console.log("Can't find me", this.chat)
         return null
       }
     },
@@ -323,7 +326,7 @@ export default {
 
               if (currentCount === 0) {
                 // First load.  Scroll to the bottom when things have sorted themselves out.
-                requestIdleCallback(() => {
+                this.$nextTick(() => {
                   const container = this.$el.querySelector('.chatContent')
                   container.scrollTop = container.scrollHeight
                 })
@@ -351,6 +354,8 @@ export default {
       this.sendmessage += '\n'
     },
     _updateAfterSend() {
+      this.sending = false
+
       // The latest messages will be in the store now.  Get them to trigger re-render
       this.chatmessages = Object.values(
         this.$store.getters['chatmessages/getMessages'](this.id)
@@ -361,7 +366,7 @@ export default {
       this.lastFetched = new Date()
 
       // Scroll to the bottom so we can see it.
-      requestIdleCallback(() => {
+      this.$nextTick(() => {
         const container = this.$el.querySelector('.chatContent')
         container.scrollTop = container.scrollHeight
       })
@@ -370,10 +375,13 @@ export default {
       this.sendmessage = ''
 
       // We also want to trigger an update in the chat list.
-      this.$store.dispatch('chats/listChats')
+      this.$store.dispatch('chats/fetch', {
+        id: this.id
+      })
     },
     send: function() {
       let msg = this.sendmessage
+      this.sending = true
 
       // Encode up any emojis.
       msg = twem.untwem(msg)
@@ -449,8 +457,7 @@ export default {
         id: this.id
       })
 
-      // We also want to trigger an update in the chat list.
-      this.$store.dispatch('chats/listChats')
+      this._updateAfterSend()
     }
   }
 }

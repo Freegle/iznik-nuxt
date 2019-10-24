@@ -3,13 +3,12 @@ import Vue from 'vue'
 export const state = () => ({
   // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
   // storage.
-  list: {},
-  rooms: {}
+  list: {}
 })
 
 export const mutations = {
   addRoom(state, item) {
-    Vue.set(state.rooms, item.id, item)
+    Vue.set(state.list, item.id, item)
   },
 
   setList(state, chats) {
@@ -27,8 +26,8 @@ export const getters = {
   get: state => id => {
     let ret = null
 
-    Object.keys(state.rooms).forEach(key => {
-      const chat = state.rooms[key]
+    Object.keys(state.list).forEach(key => {
+      const chat = state.list[key]
 
       if (parseInt(key) === parseInt(id)) {
         ret = chat
@@ -47,7 +46,8 @@ export const actions = {
   async listChats({ commit }, params) {
     params = params || {
       chattypes: ['User2User', 'User2Mod'],
-      summary: true
+      summary: true,
+      search: params && params.search ? params.search : null
     }
 
     const res = await this.$axios.get(process.env.API + '/chat/rooms', {
@@ -58,6 +58,34 @@ export const actions = {
       commit('setList', res.data.chatrooms)
     }
   },
+
+  async openChatToMods({ dispatch, commit }, params) {
+    let id = null
+
+    const res = await this.$axios.post(
+      process.env.API + '/chat/rooms',
+      {
+        chattype: 'User2Mod',
+        groupid: params.groupid
+      },
+      {
+        headers: {
+          'X-HTTP-Method-Override': 'PUT'
+        }
+      }
+    )
+
+    if (res.status === 200) {
+      id = res.data.id
+
+      await dispatch('fetch', {
+        id: id
+      })
+    }
+
+    return id
+  },
+
   async fetch({ commit }, params) {
     const chatid = params.id
 

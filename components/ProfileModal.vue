@@ -16,7 +16,7 @@
             <div class="float-right">
               <span class="small text-faded float-right">#{{ id }}</span>
               <br>
-              <b-btn variant="white" size="sm" class="float-right mb-1" :disabled="user.id === myid ? 'true' : ''">
+              <b-btn variant="white" size="sm" class="float-right mb-1" :disabled="user.id === myid ? 'true' : undefined">
                 <v-icon name="comment" class="d-none d-sm-inline-block" />&nbsp;Message
               </b-btn>
               <br>
@@ -155,6 +155,7 @@
 <script>
 // TODO DESIGN Header is messy - wallpaper should fill the whole thing; image should have a border round it with a gap.
 // TODO DESIGN The about me section needs nice big quotes round it.
+// TODO Message button
 const Ratings = () => import('~/components/Ratings')
 const ReplyTime = () => import('~/components/ReplyTime')
 

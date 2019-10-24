@@ -18,7 +18,7 @@ export default {
       default: false
     },
     id: {
-      type: String,
+      validator: prop => typeof prop === 'number' || typeof prop === 'string',
       required: true
     }
   },
@@ -37,8 +37,6 @@ export default {
           id: this.id,
           val: newval
         })
-
-        this.$emit('change', newval)
       }
     },
 
@@ -48,7 +46,7 @@ export default {
       if (this.all) {
         groups.push({
           value: 0,
-          text: '-- All groups --',
+          text: '-- All my groups --',
           selected: this.selectedGroup === 0
         })
       } else {
@@ -59,14 +57,17 @@ export default {
         })
       }
 
-      Object.keys(this.$store.state.group.list).forEach(key => {
-        const group = this.$store.state.group.list[key]
+      const myGroups = this.$store.getters['auth/groups']()
+      Object.keys(myGroups).forEach(key => {
+        const group = myGroups[key]
 
-        groups.push({
-          value: group.id,
-          text: group.namedisplay,
-          selected: this.selectedGroup === group.id
-        })
+        if (group.type === 'Freegle') {
+          groups.push({
+            value: group.id,
+            text: group.namedisplay,
+            selected: this.selectedGroup === group.id
+          })
+        }
       })
 
       groups.sort(function(a, b) {
@@ -77,6 +78,25 @@ export default {
 
       return groups
     }
+  },
+  mounted() {
+    // Set up a watch on the store.  We do this because initially the store may not have been reloaded from local
+    // storage. When it does get initially loaded, or when we change the value above, this watch will fire.
+    const current = this.$store.getters['group/remembered'](this.id)
+
+    if (current !== undefined) {
+      // It has been loaded.
+      this.$emit('change', current)
+    }
+
+    this.$store.watch(
+      (state, getters) => {
+        return this.$store.getters['group/remembered'](this.id)
+      },
+      (newValue, oldValue) => {
+        this.$emit('change', newValue)
+      }
+    )
   }
 }
 </script>

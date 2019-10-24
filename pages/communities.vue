@@ -2,7 +2,10 @@
   <b-col>
     <b-row class="m-0">
       <b-col cols="0" md="3" class="d-none d-md-block">
-        Community Events go here
+        <div class="d-flex flex-column sidebar">
+          <CommunityEventSidebar class="justify-content-start flex-grow-1" style="overflow-y: auto" />
+          <BotLeftBox class="justify-content-end flex-shrink-2" />
+        </div>
       </b-col>
       <b-col cols="12" md="6" class="p-0">
         <div>
@@ -32,7 +35,10 @@
         </div>
       </b-col>
       <b-col cols="0" md="3" class="d-none d-md-block">
-        Volunteer ops and ads go here
+        <div class="d-flex flex-column sidebar">
+          <VolunteerOpportunitySidebar class="justify-content-start flex-grow-1" style="overflow-y: auto" />
+          Job ads go here
+        </div>
       </b-col>
     </b-row>
   </b-col>
@@ -44,12 +50,17 @@ import loginRequired from '@/mixins/loginRequired.js'
 const GroupSelect = () => import('~/components/GroupSelect.vue')
 const GroupHeader = () => import('~/components/GroupHeader.vue')
 const Message = () => import('~/components/Message.vue')
+const CommunityEventSidebar = () => import('~/components/CommunityEventSidebar')
+const VolunteerOpportunitySidebar = () =>
+  import('~/components/VolunteerOpportunitySidebar')
 
 export default {
   components: {
     GroupHeader,
     GroupSelect,
-    Message
+    Message,
+    CommunityEventSidebar,
+    VolunteerOpportunitySidebar
   },
   mixins: [loginRequired],
   data: function() {
@@ -82,9 +93,11 @@ export default {
     group: function() {
       // We remember any previously selected group.
       const remembered = this.$store.getters['group/remembered']('mygroups')
+      console.log('Compute group', remembered)
       const ret = remembered
         ? this.$store.getters['group/get'](remembered)
         : null
+      console.log('Returning', ret)
 
       return ret
     },
@@ -98,6 +111,20 @@ export default {
       return this.group ? this.group.id : null
     }
   },
+  watch: {
+    async group(newValue, oldValue) {
+      // We have this watch because we may need to fetch a group that we have remembered.  The mounted()
+      // call may happen before we have restored the persisted state, so we can't initiate the fetch there.
+      //
+      // TODO But this seems very ugly.  Is it right?
+      const remembered = this.$store.getters['group/remembered']('mygroups')
+      if (oldValue === null || oldValue.id !== remembered) {
+        await this.$store.dispatch('group/fetch', {
+          id: remembered
+        })
+      }
+    }
+  },
   mounted() {
     // We want this to be our next home page.
     try {
@@ -108,6 +135,11 @@ export default {
 
     // Ensure we have no cached messages for other searches/groups
     this.$store.dispatch('messages/clear')
+
+    // Get our list of groups
+    this.$store.dispatch('auth/fetchUser', {
+      components: ['me', 'groups']
+    })
   },
   methods: {
     groupChange: function() {

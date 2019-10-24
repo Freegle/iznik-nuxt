@@ -177,6 +177,14 @@
           </mappings>
         </serverdata>
       </paths>
+      <paths name="bulk4.ilovefreegle.org">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+            <mapping local="$PROJECT_DIR$/node_modules" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="db1.ilovefreegle.org">
         <serverdata>
           <mappings>

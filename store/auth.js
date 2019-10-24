@@ -1,10 +1,14 @@
+// TODO HARD All this loginRequired/loginOptional stuff seems like hard work.  I've seen at least one undiagnosed
+// bug.  Is there really not a better way to do it?  For example, if we used local storage directly, maybe we
+// could simplify some of the issues that arise because the Vuex persisted store is loaded later rather than sooner.
 let first = true
 
 export const state = () => ({
   forceLogin: false,
   user: null,
   userFetched: null,
-  groups: []
+  groups: [],
+  nchan: null
 })
 
 const NONMIN = ['me', 'groups', 'aboutme', 'phone', 'notifications']
@@ -46,6 +50,10 @@ export const mutations = {
 
   setFetched(state, val) {
     state.userFetched = val
+  },
+
+  setNCHAN(state, val) {
+    state.nchan = val
   }
 }
 
@@ -58,6 +66,10 @@ export const getters = {
     return state.user
   },
 
+  groups: state => () => {
+    return state.groups
+  },
+
   member: state => id => {
     let ret = false
 
@@ -68,6 +80,10 @@ export const getters = {
     }
 
     return ret
+  },
+
+  nchan: state => () => {
+    return state.nchan
   }
 }
 
@@ -254,5 +270,9 @@ export const actions = {
     }
 
     return state.user
+  },
+
+  setNCHAN({ commit, dispatch, state }, params) {
+    commit('setNCHAN', params)
   }
 }

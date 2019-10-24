@@ -78,7 +78,7 @@
           <b-row v-if="valid">
             <b-col cols="12" md="6" offset-md="3" class="text-center pt-2">
               <b-btn variant="success" size="lg" block @click="next">
-                Next >>
+                Next <v-icon name="angle-double-right" />
               </b-btn>
             </b-col>
           </b-row>

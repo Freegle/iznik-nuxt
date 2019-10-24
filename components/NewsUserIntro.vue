@@ -1,35 +1,45 @@
 <template>
   <b-row>
     <b-col v-if="userid && users[userid]" class="clickme" title="Click to see their profile" @click="showInfo">
-      <b-img-lazy
-        v-if="users[userid].profile.turl"
-        rounded="circle"
-        thumbnail
-        class="profile p-0 ml-1 mb-1 inline float-left"
-        alt="Profile picture"
-        title="Profile"
-        :src="users[userid].profile.turl"
-        @error.native="brokenImage"
-        @click="showInfo"
-      />
-      <v-icon v-if="users[userid].settings.showmod" name="leaf" class="showmod text-success" />
-      <span class="text-success font-weight-bold pl-2">
-        {{ users[userid].displayname }}
-      </span>
-      {{ append }}
-      <span v-if="appendBold">
-        "{{ appendBold }}"
-      </span>
-      <br>
-      <span class="text-muted small pl-0 pl-sm-2">
-        {{ $dayjs(newsfeed.timestamp).fromNow() }}
-      </span>
-      <NewsUserInfo :user="users[userid]" />
+      <div class="media clickme">
+        <div class="media-left">
+          <div class="media-object">
+            <b-img-lazy
+              v-if="users[userid].profile.turl"
+              rounded="circle"
+              thumbnail
+              class="profile p-0 ml-1 mb-1 inline float-left"
+              alt="Profile picture"
+              title="Profile"
+              :src="users[userid].profile.turl"
+              @error.native="brokenImage"
+              @click="showInfo"
+            />
+            <v-icon v-if="users[userid].settings.showmod" name="leaf" class="showmod text-success" />
+          </div>
+        </div>
+        <div class="media-body ml-2">
+          <span class="text-success font-weight-bold">
+            {{ users[userid].displayname }}
+          </span>
+          {{ append }}
+          <span v-if="appendBold">
+            "{{ appendBold }}"
+          </span>
+          <br>
+          <span class="text-muted small pl-0">
+            {{ $dayjs(newsfeed.timestamp).fromNow() }}
+          </span>
+          <NewsUserInfo :user="users[userid]" />
+        </div>
+      </div>
       <ProfileModal v-if="infoclick" :id="userid" ref="profilemodal" />
     </b-col>
   </b-row>
 </template>
 <style scoped>
+/*TODO DESIGN This showmod leaf appears in the wrong place on mobile because profile is smaller then.  This should*/
+/*be handled better.  Applies in other places - search for "leaf" to find possibilities.*/
 .showmod {
   top: 29px;
   left: 44px;
@@ -88,9 +98,13 @@ export default {
       this.infoclick = true
 
       // TODO I tried nextTick here, and the ref wasn't defined in the callback.  So this is a hack.
+      // Might relate to use of async import stuff.
       setTimeout(() => {
         this.$refs.profilemodal.show()
       }, 25)
+    },
+    brokenImage(event) {
+      event.target.src = '/static/defaultprofile.png'
     }
   }
 }

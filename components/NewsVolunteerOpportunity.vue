@@ -6,19 +6,17 @@
           v-if="users[userid].profile.turl"
           rounded="circle"
           thumbnail
-          class="profile p-0 ml-1 mb-1 inline float-left"
+          class="profile p-0 ml-1 mb-1 inline float-left mr-2"
           alt="Profile picture"
           title="Profile"
           :src="users[userid].profile.turl"
           @error.native="brokenImage"
         />
         <v-icon v-if="users[userid].settings.showmod" name="leaf" class="showmod text-success" />
-        <span class="text-success font-weight-bold pl-2">
-          {{ users[userid].displayname }}
-        </span>
+        <span class="text-success font-weight-bold">{{ users[userid].displayname }}</span>
         posted a volunteering opportunity: <b>{{ newsfeed.volunteering.title }}</b>
         <br>
-        <span class="text-muted small pl-2">
+        <span class="text-muted small">
           {{ $dayjs(newsfeed.timestamp).fromNow() }}
         </span>
         on {{ newsfeed.volunteering.groups[0].namedisplay }}
@@ -33,7 +31,7 @@
           <v-icon name="map-marker-alt" class="fa-fw" /> {{ newsfeed.volunteering.location }}
         </span>
         <br>
-        <b-btn variant="primary" class="mt-2" @click="details">
+        <b-btn variant="primary" class="mt-2" @click="moreInfo">
           <v-icon name="info-circle" /> More info
         </b-btn>
       </b-col>
@@ -44,8 +42,8 @@
           rounded
           lazy
           :src="newsfeed.volunteering.photo.paththumb"
-          class="clickme d-inline-block float-right"
-          @click="details"
+          class="clickme d-inline-block mt-2 mt-md-0 float-md-right"
+          @click="moreInfo"
         />
       </b-col>
     </b-row>
@@ -54,31 +52,35 @@
       <b-col>
         <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
         <span class="float-right d-inline-block">
-          <b-btn variant="white" size="sm" @click="add">
+          <b-btn variant="white" size="sm" @click="addOpportunity">
             <v-icon name="plus" /> Add your opportunity
           </b-btn>
         </span>
       </b-col>
     </b-row>
+    <VolunteerOpportunityModal ref="addOpportunity" :volunteering="{}" :start-edit="true" />
+    <VolunteerOpportunityModal ref="moreInfo" :volunteering="newsfeed.volunteering" />
   </div>
 </template>
 <style scoped>
 </style>
 <script>
 import NewsBase from '~/components/NewsBase'
+const VolunteerOpportunityModal = () => import('./VolunteerOpportunityModal')
 const NewsLoveComment = () => import('~/components/NewsLoveComment')
 
 export default {
   components: {
+    VolunteerOpportunityModal,
     NewsLoveComment
   },
   extends: NewsBase,
   methods: {
-    add() {
-      // TODO
+    moreInfo() {
+      this.$refs.moreInfo.show()
     },
-    details() {
-      // TODO
+    addOpportunity() {
+      this.$refs.addOpportunity.show()
     }
   }
 }

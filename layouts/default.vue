@@ -14,45 +14,60 @@
           />
         </b-navbar-brand>
         <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
-        <b-collapse v-if="loggedIn" id="nav_collapse" is-nav>
+        <b-collapse v-if="loggedIn" id="nav_collapse" ref="nav_collapse" is-nav>
           <b-navbar-nav>
-            <b-nav-item id="menu-option-chitchat" class="text-center p-0" to="/chitchat" @mousedown="maybeReload('/chitchat')">
+            <b-nav-item id="menu-option-chitchat" class="text-center small p-0" to="/chitchat" @mousedown="maybeReload('/chitchat')">
               <v-icon name="coffee" scale="2" /><br>
               ChitChat
             </b-nav-item>
-            <b-nav-item id="menu-option-myposts" class="text-center p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
+            <b-nav-item id="menu-option-myposts" class="text-center small p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
               <v-icon name="home" scale="2" /><br>
               My&nbsp;Posts
             </b-nav-item>
-            <b-nav-item id="menu-option-mygroups" class="text-center p-0" to="/mygroups" @mousedown="maybeReload('/mygroups')">
+            <b-nav-item id="menu-option-mygroups" class="text-center small p-0" to="/communities" @mousedown="maybeReload('/communities')">
               <v-icon name="users" scale="2" /><br>
-              My&nbsp;Groups
+              Communities
             </b-nav-item>
-            <b-nav-item id="menu-option-give" class="text-center p-0" to="/give" @mousedown="maybeReload('/give')">
+            <b-nav-item id="menu-option-give" class="text-center small p-0" to="/give" @mousedown="maybeReload('/give')">
               <v-icon name="gift" scale="2" /><br>
               Give
             </b-nav-item>
-            <b-nav-item id="menu-option-find" class="text-center p-0" to="/find" @mousedown="maybeReload('/find')">
+            <b-nav-item id="menu-option-find" class="text-center small p-0" to="/find" @mousedown="maybeReload('/find')">
               <v-icon name="search" scale="2" /><br>
               Find
             </b-nav-item>
-            <b-nav-item id="menu-option-explore" class="text-center p-0" to="/explore" @mousedown="maybeReload('/explore')">
+            <b-nav-item id="menu-option-explore" class="text-center small p-0" to="/explore" @mousedown="maybeReload('/explore')">
               <v-icon name="map-marked-alt" scale="2" /><br>
               Explore
+            </b-nav-item>
+            <b-nav-item id="menu-option-communityevents" class="text-center small p-0" to="/communityevents" @mousedown="maybeReload('/communityevents')">
+              <v-icon name="calendar-alt" scale="2" /><br>
+              Events
+            </b-nav-item>
+            <b-nav-item id="menu-option-volunteering" class="text-center small p-0" to="/volunteering" @mousedown="maybeReload('/volunteering')">
+              <v-icon name="hands-helping" scale="2" /><br>
+              Volunteer
             </b-nav-item>
           </b-navbar-nav>
           <b-navbar-nav class="ml-auto">
             <b-nav-item id="menu-option-notification" class="text-center p-0" />
             <b-nav-item-dropdown class="white text-center notiflist" lazy right @shown="showNotifications">
               <template slot="button-content">
-                <div class="notifwrapper ml-3">
+                <div class="notifwrapper text-center small">
                   <v-icon name="bell" scale="2" />
                   <b-badge v-if="notificationCount" variant="danger" class="ml-3 notifbadge">
                     {{ notificationCount }}
-                  </b-badge>
+                  </b-badge><br>
+                  Notifications
                 </div>
-                Notifications
               </template>
+              <b-dropdown-item>
+                <b-btn variant="white" size="sm" @click="markAllRead">
+                  <!--                  TODO DESIGN Align to right; float right breaks divider-->
+                  Mark all as read
+                </b-btn>
+              </b-dropdown-item>
+              <b-dropdown-divider />
               <b-dropdown-item v-for="(notification, $index) in notifications" :key="'notification-' + $index" class="p-0 notpad">
                 <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
               </b-dropdown-item>
@@ -65,15 +80,24 @@
               </infinite-loading>
             </b-nav-item-dropdown>
             <a class="d-none dropdown-item" />
-            <b-nav-item id="menu-option-chat" class="text-center p-0" to="/chats" @mousedown="maybeReload('/chats')">
-              <v-icon name="comments" scale="2" /><br>
-              Chats
+            <b-nav-item id="menu-option-chat" class="text-center small p-0" to="/chats" @mousedown="maybeReload('/chats')">
+              <div class="notifwrapper">
+                <v-icon name="comments" scale="2" /><br>
+                Chats
+                <b-badge v-if="chatCount" variant="danger" class="ml-3 chatbadge">
+                  {{ chatCount }}
+                </b-badge>
+              </div>
             </b-nav-item>
-            <b-nav-item id="menu-option-settings" class="text-center p-0" to="/settings" @mousedown="maybeReload('/settings')">
+            <b-nav-item id="menu-option-help" class="text-center small p-0" to="/help" @mousedown="maybeReload('/help')">
+              <v-icon name="question-circle" scale="2" /><br>
+              Help
+            </b-nav-item>
+            <b-nav-item id="menu-option-settings" class="text-center small p-0" to="/settings" @mousedown="maybeReload('/settings')">
               <v-icon name="cog" scale="2" /><br>
               Settings
             </b-nav-item>
-            <b-nav-item id="menu-option-logout" class="text-center p-0" @click="logOut()">
+            <b-nav-item id="menu-option-logout" class="text-center p-0 small" @click="logOut()">
               <v-icon name="sign-out-alt" scale="2" /><br>
               Logout
             </b-nav-item>
@@ -130,7 +154,12 @@
         </b-dropdown>
 
         <nuxt-link v-if="loggedIn" id="menu-option-chat-sm" class="text-white mr-3" to="/chats">
-          <v-icon name="comments" scale="2" />
+          <div class="notifwrapper">
+            <v-icon name="comments" scale="2" /><br>
+            <b-badge v-if="chatCount" variant="danger" class="chatbadge">
+              {{ chatCount }}
+            </b-badge>
+          </div>
         </nuxt-link>
 
         <b-nav-item v-if="!loggedIn">
@@ -143,7 +172,7 @@
           <b-navbar-toggle v-if="loggedIn" target="nav_collapse_mobile" />
         </b-navbar-nav>
 
-        <b-collapse v-if="loggedIn" id="nav_collapse_mobile" class="w-100 ourBack">
+        <b-collapse v-if="loggedIn" id="nav_collapse_mobile" ref="nav_collapse_mobile" class="w-100 ourBack">
           <b-navbar-nav class="ml-auto flex-row flex-wrap small">
             <b-nav-item class="text-center p-0 white" to="/chitchat" @mousedown="maybeReload('/chitchat')">
               <v-icon name="coffee" scale="2" /><br>
@@ -161,17 +190,13 @@
               <v-icon name="search" scale="2" /><br>
               Find
             </b-nav-item>
-            <b-nav-item class="text-center p-0" to="/mygroups" @mousedown="maybeReload('/mygroups')">
+            <b-nav-item class="text-center p-0" to="/communities" @mousedown="maybeReload('/communities')">
               <v-icon name="users" scale="2" /><br>
               My&nbsp;Groups
             </b-nav-item>
             <b-nav-item class="text-center p-0" to="/explore" @mousedown="maybeReload('/explore')">
               <v-icon name="map-marked-alt" scale="2" /><br>
               Explore
-            </b-nav-item>
-            <b-nav-item id="menu-option-chat-sm-2" class="text-center p-0" to="/chats" @mousedown="maybeReload('/chats')">
-              <v-icon name="comments" scale="2" /><br>
-              Chats
             </b-nav-item>
             <b-nav-item class="text-center p-0" to="/settings" @mousedown="maybeReload('/settings')">
               <v-icon name="cog" scale="2" /><br>
@@ -185,7 +210,7 @@
         </b-collapse>
       </b-navbar>
 
-      <nuxt ref="pageContent" class="ml-0 pl-1 pr-1 pageContent" />
+      <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent" />
       <ChatPopups v-if="loggedIn" />
       <LoginModal ref="loginModal" />
       <AboutMeModal ref="modal" />
@@ -210,8 +235,13 @@ html {
 }
 
 #navbar_large .nav-item {
-  width: 95px;
+  width: 80px;
   text-align: center;
+}
+
+.nav-link {
+  padding-left: 2px !important;
+  padding-right: 2px !important;
 }
 
 nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
@@ -325,13 +355,21 @@ svg.fa-icon {
   top: 0px;
   left: 18px;
 }
+
+.chatbadge {
+  position: absolute;
+  top: 0px;
+  left: 25px;
+}
 </style>
 
 <script>
+// TODO DESIGN Notification dropdown window isn't wide enough before it's loaded.
 const LoginModal = () => import('~/components/LoginModal')
 const AboutMeModal = () => import('~/components/AboutMeModal')
 const ChatPopups = () => import('~/components/ChatPopups')
 const Notification = () => import('~/components/Notification')
+const NchanSubscriber = require('nchan')
 
 export default {
   components: {
@@ -345,7 +383,8 @@ export default {
     return {
       complete: false,
       distance: 1000,
-      notificationPoll: null
+      notificationPoll: null,
+      nchan: null
     }
   },
 
@@ -354,6 +393,9 @@ export default {
       const ret = Boolean(this.$store.getters['auth/user']())
       return ret
     },
+    me() {
+      return this.$store.getters['auth/user']()
+    },
     notifications() {
       const notifications = Object.values(
         this.$store.getters['notifications/list']()
@@ -361,7 +403,55 @@ export default {
       return notifications
     },
     notificationCount() {
+      // TODO We also need to change the window title.
       return this.$store.getters['notifications/count']()
+    },
+    chatCount() {
+      // TODO We also need to change the window title.
+      const chats = Object.values(this.$store.getters['chats/list']())
+      let count = 0
+
+      for (const chat of chats) {
+        count += chat.unseen
+      }
+
+      return count
+    }
+  },
+
+  watch: {
+    $route() {
+      // Close the dropdown menu when we move around.
+      console.log('Route changed')
+      if (
+        this.$refs.nav_collapse &&
+        this.$refs.nav_collapse.$el.classList.contains('show')
+      ) {
+        this.$root.$emit('bv::toggle::collapse', 'nav_collapse')
+      }
+
+      if (
+        this.$refs.nav_collapse_mobile &&
+        this.$refs.nav_collapse_mobile.$el.classList.contains('show')
+      ) {
+        this.$root.$emit('bv::toggle::collapse', 'nav_collapse_mobile')
+      }
+    },
+    me(newVal, oldVal) {
+      if (this.nchan) {
+        // Stop old listen.
+        try {
+          this.nchan.stop()
+        } catch (e) {}
+
+        this.nchan = null
+      }
+
+      if (newVal) {
+        // We are now logged in.
+        console.log('Start NCHAN from watch')
+        this.startNCHAN(newVal.id)
+      }
     }
   },
 
@@ -371,14 +461,88 @@ export default {
 
     // Poll regularly for new ones.  Would be nice if this was event driven instead but requires server work.
     this.notificationPoll = setTimeout(this.getNotificationCount, 30000)
+
+    const me = this.$store.getters['auth/user']()
+
+    if (me && me.id) {
+      console.log('Start NCHAN from mount')
+      this.startNCHAN(me.id)
+    }
   },
 
   beforeDestroy() {
     console.log('Destroy layout')
     clearTimeout(this.notificationPoll)
+
+    if (this.nchan) {
+      console.log('Stop NCHAN')
+      try {
+        this.nchan.stop()
+      } catch (e) {}
+
+      this.nchan = null
+    }
   },
 
   methods: {
+    startNCHAN(id) {
+      this.nchan = new NchanSubscriber(
+        process.env.CHAT_HOST + '/subscribe?id=' + id,
+        {
+          subscriber: ['websocket', 'eventsource', 'longpoll ']
+        }
+      )
+
+      // We store the last message we got from NCHAN.  This avoids us getting duplicate messages (triggering server
+      // work) when we load up.
+      const lastNCHAN = this.$store.getters['auth/nchan']()
+
+      if (lastNCHAN) {
+        this.nchan.lastMessageId = lastNCHAN.id
+      }
+
+      this.nchan.start()
+
+      this.nchan.on('message', async (ret, meta) => {
+        console.log('NCHAN', ret, meta)
+
+        if (meta.id) {
+          this.$store.dispatch('auth/setNCHAN', {
+            id: meta.id
+          })
+        }
+
+        if (ret) {
+          ret = JSON.parse(ret)
+
+          // We will get notified for both MT and FD chats.  But we only want to react to
+          // the one which this client actually is.
+          const mt =
+            ret && Object.keys(ret).includes('modtools') ? ret.modtools : false
+
+          if (process.env.MODTOOLS === mt && ret && ret.text) {
+            const data = ret.text
+
+            if (data) {
+              if (data.newroom) {
+                // We have been notified that we are now in a new chat.  Load it into the store; once we've
+                // done that then anything else needed will follow.
+                console.log('Load new room', data.newroom)
+                await this.$store.dispatch('chats/fetch', {
+                  id: data.newroom
+                })
+              } else if (data.roomid) {
+                // Activity on this room.  Fetch it.
+                console.log('Activity on room', data.roomid)
+                await this.$store.dispatch('chats/fetch', {
+                  id: data.roomid
+                })
+              }
+            }
+          }
+        }
+      })
+    },
     async getNotificationCount() {
       console.log('Poll for notification count')
       await this.$store.dispatch('notifications/count')
@@ -388,6 +552,7 @@ export default {
     showAboutMe() {
       this.$refs.modal.show()
     },
+
     logOut() {
       // Remove all cookies, both client and server.  This seems to be necessary to kill off the PHPSESSID cookie
       // on the server, which would otherwise keep us logged in despite our efforts.
@@ -455,6 +620,12 @@ export default {
         // We have clicked to route to the page we're already on.  Force a full refresh.
         window.location.reload(true)
       }
+    },
+
+    async markAllRead() {
+      await this.$store.dispatch('notifications/allSeen')
+      await this.$store.dispatch('notifications/count')
+      await this.$store.dispatch('notifications/list')
     }
   }
 }

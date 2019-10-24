@@ -43,7 +43,7 @@
             <b-col class="text-center mt-4" cols="6" offset="3">
               <nuxt-link to="/find/search" class="decornone">
                 <b-btn variant="success" size="lg" block>
-                  Next >>
+                  Next <v-icon name="angle-double-right" />
                 </b-btn>
               </nuxt-link>
             </b-col>

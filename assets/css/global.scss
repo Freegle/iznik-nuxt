@@ -1,0 +1,530 @@
+// Brought in from user.less
+
+$colour-success: #61AE24;
+$colour-success-bg: #d6e9c6;
+$colour-success-fg: #3c763d;
+$colour-info: #D70060;
+$colour-info-fg: #000080;
+$colour-info-bg: #d9edf7;
+$colour-warning: #e38d13;
+$colour-header: #1d6607;
+$colour-primary: #00A1CB;
+
+$color-green--light-alt: #00FF00;
+$color-green--light: #dff0d8;
+$color-green--medium: #84cf96;
+$color-green--dark: #006b50;
+
+$color-gray--faded: #6c757d70;
+$color-gray--x-light: #f5f5f5;
+$color-gray--light: #e0e0e0;
+$color-gray--mid-light: #d3d3d3;
+$color-gray--base: #a9a9a9;
+$color-gray--dark: #999;
+$color-gray--darker: #595959;
+
+$color-yellow: #fbe8aa;
+
+$color-red: #FF0000;
+
+$color-white: #FFF;
+$color-black: #000;
+
+// TODO Would be nice to use bootstrap mixins for breakpoints, but that's in SCSS and this is in less.  Maybe
+// that can be made to work, or maybe this needs moving to SCSS instead.
+$bootstrap-xs: 576px;
+$bootstrap-sm: 768px;
+$bootstrap-md: 992px;
+$bootstrap-lg: 1200px;
+
+.bg-success {
+  background-color: $colour-success-bg !important;
+  color: $colour-success-fg !important;
+}
+
+.border-success {
+  border-color: $colour-success-bg !important;
+}
+
+.card-header.bg-success {
+  border-bottom: 1px solid $colour-success-bg;
+}
+
+.bg-info {
+  background-color: $colour-info-bg !important;
+  color: $colour-info-fg !important;
+}
+
+.border-info {
+  border-color: $colour-info-bg !important;
+}
+
+.card-header.bg-info {
+  border-bottom: 1px solid $colour-info-bg;
+}
+
+.btn-primary {
+  background-color: $colour-primary !important;
+  border-color: $color-green--dark $color-green--dark hsl(165, 100%, 16%);
+  color: $color-white !important;
+  text-shadow: 0 - 1 px 0 rgba(0, 0, 0, 0.59);
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn-success {
+  background-color: $colour-success !important;
+  background-image: none;
+  border-color: $color-green--dark $color-green--dark hsl(165, 100%, 16%);
+  color: $color-white !important;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.59);
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn-info {
+  background-color: $colour-info !important;
+  background-image: none;
+  border-color: $color-green--dark $color-green--dark hsl(165, 100%, 16%);
+  color: $color-white !important;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.59);
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn-default {
+  background-color: $color-white !important;
+  background-image: none;
+  border-color: $color-green--dark $color-green--dark hsl(165, 100%, 16%);
+  color: $color-black !important;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.33);
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn-warning {
+  background-color: $colour-warning !important;
+  background-image: none;
+  border-color: $color-green--dark $color-green--dark hsl(165, 100%, 16%);
+  color: $color-white !important;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.33);
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn-white {
+  background-color: $color-white !important;
+  border-color: $color-green--dark $color-green--dark hsl(165, 100%, 16%);
+  color: $color-black !important;
+  text-shadow: none !important;
+  -webkit-font-smoothing: antialiased;
+  border: 1px $color-black solid !important;
+}
+
+.text-success {
+  color: $colour-success !important;
+}
+
+h1, h2, h3, h4 {
+  color: $colour-header !important;
+}
+
+div[variant="success"] .card-header {
+  color: $colour-success-fg;
+  background-color: $color-green--light;
+  border-color: $colour-success-bg;
+}
+
+.msgsubj {
+  color: $colour-info-fg !important
+}
+
+.chatname {
+  color: $colour-info-fg;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.chatlist {
+  max-height: calc(100vh - 74px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.chatsnippet {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chatsnippet br {
+  display: none
+}
+
+.truncate {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+body {
+  background-image: url('~static/wallpaper.png');
+}
+
+.profile {
+  width: 30px !important;
+  height: 30px !important;
+
+  @media (min-width: $bootstrap-sm) {
+    width: 50px !important;
+    height: 50px !important;
+  }
+}
+
+.profilemd {
+  width: 20px !important;
+  height: 20px !important;
+
+  @media (min-width: $bootstrap-sm)  {
+    width: 35px !important;
+    height: 35px !important;
+  }
+}
+
+.profilesm {
+  width: 15px !important;
+  height: 15px !important;
+
+  @media (min-width: $bootstrap-sm) {
+    width: 25px !important;
+    height: 25px !important;
+  }
+}
+
+// We have to go to some effort to style the resize grip.  We can't have it in a scoped style otherwise it won't
+// apply to the grip, and the image is small enough that it gets inlined into base64, so we can't use an
+// image file - instead we encode it here.
+.handle {
+  content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAAB3RJTUUH4AQLDigeVd0uIAAAAHpJREFUOMvVkDEKgDAMRQuOLoIHcHTUybmb4BW8gPQM4tWfg6mUIJRmUf+W8P9/JM59RkAHBACZK2Dh0ii7GtiiRxcEMQ8yx/ABtBJeZeefCgB6Rd41GZhzp9xhoMmSk+BLZPWDcnJSMJnIqqScrMI2shTYyOqJ3v1OJ4UMEzPeJauEAAAAAElFTkSuQmCC');
+  height: 16px;
+  width: 16px;
+  position: absolute;
+  z-index: 1000;
+}
+
+.handle-tl {
+  top: 0;
+  left: 0;
+}
+
+.bs-wizard {
+  margin-top: 40px;
+}
+.bs-wizard {
+  border-bottom: solid 1px $color-gray--light;
+  padding: 0 0 10px 0;
+}
+.bs-wizard > .bs-wizard-step {
+  padding: 0;
+  position: relative;
+}
+.bs-wizard > .bs-wizard-step + .bs-wizard-step {
+}
+.bs-wizard > .bs-wizard-step .bs-wizard-stepnum {
+  color: $color-gray--darker;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+.bs-wizard > .bs-wizard-step .bs-wizard-info {
+  color: $color-gray--dark;
+  font-size: 14px;
+}
+.bs-wizard > .bs-wizard-step > .bs-wizard-dot.active {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  display: block;
+  background: $color-green--medium;
+  top: 45px;
+  left: 50%;
+  margin-top: -15px;
+  margin-left: -15px;
+  border-radius: 50%;
+}
+.bs-wizard > .bs-wizard-step > .bs-wizard-dot {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  display: block;
+  background: $color-gray--mid-light;
+  top: 45px;
+  left: 50%;
+  margin-top: -15px;
+  margin-left: -15px;
+  border-radius: 50%;
+}
+.bs-wizard > .bs-wizard-step > .bs-wizard-dot.active:after {
+  content: ' ';
+  width: 14px;
+  height: 14px;
+  background: $color-green--light-alt;
+  border-radius: 50px;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+}
+.bs-wizard > .bs-wizard-step > .bs-wizard-dot:after {
+  content: ' ';
+  width: 14px;
+  height: 14px;
+  background: $color-gray--base;
+  border-radius: 50px;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+}
+.bs-wizard > .bs-wizard-step > .progress {
+  position: relative;
+  border-radius: 0px;
+  height: 8px;
+  box-shadow: none;
+  margin: 20px 0;
+}
+.bs-wizard > .bs-wizard-step > .progress > .progress-bar {
+  width: 0px;
+  box-shadow: none;
+  background: $color-yellow;
+}
+.bs-wizard > .bs-wizard-step.complete > .progress > .progress-bar {
+  width: 100%;
+}
+.bs-wizard > .bs-wizard-step.active > .progress > .progress-bar {
+  width: 50%;
+}
+.bs-wizard > .bs-wizard-step:first-child.active > .progress > .progress-bar {
+  width: 0%;
+}
+.bs-wizard > .bs-wizard-step:last-child.active > .progress > .progress-bar {
+  width: 100%;
+}
+.bs-wizard > .bs-wizard-step.disabled > .bs-wizard-dot {
+  background-color: $color-gray--x-light;
+}
+.bs-wizard > .bs-wizard-step.disabled > .bs-wizard-dot:after {
+  opacity: 0;
+}
+.bs-wizard > .bs-wizard-step:first-child > .progress {
+  left: 50%;
+  width: 50%;
+}
+.bs-wizard > .bs-wizard-step:last-child > .progress {
+  width: 50%;
+}
+.bs-wizard > .bs-wizard-step.disabled a.bs-wizard-dot {
+  pointer-events: none;
+}
+
+// Brought in from style.css
+button {
+    white-space: nowrap;
+}
+
+.clickme {
+    cursor: pointer;
+}
+
+.nav-link {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+}
+
+.btn-group-xs > .btn, .btn-xs {
+    padding  : .25rem .4rem;
+    font-size  : .875rem;
+    line-height  : .5;
+    border-radius : .2rem;
+}
+
+.nodecor {
+    text-decoration: none !important;
+    color: $color-black !important;
+}
+
+.prewrap {
+    white-space: pre-wrap !important;
+}
+
+.fa-bh {
+    font-size: 100px;
+}
+
+.decornone,
+.decornone:hover{
+    text-decoration: none;
+}
+
+/*TODO This gets stripped if we add it into Postcode because the element is added dynamically.  How do we avoid that?*/
+.pcinp {
+    max-width: 238px;
+    margin: 0 auto;
+}
+
+.iteminp ul {
+    width: 100% !important;
+    right: 0px !important;
+    padding-right: 15px !important;
+    padding-left: 15px !important;
+}
+
+.postcodelist {
+    z-index: 900;
+}
+
+.postcodelist li {
+    box-shadow: 1px 3px 5px 3px rgba(0, 0, 0, 0.6) !important;
+    width: 238px;
+}
+
+/* TODO I tried adding "appear" transitions, e.g. for elements in chitchat, or messages.  But they then don't
+    show the computed emessage property.  Don't know why */
+.fade-enter-active, .fade-leave-active {
+    transition: opacity 1s;
+}
+.fade-enter, .fade-leave-to {
+    opacity: 0;
+}
+
+.fadein-enter-active {
+    transition: opacity 1s;
+}
+.fadein-enter {
+    opacity: 0;
+}
+
+.notiflist .dropdown-menu {
+    height: 500px;
+    overflow-y: auto;
+}
+
+.navbar .dropdown-toggle:after {
+  content: none;
+}
+
+nav .dropdown-toggle {
+  border: none;
+}
+
+#nav_collapse_mobile .navbar-nav {
+  border-top: 1px solid $color-gray--mid-light;
+  padding-top: 5px;
+}
+
+#nav_collapse_mobile .nav-item {
+  width: 70px;
+}
+
+#nav_collapse_mobile a.nav-link {
+  color: $color-white;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    height: 100px;
+    width: 100px;
+    outline: $color-black;
+    background-size: 100%, 100%;
+    border-radius: 50%;
+    border: 1px solid $color-black;
+    background-image: none;
+    background-color: $color-white;
+}
+
+.carousel-control-next-icon:after
+{
+    content: '>';
+    font-size: 55px;
+    color: $color-red;
+}
+
+.carousel-control-prev-icon:after {
+    content: '<';
+    font-size: 55px;
+    color: $color-red;
+}
+
+.forcebreak {
+  -ms-word-break: break-all;
+
+  /* Non standard for webkit */
+  word-break: break-word;
+
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  hyphens: auto;
+}
+
+.notiflist .dropdown-item {
+  width: 300px;
+  max-width: 100%;
+  padding-left: 5px;
+  overflow-wrap: break-word;
+}
+
+.black {
+  color: $color-black;
+}
+
+.white, .white > a {
+  color: $color-white !important;
+}
+
+.red {
+  color: $color-red;
+}
+
+.fa-icon {
+  /* These appear misaligned - fix */
+  margin-bottom: 3px;
+}
+
+.fa-fw {
+  width: 1rem;
+  height: 1rem;
+}
+
+.text-faded {
+  color: $color-gray--faded;
+}
+
+.nopara p {
+  margin-bottom: 0;
+  display: inline;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+legend {
+  font-weight: bold !important;
+}
+
+.notpad > a {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.sidebar {
+  height: calc(100vh - 100px);
+}
+
+.mx-datepicker-popup {
+  z-index: 2000 !important;;
+}
+
+.faq-wrapper {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}

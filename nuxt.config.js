@@ -8,6 +8,9 @@ const API = '/api'
 // hurt client performance).
 const PROXY_API = process.env.IZNIK_API || 'https://iznik.ilovefreegle.org'
 
+// Long polls interact badly with per-host connection limits so send to here instead.
+const CHAT_HOST = 'https://users.ilovefreegle.org:555'
+
 module.exports = {
   mode: 'universal',
 
@@ -33,11 +36,13 @@ module.exports = {
   ** Global CSS
   */
   css: [
-    '@/assets/css/style.css',
-    '@/assets/css/user.less',
+    '@/assets/css/global.scss',
     '@/assets/css/Autocomplete.css'
   ],
 
+  // TODO We have too many plugins.  Initially I thought the only way to pull in a standard bit of Vue code
+  // was to create a plugin for it.  But that is flat wrong.  Pulling them in as plugins will increase the
+  // page load size, I expect, so we should take a pass through and see if any of them should be removed.
   plugins: [
     // Our template formatting utils.
     '~/plugins/filters',
@@ -81,6 +86,12 @@ module.exports = {
     { src: '~plugins/vue-google-autocomplete', ssr: false },
   ],
 
+  redirect: [
+    { from: '^/chat/(.*)$', to: '/chats/$1' },
+    { from: '^/mygroups$', to: '/communities' },
+    { from: '^/why$', to: '/help' },
+  ],
+
   /*
   ** Nuxt.js modules
   */
@@ -90,6 +101,7 @@ module.exports = {
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     'nuxt-dayjs-module',
+    '@nuxtjs/redirect-module'
     // Removing this as it causes a scalability issue with vue-meta - see https://github.com/nuxt/vue-meta/issues/443
     // 'cookie-universal-nuxt',
     // [
@@ -224,6 +236,7 @@ module.exports = {
 
   env: {
     API: API,
+    CHAT_HOST: CHAT_HOST,
     FACEBOOK_APPID: FACEBOOK_APPID,
     GOOGLE_MAPS_KEY: 'AIzaSyCdTSJKGWJUOx2pq1Y0f5in5g4kKAO5dgg',
     GOOGLE_API_KEY: 'AIzaSyArVxoX781qdcbmQZi1PKHX-qa0bPbboH4',

@@ -116,5 +116,13 @@ export const actions = {
     })
 
     await dispatch('count')
+  },
+
+  async allSeen({ commit, dispatch }, params) {
+    await this.$axios.post(process.env.API + '/notification', {
+      action: 'AllSeen'
+    })
+
+    await dispatch('count')
   }
 }

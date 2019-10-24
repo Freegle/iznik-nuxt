@@ -1,15 +1,15 @@
 <template>
-  <div class="clickme noselect" @click="click">
+  <div v-if="chat" class="clickme noselect" @click="click">
     <b-row class="ml-1 mr-1">
       <b-col class="pl-0">
         <b-img-lazy
-          v-if="icon"
+          v-if="chat.icon"
           rounded="circle"
           thumbnail
           class="profile p-0 ml-1 mb-1 inline"
           alt="Profile picture"
           title="Profile"
-          :src="icon"
+          :src="chat.icon"
         />
         <b-img-lazy
           v-else
@@ -21,18 +21,18 @@
           src="~/static/defaultprofile.png"
         />
         <span class="pl-0 mb-0 chatname">
-          {{ name }}
+          {{ chat.name }}
         </span>
-        <span v-if="unseen">
-          <b-badge variant="danger">{{ unseen }}</b-badge>
+        <span v-if="chat.unseen">
+          <b-badge variant="danger">{{ chat.unseen }}</b-badge>
         </span>
         <span class="float-right small text-muted">
-          {{ $dayjs(lastdate).fromNow() }}
+          {{ $dayjs(chat.lastdate).fromNow() }}
         </span>
       </b-col>
     </b-row>
     <b-row>
-      <b-col v-if="snippet" class="pl-4 truncate">
+      <b-col v-if="chat.snippet" class="pl-4 truncate">
         {{ esnippet }}
       </b-col>
       <b-col v-else class="pl-4">
@@ -55,46 +55,16 @@ export default {
     id: {
       type: Number,
       required: true
-    },
-    name: {
-      type: String,
-      required: true
-    },
-    unseen: {
-      type: Number,
-      required: false,
-      default: 0
-    },
-    user1: {
-      type: Number,
-      required: false,
-      default: null
-    },
-    user2: {
-      type: Number,
-      required: false,
-      default: null
-    },
-    icon: {
-      type: String,
-      required: false,
-      default: null
-    },
-    lastdate: {
-      type: String,
-      required: false,
-      default: null
-    },
-    snippet: {
-      type: String,
-      required: false,
-      default: null
     }
   },
 
   computed: {
+    chat() {
+      return this.$store.getters['chats/get'](this.id)
+    },
+
     esnippet() {
-      let ret = twem.twem(this.$twemoji, this.snippet)
+      let ret = twem.twem(this.$twemoji, this.chat.snippet)
 
       // The way the snippet is constructed might lead to backslashes if we have an emoji.
       ret = ret.replace(/\\*$/, '') + '...'
