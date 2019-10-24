@@ -102,6 +102,9 @@ export default {
       setTimeout(() => {
         this.$refs.profilemodal.show()
       }, 25)
+    },
+    brokenImage(event) {
+      event.target.src = '/static/defaultprofile.png'
     }
   }
 }

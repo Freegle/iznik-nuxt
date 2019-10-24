@@ -11,7 +11,7 @@
         </p>
         <VueFaqAccordion
           :items="myItems"
-          class="mt-2 mb-2"
+          class="mt-2 mb-2 p-0"
         />
         <h1>
           Something else?
@@ -56,6 +56,7 @@
         </div>
       </b-col>
       <b-col cols="0" md="3" />
+      <div class="faq-wrapper d-none" />
     </b-row>
   </div>
 </template>
