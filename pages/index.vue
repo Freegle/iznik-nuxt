@@ -171,7 +171,7 @@ export default {
               if (!lastRoute || lastRoute === 'news') {
                 route = '/chitchat'
               } else {
-                route = '/mygroups'
+                route = '/communities'
               }
 
               if (this.$nuxt.path !== route) {

@@ -24,7 +24,7 @@
               <v-icon name="home" scale="2" /><br>
               My&nbsp;Posts
             </b-nav-item>
-            <b-nav-item id="menu-option-mygroups" class="text-center small p-0" to="/mygroups" @mousedown="maybeReload('/mygroups')">
+            <b-nav-item id="menu-option-mygroups" class="text-center small p-0" to="/communities" @mousedown="maybeReload('/communities')">
               <v-icon name="users" scale="2" /><br>
               Communities
             </b-nav-item>
@@ -190,7 +190,7 @@
               <v-icon name="search" scale="2" /><br>
               Find
             </b-nav-item>
-            <b-nav-item class="text-center p-0" to="/mygroups" @mousedown="maybeReload('/mygroups')">
+            <b-nav-item class="text-center p-0" to="/communities" @mousedown="maybeReload('/communities')">
               <v-icon name="users" scale="2" /><br>
               My&nbsp;Groups
             </b-nav-item>
@@ -237,6 +237,11 @@ html {
 #navbar_large .nav-item {
   width: 80px;
   text-align: center;
+}
+
+.nav-link {
+  padding-left: 2px !important;
+  padding-right: 2px !important;
 }
 
 nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {

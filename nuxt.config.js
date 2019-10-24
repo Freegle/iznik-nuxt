@@ -88,7 +88,8 @@ module.exports = {
 
   redirect: [
     { from: '^/chat/(.*)$', to: '/chats/$1' },
-    { from: '^/why$', to: '/help' }
+    { from: '^/mygroups$', to: '/communities' },
+    { from: '^/why$', to: '/help' },
   ],
 
   /*
