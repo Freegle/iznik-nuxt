@@ -49,6 +49,7 @@
     "vue-debounce": "^2.0.0",
     "vue-drag-drop": "^1.1.4",
     "vue-draggable-resizable": "^2.0.0-rc2",
+    "vue-faq-accordion": "^1.2.1",
     "vue-filepond": "^5.1.3",
     "vue-force-next-tick": "^1.0.3",
     "vue-google-autocomplete": "^1.1.0",

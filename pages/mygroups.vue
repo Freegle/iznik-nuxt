@@ -97,6 +97,7 @@ export default {
       const ret = remembered
         ? this.$store.getters['group/get'](remembered)
         : null
+      console.log('Returning', ret)
 
       return ret
     },

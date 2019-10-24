@@ -58,6 +58,34 @@ export const actions = {
       commit('setList', res.data.chatrooms)
     }
   },
+
+  async openChatToMods({ dispatch, commit }, params) {
+    let id = null
+
+    const res = await this.$axios.post(
+      process.env.API + '/chat/rooms',
+      {
+        chattype: 'User2Mod',
+        groupid: params.groupid
+      },
+      {
+        headers: {
+          'X-HTTP-Method-Override': 'PUT'
+        }
+      }
+    )
+
+    if (res.status === 200) {
+      id = res.data.id
+
+      await dispatch('fetch', {
+        id: id
+      })
+    }
+
+    return id
+  },
+
   async fetch({ commit }, params) {
     const chatid = params.id
 

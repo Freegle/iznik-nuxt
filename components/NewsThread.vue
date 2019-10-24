@@ -232,6 +232,8 @@ export default {
       }
     },
     newlineComment() {
+      // TODO Would be good to handle inserting in the middle a block of text, though last time I looked at this it
+      // was quite fiddly.
       this.threadcomment += '\n'
     },
     show() {

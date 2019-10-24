@@ -40,6 +40,9 @@ module.exports = {
     '@/assets/css/Autocomplete.css'
   ],
 
+  // TODO We have too many plugins.  Initially I thought the only way to pull in a standard bit of Vue code
+  // was to create a plugin for it.  But that is flat wrong.  Pulling them in as plugins will increase the
+  // page load size, I expect, so we should take a pass through and see if any of them should be removed.
   plugins: [
     // Our template formatting utils.
     '~/plugins/filters',
@@ -84,7 +87,8 @@ module.exports = {
   ],
 
   redirect: [
-    { from: '^/chat/(.*)$', to: '/chats/$1' }
+    { from: '^/chat/(.*)$', to: '/chats/$1' },
+    { from: '^/why$', to: '/help' }
   ],
 
   /*

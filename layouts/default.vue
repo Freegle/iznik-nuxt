@@ -16,35 +16,35 @@
         <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
         <b-collapse v-if="loggedIn" id="nav_collapse" ref="nav_collapse" is-nav>
           <b-navbar-nav>
-            <b-nav-item id="menu-option-chitchat" class="text-center p-0" to="/chitchat" @mousedown="maybeReload('/chitchat')">
+            <b-nav-item id="menu-option-chitchat" class="text-center small p-0" to="/chitchat" @mousedown="maybeReload('/chitchat')">
               <v-icon name="coffee" scale="2" /><br>
               ChitChat
             </b-nav-item>
-            <b-nav-item id="menu-option-myposts" class="text-center p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
+            <b-nav-item id="menu-option-myposts" class="text-center small p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
               <v-icon name="home" scale="2" /><br>
               My&nbsp;Posts
             </b-nav-item>
-            <b-nav-item id="menu-option-mygroups" class="text-center p-0" to="/mygroups" @mousedown="maybeReload('/mygroups')">
+            <b-nav-item id="menu-option-mygroups" class="text-center small p-0" to="/mygroups" @mousedown="maybeReload('/mygroups')">
               <v-icon name="users" scale="2" /><br>
-              My&nbsp;Groups
+              Communities
             </b-nav-item>
-            <b-nav-item id="menu-option-give" class="text-center p-0" to="/give" @mousedown="maybeReload('/give')">
+            <b-nav-item id="menu-option-give" class="text-center small p-0" to="/give" @mousedown="maybeReload('/give')">
               <v-icon name="gift" scale="2" /><br>
               Give
             </b-nav-item>
-            <b-nav-item id="menu-option-find" class="text-center p-0" to="/find" @mousedown="maybeReload('/find')">
+            <b-nav-item id="menu-option-find" class="text-center small p-0" to="/find" @mousedown="maybeReload('/find')">
               <v-icon name="search" scale="2" /><br>
               Find
             </b-nav-item>
-            <b-nav-item id="menu-option-explore" class="text-center p-0" to="/explore" @mousedown="maybeReload('/explore')">
+            <b-nav-item id="menu-option-explore" class="text-center small p-0" to="/explore" @mousedown="maybeReload('/explore')">
               <v-icon name="map-marked-alt" scale="2" /><br>
               Explore
             </b-nav-item>
-            <b-nav-item id="menu-option-communityevents" class="text-center p-0" to="/communityevents" @mousedown="maybeReload('/communityevents')">
+            <b-nav-item id="menu-option-communityevents" class="text-center small p-0" to="/communityevents" @mousedown="maybeReload('/communityevents')">
               <v-icon name="calendar-alt" scale="2" /><br>
               Events
             </b-nav-item>
-            <b-nav-item id="menu-option-volunteering" class="text-center p-0" to="/volunteering" @mousedown="maybeReload('/volunteering')">
+            <b-nav-item id="menu-option-volunteering" class="text-center small p-0" to="/volunteering" @mousedown="maybeReload('/volunteering')">
               <v-icon name="hands-helping" scale="2" /><br>
               Volunteer
             </b-nav-item>
@@ -53,13 +53,13 @@
             <b-nav-item id="menu-option-notification" class="text-center p-0" />
             <b-nav-item-dropdown class="white text-center notiflist" lazy right @shown="showNotifications">
               <template slot="button-content">
-                <div class="notifwrapper ml-3">
+                <div class="notifwrapper text-center small">
                   <v-icon name="bell" scale="2" />
                   <b-badge v-if="notificationCount" variant="danger" class="ml-3 notifbadge">
                     {{ notificationCount }}
-                  </b-badge>
+                  </b-badge><br>
+                  Notifications
                 </div>
-                Notifications
               </template>
               <b-dropdown-item>
                 <b-btn variant="white" size="sm" @click="markAllRead">
@@ -80,7 +80,7 @@
               </infinite-loading>
             </b-nav-item-dropdown>
             <a class="d-none dropdown-item" />
-            <b-nav-item id="menu-option-chat" class="text-center p-0" to="/chats" @mousedown="maybeReload('/chats')">
+            <b-nav-item id="menu-option-chat" class="text-center small p-0" to="/chats" @mousedown="maybeReload('/chats')">
               <div class="notifwrapper">
                 <v-icon name="comments" scale="2" /><br>
                 Chats
@@ -89,11 +89,15 @@
                 </b-badge>
               </div>
             </b-nav-item>
-            <b-nav-item id="menu-option-settings" class="text-center p-0" to="/settings" @mousedown="maybeReload('/settings')">
+            <b-nav-item id="menu-option-help" class="text-center small p-0" to="/help" @mousedown="maybeReload('/help')">
+              <v-icon name="question-circle" scale="2" /><br>
+              Help
+            </b-nav-item>
+            <b-nav-item id="menu-option-settings" class="text-center small p-0" to="/settings" @mousedown="maybeReload('/settings')">
               <v-icon name="cog" scale="2" /><br>
               Settings
             </b-nav-item>
-            <b-nav-item id="menu-option-logout" class="text-center p-0" @click="logOut()">
+            <b-nav-item id="menu-option-logout" class="text-center p-0 small" @click="logOut()">
               <v-icon name="sign-out-alt" scale="2" /><br>
               Logout
             </b-nav-item>
@@ -231,7 +235,7 @@ html {
 }
 
 #navbar_large .nav-item {
-  width: 95px;
+  width: 80px;
   text-align: center;
 }
 

@@ -397,11 +397,13 @@ export default {
           }
         }
 
-        await this.$store.dispatch('volunteerops/setDates', {
-          id: this.volunteering.id,
-          olddates: this.olddates,
-          newdates: this.volunteering.dates
-        })
+        if (this.volunteering.dates && this.volunteering.dates.length) {
+          await this.$store.dispatch('volunteerops/setDates', {
+            id: this.volunteering.id,
+            olddates: this.olddates,
+            newdates: this.volunteering.dates
+          })
+        }
 
         await this.$store.dispatch('volunteerops/save', this.volunteering)
       } else {
@@ -429,11 +431,13 @@ export default {
           groupid: this.groupid
         })
 
-        await this.$store.dispatch('volunteerops/setDates', {
-          id: volunteeringid,
-          olddates: [],
-          newdates: dates
-        })
+        if (this.volunteering.dates && this.volunteering.dates.length) {
+          await this.$store.dispatch('volunteerops/setDates', {
+            id: volunteeringid,
+            olddates: [],
+            newdates: dates
+          })
+        }
 
         // Fetch for good luck.
         await this.$store.dispatch('volunteerops/fetch', {
