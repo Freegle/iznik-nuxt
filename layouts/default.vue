@@ -61,6 +61,13 @@
                 </div>
                 Notifications
               </template>
+              <b-dropdown-item>
+                <b-btn variant="white" size="sm" @click="markAllRead">
+                  <!--                  TODO DESIGN Align to right; float right breaks divider-->
+                  Mark all as read
+                </b-btn>
+              </b-dropdown-item>
+              <b-dropdown-divider />
               <b-dropdown-item v-for="(notification, $index) in notifications" :key="'notification-' + $index" class="p-0 notpad">
                 <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
               </b-dropdown-item>
@@ -604,6 +611,12 @@ export default {
         // We have clicked to route to the page we're already on.  Force a full refresh.
         window.location.reload(true)
       }
+    },
+
+    async markAllRead() {
+      await this.$store.dispatch('notifications/allSeen')
+      await this.$store.dispatch('notifications/count')
+      await this.$store.dispatch('notifications/list')
     }
   }
 }
