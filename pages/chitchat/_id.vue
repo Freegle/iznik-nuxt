@@ -77,7 +77,7 @@
                 </b-tab>
                 <b-tab class="p-1">
                   <template slot="title">
-                    <v-icon name="star" title="Advertise a Volunteer Opportunity" /><span class="d-none d-lg-inline">&nbsp;Volunteer</span>
+                    <v-icon name="hands-helping" title="Advertise a Volunteer Opportunity" /><span class="d-none d-lg-inline">&nbsp;Volunteer</span>
                   </template>
                   <b-card-text>TODO</b-card-text>
                 </b-tab>
@@ -107,7 +107,7 @@
                   </div>
                 </b-col>
                 <b-col
-                  col="12"
+                  cols="12"
                   sm="6"
                   lg="4"
                   order="2"
