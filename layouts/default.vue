@@ -219,7 +219,9 @@
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@import 'color-vars';
+
 /*TODO DESIGN Menu dropdown on mobile needs a bit of love.*/
 /*TODO Shrink navbar on scroll? */
 html {
@@ -249,7 +251,7 @@ nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
 }
 
 .navbar-dark .navbar-nav .nav-link {
-  color: white !important;
+  color: $color-white !important;
 }
 
 .navbar-dark .navbar-nav .nav-link:hover,
@@ -310,11 +312,11 @@ nav .navbar-nav li a {
 }
 
 nav .navbar-nav li a.nuxt-link-active {
-  color: white !important;
+  color: $color-white !important;
 }
 
 .navbar-brand a {
-  color: white !important;
+  color: $color-white !important;
 }
 
 .navbar a.navbar-brand {

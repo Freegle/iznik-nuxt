@@ -56,18 +56,22 @@
     </div>
   </div>
 </template>
-<style>
+
+<style lang="scss">
+@import 'color-vars';
+
 /*TODO DESIGN Make this prettier.  See also NewUser. */
 .tooltip-inner {
-  background-color: white;
-  color: black;
-  border: 1px black solid;
+  background-color: $color-white;
+  color: $color-black;
+  border: 1px $color-black solid;
 }
 .arrow {
   background-color: transparent;
-  color: white;
+  color: $color-white;
 }
 </style>
+
 <script>
 import loginOptional from '@/mixins/loginOptional.js'
 const GroupHeader = () => import('~/components/GroupHeader.vue')

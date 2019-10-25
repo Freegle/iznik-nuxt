@@ -115,14 +115,16 @@
     </client-only>
   </div>
 </template>
-<style scoped>
+<style scoped lang="scss">
+@import 'color-vars';
+
 .vdr {
   position: absolute;
   top: initial !important;
   left: initial !important;
   bottom: 0;
   z-index: 900;
-  background-color: #f3f0da;
+  background-color: $color-yellow--light;
   animation: chatIn 2s;
   transform-origin: right bottom;
   background-color: transparent !important;
@@ -142,7 +144,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow-x: hidden;
-  color: white;
+  color: $color-white;
 }
 
 .shadow {
@@ -161,7 +163,7 @@
 }
 
 .chatTitle {
-  background-color: #4895dd;
+  background-color: $color-blue--base;
   color: white;
   font-weight: bold;
   order: 1;
