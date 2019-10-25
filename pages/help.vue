@@ -21,9 +21,7 @@
         <div v-if="loggedIn">
           <GroupSelect id="contactmods" class="mt-2" @change="groupChange" />
           <br>
-          <b-btn size="lg" variant="success" class="mt-2 mb-2" @click="contactMods">
-            Contact community volunteers
-          </b-btn>
+          <ChatButton :groupid="contactGroupId" size="lg" title="Contact community volunteers" variant="success" />
         </div>
         <div class="text-muted">
           <hr>
@@ -64,6 +62,7 @@
 // TODO DESIGN Make this a bit prettier.
 const VueFaqAccordion = () => import('vue-faq-accordion')
 const GroupSelect = () => import('~/components/GroupSelect.vue')
+const ChatButton = () => import('~/components/ChatButton.vue')
 
 // TODO It's not ideal that the links below are a rather than nuxt-link, because that causes a page load.
 // TODO Would be nice to be able to do a direct URL link into each of these.
@@ -71,7 +70,8 @@ const GroupSelect = () => import('~/components/GroupSelect.vue')
 export default {
   components: {
     GroupSelect,
-    VueFaqAccordion
+    VueFaqAccordion,
+    ChatButton
   },
   data() {
     return {
@@ -285,17 +285,6 @@ export default {
   methods: {
     groupChange(groupid) {
       this.contactGroupId = groupid
-    },
-    async contactMods() {
-      if (this.contactGroupId > 0) {
-        const chatid = await this.$store.dispatch('chats/openChatToMods', {
-          groupid: this.contactGroupId
-        })
-
-        await this.$store.dispatch('popupchats/popup', {
-          id: chatid
-        })
-      }
     }
   }
 }
