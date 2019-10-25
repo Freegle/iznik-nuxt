@@ -1,10 +1,15 @@
 <template>
-  <b-btn :size="size" :variant="variant" @click="openChat">
-    <v-icon name="comments" />
-    <span v-if="title">
+  <span>
+    <span v-if="size === 'naked'" @click="openChat">
       {{ title }}
     </span>
-  </b-btn>
+    <b-btn v-else :size="size" :variant="variant" @click="openChat">
+      <v-icon name="comments" />
+      <span v-if="title">
+        {{ title }}
+      </span>
+    </b-btn>
+  </span>
 </template>
 <script>
 export default {

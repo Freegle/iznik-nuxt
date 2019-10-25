@@ -61,6 +61,14 @@
                     <span v-if="me.id === reply.userid || mod" @click="deleteReply">
                       &bull;&nbsp;Delete
                     </span>
+                    <span v-if="me.id !== reply.userid">
+                      &bull;&nbsp;
+                      <ChatButton
+                        :userid="reply.userid"
+                        size="naked"
+                        title="Message"
+                      />
+                    </span>
                   </span>
                 </span>
               </td>
@@ -188,13 +196,15 @@ import twem from '~/assets/js/twem'
 const NewsUserInfo = () => import('~/components/NewsUserInfo')
 const NewsHighlight = () => import('~/components/NewsHighlight')
 const ProfileModal = () => import('~/components/ProfileModal')
+const ChatButton = () => import('~/components/ChatButton')
 
 export default {
   name: 'NewsReply',
   components: {
     NewsUserInfo,
     NewsHighlight,
-    ProfileModal
+    ProfileModal,
+    ChatButton
   },
   props: {
     threadhead: {
