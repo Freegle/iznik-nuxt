@@ -16,10 +16,15 @@
             <div class="float-right">
               <span class="small text-faded float-right">#{{ id }}</span>
               <br>
-              <b-btn variant="white" size="sm" class="float-right mb-1" :disabled="user.id === myid ? 'true' : undefined">
-                <v-icon name="comment" class="d-none d-sm-inline-block" />&nbsp;Message
-              </b-btn>
-              <br>
+              <ChatButton
+                :userid="id"
+                size="sm"
+                title="Message"
+                variant="white"
+                :disabled="user.id === myid ? 'true' : undefined"
+                class="float-right mb-1"
+                @click="hide"
+              />
               <ratings size="sm" v-bind="user" class="pl-1 pt-1 d-block" />
             </div>
             <h4 class="d-inline-block">
@@ -155,14 +160,15 @@
 <script>
 // TODO DESIGN Header is messy - wallpaper should fill the whole thing; image should have a border round it with a gap.
 // TODO DESIGN The about me section needs nice big quotes round it.
-// TODO Message button
 const Ratings = () => import('~/components/Ratings')
 const ReplyTime = () => import('~/components/ReplyTime')
+const ChatButton = () => import('~/components/ChatButton.vue')
 
 export default {
   components: {
     Ratings,
-    ReplyTime
+    ReplyTime,
+    ChatButton
   },
   props: {
     id: {

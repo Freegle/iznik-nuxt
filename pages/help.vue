@@ -21,7 +21,7 @@
         <div v-if="loggedIn">
           <GroupSelect id="contactmods" class="mt-2" @change="groupChange" />
           <br>
-          <ChatButton :groupid="contactGroupId" size="lg" title="Contact community volunteers" variant="success" />
+          <ChatButton :groupid="contactGroupId" size="lg" title="Contact community volunteers" variant="success" class="mt-2 mb-2" />
         </div>
         <div class="text-muted">
           <hr>

@@ -1,5 +1,5 @@
 <template>
-  <b-btn :size="size" :variant="variant" class="mt-2 mb-2" @click="openChat">
+  <b-btn :size="size" :variant="variant" @click="openChat">
     <v-icon name="comments" />
     <span v-if="title">
       {{ title }}
@@ -37,11 +37,20 @@ export default {
   },
   methods: {
     async openChat() {
-      console.log('Click', this.groupid)
+      this.$emit('click')
+
       if (this.groupid > 0) {
         // Open a chat to the mods
         const chatid = await this.$store.dispatch('chats/openChatToMods', {
           groupid: this.groupid
+        })
+
+        await this.$store.dispatch('popupchats/popup', {
+          id: chatid
+        })
+      } else if (this.userid > 0) {
+        const chatid = await this.$store.dispatch('chats/openChatToUser', {
+          userid: this.userid
         })
 
         await this.$store.dispatch('popupchats/popup', {
