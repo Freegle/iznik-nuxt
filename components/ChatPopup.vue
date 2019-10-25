@@ -149,7 +149,7 @@
 }
 
 .shadow {
-  box-shadow: 1px 3px 5px 3px rgba(0, 0, 0, 0.6) !important;
+  box-shadow: 1px 3px 5px 3px $color-black-opacity-60 !important;
 }
 
 @keyframes chatIn {
@@ -180,7 +180,7 @@
   justify-content: flex-start;
   flex-grow: 1;
   overflow-y: auto;
-  background-color: rgb(243, 240, 218);
+  background-color: $color-yellow--light;
 }
 
 .chatFooter {

@@ -36,7 +36,7 @@ $bootstrap-lg: 1200px;
   background-color: $colour-primary !important;
   border-color: $color-green--dark $color-green--dark hsl(165, 100%, 16%);
   color: $color-white !important;
-  text-shadow: 0 - 1 px 0 rgba(0, 0, 0, 0.59);
+  text-shadow: 0 - 1 px 0 $color-black-opacity-59;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -45,7 +45,7 @@ $bootstrap-lg: 1200px;
   background-image: none;
   border-color: $color-green--dark $color-green--dark hsl(165, 100%, 16%);
   color: $color-white !important;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.59);
+  text-shadow: 0 -1px 0 $color-black-opacity-59;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -54,7 +54,7 @@ $bootstrap-lg: 1200px;
   background-image: none;
   border-color: $color-green--dark $color-green--dark hsl(165, 100%, 16%);
   color: $color-white !important;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.59);
+  text-shadow: 0 -1px 0 $color-black-opacity-59;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -63,7 +63,7 @@ $bootstrap-lg: 1200px;
   background-image: none;
   border-color: $color-green--dark $color-green--dark hsl(165, 100%, 16%);
   color: $color-black !important;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.33);
+  text-shadow: 0 -1px 0 $color-black-opacity-33;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -72,7 +72,7 @@ $bootstrap-lg: 1200px;
   background-image: none;
   border-color: $color-green--dark $color-green--dark hsl(165, 100%, 16%);
   color: $color-white !important;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.33);
+  text-shadow: 0 -1px 0 $color-black-opacity-33;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -346,7 +346,7 @@ button {
 }
 
 .postcodelist li {
-    box-shadow: 1px 3px 5px 3px rgba(0, 0, 0, 0.6) !important;
+    box-shadow: 1px 3px 5px 3px $color-black-opacity-60 !important;
     width: 238px;
 }
 

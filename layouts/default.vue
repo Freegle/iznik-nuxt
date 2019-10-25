@@ -259,7 +259,7 @@ html {
 }
 
 nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
-  color: rgba(255, 255, 255, 0.5) !important;
+  color: $color-white-opacity-50 !important;
 }
 
 .navbar-dark .navbar-nav .nav-link {
@@ -268,7 +268,7 @@ nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
 
 .navbar-dark .navbar-nav .nav-link:hover,
 .navbar-dark .navbar-nav .nav-link:focus {
-  color: rgba(255, 255, 255, 0.75) !important;
+  color: $color-white-opacity-75 !important;
 }
 
 *,
