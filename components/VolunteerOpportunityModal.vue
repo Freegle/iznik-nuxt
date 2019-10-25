@@ -114,7 +114,7 @@
                     <v-icon name="circle" scale="2" />
                     <v-icon
                       name="reply"
-                      style="color: white;"
+                      class="rotate__icon"
                     />
                   </v-icon>
                 </span>
@@ -123,7 +123,7 @@
                     <v-icon name="circle" scale="2" />
                     <v-icon
                       name="reply"
-                      style="color: white;"
+                      class="rotate__icon"
                     />
                   </v-icon>
                 </span>
@@ -257,6 +257,10 @@ label {
 
 .container {
   position: relative;
+}
+
+.rotate__icon {
+  color: $color-white;
 }
 </style>
 

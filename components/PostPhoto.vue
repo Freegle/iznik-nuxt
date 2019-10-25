@@ -5,7 +5,7 @@
         <v-icon name="circle" scale="2" />
         <v-icon
           name="reply"
-          style="color: white;"
+          class="image__icon"
         />
       </v-icon>
     </span>
@@ -14,7 +14,7 @@
         <v-icon name="circle" scale="2" />
         <v-icon
           name="reply"
-          style="color: white;"
+          class="image__icon"
         />
       </v-icon>
     </span>
@@ -23,14 +23,17 @@
         <v-icon name="circle" scale="2" />
         <v-icon
           name="trash-alt"
-          style="color: white;"
+          class="image__icon"
         />
       </v-icon>
     </span>
     <b-img lazy :src="paththumb + '?' + cacheBust" rounded thumbnail class="imagepreview" />
   </div>
 </template>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .imagepreview {
   width: 150px;
 }
@@ -56,7 +59,12 @@
 .container {
   position: relative;
 }
+
+.image__icon {
+  color: $color-white;
+}
 </style>
+
 <script>
 // TODO Rotate and delete
 export default {
