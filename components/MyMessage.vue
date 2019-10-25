@@ -177,7 +177,10 @@
     <MessageEditModal ref="editModal" :message="message" />
   </div>
 </template>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .square {
   object-fit: cover;
   width: 75px;
@@ -201,9 +204,10 @@ img.attachment {
 
 .noborder {
   border: none !important;
-  border-color: white !important;
+  border-color: $color-white !important;
 }
 </style>
+
 <script>
 // TODO Donation appeal!
 // TODO DESIGN This is better than the old version, but it's still not quite right, in terms of alignment and sizes

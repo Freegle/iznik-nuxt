@@ -208,15 +208,18 @@
     </template>
   </b-modal>
 </template>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .field {
   font-weight: bold;
-  color: darkgreen;
+  color: $color-green--dark-alt;
 }
 
 label {
   font-weight: bold;
-  color: darkgreen;
+  color: $color-green--dark-alt;
   margin-top: 10px;
 }
 
@@ -236,6 +239,7 @@ label {
   position: relative;
 }
 </style>
+
 <script>
 // TODO DESIGN This layout is staid table nonsense.  Surely we can make it more appealing?
 // TODO Delete

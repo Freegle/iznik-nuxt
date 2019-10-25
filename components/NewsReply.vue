@@ -165,7 +165,10 @@
     <ProfileModal v-if="infoclick" :id="reply.userid" ref="profilemodal" />
   </div>
 </template>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .replytext {
   font-size: 14px;
   line-height: 1.2;
@@ -176,12 +179,13 @@
   left: 26px;
   border-radius: 50%;
   position: absolute;
-  background-color: white;
+  background-color: $color-white;
   width: 15px;
   padding-left: 3px;
   padding-top: 3px;
 }
 </style>
+
 <script>
 // TODO User tagging
 import twem from '~/assets/js/twem'

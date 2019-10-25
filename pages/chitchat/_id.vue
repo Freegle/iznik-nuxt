@@ -165,16 +165,20 @@
     </b-row>
   </div>
 </template>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .newsfeedHolder {
   height: calc(100vh - 74px);
 }
 
 .tab-content,
 .tab-pane {
-  background-color: white;
+  background-color: $color-white;
 }
 </style>
+
 <script>
 import loginRequired from '@/mixins/loginRequired.js'
 import twem from '~/assets/js/twem'

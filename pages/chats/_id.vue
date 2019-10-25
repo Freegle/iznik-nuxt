@@ -29,15 +29,19 @@
     </b-col>
   </b-row>
 </template>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .chatback {
-  background-color: #f9f7ec;
+  background-color: $color-yellow--light-alt;
 }
 
 .active {
-  background-color: rgb(245, 245, 245);
+  background-color: $color-gray--x-light;
 }
 </style>
+
 <script>
 import loginRequired from '@/mixins/loginRequired.js'
 const ChatPane = () => import('~/components/ChatPane.vue')

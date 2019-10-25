@@ -20,7 +20,10 @@
     </RichMarker>
   </div>
 </template>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .groupprofile {
   object-fit: cover;
   width: 100px;
@@ -28,9 +31,10 @@
 }
 
 .thick {
-  border: 2px solid darkgreen !important;
+  border: 2px solid $color-green--dark-alt !important;
 }
 </style>
+
 <script>
 // TODO DESIGN This page is a clutter and needs love.
 import { gmapApi } from 'vue2-google-maps'

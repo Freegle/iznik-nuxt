@@ -13,12 +13,16 @@
     </span>
   </div>
 </template>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .highlight {
-  color: blue;
+  color: $color-blue--alt;
   background-color: initial;
 }
 </style>
+
 <script>
 // Originally based on https://github.com/orlyyani/read-more
 const Highlighter = () => import('vue-highlight-words')

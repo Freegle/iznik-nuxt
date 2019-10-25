@@ -50,18 +50,22 @@
     </b-tooltip>
   </div>
 </template>
-<style>
+
+<style lang="scss">
+@import 'color-vars';
+
 /*TODO Make this prettier*/
 .tooltip-inner {
-  background-color: white;
-  color: black;
-  border: 1px black solid;
+  background-color: $color-white;
+  color: $color-black;
+  border: 1px $color-black solid;
 }
 .arrow {
   background-color: transparent;
-  color: white;
+  color: $color-white;
 }
 </style>
+
 <script>
 // TODO Popups appear in weird places, Chris says - moves down to bottom left.
 import loginOptional from '@/mixins/loginOptional.js'

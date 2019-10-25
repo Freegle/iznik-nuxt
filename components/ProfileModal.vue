@@ -119,7 +119,10 @@
     </template>
   </b-modal>
 </template>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .coverphoto {
   height: 100px !important;
   width: 100% !important;
@@ -129,7 +132,7 @@
 .coverprofilecircle {
   width: 100px;
   height: 100px;
-  background-color: darkgray;
+  background-color: $color-gray--base;
   border-radius: 50%;
   /*margin: 10px;*/
 }
@@ -140,7 +143,7 @@
   width: 98px;
   height: 98px;
   border-radius: 98px;
-  border: 3px solid white;
+  border: 3px solid $color-white;
 }
 
 .covername {
@@ -152,6 +155,7 @@
   padding-right: 10px;
 }
 </style>
+
 <script>
 // TODO DESIGN Header is messy - wallpaper should fill the whole thing; image should have a border round it with a gap.
 // TODO DESIGN The about me section needs nice big quotes round it.

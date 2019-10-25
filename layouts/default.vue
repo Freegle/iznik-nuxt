@@ -277,38 +277,38 @@ nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
 .button--green {
   display: inline-block;
   border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
+  border: 1px solid $color-green--dark-alt2;
+  color: $color-green--dark-alt2;
   text-decoration: none;
   padding: 10px 30px;
 }
 
 .button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
+  color: $color-white;
+  background-color: $color-green--dark-alt2;
 }
 
 .button--grey {
   display: inline-block;
   border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
+  border: 1px solid $color-blue--dark;
+  color: $color-blue--dark;
   text-decoration: none;
   padding: 10px 30px;
   margin-left: 15px;
 }
 
 .button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
+  color: $color-white;
+  background-color: $color-blue--dark;
 }
 
 .ourBack {
-  background-color: #61ae24 !important;
+  background-color: $colour-success !important;
 }
 
 nav .navbar-nav li a {
-  color: #cdcdcd !important;
+  color: $color-gray--alt !important;
 }
 
 nav .navbar-nav li a.nuxt-link-active {
