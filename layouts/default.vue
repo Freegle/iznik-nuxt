@@ -544,7 +544,6 @@ export default {
       })
     },
     async getNotificationCount() {
-      console.log('Poll for notification count')
       await this.$store.dispatch('notifications/count')
       this.notificationPoll = setTimeout(this.getNotificationCount, 30000)
     },
