@@ -198,6 +198,18 @@
               <v-icon name="map-marked-alt" scale="2" /><br>
               Explore
             </b-nav-item>
+            <b-nav-item class="text-center p-0" to="/communityevents" @mousedown="maybeReload('/communityevetns')">
+              <v-icon name="calendar-alt" scale="2" /><br>
+              Events
+            </b-nav-item>
+            <b-nav-item class="text-center p-0" to="/volunteering" @mousedown="maybeReload('/volunteering')">
+              <v-icon name="hands-helping" scale="2" /><br>
+              Volunteer
+            </b-nav-item>
+            <b-nav-item class="text-center p-0" to="/help" @mousedown="maybeReload('/help')">
+              <v-icon name="question-circle" scale="2" /><br>
+              Help
+            </b-nav-item>
             <b-nav-item class="text-center p-0" to="/settings" @mousedown="maybeReload('/settings')">
               <v-icon name="cog" scale="2" /><br>
               Settings
@@ -546,7 +558,6 @@ export default {
       })
     },
     async getNotificationCount() {
-      console.log('Poll for notification count')
       await this.$store.dispatch('notifications/count')
       this.notificationPoll = setTimeout(this.getNotificationCount, 30000)
     },

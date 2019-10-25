@@ -60,14 +60,29 @@ export const actions = {
   },
 
   async openChatToMods({ dispatch, commit }, params) {
+    const id = await dispatch('openChat', {
+      chattype: 'User2Mod',
+      groupid: params.groupid
+    })
+
+    return id
+  },
+
+  async openChatToUser({ dispatch, commit }, params) {
+    const id = await dispatch('openChat', {
+      chattype: 'User2User',
+      userid: params.userid
+    })
+
+    return id
+  },
+
+  async openChat({ dispatch, commit }, params) {
     let id = null
 
     const res = await this.$axios.post(
       process.env.API + '/chat/rooms',
-      {
-        chattype: 'User2Mod',
-        groupid: params.groupid
-      },
+      params,
       {
         headers: {
           'X-HTTP-Method-Override': 'PUT'

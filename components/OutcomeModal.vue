@@ -34,6 +34,7 @@
             autofocus
             :options="userOptions"
             :class="'mb-2 font-weight-bold ' + (selectedUser === -1 ? 'text-danger' : '')"
+            @change="fetchUser"
           />
         </b-col>
       </b-row>
@@ -41,8 +42,8 @@
         <b-col class="text-center">
           <b-card bg-variant="info">
             <b-card-body>
-              <p>How was this freegler?</p>
-              <Ratings :key="'user-' + selectedUser" v-bind="users[selectedUser]" class="" />
+              <p>How was this freegler? Please click.</p>
+              <Ratings :key="'user-' + selectedUser" v-bind="fetchedUser" class="" />
             </b-card-body>
           </b-card>
         </b-col>
@@ -126,7 +127,8 @@ export default {
       type: null,
       happiness: null,
       comments: null,
-      selectedUser: null
+      selectedUser: null,
+      fetchedUser: null
     }
   },
   computed: {
@@ -206,6 +208,15 @@ export default {
     changeType() {
       this.selectedUser = -1
       this.setComments()
+    },
+
+    async fetchUser(userid) {
+      await this.$store.dispatch('user/fetch', {
+        id: userid,
+        info: true
+      })
+
+      this.fetchedUser = this.$store.getters['user/get'](userid)
     }
   }
 }
