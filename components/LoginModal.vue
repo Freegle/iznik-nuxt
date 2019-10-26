@@ -33,13 +33,13 @@
       <b-col cols="12" class="d-block d-lg-none">
         <b-row>
           <b-col cols="5">
-            <hr class="text-danger pb-2 d-block d-lg-none" style="border-top: 1px solid red">
+            <hr class="text-danger pb-2 d-block d-lg-none login__splitter">
           </b-col>
           <b-col cols="2" class="text-center">
             <em>Or</em>
           </b-col>
           <b-col cols="5">
-            <hr class="text-danger pb-2 d-block d-lg-none" style="border-top: 1px solid red">
+            <hr class="text-danger pb-2 d-block d-lg-none login__splitter">
           </b-col>
         </b-row>
       </b-col>
@@ -108,11 +108,19 @@
     </b-row>
   </b-modal>
 </template>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .loginbutton {
   width: 303px;
 }
+
+.login__splitter {
+  border-top: 1px solid $color-red;
+}
 </style>
+
 <script>
 // TODO Sign Up
 // TODO Eye icon to show password for mobile

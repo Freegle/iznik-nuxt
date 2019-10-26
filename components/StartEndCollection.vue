@@ -8,12 +8,16 @@
     </b-btn>
   </div>
 </template>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .inpast {
   text-decoration: line-through;
-  color: #6c757d70;
+  color: $color-gray--faded;
 }
 </style>
+
 <script>
 // TODO Validation - end date > start date, no stupidly long events (3 days?), no overlapping dates.
 // TODO This code could do with a bit of extra testing - various combinations of add/edit/cancel/delete etc.

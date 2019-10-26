@@ -131,16 +131,20 @@
     </footer>
   </div>
 </template>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .footer {
   position: absolute;
   bottom: 0;
   width: 100%;
   height: 60px;
   line-height: 60px;
-  background-color: #f5f5f5;
+  background-color: $color-gray--x-light;
 }
 </style>
+
 <script>
 const Stories = () => import('~/components/Stories.vue')
 // TODO That thing where you prompt people on mobile to install the app.

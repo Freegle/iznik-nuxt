@@ -70,9 +70,12 @@
     <RenegeModal ref="renege" :messages="[ message ]" :selected-message="message.id" :users="[ reply.user ]" :selected-user="reply.user.id" />
   </div>
 </template>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .snippet {
-  border: 1px solid lightgrey;
+  border: 1px solid $color-gray--mid-light;
   border-radius: 10px;
   padding-top: 2px;
   padding-bottom: 2px;
@@ -82,6 +85,7 @@
   line-height: 1.75;
 }
 </style>
+
 <script>
 const PromiseModal = () => import('./PromiseModal')
 const RenegeModal = () => import('./RenegeModal')

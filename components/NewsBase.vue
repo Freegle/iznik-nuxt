@@ -1,20 +1,24 @@
 <template>
   <div />
 </template>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .showmod {
   top: 29px;
   left: 44px;
   border-radius: 50%;
   position: absolute;
-  background-color: white;
+  background-color: $color-white;
   width: 24px;
   height: 24px;
   padding-left: 5px;
   padding-top: 4px;
-  border: 1px solid green;
+  border: 1px solid $color-green--dark-alt3;
 }
 </style>
+
 <script>
 import twem from '~/assets/js/twem'
 

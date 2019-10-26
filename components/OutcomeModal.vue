@@ -95,9 +95,11 @@
   </b-modal>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@import 'color-vars';
+
 option {
-  color: black !important;
+  color: $color-black !important;
 }
 </style>
 

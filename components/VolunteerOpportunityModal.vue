@@ -114,7 +114,7 @@
                     <v-icon name="circle" scale="2" />
                     <v-icon
                       name="reply"
-                      style="color: white;"
+                      class="rotate__icon"
                     />
                   </v-icon>
                 </span>
@@ -123,7 +123,7 @@
                     <v-icon name="circle" scale="2" />
                     <v-icon
                       name="reply"
-                      style="color: white;"
+                      class="rotate__icon"
                     />
                   </v-icon>
                 </span>
@@ -228,15 +228,18 @@
     </template>
   </b-modal>
 </template>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .field {
   font-weight: bold;
-  color: darkgreen;
+  color: $color-green--dark-alt;
 }
 
 label {
   font-weight: bold;
-  color: darkgreen;
+  color: $color-green--dark-alt;
   margin-top: 10px;
 }
 
@@ -255,7 +258,12 @@ label {
 .container {
   position: relative;
 }
+
+.rotate__icon {
+  color: $color-white;
+}
 </style>
+
 <script>
 // TODO DESIGN This layout is staid table nonsense.  Surely we can make it more appealing?
 // TODO Delete

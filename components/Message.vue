@@ -246,18 +246,21 @@ export default {
   }
 }
 </script>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .card-body {
   padding: 0px;
 }
 
 h4 {
-  color: #000080 !important;
+  color: $colour-info-fg !important;
   font-weight: bold;
 }
 
 h4.snippet {
-  color: black !important;
+  color: $color-black !important;
   font-weight: 500;
 }
 

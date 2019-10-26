@@ -92,12 +92,16 @@
     </b-row>
   </div>
 </template>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .form-group {
-  border: 1px gray solid;
+  border: 1px $color-gray--alt2 solid;
   border-radius: 0.2rem;
 }
 </style>
+
 <script>
 // TODO Highlight search matches
 // TODO Message paging isn't right, the dates are wrong and we get messages added earlier

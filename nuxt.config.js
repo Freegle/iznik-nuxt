@@ -194,6 +194,8 @@ module.exports = {
           }
         })
       }
+
+      config.resolve.alias['color-vars']= 'assets/css/_color-vars.scss';
     },
 
     optimization: {

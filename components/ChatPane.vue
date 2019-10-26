@@ -148,7 +148,9 @@
     </client-only>
   </div>
 </template>
-<style scoped>
+<style scoped lang="scss">
+@import 'color-vars';
+
 .chatpane {
   min-height: 100vh;
 }
@@ -161,8 +163,8 @@
 }
 
 .chatTitle {
-  background-color: #4895dd;
-  color: white;
+  background-color: $color-blue--base;
+  color: $color-white;
   font-weight: bold;
   order: 1;
 }
@@ -182,7 +184,7 @@
 .chatFooter {
   order: 4;
   justify-content: flex-end;
-  background-color: white;
+  background-color: $color-white;
 }
 </style>
 <script>

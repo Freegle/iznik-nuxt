@@ -133,7 +133,10 @@
     </b-row>
   </div>
 </template>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .coverphoto {
   height: 100px !important;
   width: 100% !important;
@@ -143,7 +146,7 @@
 .coverprofilecircle {
   width: 100px;
   height: 100px;
-  background-color: darkgray;
+  background-color: $color-gray--base;
   border-radius: 50%;
   /*margin: 10px;*/
 }
@@ -154,7 +157,7 @@
   width: 98px;
   height: 98px;
   border-radius: 98px;
-  border: 3px solid white;
+  border: 3px solid $color-white;
 }
 
 .covername {
@@ -166,6 +169,7 @@
   padding-right: 10px;
 }
 </style>
+
 <script>
 // TODO DESIGN The about me section needs nice big quotes round it.
 // TODO DESIGN This page is dull.  We could add newsfeed activity but most users won't have any.  What can we do?

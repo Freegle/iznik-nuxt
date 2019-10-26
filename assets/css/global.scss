@@ -1,37 +1,6 @@
-// Brought in from user.less
+@import 'color-vars';
 
-$colour-success: #61AE24;
-$colour-success-bg: #d6e9c6;
-$colour-success-fg: #3c763d;
-$colour-info: #D70060;
-$colour-info-fg: #000080;
-$colour-info-bg: #d9edf7;
-$colour-warning: #e38d13;
-$colour-header: #1d6607;
-$colour-primary: #00A1CB;
-
-$color-green--light-alt: #00FF00;
-$color-green--light: #dff0d8;
-$color-green--medium: #84cf96;
-$color-green--dark: #006b50;
-
-$color-gray--faded: #6c757d70;
-$color-gray--x-light: #f5f5f5;
-$color-gray--light: #e0e0e0;
-$color-gray--mid-light: #d3d3d3;
-$color-gray--base: #a9a9a9;
-$color-gray--dark: #999;
-$color-gray--darker: #595959;
-
-$color-yellow: #fbe8aa;
-
-$color-red: #FF0000;
-
-$color-white: #FFF;
-$color-black: #000;
-
-// TODO Would be nice to use bootstrap mixins for breakpoints, but that's in SCSS and this is in less.  Maybe
-// that can be made to work, or maybe this needs moving to SCSS instead.
+// TODO Would be nice to use bootstrap mixins for breakpoints
 $bootstrap-xs: 576px;
 $bootstrap-sm: 768px;
 $bootstrap-md: 992px;
@@ -65,51 +34,51 @@ $bootstrap-lg: 1200px;
 
 .btn-primary {
   background-color: $colour-primary !important;
-  border-color: $color-green--dark $color-green--dark hsl(165, 100%, 16%);
+  border-color: $color-green--dark $color-green--dark $color-green--dark-alt4;
   color: $color-white !important;
-  text-shadow: 0 - 1 px 0 rgba(0, 0, 0, 0.59);
+  text-shadow: 0 - 1 px 0 $color-black-opacity-59;
   -webkit-font-smoothing: antialiased;
 }
 
 .btn-success {
   background-color: $colour-success !important;
   background-image: none;
-  border-color: $color-green--dark $color-green--dark hsl(165, 100%, 16%);
+  border-color: $color-green--dark $color-green--dark $color-green--dark-alt4;
   color: $color-white !important;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.59);
+  text-shadow: 0 -1px 0 $color-black-opacity-59;
   -webkit-font-smoothing: antialiased;
 }
 
 .btn-info {
   background-color: $colour-info !important;
   background-image: none;
-  border-color: $color-green--dark $color-green--dark hsl(165, 100%, 16%);
+  border-color: $color-green--dark $color-green--dark $color-green--dark-alt4;
   color: $color-white !important;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.59);
+  text-shadow: 0 -1px 0 $color-black-opacity-59;
   -webkit-font-smoothing: antialiased;
 }
 
 .btn-default {
   background-color: $color-white !important;
   background-image: none;
-  border-color: $color-green--dark $color-green--dark hsl(165, 100%, 16%);
+  border-color: $color-green--dark $color-green--dark $color-green--dark-alt4;
   color: $color-black !important;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.33);
+  text-shadow: 0 -1px 0 $color-black-opacity-33;
   -webkit-font-smoothing: antialiased;
 }
 
 .btn-warning {
   background-color: $colour-warning !important;
   background-image: none;
-  border-color: $color-green--dark $color-green--dark hsl(165, 100%, 16%);
+  border-color: $color-green--dark $color-green--dark $color-green--dark-alt4;
   color: $color-white !important;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.33);
+  text-shadow: 0 -1px 0 $color-black-opacity-33;
   -webkit-font-smoothing: antialiased;
 }
 
 .btn-white {
   background-color: $color-white !important;
-  border-color: $color-green--dark $color-green--dark hsl(165, 100%, 16%);
+  border-color: $color-green--dark $color-green--dark $color-green--dark-alt4;
   color: $color-black !important;
   text-shadow: none !important;
   -webkit-font-smoothing: antialiased;
@@ -377,7 +346,7 @@ button {
 }
 
 .postcodelist li {
-    box-shadow: 1px 3px 5px 3px rgba(0, 0, 0, 0.6) !important;
+    box-shadow: 1px 3px 5px 3px $color-black-opacity-60 !important;
     width: 238px;
 }
 

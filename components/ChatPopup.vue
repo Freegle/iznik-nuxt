@@ -115,14 +115,17 @@
     </client-only>
   </div>
 </template>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .vdr {
   position: absolute;
   top: initial !important;
   left: initial !important;
   bottom: 0;
   z-index: 900;
-  background-color: #f3f0da;
+  background-color: $color-yellow--light;
   animation: chatIn 2s;
   transform-origin: right bottom;
   background-color: transparent !important;
@@ -133,7 +136,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border: 1px solid grey;
+  border: 1px solid $color-gray--alt2;
 }
 
 .chatname {
@@ -142,11 +145,11 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow-x: hidden;
-  color: white;
+  color: $color-white;
 }
 
 .shadow {
-  box-shadow: 1px 3px 5px 3px rgba(0, 0, 0, 0.6) !important;
+  box-shadow: 1px 3px 5px 3px $color-black-opacity-60 !important;
 }
 
 @keyframes chatIn {
@@ -161,8 +164,8 @@
 }
 
 .chatTitle {
-  background-color: #4895dd;
-  color: white;
+  background-color: $color-blue--base;
+  color: $color-white;
   font-weight: bold;
   order: 1;
 }
@@ -177,15 +180,16 @@
   justify-content: flex-start;
   flex-grow: 1;
   overflow-y: auto;
-  background-color: rgb(243, 240, 218);
+  background-color: $color-yellow--light;
 }
 
 .chatFooter {
   order: 4;
   justify-content: flex-end;
-  background-color: white;
+  background-color: $color-white;
 }
 </style>
+
 <script>
 import twem from '~/assets/js/twem'
 
