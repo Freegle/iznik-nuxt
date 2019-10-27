@@ -103,14 +103,13 @@
             </b-nav-item>
           </b-navbar-nav>
         </b-collapse>
-        <ul class="navbar-nav mr-auto" />
-        <ul class="nav navbar-nav navbar-right">
-          <li>
+        <b-navbar-nav class="ml-auto">
+          <n-nav-item>
             <b-button v-if="!loggedIn" class="btn-white" @click="requestLogin">
               Sign in
             </b-button>
-          </li>
-        </ul>
+          </n-nav-item>
+        </b-navbar-nav>
       </b-navbar>
       <!-- Navbar for small screens -->
       <b-navbar id="navbar_small" toggleable="xl" type="dark" class="ourBack d-flex justify-content-end d-xl-none">
@@ -162,11 +161,13 @@
           </div>
         </nuxt-link>
 
-        <b-nav-item v-if="!loggedIn">
-          <b-button class="btn-white" @click="requestLogin">
-            Sign in
-          </b-button>
-        </b-nav-item>
+        <b-navbar-nav>
+          <b-nav-item v-if="!loggedIn">
+            <b-button class="btn-white" @click="requestLogin">
+              Sign in
+            </b-button>
+          </b-nav-item>
+        </b-navbar-nav>
 
         <b-navbar-nav class="">
           <b-navbar-toggle v-if="loggedIn" target="nav_collapse_mobile" />
