@@ -160,6 +160,7 @@
     <ChatButton ref="chatButton" :userid="fromuser" class="d-none" />
   </div>
 </template>
+
 <script>
 // TODO Focus on textbox when expand.
 // TODO Report this post
@@ -353,5 +354,9 @@ img.attachment {
   left: 150px;
   top: -54px;
   position: relative;
+}
+
+.msgsubj {
+  color: $colour-info-fg !important;
 }
 </style>
