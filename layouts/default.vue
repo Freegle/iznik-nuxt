@@ -287,35 +287,6 @@ nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
   max-width: 100%;
 }
 
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid $color-green--dark;
-  color: $color-green--dark;
-  text-decoration: none;
-  padding: 10px 30px;
-}
-
-.button--green:hover {
-  color: $color-white;
-  background-color: $color-green--dark;
-}
-
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid $color-blue--dark;
-  color: $color-blue--dark;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
-
-.button--grey:hover {
-  color: $color-white;
-  background-color: $color-blue--dark;
-}
-
 .ourBack {
   background-color: $colour-success !important;
 }
