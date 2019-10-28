@@ -93,16 +93,20 @@
               class="flex-shrink-2"
             />
             <div class="flex-grow-1 text-right ml-2 d-none d-md-block">
-              <b-btn variant="success">
-                Send <v-icon name="angle-double-right" />
+              <b-btn variant="success" :disabled="replying" @click="sendReply">
+                Send
+                <v-icon v-if="replying" name="sync" class="fa-spin" />
+                <v-icon v-else name="angle-double-right" />&nbsp;
               </b-btn>
             </div>
           </b-col>
         </b-row>
         <b-row class="d-block d-md-none mt-2">
           <b-col>
-            <b-btn variant="success" block>
-              Send <v-icon name="angle-double-right" />
+            <b-btn variant="success" block :disabled="replying" @click="sendReply">
+              Send
+              <v-icon v-if="replying" name="sync" class="fa-spin" />
+              <v-icon v-else name="angle-double-right" />&nbsp;
             </b-btn>
           </b-col>
         </b-row>
@@ -153,6 +157,7 @@
       </template>
     </b-modal>
     <ShareModal v-if="expanded" ref="shareModal" :message="$props" />
+    <ChatButton ref="chatButton" :userid="fromuser" class="d-none" />
   </div>
 </template>
 <script>
@@ -160,12 +165,14 @@
 // TODO Report this post
 // TODO Actually reply.
 import twem from '~/assets/js/twem'
+const ChatButton = () => import('./ChatButton')
 const Highlighter = () => import('vue-highlight-words')
 const MessageUserInfo = () => import('~/components/MessageUserInfo')
 const ShareModal = () => import('./ShareModal')
 
 export default {
   components: {
+    ChatButton,
     MessageUserInfo,
     Highlighter,
     ShareModal
@@ -198,13 +205,18 @@ export default {
     matchedon: {
       type: Object,
       default: null
+    },
+    fromuser: {
+      type: Number,
+      default: null
     }
   },
   data: function() {
     return {
       reply: null,
       expanded: null,
-      slide: 0
+      slide: 0,
+      replying: false
     }
   },
   computed: {
@@ -242,6 +254,59 @@ export default {
 
     share() {
       this.$refs.shareModal.show()
+    },
+
+    async sendReply() {
+      console.log('Reply with', this.reply)
+
+      // TODO What if we're logged out?
+      if (this.reply) {
+        // We have several things to do:
+        // - join a group if need be (doesn't matter which)
+        // - post our reply
+        // - open the popup chat so they see what happened
+        this.replying = true
+        const me = this.$store.getters['auth/user']()
+        console.log('Send reply', this.reply)
+        console.log('Message groups', this.groups)
+        const myGroups = this.$store.getters['auth/groups']()
+        console.log('My Groups', myGroups)
+        let found = false
+        let tojoin = null
+
+        for (const messageGroup of this.groups) {
+          console.log('Message group', messageGroup)
+          tojoin = messageGroup.groupid
+          Object.keys(myGroups).forEach(key => {
+            const group = myGroups[key]
+            console.log('Groups', messageGroup.groupid, group.id)
+            if (messageGroup.groupid === group.id) {
+              console.log('Found')
+              found = true
+            }
+          })
+        }
+
+        if (!found) {
+          console.log('Need to join', tojoin)
+          await this.$store.dispatch('auth/joinGroup', {
+            userid: me.id,
+            groupid: tojoin
+          })
+        }
+
+        // TODO If the group approves membership, then we will not actually be a member at this point, and might not
+        // become one if we are rejected.  Probably in that case we shouldn't be allowed to reply to this message, but
+        // we will.  I think this is the same behaviour as in the old version, but that needs testing and consideration
+        // of how to handle.
+
+        // Now create the chat and send the first message.
+        await this.$refs.chatButton.openChat(this.reply)
+        this.replying = false
+
+        // Clear message now sent
+        this.reply = null
+      }
     }
   }
 }

@@ -104,11 +104,11 @@
           </b-navbar-nav>
         </b-collapse>
         <b-navbar-nav class="ml-auto">
-          <n-nav-item>
+          <b-nav-item>
             <b-button v-if="!loggedIn" class="btn-white" @click="requestLogin">
               Sign in
             </b-button>
-          </n-nav-item>
+          </b-nav-item>
         </b-navbar-nav>
       </b-navbar>
       <!-- Navbar for small screens -->
