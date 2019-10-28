@@ -104,11 +104,11 @@
           </b-navbar-nav>
         </b-collapse>
         <b-navbar-nav class="ml-auto">
-          <n-nav-item>
+          <b-nav-item>
             <b-button v-if="!loggedIn" class="btn-white" @click="requestLogin">
               Sign in
             </b-button>
-          </n-nav-item>
+          </b-nav-item>
         </b-navbar-nav>
       </b-navbar>
       <!-- Navbar for small screens -->
@@ -285,35 +285,6 @@ nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
 
 .notiflist {
   max-width: 100%;
-}
-
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid $color-green--dark;
-  color: $color-green--dark;
-  text-decoration: none;
-  padding: 10px 30px;
-}
-
-.button--green:hover {
-  color: $color-white;
-  background-color: $color-green--dark;
-}
-
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid $color-blue--dark;
-  color: $color-blue--dark;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
-
-.button--grey:hover {
-  color: $color-white;
-  background-color: $color-blue--dark;
 }
 
 .ourBack {

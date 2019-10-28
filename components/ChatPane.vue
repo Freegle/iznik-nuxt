@@ -226,8 +226,6 @@ export default {
   data: function() {
     return {
       chatBusy: false,
-      chatmessages: [],
-      chatusers: [],
       lastFetched: new Date(),
       complete: false,
       sendmessage: null,
@@ -257,6 +255,18 @@ export default {
 
     chat() {
       return this.$store.getters['chats/get'](this.id)
+    },
+
+    chatmessages() {
+      return Object.values(
+        this.$store.getters['chatmessages/getMessages'](this.id)
+      )
+    },
+
+    chatusers() {
+      return Object.values(
+        this.$store.getters['chatmessages/getUsers'](this.id)
+      )
     },
 
     otheruser() {
@@ -307,12 +317,6 @@ export default {
           })
           .then(() => {
             try {
-              this.chatmessages = Object.values(
-                this.$store.getters['chatmessages/getMessages'](this.id)
-              )
-              this.chatusers = Object.values(
-                this.$store.getters['chatmessages/getUsers'](this.id)
-              )
               this.lastFetched = new Date()
 
               if (currentCount === 0) {
@@ -348,24 +352,13 @@ export default {
     _updateAfterSend: function() {
       this.chatBusy = false
       this.sending = false
-
-      // The latest messages will be in the store now.  Get them to trigger re-render
-      this.chatmessages = Object.values(
-        this.$store.getters['chatmessages/getMessages'](this.id)
-      )
-      this.chatusers = Object.values(
-        this.$store.getters['chatmessages/getUsers'](this.id)
-      )
-
       this.lastFetched = new Date()
 
       // Scroll to the bottom so we can see it.
       // TODO DESIGN This method, here and in ChatPopup doesn't work reliably.  If you add an image which will cause
       // further scroll, then we can called before the image has loaded properly.  We might need to add a placeholder
       // based on the dimensions of the image (which we know at the point we uploaded it).
-      console.log('after send')
       this.$nextTick(() => {
-        console.log('Scroll to bottom')
         const container = this.$el.querySelector('.chatContent')
         container.scrollTop = container.scrollHeight
       })

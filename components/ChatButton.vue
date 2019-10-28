@@ -41,7 +41,7 @@ export default {
     }
   },
   methods: {
-    async openChat() {
+    async openChat(firstmessage) {
       this.$emit('click')
 
       if (this.groupid > 0) {
@@ -57,6 +57,13 @@ export default {
         const chatid = await this.$store.dispatch('chats/openChatToUser', {
           userid: this.userid
         })
+
+        if (firstmessage) {
+          await this.$store.dispatch('chatmessages/send', {
+            roomid: chatid,
+            message: firstmessage
+          })
+        }
 
         await this.$store.dispatch('popupchats/popup', {
           id: chatid

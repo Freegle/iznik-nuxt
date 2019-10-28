@@ -218,8 +218,6 @@ export default {
   },
   data: function() {
     return {
-      chatmessages: [],
-      chatusers: [],
       lastFetched: new Date(),
       complete: false,
       sendmessage: null,
@@ -244,6 +242,18 @@ export default {
 
     chat() {
       return this.$store.getters['chats/get'](this.id)
+    },
+
+    chatmessages() {
+      return Object.values(
+        this.$store.getters['chatmessages/getMessages'](this.id)
+      )
+    },
+
+    chatusers() {
+      return Object.values(
+        this.$store.getters['chatmessages/getUsers'](this.id)
+      )
     },
 
     otheruser() {
@@ -320,12 +330,6 @@ export default {
           })
           .then(() => {
             try {
-              this.chatmessages = Object.values(
-                this.$store.getters['chatmessages/getMessages'](this.id)
-              )
-              this.chatusers = Object.values(
-                this.$store.getters['chatmessages/getUsers'](this.id)
-              )
               this.lastFetched = new Date()
 
               if (currentCount === 0) {
@@ -359,14 +363,6 @@ export default {
     },
     _updateAfterSend() {
       this.sending = false
-
-      // The latest messages will be in the store now.  Get them to trigger re-render
-      this.chatmessages = Object.values(
-        this.$store.getters['chatmessages/getMessages'](this.id)
-      )
-      this.chatusers = Object.values(
-        this.$store.getters['chatmessages/getUsers'](this.id)
-      )
       this.lastFetched = new Date()
 
       // Scroll to the bottom so we can see it.

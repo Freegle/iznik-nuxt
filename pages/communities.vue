@@ -53,6 +53,7 @@ const Message = () => import('~/components/Message.vue')
 const CommunityEventSidebar = () => import('~/components/CommunityEventSidebar')
 const VolunteerOpportunitySidebar = () =>
   import('~/components/VolunteerOpportunitySidebar')
+const BotLeftBox = () => import('~/components/BotLeftBox')
 
 export default {
   components: {
@@ -60,7 +61,8 @@ export default {
     GroupSelect,
     Message,
     CommunityEventSidebar,
-    VolunteerOpportunitySidebar
+    VolunteerOpportunitySidebar,
+    BotLeftBox
   },
   mixins: [loginRequired],
   data: function() {
@@ -93,11 +95,9 @@ export default {
     group: function() {
       // We remember any previously selected group.
       const remembered = this.$store.getters['group/remembered']('mygroups')
-      console.log('Compute group', remembered)
       const ret = remembered
         ? this.$store.getters['group/get'](remembered)
         : null
-      console.log('Returning', ret)
 
       return ret
     },
@@ -108,7 +108,8 @@ export default {
     },
 
     groupid: function() {
-      return this.group ? this.group.id : null
+      const remembered = this.$store.getters['group/remembered']('mygroups')
+      return remembered
     }
   },
   watch: {
@@ -145,6 +146,7 @@ export default {
     groupChange: function() {
       this.messages = []
       this.context = null
+      this.$store.dispatch('messages/clear')
     },
 
     typeChange: function() {
@@ -153,6 +155,7 @@ export default {
 
     loadMore: function($state) {
       this.busy = true
+      console.log('Load more')
 
       const currentCount = this.messages.length
 
@@ -170,9 +173,11 @@ export default {
           break
       }
 
+      const remembered = this.$store.getters['group/remembered']('mygroups')
+
       this.$store
         .dispatch('messages/fetchMessages', {
-          groupid: this.group ? this.group.id : null,
+          groupid: remembered,
           collection: 'Approved',
           summary: true,
           types: types,
@@ -183,8 +188,8 @@ export default {
 
           let messages
 
-          if (this.group) {
-            messages = this.$store.getters['messages/getByGroup'](this.group.id)
+          if (remembered) {
+            messages = this.$store.getters['messages/getByGroup'](remembered)
           } else {
             messages = this.$store.getters['messages/getAll']()
           }
@@ -195,14 +200,16 @@ export default {
           if (currentCount === messages.length) {
             this.complete = true
             $state.complete()
+            console.log('Complete')
           } else {
+            console.log('Loaded')
             $state.loaded()
           }
         })
-        .catch(() => {
+        .catch(e => {
           this.busy = false
           $state.complete()
-          console.log('Complete')
+          console.log('Complete on error', e)
         })
     }
   }

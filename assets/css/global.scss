@@ -11,10 +11,6 @@ $bootstrap-lg: 1200px;
   color: $colour-success-fg !important;
 }
 
-.border-success {
-  border-color: $colour-success-bg !important;
-}
-
 .card-header.bg-success {
   border-bottom: 1px solid $colour-success-bg;
 }
@@ -85,6 +81,35 @@ $bootstrap-lg: 1200px;
   border: 1px $color-black solid !important;
 }
 
+.button--green {
+  display: inline-block;
+  border-radius: 4px;
+  border: 1px solid $color-green--dark;
+  color: $color-green--dark;
+  text-decoration: none;
+  padding: 10px 30px;
+}
+
+.button--green:hover {
+  color: $color-white;
+  background-color: $color-green--dark;
+}
+
+.button--grey {
+  display: inline-block;
+  border-radius: 4px;
+  border: 1px solid $color-blue--dark;
+  color: $color-blue--dark;
+  text-decoration: none;
+  padding: 10px 30px;
+  margin-left: 15px;
+}
+
+.button--grey:hover {
+  color: $color-white;
+  background-color: $color-blue--dark;
+}
+
 .text-success {
   color: $colour-success !important;
 }
@@ -97,10 +122,6 @@ div[variant="success"] .card-header {
   color: $colour-success-fg;
   background-color: $color-green--light;
   border-color: $colour-success-bg;
-}
-
-.msgsubj {
-  color: $colour-info-fg !important
 }
 
 .chatname {
@@ -431,10 +452,6 @@ nav .dropdown-toggle {
 
 .white, .white > a {
   color: $color-white !important;
-}
-
-.red {
-  color: $color-red;
 }
 
 .fa-icon {

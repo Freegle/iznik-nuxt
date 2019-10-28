@@ -36,7 +36,7 @@ export const getters = {
 }
 
 export const actions = {
-  popup({ commit }, params) {
+  popup({ dispatch, commit }, params) {
     commit('popup', params)
   },
 
