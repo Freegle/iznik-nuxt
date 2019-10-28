@@ -2,15 +2,7 @@
   <div v-if="chat" class="clickme noselect" @click="click">
     <b-row class="ml-1 mr-1">
       <b-col class="pl-0">
-        <b-img-lazy
-          v-if="chat.icon"
-          rounded="circle"
-          thumbnail
-          class="profile p-0 ml-1 mb-1 inline"
-          alt="Profile picture"
-          title="Profile"
-          :src="chat.icon"
-        />
+        <profile-image v-if="chat.icon" :image="chat.icon" class="profile ml-1 mb-1 inline" is-thumbnail />
         <b-img-lazy
           v-else
           rounded="circle"
@@ -41,16 +33,22 @@
     </b-row>
   </div>
 </template>
+
 <style scoped>
 img.profile {
   max-height: 25px !important;
   max-width: 25px !important;
 }
 </style>
+
 <script>
 import twem from '~/assets/js/twem'
+const ProfileImage = () => import('~/components/profile-image')
 
 export default {
+  components: {
+    ProfileImage
+  },
   props: {
     id: {
       type: Number,

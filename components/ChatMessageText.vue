@@ -5,16 +5,7 @@
         <div v-if="chatmessage.userid != $store.state.auth.user.id" class="media float-left">
           <div class="media-left">
             <div class="media-object">
-              <b-img-lazy
-                v-if="othericon"
-                rounded="circle"
-                thumbnail
-                class="profilesm p-0 mb-1 inline mr-1 mt-1"
-                alt="Profile picture"
-                title="Profile"
-                :src="othericon"
-                @error.native="brokenImage"
-              />
+              <profile-image v-if="othericon" :image="othericon" class="profilesm mr-1 mb-1 mt-1 inline" is-thumbnail />
             </div>
           </div>
           <div :class="emessage ? 'media-body chatMessage theirs' : 'media-body'">
@@ -76,9 +67,13 @@
 </style>
 
 <script>
+import ProfileImage from '~/components/profile-image'
 import ChatBase from '~/components/ChatBase'
 
 export default {
+  components: {
+    ProfileImage
+  },
   extends: ChatBase
 }
 </script>

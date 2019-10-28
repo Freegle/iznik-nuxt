@@ -6,14 +6,7 @@
           <tbody>
             <tr>
               <td style="vertical-align: top" class="clickme" title="Click to see their profile" @click="showInfo">
-                <b-img-lazy
-                  rounded="circle"
-                  class="profilemd p-0 ml-1 mb-1 mr-2 inline float-left mt-2"
-                  alt="Profile picture"
-                  title="Profile"
-                  :src="users[reply.userid].profile.turl"
-                  @error.native="brokenImage"
-                />
+                <profile-image :image="users[reply.userid].profile.turl" class="profilemd ml-1 mr-2 mt-2 mb-1 inline float-left" />
               </td>
               <td class="align-top">
                 <v-icon v-if="users[reply.userid].settings.showmod" name="leaf" class="showmodsm text-success" />
@@ -92,16 +85,7 @@
         <b-input-group class="pl-4 flex-shrink-2">
           <b-input-group-prepend>
             <span class="input-group-text pl-1 pr-1">
-              <b-img-lazy
-                v-if="me.profile.turl"
-                rounded="circle"
-                thumbnail
-                class="profilesm p-0 m-0 inline float-left"
-                alt="Profile picture"
-                title="Profile"
-                :src="me.profile.turl"
-                @error.native="brokenImage"
-              />
+              <profile-image v-if="me.profile.turl" :image="me.profile.turl" class="profilesm m-0 inline float-left" is-thumbnail />
             </span>
           </b-input-group-prepend>
           <b-textarea
@@ -201,6 +185,7 @@ const NewsUserInfo = () => import('~/components/NewsUserInfo')
 const NewsHighlight = () => import('~/components/NewsHighlight')
 const ProfileModal = () => import('~/components/ProfileModal')
 const ChatButton = () => import('~/components/ChatButton')
+const ProfileImage = () => import('~/components/profile-image')
 
 export default {
   name: 'NewsReply',
@@ -208,7 +193,8 @@ export default {
     NewsUserInfo,
     NewsHighlight,
     ProfileModal,
-    ChatButton
+    ChatButton,
+    ProfileImage
   },
   props: {
     threadhead: {
