@@ -34,11 +34,11 @@
 @import 'color-vars';
 
 .chatback {
-  background-color: $color-yellow--light-alt;
+  background-color: $color-yellow--light;
 }
 
 .active {
-  background-color: $color-gray--x-light;
+  background-color: $color-gray--lighter;
 }
 </style>
 

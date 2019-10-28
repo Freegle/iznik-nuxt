@@ -47,7 +47,7 @@
 @import 'color-vars';
 
 .chatMessage {
-  border: 1px solid $color-gray--mid-light;
+  border: 1px solid $color-gray--light;
   border-radius: 10px;
   padding-top: 2px;
   padding-bottom: 2px;
@@ -62,7 +62,7 @@
 }
 
 .mine {
-  background-color: $color-green--lighter;
+  background-color: $color-green--light;
 }
 </style>
 
