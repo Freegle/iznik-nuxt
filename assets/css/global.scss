@@ -34,7 +34,7 @@ $bootstrap-lg: 1200px;
 
 .btn-primary {
   background-color: $colour-primary !important;
-  border-color: $color-green--dark $color-green--dark $color-green--dark-alt4;
+  border-color: $color-blue--dark;
   color: $color-white !important;
   text-shadow: 0 - 1 px 0 $color-black-opacity-59;
   -webkit-font-smoothing: antialiased;
@@ -43,7 +43,7 @@ $bootstrap-lg: 1200px;
 .btn-success {
   background-color: $colour-success !important;
   background-image: none;
-  border-color: $color-green--dark $color-green--dark $color-green--dark-alt4;
+  border-color: $color-green--dark;
   color: $color-white !important;
   text-shadow: 0 -1px 0 $color-black-opacity-59;
   -webkit-font-smoothing: antialiased;
@@ -52,7 +52,7 @@ $bootstrap-lg: 1200px;
 .btn-info {
   background-color: $colour-info !important;
   background-image: none;
-  border-color: $color-green--dark $color-green--dark $color-green--dark-alt4;
+  border-color: $color-green--dark;
   color: $color-white !important;
   text-shadow: 0 -1px 0 $color-black-opacity-59;
   -webkit-font-smoothing: antialiased;
@@ -61,7 +61,7 @@ $bootstrap-lg: 1200px;
 .btn-default {
   background-color: $color-white !important;
   background-image: none;
-  border-color: $color-green--dark $color-green--dark $color-green--dark-alt4;
+  border-color: $color-green--dark;
   color: $color-black !important;
   text-shadow: 0 -1px 0 $color-black-opacity-33;
   -webkit-font-smoothing: antialiased;
@@ -70,7 +70,7 @@ $bootstrap-lg: 1200px;
 .btn-warning {
   background-color: $colour-warning !important;
   background-image: none;
-  border-color: $color-green--dark $color-green--dark $color-green--dark-alt4;
+  border-color: $color-green--dark;
   color: $color-white !important;
   text-shadow: 0 -1px 0 $color-black-opacity-33;
   -webkit-font-smoothing: antialiased;
@@ -78,7 +78,7 @@ $bootstrap-lg: 1200px;
 
 .btn-white {
   background-color: $color-white !important;
-  border-color: $color-green--dark $color-green--dark $color-green--dark-alt4;
+  border-color: $color-green--dark;
   color: $color-black !important;
   text-shadow: none !important;
   -webkit-font-smoothing: antialiased;
@@ -196,12 +196,12 @@ body {
 .bs-wizard > .bs-wizard-step + .bs-wizard-step {
 }
 .bs-wizard > .bs-wizard-step .bs-wizard-stepnum {
-  color: $color-gray--darker;
+  color: $color-black;
   font-size: 16px;
   margin-bottom: 5px;
 }
 .bs-wizard > .bs-wizard-step .bs-wizard-info {
-  color: $color-gray--dark;
+  color: $color-black;
   font-size: 14px;
 }
 .bs-wizard > .bs-wizard-step > .bs-wizard-dot.active {
@@ -221,7 +221,7 @@ body {
   width: 30px;
   height: 30px;
   display: block;
-  background: $color-gray--mid-light;
+  background: $color-gray--light;
   top: 45px;
   left: 50%;
   margin-top: -15px;
@@ -258,7 +258,7 @@ body {
 .bs-wizard > .bs-wizard-step > .progress > .progress-bar {
   width: 0px;
   box-shadow: none;
-  background: $color-yellow;
+  background: $color-yellow--dark;
 }
 .bs-wizard > .bs-wizard-step.complete > .progress > .progress-bar {
   width: 100%;
@@ -273,7 +273,7 @@ body {
   width: 100%;
 }
 .bs-wizard > .bs-wizard-step.disabled > .bs-wizard-dot {
-  background-color: $color-gray--x-light;
+  background-color: $color-gray--lighter;
 }
 .bs-wizard > .bs-wizard-step.disabled > .bs-wizard-dot:after {
   opacity: 0;
@@ -380,7 +380,7 @@ nav .dropdown-toggle {
 }
 
 #nav_collapse_mobile .navbar-nav {
-  border-top: 1px solid $color-gray--mid-light;
+  border-top: 1px solid $color-gray--light;
   padding-top: 5px;
 }
 

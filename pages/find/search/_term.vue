@@ -97,7 +97,7 @@
 @import 'color-vars';
 
 .form-group {
-  border: 1px $color-gray--alt2 solid;
+  border: 1px $color-gray--dark solid;
   border-radius: 0.2rem;
 }
 </style>

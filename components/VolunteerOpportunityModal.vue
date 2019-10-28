@@ -234,12 +234,12 @@
 
 .field {
   font-weight: bold;
-  color: $color-green--dark-alt;
+  color: $color-green--darker;
 }
 
 label {
   font-weight: bold;
-  color: $color-green--dark-alt;
+  color: $color-green--darker;
   margin-top: 10px;
 }
 

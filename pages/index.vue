@@ -141,7 +141,7 @@
   width: 100%;
   height: 60px;
   line-height: 60px;
-  background-color: $color-gray--x-light;
+  background-color: $color-gray--lighter;
 }
 </style>
 

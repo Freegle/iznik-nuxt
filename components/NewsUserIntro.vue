@@ -53,7 +53,7 @@
   height: 24px;
   padding-left: 5px;
   padding-top: 4px;
-  border: 1px solid $color-green--dark-alt3;
+  border: 1px solid $color-green--darker;
 }
 </style>
 <script>
