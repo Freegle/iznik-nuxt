@@ -31,7 +31,7 @@
 }
 
 .thick {
-  border: 2px solid $color-green--dark-alt !important;
+  border: 2px solid $color-green--darker !important;
 }
 </style>
 

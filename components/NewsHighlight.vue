@@ -18,7 +18,7 @@
 @import 'color-vars';
 
 .highlight {
-  color: $color-blue--alt;
+  color: $color-blue--base;
   background-color: initial;
 }
 </style>

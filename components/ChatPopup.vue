@@ -125,7 +125,7 @@
   left: initial !important;
   bottom: 0;
   z-index: 900;
-  background-color: $color-yellow--light;
+  background-color: $color-yellow--base;
   animation: chatIn 2s;
   transform-origin: right bottom;
   background-color: transparent !important;
@@ -136,7 +136,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border: 1px solid $color-gray--alt2;
+  border: 1px solid $color-gray--dark;
 }
 
 .chatname {
@@ -164,7 +164,7 @@
 }
 
 .chatTitle {
-  background-color: $color-blue--base;
+  background-color: $color-blue--light;
   color: $color-white;
   font-weight: bold;
   order: 1;
@@ -180,7 +180,7 @@
   justify-content: flex-start;
   flex-grow: 1;
   overflow-y: auto;
-  background-color: $color-yellow--light;
+  background-color: $color-yellow--base;
 }
 
 .chatFooter {

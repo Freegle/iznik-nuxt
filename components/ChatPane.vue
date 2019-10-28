@@ -163,7 +163,7 @@
 }
 
 .chatTitle {
-  background-color: $color-blue--base;
+  background-color: $color-blue--light;
   color: $color-white;
   font-weight: bold;
   order: 1;
