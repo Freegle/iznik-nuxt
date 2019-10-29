@@ -92,6 +92,18 @@ export const actions = {
     commit('forceLogin', value)
   },
 
+  logout({ commit }) {
+    commit('setUser', null)
+
+    this.$axios.post(process.env.API + '/session', [], {
+      headers: {
+        'X-HTTP-Method-Override': 'DELETE'
+      }
+    })
+
+    this.$axios.defaults.headers.common.Authorization = null
+  },
+
   setUser({ commit }, value) {
     console.log('Set user', value)
     commit('setUser', value)

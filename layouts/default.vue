@@ -377,6 +377,7 @@ export default {
   computed: {
     loggedIn() {
       const ret = Boolean(this.$store.getters['auth/user']())
+      console.log('Default logged in?', this.$store.getters['auth/user']())
       return ret
     },
     me() {
@@ -548,7 +549,7 @@ export default {
       // Go to the landing page.
       this.$router.push('/')
 
-      this.$store.dispatch('auth/setUser', null)
+      this.$store.dispatch('auth/logout')
     },
 
     loadMore: function($state) {
