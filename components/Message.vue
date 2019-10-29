@@ -3,7 +3,7 @@
     <b-card class="p-0 mb-1" variant="success">
       <b-card-header class="pl-2 pr-2 clearfix">
         <b-card-title class="msgsubj mb-0">
-          <span v-if="attachments.length > 0" class="float-right clickme" @click="showPhotos">
+          <span v-if="attachments && attachments.length > 0" class="float-right clickme" @click="showPhotos">
             <b-badge v-if="attachments.length > 1" class="photobadge" variant="primary">+{{ attachments.length - 1 }} <v-icon name="camera" /></b-badge>
             <b-img-lazy
               rounded
@@ -113,7 +113,7 @@
       </b-card-footer>
     </b-card>
     <b-modal
-      v-if="expanded && expanded.attachments.length"
+      v-if="expanded && expanded.attachments && expanded.attachments.length"
       :id="'photoModal-' + id"
       ref="photoModal"
       :title="subject"
@@ -157,7 +157,7 @@
       </template>
     </b-modal>
     <ShareModal v-if="expanded" ref="shareModal" :message="$props" />
-    <ChatButton ref="chatButton" :userid="fromuser" class="d-none" />
+    <ChatButton v-if="expanded" ref="chatButton" :userid="expanded.fromuser.id" class="d-none" />
   </div>
 </template>
 
@@ -207,8 +207,13 @@ export default {
       default: null
     },
     fromuser: {
-      type: Number,
+      validator: prop => typeof prop === 'object' || typeof prop === 'number',
       default: null
+    },
+    startExpanded: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
@@ -236,6 +241,11 @@ export default {
       return snip
     }
   },
+  mounted() {
+    if (this.startExpanded) {
+      this.expanded = this.$store.getters['messages/get'](this.id)
+    }
+  },
   methods: {
     async expand() {
       await this.$store.dispatch('messages/fetch', {
@@ -257,55 +267,53 @@ export default {
     },
 
     async sendReply() {
-      console.log('Reply with', this.reply)
-
-      // TODO What if we're logged out?
       if (this.reply) {
-        // We have several things to do:
-        // - join a group if need be (doesn't matter which)
-        // - post our reply
-        // - open the popup chat so they see what happened
-        this.replying = true
         const me = this.$store.getters['auth/user']()
-        console.log('Send reply', this.reply)
-        console.log('Message groups', this.groups)
-        const myGroups = this.$store.getters['auth/groups']()
-        console.log('My Groups', myGroups)
-        let found = false
-        let tojoin = null
 
-        for (const messageGroup of this.groups) {
-          console.log('Message group', messageGroup)
-          tojoin = messageGroup.groupid
-          Object.keys(myGroups).forEach(key => {
-            const group = myGroups[key]
-            console.log('Groups', messageGroup.groupid, group.id)
-            if (messageGroup.groupid === group.id) {
-              console.log('Found')
-              found = true
-            }
-          })
+        if (me && me.id) {
+          // TODO What if we're logged out?
+          // We have several things to do:
+          // - join a group if need be (doesn't matter which)
+          // - post our reply
+          // - open the popup chat so they see what happened
+          this.replying = true
+          const me = this.$store.getters['auth/user']()
+          const myGroups = this.$store.getters['auth/groups']()
+          let found = false
+          let tojoin = null
+
+          for (const messageGroup of this.groups) {
+            tojoin = messageGroup.groupid
+            Object.keys(myGroups).forEach(key => {
+              const group = myGroups[key]
+
+              if (messageGroup.groupid === group.id) {
+                found = true
+              }
+            })
+          }
+
+          if (!found) {
+            await this.$store.dispatch('auth/joinGroup', {
+              userid: me.id,
+              groupid: tojoin
+            })
+          }
+
+          // TODO If the group approves membership, then we will not actually be a member at this point, and might not
+          // become one if we are rejected.  Probably in that case we shouldn't be allowed to reply to this message, but
+          // we will.  I think this is the same behaviour as in the old version, but that needs testing and consideration
+          // of how to handle.
+
+          // Now create the chat and send the first message.
+          await this.$refs.chatButton.openChat(this.reply)
+          this.replying = false
+
+          // Clear message now sent
+          this.reply = null
+        } else {
+          // We're not logged in yet.  We need to save the reply and force a sign in.
         }
-
-        if (!found) {
-          console.log('Need to join', tojoin)
-          await this.$store.dispatch('auth/joinGroup', {
-            userid: me.id,
-            groupid: tojoin
-          })
-        }
-
-        // TODO If the group approves membership, then we will not actually be a member at this point, and might not
-        // become one if we are rejected.  Probably in that case we shouldn't be allowed to reply to this message, but
-        // we will.  I think this is the same behaviour as in the old version, but that needs testing and consideration
-        // of how to handle.
-
-        // Now create the chat and send the first message.
-        await this.$refs.chatButton.openChat(this.reply)
-        this.replying = false
-
-        // Clear message now sent
-        this.reply = null
       }
     }
   }
