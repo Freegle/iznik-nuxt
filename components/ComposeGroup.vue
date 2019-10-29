@@ -26,6 +26,7 @@ export default {
     },
     groupOptions() {
       const ret = []
+      const ids = []
 
       if (this.postcode) {
         console.log('Got postcode', this.postcode)
@@ -35,6 +36,24 @@ export default {
               value: group.id,
               text: group.namedisplay ? group.namedisplay : group.nameshort
             })
+
+            ids[group.id] = true
+          }
+        }
+      }
+
+      // Add any other groups we are a member of and might want to select.
+      const groups = this.$store.getters['auth/groups']()
+
+      for (const group of groups) {
+        if (group.type === 'Freegle') {
+          if (!ids[group.id]) {
+            ret.push({
+              value: group.id,
+              text: group.namedisplay ? group.namedisplay : group.nameshort
+            })
+
+            ids[group.id] = true
           }
         }
       }
