@@ -306,7 +306,7 @@ export default {
           // of how to handle.
 
           // Now create the chat and send the first message.
-          await this.$refs.chatButton.openChat(this.reply)
+          await this.$refs.chatButton.openChat(null, this.reply)
           this.replying = false
 
           // Clear message now sent

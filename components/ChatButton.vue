@@ -41,7 +41,7 @@ export default {
     }
   },
   methods: {
-    async openChat(firstmessage) {
+    async openChat(event, firstmessage) {
       this.$emit('click')
 
       if (this.groupid > 0) {
