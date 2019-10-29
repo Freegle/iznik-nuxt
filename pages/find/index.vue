@@ -11,7 +11,7 @@
         </p>
         <b-row>
           <b-col class="text-center">
-            <postcode size="md" @selected="postcodeSelect" @cleared="postcodeClear" />
+            <postcode @selected="postcodeSelect" @cleared="postcodeClear" />
           </b-col>
         </b-row>
         <transition name="fade">

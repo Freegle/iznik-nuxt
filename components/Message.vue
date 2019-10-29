@@ -30,9 +30,9 @@
         </b-card-title>
         <span v-for="group in groups" :key="'message-' + id + '-' + group.id" class="small muted">
           {{ group.arrival | timeago }} on {{ group.namedisplay }}
-          <span class="text-sm small text-faded">
+          <nuxt-link :to="'/message/' + id" class="text-sm small text-faded">
             #{{ id }}&nbsp;
-          </span>
+          </nuxt-link>
         </span>
         <div v-if="eSnippet && eSnippet !== 'null' && !expanded">
           <h4 class="snippet">

@@ -29,7 +29,7 @@
 }
 
 .input-group-append {
-  /*TODO DESIGN This is a hacky way of positioning this button.*/
+  /*TODO DESIGN This is a hacky way of positioning this button and doesn't work with the different values of the size prop.*/
   top: -3px;
   left: -5px;
   position: relative;
