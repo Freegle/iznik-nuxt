@@ -251,6 +251,7 @@ label {
 // TODO Don't allow submission before image upload complete.
 // TODO Groups which don't support events
 // TODO Wherever we have b-img (throughout the site, not just here) we should have @brokenImage.  Bet we don't.
+// TODO Set date to start at 9am rather than midnight.  Default end date to later than start date.
 import twem from '~/assets/js/twem'
 const GroupSelect = () => import('~/components/GroupSelect.vue')
 const OurFilePond = () => import('~/components/OurFilePond')

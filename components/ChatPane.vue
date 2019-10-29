@@ -195,6 +195,7 @@
 // TODO DESIGN We have a spinner at the top for our upwards infinite scroll.  But this looks messy when we load a
 // short chat, because we see the messages appear below the spinner and then move upwards once the infinite scroll
 // completes.
+// TODO New messages get flagged in left hand side and navbar but don't get loaded into the message pane.
 import twem from '~/assets/js/twem'
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.

@@ -163,7 +163,6 @@
 <script>
 // TODO Focus on textbox when expand.
 // TODO Report this post
-// TODO Actually reply.
 import twem from '~/assets/js/twem'
 const ChatButton = () => import('./ChatButton')
 const Highlighter = () => import('vue-highlight-words')
