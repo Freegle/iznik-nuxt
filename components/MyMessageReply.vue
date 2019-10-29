@@ -84,6 +84,10 @@
   word-wrap: break-word;
   line-height: 1.75;
 }
+
+.red {
+  color: $color-red;
+}
 </style>
 
 <script>
