@@ -105,7 +105,6 @@ export const actions = {
   },
 
   setUser({ commit }, value) {
-    console.log('Set user', value)
     commit('setUser', value)
 
     // Set or clear our auth token to be used on all API requests.
@@ -177,7 +176,6 @@ export const actions = {
         }
       } else {
         // Login failed.
-        console.error('Fetch user failed')
         throw new Error('Fetch user failed')
       }
     }

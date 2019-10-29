@@ -29,6 +29,21 @@ export default {
     }
   },
   computed: {},
+  watch: {
+    options(newVal, oldVal) {
+      if (this.filterByAnchor) {
+        const { type, anchor } = this
+        const regex = new RegExp(`${type}`, 'i')
+        const filtered = newVal.filter(item => {
+          const found = item[anchor].search(regex) !== -1
+          return found
+        })
+        this.json = filtered
+      } else {
+        this.json = newVal
+      }
+    }
+  },
   async asyncData({ app, params, store }) {
     console.log('Fetch message', params.id)
     await store.dispatch('messages/fetch', {

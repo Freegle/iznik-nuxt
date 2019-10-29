@@ -139,10 +139,8 @@ export default {
 
   computed: {
     googleDisabled() {
-      console.log('COmpure googl')
       const ret =
         !window || !window.gapi || !window.gapi.client || !window.auth2
-      console.log('COmpured googl', ret)
       return ret
     },
 

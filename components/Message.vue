@@ -157,7 +157,7 @@
       </template>
     </b-modal>
     <ShareModal v-if="expanded" ref="shareModal" :message="$props" />
-    <ChatButton v-if="expanded" ref="chatButton" :userid="expanded.fromuser.id" class="d-none" />
+    <ChatButton v-if="expanded && expanded.fromuser" ref="chatbutton" :userid="expanded.fromuser.id" class="d-none" />
   </div>
 </template>
 
@@ -239,11 +239,40 @@ export default {
       }
 
       return snip
+    },
+    replyToSend() {
+      let ret = null
+      const me = this.$store.getters['auth/user']()
+
+      if (me) {
+        ret = this.$store.getters['reply/get']()
+      }
+
+      return ret
     }
   },
-  mounted() {
+  watch: {
+    replyToSend(newVal, oldVal) {
+      // Because of the way persistent store is restored, we might only find out that we have a reply to send post-mount.
+      if (newVal) {
+        console.log('Send on watch')
+        this.reply = newVal.replyMessage
+        this.sendReply()
+      }
+    }
+  },
+  async mounted() {
     if (this.startExpanded) {
       this.expanded = this.$store.getters['messages/get'](this.id)
+    }
+
+    const reply = this.replyToSend
+
+    if (reply && reply.replyTo === this.id) {
+      // Because of the way persistent store is restored, we might or might not know that we have a reply to send here.
+      this.reply = reply.replyMessage
+      await this.expand()
+      this.sendReply()
     }
   },
   methods: {
@@ -267,11 +296,12 @@ export default {
     },
 
     async sendReply() {
+      console.log('Send reply', this.reply, this.$refs)
+
       if (this.reply) {
         const me = this.$store.getters['auth/user']()
 
         if (me && me.id) {
-          // TODO What if we're logged out?
           // We have several things to do:
           // - join a group if need be (doesn't matter which)
           // - post our reply
@@ -306,13 +336,30 @@ export default {
           // of how to handle.
 
           // Now create the chat and send the first message.
-          await this.$refs.chatButton.openChat(null, this.reply)
+          await this.$refs.chatbutton.openChat(null, this.reply)
           this.replying = false
 
           // Clear message now sent
           this.reply = null
+
+          await this.$store.dispatch('reply/set', {
+            replyTo: null,
+            replyMessage: null
+          })
         } else {
           // We're not logged in yet.  We need to save the reply and force a sign in.
+          //
+          // Setting the reply text here will get persisted to the store.  Once we log in and return to the message
+          // page, then we will find this in the store and trigger the send of the reply.
+          // TODO The store is persisted asynchronously.  Probably it will have happened before the signin completes,
+          // but we don't actually guarantee that.
+          await this.$store.dispatch('reply/set', {
+            replyTo: this.id,
+            replyMessage: this.reply
+          })
+
+          // TODO We're getting redirected away from the page.
+          this.$store.dispatch('auth/forceLogin', true)
         }
       }
     }
