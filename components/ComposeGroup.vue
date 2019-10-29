@@ -1,5 +1,5 @@
 <template>
-  <b-form-select v-model="group" :style="width ? ('width: ' + width + 'px') : ''" :options="groupOptions" />
+  <b-form-select v-model="group" :style="width ? ('width: ' + width + 'px') : ''" :options="groupOptions" @change="change" />
 </template>
 <script>
 export default {
@@ -10,26 +10,21 @@ export default {
       default: null
     }
   },
+  data: function() {
+    return {
+      group: null
+    }
+  },
   computed: {
     postcode() {
       const pc = this.$store.getters['compose/getPostcode']()
       return pc
-    },
-    group: {
-      get() {
-        const stored = this.$store.getters['compose/getGroup']()
-        return stored
-      },
-      set(newValue) {
-        this.$store.dispatch('compose/setGroup', newValue)
-      }
     },
     groupOptions() {
       const ret = []
       const ids = []
 
       if (this.postcode) {
-        console.log('Got postcode', this.postcode)
         for (const group of this.postcode.groupsnear) {
           if (group.type === 'Freegle') {
             ret.push({
@@ -59,6 +54,16 @@ export default {
       }
 
       return ret
+    }
+  },
+  mounted() {
+    const stored = this.$store.getters['compose/getGroup']()
+    this.group = stored
+  },
+  methods: {
+    change(newValue) {
+      this.$store.dispatch('compose/setGroup', newValue)
+      this.group = newValue
     }
   }
 }
