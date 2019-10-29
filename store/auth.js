@@ -92,8 +92,19 @@ export const actions = {
     commit('forceLogin', value)
   },
 
+  logout({ commit }) {
+    commit('setUser', null)
+
+    this.$axios.post(process.env.API + '/session', [], {
+      headers: {
+        'X-HTTP-Method-Override': 'DELETE'
+      }
+    })
+
+    this.$axios.defaults.headers.common.Authorization = null
+  },
+
   setUser({ commit }, value) {
-    console.log('Set user', value)
     commit('setUser', value)
 
     // Set or clear our auth token to be used on all API requests.
@@ -165,7 +176,6 @@ export const actions = {
         }
       } else {
         // Login failed.
-        console.error('Fetch user failed')
         throw new Error('Fetch user failed')
       }
     }

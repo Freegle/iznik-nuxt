@@ -16,7 +16,7 @@
 
     <b-input-group-append v-if="find">
       <b-button variant="primary" :size="size">
-        <v-icon title="Find my location" name="map-marker-alt" /><span class="d-none d-sm-block">&nbsp;Find my location</span>
+        <v-icon title="Find my location" name="map-marker-alt" /><span class="d-none d-sm-inline">&nbsp;Find my location</span>
       </b-button>
     </b-input-group-append>
   </b-input-group>
@@ -29,8 +29,8 @@
 }
 
 .input-group-append {
-  /*TODO DESIGN This is a hacky way of positioning this button.*/
-  top: -5px;
+  /*TODO DESIGN This is a hacky way of positioning this button and doesn't work with the different values of the size prop.*/
+  top: -3px;
   left: -5px;
   position: relative;
 }

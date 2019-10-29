@@ -30,7 +30,7 @@
         </b-row>
         <b-row v-if="postcode" class="mt-1">
           <b-col class="text-center">
-            <b-form-select v-model="group" :options="groupOptions" @change="groupChange" />
+            <ComposeGroup />
           </b-col>
         </b-row>
         <b-row v-if="postcode" class="mt-1">
@@ -63,10 +63,12 @@ select {
 // TODO Norfolk and redirection to another site?
 import loginOptional from '@/mixins/loginOptional.js'
 const Postcode = () => import('~/components/Postcode')
+const ComposeGroup = () => import('~/components/ComposeGroup')
 
 export default {
   components: {
-    Postcode
+    Postcode,
+    ComposeGroup
   },
   mixins: [loginOptional],
   data() {
@@ -77,24 +79,7 @@ export default {
       group: null
     }
   },
-  computed: {
-    groupOptions() {
-      const ret = []
-
-      if (this.postcode) {
-        for (const group of this.postcode.groupsnear) {
-          if (group.type === 'Freegle') {
-            ret.push({
-              value: group.id,
-              text: group.namedisplay
-            })
-          }
-        }
-      }
-
-      return ret
-    }
-  },
+  computed: {},
   async asyncData({ app, params, store }) {},
   methods: {
     getLocation() {},
@@ -128,8 +113,7 @@ export default {
       this.group = null
       this.$store.dispatch('compose/setPostcode', null)
       this.$store.dispatch('compose/setGroup', null)
-    },
-    groupChange() {}
+    }
   }
 }
 </script>

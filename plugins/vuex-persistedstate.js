@@ -19,6 +19,7 @@ const keep = [
   'chats',
   'popupchats',
   'compose',
+  'reply',
   'i18n'
 ]
 
@@ -42,6 +43,11 @@ export default ({ store }) => {
           newstate.newsfeed = {
             area: state.newsfeed.area
           }
+        }
+
+        if (newstate.auth) {
+          // Don't store the forceLogin, as that can result in the login popup on page refresh.
+          delete newstate.auth.forceLogin
         }
 
         // for (const field of Object.keys(newstate)) {

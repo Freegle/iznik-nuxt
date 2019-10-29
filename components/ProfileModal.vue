@@ -112,6 +112,7 @@
           <v-icon name="gift" />
         </b-badge>
         <b-badge v-if="user.info.openwanteds" variant="danger">
+          <!--          TODO This icon is too big compared to the badge number.-->
           {{ user.info.wanteds }}
           <v-icon name="search" />
         </b-badge>
