@@ -39,7 +39,13 @@ export const mutations = {
 
     if (items) {
       for (const item of items) {
-        state.users[item.id] = item
+        if (state.users[item.id]) {
+          // Already there.  Merge in all fields.  This is because we can get users with different levels of
+          // info in them (e.g. users in replies have less info) and we don't want to lose info by overwriting.
+          state.users[item.id] = Object.assign(state.users[item.id], item)
+        } else {
+          state.users[item.id] = item
+        }
       }
     }
   },
