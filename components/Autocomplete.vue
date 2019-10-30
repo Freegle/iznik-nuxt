@@ -52,6 +52,14 @@
   </div>
 </template>
 
+<style scoped>
+.iteminp ul {
+  width: 100% !important;
+  right: 0px !important;
+  padding-right: 15px !important;
+  padding-left: 15px !important;
+}
+</style>
 
 <script>
 /*! Copyright (c) 2016 Naufal Rabbani (http://github.com/BosNaufal)
