@@ -52,12 +52,25 @@
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@import 'color-vars';
+
+/* iteminp class is passed into this component in a prop */
 .iteminp ul {
   width: 100% !important;
   right: 0px !important;
   padding-right: 15px !important;
   padding-left: 15px !important;
+}
+
+/* postcodelist class is passed into this component in a prop */
+.postcodelist {
+  z-index: 900;
+}
+
+.postcodelist li {
+  box-shadow: 1px 3px 5px 3px $color-black-opacity-60;
+  width: 238px;
 }
 </style>
 
