@@ -124,12 +124,6 @@ div[variant="success"] .card-header {
   border-color: $colour-success-bg;
 }
 
-.chatname {
-  color: $colour-info-fg;
-  font-weight: bold;
-  white-space: nowrap;
-}
-
 .chatlist {
   max-height: calc(100vh - 74px);
   overflow-y: auto;
@@ -349,28 +343,6 @@ button {
     text-decoration: none;
 }
 
-/*TODO This gets stripped if we add it into Postcode because the element is added dynamically.  How do we avoid that?*/
-.pcinp {
-    max-width: 238px;
-    margin: 0 auto;
-}
-
-.iteminp ul {
-    width: 100% !important;
-    right: 0px !important;
-    padding-right: 15px !important;
-    padding-left: 15px !important;
-}
-
-.postcodelist {
-    z-index: 900;
-}
-
-.postcodelist li {
-    box-shadow: 1px 3px 5px 3px $color-black-opacity-60 !important;
-    width: 238px;
-}
-
 /* TODO I tried adding "appear" transitions, e.g. for elements in chitchat, or messages.  But they then don't
     show the computed emessage property.  Don't know why */
 .fade-enter-active, .fade-leave-active {
@@ -508,9 +480,4 @@ legend {
 
 .mx-datepicker-popup {
   z-index: 2000 !important;;
-}
-
-.faq-wrapper {
-  margin-left: 0px !important;
-  margin-right: 0px !important;
 }
