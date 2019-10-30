@@ -54,10 +54,18 @@
         </div>
       </b-col>
       <b-col cols="0" md="3" />
-      <div class="faq-wrapper d-none" />
     </b-row>
   </div>
 </template>
+
+<style scoped lang="scss">
+/* The faq-wrapper class is used within the third party vue-faq-accordion component */
+::v-deep .faq-wrapper {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+</style>
+
 <script>
 // TODO DESIGN Make this a bit prettier.
 const VueFaqAccordion = () => import('vue-faq-accordion')
