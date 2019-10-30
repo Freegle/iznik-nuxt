@@ -349,22 +349,6 @@ button {
     text-decoration: none;
 }
 
-.iteminp ul {
-    width: 100% !important;
-    right: 0px !important;
-    padding-right: 15px !important;
-    padding-left: 15px !important;
-}
-
-.postcodelist {
-    z-index: 900;
-}
-
-.postcodelist li {
-    box-shadow: 1px 3px 5px 3px $color-black-opacity-60 !important;
-    width: 238px;
-}
-
 /* TODO I tried adding "appear" transitions, e.g. for elements in chitchat, or messages.  But they then don't
     show the computed emessage property.  Don't know why */
 .fade-enter-active, .fade-leave-active {
