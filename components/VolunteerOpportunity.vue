@@ -48,7 +48,7 @@
         </div>
         <div v-else>
           <b-row>
-            <b-col cols="12" md="6">
+            <b-col cols="12" :md="volunteering.photo ? 6 : 12">
               <div v-if="volunteering.earliestDate" class="media clickme">
                 <div class="media-left">
                   <div class="media-object pl-1 text-muted">
