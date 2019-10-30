@@ -20,13 +20,13 @@
               <b-col v-if="chat" class="pr-3">
                 <b-row>
                   <b-col class="p-0 pl-3">
-                    <span class="chatname">
-                      <span v-if="(chat.chattype == 'User2User' || chat.chattype == 'User2Mod')" class="d-inline">
+                    <span class="chatname text-truncate">
+                      <span v-if="(chat.chattype == 'User2User' || chat.chattype == 'User2Mod')">
                         <span @click="showInfo">
                           {{ chat.name }}
                         </span>
                       </span>
-                      <span v-else class="d-inline">
+                      <span v-else>
                         {{ chat.name }}
                       </span>
                     </span>
@@ -140,11 +140,9 @@
 }
 
 .chatname {
-  /* TODO DESIGN The ellipsis stuff here isn't working */
+  display: inline-block;
   max-width: 100px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow-x: hidden;
+  font-weight: bold;
   color: $color-white;
 }
 
