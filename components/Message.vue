@@ -79,6 +79,7 @@
             <b-form-textarea
               v-if="expanded.type == 'Offer'"
               v-model="reply"
+              v-focus
               placeholder="Interested?  Please explain why you'd like it and when you can collect.  Always be polite and helpful."
               rows="3"
               max-rows="8"
@@ -87,6 +88,7 @@
             <b-form-textarea
               v-if="expanded.type == 'Wanted'"
               v-model="reply"
+              v-focus
               placeholder="Can you help?  If you have what they're looking for, let them know."
               rows="3"
               max-rows="8"
@@ -162,15 +164,23 @@
 </template>
 
 <script>
-// TODO Focus on textbox when expand.
+// TODO Focus on textbox when expand. #COMPLETE - Casq
 // TODO Report this post
 import twem from '~/assets/js/twem'
+
 const ChatButton = () => import('./ChatButton')
 const Highlighter = () => import('vue-highlight-words')
 const MessageUserInfo = () => import('~/components/MessageUserInfo')
 const ShareModal = () => import('./ShareModal')
 
 export default {
+  directives: {
+    focus: {
+      inserted: function(el) {
+        el.focus()
+      }
+    }
+  },
   components: {
     ChatButton,
     MessageUserInfo,
