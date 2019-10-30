@@ -36,8 +36,7 @@ module.exports = {
   ** Global CSS
   */
   css: [
-    '@/assets/css/global.scss',
-    '@/assets/css/Autocomplete.css'
+    '@/assets/css/global.scss'
   ],
 
   // TODO We have too many plugins.  Initially I thought the only way to pull in a standard bit of Vue code
