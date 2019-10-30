@@ -349,12 +349,6 @@ button {
     text-decoration: none;
 }
 
-/*TODO This gets stripped if we add it into Postcode because the element is added dynamically.  How do we avoid that?*/
-.pcinp {
-    max-width: 238px;
-    margin: 0 auto;
-}
-
 .iteminp ul {
     width: 100% !important;
     right: 0px !important;

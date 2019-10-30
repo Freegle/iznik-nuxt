@@ -21,7 +21,8 @@
     </b-input-group-append>
   </b-input-group>
 </template>
-<style scoped>
+
+<style scoped lang="scss">
 .input-group,
 .autocomplete-wrapper,
 .input-group-append {
@@ -34,7 +35,14 @@
   left: -5px;
   position: relative;
 }
+
+/* Deep selector for scoped CSS */
+>>> .pcinp {
+  max-width: 238px;
+  margin: 0 auto;
+}
 </style>
+
 <script>
 import Autocomplete from '~/components/Autocomplete'
 // TODO Make find location button work
