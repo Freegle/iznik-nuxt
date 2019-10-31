@@ -29,8 +29,6 @@ export default {
   },
   data: function() {
     return {
-      target: 2000,
-      raised: 0,
       thermOptions: {
         thermo: {
           color: 'darkgreen',
@@ -44,13 +42,16 @@ export default {
       }
     }
   },
-  mounted: async function() {
-    const donations = await this.$axios.get(process.env.API + '/donations')
-
-    if (donations.status === 200 && donations.data.ret === 0) {
-      this.target = Math.round(parseInt(donations.data.donations.target))
-      this.raised = Math.round(parseInt(donations.data.donations.raised))
+  computed: {
+    target() {
+      return this.$store.getters['donations/target']()
+    },
+    raised() {
+      return this.$store.getters['donations/raised']()
     }
+  },
+  mounted: async function() {
+    await this.$store.dispatch('donations/fetch')
   }
 }
 </script>

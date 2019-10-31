@@ -7,7 +7,7 @@
           <h1>Free To Use - Not Free To Run!</h1>
         </b-card-header>
         <b-card-text class="p-2">
-          <DonationThermometer class="float-right text-center" />
+          <DonationThermometer ref="thermo" class="float-right text-center" />
           <p>Thank you!  It's nice of you to even think about supporting us.</p>
           <p>
             We provide a free service and keep costs <em>phenomenally</em> low thanks to our
@@ -114,6 +114,11 @@
 <script>
 import DonationThermometer from '../components/DonationThermometer'
 export default {
-  components: { DonationThermometer }
+  components: { DonationThermometer },
+  computed: {
+    target() {
+      return this.$store.getters['donations/target']()
+    }
+  }
 }
 </script>
