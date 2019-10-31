@@ -9,7 +9,7 @@
             height="58"
             width="58"
             rounded
-            :src="require(`@/static/icon.png`)"
+            :src="logo"
             alt="Home"
           />
         </b-navbar-brand>
@@ -370,7 +370,8 @@ export default {
       complete: false,
       distance: 1000,
       notificationPoll: null,
-      nchan: null
+      nchan: null,
+      logo: require(`@/static/icon.png`)
     }
   },
 
@@ -455,6 +456,19 @@ export default {
       console.log('Start NCHAN from mount')
       this.startNCHAN(me.id)
     }
+
+    // Look for a custom logo.
+    setTimeout(async () => {
+      const res = await this.$axios.get(process.env.API + '/logo')
+
+      if (res.status === 200) {
+        const ret = res.data
+
+        if (ret.ret === 0 && ret.logo) {
+          this.logo = ret.logo.path
+        }
+      }
+    }, 5000)
   },
 
   beforeDestroy() {
