@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="mt-2">
     <b-card v-if="events.length" variant="white" no-body>
       <b-card-body class="p-0">
-        <b-btn variant="white" class="float-right" @click="showEventModal">
+        <b-btn variant="white" class="float-right m-1" @click="showEventModal">
           <v-icon name="plus" /> Add
         </b-btn>
         <nuxt-link to="/communityevents">
@@ -26,6 +26,7 @@ import CommunityEvent from './CommunityEvent'
 const CommunityEventModal = () => import('~/components/CommunityEventModal')
 
 // TODO Would be nice not to load the modal in except when clicked.  Bit fiddly because of async imports.
+// TODO DESIGN This sidebar, and the volunteering one, are brutally cut off at the bottom.
 export default {
   components: {
     CommunityEvent,

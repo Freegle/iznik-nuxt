@@ -184,6 +184,7 @@ const MyMessage = () => import('~/components/MyMessage.vue')
 const CommunityEventSidebar = () => import('~/components/CommunityEventSidebar')
 const VolunteerOpportunitySidebar = () =>
   import('~/components/VolunteerOpportunitySidebar')
+const BotLeftBox = () => import('~/components/BotLeftBox')
 // TODO Availability
 // TODO Reject and resubmit.
 // TODO Repost results in two items on the post page.
@@ -192,7 +193,8 @@ export default {
   components: {
     MyMessage,
     CommunityEventSidebar,
-    VolunteerOpportunitySidebar
+    VolunteerOpportunitySidebar,
+    BotLeftBox
   },
   mixins: [loginRequired],
   data() {

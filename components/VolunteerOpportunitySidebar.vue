@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="mt-2">
     <b-card v-if="opportunities.length" variant="white" no-body>
       <b-card-body class="p-0">
-        <b-btn variant="white" class="float-right" @click="showEventModal">
+        <b-btn variant="white" class="float-right m-1" @click="showEventModal">
           <v-icon name="plus" /> Add
         </b-btn>
         <nuxt-link to="/volunteering">
