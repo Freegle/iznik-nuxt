@@ -19,7 +19,7 @@
         <p>If your question isn't answered above, or you wish to compliment or complain, then you can <b>contact your volunteer team</b>, who will be happy to hear whether Freegle is doing a great job or needs changing.</p>
         <h5>Which Freegle community do you need help with?</h5>
         <div v-if="loggedIn">
-          <GroupSelect id="contactmods" class="mt-2" @change="groupChange" />
+          <GroupSelect id="contactmods" class="mt-2 mb-2" @change="groupChange" />
           <br>
           <ChatButton :groupid="contactGroupId" size="lg" title="Contact community volunteers" variant="success" class="mt-2 mb-2" />
         </div>

@@ -378,7 +378,6 @@ export default {
   computed: {
     loggedIn() {
       const ret = Boolean(this.$store.getters['auth/user']())
-      console.log('Default logged in?', this.$store.getters['auth/user']())
       return ret
     },
     me() {

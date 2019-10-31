@@ -17,7 +17,7 @@
         <nuxt-link to="/donate" class="p-1">
           Donate
         </nuxt-link>
-        <nuxt-link to="/contact" class="p-1">
+        <nuxt-link to="/help" class="p-1">
           Contact
         </nuxt-link>
       </div>
