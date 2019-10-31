@@ -3,11 +3,11 @@
     <NewsUserIntro v-if="userid" :userid="userid" :users="users" :newsfeed="newsfeed" append="told their Freegle story" />
     <b-row>
       <b-col>
-        <b-card variant="success">
+        <b-card variant="success" no-body>
           <b-card-header>
             {{ newsfeed.story.headline }}
           </b-card-header>
-          <b-card-text>
+          <b-card-text class="p-2">
             <b-img
               v-if="newsfeed.story.photo"
               v-b-modal="'photoModal-' + newsfeed.id"

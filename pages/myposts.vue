@@ -186,6 +186,7 @@ const VolunteerOpportunitySidebar = () =>
   import('~/components/VolunteerOpportunitySidebar')
 // TODO Availability
 // TODO Reject and resubmit.
+// TODO Repost results in two items on the post page.
 
 export default {
   components: {

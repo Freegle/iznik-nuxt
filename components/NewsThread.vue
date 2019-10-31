@@ -121,8 +121,8 @@ import twem from '~/assets/js/twem'
 
 // Use standard import to avoid screen-flicker
 import NewsReply from '~/components/NewsReply'
-const NewsMessage = () => import('~/components/NewsMessage')
-const NewsAboutMe = () => import('~/components/NewsAboutMe')
+import NewsMessage from '~/components/NewsMessage'
+import NewsAboutMe from '~/components/NewsAboutMe'
 const NewsCommunityEvent = () => import('~/components/NewsCommunityEvent')
 const NewsVolunteerOpportunity = () =>
   import('~/components/NewsVolunteerOpportunity')
