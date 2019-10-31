@@ -210,6 +210,8 @@ export default {
       this.replyingTo = this.newsfeed.id
     },
     async sendComment() {
+      // TODO This is sluggish.  Can we fake up the reply in the store in advance, or have some other visual indicator?
+      // Same applies to NewsReply.
       // Encode up any emojis.
       if (this.threadcomment) {
         const msg = twem.untwem(this.threadcomment)
