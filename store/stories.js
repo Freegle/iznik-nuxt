@@ -19,6 +19,10 @@ export const mutations = {
         Vue.set(state.list, item.id, item)
       }
     }
+  },
+
+  clear(state) {
+    state.list = {}
   }
 }
 
@@ -51,5 +55,9 @@ export const actions = {
     if (res.status === 200) {
       commit('setList', res.data.stories)
     }
+  },
+
+  clear({ commit }) {
+    commit('clear')
   }
 }

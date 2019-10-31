@@ -150,6 +150,7 @@
       :title="message.subject"
       size="lg"
       no-stacking
+      ok-only
     >
       <template slot="default">
         <b-carousel

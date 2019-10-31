@@ -50,7 +50,7 @@
             />
           </b-col>
         </b-row>
-        <Stories class="mt-4" />
+        <StoriesLanding class="mt-4" />
         <div style="height:80px" />
       </b-col>
       <b-col cols="0" md="3">
@@ -146,13 +146,13 @@
 </style>
 
 <script>
-const Stories = () => import('~/components/Stories.vue')
+const StoriesLanding = () => import('~/components/StoriesLanding.vue')
 // TODO That thing where you prompt people on mobile to install the app.
 // TODO The footer links don't exist.
 
 export default {
   components: {
-    Stories
+    StoriesLanding
   },
 
   mounted() {

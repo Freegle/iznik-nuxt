@@ -26,7 +26,11 @@
     <b-row class="mt-2">
       <b-col>
         <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
-        <b-btn variant="white" size="sm" class="float-right d-inline-block" @click="share">
+        <b-btn variant="primary" size="sm" class="float-right" @click="tellStory">
+          <v-icon name="book-open" /> Tell your story!
+        </b-btn>
+        <b-btn variant="white" size="sm" class="float-right d-inline-block mr-1" @click="share">
+          <!--          // TODO Add story button-->
           <v-icon name="share-alt" /> Share
         </b-btn>
       </b-col>
@@ -39,6 +43,7 @@
       alt="ChitChat Photo"
       size="lg"
       no-stacking
+      ok-only
     >
       <template slot="default">
         <b-img
