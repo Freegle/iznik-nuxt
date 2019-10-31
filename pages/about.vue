@@ -62,9 +62,45 @@
                 <b-card-text>
                   <h2>We Love Volunteers!</h2>
                   <p>Freegle is run by volunteers. Here are some of us:</p>
-                  <!-- TODO Add volunteers -->
+
+                  <b-list-group horizontal class="mb-1 mt-2 flex flex-wrap">
+                    <b-list-group-item v-for="(volunteer, $index) in volunteers" :key="'image-' + $index" class="bg-transparent p-0">
+                      <b-img-lazy
+                        v-if="!volunteer.profile.default"
+                        class="profile"
+                        rounded="circle"
+                        :title="volunteer.displayname"
+                        :src="volunteer.profile.turl"
+                        @error.native="brokenImage"
+                      />
+                    </b-list-group-item>
+                  </b-list-group>
+
                   <h2>Our Board</h2>
-                  <!-- TODO Add board -->
+                  <p>Our volunteers elect a Board.  Here they are:</p>
+                  <div v-for="(boardmember, $index) in board" :key="'image-' + $index" class="bg-transparent p-0">
+                    <div class="media clickme">
+                      <div class="media-left">
+                        <div class="media-object">
+                          <b-img-lazy
+                            v-if="!boardmember.profile.default"
+                            class="profile mr-2"
+                            rounded="circle"
+                            :title="boardmember.displayname"
+                            :src="boardmember.profile.turl"
+                            @error.native="brokenImage"
+                          />
+                        </div>
+                      </div>
+                      <div class="media-body">
+                        <b>{{ boardmember.displayname }}</b>
+                        <p v-if="boardmember.description">
+                          {{ boardmember.description }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
                   <h2>Why We Do It</h2>
                   <p>People have different reasons! Common reasons are:</p>
                   <ul>
@@ -181,3 +217,35 @@
     </b-row>
   </b-col>
 </template>
+<script>
+export default {
+  computed: {},
+  async asyncData({ app, params, store }) {
+    await store.dispatch('team/fetch', {
+      name: 'Volunteers'
+    })
+
+    const volunteers = store.getters['team/get']()
+
+    await store.dispatch('team/clear')
+
+    await store.dispatch('team/fetch', {
+      name: 'Board'
+    })
+
+    const board = store.getters['team/get']()
+    console.log('BOard', board)
+
+    return {
+      board: board.members,
+      volunteers: volunteers.members
+    }
+  },
+  methods: {
+    brokenImage(event) {
+      console.error('Broken profile image', event.target.src)
+      event.target.src = '/static/defaultprofile.png'
+    }
+  }
+}
+</script>

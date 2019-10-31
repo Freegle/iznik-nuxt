@@ -48,11 +48,13 @@
           </nuxt-link>
         </b-col>
       </b-row>
-      <b-tooltip :show.sync="show" target="menu-option-chat" class="d-none d-md-block">
-        Replies will appear here<br><br>
+      <div class="d-none d-md-block">
+        <b-tooltip :show.sync="show" target="menu-option-chat">
+          Replies will appear here<br><br>
 
-        You'll also get them by email.  <span class="text-danger font-weight-bold">Check your spam!</span>
-      </b-tooltip>
+          You'll also get them by email.  <span class="text-danger font-weight-bold">Check your spam!</span>
+        </b-tooltip>
+      </div>
     </div>
   </div>
 </template>
