@@ -52,13 +52,13 @@
                 <PostMessage :id="id" type="Offer" />
               </b-card-body>
               <b-card-footer v-if="index === ids.length - 1">
-                <div class="float-left">
+                <div class="mr-auto float-left">
                   <Postcode :focus="false" :find="false" size="md" class="d-inline" @selected="postcodeSelect" />
                   <ComposeGroup class="d-inline align-top" :width="200" />
                 </div>
                 <div class="ml-auto float-right">
                   <b-btn v-if="ids.length > 1" variant="white" class="" @click="deleteItem">
-                    <v-icon name="trash-alt" />&nbsp;Delete item
+                    <v-icon name="trash-alt" />&nbsp;Delete last item
                   </b-btn>
                   <b-btn variant="white" class="" @click="addItem">
                     <v-icon name="plus" />&nbsp;Add another item

@@ -186,8 +186,7 @@ const VolunteerOpportunitySidebar = () =>
   import('~/components/VolunteerOpportunitySidebar')
 const BotLeftBox = () => import('~/components/BotLeftBox')
 // TODO Availability
-// TODO Reject and resubmit.
-// TODO Repost results in two items on the post page.
+// TODO Repost results in two items on the post page?  Maybe, needs testing.
 
 export default {
   components: {

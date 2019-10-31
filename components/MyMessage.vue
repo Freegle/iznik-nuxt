@@ -97,7 +97,7 @@
             </div>
             <b-list-group v-if="rejected" horizontal class="flex-wrap">
               <b-list-group-item>
-                <b-btn variant="warning" class="d-inline mr-1" @click="edit">
+                <b-btn variant="warning" class="d-inline mr-1" @click="repost">
                   <v-icon name="pen" /> Edit and Resend
                 </b-btn>
               </b-list-group-item>
