@@ -1,5 +1,5 @@
 <template>
-  <b-input-group>
+  <div class="d-flex justify-content-center">
     <autocomplete
       ref="autocomplete"
       :url="source"
@@ -8,34 +8,23 @@
       label=""
       placeholder="Type postcode or..."
       :classes="{ input: 'form-control form-control-' + size + ' text-center pcinp', list: 'postcodelist' }"
+      class="mr-1"
       :min="3"
       :debounce="100"
       :process="process"
       :on-select="select"
     />
 
-    <b-input-group-append v-if="find">
+    <div v-if="find">
       <b-button variant="primary" :size="size">
-        <v-icon title="Find my location" name="map-marker-alt" /><span class="d-none d-sm-inline">&nbsp;Find my location</span>
+        <v-icon title="Find my location" name="map-marker-alt" />
+        <span class="d-none d-sm-inline">&nbsp;Find my location</span>
       </b-button>
-    </b-input-group-append>
-  </b-input-group>
+    </div>
+  </div>
 </template>
 
 <style scoped lang="scss">
-.input-group,
-.autocomplete-wrapper,
-.input-group-append {
-  display: inline-block;
-}
-
-.input-group-append {
-  /*TODO DESIGN This is a hacky way of positioning this button and doesn't work with the different values of the size prop.*/
-  top: -3px;
-  left: -5px;
-  position: relative;
-}
-
 /* Deep selector for scoped CSS */
 >>> .pcinp {
   max-width: 238px;
