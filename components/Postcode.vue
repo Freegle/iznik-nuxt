@@ -7,7 +7,7 @@
       anchor="name"
       label=""
       placeholder="Type postcode or..."
-      :classes="{input: 'form-control form-control-' + size + ' text-center pcinp', list: 'postcodelist' }"
+      :classes="{ input: 'form-control form-control-' + size + ' text-center pcinp', list: 'postcodelist' }"
       class="mr-1"
       :min="3"
       :debounce="100"
