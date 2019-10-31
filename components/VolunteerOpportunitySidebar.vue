@@ -2,12 +2,12 @@
   <div>
     <b-card v-if="opportunities.length" variant="white" no-body>
       <b-card-body class="p-0">
+        <b-btn variant="white" class="float-right" @click="showEventModal">
+          <v-icon name="plus" /> Add
+        </b-btn>
         <nuxt-link to="/volunteering">
           <h4 class="pl-1 pt-1">
             <v-icon name="calendar-alt" scale="2" /> Volunteer Opportunities
-            <b-btn variant="white" class="float-right" @click="showEventModal">
-              <v-icon name="plus" /> Add
-            </b-btn>
           </h4>
         </nuxt-link>
         <p class="text-center small">
