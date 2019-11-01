@@ -6,18 +6,11 @@
       </b-col>
       <b-col cols="12" md="6" class="p-0">
         <div>
-          <b-alert show variant="info" class="mt-2">
-            <b-row>
-              <b-col>
-                <groupSelect id="mygroups" class="float-left" all @change="groupChange" />
-              </b-col>
-              <b-col>
-                <b-form-select v-model="selectedType" class="float-right" value="All" :options="typeOptions" @change="typeChange" />
-              </b-col>
-            </b-row>
-          </b-alert>
+          <div class="d-flex mt-2 mb-3 notification">
+            <groupSelect id="mygroups" class="m-3" all @change="groupChange" />
+            <b-form-select v-model="selectedType" class="m-3" value="All" :options="typeOptions" @change="typeChange" />
+          </div>
           <groupHeader v-if="group" :key="'groupheader-' + groupid" v-bind="group" />
-
           <div v-for="(message, $index) in messages" :key="'messagelist-' + $index" class="p-0">
             <message v-if="selectedType === 'All' || message.type == selectedType" v-bind="message" />
           </div>
@@ -38,7 +31,14 @@
   </b-col>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@import 'color-vars';
+
+.notification {
+  background-color: $color-blue--x-light;
+  border: 1px solid $color-blue-x-light2;
+  border-radius: 3px;
+}
 </style>
 
 <script>
