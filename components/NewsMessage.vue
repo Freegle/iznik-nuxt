@@ -51,8 +51,7 @@
 </template>
 <script>
 import NewsBase from '~/components/NewsBase'
-
-const NewsUserIntro = () => import('~/components/NewsUserIntro')
+import NewsUserIntro from '~/components/NewsUserIntro'
 const NewsLoveComment = () => import('~/components/NewsLoveComment')
 
 export default {
