@@ -14,8 +14,8 @@
                 <span v-else class="d-inline">
                   {{ chat.name }}
                 </span>
-                <span v-if="chat.unseen">
-                  <b-badge variant="danger">{{ chat.unseen }}</b-badge>
+                <span v-if="unseen">
+                  <b-badge variant="danger">{{ unseen }}</b-badge>
                 </span>
                 <ratings v-if="otheruser" :key="'otheruser-' + otheruser.id" size="sm" v-bind="otheruser" class="mr-2" />
               </b-col>
@@ -195,7 +195,6 @@
 // TODO DESIGN We have a spinner at the top for our upwards infinite scroll.  But this looks messy when we load a
 // short chat, because we see the messages appear below the spinner and then move upwards once the infinite scroll
 // completes.
-// TODO New messages get flagged in left hand side and navbar but don't get loaded into the message pane.
 import twem from '~/assets/js/twem'
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
@@ -235,7 +234,8 @@ export default {
       distance: 1000,
       likelymsg: null,
       ouroffers: null,
-      sending: false
+      sending: false,
+      scrolledToBottom: false
     }
   },
   computed: {
@@ -256,6 +256,11 @@ export default {
 
     chat() {
       return this.$store.getters['chats/get'](this.id)
+    },
+
+    unseen() {
+      const unseen = this.$store.getters['chats/get'](this.id).unseen
+      return unseen
     },
 
     chatmessages() {
@@ -290,6 +295,27 @@ export default {
       return ret
     }
   },
+  watch: {
+    async unseen(newVal, oldVal) {
+      // The unseen count will get changed by reactivity from the store.  If that's the chat we have in our pane
+      // then that will trigger this watch, which we can use to pick up the new message.
+      if (newVal > oldVal) {
+        // New unread message.  Pick it up.
+        await this.$store.dispatch('chatmessages/clearContext', {
+          chatid: this.id
+        })
+        await this.$store.dispatch('chatmessages/fetch', {
+          chatid: this.id
+        })
+
+        this.$nextTick(() => {
+          const container = this.$el.querySelector('.chatContent')
+          container.scrollTop = container.scrollHeight
+        })
+      }
+    }
+  },
+
   async mounted() {
     // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
     // need to render this pane on the server.
@@ -320,11 +346,12 @@ export default {
             try {
               this.lastFetched = new Date()
 
-              if (currentCount === 0) {
+              if (!this.scrolledToBottom) {
                 // First load.  Scroll to the bottom when things have sorted themselves out.
-                requestIdleCallback(() => {
+                this.$nextTick(() => {
                   const container = this.$el.querySelector('.chatContent')
                   container.scrollTop = container.scrollHeight
+                  this.scrolledToBottom = true
                 })
               }
 

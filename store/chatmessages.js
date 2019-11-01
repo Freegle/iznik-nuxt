@@ -71,6 +71,13 @@ export const actions = {
     commit('clearMessages')
   },
 
+  clearContext({ commit, state }, params) {
+    commit('setContext', {
+      id: params.chatid,
+      ctx: null
+    })
+  },
+
   async fetch({ commit, state }, params) {
     const chatid = params.chatid
     const messages = await this.$axios.get(

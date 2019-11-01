@@ -199,6 +199,7 @@ const PromiseModal = () => import('./PromiseModal')
 const ProfileModal = () => import('./ProfileModal')
 
 // TODO DESIGN The maximise icon from font awesome is not obvious.
+// TODO MINOR This has a lot of code overlap with ChatPane.  Shame on me.
 
 export default {
   components: {
@@ -222,7 +223,8 @@ export default {
       distance: 1000,
       likelymsg: null,
       ouroffers: null,
-      sending: false
+      sending: false,
+      scrolledToBottom: false
     }
   },
   computed: {
@@ -240,6 +242,11 @@ export default {
 
     chat() {
       return this.$store.getters['chats/get'](this.id)
+    },
+
+    unseen() {
+      const unseen = this.$store.getters['chats/get'](this.id).unseen
+      return unseen
     },
 
     chatmessages() {
@@ -292,6 +299,26 @@ export default {
       return right
     }
   },
+  watch: {
+    async unseen(newVal, oldVal) {
+      // The unseen count will get changed by reactivity from the store.  If that's the chat we have in our pane
+      // then that will trigger this watch, which we can use to pick up the new message.
+      if (newVal > oldVal) {
+        // New unread message.  Pick it up.
+        await this.$store.dispatch('chatmessages/clearContext', {
+          chatid: this.id
+        })
+        await this.$store.dispatch('chatmessages/fetch', {
+          chatid: this.id
+        })
+
+        this.$nextTick(() => {
+          const container = this.$el.querySelector('.chatContent')
+          container.scrollTop = container.scrollHeight
+        })
+      }
+    }
+  },
   async mounted() {
     // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
     // need to render this pane on the server.
@@ -314,6 +341,7 @@ export default {
     },
     loadMore: function($state) {
       const currentCount = this.chatmessages.length
+      console.log('Load more', currentCount)
 
       if (this.complete) {
         // This is a bit weird - calling complete() works here to stop the plugin firing, but not lower down in the
@@ -330,11 +358,12 @@ export default {
             try {
               this.lastFetched = new Date()
 
-              if (currentCount === 0) {
+              if (!this.scrolledToBottom) {
                 // First load.  Scroll to the bottom when things have sorted themselves out.
                 this.$nextTick(() => {
                   const container = this.$el.querySelector('.chatContent')
                   container.scrollTop = container.scrollHeight
+                  this.scrolledToBottom = true
                 })
               }
 
