@@ -88,7 +88,7 @@
   font-family: sans-serif;
   position: absolute;
   list-style: none;
-  background: #f8f8f8;
+  background: $color-gray--lighter;
   padding: 0;
   margin: 0;
   display: inline-block;
@@ -105,7 +105,7 @@
 /*height: 0;*/
 /*width: 0;*/
 /*border: 10px solid transparent;*/
-/*border-bottom: 10px solid #f8f8f8;*/
+/*border-bottom: 10px solid $color-gray--lighter;*/
 /*left: 46%;*/
 /*top: -20px*/
 /*}*/
@@ -113,8 +113,6 @@
 .autocomplete ul li a {
   text-decoration: none;
   display: block;
-  background: #f8f8f8;
-  color: #2b2b2b;
   padding: 5px;
   padding-left: 10px;
 }
@@ -122,7 +120,7 @@
 .autocomplete ul li a:hover,
 .autocomplete ul li.focus-list a {
   color: white;
-  background: #2f9af7;
+  background: $color-blue--lighter;
 }
 
 .autocomplete ul li a span, /*backwards compat*/
