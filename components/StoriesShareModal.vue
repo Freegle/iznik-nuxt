@@ -7,6 +7,7 @@
       no-stacking
     >
       <template slot="default">
+        <p><a target="_blank" :href="story.url">{{ story.url }}</a></p>
         <social-sharing
           :url="story.url"
           :title="'Sharing ' + story.headline"

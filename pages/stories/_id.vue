@@ -23,73 +23,28 @@
           </b-row>
         </div>
         <div v-for="(story, $index) in sortedStories" :key="$index" class="mt-2">
-          <b-card no-body variant="success">
-            <b-card-header>
-              &quot;{{ story.headline }}&quot;
-            </b-card-header>
-            <b-card-text class="pl-2 pr-2">
-              <div v-if="story.story" class="preline">
-                <div v-if="story.photo" class="float-right">
-                  <b-img-lazy v-b-modal="'photoModal-' + story.photo.id" :src="story.photo.path" class="storyphoto clickme" thumbnail />
-                  <br>
-                </div>
-                {{ story.story }}
-              </div>
-              <span class="text-muted small">
-                <b-btn variant="white" class="float-right mb-1" @click="share(story)">
-                  <v-icon name="share-alt" />
-                </b-btn>
-                {{ story.date | timeago }} <span v-if="!groupid">on {{ story.groupname }}</span>
-              </span>
-            </b-card-text>
-          </b-card>
-          <b-modal
-            v-if="story.photo"
-            :id="'photoModal-' + story.photo.id"
-            ref="photoModal"
-            title="Story Photo"
-            alt="Story Photo"
-            size="lg"
-            no-stacking
-            ok-only
-          >
-            <template slot="default">
-              <b-img
-                fluid
-                rounded
-                center
-                :src="story.photo.path"
-              />
-            </template>
-          </b-modal>
+          <Story :story="story" />
         </div>
       </b-col>
       <b-col cols="0" md="3" class="d-none d-md-block" />
     </b-row>
     <StoriesAddModal ref="addmodal" />
-    <StoriesShareModal ref="share" :story="modalStory" />
   </div>
 </template>
 <style scoped>
-.storyphoto {
-  max-height: 250px !important;
-  max-width: 250px !important;
-}
 </style>
 <script>
 // TODO MINOR Add infinite scroll
-// TODO Story loves
-// TODO Individual story page.
 import loginOptional from '@/mixins/loginOptional.js'
-import StoriesShareModal from '~/components/StoriesShareModal'
 const GroupSelect = () => import('~/components/GroupSelect')
 const StoriesAddModal = () => import('~/components/StoriesAddModal')
+const Story = () => import('~/components/Story')
 
 export default {
   components: {
     GroupSelect,
     StoriesAddModal,
-    StoriesShareModal
+    Story
   },
   mixins: [loginOptional],
   data: function() {
@@ -168,13 +123,6 @@ export default {
 
     showAddModal() {
       this.$refs.addmodal.show()
-    },
-
-    share(story) {
-      this.modalStory = story
-      this.$nextTick(() => {
-        this.$bvModal.show('storiesShareModal-' + story.id)
-      })
     }
   }
 }
