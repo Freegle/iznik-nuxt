@@ -26,7 +26,8 @@
 
 <style scoped lang="scss">
 /* Deep selector for scoped CSS */
->>> .pcinp {
+::v-deep .pcinp {
+  min-width: 100px;
   max-width: 238px;
   margin: 0 auto;
 }

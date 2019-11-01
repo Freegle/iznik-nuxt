@@ -51,23 +51,23 @@
               <b-card-body class="pt-0 pb-1">
                 <PostMessage :id="id" type="Offer" />
               </b-card-body>
-              <b-card-footer v-if="index === ids.length - 1">
-                <div class="mr-auto float-left">
+              <b-card-footer v-if="index === ids.length - 1" class="d-flex justify-content-between">
+                <div class="d-flex">
                   <Postcode :focus="false" :find="false" size="md" class="d-inline" @selected="postcodeSelect" />
-                  <ComposeGroup class="d-inline align-top" :width="200" />
-                </div>
-                <div class="ml-auto float-right">
-                  <b-btn v-if="ids.length > 1" variant="white" class="" @click="deleteItem">
-                    <v-icon name="trash-alt" />&nbsp;Delete last item
-                  </b-btn>
-                  <b-btn variant="white" class="" @click="addItem">
-                    <v-icon name="plus" />&nbsp;Add another item
-                  </b-btn>
+                  <ComposeGroup :width="200" />
                 </div>
               </b-card-footer>
             </b-card>
           </li>
         </ul>
+        <div class="d-flex justify-content-end ml-1 mr-1">
+          <b-btn v-if="ids.length > 1" variant="white" class="mr-1" @click="deleteItem">
+            <v-icon name="trash-alt" />&nbsp;Delete last item
+          </b-btn>
+          <b-btn variant="white" class="" @click="addItem">
+            <v-icon name="plus" />&nbsp;Add another item
+          </b-btn>
+        </div>
         <b-row>
           <b-col class="text-muted small pl-0 pt-1 text-center">
             We may show this post, but not your email address, to people who are not yet members of Freegle.
