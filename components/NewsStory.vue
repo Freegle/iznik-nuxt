@@ -32,7 +32,7 @@
         <b-btn variant="white" to="/stories" size="sm" class="float-right mr-1">
           <v-icon name="book-open" /> More stories
         </b-btn>
-        <b-btn variant="white" size="sm" class="float-right d-inline-block mr-1" @click="share">
+        <b-btn variant="white" size="sm" class="float-right d-inline-block mr-1" @click="shareStory">
           <v-icon name="share-alt" /> Share
         </b-btn>
       </b-col>
@@ -57,6 +57,7 @@
       </template>
     </b-modal>
     <StoriesAddModal ref="addmodal" />
+    <StoriesShareModal ref="storiesShareModal" :story="newsfeed.story" />
   </div>
 </template>
 <script>
@@ -65,12 +66,14 @@ import NewsBase from '~/components/NewsBase'
 const NewsUserIntro = () => import('~/components/NewsUserIntro')
 const NewsLoveComment = () => import('~/components/NewsLoveComment')
 const StoriesAddModal = () => import('~/components/StoriesAddModal')
+const StoriesShareModal = () => import('~/components/StoriesShareModal')
 
 export default {
   components: {
     NewsUserIntro,
     NewsLoveComment,
-    StoriesAddModal
+    StoriesAddModal,
+    StoriesShareModal
   },
   extends: NewsBase,
   computed: {
@@ -84,6 +87,9 @@ export default {
   methods: {
     showAddModal() {
       this.$refs.addmodal.show()
+    },
+    shareStory() {
+      this.$refs.storiesShareModal.show()
     }
   }
 }
