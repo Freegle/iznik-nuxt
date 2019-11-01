@@ -26,11 +26,13 @@
     <b-row class="mt-2">
       <b-col>
         <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
-        <b-btn variant="primary" size="sm" class="float-right" @click="tellStory">
+        <b-btn variant="primary" size="sm" class="float-right" @click="showAddModal">
           <v-icon name="book-open" /> Tell your story!
         </b-btn>
+        <b-btn variant="white" to="/stories" size="sm" class="float-right mr-1">
+          <v-icon name="book-open" /> More stories
+        </b-btn>
         <b-btn variant="white" size="sm" class="float-right d-inline-block mr-1" @click="share">
-          <!--          // TODO Add story button-->
           <v-icon name="share-alt" /> Share
         </b-btn>
       </b-col>
@@ -54,6 +56,7 @@
         />
       </template>
     </b-modal>
+    <StoriesAddModal ref="addmodal" />
   </div>
 </template>
 <script>
@@ -61,11 +64,13 @@ import twem from '~/assets/js/twem'
 import NewsBase from '~/components/NewsBase'
 const NewsUserIntro = () => import('~/components/NewsUserIntro')
 const NewsLoveComment = () => import('~/components/NewsLoveComment')
+const StoriesAddModal = () => import('~/components/StoriesAddModal')
 
 export default {
   components: {
     NewsUserIntro,
-    NewsLoveComment
+    NewsLoveComment,
+    StoriesAddModal
   },
   extends: NewsBase,
   computed: {
@@ -74,6 +79,11 @@ export default {
       story = story ? twem.twem(this.$twemoji, story) : ''
       story = story.trim()
       return story
+    }
+  },
+  methods: {
+    showAddModal() {
+      this.$refs.addmodal.show()
     }
   }
 }

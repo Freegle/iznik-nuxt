@@ -129,7 +129,7 @@
                 </span>
               </div>
               <b-img v-if="volunteering.photo" thumbnail :src="volunteering.photo.paththumb + '?' + cacheBust" />
-              <b-img-lazy v-else thumbnail src="~/static/placeholder.jpg" />
+              <b-img v-else width="250" thumbnail src="~/static/placeholder.jpg" />
             </div>
           </b-col>
         </b-row>

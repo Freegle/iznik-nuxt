@@ -59,5 +59,21 @@ export const actions = {
 
   clear({ commit }) {
     commit('clear')
+  },
+
+  async add({ commit }, params) {
+    const res = await this.$axios.post(process.env.API + '/stories', params, {
+      headers: {
+        'X-HTTP-Method-Override': 'PUT'
+      }
+    })
+
+    let id = null
+
+    if (res.status === 200 && res.data.ret === 0) {
+      id = res.data.id
+    }
+
+    return id
   }
 }

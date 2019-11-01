@@ -16,7 +16,7 @@
               <groupSelect id="stories" class="float-left" all @change="groupChange" />
             </b-col>
             <b-col>
-              <b-btn variant="success" class="float-right" @click="showEventModal">
+              <b-btn variant="success" class="float-right" @click="showAddModal">
                 <v-icon name="book-open" /> Tell us your story!
               </b-btn>
             </b-col>
@@ -63,6 +63,7 @@
       </b-col>
       <b-col cols="0" md="3" class="d-none d-md-block" />
     </b-row>
+    <StoriesAddModal ref="addmodal" />
   </div>
 </template>
 <style scoped>
@@ -74,15 +75,16 @@
 <script>
 // TODO MINOR Add infinite scroll
 // TODO Story loves
-// TODO Add story button
 // TODO Set group based on params
 // TODO Individual story page.
 import loginOptional from '@/mixins/loginOptional.js'
-const GroupSelect = () => import('~/components/GroupSelect.vue')
+const GroupSelect = () => import('~/components/GroupSelect')
+const StoriesAddModal = () => import('~/components/StoriesAddModal')
 
 export default {
   components: {
-    GroupSelect
+    GroupSelect,
+    StoriesAddModal
   },
   mixins: [loginOptional],
   data: function() {
@@ -123,6 +125,10 @@ export default {
       } else {
         this.$router.push('/stories')
       }
+    },
+
+    showAddModal() {
+      this.$refs.addmodal.show()
     }
   }
 }
