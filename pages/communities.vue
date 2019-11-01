@@ -2,10 +2,7 @@
   <b-col>
     <b-row class="m-0">
       <b-col cols="0" md="3" class="d-none d-md-block">
-        <div class="d-flex flex-column sidebar">
-          <CommunityEventSidebar class="justify-content-start flex-grow-1" style="overflow-y: auto" />
-          <BotLeftBox class="justify-content-end flex-shrink-2" />
-        </div>
+        <sidebar-left />
       </b-col>
       <b-col cols="12" md="6" class="p-0">
         <div>
@@ -35,34 +32,30 @@
         </div>
       </b-col>
       <b-col cols="0" md="3" class="d-none d-md-block">
-        <div class="d-flex flex-column sidebar">
-          <VolunteerOpportunitySidebar class="justify-content-start flex-grow-1" style="overflow-y: auto" />
-          Job ads go here
-        </div>
+        <sidebar-right show-volunteer-opportunities show-job-opportunities />
       </b-col>
     </b-row>
   </b-col>
 </template>
+
 <style scoped>
 </style>
+
 <script>
 import loginRequired from '@/mixins/loginRequired.js'
 const GroupSelect = () => import('~/components/GroupSelect.vue')
 const GroupHeader = () => import('~/components/GroupHeader.vue')
 const Message = () => import('~/components/Message.vue')
-const CommunityEventSidebar = () => import('~/components/CommunityEventSidebar')
-const VolunteerOpportunitySidebar = () =>
-  import('~/components/VolunteerOpportunitySidebar')
-const BotLeftBox = () => import('~/components/BotLeftBox')
+const SidebarLeft = () => import('~/components/sidebar-left.vue')
+const SidebarRight = () => import('~/components/sidebar-right.vue')
 
 export default {
   components: {
     GroupHeader,
     GroupSelect,
     Message,
-    CommunityEventSidebar,
-    VolunteerOpportunitySidebar,
-    BotLeftBox
+    SidebarLeft,
+    SidebarRight
   },
   mixins: [loginRequired],
   data: function() {

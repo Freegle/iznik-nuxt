@@ -2,10 +2,7 @@
   <b-col>
     <b-row class="m-0">
       <b-col cols="0" md="3" class="d-none d-md-block">
-        <div class="d-flex flex-column sidebar">
-          <CommunityEventSidebar class="justify-content-start flex-grow-1" style="overflow-y: auto" />
-          <BotLeftBox class="justify-content-end flex-shrink-2" />
-        </div>
+        <sidebar-left />
       </b-col>
       <b-col cols="12" md="6" class="p-0">
         <b-card
@@ -168,10 +165,7 @@
         </b-card>
       </b-col>
       <b-col cols="0" md="3" class="d-none d-md-block">
-        <div class="d-flex flex-column sidebar">
-          <VolunteerOpportunitySidebar class="justify-content-start flex-grow-1" style="overflow-y: auto" />
-          Job ads go here
-        </div>
+        <sidebar-right show-volunteer-opportunities show-job-opportunities />
       </b-col>
     </b-row>
   </b-col>
@@ -181,19 +175,16 @@
 <script>
 import loginRequired from '@/mixins/loginRequired.js'
 const MyMessage = () => import('~/components/MyMessage.vue')
-const CommunityEventSidebar = () => import('~/components/CommunityEventSidebar')
-const VolunteerOpportunitySidebar = () =>
-  import('~/components/VolunteerOpportunitySidebar')
-const BotLeftBox = () => import('~/components/BotLeftBox')
+const SidebarLeft = () => import('~/components/sidebar-left.vue')
+const SidebarRight = () => import('~/components/sidebar-right.vue')
 // TODO Availability
 // TODO Repost results in two items on the post page?  Maybe, needs testing.
 
 export default {
   components: {
     MyMessage,
-    CommunityEventSidebar,
-    VolunteerOpportunitySidebar,
-    BotLeftBox
+    SidebarLeft,
+    SidebarRight
   },
   mixins: [loginRequired],
   data() {
