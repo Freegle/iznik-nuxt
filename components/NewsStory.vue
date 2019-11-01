@@ -57,7 +57,7 @@
       </template>
     </b-modal>
     <StoriesAddModal ref="addmodal" />
-    <StoriesShareModal ref="storiesShareModal" :story="newsfeed.story" />
+    <StoriesShareModal :story="newsfeed.story" />
   </div>
 </template>
 <script>
@@ -89,7 +89,7 @@ export default {
       this.$refs.addmodal.show()
     },
     shareStory() {
-      this.$refs.storiesShareModal.show()
+      this.$bvModal.show('storiesShareModal-' + this.newsfeed.story.id)
     }
   }
 }

@@ -11,8 +11,8 @@
           <p>
             So please tell us your story!
           </p>
-          <b-row v-if="oneOfOurs">
-            <b-col>
+          <b-row>
+            <b-col v-if="oneOfOurs">
               <groupSelect id="stories" class="float-left" all @change="groupChange" />
             </b-col>
             <b-col>
@@ -36,6 +36,9 @@
                 {{ story.story }}
               </div>
               <span class="text-muted small">
+                <b-btn variant="white" class="float-right mb-1" @click="share(story)">
+                  <v-icon name="share-alt" />
+                </b-btn>
                 {{ story.date | timeago }} <span v-if="!groupid">on {{ story.groupname }}</span>
               </span>
             </b-card-text>
@@ -64,6 +67,7 @@
       <b-col cols="0" md="3" class="d-none d-md-block" />
     </b-row>
     <StoriesAddModal ref="addmodal" />
+    <StoriesShareModal ref="share" :story="modalStory" />
   </div>
 </template>
 <style scoped>
@@ -77,13 +81,15 @@
 // TODO Story loves
 // TODO Individual story page.
 import loginOptional from '@/mixins/loginOptional.js'
+import StoriesShareModal from '~/components/StoriesShareModal'
 const GroupSelect = () => import('~/components/GroupSelect')
 const StoriesAddModal = () => import('~/components/StoriesAddModal')
 
 export default {
   components: {
     GroupSelect,
-    StoriesAddModal
+    StoriesAddModal,
+    StoriesShareModal
   },
   mixins: [loginOptional],
   data: function() {
@@ -91,7 +97,8 @@ export default {
       groupid: null,
       context: null,
       infiniteId: +new Date(),
-      complete: false
+      complete: false,
+      modalStory: null
     }
   },
   computed: {
@@ -161,6 +168,13 @@ export default {
 
     showAddModal() {
       this.$refs.addmodal.show()
+    },
+
+    share(story) {
+      this.modalStory = story
+      this.$nextTick(() => {
+        this.$bvModal.show('storiesShareModal-' + story.id)
+      })
     }
   }
 }
