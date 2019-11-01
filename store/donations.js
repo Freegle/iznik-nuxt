@@ -22,7 +22,12 @@ export const getters = {
 
 export const actions = {
   async fetch({ commit }, params) {
-    const donations = await this.$axios.get(process.env.API + '/donations')
+    console.log('Fetch donations', params)
+    const donations = await this.$axios.get(process.env.API + '/donations', {
+      params: {
+        groupid: params.groupid ? params.groupid : null
+      }
+    })
 
     if (donations.status === 200 && donations.data.ret === 0) {
       commit('set', {

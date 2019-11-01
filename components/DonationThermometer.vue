@@ -51,7 +51,9 @@ export default {
     }
   },
   mounted: async function() {
-    await this.$store.dispatch('donations/fetch')
+    await this.$store.dispatch('donations/fetch', {
+      groupid: this.groupid
+    })
   }
 }
 </script>
