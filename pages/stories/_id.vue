@@ -4,14 +4,14 @@
       <b-col cols="0" md="3" class="d-none d-md-block" />
       <b-col cols="12" md="6" class="p-0">
         <div>
-          <h1>Stories from Freeglers</h1>
+          <h1>Stories from Freeglers<span v-if="groupname"> on {{ groupname }}</span></h1>
           <p>
             We love to hear why people Freegle - it keeps our volunteers volunteering, and it helps show new freeglers what it's all about.
           </p>
           <p>
             So please tell us your story!
           </p>
-          <b-row>
+          <b-row v-if="oneOfOurs">
             <b-col>
               <groupSelect id="stories" class="float-left" all @change="groupChange" />
             </b-col>
@@ -75,7 +75,6 @@
 <script>
 // TODO MINOR Add infinite scroll
 // TODO Story loves
-// TODO Set group based on params
 // TODO Individual story page.
 import loginOptional from '@/mixins/loginOptional.js'
 const GroupSelect = () => import('~/components/GroupSelect')
@@ -107,12 +106,45 @@ export default {
       }
 
       return []
+    },
+    groupname() {
+      let ret = null
+
+      if (this.sortedStories && this.sortedStories.length && this.groupid) {
+        ret = this.sortedStories[0].groupname
+      }
+
+      return ret
+    },
+    oneOfOurs() {
+      const myGroups = this.$store.getters['auth/groups']()
+
+      let ret = false
+
+      for (const group of myGroups) {
+        if (
+          this.groupid === 0 ||
+          parseInt(group.id) === parseInt(this.groupid)
+        ) {
+          ret = true
+        }
+      }
+
+      return ret
     }
   },
   created() {
     this.groupid = this.$route.params.id
   },
   async mounted() {
+    if (this.groupid) {
+      // Ensure our select is set to the right value
+      this.$store.commit('group/remember', {
+        id: 'stories',
+        val: this.groupid
+      })
+    }
+
     await this.$store.dispatch('stories/clear')
     await this.$store.dispatch('stories/fetchSummary', {
       groupid: this.groupid > 0 ? this.groupid : null
