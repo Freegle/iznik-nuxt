@@ -22,24 +22,14 @@
     </b-row>
   </div>
 </template>
-<style scoped>
-.input-group,
-.autocomplete-wrapper,
-.input-group-append {
-  display: inline-block;
-}
 
+<style scoped>
 .autocomplete-wrapper {
+  display: inline-block;
   width: 100%;
 }
-
-.input-group-append {
-  /*TODO DESIGN This is a hacky way of positioning this button.*/
-  top: -5px;
-  left: -5px;
-  position: relative;
-}
 </style>
+
 <script>
 import Autocomplete from '~/components/Autocomplete'
 // TODO Make find location button work
