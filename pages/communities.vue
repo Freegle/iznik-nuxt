@@ -32,7 +32,7 @@
         </div>
       </b-col>
       <b-col cols="0" md="3" class="d-none d-md-block">
-        <sidebar-right />
+        <sidebar-right show-volunteer-opportunities show-job-opportunities />
       </b-col>
     </b-row>
   </b-col>
