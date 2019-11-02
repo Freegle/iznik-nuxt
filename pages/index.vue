@@ -56,7 +56,7 @@
       <b-col cols="0" md="3">
         <b-row class="d-none d-md-block">
           <b-col>
-            <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" class="float-right" alt="Android app" target="_blank">
+            <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" class="float-right mt-2" alt="Android app" target="_blank">
               <img alt="Freegle Android app on Google Play" title="Freegle Android app on Google Play" class="img-responsive" src="/en-play-badge.png">
             </a>
           </b-col>
