@@ -107,6 +107,8 @@
           <b-col>
             <b-btn variant="success" block :disabled="replying" @click="sendReply">
               Send
+              <!--              TODO DESIGN If you've gone through sign in, and your eye is therefore elsewhere, this method of -->
+              <!--              indicating that we are sending a reply is probably too subtle to notice.-->
               <v-icon v-if="replying" name="sync" class="fa-spin" />
               <v-icon v-else name="angle-double-right" />&nbsp;
             </b-btn>

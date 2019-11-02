@@ -331,6 +331,16 @@ export default {
     loadMore: function($state) {
       const currentCount = this.chatmessages.length
 
+      if (!this.scrolledToBottom) {
+        // First load.  Scroll to the bottom when things have sorted themselves out.  This helps if we have messages
+        // in our store, so we'll render some, otherwise we are stuck at the top until this fetch completes and we
+        // scroll to the bottom below.
+        this.$nextTick(() => {
+          const container = this.$el.querySelector('.chatContent')
+          container.scrollTop = container.scrollHeight
+        })
+      }
+
       if (this.complete) {
         // This is a bit weird - calling complete() works here to stop the plugin firing, but not lower down in the
         // callback.  And we get the error message about no results, so I've overridden it above to be empty.
