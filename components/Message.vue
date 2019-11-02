@@ -166,12 +166,13 @@
 
 <script>
 // TODO Report this post
+// Need to import rather than async otherwise the render doesn't happen and ref isn't set.
+import ChatButton from './ChatButton'
+import ShareModal from './ShareModal'
 import twem from '~/assets/js/twem'
 
-const ChatButton = () => import('./ChatButton')
 const Highlighter = () => import('vue-highlight-words')
 const MessageUserInfo = () => import('~/components/MessageUserInfo')
-const ShareModal = () => import('./ShareModal')
 
 export default {
   components: {
@@ -299,7 +300,7 @@ export default {
     },
 
     async sendReply() {
-      console.log('Send reply', this.reply, this.$refs)
+      console.log('Send reply', this.reply, this.$refs, this.expanded)
 
       if (this.reply) {
         const me = this.$store.getters['auth/user']()
