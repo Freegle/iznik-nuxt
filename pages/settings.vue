@@ -554,18 +554,24 @@ export default {
   },
 
   async asyncData({ app, params, store }) {
-    await store.dispatch('auth/fetchUser', {
-      components: ['me', 'groups', 'aboutme', 'phone', 'notifications'],
-      force: true
-    })
-
-    const me = store.getters['auth/user']()
-
-    return {
-      me: me,
-      emailsOn: !Object.keys(me).includes('onholidaytill')
+    const ret = {
+      me: null,
+      emailsOn: true
     }
+
+    try {
+      await store.dispatch('auth/fetchUser', {
+        components: ['me', 'groups', 'aboutme', 'phone', 'notifications'],
+        force: true
+      })
+
+      ret.me = store.getters['auth/user']()
+      ret.emailsOn = !Object.keys(ret.me).includes('onholidaytill')
+    } catch (e) {}
+
+    return ret
   },
+
   methods: {
     async update() {
       await this.$store.dispatch('auth/fetchUser', {
