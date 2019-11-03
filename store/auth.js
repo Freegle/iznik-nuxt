@@ -10,7 +10,8 @@ export const state = () => ({
   user: null,
   userFetched: null,
   groups: [],
-  nchan: null
+  nchan: null,
+  loggedInEver: false
 })
 
 const NONMIN = ['me', 'groups', 'aboutme', 'phone', 'notifications']
@@ -40,10 +41,17 @@ export const mutations = {
           state.user[key] = user[key]
         }
       }
+
+      // Remember that we have successfully logged in at some point.
+      state.loggedInEver = true
     } else if (state.user) {
       state.user = null
       state.userFetched = null
     }
+  },
+
+  setLoggedInEver(state, value) {
+    state.loggedInEver = value
   },
 
   setGroups(state, groups) {
@@ -64,8 +72,24 @@ export const getters = {
     return state.forceLogin
   },
 
+  loggedInEver: state => () => {
+    return state.loggedInEver
+  },
+
   user: state => () => {
-    return state.user
+    const ret = state.user
+
+    if (!ret.settings.notifications) {
+      ret.settings.notifications = {
+        email: true,
+        emailmine: false,
+        push: true,
+        facebook: true,
+        app: true
+      }
+    }
+
+    return ret
   },
 
   groups: state => () => {
@@ -286,5 +310,9 @@ export const actions = {
 
   setNCHAN({ commit, dispatch, state }, params) {
     commit('setNCHAN', params)
+  },
+
+  loggedInEver({ commit }, value) {
+    commit('setLoggedInEver', value)
   }
 }
