@@ -1,6 +1,6 @@
 <template>
   <client-only>
-    <b-form-select v-model="selectedGroup" :options="groupOptions" />
+    <b-form-select v-model="selectedGroup" size=":size" :options="groupOptions" />
   </client-only>
 </template>
 <style scoped>
@@ -20,6 +20,11 @@ export default {
     id: {
       validator: prop => typeof prop === 'number' || typeof prop === 'string',
       required: true
+    },
+    size: {
+      type: String,
+      required: false,
+      default: 'md'
     }
   },
   data: function() {

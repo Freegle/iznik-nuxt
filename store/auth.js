@@ -79,7 +79,7 @@ export const getters = {
   user: state => () => {
     const ret = state.user
 
-    if (!ret.settings.notifications) {
+    if (ret && !ret.settings.notifications) {
       ret.settings.notifications = {
         email: true,
         emailmine: false,
@@ -128,6 +128,20 @@ export const actions = {
     })
 
     this.$axios.defaults.headers.common.Authorization = null
+  },
+
+  forget({ commit }) {
+    const res = this.$axios.post(process.env.API + '/session', {
+      action: 'Forget'
+    })
+
+    if (res.status === 200 && res.data.ret === 0) {
+      this.$axios.defaults.headers.common.Authorization = null
+      commit('setUser', null)
+      return null
+    } else {
+      return res.data
+    }
   },
 
   setUser({ commit }, value) {
