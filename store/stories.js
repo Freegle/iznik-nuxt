@@ -12,6 +12,7 @@ export const mutations = {
   },
 
   setList(state, list) {
+    console.log('Set list', list)
     state.list = {}
 
     if (list) {
@@ -53,7 +54,7 @@ export const actions = {
     })
 
     if (res.status === 200) {
-      commit('setList', res.data.stories)
+      commit('setList', params.id ? [res.data.story] : res.data.stories)
     }
   },
 
