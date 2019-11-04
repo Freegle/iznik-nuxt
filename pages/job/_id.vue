@@ -35,7 +35,7 @@
 
         <b-img-lazy v-if="loading && (!jobs || jobs.length === 0)" src="~/static/loader.gif" />
         <div v-for="(job, $index) in jobs" :key="'job-' + $index">
-          <Job :job="job" class="mb-1" />
+          <Job :job="job" class="mb-1" :highlight="job.id === id" />
         </div>
         <div v-if="!loading && (!jobs || jobs.length === 0)">
           We didn't find any jobs here.  Please search somewhere else.
@@ -47,7 +47,7 @@
 <style scoped>
 </style>
 <script>
-// TODO Infinite scroll (needs server changes).
+// TODO This page is near identical to the _location one.  What's the correct way to do that?
 import loginOptional from '@/mixins/loginOptional.js'
 const Job = () => import('~/components/Job')
 
@@ -64,7 +64,16 @@ export default {
   },
   computed: {
     jobs() {
+      // Key difference from _location - move the job we're interested in to the start of the queue.
       const ret = this.$store.getters['jobs/list']()
+
+      for (let i = 0; i < ret.length; i++) {
+        if (ret[i].id === this.id) {
+          const found = ret.splice(i, 1)
+          ret.unshift(found[0])
+        }
+      }
+
       return ret
     },
     location() {
@@ -99,15 +108,28 @@ export default {
 
     document.head.appendChild(newScript)
 
-    await this.$store.dispatch('jobs/clear')
-    await this.$store.dispatch('jobs/fetch', {
-      location: this.location
-    })
+    // Don't clear store - that means if we saw a job in the sidebar, then it will still be present.
+    const ret = this.$store.getters['jobs/list']()
+
+    let found = false
+
+    for (let i = 0; i < ret.length; i++) {
+      if (ret[i].id === this.id) {
+        found = true
+      }
+    }
+
+    if (!found) {
+      // We didn't find the job we wanted.  Perhaps our store is empty or out of date.
+      await this.$store.dispatch('jobs/fetch', {
+        location: this.location
+      })
+    }
 
     this.loading = false
   },
   beforeCreate() {
-    this.suppliedLocation = this.$route.params.location
+    this.id = this.$route.params.id
   },
   methods: {
     search() {

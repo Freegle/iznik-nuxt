@@ -11,7 +11,7 @@
         {{ job.snippet }}
       </p>
     </div>
-    <b-card v-else no-body variant="info">
+    <b-card v-else no-body variant="info" :class="highlight ? 'bg-info': ''">
       <b-card-body>
         <b-card-title>
           {{ job.title }}
@@ -73,7 +73,13 @@ export default {
     },
     summary: {
       type: Boolean,
-      required: false
+      required: false,
+      default: false
+    },
+    highlight: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   }
 }

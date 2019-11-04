@@ -4,6 +4,13 @@ export const state = () => ({
 
 export const mutations = {
   setList(state, list) {
+    for (let i = 0; i < list.length; i++) {
+      // Get a unique ID.
+      const p = list[i].url.lastIndexOf('/')
+      const q = list[i].url.indexOf('?')
+      list[i].id = list[i].url.substring(p + 1, q)
+    }
+
     state.list = list
   },
 
