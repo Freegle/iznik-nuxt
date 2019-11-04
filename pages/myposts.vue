@@ -175,8 +175,8 @@
 <script>
 import loginRequired from '@/mixins/loginRequired.js'
 const MyMessage = () => import('~/components/MyMessage.vue')
-const SidebarLeft = () => import('~/components/sidebar-left.vue')
-const SidebarRight = () => import('~/components/sidebar-right.vue')
+const SidebarLeft = () => import('~/components/SidebarLeft')
+const SidebarRight = () => import('~/components/SidebarRight')
 // TODO Availability
 // TODO Repost results in two items on the post page?  Maybe, needs testing.
 

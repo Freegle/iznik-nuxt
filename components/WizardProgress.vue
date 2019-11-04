@@ -58,7 +58,7 @@ export default {
 @import 'color-vars';
 
 .wizard {
-  margin-top: 40px;
+  margin-top: 20px;
   border-bottom: solid 1px $color-gray--light;
   padding: 0 0 10px 0;
 }
