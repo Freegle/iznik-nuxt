@@ -174,9 +174,7 @@ export default {
         },
         (newValue, oldValue) => {
           if (newValue) {
-            console.log('Logged in', this.$nuxt.path)
-
-            if (this.$nuxt.path === '/') {
+            if (this.$nuxt.path === '/' || !this.$nuxt.path) {
               // Logged in homepage - on client side we want to load the last page, for logged in users.
               try {
                 const lastRoute = localStorage.getItem('Iznik>lasthomepage')

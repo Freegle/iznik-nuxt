@@ -12,7 +12,6 @@ export const mutations = {
   },
 
   setList(state, list) {
-    console.log('Set list', list)
     state.list = {}
 
     if (list) {

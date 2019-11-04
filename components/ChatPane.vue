@@ -485,6 +485,9 @@ export default {
       })
     },
     async nudge() {
+      // TODO MINOR Prevent nudges that are too frequent, or come too soon after a message.  I've had one member
+      // who always sends me a nudge immediately after sending a message, either deliberately or otherwise.  Pop up
+      // a "Come on, give 'em a chance" modal.
       await this.$store.dispatch('chatmessages/nudge', {
         roomid: this.id
       })

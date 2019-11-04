@@ -23,6 +23,9 @@
     </b-row>
     <b-row>
       <b-col cols="12" lg="6" class="text-center">
+        <p v-if="showSignUp">
+          <b>Using one of these buttons is the easiest way to create an account:</b>
+        </p>
         <b-img alt="Facebook login" class="loginbutton clickme" src="~/static/signinbuttons/facebook.png" @click="loginFacebook" />
         <b-img alt="Google login" :class="'mb-1 loginbutton clickme ' + disabled('google')" src="~/static/signinbuttons/google.png" @click="loginGoogle" />
         <b-img alt="Yahoo login" class="loginbutton clickme" src="~/static/signinbuttons/yahoo.png" @click="loginYahoo" />
@@ -45,7 +48,35 @@
       </b-col>
       <b-col cols="12" lg="6" class="mt-0">
         <b-form ref="form" action="/" autocomplete="on" method="post" @submit="loginNative">
-          <div v-if="existinguser">
+          <div>
+            <b-row v-if="showSignUp">
+              <b-col>
+                <b-form-input
+                  id="firstname"
+                  ref="firstname"
+                  v-model="firstname"
+                  name="firstname"
+                  placeholder="Your first name"
+                  alt="First name"
+                  class="mb-3"
+                  autocomplete="given-name"
+                />
+              </b-col>
+            </b-row>
+            <b-row v-if="showSignUp">
+              <b-col>
+                <b-form-input
+                  id="lastname"
+                  ref="lastname"
+                  v-model="lastname"
+                  name="lastname"
+                  placeholder="Your last name"
+                  alt="Last name"
+                  class="mb-3"
+                  autocomplete="family-name"
+                />
+              </b-col>
+            </b-row>
             <b-row>
               <b-col>
                 <b-form-input
@@ -86,20 +117,30 @@
                   type="submit"
                   value="login"
                 >
-                  Sign in with Freegle
+                  <span v-if="!showSignUp">
+                    Sign in to Freegle
+                  </span>
+                  <span v-else>
+                    Sign up to Freegle
+                  </span>
                 </b-btn>
               </b-col>
             </b-row>
-            <b-row>
+            <b-row v-if="!showSignUp">
               <b-col class="text-center">
                 <nuxt-link to="/forgot">
                   I forgot my password
                 </nuxt-link>
               </b-col>
             </b-row>
-            <b-row>
+            <b-row v-if="!showSignUp">
               <b-col class="text-center">
-                New freegler? <span class="clickme">Sign Up</span>
+                New freegler? <a href="#" @click="clickShowSignUp">Sign Up</a>
+              </b-col>
+            </b-row>
+            <b-row v-else>
+              <b-col class="text-center">
+                Already a freegler? <a href="#" @click="clickShowSignIn">Sign In</a>
               </b-col>
             </b-row>
           </div>
@@ -122,27 +163,25 @@
 </style>
 
 <script>
-// TODO Sign Up
 // TODO Eye icon to show password for mobile
+// TODO DESIGN Need vertical line or some other way to indicate that the form on the right is an alternative to
+// the buttons.
 // TODO DESIGN Spacing and alignment of the buttons is a bit off.
+// TODO DESIGN Would be nice to have "Sign up" buttons for social sign in.
+// TODO DESIGN Google's terms require the square icon, which is annoyingly inconsistent with the others.  Are we
+// allowed to have square other ones?  If so, please make such images.
 import Vue from 'vue'
 
 export default {
-  // props: {
-  // TODO
-  //   showSignIn: {
-  //     type: Boolean,
-  //     required: false,
-  //     default: false
-  //   }
-  // },
   data: function() {
     return {
+      firstname: null,
+      lastname: null,
       email: null,
       password: null,
       socialblocked: false,
-      existinguser: true,
-      pleaseShowModal: false
+      pleaseShowModal: false,
+      showSignUp: true
     }
   },
 
@@ -155,6 +194,14 @@ export default {
 
     showModal() {
       return this.pleaseShowModal || this.$store.getters['auth/forceLogin']()
+    },
+
+    loggedInEver() {
+      return this.$store.getters['auth/loggedInEver']
+    },
+
+    signUp() {
+      return !this.loggedInEver() || this.showSignUp
     }
   },
 
@@ -178,36 +225,72 @@ export default {
       return ret ? 'signindisabled' : ''
     },
     loginNative(e) {
-      console.log('loginNative')
       const self = this
       e.preventDefault()
       e.stopPropagation()
 
-      this.$store
-        .dispatch('auth/login', {
-          email: this.email,
-          password: this.password
-        })
-        .then(() => {
-          // We are now logged in. Prompt the browser to remember the credentials.
-          if (window.PasswordCredential) {
-            const c = new window.PasswordCredential(e.target)
-            navigator.credentials
-              .store(c)
-              .then(function() {
-                self.pleaseShowModal = false
-              })
-              .catch(err => {
-                console.error('Failed to save credentials', err)
-              })
-          } else {
-            self.pleaseShowModal = false
-          }
-        })
-        .catch(e => {
-          // TODO
-          console.error('Native login failed', e)
-        })
+      if (this.showSignUp) {
+        this.$store
+          .dispatch('auth/signup', {
+            firstname: this.firstname,
+            lastname: this.lastname,
+            email: this.email,
+            password: this.password
+          })
+          .then(() => {
+            // We are now logged in. Prompt the browser to remember the credentials.
+            if (window.PasswordCredential) {
+              const c = new window.PasswordCredential(e.target)
+              navigator.credentials
+                .store(c)
+                .then(function() {
+                  self.pleaseShowModal = false
+                })
+                .catch(err => {
+                  console.error('Failed to save credentials', err)
+                })
+            } else {
+              self.pleaseShowModal = false
+            }
+
+            if (this.$nuxt.path === '/' || !this.$nuxt.path) {
+              // We've signed up from the home page.  Send them to chitchat - that shows some activity, and also
+              // has the Give/Find prompt.
+              this.$router.push('/chitchat')
+            }
+          })
+          .catch(e => {
+            // TODO
+            console.error('Native login failed', e)
+          })
+      } else {
+        // Login
+        this.$store
+          .dispatch('auth/login', {
+            email: this.email,
+            password: this.password
+          })
+          .then(() => {
+            // We are now logged in. Prompt the browser to remember the credentials.
+            if (window.PasswordCredential) {
+              const c = new window.PasswordCredential(e.target)
+              navigator.credentials
+                .store(c)
+                .then(function() {
+                  self.pleaseShowModal = false
+                })
+                .catch(err => {
+                  console.error('Failed to save credentials', err)
+                })
+            } else {
+              self.pleaseShowModal = false
+            }
+          })
+          .catch(e => {
+            // TODO
+            console.error('Native login failed', e)
+          })
+      }
     },
     async loginFacebook() {
       console.log('Facebook login')
@@ -350,6 +433,19 @@ export default {
           // TODO
           console.error('Yahoo login failed', e)
         })
+    },
+
+    clickShowSignUp(e) {
+      this.showSignUp = true
+      e.preventDefault()
+      e.stopPropagation()
+    },
+
+    clickShowSignIn(e) {
+      console.log('Show sign in')
+      this.showSignUp = false
+      e.preventDefault()
+      e.stopPropagation()
     }
   }
 }

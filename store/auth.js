@@ -175,6 +175,26 @@ export const actions = {
     }
   },
 
+  async signup({ commit, dispatch }, params) {
+    const res = await this.$axios.post(process.env.API + '/user', params, {
+      headers: {
+        'X-HTTP-Method-Override': 'PUT'
+      }
+    })
+
+    if (res.status === 200 && res.data.ret === 0) {
+      commit('forceLogin', false)
+
+      // We need to fetch the user to get the groups, persistent token etc.
+      dispatch('fetchUser')
+    } else {
+      // Sign up failed.
+      // TODO Display some kind of error.
+      console.error('Login failed', res)
+      throw new Error('Login failed')
+    }
+  },
+
   async fetchUser({ commit, store, dispatch, state }, params) {
     const lastfetch = state.userFetched
 
