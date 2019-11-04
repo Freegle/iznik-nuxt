@@ -7,7 +7,7 @@
         </b-btn>
         <nuxt-link to="/communityevents">
           <h4 class="pl-1 pt-1">
-            <v-icon name="business-time" scale="2" /> Jobs
+            <v-icon name="briefcase" scale="2" /> Jobs
           </h4>
         </nuxt-link>
         <p class="text-center small">
@@ -38,9 +38,23 @@ export default {
   mounted() {
     this.$store.dispatch('jobs/clear')
 
+    const me = this.$store.getters['auth/user']()
+    let location = null
+
+    if (
+      me &&
+      me.settings &&
+      me.settings.mylocation &&
+      me.settings.mylocation.name
+    ) {
+      location = me.settings.mylocation.name
+    }
+
     // Delay a little bit to give the main pane a chance to load.
     setTimeout(() => {
-      this.$store.dispatch('jobs/fetch')
+      this.$store.dispatch('jobs/fetch', {
+        location: location
+      })
     }, 1000)
   },
   methods: {}
