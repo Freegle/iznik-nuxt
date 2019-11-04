@@ -94,9 +94,7 @@
         </b-button>
       </template>
     </b-modal>
-    <div v-if="showDonation">
-      <DonationAskModal ref="askmodal" :groupid="groupid" />
-    </div>
+    <DonationAskModal ref="askmodal" :groupid="groupid" />
   </div>
 </template>
 
