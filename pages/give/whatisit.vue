@@ -3,45 +3,7 @@
     <b-row class="m-0">
       <b-col cols="0" md="3" />
       <b-col cols="12" md="6" class="p-0">
-        <b-row class="bs-wizard">
-          <b-col cols="4" class="bs-wizard-step">
-            <div class="text-center bs-wizard-stepnum">
-              &nbsp;
-            </div>
-            <div class="progress">
-              <div class="progress-bar" />
-            </div>
-            <a href="#" class="bs-wizard-dot" />
-            <div class="bs-wizard-info text-center">
-              Where are you?
-            </div>
-          </b-col>
-          <b-col cols="4" class="bs-wizard-step">
-            <div class="text-center bs-wizard-stepnum active">
-              &nbsp;
-            </div>
-            <div class="progress">
-              <div class="progress-bar" />
-            </div>
-            <a href="#" class="bs-wizard-dot active" />
-            <div class="bs-wizard-info text-center">
-              What is it?
-            </div>
-          </b-col>
-          <b-col cols="4" class="bs-wizard-step">
-            <div class="text-center bs-wizard-stepnum">
-              &nbsp;
-            </div>
-            <div class="progress">
-              <div class="progress-bar" />
-            </div>
-            <a href="#" class="bs-wizard-dot" />
-            <div class="bs-wizard-info text-center">
-              Who are you?
-            </div>
-          </b-col>
-        </b-row>
-
+        <WizardProgress :active-stage="2" />
         <h1 class="text-center">
           Ok, now tell us about your item
         </h1>
@@ -97,12 +59,14 @@ import loginOptional from '@/mixins/loginOptional.js'
 const PostMessage = () => import('~/components/PostMessage')
 const Postcode = () => import('~/components/Postcode')
 const ComposeGroup = () => import('~/components/ComposeGroup')
+const WizardProgress = () => import('~/components/WizardProgress')
 
 export default {
   components: {
     PostMessage,
     Postcode,
-    ComposeGroup
+    ComposeGroup,
+    WizardProgress
   },
   mixins: [loginOptional],
   data: function() {
