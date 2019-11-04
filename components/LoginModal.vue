@@ -24,7 +24,7 @@
     <b-row>
       <b-col cols="12" lg="6" class="text-center">
         <b-img alt="Facebook login" class="loginbutton clickme" src="~/static/signinbuttons/facebook.png" @click="loginFacebook" />
-        <b-img alt="Google login" :class="'loginbutton clickme ' + disabled('google')" src="~/static/signinbuttons/google.png" @click="loginGoogle" />
+        <b-img alt="Google login" :class="'mb-1 loginbutton clickme ' + disabled('google')" src="~/static/signinbuttons/google.png" @click="loginGoogle" />
         <b-img alt="Yahoo login" class="loginbutton clickme" src="~/static/signinbuttons/yahoo.png" @click="loginYahoo" />
         <b-alert v-if="socialblocked" variant="error">
           Social login blocked - check your privacy settings
@@ -124,9 +124,18 @@
 <script>
 // TODO Sign Up
 // TODO Eye icon to show password for mobile
+// TODO DESIGN Spacing and alignment of the buttons is a bit off.
 import Vue from 'vue'
 
 export default {
+  // props: {
+  // TODO
+  //   showSignIn: {
+  //     type: Boolean,
+  //     required: false,
+  //     default: false
+  //   }
+  // },
   data: function() {
     return {
       email: null,

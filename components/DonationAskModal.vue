@@ -24,7 +24,7 @@
             </b-btn>
           </a>
           <p class="mt-2">
-            <a target="_blank" href="https://freegle.in/paypalbutton">Monthly donations</a> really help.
+            A <a target="_blank" href="https://freegle.in/paypalbutton">monthly donation</a> of &pound;1 would really help.
             You can find other ways to donate (e.g. bank transfer or cheque) <nuxt-link to="/donate">
               here
             </nuxt-link>.

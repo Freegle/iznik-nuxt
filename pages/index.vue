@@ -56,7 +56,7 @@
       <b-col cols="0" md="3">
         <b-row class="d-none d-md-block">
           <b-col>
-            <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" class="float-right" alt="Android app" target="_blank">
+            <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" class="float-right mt-2" alt="Android app" target="_blank">
               <img alt="Freegle Android app on Google Play" title="Freegle Android app on Google Play" class="img-responsive" src="/en-play-badge.png">
             </a>
           </b-col>
@@ -102,6 +102,9 @@
             <b-btn variant="white" to="/contact">
               <v-icon name="envelope" /> Contact
             </b-btn>
+            <b-btn variant="white" to="/unsubscribe">
+              <v-icon name="trash-alt" /> Unsubscribe
+            </b-btn>
           </div>
           <div class="flex flex-wrap justify-content-between mb-2 d-block d-sm-none">
             <nuxt-link to="/about">
@@ -121,6 +124,9 @@
             </nuxt-link>
             <nuxt-link to="/contact">
               Contact
+            </nuxt-link>
+            <nuxt-link to="/unsubscribe">
+              Unsubscribe
             </nuxt-link>
           </div>
           <span class="text-muted">
@@ -168,21 +174,25 @@ export default {
         },
         (newValue, oldValue) => {
           if (newValue) {
-            // Logged in - on client side we want to load the last page, for logged in users.
-            try {
-              const lastRoute = localStorage.getItem('Iznik>lasthomepage')
+            console.log('Logged in', this.$nuxt.path)
 
-              if (!lastRoute || lastRoute === 'news') {
-                route = '/chitchat'
-              } else {
-                route = '/communities'
-              }
+            if (this.$nuxt.path === '/') {
+              // Logged in homepage - on client side we want to load the last page, for logged in users.
+              try {
+                const lastRoute = localStorage.getItem('Iznik>lasthomepage')
 
-              if (this.$nuxt.path !== route) {
-                this.$router.push(route)
+                if (!lastRoute || lastRoute === 'news') {
+                  route = '/chitchat'
+                } else {
+                  route = '/communities'
+                }
+
+                if (this.$nuxt.path !== route) {
+                  this.$router.push(route)
+                }
+              } catch (e) {
+                console.log('Exception', e)
               }
-            } catch (e) {
-              console.log('Exception', e)
             }
           }
         }

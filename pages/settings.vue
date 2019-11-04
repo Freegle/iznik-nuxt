@@ -169,80 +169,85 @@
           <template v-slot:header>
             <v-icon name="envelope" /> Community Mail Settings
           </template>
-          <p>You can pause regular emails for a while, for example if you're on holiday.</p>
-          <toggle-button
-            v-model="emailsOn"
-            :height="34"
-            :width="150"
-            :font-size="14"
-            :sync="true"
-            :labels="{checked: 'Mails On', unchecked: 'Mails Paused'}"
-            color="#61AE24"
-            @change="changeHolidayToggle"
-          />
-          <span v-if="!emailsOn">
-            <span class="align-top ml-2 mr-2">
-              until
-            </span>
-            <date-picker
-              :value="me.onholidaytill"
-              lang="en"
-              placeholder="Set a date"
-              value-type="format"
-              :not-before="new Date()"
-              :not-after="(new Date()).setDate((new Date()).getDate() + 30)"
-              :confirm="true"
-              :clearable="true"
-              class="align-top"
-              @confirm="changeHolidayDate"
+          <div v-if="me.groups.length">
+            <p>You can pause regular emails for a while, for example if you're on holiday.</p>
+            <toggle-button
+              v-model="emailsOn"
+              :height="34"
+              :width="150"
+              :font-size="14"
+              :sync="true"
+              :labels="{checked: 'Mails On', unchecked: 'Mails Paused'}"
+              color="#61AE24"
+              @change="changeHolidayToggle"
             />
-          </span>
-          <b-card-body class="p-0 pt-1">
-            <p>
-              You can control the type and frequency of emails from your Freegle communities.
-            </p>
-            <div v-if="simpleSettings && !showAdvanced">
-              <div>
-                <SettingsGroup :emailfrequency.sync="emailSimple" :volunteeringallowed.sync="volunteeringSimple" :eventsallowed.sync="eventSimple" />
-                <p class="text-muted">
-                  Occasionally we may also send ADMIN mails about the running of Freegle.
-                </p>
-                <hr>
-                <a v-if="!showAdvanced" href="#" @click="toggleAdvanced">
-                  Show advanced settings
-                </a>
-              </div>
-            </div>
-            <div v-else>
-              <div v-if="me">
-                <div v-for="(group, $index) in me.groups" :key="'settingsgroup-' + $index" class="list-unstyled">
-                  <b-card v-if="group.type === 'Freegle'" class="nocardbot">
-                    <b-card-title>
-                      <b-img-lazy rounded thumbnail alt="Community profile picture" :src="group.profile" class="float-right groupprofile" />
-                      {{ group.namedisplay }}
-                      <span v-if="group.role === 'Moderator' || group.role === 'Owner'">
-                        <v-icon name="crown" class="text-success" />
-                      </span>
-                    </b-card-title>
-                    <b-card-body class="p-0 pt-2">
-                      <SettingsGroup
-                        :groupid="group.id"
-                        :emailfrequency="group.mysettings.emailfrequency"
-                        :volunteeringallowed="Boolean(group.mysettings.volunteeringallowed)"
-                        :eventsallowed="Boolean(group.mysettings.eventsallowed)"
-                        :leave="group.role === 'Member'"
-                        @change="groupChange"
-                        @leave="leaveGroup(group.id)"
-                      />
-                    </b-card-body>
-                  </b-card>
+            <span v-if="!emailsOn">
+              <span class="align-top ml-2 mr-2">
+                until
+              </span>
+              <date-picker
+                :value="me.onholidaytill"
+                lang="en"
+                placeholder="Set a date"
+                value-type="format"
+                :not-before="new Date()"
+                :not-after="(new Date()).setDate((new Date()).getDate() + 30)"
+                :confirm="true"
+                :clearable="true"
+                class="align-top"
+                @confirm="changeHolidayDate"
+              />
+            </span>
+            <b-card-body class="p-0 pt-1">
+              <p>
+                You can control the type and frequency of emails from your Freegle communities.
+              </p>
+              <div v-if="simpleSettings && !showAdvanced">
+                <div>
+                  <SettingsGroup :emailfrequency.sync="emailSimple" :volunteeringallowed.sync="volunteeringSimple" :eventsallowed.sync="eventSimple" />
+                  <p class="text-muted">
+                    Occasionally we may also send ADMIN mails about the running of Freegle.
+                  </p>
+                  <hr>
+                  <a v-if="!showAdvanced" href="#" @click="toggleAdvanced">
+                    Show advanced settings
+                  </a>
                 </div>
               </div>
-              <p class="text-muted mt-2">
-                Occasionally we may also send ADMIN mails about the running of Freegle.
-              </p>
-            </div>
-          </b-card-body>
+              <div v-else>
+                <div v-if="me">
+                  <div v-for="(group, $index) in me.groups" :key="'settingsgroup-' + $index" class="list-unstyled">
+                    <b-card v-if="group.type === 'Freegle'" class="nocardbot">
+                      <b-card-title>
+                        <b-img-lazy rounded thumbnail alt="Community profile picture" :src="group.profile" class="float-right groupprofile" />
+                        {{ group.namedisplay }}
+                        <span v-if="group.role === 'Moderator' || group.role === 'Owner'">
+                          <v-icon name="crown" class="text-success" />
+                        </span>
+                      </b-card-title>
+                      <b-card-body class="p-0 pt-2">
+                        <SettingsGroup
+                          :groupid="group.id"
+                          :emailfrequency="group.mysettings.emailfrequency"
+                          :volunteeringallowed="Boolean(group.mysettings.volunteeringallowed)"
+                          :eventsallowed="Boolean(group.mysettings.eventsallowed)"
+                          :leave="group.role === 'Member'"
+                          @change="groupChange"
+                          @leave="leaveGroup(group.id)"
+                        />
+                      </b-card-body>
+                    </b-card>
+                  </div>
+                </div>
+                <p class="text-muted mt-2">
+                  Occasionally we may also send ADMIN mails about the running of Freegle.
+                </p>
+              </div>
+            </b-card-body>
+          </div>
+          <div v-else>
+            You're not a member of any communities yet.
+          </div>
         </b-card>
         <b-card border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
           <template v-slot:header>
@@ -549,18 +554,24 @@ export default {
   },
 
   async asyncData({ app, params, store }) {
-    await store.dispatch('auth/fetchUser', {
-      components: ['me', 'groups', 'aboutme', 'phone', 'notifications'],
-      force: true
-    })
-
-    const me = store.getters['auth/user']()
-
-    return {
-      me: me,
-      emailsOn: !Object.keys(me).includes('onholidaytill')
+    const ret = {
+      me: null,
+      emailsOn: true
     }
+
+    try {
+      await store.dispatch('auth/fetchUser', {
+        components: ['me', 'groups', 'aboutme', 'phone', 'notifications'],
+        force: true
+      })
+
+      ret.me = store.getters['auth/user']()
+      ret.emailsOn = !Object.keys(ret.me).includes('onholidaytill')
+    } catch (e) {}
+
+    return ret
   },
+
   methods: {
     async update() {
       await this.$store.dispatch('auth/fetchUser', {

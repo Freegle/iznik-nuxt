@@ -41,7 +41,7 @@ export default {
     }
   },
   methods: {
-    async openChat(event, firstmessage) {
+    async openChat(event, firstmessage, firstmsgid) {
       this.$emit('click')
 
       if (this.groupid > 0) {
@@ -61,7 +61,8 @@ export default {
         if (firstmessage) {
           await this.$store.dispatch('chatmessages/send', {
             roomid: chatid,
-            message: firstmessage
+            message: firstmessage,
+            refmsgid: firstmsgid
           })
         }
 

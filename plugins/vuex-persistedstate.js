@@ -5,6 +5,8 @@ import cloneDeep from 'lodash.clonedeep'
 import requestIdleCallback from '~/assets/js/requestIdleCallback'
 
 // We defer setting of state to local storage until we're idle.
+// TODO Can we force it to happen before moving away from the page?  There's a window where if you sign in, then
+// reload rapidly, you'll be logged out.  Similarly for other data changes.
 let settingState = null
 let setInProgress = false
 

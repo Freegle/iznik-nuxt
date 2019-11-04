@@ -107,6 +107,8 @@
           <b-col>
             <b-btn variant="success" block :disabled="replying" @click="sendReply">
               Send
+              <!--              TODO DESIGN If you've gone through sign in, and your eye is therefore elsewhere, this method of -->
+              <!--              indicating that we are sending a reply is probably too subtle to notice.-->
               <v-icon v-if="replying" name="sync" class="fa-spin" />
               <v-icon v-else name="angle-double-right" />&nbsp;
             </b-btn>
@@ -166,12 +168,13 @@
 
 <script>
 // TODO Report this post
+// Need to import rather than async otherwise the render doesn't happen and ref isn't set.
+import ChatButton from './ChatButton'
+import ShareModal from './ShareModal'
 import twem from '~/assets/js/twem'
 
-const ChatButton = () => import('./ChatButton')
 const Highlighter = () => import('vue-highlight-words')
 const MessageUserInfo = () => import('~/components/MessageUserInfo')
-const ShareModal = () => import('./ShareModal')
 
 export default {
   components: {
@@ -299,7 +302,7 @@ export default {
     },
 
     async sendReply() {
-      console.log('Send reply', this.reply, this.$refs)
+      console.log('Send reply', this.reply, this.$refs, this.expanded)
 
       if (this.reply) {
         const me = this.$store.getters['auth/user']()
@@ -339,7 +342,7 @@ export default {
           // of how to handle.
 
           // Now create the chat and send the first message.
-          await this.$refs.chatbutton.openChat(null, this.reply)
+          await this.$refs.chatbutton.openChat(null, this.reply, this.id)
           this.replying = false
 
           // Clear message now sent

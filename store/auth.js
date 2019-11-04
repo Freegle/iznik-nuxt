@@ -1,6 +1,8 @@
 // TODO HARD All this loginRequired/loginOptional stuff seems like hard work.  I've seen at least one undiagnosed
 // bug.  Is there really not a better way to do it?  For example, if we used local storage directly, maybe we
 // could simplify some of the issues that arise because the Vuex persisted store is loaded later rather than sooner.
+// There are definitely still some of these - I've seen the navbar show us logged in while the page contents show us
+// logged out.  Can we force the persisted store to be loaded earlier to knock this class of bugs on the head?
 let first = true
 
 export const state = () => ({
@@ -8,7 +10,8 @@ export const state = () => ({
   user: null,
   userFetched: null,
   groups: [],
-  nchan: null
+  nchan: null,
+  loggedInEver: false
 })
 
 const NONMIN = ['me', 'groups', 'aboutme', 'phone', 'notifications']
@@ -38,10 +41,17 @@ export const mutations = {
           state.user[key] = user[key]
         }
       }
+
+      // Remember that we have successfully logged in at some point.
+      state.loggedInEver = true
     } else if (state.user) {
       state.user = null
       state.userFetched = null
     }
+  },
+
+  setLoggedInEver(state, value) {
+    state.loggedInEver = value
   },
 
   setGroups(state, groups) {
@@ -62,8 +72,24 @@ export const getters = {
     return state.forceLogin
   },
 
+  loggedInEver: state => () => {
+    return state.loggedInEver
+  },
+
   user: state => () => {
-    return state.user
+    const ret = state.user
+
+    if (ret && !ret.settings.notifications) {
+      ret.settings.notifications = {
+        email: true,
+        emailmine: false,
+        push: true,
+        facebook: true,
+        app: true
+      }
+    }
+
+    return ret
   },
 
   groups: state => () => {
@@ -102,6 +128,20 @@ export const actions = {
     })
 
     this.$axios.defaults.headers.common.Authorization = null
+  },
+
+  forget({ commit }) {
+    const res = this.$axios.post(process.env.API + '/session', {
+      action: 'Forget'
+    })
+
+    if (res.status === 200 && res.data.ret === 0) {
+      this.$axios.defaults.headers.common.Authorization = null
+      commit('setUser', null)
+      return null
+    } else {
+      return res.data
+    }
   },
 
   setUser({ commit }, value) {
@@ -284,5 +324,9 @@ export const actions = {
 
   setNCHAN({ commit, dispatch, state }, params) {
     commit('setNCHAN', params)
+  },
+
+  loggedInEver({ commit }, value) {
+    commit('setLoggedInEver', value)
   }
 }
