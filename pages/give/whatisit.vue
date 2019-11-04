@@ -3,7 +3,7 @@
     <b-row class="m-0">
       <b-col cols="0" md="3" />
       <b-col cols="12" md="6" class="p-0">
-        <WizardWhatIsIt />
+        <WizardProgress :active-stage="2" />
         <h1 class="text-center">
           Ok, now tell us about your item
         </h1>
@@ -59,14 +59,14 @@ import loginOptional from '@/mixins/loginOptional.js'
 const PostMessage = () => import('~/components/PostMessage')
 const Postcode = () => import('~/components/Postcode')
 const ComposeGroup = () => import('~/components/ComposeGroup')
-const WizardWhatIsIt = () => import('~/components/wizard-whatisit')
+const WizardProgress = () => import('~/components/WizardProgress')
 
 export default {
   components: {
     PostMessage,
     Postcode,
     ComposeGroup,
-    WizardWhatIsIt
+    WizardProgress
   },
   mixins: [loginOptional],
   data: function() {

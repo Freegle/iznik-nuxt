@@ -3,7 +3,7 @@
     <b-row class="m-0">
       <b-col cols="0" md="3" />
       <b-col cols="12" md="6">
-        <WizardWhoAreYou />
+        <WizardProgress :active-stage="3" />
         <h1 class="text-center">
           Finally, your email address
         </h1>
@@ -55,11 +55,11 @@
 <script>
 // TODO Add speech recognition
 import loginOptional from '@/mixins/loginOptional.js'
-const WizardWhoAreYou = () => import('~/components/wizard-whoareyou')
+const WizardProgress = () => import('~/components/WizardProgress')
 
 export default {
   components: {
-    WizardWhoAreYou
+    WizardProgress
   },
   mixins: [loginOptional],
   data() {
