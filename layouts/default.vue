@@ -354,6 +354,7 @@ svg.fa-icon {
 <script>
 // TODO DESIGN Notification dropdown window isn't wide enough before it's loaded.
 // Import login modal as I've seen an issue where it's not in $refs when you click on the signin button too rapidly.
+// TODO Catching exceptions and doing something graceful.  Including reporting to Sentry?
 import LoginModal from '~/components/LoginModal'
 const AboutMeModal = () => import('~/components/AboutMeModal')
 const ChatPopups = () => import('~/components/ChatPopups')

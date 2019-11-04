@@ -4,6 +4,9 @@ const FACEBOOK_APPID = '134980666550322'
 // API is the constant the code uses.
 const API = '/api'
 
+// This is where the user site is.
+const USER_SITE = 'https://www.ilovefreegle.org'
+
 // PROXY_API is where we send it to.  This avoids CORS issues (and removes preflight OPTIONS calls for GETs, which
 // hurt client performance).
 const PROXY_API = process.env.IZNIK_API || 'https://iznik.ilovefreegle.org'
@@ -168,7 +171,8 @@ module.exports = {
     proxy: true
   },
   proxy: {
-    '/api/': PROXY_API
+    '/api/': PROXY_API,
+    '/adview.php': USER_SITE + '/adview.php'
   },
 
   /*
@@ -243,7 +247,8 @@ module.exports = {
     GOOGLE_MAPS_KEY: 'AIzaSyCdTSJKGWJUOx2pq1Y0f5in5g4kKAO5dgg',
     GOOGLE_API_KEY: 'AIzaSyArVxoX781qdcbmQZi1PKHX-qa0bPbboH4',
     GOOGLE_CLIENT_ID: '423761283916-1rpa8120tpudgv4nf44cpmlf8slqbf4f.apps.googleusercontent.com',
-    MODTOOLS: false
+    MODTOOLS: false,
+    USER_SITE: USER_SITE
   },
 
   vue: {
