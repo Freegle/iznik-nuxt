@@ -5,6 +5,10 @@ export const state = () => ({
 export const mutations = {
   setList(state, list) {
     state.list = list
+  },
+
+  clear(state) {
+    state.list = []
   }
 }
 

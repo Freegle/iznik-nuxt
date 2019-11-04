@@ -48,6 +48,7 @@
 </style>
 <script>
 // TODO Infinite scroll (needs server changes).  Also when clicking on a job in an email, that one needs to appear at the top.
+// TODO /job/id page.
 import loginOptional from '@/mixins/loginOptional.js'
 const Job = () => import('~/components/Job')
 

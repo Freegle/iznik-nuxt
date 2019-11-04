@@ -1,6 +1,17 @@
 <template>
   <div>
-    <b-card no-body variant="info">
+    <div v-if="summary" class="ml-2 mr-2">
+      <h6>
+        {{ job.title }}
+        <nuxt-link :to="'/job/' + job.id" class="float-right">
+          Read more <v-icon name="angle-double-right" />
+        </nuxt-link>
+      </h6>
+      <p class="text-truncate mt-2">
+        {{ job.snippet }}
+      </p>
+    </div>
+    <b-card v-else no-body variant="info">
       <b-card-body>
         <b-card-title>
           {{ job.title }}
@@ -51,12 +62,18 @@
     </b-card>
   </div>
 </template>
+<style scoped lang="scss">
+</style>
 <script>
 export default {
   props: {
     job: {
       type: Object,
       required: true
+    },
+    summary: {
+      type: Boolean,
+      required: false
     }
   }
 }

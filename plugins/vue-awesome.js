@@ -5,6 +5,7 @@ import Icon from 'vue-awesome/components/Icon.vue'
 require('vue-awesome/icons/address-book')
 require('vue-awesome/icons/angle-double-right')
 require('vue-awesome/icons/bell')
+require('vue-awesome/icons/business-time')
 require('vue-awesome/icons/book-open')
 require('vue-awesome/icons/bullhorn')
 require('vue-awesome/icons/calendar-alt')
