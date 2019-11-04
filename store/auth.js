@@ -44,7 +44,7 @@ export const mutations = {
 
       // Remember that we have successfully logged in at some point.
       state.loggedInEver = true
-    } else if (state.user) {
+    } else if (state.user || state.user === {}) {
       state.user = null
       state.userFetched = null
     }
@@ -130,15 +130,14 @@ export const actions = {
     this.$axios.defaults.headers.common.Authorization = null
   },
 
-  forget({ commit }) {
-    const res = this.$axios.post(process.env.API + '/session', {
+  async forget({ commit, dispatch }) {
+    const res = await this.$axios.post(process.env.API + '/session', {
       action: 'Forget'
     })
 
+    console.log('Forget', res)
     if (res.status === 200 && res.data.ret === 0) {
-      this.$axios.defaults.headers.common.Authorization = null
-      commit('setUser', null)
-      return null
+      await dispatch('logout')
     } else {
       return res.data
     }
