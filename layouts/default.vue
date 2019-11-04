@@ -236,7 +236,9 @@
 @import 'color-vars';
 
 /*TODO DESIGN Menu dropdown on mobile needs a bit of love.*/
-/*TODO Shrink navbar on scroll? */
+/*TODO DESIGN Shrink navbar on scroll? */
+/*TODO DESIGN MINOR There's a bar that appears at the top when an Ajax request is outstanding.  Probably a Nuxt thing.  It's a nice idea, but irksome.  Maybe just lose it, or have something less annoying on the navbar for the same purpose. /*
+ */
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Roboto, 'Helvetica Neue', Arial, sans-serif;
