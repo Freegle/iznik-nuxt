@@ -46,8 +46,8 @@ import loginRequired from '@/mixins/loginRequired.js'
 const GroupSelect = () => import('~/components/GroupSelect.vue')
 const GroupHeader = () => import('~/components/GroupHeader.vue')
 const Message = () => import('~/components/Message.vue')
-const SidebarLeft = () => import('~/components/sidebar-left.vue')
-const SidebarRight = () => import('~/components/sidebar-right.vue')
+const SidebarLeft = () => import('~/components/SidebarLeft')
+const SidebarRight = () => import('~/components/SidebarRight')
 
 export default {
   components: {

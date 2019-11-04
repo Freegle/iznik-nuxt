@@ -153,8 +153,8 @@ import loginRequired from '@/mixins/loginRequired.js'
 import twem from '~/assets/js/twem'
 import NewsThread from '~/components/NewsThread.vue'
 const OurFilePond = () => import('~/components/OurFilePond')
-const SidebarLeft = () => import('~/components/sidebar-left.vue')
-const SidebarRight = () => import('~/components/sidebar-right.vue')
+const SidebarLeft = () => import('~/components/SidebarLeft')
+const SidebarRight = () => import('~/components/SidebarRight')
 
 export default {
   components: {
