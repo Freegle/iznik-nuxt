@@ -81,15 +81,20 @@ export const actions = {
     }
   },
 
-  async count({ commit, state }, params) {
-    const res = await this.$axios.get(process.env.API + '/notification', {
-      params: {
-        count: true
-      }
-    })
+  async count({ commit, state, rootGetters }, params) {
+    // Check if we're logged in - no point checking for notifications if we're not.
+    const me = rootGetters['auth/user']()
 
-    if (res.status === 200) {
-      commit('setCount', res.data.count)
+    if (me) {
+      const res = await this.$axios.get(process.env.API + '/notification', {
+        params: {
+          count: true
+        }
+      })
+
+      if (res.status === 200) {
+        commit('setCount', res.data.count)
+      }
     }
   },
 
