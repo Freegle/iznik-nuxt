@@ -93,7 +93,7 @@
               <div class="notifwrapper">
                 <v-icon name="bullhorn" scale="2" /><br>
                 Spread
-                <b-badge v-if="spreadCount" variant="danger" class="ml-3 chatbadge">
+                <b-badge v-if="spreadCount" variant="info" class="ml-3 chatbadge">
                   {{ spreadCount }}
                 </b-badge>
               </div>
@@ -420,6 +420,9 @@ export default {
       }
 
       return count
+    },
+    spreadCount() {
+      return this.me && this.me.invitesleft ? this.me.invitesleft : 0
     }
   },
 
