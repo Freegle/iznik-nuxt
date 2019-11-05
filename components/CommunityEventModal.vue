@@ -49,9 +49,18 @@
             When
           </b-col>
           <b-col cols="8" md="9">
-            <div v-for="(date, index) in event.dates" :key="'event-' + event.id + '-' + index + '-' + date.start.toString() + '-' + date.end.toString()" :class="date && date.string && date.string.past ? 'inpast': ''">
+            <div v-for="(date, index) in event.dates" :key="'event-' + event.id + '-' + index + '-' + (date.start ? date.start.toString() : '') + '-' + (date.end ? date.end.toString() : '')" :class="date && date.string && date.string.past ? 'inpast': ''">
               <span v-if="date && date.string">
-                {{ date.string.start }} - {{ date.string.end }}<br>
+                <span v-if="date.string.start">
+                  {{ date.string.start }}
+                </span>
+                <span v-if="date.string.start && date.string.end">
+                  -
+                </span>
+                <span v-if="date.string.end">
+                  {{ date.string.end }}
+                </span>
+                <br>
               </span>
             </div>
           </b-col>

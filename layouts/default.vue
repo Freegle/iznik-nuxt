@@ -89,6 +89,15 @@
                 </b-badge>
               </div>
             </b-nav-item>
+            <b-nav-item id="menu-option-spread" class="text-center small p-0" to="/spread" @mousedown="maybeReload('/spread')">
+              <div class="notifwrapper">
+                <v-icon name="bullhorn" scale="2" /><br>
+                Spread
+                <b-badge v-if="spreadCount" variant="danger" class="ml-3 chatbadge">
+                  {{ spreadCount }}
+                </b-badge>
+              </div>
+            </b-nav-item>
             <b-nav-item id="menu-option-help" class="text-center small p-0" to="/help" @mousedown="maybeReload('/help')">
               <v-icon name="question-circle" scale="2" /><br>
               Help
@@ -206,6 +215,10 @@
             <b-nav-item class="text-center p-0" to="/volunteering" @mousedown="maybeReload('/volunteering')">
               <v-icon name="hands-helping" scale="2" /><br>
               Volunteer
+            </b-nav-item>
+            <b-nav-item class="text-center p-0" to="/spreadh" @mousedown="maybeReload('/spread')">
+              <v-icon name="bullhorn" scale="2" /><br>
+              Spread
             </b-nav-item>
             <b-nav-item class="text-center p-0" to="/help" @mousedown="maybeReload('/help')">
               <v-icon name="question-circle" scale="2" /><br>
