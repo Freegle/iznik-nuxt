@@ -361,6 +361,7 @@ svg.fa-icon {
   position: absolute;
   top: 0px;
   left: 25px;
+  font-size: 110%;
 }
 </style>
 

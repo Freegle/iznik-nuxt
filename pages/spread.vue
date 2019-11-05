@@ -32,10 +32,60 @@
       <b-btn variant="info" size="lg" @click="added">
         I put up a poster
       </b-btn>
+      <hr>
       <h3>Invite your friends</h3>
-      TODO
+      <div v-if="me.invitesleft > 0">
+        <p class="bg-info p-2">
+          You have <b>{{ me.invitesleft | pluralize('invitation', { includeNumber: true }) }}</b> left.
+        </p>
+        <b-card class="mb-1">
+          <p>
+            We'll send them an email invitation. It will show your name and email.
+          </p>
+          <b-input-group>
+            <b-input
+              v-model="invitemail"
+              type="email"
+              size="lg"
+              placeholder="Enter their email address"
+            />
+            <b-input-group-append>
+              <b-button variant="success" size="lg" @click="invite">
+                <v-icon name="envelope" />&nbsp;Invite a friend
+              </b-button>
+            </b-input-group-append>
+          </b-input-group>
+          <span class="small text-muted">
+            By using this you confirm that you have their consent.  That's a PECR/GDPR thing.
+          </span>
+        </b-card>
+        <div v-if="invitations && invitations.length">
+          <h5>Your recent invitations</h5>
+          <div v-for="invitation in invitations" :key="invitation.id">
+            <b-row>
+              <b-col cols="6" sm="4">
+                {{ invitation.email }}
+              </b-col>
+              <b-col cols="6" sm="4">
+                invited {{ invitation.date | timeago }}
+              </b-col>
+              <b-col cols="6" sm="4">
+                {{ invitation.outcome }}
+              </b-col>
+            </b-row>
+          </div>
+        </div>
+      </div>
+      <div v-else>
+        <p class="bg-info p-2">
+          You have no invitations left at the moment.  You'll get more when one of the people you invited accepts, or
+          after a while.
+        </p>
+      </div>
+      <hr>
       <h3>Business Cards</h3>
       TODO
+      <hr>
       <h3>Tell your story</h3>
       <b-btn to="/stories" variant="primary" size="lg">
         <v-name icon="book-open" />Tell your story
@@ -53,13 +103,39 @@
 import PosterModal from '../components/PosterModal'
 // TODO LOW Record who downloads a poster.  Then we can chase them later to find out if they put them up.
 // TODO Link to page of noticeboards already put up.
+// TODO Validation on email invitation.
+// TODO Invitation accept page.
 
 export default {
   components: { PosterModal },
-  computed: {},
+  data: function() {
+    return {
+      invitemail: null
+    }
+  },
+  computed: {
+    me() {
+      return this.$store.getters['auth/user']()
+    },
+    invitations() {
+      return Object.values(this.$store.getters['invitations/list']())
+    }
+  },
+  async mounted() {
+    await this.$store.dispatch('invitations/fetch')
+  },
   methods: {
     added() {
       this.$refs.modal.show()
+    },
+    async invite() {
+      if (this.invitemail) {
+        await this.$store.dispatch('invitations/add', {
+          email: this.invitemail
+        })
+
+        this.invitemail = null
+      }
     }
   }
 }

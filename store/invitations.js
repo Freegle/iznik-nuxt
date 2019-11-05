@@ -44,21 +44,21 @@ export const getters = {
 
 export const actions = {
   async fetch({ commit }, params) {
-    const res = await this.$axios.get(process.env.API + '/noticeboard', {
+    const res = await this.$axios.get(process.env.API + '/invitation', {
       params: params
     })
 
     if (res.status === 200) {
       commit(
         'setList',
-        res.data.noticeboard ? [res.data.noticeboard] : res.data.noticeboards
+        res.data.invitation ? [res.data.invitation] : res.data.invitations
       )
     }
   },
 
   async delete({ commit, getters, dispatch }, params) {
     await this.$axios.post(
-      process.env.API + '/noticeboard',
+      process.env.API + '/invitation',
       {
         id: params.id
       },
@@ -74,9 +74,17 @@ export const actions = {
 
   async add({ commit, getters, dispatch }, params) {
     let id = null
-    const ret = await this.$axios.post(process.env.API + '/noticeboard', params)
+    const ret = await this.$axios.post(
+      process.env.API + '/invitation',
+      params,
+      {
+        headers: {
+          'X-HTTP-Method-Override': 'PUT'
+        }
+      }
+    )
 
-    if (ret.status === 200 && ret.data.id) {
+    if (ret.status === 200) {
       await dispatch('fetch', {
         id: ret.data.id
       })
@@ -88,7 +96,7 @@ export const actions = {
   },
 
   async edit({ commit, getters, dispatch }, params) {
-    await this.$axios.post(process.env.API + '/noticeboard', params, {
+    await this.$axios.post(process.env.API + '/invitation', params, {
       headers: {
         'X-HTTP-Method-Override': 'PATCH'
       }
