@@ -12,7 +12,7 @@
           </div>
           <groupHeader v-if="group" :key="'groupheader-' + groupid" v-bind="group" />
           <div v-for="(message, $index) in messages" :key="'messagelist-' + $index" class="p-0">
-            <message v-if="selectedType === 'All' || message.type == selectedType" v-bind="message" />
+            <message v-if="(selectedType === 'All' || message.type == selectedType) && (!message.outcomes || message.outcomes.length === 0)" v-bind="message" />
           </div>
 
           <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
