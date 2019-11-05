@@ -101,13 +101,15 @@
 </style>
 <script>
 import PosterModal from '../components/PosterModal'
+import loginRequired from '@/mixins/loginRequired.js'
 // TODO LOW Record who downloads a poster.  Then we can chase them later to find out if they put them up.
 // TODO Link to page of noticeboards already put up.
-// TODO Validation on email invitation.
-// TODO Invitation accept page.
+// TODO Validation on email for invitation.
+// TODO DESIGN This page is a bit of a guddle.  Various different things on it, feels cluttered.
 
 export default {
   components: { PosterModal },
+  mixins: [loginRequired],
   data: function() {
     return {
       invitemail: null
