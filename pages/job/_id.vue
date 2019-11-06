@@ -34,7 +34,7 @@
         </b-input-group>
 
         <b-img-lazy v-if="loading && (!jobs || jobs.length === 0)" src="~/static/loader.gif" />
-        <div v-for="(job, $index) in jobs" :key="'job-' + $index">
+        <div v-for="job in jobs" :key="'job-' + job.onmousedown">
           <Job :job="job" class="mb-1" :highlight="job.id === id" />
         </div>
         <div v-if="!loading && (!jobs || jobs.length === 0)">

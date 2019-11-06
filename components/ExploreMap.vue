@@ -64,7 +64,7 @@
             @zoom_changed="zoomChanged"
             @bounds_changed="boundsChanged"
           >
-            <div v-for="(g, index) in groupsInBounds" :key="'marker-' + index + '-' + groupsInBounds.length">
+            <div v-for="g in groupsInBounds" :key="'marker-' + g.id + '-' + groupsInBounds.length">
               <GroupMarker v-if="g.onmap" :group="g" :size="groupsInBounds.length < 20 ? 'rich' : 'poor'" />
             </div>
           </GmapMap>
@@ -76,7 +76,7 @@
         <b-card header-bg-variant="success" header-text-variant="white" header="Here's a list of communities:">
           <b-card-body style="height: 500px; overflow-y: scroll" class="p-0">
             <p>This list will change as you zoom or move around the map.</p>
-            <div v-for="(g, index) in groupsInList" :key="'groupsInBounds-' + index">
+            <div v-for="g in groupsInList" :key="'groupsInBounds-' + g.id">
               <div class="media clickme">
                 <div class="media-left">
                   <div class="media-object">

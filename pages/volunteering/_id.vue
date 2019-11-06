@@ -17,12 +17,12 @@
             </b-col>
           </b-row>
         </div>
-        <div v-for="(volunteering, $index) in events" :key="$index" class="mt-2">
+        <div v-for="volunteering in volunteerings" :key="'volunteering-' + volunteering.id" class="mt-2">
           <VolunteerOpportunity v-if="!volunteering.pending" :summary="false" :volunteering="volunteering" />
         </div>
         <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" force-use-infinite-wrapper="body" @infinite="loadMore">
           <span slot="no-results">
-            <b-alert v-if="!events.length" variant="info" class="mt-2" show>
+            <b-alert v-if="!volunteerings.length" variant="info" class="mt-2" show>
               There are no volunteer opportunities to show.  Why not add one?
             </b-alert>
           </span>
@@ -61,7 +61,7 @@ export default {
     }
   },
   computed: {
-    events() {
+    volunteerings() {
       return this.$store.getters['volunteerops/sortedList']()
     }
   },
@@ -89,8 +89,9 @@ export default {
       }
     },
     loadMore: async function($state) {
-      let events = this.$store.getters['volunteerops/list']()
-      const currentCount = events && events.length ? events.length : 0
+      let volunteerings = this.$store.getters['volunteerops/list']()
+      const currentCount =
+        volunteerings && volunteerings.length ? volunteerings.length : 0
 
       this.context = this.$store.getters['volunteerops/getContext']()
 
@@ -99,9 +100,10 @@ export default {
         context: this.context
       })
 
-      events = this.$store.getters['volunteerops/list']()
+      volunteerings = this.$store.getters['volunteerops/list']()
 
-      const newCount = events && events.length ? events.length : 0
+      const newCount =
+        volunteerings && volunteerings.length ? volunteerings.length : 0
       if (currentCount === newCount) {
         this.complete = true
         $state.complete()

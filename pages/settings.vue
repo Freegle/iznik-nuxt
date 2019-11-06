@@ -216,7 +216,7 @@
               </div>
               <div v-else>
                 <div v-if="me">
-                  <div v-for="(group, $index) in me.groups" :key="'settingsgroup-' + $index" class="list-unstyled">
+                  <div v-for="group in me.groups" :key="'settingsgroup-' + group.id" class="list-unstyled">
                     <b-card v-if="group.type === 'Freegle'" class="nocardbot">
                       <b-card-title>
                         <b-img-lazy rounded thumbnail alt="Community profile picture" :src="group.profile" class="float-right groupprofile" />

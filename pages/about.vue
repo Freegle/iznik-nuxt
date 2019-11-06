@@ -64,7 +64,7 @@
                   <p>Freegle is run by volunteers. Here are some of us:</p>
 
                   <b-list-group horizontal class="mb-1 mt-2 flex flex-wrap">
-                    <b-list-group-item v-for="(volunteer, $index) in volunteers" :key="'image-' + $index" class="bg-transparent p-0">
+                    <b-list-group-item v-for="volunteer in volunteers" :key="'volunteering-' + volunteer.id" class="bg-transparent p-0">
                       <b-img-lazy
                         v-if="!volunteer.profile.default"
                         class="profile"
@@ -78,7 +78,7 @@
 
                   <h2>Our Board</h2>
                   <p>Our volunteers elect a Board.  Here they are:</p>
-                  <div v-for="(boardmember, $index) in board" :key="'image-' + $index" class="bg-transparent p-0">
+                  <div v-for="boardmember in board" :key="'board-' + boardmember.id" class="bg-transparent p-0">
                     <div class="media clickme">
                       <div class="media-left">
                         <div class="media-object">

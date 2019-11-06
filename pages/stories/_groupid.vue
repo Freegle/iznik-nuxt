@@ -22,7 +22,7 @@
             </b-col>
           </b-row>
         </div>
-        <div v-for="(story, $index) in sortedStories" :key="$index" class="mt-2">
+        <div v-for="story in sortedStories" :key="'story-' + story.id" class="mt-2">
           <Story :story="story" />
         </div>
       </b-col>

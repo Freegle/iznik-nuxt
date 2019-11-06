@@ -81,7 +81,7 @@
       Show earlier {{ reply.replies.length | pluralize(['reply', 'replies'], { includeNumber: false }) }} ({{ reply.replies.length - 5 }})
     </a>
     <div v-if="reply.replies && reply.replies.length > 0" class="pl-3">
-      <ul v-for="(entry, $index) in reply.replies" :key="'newsfeed-' + $index" class="p-0 pt-1 pl-1 list-unstyled mb-1 border-left">
+      <ul v-for="entry in reply.replies" :key="'newsfeed-' + entry.id" class="p-0 pt-1 pl-1 list-unstyled mb-1 border-left">
         <li>
           <news-reply :key="'newsfeedreply-' + reply.id + '-reply-' + entry.id" :reply="entry" :users="users" />
         </li>

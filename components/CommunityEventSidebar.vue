@@ -13,7 +13,7 @@
         <p class="text-center small">
           These are local events, posted by other freeglers like you.
         </p>
-        <div v-for="(event, $index) in events" :key="$index" class="">
+        <div v-for="event in events" :key="'event-' + event.id" class="">
           <CommunityEvent v-if="!event.pending" :summary="true" :event="event" />
         </div>
       </b-card-body>

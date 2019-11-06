@@ -13,7 +13,7 @@
         <p class="text-center small">
           Jobs near you.  Freegle gets a small amount if you click.
         </p>
-        <div v-for="(job, $index) in jobs" :key="$index" class="">
+        <div v-for="job in jobs" :key="'job-' + job.onmousedown" class="">
           <Job :summary="true" :job="job" />
         </div>
       </b-card-body>

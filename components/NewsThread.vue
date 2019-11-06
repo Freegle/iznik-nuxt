@@ -28,7 +28,7 @@
         <a v-if="!showAllReplies && newsfeed.replies.length > 10" href="#" variant="white" class="mb-3" @click="(e) => { e.preventDefault(); showAllReplies = true }">
           Show earlier {{ newsfeed.replies.length | pluralize(['reply', 'replies'], { includeNumber: false }) }} ({{ newsfeed.replies.length - 10 }})
         </a>
-        <ul v-for="(entry, $index) in repliestoshow" :key="'newsfeed-' + $index" class="list-unstyled">
+        <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id" class="list-unstyled">
           <li>
             <news-reply :key="'newsfeedreply-' + newsfeed.id + '-reply-' + entry.id" :reply="entry" :users="users" :threadhead="newsfeed" :scroll-to="scrollTo" />
           </li>

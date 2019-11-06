@@ -135,7 +135,7 @@
           indicators
           img-width="100%"
         >
-          <b-carousel-slide v-for="(attachment, index) in expanded.attachments" :key="'mesagephohoto-' + index + '-' + attachment.id">
+          <b-carousel-slide v-for="attachment in expanded.attachments" :key="'mesagephohoto-' + attachment.id">
             <b-img
               slot="img"
               center

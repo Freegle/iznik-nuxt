@@ -68,7 +68,7 @@
                 </b-btn>
               </b-dropdown-item>
               <b-dropdown-divider />
-              <b-dropdown-item v-for="(notification, $index) in notifications" :key="'notification-' + $index" class="p-0 notpad">
+              <b-dropdown-item v-for="notification in notifications" :key="'notification-' + notification.id" class="p-0 notpad">
                 <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
               </b-dropdown-item>
               <infinite-loading :distance="distance" @infinite="loadMore">
@@ -149,7 +149,7 @@
               </b-badge>
             </div>
           </template>
-          <b-dropdown-item v-for="(notification, $index) in notifications" :key="'notification-' + $index" class="p-0 notpad">
+          <b-dropdown-item v-for="notification in notifications" :key="'notification-' + notification.id" class="p-0 notpad">
             <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
           </b-dropdown-item>
           <infinite-loading :distance="distance" @infinite="loadMore">

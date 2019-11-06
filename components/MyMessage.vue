@@ -161,7 +161,7 @@
           indicators
           img-width="100%"
         >
-          <b-carousel-slide v-for="(attachment, index) in message.attachments" :key="'mesagephohoto-' + index + '-' + attachment.id">
+          <b-carousel-slide v-for="attachment in message.attachments" :key="'mesagephohoto-' + attachment.id">
             <b-img
               slot="img"
               center

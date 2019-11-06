@@ -39,7 +39,7 @@
                 <b-img-lazy src="~/static/loader.gif" />
               </span>
             </infinite-loading>
-            <ul v-for="(chatmessage, $index) in chatmessages" :key="'chatmessage-' + $index" class="p-0 pt-1 list-unstyled mb-1">
+            <ul v-for="chatmessage in chatmessages" :key="'chatmessage-' + chatmessage.id" class="p-0 pt-1 list-unstyled mb-1">
               <li v-if="chatmessage">
                 <ChatMessage
                   :key="'chatmessage-' + chatmessage.id"

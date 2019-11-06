@@ -74,7 +74,7 @@
           </template>
           <b-card-body class="p-0">
             <div v-if="activeOffers.length">
-              <div v-for="(message, $index) in activeOffers" :key="$index" class="p-0">
+              <div v-for="message in activeOffers" :key="'message-' + message.id" class="p-0">
                 <Message v-bind="message" />
               </div>
             </div>
@@ -90,7 +90,7 @@
           </template>
           <b-card-body class="p-0">
             <div v-if="activeWanteds.length">
-              <div v-for="(message, $index) in activeWanteds" :key="$index" class="p-0">
+              <div v-for="message in activeWanteds" :key="'message-' + message.id" class="p-0">
                 <Message v-bind="message" />
               </div>
             </div>

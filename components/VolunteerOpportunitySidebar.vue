@@ -13,7 +13,7 @@
         <p class="text-center small">
           Are you a charity or good cause that needs volunteers?
         </p>
-        <div v-for="(opportunity, $index) in opportunities" :key="$index" class="">
+        <div v-for="opportunity in opportunities" :key="'volunteering-' + opportunity.id" class="">
           <VolunteerOpportunity v-if="!opportunity.pending" :summary="true" :volunteering="opportunity" />
         </div>
       </b-card-body>

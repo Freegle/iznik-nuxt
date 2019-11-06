@@ -73,7 +73,7 @@
         </b-row>
         <b-row>
           <b-col>
-            <div v-for="(message, $index) in messages" :key="$index" class="p-0">
+            <div v-for="message in messages" :key="'message-' + message.id" class="p-0">
               <message v-if="message.type == searchtype" v-bind="message" />
             </div>
 

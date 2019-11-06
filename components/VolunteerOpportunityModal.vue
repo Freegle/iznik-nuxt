@@ -57,7 +57,7 @@
             When
           </b-col>
           <b-col cols="8" md="9">
-            <div v-for="(date, index) in volunteering.dates" :key="'volunteering-' + volunteering.id + '-' + index + '-' + (date.start ? date.start.toString() : '') + '-' + (date.end ? date.end.toString() : '')" :class="date && date.string && date.string.past ? 'inpast': ''">
+            <div v-for="date in volunteering.dates" :key="'volunteering-' + volunteering.id + '-' + (date.start ? date.start.toString() : '') + '-' + (date.end ? date.end.toString() : '')" :class="date && date.string && date.string.past ? 'inpast': ''">
               <span v-if="date && date.string">
                 <span v-if="date.string.start">
                   {{ date.string.start }}

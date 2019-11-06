@@ -17,7 +17,7 @@
             </b-col>
           </b-row>
         </div>
-        <div v-for="(event, $index) in events" :key="$index" class="mt-2">
+        <div v-for="event in events" :key="'event-' + event.id" class="mt-2">
           <CommunityEvent v-if="!event.pending" :summary="false" :event="event" />
         </div>
         <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" force-use-infinite-wrapper="body" @infinite="loadMore">

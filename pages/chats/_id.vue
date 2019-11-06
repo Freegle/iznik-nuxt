@@ -15,7 +15,7 @@
           </b-row>
         </b-card-body>
       </b-card>
-      <ul v-for="(chat, $index) in sortedChats" :key="'chat-' + $index" class="p-0 pt-1 list-unstyled mb-1">
+      <ul v-for="chat in sortedChats" :key="'chat-' + chat.id" class="p-0 pt-1 list-unstyled mb-1">
         <li :class="{ active: activeChat && parseInt(activeChat.id) === parseInt(chat.id) }">
           <ChatListEntry :id="chat.id" />
         </li>

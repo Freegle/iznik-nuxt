@@ -3,7 +3,7 @@
     <b-card variant="white">
       <h3>Why Freegle?</h3>
       <p>Here's what freeglers have said recently:</p>
-      <div v-for="(story, $index) in sortedStories" :key="$index" class="">
+      <div v-for="story in sortedStories" :key="'story-' + story.id" class="">
         <h5 class="mt-2">
           &quot;{{ story.headline }}&quot;
         </h5>

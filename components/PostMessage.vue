@@ -24,7 +24,7 @@
     <b-row v-if="attachments && attachments.length">
       <b-col class="p-0">
         <b-list-group horizontal class="mb-1">
-          <b-list-group-item v-for="(att, $index) in attachments" :key="'image-' + $index" class="bg-transparent p-0">
+          <b-list-group-item v-for="att in attachments" :key="'image-' + att.id" class="bg-transparent p-0">
             <PostPhoto v-bind="att" @remove="removePhoto" />
           </b-list-group-item>
         </b-list-group>
