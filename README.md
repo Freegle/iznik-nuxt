@@ -44,9 +44,20 @@ Rendering solution.
 # Current Status
 
 This is getting close to Beta.
-* You can log in, though the Sign Up half isn't done yet.
-* The ChitChat/My Groups/Chat/Give/Find/My Posts/Notifications/Settings/Events/Volunteer pages exist.  They are basically functional, but not complete.
-* Spread/Help don't exist.  There are lots of other bits and pieces, and many TODOs in the code.
+* You can log in or sign up, though the Sign Up half isn't done yet.
+* The pages you can access from the menu bar are basically done.
+* There are lots of other bits and pieces, and many TODOs in the code.
 * We've done a first pass for how it displays on a mobile, but there will be some niggles at different screen sizes.
 * We've tested on Chrome only, and very few mobiles/tablets.
 
+There are some specific pages that still need doing:
+* /settings/confirmmail/key
+* /shortlinks/id
+* /livemap
+* /stats/heatmap
+* /stats/authority/id
+* /mobile
+* Plugins - are they still used?
+* /stories/fornewsletter
+* /mydata
+* /councils
