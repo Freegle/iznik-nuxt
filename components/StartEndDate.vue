@@ -37,6 +37,7 @@
     </div>
     <div>
       <!-- TODO Hide button if only one date present -->
+      <!-- TODO Delete button isn't working correctly - Add three dates and delete the first one to recreate -->
       <b-btn variant="white" size="sm" @click="$emit('remove', index)">
         <v-icon name="trash-alt" title="Delete this date" aria-hidden="true" />
         <span class="delete__label">Remove</span>
