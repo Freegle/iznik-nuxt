@@ -55,6 +55,11 @@
                   </h2>
                 </b-col>
               </b-row>
+              <b-row>
+                <b-col class="text-center text-muted">
+                  These three figures are totals over the last 12 months.
+                </b-col>
+              </b-row>
             </b-card-text>
           </b-card>
           <b-card variant="white" class="mt-2">
