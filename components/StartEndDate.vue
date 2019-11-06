@@ -36,70 +36,12 @@
       </div>
     </div>
     <div>
-      <!-- TODO This should be tabable to -->
-      <span title="Delete this date" class="d-none d-md-inline" @click="$emit('remove', index)">
-        <v-icon name="trash-alt" scale="1.5" />
-      </span>
-      <span title="Delete this date" class="d-inlineblock d-md-none">
-        <b-btn variant="white" class="mt-2 mb-3" size="sm" @click="$emit('remove', index)">
-          <v-icon name="trash-alt" /> Remove
-        </b-btn>
-      </span>
+      <!-- TODO Hide button if only one date present -->
+      <b-btn variant="white" size="sm" @click="$emit('remove', index)">
+        <v-icon name="trash-alt" title="Delete this date" aria-hidden="true" />
+        <span class="delete__label">Remove</span>
+      </b-btn>
     </div>
-
-
-
-    <!--
-
-  <b-card no-body class="m-0 mb-1">
-    <b-card-body class="p-2">
-      <b-row>
-        <b-col cols="12" sm="5">
-          <span class="align-middle text-muted">
-            Starts at:
-          </span>
-          <date-picker
-            v-model="startd"
-            class="float-right mt-1"
-            lang="en"
-            type="datetime"
-            append-to-body
-            format="ddd, Do MMM HH:mm a"
-            :time-picker-options="{ start: '00:00', step: '00:30', end: '23:30' }"
-            placeholder="Choose date/time"
-            @change="change"
-          />
-        </b-col>
-        <b-col cols="12" sm="5">
-          <span class="align-middle text-muted">
-            Ends at:
-          </span>
-          <date-picker
-            v-model="endd"
-            class="float-right mt-1"
-            lang="en"
-            type="datetime"
-            append-to-body
-            format="ddd, Do MMM HH:mm a"
-            :time-picker-options="{ start: '00:00', step: '00:30', end: '23:30' }"
-            placeholder="Choose date/time"
-            @change="change"
-          />
-        </b-col>
-        <b-col cols="12" sm="2">
-          <span title="Delete this date" class="d-none d-sm-inline float-right" @click="$emit('remove', index)">
-            <v-icon name="trash-alt" scale="1.5" />
-          </span>
-          <span title="Delete this date" class="d-inlineblock d-sm-none">
-            <b-btn variant="white" class="mt-2 mb-3" size="sm" @click="$emit('remove', index)">
-              <v-icon name="trash-alt" /> Remove
-            </b-btn>
-          </span>
-        </b-col>
-      </b-row>
-    </b-card-body>
-  </b-card>
--->
   </div>
 </template>
 
@@ -156,5 +98,15 @@ export default {
 /* Override the class from Vue2 Datepicker */
 .mx-datepicker {
   width: 100%;
+}
+
+.delete__label {
+  font-size: 14px;
+}
+
+/* Style the icon inside the v-icon component */
+.fa-icon {
+  width: auto;
+  height: 16px;
 }
 </style>

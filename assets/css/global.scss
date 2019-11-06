@@ -78,7 +78,7 @@ $bootstrap-lg: 1200px;
   color: $color-black !important;
   text-shadow: none !important;
   -webkit-font-smoothing: antialiased;
-  border: 1px $color-black solid !important;
+  border: 1px $color-black solid;
 }
 
 .button--green {
