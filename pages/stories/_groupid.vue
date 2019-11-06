@@ -96,7 +96,7 @@ export default {
     }
   },
   created() {
-    this.groupid = this.$route.params.id
+    this.groupid = this.$route.params.groupid
   },
   async mounted() {
     if (this.groupid) {
