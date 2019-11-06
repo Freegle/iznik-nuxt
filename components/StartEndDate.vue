@@ -68,6 +68,14 @@ export default {
       endd: null
     }
   },
+  watch: {
+    start: function() {
+      this.startd = this.start
+    },
+    end: function() {
+      this.endd = this.end
+    }
+  },
   mounted: function() {
     this.startd = this.start
     this.endd = this.end
