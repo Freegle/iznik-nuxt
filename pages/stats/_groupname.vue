@@ -5,15 +5,18 @@
       <b-col cols="12" md="6" class="p-0">
         <b-row>
           <b-col>
-            <div class="media pl-1 bg-white">
-              <div class="media-left">
-                <div class="media-object">
-                  <b-img thumbnail src="/icon.png" class="titlelogo" />
+            <GroupHeader v-if="group" :id="group.id" :key="'group-' + (group ? group.id : null)" v-bind="group" />
+            <div v-else>
+              <div class="media pl-1 bg-white">
+                <div class="media-left">
+                  <div class="media-object">
+                    <b-img thumbnail src="/icon.png" class="titlelogo" />
+                  </div>
                 </div>
-              </div>
-              <div class="media-body ml-2">
-                <h2>{{ titlename }} - Statistics</h2>
-                <h5>{{ tagline }}</h5>
+                <div class="media-body ml-2">
+                  <h2>Freegle</h2>
+                  <h5>Give and get stuff for free in your local community. Don't throw it away, give it away!</h5>
+                </div>
               </div>
             </div>
           </b-col>
@@ -168,16 +171,19 @@
 import dayjs from 'dayjs'
 import { GChart } from 'vue-google-charts'
 import loginOptional from '@/mixins/loginOptional.js'
+const GroupHeader = () => import('~/components/GroupHeader.vue')
 
 export default {
   components: {
-    GChart
+    GChart,
+    GroupHeader
   },
   mixins: [loginOptional],
   data: function() {
     return {
       loading: false,
       dataready: false,
+      group: null,
       activityOptions: {
         title: 'Activity',
         interpolateNulls: false,
@@ -263,14 +269,6 @@ export default {
     }
   },
   computed: {
-    titlename() {
-      return this.groupname ? this.groupname : 'Freegle'
-    },
-    tagline() {
-      return this.groupid && this.group.tagline
-        ? this.group.tagline
-        : "Don't throw it away, give it away!"
-    },
     totalWeight() {
       const weights = this.$store.getters['stats/get']('Weight')
       let total = 0
@@ -313,7 +311,6 @@ export default {
     },
     offerOutcomeData() {
       const breakdown = this.$store.getters['stats/get']('Outcomes')
-      console.log('Breakdown', breakdown)
       let totalOffer = 0
       let takenOffer = 0
       let withdrawnOffer = 0
@@ -417,16 +414,10 @@ export default {
       const groups = this.$store.getters['group/list']()
       for (const ix in groups) {
         const group = groups[ix]
-        console.log(
-          'Check group',
-          group.nameshort.toLowerCase(),
-          this.groupname.toLowerCase()
-        )
 
         if (group.nameshort.toLowerCase() === this.groupname.toLowerCase()) {
           groupid = group.id
           this.group = group
-          console.log('Found as ', groupid)
         }
       }
     }
@@ -439,7 +430,7 @@ export default {
 
     await this.$store.dispatch('stats/clear')
     await this.$store.dispatch('stats/fetch', {
-      groupid: groupid,
+      group: groupid,
       grouptype: 'Freegle',
       systemwide: groupid === null,
       start: start
