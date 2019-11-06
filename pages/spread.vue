@@ -12,6 +12,7 @@
         <li><b>Tell people!</b> It's easy to forget that lots of people still haven't heard of us.</li>
         <li><b>Put up a poster.</b></li>
         <li><b>Invite your friends</b> by email.</li>
+        <li><b>Tell your story</b>.</li>
       </ul>
       <p>
         You wouldn't be freegling unless someone had told you about it - can you pay it forward?
@@ -84,11 +85,25 @@
       </div>
       <hr>
       <h3>Business Cards</h3>
-      TODO
+      <p>
+        You can get little "business cards" to hand out to people or put on noticeboards.  They're small, so it's
+        easy to always have a few with you.
+      </p>
+      <p>You can order these from firms like <a href="https://www.instantprint.co.uk/business-cards/economy?lamination=no&size=85-x-55-mm&paper=350gsm-silk&sided=single&finish=standard-corners&rangesizeq=0">Instantprint</a> - download our PDF and upload it to their site when ordering.</p>
+      <b-img-lazy src="/businesscards/FreegleBusinessCardSmall.png" class="border border-dark mb-2" />
+      <br>
+      <a href="/businesscards/FreegleBusinessCardFront.pdf" target="_blank" class="mt-1 mb-1">
+        <b-btn size="lg" variant="primary">
+          Download card as PDF
+        </b-btn>
+      </a>
       <hr>
-      <h3>Tell your story</h3>
+      <h3>
+        Tell your story
+      </h3>
+      <p>This helps encourage other people to try freegling.</p>
       <b-btn to="/stories" variant="primary" size="lg">
-        <v-name icon="book-open" />Tell your story
+        <v-icon name="book-open" />Tell your story
       </b-btn>
     </b-col>
     <PosterModal ref="modal" />
