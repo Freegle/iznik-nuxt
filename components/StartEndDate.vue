@@ -37,7 +37,7 @@
     </div>
     <div>
       <!-- TODO Hide button if only one date present -->
-      <b-btn variant="white" class="delete__button" size="sm" @click="$emit('remove', index)">
+      <b-btn variant="white" size="sm" @click="$emit('remove', index)">
         <v-icon name="trash-alt" title="Delete this date" aria-hidden="true" />
         <span class="delete__label">Remove</span>
       </b-btn>
@@ -98,12 +98,6 @@ export default {
 /* Override the class from Vue2 Datepicker */
 .mx-datepicker {
   width: 100%;
-}
-
-.delete__button {
-  background-color: $color-white;
-  border: 1px solid $color-black;
-  border-radius: 0.2rem;
 }
 
 .delete__label {
