@@ -93,6 +93,7 @@ module.exports = {
     { from: '^/mygroups$', to: '/communities' },
     { from: '^/why$', to: '/help' },
     { from: '^/contact$', to: '/help' },
+    { from: '^/posters$', to: '/noticeboards' },
   ],
 
   /*

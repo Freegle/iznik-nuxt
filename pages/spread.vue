@@ -20,10 +20,10 @@
       <h3>Put up a poster</h3>
       <p>This is an A4 poster with tear-off strips - good for noticeboards in cafes, community venues, or at work.</p>
       <a href="https://freegle.in/A4Poster" target="_blank">
-        <b-img-lazy src="~static/posters/A4.png" class="poster" />
+        <b-img-lazy src="~static/posters/A4.png" class="poster border border-dark mb-2" />
         <br>
         <b-btn variant="success" size="lg" class="mt-2 mb-2">
-          Download Poster
+          Download poster
         </b-btn>
       </a>
       <p>
@@ -31,8 +31,13 @@
         we can encourage other freeglers to put one up there in future. <b>Please do this!</b>
       </p>
       <b-btn variant="info" size="lg" @click="added">
-        I put up a poster
+        I put up a poster!
       </b-btn>
+      <p>
+        You can see where people have put up posters <nuxt-link to="/noticeboards">
+          here
+        </nuxt-link>.
+      </p>
       <hr>
       <h3>Invite your friends</h3>
       <div v-if="me.invitesleft > 0">
@@ -94,7 +99,7 @@
       <br>
       <a href="/businesscards/FreegleBusinessCardFront.pdf" target="_blank" class="mt-1 mb-1">
         <b-btn size="lg" variant="primary">
-          Download card as PDF
+          Download business card
         </b-btn>
       </a>
       <hr>
@@ -103,7 +108,7 @@
       </h3>
       <p>This helps encourage other people to try freegling.</p>
       <b-btn to="/stories" variant="primary" size="lg">
-        <v-icon name="book-open" />Tell your story
+        <v-icon name="book-open" /> Tell your story
       </b-btn>
     </b-col>
     <PosterModal ref="modal" />
