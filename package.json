@@ -53,6 +53,7 @@
     "vue-filepond": "^5.1.3",
     "vue-force-next-tick": "^1.0.3",
     "vue-google-autocomplete": "^1.1.0",
+    "vue-google-charts": "^0.3.2",
     "vue-highlight-words": "^1.2.0",
     "vue-infinite-loading": "github:PeachScript/vue-infinite-loading#master",
     "vue-js-toggle-button": "^1.3.2",

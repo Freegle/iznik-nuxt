@@ -15,7 +15,7 @@
           <b-row>
             <b-col>
               <a href="https://freegle.in/A4Poster" target="_blank" class="float-left">
-                <b-btn variant="success" size="lg" class="mt-2 mb-2">
+                <b-btn variant="success" size="lg">
                   Download poster
                 </b-btn>
               </a>

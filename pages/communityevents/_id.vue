@@ -80,6 +80,8 @@ export default {
 
   methods: {
     groupChange: function(newGroup) {
+      // TODO If we go to the page and have a group selected, then we get redirected to the group page, which means
+      // the back button is broken.  Same probably applies for volunteering.
       if (newGroup) {
         this.$router.push('/communityevents/' + newGroup)
       } else {
