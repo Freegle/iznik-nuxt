@@ -181,7 +181,7 @@ export default {
       password: null,
       socialblocked: false,
       pleaseShowModal: false,
-      showSignUp: true
+      showSignUp: false
     }
   },
 
@@ -197,7 +197,7 @@ export default {
     },
 
     loggedInEver() {
-      return this.$store.getters['auth/loggedInEver']
+      return this.$store.getters['auth/loggedInEver']()
     },
 
     signUp() {
@@ -442,7 +442,6 @@ export default {
     },
 
     clickShowSignIn(e) {
-      console.log('Show sign in')
       this.showSignUp = false
       e.preventDefault()
       e.stopPropagation()
