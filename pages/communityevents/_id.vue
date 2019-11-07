@@ -5,7 +5,6 @@
       <b-col cols="12" md="6" class="p-0">
         <div>
           <h1>Community Events</h1>
-          <pre>groupid: {{ groupid }}</pre>
           <p>These are local events, posted by other freeglers like you.</p>
           <b-row>
             <b-col>
