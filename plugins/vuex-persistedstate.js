@@ -90,7 +90,7 @@ export default ({ store }) => {
             if (settingState) {
               // console.log('set state now')
               setInProgress = true
-              storage.setItem(key, JSON.stringify(state))
+              storage.setItem(key, JSON.stringify(settingState))
               setInProgress = false
               settingState = null
               // console.log('completed set state')
