@@ -240,15 +240,19 @@ export default {
           .then(() => {
             // We are now logged in. Prompt the browser to remember the credentials.
             if (window.PasswordCredential) {
-              const c = new window.PasswordCredential(e.target)
-              navigator.credentials
-                .store(c)
-                .then(function() {
-                  self.pleaseShowModal = false
-                })
-                .catch(err => {
-                  console.error('Failed to save credentials', err)
-                })
+              try {
+                const c = new window.PasswordCredential(e.target)
+                navigator.credentials
+                  .store(c)
+                  .then(function() {
+                    self.pleaseShowModal = false
+                  })
+                  .catch(err => {
+                    console.error('Failed to save credentials', err)
+                  })
+              } catch (e) {
+                self.pleaseShowModal = false
+              }
             } else {
               self.pleaseShowModal = false
             }
@@ -273,15 +277,19 @@ export default {
           .then(() => {
             // We are now logged in. Prompt the browser to remember the credentials.
             if (window.PasswordCredential) {
-              const c = new window.PasswordCredential(e.target)
-              navigator.credentials
-                .store(c)
-                .then(function() {
-                  self.pleaseShowModal = false
-                })
-                .catch(err => {
-                  console.error('Failed to save credentials', err)
-                })
+              try {
+                const c = new window.PasswordCredential(e.target)
+                navigator.credentials
+                  .store(c)
+                  .then(function() {
+                    self.pleaseShowModal = false
+                  })
+                  .catch(err => {
+                    console.error('Failed to save credentials', err)
+                  })
+              } catch (e) {
+                self.pleaseShowModal = false
+              }
             } else {
               self.pleaseShowModal = false
             }
