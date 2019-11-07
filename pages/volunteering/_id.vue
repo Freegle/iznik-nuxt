@@ -8,7 +8,7 @@
           <p>Are you a charity or good cause that needs volunteers? Ask our lovely community of freeglers to help.</p>
           <b-row>
             <b-col>
-              <groupSelect id="volunteering" class="float-left" all @change="groupChange" />
+              <groupSelect v-model="groupid" class="float-left" all />
             </b-col>
             <b-col>
               <b-btn variant="success" class="float-right" @click="showEventModal">
@@ -39,7 +39,8 @@
 </template>
 <script>
 import loginOptional from '@/mixins/loginOptional.js'
-const GroupSelect = () => import('~/components/GroupSelect.vue')
+import createGroupRouteMixin from '@/mixins/createGroupRouteMixin'
+const GroupSelect = () => import('~/components/GroupSelect')
 const VolunteerOpportunity = () =>
   import('~/components/VolunteerOpportunity.vue')
 const VolunteerOpportunityModal = () =>
@@ -51,10 +52,9 @@ export default {
     VolunteerOpportunity,
     VolunteerOpportunityModal
   },
-  mixins: [loginOptional],
+  mixins: [loginOptional, createGroupRouteMixin('volunteering')],
   data: function() {
     return {
-      groupid: null,
       context: null,
       infiniteId: +new Date(),
       complete: false
@@ -65,29 +65,11 @@ export default {
       return this.$store.getters['volunteerops/sortedList']()
     }
   },
-  created() {
-    this.groupid = this.$route.params.id
-  },
   mounted() {
     this.$store.dispatch('volunteerops/clear')
-
-    if (this.groupid) {
-      // Ensure our select is set to the right value
-      this.$store.commit('group/remember', {
-        id: 'volunteering',
-        val: this.groupid
-      })
-    }
   },
 
   methods: {
-    groupChange: function(newGroup) {
-      if (newGroup) {
-        this.$router.push('/volunteering/' + newGroup)
-      } else {
-        this.$router.push('/volunteering')
-      }
-    },
     loadMore: async function($state) {
       let volunteerings = this.$store.getters['volunteerops/list']()
       const currentCount =
