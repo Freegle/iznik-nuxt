@@ -321,7 +321,6 @@ export default {
       let withdrawnOffer = 0
 
       for (const d of breakdown.Offer) {
-        console.log('Offer', d)
         totalOffer += d.count
 
         if (d.outcome === 'Taken') {

@@ -15,7 +15,7 @@ const PROXY_API = process.env.IZNIK_API || 'https://iznik.ilovefreegle.org'
 const CHAT_HOST = 'https://users.ilovefreegle.org:555'
 
 module.exports = {
-  mode: 'universal',
+  mode: 'spa',
 
   /*
   ** Headers of the page
