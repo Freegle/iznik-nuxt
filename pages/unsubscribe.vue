@@ -21,7 +21,7 @@
         <div v-if="loggedIn && groupCount" class="mt-2">
           <p>You can also leave communities individually:</p>
           <div class="mb-2">
-            <GroupSelect id="leavegroup" size="lg" @change="groupChange" />
+            <GroupSelect v-model="groupid" size="lg" />
             <b-btn v-if="groupid" variant="white" :disabled="leaving" @click="leave">
               <v-icon v-if="leaving" name="sync" class="fa-spin" />
               <v-icon v-else name="trash-alt" />
@@ -62,7 +62,7 @@ export default {
   mixins: [loginOptional],
   data() {
     return {
-      groupid: null,
+      groupid: 0,
       leaving: false
     }
   },
@@ -77,9 +77,6 @@ export default {
     }
   },
   methods: {
-    groupChange(groupid) {
-      this.groupid = groupid
-    },
     unsubscribe() {
       const me = this.$store.getters['auth/user']()
 
