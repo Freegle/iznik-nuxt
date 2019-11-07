@@ -21,7 +21,7 @@
         <div v-if="loggedIn && groupCount" class="mt-2">
           <p>You can also leave communities individually:</p>
           <div class="mb-2">
-            <GroupSelect v-model="groupid" size="lg" />
+            <GroupRememberSelect v-model="groupid" remember="unsubscribe" size="lg" />
             <b-btn v-if="groupid" variant="white" :disabled="leaving" @click="leave">
               <v-icon v-if="leaving" name="sync" class="fa-spin" />
               <v-icon v-else name="trash-alt" />
@@ -48,8 +48,7 @@
 import ForgetFailModal from '../components/ForgetFailModal'
 import ForgetSucceedModal from '../components/ForgetSucceedModal'
 import loginOptional from '@/mixins/loginOptional.js'
-import createRememberGroupMixin from '@/mixins/createRememberGroupMixin'
-const GroupSelect = () => import('~/components/GroupSelect.vue')
+const GroupRememberSelect = () => import('~/components/GroupRememberSelect.vue')
 const ConfirmModal = () => import('~/components/ConfirmModal.vue')
 // TODO MINOR If you have to sign in, should go straight to confirmation once we return to the page signed in.
 
@@ -57,12 +56,13 @@ export default {
   components: {
     ForgetSucceedModal,
     ForgetFailModal,
-    GroupSelect,
+    GroupRememberSelect,
     ConfirmModal
   },
-  mixins: [loginOptional, createRememberGroupMixin('unsubscribe')],
+  mixins: [loginOptional],
   data() {
     return {
+      groupid: 0,
       leaving: false
     }
   },
