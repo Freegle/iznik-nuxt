@@ -7,7 +7,7 @@
       <b-col cols="12" md="6" class="p-0">
         <div>
           <div class="d-flex mt-2 mb-3 notification">
-            <groupSelect id="mygroups" class="m-3" all @change="groupChange" />
+            <groupSelect v-model="groupid" class="m-3" all />
             <b-form-select v-model="selectedType" class="m-3" value="All" :options="typeOptions" @change="typeChange" />
           </div>
           <groupHeader v-if="group" :key="'groupheader-' + groupid" v-bind="group" />
@@ -43,6 +43,7 @@
 
 <script>
 import loginRequired from '@/mixins/loginRequired.js'
+import createRememberGroupMixin from '@/mixins/createRememberGroupMixin'
 const GroupSelect = () => import('~/components/GroupSelect.vue')
 const GroupHeader = () => import('~/components/GroupHeader.vue')
 const Message = () => import('~/components/Message.vue')
@@ -57,7 +58,7 @@ export default {
     SidebarLeft,
     SidebarRight
   },
-  mixins: [loginRequired],
+  mixins: [loginRequired, createRememberGroupMixin('mygroups')],
   data: function() {
     return {
       id: null,
@@ -86,10 +87,8 @@ export default {
   },
   computed: {
     group: function() {
-      // We remember any previously selected group.
-      const remembered = this.$store.getters['group/remembered']('mygroups')
-      const ret = remembered
-        ? this.$store.getters['group/get'](remembered)
+      const ret = this.groupid
+        ? this.$store.getters['group/get'](this.groupid)
         : null
 
       return ret
@@ -98,23 +97,22 @@ export default {
     messageCount: function() {
       const count = this.messages ? this.messages.length : 0
       return count
-    },
-
-    groupid: function() {
-      const remembered = this.$store.getters['group/remembered']('mygroups')
-      return remembered
     }
   },
   watch: {
+    groupid() {
+      this.messages = []
+      this.context = null
+      this.$store.dispatch('messages/clear')
+    },
     async group(newValue, oldValue) {
       // We have this watch because we may need to fetch a group that we have remembered.  The mounted()
       // call may happen before we have restored the persisted state, so we can't initiate the fetch there.
       //
       // TODO But this seems very ugly.  Is it right?
-      const remembered = this.$store.getters['group/remembered']('mygroups')
-      if (oldValue === null || oldValue.id !== remembered) {
+      if (oldValue === null || oldValue.id !== this.groupid) {
         await this.$store.dispatch('group/fetch', {
-          id: remembered
+          id: this.groupid
         })
       }
     }
@@ -136,19 +134,13 @@ export default {
     })
   },
   methods: {
-    groupChange: function() {
-      this.messages = []
-      this.context = null
-      this.$store.dispatch('messages/clear')
-    },
-
     typeChange: function() {
       this.infiniteId++
     },
 
     loadMore: function($state) {
       this.busy = true
-      console.log('Load more')
+      console.log('Load more', this.groupid)
 
       const currentCount = this.messages.length
 
@@ -166,11 +158,9 @@ export default {
           break
       }
 
-      const remembered = this.$store.getters['group/remembered']('mygroups')
-
       this.$store
         .dispatch('messages/fetchMessages', {
-          groupid: remembered,
+          groupid: this.groupid,
           collection: 'Approved',
           summary: true,
           types: types,
@@ -181,8 +171,8 @@ export default {
 
           let messages
 
-          if (remembered) {
-            messages = this.$store.getters['messages/getByGroup'](remembered)
+          if (this.groupid) {
+            messages = this.$store.getters['messages/getByGroup'](this.groupid)
           } else {
             messages = this.$store.getters['messages/getAll']()
           }

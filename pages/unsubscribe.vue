@@ -48,6 +48,7 @@
 import ForgetFailModal from '../components/ForgetFailModal'
 import ForgetSucceedModal from '../components/ForgetSucceedModal'
 import loginOptional from '@/mixins/loginOptional.js'
+import createRememberGroupMixin from '@/mixins/createRememberGroupMixin'
 const GroupSelect = () => import('~/components/GroupSelect.vue')
 const ConfirmModal = () => import('~/components/ConfirmModal.vue')
 // TODO MINOR If you have to sign in, should go straight to confirmation once we return to the page signed in.
@@ -59,10 +60,9 @@ export default {
     GroupSelect,
     ConfirmModal
   },
-  mixins: [loginOptional],
+  mixins: [loginOptional, createRememberGroupMixin('unsubscribe')],
   data() {
     return {
-      groupid: 0,
       leaving: false
     }
   },
