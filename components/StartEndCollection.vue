@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="(date, index) in editableDates" :key="'startend-' + date.toISOString()" :class="date.string && date.string.past ? 'inpast': ''">
+    <div v-for="(date, index) in editableDates" :key="'startend-' + index" :class="date.string && date.string.past ? 'inpast': ''">
       <StartEndDate :start="date.start" :end="date.end" :index="index" @remove="remove(index)" @change="change" />
     </div>
     <b-btn variant="white" class="mt-1" @click="add">
