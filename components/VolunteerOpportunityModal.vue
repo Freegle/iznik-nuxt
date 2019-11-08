@@ -109,7 +109,7 @@
             <label for="group">
               For which community?
             </label>
-            <groupSelect id="editopportunity" class="" @change="groupChange" />
+            <groupRememberSelect v-model="groupid" remember="editopportunity" />
             <label for="title">
               What's the opportunity?
             </label>
@@ -281,13 +281,13 @@ label {
 // TODO Groups which don't support opportunities
 // TODO We used to have an "apply by" date. It's not clear we need this, so no urgency in re-adding it.
 import twem from '~/assets/js/twem'
-const GroupSelect = () => import('~/components/GroupSelect.vue')
+const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
 const OurFilePond = () => import('~/components/OurFilePond')
 const StartEndCollection = () => import('~/components/StartEndCollection')
 
 export default {
   components: {
-    GroupSelect,
+    GroupRememberSelect,
     OurFilePond,
     StartEndCollection
   },
@@ -306,7 +306,7 @@ export default {
     return {
       showModal: false,
       editing: false,
-      groupid: null,
+      groupid: 0,
       uploading: false,
       oldphoto: null,
       olddates: null,
@@ -350,21 +350,6 @@ export default {
       this.volunteering.groups = this.volunteering.groups
         ? this.volunteering.groups
         : [{ id: 0 }]
-
-      // Store the group id we're using for the select to pick up.
-      // TODO This seems a poor way to signal it.
-      if (
-        this.volunteering &&
-        this.volunteering.groups &&
-        this.volunteering.groups.length
-      ) {
-        this.$store.commit('group/remember', {
-          id: 'editopportunity',
-          val: this.volunteering.groups[0].id
-        })
-
-        this.groupid = this.volunteering.groups[0].id
-      }
     },
     hide() {
       this.editing = false
@@ -471,9 +456,6 @@ export default {
       })
 
       this.hide()
-    },
-    groupChange: function(val) {
-      this.groupid = val
     },
     photoAdd() {
       // Flag that we're uploading.  This will trigger the render of the filepond instance and subsequently the
