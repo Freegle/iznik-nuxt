@@ -7,7 +7,8 @@
  * @param key used for the remember key and the route segment
  * @returns a Vue mixin
  */
-export default function createGroupRouteMixin(key) {
+export default function createGroupRouteMixin(key, options = {}) {
+  const { routeParam = 'id' } = options
   const rememberId = key
   function routePath(id) {
     return `/${key}/` + (id === 0 ? '' : id)
@@ -16,7 +17,9 @@ export default function createGroupRouteMixin(key) {
     computed: {
       groupid: {
         get() {
-          return this.$route.params.id ? parseInt(this.$route.params.id) : 0
+          return this.$route.params[routeParam]
+            ? parseInt(this.$route.params[routeParam])
+            : 0
         },
         set(val) {
           const oldVal = this.groupid
