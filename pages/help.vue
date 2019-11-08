@@ -19,7 +19,7 @@
         <p>If your question isn't answered above, or you wish to compliment or complain, then you can <b>contact your volunteer team</b>, who will be happy to hear whether Freegle is doing a great job or needs changing.</p>
         <h5>Which Freegle community do you need help with?</h5>
         <div v-if="loggedIn">
-          <GroupSelect id="contactmods" class="mt-2 mb-2" @change="groupChange" />
+          <GroupRememberSelect v-model="contactGroupId" remember="contactmods" class="mt-2 mb-2" />
           <br>
           <ChatButton :groupid="contactGroupId" size="lg" title="Contact community volunteers" variant="success" class="mt-2 mb-2" />
         </div>
@@ -61,7 +61,7 @@
 <script>
 // TODO DESIGN Make this a bit prettier.
 const VueFaqAccordion = () => import('vue-faq-accordion')
-const GroupSelect = () => import('~/components/GroupSelect.vue')
+const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
 const ChatButton = () => import('~/components/ChatButton.vue')
 
 // TODO It's not ideal that the links below are a rather than nuxt-link, because that causes a page load.
@@ -69,13 +69,13 @@ const ChatButton = () => import('~/components/ChatButton.vue')
 
 export default {
   components: {
-    GroupSelect,
+    GroupRememberSelect,
     VueFaqAccordion,
     ChatButton
   },
   data() {
     return {
-      contactGroupId: null,
+      contactGroupId: 0,
       myItems: [
         {
           title: 'How do I post a WANTED?',
@@ -280,11 +280,6 @@ export default {
     loggedIn() {
       const ret = Boolean(this.$store.getters['auth/user']())
       return ret
-    }
-  },
-  methods: {
-    groupChange(groupid) {
-      this.contactGroupId = groupid
     }
   }
 }
