@@ -40,9 +40,7 @@ export default function createGroupRouteMixin(key, options = {}) {
             // We have changed the groupid away from the one in the route! Redirect...
             this.$router.push(routePath(val))
             if (val === 0) {
-              this.$store.commit('group/forget', {
-                id: rememberId
-              })
+              this.forgetGroup()
             }
           }
         }
@@ -76,6 +74,11 @@ export default function createGroupRouteMixin(key, options = {}) {
         this.$store.commit('group/remember', {
           id: rememberId,
           val: this.groupid
+        })
+      },
+      forgetGroup() {
+        this.$store.commit('group/forget', {
+          id: rememberId
         })
       }
     },
