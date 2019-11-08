@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- TODO use a better value for the key -->
     <div v-for="(date, index) in editableDates" :key="'startend-' + index" :class="date.string && date.string.past ? 'inpast': ''">
       <StartEndDate :start="date.start" :end="date.end" :index="index" @remove="remove(index)" @change="change" />
     </div>
