@@ -24,6 +24,10 @@ export const mutations = {
 
   remember(state, payload) {
     Vue.set(state, 'remember-' + payload.id, payload.val)
+  },
+
+  forget(state, payload) {
+    Vue.delete(state, 'remember-' + payload.id)
   }
 }
 

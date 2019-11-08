@@ -8,7 +8,7 @@
           <p>These are local events, posted by other freeglers like you.</p>
           <b-row>
             <b-col>
-              <groupSelect id="communityevents" class="float-left" all @change="groupChange" />
+              <groupSelect v-model="groupid" class="float-left" all />
             </b-col>
             <b-col>
               <b-btn variant="success" class="float-right" @click="showEventModal">
@@ -39,7 +39,9 @@
 </template>
 <script>
 import loginOptional from '@/mixins/loginOptional.js'
-const GroupSelect = () => import('~/components/GroupSelect.vue')
+import createGroupRoute from '@/mixins/createGroupRoute'
+
+const GroupSelect = () => import('~/components/GroupSelect')
 const CommunityEvent = () => import('~/components/CommunityEvent.vue')
 const CommunityEventModal = () => import('~/components/CommunityEventModal')
 
@@ -49,10 +51,9 @@ export default {
     CommunityEvent,
     CommunityEventModal
   },
-  mixins: [loginOptional],
+  mixins: [loginOptional, createGroupRoute('communityevents')],
   data: function() {
     return {
-      groupid: null,
       context: null,
       infiniteId: +new Date(),
       complete: false
@@ -63,31 +64,10 @@ export default {
       return this.$store.getters['communityevents/sortedList']()
     }
   },
-  created() {
-    this.groupid = this.$route.params.id
-  },
   mounted() {
     this.$store.dispatch('communityevents/clear')
-
-    if (this.groupid) {
-      // Ensure our select is set to the right value
-      this.$store.commit('group/remember', {
-        id: 'communityevents',
-        val: this.groupid
-      })
-    }
   },
-
   methods: {
-    groupChange: function(newGroup) {
-      // TODO If we go to the page and have a group selected, then we get redirected to the group page, which means
-      // the back button is broken.  Same probably applies for volunteering.
-      if (newGroup) {
-        this.$router.push('/communityevents/' + newGroup)
-      } else {
-        this.$router.push('/communityevents')
-      }
-    },
     loadMore: async function($state) {
       let events = this.$store.getters['communityevents/list']()
       const currentCount = events && events.length ? events.length : 0

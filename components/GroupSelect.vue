@@ -5,21 +5,22 @@
 </template>
 <style scoped>
 select {
+  /* TODO DESIGN make this configurable? */
   max-width: 400px !important;
 }
 </style>
 <script>
 export default {
   props: {
+    value: {
+      type: Number,
+      default: null
+    },
     // Whether we show "All my groups" or "Please choose a group"
     all: {
       type: Boolean,
       required: false,
       default: false
-    },
-    id: {
-      validator: prop => typeof prop === 'number' || typeof prop === 'string',
-      required: true
     },
     size: {
       type: String,
@@ -27,21 +28,13 @@ export default {
       default: 'md'
     }
   },
-  data: function() {
-    return {}
-  },
   computed: {
     selectedGroup: {
-      get: function() {
-        const remembered = this.$store.getters['group/remembered'](this.id)
-
-        return remembered || 0
+      get() {
+        return this.value
       },
-      set: function(newval) {
-        this.$store.commit('group/remember', {
-          id: this.id,
-          val: newval
-        })
+      set(val) {
+        this.$emit('input', val)
       }
     },
 
@@ -83,25 +76,6 @@ export default {
 
       return groups
     }
-  },
-  mounted() {
-    // Set up a watch on the store.  We do this because initially the store may not have been reloaded from local
-    // storage. When it does get initially loaded, or when we change the value above, this watch will fire.
-    const current = this.$store.getters['group/remembered'](this.id)
-
-    if (current !== undefined) {
-      // It has been loaded.
-      this.$emit('change', current)
-    }
-
-    this.$store.watch(
-      (state, getters) => {
-        return this.$store.getters['group/remembered'](this.id)
-      },
-      (newValue, oldValue) => {
-        this.$emit('change', newValue)
-      }
-    )
   }
 }
 </script>

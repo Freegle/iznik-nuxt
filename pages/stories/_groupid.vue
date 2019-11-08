@@ -13,7 +13,7 @@
           </p>
           <b-row>
             <b-col v-if="oneOfOurs">
-              <groupSelect id="stories" class="float-left" all @change="groupChange" />
+              <groupSelect v-model="groupid" class="float-left" all />
             </b-col>
             <b-col>
               <b-btn variant="success" class="float-right" @click="showAddModal">
@@ -36,6 +36,7 @@
 <script>
 // TODO MINOR Add infinite scroll
 import loginOptional from '@/mixins/loginOptional.js'
+import createGroupRoute from '@/mixins/createGroupRoute'
 const GroupSelect = () => import('~/components/GroupSelect')
 const StoriesAddModal = () => import('~/components/StoriesAddModal')
 const Story = () => import('~/components/Story')
@@ -46,10 +47,12 @@ export default {
     StoriesAddModal,
     Story
   },
-  mixins: [loginOptional],
+  mixins: [
+    loginOptional,
+    createGroupRoute('stories', { routeParam: 'groupid' })
+  ],
   data: function() {
     return {
-      groupid: null,
       context: null,
       infiniteId: +new Date(),
       complete: false,
@@ -95,32 +98,13 @@ export default {
       return ret
     }
   },
-  created() {
-    this.groupid = this.$route.params.groupid
-  },
   async mounted() {
-    if (this.groupid) {
-      // Ensure our select is set to the right value
-      this.$store.commit('group/remember', {
-        id: 'stories',
-        val: this.groupid
-      })
-    }
-
     await this.$store.dispatch('stories/clear')
     await this.$store.dispatch('stories/fetchSummary', {
       groupid: this.groupid > 0 ? this.groupid : null
     })
   },
   methods: {
-    groupChange: function(newGroup) {
-      if (newGroup) {
-        this.$router.push('/stories/' + newGroup)
-      } else {
-        this.$router.push('/stories')
-      }
-    },
-
     showAddModal() {
       this.$refs.addmodal.show()
     }
