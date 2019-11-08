@@ -11,8 +11,34 @@
           <br>
           <v-icon name="globe-europe" /> www.iLoveFreegle.org  <v-icon name="brands/twitter" /> @thisisfreegle  <v-icon name="brands/facebook" /> facebook.com/Freegle
         </div>
-        <b-card variant="white" class="border-white">
-          <b-card-text>
+        <GmapMap
+          ref="gmap"
+          :center="{lat:53.9450, lng:-2.5209}"
+          :zoom="5"
+          :style="'width: ' + mapWidth + '; height: ' + mapWidth + 'px'"
+          :options="{
+            zoomControl: true,
+            mapTypeControl: false,
+            scaleControl: false,
+            streetViewControl: false,
+            rotateControl: false,
+            fullscreenControl: true,
+            disableDefaultUi: false,
+            gestureHandling: 'greedy'
+          }"
+          @idle="mapIdle"
+        >
+          <GmapMarker
+            v-for="(m, index) in markers"
+            :key="index"
+            :position="m"
+            :clickable="false"
+            :draggable="false"
+            icon="/mapmarker.gif"
+          />
+        </GmapMap>
+        <b-card variant="white" class="border-white" no-body>
+          <b-card-body class="pb-0">
             <b-row class="p-0">
               <b-col class="text-center">
                 <v-icon name="balance-scale-left" class="gold titleicon" scale="3" />
@@ -87,7 +113,7 @@
                 </h5>
               </b-col>
             </b-row>
-          </b-card-text>
+          </b-card-body>
         </b-card>
         <b-row class="m-0 border border-light">
           <b-col class="bg-white text-faded">
@@ -183,7 +209,7 @@
             </div>
           </b-col>
         </b-row>
-        <b-row class="m-0 mt-1">
+        <b-row class="m-0">
           <b-col class="border border-white p-0 bg-white text-center pt-1">
             <H5>WEIGHTS (KG)</H5>
           </b-col>
@@ -221,7 +247,7 @@
                 <span v-html="data.value" />
               </template>
             </b-table>
-            <p v-if="someoverlap" class="text-muted small pl-1">
+            <p v-if="someoverlap" class="text-muted small pl-1 mb-0">
               * The area for this Freegle community partly overlaps the area you're looking at, so we've added an appropriate percentage.
             </p>
           </b-card-text>
@@ -285,12 +311,16 @@
 <script>
 import dayjs from 'dayjs'
 import { GChart } from 'vue-google-charts'
+import Wkt from 'wicket'
+import 'wicket/wicket-gmap3'
+import { gmapApi } from 'vue2-google-maps'
 import loginOptional from '@/mixins/loginOptional.js'
-// TODO Remove navbar
+
 // TODO Date filter
 // TODO I think table is a big chunk of stuff to load from Bootstrap.  Does this hit us on initial page load?
 
 export default {
+  layout: 'empty',
   components: {
     GChart
   },
@@ -336,10 +366,21 @@ export default {
           key: 'monthly',
           label: 'Average Kgs Reused Monthly'
         }
-      ]
+      ],
+      addedPolygons: false
     }
   },
   computed: {
+    google: gmapApi,
+    mapHeight() {
+      const contWidth = this.$refs.mapcont ? this.$refs.mapcont.$el.width : 0
+      return contWidth
+    },
+    mapWidth() {
+      let height = Math.floor(window.innerHeight / 2)
+      height = height < 200 ? 200 : height
+      return height
+    },
     totalWeight() {
       let total = 0
 
@@ -484,7 +525,7 @@ export default {
       for (const ix in groups) {
         const group = groups[ix]
         ret.push({
-          location: group.namedisplay + (group.overlap < 1 ? ' *' : ''),
+          location: group.group.namedisplay + (group.overlap < 1 ? ' *' : ''),
           members:
             group.ApprovedMemberCount[group.ApprovedMemberCount.length - 1]
               .count,
@@ -498,6 +539,24 @@ export default {
         })
       }
 
+      return ret
+    },
+    markers() {
+      const google = gmapApi()
+      const ret = []
+
+      if (google) {
+        for (const groupid in this.stats) {
+          console.log('Add ', this.stats[groupid].group)
+          const marker = new google.maps.LatLng(
+            this.stats[groupid].group.lat,
+            this.stats[groupid].group.lng
+          )
+          ret.push(marker)
+        }
+      }
+
+      console.log('Markers', ret)
       return ret
     }
   },
@@ -556,7 +615,7 @@ export default {
             'ApprovedMemberCount'
           ),
           OutcomesPerMonth: store.getters['stats/get']('OutcomesPerMonth'),
-          namedisplay: group.namedisplay
+          group: group
         }
       }
     }
@@ -579,6 +638,74 @@ export default {
       }
 
       return 0
+    },
+    mapPoly: function(poly, options) {
+      const google = gmapApi()
+      let bounds = null
+      const wkt = new Wkt.Wkt()
+      wkt.read(poly)
+
+      const mapobj = this.$refs.gmap.$mapObject
+      const obj = wkt.toObject(mapobj.defaults)
+
+      if (obj) {
+        // This might be a multipolygon.
+        bounds = new google.maps.LatLngBounds()
+
+        if (Array.isArray(obj)) {
+          for (const ent of obj) {
+            ent.setMap(mapobj)
+            ent.setOptions(options)
+            const thisbounds = ent.getBounds()
+            bounds.extend(thisbounds.getNorthEast())
+            bounds.extend(thisbounds.getSouthWest())
+          }
+        } else {
+          obj.setMap(mapobj)
+          obj.setOptions(options)
+          bounds = obj.getBounds()
+        }
+      }
+
+      return bounds
+    },
+    mapIdle() {
+      if (!this.addedPolygons) {
+        const google = gmapApi()
+        this.addedPolygons = true
+
+        // No getBounds on polygon by default.
+        google.maps.Polygon.prototype.getBounds = function() {
+          const bounds = new google.maps.LatLngBounds()
+          const paths = this.getPaths()
+          let path
+          for (let i = 0; i < paths.getLength(); i++) {
+            path = paths.getAt(i)
+            for (let ii = 0; ii < path.getLength(); ii++) {
+              bounds.extend(path.getAt(ii))
+            }
+          }
+          return bounds
+        }
+
+        const bounds = this.mapPoly(this.authority.polygon, {
+          fillColor: 'blue',
+          strokeWeight: 0,
+          fillOpacity: 0.2
+        })
+
+        this.$refs.gmap.$mapObject.fitBounds(bounds)
+
+        for (const groupid in this.stats) {
+          const polygon = this.stats[groupid].group.poly
+
+          this.mapPoly(polygon, {
+            fillColor: 'grey',
+            strokeWeight: 0,
+            fillOpacity: 0.2
+          })
+        }
+      }
     }
   }
 }

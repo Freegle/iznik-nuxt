@@ -171,7 +171,6 @@ export default {
     },
     mapHeight() {
       const contWidth = this.$refs.mapcont ? this.$refs.mapcont.$el.width : 0
-
       return contWidth
     },
     mapWidth() {
@@ -225,13 +224,6 @@ export default {
 
   methods: {
     getAddressData: function(addressData, placeResultData, id) {
-      console.log(
-        'Autocomplete returned',
-        addressData,
-        placeResultData,
-        id,
-        this.$refs.gmap
-      )
       if (addressData) {
         this.$refs.gmap.$mapObject.setCenter(
           new this.google.maps.LatLng(
