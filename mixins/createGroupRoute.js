@@ -19,7 +19,7 @@
  * @param options pass in routeParam to use a different route param key, defaults to id
  * @returns a Vue mixin
  */
-export default function createGroupRouteMixin(key, options = {}) {
+export default function createGroupRoute(key, options = {}) {
   const { routeParam = 'id' } = options
   const rememberId = key
   function routePath(id) {

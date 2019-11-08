@@ -36,7 +36,7 @@
 <script>
 // TODO MINOR Add infinite scroll
 import loginOptional from '@/mixins/loginOptional.js'
-import createGroupRouteMixin from '@/mixins/createGroupRouteMixin'
+import createGroupRoute from '@/mixins/createGroupRoute'
 const GroupSelect = () => import('~/components/GroupSelect')
 const StoriesAddModal = () => import('~/components/StoriesAddModal')
 const Story = () => import('~/components/Story')
@@ -49,7 +49,7 @@ export default {
   },
   mixins: [
     loginOptional,
-    createGroupRouteMixin('stories', { routeParam: 'groupid' })
+    createGroupRoute('stories', { routeParam: 'groupid' })
   ],
   data: function() {
     return {

@@ -39,7 +39,7 @@
 </template>
 <script>
 import loginOptional from '@/mixins/loginOptional.js'
-import createGroupRouteMixin from '@/mixins/createGroupRouteMixin'
+import createGroupRoute from '@/mixins/createGroupRoute'
 
 const GroupSelect = () => import('~/components/GroupSelect')
 const CommunityEvent = () => import('~/components/CommunityEvent.vue')
@@ -51,7 +51,7 @@ export default {
     CommunityEvent,
     CommunityEventModal
   },
-  mixins: [loginOptional, createGroupRouteMixin('communityevents')],
+  mixins: [loginOptional, createGroupRoute('communityevents')],
   data: function() {
     return {
       context: null,

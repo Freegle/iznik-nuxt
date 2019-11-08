@@ -39,7 +39,7 @@
 </template>
 <script>
 import loginOptional from '@/mixins/loginOptional.js'
-import createGroupRouteMixin from '@/mixins/createGroupRouteMixin'
+import createGroupRoute from '@/mixins/createGroupRoute'
 const GroupSelect = () => import('~/components/GroupSelect')
 const VolunteerOpportunity = () =>
   import('~/components/VolunteerOpportunity.vue')
@@ -52,7 +52,7 @@ export default {
     VolunteerOpportunity,
     VolunteerOpportunityModal
   },
-  mixins: [loginOptional, createGroupRouteMixin('volunteering')],
+  mixins: [loginOptional, createGroupRoute('volunteering')],
   data: function() {
     return {
       context: null,
