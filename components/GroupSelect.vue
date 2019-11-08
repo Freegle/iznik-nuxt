@@ -5,6 +5,7 @@
 </template>
 <style scoped>
 select {
+  /* TODO DESIGN make this configurable? */
   max-width: 400px !important;
 }
 </style>
