@@ -160,6 +160,7 @@ module.exports = {
       'PopoverPlugin',
       'ProgressPlugin',
       'TabsPlugin',
+      'TablePlugin',
       'TooltipPlugin'
     ],
     directivePlugins: ['VBPopoverPlugin', 'VBTooltipPlugin', 'VBScrollspyPlugin']

@@ -55,7 +55,7 @@
                 <h5 class="purple">
                   {{ totalGifts.toLocaleString() }}
                   <br>
-                  GIFTS MADE
+                  {{ totalGifts | pluralize(['GIFT', 'GIFTS'], { includeNumber: false }) }}
                   <br>
                   <span class="text-muted small">
                     {{ range }}
@@ -67,39 +67,177 @@
                 <h5 class="text-primary">
                   {{ totalMembers.toLocaleString() }}
                   <br>
-                  MEMBERS
+                  {{ totalMembers | pluralize(['MEMBER', 'MEMBERS'], { includeNumber: false }) }}
                   <br>
                   <span class="text-muted small">
                     {{ end }}
                   </span>
                 </h5>
               </b-col>
-              <b-col />
+              <b-col class="text-center">
+                <v-icon name="map-marker-alt" class="green titleicon" scale="3" />
+                <h5 class="green">
+                  {{ groupcount.toLocaleString() }}
+                  <br>
+                  {{ groupcount | pluralize(['COMMUNITY', 'COMMUNITIES'], { includeNumber: false }) }}
+                  <br>
+                  <span class="text-muted small">
+                    {{ groupcount | pluralize(['SERVES', 'SERVE'], { includeNumber: false }) }} THIS AREA
+                  </span>
+                </h5>
+              </b-col>
             </b-row>
           </b-card-text>
         </b-card>
-        <b-row class="m-0">
-          <b-col class="border border-white p-0 bg-white text-center">
+        <b-row class="m-0 border border-light">
+          <b-col class="bg-white text-faded">
+            <div class="iconlist">
+              <v-icon name="glass-martini" />
+              <v-icon name="camera" />
+              <v-icon name="print" />
+              <v-icon name="binoculars" />
+              <v-icon name="umbrella" />
+              <v-icon name="coffee" />
+              <v-icon name="bath" />
+              <v-icon name="clock" />
+              <v-icon name="bicycle" />
+              <v-icon name="hat-wizard" />
+              <v-icon name="bed" />
+              <v-icon name="laptop" />
+              <v-icon name="gift" />
+              <v-icon name="utensils" />
+              <v-icon name="tablet-alt" />
+              <v-icon name="crown" />
+              <v-icon name="baby-carriage" />
+              <v-icon name="headphones" />
+              <v-icon name="tv" />
+              <v-icon name="car" />
+              <v-icon name="socks" />
+              <v-icon name="mobile-alt" />
+              <v-icon name="glass-martini" />
+              <v-icon name="camera" />
+              <v-icon name="print" />
+              <v-icon name="binoculars" />
+              <v-icon name="umbrella" />
+              <v-icon name="coffee" />
+              <v-icon name="bath" />
+              <v-icon name="clock" />
+              <v-icon name="bicycle" />
+              <v-icon name="hat-wizard" />
+              <v-icon name="bed" />
+              <v-icon name="laptop" />
+              <v-icon name="gift" />
+              <v-icon name="utensils" />
+              <v-icon name="tablet-alt" />
+              <v-icon name="crown" />
+              <v-icon name="baby-carriage" />
+              <v-icon name="headphones" />
+              <v-icon name="tv" />
+              <v-icon name="car" />
+              <v-icon name="socks" />
+              <v-icon name="mobile-alt" />
+              <v-icon name="glass-martini" />
+              <v-icon name="camera" />
+              <v-icon name="print" />
+              <v-icon name="binoculars" />
+              <v-icon name="umbrella" />
+              <v-icon name="coffee" />
+              <v-icon name="bath" />
+              <v-icon name="clock" />
+              <v-icon name="bicycle" />
+              <v-icon name="hat-wizard" />
+              <v-icon name="bed" />
+              <v-icon name="laptop" />
+              <v-icon name="gift" />
+              <v-icon name="utensils" />
+              <v-icon name="tablet-alt" />
+              <v-icon name="crown" />
+              <v-icon name="baby-carriage" />
+              <v-icon name="headphones" />
+              <v-icon name="tv" />
+              <v-icon name="car" />
+              <v-icon name="socks" />
+              <v-icon name="mobile-alt" />
+              <v-icon name="glass-martini" />
+              <v-icon name="camera" />
+              <v-icon name="print" />
+              <v-icon name="binoculars" />
+              <v-icon name="umbrella" />
+              <v-icon name="coffee" />
+              <v-icon name="bath" />
+              <v-icon name="clock" />
+              <v-icon name="bicycle" />
+              <v-icon name="hat-wizard" />
+              <v-icon name="bed" />
+              <v-icon name="laptop" />
+              <v-icon name="gift" />
+              <v-icon name="utensils" />
+              <v-icon name="tablet-alt" />
+              <v-icon name="crown" />
+              <v-icon name="baby-carriage" />
+              <v-icon name="headphones" />
+              <v-icon name="tv" />
+              <v-icon name="car" />
+              <v-icon name="socks" />
+              <v-icon name="mobile-alt" />
+            </div>
+          </b-col>
+        </b-row>
+        <b-row class="m-0 mt-1">
+          <b-col class="border border-white p-0 bg-white text-center pt-1">
             <H5>WEIGHTS (KG)</H5>
           </b-col>
-          <b-col class="border border-white p-0 bg-white text-center">
+          <b-col class="border border-white p-0 bg-white text-center pt-1">
             <H5>MEMBERS</H5>
           </b-col>
         </b-row>
         <b-row class="m-0">
-          <b-col class="border border-white p-0 bg-white">
+          <b-col class="border border-white p-0 bg-white overflow-hidden">
             <GChart
               type="ColumnChart"
               :data="weightData"
               :options="weightOptions"
             />
           </b-col>
-          <b-col class="border border-white p-0 bg-white">
+          <b-col class="border border-white p-0 bg-white overflow-hidden">
             <GChart
               type="LineChart"
               :data="memberData"
               :options="memberOptions"
             />
+          </b-col>
+        </b-row>
+        <b-card variant="white" class="border-white">
+          <b-card-text>
+            <h2 class="text-center">
+              Freegle Communities serving {{ authority.name }}
+            </h2>
+            <b-table striped :items="items" :fields="fields">
+              <template v-slot:cell(members)="data">
+                {{ data.value.toLocaleString() }}
+              </template>
+              <template v-slot:cell(monthly)="data">
+                <!-- eslint-disable-next-line -->
+                <span v-html="data.value" />
+              </template>
+            </b-table>
+            <p v-if="someoverlap" class="text-muted small pl-1">
+              * The area for this Freegle community partly overlaps the area you're looking at, so we've added an appropriate percentage.
+            </p>
+          </b-card-text>
+        </b-card>
+        <b-row class="m-0">
+          <b-col class="p-0">
+            <div class="title pl-2">
+              <b-img thumbnail src="/icon.png" class="titlelogo float-right" />
+              <span class="head">
+                {{ totalWeight }} TONNES REUSED
+              </span>
+              <br>
+              <span class="small">
+                {{ range }}
+              </span>
+            </div>
           </b-col>
         </b-row>
       </b-col>
@@ -138,6 +276,11 @@
 .green {
   color: green !important;
 }
+
+.iconlist {
+  white-space: nowrap;
+  overflow-x: hidden;
+}
 </style>
 <script>
 import dayjs from 'dayjs'
@@ -145,6 +288,7 @@ import { GChart } from 'vue-google-charts'
 import loginOptional from '@/mixins/loginOptional.js'
 // TODO Remove navbar
 // TODO Date filter
+// TODO I think table is a big chunk of stuff to load from Bootstrap.  Does this hit us on initial page load?
 
 export default {
   components: {
@@ -178,7 +322,21 @@ export default {
         series: {
           0: { color: 'blue' }
         }
-      }
+      },
+      fields: [
+        {
+          key: 'location',
+          label: 'Community Location'
+        },
+        {
+          key: 'members',
+          label: 'Membership'
+        },
+        {
+          key: 'monthly',
+          label: 'Average Kgs Reused Monthly'
+        }
+      ]
     }
   },
   computed: {
@@ -301,14 +459,56 @@ export default {
         .format('MMM YY')
         .toUpperCase()
       return end
+    },
+    someoverlap() {
+      const groups = Object.values(this.stats)
+      let someoverlaps = false
+
+      for (const ix in groups) {
+        const group = groups[ix]
+        if (group.overlap < 1) {
+          someoverlaps = true
+        }
+      }
+
+      return someoverlaps
+    },
+    items() {
+      const groups = Object.values(this.stats)
+      groups.sort(function(a, b) {
+        return b.avpermonth - a.avpermonth
+      })
+
+      const ret = []
+
+      for (const ix in groups) {
+        const group = groups[ix]
+        ret.push({
+          location: group.namedisplay + (group.overlap < 1 ? ' *' : ''),
+          members:
+            group.ApprovedMemberCount[group.ApprovedMemberCount.length - 1]
+              .count,
+          monthly:
+            Math.round(group.avpermonth) +
+            (group.overlap < 1
+              ? ' (<span class="text-muted small">of ' +
+                Math.round(group.totalweight) +
+                ')</span>'
+              : '')
+        })
+      }
+
+      return ret
     }
   },
   async asyncData({ app, params, store }) {
-    // TODO This is slow, which means the page is very slow to load.
+    // TODO This is slow, which means the page is very slow to load.  We need it for SSR, though.  Is there a clever
+    // way to do a better busy/progress indicator when the page is loaded by navigating in the client?
     await store.dispatch('authorities/fetch', {
       id: params.id
     })
 
+    let groupcount = 0
     const stats = []
     const authority = store.getters['authorities/get'](params.id)
     const start = dayjs()
@@ -329,16 +529,42 @@ export default {
         end: end
       })
 
-      stats[group.id] = {
-        Weights: store.getters['stats/get']('Weight'),
-        ApprovedMemberCount: store.getters['stats/get']('ApprovedMemberCount'),
-        OutcomesPerMonth: store.getters['stats/get']('OutcomesPerMonth')
+      // Check if the group has a significant overlap. No point cluttering things up with groups which don't really
+      // contribute.
+      const overlap = group.overlap
+      const weights = store.getters['stats/get']('Weight')
+
+      let totalWeight = 0
+      for (const w of weights) {
+        totalWeight += w.count * overlap
+      }
+
+      const avpermonth = totalWeight / 12
+
+      // If there is only one group in the area we're looking at, or the group is entirely contained within the
+      // area, then show it irrespective of activity otherwise it looks silly.
+      // TODO MINOR Really we should be checking if all the groups are low activity and then showing them all.
+      if (avpermonth > 1 || authority.groups.length === 1 || overlap === 1) {
+        groupcount++
+
+        stats[group.id] = {
+          overlap: overlap,
+          avpermonth: avpermonth,
+          totalweight: totalWeight,
+          Weights: weights,
+          ApprovedMemberCount: store.getters['stats/get'](
+            'ApprovedMemberCount'
+          ),
+          OutcomesPerMonth: store.getters['stats/get']('OutcomesPerMonth'),
+          namedisplay: group.namedisplay
+        }
       }
     }
 
     return {
       authority: authority,
-      stats: stats
+      stats: stats,
+      groupcount: groupcount
     }
   },
   created() {
