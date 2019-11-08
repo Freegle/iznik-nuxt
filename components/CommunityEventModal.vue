@@ -101,7 +101,7 @@
             <label for="group">
               For which community?
             </label>
-            <groupSelect id="editevent" class="" @change="groupChange" />
+            <groupRememberSelect v-model="groupid" remember="editevent" />
             <label for="title">
               What's the event's name?
             </label>
@@ -261,13 +261,13 @@ label {
 // TODO Wherever we have b-img (throughout the site, not just here) we should have @brokenImage.  Bet we don't.
 // TODO Set date to start at 9am rather than midnight.  Default end date to later than start date.
 import twem from '~/assets/js/twem'
-const GroupSelect = () => import('~/components/GroupSelect.vue')
+const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
 const OurFilePond = () => import('~/components/OurFilePond')
 const StartEndCollection = () => import('~/components/StartEndCollection')
 
 export default {
   components: {
-    GroupSelect,
+    GroupRememberSelect,
     OurFilePond,
     StartEndCollection
   },
@@ -286,7 +286,7 @@ export default {
     return {
       showModal: false,
       editing: false,
-      groupid: null,
+      groupid: 0,
       uploading: false,
       oldphoto: null,
       olddates: null,
@@ -326,17 +326,6 @@ export default {
 
       // If we don't have any groups, force a select.
       this.event.groups = this.event.groups ? this.event.groups : [{ id: 0 }]
-
-      // Store the group id we're using for the select to pick up.
-      // TODO This seems a poor way to signal it.
-      if (this.event && this.event.groups && this.event.groups.length) {
-        this.$store.commit('group/remember', {
-          id: 'editevent',
-          val: this.event.groups[0].id
-        })
-
-        this.groupid = this.event.groups[0].id
-      }
     },
     hide() {
       this.editing = false
@@ -432,9 +421,6 @@ export default {
       })
 
       this.hide()
-    },
-    groupChange: function(val) {
-      this.groupid = val
     },
     photoAdd() {
       // Flag that we're uploading.  This will trigger the render of the filepond instance and subsequently the
