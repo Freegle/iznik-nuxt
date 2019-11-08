@@ -20,10 +20,11 @@
  * @returns a Vue mixin
  */
 export default function createGroupRoute(key, options = {}) {
+  const ALL_GROUPS = 0
   const { routeParam = 'id' } = options
   const rememberId = key
   function routePath(id) {
-    return `/${key}/` + (id === 0 ? '' : id)
+    return `/${key}/` + (id === ALL_GROUPS ? '' : id)
   }
   return {
     computed: {
@@ -31,15 +32,15 @@ export default function createGroupRoute(key, options = {}) {
         get() {
           return this.$route.params[routeParam]
             ? parseInt(this.$route.params[routeParam])
-            : 0
+            : ALL_GROUPS
         },
         set(val) {
           const oldVal = this.groupid
-          val = val || 0
+          val = val || ALL_GROUPS
           if (val !== oldVal) {
             // We have changed the groupid away from the one in the route! Redirect...
             this.$router.push(routePath(val))
-            if (val === 0) {
+            if (val === ALL_GROUPS) {
               this.forgetGroup()
             }
           }
@@ -50,11 +51,15 @@ export default function createGroupRoute(key, options = {}) {
       this._unwatchGroupRemember = this.$store.watch(
         (state, getters) => getters['group/remembered'](rememberId),
         (val, oldVal) => {
-          if (oldVal === undefined && val === undefined && this.groupid !== 0) {
+          if (
+            oldVal === undefined &&
+            val === undefined &&
+            this.groupid !== ALL_GROUPS
+          ) {
             // Nothing set so far... make it what our current page is
             this.rememberGroup()
           } else if (val !== undefined) {
-            if (this.groupid === 0) {
+            if (this.groupid === ALL_GROUPS) {
               // We have a remember value, but we're on the general page
               // Replace the current route
               this.$router.replace(routePath(val))
