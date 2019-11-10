@@ -84,7 +84,7 @@ export default {
   },
   data: function() {
     return {
-      cacheBust: new Date().getTime()
+      cacheBust: Date.now()
     }
   },
   methods: {
@@ -96,10 +96,10 @@ export default {
         .post(process.env.API + '/image', {
           id: this.id,
           rotate: deg,
-          bust: new Date().getTime()
+          bust: Date.now()
         })
         .then(() => {
-          this.cacheBust = new Date().getTime()
+          this.cacheBust = Date.now()
         })
     },
     rotateLeft() {

@@ -3,7 +3,7 @@ import Moment from 'dayjs'
 
 function earliestDate(dates) {
   // Find the earliest date which is in the future.
-  const now = new Date().getTime()
+  const now = Date.now()
   let earliest = null
   let earliestDate = null
 
@@ -32,7 +32,7 @@ function addStrings(item) {
       item.dates[i].string = {
         start: startm.format('ddd, Do MMM HH:mm'),
         end: endm,
-        past: new Date().getTime() > new Date(date.start)
+        past: Date.now() > new Date(date.start)
       }
     }
   }

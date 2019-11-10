@@ -23,7 +23,7 @@ export const mutations = {
 
   setEmail(state, email) {
     state.email = email
-    state.emailAt = new Date().getTime()
+    state.emailAt = Date.now()
   },
   setPostcode(state, postcode) {
     // Want to make sure we don't store too much data.

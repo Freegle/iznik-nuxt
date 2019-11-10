@@ -205,7 +205,7 @@ export const actions = {
       !first &&
       !params.force &&
       lastfetch &&
-      new Date().getTime() - lastfetch < 30000
+      Date.now() - lastfetch < 30000
     ) {
       // We have fetched the user pretty recently.
     } else {
@@ -213,7 +213,7 @@ export const actions = {
       first = false
 
       // Set the time now; this avoids multiple fetches at the start of page loads.
-      commit('setFetched', new Date().getTime())
+      commit('setFetched', Date.now())
 
       const res = await this.$axios.get(process.env.API + '/session', {
         params: params

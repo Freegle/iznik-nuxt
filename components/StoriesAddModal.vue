@@ -156,7 +156,7 @@ export default {
         story: null,
         photo: null
       },
-      cacheBust: new Date().getTime(),
+      cacheBust: Date.now(),
       thankyou: false
     }
   },
@@ -184,11 +184,11 @@ export default {
         .post(process.env.API + '/image', {
           id: this.story.photo.id,
           rotate: deg,
-          bust: new Date().getTime(),
+          bust: Date.now(),
           story: true
         })
         .then(() => {
-          this.cacheBust = new Date().getTime()
+          this.cacheBust = Date.now()
         })
     },
     rotateLeft() {

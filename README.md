@@ -55,7 +55,6 @@ There are some specific pages that still need doing:
 * /shortlinks/id
 * /livemap
 * /stats/heatmap
-* /stats/authority/id
 * /mobile
 * Plugins - are they still used?
 * /stories/fornewsletter

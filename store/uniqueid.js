@@ -14,7 +14,7 @@ export const mutations = {
 export const actions = {
   generate({ commit, state }) {
     commit('inc')
-    const id = new Date().getTime() + '-' + state.counter
+    const id = Date.now() + '-' + state.counter
     return id
   }
 }

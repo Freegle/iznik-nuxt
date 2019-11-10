@@ -67,7 +67,6 @@ export default {
       event.target.src = '/static/defaultprofile.png'
     },
     goto() {
-      console.log('Goto', this.group)
       this.$router.push('/explore/' + this.group.nameshort)
     }
   }

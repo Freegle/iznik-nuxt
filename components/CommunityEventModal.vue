@@ -290,7 +290,7 @@ export default {
       uploading: false,
       oldphoto: null,
       olddates: null,
-      cacheBust: new Date().getTime(),
+      cacheBust: Date.now(),
       saving: false
     }
   },
@@ -445,11 +445,11 @@ export default {
         .post(process.env.API + '/image', {
           id: this.event.photo.id,
           rotate: deg,
-          bust: new Date().getTime(),
+          bust: Date.now(),
           communityevent: true
         })
         .then(() => {
-          this.cacheBust = new Date().getTime()
+          this.cacheBust = Date.now()
         })
     },
     rotateLeft() {
