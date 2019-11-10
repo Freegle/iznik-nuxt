@@ -106,10 +106,19 @@
     </b-modal>
   </div>
 </template>
-<style scoped>
+<style scoped lang="scss">
 .profilesm {
   width: 25px !important;
   height: 25px !important;
+}
+
+::v-deep .img-thumbnail {
+  cursor: pointer;
+
+  /*TODO DESIGN Should use same values as global.scss, maybe mixins*/
+  @media (max-width: 992px) {
+    max-width: 100px;
+  }
 }
 </style>
 <script>
