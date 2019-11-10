@@ -47,9 +47,6 @@
       </b-col>
     </b-row>
   </div>
-  </b-col>
-  </b-row>
-  </div>
 </template>
 <style scoped>
 </style>
