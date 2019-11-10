@@ -18,28 +18,6 @@ function earliestDate(dates) {
   return earliestDate
 }
 
-function addStrings(item) {
-  // Add human readable versions of each date range.
-  if (item) {
-    for (let i = 0; i < item.dates.length; i++) {
-      const date = item.dates[i]
-      const startm = new Moment(date.start)
-      let endm = new Moment(date.end)
-      endm = endm.isSame(startm, 'day')
-        ? endm.format('HH:mm')
-        : endm.format('ddd, Do MMM HH:mm')
-
-      item.dates[i].string = {
-        start: startm.format('ddd, Do MMM HH:mm'),
-        end: endm,
-        past: new Date().getTime() > new Date(date.start)
-      }
-    }
-  }
-
-  return item
-}
-
 export const state = () => ({
   // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
   // storage.
@@ -49,13 +27,13 @@ export const state = () => ({
 export const mutations = {
   add(state, item) {
     item.earliestDate = earliestDate(item.dates)
-    Vue.set(state.list, item.id, addStrings(item))
+    Vue.set(state.list, item.id, item)
   },
 
   addAll(state, items) {
     items.forEach(item => {
       item.earliestDate = earliestDate(item.dates)
-      Vue.set(state.list, item.id, addStrings(item))
+      Vue.set(state.list, item.id, item)
     })
   },
 
@@ -124,16 +102,46 @@ export const getters = {
 }
 
 export const actions = {
-  async fetch({ commit }, params) {
+  async addFields({ dispatch }, items) {
+    for (let j = 0; j < items.length; j++) {
+      for (let i = 0; i < items[j].dates.length; i++) {
+        const date = items[j].dates[i]
+
+        // Add human readable versions of each date range.
+        const startm = new Moment(date.start)
+        let endm = new Moment(date.end)
+        endm = endm.isSame(startm, 'day')
+          ? endm.format('HH:mm')
+          : endm.format('ddd, Do MMM HH:mm')
+
+        items[j].dates[i].string = {
+          start: startm.format('ddd, Do MMM HH:mm'),
+          end: endm,
+          past: new Date().getTime() > new Date(date.start)
+        }
+
+        if (!items[j].dates[i].uniqueid) {
+          // Add a unique date id.  This is client-side only, used for keying component.
+          items[j].dates[i].uniqueid = await dispatch('uniqueid/generate', [], {
+            root: true
+          })
+        }
+      }
+    }
+
+    return items
+  },
+
+  async fetch({ commit, dispatch }, params) {
     const res = await this.$axios.get(process.env.API + '/communityevent', {
       params: params
     })
 
     if (res.status === 200) {
       if (params && params.id) {
-        commit('addAll', [res.data.communityevent])
+        commit('addAll', await dispatch('addFields', [res.data.communityevent]))
       } else {
-        commit('addAll', res.data.communityevents)
+        commit('addAll', await dispatch('addFields', res.data.communityevents))
 
         commit('setContext', {
           ctx: res.data.context

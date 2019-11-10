@@ -1,8 +1,7 @@
 <template>
   <div>
-    <!-- TODO use a better value for the key -->
-    <div v-for="(date, index) in editableDates" :key="'startend-' + index" :class="date.string && date.string.past ? 'inpast': ''">
-      <StartEndDate :start="date.start" :end="date.end" :index="index" @remove="remove(index)" @change="change" />
+    <div v-for="date in editableDates" :key="'startend-' + date.uniqueid" :class="date.string && date.string.past ? 'inpast': ''">
+      <StartEndDate :start="date.start" :end="date.end" :uniqueid="date.uniqueid" @remove="remove(date.uniqueid)" @change="change(date)" />
     </div>
     <b-btn variant="white" class="mt-1" @click="add">
       <v-icon name="plus" /> Add another date
@@ -20,7 +19,7 @@
 </style>
 
 <script>
-// TODO Validation - end date > start date, no stupidly long events (3 days?), no overlapping dates.
+// TODO Validation - end date > start date, no stupidly long events (3 days?), no overlapping dates, only one blank slot.
 // TODO This code could do with a bit of extra testing - various combinations of add/edit/cancel/delete etc.
 const StartEndDate = () => import('~/components/StartEndDate')
 
@@ -43,23 +42,32 @@ export default {
     this.editableDates = this.dates ? this.dates : []
   },
   methods: {
-    remove(index) {
-      if (this.editableDates.length > 1) {
-        this.editableDates.splice(index, 1)
-        this.$emit('changed', this.editableDates)
+    remove(uniqueid) {
+      for (let i = 0; i < this.editableDates.length; i++) {
+        if (this.editableDates[i].uniqueid === uniqueid) {
+          this.editableDates.splice(i, 1)
+        }
       }
+
+      this.$emit('change', JSON.stringify(this.editableDates))
     },
     add() {
-      console.log('Add another date')
       this.editableDates.push({
+        uniqueid: this.$store.dispatch('uniqueid/generate'),
         start: null,
         end: null,
         past: false
       })
     },
-    change(index, date) {
-      this.editableDates[index] = date
-      this.$emit('change', this.editableDates)
+    change(date) {
+      for (let i = 0; i < this.editableDates.length; i++) {
+        console.log('Check', i)
+        if (this.editableDates[i].uniqueid === date.uniqueid) {
+          this.editableDates[i] = date
+        }
+      }
+
+      this.$emit('change', JSON.stringify(this.editableDates))
     }
   }
 }

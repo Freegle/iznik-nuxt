@@ -37,7 +37,7 @@
     </div>
     <div>
       <!-- TODO Hide button if only one date present -->
-      <b-btn variant="white" size="sm" @click="$emit('remove', index)">
+      <b-btn variant="white" size="sm" @click="$emit('remove', uniqueid)">
         <v-icon name="trash-alt" title="Delete this date" aria-hidden="true" />
         <span class="delete__label">Remove</span>
       </b-btn>
@@ -48,16 +48,16 @@
 <script>
 export default {
   props: {
+    uniqueid: {
+      type: String,
+      required: true
+    },
     start: {
       validator: prop => typeof prop === 'string' || prop === null,
       required: true
     },
     end: {
       validator: prop => typeof prop === 'string' || prop === null,
-      required: true
-    },
-    index: {
-      type: Number,
       required: true
     }
   },
@@ -73,7 +73,8 @@ export default {
   },
   methods: {
     change() {
-      this.$emit('change', this.index, {
+      this.$emit('change', {
+        uniqueid: this.uniqueid,
         start: new Date(this.startd).toISOString(),
         end: new Date(this.endd).toISOString()
       })

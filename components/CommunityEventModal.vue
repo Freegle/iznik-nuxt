@@ -49,7 +49,7 @@
             When
           </b-col>
           <b-col cols="8" md="9">
-            <div v-for="(date, index) in event.dates" :key="'event-' + event.id + '-' + index + '-' + (date.start ? date.start.toString() : '') + '-' + (date.end ? date.end.toString() : '')" :class="date && date.string && date.string.past ? 'inpast': ''">
+            <div v-for="date in event.dates" :key="'event-' + event.id + '-' + date.uniqueid" :class="date && date.string && date.string.past ? 'inpast': ''">
               <span v-if="date && date.string">
                 <span v-if="date.string.start">
                   {{ date.string.start }}
@@ -303,7 +303,7 @@ export default {
     }
   },
   methods: {
-    show() {
+    async show() {
       this.editing = this.startEdit
       this.showModal = true
 
@@ -320,7 +320,8 @@ export default {
         : [
             {
               start: null,
-              end: null
+              end: null,
+              uniqueid: await this.$store.dispatch('uniqueid/generate')
             }
           ]
 
