@@ -53,7 +53,6 @@ This is getting close to Beta.
 There are some specific pages that still need doing:
 * /settings/confirmmail/key
 * /shortlinks/id
-* /livemap
 * /stats/heatmap
 * /mobile
 * Plugins - are they still used?
