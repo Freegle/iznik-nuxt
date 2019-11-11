@@ -153,7 +153,7 @@
       ok-only
     >
       <template slot="default">
-        <ImageCarousel message-id="message.id" :attachments="message.attachments" :slide-number="slide" />
+        <ImageCarousel message-id="message.id" :attachments="message.attachments" />
       </template>
     </b-modal>
     <OutcomeModal ref="outcomeModal" :message="message" :users="replyusers" />

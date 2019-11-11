@@ -126,7 +126,7 @@
       ok-only
     >
       <template slot="default">
-        <ImageCarousel v-if="expanded.attachments.length > 1" message-id="message.id" :attachments="expanded.attachments" :slide-number="slide" />
+        <ImageCarousel v-if="expanded.attachments.length > 1" message-id="message.id" :attachments="expanded.attachments" />
         <div v-else>
           <b-img
             slot="img"
