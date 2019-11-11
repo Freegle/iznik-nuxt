@@ -13,7 +13,7 @@
           </p>
           <b-row>
             <b-col>
-              <groupSelect v-model="groupid" class="float-left" all />
+              <groupSelect v-if="loggedIn" v-model="groupid" class="float-left" all />
             </b-col>
             <b-col>
               <b-btn variant="success" class="float-right" @click="showAddModal">
@@ -60,6 +60,10 @@ export default {
     }
   },
   computed: {
+    loggedIn() {
+      const ret = Boolean(this.$store.getters['auth/user']())
+      return ret
+    },
     sortedStories() {
       let stories = this.$store.getters['stories/list']()
 
