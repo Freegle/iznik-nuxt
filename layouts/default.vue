@@ -268,9 +268,12 @@ html {
   text-align: center;
 }
 
-.nav-link {
+/* Style the external nav-link class */
+::v-deep .nav-link {
   padding-left: 2px !important;
   padding-right: 2px !important;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
 }
 
 nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
@@ -284,6 +287,19 @@ nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
 .navbar-dark .navbar-nav .nav-link:hover,
 .navbar-dark .navbar-nav .nav-link:focus {
   color: $color-white-opacity-75 !important;
+}
+
+#nav_collapse_mobile .navbar-nav {
+  border-top: 1px solid $color-gray--light;
+  padding-top: 5px;
+}
+
+#nav_collapse_mobile .nav-item {
+  width: 70px;
+}
+
+#nav_collapse_mobile a.nav-link {
+  color: $color-white;
 }
 
 *,

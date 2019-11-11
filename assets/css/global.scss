@@ -124,12 +124,6 @@ div[variant="success"] .card-header {
   border-color: $colour-success-bg;
 }
 
-.chatlist {
-  max-height: calc(100vh - 74px);
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
 .chatsnippet {
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -209,11 +203,6 @@ button {
     cursor: pointer;
 }
 
-.nav-link {
-    padding-top: 0px !important;
-    padding-bottom: 0px !important;
-}
-
 .btn-group-xs > .btn, .btn-xs {
     padding  : .25rem .4rem;
     font-size  : .875rem;
@@ -265,19 +254,6 @@ button {
 
 nav .dropdown-toggle {
   border: none;
-}
-
-#nav_collapse_mobile .navbar-nav {
-  border-top: 1px solid $color-gray--light;
-  padding-top: 5px;
-}
-
-#nav_collapse_mobile .nav-item {
-  width: 70px;
-}
-
-#nav_collapse_mobile a.nav-link {
-  color: $color-white;
 }
 
 .carousel-control-prev-icon,
