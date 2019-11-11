@@ -296,7 +296,7 @@ export default {
     return {
       showModal: false,
       editing: false,
-      groupid: 0,
+      groupid: null,
       uploading: false,
       oldphoto: null,
       olddates: null,
@@ -335,8 +335,9 @@ export default {
             }
           ]
 
-      // If we don't have any groups, force a select.
-      this.event.groups = this.event.groups ? this.event.groups : [{ id: 0 }]
+      if (this.event.groups) {
+        this.groupid = this.event.groups[0].id
+      }
     },
     hide() {
       this.editing = false

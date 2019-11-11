@@ -62,7 +62,7 @@ export default {
   mixins: [loginOptional],
   data() {
     return {
-      groupid: 0,
+      groupid: null,
       leaving: false
     }
   },

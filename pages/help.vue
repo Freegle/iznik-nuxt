@@ -75,7 +75,7 @@ export default {
   },
   data() {
     return {
-      contactGroupId: 0,
+      contactGroupId: null,
       myItems: [
         {
           title: 'How do I post a WANTED?',

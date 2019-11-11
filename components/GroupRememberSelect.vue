@@ -32,7 +32,7 @@ export default {
   },
   computed: {
     rememberedValue() {
-      return this.$store.getters['group/remembered'](this.remember) || 0
+      return this.$store.getters['group/remembered'](this.remember)
     },
     selectValue: {
       get() {
@@ -40,10 +40,6 @@ export default {
       },
       set(val) {
         val = parseInt(val)
-        // value changed from the select
-        if (this.rememberedValue !== val) {
-          this.updateMemory(val)
-        }
         if (this.value !== val) {
           this.$emit('input', val)
         }
@@ -54,14 +50,16 @@ export default {
     rememberedValue: {
       immediate: true,
       handler(val) {
-        // value changed from the memory!
-        if (this.value !== val) {
-          this.$emit('input', val)
+        // value received from memory (might be nothing)
+        // we only take it if there is not already a value
+        // this ensures we don't override explicitly set values from outside
+        if (!this.value) {
+          this.$emit('input', val || 0)
         }
       }
     },
     value(val) {
-      // value changed from outside
+      // value changed
       if (this.rememberedValue !== val) {
         this.updateMemory(val)
       }
@@ -69,14 +67,14 @@ export default {
   },
   methods: {
     updateMemory(val) {
-      if (val === 0) {
-        this.$store.commit('group/forget', {
-          id: this.remember
-        })
-      } else {
+      if (val) {
         this.$store.commit('group/remember', {
           id: this.remember,
           val
+        })
+      } else {
+        this.$store.commit('group/forget', {
+          id: this.remember
         })
       }
     }
