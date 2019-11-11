@@ -124,12 +124,6 @@ div[variant="success"] .card-header {
   border-color: $colour-success-bg;
 }
 
-.chatlist {
-  max-height: calc(100vh - 74px);
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
 .chatsnippet {
   text-overflow: ellipsis;
   white-space: nowrap;

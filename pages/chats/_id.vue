@@ -40,6 +40,12 @@
 .active {
   background-color: $color-gray--lighter;
 }
+
+.chatlist {
+  max-height: calc(100vh - 74px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
 </style>
 
 <script>
