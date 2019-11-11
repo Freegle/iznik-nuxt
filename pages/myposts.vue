@@ -5,6 +5,7 @@
         <SidebarLeft :show-community-events="true" :show-bot-left="true" />
       </b-col>
       <b-col cols="12" md="6" class="p-0">
+        <JobsTopBar />
         <b-card
           class="mt-2"
           border-variant="info"
@@ -174,6 +175,7 @@
 </style>
 <script>
 import loginRequired from '@/mixins/loginRequired.js'
+const JobsTopBar = () => import('../components/JobsTopBar')
 const MyMessage = () => import('~/components/MyMessage.vue')
 const SidebarLeft = () => import('~/components/SidebarLeft')
 const SidebarRight = () => import('~/components/SidebarRight')
@@ -182,6 +184,7 @@ const SidebarRight = () => import('~/components/SidebarRight')
 
 export default {
   components: {
+    JobsTopBar,
     MyMessage,
     SidebarLeft,
     SidebarRight

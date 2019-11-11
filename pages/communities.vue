@@ -5,6 +5,7 @@
         <SidebarLeft :show-community-events="true" :show-bot-left="true" />
       </b-col>
       <b-col cols="12" md="6" class="p-0">
+        <JobsTopBar />
         <div>
           <div class="d-flex mt-2 mb-3 notification">
             <GroupRememberSelect v-model="groupid" remember="mygroups" class="m-3" all />
@@ -44,6 +45,7 @@
 
 <script>
 import loginRequired from '@/mixins/loginRequired.js'
+const JobsTopBar = () => import('../components/JobsTopBar')
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect.vue')
 const GroupHeader = () => import('~/components/GroupHeader.vue')
 const Message = () => import('~/components/Message.vue')
@@ -52,6 +54,7 @@ const SidebarRight = () => import('~/components/SidebarRight')
 
 export default {
   components: {
+    JobsTopBar,
     GroupHeader,
     GroupRememberSelect,
     Message,
