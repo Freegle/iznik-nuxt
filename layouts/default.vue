@@ -79,7 +79,6 @@
                 </span>
               </infinite-loading>
             </b-nav-item-dropdown>
-            <a class="d-none dropdown-item" />
             <b-nav-item id="menu-option-chat" class="text-center small p-0" to="/chats" @mousedown="maybeReload('/chats')">
               <div class="notifwrapper">
                 <v-icon name="comments" scale="2" /><br>
@@ -294,12 +293,21 @@ nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
   margin: 0;
 }
 
-.dropdown-item {
-  padding-left: 0px;
-}
-
 .notiflist {
   max-width: 100%;
+}
+
+/* These classes style the external b-nav-item-dropdown component */
+.notiflist ::v-deep .dropdown-menu {
+  height: 500px;
+  overflow-y: auto;
+}
+
+.notiflist ::v-deep .dropdown-item {
+  width: 300px;
+  max-width: 100%;
+  padding-left: 5px;
+  overflow-wrap: break-word;
 }
 
 .ourBack {
@@ -340,11 +348,6 @@ svg.fa-icon {
 .signindisabled {
   opacity: 0.2;
   pointer-events: none;
-}
-
-.dropdown-item {
-  padding-left: 0px;
-  padding-right: 0px;
 }
 
 .notifwrapper {
