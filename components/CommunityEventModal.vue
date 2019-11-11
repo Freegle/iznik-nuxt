@@ -273,8 +273,6 @@ export default {
   },
   props: {
     event: {
-      // validator: prop => typeof prop === 'object' || prop === null,
-      // required: true
       type: Object,
       default: () => ({
         title: null,
