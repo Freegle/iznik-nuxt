@@ -47,9 +47,9 @@
       <b-alert v-if="user.info.reneged && user.info.reneged > 1 && (user.info.reneged * 100 / (user.info.reneged + user.info.collected) > 25)" variant="warning" show>
         <v-icon name="exclamation-triangle" />&nbsp;Things haven't always worked out for this freegler.  That might not be their fault, but please make very clear arrangements.
       </b-alert>
-      <div v-if="user.info.aboutme && user.info.aboutme.text" class="mb-1">
+      <div v-if="aboutme" class="mb-1">
         <blockquote>
-          <b>&quot;{{ user.info.aboutme.text }}&quot;</b>
+          <b>&quot;{{ aboutme }}&quot;</b>
         </blockquote>
       </div>
       <b-card border-variant="success" header-bg-variant="success" header-text-variant="white" class="mt-2">
@@ -163,6 +163,8 @@
 </style>
 
 <script>
+import twem from '~/assets/js/twem'
+
 // TODO DESIGN Header is messy - wallpaper should fill the whole thing; image should have a border round it with a gap.
 // TODO DESIGN The about me section needs nice big quotes round it.
 const Ratings = () => import('~/components/Ratings')
@@ -195,6 +197,11 @@ export default {
     user() {
       const ret = this.id ? this.$store.getters['user/get'](this.id) : null
       return ret
+    },
+    aboutme() {
+      return this.user && this.user.info && this.user.info.aboutme
+        ? twem.twem(this.$twemoji, this.user.info.aboutme.text)
+        : null
     }
   },
   async mounted() {

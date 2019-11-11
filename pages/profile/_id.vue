@@ -36,11 +36,11 @@
             </div>
           </b-card-body>
         </b-card>
-        <b-card v-if="user.info.aboutme && user.info.aboutme.text" variant="white" class="mt-2">
+        <b-card v-if="aboutme" variant="white" class="mt-2">
           <b-card-body class="p-0">
             <div class="mb-1">
               <blockquote>
-                <b>&quot;{{ user.info.aboutme.text }}&quot;</b>
+                <b>&quot;{{ aboutme }}&quot;</b>
               </blockquote>
             </div>
           </b-card-body>
@@ -173,6 +173,7 @@
 <script>
 // TODO DESIGN The about me section needs nice big quotes round it.
 // TODO DESIGN This page is dull.  We could add newsfeed activity but most users won't have any.  What can we do?
+import twem from '~/assets/js/twem'
 import loginOptional from '@/mixins/loginOptional.js'
 const Ratings = () => import('~/components/Ratings')
 const ReplyTime = () => import('~/components/ReplyTime')
@@ -206,6 +207,11 @@ export default {
     },
     activeWanteds() {
       return this.active('Wanted')
+    },
+    aboutme() {
+      return this.user && this.user.info && this.user.info.aboutme
+        ? twem.twem(this.$twemoji, this.user.info.aboutme.text)
+        : null
     }
   },
   async asyncData({ app, params, store }) {
