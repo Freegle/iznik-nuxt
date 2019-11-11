@@ -4,9 +4,10 @@ import createPersistedState from 'vuex-persistedstate'
 import cloneDeep from 'lodash.clonedeep'
 import requestIdleCallback from '~/assets/js/requestIdleCallback'
 
+const STORAGE = localStorage
+const STORAGE_KEY = 'iznik'
+
 // We defer setting of state to local storage until we're idle.
-// TODO Can we force it to happen before moving away from the page?  There's a window where if you sign in, then
-// reload rapidly, you'll be logged out.  Similarly for other data changes.
 let settingState = null
 let setInProgress = false
 
@@ -26,8 +27,15 @@ const keep = [
 ]
 
 export default ({ store }) => {
+  // Before leaving the page, make sure we save the state
+  window.addEventListener('beforeunload', () => {
+    if (settingState) STORAGE.setItem(STORAGE_KEY, JSON.stringify(settingState))
+  })
+
   createPersistedState({
-    key: 'iznik',
+    key: STORAGE_KEY,
+
+    storage: STORAGE,
 
     reducer: function(state, paths) {
       // Earlier we used cloneDeep on the whole thing and then deleted what we didn't need.
