@@ -14,7 +14,7 @@
             <v-icon name="book-open" /> Tell us your story!
           </b-btn>
         </div>
-        <Story :story="story" class="mt-2" />
+        <Story :id="story.id" class="mt-2" />
         <b-btn variant="white" to="/stories" class="mt-2">
           View more stories
         </b-btn>
@@ -53,7 +53,7 @@ export default {
     this.id = this.$route.params.id
   },
   async mounted() {
-    await this.$store.dispatch('stories/fetchSummary', {
+    await this.$store.dispatch('stories/fetch', {
       id: this.id
     })
   },

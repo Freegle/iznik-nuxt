@@ -47,13 +47,17 @@ export const getters = {
 }
 
 export const actions = {
-  async fetchSummary({ commit }, params) {
+  async fetch({ commit }, params) {
     const res = await this.$axios.get(process.env.API + '/stories', {
       params: params
     })
 
     if (res.status === 200) {
-      commit('setList', params.id ? [res.data.story] : res.data.stories)
+      if (params.id) {
+        commit('add', res.data.story)
+      } else {
+        commit('setList', res.data.stories)
+      }
     }
   },
 
@@ -75,5 +79,23 @@ export const actions = {
     }
 
     return id
+  },
+
+  async love({ commit, dispatch }, params) {
+    await this.$axios.post(process.env.API + '/stories', {
+      id: params.id,
+      action: 'Like'
+    })
+
+    await dispatch('fetch', params)
+  },
+
+  async unlove({ commit, dispatch }, params) {
+    await this.$axios.post(process.env.API + '/stories', {
+      id: params.id,
+      action: 'Unlike'
+    })
+
+    await dispatch('fetch', params)
   }
 }

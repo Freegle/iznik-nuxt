@@ -3,8 +3,17 @@
     <b-card no-body variant="success">
       <b-card-header>
         &quot;{{ story.headline }}&quot;
-        <b-btn variant="white" class="float-right" @click="share(story)">
-          <v-icon name="share-alt" />
+        <span v-if="story.likes">
+          <v-icon name="heart" class="fa-fw" /> {{ story.likes }}
+        </span>
+        <b-btn v-if="loggedIn && !story.liked" variant="white" class="float-right" @click="love">
+          <v-icon name="heart" class="fa-fw" /><span class="d-none d-sm-inline">&nbsp;Love this</span>
+        </b-btn>
+        <b-btn v-if="loggedIn && story.liked" variant="white" class="float-right" @click="unlove">
+          <v-icon name="heart" class="text-danger fa-fw" /><span class="d-none d-sm-inline">&nbsp;Unlove this</span>
+        </b-btn>
+        <b-btn variant="white" class="float-right mr-1" @click="share(story)">
+          <v-icon name="share-alt" class="fa-fw" />
         </b-btn>
       </b-card-header>
       <b-card-text class="pl-2 pr-2">
@@ -16,7 +25,7 @@
           {{ story.story }}
         </div>
         <span class="text-muted small">
-          {{ story.date | timeago }} <span v-if="!groupid">on {{ story.groupname }}</span>
+          {{ story.date | timeago }} on {{ story.groupname }}
         </span>
       </b-card-text>
     </b-card>
@@ -39,7 +48,7 @@
         />
       </template>
     </b-modal>
-    <StoriesShareModal ref="share" :story="modalStory" />
+    <StoriesShareModal v-if="modalStory" ref="share" :story="modalStory" />
   </div>
 </template>
 <style scoped>
@@ -49,7 +58,6 @@
 }
 </style>
 <script>
-// TODO Story loves
 import StoriesShareModal from '~/components/StoriesShareModal'
 
 export default {
@@ -57,8 +65,8 @@ export default {
     StoriesShareModal
   },
   props: {
-    story: {
-      type: Object,
+    id: {
+      type: Number,
       required: true
     }
   },
@@ -67,11 +75,30 @@ export default {
       modalStory: null
     }
   },
+  computed: {
+    loggedIn() {
+      const ret = Boolean(this.$store.getters['auth/user']())
+      return ret
+    },
+    story() {
+      return this.$store.getters['stories/get'](this.id)
+    }
+  },
   methods: {
     share(story) {
       this.modalStory = story
       this.$nextTick(() => {
         this.$bvModal.show('storiesShareModal-' + story.id)
+      })
+    },
+    async love() {
+      await this.$store.dispatch('stories/love', {
+        id: this.story.id
+      })
+    },
+    async unlove() {
+      await this.$store.dispatch('stories/unlove', {
+        id: this.story.id
       })
     }
   }

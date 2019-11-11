@@ -9,6 +9,7 @@
           <div class="d-flex mt-2 mb-3 notification">
             <GroupRememberSelect v-model="groupid" remember="mygroups" class="m-3" all />
             <b-form-select v-model="selectedType" class="m-3" value="All" :options="typeOptions" @change="typeChange" />
+            <!--            TODO DESIGN Grow the group select if there's room, shrink the type select to fit contents.-->
           </div>
           <groupHeader v-if="group" :key="'groupheader-' + groupid" v-bind="group" />
           <div v-for="message in messages" :key="'messagelist-' + message.id" class="p-0">

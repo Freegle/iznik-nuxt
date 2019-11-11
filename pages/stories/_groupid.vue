@@ -23,7 +23,7 @@
           </b-row>
         </div>
         <div v-for="story in sortedStories" :key="'story-' + story.id" class="mt-2">
-          <Story :story="story" />
+          <Story :id="story.id" />
         </div>
       </b-col>
       <b-col cols="0" md="3" class="d-none d-md-block" />
@@ -100,7 +100,7 @@ export default {
   },
   async mounted() {
     await this.$store.dispatch('stories/clear')
-    await this.$store.dispatch('stories/fetchSummary', {
+    await this.$store.dispatch('stories/fetch', {
       groupid: this.groupid > 0 ? this.groupid : null
     })
   },

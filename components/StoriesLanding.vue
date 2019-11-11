@@ -42,7 +42,7 @@ export default {
     }
   },
   async mounted() {
-    await this.$store.dispatch('stories/fetchSummary', {
+    await this.$store.dispatch('stories/fetch', {
       limit: 3
     })
   }
