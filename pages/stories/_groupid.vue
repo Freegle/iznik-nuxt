@@ -12,7 +12,7 @@
             So please tell us your story!
           </p>
           <b-row>
-            <b-col v-if="oneOfOurs">
+            <b-col>
               <groupSelect v-model="groupid" class="float-left" all />
             </b-col>
             <b-col>
@@ -77,22 +77,6 @@ export default {
 
       if (this.sortedStories && this.sortedStories.length && this.groupid) {
         ret = this.sortedStories[0].groupname
-      }
-
-      return ret
-    },
-    oneOfOurs() {
-      const myGroups = this.$store.getters['auth/groups']()
-
-      let ret = false
-
-      for (const group of myGroups) {
-        if (
-          this.groupid === 0 ||
-          parseInt(group.id) === parseInt(this.groupid)
-        ) {
-          ret = true
-        }
       }
 
       return ret
