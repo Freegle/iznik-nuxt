@@ -79,7 +79,6 @@
                 </span>
               </infinite-loading>
             </b-nav-item-dropdown>
-            <a class="d-none dropdown-item" />
             <b-nav-item id="menu-option-chat" class="text-center small p-0" to="/chats" @mousedown="maybeReload('/chats')">
               <div class="notifwrapper">
                 <v-icon name="comments" scale="2" /><br>
@@ -309,11 +308,6 @@ nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
   max-width: 100%;
   padding-left: 5px;
   overflow-wrap: break-word;
-}
-
-.dropdown-item {
-  padding-left: 0px;
-  padding-right: 0px;
 }
 
 .ourBack {
