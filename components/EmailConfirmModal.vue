@@ -11,8 +11,8 @@
     <p>We've sent you a verification mail.</p>
     <p>Don't forget to check your spam folder!</p>
     <template slot="modal-footer" slot-scope="{ ok, cancel }">
-      <b-button variant="white" @click="cancel">
-        Got it!
+      <b-button variant="success" @click="cancel">
+        Close
       </b-button>
     </template>
   </b-modal>

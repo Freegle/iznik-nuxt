@@ -279,7 +279,7 @@ export const actions = {
       })
     } else {
       // TODO
-      console.error('saveUser failed')
+      throw new Error('saveAndGet failed')
     }
 
     return state.user
