@@ -1,19 +1,18 @@
 <template>
   <b-carousel
     :id="'message-carousel-' + messageId"
-    v-model="slide"
     :interval="5000"
     controls
     indicators
     img-width="100%"
   >
-    <b-carousel-slide v-for="attachment in attachments" :key="'mesagephohoto-' + attachment.id">
+    <b-carousel-slide v-for="(attachment,index) in attachments" :key="'mesagephohoto-' + attachment.id">
       <b-img
         slot="img"
         center
         class="d-block img-fluid w-100 messagePhoto"
         :src="attachment.path"
-        :alt="'Message photo ' + slideNumber"
+        :alt="'Message photo ' + index"
       />
     </b-carousel-slide>
   </b-carousel>
@@ -29,10 +28,6 @@ export default {
     },
     attachments: {
       type: Object,
-      required: true
-    },
-    slideNumber: {
-      type: Number,
       required: true
     }
   }
