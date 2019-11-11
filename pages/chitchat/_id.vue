@@ -2,7 +2,7 @@
   <div v-if="me">
     <b-row class="m-0">
       <b-col cols="0" md="3" class="d-none d-md-block">
-        <sidebar-left />
+        <SidebarLeft :show-community-events="true" :show-bot-left="true" />
       </b-col>
       <b-col cols="12" md="6" class="newsfeedHolder p-0">
         <b-card v-if="!id">
