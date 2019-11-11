@@ -286,6 +286,19 @@ nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
   color: $color-white-opacity-75 !important;
 }
 
+#nav_collapse_mobile .navbar-nav {
+  border-top: 1px solid $color-gray--light;
+  padding-top: 5px;
+}
+
+#nav_collapse_mobile .nav-item {
+  width: 70px;
+}
+
+#nav_collapse_mobile a.nav-link {
+  color: $color-white;
+}
+
 *,
 *:before,
 *:after {
