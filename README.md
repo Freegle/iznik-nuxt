@@ -55,6 +55,5 @@ There are some specific pages that still need doing:
 * /stats/heatmap
 * /mobile
 * Plugins - are they still used?
-* /stories/fornewsletter
 * /mydata
 * /councils
