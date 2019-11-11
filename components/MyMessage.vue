@@ -153,24 +153,7 @@
       ok-only
     >
       <template slot="default">
-        <b-carousel
-          :id="'message-carousel-' + message.id"
-          v-model="slide"
-          :interval="5000"
-          controls
-          indicators
-          img-width="100%"
-        >
-          <b-carousel-slide v-for="attachment in message.attachments" :key="'mesagephohoto-' + attachment.id">
-            <b-img
-              slot="img"
-              center
-              class="d-block img-fluid w-100 messagePhoto"
-              :src="attachment.path"
-              :alt="'Message photo ' + slide"
-            />
-          </b-carousel-slide>
-        </b-carousel>
+        <ImageCarousel message-id="message.id" :attachments="message.attachments" :slide-number="slide" />
       </template>
     </b-modal>
     <OutcomeModal ref="outcomeModal" :message="message" :users="replyusers" />
@@ -219,6 +202,7 @@ const OutcomeModal = () => import('./OutcomeModal')
 const MyMessageReply = () => import('./MyMessageReply.vue')
 const ShareModal = () => import('./ShareModal')
 const MessageEditModal = () => import('./MessageEditModal')
+const ImageCarousel = () => import('./ImageCarousel')
 
 export default {
   directives: {
@@ -228,7 +212,8 @@ export default {
     OutcomeModal,
     ShareModal,
     MyMessageReply,
-    MessageEditModal
+    MessageEditModal,
+    ImageCarousel
   },
   props: {
     message: {
