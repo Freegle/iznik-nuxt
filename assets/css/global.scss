@@ -124,15 +124,6 @@ div[variant="success"] .card-header {
   border-color: $colour-success-bg;
 }
 
-.chatsnippet {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.chatsnippet br {
-  display: none
-}
-
 .truncate {
   width: 100%;
   white-space: nowrap;
