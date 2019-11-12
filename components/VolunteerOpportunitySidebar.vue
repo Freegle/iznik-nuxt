@@ -26,7 +26,6 @@ import VolunteerOpportunity from './VolunteerOpportunity'
 const VolunteerOpportunityModal = () =>
   import('~/components/VolunteerOpportunityModal')
 
-// TODO Would be nice not to load the modal in except when clicked.  Bit fiddly because of async imports.
 export default {
   components: {
     VolunteerOpportunity,

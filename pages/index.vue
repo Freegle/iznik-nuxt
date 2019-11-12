@@ -154,7 +154,6 @@
 <script>
 const StoriesLanding = () => import('~/components/StoriesLanding.vue')
 // TODO That thing where you prompt people on mobile to install the app.
-// TODO The footer links don't exist.
 
 export default {
   components: {

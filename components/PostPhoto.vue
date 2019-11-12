@@ -66,7 +66,6 @@
 </style>
 
 <script>
-// TODO Rotate and delete
 export default {
   props: {
     id: {
