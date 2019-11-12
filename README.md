@@ -51,7 +51,6 @@ This is getting close to Beta.
 
 There are some specific pages that still need doing:
 * /shortlinks/id
-* /stats/heatmap
 * Plugins - are they still used?
 * /mydata
 * /councils
