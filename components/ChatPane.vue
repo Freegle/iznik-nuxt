@@ -74,10 +74,15 @@
               <p v-if="warnuser" class="bg-warning p-2 mb-0">
                 <v-icon name="exclamation-triangle" />&nbsp;Things haven't always worked out for this freegler.  That might not be their fault, but please make very clear arrangements.
               </p>
-              <p v-if="showReplyTime && replytime" class="bg-info p-2 mb-0 clickme" @click="showInfo">
+              <p v-if="!spammer && showReplyTime && replytime" class="bg-info p-2 mb-0 clickme" @click="showInfo">
                 <v-icon name="info-circle" />&nbsp;Typically replies in <b>{{ replytime }}</b>.  Click for more info.
               </p>
+              <p v-if="spammer" class="bg-danger white p-2 mb-0">
+                This person has been reported as a spammer or scammer.  Please do not talk to them and under no circumstances
+                send them any money.
+              </p>
               <b-form-textarea
+                v-if="!spammer"
                 v-model="sendmessage"
                 placeholder="Type here..."
                 rows="3"
@@ -90,7 +95,7 @@
               />
             </b-col>
           </b-row>
-          <b-row class="bg-white">
+          <b-row v-if="!spammer" class="bg-white">
             <b-col class="p-0 pt-1 pb-1">
               <div class="d-none d-xl-block">
                 <span v-if="chat && chat.chattype === 'User2User' && otheruser">
@@ -197,7 +202,6 @@
 <script>
 // TODO Chat dropdown menu for report etc
 // TODO Popup confirm first time you use Nudge, so you know what you're doing.
-// TODO Warning if you're talking to a spammer, and disable the chat message box.
 // TODO DESIGN We have a spinner at the top for our upwards infinite scroll.  But this looks messy when we load a
 // short chat, because we see the messages appear below the spinner and then move upwards once the infinite scroll
 // completes.
@@ -313,6 +317,16 @@ export default {
             info.reneged > 1 &&
             (info.reneged * 100) / (info.reneged + info.collected) > 25
         }
+      }
+
+      return ret
+    },
+
+    spammer() {
+      let ret = false
+
+      if (this.otheruser) {
+        ret = this.otheruser.spammer
       }
 
       return ret
