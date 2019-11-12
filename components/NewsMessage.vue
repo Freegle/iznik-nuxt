@@ -51,9 +51,9 @@
   </div>
 </template>
 <script>
-import NewsShareModal from './NewsShareModal'
 import NewsBase from '~/components/NewsBase'
 import NewsUserIntro from '~/components/NewsUserIntro'
+const NewsShareModal = () => import('~/components/NewsShareModal')
 const NewsLoveComment = () => import('~/components/NewsLoveComment')
 
 export default {
@@ -62,16 +62,6 @@ export default {
     NewsUserIntro,
     NewsLoveComment
   },
-  extends: NewsBase,
-  methods: {
-    share() {
-      console.log('Share', this.newsfeed)
-      this.newsfeedModal = this.newsfeed
-      this.$nextTick(() => {
-        console.log('Show')
-        this.$bvModal.show('newsShareModal-' + this.newsfeed.id)
-      })
-    }
-  }
+  extends: NewsBase
 }
 </script>
