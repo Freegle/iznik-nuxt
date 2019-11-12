@@ -6,7 +6,7 @@ const googleMapsKey = process.env.GOOGLE_MAPS_KEY
 Vue.use(VueGoogleMaps, {
   load: {
     key: googleMapsKey,
-    libraries: 'places,drawing'
+    libraries: 'places,drawing,visualization'
   },
 
   autobindAllEvents: true

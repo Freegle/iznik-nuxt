@@ -5,6 +5,11 @@
         <h1>Live Map</h1>
         <h3>See freegling happen across the UK.</h3>
         <p>This shows posts as freeglers make them. There'll usually be something along in a minute or two.</p>
+        <p>
+          You might also like our <nuxt-link to="/stats/heatmap">
+            heatmap
+          </nuxt-link> showing where people freegle.
+        </p>
         <client-only>
           <GmapMap
             ref="gmap"
