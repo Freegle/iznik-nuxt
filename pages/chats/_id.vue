@@ -22,10 +22,10 @@
       </ul>
     </b-col>
     <b-col cols="12" md="6" class="chatback">
-      <chatPane v-if="activeChat" v-bind="activeChat" />
+      <ChatPane v-if="activeChat" v-bind="activeChat" />
     </b-col>
     <b-col cols="0" md="3" class="d-none d-md-block">
-      Ads go here
+      <SidebarRight :show-volunteer-opportunities="false" show-job-opportunities="true" />
     </b-col>
   </b-row>
 </template>
@@ -49,6 +49,7 @@
 </style>
 
 <script>
+import SidebarRight from '../../components/SidebarRight'
 import loginRequired from '@/mixins/loginRequired.js'
 const ChatPane = () => import('~/components/ChatPane.vue')
 const ChatListEntry = () => import('~/components/ChatListEntry.vue')
@@ -56,6 +57,7 @@ const requestIdleCallback = () => import('~/assets/js/requestIdleCallback')
 
 export default {
   components: {
+    SidebarRight,
     ChatPane,
     ChatListEntry
   },
