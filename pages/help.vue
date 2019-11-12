@@ -103,8 +103,7 @@ export default {
           value:
             '            <p>\n' +
             "              If someone has collected your OFFER, then make sure you're logged in (click on <em>Sign in</em> on\n" +
-            '              the top left if you need to), then go to <a href="/myposts">My Posts</a>, find your post, click to\n' +
-            '              expand it, and click this:\n' +
+            '              the top left if you need to), then go to <a href="/myposts">My Posts</a>, find your post, and click this:\n' +
             '            </p>\n' +
             '            <button class="btn btn-success inline mb-1">\n' +
             '              Mark as TAKEN\n' +
@@ -115,7 +114,8 @@ export default {
             '            </p>\n' +
             '            <button class="btn btn-success inline mb-1">\n' +
             '              Mark as RECEIVED\n' +
-            '            </button>\n',
+            '            </button>\n' +
+            '            <p>If you have multiple posts showing, you may need to click the post to expand it before the buttons appear.</p>',
           category: '<h4>Frequently Asked Questions</h4>'
         },
         {
