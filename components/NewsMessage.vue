@@ -47,18 +47,31 @@
         />
       </template>
     </b-modal>
+    <NewsShareModal v-if="newsfeedModal" :newsfeed="newsfeedModal" />
   </div>
 </template>
 <script>
+import NewsShareModal from './NewsShareModal'
 import NewsBase from '~/components/NewsBase'
 import NewsUserIntro from '~/components/NewsUserIntro'
 const NewsLoveComment = () => import('~/components/NewsLoveComment')
 
 export default {
   components: {
+    NewsShareModal,
     NewsUserIntro,
     NewsLoveComment
   },
-  extends: NewsBase
+  extends: NewsBase,
+  methods: {
+    share() {
+      console.log('Share', this.newsfeed)
+      this.newsfeedModal = this.newsfeed
+      this.$nextTick(() => {
+        console.log('Show')
+        this.$bvModal.show('newsShareModal-' + this.newsfeed.id)
+      })
+    }
+  }
 }
 </script>

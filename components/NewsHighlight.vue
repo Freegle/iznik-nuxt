@@ -41,7 +41,7 @@ export default {
       default: ''
     },
     text: {
-      type: String,
+      validator: prop => typeof prop === 'string' || prop === null,
       required: true
     },
     link: {

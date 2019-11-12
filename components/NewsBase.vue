@@ -37,7 +37,8 @@ export default {
   data: function() {
     return {
       replyingTo: null,
-      threadcomment: null
+      threadcomment: null,
+      newsfeedModal: null
     }
   },
   computed: {
@@ -70,9 +71,6 @@ export default {
     }
   },
   methods: {
-    share() {
-      // TODO
-    },
     brokenImage(event) {
       event.target.src = '/static/defaultprofile.png'
     }
