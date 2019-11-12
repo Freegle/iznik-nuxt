@@ -35,11 +35,6 @@
     </b-card>
   </div>
 </template>
-<script>
-// TODO DESIGN This should really be sticky to the bottom left, but I failed to get that working with the flex stuff
-// for the event sidebar above it.
-</script>
-
 <style scoped lang="scss">
 @import 'color-vars';
 
