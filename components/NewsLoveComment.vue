@@ -21,7 +21,7 @@
   </ul>
 </template>
 <script>
-// TODO This is a bit sluggish to do.  Needs visual indication that something is happening.
+// TODO MINOR This is a bit sluggish to do.  Needs visual indication that something is happening.
 export default {
   props: {
     newsfeed: {

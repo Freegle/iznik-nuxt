@@ -18,7 +18,7 @@
 <style scoped>
 </style>
 <script>
-// TODO Other chat message types
+// TODO EH Other chat message types
 // const TYPE_SYSTEM = 'System';
 // const TYPE_REPORTEDUSER = 'ReportedUser';
 // const TYPE_SCHEDULE = 'Schedule';

@@ -26,12 +26,13 @@
         <p v-if="showSignUp">
           <b>Using one of these buttons is the easiest way to create an account:</b>
         </p>
-        <b-img alt="Facebook login" class="loginbutton clickme" src="~/static/signinbuttons/facebook.png" @click="loginFacebook" />
-        <b-img alt="Google login" :class="'mb-1 loginbutton clickme ' + disabled('google')" src="~/static/signinbuttons/google.png" @click="loginGoogle" />
-        <b-img alt="Yahoo login" class="loginbutton clickme" src="~/static/signinbuttons/yahoo.png" @click="loginYahoo" />
-        <b-alert v-if="socialblocked" variant="error">
-          Social login blocked - check your privacy settings
-        </b-alert>
+        <b-img alt="Facebook login" :class="'loginbutton clickme ' + (facebookDisabled ? ' signindisabled' : '')" src="~/static/signinbuttons/facebook.png" @click="loginFacebook" />
+        <b-img alt="Google login" :class="'mb-1 loginbutton clickme ' + (googleDisabled ? ' signindisabled' : '')" src="~/static/signinbuttons/google.png" @click="loginGoogle" />
+        <b-img alt="Yahoo login" :class="'loginbutton clickme ' + (yahooDisabled ? ' signindisabled' : '')" src="~/static/signinbuttons/yahoo.png" @click="loginYahoo" />
+        <div v-if="socialblocked" class="p-2 bg-warning">
+          <!--          TODO DESIGN Use Notice component-->
+          Social sign in blocked - check your privacy settings
+        </div>
       </b-col>
       <b-col cols="12" class="d-block d-lg-none">
         <b-row>
@@ -160,6 +161,10 @@
 .login__splitter {
   border-top: 1px solid $color-red;
 }
+
+.signindisabled {
+  opacity: 0.2;
+}
 </style>
 
 <script>
@@ -167,7 +172,7 @@
 // TODO DESIGN Need vertical line or some other way to indicate that the form on the right is an alternative to
 // the buttons.
 // TODO DESIGN Spacing and alignment of the buttons is a bit off.
-// TODO DESIGN Would be nice to have "Sign up" buttons for social sign in.
+// TODO DESIGN MINOR Would be nice to have "Sign up" buttons for social sign in.
 // TODO DESIGN Google's terms require the square icon, which is annoyingly inconsistent with the others.  Are we
 // allowed to have square other ones?  If so, please make such images.
 import Vue from 'vue'
@@ -175,20 +180,41 @@ import Vue from 'vue'
 export default {
   data: function() {
     return {
+      bump: Date.now(),
       firstname: null,
       lastname: null,
       email: null,
       password: null,
-      socialblocked: false,
       pleaseShowModal: false,
       showSignUp: false
     }
   },
 
   computed: {
+    // Use of this.bump means we will recompute when we need to, i.e. when the modal is shown.  This is overriding
+    // normal reactivity but that's because the SDKs we use aren't written in Vue.
+    facebookDisabled() {
+      const ret = this.bump && typeof Vue.FB === 'undefined'
+      console.log('Compute facebook disabled', ret, this.bump, Vue.FB)
+      return ret
+    },
+
     googleDisabled() {
+      const ret = this.bump && (!window || !window.gapi || !window.gapi.client)
+      console.log('Compute Google disabled', ret, window)
+      return ret
+    },
+
+    yahooDisabled() {
+      // Yahoo currently can't be disabled, because it's redirect auth flow rather than load of a JS toolkit.
+      return false
+    },
+
+    socialblocked() {
       const ret =
-        !window || !window.gapi || !window.gapi.client || !window.auth2
+        this.bump &&
+        (this.facebookDisabled || this.googleDisabled || this.yahooDisabled)
+      console.log('compute socialblocked', ret)
       return ret
     },
 
@@ -207,22 +233,12 @@ export default {
 
   methods: {
     show() {
+      // Force reconsideration of social signin disabled.
+      this.bump = Date.now()
       this.pleaseShowModal = true
     },
     hide() {
       this.pleaseShowModal = false
-    },
-    disabled(type) {
-      // TODO We might compute this the first time before the API has loaded, and therefore still show the
-      // button disabled even after the API has loaded successfully.
-      let ret = false
-      switch (type) {
-        case 'google':
-          ret = !window || !window.gapi || !window.gapi.client
-          break
-      }
-
-      return ret ? 'signindisabled' : ''
     },
     loginNative(e) {
       const self = this

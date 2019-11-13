@@ -124,8 +124,8 @@
 </style>
 
 <script>
-// TODO Report etc menu dropdown
-// TODO Delete
+// TODO EH Report etc menu dropdown
+// TODO EH Delete
 // TODO DESIGN Some indication of newly added entries
 // TODO Click on loves to show who loves them
 import twem from '~/assets/js/twem'
@@ -223,7 +223,7 @@ export default {
       this.replyingTo = this.newsfeed.id
     },
     async sendComment() {
-      // TODO This is sluggish.  Can we fake up the reply in the store in advance, or have some other visual indicator?
+      // TODO MINOR This is sluggish.  Can we fake up the reply in the store in advance, or have some other visual indicator?
       // Same applies to NewsReply.
       // Encode up any emojis.
       if (this.threadcomment) {
@@ -247,7 +247,7 @@ export default {
       }
     },
     newlineComment() {
-      // TODO Would be good to handle inserting in the middle a block of text, though last time I looked at this it
+      // TODO MINOR Would be good to handle inserting in the middle a block of text, though last time I looked at this it
       // was quite fiddly.
       this.threadcomment += '\n'
     },

@@ -275,12 +275,12 @@ label {
 
 <script>
 // TODO DESIGN This layout is staid table nonsense.  Surely we can make it more appealing?
-// TODO Delete
+// TODO EH Delete
 // TODO Add some form validation using a plugin - see https://bootstrap-vue.js.org/docs/reference/validation/
 // TODO Don't allow submission before image upload complete.
 // TODO Groups which don't support opportunities
 // TODO We used to have an "apply by" date. It's not clear we need this, so no urgency in re-adding it.
-// TODO Systemwide opportunities.
+// TODO EH Systemwide opportunities.
 import twem from '~/assets/js/twem'
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
 const OurFilePond = () => import('~/components/OurFilePond')

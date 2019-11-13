@@ -11,7 +11,7 @@ export const state = () => ({
 export const mutations = {
   add(state, item) {
     // Overwrite any existing entry.
-    // TODO Performance not great.
+    // TODO EH Performance not great.
     const existing = state.list.findIndex(obj => {
       return parseInt(obj.id) === parseInt(item.id)
     })
@@ -25,7 +25,7 @@ export const mutations = {
   addAll(state, items) {
     console.log('AddAll', items)
     items.forEach(item => {
-      // TODO Performance not great.  Items is short, though, so could take advantage of that.
+      // TODO EH Performance not great.  Items is short, though, so could take advantage of that.
       const existing = state.list.findIndex(obj => {
         return parseInt(obj.id) === parseInt(item.id)
       })

@@ -450,7 +450,7 @@ export default {
         paththumb: imagethumb
       }
 
-      // TODO Handle any OCR returned from the server by putting it in the description.
+      // TODO EH Handle any OCR returned from the server by putting it in the description.
     },
     rotate(deg) {
       this.$axios

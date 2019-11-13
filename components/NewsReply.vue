@@ -196,7 +196,7 @@
 </style>
 
 <script>
-// TODO User tagging
+// TODO EH User tagging
 import twem from '~/assets/js/twem'
 const NewsUserInfo = () => import('~/components/NewsUserInfo')
 const NewsHighlight = () => import('~/components/NewsHighlight')
@@ -272,7 +272,7 @@ export default {
           ret = this.reply.replies
         } else {
           // We have to prune what we show.
-          // TODO But we shouldn't prune away this.scrollTo if set.
+          // TODO EH But we shouldn't prune away this.scrollTo if set.
           ret = this.reply.replies.slice(-5)
         }
       }

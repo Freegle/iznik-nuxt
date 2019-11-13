@@ -53,7 +53,7 @@
 }
 </style>
 <script>
-// TODO Add speech recognition
+// TODO EH Add speech recognition
 import loginOptional from '@/mixins/loginOptional.js'
 const WizardProgress = () => import('~/components/WizardProgress')
 
@@ -126,9 +126,7 @@ export default {
           }
         })
         .catch(e => {
-          // TODO  More generally, need to check all axios requests, and have something consistent in place about
-          // where those errors are caught - in the store or in the calling code - and how the errors are
-          // displayed.
+          // TODO
           console.log('Submit failed', e)
         })
     }

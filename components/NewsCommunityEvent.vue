@@ -72,8 +72,6 @@ import NewsBase from '~/components/NewsBase'
 const NewsLoveComment = () => import('~/components/NewsLoveComment')
 const CommunityEventModal = () => import('~/components/CommunityEventModal')
 
-// TODO Would be nice not to load the modal in except when clicked.  Bit fiddly because of async imports.
-
 export default {
   components: {
     NewsLoveComment,

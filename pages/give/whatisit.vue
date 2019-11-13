@@ -51,8 +51,8 @@
   </div>
 </template>
 <script>
-// TODO Add speech recognition
-// TODO Image recognition
+// TODO EH Add speech recognition
+// TODO EH Image recognition
 // TODO Suppose we end up here, without a postcode in the store?
 
 import loginOptional from '@/mixins/loginOptional.js'
