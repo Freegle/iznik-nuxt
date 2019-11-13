@@ -126,25 +126,7 @@
       ok-only
     >
       <template slot="default">
-        <b-carousel
-          v-if="expanded.attachments.length > 1"
-          :id="'message-carousel-' + expanded.id"
-          v-model="slide"
-          :interval="5000"
-          controls
-          indicators
-          img-width="100%"
-        >
-          <b-carousel-slide v-for="attachment in expanded.attachments" :key="'mesagephohoto-' + attachment.id">
-            <b-img
-              slot="img"
-              center
-              class="d-block img-fluid w-100 messagePhoto"
-              :src="attachment.path"
-              :alt="'Message photo ' + slide"
-            />
-          </b-carousel-slide>
-        </b-carousel>
+        <ImageCarousel v-if="expanded.attachments.length > 1" message-id="message.id" :attachments="expanded.attachments" />
         <div v-else>
           <b-img
             slot="img"
@@ -175,13 +157,15 @@ import twem from '~/assets/js/twem'
 
 const Highlighter = () => import('vue-highlight-words')
 const MessageUserInfo = () => import('~/components/MessageUserInfo')
+const ImageCarousel = () => import('./ImageCarousel')
 
 export default {
   components: {
     ChatButton,
     MessageUserInfo,
     Highlighter,
-    ShareModal
+    ShareModal,
+    ImageCarousel
   },
   props: {
     id: {
@@ -226,7 +210,6 @@ export default {
     return {
       reply: null,
       expanded: null,
-      slide: 0,
       replying: false
     }
   },

@@ -247,31 +247,6 @@ nav .dropdown-toggle {
   border: none;
 }
 
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-    height: 100px;
-    width: 100px;
-    outline: $color-black;
-    background-size: 100%, 100%;
-    border-radius: 50%;
-    border: 1px solid $color-black;
-    background-image: none;
-    background-color: $color-white;
-}
-
-.carousel-control-next-icon:after
-{
-    content: '>';
-    font-size: 55px;
-    color: $color-red;
-}
-
-.carousel-control-prev-icon:after {
-    content: '<';
-    font-size: 55px;
-    color: $color-red;
-}
-
 .forcebreak {
   -ms-word-break: break-all;
 
