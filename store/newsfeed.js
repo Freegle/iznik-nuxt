@@ -1,6 +1,5 @@
 export const state = () => ({
-  // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
-  // storage.
+  // Use array for newsfeed as we need ordering.
   newsfeed: [],
   users: {},
   context: {},
@@ -9,8 +8,8 @@ export const state = () => ({
 
 export const mutations = {
   addNewsfeed(state, item) {
-    // Remove any existing copy.
-    // TODO Performance is poor here, we're scanning arrays.  Should newsfeed be an object after all?
+    // Remove any existing copy.  Not great to scan an array, but this is only used when (re)fetching a single
+    // item and therefore it's not too bad.
     state.newsfeed = state.newsfeed.filter(obj => {
       return parseInt(obj.id) !== parseInt(item.id)
     })
