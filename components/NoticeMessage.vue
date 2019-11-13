@@ -1,21 +1,38 @@
 <template>
-  <div class="notice__wrapper p-2 rounded-sm">
+  <div class="notice p-2 rounded-sm" :class="'notice--' + variant">
     <slot />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'NoticeMessage'
+  name: 'NoticeMessage',
+  props: {
+    variant: {
+      type: String,
+      required: false,
+      default: 'info'
+    }
+  }
 }
 </script>
 
 <style scoped lang="scss">
 @import 'color-vars';
 
-.notice__wrapper {
-  /* These defaults can be overrriden on the main component */
+.notice {
+  border-width: 1px;
+  border-style: solid;
+}
+
+.notice--info {
   background-color: $color-blue--x-light;
-  border: 1px solid $color-blue-x-light2;
+  border-color: $color-blue-x-light2;
+}
+
+.notice--warning {
+  background-color: $color-yellow-1;
+  border-color: $color-yellow-2;
+  color: $color-yellow-3;
 }
 </style>

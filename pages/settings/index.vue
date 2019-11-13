@@ -261,7 +261,7 @@
               Messages from other freeglers will appear in the <em>Chat</em> section.  We can also notify you
               in other ways.
             </p>
-            <notice-message class="bg-warning border-warning">
+            <notice-message variant="warning">
               Email doesn't always get through, so check your spam folders, and check <em>Chat</em> on here occasionally.
             </notice-message>
             <hr>
