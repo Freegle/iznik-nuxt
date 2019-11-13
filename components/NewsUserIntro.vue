@@ -57,8 +57,10 @@
 }
 </style>
 <script>
+// Use import rather than async otherwise we have trouble with refs.
+import ProfileModal from '~/components/ProfileModal'
+
 const NewsUserInfo = () => import('~/components/NewsUserInfo')
-const ProfileModal = () => import('~/components/ProfileModal')
 
 export default {
   components: {
@@ -99,12 +101,9 @@ export default {
       // We use v-if so that the profile modal is not inserted into the DOM until we have clicked, which saves the
       // fetch of the user info.
       this.infoclick = true
-
-      // TODO I tried nextTick here, and the ref wasn't defined in the callback.  So this is a hack.
-      // Might relate to use of async import stuff.
-      setTimeout(() => {
+      this.$nextTick(() => {
         this.$refs.profilemodal.show()
-      }, 25)
+      })
     },
     brokenImage(event) {
       event.target.src = '/static/defaultprofile.png'
