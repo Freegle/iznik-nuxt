@@ -1,21 +1,33 @@
 <template>
-  <b-carousel
-    :id="'message-carousel-' + messageId"
-    :interval="5000"
-    controls
-    indicators
-    img-width="100%"
-  >
-    <b-carousel-slide v-for="(attachment,index) in attachments" :key="'mesagephohoto-' + attachment.id">
+  <div>
+    <b-carousel
+      v-if="attachments.length > 1"
+      :id="'message-carousel-' + messageId"
+      :interval="5000"
+      controls
+      indicators
+      img-width="100%"
+    >
+      <b-carousel-slide v-for="(attachment,index) in attachments" :key="'mesagephohoto-' + attachment.id">
+        <b-img
+          slot="img"
+          center
+          class="d-block img-fluid w-100 messagePhoto"
+          :src="attachment.path"
+          :alt="'Message photo ' + index"
+        />
+      </b-carousel-slide>
+    </b-carousel>
+    <div v-else>
       <b-img
         slot="img"
         center
         class="d-block img-fluid w-100 messagePhoto"
-        :src="attachment.path"
-        :alt="'Message photo ' + index"
+        :src="attachments[0].path"
+        :alt="'Message photo'"
       />
-    </b-carousel-slide>
-  </b-carousel>
+    </div>
+  </div>
 </template>
 
 <script>
