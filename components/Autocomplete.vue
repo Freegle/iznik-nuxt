@@ -73,6 +73,13 @@
   width: 238px;
 }
 
+/* Deep selector for scoped CSS */
+::v-deep .pcinp {
+  min-width: 100px;
+  max-width: 238px;
+  margin: 0 auto;
+}
+
 .transition,
 .autocomplete,
 .showAll-transition,
