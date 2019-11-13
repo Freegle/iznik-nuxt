@@ -34,7 +34,7 @@
       </b-col>
       <b-col cols="0" md="3" class="d-none d-md-block" />
     </b-row>
-    <CommunityEventModal ref="eventmodal" :event="{}" :start-edit="true" />
+    <CommunityEventModal ref="eventmodal" :start-edit="true" />
   </div>
 </template>
 <script>
