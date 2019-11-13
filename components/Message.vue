@@ -210,7 +210,6 @@ export default {
     return {
       reply: null,
       expanded: null,
-      slide: 0,
       replying: false
     }
   },

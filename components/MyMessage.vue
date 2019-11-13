@@ -235,7 +235,6 @@ export default {
   },
   data: function() {
     return {
-      slide: 0,
       maxChars: 60,
       expanded: false
     }
