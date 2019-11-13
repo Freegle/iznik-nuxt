@@ -24,15 +24,6 @@
   </div>
 </template>
 
-<style scoped lang="scss">
-/* Deep selector for scoped CSS */
-::v-deep .pcinp {
-  min-width: 100px;
-  max-width: 238px;
-  margin: 0 auto;
-}
-</style>
-
 <script>
 import Autocomplete from '~/components/Autocomplete'
 // TODO Make find location button work - and in DraggableMap.vue.
