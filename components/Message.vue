@@ -126,16 +126,7 @@
       ok-only
     >
       <template slot="default">
-        <ImageCarousel v-if="expanded.attachments.length > 1" message-id="message.id" :attachments="expanded.attachments" />
-        <div v-else>
-          <b-img
-            slot="img"
-            center
-            class="d-block img-fluid w-100 messagePhoto"
-            :src="attachments[0].path"
-            :alt="'Message photo'"
-          />
-        </div>
+        <ImageCarousel message-id="message.id" :attachments="expanded.attachments" />
       </template>
       <template slot="modal-footer" slot-scope="{ ok, cancel }">
         <b-button variant="white" @click="cancel">
