@@ -47,15 +47,18 @@
         />
       </template>
     </b-modal>
+    <NewsShareModal v-if="newsfeedModal" :newsfeed="newsfeedModal" />
   </div>
 </template>
 <script>
 import NewsBase from '~/components/NewsBase'
 import NewsUserIntro from '~/components/NewsUserIntro'
+const NewsShareModal = () => import('~/components/NewsShareModal')
 const NewsLoveComment = () => import('~/components/NewsLoveComment')
 
 export default {
   components: {
+    NewsShareModal,
     NewsUserIntro,
     NewsLoveComment
   },

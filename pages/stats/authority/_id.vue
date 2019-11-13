@@ -547,7 +547,6 @@ export default {
 
       if (google) {
         for (const groupid in this.stats) {
-          console.log('Add ', this.stats[groupid].group)
           const marker = new google.maps.LatLng(
             this.stats[groupid].group.lat,
             this.stats[groupid].group.lng
@@ -556,7 +555,6 @@ export default {
         }
       }
 
-      console.log('Markers', ret)
       return ret
     }
   },

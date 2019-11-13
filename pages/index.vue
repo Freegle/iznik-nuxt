@@ -154,47 +154,67 @@
 <script>
 const StoriesLanding = () => import('~/components/StoriesLanding.vue')
 // TODO That thing where you prompt people on mobile to install the app.
-// TODO The footer links don't exist.
 
 export default {
   components: {
     StoriesLanding
   },
+  data: function() {
+    return {
+      userWatch: null
+    }
+  },
 
   mounted() {
-    let route = '/chitchat'
-
     if (process.browser) {
-      // Set up a watch on the store.  We do this because initially the store hasn't yet been reloaded from local
-      // storage, so we don't know if we're logged in. When it does get loaded, this watch will fire.
-      this.$store.watch(
-        (state, getters) => {
-          const user = this.$store.getters['auth/user']()
-          return user
-        },
-        (newValue, oldValue) => {
-          if (newValue) {
-            if (this.$nuxt.path === '/' || !this.$nuxt.path) {
-              // Logged in homepage - on client side we want to load the last page, for logged in users.
-              try {
-                const lastRoute = localStorage.getItem('Iznik>lasthomepage')
+      const user = this.$store.getters['auth/user']()
 
-                if (!lastRoute || lastRoute === 'news') {
-                  route = '/chitchat'
-                } else {
-                  route = '/communities'
-                }
-
-                if (this.$nuxt.path !== route) {
-                  this.$router.push(route)
-                }
-              } catch (e) {
-                console.log('Exception', e)
+      if (user) {
+        this.goHome()
+      } else {
+        // Set up a watch on the store.  We do this because initially the store hasn't yet been reloaded from local
+        // storage, so we don't know if we're logged in. When it does get loaded, this watch will fire.
+        this.userWatch = this.$store.watch(
+          (state, getters) => {
+            const user = this.$store.getters['auth/user']()
+            return user
+          },
+          (newValue, oldValue) => {
+            if (newValue) {
+              if (this.$nuxt.path === '/' || !this.$nuxt.path) {
+                this.goHome()
               }
             }
           }
+        )
+      }
+    }
+  },
+  beforeDestroy() {
+    if (this.userWatch) {
+      this.userWatch()
+    }
+  },
+  methods: {
+    goHome() {
+      let route = '/chitchat'
+
+      // Logged in homepage - on client side we want to load the last page, for logged in users.
+      try {
+        const lastRoute = localStorage.getItem('Iznik>lasthomepage')
+
+        if (!lastRoute || lastRoute === 'news') {
+          route = '/chitchat'
+        } else {
+          route = '/communities'
         }
-      )
+
+        if (this.$nuxt.path !== route) {
+          this.$router.push(route)
+        }
+      } catch (e) {
+        console.log('Exception', e)
+      }
     }
   }
 }

@@ -70,7 +70,12 @@
             <div class="chatFooter">
               <b-row class="m-0">
                 <b-col class="p-0">
+                  <p v-if="spammer" class="bg-danger white p-2 mb-0">
+                    This person has been reported as a spammer or scammer.  Please do not talk to them and under no circumstances
+                    send them any money.
+                  </p>
                   <b-form-textarea
+                    v-if="!spammer"
                     v-model="sendmessage"
                     placeholder="Type here..."
                     rows="2"
@@ -84,7 +89,7 @@
                 </b-col>
               </b-row>
               <b-row class="m-0">
-                <b-col class="p-0 pt-1 pb-1">
+                <b-col v-if="!spammer" class="p-0 pt-1 pb-1">
                   <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person" class="ml-1" @click="promise">
                     <v-icon name="handshake" />
                   </b-btn>
@@ -242,6 +247,16 @@ export default {
 
     chat() {
       return this.$store.getters['chats/get'](this.id)
+    },
+
+    spammer() {
+      let ret = false
+
+      if (this.otheruser) {
+        ret = this.otheruser.spammer
+      }
+
+      return ret
     },
 
     unseen() {

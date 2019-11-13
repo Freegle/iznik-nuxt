@@ -64,8 +64,8 @@ const VueFaqAccordion = () => import('vue-faq-accordion')
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
 const ChatButton = () => import('~/components/ChatButton.vue')
 
-// TODO It's not ideal that the links below are a rather than nuxt-link, because that causes a page load.
-// TODO Would be nice to be able to do a direct URL link into each of these.
+// TODO MINOR It's not ideal that the links below are a rather than nuxt-link, because that causes a page load.
+// TODO MINOR Would be nice to be able to do a direct URL link into each of these.
 
 export default {
   components: {
@@ -103,8 +103,7 @@ export default {
           value:
             '            <p>\n' +
             "              If someone has collected your OFFER, then make sure you're logged in (click on <em>Sign in</em> on\n" +
-            '              the top left if you need to), then go to <a href="/myposts">My Posts</a>, find your post, click to\n' +
-            '              expand it, and click this:\n' +
+            '              the top left if you need to), then go to <a href="/myposts">My Posts</a>, find your post, and click this:\n' +
             '            </p>\n' +
             '            <button class="btn btn-success inline mb-1">\n' +
             '              Mark as TAKEN\n' +
@@ -115,7 +114,8 @@ export default {
             '            </p>\n' +
             '            <button class="btn btn-success inline mb-1">\n' +
             '              Mark as RECEIVED\n' +
-            '            </button>\n',
+            '            </button>\n' +
+            '            <p>If you have multiple posts showing, you may need to click the post to expand it before the buttons appear.</p>',
           category: '<h4>Frequently Asked Questions</h4>'
         },
         {

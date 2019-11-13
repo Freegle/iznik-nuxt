@@ -280,6 +280,7 @@ label {
 // TODO Don't allow submission before image upload complete.
 // TODO Groups which don't support opportunities
 // TODO We used to have an "apply by" date. It's not clear we need this, so no urgency in re-adding it.
+// TODO Systemwide opportunities.
 import twem from '~/assets/js/twem'
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
 const OurFilePond = () => import('~/components/OurFilePond')

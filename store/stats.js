@@ -1,7 +1,7 @@
 import Vue from 'vue'
 
 export const state = () => ({
-  Weight: []
+  Heatmap: null
 })
 
 export const mutations = {
@@ -17,6 +17,10 @@ export const mutations = {
         Vue.set(state[type], ix, stats[type][ix])
       }
     }
+  },
+
+  setHeatmap(state, heatmap) {
+    state.Heatmap = heatmap
   },
 
   clear(state) {
@@ -38,6 +42,18 @@ export const actions = {
 
     if (res.status === 200) {
       commit('set', res.data.dashboard)
+    }
+  },
+
+  async fetchHeatmap({ commit }, params) {
+    const res = await this.$axios.get(process.env.API + '/dashboard', {
+      params: {
+        heatmap: true
+      }
+    })
+
+    if (res.status === 200) {
+      commit('setHeatmap', res.data.heatmap)
     }
   },
 

@@ -373,7 +373,7 @@ svg.fa-icon {
 .notifbadge {
   position: absolute;
   top: 0px;
-  left: 18px;
+  left: 24px;
 }
 
 .chatbadge {

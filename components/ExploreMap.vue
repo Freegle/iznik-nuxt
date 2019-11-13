@@ -139,7 +139,7 @@
 }
 </style>
 <script>
-// TODO This loads a bit clunkily.
+// TODO MINOR This loads a bit clunkily.
 import { gmapApi } from 'vue2-google-maps'
 import GroupMarker from '~/components/GroupMarker.vue'
 

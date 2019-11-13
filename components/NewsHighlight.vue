@@ -7,7 +7,7 @@
       class="nopara"
     />
 
-    <span v-show="text.length > maxChars">
+    <span v-show="text && text.length > maxChars">
       <a v-show="!isReadMore" id="readmore" class="highlight" :href="link" @click="triggerReadMore($event, true)">{{ moreStr }}</a>
       <a v-show="isReadMore" id="readmore" class="highlight" :href="link" @click="triggerReadMore($event, false)">{{ lessStr }}</a>
     </span>
@@ -41,7 +41,7 @@ export default {
       default: ''
     },
     text: {
-      type: String,
+      validator: prop => typeof prop === 'string' || prop === null,
       required: true
     },
     link: {

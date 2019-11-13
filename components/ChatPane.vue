@@ -70,7 +70,19 @@
           </b-row>
           <b-row>
             <b-col class="p-0">
+              <!-- TODO DESIGN This should be a Notice box once we replace b-alert with those. -->
+              <p v-if="warnuser" class="bg-warning p-2 mb-0">
+                <v-icon name="exclamation-triangle" />&nbsp;Things haven't always worked out for this freegler.  That might not be their fault, but please make very clear arrangements.
+              </p>
+              <p v-if="!spammer && showReplyTime && replytime" class="bg-info p-2 mb-0 clickme" @click="showInfo">
+                <v-icon name="info-circle" />&nbsp;Typically replies in <b>{{ replytime }}</b>.  Click for more info.
+              </p>
+              <p v-if="spammer" class="bg-danger white p-2 mb-0">
+                This person has been reported as a spammer or scammer.  Please do not talk to them and under no circumstances
+                send them any money.
+              </p>
               <b-form-textarea
+                v-if="!spammer"
                 v-model="sendmessage"
                 placeholder="Type here..."
                 rows="3"
@@ -83,7 +95,7 @@
               />
             </b-col>
           </b-row>
-          <b-row class="bg-white">
+          <b-row v-if="!spammer" class="bg-white">
             <b-col class="p-0 pt-1 pb-1">
               <div class="d-none d-xl-block">
                 <span v-if="chat && chat.chattype === 'User2User' && otheruser">
@@ -188,10 +200,8 @@
 }
 </style>
 <script>
-// TODO Chat dropdown warnings
 // TODO Chat dropdown menu for report etc
 // TODO Popup confirm first time you use Nudge, so you know what you're doing.
-// TODO Warning if you're talking to a spammer, and disable the chat message box.
 // TODO DESIGN We have a spinner at the top for our upwards infinite scroll.  But this looks messy when we load a
 // short chat, because we see the messages appear below the spinner and then move upwards once the infinite scroll
 // completes.
@@ -235,7 +245,8 @@ export default {
       likelymsg: null,
       ouroffers: null,
       sending: false,
-      scrolledToBottom: false
+      scrolledToBottom: false,
+      showReplyTime: true
     }
   },
   computed: {
@@ -293,6 +304,62 @@ export default {
       }
 
       return ret
+    },
+
+    warnuser() {
+      let ret = false
+      if (this.otheruser) {
+        const user = this.$store.getters['user/get'](this.otheruser.id)
+        if (user && user.info) {
+          const info = user.info
+          ret =
+            info.reneged &&
+            info.reneged > 1 &&
+            (info.reneged * 100) / (info.reneged + info.collected) > 25
+        }
+      }
+
+      return ret
+    },
+
+    spammer() {
+      let ret = false
+
+      if (this.otheruser) {
+        ret = this.otheruser.spammer
+      }
+
+      return ret
+    },
+
+    replytime() {
+      let ret = null
+      let secs = null
+
+      if (this.otheruser) {
+        const user = this.$store.getters['user/get'](this.otheruser.id)
+        if (user && user.info) {
+          secs = user.info.replytime
+        }
+      }
+
+      if (secs !== null) {
+        if (secs < 60) {
+          ret = Math.round(secs) + ' second'
+        } else if (secs < 60 * 60) {
+          ret = Math.round(secs / 60) + ' minute'
+        } else if (secs < 24 * 60 * 60) {
+          ret = Math.round(secs / 60 / 60) + ' hour'
+        } else {
+          ret = Math.round(secs / 60 / 60 / 24) + ' day'
+        }
+
+        if (ret.indexOf('1 ') !== 0) {
+          ret += 's'
+        }
+      }
+
+      return ret
     }
   },
   watch: {
@@ -322,6 +389,16 @@ export default {
     await this.$store.dispatch('chats/fetch', {
       id: this.id
     })
+
+    // Get the user info in case we need to warn about them.
+    await this.$store.dispatch('user/fetch', {
+      id: this.otheruser,
+      info: true
+    })
+
+    setTimeout(() => {
+      this.showReplyTime = false
+    }, 30000)
   },
 
   methods: {
@@ -359,9 +436,11 @@ export default {
               if (!this.scrolledToBottom) {
                 // First load.  Scroll to the bottom when things have sorted themselves out.
                 this.$nextTick(() => {
-                  const container = this.$el.querySelector('.chatContent')
-                  container.scrollTop = container.scrollHeight
-                  this.scrolledToBottom = true
+                  if (this.$el && this.$el.querySelector) {
+                    const container = this.$el.querySelector('.chatContent')
+                    container.scrollTop = container.scrollHeight
+                    this.scrolledToBottom = true
+                  }
                 })
               }
 
