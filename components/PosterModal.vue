@@ -8,10 +8,9 @@
     visible
     size="lg"
   >
-    <!--          TODO DESIGN This should be a Notice box once we replace b-alert with those. -->
-    <p class="bg-info p-2">
+    <notice-message class="mb-3">
       Please drag the map until the marker shows where the poster is.
-    </p>
+    </notice-message>
     <DraggableMap ref="map" :initial-zoom="7" class="mb-2" />
     <h4>Please add more info</h4>
     <b-input
@@ -33,13 +32,17 @@
     </template>
   </b-modal>
 </template>
-<style scoped>
-</style>
+
 <script>
 // TODO Validation - name required, description not.
 import DraggableMap from './DraggableMap'
+const NoticeMessage = () => import('~/components/NoticeMessage')
+
 export default {
-  components: { DraggableMap },
+  components: {
+    DraggableMap,
+    NoticeMessage
+  },
   data: function() {
     return {
       showModal: false,

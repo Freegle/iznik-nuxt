@@ -22,9 +22,9 @@
     <template slot="default">
       <div v-if="!editing">
         <div v-if="volunteering.photo">
-          <b-alert show variant="info">
+          <notice-message class="mb-3">
             Scroll down past the picture for more information!
-          </b-alert>
+          </notice-message>
           <b-row>
             <b-col>
               <b-img lazy fluid :src="volunteering.photo.path" class="mb-2 w-100" />
@@ -285,12 +285,14 @@ import twem from '~/assets/js/twem'
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
 const OurFilePond = () => import('~/components/OurFilePond')
 const StartEndCollection = () => import('~/components/StartEndCollection')
+const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
     GroupRememberSelect,
     OurFilePond,
-    StartEndCollection
+    StartEndCollection,
+    NoticeMessage
   },
   props: {
     volunteering: {

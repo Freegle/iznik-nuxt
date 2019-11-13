@@ -6,7 +6,7 @@
         <div>
           <h1>Community Events</h1>
           <p>These are local events, posted by other freeglers like you.</p>
-          <b-row>
+          <b-row class="mb-3">
             <b-col>
               <groupSelect v-model="groupid" class="float-left" all />
             </b-col>
@@ -22,9 +22,9 @@
         </div>
         <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" force-use-infinite-wrapper="body" @infinite="loadMore">
           <span slot="no-results">
-            <b-alert v-if="!events.length" variant="info" class="mt-2" show>
+            <notice-message v-if="!events.length">
               There are no community events to show.  Why not add one?
-            </b-alert>
+            </notice-message>
           </span>
           <span slot="no-more" />
           <span slot="spinner">
@@ -44,12 +44,14 @@ import createGroupRoute from '@/mixins/createGroupRoute'
 const GroupSelect = () => import('~/components/GroupSelect')
 const CommunityEvent = () => import('~/components/CommunityEvent.vue')
 const CommunityEventModal = () => import('~/components/CommunityEventModal')
+const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
     GroupSelect,
     CommunityEvent,
-    CommunityEventModal
+    CommunityEventModal,
+    NoticeMessage
   },
   mixins: [loginOptional, createGroupRoute('communityevents')],
   data: function() {

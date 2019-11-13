@@ -28,7 +28,7 @@
         <a v-if="!showAllReplies && newsfeed.replies.length > 10" href="#" variant="white" class="mb-3" @click="(e) => { e.preventDefault(); showAllReplies = true }">
           Show earlier {{ newsfeed.replies.length | pluralize(['reply', 'replies'], { includeNumber: false }) }} ({{ newsfeed.replies.length - 10 }})
         </a>
-        <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id" class="list-unstyled">
+        <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id" class="list-unstyled mb-2">
           <li>
             <news-reply :key="'newsfeedreply-' + newsfeed.id + '-reply-' + entry.id" :reply="entry" :users="users" :threadhead="newsfeed" :scroll-to="scrollTo" />
           </li>
@@ -73,9 +73,9 @@
             </b-col>
           </b-row>
         </span>
-        <b-alert v-else variant="info" show>
+        <notice-message v-else>
           This thread is now closed.  Thanks to everyone who contributed.
-        </b-alert>
+        </notice-message>
       </div>
     </b-card>
     <b-modal
@@ -106,6 +106,7 @@
     </b-modal>
   </div>
 </template>
+
 <style scoped lang="scss">
 .profilesm {
   width: 25px !important;
@@ -121,6 +122,7 @@
   }
 }
 </style>
+
 <script>
 // TODO Report etc menu dropdown
 // TODO Delete
@@ -138,6 +140,7 @@ const NewsVolunteerOpportunity = () =>
 const NewsStory = () => import('~/components/NewsStory')
 const NewsAlert = () => import('~/components/NewsAlert')
 const NewsNoticeboard = () => import('~/components/NewsNoticeboard')
+const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
@@ -148,7 +151,8 @@ export default {
     NewsVolunteerOpportunity,
     NewsStory,
     NewsAlert,
-    NewsNoticeboard
+    NewsNoticeboard,
+    NoticeMessage
   },
   props: {
     id: {
