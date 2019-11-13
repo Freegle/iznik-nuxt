@@ -172,7 +172,7 @@
           When is it?
         </label>
         <p>You can add multiple dates if the event occurs several times.</p>
-        <StartEndCollection v-if="event.dates" :dates="event.dates" @change="datesChange" />
+        <StartEndCollection v-if="event.dates" v-model="event.dates" />
         <label for="contactname">
           Contact name:
         </label>
@@ -273,8 +273,18 @@ export default {
   },
   props: {
     event: {
-      validator: prop => typeof prop === 'object' || prop === null,
-      required: true
+      type: Object,
+      default: () => ({
+        title: null,
+        photo: null,
+        description: null,
+        location: null,
+        dates: [],
+        contactname: null,
+        contactemail: null,
+        contactphone: null,
+        contacturl: null
+      })
     },
     startEdit: {
       type: Boolean,
@@ -457,9 +467,6 @@ export default {
     },
     rotateRight() {
       this.rotate(-90)
-    },
-    datesChange(dates) {
-      this.event.dates = dates
     }
   }
 }

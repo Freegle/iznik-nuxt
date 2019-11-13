@@ -8,7 +8,7 @@
         <!-- Add form-control class to get focus etc. -->
         <date-picker
           id="startDate"
-          v-model="startd"
+          v-model="value.start"
           class=""
           lang="en"
           type="datetime"
@@ -16,14 +16,13 @@
           format="ddd, Do MMM HH:mm a"
           :time-picker-options="{ start: '00:00', step: '00:30', end: '23:30' }"
           placeholder=""
-          @change="change"
         />
       </div>
       <div class="mr-lg-4 d-flex flex-column">
         <label for="endDate" class="date__label">Ends at:</label>
         <date-picker
           id="endDate"
-          v-model="endd"
+          v-model="value.end"
           class=""
           lang="en"
           type="datetime"
@@ -31,13 +30,12 @@
           format="ddd, Do MMM HH:mm a"
           :time-picker-options="{ start: '00:00', step: '00:30', end: '23:30' }"
           placeholder=""
-          @change="change"
         />
       </div>
     </div>
     <div>
       <!-- TODO Hide button if only one date present -->
-      <b-btn variant="white" size="sm" @click="$emit('remove', uniqueid)">
+      <b-btn variant="white" size="sm" @click="$emit('remove')">
         <v-icon name="trash-alt" title="Delete this date" aria-hidden="true" />
         <span class="delete__label">Remove</span>
       </b-btn>
@@ -48,36 +46,9 @@
 <script>
 export default {
   props: {
-    uniqueid: {
-      type: String,
+    value: {
+      type: Object,
       required: true
-    },
-    start: {
-      validator: prop => typeof prop === 'string' || prop === null,
-      required: true
-    },
-    end: {
-      validator: prop => typeof prop === 'string' || prop === null,
-      required: true
-    }
-  },
-  data: function() {
-    return {
-      startd: null,
-      endd: null
-    }
-  },
-  mounted: function() {
-    this.startd = this.start
-    this.endd = this.end
-  },
-  methods: {
-    change() {
-      this.$emit('change', {
-        uniqueid: this.uniqueid,
-        start: new Date(this.startd).toISOString(),
-        end: new Date(this.endd).toISOString()
-      })
     }
   }
 }
