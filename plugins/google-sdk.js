@@ -43,14 +43,6 @@ VueGoogle.install = function install(Vue, options) {
     }
     fjs.parentNode.insertBefore(js, fjs)
   })(document, 'script', 'google-jssdk')
-
-  window.fbAsyncInit = function onSDKInit() {
-    window.FB.init(options)
-    window.FB.AppEvents.logPageView()
-    Vue.FB = window.FB
-    window.dispatchEvent(new Event('fb-sdk-ready'))
-  }
-  Vue.Google = undefined
 }
 
 Vue.use(VueGoogle)
