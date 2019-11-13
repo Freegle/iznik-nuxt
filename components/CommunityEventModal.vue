@@ -146,7 +146,7 @@
             <OurFilePond
               class="bg-white"
               imgtype="CommunityEvent"
-              imgflag="communitevent"
+              imgflag="communityevent"
               :ocr="true"
               @photoProcessed="photoProcessed"
             />
@@ -438,7 +438,7 @@ export default {
       // processed callback below.
       this.uploading = true
     },
-    photoProcessed(imageid, imagethumb, image) {
+    photoProcessed(imageid, imagethumb, image, ocr) {
       // We have uploaded a photo.  Remove the filepond instance.
       this.uploading = false
 
@@ -448,7 +448,20 @@ export default {
         paththumb: imagethumb
       }
 
-      // TODO EH Handle any OCR returned from the server by putting it in the description.
+      if (ocr) {
+        // We might have some OCR text from a poster which we can add in.
+        const p = ocr.indexOf('\n')
+        const title = p !== -1 ? ocr.substring(0, p) : null
+        const desc = p !== -1 ? ocr.substring(p + 1) : ocr
+
+        if (!this.event.title) {
+          this.event.title = title
+        }
+
+        if (!this.event.description) {
+          this.event.description = desc
+        }
+      }
     },
     rotate(deg) {
       this.$axios

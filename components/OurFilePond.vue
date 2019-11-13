@@ -57,6 +57,7 @@ export default {
       imageid: null,
       imagethumb: null,
       image: null,
+      ocred: null,
       myFiles: []
     }
   },
@@ -86,6 +87,10 @@ export default {
         this.imageid = ret.data.id
         this.imagethumb = ret.data.paththumb
         this.image = ret.data.path
+
+        if (this.ocr) {
+          this.ocred = ret.data.ocr
+        }
         load(ret.data.id)
       } else {
         error(
@@ -109,7 +114,13 @@ export default {
       if (error) {
         // TODO error
       } else {
-        this.$emit('photoProcessed', this.imageid, this.imagethumb, this.image)
+        this.$emit(
+          'photoProcessed',
+          this.imageid,
+          this.imagethumb,
+          this.image,
+          this.ocred
+        )
       }
     }
   }
