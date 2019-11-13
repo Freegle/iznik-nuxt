@@ -25,7 +25,6 @@
 import CommunityEvent from './CommunityEvent'
 const CommunityEventModal = () => import('~/components/CommunityEventModal')
 
-// TODO Would be nice not to load the modal in except when clicked.  Bit fiddly because of async imports.
 // TODO DESIGN This sidebar, and the volunteering one, are brutally cut off at the bottom.
 export default {
   components: {

@@ -427,11 +427,11 @@ export default {
       return notifications
     },
     notificationCount() {
-      // TODO We also need to change the window title.
+      // TODO EH We also need to change the window title.
       return this.$store.getters['notifications/count']()
     },
     chatCount() {
-      // TODO We also need to change the window title.
+      // TODO EH We also need to change the window title.
       const chats = Object.values(this.$store.getters['chats/list']())
       let count = 0
 
@@ -611,7 +611,7 @@ export default {
       if (this.complete) {
         // This is a bit weird - calling complete() works here to stop the plugin firing, but not lower down in the
         // callback.  And we get the error message about no results, so I've overridden it above to be empty.
-        // TODO Figure out what's going on here.  This kinda works but it's hacky.
+        // TODO EH Figure out what's going on here.  This kinda works but it's hacky.
         $state.complete()
       } else {
         this.busy = true

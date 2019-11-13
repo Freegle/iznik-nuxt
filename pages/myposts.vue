@@ -179,7 +179,7 @@ const JobsTopBar = () => import('../components/JobsTopBar')
 const MyMessage = () => import('~/components/MyMessage.vue')
 const SidebarLeft = () => import('~/components/SidebarLeft')
 const SidebarRight = () => import('~/components/SidebarRight')
-// TODO Availability
+// TODO EH Availability
 // TODO Repost results in two items on the post page?  Maybe, needs testing.
 
 export default {

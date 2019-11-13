@@ -67,7 +67,6 @@
 </style>
 
 <script>
-// TODO Popups appear in weird places, Chris says - moves down to bottom left.
 import loginOptional from '@/mixins/loginOptional.js'
 const GroupHeader = () => import('~/components/GroupHeader.vue')
 const NewUser = () => import('~/components/NewUser.vue')

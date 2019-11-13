@@ -103,7 +103,7 @@
 </style>
 
 <script>
-// TODO Add speech recognition
+// TODO EH Add speech recognition
 // TODO DESIGN Maybe some kind of border round the search options.
 // TODO DESIGN When you focus on the search box, there's a drop shadow to highlight it, but that only goes round
 //      the input, and not also round the button, which it should.

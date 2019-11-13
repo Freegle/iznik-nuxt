@@ -176,7 +176,7 @@ export const actions = {
     // But we don't need to do that, because our store remembers the contents of the message.  Orphaned drafts will
     // be pruned by the server.
     //
-    // TODO Once the old client goes and we only have one set of code to worry about, we should simplify this into a
+    // TODO MINOR Once the old client goes and we only have one set of code to worry about, we should simplify this into a
     // single server call.
     const promises = []
     const results = []
