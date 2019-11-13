@@ -30,7 +30,7 @@
         You can help even more by letting us know where you put up posters. Once we know where it is, then
         we can encourage other freeglers to put one up there in future. <b>Please do this!</b>
       </p>
-      <b-btn variant="info" size="lg" @click="added">
+      <b-btn variant="info" size="lg" class="mb-1" @click="added">
         I put up a poster!
       </b-btn>
       <p>
@@ -123,7 +123,6 @@
 import PosterModal from '../components/PosterModal'
 import loginRequired from '@/mixins/loginRequired.js'
 // TODO MINOR Record who downloads a poster.  Then we can chase them later to find out if they put them up.
-// TODO Link to page of noticeboards already put up.
 // TODO Validation on email for invitation.
 // TODO DESIGN This page is a bit of a guddle.  Various different things on it, feels cluttered.
 

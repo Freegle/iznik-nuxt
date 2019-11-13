@@ -23,6 +23,7 @@ export const mutations = {
     }
   },
   addAll(state, items) {
+    console.log('AddAll', items)
     items.forEach(item => {
       // TODO Performance not great.  Items is short, though, so could take advantage of that.
       const existing = state.list.findIndex(obj => {
@@ -86,11 +87,13 @@ export const getters = {
 }
 
 export const actions = {
-  async fetchMessages({ commit }, params) {
+  async fetchMessages({ commit, state }, params) {
     if (params.context) {
       // Ensure the context is a real object, in case it has been in the store.
       const ctx = JSON.parse(JSON.stringify(params.context))
       params.context = ctx
+    } else if (state.context) {
+      params.context = state.context
     }
 
     const res = await this.$axios.get(process.env.API + '/messages', {

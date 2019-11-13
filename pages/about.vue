@@ -1,6 +1,6 @@
 <template>
   <!-- TODO Use a bootstrap container here rather than spacer columns -->
-  <!-- TODO Rework to use the FAQ according, as in Help page -->
+  <!-- TODO Rework to use the FAQ accordion, as in Help page -->
   <b-col>
     <b-row class="m-0">
       <b-col cols="0" md="3" />

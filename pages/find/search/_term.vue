@@ -33,7 +33,7 @@
                 anchor="name"
                 label=""
                 :classes="{ input: 'form-control form-control-lg', list: 'iteminp' }"
-                :min="3"
+                :min="2"
                 :debounce="100"
                 :process="process"
                 size="60"
@@ -103,8 +103,6 @@
 </style>
 
 <script>
-// TODO Highlight search matches
-// TODO Message paging isn't right, the dates are wrong and we get messages added earlier
 // TODO Add speech recognition
 // TODO DESIGN Maybe some kind of border round the search options.
 // TODO DESIGN When you focus on the search box, there's a drop shadow to highlight it, but that only goes round
@@ -241,10 +239,13 @@ export default {
 
           this.context = this.$store.getters['messages/getContext']()
 
+          console.log('Lengths', currentCount, this.messages.length)
           if (currentCount === this.messages.length) {
             this.complete = true
+            console.log('Complete', currentCount)
             $state.complete()
           } else {
+            console.log('Loaded', currentCount)
             $state.loaded()
           }
         })

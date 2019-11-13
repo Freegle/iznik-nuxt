@@ -147,6 +147,11 @@
     <ChatButton v-if="expanded && expanded.fromuser" ref="chatbutton" :userid="expanded.fromuser.id" class="d-none" />
   </div>
 </template>
+<style scoped>
+.highlight {
+  padding: 0;
+}
+</style>
 
 <script>
 // TODO Report this post
