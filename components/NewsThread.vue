@@ -19,6 +19,7 @@
           <news-story v-else-if="newsfeed.type === 'Story'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
           <news-alert v-else-if="newsfeed.type === 'Alert'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
           <news-noticeboard v-else-if="newsfeed.type === 'Noticeboard'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
+          <!-- TODO Design - Replace this with a notice-message component. Fix the issue with the floated dropdown above first -->
           <b-alert v-else variant="danger" show>
             Unknown item type {{ newsfeed.type }}
           </b-alert>

@@ -54,6 +54,7 @@
         </b-button>
       </b-card-header>
       <b-card-body v-if="expanded" class="pl-1">
+        <!-- TODO Design - Replace this with a notice-message component -->
         <b-alert v-if="expanded.promised" variant="info">
           This item has already been promised to someone.  You can still reply - you might get it if someone
           else drops out.

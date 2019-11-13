@@ -50,6 +50,7 @@
         <div v-if="expanded">
           <b-card-body class="p-2">
             <b-card-text>
+              <!-- ToDO Design - Replace this with a notice-message component -->
               <b-alert v-if="rejected" show variant="warning">
                 <v-icon name="exclamation-triangle" scale="2" /> This post has been returned to you.
               </b-alert>

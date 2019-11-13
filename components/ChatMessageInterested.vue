@@ -30,6 +30,7 @@
               </h4>
             </b-card-title>
             <b-card-text>
+              <!-- TODO Design - Replace this with a notice-message component -->
               <b-alert v-if="refmsg.outcomes && refmsg.outcomes.length" show variant="info">
                 <v-icon name="info-circle" />
                 <span v-if="refmsg.type === 'Offer'">
@@ -77,6 +78,7 @@
               </h4>
             </b-card-title>
             <b-card-text>
+              <!-- TODO Design - Replace this with a notice-message component -->
               <b-alert v-if="refmsg.outcomes && refmsg.outcomes.length" show variant="info">
                 <v-icon name="info-circle" />
                 <span v-if="refmsg.type === 'Offer'">
