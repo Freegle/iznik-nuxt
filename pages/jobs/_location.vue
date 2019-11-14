@@ -47,7 +47,7 @@
 <style scoped>
 </style>
 <script>
-// TODO EH Infinite scroll (needs server changes).
+// TODO MINOR Infinite scroll (needs server changes).
 import loginOptional from '@/mixins/loginOptional.js'
 const Job = () => import('~/components/Job')
 

@@ -125,7 +125,10 @@
 }
 </style>
 <script>
-// TODO EH Report etc menu dropdown
+// TODO EH Unfollow
+// TODO EH Report
+// TODO EH Refer to WANTED/OFFER/RECEIVED/TAKEN
+// TODO MINOR Attach to thread
 // TODO DESIGN Some indication of newly added entries
 // TODO Click on loves to show who loves them
 import twem from '~/assets/js/twem'
