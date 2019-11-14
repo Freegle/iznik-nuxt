@@ -17,6 +17,7 @@
         <OurFilePond
           imgtype="Message"
           imgflag="message"
+          :identify="true"
           @photoProcessed="photoProcessed"
         />
       </b-col>
@@ -31,6 +32,16 @@
         <hr>
       </b-col>
     </b-row>
+    <b-row v-if="suggestions.length">
+      <b-col>
+        <b-card bg-variant="info">
+          <p>Based on your photo, here's what we think it might be.  Click to choose.</p>
+          <b-btn v-for="suggestion in suggestions" :key="suggestion.id" variant="white" class="mr-1" @click="chooseSuggestion(suggestion)">
+            {{ suggestion.name }}
+          </b-btn>
+        </b-card>
+      </b-col>
+    </b-row>
     <b-row>
       <b-col cols="6" md="3" class="pl-0">
         <b-form-select v-model="type">
@@ -43,7 +54,7 @@
         </b-form-select>
       </b-col>
       <b-col cols="9" class="pl-0 pr-0">
-        <PostItem :item="item" @selected="itemSelect" @cleared="itemClear" @typed="itemType" />
+        <PostItem :key="item" :item="item" @selected="itemSelect" @cleared="itemClear" @typed="itemType" />
       </b-col>
     </b-row>
     <b-row>
@@ -58,7 +69,6 @@
   </div>
 </template>
 <script>
-// TODO EH Image recognition?
 // TODO Not obvious enough why the Next button doesn't appear.  Greyed out?  Indications?
 const OurFilePond = () => import('~/components/OurFilePond')
 const PostPhoto = () => import('~/components/PostPhoto')
@@ -85,7 +95,8 @@ export default {
     return {
       uploading: false,
       myFiles: [],
-      image: null
+      image: null,
+      suggestions: []
     }
   },
   computed: {
@@ -138,7 +149,7 @@ export default {
       // init callback below.
       this.uploading = true
     },
-    photoProcessed(imageid, imagethumb, image) {
+    photoProcessed(imageid, imagethumb, image, ocr, suggestions) {
       // We have uploaded a photo.  Remove the filepond instance.
       this.uploading = false
 
@@ -147,6 +158,8 @@ export default {
         paththumb: imagethumb,
         path: image
       }
+
+      this.suggestions = suggestions
 
       this.$store.dispatch('compose/addAttachment', {
         id: this.id,
@@ -177,6 +190,9 @@ export default {
     },
     itemClear() {
       this.item = null
+    },
+    chooseSuggestion(suggestion) {
+      this.item = suggestion.name
     }
   }
 }

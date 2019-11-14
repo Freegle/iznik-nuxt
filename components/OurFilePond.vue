@@ -50,6 +50,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    identify: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
@@ -58,6 +63,7 @@ export default {
       imagethumb: null,
       image: null,
       ocred: null,
+      identified: null,
       myFiles: []
     }
   },
@@ -73,6 +79,7 @@ export default {
       data.append(this.imgflag, true)
       data.append('imgtype', this.imgtype)
       data.append('ocr', this.ocr)
+      data.append('identify', this.identify)
 
       const ret = await this.$axios.post(process.env.API + '/image', data, {
         headers: {
@@ -91,6 +98,11 @@ export default {
         if (this.ocr) {
           this.ocred = ret.data.ocr
         }
+
+        if (this.identify) {
+          this.identified = ret.data.items
+        }
+
         load(ret.data.id)
       } else {
         error(
@@ -119,7 +131,8 @@ export default {
           this.imageid,
           this.imagethumb,
           this.image,
-          this.ocred
+          this.ocred,
+          this.identified
         )
       }
     }

@@ -275,7 +275,6 @@ label {
 
 <script>
 // TODO DESIGN This layout is staid table nonsense.  Surely we can make it more appealing?
-// TODO EH Delete
 // TODO Add some form validation using a plugin - see https://bootstrap-vue.js.org/docs/reference/validation/
 // TODO Don't allow submission before image upload complete.
 // TODO Groups which don't support opportunities
