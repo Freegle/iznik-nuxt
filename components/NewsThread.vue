@@ -11,8 +11,11 @@
             <b-dropdown-item :b-v-modal="'newsEdit' + newsfeed.id" @click="show">
               Edit
             </b-dropdown-item>
+            <b-dropdown-item @click="unfollow">
+              Unfollow this thread
+            </b-dropdown-item>
             <b-dropdown-item v-if="parseInt(me.id) === parseInt(newsfeed.userid) || mod" @click="deleteIt">
-              Delete
+              Delete this thread
             </b-dropdown-item>
           </b-dropdown>
           <news-message v-if="newsfeed.type === 'Message'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
@@ -125,7 +128,6 @@
 }
 </style>
 <script>
-// TODO EH Unfollow
 // TODO EH Report
 // TODO EH Refer to WANTED/OFFER/RECEIVED/TAKEN
 // TODO MINOR Attach to thread
@@ -276,6 +278,11 @@ export default {
       this.$store.dispatch('newsfeed/delete', {
         id: this.id,
         threadhead: this.id
+      })
+    },
+    unfollow() {
+      this.$store.dispatch('newsfeed/unfollow', {
+        id: this.id
       })
     }
   }
