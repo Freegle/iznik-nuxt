@@ -271,9 +271,19 @@ export default {
         if (this.showAllReplies || this.reply.replies.length <= 5) {
           ret = this.reply.replies
         } else {
-          // We have to prune what we show.
-          // TODO EH But we shouldn't prune away this.scrollTo if set.
-          ret = this.reply.replies.slice(-5)
+          // We have to prune what we show, but we should show any replyto.
+          ret = this.reply.replies
+          let pruned = 0
+          let pruneAt = ret - 1
+
+          while (pruned < 5 && pruneAt < ret.length) {
+            if (ret[pruneAt].id !== parseInt(this.replyTo)) {
+              pruned++
+              ret.splice(pruneAt, 1)
+            } else {
+              pruneAt++
+            }
+          }
         }
       }
 
