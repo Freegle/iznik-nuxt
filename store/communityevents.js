@@ -137,6 +137,7 @@ export const actions = {
       params: params
     })
 
+    // TODO this can return "ret":1,"status":"Not logged in", then res.data is not available and there is an error
     if (res.status === 200) {
       if (params && params.id) {
         commit('addAll', await dispatch('addFields', [res.data.communityevent]))
