@@ -14,6 +14,9 @@
             <b-dropdown-item @click="unfollow">
               Unfollow this thread
             </b-dropdown-item>
+            <b-dropdown-item @click="report">
+              Report this thread or one of its replies
+            </b-dropdown-item>
             <b-dropdown-item v-if="parseInt(me.id) === parseInt(newsfeed.userid) || mod" @click="deleteIt">
               Delete this thread
             </b-dropdown-item>
@@ -110,6 +113,7 @@
         </b-button>
       </template>
     </b-modal>
+    <NewsReportModal :id="newsfeed.id" ref="newsreport" />
   </div>
 </template>
 <style scoped lang="scss">
@@ -128,11 +132,11 @@
 }
 </style>
 <script>
-// TODO EH Report
 // TODO EH Refer to WANTED/OFFER/RECEIVED/TAKEN
 // TODO MINOR Attach to thread
 // TODO DESIGN Some indication of newly added entries
 // TODO Click on loves to show who loves them
+import NewsReportModal from './NewsReportModal'
 import twem from '~/assets/js/twem'
 
 // Use standard import to avoid screen-flicker
@@ -148,6 +152,7 @@ const NewsNoticeboard = () => import('~/components/NewsNoticeboard')
 
 export default {
   components: {
+    NewsReportModal,
     NewsReply,
     NewsMessage,
     NewsAboutMe,
@@ -176,7 +181,8 @@ export default {
     return {
       replyingTo: null,
       threadcomment: null,
-      showAllReplies: false
+      showAllReplies: false,
+      newsreport: false
     }
   },
   computed: {
@@ -284,6 +290,9 @@ export default {
       this.$store.dispatch('newsfeed/unfollow', {
         id: this.id
       })
+    },
+    report() {
+      this.$refs.newsreport.show()
     }
   }
 }

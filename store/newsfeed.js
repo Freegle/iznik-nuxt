@@ -274,5 +274,13 @@ export const actions = {
       id: params.id,
       action: 'Unfollow'
     })
+  },
+
+  async report({ commit, dispatch }, params) {
+    await this.$axios.post(process.env.API + '/newsfeed', {
+      id: params.id,
+      reason: params.reason,
+      action: 'Report'
+    })
   }
 }
