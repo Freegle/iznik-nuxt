@@ -34,6 +34,9 @@ export default function createGroupRoute(key, options = {}) {
   }
   return {
     computed: {
+      rememberedValue() {
+        return this.$store.getters['group/remembered'](rememberId)
+      },
       groupid: {
         get() {
           return this.$route.params[routeParam]
@@ -53,10 +56,10 @@ export default function createGroupRoute(key, options = {}) {
         }
       }
     },
-    created() {
-      this._unwatchGroupRemember = this.$store.watch(
-        (state, getters) => getters['group/remembered'](rememberId),
-        val => {
+    watch: {
+      rememberedValue: {
+        immediate: true,
+        handler(val) {
           if (val === undefined && this.groupid !== DEFAULT_VALUE) {
             // Nothing set so far... make it what our current page is
             this.updateMemory(this.groupid)
@@ -70,28 +73,22 @@ export default function createGroupRoute(key, options = {}) {
               this.updateMemory(this.groupid)
             }
           }
-        },
-        {
-          immediate: true
         }
-      )
+      }
     },
     methods: {
       updateMemory(val) {
         if (typeof val === 'number') {
           this.$store.commit('group/remember', {
-            id: this.remember,
+            id: rememberId,
             val
           })
         } else {
           this.$store.commit('group/forget', {
-            id: this.remember
+            id: rememberId
           })
         }
       }
-    },
-    beforeDestroy() {
-      if (this._unwatchGroupRemember) this._unwatchGroupRemember()
     }
   }
 }
