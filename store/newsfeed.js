@@ -17,6 +17,12 @@ export const mutations = {
     state.newsfeed.unshift(item)
   },
 
+  removeNewsfeed(state, id) {
+    state.newsfeed = state.newsfeed.filter(obj => {
+      return parseInt(obj.id) !== parseInt(id)
+    })
+  },
+
   mergeNewsfeed(state, payload) {
     const items =
       typeof payload.newsfeed === 'object'
@@ -258,6 +264,8 @@ export const actions = {
       await dispatch('fetch', {
         id: params.threadhead
       })
+    } else {
+      commit('removeNewsfeed', params.id)
     }
   }
 }

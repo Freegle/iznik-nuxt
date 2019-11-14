@@ -55,13 +55,13 @@
                     <span v-if="reply.loves">
                       <v-icon name="heart" class="text-danger" />&nbsp;{{ reply.loves }}
                     </span>
-                    <span v-if="me.id === reply.userid" v-b-modal="'newsEdit-' + reply.id">
+                    <span v-if="parseInt(me.id) === parseInt(reply.userid)" v-b-modal="'newsEdit-' + reply.id">
                       &bull;&nbsp;Edit
                     </span>
-                    <span v-if="me.id === reply.userid || mod" @click="deleteReply">
+                    <span v-if="parseInt(me.id) === parseInt(reply.userid) || mod" @click="deleteReply">
                       &bull;&nbsp;Delete
                     </span>
-                    <span v-if="me.id !== reply.userid">
+                    <span v-if="parseInt(me.id) !== parseInt(reply.userid)">
                       &bull;&nbsp;
                       <ChatButton
                         :userid="reply.userid"
@@ -241,7 +241,7 @@ export default {
   },
   computed: {
     me() {
-      return this.$store.state.auth.user
+      return this.$store.getters['auth/user']()
     },
     mod() {
       const me = this.me

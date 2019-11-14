@@ -11,6 +11,9 @@
             <b-dropdown-item :b-v-modal="'newsEdit' + newsfeed.id" @click="show">
               Edit
             </b-dropdown-item>
+            <b-dropdown-item v-if="parseInt(me.id) === parseInt(newsfeed.userid) || mod" @click="deleteIt">
+              Delete
+            </b-dropdown-item>
           </b-dropdown>
           <news-message v-if="newsfeed.type === 'Message'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
           <news-about-me v-else-if="newsfeed.type === 'AboutMe'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
@@ -123,7 +126,6 @@
 </style>
 <script>
 // TODO EH Report etc menu dropdown
-// TODO EH Delete
 // TODO DESIGN Some indication of newly added entries
 // TODO Click on loves to show who loves them
 import twem from '~/assets/js/twem'
@@ -177,7 +179,16 @@ export default {
       return this.$store.getters['newsfeed/get'](this.id)
     },
     me() {
-      return this.$store.state.auth.user
+      return this.$store.getters['auth/user']()
+    },
+    mod() {
+      const me = this.me
+      return (
+        me &&
+        (me.systemrole === 'Moderator' ||
+          me.systemrole === 'Admin' ||
+          me.systemrole === 'Support')
+      )
     },
     backgroundColor() {
       let col
@@ -257,6 +268,12 @@ export default {
       })
 
       this.$refs.editModal.hide()
+    },
+    deleteIt() {
+      this.$store.dispatch('newsfeed/delete', {
+        id: this.id,
+        threadhead: this.id
+      })
     }
   }
 }
