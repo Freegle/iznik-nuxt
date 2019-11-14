@@ -192,6 +192,7 @@
           When is it?
         </label>
         <p>You can add multiple dates if the opportunity occurs several times.</p>
+        <!-- TODO fix this to use v-model properly (as in components/CommunityEventModal.vue) -->
         <StartEndCollection v-if="volunteering.dates" :dates="volunteering.dates" @change="datesChange" />
         <label for="contactname">
           Contact name:

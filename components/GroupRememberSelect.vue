@@ -5,6 +5,11 @@
 </template>
 <script>
 import groupSelect from './GroupSelect'
+
+function intOrNull(val) {
+  return typeof val === 'number' ? parseInt(val) : null
+}
+
 export default {
   components: {
     groupSelect
@@ -39,7 +44,7 @@ export default {
         return this.value
       },
       set(val) {
-        val = parseInt(val)
+        val = intOrNull(val)
         if (this.value !== val) {
           this.$emit('input', val)
         }
@@ -50,12 +55,10 @@ export default {
     rememberedValue: {
       immediate: true,
       handler(val) {
-        // value received from memory (might be nothing)
+        if (val === undefined) return // no remembered value
         // we only take it if there is not already a value
         // this ensures we don't override explicitly set values from outside
-        if (!this.value) {
-          this.$emit('input', val || 0)
-        }
+        if (this.value === null) this.$emit('input', val)
       }
     },
     value(val) {
@@ -67,7 +70,7 @@ export default {
   },
   methods: {
     updateMemory(val) {
-      if (val) {
+      if (typeof val === 'number') {
         this.$store.commit('group/remember', {
           id: this.remember,
           val

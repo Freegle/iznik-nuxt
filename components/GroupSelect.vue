@@ -12,6 +12,16 @@ select {
 <script>
 export default {
   props: {
+    /**
+     * Selected value
+     *
+     *   if null
+     *     if   all=true       --> "all groups"
+     *     else all=false      --> "you must select a group"
+     *   else if it's a number --> use that group id
+     *
+     * (0 is not a valid group number)
+     */
     value: {
       type: Number,
       default: null
@@ -43,22 +53,21 @@ export default {
 
       if (this.all) {
         groups.push({
-          value: 0,
+          value: null,
           text: '-- All my groups --',
-          selected: this.selectedGroup === 0
+          selected: this.selectedGroup === null
         })
       } else {
         groups.push({
-          value: 0,
+          value: null,
           text: '-- Please choose --',
-          selected: this.selectedGroup === -1
+          selected: this.selectedGroup === null
         })
       }
 
       const myGroups = this.$store.getters['auth/groups']()
-      Object.keys(myGroups).forEach(key => {
-        const group = myGroups[key]
 
+      for (const group of myGroups) {
         if (group.type === 'Freegle') {
           groups.push({
             value: group.id,
@@ -66,15 +75,26 @@ export default {
             selected: this.selectedGroup === group.id
           })
         }
-      })
+      }
 
-      groups.sort(function(a, b) {
-        const str1 = a.text
-        const str2 = b.text
-        return str1 < str2 ? -1 : str1 > str2 ? 1 : 0
-      })
+      groups.sort((a, b) => a.text.localeCompare(b.text))
 
       return groups
+    },
+
+    invalidSelection() {
+      return (
+        this.groupOptions.length > 0 &&
+        !this.groupOptions.some(option => option.selected)
+      )
+    }
+  },
+  watch: {
+    invalidSelection: {
+      immediate: true,
+      handler(val) {
+        if (val) this.selectedGroup = null
+      }
     }
   }
 }
