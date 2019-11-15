@@ -11,6 +11,7 @@
     <div>
       <p>To help Freegle, <b>{{ users[userid].displayname }}</b> printed a Freegle poster and put it up where people can see it.</p>
     </div>
+    <!-- TODO Design - Maybe replace this with a notice-message component.  How to test this? -->
     <b-alert v-if="info.description" show variant="info" class="prewrap">
       <b>"{{ info.description }}"</b>
     </b-alert>

@@ -44,9 +44,9 @@
       </div>
     </template>
     <template slot="default">
-      <b-alert v-if="user.info.reneged && user.info.reneged > 1 && (user.info.reneged * 100 / (user.info.reneged + user.info.collected) > 25)" variant="warning" show>
+      <notice-message v-if="user.info.reneged && user.info.reneged > 1 && (user.info.reneged * 100 / (user.info.reneged + user.info.collected) > 25)" variant="warning">
         <v-icon name="exclamation-triangle" />&nbsp;Things haven't always worked out for this freegler.  That might not be their fault, but please make very clear arrangements.
-      </b-alert>
+      </notice-message>
       <div v-if="aboutme" class="mb-1">
         <blockquote>
           <b>&quot;{{ aboutme }}&quot;</b>
@@ -170,12 +170,14 @@ import twem from '~/assets/js/twem'
 const Ratings = () => import('~/components/Ratings')
 const ReplyTime = () => import('~/components/ReplyTime')
 const ChatButton = () => import('~/components/ChatButton.vue')
+const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
     Ratings,
     ReplyTime,
-    ChatButton
+    ChatButton,
+    NoticeMessage
   },
   props: {
     id: {

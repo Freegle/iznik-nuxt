@@ -9,12 +9,11 @@
         <p>
           We'd love you to stay, but sometimes if you love someone, you have to let them go.
         </p>
-        <p class="bg-info p-2">
-          <!--          TODO DESIGN This should be a Notice box once we replace b-alert with those. -->
+        <notice-message class="mb-3">
           Too many emails? Don't leave! Go to <nuxt-link to="/settings">
             Settings
           </nuxt-link> and adjust your Mail Settings.
-        </p>
+        </notice-message>
         <b-btn size="lg" variant="success" class="mb-2" @click="unsubscribe">
           Unsubscribe completely
         </b-btn>
@@ -51,13 +50,15 @@ import loginOptional from '@/mixins/loginOptional.js'
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect.vue')
 const ConfirmModal = () => import('~/components/ConfirmModal.vue')
 // TODO MINOR If you have to sign in, should go straight to confirmation once we return to the page signed in.
+const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
     ForgetSucceedModal,
     ForgetFailModal,
     GroupRememberSelect,
-    ConfirmModal
+    ConfirmModal,
+    NoticeMessage
   },
   mixins: [loginOptional],
   data() {

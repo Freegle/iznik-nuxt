@@ -7,7 +7,7 @@
       <b-col cols="12" md="6" class="p-0">
         <JobsTopBar />
         <div>
-          <div class="d-flex mt-2 mb-3 notification">
+          <div class="d-flex mt-2 mb-3 selection__wrapper">
             <GroupRememberSelect v-model="groupid" remember="mygroups" class="m-3" all />
             <b-form-select v-model="selectedType" class="m-3" value="All" :options="typeOptions" @change="typeChange" />
             <!--            TODO DESIGN Grow the group select if there's room, shrink the type select to fit contents.-->
@@ -36,7 +36,7 @@
 <style scoped lang="scss">
 @import 'color-vars';
 
-.notification {
+.selection__wrapper {
   background-color: $color-blue--x-light;
   border: 1px solid $color-blue-x-light2;
   border-radius: 3px;

@@ -77,9 +77,9 @@
                       </b-btn>
                     </div>
                     <div v-else>
-                      <b-alert variant="info" show>
+                      <notice-message>
                         Please write something to let other freeglers know a bit about you. It makes freegling more fun and helps get a better response when you're replying to OFFERs.
-                      </b-alert>
+                      </notice-message>
                       <b-btn variant="white" class="mt-2" @click="addAbout">
                         <v-icon name="pen" /> Introduce yourself
                       </b-btn>
@@ -261,9 +261,9 @@
               Messages from other freeglers will appear in the <em>Chat</em> section.  We can also notify you
               in other ways.
             </p>
-            <b-alert show variant="warning">
+            <notice-message variant="warning">
               Email doesn't always get through, so check your spam folders, and check <em>Chat</em> on here occasionally.
-            </b-alert>
+            </notice-message>
             <hr>
             <h5>Text Alerts</h5>
             <p>We can send you SMS alerts to your phone.</p>
@@ -399,6 +399,7 @@
     <EmailConfirmModal ref="emailconfirm" />
   </div>
 </template>
+
 <style scoped>
 .profile {
   width: 100px !important;
@@ -413,6 +414,7 @@
   padding-bottom: 0px;
 }
 </style>
+
 <script>
 // TODO Click on group name or icon to go to group once we have /mygroups/id
 import Vue from 'vue'
@@ -422,6 +424,7 @@ const AboutMeModal = () => import('~/components/AboutMeModal')
 const ProfileModal = () => import('~/components/ProfileModal')
 const Postcode = () => import('~/components/Postcode')
 const SettingsGroup = () => import('~/components/SettingsGroup')
+const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
@@ -429,7 +432,8 @@ export default {
     AboutMeModal,
     ProfileModal,
     Postcode,
-    SettingsGroup
+    SettingsGroup,
+    NoticeMessage
   },
   mixins: [loginRequired],
   data: function() {
