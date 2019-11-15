@@ -4,7 +4,7 @@
       <StartEndDate v-model="value[idx]" @remove="remove(date)" />
     </div>
     <b-btn variant="white" class="mt-1" @click="add">
-      <v-icon name="plus" /> Add another date
+      <v-icon name="plus" /> Add <span v-if="value.length > 0">another</span><span v-else>a</span> date
     </b-btn>
   </div>
 </template>
