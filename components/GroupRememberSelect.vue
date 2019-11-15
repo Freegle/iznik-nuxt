@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <groupSelect v-model="selectValue" :all="all" :size="size" />
-  </div>
+  <groupSelect v-model="selectValue" :all="all" :size="size" />
 </template>
 <script>
 import groupSelect from './GroupSelect'
