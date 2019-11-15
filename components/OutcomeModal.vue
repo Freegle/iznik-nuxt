@@ -221,6 +221,7 @@ export default {
       this.showModal = false
       this.showDonation = true
       this.$nextTick(() => {
+        // TODO This failed with askmodal undefined.  Why?
         this.$refs.askmodal.show()
       })
     },
