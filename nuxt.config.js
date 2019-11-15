@@ -96,6 +96,10 @@ module.exports = {
     { from: '^/posters$', to: '/noticeboards' },
   ],
 
+  buildModules: [
+    '~/docsModule'
+  ],
+
   /*
   ** Nuxt.js modules
   */
