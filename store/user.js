@@ -6,6 +6,20 @@ export const state = () => ({
   list: {}
 })
 
+function getUserByID(state, id) {
+  let user = null
+
+  Object.keys(state.list).forEach(key => {
+    const item = state.list[key]
+
+    if (parseInt(key) === parseInt(id)) {
+      user = item
+    }
+  })
+
+  return user
+}
+
 export const mutations = {
   add(state, item) {
     Vue.set(state.list, item.id, item)
@@ -21,21 +35,24 @@ export const mutations = {
 
 export const getters = {
   get: state => id => {
-    let ret = null
-
-    Object.keys(state.list).forEach(key => {
-      const item = state.list[key]
-
-      if (parseInt(key) === parseInt(id)) {
-        ret = item
-      }
-    })
-
-    return ret
+    return getUserByID(state, id)
   },
 
   list: state => () => {
     return state.list
+  },
+
+  userHasReneged: state => id => {
+    const user = getUserByID(state, id)
+
+    // If the user can't be found then return false
+    return user && user.info
+      ? user.info.reneged &&
+          user.info.reneged > 1 &&
+          (user.info.reneged * 100) /
+            (user.info.reneged + user.info.collected) >
+            25
+      : false
   }
 }
 

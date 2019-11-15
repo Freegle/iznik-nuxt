@@ -206,14 +206,7 @@ export default {
         : null
     },
     userHasReneged() {
-      /* TODO Create a common function that does this so it can be used in other places */
-      return (
-        this.user.info.reneged &&
-        this.user.info.reneged > 1 &&
-        (this.user.info.reneged * 100) /
-          (this.user.info.reneged + this.user.info.collected) >
-          25
-      )
+      return this.$store.getters['user/userHasReneged'](this.id)
     }
   },
   async mounted() {
