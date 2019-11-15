@@ -308,7 +308,9 @@ export default {
       return ret
     },
     userHasReneged() {
-      return this.$store.getters['user/userHasReneged'](this.otheruser.id)
+      return this.otheruser
+        ? this.$store.getters['user/userHasReneged'](this.otheruser.id)
+        : false
     },
 
     spammer() {
