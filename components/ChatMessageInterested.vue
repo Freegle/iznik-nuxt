@@ -30,8 +30,7 @@
               </h4>
             </b-card-title>
             <b-card-text>
-              <!-- TODO Design - Replace this with a notice-message component -->
-              <b-alert v-if="refmsg.outcomes && refmsg.outcomes.length" show variant="info">
+              <notice-message v-if="refmsg.outcomes && refmsg.outcomes.length" class="mb-3">
                 <v-icon name="info-circle" />
                 <span v-if="refmsg.type === 'Offer'">
                   This is no longer available.
@@ -39,7 +38,7 @@
                 <span v-else>
                   They are no longer looking for this.
                 </span>
-              </b-alert>
+              </notice-message>
               <div :class="emessage ? 'media-body chatMessage' : 'media-body'">
                 <span>
                   <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap"><b>{{ emessage }}</b></span>
@@ -78,8 +77,7 @@
               </h4>
             </b-card-title>
             <b-card-text>
-              <!-- TODO Design - Replace this with a notice-message component -->
-              <b-alert v-if="refmsg.outcomes && refmsg.outcomes.length" show variant="info">
+              <notice-message v-if="refmsg.outcomes && refmsg.outcomes.length" class="mb-3">
                 <v-icon name="info-circle" />
                 <span v-if="refmsg.type === 'Offer'">
                   This is no longer available.
@@ -87,7 +85,7 @@
                 <span v-else>
                   They are no longer looking for this.
                 </span>
-              </b-alert>
+              </notice-message>
               <div :class="emessage ? 'media-body chatMessage' : 'media-body'">
                 <span>
                   <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap"><b>{{ emessage }}</b></span>
@@ -106,8 +104,12 @@
 </style>
 <script>
 import ChatBase from '~/components/ChatBase'
+const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
+  components: {
+    NoticeMessage
+  },
   extends: ChatBase
 }
 </script>

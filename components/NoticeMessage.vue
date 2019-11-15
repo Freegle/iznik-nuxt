@@ -28,6 +28,7 @@ export default {
 .notice--info {
   background-color: $color-blue--x-light;
   border-color: $color-blue-x-light2;
+  color: $color-blue--1;
 }
 
 .notice--warning {

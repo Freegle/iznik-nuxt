@@ -29,10 +29,9 @@
         <b-img alt="Facebook login" :class="'loginbutton clickme ' + (facebookDisabled ? ' signindisabled' : '')" src="~/static/signinbuttons/facebook.png" @click="loginFacebook" />
         <b-img alt="Google login" :class="'mb-1 loginbutton clickme ' + (googleDisabled ? ' signindisabled' : '')" src="~/static/signinbuttons/google.png" @click="loginGoogle" />
         <b-img alt="Yahoo login" :class="'loginbutton clickme ' + (yahooDisabled ? ' signindisabled' : '')" src="~/static/signinbuttons/yahoo.png" @click="loginYahoo" />
-        <div v-if="socialblocked" class="p-2 bg-warning">
-          <!--          TODO DESIGN Use Notice component-->
+        <notice-message v-if="socialblocked" variant="warning">
           Social sign in blocked - check your privacy settings
-        </div>
+        </notice-message>
       </b-col>
       <b-col cols="12" class="d-block d-lg-none">
         <b-row>
@@ -176,8 +175,12 @@
 // TODO DESIGN Google's terms require the square icon, which is annoyingly inconsistent with the others.  Are we
 // allowed to have square other ones?  If so, please make such images.
 import Vue from 'vue'
+const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
+  components: {
+    NoticeMessage
+  },
   data: function() {
     return {
       bump: Date.now(),
