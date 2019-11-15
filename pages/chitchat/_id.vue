@@ -115,7 +115,7 @@
         </b-row>
         <div class=" p-0 pt-1 mb-1">
           <ul v-for="entry in newsfeed" :key="'newsfeed-' + entry.id + '-area-' + selectedArea" class="list-unstyled">
-            <li v-if="entry && entry.visible && !entry.unfollowed">
+            <li v-if="entry && entry.visible && !entry.unfollowed && entry.threadhead === entry.id">
               <NewsThread :id="entry.id" :key="'newsfeed-' + entry.id" :users="users" :scroll-to="scrollTo" />
             </li>
           </ul>
