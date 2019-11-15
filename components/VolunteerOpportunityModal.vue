@@ -280,6 +280,7 @@ label {
 // TODO Groups which don't support opportunities
 // TODO We used to have an "apply by" date. It's not clear we need this, so no urgency in re-adding it.
 // TODO EH Systemwide opportunities.
+import cloneDeep from 'lodash.clonedeep'
 import twem from '~/assets/js/twem'
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
 const OurFilePond = () => import('~/components/OurFilePond')
@@ -350,8 +351,10 @@ export default {
           ? this.volunteering.photo.id
           : null
       this.olddates =
-        this.volunteering && this.volunteering.dates
-          ? JSON.parse(JSON.stringify(this.volunteering.dates))
+        this.volunteering &&
+        this.volunteering.dates &&
+        this.volunteering.dates.length > 0
+          ? cloneDeep(this.volunteering.dates)
           : null
 
       if (this.volunteering.groups && this.volunteering.groups.length > 0) {

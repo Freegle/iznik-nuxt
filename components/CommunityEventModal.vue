@@ -260,6 +260,7 @@ label {
 // TODO Groups which don't support events
 // TODO Wherever we have b-img (throughout the site, not just here) we should have @brokenImage.  Bet we don't.
 // TODO Set date to start at 9am rather than midnight.  Default end date to later than start date.
+import cloneDeep from 'lodash.clonedeep'
 import twem from '~/assets/js/twem'
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
 const OurFilePond = () => import('~/components/OurFilePond')
@@ -324,8 +325,8 @@ export default {
       this.oldphoto =
         this.event && this.event.photo ? this.event.photo.id : null
       this.olddates =
-        this.event && this.event.dates
-          ? JSON.parse(JSON.stringify(this.event.dates))
+        this.event && this.event.dates && this.event.dates.length > 0
+          ? cloneDeep(this.event.dates)
           : null
 
       if (this.event.groups && this.event.groups.length > 0) {
