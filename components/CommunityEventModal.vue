@@ -172,7 +172,7 @@
           When is it?
         </label>
         <p>You can add multiple dates if the event occurs several times.</p>
-        <StartEndCollection v-if="event.dates" v-model="event.dates" />
+        <StartEndCollection v-if="event.dates" v-model="event.dates" add-date-if-empty />
         <label for="contactname">
           Contact name:
         </label>

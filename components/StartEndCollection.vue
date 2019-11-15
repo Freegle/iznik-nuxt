@@ -31,10 +31,14 @@ export default {
     value: {
       type: Array,
       required: true
+    },
+    addDateIfEmpty: {
+      type: Boolean,
+      default: false
     }
   },
   async mounted() {
-    if (this.value.length === 0) {
+    if (this.value.length === 0 && this.addDateIfEmpty) {
       this.value.push({
         uniqueid: await this.$store.dispatch('uniqueid/generate'),
         start: null,
