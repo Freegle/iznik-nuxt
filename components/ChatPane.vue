@@ -73,7 +73,7 @@
               <notice-message v-if="warnuser" variant="warning">
                 <v-icon name="exclamation-triangle" />&nbsp;Things haven't always worked out for this freegler.  That might not be their fault, but please make very clear arrangements.
               </notice-message>
-              <!-- Make this a notice-message component too -->
+              <!-- TODO Make this a notice-message component too -->
               <p v-if="!spammer && showReplyTime && replytime" class="bg-info p-2 mb-0 clickme" @click="showInfo">
                 <v-icon name="info-circle" />&nbsp;Typically replies in <b>{{ replytime }}</b>.  Click for more info.
               </p>
