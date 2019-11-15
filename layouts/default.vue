@@ -412,6 +412,13 @@ export default {
     }
   },
 
+  head() {
+    const totalCount = this.notificationCount + this.chatCount
+    return {
+      titleTemplate: totalCount > 0 ? `(${totalCount}) %s` : '%s'
+    }
+  },
+
   computed: {
     loggedIn() {
       const ret = Boolean(this.$store.getters['auth/user']())
@@ -427,19 +434,13 @@ export default {
       return notifications
     },
     notificationCount() {
-      // TODO NS We also need to change the window title.
       return this.$store.getters['notifications/count']()
     },
     chatCount() {
-      // TODO NS We also need to change the window title.
-      const chats = Object.values(this.$store.getters['chats/list']())
-      let count = 0
-
-      for (const chat of chats) {
-        count += chat.unseen
-      }
-
-      return count
+      return Object.values(this.$store.getters['chats/list']()).reduce(
+        (total, chat) => total + chat.unseen,
+        0
+      )
     },
     spreadCount() {
       return this.me && this.me.invitesleft ? this.me.invitesleft : 0
