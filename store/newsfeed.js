@@ -1,3 +1,5 @@
+import cloneDeep from 'lodash.clonedeep'
+
 export const state = () => ({
   // Use array for newsfeed as we need ordering.
   newsfeed: [],
@@ -109,7 +111,7 @@ export const actions = {
 
     if (params.context) {
       // Ensure the context is a real object, in case it has been in the store.
-      const ctx = JSON.parse(JSON.stringify(params.context))
+      const ctx = cloneDeep(params.context)
       params.context = ctx
     }
 
