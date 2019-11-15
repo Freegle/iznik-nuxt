@@ -51,7 +51,6 @@
   </div>
 </template>
 <script>
-// TODO EH Add speech recognition
 // TODO Suppose we end up here, without a postcode in the store?
 // TODO Don't allow submission before image upload complete.
 

@@ -55,7 +55,6 @@
 </style>
 
 <script>
-// TODO EH Add speech recognition
 import loginOptional from '@/mixins/loginOptional.js'
 const WizardProgress = () => import('~/components/WizardProgress')
 
