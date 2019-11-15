@@ -192,8 +192,7 @@
           When is it?
         </label>
         <p>You can add multiple dates if the opportunity occurs several times.</p>
-        <!-- TODO fix this to use v-model properly (as in components/CommunityEventModal.vue) -->
-        <StartEndCollection v-if="volunteering.dates" :dates="volunteering.dates" @change="datesChange" />
+        <StartEndCollection v-if="volunteering.dates" v-model="volunteering.dates" />
         <label for="contactname">
           Contact name:
         </label>
@@ -281,6 +280,7 @@ label {
 // TODO Groups which don't support opportunities
 // TODO We used to have an "apply by" date. It's not clear we need this, so no urgency in re-adding it.
 // TODO EH Systemwide opportunities.
+import cloneDeep from 'lodash.clonedeep'
 import twem from '~/assets/js/twem'
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
 const OurFilePond = () => import('~/components/OurFilePond')
@@ -296,8 +296,24 @@ export default {
   },
   props: {
     volunteering: {
-      validator: prop => typeof prop === 'object' || prop === null,
-      required: true
+      type: Object,
+      default: () => ({
+        id: null,
+        title: null,
+        description: null,
+        photo: null,
+        user: null,
+        url: null,
+        timecommitment: null,
+        location: null,
+        dates: [],
+        groups: [],
+        contactname: null,
+        contactemail: null,
+        contactphone: null,
+        contacturl: null,
+        canmodify: null
+      })
     },
     startEdit: {
       type: Boolean,
@@ -335,19 +351,11 @@ export default {
           ? this.volunteering.photo.id
           : null
       this.olddates =
-        this.volunteering && this.volunteering.dates
-          ? JSON.parse(JSON.stringify(this.volunteering.dates))
+        this.volunteering &&
+        this.volunteering.dates &&
+        this.volunteering.dates.length > 0
+          ? cloneDeep(this.volunteering.dates)
           : null
-
-      // If we don't have any dates, add an empty one so the slot appears for them to fill in.
-      this.volunteering.dates = this.volunteering.dates
-        ? this.volunteering.dates
-        : [
-            {
-              start: null,
-              end: null
-            }
-          ]
 
       if (this.volunteering.groups && this.volunteering.groups.length > 0) {
         this.groupid = this.volunteering.groups[0].id
@@ -493,9 +501,6 @@ export default {
     },
     rotateRight() {
       this.rotate(-90)
-    },
-    datesChange(dates) {
-      this.volunteering.dates = dates
     }
   }
 }

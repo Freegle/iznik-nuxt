@@ -4,7 +4,7 @@
       <StartEndDate v-model="value[idx]" @remove="remove(date)" />
     </div>
     <b-btn variant="white" class="mt-1" @click="add">
-      <v-icon name="plus" /> Add another date
+      <v-icon name="plus" /> Add <span v-if="value.length > 0">another</span><span v-else>a</span> date
     </b-btn>
   </div>
 </template>
@@ -31,10 +31,14 @@ export default {
     value: {
       type: Array,
       required: true
+    },
+    addDateIfEmpty: {
+      type: Boolean,
+      default: false
     }
   },
   async mounted() {
-    if (this.value.length === 0) {
+    if (this.value.length === 0 && this.addDateIfEmpty) {
       this.value.push({
         uniqueid: await this.$store.dispatch('uniqueid/generate'),
         start: null,

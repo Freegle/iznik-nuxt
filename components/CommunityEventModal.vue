@@ -172,7 +172,7 @@
           When is it?
         </label>
         <p>You can add multiple dates if the event occurs several times.</p>
-        <StartEndCollection v-if="event.dates" v-model="event.dates" />
+        <StartEndCollection v-if="event.dates" v-model="event.dates" add-date-if-empty />
         <label for="contactname">
           Contact name:
         </label>
@@ -260,6 +260,7 @@ label {
 // TODO Groups which don't support events
 // TODO Wherever we have b-img (throughout the site, not just here) we should have @brokenImage.  Bet we don't.
 // TODO Set date to start at 9am rather than midnight.  Default end date to later than start date.
+import cloneDeep from 'lodash.clonedeep'
 import twem from '~/assets/js/twem'
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
 const OurFilePond = () => import('~/components/OurFilePond')
@@ -277,15 +278,18 @@ export default {
     event: {
       type: Object,
       default: () => ({
+        id: null,
         title: null,
         photo: null,
         description: null,
         location: null,
         dates: [],
+        groups: [],
         contactname: null,
         contactemail: null,
         contactphone: null,
-        contacturl: null
+        contacturl: null,
+        canmodify: null
       })
     },
     startEdit: {
@@ -315,27 +319,16 @@ export default {
     }
   },
   methods: {
-    async show() {
+    show() {
       this.editing = this.startEdit
       this.showModal = true
 
       this.oldphoto =
         this.event && this.event.photo ? this.event.photo.id : null
       this.olddates =
-        this.event && this.event.dates
-          ? JSON.parse(JSON.stringify(this.event.dates))
+        this.event && this.event.dates && this.event.dates.length > 0
+          ? cloneDeep(this.event.dates)
           : null
-
-      // If we don't have any dates, add an empty one so the slot appears for them to fill in.
-      this.event.dates = this.event.dates
-        ? this.event.dates
-        : [
-            {
-              start: null,
-              end: null,
-              uniqueid: await this.$store.dispatch('uniqueid/generate')
-            }
-          ]
 
       if (this.event.groups && this.event.groups.length > 0) {
         this.groupid = this.event.groups[0].id
