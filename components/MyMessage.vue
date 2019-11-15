@@ -50,10 +50,9 @@
         <div v-if="expanded">
           <b-card-body class="p-2">
             <b-card-text>
-              <!-- ToDO Design - Replace this with a notice-message component -->
-              <b-alert v-if="rejected" show variant="warning">
+              <notice-message v-if="rejected" class="mb-3">
                 <v-icon name="exclamation-triangle" scale="2" /> This post has been returned to you.
-              </b-alert>
+              </notice-message>
               <span v-if="message.attachments.length > 0" class="float-right clickme" @click="showPhotos">
                 <b-badge v-if="message.attachments.length > 1" class="photobadge" variant="primary">+{{ message.attachments.length - 1 }} <v-icon name="camera" /></b-badge>
                 <b-img-lazy
@@ -204,6 +203,7 @@ const MyMessageReply = () => import('./MyMessageReply.vue')
 const ShareModal = () => import('./ShareModal')
 const MessageEditModal = () => import('./MessageEditModal')
 const ImageCarousel = () => import('./ImageCarousel')
+const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   directives: {
@@ -214,7 +214,8 @@ export default {
     ShareModal,
     MyMessageReply,
     MessageEditModal,
-    ImageCarousel
+    ImageCarousel,
+    NoticeMessage
   },
   props: {
     message: {

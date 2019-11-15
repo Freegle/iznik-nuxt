@@ -54,11 +54,10 @@
         </b-button>
       </b-card-header>
       <b-card-body v-if="expanded" class="pl-1">
-        <!-- TODO Design - Replace this with a notice-message component -->
-        <b-alert v-if="expanded.promised" variant="info">
+        <notice-message v-if="expanded.promised" class="mb-3">
           This item has already been promised to someone.  You can still reply - you might get it if someone
           else drops out.
-        </b-alert>
+        </notice-message>
 
         <p class="prewrap pl-1">
           <Highlighter
@@ -155,6 +154,7 @@ import twem from '~/assets/js/twem'
 const Highlighter = () => import('vue-highlight-words')
 const MessageUserInfo = () => import('~/components/MessageUserInfo')
 const ImageCarousel = () => import('./ImageCarousel')
+const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
@@ -162,7 +162,8 @@ export default {
     MessageUserInfo,
     Highlighter,
     ShareModal,
-    ImageCarousel
+    ImageCarousel,
+    NoticeMessage
   },
   props: {
     id: {
