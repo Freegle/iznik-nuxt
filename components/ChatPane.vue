@@ -70,17 +70,17 @@
           </b-row>
           <b-row>
             <b-col class="p-0">
-              <!-- TODO DESIGN This should be a Notice box once we replace b-alert with those. -->
-              <p v-if="warnuser" class="bg-warning p-2 mb-0">
+              <notice-message v-if="warnuser" variant="warning">
                 <v-icon name="exclamation-triangle" />&nbsp;Things haven't always worked out for this freegler.  That might not be their fault, but please make very clear arrangements.
-              </p>
+              </notice-message>
+              <!-- Make this a notice-message component too -->
               <p v-if="!spammer && showReplyTime && replytime" class="bg-info p-2 mb-0 clickme" @click="showInfo">
                 <v-icon name="info-circle" />&nbsp;Typically replies in <b>{{ replytime }}</b>.  Click for more info.
               </p>
-              <p v-if="spammer" class="bg-danger white p-2 mb-0">
+              <notice-message v-if="spammer" variant="danger">
                 This person has been reported as a spammer or scammer.  Please do not talk to them and under no circumstances
                 send them any money.
-              </p>
+              </notice-message>
               <b-form-textarea
                 v-if="!spammer"
                 v-model="sendmessage"
@@ -213,6 +213,7 @@ const OurFilePond = () => import('~/components/OurFilePond')
 const Ratings = () => import('~/components/Ratings')
 const PromiseModal = () => import('./PromiseModal')
 const ProfileModal = () => import('./ProfileModal')
+const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
@@ -220,7 +221,8 @@ export default {
     ChatMessage,
     OurFilePond,
     PromiseModal,
-    ProfileModal
+    ProfileModal,
+    NoticeMessage
   },
   props: {
     id: {

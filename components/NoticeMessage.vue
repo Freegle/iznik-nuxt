@@ -36,4 +36,10 @@ export default {
   border-color: $color-yellow-2;
   color: $color-yellow-3;
 }
+
+.notice--danger {
+  background-color: $color-red;
+  border-color: $color-red;
+  color: $color-white;
+}
 </style>
