@@ -70,7 +70,7 @@
           </b-row>
           <b-row>
             <b-col class="p-0">
-              <notice-message v-if="warnuser" variant="warning">
+              <notice-message v-if="userHasReneged" variant="warning">
                 <v-icon name="exclamation-triangle" />&nbsp;Things haven't always worked out for this freegler.  That might not be their fault, but please make very clear arrangements.
               </notice-message>
               <!-- TODO Make this a notice-message component too -->
@@ -307,21 +307,8 @@ export default {
 
       return ret
     },
-
-    warnuser() {
-      let ret = false
-      if (this.otheruser) {
-        const user = this.$store.getters['user/get'](this.otheruser.id)
-        if (user && user.info) {
-          const info = user.info
-          ret =
-            info.reneged &&
-            info.reneged > 1 &&
-            (info.reneged * 100) / (info.reneged + info.collected) > 25
-        }
-      }
-
-      return ret
+    userHasReneged() {
+      return this.$store.getters['user/userHasReneged'](this.otheruser.id)
     },
 
     spammer() {
