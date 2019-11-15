@@ -44,7 +44,7 @@
       </div>
     </template>
     <template slot="default">
-      <notice-message v-if="user.info.reneged && user.info.reneged > 1 && (user.info.reneged * 100 / (user.info.reneged + user.info.collected) > 25)" variant="warning">
+      <notice-message v-if="userHasReneged" variant="warning">
         <v-icon name="exclamation-triangle" />&nbsp;Things haven't always worked out for this freegler.  That might not be their fault, but please make very clear arrangements.
       </notice-message>
       <div v-if="aboutme" class="mb-1">
@@ -204,6 +204,16 @@ export default {
       return this.user && this.user.info && this.user.info.aboutme
         ? twem.twem(this.$twemoji, this.user.info.aboutme.text)
         : null
+    },
+    userHasReneged() {
+      /* TODO Create a common function that does this so it can be used in other places */
+      return (
+        this.user.info.reneged &&
+        this.user.info.reneged > 1 &&
+        (this.user.info.reneged * 100) /
+          (this.user.info.reneged + this.user.info.collected) >
+          25
+      )
     }
   },
   async mounted() {
