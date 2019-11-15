@@ -277,11 +277,13 @@ export default {
     event: {
       type: Object,
       default: () => ({
+        id: null,
         title: null,
         photo: null,
         description: null,
         location: null,
         dates: [],
+        groups: [],
         contactname: null,
         contactemail: null,
         contactphone: null,
@@ -315,7 +317,7 @@ export default {
     }
   },
   methods: {
-    async show() {
+    show() {
       this.editing = this.startEdit
       this.showModal = true
 
@@ -325,17 +327,6 @@ export default {
         this.event && this.event.dates
           ? JSON.parse(JSON.stringify(this.event.dates))
           : null
-
-      // If we don't have any dates, add an empty one so the slot appears for them to fill in.
-      this.event.dates = this.event.dates
-        ? this.event.dates
-        : [
-            {
-              start: null,
-              end: null,
-              uniqueid: await this.$store.dispatch('uniqueid/generate')
-            }
-          ]
 
       if (this.event.groups && this.event.groups.length > 0) {
         this.groupid = this.event.groups[0].id

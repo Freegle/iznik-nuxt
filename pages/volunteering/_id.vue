@@ -34,7 +34,7 @@
       </b-col>
       <b-col cols="0" md="3" class="d-none d-md-block" />
     </b-row>
-    <VolunteerOpportunityModal ref="volunteermodal" :volunteering="{}" :start-edit="true" />
+    <VolunteerOpportunityModal ref="volunteermodal" :start-edit="true" />
   </div>
 </template>
 
