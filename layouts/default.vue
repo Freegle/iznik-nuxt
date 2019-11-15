@@ -427,11 +427,11 @@ export default {
       return notifications
     },
     notificationCount() {
-      // TODO EH We also need to change the window title.
+      // TODO NS We also need to change the window title.
       return this.$store.getters['notifications/count']()
     },
     chatCount() {
-      // TODO EH We also need to change the window title.
+      // TODO NS We also need to change the window title.
       const chats = Object.values(this.$store.getters['chats/list']())
       let count = 0
 
