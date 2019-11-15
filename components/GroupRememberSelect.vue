@@ -5,6 +5,11 @@
 </template>
 <script>
 import groupSelect from './GroupSelect'
+
+function intOrNull(val) {
+  return typeof val === 'number' ? parseInt(val) : null
+}
+
 export default {
   components: {
     groupSelect
@@ -32,18 +37,14 @@ export default {
   },
   computed: {
     rememberedValue() {
-      return this.$store.getters['group/remembered'](this.remember) || 0
+      return this.$store.getters['group/remembered'](this.remember)
     },
     selectValue: {
       get() {
         return this.value
       },
       set(val) {
-        val = parseInt(val)
-        // value changed from the select
-        if (this.rememberedValue !== val) {
-          this.updateMemory(val)
-        }
+        val = intOrNull(val)
         if (this.value !== val) {
           this.$emit('input', val)
         }
@@ -54,14 +55,14 @@ export default {
     rememberedValue: {
       immediate: true,
       handler(val) {
-        // value changed from the memory!
-        if (this.value !== val) {
-          this.$emit('input', val)
-        }
+        if (val === undefined) return // no remembered value
+        // we only take it if there is not already a value
+        // this ensures we don't override explicitly set values from outside
+        if (this.value === null) this.$emit('input', val)
       }
     },
     value(val) {
-      // value changed from outside
+      // value changed
       if (this.rememberedValue !== val) {
         this.updateMemory(val)
       }
@@ -69,14 +70,14 @@ export default {
   },
   methods: {
     updateMemory(val) {
-      if (val === 0) {
-        this.$store.commit('group/forget', {
-          id: this.remember
-        })
-      } else {
+      if (typeof val === 'number') {
         this.$store.commit('group/remember', {
           id: this.remember,
           val
+        })
+      } else {
+        this.$store.commit('group/forget', {
+          id: this.remember
         })
       }
     }

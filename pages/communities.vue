@@ -65,7 +65,7 @@ export default {
   data: function() {
     return {
       id: null,
-      groupid: 0,
+      groupid: null,
       messages: [],
       busy: false,
       context: null,
