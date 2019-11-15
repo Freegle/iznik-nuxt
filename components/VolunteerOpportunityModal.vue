@@ -347,7 +347,7 @@ export default {
             }
           ]
 
-      if (this.volunteering.groups) {
+      if (this.volunteering.groups && this.volunteering.groups.length > 0) {
         this.groupid = this.volunteering.groups[0].id
       }
     },

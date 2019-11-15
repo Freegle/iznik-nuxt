@@ -335,7 +335,7 @@ export default {
             }
           ]
 
-      if (this.event.groups) {
+      if (this.event.groups && this.event.groups.length > 0) {
         this.groupid = this.event.groups[0].id
       }
     },
