@@ -13,9 +13,13 @@
                   <div class="float-right">
                     <span class="small text-faded float-right">#{{ id }}</span>
                     <br>
-                    <b-btn variant="white" size="sm" class="float-right mb-1" :disabled="user.id === myid ? 'true' : undefined">
-                      <v-icon name="comment" class="d-none d-sm-inline-block" />&nbsp;Message
-                    </b-btn>
+                    <ChatButton
+                      v-if="user.id !== myid"
+                      :userid="user.id"
+                      size="sm"
+                      title="Message"
+                      class="float-right mb-1"
+                    />
                     <br>
                     <ratings size="sm" v-bind="user" class="pl-1 pt-1 d-block" />
                   </div>
@@ -178,12 +182,14 @@ import loginOptional from '@/mixins/loginOptional.js'
 const Ratings = () => import('~/components/Ratings')
 const ReplyTime = () => import('~/components/ReplyTime')
 const Message = () => import('~/components/Message.vue')
+const ChatButton = () => import('~/components/ChatButton.vue')
 
 export default {
   components: {
     Ratings,
     ReplyTime,
-    Message
+    Message,
+    ChatButton
   },
   mixins: [loginOptional],
   props: {},
