@@ -174,6 +174,8 @@
 
 /* eslint-disable */
 
+import cloneDeep from 'lodash.clonedeep'
+
 export default {
   props: {
     id: String,
@@ -330,7 +332,7 @@ export default {
 
     // Get the original data
     cleanUp(data) {
-      return data ? JSON.parse(JSON.stringify(data)) : null
+      return data ? cloneDeep(data) : null
     },
 
     /* ==============================
