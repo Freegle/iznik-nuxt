@@ -288,7 +288,8 @@ export default {
         contactname: null,
         contactemail: null,
         contactphone: null,
-        contacturl: null
+        contacturl: null,
+        canmodify: null
       })
     },
     startEdit: {
