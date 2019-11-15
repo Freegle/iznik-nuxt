@@ -7,10 +7,10 @@
     no-stacking
   >
     <template slot="default">
-      <b-alert show variant="info">
+      <notice-message class="mb-3">
         This lets them you're planning to give it to them, and helps you keep track.
         You can change your mind later if it doesn't work out, using the  <em>Unpromise</em> button.
-      </b-alert>
+      </notice-message>
       <p>You're promising:</p>
       <b-select v-model="selectedMessage" :options="messageOptions" class="mb-2 font-weight-bold" />
       <p>...to:</p>
@@ -27,13 +27,15 @@
   </b-modal>
 </template>
 
-<style scoped>
-</style>
-
 <script>
+const NoticeMessage = () => import('~/components/NoticeMessage')
+
 // TODO DESIGN This is a good example of why I can't write mobile apps.  It's a very old-school interface, dropdown
 // lists, whereas perhaps it should be a all funky image-based touch-gesture stuff.
 export default {
+  components: {
+    NoticeMessage
+  },
   props: {
     messages: {
       validator: prop => typeof prop === 'object' || prop === null,

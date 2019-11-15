@@ -30,9 +30,9 @@
             possible.
           </p>
           <div v-if="!loggedIn" class="mb-1">
-            <b-alert variant="info" show>
+            <notice-message>
               Please sign in using the menu option at the top to contact your community volunteers.
-            </b-alert>
+            </notice-message>
           </div>
           <p>But you can also contact:</p>
           <ul>
@@ -63,6 +63,7 @@
 const VueFaqAccordion = () => import('vue-faq-accordion')
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
 const ChatButton = () => import('~/components/ChatButton.vue')
+const NoticeMessage = () => import('~/components/NoticeMessage')
 
 // TODO MINOR It's not ideal that the links below are a rather than nuxt-link, because that causes a page load.
 // TODO MINOR Would be nice to be able to do a direct URL link into each of these.
@@ -71,11 +72,12 @@ export default {
   components: {
     GroupRememberSelect,
     VueFaqAccordion,
-    ChatButton
+    ChatButton,
+    NoticeMessage
   },
   data() {
     return {
-      contactGroupId: 0,
+      contactGroupId: null,
       myItems: [
         {
           title: 'How do I post a WANTED?',

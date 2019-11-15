@@ -20,75 +20,75 @@
  * @returns a Vue mixin
  */
 export default function createGroupRoute(key, options = {}) {
-  const ALL_GROUPS = 0
+  const DEFAULT_VALUE = null
   const { routeParam = 'id' } = options
   const rememberId = key
+  function isGroupId(val) {
+    return typeof val === 'number' && val > 0
+  }
+  function groupIdOrNull(val) {
+    return isGroupId(val) ? val : null
+  }
   function routePath(id) {
-    return `/${key}/` + (id === ALL_GROUPS ? '' : id)
+    return `/${key}/${isGroupId(id) ? id : ''}`
   }
   return {
     computed: {
+      rememberedValue() {
+        return this.$store.getters['group/remembered'](rememberId)
+      },
       groupid: {
         get() {
           return this.$route.params[routeParam]
-            ? parseInt(this.$route.params[routeParam])
-            : ALL_GROUPS
+            ? groupIdOrNull(parseInt(this.$route.params[routeParam]))
+            : DEFAULT_VALUE
         },
         set(val) {
           const oldVal = this.groupid
-          val = val || ALL_GROUPS
+          val = groupIdOrNull(val)
           if (val !== oldVal) {
             // We have changed the groupid away from the one in the route! Redirect...
             this.$router.push(routePath(val))
-            if (val === ALL_GROUPS) {
-              this.forgetGroup()
+            if (val === DEFAULT_VALUE) {
+              this.updateMemory(DEFAULT_VALUE)
             }
           }
         }
       }
     },
-    created() {
-      this._unwatchGroupRemember = this.$store.watch(
-        (state, getters) => getters['group/remembered'](rememberId),
-        (val, oldVal) => {
-          if (
-            oldVal === undefined &&
-            val === undefined &&
-            this.groupid !== ALL_GROUPS
-          ) {
+    watch: {
+      rememberedValue: {
+        immediate: true,
+        handler(val) {
+          if (val === undefined && this.groupid !== DEFAULT_VALUE) {
             // Nothing set so far... make it what our current page is
-            this.rememberGroup()
+            this.updateMemory(this.groupid)
           } else if (val !== undefined) {
-            if (this.groupid === ALL_GROUPS) {
+            if (this.groupid === DEFAULT_VALUE) {
               // We have a remember value, but we're on the general page
               // Replace the current route
               this.$router.replace(routePath(val))
             } else if (this.groupid !== val) {
               // We've set the groupid to something else now, save it
-              this.rememberGroup()
+              this.updateMemory(this.groupid)
             }
           }
-        },
-        {
-          immediate: true
         }
-      )
-    },
-    methods: {
-      rememberGroup() {
-        this.$store.commit('group/remember', {
-          id: rememberId,
-          val: this.groupid
-        })
-      },
-      forgetGroup() {
-        this.$store.commit('group/forget', {
-          id: rememberId
-        })
       }
     },
-    beforeDestroy() {
-      if (this._unwatchGroupRemember) this._unwatchGroupRemember()
+    methods: {
+      updateMemory(val) {
+        if (typeof val === 'number') {
+          this.$store.commit('group/remember', {
+            id: rememberId,
+            val
+          })
+        } else {
+          this.$store.commit('group/forget', {
+            id: rememberId
+          })
+        }
+      }
     }
   }
 }

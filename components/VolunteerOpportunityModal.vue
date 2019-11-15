@@ -22,9 +22,9 @@
     <template slot="default">
       <div v-if="!editing">
         <div v-if="volunteering.photo">
-          <b-alert show variant="info">
+          <notice-message class="mb-3">
             Scroll down past the picture for more information!
-          </b-alert>
+          </notice-message>
           <b-row>
             <b-col>
               <b-img lazy fluid :src="volunteering.photo.path" class="mb-2 w-100" />
@@ -192,6 +192,7 @@
           When is it?
         </label>
         <p>You can add multiple dates if the opportunity occurs several times.</p>
+        <!-- TODO fix this to use v-model properly (as in components/CommunityEventModal.vue) -->
         <StartEndCollection v-if="volunteering.dates" :dates="volunteering.dates" @change="datesChange" />
         <label for="contactname">
           Contact name:
@@ -284,12 +285,14 @@ import twem from '~/assets/js/twem'
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
 const OurFilePond = () => import('~/components/OurFilePond')
 const StartEndCollection = () => import('~/components/StartEndCollection')
+const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
     GroupRememberSelect,
     OurFilePond,
-    StartEndCollection
+    StartEndCollection,
+    NoticeMessage
   },
   props: {
     volunteering: {
@@ -306,7 +309,7 @@ export default {
     return {
       showModal: false,
       editing: false,
-      groupid: 0,
+      groupid: null,
       uploading: false,
       oldphoto: null,
       olddates: null,
@@ -346,10 +349,9 @@ export default {
             }
           ]
 
-      // If we don't have any groups, force a select.
-      this.volunteering.groups = this.volunteering.groups
-        ? this.volunteering.groups
-        : [{ id: 0 }]
+      if (this.volunteering.groups && this.volunteering.groups.length > 0) {
+        this.groupid = this.volunteering.groups[0].id
+      }
     },
     hide() {
       this.editing = false

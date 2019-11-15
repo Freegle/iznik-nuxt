@@ -28,6 +28,7 @@
           <news-story v-else-if="newsfeed.type === 'Story'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
           <news-alert v-else-if="newsfeed.type === 'Alert'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
           <news-noticeboard v-else-if="newsfeed.type === 'Noticeboard'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
+          <!-- TODO Design - Replace this with a notice-message component. Fix the issue with the floated dropdown above first -->
           <b-alert v-else variant="danger" show>
             Unknown item type {{ newsfeed.type }}
           </b-alert>
@@ -37,7 +38,7 @@
         <a v-if="!showAllReplies && newsfeed.replies.length > 10" href="#" variant="white" class="mb-3" @click="(e) => { e.preventDefault(); showAllReplies = true }">
           Show earlier {{ newsfeed.replies.length | pluralize(['reply', 'replies'], { includeNumber: false }) }} ({{ newsfeed.replies.length - 10 }})
         </a>
-        <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id" class="list-unstyled">
+        <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id" class="list-unstyled mb-2">
           <li>
             <news-reply :key="'newsfeedreply-' + newsfeed.id + '-reply-' + entry.id" :reply="entry" :users="users" :threadhead="newsfeed" :scroll-to="scrollTo" />
           </li>
@@ -82,9 +83,9 @@
             </b-col>
           </b-row>
         </span>
-        <b-alert v-else variant="info" show>
+        <notice-message v-else>
           This thread is now closed.  Thanks to everyone who contributed.
-        </b-alert>
+        </notice-message>
       </div>
     </b-card>
     <b-modal
@@ -116,6 +117,7 @@
     <NewsReportModal :id="newsfeed.id" ref="newsreport" />
   </div>
 </template>
+
 <style scoped lang="scss">
 .profilesm {
   width: 25px !important;
@@ -131,6 +133,7 @@
   }
 }
 </style>
+
 <script>
 // TODO EH Refer to WANTED/OFFER/RECEIVED/TAKEN
 // TODO MINOR Attach to thread
@@ -149,6 +152,7 @@ const NewsVolunteerOpportunity = () =>
 const NewsStory = () => import('~/components/NewsStory')
 const NewsAlert = () => import('~/components/NewsAlert')
 const NewsNoticeboard = () => import('~/components/NewsNoticeboard')
+const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
@@ -160,7 +164,8 @@ export default {
     NewsVolunteerOpportunity,
     NewsStory,
     NewsAlert,
-    NewsNoticeboard
+    NewsNoticeboard,
+    NoticeMessage
   },
   props: {
     id: {

@@ -6,7 +6,7 @@
         <div>
           <h1>Volunteer Opportunities</h1>
           <p>Are you a charity or good cause that needs volunteers? Ask our lovely community of freeglers to help.</p>
-          <b-row>
+          <b-row class="mb-3">
             <b-col>
               <groupSelect v-model="groupid" class="float-left" all />
             </b-col>
@@ -22,9 +22,9 @@
         </div>
         <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" force-use-infinite-wrapper="body" @infinite="loadMore">
           <span slot="no-results">
-            <b-alert v-if="!volunteerings.length" variant="info" class="mt-2" show>
+            <notice-message v-if="!volunteerings.length">
               There are no volunteer opportunities to show.  Why not add one?
-            </b-alert>
+            </notice-message>
           </span>
           <span slot="no-more" />
           <span slot="spinner">
@@ -37,6 +37,7 @@
     <VolunteerOpportunityModal ref="volunteermodal" :volunteering="{}" :start-edit="true" />
   </div>
 </template>
+
 <script>
 import loginOptional from '@/mixins/loginOptional.js'
 import createGroupRoute from '@/mixins/createGroupRoute'
@@ -45,12 +46,14 @@ const VolunteerOpportunity = () =>
   import('~/components/VolunteerOpportunity.vue')
 const VolunteerOpportunityModal = () =>
   import('~/components/VolunteerOpportunityModal')
+const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
     GroupSelect,
     VolunteerOpportunity,
-    VolunteerOpportunityModal
+    VolunteerOpportunityModal,
+    NoticeMessage
   },
   mixins: [loginOptional, createGroupRoute('volunteering')],
   data: function() {

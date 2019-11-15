@@ -1,15 +1,15 @@
 <template>
   <div>
-    <b-row class="pr-0">
+    <b-row class="pr-0 mb-2">
       <b-col cols="auto" class="mt-2 pl-0">
         <b-btn variant="success" size="lg" @click="photoAdd">
           <v-icon name="camera" />&nbsp;Add photos
         </b-btn>
       </b-col>
       <b-col class="text-center mt-2 pr-0">
-        <b-alert variant="info" class="d-none d-md-inline-block float-right" show>
+        <notice-message class="d-none d-md-inline-block float-right">
           <v-icon name="info-circle" />&nbsp;Please add photos - you'll get a better response.
-        </b-alert>
+        </notice-message>
       </b-col>
     </b-row>
     <b-row v-if="uploading" class="bg-white">
@@ -68,17 +68,20 @@
     </b-row>
   </div>
 </template>
+
 <script>
 // TODO Not obvious enough why the Next button doesn't appear.  Greyed out?  Indications?
 const OurFilePond = () => import('~/components/OurFilePond')
 const PostPhoto = () => import('~/components/PostPhoto')
 const PostItem = () => import('~/components/PostItem')
+const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
     OurFilePond,
     PostPhoto,
-    PostItem
+    PostItem,
+    NoticeMessage
   },
   props: {
     id: {
