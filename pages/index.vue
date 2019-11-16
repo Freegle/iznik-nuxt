@@ -18,14 +18,14 @@
           All completely free. Freegle: it's like online dating for stuff.
         </h5>
         <b-row class="mt-4">
-          <b-col style="padding-right:7.5px;" cols="6" md="5">
+          <b-col class="half-pad-col-right" cols="6" md="5">
             <nuxt-link to="/give">
               <b-btn block variant="success" class="float-left" size="lg">
                 <v-icon name="gift" />&nbsp;Give Stuff
               </b-btn>
             </nuxt-link>
           </b-col>
-          <b-col style="padding-left:7.5px;" offset="0" offset-md="2" cols="6" md="5">
+          <b-col class="half-pad-col-left" offset="0" offset-md="2" cols="6" md="5">
             <nuxt-link to="/find">
               <b-btn block variant="primary" class="float-right" size="lg">
                 <v-icon name="search" />&nbsp;Find Stuff
@@ -151,6 +151,14 @@
 
 <style scoped lang="scss">
 @import 'color-vars';
+
+.half-pad-col-right {
+  padding-right:7.5px;
+}
+
+.half-pad-col-left {
+  padding-left:7.5px;
+}
 
 .footer {
   position: absolute;
