@@ -153,11 +153,11 @@
 @import 'color-vars';
 
 .half-pad-col-right {
-  padding-right:7.5px;
+  padding-right: 7.5px;
 }
 
 .half-pad-col-left {
-  padding-left:7.5px;
+  padding-left: 7.5px;
 }
 
 .footer {

@@ -10,6 +10,8 @@
     size="lg"
     hide-footer
     no-close-on-backdrop
+    :hide-header-close="modalIsForced"
+    :no-close-on-esc="modalIsForced"
   >
     <b-row>
       <b-col class="text-center pb-3">
@@ -227,8 +229,17 @@ export default {
       return ret
     },
 
-    showModal() {
-      return this.pleaseShowModal || this.$store.getters['auth/forceLogin']()
+    showModal: {
+      get() {
+        return this.pleaseShowModal || this.$store.getters['auth/forceLogin']()
+      },
+      set(value) {
+        this.pleaseShowModal = value
+      }
+    },
+
+    modalIsForced() {
+      return this.$store.getters['auth/forceLogin']()
     },
 
     loggedInEver() {
