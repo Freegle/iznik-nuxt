@@ -7,17 +7,11 @@ export const state = () => ({
 })
 
 function getUserByID(state, id) {
-  let user = null
+  if (!state || !state.list || !(id in state.list)) {
+    return null
+  }
 
-  Object.keys(state.list).forEach(key => {
-    const item = state.list[key]
-
-    if (parseInt(key) === parseInt(id)) {
-      user = item
-    }
-  })
-
-  return user
+  return state.list[id]
 }
 
 export const mutations = {
