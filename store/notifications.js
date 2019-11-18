@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import union from 'lodash/union'
 import twem from '~/assets/js/twem'
 
 export const state = () => ({
@@ -22,7 +23,7 @@ export const mutations = {
             .trim()
         }
       }
-      state.list = [...state.list, ...notifications]
+      state.list = union(state.list, notifications)
     }
   },
 
@@ -39,11 +40,8 @@ export const mutations = {
   },
 
   seen(state, id) {
-    console.log('Seen', id)
     for (let ix = 0; ix < state.list.length; ix++) {
-      console.log('Compare', state.list[ix].id)
       if (id === state.list[ix].id) {
-        console.log('Found')
         state.list[ix].seen = 1
       }
     }
