@@ -13,7 +13,7 @@
           <h5 class="text-center">
             We've put your offer here first:
           </h5>
-          <groupHeader v-if="group" :key="'groupheader-' + group.id" v-bind="group" show-join="false" />
+          <groupHeader v-if="group" :key="'groupheader-' + group.id" v-bind="group" :show-join="false" />
           <p class="text-center mt-2">
             We'll let people know about your item, and contact you when people are interested via Chat (on here) and email
             (check your spam!)
