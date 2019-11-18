@@ -94,7 +94,7 @@ export const getters = {
     return state.context
   },
 
-  area: state => id => {
+  area: state => {
     return state.area
   }
 }
