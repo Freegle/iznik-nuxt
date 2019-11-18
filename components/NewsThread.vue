@@ -3,35 +3,36 @@
     <b-card :style="'background-color:' + backgroundColor" no-body>
       <b-card-body class="p-1 p-sm-2">
         <b-card-text>
-          <b-dropdown class="float-right" right variant="white">
-            <template slot="button-content" />
-            <b-dropdown-item :href="'/chitchat/' + newsfeed.id" target="_blank">
-              Open in new window
-            </b-dropdown-item>
-            <b-dropdown-item :b-v-modal="'newsEdit' + newsfeed.id" @click="show">
-              Edit
-            </b-dropdown-item>
-            <b-dropdown-item @click="unfollow">
-              Unfollow this thread
-            </b-dropdown-item>
-            <b-dropdown-item @click="report">
-              Report this thread or one of its replies
-            </b-dropdown-item>
-            <b-dropdown-item v-if="parseInt(me.id) === parseInt(newsfeed.userid) || mod" @click="deleteIt">
-              Delete this thread
-            </b-dropdown-item>
-          </b-dropdown>
-          <news-message v-if="newsfeed.type === 'Message'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
-          <news-about-me v-else-if="newsfeed.type === 'AboutMe'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
-          <news-community-event v-else-if="newsfeed.type === 'CommunityEvent'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
-          <news-volunteer-opportunity v-else-if="newsfeed.type === 'VolunteerOpportunity'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
-          <news-story v-else-if="newsfeed.type === 'Story'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
-          <news-alert v-else-if="newsfeed.type === 'Alert'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
-          <news-noticeboard v-else-if="newsfeed.type === 'Noticeboard'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
-          <!-- TODO Design - Replace this with a notice-message component. Fix the issue with the floated dropdown above first -->
-          <b-alert v-else variant="danger" show>
+          <div v-if="isNewsComponent">
+            <b-dropdown class="float-right" right variant="white">
+              <template slot="button-content" />
+              <b-dropdown-item :href="'/chitchat/' + newsfeed.id" target="_blank">
+                Open in new window
+              </b-dropdown-item>
+              <b-dropdown-item :b-v-modal="'newsEdit' + newsfeed.id" @click="show">
+                Edit
+              </b-dropdown-item>
+              <b-dropdown-item @click="unfollow">
+                Unfollow this thread
+              </b-dropdown-item>
+              <b-dropdown-item @click="report">
+                Report this thread or one of its replies
+              </b-dropdown-item>
+              <b-dropdown-item v-if="parseInt(me.id) === parseInt(newsfeed.userid) || mod" @click="deleteIt">
+                Delete this thread
+              </b-dropdown-item>
+            </b-dropdown>
+            <component
+              :is="newsComponentName"
+              :id="newsfeed.id"
+              :newsfeed="newsfeed"
+              :users="users"
+              @focus-comment="focusComment"
+            />
+          </div>
+          <notice-message v-else variant="danger">
             Unknown item type {{ newsfeed.type }}
-          </b-alert>
+          </notice-message>
         </b-card-text>
       </b-card-body>
       <div slot="footer">
@@ -187,7 +188,16 @@ export default {
       replyingTo: null,
       threadcomment: null,
       showAllReplies: false,
-      newsreport: false
+      newsreport: false,
+      newsComponents: {
+        AboutMe: 'NewsAboutMe',
+        Message: 'NewMessage',
+        CommunityEvent: 'NewsCommunityEvent',
+        VolunteerOpportunity: 'NewsVolunteerOpportunity',
+        Story: 'NewsStory',
+        Alert: 'NewsAlert',
+        NoticeBoard: 'NewsNoticeboard'
+      }
     }
   },
   computed: {
@@ -236,6 +246,12 @@ export default {
       }
 
       return ret
+    },
+    isNewsComponent() {
+      return this.newsfeed.type in this.newsComponents
+    },
+    newsComponentName() {
+      return this.isNewsComponent ? this.newsComponents[this.newsfeed.type] : ''
     }
   },
   methods: {
