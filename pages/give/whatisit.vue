@@ -73,12 +73,10 @@ export default {
   },
   computed: {
     postcode() {
-      return this.$store.getters['compose/getPostcode']()
+      return this.$store.getters['compose/getPostcode']
     },
     ids() {
-      const messages = Object.values(
-        this.$store.getters['compose/getMessages']()
-      )
+      const messages = Object.values(this.$store.getters['compose/getMessages'])
 
       let ids = []
       for (const message of messages) {
@@ -95,9 +93,7 @@ export default {
     },
 
     valid() {
-      const messages = Object.values(
-        this.$store.getters['compose/getMessages']()
-      )
+      const messages = Object.values(this.$store.getters['compose/getMessages'])
       let valid = true
 
       if (messages) {
@@ -146,7 +142,7 @@ export default {
 
       // If we don't have a group currently which is in the list near this postcode, choose the closest.  That
       // allows people to select further away groups if they wish.
-      const groupid = this.$store.getters['compose/getGroup']()
+      const groupid = this.$store.getters['compose/getGroup']
 
       if (pc && pc.groupsnear) {
         let found = false

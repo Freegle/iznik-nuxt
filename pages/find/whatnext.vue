@@ -86,7 +86,7 @@ export default {
   },
   computed: {
     group() {
-      const groupid = this.$store.getters['compose/getGroup']()
+      const groupid = this.$store.getters['compose/getGroup']
       const group = this.$store.getters['group/get'](groupid)
       return group
     }

@@ -94,7 +94,7 @@ export default {
 
       // If we don't have a group currently which is in the list near this postcode, choose the closest.  That
       // allows people to select further away groups if they wish.
-      const groupid = this.$store.getters['compose/getGroup']()
+      const groupid = this.$store.getters['compose/getGroup']
 
       if (pc && pc.groupsnear) {
         let found = false

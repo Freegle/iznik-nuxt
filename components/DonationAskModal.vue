@@ -75,10 +75,10 @@ export default {
       }
     },
     target() {
-      return this.$store.getters['donations/target']()
+      return this.$store.getters['donations/target']
     },
     raised() {
-      return this.$store.getters['donations/raised']()
+      return this.$store.getters['donations/raised']
     },
     targetMet() {
       // Have we met our per group target?  If so then we'll do a global donation appeal.

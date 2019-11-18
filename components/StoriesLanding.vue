@@ -29,7 +29,7 @@ export default {
   },
   computed: {
     sortedStories() {
-      let stories = this.$store.getters['stories/list']()
+      let stories = this.$store.getters['stories/list']
 
       if (stories) {
         stories = Object.values(stories)

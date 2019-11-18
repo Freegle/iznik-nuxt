@@ -225,7 +225,7 @@ export default {
       name: 'Volunteers'
     })
 
-    const volunteers = store.getters['team/get']()
+    const volunteers = store.getters['team/get']
 
     await store.dispatch('team/clear')
 
@@ -233,7 +233,7 @@ export default {
       name: 'Board'
     })
 
-    const board = store.getters['team/get']()
+    const board = store.getters['team/get']
     console.log('BOard', board)
 
     return {

@@ -65,7 +65,7 @@ export default {
   },
   computed: {
     volunteerings() {
-      return this.$store.getters['volunteerops/sortedList']()
+      return this.$store.getters['volunteerops/sortedList']
     }
   },
   mounted() {
@@ -74,18 +74,18 @@ export default {
 
   methods: {
     loadMore: async function($state) {
-      let volunteerings = this.$store.getters['volunteerops/list']()
+      let volunteerings = this.$store.getters['volunteerops/list']
       const currentCount =
         volunteerings && volunteerings.length ? volunteerings.length : 0
 
-      this.context = this.$store.getters['volunteerops/getContext']()
+      this.context = this.$store.getters['volunteerops/getContext']
 
       await this.$store.dispatch('volunteerops/fetch', {
         groupid: this.groupid ? this.groupid : null,
         context: this.context
       })
 
-      volunteerings = this.$store.getters['volunteerops/list']()
+      volunteerings = this.$store.getters['volunteerops/list']
 
       const newCount =
         volunteerings && volunteerings.length ? volunteerings.length : 0

@@ -186,7 +186,7 @@ export default {
 
   mounted() {
     if (process.browser) {
-      const user = this.$store.getters['auth/user']()
+      const user = this.$store.getters['auth/user']
 
       if (user) {
         this.goHome()
@@ -195,7 +195,7 @@ export default {
         // storage, so we don't know if we're logged in. When it does get loaded, this watch will fire.
         this.userWatch = this.$store.watch(
           (state, getters) => {
-            const user = this.$store.getters['auth/user']()
+            const user = this.$store.getters['auth/user']
             return user
           },
           (newValue, oldValue) => {

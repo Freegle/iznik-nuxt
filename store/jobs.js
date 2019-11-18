@@ -20,7 +20,7 @@ export const mutations = {
 }
 
 export const getters = {
-  list: state => () => {
+  list: state => {
     return state.list
   }
 }

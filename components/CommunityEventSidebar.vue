@@ -36,7 +36,7 @@ export default {
   },
   computed: {
     events() {
-      return this.$store.getters['communityevents/sortedList']()
+      return this.$store.getters['communityevents/sortedList']
     }
   },
   mounted() {

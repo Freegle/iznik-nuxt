@@ -68,15 +68,15 @@ export const mutations = {
 }
 
 export const getters = {
-  forceLogin: state => () => {
+  forceLogin: state => {
     return state.forceLogin
   },
 
-  loggedInEver: state => () => {
+  loggedInEver: state => {
     return state.loggedInEver
   },
 
-  user: state => () => {
+  user: state => {
     const ret = state.user
 
     if (ret && !ret.settings.notifications) {
@@ -92,7 +92,7 @@ export const getters = {
     return ret
   },
 
-  groups: state => () => {
+  groups: state => {
     return state.groups
   },
 
@@ -108,7 +108,7 @@ export const getters = {
     return ret
   },
 
-  nchan: state => () => {
+  nchan: state => {
     return state.nchan
   }
 }

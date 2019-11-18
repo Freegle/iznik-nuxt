@@ -72,11 +72,11 @@ export const getters = {
     return ret
   },
 
-  list: state => () => {
+  list: state => {
     return state.list
   },
 
-  sortedList: state => () => {
+  sortedList: state => {
     const k = Object.values(state.list)
     return k.sort(function(a, b) {
       if (a.earliestDate && b.earliestDate) {
@@ -90,7 +90,7 @@ export const getters = {
     })
   },
 
-  getContext: state => () => {
+  getContext: state => {
     let ret = null
 
     if (state.context && state.context.end) {

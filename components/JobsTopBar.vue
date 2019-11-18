@@ -25,7 +25,7 @@ export default {
   },
   computed: {
     jobs() {
-      let jobs = this.$store.getters['jobs/list']()
+      let jobs = this.$store.getters['jobs/list']
       jobs = jobs.slice(0, 3)
       return jobs
     }
@@ -33,7 +33,7 @@ export default {
   mounted() {
     this.$store.dispatch('jobs/clear')
 
-    const me = this.$store.getters['auth/user']()
+    const me = this.$store.getters['auth/user']
     let location = null
 
     if (

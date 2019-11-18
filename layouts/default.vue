@@ -421,23 +421,23 @@ export default {
 
   computed: {
     loggedIn() {
-      const ret = Boolean(this.$store.getters['auth/user']())
+      const ret = Boolean(this.$store.getters['auth/user'])
       return ret
     },
     me() {
-      return this.$store.getters['auth/user']()
+      return this.$store.getters['auth/user']
     },
     notifications() {
       const notifications = Object.values(
-        this.$store.getters['notifications/list']()
+        this.$store.getters['notifications/list']
       )
       return notifications
     },
     notificationCount() {
-      return this.$store.getters['notifications/count']()
+      return this.$store.getters['notifications/count']
     },
     chatCount() {
-      return Object.values(this.$store.getters['chats/list']()).reduce(
+      return Object.values(this.$store.getters['chats/list']).reduce(
         (total, chat) => total + chat.unseen,
         0
       )
@@ -490,7 +490,7 @@ export default {
     // Poll regularly for new ones.  Would be nice if this was event driven instead but requires server work.
     this.notificationPoll = setTimeout(this.getNotificationCount, 30000)
 
-    const me = this.$store.getters['auth/user']()
+    const me = this.$store.getters['auth/user']
 
     if (me && me.id) {
       console.log('Start NCHAN from mount')
@@ -536,7 +536,7 @@ export default {
 
       // We store the last message we got from NCHAN.  This avoids us getting duplicate messages (triggering server
       // work) when we load up.
-      const lastNCHAN = this.$store.getters['auth/nchan']()
+      const lastNCHAN = this.$store.getters['auth/nchan']
 
       if (lastNCHAN) {
         this.nchan.lastMessageId = lastNCHAN.id
@@ -620,7 +620,7 @@ export default {
           .dispatch('notifications/list')
           .then(() => {
             try {
-              const notifications = this.$store.getters['notifications/list']()
+              const notifications = this.$store.getters['notifications/list']
 
               if (currentCount === notifications.length) {
                 this.complete = true

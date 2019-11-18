@@ -225,12 +225,12 @@ export default {
 
   computed: {
     me() {
-      const user = this.$store.getters['auth/user']()
+      const user = this.$store.getters['auth/user']
       return user
     },
     selectedArea: {
       get: function() {
-        const remembered = this.$store.getters['newsfeed/area']()
+        const remembered = this.$store.getters['newsfeed/area']
 
         return remembered || 0
       },
@@ -241,7 +241,7 @@ export default {
       }
     },
     users() {
-      const users = this.$store.getters['newsfeed/users']()
+      const users = this.$store.getters['newsfeed/users']
       return users
     }
   },
@@ -327,7 +327,7 @@ export default {
 
     async loadMore($state) {
       this.busy = true
-      const user = this.$store.getters['auth/user']()
+      const user = this.$store.getters['auth/user']
 
       if (!user) {
         if ($state.complete) {
@@ -335,7 +335,7 @@ export default {
         }
       } else {
         try {
-          const context = this.$store.getters['newsfeed/getContext']()
+          const context = this.$store.getters['newsfeed/getContext']
 
           if (this.id) {
             // Just one - fetch it by id.
@@ -374,7 +374,7 @@ export default {
             })
 
             // One need this one entry.
-            this.newsfeed = this.$store.getters['newsfeed/newsfeed']()
+            this.newsfeed = this.$store.getters['newsfeed/newsfeed']
             if ($state.loaded) {
               $state.loaded()
             }
@@ -408,7 +408,7 @@ export default {
         })
 
         // Show the new message
-        this.newsfeed = this.$store.getters['newsfeed/newsfeed']()
+        this.newsfeed = this.$store.getters['newsfeed/newsfeed']
 
         // Clear the textarea now it's sent.
         this.startThread = null

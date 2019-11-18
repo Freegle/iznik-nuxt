@@ -82,15 +82,15 @@ export const getters = {
     return ret
   },
 
-  newsfeed: state => () => {
+  newsfeed: state => {
     return state.newsfeed
   },
 
-  users: state => () => {
+  users: state => {
     return state.users
   },
 
-  getContext: state => () => {
+  getContext: state => {
     return state.context
   },
 

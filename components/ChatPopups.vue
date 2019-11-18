@@ -31,12 +31,12 @@ export default {
   computed: {
     chatlist() {
       // The popup info is held in our local store.
-      const popups = Object.values(this.$store.getters['popupchats/list']())
+      const popups = Object.values(this.$store.getters['popupchats/list'])
 
       // We want the chats which are currently set to be popups.
       const ret = []
 
-      const chats = Object.values(this.$store.getters['chats/list']())
+      const chats = Object.values(this.$store.getters['chats/list'])
 
       // There will be few popups, so although this involves a scan of all chats, the performance should be ok.
       for (const popup of popups) {

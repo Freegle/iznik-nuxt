@@ -263,7 +263,7 @@ export default {
       return count
     },
     searches() {
-      const ret = this.$store.getters['searches/list']()
+      const ret = this.$store.getters['searches/list']
       return ret
     }
   },
@@ -301,8 +301,8 @@ export default {
 
         this.busy = false
 
-        this.messages = this.$store.getters['messages/getAll']()
-        this.context = this.$store.getters['messages/getContext']()
+        this.messages = this.$store.getters['messages/getAll']
+        this.context = this.$store.getters['messages/getContext']
 
         if (currentCount !== this.messages.length) {
           // More to load

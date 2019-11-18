@@ -193,7 +193,7 @@ export default {
       this.busy = true
 
       const term = this.$refs.autocomplete.$refs.input.value
-      const postcode = this.$store.getters['compose/getPostcode']()
+      const postcode = this.$store.getters['compose/getPostcode']
 
       if (!postcode) {
         // No postcode.  This can happen if we are called before the store has loaded.
@@ -233,10 +233,10 @@ export default {
               this.group.id
             )
           } else {
-            this.messages = this.$store.getters['messages/getAll']()
+            this.messages = this.$store.getters['messages/getAll']
           }
 
-          this.context = this.$store.getters['messages/getContext']()
+          this.context = this.$store.getters['messages/getContext']
 
           console.log('Lengths', currentCount, this.messages.length)
           if (currentCount === this.messages.length) {

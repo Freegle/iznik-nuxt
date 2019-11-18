@@ -195,7 +195,7 @@ export default {
       return this.$store.getters['newsfeed/get'](this.id)
     },
     me() {
-      return this.$store.getters['auth/user']()
+      return this.$store.getters['auth/user']
     },
     mod() {
       const me = this.me

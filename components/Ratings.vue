@@ -59,7 +59,7 @@ export default {
   },
   computed: {
     myid() {
-      const me = this.$store.getters['auth/user']()
+      const me = this.$store.getters['auth/user']
       return me ? me.id : null
     },
     user() {

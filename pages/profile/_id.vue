@@ -237,7 +237,7 @@ export default {
     })
 
     return {
-      messages: store.getters['messages/getAll']()
+      messages: store.getters['messages/getAll']
     }
   },
   created() {

@@ -64,7 +64,7 @@ export default {
   },
   computed: {
     jobs() {
-      const ret = this.$store.getters['jobs/list']()
+      const ret = this.$store.getters['jobs/list']
       return ret
     },
     location() {
@@ -73,7 +73,7 @@ export default {
       if (this.suppliedLocation) {
         ret = this.suppliedLocation
       } else {
-        const me = this.$store.getters['auth/user']()
+        const me = this.$store.getters['auth/user']
 
         if (
           me &&

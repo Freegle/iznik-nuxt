@@ -65,7 +65,7 @@ export default {
         })
       }
 
-      const myGroups = this.$store.getters['auth/groups']()
+      const myGroups = this.$store.getters['auth/groups']
 
       for (const group of myGroups) {
         if (group.type === 'Freegle') {

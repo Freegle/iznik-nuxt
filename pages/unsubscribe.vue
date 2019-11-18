@@ -69,17 +69,17 @@ export default {
   },
   computed: {
     loggedIn() {
-      const ret = Boolean(this.$store.getters['auth/user']())
+      const ret = Boolean(this.$store.getters['auth/user'])
       return ret
     },
     groupCount() {
-      const myGroups = this.$store.getters['auth/groups']()
+      const myGroups = this.$store.getters['auth/groups']
       return myGroups ? myGroups.length : 0
     }
   },
   methods: {
     unsubscribe() {
-      const me = this.$store.getters['auth/user']()
+      const me = this.$store.getters['auth/user']
 
       if (!me) {
         // If we're trying to do this, we must have logged in at some point in the past, even if not on this device
@@ -94,7 +94,7 @@ export default {
     async leave() {
       this.leaving = true
 
-      const me = this.$store.getters['auth/user']()
+      const me = this.$store.getters['auth/user']
 
       if (this.groupid) {
         await this.$store.dispatch('auth/leaveGroup', {

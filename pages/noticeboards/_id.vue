@@ -86,7 +86,7 @@ export default {
   computed: {
     google: gmapApi,
     noticeboards() {
-      return this.$store.getters['noticeboards/list']()
+      return this.$store.getters['noticeboards/list']
     },
     mapHeight() {
       const contWidth = this.$refs.mapcont ? this.$refs.mapcont.$el.width : 0

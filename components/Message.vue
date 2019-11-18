@@ -229,10 +229,10 @@ export default {
     },
     replyToSend() {
       let ret = null
-      const me = this.$store.getters['auth/user']()
+      const me = this.$store.getters['auth/user']
 
       if (me) {
-        ret = this.$store.getters['reply/get']()
+        ret = this.$store.getters['reply/get']
       }
 
       return ret
@@ -286,7 +286,7 @@ export default {
       console.log('Send reply', this.reply, this.$refs, this.expanded)
 
       if (this.reply) {
-        const me = this.$store.getters['auth/user']()
+        const me = this.$store.getters['auth/user']
 
         if (me && me.id) {
           // We have several things to do:
@@ -294,8 +294,8 @@ export default {
           // - post our reply
           // - open the popup chat so they see what happened
           this.replying = true
-          const me = this.$store.getters['auth/user']()
-          const myGroups = this.$store.getters['auth/groups']()
+          const me = this.$store.getters['auth/user']
+          const myGroups = this.$store.getters['auth/groups']
           let found = false
           let tojoin = null
 

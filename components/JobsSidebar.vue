@@ -34,13 +34,13 @@ export default {
   },
   computed: {
     jobs() {
-      return this.$store.getters['jobs/list']()
+      return this.$store.getters['jobs/list']
     }
   },
   mounted() {
     this.$store.dispatch('jobs/clear')
 
-    const me = this.$store.getters['auth/user']()
+    const me = this.$store.getters['auth/user']
     let location = null
 
     if (

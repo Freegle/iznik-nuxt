@@ -569,7 +569,7 @@ export default {
         force: true
       })
 
-      ret.me = store.getters['auth/user']()
+      ret.me = store.getters['auth/user']
       ret.emailsOn = !Object.keys(ret.me).includes('onholidaytill')
     } catch (e) {}
 
@@ -583,7 +583,7 @@ export default {
         force: true
       })
 
-      const me = this.$store.getters['auth/user']()
+      const me = this.$store.getters['auth/user']
       this.me = me
     },
 

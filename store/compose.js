@@ -105,28 +105,28 @@ export const mutations = {
 }
 
 export const getters = {
-  getEmail: state => () => {
+  getEmail: state => {
     return state.email
   },
-  getEmailAt: state => () => {
+  getEmailAt: state => {
     return state.emailAt
   },
-  getPostcode: state => () => {
+  getPostcode: state => {
     return state.postcode
   },
-  getGroup: state => () => {
+  getGroup: state => {
     return state.group
   },
   getMessage: state => id => {
     return state.messages[id]
   },
-  getMessages: state => () => {
+  getMessages: state => {
     return state.messages
   },
   getAttachments: state => id => {
     return state.attachments[id] ? state.attachments[id] : []
   },
-  getProgress: state => () => {
+  getProgress: state => {
     return (Math.min(state.progress, state.max - 1) * 100) / state.max
   }
 }

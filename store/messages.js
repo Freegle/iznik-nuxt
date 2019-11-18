@@ -60,7 +60,7 @@ export const getters = {
 
     return ret
   },
-  getContext: state => () => {
+  getContext: state => {
     let ret = null
 
     if (state.context && state.context.id) {
@@ -79,7 +79,7 @@ export const getters = {
 
     return ret
   },
-  getAll: state => () => {
+  getAll: state => {
     return state.list
   }
 }

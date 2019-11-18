@@ -255,7 +255,7 @@ export default {
     me() {
       // The user who is us
       let ret = null
-      const me = this.$store.getters['auth/user']()
+      const me = this.$store.getters['auth/user']
       if (this.chat && this.chat.user1 && me) {
         ret =
           this.chat.user1 &&
@@ -534,7 +534,7 @@ export default {
           collection: 'AllUser'
         })
 
-        this.ouroffers = this.$store.getters['messages/getAll']()
+        this.ouroffers = this.$store.getters['messages/getAll']
 
         // Find the last message referenced in this chat, if any.  That's the most likely one you'd want to promise,
         // so it should be the default.

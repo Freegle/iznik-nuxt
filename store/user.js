@@ -32,7 +32,7 @@ export const getters = {
     return getUserByID(state, id)
   },
 
-  list: state => () => {
+  list: state => {
     return state.list
   },
 

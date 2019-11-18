@@ -415,7 +415,7 @@ export default {
         id: this.groupname
       })
 
-      const groups = this.$store.getters['group/list']()
+      const groups = this.$store.getters['group/list']
       for (const ix in groups) {
         const group = groups[ix]
 

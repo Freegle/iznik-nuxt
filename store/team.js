@@ -15,7 +15,7 @@ export const mutations = {
 }
 
 export const getters = {
-  get: state => () => {
+  get: state => {
     return state.team
   }
 }

@@ -31,7 +31,7 @@ export default {
   mixins: [loginRequired],
   computed: {
     sortedStories() {
-      const stories = this.$store.getters['stories/list']()
+      const stories = this.$store.getters['stories/list']
       return this.shuffle(stories)
     }
   },

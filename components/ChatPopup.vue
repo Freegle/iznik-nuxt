@@ -299,7 +299,7 @@ export default {
     },
     right() {
       let right = 0
-      const popups = Object.values(this.$store.getters['popupchats/list']())
+      const popups = Object.values(this.$store.getters['popupchats/list'])
 
       if (popups) {
         for (const popup of popups) {
@@ -467,7 +467,7 @@ export default {
           collection: 'AllUser'
         })
 
-        this.ouroffers = this.$store.getters['messages/getAll']()
+        this.ouroffers = this.$store.getters['messages/getAll']
 
         // Find the last message referenced in this chat, if any.  That's the most likely one you'd want to promise,
         // so it should be the default.

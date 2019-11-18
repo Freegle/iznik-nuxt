@@ -280,7 +280,7 @@ export default {
   },
   computed: {
     loggedIn() {
-      const ret = Boolean(this.$store.getters['auth/user']())
+      const ret = Boolean(this.$store.getters['auth/user'])
       return ret
     }
   }

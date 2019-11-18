@@ -117,7 +117,7 @@ export default {
   components: { DonationThermometer },
   computed: {
     target() {
-      return this.$store.getters['donations/target']()
+      return this.$store.getters['donations/target']
     }
   }
 }

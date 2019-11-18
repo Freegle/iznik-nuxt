@@ -63,7 +63,7 @@ export default {
   },
   computed: {
     events() {
-      return this.$store.getters['communityevents/sortedList']()
+      return this.$store.getters['communityevents/sortedList']
     }
   },
   mounted() {
@@ -71,17 +71,17 @@ export default {
   },
   methods: {
     loadMore: async function($state) {
-      let events = this.$store.getters['communityevents/list']()
+      let events = this.$store.getters['communityevents/list']
       const currentCount = events && events.length ? events.length : 0
 
-      this.context = this.$store.getters['communityevents/getContext']()
+      this.context = this.$store.getters['communityevents/getContext']
 
       await this.$store.dispatch('communityevents/fetch', {
         groupid: this.groupid ? this.groupid : null,
         context: this.context
       })
 
-      events = this.$store.getters['communityevents/list']()
+      events = this.$store.getters['communityevents/list']
 
       const newCount = events && events.length ? events.length : 0
       if (currentCount === newCount) {

@@ -81,7 +81,7 @@ export default {
           this.$store.dispatch('compose/setEmail', email)
         } else {
           // See if we have a local email stored from last time we were logged in.
-          email = this.$store.getters['compose/getEmail']()
+          email = this.$store.getters['compose/getEmail']
         }
 
         return email
@@ -91,7 +91,7 @@ export default {
       }
     },
     progressValue() {
-      const progress = this.$store.getters['compose/getProgress']()
+      const progress = this.$store.getters['compose/getProgress']
       console.log('Progress', progress)
       return progress
     }

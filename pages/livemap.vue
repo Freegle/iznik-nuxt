@@ -78,7 +78,7 @@ export default {
       return height
     },
     messagesToShow() {
-      const messages = this.$store.getters['activity/listRecentMessages']()
+      const messages = this.$store.getters['activity/listRecentMessages']
       const ret = []
 
       if (messages) {
@@ -116,7 +116,7 @@ export default {
 
       if (this.firstMessageTime === null) {
         // Very first messages we've fetched.  Get the oldest message.  We use this to time everything.
-        const messages = this.$store.getters['activity/listRecentMessages']()
+        const messages = this.$store.getters['activity/listRecentMessages']
 
         if (messages) {
           messages.forEach(message => {
@@ -136,7 +136,7 @@ export default {
     poll() {
       this.pollTimer = null
       this.nowTime = Date.now()
-      const messages = this.$store.getters['activity/listRecentMessages']()
+      const messages = this.$store.getters['activity/listRecentMessages']
 
       if (messages.length < 10) {
         // Poll to ensure we have a queue to show.

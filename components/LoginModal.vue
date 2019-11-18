@@ -198,7 +198,7 @@ export default {
 
   computed: {
     loggedIn() {
-      const ret = Boolean(this.$store.getters['auth/user']())
+      const ret = Boolean(this.$store.getters['auth/user'])
       return ret
     },
 
@@ -231,7 +231,7 @@ export default {
 
     showModal: {
       get() {
-        return this.pleaseShowModal || this.$store.getters['auth/forceLogin']()
+        return this.pleaseShowModal || this.$store.getters['auth/forceLogin']
       },
       set(value) {
         this.pleaseShowModal = value
@@ -239,11 +239,11 @@ export default {
     },
 
     modalIsForced() {
-      return this.$store.getters['auth/forceLogin']()
+      return this.$store.getters['auth/forceLogin']
     },
 
     loggedInEver() {
-      return this.$store.getters['auth/loggedInEver']()
+      return this.$store.getters['auth/loggedInEver']
     },
 
     signUp() {

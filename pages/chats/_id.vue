@@ -81,7 +81,7 @@ export default {
   computed: {
     sortedChats() {
       // We sort chats by unread first, then
-      let chats = Object.values(this.$store.getters['chats/list']())
+      let chats = Object.values(this.$store.getters['chats/list'])
 
       chats.sort(function(a, b) {
         if (b.unseen !== a.unseen) {
@@ -130,7 +130,7 @@ export default {
   },
 
   async asyncData({ app, params, store }) {
-    let chats = Object.values(store.getters['chats/list']())
+    let chats = Object.values(store.getters['chats/list'])
 
     if (chats) {
       // Got some - can start rendering.  Fire off an update to refresh us later if they've changed.  No rush, so
@@ -143,7 +143,7 @@ export default {
       await store.dispatch('chats/listChats')
     }
 
-    chats = Object.values(store.getters['chats/list']())
+    chats = Object.values(store.getters['chats/list'])
 
     return {
       chats: chats
@@ -177,7 +177,7 @@ export default {
           summary: true
         })
 
-        this.chats = Object.values(this.$store.getters['chats/list']())
+        this.chats = Object.values(this.$store.getters['chats/list'])
         this.clientSearch = false
 
         while (this.searchlast) {
@@ -189,7 +189,7 @@ export default {
             summary: true
           })
 
-          this.chats = Object.values(this.$store.getters['chats/list']())
+          this.chats = Object.values(this.$store.getters['chats/list'])
         }
 
         this.searching = null

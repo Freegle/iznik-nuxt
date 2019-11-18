@@ -36,7 +36,7 @@ export default {
   },
   computed: {
     opportunities() {
-      return this.$store.getters['volunteerops/sortedList']()
+      return this.$store.getters['volunteerops/sortedList']
     }
   },
   mounted() {

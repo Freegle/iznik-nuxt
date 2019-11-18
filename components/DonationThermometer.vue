@@ -44,10 +44,10 @@ export default {
   },
   computed: {
     target() {
-      return this.$store.getters['donations/target']()
+      return this.$store.getters['donations/target']
     },
     raised() {
-      return this.$store.getters['donations/raised']()
+      return this.$store.getters['donations/raised']
     }
   },
   mounted: async function() {

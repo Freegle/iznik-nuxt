@@ -21,7 +21,7 @@ export const mutations = {
 }
 
 export const getters = {
-  listRecentMessages: state => () => {
+  listRecentMessages: state => {
     return Object.values(state.recentmessages)
   }
 }

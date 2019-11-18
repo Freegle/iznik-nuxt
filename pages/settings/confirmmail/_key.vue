@@ -101,7 +101,7 @@ export default {
       force: true
     })
 
-    const me = this.$store.getters['auth/user']()
+    const me = this.$store.getters['auth/user']
     this.email = me.email
 
     try {

@@ -178,11 +178,11 @@ export default {
           if (this.groupid) {
             messages = this.$store.getters['messages/getByGroup'](this.groupid)
           } else {
-            messages = this.$store.getters['messages/getAll']()
+            messages = this.$store.getters['messages/getAll']
           }
 
           this.messages = messages
-          this.context = this.$store.getters['messages/getContext']()
+          this.context = this.$store.getters['messages/getContext']
 
           if (currentCount === messages.length) {
             this.complete = true

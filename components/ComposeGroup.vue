@@ -17,7 +17,7 @@ export default {
   },
   computed: {
     postcode() {
-      const pc = this.$store.getters['compose/getPostcode']()
+      const pc = this.$store.getters['compose/getPostcode']
       return pc
     },
     groupOptions() {
@@ -38,7 +38,7 @@ export default {
       }
 
       // Add any other groups we are a member of and might want to select.
-      const groups = this.$store.getters['auth/groups']()
+      const groups = this.$store.getters['auth/groups']
 
       for (const group of groups) {
         if (group.type === 'Freegle') {
@@ -57,7 +57,7 @@ export default {
     }
   },
   mounted() {
-    const stored = this.$store.getters['compose/getGroup']()
+    const stored = this.$store.getters['compose/getGroup']
     this.group = stored
   },
   methods: {

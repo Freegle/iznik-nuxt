@@ -179,7 +179,7 @@ export default {
       return height
     },
     groupsInBounds() {
-      const groups = this.$store.getters['group/list']()
+      const groups = this.$store.getters['group/list']
       const ret = []
 
       if (this.bounds) {
@@ -209,7 +209,7 @@ export default {
       grouptype: 'Freegle'
     })
 
-    this.groups = this.$store.getters['group/list']()
+    this.groups = this.$store.getters['group/list']
 
     for (const ix in this.groups) {
       const group = this.groups[ix]

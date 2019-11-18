@@ -121,7 +121,7 @@ export default {
   },
   methods: {
     async leave() {
-      const me = this.$store.getters['auth/user']()
+      const me = this.$store.getters['auth/user']
       this.joiningOrLeaving = true
 
       await this.$store.dispatch('auth/leaveGroup', {
@@ -132,7 +132,7 @@ export default {
       this.joiningOrLeaving = false
     },
     async join() {
-      const me = this.$store.getters['auth/user']()
+      const me = this.$store.getters['auth/user']
       this.joiningOrLeaving = true
 
       await this.$store.dispatch('auth/joinGroup', {

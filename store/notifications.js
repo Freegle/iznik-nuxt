@@ -51,15 +51,15 @@ export const mutations = {
 }
 
 export const getters = {
-  list: state => () => {
+  list: state => {
     return state.list
   },
 
-  getContext: state => () => {
+  getContext: state => {
     return state.context
   },
 
-  count: state => () => {
+  count: state => {
     return state.count
   }
 }
@@ -83,7 +83,7 @@ export const actions = {
 
   async count({ commit, state, rootGetters }, params) {
     // Check if we're logged in - no point checking for notifications if we're not.
-    const me = rootGetters['auth/user']()
+    const me = rootGetters['auth/user']
 
     if (me) {
       const res = await this.$axios.get(process.env.API + '/notification', {

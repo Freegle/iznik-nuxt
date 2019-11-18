@@ -11,11 +11,11 @@ export const mutations = {
 }
 
 export const getters = {
-  target: state => () => {
+  target: state => {
     return state.target
   },
 
-  raised: state => () => {
+  raised: state => {
     return state.raised
   }
 }

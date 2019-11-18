@@ -65,7 +65,7 @@ export default {
   computed: {
     jobs() {
       // Key difference from _location - move the job we're interested in to the start of the queue.
-      const ret = this.$store.getters['jobs/list']()
+      const ret = this.$store.getters['jobs/list']
 
       for (let i = 0; i < ret.length; i++) {
         if (ret[i].id === this.id) {
@@ -82,7 +82,7 @@ export default {
       if (this.suppliedLocation) {
         ret = this.suppliedLocation
       } else {
-        const me = this.$store.getters['auth/user']()
+        const me = this.$store.getters['auth/user']
 
         if (
           me &&
@@ -109,7 +109,7 @@ export default {
     document.head.appendChild(newScript)
 
     // Don't clear store - that means if we saw a job in the sidebar, then it will still be present.
-    const ret = this.$store.getters['jobs/list']()
+    const ret = this.$store.getters['jobs/list']
 
     let found = false
 
