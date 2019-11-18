@@ -25,7 +25,7 @@
       <ChatPane v-if="activeChat" v-bind="activeChat" />
     </b-col>
     <b-col cols="0" md="3" class="d-none d-md-block">
-      <SidebarRight :show-volunteer-opportunities="false" show-job-opportunities="true" />
+      <SidebarRight :show-volunteer-opportunities="false" :show-job-opportunities="true" />
     </b-col>
   </b-row>
 </template>
