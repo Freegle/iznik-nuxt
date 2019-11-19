@@ -12,12 +12,11 @@ export default {
       // Set up a watch on the store.  We do this because initially the store hasn't yet been reloaded from local
       // storage, so we don't know if we're logged in. When it does get loaded, this watch will fire.  So this way
       // we'll end up with the correct value of forceLogin set.
-      this.$store.watch(
-        (state, getters) => {
-          const user = this.$store.getters['auth/user']
-          return user
+      this.loginRequiredWatch = this.$store.watch(
+        () => {
+          return this.$store.getters['auth/user']
         },
-        (newValue, oldValue) => {
+        newValue => {
           if (!newValue) {
             this.$store.dispatch('auth/forceLogin', true)
           } else {
@@ -30,6 +29,12 @@ export default {
       this.$store.dispatch('auth/fetchUser', {
         components: ['me', 'groups']
       })
+    }
+  },
+
+  beforeDestroy() {
+    if (this.loginRequiredWatch) {
+      this.loginRequiredWatch()
     }
   }
 }
