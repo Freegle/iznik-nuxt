@@ -16,6 +16,8 @@
   </div>
 </template>
 <script>
+// TODO MINOR Some people haven't had Pavlovian training from Facebook to click on red notifications.  Consider a one-off
+//   popup to alert people to go and look at notifications or chat replies the first time they get one.
 const NotificationLovedPost = () => import('~/components/NotificationLovedPost')
 const NotificationLovedComment = () =>
   import('~/components/NotificationLovedComment')
