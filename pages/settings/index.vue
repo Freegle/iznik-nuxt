@@ -296,6 +296,7 @@
             </b-row>
             <b-row>
               <b-col>
+                <!-- TODO - This should ideally be a b-alert when it pops up but if the page loads with it already present then it should be a notice-message component -->
                 <b-alert v-if="me.phone" show variant="info">
                   <p>
                     It costs Freegle to send these - if you can, please:
