@@ -10,44 +10,23 @@ export default class CommunityEventAPI extends BaseAPI {
   }
 
   addGroup(id, groupid) {
-    return this.$patch({
-      id,
-      groupid,
-      action: 'AddGroup'
-    })
+    return this.$patch({ id, groupid, action: 'AddGroup' })
   }
 
   removeGroup(id, groupid) {
-    return this.$patch({
-      id,
-      groupid,
-      action: 'RemoveGroup'
-    })
+    return this.$patch({ id, groupid, action: 'RemoveGroup' })
   }
 
   setPhoto(id, photoid) {
-    return this.$patch({
-      id,
-      photoid,
-      action: 'SetPhoto'
-    })
+    return this.$patch({ id, photoid, action: 'SetPhoto' })
   }
 
   removeDate(id, dateid) {
-    return this.$patch({
-      id,
-      dateid,
-      action: 'RemoveDate'
-    })
+    return this.$patch({ id, dateid, action: 'RemoveDate' })
   }
 
   addDate(id, start, end) {
-    return this.$patch({
-      id,
-      start,
-      end,
-      action: 'RemoveDate'
-    })
+    return this.$patch({ id, start, end, action: 'RemoveDate' })
   }
 
   save(event) {
