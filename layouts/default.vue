@@ -249,7 +249,7 @@
 
 /*TODO DESIGN Menu dropdown on mobile needs a bit of love.*/
 /*TODO DESIGN Shrink navbar on scroll? */
- */
+
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Roboto, 'Helvetica Neue', Arial, sans-serif;
