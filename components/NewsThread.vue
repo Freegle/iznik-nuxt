@@ -36,6 +36,7 @@
         </b-card-text>
       </b-card-body>
       <div slot="footer">
+        <!-- TODO Minor - Refactor out the reply logic. Also bear in mind the logic in NewsReply -->
         <a v-if="!showAllReplies && newsfeed.replies.length > 10" href="#" variant="white" class="mb-3" @click="(e) => { e.preventDefault(); showAllReplies = true }">
           Show earlier {{ newsfeed.replies.length | pluralize(['reply', 'replies'], { includeNumber: false }) }} ({{ newsfeed.replies.length - 10 }})
         </a>
