@@ -73,10 +73,9 @@
               <notice-message v-if="userHasReneged" variant="warning">
                 <v-icon name="exclamation-triangle" />&nbsp;Things haven't always worked out for this freegler.  That might not be their fault, but please make very clear arrangements.
               </notice-message>
-              <!-- TODO Make this a notice-message component too -->
-              <p v-if="!spammer && showReplyTime && replytime" class="bg-info p-2 mb-0 clickme" @click="showInfo">
+              <notice-message v-if="!spammer && showReplyTime && replytime" class="clickme" @click.native="showInfo">
                 <v-icon name="info-circle" />&nbsp;Typically replies in <b>{{ replytime }}</b>.  Click for more info.
-              </p>
+              </notice-message>
               <notice-message v-if="spammer" variant="danger">
                 This person has been reported as a spammer or scammer.  Please do not talk to them and under no circumstances
                 send them any money.
