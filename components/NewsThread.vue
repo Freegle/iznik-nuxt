@@ -1,6 +1,6 @@
 <template>
   <div v-if="newsfeed && newsfeed.visible && !newsfeed.unfollowed" class="bg-white">
-    <b-card :style="'background-color:' + backgroundColor" no-body>
+    <b-card :class="backgroundColor" no-body>
       <b-card-body class="p-1 p-sm-2">
         <b-card-text>
           <div v-if="isNewsComponent">
@@ -120,22 +120,6 @@
   </div>
 </template>
 
-<style scoped lang="scss">
-.profilesm {
-  width: 25px !important;
-  height: 25px !important;
-}
-
-::v-deep .img-thumbnail {
-  cursor: pointer;
-
-  /*TODO DESIGN Should use same values as global.scss, maybe mixins*/
-  @media (max-width: 992px) {
-    max-width: 100px;
-  }
-}
-</style>
-
 <script>
 // TODO EH Refer to WANTED/OFFER/RECEIVED/TAKEN
 // TODO MINOR Attach to thread
@@ -198,6 +182,10 @@ export default {
         Story: 'NewsStory',
         Alert: 'NewsAlert',
         Noticeboard: 'NewsNoticeboard'
+      },
+      elementBackgroundColor: {
+        CommunityEvent: 'card__community-event',
+        VolunteerOpportunity: 'card__volunteer-opportunity'
       }
     }
   },
@@ -218,21 +206,7 @@ export default {
       )
     },
     backgroundColor() {
-      let col
-
-      switch (this.newsfeed.type) {
-        case 'CommunityEvent':
-          col = '#add8e62e'
-          break
-        case 'VolunteerOpportunity':
-          col = '#c3e6cb26'
-          break
-        default:
-          col = 'white'
-          break
-      }
-
-      return col
+      return this.elementBackgroundColor[this.newsfeed.type] || 'card__default'
     },
     repliestoshow() {
       let ret = []
@@ -319,3 +293,33 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
+.profilesm {
+  width: 25px !important;
+  height: 25px !important;
+}
+
+::v-deep .img-thumbnail {
+  cursor: pointer;
+
+  /*TODO DESIGN Should use same values as global.scss, maybe mixins*/
+  @media (max-width: 992px) {
+    max-width: 100px;
+  }
+}
+
+.card__community-event {
+  background-color: $color-gray-1;
+}
+
+.card__volunteer-opportunity {
+  background-color: $color-gray-2;
+}
+
+.card__default {
+  background-color: $color-white;
+}
+</style>
