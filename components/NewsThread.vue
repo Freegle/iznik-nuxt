@@ -192,12 +192,12 @@ export default {
       newsreport: false,
       newsComponents: {
         AboutMe: 'NewsAboutMe',
-        Message: 'NewMessage',
+        Message: 'NewsMessage',
         CommunityEvent: 'NewsCommunityEvent',
         VolunteerOpportunity: 'NewsVolunteerOpportunity',
         Story: 'NewsStory',
         Alert: 'NewsAlert',
-        NoticeBoard: 'NewsNoticeboard'
+        Noticeboard: 'NewsNoticeboard'
       }
     }
   },
