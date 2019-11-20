@@ -62,6 +62,9 @@ module.exports = {
     // Our directives
     '~/plugins/directives',
 
+    // Iznik $api setup
+    { src: '~plugins/api.js' },
+
     // Our parameters serialize differently from axios defaults
     { src: '~plugins/axios-serializer.js' },
     { src: '~plugins/axios-login.js' },

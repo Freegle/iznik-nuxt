@@ -120,27 +120,14 @@ export const actions = {
 
   logout({ commit }) {
     commit('setUser', null)
-
-    this.$axios.post(process.env.API + '/session', [], {
-      headers: {
-        'X-HTTP-Method-Override': 'DELETE'
-      }
-    })
-
+    this.$api.session.logout()
     this.$axios.defaults.headers.common.Authorization = null
   },
 
-  async forget({ commit, dispatch }) {
-    const res = await this.$axios.post(process.env.API + '/session', {
-      action: 'Forget'
-    })
-
-    console.log('Forget', res)
-    if (res.status === 200 && res.data.ret === 0) {
-      await dispatch('logout')
-    } else {
-      return res.data
-    }
+  async forget({ dispatch }) {
+    this.$api.session.forget()
+    await this.$api.session.forget()
+    await dispatch('logout')
   },
 
   setUser({ commit }, value) {
@@ -153,25 +140,19 @@ export const actions = {
   },
 
   async login({ commit, dispatch }, params) {
-    const res = await this.$axios.post(process.env.API + '/session', params)
+    const { user, persistent } = await this.$api.session.login(params)
 
-    if (res.status === 200 && res.data.ret === 0) {
-      // Login no longer required (if it was)
-      commit('forceLogin', false)
+    // Login no longer required (if it was)
+    commit('forceLogin', false)
 
-      // Save the persistent session token.
-      res.data.user.persistent = res.data.persistent
+    // Save the persistent session token.
+    user.persistent = persistent
 
-      // Login succeeded.  Set the user, which will trigger various rerendering if we were required to be logged in.
-      commit('setUser', res.data.user)
+    // Login succeeded.  Set the user, which will trigger various rerendering if we were required to be logged in.
+    commit('setUser', user)
 
-      // We need to fetch the user again to get the groups, which aren't returned by the login API.
-      dispatch('fetchUser')
-    } else {
-      // Login failed.
-      console.error('Login failed', res)
-      throw new Error('Login failed')
-    }
+    // We need to fetch the user again to get the groups, which aren't returned by the login API.
+    dispatch('fetchUser')
   },
 
   async signup({ commit, dispatch }, params) {
@@ -215,27 +196,20 @@ export const actions = {
       // Set the time now; this avoids multiple fetches at the start of page loads.
       commit('setFetched', Date.now())
 
-      const res = await this.$axios.get(process.env.API + '/session', {
-        params: params
-      })
+      const { me, persistent, groups } = await this.$api.session.fetch(params)
 
-      if (res.status === 200 && res.data.ret === 0) {
-        // Save the persistent session token.
-        res.data.me.persistent = res.data.persistent
+      // Save the persistent session token.
+      me.persistent = persistent
 
-        if (res.data.groups) {
-          res.data.me.groups = res.data.groups
-          commit('setGroups', res.data.groups)
-        }
+      if (groups) {
+        me.groups = groups
+        commit('setGroups', groups)
+      }
 
-        // Login succeeded.  Set the user, which will trigger various re-rendering if we were required to be logged in.
-        if (res.data.me) {
-          commit('setUser', res.data.me, params.components)
-          commit('forceLogin', false)
-        }
-      } else {
-        // Login failed.
-        throw new Error('Fetch user failed')
+      // Login succeeded.  Set the user, which will trigger various re-rendering if we were required to be logged in.
+      if (me) {
+        commit('setUser', me, params.components)
+        commit('forceLogin', false)
       }
     }
   },
@@ -247,41 +221,20 @@ export const actions = {
   },
 
   async saveEmail({ commit, dispatch, state }, params) {
-    const res = await this.$axios.post(process.env.API + '/session', params, {
-      headers: {
-        'X-HTTP-Method-Override': 'PATCH'
-      }
+    await this.$api.session.save(params)
+    await dispatch('fetchUser', {
+      components: ['me', 'groups', 'aboutme']
     })
-
-    if (res.status === 200 && res.data.ret === 0) {
-      await dispatch('fetchUser', {
-        components: ['me', 'groups', 'aboutme']
-      })
-    } else {
-      // TODO
-      console.error('saveUser failed')
-    }
-
-    return res
+    // TODO: no longer returning res, does it break anything?
   },
 
   async saveAndGet({ commit, dispatch, state }, params) {
-    const res = await this.$axios.post(process.env.API + '/session', params, {
-      headers: {
-        'X-HTTP-Method-Override': 'PATCH'
-      }
+    await this.$api.session.save(params)
+    await dispatch('fetchUser', {
+      components: NONMIN,
+      force: true
     })
-
-    if (res.status === 200 && res.data.ret === 0) {
-      await dispatch('fetchUser', {
-        components: NONMIN,
-        force: true
-      })
-    } else {
-      // TODO
-      throw new Error('saveAndGet failed')
-    }
-
+    // TODO: should we rely on returning this?
     return state.user
   },
 

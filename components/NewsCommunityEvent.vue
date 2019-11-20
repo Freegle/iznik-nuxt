@@ -19,7 +19,9 @@
         <span class="text-muted small">
           {{ $dayjs(newsfeed.timestamp).fromNow() }}
         </span>
-        on {{ newsfeed.communityevent.groups[0].namedisplay }}
+        <span v-if="newsfeed.communityevent.groups.length > 0">
+          on {{ newsfeed.communityevent.groups[0].namedisplay }}
+        </span>
       </b-col>
     </b-row>
     <b-row>
