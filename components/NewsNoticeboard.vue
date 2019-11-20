@@ -11,10 +11,9 @@
     <div>
       <p>To help Freegle, <b>{{ users[userid].displayname }}</b> printed a Freegle poster and put it up where people can see it.</p>
     </div>
-    <!-- TODO Design - Maybe replace this with a notice-message component.  How to test this? -->
-    <b-alert v-if="info.description" show variant="info" class="prewrap">
+    <notice-message v-if="info.description" class="prewrap">
       <b>"{{ info.description }}"</b>
-    </b-alert>
+    </notice-message>
     <p><b>We need your help to get more people freegling</b>.  Could you put one up too?</p>
     <iframe
       width="100%"
@@ -46,11 +45,13 @@ import twem from '~/assets/js/twem'
 import NewsBase from '~/components/NewsBase'
 const NewsUserIntro = () => import('~/components/NewsUserIntro')
 const NewsLoveComment = () => import('~/components/NewsLoveComment')
+const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
     NewsUserIntro,
-    NewsLoveComment
+    NewsLoveComment,
+    NoticeMessage
   },
   extends: NewsBase,
   computed: {
