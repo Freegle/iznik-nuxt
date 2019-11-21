@@ -1,3 +1,10 @@
+export class APIError extends Error {
+  constructor({ request, response }, message) {
+    super(message)
+    Object.assign(this, { request, response })
+  }
+}
+
 export default class BaseAPI {
   constructor({ $axios, path }) {
     this.$axios = $axios
@@ -5,17 +12,38 @@ export default class BaseAPI {
   }
 
   async $request(method, config) {
-    const res = await this.$axios.request({
+    const { status, data } = await this.$axios.request({
       ...config,
       method,
       url: this.$path,
       baseURL: process.env.API
     })
-    if (res.status !== 200 || res.data.ret !== 0) {
-      console.error('API error', res)
-      throw new Error('API error')
+    if (status !== 200 || data.ret !== 0) {
+      const message = [
+        'API Error',
+        method,
+        this.$path,
+        '->',
+        `ret: ${data.ret} status: ${data.status || 'Unknown'}`
+      ].join(' ')
+      throw new APIError(
+        {
+          request: {
+            path: this.$path,
+            method: method,
+            headers: config.headers,
+            params: config.params,
+            data: config.data
+          },
+          response: {
+            status,
+            data
+          }
+        },
+        message
+      )
     }
-    return res.data
+    return data
   }
 
   $get(params = {}) {

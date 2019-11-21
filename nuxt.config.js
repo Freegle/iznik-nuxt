@@ -65,6 +65,8 @@ module.exports = {
     // Iznik $api setup
     { src: '~plugins/api.js' },
 
+    { src: '~plugins/error-toasts.js' },
+
     // Our parameters serialize differently from axios defaults
     { src: '~plugins/axios-serializer.js' },
     { src: '~plugins/axios-login.js' },
@@ -171,7 +173,8 @@ module.exports = {
       'ProgressPlugin',
       'TabsPlugin',
       'TablePlugin',
-      'TooltipPlugin'
+      'TooltipPlugin',
+      'BVToastPlugin'
     ],
     directivePlugins: ['VBPopoverPlugin', 'VBTooltipPlugin', 'VBScrollspyPlugin']
   },
