@@ -1,6 +1,8 @@
 const pkg = require('./package')
 const FACEBOOK_APPID = '134980666550322'
 
+require('dotenv').config()
+
 // API is the constant the code uses.
 const API = '/api'
 
@@ -13,6 +15,10 @@ const PROXY_API = process.env.IZNIK_API || 'https://iznik.ilovefreegle.org'
 
 // Long polls interact badly with per-host connection limits so send to here instead.
 const CHAT_HOST = 'https://users.ilovefreegle.org:555'
+
+// Allow disabling of eslint autofix by setting "DISABLE_ESLINT_AUTOFIX=true" in env (e.g. .env file)
+// defaults to enabling autofixing
+const ESLINT_AUTOFIX = process.env.DISABLE_ESLINT_AUTOFIX !== 'false' ? false : true
 
 module.exports = {
   mode: 'universal',
@@ -196,7 +202,7 @@ module.exports = {
           loader: 'eslint-loader',
           exclude: /(node_modules)/,
           options: {
-            fix: true
+            fix: ESLINT_AUTOFIX
           }
         })
       }
