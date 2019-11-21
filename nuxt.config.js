@@ -65,8 +65,6 @@ module.exports = {
     // Iznik $api setup
     { src: '~plugins/api.js' },
 
-    { src: '~plugins/error-toasts.js' },
-
     // Our parameters serialize differently from axios defaults
     { src: '~plugins/axios-serializer.js' },
     { src: '~plugins/axios-login.js' },
@@ -81,6 +79,7 @@ module.exports = {
     { src: '~/plugins/dayjs'},
 
     // Some plugins are client-side features
+    { src: '~plugins/error-toasts.js', ssr: false },
     { src: '~plugins/vuex-persistedstate', ssr: false },
     { src: '~plugins/vue-drag-drop.js', ssr: false },
     { src: '~plugins/vue-draggable-resizable.js', ssr: false },
