@@ -25,6 +25,7 @@
     "cookie-universal-nuxt": "^2.0.16",
     "cookieparser": "^0.1.0",
     "cross-env": "^5.2.0",
+    "dotenv": "^8.2.0",
     "filepond": "^4.4.12",
     "filepond-plugin-file-validate-type": "^1.2.4",
     "filepond-plugin-image-preview": "^4.2.1",
