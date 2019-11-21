@@ -224,56 +224,43 @@ export const actions = {
           groupid: state.group
         }
 
-        promise = new Promise(function(resolve, reject) {
+        promise = new Promise((resolve, reject) => {
           console.log('Create draft')
-          self.$axios
-            .put(process.env.API + '/message', data)
-            .then(function(ret) {
+
+          self.$api.message
+            .put(data)
+            .then(({ id }) => {
               commit('incProgress')
+              // We've created a draft.  Submit it
+              console.log('Created draft, now submit', id)
 
-              if (ret.status === 200 && ret.data.ret === 0) {
-                // We've created a draft.  Submit it
-                console.log('Created draft, now submit', ret.data.id)
-
-                self.$axios
-                  .post(process.env.API + '/message', {
-                    action: 'JoinAndPost',
-                    email: state.email,
-                    id: ret.data.id
+              self.$api.message
+                .joinAndPost(id, state.email)
+                .then(({ groupid, newuser, newpassword }) => {
+                  commit('incProgress')
+                  // Success
+                  console.log('Submitted draft OK')
+                  commit('setMessage', {
+                    id: message.id,
+                    submitted: true,
+                    item: null,
+                    description: null
                   })
-                  .then(function(ret2) {
-                    commit('incProgress')
-
-                    if (ret2.status === 200 && ret2.data.ret === 0) {
-                      // Success
-                      console.log('Submitted draft OK')
-                      const groupid = ret2.data.groupid
-                      commit('setMessage', {
-                        id: message.id,
-                        submitted: true,
-                        item: null,
-                        description: null
-                      })
-                      commit('setAttachments', [])
-                      results.push({
-                        id: message.id,
-                        groupid: groupid,
-                        newuser: ret2.data.newuser,
-                        newpassword: ret2.data.newpassword
-                      })
-
-                      resolve(groupid)
-                    }
+                  commit('setAttachments', [])
+                  results.push({
+                    id: message.id,
+                    groupid,
+                    newuser,
+                    newpassword
                   })
-                  .catch(function(e) {
-                    // Failed
-                    console.error('Post of message failed', e)
-                    reject(e)
-                  })
-              } else {
-                console.error('Create of draft failed', ret)
-                reject(ret)
-              }
+
+                  resolve(groupid)
+                })
+                .catch(function(e) {
+                  // Failed
+                  console.error('Post of message failed', e)
+                  reject(e)
+                })
             })
             .catch(function(e) {
               // TODO
@@ -287,71 +274,54 @@ export const actions = {
           console.log('Existing message, update on server', message.id)
           dispatch('messages/patch', message, {
             root: true
-          }).then(function(ret) {
+          }).then(() => {
             commit('incProgress')
 
-            if (ret.status === 200 && ret.data.ret === 0) {
-              console.log('Updated, now convert back to draft')
-              dispatch(
-                'messages/update',
-                {
-                  id: message.id,
-                  action: 'RejectToDraft'
-                },
-                {
-                  root: true
-                }
-              ).then(function(ret2) {
-                commit('incProgress')
+            console.log('Updated, now convert back to draft')
+            dispatch(
+              'messages/update',
+              {
+                id: message.id,
+                action: 'RejectToDraft'
+              },
+              {
+                root: true
+              }
+            ).then(() => {
+              commit('incProgress')
 
-                if (ret2.status === 200 && ret.data.ret === 0) {
-                  console.log('Updated, now submit')
-                  self.$axios
-                    .post(process.env.API + '/message', {
-                      action: 'JoinAndPost',
-                      email: state.email,
-                      id: message.id
-                    })
-                    .then(function(ret2) {
-                      commit('incProgress')
-                      console.log('Submitted', ret2)
-                      if (ret2.status === 200 && ret2.data.ret === 0) {
-                        // Success
-                        const groupid = ret2.data.groupid
-                        commit('setMessage', {
-                          id: message.id,
-                          submitted: true,
-                          item: null,
-                          description: null
-                        })
-                        commit('setAttachments', [])
-                        results.push({
-                          id: message.id,
-                          groupid: groupid,
-                          newuser: ret2.data.newuser,
-                          newpassword: ret2.data.newpassword
-                        })
+              console.log('Updated, now submit')
+              self.$api.message
+                .joinAndPost(message.id, state.email)
+                .then(({ groupid, newuser, newpassword }) => {
+                  commit('incProgress')
+                  console.log('Submitted')
+                  // Success
+                  commit('setMessage', {
+                    id: message.id,
+                    submitted: true,
+                    item: null,
+                    description: null
+                  })
+                  commit('setAttachments', [])
+                  results.push({
+                    id: message.id,
+                    groupid,
+                    newuser,
+                    newpassword
+                  })
 
-                        resolve(groupid)
-                      }
-                    })
-                    .catch(function(e) {
-                      // Failed
-                      console.error('Post of message failed', e)
-                      reject(e)
-                    })
-                    .catch(function(e) {
-                      console.error('Edit of existing message failed', e)
-                    })
-                } else {
-                  console.error('Edit of exist message failed', ret2)
-                  reject(ret2)
-                }
-              })
-            } else {
-              console.error('Edit of exist message failed 2', ret)
-              reject(ret)
-            }
+                  resolve(groupid)
+                })
+                .catch(e => {
+                  // Failed
+                  console.error('Post of message failed', e)
+                  reject(e)
+                })
+                .catch(e => {
+                  console.error('Edit of existing message failed', e)
+                })
+            })
           })
         })
       }

@@ -39,6 +39,10 @@ export default class BaseAPI {
     return this.$postOverride('PUT', data)
   }
 
+  $realPut(data) {
+    return this.$request('PUT', { data })
+  }
+
   $patch(data) {
     return this.$postOverride('PATCH', data)
   }
