@@ -29,6 +29,7 @@
               :users="users"
               @focus-comment="focusComment"
             />
+            <NewsPreview v-if="newsfeed.preview" :preview="newsfeed.preview" class="mt-1"/>
           </div>
           <notice-message v-else variant="danger">
             Unknown item type {{ newsfeed.type }}
@@ -139,6 +140,7 @@ const NewsStory = () => import('~/components/NewsStory')
 const NewsAlert = () => import('~/components/NewsAlert')
 const NewsNoticeboard = () => import('~/components/NewsNoticeboard')
 const NoticeMessage = () => import('~/components/NoticeMessage')
+const NewsPreview = () => import('~/components/NewsPreview')
 
 export default {
   components: {
@@ -151,7 +153,8 @@ export default {
     NewsStory,
     NewsAlert,
     NewsNoticeboard,
-    NoticeMessage
+    NoticeMessage,
+    NewsPreview
   },
   props: {
     id: {

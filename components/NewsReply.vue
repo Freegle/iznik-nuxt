@@ -71,6 +71,7 @@
                     </span>
                   </span>
                 </span>
+                <NewsPreview v-if="reply.preview" :preview="reply.preview" class="mt-1" size="sm"/>
               </td>
             </tr>
           </tbody>
@@ -202,6 +203,7 @@ const NewsUserInfo = () => import('~/components/NewsUserInfo')
 const NewsHighlight = () => import('~/components/NewsHighlight')
 const ProfileModal = () => import('~/components/ProfileModal')
 const ChatButton = () => import('~/components/ChatButton')
+const NewsPreview = () => import('~/components/NewsPreview')
 
 export default {
   name: 'NewsReply',
@@ -209,7 +211,8 @@ export default {
     NewsUserInfo,
     NewsHighlight,
     ProfileModal,
-    ChatButton
+    ChatButton,
+    NewsPreview
   },
   props: {
     threadhead: {
