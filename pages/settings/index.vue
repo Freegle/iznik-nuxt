@@ -88,6 +88,17 @@
                 </b-card>
               </b-col>
             </b-row>
+            <b-row>
+              <b-col>
+                <p class="mt-2">
+                  We can help you arrange a collection time if you tell us when you're available over the next
+                  few days.
+                </p>
+                <b-btn variant="white" @click="availability">
+                  <v-icon name="calendar-alt" /> Edit Availability
+                </b-btn>
+              </b-col>
+            </b-row>
           </b-card-body>
         </b-card>
         <b-card border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
@@ -398,6 +409,7 @@
     <AboutMeModal ref="aboutmemodal" @change="update" />
     <ProfileModal :id="me ? me.id : null" ref="profilemodal" />
     <EmailConfirmModal ref="emailconfirm" />
+    <AvailabilityModal ref="availabilitymodal" />
   </div>
 </template>
 
@@ -422,6 +434,7 @@ import Vue from 'vue'
 import EmailConfirmModal from '~/components/EmailConfirmModal'
 import loginRequired from '@/mixins/loginRequired.js'
 const AboutMeModal = () => import('~/components/AboutMeModal')
+const AvailabilityModal = () => import('~/components/AvailabilityModal')
 const ProfileModal = () => import('~/components/ProfileModal')
 const Postcode = () => import('~/components/Postcode')
 const SettingsGroup = () => import('~/components/SettingsGroup')
@@ -431,6 +444,7 @@ export default {
   components: {
     EmailConfirmModal,
     AboutMeModal,
+    AvailabilityModal,
     ProfileModal,
     Postcode,
     SettingsGroup,
@@ -596,6 +610,9 @@ export default {
     },
     viewProfile() {
       this.$refs.profilemodal.show()
+    },
+    availability() {
+      this.$refs.availabilitymodal.show()
     },
     async changeUseProfile(c, e) {
       const settings = this.me.settings

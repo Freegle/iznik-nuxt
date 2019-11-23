@@ -1,9 +1,9 @@
 <template>
-  <b-card bg-variant="white" border-variant="grey" @click="open" :class="'clickme ' + (size === 'md' ? '' : 'p-1')">
+  <b-card bg-variant="white" border-variant="grey" :class="'clickme ' + (size === 'md' ? '' : 'p-1')" @click="open">
     <b-media>
-      <template slot="aside" v-if="preview.image">
-        <b-img lazy :src="preview.image" class="previewimage" v-if="size === 'md'" />
-        <b-img lazy :src="preview.image" class="previewimagesm" v-if="size === 'sm'" />
+      <template v-if="preview.image" slot="aside">
+        <b-img v-if="size === 'md'" lazy :src="preview.image" class="previewimage" />
+        <b-img v-if="size === 'sm'" lazy :src="preview.image" class="previewimagesm" />
       </template>
       <b-media-body class="align-top">
         <h3 v-if="preview.title && size === 'md'">
@@ -12,8 +12,12 @@
         <h5 v-if="preview.title && size === 'sm'">
           {{ preview.title }}
         </h5>
-        <p v-if="preview.description && size === 'md'" class="prewrap forcebreak mb-0">{{ preview.description}}</p>
-        <p v-if="preview.description && size === 'sm'" class="prewrap forcebreak mb-0 small">{{ preview.description}}</p>
+        <p v-if="preview.description && size === 'md'" class="prewrap forcebreak mb-0">
+          {{ preview.description }}
+        </p>
+        <p v-if="preview.description && size === 'sm'" class="prewrap forcebreak mb-0 small">
+          {{ preview.description }}
+        </p>
         <span class="small text-muted">
           This is an automatic preview of {{ preview.url }}.  Click at your own risk.
         </span>

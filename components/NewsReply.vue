@@ -71,7 +71,7 @@
                     </span>
                   </span>
                 </span>
-                <NewsPreview v-if="reply.preview" :preview="reply.preview" class="mt-1" size="sm"/>
+                <NewsPreview v-if="reply.preview" :preview="reply.preview" class="mt-1" size="sm" />
               </td>
             </tr>
           </tbody>

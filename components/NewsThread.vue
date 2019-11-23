@@ -29,7 +29,7 @@
               :users="users"
               @focus-comment="focusComment"
             />
-            <NewsPreview v-if="newsfeed.preview" :preview="newsfeed.preview" class="mt-1"/>
+            <NewsPreview v-if="newsfeed.preview" :preview="newsfeed.preview" class="mt-1" />
           </div>
           <notice-message v-else variant="danger">
             Unknown item type {{ newsfeed.type }}

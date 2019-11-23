@@ -202,7 +202,7 @@ module.exports = {
           loader: 'eslint-loader',
           exclude: /(node_modules)/,
           options: {
-            fix: ESLINT_AUTOFIX
+            fix: true
           }
         })
       }
