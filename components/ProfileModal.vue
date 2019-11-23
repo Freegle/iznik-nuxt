@@ -82,20 +82,26 @@
         </template>
         <b-card-body class="p-0 pt-1">
           <b-row v-if="user.info.offers + user.info.wanteds + user.info.replies > 0">
-            <b-col cols="12" md="4">
-              <v-icon name="gift" /> {{ user.info.offers | pluralize([ 'recent OFFER', 'recent OFFERs' ], { includeNumber: true }) }}.
+            <b-col cols="12" md="5">
+              <v-icon name="gift" /> {{ user.info.offers | pluralize([ 'recent OFFER', 'recent OFFERs' ], { includeNumber: true }) }}
+              <span v-if="user.info.openoffers" class="text-success font-weight-bold">
+                ({{ user.info.openoffers }} still active)
+              </span>
             </b-col>
-            <b-col cols="12" md="4">
-              <v-icon name="search" /> {{ user.info.wanteds | pluralize([ 'recent WANTED', 'recent WANTEDs' ], { includeNumber: true }) }}.
+            <b-col cols="12" md="5">
+              <v-icon name="search" /> {{ user.info.wanteds | pluralize([ 'recent WANTED', 'recent WANTEDs' ], { includeNumber: true }) }}
+              <span v-if="user.info.openwanteds" class="text-success font-weight-bold">
+                ({{ user.info.wanteds }} still active)
+              </span>
             </b-col>
-            <b-col cols="12" md="4">
-              <v-icon name="envelope" /> {{ user.info.replies | pluralize([ 'reply', 'replies' ], { includeNumber: true }) }}.
+            <b-col cols="12" md="2">
+              <v-icon name="envelope" /> {{ user.info.replies | pluralize([ 'reply', 'replies' ], { includeNumber: true }) }}
             </b-col>
           </b-row>
           <b-row>
             <b-col>
               <span v-if="user.info.collected">
-                <v-icon name="check" /> Picked up about {{ user.info.collected | pluralize('item', { includeNumber: true }) }}.
+                <v-icon name="check" /> Picked up about {{ user.info.collected | pluralize('item', { includeNumber: true }) }}
               </span>
               <span v-else>
                 <v-icon name="check" class="text-faded" />&nbsp;Not received any items recently, so far as we know.
@@ -106,22 +112,12 @@
       </b-card>
     </template>
     <template slot="modal-footer" slot-scope="{ ok, cancel }">
-      <b-btn variant="success" :href="'/profile/' + user.id" class="mr-auto">
-        <b-badge v-if="user.info.openoffers" variant="danger">
-          {{ user.info.openoffers }}
-          <v-icon name="gift" />
-        </b-badge>
-        <b-badge v-if="user.info.openwanteds" variant="danger">
-          <!--          TODO DESIGN This icon is too big compared to the badge number.-->
-          {{ user.info.wanteds }}
-          <v-icon name="search" />
-        </b-badge>
-        View full profile
-      </b-btn>
-
-      <b-button variant="white" class="float-right" @click="cancel">
+      <b-button variant="white" @click="cancel">
         Close
       </b-button>
+      <b-btn variant="success" :href="'/profile/' + user.id">
+        View full profile
+      </b-btn>
     </template>
   </b-modal>
 </template>
