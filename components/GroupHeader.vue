@@ -59,13 +59,12 @@
           Give and get stuff for free with {{ namedisplay }}.  Offer things you don't need, and ask for things you'd like.  Don't just recycle - reuse with Freegle!
         </p>
         <!-- eslint-disable-next-line -->
-        <span v-if="description" v-html="description" style="max-height: 300px; overflow-y: auto"/>
+        <span v-if="description" v-html="description"/>
       </b-col>
     </b-row>
   </b-card>
 </template>
 <script>
-// TODO DESIGN There's a double scrollbar, e.g. on /explore/ascot-freegle
 // TODO DESIGN There's a max-height hack above to keep the description from hogging the screen.  It's not that
 // pretty and some people may not even notice the scrollbar.  Would be nice to improve it.
 // TODO Add support for showJoin prop
