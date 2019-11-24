@@ -104,8 +104,8 @@
                   <b-btn v-b-tooltip.hover.top variant="white" title="Send your address" disabled>
                     <v-icon name="address-book" />&nbsp;Address
                   </b-btn>
-                  <b-btn v-b-tooltip.hover.top variant="white" title="Update your availability" disabled>
-                    <v-icon name="calendar-alt" />&nbsp;Calendar
+                  <b-btn v-b-tooltip.hover.top variant="white" title="Update your availability" @click="availability">
+                    <v-icon name="calendar-alt" />&nbsp;Availability
                   </b-btn>
                   <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler" @click="showInfo">
                     <v-icon name="info-circle" />&nbsp;Info
@@ -131,7 +131,7 @@
                   <span v-b-tooltip.hover.top title="Send your address" disabled class="mr-2">
                     <v-icon scale="2" name="address-book" />
                   </span>
-                  <span v-b-tooltip.hover.top title="Update your availability" disabled class="mr-2">
+                  <span v-b-tooltip.hover.top title="Update your availability" class="mr-2" @click="availability">
                     <v-icon scale="2" name="calendar-alt" />
                   </span>
                   <span v-b-tooltip.hover.top title="Info about this freegler" class="mr-2" @click="showInfo">
@@ -155,6 +155,7 @@
         </div>
         <PromiseModal ref="promise" :messages="ouroffers" :selected-message="likelymsg ? likelymsg : 0" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
         <ProfileModal :id="otheruser ? otheruser.id : null" ref="profile" />
+        <AvailabilityModal ref="availabilitymodal" />
       </div>
     </client-only>
   </div>
@@ -199,8 +200,9 @@
 }
 </style>
 <script>
+// TODO Send address modal.
 // TODO Chat dropdown menu for report etc
-// TODO Popup confirm first time you use Nudge, so you know what you're doing.
+// TODO MINOR Popup confirm first time you use Nudge, so you know what you're doing.
 // TODO DESIGN We have a spinner at the top for our upwards infinite scroll.  But this looks messy when we load a
 // short chat, because we see the messages appear below the spinner and then move upwards once the infinite scroll
 // completes.
@@ -213,6 +215,7 @@ const Ratings = () => import('~/components/Ratings')
 const PromiseModal = () => import('./PromiseModal')
 const ProfileModal = () => import('./ProfileModal')
 const NoticeMessage = () => import('~/components/NoticeMessage')
+const AvailabilityModal = () => import('~/components/AvailabilityModal')
 
 export default {
   components: {
@@ -221,6 +224,7 @@ export default {
     OurFilePond,
     PromiseModal,
     ProfileModal,
+    AvailabilityModal,
     NoticeMessage
   },
   props: {
@@ -394,6 +398,9 @@ export default {
   methods: {
     showInfo() {
       this.$refs.profile.show()
+    },
+    availability() {
+      this.$refs.availabilitymodal.show()
     },
     loadMore: function($state) {
       const currentCount = this.chatmessages.length
