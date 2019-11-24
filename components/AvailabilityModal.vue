@@ -309,7 +309,7 @@ export default {
 
 .otherborder {
   border-radius: 50%;
-  padding: 5px;
+  padding: 3px;
   background-color: white;
   border: 2px solid $color-blue--light;
 }
