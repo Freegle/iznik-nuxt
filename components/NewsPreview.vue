@@ -13,10 +13,10 @@
           {{ preview.title }}
         </h5>
         <p v-if="preview.description && size === 'md'" class="prewrap forcebreak mb-0">
-          {{ preview.description }}
+          <read-more :text="preview.description" :max-chars="200" class="nopara" />
         </p>
         <p v-if="preview.description && size === 'sm'" class="prewrap forcebreak mb-0 small">
-          {{ preview.description }}
+          <read-more :text="preview.description" :max-chars="200" class="nopara" />
         </p>
         <span class="small text-muted">
           This is an automatic preview of {{ preview.url }}.  Click at your own risk.
