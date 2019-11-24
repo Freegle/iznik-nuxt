@@ -155,7 +155,7 @@
         </div>
         <PromiseModal ref="promise" :messages="ouroffers" :selected-message="likelymsg ? likelymsg : 0" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
         <ProfileModal :id="otheruser ? otheruser.id : null" ref="profile" />
-        <AvailabilityModal ref="availabilitymodal" />
+        <AvailabilityModal ref="availabilitymodal" :otheruid="otheruser ? otheruser.id : null" />
       </div>
     </client-only>
   </div>

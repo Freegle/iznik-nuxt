@@ -34,8 +34,42 @@
                   </span>
                 </template>
                 <template v-slot:cell()="data">
-                  <v-icon v-if="data.value" scale="2" name="check" class="text-success clickme" @click.native="toggle(data)" />
-                  <v-icon v-else name="check" scale="2" class="text-faded clickme" @click.native="toggle(data)" />
+                  <span v-if="data.value.other">
+                    <v-icon
+                      v-if="data.value.me"
+                      scale="2"
+                      name="check"
+                      class="otherborder text-success clickme"
+                      title="You are both available."
+                      @click.native="toggle(data)"
+                    />
+                    <v-icon
+                      v-else
+                      name="check"
+                      scale="2"
+                      class="otherborder text-faded clickme"
+                      title="They are available, but you're not."
+                      @click.native="toggle(data)"
+                    />
+                  </span>
+                  <span v-else>
+                    <v-icon
+                      v-if="data.value.me"
+                      scale="2"
+                      name="check"
+                      class="text-success clickme"
+                      title="You are available, but they aren't."
+                      @click.native="toggle(data)"
+                    />
+                    <v-icon
+                      v-else
+                      name="check"
+                      scale="2"
+                      class="text-faded clickme"
+                      title="Neither of you are available"
+                      @click.native="toggle(data)"
+                    />
+                  </span>
                 </template>
               </b-table>
             </b-col>
@@ -69,11 +103,19 @@ import dayjs from 'dayjs'
 // and email code which matches up when someone is available, so this is a substantial change.
 // TODO ACCESSIBILITY This isn't accessible at all, is it?
 export default {
+  props: {
+    otheruid: {
+      type: Number,
+      required: false,
+      default: null
+    }
+  },
   data: function() {
     return {
       showModal: false,
       schedule: null,
-      saving: false
+      saving: false,
+      otherSchedule: null
     }
   },
   computed: {
@@ -124,8 +166,6 @@ export default {
     items() {
       const ret = []
 
-      console.log('Compute items from', this.schedule)
-
       if (this.schedule) {
         // hour in the schedule data structure is misnamed - at the moment it runs from 0..2 and is really a slot
         // of morning/afternoon/evening.
@@ -152,7 +192,24 @@ export default {
               }
             }
 
-            slot['day' + day] = available
+            slot['day' + day] = {
+              me: available,
+              other: false
+            }
+
+            if (this.otheruid) {
+              let otherAvailable = false
+
+              for (const existing of this.otherSchedule.schedule) {
+                const e = dayjs(existing.date).set('hour', existing.hour)
+
+                if (d.unix() === e.unix()) {
+                  otherAvailable |= existing.available
+                }
+              }
+
+              slot['day' + day].other = otherAvailable
+            }
           }
 
           ret.push(slot)
@@ -169,9 +226,19 @@ export default {
   },
   methods: {
     async show() {
-      // Fetch the current value, if any, before opening the modal.
+      // Fetch the current schedules before opening the modal.
+      if (this.otheruid) {
+        // We're going to compare our schedule to someone else's, usually in chat.
+        await this.$store.dispatch('schedule/fetch', {
+          userid: this.otheruid
+        })
+
+        this.otherSchedule = this.$store.getters['schedule/get']()
+      }
+
       await this.$store.dispatch('schedule/fetch')
       this.schedule = this.$store.getters['schedule/get']()
+
       this.showModal = true
 
       // Probably because of PEBCAK, I had a problem where if you brought up the modal, changed the data, cancelled, then
@@ -237,3 +304,13 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+@import 'color-vars';
+
+.otherborder {
+  border-radius: 50%;
+  padding: 5px;
+  background-color: white;
+  border: 2px solid $color-blue--light;
+}
+</style>

@@ -4,7 +4,6 @@ export const state = () => ({
 
 export const mutations = {
   set(state, schedule) {
-    console.log('Set schedule', schedule)
     state.schedule = schedule
   }
 }
