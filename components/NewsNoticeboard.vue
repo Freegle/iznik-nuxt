@@ -8,13 +8,14 @@
       append="put up a poster"
       :append-bold="info.title"
     />
-    <div>
-      <p>To help Freegle, <b>{{ users[userid].displayname }}</b> printed a Freegle poster and put it up where people can see it.</p>
-    </div>
-    <notice-message v-if="info.description" class="prewrap">
-      <b>"{{ info.description }}"</b>
+    <p>To help Freegle, <b>{{ users[userid].displayname }}</b> printed a Freegle poster and put it up where people can see it.</p>
+    <notice-message v-if="info.description || info.name" class="prewrap">
+      <b v-if="info.name">"{{ info.name }}"</b>
+      <em v-if="info.description">"{{ info.description }}"</em>
     </notice-message>
-    <p><b>We need your help to get more people freegling</b>.  Could you put one up too?</p>
+    <p class="mt-1">
+      <b>We need your help to get more people freegling</b>.  Could you put one up too?
+    </p>
     <iframe
       width="100%"
       height="200"
