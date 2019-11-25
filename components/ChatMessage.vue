@@ -9,6 +9,8 @@
     <chat-message-address v-else-if="chatmessage.type === 'Address'" :chat="chat" :chatmessage="chatmessage" :me="me" :otheruser="otheruser" />
     <chat-message-nudge v-else-if="chatmessage.type === 'Nudge'" :chat="chat" :chatmessage="chatmessage" :me="me" :otheruser="otheruser" />
     <chat-message-mod-mail v-else-if="chatmessage.type === 'ModMail'" :chat="chat" :chatmessage="chatmessage" :me="me" :otheruser="null" />
+    <chat-message-schedule v-else-if="chatmessage.type === 'Schedule'" :chat="chat" :chatmessage="chatmessage" :me="me" :otheruser="otheruser" />
+    <chat-message-schedule v-else-if="chatmessage.type === 'ScheduleUpdated'" :chat="chat" :chatmessage="chatmessage" :me="me" :otheruser="otheruser" />
     <div v-else>
       Unknown chat message type {{ chatmessage.type }}
     </div>
@@ -21,8 +23,6 @@
 // TODO EH Other chat message types
 // const TYPE_SYSTEM = 'System';
 // const TYPE_REPORTEDUSER = 'ReportedUser';
-// const TYPE_SCHEDULE = 'Schedule';
-// const TYPE_SCHEDULE_UPDATED = 'ScheduleUpdated';
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
 
@@ -36,6 +36,7 @@ import ChatMessageAddress from './ChatMessageAddress'
 import ChatMessageNudge from './ChatMessageNudge'
 import ChatMessageDateRead from './ChatMessageDateRead'
 import ChatMessageModMail from './ChatMessageModMail'
+import ChatMessageSchedule from './ChatMessageSchedule'
 
 export default {
   components: {
@@ -48,7 +49,8 @@ export default {
     ChatMessageAddress,
     ChatMessageReneged,
     ChatMessageNudge,
-    ChatMessageModMail
+    ChatMessageModMail,
+    ChatMessageSchedule
   },
   props: {
     chat: {

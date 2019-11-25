@@ -4,19 +4,22 @@
       <b-modal
         id="availabilitymodal"
         v-model="showModal"
-        title="When are you available?"
-        alt="When are you available?"
+        :title="mine ? 'When are you available?' : 'Their availability'"
+        :alt="mine ? 'When are you available?' : 'Their availability'"
         size="lg"
         no-stacking
       >
         <template slot="default">
-          <p>
+          <p v-if="mine">
             We can help you arrange a collection time. If you want to, <b>tell us when you're available</b> in the next few days.
             You don't have to do this, and you can still agree a precise time by chatting - but this speeds things up!
           </p>
           <b-row>
             <b-col class="text-center font-weight-bold">
-              <p>Over the next 5 days, I'm available:</p>
+              <p>
+                Over the next 5 days, <span v-if="mine">I'm</span><span v-else>they're</span>
+                available:
+              </p>
               <b-table :key="showModal" striped :items="items" :fields="fields" responsive>
                 <template v-slot:head()="data">
                   <!-- eslint-disable-next-line -->
@@ -39,7 +42,7 @@
                       v-if="data.value.me"
                       scale="2"
                       name="check"
-                      class="otherborder text-success clickme"
+                      :class="'otherborder text-success ' + (mine ? 'clickme' : '')"
                       title="You are both available."
                       @click.native="toggle(data)"
                     />
@@ -47,7 +50,7 @@
                       v-else
                       name="check"
                       scale="2"
-                      class="otherborder text-faded clickme"
+                      :class="'otherborder text-faded ' + (mine ? 'clickme' : '')"
                       title="They are available, but you're not."
                       @click.native="toggle(data)"
                     />
@@ -57,7 +60,7 @@
                       v-if="data.value.me"
                       scale="2"
                       name="check"
-                      class="text-success clickme"
+                      :class="'text-success ' + (mine ? 'clickme' : '')"
                       title="You are available, but they aren't."
                       @click.native="toggle(data)"
                     />
@@ -65,7 +68,7 @@
                       v-else
                       name="check"
                       scale="2"
-                      class="text-faded clickme"
+                      :class="'text-faded ' + (mine ? 'clickme' : '')"
                       title="Neither of you are available"
                       @click.native="toggle(data)"
                     />
@@ -74,16 +77,19 @@
               </b-table>
             </b-col>
           </b-row>
-          <p>
+          <p v-if="mine">
             Click on a time slot to toggle whether you're available. If you're only available for part of a time slot
             then click it anyway - you can sort out the precise time by chat.  Click <em>Save</em> when you're done.
           </p>
         </template>
         <template slot="modal-footer" slot-scope="{ ok, cancel }">
-          <b-button variant="white" @click="cancel">
+          <b-button v-if="mine" variant="white" @click="cancel">
             Cancel
           </b-button>
-          <b-button variant="success" @click="save">
+          <b-button v-if="!mine" variant="white" @click="cancel">
+            Close
+          </b-button>
+          <b-button v-if="mine" variant="success" @click="save">
             <v-icon v-if="saving" name="sync" class="fa-spin" />
             <v-icon v-else name="save" />
             Save
@@ -104,10 +110,24 @@ import dayjs from 'dayjs'
 // TODO ACCESSIBILITY This isn't accessible at all, is it?
 export default {
   props: {
+    thisuid: {
+      type: Number,
+      required: true
+    },
     otheruid: {
       type: Number,
       required: false,
       default: null
+    },
+    chatid: {
+      type: Number,
+      required: false,
+      default: null
+    },
+    mine: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
   data: function() {
@@ -236,7 +256,10 @@ export default {
         this.otherSchedule = this.$store.getters['schedule/get']()
       }
 
-      await this.$store.dispatch('schedule/fetch')
+      await this.$store.dispatch('schedule/fetch', {
+        userid: this.thisuid
+      })
+
       this.schedule = this.$store.getters['schedule/get']()
 
       this.showModal = true
@@ -264,41 +287,56 @@ export default {
     },
     async save() {
       this.saving = true
-      await this.$store.dispatch('schedule/update', this.schedule)
+
+      // We need to pass in the id of the other chat user if we have one.  This will cause the server to generate
+      // a chat message to them saying we've updated our availability.
+      await this.$store.dispatch('schedule/update', {
+        ...this.schedule,
+        chatuserid: this.otheruid
+      })
       this.saving = false
       this.hide()
+
+      if (this.chatid) {
+        // Saving our schedule may generate a chat message, so fetch that to pick it up.
+        await this.$store.dispatch('chats/fetch', {
+          id: this.chatid
+        })
+      }
     },
     toggle(data) {
-      const hour = data.index
-      const day = data.field.key.substring(3)
+      if (this.mine) {
+        const hour = data.index
+        const day = data.field.key.substring(3)
 
-      const d = dayjs()
-        .add(day, 'day')
-        .set('hour', hour)
-        .set('minute', 0)
-        .set('second', 0)
+        const d = dayjs()
+          .add(day, 'day')
+          .set('hour', hour)
+          .set('minute', 0)
+          .set('second', 0)
 
-      let found = false
+        let found = false
 
-      this.schedule.schedule.forEach((existing, index) => {
-        const e = dayjs(existing.date).set('hour', existing.hour)
+        this.schedule.schedule.forEach((existing, index) => {
+          const e = dayjs(existing.date).set('hour', existing.hour)
 
-        if (d.unix() === e.unix()) {
-          this.schedule.schedule[index].available = !existing.available
-          found = true
-        }
-      })
-
-      if (!found) {
-        this.schedule.schedule.push({
-          data: dayjs()
-            .add(day, day)
-            .set('hour', 0)
-            .set('minute', 0)
-            .set('second.0'),
-          hour: hour,
-          available: true
+          if (d.unix() === e.unix()) {
+            this.schedule.schedule[index].available = !existing.available
+            found = true
+          }
         })
+
+        if (!found) {
+          this.schedule.schedule.push({
+            data: dayjs()
+              .add(day, day)
+              .set('hour', 0)
+              .set('minute', 0)
+              .set('second.0'),
+            hour: hour,
+            available: true
+          })
+        }
       }
     }
   }

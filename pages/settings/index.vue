@@ -409,7 +409,7 @@
     <AboutMeModal ref="aboutmemodal" @change="update" />
     <ProfileModal :id="me ? me.id : null" ref="profilemodal" />
     <EmailConfirmModal ref="emailconfirm" />
-    <AvailabilityModal ref="availabilitymodal" />
+    <AvailabilityModal v-if="me" ref="availabilitymodal" :thisuid="me.id" />
   </div>
 </template>
 

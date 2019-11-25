@@ -155,7 +155,7 @@
         </div>
         <PromiseModal ref="promise" :messages="ouroffers" :selected-message="likelymsg ? likelymsg : 0" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
         <ProfileModal :id="otheruser ? otheruser.id : null" ref="profile" />
-        <AvailabilityModal ref="availabilitymodal" :otheruid="otheruser ? otheruser.id : null" />
+        <AvailabilityModal v-if="me" ref="availabilitymodal" :otheruid="otheruser ? otheruser.id : null" :chatid="chat.id" :thisuid="me.id" />
       </div>
     </client-only>
   </div>
@@ -382,6 +382,15 @@ export default {
     // need to render this pane on the server.
     await this.$store.dispatch('chats/fetch', {
       id: this.id
+    })
+
+    // TODO Loading a page on a specific chat doesn't always seem to fetch/render the messages correctly.  Test.
+    await this.$store.dispatch('chatmessages/clearContext', {
+      chatid: this.id
+    })
+
+    await this.$store.dispatch('chatmessages/fetch', {
+      chatid: this.id
     })
 
     // Get the user info in case we need to warn about them.
