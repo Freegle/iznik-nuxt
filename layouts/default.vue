@@ -613,9 +613,6 @@ export default {
       const currentCount = this.notifications.length
 
       if (this.complete) {
-        // This is a bit weird - calling complete() works here to stop the plugin firing, but not lower down in the
-        // callback.  And we get the error message about no results, so I've overridden it above to be empty.
-        // TODO EH Figure out what's going on here.  This kinda works but it's hacky.
         $state.complete()
       } else {
         this.busy = true

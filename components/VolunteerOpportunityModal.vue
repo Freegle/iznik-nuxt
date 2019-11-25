@@ -278,7 +278,7 @@ label {
 // TODO Add some form validation using a plugin - see https://bootstrap-vue.js.org/docs/reference/validation/
 // TODO Don't allow submission before image upload complete.
 // TODO Groups which don't support opportunities
-// TODO We used to have an "apply by" date. It's not clear we need this, so no urgency in re-adding it.
+// TODO MINOR We used to have an "apply by" date. It's not clear we need this, so no urgency in re-adding it.
 // TODO EH Systemwide opportunities.
 import cloneDeep from 'lodash.clonedeep'
 import twem from '~/assets/js/twem'
@@ -482,7 +482,8 @@ export default {
         paththumb: imagethumb
       }
 
-      // TODO Handle any OCR returned from the server by putting it in the description.
+      // We don't do OCR on these - volunteer op photos are much less likely to have useful text than community
+      // events.
     },
     rotate(deg) {
       this.$axios
