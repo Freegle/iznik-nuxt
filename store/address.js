@@ -98,7 +98,6 @@ export const actions = {
     if (res.status === 200 && res.data.ret === 0) {
       commit('clearProperties')
       commit('setProperties', res.data.addresses)
-      console.log('Set properties', res.data.addresses)
     }
   },
 

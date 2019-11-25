@@ -101,7 +101,7 @@
                   <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person" @click="promise">
                     <v-icon name="handshake" />&nbsp;Promise
                   </b-btn>
-                  <b-btn v-b-tooltip.hover.top variant="white" title="Send your address" disabled>
+                  <b-btn v-b-tooltip.hover.top variant="white" title="Send your address" @click="addressBook">
                     <v-icon name="address-book" />&nbsp;Address
                   </b-btn>
                   <b-btn v-b-tooltip.hover.top variant="white" title="Update your availability" @click="availability">
@@ -156,6 +156,7 @@
         <PromiseModal ref="promise" :messages="ouroffers" :selected-message="likelymsg ? likelymsg : 0" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
         <ProfileModal :id="otheruser ? otheruser.id : null" ref="profile" />
         <AvailabilityModal v-if="me" ref="availabilitymodal" :otheruid="otheruser ? otheruser.id : null" :chatid="chat.id" :thisuid="me.id" />
+        <AddressModal ref="addressModal" :choose="true" @chosen="sendAddress" />
       </div>
     </client-only>
   </div>
@@ -200,7 +201,6 @@
 }
 </style>
 <script>
-// TODO Send address modal.
 // TODO Chat dropdown menu for report etc
 // TODO MINOR Popup confirm first time you use Nudge, so you know what you're doing.
 // TODO DESIGN We have a spinner at the top for our upwards infinite scroll.  But this looks messy when we load a
@@ -216,6 +216,7 @@ const PromiseModal = () => import('./PromiseModal')
 const ProfileModal = () => import('./ProfileModal')
 const NoticeMessage = () => import('~/components/NoticeMessage')
 const AvailabilityModal = () => import('~/components/AvailabilityModal')
+const AddressModal = () => import('~/components/AddressModal')
 
 export default {
   components: {
@@ -225,6 +226,7 @@ export default {
     PromiseModal,
     ProfileModal,
     AvailabilityModal,
+    AddressModal,
     NoticeMessage
   },
   props: {
@@ -585,6 +587,17 @@ export default {
       })
 
       this._updateAfterSend()
+    },
+    addressBook() {
+      this.$refs.addressModal.show()
+    },
+    sendAddress(id) {
+      this.$store
+        .dispatch('chatmessages/send', {
+          roomid: this.id,
+          addressid: id
+        })
+        .then(this._updateAfterSend)
     }
   }
 }

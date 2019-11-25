@@ -120,7 +120,7 @@
                   time.
                 </p>
                 <b-btn variant="white" @click="addressBook">
-                  <v-icon name="book-open" /> Open Address Book
+                  <v-icon name="address-book" /> Open Address Book
                 </b-btn>
               </b-col>
             </b-row>

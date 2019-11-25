@@ -93,7 +93,7 @@
                   <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person" class="ml-1" @click="promise">
                     <v-icon name="handshake" />
                   </b-btn>
-                  <b-btn v-b-tooltip.hover.top variant="white" title="Send your address" disabled>
+                  <b-btn v-b-tooltip.hover.top variant="white" title="Send your address" @click="addressBook">
                     <v-icon name="address-book" />
                   </b-btn>
                   <b-btn v-b-tooltip.hover.top variant="white" title="Update your availability" @click="availability">
@@ -117,6 +117,7 @@
         <PromiseModal ref="promise" :messages="ouroffers" :selected-message="likelymsg ? likelymsg : 0" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
         <ProfileModal :id="otheruser ? otheruser.id : null" ref="profile" />
         <AvailabilityModal ref="availabilitymodal" :otheruid="otheruser ? otheruser.id : null" :thisuid="me.id" />
+        <AddressModal ref="addressModal" :choose="true" @chosen="sendAddress" />
       </div>
     </client-only>
   </div>
@@ -195,7 +196,6 @@
 </style>
 
 <script>
-// TODO Send address
 import twem from '~/assets/js/twem'
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
@@ -205,6 +205,7 @@ const Ratings = () => import('~/components/Ratings')
 const PromiseModal = () => import('./PromiseModal')
 const ProfileModal = () => import('./ProfileModal')
 const AvailabilityModal = () => import('~/components/AvailabilityModal')
+const AddressModal = () => import('~/components/AddressModal')
 
 // TODO DESIGN The maximise icon from font awesome is not obvious.
 // TODO MINOR This has a lot of code overlap with ChatPane.  Shame on me.
@@ -216,7 +217,8 @@ export default {
     VueDraggableResizable,
     PromiseModal,
     ProfileModal,
-    AvailabilityModal
+    AvailabilityModal,
+    AddressModal
   },
   props: {
     id: {
@@ -507,6 +509,17 @@ export default {
       })
 
       this._updateAfterSend()
+    },
+    addressBook() {
+      this.$refs.addressModal.show()
+    },
+    sendAddress(id) {
+      this.$store
+        .dispatch('chatmessages/send', {
+          roomid: this.id,
+          addressid: id
+        })
+        .then(this._updateAfterSend)
     }
   }
 }
