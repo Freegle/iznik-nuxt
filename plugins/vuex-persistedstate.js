@@ -23,6 +23,7 @@ const keep = [
   'popupchats',
   'compose',
   'reply',
+  'address',
   'i18n'
 ]
 
@@ -57,6 +58,11 @@ export default ({ store }) => {
       if (newstate.auth) {
         // Don't store the forceLogin, as that can result in the login popup on page refresh.
         delete newstate.auth.forceLogin
+      }
+
+      if (state.address) {
+        // Don't store the list - long and confidential.
+        delete newstate.address.list
       }
 
       // for (const field of Object.keys(newstate)) {

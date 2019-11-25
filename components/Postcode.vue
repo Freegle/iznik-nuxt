@@ -122,7 +122,6 @@ export default {
       return ret
     },
     select(pc) {
-      console.log('Selected', pc)
       this.$emit('selected', pc)
     }
   }

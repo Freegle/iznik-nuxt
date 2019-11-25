@@ -269,6 +269,8 @@ export default {
       // So we jump through some hoops with a watcher and a local property.  It'll do for now.
       // The store was updated but the computed property didn't get called again.  Perhaps it's replacing the whole
       // array?  But if that was the problem then this watch wouldn't fire.
+      //
+      // Same code in AvailabilityModal.
       if (this.scheduleWatch) {
         this.scheduleWatch()
       }

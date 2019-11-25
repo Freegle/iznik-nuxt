@@ -20,12 +20,7 @@
 <style scoped>
 </style>
 <script>
-// TODO EH Other chat message types
-// const TYPE_SYSTEM = 'System';
-// const TYPE_REPORTEDUSER = 'ReportedUser';
-
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
-
 import ChatMessageText from './ChatMessageText'
 import ChatMessageImage from './ChatMessageImage'
 import ChatMessageInterested from './ChatMessageInterested'
@@ -37,6 +32,8 @@ import ChatMessageNudge from './ChatMessageNudge'
 import ChatMessageDateRead from './ChatMessageDateRead'
 import ChatMessageModMail from './ChatMessageModMail'
 import ChatMessageSchedule from './ChatMessageSchedule'
+
+// System chat message doesn't seem to be used; ReportedUser is for ModTools only.
 
 export default {
   components: {

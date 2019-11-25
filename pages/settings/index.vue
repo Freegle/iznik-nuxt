@@ -88,14 +88,39 @@
                 </b-card>
               </b-col>
             </b-row>
+          </b-card-body>
+        </b-card>
+        <b-card border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
+          <template v-slot:header>
+            <v-icon name="globe-europe" /> Arranging Collections
+          </template>
+          <b-card-body class="p-0 pt-1">
+            <p class="text-muted">
+              This is information you can choose to send to other freeglers when arranging collections.
+            </p>
             <b-row>
               <b-col>
+                <h4>Availability</h4>
                 <p class="mt-2">
                   We can help you arrange a collection time if you tell us when you're available over the next
                   few days.
                 </p>
                 <b-btn variant="white" @click="availability">
                   <v-icon name="calendar-alt" /> Edit Availability
+                </b-btn>
+              </b-col>
+            </b-row>
+            <b-row>
+              <b-col>
+                <h4 class="mt-2">
+                  Address Book
+                </h4>
+                <p class="mt-2">
+                  You can save your address and send it to other freeglers, then you don't have to type it each
+                  time.
+                </p>
+                <b-btn variant="white" @click="addressBook">
+                  <v-icon name="book-open" /> Open Address Book
                 </b-btn>
               </b-col>
             </b-row>
@@ -410,6 +435,7 @@
     <ProfileModal :id="me ? me.id : null" ref="profilemodal" />
     <EmailConfirmModal ref="emailconfirm" />
     <AvailabilityModal v-if="me" ref="availabilitymodal" :thisuid="me.id" />
+    <AddressModal ref="addressModal" />
   </div>
 </template>
 
@@ -435,6 +461,7 @@ import EmailConfirmModal from '~/components/EmailConfirmModal'
 import loginRequired from '@/mixins/loginRequired.js'
 const AboutMeModal = () => import('~/components/AboutMeModal')
 const AvailabilityModal = () => import('~/components/AvailabilityModal')
+const AddressModal = () => import('~/components/AddressModal')
 const ProfileModal = () => import('~/components/ProfileModal')
 const Postcode = () => import('~/components/Postcode')
 const SettingsGroup = () => import('~/components/SettingsGroup')
@@ -445,6 +472,7 @@ export default {
     EmailConfirmModal,
     AboutMeModal,
     AvailabilityModal,
+    AddressModal,
     ProfileModal,
     Postcode,
     SettingsGroup,
@@ -772,6 +800,9 @@ export default {
         userid: this.me.id,
         groupid: id
       })
+    },
+    addressBook() {
+      this.$refs.addressModal.show()
     }
   }
 }
