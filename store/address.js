@@ -76,76 +76,35 @@ export const getters = {
 
 export const actions = {
   async fetch({ commit }, params) {
-    const res = await this.$axios.get(process.env.API + '/address', {
-      params: params
-    })
-
-    if (res.status === 200 && res.data.ret === 0) {
-      if (res.data.addresses) {
-        commit('clear')
-        commit('set', res.data.addresses)
-      } else {
-        commit('set', [res.data.address])
-      }
+    const { addresses, address } = await this.$api.address.fetch(params)
+    if (addresses) {
+      commit('clear')
+      commit('set', addresses)
+    } else {
+      commit('set', [address])
     }
   },
 
   async fetchProperties({ commit }, params) {
-    const res = await this.$axios.get(process.env.API + '/address', {
-      params: params
-    })
-
-    if (res.status === 200 && res.data.ret === 0) {
-      commit('clearProperties')
-      commit('setProperties', res.data.addresses)
-    }
+    const { addresses } = await this.$api.address.fetch(params)
+    commit('clearProperties')
+    commit('setProperties', addresses)
   },
 
   async delete({ commit, getters, dispatch }, params) {
-    await this.$axios.post(
-      process.env.API + '/address',
-      {
-        id: params.id
-      },
-      {
-        headers: {
-          'X-HTTP-Method-Override': 'DELETE'
-        }
-      }
-    )
-
+    await this.$api.address.del(params.id)
     await dispatch('fetch')
   },
 
   async add({ commit, getters, dispatch }, params) {
-    let id = null
-    const ret = await this.$axios.post(process.env.API + '/address', params, {
-      headers: {
-        'X-HTTP-Method-Override': 'PUT'
-      }
-    })
-
-    if (ret.status === 200 && ret.data.ret === 0) {
-      await dispatch('fetch', {
-        id: ret.data.id
-      })
-
-      id = ret.data.id
-    }
-
+    const { id } = await this.$api.address.add(params)
+    await dispatch('fetch', { id })
     return id
   },
 
   async update({ commit, getters, dispatch }, params) {
-    await this.$axios.post(process.env.API + '/address', params, {
-      headers: {
-        'X-HTTP-Method-Override': 'PATCH'
-      }
-    })
-
-    await dispatch('fetch', {
-      id: params.id
-    })
+    await this.$api.address.update(params)
+    await dispatch('fetch', { id: params.id })
   },
 
   select({ commit }, id) {

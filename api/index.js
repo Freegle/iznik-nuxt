@@ -1,23 +1,18 @@
-import SessionAPI from '@/api/SessionAPI'
-import CommunityEventAPI from '@/api/CommunityEventAPI'
-import MessageAPI from '@/api/MessageAPI'
+import ActivityAPI from './ActivityAPI'
+import AddressAPI from './AddressAPI'
+import CommunityEventAPI from './CommunityEventAPI'
+import MessageAPI from './MessageAPI'
+import MembershipsAPI from './MembershipsAPI'
+import SessionAPI from './SessionAPI'
 
 export default ({ $axios }) => {
-  const options = { $axios }
+  const options = path => ({ $axios, path })
   return {
-    session: new SessionAPI({
-      ...options,
-      path: '/session'
-    }),
-
-    communityevent: new CommunityEventAPI({
-      ...options,
-      path: '/communityevent'
-    }),
-
-    message: new MessageAPI({
-      ...options,
-      path: '/message'
-    })
+    activity: new ActivityAPI(options('/activity')),
+    address: new AddressAPI(options('/address')),
+    communityevent: new CommunityEventAPI(options('/communityevent')),
+    memberships: new MembershipsAPI(options('/memberships')),
+    message: new MessageAPI(options('/message')),
+    session: new SessionAPI(options('/session'))
   }
 }

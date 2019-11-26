@@ -239,58 +239,24 @@ export const actions = {
   },
 
   async setGroup({ commit, dispatch, state }, params) {
-    await this.$axios.post(process.env.API + '/memberships', params, {
-      headers: {
-        'X-HTTP-Method-Override': 'PATCH'
-      }
-    })
+    await this.$api.memberships.update(params)
   },
 
   async leaveGroup({ commit, dispatch, state }, params) {
-    const res = await this.$axios.post(
-      process.env.API + '/memberships',
-      params,
-      {
-        headers: {
-          'X-HTTP-Method-Override': 'DELETE'
-        }
-      }
-    )
-
-    if (res.status === 200 && res.data.ret === 0) {
-      await dispatch('fetchUser', {
-        components: NONMIN,
-        force: true
-      })
-    } else {
-      // TODO
-      console.error('saveUser failed')
-    }
-
+    await this.$api.memberships.leaveGroup(params)
+    await dispatch('fetchUser', {
+      components: NONMIN,
+      force: true
+    })
     return state.user
   },
 
   async joinGroup({ commit, dispatch, state }, params) {
-    const res = await this.$axios.post(
-      process.env.API + '/memberships',
-      params,
-      {
-        headers: {
-          'X-HTTP-Method-Override': 'PUT'
-        }
-      }
-    )
-
-    if (res.status === 200 && res.data.ret === 0) {
-      await dispatch('fetchUser', {
-        components: NONMIN,
-        force: true
-      })
-    } else {
-      // TODO
-      console.error('saveUser failed')
-    }
-
+    await this.$api.memberships.joinGroup(params)
+    await dispatch('fetchUser', {
+      components: NONMIN,
+      force: true
+    })
     return state.user
   },
 
