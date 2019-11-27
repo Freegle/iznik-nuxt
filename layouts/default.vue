@@ -61,9 +61,8 @@
                   Notifications
                 </div>
               </template>
-              <b-dropdown-item>
+              <b-dropdown-item class="text-right">
                 <b-btn variant="white" size="sm" @click="markAllRead">
-                  <!--                  TODO DESIGN Align to right; float right breaks divider-->
                   Mark all as read
                 </b-btn>
               </b-dropdown-item>
