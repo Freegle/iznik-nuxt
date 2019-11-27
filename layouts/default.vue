@@ -202,7 +202,7 @@
             </b-nav-item>
             <b-nav-item class="text-center p-0" to="/communities" @mousedown="maybeReload('/communities')">
               <v-icon name="users" scale="2" /><br>
-              My&nbsp;Groups
+              Communities
             </b-nav-item>
             <b-nav-item class="text-center p-0" to="/explore" @mousedown="maybeReload('/explore')">
               <v-icon name="map-marked-alt" scale="2" /><br>
