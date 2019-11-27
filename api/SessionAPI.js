@@ -2,11 +2,11 @@ import BaseAPI from './BaseAPI'
 
 export default class SessionAPI extends BaseAPI {
   fetch(params) {
-    return this.$get(params)
+    return this.$get('/session', params)
   }
 
   save(data) {
-    return this.$patch(data)
+    return this.$patch('/session', data)
   }
 
   login({
@@ -17,7 +17,7 @@ export default class SessionAPI extends BaseAPI {
     googlelogin,
     googleauthcode
   }) {
-    return this.$post({
+    return this.$post('/session', {
       email,
       password,
       fblogin,
@@ -28,10 +28,10 @@ export default class SessionAPI extends BaseAPI {
   }
 
   logout() {
-    return this.$del()
+    return this.$del('/session')
   }
 
   forget() {
-    return this.$post({ action: 'Forget' })
+    return this.$post('/session', { action: 'Forget' })
   }
 }

@@ -44,64 +44,23 @@ export const getters = {
 
 export const actions = {
   async fetch({ commit }, params) {
-    const res = await this.$axios.get(process.env.API + '/invitation', {
-      params: params
-    })
-
-    if (res.status === 200) {
-      commit(
-        'setList',
-        res.data.invitation ? [res.data.invitation] : res.data.invitations
-      )
-    }
+    const { invitation, invitations } = await this.$api.invitation.fetch(params)
+    commit('setList', invitation ? [invitation] : invitations)
   },
 
-  async delete({ commit, getters, dispatch }, params) {
-    await this.$axios.post(
-      process.env.API + '/invitation',
-      {
-        id: params.id
-      },
-      {
-        headers: {
-          'X-HTTP-Method-Override': 'DELETE'
-        }
-      }
-    )
-
+  async delete({ commit, getters, dispatch }, { id }) {
+    await this.$api.invitation.del(id)
     await dispatch('fetch')
   },
 
   async add({ commit, getters, dispatch }, params) {
-    let id = null
-    const ret = await this.$axios.post(
-      process.env.API + '/invitation',
-      params,
-      {
-        headers: {
-          'X-HTTP-Method-Override': 'PUT'
-        }
-      }
-    )
-
-    if (ret.status === 200) {
-      await dispatch('fetch', {
-        id: ret.data.id
-      })
-
-      id = ret.data.id
-    }
-
+    const id = await this.$api.invitation.add(params)
+    await dispatch('fetch', { id })
     return id
   },
 
   async edit({ commit, getters, dispatch }, params) {
-    await this.$axios.post(process.env.API + '/invitation', params, {
-      headers: {
-        'X-HTTP-Method-Override': 'PATCH'
-      }
-    })
-
+    await this.$api.invitation.save(params)
     await dispatch('fetch', {
       id: params.id
     })

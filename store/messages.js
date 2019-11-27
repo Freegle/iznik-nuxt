@@ -94,14 +94,9 @@ export const actions = {
       params.context = state.context
     }
 
-    const res = await this.$axios.get(process.env.API + '/messages', {
-      params: params
-    })
-
-    if (res.status === 200) {
-      commit('addAll', res.data.messages)
-      commit('setContext', res.data.context)
-    }
+    const { messages, context } = await this.$api.message.fetchMessages(params)
+    commit('addAll', messages)
+    commit('setContext', context)
   },
 
   async fetch({ commit }, params) {

@@ -22,14 +22,9 @@ export const getters = {
 
 export const actions = {
   async fetch({ commit }, params) {
-    const res = await this.$axios.get(process.env.API + '/team', {
-      params: params
-    })
-
-    if (res.status === 200) {
-      console.log('Got', res.data.team)
-      commit('set', res.data.team)
-    }
+    const team = await this.$api.team.fetch(params)
+    console.log('Got', team)
+    commit('set', team)
   },
 
   clear({ commit }) {

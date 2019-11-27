@@ -71,24 +71,10 @@ export const getters = {
 
 export const actions = {
   async list({ commit }, params) {
-    const res = await this.$axios.get(process.env.API + '/groups', {
-      params: params
-    })
-
-    if (res.status === 200) {
-      commit('setList', res.data.groups)
-    }
+    commit('setList', await this.$api.group.list(params))
   },
 
-  async fetch({ commit }, params) {
-    const res = await this.$axios.get(process.env.API + '/group', {
-      params: {
-        id: params.id
-      }
-    })
-
-    if (res.status === 200) {
-      commit('add', res.data.group)
-    }
+  async fetch({ commit }, { id }) {
+    commit('add', await this.$api.group.fetch(id))
   }
 }

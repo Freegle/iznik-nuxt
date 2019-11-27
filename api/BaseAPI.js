@@ -6,31 +6,30 @@ export class APIError extends Error {
 }
 
 export default class BaseAPI {
-  constructor({ $axios, path }) {
+  constructor({ $axios }) {
     this.$axios = $axios
-    this.$path = path
   }
 
-  async $request(method, config) {
+  async $request(method, path, config) {
     const { status, data } = await this.$axios.request({
       ...config,
       method,
-      url: this.$path,
+      url: path,
       baseURL: process.env.API
     })
     if (status !== 200 || data.ret !== 0) {
       const message = [
         'API Error',
         method,
-        this.$path,
+        path,
         '->',
         `ret: ${data.ret} status: ${data.status || 'Unknown'}`
       ].join(' ')
       throw new APIError(
         {
           request: {
-            path: this.$path,
-            method: method,
+            path,
+            method,
             headers: config.headers,
             params: config.params,
             data: config.data
@@ -46,16 +45,16 @@ export default class BaseAPI {
     return data
   }
 
-  $get(params = {}) {
-    return this.$request('GET', { params })
+  $get(path, params = {}) {
+    return this.$request('GET', path, { params })
   }
 
-  $post(data) {
-    return this.$request('POST', { data })
+  $post(path, data) {
+    return this.$request('POST', path, { data })
   }
 
-  $postOverride(overrideMethod, data) {
-    return this.$request('POST', {
+  $postOverride(overrideMethod, path, data) {
+    return this.$request('POST', path, {
       data,
       headers: {
         'X-HTTP-Method-Override': overrideMethod
@@ -63,19 +62,19 @@ export default class BaseAPI {
     })
   }
 
-  $put(data) {
-    return this.$postOverride('PUT', data)
+  $put(path, data) {
+    return this.$postOverride('PUT', path, data)
   }
 
-  $realPut(data) {
-    return this.$request('PUT', { data })
+  $realPut(path, data) {
+    return this.$request('PUT', path, { data })
   }
 
-  $patch(data) {
-    return this.$postOverride('PATCH', data)
+  $patch(path, data) {
+    return this.$postOverride('PATCH', path, data)
   }
 
-  $del(data, config = {}) {
-    return this.$postOverride('DELETE', data)
+  $del(path, data, config = {}) {
+    return this.$postOverride('DELETE', path, data)
   }
 }
