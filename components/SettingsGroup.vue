@@ -9,9 +9,6 @@
             <option value="-1">
               Immediately
             </option>
-            <option value="0">
-              Never
-            </option>
             <option value="1">
               Every Hour
             </option>
@@ -26,6 +23,9 @@
             </option>
             <option value="24">
               Every day
+            </option>
+            <option value="0">
+              Never
             </option>
           </b-form-select>
         </b-form-group>

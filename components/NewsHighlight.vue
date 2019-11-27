@@ -7,18 +7,22 @@
       class="nopara"
     />
 
-    <span v-show="text.length > maxChars">
+    <span v-show="text && text.length > maxChars">
       <a v-show="!isReadMore" id="readmore" class="highlight" :href="link" @click="triggerReadMore($event, true)">{{ moreStr }}</a>
       <a v-show="isReadMore" id="readmore" class="highlight" :href="link" @click="triggerReadMore($event, false)">{{ lessStr }}</a>
     </span>
   </div>
 </template>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .highlight {
-  color: blue;
+  color: $color-blue--base;
   background-color: initial;
 }
 </style>
+
 <script>
 // Originally based on https://github.com/orlyyani/read-more
 const Highlighter = () => import('vue-highlight-words')
@@ -37,7 +41,7 @@ export default {
       default: ''
     },
     text: {
-      type: String,
+      validator: prop => typeof prop === 'string' || prop === null,
       required: true
     },
     link: {

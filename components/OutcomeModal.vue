@@ -1,114 +1,121 @@
 <template>
-  <b-modal
-    id="promisemodal"
-    v-model="showModal"
-    :title="message.subject"
-    size="lg"
-    no-stacking
-  >
-    <template slot="default">
-      <b-row>
-        <b-col class="text-center">
-          <p>Letting us know what happened to a post is really helpful.</p>
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col>
-          <b-select v-model="type" @change="changeType">
-            <option value="Taken">
-              Taken by
-            </option>
-            <option value="Received">
-              Received from
-            </option>
-            <option value="Withdrawn">
-              Withdrawn
-            </option>
-          </b-select>
-        </b-col>
-        <b-col>
-          <b-select
-            v-if="type === 'Taken' || type === 'Received'"
-            ref="userselect"
-            v-model="selectedUser"
-            autofocus
-            :options="userOptions"
-            :class="'mb-2 ' + (selectedUser === -1 ? 'text-danger' : '')"
-          />
-        </b-col>
-      </b-row>
-      <b-row v-if="selectedUser > 0">
-        <b-col class="text-center">
-          <b-card bg-variant="info">
-            <b-card-body>
-              <p>How was this freegler?</p>
-              <Ratings :key="'user-' + selectedUser" v-bind="users[selectedUser]" class="" />
-            </b-card-body>
-          </b-card>
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col class="text-center">
-          <hr>
-          <p class="mt-2">
-            How do you feel about freegling just now?
-          </p>
-          <b-button-group>
-            <b-button variant="success" size="lg" @click="happiness = 'Happy'">
-              <v-icon name="smile" scale="2" /> Happy
-            </b-button>
-            <b-button variant="white" size="lg" @click="happiness = 'Fine'">
-              <v-icon name="meh" scale="2" color="grey" /> Fine
-            </b-button>
-            <b-button variant="danger" size="lg" @click="happiness = 'Unhappy'">
-              <v-icon name="frown" scale="2" /> Sad
-            </b-button>
-          </b-button-group>
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col class="text-center">
-          <p class="mt-2">
-            You can add comments:
-          </p>
-          <b-textarea v-model="comments" rows="2" max-rows="6" />
-          <div class="float-right text-muted mt-2">
-            <span v-if="happiness === null || happiness === 'Happy' || happiness === 'Fine'">
-              <v-icon name="globe-europe" /> Your comments may be public
-            </span>
-            <span v-if="happiness === 'Unhappy'">
-              <v-icon name="lock" /> Your comments will only go to our volunteers
-            </span>
-          </div>
-        </b-col>
-      </b-row>
-    </template>
-    <template slot="modal-footer" slot-scope="{ ok, cancel }">
-      <b-button variant="white" @click="cancel">
-        Cancel
-      </b-button>
-      <b-button variant="success" :disabled="submitDisabled" @click="submit">
-        Submit
-      </b-button>
-    </template>
-  </b-modal>
+  <div>
+    <b-modal
+      id="promisemodal"
+      v-model="showModal"
+      :title="message.subject"
+      size="lg"
+      no-stacking
+    >
+      <template slot="default">
+        <b-row>
+          <b-col class="text-center">
+            <p>Letting us know what happened to a post is really helpful.</p>
+          </b-col>
+        </b-row>
+        <b-row>
+          <b-col>
+            <b-select v-model="type" class="font-weight-bold" @change="changeType">
+              <option value="Taken">
+                Taken by
+              </option>
+              <option value="Received">
+                Received from
+              </option>
+              <option value="Withdrawn">
+                Withdrawn
+              </option>
+            </b-select>
+          </b-col>
+          <b-col>
+            <b-select
+              v-if="type === 'Taken' || type === 'Received'"
+              ref="userselect"
+              v-model="selectedUser"
+              autofocus
+              :options="userOptions"
+              :class="'mb-2 font-weight-bold ' + (selectedUser === -1 ? 'text-danger' : '')"
+              @change="fetchUser"
+            />
+          </b-col>
+        </b-row>
+        <b-row v-if="selectedUser > 0">
+          <b-col class="text-center">
+            <b-card bg-variant="info">
+              <b-card-body>
+                <p>How was this freegler? Please click.</p>
+                <Ratings :key="'user-' + selectedUser" v-bind="fetchedUser" class="" />
+              </b-card-body>
+            </b-card>
+          </b-col>
+        </b-row>
+        <b-row>
+          <b-col class="text-center">
+            <hr>
+            <p class="mt-2">
+              How do you feel about freegling just now?
+            </p>
+            <b-button-group>
+              <b-button variant="success" size="lg" @click="happiness = 'Happy'">
+                <v-icon name="smile" scale="2" /> Happy
+              </b-button>
+              <b-button variant="white" size="lg" @click="happiness = 'Fine'">
+                <v-icon name="meh" scale="2" color="grey" /> Fine
+              </b-button>
+              <b-button variant="danger" size="lg" @click="happiness = 'Unhappy'">
+                <v-icon name="frown" scale="2" /> Sad
+              </b-button>
+            </b-button-group>
+          </b-col>
+        </b-row>
+        <b-row>
+          <b-col class="text-center">
+            <p class="mt-2">
+              You can add comments:
+            </p>
+            <b-textarea v-model="comments" rows="2" max-rows="6" />
+            <div class="float-right text-muted mt-2">
+              <span v-if="happiness === null || happiness === 'Happy' || happiness === 'Fine'">
+                <v-icon name="globe-europe" /> Your comments may be public
+              </span>
+              <span v-if="happiness === 'Unhappy'">
+                <v-icon name="lock" /> Your comments will only go to our volunteers
+              </span>
+            </div>
+          </b-col>
+        </b-row>
+      </template>
+      <template slot="modal-footer">
+        <b-button variant="white" @click="hide">
+          Cancel
+        </b-button>
+        <b-button variant="success" :disabled="submitDisabled" @click="submit">
+          Submit
+        </b-button>
+      </template>
+    </b-modal>
+    <DonationAskModal ref="askmodal" :groupid="groupid" />
+  </div>
 </template>
-<style scoped>
-select {
-  font-weight: bold;
-}
+
+<style scoped lang="scss">
+@import 'color-vars';
 
 option {
-  color: black !important;
+  color: $color-black !important;
 }
 </style>
+
 <script>
 import Ratings from './Ratings'
+import DonationAskModal from './DonationAskModal'
+
 // TODO DESIGN We really want to push people to select a user.  How can we do that?  Can we force the select open on render?
 // TODO DESIGN The "Please choose" is red but the dropdown shouldn't be.
 export default {
   components: {
-    Ratings
+    Ratings,
+    DonationAskModal
   },
   props: {
     message: {
@@ -126,7 +133,9 @@ export default {
       type: null,
       happiness: null,
       comments: null,
-      selectedUser: null
+      selectedUser: null,
+      fetchedUser: null,
+      showDonation: false
     }
   },
   computed: {
@@ -157,6 +166,15 @@ export default {
       }
 
       return options
+    },
+    groupid() {
+      let ret = null
+
+      if (this.message && this.message.groups && this.message.groups.length) {
+        ret = this.message.groups[0].groupid
+      }
+
+      return ret
     }
   },
   mounted() {
@@ -201,11 +219,25 @@ export default {
 
     hide() {
       this.showModal = false
+      this.showDonation = true
+      this.$nextTick(() => {
+        // TODO This failed with askmodal undefined.  Why?
+        this.$refs.askmodal.show()
+      })
     },
 
     changeType() {
       this.selectedUser = -1
       this.setComments()
+    },
+
+    async fetchUser(userid) {
+      await this.$store.dispatch('user/fetch', {
+        id: userid,
+        info: true
+      })
+
+      this.fetchedUser = this.$store.getters['user/get'](userid)
     }
   }
 }

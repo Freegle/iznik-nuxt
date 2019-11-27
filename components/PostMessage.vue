@@ -1,15 +1,15 @@
 <template>
   <div>
-    <b-row class="pr-0">
+    <b-row class="pr-0 mb-2">
       <b-col cols="auto" class="mt-2 pl-0">
         <b-btn variant="success" size="lg" @click="photoAdd">
           <v-icon name="camera" />&nbsp;Add photos
         </b-btn>
       </b-col>
       <b-col class="text-center mt-2 pr-0">
-        <b-alert variant="info" class="d-none d-md-inline-block float-right" show>
+        <notice-message class="d-none d-md-inline-block float-right">
           <v-icon name="info-circle" />&nbsp;Please add photos - you'll get a better response.
-        </b-alert>
+        </notice-message>
       </b-col>
     </b-row>
     <b-row v-if="uploading" class="bg-white">
@@ -17,6 +17,7 @@
         <OurFilePond
           imgtype="Message"
           imgflag="message"
+          :identify="true"
           @photoProcessed="photoProcessed"
         />
       </b-col>
@@ -24,11 +25,21 @@
     <b-row v-if="attachments && attachments.length">
       <b-col class="p-0">
         <b-list-group horizontal class="mb-1">
-          <b-list-group-item v-for="(att, $index) in attachments" :key="'image-' + $index" class="bg-transparent p-0">
+          <b-list-group-item v-for="att in attachments" :key="'image-' + att.id" class="bg-transparent p-0">
             <PostPhoto v-bind="att" @remove="removePhoto" />
           </b-list-group-item>
         </b-list-group>
         <hr>
+      </b-col>
+    </b-row>
+    <b-row v-if="suggestions.length">
+      <b-col>
+        <b-card bg-variant="info">
+          <p>Based on your photo, here's what we think it might be.  Click to choose.</p>
+          <b-btn v-for="suggestion in suggestions" :key="suggestion.id" variant="white" class="mr-1" @click="chooseSuggestion(suggestion)">
+            {{ suggestion.name }}
+          </b-btn>
+        </b-card>
       </b-col>
     </b-row>
     <b-row>
@@ -43,7 +54,7 @@
         </b-form-select>
       </b-col>
       <b-col cols="9" class="pl-0 pr-0">
-        <PostItem :item="item" @selected="itemSelect" @cleared="itemClear" @typed="itemType" />
+        <PostItem :key="item" :item="item" @selected="itemSelect" @cleared="itemClear" @typed="itemType" />
       </b-col>
     </b-row>
     <b-row>
@@ -57,18 +68,20 @@
     </b-row>
   </div>
 </template>
+
 <script>
-// TODO Image recognition?
 // TODO Not obvious enough why the Next button doesn't appear.  Greyed out?  Indications?
 const OurFilePond = () => import('~/components/OurFilePond')
 const PostPhoto = () => import('~/components/PostPhoto')
 const PostItem = () => import('~/components/PostItem')
+const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
     OurFilePond,
     PostPhoto,
-    PostItem
+    PostItem,
+    NoticeMessage
   },
   props: {
     id: {
@@ -85,7 +98,8 @@ export default {
     return {
       uploading: false,
       myFiles: [],
-      image: null
+      image: null,
+      suggestions: []
     }
   },
   computed: {
@@ -138,7 +152,7 @@ export default {
       // init callback below.
       this.uploading = true
     },
-    photoProcessed(imageid, imagethumb, image) {
+    photoProcessed(imageid, imagethumb, image, ocr, suggestions) {
       // We have uploaded a photo.  Remove the filepond instance.
       this.uploading = false
 
@@ -147,6 +161,8 @@ export default {
         paththumb: imagethumb,
         path: image
       }
+
+      this.suggestions = suggestions
 
       this.$store.dispatch('compose/addAttachment', {
         id: this.id,
@@ -177,6 +193,9 @@ export default {
     },
     itemClear() {
       this.item = null
+    },
+    chooseSuggestion(suggestion) {
+      this.item = suggestion.name
     }
   }
 }

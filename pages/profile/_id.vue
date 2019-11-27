@@ -13,9 +13,13 @@
                   <div class="float-right">
                     <span class="small text-faded float-right">#{{ id }}</span>
                     <br>
-                    <b-btn variant="white" size="sm" class="float-right mb-1" :disabled="user.id === myid ? 'true' : undefined">
-                      <v-icon name="comment" class="d-none d-sm-inline-block" />&nbsp;Message
-                    </b-btn>
+                    <ChatButton
+                      v-if="user.id !== myid"
+                      :userid="user.id"
+                      size="sm"
+                      title="Message"
+                      class="float-right mb-1"
+                    />
                     <br>
                     <ratings size="sm" v-bind="user" class="pl-1 pt-1 d-block" />
                   </div>
@@ -36,11 +40,11 @@
             </div>
           </b-card-body>
         </b-card>
-        <b-card v-if="user.info.aboutme && user.info.aboutme.text" variant="white" class="mt-2">
+        <b-card v-if="aboutme" variant="white" class="mt-2">
           <b-card-body class="p-0">
             <div class="mb-1">
               <blockquote>
-                <b>&quot;{{ user.info.aboutme.text }}&quot;</b>
+                <b>&quot;{{ aboutme }}&quot;</b>
               </blockquote>
             </div>
           </b-card-body>
@@ -74,7 +78,7 @@
           </template>
           <b-card-body class="p-0">
             <div v-if="activeOffers.length">
-              <div v-for="(message, $index) in activeOffers" :key="$index" class="p-0">
+              <div v-for="message in activeOffers" :key="'message-' + message.id" class="p-0">
                 <Message v-bind="message" />
               </div>
             </div>
@@ -90,7 +94,7 @@
           </template>
           <b-card-body class="p-0">
             <div v-if="activeWanteds.length">
-              <div v-for="(message, $index) in activeWanteds" :key="$index" class="p-0">
+              <div v-for="message in activeWanteds" :key="'message-' + message.id" class="p-0">
                 <Message v-bind="message" />
               </div>
             </div>
@@ -133,7 +137,10 @@
     </b-row>
   </div>
 </template>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .coverphoto {
   height: 100px !important;
   width: 100% !important;
@@ -143,7 +150,7 @@
 .coverprofilecircle {
   width: 100px;
   height: 100px;
-  background-color: darkgray;
+  background-color: $color-gray--base;
   border-radius: 50%;
   /*margin: 10px;*/
 }
@@ -154,7 +161,7 @@
   width: 98px;
   height: 98px;
   border-radius: 98px;
-  border: 3px solid white;
+  border: 3px solid $color-white;
 }
 
 .covername {
@@ -166,19 +173,23 @@
   padding-right: 10px;
 }
 </style>
+
 <script>
 // TODO DESIGN The about me section needs nice big quotes round it.
 // TODO DESIGN This page is dull.  We could add newsfeed activity but most users won't have any.  What can we do?
+import twem from '~/assets/js/twem'
 import loginOptional from '@/mixins/loginOptional.js'
 const Ratings = () => import('~/components/Ratings')
 const ReplyTime = () => import('~/components/ReplyTime')
 const Message = () => import('~/components/Message.vue')
+const ChatButton = () => import('~/components/ChatButton.vue')
 
 export default {
   components: {
     Ratings,
     ReplyTime,
-    Message
+    Message,
+    ChatButton
   },
   mixins: [loginOptional],
   props: {},
@@ -202,6 +213,11 @@ export default {
     },
     activeWanteds() {
       return this.active('Wanted')
+    },
+    aboutme() {
+      return this.user && this.user.info && this.user.info.aboutme
+        ? twem.twem(this.$twemoji, this.user.info.aboutme.text)
+        : null
     }
   },
   async asyncData({ app, params, store }) {
@@ -221,7 +237,7 @@ export default {
     })
 
     return {
-      messages: store.getters['messages/getAll']()
+      messages: store.getters['messages/getAll']
     }
   },
   created() {

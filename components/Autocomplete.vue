@@ -52,6 +52,115 @@
   </div>
 </template>
 
+<style scoped lang="scss">
+@import 'color-vars';
+
+/* iteminp class is passed into this component in a prop */
+.iteminp ul {
+  width: 100% !important;
+  right: 0px !important;
+  padding-right: 15px !important;
+  padding-left: 15px !important;
+}
+
+/* postcodelist class is passed into this component in a prop */
+.postcodelist {
+  z-index: 900;
+}
+
+.postcodelist li {
+  box-shadow: 1px 3px 5px 3px $color-black-opacity-60;
+  width: 238px;
+}
+
+/* Deep selector for scoped CSS */
+::v-deep .pcinp {
+  min-width: 100px;
+  max-width: 238px;
+  margin: 0 auto;
+}
+
+.transition,
+.autocomplete,
+.showAll-transition,
+.autocomplete ul,
+.autocomplete ul li a {
+  transition: all 0.3s ease-out;
+  -moz-transition: all 0.3s ease-out;
+  -webkit-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+}
+
+.autocomplete ul {
+  font-family: sans-serif;
+  position: absolute;
+  list-style: none;
+  background: $color-gray--lighter;
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+  min-width: 15%;
+  margin-top: 0px;
+  z-index: 1000;
+  right: 48%;
+}
+
+/*.autocomplete ul:before{*/
+/*content: "";*/
+/*display: block;*/
+/*position: absolute;*/
+/*height: 0;*/
+/*width: 0;*/
+/*border: 10px solid transparent;*/
+/*border-bottom: 10px solid $color-gray--lighter;*/
+/*left: 46%;*/
+/*top: -20px*/
+/*}*/
+
+.autocomplete ul li a {
+  text-decoration: none;
+  display: block;
+  padding: 5px;
+  padding-left: 10px;
+}
+
+.autocomplete ul li a:hover,
+.autocomplete ul li.focus-list a {
+  color: white;
+  background: $color-blue--lighter;
+}
+
+.autocomplete ul li a span, /*backwards compat*/
+.autocomplete ul li a .autocomplete-anchor-label {
+  display: block;
+  margin-top: 3px;
+  color: grey;
+  font-size: 13px;
+}
+
+.autocomplete ul li a:hover .autocomplete-anchor-label,
+.autocomplete ul li.focus-list a span, /*backwards compat*/
+.autocomplete ul li a:hover .autocomplete-anchor-label,
+.autocomplete ul li.focus-list a span {
+  /*backwards compat*/
+  color: white;
+}
+
+/*.showAll-transition{
+  opacity: 1;
+  height: 50px;
+  overflow: hidden;
+}
+
+.showAll-enter{
+  opacity: 0.3;
+  height: 0;
+}
+
+.showAll-leave{
+  display: none;
+}*/
+</style>
 
 <script>
 /*! Copyright (c) 2016 Naufal Rabbani (http://github.com/BosNaufal)
@@ -64,6 +173,8 @@
 */
 
 /* eslint-disable */
+
+import cloneDeep from 'lodash.clonedeep'
 
 export default {
   props: {
@@ -221,7 +332,7 @@ export default {
 
     // Get the original data
     cleanUp(data) {
-      return data ? JSON.parse(JSON.stringify(data)) : null
+      return data ? cloneDeep(data) : null
     },
 
     /* ==============================

@@ -47,14 +47,10 @@
       </b-col>
     </b-row>
   </div>
-  </b-col>
-  </b-row>
-  </div>
 </template>
 <style scoped>
 </style>
 <script>
-// TODO Unpromise button
 import ChatBase from '~/components/ChatBase'
 
 export default {

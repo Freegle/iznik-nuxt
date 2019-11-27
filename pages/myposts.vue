@@ -1,10 +1,33 @@
 <template>
-  <b-col>
+  <div>
     <b-row class="m-0">
       <b-col cols="0" md="3" class="d-none d-md-block">
-        Community Events go here
+        <SidebarLeft :show-community-events="true" :show-bot-left="true" />
       </b-col>
       <b-col cols="12" md="6" class="p-0">
+        <JobsTopBar />
+        <b-card
+          class="mt-2"
+          border-variant="info"
+          header="info"
+          header-bg-variant="info"
+          header-text-variant="white"
+          no-body
+        >
+          <template slot="header">
+            <h3 class="d-inline">
+              <v-icon name="calendar-alt" scale="2" /> Your Availability
+            </h3>
+          </template>
+          <b-card-body>
+            <p>
+              Tell us when you're free and it'll make it quicker to arrange collection times.
+            </p>
+            <b-btn size="lg" variant="success" @click="availability">
+              <v-icon name="calendar-alt" /> Update your availability
+            </b-btn>
+          </b-card-body>
+        </b-card>
         <b-card
           class="mt-2"
           border-variant="info"
@@ -37,7 +60,7 @@
               </p>
               <b-img-lazy v-if="busy && offers.length === 0" src="~/static/loader.gif" />
               <div v-if="busy || offers.length > 0">
-                <div v-for="(message, $index) in offers" :key="$index" class="p-0 text-left mt-1">
+                <div v-for="message in offers" :key="'message-' + message.id" class="p-0 text-left mt-1">
                   <MyMessage :message="message" :messages="messages" :show-old="showOldOffers" :expand="expand" />
                 </div>
               </div>
@@ -89,7 +112,7 @@
                 Stuff you're trying to find.
               </p>
               <div v-if="busy || wanteds.length > 0">
-                <div v-for="(message, $index) in wanteds" :key="$index" class="p-0 text-left mt-1">
+                <div v-for="message in wanteds" :key="'message-' + message.id" class="p-0 text-left mt-1">
                   <MyMessage :message="message" :messages="messages" :show-old="showOldWanteds" :expand="expand" />
                 </div>
               </div>
@@ -135,7 +158,7 @@
                 What you've recently searched for - click to search again. These are also email alerts - we'll mail you matching posts.
               </p>
               <ul v-if="busy || searches && Object.keys(searches).length > 0" class="list-group list-group-horizontal flex-wrap">
-                <li v-for="(search, $index) in searches" :key="$index" class="text-left mt-1 list-group-item bg-white border text-nowrap mr-2">
+                <li v-for="search in searches" :key="'search-' + search.id" class="text-left mt-1 list-group-item bg-white border text-nowrap mr-2">
                   <b-btn variant="white d-inline">
                     <v-icon name="search" /> {{ search.term }}
                   </b-btn>
@@ -165,22 +188,30 @@
         </b-card>
       </b-col>
       <b-col cols="0" md="3" class="d-none d-md-block">
-        Volunteer ops and ads go here
+        <sidebar-right show-volunteer-opportunities show-job-opportunities />
       </b-col>
     </b-row>
-  </b-col>
+    <AvailabilityModal v-if="me" ref="availabilitymodal" :thisuid="me.id" />
+  </div>
 </template>
 <style scoped>
 </style>
 <script>
 import loginRequired from '@/mixins/loginRequired.js'
+const JobsTopBar = () => import('../components/JobsTopBar')
 const MyMessage = () => import('~/components/MyMessage.vue')
-// TODO Availability
-// TODO Reject and resubmit.
+const SidebarLeft = () => import('~/components/SidebarLeft')
+const SidebarRight = () => import('~/components/SidebarRight')
+const AvailabilityModal = () => import('~/components/AvailabilityModal')
+// TODO Repost results in two items on the post page?  Maybe, needs testing.
 
 export default {
   components: {
-    MyMessage
+    JobsTopBar,
+    MyMessage,
+    SidebarLeft,
+    SidebarRight,
+    AvailabilityModal
   },
   mixins: [loginRequired],
   data() {
@@ -197,6 +228,10 @@ export default {
     }
   },
   computed: {
+    me() {
+      return this.$store.getters['auth/user']
+    },
+
     wanteds() {
       const ret = []
 
@@ -256,7 +291,7 @@ export default {
       return count
     },
     searches() {
-      const ret = this.$store.getters['searches/list']()
+      const ret = this.$store.getters['searches/list']
       return ret
     }
   },
@@ -294,8 +329,8 @@ export default {
 
         this.busy = false
 
-        this.messages = this.$store.getters['messages/getAll']()
-        this.context = this.$store.getters['messages/getContext']()
+        this.messages = this.$store.getters['messages/getAll']
+        this.context = this.$store.getters['messages/getContext']
 
         if (currentCount !== this.messages.length) {
           // More to load
@@ -337,6 +372,9 @@ export default {
       setTimeout(() => {
         this.removedSearch = null
       }, 2000)
+    },
+    availability() {
+      this.$refs.availabilitymodal.show()
     }
   }
 }

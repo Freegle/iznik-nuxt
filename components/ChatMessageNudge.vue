@@ -26,7 +26,7 @@
 <style scoped>
 </style>
 <script>
-// TODO DESIGN Make the alarm shake for a bit?
+// TODO DESIGN MINOR Make the nudge alarm shake for a bit?
 import ChatBase from '~/components/ChatBase'
 
 export default {

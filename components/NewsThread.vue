@@ -1,34 +1,47 @@
 <template>
   <div v-if="newsfeed && newsfeed.visible && !newsfeed.unfollowed" class="bg-white">
-    <b-card :style="'background-color:' + backgroundColor" no-body>
+    <b-card :class="backgroundColor" no-body>
       <b-card-body class="p-1 p-sm-2">
         <b-card-text>
-          <b-dropdown class="float-right" right variant="white">
-            <template slot="button-content" />
-            <b-dropdown-item :href="'/chitchat/' + newsfeed.id" target="_blank">
-              Open in new window
-            </b-dropdown-item>
-            <b-dropdown-item :b-v-modal="'newsEdit' + newsfeed.id" @click="show">
-              Edit
-            </b-dropdown-item>
-          </b-dropdown>
-          <news-message v-if="newsfeed.type === 'Message'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
-          <news-about-me v-else-if="newsfeed.type === 'AboutMe'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
-          <news-community-event v-else-if="newsfeed.type === 'CommunityEvent'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
-          <news-volunteer-opportunity v-else-if="newsfeed.type === 'VolunteerOpportunity'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
-          <news-story v-else-if="newsfeed.type === 'Story'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
-          <news-alert v-else-if="newsfeed.type === 'Alert'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
-          <news-noticeboard v-else-if="newsfeed.type === 'Noticeboard'" :id="newsfeed.id" :newsfeed="newsfeed" :users="users" @focus-comment="focusComment" />
-          <b-alert v-else variant="danger" show>
+          <div v-if="isNewsComponent">
+            <b-dropdown class="float-right" right variant="white">
+              <template slot="button-content" />
+              <b-dropdown-item :href="'/chitchat/' + newsfeed.id" target="_blank">
+                Open in new window
+              </b-dropdown-item>
+              <b-dropdown-item :b-v-modal="'newsEdit' + newsfeed.id" @click="show">
+                Edit
+              </b-dropdown-item>
+              <b-dropdown-item @click="unfollow">
+                Unfollow this thread
+              </b-dropdown-item>
+              <b-dropdown-item @click="report">
+                Report this thread or one of its replies
+              </b-dropdown-item>
+              <b-dropdown-item v-if="parseInt(me.id) === parseInt(newsfeed.userid) || mod" @click="deleteIt">
+                Delete this thread
+              </b-dropdown-item>
+            </b-dropdown>
+            <component
+              :is="newsComponentName"
+              :id="newsfeed.id"
+              :newsfeed="newsfeed"
+              :users="users"
+              @focus-comment="focusComment"
+            />
+            <NewsPreview v-if="newsfeed.preview" :preview="newsfeed.preview" class="mt-1" />
+          </div>
+          <notice-message v-else variant="danger">
             Unknown item type {{ newsfeed.type }}
-          </b-alert>
+          </notice-message>
         </b-card-text>
       </b-card-body>
       <div slot="footer">
+        <!-- TODO Minor - Refactor out the reply logic. Also bear in mind the logic in NewsReply -->
         <a v-if="!showAllReplies && newsfeed.replies.length > 10" href="#" variant="white" class="mb-3" @click="(e) => { e.preventDefault(); showAllReplies = true }">
           Show earlier {{ newsfeed.replies.length | pluralize(['reply', 'replies'], { includeNumber: false }) }} ({{ newsfeed.replies.length - 10 }})
         </a>
-        <ul v-for="(entry, $index) in repliestoshow" :key="'newsfeed-' + $index" class="list-unstyled">
+        <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id" class="list-unstyled mb-2">
           <li>
             <news-reply :key="'newsfeedreply-' + newsfeed.id + '-reply-' + entry.id" :reply="entry" :users="users" :threadhead="newsfeed" :scroll-to="scrollTo" />
           </li>
@@ -73,9 +86,9 @@
             </b-col>
           </b-row>
         </span>
-        <b-alert v-else variant="info" show>
+        <notice-message v-else>
           This thread is now closed.  Thanks to everyone who contributed.
-        </b-alert>
+        </notice-message>
       </div>
     </b-card>
     <b-modal
@@ -104,34 +117,34 @@
         </b-button>
       </template>
     </b-modal>
+    <NewsReportModal :id="newsfeed.id" ref="newsreport" />
   </div>
 </template>
-<style scoped>
-.profilesm {
-  width: 25px !important;
-  height: 25px !important;
-}
-</style>
+
 <script>
-// TODO Report etc menu dropdown
-// TODO Delete
+// TODO EH Refer to WANTED/OFFER/RECEIVED/TAKEN
+// TODO MINOR Attach to thread
 // TODO DESIGN Some indication of newly added entries
 // TODO Click on loves to show who loves them
+import NewsReportModal from './NewsReportModal'
 import twem from '~/assets/js/twem'
 
 // Use standard import to avoid screen-flicker
 import NewsReply from '~/components/NewsReply'
-const NewsMessage = () => import('~/components/NewsMessage')
-const NewsAboutMe = () => import('~/components/NewsAboutMe')
+import NewsMessage from '~/components/NewsMessage'
+import NewsAboutMe from '~/components/NewsAboutMe'
 const NewsCommunityEvent = () => import('~/components/NewsCommunityEvent')
 const NewsVolunteerOpportunity = () =>
   import('~/components/NewsVolunteerOpportunity')
 const NewsStory = () => import('~/components/NewsStory')
 const NewsAlert = () => import('~/components/NewsAlert')
 const NewsNoticeboard = () => import('~/components/NewsNoticeboard')
+const NoticeMessage = () => import('~/components/NoticeMessage')
+const NewsPreview = () => import('~/components/NewsPreview')
 
 export default {
   components: {
+    NewsReportModal,
     NewsReply,
     NewsMessage,
     NewsAboutMe,
@@ -139,7 +152,9 @@ export default {
     NewsVolunteerOpportunity,
     NewsStory,
     NewsAlert,
-    NewsNoticeboard
+    NewsNoticeboard,
+    NoticeMessage,
+    NewsPreview
   },
   props: {
     id: {
@@ -160,7 +175,21 @@ export default {
     return {
       replyingTo: null,
       threadcomment: null,
-      showAllReplies: false
+      showAllReplies: false,
+      newsreport: false,
+      newsComponents: {
+        AboutMe: 'NewsAboutMe',
+        Message: 'NewsMessage',
+        CommunityEvent: 'NewsCommunityEvent',
+        VolunteerOpportunity: 'NewsVolunteerOpportunity',
+        Story: 'NewsStory',
+        Alert: 'NewsAlert',
+        Noticeboard: 'NewsNoticeboard'
+      },
+      elementBackgroundColor: {
+        CommunityEvent: 'card__community-event',
+        VolunteerOpportunity: 'card__volunteer-opportunity'
+      }
     }
   },
   computed: {
@@ -168,24 +197,19 @@ export default {
       return this.$store.getters['newsfeed/get'](this.id)
     },
     me() {
-      return this.$store.state.auth.user
+      return this.$store.getters['auth/user']
+    },
+    mod() {
+      const me = this.me
+      return (
+        me &&
+        (me.systemrole === 'Moderator' ||
+          me.systemrole === 'Admin' ||
+          me.systemrole === 'Support')
+      )
     },
     backgroundColor() {
-      let col
-
-      switch (this.newsfeed.type) {
-        case 'CommunityEvent':
-          col = '#add8e62e'
-          break
-        case 'VolunteerOpportunity':
-          col = '#c3e6cb26'
-          break
-        default:
-          col = 'white'
-          break
-      }
-
-      return col
+      return this.elementBackgroundColor[this.newsfeed.type] || 'card__default'
     },
     repliestoshow() {
       let ret = []
@@ -200,6 +224,12 @@ export default {
       }
 
       return ret
+    },
+    isNewsComponent() {
+      return this.newsfeed.type in this.newsComponents
+    },
+    newsComponentName() {
+      return this.isNewsComponent ? this.newsComponents[this.newsfeed.type] : ''
     }
   },
   methods: {
@@ -210,6 +240,8 @@ export default {
       this.replyingTo = this.newsfeed.id
     },
     async sendComment() {
+      // TODO MINOR This is sluggish.  Can we fake up the reply in the store in advance, or have some other visual indicator?
+      // Same applies to NewsReply.
       // Encode up any emojis.
       if (this.threadcomment) {
         const msg = twem.untwem(this.threadcomment)
@@ -232,6 +264,8 @@ export default {
       }
     },
     newlineComment() {
+      // TODO MINOR Would be good to handle inserting in the middle a block of text, though last time I looked at this it
+      // was quite fiddly.
       this.threadcomment += '\n'
     },
     show() {
@@ -244,7 +278,51 @@ export default {
       })
 
       this.$refs.editModal.hide()
+    },
+    deleteIt() {
+      this.$store.dispatch('newsfeed/delete', {
+        id: this.id,
+        threadhead: this.id
+      })
+    },
+    unfollow() {
+      this.$store.dispatch('newsfeed/unfollow', {
+        id: this.id
+      })
+    },
+    report() {
+      this.$refs.newsreport.show()
     }
   }
 }
 </script>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
+.profilesm {
+  width: 25px !important;
+  height: 25px !important;
+}
+
+::v-deep .img-thumbnail {
+  cursor: pointer;
+
+  /*TODO DESIGN Should use same values as global.scss, maybe mixins*/
+  @media (max-width: 992px) {
+    max-width: 100px;
+  }
+}
+
+.card__community-event {
+  background-color: $color-gray-1;
+}
+
+.card__volunteer-opportunity {
+  background-color: $color-gray-2;
+}
+
+.card__default {
+  background-color: $color-white;
+}
+</style>

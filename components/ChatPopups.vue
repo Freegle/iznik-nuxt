@@ -2,7 +2,7 @@
   <div>
     <client-only>
       <b-list-group horizontal class="p-0 m-0 list-unstyled chatPopups">
-        <b-list-group-item v-for="(chat, $index) in chatlist" :key="'popupchat-' + $index" class="bg-transparent">
+        <b-list-group-item v-for="chat in chatlist" :key="'popupchat-' + chat.id" class="bg-transparent">
           <ChatPopup :id="chat.id" />
         </b-list-group-item>
       </b-list-group>
@@ -26,21 +26,21 @@ export default {
   },
   props: {},
   data: function() {
-    return {
-      chats: []
-    }
+    return {}
   },
   computed: {
     chatlist() {
       // The popup info is held in our local store.
-      const popups = Object.values(this.$store.getters['popupchats/list']())
+      const popups = Object.values(this.$store.getters['popupchats/list'])
 
       // We want the chats which are currently set to be popups.
       const ret = []
 
+      const chats = Object.values(this.$store.getters['chats/list'])
+
       // There will be few popups, so although this involves a scan of all chats, the performance should be ok.
       for (const popup of popups) {
-        for (const chat of this.chats) {
+        for (const chat of chats) {
           if (parseInt(popup.id) === parseInt(chat.id)) {
             ret.push(chat)
             break
@@ -55,7 +55,6 @@ export default {
     // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
     // need to render this on the server.
     await this.$store.dispatch('chats/listChats')
-    this.chats = Object.values(this.$store.getters['chats/list']())
   },
   methods: {}
 }

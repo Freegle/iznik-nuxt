@@ -1,20 +1,24 @@
 <template>
   <div />
 </template>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .showmod {
   top: 29px;
   left: 44px;
   border-radius: 50%;
   position: absolute;
-  background-color: white;
+  background-color: $color-white;
   width: 24px;
   height: 24px;
   padding-left: 5px;
   padding-top: 4px;
-  border: 1px solid green;
+  border: 1px solid $color-green--darker;
 }
 </style>
+
 <script>
 import twem from '~/assets/js/twem'
 
@@ -33,7 +37,8 @@ export default {
   data: function() {
     return {
       replyingTo: null,
-      threadcomment: null
+      threadcomment: null,
+      newsfeedModal: null
     }
   },
   computed: {
@@ -66,11 +71,15 @@ export default {
     }
   },
   methods: {
-    share() {
-      // TODO
-    },
     brokenImage(event) {
       event.target.src = '/static/defaultprofile.png'
+    },
+    share() {
+      // TODO MINOR We have this method in here, but we put the actual modal in the template of the extending component.  Is this right?
+      this.newsfeedModal = this.newsfeed
+      this.$nextTick(() => {
+        this.$bvModal.show('newsShareModal-' + this.newsfeed.id)
+      })
     }
   }
 }

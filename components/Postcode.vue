@@ -1,5 +1,5 @@
 <template>
-  <b-input-group>
+  <div class="d-flex justify-content-center">
     <autocomplete
       ref="autocomplete"
       :url="source"
@@ -8,40 +8,31 @@
       label=""
       placeholder="Type postcode or..."
       :classes="{ input: 'form-control form-control-' + size + ' text-center pcinp', list: 'postcodelist' }"
+      class="mr-1"
       :min="3"
       :debounce="100"
       :process="process"
       :on-select="select"
     />
 
-    <b-input-group-append v-if="find">
+    <div v-if="find">
       <b-button variant="primary" :size="size">
-        <v-icon title="Find my location" name="map-marker-alt" /><span class="d-none d-sm-block">&nbsp;Find my location</span>
+        <v-icon title="Find my location" name="map-marker-alt" />
+        <span class="d-none d-sm-inline">&nbsp;Find my location</span>
       </b-button>
-    </b-input-group-append>
-  </b-input-group>
+    </div>
+  </div>
 </template>
-<style scoped>
-.input-group,
-.autocomplete-wrapper,
-.input-group-append {
-  display: inline-block;
-}
 
-.input-group-append {
-  /*TODO DESIGN This is a hacky way of positioning this button.*/
-  top: -5px;
-  left: -5px;
-  position: relative;
-}
-</style>
 <script>
 import Autocomplete from '~/components/Autocomplete'
-// TODO Make find location button work
+// TODO Make find location button work - and in DraggableMap.vue.
 // TODO It's quite easy to get the wrong postcode, or think it doesn't match, because of server lag.  Perhaps a busy
 // indicator?
 // TODO Using the debounce option means that if you type fast, you get an end postcode in the input box which isn't
 // looked up.  Bug.
+// TODO If you're on mobile, e.g. on Give page, and click into this, then the on screen keyboard can hide the
+// autocomplete dropdown.  So we need either to drop up instead, or scroll somehow.
 
 export default {
   components: {
@@ -131,7 +122,6 @@ export default {
       return ret
     },
     select(pc) {
-      console.log('Selected', pc)
       this.$emit('selected', pc)
     }
   }

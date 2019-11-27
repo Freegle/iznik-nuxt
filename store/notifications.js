@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import union from 'lodash/union'
 import twem from '~/assets/js/twem'
 
 export const state = () => ({
@@ -22,7 +23,7 @@ export const mutations = {
             .trim()
         }
       }
-      state.list = [...state.list, ...notifications]
+      state.list = union(state.list, notifications)
     }
   },
 
@@ -39,11 +40,8 @@ export const mutations = {
   },
 
   seen(state, id) {
-    console.log('Seen', id)
     for (let ix = 0; ix < state.list.length; ix++) {
-      console.log('Compare', state.list[ix].id)
       if (id === state.list[ix].id) {
-        console.log('Found')
         state.list[ix].seen = 1
       }
     }
@@ -51,15 +49,15 @@ export const mutations = {
 }
 
 export const getters = {
-  list: state => () => {
+  list: state => {
     return state.list
   },
 
-  getContext: state => () => {
+  getContext: state => {
     return state.context
   },
 
-  count: state => () => {
+  count: state => {
     return state.count
   }
 }
@@ -81,15 +79,20 @@ export const actions = {
     }
   },
 
-  async count({ commit, state }, params) {
-    const res = await this.$axios.get(process.env.API + '/notification', {
-      params: {
-        count: true
-      }
-    })
+  async count({ commit, state, rootGetters }, params) {
+    // Check if we're logged in - no point checking for notifications if we're not.
+    const me = rootGetters['auth/user']
 
-    if (res.status === 200) {
-      commit('setCount', res.data.count)
+    if (me) {
+      const res = await this.$axios.get(process.env.API + '/notification', {
+        params: {
+          count: true
+        }
+      })
+
+      if (res.status === 200) {
+        commit('setCount', res.data.count)
+      }
     }
   },
 
@@ -113,6 +116,14 @@ export const actions = {
     await this.$axios.post(process.env.API + '/notification', {
       id: params.id,
       action: 'Seen'
+    })
+
+    await dispatch('count')
+  },
+
+  async allSeen({ commit, dispatch }, params) {
+    await this.$axios.post(process.env.API + '/notification', {
+      action: 'AllSeen'
     })
 
     await dispatch('count')

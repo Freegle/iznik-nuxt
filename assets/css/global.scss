@@ -1,0 +1,304 @@
+@import 'color-vars';
+
+// TODO Would be nice to use bootstrap mixins for breakpoints
+$bootstrap-xs: 576px;
+$bootstrap-sm: 768px;
+$bootstrap-md: 992px;
+$bootstrap-lg: 1200px;
+
+.bg-success {
+  background-color: $colour-success-bg !important;
+  color: $colour-success-fg !important;
+}
+
+.card-header.bg-success {
+  border-bottom: 1px solid $colour-success-bg;
+}
+
+.bg-info {
+  background-color: $colour-info-bg !important;
+  color: $colour-info-fg !important;
+}
+
+.border-info {
+  border-color: $colour-info-bg !important;
+}
+
+.card-header.bg-info {
+  border-bottom: 1px solid $colour-info-bg;
+}
+
+.btn-primary {
+  background-color: $colour-primary !important;
+  border-color: $color-blue--dark;
+  color: $color-white !important;
+  text-shadow: 0 - 1 px 0 $color-black-opacity-59;
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn-success {
+  background-color: $colour-success !important;
+  background-image: none;
+  border-color: $color-green--dark;
+  color: $color-white !important;
+  text-shadow: 0 -1px 0 $color-black-opacity-59;
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn-info {
+  background-color: $colour-info !important;
+  background-image: none;
+  border-color: $color-green--dark;
+  color: $color-white !important;
+  text-shadow: 0 -1px 0 $color-black-opacity-59;
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn-default {
+  background-color: $color-white !important;
+  background-image: none;
+  border-color: $color-green--dark;
+  color: $color-black !important;
+  text-shadow: 0 -1px 0 $color-black-opacity-33;
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn-warning {
+  background-color: $colour-warning !important;
+  background-image: none;
+  border-color: $color-green--dark;
+  color: $color-white !important;
+  text-shadow: 0 -1px 0 $color-black-opacity-33;
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn-white {
+  background-color: $color-white !important;
+  border-color: $color-green--dark;
+  color: $color-black !important;
+  text-shadow: none !important;
+  -webkit-font-smoothing: antialiased;
+  border: 1px $color-black solid;
+}
+
+.button--green {
+  display: inline-block;
+  border-radius: 4px;
+  border: 1px solid $color-green--dark;
+  color: $color-green--dark;
+  text-decoration: none;
+  padding: 10px 30px;
+}
+
+.button--green:hover {
+  color: $color-white;
+  background-color: $color-green--dark;
+}
+
+.button--grey {
+  display: inline-block;
+  border-radius: 4px;
+  border: 1px solid $color-blue--dark;
+  color: $color-blue--dark;
+  text-decoration: none;
+  padding: 10px 30px;
+  margin-left: 15px;
+}
+
+.button--grey:hover {
+  color: $color-white;
+  background-color: $color-blue--dark;
+}
+
+.text-success {
+  color: $colour-success !important;
+}
+
+h1, h2, h3, h4 {
+  color: $colour-header !important;
+}
+
+div[variant="success"] .card-header {
+  color: $colour-success-fg;
+  background-color: $color-green--light;
+  border-color: $colour-success-bg;
+}
+
+.truncate {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+body {
+  //TODO DESIGN I'm really attached to this wallpaper.  White backgrounds are cold, and we want a warm feel.  But
+  //on pages which are text-heavy (e.g. /spread) then it's hard to read the text.
+  //On the old site I removed the wallpaper on such pages.  Should we do that or something better?
+  background-image: url('~static/wallpaper.png');
+}
+
+.profile {
+  width: 30px !important;
+  height: 30px !important;
+
+  @media (min-width: $bootstrap-sm) {
+    width: 50px !important;
+    height: 50px !important;
+  }
+}
+
+.profilemd {
+  width: 20px !important;
+  height: 20px !important;
+
+  @media (min-width: $bootstrap-sm)  {
+    width: 35px !important;
+    height: 35px !important;
+  }
+}
+
+.profilesm {
+  width: 15px !important;
+  height: 15px !important;
+
+  @media (min-width: $bootstrap-sm) {
+    width: 25px !important;
+    height: 25px !important;
+  }
+}
+
+// We have to go to some effort to style the resize grip.  We can't have it in a scoped style otherwise it won't
+// apply to the grip, and the image is small enough that it gets inlined into base64, so we can't use an
+// image file - instead we encode it here.
+.handle {
+  content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAAB3RJTUUH4AQLDigeVd0uIAAAAHpJREFUOMvVkDEKgDAMRQuOLoIHcHTUybmb4BW8gPQM4tWfg6mUIJRmUf+W8P9/JM59RkAHBACZK2Dh0ii7GtiiRxcEMQ8yx/ABtBJeZeefCgB6Rd41GZhzp9xhoMmSk+BLZPWDcnJSMJnIqqScrMI2shTYyOqJ3v1OJ4UMEzPeJauEAAAAAElFTkSuQmCC');
+  height: 16px;
+  width: 16px;
+  position: absolute;
+  z-index: 1000;
+}
+
+.handle-tl {
+  top: 0;
+  left: 0;
+}
+
+// Brought in from style.css
+button {
+    white-space: nowrap;
+}
+
+.clickme {
+    cursor: pointer;
+}
+
+.btn-group-xs > .btn, .btn-xs {
+    padding  : .25rem .4rem;
+    font-size  : .875rem;
+    line-height  : .5;
+    border-radius : .2rem;
+}
+
+.nodecor {
+    text-decoration: none !important;
+    color: $color-black !important;
+}
+
+.prewrap {
+    white-space: pre-wrap !important;
+}
+
+.preline {
+  white-space: pre-line !important;
+}
+
+.fa-bh {
+    font-size: 100px;
+}
+
+.decornone,
+.decornone:hover{
+    text-decoration: none;
+}
+
+/* TODO DESIGN I tried adding "appear" transitions, e.g. for elements in chitchat, or messages.  But they then don't
+    show the computed emessage property.  Don't know why */
+.fade-enter-active, .fade-leave-active {
+    transition: opacity 1s;
+}
+.fade-enter, .fade-leave-to {
+    opacity: 0;
+}
+
+.fadein-enter-active {
+    transition: opacity 1s;
+}
+.fadein-enter {
+    opacity: 0;
+}
+
+.navbar .dropdown-toggle:after {
+  content: none;
+}
+
+nav .dropdown-toggle {
+  border: none;
+}
+
+.forcebreak {
+  -ms-word-break: break-all;
+
+  /* Non standard for webkit */
+  word-break: break-word;
+
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  hyphens: auto;
+}
+
+.black {
+  color: $color-black;
+}
+
+.white, .white > a {
+  color: $color-white !important;
+}
+
+.fa-icon {
+  /* These appear misaligned - fix */
+  margin-bottom: 3px;
+}
+
+.fa-fw {
+  width: 1rem;
+  height: 1rem;
+}
+
+.text-faded {
+  color: $color-gray--faded;
+}
+
+.nopara p {
+  margin-bottom: 0;
+  display: inline;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+legend {
+  font-weight: bold !important;
+}
+
+.mx-datepicker-popup {
+  z-index: 2000 !important;;
+}

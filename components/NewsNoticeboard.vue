@@ -8,13 +8,14 @@
       append="put up a poster"
       :append-bold="info.title"
     />
-    <div>
-      <p>To help Freegle, <b>{{ users[userid].displayname }}</b> printed a Freegle poster and put it up where people can see it.</p>
-    </div>
-    <b-alert v-if="info.description" show variant="info" class="prewrap">
-      <b>"{{ info.description }}"</b>
-    </b-alert>
-    <p><b>We need your help to get more people freegling</b>.  Could you put one up too?</p>
+    <p>To help Freegle, <b>{{ users[userid].displayname }}</b> printed a Freegle poster and put it up where people can see it.</p>
+    <notice-message v-if="info.description || info.name" class="prewrap">
+      <b v-if="info.name">"{{ info.name }}"</b>
+      <em v-if="info.description">"{{ info.description }}"</em>
+    </notice-message>
+    <p class="mt-1">
+      <b>We need your help to get more people freegling</b>.  Could you put one up too?
+    </p>
     <iframe
       width="100%"
       height="200"
@@ -45,11 +46,13 @@ import twem from '~/assets/js/twem'
 import NewsBase from '~/components/NewsBase'
 const NewsUserIntro = () => import('~/components/NewsUserIntro')
 const NewsLoveComment = () => import('~/components/NewsLoveComment')
+const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
     NewsUserIntro,
-    NewsLoveComment
+    NewsLoveComment,
+    NoticeMessage
   },
   extends: NewsBase,
   computed: {

@@ -4,18 +4,21 @@ import Vue from 'vue'
 
 Vue.mixin({
   mounted() {
-    if (process.env.NODE_ENV !== 'production' && this.$el.parentNode) {
-      if (
-        this.$vnode &&
-        this.$vnode.componentOptions &&
-        this.$vnode.componentOptions.tag
-      ) {
-        this.__commentLabel = document.createComment(
+    this.$nextTick(() => {
+      if (process.env.NODE_ENV !== 'production' && this.$el.parentNode) {
+        if (
+          this.$vnode &&
+          this.$vnode.componentOptions &&
           this.$vnode.componentOptions.tag
-        )
-        this.$el.parentNode.insertBefore(this.__commentLabel, this.$el)
+        ) {
+          this.__commentLabel = document.createComment(
+            this.$vnode.componentOptions.tag
+          )
+
+          this.$el.parentNode.insertBefore(this.__commentLabel, this.$el)
+        }
       }
-    }
+    })
   },
   destroyed() {
     if (this.__commentLabel) {

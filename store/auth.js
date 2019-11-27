@@ -1,3 +1,8 @@
+// TODO HARD All this loginRequired/loginOptional stuff seems like hard work.  I've seen at least one undiagnosed
+// bug.  Is there really not a better way to do it?  For example, if we used local storage directly, maybe we
+// could simplify some of the issues that arise because the Vuex persisted store is loaded later rather than sooner.
+// There are definitely still some of these - I've seen the navbar show us logged in while the page contents show us
+// logged out.  Can we force the persisted store to be loaded earlier to knock this class of bugs on the head?
 let first = true
 
 export const state = () => ({
@@ -5,7 +10,8 @@ export const state = () => ({
   user: null,
   userFetched: null,
   groups: [],
-  nchan: null
+  nchan: null,
+  loggedInEver: false
 })
 
 const NONMIN = ['me', 'groups', 'aboutme', 'phone', 'notifications']
@@ -35,10 +41,17 @@ export const mutations = {
           state.user[key] = user[key]
         }
       }
-    } else if (state.user) {
+
+      // Remember that we have successfully logged in at some point.
+      state.loggedInEver = true
+    } else if (state.user || state.user === {}) {
       state.user = null
       state.userFetched = null
     }
+  },
+
+  setLoggedInEver(state, value) {
+    state.loggedInEver = value
   },
 
   setGroups(state, groups) {
@@ -55,12 +68,32 @@ export const mutations = {
 }
 
 export const getters = {
-  forceLogin: state => () => {
+  forceLogin: state => {
     return state.forceLogin
   },
 
-  user: state => () => {
-    return state.user
+  loggedInEver: state => {
+    return state.loggedInEver
+  },
+
+  user: state => {
+    const ret = state.user
+
+    if (ret && !ret.settings.notifications) {
+      ret.settings.notifications = {
+        email: true,
+        emailmine: false,
+        push: true,
+        facebook: true,
+        app: true
+      }
+    }
+
+    return ret
+  },
+
+  groups: state => {
+    return state.groups
   },
 
   member: state => id => {
@@ -75,7 +108,7 @@ export const getters = {
     return ret
   },
 
-  nchan: state => () => {
+  nchan: state => {
     return state.nchan
   }
 }
@@ -85,8 +118,32 @@ export const actions = {
     commit('forceLogin', value)
   },
 
+  logout({ commit }) {
+    commit('setUser', null)
+
+    this.$axios.post(process.env.API + '/session', [], {
+      headers: {
+        'X-HTTP-Method-Override': 'DELETE'
+      }
+    })
+
+    this.$axios.defaults.headers.common.Authorization = null
+  },
+
+  async forget({ commit, dispatch }) {
+    const res = await this.$axios.post(process.env.API + '/session', {
+      action: 'Forget'
+    })
+
+    console.log('Forget', res)
+    if (res.status === 200 && res.data.ret === 0) {
+      await dispatch('logout')
+    } else {
+      return res.data
+    }
+  },
+
   setUser({ commit }, value) {
-    console.log('Set user', value)
     commit('setUser', value)
 
     // Set or clear our auth token to be used on all API requests.
@@ -117,6 +174,26 @@ export const actions = {
     }
   },
 
+  async signup({ commit, dispatch }, params) {
+    const res = await this.$axios.post(process.env.API + '/user', params, {
+      headers: {
+        'X-HTTP-Method-Override': 'PUT'
+      }
+    })
+
+    if (res.status === 200 && res.data.ret === 0) {
+      commit('forceLogin', false)
+
+      // We need to fetch the user to get the groups, persistent token etc.
+      dispatch('fetchUser')
+    } else {
+      // Sign up failed.
+      // TODO Display some kind of error.
+      console.error('Login failed', res)
+      throw new Error('Login failed')
+    }
+  },
+
   async fetchUser({ commit, store, dispatch, state }, params) {
     const lastfetch = state.userFetched
 
@@ -128,7 +205,7 @@ export const actions = {
       !first &&
       !params.force &&
       lastfetch &&
-      new Date().getTime() - lastfetch < 30000
+      Date.now() - lastfetch < 30000
     ) {
       // We have fetched the user pretty recently.
     } else {
@@ -136,7 +213,7 @@ export const actions = {
       first = false
 
       // Set the time now; this avoids multiple fetches at the start of page loads.
-      commit('setFetched', new Date().getTime())
+      commit('setFetched', Date.now())
 
       const res = await this.$axios.get(process.env.API + '/session', {
         params: params
@@ -158,7 +235,6 @@ export const actions = {
         }
       } else {
         // Login failed.
-        console.error('Fetch user failed')
         throw new Error('Fetch user failed')
       }
     }
@@ -203,7 +279,7 @@ export const actions = {
       })
     } else {
       // TODO
-      console.error('saveUser failed')
+      throw new Error('saveAndGet failed')
     }
 
     return state.user
@@ -267,5 +343,9 @@ export const actions = {
 
   setNCHAN({ commit, dispatch, state }, params) {
     commit('setNCHAN', params)
+  },
+
+  loggedInEver({ commit }, value) {
+    commit('setLoggedInEver', value)
   }
 }

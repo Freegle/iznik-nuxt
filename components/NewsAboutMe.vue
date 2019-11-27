@@ -39,6 +39,7 @@
       alt="ChitChat Photo"
       size="lg"
       no-stacking
+      ok-only
     >
       <template slot="default">
         <b-img

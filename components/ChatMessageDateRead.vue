@@ -1,9 +1,7 @@
 <template>
   <b-row v-if="!chatmessage.sameaslast || last" class="text-muted small">
-    <b-col v-if="chatmessage.userid != $store.state.auth.user.id">
+    <b-col v-if="chatmessage.userid !== me.id">
       <span style="padding-left: 30px">
-        <v-icon v-if="chatmessage.seenbyall" name="check" class="text-success" />
-        <v-icon v-else-if="chatmessage.mailedtoall" name="envelope" />
         {{ $dayjs(chatmessage.date).fromNow() }}
       </span>
     </b-col>
@@ -27,6 +25,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    }
+  },
+  computed: {
+    me() {
+      return this.$store.getters['auth/user']
     }
   }
 }

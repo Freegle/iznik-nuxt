@@ -64,7 +64,7 @@
             @zoom_changed="zoomChanged"
             @bounds_changed="boundsChanged"
           >
-            <div v-for="(g, index) in groupsInBounds" :key="'marker-' + index + '-' + groupsInBounds.length">
+            <div v-for="g in groupsInBounds" :key="'marker-' + g.id + '-' + groupsInBounds.length">
               <GroupMarker v-if="g.onmap" :group="g" :size="groupsInBounds.length < 20 ? 'rich' : 'poor'" />
             </div>
           </GmapMap>
@@ -76,7 +76,7 @@
         <b-card header-bg-variant="success" header-text-variant="white" header="Here's a list of communities:">
           <b-card-body style="height: 500px; overflow-y: scroll" class="p-0">
             <p>This list will change as you zoom or move around the map.</p>
-            <div v-for="(g, index) in groupsInList" :key="'groupsInBounds-' + index">
+            <div v-for="g in groupsInList" :key="'groupsInBounds-' + g.id">
               <div class="media clickme">
                 <div class="media-left">
                   <div class="media-object">
@@ -139,7 +139,7 @@
 }
 </style>
 <script>
-// TODO This loads a bit clunkily.
+// TODO MINOR This loads a bit clunkily.
 import { gmapApi } from 'vue2-google-maps'
 import GroupMarker from '~/components/GroupMarker.vue'
 
@@ -171,7 +171,6 @@ export default {
     },
     mapHeight() {
       const contWidth = this.$refs.mapcont ? this.$refs.mapcont.$el.width : 0
-
       return contWidth
     },
     mapWidth() {
@@ -180,7 +179,7 @@ export default {
       return height
     },
     groupsInBounds() {
-      const groups = this.$store.getters['group/list']()
+      const groups = this.$store.getters['group/list']
       const ret = []
 
       if (this.bounds) {
@@ -210,7 +209,7 @@ export default {
       grouptype: 'Freegle'
     })
 
-    this.groups = this.$store.getters['group/list']()
+    this.groups = this.$store.getters['group/list']
 
     for (const ix in this.groups) {
       const group = this.groups[ix]
@@ -225,13 +224,6 @@ export default {
 
   methods: {
     getAddressData: function(addressData, placeResultData, id) {
-      console.log(
-        'Autocomplete returned',
-        addressData,
-        placeResultData,
-        id,
-        this.$refs.gmap
-      )
       if (addressData) {
         this.$refs.gmap.$mapObject.setCenter(
           new this.google.maps.LatLng(

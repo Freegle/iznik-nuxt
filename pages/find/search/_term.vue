@@ -33,7 +33,7 @@
                 anchor="name"
                 label=""
                 :classes="{ input: 'form-control form-control-lg', list: 'iteminp' }"
-                :min="3"
+                :min="2"
                 :debounce="100"
                 :process="process"
                 size="60"
@@ -73,7 +73,7 @@
         </b-row>
         <b-row>
           <b-col>
-            <div v-for="(message, $index) in messages" :key="$index" class="p-0">
+            <div v-for="message in messages" :key="'message-' + message.id" class="p-0">
               <message v-if="message.type == searchtype" v-bind="message" />
             </div>
 
@@ -92,16 +92,17 @@
     </b-row>
   </div>
 </template>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .form-group {
-  border: 1px gray solid;
+  border: 1px $color-gray--dark solid;
   border-radius: 0.2rem;
 }
 </style>
+
 <script>
-// TODO Highlight search matches
-// TODO Message paging isn't right, the dates are wrong and we get messages added earlier
-// TODO Add speech recognition
 // TODO DESIGN Maybe some kind of border round the search options.
 // TODO DESIGN When you focus on the search box, there's a drop shadow to highlight it, but that only goes round
 //      the input, and not also round the button, which it should.
@@ -192,7 +193,7 @@ export default {
       this.busy = true
 
       const term = this.$refs.autocomplete.$refs.input.value
-      const postcode = this.$store.getters['compose/getPostcode']()
+      const postcode = this.$store.getters['compose/getPostcode']
 
       if (!postcode) {
         // No postcode.  This can happen if we are called before the store has loaded.
@@ -232,15 +233,18 @@ export default {
               this.group.id
             )
           } else {
-            this.messages = this.$store.getters['messages/getAll']()
+            this.messages = this.$store.getters['messages/getAll']
           }
 
-          this.context = this.$store.getters['messages/getContext']()
+          this.context = this.$store.getters['messages/getContext']
 
+          console.log('Lengths', currentCount, this.messages.length)
           if (currentCount === this.messages.length) {
             this.complete = true
+            console.log('Complete', currentCount)
             $state.complete()
           } else {
+            console.log('Loaded', currentCount)
             $state.loaded()
           }
         })

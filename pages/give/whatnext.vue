@@ -13,7 +13,7 @@
           <h5 class="text-center">
             We've put your offer here first:
           </h5>
-          <groupHeader v-if="group" :key="'groupheader-' + group.id" v-bind="group" show-join="false" />
+          <groupHeader v-if="group" :key="'groupheader-' + group.id" v-bind="group" :show-join="false" />
           <p class="text-center mt-2">
             We'll let people know about your item, and contact you when people are interested via Chat (on here) and email
             (check your spam!)
@@ -48,26 +48,32 @@
           </nuxt-link>
         </b-col>
       </b-row>
-      <b-tooltip :show.sync="show" target="menu-option-chat" class="d-none d-md-block">
-        Replies will appear here<br><br>
+      <div class="d-none d-md-block">
+        <b-tooltip :show.sync="show" target="menu-option-chat">
+          Replies will appear here<br><br>
 
-        You'll also get them by email.  <span class="text-danger font-weight-bold">Check your spam!</span>
-      </b-tooltip>
+          You'll also get them by email.  <span class="text-danger font-weight-bold">Check your spam!</span>
+        </b-tooltip>
+      </div>
     </div>
   </div>
 </template>
-<style>
+
+<style lang="scss">
+@import 'color-vars';
+
 /*TODO DESIGN Make this prettier.  See also NewUser. */
 .tooltip-inner {
-  background-color: white;
-  color: black;
-  border: 1px black solid;
+  background-color: $color-white;
+  color: $color-black;
+  border: 1px $color-black solid;
 }
 .arrow {
   background-color: transparent;
-  color: white;
+  color: $color-white;
 }
 </style>
+
 <script>
 import loginOptional from '@/mixins/loginOptional.js'
 const GroupHeader = () => import('~/components/GroupHeader.vue')
@@ -88,7 +94,7 @@ export default {
   },
   computed: {
     group() {
-      const groupid = this.$store.getters['compose/getGroup']()
+      const groupid = this.$store.getters['compose/getGroup']
       const group = this.$store.getters['group/get'](groupid)
       return group
     }

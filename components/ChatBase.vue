@@ -1,9 +1,12 @@
 <template>
   <div />
 </template>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .chatMessage {
-  border: 1px solid lightgrey;
+  border: 1px solid $color-gray--light;
   border-radius: 10px;
   padding-top: 2px;
   padding-bottom: 2px;
@@ -13,6 +16,7 @@
   line-height: 1.75;
 }
 </style>
+
 <script>
 import twem from '~/assets/js/twem'
 

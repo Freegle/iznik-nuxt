@@ -24,7 +24,7 @@
           </b-card-body>
         </b-card>
 
-        <div v-for="(message, $index) in messages" :key="$index" class="p-0">
+        <div v-for="message in messages" :key="'message-' + message.id" class="p-0">
           <Message v-bind="message" />
         </div>
 
@@ -70,7 +70,7 @@ export default {
     // We have the group id or name in this.id.  Fetch the group.
     this.group = this.$store.getters['group/get'](this.id)
     this.messages = this.$store.getters['messages/getByGroup'](this.group.id)
-    this.context = this.$store.getters['messages/getContext']()
+    this.context = this.$store.getters['messages/getContext']
   },
 
   methods: {
@@ -93,10 +93,10 @@ export default {
               this.group.id
             )
           } else {
-            this.messages = this.$store.getters['messages/getAll']()
+            this.messages = this.$store.getters['messages/getAll']
           }
 
-          this.context = this.$store.getters['messages/getContext']()
+          this.context = this.$store.getters['messages/getContext']
           $state.loaded()
         })
         .catch(() => {

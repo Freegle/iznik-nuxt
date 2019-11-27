@@ -11,7 +11,8 @@
       >
         <template slot="default">
           <p>
-            It's nice to know a bit about other freeglers - it makes freegling more fun and helps get a better response when you're replying to OFFERs.
+            It's nice to know a bit about other freeglers.  We're not a dating site but it makes freegling more fun
+            and helps get a better response when you're replying to OFFERs.
           </p>
           <p>
             <b>No need to say what you're giving/seeking. </b>This is just to introduce yourself to other people.

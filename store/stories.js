@@ -19,6 +19,10 @@ export const mutations = {
         Vue.set(state.list, item.id, item)
       }
     }
+  },
+
+  clear(state) {
+    state.list = {}
   }
 }
 
@@ -37,19 +41,61 @@ export const getters = {
     return ret
   },
 
-  list: state => () => {
+  list: state => {
     return state.list
   }
 }
 
 export const actions = {
-  async fetchSummary({ commit }, params) {
+  async fetch({ commit }, params) {
     const res = await this.$axios.get(process.env.API + '/stories', {
       params: params
     })
 
     if (res.status === 200) {
-      commit('setList', res.data.stories)
+      if (params.id) {
+        commit('add', res.data.story)
+      } else {
+        commit('setList', res.data.stories)
+      }
     }
+  },
+
+  clear({ commit }) {
+    commit('clear')
+  },
+
+  async add({ commit }, params) {
+    const res = await this.$axios.post(process.env.API + '/stories', params, {
+      headers: {
+        'X-HTTP-Method-Override': 'PUT'
+      }
+    })
+
+    let id = null
+
+    if (res.status === 200 && res.data.ret === 0) {
+      id = res.data.id
+    }
+
+    return id
+  },
+
+  async love({ commit, dispatch }, params) {
+    await this.$axios.post(process.env.API + '/stories', {
+      id: params.id,
+      action: 'Like'
+    })
+
+    await dispatch('fetch', params)
+  },
+
+  async unlove({ commit, dispatch }, params) {
+    await this.$axios.post(process.env.API + '/stories', {
+      id: params.id,
+      action: 'Unlike'
+    })
+
+    await dispatch('fetch', params)
   }
 }

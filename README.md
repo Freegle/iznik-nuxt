@@ -1,10 +1,15 @@
 # iznik-nuxt
 
 Iznik is a platform for online reuse of unwanted items.  This is a work-in-progress rewrite of
-the client half.  
+the existing client, which you can find [here](https://github.com/Freegle/iznik-client).  
+
+The aim is to produce 
+something that looks very much like the existing site, but with a more modern codebase, and a fair number of
+niggles smoothed out.  More significant changes can come later.  
 
 The development has been funded by [Freegle](https://www.ilovefreegle.org) for use in the UK, 
-but it is an open source platform which can be used or adapted by others.
+but it is an open source platform which can be used or adapted by others.  Other contributors very welcome,
+especially those with design/UX expertise.
 
 License
 =======
@@ -38,8 +43,14 @@ Rendering solution.
 
 # Current Status
 
-This is still very much a proof of concept.
-* You can log in using email/password and Facebook - not Google/Yahoo yet.
-* The ChitChat/My Groups/Chat/Give pages exist.  They are basically functional, but not complete.
-* Find/My Posts/Events/Volunteer/Notifications/Spread/Help/Settings don't exist.
-* I've not checked much how it renders on mobile or other screen sizes yet.
+This is getting close to Beta.
+* The pages you can access from the menu bar are basically done.
+* There are lots of other bits and pieces, and many TODOs in the code.
+* We've done a first pass for how it displays on a mobile, but there will be some niggles at different screen sizes.
+* We've tested on Chrome only, and very few mobiles/tablets.
+
+There are some specific pages that still need doing:
+* /shortlinks/id
+* Plugins - are they still used?
+* /mydata
+* /councils

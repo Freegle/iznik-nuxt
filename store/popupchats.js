@@ -30,13 +30,13 @@ export const getters = {
     return ret
   },
 
-  list: state => () => {
+  list: state => {
     return state.list
   }
 }
 
 export const actions = {
-  popup({ commit }, params) {
+  popup({ dispatch, commit }, params) {
     commit('popup', params)
   },
 

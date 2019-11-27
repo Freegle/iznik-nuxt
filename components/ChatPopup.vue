@@ -1,125 +1,138 @@
 <template>
-  <client-only>
-    <div :style="'position: fixed; right: ' + right + 'px; bottom: 0'">
-      <vue-draggable-resizable
-        :handles="['tl']"
-        :w="width"
-        :h="height"
-        :parent="false"
-        :draggable="false"
-        :active="true"
-        :prevent-deactivation="true"
-        :min-width="320"
-        :min-height="400"
-        :style="'right: ' + width"
-        @resizing="onResize"
-      >
-        <div class="shadow chatHolder">
-          <b-row class="chatTitle m-0">
-            <b-col v-if="chat" class="pr-3">
-              <b-row>
-                <b-col class="p-0 pl-3">
-                  <span class="chatname">
-                    <span v-if="(chat.chattype == 'User2User' || chat.chattype == 'User2Mod')" class="d-inline">
-                      <span @click="showInfo">
+  <div v-if="me">
+    <client-only>
+      <div :style="'position: fixed; right: ' + right + 'px; bottom: 0'">
+        <vue-draggable-resizable
+          :handles="['tl']"
+          :w="width"
+          :h="height"
+          :parent="false"
+          :draggable="false"
+          :active="true"
+          :prevent-deactivation="true"
+          :min-width="320"
+          :min-height="400"
+          :style="'right: ' + width"
+          @resizing="onResize"
+        >
+          <div class="shadow chatHolder">
+            <b-row class="chatTitle m-0">
+              <b-col v-if="chat" class="pr-3">
+                <b-row>
+                  <b-col class="p-0 pl-3">
+                    <span class="chatname text-truncate">
+                      <span v-if="(chat.chattype == 'User2User' || chat.chattype == 'User2Mod')">
+                        <span @click="showInfo">
+                          {{ chat.name }}
+                        </span>
+                      </span>
+                      <span v-else>
                         {{ chat.name }}
                       </span>
                     </span>
-                    <span v-else class="d-inline">
-                      {{ chat.name }}
+                    <span v-if="chat.unseen">
+                      <b-badge variant="danger">{{ chat.unseen }}</b-badge>
                     </span>
+                    <ratings v-if="otheruser" :key="'otheruser-' + (otheruser ? otheruser.id : null)" size="sm" v-bind="otheruser" class="pl-1 pt-1" />
+                    <span class="pl-2 pr-1 float-right" @click="hide">
+                      <v-icon name="times" scale="1.5" class="clickme mt-1" title="Hide chat window" />
+                    </span>
+                    <span class="pl-1 float-right" @click="maximise">
+                      <v-icon name="window-maximize" scale="1.5" class="clickme mt-1" title="Maximise chat window" />
+                    </span>
+                  </b-col>
+                </b-row>
+              </b-col>
+            </b-row>
+            <b-row class="chatContent m-0" infinite-wrapper>
+              <b-col v-if="chat">
+                <infinite-loading direction="top" force-use-infinite-wrapper="true" :distance="distance" @infinite="loadMore">
+                  <span slot="no-results" />
+                  <span slot="no-more" />
+                  <span slot="spinner">
+                    <b-img-lazy src="~/static/loader.gif" />
                   </span>
-                  <span v-if="chat.unseen">
-                    <b-badge variant="danger">{{ chat.unseen }}</b-badge>
-                  </span>
-                  <ratings v-if="otheruser" :key="'otheruser-' + (otheruser ? otheruser.id : null)" size="sm" v-bind="otheruser" class="pl-1 pt-1" />
-                  <span class="pl-2 pr-1 float-right" @click="hide">
-                    <v-icon name="times" scale="1.5" class="clickme mt-1" title="Hide chat window" />
-                  </span>
-                  <span class="pl-1 float-right" @click="maximise">
-                    <v-icon name="window-maximize" scale="1.5" class="clickme mt-1" title="Maximise chat window" />
-                  </span>
+                </infinite-loading>
+                <ul v-for="chatmessage in chatmessages" :key="'chatmessage-' + chatmessage.id" class="p-0 pt-1 list-unstyled mb-1">
+                  <li v-if="chatmessage">
+                    <ChatMessage
+                      :key="'chatmessage-' + chatmessage.id"
+                      :chatmessage="chatmessage"
+                      :chat="chat"
+                      :me="me"
+                      :otheruser="otheruser"
+                      :last="chatmessage.id === chatmessages[chatmessages.length - 1].id"
+                    />
+                  </li>
+                </ul>
+              </b-col>
+            </b-row>
+            <div class="chatFooter">
+              <b-row class="m-0">
+                <b-col class="p-0">
+                  <p v-if="spammer" class="bg-danger white p-2 mb-0">
+                    This person has been reported as a spammer or scammer.  Please do not talk to them and under no circumstances
+                    send them any money.
+                  </p>
+                  <b-form-textarea
+                    v-if="!spammer"
+                    v-model="sendmessage"
+                    placeholder="Type here..."
+                    rows="2"
+                    max-rows="4"
+                    @keydown.enter.exact.prevent
+                    @keyup.enter.exact="send"
+                    @keydown.enter.shift.exact="newline"
+                    @keydown.alt.shift.exact="newline"
+                    @focus="markRead"
+                  />
                 </b-col>
               </b-row>
-            </b-col>
-          </b-row>
-          <b-row class="chatContent m-0" infinite-wrapper>
-            <b-col v-if="chat">
-              <infinite-loading direction="top" force-use-infinite-wrapper="true" :distance="distance" @infinite="loadMore">
-                <span slot="no-results" />
-                <span slot="no-more" />
-                <span slot="spinner">
-                  <b-img-lazy src="~/static/loader.gif" />
-                </span>
-              </infinite-loading>
-              <ul v-for="(chatmessage, $index) in chatmessages" :key="'chatmessage-' + $index" class="p-0 pt-1 list-unstyled mb-1">
-                <li v-if="chatmessage">
-                  <ChatMessage
-                    :key="'chatmessage-' + chatmessage.id"
-                    :chatmessage="chatmessage"
-                    :chat="chat"
-                    :me="me"
-                    :otheruser="otheruser"
-                    :last="chatmessage.id === chatmessages[chatmessages.length - 1].id"
-                  />
-                </li>
-              </ul>
-            </b-col>
-          </b-row>
-          <div class="chatFooter">
-            <b-row class="m-0">
-              <b-col class="p-0">
-                <b-form-textarea
-                  v-model="sendmessage"
-                  placeholder="Type here..."
-                  rows="2"
-                  max-rows="4"
-                  @keydown.enter.exact.prevent
-                  @keyup.enter.exact="send"
-                  @keydown.enter.shift.exact="newline"
-                  @keydown.alt.shift.exact="newline"
-                  @focus="markRead"
-                />
-              </b-col>
-            </b-row>
-            <b-row class="m-0">
-              <b-col class="p-0 pt-1 pb-1">
-                <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person" class="ml-1" @click="promise">
-                  <v-icon name="handshake" />
-                </b-btn>
-                <b-btn v-b-tooltip.hover.top variant="white" title="Send your address" disabled>
-                  <v-icon name="address-book" />
-                </b-btn>
-                <b-btn v-b-tooltip.hover.top variant="white" title="Update your availability" disabled>
-                  <v-icon name="calendar-alt" />
-                </b-btn>
-                <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler" @click="showInfo">
-                  <v-icon name="info-circle" />
-                </b-btn>
-                <b-btn v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
-                  <v-icon name="bell" />
-                </b-btn>
-                <b-btn variant="primary" class="float-right mr-1" @click="send">
-                  <v-icon name="angle-double-right" title="Send" />
-                </b-btn>
-              </b-col>
-            </b-row>
+              <b-row class="m-0">
+                <b-col v-if="!spammer" class="p-0 pt-1 pb-1">
+                  <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person" class="ml-1" @click="promise">
+                    <v-icon name="handshake" />
+                  </b-btn>
+                  <b-btn v-b-tooltip.hover.top variant="white" title="Send your address" @click="addressBook">
+                    <v-icon name="address-book" />
+                  </b-btn>
+                  <b-btn v-b-tooltip.hover.top variant="white" title="Update your availability" @click="availability">
+                    <v-icon name="calendar-alt" />
+                  </b-btn>
+                  <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler" @click="showInfo">
+                    <v-icon name="info-circle" />
+                  </b-btn>
+                  <b-btn v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
+                    <v-icon name="bell" />
+                  </b-btn>
+                  <b-btn variant="primary" class="float-right mr-1" @click="send">
+                    <v-icon v-if="sending" name="sync" class="fa-spin" title="Sending..." />
+                    <v-icon v-else name="angle-double-right" title="Send" />
+                  </b-btn>
+                </b-col>
+              </b-row>
+            </div>
           </div>
-        </div>
-      </vue-draggable-resizable>
-      <PromiseModal ref="promise" :messages="ouroffers" :selected-message="likelymsg ? likelymsg : 0" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
-      <ProfileModal :id="otheruser ? otheruser.id : null" ref="profile" />
-    </div>
-  </client-only>
+        </vue-draggable-resizable>
+        <PromiseModal ref="promise" :messages="ouroffers" :selected-message="likelymsg ? likelymsg : 0" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
+        <ProfileModal :id="otheruser ? otheruser.id : null" ref="profile" />
+        <AvailabilityModal ref="availabilitymodal" :otheruid="otheruser ? otheruser.id : null" :thisuid="me.id" />
+        <AddressModal ref="addressModal" :choose="true" @chosen="sendAddress" />
+      </div>
+    </client-only>
+  </div>
 </template>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .vdr {
   position: absolute;
   top: initial !important;
   left: initial !important;
   bottom: 0;
   z-index: 900;
-  background-color: #f3f0da;
+  background-color: $color-yellow--base;
   animation: chatIn 2s;
   transform-origin: right bottom;
   background-color: transparent !important;
@@ -130,20 +143,18 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border: 1px solid grey;
+  border: 1px solid $color-gray--dark;
 }
 
 .chatname {
-  /* TODO DESIGN The ellipsis stuff here isn't working */
+  display: inline-block;
   max-width: 100px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow-x: hidden;
-  color: white;
+  font-weight: bold;
+  color: $color-white;
 }
 
 .shadow {
-  box-shadow: 1px 3px 5px 3px rgba(0, 0, 0, 0.6) !important;
+  box-shadow: 1px 3px 5px 3px $color-black-opacity-60 !important;
 }
 
 @keyframes chatIn {
@@ -158,8 +169,8 @@
 }
 
 .chatTitle {
-  background-color: #4895dd;
-  color: white;
+  background-color: $color-blue--light;
+  color: $color-white;
   font-weight: bold;
   order: 1;
 }
@@ -174,15 +185,16 @@
   justify-content: flex-start;
   flex-grow: 1;
   overflow-y: auto;
-  background-color: rgb(243, 240, 218);
+  background-color: $color-yellow--base;
 }
 
 .chatFooter {
   order: 4;
   justify-content: flex-end;
-  background-color: white;
+  background-color: $color-white;
 }
 </style>
+
 <script>
 import twem from '~/assets/js/twem'
 
@@ -192,8 +204,11 @@ const VueDraggableResizable = () => import('vue-draggable-resizable')
 const Ratings = () => import('~/components/Ratings')
 const PromiseModal = () => import('./PromiseModal')
 const ProfileModal = () => import('./ProfileModal')
+const AvailabilityModal = () => import('~/components/AvailabilityModal')
+const AddressModal = () => import('~/components/AddressModal')
 
 // TODO DESIGN The maximise icon from font awesome is not obvious.
+// TODO MINOR This has a lot of code overlap with ChatPane.  Shame on me.
 
 export default {
   components: {
@@ -201,7 +216,9 @@ export default {
     ChatMessage,
     VueDraggableResizable,
     PromiseModal,
-    ProfileModal
+    ProfileModal,
+    AvailabilityModal,
+    AddressModal
   },
   props: {
     id: {
@@ -211,14 +228,14 @@ export default {
   },
   data: function() {
     return {
-      chatmessages: [],
-      chatusers: [],
       lastFetched: new Date(),
       complete: false,
       sendmessage: null,
       distance: 1000,
       likelymsg: null,
-      ouroffers: null
+      ouroffers: null,
+      sending: false,
+      scrolledToBottom: false
     }
   },
   computed: {
@@ -230,13 +247,39 @@ export default {
           ? this.chat.user1
           : this.chat.user2
       } else {
-        console.log("Can't find me", this.chat)
         return null
       }
     },
 
     chat() {
       return this.$store.getters['chats/get'](this.id)
+    },
+
+    spammer() {
+      let ret = false
+
+      if (this.otheruser) {
+        ret = this.otheruser.spammer
+      }
+
+      return ret
+    },
+
+    unseen() {
+      const unseen = this.$store.getters['chats/get'](this.id).unseen
+      return unseen
+    },
+
+    chatmessages() {
+      return Object.values(
+        this.$store.getters['chatmessages/getMessages'](this.id)
+      )
+    },
+
+    chatusers() {
+      return Object.values(
+        this.$store.getters['chatmessages/getUsers'](this.id)
+      )
     },
 
     otheruser() {
@@ -262,7 +305,7 @@ export default {
     },
     right() {
       let right = 0
-      const popups = Object.values(this.$store.getters['popupchats/list']())
+      const popups = Object.values(this.$store.getters['popupchats/list'])
 
       if (popups) {
         for (const popup of popups) {
@@ -275,6 +318,26 @@ export default {
         }
       }
       return right
+    }
+  },
+  watch: {
+    async unseen(newVal, oldVal) {
+      // The unseen count will get changed by reactivity from the store.  If that's the chat we have in our pane
+      // then that will trigger this watch, which we can use to pick up the new message.
+      if (newVal > oldVal) {
+        // New unread message.  Pick it up.
+        await this.$store.dispatch('chatmessages/clearContext', {
+          chatid: this.id
+        })
+        await this.$store.dispatch('chatmessages/fetch', {
+          chatid: this.id
+        })
+
+        this.$nextTick(() => {
+          const container = this.$el.querySelector('.chatContent')
+          container.scrollTop = container.scrollHeight
+        })
+      }
     }
   },
   async mounted() {
@@ -297,13 +360,14 @@ export default {
     showInfo() {
       this.$refs.profile.show()
     },
+    availability() {
+      this.$refs.availabilitymodal.show()
+    },
     loadMore: function($state) {
       const currentCount = this.chatmessages.length
+      console.log('Load more', currentCount)
 
       if (this.complete) {
-        // This is a bit weird - calling complete() works here to stop the plugin firing, but not lower down in the
-        // callback.  And we get the error message about no results, so I've overridden it above to be empty.
-        // TODO Figure out what's going on here.  This kinda works but it's hacky.
         $state.complete()
       } else {
         this.busy = true
@@ -313,19 +377,14 @@ export default {
           })
           .then(() => {
             try {
-              this.chatmessages = Object.values(
-                this.$store.getters['chatmessages/getMessages'](this.id)
-              )
-              this.chatusers = Object.values(
-                this.$store.getters['chatmessages/getUsers'](this.id)
-              )
               this.lastFetched = new Date()
 
-              if (currentCount === 0) {
+              if (!this.scrolledToBottom) {
                 // First load.  Scroll to the bottom when things have sorted themselves out.
-                requestIdleCallback(() => {
+                this.$nextTick(() => {
                   const container = this.$el.querySelector('.chatContent')
                   container.scrollTop = container.scrollHeight
+                  this.scrolledToBottom = true
                 })
               }
 
@@ -351,17 +410,11 @@ export default {
       this.sendmessage += '\n'
     },
     _updateAfterSend() {
-      // The latest messages will be in the store now.  Get them to trigger re-render
-      this.chatmessages = Object.values(
-        this.$store.getters['chatmessages/getMessages'](this.id)
-      )
-      this.chatusers = Object.values(
-        this.$store.getters['chatmessages/getUsers'](this.id)
-      )
+      this.sending = false
       this.lastFetched = new Date()
 
       // Scroll to the bottom so we can see it.
-      requestIdleCallback(() => {
+      this.$nextTick(() => {
         const container = this.$el.querySelector('.chatContent')
         container.scrollTop = container.scrollHeight
       })
@@ -370,10 +423,13 @@ export default {
       this.sendmessage = ''
 
       // We also want to trigger an update in the chat list.
-      this.$store.dispatch('chats/listChats')
+      this.$store.dispatch('chats/fetch', {
+        id: this.id
+      })
     },
     send: function() {
       let msg = this.sendmessage
+      this.sending = true
 
       // Encode up any emojis.
       msg = twem.untwem(msg)
@@ -417,7 +473,7 @@ export default {
           collection: 'AllUser'
         })
 
-        this.ouroffers = this.$store.getters['messages/getAll']()
+        this.ouroffers = this.$store.getters['messages/getAll']
 
         // Find the last message referenced in this chat, if any.  That's the most likely one you'd want to promise,
         // so it should be the default.
@@ -449,8 +505,18 @@ export default {
         id: this.id
       })
 
-      // We also want to trigger an update in the chat list.
-      this.$store.dispatch('chats/listChats')
+      this._updateAfterSend()
+    },
+    addressBook() {
+      this.$refs.addressModal.show()
+    },
+    sendAddress(id) {
+      this.$store
+        .dispatch('chatmessages/send', {
+          roomid: this.id,
+          addressid: id
+        })
+        .then(this._updateAfterSend)
     }
   }
 }

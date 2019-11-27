@@ -9,51 +9,67 @@
             height="58"
             width="58"
             rounded
-            :src="require(`@/static/icon.png`)"
+            :src="logo"
             alt="Home"
           />
         </b-navbar-brand>
         <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
         <b-collapse v-if="loggedIn" id="nav_collapse" ref="nav_collapse" is-nav>
           <b-navbar-nav>
-            <b-nav-item id="menu-option-chitchat" class="text-center p-0" to="/chitchat" @mousedown="maybeReload('/chitchat')">
+            <b-nav-item id="menu-option-chitchat" class="text-center small p-0" to="/chitchat" @mousedown="maybeReload('/chitchat')">
               <v-icon name="coffee" scale="2" /><br>
               ChitChat
             </b-nav-item>
-            <b-nav-item id="menu-option-myposts" class="text-center p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
+            <b-nav-item id="menu-option-myposts" class="text-center small p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
               <v-icon name="home" scale="2" /><br>
               My&nbsp;Posts
             </b-nav-item>
-            <b-nav-item id="menu-option-mygroups" class="text-center p-0" to="/mygroups" @mousedown="maybeReload('/mygroups')">
+            <b-nav-item id="menu-option-mygroups" class="text-center small p-0" to="/communities" @mousedown="maybeReload('/communities')">
               <v-icon name="users" scale="2" /><br>
-              My&nbsp;Groups
+              Communities
             </b-nav-item>
-            <b-nav-item id="menu-option-give" class="text-center p-0" to="/give" @mousedown="maybeReload('/give')">
+            <b-nav-item id="menu-option-give" class="text-center small p-0" to="/give" @mousedown="maybeReload('/give')">
               <v-icon name="gift" scale="2" /><br>
               Give
             </b-nav-item>
-            <b-nav-item id="menu-option-find" class="text-center p-0" to="/find" @mousedown="maybeReload('/find')">
+            <b-nav-item id="menu-option-find" class="text-center small p-0" to="/find" @mousedown="maybeReload('/find')">
               <v-icon name="search" scale="2" /><br>
               Find
             </b-nav-item>
-            <b-nav-item id="menu-option-explore" class="text-center p-0" to="/explore" @mousedown="maybeReload('/explore')">
+            <b-nav-item id="menu-option-explore" class="text-center small p-0" to="/explore" @mousedown="maybeReload('/explore')">
               <v-icon name="map-marked-alt" scale="2" /><br>
               Explore
+            </b-nav-item>
+            <b-nav-item id="menu-option-communityevents" class="text-center small p-0" to="/communityevents" @mousedown="maybeReload('/communityevents')">
+              <v-icon name="calendar-alt" scale="2" /><br>
+              Events
+            </b-nav-item>
+            <b-nav-item id="menu-option-volunteering" class="text-center small p-0" to="/volunteering" @mousedown="maybeReload('/volunteering')">
+              <v-icon name="hands-helping" scale="2" /><br>
+              Volunteer
             </b-nav-item>
           </b-navbar-nav>
           <b-navbar-nav class="ml-auto">
             <b-nav-item id="menu-option-notification" class="text-center p-0" />
             <b-nav-item-dropdown class="white text-center notiflist" lazy right @shown="showNotifications">
               <template slot="button-content">
-                <div class="notifwrapper ml-3">
+                <div class="notifwrapper text-center small">
                   <v-icon name="bell" scale="2" />
                   <b-badge v-if="notificationCount" variant="danger" class="ml-3 notifbadge">
                     {{ notificationCount }}
-                  </b-badge>
+                  </b-badge><br>
+                  Notifications
                 </div>
-                Notifications
               </template>
-              <b-dropdown-item v-for="(notification, $index) in notifications" :key="'notification-' + $index" class="p-0 notpad">
+              <b-dropdown-item>
+                <b-btn variant="white" size="sm" @click="markAllRead">
+                  <!--                  TODO DESIGN Align to right; float right breaks divider-->
+                  Mark all as read
+                </b-btn>
+              </b-dropdown-item>
+              <b-dropdown-divider />
+              <b-dropdown-item v-for="notification in notifications" :key="'notification-' + notification.id" class="p-0 notpad">
+                <!--                TODO We're getting duplicate key errors here - click on notifications, close, click again.  Why?-->
                 <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
               </b-dropdown-item>
               <infinite-loading :distance="distance" @infinite="loadMore">
@@ -64,8 +80,7 @@
                 </span>
               </infinite-loading>
             </b-nav-item-dropdown>
-            <a class="d-none dropdown-item" />
-            <b-nav-item id="menu-option-chat" class="text-center p-0" to="/chats" @mousedown="maybeReload('/chats')">
+            <b-nav-item id="menu-option-chat" class="text-center small p-0" to="/chats" @mousedown="maybeReload('/chats')">
               <div class="notifwrapper">
                 <v-icon name="comments" scale="2" /><br>
                 Chats
@@ -74,24 +89,36 @@
                 </b-badge>
               </div>
             </b-nav-item>
-            <b-nav-item id="menu-option-settings" class="text-center p-0" to="/settings" @mousedown="maybeReload('/settings')">
+            <b-nav-item id="menu-option-spread" class="text-center small p-0" to="/spread" @mousedown="maybeReload('/spread')">
+              <div class="notifwrapper">
+                <v-icon name="bullhorn" scale="2" /><br>
+                Spread
+                <b-badge v-if="spreadCount" variant="info" class="ml-3 chatbadge">
+                  {{ spreadCount }}
+                </b-badge>
+              </div>
+            </b-nav-item>
+            <b-nav-item id="menu-option-help" class="text-center small p-0" to="/help" @mousedown="maybeReload('/help')">
+              <v-icon name="question-circle" scale="2" /><br>
+              Help
+            </b-nav-item>
+            <b-nav-item id="menu-option-settings" class="text-center small p-0" to="/settings" @mousedown="maybeReload('/settings')">
               <v-icon name="cog" scale="2" /><br>
               Settings
             </b-nav-item>
-            <b-nav-item id="menu-option-logout" class="text-center p-0" @click="logOut()">
+            <b-nav-item id="menu-option-logout" class="text-center p-0 small" @click="logOut()">
               <v-icon name="sign-out-alt" scale="2" /><br>
               Logout
             </b-nav-item>
           </b-navbar-nav>
         </b-collapse>
-        <ul class="navbar-nav mr-auto" />
-        <ul class="nav navbar-nav navbar-right">
-          <li>
+        <b-navbar-nav class="ml-auto">
+          <b-nav-item>
             <b-button v-if="!loggedIn" class="btn-white" @click="requestLogin">
               Sign in
             </b-button>
-          </li>
-        </ul>
+          </b-nav-item>
+        </b-navbar-nav>
       </b-navbar>
       <!-- Navbar for small screens -->
       <b-navbar id="navbar_small" toggleable="xl" type="dark" class="ourBack d-flex justify-content-end d-xl-none">
@@ -122,7 +149,7 @@
               </b-badge>
             </div>
           </template>
-          <b-dropdown-item v-for="(notification, $index) in notifications" :key="'notification-' + $index" class="p-0 notpad">
+          <b-dropdown-item v-for="notification in notifications" :key="'notification-' + notification.id" class="p-0 notpad">
             <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
           </b-dropdown-item>
           <infinite-loading :distance="distance" @infinite="loadMore">
@@ -143,11 +170,13 @@
           </div>
         </nuxt-link>
 
-        <b-nav-item v-if="!loggedIn">
-          <b-button class="btn-white" @click="requestLogin">
-            Sign in
-          </b-button>
-        </b-nav-item>
+        <b-navbar-nav>
+          <b-nav-item v-if="!loggedIn">
+            <b-button class="btn-white" @click="requestLogin">
+              Sign in
+            </b-button>
+          </b-nav-item>
+        </b-navbar-nav>
 
         <b-navbar-nav class="">
           <b-navbar-toggle v-if="loggedIn" target="nav_collapse_mobile" />
@@ -171,13 +200,29 @@
               <v-icon name="search" scale="2" /><br>
               Find
             </b-nav-item>
-            <b-nav-item class="text-center p-0" to="/mygroups" @mousedown="maybeReload('/mygroups')">
+            <b-nav-item class="text-center p-0" to="/communities" @mousedown="maybeReload('/communities')">
               <v-icon name="users" scale="2" /><br>
               My&nbsp;Groups
             </b-nav-item>
             <b-nav-item class="text-center p-0" to="/explore" @mousedown="maybeReload('/explore')">
               <v-icon name="map-marked-alt" scale="2" /><br>
               Explore
+            </b-nav-item>
+            <b-nav-item class="text-center p-0" to="/communityevents" @mousedown="maybeReload('/communityevetns')">
+              <v-icon name="calendar-alt" scale="2" /><br>
+              Events
+            </b-nav-item>
+            <b-nav-item class="text-center p-0" to="/volunteering" @mousedown="maybeReload('/volunteering')">
+              <v-icon name="hands-helping" scale="2" /><br>
+              Volunteer
+            </b-nav-item>
+            <b-nav-item class="text-center p-0" to="/spreadh" @mousedown="maybeReload('/spread')">
+              <v-icon name="bullhorn" scale="2" /><br>
+              Spread
+            </b-nav-item>
+            <b-nav-item class="text-center p-0" to="/help" @mousedown="maybeReload('/help')">
+              <v-icon name="question-circle" scale="2" /><br>
+              Help
             </b-nav-item>
             <b-nav-item class="text-center p-0" to="/settings" @mousedown="maybeReload('/settings')">
               <v-icon name="cog" scale="2" /><br>
@@ -200,9 +245,12 @@
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@import 'color-vars';
+
 /*TODO DESIGN Menu dropdown on mobile needs a bit of love.*/
-/*TODO Shrink navbar on scroll? */
+/*TODO DESIGN Shrink navbar on scroll? */
+
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -216,21 +264,42 @@ html {
 }
 
 #navbar_large .nav-item {
-  width: 95px;
+  width: 80px;
   text-align: center;
 }
 
+/* Style the external nav-link class */
+::v-deep .nav-link {
+  padding-left: 2px !important;
+  padding-right: 2px !important;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
 nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
-  color: rgba(255, 255, 255, 0.5) !important;
+  color: $color-white-opacity-50 !important;
 }
 
 .navbar-dark .navbar-nav .nav-link {
-  color: white !important;
+  color: $color-white !important;
 }
 
 .navbar-dark .navbar-nav .nav-link:hover,
 .navbar-dark .navbar-nav .nav-link:focus {
-  color: rgba(255, 255, 255, 0.75) !important;
+  color: $color-white-opacity-75 !important;
+}
+
+#nav_collapse_mobile .navbar-nav {
+  border-top: 1px solid $color-gray--light;
+  padding-top: 5px;
+}
+
+#nav_collapse_mobile .nav-item {
+  width: 70px;
+}
+
+#nav_collapse_mobile a.nav-link {
+  color: $color-white;
 }
 
 *,
@@ -240,57 +309,37 @@ nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
   margin: 0;
 }
 
-.dropdown-item {
-  padding-left: 0px;
-}
-
 .notiflist {
   max-width: 100%;
 }
 
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
+/* These classes style the external b-nav-item-dropdown component */
+.notiflist ::v-deep .dropdown-menu {
+  height: 500px;
+  overflow-y: auto;
 }
 
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
-}
-
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
-
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
+.notiflist ::v-deep .dropdown-item {
+  width: 300px;
+  max-width: 100%;
+  padding-left: 5px;
+  overflow-wrap: break-word;
 }
 
 .ourBack {
-  background-color: #61ae24 !important;
+  background-color: $colour-success !important;
 }
 
 nav .navbar-nav li a {
-  color: #cdcdcd !important;
+  color: $color-gray--light !important;
 }
 
 nav .navbar-nav li a.nuxt-link-active {
-  color: white !important;
+  color: $color-white !important;
 }
 
 .navbar-brand a {
-  color: white !important;
+  color: $color-white !important;
 }
 
 .navbar a.navbar-brand {
@@ -317,11 +366,6 @@ svg.fa-icon {
   pointer-events: none;
 }
 
-.dropdown-item {
-  padding-left: 0px;
-  padding-right: 0px;
-}
-
 .notifwrapper {
   position: relative;
 }
@@ -329,19 +373,25 @@ svg.fa-icon {
 .notifbadge {
   position: absolute;
   top: 0px;
-  left: 18px;
+  left: 24px;
 }
 
 .chatbadge {
   position: absolute;
   top: 0px;
   left: 25px;
+  font-size: 110%;
 }
 </style>
 
 <script>
 // TODO DESIGN Notification dropdown window isn't wide enough before it's loaded.
-const LoginModal = () => import('~/components/LoginModal')
+// Import login modal as I've seen an issue where it's not in $refs when you click on the signin button too rapidly.
+// TODO Catching exceptions and doing something graceful.  Including reporting to Sentry?
+// TODO ACCESSIBILITY Review all <a> and <nuxt-link> to see if they require aria-label throughout the site.
+// TODO ACCESSIBILITY Check if we have any image links without alt text.
+// TODO ACCESSIBILITY Test for keyboard navigation.
+import LoginModal from '~/components/LoginModal'
 const AboutMeModal = () => import('~/components/AboutMeModal')
 const ChatPopups = () => import('~/components/ChatPopups')
 const Notification = () => import('~/components/Notification')
@@ -360,38 +410,43 @@ export default {
       complete: false,
       distance: 1000,
       notificationPoll: null,
-      nchan: null
+      nchan: null,
+      logo: require(`@/static/icon.png`)
+    }
+  },
+
+  head() {
+    const totalCount = this.notificationCount + this.chatCount
+    return {
+      titleTemplate: totalCount > 0 ? `(${totalCount}) %s` : '%s'
     }
   },
 
   computed: {
     loggedIn() {
-      const ret = Boolean(this.$store.getters['auth/user']())
+      const ret = Boolean(this.$store.getters['auth/user'])
       return ret
     },
     me() {
-      return this.$store.getters['auth/user']()
+      return this.$store.getters['auth/user']
     },
     notifications() {
       const notifications = Object.values(
-        this.$store.getters['notifications/list']()
+        this.$store.getters['notifications/list']
       )
       return notifications
     },
     notificationCount() {
-      // TODO We also need to change the window title.
-      return this.$store.getters['notifications/count']()
+      return this.$store.getters['notifications/count']
     },
     chatCount() {
-      // TODO We also need to change the window title.
-      const chats = Object.values(this.$store.getters['chats/list']())
-      let count = 0
-
-      for (const chat of chats) {
-        count += chat.unseen
-      }
-
-      return count
+      return Object.values(this.$store.getters['chats/list']).reduce(
+        (total, chat) => total + chat.unseen,
+        0
+      )
+    },
+    spreadCount() {
+      return this.me && this.me.invitesleft ? this.me.invitesleft : 0
     }
   },
 
@@ -416,7 +471,11 @@ export default {
     me(newVal, oldVal) {
       if (this.nchan) {
         // Stop old listen.
-        this.nchan.stop()
+        try {
+          this.nchan.stop()
+        } catch (e) {}
+
+        this.nchan = null
       }
 
       if (newVal) {
@@ -434,12 +493,25 @@ export default {
     // Poll regularly for new ones.  Would be nice if this was event driven instead but requires server work.
     this.notificationPoll = setTimeout(this.getNotificationCount, 30000)
 
-    const me = this.$store.getters['auth/user']()
+    const me = this.$store.getters['auth/user']
 
     if (me && me.id) {
       console.log('Start NCHAN from mount')
       this.startNCHAN(me.id)
     }
+
+    // Look for a custom logo.
+    setTimeout(async () => {
+      const res = await this.$axios.get(process.env.API + '/logo')
+
+      if (res.status === 200) {
+        const ret = res.data
+
+        if (ret.ret === 0 && ret.logo) {
+          this.logo = ret.logo.path
+        }
+      }
+    }, 5000)
   },
 
   beforeDestroy() {
@@ -448,7 +520,11 @@ export default {
 
     if (this.nchan) {
       console.log('Stop NCHAN')
-      this.nchan.stop()
+      try {
+        this.nchan.stop()
+      } catch (e) {}
+
+      this.nchan = null
     }
   },
 
@@ -463,7 +539,7 @@ export default {
 
       // We store the last message we got from NCHAN.  This avoids us getting duplicate messages (triggering server
       // work) when we load up.
-      const lastNCHAN = this.$store.getters['auth/nchan']()
+      const lastNCHAN = this.$store.getters['auth/nchan']
 
       if (lastNCHAN) {
         this.nchan.lastMessageId = lastNCHAN.id
@@ -512,7 +588,6 @@ export default {
       })
     },
     async getNotificationCount() {
-      console.log('Poll for notification count')
       await this.$store.dispatch('notifications/count')
       this.notificationPoll = setTimeout(this.getNotificationCount, 30000)
     },
@@ -531,16 +606,13 @@ export default {
       // Go to the landing page.
       this.$router.push('/')
 
-      this.$store.dispatch('auth/setUser', null)
+      this.$store.dispatch('auth/logout')
     },
 
     loadMore: function($state) {
       const currentCount = this.notifications.length
 
       if (this.complete) {
-        // This is a bit weird - calling complete() works here to stop the plugin firing, but not lower down in the
-        // callback.  And we get the error message about no results, so I've overridden it above to be empty.
-        // TODO Figure out what's going on here.  This kinda works but it's hacky.
         $state.complete()
       } else {
         this.busy = true
@@ -548,7 +620,7 @@ export default {
           .dispatch('notifications/list')
           .then(() => {
             try {
-              const notifications = this.$store.getters['notifications/list']()
+              const notifications = this.$store.getters['notifications/list']
 
               if (currentCount === notifications.length) {
                 this.complete = true
@@ -588,6 +660,12 @@ export default {
         // We have clicked to route to the page we're already on.  Force a full refresh.
         window.location.reload(true)
       }
+    },
+
+    async markAllRead() {
+      await this.$store.dispatch('notifications/allSeen')
+      await this.$store.dispatch('notifications/count')
+      await this.$store.dispatch('notifications/list')
     }
   }
 }

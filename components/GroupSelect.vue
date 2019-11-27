@@ -1,44 +1,50 @@
 <template>
   <client-only>
-    <b-form-select v-model="selectedGroup" :options="groupOptions" />
+    <b-form-select v-model="selectedGroup" size=":size" :options="groupOptions" />
   </client-only>
 </template>
 <style scoped>
 select {
+  /* TODO DESIGN make this configurable? */
   max-width: 400px !important;
 }
 </style>
 <script>
 export default {
   props: {
+    /**
+     * Selected value
+     *
+     *   if null
+     *     if   all=true       --> "all groups"
+     *     else all=false      --> "you must select a group"
+     *   else if it's a number --> use that group id
+     *
+     * (0 is not a valid group number)
+     */
+    value: {
+      type: Number,
+      default: null
+    },
     // Whether we show "All my groups" or "Please choose a group"
     all: {
       type: Boolean,
       required: false,
       default: false
     },
-    id: {
+    size: {
       type: String,
-      required: true
+      required: false,
+      default: 'md'
     }
-  },
-  data: function() {
-    return {}
   },
   computed: {
     selectedGroup: {
-      get: function() {
-        const remembered = this.$store.getters['group/remembered'](this.id)
-
-        return remembered || 0
+      get() {
+        return this.value
       },
-      set: function(newval) {
-        this.$store.commit('group/remember', {
-          id: this.id,
-          val: newval
-        })
-
-        this.$emit('change', newval)
+      set(val) {
+        this.$emit('input', val)
       }
     },
 
@@ -47,35 +53,48 @@ export default {
 
       if (this.all) {
         groups.push({
-          value: 0,
-          text: '-- All groups --',
-          selected: this.selectedGroup === 0
+          value: null,
+          text: '-- All my groups --',
+          selected: this.selectedGroup === null
         })
       } else {
         groups.push({
-          value: 0,
+          value: null,
           text: '-- Please choose --',
-          selected: this.selectedGroup === -1
+          selected: this.selectedGroup === null
         })
       }
 
-      Object.keys(this.$store.state.group.list).forEach(key => {
-        const group = this.$store.state.group.list[key]
+      const myGroups = this.$store.getters['auth/groups']
 
-        groups.push({
-          value: group.id,
-          text: group.namedisplay,
-          selected: this.selectedGroup === group.id
-        })
-      })
+      for (const group of myGroups) {
+        if (group.type === 'Freegle') {
+          groups.push({
+            value: group.id,
+            text: group.namedisplay,
+            selected: this.selectedGroup === group.id
+          })
+        }
+      }
 
-      groups.sort(function(a, b) {
-        const str1 = a.text
-        const str2 = b.text
-        return str1 < str2 ? -1 : str1 > str2 ? 1 : 0
-      })
+      groups.sort((a, b) => a.text.localeCompare(b.text))
 
       return groups
+    },
+
+    invalidSelection() {
+      return (
+        this.groupOptions.length > 0 &&
+        !this.groupOptions.some(option => option.selected)
+      )
+    }
+  },
+  watch: {
+    invalidSelection: {
+      immediate: true,
+      handler(val) {
+        if (val) this.selectedGroup = null
+      }
     }
   }
 }

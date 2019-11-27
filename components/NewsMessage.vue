@@ -36,6 +36,7 @@
       alt="ChitChat Photo"
       size="lg"
       no-stacking
+      ok-only
     >
       <template slot="default">
         <b-img
@@ -46,16 +47,18 @@
         />
       </template>
     </b-modal>
+    <NewsShareModal v-if="newsfeedModal" :newsfeed="newsfeedModal" />
   </div>
 </template>
 <script>
 import NewsBase from '~/components/NewsBase'
-
-const NewsUserIntro = () => import('~/components/NewsUserIntro')
+import NewsUserIntro from '~/components/NewsUserIntro'
+const NewsShareModal = () => import('~/components/NewsShareModal')
 const NewsLoveComment = () => import('~/components/NewsLoveComment')
 
 export default {
   components: {
+    NewsShareModal,
     NewsUserIntro,
     NewsLoveComment
   },

@@ -5,3 +5,5 @@
 /node_modules/
 /debug.log
 /modules/lazystrap/node_modules/.cache
+/.idea
+/.env

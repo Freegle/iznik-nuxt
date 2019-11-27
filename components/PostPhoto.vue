@@ -5,7 +5,7 @@
         <v-icon name="circle" scale="2" />
         <v-icon
           name="reply"
-          style="color: white;"
+          class="image__icon"
         />
       </v-icon>
     </span>
@@ -14,23 +14,26 @@
         <v-icon name="circle" scale="2" />
         <v-icon
           name="reply"
-          style="color: white;"
+          class="image__icon"
         />
       </v-icon>
     </span>
     <span @click="remove">
-      <v-icon label="Rotate left" class="bottomright clickme" title="Remove this photo">
+      <v-icon label="Remove this photo" class="bottomright clickme" title="Remove this photo">
         <v-icon name="circle" scale="2" />
         <v-icon
           name="trash-alt"
-          style="color: white;"
+          class="image__icon"
         />
       </v-icon>
     </span>
     <b-img lazy :src="paththumb + '?' + cacheBust" rounded thumbnail class="imagepreview" />
   </div>
 </template>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .imagepreview {
   width: 150px;
 }
@@ -56,9 +59,13 @@
 .container {
   position: relative;
 }
+
+.image__icon {
+  color: $color-white;
+}
 </style>
+
 <script>
-// TODO Rotate and delete
 export default {
   props: {
     id: {
@@ -76,7 +83,7 @@ export default {
   },
   data: function() {
     return {
-      cacheBust: new Date().getTime()
+      cacheBust: Date.now()
     }
   },
   methods: {
@@ -88,10 +95,10 @@ export default {
         .post(process.env.API + '/image', {
           id: this.id,
           rotate: deg,
-          bust: new Date().getTime()
+          bust: Date.now()
         })
         .then(() => {
-          this.cacheBust = new Date().getTime()
+          this.cacheBust = Date.now()
         })
     },
     rotateLeft() {

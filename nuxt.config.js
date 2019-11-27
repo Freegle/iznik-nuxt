@@ -1,9 +1,14 @@
 const pkg = require('./package')
 const FACEBOOK_APPID = '134980666550322'
 
+require('dotenv').config()
+
 // API is the constant the code uses.
 //const API = '/api'
 const API = 'https://iznik.ilovefreegle.org/api'  // CC
+
+// This is where the user site is.
+const USER_SITE = 'https://www.ilovefreegle.org'
 
 // PROXY_API is where we send it to.  This avoids CORS issues (and removes preflight OPTIONS calls for GETs, which
 // hurt client performance).
@@ -17,6 +22,10 @@ console.log(PROXY_API)
 // Long polls interact badly with per-host connection limits so send to here instead.
 const CHAT_HOST = 'https://users.ilovefreegle.org:555'
 
+// Allow disabling of eslint autofix by setting "DISABLE_ESLINT_AUTOFIX=true" in env (e.g. .env file)
+// defaults to enabling autofixing
+const ESLINT_AUTOFIX = process.env.DISABLE_ESLINT_AUTOFIX !== 'false' ? false : true
+
 module.exports = {
   //mode: 'universal',
   mode: 'spa',  // CC
@@ -25,7 +34,7 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: pkg.name,
+    title: 'Freegle',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -37,17 +46,18 @@ module.exports = {
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#61AE24' },
+  loading: false,
 
   /*
   ** Global CSS
   */
   css: [
-    '@/assets/css/style.css',
-    '@/assets/css/user.less',
-    '@/assets/css/Autocomplete.css'
+    '@/assets/css/global.scss'
   ],
 
+  // TODO We have too many plugins.  Initially I thought the only way to pull in a standard bit of Vue code
+  // was to create a plugin for it.  But that is flat wrong.  Pulling them in as plugins will increase the
+  // page load size, I expect, so we should take a pass through and see if any of them should be removed.
   plugins: [
     // Our template formatting utils.
     '~/plugins/filters',
@@ -91,6 +101,14 @@ module.exports = {
     { src: '~plugins/vue-google-autocomplete', ssr: false },
   ],
 
+  redirect: [
+    { from: '^/chat/(.*)$', to: '/chats/$1' },
+    { from: '^/mygroups$', to: '/communities' },
+    { from: '^/why$', to: '/help' },
+    { from: '^/contact$', to: '/help' },
+    { from: '^/posters$', to: '/noticeboards' },
+  ],
+
   /*
   ** Nuxt.js modules
   */
@@ -100,6 +118,7 @@ module.exports = {
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     'nuxt-dayjs-module',
+    '@nuxtjs/redirect-module'
     // Removing this as it causes a scalability issue with vue-meta - see https://github.com/nuxt/vue-meta/issues/443
     // 'cookie-universal-nuxt',
     // [
@@ -154,6 +173,7 @@ module.exports = {
       'PopoverPlugin',
       'ProgressPlugin',
       'TabsPlugin',
+      'TablePlugin',
       'TooltipPlugin'
     ],
     directivePlugins: ['VBPopoverPlugin', 'VBTooltipPlugin', 'VBScrollspyPlugin']
@@ -167,7 +187,8 @@ module.exports = {
     proxy: true
   },
   proxy: {
-    '/api/': PROXY_API
+    '/api/': PROXY_API,
+    '/adview.php': USER_SITE + '/adview.php'
   },
 
   router: { // CC   // https://nuxtjs.org/api/configuration-router/ 
@@ -205,6 +226,8 @@ module.exports = {
           }
         })
       }
+
+      config.resolve.alias['color-vars']= 'assets/css/_color-vars.scss';
     },
 
     optimization: {
@@ -254,7 +277,8 @@ module.exports = {
     GOOGLE_MAPS_KEY: 'AIzaSyCdTSJKGWJUOx2pq1Y0f5in5g4kKAO5dgg',
     GOOGLE_API_KEY: 'AIzaSyArVxoX781qdcbmQZi1PKHX-qa0bPbboH4',
     GOOGLE_CLIENT_ID: '423761283916-1rpa8120tpudgv4nf44cpmlf8slqbf4f.apps.googleusercontent.com',
-    MODTOOLS: false
+    MODTOOLS: false,
+    USER_SITE: USER_SITE
   },
 
   vue: {

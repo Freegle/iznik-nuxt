@@ -3,45 +3,7 @@
     <b-row class="m-0">
       <b-col cols="0" md="3" />
       <b-col cols="12" md="6" class="p-0">
-        <b-row class="bs-wizard">
-          <b-col cols="4" class="bs-wizard-step">
-            <div class="text-center bs-wizard-stepnum">
-              &nbsp;
-            </div>
-            <div class="progress">
-              <div class="progress-bar" />
-            </div>
-            <a href="#" class="bs-wizard-dot" />
-            <div class="bs-wizard-info text-center">
-              Where are you?
-            </div>
-          </b-col>
-          <b-col cols="4" class="bs-wizard-step">
-            <div class="text-center bs-wizard-stepnum active">
-              &nbsp;
-            </div>
-            <div class="progress">
-              <div class="progress-bar" />
-            </div>
-            <a href="#" class="bs-wizard-dot active" />
-            <div class="bs-wizard-info text-center">
-              What is it?
-            </div>
-          </b-col>
-          <b-col cols="4" class="bs-wizard-step">
-            <div class="text-center bs-wizard-stepnum">
-              &nbsp;
-            </div>
-            <div class="progress">
-              <div class="progress-bar" />
-            </div>
-            <a href="#" class="bs-wizard-dot" />
-            <div class="bs-wizard-info text-center">
-              Who are you?
-            </div>
-          </b-col>
-        </b-row>
-
+        <WizardProgress :active-stage="2" />
         <h1 class="text-center">
           So, what are you looking for?
         </h1>
@@ -51,23 +13,23 @@
               <b-card-body class="pt-0 pb-1">
                 <PostMessage :id="id" type="Wanted" />
               </b-card-body>
-              <b-card-footer v-if="index === ids.length - 1">
-                <div class="float-left">
+              <b-card-footer v-if="index === ids.length - 1" class="d-flex justify-content-between">
+                <div class="d-flex">
                   <Postcode :focus="false" :find="false" size="md" class="d-inline" @selected="postcodeSelect" />
-                  <ComposeGroup class="d-inline align-top" :width="200" />
-                </div>
-                <div class="ml-auto float-right">
-                  <b-btn v-if="ids.length > 1" variant="white" class="" @click="deleteItem">
-                    <v-icon name="trash-alt" />&nbsp;Delete item
-                  </b-btn>
-                  <b-btn variant="white" class="" @click="addItem">
-                    <v-icon name="plus" />&nbsp;Add another item
-                  </b-btn>
+                  <ComposeGroup :width="200" />
                 </div>
               </b-card-footer>
             </b-card>
           </li>
         </ul>
+        <div class="d-flex justify-content-end ml-1 mr-1">
+          <b-btn v-if="ids.length > 1" variant="white" class="mr-1" @click="deleteItem">
+            <v-icon name="trash-alt" />&nbsp;Delete item
+          </b-btn>
+          <b-btn variant="white" class="" @click="addItem">
+            <v-icon name="plus" />&nbsp;Add another item
+          </b-btn>
+        </div>
         <b-row>
           <b-col class="text-muted small pl-0 pt-1 text-center">
             We may show this post, but not your email address, to people who are not yet members of Freegle.
@@ -89,19 +51,21 @@
   </div>
 </template>
 <script>
-// TODO Add speech recognition
 // TODO Suppose we end up here, without a postcode in the store?
+// TODO Don't allow submission before image upload complete.
 
 import loginOptional from '@/mixins/loginOptional.js'
 const PostMessage = () => import('~/components/PostMessage')
 const Postcode = () => import('~/components/Postcode')
 const ComposeGroup = () => import('~/components/ComposeGroup')
+const WizardProgress = () => import('~/components/WizardProgress')
 
 export default {
   components: {
     PostMessage,
     Postcode,
-    ComposeGroup
+    ComposeGroup,
+    WizardProgress
   },
   mixins: [loginOptional],
   data: function() {
@@ -109,9 +73,7 @@ export default {
   },
   computed: {
     ids() {
-      const messages = Object.values(
-        this.$store.getters['compose/getMessages']()
-      )
+      const messages = Object.values(this.$store.getters['compose/getMessages'])
 
       let ids = []
       for (const message of messages) {
@@ -128,9 +90,7 @@ export default {
     },
 
     valid() {
-      const messages = Object.values(
-        this.$store.getters['compose/getMessages']()
-      )
+      const messages = Object.values(this.$store.getters['compose/getMessages'])
       let valid = true
 
       if (messages) {
@@ -177,7 +137,7 @@ export default {
 
       // If we don't have a group currently which is in the list near this postcode, choose the closest.  That
       // allows people to select further away groups if they wish.
-      const groupid = this.$store.getters['compose/getGroup']()
+      const groupid = this.$store.getters['compose/getGroup']
 
       if (pc && pc.groupsnear) {
         let found = false

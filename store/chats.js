@@ -37,7 +37,7 @@ export const getters = {
     return ret
   },
 
-  list: state => () => {
+  list: state => {
     return state.list
   }
 }
@@ -58,6 +58,49 @@ export const actions = {
       commit('setList', res.data.chatrooms)
     }
   },
+
+  async openChatToMods({ dispatch, commit }, params) {
+    const id = await dispatch('openChat', {
+      chattype: 'User2Mod',
+      groupid: params.groupid
+    })
+
+    return id
+  },
+
+  async openChatToUser({ dispatch, commit }, params) {
+    const id = await dispatch('openChat', {
+      chattype: 'User2User',
+      userid: params.userid
+    })
+
+    return id
+  },
+
+  async openChat({ dispatch, commit }, params) {
+    let id = null
+
+    const res = await this.$axios.post(
+      process.env.API + '/chat/rooms',
+      params,
+      {
+        headers: {
+          'X-HTTP-Method-Override': 'PUT'
+        }
+      }
+    )
+
+    if (res.status === 200) {
+      id = res.data.id
+
+      await dispatch('fetch', {
+        id: id
+      })
+    }
+
+    return id
+  },
+
   async fetch({ commit }, params) {
     const chatid = params.id
 

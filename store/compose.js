@@ -23,7 +23,7 @@ export const mutations = {
 
   setEmail(state, email) {
     state.email = email
-    state.emailAt = new Date().getTime()
+    state.emailAt = Date.now()
   },
   setPostcode(state, postcode) {
     // Want to make sure we don't store too much data.
@@ -105,28 +105,28 @@ export const mutations = {
 }
 
 export const getters = {
-  getEmail: state => () => {
+  getEmail: state => {
     return state.email
   },
-  getEmailAt: state => () => {
+  getEmailAt: state => {
     return state.emailAt
   },
-  getPostcode: state => () => {
+  getPostcode: state => {
     return state.postcode
   },
-  getGroup: state => () => {
+  getGroup: state => {
     return state.group
   },
   getMessage: state => id => {
     return state.messages[id]
   },
-  getMessages: state => () => {
+  getMessages: state => {
     return state.messages
   },
   getAttachments: state => id => {
     return state.attachments[id] ? state.attachments[id] : []
   },
-  getProgress: state => () => {
+  getProgress: state => {
     return (Math.min(state.progress, state.max - 1) * 100) / state.max
   }
 }
@@ -176,7 +176,7 @@ export const actions = {
     // But we don't need to do that, because our store remembers the contents of the message.  Orphaned drafts will
     // be pruned by the server.
     //
-    // TODO Once the old client goes and we only have one set of code to worry about, we should simplify this into a
+    // TODO MINOR Once the old client goes and we only have one set of code to worry about, we should simplify this into a
     // single server call.
     const promises = []
     const results = []

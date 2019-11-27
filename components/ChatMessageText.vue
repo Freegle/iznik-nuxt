@@ -2,7 +2,7 @@
   <div>
     <b-row class="pb-1">
       <b-col>
-        <div v-if="chatmessage.userid != $store.state.auth.user.id" class="media">
+        <div v-if="chatmessage.userid != $store.state.auth.user.id" class="media float-left">
           <div class="media-left">
             <div class="media-object">
               <b-img-lazy
@@ -51,9 +51,12 @@
     </b-row>
   </div>
 </template>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .chatMessage {
-  border: 1px solid lightgrey;
+  border: 1px solid $color-gray--light;
   border-radius: 10px;
   padding-top: 2px;
   padding-bottom: 2px;
@@ -64,13 +67,14 @@
 }
 
 .theirs {
-  background-color: white;
+  background-color: $color-white;
 }
 
 .mine {
-  background-color: #e6ffe6;
+  background-color: $color-green--light;
 }
 </style>
+
 <script>
 import ChatBase from '~/components/ChatBase'
 

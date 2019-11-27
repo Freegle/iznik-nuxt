@@ -1,28 +1,32 @@
 // Load Facebook SDK
-// TODO Check if blocked.
 import Vue from 'vue'
 
 const VueFB = {}
 
 VueFB.install = function install(Vue, options) {
-  ;(function(d, s, id) {
-    const fjs = d.getElementsByTagName(s)[0]
-    if (d.getElementById(id)) {
-      return
-    }
-    const js = d.createElement(s)
-    js.id = id
-    js.src = 'https://connect.facebook.net/en_US/sdk.js'  // CC
-    fjs.parentNode.insertBefore(js, fjs)
-  })(document, 'script', 'facebook-jssdk')
+  Vue.FB = undefined
 
-  window.fbAsyncInit = function onSDKInit() {
+  window.fbAsyncInit = function() {
     window.FB.init(options)
     window.FB.AppEvents.logPageView()
     Vue.FB = window.FB
     window.dispatchEvent(new Event('fb-sdk-ready'))
   }
-  Vue.FB = undefined
+  ;(function(d, s, id) {
+    try {
+      const fjs = d.getElementsByTagName(s)[0]
+      if (d.getElementById(id)) {
+        return
+      }
+
+      const js = d.createElement(s)
+      js.id = id
+      js.src = '//connect.facebook.net/en_US/sdk.js'
+      fjs.parentNode.insertBefore(js, fjs)
+    } catch (e) {
+      console.error('Failed to load Facebook SDK', e)
+    }
+  })(document, 'script', 'facebook-jssdk')
 }
 
 Vue.use(VueFB, {

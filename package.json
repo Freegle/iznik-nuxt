@@ -21,11 +21,13 @@
     "@fortawesome/free-solid-svg-icons": "^5.11.1",
     "@nuxtjs/axios": "^5.5.4",
     "@nuxtjs/pwa": "^2.6.0",
+    "@nuxtjs/redirect-module": "^0.3.1",
     "bootstrap": "^4.1.3",
-    "bootstrap-vue": "^2.0.0-rc.26",
+    "bootstrap-vue": "^2.0.4",
     "cookie-universal-nuxt": "^2.0.16",
     "cookieparser": "^0.1.0",
     "cross-env": "^5.2.0",
+    "dotenv": "^8.2.0",
     "filepond": "^4.4.12",
     "filepond-plugin-file-validate-type": "^1.2.4",
     "filepond-plugin-image-preview": "^4.2.1",
@@ -51,9 +53,11 @@
     "vue-debounce": "^2.0.0",
     "vue-drag-drop": "^1.1.4",
     "vue-draggable-resizable": "^2.0.0-rc2",
+    "vue-faq-accordion": "^1.3.0",
     "vue-filepond": "^5.1.3",
     "vue-force-next-tick": "^1.0.3",
     "vue-google-autocomplete": "^1.1.0",
+    "vue-google-charts": "^0.3.2",
     "vue-highlight-words": "^1.2.0",
     "vue-infinite-loading": "github:PeachScript/vue-infinite-loading#master",
     "vue-js-toggle-button": "^1.3.2",
@@ -65,11 +69,13 @@
     "vue2-filters": "^0.7.0",
     "vue2-google-maps": "^0.10.7",
     "vuejs-thermometer": "0.0.4",
-    "vuex-persistedstate": "^2.5.4"
+    "vuex-persistedstate": "^2.5.4",
+    "wicket": "^1.3.5"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^0.0.1",
     "babel-eslint": "^8.2.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^3.1.0",
     "eslint-config-standard": "^13.0.1",
@@ -81,10 +87,9 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": ">=4.0.0",
     "eslint-plugin-vue": "^5.2.3",
-    "less": "^3.9.0",
-    "less-loader": "^4.1.0",
+    "node-sass": "^4.13.0",
     "nodemon": "^1.19.1",
     "prettier": "1.14.3",
-    "babel-plugin-transform-runtime": "^6.23.0"
+    "sass-loader": "^8.0.0"
   }
 }

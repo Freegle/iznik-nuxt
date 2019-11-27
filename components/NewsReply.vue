@@ -55,14 +55,23 @@
                     <span v-if="reply.loves">
                       <v-icon name="heart" class="text-danger" />&nbsp;{{ reply.loves }}
                     </span>
-                    <span v-if="me.id === reply.userid" v-b-modal="'newsEdit-' + reply.id">
+                    <span v-if="parseInt(me.id) === parseInt(reply.userid)" v-b-modal="'newsEdit-' + reply.id">
                       &bull;&nbsp;Edit
                     </span>
-                    <span v-if="me.id === reply.userid || mod" @click="deleteReply">
+                    <span v-if="parseInt(me.id) === parseInt(reply.userid) || mod" @click="deleteReply">
                       &bull;&nbsp;Delete
+                    </span>
+                    <span v-if="parseInt(me.id) !== parseInt(reply.userid)">
+                      &bull;&nbsp;
+                      <ChatButton
+                        :userid="reply.userid"
+                        size="naked"
+                        title="Message"
+                      />
                     </span>
                   </span>
                 </span>
+                <NewsPreview v-if="reply.preview" :preview="reply.preview" class="mt-1" size="sm" />
               </td>
             </tr>
           </tbody>
@@ -73,9 +82,9 @@
       Show earlier {{ reply.replies.length | pluralize(['reply', 'replies'], { includeNumber: false }) }} ({{ reply.replies.length - 5 }})
     </a>
     <div v-if="reply.replies && reply.replies.length > 0" class="pl-3">
-      <ul v-for="(entry, $index) in reply.replies" :key="'newsfeed-' + $index" class="p-0 pt-1 pl-1 list-unstyled mb-1 border-left">
+      <ul v-for="entry in reply.replies" :key="'newsfeed-' + entry.id" class="p-0 pt-1 pl-1 list-unstyled mb-1 border-left">
         <li>
-          <news-reply :key="'newsfeedreply-' + reply.id + '-reply-' + entry.id" :reply="entry" :users="users" />
+          <news-reply :key="'newsfeedreply-' + reply.id + '-reply-' + entry.id" :reply="entry" :users="users" :threadhead="threadhead" />
         </li>
       </ul>
     </div>
@@ -126,6 +135,7 @@
       alt="ChitChat Photo"
       size="lg"
       no-stacking
+      ok-only
     >
       <template slot="default">
         <b-img
@@ -165,7 +175,10 @@
     <ProfileModal v-if="infoclick" :id="reply.userid" ref="profilemodal" />
   </div>
 </template>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .replytext {
   font-size: 14px;
   line-height: 1.2;
@@ -176,25 +189,30 @@
   left: 26px;
   border-radius: 50%;
   position: absolute;
-  background-color: white;
+  background-color: $color-white;
   width: 15px;
   padding-left: 3px;
   padding-top: 3px;
 }
 </style>
+
 <script>
-// TODO User tagging
+// TODO EH User tagging
 import twem from '~/assets/js/twem'
 const NewsUserInfo = () => import('~/components/NewsUserInfo')
 const NewsHighlight = () => import('~/components/NewsHighlight')
 const ProfileModal = () => import('~/components/ProfileModal')
+const ChatButton = () => import('~/components/ChatButton')
+const NewsPreview = () => import('~/components/NewsPreview')
 
 export default {
   name: 'NewsReply',
   components: {
     NewsUserInfo,
     NewsHighlight,
-    ProfileModal
+    ProfileModal,
+    ChatButton,
+    NewsPreview
   },
   props: {
     threadhead: {
@@ -226,7 +244,7 @@ export default {
   },
   computed: {
     me() {
-      return this.$store.state.auth.user
+      return this.$store.getters['auth/user']
     },
     mod() {
       const me = this.me
@@ -256,9 +274,19 @@ export default {
         if (this.showAllReplies || this.reply.replies.length <= 5) {
           ret = this.reply.replies
         } else {
-          // We have to prune what we show.
-          // TODO But we shouldn't prune away this.scrollTo if set.
-          ret = this.reply.replies.slice(-5)
+          // We have to prune what we show, but we should show any replyto.
+          ret = this.reply.replies
+          let pruned = 0
+          let pruneAt = ret - 1
+
+          while (pruned < 5 && pruneAt < ret.length) {
+            if (ret[pruneAt].id !== parseInt(this.replyTo)) {
+              pruned++
+              ret.splice(pruneAt, 1)
+            } else {
+              pruneAt++
+            }
+          }
         }
       }
 

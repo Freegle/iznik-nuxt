@@ -41,12 +41,22 @@
     </b-row>
   </div>
 </template>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 img.profile {
   max-height: 25px !important;
   max-width: 25px !important;
 }
+
+.chatname {
+  color: $colour-info-fg;
+  font-weight: bold;
+  white-space: nowrap;
+}
 </style>
+
 <script>
 import twem from '~/assets/js/twem'
 

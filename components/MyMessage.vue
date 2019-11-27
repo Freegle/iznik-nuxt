@@ -50,9 +50,9 @@
         <div v-if="expanded">
           <b-card-body class="p-2">
             <b-card-text>
-              <b-alert v-if="rejected" show variant="warning">
+              <notice-message v-if="rejected" class="mb-3">
                 <v-icon name="exclamation-triangle" scale="2" /> This post has been returned to you.
-              </b-alert>
+              </notice-message>
               <span v-if="message.attachments.length > 0" class="float-right clickme" @click="showPhotos">
                 <b-badge v-if="message.attachments.length > 1" class="photobadge" variant="primary">+{{ message.attachments.length - 1 }} <v-icon name="camera" /></b-badge>
                 <b-img-lazy
@@ -97,7 +97,7 @@
             </div>
             <b-list-group v-if="rejected" horizontal class="flex-wrap">
               <b-list-group-item>
-                <b-btn variant="warning" class="d-inline mr-1" @click="edit">
+                <b-btn variant="warning" class="d-inline mr-1" @click="repost">
                   <v-icon name="pen" /> Edit and Resend
                 </b-btn>
               </b-list-group-item>
@@ -150,26 +150,10 @@
       :title="message.subject"
       size="lg"
       no-stacking
+      ok-only
     >
       <template slot="default">
-        <b-carousel
-          :id="'message-carousel-' + message.id"
-          v-model="slide"
-          :interval="5000"
-          controls
-          indicators
-          img-width="100%"
-        >
-          <b-carousel-slide v-for="(attachment, index) in message.attachments" :key="'mesagephohoto-' + index + '-' + attachment.id">
-            <b-img
-              slot="img"
-              center
-              class="d-block img-fluid w-100 messagePhoto"
-              :src="attachment.path"
-              :alt="'Message photo ' + slide"
-            />
-          </b-carousel-slide>
-        </b-carousel>
+        <ImageCarousel message-id="message.id" :attachments="message.attachments" />
       </template>
     </b-modal>
     <OutcomeModal ref="outcomeModal" :message="message" :users="replyusers" />
@@ -177,7 +161,10 @@
     <MessageEditModal ref="editModal" :message="message" />
   </div>
 </template>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .square {
   object-fit: cover;
   width: 75px;
@@ -201,11 +188,11 @@ img.attachment {
 
 .noborder {
   border: none !important;
-  border-color: white !important;
+  border-color: $color-white !important;
 }
 </style>
+
 <script>
-// TODO Donation appeal!
 // TODO DESIGN This is better than the old version, but it's still not quite right, in terms of alignment and sizes
 // of things.
 // TODO When we click to expand, the visible text may be off the top or bottom of the screen.  Need to make it visible.
@@ -215,6 +202,8 @@ const OutcomeModal = () => import('./OutcomeModal')
 const MyMessageReply = () => import('./MyMessageReply.vue')
 const ShareModal = () => import('./ShareModal')
 const MessageEditModal = () => import('./MessageEditModal')
+const ImageCarousel = () => import('./ImageCarousel')
+const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   directives: {
@@ -224,7 +213,9 @@ export default {
     OutcomeModal,
     ShareModal,
     MyMessageReply,
-    MessageEditModal
+    MessageEditModal,
+    ImageCarousel,
+    NoticeMessage
   },
   props: {
     message: {
@@ -246,7 +237,6 @@ export default {
   },
   data: function() {
     return {
-      slide: 0,
       maxChars: 60,
       expanded: false
     }
@@ -255,7 +245,7 @@ export default {
     unseen() {
       // We want all the chats from replies.  We fetch them in myposts, here we only need to
       // get them from the store
-      const chats = Object.values(this.$store.getters['chats/list']())
+      const chats = Object.values(this.$store.getters['chats/list'])
       let unseen = 0
 
       for (const reply of this.message.replies) {
@@ -317,7 +307,7 @@ export default {
     chats() {
       // We want all the chats which reference this message.  We fetch them in myposts, here we only need to
       // get them from the store
-      const chats = Object.values(this.$store.getters['chats/list']())
+      const chats = Object.values(this.$store.getters['chats/list'])
       const ret = []
 
       for (const chat of chats) {

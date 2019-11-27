@@ -3,10 +3,7 @@
     <b-card class="p-0 mb-1" variant="success">
       <b-card-header class="pl-2 pr-2 clearfix">
         <b-card-title class="msgsubj mb-0">
-          <b-btn v-if="expanded" variant="white" class="float-right" title="Share" @click="share">
-            <v-icon name="share-alt" />
-          </b-btn>
-          <span v-if="attachments.length > 0" class="float-right clickme" @click="showPhotos">
+          <span v-if="attachments && attachments.length > 0" class="float-right clickme" @click="showPhotos">
             <b-badge v-if="attachments.length > 1" class="photobadge" variant="primary">+{{ attachments.length - 1 }} <v-icon name="camera" /></b-badge>
             <b-img-lazy
               rounded
@@ -18,6 +15,9 @@
             />
             <br>
           </span>
+          <b-btn v-if="expanded" variant="white" class="float-right mr-1" title="Share" @click="share">
+            <v-icon name="share-alt" />
+          </b-btn>
           <Highlighter
             v-if="matchedon"
             :search-words="[matchedon.word]"
@@ -30,9 +30,9 @@
         </b-card-title>
         <span v-for="group in groups" :key="'message-' + id + '-' + group.id" class="small muted">
           {{ group.arrival | timeago }} on {{ group.namedisplay }}
-          <span class="text-sm small text-faded">
+          <nuxt-link :to="'/message/' + id" class="text-sm small text-faded">
             #{{ id }}&nbsp;
-          </span>
+          </nuxt-link>
         </span>
         <div v-if="eSnippet && eSnippet !== 'null' && !expanded">
           <h4 class="snippet">
@@ -54,10 +54,10 @@
         </b-button>
       </b-card-header>
       <b-card-body v-if="expanded" class="pl-1">
-        <b-alert v-if="expanded.promised" variant="info">
+        <notice-message v-if="expanded.promised" class="mb-3">
           This item has already been promised to someone.  You can still reply - you might get it if someone
           else drops out.
-        </b-alert>
+        </notice-message>
 
         <p class="prewrap pl-1">
           <Highlighter
@@ -79,6 +79,7 @@
             <b-form-textarea
               v-if="expanded.type == 'Offer'"
               v-model="reply"
+              v-focus
               placeholder="Interested?  Please explain why you'd like it and when you can collect.  Always be polite and helpful."
               rows="3"
               max-rows="8"
@@ -87,64 +88,45 @@
             <b-form-textarea
               v-if="expanded.type == 'Wanted'"
               v-model="reply"
+              v-focus
               placeholder="Can you help?  If you have what they're looking for, let them know."
               rows="3"
               max-rows="8"
               class="flex-shrink-2"
             />
             <div class="flex-grow-1 text-right ml-2 d-none d-md-block">
-              <b-btn variant="success">
-                Send <v-icon name="angle-double-right" />
+              <b-btn variant="success" :disabled="replying" @click="sendReply">
+                Send
+                <v-icon v-if="replying" name="sync" class="fa-spin" />
+                <v-icon v-else name="angle-double-right" />&nbsp;
               </b-btn>
             </div>
           </b-col>
         </b-row>
         <b-row class="d-block d-md-none mt-2">
           <b-col>
-            <b-btn variant="success" block>
-              Send <v-icon name="angle-double-right" />
+            <b-btn variant="success" block :disabled="replying" @click="sendReply">
+              Send
+              <!--              TODO DESIGN If you've gone through sign in, and your eye is therefore elsewhere, this method of -->
+              <!--              indicating that we are sending a reply is probably too subtle to notice.-->
+              <v-icon v-if="replying" name="sync" class="fa-spin" />
+              <v-icon v-else name="angle-double-right" />&nbsp;
             </b-btn>
           </b-col>
         </b-row>
       </b-card-footer>
     </b-card>
     <b-modal
-      v-if="expanded && expanded.attachments.length"
+      v-if="expanded && expanded.attachments && expanded.attachments.length"
       :id="'photoModal-' + id"
       ref="photoModal"
       :title="subject"
       size="lg"
       no-stacking
+      ok-only
     >
       <template slot="default">
-        <b-carousel
-          v-if="expanded.attachments.length > 1"
-          :id="'message-carousel-' + expanded.id"
-          v-model="slide"
-          :interval="5000"
-          controls
-          indicators
-          img-width="100%"
-        >
-          <b-carousel-slide v-for="(attachment, index) in expanded.attachments" :key="'mesagephohoto-' + index + '-' + attachment.id">
-            <b-img
-              slot="img"
-              center
-              class="d-block img-fluid w-100 messagePhoto"
-              :src="attachment.path"
-              :alt="'Message photo ' + slide"
-            />
-          </b-carousel-slide>
-        </b-carousel>
-        <div v-else>
-          <b-img
-            slot="img"
-            center
-            class="d-block img-fluid w-100 messagePhoto"
-            :src="attachments[0].path"
-            :alt="'Message photo'"
-          />
-        </div>
+        <ImageCarousel message-id="message.id" :attachments="expanded.attachments" />
       </template>
       <template slot="modal-footer" slot-scope="{ ok, cancel }">
         <b-button variant="white" @click="cancel">
@@ -153,21 +135,35 @@
       </template>
     </b-modal>
     <ShareModal v-if="expanded" ref="shareModal" :message="$props" />
+    <ChatButton v-if="expanded && expanded.fromuser" ref="chatbutton" :userid="expanded.fromuser.id" class="d-none" />
   </div>
 </template>
+<style scoped>
+.highlight {
+  padding: 0;
+}
+</style>
+
 <script>
-// TODO Focus on textbox when expand.
 // TODO Report this post
+// Need to import rather than async otherwise the render doesn't happen and ref isn't set.
+import ChatButton from './ChatButton'
+import ShareModal from './ShareModal'
 import twem from '~/assets/js/twem'
+
 const Highlighter = () => import('vue-highlight-words')
 const MessageUserInfo = () => import('~/components/MessageUserInfo')
-const ShareModal = () => import('./ShareModal')
+const ImageCarousel = () => import('./ImageCarousel')
+const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
+    ChatButton,
     MessageUserInfo,
     Highlighter,
-    ShareModal
+    ShareModal,
+    ImageCarousel,
+    NoticeMessage
   },
   props: {
     id: {
@@ -197,13 +193,22 @@ export default {
     matchedon: {
       type: Object,
       default: null
+    },
+    fromuser: {
+      validator: prop => typeof prop === 'object' || typeof prop === 'number',
+      default: null
+    },
+    startExpanded: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
     return {
       reply: null,
       expanded: null,
-      slide: 0
+      replying: false
     }
   },
   computed: {
@@ -221,6 +226,40 @@ export default {
       }
 
       return snip
+    },
+    replyToSend() {
+      let ret = null
+      const me = this.$store.getters['auth/user']
+
+      if (me) {
+        ret = this.$store.getters['reply/get']
+      }
+
+      return ret
+    }
+  },
+  watch: {
+    replyToSend(newVal, oldVal) {
+      // Because of the way persistent store is restored, we might only find out that we have a reply to send post-mount.
+      if (newVal) {
+        console.log('Send on watch')
+        this.reply = newVal.replyMessage
+        this.sendReply()
+      }
+    }
+  },
+  async mounted() {
+    if (this.startExpanded) {
+      this.expanded = this.$store.getters['messages/get'](this.id)
+    }
+
+    const reply = this.replyToSend
+
+    if (reply && reply.replyTo === this.id) {
+      // Because of the way persistent store is restored, we might or might not know that we have a reply to send here.
+      this.reply = reply.replyMessage
+      await this.expand()
+      this.sendReply()
     }
   },
   methods: {
@@ -241,22 +280,94 @@ export default {
 
     share() {
       this.$refs.shareModal.show()
+    },
+
+    async sendReply() {
+      console.log('Send reply', this.reply, this.$refs, this.expanded)
+
+      if (this.reply) {
+        const me = this.$store.getters['auth/user']
+
+        if (me && me.id) {
+          // We have several things to do:
+          // - join a group if need be (doesn't matter which)
+          // - post our reply
+          // - open the popup chat so they see what happened
+          this.replying = true
+          const me = this.$store.getters['auth/user']
+          const myGroups = this.$store.getters['auth/groups']
+          let found = false
+          let tojoin = null
+
+          for (const messageGroup of this.groups) {
+            tojoin = messageGroup.groupid
+            Object.keys(myGroups).forEach(key => {
+              const group = myGroups[key]
+
+              if (messageGroup.groupid === group.id) {
+                found = true
+              }
+            })
+          }
+
+          if (!found) {
+            await this.$store.dispatch('auth/joinGroup', {
+              userid: me.id,
+              groupid: tojoin
+            })
+          }
+
+          // TODO If the group approves membership, then we will not actually be a member at this point, and might not
+          // become one if we are rejected.  Probably in that case we shouldn't be allowed to reply to this message, but
+          // we will.  I think this is the same behaviour as in the old version, but that needs testing and consideration
+          // of how to handle.
+
+          // Now create the chat and send the first message.
+          await this.$refs.chatbutton.openChat(null, this.reply, this.id)
+          this.replying = false
+
+          // Clear message now sent
+          this.reply = null
+
+          await this.$store.dispatch('reply/set', {
+            replyTo: null,
+            replyMessage: null
+          })
+        } else {
+          // We're not logged in yet.  We need to save the reply and force a sign in.
+          //
+          // Setting the reply text here will get persisted to the store.  Once we log in and return to the message
+          // page, then we will find this in the store and trigger the send of the reply.
+          // TODO The store is persisted asynchronously.  Probably it will have happened before the signin completes,
+          // but we don't actually guarantee that.
+          await this.$store.dispatch('reply/set', {
+            replyTo: this.id,
+            replyMessage: this.reply
+          })
+
+          // TODO We're getting redirected away from the page.
+          this.$store.dispatch('auth/forceLogin', true)
+        }
+      }
     }
   }
 }
 </script>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .card-body {
   padding: 0px;
 }
 
 h4 {
-  color: #000080 !important;
+  color: $colour-info-fg !important;
   font-weight: bold;
 }
 
 h4.snippet {
-  color: black !important;
+  color: $color-black !important;
   font-weight: 500;
 }
 
@@ -284,5 +395,9 @@ img.attachment {
   left: 150px;
   top: -54px;
   position: relative;
+}
+
+.msgsubj {
+  color: $colour-info-fg !important;
 }
 </style>

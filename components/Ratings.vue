@@ -35,6 +35,7 @@
   </client-only>
 </template>
 <script>
+// TODO DESIGN Showing that you have given feedback using blue is not very clear.  How can we improve that given limited space?
 export default {
   props: {
     id: {
@@ -58,7 +59,7 @@ export default {
   },
   computed: {
     myid() {
-      const me = this.$store.getters['auth/user']()
+      const me = this.$store.getters['auth/user']
       return me ? me.id : null
     },
     user() {

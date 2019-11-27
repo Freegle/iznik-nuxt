@@ -16,10 +16,15 @@
             <div class="float-right">
               <span class="small text-faded float-right">#{{ id }}</span>
               <br>
-              <b-btn variant="white" size="sm" class="float-right mb-1" :disabled="user.id === myid ? 'true' : undefined">
-                <v-icon name="comment" class="d-none d-sm-inline-block" />&nbsp;Message
-              </b-btn>
-              <br>
+              <ChatButton
+                :userid="id"
+                size="sm"
+                title="Message"
+                variant="white"
+                :disabled="user.id === myid ? 'true' : undefined"
+                class="float-right mb-1"
+                @click="hide"
+              />
               <ratings size="sm" v-bind="user" class="pl-1 pt-1 d-block" />
             </div>
             <h4 class="d-inline-block">
@@ -39,12 +44,12 @@
       </div>
     </template>
     <template slot="default">
-      <b-alert v-if="user.info.reneged && user.info.reneged > 1 && (user.info.reneged * 100 / (user.info.reneged + user.info.collected) > 25)" variant="warning" show>
+      <notice-message v-if="userHasReneged" variant="warning">
         <v-icon name="exclamation-triangle" />&nbsp;Things haven't always worked out for this freegler.  That might not be their fault, but please make very clear arrangements.
-      </b-alert>
-      <div v-if="user.info.aboutme && user.info.aboutme.text" class="mb-1">
+      </notice-message>
+      <div v-if="aboutme" class="mb-1">
         <blockquote>
-          <b>&quot;{{ user.info.aboutme.text }}&quot;</b>
+          <b>&quot;{{ aboutme }}&quot;</b>
         </blockquote>
       </div>
       <b-card border-variant="success" header-bg-variant="success" header-text-variant="white" class="mt-2">
@@ -77,20 +82,26 @@
         </template>
         <b-card-body class="p-0 pt-1">
           <b-row v-if="user.info.offers + user.info.wanteds + user.info.replies > 0">
-            <b-col cols="12" md="4">
-              <v-icon name="gift" /> {{ user.info.offers | pluralize([ 'recent OFFER', 'recent OFFERs' ], { includeNumber: true }) }}.
+            <b-col cols="12" md="5">
+              <v-icon name="gift" /> {{ user.info.offers | pluralize([ 'recent OFFER', 'recent OFFERs' ], { includeNumber: true }) }}
+              <span v-if="user.info.openoffers" class="text-success font-weight-bold">
+                ({{ user.info.openoffers }} still active)
+              </span>
             </b-col>
-            <b-col cols="12" md="4">
-              <v-icon name="search" /> {{ user.info.wanteds | pluralize([ 'recent WANTED', 'recent WANTEDs' ], { includeNumber: true }) }}.
+            <b-col cols="12" md="5">
+              <v-icon name="search" /> {{ user.info.wanteds | pluralize([ 'recent WANTED', 'recent WANTEDs' ], { includeNumber: true }) }}
+              <span v-if="user.info.openwanteds" class="text-success font-weight-bold">
+                ({{ user.info.wanteds }} still active)
+              </span>
             </b-col>
-            <b-col cols="12" md="4">
-              <v-icon name="envelope" /> {{ user.info.replies | pluralize([ 'reply', 'replies' ], { includeNumber: true }) }}.
+            <b-col cols="12" md="2">
+              <v-icon name="envelope" /> {{ user.info.replies | pluralize([ 'reply', 'replies' ], { includeNumber: true }) }}
             </b-col>
           </b-row>
           <b-row>
             <b-col>
               <span v-if="user.info.collected">
-                <v-icon name="check" /> Picked up about {{ user.info.collected | pluralize('item', { includeNumber: true }) }}.
+                <v-icon name="check" /> Picked up about {{ user.info.collected | pluralize('item', { includeNumber: true }) }}
               </span>
               <span v-else>
                 <v-icon name="check" class="text-faded" />&nbsp;Not received any items recently, so far as we know.
@@ -101,25 +112,19 @@
       </b-card>
     </template>
     <template slot="modal-footer" slot-scope="{ ok, cancel }">
-      <b-btn variant="success" :href="'/profile/' + user.id" class="mr-auto">
-        <b-badge v-if="user.info.openoffers" variant="danger">
-          {{ user.info.openoffers }}
-          <v-icon name="gift" />
-        </b-badge>
-        <b-badge v-if="user.info.openwanteds" variant="danger">
-          {{ user.info.wanteds }}
-          <v-icon name="search" />
-        </b-badge>
-        View full profile
-      </b-btn>
-
-      <b-button variant="white" class="float-right" @click="cancel">
+      <b-button variant="white" @click="cancel">
         Close
       </b-button>
+      <b-btn variant="success" :href="'/profile/' + user.id">
+        View full profile
+      </b-btn>
     </template>
   </b-modal>
 </template>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .coverphoto {
   height: 100px !important;
   width: 100% !important;
@@ -129,7 +134,7 @@
 .coverprofilecircle {
   width: 100px;
   height: 100px;
-  background-color: darkgray;
+  background-color: $color-gray--base;
   border-radius: 50%;
   /*margin: 10px;*/
 }
@@ -140,7 +145,7 @@
   width: 98px;
   height: 98px;
   border-radius: 98px;
-  border: 3px solid white;
+  border: 3px solid $color-white;
 }
 
 .covername {
@@ -152,16 +157,23 @@
   padding-right: 10px;
 }
 </style>
+
 <script>
+import twem from '~/assets/js/twem'
+
 // TODO DESIGN Header is messy - wallpaper should fill the whole thing; image should have a border round it with a gap.
 // TODO DESIGN The about me section needs nice big quotes round it.
 const Ratings = () => import('~/components/Ratings')
 const ReplyTime = () => import('~/components/ReplyTime')
+const ChatButton = () => import('~/components/ChatButton.vue')
+const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
     Ratings,
-    ReplyTime
+    ReplyTime,
+    ChatButton,
+    NoticeMessage
   },
   props: {
     id: {
@@ -183,6 +195,14 @@ export default {
     user() {
       const ret = this.id ? this.$store.getters['user/get'](this.id) : null
       return ret
+    },
+    aboutme() {
+      return this.user && this.user.info && this.user.info.aboutme
+        ? twem.twem(this.$twemoji, this.user.info.aboutme.text)
+        : null
+    },
+    userHasReneged() {
+      return this.$store.getters['user/userHasReneged'](this.id)
     }
   },
   async mounted() {

@@ -1,6 +1,7 @@
+import cloneDeep from 'lodash.clonedeep'
+
 export const state = () => ({
-  // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
-  // storage.
+  // Use array for newsfeed as we need ordering.
   newsfeed: [],
   users: {},
   context: {},
@@ -9,13 +10,19 @@ export const state = () => ({
 
 export const mutations = {
   addNewsfeed(state, item) {
-    // Remove any existing copy.
-    // TODO Performance is poor here, we're scanning arrays.  Should newsfeed be an object after all?
+    // Remove any existing copy.  Not great to scan an array, but this is only used when (re)fetching a single
+    // item and therefore it's not too bad.
     state.newsfeed = state.newsfeed.filter(obj => {
       return parseInt(obj.id) !== parseInt(item.id)
     })
 
     state.newsfeed.unshift(item)
+  },
+
+  removeNewsfeed(state, id) {
+    state.newsfeed = state.newsfeed.filter(obj => {
+      return parseInt(obj.id) !== parseInt(id)
+    })
   },
 
   mergeNewsfeed(state, payload) {
@@ -39,7 +46,13 @@ export const mutations = {
 
     if (items) {
       for (const item of items) {
-        state.users[item.id] = item
+        if (state.users[item.id]) {
+          // Already there.  Merge in all fields.  This is because we can get users with different levels of
+          // info in them (e.g. users in replies have less info) and we don't want to lose info by overwriting.
+          state.users[item.id] = Object.assign(state.users[item.id], item)
+        } else {
+          state.users[item.id] = item
+        }
       }
     }
   },
@@ -69,19 +82,19 @@ export const getters = {
     return ret
   },
 
-  newsfeed: state => () => {
+  newsfeed: state => {
     return state.newsfeed
   },
 
-  users: state => () => {
+  users: state => {
     return state.users
   },
 
-  getContext: state => () => {
+  getContext: state => {
     return state.context
   },
 
-  area: state => id => {
+  area: state => {
     return state.area
   }
 }
@@ -98,7 +111,7 @@ export const actions = {
 
     if (params.context) {
       // Ensure the context is a real object, in case it has been in the store.
-      const ctx = JSON.parse(JSON.stringify(params.context))
+      const ctx = cloneDeep(params.context)
       params.context = ctx
     }
 
@@ -253,6 +266,23 @@ export const actions = {
       await dispatch('fetch', {
         id: params.threadhead
       })
+    } else {
+      commit('removeNewsfeed', params.id)
     }
+  },
+
+  async unfollow({ commit, dispatch }, params) {
+    await this.$axios.post(process.env.API + '/newsfeed', {
+      id: params.id,
+      action: 'Unfollow'
+    })
+  },
+
+  async report({ commit, dispatch }, params) {
+    await this.$axios.post(process.env.API + '/newsfeed', {
+      id: params.id,
+      reason: params.reason,
+      action: 'Report'
+    })
   }
 }

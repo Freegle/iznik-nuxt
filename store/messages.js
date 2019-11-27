@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import cloneDeep from 'lodash.clonedeep'
 
 export const state = () => ({
   // Use array because we need to store them in the order returned by the server.
@@ -11,7 +12,6 @@ export const state = () => ({
 export const mutations = {
   add(state, item) {
     // Overwrite any existing entry.
-    // TODO Performance not great.
     const existing = state.list.findIndex(obj => {
       return parseInt(obj.id) === parseInt(item.id)
     })
@@ -24,7 +24,6 @@ export const mutations = {
   },
   addAll(state, items) {
     items.forEach(item => {
-      // TODO Performance not great.  Items is short, though, so could take advantage of that.
       const existing = state.list.findIndex(obj => {
         return parseInt(obj.id) === parseInt(item.id)
       })
@@ -61,7 +60,7 @@ export const getters = {
 
     return ret
   },
-  getContext: state => () => {
+  getContext: state => {
     let ret = null
 
     if (state.context && state.context.id) {
@@ -80,17 +79,19 @@ export const getters = {
 
     return ret
   },
-  getAll: state => () => {
+  getAll: state => {
     return state.list
   }
 }
 
 export const actions = {
-  async fetchMessages({ commit }, params) {
+  async fetchMessages({ commit, state }, params) {
     if (params.context) {
       // Ensure the context is a real object, in case it has been in the store.
-      const ctx = JSON.parse(JSON.stringify(params.context))
+      const ctx = cloneDeep(params.context)
       params.context = ctx
+    } else if (state.context) {
+      params.context = state.context
     }
 
     const res = await this.$axios.get(process.env.API + '/messages', {

@@ -3,45 +3,7 @@
     <b-row class="m-0">
       <b-col cols="0" md="3" />
       <b-col cols="12" md="6">
-        <b-row class="bs-wizard">
-          <b-col cols="4" class="bs-wizard-step">
-            <div class="text-center bs-wizard-stepnum">
-              &nbsp;
-            </div>
-            <div class="progress">
-              <div class="progress-bar" />
-            </div>
-            <a href="#" class="bs-wizard-dot" />
-            <div class="bs-wizard-info text-center">
-              Where are you?
-            </div>
-          </b-col>
-          <b-col cols="4" class="bs-wizard-step">
-            <div class="text-center bs-wizard-stepnum">
-              &nbsp;
-            </div>
-            <div class="progress">
-              <div class="progress-bar" />
-            </div>
-            <a href="#" class="bs-wizard-dot" />
-            <div class="bs-wizard-info text-center">
-              What is it?
-            </div>
-          </b-col>
-          <b-col cols="4" class="bs-wizard-step">
-            <div class="text-center bs-wizard-stepnum">
-              &nbsp;
-            </div>
-            <div class="progress">
-              <div class="progress-bar" />
-            </div>
-            <a href="#" class="bs-wizard-dot active" />
-            <div class="bs-wizard-info text-center">
-              Who are you?
-            </div>
-          </b-col>
-        </b-row>
-
+        <WizardProgress :active-stage="3" />
         <h1 class="text-center">
           Finally, your email address
         </h1>
@@ -85,17 +47,21 @@
     </b-row>
   </div>
 </template>
+
 <style scoped>
 .email {
   max-width: 300px;
 }
 </style>
+
 <script>
-// TODO Add speech recognition
 import loginOptional from '@/mixins/loginOptional.js'
+const WizardProgress = () => import('~/components/WizardProgress')
 
 export default {
-  components: {},
+  components: {
+    WizardProgress
+  },
   mixins: [loginOptional],
   data() {
     return {
@@ -117,7 +83,7 @@ export default {
           this.$store.dispatch('compose/setEmail', email)
         } else {
           // See if we have a local email stored from last time we were logged in.
-          email = this.$store.getters['compose/getEmail']()
+          email = this.$store.getters['compose/getEmail']
         }
 
         return email
@@ -127,7 +93,7 @@ export default {
       }
     },
     progressValue() {
-      const progress = this.$store.getters['compose/getProgress']()
+      const progress = this.$store.getters['compose/getProgress']
       return progress
     }
   },
