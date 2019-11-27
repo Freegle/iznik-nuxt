@@ -5,6 +5,11 @@ export default class ChatAPI extends BaseAPI {
     return this.$get(`/chat/rooms/${chatid}/messages`, { limit, context })
   }
 
+  async listChats(params) {
+    const { chatrooms } = await this.$get('/chat/rooms', params)
+    return chatrooms
+  }
+
   fetchRoom(chatid) {
     return this.$get('/chatrooms', { id: chatid })
   }

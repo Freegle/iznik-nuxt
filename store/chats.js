@@ -49,14 +49,7 @@ export const actions = {
       summary: true,
       search: params && params.search ? params.search : null
     }
-
-    const res = await this.$axios.get(process.env.API + '/chat/rooms', {
-      params: params
-    })
-
-    if (res.status === 200) {
-      commit('setList', res.data.chatrooms)
-    }
+    commit('setList', await this.$api.chat.listChats(params))
   },
 
   async openChatToMods({ dispatch, commit }, params) {
