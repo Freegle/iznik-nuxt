@@ -63,7 +63,7 @@
               </template>
               <b-dropdown-item class="text-right">
                 <b-btn variant="white" size="sm" @click="markAllRead">
-                  Mark all as read
+                  Mark all read
                 </b-btn>
               </b-dropdown-item>
               <b-dropdown-divider />
