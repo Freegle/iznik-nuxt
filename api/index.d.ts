@@ -1,25 +1,37 @@
-import ActivityAPI from './ActivityAPI'
-import AddressAPI from './AddressAPI'
-import AuthorityAPI from './AuthorityAPI'
-import ChatAPI from './ChatAPI'
-import CommunityEventAPI from './CommunityEventAPI'
-import DashboardAPI from './DashboardAPI'
-import DonationsAPI from './DonationsAPI'
-import GroupAPI from './GroupAPI'
-import InvitationAPI from './InvitationAPI'
-import JobAPI from './JobAPI'
-import MembershipsAPI from './MembershipsAPI'
-import MessageAPI from './MessageAPI'
-import NewsAPI from './NewsAPI'
-import NoticeboardAPI from './NoticeboardAPI'
-import NotificationAPI from './NotificationAPI'
-import ScheduleAPI from './ScheduleAPI'
-import SessionAPI from './SessionAPI'
-import StoriesAPI from './StoriesAPI'
-import TeamAPI from './TeamAPI'
-import UserAPI from './UserAPI'
-import UserSearchAPI from './UserSearchAPI'
-import VolunteeringAPI from './VolunteeringAPI'
+
+/*    --- DO NOT EDIT --- 
+ *
+ * This file was generating using api/index.generate.js
+ * You can regenerate it by running:
+ *
+ *     node api/index.generate.js
+ *
+ *    --- DO NOT EDIT ---
+ */
+
+
+import ActivityAPI from './ActivityAPI.js'
+import AddressAPI from './AddressAPI.js'
+import AuthorityAPI from './AuthorityAPI.js'
+import ChatAPI from './ChatAPI.js'
+import CommunityEventAPI from './CommunityEventAPI.js'
+import DashboardAPI from './DashboardAPI.js'
+import DonationsAPI from './DonationsAPI.js'
+import GroupAPI from './GroupAPI.js'
+import InvitationAPI from './InvitationAPI.js'
+import JobAPI from './JobAPI.js'
+import MembershipsAPI from './MembershipsAPI.js'
+import MessageAPI from './MessageAPI.js'
+import NewsAPI from './NewsAPI.js'
+import NoticeboardAPI from './NoticeboardAPI.js'
+import NotificationAPI from './NotificationAPI.js'
+import ScheduleAPI from './ScheduleAPI.js'
+import SessionAPI from './SessionAPI.js'
+import StoriesAPI from './StoriesAPI.js'
+import TeamAPI from './TeamAPI.js'
+import UserAPI from './UserAPI.js'
+import UserSearchAPI from './UserSearchAPI.js'
+import VolunteeringAPI from './VolunteeringAPI.js'
 
 interface API {
   activity: ActivityAPI;
@@ -32,8 +44,8 @@ interface API {
   group: GroupAPI;
   invitation: InvitationAPI;
   job: JobAPI;
-  message: MessageAPI;
   memberships: MembershipsAPI;
+  message: MessageAPI;
   news: NewsAPI;
   noticeboard: NoticeboardAPI;
   notification: NotificationAPI;
