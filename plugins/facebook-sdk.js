@@ -21,7 +21,7 @@ VueFB.install = function install(Vue, options) {
 
       const js = d.createElement(s)
       js.id = id
-      js.src = '//connect.facebook.net/en_US/sdk.js'
+      js.src = 'https://connect.facebook.net/en_US/sdk.js'  // CC
       fjs.parentNode.insertBefore(js, fjs)
     } catch (e) {
       console.error('Failed to load Facebook SDK', e)

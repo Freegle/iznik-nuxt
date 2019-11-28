@@ -27,7 +27,7 @@ export const getters = {
 
 export const actions = {
   async fetch({ commit }, params) {
-    const res = await this.$axios.get('/adview.php', {
+    const res = await this.$axios.get(process.env.USER_SITE + '/adview.php', {  // CC
       params: params
     })
 

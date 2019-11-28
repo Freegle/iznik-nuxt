@@ -14,8 +14,9 @@ const USER_SITE = 'https://www.ilovefreegle.org'
 // hurt client performance).
 const PROXY_API = process.env.IZNIK_API || 'https://iznik.ilovefreegle.org'
 
-console.log("PROXY_API")
-console.log(PROXY_API)
+console.log("PROXY_API", PROXY_API)
+
+console.log("USER_SITE", USER_SITE)
 
 //const httpadapter = require('./node_modules/axios/lib/adapters/http')
 
