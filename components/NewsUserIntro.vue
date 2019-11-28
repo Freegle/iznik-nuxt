@@ -37,25 +37,6 @@
     </b-col>
   </b-row>
 </template>
-
-<style scoped lang="scss">
-@import 'color-vars';
-
-/*TODO DESIGN This showmod leaf appears in the wrong place on mobile because profile is smaller then.  This should*/
-/*be handled better.  Applies in other places - search for "leaf" to find possibilities.*/
-.showmod {
-  top: 29px;
-  left: 44px;
-  border-radius: 50%;
-  position: absolute;
-  background-color: $color-white;
-  width: 24px;
-  height: 24px;
-  padding-left: 5px;
-  padding-top: 4px;
-  border: 1px solid $color-green--darker;
-}
-</style>
 <script>
 // Use import rather than async otherwise we have trouble with refs.
 import ProfileModal from '~/components/ProfileModal'

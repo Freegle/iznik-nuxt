@@ -1,5 +1,5 @@
 <template>
-  <b-card bg-variant="white" border-variant="grey" :class="'clickme ' + (size === 'md' ? '' : 'p-1')" @click="open">
+  <b-card bg-variant="white" border-variant="grey" :class="'forcebreak clickme ' + (size === 'md' ? '' : 'p-1')" @click="open">
     <b-media>
       <template v-if="preview.image" slot="aside">
         <b-img v-if="size === 'md'" lazy :src="preview.image" class="previewimage" />
