@@ -1,5 +1,5 @@
 <template>
-  <div class="text-center">
+  <div v-if="!me" class="text-center">
     <b-row class="m-0">
       <b-col cols="12" lg="6" offset-lg="3">
         <h1 class="largest">
@@ -178,9 +178,17 @@ export default {
   components: {
     StoriesLanding
   },
+
   data: function() {
     return {
       userWatch: null
+    }
+  },
+
+  computed: {
+    me() {
+      const user = this.$store.getters['auth/user']
+      return user
     }
   },
 

@@ -61,10 +61,9 @@
                   Notifications
                 </div>
               </template>
-              <b-dropdown-item>
+              <b-dropdown-item class="text-right">
                 <b-btn variant="white" size="sm" @click="markAllRead">
-                  <!--                  TODO DESIGN Align to right; float right breaks divider-->
-                  Mark all as read
+                  Mark all read
                 </b-btn>
               </b-dropdown-item>
               <b-dropdown-divider />
@@ -202,7 +201,7 @@
             </b-nav-item>
             <b-nav-item class="text-center p-0" to="/communities" @mousedown="maybeReload('/communities')">
               <v-icon name="users" scale="2" /><br>
-              My&nbsp;Groups
+              Communities
             </b-nav-item>
             <b-nav-item class="text-center p-0" to="/explore" @mousedown="maybeReload('/explore')">
               <v-icon name="map-marked-alt" scale="2" /><br>

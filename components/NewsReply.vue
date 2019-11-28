@@ -14,9 +14,9 @@
                   :src="users[reply.userid].profile.turl"
                   @error.native="brokenImage"
                 />
+                <v-icon v-if="users[reply.userid].settings.showmod" name="leaf" class="showmodsm text-success" />
               </td>
               <td class="align-top">
-                <v-icon v-if="users[reply.userid].settings.showmod" name="leaf" class="showmodsm text-success" />
                 <span class="text-success font-weight-bold clickme" title="Click to see their profile" @click="showInfo">{{ users[reply.userid].displayname }}</span>
                 <span class="font-weight-bold prewrap forcebreak replytext nopara">
                   <NewsHighlight
@@ -179,20 +179,31 @@
 <style scoped lang="scss">
 @import 'color-vars';
 
+$bootstrap-xs: 576px;
+$bootstrap-sm: 768px;
+$bootstrap-md: 992px;
+$bootstrap-lg: 1200px;
+
 .replytext {
   font-size: 14px;
   line-height: 1.2;
 }
 
 .showmodsm {
-  top: 28px;
-  left: 26px;
   border-radius: 50%;
   position: absolute;
   background-color: $color-white;
   width: 15px;
   padding-left: 3px;
   padding-top: 3px;
+
+  top: 20px;
+  left: 18px;
+
+  @media (min-width: $bootstrap-sm) {
+    top: 30px;
+    left: 26px;
+  }
 }
 </style>
 

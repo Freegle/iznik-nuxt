@@ -26,11 +26,13 @@ import vueFilePond from 'vue-filepond'
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 import FilePondPluginImageTransform from 'filepond-plugin-image-transform'
+import FilePondPluginImageResize from 'filepond-plugin-image-resize'
 
 const FilePond = vueFilePond(
   FilePondPluginFileValidateType,
   FilePondPluginImagePreview,
-  FilePondPluginImageTransform
+  FilePondPluginImageTransform,
+  FilePondPluginImageResize
 )
 
 export default {

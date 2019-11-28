@@ -1,6 +1,6 @@
 @import 'color-vars';
 
-// TODO Would be nice to use bootstrap mixins for breakpoints
+// TODO Would be nice to use bootstrap mixins for breakpoints.  Also in NewsReply.
 $bootstrap-xs: 576px;
 $bootstrap-sm: 768px;
 $bootstrap-md: 992px;
@@ -140,12 +140,32 @@ body {
 }
 
 .profile {
-  width: 30px !important;
-  height: 30px !important;
+  width: 35px !important;
+  height: 35px !important;
 
   @media (min-width: $bootstrap-sm) {
     width: 50px !important;
     height: 50px !important;
+  }
+}
+
+.showmod {
+  border-radius: 50%;
+  position: absolute;
+  background-color: $color-white;
+  width: 24px;
+  height: 24px;
+  padding-left: 3px;
+  padding-top: 4px;
+  padding-right: 2px;
+  border: 1px solid $color-green--darker;
+
+  top: 20px;
+  left: 33px;
+
+  @media (min-width: $bootstrap-sm) {
+    top: 29px;
+    left: 44px;
   }
 }
 
