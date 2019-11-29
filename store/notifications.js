@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import union from 'lodash/union'
+import uniqWith from 'lodash/uniqWith'
 import twem from '~/assets/js/twem'
 
 export const state = () => ({
@@ -9,6 +10,10 @@ export const state = () => ({
   context: null,
   count: 0
 })
+
+function compareNotificationIDs(x, y) {
+  return x.id === y.id
+}
 
 export const mutations = {
   add(state, notifications) {
@@ -23,7 +28,10 @@ export const mutations = {
             .trim()
         }
       }
-      state.list = union(state.list, notifications)
+      state.list = uniqWith(
+        union(state.list, notifications),
+        compareNotificationIDs
+      )
     }
   },
 
