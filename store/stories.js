@@ -48,16 +48,11 @@ export const getters = {
 
 export const actions = {
   async fetch({ commit }, params) {
-    const res = await this.$axios.get(process.env.API + '/stories', {
-      params: params
-    })
-
-    if (res.status === 200) {
-      if (params.id) {
-        commit('add', res.data.story)
-      } else {
-        commit('setList', res.data.stories)
-      }
+    const { story, stories } = await this.$api.stories.fetch(params)
+    if (params.id) {
+      commit('add', story)
+    } else {
+      commit('setList', stories)
     }
   },
 
@@ -65,37 +60,17 @@ export const actions = {
     commit('clear')
   },
 
-  async add({ commit }, params) {
-    const res = await this.$axios.post(process.env.API + '/stories', params, {
-      headers: {
-        'X-HTTP-Method-Override': 'PUT'
-      }
-    })
-
-    let id = null
-
-    if (res.status === 200 && res.data.ret === 0) {
-      id = res.data.id
-    }
-
-    return id
+  add({ commit }, params) {
+    return this.$api.stories.add(params)
   },
 
   async love({ commit, dispatch }, params) {
-    await this.$axios.post(process.env.API + '/stories', {
-      id: params.id,
-      action: 'Like'
-    })
-
+    await this.$api.stories.love(params.id)
     await dispatch('fetch', params)
   },
 
   async unlove({ commit, dispatch }, params) {
-    await this.$axios.post(process.env.API + '/stories', {
-      id: params.id,
-      action: 'Unlike'
-    })
-
+    await this.$api.stories.unlove(params.id)
     await dispatch('fetch', params)
   }
 }

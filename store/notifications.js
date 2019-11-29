@@ -110,22 +110,14 @@ export const actions = {
     })
   },
 
-  async seen({ commit, dispatch }, params) {
-    commit('seen', params.id)
-
-    await this.$axios.post(process.env.API + '/notification', {
-      id: params.id,
-      action: 'Seen'
-    })
-
+  async seen({ commit, dispatch }, { id }) {
+    commit('seen', id)
+    await this.$api.notification.seen(id)
     await dispatch('count')
   },
 
-  async allSeen({ commit, dispatch }, params) {
-    await this.$axios.post(process.env.API + '/notification', {
-      action: 'AllSeen'
-    })
-
+  async allSeen({ dispatch }) {
+    await this.$api.notification.allSeen()
     await dispatch('count')
   }
 }

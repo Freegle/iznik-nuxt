@@ -36,25 +36,11 @@ export const getters = {
 
 export const actions = {
   async fetch({ commit }, params) {
-    const res = await this.$axios.get(process.env.API + '/dashboard', {
-      params: params
-    })
-
-    if (res.status === 200) {
-      commit('set', res.data.dashboard)
-    }
+    commit('set', await this.$api.dashboard.fetch(params))
   },
 
   async fetchHeatmap({ commit }, params) {
-    const res = await this.$axios.get(process.env.API + '/dashboard', {
-      params: {
-        heatmap: true
-      }
-    })
-
-    if (res.status === 200) {
-      commit('setHeatmap', res.data.heatmap)
-    }
+    commit('setHeatmap', await this.$api.dashboard.fetchHeatmap())
   },
 
   clear({ commit }) {

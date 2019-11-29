@@ -44,58 +44,25 @@ export const getters = {
 
 export const actions = {
   async fetch({ commit }, params) {
-    const res = await this.$axios.get(process.env.API + '/noticeboard', {
-      params: params
-    })
-
-    if (res.status === 200) {
-      commit(
-        'setList',
-        res.data.noticeboard ? [res.data.noticeboard] : res.data.noticeboards
-      )
-    }
+    const { noticeboard, noticeboards } = await this.$api.noticeboard.fetch(
+      params
+    )
+    commit('setList', noticeboard ? [noticeboard] : noticeboards)
   },
 
-  async delete({ commit, getters, dispatch }, params) {
-    await this.$axios.post(
-      process.env.API + '/noticeboard',
-      {
-        id: params.id
-      },
-      {
-        headers: {
-          'X-HTTP-Method-Override': 'DELETE'
-        }
-      }
-    )
-
+  async delete({ commit, getters, dispatch }, { id }) {
+    await this.$api.noticeboard.del(id)
     await dispatch('fetch')
   },
 
   async add({ commit, getters, dispatch }, params) {
-    let id = null
-    const ret = await this.$axios.post(process.env.API + '/noticeboard', params)
-
-    if (ret.status === 200 && ret.data.id) {
-      await dispatch('fetch', {
-        id: ret.data.id
-      })
-
-      id = ret.data.id
-    }
-
+    const id = await this.$api.noticeboard.add(params)
+    await dispatch('fetch', { id })
     return id
   },
 
   async edit({ commit, getters, dispatch }, params) {
-    await this.$axios.post(process.env.API + '/noticeboard', params, {
-      headers: {
-        'X-HTTP-Method-Override': 'PATCH'
-      }
-    })
-
-    await dispatch('fetch', {
-      id: params.id
-    })
+    await this.$api.noticeboard.save(params)
+    await dispatch('fetch', { id: params.id })
   }
 }
