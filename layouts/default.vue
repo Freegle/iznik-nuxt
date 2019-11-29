@@ -148,6 +148,12 @@
               </b-badge>
             </div>
           </template>
+          <b-dropdown-item class="text-right">
+            <b-btn variant="white" size="sm" @click="markAllRead">
+              Mark all read
+            </b-btn>
+          </b-dropdown-item>
+          <b-dropdown-divider />
           <b-dropdown-item v-for="notification in notifications" :key="'notification-' + notification.id" class="p-0 notpad">
             <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
           </b-dropdown-item>
