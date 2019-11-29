@@ -38,9 +38,9 @@
       </b-card-body>
       <div slot="footer">
         <!-- TODO Minor - Refactor out the reply logic. Also bear in mind the logic in NewsReply -->
-        <a v-if="!showAllReplies && newsfeed.replies.length > 10" href="#" variant="white" class="mb-3" @click="(e) => { e.preventDefault(); showAllReplies = true }">
-          Show earlier {{ newsfeed.replies.length | pluralize(['reply', 'replies'], { includeNumber: false }) }} ({{ newsfeed.replies.length - 10 }})
-        </a>
+        <b-button v-if="showEarlierRepliesOption" variant="link" class="pl-0" @click.prevent="showAllReplies = true">
+          Show earlier {{ newsfeed.replies.length | pluralize(['reply', 'replies']) }} ({{ numberOfRepliesNotShown }})
+        </b-button>
         <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id" class="list-unstyled mb-2">
           <li>
             <news-reply :key="'newsfeedreply-' + newsfeed.id + '-reply-' + entry.id" :reply="entry" :users="users" :threadhead="newsfeed" :scroll-to="scrollTo" />
@@ -142,7 +142,10 @@ const NewsNoticeboard = () => import('~/components/NewsNoticeboard')
 const NoticeMessage = () => import('~/components/NoticeMessage')
 const NewsPreview = () => import('~/components/NewsPreview')
 
+const INITIAL_NUMBER_OF_REPLIES_TO_SHOW = 10
+
 export default {
+  name: 'NewsThread',
   components: {
     NewsReportModal,
     NewsReply,
@@ -215,11 +218,17 @@ export default {
       let ret = []
 
       if (this.newsfeed.replies && this.newsfeed.replies.length) {
-        if (this.showAllReplies || this.newsfeed.replies.length <= 10) {
+        if (
+          this.showAllReplies ||
+          this.newsfeed.replies.length <= INITIAL_NUMBER_OF_REPLIES_TO_SHOW
+        ) {
+          // Return all the replies
           ret = this.newsfeed.replies
         } else {
-          // We have to prune what we show.
-          ret = this.newsfeed.replies.slice(-10)
+          // Only return the last few replies
+          ret = this.newsfeed.replies.slice(
+            -Math.abs(INITIAL_NUMBER_OF_REPLIES_TO_SHOW)
+          )
         }
       }
 
@@ -230,6 +239,28 @@ export default {
     },
     newsComponentName() {
       return this.isNewsComponent ? this.newsComponents[this.newsfeed.type] : ''
+    },
+    showEarlierRepliesOption() {
+      if (!this.newsfeed || !this.newsfeed.replies) {
+        return false
+      }
+
+      // If we're not already showing all replies and there are still some to show after the default display
+      return (
+        !this.showAllReplies &&
+        this.newsfeed.replies.length > INITIAL_NUMBER_OF_REPLIES_TO_SHOW
+      )
+    },
+    numberOfRepliesNotShown() {
+      if (
+        !this.newsfeed ||
+        !this.newsfeed.replies ||
+        this.newsfeed.replies.length < INITIAL_NUMBER_OF_REPLIES_TO_SHOW
+      ) {
+        return 0
+      }
+
+      return this.newsfeed.replies.length - INITIAL_NUMBER_OF_REPLIES_TO_SHOW
     }
   },
   methods: {

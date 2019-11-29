@@ -28,11 +28,7 @@ export const getters = {
 
 export const actions = {
   async fetchRecentMessages({ commit }) {
-    const res = await this.$axios.get(process.env.API + '/activity')
-
-    if (res.status === 200) {
-      commit('setRecentMessages', res.data.recentmessages)
-    }
+    commit('setRecentMessages', await this.$api.activity.fetch())
   },
 
   clearRecentMessages({ commit }) {

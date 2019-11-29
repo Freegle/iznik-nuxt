@@ -108,6 +108,8 @@
 import VolunteerOpportunityModal from './VolunteerOpportunityModal'
 import twem from '~/assets/js/twem'
 
+// TODO EH Button to reactivate ones which have expired.
+
 export default {
   components: {
     VolunteerOpportunityModal

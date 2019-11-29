@@ -78,9 +78,9 @@
         </table>
       </b-col>
     </b-row>
-    <a v-if="!showAllReplies && reply.replies.length > 5" href="#" variant="white" class="mb-3" @click="(e) => { e.preventDefault(); showAllReplies = true }">
-      Show earlier {{ reply.replies.length | pluralize(['reply', 'replies'], { includeNumber: false }) }} ({{ reply.replies.length - 5 }})
-    </a>
+    <b-button v-if="showEarlierRepliesOption" variant="link" class="pl-0" @click.prevent="showAllReplies = true">
+      Show earlier {{ reply.replies.length | pluralize(['reply', 'replies']) }} ({{ numberOfRepliesNotShown }})
+    </b-button>
     <div v-if="reply.replies && reply.replies.length > 0" class="pl-3">
       <ul v-for="entry in reply.replies" :key="'newsfeed-' + entry.id" class="p-0 pt-1 pl-1 list-unstyled mb-1 border-left">
         <li>
@@ -176,37 +176,6 @@
   </div>
 </template>
 
-<style scoped lang="scss">
-@import 'color-vars';
-
-$bootstrap-xs: 576px;
-$bootstrap-sm: 768px;
-$bootstrap-md: 992px;
-$bootstrap-lg: 1200px;
-
-.replytext {
-  font-size: 14px;
-  line-height: 1.2;
-}
-
-.showmodsm {
-  border-radius: 50%;
-  position: absolute;
-  background-color: $color-white;
-  width: 15px;
-  padding-left: 3px;
-  padding-top: 3px;
-
-  top: 20px;
-  left: 18px;
-
-  @media (min-width: $bootstrap-sm) {
-    top: 30px;
-    left: 26px;
-  }
-}
-</style>
-
 <script>
 // TODO EH User tagging
 import twem from '~/assets/js/twem'
@@ -215,6 +184,8 @@ const NewsHighlight = () => import('~/components/NewsHighlight')
 const ProfileModal = () => import('~/components/ProfileModal')
 const ChatButton = () => import('~/components/ChatButton')
 const NewsPreview = () => import('~/components/NewsPreview')
+
+const INITIAL_NUMBER_OF_REPLIES_TO_SHOW = 5
 
 export default {
   name: 'NewsReply',
@@ -282,7 +253,11 @@ export default {
       let ret = []
 
       if (this.reply.replies && this.reply.replies.length) {
-        if (this.showAllReplies || this.reply.replies.length <= 5) {
+        if (
+          this.showAllReplies ||
+          this.reply.replies.length <= INITIAL_NUMBER_OF_REPLIES_TO_SHOW
+        ) {
+          // Return all the replies
           ret = this.reply.replies
         } else {
           // We have to prune what we show, but we should show any replyto.
@@ -290,7 +265,10 @@ export default {
           let pruned = 0
           let pruneAt = ret - 1
 
-          while (pruned < 5 && pruneAt < ret.length) {
+          while (
+            pruned < INITIAL_NUMBER_OF_REPLIES_TO_SHOW &&
+            pruneAt < ret.length
+          ) {
             if (ret[pruneAt].id !== parseInt(this.replyTo)) {
               pruned++
               ret.splice(pruneAt, 1)
@@ -302,6 +280,28 @@ export default {
       }
 
       return ret
+    },
+    showEarlierRepliesOption() {
+      if (!this.reply || !this.reply.replies) {
+        return false
+      }
+
+      // If we're not already showing all replies and there are still some to show after the default display
+      return (
+        !this.showAllReplies &&
+        this.reply.replies.length > INITIAL_NUMBER_OF_REPLIES_TO_SHOW
+      )
+    },
+    numberOfRepliesNotShown() {
+      if (
+        !this.reply ||
+        !this.reply.replies ||
+        this.reply.replies.length < INITIAL_NUMBER_OF_REPLIES_TO_SHOW
+      ) {
+        return 0
+      }
+
+      return this.reply.replies.length - INITIAL_NUMBER_OF_REPLIES_TO_SHOW
     }
   },
   mounted() {
@@ -394,3 +394,34 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
+$bootstrap-xs: 576px;
+$bootstrap-sm: 768px;
+$bootstrap-md: 992px;
+$bootstrap-lg: 1200px;
+
+.replytext {
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.showmodsm {
+  border-radius: 50%;
+  position: absolute;
+  background-color: $color-white;
+  width: 15px;
+  padding-left: 3px;
+  padding-top: 3px;
+
+  top: 20px;
+  left: 18px;
+
+  @media (min-width: $bootstrap-sm) {
+    top: 30px;
+    left: 26px;
+  }
+}
+</style>
