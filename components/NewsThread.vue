@@ -38,10 +38,9 @@
       </b-card-body>
       <div slot="footer">
         <!-- TODO Minor - Refactor out the reply logic. Also bear in mind the logic in NewsReply -->
-        <!-- TODO Change the anchor to a button -->
-        <a v-if="showEarlierRepliesOption" href="#" variant="white" class="mb-3" @click.prevent="showAllReplies = true">
+        <b-button v-if="showEarlierRepliesOption" variant="link" class="pl-0" @click.prevent="showAllReplies = true">
           Show earlier {{ newsfeed.replies.length | pluralize(['reply', 'replies']) }} ({{ numberOfRepliesNotShown }})
-        </a>
+        </b-button>
         <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id" class="list-unstyled mb-2">
           <li>
             <news-reply :key="'newsfeedreply-' + newsfeed.id + '-reply-' + entry.id" :reply="entry" :users="users" :threadhead="newsfeed" :scroll-to="scrollTo" />

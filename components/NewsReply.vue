@@ -78,10 +78,9 @@
         </table>
       </b-col>
     </b-row>
-    <!-- TODO Change the anchor to a button -->
-    <a v-if="showEarlierRepliesOption" href="#" variant="white" class="mb-3" @click.prevent="showAllReplies = true">
+    <b-button v-if="showEarlierRepliesOption" variant="link" class="pl-0" @click.prevent="showAllReplies = true">
       Show earlier {{ reply.replies.length | pluralize(['reply', 'replies']) }} ({{ numberOfRepliesNotShown }})
-    </a>
+    </b-button>
     <div v-if="reply.replies && reply.replies.length > 0" class="pl-3">
       <ul v-for="entry in reply.replies" :key="'newsfeed-' + entry.id" class="p-0 pt-1 pl-1 list-unstyled mb-1 border-left">
         <li>
