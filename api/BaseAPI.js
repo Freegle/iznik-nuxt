@@ -17,7 +17,10 @@ export default class BaseAPI {
       url: path,
       baseURL: process.env.API
     })
-    if (status !== 200 || data.ret !== 0) {
+    if (
+      status !== 200 ||
+      (data.ret !== 0 && data.ret !== 1 && data.status === 'Not logged in')
+    ) {
       const message = [
         'API Error',
         method,
