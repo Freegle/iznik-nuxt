@@ -71,7 +71,7 @@
           </li>
           <li>
             4. You can browse other freeglers' posts in <nuxt-link to="/communities">
-              My Groups
+              Communities
             </nuxt-link>.
           </li>
         </ul>
