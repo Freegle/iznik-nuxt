@@ -360,7 +360,8 @@ export default {
           })
         }
 
-        const oldgroupid = this.event.groups ? this.event.groups[0].id : null
+        const oldgroupid =
+          this.event.groups.length > 0 ? this.event.groups[0].id : null
 
         if (this.groupid !== oldgroupid) {
           // Save the new group, then remove the old group, so it won't get stranded.

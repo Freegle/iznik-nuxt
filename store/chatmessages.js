@@ -79,43 +79,36 @@ export const actions = {
   },
 
   async fetch({ commit, state }, params) {
-    const chatid = params.chatid
-    const messages = await this.$axios.get(
-      process.env.API + '/chat/rooms/' + chatid + '/messages',
+    const { chatid, noContext } = params
+    const { chatmessages, chatusers, context } = await this.$api.chat.fetch(
+      chatid,
       {
-        params: {
-          limit: 30,
-          context:
-            !params.noContext && state.contexts[chatid]
-              ? state.contexts[chatid]
-              : null
-        }
+        limit: 30,
+        context: noContext ? null : state.contexts[chatid]
       }
     )
 
-    if (messages.status === 200 && messages.data.ret === 0) {
-      commit('mergeMessages', {
-        id: chatid,
-        messages: messages.data.chatmessages
-      })
-      commit('mergeUsers', {
-        id: chatid,
-        users: messages.data.chatusers
-      })
+    commit('mergeMessages', {
+      id: chatid,
+      messages: chatmessages
+    })
+    commit('mergeUsers', {
+      id: chatid,
+      users: chatusers
+    })
 
-      if (!params.noContext) {
-        commit('setContext', {
-          id: chatid,
-          ctx: messages.data.context ? messages.data.context : null
-        })
-      }
+    if (!noContext) {
+      commit('setContext', {
+        id: chatid,
+        ctx: context || null
+      })
     }
   },
 
   async send({ commit, dispatch }, params) {
     params.modtools = process.env.MODTOOLS
 
-    await this.$axios.post(process.env.API + '/chatmessages', params)
+    await this.$api.chat.send(params)
 
     // Get the latest messages back.  Passing no context will fetch the latest.
     await dispatch('fetch', {
@@ -124,14 +117,11 @@ export const actions = {
     })
   },
 
-  async nudge({ commit, dispatch }, params) {
-    await this.$axios.post(process.env.API + '/chatrooms', {
-      id: params.roomid,
-      action: 'Nudge'
-    })
+  async nudge({ commit, dispatch }, { roomid }) {
+    await this.$api.chat.nudge(roomid)
 
     await dispatch('fetch', {
-      chatid: params.roomid,
+      chatid: roomid,
       noContext: true
     })
   }

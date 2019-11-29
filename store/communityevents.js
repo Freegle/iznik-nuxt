@@ -133,21 +133,15 @@ export const actions = {
   },
 
   async fetch({ commit, dispatch }, params) {
-    const res = await this.$axios.get(process.env.API + '/communityevent', {
-      params: params
-    })
+    const data = await this.$api.communityevent.fetch(params)
+    if (params && params.id) {
+      commit('addAll', await dispatch('addFields', [data.communityevent]))
+    } else {
+      commit('addAll', await dispatch('addFields', data.communityevents))
 
-    // TODO this can return "ret":1,"status":"Not logged in", then res.data is not available and there is an error
-    if (res.status === 200) {
-      if (params && params.id) {
-        commit('addAll', await dispatch('addFields', [res.data.communityevent]))
-      } else {
-        commit('addAll', await dispatch('addFields', res.data.communityevents))
-
-        commit('setContext', {
-          ctx: res.data.context
-        })
-      }
+      commit('setContext', {
+        ctx: data.context
+      })
     }
   },
   clear({ commit }) {
@@ -158,178 +152,45 @@ export const actions = {
     commit('setList', [])
   },
   async save({ commit, dispatch }, event) {
-    const ret = await this.$axios.post(
-      process.env.API + '/communityevent',
-      event,
-      {
-        headers: {
-          'X-HTTP-Method-Override': 'PATCH'
-        }
-      }
-    )
-
-    if (ret.status === 200 && ret.data.ret === 0) {
-      // Fetch back to update store and thereby components
-      await dispatch('fetch', {
-        id: event.id
-      })
-    }
-
-    return ret
+    await this.$api.communityevent.save(event)
+    await dispatch('fetch', { id: event.id })
   },
   async delete({ commit, dispatch }, params) {
-    const ret = await this.$axios.post(
-      process.env.API + '/communityevent',
-      {
-        id: params.id
-      },
-      {
-        headers: {
-          'X-HTTP-Method-Override': 'DELETE'
-        }
-      }
-    )
-
-    if (ret.status === 200 && ret.data.ret === 0) {
-      commit('delete', {
-        id: params.id
-      })
-    }
-
-    return ret
+    await this.$api.del(params.id)
+    commit('delete', { id: params.id })
   },
   async add({ commit, dispatch }, event) {
-    const ret = await this.$axios.post(
-      process.env.API + '/communityevent',
-      event,
-      {
-        headers: {
-          'X-HTTP-Method-Override': 'POST'
-        }
-      }
-    )
-
-    if (ret.status === 200 && ret.data.ret === 0) {
-      // Fetch back to update store and thereby components
-      await dispatch('fetch', {
-        id: ret.data.id
-      })
-    }
-
-    return ret.data.id
+    const { id } = await this.$api.communityevent.create(event)
+    await dispatch('fetch', { id })
   },
-  async addGroup({ commit, dispatch }, params) {
-    const ret = await this.$axios.post(
-      process.env.API + '/communityevent',
-      {
-        id: params.id,
-        action: 'AddGroup',
-        groupid: params.groupid
-      },
-      {
-        headers: {
-          'X-HTTP-Method-Override': 'PATCH'
-        }
-      }
-    )
-
-    if (ret.status === 200 && ret.data.ret === 0) {
-      // Fetch back to update store and thereby components
-      await dispatch('fetch', {
-        id: params.id
-      })
-    }
-
-    return ret
+  async addGroup({ commit, dispatch }, { id, groupid }) {
+    await this.$api.communityevent.addGroup(id, groupid)
+    // Fetch back to update store and thereby components
+    await dispatch('fetch', { id })
   },
 
-  async removeGroup({ commit, dispatch }, params) {
-    const ret = await this.$axios.post(
-      process.env.API + '/communityevent',
-      {
-        id: params.id,
-        action: 'RemoveGroup',
-        groupid: params.groupid
-      },
-      {
-        headers: {
-          'X-HTTP-Method-Override': 'PATCH'
-        }
-      }
-    )
-
-    if (ret.status === 200 && ret.data.ret === 0) {
-      // Fetch back to update store and thereby components
-      await dispatch('fetch', {
-        id: params.id
-      })
-    }
-
-    return ret
+  async removeGroup({ commit, dispatch }, { id, groupid }) {
+    await this.$api.communityevent.removeGroup(id, groupid)
+    // Fetch back to update store and thereby components
+    await dispatch('fetch', { id })
   },
 
-  async setPhoto({ commit, dispatch }, params) {
-    const ret = await this.$axios.post(
-      process.env.API + '/communityevent',
-      {
-        id: params.id,
-        action: 'SetPhoto',
-        photoid: params.photoid
-      },
-      {
-        headers: {
-          'X-HTTP-Method-Override': 'PATCH'
-        }
-      }
-    )
-
-    if (ret.status === 200 && ret.data.ret === 0) {
-      // Fetch back to update store and thereby components
-      await dispatch('fetch', {
-        id: params.id
-      })
-    }
-
-    return ret
+  async setPhoto({ commit, dispatch }, { id, photoid }) {
+    await this.$api.communityevent.setPhoto(id, photoid)
+    // Fetch back to update store and thereby components
+    await dispatch('fetch', { id })
   },
 
   async setDates({ commit, dispatch }, params) {
     const promises = []
 
     for (const date of params.olddates) {
-      promises.push(
-        this.$axios.post(
-          process.env.API + '/communityevent',
-          {
-            id: params.id,
-            action: 'RemoveDate',
-            dateid: date.id
-          },
-          {
-            headers: {
-              'X-HTTP-Method-Override': 'PATCH'
-            }
-          }
-        )
-      )
+      promises.push(this.$api.communityevent.removeDate(params.id, date.id))
     }
 
     for (const date of params.newdates) {
       promises.push(
-        this.$axios.post(
-          process.env.API + '/communityevent',
-          {
-            id: params.id,
-            action: 'AddDate',
-            start: date.start,
-            end: date.end
-          },
-          {
-            headers: {
-              'X-HTTP-Method-Override': 'PATCH'
-            }
-          }
-        )
+        this.$api.communityevent.addDate(params.id, date.start, date.end)
       )
     }
 

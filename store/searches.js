@@ -44,28 +44,11 @@ export const getters = {
 
 export const actions = {
   async fetchList({ commit }, params) {
-    const res = await this.$axios.get(process.env.API + '/usersearch', {
-      params: params
-    })
-
-    if (res.status === 200) {
-      commit('setList', res.data.usersearches)
-    }
+    commit('setList', await this.$api.usersearch.list(params))
   },
 
-  async delete({ commit, getters, dispatch }, params) {
-    await this.$axios.post(
-      process.env.API + '/usersearch',
-      {
-        id: params.id
-      },
-      {
-        headers: {
-          'X-HTTP-Method-Override': 'DELETE'
-        }
-      }
-    )
-
+  async delete({ commit, getters, dispatch }, { id }) {
+    await this.$api.usersearch.del(id)
     await dispatch('fetchList')
   }
 }
