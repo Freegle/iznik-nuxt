@@ -52,26 +52,12 @@ export const getters = {
 
 export const actions = {
   async fetch({ commit }, params) {
-    const rsp = await this.$axios.get(process.env.API + '/user', {
-      params: params
-    })
-
-    if (rsp.status === 200 && rsp.data.ret === 0) {
-      commit('add', rsp.data.user)
-    }
+    commit('add', await this.$api.user.fetch(params))
   },
 
-  async rate({ commit, dispatch }, params) {
-    await this.$axios.post(process.env.API + '/user', {
-      action: 'Rate',
-      ratee: params.id,
-      rating: params.rating
-    })
-
+  async rate({ commit, dispatch }, { id, rating }) {
+    await this.$api.user.rate(id, rating)
     // Fetch the user back into the store to update any ratings elsewhere
-    await dispatch('fetch', {
-      id: params.id,
-      info: true
-    })
+    await dispatch('fetch', { id, info: true })
   }
 }

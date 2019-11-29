@@ -27,13 +27,7 @@ export const getters = {
 
 export const actions = {
   async fetch({ commit }, params) {
-    const res = await this.$axios.get('/adview.php', {
-      params: params
-    })
-
-    if (res.status === 200) {
-      commit('setList', res.data.data)
-    }
+    commit('setList', await this.$api.job.fetch(params))
   },
 
   clear({ commit }) {

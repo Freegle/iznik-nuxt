@@ -129,160 +129,83 @@ export const actions = {
       'Noticeboard'
     ]
 
-    const res = await this.$axios.get(process.env.API + '/newsfeed', {
-      params: params
+    const data = await this.$api.news.fetchFeed(params)
+    const { users, context } = data
+
+    commit('mergeNewsfeed', data)
+
+    // We get some users back but might miss some in replies.
+    commit('mergeUsers', {
+      users: users
     })
 
-    if (res.status === 200) {
-      commit('mergeNewsfeed', res.data)
-
-      // We get some users back but might miss some in replies.
-      const users = res.data.users
-      commit('mergeUsers', {
-        users: users
-      })
-
-      if (!params || !params.noContext) {
-        commit('setContext', {
-          ctx: res.data.context ? res.data.context : null
-        })
-      }
+    if (!params || !params.noContext) {
+      commit('setContext', { ctx: context })
     }
   },
 
   async fetch({ commit }, params) {
-    let newsfeedobj = null
+    const newsfeed = await this.$api.news.fetch(params)
 
-    const newsfeed = await this.$axios.get(process.env.API + '/newsfeed', {
-      params: params
-    })
+    if (newsfeed) {
+      // Valid id
+      commit('addNewsfeed', newsfeed)
 
-    if (newsfeed.status === 200 && newsfeed.data.ret === 0) {
-      newsfeedobj = newsfeed.data.newsfeed
+      const { user } = newsfeed
 
-      if (newsfeedobj) {
-        // Valid id
-        commit('addNewsfeed', newsfeedobj)
+      if (user) {
+        const users = {}
+        users[user.id] = user
 
-        const user = newsfeed.data.newsfeed.user
-
-        if (user) {
-          const users = {}
-          users[user.id] = user
-
-          // Also add in any users from replies.
-          for (const reply of newsfeed.data.newsfeed.replies) {
-            users[reply.user.id] = reply.user
-          }
-
-          commit('mergeUsers', {
-            users: users
-          })
+        // Also add in any users from replies.
+        for (const reply of newsfeed.replies) {
+          users[reply.user.id] = reply.user
         }
+
+        commit('mergeUsers', { users })
       }
     }
-
-    return newsfeedobj
+    return newsfeed
   },
 
   async send({ commit, dispatch }, params) {
-    let newsfeedobj = null
-
-    const newsfeed = await this.$axios.post(
-      process.env.API + '/newsfeed',
-      params
-    )
-
-    if (newsfeed.status === 200 && newsfeed.data.ret === 0) {
-      // The thread head may have been passed (for a reply) or if not, then it's a new thread and the id is returned.
-      newsfeedobj = await dispatch('fetch', {
-        id: params.threadhead ? params.threadhead : newsfeed.data.id
-      })
-    }
-
-    return newsfeedobj
+    const id = await this.$api.news.send(params)
+    return dispatch('fetch', { id: params.threadhead || id })
   },
 
-  async love({ commit, dispatch }, params) {
-    await this.$axios.post(process.env.API + '/newsfeed', {
-      id: params.id,
-      action: 'Love'
-    })
-
+  async love({ commit, dispatch }, { id, threadhead }) {
+    await this.$api.news.love(id)
     // We fetch the thread head to force a rerender
-    await dispatch('fetch', {
-      id: params.threadhead
-    })
+    await dispatch('fetch', { id: threadhead })
   },
 
-  async unlove({ commit, dispatch }, params) {
-    await this.$axios.post(process.env.API + '/newsfeed', {
-      id: params.id,
-      action: 'Unlove'
-    })
-
+  async unlove({ commit, dispatch }, { id, threadhead }) {
+    await this.$api.news.unlove(id)
     // We fetch the thread head to force a rerender
-    await dispatch('fetch', {
-      id: params.threadhead
-    })
+    await dispatch('fetch', { id: threadhead })
   },
 
-  async edit({ commit, dispatch }, params) {
-    await this.$axios.post(
-      process.env.API + '/newsfeed',
-      {
-        id: params.id,
-        message: params.message,
-        action: 'Edit'
-      },
-      {
-        headers: {
-          'X-HTTP-Method-Override': 'PATCH'
-        }
-      }
-    )
-
+  async edit({ commit, dispatch }, { id, message, threadhead }) {
+    await this.$api.news.edit(id, message)
     // We fetch the thread head to force a rerender
-    await dispatch('fetch', {
-      id: params.threadhead
-    })
+    await dispatch('fetch', { id: threadhead })
   },
 
-  async delete({ commit, dispatch }, params) {
-    await this.$axios.post(
-      process.env.API + '/newsfeed',
-      {
-        id: params.id
-      },
-      {
-        headers: {
-          'X-HTTP-Method-Override': 'DELETE'
-        }
-      }
-    )
-
-    if (params.id !== params.threadhead) {
+  async delete({ commit, dispatch }, { id, threadhead }) {
+    await this.$api.news.del(id)
+    if (id !== threadhead) {
       // We fetch the thread head to force a rerender
-      await dispatch('fetch', {
-        id: params.threadhead
-      })
+      await dispatch('fetch', { id: threadhead })
     } else {
-      commit('removeNewsfeed', params.id)
+      commit('removeNewsfeed', id)
     }
   },
 
-  async unfollow({ commit, dispatch }, params) {
-    await this.$axios.post(process.env.API + '/newsfeed', {
-      id: params.id,
-      action: 'Unfollow'
-    })
+  async unfollow({ commit, dispatch }, { id }) {
+    await this.$api.news.unfollow(id)
   },
 
-  async report({ commit, dispatch }, params) {
-    await this.$axios.post(process.env.API + '/newsfeed', {
-      id: params.id,
-      reason: params.reason,
-      action: 'Report'
-    })
+  async report({ commit, dispatch }, { id, reason }) {
+    await this.$api.news.report(id, reason)
   }
 }

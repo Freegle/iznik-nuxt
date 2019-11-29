@@ -49,14 +49,7 @@ export const actions = {
       summary: true,
       search: params && params.search ? params.search : null
     }
-
-    const res = await this.$axios.get(process.env.API + '/chat/rooms', {
-      params: params
-    })
-
-    if (res.status === 200) {
-      commit('setList', res.data.chatrooms)
-    }
+    commit('setList', await this.$api.chat.listChats(params))
   },
 
   async openChatToMods({ dispatch, commit }, params) {
@@ -78,52 +71,20 @@ export const actions = {
   },
 
   async openChat({ dispatch, commit }, params) {
-    let id = null
-
-    const res = await this.$axios.post(
-      process.env.API + '/chat/rooms',
-      params,
-      {
-        headers: {
-          'X-HTTP-Method-Override': 'PUT'
-        }
-      }
-    )
-
-    if (res.status === 200) {
-      id = res.data.id
-
-      await dispatch('fetch', {
-        id: id
-      })
-    }
-
+    const { id } = await this.$api.chat.openChat(params)
+    await dispatch('fetch', { id })
     return id
   },
 
-  async fetch({ commit }, params) {
-    const chatid = params.id
-
-    if (chatid) {
-      const chat = await this.$axios.get(process.env.API + '/chatrooms', {
-        params: {
-          id: chatid
-        }
-      })
-
-      if (chat.status === 200 && chat.data.ret === 0) {
-        const chatobj = chat.data.chatroom
-
-        if (chatobj) {
-          // Valid chatid
-          commit('addRoom', chatobj)
-        } else {
-          // Invalid
-          console.error('Invalid chat id', chatid)
-        }
-      }
+  async fetch({ commit }, { id: chatid }) {
+    if (!chatid) return
+    const { chatroom } = await this.$api.chat.fetchRoom(chatid)
+    if (chatroom) {
+      // Valid chatid
+      commit('addRoom', chatroom)
     } else {
-      console.error("Don't fetch null id")
+      // Invalid
+      console.error('Invalid chat id', chatid)
     }
   },
 
@@ -131,12 +92,7 @@ export const actions = {
     const chat = getters.get(params.id)
 
     if (chat.unseen > 0) {
-      // Record that we have seen the last message, and there are no unseen ones left.
-      await this.$axios.post(process.env.API + '/chatrooms', {
-        id: chat.id,
-        lastmsgseen: chat.lastmsg
-      })
-
+      await this.$api.chat.markSeen(chat.id, chat.lastmsg)
       await dispatch('fetch', {
         id: params.id
       })

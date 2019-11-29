@@ -48,13 +48,8 @@ export const getters = {
 
 export const actions = {
   async fetch({ commit }, params) {
-    const res = await this.$axios.get(process.env.API + '/authority', {
-      params: params
-    })
-
-    if (res.status === 200) {
-      commit('setList', params.id ? [res.data.authority] : res.data.authorities)
-    }
+    const { authority, authorities } = await this.$api.authority.fetch()
+    commit('setList', params.id ? [authority] : authorities)
   },
 
   clear({ commit }) {
