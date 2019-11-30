@@ -68,7 +68,6 @@
               </b-dropdown-item>
               <b-dropdown-divider />
               <b-dropdown-item v-for="notification in notifications" :key="'notification-' + notification.id" class="p-0 notpad">
-                <!--                TODO We're getting duplicate key errors here - click on notifications, close, click again.  Why?-->
                 <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
               </b-dropdown-item>
               <infinite-loading :distance="distance" @infinite="loadMore">
