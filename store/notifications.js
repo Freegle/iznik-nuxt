@@ -4,8 +4,6 @@ import uniqWith from 'lodash/uniqWith'
 import twem from '~/assets/js/twem'
 
 export const state = () => ({
-  // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
-  // storage.
   list: [],
   context: null,
   count: 0
@@ -28,6 +26,11 @@ export const mutations = {
             .trim()
         }
       }
+
+      // Ensure we don't have duplicates.  This is unusual code - at the moment we normally clear the store before
+      // fetching, but the approach of just fetching and adding means the notifications render rapidly if they are
+      // in store and then catch up once the API call has returned.  In general we can't do this without having a
+      // way to remove deleted items from the stores, but notifications don't get deleted so it's OK in this case.
       state.list = uniqWith(
         union(state.list, notifications),
         compareNotificationIDs
