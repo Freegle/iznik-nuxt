@@ -220,7 +220,7 @@
               <v-icon name="hands-helping" scale="2" /><br>
               Volunteer
             </b-nav-item>
-            <b-nav-item class="text-center p-0" to="/spreadh" @mousedown="maybeReload('/spread')">
+            <b-nav-item class="text-center p-0" to="/spread" @mousedown="maybeReload('/spread')">
               <v-icon name="bullhorn" scale="2" /><br>
               Spread
             </b-nav-item>
