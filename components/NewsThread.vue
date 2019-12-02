@@ -342,8 +342,10 @@ export default {
 ::v-deep .img-thumbnail {
   cursor: pointer;
 
+  max-width: 100px;
+
   @include media-breakpoint-up(lg) {
-    max-width: 100px;
+    max-width: 100%;
   }
 }
 
