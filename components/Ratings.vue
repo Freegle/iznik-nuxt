@@ -1,6 +1,6 @@
 <template>
   <client-only>
-    <span class="b-inline">
+    <span class="d-inline">
       <span v-if="user">
         <b-btn
           v-b-tooltip.hover.top
