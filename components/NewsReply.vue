@@ -8,13 +8,13 @@
               <td style="vertical-align: top" class="clickme" title="Click to see their profile" @click="showInfo">
                 <b-img-lazy
                   rounded="circle"
-                  class="profilemd p-0 ml-1 mb-1 mr-2 inline float-left mt-2"
+                  :class="(reply.replyto !== threadhead.id) ? 'profilesm' : 'profilemd' + ' p-0 ml-1 mb-1 mr-2 inline float-left mt-2'"
                   alt="Profile picture"
                   title="Profile"
                   :src="users[reply.userid].profile.turl"
                   @error.native="brokenImage"
                 />
-                <v-icon v-if="users[reply.userid].settings.showmod" name="leaf" class="showmodsm text-success" />
+                <v-icon v-if="users[reply.userid].settings.showmod && reply.replyto === threadhead.id" name="leaf" class="showmodsm text-success" />
               </td>
               <td class="align-top">
                 <span class="text-success font-weight-bold clickme" title="Click to see their profile" @click="showInfo">{{ users[reply.userid].displayname }}</span>

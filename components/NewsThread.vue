@@ -334,11 +334,6 @@ export default {
 @import 'node_modules/bootstrap/scss/variables';
 @import 'node_modules/bootstrap/scss/mixins/_breakpoints';
 
-.profilesm {
-  width: 25px !important;
-  height: 25px !important;
-}
-
 ::v-deep .img-thumbnail {
   cursor: pointer;
 
