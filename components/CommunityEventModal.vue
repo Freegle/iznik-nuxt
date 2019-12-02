@@ -105,13 +105,17 @@
             <label v-if="enabled" for="title">
               What's the event's name?
             </label>
-            <b-form-input
+            <validating-form-input
               v-if="enabled"
               id="title"
               v-model="event.title"
               type="text"
-              maxlength="80"
               placeholder="Give the event a short title"
+              :validation="$v.event.title"
+              :validation-messages="{
+                required: 'Title is required',
+                maxLength: ({ max }) => `Max length is ${max}`
+              }"
             />
           </b-col>
           <b-col v-if="enabled" cols="12" md="6">
@@ -163,7 +167,7 @@
           <label for="description">
             What is it?
           </label>
-          <b-textarea
+          <validating-textarea
             id="description"
             v-model="event.description"
             rows="5"
@@ -171,11 +175,24 @@
             spellcheck="true"
             placeholder="Let people know what the event is - why they should come, what to expect, and any admission charge or fee (we only approve free or cheap events)."
             class="mt-2"
+            :validation="$v.event.description"
+            :validation-messages="{
+              required: 'Description is required'
+            }"
           />
           <label for="location">
             Where is it?
           </label>
-          <b-form-input id="location" v-model="event.location" type="text" maxlength="80" placeholder="Where is it being held?  Add a postcode to make sure people can find you!" />
+          <validating-form-input
+            id="location"
+            v-model="event.location"
+            type="text"
+            placeholder="Where is it being held? Add a postcode to make sure people can find you!"
+            :validation="$v.event.location"
+            :validation-messages="{
+              required: 'Location is required'
+            }"
+          />
           <label>
             When is it?
           </label>
@@ -271,8 +288,12 @@ label {
 // TODO NS Don't allow submission before image upload complete.
 // TODO Wherever we have b-img (throughout the site, not just here) we should have @brokenImage.  Bet we don't.
 // TODO NS Set date to start at 9am rather than midnight.  Default end date to later than start date.
+import { validationMixin } from 'vuelidate'
+import { required, maxLength } from 'vuelidate/lib/validators'
 import cloneDeep from 'lodash.clonedeep'
 import twem from '~/assets/js/twem'
+import ValidatingFormInput from '@/components/ValidatingFormInput'
+import ValidatingTextarea from '@/components/ValidatingTextarea'
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
 const OurFilePond = () => import('~/components/OurFilePond')
 const StartEndCollection = () => import('~/components/StartEndCollection')
@@ -280,11 +301,14 @@ const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
+    ValidatingFormInput,
+    ValidatingTextarea,
     GroupRememberSelect,
     OurFilePond,
     StartEndCollection,
     NoticeMessage
   },
+  mixins: [validationMixin],
   props: {
     event: {
       type: Object,
@@ -372,6 +396,11 @@ export default {
       this.hide()
     },
     async saveIt() {
+      this.$v.form.$touch()
+      if (this.$v.form.$anyError) {
+        return
+      }
+
       // TODO NS Validation.
       this.saving = true
 
@@ -501,6 +530,20 @@ export default {
     },
     rotateRight() {
       this.rotate(-90)
+    }
+  },
+  validations: {
+    event: {
+      title: {
+        required,
+        maxLength: maxLength(80)
+      },
+      description: {
+        required
+      },
+      location: {
+        required
+      }
     }
   }
 }
