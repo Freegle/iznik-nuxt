@@ -105,6 +105,7 @@ module.exports = {
     { from: '^/why$', to: '/help' },
     { from: '^/contact$', to: '/help' },
     { from: '^/posters$', to: '/noticeboards' },
+    { from: '^/groups', to: '/explore' }
   ],
 
   /*
