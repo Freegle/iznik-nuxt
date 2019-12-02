@@ -413,8 +413,8 @@ export default {
   width: 15px;
   padding-left: 3px;
   padding-top: 3px;
-  top: 20px;
-  left: 18px;
+  top: 23px;
+  left: 23px;
 
   @include media-breakpoint-up(md) {
     top: 30px;
