@@ -27,12 +27,7 @@ export const getters = {
 
 export const actions = {
   async fetch({ commit }, params) {
-    try {
-      commit('setList', await this.$api.job.fetch(params))
-    } catch (e) {
-      // If the API call fails, then just don't change the store.
-      console.error('Jobs API failed', e)
-    }
+    commit('setList', await this.$api.job.fetch(params))
   },
 
   clear({ commit }) {
