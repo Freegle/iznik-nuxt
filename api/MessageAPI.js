@@ -25,8 +25,7 @@ export default class MessageAPI extends BaseAPI {
     return this.$del('/message', { id })
   }
 
-  // TODO: work out if this is actually needed like this...
   put(data) {
-    return this.$realPut('/message', data)
+    return this.$put('/message', data)
   }
 }
