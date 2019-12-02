@@ -27,7 +27,11 @@ export const getters = {
 
 export const actions = {
   async fetch({ commit }, params) {
-    commit('setList', await this.$api.job.fetch(params))
+    const ret = await this.$api.job.fetch(params)
+
+    if (ret.data) {
+      commit('setList', ret.data)
+    }
   },
 
   clear({ commit }) {
