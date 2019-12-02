@@ -70,7 +70,7 @@
 </template>
 
 <script>
-// TODO Not obvious enough why the Next button doesn't appear.  Greyed out?  Indications?
+// TODO NS Not obvious enough why the Next button doesn't appear.  Greyed out?  Indications? Nick, relates to validation.
 const OurFilePond = () => import('~/components/OurFilePond')
 const PostPhoto = () => import('~/components/PostPhoto')
 const PostItem = () => import('~/components/PostItem')

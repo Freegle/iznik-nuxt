@@ -225,7 +225,8 @@ export const actions = {
     await dispatch('fetchUser', {
       components: ['me', 'groups', 'aboutme']
     })
-    // TODO: no longer returning res, does it break anything?
+    // TODO NS BUG: no longer returning res, does it break anything?  Yes, I think it does - see use in settings/index.vue
+    // where we consider showing a modal.
   },
 
   async saveAndGet({ commit, dispatch, state }, params) {
@@ -234,7 +235,7 @@ export const actions = {
       components: NONMIN,
       force: true
     })
-    // TODO: should we rely on returning this?
+    // TODO NS: should we rely on returning this?  EH We definitely do, and the clue is in the name.  I'd just remove this.
     return state.user
   },
 

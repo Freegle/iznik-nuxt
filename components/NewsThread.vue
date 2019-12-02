@@ -125,7 +125,7 @@
 // TODO EH Refer to WANTED/OFFER/RECEIVED/TAKEN
 // TODO MINOR Attach to thread
 // TODO DESIGN Some indication of newly added entries
-// TODO Click on loves to show who loves them
+// TODO EH Click on loves to show who loves them
 import NewsReportModal from './NewsReportModal'
 import twem from '~/assets/js/twem'
 

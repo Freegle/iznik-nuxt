@@ -113,7 +113,7 @@ export default {
       // We have this watch because we may need to fetch a group that we have remembered.  The mounted()
       // call may happen before we have restored the persisted state, so we can't initiate the fetch there.
       //
-      // TODO But this seems very ugly.  Is it right?
+      // TODO NS But this seems very ugly.  Is it right?
       if (oldValue === null || oldValue.id !== this.groupid) {
         await this.$store.dispatch('group/fetch', {
           id: this.groupid

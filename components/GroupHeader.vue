@@ -67,7 +67,7 @@
 <script>
 // TODO DESIGN There's a max-height hack above to keep the description from hogging the screen.  It's not that
 // pretty and some people may not even notice the scrollbar.  Would be nice to improve it.
-// TODO Add support for showJoin prop
+// TODO EH Add support for showJoin prop
 export default {
   props: {
     id: {

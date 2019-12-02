@@ -49,7 +49,7 @@ module.exports = {
     '@/assets/css/global.scss'
   ],
 
-  // TODO We have too many plugins.  Initially I thought the only way to pull in a standard bit of Vue code
+  // TODO NS We have too many plugins.  Initially I thought the only way to pull in a standard bit of Vue code
   // was to create a plugin for it.  But that is flat wrong.  Pulling them in as plugins will increase the
   // page load size, I expect, so we should take a pass through and see if any of them should be removed.
   plugins: [

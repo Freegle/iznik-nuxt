@@ -126,7 +126,7 @@ export default {
 
     processed(error, file) {
       if (error) {
-        // TODO error
+        // TODO NS error
       } else {
         this.$emit(
           'photoProcessed',

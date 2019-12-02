@@ -255,11 +255,11 @@ label {
 
 <script>
 // TODO DESIGN This layout is staid table nonsense.  Surely we can make it more appealing?
-// TODO Add some form validation using a plugin - see https://bootstrap-vue.js.org/docs/reference/validation/
-// TODO Don't allow submission before image upload complete.
-// TODO Groups which don't support events
+// TODO NS Add some form validation using a plugin - see https://bootstrap-vue.js.org/docs/reference/validation/
+// TODO NS Don't allow submission before image upload complete.
+// TODO EH Groups which don't support events
 // TODO Wherever we have b-img (throughout the site, not just here) we should have @brokenImage.  Bet we don't.
-// TODO Set date to start at 9am rather than midnight.  Default end date to later than start date.
+// TODO NS Set date to start at 9am rather than midnight.  Default end date to later than start date.
 import cloneDeep from 'lodash.clonedeep'
 import twem from '~/assets/js/twem'
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
@@ -348,7 +348,7 @@ export default {
       this.hide()
     },
     async saveIt() {
-      // TODO Validation.
+      // TODO NS Validation.
       this.saving = true
 
       if (this.event.id) {

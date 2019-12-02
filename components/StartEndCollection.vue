@@ -19,7 +19,7 @@
 </style>
 
 <script>
-// TODO Validation - end date > start date, no stupidly long events (3 days?), no overlapping dates, only one blank slot.
+// TODO NS Validation - end date > start date, no stupidly long events (3 days?), no overlapping dates, only one blank slot.
 // TODO This code could do with a bit of extra testing - various combinations of add/edit/cancel/delete etc.
 import StartEndDate from '~/components/StartEndDate'
 

@@ -145,7 +145,7 @@
 </style>
 
 <script>
-// TODO Report this post
+// TODO EH Report this post
 // Need to import rather than async otherwise the render doesn't happen and ref isn't set.
 import ChatButton from './ChatButton'
 import ShareModal from './ShareModal'
@@ -317,7 +317,7 @@ export default {
             })
           }
 
-          // TODO If the group approves membership, then we will not actually be a member at this point, and might not
+          // TODO EH If the group approves membership, then we will not actually be a member at this point, and might not
           // become one if we are rejected.  Probably in that case we shouldn't be allowed to reply to this message, but
           // we will.  I think this is the same behaviour as in the old version, but that needs testing and consideration
           // of how to handle.
@@ -338,14 +338,13 @@ export default {
           //
           // Setting the reply text here will get persisted to the store.  Once we log in and return to the message
           // page, then we will find this in the store and trigger the send of the reply.
-          // TODO The store is persisted asynchronously.  Probably it will have happened before the signin completes,
-          // but we don't actually guarantee that.
+          // TODO NS The store is persisted asynchronously.  Probably it will have happened before the signin completes,
+          // but we don't actually guarantee that.  Nick, is this fixed by your change to persist on page destroy?
           await this.$store.dispatch('reply/set', {
             replyTo: this.id,
             replyMessage: this.reply
           })
 
-          // TODO We're getting redirected away from the page.
           this.$store.dispatch('auth/forceLogin', true)
         }
       }

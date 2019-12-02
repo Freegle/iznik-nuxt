@@ -1,5 +1,3 @@
-// TODO There's way too much boilerplate code in here.  I've seen talk of best practice being to wrap mutations in
-// actions, which isn't helping.  And then there's mapState/mapMutations/mapActions.  Surely we can do better?
 import Vue from 'vue'
 
 // We allow composing of multiple posts for the same location/email, so messages and attachments are indexed by
@@ -263,7 +261,7 @@ export const actions = {
                 })
             })
             .catch(function(e) {
-              // TODO
+              // TODO NS
               console.error('Create of draft failed', e)
             })
         })

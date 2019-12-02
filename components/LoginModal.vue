@@ -300,7 +300,7 @@ export default {
             }
           })
           .catch(e => {
-            // TODO
+            // TODO NS
             console.error('Native login failed', e)
           })
       } else {
@@ -331,14 +331,14 @@ export default {
             }
           })
           .catch(e => {
-            // TODO
+            // TODO NS
             console.error('Native login failed', e)
           })
       }
     },
     async loginFacebook() {
       console.log('Facebook login')
-      // TODO Do we still have the Chrome on IOS problem?
+      // TODO EH Do we still have the Chrome on IOS problem?
       try {
         let response = null
         const promise = new Promise(function(resolve, reject) {
@@ -371,7 +371,7 @@ export default {
           throw new Error('Facebook response missing auth')
         }
       } catch (e) {
-        // TODO
+        // TODO NS
         console.error('Native login failed', e)
       }
     },
@@ -394,7 +394,7 @@ export default {
             console.log('Logged in')
             self.pleaseShowModal = false
           } else if (authResult.error) {
-            // TODO
+            // TODO NS
             console.error('There was an error: ' + authResult.error)
           }
         },
@@ -469,12 +469,12 @@ export default {
             this.$store.dispatch('auth/fetchUser')
             self.pleaseShowModal = false
           } else {
-            // TODO
+            // TODO NS
             console.error('Server login failed', ret)
           }
         })
         .catch(e => {
-          // TODO
+          // TODO NS
           console.error('Yahoo login failed', e)
         })
     },

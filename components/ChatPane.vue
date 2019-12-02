@@ -201,7 +201,7 @@
 }
 </style>
 <script>
-// TODO Chat dropdown menu for report etc
+// TODO EH Chat dropdown menu for report etc
 // TODO MINOR Popup confirm first time you use Nudge, so you know what you're doing.
 // TODO DESIGN We have a spinner at the top for our upwards infinite scroll.  But this looks messy when we load a
 // short chat, because we see the messages appear below the spinner and then move upwards once the infinite scroll
@@ -386,7 +386,7 @@ export default {
       id: this.id
     })
 
-    // TODO Loading a page on a specific chat doesn't always seem to fetch/render the messages correctly.  Test.
+    // TODO EH Loading a page on a specific chat doesn't always seem to fetch/render the messages correctly.  Test.
     await this.$store.dispatch('chatmessages/clearContext', {
       chatid: this.id
     })

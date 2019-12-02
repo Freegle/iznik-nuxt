@@ -51,8 +51,8 @@
   </div>
 </template>
 <script>
-// TODO Suppose we end up here, without a postcode in the store?
-// TODO Don't allow submission before image upload complete.
+// TODO EH Suppose we end up here, without a postcode in the store?
+// TODO NS Don't allow submission before image upload complete.
 
 import loginOptional from '@/mixins/loginOptional.js'
 const PostMessage = () => import('~/components/PostMessage')
