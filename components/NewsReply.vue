@@ -397,11 +397,9 @@ export default {
 
 <style scoped lang="scss">
 @import 'color-vars';
-
-$bootstrap-xs: 576px;
-$bootstrap-sm: 768px;
-$bootstrap-md: 992px;
-$bootstrap-lg: 1200px;
+@import 'node_modules/bootstrap/scss/functions';
+@import 'node_modules/bootstrap/scss/variables';
+@import 'node_modules/bootstrap/scss/mixins/_breakpoints';
 
 .replytext {
   font-size: 14px;
@@ -415,11 +413,10 @@ $bootstrap-lg: 1200px;
   width: 15px;
   padding-left: 3px;
   padding-top: 3px;
-
   top: 20px;
   left: 18px;
 
-  @media (min-width: $bootstrap-sm) {
+  @include media-breakpoint-up(md) {
     top: 30px;
     left: 26px;
   }

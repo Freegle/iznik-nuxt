@@ -143,6 +143,7 @@ body {
   width: 35px !important;
   height: 35px !important;
 
+  // TODO design Use bootstrap breakpoints
   @media (min-width: $bootstrap-sm) {
     width: 50px !important;
     height: 50px !important;
@@ -163,6 +164,7 @@ body {
   top: 20px;
   left: 33px;
 
+  // TODO Use bootstrap breakpoints
   @media (min-width: $bootstrap-sm) {
     top: 29px;
     left: 44px;
@@ -173,6 +175,7 @@ body {
   width: 30px !important;
   height: 30px !important;
 
+  // TODO Use bootstrap breakpoints
   @media (min-width: $bootstrap-sm)  {
     width: 35px !important;
     height: 35px !important;
@@ -183,6 +186,7 @@ body {
   width: 15px !important;
   height: 15px !important;
 
+  // TODO Use bootstrap breakpoints
   @media (min-width: $bootstrap-sm) {
     width: 25px !important;
     height: 25px !important;
