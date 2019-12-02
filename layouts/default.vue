@@ -142,7 +142,7 @@
           <template slot="button-content">
             <div class="notifwrapper">
               <v-icon name="bell" scale="2" class="" />
-              <b-badge v-if="notificationCount" variant="danger" class="notifbadge">
+              <b-badge v-if="notificationCount" variant="danger" class="notifbadgesm">
                 {{ notificationCount }}
               </b-badge>
             </div>
@@ -378,6 +378,12 @@ svg.fa-icon {
   position: absolute;
   top: 0px;
   left: 24px;
+}
+
+.notifbadgesm {
+  position: absolute;
+  top: 0px;
+  left: 18px;
 }
 
 .chatbadge {
