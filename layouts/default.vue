@@ -435,10 +435,7 @@ export default {
       return this.$store.getters['auth/user']
     },
     notifications() {
-      const notifications = Object.values(
-        this.$store.getters['notifications/list']
-      )
-      return notifications
+      return this.$store.getters['notifications/list']
     },
     notificationCount() {
       return this.$store.getters['notifications/count']
