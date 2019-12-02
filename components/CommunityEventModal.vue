@@ -396,8 +396,8 @@ export default {
       this.hide()
     },
     async saveIt() {
-      this.$v.form.$touch()
-      if (this.$v.form.$anyError) {
+      this.$v.event.$touch()
+      if (this.$v.event.$anyError) {
         return
       }
 
