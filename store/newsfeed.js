@@ -1,4 +1,5 @@
 import cloneDeep from 'lodash.clonedeep'
+import Vue from 'vue'
 
 export const state = () => ({
   // Use array for newsfeed as we need ordering.
@@ -10,13 +11,22 @@ export const state = () => ({
 
 export const mutations = {
   addNewsfeed(state, item) {
-    // Remove any existing copy.  Not great to scan an array, but this is only used when (re)fetching a single
-    // item and therefore it's not too bad.
-    state.newsfeed = state.newsfeed.filter(obj => {
-      return parseInt(obj.id) !== parseInt(item.id)
-    })
+    let found = false
 
-    state.newsfeed.unshift(item)
+    for (let i = 0; i < state.newsfeed.length; i++) {
+      if (parseInt(state.newsfeed[i].id) === parseInt(item.id)) {
+        // Already there - replace.
+        console.log('Already in state', item.id)
+        Vue.set(state.newsfeed, i, item)
+        found = true
+      }
+    }
+
+    if (!found) {
+      // Just add to head.
+      console.log('Just add', item.id)
+      state.newsfeed.unshift(item)
+    }
   },
 
   removeNewsfeed(state, id) {
@@ -73,11 +83,44 @@ export const mutations = {
 
 export const getters = {
   get: state => id => {
-    const ret = state.newsfeed
+    // This will get any newsfeed item, whether it's a top-level thread, a reply, or a reply to a reply.
+    //
+    // First look in the top-level entries - quickest
+    let ret = state.newsfeed
       ? state.newsfeed.find(item => {
           return parseInt(item.id) === parseInt(id)
         })
       : null
+
+    if (!ret) {
+      // Now look in the replies - bit slower.
+      for (const item of state.newsfeed) {
+        if (item.replies) {
+          for (const reply of item.replies) {
+            if (parseInt(reply.id) === parseInt(id)) {
+              ret = reply
+            }
+          }
+        }
+      }
+    }
+
+    if (!ret) {
+      // Now look in the replies to replies - even slower.
+      for (const item of state.newsfeed) {
+        if (item.replies) {
+          for (const reply of item.replies) {
+            if (reply.replies) {
+              for (const reply2reply of reply.replies) {
+                if (parseInt(reply2reply.id) === parseInt(id)) {
+                  ret = reply2reply
+                }
+              }
+            }
+          }
+        }
+      }
+    }
 
     return ret
   },

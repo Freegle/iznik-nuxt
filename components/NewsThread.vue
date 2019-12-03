@@ -38,13 +38,12 @@
       </b-card-body>
       <div slot="footer">
         <!-- TODO Minor - Refactor out the reply logic. Also bear in mind the logic in NewsReply -->
-        <!--         TODO Don't use newsfeed.replies, use repliestoshow-->
         <b-button v-if="showEarlierRepliesOption" variant="link" class="pl-0" @click.prevent="showAllReplies = true">
-          Show earlier {{ newsfeed.replies.length | pluralize(['reply', 'replies']) }} ({{ numberOfRepliesNotShown }})
+          Show earlier {{ numberOfRepliesNotShown.length | pluralize(['reply', 'replies']) }} ({{ numberOfRepliesNotShown }})
         </b-button>
         <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id" class="list-unstyled mb-2">
           <li>
-            <news-reply :key="'newsfeedreply-' + newsfeed.id + '-reply-' + entry.id + '-' + entry.deleted" :reply="entry" :users="users" :threadhead="newsfeed" :scroll-to="scrollTo" />
+            <news-reply :key="'newsfeedreply-' + newsfeed.id + '-reply-' + entry.id" :replyid="entry.id" :users="users" :threadhead="newsfeed" :scroll-to="scrollTo" />
           </li>
         </ul>
         <span v-if="!newsfeed.closed" class="text-small">
@@ -214,19 +213,39 @@ export default {
     backgroundColor() {
       return this.elementBackgroundColor[this.newsfeed.type] || 'card__default'
     },
+    visiblereplies() {
+      // These are the replies which are candidates to show, i.e. not deleted or hidden.
+      const ret = []
+
+      if (this.newsfeed) {
+        if (this.newsfeed.replies && this.newsfeed.replies.length) {
+          for (let i = 0; i < this.newsfeed.replies.length; i++) {
+            if (
+              !this.newsfeed.replies[i].deleted &&
+              this.newsfeed.replies[i].visible
+            ) {
+              ret.push(this.newsfeed.replies[i])
+            }
+          }
+        }
+      }
+
+      console.log('NewsThread compute visible replies', ret)
+      return ret
+    },
     repliestoshow() {
       let ret = []
 
-      if (this.newsfeed.replies && this.newsfeed.replies.length) {
+      if (this.visiblereplies && this.visiblereplies.length) {
         if (
           this.showAllReplies ||
-          this.newsfeed.replies.length <= INITIAL_NUMBER_OF_REPLIES_TO_SHOW
+          this.visiblereplies.length <= INITIAL_NUMBER_OF_REPLIES_TO_SHOW
         ) {
           // Return all the replies
-          ret = this.newsfeed.replies
+          ret = this.visiblereplies
         } else {
           // Only return the last few replies
-          ret = this.newsfeed.replies.slice(
+          ret = this.visiblereplies.slice(
             -Math.abs(INITIAL_NUMBER_OF_REPLIES_TO_SHOW)
           )
         }

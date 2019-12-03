@@ -1,7 +1,8 @@
 <template>
-  <div v-if="reply.userid && users[reply.userid] && reply.visible">
+  <div v-if="reply && reply.userid && users[reply.userid] && reply.visible">
     <b-row class="p-0">
       <b-col class="p-0">
+        Reply {{ replyid }} to {{ reply.replyto }} head {{ threadhead.id }}
         <table v-if="users[reply.userid].profile">
           <tbody>
             <tr>
@@ -28,7 +29,7 @@
                 </span>
                 <div v-if="reply.image">
                   <b-img
-                    v-b-modal="'photoModal-' + reply.id"
+                    v-b-modal="'photoModal-' + replyid"
                     rounded
                     class="clickme"
                     alt="ChitChat photo"
@@ -55,7 +56,7 @@
                     <span v-if="reply.loves" class="clickme" @click="showLove">
                       <v-icon name="heart" class="text-danger" />&nbsp;{{ reply.loves }}
                     </span>
-                    <span v-if="parseInt(me.id) === parseInt(reply.userid)" v-b-modal="'newsEdit-' + reply.id">
+                    <span v-if="parseInt(me.id) === parseInt(reply.userid)" v-b-modal="'newsEdit-' + replyid">
                       &bull;&nbsp;Edit
                     </span>
                     <span v-if="parseInt(me.id) === parseInt(reply.userid) || mod" @click="deleteReply">
@@ -79,12 +80,13 @@
       </b-col>
     </b-row>
     <b-button v-if="showEarlierRepliesOption" variant="link" class="pl-0" @click.prevent="showAllReplies = true">
-      Show earlier {{ reply.replies.length | pluralize(['reply', 'replies']) }} ({{ numberOfRepliesNotShown }})
+      Show earlier {{ numberOfRepliesNotShown | pluralize(['reply', 'replies']) }} ({{ numberOfRepliesNotShown }})
     </b-button>
+    Replies to show {{ JSON.stringify(repliestoshow) }}
     <div v-if="repliestoshow && repliestoshow.length > 0" class="pl-3">
       <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id" class="p-0 pt-1 pl-1 list-unstyled mb-1 border-left">
         <li>
-          <news-reply :key="'newsfeedreply-' + reply.id + '-reply-' + entry.id" :reply="entry" :users="users" :threadhead="threadhead" />
+          <news-reply :key="'newsfeedreply-' + replyid + '-reply-' + entry.id" :replyid="entry.id" :users="users" :threadhead="threadhead" />
         </li>
       </ul>
     </div>
@@ -129,7 +131,7 @@
     </b-row>
     <b-modal
       v-if="reply.image"
-      :id="'photoModal-' + reply.id"
+      :id="'photoModal-' + replyid"
       ref="photoModal"
       title="ChitChat Photo"
       alt="ChitChat Photo"
@@ -147,7 +149,7 @@
       </template>
     </b-modal>
     <b-modal
-      :id="'newsEdit-' + reply.id"
+      :id="'newsEdit-' + replyid"
       ref="editModal"
       title="Edit your post"
       size="lg"
@@ -173,7 +175,7 @@
       </template>
     </b-modal>
     <ProfileModal v-if="infoclick" :id="reply.userid" ref="profilemodal" />
-    <NewsLovesModal :id="reply.id" ref="loveModal" />
+    <NewsLovesModal :id="replyid" ref="loveModal" />
   </div>
 </template>
 
@@ -205,8 +207,8 @@ export default {
       type: Object,
       required: true
     },
-    reply: {
-      type: Object,
+    replyid: {
+      type: Number,
       required: true
     },
     users: {
@@ -229,6 +231,11 @@ export default {
     }
   },
   computed: {
+    reply() {
+      const ret = this.$store.getters['newsfeed/get'](this.replyid)
+      console.log('NewsReply compute reply', this.replyid, ret)
+      return ret
+    },
     me() {
       return this.$store.getters['auth/user']
     },
@@ -254,16 +261,23 @@ export default {
       return ret
     },
     visiblereplies() {
+      // These are the replies which are candidates to show, i.e. not deleted or hidden.
       const ret = []
 
-      if (this.reply.replies && this.reply.replies.length) {
-        for (let i = 0; i < this.reply.replies.length; i++) {
-          if (!this.reply.replies[i].deleted && this.reply.replies[i].visible) {
-            ret.push(this.reply.replies[i])
+      if (this.reply) {
+        if (this.reply.replies && this.reply.replies.length) {
+          for (let i = 0; i < this.reply.replies.length; i++) {
+            if (
+              !this.reply.replies[i].deleted &&
+              this.reply.replies[i].visible
+            ) {
+              ret.push(this.reply.replies[i])
+            }
           }
         }
       }
 
+      console.log('NewsReply compute visible replies', ret)
       return ret
     },
     repliestoshow() {
@@ -272,7 +286,7 @@ export default {
       if (this.visiblereplies.length) {
         if (
           this.showAllReplies ||
-          this.reply.replies.length <= INITIAL_NUMBER_OF_REPLIES_TO_SHOW
+          this.visiblereplies.length <= INITIAL_NUMBER_OF_REPLIES_TO_SHOW
         ) {
           // Return all the replies
           ret = this.visiblereplies
@@ -321,7 +335,7 @@ export default {
     }
   },
   mounted() {
-    if (parseInt(this.scrollTo) === this.reply.id) {
+    if (parseInt(this.scrollTo) === this.replyid) {
       // We want to scroll to this reply to make sure it's visible
       this.$el.scrollIntoView()
 
@@ -338,7 +352,7 @@ export default {
       }, 25)
     },
     replyReply() {
-      this.replyingTo = this.reply.id
+      this.replyingTo = this.replyid
       this.showReplyBox = true
 
       // Can't set focus immediately as not in DOM until re-render.
@@ -353,7 +367,7 @@ export default {
       this.$refs.replybox.focus()
     },
     focusedReply: function() {
-      this.replyingTo = this.reply.id
+      this.replyingTo = this.replyid
     },
     async sendReply() {
       // Encode up any emojis.
@@ -378,30 +392,31 @@ export default {
     },
     love() {
       this.$store.dispatch('newsfeed/love', {
-        id: this.reply.id,
+        id: this.replyid,
         replyto: this.reply.replyto,
         threadhead: this.reply.threadhead
       })
     },
     unlove() {
       this.$store.dispatch('newsfeed/unlove', {
-        id: this.reply.id,
+        id: this.replyid,
         replyto: this.reply.replyto,
         threadhead: this.reply.threadhead
       })
     },
     save() {
       this.$store.dispatch('newsfeed/edit', {
-        id: this.reply.id,
+        id: this.replyid,
         message: this.reply.message
       })
 
       this.$refs.editModal.hide()
     },
     deleteReply() {
+      console.log('Delete reply', this.replyid, this.threadhead)
       this.$store.dispatch('newsfeed/delete', {
-        id: this.reply.id,
-        threadhead: this.reply.threadhead
+        id: this.replyid,
+        threadhead: this.threadhead
       })
     },
     brokenImage(event) {
