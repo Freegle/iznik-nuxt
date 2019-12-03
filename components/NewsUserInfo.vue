@@ -4,7 +4,7 @@
       <span v-if="user.publiclocation" class="pl-0">
         <v-icon name="map-marker-alt" />&nbsp;{{ user.publiclocation.display }}
       </span>
-      <span v-if="user.activecounts.offers + user.activecounts.wanteds > 0">
+      <span v-if="user.activecounts && user.activecounts.offers + user.activecounts.wanteds > 0">
         &bull;
         <span v-if="user.activecounts.offers" class="text-success">
           {{ user.activecounts.offers | pluralize([ 'OFFER', 'OFFERs' ], { includeNumber: true }) }}&nbsp;
