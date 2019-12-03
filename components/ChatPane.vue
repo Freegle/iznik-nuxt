@@ -386,7 +386,6 @@ export default {
       id: this.id
     })
 
-    // TODO EH Loading a page on a specific chat doesn't always seem to fetch/render the messages correctly.  Test.
     await this.$store.dispatch('chatmessages/clearContext', {
       chatid: this.id
     })
