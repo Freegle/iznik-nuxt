@@ -157,7 +157,6 @@
 </style>
 
 <script>
-// TODO EH Report this post
 // Need to import rather than async otherwise the render doesn't happen and ref isn't set.
 import ChatButton from './ChatButton'
 import ShareModal from './ShareModal'
