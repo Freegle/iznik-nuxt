@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <span>
     <b-modal
       :id="'newsLovesModal-' + id"
       v-model="showModal"
@@ -42,7 +42,7 @@
         </b-button>
       </template>
     </b-modal>
-  </div>
+  </span>
 </template>
 <script>
 const NewsUserInfo = () => import('~/components/NewsUserInfo')

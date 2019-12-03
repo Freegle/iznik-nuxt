@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <span>
     <ul v-if="newsfeed" class="list-unstyled list-inline d-inline-block">
       <li class="list-inline-item">
         <b-btn v-if="!newsfeed.loved" variant="white" size="sm" @click="love">
@@ -21,7 +21,7 @@
       </li>
     </ul>
     <NewsLovesModal :id="newsfeed.id" ref="loveModal" />
-  </div>
+  </span>
 </template>
 <script>
 import NewsLovesModal from './NewsLovesModal'
