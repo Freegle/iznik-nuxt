@@ -81,8 +81,8 @@
     <b-button v-if="showEarlierRepliesOption" variant="link" class="pl-0" @click.prevent="showAllReplies = true">
       Show earlier {{ reply.replies.length | pluralize(['reply', 'replies']) }} ({{ numberOfRepliesNotShown }})
     </b-button>
-    <div v-if="reply.replies && reply.replies.length > 0" class="pl-3">
-      <ul v-for="entry in reply.replies" :key="'newsfeed-' + entry.id" class="p-0 pt-1 pl-1 list-unstyled mb-1 border-left">
+    <div v-if="repliestoshow && repliestoshow.length > 0" class="pl-3">
+      <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id" class="p-0 pt-1 pl-1 list-unstyled mb-1 border-left">
         <li>
           <news-reply :key="'newsfeedreply-' + reply.id + '-reply-' + entry.id" :reply="entry" :users="users" :threadhead="threadhead" />
         </li>
@@ -243,7 +243,7 @@ export default {
     },
     emessage() {
       return this.reply.message
-        ? twem.twem(this.$twemoji, this.reply.message)
+        ? twem.twem(this.$twemoji, this.reply.message) + ''
         : null
     },
     threadUsers() {
@@ -253,19 +253,32 @@ export default {
       }
       return ret
     },
+    visiblereplies() {
+      const ret = []
+
+      if (this.reply.replies && this.reply.replies.length) {
+        for (let i = 0; i < this.reply.replies.length; i++) {
+          if (!this.reply.replies[i].deleted && this.reply.replies[i].visible) {
+            ret.push(this.reply.replies[i])
+          }
+        }
+      }
+
+      return ret
+    },
     repliestoshow() {
       let ret = []
 
-      if (this.reply.replies && this.reply.replies.length) {
+      if (this.visiblereplies.length) {
         if (
           this.showAllReplies ||
           this.reply.replies.length <= INITIAL_NUMBER_OF_REPLIES_TO_SHOW
         ) {
           // Return all the replies
-          ret = this.reply.replies
+          ret = this.visiblereplies
         } else {
           // We have to prune what we show, but we should show any replyto.
-          ret = this.reply.replies
+          ret = this.visiblereplies
           let pruned = 0
           let pruneAt = ret - 1
 
@@ -293,19 +306,18 @@ export default {
       // If we're not already showing all replies and there are still some to show after the default display
       return (
         !this.showAllReplies &&
-        this.reply.replies.length > INITIAL_NUMBER_OF_REPLIES_TO_SHOW
+        this.visiblereplies.length > INITIAL_NUMBER_OF_REPLIES_TO_SHOW
       )
     },
     numberOfRepliesNotShown() {
       if (
-        !this.reply ||
-        !this.reply.replies ||
-        this.reply.replies.length < INITIAL_NUMBER_OF_REPLIES_TO_SHOW
+        !this.visiblereplies ||
+        this.visiblereplies.length < INITIAL_NUMBER_OF_REPLIES_TO_SHOW
       ) {
         return 0
       }
 
-      return this.reply.replies.length - INITIAL_NUMBER_OF_REPLIES_TO_SHOW
+      return this.visiblereplies.length - INITIAL_NUMBER_OF_REPLIES_TO_SHOW
     }
   },
   mounted() {
