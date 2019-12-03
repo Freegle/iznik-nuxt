@@ -96,6 +96,10 @@ export const getters = {
     return state.groups
   },
 
+  groupById: state => id => {
+    return state.groups.find(g => parseInt(g.id) === id)
+  },
+
   member: state => id => {
     let ret = false
 

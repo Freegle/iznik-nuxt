@@ -102,12 +102,19 @@
               For which community?
             </label>
             <groupRememberSelect v-model="groupid" remember="editevent" />
-            <label for="title">
+            <label v-if="enabled" for="title">
               What's the event's name?
             </label>
-            <b-form-input id="title" v-model="event.title" type="text" maxlength="80" placeholder="Give the event a short title" />
+            <b-form-input
+              v-if="enabled"
+              id="title"
+              v-model="event.title"
+              type="text"
+              maxlength="80"
+              placeholder="Give the event a short title"
+            />
           </b-col>
-          <b-col cols="12" md="6">
+          <b-col v-if="enabled" cols="12" md="6">
             <div class="float-right">
               <div v-if="event.photo" class="container p-0">
                 <span @click="rotateLeft">
@@ -134,61 +141,66 @@
             </div>
           </b-col>
         </b-row>
-        <b-row>
-          <b-col>
-            <b-btn variant="white" class="mt-1 float-right" @click="photoAdd">
-              <v-icon name="camera" /> Upload photo
-            </b-btn>
-          </b-col>
-        </b-row>
-        <b-row v-if="uploading">
-          <b-col>
-            <OurFilePond
-              class="bg-white"
-              imgtype="CommunityEvent"
-              imgflag="communityevent"
-              :ocr="true"
-              @photoProcessed="photoProcessed"
-            />
-          </b-col>
-        </b-row>
-        <label for="description">
-          What is it?
-        </label>
-        <b-textarea
-          id="description"
-          v-model="event.description"
-          rows="5"
-          max-rows="8"
-          spellcheck="true"
-          placeholder="Let people know what the event is - why they should come, what to expect, and any admission charge or fee (we only approve free or cheap events)."
-          class="mt-2"
-        />
-        <label for="location">
-          Where is it?
-        </label>
-        <b-form-input id="location" v-model="event.location" type="text" maxlength="80" placeholder="Where is it being held?  Add a postcode to make sure people can find you!" />
-        <label>
-          When is it?
-        </label>
-        <p>You can add multiple dates if the event occurs several times.</p>
-        <StartEndCollection v-if="event.dates" v-model="event.dates" add-date-if-empty />
-        <label for="contactname">
-          Contact name:
-        </label>
-        <b-form-input id="contactname" v-model="event.contactname" type="text" maxlength="60" placeholder="Is there a contact person for anyone who wants to find out more? (Optional)" />
-        <label for="contactemail">
-          Contact email:
-        </label>
-        <b-form-input id="contactemail" v-model="event.contactemail" type="email" placeholder="Can people reach you by email? (Optional)" />
-        <label for="contactphone">
-          Contact phone:
-        </label>
-        <b-form-input id="contactphone" v-model="event.contactphone" type="tel" placeholder="Can people reach you by phone? (Optional)" />
-        <label for="contacturl">
-          Web link:
-        </label>
-        <b-form-input id="contacturl" v-model="event.contacturl" type="url" placeholder="Is there more information on the web? (Optional)" />
+        <span v-if="enabled">
+          <b-row>
+            <b-col>
+              <b-btn variant="white" class="mt-1 float-right" @click="photoAdd">
+                <v-icon name="camera" /> Upload photo
+              </b-btn>
+            </b-col>
+          </b-row>
+          <b-row v-if="uploading">
+            <b-col>
+              <OurFilePond
+                class="bg-white"
+                imgtype="CommunityEvent"
+                imgflag="communityevent"
+                :ocr="true"
+                @photoProcessed="photoProcessed"
+              />
+            </b-col>
+          </b-row>
+          <label for="description">
+            What is it?
+          </label>
+          <b-textarea
+            id="description"
+            v-model="event.description"
+            rows="5"
+            max-rows="8"
+            spellcheck="true"
+            placeholder="Let people know what the event is - why they should come, what to expect, and any admission charge or fee (we only approve free or cheap events)."
+            class="mt-2"
+          />
+          <label for="location">
+            Where is it?
+          </label>
+          <b-form-input id="location" v-model="event.location" type="text" maxlength="80" placeholder="Where is it being held?  Add a postcode to make sure people can find you!" />
+          <label>
+            When is it?
+          </label>
+          <p>You can add multiple dates if the event occurs several times.</p>
+          <StartEndCollection v-if="event.dates" v-model="event.dates" add-date-if-empty />
+          <label for="contactname">
+            Contact name:
+          </label>
+          <b-form-input id="contactname" v-model="event.contactname" type="text" maxlength="60" placeholder="Is there a contact person for anyone who wants to find out more? (Optional)" />
+          <label for="contactemail">
+            Contact email:
+          </label>
+          <b-form-input id="contactemail" v-model="event.contactemail" type="email" placeholder="Can people reach you by email? (Optional)" />
+          <label for="contactphone">
+            Contact phone:
+          </label>
+          <b-form-input id="contactphone" v-model="event.contactphone" type="tel" placeholder="Can people reach you by phone? (Optional)" />
+          <label for="contacturl">
+            Web link:
+          </label>
+          <b-form-input id="contacturl" v-model="event.contacturl" type="url" placeholder="Is there more information on the web? (Optional)" />
+        </span>
+        <NoticeMessage v-else variant="warning" class="mt-2">
+          <v-icon name="info-circle" />&nbsp;This community has chosen not to allow Community Events.
+        </NoticeMessage>
       </div>
     </template>
     <template slot="modal-footer" slot-scope="{ ok, cancel }">
@@ -257,7 +269,6 @@ label {
 // TODO DESIGN This layout is staid table nonsense.  Surely we can make it more appealing?
 // TODO NS Add some form validation using a plugin - see https://bootstrap-vue.js.org/docs/reference/validation/
 // TODO NS Don't allow submission before image upload complete.
-// TODO EH Groups which don't support events
 // TODO Wherever we have b-img (throughout the site, not just here) we should have @brokenImage.  Bet we don't.
 // TODO NS Set date to start at 9am rather than midnight.  Default end date to later than start date.
 import cloneDeep from 'lodash.clonedeep'
@@ -316,6 +327,19 @@ export default {
       desc = desc ? twem.twem(this.$twemoji, desc) : ''
       desc = desc.trim()
       return desc
+    },
+    enabled() {
+      const group = this.$store.getters['auth/groupById'](this.groupid)
+
+      let ret = true
+
+      if (group) {
+        if ('communityevents' in group.settings) {
+          ret = group.settings.communityevents
+        }
+      }
+
+      return ret
     }
   },
   methods: {
