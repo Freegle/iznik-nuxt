@@ -10,7 +10,7 @@
                 fluid
                 rounded
                 thumbnail
-                class=""
+                class="chatimage"
                 alt="Chat image"
                 :src="chatmessage.image.path"
                 @error.native="brokenImage"
@@ -36,7 +36,7 @@
               fluid
               rounded
               thumbnail
-              class=""
+              class="chatimage"
               alt="Chat image"
               :src="chatmessage.image.path"
               @error.native="brokenImage"
@@ -61,6 +61,9 @@
   </div>
 </template>
 <style scoped>
+.chatimage {
+  max-height: 50vh;
+}
 </style>
 <script>
 import ChatBase from '~/components/ChatBase'
