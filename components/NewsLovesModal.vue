@@ -72,7 +72,9 @@ export default {
           this.newsfeed.loves +
           ' freegler' +
           (this.newsfeed.loves !== 1 ? 's' : '') +
-          ' love this'
+          ' love' +
+          (this.newsfeed.loves === 1 ? 's' : '') +
+          ' this'
       }
 
       return ret

@@ -52,7 +52,7 @@
                     <span v-if="reply.loved" @click="unlove">
                       &bull;&nbsp;Unlove this
                     </span>
-                    <span v-if="reply.loves">
+                    <span v-if="reply.loves" class="clickme" @click="showLove">
                       <v-icon name="heart" class="text-danger" />&nbsp;{{ reply.loves }}
                     </span>
                     <span v-if="parseInt(me.id) === parseInt(reply.userid)" v-b-modal="'newsEdit-' + reply.id">
@@ -173,12 +173,15 @@
       </template>
     </b-modal>
     <ProfileModal v-if="infoclick" :id="reply.userid" ref="profilemodal" />
+    <NewsLovesModal :id="reply.id" ref="loveModal" />
   </div>
 </template>
 
 <script>
 // TODO EH User tagging
+import NewsLovesModal from './NewsLovesModal'
 import twem from '~/assets/js/twem'
+
 const NewsUserInfo = () => import('~/components/NewsUserInfo')
 const NewsHighlight = () => import('~/components/NewsHighlight')
 const ProfileModal = () => import('~/components/ProfileModal')
@@ -190,6 +193,7 @@ const INITIAL_NUMBER_OF_REPLIES_TO_SHOW = 5
 export default {
   name: 'NewsReply',
   components: {
+    NewsLovesModal,
     NewsUserInfo,
     NewsHighlight,
     ProfileModal,
@@ -390,6 +394,9 @@ export default {
     },
     brokenImage(event) {
       event.target.src = '/static/defaultprofile.png'
+    },
+    showLove() {
+      this.$refs.loveModal.show()
     }
   }
 }
