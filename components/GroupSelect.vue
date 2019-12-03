@@ -1,6 +1,11 @@
 <template>
   <client-only>
-    <b-form-select v-model="selectedGroup" size=":size" :options="groupOptions" />
+    <div>
+      <b-form-select v-model="selectedGroup" size=":size" :options="groupOptions" />
+      <NoticeMessage v-if="selectedGroup === -2" variant="danger" class="mt-1">
+        This is a national volunteer opportunity which will go out to all communities. Please review carefully.
+      </NoticeMessage>
+    </div>
   </client-only>
 </template>
 <style scoped>
@@ -10,7 +15,9 @@ select {
 }
 </style>
 <script>
+import NoticeMessage from './NoticeMessage'
 export default {
+  components: { NoticeMessage },
   props: {
     /**
      * Selected value
@@ -32,6 +39,11 @@ export default {
       required: false,
       default: false
     },
+    systemwide: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     size: {
       type: String,
       required: false,
@@ -46,6 +58,10 @@ export default {
       set(val) {
         this.$emit('input', val)
       }
+    },
+
+    me() {
+      return this.$store.getters['auth/user']
     },
 
     groupOptions() {
@@ -63,6 +79,17 @@ export default {
           text: '-- Please choose --',
           selected: this.selectedGroup === null
         })
+      }
+
+      if (this.systemwide) {
+        // Check we're allowed.
+        if (this.me && this.me.systemrole === 'Admin') {
+          groups.push({
+            value: -2,
+            text: '-- Systemwide --',
+            selected: false
+          })
+        }
       }
 
       const myGroups = this.$store.getters['auth/groups']
@@ -93,6 +120,8 @@ export default {
     invalidSelection: {
       immediate: true,
       handler(val) {
+        console.log('Invalid', val)
+        // TODO NS This makes it impossible to select systemwide.
         if (val) this.selectedGroup = null
       }
     }

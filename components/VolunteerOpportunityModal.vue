@@ -109,7 +109,7 @@
             <label for="group">
               For which community?
             </label>
-            <groupRememberSelect v-model="groupid" remember="editopportunity" />
+            <groupRememberSelect v-model="groupid" remember="editopportunity" :systemwide="true" />
             <label v-if="enabled" for="title">
               What's the opportunity?
             </label>
@@ -287,10 +287,10 @@ label {
 
 <script>
 // TODO DESIGN This layout is staid table nonsense.  Surely we can make it more appealing?
-// TODO NS Add some form validation using a plugin - see https://bootstrap-vue.js.org/docs/reference/validation/
+// TODO NS Add some form validation using a plugin - see https://bootstrap-vue.js.org/docs/reference/validation/.  Need
+// title, description, location as mandatory.
 // TODO NS Don't allow submission before image upload complete.
 // TODO MINOR We used to have an "apply by" date. It's not clear we need this, so no urgency in re-adding it.
-// TODO EH Systemwide opportunities.
 import cloneDeep from 'lodash.clonedeep'
 import twem from '~/assets/js/twem'
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
@@ -420,10 +420,14 @@ export default {
 
         if (this.groupid !== oldgroupid) {
           // Save the new group, then remove the old group, so it won't get stranded.
-          await this.$store.dispatch('volunteerops/addGroup', {
-            id: this.volunteering.id,
-            groupid: this.groupid
-          })
+          //
+          // Checking for groupid > 0 allows systemwide opportunities.
+          if (this.groupid > 0) {
+            await this.$store.dispatch('volunteerops/addGroup', {
+              id: this.volunteering.id,
+              groupid: this.groupid
+            })
+          }
 
           if (oldgroupid) {
             await this.$store.dispatch('volunteerops/removeGroup', {
