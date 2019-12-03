@@ -87,7 +87,7 @@ export default {
           groups.push({
             value: -2,
             text: '-- Systemwide --',
-            selected: false
+            selected: this.selectedGroup === -2
           })
         }
       }
@@ -120,8 +120,6 @@ export default {
     invalidSelection: {
       immediate: true,
       handler(val) {
-        console.log('Invalid', val)
-        // TODO NS This makes it impossible to select systemwide.
         if (val) this.selectedGroup = null
       }
     }
