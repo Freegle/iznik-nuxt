@@ -2,7 +2,6 @@
   <div v-if="reply && reply.userid && users[reply.userid] && reply.visible">
     <b-row class="p-0">
       <b-col class="p-0">
-        Reply {{ replyid }} to {{ reply.replyto }} head {{ threadhead.id }}
         <table v-if="users[reply.userid].profile">
           <tbody>
             <tr>
@@ -82,7 +81,6 @@
     <b-button v-if="showEarlierRepliesOption" variant="link" class="pl-0" @click.prevent="showAllReplies = true">
       Show earlier {{ numberOfRepliesNotShown | pluralize(['reply', 'replies']) }} ({{ numberOfRepliesNotShown }})
     </b-button>
-    Replies to show {{ JSON.stringify(repliestoshow) }}
     <div v-if="repliestoshow && repliestoshow.length > 0" class="pl-3">
       <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id" class="p-0 pt-1 pl-1 list-unstyled mb-1 border-left">
         <li>
@@ -233,7 +231,6 @@ export default {
   computed: {
     reply() {
       const ret = this.$store.getters['newsfeed/get'](this.replyid)
-      console.log('NewsReply compute reply', this.replyid, ret)
       return ret
     },
     me() {
@@ -277,7 +274,6 @@ export default {
         }
       }
 
-      console.log('NewsReply compute visible replies', ret)
       return ret
     },
     repliestoshow() {
@@ -413,10 +409,9 @@ export default {
       this.$refs.editModal.hide()
     },
     deleteReply() {
-      console.log('Delete reply', this.replyid, this.threadhead)
       this.$store.dispatch('newsfeed/delete', {
         id: this.replyid,
-        threadhead: this.threadhead
+        threadhead: this.threadhead.id
       })
     },
     brokenImage(event) {

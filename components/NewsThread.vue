@@ -230,7 +230,6 @@ export default {
         }
       }
 
-      console.log('NewsThread compute visible replies', ret)
       return ret
     },
     repliestoshow() {
@@ -296,11 +295,6 @@ export default {
       if (this.threadcomment) {
         const msg = twem.untwem(this.threadcomment)
 
-        console.log(
-          'Comment replying this',
-          this.replyingTo,
-          this.newsfeed.threadhead
-        )
         await this.$store.dispatch('newsfeed/send', {
           message: msg,
           replyto: this.replyingTo,
