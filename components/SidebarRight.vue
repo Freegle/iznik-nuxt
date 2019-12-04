@@ -1,8 +1,7 @@
 <template>
   <div class="d-flex flex-column sidebar__wrapper">
-    <VolunteerOpportunitySidebar v-if="showVolunteerOpportunities" class="justify-content-start flex-grow-1" style="overflow-y: auto" />
-    <JobsSidebar v-if="showJobOpportunities" class="justify-content-end flex-grow-1" style="overflow-y: auto" />
-    <!--    TODO DESIGN make these equal height-->
+    <VolunteerOpportunitySidebar v-if="showVolunteerOpportunities" class="sidebar__item" />
+    <JobsSidebar v-if="showJobOpportunities" class="sidebar__item" />
   </div>
 </template>
 
@@ -32,5 +31,10 @@ export default {
 <style scoped>
 .sidebar__wrapper {
   height: calc(100vh - 100px);
+}
+
+.sidebar__item {
+  flex: 0 1 50%;
+  overflow-y: auto;
 }
 </style>
