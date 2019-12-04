@@ -39,6 +39,7 @@ export default {
       required: false,
       default: false
     },
+    // Whether to show the systemwide option.  This will only show if we're an system admin.
     systemwide: {
       type: Boolean,
       required: false,
