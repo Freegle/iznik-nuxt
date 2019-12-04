@@ -518,10 +518,6 @@ export default {
         return
       }
 
-      console.log('WOULD have saved it', this.event)
-
-      // if (this.event !== 'a small brown dog') return
-
       // TODO NS Validation.
       this.saving = true
 
