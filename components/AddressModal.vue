@@ -61,7 +61,6 @@
             <p>Choose a postcode:</p>
             <b-row>
               <b-col>
-                <!--              TODO DESIGN Postcode is center-aligned, which looks wrong.-->
                 <Postcode @selected="postcodeSelect" @cleared="postcodeCleared" />
               </b-col>
             </b-row>
