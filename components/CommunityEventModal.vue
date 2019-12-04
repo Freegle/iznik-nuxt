@@ -4,6 +4,7 @@
     v-model="showModal"
     size="lg"
     no-stacking
+    @hidden="resetData()"
   >
     <template slot="modal-header">
       <h4 v-if="editing">
@@ -95,28 +96,37 @@
           Posted by {{ event.user.displayname }} <span class="text-faded">(#{{ event.user.id }})</span>
         </p>
       </div>
-      <div v-else>
+      <div v-else ref="form">
         <b-row>
           <b-col cols="12" md="6">
-            <label for="group">
-              For which community?
-            </label>
-            <groupRememberSelect v-model="groupid" remember="editevent" />
-            <label v-if="enabled" for="title">
-              What's the event's name?
-            </label>
-            <validating-form-input
+            <b-form-group
+              label="For which community?"
+              :state="validationEnabled ? !$v.groupid.$invalid : null"
+            >
+              <groupRememberSelect v-model="groupid" remember="editevent" />
+              <b-form-invalid-feedback>
+                Please select a community
+              </b-form-invalid-feedback>
+            </b-form-group>
+            <b-form-group
               v-if="enabled"
-              id="title"
-              v-model="event.title"
-              type="text"
-              placeholder="Give the event a short title"
-              :validation="$v.event.title"
-              :validation-messages="{
-                required: 'Title is required',
-                maxLength: ({ max }) => `Max length is ${max}`
-              }"
-            />
+              label="What's the event's name?"
+              label-for="title"
+              :state="validationEnabled ? !$v.event.title.$invalid : null"
+            >
+              <validating-form-input
+                id="title"
+                v-model="event.title"
+                type="text"
+                placeholder="Give the event a short title"
+                :validation="$v.event.title"
+                :validation-enabled="validationEnabled"
+                :validation-messages="{
+                  required: 'Please add a title',
+                  maxLength: ({ max }) => `Max length is ${max}`
+                }"
+              />
+            </b-form-group>
           </b-col>
           <b-col v-if="enabled" cols="12" md="6">
             <div class="float-right">
@@ -164,56 +174,103 @@
               />
             </b-col>
           </b-row>
-          <label for="description">
-            What is it?
-          </label>
-          <validating-textarea
-            id="description"
-            v-model="event.description"
-            rows="5"
-            max-rows="8"
-            spellcheck="true"
-            placeholder="Let people know what the event is - why they should come, what to expect, and any admission charge or fee (we only approve free or cheap events)."
-            class="mt-2"
-            :validation="$v.event.description"
-            :validation-messages="{
-              required: 'Description is required'
-            }"
-          />
-          <label for="location">
-            Where is it?
-          </label>
-          <validating-form-input
-            id="location"
-            v-model="event.location"
-            type="text"
-            placeholder="Where is it being held? Add a postcode to make sure people can find you!"
-            :validation="$v.event.location"
-            :validation-messages="{
-              required: 'Location is required'
-            }"
-          />
-          <label>
-            When is it?
-          </label>
-          <p>You can add multiple dates if the event occurs several times.</p>
-          <StartEndCollection v-if="event.dates" v-model="event.dates" add-date-if-empty />
-          <label for="contactname">
-            Contact name:
-          </label>
-          <b-form-input id="contactname" v-model="event.contactname" type="text" maxlength="60" placeholder="Is there a contact person for anyone who wants to find out more? (Optional)" />
-          <label for="contactemail">
-            Contact email:
-          </label>
-          <b-form-input id="contactemail" v-model="event.contactemail" type="email" placeholder="Can people reach you by email? (Optional)" />
-          <label for="contactphone">
-            Contact phone:
-          </label>
-          <b-form-input id="contactphone" v-model="event.contactphone" type="tel" placeholder="Can people reach you by phone? (Optional)" />
-          <label for="contacturl">
-            Web link:
-          </label>
-          <b-form-input id="contacturl" v-model="event.contacturl" type="url" placeholder="Is there more information on the web? (Optional)" />
+          <b-form-group
+            label="What is it?"
+            label-for="description"
+            :state="validationEnabled ? !$v.event.description.$invalid : null"
+          >
+            <validating-textarea
+              id="description"
+              v-model="event.description"
+              rows="5"
+              max-rows="8"
+              spellcheck="true"
+              placeholder="Let people know what the event is - why they should come, what to expect, and any admission charge or fee (we only approve free or cheap events)."
+              class="mt-2"
+              :validation="$v.event.description"
+              :validation-enabled="validationEnabled"
+              :validation-messages="{
+                required: 'Please add a description'
+              }"
+            />
+          </b-form-group>
+          <b-form-group
+            label="Where is it?"
+            label-for="location"
+            :state="validationEnabled ? !$v.event.location.$invalid : null"
+          >
+            <validating-form-input
+              id="location"
+              v-model="event.location"
+              type="text"
+              placeholder="Where is it being held? Add a postcode to make sure people can find you!"
+              :validation="$v.event.location"
+              :validation-enabled="validationEnabled"
+              :validation-messages="{
+                required: 'Please add a location'
+              }"
+            />
+          </b-form-group>
+          <b-form-group
+            label="When is it?"
+            :state="validationEnabled ? !$v.event.dates.$invalid : null"
+          >
+            <p>You can add multiple dates if the event occurs several times.</p>
+            <b-form-invalid-feedback class="mb-3">
+              Please add at least one date
+            </b-form-invalid-feedback>
+            <StartEndCollection v-if="event.dates" v-model="event.dates" add-date-if-empty />
+          </b-form-group>
+          <b-form-group
+            label="Contact name:"
+            label-for="contactname"
+            :state="event.contactname && validationEnabled ? !$v.event.contactname.$invalid : null"
+          >
+            <validating-form-input
+              id="contactname"
+              v-model="event.contactname"
+              type="text"
+              placeholder="Is there a contact person for anyone who wants to find out more? (Optional)"
+              :validation="$v.event.contactname"
+              :validation-enabled="event.contactname && validationEnabled"
+              :validation-messages="{
+                maxLength: ({ max }) => `Max length is ${max}`
+              }"
+            />
+          </b-form-group>
+          <b-form-group
+            label="Contact email:"
+            label-for="contactemail"
+          >
+            <b-form-input
+              id="contactemail"
+              v-model="event.contactemail"
+              type="email"
+              placeholder="Can people reach you by email? (Optional)"
+            />
+          </b-form-group>
+          <b-form-group
+            label="Contact phone:"
+            label-for="contactphone"
+          >
+            <b-form-input
+              id="contactphone"
+              v-model="event.contactphone"
+              type="tel"
+              placeholder="Can people reach you by phone? (Optional)"
+            />
+          </b-form-group>
+          <b-form-group
+            label="Web link:"
+            label-for="contacturl"
+          >
+            <b-form-input
+              id="contacturl"
+              v-model="event.contacturl"
+              type="tel"
+              placeholder="Is there more information on the web? (Optional)"
+            />
+          </b-form-group>
         </span>
         <NoticeMessage v-else variant="warning" class="mt-2">
           <v-icon name="info-circle" />&nbsp;This community has chosen not to allow Community Events.
@@ -255,10 +312,23 @@
   color: $color-green--darker;
 }
 
-label {
+// TODO move (most of?) these ::v-deep ones into global style
+//   - they are general form styles, not specific to CommunityEventModal
+
+::v-deep label,
+::v-deep .col-form-label {
   font-weight: bold;
   color: $color-green--darker;
   margin-top: 10px;
+}
+
+::v-deep .is-invalid label,
+::v-deep .is-invalid .col-form-label {
+  color: $color-danger;
+}
+
+::v-deep .form-group.is-invalid .invalid-feedback {
+  display: block;
 }
 
 .topleft {
@@ -288,6 +358,7 @@ label {
 // TODO NS Don't allow submission before image upload complete.
 // TODO Wherever we have b-img (throughout the site, not just here) we should have @brokenImage.  Bet we don't.
 // TODO NS Set date to start at 9am rather than midnight.  Default end date to later than start date.
+import Vue from 'vue'
 import { validationMixin } from 'vuelidate'
 import { required, maxLength } from 'vuelidate/lib/validators'
 import cloneDeep from 'lodash.clonedeep'
@@ -298,6 +369,45 @@ const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
 const OurFilePond = () => import('~/components/OurFilePond')
 const StartEndCollection = () => import('~/components/StartEndCollection')
 const NoticeMessage = () => import('~/components/NoticeMessage')
+
+// TODO NS move into utilities somewhere
+function nextTicks(n, fn) {
+  if (n === 0) {
+    fn()
+  } else {
+    Vue.nextTick(() => nextTicks(n - 1, fn))
+  }
+}
+
+function initialEvent() {
+  return {
+    id: null,
+    title: null,
+    photo: null,
+    description: null,
+    location: null,
+    dates: [],
+    groups: [],
+    contactname: null,
+    contactemail: null,
+    contactphone: null,
+    contacturl: null,
+    canmodify: null
+  }
+}
+
+function initialData() {
+  return {
+    showModal: false,
+    editing: false,
+    groupid: null,
+    uploading: false,
+    oldphoto: null,
+    olddates: null,
+    cacheBust: Date.now(),
+    saving: false
+  }
+}
 
 export default {
   components: {
@@ -312,20 +422,7 @@ export default {
   props: {
     event: {
       type: Object,
-      default: () => ({
-        id: null,
-        title: null,
-        photo: null,
-        description: null,
-        location: null,
-        dates: [],
-        groups: [],
-        contactname: null,
-        contactemail: null,
-        contactphone: null,
-        contacturl: null,
-        canmodify: null
-      })
+      default: initialEvent
     },
     startEdit: {
       type: Boolean,
@@ -333,19 +430,11 @@ export default {
       default: false
     }
   },
-  data: function() {
-    return {
-      showModal: false,
-      editing: false,
-      groupid: null,
-      uploading: false,
-      oldphoto: null,
-      olddates: null,
-      cacheBust: Date.now(),
-      saving: false
-    }
-  },
+  data: initialData,
   computed: {
+    validationEnabled() {
+      return this.$v.event.$dirty
+    },
     description() {
       let desc = this.event.description
       desc = desc ? twem.twem(this.$twemoji, desc) : ''
@@ -366,6 +455,11 @@ export default {
       return ret
     }
   },
+  watch: {
+    showModal(val, oldVal) {
+      console.log('showModal', oldVal, '->', val)
+    }
+  },
   methods: {
     show() {
       this.editing = this.startEdit
@@ -383,10 +477,7 @@ export default {
       }
     },
     hide() {
-      this.editing = false
-      this.uploading = false
       this.showModal = false
-      this.saving = false
     },
     async deleteIt() {
       await this.$store.dispatch('communityevents/delete', {
@@ -395,11 +486,41 @@ export default {
 
       this.hide()
     },
+    resetData() {
+      Object.assign(this, initialData())
+    },
+    resetEvent() {
+      Object.assign(this.event, initialEvent())
+      this.$v.$reset()
+    },
+    focusFirstError() {
+      // We want to scroll to the form group, so the label is visible
+      const scrollToEl = this.$refs.form.querySelector('.is-invalid')
+      // ... but focus the first input field
+      const focusEl = this.$refs.form.querySelector(
+        'input.is-invalid, textarea.is-invalid'
+      )
+      if (scrollToEl) scrollToEl.scrollIntoView()
+      if (focusEl) {
+        if (!scrollToEl) {
+          // we can make do with scrolling to the input
+          focusEl.scrollIntoView()
+        }
+        focusEl.focus()
+      }
+      return scrollToEl || focusEl
+    },
     async saveIt() {
-      this.$v.event.$touch()
-      if (this.$v.event.$anyError) {
+      this.$v.$touch()
+      if (this.$v.$anyError) {
+        // It takes a few cycles to actually render the errors...
+        nextTicks(4, () => this.focusFirstError())
         return
       }
+
+      console.log('WOULD have saved it', this.event)
+
+      // if (this.event !== 'a small brown dog') return
 
       // TODO NS Validation.
       this.saving = true
@@ -482,6 +603,7 @@ export default {
       })
 
       this.hide()
+      this.resetEvent()
     },
     photoAdd() {
       // Flag that we're uploading.  This will trigger the render of the filepond instance and subsequently the
@@ -533,6 +655,9 @@ export default {
     }
   },
   validations: {
+    groupid: {
+      required
+    },
     event: {
       title: {
         required,
@@ -543,6 +668,13 @@ export default {
       },
       location: {
         required
+      },
+      dates: {
+        minLength: dates =>
+          dates.filter(({ start, end }) => start && end).length > 0
+      },
+      contactname: {
+        maxLength: maxLength(60)
       }
     }
   }
