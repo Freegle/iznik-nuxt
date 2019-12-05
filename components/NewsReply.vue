@@ -90,41 +90,47 @@
     </div>
     <b-row v-if="showReplyBox" class="mb-2">
       <b-col class="p-0 pb-1 d-flex ml-4">
-        <b-input-group class="pl-4 flex-shrink-2">
-          <b-input-group-prepend>
-            <span class="input-group-text pl-1 pr-1">
-              <b-img-lazy
-                v-if="me.profile.turl"
-                rounded="circle"
-                thumbnail
-                class="profilesm p-0 m-0 inline float-left"
-                alt="Profile picture"
-                title="Profile"
-                :src="me.profile.turl"
-                @error.native="brokenImage"
-              />
-            </span>
-          </b-input-group-prepend>
-          <b-textarea
-            ref="replybox"
-            v-model="replybox"
-            size="sm"
-            rows="1"
-            max-rows="8"
-            maxlength="2048"
-            spellcheck="true"
-            placeholder="Write a reply to this comment and hit enter..."
-            class="p-0 pl-1 pt-1"
-            @keydown.enter.exact.prevent
-            @keyup.enter.exact="sendReply"
-            @keydown.enter.shift.exact="newlineReply"
-            @keydown.alt.shift.exact="newlineReply"
-            @focus="focusedReply"
-          />
-        </b-input-group>
-        <b-btn size="sm" variant="white" class="flex-grow-1 float-right ml-1">
-          <v-icon name="camera" />&nbsp;Photo
-        </b-btn>
+        <div
+          class="d-flex w-100"
+          @keyup.enter.exact.prevent
+          @keydown.enter.exact="sendReply"
+        >
+          <at-ta ref="at" :members="tagusers" class="pl-4 flex-shrink-2 input-group">
+            <b-input-group-prepend>
+              <span class="input-group-text pl-1 pr-1">
+                <b-img-lazy
+                  v-if="me.profile.turl"
+                  rounded="circle"
+                  thumbnail
+                  class="profilesm p-0 m-0 inline float-left"
+                  alt="Profile picture"
+                  title="Profile"
+                  :src="me.profile.turl"
+                  @error.native="brokenImage"
+                />
+              </span>
+            </b-input-group-prepend>
+            <b-textarea
+              ref="replybox"
+              v-model="replybox"
+              size="sm"
+              rows="1"
+              max-rows="8"
+              maxlength="2048"
+              spellcheck="true"
+              placeholder="Write a reply to this comment and hit enter..."
+              class="p-0 pl-1 pt-1"
+              @keydown.enter.exact.prevent
+              @keyup.enter.exact="sendReply"
+              @keydown.enter.shift.exact="newlineReply"
+              @keydown.alt.shift.exact="newlineReply"
+              @focus="focusedReply"
+            />
+          </at-ta>
+          <b-btn size="sm" variant="white" class="flex-grow-1 float-right ml-1">
+            <v-icon name="camera" />&nbsp;Photo
+          </b-btn>
+        </div>
       </b-col>
     </b-row>
     <b-modal
@@ -178,9 +184,11 @@
 </template>
 
 <script>
-// TODO EH User tagging
 import NewsLovesModal from './NewsLovesModal'
 import twem from '~/assets/js/twem'
+const AtTa = process.browser
+  ? require('vue-at/dist/vue-at-textarea')
+  : undefined
 
 const NewsUserInfo = () => import('~/components/NewsUserInfo')
 const NewsHighlight = () => import('~/components/NewsHighlight')
@@ -198,7 +206,8 @@ export default {
     NewsHighlight,
     ProfileModal,
     ChatButton,
-    NewsPreview
+    NewsPreview,
+    AtTa
   },
   props: {
     threadhead: {
@@ -247,6 +256,15 @@ export default {
     },
     me() {
       return this.$store.getters['auth/user']
+    },
+    tagusers() {
+      // TODO MINOR Would be nice to allow tagging of users who haven't contributed to the thread yet.  Same in NewsReply.
+      const ret = []
+      for (const user in this.users) {
+        ret.push(this.users[user].displayname)
+      }
+
+      return ret
     },
     mod() {
       const me = this.me
