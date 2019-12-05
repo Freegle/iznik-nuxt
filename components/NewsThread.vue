@@ -48,41 +48,45 @@
         </ul>
         <span v-if="!newsfeed.closed" class="text-small">
           <b-row>
-            <b-col class="d-flex">
-              <b-input-group class="flex-shrink-2">
-                <b-input-group-prepend>
-                  <span class="input-group-text pl-1 pr-1">
-                    <b-img-lazy
-                      v-if="me.profile.turl"
-                      rounded="circle"
-                      thumbnail
-                      class="profilesm p-0 m-0 inline float-left"
-                      alt="Profile picture"
-                      title="Profile"
-                      :src="me.profile.turl"
-                    />
-                  </span>
-                </b-input-group-prepend>
-                <b-textarea
-                  ref="threadcomment"
-                  v-model="threadcomment"
-                  size="sm"
-                  rows="1"
-                  max-rows="8"
-                  maxlength="2048"
-                  spellcheck="true"
-                  placeholder="Write a comment on this thread and hit enter..."
-                  class="p-0 pl-1 pt-1"
-                  @keydown.enter.exact.prevent
-                  @keyup.enter.exact="sendComment"
-                  @keydown.enter.shift.exact="newlineComment"
-                  @keydown.alt.shift.exact="newlineComment"
-                  @focus="focusedComment"
-                />
-              </b-input-group>
-              <b-btn size="sm" variant="white" class="float-right flex-grow-1 ml-1">
-                <v-icon name="camera" /><span class="d-none d-sm-inline">&nbsp;Photo</span>
-              </b-btn>
+            <b-col>
+              <div
+                class="d-flex"
+                @keyup.enter.exact.prevent
+                @keydown.enter.exact="sendComment"
+              >
+                <at-ta ref="at" :members="tagusers" class="flex-shrink-2 input-group">
+                  <b-input-group-prepend>
+                    <span class="input-group-text pl-1 pr-1">
+                      <b-img-lazy
+                        v-if="me.profile.turl"
+                        rounded="circle"
+                        thumbnail
+                        class="profilesm p-0 m-0 inline float-left"
+                        alt="Profile picture"
+                        title="Profile"
+                        :src="me.profile.turl"
+                      />
+                    </span>
+                  </b-input-group-prepend>
+                  <b-textarea
+                    ref="threadcomment"
+                    v-model="threadcomment"
+                    size="sm"
+                    rows="1"
+                    max-rows="8"
+                    maxlength="2048"
+                    spellcheck="true"
+                    placeholder="Write a comment on this thread and hit enter..."
+                    class="p-0 pl-1 pt-1"
+                    @keydown.enter.shift.exact="newlineComment"
+                    @keydown.alt.shift.exact="newlineComment"
+                    @focus="focusedComment"
+                  />
+                </at-ta>
+                <b-btn size="sm" variant="white" class="float-right flex-grow-1 ml-1">
+                  <v-icon name="camera" /><span class="d-none d-sm-inline">&nbsp;Photo</span>
+                </b-btn>
+              </div>
             </b-col>
           </b-row>
         </span>
@@ -132,6 +136,9 @@ import twem from '~/assets/js/twem'
 import NewsReply from '~/components/NewsReply'
 import NewsMessage from '~/components/NewsMessage'
 import NewsAboutMe from '~/components/NewsAboutMe'
+const AtTa = process.browser
+  ? require('vue-at/dist/vue-at-textarea')
+  : undefined
 const NewsCommunityEvent = () => import('~/components/NewsCommunityEvent')
 const NewsVolunteerOpportunity = () =>
   import('~/components/NewsVolunteerOpportunity')
@@ -156,7 +163,8 @@ export default {
     NewsAlert,
     NewsNoticeboard,
     NoticeMessage,
-    NewsPreview
+    NewsPreview,
+    AtTa
   },
   props: {
     id: {
@@ -200,6 +208,15 @@ export default {
     },
     me() {
       return this.$store.getters['auth/user']
+    },
+    tagusers() {
+      // TODO MINOR Would be nice to allow tagging of users who haven't contributed to the thread yet.  Same in NewsReply.
+      const ret = []
+      for (const user in this.users) {
+        ret.push(this.users[user].displayname)
+      }
+
+      return ret
     },
     mod() {
       const me = this.me
@@ -289,12 +306,14 @@ export default {
       this.replyingTo = this.newsfeed.id
     },
     async sendComment() {
-      // TODO MINOR This is sluggish.  Can we fake up the reply in the store in advance, or have some other visual indicator?
-      // Same applies to NewsReply.
-      // Encode up any emojis.
+      // TODO MINOR The newline gets added to the textarea before submission.  You can fix that by changing to use
+      // keydown to trigger this event, but that then breaks interaction with vue-at.  Same in NewsReply.
       if (this.threadcomment) {
+        // Encode up any emojis.
         const msg = twem.untwem(this.threadcomment)
 
+        // TODO MINOR This is sluggish.  Can we fake up the reply in the store in advance, or have some other visual indicator?
+        // Same applies to NewsReply.
         await this.$store.dispatch('newsfeed/send', {
           message: msg,
           replyto: this.replyingTo,

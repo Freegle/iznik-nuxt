@@ -1,8 +1,8 @@
 <template>
-  <div v-if="reply && reply.userid && users[reply.userid] && reply.visible">
+  <div v-if="reply && userid && users[userid] && reply.visible">
     <b-row class="p-0">
       <b-col class="p-0">
-        <table v-if="users[reply.userid].profile">
+        <table v-if="users[userid].profile">
           <tbody>
             <tr>
               <td style="vertical-align: top" class="clickme" title="Click to see their profile" @click="showInfo">
@@ -11,13 +11,13 @@
                   :class="(reply.replyto !== threadhead.id) ? 'profilesm' : 'profilemd' + ' p-0 ml-1 mb-1 mr-2 inline float-left mt-2'"
                   alt="Profile picture"
                   title="Profile"
-                  :src="users[reply.userid].profile.turl"
+                  :src="users[userid].profile.turl"
                   @error.native="brokenImage"
                 />
-                <v-icon v-if="users[reply.userid].settings.showmod && reply.replyto === threadhead.id" name="leaf" class="showmodsm text-success" />
+                <v-icon v-if="users[userid].settings.showmod && reply.replyto === threadhead.id" name="leaf" class="showmodsm text-success" />
               </td>
               <td class="align-top">
-                <span class="text-success font-weight-bold clickme" title="Click to see their profile" @click="showInfo">{{ users[reply.userid].displayname }}</span>
+                <span class="text-success font-weight-bold clickme" title="Click to see their profile" @click="showInfo">{{ users[userid].displayname }}</span>
                 <span class="font-weight-bold prewrap forcebreak replytext nopara">
                   <NewsHighlight
                     :search-words="threadUsers"
@@ -37,11 +37,11 @@
                     @error.native="brokenImage"
                   />
                 </div>
-                <span v-if="reply.message && reply.userid && users[reply.userid]">
+                <span v-if="reply.message && userid && users[userid]">
                   <span class="text-muted small">
                     {{ $dayjs(reply.timestamp).fromNow() }}
                   </span>
-                  <NewsUserInfo :user="users[reply.userid]" />
+                  <NewsUserInfo :user="users[userid]" />
                   <span>
                     &bull;<span class="text-muted small clickme" @click="replyReply">&nbsp;Reply</span>
                   </span>
@@ -55,16 +55,16 @@
                     <span v-if="reply.loves" class="clickme" @click="showLove">
                       <v-icon name="heart" class="text-danger" />&nbsp;{{ reply.loves }}
                     </span>
-                    <span v-if="parseInt(me.id) === parseInt(reply.userid)" v-b-modal="'newsEdit-' + replyid">
+                    <span v-if="parseInt(me.id) === parseInt(userid)" v-b-modal="'newsEdit-' + replyid">
                       &bull;&nbsp;Edit
                     </span>
-                    <span v-if="parseInt(me.id) === parseInt(reply.userid) || mod" @click="deleteReply">
+                    <span v-if="parseInt(me.id) === parseInt(userid) || mod" @click="deleteReply">
                       &bull;&nbsp;Delete
                     </span>
-                    <span v-if="parseInt(me.id) !== parseInt(reply.userid)">
+                    <span v-if="parseInt(me.id) !== parseInt(userid)">
                       &bull;&nbsp;
                       <ChatButton
-                        :userid="reply.userid"
+                        :userid="userid"
                         size="naked"
                         title="Message"
                       />
@@ -90,41 +90,47 @@
     </div>
     <b-row v-if="showReplyBox" class="mb-2">
       <b-col class="p-0 pb-1 d-flex ml-4">
-        <b-input-group class="pl-4 flex-shrink-2">
-          <b-input-group-prepend>
-            <span class="input-group-text pl-1 pr-1">
-              <b-img-lazy
-                v-if="me.profile.turl"
-                rounded="circle"
-                thumbnail
-                class="profilesm p-0 m-0 inline float-left"
-                alt="Profile picture"
-                title="Profile"
-                :src="me.profile.turl"
-                @error.native="brokenImage"
-              />
-            </span>
-          </b-input-group-prepend>
-          <b-textarea
-            ref="replybox"
-            v-model="replybox"
-            size="sm"
-            rows="1"
-            max-rows="8"
-            maxlength="2048"
-            spellcheck="true"
-            placeholder="Write a reply to this comment and hit enter..."
-            class="p-0 pl-1 pt-1"
-            @keydown.enter.exact.prevent
-            @keyup.enter.exact="sendReply"
-            @keydown.enter.shift.exact="newlineReply"
-            @keydown.alt.shift.exact="newlineReply"
-            @focus="focusedReply"
-          />
-        </b-input-group>
-        <b-btn size="sm" variant="white" class="flex-grow-1 float-right ml-1">
-          <v-icon name="camera" />&nbsp;Photo
-        </b-btn>
+        <div
+          class="d-flex w-100"
+          @keyup.enter.exact.prevent
+          @keydown.enter.exact="sendReply"
+        >
+          <at-ta ref="at" :members="tagusers" class="pl-4 flex-shrink-2 input-group">
+            <b-input-group-prepend>
+              <span class="input-group-text pl-1 pr-1">
+                <b-img-lazy
+                  v-if="me.profile.turl"
+                  rounded="circle"
+                  thumbnail
+                  class="profilesm p-0 m-0 inline float-left"
+                  alt="Profile picture"
+                  title="Profile"
+                  :src="me.profile.turl"
+                  @error.native="brokenImage"
+                />
+              </span>
+            </b-input-group-prepend>
+            <b-textarea
+              ref="replybox"
+              v-model="replybox"
+              size="sm"
+              rows="1"
+              max-rows="8"
+              maxlength="2048"
+              spellcheck="true"
+              placeholder="Write a reply to this comment and hit enter..."
+              class="p-0 pl-1 pt-1"
+              @keydown.enter.exact.prevent
+              @keyup.enter.exact="sendReply"
+              @keydown.enter.shift.exact="newlineReply"
+              @keydown.alt.shift.exact="newlineReply"
+              @focus="focusedReply"
+            />
+          </at-ta>
+          <b-btn size="sm" variant="white" class="flex-grow-1 float-right ml-1">
+            <v-icon name="camera" />&nbsp;Photo
+          </b-btn>
+        </div>
       </b-col>
     </b-row>
     <b-modal
@@ -172,15 +178,17 @@
         </b-button>
       </template>
     </b-modal>
-    <ProfileModal v-if="infoclick" :id="reply.userid" ref="profilemodal" />
+    <ProfileModal v-if="infoclick" :id="userid" ref="profilemodal" />
     <NewsLovesModal :id="replyid" ref="loveModal" />
   </div>
 </template>
 
 <script>
-// TODO EH User tagging
 import NewsLovesModal from './NewsLovesModal'
 import twem from '~/assets/js/twem'
+const AtTa = process.browser
+  ? require('vue-at/dist/vue-at-textarea')
+  : undefined
 
 const NewsUserInfo = () => import('~/components/NewsUserInfo')
 const NewsHighlight = () => import('~/components/NewsHighlight')
@@ -198,7 +206,8 @@ export default {
     NewsHighlight,
     ProfileModal,
     ChatButton,
-    NewsPreview
+    NewsPreview,
+    AtTa
   },
   props: {
     threadhead: {
@@ -229,12 +238,33 @@ export default {
     }
   },
   computed: {
+    userid() {
+      // The API can return slightly different things in different places.
+      if (this.reply.userid) {
+        return this.reply.userid
+      }
+
+      if (this.reply.user) {
+        return this.reply.user.id
+      }
+
+      return null
+    },
     reply() {
       const ret = this.$store.getters['newsfeed/get'](this.replyid)
       return ret
     },
     me() {
       return this.$store.getters['auth/user']
+    },
+    tagusers() {
+      // TODO MINOR Would be nice to allow tagging of users who haven't contributed to the thread yet.  Same in NewsReply.
+      const ret = []
+      for (const user in this.users) {
+        ret.push(this.users[user].displayname)
+      }
+
+      return ret
     },
     mod() {
       const me = this.me
@@ -331,8 +361,8 @@ export default {
     }
   },
   mounted() {
-    if (parseInt(this.scrollTo) === this.replyid) {
-      // We want to scroll to this reply to make sure it's visible
+    if (parseInt(this.scrollTo) === this.replyid && this.$el.scrollIntoView) {
+      // We want to scroll to this reply to make sure it's visible.
       this.$el.scrollIntoView()
 
       // TODO DESIGN Can we have some visual highlighting of the element we've just scrolled to?
@@ -356,7 +386,7 @@ export default {
         this.$refs.replybox.focus()
 
         // Reply with tag.
-        this.replybox = '@' + this.users[this.reply.userid].displayname + ' '
+        this.replybox = '@' + this.users[this.userid].displayname + ' '
       })
     },
     focusReply: function() {
