@@ -80,6 +80,34 @@ export const mutations = {
   }
 }
 
+function findInReplies(replies, id) {
+  let ret = null
+
+  // Look in the replies.
+  for (const reply of replies) {
+    if (parseInt(reply.id) === parseInt(id)) {
+      ret = reply
+      break
+    }
+  }
+
+  if (!ret) {
+    // Not found.  Recurse, which is slower.  We don't in practice have deeply nested conversations so we're not
+    // going to blow our stack.
+    for (const reply of replies) {
+      if (reply.replies) {
+        ret = findInReplies(reply.replies, id)
+      }
+
+      if (ret) {
+        break
+      }
+    }
+  }
+
+  return ret
+}
+
 export const getters = {
   get: state => id => {
     // This will get any newsfeed item, whether it's a top-level thread, a reply, or a reply to a reply.
@@ -95,28 +123,7 @@ export const getters = {
       // Now look in the replies - bit slower.
       for (const item of state.newsfeed) {
         if (item.replies) {
-          for (const reply of item.replies) {
-            if (parseInt(reply.id) === parseInt(id)) {
-              ret = reply
-            }
-          }
-        }
-      }
-    }
-
-    if (!ret) {
-      // Now look in the replies to replies - even slower.
-      for (const item of state.newsfeed) {
-        if (item.replies) {
-          for (const reply of item.replies) {
-            if (reply.replies) {
-              for (const reply2reply of reply.replies) {
-                if (parseInt(reply2reply.id) === parseInt(id)) {
-                  ret = reply2reply
-                }
-              }
-            }
-          }
+          ret = findInReplies(item.replies, id)
         }
       }
     }
