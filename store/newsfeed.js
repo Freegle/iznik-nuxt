@@ -24,7 +24,6 @@ export const mutations = {
 
     if (!found) {
       // Just add to head.
-      console.log('Just add', item.id)
       state.newsfeed.unshift(item)
     }
   },
