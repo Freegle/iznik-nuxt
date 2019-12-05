@@ -124,6 +124,10 @@ export const getters = {
       for (const item of state.newsfeed) {
         if (item.replies) {
           ret = findInReplies(item.replies, id)
+
+          if (ret) {
+            break
+          }
         }
       }
     }
