@@ -41,7 +41,7 @@
               <v-icon name="info-circle" /> More info
             </b-btn>
           </div>
-          <b-img-lazy v-if="volunteering.photo" fluid :src="volunteering.photo.path" />
+          <b-img-lazy v-if="volunteering.photo" class="w-100" :src="volunteering.photo.path" />
           <div v-if="volunteering.groups && volunteering.groups.length > 0" class="small text-muted text-center">
             Posted on {{ volunteering.groups[0].namedisplay }}
           </div>
