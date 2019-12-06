@@ -205,5 +205,17 @@ export const actions = {
     }
 
     await Promise.all(promises)
+  },
+
+  async renew({ commit, dispatch }, { id }) {
+    await this.$api.volunteering.renew(id)
+    // Fetch back to update store and thereby components
+    await dispatch('fetch', { id })
+  },
+
+  async expire({ commit, dispatch }, { id }) {
+    await this.$api.volunteering.expire(id)
+    // Fetch back to update store and thereby components
+    await dispatch('fetch', { id })
   }
 }
