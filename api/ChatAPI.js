@@ -10,7 +10,7 @@ export default class ChatAPI extends BaseAPI {
     return chatrooms
   }
 
-  fetchRoom(chatid) {
+  fetchChat(chatid) {
     return this.$get('/chatrooms', { id: chatid })
   }
 
@@ -31,5 +31,13 @@ export default class ChatAPI extends BaseAPI {
       id: roomid,
       action: 'Nudge'
     })
+  }
+
+  hideChat(chatid) {
+    return this.$post('/chatrooms', { id: chatid, status: 'Closed' })
+  }
+
+  blockChat(chatid) {
+    return this.$post('/chatrooms', { id: chatid, status: 'Blocked' })
   }
 }

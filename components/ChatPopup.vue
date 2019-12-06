@@ -370,7 +370,6 @@ export default {
     },
     loadMore: function($state) {
       const currentCount = this.chatmessages.length
-      console.log('Load more', currentCount)
 
       if (this.complete) {
         $state.complete()

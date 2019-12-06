@@ -633,10 +633,8 @@ export default {
               if (currentCount === notifications.length) {
                 this.complete = true
                 $state.complete()
-                console.log('Complete')
               } else {
                 $state.loaded()
-                console.log('Loaded')
               }
               this.busy = false
             } catch (e) {

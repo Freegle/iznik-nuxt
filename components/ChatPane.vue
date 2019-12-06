@@ -20,6 +20,18 @@
                 <ratings v-if="otheruser" :key="'otheruser-' + otheruser.id" size="sm" v-bind="otheruser" class="mr-2" />
               </b-col>
               <b-col cols="4" class="p-0">
+                <b-dropdown size="sm" variant="transparent" class="float-right" right>
+                  <template slot="button-content" />
+                  <b-dropdown-item v-if="chat.chattype === 'User2User'" @click="showhide">
+                    Hide this chat
+                  </b-dropdown-item>
+                  <b-dropdown-item v-if="chat.chattype === 'User2User'" @click="showblock">
+                    Block this person
+                  </b-dropdown-item>
+                  <b-dropdown-item v-if="chat.chattype === 'User2User'" @click="report">
+                    Report this person
+                  </b-dropdown-item>
+                </b-dropdown>
                 <span class="float-right pl-1 mr-1 clickme" title="Popup chat window" @click="popup">
                   <v-icon name="window-restore" />
                 </span>
@@ -157,6 +169,8 @@
         <ProfileModal :id="otheruser ? otheruser.id : null" ref="profile" />
         <AvailabilityModal v-if="me" ref="availabilitymodal" :otheruid="otheruser ? otheruser.id : null" :chatid="chat.id" :thisuid="me.id" />
         <AddressModal ref="addressModal" :choose="true" @chosen="sendAddress" />
+        <ChatBlockModal v-if="chat.chattype === 'User2User'" :id="id" ref="chatblock" :user="otheruser" @confirm="block" />
+        <ChatHideModal v-if="chat.chattype === 'User2User'" :id="id" ref="chathide" :user="otheruser" @confirm="hide" />
       </div>
     </client-only>
   </div>
@@ -199,13 +213,19 @@
   justify-content: flex-end;
   background-color: $color-white;
 }
+
+::v-deep .dropdown-toggle {
+  color: $color-white;
+}
 </style>
 <script>
-// TODO EH Chat dropdown menu for report etc
+// TODO EH Report option
 // TODO MINOR Popup confirm first time you use Nudge, so you know what you're doing.
 // TODO DESIGN We have a spinner at the top for our upwards infinite scroll.  But this looks messy when we load a
 // short chat, because we see the messages appear below the spinner and then move upwards once the infinite scroll
 // completes.
+import ChatBlockModal from './ChatBlockModal'
+import ChatHideModal from './ChatHideModal'
 import twem from '~/assets/js/twem'
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
@@ -227,7 +247,9 @@ export default {
     ProfileModal,
     AvailabilityModal,
     AddressModal,
-    NoticeMessage
+    NoticeMessage,
+    ChatBlockModal,
+    ChatHideModal
   },
   props: {
     id: {
@@ -594,7 +616,24 @@ export default {
           addressid: id
         })
         .then(this._updateAfterSend)
-    }
+    },
+    showhide() {
+      this.$refs.chathide.show()
+    },
+    showblock() {
+      this.$refs.chatblock.show()
+    },
+    hide() {
+      this.$store.dispatch('chats/hide', {
+        id: this.id
+      })
+    },
+    block() {
+      this.$store.dispatch('chats/block', {
+        id: this.id
+      })
+    },
+    report() {}
   }
 }
 </script>

@@ -144,7 +144,6 @@ export default {
 
     loadMore: function($state) {
       this.busy = true
-      console.log('Load more', this.groupid)
 
       const currentCount = this.messages.length
 
@@ -187,9 +186,7 @@ export default {
           if (currentCount === messages.length) {
             this.complete = true
             $state.complete()
-            console.log('Complete')
           } else {
-            console.log('Loaded')
             $state.loaded()
           }
         })
