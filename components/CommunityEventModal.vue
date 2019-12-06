@@ -354,7 +354,6 @@
 
 <script>
 // TODO DESIGN This layout is staid table nonsense.  Surely we can make it more appealing?
-// TODO NS Add some form validation using a plugin - see https://bootstrap-vue.js.org/docs/reference/validation/
 // TODO NS Don't allow submission before image upload complete.
 // TODO Wherever we have b-img (throughout the site, not just here) we should have @brokenImage.  Bet we don't.
 // TODO NS Set date to start at 9am rather than midnight.  Default end date to later than start date.
@@ -490,7 +489,6 @@ export default {
         return
       }
 
-      // TODO NS Validation.
       this.saving = true
 
       if (this.isExisting) {
