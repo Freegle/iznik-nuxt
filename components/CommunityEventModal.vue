@@ -312,6 +312,8 @@
 
 <style scoped lang="scss">
 @import 'color-vars';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
 
 .field {
   font-weight: bold;
@@ -330,7 +332,7 @@
 
 ::v-deep .is-invalid label,
 ::v-deep .is-invalid .col-form-label {
-  color: $color-danger;
+  color: $form-feedback-invalid-color;
 }
 
 ::v-deep .form-group.is-invalid .invalid-feedback {
