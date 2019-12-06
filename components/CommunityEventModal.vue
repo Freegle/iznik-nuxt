@@ -100,6 +100,7 @@
         <b-row>
           <b-col cols="12" md="6">
             <b-form-group
+              ref="groupid"
               label="For which community?"
               :state="validationEnabled ? !$v.groupid.$invalid : null"
             >
@@ -110,6 +111,7 @@
             </b-form-group>
             <b-form-group
               v-if="enabled"
+              ref="eventEdit__title"
               label="What's the event's name?"
               label-for="title"
               :state="validationEnabled ? !$v.eventEdit.title.$invalid : null"
@@ -175,6 +177,7 @@
             </b-col>
           </b-row>
           <b-form-group
+            ref="eventEdit__description"
             label="What is it?"
             label-for="description"
             :state="validationEnabled ? !$v.eventEdit.description.$invalid : null"
@@ -195,6 +198,7 @@
             />
           </b-form-group>
           <b-form-group
+            ref="eventEdit__location"
             label="Where is it?"
             label-for="location"
             :state="validationEnabled ? !$v.eventEdit.location.$invalid : null"
@@ -212,6 +216,7 @@
             />
           </b-form-group>
           <b-form-group
+            ref="eventEdit__dates"
             label="When is it?"
             :state="validationEnabled ? !$v.eventEdit.dates.$invalid : null"
           >
@@ -222,6 +227,7 @@
             <StartEndCollection v-if="eventEdit.dates" v-model="eventEdit.dates" add-date-if-empty />
           </b-form-group>
           <b-form-group
+            ref="eventEdit__contactname"
             label="Contact name:"
             label-for="contactname"
             :state="eventEdit.contactname && validationEnabled ? !$v.eventEdit.contactname.$invalid : null"
@@ -357,7 +363,6 @@
 // TODO NS Don't allow submission before image upload complete.
 // TODO Wherever we have b-img (throughout the site, not just here) we should have @brokenImage.  Bet we don't.
 // TODO NS Set date to start at 9am rather than midnight.  Default end date to later than start date.
-import Vue from 'vue'
 import { required, maxLength } from 'vuelidate/lib/validators'
 import cloneDeep from 'lodash.clonedeep'
 import { validationMixin } from 'vuelidate'
@@ -369,15 +374,6 @@ const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
 const OurFilePond = () => import('~/components/OurFilePond')
 const StartEndCollection = () => import('~/components/StartEndCollection')
 const NoticeMessage = () => import('~/components/NoticeMessage')
-
-// TODO NS move into utilities somewhere
-function nextTicks(n, fn) {
-  if (n === 0) {
-    fn()
-  } else {
-    Vue.nextTick(() => nextTicks(n - 1, fn))
-  }
-}
 
 function initialEvent() {
   return {
@@ -484,9 +480,7 @@ export default {
     async saveIt() {
       this.$v.$touch()
       if (this.$v.$anyError) {
-        // It takes a few cycles to actually render the errors...
-        // TODO NS this is a bit hacky, I think a better way is to use refs to find the elements to focus
-        nextTicks(4, () => this.validationFocusFirstError())
+        this.validationFocusFirstError()
         return
       }
 

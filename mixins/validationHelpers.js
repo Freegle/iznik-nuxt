@@ -3,6 +3,7 @@
  *
  * It does not include vuelidate, so include that too in your form component.
  */
+import get from 'lodash.get'
 export default {
   computed: {
     validationEnabled() {
@@ -10,25 +11,36 @@ export default {
     }
   },
   methods: {
+    /**
+     * Finds, scrolls to, and focuses the first error on a form.
+     *
+     * This relies on a convention for setting "ref" attributes on form fields.
+     *
+     * If you are validating the nested field `eventEdit.title`
+     * the corresponding ref would be `eventEdit__title`.
+     *
+     * It is expected to put this on a form group wrapper element,
+     * rather than the input element itself.
+     *
+     * We then find this ref, scroll to it, and focus any input or textarea.
+     */
     validationFocusFirstError() {
-      const el = this.$refs.form
-      if (!el) return // no ref :/
-      // We want to scroll to the form group, so the label is visible
-      const scrollToEl = el.querySelector('.is-invalid')
-      // ... but focus the first input field
-      const focusEl = el.querySelector('input.is-invalid, textarea.is-invalid')
-      if (scrollToEl) scrollToEl.scrollIntoView()
+      const error = this.$v
+        .$flattenParams()
+        .map(({ path }) => ({
+          path,
+          validator: get(this.$v, path),
+          ref: this.$refs[path.join('__')]
+        }))
+        .find(({ ref, validator }) => ref && validator.$error)
+      if (!error) return
+      const { ref } = error
+      const el = ref.$el
+      el.scrollIntoView()
+      const focusEl = el.querySelector('input, textarea')
       if (focusEl) {
-        if (!scrollToEl) {
-          // we can make do with scrolling to the input
-          focusEl.scrollIntoView()
-        }
         focusEl.focus()
-      } else if (!scrollToEl) {
-        // nothing else found, just scroll to the form itself...
-        el.scrollIntoView()
       }
-      return scrollToEl || focusEl
     }
   }
 }
