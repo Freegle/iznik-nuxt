@@ -162,6 +162,7 @@ export const actions = {
   async add({ commit, dispatch }, event) {
     const { id } = await this.$api.communityevent.create(event)
     await dispatch('fetch', { id })
+    return id
   },
   async addGroup({ commit, dispatch }, { id, groupid }) {
     await this.$api.communityevent.addGroup(id, groupid)
