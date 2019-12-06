@@ -485,6 +485,7 @@ export default {
       this.$v.$touch()
       if (this.$v.$anyError) {
         // It takes a few cycles to actually render the errors...
+        // TODO NS this is a bit hacky, I think a better way is to use refs to find the elements to focus
         nextTicks(4, () => this.validationFocusFirstError())
         return
       }
@@ -636,6 +637,7 @@ export default {
         required
       },
       dates: {
+        // TODO validate each entry is not more than 4 days in duration
         minLength: dates =>
           dates.filter(({ start, end }) => start && end).length > 0
       },
