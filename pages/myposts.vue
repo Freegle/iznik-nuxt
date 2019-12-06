@@ -314,7 +314,7 @@ export default {
   },
   methods: {
     async loadMore() {
-      const me = this.$store.state.auth.user
+      const me = this.$store.getters['auth/user']
       const currentCount = this.messages.length
 
       try {

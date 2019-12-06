@@ -30,7 +30,7 @@ export default {
         : null
     },
     me() {
-      return this.$store.state.auth.user
+      return this.$store.getters['auth/user']
     },
     newsfeed() {
       return this.$store.getters['newsfeed/get'](this.id)

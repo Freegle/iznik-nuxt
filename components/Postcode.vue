@@ -73,16 +73,16 @@ export default {
     //
     // If we are logged in then we may have a known location to use as the default.
     const ret =
-      this.$store.state.auth.user &&
-      this.$store.state.auth.user.settings &&
-      this.$store.state.auth.user.settings.mylocation
-        ? this.$store.state.auth.user.settings.mylocation.name
+      this.$store.getters['auth/user'] &&
+      this.$store.getters['auth/user'].settings &&
+      this.$store.getters['auth/user'].settings.mylocation
+        ? this.$store.getters['auth/user'].settings.mylocation.name
         : null
 
     if (ret) {
       // Got one Set this as the default in the input.
       this.$refs.autocomplete.setValue(
-        this.$store.state.auth.user.settings.mylocation.name
+        this.$store.getters['auth/user'].settings.mylocation.name
       )
 
       // We want to signal that we have a selected value.  Unfortunately what we have in auth from the session call

@@ -71,7 +71,7 @@ export default {
     email: {
       get() {
         let email = null
-        const user = this.$store.state.auth.user
+        const user = this.$store.getters['auth/user']
 
         if (user && user.email) {
           // If we're logged in, then we have an email from that which takes precedence.
