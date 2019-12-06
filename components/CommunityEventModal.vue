@@ -4,11 +4,11 @@
     v-model="showModal"
     size="lg"
     no-stacking
-    @hidden="resetData()"
+    @hidden="reset()"
   >
     <template slot="modal-header">
       <h4 v-if="editing">
-        <span v-if="event.id">
+        <span v-if="isExisting">
           Edit Event
         </span>
         <span v-else>
@@ -112,14 +112,14 @@
               v-if="enabled"
               label="What's the event's name?"
               label-for="title"
-              :state="validationEnabled ? !$v.event.title.$invalid : null"
+              :state="validationEnabled ? !$v.eventEdit.title.$invalid : null"
             >
               <validating-form-input
                 id="title"
-                v-model="event.title"
+                v-model="eventEdit.title"
                 type="text"
                 placeholder="Give the event a short title"
-                :validation="$v.event.title"
+                :validation="$v.eventEdit.title"
                 :validation-enabled="validationEnabled"
                 :validation-messages="{
                   required: 'Please add a title',
@@ -130,7 +130,7 @@
           </b-col>
           <b-col v-if="enabled" cols="12" md="6">
             <div class="float-right">
-              <div v-if="event.photo" class="container p-0">
+              <div v-if="eventEdit.photo" class="container p-0">
                 <span @click="rotateLeft">
                   <v-icon label="Rotate left" class="topleft clickme" title="Rotate left">
                     <v-icon name="circle" scale="2" />
@@ -150,7 +150,7 @@
                   </v-icon>
                 </span>
               </div>
-              <b-img v-if="event.photo" thumbnail :src="event.photo.paththumb + '?' + cacheBust" />
+              <b-img v-if="event.photo" thumbnail :src="eventEdit.photo.paththumb + '?' + cacheBust" />
               <b-img v-else width="250" thumbnail src="~/static/placeholder.jpg" />
             </div>
           </b-col>
@@ -177,17 +177,17 @@
           <b-form-group
             label="What is it?"
             label-for="description"
-            :state="validationEnabled ? !$v.event.description.$invalid : null"
+            :state="validationEnabled ? !$v.eventEdit.description.$invalid : null"
           >
             <validating-textarea
               id="description"
-              v-model="event.description"
+              v-model="eventEdit.description"
               rows="5"
               max-rows="8"
               spellcheck="true"
               placeholder="Let people know what the event is - why they should come, what to expect, and any admission charge or fee (we only approve free or cheap events)."
               class="mt-2"
-              :validation="$v.event.description"
+              :validation="$v.eventEdit.description"
               :validation-enabled="validationEnabled"
               :validation-messages="{
                 required: 'Please add a description'
@@ -197,14 +197,14 @@
           <b-form-group
             label="Where is it?"
             label-for="location"
-            :state="validationEnabled ? !$v.event.location.$invalid : null"
+            :state="validationEnabled ? !$v.eventEdit.location.$invalid : null"
           >
             <validating-form-input
               id="location"
-              v-model="event.location"
+              v-model="eventEdit.location"
               type="text"
               placeholder="Where is it being held? Add a postcode to make sure people can find you!"
-              :validation="$v.event.location"
+              :validation="$v.eventEdit.location"
               :validation-enabled="validationEnabled"
               :validation-messages="{
                 required: 'Please add a location'
@@ -213,26 +213,26 @@
           </b-form-group>
           <b-form-group
             label="When is it?"
-            :state="validationEnabled ? !$v.event.dates.$invalid : null"
+            :state="validationEnabled ? !$v.eventEdit.dates.$invalid : null"
           >
             <p>You can add multiple dates if the event occurs several times.</p>
             <b-form-invalid-feedback class="mb-3">
               Please add at least one date
             </b-form-invalid-feedback>
-            <StartEndCollection v-if="event.dates" v-model="event.dates" add-date-if-empty />
+            <StartEndCollection v-if="eventEdit.dates" v-model="eventEdit.dates" add-date-if-empty />
           </b-form-group>
           <b-form-group
             label="Contact name:"
             label-for="contactname"
-            :state="event.contactname && validationEnabled ? !$v.event.contactname.$invalid : null"
+            :state="eventEdit.contactname && validationEnabled ? !$v.eventEdit.contactname.$invalid : null"
           >
             <validating-form-input
               id="contactname"
-              v-model="event.contactname"
+              v-model="eventEdit.contactname"
               type="text"
               placeholder="Is there a contact person for anyone who wants to find out more? (Optional)"
-              :validation="$v.event.contactname"
-              :validation-enabled="event.contactname && validationEnabled"
+              :validation="$v.eventEdit.contactname"
+              :validation-enabled="eventEdit.contactname && validationEnabled"
               :validation-messages="{
                 maxLength: ({ max }) => `Max length is ${max}`
               }"
@@ -244,7 +244,7 @@
           >
             <b-form-input
               id="contactemail"
-              v-model="event.contactemail"
+              v-model="eventEdit.contactemail"
               type="email"
               placeholder="Can people reach you by email? (Optional)"
             />
@@ -255,7 +255,7 @@
           >
             <b-form-input
               id="contactphone"
-              v-model="event.contactphone"
+              v-model="eventEdit.contactphone"
               type="tel"
               placeholder="Can people reach you by phone? (Optional)"
             />
@@ -266,7 +266,7 @@
           >
             <b-form-input
               id="contacturl"
-              v-model="event.contacturl"
+              v-model="eventEdit.contacturl"
               type="tel"
               placeholder="Is there more information on the web? (Optional)"
             />
@@ -297,7 +297,7 @@
       <b-button v-if="editing" variant="success" class="float-right" @click="saveIt">
         <v-icon v-if="saving" name="sync" class="fa-spin" />
         <v-icon v-else name="save" />
-        <span v-if="event.id">Save Changes</span>
+        <span v-if="isExisting">Save Changes</span>
         <span v-else>Add Event</span>
       </b-button>
     </template>
@@ -398,12 +398,11 @@ function initialEvent() {
 
 function initialData() {
   return {
+    eventEdit: cloneDeep(this.event),
     showModal: false,
     editing: false,
     groupid: null,
     uploading: false,
-    oldphoto: null,
-    olddates: null,
     cacheBust: Date.now(),
     saving: false
   }
@@ -432,11 +431,14 @@ export default {
   },
   data: initialData,
   computed: {
+    isExisting() {
+      return Boolean(this.event.id)
+    },
     validationEnabled() {
-      return this.$v.event.$dirty
+      return this.$v.eventEdit.$dirty
     },
     description() {
-      let desc = this.event.description
+      let desc = this.eventEdit.description
       desc = desc ? twem.twem(this.$twemoji, desc) : ''
       desc = desc.trim()
       return desc
@@ -453,27 +455,19 @@ export default {
       }
 
       return ret
-    }
-  },
-  watch: {
-    showModal(val, oldVal) {
-      console.log('showModal', oldVal, '->', val)
+    },
+    shouldUpdatePhoto() {
+      const { photo: oldPhoto } = this.event
+      const { photo: newPhoto } = this.eventEdit
+      return newPhoto && (oldPhoto ? newPhoto.id !== oldPhoto.id : true)
     }
   },
   methods: {
     show() {
       this.editing = this.startEdit
       this.showModal = true
-
-      this.oldphoto =
-        this.event && this.event.photo ? this.event.photo.id : null
-      this.olddates =
-        this.event && this.event.dates && this.event.dates.length > 0
-          ? cloneDeep(this.event.dates)
-          : null
-
-      if (this.event.groups && this.event.groups.length > 0) {
-        this.groupid = this.event.groups[0].id
+      if (this.eventEdit.groups && this.eventEdit.groups.length > 0) {
+        this.groupid = this.eventEdit.groups[0].id
       }
     },
     hide() {
@@ -486,11 +480,8 @@ export default {
 
       this.hide()
     },
-    resetData() {
-      Object.assign(this, initialData())
-    },
-    resetEvent() {
-      Object.assign(this.event, initialEvent())
+    reset() {
+      Object.assign(this, initialData.call(this))
       this.$v.$reset()
     },
     focusFirstError() {
@@ -521,12 +512,13 @@ export default {
       // TODO NS Validation.
       this.saving = true
 
-      if (this.event.id) {
+      if (this.isExisting) {
+        const { id } = this.event
         // This is an edit.
-        if (this.event.photo && this.event.photo.id !== this.oldphoto) {
+        if (this.shouldUpdatePhoto) {
           await this.$store.dispatch('communityevents/setPhoto', {
-            id: this.event.id,
-            photoid: this.event.photo.id
+            id,
+            photoid: this.eventEdit.photo.id
           })
         }
 
@@ -536,57 +528,57 @@ export default {
         if (this.groupid !== oldgroupid) {
           // Save the new group, then remove the old group, so it won't get stranded.
           await this.$store.dispatch('communityevents/addGroup', {
-            id: this.event.id,
+            id,
             groupid: this.groupid
           })
 
           if (oldgroupid) {
             await this.$store.dispatch('communityevents/removeGroup', {
-              id: this.event.id,
+              id,
               groupid: oldgroupid
             })
           }
         }
 
         await this.$store.dispatch('communityevents/setDates', {
-          id: this.event.id,
-          olddates: this.olddates,
-          newdates: this.event.dates
+          id,
+          olddates: this.event.dates,
+          newdates: this.eventEdit.dates
         })
 
-        await this.$store.dispatch('communityevents/save', this.event)
+        await this.$store.dispatch('communityevents/save', this.eventEdit)
       } else {
         // This is an add.  First create it to get the id.
-        const dates = this.event.dates
-        const photoid = this.event.photo ? this.event.photo.id : null
+        const dates = this.eventEdit.dates
+        const photoid = this.eventEdit.photo ? this.eventEdit.photo.id : null
 
-        const eventid = await this.$store.dispatch(
+        const id = await this.$store.dispatch(
           'communityevents/add',
-          this.event
+          this.eventEdit
         )
 
         if (photoid) {
           await this.$store.dispatch('communityevents/setPhoto', {
-            id: eventid,
+            id,
             photoid: photoid
           })
         }
 
         // Save the group.
         await this.$store.dispatch('communityevents/addGroup', {
-          id: eventid,
+          id,
           groupid: this.groupid
         })
 
         await this.$store.dispatch('communityevents/setDates', {
-          id: eventid,
+          id,
           olddates: [],
           newdates: dates
         })
 
         // Fetch for good luck.
         await this.$store.dispatch('communityevents/fetch', {
-          id: eventid
+          id
         })
       }
 
@@ -599,7 +591,6 @@ export default {
       })
 
       this.hide()
-      this.resetEvent()
     },
     photoAdd() {
       // Flag that we're uploading.  This will trigger the render of the filepond instance and subsequently the
@@ -610,7 +601,7 @@ export default {
       // We have uploaded a photo.  Remove the filepond instance.
       this.uploading = false
 
-      this.event.photo = {
+      this.eventEdit.photo = {
         id: imageid,
         path: image,
         paththumb: imagethumb
@@ -622,19 +613,19 @@ export default {
         const title = p !== -1 ? ocr.substring(0, p) : null
         const desc = p !== -1 ? ocr.substring(p + 1) : ocr
 
-        if (!this.event.title) {
-          this.event.title = title
+        if (!this.eventEdit.title) {
+          this.eventEdit.title = title
         }
 
-        if (!this.event.description) {
-          this.event.description = desc
+        if (!this.eventEdit.description) {
+          this.eventEdit.description = desc
         }
       }
     },
     rotate(deg) {
       this.$axios
         .post(process.env.API + '/image', {
-          id: this.event.photo.id,
+          id: this.eventEdit.photo.id,
           rotate: deg,
           bust: Date.now(),
           communityevent: true
@@ -654,7 +645,7 @@ export default {
     groupid: {
       required
     },
-    event: {
+    eventEdit: {
       title: {
         required,
         maxLength: maxLength(80)
