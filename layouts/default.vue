@@ -45,7 +45,7 @@
               <v-icon name="calendar-alt" scale="2" /><br>
               Events
             </b-nav-item>
-            <b-nav-item id="menu-option-volunteering" class="text-center small p-0" to="/volunteering" @mousedown="maybeReload('/volunteering')">
+            <b-nav-item id="menu-option-volunteering" class="text-center small p-0" to="/volunteerings" @mousedown="maybeReload('/volunteerings')">
               <v-icon name="hands-helping" scale="2" /><br>
               Volunteer
             </b-nav-item>
@@ -217,7 +217,7 @@
               <v-icon name="calendar-alt" scale="2" /><br>
               Events
             </b-nav-item>
-            <b-nav-item class="text-center p-0" to="/volunteering" @mousedown="maybeReload('/volunteering')">
+            <b-nav-item class="text-center p-0" to="/volunteerings" @mousedown="maybeReload('/volunteerings')">
               <v-icon name="hands-helping" scale="2" /><br>
               Volunteer
             </b-nav-item>
@@ -461,7 +461,6 @@ export default {
   watch: {
     $route() {
       // Close the dropdown menu when we move around.
-      console.log('Route changed')
       if (
         this.$refs.nav_collapse &&
         this.$refs.nav_collapse.$el.classList.contains('show')

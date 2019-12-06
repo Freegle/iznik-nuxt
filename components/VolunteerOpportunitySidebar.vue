@@ -5,7 +5,7 @@
         <b-btn variant="white" class="float-right m-1" @click="showVolunteerModal">
           <v-icon name="plus" /> Add
         </b-btn>
-        <nuxt-link to="/volunteering">
+        <nuxt-link to="/volunteerings">
           <h4 class="pl-1 pt-1">
             <v-icon name="calendar-alt" scale="2" /> Volunteer Opportunities
           </h4>
