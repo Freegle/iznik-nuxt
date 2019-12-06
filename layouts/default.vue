@@ -1,6 +1,7 @@
 <template>
   <div>
     <client-only>
+      <!--      TODO We need a navbar that's fixed to the top.-->
       <!-- Navbar for large screens -->
       <b-navbar id="navbar_large" toggleable="xl" type="dark" class="ourBack d-none d-xl-flex">
         <b-navbar-brand to="/" class="p-0">
