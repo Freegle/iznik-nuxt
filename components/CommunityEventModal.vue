@@ -359,9 +359,10 @@
 // TODO Wherever we have b-img (throughout the site, not just here) we should have @brokenImage.  Bet we don't.
 // TODO NS Set date to start at 9am rather than midnight.  Default end date to later than start date.
 import Vue from 'vue'
-import { validationMixin } from 'vuelidate'
 import { required, maxLength } from 'vuelidate/lib/validators'
 import cloneDeep from 'lodash.clonedeep'
+import { validationMixin } from 'vuelidate'
+import validationHelpers from '@/mixins/validationHelpers'
 import twem from '~/assets/js/twem'
 import ValidatingFormInput from '@/components/ValidatingFormInput'
 import ValidatingTextarea from '@/components/ValidatingTextarea'
@@ -417,7 +418,7 @@ export default {
     StartEndCollection,
     NoticeMessage
   },
-  mixins: [validationMixin],
+  mixins: [validationMixin, validationHelpers],
   props: {
     event: {
       type: Object,
@@ -433,9 +434,6 @@ export default {
   computed: {
     isExisting() {
       return Boolean(this.event.id)
-    },
-    validationEnabled() {
-      return this.$v.eventEdit.$dirty
     },
     description() {
       let desc = this.eventEdit.description
@@ -484,28 +482,11 @@ export default {
       Object.assign(this, initialData.call(this))
       this.$v.$reset()
     },
-    focusFirstError() {
-      // We want to scroll to the form group, so the label is visible
-      const scrollToEl = this.$refs.form.querySelector('.is-invalid')
-      // ... but focus the first input field
-      const focusEl = this.$refs.form.querySelector(
-        'input.is-invalid, textarea.is-invalid'
-      )
-      if (scrollToEl) scrollToEl.scrollIntoView()
-      if (focusEl) {
-        if (!scrollToEl) {
-          // we can make do with scrolling to the input
-          focusEl.scrollIntoView()
-        }
-        focusEl.focus()
-      }
-      return scrollToEl || focusEl
-    },
     async saveIt() {
       this.$v.$touch()
       if (this.$v.$anyError) {
         // It takes a few cycles to actually render the errors...
-        nextTicks(4, () => this.focusFirstError())
+        nextTicks(4, () => this.validationFocusFirstError())
         return
       }
 

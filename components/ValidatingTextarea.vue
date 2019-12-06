@@ -14,9 +14,9 @@
 </template>
 
 <script>
-import validationHelpers from '@/mixins/validationHelpers'
+import validationFieldHelpers from '@/mixins/validationFieldHelpers'
 
 export default {
-  mixins: [validationHelpers]
+  mixins: [validationFieldHelpers]
 }
 </script>
