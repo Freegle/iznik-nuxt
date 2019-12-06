@@ -43,7 +43,7 @@ export default {
   computed: {
     /**
      * The errors come with a nice element to show the error messages.
-     * It will use this as it's id
+     * It will use this as its id
      *
      * @returns {string}
      */
@@ -98,7 +98,7 @@ export default {
      * Returns the first error message if there are validation errors.
      * It's a bit overwhelming to show them all errors at once.
      * The order of how to show them if there are multiple errors
-     * is detirmined by the order returned by "validationTypes".
+     * is determined by the order returned by "validationTypes".
      *
      * The messages come from the "validationMessages" prop.
      *
