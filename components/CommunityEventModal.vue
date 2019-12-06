@@ -150,7 +150,7 @@
                   </v-icon>
                 </span>
               </div>
-              <b-img v-if="event.photo" thumbnail :src="eventEdit.photo.paththumb + '?' + cacheBust" />
+              <b-img v-if="eventEdit.photo" thumbnail :src="eventEdit.photo.paththumb + '?' + cacheBust" />
               <b-img v-else width="250" thumbnail src="~/static/placeholder.jpg" />
             </div>
           </b-col>
