@@ -79,6 +79,7 @@ module.exports = {
     { src: '~/plugins/dayjs'},
 
     // Some plugins are client-side features
+    { src: '~plugins/visibility.js', ssr: false },
     { src: '~plugins/error-toasts.js', ssr: false },
     { src: '~plugins/vuex-persistedstate', ssr: false },
     { src: '~plugins/vue-drag-drop.js', ssr: false },
