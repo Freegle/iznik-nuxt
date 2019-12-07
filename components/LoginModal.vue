@@ -299,10 +299,6 @@ export default {
               this.$router.push('/chitchat')
             }
           })
-          .catch(e => {
-            // TODO NS
-            console.error('Native login failed', e)
-          })
       } else {
         // Login
         this.$store
@@ -330,10 +326,8 @@ export default {
               self.pleaseShowModal = false
             }
           })
-          .catch(e => {
-            // TODO NS
-            console.error('Native login failed', e)
-          })
+
+        // TODO EH Error message for native login failure.
       }
     },
     async loginFacebook() {
@@ -341,10 +335,9 @@ export default {
       // TODO EH Do we still have the Chrome on IOS problem?
       try {
         let response = null
-        const promise = new Promise(function(resolve, reject) {
+        const promise = new Promise(function(resolve) {
           Vue.FB.login(
             function(ret) {
-              console.log('Returned in promise', ret)
               response = ret
               resolve()
             },
@@ -353,10 +346,8 @@ export default {
         })
 
         await promise
-        console.log('Returned after promise', response)
         if (response.authResponse) {
           const accessToken = response.authResponse.accessToken
-          console.log('Now login on server', accessToken)
 
           await this.$store.dispatch('auth/login', {
             fblogin: 1,
@@ -364,7 +355,6 @@ export default {
           })
 
           // We are now logged in.
-          console.log('Logged in')
           self.pleaseShowModal = false
         } else {
           console.error('Facebook response missing auth', response)
@@ -372,7 +362,7 @@ export default {
         }
       } catch (e) {
         // TODO NS
-        console.error('Native login failed', e)
+        console.error('Facebook login failed', e)
       }
     },
 
@@ -394,7 +384,7 @@ export default {
             console.log('Logged in')
             self.pleaseShowModal = false
           } else if (authResult.error) {
-            // TODO NS
+            // TODO MINOR Error handling
             console.error('There was an error: ' + authResult.error)
           }
         },
@@ -469,12 +459,12 @@ export default {
             this.$store.dispatch('auth/fetchUser')
             self.pleaseShowModal = false
           } else {
-            // TODO NS
+            // TODO MINOR Error handling
             console.error('Server login failed', ret)
           }
         })
         .catch(e => {
-          // TODO NS
+          // TODO MINOR Error handling.
           console.error('Yahoo login failed', e)
         })
     },

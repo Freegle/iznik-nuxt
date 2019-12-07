@@ -104,30 +104,24 @@ export default {
       console.log('Submitted with', email)
       await this.$store.dispatch('compose/setEmail', email)
 
-      this.$store
-        .dispatch('compose/submit')
-        .then(results => {
-          // Fetch the group we posted on so that it's in the store for the whatsnext page - it might not be if
-          // we weren't a member or logged in.
-          if (results.length > 0 && results[0].groupid) {
-            this.$store
-              .dispatch('group/fetch', {
-                id: results[0].groupid
+      this.$store.dispatch('compose/submit').then(results => {
+        // Fetch the group we posted on so that it's in the store for the whatsnext page - it might not be if
+        // we weren't a member or logged in.
+        if (results.length > 0 && results[0].groupid) {
+          this.$store
+            .dispatch('group/fetch', {
+              id: results[0].groupid
+            })
+            .then(() => {
+              this.$router.push({
+                name: 'give-whatnext',
+                params: results[0]
               })
-              .then(() => {
-                this.$router.push({
-                  name: 'give-whatnext',
-                  params: results[0]
-                })
-              })
-          } else {
-            // TODO NS
-          }
-        })
-        .catch(e => {
-          // TODO NS
-          console.log('Submit failed', e)
-        })
+            })
+        } else {
+          // TODO MINOR Error handling
+        }
+      })
     }
   }
 }

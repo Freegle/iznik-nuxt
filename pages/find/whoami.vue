@@ -103,29 +103,21 @@ export default {
 
       this.$store.dispatch('compose/setEmail', this.$refs.email.value)
 
-      this.$store
-        .dispatch('compose/submit')
-        .then(results => {
-          // Fetch the group we posted on so that it's in the store for the whatsnext page - it might not be if
-          // we weren't a member or logged in.
-          if (results.length > 0 && results[0].groupid) {
-            this.$store
-              .dispatch('group/fetch', {
-                id: results[0].groupid
-              })
-              .then(() => {
-                this.$router.push('/find/whatnext')
-              })
-          } else {
-            // TODO NS
-          }
-        })
-        .catch(e => {
-          // TODO NS More generally, need to check all axios requests, and have something consistent in place about
-          // where those errors are caught - in the store or in the calling code - and how the errors are
-          // displayed.
-          console.log('Submit failed', e)
-        })
+      this.$store.dispatch('compose/submit').then(results => {
+        // Fetch the group we posted on so that it's in the store for the whatsnext page - it might not be if
+        // we weren't a member or logged in.
+        if (results.length > 0 && results[0].groupid) {
+          this.$store
+            .dispatch('group/fetch', {
+              id: results[0].groupid
+            })
+            .then(() => {
+              this.$router.push('/find/whatnext')
+            })
+        } else {
+          // TODO MINOR Error handling
+        }
+      })
     }
   }
 }
