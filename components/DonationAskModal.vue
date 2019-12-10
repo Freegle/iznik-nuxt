@@ -69,10 +69,13 @@ export default {
     groupname() {
       if (this.groupid && !this.targetMet) {
         const group = this.$store.getters['group/get'](this.groupid)
-        return group.namedisplay
-      } else {
-        return 'Freegle'
+
+        if (group) {
+          return group.namedisplay
+        }
       }
+
+      return 'Freegle'
     },
     target() {
       return this.$store.getters['donations/target']
