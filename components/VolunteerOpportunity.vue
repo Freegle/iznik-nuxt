@@ -5,7 +5,7 @@
         {{ volunteering.title }}
       </b-card-title>
       <b-card-body class="p-1 pt-0">
-        <div v-if="mine">
+        <div v-if="mine && !renewed">
           <notice-message v-if="warning" variant="warning" class="mb-1">
             <span v-if="volunteering.expired">
               We've stopped showing this opportunity, but you can reactivate it.
@@ -150,7 +150,9 @@ export default {
     }
   },
   data: function() {
-    return {}
+    return {
+      renewed: false
+    }
   },
   computed: {
     description() {
@@ -183,10 +185,11 @@ export default {
     showOpportunityModal() {
       this.$refs.opportunitymodal.show()
     },
-    renew() {
-      this.$store.dispatch('volunteerops/renew', {
+    async renew() {
+      await this.$store.dispatch('volunteerops/renew', {
         id: this.volunteering.id
       })
+      this.renewed = true
     },
     expire() {
       this.$store.dispatch('volunteerops/expire', {
