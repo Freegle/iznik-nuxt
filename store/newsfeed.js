@@ -209,10 +209,12 @@ export const actions = {
         const users = {}
         users[user.id] = user
 
-        // Also add in any users from replies.
-        for (const reply of newsfeed.replies) {
-          if (reply.user) {
-            users[reply.user.id] = reply.user
+        if (newsfeed.replies) {
+          // Also add in any users from replies.
+          for (const reply of newsfeed.replies) {
+            if (reply.user) {
+              users[reply.user.id] = reply.user
+            }
           }
         }
 
