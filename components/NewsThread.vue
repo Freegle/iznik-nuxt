@@ -343,6 +343,8 @@ export default {
       this.$refs.editModal.hide()
     },
     deleteIt() {
+      // TODO MINOR Add confirm.  We have ConfirmModal, but that needs improving a bit so you can show info about
+      // what you're actually confirming.
       this.$store.dispatch('newsfeed/delete', {
         id: this.id,
         threadhead: this.id

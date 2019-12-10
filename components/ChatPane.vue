@@ -171,6 +171,14 @@
         <AddressModal ref="addressModal" :choose="true" @chosen="sendAddress" />
         <ChatBlockModal v-if="chat.chattype === 'User2User'" :id="id" ref="chatblock" :user="otheruser" @confirm="block" />
         <ChatHideModal v-if="chat.chattype === 'User2User'" :id="id" ref="chathide" :user="otheruser" @confirm="hide" />
+        <ChatReportModal
+          v-if="chat.chattype === 'User2User'"
+          :id="'report-' + id"
+          ref="chatreport"
+          :user="otheruser"
+          :chatid="chat.id"
+          @confirm="hide"
+        />
       </div>
     </client-only>
   </div>
@@ -219,7 +227,6 @@
 }
 </style>
 <script>
-// TODO EH Report option
 // TODO MINOR Popup confirm first time you use Nudge, so you know what you're doing.
 // TODO DESIGN We have a spinner at the top for our upwards infinite scroll.  But this looks messy when we load a
 // short chat, because we see the messages appear below the spinner and then move upwards once the infinite scroll
@@ -237,6 +244,7 @@ const ProfileModal = () => import('./ProfileModal')
 const NoticeMessage = () => import('~/components/NoticeMessage')
 const AvailabilityModal = () => import('~/components/AvailabilityModal')
 const AddressModal = () => import('~/components/AddressModal')
+const ChatReportModal = () => import('~/components/ChatReportModal')
 
 export default {
   components: {
@@ -249,7 +257,8 @@ export default {
     AddressModal,
     NoticeMessage,
     ChatBlockModal,
-    ChatHideModal
+    ChatHideModal,
+    ChatReportModal
   },
   props: {
     id: {
@@ -633,7 +642,9 @@ export default {
         id: this.id
       })
     },
-    report() {}
+    report() {
+      this.$refs.chatreport.show()
+    }
   }
 }
 </script>
