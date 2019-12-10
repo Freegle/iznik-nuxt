@@ -5,6 +5,13 @@ export class APIError extends Error {
   }
 }
 
+export class LoginError extends Error {
+  constructor(ret, status) {
+    super(status)
+    Object.assign(this, { ret, status })
+  }
+}
+
 export default class BaseAPI {
   constructor({ $axios }) {
     this.$axios = $axios
