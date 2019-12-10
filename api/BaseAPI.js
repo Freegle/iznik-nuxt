@@ -5,6 +5,13 @@ export class APIError extends Error {
   }
 }
 
+export class LoginError extends Error {
+  constructor(ret, status) {
+    super(status)
+    Object.assign(this, { ret, status })
+  }
+}
+
 export default class BaseAPI {
   constructor({ $axios }) {
     this.$axios = $axios
@@ -15,7 +22,12 @@ export default class BaseAPI {
       ...config,
       method,
       url: path,
-      baseURL: process.env.API
+      // TODO NS BUG I've hacked the next line to make SSR work in dev environments.  Please decide what the correct
+      // fix is.
+      baseURL:
+        process.env.NODE_ENV === 'development'
+          ? 'http://localhost:3000/api'
+          : process.env.API
     })
     if (
       status !== 200 ||
@@ -67,10 +79,6 @@ export default class BaseAPI {
 
   $put(path, data) {
     return this.$postOverride('PUT', path, data)
-  }
-
-  $realPut(path, data) {
-    return this.$request('PUT', path, { data })
   }
 
   $patch(path, data) {

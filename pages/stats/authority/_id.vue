@@ -316,8 +316,8 @@ import 'wicket/wicket-gmap3'
 import { gmapApi } from 'vue2-google-maps'
 import loginOptional from '@/mixins/loginOptional.js'
 
-// TODO Date filter
-// TODO I think table is a big chunk of stuff to load from Bootstrap.  Does this hit us on initial page load?
+// TODO EH Date filter
+// TODO NS I think table is a big chunk of stuff to load from Bootstrap.  Does this hit us on initial page load?
 
 export default {
   layout: 'empty',
@@ -559,7 +559,7 @@ export default {
     }
   },
   async asyncData({ app, params, store }) {
-    // TODO This is slow, which means the page is very slow to load.  We need it for SSR, though.  Is there a clever
+    // TODO NS This is slow, which means the page is very slow to load.  We need it for SSR, though.  Is there a clever
     // way to do a better busy/progress indicator when the page is loaded by navigating in the client?
     await store.dispatch('authorities/fetch', {
       id: params.id

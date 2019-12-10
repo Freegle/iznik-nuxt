@@ -3,6 +3,8 @@
 // could simplify some of the issues that arise because the Vuex persisted store is loaded later rather than sooner.
 // There are definitely still some of these - I've seen the navbar show us logged in while the page contents show us
 // logged out.  Can we force the persisted store to be loaded earlier to knock this class of bugs on the head?
+import { LoginError } from '../api/BaseAPI'
+
 let first = true
 
 export const state = () => ({
@@ -96,6 +98,10 @@ export const getters = {
     return state.groups
   },
 
+  groupById: state => id => {
+    return state.groups.find(g => parseInt(g.id) === id)
+  },
+
   member: state => id => {
     let ret = false
 
@@ -140,19 +146,27 @@ export const actions = {
   },
 
   async login({ commit, dispatch }, params) {
-    const { user, persistent } = await this.$api.session.login(params)
+    const res = await this.$api.session.login(params)
+    const { ret, status, user, persistent } = res
 
-    // Login no longer required (if it was)
-    commit('forceLogin', false)
+    if (ret === 0) {
+      // Successful login.
+      //
+      // Login no longer required (if it was)
+      commit('forceLogin', false)
 
-    // Save the persistent session token.
-    user.persistent = persistent
+      // Save the persistent session token.
+      user.persistent = persistent
 
-    // Login succeeded.  Set the user, which will trigger various rerendering if we were required to be logged in.
-    commit('setUser', user)
+      // Login succeeded.  Set the user, which will trigger various rerendering if we were required to be logged in.
+      commit('setUser', user)
 
-    // We need to fetch the user again to get the groups, which aren't returned by the login API.
-    dispatch('fetchUser')
+      // We need to fetch the user again to get the groups, which aren't returned by the login API.
+      dispatch('fetchUser')
+    } else {
+      // Login failed.
+      throw new LoginError(ret, status)
+    }
   },
 
   async signup({ commit, dispatch }, params) {
@@ -225,7 +239,8 @@ export const actions = {
     await dispatch('fetchUser', {
       components: ['me', 'groups', 'aboutme']
     })
-    // TODO: no longer returning res, does it break anything?
+    // TODO NS BUG: no longer returning res, does it break anything?  Yes, I think it does - see use in settings/index.vue
+    // where we consider showing a modal.
   },
 
   async saveAndGet({ commit, dispatch, state }, params) {
@@ -234,7 +249,7 @@ export const actions = {
       components: NONMIN,
       force: true
     })
-    // TODO: should we rely on returning this?
+    // TODO NS: should we rely on returning this?  EH We definitely do, and the clue is in the name.  I'd just remove this.
     return state.user
   },
 

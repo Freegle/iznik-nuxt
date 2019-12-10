@@ -1,5 +1,5 @@
 <template>
-  <groupSelect v-model="selectValue" :all="all" :size="size" />
+  <groupSelect v-model="selectValue" :all="all" :systemwide="systemwide" :size="size" />
 </template>
 <script>
 import groupSelect from './GroupSelect'
@@ -23,6 +23,11 @@ export default {
     },
     // Whether we show "All my groups" or "Please choose a group"
     all: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    systemwide: {
       type: Boolean,
       required: false,
       default: false

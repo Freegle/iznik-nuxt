@@ -241,9 +241,9 @@ export default {
   computed: {
     me() {
       // The user who is us
-      if (this.chat && this.chat.user1 && this.$store.state.auth.user) {
+      if (this.chat && this.chat.user1 && this.$store.getters['auth/user']) {
         return this.chat.user1 &&
-          this.chat.user1.id === this.$store.state.auth.user.id
+          this.chat.user1.id === this.$store.getters['auth/user'].id
           ? this.chat.user1
           : this.chat.user2
       } else {
@@ -284,9 +284,14 @@ export default {
 
     otheruser() {
       // The user who isn't us.
-      if (this.chat && this.chat.user1 && this.$store.state.auth.user) {
+      if (
+        this.chat &&
+        this.chat.chattype === 'User2User' &&
+        this.chat.user1 &&
+        this.$store.getters['auth/user']
+      ) {
         return this.chat.user1 &&
-          this.chat.user1.id === this.$store.state.auth.user.id
+          this.chat.user1.id === this.$store.getters['auth/user'].id
           ? this.chat.user2
           : this.chat.user1
       } else {
@@ -365,7 +370,6 @@ export default {
     },
     loadMore: function($state) {
       const currentCount = this.chatmessages.length
-      console.log('Load more', currentCount)
 
       if (this.complete) {
         $state.complete()
@@ -463,7 +467,7 @@ export default {
 
       this.$nextTick(async () => {
         // Get our offers.
-        const me = this.$store.state.auth.user
+        const me = this.$store.getters['auth/user']
         await this.$store.dispatch('messages/clear')
         await this.$store.dispatch('messages/fetchMessages', {
           fromuser: me.id,

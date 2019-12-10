@@ -37,4 +37,12 @@ export default class VolunteeringAPI extends BaseAPI {
   del(id) {
     return this.$del('/volunteering', { id })
   }
+
+  renew(id) {
+    return this.$patch('/volunteering', { id, action: 'Renew' })
+  }
+
+  expire(id) {
+    return this.$patch('/volunteering', { id, action: 'Expire' })
+  }
 }

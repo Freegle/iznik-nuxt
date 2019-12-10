@@ -11,6 +11,7 @@
     <chat-message-mod-mail v-else-if="chatmessage.type === 'ModMail'" :chat="chat" :chatmessage="chatmessage" :me="me" :otheruser="null" />
     <chat-message-schedule v-else-if="chatmessage.type === 'Schedule'" :chat="chat" :chatmessage="chatmessage" :me="me" :otheruser="otheruser" />
     <chat-message-schedule v-else-if="chatmessage.type === 'ScheduleUpdated'" :chat="chat" :chatmessage="chatmessage" :me="me" :otheruser="otheruser" />
+    <chat-message-report v-else-if="chatmessage.type === 'ReportedUser'" :chat="chat" :chatmessage="chatmessage" :me="me" :otheruser="otheruser" />
     <div v-else>
       Unknown chat message type {{ chatmessage.type }}
     </div>
@@ -32,6 +33,7 @@ import ChatMessageNudge from './ChatMessageNudge'
 import ChatMessageDateRead from './ChatMessageDateRead'
 import ChatMessageModMail from './ChatMessageModMail'
 import ChatMessageSchedule from './ChatMessageSchedule'
+import ChatMessageReport from './ChatMessageReport'
 
 // System chat message doesn't seem to be used; ReportedUser is for ModTools only.
 
@@ -47,7 +49,8 @@ export default {
     ChatMessageReneged,
     ChatMessageNudge,
     ChatMessageModMail,
-    ChatMessageSchedule
+    ChatMessageSchedule,
+    ChatMessageReport
   },
   props: {
     chat: {

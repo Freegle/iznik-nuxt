@@ -1,6 +1,7 @@
 <template>
   <div>
     <client-only>
+      <!--      TODO We need a navbar that's fixed to the top.-->
       <!-- Navbar for large screens -->
       <b-navbar id="navbar_large" toggleable="xl" type="dark" class="ourBack d-none d-xl-flex">
         <b-navbar-brand to="/" class="p-0">
@@ -44,7 +45,7 @@
               <v-icon name="calendar-alt" scale="2" /><br>
               Events
             </b-nav-item>
-            <b-nav-item id="menu-option-volunteering" class="text-center small p-0" to="/volunteering" @mousedown="maybeReload('/volunteering')">
+            <b-nav-item id="menu-option-volunteering" class="text-center small p-0" to="/volunteerings" @mousedown="maybeReload('/volunteerings')">
               <v-icon name="hands-helping" scale="2" /><br>
               Volunteer
             </b-nav-item>
@@ -68,7 +69,6 @@
               </b-dropdown-item>
               <b-dropdown-divider />
               <b-dropdown-item v-for="notification in notifications" :key="'notification-' + notification.id" class="p-0 notpad">
-                <!--                TODO We're getting duplicate key errors here - click on notifications, close, click again.  Why?-->
                 <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
               </b-dropdown-item>
               <infinite-loading :distance="distance" @infinite="loadMore">
@@ -143,7 +143,7 @@
           <template slot="button-content">
             <div class="notifwrapper">
               <v-icon name="bell" scale="2" class="" />
-              <b-badge v-if="notificationCount" variant="danger" class="notifbadge">
+              <b-badge v-if="notificationCount" variant="danger" class="notifbadgesm">
                 {{ notificationCount }}
               </b-badge>
             </div>
@@ -217,11 +217,11 @@
               <v-icon name="calendar-alt" scale="2" /><br>
               Events
             </b-nav-item>
-            <b-nav-item class="text-center p-0" to="/volunteering" @mousedown="maybeReload('/volunteering')">
+            <b-nav-item class="text-center p-0" to="/volunteerings" @mousedown="maybeReload('/volunteerings')">
               <v-icon name="hands-helping" scale="2" /><br>
               Volunteer
             </b-nav-item>
-            <b-nav-item class="text-center p-0" to="/spreadh" @mousedown="maybeReload('/spread')">
+            <b-nav-item class="text-center p-0" to="/spread" @mousedown="maybeReload('/spread')">
               <v-icon name="bullhorn" scale="2" /><br>
               Spread
             </b-nav-item>
@@ -381,6 +381,12 @@ svg.fa-icon {
   left: 24px;
 }
 
+.notifbadgesm {
+  position: absolute;
+  top: 0px;
+  left: 18px;
+}
+
 .chatbadge {
   position: absolute;
   top: 0px;
@@ -392,7 +398,7 @@ svg.fa-icon {
 <script>
 // TODO DESIGN Notification dropdown window isn't wide enough before it's loaded.
 // Import login modal as I've seen an issue where it's not in $refs when you click on the signin button too rapidly.
-// TODO Catching exceptions and doing something graceful.  Including reporting to Sentry?
+// TODO NS Catching exceptions and doing something graceful.  Including reporting to Sentry?
 // TODO ACCESSIBILITY Review all <a> and <nuxt-link> to see if they require aria-label throughout the site.
 // TODO ACCESSIBILITY Check if we have any image links without alt text.
 // TODO ACCESSIBILITY Test for keyboard navigation.
@@ -436,10 +442,7 @@ export default {
       return this.$store.getters['auth/user']
     },
     notifications() {
-      const notifications = Object.values(
-        this.$store.getters['notifications/list']
-      )
-      return notifications
+      return this.$store.getters['notifications/list']
     },
     notificationCount() {
       return this.$store.getters['notifications/count']
@@ -458,7 +461,6 @@ export default {
   watch: {
     $route() {
       // Close the dropdown menu when we move around.
-      console.log('Route changed')
       if (
         this.$refs.nav_collapse &&
         this.$refs.nav_collapse.$el.classList.contains('show')
@@ -630,10 +632,8 @@ export default {
               if (currentCount === notifications.length) {
                 this.complete = true
                 $state.complete()
-                console.log('Complete')
               } else {
                 $state.loaded()
-                console.log('Loaded')
               }
               this.busy = false
             } catch (e) {

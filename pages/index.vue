@@ -91,61 +91,7 @@
         </b-row>
       </b-col>
     </b-row>
-    <footer>
-      <b-row class="m-0 mt-2">
-        <b-col cols="12" lg="6" offset-lg="3">
-          <div class="flex justify-content-between d-none d-sm-block">
-            <b-btn class="mb-2" variant="white" to="/about">
-              <v-icon name="info-circle" /> About
-            </b-btn>
-            <b-btn class="mb-2" variant="white" to="/terms">
-              <v-icon name="book-open" /> Terms
-            </b-btn>
-            <b-btn class="mb-2" variant="white" to="/privacy">
-              <v-icon name="lock" /> Privacy
-            </b-btn>
-            <b-btn class="mb-2" variant="white" to="/disclaimer">
-              <v-icon name="gavel" /> Disclaimer
-            </b-btn>
-            <b-btn class="mb-2" variant="white" to="/donate">
-              <v-icon name="hand-holding-heart" /> Donate
-            </b-btn>
-            <b-btn class="mb-2" variant="white" to="/contact">
-              <v-icon name="envelope" /> Contact
-            </b-btn>
-            <b-btn class="mb-2" variant="white" to="/unsubscribe">
-              <v-icon name="trash-alt" /> Unsubscribe
-            </b-btn>
-          </div>
-          <div class="flex flex-wrap justify-content-between mb-2 d-block d-sm-none">
-            <nuxt-link to="/about">
-              About
-            </nuxt-link>
-            <nuxt-link to="/terms">
-              Terms
-            </nuxt-link>
-            <nuxt-link to="/privacy">
-              Privacy
-            </nuxt-link>
-            <nuxt-link to="/disclaimer">
-              Disclaimer
-            </nuxt-link>
-            <nuxt-link to="/donate">
-              Donate
-            </nuxt-link>
-            <nuxt-link to="/contact">
-              Contact
-            </nuxt-link>
-            <nuxt-link to="/unsubscribe">
-              Unsubscribe
-            </nuxt-link>
-          </div>
-          <span class="text-muted">
-            Freegle is registered as a charity with HMRC (ref. XT32865).
-          </span>
-        </b-col>
-      </b-row>
-    </footer>
+    <main-footer />
   </div>
 </template>
 
@@ -159,24 +105,17 @@
 .half-pad-col-left {
   padding-left: 7.5px;
 }
-
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 60px;
-  line-height: 60px;
-  background-color: $color-gray--lighter;
-}
 </style>
 
 <script>
 const StoriesLanding = () => import('~/components/StoriesLanding.vue')
+const MainFooter = () => import('~/components/MainFooter.vue')
 // TODO That thing where you prompt people on mobile to install the app.
 
 export default {
   components: {
-    StoriesLanding
+    StoriesLanding,
+    MainFooter
   },
 
   data: function() {

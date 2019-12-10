@@ -13,31 +13,32 @@
             <b-img lazy :src="user.profile.url" class="coverprofileimage" />
           </template>
           <b-media-body class="align-top">
-            <div class="float-right">
-              <span class="small text-faded float-right">#{{ id }}</span>
-              <br>
-              <ChatButton
-                :userid="id"
-                size="sm"
-                title="Message"
-                variant="white"
-                :disabled="user.id === myid ? 'true' : undefined"
-                class="float-right mb-1"
-                @click="hide"
-              />
-              <ratings size="sm" v-bind="user" class="pl-1 pt-1 d-block" />
-            </div>
-            <h4 class="d-inline-block">
+            <h4 class="d-inline-block w-100 overflow-hidden">
+              <span class="small">
+                <span class="small text-faded float-right mr-1 d-none d-sm-inline-block">#{{ id }}</span>
+              </span>
               {{ user.displayname }}
               <br>
-              <div class="text-muted small">
-                <span class="glyphicon glyphicon-heart" /> Freegler since {{ user.added | dateonly }}.
+              <div class="small">
+                <span class="small">
+                  Freegler since {{ user.added | dateonly }}.
+                </span>
               </div>
               <span v-if="user.settings.showmod" class="small text-muted">
                 <span class="small">
                   <v-icon name="leaf" /> Freegle Volunteer
                 </span>
               </span>
+              <ChatButton
+                :userid="id"
+                size="sm"
+                title="Message"
+                variant="white"
+                :disabled="user.id === myid ? 'true' : undefined"
+                class="mb-1 mt-1"
+                @click="hide"
+              />
+              <ratings size="sm" v-bind="user" class="pt-1 mt-1" />
             </h4>
           </b-media-body>
         </b-media>
@@ -124,6 +125,14 @@
 
 <style scoped lang="scss">
 @import 'color-vars';
+
+::v-deep .media .align-self-start {
+  margin-right: 0.25rem !important;
+}
+
+::v-deep .modal-header {
+  padding: 0px;
+}
 
 .coverphoto {
   height: 100px !important;

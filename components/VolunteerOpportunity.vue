@@ -5,6 +5,31 @@
         {{ volunteering.title }}
       </b-card-title>
       <b-card-body class="p-1 pt-0">
+        <div v-if="mine && !renewed">
+          <notice-message v-if="warning" variant="warning" class="mb-1">
+            <span v-if="volunteering.expired">
+              We've stopped showing this opportunity, but you can reactivate it.
+            </span>
+            <span v-else>
+              We'll stop showing this opportunity soon unless you tell us it's still active.  Please click to let us
+              know.
+            </span>
+          </notice-message>
+          <notice-message v-else class="mb-1">
+            <span v-if="volunteering.expired">
+              We've stopped showing this opportunity, but you can reactivate it.
+            </span>
+            <span v-else>
+              You created this opportunity.  Please click to let us know if it's still active.
+            </span>
+          </notice-message>
+          <b-btn variant="success" @click="renew">
+            <v-icon name="check" /> Yes, it's still active
+          </b-btn>
+          <b-btn variant="white" @click="expire">
+            <v-icon name="trash-alt" /> No, please remove it
+          </b-btn>
+        </div>
         <div v-if="summary">
           <div class="media clickme">
             <div class="media-left">
@@ -41,7 +66,7 @@
               <v-icon name="info-circle" /> More info
             </b-btn>
           </div>
-          <b-img-lazy v-if="volunteering.photo" fluid :src="volunteering.photo.path" />
+          <b-img-lazy v-if="volunteering.photo" class="w-100" :src="volunteering.photo.path" />
           <div v-if="volunteering.groups && volunteering.groups.length > 0" class="small text-muted text-center">
             Posted on {{ volunteering.groups[0].namedisplay }}
           </div>
@@ -106,12 +131,12 @@
 </template>
 <script>
 import VolunteerOpportunityModal from './VolunteerOpportunityModal'
+import NoticeMessage from './NoticeMessage'
 import twem from '~/assets/js/twem'
-
-// TODO EH Button to reactivate ones which have expired.
 
 export default {
   components: {
+    NoticeMessage,
     VolunteerOpportunityModal
   },
   props: {
@@ -125,7 +150,9 @@ export default {
     }
   },
   data: function() {
-    return {}
+    return {
+      renewed: false
+    }
   },
   computed: {
     description() {
@@ -133,11 +160,41 @@ export default {
       desc = desc ? twem.twem(this.$twemoji, desc) : ''
       desc = desc.trim()
       return desc
+    },
+    warning() {
+      const added = new Date(this.volunteering.added).getTime()
+      const renewed = new Date(this.volunteering.renewed).getTime()
+      const now = Date.now()
+
+      let warn = false
+
+      if (renewed) {
+        warn = now - renewed > 31 * 24 * 60 * 60 * 1000
+      } else {
+        warn = now - added > 31 * 24 * 60 * 60 * 1000
+      }
+
+      return warn
+    },
+    mine() {
+      const me = this.$store.getters['auth/user']
+      return me && this.volunteering.user.id === me.id
     }
   },
   methods: {
     showOpportunityModal() {
       this.$refs.opportunitymodal.show()
+    },
+    async renew() {
+      await this.$store.dispatch('volunteerops/renew', {
+        id: this.volunteering.id
+      })
+      this.renewed = true
+    },
+    expire() {
+      this.$store.dispatch('volunteerops/expire', {
+        id: this.volunteering.id
+      })
     }
   }
 }

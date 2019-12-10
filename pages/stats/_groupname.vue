@@ -5,7 +5,7 @@
       <b-col cols="12" md="6" class="p-0">
         <b-row>
           <b-col>
-            <GroupHeader v-if="group" :id="group.id" :key="'group-' + (group ? group.id : null)" v-bind="group" />
+            <GroupHeader v-if="group" :id="group.id" :key="'group-' + (group ? group.id : null)" :group="group" :show-join="false" />
             <div v-else>
               <div class="media pl-1 bg-white">
                 <div class="media-left">

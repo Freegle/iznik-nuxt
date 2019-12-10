@@ -49,7 +49,7 @@ export default {
       await this.$store.dispatch('auth/fetchUser', {
         components: ['me', 'groups', 'aboutme']
       })
-      const me = this.$store.state.auth.user
+      const me = this.$store.getters['auth/user']
       this.text = me.aboutme.text ? me.aboutme.text : null
       this.showModal = true
     },

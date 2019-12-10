@@ -2,10 +2,10 @@
   <div class="mt-2">
     <b-card v-if="opportunities.length" variant="white" no-body>
       <b-card-body class="p-0">
-        <b-btn variant="white" class="float-right m-1" @click="showEventModal">
+        <b-btn variant="white" class="float-right m-1" @click="showVolunteerModal">
           <v-icon name="plus" /> Add
         </b-btn>
-        <nuxt-link to="/volunteering">
+        <nuxt-link to="/volunteerings">
           <h4 class="pl-1 pt-1">
             <v-icon name="calendar-alt" scale="2" /> Volunteer Opportunities
           </h4>
@@ -18,7 +18,7 @@
         </div>
       </b-card-body>
     </b-card>
-    <VolunteerOpportunityModal ref="eventmodal" :volunteering="{}" :start-edit="true" />
+    <VolunteerOpportunityModal ref="volunteermodal" :volunteering="{}" :start-edit="true" />
   </div>
 </template>
 <script>
@@ -48,8 +48,8 @@ export default {
     }, 1000)
   },
   methods: {
-    showEventModal() {
-      this.$refs.eventmodal.show()
+    showVolunteerModal() {
+      this.$refs.volunteermodal.show()
     }
   }
 }

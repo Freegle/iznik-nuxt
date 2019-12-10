@@ -60,6 +60,10 @@ export default function createGroupRoute(key, options = {}) {
       rememberedValue: {
         immediate: true,
         handler(val) {
+          // If we have already triggered a route we don't want to do
+          // any more logic about the remembered value on this page
+          // it will trigger a redirect loop otherwise
+          if (this.$router.history.pending) return
           if (val === undefined && this.groupid !== DEFAULT_VALUE) {
             // Nothing set so far... make it what our current page is
             this.updateMemory(this.groupid)

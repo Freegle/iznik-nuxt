@@ -51,9 +51,8 @@
   </div>
 </template>
 <script>
-// TODO Suppose we end up here, without a postcode in the store?
-// TODO Don't allow submission before image upload complete.
-
+// TODO NS Don't allow submission before image upload complete.  Also check that there is a postcode in case we
+// loaded this page directly, by passing the previous one.
 import loginOptional from '@/mixins/loginOptional.js'
 const PostMessage = () => import('~/components/PostMessage')
 const Postcode = () => import('~/components/Postcode')

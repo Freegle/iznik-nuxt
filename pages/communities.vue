@@ -12,7 +12,7 @@
             <b-form-select v-model="selectedType" class="m-3" value="All" :options="typeOptions" @change="typeChange" />
             <!--            TODO DESIGN Grow the group select if there's room, shrink the type select to fit contents.-->
           </div>
-          <groupHeader v-if="group" :key="'groupheader-' + groupid" v-bind="group" />
+          <groupHeader v-if="group" :key="'groupheader-' + groupid" :group="group" :show-join="true" />
           <div v-for="message in messages" :key="'messagelist-' + message.id" class="p-0">
             <message v-if="(selectedType === 'All' || message.type == selectedType) && (!message.outcomes || message.outcomes.length === 0)" v-bind="message" />
           </div>
@@ -113,7 +113,7 @@ export default {
       // We have this watch because we may need to fetch a group that we have remembered.  The mounted()
       // call may happen before we have restored the persisted state, so we can't initiate the fetch there.
       //
-      // TODO But this seems very ugly.  Is it right?
+      // TODO NS But this seems very ugly.  Is it right?
       if (oldValue === null || oldValue.id !== this.groupid) {
         await this.$store.dispatch('group/fetch', {
           id: this.groupid
@@ -144,7 +144,6 @@ export default {
 
     loadMore: function($state) {
       this.busy = true
-      console.log('Load more', this.groupid)
 
       const currentCount = this.messages.length
 
@@ -187,9 +186,7 @@ export default {
           if (currentCount === messages.length) {
             this.complete = true
             $state.complete()
-            console.log('Complete')
           } else {
-            console.log('Loaded')
             $state.loaded()
           }
         })

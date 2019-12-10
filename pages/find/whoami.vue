@@ -73,7 +73,7 @@ export default {
     email: {
       get() {
         let email = null
-        const user = this.$store.state.auth.user
+        const user = this.$store.getters['auth/user']
 
         if (user && user.email) {
           // If we're logged in, then we have an email from that which takes precedence.
@@ -103,29 +103,21 @@ export default {
 
       this.$store.dispatch('compose/setEmail', this.$refs.email.value)
 
-      this.$store
-        .dispatch('compose/submit')
-        .then(results => {
-          // Fetch the group we posted on so that it's in the store for the whatsnext page - it might not be if
-          // we weren't a member or logged in.
-          if (results.length > 0 && results[0].groupid) {
-            this.$store
-              .dispatch('group/fetch', {
-                id: results[0].groupid
-              })
-              .then(() => {
-                this.$router.push('/find/whatnext')
-              })
-          } else {
-            // TODO
-          }
-        })
-        .catch(e => {
-          // TODO  More generally, need to check all axios requests, and have something consistent in place about
-          // where those errors are caught - in the store or in the calling code - and how the errors are
-          // displayed.
-          console.log('Submit failed', e)
-        })
+      this.$store.dispatch('compose/submit').then(results => {
+        // Fetch the group we posted on so that it's in the store for the whatsnext page - it might not be if
+        // we weren't a member or logged in.
+        if (results.length > 0 && results[0].groupid) {
+          this.$store
+            .dispatch('group/fetch', {
+              id: results[0].groupid
+            })
+            .then(() => {
+              this.$router.push('/find/whatnext')
+            })
+        } else {
+          // TODO MINOR Error handling
+        }
+      })
     }
   }
 }

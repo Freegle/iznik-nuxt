@@ -78,7 +78,7 @@ export const actions = {
 
   async fetch({ commit }, { id: chatid }) {
     if (!chatid) return
-    const { chatroom } = await this.$api.chat.fetchRoom(chatid)
+    const { chatroom } = await this.$api.chat.fetchChat(chatid)
     if (chatroom) {
       // Valid chatid
       commit('addRoom', chatroom)
@@ -97,5 +97,15 @@ export const actions = {
         id: params.id
       })
     }
+  },
+
+  async hide({ dispatch, commit }, params) {
+    await this.$api.chat.hideChat(params.id)
+    await dispatch('listChats')
+  },
+
+  async block({ dispatch, commit }, params) {
+    await this.$api.chat.blockChat(params.id)
+    await dispatch('listChats')
   }
 }

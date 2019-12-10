@@ -103,19 +103,26 @@
           Posted by {{ volunteering.user.displayname }} <span class="text-faded">(#{{ volunteering.user.id }})</span>
         </p>
       </div>
-      <div v-else>
+      <div>
         <b-row>
           <b-col cols="12" md="6">
             <label for="group">
               For which community?
             </label>
-            <groupRememberSelect v-model="groupid" remember="editopportunity" />
-            <label for="title">
+            <groupRememberSelect v-model="groupid" remember="editopportunity" :systemwide="true" />
+            <label v-if="enabled" for="title">
               What's the opportunity?
             </label>
-            <b-form-input id="title" v-model="volunteering.title" type="text" maxlength="80" placeholder="Give the opportunity a short title" />
+            <b-form-input
+              v-if="enabled"
+              id="title"
+              v-model="volunteering.title"
+              type="text"
+              maxlength="80"
+              placeholder="Give the opportunity a short title"
+            />
           </b-col>
-          <b-col cols="12" md="6">
+          <b-col v-if="enabled" cols="12" md="6">
             <div class="float-right">
               <div v-if="volunteering.photo" class="container p-0">
                 <span @click="rotateLeft">
@@ -142,73 +149,78 @@
             </div>
           </b-col>
         </b-row>
-        <b-row>
-          <b-col>
-            <b-btn variant="white" class="mt-1 float-right" @click="photoAdd">
-              <v-icon name="camera" /> Upload photo
-            </b-btn>
-          </b-col>
-        </b-row>
-        <b-row v-if="uploading">
-          <b-col>
-            <OurFilePond
-              class="bg-white"
-              imgtype="Volunteering"
-              imgflag="volunteering"
-              :ocr="true"
-              @photoProcessed="photoProcessed"
-            />
-          </b-col>
-        </b-row>
-        <label for="description">
-          What is it?
-        </label>
-        <b-textarea
-          id="description"
-          v-model="volunteering.description"
-          rows="5"
-          max-rows="8"
-          spellcheck="true"
-          placeholder="Please let people know what the opportunity is - any organisation which is involved, what you'd like them to do, and why they might like to do it."
-          class="mt-2"
-        />
-        <label for="timecommitment">
-          Time commitment:
-        </label>
-        <b-textarea
-          id="description"
-          v-model="volunteering.timecommitment"
-          rows="2"
-          max-rows="8"
-          spellcheck="true"
-          placeholder="Please let people know what the time commitment is that you're looking for, e.g. how many hours a week, what times of day."
-          class="mt-2"
-        />
-        <label for="location">
-          Where is it?
-        </label>
-        <b-form-input id="location" v-model="volunteering.location" type="text" maxlength="80" placeholder="Where is it being held?  Add a postcode to make sure people can find you!" />
-        <label>
-          When is it?
-        </label>
-        <p>You can add multiple dates if the opportunity occurs several times.</p>
-        <StartEndCollection v-if="volunteering.dates" v-model="volunteering.dates" />
-        <label for="contactname">
-          Contact name:
-        </label>
-        <b-form-input id="contactname" v-model="volunteering.contactname" type="text" maxlength="60" placeholder="Is there a contact person for anyone who wants to find out more? (Optional)" />
-        <label for="contactemail">
-          Contact email:
-        </label>
-        <b-form-input id="contactemail" v-model="volunteering.contactemail" type="email" placeholder="Can people reach you by email? (Optional)" />
-        <label for="contactphone">
-          Contact phone:
-        </label>
-        <b-form-input id="contactphone" v-model="volunteering.contactphone" type="tel" placeholder="Can people reach you by phone? (Optional)" />
-        <label for="contacturl">
-          Web link:
-        </label>
-        <b-form-input id="contacturl" v-model="volunteering.contacturl" type="url" placeholder="Is there more information on the web? (Optional)" />
+        <span v-if="enabled">
+          <b-row>
+            <b-col>
+              <b-btn variant="white" class="mt-1 float-right" @click="photoAdd">
+                <v-icon name="camera" /> Upload photo
+              </b-btn>
+            </b-col>
+          </b-row>
+          <b-row v-if="uploading">
+            <b-col>
+              <OurFilePond
+                class="bg-white"
+                imgtype="Volunteering"
+                imgflag="volunteering"
+                :ocr="true"
+                @photoProcessed="photoProcessed"
+              />
+            </b-col>
+          </b-row>
+          <label for="description">
+            What is it?
+          </label>
+          <b-textarea
+            id="description"
+            v-model="volunteering.description"
+            rows="5"
+            max-rows="8"
+            spellcheck="true"
+            placeholder="Please let people know what the opportunity is - any organisation which is involved, what you'd like them to do, and why they might like to do it."
+            class="mt-2"
+          />
+          <label for="timecommitment">
+            Time commitment:
+          </label>
+          <b-textarea
+            id="description"
+            v-model="volunteering.timecommitment"
+            rows="2"
+            max-rows="8"
+            spellcheck="true"
+            placeholder="Please let people know what the time commitment is that you're looking for, e.g. how many hours a week, what times of day."
+            class="mt-2"
+          />
+          <label for="location">
+            Where is it?
+          </label>
+          <b-form-input id="location" v-model="volunteering.location" type="text" maxlength="80" placeholder="Where is it being held?  Add a postcode to make sure people can find you!" />
+          <label>
+            When is it?
+          </label>
+          <p>You can add multiple dates if the opportunity occurs several times.</p>
+          <StartEndCollection v-if="volunteering.dates" v-model="volunteering.dates" />
+          <label for="contactname">
+            Contact name:
+          </label>
+          <b-form-input id="contactname" v-model="volunteering.contactname" type="text" maxlength="60" placeholder="Is there a contact person for anyone who wants to find out more? (Optional)" />
+          <label for="contactemail">
+            Contact email:
+          </label>
+          <b-form-input id="contactemail" v-model="volunteering.contactemail" type="email" placeholder="Can people reach you by email? (Optional)" />
+          <label for="contactphone">
+            Contact phone:
+          </label>
+          <b-form-input id="contactphone" v-model="volunteering.contactphone" type="tel" placeholder="Can people reach you by phone? (Optional)" />
+          <label for="contacturl">
+            Web link:
+          </label>
+          <b-form-input id="contacturl" v-model="volunteering.contacturl" type="url" placeholder="Is there more information on the web? (Optional)" />
+        </span>
+        <NoticeMessage v-else variant="warning" class="mt-2">
+          <v-icon name="info-circle" />&nbsp;This community has chosen not to allow Volunteer Opportunities.
+        </NoticeMessage>
       </div>
     </template>
     <template slot="modal-footer" slot-scope="{ ok, cancel }">
@@ -275,11 +287,10 @@ label {
 
 <script>
 // TODO DESIGN This layout is staid table nonsense.  Surely we can make it more appealing?
-// TODO Add some form validation using a plugin - see https://bootstrap-vue.js.org/docs/reference/validation/
-// TODO Don't allow submission before image upload complete.
-// TODO Groups which don't support opportunities
+// TODO NS Add some form validation using a plugin - see https://bootstrap-vue.js.org/docs/reference/validation/.  Need
+// title, description, location as mandatory.
+// TODO NS Don't allow submission before image upload complete.
 // TODO MINOR We used to have an "apply by" date. It's not clear we need this, so no urgency in re-adding it.
-// TODO EH Systemwide opportunities.
 import cloneDeep from 'lodash.clonedeep'
 import twem from '~/assets/js/twem'
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
@@ -339,6 +350,19 @@ export default {
       desc = desc ? twem.twem(this.$twemoji, desc) : ''
       desc = desc.trim()
       return desc
+    },
+    enabled() {
+      const group = this.$store.getters['auth/groupById'](this.groupid)
+
+      let ret = true
+
+      if (group) {
+        if ('volunteering' in group.settings) {
+          ret = group.settings.volunteering
+        }
+      }
+
+      return ret
     }
   },
   methods: {
@@ -396,10 +420,14 @@ export default {
 
         if (this.groupid !== oldgroupid) {
           // Save the new group, then remove the old group, so it won't get stranded.
-          await this.$store.dispatch('volunteerops/addGroup', {
-            id: this.volunteering.id,
-            groupid: this.groupid
-          })
+          //
+          // Checking for groupid > 0 allows systemwide opportunities.
+          if (this.groupid > 0) {
+            await this.$store.dispatch('volunteerops/addGroup', {
+              id: this.volunteering.id,
+              groupid: this.groupid
+            })
+          }
 
           if (oldgroupid) {
             await this.$store.dispatch('volunteerops/removeGroup', {

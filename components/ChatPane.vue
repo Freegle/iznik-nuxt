@@ -20,6 +20,18 @@
                 <ratings v-if="otheruser" :key="'otheruser-' + otheruser.id" size="sm" v-bind="otheruser" class="mr-2" />
               </b-col>
               <b-col cols="4" class="p-0">
+                <b-dropdown size="sm" variant="transparent" class="float-right" right>
+                  <template slot="button-content" />
+                  <b-dropdown-item v-if="chat.chattype === 'User2User'" @click="showhide">
+                    Hide this chat
+                  </b-dropdown-item>
+                  <b-dropdown-item v-if="chat.chattype === 'User2User'" @click="showblock">
+                    Block this person
+                  </b-dropdown-item>
+                  <b-dropdown-item v-if="chat.chattype === 'User2User'" @click="report">
+                    Report this person
+                  </b-dropdown-item>
+                </b-dropdown>
                 <span class="float-right pl-1 mr-1 clickme" title="Popup chat window" @click="popup">
                   <v-icon name="window-restore" />
                 </span>
@@ -157,6 +169,16 @@
         <ProfileModal :id="otheruser ? otheruser.id : null" ref="profile" />
         <AvailabilityModal v-if="me" ref="availabilitymodal" :otheruid="otheruser ? otheruser.id : null" :chatid="chat.id" :thisuid="me.id" />
         <AddressModal ref="addressModal" :choose="true" @chosen="sendAddress" />
+        <ChatBlockModal v-if="chat.chattype === 'User2User'" :id="id" ref="chatblock" :user="otheruser" @confirm="block" />
+        <ChatHideModal v-if="chat.chattype === 'User2User'" :id="id" ref="chathide" :user="otheruser" @confirm="hide" />
+        <ChatReportModal
+          v-if="chat.chattype === 'User2User'"
+          :id="'report-' + id"
+          ref="chatreport"
+          :user="otheruser"
+          :chatid="chat.id"
+          @confirm="hide"
+        />
       </div>
     </client-only>
   </div>
@@ -199,13 +221,18 @@
   justify-content: flex-end;
   background-color: $color-white;
 }
+
+::v-deep .dropdown-toggle {
+  color: $color-white;
+}
 </style>
 <script>
-// TODO Chat dropdown menu for report etc
 // TODO MINOR Popup confirm first time you use Nudge, so you know what you're doing.
 // TODO DESIGN We have a spinner at the top for our upwards infinite scroll.  But this looks messy when we load a
 // short chat, because we see the messages appear below the spinner and then move upwards once the infinite scroll
 // completes.
+import ChatBlockModal from './ChatBlockModal'
+import ChatHideModal from './ChatHideModal'
 import twem from '~/assets/js/twem'
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
@@ -217,6 +244,7 @@ const ProfileModal = () => import('./ProfileModal')
 const NoticeMessage = () => import('~/components/NoticeMessage')
 const AvailabilityModal = () => import('~/components/AvailabilityModal')
 const AddressModal = () => import('~/components/AddressModal')
+const ChatReportModal = () => import('~/components/ChatReportModal')
 
 export default {
   components: {
@@ -227,7 +255,10 @@ export default {
     ProfileModal,
     AvailabilityModal,
     AddressModal,
-    NoticeMessage
+    NoticeMessage,
+    ChatBlockModal,
+    ChatHideModal,
+    ChatReportModal
   },
   props: {
     id: {
@@ -264,7 +295,7 @@ export default {
       if (this.chat && this.chat.user1 && me) {
         ret =
           this.chat.user1 &&
-          this.chat.user1.id === this.$store.state.auth.user.id
+          this.chat.user1.id === this.$store.getters['auth/user'].id
             ? this.chat.user1
             : this.chat.user2
       }
@@ -301,11 +332,11 @@ export default {
         this.chat &&
         this.chat.chattype === 'User2User' &&
         this.chat.user1 &&
-        this.$store.state.auth.user
+        this.$store.getters['auth/user']
       ) {
         ret =
           this.chat.user1 &&
-          this.chat.user1.id === this.$store.state.auth.user.id
+          this.chat.user1.id === this.$store.getters['auth/user'].id
             ? this.chat.user2
             : this.chat.user1
       }
@@ -386,7 +417,6 @@ export default {
       id: this.id
     })
 
-    // TODO Loading a page on a specific chat doesn't always seem to fetch/render the messages correctly.  Test.
     await this.$store.dispatch('chatmessages/clearContext', {
       chatid: this.id
     })
@@ -538,7 +568,7 @@ export default {
 
       this.$nextTick(async () => {
         // Get our offers.
-        const me = this.$store.state.auth.user
+        const me = this.$store.getters['auth/user']
         await this.$store.dispatch('messages/clear')
         await this.$store.dispatch('messages/fetchMessages', {
           fromuser: me.id,
@@ -595,6 +625,25 @@ export default {
           addressid: id
         })
         .then(this._updateAfterSend)
+    },
+    showhide() {
+      this.$refs.chathide.show()
+    },
+    showblock() {
+      this.$refs.chatblock.show()
+    },
+    hide() {
+      this.$store.dispatch('chats/hide', {
+        id: this.id
+      })
+    },
+    block() {
+      this.$store.dispatch('chats/block', {
+        id: this.id
+      })
+    },
+    report() {
+      this.$refs.chatreport.show()
     }
   }
 }

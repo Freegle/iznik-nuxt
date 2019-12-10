@@ -455,7 +455,7 @@
 </style>
 
 <script>
-// TODO Click on group name or icon to go to group once we have /mygroups/id
+// TODO MINOR Click on group name or icon to go to group once we have /mygroups/id
 import Vue from 'vue'
 import EmailConfirmModal from '~/components/EmailConfirmModal'
 import loginRequired from '@/mixins/loginRequired.js'

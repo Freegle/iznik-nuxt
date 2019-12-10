@@ -1,5 +1,3 @@
-// TODO There's way too much boilerplate code in here.  I've seen talk of best practice being to wrap mutations in
-// actions, which isn't helping.  And then there's mapState/mapMutations/mapActions.  Surely we can do better?
 import Vue from 'vue'
 
 // We allow composing of multiple posts for the same location/email, so messages and attachments are indexed by
@@ -227,45 +225,39 @@ export const actions = {
         promise = new Promise((resolve, reject) => {
           console.log('Create draft')
 
-          self.$api.message
-            .put(data)
-            .then(({ id }) => {
-              commit('incProgress')
-              // We've created a draft.  Submit it
-              console.log('Created draft, now submit', id)
+          self.$api.message.put(data).then(({ id }) => {
+            commit('incProgress')
+            // We've created a draft.  Submit it
+            console.log('Created draft, now submit', id)
 
-              self.$api.message
-                .joinAndPost(id, state.email)
-                .then(({ groupid, newuser, newpassword }) => {
-                  commit('incProgress')
-                  // Success
-                  console.log('Submitted draft OK')
-                  commit('setMessage', {
-                    id: message.id,
-                    submitted: true,
-                    item: null,
-                    description: null
-                  })
-                  commit('setAttachments', [])
-                  results.push({
-                    id: message.id,
-                    groupid,
-                    newuser,
-                    newpassword
-                  })
+            self.$api.message
+              .joinAndPost(id, state.email)
+              .then(({ groupid, newuser, newpassword }) => {
+                commit('incProgress')
+                // Success
+                console.log('Submitted draft OK')
+                commit('setMessage', {
+                  id: message.id,
+                  submitted: true,
+                  item: null,
+                  description: null
+                })
+                commit('setAttachments', [])
+                results.push({
+                  id: message.id,
+                  groupid,
+                  newuser,
+                  newpassword
+                })
 
-                  resolve(groupid)
-                })
-                .catch(function(e) {
-                  // Failed
-                  console.error('Post of message failed', e)
-                  reject(e)
-                })
-            })
-            .catch(function(e) {
-              // TODO
-              console.error('Create of draft failed', e)
-            })
+                resolve(groupid)
+              })
+              .catch(function(e) {
+                // Failed
+                console.error('Post of message failed', e)
+                reject(e)
+              })
+          })
         })
       } else {
         // This is one of our messages which we are reposting.  We need to edit it (to update it from our client

@@ -123,7 +123,7 @@
 import PosterModal from '../components/PosterModal'
 import loginRequired from '@/mixins/loginRequired.js'
 // TODO MINOR Record who downloads a poster.  Then we can chase them later to find out if they put them up.
-// TODO Validation on email for invitation.
+// TODO NS Validation on email for invitation.
 // TODO DESIGN This page is a bit of a guddle.  Various different things on it, feels cluttered.
 
 export default {

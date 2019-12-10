@@ -150,6 +150,9 @@
         </b-form>
       </b-col>
     </b-row>
+    <b-alert v-if="loginError" variant="danger" show>
+      Login Failed: {{ loginError }}
+    </b-alert>
   </b-modal>
 </template>
 
@@ -178,6 +181,7 @@
 // TODO DESIGN Google's terms require the square icon, which is annoyingly inconsistent with the others.  Are we
 // allowed to have square other ones?  If so, please make such images.
 import Vue from 'vue'
+import { LoginError } from '../api/BaseAPI'
 const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
@@ -192,7 +196,8 @@ export default {
       email: null,
       password: null,
       pleaseShowModal: false,
-      showSignUp: false
+      showSignUp: false,
+      loginError: null
     }
   },
 
@@ -206,13 +211,11 @@ export default {
     // normal reactivity but that's because the SDKs we use aren't written in Vue.
     facebookDisabled() {
       const ret = this.bump && typeof Vue.FB === 'undefined'
-      console.log('Compute facebook disabled', ret, this.bump, Vue.FB)
       return ret
     },
 
     googleDisabled() {
       const ret = this.bump && (!window || !window.gapi || !window.gapi.client)
-      console.log('Compute Google disabled', ret, window)
       return ret
     },
 
@@ -225,7 +228,6 @@ export default {
       const ret =
         this.bump &&
         (this.facebookDisabled || this.googleDisabled || this.yahooDisabled)
-      console.log('compute socialblocked', ret)
       return ret
     },
 
@@ -252,6 +254,9 @@ export default {
   },
 
   methods: {
+    tryLater() {
+      this.loginError = 'Something went wrong; please try later.'
+    },
     show() {
       // Force reconsideration of social signin disabled.
       this.bump = Date.now()
@@ -262,6 +267,7 @@ export default {
     },
     loginNative(e) {
       const self = this
+      this.loginError = null
       e.preventDefault()
       e.stopPropagation()
 
@@ -299,10 +305,6 @@ export default {
               this.$router.push('/chitchat')
             }
           })
-          .catch(e => {
-            // TODO
-            console.error('Native login failed', e)
-          })
       } else {
         // Login
         this.$store
@@ -331,20 +333,24 @@ export default {
             }
           })
           .catch(e => {
-            // TODO
-            console.error('Native login failed', e)
+            console.log('Login failed', e)
+            if (e instanceof LoginError) {
+              console.log('Login error')
+              this.loginError = e.status
+            } else {
+              throw e // let others bubble up
+            }
           })
       }
     },
     async loginFacebook() {
-      console.log('Facebook login')
-      // TODO Do we still have the Chrome on IOS problem?
+      this.loginError = null
+      // TODO EH Do we still have the Chrome on IOS problem?
       try {
         let response = null
-        const promise = new Promise(function(resolve, reject) {
+        const promise = new Promise(function(resolve) {
           Vue.FB.login(
             function(ret) {
-              console.log('Returned in promise', ret)
               response = ret
               resolve()
             },
@@ -353,10 +359,8 @@ export default {
         })
 
         await promise
-        console.log('Returned after promise', response)
         if (response.authResponse) {
           const accessToken = response.authResponse.accessToken
-          console.log('Now login on server', accessToken)
 
           await this.$store.dispatch('auth/login', {
             fblogin: 1,
@@ -364,19 +368,18 @@ export default {
           })
 
           // We are now logged in.
-          console.log('Logged in')
           self.pleaseShowModal = false
         } else {
-          console.error('Facebook response missing auth', response)
-          throw new Error('Facebook response missing auth')
+          this.loginError =
+            'Facebook response is unexpected.  Please try later.'
         }
       } catch (e) {
-        // TODO
-        console.error('Native login failed', e)
+        this.loginError = 'Facebook login error: ' + e.message
       }
     },
 
     loginGoogle() {
+      this.loginError = null
       const params = {
         clientid: process.env.GOOGLE_CLIENT_ID,
         cookiepolicy: 'single_host_origin',
@@ -394,8 +397,7 @@ export default {
             console.log('Logged in')
             self.pleaseShowModal = false
           } else if (authResult.error) {
-            // TODO
-            console.error('There was an error: ' + authResult.error)
+            this.loginError = 'Google login failed: ' + authResult.error
           }
         },
         immediate: false,
@@ -410,12 +412,7 @@ export default {
       // Sadly Yahoo doesn't support a Javascript-only OAuth flow, so far as I can tell.  So what we do is
       // post to the server, get a redirection URL from there, redirect on here to Yahoo to complete the
       // signin, and then return to a /yahoologin route.
-      console.log(
-        'Yahoo login',
-        this.$route.query.page,
-        window.location,
-        document.URL
-      )
+      this.loginError = null
       let match
       const pl = /\+/g // Regex for replacing addition symbol with a space
       const search = /([^&=]+)=?([^&]*)/g
@@ -437,7 +434,6 @@ export default {
         '//' +
         window.location.hostname +
         (window.location.port ? ':' + window.location.port : '')
-      console.log('Got URL params', urlParams)
 
       this.$axios
         .post(process.env.API + '/session', urlParams)
@@ -469,13 +465,12 @@ export default {
             this.$store.dispatch('auth/fetchUser')
             self.pleaseShowModal = false
           } else {
-            // TODO
             console.error('Server login failed', ret)
+            this.tryLater()
           }
         })
         .catch(e => {
-          // TODO
-          console.error('Yahoo login failed', e)
+          this.tryLater()
         })
     },
 

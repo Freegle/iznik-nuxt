@@ -71,7 +71,18 @@
         <MessageUserInfo v-if="expanded.fromuser" :user="expanded.fromuser" />
         <span v-if="expanded.replycount" class="float-right small text-muted mr-1">
           <v-icon name="user" class="d-inline" />&nbsp;<span class="d-inline">{{ expanded.replycount }}&nbsp;freegler<span v-if="expanded.replycount != 1">s</span>&nbsp;replied&nbsp;</span>
+          <span v-if="expanded.groups && expanded.groups.length" />
         </span>
+        <!--        TODO DESIGN MINOR This report button and the freegler replies count are not aligned correctly.-->
+        <b-btn
+          v-if="expanded.groups && expanded.groups.length"
+          variant="link"
+          class="ml-1 float-right p-0 mr-1 "
+          size="sm"
+          @click="report"
+        >
+          Report this post
+        </b-btn>
       </b-card-body>
       <b-card-footer v-if="expanded" class="p-1 pt-3">
         <b-row>
@@ -136,6 +147,7 @@
     </b-modal>
     <ShareModal v-if="expanded" ref="shareModal" :message="$props" />
     <ChatButton v-if="expanded && expanded.fromuser" ref="chatbutton" :userid="expanded.fromuser.id" class="d-none" />
+    <MessageReportModal v-if="expanded" ref="reportModal" :message="$props" />
   </div>
 </template>
 <style scoped>
@@ -145,10 +157,11 @@
 </style>
 
 <script>
-// TODO Report this post
 // Need to import rather than async otherwise the render doesn't happen and ref isn't set.
 import ChatButton from './ChatButton'
 import ShareModal from './ShareModal'
+import MessageReportModal from './MessageReportModal'
+
 import twem from '~/assets/js/twem'
 
 const Highlighter = () => import('vue-highlight-words')
@@ -162,6 +175,7 @@ export default {
     MessageUserInfo,
     Highlighter,
     ShareModal,
+    MessageReportModal,
     ImageCarousel,
     NoticeMessage
   },
@@ -282,6 +296,10 @@ export default {
       this.$refs.shareModal.show()
     },
 
+    report() {
+      this.$refs.reportModal.show()
+    },
+
     async sendReply() {
       console.log('Send reply', this.reply, this.$refs, this.expanded)
 
@@ -317,7 +335,7 @@ export default {
             })
           }
 
-          // TODO If the group approves membership, then we will not actually be a member at this point, and might not
+          // TODO EH If the group approves membership, then we will not actually be a member at this point, and might not
           // become one if we are rejected.  Probably in that case we shouldn't be allowed to reply to this message, but
           // we will.  I think this is the same behaviour as in the old version, but that needs testing and consideration
           // of how to handle.
@@ -338,14 +356,13 @@ export default {
           //
           // Setting the reply text here will get persisted to the store.  Once we log in and return to the message
           // page, then we will find this in the store and trigger the send of the reply.
-          // TODO The store is persisted asynchronously.  Probably it will have happened before the signin completes,
-          // but we don't actually guarantee that.
+          // TODO NS The store is persisted asynchronously.  Probably it will have happened before the signin completes,
+          // but we don't actually guarantee that.  Nick, is this fixed by your change to persist on page destroy?
           await this.$store.dispatch('reply/set', {
             replyTo: this.id,
             replyMessage: this.reply
           })
 
-          // TODO We're getting redirected away from the page.
           this.$store.dispatch('auth/forceLogin', true)
         }
       }

@@ -1,23 +1,23 @@
 <template>
-  <div v-if="reply.userid && users[reply.userid] && reply.visible">
+  <div v-if="reply && userid && users[userid] && reply.visible">
     <b-row class="p-0">
       <b-col class="p-0">
-        <table v-if="users[reply.userid].profile">
+        <table v-if="users[userid].profile">
           <tbody>
             <tr>
               <td style="vertical-align: top" class="clickme" title="Click to see their profile" @click="showInfo">
                 <b-img-lazy
                   rounded="circle"
-                  class="profilemd p-0 ml-1 mb-1 mr-2 inline float-left mt-2"
+                  :class="(reply.replyto !== threadhead.id) ? 'profilesm' : 'profilemd' + ' p-0 ml-1 mb-1 mr-2 inline float-left mt-2'"
                   alt="Profile picture"
                   title="Profile"
-                  :src="users[reply.userid].profile.turl"
+                  :src="users[userid].profile.turl"
                   @error.native="brokenImage"
                 />
-                <v-icon v-if="users[reply.userid].settings.showmod" name="leaf" class="showmodsm text-success" />
+                <v-icon v-if="users[userid].settings.showmod && reply.replyto === threadhead.id" name="leaf" class="showmodsm text-success" />
               </td>
               <td class="align-top">
-                <span class="text-success font-weight-bold clickme" title="Click to see their profile" @click="showInfo">{{ users[reply.userid].displayname }}</span>
+                <span class="text-success font-weight-bold clickme" title="Click to see their profile" @click="showInfo">{{ users[userid].displayname }}</span>
                 <span class="font-weight-bold prewrap forcebreak replytext nopara">
                   <NewsHighlight
                     :search-words="threadUsers"
@@ -28,7 +28,7 @@
                 </span>
                 <div v-if="reply.image">
                   <b-img
-                    v-b-modal="'photoModal-' + reply.id"
+                    v-b-modal="'photoModal-' + replyid"
                     rounded
                     class="clickme"
                     alt="ChitChat photo"
@@ -37,11 +37,11 @@
                     @error.native="brokenImage"
                   />
                 </div>
-                <span v-if="reply.message && reply.userid && users[reply.userid]">
+                <span v-if="reply.message && userid && users[userid]">
                   <span class="text-muted small">
                     {{ $dayjs(reply.timestamp).fromNow() }}
                   </span>
-                  <NewsUserInfo :user="users[reply.userid]" />
+                  <NewsUserInfo :user="users[userid]" />
                   <span>
                     &bull;<span class="text-muted small clickme" @click="replyReply">&nbsp;Reply</span>
                   </span>
@@ -52,19 +52,19 @@
                     <span v-if="reply.loved" @click="unlove">
                       &bull;&nbsp;Unlove this
                     </span>
-                    <span v-if="reply.loves">
+                    <span v-if="reply.loves" class="clickme" @click="showLove">
                       <v-icon name="heart" class="text-danger" />&nbsp;{{ reply.loves }}
                     </span>
-                    <span v-if="parseInt(me.id) === parseInt(reply.userid)" v-b-modal="'newsEdit-' + reply.id">
+                    <span v-if="parseInt(me.id) === parseInt(userid)" v-b-modal="'newsEdit-' + replyid">
                       &bull;&nbsp;Edit
                     </span>
-                    <span v-if="parseInt(me.id) === parseInt(reply.userid) || mod" @click="deleteReply">
+                    <span v-if="parseInt(me.id) === parseInt(userid) || mod" @click="deleteReply">
                       &bull;&nbsp;Delete
                     </span>
-                    <span v-if="parseInt(me.id) !== parseInt(reply.userid)">
+                    <span v-if="parseInt(me.id) !== parseInt(userid)">
                       &bull;&nbsp;
                       <ChatButton
-                        :userid="reply.userid"
+                        :userid="userid"
                         size="naked"
                         title="Message"
                       />
@@ -79,57 +79,63 @@
       </b-col>
     </b-row>
     <b-button v-if="showEarlierRepliesOption" variant="link" class="pl-0" @click.prevent="showAllReplies = true">
-      Show earlier {{ reply.replies.length | pluralize(['reply', 'replies']) }} ({{ numberOfRepliesNotShown }})
+      Show earlier {{ numberOfRepliesNotShown | pluralize(['reply', 'replies']) }} ({{ numberOfRepliesNotShown }})
     </b-button>
-    <div v-if="reply.replies && reply.replies.length > 0" class="pl-3">
-      <ul v-for="entry in reply.replies" :key="'newsfeed-' + entry.id" class="p-0 pt-1 pl-1 list-unstyled mb-1 border-left">
+    <div v-if="repliestoshow && repliestoshow.length > 0" class="pl-3">
+      <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id" class="p-0 pt-1 pl-1 list-unstyled mb-1 border-left">
         <li>
-          <news-reply :key="'newsfeedreply-' + reply.id + '-reply-' + entry.id" :reply="entry" :users="users" :threadhead="threadhead" />
+          <news-reply :key="'newsfeedreply-' + replyid + '-reply-' + entry.id" :replyid="entry.id" :users="users" :threadhead="threadhead" />
         </li>
       </ul>
     </div>
     <b-row v-if="showReplyBox" class="mb-2">
       <b-col class="p-0 pb-1 d-flex ml-4">
-        <b-input-group class="pl-4 flex-shrink-2">
-          <b-input-group-prepend>
-            <span class="input-group-text pl-1 pr-1">
-              <b-img-lazy
-                v-if="me.profile.turl"
-                rounded="circle"
-                thumbnail
-                class="profilesm p-0 m-0 inline float-left"
-                alt="Profile picture"
-                title="Profile"
-                :src="me.profile.turl"
-                @error.native="brokenImage"
-              />
-            </span>
-          </b-input-group-prepend>
-          <b-textarea
-            ref="replybox"
-            v-model="replybox"
-            size="sm"
-            rows="1"
-            max-rows="8"
-            maxlength="2048"
-            spellcheck="true"
-            placeholder="Write a reply to this comment and hit enter..."
-            class="p-0 pl-1 pt-1"
-            @keydown.enter.exact.prevent
-            @keyup.enter.exact="sendReply"
-            @keydown.enter.shift.exact="newlineReply"
-            @keydown.alt.shift.exact="newlineReply"
-            @focus="focusedReply"
-          />
-        </b-input-group>
-        <b-btn size="sm" variant="white" class="flex-grow-1 float-right ml-1">
-          <v-icon name="camera" />&nbsp;Photo
-        </b-btn>
+        <div
+          class="d-flex w-100"
+          @keyup.enter.exact.prevent
+          @keydown.enter.exact="sendReply"
+        >
+          <at-ta ref="at" :members="tagusers" class="pl-4 flex-shrink-2 input-group">
+            <b-input-group-prepend>
+              <span class="input-group-text pl-1 pr-1">
+                <b-img-lazy
+                  v-if="me.profile.turl"
+                  rounded="circle"
+                  thumbnail
+                  class="profilesm p-0 m-0 inline float-left"
+                  alt="Profile picture"
+                  title="Profile"
+                  :src="me.profile.turl"
+                  @error.native="brokenImage"
+                />
+              </span>
+            </b-input-group-prepend>
+            <b-textarea
+              ref="replybox"
+              v-model="replybox"
+              size="sm"
+              rows="1"
+              max-rows="8"
+              maxlength="2048"
+              spellcheck="true"
+              placeholder="Write a reply to this comment and hit enter..."
+              class="p-0 pl-1 pt-1"
+              @keydown.enter.exact.prevent
+              @keyup.enter.exact="sendReply"
+              @keydown.enter.shift.exact="newlineReply"
+              @keydown.alt.shift.exact="newlineReply"
+              @focus="focusedReply"
+            />
+          </at-ta>
+          <b-btn size="sm" variant="white" class="flex-grow-1 float-right ml-1">
+            <v-icon name="camera" />&nbsp;Photo
+          </b-btn>
+        </div>
       </b-col>
     </b-row>
     <b-modal
       v-if="reply.image"
-      :id="'photoModal-' + reply.id"
+      :id="'photoModal-' + replyid"
       ref="photoModal"
       title="ChitChat Photo"
       alt="ChitChat Photo"
@@ -147,7 +153,7 @@
       </template>
     </b-modal>
     <b-modal
-      :id="'newsEdit-' + reply.id"
+      :id="'newsEdit-' + replyid"
       ref="editModal"
       title="Edit your post"
       size="lg"
@@ -172,13 +178,18 @@
         </b-button>
       </template>
     </b-modal>
-    <ProfileModal v-if="infoclick" :id="reply.userid" ref="profilemodal" />
+    <ProfileModal v-if="infoclick" :id="userid" ref="profilemodal" />
+    <NewsLovesModal :id="replyid" ref="loveModal" />
   </div>
 </template>
 
 <script>
-// TODO EH User tagging
+import NewsLovesModal from './NewsLovesModal'
 import twem from '~/assets/js/twem'
+const AtTa = process.browser
+  ? require('vue-at/dist/vue-at-textarea')
+  : undefined
+
 const NewsUserInfo = () => import('~/components/NewsUserInfo')
 const NewsHighlight = () => import('~/components/NewsHighlight')
 const ProfileModal = () => import('~/components/ProfileModal')
@@ -190,19 +201,21 @@ const INITIAL_NUMBER_OF_REPLIES_TO_SHOW = 5
 export default {
   name: 'NewsReply',
   components: {
+    NewsLovesModal,
     NewsUserInfo,
     NewsHighlight,
     ProfileModal,
     ChatButton,
-    NewsPreview
+    NewsPreview,
+    AtTa
   },
   props: {
     threadhead: {
       type: Object,
       required: true
     },
-    reply: {
-      type: Object,
+    replyid: {
+      type: Number,
       required: true
     },
     users: {
@@ -225,8 +238,33 @@ export default {
     }
   },
   computed: {
+    userid() {
+      // The API can return slightly different things in different places.
+      if (this.reply.userid) {
+        return this.reply.userid
+      }
+
+      if (this.reply.user) {
+        return this.reply.user.id
+      }
+
+      return null
+    },
+    reply() {
+      const ret = this.$store.getters['newsfeed/get'](this.replyid)
+      return ret
+    },
     me() {
       return this.$store.getters['auth/user']
+    },
+    tagusers() {
+      // TODO MINOR Would be nice to allow tagging of users who haven't contributed to the thread yet.  Same in NewsReply.
+      const ret = []
+      for (const user in this.users) {
+        ret.push(this.users[user].displayname)
+      }
+
+      return ret
     },
     mod() {
       const me = this.me
@@ -239,7 +277,7 @@ export default {
     },
     emessage() {
       return this.reply.message
-        ? twem.twem(this.$twemoji, this.reply.message)
+        ? twem.twem(this.$twemoji, this.reply.message) + ''
         : null
     },
     threadUsers() {
@@ -249,19 +287,38 @@ export default {
       }
       return ret
     },
+    visiblereplies() {
+      // These are the replies which are candidates to show, i.e. not deleted or hidden.
+      const ret = []
+
+      if (this.reply) {
+        if (this.reply.replies && this.reply.replies.length) {
+          for (let i = 0; i < this.reply.replies.length; i++) {
+            if (
+              !this.reply.replies[i].deleted &&
+              this.reply.replies[i].visible
+            ) {
+              ret.push(this.reply.replies[i])
+            }
+          }
+        }
+      }
+
+      return ret
+    },
     repliestoshow() {
       let ret = []
 
-      if (this.reply.replies && this.reply.replies.length) {
+      if (this.visiblereplies.length) {
         if (
           this.showAllReplies ||
-          this.reply.replies.length <= INITIAL_NUMBER_OF_REPLIES_TO_SHOW
+          this.visiblereplies.length <= INITIAL_NUMBER_OF_REPLIES_TO_SHOW
         ) {
           // Return all the replies
-          ret = this.reply.replies
+          ret = this.visiblereplies
         } else {
           // We have to prune what we show, but we should show any replyto.
-          ret = this.reply.replies
+          ret = this.visiblereplies
           let pruned = 0
           let pruneAt = ret - 1
 
@@ -289,24 +346,23 @@ export default {
       // If we're not already showing all replies and there are still some to show after the default display
       return (
         !this.showAllReplies &&
-        this.reply.replies.length > INITIAL_NUMBER_OF_REPLIES_TO_SHOW
+        this.visiblereplies.length > INITIAL_NUMBER_OF_REPLIES_TO_SHOW
       )
     },
     numberOfRepliesNotShown() {
       if (
-        !this.reply ||
-        !this.reply.replies ||
-        this.reply.replies.length < INITIAL_NUMBER_OF_REPLIES_TO_SHOW
+        !this.visiblereplies ||
+        this.visiblereplies.length < INITIAL_NUMBER_OF_REPLIES_TO_SHOW
       ) {
         return 0
       }
 
-      return this.reply.replies.length - INITIAL_NUMBER_OF_REPLIES_TO_SHOW
+      return this.visiblereplies.length - INITIAL_NUMBER_OF_REPLIES_TO_SHOW
     }
   },
   mounted() {
-    if (parseInt(this.scrollTo) === this.reply.id) {
-      // We want to scroll to this reply to make sure it's visible
+    if (parseInt(this.scrollTo) === this.replyid && this.$el.scrollIntoView) {
+      // We want to scroll to this reply to make sure it's visible.
       this.$el.scrollIntoView()
 
       // TODO DESIGN Can we have some visual highlighting of the element we've just scrolled to?
@@ -322,7 +378,7 @@ export default {
       }, 25)
     },
     replyReply() {
-      this.replyingTo = this.reply.id
+      this.replyingTo = this.replyid
       this.showReplyBox = true
 
       // Can't set focus immediately as not in DOM until re-render.
@@ -330,14 +386,14 @@ export default {
         this.$refs.replybox.focus()
 
         // Reply with tag.
-        this.replybox = '@' + this.users[this.reply.userid].displayname + ' '
+        this.replybox = '@' + this.users[this.userid].displayname + ' '
       })
     },
     focusReply: function() {
       this.$refs.replybox.focus()
     },
     focusedReply: function() {
-      this.replyingTo = this.reply.id
+      this.replyingTo = this.replyid
     },
     async sendReply() {
       // Encode up any emojis.
@@ -362,21 +418,21 @@ export default {
     },
     love() {
       this.$store.dispatch('newsfeed/love', {
-        id: this.reply.id,
+        id: this.replyid,
         replyto: this.reply.replyto,
         threadhead: this.reply.threadhead
       })
     },
     unlove() {
       this.$store.dispatch('newsfeed/unlove', {
-        id: this.reply.id,
+        id: this.replyid,
         replyto: this.reply.replyto,
         threadhead: this.reply.threadhead
       })
     },
     save() {
       this.$store.dispatch('newsfeed/edit', {
-        id: this.reply.id,
+        id: this.replyid,
         message: this.reply.message
       })
 
@@ -384,12 +440,15 @@ export default {
     },
     deleteReply() {
       this.$store.dispatch('newsfeed/delete', {
-        id: this.reply.id,
-        threadhead: this.reply.threadhead
+        id: this.replyid,
+        threadhead: this.threadhead.id
       })
     },
     brokenImage(event) {
       event.target.src = '/static/defaultprofile.png'
+    },
+    showLove() {
+      this.$refs.loveModal.show()
     }
   }
 }
@@ -397,11 +456,9 @@ export default {
 
 <style scoped lang="scss">
 @import 'color-vars';
-
-$bootstrap-xs: 576px;
-$bootstrap-sm: 768px;
-$bootstrap-md: 992px;
-$bootstrap-lg: 1200px;
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
 
 .replytext {
   font-size: 14px;
@@ -415,11 +472,10 @@ $bootstrap-lg: 1200px;
   width: 15px;
   padding-left: 3px;
   padding-top: 3px;
+  top: 23px;
+  left: 23px;
 
-  top: 20px;
-  left: 18px;
-
-  @media (min-width: $bootstrap-sm) {
+  @include media-breakpoint-up(md) {
     top: 30px;
     left: 26px;
   }
