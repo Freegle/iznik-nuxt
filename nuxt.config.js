@@ -4,8 +4,10 @@ const FACEBOOK_APPID = '134980666550322'
 require('dotenv').config()
 
 // API is the constant the code uses.
-//const API = '/api'
-const API = 'https://iznik.ilovefreegle.org/api'  // CC
+let API = '/api'
+if (process.env.NUXT_BUILD_TYPE === 'fdapp') {
+  API = 'https://iznik.ilovefreegle.org/api'
+}
 
 // This is where the user site is.
 const USER_SITE = 'https://www.ilovefreegle.org'
@@ -13,12 +15,6 @@ const USER_SITE = 'https://www.ilovefreegle.org'
 // PROXY_API is where we send it to.  This avoids CORS issues (and removes preflight OPTIONS calls for GETs, which
 // hurt client performance).
 const PROXY_API = process.env.IZNIK_API || 'https://iznik.ilovefreegle.org'
-
-console.log("PROXY_API", PROXY_API)
-
-console.log("USER_SITE", USER_SITE)
-
-//const httpadapter = require('./node_modules/axios/lib/adapters/http')
 
 // Long polls interact badly with per-host connection limits so send to here instead.
 const CHAT_HOST = 'https://users.ilovefreegle.org:555'
@@ -28,9 +24,8 @@ const CHAT_HOST = 'https://users.ilovefreegle.org:555'
 const DISABLE_ESLINT_AUTOFIX = process.env.DISABLE_ESLINT_AUTOFIX && process.env.DISABLE_ESLINT_AUTOFIX !== 'false'
 const ESLINT_AUTOFIX = !DISABLE_ESLINT_AUTOFIX
 
-module.exports = {
-  //mode: 'universal',
-  mode: 'spa',  // CC
+let config = {
+  mode: 'universal',
 
   /*
   ** Headers of the page
@@ -192,16 +187,11 @@ module.exports = {
   ** Axios module configuration
   */
   axios: {
-    // CC baseURL: PROXY_API,
     proxy: true
   },
   proxy: {
     '/api/': PROXY_API,
     '/adview.php': USER_SITE + '/adview.php'
-  },
-
-  router: { // CC   // https://nuxtjs.org/api/configuration-router/ 
-    mode: 'hash'    // https://router.vuejs.org/api/#mode
   },
 
   /*
@@ -210,17 +200,9 @@ module.exports = {
   build: {
     // analyze: true,
 
-    publicPath: '/js/', // CC
-
     transpile: [/^vue2-google-maps($|\/)/],
 
     extend(config, ctx) {
-
-      config.plugins.forEach(function (p,ix) {  // CC..
-        console.log(ix+":"+p.constructor.name)
-      })
-      config.plugins = config.plugins.filter((plugin) => plugin.constructor.name !== 'UglifyJsPlugin')  // ..CC
-
       config.devtool = ctx.isClient ? 'eval-source-map' : 'inline-source-map'
 
       // Run ESLint on save
@@ -240,7 +222,6 @@ module.exports = {
     },
 
     optimization: {
-      minimize: false,  // CC
       splitChunks: {
         chunks: 'all',
         automaticNameDelimiter: '.',
@@ -252,7 +233,6 @@ module.exports = {
     },
 
     optimization: {
-      minimize: false,  // CC
       runtimeChunk: 'single',
       splitChunks: {
         chunks: 'all',
@@ -296,3 +276,22 @@ module.exports = {
     }
   },
 }
+
+if (process.env.NUXT_BUILD_TYPE === 'fdapp') {
+  console.log('NUXT_BUILD_TYPE', process.env.NUXT_BUILD_TYPE)
+
+  config.mode = 'spa'
+
+  config.router = { // https://nuxtjs.org/api/configuration-router/ 
+    mode: 'hash'    // https://router.vuejs.org/api/#mode
+  }
+
+  config.build.publicPath = '/js/'
+
+  config.build.optimization.minimize = false
+
+  // https://stackoverflow.com/questions/57822378/disable-service-workers-or-workbox-in-nuxtjs-app
+  config.modules = config.modules.filter((module) => module !== '@nuxtjs/pwa')
+}
+
+module.exports = config

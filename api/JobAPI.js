@@ -9,7 +9,7 @@ export default class JobAPI {
     // Note that the server side proxy we use to bypass CORS and get the jobs is not part of the API and therefore we
     // don't use the usual API methods.
     const path = '/adview.php'
-    const { status, data } = await this.$axios.get(path, { params })
+    const { status, data } = await this.$axios.get(process.env.USER_SITE + path, { params })
     if (data && data.data) {
       return data.data
     } else {
