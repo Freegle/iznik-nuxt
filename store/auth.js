@@ -248,7 +248,6 @@ export const actions = {
       components: NONMIN,
       force: true
     })
-    // TODO NS: should we rely on returning this?  EH We definitely do, and the clue is in the name.  I'd just remove this.
     return state.user
   },
 
