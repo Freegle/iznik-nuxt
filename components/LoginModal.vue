@@ -462,12 +462,16 @@ export default {
               '/api',
               ''
             )
-            const re = new RegExp(apihost, 'g')
-            url = url.replace(
-              re,
-              window.location.hostname +
-                (window.location.port ? ':' + window.location.port : '')
-            )
+
+            if (apihost) {
+              const re = new RegExp(apihost, 'g')
+              url = url.replace(
+                re,
+                window.location.hostname +
+                  (window.location.port ? ':' + window.location.port : '')
+              )
+            }
+
             console.log('Redirect to Yahoo', url)
             window.location = url
           } else if (ret.ret === 0) {
