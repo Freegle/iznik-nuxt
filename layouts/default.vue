@@ -24,10 +24,6 @@
               <v-icon name="home" scale="2" /><br>
               My&nbsp;Posts
             </b-nav-item>
-            <b-nav-item id="menu-option-mygroups" class="text-center small p-0" to="/communities" @mousedown="maybeReload('/communities')">
-              <v-icon name="users" scale="2" /><br>
-              Communities
-            </b-nav-item>
             <b-nav-item id="menu-option-give" class="text-center small p-0" to="/give" @mousedown="maybeReload('/give')">
               <v-icon name="gift" scale="2" /><br>
               Give
@@ -35,6 +31,10 @@
             <b-nav-item id="menu-option-find" class="text-center small p-0" to="/find" @mousedown="maybeReload('/find')">
               <v-icon name="search" scale="2" /><br>
               Find
+            </b-nav-item>
+            <b-nav-item id="menu-option-mygroups" class="text-center small p-0" to="/communities" @mousedown="maybeReload('/communities')">
+              <v-icon name="users" scale="2" /><br>
+              Communities
             </b-nav-item>
             <b-nav-item id="menu-option-explore" class="text-center small p-0" to="/explore" @mousedown="maybeReload('/explore')">
               <v-icon name="map-marked-alt" scale="2" /><br>
