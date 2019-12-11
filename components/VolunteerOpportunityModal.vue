@@ -4,6 +4,7 @@
     v-model="showModal"
     size="lg"
     no-stacking
+    @hidden="reset()"
   >
     <template slot="modal-header">
       <h4 v-if="editing">
@@ -106,21 +107,36 @@
       <div>
         <b-row>
           <b-col cols="12" md="6">
-            <label for="group">
-              For which community?
-            </label>
-            <groupRememberSelect v-model="groupid" remember="editopportunity" :systemwide="true" />
-            <label v-if="enabled" for="title">
-              What's the opportunity?
-            </label>
-            <b-form-input
+            <b-form-group
+              ref="groupid"
+              label="For which community?"
+              :state="validationEnabled ? !$v.groupid.$invalid : null"
+            >
+              <groupRememberSelect v-model="groupid" remember="editopportunity" :systemwide="true" />
+              <b-form-invalid-feedback>
+                Please select a community
+              </b-form-invalid-feedback>
+            </b-form-group>
+            <b-form-group
               v-if="enabled"
-              id="title"
-              v-model="volunteering.title"
-              type="text"
-              maxlength="80"
-              placeholder="Give the opportunity a short title"
-            />
+              ref="volunteeringEdit__title"
+              label="What's the opportunity?"
+              label-for="title"
+              :state="validationEnabled ? !$v.volunteeringEdit.title.$invalid : null"
+            >
+              <validating-form-input
+                id="title"
+                v-model="volunteeringEdit.title"
+                type="text"
+                placeholder="Give the opportunity a short title"
+                :validation="$v.volunteeringEdit.title"
+                :validation-enabled="validationEnabled"
+                :validation-messages="{
+                  required: 'Please add a title',
+                  maxLength: ({ max }) => `Max length is ${max}`
+                }"
+              />
+            </b-form-group>
           </b-col>
           <b-col v-if="enabled" cols="12" md="6">
             <div class="float-right">
@@ -168,55 +184,122 @@
               />
             </b-col>
           </b-row>
-          <label for="description">
-            What is it?
-          </label>
-          <b-textarea
-            id="description"
-            v-model="volunteering.description"
-            rows="5"
-            max-rows="8"
-            spellcheck="true"
-            placeholder="Please let people know what the opportunity is - any organisation which is involved, what you'd like them to do, and why they might like to do it."
-            class="mt-2"
-          />
-          <label for="timecommitment">
-            Time commitment:
-          </label>
-          <b-textarea
-            id="description"
-            v-model="volunteering.timecommitment"
-            rows="2"
-            max-rows="8"
-            spellcheck="true"
-            placeholder="Please let people know what the time commitment is that you're looking for, e.g. how many hours a week, what times of day."
-            class="mt-2"
-          />
-          <label for="location">
-            Where is it?
-          </label>
-          <b-form-input id="location" v-model="volunteering.location" type="text" maxlength="80" placeholder="Where is it being held?  Add a postcode to make sure people can find you!" />
-          <label>
-            When is it?
-          </label>
-          <p>You can add multiple dates if the opportunity occurs several times.</p>
-          <StartEndCollection v-if="volunteering.dates" v-model="volunteering.dates" />
-          <label for="contactname">
-            Contact name:
-          </label>
-          <b-form-input id="contactname" v-model="volunteering.contactname" type="text" maxlength="60" placeholder="Is there a contact person for anyone who wants to find out more? (Optional)" />
-          <label for="contactemail">
-            Contact email:
-          </label>
-          <b-form-input id="contactemail" v-model="volunteering.contactemail" type="email" placeholder="Can people reach you by email? (Optional)" />
-          <label for="contactphone">
-            Contact phone:
-          </label>
-          <b-form-input id="contactphone" v-model="volunteering.contactphone" type="tel" placeholder="Can people reach you by phone? (Optional)" />
-          <label for="contacturl">
-            Web link:
-          </label>
-          <b-form-input id="contacturl" v-model="volunteering.contacturl" type="url" placeholder="Is there more information on the web? (Optional)" />
+
+          <b-form-group
+            ref="volunteeringEdit__description"
+            label="What is it?"
+            label-for="description"
+            :state="validationEnabled ? !$v.volunteeringEdit.description.$invalid : null"
+          >
+            <validating-textarea
+              id="description"
+              v-model="volunteeringEdit.description"
+              rows="5"
+              max-rows="8"
+              spellcheck="true"
+              placeholder="Please let people know what the opportunity is - any organisation which is involved, what you'd like them to do, and why they might like to do it."
+              class="mt-2"
+              :validation="$v.volunteeringEdit.description"
+              :validation-enabled="validationEnabled"
+              :validation-messages="{
+                required: 'Please add a description'
+              }"
+            />
+          </b-form-group>
+          <b-form-group
+            ref="volunteeringEdit__timecommitment"
+            label="Time commitment:"
+            label-for="description"
+            :state="validationEnabled ? !$v.volunteeringEdit.timecommitment.$invalid : null"
+          >
+            <validating-textarea
+              id="timecommitment"
+              v-model="volunteeringEdit.timecommitment"
+              rows="2"
+              max-rows="8"
+              spellcheck="true"
+              placeholder="Please let people know what the time commitment is that you're looking for, e.g. how many hours a week, what times of day."
+              class="mt-2"
+              :validation="$v.volunteeringEdit.timecommitment"
+              :validation-enabled="validationEnabled"
+              :validation-messages="{
+                required: 'Please add the time commitment'
+              }"
+            />
+          </b-form-group>
+          <b-form-group
+            ref="volunteeringEdit__location"
+            label="Where is it?"
+            label-for="location"
+            :state="validationEnabled ? !$v.volunteeringEdit.location.$invalid : null"
+          >
+            <validating-form-input
+              id="location"
+              v-model="volunteeringEdit.location"
+              type="text"
+              placeholder="Where is it being held? Add a postcode to make sure people can find you!"
+              :validation="$v.volunteeringEdit.location"
+              :validation-enabled="validationEnabled"
+              :validation-messages="{
+                required: 'Please add a location'
+              }"
+            />
+          </b-form-group>
+          <b-form-group label="When is it?">
+            <p>You can add multiple dates if the opportunity occurs several times.</p>
+            <StartEndCollection v-if="volunteering.dates" v-model="volunteering.dates" />
+          </b-form-group>
+          <b-form-group
+            ref="volunteeringEdit__contactname"
+            label="Contact name:"
+            label-for="contactname"
+            :state="volunteeringEdit.contactname && validationEnabled ? !$v.volunteeringEdit.contactname.$invalid : null"
+          >
+            <validating-form-input
+              id="contactname"
+              v-model="volunteeringEdit.contactname"
+              type="text"
+              placeholder="Is there a contact person for anyone who wants to find out more? (Optional)"
+              :validation="$v.volunteeringEdit.contactname"
+              :validation-enabled="volunteeringEdit.contactname && validationEnabled"
+              :validation-messages="{
+                maxLength: ({ max }) => `Max length is ${max}`
+              }"
+            />
+          </b-form-group>
+          <b-form-group
+            label="Contact email:"
+            label-for="contactemail"
+          >
+            <b-form-input
+              id="contactemail"
+              v-model="volunteeringEdit.contactemail"
+              type="email"
+              placeholder="Can people reach you by email? (Optional)"
+            />
+          </b-form-group>
+          <b-form-group
+            label="Contact phone:"
+            label-for="contactphone"
+          >
+            <b-form-input
+              id="contactphone"
+              v-model="volunteeringEdit.contactphone"
+              type="tel"
+              placeholder="Can people reach you by phone? (Optional)"
+            />
+          </b-form-group>
+          <b-form-group
+            label="Web link:"
+            label-for="contacturl"
+          >
+            <b-form-input
+              id="contacturl"
+              v-model="volunteeringEdit.contacturl"
+              type="tel"
+              placeholder="Is there more information on the web? (Optional)"
+            />
+          </b-form-group>
         </span>
         <NoticeMessage v-else variant="warning" class="mt-2">
           <v-icon name="info-circle" />&nbsp;This community has chosen not to allow Volunteer Opportunities.
@@ -258,12 +341,6 @@
   color: $color-green--darker;
 }
 
-label {
-  font-weight: bold;
-  color: $color-green--darker;
-  margin-top: 10px;
-}
-
 .topleft {
   top: 12px;
   left: 10px;
@@ -292,39 +369,66 @@ label {
 // TODO NS Don't allow submission before image upload complete.
 // TODO MINOR We used to have an "apply by" date. It's not clear we need this, so no urgency in re-adding it.
 import cloneDeep from 'lodash.clonedeep'
+import { validationMixin } from 'vuelidate'
+import { maxLength, required } from 'vuelidate/lib/validators'
 import twem from '~/assets/js/twem'
+import ValidatingFormInput from '@/components/ValidatingFormInput'
+import ValidatingTextarea from '@/components/ValidatingTextarea'
+import validationHelpers from '@/mixins/validationHelpers'
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
 const OurFilePond = () => import('~/components/OurFilePond')
 const StartEndCollection = () => import('~/components/StartEndCollection')
 const NoticeMessage = () => import('~/components/NoticeMessage')
 
+function initialVolunteering() {
+  return {
+    id: null,
+    title: null,
+    description: null,
+    photo: null,
+    user: null,
+    url: null,
+    timecommitment: null,
+    location: null,
+    dates: [],
+    groups: [],
+    contactname: null,
+    contactemail: null,
+    contactphone: null,
+    contacturl: null,
+    canmodify: null
+  }
+}
+
+function initialData() {
+  return {
+    volunteeringEdit: cloneDeep(this.volunteering),
+    showModal: false,
+    editing: false,
+    groupid: null,
+    uploading: false,
+    oldphoto: null,
+    olddates: null,
+    cacheBust: Date.now(),
+    saving: false
+  }
+}
+
 export default {
   components: {
+    ValidatingFormInput,
+    // eslint-disable-next-line vue/no-unused-components
+    ValidatingTextarea,
     GroupRememberSelect,
     OurFilePond,
     StartEndCollection,
     NoticeMessage
   },
+  mixins: [validationMixin, validationHelpers],
   props: {
     volunteering: {
       type: Object,
-      default: () => ({
-        id: null,
-        title: null,
-        description: null,
-        photo: null,
-        user: null,
-        url: null,
-        timecommitment: null,
-        location: null,
-        dates: [],
-        groups: [],
-        contactname: null,
-        contactemail: null,
-        contactphone: null,
-        contacturl: null,
-        canmodify: null
-      })
+      default: initialVolunteering
     },
     startEdit: {
       type: Boolean,
@@ -332,19 +436,11 @@ export default {
       default: false
     }
   },
-  data: function() {
-    return {
-      showModal: false,
-      editing: false,
-      groupid: null,
-      uploading: false,
-      oldphoto: null,
-      olddates: null,
-      cacheBust: Date.now(),
-      saving: false
-    }
-  },
+  data: initialData,
   computed: {
+    isExisting() {
+      return Boolean(this.volunteering.id)
+    },
     description() {
       let desc = this.volunteering.description
       desc = desc ? twem.twem(this.$twemoji, desc) : ''
@@ -363,24 +459,17 @@ export default {
       }
 
       return ret
+    },
+    shouldUpdatePhoto() {
+      const { photo: oldPhoto } = this.volunteering
+      const { photo: newPhoto } = this.volunteeringEdit
+      return newPhoto && (oldPhoto ? newPhoto.id !== oldPhoto.id : true)
     }
   },
   methods: {
     show() {
       this.editing = this.startEdit
       this.showModal = true
-
-      this.oldphoto =
-        this.volunteering && this.volunteering.photo
-          ? this.volunteering.photo.id
-          : null
-      this.olddates =
-        this.volunteering &&
-        this.volunteering.dates &&
-        this.volunteering.dates.length > 0
-          ? cloneDeep(this.volunteering.dates)
-          : null
-
       if (this.volunteering.groups && this.volunteering.groups.length > 0) {
         this.groupid = this.volunteering.groups[0].id
       }
@@ -398,19 +487,26 @@ export default {
 
       this.hide()
     },
+    reset() {
+      Object.assign(this, initialData.call(this))
+      this.$v.$reset()
+    },
     async saveIt() {
-      // TODO NS Validation.
+      this.$v.$touch()
+      if (this.$v.$anyError) {
+        this.validationFocusFirstError()
+        return
+      }
+
       this.saving = true
 
-      if (this.volunteering.id) {
+      if (this.isExisting) {
+        const { id } = this.volunteering
         // This is an edit.
-        if (
-          this.volunteering.photo &&
-          this.volunteering.photo.id !== this.oldphoto
-        ) {
-          await this.$store.dispatch('volunteerops/setPhoto', {
-            id: this.volunteering.id,
-            photoid: this.volunteering.photo.id
+        if (this.shouldUpdatePhoto) {
+          await this.$store.dispatch('communityevents/setPhoto', {
+            id,
+            photoid: this.volunteeringEdit.photo.id
           })
         }
 
@@ -424,56 +520,54 @@ export default {
           // Checking for groupid > 0 allows systemwide opportunities.
           if (this.groupid > 0) {
             await this.$store.dispatch('volunteerops/addGroup', {
-              id: this.volunteering.id,
+              id,
               groupid: this.groupid
             })
           }
 
           if (oldgroupid) {
             await this.$store.dispatch('volunteerops/removeGroup', {
-              id: this.volunteering.id,
+              id,
               groupid: oldgroupid
             })
           }
         }
 
-        if (this.volunteering.dates && this.volunteering.dates.length) {
-          await this.$store.dispatch('volunteerops/setDates', {
-            id: this.volunteering.id,
-            olddates: this.olddates,
-            newdates: this.volunteering.dates
-          })
-        }
+        await this.$store.dispatch('volunteerops/setDates', {
+          id,
+          olddates: this.volunteering.dates,
+          newdates: this.volunteeringEdit.dates
+        })
 
-        await this.$store.dispatch('volunteerops/save', this.volunteering)
+        await this.$store.dispatch('volunteerops/save', this.volunteeringEdit)
       } else {
         // This is an add.  First create it to get the id.
-        const dates = this.volunteering.dates
-        const photoid = this.volunteering.photo
-          ? this.volunteering.photo.id
+        const dates = this.volunteeringEdit.dates
+        const photoid = this.volunteeringEdit.photo
+          ? this.volunteeringEdit.photo.id
           : null
 
-        const volunteeringid = await this.$store.dispatch(
+        const id = await this.$store.dispatch(
           'volunteerops/add',
-          this.volunteering
+          this.volunteeringEdit
         )
 
         if (photoid) {
           await this.$store.dispatch('volunteerops/setPhoto', {
-            id: volunteeringid,
+            id,
             photoid: photoid
           })
         }
 
         // Save the group.
         await this.$store.dispatch('volunteerops/addGroup', {
-          id: volunteeringid,
+          id,
           groupid: this.groupid
         })
 
         if (this.volunteering.dates && this.volunteering.dates.length) {
           await this.$store.dispatch('volunteerops/setDates', {
-            id: volunteeringid,
+            id,
             olddates: [],
             newdates: dates
           })
@@ -481,7 +575,7 @@ export default {
 
         // Fetch for good luck.
         await this.$store.dispatch('volunteerops/fetch', {
-          id: volunteeringid
+          id
         })
       }
 
@@ -504,7 +598,7 @@ export default {
       // We have uploaded a photo.  Remove the filepond instance.
       this.uploading = false
 
-      this.volunteering.photo = {
+      this.volunteeringEdit.photo = {
         id: imageid,
         path: image,
         paththumb: imagethumb
@@ -516,7 +610,7 @@ export default {
     rotate(deg) {
       this.$axios
         .post(process.env.API + '/image', {
-          id: this.volunteering.photo.id,
+          id: this.volunteeringEdit.photo.id,
           rotate: deg,
           bust: Date.now(),
           volunteering: true
@@ -530,6 +624,29 @@ export default {
     },
     rotateRight() {
       this.rotate(-90)
+    }
+  },
+  validations: {
+    groupid: {
+      required
+    },
+    volunteeringEdit: {
+      title: {
+        required,
+        maxLength: maxLength(80)
+      },
+      description: {
+        required
+      },
+      timecommitment: {
+        required
+      },
+      location: {
+        required
+      },
+      contactname: {
+        maxLength: maxLength(60)
+      }
     }
   }
 }

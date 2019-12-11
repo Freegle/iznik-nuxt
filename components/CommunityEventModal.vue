@@ -312,31 +312,10 @@
 
 <style scoped lang="scss">
 @import 'color-vars';
-@import '~bootstrap/scss/functions';
-@import '~bootstrap/scss/variables';
 
 .field {
   font-weight: bold;
   color: $color-green--darker;
-}
-
-// TODO move (most of?) these ::v-deep ones into global style
-//   - they are general form styles, not specific to CommunityEventModal
-
-::v-deep label,
-::v-deep .col-form-label {
-  font-weight: bold;
-  color: $color-green--darker;
-  margin-top: 10px;
-}
-
-::v-deep .is-invalid label,
-::v-deep .is-invalid .col-form-label {
-  color: $form-feedback-invalid-color;
-}
-
-::v-deep .form-group.is-invalid .invalid-feedback {
-  display: block;
 }
 
 .topleft {
