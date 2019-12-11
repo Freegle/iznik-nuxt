@@ -63,7 +63,6 @@ export default {
   },
   methods: {
     brokenImage(event) {
-      console.error('Broken profile image', event.target.src)
       event.target.src = '/static/defaultprofile.png'
     },
     goto() {

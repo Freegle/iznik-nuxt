@@ -64,8 +64,8 @@
             @zoom_changed="zoomChanged"
             @bounds_changed="boundsChanged"
           >
-            <div v-for="g in groupsInBounds" :key="'marker-' + g.id + '-' + groupsInBounds.length">
-              <GroupMarker v-if="g.onmap" :group="g" :size="groupsInBounds.length < 20 ? 'rich' : 'poor'" />
+            <div v-for="g in groupsInBounds" :key="'marker-' + g.id + '-' + zoom">
+              <GroupMarker v-if="g.onmap" :group="g" :size="largeMarkers ? 'rich' : 'poor'" />
             </div>
           </GmapMap>
         </client-only>
@@ -166,6 +166,10 @@ export default {
   },
   computed: {
     google: gmapApi,
+    largeMarkers() {
+      // Show small markers unless we are zoomed in to a small number of groups.
+      return this.groupsInBounds.length < 20 && this.zoom > 10
+    },
     groupCount() {
       return this.groups ? Object.keys(this.groups).length : 0
     },
