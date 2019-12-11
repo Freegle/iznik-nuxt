@@ -681,6 +681,7 @@ export default {
         })
 
         if (data && data.ret === 10) {
+          // TODO MINOR Get rid of this magic number.
           this.$refs.emailconfirm.show()
         }
       }
