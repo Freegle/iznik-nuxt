@@ -234,7 +234,6 @@ export default {
     })
 
     const board = store.getters['team/get']
-    console.log('BOard', board)
 
     return {
       board: board.members,
