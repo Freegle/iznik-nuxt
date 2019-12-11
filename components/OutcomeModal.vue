@@ -134,8 +134,7 @@ export default {
       happiness: null,
       comments: null,
       selectedUser: null,
-      fetchedUser: null,
-      showDonation: false
+      fetchedUser: null
     }
   },
   computed: {
@@ -219,11 +218,8 @@ export default {
 
     hide() {
       this.showModal = false
-      this.showDonation = true
-      this.$nextTick(() => {
-        // TODO This failed with askmodal undefined.  Why?
-        this.$refs.askmodal.show()
-      })
+      console.log('Hide, ask', this.$refs)
+      this.$refs.askmodal.show()
     },
 
     changeType() {

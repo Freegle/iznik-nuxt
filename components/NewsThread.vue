@@ -49,7 +49,7 @@
         </b-card-text>
       </b-card-body>
       <div slot="footer">
-        <!-- TODO Minor - Refactor out the reply logic. Also bear in mind the logic in NewsReply -->
+        <!-- TODO MINOR - Refactor out the reply logic. Also bear in mind the logic in NewsReply -->
         <b-button v-if="showEarlierRepliesOption" variant="link" class="pl-0" @click.prevent="showAllReplies = true">
           Show earlier {{ numberOfRepliesNotShown.length | pluralize(['reply', 'replies']) }} ({{ numberOfRepliesNotShown }})
         </b-button>
