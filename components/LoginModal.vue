@@ -54,59 +54,79 @@
           <div>
             <b-row v-if="showSignUp">
               <b-col>
-                <b-form-input
-                  id="firstname"
-                  ref="firstname"
-                  v-model="firstname"
-                  name="firstname"
-                  placeholder="Your first name"
-                  alt="First name"
-                  class="mb-3"
-                  autocomplete="given-name"
-                />
+                <b-form-group
+                  id="firstnameGroup"
+                  label="Your first name"
+                  label-for="firstname"
+                  label-class="mb-0"
+                >
+                  <b-form-input
+                    id="firstname"
+                    ref="firstname"
+                    v-model="firstname"
+                    name="firstname"
+                    class="mb-3"
+                    autocomplete="given-name"
+                  />
+                </b-form-group>
               </b-col>
             </b-row>
             <b-row v-if="showSignUp">
               <b-col>
-                <b-form-input
-                  id="lastname"
-                  ref="lastname"
-                  v-model="lastname"
-                  name="lastname"
-                  placeholder="Your last name"
-                  alt="Last name"
-                  class="mb-3"
-                  autocomplete="family-name"
-                />
+                <b-form-group
+                  id="lastnameGroup"
+                  label="Your last name"
+                  label-for="lastname"
+                  label-class="mb-0"
+                >
+                  <b-form-input
+                    id="lastname"
+                    ref="lastname"
+                    v-model="lastname"
+                    name="lastname"
+                    class="mb-3"
+                    autocomplete="family-name"
+                  />
+                </b-form-group>
               </b-col>
             </b-row>
             <b-row>
               <b-col>
-                <b-form-input
-                  id="email"
-                  ref="email"
-                  v-model="email"
-                  name="email"
-                  placeholder="Your email address"
-                  alt="Email address"
-                  class="mb-3"
-                  autocomplete="username email"
-                />
+                <b-form-group
+                  id="emailGroup"
+                  label="Your email address"
+                  label-for="email"
+                  label-class="mb-0"
+                >
+                  <b-form-input
+                    id="email"
+                    ref="email"
+                    v-model="email"
+                    name="email"
+                    class="mb-3"
+                    autocomplete="username email"
+                  />
+                </b-form-group>
               </b-col>
             </b-row>
             <b-row>
               <b-col>
-                <b-form-input
-                  id="password"
-                  ref="password"
-                  v-model="password"
-                  name="password"
-                  type="password"
-                  placeholder="Your password"
-                  alt="Password"
-                  class="mb-2"
-                  autocomplete="current-password"
-                />
+                <b-form-group
+                  id="passwordGroup"
+                  label="Your password"
+                  label-for="password"
+                  label-class="mb-0"
+                >
+                  <b-form-input
+                    id="password"
+                    ref="password"
+                    v-model="password"
+                    name="password"
+                    type="password"
+                    class="mb-2"
+                    autocomplete="current-password"
+                  />
+                </b-form-group>
               </b-col>
             </b-row>
             <b-row>
