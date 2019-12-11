@@ -1,9 +1,8 @@
 <template>
   <div>
     <client-only>
-      <!--      TODO We need a navbar that's fixed to the top.-->
       <!-- Navbar for large screens -->
-      <b-navbar id="navbar_large" toggleable="xl" type="dark" class="ourBack d-none d-xl-flex">
+      <b-navbar id="navbar_large" toggleable="xl" type="dark" class="ourBack d-none d-xl-flex" fixed="top">
         <b-navbar-brand to="/" class="p-0">
           <b-img
             class="logo mr-2"
@@ -120,7 +119,7 @@
         </b-navbar-nav>
       </b-navbar>
       <!-- Navbar for small screens -->
-      <b-navbar id="navbar_small" toggleable="xl" type="dark" class="ourBack d-flex justify-content-end d-xl-none">
+      <b-navbar id="navbar_small" toggleable="xl" type="dark" class="ourBack d-flex justify-content-end d-xl-none" fixed="top">
         <b-navbar-brand to="/" class="p-0 mr-auto">
           <b-img
             class="logo mr-2"
@@ -541,6 +540,9 @@ export default {
         process.env.CHAT_HOST + '/subscribe?id=' + id,
         {
           subscriber: ['websocket', 'eventsource', 'longpoll ']
+        },
+        {
+          subscriber: 'longpoll'
         }
       )
 
@@ -553,6 +555,10 @@ export default {
       }
 
       this.nchan.start()
+
+      this.nchan.on('error', function(code, descr) {
+        console.error('NCHAN error', code, descr)
+      })
 
       this.nchan.on('message', async (ret, meta) => {
         console.log('NCHAN', ret, meta)
