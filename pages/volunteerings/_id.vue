@@ -39,7 +39,6 @@
 </template>
 
 <script>
-// TODO NS Viewing an individual volunteer op e.g. http://localhost:3000/volunteering/12869  causes redirect loop.
 import loginOptional from '@/mixins/loginOptional.js'
 import createGroupRoute from '@/mixins/createGroupRoute'
 const GroupSelect = () => import('~/components/GroupSelect')

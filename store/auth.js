@@ -183,7 +183,7 @@ export const actions = {
       dispatch('fetchUser')
     } else {
       // Sign up failed.
-      // TODO Display some kind of error.
+      // TODO Display some kind of error.  May now work but needs testing.
       console.error('Login failed', res)
       throw new Error('Login failed')
     }
