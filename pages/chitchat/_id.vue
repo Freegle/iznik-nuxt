@@ -156,6 +156,8 @@ const OurFilePond = () => import('~/components/OurFilePond')
 const SidebarLeft = () => import('~/components/SidebarLeft')
 const SidebarRight = () => import('~/components/SidebarRight')
 
+// TODO MINOR Refetch feed using the visibility plugin.
+
 export default {
   components: {
     NewsThread,
