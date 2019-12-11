@@ -55,7 +55,7 @@ export default {
     VolunteerOpportunityModal,
     NoticeMessage
   },
-  mixins: [loginOptional, createGroupRoute('volunteering')],
+  mixins: [loginOptional, createGroupRoute('volunteerings')],
   data: function() {
     return {
       context: null,
