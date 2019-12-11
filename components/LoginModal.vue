@@ -29,9 +29,18 @@
         <p v-if="showSignUp">
           <b>Using one of these buttons is the easiest way to create an account:</b>
         </p>
-        <b-img alt="Facebook login" :class="'loginbutton clickme ' + (facebookDisabled ? ' signindisabled' : '')" src="~/static/signinbuttons/facebook.png" @click="loginFacebook" />
-        <b-img alt="Google login" :class="'mb-1 loginbutton clickme ' + (googleDisabled ? ' signindisabled' : '')" src="~/static/signinbuttons/google.png" @click="loginGoogle" />
-        <b-img alt="Yahoo login" :class="'loginbutton clickme ' + (yahooDisabled ? ' signindisabled' : '')" src="~/static/signinbuttons/yahoo.png" @click="loginYahoo" />
+        <button class="social-button social-button--facebook" :class="{signindisabled : facebookDisabled}" @click="loginFacebook">
+          <b-img src="~/static/signinbuttons/facebook-logo.png" class="social-button__image" />
+          <span class="p-2 font-weight-bold">Continue with Facebook</span>
+        </button>
+        <button class="social-button social-button--google" :class="{signindisabled : googleDisabled}" @click="loginGoogle">
+          <b-img src="~/static/signinbuttons/google-logo.svg" class="social-button__image" />
+          <span class="p-2 font-weight-bold">Continue with Google</span>
+        </button>
+        <button class="social-button social-button--yahoo" :class="{signindisabled : yahooDisabled}" @click="loginYahoo">
+          <b-img src="~/static/signinbuttons/yahoo-logo.svg" class="social-button__image" />
+          <span class="p-2 font-weight-bold">Continue with Yahoo</span>
+        </button>
         <notice-message v-if="socialblocked" variant="warning">
           Social sign in blocked - check your privacy settings
         </notice-message>
@@ -153,34 +162,16 @@
   </b-modal>
 </template>
 
-<style scoped lang="scss">
-@import 'color-vars';
-
-.loginbutton {
-  width: 303px;
-}
-
-.login__splitter {
-  border-top: 1px solid $color-red;
-}
-
-.signindisabled {
-  opacity: 0.2;
-}
-</style>
-
 <script>
 // TODO Eye icon to show password for mobile
 // TODO DESIGN Need vertical line or some other way to indicate that the form on the right is an alternative to
 // the buttons.
-// TODO DESIGN Spacing and alignment of the buttons is a bit off.
 // TODO DESIGN MINOR Would be nice to have "Sign up" buttons for social sign in.
-// TODO DESIGN Google's terms require the square icon, which is annoyingly inconsistent with the others.  Are we
-// allowed to have square other ones?  If so, please make such images.
 import Vue from 'vue'
 const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
+  name: 'LoginModal',
   components: {
     NoticeMessage
   },
@@ -483,3 +474,50 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
+$color-facebook: #4267b2;
+$color-google: #4285f4;
+$color-yahoo: #6b0094;
+
+.login__splitter {
+  border-top: 1px solid $color-red;
+}
+
+.signindisabled {
+  opacity: 0.2;
+}
+
+.social-button {
+  display: flex;
+  width: 250px;
+  border-radius: 3px;
+  align-items: center;
+  padding: 0;
+  margin-bottom: 20px;
+  color: $color-white;
+}
+
+.social-button__image {
+  width: 46px;
+  height: 46px;
+  background-color: $color-white;
+}
+
+.social-button--facebook {
+  border: 2px solid $color-facebook;
+  background-color: $color-facebook;
+}
+
+.social-button--google {
+  border: 2px solid $color-google;
+  background-color: $color-google;
+}
+
+.social-button--yahoo {
+  border: 2px solid $color-yahoo;
+  background-color: $color-yahoo;
+}
+</style>
