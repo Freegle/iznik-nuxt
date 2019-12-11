@@ -40,7 +40,7 @@
 <style scoped>
 </style>
 <script>
-// TODO Make find location button work - and in Postcode.vue.
+// TODO EH Make find location button work - and in Postcode.vue.
 // TODO DESIGN Make a bigger and more visible icon.
 import { gmapApi } from 'vue2-google-maps'
 

@@ -235,12 +235,11 @@ export const actions = {
   },
 
   async saveEmail({ commit, dispatch, state }, params) {
-    await this.$api.session.save(params)
+    const data = await this.$api.session.save(params)
     await dispatch('fetchUser', {
       components: ['me', 'groups', 'aboutme']
     })
-    // TODO NS BUG: no longer returning res, does it break anything?  Yes, I think it does - see use in settings/index.vue
-    // where we consider showing a modal.
+    return data
   },
 
   async saveAndGet({ commit, dispatch, state }, params) {
@@ -249,7 +248,6 @@ export const actions = {
       components: NONMIN,
       force: true
     })
-    // TODO NS: should we rely on returning this?  EH We definitely do, and the clue is in the name.  I'd just remove this.
     return state.user
   },
 

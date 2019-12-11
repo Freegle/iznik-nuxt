@@ -12,9 +12,9 @@ if (process.env.NUXT_BUILD_TYPE === 'fdapp') {
 // This is where the user site is.
 const USER_SITE = 'https://www.ilovefreegle.org'
 
-// PROXY_API is where we send it to.  This avoids CORS issues (and removes preflight OPTIONS calls for GETs, which
+// IZNIK_API is where we send it to.  This avoids CORS issues (and removes preflight OPTIONS calls for GETs, which
 // hurt client performance).
-const PROXY_API = process.env.IZNIK_API || 'https://iznik.ilovefreegle.org'
+const IZNIK_API = process.env.IZNIK_API || 'https://iznik.ilovefreegle.org'
 
 // Long polls interact badly with per-host connection limits so send to here instead.
 const CHAT_HOST = 'https://users.ilovefreegle.org:555'
@@ -79,6 +79,7 @@ let config = {
     { src: '~/plugins/twemoji' },
     { src: '~/plugins/vue2-filters' },
     { src: '~/plugins/axios-token' },
+    { src: '~/plugins/axios-baseurl' },
     { src: '~/plugins/dayjs'},
 
     // Some plugins are client-side features
@@ -190,7 +191,7 @@ let config = {
     proxy: true
   },
   proxy: {
-    '/api/': PROXY_API,
+    '/api/': IZNIK_API,
     '/adview.php': USER_SITE + '/adview.php'
   },
 
@@ -261,6 +262,7 @@ let config = {
 
   env: {
     API: API,
+    IZNIK_API: IZNIK_API,
     CHAT_HOST: CHAT_HOST,
     FACEBOOK_APPID: FACEBOOK_APPID,
     GOOGLE_MAPS_KEY: 'AIzaSyCdTSJKGWJUOx2pq1Y0f5in5g4kKAO5dgg',

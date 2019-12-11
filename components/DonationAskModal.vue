@@ -43,9 +43,6 @@
     </template>
   </b-modal>
 </template>
-<style scoped lang="scss">
-</style>
-
 <script>
 import DonationThermometer from './DonationThermometer'
 

@@ -16,7 +16,6 @@ export const mutations = {
     for (let i = 0; i < state.newsfeed.length; i++) {
       if (parseInt(state.newsfeed[i].id) === parseInt(item.id)) {
         // Already there - replace.
-        console.log('Already in state', item.id)
         Vue.set(state.newsfeed, i, item)
         found = true
       }
@@ -210,9 +209,13 @@ export const actions = {
         const users = {}
         users[user.id] = user
 
-        // Also add in any users from replies.
-        for (const reply of newsfeed.replies) {
-          users[reply.user.id] = reply.user
+        if (newsfeed.replies) {
+          // Also add in any users from replies.
+          for (const reply of newsfeed.replies) {
+            if (reply.user) {
+              users[reply.user.id] = reply.user
+            }
+          }
         }
 
         commit('mergeUsers', { users })
@@ -260,5 +263,9 @@ export const actions = {
 
   async report({ commit, dispatch }, { id, reason }) {
     await this.$api.news.report(id, reason)
+  },
+
+  async referto({ commit, dispatch }, { id, type }) {
+    await this.$api.news.referto(id, type)
   }
 }

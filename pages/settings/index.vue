@@ -676,11 +676,12 @@ export default {
       this.savingEmail = true
 
       if (this.me.email) {
-        const ret = await this.$store.dispatch('auth/saveEmail', {
+        const data = await this.$store.dispatch('auth/saveEmail', {
           email: this.me.email
         })
 
-        if (ret && ret.data && ret.data.ret === 10) {
+        if (data && data.ret === 10) {
+          // TODO MINOR Get rid of this magic number.
           this.$refs.emailconfirm.show()
         }
       }

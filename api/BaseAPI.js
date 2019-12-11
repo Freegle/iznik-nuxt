@@ -21,13 +21,7 @@ export default class BaseAPI {
     const { status, data } = await this.$axios.request({
       ...config,
       method,
-      url: path,
-      // TODO NS BUG I've hacked the next line to make SSR work in dev environments.  Please decide what the correct
-      // fix is.
-      baseURL:
-        process.env.NODE_ENV === 'development'
-          ? 'http://localhost:3000/api'
-          : process.env.API
+      url: process.env.API + path
     })
     if (
       status !== 200 ||
