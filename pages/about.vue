@@ -1,6 +1,6 @@
 <template>
-  <!-- TODO Use a bootstrap container here rather than spacer columns -->
-  <!-- TODO Rework to use the FAQ accordion, as in Help page -->
+  <!-- TODO DESIGN MINOR Use a bootstrap container here rather than spacer columns -->
+  <!-- TODO DESIGN Rework to use the FAQ accordion, as in Help page -->
   <b-col>
     <b-row class="m-0">
       <b-col cols="0" md="3" />
@@ -11,7 +11,7 @@
         <p class="text-left">
           Please click on a section to find out more.
         </p>
-        <!-- TODO Make these cards into a component -->
+        <!-- TODO MINOR Make these cards into a component -->
         <div role="tablist">
           <b-card no-body class="mb-1">
             <b-card-header header-tag="header" class="p-1" role="tab">
@@ -234,7 +234,6 @@ export default {
     })
 
     const board = store.getters['team/get']
-    console.log('BOard', board)
 
     return {
       board: board.members,

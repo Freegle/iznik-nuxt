@@ -23,7 +23,6 @@ export const getters = {
 export const actions = {
   async fetch({ commit }, params) {
     const team = await this.$api.team.fetch(params)
-    console.log('Got', team)
     commit('set', team)
   },
 

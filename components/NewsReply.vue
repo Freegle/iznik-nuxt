@@ -84,7 +84,8 @@
     <div v-if="repliestoshow && repliestoshow.length > 0" class="pl-3">
       <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id" class="p-0 pt-1 pl-1 list-unstyled mb-1 border-left">
         <li>
-          <news-reply :key="'newsfeedreply-' + replyid + '-reply-' + entry.id" :replyid="entry.id" :users="users" :threadhead="threadhead" />
+          <news-refer v-if="entry.type.indexOf('ReferTo') === 0" :type="entry.type" />
+          <news-reply v-else :key="'newsfeedreply-' + replyid + '-reply-' + entry.id" :replyid="entry.id" :users="users" :threadhead="threadhead" />
         </li>
       </ul>
     </div>
@@ -195,6 +196,7 @@ const NewsHighlight = () => import('~/components/NewsHighlight')
 const ProfileModal = () => import('~/components/ProfileModal')
 const ChatButton = () => import('~/components/ChatButton')
 const NewsPreview = () => import('~/components/NewsPreview')
+const NewsRefer = () => import('~/components/NewsRefer')
 
 const INITIAL_NUMBER_OF_REPLIES_TO_SHOW = 5
 
@@ -207,6 +209,7 @@ export default {
     ProfileModal,
     ChatButton,
     NewsPreview,
+    NewsRefer,
     AtTa
   },
   props: {

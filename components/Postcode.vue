@@ -1,6 +1,7 @@
 <template>
   <div class="d-flex">
     <autocomplete
+      id="postcodeautocomplete"
       ref="autocomplete"
       :url="source"
       param="typeahead"
@@ -16,17 +17,25 @@
     />
 
     <div v-if="find">
-      <b-button variant="primary" :size="size">
-        <v-icon title="Find my location" name="map-marker-alt" />
+      <b-button variant="primary" :size="size" title="Find my location" @click="findLoc">
+        <v-icon v-if="locating" name="sync" class="fa-spin" />
+        <v-icon v-else-if="locationFailed" name="exclamation-triangle" />
+        <v-icon v-else name="map-marker-alt" />
         <span class="d-none d-sm-inline">&nbsp;Find my location</span>
       </b-button>
     </div>
+
+    <!--    TODO DESIGN The standard tooltip has opacity 0.9, which means some text can be hard to read.-->
+    <b-tooltip :show.sync="showToolTip" target="postcodeautocomplete" placement="top" variant="primary" triggers="">
+      <b>Your device thinks you're here.<br><br>
+
+        If it's wrong, please change it.</b>
+    </b-tooltip>
   </div>
 </template>
 
 <script>
 import Autocomplete from '~/components/Autocomplete'
-// TODO Make find location button work - and in DraggableMap.vue.
 // TODO It's quite easy to get the wrong postcode, or think it doesn't match, because of server lag.  Perhaps a busy
 // indicator?
 // TODO Using the debounce option means that if you type fast, you get an end postcode in the input box which isn't
@@ -59,7 +68,10 @@ export default {
     return {
       source: process.env.API + '/locations',
       results: [],
-      mylocation: null
+      mylocation: null,
+      locating: false,
+      locationFailed: false,
+      showToolTip: false
     }
   },
   async mounted() {
@@ -123,6 +135,48 @@ export default {
     },
     select(pc) {
       this.$emit('selected', pc)
+    },
+    findLoc() {
+      try {
+        if (
+          navigator &&
+          navigator.geolocation &&
+          navigator.geolocation.getCurrentPosition
+        ) {
+          this.locating = true
+          navigator.geolocation.getCurrentPosition(async position => {
+            // TODO NS This is a hack - we don't really need this in the store, but probably should have a locationAPI.
+            // This is quick and dirty for now, but probably should tidy.  /locations is used from other places so if
+            // we add an API, search for it.
+            const res = await this.$axios.get(process.env.API + '/locations', {
+              params: {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+              }
+            })
+
+            if (res.data.ret === 0) {
+              // Got it - put it in the autocomplete input, and indicate that we've selected it.
+              this.$refs.autocomplete.setValue(res.data.location.name)
+              this.$emit('selected', res.data.location)
+
+              // Show the user we've done this, and make them think.
+              this.showToolTip = true
+              setTimeout(() => (this.showToolTip = false), 10000)
+            } else {
+              this.locationFailed = true
+            }
+          })
+        } else {
+          console.log('Navigation not supported.  ')
+          this.locationFailed = true
+        }
+      } catch (e) {
+        console.error('Find location failed with', e)
+        this.locationFailed = true
+      }
+
+      this.locating = false
     }
   }
 }

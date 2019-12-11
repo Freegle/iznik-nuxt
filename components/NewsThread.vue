@@ -21,6 +21,18 @@
               <b-dropdown-item v-if="parseInt(me.id) === parseInt(newsfeed.userid) || mod" @click="deleteIt">
                 Delete this thread
               </b-dropdown-item>
+              <b-dropdown-item v-if="mod" @click="referToOffer">
+                Refer to OFFER
+              </b-dropdown-item>
+              <b-dropdown-item v-if="mod" @click="referToWanted">
+                Refer to WANTED
+              </b-dropdown-item>
+              <b-dropdown-item v-if="mod" @click="referToTaken">
+                Refer to TAKEN
+              </b-dropdown-item>
+              <b-dropdown-item v-if="mod" @click="referToReceived">
+                Refer to RECEIVED
+              </b-dropdown-item>
             </b-dropdown>
             <component
               :is="newsComponentName"
@@ -37,13 +49,21 @@
         </b-card-text>
       </b-card-body>
       <div slot="footer">
-        <!-- TODO Minor - Refactor out the reply logic. Also bear in mind the logic in NewsReply -->
+        <!-- TODO MINOR - Refactor out the reply logic. Also bear in mind the logic in NewsReply -->
         <b-button v-if="showEarlierRepliesOption" variant="link" class="pl-0" @click.prevent="showAllReplies = true">
           Show earlier {{ numberOfRepliesNotShown.length | pluralize(['reply', 'replies']) }} ({{ numberOfRepliesNotShown }})
         </b-button>
         <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id" class="list-unstyled mb-2">
           <li>
-            <news-reply :key="'newsfeedreply-' + newsfeed.id + '-reply-' + entry.id" :replyid="entry.id" :users="users" :threadhead="newsfeed" :scroll-to="scrollTo" />
+            <news-refer v-if="entry.type.indexOf('ReferTo') === 0" :type="entry.type" />
+            <news-reply
+              v-else
+              :key="'newsfeedreply-' + newsfeed.id + '-reply-' + entry.id"
+              :replyid="entry.id"
+              :users="users"
+              :threadhead="newsfeed"
+              :scroll-to="scrollTo"
+            />
           </li>
         </ul>
         <span v-if="!newsfeed.closed" class="text-small">
@@ -126,7 +146,6 @@
 </template>
 
 <script>
-// TODO EH Refer to WANTED/OFFER/RECEIVED/TAKEN
 // TODO MINOR Attach to thread
 // TODO DESIGN Some indication of newly added entries
 import NewsReportModal from './NewsReportModal'
@@ -134,6 +153,7 @@ import twem from '~/assets/js/twem'
 
 // Use standard import to avoid screen-flicker
 import NewsReply from '~/components/NewsReply'
+import NewsRefer from '~/components/NewsRefer'
 import NewsMessage from '~/components/NewsMessage'
 import NewsAboutMe from '~/components/NewsAboutMe'
 const AtTa = process.browser
@@ -155,6 +175,7 @@ export default {
   components: {
     NewsReportModal,
     NewsReply,
+    NewsRefer,
     NewsMessage,
     NewsAboutMe,
     NewsCommunityEvent,
@@ -343,6 +364,8 @@ export default {
       this.$refs.editModal.hide()
     },
     deleteIt() {
+      // TODO MINOR Add confirm.  We have ConfirmModal, but that needs improving a bit so you can show info about
+      // what you're actually confirming.
       this.$store.dispatch('newsfeed/delete', {
         id: this.id,
         threadhead: this.id
@@ -355,6 +378,27 @@ export default {
     },
     report() {
       this.$refs.newsreport.show()
+    },
+    referToOffer() {
+      this.referTo('Offer')
+    },
+    referToWanted() {
+      this.referTo('Wanted')
+    },
+    referToTaken() {
+      this.referTo('Taken')
+    },
+    referToReceived() {
+      this.referTo('Recived')
+    },
+    async referTo(type) {
+      await this.$store.dispatch('newsfeed/referto', {
+        id: this.id,
+        type: type
+      })
+      await this.$store.dispatch('newsfeed/fetch', {
+        id: this.id
+      })
     }
   }
 }

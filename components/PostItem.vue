@@ -32,9 +32,6 @@
 
 <script>
 import Autocomplete from '~/components/Autocomplete'
-// TODO Make find location button work
-// TODO It's quite easy to get the wrong postcode, or think it doesn't match, because of server lag.  Perhaps a busy
-// indicator?
 
 export default {
   components: {

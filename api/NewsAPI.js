@@ -6,7 +6,7 @@ export default class NewsAPI extends BaseAPI {
   }
 
   async fetch(params) {
-    const { newsfeed } = await this.$get('newsfeed', params)
+    const { newsfeed } = await this.$get('/newsfeed', params)
     return newsfeed
   }
 
@@ -33,6 +33,10 @@ export default class NewsAPI extends BaseAPI {
 
   async report(id, reason) {
     await this.$post('/newsfeed', { id, reason, action: 'Report' })
+  }
+
+  async referto(id, type) {
+    await this.$post('/newsfeed', { id, action: 'ReferTo' + type })
   }
 
   del(id) {
