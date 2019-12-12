@@ -490,7 +490,7 @@ $color-yahoo: #6b0094;
   flex: 0 1 100%;
 
   @include media-breakpoint-up(lg) {
-    flex: 0 1 38%;
+    flex: 0 1 37%;
   }
 }
 
@@ -498,7 +498,7 @@ $color-yahoo: #6b0094;
   flex: 0 1 100%;
 
   @include media-breakpoint-up(lg) {
-    flex: 0 1 43%;
+    flex: 0 1 44%;
   }
 }
 
