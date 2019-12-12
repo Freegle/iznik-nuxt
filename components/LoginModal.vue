@@ -140,7 +140,7 @@
             </p>
           </div>
           <p v-else class="text-center">
-              Already a freegler? <a href="#" @click="clickShowSignIn">Sign In</a>
+            Already a freegler? <a href="#" @click="clickShowSignIn">Sign In</a>
           </p>
         </b-form>
       </div>
