@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-row class="m-0">
+    <b-row v-if="stats" class="m-0">
       <b-col cols="0" md="3" class="d-none d-md-block" />
       <b-col v-if="authority" cols="12" md="6" class="p-0">
         <div class="title pl-2">
@@ -8,6 +8,31 @@
           <span class="head">
             {{ authority.name }}
           </span>
+          <div class="d-inline-block align-top pt-2">
+            <date-picker
+              id="startDate"
+              v-model="startDate"
+              class="ml-1"
+              lang="en"
+              type="date"
+              append-to-body
+              format="YYYY-MM"
+              placeholder=""
+              @change="reloadData"
+            />
+            <b>-</b>
+            <date-picker
+              id="endDate"
+              v-model="endDate"
+              class=""
+              lang="en"
+              type="date"
+              append-to-body
+              format="YYYY-MM"
+              placeholder=""
+              @change="reloadData"
+            />
+          </div>
           <br>
           <v-icon name="globe-europe" /> www.iLoveFreegle.org  <v-icon name="brands/twitter" /> @thisisfreegle  <v-icon name="brands/facebook" /> facebook.com/Freegle
         </div>
@@ -268,6 +293,13 @@
         </b-row>
       </b-col>
     </b-row>
+    <b-row v-else>
+      <b-col class="text-center">
+        <h4>Crunching the numbers...</h4>
+        <p>This may take a minute.</p>
+        <b-img-lazy src="~/static/loader.gif" />
+      </b-col>
+    </b-row>
   </div>
 </template>
 <style scoped lang="scss">
@@ -307,18 +339,22 @@
   white-space: nowrap;
   overflow-x: hidden;
 }
+
+::v-deep .mx-datepicker {
+  width: 100px;
+}
 </style>
 <script>
-import dayjs from 'dayjs'
 import { GChart } from 'vue-google-charts'
 import Wkt from 'wicket'
 import 'wicket/wicket-gmap3'
 import { gmapApi } from 'vue2-google-maps'
 import loginOptional from '@/mixins/loginOptional.js'
 
-// TODO EH Date filter
 // TODO NS I think table is a big chunk of stuff to load from Bootstrap.  Does this hit us on initial page load?
-
+// TODO MINOR It would be nice to render this page using SSR.  But the fetching of data is very slow, which means
+// the page would take too long to load.  So either we need to speed that up radically, or we need to do something
+// cunning.
 export default {
   layout: 'empty',
   components: {
@@ -327,6 +363,11 @@ export default {
   mixins: [loginOptional],
   data() {
     return {
+      startDate: null,
+      endDate: null,
+      authority: null,
+      stats: null,
+      groupcount: null,
       // No animations as we want the SSR to return the whole thing.
       weightOptions: {
         interpolateNulls: false,
@@ -481,22 +522,16 @@ export default {
       return ret
     },
     range() {
-      const start = dayjs()
-        .subtract(1, 'year')
-        .startOf('month')
+      const start = this.$dayjs(this.startDate)
         .format('MMM YY')
         .toUpperCase()
-      const end = dayjs()
-        .subtract(1, 'month')
-        .endOf('month')
+      const end = this.$dayjs(this.endDate)
         .format('MMM YY')
         .toUpperCase()
       return start + ' - ' + end
     },
     end() {
-      const end = dayjs()
-        .subtract(1, 'month')
-        .endOf('month')
+      const end = this.$dayjs(this.endDate)
         .format('MMM YY')
         .toUpperCase()
       return end
@@ -558,76 +593,80 @@ export default {
       return ret
     }
   },
-  async asyncData({ app, params, store }) {
-    // TODO NS This is slow, which means the page is very slow to load.  We need it for SSR, though.  Is there a clever
-    // way to do a better busy/progress indicator when the page is loaded by navigating in the client?
-    await store.dispatch('authorities/fetch', {
-      id: params.id
-    })
-
-    let groupcount = 0
-    const stats = []
-    const authority = store.getters['authorities/get'](params.id)
-    const start = dayjs()
-      .subtract(1, 'year')
-      .startOf('month')
-      .format('YYYY-MM-DD')
-    const end = dayjs()
-      .subtract(1, 'month')
-      .endOf('month')
-      .format('YYYY-MM-DD')
-
-    for (const group of authority.groups) {
-      await store.dispatch('stats/clear')
-      await store.dispatch('stats/fetch', {
-        group: group.id,
-        grouptype: 'Freegle',
-        start: start,
-        end: end
-      })
-
-      // Check if the group has a significant overlap. No point cluttering things up with groups which don't really
-      // contribute.
-      const overlap = group.overlap
-      const weights = store.getters['stats/get']('Weight')
-
-      let totalWeight = 0
-      for (const w of weights) {
-        totalWeight += w.count * overlap
-      }
-
-      const avpermonth = totalWeight / 12
-
-      // If there is only one group in the area we're looking at, or the group is entirely contained within the
-      // area, then show it irrespective of activity otherwise it looks silly.
-      // TODO MINOR Really we should be checking if all the groups are low activity and then showing them all.
-      if (avpermonth > 1 || authority.groups.length === 1 || overlap === 1) {
-        groupcount++
-
-        stats[group.id] = {
-          overlap: overlap,
-          avpermonth: avpermonth,
-          totalweight: totalWeight,
-          Weights: weights,
-          ApprovedMemberCount: store.getters['stats/get'](
-            'ApprovedMemberCount'
-          ),
-          OutcomesPerMonth: store.getters['stats/get']('OutcomesPerMonth'),
-          group: group
-        }
-      }
-    }
-
-    return {
-      authority: authority,
-      stats: stats,
-      groupcount: groupcount
-    }
-  },
   created() {
     this.id = this.$route.params.id
+
+    // Default end is last complete month, and start is a year before that, so we cover twelve months.
+    this.endDate = this.$dayjs()
+      .subtract(1, 'month')
+      .endOf('month')
+      .format()
+    this.startDate = this.$dayjs(this.endDate)
+      .subtract(1, 'year')
+      .add(1, 'month')
+      .startOf('month')
+      .format()
+  },
+  mounted() {
+    this.fetchData(this.$store, this.id)
   },
   methods: {
+    async fetchData(store, id) {
+      await store.dispatch('authorities/fetch', {
+        id: id
+      })
+
+      let groupcount = 0
+      const stats = []
+      const authority = store.getters['authorities/get'](id)
+      const start = this.$dayjs(this.startDate).format('YYYY-MM-DD')
+      const end = this.$dayjs(this.endDate).format('YYYY-MM-DD')
+
+      for (const group of authority.groups) {
+        await store.dispatch('stats/clear')
+        await store.dispatch('stats/fetch', {
+          group: group.id,
+          grouptype: 'Freegle',
+          start: start,
+          end: end
+        })
+
+        // Check if the group has a significant overlap. No point cluttering things up with groups which don't really
+        // contribute.
+        const overlap = group.overlap
+        const weights = store.getters['stats/get']('Weight')
+
+        let totalWeight = 0
+        for (const w of weights) {
+          totalWeight += w.count * overlap
+        }
+
+        const avpermonth = totalWeight / 12
+
+        // If there is only one group in the area we're looking at, or the group is entirely contained within the
+        // area, then show it irrespective of activity otherwise it looks silly.
+        // TODO MINOR Really we should be checking if all the groups are low activity and then showing them all.
+        if (avpermonth > 1 || authority.groups.length === 1 || overlap === 1) {
+          groupcount++
+
+          stats[group.id] = {
+            overlap: overlap,
+            avpermonth: avpermonth,
+            totalweight: totalWeight,
+            Weights: weights,
+            ApprovedMemberCount: store.getters['stats/get'](
+              'ApprovedMemberCount'
+            ),
+            OutcomesPerMonth: store.getters['stats/get']('OutcomesPerMonth'),
+            group: group
+          }
+        }
+      }
+
+      this.authority = authority
+      this.stats = stats
+      this.groupcount = groupcount
+    },
     overlap: function(groupid) {
       for (const group of this.authority.groups) {
         if (parseInt(group.id) === parseInt(groupid)) {
@@ -703,6 +742,16 @@ export default {
             fillOpacity: 0.2
           })
         }
+      }
+    },
+    reloadData() {
+      if (
+        this.startDate &&
+        this.endDate &&
+        this.$dayjs(this.endDate).isAfter(this.$dayjs(this.startDate))
+      ) {
+        this.stats = null
+        this.fetchData(this.$store, this.id)
       }
     }
   }
