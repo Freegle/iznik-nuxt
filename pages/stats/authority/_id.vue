@@ -18,7 +18,6 @@
               append-to-body
               format="YYYY-MM"
               placeholder=""
-              @change="reloadData"
             />
             <b>-</b>
             <date-picker
@@ -30,8 +29,10 @@
               append-to-body
               format="YYYY-MM"
               placeholder=""
-              @change="reloadData"
             />
+            <span @click="reloadData">
+              <v-icon name="sync" />
+            </span>
           </div>
           <br>
           <v-icon name="globe-europe" /> www.iLoveFreegle.org  <v-icon name="brands/twitter" /> @thisisfreegle  <v-icon name="brands/facebook" /> facebook.com/Freegle
@@ -451,8 +452,15 @@ export default {
         const stat = this.stats[groupid]
         const outcomes = stat.OutcomesPerMonth
 
-        for (const outcome in outcomes) {
-          count += outcomes[outcome].count * overlap
+        const start = this.$dayjs(this.startDate)
+        const end = this.$dayjs(this.endDate)
+
+        for (const outcome of outcomes) {
+          const m = this.$dayjs(outcome.date + '-01')
+
+          if (!m.isBefore(start) && !m.isAfter(end)) {
+            count += outcome.count * overlap
+          }
         }
       }
 
