@@ -4,7 +4,6 @@
     id="loginModal"
     ref="loginModal"
     v-model="showModal"
-    title="Let's get freegling!"
     no-stacking
     visible
     size="lg"
@@ -13,19 +12,15 @@
     :hide-header-close="modalIsForced"
     :no-close-on-esc="modalIsForced"
   >
-    <b-row>
-      <b-col class="text-center pb-3">
-        You will receive emails, and your name and approximate location will be public.  You can
-        control privacy from Settings.  Read <nuxt-link target="_blank" to="/terms">
-          Terms of Use
-        </nuxt-link> and
-        <nuxt-link target="_blank" to="/privacy">
-          Privacy
-        </nuxt-link> for details.
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col cols="12" lg="6" class="text-center">
+    <!-- This is required as the default bootstrap component makes the main title an h5 -->
+    <template slot="modal-title">
+      <h2>Let's get freegling!</h2>
+    </template>
+    <div class="d-flex flex-column flex-lg-row justify-content-between p-3">
+      <div class="signin__section">
+        <h3 class="signin__header">
+          Continue with your social account
+        </h3>
         <p v-if="showSignUp">
           <b>Using one of these buttons is the easiest way to create an account:</b>
         </p>
@@ -44,21 +39,18 @@
         <notice-message v-if="socialblocked" variant="warning">
           Social sign in blocked - check your privacy settings
         </notice-message>
-      </b-col>
-      <b-col cols="12" class="d-block d-lg-none">
-        <b-row>
-          <b-col cols="5">
-            <hr class="text-danger pb-2 d-block d-lg-none login__splitter">
-          </b-col>
-          <b-col cols="2" class="text-center">
-            <em>Or</em>
-          </b-col>
-          <b-col cols="5">
-            <hr class="text-danger pb-2 d-block d-lg-none login__splitter">
-          </b-col>
-        </b-row>
-      </b-col>
-      <b-col cols="12" lg="6" class="mt-0">
+      </div>
+      <div class="divider__wrapper">
+        <div class="divider" />
+        <div class="divider__text">
+          OR
+        </div>
+        <div class="divider" />
+      </div>
+      <div class="signin__section">
+        <h3 class="signin__header">
+          Continue with your Freegle account
+        </h3>
         <b-form ref="form" action="/" autocomplete="on" method="post" @submit="loginNative">
           <div>
             <b-row v-if="showSignUp">
@@ -177,8 +169,17 @@
             </b-row>
           </div>
         </b-form>
-      </b-col>
-    </b-row>
+      </div>
+    </div>
+    <p class="text-center">
+      You will receive emails, and your name and approximate location will be public.  You can
+      control privacy from Settings.  Read <nuxt-link target="_blank" to="/terms">
+        Terms of Use
+      </nuxt-link> and
+      <nuxt-link target="_blank" to="/privacy">
+        Privacy
+      </nuxt-link> for details.
+    </p>
     <b-alert v-if="loginError" variant="danger" show>
       Login Failed: {{ loginError }}
     </b-alert>
@@ -187,8 +188,6 @@
 
 <script>
 // TODO Eye icon to show password for mobile
-// TODO DESIGN Need vertical line or some other way to indicate that the form on the right is an alternative to
-// the buttons.
 // TODO DESIGN MINOR Would be nice to have "Sign up" buttons for social sign in.
 import Vue from 'vue'
 import { LoginError } from '../api/BaseAPI'
@@ -504,20 +503,27 @@ export default {
 
 <style scoped lang="scss">
 @import 'color-vars';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
 
 $color-facebook: #4267b2;
 $color-google: #4285f4;
 $color-yahoo: #6b0094;
 
-.login__splitter {
-  border-top: 1px solid $color-red;
+.signin__section {
+  flex: 0 1 100%;
+
+  @include media-breakpoint-up(lg) {
+    flex: 0 1 45%;
+  }
 }
 
 .social-button {
   display: flex;
+  align-items: center;
   width: 250px;
   border-radius: 3px;
-  align-items: center;
   padding: 0;
   margin-bottom: 20px;
   color: $color-white;
@@ -546,5 +552,46 @@ $color-yahoo: #6b0094;
 .social-button--yahoo {
   border: 2px solid $color-yahoo;
   background-color: $color-yahoo;
+}
+
+.signin__header {
+  font-size: 1.2rem;
+  padding-bottom: 15px;
+}
+
+.divider__wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+
+  @include media-breakpoint-up(lg) {
+    flex-direction: column;
+    margin-bottom: 0;
+  }
+}
+
+.divider {
+  border-right: none;
+  border-bottom: 1px solid $color-gray--light;
+  width: 100%;
+
+  @include media-breakpoint-up(lg) {
+    border-right: 1px solid $color-gray--light;
+    border-bottom: none;
+    height: 100%;
+    width: auto;
+  }
+}
+
+.divider__text {
+  margin: 0 7px 0 7px;
+  color: $color-gray--light;
+  font-size: 0.8rem;
+
+  @include media-breakpoint-up(lg) {
+    margin: 7px 0 7px 0;
+  }
 }
 </style>
