@@ -370,7 +370,7 @@ export default {
         }
       }
 
-      if (secs !== null) {
+      if (secs) {
         if (secs < 60) {
           ret = Math.round(secs) + ' second'
         } else if (secs < 60 * 60) {
