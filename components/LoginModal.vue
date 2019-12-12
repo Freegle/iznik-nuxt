@@ -49,7 +49,8 @@
       </div>
       <div class="signin__section">
         <h3 class="signin__header">
-          Continue with your Freegle account
+          <span v-if="showSignUp">Create an account on Freegle</span>
+          <span v-else>Continue with your Freegle account</span>
         </h3>
         <b-form ref="form" action="/" autocomplete="on" method="post" @submit="loginNative">
           <div v-if="showSignUp">
@@ -561,7 +562,7 @@ $color-yahoo: #6b0094;
 
 .divider__text {
   margin: 0 7px 0 7px;
-  color: $color-gray--light;
+  color: $color-gray--base;
   font-size: 0.8rem;
 
   @include media-breakpoint-up(lg) {
