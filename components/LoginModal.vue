@@ -17,7 +17,7 @@
       <h2>Let's get freegling!</h2>
     </template>
     <div class="d-flex flex-column flex-lg-row justify-content-between p-3">
-      <div class="signin__section">
+      <div class="signin__section--social">
         <h3 class="signin__header">
           Continue with your social account
         </h3>
@@ -47,7 +47,7 @@
         </div>
         <div class="divider" />
       </div>
-      <div class="signin__section">
+      <div class="signin__section--freegle">
         <h3 class="signin__header">
           <span v-if="showSignUp">Create an account on Freegle</span>
           <span v-else>Continue with your Freegle account</span>
@@ -486,11 +486,19 @@ $color-facebook: #4267b2;
 $color-google: #4285f4;
 $color-yahoo: #6b0094;
 
-.signin__section {
+.signin__section--social {
   flex: 0 1 100%;
 
   @include media-breakpoint-up(lg) {
-    flex: 0 1 45%;
+    flex: 0 1 38%;
+  }
+}
+
+.signin__section--freegle {
+  flex: 0 1 100%;
+
+  @include media-breakpoint-up(lg) {
+    flex: 0 1 43%;
   }
 }
 
@@ -530,7 +538,7 @@ $color-yahoo: #6b0094;
 }
 
 .signin__header {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   padding-bottom: 15px;
 }
 
@@ -544,6 +552,7 @@ $color-yahoo: #6b0094;
   @include media-breakpoint-up(lg) {
     flex-direction: column;
     margin-bottom: 0;
+    flex-grow: 1;
   }
 }
 
