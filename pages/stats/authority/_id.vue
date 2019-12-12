@@ -30,7 +30,7 @@
               format="YYYY-MM"
               placeholder=""
             />
-            <span @click="reloadData">
+            <span class="clickme" @click="reloadData">
               <v-icon name="sync" />
             </span>
           </div>
