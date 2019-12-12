@@ -50,7 +50,6 @@ This is getting close to Beta.
 * We've tested on Chrome only, and very few mobiles/tablets.
 
 There are some specific pages that still need doing:
-* /shortlinks/id
 * Plugins - are they still used?
 * /mydata
 * /councils
