@@ -1,10 +1,10 @@
 <template>
   <div v-if="me">
     <b-row class="m-0">
-      <b-col cols="0" md="3" class="d-none d-md-block">
+      <b-col cols="0" lg="3" class="d-none d-lg-block">
         <SidebarLeft :show-community-events="true" :show-bot-left="true" />
       </b-col>
-      <b-col cols="12" md="6" class="newsfeedHolder p-0">
+      <b-col cols="12" lg="6" class="newsfeedHolder p-0">
         <b-card v-if="!id">
           <b-card-text>
             <b-row>
@@ -128,7 +128,7 @@
           </infinite-loading>
         </div>
       </b-col>
-      <b-col cols="0" md="3" class="d-none d-md-block">
+      <b-col cols="0" lg="3" class="d-none d-lg-block">
         <sidebar-right show-volunteer-opportunities show-job-opportunities />
       </b-col>
     </b-row>

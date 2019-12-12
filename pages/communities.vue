@@ -1,10 +1,10 @@
 <template>
   <b-col>
     <b-row class="m-0">
-      <b-col cols="0" md="3" class="d-none d-md-block">
+      <b-col cols="0" lg="3" class="d-none d-lg-block">
         <SidebarLeft :show-community-events="true" :show-bot-left="true" />
       </b-col>
-      <b-col cols="12" md="6" class="p-0">
+      <b-col cols="12" lg="6" class="p-0">
         <JobsTopBar />
         <div>
           <div class="d-flex mt-2 mb-3 selection__wrapper justify-content-between">
@@ -25,7 +25,7 @@
           </infinite-loading>
         </div>
       </b-col>
-      <b-col cols="0" md="3" class="d-none d-md-block">
+      <b-col cols="0" lg="3" class="d-none d-lg-block">
         <sidebar-right show-volunteer-opportunities show-job-opportunities />
       </b-col>
     </b-row>

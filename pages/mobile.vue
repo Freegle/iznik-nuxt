@@ -1,9 +1,7 @@
 <template>
   <b-row>
-    <b-col cols="0" md="3">
-      <SidebarLeft :show-community-events="false" :show-bot-left="true" />
-    </b-col>
-    <b-col cols="12" md="6">
+    <b-col cols="0" lg="3" />
+    <b-col cols="12" lg="6">
       <div class="text-center">
         <h1>Freegle</h1>
         <h2>Don't throw it away, give it away!</h2>
@@ -41,9 +39,3 @@
     </b-col>
   </b-row>
 </template>
-<script>
-import SidebarLeft from '../components/SidebarLeft'
-export default {
-  components: { SidebarLeft }
-}
-</script>
