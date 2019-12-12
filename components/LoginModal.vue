@@ -29,15 +29,15 @@
         <p v-if="showSignUp">
           <b>Using one of these buttons is the easiest way to create an account:</b>
         </p>
-        <button class="social-button social-button--facebook" :class="{signindisabled : facebookDisabled}" @click="loginFacebook">
+        <button class="social-button social-button--facebook" :disabled="facebookDisabled" @click="loginFacebook">
           <b-img src="~/static/signinbuttons/facebook-logo.png" class="social-button__image" />
           <span class="p-2 font-weight-bold">Continue with Facebook</span>
         </button>
-        <button class="social-button social-button--google" :class="{signindisabled : googleDisabled}" @click="loginGoogle">
+        <button class="social-button social-button--google" :disabled="googleDisabled" @click="loginGoogle">
           <b-img src="~/static/signinbuttons/google-logo.svg" class="social-button__image" />
           <span class="p-2 font-weight-bold">Continue with Google</span>
         </button>
-        <button class="social-button social-button--yahoo" :class="{signindisabled : yahooDisabled}" @click="loginYahoo">
+        <button class="social-button social-button--yahoo" :disabled="yahooDisabled" @click="loginYahoo">
           <b-img src="~/static/signinbuttons/yahoo-logo.svg" class="social-button__image" />
           <span class="p-2 font-weight-bold">Continue with Yahoo</span>
         </button>
@@ -221,13 +221,11 @@ export default {
     // Use of this.bump means we will recompute when we need to, i.e. when the modal is shown.  This is overriding
     // normal reactivity but that's because the SDKs we use aren't written in Vue.
     facebookDisabled() {
-      const ret = this.bump && typeof Vue.FB === 'undefined'
-      return ret
+      return this.bump && typeof Vue.FB === 'undefined'
     },
 
     googleDisabled() {
-      const ret = this.bump && (!window || !window.gapi || !window.gapi.client)
-      return ret
+      return this.bump && (!window || !window.gapi || !window.gapi.client)
     },
 
     yahooDisabled() {
@@ -515,10 +513,6 @@ $color-yahoo: #6b0094;
   border-top: 1px solid $color-red;
 }
 
-.signindisabled {
-  opacity: 0.2;
-}
-
 .social-button {
   display: flex;
   width: 250px;
@@ -527,6 +521,10 @@ $color-yahoo: #6b0094;
   padding: 0;
   margin-bottom: 20px;
   color: $color-white;
+}
+
+.social-button:disabled {
+  opacity: 0.2;
 }
 
 .social-button__image {
