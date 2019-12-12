@@ -328,19 +328,3 @@ legend {
 .mx-datepicker-popup {
   z-index: 2000 !important;;
 }
-
-label,
-.col-form-label {
-  font-weight: bold;
-  color: $color-green--darker;
-  margin-top: 10px;
-}
-
-.is-invalid label,
-.is-invalid .col-form-label {
-  color: $form-feedback-invalid-color;
-}
-
-.form-group.is-invalid .invalid-feedback {
-  display: block;
-}

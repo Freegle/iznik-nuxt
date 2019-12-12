@@ -104,7 +104,7 @@
           Posted by {{ volunteering.user.displayname }} <span class="text-faded">(#{{ volunteering.user.id }})</span>
         </p>
       </div>
-      <div>
+      <validating-form v-else>
         <b-row>
           <b-col cols="12" md="6">
             <b-form-group
@@ -304,7 +304,7 @@
         <NoticeMessage v-else variant="warning" class="mt-2">
           <v-icon name="info-circle" />&nbsp;This community has chosen not to allow Volunteer Opportunities.
         </NoticeMessage>
-      </div>
+      </validating-form>
     </template>
     <template slot="modal-footer" slot-scope="{ ok, cancel }">
       <div v-if="volunteering.canmodify" class="w-100">
@@ -372,6 +372,7 @@ import cloneDeep from 'lodash.clonedeep'
 import { validationMixin } from 'vuelidate'
 import { maxLength, required } from 'vuelidate/lib/validators'
 import twem from '~/assets/js/twem'
+import ValidatingForm from '@/components/ValidatingForm'
 import ValidatingFormInput from '@/components/ValidatingFormInput'
 import ValidatingTextarea from '@/components/ValidatingTextarea'
 import validationHelpers from '@/mixins/validationHelpers'
@@ -407,8 +408,6 @@ function initialData() {
     editing: false,
     groupid: null,
     uploading: false,
-    oldphoto: null,
-    olddates: null,
     cacheBust: Date.now(),
     saving: false
   }
@@ -416,8 +415,8 @@ function initialData() {
 
 export default {
   components: {
+    ValidatingForm,
     ValidatingFormInput,
-    // eslint-disable-next-line vue/no-unused-components
     ValidatingTextarea,
     GroupRememberSelect,
     OurFilePond,
