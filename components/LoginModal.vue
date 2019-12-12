@@ -52,122 +52,96 @@
           Continue with your Freegle account
         </h3>
         <b-form ref="form" action="/" autocomplete="on" method="post" @submit="loginNative">
-          <div>
-            <b-row v-if="showSignUp">
-              <b-col>
-                <b-form-group
-                  id="firstnameGroup"
-                  label="Your first name"
-                  label-for="firstname"
-                  label-class="mb-0"
-                >
-                  <b-form-input
-                    id="firstname"
-                    ref="firstname"
-                    v-model="firstname"
-                    name="firstname"
-                    class="mb-3"
-                    autocomplete="given-name"
-                  />
-                </b-form-group>
-              </b-col>
-            </b-row>
-            <b-row v-if="showSignUp">
-              <b-col>
-                <b-form-group
-                  id="lastnameGroup"
-                  label="Your last name"
-                  label-for="lastname"
-                  label-class="mb-0"
-                >
-                  <b-form-input
-                    id="lastname"
-                    ref="lastname"
-                    v-model="lastname"
-                    name="lastname"
-                    class="mb-3"
-                    autocomplete="family-name"
-                  />
-                </b-form-group>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col>
-                <b-form-group
-                  id="emailGroup"
-                  label="Your email address"
-                  label-for="email"
-                  label-class="mb-0"
-                >
-                  <b-form-input
-                    id="email"
-                    ref="email"
-                    v-model="email"
-                    name="email"
-                    class="mb-3"
-                    autocomplete="username email"
-                  />
-                </b-form-group>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col>
-                <b-form-group
-                  id="passwordGroup"
-                  label="Your password"
-                  label-for="password"
-                  label-class="mb-0"
-                >
-                  <b-form-input
-                    id="password"
-                    ref="password"
-                    v-model="password"
-                    name="password"
-                    type="password"
-                    class="mb-2"
-                    autocomplete="current-password"
-                  />
-                </b-form-group>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col>
-                <b-btn
-                  v-b-modal.add
-                  block
-                  size="lg"
-                  variant="success"
-                  class="mb-2 mt-2"
-                  type="submit"
-                  value="login"
-                >
-                  <span v-if="!showSignUp">
-                    Sign in to Freegle
-                  </span>
-                  <span v-else>
-                    Sign up to Freegle
-                  </span>
-                </b-btn>
-              </b-col>
-            </b-row>
-            <b-row v-if="!showSignUp">
-              <b-col class="text-center">
-                <nuxt-link to="/forgot">
-                  I forgot my password
-                </nuxt-link>
-              </b-col>
-            </b-row>
-            <b-row v-if="!showSignUp">
-              <b-col class="text-center">
-                New freegler? <a href="#" @click="clickShowSignUp">Sign Up</a>
-              </b-col>
-            </b-row>
-            <b-row v-else>
-              <b-col class="text-center">
-                Already a freegler? <a href="#" @click="clickShowSignIn">Sign In</a>
-              </b-col>
-            </b-row>
+          <div v-if="showSignUp">
+            <b-form-group
+              id="firstnameGroup"
+              label="Your first name"
+              label-for="firstname"
+              label-class="mb-0"
+            >
+              <b-form-input
+                id="firstname"
+                ref="firstname"
+                v-model="firstname"
+                name="firstname"
+                class="mb-3"
+                autocomplete="given-name"
+              />
+            </b-form-group>
+            <b-form-group
+              id="lastnameGroup"
+              label="Your last name"
+              label-for="lastname"
+              label-class="mb-0"
+            >
+              <b-form-input
+                id="lastname"
+                ref="lastname"
+                v-model="lastname"
+                name="lastname"
+                class="mb-3"
+                autocomplete="family-name"
+              />
+            </b-form-group>
           </div>
+          <b-form-group
+            id="emailGroup"
+            label="Your email address"
+            label-for="email"
+            label-class="mb-0"
+          >
+            <b-form-input
+              id="email"
+              ref="email"
+              v-model="email"
+              name="email"
+              class="mb-3"
+              autocomplete="username email"
+            />
+          </b-form-group>
+          <b-form-group
+            id="passwordGroup"
+            label="Your password"
+            label-for="password"
+            label-class="mb-0"
+          >
+            <b-form-input
+              id="password"
+              ref="password"
+              v-model="password"
+              name="password"
+              type="password"
+              class="mb-2"
+              autocomplete="current-password"
+            />
+          </b-form-group>
+          <b-btn
+            v-b-modal.add
+            block
+            size="lg"
+            variant="success"
+            class="mb-2 mt-2"
+            type="submit"
+            value="login"
+          >
+            <span v-if="!showSignUp">
+              Sign in to Freegle
+            </span>
+            <span v-else>
+              Sign up to Freegle
+            </span>
+          </b-btn>
+          <div v-if="!showSignUp" class="text-center">
+            <nuxt-link to="/forgot">
+              I forgot my password
+            </nuxt-link>
+            <p>
+              New freegler? <a href="#" @click="clickShowSignUp">Sign Up</a>
+            </p>
+          </div>
+          <p v-else class="text-center">
+              Already a freegler? <a href="#" @click="clickShowSignIn">Sign In</a>
+          </p>
         </b-form>
       </div>
     </div>
