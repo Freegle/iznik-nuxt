@@ -136,7 +136,7 @@
             <nuxt-link to="/forgot">
               I forgot my password
             </nuxt-link>
-            <p>
+            <p class="mb-0">
               New freegler? <a href="#" @click="clickShowSignUp">Sign Up</a>
             </p>
           </div>
