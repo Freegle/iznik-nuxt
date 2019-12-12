@@ -48,7 +48,7 @@ export const getters = {
 
 export const actions = {
   async fetch({ commit }, params) {
-    const { authority, authorities } = await this.$api.authority.fetch()
+    const { authority, authorities } = await this.$api.authority.fetch(params)
     commit('setList', params.id ? [authority] : authorities)
   },
 
