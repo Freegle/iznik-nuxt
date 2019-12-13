@@ -81,16 +81,7 @@ export const getters = {
   user: state => {
     const ret = state.user
 
-    if (ret && !ret.settings.notifications) {
-      ret.settings.notifications = {
-        email: true,
-        emailmine: false,
-        push: true,
-        facebook: true,
-        app: true
-      }
-    }
-
+    console.log('Get user', ret, JSON.stringify(ret.settings.notifications))
     return ret
   },
 
@@ -218,6 +209,17 @@ export const actions = {
       if (groups) {
         me.groups = groups
         commit('setGroups', groups)
+      }
+
+      // Make sure we have a default of notification settings.
+      if (me && me.settings && !me.settings.notifications) {
+        me.settings.notifications = {
+          email: true,
+          emailmine: false,
+          push: true,
+          facebook: true,
+          app: true
+        }
       }
 
       // Login succeeded.  Set the user, which will trigger various re-rendering if we were required to be logged in.
