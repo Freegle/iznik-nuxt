@@ -202,7 +202,13 @@ export default {
         }
       }
 
-      return ret
+      const sorted = ret.sort((a, b) => {
+        return a.nameshort
+          .toLowerCase()
+          .localeCompare(b.nameshort.toLowerCase())
+      })
+
+      return sorted
     },
     groupsInList() {
       return this.groupsInBounds.slice(0, this.showList)
