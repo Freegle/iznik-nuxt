@@ -1,6 +1,6 @@
 <template>
   <b-modal
-    id="profilemodal"
+    :id="'eventmodal-' + event.id"
     v-model="showModal"
     size="lg"
     no-stacking

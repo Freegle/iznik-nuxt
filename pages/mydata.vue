@@ -205,7 +205,7 @@
                       added {{ email.added | dateonly }}
                     </b-col>
                     <b-col cols="3">
-                      <span v-if="validated">
+                      <span v-if="email.validated">
                         validated {{ email.validated | dateonly }}
                       </span>
                       <span v-else>
@@ -366,35 +366,117 @@
                   <ExportChat :chat="chat" />
                 </div>
                 <h2>Ratings</h2>
-                <p>These are other freeglers that you have given a thumbs up or down to.</p>
-                <div class="js-more js-ratings" />
-                <h2>Newsfeed</h2>
+                <p>These are other freeglers that you have given a thumbs up or down to.  Your rating is in blue.</p>
+                <div v-for="rating in status.data.ratings" :key="rating.id">
+                  <Ratings :id="rating.ratee" :show-name="true" size="sm" />
+                </div>
+                <h2>ChitChat</h2>
                 <p>This just shows what you have posted, or replies you've made.</p>
-                <ul class="js-more list-unstyled js-newsfeed" />
-                <h2>Newsfeed Loves</h2>
+                <div v-for="newsfeed in status.data.newsfeed" :key="newsfeed.id">
+                  <b-row>
+                    <b-col cols="3">
+                      {{ newsfeed.timestamp | dateonly }}
+                    </b-col>
+                    <b-col cols="6">
+                      {{ newsfeed.message }}
+                    </b-col>
+                    <b-col cols="3">
+                      <b-btn variant="link" :to="'/chitchat/' + newsfeed.id">
+                        View thread
+                      </b-btn>
+                    </b-col>
+                  </b-row>
+                </div>
+                <h2>ChitChat Loves</h2>
                 <p>These are any ChitChat posts you've loved.</p>
-                <ul class="js-more list-unstyled js-newsfeedlikes" />
-                <h2>Newsfeed Reports</h2>
+                <div v-for="newsfeed in status.data.newsfeed_likes" :key="newsfeed.id">
+                  <b-row>
+                    <b-col cols="3">
+                      {{ newsfeed.timestamp | dateonly }}
+                    </b-col>
+                    <b-col cols="3">
+                      <b-btn variant="link" :to="'/chitchat/' + newsfeed.id">
+                        View thread
+                      </b-btn>
+                    </b-col>
+                  </b-row>
+                </div>
+                <h2>ChitChat Reports</h2>
                 <p>These are any ChitChat posts you've reported.</p>
-                <ul class="js-more list-unstyled js-newsfeedreports" />
+                <div v-for="newsfeed in status.data.newsfeed_reports" :key="newsfeed.id">
+                  <b-row>
+                    <b-col cols="3">
+                      {{ newsfeed.timestamp | dateonly }}
+                    </b-col>
+                    <b-col cols="3">
+                      <b-btn variant="link" :to="'/chitchat/' + newsfeed.newsfeedid">
+                        View thread
+                      </b-btn>
+                    </b-col>
+                  </b-row>
+                </div>
                 <h2>Stories</h2>
                 <p>These are any stories you've told us.</p>
-                <ul class="js-more list-unstyled js-stories" />
+                <div v-for="story in status.data.stories" :key="story.id">
+                  <b>{{ story.headline }}</b> <br>
+                  {{ story.story }}
+                </div>
                 <h2>Stories Loves</h2>
                 <p>These are any stories you've loved.</p>
+                <div v-for="story in status.data.stories_likes" :key="story.id">
+                  <b-btn variant="link" :to="'/story/' + story.id">
+                    View story
+                  </b-btn>
+                </div>
                 <h2>About Me</h2>
                 <p>These are any "about me" info you've given us</p>
-                <ul class="js-more list-unstyled js-aboutme" />
-                <ul class="js-more list-unstyled js-storylikes" />
+                <div v-for="aboutme in status.data.aboutme" :key="aboutme.id">
+                  <b-row>
+                    <b-col cols="3">
+                      {{ aboutme.timestamp | dateonly }}
+                    </b-col>
+                    <b-col cols="9" class="prewrap">
+                      {{ aboutme.text }}
+                    </b-col>
+                  </b-row>
+                </div>
                 <h2>Community Events</h2>
                 <p>These are community events which you've created.</p>
-                <div class="js-more js-communityevents" />
+                <div v-for="event in status.data.communityevents" :key="event.id">
+                  <b-row>
+                    <b-col cols="3">
+                      {{ event.timestamp | dateonly }}
+                    </b-col>
+                    <b-col cos="6">
+                      {{ event.title }}
+                    </b-col>
+                    <b-col cols="3">
+                      <b-btn variant="link" :to="'/communityevent/' + event.id">
+                        Details
+                      </b-btn>
+                    </b-col>
+                  </b-row>
+                </div>
                 <h2>Volunteering Opportunities</h2>
                 <p>These are volunteering opportunities which you've created.</p>
-                <div class="js-more js-volunteerings" />
+                <div v-for="volunteering in status.data.volunteering" :key="volunteering.id">
+                  <b-row>
+                    <b-col cols="3">
+                      {{ volunteering.timestamp | dateonly }}
+                    </b-col>
+                    <b-col cos="6">
+                      {{ volunteering.title }}
+                    </b-col>
+                    <b-col cols="3">
+                      <b-btn variant="link" :to="'/volunteering/' + volunteering.id">
+                        Details
+                      </b-btn>
+                    </b-col>
+                  </b-row>
+                </div>
                 <div v-if="mod">
                   <h2>Alerts</h2>
-                  <p>These are messages sent to volunteers from Freegle teams.</p>
+                  <p>These are messages you've sent to volunteers on behalf of a Freegle team.</p>
                   <div class="js-more js-alerts" />
                 </div>
                 <h2>Donations</h2>
@@ -475,12 +557,14 @@ import loginRequired from '@/mixins/loginRequired.js'
 const NoticeMessage = () => import('~/components/NoticeMessage')
 const ExportPost = () => import('~/components/ExportPost')
 const ExportChat = () => import('~/components/ExportChat')
+const Ratings = () => import('~/components/Ratings')
 
 export default {
   components: {
     NoticeMessage,
     ExportPost,
-    ExportChat
+    ExportChat,
+    Ratings
   },
   mixins: [loginRequired],
   data: function() {
@@ -535,6 +619,15 @@ export default {
       } else {
         this.error = true
       }
+    },
+    showEvent(id) {
+      console.log(
+        'Refs',
+        this.$refs['eventmodal-' + id],
+        id,
+        'eventmodal-' + id
+      )
+      this.$refs['eventmodal-' + id].show()
     },
     download() {
       // TODO
