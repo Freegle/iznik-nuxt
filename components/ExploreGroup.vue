@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-row class="m-0">
-      <b-col cols="12" md="6" offset-md="3">
+      <b-col cols="12" lg="6" offset-lg="3">
         <groupHeader v-if="group" :id="group.id" :key="'group-' + (group ? group.id : null)" :group="group" :show-join="true" />
         <b-card variant="default">
           <b-card-body class="p-0 mb-2">
