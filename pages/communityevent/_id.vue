@@ -10,6 +10,7 @@
   </div>
 </template>
 <script>
+// TODO Handle invalid id.  Ditto in Volunteer Ops.
 import loginOptional from '@/mixins/loginOptional.js'
 
 const CommunityEvent = () => import('~/components/CommunityEvent.vue')
