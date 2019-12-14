@@ -303,6 +303,10 @@ export default {
       } else {
         this.json = newVal
       }
+    },
+    type(newVal) {
+      // We want to alert users of this component to changed data.
+      this.$emit('input', newVal)
     }
   },
 
