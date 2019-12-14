@@ -671,10 +671,24 @@
                 These are detailed internal logs relating to your activity.  There may be a very large number
                 of these, and they're not very interesting - but you can view them if you like.
               </p>
-              <div class="btn btn-white js-showlogs">
-                View logs
-              </div>
-              <ul class="list-unstyled js-logs" />
+              <ShowMore :items="status.data.logs" limit="0">
+                <template v-slot:item="s">
+                  <b-row>
+                    <b-col cols="4">
+                      {{ s.item.timestamp | datetime }}
+                    </b-col>
+                    <b-col cols="2">
+                      {{ s.item.type }}
+                    </b-col>
+                    <b-col cols="2">
+                      {{ s.item.subtype }}
+                    </b-col>
+                    <b-col cols="4">
+                      {{ s.item.text }}
+                    </b-col>
+                  </b-row>
+                </template>
+              </ShowMore>
               <h2>Exports</h2>
               <p>These are any other times you've viewed this data.</p>
               <b-row>
