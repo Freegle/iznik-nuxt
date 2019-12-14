@@ -165,7 +165,7 @@
               </div>
               <h2>Your profile pictures</h2>
               <div v-for="image in status.data.images" :key="image.thumb">
-                <b-img-lazy thumbnail :src="image.thumb" />
+                <b-img-lazy thumbnail :src="image.thumb" class="profile" />
               </div>
               <h2>Logins</h2>
               <p>These are the ways in which you have registered to use the site.</p>
