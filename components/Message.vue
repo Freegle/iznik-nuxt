@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-card class="p-0 mb-1" variant="success">
-      <b-card-header class="pl-2 pr-2 clearfix">
+      <b-card-header :class="'pl-2 pr-2 clearfix' + (expanded && expanded.promised ? ' promisedfade' : '')">
         <b-card-title class="msgsubj mb-0">
           <span v-if="attachments && attachments.length > 0" class="float-right clickme" @click="showPhotos">
             <b-badge v-if="attachments.length > 1" class="photobadge" variant="primary">+{{ attachments.length - 1 }} <v-icon name="camera" /></b-badge>
@@ -54,7 +54,7 @@
         </b-button>
       </b-card-header>
       <b-card-body v-if="expanded" class="pl-1">
-        <notice-message v-if="expanded.promised" class="mb-3">
+        <notice-message v-if="expanded.promised" variant="warning" class="mb-3 mt-1">
           This item has already been promised to someone.  You can still reply - you might get it if someone
           else drops out.
         </notice-message>
@@ -153,6 +153,10 @@
 <style scoped>
 .highlight {
   padding: 0;
+}
+
+.promisedfade {
+  opacity: 0.3;
 }
 </style>
 
