@@ -8,7 +8,7 @@
         {{ chat.name }}
       </b-col>
       <b-col cols="1">
-        <b-btn variant="white" @click="showMessages = true">
+        <b-btn variant="link" @click="showMessages = true">
           Show messages
         </b-btn>
       </b-col>
@@ -19,7 +19,7 @@
           <b-col cols="4">
             {{ message.date | dateonly }}
           </b-col>
-          <b-col cols="8">
+          <b-col cols="8" class="prewrap">
             {{ message.message }}
           </b-col>
         </b-row>

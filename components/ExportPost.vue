@@ -7,14 +7,16 @@
       <b-col cols="2">
         {{ post.arrival | dateonly }}
       </b-col>
-      <b-col cols="3">
-        {{ post.groups[0].namedisplay }}
+      <b-col cols="2">
+        <span v-if="post.groups && post.groups[0]">
+          {{ post.groups[0].namedisplay }}
+        </span>
       </b-col>
       <b-col cols="4">
         {{ post.subject }}
       </b-col>
-      <b-col cols="1">
-        <b-btn variant="white" @click="showJSON = true">
+      <b-col cols="2">
+        <b-btn variant="link" @click="showJSON = true">
           Details
         </b-btn>
       </b-col>
