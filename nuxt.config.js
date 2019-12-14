@@ -108,7 +108,9 @@ module.exports = {
     { from: '^/contact$', to: '/help' },
     { from: '^/posters$', to: '/noticeboards' },
     { from: '^/groups', to: '/explore' },
-    { from: '^/events', to: '/communityevents' }
+    { from: '^/events', to: '/communityevents' },
+    { from: '^/contact', to: '/help' },
+    { from: '^/handbook', to: '/help' }
   ],
 
   /*
