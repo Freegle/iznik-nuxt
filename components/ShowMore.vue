@@ -5,7 +5,7 @@
         Item {{ item[keyfield] }}
       </slot>
     </div>
-    <b-btn v-if="this.items.length > this.limit && !this.expanded" variant="link" @click="expanded = true">
+    <b-btn v-if="items.length > limit && !expanded" variant="link" @click="expanded = true">
       Show more...
     </b-btn>
   </div>

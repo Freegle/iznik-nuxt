@@ -17,10 +17,11 @@
                 You can also download all this data
                 in a commonly-used machine-readable format (<a href="https://www.json.org/" target="_blank">JSON</a>).
               </p>
-              <b-btn variant="white" class="mb-2" @click="download">
+              <!--              TODO DESIGN MINOR Style as a button. We need to have it as a link so that we can use the download attribute.-->
+              <a :href="downloadlink" download="mydata.json">
                 Download in machine-readable format
-              </b-btn>
-              <p>
+              </a>
+              <p class="mt-2">
                 There may be a lot of information here, so if you have any questions, please
                 <nuxt-link to="/help">
                   contact us
@@ -778,6 +779,9 @@ export default {
         this.me.systemrole === 'Support' ||
         this.me.systemrole === 'Admin'
       )
+    },
+    downloadlink() {
+      return process.env.API + '/export?id=' + this.id + '&tag=' + this.tag
     }
   },
   async mounted() {
@@ -825,7 +829,10 @@ export default {
       this.$refs['eventmodal-' + id].show()
     },
     download() {
-      // TODO
+      window.open(
+        process.env.API + '/export?id=' + this.id + '&tag=' + this.tag,
+        '_blank'
+      )
     }
   }
 }
