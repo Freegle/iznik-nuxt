@@ -203,9 +203,9 @@ export default {
       }
 
       const sorted = ret.sort((a, b) => {
-        return a.nameshort
+        return a.namedisplay
           .toLowerCase()
-          .localeCompare(b.nameshort.toLowerCase())
+          .localeCompare(b.namedisplay.toLowerCase())
       })
 
       return sorted
