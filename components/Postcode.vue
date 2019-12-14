@@ -7,7 +7,7 @@
       param="typeahead"
       anchor="name"
       label=""
-      placeholder="Type postcode or..."
+      placeholder="Type postcode"
       :classes="{ input: 'form-control form-control-' + size + ' text-center pcinp', list: 'postcodelist' }"
       class="mr-1"
       :min="3"
