@@ -330,7 +330,6 @@ export default {
     },
 
     async loadMore($state) {
-      console.log('load more')
       this.busy = true
       const user = this.$store.getters['auth/user']
 

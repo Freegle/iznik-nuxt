@@ -308,7 +308,6 @@ nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
 
 .pageContent {
   padding-top: 68px;
-  overflow-x: hidden;
 }
 
 *,
