@@ -100,7 +100,6 @@ module.exports = {
     { src: '~plugins/vue-js-toggle-button', ssr: false },
     { src: '~plugins/vue2-datepicker', ssr: false },
     { src: '~plugins/vue-social-sharing', ssr: false },
-    { src: '~plugins/vue-force-next-tick', ssr: false },
     { src: '~plugins/vue-google-autocomplete', ssr: false }
   ],
 
@@ -208,7 +207,8 @@ module.exports = {
   build: {
     // analyze: true,
 
-    transpile: [/^vue2-google-maps($|\/)/],
+    transpile: [({ isLegacy }) => isLegacy || "vue2-google-maps"],
+    // transpile: [/^vue2-google-maps($|\/)/],
 
     extend(config, ctx) {
       config.devtool = ctx.isClient ? 'eval-source-map' : 'inline-source-map'
@@ -236,7 +236,7 @@ module.exports = {
         maxInitialRequests: Infinity,
         automaticNameDelimiter: '.',
         name: true,
-        minSize: 100000,
+        minSize: 100000, // Change this to 0 if you're debugging problems and can't see which npm package is at fault.
         maxSize: 100000,
         cacheGroups: {
           vendor: {
@@ -256,23 +256,6 @@ module.exports = {
       }
     },
 
-    // babel: {
-    //   presets({ envName }) {
-    //     const envTargets = {
-    //       client: { browsers: ['last 2 versions'], ie: 11, safari: 9 },
-    //       server: { node: 'current' }
-    //     }
-    //     return [
-    //       [
-    //         '@nuxt/babel-preset-app',
-    //         {
-    //           targets: envTargets[envName]
-    //         }
-    //       ]
-    //     ]
-    //   }
-    // },
-    //
     loaders: {
       less: { javascriptEnabled: true }
     }
