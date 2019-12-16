@@ -368,7 +368,6 @@ export default {
             $state.complete()
           } else {
             // Fetch for the area we are interested in.
-            console.log('Fetch')
             await this.$store.dispatch('newsfeed/fetchFeed', {
               context: context,
               distance: this.selectedArea
