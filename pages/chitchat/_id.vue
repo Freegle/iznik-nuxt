@@ -342,6 +342,8 @@ export default {
           const context = this.$store.getters['newsfeed/getContext']
 
           if (this.id) {
+            await this.$store.dispatch('newsfeed/clearFeed')
+
             // Just one - fetch it by id.
             await this.$store.dispatch('newsfeed/fetch', {
               id: this.id
