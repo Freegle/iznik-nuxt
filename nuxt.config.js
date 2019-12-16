@@ -21,7 +21,9 @@ const CHAT_HOST = 'https://users.ilovefreegle.org:555'
 
 // Allow disabling of eslint autofix by setting "DISABLE_ESLINT_AUTOFIX=true" in env (e.g. .env file)
 // defaults to enabling autofixing
-const DISABLE_ESLINT_AUTOFIX = process.env.DISABLE_ESLINT_AUTOFIX && process.env.DISABLE_ESLINT_AUTOFIX !== 'false'
+const DISABLE_ESLINT_AUTOFIX =
+  process.env.DISABLE_ESLINT_AUTOFIX &&
+  process.env.DISABLE_ESLINT_AUTOFIX !== 'false'
 const ESLINT_AUTOFIX = !DISABLE_ESLINT_AUTOFIX
 
 module.exports = {
@@ -48,9 +50,7 @@ module.exports = {
   /*
   ** Global CSS
   */
-  css: [
-    '@/assets/css/global.scss'
-  ],
+  css: ['@/assets/css/global.scss'],
 
   // TODO NS We have too many plugins.  Initially I thought the only way to pull in a standard bit of Vue code
   // was to create a plugin for it.  But that is flat wrong.  Pulling them in as plugins will increase the
@@ -80,7 +80,7 @@ module.exports = {
     { src: '~/plugins/vue2-filters' },
     { src: '~/plugins/axios-token' },
     { src: '~/plugins/axios-baseurl' },
-    { src: '~/plugins/dayjs'},
+    { src: '~/plugins/dayjs' },
 
     // Some plugins are client-side features
     { src: '~plugins/visibility.js', ssr: false },
@@ -91,8 +91,8 @@ module.exports = {
     { src: '~plugins/vue-color', ssr: false },
     { src: '~plugins/vue-infinite-loading.js', ssr: false },
     { src: '~plugins/vue2-google-maps.js', ssr: false },
-    { src: '~plugins/vue-debounce', ssr: false},
-    { src: '~plugins/vue-highlight-words', ssr: false},
+    { src: '~plugins/vue-debounce', ssr: false },
+    { src: '~plugins/vue-highlight-words', ssr: false },
     { src: '~plugins/vue-awesome.js', ssr: false },
     { src: '~plugins/vue-read-more', ssr: false },
     { src: '~plugins/facebook-sdk', ssr: false },
@@ -101,7 +101,7 @@ module.exports = {
     { src: '~plugins/vue2-datepicker', ssr: false },
     { src: '~plugins/vue-social-sharing', ssr: false },
     { src: '~plugins/vue-force-next-tick', ssr: false },
-    { src: '~plugins/vue-google-autocomplete', ssr: false },
+    { src: '~plugins/vue-google-autocomplete', ssr: false }
   ],
 
   redirect: [
@@ -184,7 +184,11 @@ module.exports = {
       'TooltipPlugin',
       'BVToastPlugin'
     ],
-    directivePlugins: ['VBPopoverPlugin', 'VBTooltipPlugin', 'VBScrollspyPlugin']
+    directivePlugins: [
+      'VBPopoverPlugin',
+      'VBTooltipPlugin',
+      'VBScrollspyPlugin'
+    ]
   },
 
   /*
@@ -222,18 +226,7 @@ module.exports = {
         })
       }
 
-      config.resolve.alias['color-vars']= 'assets/css/_color-vars.scss';
-    },
-
-    optimization: {
-      splitChunks: {
-        chunks: 'all',
-        automaticNameDelimiter: '.',
-        name: true,
-        cacheGroups: {},
-        minSize: 100000,
-        maxSize: 100000
-      }
+      config.resolve.alias['color-vars'] = 'assets/css/_color-vars.scss'
     },
 
     optimization: {
@@ -241,26 +234,48 @@ module.exports = {
       splitChunks: {
         chunks: 'all',
         maxInitialRequests: Infinity,
-        minSize: 0,
+        automaticNameDelimiter: '.',
+        name: true,
+        minSize: 100000,
+        maxSize: 100000,
         cacheGroups: {
           vendor: {
             test: /[\\/]node_modules[\\/]/,
-            name (module) {
+            name(module) {
               // get the name. E.g. node_modules/packageName/not/this/part.js
               // or node_modules/packageName
-              const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+              const packageName = module.context.match(
+                /[\\/]node_modules[\\/](.*?)([\\/]|$)/
+              )[1]
 
               // npm package names are URL-safe, but some servers don't like @ symbols
-              return `npm.${packageName.replace('@', '')}`;
-            },
-          },
-        },
-      },
+              return `npm.${packageName.replace('@', '')}`
+            }
+          }
+        }
+      }
+    },
+
+    babel: {
+      presets({ envName }) {
+        const envTargets = {
+          client: { browsers: ['last 2 versions'], ie: 11, safari: 9 },
+          server: { node: 'current' }
+        }
+        return [
+          [
+            '@nuxt/babel-preset-app',
+            {
+              targets: envTargets[envName]
+            }
+          ]
+        ]
+      }
     },
 
     loaders: {
-      less: { javascriptEnabled: true },
-    },
+      less: { javascriptEnabled: true }
+    }
   },
 
   env: {
@@ -270,7 +285,8 @@ module.exports = {
     FACEBOOK_APPID: FACEBOOK_APPID,
     GOOGLE_MAPS_KEY: 'AIzaSyCdTSJKGWJUOx2pq1Y0f5in5g4kKAO5dgg',
     GOOGLE_API_KEY: 'AIzaSyArVxoX781qdcbmQZi1PKHX-qa0bPbboH4',
-    GOOGLE_CLIENT_ID: '423761283916-1rpa8120tpudgv4nf44cpmlf8slqbf4f.apps.googleusercontent.com',
+    GOOGLE_CLIENT_ID:
+      '423761283916-1rpa8120tpudgv4nf44cpmlf8slqbf4f.apps.googleusercontent.com',
     MODTOOLS: false,
     USER_SITE: USER_SITE
   },
@@ -282,8 +298,6 @@ module.exports = {
   },
 
   router: {
-    middleware: [
-      'keylogin'
-    ]
+    middleware: ['keylogin']
   }
 }
