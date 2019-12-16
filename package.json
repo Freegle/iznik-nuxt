@@ -47,6 +47,7 @@
     "nuxt-rfg-icon": "^0.6.3",
     "qs": "^6.7.0",
     "textarea-caret": "^3.1.0",
+    "url": "^0.11.0",
     "vue": "^2.6.10",
     "vue-at": "^2.5.0-beta.2",
     "vue-awesome": "^3.5.4",

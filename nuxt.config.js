@@ -280,4 +280,8 @@ module.exports = {
       performance: true
     }
   },
+
+  serverMiddleware: [
+    '~/serverMiddleware/keylogin'
+  ]
 }
