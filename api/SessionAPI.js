@@ -15,7 +15,9 @@ export default class SessionAPI extends BaseAPI {
     fblogin,
     fbaccesstoken,
     googlelogin,
-    googleauthcode
+    googleauthcode,
+    u,
+    k
   }) {
     return this.$post('/session', {
       email,
@@ -23,7 +25,9 @@ export default class SessionAPI extends BaseAPI {
       fblogin,
       fbaccesstoken,
       googlelogin,
-      googleauthcode
+      googleauthcode,
+      u,
+      k
     })
   }
 

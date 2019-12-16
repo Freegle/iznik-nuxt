@@ -281,7 +281,9 @@ module.exports = {
     }
   },
 
-  serverMiddleware: [
-    '~/serverMiddleware/keylogin'
-  ]
+  router: {
+    middleware: [
+      'keylogin'
+    ]
+  }
 }

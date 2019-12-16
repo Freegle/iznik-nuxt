@@ -4,7 +4,6 @@
 // There are definitely still some of these - I've seen the navbar show us logged in while the page contents show us
 // logged out.  Can we force the persisted store to be loaded earlier to knock this class of bugs on the head?
 
-// TODO EH Impersonation.
 import { LoginError } from '../api/BaseAPI'
 
 let first = true
