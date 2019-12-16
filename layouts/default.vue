@@ -501,14 +501,14 @@ export default {
     // Clear old notifications because they're probably out of date now.
     await this.$store.dispatch('notifications/clear')
 
-    // Poll regularly for new ones.  Would be nice if this was event driven instead but requires server work.
-    this.notificationPoll = setTimeout(this.getNotificationCount, 30000)
-
     const me = this.$store.getters['auth/user']
 
     if (me && me.id) {
       console.log('Start NCHAN from mount')
       this.startNCHAN(me.id)
+
+      // Get notifications and poll regularly for new ones.  Would be nice if this was event driven instead but requires server work.
+      this.getNotificationCount()
     }
 
     // Look for a custom logo.
@@ -606,7 +606,12 @@ export default {
       })
     },
     async getNotificationCount() {
-      await this.$store.dispatch('notifications/count')
+      const me = this.$store.getters['auth/user']
+
+      if (me && me.id) {
+        await this.$store.dispatch('notifications/count')
+      }
+
       this.notificationPoll = setTimeout(this.getNotificationCount, 30000)
     },
 
