@@ -119,7 +119,7 @@
         </b-navbar-nav>
       </b-navbar>
       <!-- Navbar for small screens -->
-      <b-navbar id="navbar_small" toggleable="xl" type="dark" class="ourBack d-flex justify-content-end d-xl-none" fixed="top">
+      <b-navbar id="navbar_small" toggleable="xl" type="dark" class="ourBack d-flex justify-content-end d-xl-none pr-0" fixed="top">
         <b-navbar-brand to="/" class="p-0 mr-auto">
           <b-img
             class="logo mr-2"
@@ -308,6 +308,7 @@ nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
 
 .pageContent {
   padding-top: 68px;
+  overflow-x: hidden;
 }
 
 *,
