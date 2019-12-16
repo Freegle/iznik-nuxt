@@ -505,7 +505,7 @@ $color-yahoo: #6b0094;
 .social-button {
   display: flex;
   align-items: center;
-  width: 250px;
+  min-width: 250px;
   border-radius: 3px;
   padding: 0;
   margin-bottom: 20px;
