@@ -354,7 +354,6 @@ export default {
     },
     async loginFacebook() {
       this.loginError = null
-      // TODO EH Do we still have the Chrome on IOS problem?
       try {
         let response = null
         const promise = new Promise(function(resolve) {
