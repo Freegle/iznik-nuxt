@@ -256,23 +256,23 @@ module.exports = {
       }
     },
 
-    babel: {
-      presets({ envName }) {
-        const envTargets = {
-          client: { browsers: ['last 2 versions'], ie: 11, safari: 9 },
-          server: { node: 'current' }
-        }
-        return [
-          [
-            '@nuxt/babel-preset-app',
-            {
-              targets: envTargets[envName]
-            }
-          ]
-        ]
-      }
-    },
-
+    // babel: {
+    //   presets({ envName }) {
+    //     const envTargets = {
+    //       client: { browsers: ['last 2 versions'], ie: 11, safari: 9 },
+    //       server: { node: 'current' }
+    //     }
+    //     return [
+    //       [
+    //         '@nuxt/babel-preset-app',
+    //         {
+    //           targets: envTargets[envName]
+    //         }
+    //       ]
+    //     ]
+    //   }
+    // },
+    //
     loaders: {
       less: { javascriptEnabled: true }
     }
