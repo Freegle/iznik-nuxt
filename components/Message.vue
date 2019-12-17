@@ -35,7 +35,7 @@
           </nuxt-link>
         </span>
         <div v-if="eSnippet && eSnippet !== 'null' && !expanded">
-          <h4 class="snippet">
+          <b class="snippet black">
             <Highlighter
               v-if="matchedon"
               :search-words="[matchedon.word]"
@@ -44,12 +44,12 @@
             />
             <span v-else>{{ eSnippet }}</span>
             ...
-          </h4>
+          </b>
         </div>
         <div v-if="!eSnippet || eSnippet === 'null' && !expanded">
           <i>There's no description.</i>
         </div>
-        <b-button v-if="!expanded" variant="white" @click="expand">
+        <b-button v-if="!expanded" variant="white" class="mt-1" @click="expand">
           Read more and reply <v-icon name="angle-double-right" />
         </b-button>
       </b-card-header>
