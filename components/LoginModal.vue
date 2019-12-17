@@ -26,7 +26,7 @@
     </b-row>
     <b-row>
       <b-col cols="12" lg="6" class="text-center">
-        <p v-if="showSignUp">
+        <p v-if="signUp">
           <b>Using one of these buttons is the easiest way to create an account:</b>
         </p>
         <button class="social-button social-button--facebook" :disabled="facebookDisabled" @click="loginFacebook">
@@ -61,7 +61,7 @@
       <b-col cols="12" lg="6" class="mt-0">
         <b-form ref="form" action="/" autocomplete="on" method="post" @submit="loginNative">
           <div>
-            <b-row v-if="showSignUp">
+            <b-row v-if="signUp">
               <b-col>
                 <b-form-group
                   id="firstnameGroup"
@@ -80,7 +80,7 @@
                 </b-form-group>
               </b-col>
             </b-row>
-            <b-row v-if="showSignUp">
+            <b-row v-if="signUp">
               <b-col>
                 <b-form-group
                   id="lastnameGroup"
@@ -149,7 +149,7 @@
                   type="submit"
                   value="login"
                 >
-                  <span v-if="!showSignUp">
+                  <span v-if="!signUp">
                     Sign in to Freegle
                   </span>
                   <span v-else>
@@ -158,14 +158,14 @@
                 </b-btn>
               </b-col>
             </b-row>
-            <b-row v-if="!showSignUp">
+            <b-row v-if="!signUp">
               <b-col class="text-center">
                 <nuxt-link to="/forgot">
                   I forgot my password
                 </nuxt-link>
               </b-col>
             </b-row>
-            <b-row v-if="!showSignUp">
+            <b-row v-if="!signUp">
               <b-col class="text-center">
                 New freegler? <a href="#" @click="clickShowSignUp">Sign Up</a>
               </b-col>
@@ -208,6 +208,7 @@ export default {
       password: null,
       pleaseShowModal: false,
       showSignUp: false,
+      forceSignIn: false,
       loginError: null
     }
   },
@@ -258,7 +259,11 @@ export default {
     },
 
     signUp() {
-      return !this.loggedInEver() || this.showSignUp
+      if (this.forceSignIn) {
+        return false
+      } else {
+        return !this.loggedInEver || this.showSignUp
+      }
     }
   },
 
@@ -280,7 +285,7 @@ export default {
       e.preventDefault()
       e.stopPropagation()
 
-      if (this.showSignUp) {
+      if (this.signUp) {
         this.$store
           .dispatch('auth/signup', {
             firstname: this.firstname,
@@ -488,12 +493,14 @@ export default {
 
     clickShowSignUp(e) {
       this.showSignUp = true
+      this.forceSignIn = false
       e.preventDefault()
       e.stopPropagation()
     },
 
     clickShowSignIn(e) {
       this.showSignUp = false
+      this.forceSignIn = true
       e.preventDefault()
       e.stopPropagation()
     }
