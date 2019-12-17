@@ -63,7 +63,7 @@
         </span>
       </b-col>
     </b-row>
-    <CommunityEventModal ref="addEvent" :event="{}" :start-edit="true" />
+    <CommunityEventModal ref="addEvent" :start-edit="true" />
     <CommunityEventModal ref="moreInfo" :event="newsfeed.communityevent" />
   </div>
 </template>
