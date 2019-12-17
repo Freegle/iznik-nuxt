@@ -159,9 +159,12 @@ export default {
           value:
             '            <p>Freegle is run by volunteers - so if you can help, please get in touch!</p>\n' +
             '            <p>If you\'d like to spread the word you can download a poster or ask for "business cards" to hand out:</p>\n' +
-            '            <p /><div class="btn btn-success js-cards">\n' +
+            '            <p />' +
+            '            <a href="/spread">' +
+            '            <button class="btn-success">\n' +
             '              Find out more\n' +
-            '            </div>\n' +
+            '            </button>\n' +
+            '            </a>\n' +
             '            </p>\n' +
             '            <p>If you would like to help run one of the local communities, which is a good place to start, please use the <em>Contact</em> button below.</p>\n' +
             '            <p>You can also volunteer nationally.  We really need people in these areas:</p>\n' +
