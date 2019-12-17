@@ -56,6 +56,8 @@ module.exports = {
   // was to create a plugin for it.  But that is flat wrong.  Pulling them in as plugins will increase the
   // page load size, I expect, so we should take a pass through and see if any of them should be removed.
   plugins: [
+    '~/plugins/polyfills',
+
     // Our template formatting utils.
     '~/plugins/filters',
 
@@ -207,8 +209,7 @@ module.exports = {
   build: {
     // analyze: true,
 
-    transpile: [({ isLegacy }) => isLegacy || "vue2-google-maps"],
-    // transpile: [/^vue2-google-maps($|\/)/],
+    transpile: [ /^vue2-google-maps($|\/)/ ],
 
     extend(config, ctx) {
       config.devtool = ctx.isClient ? 'eval-source-map' : 'inline-source-map'
@@ -253,6 +254,26 @@ module.exports = {
             }
           }
         }
+      }
+    },
+
+    babel: {
+      presets({ isServer }) {
+        const targets = isServer
+          ? { node: '10' }
+          : {
+              browsers: ['> 1%', 'last 2 versions', 'ie >= 8', 'safari >= 9']
+            }
+        return [
+          [
+            require.resolve('@nuxt/babel-preset-app'),
+            {
+              targets,
+              corejs: 3,
+              debug: process.env.NODE_ENV === 'production'
+            }
+          ]
+        ]
       }
     },
 
