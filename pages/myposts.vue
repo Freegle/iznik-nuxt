@@ -356,6 +356,10 @@ export default {
       this.showOldOffers = !this.showOldOffers
     },
 
+    toggleOldWanted() {
+      this.showOldWanteds = !this.showOldWanteds
+    },
+
     async deleteSearch(id) {
       this.removingSearch = id
 

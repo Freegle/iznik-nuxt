@@ -174,7 +174,6 @@ export default {
 
   data: function() {
     return {
-      newsfeed: null,
       busy: false,
       startThread: null,
       scrollTo: null,
@@ -245,6 +244,9 @@ export default {
     users() {
       const users = this.$store.getters['newsfeed/users']
       return users
+    },
+    newsfeed() {
+      return this.$store.getters['newsfeed/newsfeed']
     }
   },
 
@@ -340,29 +342,25 @@ export default {
           const context = this.$store.getters['newsfeed/getContext']
 
           if (this.id) {
+            await this.$store.dispatch('newsfeed/clearFeed')
+
             // Just one - fetch it by id.
-            this.newsfeed = [
-              await this.$store.dispatch('newsfeed/fetch', {
-                id: this.id
-              })
-            ]
+            await this.$store.dispatch('newsfeed/fetch', {
+              id: this.id
+            })
 
             // But maybe this isn't the thread head.
             const fetched = this.$store.getters['newsfeed/get'](this.id)
             if (fetched.threadhead && this.id !== fetched.threadhead) {
-              this.newsfeed = []
-              this.newsfeed = [
-                await this.$store.dispatch('newsfeed/fetch', {
-                  id: fetched.threadhead
-                })
-              ]
+              await this.$store.dispatch('newsfeed/clearFeed')
+              await this.$store.dispatch('newsfeed/fetch', {
+                id: fetched.threadhead
+              })
             } else if (fetched.replyto && this.id !== fetched.replyto) {
-              this.newsfeed = []
-              this.newsfeed = [
-                await this.$store.dispatch('newsfeed/fetch', {
-                  id: fetched.replyto
-                })
-              ]
+              await this.$store.dispatch('newsfeed/clearFeed')
+              await this.$store.dispatch('newsfeed/fetch', {
+                id: fetched.replyto
+              })
             }
 
             this.scrollTo = this.id
@@ -375,8 +373,6 @@ export default {
               distance: this.selectedArea
             })
 
-            // One need this one entry.
-            this.newsfeed = this.$store.getters['newsfeed/newsfeed']
             if ($state.loaded) {
               $state.loaded()
             }
@@ -395,7 +391,6 @@ export default {
     areaChange: function() {
       this.infiniteId++
       this.$store.commit('newsfeed/clearFeed')
-      this.newsfeed = null
     },
     async postIt() {
       let msg = this.startThread
@@ -408,9 +403,6 @@ export default {
           message: msg,
           imageid: this.imageid
         })
-
-        // Show the new message
-        this.newsfeed = this.$store.getters['newsfeed/newsfeed']
 
         // Clear the textarea now it's sent.
         this.startThread = null

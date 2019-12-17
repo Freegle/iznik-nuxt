@@ -108,17 +108,17 @@
               </b-list-group-item>
             </b-list-group>
             <b-list-group v-else horizontal class="flex-wrap">
-              <b-list-group-item v-if="message.type === 'Offer'" li>
+              <b-list-group-item v-if="message.type === 'Offer' && (!message.outcomes || !message.outcomes.length)" li>
                 <b-btn variant="success" class="d-inline mr-1" @click="outcome('Taken')">
                   <v-icon name="check" /> Mark as TAKEN
                 </b-btn>
               </b-list-group-item>
-              <b-list-group-item v-else>
+              <b-list-group-item v-else-if="message.type === 'Wanted' && (!message.outcomes || !message.outcomes.length)">
                 <b-btn variant="success" class="d-inline mr-1" @click="outcome('Received')">
                   <v-icon name="check" /> Mark as Received
                 </b-btn>
               </b-list-group-item>
-              <b-list-group-item>
+              <b-list-group-item v-if="!message.outcomes || !message.outcomes.length">
                 <b-btn variant="white" class="d-inline mr-1" @click="outcome('Withdrawn')">
                   <v-icon name="trash-alt" /> Withdraw
                 </b-btn>

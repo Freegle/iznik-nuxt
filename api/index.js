@@ -1,4 +1,4 @@
-/*    --- DO NOT EDIT --- 
+/*    --- DO NOT EDIT ---
  *
  * This file was generating using api/index.generate.js
  * You can regenerate it by running:
@@ -30,6 +30,7 @@ import TeamAPI from './TeamAPI.js'
 import UserAPI from './UserAPI.js'
 import UserSearchAPI from './UserSearchAPI.js'
 import VolunteeringAPI from './VolunteeringAPI.js'
+import ShortlinkAPI from './ShortlinkAPI'
 
 export default ({ $axios }) => {
   const options = { $axios }
@@ -51,6 +52,7 @@ export default ({ $axios }) => {
     notification: new NotificationAPI(options),
     schedule: new ScheduleAPI(options),
     session: new SessionAPI(options),
+    shortlinks: new ShortlinkAPI(options),
     stories: new StoriesAPI(options),
     team: new TeamAPI(options),
     user: new UserAPI(options),

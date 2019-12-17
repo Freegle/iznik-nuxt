@@ -16,7 +16,6 @@ export default {
     }
   },
   created() {
-    console.log('Region', this.$route.params)
     this.region = this.$route.params.region
   }
 }

@@ -17,6 +17,7 @@
           maxlength="60"
           spellcheck="true"
           placeholder="In a single word or phrase, what is it?"
+          @input="input"
         />
       </b-col>
     </b-row>
@@ -57,25 +58,16 @@ export default {
     // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
     // need to render this on the server.
     this.$refs.autocomplete.setValue(this.item)
-
-    // We need some fettling of the input keystrokes.
-    const input = this.$refs.autocomplete.$refs.input
-    input.addEventListener('keydown', this.keydown, false)
   },
   methods: {
-    keydown(e) {
-      if (e.which === 8) {
-        // Backspace means we no longer have a full item.  Parent might want to know that we don't have a valid
-        // item any more.
+    input(newValue) {
+      // TODO NS MINOR I've changed Autocomplete to emit the input event', but here we split it.  Is this
+      // bad code?
+      if (!newValue.length) {
         this.$emit('cleared')
-        this.results = null
+      } else {
+        this.$emit('typed', newValue)
       }
-
-      this.$forceNextTick(() => {
-        const input = this.$refs.autocomplete.$refs.input
-        this.$emit('typed', input.value)
-        console.log('Typed', input.value)
-      })
     },
     process(results) {
       const items =

@@ -10,6 +10,8 @@
   </div>
 </template>
 <script>
+// TODO Handle invalid id.  Ditto in Volunteer Ops.
+// TODO Handle deleted events, which return an error of 3 on the fetch.  Ditto volunteer ops.
 import loginOptional from '@/mixins/loginOptional.js'
 
 const CommunityEvent = () => import('~/components/CommunityEvent.vue')

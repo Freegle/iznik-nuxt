@@ -515,16 +515,13 @@ export default {
         container.scrollTop = container.scrollHeight
       })
 
-      // Clear the message now it's sent.
-      this.sendmessage = ''
-
       // We also want to trigger an update in the chat list.
       this.$store.dispatch('chats/fetch', {
         id: this.id
       })
     },
 
-    send: function() {
+    send: async function() {
       let msg = this.sendmessage
       this.sending = true
 
@@ -532,12 +529,15 @@ export default {
       msg = twem.untwem(msg)
 
       // Send it
-      this.$store
-        .dispatch('chatmessages/send', {
-          roomid: this.id,
-          message: msg
-        })
-        .then(this._updateAfterSend)
+      await this.$store.dispatch('chatmessages/send', {
+        roomid: this.id,
+        message: msg
+      })
+
+      this._updateAfterSend()
+
+      // Clear the message now it's sent.
+      this.sendmessage = ''
     },
     popup() {
       this.$store.dispatch('popupchats/popup', { id: this.chat.id })

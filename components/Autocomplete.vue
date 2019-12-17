@@ -163,12 +163,15 @@
 </style>
 
 <script>
-/*! Copyright (c) 2016 Naufal Rabbani (http://github.com/BosNaufal)
+/*
+* Originally based on:
+*
+*! Copyright (c) 2016 Naufal Rabbani (http://github.com/BosNaufal)
 * Licensed Under MIT (http://opensource.org/licenses/MIT)
 *
-* Modified by EH.
-*
 * Vue 2 Autocomplete @ Version 0.0.1
+*
+* Modified by EH as that repository is no longer maintained.
 *
 */
 
@@ -280,7 +283,9 @@ export default {
       type: '',
       json: [],
       focusList: '',
-      debounceTask: undefined
+      debounceTask: undefined,
+      ajaxInProgress: null,
+      ajaxDeferred: null
     }
   },
 
@@ -303,6 +308,10 @@ export default {
       } else {
         this.json = newVal
       }
+    },
+    type(newVal) {
+      // We want to alert users of this component to changed data.
+      this.$emit('input', newVal)
     }
   },
 
@@ -496,29 +505,48 @@ export default {
     },
 
     doAjax(val) {
-      // Callback Event
-      this.onBeforeAjax ? this.onBeforeAjax(val) : null
-      // Compose Params
-      const params = this.composeParams(val)
-      // Init Ajax
-      const ajax = new XMLHttpRequest()
-      ajax.open('GET', `${this.url}?${params}`, true)
-      this.composeHeader(ajax)
-      // Callback Event
-      ajax.addEventListener('progress', data => {
-        if (data.lengthComputable && this.onAjaxProgress)
-          this.onAjaxProgress(data)
-      })
-      // On Done
-      ajax.addEventListener('loadend', e => {
-        const { responseText } = e.target
-        const json = JSON.parse(responseText)
+      if (this.ajaxInProgress) {
+        // We're already doing a request.  Don't send another one, partly out of politeness to the server, and
+        // partly because if they complete out of sequence then we will end up with the wrong values.
+        if (this.ajaxDeferred) {
+          clearTimeout(this.ajaxDeferred)
+        }
+
+        this.ajaxDeferred = setTimeout(() => {
+          this.doAjax(val)
+        }, 100)
+      } else {
         // Callback Event
-        this.onAjaxLoaded ? this.onAjaxLoaded(json) : null
-        this.json = this.process ? this.process(json) : json
-      })
-      // Send Ajax
-      ajax.send()
+        this.onBeforeAjax ? this.onBeforeAjax(val) : null
+        // Compose Params
+        const params = this.composeParams(val)
+        // Init Ajax
+        const ajax = new XMLHttpRequest()
+
+        // Save this request so that we know it's happening.
+        this.ajaxInProgress = ajax
+
+        ajax.open('GET', `${this.url}?${params}`, true)
+        this.composeHeader(ajax)
+        // Callback Event
+        ajax.addEventListener('progress', data => {
+          if (data.lengthComputable && this.onAjaxProgress)
+            this.onAjaxProgress(data)
+        })
+        // On Done
+        ajax.addEventListener('loadend', e => {
+          const { responseText } = e.target
+          const json = JSON.parse(responseText)
+          // Callback Event
+          this.onAjaxLoaded ? this.onAjaxLoaded(json) : null
+          this.json = this.process ? this.process(json) : json
+
+          // We no longer have a request in progress.
+          this.ajaxInProgress = null
+        })
+        // Send Ajax
+        ajax.send()
+      }
     },
 
     getData(value) {
