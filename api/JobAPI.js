@@ -10,6 +10,7 @@ export default class JobAPI {
     // don't use the usual API methods.
     const path = '/adview.php'
     const { status, data } = await this.$axios.get(process.env.USER_SITE + path, { params })
+    //const { status, data } = await this.$axios.get(path, { params })
     if (data && data.data) {
       return data.data
     } else {
