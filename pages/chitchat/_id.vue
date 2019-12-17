@@ -267,6 +267,9 @@ export default {
       console.error('Save last route failed', e)
     }
 
+    // Clear the store otherwise existing info may prevent us triggering a fetch via loadMore.
+    this.$store.dispatch('newsfeed/clearFeed')
+
     setTimeout(this.runCheck, 3000)
   },
 
