@@ -264,9 +264,9 @@
                       <b-card-body class="p-0 pt-2">
                         <SettingsGroup
                           :groupid="group.id"
-                          :emailfrequency="group.mysettings.emailfrequency"
-                          :volunteeringallowed="Boolean(group.mysettings.volunteeringallowed)"
-                          :eventsallowed="Boolean(group.mysettings.eventsallowed)"
+                          :emailfrequency="group.mysettings ? group.mysettings.emailfrequency : 24"
+                          :volunteeringallowed="Boolean(group.mysettings ? group.mysettings.volunteeringallowed : true)"
+                          :eventsallowed="Boolean(group.mysettings ? group.mysettings.eventsallowed : true)"
                           :leave="group.role === 'Member'"
                           @change="groupChange"
                           @leave="leaveGroup(group.id)"

@@ -210,7 +210,7 @@ export const actions = {
         commit('setGroups', groups)
       }
 
-      // Login succeeded.  Set the user, which will trigger various re-rendering if we were required to be logged in.
+      // Set the user, which will trigger various re-rendering if we were required to be logged in.
       if (me) {
         commit('setUser', me, params.components)
         commit('forceLogin', false)
