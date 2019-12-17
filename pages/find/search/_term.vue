@@ -73,7 +73,7 @@
         </b-row>
         <b-row>
           <b-col>
-            <div v-for="message in messages" :key="'message-' + message.id" class="p-0">
+            <div v-for="message in filteredMessages" :key="'message-' + message.id" class="p-0">
               <message v-if="message.type == searchtype" v-bind="message" />
             </div>
 
@@ -140,11 +140,12 @@ export default {
         messages = this.$store.getters['messages/getAll']
       }
 
-      messages = messages.filter(message => {
+      return messages
+    },
+    filteredMessages() {
+      return this.messages.filter(message => {
         return !message.outcomes || message.outcomes.length === 0
       })
-
-      return messages
     }
   },
   mounted() {
