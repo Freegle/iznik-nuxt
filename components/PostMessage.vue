@@ -2,6 +2,7 @@
   <div>
     <b-row class="pr-0 mb-2">
       <b-col cols="auto" class="mt-2 pl-0">
+        <!--        TODO EH Apparently you used to be able to add by dragging and dropping onto this button-->
         <b-btn variant="success" size="lg" @click="photoAdd">
           <v-icon name="camera" />&nbsp;Add photos
         </b-btn>
