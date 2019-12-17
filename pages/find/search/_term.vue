@@ -125,13 +125,28 @@ export default {
       searchtype: 'Offer',
       source: process.env.API + '/item',
       context: null,
-      messages: null,
       term: null,
       complete: false,
       distance: 1000
     }
   },
-  computed: {},
+  computed: {
+    messages() {
+      let messages
+
+      if (this.group) {
+        messages = this.$store.getters['messages/getByGroup'](this.group.id)
+      } else {
+        messages = this.$store.getters['messages/getAll']
+      }
+
+      messages = messages.filter(message => {
+        return !message.outcomes || message.outcomes.length === 0
+      })
+
+      return messages
+    }
+  },
   mounted() {
     // Get any value passed in the url for what to search for
     let term = this.$route.params.term
@@ -200,7 +215,7 @@ export default {
         return
       }
 
-      const currentCount = this.messages ? this.messages.length : 0
+      const currentCount = this.messages.length
 
       let params = null
 
@@ -228,23 +243,12 @@ export default {
         .then(() => {
           this.busy = false
 
-          if (this.group) {
-            this.messages = this.$store.getters['messages/getByGroup'](
-              this.group.id
-            )
-          } else {
-            this.messages = this.$store.getters['messages/getAll']
-          }
-
           this.context = this.$store.getters['messages/getContext']
 
-          console.log('Lengths', currentCount, this.messages.length)
           if (currentCount === this.messages.length) {
             this.complete = true
-            console.log('Complete', currentCount)
             $state.complete()
           } else {
-            console.log('Loaded', currentCount)
             $state.loaded()
           }
         })
