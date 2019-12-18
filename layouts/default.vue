@@ -459,7 +459,13 @@ export default {
       return this.$store.getters['auth/user']
     },
     notifications() {
-      return this.$store.getters['notifications/list']
+      const notifications = this.$store.getters['notifications/list']
+
+      notifications.sort(function(a, b) {
+        return new Date(b.timestamp) - new Date(a.timestamp)
+      })
+
+      return notifications
     },
     notificationCount() {
       return this.$store.getters['notifications/count']
