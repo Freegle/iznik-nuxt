@@ -7,39 +7,35 @@
       <b-col cols="12" lg="6" class="newsfeedHolder p-0">
         <b-card v-if="!id">
           <b-card-text>
-            <b-row>
-              <b-col class="text-center">
-                <h4>
-                  Looking for your own posts?  Click <nuxt-link to="/myposts">
-                    here
-                  </nuxt-link>
-                </h4>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col cols="5">
-                <nuxt-link to="/give">
-                  <b-btn id="givebutton" ref="givebutton" block variant="success" class="float-left">
-                    <v-icon name="gift" />&nbsp;Give stuff
-                  </b-btn>
-                </nuxt-link>
-                <b-tooltip :show.sync="showToolGive" target="givebutton" placement="bottom" triggers="">
-                  Giving something away?  Click the Give button.  Chitchat is for other discussion.
-                </b-tooltip>
-              </b-col>
-              <b-col cols="2" />
-              <b-col cols="5">
-                <nuxt-link to="/find">
-                  <b-btn id="findbutton" ref="findbutton" block variant="primary" class="float-right">
-                    <v-icon name="search" />&nbsp;Find stuff
-                  </b-btn>
-                </nuxt-link>
-                <b-tooltip :show.sync="showToolFind" target="findbutton" placement="bottom" triggers="">
-                  Looking for an item?  Click the Find button.  Chitchat is for other discussion.
-                </b-tooltip>
-              </b-col>
-            </b-row>
+            <h4 class="text-center mb-3">
+              Looking for your own posts?  Click
+              <nuxt-link to="/myposts">
+                here
+              </nuxt-link>
+            </h4>
+            <div class="d-flex justify-content-between">
+              <nuxt-link to="/give" class="post__button">
+                <!-- TODO Design These should not be buttons contained within anchors -->
+                <b-btn id="givebutton" ref="givebutton" variant="success" class="w-100">
+                  <v-icon name="gift" class="mr-1" />
+                  Give stuff
+                </b-btn>
+              </nuxt-link>
+              <nuxt-link to="/find" class="post__button">
+                <!-- TODO These should not be buttons contained within anchors -->
+                <b-btn id="findbutton" ref="findbutton" variant="primary" class="w-100">
+                  <v-icon name="search" class="mr-1" />
+                  Find stuff
+                </b-btn>
+              </nuxt-link>
+            </div>
           </b-card-text>
+          <b-tooltip :show.sync="showToolGive" target="givebutton" placement="bottom" triggers="">
+            Giving something away?  Click the Give button.  Chitchat is for other discussion.
+          </b-tooltip>
+          <b-tooltip :show.sync="showToolFind" target="findbutton" placement="bottom" triggers="">
+            Looking for an item?  Click the Find button.  Chitchat is for other discussion.
+          </b-tooltip>
         </b-card>
         <b-row v-if="!id" class="mt-2">
           <b-col>
@@ -134,19 +130,6 @@
     </b-row>
   </div>
 </template>
-
-<style scoped lang="scss">
-@import 'color-vars';
-
-.newsfeedHolder {
-  height: calc(100vh - 74px);
-}
-
-.tab-content,
-.tab-pane {
-  background-color: $color-white;
-}
-</style>
 
 <script>
 import loginRequired from '@/mixins/loginRequired.js'
@@ -433,3 +416,20 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
+.post__button {
+  width: 40%;
+}
+
+.newsfeedHolder {
+  height: calc(100vh - 74px);
+}
+
+.tab-content,
+.tab-pane {
+  background-color: $color-white;
+}
+</style>
