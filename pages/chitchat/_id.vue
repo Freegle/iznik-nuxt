@@ -271,7 +271,8 @@ export default {
               if (msg.length && msg.indexOf(word) !== -1) {
                 this.showToolGive = true
                 this.shownToolGive = true
-                this.$refs.givebutton.scrollIntoView()
+                this.$refs.givebutton.$el.scrollIntoView()
+                window.scrollBy(0, -100)
 
                 setTimeout(() => {
                   this.showToolGive = false
@@ -295,7 +296,8 @@ export default {
               if (msg.length && msg.indexOf(word) !== -1) {
                 this.showToolFind = true
                 this.shownToolFind = true
-                this.$refs.findbutton.scrollIntoView()
+                this.$refs.findbutton.$el.scrollIntoView()
+                window.scrollBy(0, -100)
 
                 setTimeout(() => {
                   this.showToolFind = false
