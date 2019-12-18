@@ -47,7 +47,7 @@
 <style scoped>
 </style>
 <script>
-// TODO NS This page is near identical to the _location one.  What's the correct way to do that?
+// TODO NS MINOR This page is near identical to the _location one.  What's the correct way to do that?
 import loginOptional from '@/mixins/loginOptional.js'
 const Job = () => import('~/components/Job')
 

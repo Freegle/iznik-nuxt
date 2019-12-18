@@ -33,7 +33,7 @@
           </nuxt-link>
         </li>
         <li>
-          <nuxt-link to="/contact" class="menu__link">
+          <nuxt-link to="/help" class="menu__link">
             <v-icon name="envelope" class="link__icon" />
             Contact
           </nuxt-link>

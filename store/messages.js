@@ -136,5 +136,6 @@ export const actions = {
 
   clear({ commit }) {
     commit('clear')
+    commit('setContext', null)
   }
 }

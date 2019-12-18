@@ -143,7 +143,7 @@ export default {
         ) {
           this.locating = true
           navigator.geolocation.getCurrentPosition(async position => {
-            // TODO NS This is a hack - we don't really need this in the store, but probably should have a locationAPI.
+            // TODO NS MINOR This is a hack - we don't really need this in the store, but probably should have a locationAPI.
             // This is quick and dirty for now, but probably should tidy.  /locations is used from other places so if
             // we add an API, search for it.
             const res = await this.$axios.get(process.env.API + '/locations', {

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="me && me.settings">
+  <div v-if="me && me.settings && me.settings.notifications">
     <b-row class="m-0">
       <b-col cols="0" md="3" />
       <b-col cols="12" md="6" class="p-0">
@@ -264,9 +264,9 @@
                       <b-card-body class="p-0 pt-2">
                         <SettingsGroup
                           :groupid="group.id"
-                          :emailfrequency="group.mysettings.emailfrequency"
-                          :volunteeringallowed="Boolean(group.mysettings.volunteeringallowed)"
-                          :eventsallowed="Boolean(group.mysettings.eventsallowed)"
+                          :emailfrequency="group.mysettings ? group.mysettings.emailfrequency : 24"
+                          :volunteeringallowed="Boolean(group.mysettings ? group.mysettings.volunteeringallowed : true)"
+                          :eventsallowed="Boolean(group.mysettings ? group.mysettings.eventsallowed : true)"
                           :leave="group.role === 'Member'"
                           @change="groupChange"
                           @leave="leaveGroup(group.id)"
@@ -482,6 +482,7 @@ export default {
   data: function() {
     return {
       me: null,
+      emailsOn: null,
       pc: null,
       showAdvanced: false,
       savingPostcode: false,
@@ -600,23 +601,18 @@ export default {
     }
   },
 
-  async asyncData({ app, params, store }) {
-    const ret = {
-      me: null,
-      emailsOn: true
-    }
-
+  async mounted() {
     try {
-      await store.dispatch('auth/fetchUser', {
+      await this.$store.dispatch('auth/fetchUser', {
         components: ['me', 'groups', 'aboutme', 'phone', 'notifications'],
         force: true
       })
 
-      ret.me = store.getters['auth/user']
-      ret.emailsOn = !Object.keys(ret.me).includes('onholidaytill')
-    } catch (e) {}
-
-    return ret
+      this.me = this.$store.getters['auth/user']
+      this.emailsOn = !Object.keys(this.me).includes('onholidaytill')
+    } catch (e) {
+      console.error('Failed to fetch user', e)
+    }
   },
 
   methods: {

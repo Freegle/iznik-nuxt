@@ -58,7 +58,7 @@
         </span>
       </b-col>
     </b-row>
-    <VolunteerOpportunityModal ref="addOpportunity" :volunteering="{}" :start-edit="true" />
+    <VolunteerOpportunityModal ref="addOpportunity" :start-edit="true" />
     <VolunteerOpportunityModal ref="moreInfo" :volunteering="newsfeed.volunteering" />
   </div>
 </template>

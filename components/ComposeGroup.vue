@@ -10,12 +10,10 @@ export default {
       default: null
     }
   },
-  data: function() {
-    return {
-      group: null
-    }
-  },
   computed: {
+    group() {
+      return this.$store.getters['compose/getGroup']
+    },
     postcode() {
       const pc = this.$store.getters['compose/getPostcode']
       return pc
@@ -56,14 +54,13 @@ export default {
       return ret
     }
   },
-  mounted() {
-    const stored = this.$store.getters['compose/getGroup']
-    this.group = stored
-  },
   methods: {
     change(newValue) {
+      // TODO MINOR In the old version we had some explicit code to spot when a group we find near to a postcode
+      // has been founded more recently than we saved our preferred group.  This is so that when a new group has
+      // started, we will direct existing active members over to it rather than remember their last group and
+      // keep posting to it.  We should do something similar.
       this.$store.dispatch('compose/setGroup', newValue)
-      this.group = newValue
     }
   }
 }

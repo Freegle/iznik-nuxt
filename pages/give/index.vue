@@ -40,7 +40,20 @@
           </b-col>
         </b-row>
         <transition name="fade">
-          <b-row v-if="postcode" class="mt-1">
+          <div v-if="extgroup">
+            <notice-message variant="info" class="mt-1">
+              This community is on a separate site. You can proceed or choose a different community using the dropdown
+              above.
+            </notice-message>
+            <b-row class="mt-1">
+              <b-col class="text-center mt-4" cols="6" offset="3">
+                <b-btn variant="success" size="lg" block :href="extgroup">
+                  Proceed <v-icon name="angle-double-right" />
+                </b-btn>
+              </b-col>
+            </b-row>
+          </div>
+          <b-row v-else-if="postcode" class="mt-1">
             <b-col class="text-center mt-4" cols="6" offset="3">
               <nuxt-link to="/give/whatisit" class="decornone">
                 <b-btn variant="success" size="lg" block>
@@ -63,7 +76,7 @@ select {
 </style>
 
 <script>
-// TODO EH Norfolk and redirection to another site?
+import NoticeMessage from '../../components/NoticeMessage'
 import loginOptional from '@/mixins/loginOptional.js'
 const Postcode = () => import('~/components/Postcode')
 const ComposeGroup = () => import('~/components/ComposeGroup')
@@ -72,6 +85,7 @@ const WizardProgress = () => import('~/components/WizardProgress')
 export default {
   options: () => {},
   components: {
+    NoticeMessage,
     Postcode,
     ComposeGroup,
     WizardProgress
@@ -83,6 +97,19 @@ export default {
       id: null,
       postcode: null,
       source: process.env.API + '/locations?typeahead='
+    }
+  },
+  computed: {
+    extgroup() {
+      if (
+        this.postcode &&
+        this.postcode.groupsnear &&
+        this.postcode.groupsnear[0].external
+      ) {
+        return this.postcode.groupsnear[0].external
+      }
+
+      return null
     }
   },
   async asyncData({ app, params, store }) {},
@@ -104,13 +131,15 @@ export default {
           }
         }
 
+        let group
+
         if (!found) {
-          this.group = pc.groupsnear[0].id
+          group = parseInt(pc.groupsnear[0].id)
         } else {
-          this.group = groupid
+          group = groupid
         }
 
-        this.$store.dispatch('compose/setGroup', this.group)
+        this.$store.dispatch('compose/setGroup', group)
       }
     },
     postcodeClear() {

@@ -18,7 +18,7 @@
         </div>
       </b-card-body>
     </b-card>
-    <VolunteerOpportunityModal ref="volunteermodal" :volunteering="{}" :start-edit="true" />
+    <VolunteerOpportunityModal ref="volunteermodal" :start-edit="true" />
   </div>
 </template>
 <script>

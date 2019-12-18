@@ -246,6 +246,14 @@
       <AboutMeModal ref="modal" />
       <div class="navbar-toggle" style="display: none" />
     </client-only>
+    <div id="serverloader" class="centered">
+      <b-img src="~/static/loader.gif" />
+      <p>
+        <b>Just a tick...</b>
+        <br>
+        <a href="mailto:support@ilovefreegle.org" style="color: grey; font-size: 12px">Stuck here?</a>
+      </p>
+    </div>
   </div>
 </template>
 
@@ -396,8 +404,14 @@ svg.fa-icon {
   left: 25px;
   font-size: 110%;
 }
-</style>
 
+.centered {
+  text-align: center;
+  position: fixed; /* or absolute */
+  top: 50%;
+  left: 50%;
+}
+</style>
 <script>
 // TODO DESIGN Notification dropdown window isn't wide enough before it's loaded.
 // Import login modal as I've seen an issue where it's not in $refs when you click on the signin button too rapidly.
@@ -497,6 +511,13 @@ export default {
   },
 
   async mounted() {
+    if (document) {
+      // We added a basic loader into the HTML.  This helps if we are loaded on an old browser where our JS bombs
+      // out - at least we display something, with a link to support.  But now we're up and running, remove that.
+      const l = document.getElementById('serverloader')
+      l.style.display = 'none'
+    }
+
     // Clear old notifications because they're probably out of date now.
     await this.$store.dispatch('notifications/clear')
 

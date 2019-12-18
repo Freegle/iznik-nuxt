@@ -348,7 +348,7 @@ export default {
             })
           }
 
-          // TODO EH If the group approves membership, then we will not actually be a member at this point, and might not
+          // TODO EH MINOR If the group approves membership, then we will not actually be a member at this point, and might not
           // become one if we are rejected.  Probably in that case we shouldn't be allowed to reply to this message, but
           // we will.  I think this is the same behaviour as in the old version, but that needs testing and consideration
           // of how to handle.
