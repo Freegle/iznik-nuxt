@@ -17,6 +17,13 @@
         @focus="handleFocus"
       >
 
+      <b-input-group-append>
+        <b-button variant="white" class="transbord">
+          // TODO DESIGN MINOR The shadow on the input field that you get when you're focused ought really to include
+          // this append.
+          <v-icon name="sync" :class="'text-success fa-spin ' + (ajaxInProgress ? 'visible': 'invisible')" />
+        </b-button>
+      </b-input-group-append>
       <b-input-group-append v-if="searchbutton">
         <b-button variant="success" size="lg" @click="search">
           <v-icon name="search" />&nbsp;Search
@@ -54,6 +61,12 @@
 
 <style scoped lang="scss">
 @import 'color-vars';
+
+.transbord {
+  // TODO DESIGN MINOR This colour is copied from bootstrap $input-border-color and should be done better.  Sorry Jason.
+  border-color: #ced4da;
+  border-left: none;
+}
 
 /* iteminp class is passed into this component in a prop */
 .iteminp ul {
@@ -274,7 +287,7 @@ export default {
       type: String,
       required: false,
       default: ""
-    }
+    },
   },
 
   data() {
