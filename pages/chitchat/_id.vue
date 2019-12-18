@@ -14,20 +14,14 @@
               </nuxt-link>
             </h4>
             <div class="d-flex justify-content-between">
-              <nuxt-link to="/give" class="post__button">
-                <!-- TODO Design These should not be buttons contained within anchors -->
-                <b-btn id="givebutton" ref="givebutton" variant="success" class="w-100">
-                  <v-icon name="gift" class="mr-1" />
-                  Give stuff
-                </b-btn>
-              </nuxt-link>
-              <nuxt-link to="/find" class="post__button">
-                <!-- TODO These should not be buttons contained within anchors -->
-                <b-btn id="findbutton" ref="findbutton" variant="primary" class="w-100">
-                  <v-icon name="search" class="mr-1" />
-                  Find stuff
-                </b-btn>
-              </nuxt-link>
+              <b-btn id="givebutton" ref="givebutton" to="/give" variant="success" class="post__button">
+                <v-icon name="gift" class="mr-1" />
+                Give stuff
+              </b-btn>
+              <b-btn id="findbutton" ref="findbutton" to="/find" variant="primary" class="post__button">
+                <v-icon name="search" class="mr-1" />
+                Find stuff
+              </b-btn>
             </div>
           </b-card-text>
           <b-tooltip :show.sync="showToolGive" target="givebutton" placement="bottom" triggers="">
