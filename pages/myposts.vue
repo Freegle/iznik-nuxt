@@ -188,7 +188,7 @@
         </b-card>
       </b-col>
       <b-col cols="0" lg="3" class="d-none d-lg-block">
-        <sidebar-right show-volunteer-opportunities show-job-opportunities />
+        <sidebar-right show-volunteer-opportunities />
       </b-col>
     </b-row>
     <AvailabilityModal v-if="me" ref="availabilitymodal" :thisuid="me.id" />
