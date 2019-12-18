@@ -126,15 +126,22 @@
                   label-for="password"
                   label-class="mb-0"
                 >
-                  <b-form-input
-                    id="password"
-                    ref="password"
-                    v-model="password"
-                    name="password"
-                    type="password"
-                    class="mb-2"
-                    autocomplete="current-password"
-                  />
+                  <b-input-group class="mb-2">
+                    <b-form-input
+                      id="password"
+                      ref="password"
+                      v-model="password"
+                      name="password"
+                      :type="showPassword ? 'input' : 'password'"
+                      autocomplete="current-password"
+                    />
+                    <b-input-group-append>
+                      <!-- TODO DESIGN MINOR The shadow on the input field that you get when you're focused ought really to include this append.-->
+                      <b-button variant="white" class="transbord" title="Show/hide password" @click="togglePassword">
+                        <v-icon name="eye" class="text-secondary" />
+                      </b-button>
+                    </b-input-group-append>
+                  </b-input-group>
                 </b-form-group>
               </b-col>
             </b-row>
@@ -186,10 +193,8 @@
 </template>
 
 <script>
-// TODO Eye icon to show password for mobile
 // TODO DESIGN Need vertical line or some other way to indicate that the form on the right is an alternative to
 // the buttons.
-// TODO DESIGN MINOR Would be nice to have "Sign up" buttons for social sign in.
 import Vue from 'vue'
 import { LoginError } from '../api/BaseAPI'
 const NoticeMessage = () => import('~/components/NoticeMessage')
@@ -209,7 +214,8 @@ export default {
       pleaseShowModal: false,
       showSignUp: false,
       forceSignIn: false,
-      loginError: null
+      loginError: null,
+      showPassword: false
     }
   },
 
@@ -503,6 +509,10 @@ export default {
       this.forceSignIn = true
       e.preventDefault()
       e.stopPropagation()
+    },
+
+    togglePassword() {
+      this.showPassword = !this.showPassword
     }
   }
 }
@@ -552,5 +562,12 @@ $color-yahoo: #6b0094;
 .social-button--yahoo {
   border: 2px solid $color-yahoo;
   background-color: $color-yahoo;
+}
+
+.transbord {
+  // TODO DESIGN MINOR This colour is copied from bootstrap $input-border-color and should be done better.  Sorry Jason.
+  // See also Autocomplete.
+  border-color: #ced4da;
+  border-left: none;
 }
 </style>

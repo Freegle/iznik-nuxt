@@ -19,8 +19,7 @@
 
       <b-input-group-append>
         <b-button variant="white" class="transbord">
-          <!--          TODO DESIGN MINOR The shadow on the input field that you get when you're focused ought really to include-->
-          <!--          this append.-->
+          <!-- TODO DESIGN MINOR The shadow on the input field that you get when you're focused ought really to include this append.-->
           <v-icon name="sync" :class="'text-success fa-spin ' + (ajaxInProgress ? 'visible': 'invisible')" />
         </b-button>
       </b-input-group-append>
@@ -64,6 +63,7 @@
 
 .transbord {
   // TODO DESIGN MINOR This colour is copied from bootstrap $input-border-color and should be done better.  Sorry Jason.
+  // See also LoginModal
   border-color: #ced4da;
   border-left: none;
 }
