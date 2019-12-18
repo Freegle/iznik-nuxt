@@ -48,11 +48,19 @@ export const getters = {
 
 export const actions = {
   async fetch({ commit }, params) {
-    const { authority, authorities } = await this.$api.authority.fetch(params)
-    commit('setList', params.id ? [authority] : authorities)
+    const { shortlink, shortlinks } = await this.$api.shortlinks.fetch(params)
+    if (params && params.id) {
+      commit('add', shortlink)
+    } else {
+      commit('setList', shortlinks)
+    }
   },
 
   clear({ commit }) {
     commit('clear')
+  },
+
+  add({ commit }, params) {
+    return this.$api.shortlinks.add(params)
   }
 }

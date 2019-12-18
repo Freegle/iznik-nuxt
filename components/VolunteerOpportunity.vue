@@ -5,7 +5,7 @@
         {{ volunteering.title }}
       </b-card-title>
       <b-card-body class="p-1 pt-0">
-        <div v-if="mine && !renewed">
+        <div v-if="mine && !renewed && !summary">
           <notice-message v-if="warning" variant="warning" class="mb-1">
             <span v-if="volunteering.expired">
               We've stopped showing this opportunity, but you can reactivate it.

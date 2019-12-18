@@ -1,10 +1,10 @@
 <template>
   <div v-if="me">
     <b-row class="m-0">
-      <b-col cols="0" md="3" class="d-none d-md-block">
+      <b-col cols="0" lg="3" class="d-none d-lg-block">
         <SidebarLeft :show-community-events="true" :show-bot-left="true" />
       </b-col>
-      <b-col cols="12" md="6" class="newsfeedHolder p-0">
+      <b-col cols="12" lg="6" class="newsfeedHolder p-0">
         <b-card v-if="!id">
           <b-card-text>
             <b-row>
@@ -128,7 +128,7 @@
           </infinite-loading>
         </div>
       </b-col>
-      <b-col cols="0" md="3" class="d-none d-md-block">
+      <b-col cols="0" lg="3" class="d-none d-lg-block">
         <sidebar-right show-volunteer-opportunities show-job-opportunities />
       </b-col>
     </b-row>
@@ -174,7 +174,6 @@ export default {
 
   data: function() {
     return {
-      newsfeed: null,
       busy: false,
       startThread: null,
       scrollTo: null,
@@ -245,6 +244,9 @@ export default {
     users() {
       const users = this.$store.getters['newsfeed/users']
       return users
+    },
+    newsfeed() {
+      return this.$store.getters['newsfeed/newsfeed']
     }
   },
 
@@ -340,29 +342,25 @@ export default {
           const context = this.$store.getters['newsfeed/getContext']
 
           if (this.id) {
+            await this.$store.dispatch('newsfeed/clearFeed')
+
             // Just one - fetch it by id.
-            this.newsfeed = [
-              await this.$store.dispatch('newsfeed/fetch', {
-                id: this.id
-              })
-            ]
+            await this.$store.dispatch('newsfeed/fetch', {
+              id: this.id
+            })
 
             // But maybe this isn't the thread head.
             const fetched = this.$store.getters['newsfeed/get'](this.id)
             if (fetched.threadhead && this.id !== fetched.threadhead) {
-              this.newsfeed = []
-              this.newsfeed = [
-                await this.$store.dispatch('newsfeed/fetch', {
-                  id: fetched.threadhead
-                })
-              ]
+              await this.$store.dispatch('newsfeed/clearFeed')
+              await this.$store.dispatch('newsfeed/fetch', {
+                id: fetched.threadhead
+              })
             } else if (fetched.replyto && this.id !== fetched.replyto) {
-              this.newsfeed = []
-              this.newsfeed = [
-                await this.$store.dispatch('newsfeed/fetch', {
-                  id: fetched.replyto
-                })
-              ]
+              await this.$store.dispatch('newsfeed/clearFeed')
+              await this.$store.dispatch('newsfeed/fetch', {
+                id: fetched.replyto
+              })
             }
 
             this.scrollTo = this.id
@@ -375,8 +373,6 @@ export default {
               distance: this.selectedArea
             })
 
-            // One need this one entry.
-            this.newsfeed = this.$store.getters['newsfeed/newsfeed']
             if ($state.loaded) {
               $state.loaded()
             }
@@ -395,7 +391,6 @@ export default {
     areaChange: function() {
       this.infiniteId++
       this.$store.commit('newsfeed/clearFeed')
-      this.newsfeed = null
     },
     async postIt() {
       let msg = this.startThread
@@ -408,9 +403,6 @@ export default {
           message: msg,
           imageid: this.imageid
         })
-
-        // Show the new message
-        this.newsfeed = this.$store.getters['newsfeed/newsfeed']
 
         // Clear the textarea now it's sent.
         this.startThread = null

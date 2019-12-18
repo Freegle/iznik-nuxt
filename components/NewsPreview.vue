@@ -3,8 +3,8 @@
     <b-card-body class="p-1">
       <b-media>
         <template v-if="preview.image" slot="aside">
-          <b-img v-if="size === 'md'" lazy :src="preview.image" class="previewimage" />
-          <b-img v-if="size === 'sm'" lazy :src="preview.image" class="previewimagesm" />
+          <b-img-lazy v-if="size === 'md'" lazy :src="preview.image" class="previewimage" @error.native="brokenImage" />
+          <b-img-lazy v-if="size === 'sm'" lazy :src="preview.image" class="previewimagesm" @error.native="brokenImage" />
         </template>
         <b-media-body class="align-top">
           <h3 v-if="preview.title && size === 'md'">
@@ -43,6 +43,9 @@ export default {
   methods: {
     open() {
       window.open(this.preview.url)
+    },
+    brokenImage(event) {
+      event.target.src = '/placeholder.jpg'
     }
   }
 }

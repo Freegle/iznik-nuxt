@@ -50,7 +50,10 @@ This is getting close to Beta.
 * We've tested on Chrome only, and very few mobiles/tablets.
 
 There are some specific pages that still need doing:
-* /shortlinks/id
 * Plugins - are they still used?
 * /mydata
 * /councils
+
+<img src="http://www.browserstack.com/images/layout/browserstack-logo-600x315.png" width="280"/>
+
+[BrowserStack](http://www.browserstack.com) is supporting Freegle, allowing us to use their service and infrastructure to test the code in this repository. Thank you for supporting the open source community!

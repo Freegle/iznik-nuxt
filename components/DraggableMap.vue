@@ -3,8 +3,10 @@
     <b-row class="m-0">
       <b-col ref="mapcont" class="p-0">
         <client-only>
-          <b-button variant="primary" size="lg" class="mb-2">
-            <v-icon title="Find my location" name="map-marker-alt" />
+          <b-button variant="primary" size="lg" class="mb-2" title="Find my location" @click="findLoc">
+            <v-icon v-if="locating" name="sync" class="fa-spin" />
+            <v-icon v-else-if="locationFailed" name="exclamation-triangle" />
+            <v-icon v-else name="map-marker-alt" />
             <span class="d-none d-sm-inline">&nbsp;Find my location</span>
           </b-button>
           <GmapMap
@@ -40,7 +42,6 @@
 <style scoped>
 </style>
 <script>
-// TODO EH Make find location button work - and in Postcode.vue.
 // TODO DESIGN Make a bigger and more visible icon.
 import { gmapApi } from 'vue2-google-maps'
 
@@ -57,7 +58,9 @@ export default {
     return {
       zoom: 5,
       bounds: null,
-      center: null
+      center: null,
+      locating: false,
+      locationFailed: false
     }
   },
   computed: {
@@ -100,6 +103,31 @@ export default {
     },
     getCenter() {
       return this.center
+    },
+    findLoc() {
+      try {
+        if (
+          navigator &&
+          navigator.geolocation &&
+          navigator.geolocation.getCurrentPosition
+        ) {
+          this.locating = true
+          navigator.geolocation.getCurrentPosition(position => {
+            this.center = new this.google.maps.LatLng(
+              position.coords.latitude,
+              position.coords.longitude
+            )
+          })
+        } else {
+          console.log('Navigation not supported.  ')
+          this.locationFailed = true
+        }
+      } catch (e) {
+        console.error('Find location failed with', e)
+        this.locationFailed = true
+      }
+
+      this.locating = false
     }
   }
 }

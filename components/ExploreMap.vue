@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-row class="text-center m-0">
-      <b-col cols="12" md="6" offset-md="3">
+      <b-col cols="12" lg="6" offset-lg="3">
         <div v-if="region">
           <h1>Freegle communities in {{ region }}</h1>
         </div>
@@ -14,7 +14,7 @@
       </b-col>
     </b-row>
     <b-row v-if="!region" class="m-0">
-      <b-col cols="12" md="2" offset-md="5">
+      <b-col cols="12" lg="2" offset-lg="5">
         <client-only>
           <vue-google-autocomplete
             v-if="google"
@@ -30,7 +30,7 @@
       </b-col>
     </b-row>
     <b-row v-if="!region && regions.length" class="m-0">
-      <b-col cols="12" md="6" offset-md="3" class="mt-2">
+      <b-col cols="12" lg="6" offset-lg="3" class="mt-2">
         <h5 class="text-center">
           Or choose a region:
         </h5>
@@ -44,7 +44,7 @@
       </b-col>
     </b-row>
     <b-row class="m-0">
-      <b-col ref="mapcont" cols="12" md="6" offset-md="3" class="mt-4">
+      <b-col ref="mapcont" cols="12" lg="6" offset-lg="3" class="mt-4">
         <client-only>
           <GmapMap
             ref="gmap"
@@ -64,15 +64,15 @@
             @zoom_changed="zoomChanged"
             @bounds_changed="boundsChanged"
           >
-            <div v-for="g in groupsInBounds" :key="'marker-' + g.id + '-' + groupsInBounds.length">
-              <GroupMarker v-if="g.onmap" :group="g" :size="groupsInBounds.length < 20 ? 'rich' : 'poor'" />
+            <div v-for="g in groupsInBounds" :key="'marker-' + g.id + '-' + zoom">
+              <GroupMarker v-if="g.onmap" :group="g" :size="largeMarkers ? 'rich' : 'poor'" />
             </div>
           </GmapMap>
         </client-only>
       </b-col>
     </b-row>
     <b-row class="m-0">
-      <b-col v-if="groupsInBounds.length" cols="12" md="6" offset-md="3" class="mt-4">
+      <b-col v-if="groupsInBounds.length" cols="12" lg="6" offset-lg="3" class="mt-4">
         <b-card header-bg-variant="success" header-text-variant="white" header="Here's a list of communities:">
           <b-card-body style="height: 500px; overflow-y: scroll" class="p-0">
             <p>This list will change as you zoom or move around the map.</p>
@@ -166,6 +166,10 @@ export default {
   },
   computed: {
     google: gmapApi,
+    largeMarkers() {
+      // Show small markers unless we are zoomed in to a small number of groups.
+      return this.groupsInBounds.length < 20 && this.zoom > 10
+    },
     groupCount() {
       return this.groups ? Object.keys(this.groups).length : 0
     },
@@ -198,7 +202,13 @@ export default {
         }
       }
 
-      return ret
+      const sorted = ret.sort((a, b) => {
+        return a.namedisplay
+          .toLowerCase()
+          .localeCompare(b.namedisplay.toLowerCase())
+      })
+
+      return sorted
     },
     groupsInList() {
       return this.groupsInBounds.slice(0, this.showList)

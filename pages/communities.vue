@@ -1,16 +1,15 @@
 <template>
   <b-col>
     <b-row class="m-0">
-      <b-col cols="0" md="3" class="d-none d-md-block">
+      <b-col cols="0" lg="3" class="d-none d-lg-block">
         <SidebarLeft :show-community-events="true" :show-bot-left="true" />
       </b-col>
-      <b-col cols="12" md="6" class="p-0">
+      <b-col cols="12" lg="6" class="p-0">
         <JobsTopBar />
         <div>
-          <div class="d-flex mt-2 mb-3 selection__wrapper">
+          <div class="d-flex mt-2 mb-3 selection__wrapper justify-content-between">
             <GroupRememberSelect v-model="groupid" remember="mygroups" class="m-3" all />
-            <b-form-select v-model="selectedType" class="m-3" value="All" :options="typeOptions" @change="typeChange" />
-            <!--            TODO DESIGN Grow the group select if there's room, shrink the type select to fit contents.-->
+            <b-form-select v-model="selectedType" class="m-3 typeSelect" value="All" :options="typeOptions" @change="typeChange" />
           </div>
           <groupHeader v-if="group" :key="'groupheader-' + groupid" :group="group" :show-join="true" />
           <div v-for="message in messages" :key="'messagelist-' + message.id" class="p-0">
@@ -26,7 +25,7 @@
           </infinite-loading>
         </div>
       </b-col>
-      <b-col cols="0" md="3" class="d-none d-md-block">
+      <b-col cols="0" lg="3" class="d-none d-lg-block">
         <sidebar-right show-volunteer-opportunities show-job-opportunities />
       </b-col>
     </b-row>
@@ -40,6 +39,10 @@
   background-color: $color-blue--x-light;
   border: 1px solid $color-blue-x-light2;
   border-radius: 3px;
+}
+
+.typeSelect {
+  max-width: 33%;
 }
 </style>
 

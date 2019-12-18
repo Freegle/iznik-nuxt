@@ -43,7 +43,7 @@ export default {
             map: map,
             draggable: false,
             flat: true,
-            anchor: RichMarker.RichMarkerPosition.TOP_LEFT,
+            anchor: RichMarker.RichMarkerPosition.MIDDLE,
             content: this.$refs.flyaway,
             // id: marker.id,
             // title: marker.name

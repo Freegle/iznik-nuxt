@@ -1,5 +1,5 @@
 <template>
-  <div v-if="me">
+  <div v-if="me && me.settings">
     <b-row class="m-0">
       <b-col cols="0" md="3" />
       <b-col cols="12" md="6" class="p-0">
@@ -626,6 +626,7 @@ export default {
         force: true
       })
 
+      // TODO MINOR This use of getters is wrong; me should be a computed property.
       const me = this.$store.getters['auth/user']
       this.me = me
     },

@@ -26,12 +26,21 @@
     </b-row>
     <b-row>
       <b-col cols="12" lg="6" class="text-center">
-        <p v-if="showSignUp">
+        <p v-if="signUp">
           <b>Using one of these buttons is the easiest way to create an account:</b>
         </p>
-        <b-img alt="Facebook login" :class="'loginbutton clickme ' + (facebookDisabled ? ' signindisabled' : '')" src="~/static/signinbuttons/facebook.png" @click="loginFacebook" />
-        <b-img alt="Google login" :class="'mb-1 loginbutton clickme ' + (googleDisabled ? ' signindisabled' : '')" src="~/static/signinbuttons/google.png" @click="loginGoogle" />
-        <b-img alt="Yahoo login" :class="'loginbutton clickme ' + (yahooDisabled ? ' signindisabled' : '')" src="~/static/signinbuttons/yahoo.png" @click="loginYahoo" />
+        <button class="social-button social-button--facebook" :disabled="facebookDisabled" @click="loginFacebook">
+          <b-img src="~/static/signinbuttons/facebook-logo.png" class="social-button__image" />
+          <span class="p-2 font-weight-bold">Continue with Facebook</span>
+        </button>
+        <button class="social-button social-button--google" :disabled="googleDisabled" @click="loginGoogle">
+          <b-img src="~/static/signinbuttons/google-logo.svg" class="social-button__image" />
+          <span class="p-2 font-weight-bold">Continue with Google</span>
+        </button>
+        <button class="social-button social-button--yahoo" :disabled="yahooDisabled" @click="loginYahoo">
+          <b-img src="~/static/signinbuttons/yahoo-logo.svg" class="social-button__image" />
+          <span class="p-2 font-weight-bold">Continue with Yahoo</span>
+        </button>
         <notice-message v-if="socialblocked" variant="warning">
           Social sign in blocked - check your privacy settings
         </notice-message>
@@ -52,61 +61,81 @@
       <b-col cols="12" lg="6" class="mt-0">
         <b-form ref="form" action="/" autocomplete="on" method="post" @submit="loginNative">
           <div>
-            <b-row v-if="showSignUp">
+            <b-row v-if="signUp">
               <b-col>
-                <b-form-input
-                  id="firstname"
-                  ref="firstname"
-                  v-model="firstname"
-                  name="firstname"
-                  placeholder="Your first name"
-                  alt="First name"
-                  class="mb-3"
-                  autocomplete="given-name"
-                />
+                <b-form-group
+                  id="firstnameGroup"
+                  label="Your first name"
+                  label-for="firstname"
+                  label-class="mb-0"
+                >
+                  <b-form-input
+                    id="firstname"
+                    ref="firstname"
+                    v-model="firstname"
+                    name="firstname"
+                    class="mb-3"
+                    autocomplete="given-name"
+                  />
+                </b-form-group>
               </b-col>
             </b-row>
-            <b-row v-if="showSignUp">
+            <b-row v-if="signUp">
               <b-col>
-                <b-form-input
-                  id="lastname"
-                  ref="lastname"
-                  v-model="lastname"
-                  name="lastname"
-                  placeholder="Your last name"
-                  alt="Last name"
-                  class="mb-3"
-                  autocomplete="family-name"
-                />
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col>
-                <b-form-input
-                  id="email"
-                  ref="email"
-                  v-model="email"
-                  name="email"
-                  placeholder="Your email address"
-                  alt="Email address"
-                  class="mb-3"
-                  autocomplete="username email"
-                />
+                <b-form-group
+                  id="lastnameGroup"
+                  label="Your last name"
+                  label-for="lastname"
+                  label-class="mb-0"
+                >
+                  <b-form-input
+                    id="lastname"
+                    ref="lastname"
+                    v-model="lastname"
+                    name="lastname"
+                    class="mb-3"
+                    autocomplete="family-name"
+                  />
+                </b-form-group>
               </b-col>
             </b-row>
             <b-row>
               <b-col>
-                <b-form-input
-                  id="password"
-                  ref="password"
-                  v-model="password"
-                  name="password"
-                  type="password"
-                  placeholder="Your password"
-                  alt="Password"
-                  class="mb-2"
-                  autocomplete="current-password"
-                />
+                <b-form-group
+                  id="emailGroup"
+                  label="Your email address"
+                  label-for="email"
+                  label-class="mb-0"
+                >
+                  <b-form-input
+                    id="email"
+                    ref="email"
+                    v-model="email"
+                    name="email"
+                    class="mb-3"
+                    autocomplete="username email"
+                  />
+                </b-form-group>
+              </b-col>
+            </b-row>
+            <b-row>
+              <b-col>
+                <b-form-group
+                  id="passwordGroup"
+                  label="Your password"
+                  label-for="password"
+                  label-class="mb-0"
+                >
+                  <b-form-input
+                    id="password"
+                    ref="password"
+                    v-model="password"
+                    name="password"
+                    type="password"
+                    class="mb-2"
+                    autocomplete="current-password"
+                  />
+                </b-form-group>
               </b-col>
             </b-row>
             <b-row>
@@ -120,7 +149,7 @@
                   type="submit"
                   value="login"
                 >
-                  <span v-if="!showSignUp">
+                  <span v-if="!signUp">
                     Sign in to Freegle
                   </span>
                   <span v-else>
@@ -129,14 +158,14 @@
                 </b-btn>
               </b-col>
             </b-row>
-            <b-row v-if="!showSignUp">
+            <b-row v-if="!signUp">
               <b-col class="text-center">
                 <nuxt-link to="/forgot">
                   I forgot my password
                 </nuxt-link>
               </b-col>
             </b-row>
-            <b-row v-if="!showSignUp">
+            <b-row v-if="!signUp">
               <b-col class="text-center">
                 New freegler? <a href="#" @click="clickShowSignUp">Sign Up</a>
               </b-col>
@@ -156,35 +185,17 @@
   </b-modal>
 </template>
 
-<style scoped lang="scss">
-@import 'color-vars';
-
-.loginbutton {
-  width: 303px;
-}
-
-.login__splitter {
-  border-top: 1px solid $color-red;
-}
-
-.signindisabled {
-  opacity: 0.2;
-}
-</style>
-
 <script>
 // TODO Eye icon to show password for mobile
 // TODO DESIGN Need vertical line or some other way to indicate that the form on the right is an alternative to
 // the buttons.
-// TODO DESIGN Spacing and alignment of the buttons is a bit off.
 // TODO DESIGN MINOR Would be nice to have "Sign up" buttons for social sign in.
-// TODO DESIGN Google's terms require the square icon, which is annoyingly inconsistent with the others.  Are we
-// allowed to have square other ones?  If so, please make such images.
 import Vue from 'vue'
 import { LoginError } from '../api/BaseAPI'
 const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
+  name: 'LoginModal',
   components: {
     NoticeMessage
   },
@@ -197,6 +208,7 @@ export default {
       password: null,
       pleaseShowModal: false,
       showSignUp: false,
+      forceSignIn: false,
       loginError: null
     }
   },
@@ -210,13 +222,11 @@ export default {
     // Use of this.bump means we will recompute when we need to, i.e. when the modal is shown.  This is overriding
     // normal reactivity but that's because the SDKs we use aren't written in Vue.
     facebookDisabled() {
-      const ret = this.bump && typeof Vue.FB === 'undefined'
-      return ret
+      return this.bump && typeof Vue.FB === 'undefined'
     },
 
     googleDisabled() {
-      const ret = this.bump && (!window || !window.gapi || !window.gapi.client)
-      return ret
+      return this.bump && (!window || !window.gapi || !window.gapi.client)
     },
 
     yahooDisabled() {
@@ -249,7 +259,11 @@ export default {
     },
 
     signUp() {
-      return !this.loggedInEver() || this.showSignUp
+      if (this.forceSignIn) {
+        return false
+      } else {
+        return !this.loggedInEver || this.showSignUp
+      }
     }
   },
 
@@ -271,7 +285,7 @@ export default {
       e.preventDefault()
       e.stopPropagation()
 
-      if (this.showSignUp) {
+      if (this.signUp) {
         this.$store
           .dispatch('auth/signup', {
             firstname: this.firstname,
@@ -345,7 +359,6 @@ export default {
     },
     async loginFacebook() {
       this.loginError = null
-      // TODO EH Do we still have the Chrome on IOS problem?
       try {
         let response = null
         const promise = new Promise(function(resolve) {
@@ -451,12 +464,16 @@ export default {
               '/api',
               ''
             )
-            const re = new RegExp(apihost, 'g')
-            url = url.replace(
-              re,
-              window.location.hostname +
-                (window.location.port ? ':' + window.location.port : '')
-            )
+
+            if (apihost) {
+              const re = new RegExp(apihost, 'g')
+              url = url.replace(
+                re,
+                window.location.hostname +
+                  (window.location.port ? ':' + window.location.port : '')
+              )
+            }
+
             console.log('Redirect to Yahoo', url)
             window.location = url
           } else if (ret.ret === 0) {
@@ -476,15 +493,64 @@ export default {
 
     clickShowSignUp(e) {
       this.showSignUp = true
+      this.forceSignIn = false
       e.preventDefault()
       e.stopPropagation()
     },
 
     clickShowSignIn(e) {
       this.showSignUp = false
+      this.forceSignIn = true
       e.preventDefault()
       e.stopPropagation()
     }
   }
 }
 </script>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
+$color-facebook: #4267b2;
+$color-google: #4285f4;
+$color-yahoo: #6b0094;
+
+.login__splitter {
+  border-top: 1px solid $color-red;
+}
+
+.social-button {
+  display: flex;
+  width: 250px;
+  border-radius: 3px;
+  align-items: center;
+  padding: 0;
+  margin-bottom: 20px;
+  color: $color-white;
+}
+
+.social-button:disabled {
+  opacity: 0.2;
+}
+
+.social-button__image {
+  width: 46px;
+  height: 46px;
+  background-color: $color-white;
+}
+
+.social-button--facebook {
+  border: 2px solid $color-facebook;
+  background-color: $color-facebook;
+}
+
+.social-button--google {
+  border: 2px solid $color-google;
+  background-color: $color-google;
+}
+
+.social-button--yahoo {
+  border: 2px solid $color-yahoo;
+  background-color: $color-yahoo;
+}
+</style>

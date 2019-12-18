@@ -1,6 +1,6 @@
 <template>
   <b-modal
-    id="profilemodal"
+    :id="'eventmodal-' + event.id"
     v-model="showModal"
     size="lg"
     no-stacking
@@ -96,7 +96,7 @@
           Posted by {{ event.user.displayname }} <span class="text-faded">(#{{ event.user.id }})</span>
         </p>
       </div>
-      <div v-else ref="form">
+      <validating-form v-else>
         <b-row>
           <b-col cols="12" md="6">
             <b-form-group
@@ -281,7 +281,7 @@
         <NoticeMessage v-else variant="warning" class="mt-2">
           <v-icon name="info-circle" />&nbsp;This community has chosen not to allow Community Events.
         </NoticeMessage>
-      </div>
+      </validating-form>
     </template>
     <template slot="modal-footer" slot-scope="{ ok, cancel }">
       <div v-if="event.canmodify" class="w-100">
@@ -312,31 +312,10 @@
 
 <style scoped lang="scss">
 @import 'color-vars';
-@import '~bootstrap/scss/functions';
-@import '~bootstrap/scss/variables';
 
 .field {
   font-weight: bold;
   color: $color-green--darker;
-}
-
-// TODO move (most of?) these ::v-deep ones into global style
-//   - they are general form styles, not specific to CommunityEventModal
-
-::v-deep label,
-::v-deep .col-form-label {
-  font-weight: bold;
-  color: $color-green--darker;
-  margin-top: 10px;
-}
-
-::v-deep .is-invalid label,
-::v-deep .is-invalid .col-form-label {
-  color: $form-feedback-invalid-color;
-}
-
-::v-deep .form-group.is-invalid .invalid-feedback {
-  display: block;
 }
 
 .topleft {
@@ -370,6 +349,7 @@ import cloneDeep from 'lodash.clonedeep'
 import { validationMixin } from 'vuelidate'
 import validationHelpers from '@/mixins/validationHelpers'
 import twem from '~/assets/js/twem'
+import ValidatingForm from '@/components/ValidatingForm'
 import ValidatingFormInput from '@/components/ValidatingFormInput'
 import ValidatingTextarea from '@/components/ValidatingTextarea'
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
@@ -408,6 +388,7 @@ function initialData() {
 
 export default {
   components: {
+    ValidatingForm,
     ValidatingFormInput,
     ValidatingTextarea,
     GroupRememberSelect,

@@ -2,6 +2,9 @@
   <client-only>
     <span class="d-inline">
       <span v-if="user">
+        <span v-if="showName">
+          {{ user.displayname }}
+        </span>
         <b-btn
           v-b-tooltip.hover.top
           :size="size"
@@ -52,6 +55,11 @@ export default {
       type: String,
       required: false,
       default: ''
+    },
+    showName: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {

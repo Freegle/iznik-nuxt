@@ -24,10 +24,6 @@
               <v-icon name="home" scale="2" /><br>
               My&nbsp;Posts
             </b-nav-item>
-            <b-nav-item id="menu-option-mygroups" class="text-center small p-0" to="/communities" @mousedown="maybeReload('/communities')">
-              <v-icon name="users" scale="2" /><br>
-              Communities
-            </b-nav-item>
             <b-nav-item id="menu-option-give" class="text-center small p-0" to="/give" @mousedown="maybeReload('/give')">
               <v-icon name="gift" scale="2" /><br>
               Give
@@ -35,6 +31,10 @@
             <b-nav-item id="menu-option-find" class="text-center small p-0" to="/find" @mousedown="maybeReload('/find')">
               <v-icon name="search" scale="2" /><br>
               Find
+            </b-nav-item>
+            <b-nav-item id="menu-option-mygroups" class="text-center small p-0" to="/communities" @mousedown="maybeReload('/communities')">
+              <v-icon name="users" scale="2" /><br>
+              Communities
             </b-nav-item>
             <b-nav-item id="menu-option-explore" class="text-center small p-0" to="/explore" @mousedown="maybeReload('/explore')">
               <v-icon name="map-marked-alt" scale="2" /><br>
@@ -119,7 +119,7 @@
         </b-navbar-nav>
       </b-navbar>
       <!-- Navbar for small screens -->
-      <b-navbar id="navbar_small" toggleable="xl" type="dark" class="ourBack d-flex justify-content-end d-xl-none" fixed="top">
+      <b-navbar id="navbar_small" toggleable="xl" type="dark" class="ourBack d-flex justify-content-end d-xl-none pr-0" fixed="top">
         <b-navbar-brand to="/" class="p-0 mr-auto">
           <b-img
             class="logo mr-2"
@@ -304,6 +304,10 @@ nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
 
 #nav_collapse_mobile a.nav-link {
   color: $color-white;
+}
+
+.pageContent {
+  padding-top: 68px;
 }
 
 *,
@@ -496,14 +500,14 @@ export default {
     // Clear old notifications because they're probably out of date now.
     await this.$store.dispatch('notifications/clear')
 
-    // Poll regularly for new ones.  Would be nice if this was event driven instead but requires server work.
-    this.notificationPoll = setTimeout(this.getNotificationCount, 30000)
-
     const me = this.$store.getters['auth/user']
 
     if (me && me.id) {
       console.log('Start NCHAN from mount')
       this.startNCHAN(me.id)
+
+      // Get notifications and poll regularly for new ones.  Would be nice if this was event driven instead but requires server work.
+      this.getNotificationCount()
     }
 
     // Look for a custom logo.
@@ -601,7 +605,12 @@ export default {
       })
     },
     async getNotificationCount() {
-      await this.$store.dispatch('notifications/count')
+      const me = this.$store.getters['auth/user']
+
+      if (me && me.id) {
+        await this.$store.dispatch('notifications/count')
+      }
+
       this.notificationPoll = setTimeout(this.getNotificationCount, 30000)
     },
 

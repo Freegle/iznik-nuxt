@@ -34,7 +34,7 @@
 </template>
 
 <script>
-// TODO Validation - name required, description not.
+// TODO NS Validation - name required, description not.
 import DraggableMap from './DraggableMap'
 const NoticeMessage = () => import('~/components/NoticeMessage')
 

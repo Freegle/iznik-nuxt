@@ -3,6 +3,7 @@
 // could simplify some of the issues that arise because the Vuex persisted store is loaded later rather than sooner.
 // There are definitely still some of these - I've seen the navbar show us logged in while the page contents show us
 // logged out.  Can we force the persisted store to be loaded earlier to knock this class of bugs on the head?
+
 import { LoginError } from '../api/BaseAPI'
 
 let first = true
@@ -80,17 +81,6 @@ export const getters = {
 
   user: state => {
     const ret = state.user
-
-    if (ret && !ret.settings.notifications) {
-      ret.settings.notifications = {
-        email: true,
-        emailmine: false,
-        push: true,
-        facebook: true,
-        app: true
-      }
-    }
-
     return ret
   },
 
@@ -183,7 +173,7 @@ export const actions = {
       dispatch('fetchUser')
     } else {
       // Sign up failed.
-      // TODO Display some kind of error.
+      // TODO Display some kind of error.  May now work but needs testing.
       console.error('Login failed', res)
       throw new Error('Login failed')
     }
