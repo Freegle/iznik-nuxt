@@ -1,7 +1,7 @@
 const pkg = require('./package')
 const FACEBOOK_APPID = '134980666550322'
 
-// TODO In the old code we look for and record the src parameter as a way of recording where traffic comes from.
+// TODO EH In the old code we look for and record the src parameter as a way of recording where traffic comes from.
 // How shall we do that now?
 
 require('dotenv').config()
