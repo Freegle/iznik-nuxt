@@ -7,12 +7,18 @@
       <b-col cols="12" lg="6" class="newsfeedHolder p-0">
         <b-card v-if="!id">
           <b-card-text>
-            <h4 class="text-center mb-3">
-              Looking for your own posts?  Click
+            <h5 class="text-center mb-3">
+              Looking for your posts?  Click
               <nuxt-link to="/myposts">
                 here
               </nuxt-link>
-            </h4>
+            </h5>
+            <h5 class="text-center mb-3">
+              Browse OFFERs/WANTEDs
+              <nuxt-link to="/communities">
+                here
+              </nuxt-link>
+            </h5>
             <div class="d-flex justify-content-between">
               <b-btn id="givebutton" ref="givebutton" to="/give" variant="success" class="post__button">
                 <v-icon name="gift" class="mr-1" />
