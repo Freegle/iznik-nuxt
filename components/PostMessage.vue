@@ -2,8 +2,7 @@
   <div>
     <b-row class="pr-0 mb-2">
       <b-col cols="auto" class="mt-2 pl-0">
-        <!--        TODO EH Apparently you used to be able to add by dragging and dropping onto this button-->
-        <b-btn variant="success" size="lg" @click="photoAdd">
+        <b-btn variant="success" size="lg" @click="photoAdd" @drop.prevent="drop" @dragover.prevent>
           <v-icon name="camera" />&nbsp;Add photos
         </b-btn>
       </b-col>
@@ -16,9 +15,11 @@
     <b-row v-if="uploading" class="bg-white">
       <b-col class="p-0">
         <OurFilePond
+          ref="filepond"
           imgtype="Message"
           imgflag="message"
           :identify="true"
+          :browse="pondBrowse"
           @photoProcessed="photoProcessed"
         />
       </b-col>
@@ -100,7 +101,8 @@ export default {
       uploading: false,
       myFiles: [],
       image: null,
-      suggestions: []
+      suggestions: [],
+      pondBrowse: true
     }
   },
   computed: {
@@ -197,6 +199,25 @@ export default {
     },
     chooseSuggestion(suggestion) {
       this.item = suggestion.name
+    },
+    drop(e) {
+      // Although it's probably not widely used (I didn't know it even worked) in the old code you could drag and drog
+      // a file onto the Add photos button.  So we should handle that too here.
+      const droppedFiles = e.dataTransfer.files
+
+      if (!droppedFiles) {
+        return
+      }
+
+      this.uploading = true
+      this.pondBrowse = false
+
+      // Give pond time to render.
+      setTimeout(() => {
+        ;[...droppedFiles].forEach(f => {
+          this.$refs.filepond.addFile(f)
+        })
+      }, 500)
     }
   }
 }

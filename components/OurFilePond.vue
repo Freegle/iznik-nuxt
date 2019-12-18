@@ -57,6 +57,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    browse: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
   data: function() {
@@ -71,9 +76,11 @@ export default {
   },
   methods: {
     photoInit: function() {
-      // We have rendered the filepond instance.  Trigger browse so that they can upload a photo without an
-      // extra click.
-      this.$refs.pond.browse()
+      if (this.browse) {
+        // We have rendered the filepond instance.  Trigger browse so that they can upload a photo without an
+        // extra click.
+        this.$refs.pond.browse()
+      }
     },
     async process(fieldName, file, metadata, load, error, progress, abort) {
       const data = new FormData()
@@ -137,6 +144,10 @@ export default {
           this.identified
         )
       }
+    },
+
+    addFile(f) {
+      this.$refs.pond.addFile(f)
     }
   }
 }
