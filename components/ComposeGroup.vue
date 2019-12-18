@@ -10,12 +10,10 @@ export default {
       default: null
     }
   },
-  data: function() {
-    return {
-      group: null
-    }
-  },
   computed: {
+    group() {
+      return this.$store.getters['compose/getGroup']
+    },
     postcode() {
       const pc = this.$store.getters['compose/getPostcode']
       return pc
@@ -56,14 +54,9 @@ export default {
       return ret
     }
   },
-  mounted() {
-    const stored = this.$store.getters['compose/getGroup']
-    this.group = stored
-  },
   methods: {
     change(newValue) {
       this.$store.dispatch('compose/setGroup', newValue)
-      this.group = newValue
     }
   }
 }
