@@ -47,7 +47,7 @@
         </p>
         <h2>Got questions?</h2>
         <p>
-          If you have questions, please <nuxt-link to="/contact">
+          If you have questions, please <nuxt-link to="/help">
             contact us.
           </nuxt-link>
         </p>

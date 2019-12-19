@@ -18,7 +18,7 @@
         </div>
       </b-card-body>
     </b-card>
-    <CommunityEventModal ref="eventmodal" :event="{}" :start-edit="true" />
+    <CommunityEventModal ref="eventmodal" :start-edit="true" />
   </div>
 </template>
 <script>

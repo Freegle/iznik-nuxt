@@ -17,7 +17,10 @@
         <transition name="fade">
           <b-row v-if="postcode">
             <b-col class="text-center">
-              <nuxt-link to="/give/whatisit">
+              <a v-if="extgroup" :href="extgroup">
+                <v-icon name="check-circle" class="text-success mt-2 fa-bh" scale="5" />
+              </a>
+              <nuxt-link v-else to="/find/whatisit">
                 <v-icon name="check-circle" class="text-success mt-2 fa-bh" scale="5" />
               </nuxt-link>
             </b-col>
@@ -39,7 +42,20 @@
           </b-col>
         </b-row>
         <transition name="fade">
-          <b-row v-if="postcode" class="mt-1">
+          <div v-if="extgroup">
+            <notice-message variant="info" class="mt-1">
+              This community is on a separate site. You can proceed or choose a different community using the dropdown
+              above.
+            </notice-message>
+            <b-row class="mt-1">
+              <b-col class="text-center mt-4" cols="6" offset="3">
+                <b-btn variant="success" size="lg" block :href="extgroup">
+                  Proceed <v-icon name="angle-double-right" />
+                </b-btn>
+              </b-col>
+            </b-row>
+          </div>
+          <b-row v-else-if="postcode" class="mt-1">
             <b-col class="text-center mt-4" cols="6" offset="3">
               <nuxt-link to="/find/search" class="decornone">
                 <b-btn variant="success" size="lg" block>
@@ -60,13 +76,14 @@ select {
 }
 </style>
 <script>
-// TODO EH Norfolk and redirection to another site?
+import NoticeMessage from '../../components/NoticeMessage'
 import loginOptional from '@/mixins/loginOptional.js'
 const Postcode = () => import('~/components/Postcode')
 const ComposeGroup = () => import('~/components/ComposeGroup')
 
 export default {
   components: {
+    NoticeMessage,
     Postcode,
     ComposeGroup
   },
@@ -79,7 +96,19 @@ export default {
       group: null
     }
   },
-  computed: {},
+  computed: {
+    extgroup() {
+      if (
+        this.postcode &&
+        this.postcode.groupsnear &&
+        this.postcode.groupsnear[0].external
+      ) {
+        return this.postcode.groupsnear[0].external
+      }
+
+      return null
+    }
+  },
   async asyncData({ app, params, store }) {},
   methods: {
     getLocation() {},
@@ -99,13 +128,15 @@ export default {
           }
         }
 
+        let group
+
         if (!found) {
-          this.group = pc.groupsnear[0].id
+          group = pc.groupsnear[0].id
         } else {
-          this.group = groupid
+          group = groupid
         }
 
-        this.$store.dispatch('compose/setGroup', this.group)
+        this.$store.dispatch('compose/setGroup', group)
       }
     },
     postcodeClear() {

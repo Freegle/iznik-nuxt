@@ -17,9 +17,8 @@
   </div>
 </template>
 <script>
-// TODO Would be nice to allow multiple in some cases, e.g. message post.
+// TODO EH Would be nice to allow multiple in some cases, e.g. message post.
 // TODO DESIGN We should probably hide the drop area - we only use this when triggered from a button.
-// TODO This needs careful testing for exim rotation stuff and resizing, to make sure it's doing what we think.
 import 'filepond/dist/filepond.min.css'
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
 import vueFilePond from 'vue-filepond'
@@ -57,6 +56,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    browse: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
   data: function() {
@@ -71,9 +75,11 @@ export default {
   },
   methods: {
     photoInit: function() {
-      // We have rendered the filepond instance.  Trigger browse so that they can upload a photo without an
-      // extra click.
-      this.$refs.pond.browse()
+      if (this.browse) {
+        // We have rendered the filepond instance.  Trigger browse so that they can upload a photo without an
+        // extra click.
+        this.$refs.pond.browse()
+      }
     },
     async process(fieldName, file, metadata, load, error, progress, abort) {
       const data = new FormData()
@@ -137,6 +143,10 @@ export default {
           this.identified
         )
       }
+    },
+
+    addFile(f) {
+      this.$refs.pond.addFile(f)
     }
   }
 }

@@ -35,7 +35,7 @@
           </nuxt-link>
         </span>
         <div v-if="eSnippet && eSnippet !== 'null' && !expanded">
-          <h4 class="snippet">
+          <b class="snippet black">
             <Highlighter
               v-if="matchedon"
               :search-words="[matchedon.word]"
@@ -44,12 +44,12 @@
             />
             <span v-else>{{ eSnippet }}</span>
             ...
-          </h4>
+          </b>
         </div>
         <div v-if="!eSnippet || eSnippet === 'null' && !expanded">
           <i>There's no description.</i>
         </div>
-        <b-button v-if="!expanded" variant="white" @click="expand">
+        <b-button v-if="!expanded" variant="white" class="mt-1" @click="expand">
           Read more and reply <v-icon name="angle-double-right" />
         </b-button>
       </b-card-header>
@@ -348,7 +348,7 @@ export default {
             })
           }
 
-          // TODO EH If the group approves membership, then we will not actually be a member at this point, and might not
+          // TODO EH MINOR If the group approves membership, then we will not actually be a member at this point, and might not
           // become one if we are rejected.  Probably in that case we shouldn't be allowed to reply to this message, but
           // we will.  I think this is the same behaviour as in the old version, but that needs testing and consideration
           // of how to handle.

@@ -110,7 +110,7 @@
 <script>
 const StoriesLanding = () => import('~/components/StoriesLanding.vue')
 const MainFooter = () => import('~/components/MainFooter.vue')
-// TODO That thing where you prompt people on mobile to install the app.
+// TODO MINOR That thing where you prompt people on mobile to install the app.
 
 export default {
   components: {

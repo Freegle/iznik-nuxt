@@ -27,6 +27,9 @@ export default () => {
       })
       return true
     }
-    return originalErrorHandler(err, vm, info, ...rest)
+
+    if (originalErrorHandler) {
+      return originalErrorHandler(err, vm, info, ...rest)
+    }
   }
 }

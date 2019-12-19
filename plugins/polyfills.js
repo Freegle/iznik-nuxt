@@ -1,0 +1,7 @@
+// This will mean we always use the polyfill, which isn't ideal.
+// See https://stackoverflow.com/questions/52452501/how-to-add-a-polyfill-to-nuxt-2-0 for background.
+import 'core-js/es/set'
+import 'core-js/es/promise'
+import 'core-js/es/array/find'
+import 'core-js/es/array/find-index'
+import 'core-js/es/array/includes'

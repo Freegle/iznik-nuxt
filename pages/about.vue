@@ -111,7 +111,7 @@
                   <h2>Get Involved!</h2>
                   <p>We're always looking for more volunteers - for local communities, graphics, publicity, improving the website...there's lots to do.</p>
                   <p>
-                    If you'd like to get involved, <nuxt-link to="/contact">
+                    If you'd like to get involved, <nuxt-link to="/help">
                       contact your local community.
                     </nuxt-link>
                   </p>
@@ -180,11 +180,12 @@
                   </ul>
                   <p>
                     Each Freegle local group is run independently and is affiliated to Freegle Ltd, which provides central
-                    services (such as this website) to these groups and their volunteers. Freegle Ltd is an Industrial and Provident Society for Community
-                    Benefit.  Freegle Ltd is owned and governed by its members.  Local and national volunteers are eligible for membership.
+                    services (such as this website) to these groups and their volunteers. Freegle Ltd is a Registered Society
+                    (previously known as an Industrial and Provident Society for Community Benefit).
+                    Freegle Ltd is owned and governed by its members.  Local and national volunteers are eligible for membership.
                   </p>
                   <p>
-                    Charities of this type are slightly unusual in that they do not register with the Charity Commission (see <a href="https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/586603/Industrial_and_provident_societies.pdf" target="_blank" rel="noopener">here</a>).
+                    Charities of this type are slightly unusual in that they do not register with the Charity Commission (see <a href="https://www.gov.uk/government/publications/exempt-charities-cc23/exempt-charities" target="_blank" rel="noopener">here</a>).
                     Instead they register with the Financial Conduct Authority (our registration number is <a href="https://mutuals.fca.org.uk/Search/Society/9593" target="_blank" rel="noopener">32410R</a>)
                     and also register with HMRC as charitable (our reference is XT32865).  So we're legally a charity, but of a slightly
                     different type than you might be used to.
@@ -203,7 +204,7 @@
               <b-card-body>
                 <b-card-text>
                   <p>
-                    If you have questions, please <nuxt-link to="/contact">
+                    If you have questions, please <nuxt-link to="/help">
                       contact us.
                     </nuxt-link>
                   </p>
