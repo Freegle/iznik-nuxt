@@ -88,11 +88,12 @@ $bootstrap-lg: 1200px;
   color: $color-green--dark;
   text-decoration: none;
   padding: 10px 30px;
-}
 
-.button--green:hover {
-  color: $color-white;
-  background-color: $color-green--dark;
+  &:hover,
+  &:focus {
+    color: $color-white;
+    background-color: $color-green--dark;
+  }
 }
 
 .button--grey {
@@ -103,11 +104,12 @@ $bootstrap-lg: 1200px;
   text-decoration: none;
   padding: 10px 30px;
   margin-left: 15px;
-}
 
-.button--grey:hover {
-  color: $color-white;
-  background-color: $color-blue--dark;
+  &:hover,
+  &:focus {
+    color: $color-white;
+    background-color: $color-blue--dark;
+  }
 }
 
 .text-success {
@@ -242,9 +244,11 @@ button {
     font-size: 100px;
 }
 
-.decornone,
-.decornone:hover{
+.decornone {
+  &:hover,
+  &:focus {
     text-decoration: none;
+  }
 }
 
 /* TODO DESIGN I tried adding "appear" transitions, e.g. for elements in chitchat, or messages.  But they then don't
