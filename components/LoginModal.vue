@@ -117,9 +117,12 @@
               />
               <b-input-group-append>
                 <!-- TODO DESIGN MINOR The shadow on the input field that you get when you're focused ought really to include this append.-->
-                <!-- TODO DESIGN The eye icon should change to have a line through it when it has been pressed -->
-                <b-button variant="white" class="transbord" title="Show/hide password" @click="togglePassword">
-                  <v-icon name="eye" class="text-secondary" />
+                <b-button variant="white" class="transbord" title="Show password" @click="togglePassword">
+                  <v-icon v-if="showPassword" title="Hide password" class="text-secondary" flip="horizontal" @click="togglePassword">
+                    <v-icon name="eye" />
+                    <v-icon name="slash" />
+                  </v-icon>
+                  <v-icon v-else name="eye" class="text-secondary" />
                 </b-button>
               </b-input-group-append>
             </b-input-group>
