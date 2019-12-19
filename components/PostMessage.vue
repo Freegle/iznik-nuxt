@@ -20,7 +20,9 @@
           imgflag="message"
           :identify="true"
           :browse="pondBrowse"
+          :multiple="true"
           @photoProcessed="photoProcessed"
+          @allProcessed="allProcessed"
         />
       </b-col>
     </b-row>
@@ -36,7 +38,7 @@
     </b-row>
     <b-row v-if="suggestions.length">
       <b-col>
-        <b-card bg-variant="info">
+        <b-card v-if="attachments.length" bg-variant="info" class="mb-1">
           <p>Based on your photo, here's what we think it might be.  Click to choose.</p>
           <b-btn v-for="suggestion in suggestions" :key="suggestion.id" variant="white" class="mr-1" @click="chooseSuggestion(suggestion)">
             {{ suggestion.name }}
@@ -100,7 +102,6 @@ export default {
     return {
       uploading: false,
       myFiles: [],
-      image: null,
       suggestions: [],
       pondBrowse: true
     }
@@ -157,9 +158,7 @@ export default {
     },
     photoProcessed(imageid, imagethumb, image, ocr, suggestions) {
       // We have uploaded a photo.  Remove the filepond instance.
-      this.uploading = false
-
-      this.image = {
+      const att = {
         id: imageid,
         paththumb: imagethumb,
         path: image
@@ -169,8 +168,11 @@ export default {
 
       this.$store.dispatch('compose/addAttachment', {
         id: this.id,
-        attachment: this.image
+        attachment: att
       })
+    },
+    allProcessed() {
+      this.uploading = false
     },
     removePhoto(id) {
       this.$store.dispatch('compose/removeAttachment', {
@@ -196,6 +198,7 @@ export default {
     },
     itemClear() {
       this.item = null
+      this.uploading = false
     },
     chooseSuggestion(suggestion) {
       this.item = suggestion.name
@@ -209,7 +212,7 @@ export default {
         return
       }
 
-      this.uploading = true
+      this.uploading = droppedFiles.length
       this.pondBrowse = false
 
       // Give pond time to render.

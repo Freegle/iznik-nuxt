@@ -13,11 +13,11 @@
       :server="{ process, revert, restore, load, fetch }"
       @init="photoInit"
       @processfile="processed"
+      @processfiles="allProcessed"
     />
   </div>
 </template>
 <script>
-// TODO EH Would be nice to allow multiple in some cases, e.g. message post.
 // TODO DESIGN We should probably hide the drop area - we only use this when triggered from a button.
 import 'filepond/dist/filepond.min.css'
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
@@ -61,6 +61,11 @@ export default {
       type: Boolean,
       required: false,
       default: true
+    },
+    multiple: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
@@ -147,6 +152,11 @@ export default {
 
     addFile(f) {
       this.$refs.pond.addFile(f)
+    },
+
+    allProcessed() {
+      console.log('Our all proc')
+      this.$emit('allProcessed')
     }
   }
 }
