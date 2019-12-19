@@ -24,18 +24,18 @@
         <p v-if="signUp">
           <b>Using one of these buttons is the easiest way to create an account:</b>
         </p>
-        <button class="social-button social-button--facebook" :disabled="facebookDisabled" @click="loginFacebook">
+        <b-btn class="social-button social-button--facebook" :disabled="facebookDisabled" @click="loginFacebook">
           <b-img src="~/static/signinbuttons/facebook-logo.png" class="social-button__image" />
           <span class="p-2 social-button__text font-weight-bold">Continue with Facebook</span>
-        </button>
-        <button class="social-button social-button--google" :disabled="googleDisabled" @click="loginGoogle">
+        </b-btn>
+        <b-btn class="social-button social-button--google" :disabled="googleDisabled" @click="loginGoogle">
           <b-img src="~/static/signinbuttons/google-logo.svg" class="social-button__image" />
           <span class="p-2 social-button__text font-weight-bold">Continue with Google</span>
-        </button>
-        <button class="social-button social-button--yahoo" :disabled="yahooDisabled" @click="loginYahoo">
+        </b-btn>
+        <b-btn class="social-button social-button--yahoo" :disabled="yahooDisabled" @click="loginYahoo">
           <b-img src="~/static/signinbuttons/yahoo-logo.svg" class="social-button__image" />
           <span class="p-2 social-button__text font-weight-bold">Continue with Yahoo</span>
-        </button>
+        </b-btn>
         <notice-message v-if="socialblocked" variant="warning">
           Social sign in blocked - check your privacy settings
         </notice-message>
@@ -117,6 +117,7 @@
               />
               <b-input-group-append>
                 <!-- TODO DESIGN MINOR The shadow on the input field that you get when you're focused ought really to include this append.-->
+                <!-- TODO DESIGN The eye icon should change to have a line through it when it has been pressed -->
                 <b-button variant="white" class="transbord" title="Show/hide password" @click="togglePassword">
                   <v-icon name="eye" class="text-secondary" />
                 </b-button>
