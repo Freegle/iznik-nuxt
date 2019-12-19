@@ -102,7 +102,6 @@
 <script>
 import dayjs from 'dayjs'
 
-// TODO Don't ask again function.
 // TODO DESIGN We display in slots; these don't work for everyone, but no slots will, and most people won't want to
 // fill out lots of detail.  If we could work out a good UX, we would allow something which allowed the user to
 // expand to fill out more detail (hours, 15 minute segments) if they wanted.  We'd need to also update the chat

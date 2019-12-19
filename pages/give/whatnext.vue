@@ -24,14 +24,38 @@
           </p>
         </b-col>
       </b-row>
-      <b-row>
+      <b-row class="text-center d-block d-md-none">
         <b-col cols="0" md="3" />
-        <b-col cols="12" md="6" class="mt-2">
+        <b-col cols="12" md="3" class="mt-2">
+          <nuxt-link to="/give/whatisit">
+            <b-btn size="lg" variant="info">
+              <v-icon name="gift" />&nbsp;Give something else
+            </b-btn>
+          </nuxt-link>
+        </b-col>
+        <b-col cols="12" md="3" class="mt-2">
+          <b-btn variant="white" size="lg" @click="availability">
+            <v-icon name="calendar-alt" /> Edit Availability
+          </b-btn>
+        </b-col>
+        <b-col cols="12" md="3" class="mt-2">
+          <nuxt-link to="/find/search">
+            <b-btn size="lg" variant="primary">
+              <v-icon name="search" />&nbsp;Find something
+            </b-btn>
+          </nuxt-link>
+        </b-col>
+      </b-row>
+      <b-row class="text-center d-none d-md-block">
+        <b-col cols="12" md="6" offset-md="3" class="mt-2">
           <nuxt-link to="/give/whatisit" class="float-left">
             <b-btn size="lg" variant="info">
               <v-icon name="gift" />&nbsp;Give something else
             </b-btn>
           </nuxt-link>
+          <b-btn variant="white" size="lg" @click="availability">
+            <v-icon name="calendar-alt" /> Edit Availability
+          </b-btn>
           <nuxt-link to="/find/search" class="float-right">
             <b-btn size="lg" variant="primary">
               <v-icon name="search" />&nbsp;Find something
@@ -40,9 +64,11 @@
         </b-col>
       </b-row>
       <b-row>
-        <b-col class="text-center mt-2">
+        <b-col cols="0" md="3" />
+        <b-col cols="12" md="6" class="text-center mt-4">
           <nuxt-link to="/">
-            <b-btn variant="white">
+            <!-- TODO DESIGN MINOR This button is centred correctly w.r.t. the availability one above.  See also find/whatnext. -->
+            <b-btn variant="white" size="lg">
               Continue to Home Page <v-icon name="angle-double-right" />
             </b-btn>
           </nuxt-link>
@@ -56,6 +82,7 @@
         </b-tooltip>
       </div>
     </div>
+    <AvailabilityModal v-if="me" ref="availabilitymodal" :thisuid="me.id" />
   </div>
 </template>
 
@@ -75,12 +102,14 @@
 </style>
 
 <script>
+import AvailabilityModal from '../../components/AvailabilityModal'
 import loginOptional from '@/mixins/loginOptional.js'
 const GroupHeader = () => import('~/components/GroupHeader.vue')
 const NewUser = () => import('~/components/NewUser.vue')
 
 export default {
   components: {
+    AvailabilityModal,
     GroupHeader,
     NewUser
   },
@@ -93,6 +122,9 @@ export default {
     }
   },
   computed: {
+    me() {
+      return this.$store.getters['auth/user']
+    },
     group() {
       const groupid = this.$store.getters['compose/getGroup']
       const group = this.$store.getters['group/get'](groupid)
@@ -105,6 +137,10 @@ export default {
     this.newuser = this.$route.params.newuser
     this.newpassword = this.$route.params.newpassword
   },
-  methods: {}
+  methods: {
+    availability() {
+      this.$refs.availabilitymodal.show()
+    }
+  }
 }
 </script>
