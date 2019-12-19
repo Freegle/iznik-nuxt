@@ -50,7 +50,7 @@ export default {
         components: ['me', 'groups', 'aboutme']
       })
       const me = this.$store.getters['auth/user']
-      this.text = me.aboutme.text ? me.aboutme.text : null
+      this.text = me.aboutme && me.aboutme.text ? me.aboutme.text : null
       this.showModal = true
     },
     hide() {
