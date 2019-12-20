@@ -13,6 +13,7 @@
 // TODO Handle invalid id.  Ditto in Volunteer Ops.
 // TODO Handle deleted events, which return an error of 3 on the fetch.  Ditto volunteer ops.
 import loginOptional from '@/mixins/loginOptional.js'
+import buildHead from '@/mixins/buildHead.js'
 
 const CommunityEvent = () => import('~/components/CommunityEvent.vue')
 
@@ -20,7 +21,7 @@ export default {
   components: {
     CommunityEvent
   },
-  mixins: [loginOptional],
+  mixins: [loginOptional, buildHead],
   computed: {
     event() {
       return this.$store.getters['communityevents/get'](this.$route.params.id)
@@ -32,51 +33,11 @@ export default {
     })
   },
   head() {
-    const meta = [
-      {
-        hid: 'description',
-        name: 'description',
-        content: this.event.description
-      },
-      { hid: 'og:title', property: 'og:title', content: this.event.title },
-      {
-        hid: 'og:description',
-        property: 'og:description',
-        content: this.event.description
-      },
-
-      {
-        hid: 'twitter:title',
-        name: 'twitter:title',
-        content: this.event.title
-      },
-      {
-        hid: 'twitter:description',
-        name: 'twitter:description',
-        content: this.event.description
-      }
-    ]
-
-    const image = this.event.photo
-      ? this.event.photo.path
-      : process.env.USER_SITE + '/icon.png'
-
-    meta.push({
-      hid: 'og:image',
-      property: 'og:image',
-      content: image
-    })
-
-    meta.push({
-      hid: 'twitter:image',
-      property: 'twitter:image',
-      content: image
-    })
-
-    return {
-      title: this.event.title,
-      meta: meta
-    }
+    return this.buildHead(
+      this.event.title,
+      this.event.description,
+      this.event.photo ? this.event.photo.path : null
+    )
   }
 }
 </script>
