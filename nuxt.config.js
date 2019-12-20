@@ -322,6 +322,8 @@ if (process.env.NUXT_BUILD_TYPE === 'fdapp') {
 
   config.build.optimization.minimize = false
 
+  config.plugins.push({ src: '~plugins/initapp.js', ssr: false })
+
   // https://stackoverflow.com/questions/57822378/disable-service-workers-or-workbox-in-nuxtjs-app
   config.modules = config.modules.filter((module) => module !== '@nuxtjs/pwa')
 }
