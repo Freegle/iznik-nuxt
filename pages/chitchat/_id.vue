@@ -1,5 +1,5 @@
 <template>
-  <div v-if="me">
+  <b-container v-if="me" fluid>
     <b-row class="m-0">
       <b-col cols="0" lg="3" class="d-none d-lg-block">
         <SidebarLeft :show-community-events="true" :show-bot-left="true" />
@@ -128,7 +128,7 @@
         <sidebar-right show-volunteer-opportunities show-job-opportunities />
       </b-col>
     </b-row>
-  </div>
+  </b-container>
 </template>
 
 <script>
