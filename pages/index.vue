@@ -19,18 +19,14 @@
         </h5>
         <b-row class="mt-4">
           <b-col class="half-pad-col-right" cols="6" md="5">
-            <nuxt-link to="/give">
-              <b-btn block variant="success" class="float-left" size="lg">
-                <v-icon name="gift" />&nbsp;Give Stuff
-              </b-btn>
-            </nuxt-link>
+            <b-btn block variant="success" class="float-left" size="lg" to="/give">
+              <v-icon name="gift" />&nbsp;Give Stuff
+            </b-btn>
           </b-col>
           <b-col class="half-pad-col-left" offset="0" offset-md="2" cols="6" md="5">
-            <nuxt-link to="/find">
-              <b-btn block variant="primary" class="float-right" size="lg">
-                <v-icon name="search" />&nbsp;Find Stuff
-              </b-btn>
-            </nuxt-link>
+            <b-btn block variant="primary" class="float-right" size="lg" to="/find">
+              <v-icon name="search" />&nbsp;Find Stuff
+            </b-btn>
           </b-col>
         </b-row>
         <b-row class="mt-4">
@@ -55,36 +51,36 @@
       <b-col cols="0" lg="3">
         <b-row class="d-none d-lg-block">
           <b-col>
-            <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" class="float-right mt-2" alt="Android app" target="_blank">
+            <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" class="float-right mt-2" target="_blank">
               <img alt="Freegle Android app on Google Play" title="Freegle Android app on Google Play" class="img-responsive" src="/en-play-badge.png">
             </a>
           </b-col>
         </b-row>
         <b-row class="d-none d-lg-block">
           <b-col>
-            <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&amp;mt=8" class="float-right mt-2" alt="iOS app" target="_blank">
+            <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&amp;mt=8" class="float-right mt-2" target="_blank">
               <img alt="Freegle app for iPhone, iPad, and iPod touch" title="Freegle app for iPhone, iPad, and iPod Touch" class="img-responsive" src="/app-store-black-sm.png">
             </a>
           </b-col>
         </b-row>
         <b-row class="d-none d-sm-block d-lg-none">
           <b-col>
-            <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" class="float-left" alt="Android app" target="_blank">
+            <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" class="float-left" target="_blank">
               <img alt="Freegle Android app on Google Play" title="Freegle Android app on Google Play" class="img-responsive" src="/en-play-badge.png">
             </a>
-            <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&amp;mt=8" class="float-right" alt="iOS app" target="_blank">
+            <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&amp;mt=8" class="float-right" target="_blank">
               <img alt="Freegle app for iPhone, iPad, and iPod touch" title="Freegle app for iPhone, iPad, and iPod Touch" class="img-responsive" src="/app-store-black-sm.png">
             </a>
           </b-col>
         </b-row>
         <b-row class="d-block d-sm-none">
           <b-col cols="12">
-            <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" alt="Android app" target="_blank">
+            <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" target="_blank">
               <img alt="Freegle Android app on Google Play" title="Freegle Android app on Google Play" class="img-responsive" src="/en-play-badge.png">
             </a>
           </b-col>
           <b-col cols="12">
-            <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&amp;mt=8" alt="iOS app" target="_blank">
+            <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&amp;mt=8" target="_blank">
               <img alt="Freegle app for iPhone, iPad, and iPod touch" title="Freegle app for iPhone, iPad, and iPod Touch" class="img-responsive" src="/app-store-black-sm.png">
             </a>
           </b-col>

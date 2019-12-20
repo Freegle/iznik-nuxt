@@ -45,11 +45,7 @@ export default {
       window.open(this.preview.url)
     },
     brokenImage(event) {
-      if (process.env.IS_APP) {
-        event.target.src = require('~/static/placeholder.jpg')
-      } else {
-        event.target.src = '/placeholder.jpg'
-      }
+      event.target.src = require('~/static/placeholder.jpg')
     }
   }
 }

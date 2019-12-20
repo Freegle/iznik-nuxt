@@ -6,6 +6,7 @@
 </template>
 <script>
 import loginOptional from '@/mixins/loginOptional.js'
+import buildHead from '@/mixins/buildHead.js'
 const ExploreGroup = () => import('~/components/ExploreGroup.vue')
 const ExploreMap = () => import('~/components/ExploreMap.vue')
 
@@ -14,7 +15,7 @@ export default {
     ExploreGroup,
     ExploreMap
   },
-  mixins: [loginOptional],
+  mixins: [loginOptional, buildHead],
   data: function() {
     return {
       id: null
@@ -40,9 +41,34 @@ export default {
         types: ['Offer', 'Wanted']
       })
     }
+
+    return {
+      asyncGroupId: params.id
+    }
   },
   created() {
     this.id = this.$route.params.id
+  },
+  head() {
+    let group
+
+    if (this.asyncGroupId) {
+      group = this.$store.getters['group/get'](this.asyncGroupId)
+    }
+
+    if (this.id) {
+      return this.buildHead(
+        'Explore ' + group.namedisplay,
+        group.tagline,
+        group.profile
+      )
+    } else {
+      return this.buildHead(
+        'Explore Freegle Groups',
+        "There are lots of lovely communities of freeglers across the UK. Shall we see what they're up to?",
+        null
+      )
+    }
   }
 }
 </script>

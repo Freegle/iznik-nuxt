@@ -50,3 +50,16 @@
     </b-row>
   </b-col>
 </template>
+<script>
+import buildHead from '@/mixins/buildHead.js'
+
+export default {
+  mixins: [buildHead],
+  head() {
+    return this.buildHead(
+      'Disclaimer',
+      'What you need to know when using Freegle.'
+    )
+  }
+}
+</script>

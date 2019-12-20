@@ -4,6 +4,7 @@
 // There are definitely still some of these - I've seen the navbar show us logged in while the page contents show us
 // logged out.  Can we force the persisted store to be loaded earlier to knock this class of bugs on the head?
 
+import Vue from 'vue'
 import { LoginError } from '../api/BaseAPI'
 
 let first = true
@@ -133,6 +134,8 @@ export const actions = {
     this.$axios.defaults.headers.common.Authorization = value
       ? 'Iznik ' + value.persistent
       : null
+
+    console.log('auth.setUser ',value.persistent)
   },
 
   async login({ commit, dispatch }, params) {
@@ -214,6 +217,22 @@ export const actions = {
       if (me) {
         commit('setUser', me, params.components)
         commit('forceLogin', false)
+
+        // Tell server our push notification id
+        const mobilePushId = Vue.prototype.$mobilePushId()
+        if (mobilePushId) {
+          const params = {
+            notifications: {
+              push: {
+                type: Vue.prototype.$isiOS() ? 'FCMIOS' : 'FCMAndroid',
+                subscription: mobilePushId
+              }
+            }
+          }
+          await this.$api.session.save(params)
+          console.log('auth.fetchUser mobilePushId saved')
+        }
+
       }
     }
   },

@@ -55,7 +55,11 @@ export default {
     }
   },
   computed: {
-    google: gmapApi
+    google: {
+      get() {
+        return process.browser ? gmapApi : []
+      }
+    }
   },
   beforeDestroy() {
     // We have to remove the marker from the map otherwise we get screen trozzle.

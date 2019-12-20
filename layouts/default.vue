@@ -1,18 +1,18 @@
 <template>
   <div>
-    <client-only>
-      <!-- Navbar for large screens -->
-      <b-navbar id="navbar_large" toggleable="xl" type="dark" class="ourBack d-none d-xl-flex" fixed="top">
-        <b-navbar-brand to="/" class="p-0">
-          <b-img
-            class="logo mr-2"
-            height="58"
-            width="58"
-            rounded
-            :src="logo"
-            alt="Home"
-          />
-        </b-navbar-brand>
+    <!-- Navbar for large screens-->
+    <b-navbar id="navbar_large" toggleable="xl" type="dark" class="ourBack d-none d-xl-flex" fixed="top">
+      <b-navbar-brand to="/" class="p-0">
+        <b-img
+          class="logo mr-2"
+          height="58"
+          width="58"
+          rounded
+          :src="logo"
+          alt="Home"
+        />
+      </b-navbar-brand>
+      <client-only>
         <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
         <b-collapse v-if="loggedIn" id="nav_collapse" ref="nav_collapse" is-nav>
           <b-navbar-nav>
@@ -37,7 +37,7 @@
               Communities
             </b-nav-item>
             <b-nav-item id="menu-option-explore" class="text-center small p-0" to="/explore" @mousedown="maybeReload('/explore')">
-              <v-icon name="map-marked-alt" scale="2" /><br>
+              <v-icon name="map-marker-alt" scale="2" /><br>
               Explore
             </b-nav-item>
             <b-nav-item id="menu-option-communityevents" class="text-center small p-0" to="/communityevents" @mousedown="maybeReload('/communityevents')">
@@ -110,27 +110,29 @@
             </b-nav-item>
           </b-navbar-nav>
         </b-collapse>
-        <b-navbar-nav class="ml-auto">
-          <b-nav-item>
-            <b-button v-if="!loggedIn" class="btn-white" @click="requestLogin">
-              Sign in
-            </b-button>
-          </b-nav-item>
-        </b-navbar-nav>
-      </b-navbar>
-      <!-- Navbar for small screens -->
-      <b-navbar id="navbar_small" toggleable="xl" type="dark" class="ourBack d-flex justify-content-end d-xl-none pr-0" fixed="top">
-        <b-navbar-brand to="/" class="p-0 mr-auto">
-          <b-img
-            class="logo mr-2"
-            height="58"
-            width="58"
-            rounded
-            :src="require(`@/static/icon.png`)"
-            alt="Home"
-          />
-        </b-navbar-brand>
+      </client-only>
+      <b-navbar-nav class="ml-auto">
+        <b-nav-item>
+          <div v-if="!loggedIn" class="btn btn-white" @click="requestLogin">
+            Sign in
+          </div>
+        </b-nav-item>
+      </b-navbar-nav>
+    </b-navbar>
+    <!-- Navbar for small screens -->
+    <b-navbar id="navbar_small" toggleable="xl" type="dark" class="ourBack d-flex justify-content-end d-xl-none pr-0" fixed="top">
+      <b-navbar-brand to="/" class="p-0 mr-auto">
+        <b-img
+          class="logo mr-2"
+          height="58"
+          width="58"
+          rounded
+          :src="require(`@/static/icon.png`)"
+          alt="Home"
+        />
+      </b-navbar-brand>
 
+      <client-only>
         <b-dropdown
           v-if="loggedIn"
           class="white text-center notiflist mr-2"
@@ -173,79 +175,81 @@
             </b-badge>
           </div>
         </nuxt-link>
+      </client-only>
 
-        <b-navbar-nav>
-          <b-nav-item v-if="!loggedIn">
-            <b-button class="btn-white" @click="requestLogin">
-              Sign in
-            </b-button>
+      <b-navbar-nav>
+        <b-nav-item v-if="!loggedIn">
+          <div class="btn btn-white" @click="requestLogin">
+            Sign in
+          </div>
+        </b-nav-item>
+      </b-navbar-nav>
+
+      <b-navbar-nav class="">
+        <b-navbar-toggle v-if="loggedIn" target="nav_collapse_mobile" />
+      </b-navbar-nav>
+
+      <b-collapse v-if="loggedIn" id="nav_collapse_mobile" ref="nav_collapse_mobile" class="w-100 ourBack">
+        <b-navbar-nav class="ml-auto flex-row flex-wrap small">
+          <b-nav-item class="text-center p-0 white" to="/chitchat" @mousedown="maybeReload('/chitchat')">
+            <v-icon name="coffee" scale="2" /><br>
+            ChitChat
+          </b-nav-item>
+          <b-nav-item class="text-center p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
+            <v-icon name="home" scale="2" /><br>
+            My&nbsp;Posts
+          </b-nav-item>
+          <b-nav-item class="text-center p-0" to="/give" @mousedown="maybeReload('/give')">
+            <v-icon name="gift" scale="2" /><br>
+            Give
+          </b-nav-item>
+          <b-nav-item class="text-center p-0" to="/find" @mousedown="maybeReload('/find')">
+            <v-icon name="search" scale="2" /><br>
+            Find
+          </b-nav-item>
+          <b-nav-item class="text-center p-0" to="/communities" @mousedown="maybeReload('/communities')">
+            <v-icon name="users" scale="2" /><br>
+            Communities
+          </b-nav-item>
+          <b-nav-item class="text-center p-0" to="/explore" @mousedown="maybeReload('/explore')">
+            <v-icon name="map-marker-alt" scale="2" /><br>
+            Explore
+          </b-nav-item>
+          <b-nav-item class="text-center p-0" to="/communityevents" @mousedown="maybeReload('/communityevetns')">
+            <v-icon name="calendar-alt" scale="2" /><br>
+            Events
+          </b-nav-item>
+          <b-nav-item class="text-center p-0" to="/volunteerings" @mousedown="maybeReload('/volunteerings')">
+            <v-icon name="hands-helping" scale="2" /><br>
+            Volunteer
+          </b-nav-item>
+          <b-nav-item class="text-center p-0" to="/spread" @mousedown="maybeReload('/spread')">
+            <v-icon name="bullhorn" scale="2" /><br>
+            Spread
+          </b-nav-item>
+          <b-nav-item class="text-center p-0" to="/help" @mousedown="maybeReload('/help')">
+            <v-icon name="question-circle" scale="2" /><br>
+            Help
+          </b-nav-item>
+          <b-nav-item class="text-center p-0" to="/settings" @mousedown="maybeReload('/settings')">
+            <v-icon name="cog" scale="2" /><br>
+            Settings
+          </b-nav-item>
+          <b-nav-item class="text-center p-0" @click="logOut()">
+            <v-icon name="sign-out-alt" scale="2" /><br>
+            Logout
           </b-nav-item>
         </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
 
-        <b-navbar-nav class="">
-          <b-navbar-toggle v-if="loggedIn" target="nav_collapse_mobile" />
-        </b-navbar-nav>
-
-        <b-collapse v-if="loggedIn" id="nav_collapse_mobile" ref="nav_collapse_mobile" class="w-100 ourBack">
-          <b-navbar-nav class="ml-auto flex-row flex-wrap small">
-            <b-nav-item class="text-center p-0 white" to="/chitchat" @mousedown="maybeReload('/chitchat')">
-              <v-icon name="coffee" scale="2" /><br>
-              ChitChat
-            </b-nav-item>
-            <b-nav-item class="text-center p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
-              <v-icon name="home" scale="2" /><br>
-              My&nbsp;Posts
-            </b-nav-item>
-            <b-nav-item class="text-center p-0" to="/give" @mousedown="maybeReload('/give')">
-              <v-icon name="gift" scale="2" /><br>
-              Give
-            </b-nav-item>
-            <b-nav-item class="text-center p-0" to="/find" @mousedown="maybeReload('/find')">
-              <v-icon name="search" scale="2" /><br>
-              Find
-            </b-nav-item>
-            <b-nav-item class="text-center p-0" to="/communities" @mousedown="maybeReload('/communities')">
-              <v-icon name="users" scale="2" /><br>
-              Communities
-            </b-nav-item>
-            <b-nav-item class="text-center p-0" to="/explore" @mousedown="maybeReload('/explore')">
-              <v-icon name="map-marked-alt" scale="2" /><br>
-              Explore
-            </b-nav-item>
-            <b-nav-item class="text-center p-0" to="/communityevents" @mousedown="maybeReload('/communityevetns')">
-              <v-icon name="calendar-alt" scale="2" /><br>
-              Events
-            </b-nav-item>
-            <b-nav-item class="text-center p-0" to="/volunteerings" @mousedown="maybeReload('/volunteerings')">
-              <v-icon name="hands-helping" scale="2" /><br>
-              Volunteer
-            </b-nav-item>
-            <b-nav-item class="text-center p-0" to="/spread" @mousedown="maybeReload('/spread')">
-              <v-icon name="bullhorn" scale="2" /><br>
-              Spread
-            </b-nav-item>
-            <b-nav-item class="text-center p-0" to="/help" @mousedown="maybeReload('/help')">
-              <v-icon name="question-circle" scale="2" /><br>
-              Help
-            </b-nav-item>
-            <b-nav-item class="text-center p-0" to="/settings" @mousedown="maybeReload('/settings')">
-              <v-icon name="cog" scale="2" /><br>
-              Settings
-            </b-nav-item>
-            <b-nav-item class="text-center p-0" @click="logOut()">
-              <v-icon name="sign-out-alt" scale="2" /><br>
-              Logout
-            </b-nav-item>
-          </b-navbar-nav>
-        </b-collapse>
-      </b-navbar>
-
-      <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent" />
+    <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent" />
+    <client-only>
       <ChatPopups v-if="loggedIn" />
       <LoginModal ref="loginModal" />
       <AboutMeModal ref="modal" />
-      <div class="navbar-toggle" style="display: none" />
     </client-only>
+    <div class="navbar-toggle" style="display: none" />
     <div id="serverloader" class="centered">
       <b-img src="~/static/loader.gif" />
       <p>
@@ -569,9 +573,9 @@ export default {
     startNCHAN(id) {
       this.nchan = new NchanSubscriber(
         process.env.CHAT_HOST + '/subscribe?id=' + id,
-        {
-          subscriber: ['websocket', 'eventsource', 'longpoll ']
-        },
+        //{
+        //  subscriber: ['websocket', 'eventsource', 'longpoll ']
+        //},
         {
           subscriber: 'longpoll'
         }

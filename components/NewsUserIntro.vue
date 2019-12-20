@@ -1,41 +1,39 @@
 <template>
-  <b-row>
-    <b-col v-if="userid && users[userid]" class="clickme" title="Click to see their profile" @click="showInfo">
-      <div class="media clickme">
-        <div class="media-left">
-          <div class="media-object">
-            <b-img-lazy
-              v-if="users[userid].profile.turl"
-              rounded="circle"
-              thumbnail
-              class="profile p-0 ml-1 mb-1 inline float-left"
-              alt="Profile picture"
-              title="Profile"
-              :src="users[userid].profile.turl"
-              @error.native="brokenImage"
-              @click="showInfo"
-            />
-            <v-icon v-if="users[userid].settings.showmod" name="leaf" class="showmod text-success" />
-          </div>
-        </div>
-        <div class="media-body ml-2">
-          <span class="text-success font-weight-bold">
-            {{ users[userid].displayname }}
-          </span>
-          {{ append }}
-          <span v-if="appendBold">
-            "{{ appendBold }}"
-          </span>
-          <br>
-          <span class="text-muted small pl-0">
-            {{ $dayjs(newsfeed.added).fromNow() }}
-          </span>
-          <NewsUserInfo :user="users[userid]" />
+  <div v-if="userid && users[userid]" class="clickme" title="Click to see their profile" @click="showInfo">
+    <div class="media clickme">
+      <div class="media-left">
+        <div class="media-object">
+          <b-img-lazy
+            v-if="users[userid].profile.turl"
+            rounded="circle"
+            thumbnail
+            class="profile p-0 ml-1 mb-1 inline float-left"
+            alt="Profile picture"
+            title="Profile"
+            :src="users[userid].profile.turl"
+            @error.native="brokenImage"
+            @click="showInfo"
+          />
+          <v-icon v-if="users[userid].settings.showmod" name="leaf" class="showmod text-success" />
         </div>
       </div>
-      <ProfileModal v-if="infoclick" :id="userid" ref="profilemodal" />
-    </b-col>
-  </b-row>
+      <div class="media-body ml-2">
+        <span class="text-success font-weight-bold">
+          {{ users[userid].displayname }}
+        </span>
+        {{ append }}
+        <span v-if="appendBold">
+          "{{ appendBold }}"
+        </span>
+        <br>
+        <span class="text-muted small pl-0">
+          {{ $dayjs(newsfeed.added).fromNow() }}
+        </span>
+        <NewsUserInfo :user="users[userid]" />
+      </div>
+    </div>
+    <ProfileModal v-if="infoclick" :id="userid" ref="profilemodal" />
+  </div>
 </template>
 <script>
 // Use import rather than async otherwise we have trouble with refs.

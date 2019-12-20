@@ -36,14 +36,72 @@ let config = {
   mode: 'universal',
 
   /*
-  ** Headers of the page
+  ** Headers.  Include default meta tags that will apply unless overridden by individual pages.  Every page that
+  * doesn't use loginRequired should consider overriding the following to something suitable:
+  *
+  * description
+  * og:image
+  * og:title
+  * og:description
+  * twitter:title
+  * twitter:description
+  * twitter:image
+  *
+  * All data for the SSR must be obtained in asyncData; it will then be used to render the page, and accessible
+  * via the store or returned values in head().  Note that if you try to get data in an async head() then it will
+  * silently fail and revert to the site default we set up here.
   */
   head: {
     title: 'Freegle',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: pkg.description }
+      { hid: 'author', name: 'author', content: 'Freegle' },
+      {
+        hid: 'description',
+        name: 'description',
+        content: 'Online dating for stuff'
+      },
+      {
+        hid: 'apple-mobile-web-app-title',
+        name: 'apple-mobile-web-app-title',
+        content: 'Online dating for stuff'
+      },
+
+      {
+        hid: 'og:image',
+        property: 'og:image',
+        content: USER_SITE + '/icon.png'
+      },
+      {
+        hid: 'og:video',
+        property: 'og:video',
+        content: 'https://www.youtube.com/embed/Gw_wpkbNQY8'
+      },
+      { hid: 'og:locale', property: 'og:locale', content: 'en_GB' },
+      { hid: 'og:title', property: 'og:title', content: 'Freegle' },
+      { hid: 'og:site_name', property: 'og:site_name', content: 'Freegle' },
+      {
+        hid: 'og:description',
+        property: 'og:description',
+        content: 'Online dating for stuff'
+      },
+      { hid: 'fb:app_id', property: 'og:site_name', content: FACEBOOK_APPID },
+
+      { hid: 'twitter:title', name: 'twitter:title', content: 'Freegle' },
+      { hid: 'twitter:description', name: 'twitter:description', content: 'Online dating for stuff' },
+      {
+        hid: 'twitter:image',
+        name: 'twitter:image',
+        content: USER_SITE + '/icon.png'
+      },
+      {
+        hid: 'twitter:image:alt',
+        name: 'twitter:image:alt',
+        content: 'The Freegle logo'
+      },
+      { hid: 'twitter:card', name: 'twitter:card', content: 'summary_large_image' },
+      { hid: 'twitter:site', name: 'twitter:site', content: 'thisisfreegle' }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
@@ -66,9 +124,6 @@ let config = {
 
     // Our template formatting utils.
     '~/plugins/filters',
-
-    // Naming components via HTML comments.
-    '~/mixins/componentNames',
 
     // Our directives
     '~/plugins/directives',
@@ -215,7 +270,7 @@ let config = {
   build: {
     // analyze: true,
 
-    transpile: [ /^vue2-google-maps($|\/)/ ],
+    transpile: [/^vue2-google-maps($|\/)/],
 
     extend(config, ctx) {
       config.devtool = ctx.isClient ? 'eval-source-map' : 'inline-source-map'
@@ -329,7 +384,7 @@ if (process.env.NUXT_BUILD_TYPE === 'fdapp') {
 
   config.build.optimization.minimize = false
 
-  config.plugins.push({ src: '~plugins/initapp.js', ssr: false })
+  config.plugins.push({ src: '~plugins/initapp.js', mode: 'client' })
 
   // https://stackoverflow.com/questions/57822378/disable-service-workers-or-workbox-in-nuxtjs-app
   config.modules = config.modules.filter((module) => module !== '@nuxtjs/pwa')

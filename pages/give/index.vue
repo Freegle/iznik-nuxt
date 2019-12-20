@@ -58,11 +58,9 @@
           </div>
           <b-row v-else-if="postcode" class="mt-1">
             <b-col class="text-center mt-4" cols="6" offset="3">
-              <nuxt-link to="/give/whatisit" class="decornone">
-                <b-btn variant="success" size="lg" block>
-                  Next <v-icon name="angle-double-right" />
-                </b-btn>
-              </nuxt-link>
+              <b-btn variant="success" size="lg" block to="/give/whatisit">
+                Next <v-icon name="angle-double-right" />
+              </b-btn>
             </b-col>
           </b-row>
         </transition>

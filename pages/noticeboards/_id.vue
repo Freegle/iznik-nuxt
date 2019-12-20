@@ -84,7 +84,11 @@ export default {
     }
   },
   computed: {
-    google: gmapApi,
+    google: {
+      get() {
+        return process.browser ? gmapApi : []
+      }
+    },
     noticeboards() {
       return this.$store.getters['noticeboards/list']
     },

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-card variant="white">
+    <b-card>
       <h3>Why Freegle?</h3>
       <p>Here's what freeglers have said recently:</p>
       <div v-for="story in sortedStories" :key="'story-' + story.id" class="">
