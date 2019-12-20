@@ -30,11 +30,11 @@ const DISABLE_ESLINT_AUTOFIX =
 const ESLINT_AUTOFIX = !DISABLE_ESLINT_AUTOFIX
 
 module.exports = {
-  mode: 'universal',
+  mode: 'spa',
 
   /*
   ** Headers.  Include default meta tags that will apply unless overridden by individual pages.  Every page that
-  * doesn't use loginRequired should override the following to something suitable:
+  * doesn't use loginRequired should consider overriding the following to something suitable:
   *
   * description
   * og:image
@@ -63,26 +63,26 @@ module.exports = {
 
       {
         hid: 'og:image',
-        name: 'og:image',
+        property: 'og:image',
         content: USER_SITE + '/icon.png'
       },
       {
         hid: 'og:video',
-        name: 'og:video',
+        property: 'og:video',
         content: 'https://www.youtube.com/embed/Gw_wpkbNQY8'
       },
-      { hid: 'og:locale', name: 'og:locale', content: 'en_GB' },
-      { hid: 'og:title', name: 'og:title', content: 'Freegle' },
-      { hid: 'og:site_name', name: 'og:site_name', content: 'Freegle' },
+      { hid: 'og:locale', property: 'og:locale', content: 'en_GB' },
+      { hid: 'og:title', property: 'og:title', content: 'Freegle' },
+      { hid: 'og:site_name', property: 'og:site_name', content: 'Freegle' },
       {
         hid: 'og:description',
-        name: 'og:description',
+        property: 'og:description',
         content: 'Online dating for stuff'
       },
-      { hid: 'fb:app_id', name: 'og:site_name', content: FACEBOOK_APPID },
+      { hid: 'fb:app_id', property: 'og:site_name', content: FACEBOOK_APPID },
 
       { hid: 'twitter:title', name: 'twitter:title', content: 'Freegle' },
-      { hid: 'twitter:description', name: 'twitter:description', content: 'Online dataing for stuff' },
+      { hid: 'twitter:description', name: 'twitter:description', content: 'Online dating for stuff' },
       {
         hid: 'twitter:image',
         name: 'twitter:image',

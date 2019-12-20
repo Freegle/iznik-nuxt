@@ -22,11 +22,9 @@
     <b-row class="text-center d-block d-md-none">
       <b-col cols="0" md="3" />
       <b-col cols="12" md="3" class="mt-2">
-        <nuxt-link to="/give/whatisit">
-          <b-btn size="lg" variant="info">
-            <v-icon name="gift" />&nbsp;Give something
-          </b-btn>
-        </nuxt-link>
+        <b-btn size="lg" variant="info" to="/give/whatisit">
+          <v-icon name="gift" />&nbsp;Give something
+        </b-btn>
       </b-col>
       <b-col cols="12" md="3" class="mt-2">
         <b-btn variant="white" size="lg" @click="availability">
@@ -34,11 +32,9 @@
         </b-btn>
       </b-col>
       <b-col cols="12" md="3" class="mt-2">
-        <nuxt-link to="/find/search">
-          <b-btn size="lg" variant="primary">
-            <v-icon name="search" />&nbsp;Find something else
-          </b-btn>
-        </nuxt-link>
+        <b-btn size="lg" variant="primary" to="/find/search">
+          <v-icon name="search" />&nbsp;Find something else
+        </b-btn>
       </b-col>
     </b-row>
     <b-row class="text-center d-none d-md-block">
