@@ -6,7 +6,7 @@
           <div v-if="isNewsComponent">
             <b-dropdown class="float-right" right variant="white">
               <template slot="button-content" />
-              <b-dropdown-item :href="'/chitchat/' + newsfeed.id" target="_blank">
+              <b-dropdown-item v-if="!isApp" :href="'/chitchat/' + newsfeed.id" target="_blank">
                 Open in new window
               </b-dropdown-item>
               <b-dropdown-item :b-v-modal="'newsEdit' + newsfeed.id" @click="show">
@@ -317,6 +317,9 @@ export default {
       }
 
       return this.newsfeed.replies.length - INITIAL_NUMBER_OF_REPLIES_TO_SHOW
+    },
+    isApp() {
+      return process.env.IS_APP
     }
   },
   methods: {

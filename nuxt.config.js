@@ -299,7 +299,8 @@ let config = {
       '423761283916-1rpa8120tpudgv4nf44cpmlf8slqbf4f.apps.googleusercontent.com',
     MODTOOLS: false,
     USER_SITE: USER_SITE,
-    IMAGE_SITE: IMAGE_SITE
+    IMAGE_SITE: IMAGE_SITE,
+    IS_APP: false
   },
 
   vue: {
@@ -321,6 +322,8 @@ if (process.env.NUXT_BUILD_TYPE === 'fdapp') {
   config.router = { // https://nuxtjs.org/api/configuration-router/ 
     mode: 'hash'    // https://router.vuejs.org/api/#mode
   }
+
+  config.env.IS_APP = true
 
   config.build.publicPath = '/js/'
 
