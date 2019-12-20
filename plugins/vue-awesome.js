@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import ClientOnlyIcon from '~/components/ClientOnlyIcon'
+import Icon from 'vue-awesome/components/Icon.vue'
 
 // We list the icons we use explicitly because this reduces our bundle size.
 require('vue-awesome/icons/address-book')
@@ -90,4 +90,4 @@ require('vue-awesome/icons/brands/telegram')
 require('vue-awesome/icons/brands/twitter')
 require('vue-awesome/icons/brands/whatsapp')
 
-Vue.component('v-icon', ClientOnlyIcon)
+Vue.component('v-icon', Icon)
