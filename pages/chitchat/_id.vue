@@ -37,8 +37,8 @@
             Looking for an item?  Click the Find button.  Chitchat is for other discussion.
           </b-tooltip>
         </b-card>
-        <b-row v-if="!id" class="mt-2">
-          <b-col>
+        <b-row v-if="!id" class="m-0 mt-2">
+          <b-col class="p-0">
             <b-card no-body>
               <b-card-text>
                 <b-row>
