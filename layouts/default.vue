@@ -264,7 +264,6 @@
 <style scoped lang="scss">
 @import 'color-vars';
 
-/*TODO DESIGN Menu dropdown on mobile needs a bit of love.*/
 /*TODO DESIGN Shrink navbar on scroll? */
 
 html {
@@ -316,7 +315,7 @@ nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
   }
 
   .nav-item {
-    width: 70px;
+    flex: 1;
     margin: 20px;
   }
 
