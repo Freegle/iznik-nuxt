@@ -120,7 +120,7 @@
       </b-navbar-nav>
     </b-navbar>
     <!-- Navbar for small screens -->
-    <b-navbar id="navbar_small" toggleable="xl" type="dark" class="ourBack d-flex justify-content-end d-xl-none pr-0" fixed="top">
+    <b-navbar id="navbar_small" toggleable="xl" type="dark" class="ourBack d-flex justify-content-end d-xl-none" fixed="top">
       <b-navbar-brand to="/" class="p-0 mr-auto">
         <b-img
           class="logo mr-2"
@@ -305,17 +305,24 @@ nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
   color: $color-white-opacity-75 !important;
 }
 
-#nav_collapse_mobile .navbar-nav {
-  border-top: 1px solid $color-gray--light;
-  padding-top: 5px;
-}
+#nav_collapse_mobile {
+  margin-top: 5px;
 
-#nav_collapse_mobile .nav-item {
-  width: 70px;
-}
+  .navbar-nav {
+    border-top: 1px solid $color-gray--light;
+    padding-top: 5px;
+    margin-top: 15px;
+    justify-content: center;
+  }
 
-#nav_collapse_mobile a.nav-link {
-  color: $color-white;
+  .nav-item {
+    width: 70px;
+    margin: 20px;
+  }
+
+  a.nav-link {
+    color: $color-white;
+  }
 }
 
 .pageContent {
