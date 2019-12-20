@@ -37,78 +37,39 @@
             Looking for an item?  Click the Find button.  Chitchat is for other discussion.
           </b-tooltip>
         </b-card>
-        <b-row v-if="!id" class="m-0 mt-2">
-          <b-col class="p-0">
-            <b-card no-body>
-              <b-card-text class="shadow">
-                <b-row>
-                  <b-col>
-                    <b-textarea v-model="startThread" rows="2" max-rows="8" placeholder="Chat to nearby freeglers...ask for advice, recommendations, or just have a good old blether.  If you're looking to give or find stuff, please use the Give/Find buttons.  Everything on here is public." />
-                  </b-col>
-                  <b-col v-if="imageid" md="auto">
-                    <b-img lazy thumbnail :src="imagethumb" />
-                  </b-col>
-                </b-row>
-              </b-card-text>
-              <hr class="mt-1 mb-1">
-              <b-row v-if="uploading" class="bg-white m-0 pondrow">
-                <b-col class="p-0">
-                  <OurFilePond
-                    imgtype="Newsfeed"
-                    imgflag="newsfeed"
-                    @photoProcessed="photoProcessed"
-                  />
-                </b-col>
-              </b-row>
-              <b-row>
-                <b-col
-                  cols="12"
-                  sm="12"
-                  lg="3"
-                  class="pl-4 text-muted pt-2"
-                  order="3"
-                  order-sm="3"
-                  order-lg="1"
-                >
-                  <div v-if="me.settings.mylocation && me.settings.mylocation.area.name" title="Your public location, from your postcode in Settings">
-                    <v-icon name="map-marker-alt" />&nbsp;{{ me.settings.mylocation.area.name }}
-                  </div>
-                </b-col>
-                <b-col
-                  cols="12"
-                  sm="6"
-                  lg="4"
-                  order="2"
-                  order-sm="1"
-                  order-lg="2"
-                >
-                  <b-form-select v-model="selectedArea" :options="areaOptions" @change="areaChange" />
-                </b-col>
-                <b-col
-                  cols="12"
-                  sm="6"
-                  lg="5"
-                  order="1"
-                  order-sm="2"
-                  order-lg="3"
-                >
-                  <b-row>
-                    <b-col>
-                      <div class="float-right pb-1 pr-1">
-                        <b-btn variant="primary" @click="photoAdd">
-                          Add photo
-                        </b-btn>
-                        <b-btn variant="success" @click="postIt">
-                          Post it!
-                        </b-btn>
-                      </div>
-                    </b-col>
-                  </b-row>
-                </b-col>
-              </b-row>
-            </b-card>
-          </b-col>
-        </b-row>
+        <div v-if="!id" class="mt-2">
+          <b-card no-body class="mb-2">
+            <b-card-text>
+              <b-textarea v-model="startThread" rows="2" max-rows="8" placeholder="Chat to nearby freeglers...ask for advice, recommendations, or just have a good old blether.  If you're looking to give or find stuff, please use the Give/Find buttons.  Everything on here is public." />
+              <b-img v-if="imageid" lazy thumbnail :src="imagethumb" class="image__uploaded" />
+            </b-card-text>
+            <hr class="mt-1 mb-1">
+            <OurFilePond
+              v-if="uploading"
+              class="bg-white m-0 pondrow"
+              imgtype="Newsfeed"
+              imgflag="newsfeed"
+              @photoProcessed="photoProcessed"
+            />
+            <div class="pb-1 d-flex justify-content-end">
+              <b-btn variant="primary" class="mr-2" @click="photoAdd">
+                Add photo
+              </b-btn>
+              <b-btn variant="success" class="mr-2" @click="postIt">
+                Post it!
+              </b-btn>
+            </div>
+          </b-card>
+        </div>
+        <b-card no-body class="p-2">
+          <b-card-text class="d-flex align-items-center">
+            <div v-if="me.settings.mylocation && me.settings.mylocation.area.name" class="w-50">
+              <v-icon name="map-marker-alt" />
+              <span>{{ me.settings.mylocation.area.name }}</span>
+            </div>
+            <b-form-select v-model="selectedArea" :options="areaOptions" class="w-50" @change="areaChange" />
+          </b-card-text>
+        </b-card>
         <div class=" p-0 pt-1 mb-1">
           <ul v-for="entry in newsfeed" :key="'newsfeed-' + entry.id + '-area-' + selectedArea" class="list-unstyled">
             <li v-if="entry && entry.visible && !entry.unfollowed && entry.threadhead === entry.id">
@@ -433,5 +394,9 @@ export default {
 .tab-content,
 .tab-pane {
   background-color: $color-white;
+}
+
+.image__uploaded {
+  width: 100px;
 }
 </style>
