@@ -40,7 +40,7 @@
         <b-row v-if="!id" class="m-0 mt-2">
           <b-col class="p-0">
             <b-card no-body>
-              <b-card-text>
+              <b-card-text class="shadow">
                 <b-row>
                   <b-col>
                     <b-textarea v-model="startThread" rows="2" max-rows="8" placeholder="Chat to nearby freeglers...ask for advice, recommendations, or just have a good old blether.  If you're looking to give or find stuff, please use the Give/Find buttons.  Everything on here is public." />
