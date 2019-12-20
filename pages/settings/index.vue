@@ -434,7 +434,7 @@
     <AboutMeModal ref="aboutmemodal" @change="update" />
     <ProfileModal :id="me ? me.id : null" ref="profilemodal" />
     <EmailConfirmModal ref="emailconfirm" />
-    <AvailabilityModal v-if="me" ref="availabilitymodal" :thisuid="me.id" />
+    <AvailabilityModal ref="availabilitymodal" :thisuid="me.id" />
     <AddressModal ref="addressModal" />
   </div>
 </template>

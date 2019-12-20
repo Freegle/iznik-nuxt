@@ -188,9 +188,16 @@ export default {
       if (this.schedule) {
         // hour in the schedule data structure is misnamed - at the moment it runs from 0..2 and is really a slot
         // of morning/afternoon/evening.
-
+        //
+        // For b-table we need to output a row for each slot, where the columns are the availability for each day.
         for (let hour = 0; hour < 3; hour++) {
-          const slot = {
+          let slot = {
+            slot: hour,
+            me: false,
+            other: false
+          }
+
+          const row = {
             slot: hour
           }
 
@@ -203,15 +210,24 @@ export default {
 
             let available = false
 
-            for (const existing of this.schedule.schedule) {
-              const e = dayjs(existing.date).set('hour', existing.hour)
+            // Be careful about bad data being in there.  It's only JSON encoded on the server, and we've seen bad
+            // data get in there because of bugs.  We want to ensure that we can always set it even if the data
+            // is bad.
+            if (
+              this.schedule.schedule &&
+              Array.isArray(this.schedule.schedule)
+            ) {
+              for (const existing of this.schedule.schedule) {
+                const e = dayjs(existing.date).set('hour', existing.hour)
 
-              if (d.unix() === e.unix()) {
-                available |= existing.available
+                if (d.unix() === e.unix()) {
+                  available |= existing.available
+                }
               }
             }
 
-            slot['day' + day] = {
+            slot = {
+              slot: hour,
               me: available,
               other: false
             }
@@ -227,11 +243,13 @@ export default {
                 }
               }
 
-              slot['day' + day].other = otherAvailable
+              slot.other = otherAvailable
             }
+
+            row['day' + day] = slot
           }
 
-          ret.push(slot)
+          ret.push(row)
         }
       }
 
@@ -318,22 +336,27 @@ export default {
 
         let found = false
 
-        this.schedule.schedule.forEach((existing, index) => {
-          const e = dayjs(existing.date).set('hour', existing.hour)
+        if (this.schedule.schedule && Array.isArray(this.schedule.schedule)) {
+          this.schedule.schedule.forEach((existing, index) => {
+            const e = dayjs(existing.date).set('hour', existing.hour)
 
-          if (d.unix() === e.unix()) {
-            this.schedule.schedule[index].available = !existing.available
-            found = true
-          }
-        })
+            if (d.unix() === e.unix()) {
+              this.schedule.schedule[index].available = !existing.available
+              found = true
+            }
+          })
+        } else {
+          this.schedule.schedule = []
+        }
 
         if (!found) {
           this.schedule.schedule.push({
-            data: dayjs()
-              .add(day, day)
+            date: dayjs()
+              .add(day, 'day')
               .set('hour', 0)
               .set('minute', 0)
-              .set('second.0'),
+              .set('second', 0)
+              .set('millisecond', 0),
             hour: hour,
             available: true
           })
