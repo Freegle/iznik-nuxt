@@ -1,7 +1,9 @@
 <template>
   <div class="mb-2 jobbox bg-light overflow-hidden">
     <div class="mb-1 text-center small text-muted">
-      Jobs near you.  Freegle gets a small amount if you click, which helps keep us going.
+      Jobs near you.  Freegle gets a small amount if you click, which helps keep us going.  <nuxt-link to="/jobs">
+        See more
+      </nuxt-link>.
     </div>
     <div v-for="job in jobs" :key="'job-' + job.onmousedown" class="">
       <Job :summary="true" :job="job" />
