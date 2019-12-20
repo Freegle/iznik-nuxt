@@ -70,7 +70,7 @@
                   order-sm="3"
                   order-lg="1"
                 >
-                  <div v-if="me.settings.mylocation && me.settings.mylocation.area.name">
+                  <div v-if="me.settings.mylocation && me.settings.mylocation.area.name" title="Your public location, from your postcode in Settings">
                     <v-icon name="map-marker-alt" />&nbsp;{{ me.settings.mylocation.area.name }}
                   </div>
                 </b-col>
