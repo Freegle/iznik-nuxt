@@ -14,12 +14,12 @@
         </div>
       </div>
       <div class="media-body">
-        <span v-if="notification.newsfeed.type == 'notification.noticeboard'" class="notification-title"><span>{{ notification.fromuser.displayname }} loves your poster</span>
+        <span v-if="notification.newsfeed.type == 'Noticeboard'" class="notification-title"><span>{{ notification.fromuser.displayname }} loves your poster</span>
           <span v-if="notification.noticeboard && notification.noticeboard.name">&quot;<b>{{ notification.noticeboard.name }}</b>&quot;</span>
         </span>
         <span v-else>
           <span class="notification-title"><span>{{ notification.fromuser.displayname }} loves your post</span>
-            <span v-if="notification.newsfeed.message">
+            <span v-if="nnotification.newsfeed.message">
               <br>"<b>{{ notification.newsfeed.message }}</b>"
             </span>
           </span>
