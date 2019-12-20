@@ -311,7 +311,7 @@ nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
   .navbar-nav {
     border-top: 1px solid $color-gray--light;
     padding-top: 5px;
-    margin-top: 15px;
+    margin-top: 5px;
     justify-content: center;
   }
 
@@ -320,8 +320,10 @@ nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
     margin: 20px;
   }
 
-  a.nav-link {
-    color: $color-white;
+  a {
+    &.nav-link {
+      color: $color-white;
+    }
   }
 }
 
