@@ -33,14 +33,68 @@ module.exports = {
   mode: 'universal',
 
   /*
-  ** Headers of the page
+  ** Headers.  Include default meta tags that will apply unless overridden by individual pages.  Every page that
+  * doesn't use loginRequired should override the following to something suitable:
+  *
+  * description
+  * og:image
+  * og:title
+  * og:description
+  * twitter:title
+  * twitter:description
+  * twitter:image
   */
   head: {
     title: 'Freegle',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: pkg.description }
+      { hid: 'author', name: 'author', content: 'Freegle' },
+      {
+        hid: 'description',
+        name: 'description',
+        content: 'Online dating for stuff'
+      },
+      {
+        hid: 'apple-mobile-web-app-title',
+        name: 'apple-mobile-web-app-title',
+        content: 'Online dating for stuff'
+      },
+
+      {
+        hid: 'og:image',
+        name: 'og:image',
+        content: USER_SITE + '/icon.png'
+      },
+      {
+        hid: 'og:video',
+        name: 'og:video',
+        content: 'https://www.youtube.com/embed/Gw_wpkbNQY8'
+      },
+      { hid: 'og:locale', name: 'og:locale', content: 'en_GB' },
+      { hid: 'og:title', name: 'og:title', content: 'Freegle' },
+      { hid: 'og:site_name', name: 'og:site_name', content: 'Freegle' },
+      {
+        hid: 'og:description',
+        name: 'og:description',
+        content: 'Online dating for stuff'
+      },
+      { hid: 'fb:app_id', name: 'og:site_name', content: FACEBOOK_APPID },
+
+      { hid: 'twitter:title', name: 'twitter:title', content: 'Freegle' },
+      { hid: 'twitter:description', name: 'twitter:description', content: 'Online dataing for stuff' },
+      {
+        hid: 'twitter:image',
+        name: 'twitter:image',
+        content: USER_SITE + '/icon.png'
+      },
+      {
+        hid: 'twitter:image:alt',
+        name: 'twitter:image:alt',
+        content: 'The Freegle logo'
+      },
+      { hid: 'twitter:card', name: 'twitter:card', content: 'summary_large_image' },
+      { hid: 'twitter:site', name: 'twitter:site', content: 'thisisfreegle' }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
@@ -212,7 +266,7 @@ module.exports = {
   build: {
     // analyze: true,
 
-    transpile: [ /^vue2-google-maps($|\/)/ ],
+    transpile: [/^vue2-google-maps($|\/)/],
 
     extend(config, ctx) {
       config.devtool = ctx.isClient ? 'eval-source-map' : 'inline-source-map'
