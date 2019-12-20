@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- Navbar for large screens -->
+    <!-- Navbar for large screens-->
     <b-navbar id="navbar_large" toggleable="xl" type="dark" class="ourBack d-none d-xl-flex" fixed="top">
       <b-navbar-brand to="/" class="p-0">
         <b-img
@@ -12,103 +12,105 @@
           alt="Home"
         />
       </b-navbar-brand>
-      <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
-      <b-collapse v-if="loggedIn" id="nav_collapse" ref="nav_collapse" is-nav>
-        <b-navbar-nav>
-          <b-nav-item id="menu-option-chitchat" class="text-center small p-0" to="/chitchat" @mousedown="maybeReload('/chitchat')">
-            <v-icon name="coffee" scale="2" /><br>
-            ChitChat
-          </b-nav-item>
-          <b-nav-item id="menu-option-myposts" class="text-center small p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
-            <v-icon name="home" scale="2" /><br>
-            My&nbsp;Posts
-          </b-nav-item>
-          <b-nav-item id="menu-option-give" class="text-center small p-0" to="/give" @mousedown="maybeReload('/give')">
-            <v-icon name="gift" scale="2" /><br>
-            Give
-          </b-nav-item>
-          <b-nav-item id="menu-option-find" class="text-center small p-0" to="/find" @mousedown="maybeReload('/find')">
-            <v-icon name="search" scale="2" /><br>
-            Find
-          </b-nav-item>
-          <b-nav-item id="menu-option-mygroups" class="text-center small p-0" to="/communities" @mousedown="maybeReload('/communities')">
-            <v-icon name="users" scale="2" /><br>
-            Communities
-          </b-nav-item>
-          <b-nav-item id="menu-option-explore" class="text-center small p-0" to="/explore" @mousedown="maybeReload('/explore')">
-            <v-icon name="map-marked-alt" scale="2" /><br>
-            Explore
-          </b-nav-item>
-          <b-nav-item id="menu-option-communityevents" class="text-center small p-0" to="/communityevents" @mousedown="maybeReload('/communityevents')">
-            <v-icon name="calendar-alt" scale="2" /><br>
-            Events
-          </b-nav-item>
-          <b-nav-item id="menu-option-volunteering" class="text-center small p-0" to="/volunteerings" @mousedown="maybeReload('/volunteerings')">
-            <v-icon name="hands-helping" scale="2" /><br>
-            Volunteer
-          </b-nav-item>
-        </b-navbar-nav>
-        <b-navbar-nav class="ml-auto">
-          <b-nav-item id="menu-option-notification" class="text-center p-0" />
-          <b-nav-item-dropdown class="white text-center notiflist" lazy right @shown="showNotifications">
-            <template slot="button-content">
-              <div class="notifwrapper text-center small">
-                <v-icon name="bell" scale="2" />
-                <b-badge v-if="notificationCount" variant="danger" class="ml-3 notifbadge">
-                  {{ notificationCount }}
-                </b-badge><br>
-                Notifications
+      <client-only>
+        <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
+        <b-collapse v-if="loggedIn" id="nav_collapse" ref="nav_collapse" is-nav>
+          <b-navbar-nav>
+            <b-nav-item id="menu-option-chitchat" class="text-center small p-0" to="/chitchat" @mousedown="maybeReload('/chitchat')">
+              <v-icon name="coffee" scale="2" /><br>
+              ChitChat
+            </b-nav-item>
+            <b-nav-item id="menu-option-myposts" class="text-center small p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
+              <v-icon name="home" scale="2" /><br>
+              My&nbsp;Posts
+            </b-nav-item>
+            <b-nav-item id="menu-option-give" class="text-center small p-0" to="/give" @mousedown="maybeReload('/give')">
+              <v-icon name="gift" scale="2" /><br>
+              Give
+            </b-nav-item>
+            <b-nav-item id="menu-option-find" class="text-center small p-0" to="/find" @mousedown="maybeReload('/find')">
+              <v-icon name="search" scale="2" /><br>
+              Find
+            </b-nav-item>
+            <b-nav-item id="menu-option-mygroups" class="text-center small p-0" to="/communities" @mousedown="maybeReload('/communities')">
+              <v-icon name="users" scale="2" /><br>
+              Communities
+            </b-nav-item>
+            <b-nav-item id="menu-option-explore" class="text-center small p-0" to="/explore" @mousedown="maybeReload('/explore')">
+              <v-icon name="map-marker-alt" scale="2" /><br>
+              Explore
+            </b-nav-item>
+            <b-nav-item id="menu-option-communityevents" class="text-center small p-0" to="/communityevents" @mousedown="maybeReload('/communityevents')">
+              <v-icon name="calendar-alt" scale="2" /><br>
+              Events
+            </b-nav-item>
+            <b-nav-item id="menu-option-volunteering" class="text-center small p-0" to="/volunteerings" @mousedown="maybeReload('/volunteerings')">
+              <v-icon name="hands-helping" scale="2" /><br>
+              Volunteer
+            </b-nav-item>
+          </b-navbar-nav>
+          <b-navbar-nav class="ml-auto">
+            <b-nav-item id="menu-option-notification" class="text-center p-0" />
+            <b-nav-item-dropdown class="white text-center notiflist" lazy right @shown="showNotifications">
+              <template slot="button-content">
+                <div class="notifwrapper text-center small">
+                  <v-icon name="bell" scale="2" />
+                  <b-badge v-if="notificationCount" variant="danger" class="ml-3 notifbadge">
+                    {{ notificationCount }}
+                  </b-badge><br>
+                  Notifications
+                </div>
+              </template>
+              <b-dropdown-item class="text-right">
+                <b-btn variant="white" size="sm" @click="markAllRead">
+                  Mark all read
+                </b-btn>
+              </b-dropdown-item>
+              <b-dropdown-divider />
+              <b-dropdown-item v-for="notification in notifications" :key="'notification-' + notification.id" class="p-0 notpad">
+                <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
+              </b-dropdown-item>
+              <infinite-loading :distance="distance" @infinite="loadMore">
+                <span slot="no-results" />
+                <span slot="no-more" />
+                <span slot="spinner">
+                  <b-img-lazy src="~/static/loader.gif" />
+                </span>
+              </infinite-loading>
+            </b-nav-item-dropdown>
+            <b-nav-item id="menu-option-chat" class="text-center small p-0" to="/chats" @mousedown="maybeReload('/chats')">
+              <div class="notifwrapper">
+                <v-icon name="comments" scale="2" /><br>
+                Chats
+                <b-badge v-if="chatCount" variant="danger" class="ml-3 chatbadge">
+                  {{ chatCount }}
+                </b-badge>
               </div>
-            </template>
-            <b-dropdown-item class="text-right">
-              <b-btn variant="white" size="sm" @click="markAllRead">
-                Mark all read
-              </b-btn>
-            </b-dropdown-item>
-            <b-dropdown-divider />
-            <b-dropdown-item v-for="notification in notifications" :key="'notification-' + notification.id" class="p-0 notpad">
-              <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
-            </b-dropdown-item>
-            <infinite-loading :distance="distance" @infinite="loadMore">
-              <span slot="no-results" />
-              <span slot="no-more" />
-              <span slot="spinner">
-                <b-img-lazy src="~/static/loader.gif" />
-              </span>
-            </infinite-loading>
-          </b-nav-item-dropdown>
-          <b-nav-item id="menu-option-chat" class="text-center small p-0" to="/chats" @mousedown="maybeReload('/chats')">
-            <div class="notifwrapper">
-              <v-icon name="comments" scale="2" /><br>
-              Chats
-              <b-badge v-if="chatCount" variant="danger" class="ml-3 chatbadge">
-                {{ chatCount }}
-              </b-badge>
-            </div>
-          </b-nav-item>
-          <b-nav-item id="menu-option-spread" class="text-center small p-0" to="/spread" @mousedown="maybeReload('/spread')">
-            <div class="notifwrapper">
-              <v-icon name="bullhorn" scale="2" /><br>
-              Spread
-              <b-badge v-if="spreadCount" variant="info" class="ml-3 chatbadge">
-                {{ spreadCount }}
-              </b-badge>
-            </div>
-          </b-nav-item>
-          <b-nav-item id="menu-option-help" class="text-center small p-0" to="/help" @mousedown="maybeReload('/help')">
-            <v-icon name="question-circle" scale="2" /><br>
-            Help
-          </b-nav-item>
-          <b-nav-item id="menu-option-settings" class="text-center small p-0" to="/settings" @mousedown="maybeReload('/settings')">
-            <v-icon name="cog" scale="2" /><br>
-            Settings
-          </b-nav-item>
-          <b-nav-item id="menu-option-logout" class="text-center p-0 small" @click="logOut()">
-            <v-icon name="sign-out-alt" scale="2" /><br>
-            Logout
-          </b-nav-item>
-        </b-navbar-nav>
-      </b-collapse>
+            </b-nav-item>
+            <b-nav-item id="menu-option-spread" class="text-center small p-0" to="/spread" @mousedown="maybeReload('/spread')">
+              <div class="notifwrapper">
+                <v-icon name="bullhorn" scale="2" /><br>
+                Spread
+                <b-badge v-if="spreadCount" variant="info" class="ml-3 chatbadge">
+                  {{ spreadCount }}
+                </b-badge>
+              </div>
+            </b-nav-item>
+            <b-nav-item id="menu-option-help" class="text-center small p-0" to="/help" @mousedown="maybeReload('/help')">
+              <v-icon name="question-circle" scale="2" /><br>
+              Help
+            </b-nav-item>
+            <b-nav-item id="menu-option-settings" class="text-center small p-0" to="/settings" @mousedown="maybeReload('/settings')">
+              <v-icon name="cog" scale="2" /><br>
+              Settings
+            </b-nav-item>
+            <b-nav-item id="menu-option-logout" class="text-center p-0 small" @click="logOut()">
+              <v-icon name="sign-out-alt" scale="2" /><br>
+              Logout
+            </b-nav-item>
+          </b-navbar-nav>
+        </b-collapse>
+      </client-only>
       <b-navbar-nav class="ml-auto">
         <b-nav-item>
           <div v-if="!loggedIn" class="btn btn-white" @click="requestLogin">
@@ -130,48 +132,50 @@
         />
       </b-navbar-brand>
 
-      <b-dropdown
-        v-if="loggedIn"
-        class="white text-center notiflist mr-2"
-        variant="success"
-        lazy
-        right
-        @shown="showNotifications"
-      >
-        <template slot="button-content">
+      <client-only>
+        <b-dropdown
+          v-if="loggedIn"
+          class="white text-center notiflist mr-2"
+          variant="success"
+          lazy
+          right
+          @shown="showNotifications"
+        >
+          <template slot="button-content">
+            <div class="notifwrapper">
+              <v-icon name="bell" scale="2" class="" />
+              <b-badge v-if="notificationCount" variant="danger" class="notifbadgesm">
+                {{ notificationCount }}
+              </b-badge>
+            </div>
+          </template>
+          <b-dropdown-item class="text-right">
+            <b-btn variant="white" size="sm" @click="markAllRead">
+              Mark all read
+            </b-btn>
+          </b-dropdown-item>
+          <b-dropdown-divider />
+          <b-dropdown-item v-for="notification in notifications" :key="'notification-' + notification.id" class="p-0 notpad">
+            <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
+          </b-dropdown-item>
+          <infinite-loading :distance="distance" @infinite="loadMore">
+            <span slot="no-results" />
+            <span slot="no-more" />
+            <span slot="spinner">
+              <b-img-lazy src="~/static/loader.gif" />
+            </span>
+          </infinite-loading>
+        </b-dropdown>
+
+        <nuxt-link v-if="loggedIn" id="menu-option-chat-sm" class="text-white mr-3" to="/chats">
           <div class="notifwrapper">
-            <v-icon name="bell" scale="2" class="" />
-            <b-badge v-if="notificationCount" variant="danger" class="notifbadgesm">
-              {{ notificationCount }}
+            <v-icon name="comments" scale="2" /><br>
+            <b-badge v-if="chatCount" variant="danger" class="chatbadge">
+              {{ chatCount }}
             </b-badge>
           </div>
-        </template>
-        <b-dropdown-item class="text-right">
-          <b-btn variant="white" size="sm" @click="markAllRead">
-            Mark all read
-          </b-btn>
-        </b-dropdown-item>
-        <b-dropdown-divider />
-        <b-dropdown-item v-for="notification in notifications" :key="'notification-' + notification.id" class="p-0 notpad">
-          <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
-        </b-dropdown-item>
-        <infinite-loading :distance="distance" @infinite="loadMore">
-          <span slot="no-results" />
-          <span slot="no-more" />
-          <span slot="spinner">
-            <b-img-lazy src="~/static/loader.gif" />
-          </span>
-        </infinite-loading>
-      </b-dropdown>
-
-      <nuxt-link v-if="loggedIn" id="menu-option-chat-sm" class="text-white mr-3" to="/chats">
-        <div class="notifwrapper">
-          <v-icon name="comments" scale="2" /><br>
-          <b-badge v-if="chatCount" variant="danger" class="chatbadge">
-            {{ chatCount }}
-          </b-badge>
-        </div>
-      </nuxt-link>
+        </nuxt-link>
+      </client-only>
 
       <b-navbar-nav>
         <b-nav-item v-if="!loggedIn">
@@ -208,7 +212,7 @@
             Communities
           </b-nav-item>
           <b-nav-item class="text-center p-0" to="/explore" @mousedown="maybeReload('/explore')">
-            <v-icon name="map-marked-alt" scale="2" /><br>
+            <v-icon name="map-marker-alt" scale="2" /><br>
             Explore
           </b-nav-item>
           <b-nav-item class="text-center p-0" to="/communityevents" @mousedown="maybeReload('/communityevetns')">
