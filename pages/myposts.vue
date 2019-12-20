@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <b-container fluid>
     <b-row class="m-0">
       <b-col cols="0" lg="3" class="d-none d-lg-block">
         <SidebarLeft :show-community-events="true" :show-bot-left="true" />
@@ -192,10 +192,9 @@
       </b-col>
     </b-row>
     <AvailabilityModal v-if="me" ref="availabilitymodal" :thisuid="me.id" />
-  </div>
+  </b-container>
 </template>
-<style scoped>
-</style>
+
 <script>
 import loginRequired from '@/mixins/loginRequired.js'
 const JobsTopBar = () => import('../components/JobsTopBar')
@@ -383,3 +382,7 @@ export default {
   }
 }
 </script>
+
+
+<style scoped>
+</style>
