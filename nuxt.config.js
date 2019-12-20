@@ -43,6 +43,10 @@ module.exports = {
   * twitter:title
   * twitter:description
   * twitter:image
+  *
+  * All data for the SSR must be obtained in asyncData; it will then be used to render the page, and accessible
+  * via the store or returned values in head().  Note that if you try to get data in an async head() then it will
+  * silently fail and revert to the site default we set up here.
   */
   head: {
     title: 'Freegle',

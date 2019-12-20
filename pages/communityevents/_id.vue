@@ -40,6 +40,7 @@
 <script>
 import loginOptional from '@/mixins/loginOptional.js'
 import createGroupRoute from '@/mixins/createGroupRoute'
+import buildHead from '@/mixins/buildHead.js'
 
 const GroupSelect = () => import('~/components/GroupSelect')
 const CommunityEvent = () => import('~/components/CommunityEvent.vue')
@@ -53,7 +54,7 @@ export default {
     CommunityEventModal,
     NoticeMessage
   },
-  mixins: [loginOptional, createGroupRoute('communityevents')],
+  mixins: [loginOptional, createGroupRoute('communityevents'), buildHead],
   data: function() {
     return {
       context: null,
@@ -64,6 +65,21 @@ export default {
   computed: {
     events() {
       return this.$store.getters['communityevents/sortedList']
+    }
+  },
+  async asyncData({ app, params, store }) {
+    await store.dispatch('communityevents/fetch', {
+      groupid: params.id ? params.id : null
+    })
+
+    if (params.id) {
+      await store.dispatch('group/fetch', {
+        id: params.id
+      })
+    }
+
+    return {
+      asyncGroupId: params.id
     }
   },
   mounted() {
@@ -95,6 +111,26 @@ export default {
     showEventModal() {
       this.$refs.eventmodal.show()
     }
+  },
+  head() {
+    let name
+    let image
+
+    if (this.asyncGroupId) {
+      const group = this.$store.getters['group/get'](this.asyncGroupId)
+
+      name = 'Community Events for ' + group.namedisplay
+      image = group.profile
+    } else {
+      name = 'Community Events'
+      image = null
+    }
+
+    return this.buildHead(
+      name,
+      'Are you a charity or good cause that needs volunteers? Ask our lovely community of freeglers to help.',
+      image
+    )
   }
 }
 </script>
