@@ -301,11 +301,27 @@ nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
 
 .navbar-dark .navbar-nav .nav-link {
   color: $color-white !important;
+
+  &:hover,
+  &:focus {
+    color: $color-white-opacity-75 !important;
+  }
 }
 
-.navbar-dark .navbar-nav .nav-link:hover,
-.navbar-dark .navbar-nav .nav-link:focus {
-  color: $color-white-opacity-75 !important;
+#menu-option-chat-sm {
+  &:hover,
+  &:focus {
+    color: $color-white-opacity-75 !important;
+  }
+
+  &.nuxt-link-active {
+    color: $color-white-opacity-50 !important;
+
+    &:hover,
+    &:focus {
+      color: $color-white-opacity-75 !important;
+    }
+  }
 }
 
 #nav_collapse_mobile {
