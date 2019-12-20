@@ -10,7 +10,8 @@
     />
     <p>To help Freegle, <b>{{ users[userid].displayname }}</b> printed a Freegle poster and put it up where people can see it.</p>
     <notice-message v-if="info.description || info.name" class="prewrap">
-      <b v-if="info.name">"{{ info.name.trim() }}"</b><br>
+      <b v-if="info.name">"{{ info.name.trim() }}"</b>
+      <br v-if="info.name && info.description">
       <em v-if="info.description">"{{ info.description.trim() }}"</em>
     </notice-message>
     <p class="mt-1">
