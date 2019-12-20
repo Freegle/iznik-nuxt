@@ -123,6 +123,13 @@ export default {
         }
       })
     }
+  },
+
+  head() {
+    return this.buildHead(
+      'OFFER',
+      'OFFER something to people nearby and see who wants it'
+    )
   }
 }
 </script>

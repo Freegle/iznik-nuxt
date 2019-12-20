@@ -78,6 +78,7 @@ select {
 <script>
 import NoticeMessage from '../../components/NoticeMessage'
 import loginOptional from '@/mixins/loginOptional.js'
+import buildHead from '@/mixins/buildHead.js'
 const Postcode = () => import('~/components/Postcode')
 const ComposeGroup = () => import('~/components/ComposeGroup')
 
@@ -87,7 +88,7 @@ export default {
     Postcode,
     ComposeGroup
   },
-  mixins: [loginOptional],
+  mixins: [loginOptional, buildHead],
   data() {
     return {
       id: null,
@@ -145,6 +146,13 @@ export default {
       this.$store.dispatch('compose/setPostcode', null)
       this.$store.dispatch('compose/setGroup', null)
     }
+  },
+
+  head() {
+    return this.buildHead(
+      'Find',
+      'See what people nearby are giving away for free'
+    )
   }
 }
 </script>

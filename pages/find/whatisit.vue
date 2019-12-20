@@ -55,6 +55,8 @@
 // loaded this page directly, by passing the previous one.
 
 import loginOptional from '@/mixins/loginOptional.js'
+import buildHead from '@/mixins/buildHead.js'
+
 const PostMessage = () => import('~/components/PostMessage')
 const Postcode = () => import('~/components/Postcode')
 const ComposeGroup = () => import('~/components/ComposeGroup')
@@ -67,7 +69,7 @@ export default {
     ComposeGroup,
     WizardProgress
   },
-  mixins: [loginOptional],
+  mixins: [loginOptional, buildHead],
   data: function() {
     return {}
   },
@@ -159,6 +161,13 @@ export default {
     next() {
       this.$router.push('/find/whoami')
     }
+  },
+
+  head() {
+    return this.buildHead(
+      'WANTED',
+      "Ask people nearby if they have what you're looking for"
+    )
   }
 }
 </script>

@@ -119,6 +119,13 @@ export default {
         }
       })
     }
+  },
+
+  head() {
+    return this.buildHead(
+      'WANTED',
+      "Ask people nearby if they have what you're looking for"
+    )
   }
 }
 </script>

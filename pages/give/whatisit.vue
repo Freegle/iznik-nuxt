@@ -54,6 +54,8 @@
 // TODO NS Don't allow submission before image upload complete.  Also check that there is a postcode in case we
 // loaded this page directly, by passing the previous one.
 import loginOptional from '@/mixins/loginOptional.js'
+import buildHead from '@/mixins/buildHead.js'
+
 const PostMessage = () => import('~/components/PostMessage')
 const Postcode = () => import('~/components/Postcode')
 const ComposeGroup = () => import('~/components/ComposeGroup')
@@ -66,7 +68,7 @@ export default {
     ComposeGroup,
     WizardProgress
   },
-  mixins: [loginOptional],
+  mixins: [loginOptional, buildHead],
   data: function() {
     return {}
   },
@@ -160,6 +162,13 @@ export default {
         this.$store.dispatch('compose/setGroup', this.group)
       }
     }
+  },
+
+  head() {
+    return this.buildHead(
+      'OFFER',
+      'OFFER something to people nearby and see who wants it'
+    )
   }
 }
 </script>
