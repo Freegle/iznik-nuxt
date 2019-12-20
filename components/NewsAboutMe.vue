@@ -1,11 +1,7 @@
 <template>
   <div>
     <NewsUserIntro v-if="userid" :userid="userid" :users="users" :newsfeed="newsfeed" append="introduced themselves" />
-    <b-row v-if="newsfeed.message">
-      <b-col>
-        <span class="font-weight-bold prewrap forcebreak">{{ emessage }}</span>
-      </b-col>
-    </b-row>
+    <span v-if="newsfeed.message" class="font-weight-bold prewrap forcebreak">{{ emessage }}</span>
     <div>
       <b-row v-if="newsfeed.image">
         <b-col>
@@ -20,17 +16,15 @@
         </b-col>
       </b-row>
     </div>
-    <b-row class="mt-2">
-      <b-col>
-        <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
-        <span class="float-right d-inline-block">
-          <b-btn variant="primary" size="sm" @click="showModal">
-            <v-icon name="user" /> Introduce yourself
-          </b-btn>
-          <AboutMeModal ref="modal" />
-        </span>
-      </b-col>
-    </b-row>
+    <div class="mt-2">
+      <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
+      <span class="float-right d-inline-block">
+        <b-btn variant="primary" size="sm" @click="showModal">
+          <v-icon name="user" /> Introduce yourself
+        </b-btn>
+        <AboutMeModal ref="modal" />
+      </span>
+    </div>
     <b-modal
       v-if="newsfeed.image"
       :id="'photoModal-' + newsfeed.id"
