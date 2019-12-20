@@ -37,7 +37,7 @@
                     @error.native="brokenImage"
                   />
                 </div>
-                <span v-if="reply.message && userid && users[userid]">
+                <span v-if="userid && users[userid]">
                   <span class="text-muted small">
                     {{ $dayjs(reply.timestamp).fromNow() }}
                   </span>

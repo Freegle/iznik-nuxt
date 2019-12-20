@@ -4,7 +4,6 @@
     id="loginModal"
     ref="loginModal"
     v-model="showModal"
-    title="Let's get freegling!"
     no-stacking
     visible
     size="lg"
@@ -13,172 +12,160 @@
     :hide-header-close="modalIsForced"
     :no-close-on-esc="modalIsForced"
   >
-    <b-row>
-      <b-col class="text-center pb-3">
-        You will receive emails, and your name and approximate location will be public.  You can
-        control privacy from Settings.  Read <nuxt-link target="_blank" to="/terms">
-          Terms of Use
-        </nuxt-link> and
-        <nuxt-link target="_blank" to="/privacy">
-          Privacy
-        </nuxt-link> for details.
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col cols="12" lg="6" class="text-center">
+    <!-- This is required as the default bootstrap component makes the main title an h5 -->
+    <template slot="modal-title">
+      <h2>Let's get freegling!</h2>
+    </template>
+    <div class="d-flex flex-column flex-lg-row justify-content-between p-3">
+      <div class="signin__section--social">
+        <h3 class="signin__header">
+          Continue with your social account
+        </h3>
         <p v-if="signUp">
           <b>Using one of these buttons is the easiest way to create an account:</b>
         </p>
-        <button class="social-button social-button--facebook" :disabled="facebookDisabled" @click="loginFacebook">
+        <b-btn class="social-button social-button--facebook" :disabled="facebookDisabled" @click="loginFacebook">
           <b-img src="~/static/signinbuttons/facebook-logo.png" class="social-button__image" />
-          <span class="p-2 font-weight-bold">Continue with Facebook</span>
-        </button>
-        <button class="social-button social-button--google" :disabled="googleDisabled" @click="loginGoogle">
+          <span class="p-2 social-button__text font-weight-bold">Continue with Facebook</span>
+        </b-btn>
+        <b-btn class="social-button social-button--google" :disabled="googleDisabled" @click="loginGoogle">
           <b-img src="~/static/signinbuttons/google-logo.svg" class="social-button__image" />
-          <span class="p-2 font-weight-bold">Continue with Google</span>
-        </button>
-        <button class="social-button social-button--yahoo" :disabled="yahooDisabled" @click="loginYahoo">
+          <span class="p-2 social-button__text font-weight-bold">Continue with Google</span>
+        </b-btn>
+        <b-btn class="social-button social-button--yahoo" :disabled="yahooDisabled" @click="loginYahoo">
           <b-img src="~/static/signinbuttons/yahoo-logo.svg" class="social-button__image" />
-          <span class="p-2 font-weight-bold">Continue with Yahoo</span>
-        </button>
+          <span class="p-2 social-button__text font-weight-bold">Continue with Yahoo</span>
+        </b-btn>
         <notice-message v-if="socialblocked" variant="warning">
           Social sign in blocked - check your privacy settings
         </notice-message>
-      </b-col>
-      <b-col cols="12" class="d-block d-lg-none">
-        <b-row>
-          <b-col cols="5">
-            <hr class="text-danger pb-2 d-block d-lg-none login__splitter">
-          </b-col>
-          <b-col cols="2" class="text-center">
-            <em>Or</em>
-          </b-col>
-          <b-col cols="5">
-            <hr class="text-danger pb-2 d-block d-lg-none login__splitter">
-          </b-col>
-        </b-row>
-      </b-col>
-      <b-col cols="12" lg="6" class="mt-0">
+      </div>
+      <div class="divider__wrapper">
+        <div class="divider" />
+        <div class="divider__text">
+          OR
+        </div>
+        <div class="divider" />
+      </div>
+      <div class="signin__section--freegle">
+        <h3 class="signin__header">
+          <span v-if="showSignUp">Create an account on Freegle</span>
+          <span v-else>Continue with your Freegle account</span>
+        </h3>
         <b-form ref="form" action="/" autocomplete="on" method="post" @submit="loginNative">
-          <div>
-            <b-row v-if="signUp">
-              <b-col>
-                <b-form-group
-                  id="firstnameGroup"
-                  label="Your first name"
-                  label-for="firstname"
-                  label-class="mb-0"
-                >
-                  <b-form-input
-                    id="firstname"
-                    ref="firstname"
-                    v-model="firstname"
-                    name="firstname"
-                    class="mb-3"
-                    autocomplete="given-name"
-                  />
-                </b-form-group>
-              </b-col>
-            </b-row>
-            <b-row v-if="signUp">
-              <b-col>
-                <b-form-group
-                  id="lastnameGroup"
-                  label="Your last name"
-                  label-for="lastname"
-                  label-class="mb-0"
-                >
-                  <b-form-input
-                    id="lastname"
-                    ref="lastname"
-                    v-model="lastname"
-                    name="lastname"
-                    class="mb-3"
-                    autocomplete="family-name"
-                  />
-                </b-form-group>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col>
-                <b-form-group
-                  id="emailGroup"
-                  label="Your email address"
-                  label-for="email"
-                  label-class="mb-0"
-                >
-                  <b-form-input
-                    id="email"
-                    ref="email"
-                    v-model="email"
-                    name="email"
-                    class="mb-3"
-                    autocomplete="username email"
-                  />
-                </b-form-group>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col>
-                <b-form-group
-                  id="passwordGroup"
-                  label="Your password"
-                  label-for="password"
-                  label-class="mb-0"
-                >
-                  <b-form-input
-                    id="password"
-                    ref="password"
-                    v-model="password"
-                    name="password"
-                    type="password"
-                    class="mb-2"
-                    autocomplete="current-password"
-                  />
-                </b-form-group>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col>
-                <b-btn
-                  v-b-modal.add
-                  block
-                  size="lg"
-                  variant="success"
-                  class="mb-2 mt-2"
-                  type="submit"
-                  value="login"
-                >
-                  <span v-if="!signUp">
-                    Sign in to Freegle
-                  </span>
-                  <span v-else>
-                    Sign up to Freegle
-                  </span>
-                </b-btn>
-              </b-col>
-            </b-row>
-            <b-row v-if="!signUp">
-              <b-col class="text-center">
-                <nuxt-link to="/forgot">
-                  I forgot my password
-                </nuxt-link>
-              </b-col>
-            </b-row>
-            <b-row v-if="!signUp">
-              <b-col class="text-center">
-                New freegler? <a href="#" @click="clickShowSignUp">Sign Up</a>
-              </b-col>
-            </b-row>
-            <b-row v-else>
-              <b-col class="text-center">
-                Already a freegler? <a href="#" @click="clickShowSignIn">Sign In</a>
-              </b-col>
-            </b-row>
+          <div v-if="signUp">
+            <b-form-group
+              id="firstnameGroup"
+              label="Your first name"
+              label-for="firstname"
+              label-class="mb-0"
+            >
+              <b-form-input
+                id="firstname"
+                ref="firstname"
+                v-model="firstname"
+                name="firstname"
+                class="mb-3"
+                autocomplete="given-name"
+              />
+            </b-form-group>
+            <b-form-group
+              id="lastnameGroup"
+              label="Your last name"
+              label-for="lastname"
+              label-class="mb-0"
+            >
+              <b-form-input
+                id="lastname"
+                ref="lastname"
+                v-model="lastname"
+                name="lastname"
+                class="mb-3"
+                autocomplete="family-name"
+              />
+            </b-form-group>
           </div>
+          <b-form-group
+            id="emailGroup"
+            label="Your email address"
+            label-for="email"
+            label-class="mb-0"
+          >
+            <b-form-input
+              id="email"
+              ref="email"
+              v-model="email"
+              name="email"
+              class="mb-3"
+              autocomplete="username email"
+            />
+          </b-form-group>
+          <b-form-group
+            id="passwordGroup"
+            label="Your password"
+            label-for="password"
+            label-class="mb-0"
+          >
+            <b-input-group class="mb-2">
+              <b-form-input
+                id="password"
+                ref="password"
+                v-model="password"
+                name="password"
+                :type="showPassword ? 'input' : 'password'"
+                autocomplete="current-password"
+              />
+              <b-input-group-append>
+                <!-- TODO DESIGN MINOR The shadow on the input field that you get when you're focused ought really to include this append.-->
+                <b-button variant="white" class="transbord" title="Show password" @click="togglePassword">
+                  <v-icon v-if="showPassword" title="Hide password" class="text-secondary" flip="horizontal" @click="togglePassword">
+                    <v-icon name="eye" />
+                    <v-icon name="slash" />
+                  </v-icon>
+                  <v-icon v-else name="eye" class="text-secondary" />
+                </b-button>
+              </b-input-group-append>
+            </b-input-group>
+          </b-form-group>
+          <b-btn
+            v-b-modal.add
+            block
+            size="lg"
+            variant="success"
+            class="mb-2 mt-2"
+            type="submit"
+            value="login"
+          >
+            <span v-if="!signUp">
+              Sign in to Freegle
+            </span>
+            <span v-else>
+              Sign up to Freegle
+            </span>
+          </b-btn>
+          <div v-if="!signUp" class="text-center">
+            <nuxt-link to="/forgot">
+              I forgot my password
+            </nuxt-link>
+            <p class="mb-0">
+              New freegler? <a href="#" @click="clickShowSignUp">Sign Up</a>
+            </p>
+          </div>
+          <p v-else class="text-center">
+            Already a freegler? <a href="#" @click="clickShowSignIn">Sign In</a>
+          </p>
         </b-form>
-      </b-col>
-    </b-row>
+      </div>
+    </div>
+    <p class="text-center">
+      You will receive emails, and your name and approximate location will be public.  You can
+      control privacy from Settings.  Read <nuxt-link target="_blank" to="/terms">
+        Terms of Use
+      </nuxt-link> and
+      <nuxt-link target="_blank" to="/privacy">
+        Privacy
+      </nuxt-link> for details.
+    </p>
     <b-alert v-if="loginError" variant="danger" show>
       Login Failed: {{ loginError }}
     </b-alert>
@@ -186,10 +173,6 @@
 </template>
 
 <script>
-// TODO Eye icon to show password for mobile
-// TODO DESIGN Need vertical line or some other way to indicate that the form on the right is an alternative to
-// the buttons.
-// TODO DESIGN MINOR Would be nice to have "Sign up" buttons for social sign in.
 import Vue from 'vue'
 import { LoginError } from '../api/BaseAPI'
 const NoticeMessage = () => import('~/components/NoticeMessage')
@@ -209,7 +192,8 @@ export default {
       pleaseShowModal: false,
       showSignUp: false,
       forceSignIn: false,
-      loginError: null
+      loginError: null,
+      showPassword: false
     }
   },
 
@@ -503,6 +487,9 @@ export default {
       this.forceSignIn = true
       e.preventDefault()
       e.stopPropagation()
+    },
+    togglePassword() {
+      this.showPassword = !this.showPassword
     }
   }
 }
@@ -510,20 +497,35 @@ export default {
 
 <style scoped lang="scss">
 @import 'color-vars';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
 
 $color-facebook: #4267b2;
 $color-google: #4285f4;
 $color-yahoo: #6b0094;
 
-.login__splitter {
-  border-top: 1px solid $color-red;
+.signin__section--social {
+  flex: 0 1 100%;
+
+  @include media-breakpoint-up(lg) {
+    flex: 0 1 37%;
+  }
+}
+
+.signin__section--freegle {
+  flex: 0 1 100%;
+
+  @include media-breakpoint-up(lg) {
+    flex: 0 1 44%;
+  }
 }
 
 .social-button {
   display: flex;
-  width: 250px;
-  border-radius: 3px;
   align-items: center;
+  min-width: 250px;
+  border-radius: 3px;
   padding: 0;
   margin-bottom: 20px;
   color: $color-white;
@@ -539,6 +541,10 @@ $color-yahoo: #6b0094;
   background-color: $color-white;
 }
 
+.social-button__text {
+  font-size: 1rem;
+}
+
 .social-button--facebook {
   border: 2px solid $color-facebook;
   background-color: $color-facebook;
@@ -552,5 +558,54 @@ $color-yahoo: #6b0094;
 .social-button--yahoo {
   border: 2px solid $color-yahoo;
   background-color: $color-yahoo;
+}
+
+.signin__header {
+  font-size: 1.1rem;
+  padding-bottom: 15px;
+}
+
+.divider__wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+
+  @include media-breakpoint-up(lg) {
+    flex-direction: column;
+    margin-bottom: 0;
+    flex-grow: 1;
+  }
+}
+
+.divider {
+  border-right: none;
+  border-bottom: 1px solid $color-gray--light;
+  width: 100%;
+
+  @include media-breakpoint-up(lg) {
+    border-right: 1px solid $color-gray--light;
+    border-bottom: none;
+    height: 100%;
+    width: auto;
+  }
+}
+
+.divider__text {
+  margin: 0 7px 0 7px;
+  color: $color-gray--base;
+  font-size: 0.8rem;
+
+  @include media-breakpoint-up(lg) {
+    margin: 7px 0 7px 0;
+  }
+}
+
+.transbord {
+  // TODO DESIGN MINOR This colour is copied from bootstrap $input-border-color and should be done better.  Sorry Jason.
+  // See also Autocomplete.
+  border-color: #ced4da;
+  border-left: none;
 }
 </style>

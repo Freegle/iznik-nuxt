@@ -1,5 +1,5 @@
 <template>
-  <div v-if="me">
+  <b-container v-if="me" fluid>
     <b-row class="m-0">
       <b-col cols="0" lg="3" class="d-none d-lg-block">
         <SidebarLeft :show-community-events="true" :show-bot-left="true" />
@@ -7,12 +7,18 @@
       <b-col cols="12" lg="6" class="newsfeedHolder p-0">
         <b-card v-if="!id">
           <b-card-text>
-            <h4 class="text-center mb-3">
-              Looking for your own posts?  Click
+            <h5 class="text-center mb-3">
+              Looking for your posts?  Click
               <nuxt-link to="/myposts">
                 here
               </nuxt-link>
-            </h4>
+            </h5>
+            <h5 class="text-center mb-3">
+              Browse OFFERs/WANTEDs
+              <nuxt-link to="/communities">
+                here
+              </nuxt-link>
+            </h5>
             <div class="d-flex justify-content-between">
               <b-btn id="givebutton" ref="givebutton" to="/give" variant="success" class="post__button">
                 <v-icon name="gift" class="mr-1" />
@@ -31,13 +37,13 @@
             Looking for an item?  Click the Find button.  Chitchat is for other discussion.
           </b-tooltip>
         </b-card>
-        <b-row v-if="!id" class="mt-2">
-          <b-col>
+        <b-row v-if="!id" class="m-0 mt-2">
+          <b-col class="p-0">
             <b-card no-body>
               <b-card-text>
                 <b-row>
                   <b-col>
-                    <b-textarea v-model="startThread" v-focus rows="2" max-rows="8" placeholder="Chat to nearby freeglers...ask for advice, recommendations, or just have a good old blether.  If you're looking to give or find stuff, please use the Give/Find buttons.  Everything on here is public." />
+                    <b-textarea v-model="startThread" rows="2" max-rows="8" placeholder="Chat to nearby freeglers...ask for advice, recommendations, or just have a good old blether.  If you're looking to give or find stuff, please use the Give/Find buttons.  Everything on here is public." />
                   </b-col>
                   <b-col v-if="imageid" md="auto">
                     <b-img lazy thumbnail :src="imagethumb" />
@@ -122,7 +128,7 @@
         <sidebar-right show-volunteer-opportunities show-job-opportunities />
       </b-col>
     </b-row>
-  </div>
+  </b-container>
 </template>
 
 <script>
@@ -271,7 +277,8 @@ export default {
               if (msg.length && msg.indexOf(word) !== -1) {
                 this.showToolGive = true
                 this.shownToolGive = true
-                this.$refs.givebutton.scrollIntoView()
+                this.$refs.givebutton.$el.scrollIntoView()
+                window.scrollBy(0, -100)
 
                 setTimeout(() => {
                   this.showToolGive = false
@@ -295,7 +302,8 @@ export default {
               if (msg.length && msg.indexOf(word) !== -1) {
                 this.showToolFind = true
                 this.shownToolFind = true
-                this.$refs.findbutton.scrollIntoView()
+                this.$refs.findbutton.$el.scrollIntoView()
+                window.scrollBy(0, -100)
 
                 setTimeout(() => {
                   this.showToolFind = false

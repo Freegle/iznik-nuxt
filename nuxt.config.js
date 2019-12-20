@@ -1,7 +1,7 @@
 const pkg = require('./package')
 const FACEBOOK_APPID = '134980666550322'
 
-// TODO In the old code we look for and record the src parameter as a way of recording where traffic comes from.
+// TODO EH In the old code we look for and record the src parameter as a way of recording where traffic comes from.
 // How shall we do that now?
 
 require('dotenv').config()
@@ -15,9 +15,12 @@ if (process.env.NUXT_BUILD_TYPE === 'fdapp') {
 // This is where the user site is.
 const USER_SITE = 'https://www.ilovefreegle.org'
 
+// This is where images are served from.
+const IMAGE_SITE = 'https://images.ilovefreegle.org'
+
 // IZNIK_API is where we send it to.  This avoids CORS issues (and removes preflight OPTIONS calls for GETs, which
 // hurt client performance).
-const IZNIK_API = process.env.IZNIK_API || 'https://iznik.ilovefreegle.org'
+const IZNIK_API = process.env.IZNIK_API || 'https://fdapidbg.ilovefreegle.org'
 
 // Long polls interact badly with per-host connection limits so send to here instead.
 const CHAT_HOST = 'https://users.ilovefreegle.org:555'
@@ -295,7 +298,8 @@ let config = {
     GOOGLE_CLIENT_ID:
       '423761283916-1rpa8120tpudgv4nf44cpmlf8slqbf4f.apps.googleusercontent.com',
     MODTOOLS: false,
-    USER_SITE: USER_SITE
+    USER_SITE: USER_SITE,
+    IMAGE_SITE: IMAGE_SITE
   },
 
   vue: {

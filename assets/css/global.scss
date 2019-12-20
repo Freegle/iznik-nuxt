@@ -1,6 +1,6 @@
 @import 'color-vars';
 
-// TODO Would be nice to use bootstrap mixins for breakpoints.  Also in NewsReply.
+// TODO MINOR Would be nice to use bootstrap mixins for breakpoints.  Also in NewsReply.
 $bootstrap-xs: 576px;
 $bootstrap-sm: 768px;
 $bootstrap-md: 992px;
@@ -79,35 +79,6 @@ $bootstrap-lg: 1200px;
   text-shadow: none !important;
   -webkit-font-smoothing: antialiased;
   border: 1px $color-black solid;
-}
-
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid $color-green--dark;
-  color: $color-green--dark;
-  text-decoration: none;
-  padding: 10px 30px;
-}
-
-.button--green:hover {
-  color: $color-white;
-  background-color: $color-green--dark;
-}
-
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid $color-blue--dark;
-  color: $color-blue--dark;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
-
-.button--grey:hover {
-  color: $color-white;
-  background-color: $color-blue--dark;
 }
 
 .text-success {
@@ -242,9 +213,11 @@ button {
     font-size: 100px;
 }
 
-.decornone,
-.decornone:hover{
+.decornone {
+  &:hover,
+  &:focus {
     text-decoration: none;
+  }
 }
 
 /* TODO DESIGN I tried adding "appear" transitions, e.g. for elements in chitchat, or messages.  But they then don't

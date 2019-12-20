@@ -12,7 +12,7 @@
             <b-form-select v-model="selectedType" class="m-3 typeSelect" value="All" :options="typeOptions" @change="typeChange" />
           </div>
           <groupHeader v-if="group" :key="'groupheader-' + groupid" :group="group" :show-join="true" />
-          <div v-for="message in messages" :key="'messagelist-' + message.id" class="p-0">
+          <div v-for="message in filteredMessages" :key="'messagelist-' + message.id" class="p-0">
             <message v-if="(selectedType === 'All' || message.type == selectedType) && (!message.outcomes || message.outcomes.length === 0)" v-bind="message" />
           </div>
 
@@ -26,7 +26,7 @@
         </div>
       </b-col>
       <b-col cols="0" lg="3" class="d-none d-lg-block">
-        <sidebar-right show-volunteer-opportunities show-job-opportunities />
+        <sidebar-right show-volunteer-opportunities />
       </b-col>
     </b-row>
   </b-col>
@@ -69,7 +69,6 @@ export default {
     return {
       id: null,
       groupid: null,
-      messages: [],
       busy: false,
       context: null,
       typeOptions: [
@@ -104,11 +103,28 @@ export default {
     messageCount: function() {
       const count = this.messages ? this.messages.length : 0
       return count
+    },
+
+    messages: function() {
+      let messages
+
+      if (this.groupid) {
+        messages = this.$store.getters['messages/getByGroup'](this.groupid)
+      } else {
+        messages = this.$store.getters['messages/getAll']
+      }
+
+      return messages
+    },
+
+    filteredMessages() {
+      return this.messages.filter(message => {
+        return !message.outcomes || message.outcomes.length === 0
+      })
     }
   },
   watch: {
     groupid() {
-      this.messages = []
       this.context = null
       this.$store.dispatch('messages/clear')
     },
@@ -175,18 +191,9 @@ export default {
         .then(() => {
           this.busy = false
 
-          let messages
-
-          if (this.groupid) {
-            messages = this.$store.getters['messages/getByGroup'](this.groupid)
-          } else {
-            messages = this.$store.getters['messages/getAll']
-          }
-
-          this.messages = messages
           this.context = this.$store.getters['messages/getContext']
 
-          if (currentCount === messages.length) {
+          if (currentCount === this.messages.length) {
             this.complete = true
             $state.complete()
           } else {

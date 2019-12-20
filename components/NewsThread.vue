@@ -55,8 +55,8 @@
         </b-button>
         <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id" class="list-unstyled mb-2">
           <li>
-            <news-refer v-if="entry.type.indexOf('ReferTo') === 0" :type="entry.type" />
-            <news-reply
+            <NewsRefer v-if="entry.type.indexOf('ReferTo') === 0" :type="entry.type" />
+            <NewsReply
               v-else
               :key="'newsfeedreply-' + newsfeed.id + '-reply-' + entry.id"
               :replyid="entry.id"

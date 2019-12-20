@@ -24,7 +24,7 @@
           </b-card-body>
         </b-card>
 
-        <div v-for="message in messages" :key="'message-' + message.id" class="p-0">
+        <div v-for="message in filteredMessages" :key="'message-' + message.id" class="p-0">
           <Message v-bind="message" />
         </div>
 
@@ -48,6 +48,7 @@ export default {
     groupHeader,
     Message
   },
+
   props: {
     id: {
       validator: prop => typeof prop === 'number' || typeof prop === 'string',
@@ -58,10 +59,29 @@ export default {
   data: function() {
     return {
       group: null,
-      messages: null,
       busy: false,
       context: null,
       distance: 1000
+    }
+  },
+
+  computed: {
+    messages: function() {
+      let messages
+
+      if (this.group) {
+        messages = this.$store.getters['messages/getByGroup'](this.group.id)
+      } else {
+        messages = this.$store.getters['messages/getAll']
+      }
+
+      return messages
+    },
+
+    filteredMessages() {
+      return this.messages.filter(message => {
+        return !message.outcomes || message.outcomes.length === 0
+      })
     }
   },
 
@@ -69,7 +89,6 @@ export default {
     // asyncData in the parent has populated the store.
     // We have the group id or name in this.id.  Fetch the group.
     this.group = this.$store.getters['group/get'](this.id)
-    this.messages = this.$store.getters['messages/getByGroup'](this.group.id)
     this.context = this.$store.getters['messages/getContext']
   },
 
@@ -87,14 +106,6 @@ export default {
         })
         .then(() => {
           this.busy = false
-
-          if (this.group) {
-            this.messages = this.$store.getters['messages/getByGroup'](
-              this.group.id
-            )
-          } else {
-            this.messages = this.$store.getters['messages/getAll']
-          }
 
           this.context = this.$store.getters['messages/getContext']
           $state.loaded()

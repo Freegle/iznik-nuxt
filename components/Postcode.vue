@@ -36,8 +36,6 @@
 
 <script>
 import Autocomplete from '~/components/Autocomplete'
-// TODO It's quite easy to get the wrong postcode, or think it doesn't match, because of server lag.  Perhaps a busy
-// indicator?
 // TODO If you're on mobile, e.g. on Give page, and click into this, then the on screen keyboard can hide the
 // autocomplete dropdown.  So we need either to drop up instead, or scroll somehow.
 

@@ -1,6 +1,7 @@
 <template>
   <div>
     <Highlighter
+      v-if="text"
       :search-words="searchWords"
       :text-to-highlight="formattedString"
       highlight-class-name="highlight"
