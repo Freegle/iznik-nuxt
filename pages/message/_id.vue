@@ -15,13 +15,16 @@
 </style>
 <script>
 import loginOptional from '@/mixins/loginOptional.js'
+import buildHead from '@/mixins/buildHead.js'
+import twem from '~/assets/js/twem'
+
 const Message = () => import('~/components/Message.vue')
 
 export default {
   components: {
     Message
   },
-  mixins: [loginOptional],
+  mixins: [loginOptional, buildHead],
   data: function() {
     return {
       id: null,
@@ -45,18 +48,11 @@ export default {
     }
   },
   async asyncData({ app, params, store }) {
-    console.log('Fetch message', params.id)
     await store.dispatch('messages/fetch', {
       id: params.id
     })
 
     const message = store.getters['messages/get'](params.id)
-
-    // console.log('Fetch user', message.fromuser)
-    // message.fromuser = await store.dispatch('user/fetch', {
-    //   id: message.fromuser.id,
-    //   info: true
-    // })
 
     return {
       message: message
@@ -65,6 +61,23 @@ export default {
   created() {
     this.id = this.$route.params.id
   },
-  methods: {}
+  head() {
+    let snip = null
+    const message = this.message
+
+    if (message.snippet) {
+      snip = twem.twem(this.$emoji, message.snippet)
+    } else {
+      snip = 'Click for more details'
+    }
+
+    return this.buildHead(
+      message.subject,
+      snip,
+      message.attachments && message.attachments.length > 1
+        ? message.attachments[0].path
+        : null
+    )
+  }
 }
 </script>

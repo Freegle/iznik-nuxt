@@ -54,13 +54,15 @@
 </style>
 <script>
 import loginOptional from '@/mixins/loginOptional.js'
+import buildHead from '@/mixins/buildHead.js'
+
 const WizardProgress = () => import('~/components/WizardProgress')
 
 export default {
   components: {
     WizardProgress
   },
-  mixins: [loginOptional],
+  mixins: [loginOptional, buildHead],
   data() {
     return {
       id: null,
