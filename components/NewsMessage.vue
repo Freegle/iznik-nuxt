@@ -1,11 +1,7 @@
 <template>
   <div>
     <NewsUserIntro v-if="userid" :userid="userid" :users="users" :newsfeed="newsfeed" />
-    <b-row v-if="newsfeed.message">
-      <b-col>
-        <read-more v-if="emessage" :text="emessage" :max-chars="1024" class="font-weight-bold prewrap forcebreak nopara" />
-      </b-col>
-    </b-row>
+    <read-more v-if="newsfeed.message && emessage" :text="emessage" :max-chars="1024" class="font-weight-bold prewrap forcebreak nopara" />
     <div>
       <b-row v-if="newsfeed.image">
         <b-col>
