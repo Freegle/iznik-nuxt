@@ -298,7 +298,7 @@
       <b-col class="text-center">
         <h4>Crunching the numbers...</h4>
         <p>This may take a minute.</p>
-        <b-img-lazy src="~/static/loader.gif" />
+        <b-img-lazy src="~/static/loader.gif" alt="Loading" />
       </b-col>
     </b-row>
   </div>

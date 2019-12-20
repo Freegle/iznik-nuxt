@@ -2,7 +2,7 @@
   <b-row class="m-0">
     <b-col cols="0" md="3" />
     <b-col cols="12" md="6" class="mt-2 text-center">
-      <b-img-lazy src="~/static/loader.gif" />
+      <b-img-lazy src="~/static/loader.gif" alt="Loading" />
     </b-col>
   </b-row>
 </template>

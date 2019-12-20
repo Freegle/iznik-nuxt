@@ -113,7 +113,7 @@
               <span slot="no-results" />
               <span slot="no-more" />
               <span slot="spinner">
-                <b-img-lazy src="~/static/loader.gif" />
+                <b-img-lazy src="~/static/loader.gif" alt="Loading" />
               </span>
             </infinite-loading>
           </b-card-body>

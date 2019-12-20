@@ -74,7 +74,7 @@
                 <span slot="no-results" />
                 <span slot="no-more" />
                 <span slot="spinner">
-                  <b-img-lazy src="~/static/loader.gif" />
+                  <b-img-lazy src="~/static/loader.gif" alt="Loading" />
                 </span>
               </infinite-loading>
             </b-nav-item-dropdown>
@@ -162,7 +162,7 @@
             <span slot="no-results" />
             <span slot="no-more" />
             <span slot="spinner">
-              <b-img-lazy src="~/static/loader.gif" />
+              <b-img-lazy src="~/static/loader.gif" alt="Loading" />
             </span>
           </infinite-loading>
         </b-dropdown>
@@ -251,7 +251,7 @@
     </client-only>
     <div class="navbar-toggle" style="display: none" />
     <div id="serverloader" class="centered">
-      <b-img src="~/static/loader.gif" />
+      <b-img src="~/static/loader.gif" alt="Loading..." />
       <p>
         <b>Just a tick...</b>
         <br>

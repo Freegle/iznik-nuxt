@@ -48,7 +48,7 @@
               <span slot="no-results" />
               <span slot="no-more" />
               <span slot="spinner">
-                <b-img-lazy src="~/static/loader.gif" />
+                <b-img-lazy src="~/static/loader.gif" alt="Loading" />
               </span>
             </infinite-loading>
             <ul v-for="chatmessage in chatmessages" :key="'chatmessage-' + chatmessage.id" class="p-0 pt-1 list-unstyled mb-1">

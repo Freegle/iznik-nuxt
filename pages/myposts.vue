@@ -58,7 +58,7 @@
               <p v-if="offers.length > 0" class="text-muted">
                 Stuff you're giving away.
               </p>
-              <b-img-lazy v-if="busy && offers.length === 0" src="~/static/loader.gif" />
+              <b-img-lazy v-if="busy && offers.length === 0" src="~/static/loader.gif" alt="Loading..." />
               <div v-if="busy || offers.length > 0">
                 <div v-for="message in offers" :key="'message-' + message.id" class="p-0 text-left mt-1">
                   <MyMessage :message="message" :messages="messages" :show-old="showOldOffers" :expand="expand" />

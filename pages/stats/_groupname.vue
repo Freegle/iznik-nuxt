@@ -23,7 +23,7 @@
         </b-row>
         <b-row v-if="loading">
           <b-col class="text-center">
-            <b-img-lazy v-if="loading" src="~/static/loader.gif" />
+            <b-img-lazy v-if="loading" src="~/static/loader.gif" alt="Loading..." />
           </b-col>
         </b-row>
         <div v-if="dataready">
