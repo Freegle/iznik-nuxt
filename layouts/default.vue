@@ -112,11 +112,13 @@
         </b-collapse>
       </client-only>
       <b-navbar-nav class="ml-auto">
-        <b-nav-item>
-          <div v-if="!loggedIn" class="btn btn-white" @click="requestLogin">
-            Sign in
-          </div>
-        </b-nav-item>
+        <client-only>
+          <b-nav-item>
+            <div v-if="!loggedIn" class="btn btn-white" @click="requestLogin">
+              Sign in
+            </div>
+          </b-nav-item>
+        </client-only>
       </b-navbar-nav>
     </b-navbar>
     <!-- Navbar for small screens -->
@@ -178,11 +180,13 @@
       </client-only>
 
       <b-navbar-nav>
-        <b-nav-item v-if="!loggedIn">
-          <div class="btn btn-white" @click="requestLogin">
-            Sign in
-          </div>
-        </b-nav-item>
+        <client-only>
+          <b-nav-item v-if="!loggedIn">
+            <div class="btn btn-white" @click="requestLogin">
+              Sign in
+            </div>
+          </b-nav-item>
+        </client-only>
       </b-navbar-nav>
 
       <b-navbar-nav class="">
