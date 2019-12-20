@@ -57,12 +57,12 @@ module.exports = {
       {
         hid: 'description',
         name: 'description',
-        content: 'Online dating for stuff'
+        content: 'Give and get stuff for free in your local community.  Don\'t just recycle - reuse, freecycle and freegle!'
       },
       {
         hid: 'apple-mobile-web-app-title',
         name: 'apple-mobile-web-app-title',
-        content: 'Online dating for stuff'
+        content: 'Give and get stuff for free in your local community.  Don\'t just recycle - reuse, freecycle and freegle!'
       },
 
       {
@@ -81,12 +81,12 @@ module.exports = {
       {
         hid: 'og:description',
         property: 'og:description',
-        content: 'Online dating for stuff'
+        content: 'Give and get stuff for free in your local community.  Don\'t just recycle - reuse, freecycle and freegle!'
       },
       { hid: 'fb:app_id', property: 'og:site_name', content: FACEBOOK_APPID },
 
       { hid: 'twitter:title', name: 'twitter:title', content: 'Freegle' },
-      { hid: 'twitter:description', name: 'twitter:description', content: 'Online dating for stuff' },
+      { hid: 'twitter:description', name: 'twitter:description', content: 'Give and get stuff for free in your local community.  Don\'t just recycle - reuse, freecycle and freegle!' },
       {
         hid: 'twitter:image',
         name: 'twitter:image',
