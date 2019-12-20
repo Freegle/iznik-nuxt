@@ -117,24 +117,15 @@
                 </div>
               </div>
               <div v-else>
-                <b-row>
-                  <b-col>
-                    <p>Nothing here yet.  Why not...</p>
-                  </b-col>
-                </b-row>
-                <b-row>
-                  <b-col cols="5" class="text-center">
-                    <b-button to="/find" class="mt-1" size="lg" variant="primary">
-                      <v-icon name="search" />&nbsp;Find stuff
-                    </b-button>
-                  </b-col>
-                  <b-col cols="2" />
-                  <b-col cols="5" class="text-center">
-                    <b-button to="/find/whatisit" class="mt-1" size="lg" variant="info">
-                      <v-icon name="gift" />&nbsp;Post a WANTED
-                    </b-button>
-                  </b-col>
-                </b-row>
+                <p>Nothing here yet.  Why not...</p>
+                <div class="d-flex justify-content-around mb-2">
+                  <b-button to="/find" class="mt-1" size="lg" variant="primary">
+                    <v-icon name="search" />&nbsp;Find stuff
+                  </b-button>
+                  <b-button to="/find/whatisit" class="mt-1" size="lg" variant="info">
+                    <v-icon name="gift" />&nbsp;Post a WANTED
+                  </b-button>
+                </div>
               </div>
             </b-card-text>
           </b-card-body>
@@ -382,7 +373,6 @@ export default {
   }
 }
 </script>
-
 
 <style scoped>
 </style>
