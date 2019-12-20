@@ -413,7 +413,11 @@ export default {
     }
   },
   computed: {
-    google: gmapApi,
+    google: {
+      get() {
+        return process.browser ? gmapApi : []
+      }
+    },
     mapHeight() {
       const contWidth = this.$refs.mapcont ? this.$refs.mapcont.$el.width : 0
       return contWidth

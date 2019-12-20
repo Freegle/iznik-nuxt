@@ -140,7 +140,7 @@
 </style>
 <script>
 // TODO MINOR This loads a bit clunkily.
-import { gmapApi } from 'vue2-google-maps'
+import gmapApi from 'vue2-google-maps'
 import GroupMarker from '~/components/GroupMarker.vue'
 
 export default {
@@ -165,7 +165,11 @@ export default {
     }
   },
   computed: {
-    google: gmapApi,
+    google: {
+      get() {
+        return process.browser ? gmapApi : []
+      }
+    },
     largeMarkers() {
       // Show small markers unless we are zoomed in to a small number of groups.
       return this.groupsInBounds.length < 20 && this.zoom > 10
@@ -178,8 +182,13 @@ export default {
       return contWidth
     },
     mapWidth() {
-      let height = Math.floor(window.innerHeight / 2)
-      height = height < 200 ? 200 : height
+      let height = 0
+
+      if (process.browser) {
+        height = Math.floor(window.innerHeight / 2)
+        height = height < 200 ? 200 : height
+      }
+
       return height
     },
     groupsInBounds() {
