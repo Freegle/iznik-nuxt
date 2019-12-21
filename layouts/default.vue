@@ -324,6 +324,9 @@ nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
   }
 }
 
+// TODO DESIGN Remove once we move to bootstrap breakpoints.
+$bootstrap-sm: 768px;
+
 #nav_collapse_mobile {
   margin-top: 5px;
 
@@ -336,7 +339,13 @@ nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
 
   .nav-item {
     flex: 1;
-    margin: 20px;
+    flex-basis: 25%;
+    margin: 20px 0;
+
+    // TODO DESIGN Use bootstrap breakpoints
+    @media (min-width: $bootstrap-sm) {
+      flex-basis: unset;
+    }
   }
 
   a {
