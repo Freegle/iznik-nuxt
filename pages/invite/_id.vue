@@ -7,7 +7,10 @@
   </b-row>
 </template>
 <script>
+import buildHead from '@/mixins/buildHead.js'
+
 export default {
+  mixins: [buildHead],
   created() {
     this.id = this.$route.params.id
   },
@@ -19,6 +22,9 @@ export default {
     })
 
     this.$router.push('/')
+  },
+  head() {
+    return this.buildHead('Invitation', "You've been invited to Freegle")
   }
 }
 </script>
