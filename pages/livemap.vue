@@ -48,7 +48,6 @@
   </div>
 </template>
 <script>
-import { gmapApi } from 'vue2-google-maps'
 import RichMarker from '~/components/RichMarker.vue'
 import loginOptional from '@/mixins/loginOptional.js'
 
@@ -67,11 +66,6 @@ export default {
     }
   },
   computed: {
-    google: {
-      get() {
-        return process.browser ? gmapApi : []
-      }
-    },
     mapHeight() {
       const contWidth = this.$refs.mapcont ? this.$refs.mapcont.$el.width : 0
       return contWidth

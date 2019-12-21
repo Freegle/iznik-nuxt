@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <b-container fluid>
     <b-row class="m-0">
       <b-col cols="0" lg="3" class="d-none d-lg-block">
         <SidebarLeft :show-community-events="true" :show-bot-left="true" />
@@ -58,7 +58,7 @@
               <p v-if="offers.length > 0" class="text-muted">
                 Stuff you're giving away.
               </p>
-              <b-img-lazy v-if="busy && offers.length === 0" src="~/static/loader.gif" />
+              <b-img-lazy v-if="busy && offers.length === 0" src="~/static/loader.gif" alt="Loading..." />
               <div v-if="busy || offers.length > 0">
                 <div v-for="message in offers" :key="'message-' + message.id" class="p-0 text-left mt-1">
                   <MyMessage :message="message" :messages="messages" :show-old="showOldOffers" :expand="expand" />
@@ -117,24 +117,15 @@
                 </div>
               </div>
               <div v-else>
-                <b-row>
-                  <b-col>
-                    <p>Nothing here yet.  Why not...</p>
-                  </b-col>
-                </b-row>
-                <b-row>
-                  <b-col cols="5" class="text-center">
-                    <b-button to="/find" class="mt-1" size="lg" variant="primary">
-                      <v-icon name="search" />&nbsp;Find stuff
-                    </b-button>
-                  </b-col>
-                  <b-col cols="2" />
-                  <b-col cols="5" class="text-center">
-                    <b-button to="/find/whatisit" class="mt-1" size="lg" variant="info">
-                      <v-icon name="gift" />&nbsp;Post a WANTED
-                    </b-button>
-                  </b-col>
-                </b-row>
+                <p>Nothing here yet.  Why not...</p>
+                <div class="d-flex justify-content-around mb-2">
+                  <b-button to="/find" class="mt-1" size="lg" variant="primary">
+                    <v-icon name="search" />&nbsp;Find stuff
+                  </b-button>
+                  <b-button to="/find/whatisit" class="mt-1" size="lg" variant="info">
+                    <v-icon name="gift" />&nbsp;Post a WANTED
+                  </b-button>
+                </div>
               </div>
             </b-card-text>
           </b-card-body>
@@ -192,10 +183,9 @@
       </b-col>
     </b-row>
     <AvailabilityModal v-if="me" ref="availabilitymodal" :thisuid="me.id" />
-  </div>
+  </b-container>
 </template>
-<style scoped>
-</style>
+
 <script>
 import loginRequired from '@/mixins/loginRequired.js'
 const JobsTopBar = () => import('../components/JobsTopBar')
@@ -383,3 +373,6 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+</style>

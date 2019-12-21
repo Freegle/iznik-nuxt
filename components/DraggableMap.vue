@@ -7,7 +7,7 @@
             <v-icon v-if="locating" name="sync" class="fa-spin" />
             <v-icon v-else-if="locationFailed" name="exclamation-triangle" />
             <v-icon v-else name="map-marker-alt" />
-            <span class="d-none d-sm-inline">&nbsp;Find my location</span>
+            &nbsp;Find my location
           </b-button>
           <GmapMap
             ref="gmap"
@@ -43,6 +43,7 @@
 </style>
 <script>
 // TODO DESIGN Make a bigger and more visible icon.
+// TODO EH Add place finder like in ExploreMap
 import { gmapApi } from 'vue2-google-maps'
 
 export default {
@@ -117,10 +118,13 @@ export default {
         ) {
           this.locating = true
           navigator.geolocation.getCurrentPosition(position => {
-            this.center = new this.google.maps.LatLng(
+            this.center = new (this.google()).maps.LatLng(
               position.coords.latitude,
               position.coords.longitude
             )
+
+            // Show close to where we think they are.
+            this.zoom = 16
           })
         } else {
           console.log('Navigation not supported.  ')

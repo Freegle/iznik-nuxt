@@ -722,7 +722,7 @@
               <notice-message variant="info">
                 This may take a few minutes, so please keep this tab open and be patient...
               </notice-message>
-              <b-img-lazy src="~/static/loader.gif" />
+              <b-img-lazy src="~/static/loader.gif" alt="Loading" />
               <b-alert variant="success" show>
                 Your data export has been started...
               </b-alert>
@@ -731,7 +731,7 @@
               <notice-message variant="info">
                 This may take a few minutes, so please keep this tab open and be patient...
               </notice-message>
-              <b-img-lazy src="~/static/loader.gif" />
+              <b-img-lazy src="~/static/loader.gif" alt="Loading" />
               <b-alert variant="warning" show>
                 You're in a queue (sorry).  Data exports ahead of you: {{ status.infront }}
               </b-alert>
@@ -740,17 +740,17 @@
               <notice-message variant="info">
                 This may take a few minutes, so please keep this tab open and be patient...
               </notice-message>
-              <b-img-lazy src="~/static/loader.gif" />
+              <b-img-lazy src="~/static/loader.gif" alt="Loading" />
               <b-alert variant="warning" show>
                 Your export will start soon...
               </b-alert>
             </div>
             <div v-else class="text-center">
-              <b-img-lazy src="~/static/loader.gif" />
+              <b-img-lazy src="~/static/loader.gif" alt="Loading" />
             </div>
           </div>
           <div v-else class="text-center">
-            <b-img-lazy src="~/static/loader.gif" />
+            <b-img-lazy src="~/static/loader.gif" alt="Loading" />
           </div>
         </div>
       </b-col>

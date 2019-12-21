@@ -56,3 +56,13 @@
     </b-row>
   </b-col>
 </template>
+<script>
+import buildHead from '@/mixins/buildHead.js'
+
+export default {
+  mixins: [buildHead],
+  head() {
+    return this.buildHead('Privacy', 'What data we keep and how we protect it')
+  }
+}
+</script>

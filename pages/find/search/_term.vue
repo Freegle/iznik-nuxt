@@ -82,7 +82,7 @@
               <span slot="no-more" />
               <span slot="spinner">
                 <span slot="no-results" />
-                <b-img-lazy src="~/static/loader.gif" />
+                <b-img-lazy src="~/static/loader.gif" alt="Loading" />
               </span>
             </infinite-loading>
           </b-col>
@@ -108,6 +108,7 @@
 //      the input, and not also round the button, which it should.
 import Autocomplete from '~/components/Autocomplete'
 import loginOptional from '@/mixins/loginOptional.js'
+import buildHead from '@/mixins/buildHead.js'
 const Message = () => import('~/components/Message.vue')
 
 export default {
@@ -115,7 +116,7 @@ export default {
     Autocomplete,
     Message
   },
-  mixins: [loginOptional],
+  mixins: [loginOptional, buildHead],
   data: function() {
     return {
       options: [
@@ -125,7 +126,6 @@ export default {
       searchtype: 'Offer',
       source: process.env.API + '/item',
       context: null,
-      term: null,
       complete: false,
       distance: 1000
     }
@@ -148,12 +148,17 @@ export default {
       })
     }
   },
-  mounted() {
+  asyncData({ app, params, store }) {
     // Get any value passed in the url for what to search for
-    let term = this.$route.params.term
+    let term = params.term
     term = term && term !== 'null' ? term : null
-    this.$refs.autocomplete.setValue(term)
-    this.term = term
+
+    return {
+      term: term
+    }
+  },
+  mounted() {
+    this.$refs.autocomplete.setValue(this.term)
 
     // Ensure we have no cached messages for other searches/groups
     this.$store.dispatch('messages/clear')
@@ -261,6 +266,10 @@ export default {
       // Reset the messages to force refetch.
       this.$store.dispatch('messages/clear')
     }
+  },
+
+  head() {
+    return this.buildHead('Search results: ' + this.term)
   }
 }
 </script>

@@ -100,6 +100,8 @@
 <script>
 import AvailabilityModal from '../../components/AvailabilityModal'
 import loginOptional from '@/mixins/loginOptional.js'
+import buildHead from '@/mixins/buildHead.js'
+
 const GroupHeader = () => import('~/components/GroupHeader.vue')
 const NewUser = () => import('~/components/NewUser.vue')
 
@@ -109,7 +111,7 @@ export default {
     GroupHeader,
     NewUser
   },
-  mixins: [loginOptional],
+  mixins: [loginOptional, buildHead],
   data: function() {
     return {
       show: true,
@@ -137,6 +139,10 @@ export default {
     availability() {
       this.$refs.availabilitymodal.show()
     }
+  },
+
+  head() {
+    return this.buildHead('Success', 'Your OFFER has been posted')
   }
 }
 </script>

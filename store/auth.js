@@ -135,7 +135,7 @@ export const actions = {
       ? 'Iznik ' + value.persistent
       : null
 
-    console.log('auth.setUser ',value.persistent)
+    console.log('auth.setUser ',value?value.persistent:'null')
   },
 
   async login({ commit, dispatch }, params) {

@@ -2,6 +2,7 @@ import Vue from 'vue'
 
 // app initialisation based on standard Cordova code
 console.log('--------------initapp--------------')
+console.log(Vue)
 
 let mobilePush = false
 let mobilePushId = false
@@ -115,18 +116,7 @@ const app = {
       mobilePush.on('registration', function (data) {
         mobilePushId = data.registrationId
         console.log('push registration ' + mobilePushId)
-        /*async function saveMobilePushId() {
-          console.log('saveMobilePushId')
-          const data = await this.$store.dispatch('auth/saveMobilePushId', {
-            push: {
-              type: isiOS ? 'FCMIOS' : 'FCMAndroid',
-              subscription: mobilePushId
-            }
-          })
-          console.log('saveMobilePushId', data)
-        }
-        saveMobilePushId()*/
-        // window.mobilePushId = false;
+        // mobilePushId reported to server in store/auth.js fetchUser
         // alert("registration: " + mobilePushId);
       })
       // Called to handle a push notification
@@ -173,6 +163,12 @@ const app = {
           data.count)
 
         //await this.$store.dispatch('notifications/count')
+        if (Vue.$store) {
+          console.log('PUSH dispatch store')
+          Vue.$store.dispatch('notifications/count')
+          Vue.$store.dispatch('chats/listChats')
+          console.log('PUSH dispatched store')
+        } else console.log('PUSH NO store')
 
         /* // Always try to set in-app counts
         if (('chatcount' in data.additionalData) && ('notifcount' in data.additionalData)) {
@@ -253,3 +249,16 @@ document.getElementsByTagName('head')[0].appendChild(style) */
 // }
 
 console.log('--------------initedapp--------------')
+
+/*const VueMobile = {}
+
+VueMobile.install = function install(Vue, options) {
+  console.log(Vue)
+  console.log(Vue.$store)
+  Vue.MobileApp = app
+  console.log('--------------Vue.MobileApp = app--------------')
+
+}
+
+Vue.use(VueMobile)*/
+

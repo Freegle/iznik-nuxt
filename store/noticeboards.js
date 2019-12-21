@@ -64,5 +64,9 @@ export const actions = {
   async edit({ commit, getters, dispatch }, params) {
     await this.$api.noticeboard.save(params)
     await dispatch('fetch', { id: params.id })
+  },
+
+  clear({ commit }) {
+    commit('setList', null)
   }
 }

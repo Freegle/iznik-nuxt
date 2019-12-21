@@ -37,7 +37,6 @@
 
 <script>
 // TODO DESIGN This page is a clutter and needs love.
-import { gmapApi } from 'vue2-google-maps'
 import RichMarker from './RichMarker.vue'
 
 export default {
@@ -52,13 +51,6 @@ export default {
     size: {
       type: String,
       required: true
-    }
-  },
-  computed: {
-    google: {
-      get() {
-        return process.browser ? gmapApi : []
-      }
     }
   },
   beforeDestroy() {

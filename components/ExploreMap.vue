@@ -14,17 +14,16 @@
       </b-col>
     </b-row>
     <b-row v-if="!region" class="m-0">
-      <b-col cols="12" lg="2" offset-lg="5">
+      <b-col cols="12" lg="2" offset-lg="5" class="text-center">
         <client-only>
-          <vue-google-autocomplete
-            v-if="google"
+          <gmap-autocomplete
             id="autocomplete"
             v-focus
-            classname="form-control"
+            class="form-control"
             placeholder="Enter a location"
             country="GB"
-            types="(regions)"
-            @placechanged="getAddressData"
+            :types="['(regions)']"
+            @place_changed="getAddressData"
           />
         </client-only>
       </b-col>
@@ -113,7 +112,7 @@
               <span slot="no-results" />
               <span slot="no-more" />
               <span slot="spinner">
-                <b-img-lazy src="~/static/loader.gif" />
+                <b-img-lazy src="~/static/loader.gif" alt="Loading" />
               </span>
             </infinite-loading>
           </b-card-body>
@@ -140,7 +139,6 @@
 </style>
 <script>
 // TODO MINOR This loads a bit clunkily.
-import gmapApi from 'vue2-google-maps'
 import GroupMarker from '~/components/GroupMarker.vue'
 
 export default {
@@ -165,11 +163,6 @@ export default {
     }
   },
   computed: {
-    google: {
-      get() {
-        return process.browser ? gmapApi : []
-      }
-    },
     largeMarkers() {
       // Show small markers unless we are zoomed in to a small number of groups.
       return this.groupsInBounds.length < 20 && this.zoom > 10
@@ -244,13 +237,7 @@ export default {
   methods: {
     getAddressData: function(addressData, placeResultData, id) {
       if (addressData) {
-        this.$refs.gmap.$mapObject.setCenter(
-          new this.google.maps.LatLng(
-            addressData.latitude,
-            addressData.longitude
-          )
-        )
-
+        this.$refs.gmap.$mapObject.setCenter(addressData.geometry.location)
         this.$refs.gmap.$mapObject.setZoom(11)
       }
     },

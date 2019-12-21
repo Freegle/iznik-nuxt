@@ -74,7 +74,7 @@
                 <span slot="no-results" />
                 <span slot="no-more" />
                 <span slot="spinner">
-                  <b-img-lazy src="~/static/loader.gif" />
+                  <b-img-lazy src="~/static/loader.gif" alt="Loading" />
                 </span>
               </infinite-loading>
             </b-nav-item-dropdown>
@@ -112,15 +112,17 @@
         </b-collapse>
       </client-only>
       <b-navbar-nav class="ml-auto">
-        <b-nav-item>
-          <div v-if="!loggedIn" class="btn btn-white" @click="requestLogin">
-            Sign in
-          </div>
-        </b-nav-item>
+        <client-only>
+          <b-nav-item>
+            <div v-if="!loggedIn" class="btn btn-white" @click="requestLogin">
+              Sign in
+            </div>
+          </b-nav-item>
+        </client-only>
       </b-navbar-nav>
     </b-navbar>
     <!-- Navbar for small screens -->
-    <b-navbar id="navbar_small" toggleable="xl" type="dark" class="ourBack d-flex justify-content-end d-xl-none pr-0" fixed="top">
+    <b-navbar id="navbar_small" toggleable="xl" type="dark" class="ourBack d-flex justify-content-end d-xl-none" fixed="top">
       <b-navbar-brand to="/" class="p-0 mr-auto">
         <b-img
           class="logo mr-2"
@@ -162,7 +164,7 @@
             <span slot="no-results" />
             <span slot="no-more" />
             <span slot="spinner">
-              <b-img-lazy src="~/static/loader.gif" />
+              <b-img-lazy src="~/static/loader.gif" alt="Loading" />
             </span>
           </infinite-loading>
         </b-dropdown>
@@ -178,11 +180,13 @@
       </client-only>
 
       <b-navbar-nav>
-        <b-nav-item v-if="!loggedIn">
-          <div class="btn btn-white" @click="requestLogin">
-            Sign in
-          </div>
-        </b-nav-item>
+        <client-only>
+          <b-nav-item v-if="!loggedIn">
+            <div class="btn btn-white" @click="requestLogin">
+              Sign in
+            </div>
+          </b-nav-item>
+        </client-only>
       </b-navbar-nav>
 
       <b-navbar-nav class="">
@@ -251,7 +255,7 @@
     </client-only>
     <div class="navbar-toggle" style="display: none" />
     <div id="serverloader" class="centered">
-      <b-img src="~/static/loader.gif" />
+      <b-img src="~/static/loader.gif" alt="Loading..." />
       <p>
         <b>Just a tick...</b>
         <br>
@@ -264,7 +268,6 @@
 <style scoped lang="scss">
 @import 'color-vars';
 
-/*TODO DESIGN Menu dropdown on mobile needs a bit of love.*/
 /*TODO DESIGN Shrink navbar on scroll? */
 
 html {
@@ -298,24 +301,58 @@ nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
 
 .navbar-dark .navbar-nav .nav-link {
   color: $color-white !important;
+
+  &:hover,
+  &:focus {
+    color: $color-white-opacity-75 !important;
+  }
 }
 
-.navbar-dark .navbar-nav .nav-link:hover,
-.navbar-dark .navbar-nav .nav-link:focus {
-  color: $color-white-opacity-75 !important;
+#menu-option-chat-sm {
+  &:hover,
+  &:focus {
+    color: $color-white-opacity-75 !important;
+  }
+
+  &.nuxt-link-active {
+    color: $color-white-opacity-50 !important;
+
+    &:hover,
+    &:focus {
+      color: $color-white-opacity-75 !important;
+    }
+  }
 }
 
-#nav_collapse_mobile .navbar-nav {
-  border-top: 1px solid $color-gray--light;
-  padding-top: 5px;
-}
+// TODO DESIGN Remove once we move to bootstrap breakpoints.
+$bootstrap-sm: 768px;
 
-#nav_collapse_mobile .nav-item {
-  width: 70px;
-}
+#nav_collapse_mobile {
+  margin-top: 5px;
 
-#nav_collapse_mobile a.nav-link {
-  color: $color-white;
+  .navbar-nav {
+    border-top: 1px solid $color-gray--light;
+    padding-top: 5px;
+    margin-top: 5px;
+    justify-content: center;
+  }
+
+  .nav-item {
+    flex: 1;
+    flex-basis: 25%;
+    margin: 20px 0;
+
+    // TODO DESIGN Use bootstrap breakpoints
+    @media (min-width: $bootstrap-sm) {
+      flex-basis: unset;
+    }
+  }
+
+  a {
+    &.nav-link {
+      color: $color-white;
+    }
+  }
 }
 
 .pageContent {

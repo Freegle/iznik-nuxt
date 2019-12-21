@@ -1,5 +1,5 @@
 <template>
-  <b-col>
+  <b-container fluid>
     <b-row class="m-0">
       <b-col cols="0" lg="3" class="d-none d-lg-block">
         <SidebarLeft :show-community-events="true" :show-bot-left="true" />
@@ -20,7 +20,7 @@
             <span slot="no-results" />
             <span slot="no-more" />
             <span slot="spinner">
-              <b-img-lazy src="~/static/loader.gif" />
+              <b-img-lazy src="~/static/loader.gif" alt="Loading" />
             </span>
           </infinite-loading>
         </div>
@@ -29,22 +29,8 @@
         <sidebar-right show-volunteer-opportunities />
       </b-col>
     </b-row>
-  </b-col>
+  </b-container>
 </template>
-
-<style scoped lang="scss">
-@import 'color-vars';
-
-.selection__wrapper {
-  background-color: $color-blue--x-light;
-  border: 1px solid $color-blue-x-light2;
-  border-radius: 3px;
-}
-
-.typeSelect {
-  max-width: 33%;
-}
-</style>
 
 <script>
 import loginRequired from '@/mixins/loginRequired.js'
@@ -209,3 +195,17 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
+.selection__wrapper {
+  background-color: $color-blue--x-light;
+  border: 1px solid $color-blue-x-light2;
+  border-radius: 3px;
+}
+
+.typeSelect {
+  max-width: 33%;
+}
+</style>

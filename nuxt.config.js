@@ -60,12 +60,12 @@ let config = {
       {
         hid: 'description',
         name: 'description',
-        content: 'Online dating for stuff'
+        content: 'Give and get stuff for free in your local community.  Don\'t just recycle - reuse, freecycle and freegle!'
       },
       {
         hid: 'apple-mobile-web-app-title',
         name: 'apple-mobile-web-app-title',
-        content: 'Online dating for stuff'
+        content: 'Give and get stuff for free in your local community.  Don\'t just recycle - reuse, freecycle and freegle!'
       },
 
       {
@@ -84,12 +84,12 @@ let config = {
       {
         hid: 'og:description',
         property: 'og:description',
-        content: 'Online dating for stuff'
+        content: 'Give and get stuff for free in your local community.  Don\'t just recycle - reuse, freecycle and freegle!'
       },
       { hid: 'fb:app_id', property: 'og:site_name', content: FACEBOOK_APPID },
 
       { hid: 'twitter:title', name: 'twitter:title', content: 'Freegle' },
-      { hid: 'twitter:description', name: 'twitter:description', content: 'Online dating for stuff' },
+      { hid: 'twitter:description', name: 'twitter:description', content: 'Give and get stuff for free in your local community.  Don\'t just recycle - reuse, freecycle and freegle!' },
       {
         hid: 'twitter:image',
         name: 'twitter:image',
@@ -162,8 +162,7 @@ let config = {
     { src: '~plugins/google-sdk', ssr: false },
     { src: '~plugins/vue-js-toggle-button', ssr: false },
     { src: '~plugins/vue2-datepicker', ssr: false },
-    { src: '~plugins/vue-social-sharing', ssr: false },
-    { src: '~plugins/vue-google-autocomplete', ssr: false }
+    { src: '~plugins/vue-social-sharing', ssr: false }
   ],
 
   redirect: [
