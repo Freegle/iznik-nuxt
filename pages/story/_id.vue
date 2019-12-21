@@ -30,6 +30,8 @@
 // TODO MINOR Add infinite scroll
 // TODO MINOR Error handling for invalid story id.
 import loginOptional from '@/mixins/loginOptional.js'
+import buildHead from '@/mixins/buildHead.js'
+
 const StoriesAddModal = () => import('~/components/StoriesAddModal')
 const Story = () => import('~/components/Story')
 
@@ -38,7 +40,7 @@ export default {
     StoriesAddModal,
     Story
   },
-  mixins: [loginOptional],
+  mixins: [loginOptional, buildHead],
   data: function() {
     return {
       id: null
@@ -49,18 +51,25 @@ export default {
       return this.$store.getters['stories/get'](this.id)
     }
   },
+  async asyncData({ app, params, store }) {
+    await store.dispatch('stories/fetch', {
+      id: params.id
+    })
+  },
   created() {
     this.id = this.$route.params.id
-  },
-  async mounted() {
-    await this.$store.dispatch('stories/fetch', {
-      id: this.id
-    })
   },
   methods: {
     showAddModal() {
       this.$refs.addmodal.show()
     }
+  },
+  head() {
+    return this.buildHead(
+      'Freegle Story: ' + this.story.headline,
+      this.story.story,
+      this.story.photo
+    )
   }
 }
 </script>
