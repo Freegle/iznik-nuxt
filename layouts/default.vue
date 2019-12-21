@@ -571,14 +571,16 @@ export default {
 
   methods: {
     startNCHAN(id) {
+      console.log('NCHAN COMMENTED OUT')
+      return
       this.nchan = new NchanSubscriber(
         process.env.CHAT_HOST + '/subscribe?id=' + id,
-        //{
-        //  subscriber: ['websocket', 'eventsource', 'longpoll ']
-        //},
         {
-          subscriber: 'longpoll'
-        }
+          subscriber: ['websocket', 'eventsource', 'longpoll ']
+        },
+        // CC {
+        // CC  subscriber: 'longpoll'
+        // CC}
       )
 
       // We store the last message we got from NCHAN.  This avoids us getting duplicate messages (triggering server
