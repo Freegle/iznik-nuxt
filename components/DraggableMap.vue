@@ -7,7 +7,7 @@
             <v-icon v-if="locating" name="sync" class="fa-spin" />
             <v-icon v-else-if="locationFailed" name="exclamation-triangle" />
             <v-icon v-else name="map-marker-alt" />
-            <span class="d-none d-sm-inline">&nbsp;Find my location</span>
+            &nbsp;Find my location
           </b-button>
           <GmapMap
             ref="gmap"
