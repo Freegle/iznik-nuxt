@@ -49,13 +49,14 @@
 <script>
 // TODO NS MINOR This page is near identical to the _location one.  What's the correct way to do that?
 import loginOptional from '@/mixins/loginOptional.js'
+import buildHead from '@/mixins/buildHead.js'
 const Job = () => import('~/components/Job')
 
 export default {
   components: {
     Job
   },
-  mixins: [loginOptional],
+  mixins: [loginOptional, buildHead],
   data: function() {
     return {
       loading: true,
@@ -135,6 +136,12 @@ export default {
     search() {
       this.$router.push('/jobs/' + encodeURIComponent(this.searchLocation))
     }
+  },
+  head() {
+    return this.buildHead(
+      this.location ? 'Jobs near ' + this.location : 'Jobs',
+      'These are job ads fairly close to the location.  Freegle gets a little bit to help keep us going if you click on them.'
+    )
   }
 }
 </script>
