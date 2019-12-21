@@ -40,7 +40,7 @@
       </p>
       <hr>
       <h3>Invite your friends</h3>
-      <div v-if="me.invitesleft > 0">
+      <div v-if="me && me.invitesleft > 0">
         <p class="bg-info p-2">
           You have <b>{{ me.invitesleft | pluralize('invitation', { includeNumber: true }) }}</b> left.
         </p>

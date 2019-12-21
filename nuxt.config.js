@@ -30,7 +30,7 @@ const DISABLE_ESLINT_AUTOFIX =
 const ESLINT_AUTOFIX = !DISABLE_ESLINT_AUTOFIX
 
 module.exports = {
-  mode: 'universal',
+  mode: 'spa',
 
   /*
   ** Headers.  Include default meta tags that will apply unless overridden by individual pages.  Every page that
@@ -159,8 +159,7 @@ module.exports = {
     { src: '~plugins/google-sdk', ssr: false },
     { src: '~plugins/vue-js-toggle-button', ssr: false },
     { src: '~plugins/vue2-datepicker', ssr: false },
-    { src: '~plugins/vue-social-sharing', ssr: false },
-    { src: '~plugins/vue-google-autocomplete', ssr: false }
+    { src: '~plugins/vue-social-sharing', ssr: false }
   ],
 
   redirect: [

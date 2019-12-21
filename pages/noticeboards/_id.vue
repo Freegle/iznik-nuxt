@@ -45,7 +45,7 @@
                 >
                   <div v-for="noticeboard in noticeboards" :key="'marker-' + noticeboard.id + '-' + noticeboards.length">
                     <GmapMarker
-                      :position="google && new google.maps.LatLng(noticeboard.lat, noticeboard.lng)"
+                      :position="google && new (google()).maps.LatLng(noticeboard.lat, noticeboard.lng)"
                       :clickable="false"
                       :draggable="false"
                       icon="/mapmarker.gif"

@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import * as VueGoogleMaps from 'vue2-google-maps'
+import * as VueGoogleMaps from '~/node_modules/vue2-google-maps'
 
 const googleMapsKey = process.env.GOOGLE_MAPS_KEY
 
