@@ -725,7 +725,6 @@ export default {
 
     showNotifications() {
       // We want to make sure we have the most up to date notifications.
-      console.log('Click notifications')
       this.$store.dispatch('notifications/clearContext')
       this.$store.dispatch('notifications/list')
     },
