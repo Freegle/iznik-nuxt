@@ -76,8 +76,13 @@ export default {
       return contWidth
     },
     mapWidth() {
-      let height = Math.floor(window.innerHeight / 2)
-      height = height < 200 ? 200 : height
+      let height = 0
+
+      if (process.browser) {
+        height = Math.floor(window.innerHeight / 2)
+        height = height < 200 ? 200 : height
+      }
+
       return height
     }
   },

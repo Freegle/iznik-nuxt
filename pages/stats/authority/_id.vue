@@ -351,6 +351,7 @@ import Wkt from 'wicket'
 import 'wicket/wicket-gmap3'
 import { gmapApi } from 'vue2-google-maps'
 import loginOptional from '@/mixins/loginOptional.js'
+import buildHead from '@/mixins/buildHead.js'
 
 // TODO NS MINOR I think table is a big chunk of stuff to load from Bootstrap.  Does this hit us on initial page load?
 // TODO MINOR It would be nice to render this page using SSR.  But the fetching of data is very slow, which means
@@ -361,7 +362,7 @@ export default {
   components: {
     GChart
   },
-  mixins: [loginOptional],
+  mixins: [loginOptional, buildHead],
   data() {
     return {
       startDate: null,
@@ -423,8 +424,13 @@ export default {
       return contWidth
     },
     mapWidth() {
-      let height = Math.floor(window.innerHeight / 2)
-      height = height < 200 ? 200 : height
+      let height = 0
+
+      if (process.browser) {
+        height = Math.floor(window.innerHeight / 2)
+        height = height < 200 ? 200 : height
+      }
+
       return height
     },
     totalWeight() {
@@ -630,6 +636,8 @@ export default {
 
       let groupcount = 0
       const stats = []
+
+      // TODO MINOR Change this to use a computed property.  Then reference in head() and check SSR works.
       const authority = store.getters['authorities/get'](id)
       const start = this.$dayjs(this.startDate).format('YYYY-MM-DD')
       const end = this.$dayjs(this.endDate).format('YYYY-MM-DD')
@@ -766,6 +774,9 @@ export default {
         this.fetchData(this.$store, this.id)
       }
     }
+  },
+  head() {
+    return this.buildHead('Statistics', 'See stats and graphs for Freegle')
   }
 }
 </script>

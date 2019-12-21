@@ -35,11 +35,14 @@
 <script>
 import { gmapApi } from 'vue2-google-maps'
 import loginOptional from '@/mixins/loginOptional.js'
+import buildHead from '@/mixins/buildHead.js'
+
 // TODO MINOR Add place search box.
+// TODO MINOR Add loading indicator rather than showing a map.  Search Crunching.
 
 export default {
   components: {},
-  mixins: [loginOptional],
+  mixins: [loginOptional, buildHead],
   data: function() {
     return {
       fetched: false,
@@ -58,8 +61,13 @@ export default {
       return contWidth
     },
     mapWidth() {
-      let height = Math.floor(window.innerHeight - 250)
-      height = height < 200 ? 200 : height
+      let height = 0
+
+      if (process.browser) {
+        height = Math.floor(window.innerHeight - 250)
+        height = height < 200 ? 200 : height
+      }
+
       return height
     }
   },
@@ -130,6 +138,12 @@ export default {
 
       return data
     }
+  },
+  head() {
+    return this.buildHead(
+      'Heatmap',
+      'This shows where the most items have been freegled, in pretty colours.'
+    )
   }
 }
 </script>
