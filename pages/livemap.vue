@@ -50,12 +50,13 @@
 <script>
 import RichMarker from '~/components/RichMarker.vue'
 import loginOptional from '@/mixins/loginOptional.js'
+import buildHead from '@/mixins/buildHead.js'
 
 export default {
   components: {
     RichMarker
   },
-  mixins: [loginOptional],
+  mixins: [loginOptional, buildHead],
   data: function() {
     return {
       startTime: null,
@@ -71,8 +72,13 @@ export default {
       return contWidth
     },
     mapWidth() {
-      let height = Math.floor(window.innerHeight - 250)
-      height = height < 200 ? 200 : height
+      let height = 0
+
+      if (process.browser) {
+        height = Math.floor(window.innerHeight - 250)
+        height = height < 200 ? 200 : height
+      }
+
       return height
     },
     messagesToShow() {
@@ -157,6 +163,13 @@ export default {
       console.log('Open', id)
       window.open(process.env.USER_SITE + '/message/' + id)
     }
+  },
+
+  head() {
+    return this.buildHead(
+      'Live Map',
+      'See freegling happen across the UK in real time'
+    )
   }
 }
 </script>
