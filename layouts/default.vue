@@ -677,6 +677,7 @@ export default {
 
       if (me && me.id) {
         await this.$store.dispatch('notifications/count')
+        await this.$store.dispatch('chats/listChats')
       }
 
       this.notificationPoll = setTimeout(this.getNotificationCount, 30000)
