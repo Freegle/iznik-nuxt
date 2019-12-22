@@ -50,6 +50,7 @@
 
 <script>
 import SidebarRight from '../../components/SidebarRight'
+import buildHead from '@/mixins/buildHead'
 import loginRequired from '@/mixins/loginRequired.js'
 const ChatPane = () => import('~/components/ChatPane.vue')
 const ChatListEntry = () => import('~/components/ChatListEntry.vue')
@@ -61,7 +62,7 @@ export default {
     ChatPane,
     ChatListEntry
   },
-  mixins: [loginRequired],
+  mixins: [loginRequired, buildHead],
 
   validate({ params }) {
     // Must be a number if present
@@ -195,6 +196,12 @@ export default {
         this.searching = null
       }
     }
+  },
+  head() {
+    return this.buildHead(
+      'Chats',
+      "See the conversations you're having with other freeglers."
+    )
   }
 }
 </script>
