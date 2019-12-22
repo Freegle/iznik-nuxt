@@ -12,6 +12,9 @@
     :hide-header-close="modalIsForced"
     :no-close-on-esc="modalIsForced"
   >
+    <!--    TODO MINOR Suppose you have a button which then forces you to log in, e.g. Add a volunteer op.  Once clicked, you-->
+    <!--    can't get out of this modal.  Probably that only happens when we want to force login before popping up another-->
+    <!--    modal and we're not navigating.-->
     <!-- This is required as the default bootstrap component makes the main title an h5 -->
     <template slot="modal-title">
       <h2>Let's get freegling!</h2>
