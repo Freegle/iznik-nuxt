@@ -94,6 +94,7 @@
 
 <script>
 import loginRequired from '@/mixins/loginRequired.js'
+import buildHead from '@/mixins/buildHead'
 import twem from '~/assets/js/twem'
 import NewsThread from '~/components/NewsThread.vue'
 const OurFilePond = () => import('~/components/OurFilePond')
@@ -109,7 +110,7 @@ export default {
     SidebarLeft,
     SidebarRight
   },
-  mixins: [loginRequired],
+  mixins: [loginRequired, buildHead],
 
   validate({ params }) {
     // Must be a number if present
@@ -376,6 +377,12 @@ export default {
       this.imageid = imageid
       this.imagethumb = imagethumb
     }
+  },
+  head() {
+    return this.buildHead(
+      'ChitChat',
+      'Chat to nearby freeglers...ask for advice, recommendations or just have a good old blether.'
+    )
   }
 }
 </script>
