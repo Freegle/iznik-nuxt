@@ -6,7 +6,7 @@
       :min="0"
       :max="target"
       :options="thermOptions"
-      scale=""
+      scale="£"
     />
 
     <h4 v-if="raised">
@@ -15,7 +15,6 @@
   </div>
 </template>
 <style scoped>
-/* TODO DESIGN Use CSS magic to insert a pound sign on the axis? */
 /* TODO DESIGN Animate the change in value? */
 </style>
 <script>

@@ -527,8 +527,12 @@ $color-yahoo: #6b0094;
   min-width: 250px;
   border-radius: 3px;
   padding: 0;
-  margin-bottom: 20px;
+  margin: 0 auto 20px;
   color: $color-white;
+
+  @include media-breakpoint-up(lg) {
+    margin: 0 0 20px;
+  }
 }
 
 .social-button:disabled {

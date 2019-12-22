@@ -7,3 +7,6 @@
 /modules/lazystrap/node_modules/.cache
 /.idea
 /.env
+
+# OSx files
+.DS_Store
