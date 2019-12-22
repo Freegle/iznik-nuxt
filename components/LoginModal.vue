@@ -522,8 +522,6 @@ $color-yahoo: #6b0094;
 }
 
 .social-button {
-  margin-right: auto;
-  margin-left: auto;
   display: flex;
   align-items: center;
   min-width: 250px;
