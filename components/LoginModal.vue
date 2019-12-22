@@ -522,7 +522,7 @@ $color-yahoo: #6b0094;
 }
 
 .social-button {
-  @include media-breakpoint-down(lg) {
+  @include media-breakpoint-down(md) {
     margin-right: auto;
     margin-left: auto;
   }
