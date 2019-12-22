@@ -522,18 +522,19 @@ $color-yahoo: #6b0094;
 }
 
 .social-button {
-  @include media-breakpoint-down(md) {
-    margin-right: auto;
-    margin-left: auto;
-  }
-
+  margin-right: auto;
+  margin-left: auto;
   display: flex;
   align-items: center;
   min-width: 250px;
   border-radius: 3px;
   padding: 0;
-  margin-bottom: 20px;
+  margin: 0 auto 20px;
   color: $color-white;
+
+  @include media-breakpoint-up(lg) {
+    margin: 0 0 20px;
+  }
 }
 
 .social-button:disabled {
