@@ -46,6 +46,7 @@
 <script>
 import ForgetFailModal from '../components/ForgetFailModal'
 import ForgetSucceedModal from '../components/ForgetSucceedModal'
+import buildHead from '@/mixins/buildHead.js'
 import loginOptional from '@/mixins/loginOptional.js'
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect.vue')
 const ConfirmModal = () => import('~/components/ConfirmModal.vue')
@@ -60,7 +61,7 @@ export default {
     ConfirmModal,
     NoticeMessage
   },
-  mixins: [loginOptional],
+  mixins: [loginOptional, buildHead],
   data() {
     return {
       groupid: null,
@@ -116,6 +117,12 @@ export default {
         this.$refs.forgetsucceed.show()
       }
     }
+  },
+  head() {
+    return this.buildHead(
+      'Unsubscribe',
+      'Want to leave Freegle?  You can do that from here.'
+    )
   }
 }
 </script>
