@@ -267,7 +267,9 @@ export default {
         ret.push(this.users[user].displayname)
       }
 
-      return ret
+      return ret.sort((a, b) => {
+        return a.toLowerCase().localeCompare(b.toLowerCase())
+      })
     },
     mod() {
       const me = this.me
