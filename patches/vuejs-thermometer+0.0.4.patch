@@ -1,7 +1,3 @@
-diff --git a/node_modules/vuejs-thermometer/.DS_Store b/node_modules/vuejs-thermometer/.DS_Store
-new file mode 100644
-index 0000000..9822cf3
-Binary files /dev/null and b/node_modules/vuejs-thermometer/.DS_Store differ
 diff --git a/node_modules/vuejs-thermometer/dist/VueThermometer.common.js b/node_modules/vuejs-thermometer/dist/VueThermometer.common.js
 index a3201fc..e63afc3 100644
 --- a/node_modules/vuejs-thermometer/dist/VueThermometer.common.js
@@ -15,10 +11,6 @@ index a3201fc..e63afc3 100644
  var staticRenderFns = []
  
  
-diff --git a/node_modules/vuejs-thermometer/src/.DS_Store b/node_modules/vuejs-thermometer/src/.DS_Store
-new file mode 100644
-index 0000000..569309b
-Binary files /dev/null and b/node_modules/vuejs-thermometer/src/.DS_Store differ
 diff --git a/node_modules/vuejs-thermometer/src/components/VueThermometer.vue b/node_modules/vuejs-thermometer/src/components/VueThermometer.vue
 index 703d0ee..8950e93 100644
 --- a/node_modules/vuejs-thermometer/src/components/VueThermometer.vue
