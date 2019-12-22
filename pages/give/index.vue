@@ -154,7 +154,7 @@ export default {
 
   head() {
     return this.buildHead(
-      'Give',
+      'Give something',
       'OFFER something to people nearby and see who wants it'
     )
   }

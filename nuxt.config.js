@@ -49,7 +49,7 @@ module.exports = {
   * silently fail and revert to the site default we set up here.
   */
   head: {
-    title: 'Freegle',
+    title: "Freegle - Don't throw it away, give it away!",
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
