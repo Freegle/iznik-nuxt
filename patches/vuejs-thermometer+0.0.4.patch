@@ -1,0 +1,21 @@
+diff --git a/node_modules/vuejs-thermometer/.DS_Store b/node_modules/vuejs-thermometer/.DS_Store
+new file mode 100644
+index 0000000..861e1ff
+Binary files /dev/null and b/node_modules/vuejs-thermometer/.DS_Store differ
+diff --git a/node_modules/vuejs-thermometer/src/.DS_Store b/node_modules/vuejs-thermometer/src/.DS_Store
+new file mode 100644
+index 0000000..4ccbbc1
+Binary files /dev/null and b/node_modules/vuejs-thermometer/src/.DS_Store differ
+diff --git a/node_modules/vuejs-thermometer/src/components/VueThermometer.vue b/node_modules/vuejs-thermometer/src/components/VueThermometer.vue
+index 703d0ee..bca4a27 100644
+--- a/node_modules/vuejs-thermometer/src/components/VueThermometer.vue
++++ b/node_modules/vuejs-thermometer/src/components/VueThermometer.vue
+@@ -16,7 +16,7 @@
+       <!-- this is the bar/temp height -->
+       <rect :fill="defaultOptions.thermo.color" stroke="#000000" stroke-width="0" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="4" stroke-dashoffset="0" ry="8" rx="8" :x="baseXOffset + 3" :y="thermoOffset" :width="thermoWidth" :height="thermoHeight" id="svg_18"/>
+       <!-- this is the temp values -->
+-      <text v-show="defaultOptions.text.textEnabled" v-for="(tick, index) in ticks" :key="index" :id="'svg_19' + index" :fill="defaultOptions.text.color" :stroke="defaultOptions.text.color" stroke-width="0" :x="textSpacing" :y="offsetText(index)" :font-size="defaultOptions.text.fontSize" :font-family="defaultOptions.text.fontFamily" text-anchor="middle" xml:space="preserve">{{ tick }}{{ scale}}</text>
++      <text v-show="defaultOptions.text.textEnabled" v-for="(tick, index) in ticks" :key="index" :id="'svg_19' + index" :fill="defaultOptions.text.color" :stroke="defaultOptions.text.color" stroke-width="0" :x="textSpacing" :y="offsetText(index)" :font-size="defaultOptions.text.fontSize" :font-family="defaultOptions.text.fontFamily" text-anchor="middle" xml:space="preserve">{{ scale}}{{ tick }}</text>
+     </g>
+     </svg>
+   </div>

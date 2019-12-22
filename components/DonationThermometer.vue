@@ -6,7 +6,7 @@
       :min="0"
       :max="target"
       :options="thermOptions"
-      scale=""
+      scale="£"
     />
 
     <h4 v-if="raised">
