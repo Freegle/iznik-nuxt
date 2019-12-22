@@ -22,7 +22,7 @@
         </div>
         <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" force-use-infinite-wrapper="body" @infinite="loadMore">
           <span slot="no-results">
-            <notice-message v-if="!volunteerings.length">
+            <notice-message v-if="!volunteerings || !volunteerings.length">
               There are no volunteer opportunities to show.  Why not add one?
             </notice-message>
           </span>

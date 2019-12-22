@@ -22,7 +22,7 @@
         </div>
         <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" force-use-infinite-wrapper="body" @infinite="loadMore">
           <span slot="no-results">
-            <notice-message v-if="!events.length">
+            <notice-message v-if="!events || !events.length">
               There are no community events to show.  Why not add one?
             </notice-message>
           </span>
