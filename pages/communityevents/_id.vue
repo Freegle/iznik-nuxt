@@ -128,7 +128,7 @@ export default {
 
     return this.buildHead(
       name,
-      'Are you a charity or good cause that needs volunteers? Ask our lovely community of freeglers to help.',
+      'These are local events, posted by other freeglers like you.',
       image
     )
   }
