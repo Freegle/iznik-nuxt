@@ -74,7 +74,7 @@
                 @keyup.enter.exact.prevent
                 @keydown.enter.exact="sendComment"
               >
-                <at-ta ref="at" :members="tagusers" class="flex-shrink-2 input-group">
+                <at-ta ref="at" :members="tagusers" class="flex-shrink-2 input-group" :filter-match="filterMatch">
                   <b-input-group-prepend>
                     <span class="input-group-text pl-1 pr-1">
                       <b-img-lazy
@@ -399,6 +399,10 @@ export default {
       await this.$store.dispatch('newsfeed/fetch', {
         id: this.id
       })
+    },
+    filterMatch(name, chunk) {
+      // Only match at start of string.
+      return name.toLowerCase().indexOf(chunk.toLowerCase()) === 0
     }
   }
 }
