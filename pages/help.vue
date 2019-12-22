@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import buildHead from '@/mixins/buildHead.js'
 // TODO DESIGN Make this a bit prettier.
 const VueFaqAccordion = () => import('vue-faq-accordion')
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
@@ -75,6 +76,7 @@ export default {
     ChatButton,
     NoticeMessage
   },
+  mixins: [buildHead],
   data() {
     return {
       contactGroupId: null,
@@ -286,6 +288,12 @@ export default {
       const ret = Boolean(this.$store.getters['auth/user'])
       return ret
     }
+  },
+  head() {
+    return this.buildHead(
+      'Help',
+      'Questions?  Promblems?  Our lovely volunteers will be happy to help.'
+    )
   }
 }
 </script>
