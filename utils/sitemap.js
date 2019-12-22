@@ -1,7 +1,13 @@
 // Build up our sitemap, including dynamic routes.
+const axios = require('axios')
 
 export default {
-  includeRoutes: function() {
+  includeRoutes: async function() {
+    // Construct the routes.
+    //
+    // Google probably ignores priority and changefreq.  But it doesn't seem to do any harm.
+    const a = axios.create()
+
     const routes = [
       {
         url: '/',
@@ -89,6 +95,27 @@ export default {
         priority: 0.1
       }
     ]
+
+    const API = process.env.API ? process.env.API : 'http://localhost:3000'
+    console.log('API', process.env.API)
+    const res = await a.get(API + '/api/groups', {
+      params: {
+        grouptype: 'Freegle'
+      }
+    })
+
+    if (res.status === 200 && res.data.ret === 0) {
+      // We could include lastmod, but it would require an extra API call.  And Google probably ignores it.
+      const groups = res.data.groups
+
+      groups.forEach(group => {
+        routes.push({
+          url: '/explore/' + group.nameshort,
+          changefreq: 'daily',
+          priority: 0.2
+        })
+      })
+    }
 
     return routes
   },
