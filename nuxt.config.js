@@ -1,3 +1,5 @@
+import sitemap from './utils/sitemap.js'
+
 const pkg = require('./package')
 const FACEBOOK_APPID = '134980666550322'
 
@@ -57,12 +59,14 @@ module.exports = {
       {
         hid: 'description',
         name: 'description',
-        content: 'Give and get stuff for free in your local community.  Don\'t just recycle - reuse, freecycle and freegle!'
+        content:
+          "Give and get stuff for free in your local community.  Don't just recycle - reuse, freecycle and freegle!"
       },
       {
         hid: 'apple-mobile-web-app-title',
         name: 'apple-mobile-web-app-title',
-        content: 'Give and get stuff for free in your local community.  Don\'t just recycle - reuse, freecycle and freegle!'
+        content:
+          "Give and get stuff for free in your local community.  Don't just recycle - reuse, freecycle and freegle!"
       },
 
       {
@@ -81,12 +85,18 @@ module.exports = {
       {
         hid: 'og:description',
         property: 'og:description',
-        content: 'Give and get stuff for free in your local community.  Don\'t just recycle - reuse, freecycle and freegle!'
+        content:
+          "Give and get stuff for free in your local community.  Don't just recycle - reuse, freecycle and freegle!"
       },
       { hid: 'fb:app_id', property: 'og:site_name', content: FACEBOOK_APPID },
 
       { hid: 'twitter:title', name: 'twitter:title', content: 'Freegle' },
-      { hid: 'twitter:description', name: 'twitter:description', content: 'Give and get stuff for free in your local community.  Don\'t just recycle - reuse, freecycle and freegle!' },
+      {
+        hid: 'twitter:description',
+        name: 'twitter:description',
+        content:
+          "Give and get stuff for free in your local community.  Don't just recycle - reuse, freecycle and freegle!"
+      },
       {
         hid: 'twitter:image',
         name: 'twitter:image',
@@ -97,7 +107,11 @@ module.exports = {
         name: 'twitter:image:alt',
         content: 'The Freegle logo'
       },
-      { hid: 'twitter:card', name: 'twitter:card', content: 'summary_large_image' },
+      {
+        hid: 'twitter:card',
+        name: 'twitter:card',
+        content: 'summary_large_image'
+      },
       { hid: 'twitter:site', name: 'twitter:site', content: 'thisisfreegle' }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
@@ -178,6 +192,7 @@ module.exports = {
   ** Nuxt.js modules
   */
   modules: [
+    '@nuxtjs/sitemap',
     'bootstrap-vue/nuxt',
     'nuxt-rfg-icon',
     '@nuxtjs/axios',
@@ -361,5 +376,15 @@ module.exports = {
 
   router: {
     middleware: ['keylogin']
+  },
+
+  sitemap: {
+    routes() {
+      return sitemap.includeRoutes()
+    },
+    exclude: sitemap.excludeRoutes,
+    path: '/sitemap.xml',
+    gzip: true,
+    generate: false
   }
 }
