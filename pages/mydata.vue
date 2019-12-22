@@ -760,6 +760,8 @@
 <script>
 import ShowMore from '../components/ShowMore'
 import loginRequired from '@/mixins/loginRequired.js'
+import buildHead from '@/mixins/buildHead.js'
+
 const NoticeMessage = () => import('~/components/NoticeMessage')
 const ExportPost = () => import('~/components/ExportPost')
 const ExportChat = () => import('~/components/ExportChat')
@@ -773,7 +775,7 @@ export default {
     ExportChat,
     Ratings
   },
-  mixins: [loginRequired],
+  mixins: [loginRequired, buildHead],
   data: function() {
     return {
       status: null,
@@ -848,6 +850,12 @@ export default {
         '_blank'
       )
     }
+  },
+  head() {
+    return this.buildHead(
+      'My Data',
+      'See what data we hold about you, and download it.'
+    )
   }
 }
 </script>
