@@ -219,7 +219,10 @@
   </b-col>
 </template>
 <script>
+import buildHead from '@/mixins/buildHead.js'
+
 export default {
+  mixins: [buildHead],
   computed: {},
   async asyncData({ app, params, store }) {
     await store.dispatch('team/fetch', {
@@ -246,6 +249,12 @@ export default {
       console.error('Broken profile image', event.target.src)
       event.target.src = '/static/defaultprofile.png'
     }
+  },
+  head() {
+    return this.buildHead(
+      'About Us',
+      'What we do, how it works, who we are...all that stuff.'
+    )
   }
 }
 </script>
