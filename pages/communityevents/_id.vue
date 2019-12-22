@@ -8,7 +8,7 @@
           <p>These are local events, posted by other freeglers like you.</p>
           <b-row class="mb-3">
             <b-col>
-              <groupSelect v-model="groupid" class="float-left" all />
+              <groupSelect v-if="me" v-model="groupid" class="float-left" all />
             </b-col>
             <b-col>
               <b-btn variant="success" class="float-right" @click="showEventModal">
@@ -65,6 +65,9 @@ export default {
   computed: {
     events() {
       return this.$store.getters['communityevents/sortedList']
+    },
+    me() {
+      return this.$store.getters['auth/user']
     }
   },
   async asyncData({ app, params, store }) {

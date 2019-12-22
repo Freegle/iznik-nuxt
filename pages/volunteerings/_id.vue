@@ -8,7 +8,7 @@
           <p>Are you a charity or good cause that needs volunteers? Ask our lovely community of freeglers to help.</p>
           <b-row class="mb-3">
             <b-col>
-              <groupSelect v-model="groupid" class="float-left" all />
+              <groupSelect v-if="me" v-model="groupid" class="float-left" all />
             </b-col>
             <b-col>
               <b-btn variant="success" class="float-right" @click="showEventModal">
@@ -68,6 +68,9 @@ export default {
   computed: {
     volunteerings() {
       return this.$store.getters['volunteerops/sortedList']
+    },
+    me() {
+      return this.$store.getters['auth/user']
     }
   },
   async asyncData({ app, params, store }) {
