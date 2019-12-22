@@ -40,6 +40,10 @@ export default {
         summary: true,
         types: ['Offer', 'Wanted']
       })
+    } else {
+      await store.dispatch('group/list', {
+        grouptype: 'Freegle'
+      })
     }
 
     return {

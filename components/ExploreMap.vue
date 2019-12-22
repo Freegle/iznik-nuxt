@@ -108,7 +108,7 @@
               </div>
               <hr class="text-muted">
             </div>
-            <infinite-loading :distance="distance" @infinite="loadMoreList">
+            <infinite-loading v-if="browser" :distance="distance" @infinite="loadMoreList">
               <span slot="no-results" />
               <span slot="no-more" />
               <span slot="spinner">
@@ -154,8 +154,6 @@ export default {
   },
   data: function() {
     return {
-      groups: [],
-      regions: [],
       zoom: 5,
       bounds: null,
       showList: 0,
@@ -163,6 +161,9 @@ export default {
     }
   },
   computed: {
+    browser() {
+      return process.browser
+    },
     largeMarkers() {
       // Show small markers unless we are zoomed in to a small number of groups.
       return this.groupsInBounds.length < 20 && this.zoom > 10
@@ -184,11 +185,39 @@ export default {
 
       return height
     },
+    groups() {
+      return this.$store.getters['group/list']
+    },
+    regions() {
+      const regions = []
+
+      try {
+        for (const ix in this.groups) {
+          const group = this.groups[ix]
+
+          if (group.region && regions.indexOf(group.region) === -1) {
+            regions.push(group.region)
+          }
+        }
+
+        regions.sort()
+      } catch (e) {
+        console.error('Exception', e)
+      }
+
+      return regions
+    },
     groupsInBounds() {
-      const groups = this.$store.getters['group/list']
+      const groups = this.groups
       const ret = []
 
-      if (this.bounds) {
+      if (!process.browser) {
+        // SSR - return all for SRO.
+        for (const ix in groups) {
+          const group = groups[ix]
+          ret.push(group)
+        }
+      } else if (this.bounds) {
         for (const ix in groups) {
           const group = groups[ix]
 
@@ -213,25 +242,14 @@ export default {
       return sorted
     },
     groupsInList() {
-      return this.groupsInBounds.slice(0, this.showList)
-    }
-  },
-  async mounted() {
-    await this.$store.dispatch('group/list', {
-      grouptype: 'Freegle'
-    })
-
-    this.groups = this.$store.getters['group/list']
-
-    for (const ix in this.groups) {
-      const group = this.groups[ix]
-
-      if (group.region && this.regions.indexOf(group.region) === -1) {
-        this.regions.push(group.region)
+      if (process.browser) {
+        // We have an infinite scroll - return as many as we're currently showing.
+        return this.groupsInBounds.slice(0, this.showList)
+      } else {
+        // SSR - return all for SEO.
+        return this.groupsInBounds
       }
     }
-
-    this.regions.sort()
   },
 
   methods: {
