@@ -4,7 +4,7 @@
       <b-card no-body variant="success">
         <b-card-header>
           <h1>
-            Photos and videos
+            Posters
           </h1>
         </b-card-header>
         <b-card-text class="pl-2 pr-2">
