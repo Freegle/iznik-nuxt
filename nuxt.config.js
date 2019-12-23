@@ -116,11 +116,14 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'dns-prefetch', href: 'https://i.ytimg.com' },
-      { rel: 'dns-prefetch', href: 'https://s.ytimg.com' },
-      { rel: 'dns-prefetch', href: 'https://www.youtube.com' },
-      { rel: 'dns-prefetch', href: 'https://fonts.gstatic.com' },
-      { rel: 'dns-prefetch', href: 'https://storage.googleapis.com' },
+      { rel: 'preconnect', href: 'https://i.ytimg.com' },
+      { rel: 'preconnect', href: 'https://s.ytimg.com' },
+      { rel: 'preconnect', href: 'https://www.youtube.com' },
+      { rel: 'preconnect', href: 'https://fonts.gstatic.com' },
+      { rel: 'preconnect', href: 'https://storage.googleapis.com' },
+      { rel: 'preconnect', href: 'https://www.facebook.com' },
+      { rel: 'preconnect', href: 'https://connect.facebook.com' },
+      { rel: 'preconnect', href: 'https://apis.google.com' }
     ]
   },
 
