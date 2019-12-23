@@ -43,16 +43,10 @@ Rendering solution.
 
 # Current Status
 
-This is getting close to Beta.
-* The pages you can access from the menu bar are basically done.
-* There are lots of other bits and pieces, and many TODOs in the code.
+This is in Beta.
+* Pretty much everything is there, but we have quite a few odds and ends to sort out.
 * We've done a first pass for how it displays on a mobile, but there will be some niggles at different screen sizes.
 * We've tested on Chrome only, and very few mobiles/tablets.
-
-There are some specific pages that still need doing:
-* Plugins - are they still used?
-* /mydata
-* /councils
 
 <img src="http://www.browserstack.com/images/layout/browserstack-logo-600x315.png" width="280"/>
 
