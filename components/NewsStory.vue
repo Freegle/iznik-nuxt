@@ -27,13 +27,17 @@
       <b-col>
         <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
         <b-btn variant="primary" size="sm" class="float-right" @click="showAddModal">
-          <v-icon name="book-open" /> Tell your story!
+          <v-icon name="book-open" />
+          <span class="d-none d-inline-block-md">Tell your story!</span>
+          <span class="d-inline-block d-none-md">Tell yours</span>
         </b-btn>
         <b-btn variant="white" to="/stories" size="sm" class="float-right mr-1">
-          <v-icon name="book-open" /> More stories
+          <v-icon name="book-open" />
+          <span class="d-none d-inline-block-md">More stories</span>
+          <span class="d-inline-block d-none-md">More</span>
         </b-btn>
         <b-btn variant="white" size="sm" class="float-right d-inline-block mr-1" @click="shareStory">
-          <v-icon name="share-alt" /> Share
+          <v-icon name="share-alt" /><span class="d-none d-inline-block-md"> Share</span>
         </b-btn>
       </b-col>
     </b-row>
