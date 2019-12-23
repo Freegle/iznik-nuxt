@@ -260,7 +260,6 @@ module.exports = {
       'PopoverPlugin',
       'ProgressPlugin',
       'TabsPlugin',
-      'TooltipPlugin',
       'BVToastPlugin'
     ],
     directivePlugins: [
@@ -285,7 +284,7 @@ module.exports = {
   ** Build configuration
   */
   build: {
-    analyze: true,
+    // analyze: true,
 
     transpile: [/^vue2-google-maps($|\/)/],
 

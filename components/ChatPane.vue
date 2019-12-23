@@ -234,6 +234,9 @@
 import ChatBlockModal from './ChatBlockModal'
 import ChatHideModal from './ChatHideModal'
 import twem from '~/assets/js/twem'
+import { TooltipPlugin } from 'bootstrap-vue'
+import Vue from 'vue'
+Vue.use(TooltipPlugin)
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
 import ChatMessage from '~/components/ChatMessage.vue'
