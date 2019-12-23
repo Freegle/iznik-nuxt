@@ -293,7 +293,11 @@ module.exports = {
 
     extend(config, ctx) {
       if (process.env.NODE_ENV !== 'production') {
+        // TODO NS Did you add this or did I pick it up from somewhere?  Do you know why we do this?  Comment please.
         config.devtool = ctx.isClient ? 'eval-source-map' : 'inline-source-map'
+      } else {
+        // If we put them as files then we don't increase the bundle size.
+        config.devtool = 'source-map'
       }
 
       // Run ESLint on save
