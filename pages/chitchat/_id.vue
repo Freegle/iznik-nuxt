@@ -61,7 +61,7 @@
             </div>
           </b-card>
         </div>
-        <b-card no-body class="p-2">
+        <b-card v-if="!id" no-body class="p-2">
           <b-card-text class="d-flex align-items-center">
             <div v-if="me.settings.mylocation && me.settings.mylocation.area.name" class="w-50">
               <v-icon name="map-marker-alt" />
