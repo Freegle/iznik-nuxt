@@ -31,11 +31,13 @@
             Freegle have recently commissioned this video which is free for you to use and works particularly well on
             social media.
           </p>
-          <b-embed
-            type="iframe"
-            src="https://www.youtube.com/embed/Gw_wpkbNQY8"
-            allowfullscreen
-          />
+          <client-only>
+            <b-embed
+              type="iframe"
+              src="https://www.youtube.com/embed/Gw_wpkbNQY8"
+              allowfullscreen
+            />
+          </client-only>
           <p>
             We can provide the video source files <a href="mailto:councils@ilovefreegle.org">on request</a>.
             If you modify the video, then please preserve the

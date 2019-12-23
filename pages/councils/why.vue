@@ -8,12 +8,14 @@
           </h1>
         </b-card-header>
         <b-card-text class="pl-2 pr-2">
-          <b-embed
-            class="mt-1"
-            type="iframe"
-            src="https://www.youtube.com/embed/hXNWj2sZ7ZM"
-            allowfullscreen
-          />
+          <client-only>
+            <b-embed
+              class="mt-1"
+              type="iframe"
+              src="https://www.youtube.com/embed/hXNWj2sZ7ZM"
+              allowfullscreen
+            />
+          </client-only>
           <p>
             There are many charities and other organisations that councils promote and work with to encourage reuse
             amongst their residents.  Freegle is just one of those, so why should councils work with us?

@@ -38,11 +38,13 @@
         </b-row>
         <b-row class="mt-4">
           <b-col>
-            <b-embed
-              type="iframe"
-              src="https://www.youtube.com/embed/Gw_wpkbNQY8"
-              allowfullscreen
-            />
+            <client-only>
+              <b-embed
+                type="iframe"
+                src="https://www.youtube.com/embed/Gw_wpkbNQY8"
+                allowfullscreen
+              />
+            </client-only>
           </b-col>
         </b-row>
         <StoriesLanding class="mt-4" />
