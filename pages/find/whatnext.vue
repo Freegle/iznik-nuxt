@@ -88,11 +88,11 @@
 </style>
 
 <script>
+import { TooltipPlugin } from 'bootstrap-vue'
+import Vue from 'vue'
 import AvailabilityModal from '../../components/AvailabilityModal'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
-import { TooltipPlugin } from 'bootstrap-vue'
-import Vue from 'vue'
 Vue.use(TooltipPlugin)
 
 const GroupHeader = () => import('~/components/GroupHeader.vue')

@@ -93,12 +93,12 @@
 </template>
 
 <script>
+import { TooltipPlugin } from 'bootstrap-vue'
+import Vue from 'vue'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead'
 import twem from '~/assets/js/twem'
 import NewsThread from '~/components/NewsThread.vue'
-import { TooltipPlugin } from 'bootstrap-vue'
-import Vue from 'vue'
 Vue.use(TooltipPlugin)
 
 const OurFilePond = () => import('~/components/OurFilePond')
