@@ -39,11 +39,7 @@
         <b-row class="mt-4">
           <b-col>
             <client-only>
-              <b-embed
-                type="iframe"
-                src="https://www.youtube.com/embed/Gw_wpkbNQY8"
-                allowfullscreen
-              />
+              <LazyYoutubeVideo url="https://www.youtube.com/watch?v=Gw_wpkbNQY8" />
             </client-only>
           </b-col>
         </b-row>

@@ -112,11 +112,7 @@
             Cumbria County Council have also produced this child-friendly video as part of their ‘Rubbish Rebels’ series.
           </p>
           <client-only>
-            <b-embed
-              type="iframe"
-              src="https://www.youtube.com/embed/EvQKfTg82fI"
-              allowfullscreen
-            />
+            <LazyYoutubeVideo url="https://www.youtube.com/watch?v=EvQKfTg82fI" />
           </client-only>
 
           <h3>Radio</h3>

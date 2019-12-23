@@ -9,12 +9,7 @@
         </b-card-header>
         <b-card-text class="pl-2 pr-2">
           <client-only>
-            <b-embed
-              class="mt-1"
-              type="iframe"
-              src="https://www.youtube.com/embed/hXNWj2sZ7ZM"
-              allowfullscreen
-            />
+            <LazyYoutubeVideo url="https://www.youtube.com/watch?v=hXNWj2sZ7ZM" />
           </client-only>
           <p>
             There are many charities and other organisations that councils promote and work with to encourage reuse

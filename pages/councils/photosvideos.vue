@@ -32,11 +32,7 @@
             social media.
           </p>
           <client-only>
-            <b-embed
-              type="iframe"
-              src="https://www.youtube.com/embed/Gw_wpkbNQY8"
-              allowfullscreen
-            />
+            <LazyYoutubeVideo url="https://www.youtube.com/watch?v=Gw_wpkbNQY8" />
           </client-only>
           <p>
             We can provide the video source files <a href="mailto:councils@ilovefreegle.org">on request</a>.
