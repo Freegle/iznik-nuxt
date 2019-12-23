@@ -31,6 +31,10 @@
 </template>
 
 <script>
+import { CarouselPlugin } from 'bootstrap-vue'
+import Vue from 'vue'
+Vue.use(CarouselPlugin)
+
 export default {
   name: 'ImageCarousel',
   props: {

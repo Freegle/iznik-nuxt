@@ -237,7 +237,6 @@ module.exports = {
       'ButtonPlugin',
       'ButtonGroupPlugin',
       'CardPlugin',
-      'CarouselPlugin',
       'CollapsePlugin',
       'DropdownPlugin',
       'EmbedPlugin',
@@ -286,7 +285,7 @@ module.exports = {
   ** Build configuration
   */
   build: {
-    // analyze: true,
+    analyze: true,
 
     transpile: [/^vue2-google-maps($|\/)/],
 
