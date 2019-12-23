@@ -384,7 +384,6 @@ module.exports = {
     },
     exclude: sitemap.excludeRoutes,
     path: '/sitemap.xml',
-    gzip: true,
-    generate: false
+    gzip: true
   }
 }
