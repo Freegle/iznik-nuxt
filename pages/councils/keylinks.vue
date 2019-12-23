@@ -80,8 +80,8 @@ export default {
   mixins: [buildHead, sectionScroll],
   head() {
     return this.buildHead(
-      'Councils - Working with Freegle Volunteers',
-      'Here is some suggested wording for giving an overview of Freegle. You can use all of part of it on your websites, publicity and when speaking directly with residents.'
+      'Councils - Key website links',
+      'Here are some handy links for you to use in your work and for publicity purposes.'
     )
   }
 }
