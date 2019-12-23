@@ -292,7 +292,9 @@ module.exports = {
     transpile: [/^vue2-google-maps($|\/)/],
 
     extend(config, ctx) {
-      config.devtool = ctx.isClient ? 'eval-source-map' : 'inline-source-map'
+      if (process.env.NODE_ENV !== 'production') {
+        config.devtool = ctx.isClient ? 'eval-source-map' : 'inline-source-map'
+      }
 
       // Run ESLint on save
       if (ctx.isDev && ctx.isClient) {
