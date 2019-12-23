@@ -14,7 +14,8 @@ const TOAST_MESSAGE = `
 export default () => {
   const originalErrorHandler = Vue.config.errorHandler
   Vue.config.errorHandler = (err, vm, info, ...rest) => {
-    if (err instanceof APIError && vm.$bvToast) {
+    // TODO NS Vue instance doesn't seem to be defined in some cases.  Look at the rest of this checkin for a repro
+    if (err instanceof APIError && vm && vm.$bvToast) {
       const { request, response } = err
       console.error(err, { request, response })
       vm.$bvToast.toast(TOAST_MESSAGE, {
