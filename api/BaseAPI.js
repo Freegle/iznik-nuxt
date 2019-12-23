@@ -23,9 +23,17 @@ export default class BaseAPI {
       method,
       url: process.env.API + path
     })
+
+    console.log(
+      'Rquest',
+      status,
+      data.ret,
+      status !== 200 ||
+        (data.ret !== 0 && !(data.ret === 1 && data.status === 'Not logged in'))
+    )
     if (
       status !== 200 ||
-      (data.ret !== 0 && data.ret !== 1 && data.status === 'Not logged in')
+      (data.ret !== 0 && !(data.ret === 1 && data.status === 'Not logged in'))
     ) {
       const message = [
         'API Error',
