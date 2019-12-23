@@ -19,7 +19,7 @@
     "@fortawesome/free-brands-svg-icons": "^5.11.1",
     "@fortawesome/free-solid-svg-icons": "^5.11.1",
     "@nuxtjs/axios": "^5.5.4",
-    "@nuxtjs/pwa": "^2.6.0",
+    "@nuxtjs/pwa": "^3.0.0-beta.19",
     "@nuxtjs/redirect-module": "^0.3.1",
     "@nuxtjs/sitemap": "^2.0.1",
     "bootstrap": "^4.1.3",
