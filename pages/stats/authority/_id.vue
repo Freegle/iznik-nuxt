@@ -350,10 +350,13 @@ import { GChart } from 'vue-google-charts'
 import Wkt from 'wicket'
 import 'wicket/wicket-gmap3'
 import { gmapApi } from 'vue2-google-maps'
+import { TablePlugin } from 'bootstrap-vue'
+import Vue from 'vue'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 
-// TODO NS MINOR I think table is a big chunk of stuff to load from Bootstrap.  Does this hit us on initial page load?
+Vue.use(TablePlugin)
+
 // TODO MINOR It would be nice to render this page using SSR.  But the fetching of data is very slow, which means
 // the page would take too long to load.  So either we need to speed that up radically, or we need to do something
 // cunning.

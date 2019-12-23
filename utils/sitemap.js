@@ -97,7 +97,6 @@ export default {
     ]
 
     const API = process.env.API ? process.env.API : 'http://localhost:3000'
-    console.log('API', process.env.API)
     const res = await a.get(API + '/api/groups', {
       params: {
         grouptype: 'Freegle'

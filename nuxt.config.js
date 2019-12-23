@@ -261,7 +261,6 @@ module.exports = {
       'PopoverPlugin',
       'ProgressPlugin',
       'TabsPlugin',
-      'TablePlugin',
       'TooltipPlugin',
       'BVToastPlugin'
     ],
