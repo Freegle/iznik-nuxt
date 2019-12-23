@@ -83,7 +83,7 @@ export default {
     if (process.browser && !this.message.fromuser) {
       // We are on the client and loading a page which we have rendered on the server rather than navigated to on the
       // client side.  We will therefore have rendered it logged out.  Refetch the message so that we get more info,
-      // which we will done when logged in.
+      // which we may do when logged in.
       //
       // TODO NS MINOR This is a generic problem.  Let's have a chat about it.
       this.$store.dispatch('messages/fetch', {
