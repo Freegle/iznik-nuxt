@@ -254,12 +254,12 @@
       <AboutMeModal ref="modal" />
     </client-only>
     <div class="navbar-toggle" style="display: none" />
-    <div id="serverloader" class="centered">
+    <div id="serverloader">
       <b-img src="~/static/loader.gif" alt="Loading..." />
       <p>
-        <b>Just a tick...</b>
+        <b>Loading...</b>
         <br>
-        <a href="mailto:support@ilovefreegle.org" style="color: grey; font-size: 12px">Stuck here?</a>
+        <a href="mailto:support@ilovefreegle.org" style="font-size: 12px">Stuck here?</a>
       </p>
     </div>
   </div>
@@ -446,11 +446,26 @@ svg.fa-icon {
   font-size: 110%;
 }
 
-.centered {
+#serverloader {
+  z-index: -1;
   text-align: center;
   position: fixed; /* or absolute */
-  top: 50%;
-  left: 50%;
+  top: calc(50% - 44px);
+  left: calc(50% - 44px);
+  animation: 15s fadeIn;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  90% {
+    opacity: 0;
+  }
+  100% {
+    visibility: visible;
+    opacity: 1;
+  }
 }
 </style>
 <script>
@@ -561,6 +576,9 @@ export default {
     if (document) {
       // We added a basic loader into the HTML.  This helps if we are loaded on an old browser where our JS bombs
       // out - at least we display something, with a link to support.  But now we're up and running, remove that.
+      //
+      // We have an animation on the loader so that it only becomes visible after ~10s.  That prevents page flicker
+      // if we manage to get up and running rapidly.
       const l = document.getElementById('serverloader')
       l.style.display = 'none'
     }
