@@ -178,6 +178,7 @@
 <script>
 import Vue from 'vue'
 import { LoginError } from '../api/BaseAPI'
+
 const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {

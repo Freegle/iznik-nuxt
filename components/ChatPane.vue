@@ -236,6 +236,9 @@ import Vue from 'vue'
 import ChatBlockModal from './ChatBlockModal'
 import ChatHideModal from './ChatHideModal'
 import twem from '~/assets/js/twem'
+import 'vue-awesome/icons/address-book'
+import 'vue-awesome/icons/window-restore'
+import 'vue-awesome/icons/handshake'
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
 import ChatMessage from '~/components/ChatMessage.vue'

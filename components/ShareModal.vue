@@ -106,6 +106,7 @@ import 'vue-awesome/icons/brands/skype'
 import 'vue-awesome/icons/brands/telegram'
 import 'vue-awesome/icons/brands/twitter'
 import 'vue-awesome/icons/brands/whatsapp'
+import 'vue-awesome/icons/comment'
 
 export default {
   components: {},

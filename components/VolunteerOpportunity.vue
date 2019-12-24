@@ -138,6 +138,7 @@
 import VolunteerOpportunityModal from './VolunteerOpportunityModal'
 import NoticeMessage from './NoticeMessage'
 import twem from '~/assets/js/twem'
+import 'vue-awesome/icons/clock'
 
 export default {
   components: {

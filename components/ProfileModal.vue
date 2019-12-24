@@ -126,8 +126,6 @@
 <style scoped lang="scss">
 @import 'color-vars';
 
-import 'vue-awesome/icons/chart-bar'
-
 ::v-deep .media .align-self-start {
   margin-right: 0.25rem !important;
 }
@@ -171,6 +169,7 @@ import 'vue-awesome/icons/chart-bar'
 
 <script>
 import twem from '~/assets/js/twem'
+import 'vue-awesome/icons/chart-bar'
 
 // TODO DESIGN Header is messy - wallpaper should fill the whole thing; image should have a border round it with a gap.
 // TODO DESIGN The about me section needs nice big quotes round it.

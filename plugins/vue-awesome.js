@@ -3,27 +3,21 @@ import Icon from 'vue-awesome/components/Icon.vue'
 
 // We list the icons we use explicitly because this reduces our bundle size.  But the ones we list here are only the
 // ones which we use in lots of places.  Rarely used ones we import in the relevant component.  This reduces our
-// bundle size for the landing page.
-// TODO MINOR We could push this further.  There are still icons in here which are only used in one or two components.
-require('vue-awesome/icons/address-book')
+// bundle size for the landing page very significantly.
+//
+// We've had build trouble moving them into modals; not sure why, but watch out for that.  Slash is an example.
 require('vue-awesome/icons/angle-double-right')
 require('vue-awesome/icons/bell')
 require('vue-awesome/icons/book-open')
 require('vue-awesome/icons/bullhorn')
-require('vue-awesome/icons/calculator')
 require('vue-awesome/icons/calendar-alt')
 require('vue-awesome/icons/camera')
-require('vue-awesome/icons/caret-down')
-require('vue-awesome/icons/caret-up')
 require('vue-awesome/icons/check')
 require('vue-awesome/icons/check-circle')
 require('vue-awesome/icons/circle')
 require('vue-awesome/icons/cog')
-require('vue-awesome/icons/clock')
 require('vue-awesome/icons/coffee')
-require('vue-awesome/icons/comment')
 require('vue-awesome/icons/comments')
-require('vue-awesome/icons/crown')
 require('vue-awesome/icons/envelope')
 require('vue-awesome/icons/exclamation-triangle')
 require('vue-awesome/icons/eye')
@@ -31,7 +25,6 @@ require('vue-awesome/icons/gavel')
 require('vue-awesome/icons/gift')
 require('vue-awesome/icons/globe-europe')
 require('vue-awesome/icons/hand-holding-heart')
-require('vue-awesome/icons/handshake')
 require('vue-awesome/icons/hands-helping')
 require('vue-awesome/icons/heart')
 require('vue-awesome/icons/home')
@@ -57,7 +50,5 @@ require('vue-awesome/icons/times')
 require('vue-awesome/icons/trash-alt')
 require('vue-awesome/icons/user')
 require('vue-awesome/icons/users')
-require('vue-awesome/icons/window-maximize')
-require('vue-awesome/icons/window-restore')
 
 Vue.component('v-icon', Icon)

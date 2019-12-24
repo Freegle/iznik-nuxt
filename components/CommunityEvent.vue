@@ -112,6 +112,7 @@
 <script>
 import CommunityEventModal from './CommunityEventModal'
 import twem from '~/assets/js/twem'
+import 'vue-awesome/icons/clock'
 
 export default {
   components: {
