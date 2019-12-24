@@ -6,6 +6,7 @@
 
 import Vue from 'vue'
 import { LoginError } from '../api/BaseAPI'
+import { mobilestate } from '@/plugins/initapp' // CC
 
 let first = true
 
@@ -219,18 +220,18 @@ export const actions = {
         commit('forceLogin', false)
 
         // Tell server our push notification id
-        const mobilePushId = Vue.prototype.$mobilePushId()
-        if (mobilePushId) {
+        console.log('mobilestate', mobilestate)
+        if (mobilestate.mobilePushId) {
           const params = {
             notifications: {
               push: {
-                type: Vue.prototype.$isiOS() ? 'FCMIOS' : 'FCMAndroid',
-                subscription: mobilePushId
+                type: mobilestate.isiOS ? 'FCMIOS' : 'FCMAndroid',
+                subscription: mobilestate.mobilePushId
               }
             }
           }
           await this.$api.session.save(params)
-          console.log('auth.fetchUser mobilePushId saved')
+          console.log('auth.fetchUser mobilePushId sent to server')
         }
 
       }

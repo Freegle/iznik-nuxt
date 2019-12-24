@@ -678,7 +678,9 @@ export default {
       const me = this.$store.getters['auth/user']
 
       if (me && me.id) {
+        console.log("getNotificationCount for me")
         await this.$store.dispatch('notifications/count')
+        //await this.$store.dispatch('chats/listChats') // CC added
       }
 
       this.notificationPoll = setTimeout(this.getNotificationCount, 30000)

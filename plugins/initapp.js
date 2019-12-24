@@ -2,7 +2,13 @@ import Vue from 'vue'
 
 // app initialisation based on standard Cordova code
 console.log('--------------initapp--------------')
-console.log(Vue)
+
+const pushstate = Vue.observable({ pushed: false })
+
+export const mobilestate = Vue.observable({
+  isiOS: false,
+  mobilePushId: false
+})
 
 let mobilePush = false
 let mobilePushId = false
@@ -11,16 +17,6 @@ let lastPushMsgid = false
 window.iznikroot = location.pathname.substring(0, location.pathname.lastIndexOf('/') + 1)
 window.iznikroot = decodeURI(window.iznikroot.replace(/%25/g, '%2525'))
 console.log('window.iznikroot ' + window.iznikroot)
-
-let isiOS = false
-
-Vue.prototype.$isiOS = () => {
-  return isiOS
-}
-
-Vue.prototype.$mobilePushId = () => {
-  return mobilePushId
-}
 
 const app = {
   // Application Constructor
@@ -40,7 +36,7 @@ const app = {
   onDeviceReady: function() {
     console.log('app: onDeviceReady')
 
-    isiOS = window.device.platform === 'iOS'
+    mobilestate.isiOS = window.device.platform === 'iOS'
     // if (!window.initialURL) {
     //   window.initialURL = window.location.href
     // }
@@ -92,6 +88,7 @@ const app = {
       }
     }); */
 
+    setTimeout(function() {
     console.log('push init start')
     if ((typeof window.PushNotification === 'undefined') || (!PushNotification)) {
       console.log('NO PUSH NOTIFICATION SERVICE')
@@ -113,8 +110,10 @@ const app = {
           sound: false
         }
       })
+      mobilestate.mobilePush = mobilePush
       mobilePush.on('registration', function (data) {
         mobilePushId = data.registrationId
+        mobilestate.mobilePushId = mobilePushId
         console.log('push registration ' + mobilePushId)
         // mobilePushId reported to server in store/auth.js fetchUser
         // alert("registration: " + mobilePushId);
@@ -162,13 +161,15 @@ const app = {
           function() { console.log('badge error') },
           data.count)
 
-        //await this.$store.dispatch('notifications/count')
-        if (Vue.$store) {
-          console.log('PUSH dispatch store')
-          Vue.$store.dispatch('notifications/count')
-          Vue.$store.dispatch('chats/listChats')
-          console.log('PUSH dispatched store')
-        } else console.log('PUSH NO store')
+        console.log('PUSH mobilepushevent A')
+        // window.dispatchEvent(mobilepushevent)
+        //document.dispatchEvent(new Event('mobilepush'))
+        pushstate.pushed = true
+        console.log('PUSH mobilepushevent B')
+        /* console.log('PUSH dispatch store')
+        store.dispatch('notifications/count')
+        store.dispatch('chats/listChats')
+        console.log('PUSH dispatched store') */
 
         /* // Always try to set in-app counts
         if (('chatcount' in data.additionalData) && ('notifcount' in data.additionalData)) {
@@ -210,7 +211,7 @@ const app = {
             }
           }
         } */
-        if (isiOS) {
+        if (mobilestate.isiOS) {
           mobilePush.finish(
             function() {
               console.log('push finished OK')
@@ -225,6 +226,7 @@ const app = {
         }
       })
     }
+    }, 15000)
   }
 }
 
@@ -242,23 +244,43 @@ style.innerHTML = css
 document.getElementsByTagName('head')[0].appendChild(style) */
 
 
+/*Vue.use({
+  install(Vue) {
+    console.log('--------------initapp install--------------')
+    Vue.prototype.$storeMobile = function(store) { // Do not use arrow as it breaks 'this': () => {       // this.$nuxt.$store
+      console.log('--------------$storeMobile--------------')
+      store.mobileapp = {
+        isiOS: isiOS,
+        mobilePushId: mobilePushId
+      }
+      console.log('--------------$storeMobile done --------------')
+    }
+  }
+})*/
 
-
-// export default () => {
-//  console.log("=============pushnotify=============")
-// }
-
-console.log('--------------initedapp--------------')
-
-/*const VueMobile = {}
-
-VueMobile.install = function install(Vue, options) {
-  console.log(Vue)
-  console.log(Vue.$store)
-  Vue.MobileApp = app
-  console.log('--------------Vue.MobileApp = app--------------')
-
+export default ({ store }) => {
+  store.watch(
+    () => pushstate.pushed,
+    pushed => {
+      console.log('--------------pushed changed')
+      if (pushed) {
+        console.log('--------------We have been pushed')
+        // We have been pushed.  Refetch our notification count and chat count
+        store.dispatch('notifications/count')
+        store.dispatch('chats/listChats')
+        pushstate.pushed = false
+      }
+    }
+  )
 }
 
-Vue.use(VueMobile)*/
+/* document.addEventListener('mobilepush', function (ev) {
+  console.log('initapp mobilepush', ev)
+  state.pushed = true
+  console.log('initapp mobilepush done')
+}, false) */
+
+
+
+console.log('--------------initedapp--------------')
 

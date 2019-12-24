@@ -28,6 +28,8 @@ export default () => {
       return true
     }
 
+    console.log('-------------errorHandler', err, vm, info) // CC
+
     if (originalErrorHandler) {
       return originalErrorHandler(err, vm, info, ...rest)
     }
