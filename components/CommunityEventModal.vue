@@ -352,6 +352,8 @@ import twem from '~/assets/js/twem'
 import ValidatingForm from '@/components/ValidatingForm'
 import ValidatingFormInput from '@/components/ValidatingFormInput'
 import ValidatingTextarea from '@/components/ValidatingTextarea'
+import 'vue-awesome/icons/circle'
+
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
 const OurFilePond = () => import('~/components/OurFilePond')
 const StartEndCollection = () => import('~/components/StartEndCollection')

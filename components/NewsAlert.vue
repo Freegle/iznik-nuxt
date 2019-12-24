@@ -72,6 +72,7 @@
 </template>
 <script>
 import NewsBase from '~/components/NewsBase'
+import 'vue-awesome/icons/share-alt'
 const NewsLoveComment = () => import('~/components/NewsLoveComment')
 const NewsShareModal = () => import('~/components/NewsShareModal')
 

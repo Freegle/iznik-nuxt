@@ -99,6 +99,7 @@ import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead'
 import twem from '~/assets/js/twem'
 import NewsThread from '~/components/NewsThread.vue'
+import 'vue-awesome/icons/map-marker-alt'
 Vue.use(TooltipPlugin)
 
 const OurFilePond = () => import('~/components/OurFilePond')

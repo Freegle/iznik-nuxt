@@ -26,6 +26,7 @@
 <script>
 import NewsLovesModal from './NewsLovesModal'
 import 'vue-awesome/icons/comment'
+import 'vue-awesome/icons/heart'
 
 export default {
   components: {

@@ -180,6 +180,7 @@
 import twem from '~/assets/js/twem'
 import loginOptional from '@/mixins/loginOptional.js'
 import 'vue-awesome/icons/chart-bar'
+import 'vue-awesome/icons/map-marker-alt'
 
 const Ratings = () => import('~/components/Ratings')
 const ReplyTime = () => import('~/components/ReplyTime')

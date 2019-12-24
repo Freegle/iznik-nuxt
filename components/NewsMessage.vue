@@ -44,6 +44,8 @@
 <script>
 import NewsBase from '~/components/NewsBase'
 import NewsUserIntro from '~/components/NewsUserIntro'
+import 'vue-awesome/icons/share-alt'
+
 const NewsShareModal = () => import('~/components/NewsShareModal')
 const NewsLoveComment = () => import('~/components/NewsLoveComment')
 

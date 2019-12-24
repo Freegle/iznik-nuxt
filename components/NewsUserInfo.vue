@@ -22,6 +22,8 @@
   </nuxt-link>
 </template>
 <script>
+import 'vue-awesome/icons/map-marker-alt'
+
 export default {
   props: {
     user: {

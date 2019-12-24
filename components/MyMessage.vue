@@ -201,6 +201,7 @@ import ResizeText from 'vue-resize-text'
 import 'vue-awesome/icons/caret-down'
 import 'vue-awesome/icons/caret-up'
 import 'vue-awesome/icons/handshake'
+import 'vue-awesome/icons/share-alt'
 
 const OutcomeModal = () => import('./OutcomeModal')
 const MyMessageReply = () => import('./MyMessageReply.vue')

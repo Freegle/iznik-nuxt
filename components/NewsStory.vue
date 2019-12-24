@@ -67,6 +67,8 @@
 <script>
 import twem from '~/assets/js/twem'
 import NewsBase from '~/components/NewsBase'
+import 'vue-awesome/icons/share-alt'
+
 const NewsUserIntro = () => import('~/components/NewsUserIntro')
 const NewsLoveComment = () => import('~/components/NewsLoveComment')
 const StoriesAddModal = () => import('~/components/StoriesAddModal')

@@ -354,6 +354,7 @@ import { TablePlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
+import 'vue-awesome/icons/map-marker-alt'
 
 // There are a bunch of icons we need only on this page.  By requiring them here we avoid
 // requiring them in the vue-awesome plugin.  That makes them available everywhere - but

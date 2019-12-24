@@ -40,6 +40,8 @@
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import Autocomplete from '~/components/Autocomplete'
+import 'vue-awesome/icons/map-marker-alt'
+
 Vue.use(TooltipPlugin)
 
 export default {

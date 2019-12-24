@@ -66,6 +66,8 @@
 </style>
 
 <script>
+import 'vue-awesome/icons/circle'
+
 export default {
   props: {
     id: {

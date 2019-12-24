@@ -171,6 +171,7 @@ import ShareModal from './ShareModal'
 import MessageReportModal from './MessageReportModal'
 
 import twem from '~/assets/js/twem'
+import 'vue-awesome/icons/share-alt'
 
 const Highlighter = () => import('vue-highlight-words')
 const MessageUserInfo = () => import('~/components/MessageUserInfo')
