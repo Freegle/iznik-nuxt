@@ -126,6 +126,8 @@
 <style scoped lang="scss">
 @import 'color-vars';
 
+import 'vue-awesome/icons/chart-bar'
+
 ::v-deep .media .align-self-start {
   margin-right: 0.25rem !important;
 }

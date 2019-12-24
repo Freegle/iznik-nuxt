@@ -101,6 +101,10 @@
 <style scoped lang="scss">
 @import 'color-vars';
 
+import 'vue-awesome/icons/frown'
+import 'vue-awesome/icons/meh'
+import 'vue-awesome/icons/smile'
+
 option {
   color: $color-black !important;
 }

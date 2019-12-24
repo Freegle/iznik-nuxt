@@ -178,6 +178,9 @@ import { GChart } from 'vue-google-charts'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 
+import 'vue-awesome/icons/cloud'
+import 'vue-awesome/icons/balance-scale-left'
+
 const GroupHeader = () => import('~/components/GroupHeader.vue')
 
 export default {
