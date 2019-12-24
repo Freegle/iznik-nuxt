@@ -209,7 +209,14 @@ module.exports = {
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     'nuxt-dayjs-module',
-    '@nuxtjs/redirect-module'
+    '@nuxtjs/redirect-module',
+    [
+      '@nuxtjs/component-cache',
+      {
+        max: 1000,
+        maxAge: 300 * 60 * 60
+      }
+    ]
     // Removing this as it causes a scalability issue with vue-meta - see https://github.com/nuxt/vue-meta/issues/443
     // 'cookie-universal-nuxt',
     // [

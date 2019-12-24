@@ -24,6 +24,9 @@
 </template>
 <script>
 export default {
+  // Cache this for performance as it's on the landing page.
+  name: 'StoriesLanding',
+  serverCacheKey: () => 'storiesLanding',
   data: function() {
     return {}
   },
