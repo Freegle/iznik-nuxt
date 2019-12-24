@@ -8,7 +8,7 @@
           <p>These are local events, posted by other freeglers like you.</p>
           <b-row class="mb-3">
             <b-col>
-              <groupSelect v-model="groupid" class="float-left" all />
+              <groupSelect v-if="me" v-model="groupid" class="float-left" all />
             </b-col>
             <b-col>
               <b-btn variant="success" class="float-right" @click="showEventModal">
@@ -22,7 +22,7 @@
         </div>
         <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" force-use-infinite-wrapper="body" @infinite="loadMore">
           <span slot="no-results">
-            <notice-message v-if="!events.length">
+            <notice-message v-if="!events || !events.length">
               There are no community events to show.  Why not add one?
             </notice-message>
           </span>
@@ -65,6 +65,9 @@ export default {
   computed: {
     events() {
       return this.$store.getters['communityevents/sortedList']
+    },
+    me() {
+      return this.$store.getters['auth/user']
     }
   },
   async asyncData({ app, params, store }) {
@@ -109,7 +112,14 @@ export default {
     },
 
     showEventModal() {
-      this.$refs.eventmodal.show()
+      if (this.me) {
+        // TODO MINOR If we have a groupid but they're not a member, which can happen for
+        // people who are logged out or just get sent to the page, then we ought to sign them up.  Or we should
+        // provide a way for people to select and join a group that they're not a member of.  Same for volunteer ops.
+        this.$refs.eventmodal.show()
+      } else {
+        this.$store.dispatch('auth/forceLogin', true)
+      }
     }
   },
   head() {
@@ -128,7 +138,7 @@ export default {
 
     return this.buildHead(
       name,
-      'Are you a charity or good cause that needs volunteers? Ask our lovely community of freeglers to help.',
+      'These are local events, posted by other freeglers like you.',
       image
     )
   }

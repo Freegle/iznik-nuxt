@@ -38,11 +38,9 @@
         </b-row>
         <b-row class="mt-4">
           <b-col>
-            <b-embed
-              type="iframe"
-              src="https://www.youtube.com/embed/Gw_wpkbNQY8"
-              allowfullscreen
-            />
+            <client-only>
+              <LazyYoutubeVideo url="https://www.youtube.com/watch?v=Gw_wpkbNQY8" />
+            </client-only>
           </b-col>
         </b-row>
         <StoriesLanding class="mt-4" />
@@ -52,36 +50,36 @@
         <b-row class="d-none d-lg-block">
           <b-col>
             <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" class="float-right mt-2" target="_blank">
-              <img alt="Freegle Android app on Google Play" title="Freegle Android app on Google Play" class="img-responsive" src="/en-play-badge.png">
+              <b-img-lazy alt="Freegle Android app on Google Play" title="Freegle Android app on Google Play" class="img-responsive" src="/en-play-badge.png" />
             </a>
           </b-col>
         </b-row>
         <b-row class="d-none d-lg-block">
           <b-col>
             <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&amp;mt=8" class="float-right mt-2" target="_blank">
-              <img alt="Freegle app for iPhone, iPad, and iPod touch" title="Freegle app for iPhone, iPad, and iPod Touch" class="img-responsive" src="/app-store-black-sm.png">
+              <b-img-lazy alt="Freegle app for iPhone, iPad, and iPod touch" title="Freegle app for iPhone, iPad, and iPod Touch" class="img-responsive" src="/app-store-black-sm.png" />
             </a>
           </b-col>
         </b-row>
         <b-row class="d-none d-sm-block d-lg-none">
           <b-col>
             <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" class="float-left" target="_blank">
-              <img alt="Freegle Android app on Google Play" title="Freegle Android app on Google Play" class="img-responsive" src="/en-play-badge.png">
+              <b-img-lazy alt="Freegle Android app on Google Play" title="Freegle Android app on Google Play" class="img-responsive" src="/en-play-badge.png" />
             </a>
             <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&amp;mt=8" class="float-right" target="_blank">
-              <img alt="Freegle app for iPhone, iPad, and iPod touch" title="Freegle app for iPhone, iPad, and iPod Touch" class="img-responsive" src="/app-store-black-sm.png">
+              <b-img-lazy alt="Freegle app for iPhone, iPad, and iPod touch" title="Freegle app for iPhone, iPad, and iPod Touch" class="img-responsive" src="/app-store-black-sm.png" />
             </a>
           </b-col>
         </b-row>
         <b-row class="d-block d-sm-none">
           <b-col cols="12">
             <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" target="_blank">
-              <img alt="Freegle Android app on Google Play" title="Freegle Android app on Google Play" class="img-responsive" src="/en-play-badge.png">
+              <b-img-lazy alt="Freegle Android app on Google Play" title="Freegle Android app on Google Play" class="img-responsive" src="/en-play-badge.png" />
             </a>
           </b-col>
           <b-col cols="12">
             <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&amp;mt=8" target="_blank">
-              <img alt="Freegle app for iPhone, iPad, and iPod touch" title="Freegle app for iPhone, iPad, and iPod Touch" class="img-responsive" src="/app-store-black-sm.png">
+              <b-img-lazy alt="Freegle app for iPhone, iPad, and iPod touch" title="Freegle app for iPhone, iPad, and iPod Touch" class="img-responsive" src="/app-store-black-sm.png" />
             </a>
           </b-col>
         </b-row>

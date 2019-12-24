@@ -21,8 +21,7 @@
           <div v-if="story.photo" class="float-right">
             <b-img-lazy v-b-modal="'photoModal-' + story.photo.id" :src="story.photo.path" class="storyphoto clickme" thumbnail />
             <br>
-          </div>
-          {{ story.story }}
+          </div>{{ story.story }}
         </div>
         <span class="text-muted small">
           {{ story.date | timeago }} on {{ story.groupname }}

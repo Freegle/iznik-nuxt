@@ -38,7 +38,12 @@ export default {
         groupid: group.id,
         collection: 'Approved',
         summary: true,
-        types: ['Offer', 'Wanted']
+        types: ['Offer', 'Wanted'],
+        limit: process.browser ? 5 : 100 // During SSR fetch more, for better SEO.
+      })
+    } else {
+      await store.dispatch('group/list', {
+        grouptype: 'Freegle'
       })
     }
 

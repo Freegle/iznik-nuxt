@@ -67,13 +67,15 @@
 <script>
 import { gmapApi } from 'vue2-google-maps'
 import loginOptional from '@/mixins/loginOptional.js'
+import buildHead from '@/mixins/buildHead.js'
+
 const PosterModal = () => import('~/components/PosterModal')
 
 export default {
   components: {
     PosterModal
   },
-  mixins: [loginOptional],
+  mixins: [loginOptional, buildHead],
   data: function() {
     return {
       groupid: null,
@@ -98,8 +100,13 @@ export default {
       return contWidth
     },
     mapWidth() {
-      let height = Math.floor(window.innerHeight / 2)
-      height = height < 200 ? 200 : height
+      let height = 0
+
+      if (process.browser) {
+        height = Math.floor(window.innerHeight / 2)
+        height = height < 200 ? 200 : height
+      }
+
       return height
     }
   },
@@ -115,6 +122,19 @@ export default {
   methods: {
     added() {
       this.$refs.modal.show()
+    }
+  },
+  head() {
+    if (!this.id || !this.noticeboards || !this.noticeboards.length) {
+      return this.buildHead(
+        'Noticeboards',
+        "We're building a map of noticeboards across the UK and putting Freegle posters on them.  Help us!"
+      )
+    } else {
+      return this.buildHead(
+        'Noticeboard: ' + this.noticeboards[0].name,
+        this.noticeboards[0].description
+      )
     }
   }
 }

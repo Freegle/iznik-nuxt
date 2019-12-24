@@ -459,6 +459,9 @@
 import Vue from 'vue'
 import EmailConfirmModal from '~/components/EmailConfirmModal'
 import loginRequired from '@/mixins/loginRequired.js'
+import buildHead from '@/mixins/buildHead'
+import 'vue-awesome/icons/address-book'
+import 'vue-awesome/icons/crown'
 const AboutMeModal = () => import('~/components/AboutMeModal')
 const AvailabilityModal = () => import('~/components/AvailabilityModal')
 const AddressModal = () => import('~/components/AddressModal')
@@ -478,7 +481,7 @@ export default {
     SettingsGroup,
     NoticeMessage
   },
-  mixins: [loginRequired],
+  mixins: [loginRequired, buildHead],
   data: function() {
     return {
       me: null,
@@ -802,6 +805,12 @@ export default {
     addressBook() {
       this.$refs.addressModal.show()
     }
+  },
+  head() {
+    return this.buildHead(
+      'Settings',
+      'What people see about you, your email settings, all that good stuff...'
+    )
   }
 }
 </script>

@@ -79,10 +79,11 @@
 </style>
 <script>
 import loginRequired from '@/mixins/loginRequired.js'
+import buildHead from '@/mixins/buildHead'
 
 export default {
   components: {},
-  mixins: [loginRequired],
+  mixins: [loginRequired, buildHead],
   data: function() {
     return {
       succeeded: false,
@@ -125,6 +126,12 @@ export default {
 
       this.resent = true
     }
+  },
+  head() {
+    return this.buildHead(
+      'Confirm Email',
+      'Confirm your email address so that we send mails to the right place.'
+    )
   }
 }
 </script>

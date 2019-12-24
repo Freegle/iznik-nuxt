@@ -39,3 +39,16 @@
     </b-col>
   </b-row>
 </template>
+<script>
+import buildHead from '@/mixins/buildHead.js'
+
+export default {
+  mixins: [buildHead],
+  head() {
+    return this.buildHead(
+      'Our mobile app',
+      'Find out about our mobile app and how to install it.'
+    )
+  }
+}
+</script>

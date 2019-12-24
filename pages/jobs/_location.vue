@@ -49,13 +49,15 @@
 <script>
 // TODO MINOR Infinite scroll (needs server changes).
 import loginOptional from '@/mixins/loginOptional.js'
+import buildHead from '@/mixins/buildHead.js'
+
 const Job = () => import('~/components/Job')
 
 export default {
   components: {
     Job
   },
-  mixins: [loginOptional],
+  mixins: [loginOptional, buildHead],
   data: function() {
     return {
       loading: true,
@@ -113,6 +115,13 @@ export default {
     search() {
       this.$router.push('/jobs/' + encodeURIComponent(this.searchLocation))
     }
+  },
+  head() {
+    console.log('Build head', this.location)
+    return this.buildHead(
+      'Jobs near ' + this.location,
+      'These are job ads fairly close to the location.  Freegle gets a little bit to help keep us going if you click on them.'
+    )
   }
 }
 </script>

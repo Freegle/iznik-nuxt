@@ -8,7 +8,7 @@
           <p>Are you a charity or good cause that needs volunteers? Ask our lovely community of freeglers to help.</p>
           <b-row class="mb-3">
             <b-col>
-              <groupSelect v-model="groupid" class="float-left" all />
+              <groupSelect v-if="me" v-model="groupid" class="float-left" all />
             </b-col>
             <b-col>
               <b-btn variant="success" class="float-right" @click="showEventModal">
@@ -22,7 +22,7 @@
         </div>
         <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" force-use-infinite-wrapper="body" @infinite="loadMore">
           <span slot="no-results">
-            <notice-message v-if="!volunteerings.length">
+            <notice-message v-if="!volunteerings || !volunteerings.length">
               There are no volunteer opportunities to show.  Why not add one?
             </notice-message>
           </span>
@@ -41,6 +41,8 @@
 <script>
 import loginOptional from '@/mixins/loginOptional.js'
 import createGroupRoute from '@/mixins/createGroupRoute'
+import buildHead from '@/mixins/buildHead.js'
+
 const GroupSelect = () => import('~/components/GroupSelect')
 const VolunteerOpportunity = () =>
   import('~/components/VolunteerOpportunity.vue')
@@ -55,7 +57,7 @@ export default {
     VolunteerOpportunityModal,
     NoticeMessage
   },
-  mixins: [loginOptional, createGroupRoute('volunteerings')],
+  mixins: [loginOptional, createGroupRoute('volunteerings'), buildHead],
   data: function() {
     return {
       context: null,
@@ -66,12 +68,29 @@ export default {
   computed: {
     volunteerings() {
       return this.$store.getters['volunteerops/sortedList']
+    },
+    me() {
+      return this.$store.getters['auth/user']
+    }
+  },
+  async asyncData({ app, params, store }) {
+    await store.dispatch('volunteerops/fetch', {
+      groupid: params.id ? params.id : null
+    })
+
+    if (params.id) {
+      await store.dispatch('group/fetch', {
+        id: params.id
+      })
+    }
+
+    return {
+      asyncGroupId: params.id
     }
   },
   mounted() {
     this.$store.dispatch('volunteerops/clear')
   },
-
   methods: {
     loadMore: async function($state) {
       let volunteerings = this.$store.getters['volunteerops/list']
@@ -98,8 +117,35 @@ export default {
     },
 
     showEventModal() {
-      this.$refs.volunteermodal.show()
+      if (this.me) {
+        // TODO MINOR If we have a groupid but they're not a member, which can happen for
+        // people who are logged out or just get sent to the page, then we ought to sign them up.  Or we should
+        // provide a way for people to select and join a group that they're not a member of.  Same for events.
+        this.$refs.volunteermodal.show()
+      } else {
+        this.$store.dispatch('auth/forceLogin', true)
+      }
     }
+  },
+  head() {
+    let name
+    let image
+
+    if (this.asyncGroupId) {
+      const group = this.$store.getters['group/get'](this.asyncGroupId)
+
+      name = 'Volunteer Opportunities for ' + group.namedisplay
+      image = group.profile
+    } else {
+      name = 'Volunteer Opportunities'
+      image = null
+    }
+
+    return this.buildHead(
+      name,
+      'Are you a charity or good cause that needs volunteers? Ask our lovely community of freeglers to help.',
+      image
+    )
   }
 }
 </script>

@@ -22,13 +22,14 @@
 </style>
 <script>
 import loginRequired from '@/mixins/loginRequired.js'
+import buildHead from '@/mixins/buildHead'
 const Story = () => import('~/components/Story')
 
 export default {
   components: {
     Story
   },
-  mixins: [loginRequired],
+  mixins: [loginRequired, buildHead],
   computed: {
     sortedStories() {
       const stories = this.$store.getters['stories/list']
@@ -55,6 +56,12 @@ export default {
 
       return array
     }
+  },
+  head() {
+    return this.buildHead(
+      'Stories for Newsletter',
+      'Vote for stories to send out in the next newsletter to members'
+    )
   }
 }
 </script>

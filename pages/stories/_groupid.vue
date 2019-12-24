@@ -37,6 +37,8 @@
 // TODO MINOR Add infinite scroll
 import loginOptional from '@/mixins/loginOptional.js'
 import createGroupRoute from '@/mixins/createGroupRoute'
+import buildHead from '@/mixins/buildHead.js'
+
 const GroupSelect = () => import('~/components/GroupSelect')
 const StoriesAddModal = () => import('~/components/StoriesAddModal')
 const Story = () => import('~/components/Story')
@@ -49,7 +51,8 @@ export default {
   },
   mixins: [
     loginOptional,
-    createGroupRoute('stories', { routeParam: 'groupid' })
+    createGroupRoute('stories', { routeParam: 'groupid' }),
+    buildHead
   ],
   data: function() {
     return {
@@ -77,25 +80,56 @@ export default {
       return []
     },
     groupname() {
-      let ret = null
+      if (this.groupid) {
+        // Find selected in our groups
+        const myGroups = this.$store.getters['auth/groups']
 
-      if (this.sortedStories && this.sortedStories.length && this.groupid) {
-        ret = this.sortedStories[0].groupname
+        for (const group of myGroups) {
+          if (group.id === this.groupid) {
+            return group.namedisplay
+          }
+        }
       }
 
-      return ret
+      if (this.asyncGroupid) {
+        const group = this.$store.getters['group/get'](this.asyncGroupid)
+        if (group) {
+          return group.namedisplay
+        }
+      }
+
+      return null
     }
   },
-  async mounted() {
-    await this.$store.dispatch('stories/clear')
-    await this.$store.dispatch('stories/fetch', {
-      groupid: this.groupid > 0 ? this.groupid : null
+  async asyncData({ app, params, store }) {
+    await store.dispatch('stories/clear')
+    await store.dispatch('stories/fetch', {
+      groupid: params.groupid > 0 ? params.groupid : null
     })
+
+    if (params.groupid) {
+      await store.dispatch('group/fetch', {
+        id: params.groupid
+      })
+    }
+
+    return {
+      // TODO MINOR In several places we return info from asyncData for use in head() for SSR.  This works, but feels
+      // wrong.
+      asyncGroupid: params.groupid
+    }
   },
+
   methods: {
     showAddModal() {
       this.$refs.addmodal.show()
     }
+  },
+  head() {
+    return this.buildHead(
+      this.groupname ? 'Stories for ' + this.groupname : 'Stories',
+      'Real stories from real freeglers.'
+    )
   }
 }
 </script>

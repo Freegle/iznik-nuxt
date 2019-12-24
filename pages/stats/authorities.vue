@@ -32,12 +32,13 @@
 <script>
 import loginOptional from '@/mixins/loginOptional.js'
 import Autocomplete from '~/components/Autocomplete'
+import buildHead from '@/mixins/buildHead.js'
 
 export default {
   components: {
     Autocomplete
   },
-  mixins: [loginOptional],
+  mixins: [loginOptional, buildHead],
   data() {
     return {
       source: process.env.API + '/authority',
@@ -64,6 +65,12 @@ export default {
     select(auth) {
       this.$router.push('/stats/authority/' + auth.id)
     }
+  },
+  head() {
+    return this.buildHead(
+      'Statistics by Authority',
+      "You can search for a council, local authority etc. Then we'll show you our impact in that area."
+    )
   }
 }
 </script>

@@ -1,3 +1,5 @@
+import sitemap from './utils/sitemap.js'
+
 const pkg = require('./package')
 const FACEBOOK_APPID = '134980666550322'
 
@@ -32,7 +34,7 @@ const DISABLE_ESLINT_AUTOFIX =
   process.env.DISABLE_ESLINT_AUTOFIX !== 'false'
 const ESLINT_AUTOFIX = !DISABLE_ESLINT_AUTOFIX
 
-let config = {
+const config = {
   mode: 'universal',
 
   /*
@@ -52,7 +54,7 @@ let config = {
   * silently fail and revert to the site default we set up here.
   */
   head: {
-    title: 'Freegle',
+    title: "Freegle - Don't throw it away, give it away!",
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -60,12 +62,14 @@ let config = {
       {
         hid: 'description',
         name: 'description',
-        content: 'Give and get stuff for free in your local community.  Don\'t just recycle - reuse, freecycle and freegle!'
+        content:
+          "Give and get stuff for free in your local community.  Don't just recycle - reuse, freecycle and freegle!"
       },
       {
         hid: 'apple-mobile-web-app-title',
         name: 'apple-mobile-web-app-title',
-        content: 'Give and get stuff for free in your local community.  Don\'t just recycle - reuse, freecycle and freegle!'
+        content:
+          "Give and get stuff for free in your local community.  Don't just recycle - reuse, freecycle and freegle!"
       },
 
       {
@@ -84,12 +88,18 @@ let config = {
       {
         hid: 'og:description',
         property: 'og:description',
-        content: 'Give and get stuff for free in your local community.  Don\'t just recycle - reuse, freecycle and freegle!'
+        content:
+          "Give and get stuff for free in your local community.  Don't just recycle - reuse, freecycle and freegle!"
       },
       { hid: 'fb:app_id', property: 'og:site_name', content: FACEBOOK_APPID },
 
       { hid: 'twitter:title', name: 'twitter:title', content: 'Freegle' },
-      { hid: 'twitter:description', name: 'twitter:description', content: 'Give and get stuff for free in your local community.  Don\'t just recycle - reuse, freecycle and freegle!' },
+      {
+        hid: 'twitter:description',
+        name: 'twitter:description',
+        content:
+          "Give and get stuff for free in your local community.  Don't just recycle - reuse, freecycle and freegle!"
+      },
       {
         hid: 'twitter:image',
         name: 'twitter:image',
@@ -100,10 +110,24 @@ let config = {
         name: 'twitter:image:alt',
         content: 'The Freegle logo'
       },
-      { hid: 'twitter:card', name: 'twitter:card', content: 'summary_large_image' },
+      {
+        hid: 'twitter:card',
+        name: 'twitter:card',
+        content: 'summary_large_image'
+      },
       { hid: 'twitter:site', name: 'twitter:site', content: 'thisisfreegle' }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'preconnect', href: 'https://i.ytimg.com' },
+      { rel: 'preconnect', href: 'https://s.ytimg.com' },
+      { rel: 'preconnect', href: 'https://www.youtube.com' },
+      { rel: 'preconnect', href: 'https://fonts.gstatic.com' },
+      { rel: 'preconnect', href: 'https://storage.googleapis.com' },
+      { rel: 'preconnect', href: 'https://www.facebook.com' },
+      { rel: 'preconnect', href: 'https://connect.facebook.com' },
+      { rel: 'preconnect', href: 'https://apis.google.com' }
+    ]
   },
 
   /*
@@ -162,7 +186,8 @@ let config = {
     { src: '~plugins/google-sdk', ssr: false },
     { src: '~plugins/vue-js-toggle-button', ssr: false },
     { src: '~plugins/vue2-datepicker', ssr: false },
-    { src: '~plugins/vue-social-sharing', ssr: false }
+    { src: '~plugins/vue-social-sharing', ssr: false },
+    { src: '~plugins/vue-lazy-youtube-video', ssr: false }
   ],
 
   redirect: [
@@ -181,12 +206,20 @@ let config = {
   ** Nuxt.js modules
   */
   modules: [
+    '@nuxtjs/sitemap',
     'bootstrap-vue/nuxt',
     'nuxt-rfg-icon',
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     'nuxt-dayjs-module',
-    '@nuxtjs/redirect-module'
+    '@nuxtjs/redirect-module',
+    [
+      '@nuxtjs/component-cache',
+      {
+        max: 1000,
+        maxAge: 300 * 60 * 60
+      }
+    ]
     // Removing this as it causes a scalability issue with vue-meta - see https://github.com/nuxt/vue-meta/issues/443
     // 'cookie-universal-nuxt',
     // [
@@ -217,7 +250,6 @@ let config = {
       'ButtonPlugin',
       'ButtonGroupPlugin',
       'CardPlugin',
-      'CarouselPlugin',
       'CollapsePlugin',
       'DropdownPlugin',
       'EmbedPlugin',
@@ -241,8 +273,6 @@ let config = {
       'PopoverPlugin',
       'ProgressPlugin',
       'TabsPlugin',
-      'TablePlugin',
-      'TooltipPlugin',
       'BVToastPlugin'
     ],
     directivePlugins: [
@@ -272,7 +302,13 @@ let config = {
     transpile: [/^vue2-google-maps($|\/)/],
 
     extend(config, ctx) {
-      config.devtool = ctx.isClient ? 'eval-source-map' : 'inline-source-map'
+      if (process.env.NODE_ENV !== 'production') {
+        // TODO NS Did you add this or did I pick it up from somewhere?  Do you know why we do this?  Comment please.
+        config.devtool = ctx.isClient ? 'eval-source-map' : 'inline-source-map'
+      } else {
+        // If we put them as files then we don't increase the bundle size.
+        config.devtool = 'source-map'
+      }
 
       // Run ESLint on save
       if (ctx.isDev && ctx.isClient) {
@@ -329,8 +365,8 @@ let config = {
             require.resolve('@nuxt/babel-preset-app'),
             {
               targets,
-              corejs: 3,
-              debug: process.env.NODE_ENV === 'production'
+              corejs: 3
+              // debug: process.env.NODE_ENV === 'production'
             }
           ]
         ]
@@ -365,6 +401,15 @@ let config = {
 
   router: {
     middleware: ['keylogin']
+  },
+
+  sitemap: {
+    routes() {
+      return sitemap.includeRoutes()
+    },
+    exclude: sitemap.excludeRoutes,
+    path: '/sitemap.xml',
+    gzip: true
   }
 }
 
@@ -385,8 +430,12 @@ if (process.env.NUXT_BUILD_TYPE === 'fdapp') {
 
   config.plugins.push({ src: '~plugins/initapp.js', mode: 'client' })
 
+  // Remove service worker
   // https://stackoverflow.com/questions/57822378/disable-service-workers-or-workbox-in-nuxtjs-app
-  config.modules = config.modules.filter((module) => module !== '@nuxtjs/pwa')
+  config.modules = config.modules.filter(module => module !== '@nuxtjs/pwa')
+
+  // Remove sitemap
+  config.modules = config.modules.filter(module => module !== '@nuxtjs/sitemap')
 }
 
 module.exports = config

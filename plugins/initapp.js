@@ -1,27 +1,23 @@
 import Vue from 'vue'
 
-// app initialisation based on standard Cordova code
+// Note: mobilePushId is the same regardless of which user is logged in
+
 console.log('--------------initapp--------------')
-
 const pushstate = Vue.observable({ pushed: false })
+export const mobilestate = Vue.observable({ mobilePushId: false })
 
-export const mobilestate = Vue.observable({
-  isiOS: false,
-  mobilePushId: false
-})
-
+let isiOS = false
+let acceptedMobilePushId = false
 let mobilePush = false
-let mobilePushId = false
 let lastPushMsgid = false
 
 window.iznikroot = location.pathname.substring(0, location.pathname.lastIndexOf('/') + 1)
 window.iznikroot = decodeURI(window.iznikroot.replace(/%25/g, '%2525'))
 console.log('window.iznikroot ' + window.iznikroot)
 
-const app = {
+const cordovaApp = {
   // Application Constructor
   initialize: function() {
-    console.log('--------------initapp--------------')
     document.addEventListener(
       'deviceready',
       this.onDeviceReady.bind(this),
@@ -34,9 +30,9 @@ const app = {
   // Bind any cordova events here. Common events are:
   // 'pause', 'resume', etc.
   onDeviceReady: function() {
-    console.log('app: onDeviceReady')
+    console.log('cordovaApp: onDeviceReady')
 
-    mobilestate.isiOS = window.device.platform === 'iOS'
+    isiOS = window.device.platform === 'iOS'
     // if (!window.initialURL) {
     //   window.initialURL = window.location.href
     // }
@@ -88,12 +84,12 @@ const app = {
       }
     }); */
 
-    setTimeout(function() {
+    //setTimeout(function() {
     console.log('push init start')
     if ((typeof window.PushNotification === 'undefined') || (!PushNotification)) {
       console.log('NO PUSH NOTIFICATION SERVICE')
       // alert("No PN");
-    } else if (!mobilePushId) {
+    } else if (!mobilestate.mobilePushId) {
       mobilePush = window.PushNotification.init({
         android: {
           senderID: '423761283916', // FCM: https://console.firebase.google.com/project/scenic-oxygen-849/settings/general/android:org.ilovefreegle.direct
@@ -112,9 +108,8 @@ const app = {
       })
       mobilestate.mobilePush = mobilePush
       mobilePush.on('registration', function (data) {
-        mobilePushId = data.registrationId
-        mobilestate.mobilePushId = mobilePushId
-        console.log('push registration ' + mobilePushId)
+        mobilestate.mobilePushId = data.registrationId
+        console.log('push registration ' + mobilestate.mobilePushId)
         // mobilePushId reported to server in store/auth.js fetchUser
         // alert("registration: " + mobilePushId);
       })
@@ -166,10 +161,6 @@ const app = {
         //document.dispatchEvent(new Event('mobilepush'))
         pushstate.pushed = true
         console.log('PUSH mobilepushevent B')
-        /* console.log('PUSH dispatch store')
-        store.dispatch('notifications/count')
-        store.dispatch('chats/listChats')
-        console.log('PUSH dispatched store') */
 
         /* // Always try to set in-app counts
         if (('chatcount' in data.additionalData) && ('notifcount' in data.additionalData)) {
@@ -211,14 +202,14 @@ const app = {
             }
           }
         } */
-        if (mobilestate.isiOS) {
+        if (isiOS) {
           mobilePush.finish(
             function() {
-              console.log('push finished OK')
+              console.log('iOS push finished OK')
               // alert("finished");
             },
             function() {
-              console.log('push finished error')
+              console.log('iOS push finished error')
               // alert("finished");
             },
             data.additionalData.notId
@@ -226,11 +217,11 @@ const app = {
         }
       })
     }
-    }, 15000)
+//    }, 15000)
   }
 }
 
-app.initialize()
+cordovaApp.initialize()
 
 /* // Fix up CSS cases with absolute url path
 var style = document.createElement('style')
@@ -244,28 +235,50 @@ style.innerHTML = css
 document.getElementsByTagName('head')[0].appendChild(style) */
 
 
-/*Vue.use({
-  install(Vue) {
-    console.log('--------------initapp install--------------')
-    Vue.prototype.$storeMobile = function(store) { // Do not use arrow as it breaks 'this': () => {       // this.$nuxt.$store
-      console.log('--------------$storeMobile--------------')
-      store.mobileapp = {
-        isiOS: isiOS,
-        mobilePushId: mobilePushId
+
+export async function savePushId(store) {
+  if (acceptedMobilePushId !== mobilestate.mobilePushId) {
+    const params = {
+      notifications: {
+        push: {
+          type: isiOS ? 'FCMIOS' : 'FCMAndroid',
+          subscription: mobilestate.mobilePushId
+        }
       }
-      console.log('--------------$storeMobile done --------------')
+    }
+    const data = await store.$api.session.save(params)
+    if (data.ret === 0) {
+      acceptedMobilePushId = mobilestate.mobilePushId
+      console.log('savePushId: saved OK')
+    } else { // 1 === Not logged in
+      console.log('savePushId: Not logged in: OK will try again when signed in')
     }
   }
-})*/
+}
 
+export function logoutPushId() {
+  acceptedMobilePushId = false
+  console.log('logoutPushId')
+}
+
+// When the plugin is loaded at runtime, a watches are setup...
+// https://github.com/vuejs/rfcs/blob/function-apis/active-rfcs/0000-function-api.md#watchers
 export default ({ store }) => {
+  // When mobilePushId changed, tell server our push notification id
+  store.watch(
+    () => mobilestate.mobilePushId,
+    mobilePushId => {
+      if (mobilePushId) {
+        savePushId(store)
+      }
+    }
+  )
+  // When push received, refetch notification and chat counts
   store.watch(
     () => pushstate.pushed,
     pushed => {
-      console.log('--------------pushed changed')
       if (pushed) {
         console.log('--------------We have been pushed')
-        // We have been pushed.  Refetch our notification count and chat count
         store.dispatch('notifications/count')
         store.dispatch('chats/listChats')
         pushstate.pushed = false
@@ -273,13 +286,6 @@ export default ({ store }) => {
     }
   )
 }
-
-/* document.addEventListener('mobilepush', function (ev) {
-  console.log('initapp mobilepush', ev)
-  state.pushed = true
-  console.log('initapp mobilepush done')
-}, false) */
-
 
 
 console.log('--------------initedapp--------------')

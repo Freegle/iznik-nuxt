@@ -12,6 +12,9 @@
     :hide-header-close="modalIsForced"
     :no-close-on-esc="modalIsForced"
   >
+    <!--    TODO MINOR Suppose you have a button which then forces you to log in, e.g. Add a volunteer op.  Once clicked, you-->
+    <!--    can't get out of this modal.  Probably that only happens when we want to force login before popping up another-->
+    <!--    modal and we're not navigating.-->
     <!-- This is required as the default bootstrap component makes the main title an h5 -->
     <template slot="modal-title">
       <h2>Let's get freegling!</h2>
@@ -175,6 +178,7 @@
 <script>
 import Vue from 'vue'
 import { LoginError } from '../api/BaseAPI'
+
 const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
@@ -527,8 +531,12 @@ $color-yahoo: #6b0094;
   min-width: 250px;
   border-radius: 3px;
   padding: 0;
-  margin-bottom: 20px;
+  margin: 0 auto 20px;
   color: $color-white;
+
+  @include media-breakpoint-up(lg) {
+    margin: 0 0 20px;
+  }
 }
 
 .social-button:disabled {

@@ -188,6 +188,7 @@
 
 <script>
 import loginRequired from '@/mixins/loginRequired.js'
+import buildHead from '@/mixins/buildHead.js'
 const JobsTopBar = () => import('../components/JobsTopBar')
 const MyMessage = () => import('~/components/MyMessage.vue')
 const SidebarLeft = () => import('~/components/SidebarLeft')
@@ -203,7 +204,7 @@ export default {
     SidebarRight,
     AvailabilityModal
   },
-  mixins: [loginRequired],
+  mixins: [loginRequired, buildHead],
   data() {
     return {
       id: null,
@@ -370,6 +371,12 @@ export default {
     availability() {
       this.$refs.availabilitymodal.show()
     }
+  },
+  head() {
+    return this.buildHead(
+      'My Posts',
+      "See OFFERs/WANTEDs that you've posted, and replies to them."
+    )
   }
 }
 </script>

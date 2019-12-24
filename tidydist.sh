@@ -6,3 +6,7 @@ node ./node_modules/replace/bin/replace.js '"\/favicon.ico' '"favicon.ico' dist 
 
 node ./node_modules/replace/bin/replace.js '\/en-play-badge.png' 'en-play-badge.png' dist -r --quiet
 node ./node_modules/replace/bin/replace.js '\/app-store-black-sm.png' 'app-store-black-sm.png' dist -r --quiet
+
+cd dist
+rm -r councils
+cd ..

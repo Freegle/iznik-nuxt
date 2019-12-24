@@ -350,9 +350,39 @@ import { GChart } from 'vue-google-charts'
 import Wkt from 'wicket'
 import 'wicket/wicket-gmap3'
 import { gmapApi } from 'vue2-google-maps'
+import { TablePlugin } from 'bootstrap-vue'
+import Vue from 'vue'
 import loginOptional from '@/mixins/loginOptional.js'
+import buildHead from '@/mixins/buildHead.js'
 
-// TODO NS MINOR I think table is a big chunk of stuff to load from Bootstrap.  Does this hit us on initial page load?
+// There are a bunch of icons we need only on this page.  By requiring them here we avoid
+// requiring them in the vue-awesome plugin.  That makes them available everywhere - but
+// increases the bundle size.  Putting them here allows better bundling.
+import 'vue-awesome/icons/baby-carriage'
+import 'vue-awesome/icons/balance-scale-left'
+import 'vue-awesome/icons/binoculars'
+import 'vue-awesome/icons/headphones'
+import 'vue-awesome/icons/bath'
+import 'vue-awesome/icons/bed'
+import 'vue-awesome/icons/bicycle'
+import 'vue-awesome/icons/calculator'
+import 'vue-awesome/icons/car'
+import 'vue-awesome/icons/clock'
+import 'vue-awesome/icons/cloud'
+import 'vue-awesome/icons/crown'
+import 'vue-awesome/icons/glass-martini'
+import 'vue-awesome/icons/hat-wizard'
+import 'vue-awesome/icons/laptop'
+import 'vue-awesome/icons/mobile-alt'
+import 'vue-awesome/icons/print'
+import 'vue-awesome/icons/socks'
+import 'vue-awesome/icons/tablet-alt'
+import 'vue-awesome/icons/tv'
+import 'vue-awesome/icons/umbrella'
+import 'vue-awesome/icons/utensils'
+
+Vue.use(TablePlugin)
+
 // TODO MINOR It would be nice to render this page using SSR.  But the fetching of data is very slow, which means
 // the page would take too long to load.  So either we need to speed that up radically, or we need to do something
 // cunning.
@@ -361,7 +391,7 @@ export default {
   components: {
     GChart
   },
-  mixins: [loginOptional],
+  mixins: [loginOptional, buildHead],
   data() {
     return {
       startDate: null,
@@ -423,8 +453,13 @@ export default {
       return contWidth
     },
     mapWidth() {
-      let height = Math.floor(window.innerHeight / 2)
-      height = height < 200 ? 200 : height
+      let height = 0
+
+      if (process.browser) {
+        height = Math.floor(window.innerHeight / 2)
+        height = height < 200 ? 200 : height
+      }
+
       return height
     },
     totalWeight() {
@@ -630,6 +665,8 @@ export default {
 
       let groupcount = 0
       const stats = []
+
+      // TODO MINOR Change this to use a computed property.  Then reference in head() and check SSR works.
       const authority = store.getters['authorities/get'](id)
       const start = this.$dayjs(this.startDate).format('YYYY-MM-DD')
       const end = this.$dayjs(this.endDate).format('YYYY-MM-DD')
@@ -766,6 +803,9 @@ export default {
         this.fetchData(this.$store, this.id)
       }
     }
+  },
+  head() {
+    return this.buildHead('Statistics', 'See stats and graphs for Freegle')
   }
 }
 </script>

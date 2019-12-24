@@ -53,10 +53,12 @@ export const mutations = {
   },
 
   addAll(state, items) {
-    items.forEach(item => {
-      item.earliestDate = earliestDate(item.dates)
-      Vue.set(state.list, item.id, addStrings(item))
-    })
+    if (items) {
+      items.forEach(item => {
+        item.earliestDate = earliestDate(item.dates)
+        Vue.set(state.list, item.id, addStrings(item))
+      })
+    }
   },
 
   setList(state, list) {

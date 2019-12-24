@@ -11,6 +11,7 @@
 </template>
 <script>
 import loginOptional from '@/mixins/loginOptional.js'
+import buildHead from '@/mixins/buildHead.js'
 
 const VolunteerOpportunity = () =>
   import('~/components/VolunteerOpportunity.vue')
@@ -19,7 +20,7 @@ export default {
   components: {
     VolunteerOpportunity
   },
-  mixins: [loginOptional],
+  mixins: [loginOptional, buildHead],
   computed: {
     volunteering() {
       return this.$store.getters['volunteerops/get'](this.$route.params.id)
@@ -29,6 +30,13 @@ export default {
     await store.dispatch('volunteerops/fetch', {
       id: params.id
     })
+  },
+  head() {
+    return this.buildHead(
+      this.volunteering.title,
+      this.volunteering.description,
+      this.volunteering.photo ? this.volunteering.photo.path : null
+    )
   }
 }
 </script>

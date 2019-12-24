@@ -66,3 +66,16 @@
     </b-row>
   </b-col>
 </template>
+<script>
+import buildHead from '@/mixins/buildHead.js'
+
+export default {
+  mixins: [buildHead],
+  head() {
+    return this.buildHead(
+      'Terms of Use',
+      "Our Terms of Use.  They're pleasingly short."
+    )
+  }
+}
+</script>

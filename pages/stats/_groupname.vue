@@ -176,6 +176,12 @@
 import dayjs from 'dayjs'
 import { GChart } from 'vue-google-charts'
 import loginOptional from '@/mixins/loginOptional.js'
+import buildHead from '@/mixins/buildHead.js'
+
+import 'vue-awesome/icons/calculator'
+import 'vue-awesome/icons/cloud'
+import 'vue-awesome/icons/balance-scale-left'
+
 const GroupHeader = () => import('~/components/GroupHeader.vue')
 
 export default {
@@ -183,7 +189,7 @@ export default {
     GChart,
     GroupHeader
   },
-  mixins: [loginOptional],
+  mixins: [loginOptional, buildHead],
   data: function() {
     return {
       loading: false,
@@ -447,6 +453,17 @@ export default {
       this.dataready = true
     })
   },
+  head() {
+    if (this.groupname) {
+      return this.buildHead(
+        'Statistics for ' + this.groupname,
+        'See stats and graphs for ' + this.groupname
+      )
+    } else {
+      return this.buildHead('Statistics', 'See stats and graphs for Freegle')
+    }
+  },
+
   methods: {}
 }
 </script>

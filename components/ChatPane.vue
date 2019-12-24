@@ -231,12 +231,18 @@
 // TODO DESIGN We have a spinner at the top for our upwards infinite scroll.  But this looks messy when we load a
 // short chat, because we see the messages appear below the spinner and then move upwards once the infinite scroll
 // completes.
+import { TooltipPlugin } from 'bootstrap-vue'
+import Vue from 'vue'
 import ChatBlockModal from './ChatBlockModal'
 import ChatHideModal from './ChatHideModal'
 import twem from '~/assets/js/twem'
+import 'vue-awesome/icons/address-book'
+import 'vue-awesome/icons/window-restore'
+import 'vue-awesome/icons/handshake'
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
 import ChatMessage from '~/components/ChatMessage.vue'
+Vue.use(TooltipPlugin)
 const OurFilePond = () => import('~/components/OurFilePond')
 const Ratings = () => import('~/components/Ratings')
 const PromiseModal = () => import('./PromiseModal')

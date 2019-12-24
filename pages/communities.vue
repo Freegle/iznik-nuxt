@@ -34,6 +34,7 @@
 
 <script>
 import loginRequired from '@/mixins/loginRequired.js'
+import buildHead from '@/mixins/buildHead.js'
 const JobsTopBar = () => import('../components/JobsTopBar')
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect.vue')
 const GroupHeader = () => import('~/components/GroupHeader.vue')
@@ -50,7 +51,7 @@ export default {
     SidebarLeft,
     SidebarRight
   },
-  mixins: [loginRequired],
+  mixins: [loginRequired, buildHead],
   data: function() {
     return {
       id: null,
@@ -192,6 +193,13 @@ export default {
           console.log('Complete on error', e)
         })
     }
+  },
+
+  head() {
+    return this.buildHead(
+      'Communities',
+      "See the OFFERs and WANTEDs from communities you've joined"
+    )
   }
 }
 </script>

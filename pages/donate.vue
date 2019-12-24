@@ -113,12 +113,21 @@
 </template>
 <script>
 import DonationThermometer from '../components/DonationThermometer'
+import buildHead from '@/mixins/buildHead.js'
+
 export default {
   components: { DonationThermometer },
+  mixins: [buildHead],
   computed: {
     target() {
       return this.$store.getters['donations/target']
     }
+  },
+  head() {
+    return this.buildHead(
+      'Donate to Freegle',
+      "We're free to use, but not free to run.  Can you help us keep going?"
+    )
   }
 }
 </script>

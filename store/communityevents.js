@@ -31,10 +31,12 @@ export const mutations = {
   },
 
   addAll(state, items) {
-    items.forEach(item => {
-      item.earliestDate = earliestDate(item.dates)
-      Vue.set(state.list, item.id, item)
-    })
+    if (items) {
+      items.forEach(item => {
+        item.earliestDate = earliestDate(item.dates)
+        Vue.set(state.list, item.id, item)
+      })
+    }
   },
 
   setList(state, list) {
@@ -103,28 +105,34 @@ export const getters = {
 
 export const actions = {
   async addFields({ dispatch }, items) {
-    for (let j = 0; j < items.length; j++) {
-      for (let i = 0; i < items[j].dates.length; i++) {
-        const date = items[j].dates[i]
+    if (items) {
+      for (let j = 0; j < items.length; j++) {
+        for (let i = 0; i < items[j].dates.length; i++) {
+          const date = items[j].dates[i]
 
-        // Add human readable versions of each date range.
-        const startm = new Moment(date.start)
-        let endm = new Moment(date.end)
-        endm = endm.isSame(startm, 'day')
-          ? endm.format('HH:mm')
-          : endm.format('ddd, Do MMM HH:mm')
+          // Add human readable versions of each date range.
+          const startm = new Moment(date.start)
+          let endm = new Moment(date.end)
+          endm = endm.isSame(startm, 'day')
+            ? endm.format('HH:mm')
+            : endm.format('ddd, Do MMM HH:mm')
 
-        items[j].dates[i].string = {
-          start: startm.format('ddd, Do MMM HH:mm'),
-          end: endm,
-          past: Date.now() > new Date(date.start)
-        }
+          items[j].dates[i].string = {
+            start: startm.format('ddd, Do MMM HH:mm'),
+            end: endm,
+            past: Date.now() > new Date(date.start)
+          }
 
-        if (!items[j].dates[i].uniqueid) {
-          // Add a unique date id.  This is client-side only, used for keying component.
-          items[j].dates[i].uniqueid = await dispatch('uniqueid/generate', [], {
-            root: true
-          })
+          if (!items[j].dates[i].uniqueid) {
+            // Add a unique date id.  This is client-side only, used for keying component.
+            items[j].dates[i].uniqueid = await dispatch(
+              'uniqueid/generate',
+              [],
+              {
+                root: true
+              }
+            )
+          }
         }
       }
     }

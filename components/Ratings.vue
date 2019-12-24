@@ -38,6 +38,10 @@
   </client-only>
 </template>
 <script>
+import { TooltipPlugin } from 'bootstrap-vue'
+import Vue from 'vue'
+Vue.use(TooltipPlugin)
+
 // TODO DESIGN Showing that you have given feedback using blue is not very clear.  How can we improve that given limited space?
 export default {
   props: {

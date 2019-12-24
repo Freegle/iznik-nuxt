@@ -6,7 +6,7 @@
 
 import Vue from 'vue'
 import { LoginError } from '../api/BaseAPI'
-import { mobilestate } from '@/plugins/initapp' // CC
+import { savePushId, logoutPushId } from '@/plugins/initapp' // CC
 
 let first = true
 
@@ -117,6 +117,7 @@ export const actions = {
   },
 
   logout({ commit }) {
+    logoutPushId() // CC
     commit('setUser', null)
     this.$api.session.logout()
     this.$axios.defaults.headers.common.Authorization = null
@@ -206,34 +207,20 @@ export const actions = {
 
       const { me, persistent, groups } = await this.$api.session.fetch(params)
 
-      // Save the persistent session token.
-      me.persistent = persistent
-
-      if (groups) {
-        me.groups = groups
-        commit('setGroups', groups)
-      }
-
-      // Set the user, which will trigger various re-rendering if we were required to be logged in.
+      // Set the user, which will trigger various re-rendering if we were required to be logged in. // CC does need moving
       if (me) {
+        // Save the persistent session token.
+        me.persistent = persistent
+
+        if (groups) {
+          me.groups = groups
+          commit('setGroups', groups)
+        }
+
         commit('setUser', me, params.components)
         commit('forceLogin', false)
 
-        // Tell server our push notification id
-        console.log('mobilestate', mobilestate)
-        if (mobilestate.mobilePushId) {
-          const params = {
-            notifications: {
-              push: {
-                type: mobilestate.isiOS ? 'FCMIOS' : 'FCMAndroid',
-                subscription: mobilestate.mobilePushId
-              }
-            }
-          }
-          await this.$api.session.save(params)
-          console.log('auth.fetchUser mobilePushId sent to server')
-        }
-
+        await savePushId(this) // Tell server our mobile push notification id, if available // CC
       }
     }
   },

@@ -61,7 +61,7 @@
             </div>
           </b-card>
         </div>
-        <b-card no-body class="p-2">
+        <b-card v-if="!id" no-body class="p-2">
           <b-card-text class="d-flex align-items-center">
             <div v-if="me.settings.mylocation && me.settings.mylocation.area.name" class="w-50">
               <v-icon name="map-marker-alt" />
@@ -93,9 +93,14 @@
 </template>
 
 <script>
+import { TooltipPlugin } from 'bootstrap-vue'
+import Vue from 'vue'
 import loginRequired from '@/mixins/loginRequired.js'
+import buildHead from '@/mixins/buildHead'
 import twem from '~/assets/js/twem'
 import NewsThread from '~/components/NewsThread.vue'
+Vue.use(TooltipPlugin)
+
 const OurFilePond = () => import('~/components/OurFilePond')
 const SidebarLeft = () => import('~/components/SidebarLeft')
 const SidebarRight = () => import('~/components/SidebarRight')
@@ -109,7 +114,7 @@ export default {
     SidebarLeft,
     SidebarRight
   },
-  mixins: [loginRequired],
+  mixins: [loginRequired, buildHead],
 
   validate({ params }) {
     // Must be a number if present
@@ -376,6 +381,12 @@ export default {
       this.imageid = imageid
       this.imagethumb = imagethumb
     }
+  },
+  head() {
+    return this.buildHead(
+      'ChitChat',
+      'Chat to nearby freeglers...ask for advice, recommendations or just have a good old blether.'
+    )
   }
 }
 </script>

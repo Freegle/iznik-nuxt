@@ -150,7 +150,7 @@ export default {
 
   head() {
     return this.buildHead(
-      'Find',
+      'Find something',
       'See what people nearby are giving away for free'
     )
   }
