@@ -41,10 +41,12 @@
     <NewsShareModal v-if="newsfeedModal" :newsfeed="newsfeedModal" />
   </div>
 </template>
+<script type="module">
+import 'vue-awesome/icons/share-alt'
+</script>
 <script>
 import NewsBase from '~/components/NewsBase'
 import NewsUserIntro from '~/components/NewsUserIntro'
-import 'vue-awesome/icons/share-alt'
 
 const NewsShareModal = () => import('~/components/NewsShareModal')
 const NewsLoveComment = () => import('~/components/NewsLoveComment')

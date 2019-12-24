@@ -33,6 +33,9 @@
     </b-tooltip>
   </div>
 </template>
+<script type="module">
+import 'vue-awesome/icons/map-marker-alt'
+</script>
 
 <script>
 // TODO If you're on mobile, e.g. on Give page, and click into this, then the on screen keyboard can hide the
@@ -40,7 +43,6 @@
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import Autocomplete from '~/components/Autocomplete'
-import 'vue-awesome/icons/map-marker-alt'
 
 Vue.use(TooltipPlugin)
 

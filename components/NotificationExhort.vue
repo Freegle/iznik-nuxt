@@ -30,9 +30,10 @@
   max-width: 280px;
 }
 </style>
-<script>
+<script type="module">
 import 'vue-awesome/icons/heart'
-
+</script>
+<script>
 export default {
   props: {
     notification: {

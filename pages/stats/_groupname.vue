@@ -172,15 +172,16 @@
   color: green !important;
 }
 </style>
+<script type="module">
+import 'vue-awesome/icons/calculator'
+import 'vue-awesome/icons/cloud'
+import 'vue-awesome/icons/balance-scale-left'
+</script>
 <script>
 import dayjs from 'dayjs'
 import { GChart } from 'vue-google-charts'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
-
-import 'vue-awesome/icons/calculator'
-import 'vue-awesome/icons/cloud'
-import 'vue-awesome/icons/balance-scale-left'
 
 const GroupHeader = () => import('~/components/GroupHeader.vue')
 

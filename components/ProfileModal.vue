@@ -167,10 +167,13 @@
 }
 </style>
 
-<script>
-import twem from '~/assets/js/twem'
+<script type="module">
 import 'vue-awesome/icons/chart-bar'
 import 'vue-awesome/icons/map-marker-alt'
+</script>
+
+<script>
+import twem from '~/assets/js/twem'
 
 // TODO DESIGN Header is messy - wallpaper should fill the whole thing; image should have a border round it with a gap.
 // TODO DESIGN The about me section needs nice big quotes round it.

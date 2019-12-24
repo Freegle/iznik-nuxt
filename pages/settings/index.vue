@@ -454,14 +454,16 @@
 }
 </style>
 
+<script type="module">
+import 'vue-awesome/icons/address-book'
+import 'vue-awesome/icons/crown'
+</script>
 <script>
 // TODO MINOR Click on group name or icon to go to group once we have /mygroups/id
 import Vue from 'vue'
 import EmailConfirmModal from '~/components/EmailConfirmModal'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead'
-import 'vue-awesome/icons/address-book'
-import 'vue-awesome/icons/crown'
 const AboutMeModal = () => import('~/components/AboutMeModal')
 const AvailabilityModal = () => import('~/components/AvailabilityModal')
 const AddressModal = () => import('~/components/AddressModal')

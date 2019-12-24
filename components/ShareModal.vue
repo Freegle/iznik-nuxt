@@ -95,7 +95,7 @@
 <style scoped>
 </style>
 
-<script>
+<script type="module">
 // There are a bunch of icons we need only rarely.  By requiring them here we avoid
 // requiring them in the vue-awesome plugin.  That makes them available everywhere - but
 // increases the bundle size.  Putting them here allows better bundling.
@@ -107,7 +107,8 @@ import 'vue-awesome/icons/brands/telegram'
 import 'vue-awesome/icons/brands/twitter'
 import 'vue-awesome/icons/brands/whatsapp'
 import 'vue-awesome/icons/comment'
-
+</script>
+<script>
 export default {
   components: {},
   props: {

@@ -56,10 +56,11 @@
   max-width: 250px !important;
 }
 </style>
-<script>
+<script type="module">
 import 'vue-awesome/icons/share-alt'
 import 'vue-awesome/icons/heart'
-
+</script>
+<script>
 import StoriesShareModal from '~/components/StoriesShareModal'
 
 export default {

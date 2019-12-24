@@ -109,11 +109,13 @@
     <CommunityEventModal ref="eventmodal" :event="event" />
   </div>
 </template>
+<script type="module">
+import 'vue-awesome/icons/clock'
+import 'vue-awesome/icons/map-marker-alt'
+</script>
 <script>
 import CommunityEventModal from './CommunityEventModal'
 import twem from '~/assets/js/twem'
-import 'vue-awesome/icons/clock'
-import 'vue-awesome/icons/map-marker-alt'
 
 export default {
   components: {

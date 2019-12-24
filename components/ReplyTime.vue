@@ -8,9 +8,10 @@
     </p>
   </div>
 </template>
-<script>
+<script type="module">
 import 'vue-awesome/icons/clock'
-
+</script>
+<script>
 export default {
   props: {
     user: {

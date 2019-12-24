@@ -339,6 +339,9 @@
 }
 </style>
 
+<script type="module">
+import 'vue-awesome/icons/circle'
+</script>
 <script>
 // TODO DESIGN This layout is staid table nonsense.  Surely we can make it more appealing?
 // TODO NS Don't allow submission before image upload complete.
@@ -352,7 +355,6 @@ import twem from '~/assets/js/twem'
 import ValidatingForm from '@/components/ValidatingForm'
 import ValidatingFormInput from '@/components/ValidatingFormInput'
 import ValidatingTextarea from '@/components/ValidatingTextarea'
-import 'vue-awesome/icons/circle'
 
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
 const OurFilePond = () => import('~/components/OurFilePond')

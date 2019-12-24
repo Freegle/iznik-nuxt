@@ -20,11 +20,13 @@
     </b-card>
   </div>
 </template>
+<script type="module">
+import 'vue-awesome/icons/briefcase'
+</script>
 <script>
 // TODO DESIGN This sidebar is slow to appear, because the data comes from a third party website.  Should we have
 // a slide transition or something to make its appearance less disruptive?
 import Job from './Job'
-import 'vue-awesome/icons/briefcase'
 
 export default {
   components: {
