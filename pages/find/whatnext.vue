@@ -93,6 +93,7 @@ import Vue from 'vue'
 import AvailabilityModal from '../../components/AvailabilityModal'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
+import 'vue-awesome/icons/search'
 Vue.use(TooltipPlugin)
 
 const GroupHeader = () => import('~/components/GroupHeader.vue')

@@ -3,7 +3,7 @@
     <b-card variant="success" no-body>
       <b-card-title class="bg-info pl-2 mb-0 pt-2 pb-2 text-truncate">
         <nuxt-link :to="'/communityevent/' + event.id">
-          <span class="float-right small text-muted">
+          <span class="float-right small text-muted" v-if="!summary">
             #{{ event.id }}
           </span>
         </nuxt-link>

@@ -175,6 +175,9 @@
   </b-modal>
 </template>
 
+<script type="module">
+import 'vue-awesome/icons/slash'
+</script>
 <script>
 import Vue from 'vue'
 import { LoginError } from '../api/BaseAPI'

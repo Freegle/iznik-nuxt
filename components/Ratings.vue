@@ -40,6 +40,9 @@
 <script>
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
+import 'vue-awesome/icons/thumbs-down'
+import 'vue-awesome/icons/thumbs-up'
+
 Vue.use(TooltipPlugin)
 
 // TODO DESIGN Showing that you have given feedback using blue is not very clear.  How can we improve that given limited space?

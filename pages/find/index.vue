@@ -79,6 +79,7 @@ select {
 import NoticeMessage from '../../components/NoticeMessage'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
+import 'vue-awesome/icons/search'
 const Postcode = () => import('~/components/Postcode')
 const ComposeGroup = () => import('~/components/ComposeGroup')
 
