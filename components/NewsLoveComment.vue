@@ -23,10 +23,6 @@
     <NewsLovesModal :id="newsfeed.id" ref="loveModal" />
   </span>
 </template>
-<script type="module">
-import 'vue-awesome/icons/comment'
-import 'vue-awesome/icons/heart'
-</script>
 <script>
 import NewsLovesModal from './NewsLovesModal'
 

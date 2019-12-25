@@ -3,7 +3,7 @@
     <b-card variant="success" no-body>
       <b-card-title class="bg-info pl-2 mb-0 pt-2 pb-2 text-truncate">
         <nuxt-link :to="'/communityevent/' + event.id">
-          <span class="float-right small text-muted" v-if="!summary">
+          <span v-if="!summary" class="float-right small text-muted">
             #{{ event.id }}
           </span>
         </nuxt-link>
@@ -109,10 +109,6 @@
     <CommunityEventModal ref="eventmodal" :event="event" />
   </div>
 </template>
-<script type="module">
-import 'vue-awesome/icons/clock'
-import 'vue-awesome/icons/map-marker-alt'
-</script>
 <script>
 import CommunityEventModal from './CommunityEventModal'
 import twem from '~/assets/js/twem'

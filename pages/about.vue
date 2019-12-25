@@ -220,7 +220,6 @@
 </template>
 <script>
 import buildHead from '@/mixins/buildHead.js'
-import 'vue-awesome/icons/search'
 
 export default {
   mixins: [buildHead],

@@ -454,10 +454,6 @@
 }
 </style>
 
-<script type="module">
-import 'vue-awesome/icons/address-book'
-import 'vue-awesome/icons/crown'
-</script>
 <script>
 // TODO MINOR Click on group name or icon to go to group once we have /mygroups/id
 import Vue from 'vue'

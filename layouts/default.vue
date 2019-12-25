@@ -467,8 +467,6 @@ svg.fa-icon {
   }
 }
 </style>
-<script type="module">
-</script>
 <script>
 // TODO DESIGN Notification dropdown window isn't wide enough before it's loaded.
 // Import login modal as I've seen an issue where it's not in $refs when you click on the signin button too rapidly.

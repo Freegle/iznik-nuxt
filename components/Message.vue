@@ -163,10 +163,6 @@
   opacity: 0.3;
 }
 </style>
-<script type="module">
-import 'vue-awesome/icons/share-alt'
-</script>
-
 <script>
 // Need to import rather than async otherwise the render doesn't happen and ref isn't set.
 import ChatButton from './ChatButton'

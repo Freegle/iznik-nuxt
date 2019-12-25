@@ -167,11 +167,6 @@
 }
 </style>
 
-<script type="module">
-import 'vue-awesome/icons/chart-bar'
-import 'vue-awesome/icons/map-marker-alt'
-</script>
-
 <script>
 import twem from '~/assets/js/twem'
 

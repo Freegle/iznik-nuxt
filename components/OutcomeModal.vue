@@ -106,11 +106,6 @@ option {
 }
 </style>
 
-<script type="module">
-import 'vue-awesome/icons/frown'
-import 'vue-awesome/icons/meh'
-import 'vue-awesome/icons/smile'
-</script>
 <script>
 import Ratings from './Ratings'
 import DonationAskModal from './DonationAskModal'

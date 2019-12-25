@@ -195,11 +195,6 @@
 }
 </style>
 
-<script type="module">
-import 'vue-awesome/icons/address-book'
-import 'vue-awesome/icons/handshake'
-import 'vue-awesome/icons/window-maximize'
-</script>
 <script>
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'

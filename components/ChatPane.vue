@@ -226,11 +226,6 @@
   color: $color-white;
 }
 </style>
-<script type="module">
-import 'vue-awesome/icons/address-book'
-import 'vue-awesome/icons/window-restore'
-import 'vue-awesome/icons/handshake'
-</script>
 <script>
 // TODO MINOR Popup confirm first time you use Nudge, so you know what you're doing.
 // TODO DESIGN We have a spinner at the top for our upwards infinite scroll.  But this looks messy when we load a

@@ -33,10 +33,6 @@
     </b-tooltip>
   </div>
 </template>
-<script type="module">
-import 'vue-awesome/icons/map-marker-alt'
-</script>
-
 <script>
 // TODO If you're on mobile, e.g. on Give page, and click into this, then the on screen keyboard can hide the
 // autocomplete dropdown.  So we need either to drop up instead, or scroll somehow.

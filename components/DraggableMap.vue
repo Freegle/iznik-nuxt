@@ -41,9 +41,6 @@
 </template>
 <style scoped>
 </style>
-<script type="module">
-import 'vue-awesome/icons/map-marker-alt'
-</script>
 <script>
 // TODO DESIGN Make a bigger and more visible icon.
 // TODO EH Add place finder like in ExploreMap

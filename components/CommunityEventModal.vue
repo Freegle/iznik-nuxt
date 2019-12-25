@@ -339,9 +339,6 @@
 }
 </style>
 
-<script type="module">
-import 'vue-awesome/icons/circle'
-</script>
 <script>
 // TODO DESIGN This layout is staid table nonsense.  Surely we can make it more appealing?
 // TODO NS Don't allow submission before image upload complete.

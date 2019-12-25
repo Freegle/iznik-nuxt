@@ -184,9 +184,6 @@
   </div>
 </template>
 
-<script type="module">
-import 'vue-awesome/icons/heart'
-</script>
 <script>
 import NewsLovesModal from './NewsLovesModal'
 import twem from '~/assets/js/twem'

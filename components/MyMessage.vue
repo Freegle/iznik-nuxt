@@ -191,13 +191,6 @@ img.attachment {
   border-color: $color-white !important;
 }
 </style>
-<script type="module">
-import 'vue-awesome/icons/caret-down'
-import 'vue-awesome/icons/caret-up'
-import 'vue-awesome/icons/handshake'
-import 'vue-awesome/icons/share-alt'
-</script>
-
 <script>
 // TODO DESIGN This is better than the old version, but it's still not quite right, in terms of alignment and sizes
 // of things.

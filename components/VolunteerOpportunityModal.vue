@@ -362,9 +362,6 @@
 }
 </style>
 
-<script type="module">
-import 'vue-awesome/icons/circle'
-</script>
 <script>
 // TODO DESIGN This layout is staid table nonsense.  Surely we can make it more appealing?
 // TODO NS Add some form validation using a plugin - see https://bootstrap-vue.js.org/docs/reference/validation/.  Need

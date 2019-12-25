@@ -93,20 +93,10 @@
     </b-modal>
   </div>
 </template>
-<script type="module">
+<script>
 // There are a bunch of icons we need only rarely.  By requiring them here we avoid
 // requiring them in the vue-awesome plugin.  That makes them available everywhere - but
 // increases the bundle size.  Putting them here allows better bundling.
-import 'vue-awesome/icons/comment'
-import 'vue-awesome/icons/brands/facebook'
-import 'vue-awesome/icons/brands/google-plus'
-import 'vue-awesome/icons/brands/pinterest'
-import 'vue-awesome/icons/brands/skype'
-import 'vue-awesome/icons/brands/telegram'
-import 'vue-awesome/icons/brands/twitter'
-import 'vue-awesome/icons/brands/whatsapp'
-</script>
-<script>
 export default {
   props: {
     newsfeed: {

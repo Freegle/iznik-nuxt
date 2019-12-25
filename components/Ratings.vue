@@ -40,8 +40,6 @@
 <script>
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
-import 'vue-awesome/icons/thumbs-down'
-import 'vue-awesome/icons/thumbs-up'
 
 Vue.use(TooltipPlugin)
 

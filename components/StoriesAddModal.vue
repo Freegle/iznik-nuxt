@@ -137,9 +137,6 @@ label {
   color: $color-white;
 }
 </style>
-<script type="module">
-import 'vue-awesome/icons/circle'
-</script>
 <script>
 // TODO NS Validation.  Easy in this case but deferred rolling our own in case we have a general form validation plugin.
 

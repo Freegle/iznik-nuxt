@@ -70,9 +70,6 @@
     <NewsShareModal v-if="newsfeedModal" :newsfeed="newsfeedModal" />
   </div>
 </template>
-<script type="module">
-import 'vue-awesome/icons/share-alt'
-</script>
 <script>
 import NewsBase from '~/components/NewsBase'
 const NewsLoveComment = () => import('~/components/NewsLoveComment')

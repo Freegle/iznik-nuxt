@@ -64,9 +64,6 @@
     <StoriesShareModal :story="newsfeed.story" />
   </div>
 </template>
-<script type="module">
-import 'vue-awesome/icons/share-alt'
-</script>
 <script>
 import twem from '~/assets/js/twem'
 import NewsBase from '~/components/NewsBase'
