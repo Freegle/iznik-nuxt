@@ -65,6 +65,7 @@
 <style scoped>
 </style>
 <script>
+import 'vue-awesome/icons/map-marker-alt'
 import NewsBase from '~/components/NewsBase'
 const VolunteerOpportunityModal = () => import('./VolunteerOpportunityModal')
 const NewsLoveComment = () => import('~/components/NewsLoveComment')

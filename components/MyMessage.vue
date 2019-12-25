@@ -192,6 +192,10 @@ img.attachment {
 }
 </style>
 <script>
+import 'vue-awesome/icons/caret-down'
+import 'vue-awesome/icons/caret-up'
+import 'vue-awesome/icons/handshake'
+import 'vue-awesome/icons/share-alt'
 // TODO DESIGN This is better than the old version, but it's still not quite right, in terms of alignment and sizes
 // of things.
 // TODO When we click to expand, the visible text may be off the top or bottom of the screen.  Need to make it visible.

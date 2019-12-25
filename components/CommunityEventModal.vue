@@ -340,6 +340,7 @@
 </style>
 
 <script>
+import 'vue-awesome/icons/circle'
 // TODO DESIGN This layout is staid table nonsense.  Surely we can make it more appealing?
 // TODO NS Don't allow submission before image upload complete.
 // TODO MINOR Wherever we have b-img (throughout the site, not just here) we should have @brokenImage.  Bet we don't.

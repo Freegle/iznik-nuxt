@@ -110,6 +110,8 @@
   </div>
 </template>
 <script>
+import 'vue-awesome/icons/clock'
+import 'vue-awesome/icons/map-marker-alt'
 import CommunityEventModal from './CommunityEventModal'
 import twem from '~/assets/js/twem'
 

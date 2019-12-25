@@ -227,6 +227,9 @@
 }
 </style>
 <script>
+import 'vue-awesome/icons/address-book'
+import 'vue-awesome/icons/window-restore'
+import 'vue-awesome/icons/handshake'
 // TODO MINOR Popup confirm first time you use Nudge, so you know what you're doing.
 // TODO DESIGN We have a spinner at the top for our upwards infinite scroll.  But this looks messy when we load a
 // short chat, because we see the messages appear below the spinner and then move upwards once the infinite scroll

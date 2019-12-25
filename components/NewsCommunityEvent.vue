@@ -70,6 +70,7 @@
 <style scoped>
 </style>
 <script>
+import 'vue-awesome/icons/map-marker-alt'
 import NewsBase from '~/components/NewsBase'
 const NewsLoveComment = () => import('~/components/NewsLoveComment')
 const CommunityEventModal = () => import('~/components/CommunityEventModal')

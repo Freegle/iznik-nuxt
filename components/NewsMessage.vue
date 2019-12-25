@@ -42,6 +42,7 @@
   </div>
 </template>
 <script>
+import 'vue-awesome/icons/share-alt'
 import NewsBase from '~/components/NewsBase'
 import NewsUserIntro from '~/components/NewsUserIntro'
 

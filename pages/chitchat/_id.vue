@@ -85,6 +85,7 @@
 </template>
 
 <script>
+import 'vue-awesome/icons/map-marker-alt'
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import loginRequired from '@/mixins/loginRequired.js'

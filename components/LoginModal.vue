@@ -176,6 +176,7 @@
 </template>
 
 <script>
+import 'vue-awesome/icons/slash'
 import Vue from 'vue'
 import { LoginError } from '../api/BaseAPI'
 

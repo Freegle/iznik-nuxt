@@ -363,6 +363,7 @@
 </style>
 
 <script>
+import 'vue-awesome/icons/circle'
 // TODO DESIGN This layout is staid table nonsense.  Surely we can make it more appealing?
 // TODO NS Add some form validation using a plugin - see https://bootstrap-vue.js.org/docs/reference/validation/.  Need
 // title, description, location as mandatory.

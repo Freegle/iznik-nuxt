@@ -65,6 +65,7 @@
   </div>
 </template>
 <script>
+import 'vue-awesome/icons/share-alt'
 import twem from '~/assets/js/twem'
 import NewsBase from '~/components/NewsBase'
 

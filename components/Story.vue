@@ -57,6 +57,8 @@
 }
 </style>
 <script>
+import 'vue-awesome/icons/share-alt'
+import 'vue-awesome/icons/heart'
 import StoriesShareModal from '~/components/StoriesShareModal'
 
 export default {

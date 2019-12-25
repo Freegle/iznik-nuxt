@@ -31,6 +31,8 @@
 }
 </style>
 <script>
+import 'vue-awesome/icons/heart'
+
 export default {
   props: {
     notification: {

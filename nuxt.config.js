@@ -177,7 +177,7 @@ module.exports = {
     { src: '~plugins/vue2-google-maps.js', ssr: false },
     { src: '~plugins/vue-debounce', ssr: false },
     { src: '~plugins/vue-highlight-words', ssr: false },
-    { src: '~plugins/vue-awesome.js', ssr: false },
+    { src: '~plugins/vue-awesome.js' },
     { src: '~plugins/vue-read-more', ssr: false },
     { src: '~plugins/facebook-sdk', ssr: false },
     { src: '~plugins/google-sdk', ssr: false },
@@ -296,7 +296,7 @@ module.exports = {
   build: {
     // analyze: true,
 
-    transpile: [/^vue2-google-maps($|\/)/],
+    transpile: [/^vue2-google-maps($|\/)/, /^vue-awesome/],
 
     extend(config, ctx) {
       if (process.env.NODE_ENV !== 'production') {

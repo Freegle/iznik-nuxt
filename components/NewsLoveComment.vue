@@ -24,6 +24,8 @@
   </span>
 </template>
 <script>
+import 'vue-awesome/icons/comment'
+import 'vue-awesome/icons/heart'
 import NewsLovesModal from './NewsLovesModal'
 
 export default {

@@ -174,15 +174,17 @@
 }
 </style>
 <script>
+import 'vue-awesome/icons/chart-bar'
+import 'vue-awesome/icons/map-marker-alt'
 // TODO DESIGN The about me section needs nice big quotes round it.
 // TODO DESIGN This page is dull.  We could add newsfeed activity but most users won't have any.  What can we do?
 import twem from '~/assets/js/twem'
 import loginOptional from '@/mixins/loginOptional.js'
 
-import Ratings from '~/components/Ratings'
-import ReplyTime from '~/components/ReplyTime'
-import Message from '~/components/Message.vue'
-import ChatButton from '~/components/ChatButton'
+const Ratings = () => import('~/components/Ratings')
+const ReplyTime = () => import('~/components/ReplyTime')
+const Message = () => import('~/components/Message.vue')
+const ChatButton = () => import('~/components/ChatButton.vue')
 
 export default {
   components: {

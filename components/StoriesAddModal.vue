@@ -138,6 +138,7 @@ label {
 }
 </style>
 <script>
+import 'vue-awesome/icons/circle'
 // TODO NS Validation.  Easy in this case but deferred rolling our own in case we have a general form validation plugin.
 
 const OurFilePond = () => import('~/components/OurFilePond')

@@ -173,6 +173,9 @@
 }
 </style>
 <script>
+import 'vue-awesome/icons/calculator'
+import 'vue-awesome/icons/cloud'
+import 'vue-awesome/icons/balance-scale-left'
 import dayjs from 'dayjs'
 import { GChart } from 'vue-google-charts'
 import loginOptional from '@/mixins/loginOptional.js'

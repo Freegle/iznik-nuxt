@@ -42,6 +42,7 @@
 <style scoped>
 </style>
 <script>
+import 'vue-awesome/icons/map-marker-alt'
 // TODO DESIGN Make a bigger and more visible icon.
 // TODO EH Add place finder like in ExploreMap
 import { gmapApi } from 'vue2-google-maps'

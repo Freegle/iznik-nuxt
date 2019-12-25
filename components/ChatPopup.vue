@@ -196,6 +196,9 @@
 </style>
 
 <script>
+import 'vue-awesome/icons/address-book'
+import 'vue-awesome/icons/handshake'
+import 'vue-awesome/icons/window-maximize'
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import twem from '~/assets/js/twem'
