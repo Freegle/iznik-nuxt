@@ -66,6 +66,7 @@
 </template>
 <script>
 import 'vue-awesome/icons/share-alt'
+import 'vue-awesome/icons/book-open'
 import twem from '~/assets/js/twem'
 import NewsBase from '~/components/NewsBase'
 

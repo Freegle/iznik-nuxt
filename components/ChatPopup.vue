@@ -199,9 +199,12 @@
 import 'vue-awesome/icons/address-book'
 import 'vue-awesome/icons/handshake'
 import 'vue-awesome/icons/window-maximize'
+import 'vue-awesome/icons/times'
+
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import twem from '~/assets/js/twem'
+import 'vue-awesome/icons/bell'
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
 import ChatMessage from '~/components/ChatMessage.vue'

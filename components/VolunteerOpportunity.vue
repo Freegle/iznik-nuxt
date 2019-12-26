@@ -137,6 +137,7 @@
 <script>
 import 'vue-awesome/icons/clock'
 import 'vue-awesome/icons/map-marker-alt'
+import 'vue-awesome/icons/users'
 import VolunteerOpportunityModal from './VolunteerOpportunityModal'
 import NoticeMessage from './NoticeMessage'
 import twem from '~/assets/js/twem'

@@ -457,6 +457,9 @@
 <script>
 import 'vue-awesome/icons/address-book'
 import 'vue-awesome/icons/crown'
+import 'vue-awesome/icons/bell'
+import 'vue-awesome/icons/eye'
+
 // TODO MINOR Click on group name or icon to go to group once we have /mygroups/id
 import Vue from 'vue'
 import EmailConfirmModal from '~/components/EmailConfirmModal'

@@ -28,6 +28,7 @@
 <script>
 // TODO DESIGN MINOR Make the nudge alarm shake for a bit?
 import ChatBase from '~/components/ChatBase'
+import 'vue-awesome/icons/bell'
 
 export default {
   extends: ChatBase

@@ -35,6 +35,7 @@
 </style>
 <script>
 // TODO MINOR Add infinite scroll
+import 'vue-awesome/icons/book-open'
 import loginOptional from '@/mixins/loginOptional.js'
 import createGroupRoute from '@/mixins/createGroupRoute'
 import buildHead from '@/mixins/buildHead.js'

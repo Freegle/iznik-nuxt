@@ -29,6 +29,7 @@
 <script>
 // TODO MINOR Add infinite scroll
 // TODO MINOR Error handling for invalid story id.
+import 'vue-awesome/icons/book-open'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 

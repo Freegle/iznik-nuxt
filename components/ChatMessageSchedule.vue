@@ -46,6 +46,7 @@
 // TODO DESIGN MINOR The way we list matches could look prettier, I think.
 // TODO DESIGN MINOR The footer is a bit lame, the buttons hard up against the side and the horizontal line not going
 // all the way across.
+import 'vue-awesome/icons/eye'
 import ChatBase from '~/components/ChatBase'
 const AvailabilityModal = () => import('~/components/AvailabilityModal')
 

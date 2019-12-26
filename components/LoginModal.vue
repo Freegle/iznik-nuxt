@@ -177,6 +177,7 @@
 
 <script>
 import 'vue-awesome/icons/slash'
+import 'vue-awesome/icons/eye'
 import Vue from 'vue'
 import { LoginError } from '../api/BaseAPI'
 

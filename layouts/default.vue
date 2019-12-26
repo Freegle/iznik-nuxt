@@ -479,6 +479,11 @@ const AboutMeModal = () => import('~/components/AboutMeModal')
 const ChatPopups = () => import('~/components/ChatPopups')
 const Notification = () => import('~/components/Notification')
 const NchanSubscriber = require('nchan')
+import 'vue-awesome/icons/bell'
+import 'vue-awesome/icons/bullhorn'
+import 'vue-awesome/icons/users'
+import 'vue-awesome/icons/sign-out-alt'
+import 'vue-awesome/icons/home'
 
 export default {
   components: {

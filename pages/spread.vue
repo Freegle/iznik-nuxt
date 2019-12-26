@@ -120,6 +120,7 @@
 }
 </style>
 <script>
+import 'vue-awesome/icons/book-open'
 import PosterModal from '../components/PosterModal'
 import buildHead from '../mixins/buildHead'
 import loginRequired from '@/mixins/loginRequired.js'

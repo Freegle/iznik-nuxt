@@ -43,6 +43,7 @@
   </div>
 </template>
 <script>
+import 'vue-awesome/icons/bullhorn'
 import twem from '~/assets/js/twem'
 import NewsBase from '~/components/NewsBase'
 const NewsUserIntro = () => import('~/components/NewsUserIntro')

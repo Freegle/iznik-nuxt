@@ -48,6 +48,9 @@
 </template>
 
 <script>
+import 'vue-awesome/icons/book-open'
+import 'vue-awesome/icons/gavel'
+
 export default {
   name: 'MainFooter'
 }
