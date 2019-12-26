@@ -50,6 +50,7 @@
 <script>
 import 'vue-awesome/icons/book-open'
 import 'vue-awesome/icons/gavel'
+import 'vue-awesome/icons/info-circle'
 
 export default {
   name: 'MainFooter'

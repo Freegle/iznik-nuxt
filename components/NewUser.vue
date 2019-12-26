@@ -116,6 +116,8 @@
 </style>
 <script>
 import 'vue-awesome/icons/users'
+import 'vue-awesome/icons/check'
+
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 Vue.use(TooltipPlugin)

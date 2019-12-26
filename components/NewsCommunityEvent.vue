@@ -71,6 +71,8 @@
 </style>
 <script>
 import 'vue-awesome/icons/map-marker-alt'
+import 'vue-awesome/icons/info-circle'
+
 import NewsBase from '~/components/NewsBase'
 const NewsLoveComment = () => import('~/components/NewsLoveComment')
 const CommunityEventModal = () => import('~/components/CommunityEventModal')

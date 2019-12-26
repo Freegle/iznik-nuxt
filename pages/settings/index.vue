@@ -459,6 +459,7 @@ import 'vue-awesome/icons/address-book'
 import 'vue-awesome/icons/crown'
 import 'vue-awesome/icons/bell'
 import 'vue-awesome/icons/eye'
+import 'vue-awesome/icons/check'
 
 // TODO MINOR Click on group name or icon to go to group once we have /mygroups/id
 import Vue from 'vue'

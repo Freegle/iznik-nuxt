@@ -49,6 +49,7 @@
 </style>
 
 <script>
+import 'vue-awesome/icons/check'
 import SidebarRight from '../../components/SidebarRight'
 import buildHead from '@/mixins/buildHead'
 import loginRequired from '@/mixins/loginRequired.js'

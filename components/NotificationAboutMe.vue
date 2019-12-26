@@ -31,6 +31,8 @@
 }
 </style>
 <script>
+import 'vue-awesome/icons/info-circle'
+
 export default {
   components: {},
   props: {

@@ -103,6 +103,7 @@
 <style scoped>
 </style>
 <script>
+import 'vue-awesome/icons/info-circle'
 import ChatBase from '~/components/ChatBase'
 const NoticeMessage = () => import('~/components/NoticeMessage')
 

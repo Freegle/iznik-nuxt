@@ -200,6 +200,7 @@ import 'vue-awesome/icons/address-book'
 import 'vue-awesome/icons/handshake'
 import 'vue-awesome/icons/window-maximize'
 import 'vue-awesome/icons/times'
+import 'vue-awesome/icons/info-circle'
 
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'

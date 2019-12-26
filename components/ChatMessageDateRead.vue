@@ -15,6 +15,8 @@
   </b-row>
 </template>
 <script>
+import 'vue-awesome/icons/check'
+
 export default {
   props: {
     chatmessage: {

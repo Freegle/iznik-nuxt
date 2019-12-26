@@ -170,6 +170,9 @@
 <script>
 import 'vue-awesome/icons/chart-bar'
 import 'vue-awesome/icons/map-marker-alt'
+import 'vue-awesome/icons/info-circle'
+import 'vue-awesome/icons/check'
+
 import twem from '~/assets/js/twem'
 
 // TODO DESIGN Header is messy - wallpaper should fill the whole thing; image should have a border round it with a gap.

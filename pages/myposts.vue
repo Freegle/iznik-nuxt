@@ -187,6 +187,7 @@
 </template>
 
 <script>
+import 'vue-awesome/icons/check'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
 const JobsTopBar = () => import('../components/JobsTopBar')

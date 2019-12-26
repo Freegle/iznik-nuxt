@@ -113,6 +113,7 @@
 import 'vue-awesome/icons/clock'
 import 'vue-awesome/icons/map-marker-alt'
 import 'vue-awesome/icons/users'
+import 'vue-awesome/icons/info-circle'
 import CommunityEventModal from './CommunityEventModal'
 import twem from '~/assets/js/twem'
 

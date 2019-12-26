@@ -176,6 +176,9 @@
 <script>
 import 'vue-awesome/icons/chart-bar'
 import 'vue-awesome/icons/map-marker-alt'
+import 'vue-awesome/icons/info-circle'
+import 'vue-awesome/icons/check'
+
 // TODO DESIGN The about me section needs nice big quotes round it.
 // TODO DESIGN This page is dull.  We could add newsfeed activity but most users won't have any.  What can we do?
 import twem from '~/assets/js/twem'

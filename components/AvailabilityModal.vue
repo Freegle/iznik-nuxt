@@ -100,6 +100,8 @@
   </div>
 </template>
 <script>
+import 'vue-awesome/icons/check'
+
 import dayjs from 'dayjs'
 
 import { TablePlugin } from 'bootstrap-vue'

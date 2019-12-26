@@ -484,6 +484,8 @@ import 'vue-awesome/icons/bullhorn'
 import 'vue-awesome/icons/users'
 import 'vue-awesome/icons/sign-out-alt'
 import 'vue-awesome/icons/home'
+import 'vue-awesome/icons/hands-helping'
+import 'vue-awesome/icons/coffee'
 
 export default {
   components: {

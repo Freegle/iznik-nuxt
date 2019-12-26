@@ -76,6 +76,7 @@ select {
 }
 </style>
 <script>
+import 'vue-awesome/icons/check-circle'
 import NoticeMessage from '../../components/NoticeMessage'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
