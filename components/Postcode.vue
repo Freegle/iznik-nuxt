@@ -25,7 +25,6 @@
       </b-button>
     </div>
 
-    <!--    TODO DESIGN The standard tooltip has opacity 0.9, which means some text can be hard to read.-->
     <b-tooltip :show.sync="showToolTip" target="postcodeautocomplete" placement="top" variant="primary" triggers="">
       <b>Your device thinks you're here.<br><br>
 
