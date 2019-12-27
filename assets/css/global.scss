@@ -304,3 +304,8 @@ legend {
 .mx-datepicker-popup {
   z-index: 2000 !important;;
 }
+
+/* Overrides default Bootstrap tooltip opacity (0.9) */
+.tooltip.b-tooltip {
+  opacity: 1;
+}
