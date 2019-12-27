@@ -43,6 +43,7 @@
 </style>
 
 <script>
+import 'vue-awesome/icons/comments'
 import GroupSelect from './GroupSelect'
 
 export default {

@@ -51,6 +51,9 @@
 import 'vue-awesome/icons/book-open'
 import 'vue-awesome/icons/gavel'
 import 'vue-awesome/icons/info-circle'
+import 'vue-awesome/icons/envelope'
+import 'vue-awesome/icons/hand-holding-heart'
+import 'vue-awesome/icons/lock'
 
 export default {
   name: 'MainFooter'

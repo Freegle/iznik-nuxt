@@ -75,6 +75,7 @@
 
 <script>
 import 'vue-awesome/icons/info-circle'
+import 'vue-awesome/icons/camera'
 
 // TODO NS Not obvious enough why the Next button doesn't appear.  Greyed out?  Indications? Nick, relates to validation.
 const OurFilePond = () => import('~/components/OurFilePond')

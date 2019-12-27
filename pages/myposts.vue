@@ -188,6 +188,12 @@
 
 <script>
 import 'vue-awesome/icons/check'
+import 'vue-awesome/icons/calendar-alt'
+import 'vue-awesome/icons/gift'
+import 'vue-awesome/icons/search'
+import 'vue-awesome/icons/sync'
+import 'vue-awesome/icons/trash-alt'
+
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
 const JobsTopBar = () => import('../components/JobsTopBar')

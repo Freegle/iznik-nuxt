@@ -342,6 +342,12 @@
 <script>
 import 'vue-awesome/icons/circle'
 import 'vue-awesome/icons/info-circle'
+import 'vue-awesome/icons/camera'
+import 'vue-awesome/icons/pen'
+import 'vue-awesome/icons/reply'
+import 'vue-awesome/icons/save'
+import 'vue-awesome/icons/sync'
+import 'vue-awesome/icons/trash-alt'
 
 // TODO DESIGN This layout is staid table nonsense.  Surely we can make it more appealing?
 // TODO NS Don't allow submission before image upload complete.

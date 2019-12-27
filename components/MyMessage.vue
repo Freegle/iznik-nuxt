@@ -197,6 +197,13 @@ import 'vue-awesome/icons/caret-up'
 import 'vue-awesome/icons/handshake'
 import 'vue-awesome/icons/share-alt'
 import 'vue-awesome/icons/check'
+import 'vue-awesome/icons/comments'
+import 'vue-awesome/icons/camera'
+import 'vue-awesome/icons/exclamation-triangle'
+import 'vue-awesome/icons/pen'
+import 'vue-awesome/icons/sync'
+import 'vue-awesome/icons/trash-alt'
+import 'vue-awesome/icons/user'
 
 // TODO DESIGN This is better than the old version, but it's still not quite right, in terms of alignment and sizes
 // of things.

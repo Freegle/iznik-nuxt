@@ -77,6 +77,7 @@ select {
 </style>
 <script>
 import 'vue-awesome/icons/check-circle'
+import 'vue-awesome/icons/angle-double-right'
 import NoticeMessage from '../../components/NoticeMessage'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'

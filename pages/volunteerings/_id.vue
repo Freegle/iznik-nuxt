@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import 'vue-awesome/icons/plus'
 import loginOptional from '@/mixins/loginOptional.js'
 import createGroupRoute from '@/mixins/createGroupRoute'
 import buildHead from '@/mixins/buildHead.js'

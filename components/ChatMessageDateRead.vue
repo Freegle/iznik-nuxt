@@ -16,6 +16,7 @@
 </template>
 <script>
 import 'vue-awesome/icons/check'
+import 'vue-awesome/icons/envelope'
 
 export default {
   props: {

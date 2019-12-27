@@ -91,6 +91,7 @@
 </style>
 <script>
 import 'vue-awesome/icons/handshake'
+import 'vue-awesome/icons/comments'
 const PromiseModal = () => import('./PromiseModal')
 const RenegeModal = () => import('./RenegeModal')
 

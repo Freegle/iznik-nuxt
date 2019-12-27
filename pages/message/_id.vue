@@ -35,6 +35,8 @@
 <style scoped>
 </style>
 <script>
+import 'vue-awesome/icons/gift'
+import 'vue-awesome/icons/search'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 import twem from '~/assets/js/twem'

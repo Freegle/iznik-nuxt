@@ -176,17 +176,19 @@
 </style>
 
 <script>
-/*
-* Originally based on:
-*
-*! Copyright (c) 2016 Naufal Rabbani (http://github.com/BosNaufal)
-* Licensed Under MIT (http://opensource.org/licenses/MIT)
-*
-* Vue 2 Autocomplete @ Version 0.0.1
-*
-* Modified by EH as that repository is no longer maintained.
-*
-*/
+import 'vue-awesome/icons/search'
+import 'vue-awesome/icons/sync'
+  /*
+  * Originally based on:
+  *
+  *! Copyright (c) 2016 Naufal Rabbani (http://github.com/BosNaufal)
+  * Licensed Under MIT (http://opensource.org/licenses/MIT)
+  *
+  * Vue 2 Autocomplete @ Version 0.0.1
+  *
+  * Modified by EH as that repository is no longer maintained.
+  *
+  */
 
 /* eslint-disable */
 

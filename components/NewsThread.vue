@@ -148,6 +148,7 @@
 <script>
 // TODO MINOR Attach to thread
 // TODO DESIGN Some indication of newly added entries
+import 'vue-awesome/icons/camera'
 import NewsReportModal from './NewsReportModal'
 import twem from '~/assets/js/twem'
 

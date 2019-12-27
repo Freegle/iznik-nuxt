@@ -86,6 +86,9 @@
   </div>
 </template>
 <script>
+import 'vue-awesome/icons/camera'
+import 'vue-awesome/icons/save'
+import 'vue-awesome/icons/sync'
 const OurFilePond = () => import('~/components/OurFilePond')
 const Postcode = () => import('./Postcode')
 const PostItem = () => import('./PostItem')

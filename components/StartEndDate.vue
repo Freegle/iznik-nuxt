@@ -44,6 +44,8 @@
 </template>
 
 <script>
+import 'vue-awesome/icons/trash-alt'
+
 export default {
   props: {
     value: {

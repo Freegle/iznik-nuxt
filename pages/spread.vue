@@ -121,6 +121,7 @@
 </style>
 <script>
 import 'vue-awesome/icons/book-open'
+import 'vue-awesome/icons/envelope'
 import PosterModal from '../components/PosterModal'
 import buildHead from '../mixins/buildHead'
 import loginRequired from '@/mixins/loginRequired.js'

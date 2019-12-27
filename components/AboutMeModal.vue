@@ -40,6 +40,7 @@
   </div>
 </template>
 <script>
+import 'vue-awesome/icons/globe-europe'
 import NoticeMessage from './NoticeMessage'
 export default {
   components: { NoticeMessage },

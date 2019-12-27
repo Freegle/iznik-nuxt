@@ -365,6 +365,13 @@
 <script>
 import 'vue-awesome/icons/circle'
 import 'vue-awesome/icons/info-circle'
+import 'vue-awesome/icons/camera'
+import 'vue-awesome/icons/pen'
+import 'vue-awesome/icons/reply'
+import 'vue-awesome/icons/save'
+import 'vue-awesome/icons/sync'
+import 'vue-awesome/icons/trash-alt'
+
 // TODO DESIGN This layout is staid table nonsense.  Surely we can make it more appealing?
 // TODO NS Add some form validation using a plugin - see https://bootstrap-vue.js.org/docs/reference/validation/.  Need
 // title, description, location as mandatory.

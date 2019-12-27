@@ -110,6 +110,10 @@ option {
 import 'vue-awesome/icons/frown'
 import 'vue-awesome/icons/meh'
 import 'vue-awesome/icons/smile'
+import 'vue-awesome/icons/comments'
+import 'vue-awesome/icons/globe-europe'
+import 'vue-awesome/icons/lock'
+
 import Ratings from './Ratings'
 import DonationAskModal from './DonationAskModal'
 

@@ -12,6 +12,8 @@
   </span>
 </template>
 <script>
+import 'vue-awesome/icons/comments'
+
 export default {
   props: {
     size: {

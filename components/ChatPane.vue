@@ -231,6 +231,12 @@ import 'vue-awesome/icons/address-book'
 import 'vue-awesome/icons/window-restore'
 import 'vue-awesome/icons/handshake'
 import 'vue-awesome/icons/info-circle'
+import 'vue-awesome/icons/bell'
+import 'vue-awesome/icons/angle-double-right'
+import 'vue-awesome/icons/calendar-alt'
+import 'vue-awesome/icons/camera'
+import 'vue-awesome/icons/exclamation-triangle'
+import 'vue-awesome/icons/sync'
 
 // TODO MINOR Popup confirm first time you use Nudge, so you know what you're doing.
 // TODO DESIGN We have a spinner at the top for our upwards infinite scroll.  But this looks messy when we load a
@@ -241,7 +247,6 @@ import Vue from 'vue'
 import ChatBlockModal from './ChatBlockModal'
 import ChatHideModal from './ChatHideModal'
 import twem from '~/assets/js/twem'
-import 'vue-awesome/icons/bell'
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
 import ChatMessage from '~/components/ChatMessage.vue'

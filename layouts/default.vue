@@ -486,6 +486,13 @@ import 'vue-awesome/icons/sign-out-alt'
 import 'vue-awesome/icons/home'
 import 'vue-awesome/icons/hands-helping'
 import 'vue-awesome/icons/coffee'
+import 'vue-awesome/icons/comments'
+import 'vue-awesome/icons/calendar-alt'
+import 'vue-awesome/icons/cog'
+import 'vue-awesome/icons/gift'
+import 'vue-awesome/icons/map-marker-alt'
+import 'vue-awesome/icons/question-circle'
+import 'vue-awesome/icons/search'
 
 export default {
   components: {

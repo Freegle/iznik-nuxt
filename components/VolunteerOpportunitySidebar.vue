@@ -22,6 +22,8 @@
   </div>
 </template>
 <script>
+import 'vue-awesome/icons/calendar-alt'
+import 'vue-awesome/icons/plus'
 import VolunteerOpportunity from './VolunteerOpportunity'
 const VolunteerOpportunityModal = () =>
   import('~/components/VolunteerOpportunityModal')

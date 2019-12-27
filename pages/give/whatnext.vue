@@ -98,6 +98,11 @@
 </style>
 
 <script>
+import 'vue-awesome/icons/angle-double-right'
+import 'vue-awesome/icons/calendar-alt'
+import 'vue-awesome/icons/gift'
+import 'vue-awesome/icons/search'
+
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import AvailabilityModal from '../../components/AvailabilityModal'

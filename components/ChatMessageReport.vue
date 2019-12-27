@@ -17,6 +17,7 @@
 <style scoped>
 </style>
 <script>
+import 'vue-awesome/icons/exclamation-triangle'
 import ChatBase from '~/components/ChatBase'
 
 export default {

@@ -47,6 +47,7 @@
   </div>
 </template>
 <script>
+import 'vue-awesome/icons/user'
 import NewsBase from '~/components/NewsBase'
 const AboutMeModal = () => import('./AboutMeModal')
 const NewsUserIntro = () => import('~/components/NewsUserIntro')

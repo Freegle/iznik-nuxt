@@ -98,6 +98,11 @@
   </div>
 </template>
 <script>
+import 'vue-awesome/icons/plus'
+import 'vue-awesome/icons/save'
+import 'vue-awesome/icons/sync'
+import 'vue-awesome/icons/trash-alt'
+
 const Postcode = () => import('~/components/Postcode')
 
 export default {

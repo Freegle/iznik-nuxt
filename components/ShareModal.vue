@@ -107,6 +107,7 @@ import 'vue-awesome/icons/brands/telegram'
 import 'vue-awesome/icons/brands/twitter'
 import 'vue-awesome/icons/brands/whatsapp'
 import 'vue-awesome/icons/comment'
+import 'vue-awesome/icons/envelope'
 
 export default {
   components: {},

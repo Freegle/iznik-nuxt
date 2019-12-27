@@ -44,6 +44,8 @@
 </style>
 
 <script>
+import 'vue-awesome/icons/sync'
+import 'vue-awesome/icons/trash-alt'
 import ForgetFailModal from '../components/ForgetFailModal'
 import ForgetSucceedModal from '../components/ForgetSucceedModal'
 import buildHead from '@/mixins/buildHead.js'

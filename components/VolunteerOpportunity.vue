@@ -140,6 +140,7 @@ import 'vue-awesome/icons/map-marker-alt'
 import 'vue-awesome/icons/users'
 import 'vue-awesome/icons/info-circle'
 import 'vue-awesome/icons/check'
+import 'vue-awesome/icons/trash-alt'
 
 import VolunteerOpportunityModal from './VolunteerOpportunityModal'
 import NoticeMessage from './NoticeMessage'

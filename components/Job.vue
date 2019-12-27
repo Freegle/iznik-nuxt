@@ -65,6 +65,8 @@
 <style scoped lang="scss">
 </style>
 <script>
+import 'vue-awesome/icons/angle-double-right'
+
 export default {
   props: {
     job: {

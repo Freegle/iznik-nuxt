@@ -35,6 +35,9 @@
 </template>
 <script>
 import 'vue-awesome/icons/map-marker-alt'
+import 'vue-awesome/icons/exclamation-triangle'
+import 'vue-awesome/icons/sync'
+
 // TODO If you're on mobile, e.g. on Give page, and click into this, then the on screen keyboard can hide the
 // autocomplete dropdown.  So we need either to drop up instead, or scroll somehow.
 import { TooltipPlugin } from 'bootstrap-vue'

@@ -48,6 +48,7 @@
 </style>
 <script>
 // TODO MINOR Infinite scroll (needs server changes).
+import 'vue-awesome/icons/search'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 

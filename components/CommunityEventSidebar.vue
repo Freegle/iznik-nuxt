@@ -22,6 +22,9 @@
   </div>
 </template>
 <script>
+import 'vue-awesome/icons/calendar-alt'
+import 'vue-awesome/icons/plus'
+
 import CommunityEvent from './CommunityEvent'
 const CommunityEventModal = () => import('~/components/CommunityEventModal')
 

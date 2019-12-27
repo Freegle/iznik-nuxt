@@ -187,6 +187,7 @@
 <script>
 import 'vue-awesome/icons/heart'
 import 'vue-awesome/icons/leaf'
+import 'vue-awesome/icons/camera'
 import NewsLovesModal from './NewsLovesModal'
 import twem from '~/assets/js/twem'
 

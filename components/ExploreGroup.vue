@@ -40,6 +40,9 @@
   </div>
 </template>
 <script>
+import 'vue-awesome/icons/gift'
+import 'vue-awesome/icons/search'
+
 const groupHeader = () => import('~/components/GroupHeader.vue')
 const Message = () => import('~/components/Message.vue')
 

@@ -53,6 +53,9 @@
 <script>
 // TODO NS Don't allow submission before image upload complete.  Also check that there is a postcode in case we
 // loaded this page directly, by passing the previous one.
+import 'vue-awesome/icons/angle-double-right'
+import 'vue-awesome/icons/plus'
+import 'vue-awesome/icons/trash-alt'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 

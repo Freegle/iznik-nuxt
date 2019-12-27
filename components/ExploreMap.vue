@@ -139,6 +139,7 @@
 </style>
 <script>
 // TODO MINOR This loads a bit clunkily.
+import 'vue-awesome/icons/envelope'
 import GroupMarker from '~/components/GroupMarker.vue'
 
 export default {

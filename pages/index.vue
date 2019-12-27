@@ -103,6 +103,9 @@
 
 <script>
 import 'vue-awesome/icons/eye'
+import 'vue-awesome/icons/gift'
+import 'vue-awesome/icons/search'
+
 const StoriesLanding = () => import('~/components/StoriesLanding.vue')
 const MainFooter = () => import('~/components/MainFooter.vue')
 // TODO MINOR That thing where you prompt people on mobile to install the app.

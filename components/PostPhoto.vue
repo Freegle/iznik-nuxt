@@ -67,6 +67,8 @@
 
 <script>
 import 'vue-awesome/icons/circle'
+import 'vue-awesome/icons/reply'
+import 'vue-awesome/icons/trash-alt'
 
 export default {
   props: {

@@ -10,6 +10,8 @@
   </b-card>
 </template>
 <script>
+import 'vue-awesome/icons/map-marker-alt'
+
 export default {
   data: function() {
     return {

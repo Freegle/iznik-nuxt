@@ -101,6 +101,8 @@
 </template>
 <script>
 import 'vue-awesome/icons/check'
+import 'vue-awesome/icons/save'
+import 'vue-awesome/icons/sync'
 
 import dayjs from 'dayjs'
 

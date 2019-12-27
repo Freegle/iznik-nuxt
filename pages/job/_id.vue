@@ -48,6 +48,7 @@
 </style>
 <script>
 // TODO NS MINOR This page is near identical to the _location one.  What's the correct way to do that?
+import 'vue-awesome/icons/search'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 const Job = () => import('~/components/Job')

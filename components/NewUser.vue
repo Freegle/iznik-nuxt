@@ -117,6 +117,10 @@
 <script>
 import 'vue-awesome/icons/users'
 import 'vue-awesome/icons/check'
+import 'vue-awesome/icons/angle-double-right'
+import 'vue-awesome/icons/cog'
+import 'vue-awesome/icons/save'
+import 'vue-awesome/icons/sync'
 
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
