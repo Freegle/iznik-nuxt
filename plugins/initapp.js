@@ -3,7 +3,10 @@ import Vue from 'vue'
 // Note: mobilePushId is the same regardless of which user is logged in
 
 console.log('--------------initapp--------------')
-const pushstate = Vue.observable({ pushed: false })
+const pushstate = Vue.observable({
+  pushed: false,
+  route: false
+})
 export const mobilestate = Vue.observable({ mobilePushId: false })
 
 let isiOS = false
@@ -27,8 +30,7 @@ const cordovaApp = {
 
   // deviceready Event Handler
   //
-  // Bind any cordova events here. Common events are:
-  // 'pause', 'resume', etc.
+  // Bind any cordova events here. Common events are: 'pause', 'resume', etc.
   onDeviceReady: function() {
     console.log('cordovaApp: onDeviceReady')
 
@@ -39,15 +41,6 @@ const cordovaApp = {
     // $.ajaxSetup({
     //   mobileapp: 1
     // });
-
-    // Catch back button and clear chats
-    window.addEventListener('popstate', function(e) {
-      try {
-        console.log('----------popstate----------')
-        // var ChatHolder = new Iznik.Views.Chat.Holder()
-        // ChatHolder.minimiseall()
-      } catch (e) {}
-    })
 
     // document.addEventListener("offline", function () { window.isOnline = false; console.log("offline"); window.showNetworkStatus() }, false);
     // document.addEventListener("online", function () { window.isOnline = true; console.log("online"); window.showNetworkStatus() }, false);
@@ -110,9 +103,10 @@ const cordovaApp = {
       mobilePush.on('registration', function (data) {
         mobilestate.mobilePushId = data.registrationId
         console.log('push registration ' + mobilestate.mobilePushId)
-        // mobilePushId reported to server in store/auth.js fetchUser
-        // alert("registration: " + mobilePushId);
+        // mobilePushId reported in to server in savePushId() by store/auth.js fetchUser
+        // the watch code below also calls savePushId() in case we've already logged in
       })
+
       // Called to handle a push notification
       //
       // A push shows a notification immediately and sets desktop badge count (on iOS and some Android)
@@ -132,9 +126,9 @@ const cordovaApp = {
 
       mobilePush.on('notification', function(data) {
         console.log('push notification')
-        console.log(data)
+        // console.log(data)
         const foreground = data.additionalData.foreground.toString() === 'true' // Was first called in foreground or background
-        let msgid = (new Date()).getTime()
+        let msgid = new Date().getTime()
         if ('notId' in data.additionalData) {
           msgid = data.additionalData.notId
         }
@@ -149,20 +143,10 @@ const cordovaApp = {
           mobilePush.clearAllNotifications() // no success and error fns given
           console.log('clearAllNotifications')
         }
-        // window.mobilePush.setApplicationIconBadgeNumber(function () { }, function () { }, data.count);
-        console.log('push set badge: ', data.count, typeof data.count)
-        mobilePush.setApplicationIconBadgeNumber(
-          function() { console.log('badge success') },
-          function() { console.log('badge error') },
-          data.count)
+        window.mobilePush.setApplicationIconBadgeNumber(function () { }, function () { }, data.count)
 
-        console.log('PUSH mobilepushevent A')
-        // window.dispatchEvent(mobilepushevent)
-        //document.dispatchEvent(new Event('mobilepush'))
-        pushstate.pushed = true
-        console.log('PUSH mobilepushevent B')
-
-        /* // Always try to set in-app counts
+        /* May as well always re-get counts
+        // Always try to set in-app counts
         if (('chatcount' in data.additionalData) && ('notifcount' in data.additionalData)) {
           var chatcount = parseInt(data.additionalData.chatcount);
           var notifcount = parseInt(data.additionalData.notifcount);
@@ -171,11 +155,13 @@ const cordovaApp = {
             Iznik.setHeaderCounts(chatcount, notifcount);
             Iznik.Session.chats.fetch();
           }
-        }
+        } */
 
         // If in background or now in foreground having been woken from background
-        if (('route' in data.additionalData) && !foreground && !doubleEvent && data.count) {
-          (function waitUntilLoggedIn(retry) {
+        if (('route' in data.additionalData) && !foreground && !doubleEvent && data.count) { // eg route: "/chats"
+          console.log('Now in foreground: go to ', data.additionalData.route)
+          pushstate.route = data.additionalData.route
+          /* (function waitUntilLoggedIn(retry) {
             if (Iznik.Session.loggedIn) {
               setTimeout(function () {
                 console.log("Push go to: " + data.additionalData.route);
@@ -184,11 +170,13 @@ const cordovaApp = {
             } else {
               setTimeout(function () { if (--retry) { waitUntilLoggedIn(retry); } }, 1000);
             }
-          })(10);
+          })(10); */
         }
 
         if (foreground) { // Reload if route matches where we are - or if on any chat screen eg /chat/123456 or /chats
-          var frag = '/' + Backbone.history.getFragment();
+          console.log('Foreground: go to ', data.additionalData.route)
+          pushstate.route = data.additionalData.route
+          /* var frag = '/' + Backbone.history.getFragment();
           if (data.additionalData.route) {
             if (frag == data.additionalData.route) {
               console.log("fg: Reload as route matches");
@@ -200,20 +188,26 @@ const cordovaApp = {
                 Backbone.history.loadUrl(); // refresh rather than go to route
               }
             }
-          }
-        } */
+          } */
+        }
+
+        console.log('PUSH mobilepushevent A')
+        pushstate.pushed = true
+        console.log('PUSH mobilepushevent B')
+
+        // iOS needs to be told when we've finished: do it after a short delay to allow our code to run
         if (isiOS) {
-          mobilePush.finish(
-            function() {
-              console.log('iOS push finished OK')
-              // alert("finished");
-            },
-            function() {
-              console.log('iOS push finished error')
-              // alert("finished");
-            },
-            data.additionalData.notId
-          )
+          setTimeout(function() {
+            mobilePush.finish(
+              function() {
+                console.log('iOS push finished OK')
+              },
+              function() {
+                console.log('iOS push finished error')
+              },
+              data.additionalData.notId
+            )
+          }, 50)
         }
       })
     }
@@ -235,7 +229,8 @@ style.innerHTML = css
 document.getElementsByTagName('head')[0].appendChild(style) */
 
 
-
+// Tell server our push notification id
+// Cope if not logged in ie do it later
 export async function savePushId(store) {
   if (acceptedMobilePushId !== mobilestate.mobilePushId) {
     const params = {
@@ -256,6 +251,9 @@ export async function savePushId(store) {
   }
 }
 
+// Remember if we've logged out
+// It could tell the server to invalidare pushid
+// However we simply zap acceptedMobilePushId so it is sent when logged in
 export function logoutPushId() {
   acceptedMobilePushId = false
   console.log('logoutPushId')
@@ -263,7 +261,8 @@ export function logoutPushId() {
 
 // When the plugin is loaded at runtime, a watches are setup...
 // https://github.com/vuejs/rfcs/blob/function-apis/active-rfcs/0000-function-api.md#watchers
-export default ({ store }) => {
+export default ({ store, router }) => {
+  if (!router) console.log('--------------NO ROUTER :-(')
   // When mobilePushId changed, tell server our push notification id
   store.watch(
     () => mobilestate.mobilePushId,
@@ -281,7 +280,17 @@ export default ({ store }) => {
         console.log('--------------We have been pushed')
         store.dispatch('notifications/count')
         store.dispatch('chats/listChats')
+        if (pushstate.route) {
+          console.log('--------------route: ', pushstate.route)
+          if (router) {
+            router.push(location)
+          } else {
+            console.log('--------------NO ROUTER')
+          }
+        }
+
         pushstate.pushed = false
+        pushstate.route = false
       }
     }
   )
