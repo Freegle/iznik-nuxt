@@ -16,13 +16,13 @@
         </b-card-body>
       </b-card>
       <ul v-for="chat in sortedChats" :key="'chat-' + chat.id" class="p-0 pt-1 list-unstyled mb-1">
-        <li :class="{ active: activeChat && parseInt(activeChat.id) === parseInt(chat.id) }">
+        <li :class="{ active: parseInt(activeChat) === parseInt(chat.id) }">
           <ChatListEntry :id="chat.id" />
         </li>
       </ul>
     </b-col>
     <b-col cols="12" md="6" class="chatback">
-      <ChatPane v-if="activeChat" v-bind="activeChat" />
+      <ChatPane v-if="activeChat" :id="activeChat" />
     </b-col>
     <b-col cols="0" md="3" class="d-none d-md-block">
       <SidebarRight :show-volunteer-opportunities="false" :show-job-opportunities="true" />
@@ -118,12 +118,10 @@ export default {
 
       if (this.selectedChatId) {
         // We have selected one - try to find it
-        ret = this.sortedChats.find(
-          chat => parseInt(chat.id) === parseInt(this.selectedChatId)
-        )
+        return this.selectedChatId
       } else if (this.sortedChats) {
         // None selected - use the first if we have some.
-        ret = this.sortedChats[0]
+        ret = this.sortedChats[0].id
       }
 
       return ret

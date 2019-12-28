@@ -307,7 +307,8 @@ export default {
     },
 
     chat() {
-      return this.$store.getters['chats/get'](this.id)
+      const ret = this.$store.getters['chats/get'](this.id)
+      return ret
     },
 
     unseen() {
@@ -316,9 +317,10 @@ export default {
     },
 
     chatmessages() {
-      return Object.values(
+      const ret = Object.values(
         this.$store.getters['chatmessages/getMessages'](this.id)
       )
+      return ret
     },
 
     chatusers() {
