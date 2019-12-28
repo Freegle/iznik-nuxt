@@ -405,10 +405,13 @@ export default {
           chatid: this.id
         })
 
-        this.$nextTick(() => {
+        // TODO Errors seen on mobile with .chatContent not found, so use a timer hack rather than nextTick.
+        setTimeout(() => {
           const container = this.$el.querySelector('.chatContent')
-          container.scrollTop = container.scrollHeight
-        })
+          if (container) {
+            container.scrollTop = container.scrollHeight
+          }
+        }, 500)
       }
     }
   },
