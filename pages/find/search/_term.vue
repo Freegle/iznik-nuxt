@@ -102,8 +102,8 @@
 </style>
 
 <script>
-// TODO DESIGN Maybe some kind of border round the search options.
-// TODO DESIGN When you focus on the search box, there's a drop shadow to highlight it, but that only goes round
+// TODO RAHUL DESIGN Maybe some kind of border round the search options.
+// TODO RAHUL DESIGN When you focus on the search box, there's a drop shadow to highlight it, but that only goes round
 //      the input, and not also round the button, which it should.
 import Autocomplete from '~/components/Autocomplete'
 import loginOptional from '@/mixins/loginOptional.js'
