@@ -24,9 +24,17 @@ export default class BaseAPI {
       url: process.env.API + path
     })
 
+    // HTTP errors real errors.
+    // data.ret holds the server error.
+    // - 1 means not logged in, and that's ok.
+    // - 999 can happen if people double-click, and we should just quietly drop it because the first click will
+    //   probably do the right thing.
+    // - otherwise pop up an error.
     if (
       status !== 200 ||
-      (data.ret !== 0 && !(data.ret === 1 && data.status === 'Not logged in'))
+      (data.ret !== 0 &&
+        !(data.ret === 1 && data.status === 'Not logged in') &&
+        data.ret !== 999)
     ) {
       const message = [
         'API Error',
