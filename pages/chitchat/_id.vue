@@ -309,7 +309,7 @@ export default {
     async postIt() {
       let msg = this.startThread
 
-      if (msg.trim().length) {
+      if (msg && msg.trim().length) {
         // Encode up any emojis.
         msg = twem.untwem(msg)
 
