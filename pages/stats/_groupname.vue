@@ -2,7 +2,7 @@
   <div>
     <b-row class="m-0">
       <b-col cols="0" md="3" class="d-none d-md-block" />
-      <b-col cols="12" md="12" lg="6" class="p-0">
+      <b-col cols="12" lg="6" class="p-0">
         <b-row>
           <b-col>
             <GroupHeader v-if="group" :id="group.id" :key="'group-' + (group ? group.id : null)" :group="group" :show-join="false" />
