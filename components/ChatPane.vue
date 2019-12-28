@@ -236,9 +236,6 @@ import Vue from 'vue'
 import ChatBlockModal from './ChatBlockModal'
 import ChatHideModal from './ChatHideModal'
 import twem from '~/assets/js/twem'
-import 'vue-awesome/icons/address-book'
-import 'vue-awesome/icons/window-restore'
-import 'vue-awesome/icons/handshake'
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
 import ChatMessage from '~/components/ChatMessage.vue'
@@ -409,7 +406,11 @@ export default {
         })
 
         this.$nextTick(() => {
-          const container = this.$el.querySelector('.chatContent')
+          // Exception when push received when on chats page: _this.$el.querySelector is not a function
+          // And chat disappears when getNotificationCount called
+          if (!this.$el.querySelector) console.log('=======ChatPane.vue _this.$el.querySelector is not a function false', this.$el) // CC
+          else console.log('=======ChatPane.vue OK')
+          const container = this.$el.querySelector('.chatContent') // CC 
           container.scrollTop = container.scrollHeight
         })
       }

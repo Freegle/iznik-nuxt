@@ -89,10 +89,7 @@
   color: $color-red;
 }
 </style>
-
 <script>
-import 'vue-awesome/icons/handshake'
-
 const PromiseModal = () => import('./PromiseModal')
 const RenegeModal = () => import('./RenegeModal')
 

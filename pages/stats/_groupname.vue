@@ -73,9 +73,9 @@
               />
             </b-card-text>
           </b-card>
-          <b-row>
+          <b-row class="mt-2">
             <b-col>
-              <b-card variant="white" class="mt-2">
+              <b-card variant="white" class="chart">
                 <b-card-text>
                   Here you can see how often people give things away compared to how often they ask for things.
                   <GChart
@@ -87,9 +87,8 @@
               </b-card>
             </b-col>
             <b-col>
-              <b-card variant="white" class="mt-2" no-body>
-                <b-card-body class="pb-0">
-                  <!--                  TODO DESIGN MINOR This box and the previous one are very slightly different in height.-->
+              <b-card variant="white" no-body class="chart">
+                <b-card-body>
                   These charts show how often people are successful in giving something away or getting something - when they let us know!
                   <b-row class="p-0">
                     <b-col class="p-0">
@@ -154,6 +153,12 @@
 <style scoped lang="scss">
 @import 'color-vars';
 
+.card {
+  &.chart {
+    height: 100%;
+  }
+}
+
 .titlelogo {
   width: 140px;
   height: 140px;
@@ -177,10 +182,6 @@ import dayjs from 'dayjs'
 import { GChart } from 'vue-google-charts'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
-
-import 'vue-awesome/icons/calculator'
-import 'vue-awesome/icons/cloud'
-import 'vue-awesome/icons/balance-scale-left'
 
 const GroupHeader = () => import('~/components/GroupHeader.vue')
 

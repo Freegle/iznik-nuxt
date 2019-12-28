@@ -104,9 +104,6 @@ div[variant="success"] .card-header {
 }
 
 body {
-  //TODO DESIGN I'm really attached to this wallpaper.  White backgrounds are cold, and we want a warm feel.  But
-  //on pages which are text-heavy (e.g. /spread) then it's hard to read the text.
-  //On the old site I removed the wallpaper on such pages.  Should we do that or something better?
   background-image: url('~static/wallpaper.png');
 }
 
@@ -303,4 +300,9 @@ legend {
 
 .mx-datepicker-popup {
   z-index: 2000 !important;;
+}
+
+/* Overrides default Bootstrap tooltip opacity (0.9) */
+.tooltip.b-tooltip {
+  opacity: 1;
 }

@@ -61,15 +61,7 @@
             </div>
           </b-card>
         </div>
-        <b-card v-if="!id" no-body class="p-2">
-          <b-card-text class="d-flex align-items-center">
-            <div v-if="me.settings.mylocation && me.settings.mylocation.area.name" class="w-50">
-              <v-icon name="map-marker-alt" />
-              <span>{{ me.settings.mylocation.area.name }}</span>
-            </div>
-            <b-form-select v-model="selectedArea" :options="areaOptions" class="w-50" @change="areaChange" />
-          </b-card-text>
-        </b-card>
+        <NewsLocation v-if="!id" class="p-2" @changed="areaChange" />
         <div class=" p-0 pt-1 mb-1">
           <ul v-for="entry in newsfeed" :key="'newsfeed-' + entry.id + '-area-' + selectedArea" class="list-unstyled">
             <li v-if="entry && entry.visible && !entry.unfollowed && entry.threadhead === entry.id">
@@ -104,6 +96,7 @@ Vue.use(TooltipPlugin)
 const OurFilePond = () => import('~/components/OurFilePond')
 const SidebarLeft = () => import('~/components/SidebarLeft')
 const SidebarRight = () => import('~/components/SidebarRight')
+const NewsLocation = () => import('~/components/NewsLocation')
 
 // TODO MINOR Refetch feed using the visibility plugin.
 
@@ -112,7 +105,8 @@ export default {
     NewsThread,
     OurFilePond,
     SidebarLeft,
-    SidebarRight
+    SidebarRight,
+    NewsLocation
   },
   mixins: [loginRequired, buildHead],
 
@@ -126,40 +120,6 @@ export default {
       busy: false,
       startThread: null,
       scrollTo: null,
-      areaOptions: [
-        {
-          value: 'nearby',
-          text: 'Show chitchat from nearby'
-        },
-        {
-          value: 1609,
-          text: 'Show chitchat within 1 mile'
-        },
-        {
-          value: 3128,
-          text: 'Show chitchat within 2 miles'
-        },
-        {
-          value: 8046,
-          text: 'Show chitchat within 5 miles'
-        },
-        {
-          value: 16093,
-          text: 'Show chitchat within 10 miles'
-        },
-        {
-          value: 32186,
-          text: 'Show chitchat within 20 miles'
-        },
-        {
-          value: 80467,
-          text: 'Show chitchat within 50 miles'
-        },
-        {
-          value: 0,
-          text: 'Show chitchat from anywhere'
-        }
-      ],
       infiniteId: +new Date(),
       uploading: false,
       imageid: null,
@@ -348,22 +308,23 @@ export default {
     },
     async postIt() {
       let msg = this.startThread
+      if (msg) { // CC
+        if (msg.trim().length) {
+          // Encode up any emojis.
+          msg = twem.untwem(msg)
 
-      if (msg.trim().length) {
-        // Encode up any emojis.
-        msg = twem.untwem(msg)
+          await this.$store.dispatch('newsfeed/send', {
+            message: msg,
+            imageid: this.imageid
+          })
 
-        await this.$store.dispatch('newsfeed/send', {
-          message: msg,
-          imageid: this.imageid
-        })
+          // Clear the textarea now it's sent.
+          this.startThread = null
 
-        // Clear the textarea now it's sent.
-        this.startThread = null
-
-        // And any image id
-        this.imageid = null
-      }
+          // And any image id
+          this.imageid = null
+        }
+      } else console.log('==========chitchat _id.vue msg null')
     },
     photoAdd() {
       // Flag that we're uploading.  This will trigger the render of the filepond instance and subsequently the

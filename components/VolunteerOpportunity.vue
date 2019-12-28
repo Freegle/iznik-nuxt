@@ -3,7 +3,7 @@
     <b-card variant="success" no-body>
       <b-card-title class="bg-info pl-2 mb-0 pt-2 pb-2 text-truncate">
         <nuxt-link :to="'/volunteering/' + volunteering.id">
-          <span class="float-right small text-muted">
+          <span v-if="!summary" class="float-right small text-muted">
             #{{ volunteering.id }}
           </span>
         </nuxt-link>
@@ -138,7 +138,6 @@
 import VolunteerOpportunityModal from './VolunteerOpportunityModal'
 import NoticeMessage from './NoticeMessage'
 import twem from '~/assets/js/twem'
-import 'vue-awesome/icons/clock'
 
 export default {
   components: {

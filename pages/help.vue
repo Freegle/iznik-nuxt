@@ -6,13 +6,14 @@
         <h1>
           How can we help?
         </h1>
+        <p v-if="isApp">
+          Mobile app build: {{ appBuildDate }}
+        </p>
         <p>
           These are the most common questions we get asked - please have a look and see if this is what you need.
         </p>
-        <VueFaqAccordion
-          :items="myItems"
-          class="mt-2 mb-2 p-0"
-        />
+        <VueFaqAccordion :items="myItems"
+                         class="mt-2 mb-2 p-0" />
         <h1>
           Something else?
         </h1>
@@ -68,6 +69,7 @@ const NoticeMessage = () => import('~/components/NoticeMessage')
 
 // TODO MINOR It's not ideal that the links below are a rather than nuxt-link, because that causes a page load.
 // TODO MINOR Would be nice to be able to do a direct URL link into each of these.
+// AND IT BREAKS MOBILE APP
 
 export default {
   components: {
@@ -287,6 +289,12 @@ export default {
     loggedIn() {
       const ret = Boolean(this.$store.getters['auth/user'])
       return ret
+    },
+    isApp() {
+      return process.env.IS_APP
+    },
+    appBuildDate() {
+      return process.env.APP_BUILD_DATE
     }
   },
   head() {

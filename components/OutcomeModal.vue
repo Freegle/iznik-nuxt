@@ -109,9 +109,6 @@ option {
 <script>
 import Ratings from './Ratings'
 import DonationAskModal from './DonationAskModal'
-import 'vue-awesome/icons/frown'
-import 'vue-awesome/icons/meh'
-import 'vue-awesome/icons/smile'
 
 // TODO DESIGN We really want to push people to select a user.  How can we do that?  Can we force the select open on render?
 // TODO DESIGN The "Please choose" is red but the dropdown shouldn't be.

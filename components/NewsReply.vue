@@ -187,6 +187,7 @@
 <script>
 import NewsLovesModal from './NewsLovesModal'
 import twem from '~/assets/js/twem'
+
 const AtTa = process.browser
   ? require('vue-at/dist/vue-at-textarea')
   : undefined

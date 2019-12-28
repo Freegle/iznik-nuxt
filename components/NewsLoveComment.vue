@@ -25,7 +25,6 @@
 </template>
 <script>
 import NewsLovesModal from './NewsLovesModal'
-import 'vue-awesome/icons/comment'
 
 export default {
   components: {

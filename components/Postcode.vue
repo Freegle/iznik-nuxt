@@ -25,7 +25,6 @@
       </b-button>
     </div>
 
-    <!--    TODO DESIGN The standard tooltip has opacity 0.9, which means some text can be hard to read.-->
     <b-tooltip :show.sync="showToolTip" target="postcodeautocomplete" placement="top" variant="primary" triggers="">
       <b>Your device thinks you're here.<br><br>
 
@@ -33,13 +32,13 @@
     </b-tooltip>
   </div>
 </template>
-
 <script>
 // TODO If you're on mobile, e.g. on Give page, and click into this, then the on screen keyboard can hide the
 // autocomplete dropdown.  So we need either to drop up instead, or scroll somehow.
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import Autocomplete from '~/components/Autocomplete'
+
 Vue.use(TooltipPlugin)
 
 export default {
