@@ -202,16 +202,16 @@ export const actions = {
 
       const { me, persistent, groups } = await this.$api.session.fetch(params)
 
-      // Save the persistent session token.
-      me.persistent = persistent
-
-      if (groups) {
-        me.groups = groups
-        commit('setGroups', groups)
-      }
-
-      // Set the user, which will trigger various re-rendering if we were required to be logged in.
       if (me) {
+        // Save the persistent session token.
+        me.persistent = persistent
+
+        if (groups) {
+          me.groups = groups
+          commit('setGroups', groups)
+        }
+
+        // Set the user, which will trigger various re-rendering if we were required to be logged in.
         commit('setUser', me, params.components)
         commit('forceLogin', false)
       }
