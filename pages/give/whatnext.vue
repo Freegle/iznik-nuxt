@@ -6,7 +6,7 @@
     <div v-else>
       <b-row class="m-0">
         <b-col cols="0" md="3" />
-        <b-col cols="12" md="6">
+        <b-col cols="12" lg="6">
           <h1 class="text-center">
             Thanks for freegling!
           </h1>
