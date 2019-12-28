@@ -2,7 +2,7 @@
   <div>
     <b-row class="m-0">
       <b-col cols="0" md="3" class="d-none d-md-block" />
-      <b-col cols="12" md="6" class="p-0">
+      <b-col cols="12" class="p-0">
         <div>
           <h1>Volunteer Opportunities</h1>
           <p>Are you a charity or good cause that needs volunteers? Ask our lovely community of freeglers to help.</p>
