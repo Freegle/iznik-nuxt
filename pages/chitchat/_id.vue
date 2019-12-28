@@ -155,6 +155,7 @@ export default {
       return users
     },
     newsfeed() {
+      console.log('Compute news', this.$store.getters['newsfeed/newsfeed'])
       return this.$store.getters['newsfeed/newsfeed']
     }
   },
@@ -265,11 +266,22 @@ export default {
 
             // But maybe this isn't the thread head.
             const fetched = this.$store.getters['newsfeed/get'](this.id)
+
             if (fetched.threadhead && this.id !== fetched.threadhead) {
               await this.$store.dispatch('newsfeed/clearFeed')
               await this.$store.dispatch('newsfeed/fetch', {
                 id: fetched.threadhead
               })
+
+              const threadhead = this.$store.getters['newsfeed/get'](this.id)
+
+              if (threadhead.threadhead !== threadhead.id) {
+                // Nope, still wasn't the head.
+                await this.$store.dispatch('newsfeed/clearFeed')
+                await this.$store.dispatch('newsfeed/fetch', {
+                  id: threadhead.threadhead
+                })
+              }
             } else if (fetched.replyto && this.id !== fetched.replyto) {
               await this.$store.dispatch('newsfeed/clearFeed')
               await this.$store.dispatch('newsfeed/fetch', {
