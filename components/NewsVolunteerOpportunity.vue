@@ -66,8 +66,8 @@
 </style>
 <script>
 import NewsBase from '~/components/NewsBase'
+import NewsLoveComment from '~/components/NewsLoveComment'
 const VolunteerOpportunityModal = () => import('./VolunteerOpportunityModal')
-const NewsLoveComment = () => import('~/components/NewsLoveComment')
 
 export default {
   components: {

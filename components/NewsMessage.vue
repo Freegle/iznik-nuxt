@@ -45,8 +45,8 @@
 import NewsBase from '~/components/NewsBase'
 import NewsUserIntro from '~/components/NewsUserIntro'
 
+import NewsLoveComment from '~/components/NewsLoveComment'
 const NewsShareModal = () => import('~/components/NewsShareModal')
-const NewsLoveComment = () => import('~/components/NewsLoveComment')
 
 export default {
   components: {

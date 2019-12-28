@@ -45,9 +45,9 @@
 <script>
 import twem from '~/assets/js/twem'
 import NewsBase from '~/components/NewsBase'
-const NewsUserIntro = () => import('~/components/NewsUserIntro')
-const NewsLoveComment = () => import('~/components/NewsLoveComment')
-const NoticeMessage = () => import('~/components/NoticeMessage')
+import NewsUserIntro from '~/components/NewsUserIntro'
+import NewsLoveComment from '~/components/NewsLoveComment'
+import NoticeMessage from '~/components/NoticeMessage'
 
 export default {
   components: {

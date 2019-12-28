@@ -156,17 +156,16 @@ import NewsReply from '~/components/NewsReply'
 import NewsRefer from '~/components/NewsRefer'
 import NewsMessage from '~/components/NewsMessage'
 import NewsAboutMe from '~/components/NewsAboutMe'
+import NewsCommunityEvent from '~/components/NewsCommunityEvent'
+import NewsVolunteerOpportunity from '~/components/NewsVolunteerOpportunity'
+import NewsStory from '~/components/NewsStory'
+import NewsAlert from '~/components/NewsAlert'
+import NewsNoticeboard from '~/components/NewsNoticeboard'
+import NoticeMessage from '~/components/NoticeMessage'
+import NewsPreview from '~/components/NewsPreview'
 const AtTa = process.browser
   ? require('vue-at/dist/vue-at-textarea')
   : undefined
-const NewsCommunityEvent = () => import('~/components/NewsCommunityEvent')
-const NewsVolunteerOpportunity = () =>
-  import('~/components/NewsVolunteerOpportunity')
-const NewsStory = () => import('~/components/NewsStory')
-const NewsAlert = () => import('~/components/NewsAlert')
-const NewsNoticeboard = () => import('~/components/NewsNoticeboard')
-const NoticeMessage = () => import('~/components/NoticeMessage')
-const NewsPreview = () => import('~/components/NewsPreview')
 
 const INITIAL_NUMBER_OF_REPLIES_TO_SHOW = 10
 

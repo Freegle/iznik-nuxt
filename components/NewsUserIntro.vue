@@ -39,7 +39,7 @@
 // Use import rather than async otherwise we have trouble with refs.
 import ProfileModal from '~/components/ProfileModal'
 
-const NewsUserInfo = () => import('~/components/NewsUserInfo')
+import NewsUserInfo from '~/components/NewsUserInfo'
 
 export default {
   components: {

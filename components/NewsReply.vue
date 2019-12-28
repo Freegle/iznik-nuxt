@@ -188,16 +188,16 @@
 import NewsLovesModal from './NewsLovesModal'
 import twem from '~/assets/js/twem'
 
+import NewsUserInfo from '~/components/NewsUserInfo'
+import NewsHighlight from '~/components/NewsHighlight'
+import ChatButton from '~/components/ChatButton'
+import NewsPreview from '~/components/NewsPreview'
+import NewsRefer from '~/components/NewsRefer'
+const ProfileModal = () => import('~/components/ProfileModal')
+
 const AtTa = process.browser
   ? require('vue-at/dist/vue-at-textarea')
   : undefined
-
-const NewsUserInfo = () => import('~/components/NewsUserInfo')
-const NewsHighlight = () => import('~/components/NewsHighlight')
-const ProfileModal = () => import('~/components/ProfileModal')
-const ChatButton = () => import('~/components/ChatButton')
-const NewsPreview = () => import('~/components/NewsPreview')
-const NewsRefer = () => import('~/components/NewsRefer')
 
 const INITIAL_NUMBER_OF_REPLIES_TO_SHOW = 5
 

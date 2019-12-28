@@ -72,7 +72,7 @@
 </template>
 <script>
 import NewsBase from '~/components/NewsBase'
-const NewsLoveComment = () => import('~/components/NewsLoveComment')
+import NewsLoveComment from '~/components/NewsLoveComment'
 const NewsShareModal = () => import('~/components/NewsShareModal')
 
 export default {
