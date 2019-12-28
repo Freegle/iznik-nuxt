@@ -16,7 +16,7 @@
         </b-card-body>
       </b-card>
       <ul v-for="chat in sortedChats" :key="'chat-' + chat.id" class="p-0 pt-1 list-unstyled mb-1">
-        <li :class="{ active: parseInt(activeChat) === parseInt(chat.id) }">
+        <li :class="{ active: chat && parseInt(activeChat) === parseInt(chat.id) }">
           <ChatListEntry :id="chat.id" />
         </li>
       </ul>
@@ -119,7 +119,7 @@ export default {
       if (this.selectedChatId) {
         // We have selected one - try to find it
         return this.selectedChatId
-      } else if (this.sortedChats) {
+      } else if (this.sortedChats && this.sortedChats.length) {
         // None selected - use the first if we have some.
         ret = this.sortedChats[0].id
       }
