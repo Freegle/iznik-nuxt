@@ -200,6 +200,7 @@ export default {
       showSignUp: false,
       forceSignIn: false,
       nativeLoginError: null,
+      socialLoginError: null,
       showPassword: false
     }
   },
