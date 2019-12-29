@@ -42,6 +42,9 @@
         <notice-message v-if="socialblocked" variant="warning">
           Social sign in blocked - check your privacy settings
         </notice-message>
+        <b-alert v-if="socialLoginError" variant="danger" show>
+          Login Failed: {{ socialLoginError }}
+        </b-alert>
       </div>
       <div class="divider__wrapper">
         <div class="divider" />
@@ -146,6 +149,9 @@
               Sign up to Freegle
             </span>
           </b-btn>
+          <b-alert v-if="nativeLoginError" variant="danger" show>
+            Login Failed: {{ nativeLoginError }}
+          </b-alert>
           <div v-if="!signUp" class="text-center">
             <nuxt-link to="/forgot">
               I forgot my password
@@ -169,9 +175,6 @@
         Privacy
       </nuxt-link> for details.
     </p>
-    <b-alert v-if="loginError" variant="danger" show>
-      Login Failed: {{ loginError }}
-    </b-alert>
   </b-modal>
 </template>
 
@@ -196,7 +199,7 @@ export default {
       pleaseShowModal: false,
       showSignUp: false,
       forceSignIn: false,
-      loginError: null,
+      nativeLoginError: null,
       showPassword: false
     }
   },
@@ -257,7 +260,7 @@ export default {
 
   methods: {
     tryLater() {
-      this.loginError = 'Something went wrong; please try later.'
+      this.nativeLoginError = 'Something went wrong; please try later.'
     },
     show() {
       // Force reconsideration of social signin disabled.
@@ -269,7 +272,8 @@ export default {
     },
     loginNative(e) {
       const self = this
-      this.loginError = null
+      this.nativeLoginError = null
+      this.socialLoginError = null
       e.preventDefault()
       e.stopPropagation()
 
@@ -338,7 +342,7 @@ export default {
             console.log('Login failed', e)
             if (e instanceof LoginError) {
               console.log('Login error')
-              this.loginError = e.status
+              this.nativeLoginError = e.status
             } else {
               throw e // let others bubble up
             }
@@ -346,7 +350,8 @@ export default {
       }
     },
     async loginFacebook() {
-      this.loginError = null
+      this.nativeLoginError = null
+      this.socialLoginError = null
       try {
         let response = null
         const promise = new Promise(function(resolve) {
@@ -371,16 +376,17 @@ export default {
           // We are now logged in.
           self.pleaseShowModal = false
         } else {
-          this.loginError =
+          this.socialLoginError =
             'Facebook response is unexpected.  Please try later.'
         }
       } catch (e) {
-        this.loginError = 'Facebook login error: ' + e.message
+        this.socialLoginError = 'Facebook login error: ' + e.message
       }
     },
 
     loginGoogle() {
-      this.loginError = null
+      this.nativeLoginError = null
+      this.socialLoginError = null
       const params = {
         clientid: process.env.GOOGLE_CLIENT_ID,
         cookiepolicy: 'single_host_origin',
@@ -398,7 +404,7 @@ export default {
             console.log('Logged in')
             self.pleaseShowModal = false
           } else if (authResult.error) {
-            this.loginError = 'Google login failed: ' + authResult.error
+            this.socialLoginError = 'Google login failed: ' + authResult.error
           }
         },
         immediate: false,
@@ -413,7 +419,8 @@ export default {
       // Sadly Yahoo doesn't support a Javascript-only OAuth flow, so far as I can tell.  So what we do is
       // post to the server, get a redirection URL from there, redirect on here to Yahoo to complete the
       // signin, and then return to a /yahoologin route.
-      this.loginError = null
+      this.nativeLoginError = null
+      this.socialLoginError = null
       let match
       const pl = /\+/g // Regex for replacing addition symbol with a space
       const search = /([^&=]+)=?([^&]*)/g
