@@ -58,7 +58,7 @@
         </b-form-select>
       </b-col>
       <b-col cols="9" class="pl-0 pr-0">
-        <PostItem :key="item" :item="item" @selected="itemSelect" @cleared="itemClear" @typed="itemType" />
+        <PostItem :item="item" @selected="itemSelect" @cleared="itemClear" @typed="itemType" />
       </b-col>
     </b-row>
     <b-row>
