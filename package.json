@@ -57,7 +57,6 @@
     "vue": "^2.6.10",
     "vue-at": "^2.5.0-beta.2",
     "vue-awesome": "^4.0.2",
-    "vue-color": "^2.7.0",
     "vue-debounce": "^2.0.0",
     "vue-drag-drop": "^1.1.4",
     "vue-draggable-resizable": "^2.0.0-rc2",
