@@ -171,7 +171,6 @@ module.exports = {
     { src: '~plugins/visibility.js', ssr: false },
     { src: '~plugins/error-toasts.js', ssr: false },
     { src: '~plugins/vuex-persistedstate', ssr: false },
-    { src: '~plugins/vue-infinite-loading.js', ssr: false },
     { src: '~plugins/vue2-google-maps.js', ssr: false },
     { src: '~plugins/vue-debounce', ssr: false },
     { src: '~plugins/vue-awesome.js', ssr: false },

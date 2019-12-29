@@ -198,6 +198,7 @@
 <script>
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
+import InfiniteLoading from 'vue-infinite-loading'
 import twem from '~/assets/js/twem'
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
@@ -216,6 +217,7 @@ const AddressModal = () => import('~/components/AddressModal')
 
 export default {
   components: {
+    InfiniteLoading,
     VueDraggableResizable,
     Ratings,
     ChatMessage,

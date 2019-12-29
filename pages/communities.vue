@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import InfiniteLoading from 'vue-infinite-loading'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
 const JobsTopBar = () => import('../components/JobsTopBar')
@@ -44,6 +45,7 @@ const SidebarRight = () => import('~/components/SidebarRight')
 
 export default {
   components: {
+    InfiniteLoading,
     JobsTopBar,
     GroupHeader,
     GroupRememberSelect,

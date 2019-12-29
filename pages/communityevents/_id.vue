@@ -37,6 +37,7 @@
   </div>
 </template>
 <script>
+import InfiniteLoading from 'vue-infinite-loading'
 import loginOptional from '@/mixins/loginOptional.js'
 import createGroupRoute from '@/mixins/createGroupRoute'
 import buildHead from '@/mixins/buildHead.js'
@@ -48,6 +49,7 @@ const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
+    InfiniteLoading,
     GroupSelect,
     CommunityEvent,
     CommunityEventModal,

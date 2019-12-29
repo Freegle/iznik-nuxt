@@ -85,6 +85,7 @@
 </template>
 
 <script>
+import InfiniteLoading from 'vue-infinite-loading'
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import loginRequired from '@/mixins/loginRequired.js'
@@ -102,6 +103,7 @@ const NewsLocation = () => import('~/components/NewsLocation')
 
 export default {
   components: {
+    InfiniteLoading,
     NewsThread,
     OurFilePond,
     SidebarLeft,
