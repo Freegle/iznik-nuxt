@@ -62,6 +62,9 @@ export default {
       this.$nextTick(() => {
         this.$bvModal.show('newsShareModal-' + this.newsfeed.id)
       })
+    },
+    showPhotoModal() {
+      this.$refs.photoModal.show()
     }
   }
 }
