@@ -375,12 +375,11 @@ module.exports = {
     loaders: {
       less: { javascriptEnabled: true }
     },
+  },
 
-    sentry: {
-      dsn: 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170',
-      publishRelease: true,
-      config: {}
-    }
+  sentry: {
+    dsn: 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170',
+    publishRelease: true,
   },
 
   env: {

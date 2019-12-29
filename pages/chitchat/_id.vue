@@ -169,11 +169,6 @@ export default {
   },
 
   mounted() {
-    setTimeout(() => {
-      console.log('Capture sentry')
-      this.$sentry.captureException(new Error('Test message'))
-      console.log('Captured sentry')
-    }, 30000)
     // We want this to be our next home page.
     try {
       localStorage.setItem('Iznik>lasthomepage', 'news')

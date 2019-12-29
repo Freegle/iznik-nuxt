@@ -470,7 +470,6 @@ svg.fa-icon {
 <script>
 // TODO DESIGN Notification dropdown window isn't wide enough before it's loaded.
 // Import login modal as I've seen an issue where it's not in $refs when you click on the signin button too rapidly.
-// TODO NS Catching exceptions and doing something graceful.  Including reporting to Sentry?
 // TODO ACCESSIBILITY Review all <a> and <nuxt-link> to see if they require aria-label throughout the site.
 // TODO ACCESSIBILITY Check if we have any image links without alt text.
 // TODO ACCESSIBILITY Test for keyboard navigation.
