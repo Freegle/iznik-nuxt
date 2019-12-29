@@ -377,6 +377,7 @@ module.exports = {
   },
 
   env: {
+    // TODO MINOR Why do we have both API and IZNIK_API?  Confusing.
     API: API,
     IZNIK_API: IZNIK_API,
     CHAT_HOST: CHAT_HOST,

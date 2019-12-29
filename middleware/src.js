@@ -2,12 +2,11 @@
 import axios from 'axios'
 
 export default function({ store, route }) {
-  const API = process.env.API ? process.env.API : 'http://localhost:3000/api'
-  console.log('API', API, process.env.API)
+  const API = process.env.IZNIK_API ? process.env.IZNIK_API : 'http://localhost:3000/'
 
   if (route.query.src) {
     return axios
-      .post(API + '/src', {
+      .post(API + '/api/src', {
         src: route.query.src
       })
       .catch(e => {})
