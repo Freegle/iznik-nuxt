@@ -138,9 +138,6 @@ module.exports = {
   */
   css: ['@/assets/css/global.scss'],
 
-  // TODO NS We have too many plugins.  Initially I thought the only way to pull in a standard bit of Vue code
-  // was to create a plugin for it.  But that is flat wrong.  Pulling them in as plugins definitely increases the
-  // landing page size, so we should move plugins into components unless they are small and very widely used.
   plugins: [
     '~/plugins/polyfills',
 
@@ -177,7 +174,6 @@ module.exports = {
     { src: '~plugins/vue-read-more', ssr: false },
     { src: '~plugins/facebook-sdk', ssr: false },
     { src: '~plugins/google-sdk', ssr: false },
-    { src: '~plugins/vue-js-toggle-button', ssr: false },
     { src: '~plugins/vue-social-sharing', ssr: false },
     { src: '~plugins/vue-lazy-youtube-video', ssr: false }
   ],
