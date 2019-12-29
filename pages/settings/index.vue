@@ -457,6 +457,7 @@
 <script>
 // TODO MINOR Click on group name or icon to go to group once we have /mygroups/id
 import Vue from 'vue'
+import DatePicker from 'vue2-datepicker'
 import EmailConfirmModal from '~/components/EmailConfirmModal'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead'
@@ -470,6 +471,7 @@ const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
+    DatePicker,
     EmailConfirmModal,
     AboutMeModal,
     AvailabilityModal,

@@ -355,6 +355,7 @@ import 'wicket/wicket-gmap3'
 import { gmapApi } from 'vue2-google-maps'
 import { TablePlugin } from 'bootstrap-vue'
 import Vue from 'vue'
+import DatePicker from 'vue2-datepicker'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 
@@ -366,7 +367,8 @@ Vue.use(TablePlugin)
 export default {
   layout: 'empty',
   components: {
-    GChart
+    GChart,
+    DatePicker
   },
   mixins: [loginOptional, buildHead],
   data() {
