@@ -188,7 +188,8 @@ const config = {
     { src: '~plugins/vue2-datepicker', ssr: false },
     { src: '~plugins/vue-social-sharing', ssr: false },
     { src: '~plugins/vue-lazy-youtube-video', ssr: false },
-    { src: '~plugins/initapp.js', mode: 'client' }
+    { src: '~plugins/app-init-push.js', mode: 'client' },
+    { src: '~plugins/app-facebook.js', mode: 'client' }
   ],
 
   redirect: [
@@ -429,6 +430,8 @@ if (process.env.NUXT_BUILD_TYPE === 'fdapp') {
   config.build.publicPath = '/js/'
 
   config.build.optimization.minimize = false
+
+  config.plugins.push({ src: '~plugins/app-facebook.js', mode: 'client' })
 
   // Remove service worker
   // https://stackoverflow.com/questions/57822378/disable-service-workers-or-workbox-in-nuxtjs-app

@@ -6,7 +6,7 @@
 
 import Vue from 'vue'
 import { LoginError } from '../api/BaseAPI'
-import { savePushId, logoutPushId } from '@/plugins/initapp' // CC
+import { savePushId, logoutPushId } from '@/plugins/app-init-push' // CC
 
 let first = true
 

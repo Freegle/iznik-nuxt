@@ -178,8 +178,10 @@
 <script>
 import Vue from 'vue'
 import { LoginError } from '../api/BaseAPI'
+import { appFacebookLogin } from '../plugins/app-facebook' // CC
 
 const NoticeMessage = () => import('~/components/NoticeMessage')
+  
 
 export default {
   name: 'LoginModal',
@@ -210,10 +212,12 @@ export default {
     // Use of this.bump means we will recompute when we need to, i.e. when the modal is shown.  This is overriding
     // normal reactivity but that's because the SDKs we use aren't written in Vue.
     facebookDisabled() {
+      if (process.env.IS_APP) return false // CC
       return this.bump && typeof Vue.FB === 'undefined'
     },
 
     googleDisabled() {
+      if (process.env.IS_APP) return false // CC
       return this.bump && (!window || !window.gapi || !window.gapi.client)
     },
 
@@ -349,14 +353,25 @@ export default {
       this.loginError = null
       try {
         let response = null
-        const promise = new Promise(function(resolve) {
-          Vue.FB.login(
-            function(ret) {
+
+        const promise = new Promise(function (resolve, reject) { // CC
+          if (process.env.IS_APP) {
+            appFacebookLogin(function (ret) {
+              if (ret.status !== 'connected') {
+                reject(new Error(ret.status))
+              }
               response = ret
               resolve()
-            },
-            { scope: 'email' }
-          )
+            })
+          } else {
+            Vue.FB.login(
+              function (ret) {
+                response = ret
+                resolve()
+              },
+              { scope: 'email' }
+            )
+          }
         })
 
         await promise
@@ -375,6 +390,7 @@ export default {
             'Facebook response is unexpected.  Please try later.'
         }
       } catch (e) {
+        console.log('loginFacebook exception',e)
         this.loginError = 'Facebook login error: ' + e.message
       }
     },

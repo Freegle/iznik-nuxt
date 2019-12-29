@@ -5,7 +5,7 @@ const VueFB = {}
 
 VueFB.install = function install(Vue, options) {
   Vue.FB = undefined
-
+  if (process.env.IS_APP) return // CC
   window.fbAsyncInit = function() {
     window.FB.init(options)
     window.FB.AppEvents.logPageView()
@@ -21,7 +21,7 @@ VueFB.install = function install(Vue, options) {
 
       const js = d.createElement(s)
       js.id = id
-      js.src = 'https://connect.facebook.net/en_US/sdk.js'  // CC
+      js.src = '//connect.facebook.net/en_US/sdk.js'
       fjs.parentNode.insertBefore(js, fjs)
     } catch (e) {
       console.error('Failed to load Facebook SDK', e)
