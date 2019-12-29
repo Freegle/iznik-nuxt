@@ -4,9 +4,6 @@ const pkg = require('./package')
 const FACEBOOK_APPID = '134980666550322'
 const SENTRY_DSN = 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170'
 
-// TODO EH In the old code we look for and record the src parameter as a way of recording where traffic comes from.
-// How shall we do that now?
-
 require('dotenv').config()
 
 // API is the constant the code uses.
@@ -401,7 +398,7 @@ module.exports = {
   },
 
   router: {
-    middleware: ['keylogin']
+    middleware: ['keylogin', 'src']
   },
 
   sitemap: {
