@@ -354,6 +354,9 @@ export default {
       this.$refs.editModal.show()
     },
     async repost() {
+      // Remove any partially composed messages we currently have, because they'll be confusing.
+      await this.$store.dispatch('compose/clearMessages')
+
       // Add this message to the compose store so that it will show up on the compose page.
       await this.$store.dispatch('compose/setMessage', {
         id: this.message.id,

@@ -139,6 +139,9 @@ export const actions = {
   setGroup({ commit }, group) {
     commit('setGroup', group)
   },
+  clearMessages({ commit }, email) {
+    commit('clear', email)
+  },
   setMessage({ commit }, message) {
     commit('setMessage', message)
   },
