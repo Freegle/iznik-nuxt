@@ -20,10 +20,10 @@
           <p>Click to download:</p>
           <ul>
             <li>
-              <a target="_blank" href="/businesscards/FreegleBusinessCardFront.pdf">Front side</a>
+              <a target="_blank" href="https://freegle.in/BusinessCardFront">Front side</a>
             </li>
             <li>
-              <a target="_blank" href="/businesscards/FreegleBusinessCardBack.pdf">Back side</a>
+              <a target="_blank" href="https://freegle.in/BusinessCardBack">Back side</a>
             </li>
           </ul>
           <p>

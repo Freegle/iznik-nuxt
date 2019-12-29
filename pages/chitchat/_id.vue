@@ -265,11 +265,22 @@ export default {
 
             // But maybe this isn't the thread head.
             const fetched = this.$store.getters['newsfeed/get'](this.id)
+
             if (fetched.threadhead && this.id !== fetched.threadhead) {
               await this.$store.dispatch('newsfeed/clearFeed')
               await this.$store.dispatch('newsfeed/fetch', {
                 id: fetched.threadhead
               })
+
+              const threadhead = this.$store.getters['newsfeed/get'](this.id)
+
+              if (threadhead.threadhead !== threadhead.id) {
+                // Nope, still wasn't the head.
+                await this.$store.dispatch('newsfeed/clearFeed')
+                await this.$store.dispatch('newsfeed/fetch', {
+                  id: threadhead.threadhead
+                })
+              }
             } else if (fetched.replyto && this.id !== fetched.replyto) {
               await this.$store.dispatch('newsfeed/clearFeed')
               await this.$store.dispatch('newsfeed/fetch', {
@@ -308,23 +319,22 @@ export default {
     },
     async postIt() {
       let msg = this.startThread
-      if (msg) { // CC
-        if (msg.trim().length) {
-          // Encode up any emojis.
-          msg = twem.untwem(msg)
 
-          await this.$store.dispatch('newsfeed/send', {
-            message: msg,
-            imageid: this.imageid
-          })
+      if (msg && msg.trim().length) {
+        // Encode up any emojis.
+        msg = twem.untwem(msg)
 
-          // Clear the textarea now it's sent.
-          this.startThread = null
+        await this.$store.dispatch('newsfeed/send', {
+          message: msg,
+          imageid: this.imageid
+        })
 
-          // And any image id
-          this.imageid = null
-        }
-      } else console.log('==========chitchat _id.vue msg null')
+        // Clear the textarea now it's sent.
+        this.startThread = null
+
+        // And any image id
+        this.imageid = null
+      }
     },
     photoAdd() {
       // Flag that we're uploading.  This will trigger the render of the filepond instance and subsequently the

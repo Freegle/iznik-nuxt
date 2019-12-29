@@ -209,6 +209,7 @@ const config = {
   */
   modules: [
     '@nuxtjs/sitemap',
+    '@nuxtjs/sentry',
     'bootstrap-vue/nuxt',
     'nuxt-rfg-icon',
     '@nuxtjs/axios',
@@ -290,6 +291,7 @@ const config = {
   axios: {
     proxy: true
   },
+
   proxy: {
     '/api/': IZNIK_API,
     '/adview.php': USER_SITE + '/adview.php'
@@ -377,7 +379,12 @@ const config = {
 
     loaders: {
       less: { javascriptEnabled: true }
-    }
+    },
+  },
+
+  sentry: {
+    dsn: 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170',
+    publishRelease: true,
   },
 
   env: {
@@ -439,6 +446,9 @@ if (process.env.NUXT_BUILD_TYPE === 'fdapp') {
 
   // Remove sitemap
   config.modules = config.modules.filter(module => module !== '@nuxtjs/sitemap')
+
+  // Remove sentry
+  config.modules = config.modules.filter(module => module !== '@nuxtjs/sentry')
 }
 
 module.exports = config

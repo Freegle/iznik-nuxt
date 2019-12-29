@@ -1,8 +1,7 @@
 <template>
   <div>
     <b-row class="m-0">
-      <b-col cols="0" md="3" />
-      <b-col cols="12" md="6" class="p-0">
+      <b-col cols="12" lg="6" class="p-0" offset-lg="3">
         <WizardProgress :active-stage="2" />
         <h1 class="text-center">
           So, what are you looking for?

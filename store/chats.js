@@ -8,15 +8,28 @@ export const state = () => ({
 
 export const mutations = {
   addRoom(state, item) {
-    Vue.set(state.list, item.id, item)
+    Vue.set(state.list, parseInt(item.id), item)
   },
 
   setList(state, chats) {
-    state.list = {}
-
     if (chats) {
+      // We might have chats that have been removed.  Look for ids in our store that are not in the list, and remove
+      // them.  This is a common case when blocking a user.
+      const existingIds = Object.keys(state.list).map(a => parseInt(a))
+      const newIds = chats.map(a => a.id)
+      const removed = existingIds.filter(a => !newIds.includes(a))
+      removed.forEach(id => {
+        Vue.delete(state.list, id)
+      })
+
       for (const chat of chats) {
-        Vue.set(state.list, chat.id, chat)
+        // We might have a copy of the chat in store already.  If so, it may have more info than we have fetched
+        // this time, so merge it.
+        Vue.set(
+          state.list,
+          parseInt(chat.id),
+          Object.assign(state.list[chat.id] || {}, chat)
+        )
       }
     }
   }

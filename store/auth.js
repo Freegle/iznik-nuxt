@@ -207,8 +207,7 @@ export const actions = {
 
       const { me, persistent, groups } = await this.$api.session.fetch(params)
 
-      // Set the user, which will trigger various re-rendering if we were required to be logged in.
-      if (me) { // CC does need moving
+      if (me) {
         // Save the persistent session token.
         me.persistent = persistent
 
@@ -217,6 +216,7 @@ export const actions = {
           commit('setGroups', groups)
         }
 
+        // Set the user, which will trigger various re-rendering if we were required to be logged in.
         commit('setUser', me, params.components)
         commit('forceLogin', false)
 

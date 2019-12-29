@@ -1,8 +1,7 @@
 <template>
   <div>
     <b-row class="m-0">
-      <b-col cols="0" md="3" class="d-none d-md-block" />
-      <b-col cols="12" md="6" class="p-0">
+      <b-col cols="12" lg="6" class="p-0" offset-lg="3">
         <div>
           <h1>Community Events</h1>
           <p>These are local events, posted by other freeglers like you.</p>

@@ -45,7 +45,7 @@
   </span>
 </template>
 <script>
-const NewsUserInfo = () => import('~/components/NewsUserInfo')
+import NewsUserInfo from '~/components/NewsUserInfo'
 
 export default {
   components: {

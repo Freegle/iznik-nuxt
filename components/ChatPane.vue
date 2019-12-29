@@ -307,7 +307,8 @@ export default {
     },
 
     chat() {
-      return this.$store.getters['chats/get'](this.id)
+      const ret = this.$store.getters['chats/get'](this.id)
+      return ret
     },
 
     unseen() {
@@ -316,9 +317,10 @@ export default {
     },
 
     chatmessages() {
-      return Object.values(
+      const ret = Object.values(
         this.$store.getters['chatmessages/getMessages'](this.id)
       )
+      return ret
     },
 
     chatusers() {
@@ -405,14 +407,13 @@ export default {
           chatid: this.id
         })
 
-        this.$nextTick(() => {
-          // Exception when push received when on chats page: _this.$el.querySelector is not a function
-          // And chat disappears when getNotificationCount called
-          if (!this.$el.querySelector) console.log('=======ChatPane.vue _this.$el.querySelector is not a function false', this.$el) // CC
-          else console.log('=======ChatPane.vue OK')
-          const container = this.$el.querySelector('.chatContent') // CC 
-          container.scrollTop = container.scrollHeight
-        })
+        // TODO Errors seen on mobile with .chatContent not found, so use a timer hack rather than nextTick.
+        setTimeout(() => {
+          const container = this.$el.querySelector('.chatContent')
+          if (container) {
+            container.scrollTop = container.scrollHeight
+          }
+        }, 500)
       }
     }
   },

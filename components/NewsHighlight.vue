@@ -26,7 +26,7 @@
 
 <script>
 // Originally based on https://github.com/orlyyani/read-more
-const Highlighter = () => import('vue-highlight-words')
+import Highlighter from 'vue-highlight-words'
 
 export default {
   components: {

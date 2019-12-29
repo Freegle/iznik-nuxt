@@ -97,7 +97,7 @@
       <p>You can order these from firms like <a href="https://www.instantprint.co.uk/business-cards/economy?lamination=no&size=85-x-55-mm&paper=350gsm-silk&sided=single&finish=standard-corners&rangesizeq=0">Instantprint</a> - download our PDF and upload it to their site when ordering.</p>
       <b-img-lazy src="/businesscards/FreegleBusinessCardSmall.png" class="border border-dark mb-2" />
       <br>
-      <a href="/businesscards/FreegleBusinessCardFront.pdf" target="_blank" class="mt-1 mb-1">
+      <a href="https://freegle.in/BusinessCardFront" target="_blank" class="mt-1 mb-1">
         <b-btn size="lg" variant="primary">
           Download business card
         </b-btn>

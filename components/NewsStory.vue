@@ -68,8 +68,8 @@
 import twem from '~/assets/js/twem'
 import NewsBase from '~/components/NewsBase'
 
-const NewsUserIntro = () => import('~/components/NewsUserIntro')
-const NewsLoveComment = () => import('~/components/NewsLoveComment')
+import NewsUserIntro from '~/components/NewsUserIntro'
+import NewsLoveComment from '~/components/NewsLoveComment'
 const StoriesAddModal = () => import('~/components/StoriesAddModal')
 const StoriesShareModal = () => import('~/components/StoriesShareModal')
 

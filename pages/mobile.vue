@@ -1,7 +1,6 @@
 <template>
   <b-row>
-    <b-col cols="0" lg="3" />
-    <b-col cols="12" lg="6">
+    <b-col cols="12" lg="6" offset-lg="3">
       <div class="text-center">
         <h1>Freegle</h1>
         <h2>Don't throw it away, give it away!</h2>
