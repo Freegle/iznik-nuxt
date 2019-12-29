@@ -3,15 +3,27 @@
     <b-row class="m-0">
       <b-col ref="mapcont" class="p-0">
         <client-only>
-          <b-button variant="primary" size="lg" class="mb-2" title="Find my location" @click="findLoc">
-            <v-icon v-if="locating" name="sync" class="fa-spin" />
-            <v-icon v-else-if="locationFailed" name="exclamation-triangle" />
-            <v-icon v-else name="map-marker-alt" />
-            &nbsp;Find my location
-          </b-button>
+          <div class="d-flex justify-content-between">
+            <gmap-autocomplete
+              id="autocomplete"
+              class="form-control form-control-lg"
+              placeholder="Enter a location"
+              :options="gb"
+              size="lg"
+              :types="['(regions)']"
+              @place_changed="getAddressData"
+            />
+            <b-button variant="primary" size="lg" class="mb-2 ml-2" title="Find my location" @click="findLoc">
+              <v-icon v-if="locating" name="sync" class="fa-spin" />
+              <v-icon v-else-if="locationFailed" name="exclamation-triangle" />
+              <v-icon v-else name="map-marker-alt" />
+              &nbsp;Find my location
+            </b-button>
+          </div>
           <GmapMap
+            v-if="center"
             ref="gmap"
-            :center="{lat:53.9450, lng:-2.5209}"
+            :center="center"
             :zoom="zoom"
             :style="'width: ' + mapWidth + '; height: ' + mapWidth + 'px'"
             :options="{
@@ -39,11 +51,8 @@
     </b-row>
   </div>
 </template>
-<style scoped>
-</style>
 <script>
 // TODO DESIGN Make a bigger and more visible icon.
-// TODO EH Add place finder like in ExploreMap
 import { gmapApi } from 'vue2-google-maps'
 
 export default {
@@ -59,9 +68,15 @@ export default {
     return {
       zoom: 5,
       bounds: null,
-      center: null,
+      lat: 53.945,
+      lng: -2.5209,
       locating: false,
-      locationFailed: false
+      locationFailed: false,
+      gb: {
+        componentRestrictions: {
+          country: ['gb']
+        }
+      }
     }
   },
   computed: {
@@ -69,6 +84,15 @@ export default {
       get() {
         return process.browser ? gmapApi : []
       }
+    },
+    center() {
+      const google = this.google()
+
+      if (google) {
+        return new google.maps.LatLng(this.lat, this.lng)
+      }
+
+      return null
     },
     mapHeight() {
       const contWidth = this.$refs.mapcont ? this.$refs.mapcont.$el.width : 0
@@ -108,7 +132,9 @@ export default {
           }
         }
 
-        this.center = this.$refs.gmap.$mapObject.getCenter()
+        const center = this.$refs.gmap.$mapObject.getCenter()
+        this.lat = center.lat()
+        this.lng = center.lng()
       }
     },
     getCenter() {
@@ -123,10 +149,8 @@ export default {
         ) {
           this.locating = true
           navigator.geolocation.getCurrentPosition(position => {
-            this.center = new (this.google()).maps.LatLng(
-              position.coords.latitude,
-              position.coords.longitude
-            )
+            this.lat = position.coords.latitude
+            this.lng = position.coords.longitude
 
             // Show close to where we think they are.
             this.zoom = 16
@@ -141,6 +165,14 @@ export default {
       }
 
       this.locating = false
+    },
+
+    getAddressData: function(addressData, placeResultData, id) {
+      if (addressData) {
+        this.lat = addressData.geometry.location.lat()
+        this.lng = addressData.geometry.location.lng()
+        this.zoom = 16
+      }
     }
   }
 }

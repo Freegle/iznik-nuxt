@@ -318,3 +318,8 @@ legend {
 .tooltip.b-tooltip {
   opacity: 1;
 }
+
+/* Ensure any autocompletes are visible on top of google maps. */
+.pac-container {
+  z-index: 10000;
+}
