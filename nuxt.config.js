@@ -380,6 +380,12 @@ module.exports = {
   sentry: {
     dsn: 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170',
     publishRelease: true,
+    clientIntegrations: function(integrations) {
+      // Don't include breadcrumbs as this makes POSTs too large, and they fail.
+      return integrations.filter(integration => {
+        return integration.name !== 'Breadcrumbs'
+      })
+    }
   },
 
   env: {
