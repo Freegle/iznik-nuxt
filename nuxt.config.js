@@ -204,6 +204,7 @@ module.exports = {
   */
   modules: [
     '@nuxtjs/sitemap',
+    '@nuxtjs/sentry',
     'bootstrap-vue/nuxt',
     'nuxt-rfg-icon',
     '@nuxtjs/axios',
@@ -285,6 +286,7 @@ module.exports = {
   axios: {
     proxy: true
   },
+
   proxy: {
     '/api/': IZNIK_API,
     '/adview.php': USER_SITE + '/adview.php'
@@ -372,6 +374,12 @@ module.exports = {
 
     loaders: {
       less: { javascriptEnabled: true }
+    },
+
+    sentry: {
+      dsn: 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170',
+      publishRelease: true,
+      config: {}
     }
   },
 
