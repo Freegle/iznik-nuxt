@@ -34,6 +34,12 @@ $bootstrap-lg: 1200px;
   border-color: #204d74 !important;
 }
 
+.btn-white:hover {
+  color:  white !important;
+  background-color: $color-blue--light !important;
+  border-color: #204d74 !important;
+}
+
 .btn-primary {
   background-color: $colour-primary !important;
   border-color: $color-blue--dark;
