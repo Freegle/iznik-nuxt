@@ -202,6 +202,7 @@ import twem from '~/assets/js/twem'
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
 import ChatMessage from '~/components/ChatMessage.vue'
+
 Vue.use(TooltipPlugin)
 const VueDraggableResizable = () => import('vue-draggable-resizable')
 const Ratings = () => import('~/components/Ratings')
@@ -215,9 +216,9 @@ const AddressModal = () => import('~/components/AddressModal')
 
 export default {
   components: {
+    VueDraggableResizable,
     Ratings,
     ChatMessage,
-    VueDraggableResizable,
     PromiseModal,
     ProfileModal,
     AvailabilityModal,

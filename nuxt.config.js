@@ -2,6 +2,7 @@ import sitemap from './utils/sitemap.js'
 
 const pkg = require('./package')
 const FACEBOOK_APPID = '134980666550322'
+const SENTRY_DSN = 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170'
 
 // TODO EH In the old code we look for and record the src parameter as a way of recording where traffic comes from.
 // How shall we do that now?
@@ -171,7 +172,6 @@ module.exports = {
     { src: '~plugins/error-toasts.js', ssr: false },
     { src: '~plugins/vuex-persistedstate', ssr: false },
     { src: '~plugins/vue-drag-drop.js', ssr: false },
-    { src: '~plugins/vue-draggable-resizable.js', ssr: false },
     { src: '~plugins/vue-infinite-loading.js', ssr: false },
     { src: '~plugins/vue2-google-maps.js', ssr: false },
     { src: '~plugins/vue-debounce', ssr: false },
@@ -377,8 +377,9 @@ module.exports = {
   },
 
   sentry: {
-    dsn: 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170',
-    publishRelease: true,
+    dsn: process.env.SENTRY_DSN,
+    // TODO MINOR Disabled publishRelease as causing build errors I don't understand.
+    publishRelease: false,
     clientIntegrations: function(integrations) {
       // Don't include breadcrumbs as this makes POSTs too large, and they fail.
       return integrations.filter(integration => {
@@ -398,7 +399,8 @@ module.exports = {
       '423761283916-1rpa8120tpudgv4nf44cpmlf8slqbf4f.apps.googleusercontent.com',
     MODTOOLS: false,
     USER_SITE: USER_SITE,
-    IMAGE_SITE: IMAGE_SITE
+    IMAGE_SITE: IMAGE_SITE,
+    SENTRY_DSN: SENTRY_DSN
   },
 
   vue: {
