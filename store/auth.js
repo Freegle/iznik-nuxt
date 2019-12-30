@@ -1,9 +1,3 @@
-// TODO HARD All this loginRequired/loginOptional stuff seems like hard work.  I've seen at least one undiagnosed
-// bug.  Is there really not a better way to do it?  For example, if we used local storage directly, maybe we
-// could simplify some of the issues that arise because the Vuex persisted store is loaded later rather than sooner.
-// There are definitely still some of these - I've seen the navbar show us logged in while the page contents show us
-// logged out.  Can we force the persisted store to be loaded earlier to knock this class of bugs on the head?
-
 import { LoginError } from '../api/BaseAPI'
 
 let first = true
