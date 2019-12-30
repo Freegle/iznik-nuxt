@@ -160,7 +160,7 @@
                   </v-icon>
                 </span>
               </div>
-              <b-img v-if="volunteering.photo" thumbnail :src="volunteering.photo.paththumb + '?' + cacheBust" />
+              <b-img v-if="volunteeringEdit.photo" thumbnail :src="volunteeringEdit.photo.paththumb + '?' + cacheBust" />
               <b-img v-else width="250" thumbnail src="~/static/placeholder.jpg" />
             </div>
           </b-col>
