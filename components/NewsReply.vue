@@ -6,14 +6,7 @@
           <tbody>
             <tr>
               <td style="vertical-align: top" class="clickme" title="Click to see their profile" @click="showInfo">
-                <b-img-lazy
-                  rounded="circle"
-                  :class="(reply.replyto !== threadhead.id) ? 'profilesm' : 'profilemd' + ' p-0 ml-1 mb-1 mr-2 inline float-left mt-2'"
-                  alt="Profile picture"
-                  title="Profile"
-                  :src="users[userid].profile.turl"
-                  @error.native="brokenImage"
-                />
+                <profile-image :image="users[userid].profile.turl" class="ml-1 mr-2 mt-2 mb-1 inline float-left" :class="(reply.replyto !== threadhead.id) ? 'profilesm' : 'profilemd'" />
                 <v-icon v-if="users[userid].settings.showmod && reply.replyto === threadhead.id" name="leaf" class="showmodsm text-success" />
               </td>
               <td class="align-top">
@@ -194,6 +187,7 @@ import ChatButton from '~/components/ChatButton'
 import NewsPreview from '~/components/NewsPreview'
 import NewsRefer from '~/components/NewsRefer'
 const ProfileModal = () => import('~/components/ProfileModal')
+const ProfileImage = () => import('~/components/ProfileImage')
 
 const AtTa = process.browser
   ? require('vue-at/dist/vue-at-textarea')
@@ -211,7 +205,8 @@ export default {
     ChatButton,
     NewsPreview,
     NewsRefer,
-    AtTa
+    AtTa,
+    ProfileImage
   },
   props: {
     threadhead: {
