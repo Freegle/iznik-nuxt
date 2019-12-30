@@ -92,16 +92,7 @@
           <at-ta ref="at" :members="tagusers" class="pl-4 flex-shrink-2 input-group" :filter-match="filterMatch">
             <b-input-group-prepend>
               <span class="input-group-text pl-1 pr-1">
-                <b-img-lazy
-                  v-if="me.profile.turl"
-                  rounded="circle"
-                  thumbnail
-                  class="profilesm p-0 m-0 inline float-left"
-                  alt="Profile picture"
-                  title="Profile"
-                  :src="me.profile.turl"
-                  @error.native="brokenImage"
-                />
+                <profile-image v-if="me.profile.turl" :image="me.profile.turl" class="profilesm m-0 inline float-left" is-thumbnail />
               </span>
             </b-input-group-prepend>
             <b-textarea
