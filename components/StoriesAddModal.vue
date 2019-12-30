@@ -138,8 +138,6 @@ label {
 }
 </style>
 <script>
-// TODO NS Validation.  Easy in this case but deferred rolling our own in case we have a general form validation plugin.
-
 const OurFilePond = () => import('~/components/OurFilePond')
 
 export default {
@@ -212,13 +210,15 @@ export default {
     },
 
     async submit() {
-      await this.$store.dispatch('stories/add', {
-        headline: this.story.headline,
-        story: this.story.story,
-        photo: this.story.photo ? this.story.photo.id : null
-      })
+      if (this.story.headline && this.story.story) {
+        await this.$store.dispatch('stories/add', {
+          headline: this.story.headline,
+          story: this.story.story,
+          photo: this.story.photo ? this.story.photo.id : null
+        })
 
-      this.thankyou = true
+        this.thankyou = true
+      }
     }
   }
 }

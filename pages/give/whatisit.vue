@@ -57,7 +57,7 @@
   </div>
 </template>
 <script>
-// TODO NS Don't allow submission before image upload complete.  Also check that there is a postcode in case we
+// TODO EH Don't allow submission before image upload complete.  Also check that there is a postcode in case we
 // loaded this page directly, by passing the previous one.
 import NoticeMessage from '../../components/NoticeMessage'
 import loginOptional from '@/mixins/loginOptional.js'

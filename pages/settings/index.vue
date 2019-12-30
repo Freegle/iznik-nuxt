@@ -256,8 +256,12 @@
                     <div v-for="group in me.groups" :key="'settingsgroup-' + group.id" class="list-unstyled">
                       <b-card v-if="group.type === 'Freegle'" class="nocardbot">
                         <b-card-title>
-                          <b-img-lazy rounded thumbnail alt="Community profile picture" :src="group.profile" class="float-right groupprofile" />
-                          {{ group.namedisplay }}
+                          <nuxt-link :to="'/communities/' + group.id">
+                            <b-img-lazy rounded thumbnail alt="Community profile picture" :src="group.profile" class="float-right groupprofile" />
+                          </nuxt-link>
+                          <nuxt-link :to="'/communities/' + group.id">
+                            {{ group.namedisplay }}
+                          </nuxt-link>
                           <span v-if="group.role === 'Moderator' || group.role === 'Owner'">
                             <v-icon name="crown" class="text-success" />
                           </span>
@@ -333,7 +337,7 @@
               </b-row>
               <b-row>
                 <b-col>
-                  <!-- TODO - This should ideally be a b-alert when it pops up but if the page loads with it already present then it should be a notice-message component -->
+                  <!-- TODO MINOR This should ideally be a b-alert when it pops up but if the page loads with it already present then it should be a notice-message component -->
                   <b-alert v-if="me.phone" show variant="info">
                     <p>
                       It costs Freegle to send these - if you can, please:
@@ -441,7 +445,9 @@
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@import 'color-vars';
+
 .profile {
   width: 100px !important;
   height: 100px !important;
@@ -454,10 +460,13 @@
 .nocardbot .card-body {
   padding-bottom: 0px;
 }
+
+h4 a {
+  color: $colour-header;
+}
 </style>
 
 <script>
-// TODO MINOR Click on group name or icon to go to group once we have /mygroups/id
 import Vue from 'vue'
 import DatePicker from 'vue2-datepicker'
 import { ToggleButton } from 'vue-js-toggle-button'

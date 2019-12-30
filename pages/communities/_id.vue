@@ -8,7 +8,7 @@
         <JobsTopBar />
         <div>
           <div class="d-flex mt-2 mb-3 selection__wrapper justify-content-between">
-            <GroupRememberSelect v-model="groupid" remember="mygroups" class="m-3" all />
+            <GroupSelect v-model="groupid" class="m-3" all />
             <b-form-select v-model="selectedType" class="m-3 typeSelect" value="All" :options="typeOptions" @change="typeChange" />
           </div>
           <groupHeader v-if="group" :key="'groupheader-' + groupid" :group="group" :show-join="true" />
@@ -34,10 +34,11 @@
 
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
+import GroupSelect from '../../components/GroupSelect'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
-const JobsTopBar = () => import('../components/JobsTopBar')
-const GroupRememberSelect = () => import('~/components/GroupRememberSelect.vue')
+import createGroupRoute from '@/mixins/createGroupRoute'
+const JobsTopBar = () => import('~/components/JobsTopBar')
 const GroupHeader = () => import('~/components/GroupHeader.vue')
 const Message = () => import('~/components/Message.vue')
 const SidebarLeft = () => import('~/components/SidebarLeft')
@@ -45,19 +46,18 @@ const SidebarRight = () => import('~/components/SidebarRight')
 
 export default {
   components: {
+    GroupSelect,
     InfiniteLoading,
     JobsTopBar,
     GroupHeader,
-    GroupRememberSelect,
     Message,
     SidebarLeft,
     SidebarRight
   },
-  mixins: [loginRequired, buildHead],
+  mixins: [loginRequired, buildHead, createGroupRoute('communities')],
   data: function() {
     return {
       id: null,
-      groupid: null,
       busy: false,
       context: null,
       typeOptions: [
