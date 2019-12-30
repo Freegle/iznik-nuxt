@@ -21,11 +21,7 @@
         </span>
       </b-col>
     </b-row>
-    <b-row v-if="newsfeed.message">
-      <b-col>
-        <span class="font-weight-bold prewrap forcebreak">{{ emessage }}</span>
-      </b-col>
-    </b-row>
+    <span v-if="newsfeed.message" class="font-weight-bold prewrap forcebreak">{{ emessage }}</span>
     <div>
       <b-row v-if="newsfeed.image">
         <b-col>
@@ -40,14 +36,12 @@
         </b-col>
       </b-row>
     </div>
-    <b-row class="mt-2">
-      <b-col>
-        <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
-        <b-btn variant="white" size="sm" class="float-right d-inline-block" @click="share">
-          <v-icon name="share-alt" /> Share
-        </b-btn>
-      </b-col>
-    </b-row>
+    <div class="mt-2">
+      <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
+      <b-btn variant="white" size="sm" class="float-right d-inline-block" @click="share">
+        <v-icon name="share-alt" /> Share
+      </b-btn>
+    </div>
     <b-modal
       v-if="newsfeed.image"
       :id="'photoModal-' + newsfeed.id"
