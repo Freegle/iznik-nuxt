@@ -1,5 +1,12 @@
 <template>
-  <div v-if="event">
+  <b-row v-if="invalid" class="m-0">
+    <b-col cols="12" lg="6" class="p-0" offset-lg="3">
+      <NoticeMessage variant="danger" class="mt-2">
+        Sorry, that community event isn't around any more.
+      </NoticeMessage>
+    </b-col>
+  </b-row>
+  <div v-else>
     <b-row class="m-0">
       <b-col cols="0" md="3" class="d-none d-md-block" />
       <b-col cols="12" md="6" class="p-0">
@@ -12,6 +19,7 @@
 <script>
 // TODO Handle invalid id.  Ditto in Volunteer Ops.
 // TODO Handle deleted events, which return an error of 3 on the fetch.  Ditto volunteer ops.
+import NoticeMessage from '../../components/NoticeMessage'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 
@@ -19,6 +27,7 @@ const CommunityEvent = () => import('~/components/CommunityEvent.vue')
 
 export default {
   components: {
+    NoticeMessage,
     CommunityEvent
   },
   mixins: [loginOptional, buildHead],
@@ -28,16 +37,30 @@ export default {
     }
   },
   async asyncData({ app, params, store }) {
-    await store.dispatch('communityevents/fetch', {
-      id: params.id
-    })
+    let invalid = false
+
+    try {
+      await store.dispatch('communityevents/fetch', {
+        id: params.id
+      })
+    } catch (e) {
+      invalid = true
+    }
+
+    return {
+      invalid: invalid
+    }
   },
   head() {
-    return this.buildHead(
-      this.event.title,
-      this.event.description,
-      this.event.photo ? this.event.photo.path : null
-    )
+    if (this.invalid) {
+      return this.buildHead('Community Event #' + this.id)
+    } else {
+      return this.buildHead(
+        this.event.title,
+        this.event.description,
+        this.event.photo ? this.event.photo.path : null
+      )
+    }
   }
 }
 </script>
