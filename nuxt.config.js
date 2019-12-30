@@ -189,7 +189,9 @@ const config = {
     { src: '~plugins/vue-social-sharing', ssr: false },
     { src: '~plugins/vue-lazy-youtube-video', ssr: false },
     { src: '~plugins/app-init-push.js', mode: 'client' },
-    { src: '~plugins/app-facebook.js', mode: 'client' }
+    { src: '~plugins/app-facebook.js', mode: 'client' },
+    { src: '~plugins/app-google.js', mode: 'client' },
+    { src: '~plugins/app-yahoo.js', mode: 'client' }
   ],
 
   redirect: [

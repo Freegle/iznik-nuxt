@@ -179,6 +179,8 @@
 import Vue from 'vue'
 import { LoginError } from '../api/BaseAPI'
 import { appFacebookLogin } from '../plugins/app-facebook' // CC
+import { appGoogleLogin } from '../plugins/app-google' // CC
+import { appYahooLogin } from '../plugins/app-google' // CC
 
 const NoticeMessage = () => import('~/components/NoticeMessage')
   
@@ -395,45 +397,93 @@ export default {
       }
     },
 
-    loginGoogle() {
+    async loginGoogle() { // CC
       this.loginError = null
-      const params = {
-        clientid: process.env.GOOGLE_CLIENT_ID,
-        cookiepolicy: 'single_host_origin',
-        callback: async authResult => {
-          console.log('Signin returned', authResult)
-          if (authResult.access_token) {
-            console.log('Signed in')
-
-            await this.$store.dispatch('auth/login', {
-              googleauthcode: authResult.code,
-              googlelogin: true
-            })
-
-            // We are now logged in.
-            console.log('Logged in')
-            self.pleaseShowModal = false
-          } else if (authResult.error) {
-            this.loginError = 'Google login failed: ' + authResult.error
-          }
-        },
-        immediate: false,
-        scope: 'profile email',
-        app_package_name: 'org.ilovefreegle.direct'
+      if (process.env.IS_APP) { // CC
+        let authResult = { status: 'init' }
+        await new Promise(function (resolve) {
+          appGoogleLogin(function (ret) {
+            authResult = ret
+            resolve()
+          })
+        })
+        if (authResult.code) { // status, code
+          await this.$store.dispatch('auth/login', {
+            googleauthcode: authResult.code,
+            googlelogin: true,
+            mobile: true
+          })
+          // We are now logged in.
+          console.log('Logged in')
+          self.pleaseShowModal = false
+        }
+        else {
+          this.loginError = 'Google login error ' + authResult.status
+        }
       }
+      else {
+        const params = {
+          clientid: process.env.GOOGLE_CLIENT_ID,
+          cookiepolicy: 'single_host_origin',
+          callback: async authResult => {
+            console.log('Signin returned', authResult)
+            if (authResult.access_token) {
+              console.log('Signed in')
 
-      window.gapi.auth.signIn(params)
+              await this.$store.dispatch('auth/login', {
+                googleauthcode: authResult.code,
+                googlelogin: true
+              })
+
+              // We are now logged in.
+              console.log('Logged in')
+              self.pleaseShowModal = false
+            } else if (authResult.error) {
+              this.loginError = 'Google login failed: ' + authResult.error
+            }
+          },
+          immediate: false,
+          scope: 'profile email',
+          app_package_name: 'org.ilovefreegle.direct'
+        }
+
+        window.gapi.auth.signIn(params)
+      }
     },
 
-    loginYahoo() {
+    async loginYahoo() { // CC
+      this.loginError = null
+      let showYahooLogin = false
+      if (process.env.IS_APP) { // CC
+        showYahooLogin = appYahooLogin
+        // fall trhough
+
+        /* let authResult = { status: 'init' }
+        await new Promise(function (resolve) {
+          appYahooLogin(function (ret) {
+            authResult = ret
+            resolve()
+          })
+        })
+        if (authResult.code) {
+          await this.$store.dispatch('auth/login', {
+            yahoologin: true
+          })
+          // We are now logged in.
+          console.log('Logged in')
+          self.pleaseShowModal = false
+        }
+        else {
+          this.loginError = 'Yahoo login error ' + authResult.status
+        } */
+      }
       // Sadly Yahoo doesn't support a Javascript-only OAuth flow, so far as I can tell.  So what we do is
       // post to the server, get a redirection URL from there, redirect on here to Yahoo to complete the
       // signin, and then return to a /yahoologin route.
-      this.loginError = null
       let match
       const pl = /\+/g // Regex for replacing addition symbol with a space
       const search = /([^&=]+)=?([^&]*)/g
-      const decode = function(s) {
+      const decode = function (s) {
         return decodeURIComponent(s.replace(pl, ' '))
       }
       const query = window.location.search.substring(1)
@@ -460,6 +510,10 @@ export default {
           console.log('Default Session login returned', ret)
           if (ret.redirect) {
             // We are not logged in - we need to redirect to Yahoo
+            if (showYahooLogin) {
+              showYahooLogin(ret.redirect)
+              return
+            }
             //
             // The URL returned by the server has its hostname in it, but perhaps we are running on a different
             // host, especially when developing.
@@ -474,7 +528,7 @@ export default {
               url = url.replace(
                 re,
                 window.location.hostname +
-                  (window.location.port ? ':' + window.location.port : '')
+                (window.location.port ? ':' + window.location.port : '')
               )
             }
 
