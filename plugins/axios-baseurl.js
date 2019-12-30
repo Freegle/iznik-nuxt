@@ -3,7 +3,7 @@
  *
  *   server:
  *
- *     - set baseURL to IZNIK_API
+ *     - set baseURL to API
  *     - makes requests to the directly to the API
  *     - we don't need to worry about the CORS stuff
  *
@@ -16,6 +16,6 @@
  */
 export default function({ $axios }) {
   if (process.server) {
-    $axios.defaults.baseURL = process.env.IZNIK_API
+    $axios.defaults.baseURL = process.env.API
   }
 }

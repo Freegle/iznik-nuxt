@@ -6,18 +6,15 @@ const SENTRY_DSN = 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170'
 
 require('dotenv').config()
 
-// API is the constant the code uses.
-const API = '/api'
-
 // This is where the user site is.
 const USER_SITE = 'https://www.ilovefreegle.org'
 
 // This is where images are served from.
 const IMAGE_SITE = 'https://images.ilovefreegle.org'
 
-// IZNIK_API is where we send it to.  This avoids CORS issues (and removes preflight OPTIONS calls for GETs, which
+// API is where we send it to.  This avoids CORS issues (and removes preflight OPTIONS calls for GETs, which
 // hurt client performance).
-const IZNIK_API = process.env.IZNIK_API || 'https://fdapidbg.ilovefreegle.org'
+const API = process.env.API || 'https://fdapidbg.ilovefreegle.org/api'
 
 // Long polls interact badly with per-host connection limits so send to here instead.
 const CHAT_HOST = 'https://users.ilovefreegle.org:555'
@@ -30,7 +27,7 @@ const DISABLE_ESLINT_AUTOFIX =
 const ESLINT_AUTOFIX = !DISABLE_ESLINT_AUTOFIX
 
 module.exports = {
-  mode: 'universal',
+  mode: 'spa',
 
   /*
   ** Headers.  Include default meta tags that will apply unless overridden by individual pages.  Every page that
@@ -275,7 +272,7 @@ module.exports = {
   },
 
   proxy: {
-    '/api/': IZNIK_API,
+    '/api/': API,
     '/adview.php': USER_SITE + '/adview.php'
   },
 
@@ -377,9 +374,7 @@ module.exports = {
   },
 
   env: {
-    // TODO MINOR Why do we have both API and IZNIK_API?  Confusing.
     API: API,
-    IZNIK_API: IZNIK_API,
     CHAT_HOST: CHAT_HOST,
     FACEBOOK_APPID: FACEBOOK_APPID,
     GOOGLE_MAPS_KEY: 'AIzaSyCdTSJKGWJUOx2pq1Y0f5in5g4kKAO5dgg',
