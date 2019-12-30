@@ -1,5 +1,8 @@
 @import 'color-vars';
 
+// TODO MINOR It's lame to use !important to override Bootstrap CSS.  We should make our CSS more specific, e.g.
+// by taking advantage of everything being under the id=__nuxt element that gets inserted.
+
 // TODO MINOR Would be nice to use bootstrap mixins for breakpoints.  Also in NewsReply.
 $bootstrap-xs: 576px;
 $bootstrap-sm: 768px;
@@ -48,7 +51,7 @@ $bootstrap-lg: 1200px;
   -webkit-font-smoothing: antialiased;
 }
 
-.btn-success {
+.pageContent .btn-success {
   background-color: $colour-success !important;
   background-image: none;
   border-color: $color-green--dark;
