@@ -37,7 +37,7 @@ import InfiniteLoading from 'vue-infinite-loading'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
 import createGroupRoute from '@/mixins/createGroupRoute'
-const JobsTopBar = () => import('../components/JobsTopBar')
+const JobsTopBar = () => import('~/components/JobsTopBar')
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect.vue')
 const GroupHeader = () => import('~/components/GroupHeader.vue')
 const Message = () => import('~/components/Message.vue')
