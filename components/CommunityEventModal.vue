@@ -615,7 +615,6 @@ export default {
         required
       },
       dates: {
-        // TODO NS validate each entry is not more than 4 days in duration
         minLength: dates =>
           dates.filter(({ start, end }) => start && end).length > 0
       },

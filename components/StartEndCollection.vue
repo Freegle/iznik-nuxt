@@ -19,7 +19,6 @@
 </style>
 
 <script>
-// TODO NS Validation - end date > start date, no stupidly long events (3 days?), no overlapping dates, only one blank slot.
 import StartEndDate from '~/components/StartEndDate'
 
 export default {

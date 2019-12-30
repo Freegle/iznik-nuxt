@@ -77,7 +77,6 @@ export default {
     },
 
     async send() {
-      // TODO NS MINOR Validation rather than this if.
       if (this.groupid && this.reason && this.comments) {
         const chatid = await this.$store.dispatch('chats/openChatToMods', {
           groupid: this.groupid

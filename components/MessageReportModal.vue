@@ -47,7 +47,6 @@ export default {
       this.showModal = false
     },
     async report() {
-      // TODO MINOR NS Use validation
       if (this.reason) {
         const chatid = await this.$store.dispatch('chats/openChatToMods', {
           groupid: this.message.groups[0].groupid
