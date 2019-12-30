@@ -441,6 +441,7 @@ export default {
       setTimeout(() => {
         let body = document.getElementsByTagName("body")[0];
         body.style.minHeight = ''
+        body.style.overflowY = ''
       }, 500)
 
       // Callback Event
@@ -460,8 +461,8 @@ export default {
       // - scroll this input to the top
       let body = document.getElementsByTagName("body")[0];
       body.style.minHeight = '200vh'
-      console.log("Old scroll", this.$refs.input.scrollTop)
       this.$refs.input.scrollTop = 0
+      body.style.overflowY = 'hidden'
 
       // Force the list to show.
       this.showList = true
