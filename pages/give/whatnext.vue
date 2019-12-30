@@ -44,7 +44,6 @@
         <b-col cols="0" md="3" />
         <b-col cols="12" md="6" class="text-center mt-4">
           <nuxt-link to="/">
-            <!-- TODO DESIGN MINOR This button is centred correctly w.r.t. the availability one above.  See also find/whatnext. -->
             <b-btn variant="white" size="lg">
               Continue to Home Page <v-icon name="angle-double-right" />
             </b-btn>
