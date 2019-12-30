@@ -364,7 +364,7 @@
 
 <script>
 // TODO DESIGN This layout is staid table nonsense.  Surely we can make it more appealing?
-// TODO NS Don't allow submission before image upload complete.
+// TODO EH Don't allow submission before image upload complete.
 // TODO MINOR We used to have an "apply by" date. It's not clear we need this, so no urgency in re-adding it.
 import cloneDeep from 'lodash.clonedeep'
 import { validationMixin } from 'vuelidate'

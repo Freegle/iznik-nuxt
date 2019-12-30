@@ -34,7 +34,7 @@
       </div>
     </div>
     <div>
-      <!-- TODO Hide button if only one date present -->
+      <!-- TODO EH Hide button if only one date present -->
       <b-btn variant="white" size="sm" @click="$emit('remove')">
         <v-icon name="trash-alt" title="Delete this date" aria-hidden="true" />
         <span class="delete__label">Remove</span>

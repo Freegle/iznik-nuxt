@@ -17,8 +17,6 @@
   </div>
 </template>
 <script>
-// TODO Handle invalid id.  Ditto in Volunteer Ops.
-// TODO Handle deleted events, which return an error of 3 on the fetch.  Ditto volunteer ops.
 import NoticeMessage from '../../components/NoticeMessage'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
