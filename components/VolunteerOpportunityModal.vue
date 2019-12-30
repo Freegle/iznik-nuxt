@@ -364,8 +364,6 @@
 
 <script>
 // TODO DESIGN This layout is staid table nonsense.  Surely we can make it more appealing?
-// TODO NS Add some form validation using a plugin - see https://bootstrap-vue.js.org/docs/reference/validation/.  Need
-// title, description, location as mandatory.
 // TODO NS Don't allow submission before image upload complete.
 // TODO MINOR We used to have an "apply by" date. It's not clear we need this, so no urgency in re-adding it.
 import cloneDeep from 'lodash.clonedeep'
