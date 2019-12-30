@@ -224,7 +224,7 @@
             <b-form-invalid-feedback class="mb-3">
               Please add at least one date
             </b-form-invalid-feedback>
-            <StartEndCollection v-if="eventEdit.dates" v-model="eventEdit.dates" add-date-if-empty required />
+            <StartEndCollection v-if="eventEdit.dates" v-model="eventEdit.dates" required />
           </b-form-group>
           <b-form-group
             ref="eventEdit__contactname"
