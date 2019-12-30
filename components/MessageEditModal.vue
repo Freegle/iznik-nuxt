@@ -72,10 +72,10 @@
           <b-btn variant="primary" class="mr-auto" @click="photoAdd">
             <v-icon name="camera" />&nbsp;Add photo
           </b-btn>
-          <b-button variant="white" @click="cancel">
+          <b-button variant="white" :disabled="uploadingPhoto" @click="cancel">
             Cancel
           </b-button>
-          <b-button variant="success" :disabled="saving" @click="save">
+          <b-button variant="success" :disabled="saving || uploadingPhoto" @click="save">
             <v-icon v-if="saving" name="sync" class="fa-spin" />
             <v-icon v-else name="save" />
             Save
@@ -117,6 +117,9 @@ export default {
     }
   },
   computed: {
+    uploadingPhoto() {
+      return this.$store.getters['compose/getUploading']
+    },
     placeholder() {
       return this.message && this.message.type === 'Offer'
         ? 'Please give a few details if possible, e.g. colour, condition, size etc.'

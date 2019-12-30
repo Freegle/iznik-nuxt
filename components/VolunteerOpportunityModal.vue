@@ -308,22 +308,22 @@
     </template>
     <template slot="modal-footer" slot-scope="{ ok, cancel }">
       <div v-if="volunteering.canmodify" class="w-100">
-        <b-button v-if="!editing" variant="white" class="float-left" @click="editing = true">
+        <b-button v-if="!editing" variant="white" class="float-left" :disabled="uploadingPhoto" @click="editing = true">
           <v-icon name="pen" />
           Edit
         </b-button>
-        <b-button variant="white" class="float-left ml-1" @click="deleteIt">
+        <b-button variant="white" class="float-left ml-1" :disabled="uploadingPhoto" @click="deleteIt">
           <v-icon name="trash-alt" />
           Delete
         </b-button>
       </div>
-      <b-button v-if="!editing" variant="white" class="float-right" @click="cancel">
+      <b-button v-if="!editing" variant="white" class="float-right" :disabled="uploadingPhoto" @click="cancel">
         Close
       </b-button>
-      <b-button v-if="editing" variant="white" class="float-right" @click="dontSave">
+      <b-button v-if="editing" variant="white" class="float-right" :disabled="uploadingPhoto" @click="dontSave">
         Cancel
       </b-button>
-      <b-button v-if="editing" variant="success" class="float-right" @click="saveIt">
+      <b-button v-if="editing" variant="success" class="float-right" :disabled="uploadingPhoto" @click="saveIt">
         <v-icon v-if="saving" name="sync" class="fa-spin" />
         <v-icon v-else name="save" />
         <span v-if="volunteering.id">Save Changes</span>
@@ -364,7 +364,6 @@
 
 <script>
 // TODO DESIGN This layout is staid table nonsense.  Surely we can make it more appealing?
-// TODO EH Don't allow submission before image upload complete.
 // TODO MINOR We used to have an "apply by" date. It's not clear we need this, so no urgency in re-adding it.
 import cloneDeep from 'lodash.clonedeep'
 import { validationMixin } from 'vuelidate'
@@ -436,6 +435,9 @@ export default {
   },
   data: initialData,
   computed: {
+    uploadingPhoto() {
+      return this.$store.getters['compose/getUploading']
+    },
     isExisting() {
       return Boolean(this.volunteering.id)
     },
