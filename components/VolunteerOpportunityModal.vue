@@ -247,7 +247,7 @@
           </b-form-group>
           <b-form-group label="When is it?">
             <p>You can add multiple dates if the opportunity occurs several times.</p>
-            <StartEndCollection v-if="volunteering.dates" v-model="volunteering.dates" />
+            <StartEndCollection v-if="volunteering.dates" v-model="volunteering.dates" :required="false" />
           </b-form-group>
           <b-form-group
             ref="volunteeringEdit__contactname"

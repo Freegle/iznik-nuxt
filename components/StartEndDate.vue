@@ -34,8 +34,7 @@
       </div>
     </div>
     <div>
-      <!-- TODO EH Hide button if only one date present -->
-      <b-btn variant="white" size="sm" @click="$emit('remove')">
+      <b-btn v-if="removable" variant="white" size="sm" @click="$emit('remove')">
         <v-icon name="trash-alt" title="Delete this date" aria-hidden="true" />
         <span class="delete__label">Remove</span>
       </b-btn>
@@ -54,6 +53,11 @@ export default {
     value: {
       type: Object,
       required: true
+    },
+    removable: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   }
 }
