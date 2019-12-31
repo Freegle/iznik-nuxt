@@ -160,7 +160,7 @@
             Login Failed: {{ nativeLoginError }}
           </b-alert>
           <div v-if="!signUp" class="text-center">
-            <nuxt-link to="/forgot">
+            <nuxt-link to="/forgot" @click.native="forgot">
               I forgot my password
             </nuxt-link>
             <p class="mb-0">
@@ -498,8 +498,15 @@ export default {
       e.preventDefault()
       e.stopPropagation()
     },
+
     togglePassword() {
       this.showPassword = !this.showPassword
+    },
+
+    forgot() {
+      this.hide()
+      this.$store.dispatch('auth/forceLogin', false)
+      this.$router.push('/forgot')
     }
   }
 }
