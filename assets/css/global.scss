@@ -1,7 +1,13 @@
 @import 'color-vars';
 
-// TODO MINOR It's lame to use !important to override Bootstrap CSS.  We should make our CSS more specific, e.g.
-// by taking advantage of everything being under the id=__nuxt element that gets inserted.
+/*
+  TODO MINOR - We should update the way we are overriding the bootstrap variables
+  If we would like to continue with the same style then we should follow the directions in
+  "Using custom Bootstrap SCSS" in this doc https://bootstrap-vue.js.org/docs/.  We could then
+  override variables like $success in _variables.scss.  This could be used for background colours,
+  foreground colours, border colours, breakpoints etc.
+  The other option would be to not use the bootstrap default colours and just use regular classes.
+*/
 
 $bootstrap-xs: 576px;
 $bootstrap-sm: 768px;
