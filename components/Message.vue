@@ -73,7 +73,6 @@
           <span v-if="expanded.replycount" class="float-right small text-muted mr-1">
             <v-icon name="user" class="d-inline" />&nbsp;<span class="d-inline">{{ expanded.replycount }}&nbsp;freegler<span v-if="expanded.replycount != 1">s</span>&nbsp;replied&nbsp;</span>
             <span v-if="expanded.groups && expanded.groups.length">
-              <!--        TODO DESIGN MINOR Having this on the next line is slightly messy -->
               <br>
               <b-btn
                 v-if="expanded.groups && expanded.groups.length"
@@ -122,8 +121,6 @@
           <b-col>
             <b-btn variant="success" block :disabled="replying" @click="sendReply">
               Send
-              <!--              TODO DESIGN If you've gone through sign in, and your eye is therefore elsewhere, this method of -->
-              <!--              indicating that we are sending a reply is probably too subtle to notice.-->
               <v-icon v-if="replying" name="sync" class="fa-spin" />
               <v-icon v-else name="angle-double-right" />&nbsp;
             </b-btn>
