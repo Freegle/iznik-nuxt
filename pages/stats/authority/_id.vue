@@ -361,9 +361,6 @@ import buildHead from '@/mixins/buildHead.js'
 
 Vue.use(TablePlugin)
 
-// TODO MINOR It would be nice to render this page using SSR.  But the fetching of data is very slow, which means
-// the page would take too long to load.  So either we need to speed that up radically, or we need to do something
-// cunning.
 export default {
   layout: 'empty',
   components: {
@@ -645,7 +642,6 @@ export default {
       let groupcount = 0
       const stats = []
 
-      // TODO MINOR Change this to use a computed property.  Then reference in head() and check SSR works.
       const authority = store.getters['authorities/get'](id)
       const start = this.$dayjs(this.startDate).format('YYYY-MM-DD')
       const end = this.$dayjs(this.endDate).format('YYYY-MM-DD')

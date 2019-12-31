@@ -297,7 +297,6 @@ module.exports = {
 
     extend(config, ctx) {
       if (process.env.NODE_ENV !== 'production') {
-        // TODO NS Did you add this or did I pick it up from somewhere?  Do you know why we do this?  Comment please.
         config.devtool = ctx.isClient ? 'eval-source-map' : 'inline-source-map'
       } else {
         // If we put them as files then we don't increase the bundle size.
@@ -374,7 +373,6 @@ module.exports = {
 
   sentry: {
     dsn: process.env.SENTRY_DSN,
-    // TODO MINOR Disabled publishRelease as causing build errors I don't understand.
     publishRelease: false,
     clientIntegrations: function(integrations) {
       // Don't include breadcrumbs as this makes POSTs too large, and they fail.

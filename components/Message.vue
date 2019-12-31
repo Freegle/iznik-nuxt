@@ -184,7 +184,6 @@ export default {
     NoticeMessage
   },
   props: {
-    // TODO MINOR We've moved away from individual props like this - should use a message prop.
     id: {
       type: Number,
       default: 0

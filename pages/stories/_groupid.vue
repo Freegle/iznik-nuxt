@@ -113,8 +113,6 @@ export default {
     }
 
     return {
-      // TODO MINOR In several places we return info from asyncData for use in head() for SSR.  This works, but feels
-      // wrong.
       asyncGroupid: params.groupid
     }
   },

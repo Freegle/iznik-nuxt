@@ -638,7 +638,6 @@ export default {
         force: true
       })
 
-      // TODO MINOR This use of getters is wrong; me should be a computed property.
       const me = this.$store.getters['auth/user']
       this.me = me
     },
@@ -694,7 +693,6 @@ export default {
         })
 
         if (data && data.ret === 10) {
-          // TODO MINOR Get rid of this magic number.
           this.$refs.emailconfirm.show()
         }
       }
