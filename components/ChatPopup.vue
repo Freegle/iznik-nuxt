@@ -212,8 +212,6 @@ const ProfileModal = () => import('./ProfileModal')
 const AvailabilityModal = () => import('~/components/AvailabilityModal')
 const AddressModal = () => import('~/components/AddressModal')
 
-// TODO DESIGN The maximise icon from font awesome is not obvious.
-
 export default {
   components: {
     InfiniteLoading,

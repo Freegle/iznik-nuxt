@@ -227,7 +227,6 @@
 }
 </style>
 <script>
-// TODO MINOR Popup confirm first time you use Nudge, so you know what you're doing.
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import InfiniteLoading from 'vue-infinite-loading'
@@ -406,7 +405,6 @@ export default {
           chatid: this.id
         })
 
-        // TODO Errors seen on mobile with .chatContent not found, so use a timer hack rather than nextTick.
         setTimeout(() => {
           const container = this.$el.querySelector('.chatContent')
           if (container) {
@@ -603,9 +601,6 @@ export default {
       })
     },
     async nudge() {
-      // TODO MINOR Prevent nudges that are too frequent, or come too soon after a message.  I've had one member
-      // who always sends me a nudge immediately after sending a message, either deliberately or otherwise.  Pop up
-      // a "Come on, give 'em a chance" modal.
       await this.$store.dispatch('chatmessages/nudge', {
         roomid: this.id
       })
