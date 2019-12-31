@@ -37,9 +37,6 @@ import { gmapApi } from 'vue2-google-maps'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 
-// TODO MINOR Add place search box.
-// TODO MINOR Add loading indicator rather than showing a map.  Search Crunching.
-
 export default {
   components: {},
   mixins: [loginOptional, buildHead],

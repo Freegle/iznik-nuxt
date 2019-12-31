@@ -669,7 +669,6 @@ export default {
 
         // If there is only one group in the area we're looking at, or the group is entirely contained within the
         // area, then show it irrespective of activity otherwise it looks silly.
-        // TODO MINOR Really we should be checking if all the groups are low activity and then showing them all.
         if (avpermonth > 1 || authority.groups.length === 1 || overlap === 1) {
           groupcount++
 
