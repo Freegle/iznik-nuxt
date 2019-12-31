@@ -372,8 +372,6 @@ export default {
           //
           // Setting the reply text here will get persisted to the store.  Once we log in and return to the message
           // page, then we will find this in the store and trigger the send of the reply.
-          // TODO NS The store is persisted asynchronously.  Probably it will have happened before the signin completes,
-          // but we don't actually guarantee that.  Nick, is this fixed by your change to persist on page destroy?
           await this.$store.dispatch('reply/set', {
             replyTo: this.id,
             replyMessage: this.reply
