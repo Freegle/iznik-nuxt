@@ -106,7 +106,6 @@ import { TablePlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 Vue.use(TablePlugin)
 
-// TODO ACCESSIBILITY This isn't accessible at all, is it?
 export default {
   props: {
     thisuid: {
