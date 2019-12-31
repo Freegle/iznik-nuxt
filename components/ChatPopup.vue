@@ -213,7 +213,6 @@ const AvailabilityModal = () => import('~/components/AvailabilityModal')
 const AddressModal = () => import('~/components/AddressModal')
 
 // TODO DESIGN The maximise icon from font awesome is not obvious.
-// TODO MINOR This has a lot of code overlap with ChatPane.  Shame on me.
 
 export default {
   components: {

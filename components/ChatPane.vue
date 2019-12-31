@@ -228,9 +228,6 @@
 </style>
 <script>
 // TODO MINOR Popup confirm first time you use Nudge, so you know what you're doing.
-// TODO DESIGN We have a spinner at the top for our upwards infinite scroll.  But this looks messy when we load a
-// short chat, because we see the messages appear below the spinner and then move upwards once the infinite scroll
-// completes.
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import InfiniteLoading from 'vue-infinite-loading'
@@ -517,9 +514,6 @@ export default {
       this.lastFetched = new Date()
 
       // Scroll to the bottom so we can see it.
-      // TODO DESIGN This method, here and in ChatPopup doesn't work reliably.  If you add an image which will cause
-      // further scroll, then we can called before the image has loaded properly.  We might need to add a placeholder
-      // based on the dimensions of the image (which we know at the point we uploaded it).
       this.$nextTick(() => {
         const container = this.$el.querySelector('.chatContent')
         container.scrollTop = container.scrollHeight
