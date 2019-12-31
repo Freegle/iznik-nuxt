@@ -118,9 +118,6 @@ export default {
 
     showEventModal() {
       if (this.me) {
-        // TODO MINOR If we have a groupid but they're not a member, which can happen for
-        // people who are logged out or just get sent to the page, then we ought to sign them up.  Or we should
-        // provide a way for people to select and join a group that they're not a member of.  Same for events.
         this.$refs.volunteermodal.show()
       } else {
         this.$store.dispatch('auth/forceLogin', true)

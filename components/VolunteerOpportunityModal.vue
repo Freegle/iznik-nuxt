@@ -363,7 +363,6 @@
 </style>
 
 <script>
-// TODO MINOR We used to have an "apply by" date. It's not clear we need this, so no urgency in re-adding it.
 import cloneDeep from 'lodash.clonedeep'
 import { validationMixin } from 'vuelidate'
 import { maxLength, required } from 'vuelidate/lib/validators'
