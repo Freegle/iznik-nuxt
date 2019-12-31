@@ -147,7 +147,6 @@
 
 <script>
 // TODO MINOR Attach to thread
-// TODO DESIGN Some indication of newly added entries
 import NewsReportModal from './NewsReportModal'
 import twem from '~/assets/js/twem'
 
@@ -333,9 +332,6 @@ export default {
       if (this.threadcomment) {
         // Encode up any emojis.
         const msg = twem.untwem(this.threadcomment)
-
-        // TODO MINOR This is sluggish.  Can we fake up the reply in the store in advance, or have some other visual indicator?
-        // Same applies to NewsReply.
         await this.$store.dispatch('newsfeed/send', {
           message: msg,
           replyto: this.replyingTo,
