@@ -478,9 +478,11 @@ const AboutMeModal = () => import('~/components/AboutMeModal')
 const ChatPopups = () => import('~/components/ChatPopups')
 const Notification = () => import('~/components/Notification')
 const NchanSubscriber = require('nchan')
+const InfiniteLoading = () => import('vue-infinite-loading')
 
 export default {
   components: {
+    InfiniteLoading,
     ChatPopups,
     Notification,
     AboutMeModal,

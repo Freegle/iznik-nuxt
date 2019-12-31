@@ -21,7 +21,7 @@
             v-focus
             class="form-control"
             placeholder="Enter a location"
-            country="GB"
+            :options="gb"
             :types="['(regions)']"
             @place_changed="getAddressData"
           />
@@ -139,10 +139,12 @@
 </style>
 <script>
 // TODO MINOR This loads a bit clunkily.
+import InfiniteLoading from 'vue-infinite-loading'
 import GroupMarker from '~/components/GroupMarker.vue'
 
 export default {
   components: {
+    InfiniteLoading,
     GroupMarker
   },
   props: {
@@ -157,7 +159,12 @@ export default {
       zoom: 5,
       bounds: null,
       showList: 0,
-      distance: 1000
+      distance: 1000,
+      gb: {
+        componentRestrictions: {
+          country: ['gb']
+        }
+      }
     }
   },
   computed: {

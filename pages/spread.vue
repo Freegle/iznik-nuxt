@@ -48,19 +48,26 @@
           <p>
             We'll send them an email invitation. It will show your name and email.
           </p>
-          <b-input-group>
-            <b-input
-              v-model="invitemail"
-              type="email"
-              size="lg"
-              placeholder="Enter their email address"
-            />
-            <b-input-group-append>
-              <b-button variant="success" size="lg" @click="invite">
-                <v-icon name="envelope" />&nbsp;Invite a friend
-              </b-button>
-            </b-input-group-append>
-          </b-input-group>
+          <validating-form>
+            <b-input-group>
+              <validating-form-input
+                v-model.trim="invitemail"
+                type="email"
+                size="lg"
+                placeholder="Enter their email address"
+                :validation="$v.invitemail"
+                :validation-enabled="validationEnabled"
+                :validation-messages="{
+                  required: 'That isn\'t a valid email address - can you check?'
+                }"
+              />
+              <b-input-group-append>
+                <b-button v-if="!validationEnabled || !$v.invitemail.$invalid" variant="success" size="lg" @click="invite">
+                  <v-icon name="envelope" />&nbsp;Invite a friend
+                </b-button>
+              </b-input-group-append>
+            </b-input-group>
+          </validating-form>
           <span class="small text-muted">
             By using this you confirm that you have their consent.  That's a PECR/GDPR thing.
           </span>
@@ -120,17 +127,21 @@
 }
 </style>
 <script>
+import { required, email } from 'vuelidate/lib/validators'
+import { validationMixin } from 'vuelidate'
 import PosterModal from '../components/PosterModal'
 import buildHead from '../mixins/buildHead'
+import ValidatingForm from '../components/ValidatingForm'
+import ValidatingFormInput from '../components/ValidatingFormInput'
+import validationHelpers from '@/mixins/validationHelpers'
 import loginRequired from '@/mixins/loginRequired.js'
 
 // TODO MINOR Record who downloads a poster.  Then we can chase them later to find out if they put them up.
-// TODO NS Validation on email for invitation.
 // TODO DESIGN This page is a bit of a guddle.  Various different things on it, feels cluttered.
 
 export default {
-  components: { PosterModal },
-  mixins: [loginRequired, buildHead],
+  components: { ValidatingForm, ValidatingFormInput, PosterModal },
+  mixins: [loginRequired, buildHead, validationMixin, validationHelpers],
   data: function() {
     return {
       invitemail: null
@@ -159,6 +170,12 @@ export default {
 
         this.invitemail = null
       }
+    }
+  },
+  validations: {
+    invitemail: {
+      required,
+      email
     }
   },
   head() {

@@ -233,6 +233,7 @@
 // completes.
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
+import InfiniteLoading from 'vue-infinite-loading'
 import ChatBlockModal from './ChatBlockModal'
 import ChatHideModal from './ChatHideModal'
 import twem from '~/assets/js/twem'
@@ -251,6 +252,7 @@ const ChatReportModal = () => import('~/components/ChatReportModal')
 
 export default {
   components: {
+    InfiniteLoading,
     Ratings,
     ChatMessage,
     OurFilePond,

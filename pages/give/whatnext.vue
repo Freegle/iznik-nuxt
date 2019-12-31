@@ -23,46 +23,27 @@
           </p>
         </b-col>
       </b-row>
-      <b-row class="text-center d-block d-md-none">
-        <b-col cols="0" md="3" />
-        <b-col cols="12" md="3" class="mt-2">
-          <b-btn size="lg" variant="info" to="/give/whatisit">
+      <b-row class="text-center">
+        <b-col cols="12" class="mt-2">
+          <b-btn size="lg" variant="success" to="/give/whatisit">
             <v-icon name="gift" />&nbsp;Give something else
           </b-btn>
         </b-col>
-        <b-col cols="12" md="3" class="mt-2">
-          <b-btn variant="white" size="lg" @click="availability">
-            <v-icon name="calendar-alt" /> Edit Availability
-          </b-btn>
-        </b-col>
-        <b-col cols="12" md="3" class="mt-2">
+        <b-col cols="12" class="mt-2">
           <b-btn size="lg" variant="primary" to="/find/search">
             <v-icon name="search" />&nbsp;Find something
           </b-btn>
         </b-col>
-      </b-row>
-      <b-row class="text-center d-none d-md-block">
-        <b-col cols="12" md="6" offset-md="3" class="mt-2">
-          <nuxt-link to="/give/whatisit" class="float-left">
-            <b-btn size="lg" variant="info">
-              <v-icon name="gift" />&nbsp;Give something else
-            </b-btn>
-          </nuxt-link>
+        <b-col cols="12" class="mt-2">
           <b-btn variant="white" size="lg" @click="availability">
             <v-icon name="calendar-alt" /> Edit Availability
           </b-btn>
-          <nuxt-link to="/find/search" class="float-right">
-            <b-btn size="lg" variant="primary">
-              <v-icon name="search" />&nbsp;Find something
-            </b-btn>
-          </nuxt-link>
         </b-col>
       </b-row>
       <b-row>
         <b-col cols="0" md="3" />
         <b-col cols="12" md="6" class="text-center mt-4">
           <nuxt-link to="/">
-            <!-- TODO DESIGN MINOR This button is centred correctly w.r.t. the availability one above.  See also find/whatnext. -->
             <b-btn variant="white" size="lg">
               Continue to Home Page <v-icon name="angle-double-right" />
             </b-btn>

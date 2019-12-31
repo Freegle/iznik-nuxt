@@ -2,16 +2,14 @@ import sitemap from './utils/sitemap.js'
 
 const pkg = require('./package')
 const FACEBOOK_APPID = '134980666550322'
-
-// TODO EH In the old code we look for and record the src parameter as a way of recording where traffic comes from.
-// How shall we do that now?
+const SENTRY_DSN = 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170'
 
 require('dotenv').config()
 
 // API is the constant the code uses.
 let API = '/api'
 if (process.env.NUXT_BUILD_TYPE === 'fdapp') {
-  API = 'https://iznik.ilovefreegle.org/api'
+  API = 'https://fdapidbg.ilovefreegle.org/api'
 }
 
 // This is where the user site is.
@@ -140,9 +138,6 @@ const config = {
   */
   css: ['@/assets/css/global.scss'],
 
-  // TODO NS We have too many plugins.  Initially I thought the only way to pull in a standard bit of Vue code
-  // was to create a plugin for it.  But that is flat wrong.  Pulling them in as plugins will increase the
-  // page load size, I expect, so we should take a pass through and see if any of them should be removed.
   plugins: [
     '~/plugins/polyfills',
 
@@ -173,19 +168,11 @@ const config = {
     { src: '~plugins/visibility.js', ssr: false },
     { src: '~plugins/error-toasts.js', ssr: false },
     { src: '~plugins/vuex-persistedstate', ssr: false },
-    { src: '~plugins/vue-drag-drop.js', ssr: false },
-    { src: '~plugins/vue-draggable-resizable.js', ssr: false },
-    { src: '~plugins/vue-color', ssr: false },
-    { src: '~plugins/vue-infinite-loading.js', ssr: false },
     { src: '~plugins/vue2-google-maps.js', ssr: false },
-    { src: '~plugins/vue-debounce', ssr: false },
-    { src: '~plugins/vue-highlight-words', ssr: false },
     { src: '~plugins/vue-awesome.js', ssr: false },
     { src: '~plugins/vue-read-more', ssr: false },
     { src: '~plugins/facebook-sdk', ssr: false },
     { src: '~plugins/google-sdk', ssr: false },
-    { src: '~plugins/vue-js-toggle-button', ssr: false },
-    { src: '~plugins/vue2-datepicker', ssr: false },
     { src: '~plugins/vue-social-sharing', ssr: false },
     { src: '~plugins/vue-lazy-youtube-video', ssr: false },
     { src: '~plugins/app-init-push.js', mode: 'client' },
@@ -385,11 +372,19 @@ const config = {
   },
 
   sentry: {
-    dsn: 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170',
-    publishRelease: true,
+    dsn: process.env.SENTRY_DSN,
+    // TODO MINOR Disabled publishRelease as causing build errors I don't understand.
+    publishRelease: false,
+    clientIntegrations: function(integrations) {
+      // Don't include breadcrumbs as this makes POSTs too large, and they fail.
+      return integrations.filter(integration => {
+        return integration.name !== 'Breadcrumbs'
+      })
+    }
   },
 
   env: {
+    // TODO MINOR Why do we have both API and IZNIK_API?  Confusing.
     API: API,
     IZNIK_API: IZNIK_API,
     CHAT_HOST: CHAT_HOST,
@@ -402,7 +397,8 @@ const config = {
     USER_SITE: USER_SITE,
     IMAGE_SITE: IMAGE_SITE,
     IS_APP: false,
-    APP_BUILD_DATE: new Date().toDateString()
+    APP_BUILD_DATE: new Date().toDateString(),
+    SENTRY_DSN: SENTRY_DSN
   },
 
   vue: {
@@ -412,7 +408,7 @@ const config = {
   },
 
   router: {
-    middleware: ['keylogin']
+    middleware: ['keylogin', 'src']
   },
 
   sitemap: {

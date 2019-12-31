@@ -27,6 +27,7 @@ export default class BaseAPI {
     // HTTP errors real errors.
     // data.ret holds the server error.
     // - 1 means not logged in, and that's ok.
+    // - POSTs to session can return errors we want to handle.
     // - 999 can happen if people double-click, and we should just quietly drop it because the first click will
     //   probably do the right thing.
     // - otherwise pop up an error.
@@ -34,6 +35,7 @@ export default class BaseAPI {
       status !== 200 ||
       (data.ret !== 0 &&
         !(data.ret === 1 && data.status === 'Not logged in') &&
+        !(path === '/session' && method === 'POST') &&
         data.ret !== 999)
     ) {
       const message = [

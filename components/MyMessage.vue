@@ -194,7 +194,7 @@ img.attachment {
 <script>
 // TODO DESIGN This is better than the old version, but it's still not quite right, in terms of alignment and sizes
 // of things.
-// TODO When we click to expand, the visible text may be off the top or bottom of the screen.  Need to make it visible.
+// TODO EH When we click to expand, the visible text may be off the top or bottom of the screen.  Need to make it visible.
 // TODO MINOR There's a window we've seen in the past where the autorepost hasn't happened yet.  Should say 'soon' if autorepost time is in the past.
 import ResizeText from 'vue-resize-text'
 
@@ -348,12 +348,41 @@ export default {
       this.$refs.outcomeModal.show(type)
     },
     share() {
-      this.$refs.shareModal.show()
+      if (process.env.IS_APP) { // CC..
+        const href = 'https://www.ilovefreegle.org/message/' + this.message.id + '?src=mobileshare'
+        const subject = this.message.subject
+        // https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin
+        const options = {
+          message: "I saw this on Freegle - interested?\n\n", // not supported on some apps (Facebook, Instagram)
+          subject: 'Freegle post: ' + subject, // for email
+          //files: ['', ''], // an array of filenames either locally or remotely
+          url: href,
+          //chooserTitle: 'Pick an app' // Android only, you can override the default share sheet title
+        }
+
+        const onSuccess = function (result) {
+          console.log("Share completed? " + result.completed)   // On Android apps mostly return false even while it's true
+          console.log("Shared to app: " + result.app)           // On Android result.app is currently empty. On iOS it's empty when sharing is cancelled (result.completed=false)
+          //self.$('.js-fbshare').fadeOut('slow')
+          //Iznik.ABTestAction('messagebutton', 'Mobile Share')
+        }
+
+        const onError = function (msg) {
+          console.log("Sharing failed with message: " + msg)
+        }
+
+        window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError)
+      } else {
+        this.$refs.shareModal.show()
+      }
     },
     edit() {
       this.$refs.editModal.show()
     },
     async repost() {
+      // Remove any partially composed messages we currently have, because they'll be confusing.
+      await this.$store.dispatch('compose/clearMessages')
+
       // Add this message to the compose store so that it will show up on the compose page.
       await this.$store.dispatch('compose/setMessage', {
         id: this.message.id,

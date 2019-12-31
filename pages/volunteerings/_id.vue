@@ -38,10 +38,10 @@
 </template>
 
 <script>
+import InfiniteLoading from 'vue-infinite-loading'
 import loginOptional from '@/mixins/loginOptional.js'
 import createGroupRoute from '@/mixins/createGroupRoute'
 import buildHead from '@/mixins/buildHead.js'
-
 const GroupSelect = () => import('~/components/GroupSelect')
 const VolunteerOpportunity = () =>
   import('~/components/VolunteerOpportunity.vue')
@@ -51,6 +51,7 @@ const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
+    InfiniteLoading,
     GroupSelect,
     VolunteerOpportunity,
     VolunteerOpportunityModal,

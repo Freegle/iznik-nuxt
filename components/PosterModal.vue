@@ -34,7 +34,6 @@
 </template>
 
 <script>
-// TODO NS Validation - name required, description not.
 import DraggableMap from './DraggableMap'
 const NoticeMessage = () => import('~/components/NoticeMessage')
 
@@ -59,6 +58,7 @@ export default {
       this.showModal = false
     },
     async submit() {
+      // TODO NS MINOR Validation - name required, description not.
       if (this.name) {
         const cent = this.$refs.map.getCenter()
 

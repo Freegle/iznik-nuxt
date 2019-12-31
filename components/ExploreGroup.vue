@@ -40,11 +40,13 @@
   </div>
 </template>
 <script>
+import InfiniteLoading from 'vue-infinite-loading'
 const groupHeader = () => import('~/components/GroupHeader.vue')
 const Message = () => import('~/components/Message.vue')
 
 export default {
   components: {
+    InfiniteLoading,
     groupHeader,
     Message
   },

@@ -1,4 +1,3 @@
-// Do Yahoo login in mobile app
 // Do mobile app Yahoo login using auth popup handled within app using cordova-plugin-inappbrowser
 
 function extractQueryStringParams(url) {
@@ -11,7 +10,8 @@ function extractQueryStringParams(url) {
     const search = /([^&=]+)=?([^&]*)/g
     const decode = s => { return decodeURIComponent(s.replace(pl, " ")) }
     urlParams = {}
-    while (let match = search.exec(qs)) {
+    let match
+    while ((match = search.exec(qs))) {
       urlParams[decode(match[1])] = decode(match[2])
     }
   }
@@ -21,50 +21,61 @@ function extractQueryStringParams(url) {
 let tryingYahooLogin = false
 
 export function appYahooLogin(yauthurl) {
-  console.log("Yahoo authenticate window open")
-  console.log("yahooAuth: " + yauthurl)
+  console.log('appYahooLogin: ' + yauthurl)
 
   let authGiven = false
 
   const authWindow = cordova.InAppBrowser.open(yauthurl, '_blank', 'location=yes,menubar=yes')
   authWindow.addEventListener('loadstart', e => {
-    var url = e.originalEvent.url
-    console.log("yloadstart: " + url)
+    console.log('yloadstart: ', e)
+    if (e.url) {
+      console.log('yloadstart url: ', e.url)
+    }
 
-    // Catch redirect after auth back to ilovefreegle
-    if (url.indexOf("https://www.ilovefreegle.org/") === 0) {
-      authWindow.close()
-      var urlParams = extractQueryStringParams(url)
-      if (urlParams) {
-        authGiven = true
-        urlParams.yahoologin = true
-        console.log(urlParams)
+    if (e && e.originalEvent && e.originalEvent.url) {
+      const url = e.originalEvent.url
+      console.log('yloadstart originalEvent.url: ' + url)
 
-        // Try logging in again at FD
-        console.log("Got URL params", urlParams)
-        /* $.ajax({
-          url: API + 'session',
-          type: 'POST',
-          data: urlParams,
-          success: function (response) {
-            console.log("Session login returned", response);
-            if (response.ret === 0) {
-              trigger('loggedIn', response)
-              Router.mobileReload('/')  // CC
-            } else {
-              $('.js-signin-msg').text("Yahoo log in failed " + response.ret)
-              $('.js-signin-msg').show()
-              trigger('loginFailed', response)
+      // Catch redirect after auth back to ilovefreegle
+      if (
+        url.indexOf('https://www.ilovefreegle.org/') === 0 ||
+        url.indexOf('https://iznik.ilovefreegle.org/') === 0 ||
+        url.indexOf('https://fdnuxt.ilovefreegle.org/') === 0
+      ) {
+        authWindow.close()
+        const urlParams = extractQueryStringParams(url)
+        if (urlParams) {
+          authGiven = true
+          urlParams.yahoologin = true
+          console.log(urlParams)
+
+          // Try logging in again at FD
+          console.log('Got URL params', urlParams)
+          /* $.ajax({
+            url: API + 'session',
+            type: 'POST',
+            data: urlParams,
+            success: function (response) {
+              console.log("Session login returned", response);
+              if (response.ret === 0) {
+                trigger('loggedIn', response)
+                Router.mobileReload('/')  // CC
+              } else {
+                $('.js-signin-msg').text("Yahoo log in failed " + response.ret)
+                $('.js-signin-msg').show()
+                trigger('loginFailed', response)
+              }
             }
-          }
-        }) */
+          }) */
+        }
       }
     }
   })
 
   authWindow.addEventListener('exit', e => {
+    console.log('Yahoo authWindow exit')
     if (!authGiven) {
-      console.log("Yahoo permission not given or failed")
+      console.log('Yahoo permission not given or failed')
       // $('.js-signin-msg').text("Yahoo permission not given or failed")
       // $('.js-signin-msg').show()
     }

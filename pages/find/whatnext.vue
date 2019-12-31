@@ -18,39 +18,21 @@
         </p>
       </b-col>
     </b-row>
-    <b-row class="text-center d-block d-md-none">
-      <b-col cols="0" md="3" />
-      <b-col cols="12" md="3" class="mt-2">
-        <b-btn size="lg" variant="info" to="/give/whatisit">
-          <v-icon name="gift" />&nbsp;Give something
+    <b-row class="text-center">
+      <b-col cols="12" class="mt-2">
+        <b-btn size="lg" variant="success" to="/find/search">
+          <v-icon name="gift" />&nbsp;Find something else
         </b-btn>
       </b-col>
-      <b-col cols="12" md="3" class="mt-2">
+      <b-col cols="12" class="mt-2">
+        <b-btn size="lg" variant="primary" to="/give/whatisit">
+          <v-icon name="search" />&nbsp;Give something
+        </b-btn>
+      </b-col>
+      <b-col cols="12" class="mt-2">
         <b-btn variant="white" size="lg" @click="availability">
           <v-icon name="calendar-alt" /> Edit Availability
         </b-btn>
-      </b-col>
-      <b-col cols="12" md="3" class="mt-2">
-        <b-btn size="lg" variant="primary" to="/find/search">
-          <v-icon name="search" />&nbsp;Find something else
-        </b-btn>
-      </b-col>
-    </b-row>
-    <b-row class="text-center d-none d-md-block">
-      <b-col cols="12" md="6" offset-md="3" class="mt-2">
-        <nuxt-link to="/give/whatisit" class="float-left">
-          <b-btn size="lg" variant="info">
-            <v-icon name="gift" />&nbsp;Give something
-          </b-btn>
-        </nuxt-link>
-        <b-btn variant="white" size="lg" @click="availability">
-          <v-icon name="calendar-alt" /> Edit Availability
-        </b-btn>
-        <nuxt-link to="/find/search" class="float-right">
-          <b-btn size="lg" variant="primary">
-            <v-icon name="search" />&nbsp;Find something else
-          </b-btn>
-        </nuxt-link>
       </b-col>
     </b-row>
     <b-row>

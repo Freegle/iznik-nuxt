@@ -29,12 +29,6 @@
             <v-icon name="plus" />&nbsp;Add another item
           </b-btn>
         </div>
-        <b-row>
-          <b-col class="text-muted small pl-0 pt-1 text-center">
-            We may show this post, but not your email address, to people who are not yet members of Freegle.
-            This helps the community grow by showing people what's happening and encouraging them to join.
-          </b-col>
-        </b-row>
         <transition name="fade">
           <b-row v-if="valid">
             <b-col cols="12" md="6" offset-md="3" class="text-center pt-2">
@@ -43,14 +37,27 @@
               </b-btn>
             </b-col>
           </b-row>
+          <b-row v-else>
+            <b-col cols="12" md="6" offset-md="3" class="text-center pt-2">
+              <NoticeMessage variant="info">
+                Please add the item name, and either a description or a photo.
+              </NoticeMessage>
+            </b-col>
+          </b-row>
         </transition>
+        <b-row>
+          <b-col class="text-muted small pl-0 pt-1 text-center">
+            We may show this post, but not your email address, to people who are not yet members of Freegle.
+            This helps the community grow by showing people what's happening and encouraging them to join.
+          </b-col>
+        </b-row>
       </b-col>
       <b-col cols="0" md="3" />
     </b-row>
   </div>
 </template>
 <script>
-// TODO NS Don't allow submission before image upload complete.  Also check that there is a postcode in case we
+// TODO EH Don't allow submission before image upload complete.  Also check that there is a postcode in case we
 // loaded this page directly, by passing the previous one.
 
 import loginOptional from '@/mixins/loginOptional.js'

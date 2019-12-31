@@ -23,9 +23,14 @@
             <br>
           </div>{{ story.story }}
         </div>
-        <span class="text-muted small">
-          {{ story.date | timeago }} on {{ story.groupname }}
-        </span>
+        <div class="text-muted small d-flex justify-content-between">
+          <span>
+            {{ story.date | timeago }} on {{ story.groupname }}
+          </span>
+          <nuxt-link :to="'/story/' + story.id">
+            #{{ story.id }}
+          </nuxt-link>
+        </div>
       </b-card-text>
     </b-card>
     <b-modal

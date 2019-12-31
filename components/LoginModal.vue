@@ -42,6 +42,9 @@
         <notice-message v-if="socialblocked" variant="warning">
           Social sign in blocked - check your privacy settings
         </notice-message>
+        <b-alert v-if="socialLoginError" variant="danger" show>
+          Login Failed: {{ socialLoginError }}
+        </b-alert>
       </div>
       <div class="divider__wrapper">
         <div class="divider" />
@@ -146,6 +149,9 @@
               Sign up to Freegle
             </span>
           </b-btn>
+          <b-alert v-if="nativeLoginError" variant="danger" show>
+            Login Failed: {{ nativeLoginError }}
+          </b-alert>
           <div v-if="!signUp" class="text-center">
             <nuxt-link to="/forgot">
               I forgot my password
@@ -169,9 +175,6 @@
         Privacy
       </nuxt-link> for details.
     </p>
-    <b-alert v-if="loginError" variant="danger" show>
-      Login Failed: {{ loginError }}
-    </b-alert>
   </b-modal>
 </template>
 
@@ -180,10 +183,9 @@ import Vue from 'vue'
 import { LoginError } from '../api/BaseAPI'
 import { appFacebookLogin } from '../plugins/app-facebook' // CC
 import { appGoogleLogin } from '../plugins/app-google' // CC
-import { appYahooLogin } from '../plugins/app-google' // CC
+import { appYahooLogin } from '../plugins/app-yahoo' // CC
 
 const NoticeMessage = () => import('~/components/NoticeMessage')
-  
 
 export default {
   name: 'LoginModal',
@@ -200,7 +202,8 @@ export default {
       pleaseShowModal: false,
       showSignUp: false,
       forceSignIn: false,
-      loginError: null,
+      nativeLoginError: null,
+      socialLoginError: null,
       showPassword: false
     }
   },
@@ -263,7 +266,7 @@ export default {
 
   methods: {
     tryLater() {
-      this.loginError = 'Something went wrong; please try later.'
+      this.nativeLoginError = 'Something went wrong; please try later.'
     },
     show() {
       // Force reconsideration of social signin disabled.
@@ -275,7 +278,8 @@ export default {
     },
     loginNative(e) {
       const self = this
-      this.loginError = null
+      this.nativeLoginError = null
+      this.socialLoginError = null
       e.preventDefault()
       e.stopPropagation()
 
@@ -344,7 +348,7 @@ export default {
             console.log('Login failed', e)
             if (e instanceof LoginError) {
               console.log('Login error')
-              this.loginError = e.status
+              this.nativeLoginError = e.status
             } else {
               throw e // let others bubble up
             }
@@ -352,10 +356,10 @@ export default {
       }
     },
     async loginFacebook() {
-      this.loginError = null
+      this.nativeLoginError = null
+      this.socialLoginError = null
       try {
         let response = null
-
         const promise = new Promise(function (resolve, reject) { // CC
           if (process.env.IS_APP) {
             appFacebookLogin(function (ret) {
@@ -388,18 +392,18 @@ export default {
           // We are now logged in.
           self.pleaseShowModal = false
         } else {
-          this.loginError =
+          this.socialLoginError =
             'Facebook response is unexpected.  Please try later.'
         }
       } catch (e) {
-        console.log('loginFacebook exception',e)
-        this.loginError = 'Facebook login error: ' + e.message
+        this.socialLoginError = 'Facebook login error: ' + e.message
       }
     },
 
     async loginGoogle() { // CC
-      this.loginError = null
-      if (process.env.IS_APP) { // CC
+      this.nativeLoginError = null
+      this.socialLoginError = null
+      if (process.env.IS_APP) { // CC..
         let authResult = { status: 'init' }
         await new Promise(function (resolve) {
           appGoogleLogin(function (ret) {
@@ -418,10 +422,10 @@ export default {
           self.pleaseShowModal = false
         }
         else {
-          this.loginError = 'Google login error ' + authResult.status
+          this.socialLoginError = 'Google login error ' + authResult.status
         }
       }
-      else {
+      else {  // ..CC
         const params = {
           clientid: process.env.GOOGLE_CLIENT_ID,
           cookiepolicy: 'single_host_origin',
@@ -439,7 +443,7 @@ export default {
               console.log('Logged in')
               self.pleaseShowModal = false
             } else if (authResult.error) {
-              this.loginError = 'Google login failed: ' + authResult.error
+              this.socialLoginError = 'Google login failed: ' + authResult.error
             }
           },
           immediate: false,
@@ -451,39 +455,16 @@ export default {
       }
     },
 
-    async loginYahoo() { // CC
-      this.loginError = null
-      let showYahooLogin = false
-      if (process.env.IS_APP) { // CC
-        showYahooLogin = appYahooLogin
-        // fall trhough
-
-        /* let authResult = { status: 'init' }
-        await new Promise(function (resolve) {
-          appYahooLogin(function (ret) {
-            authResult = ret
-            resolve()
-          })
-        })
-        if (authResult.code) {
-          await this.$store.dispatch('auth/login', {
-            yahoologin: true
-          })
-          // We are now logged in.
-          console.log('Logged in')
-          self.pleaseShowModal = false
-        }
-        else {
-          this.loginError = 'Yahoo login error ' + authResult.status
-        } */
-      }
+    loginYahoo() {
+      this.nativeLoginError = null
+      this.socialLoginError = null
       // Sadly Yahoo doesn't support a Javascript-only OAuth flow, so far as I can tell.  So what we do is
       // post to the server, get a redirection URL from there, redirect on here to Yahoo to complete the
       // signin, and then return to a /yahoologin route.
       let match
       const pl = /\+/g // Regex for replacing addition symbol with a space
       const search = /([^&=]+)=?([^&]*)/g
-      const decode = function (s) {
+      const decode = function(s) {
         return decodeURIComponent(s.replace(pl, ' '))
       }
       const query = window.location.search.substring(1)
@@ -495,12 +476,17 @@ export default {
         urlParams[decode(match[1])] = decode(match[2])
 
       urlParams.yahoologin = true
-      urlParams.returnto = document.URL
-      urlParams.host =
-        window.location.protocol +
-        '//' +
-        window.location.hostname +
-        (window.location.port ? ':' + window.location.port : '')
+      if (process.env.IS_APP) { // CC
+        urlParams.returnto = 'https://fdnuxt.ilovefreegle.org/'
+        urlParams.host = 'https://fdnuxt.ilovefreegle.org'
+      } else {
+        urlParams.returnto = document.URL
+        urlParams.host =
+          window.location.protocol +
+          '//' +
+          window.location.hostname +
+          (window.location.port ? ':' + window.location.port : '')
+      }
 
       this.$axios
         .post(process.env.API + '/session', urlParams)
@@ -510,11 +496,13 @@ export default {
           console.log('Default Session login returned', ret)
           if (ret.redirect) {
             // We are not logged in - we need to redirect to Yahoo
-            if (showYahooLogin) {
-              showYahooLogin(ret.redirect)
+            //
+            if (process.env.IS_APP) { // CC
+              console.log('loginYahoo B')
+              appYahooLogin(ret.redirect)
               return
             }
-            //
+            console.log('loginYahoo C')
             // The URL returned by the server has its hostname in it, but perhaps we are running on a different
             // host, especially when developing.
             let url = ret.redirect
@@ -528,7 +516,7 @@ export default {
               url = url.replace(
                 re,
                 window.location.hostname +
-                (window.location.port ? ':' + window.location.port : '')
+                  (window.location.port ? ':' + window.location.port : '')
               )
             }
 

@@ -16,6 +16,7 @@
               lazy
               :src="newsfeed.story.photo.paththumb"
               class="clickme float-right ml-2"
+              @click="showPhotoModal"
             />
             {{ story }}
           </b-card-text>
@@ -41,25 +42,15 @@
         </b-btn>
       </b-col>
     </b-row>
-    <b-modal
+    <NewsPhotoModal
       v-if="newsfeed.story.photo"
-      :id="'photoModal-' + newsfeed.id"
+      :id="newsfeed.story.photo.id"
       ref="photoModal"
-      title="ChitChat Photo"
-      alt="ChitChat Photo"
-      size="lg"
-      no-stacking
-      ok-only
-    >
-      <template slot="default">
-        <b-img
-          fluid
-          rounded
-          center
-          :src="newsfeed.story.photo.path"
-        />
-      </template>
-    </b-modal>
+      :newsfeedid="newsfeed.id"
+      :src="newsfeed.story.photo.path"
+      imgtype="Story"
+      imgflag="story"
+    />
     <StoriesAddModal ref="addmodal" />
     <StoriesShareModal :story="newsfeed.story" />
   </div>
@@ -70,11 +61,13 @@ import NewsBase from '~/components/NewsBase'
 
 import NewsUserIntro from '~/components/NewsUserIntro'
 import NewsLoveComment from '~/components/NewsLoveComment'
+import NewsPhotoModal from '~/components/NewsPhotoModal'
 const StoriesAddModal = () => import('~/components/StoriesAddModal')
 const StoriesShareModal = () => import('~/components/StoriesShareModal')
 
 export default {
   components: {
+    NewsPhotoModal,
     NewsUserIntro,
     NewsLoveComment,
     StoriesAddModal,

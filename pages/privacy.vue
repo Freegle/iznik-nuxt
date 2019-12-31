@@ -3,7 +3,7 @@
   <b-col>
     <b-row class="m-0">
       <b-col cols="0" md="3" />
-      <b-col cols="12" md="6">
+      <b-col cols="12" md="6" class="bg-white">
         <h1 class="text-center">
           Privacy
         </h1>
@@ -26,7 +26,7 @@
         </p>
         <p>
           So that potential new users can see what is being offered on Freegle, we make some details of posts public,
-          i.e. the item name, approximate location, the description and any photos. No personal details are made public -
+          i.e. the item name, approximate location, the description and any photos. No personal details are made public
           unless in this information.
         </p>
         <h2>Cookies</h2>
@@ -39,11 +39,18 @@
         </p>
         <h2>Advertising</h2>
         <p>
-          We don't sell your behaviour to advertisers, but we do use advertisements to support Freegle.  We'd prefer not to,
+          We show jobs ads from <a href="http://adview.online/">AdView</a>, both on the site and in emails.
+          We'd prefer not to,
           but we don't raise enough from donations alone to keep going.
+          We pass them your IP address, but not your personal information.
         </p>
+        <h2>Sentry</h2>
         <p>
-          We use Google AdSense (on the website). For emails we use AdView. We pass them your IP address, but not your personal information.
+          When something goes wrong on the website, we log it to a third party site call
+          <a href="https://sentry.io">Sentry</a>.  They help organise the logs and make it easier for us to identify
+          and fix problems.  This <a href="https://docs.sentry.io/data-management/sensitive-data/">should not include</a>
+          any of your personal data.
+          You can read their privacy policy <a href="https://sentry.io/privacy/">here</a>.
         </p>
         <h2>Got questions?</h2>
         <p>
