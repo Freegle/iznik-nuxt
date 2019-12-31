@@ -4,7 +4,6 @@
       <b-col cols="0" md="3" class="d-none d-md-block" />
       <b-col cols="12" md="6" class="p-0 text-center">
         <div v-if="error">
-          <!--          TODO MINOR This could look prettier.-->
           <h1>Sorry, that message isn't around any more.</h1>
           <div class="bg-white">
             <p>If it was an OFFER, it's probably been TAKEN. If it was a WANTED, it's probably been RECEIVED.</p>

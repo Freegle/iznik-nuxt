@@ -268,8 +268,6 @@
 <style scoped lang="scss">
 @import 'color-vars';
 
-/*TODO DESIGN Shrink navbar on scroll? */
-
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -466,7 +464,6 @@ svg.fa-icon {
 }
 </style>
 <script>
-// TODO DESIGN Notification dropdown window isn't wide enough before it's loaded.
 // Import login modal as I've seen an issue where it's not in $refs when you click on the signin button too rapidly.
 import LoginModal from '~/components/LoginModal'
 const AboutMeModal = () => import('~/components/AboutMeModal')

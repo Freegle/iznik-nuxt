@@ -15,7 +15,6 @@
   </div>
 </template>
 <style scoped>
-/* TODO DESIGN Animate the change in value? */
 </style>
 <script>
 export default {

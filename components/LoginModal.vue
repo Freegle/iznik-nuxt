@@ -122,7 +122,7 @@
                 autocomplete="current-password"
               />
               <b-input-group-append>
-                <!-- TODO DESIGN MINOR The shadow on the input field that you get when you're focused ought really to include this append.-->
+                <!-- TODO RAHUL DESIGN MINOR The shadow on the input field that you get when you're focused ought really to include this append.-->
                 <b-button variant="white" class="transbord" title="Show password" @click="togglePassword">
                   <v-icon v-if="showPassword" title="Hide password" class="text-secondary" flip="horizontal" @click="togglePassword">
                     <v-icon name="eye" />

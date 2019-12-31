@@ -9,8 +9,6 @@ const TOAST_MESSAGE = `
   please take a screenshot and contact ${TOAST_EMAIL}
 `
 
-// TODO DESIGN Make this prettier.
-
 export default () => {
   const originalErrorHandler = Vue.config.errorHandler
   Vue.config.errorHandler = (err, vm, info, ...rest) => {

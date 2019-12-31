@@ -1,6 +1,4 @@
 <template>
-  <!-- TODO MINOR This should be a fieldset within a form -->
-
   <div class="form__element p-2 d-flex justify-content-between flex-column flex-lg-row align-items-md-end">
     <div class="d-flex flex-column flex-md-row mb-3 mb-lg-0">
       <div class="mr-0 mr-md-4 mb-3 mb-md-0 d-flex flex-column">

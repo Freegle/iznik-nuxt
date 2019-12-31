@@ -33,8 +33,6 @@
   </div>
 </template>
 <script>
-// TODO EH If you're on mobile, e.g. on Give page, and click into this, then the on screen keyboard can hide the
-// autocomplete dropdown.  So we need either to drop up instead, or scroll somehow.
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import Autocomplete from '~/components/Autocomplete'
