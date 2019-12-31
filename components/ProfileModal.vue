@@ -170,8 +170,6 @@
 <script>
 import twem from '~/assets/js/twem'
 
-// TODO DESIGN Header is messy - wallpaper should fill the whole thing; image should have a border round it with a gap.
-// TODO DESIGN The about me section needs nice big quotes round it.
 const Ratings = () => import('~/components/Ratings')
 const ReplyTime = () => import('~/components/ReplyTime')
 const ChatButton = () => import('~/components/ChatButton.vue')
