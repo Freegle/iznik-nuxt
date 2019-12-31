@@ -60,14 +60,10 @@
 
 <script>
 import buildHead from '@/mixins/buildHead.js'
-// TODO DESIGN Make this a bit prettier.
 const VueFaqAccordion = () => import('vue-faq-accordion')
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
 const ChatButton = () => import('~/components/ChatButton.vue')
 const NoticeMessage = () => import('~/components/NoticeMessage')
-
-// TODO MINOR It's not ideal that the links below are a rather than nuxt-link, because that causes a page load.
-// TODO MINOR Would be nice to be able to do a direct URL link into each of these.
 
 export default {
   components: {
