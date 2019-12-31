@@ -139,7 +139,6 @@ export default {
 
     processed(error, file) {
       if (error) {
-        // TODO MINOR Error handling
       } else {
         this.$emit(
           'photoProcessed',
