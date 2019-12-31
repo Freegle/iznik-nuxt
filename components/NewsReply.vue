@@ -262,7 +262,6 @@ export default {
       return this.$store.getters['auth/user']
     },
     tagusers() {
-      // TODO MINOR Would be nice to allow tagging of users who haven't contributed to the thread yet.  Same in NewsReply.
       const ret = []
       for (const user in this.users) {
         ret.push(this.users[user].displayname)

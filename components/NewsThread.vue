@@ -49,7 +49,6 @@
         </b-card-text>
       </b-card-body>
       <div slot="footer">
-        <!-- TODO MINOR - Refactor out the reply logic. Also bear in mind the logic in NewsReply -->
         <b-button v-if="showEarlierRepliesOption" variant="link" class="pl-0" @click.prevent="showAllReplies = true">
           Show earlier {{ numberOfRepliesNotShown.length | pluralize(['reply', 'replies']) }} ({{ numberOfRepliesNotShown }})
         </b-button>
@@ -146,7 +145,6 @@
 </template>
 
 <script>
-// TODO MINOR Attach to thread
 import NewsReportModal from './NewsReportModal'
 import twem from '~/assets/js/twem'
 
@@ -229,7 +227,6 @@ export default {
       return this.$store.getters['auth/user']
     },
     tagusers() {
-      // TODO MINOR Would be nice to allow tagging of users who haven't contributed to the thread yet.  Same in NewsReply.
       const ret = []
       for (const user in this.users) {
         ret.push(this.users[user].displayname)
@@ -327,8 +324,6 @@ export default {
       this.replyingTo = this.newsfeed.id
     },
     async sendComment() {
-      // TODO MINOR The newline gets added to the textarea before submission.  You can fix that by changing to use
-      // keydown to trigger this event, but that then breaks interaction with vue-at.  Same in NewsReply.
       if (this.threadcomment) {
         // Encode up any emojis.
         const msg = twem.untwem(this.threadcomment)
@@ -345,8 +340,6 @@ export default {
       }
     },
     newlineComment() {
-      // TODO MINOR Would be good to handle inserting in the middle a block of text, though last time I looked at this it
-      // was quite fiddly.
       this.threadcomment += '\n'
     },
     show() {
@@ -361,8 +354,6 @@ export default {
       this.$refs.editModal.hide()
     },
     deleteIt() {
-      // TODO MINOR Add confirm.  We have ConfirmModal, but that needs improving a bit so you can show info about
-      // what you're actually confirming.
       this.$store.dispatch('newsfeed/delete', {
         id: this.id,
         threadhead: this.id

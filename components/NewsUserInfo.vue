@@ -1,5 +1,4 @@
 <template>
-  <!--  TODO MINOR If you click here from chitchat, you get redirected to the profile page, but the modal pops up briefly before that happens.-->
   <nuxt-link :to="'/profile/' + user.id" class="text-success decornone" :title="'Click to view profile for ' + user.displayname">
     <span class="text-muted small">
       <span v-if="user.publiclocation" class="pl-0">
