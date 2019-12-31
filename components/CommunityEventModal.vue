@@ -340,7 +340,6 @@
 </style>
 
 <script>
-// TODO DESIGN This layout is staid table nonsense.  Surely we can make it more appealing?
 import { required, maxLength } from 'vuelidate/lib/validators'
 import cloneDeep from 'lodash.clonedeep'
 import { validationMixin } from 'vuelidate'

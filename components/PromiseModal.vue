@@ -30,8 +30,6 @@
 <script>
 const NoticeMessage = () => import('~/components/NoticeMessage')
 
-// TODO DESIGN This is a good example of why I can't write mobile apps.  It's a very old-school interface, dropdown
-// lists, whereas perhaps it should be a all funky image-based touch-gesture stuff.
 export default {
   components: {
     NoticeMessage
