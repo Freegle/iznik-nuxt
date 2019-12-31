@@ -87,6 +87,8 @@ export default {
       }
     },
     async process(fieldName, file, metadata, load, error, progress, abort) {
+      await this.$store.dispatch('compose/setUploading', true)
+
       const data = new FormData()
       data.append('photo', file, 'photo')
       data.append(this.imgflag, true)
@@ -154,10 +156,15 @@ export default {
       this.$refs.pond.addFile(f)
     },
 
-    allProcessed() {
-      console.log('Our all proc')
+    async allProcessed() {
       this.$emit('allProcessed')
+      await this.$store.dispatch('compose/setUploading', false)
     }
+  },
+  blockkey(e) {
+    // We're blocking all interaction with this div while the load happens.
+    e.returnValue = false
+    return false
   }
 }
 </script>

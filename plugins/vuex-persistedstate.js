@@ -65,6 +65,11 @@ export default ({ store }) => {
         delete newstate.address.list
       }
 
+      if (state.compose) {
+        // Don't remember that we're uploading, else we might get stuck.
+        delete newstate.compose.uploading
+      }
+
       // for (const field of Object.keys(newstate)) {
       //   console.log(
       //     'Field',

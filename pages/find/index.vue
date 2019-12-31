@@ -48,7 +48,7 @@
               above.
             </notice-message>
             <b-row class="mt-1">
-              <b-col class="text-center mt-4" cols="6" offset="3">
+              <b-col class="text-center mt-4" cols="12" md="6" offset-md="3">
                 <b-btn variant="success" size="lg" block :href="extgroup">
                   Proceed <v-icon name="angle-double-right" />
                 </b-btn>
@@ -56,7 +56,7 @@
             </b-row>
           </div>
           <b-row v-else-if="postcode" class="mt-1">
-            <b-col class="text-center mt-4" cols="6" offset="3">
+            <b-col class="text-center mt-4" cols="12" md="6" offset-md="3">
               <nuxt-link to="/find/search" class="decornone">
                 <b-btn variant="success" size="lg" block>
                   Next <v-icon name="angle-double-right" />

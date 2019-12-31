@@ -10,7 +10,8 @@ export const state = () => ({
   messages: {},
   attachments: {},
   progress: 1,
-  max: 4
+  max: 4,
+  uploading: false
 })
 
 export const mutations = {
@@ -99,10 +100,16 @@ export const mutations = {
   },
   setAttachments(state, params) {
     state.attachments = params
+  },
+  setUploading(state, value) {
+    state.uploading = value
   }
 }
 
 export const getters = {
+  getUploading: state => {
+    return state.uploading
+  },
   getEmail: state => {
     return state.email
   },
@@ -130,6 +137,9 @@ export const getters = {
 }
 
 export const actions = {
+  setUploading({ commit }, value) {
+    commit('setUploading', value)
+  },
   setEmail({ commit }, email) {
     commit('setEmail', email)
   },
@@ -161,7 +171,6 @@ export const actions = {
     commit('removeAttachment', params)
   },
   clearMessage({ commit }, params) {
-    console.log('clear action', params)
     commit('clearMessage', params)
   },
   async submit({ dispatch, commit, state, store }) {
@@ -226,19 +235,15 @@ export const actions = {
         }
 
         promise = new Promise((resolve, reject) => {
-          console.log('Create draft')
-
           self.$api.message.put(data).then(({ id }) => {
             commit('incProgress')
             // We've created a draft.  Submit it
-            console.log('Created draft, now submit', id)
 
             self.$api.message
               .joinAndPost(id, state.email)
               .then(({ groupid, newuser, newpassword }) => {
                 commit('incProgress')
                 // Success
-                console.log('Submitted draft OK')
                 commit('setMessage', {
                   id: message.id,
                   submitted: true,
@@ -266,13 +271,11 @@ export const actions = {
         // This is one of our messages which we are reposting.  We need to edit it (to update it from our client
         // copy), convert it back to draft, and then submit.
         promise = new Promise(function(resolve, reject) {
-          console.log('Existing message, update on server', message.id)
           dispatch('messages/patch', message, {
             root: true
           }).then(() => {
             commit('incProgress')
 
-            console.log('Updated, now convert back to draft')
             dispatch(
               'messages/update',
               {
@@ -285,12 +288,10 @@ export const actions = {
             ).then(() => {
               commit('incProgress')
 
-              console.log('Updated, now submit')
               self.$api.message
                 .joinAndPost(message.id, state.email)
                 .then(({ groupid, newuser, newpassword }) => {
                   commit('incProgress')
-                  console.log('Submitted')
                   // Success
                   commit('setMessage', {
                     id: message.id,
@@ -331,7 +332,6 @@ export const actions = {
     await Promise.all(promises)
     commit('clear')
 
-    console.log('Submit returning', results)
     return results
   }
 }

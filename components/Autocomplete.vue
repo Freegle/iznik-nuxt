@@ -437,6 +437,13 @@ export default {
     },
 
     handleBlur(e) {
+      // Reset body height.  Seems to break unless we wait for a bit.
+      setTimeout(() => {
+        let body = document.getElementsByTagName("body")[0];
+        body.style.minHeight = ''
+        body.style.overflowY = ''
+      }, 500)
+
       // Callback Event
       this.onBlur ? this.onBlur(e) : null
       setTimeout(() => {
@@ -448,6 +455,14 @@ export default {
 
     handleFocus(e) {
       this.focusList = 0
+
+      // On mobile, the on screen keyboard can obscure the dropdown.  So:
+      // - make sure we have room to scroll
+      // - scroll this input to the top
+      let body = document.getElementsByTagName("body")[0];
+      body.style.minHeight = '200vh'
+      this.$refs.input.scrollTop = 0
+      body.style.overflowY = 'hidden'
 
       // Force the list to show.
       this.showList = true

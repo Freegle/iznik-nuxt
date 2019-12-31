@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="(date, idx) in value" :key="date.uniqueid" :class="date.string && date.string.past ? 'inpast': ''">
-      <StartEndDate v-model="value[idx]" @remove="remove(date)" />
+      <StartEndDate v-model="value[idx]" :removable="!required || value.length > 1" @remove="remove(date)" />
     </div>
     <b-btn variant="white" class="mt-1" @click="add">
       <v-icon name="plus" /> Add <span v-if="value.length > 0">another</span><span v-else>a</span> date
@@ -30,13 +30,14 @@ export default {
       type: Array,
       required: true
     },
-    addDateIfEmpty: {
+    required: {
       type: Boolean,
+      required: false,
       default: false
     }
   },
   async mounted() {
-    if (this.value.length === 0 && this.addDateIfEmpty) {
+    if (this.value.length === 0 && this.required) {
       this.value.push({
         uniqueid: await this.$store.dispatch('uniqueid/generate'),
         start: null,

@@ -179,3 +179,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+::v-deep .autocomplete ul {
+  position: initial;
+}
+</style>

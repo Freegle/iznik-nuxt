@@ -88,15 +88,15 @@
     </template>
     <template slot="modal-footer" slot-scope="{ cancel }">
       <div v-if="thankyou">
-        <b-button variant="white" @click="cancel">
+        <b-button variant="white" :disabled="uploadingPhoto" @click="cancel">
           Close
         </b-button>
       </div>
       <div v-else>
-        <b-button variant="white" @click="cancel">
+        <b-button variant="white" :disabled="uploadingPhoto" @click="cancel">
           Cancel
         </b-button>
-        <b-button variant="success" @click="submit">
+        <b-button variant="success" :disabled="uploadingPhoto" @click="submit">
           Add Your Story
         </b-button>
       </div>
@@ -159,7 +159,11 @@ export default {
       thankyou: false
     }
   },
-  computed: {},
+  computed: {
+    uploadingPhoto() {
+      return this.$store.getters['compose/getUploading']
+    }
+  },
   async mounted() {},
   methods: {
     photoAdd() {
