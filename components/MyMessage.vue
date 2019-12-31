@@ -349,8 +349,11 @@ export default {
     },
     share() {
       if (process.env.IS_APP) { // CC..
+        console.log('MyMessage.vue')
         const href = 'https://www.ilovefreegle.org/message/' + this.message.id + '?src=mobileshare'
+        console.log('MyMessage.vue href', href)
         const subject = this.message.subject
+        console.log('MyMessage.vue subject', subject)
         // https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin
         const options = {
           message: "I saw this on Freegle - interested?\n\n", // not supported on some apps (Facebook, Instagram)
@@ -363,8 +366,6 @@ export default {
         const onSuccess = function (result) {
           console.log("Share completed? " + result.completed)   // On Android apps mostly return false even while it's true
           console.log("Shared to app: " + result.app)           // On Android result.app is currently empty. On iOS it's empty when sharing is cancelled (result.completed=false)
-          //self.$('.js-fbshare').fadeOut('slow')
-          //Iznik.ABTestAction('messagebutton', 'Mobile Share')
         }
 
         const onError = function (msg) {

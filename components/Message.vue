@@ -327,8 +327,6 @@ export default {
         const onSuccess = function (result) {
           console.log("Share completed? " + result.completed)   // On Android apps mostly return false even while it's true
           console.log("Shared to app: " + result.app)           // On Android result.app is currently empty. On iOS it's empty when sharing is cancelled (result.completed=false)
-          //self.$('.js-fbshare').fadeOut('slow')
-          //Iznik.ABTestAction('messagebutton', 'Mobile Share')
         }
 
         const onError = function (msg) {
