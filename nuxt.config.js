@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import sitemap from './utils/sitemap.js'
 
 const FACEBOOK_APPID = '134980666550322'
@@ -287,6 +288,19 @@ module.exports = {
     '/adview.php': USER_SITE + '/adview.php'
   },
 
+  buildModules: [
+    [
+      '@nuxtjs/google-analytics',
+      {
+        id: 'UA-10627716-2',
+        beforeFirstHit() {
+          // This is necessary to ensure we don't need cookie consent - see /privacy.
+          Vue.$ga.set('anonymizeIp', true)
+        }
+      }
+    ]
+  ],
+
   /*
   ** Build configuration
   */
@@ -368,7 +382,7 @@ module.exports = {
 
     loaders: {
       less: { javascriptEnabled: true }
-    },
+    }
   },
 
   sentry: {
