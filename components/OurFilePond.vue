@@ -18,7 +18,6 @@
   </div>
 </template>
 <script>
-// TODO DESIGN MINOR We should probably hide the drop area - we only use this when triggered from a button.
 import 'filepond/dist/filepond.min.css'
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
 import vueFilePond from 'vue-filepond'
