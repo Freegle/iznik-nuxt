@@ -3,6 +3,7 @@
     rounded="circle"
     :thumbnail="isThumbnail"
     class="p-0"
+    :class="profile--{{size}}"
     :alt="altText"
     title="Profile"
     :src="image"
@@ -27,6 +28,11 @@ export default {
     isThumbnail: {
       type: Boolean,
       required: false
+    },
+    size: {
+      type: String,
+      required: false,
+      default: 'md'
     }
   },
   methods: {
@@ -42,39 +48,33 @@ export default {
 @import 'bootstrap/scss/_variables';
 @import 'bootstrap/scss/mixins/_breakpoints';
 
-.profile {
-  width: 30px !important;
-  height: 30px !important;
-}
+.profile--sm {
+  width: 15px;
+  height: 15px;
 
-@include media-breakpoint-up(sm) {
-  .profile {
-    width: 50px !important;
-    height: 50px !important;
+  @include media-breakpoint-up(md) {
+    width: 25px;
+    height: 25px;
   }
 }
 
-.profilemd {
-  width: 20px !important;
-  height: 20px !important;
-}
+.profile--md {
+  width: 20px;
+  height: 20px;
 
-@include media-breakpoint-up(md) {
-  .profilemd {
-    width: 35px !important;
-    height: 35px !important;
+  @include media-breakpoint-up(md) {
+    width: 35px;
+    height: 35px;
   }
 }
 
-.profilesm {
-  width: 15px !important;
-  height: 15px !important;
-}
+.profile--lg {
+  width: 30px;
+  height: 30px;
 
-@include media-breakpoint-up(md) {
-  .profilesm {
-    width: 25px !important;
-    height: 25px !important;
+  @include media-breakpoint-up(sm) {
+    width: 50px;
+    height: 50px;
   }
 }
 </style>
