@@ -99,8 +99,6 @@ const SidebarLeft = () => import('~/components/SidebarLeft')
 const SidebarRight = () => import('~/components/SidebarRight')
 const NewsLocation = () => import('~/components/NewsLocation')
 
-// TODO MINOR Refetch feed using the visibility plugin.
-
 export default {
   components: {
     InfiniteLoading,

@@ -227,8 +227,6 @@ button {
   }
 }
 
-/* TODO DESIGN I tried adding "appear" transitions, e.g. for elements in chitchat, or messages.  But they then don't
-    show the computed emessage property.  Don't know why */
 .fade-enter-active, .fade-leave-active {
     transition: opacity 1s;
 }

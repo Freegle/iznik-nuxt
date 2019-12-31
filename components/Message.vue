@@ -347,11 +347,6 @@ export default {
             })
           }
 
-          // TODO EH MINOR If the group approves membership, then we will not actually be a member at this point, and might not
-          // become one if we are rejected.  Probably in that case we shouldn't be allowed to reply to this message, but
-          // we will.  I think this is the same behaviour as in the old version, but that needs testing and consideration
-          // of how to handle.
-
           // Now create the chat and send the first message.
           await this.$refs.chatbutton.openChat(null, this.reply, this.id)
           this.replying = false
