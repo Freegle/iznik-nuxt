@@ -16,6 +16,16 @@
     <template slot="modal-title">
       <h2>Let's get freegling!</h2>
     </template>
+    <p v-if="showSignUp" class="text-center">
+      You'll get emails.  Name, approx. location, and profile picture are public - you can hide your real name and
+      picture from Settings.  Logging in adds cookies and local
+      storage.  Read <nuxt-link target="_blank" to="/terms">
+        Terms of Use
+      </nuxt-link> and
+      <nuxt-link target="_blank" to="/privacy">
+        Privacy
+      </nuxt-link> for details.  Ok?  Now come on in...
+    </p>
     <div class="d-flex flex-column flex-lg-row justify-content-between p-3">
       <div class="signin__section--social">
         <h3 class="signin__header">
@@ -163,15 +173,6 @@
         </b-form>
       </div>
     </div>
-    <p class="text-center">
-      You will receive emails, and your name and approximate location will be public.  You can
-      control privacy from Settings.  Read <nuxt-link target="_blank" to="/terms">
-        Terms of Use
-      </nuxt-link> and
-      <nuxt-link target="_blank" to="/privacy">
-        Privacy
-      </nuxt-link> for details.
-    </p>
   </b-modal>
 </template>
 
