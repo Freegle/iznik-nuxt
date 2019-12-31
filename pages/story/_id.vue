@@ -34,7 +34,6 @@
 <style scoped>
 </style>
 <script>
-// TODO MINOR Add infinite scroll
 import NoticeMessage from '../../components/NoticeMessage'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
