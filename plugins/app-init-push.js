@@ -1,12 +1,15 @@
 import Vue from 'vue'
 
+export let mobilestate = {
+  isiOS: false
+}
+
 const pushstate = Vue.observable({
   pushed: false, // Set to true to handle push in Vue context
   route: false,
   mobilePushId: false // Note: mobilePushId is the same regardless of which user is logged in
 })
 
-let isiOS = false
 let acceptedMobilePushId = false
 let mobilePush = false
 let lastPushMsgid = false
@@ -32,7 +35,7 @@ const cordovaApp = {
     try {
       console.log('cordovaApp: onDeviceReady')
 
-      isiOS = window.device.platform === 'iOS'
+      mobilestate.isiOS = window.device.platform === 'iOS'
       // if (!window.initialURL) {
       //   window.initialURL = window.location.href
       // }
@@ -156,7 +159,7 @@ const cordovaApp = {
           }
 
           // iOS needs to be told when we've finished: do it after a short delay to allow our code to run
-          if (isiOS) {
+          if (mobilestate.isiOS) {
             setTimeout(function () {
               mobilePush.finish(
                 function () {
@@ -184,7 +187,7 @@ export async function savePushId(store) {
     const params = {
       notifications: {
         push: {
-          type: isiOS ? 'FCMIOS' : 'FCMAndroid',
+          type: mobilestate.isiOS ? 'FCMIOS' : 'FCMAndroid',
           subscription: pushstate.mobilePushId
         }
       }
