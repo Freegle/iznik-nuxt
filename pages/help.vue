@@ -229,6 +229,12 @@
               </template>
 
               <p>
+                Here's why we think you should freegle!  You can also read about how our charity is structured, why we
+                do what we do, and so on at <nuxt-link to="/about">
+                  About Us
+                </nuxt-link>.
+              </p>
+              <p>
                 Click on a question to expand the answer.
               </p>
 
