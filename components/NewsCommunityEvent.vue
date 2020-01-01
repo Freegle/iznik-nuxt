@@ -25,7 +25,7 @@
       </b-col>
     </b-row>
     <b-row>
-      <b-col cols="12" lg="8">
+      <b-col cols="12" :lg="newsfeed.communityevent.photo ? 8 : 12">
         <span v-if="newsfeed.communityevent.description" class="text-truncate d-block">
           <v-icon name="info-circle" class="fa-fw" /> {{ newsfeed.communityevent.description }}
         </span>
@@ -40,9 +40,8 @@
           <v-icon name="info-circle" class="fa-fw" /> More info
         </b-btn>
       </b-col>
-      <b-col cols="12" lg="4">
+      <b-col v-if="newsfeed.communityevent.photo" cols="12" lg="4">
         <b-img
-          v-if="newsfeed.communityevent.photo"
           thumbnail
           rounded
           lazy

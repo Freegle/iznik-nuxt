@@ -23,7 +23,7 @@
       </b-col>
     </b-row>
     <b-row>
-      <b-col cols="12" lg="8">
+      <b-col cols="12" :lg="newsfeed.volunteering.photo ? 8 : 12">
         <span v-if="newsfeed.volunteering.description" class="text-truncate d-block">
           <v-icon name="info-circle" class="fa-fw" /> {{ newsfeed.volunteering.description }}
         </span>
@@ -35,9 +35,8 @@
           <v-icon name="info-circle" /> More info
         </b-btn>
       </b-col>
-      <b-col cols="12" lg="4">
+      <b-col v-if="newsfeed.volunteering.photo" cols="12" lg="4">
         <b-img
-          v-if="newsfeed.volunteering.photo"
           thumbnail
           rounded
           lazy
