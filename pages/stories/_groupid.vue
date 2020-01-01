@@ -33,7 +33,6 @@
 <style scoped>
 </style>
 <script>
-// TODO MINOR Add infinite scroll
 import loginOptional from '@/mixins/loginOptional.js'
 import createGroupRoute from '@/mixins/createGroupRoute'
 import buildHead from '@/mixins/buildHead.js'
@@ -113,8 +112,6 @@ export default {
     }
 
     return {
-      // TODO MINOR In several places we return info from asyncData for use in head() for SSR.  This works, but feels
-      // wrong.
       asyncGroupid: params.groupid
     }
   },

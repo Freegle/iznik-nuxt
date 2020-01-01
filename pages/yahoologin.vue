@@ -61,12 +61,10 @@ export default {
             this.$router.push('/')
           }
         } else {
-          // TODO MINOR Error handling
           console.error('Server login failed', ret)
         }
       })
       .catch(e => {
-        // TODO MINOR Error handling
         console.error('Yahoo login failed', e)
       })
   }

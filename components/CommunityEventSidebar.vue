@@ -25,7 +25,6 @@
 import CommunityEvent from './CommunityEvent'
 const CommunityEventModal = () => import('~/components/CommunityEventModal')
 
-// TODO DESIGN This sidebar, and the volunteering one, are brutally cut off at the bottom.
 export default {
   components: {
     CommunityEvent,

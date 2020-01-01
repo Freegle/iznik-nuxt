@@ -138,7 +138,6 @@
 }
 </style>
 <script>
-// TODO MINOR This loads a bit clunkily.
 import InfiniteLoading from 'vue-infinite-loading'
 import GroupMarker from '~/components/GroupMarker.vue'
 

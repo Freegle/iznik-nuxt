@@ -36,7 +36,6 @@
 </style>
 
 <script>
-// TODO DESIGN This page is a clutter and needs love.
 import RichMarker from './RichMarker.vue'
 
 export default {

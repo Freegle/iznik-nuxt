@@ -88,15 +88,15 @@
     </template>
     <template slot="modal-footer" slot-scope="{ cancel }">
       <div v-if="thankyou">
-        <b-button variant="white" @click="cancel">
+        <b-button variant="white" :disabled="uploadingPhoto" @click="cancel">
           Close
         </b-button>
       </div>
       <div v-else>
-        <b-button variant="white" @click="cancel">
+        <b-button variant="white" :disabled="uploadingPhoto" @click="cancel">
           Cancel
         </b-button>
-        <b-button variant="success" @click="submit">
+        <b-button variant="success" :disabled="uploadingPhoto" @click="submit">
           Add Your Story
         </b-button>
       </div>
@@ -138,8 +138,6 @@ label {
 }
 </style>
 <script>
-// TODO NS Validation.  Easy in this case but deferred rolling our own in case we have a general form validation plugin.
-
 const OurFilePond = () => import('~/components/OurFilePond')
 
 export default {
@@ -161,7 +159,11 @@ export default {
       thankyou: false
     }
   },
-  computed: {},
+  computed: {
+    uploadingPhoto() {
+      return this.$store.getters['compose/getUploading']
+    }
+  },
   async mounted() {},
   methods: {
     photoAdd() {
@@ -212,13 +214,15 @@ export default {
     },
 
     async submit() {
-      await this.$store.dispatch('stories/add', {
-        headline: this.story.headline,
-        story: this.story.story,
-        photo: this.story.photo ? this.story.photo.id : null
-      })
+      if (this.story.headline && this.story.story) {
+        await this.$store.dispatch('stories/add', {
+          headline: this.story.headline,
+          story: this.story.story,
+          photo: this.story.photo ? this.story.photo.id : null
+        })
 
-      this.thankyou = true
+        this.thankyou = true
+      }
     }
   }
 }

@@ -152,13 +152,11 @@
 <style scoped lang="scss">
 @import 'color-vars';
 
-// TODO DESIGN remove when we move to Bootstrap mixins and variables globally.
 $bootstrap-sm: 768px;
 
 .chart-wrapper {
   flex-direction: column;
 
-  // TODO DESIGN Use bootstrap breakpoints
   @media (min-width: $bootstrap-sm) {
     flex-direction: row;
   }

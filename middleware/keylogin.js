@@ -1,6 +1,6 @@
 // We can log in with u=uid and k=val.
 
-export default async function({ store, route }) {
+export default async function({ store, route, app }) {
   if (route.query.u && route.query.k) {
     // Log in using the username and key
     await store.dispatch('auth/login', {
@@ -9,6 +9,6 @@ export default async function({ store, route }) {
       force: true
     })
 
-    route.push('/chitchat')
+    app.router.push('/chitchat')
   }
 }

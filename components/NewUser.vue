@@ -119,9 +119,6 @@ import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 Vue.use(TooltipPlugin)
 
-// TODO DESIGN This page is basically the intro for new users.  Should it be like this?  A multi-step modal?  Whatever
-// it is it should look better.
-// TODO DESIGN Tooltips should be prettier.
 export default {
   props: {
     password: {

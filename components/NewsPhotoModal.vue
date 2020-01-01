@@ -49,7 +49,6 @@
   </b-modal>
 </template>
 <script>
-// TODO MINOR Use this for all newsfeed photos.
 export default {
   props: {
     id: {
@@ -115,7 +114,6 @@ export default {
       })
 
       // Refetch the newsfeed entry to update any values in the parents, via the store.
-      // TODO MINOR This doesn't work, though.  Why not?
       this.$store.dispatch('newsfeed/fetch', {
         id: this.newsfeedid
       })

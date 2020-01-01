@@ -17,7 +17,6 @@
                 You can also download all this data
                 in a commonly-used machine-readable format (<a href="https://www.json.org/" target="_blank">JSON</a>).
               </p>
-              <!--              TODO DESIGN MINOR Style as a button. We need to have it as a link so that we can use the download attribute.-->
               <a :href="downloadlink" download="mydata.json">
                 Download in machine-readable format
               </a>

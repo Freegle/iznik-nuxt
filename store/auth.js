@@ -157,6 +157,13 @@ export const actions = {
     }
   },
 
+  async lostPassword({ commit, dispatch }, params) {
+    await this.$axios.post(process.env.API + '/session', {
+      action: 'LostPassword',
+      email: params.email
+    })
+  },
+
   async signup({ commit, dispatch }, params) {
     const res = await this.$axios.post(process.env.API + '/user', params, {
       headers: {
@@ -171,7 +178,6 @@ export const actions = {
       dispatch('fetchUser')
     } else {
       // Sign up failed.
-      // TODO Display some kind of error.  May now work but needs testing.
       console.error('Login failed', res)
       throw new Error('Login failed')
     }

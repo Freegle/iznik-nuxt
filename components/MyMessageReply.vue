@@ -93,11 +93,6 @@
 const PromiseModal = () => import('./PromiseModal')
 const RenegeModal = () => import('./RenegeModal')
 
-// TODO DESIGN I would like a way of indicating whether the last message, which we have in snippet, came from
-// this user or not.  We can work that out, but I can't think of a way of showing that which is obvious.  On the
-// other hand, the most important messages will be bold because they're unread, and all bold messages will
-// be from the other party, so maybe that's fine as it is.
-// TODO DESIGN Unpromise icon is lame.
 const Ratings = () => import('~/components/Ratings')
 
 export default {

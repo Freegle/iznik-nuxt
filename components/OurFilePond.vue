@@ -18,7 +18,6 @@
   </div>
 </template>
 <script>
-// TODO DESIGN MINOR We should probably hide the drop area - we only use this when triggered from a button.
 import 'filepond/dist/filepond.min.css'
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
 import vueFilePond from 'vue-filepond'
@@ -87,6 +86,8 @@ export default {
       }
     },
     async process(fieldName, file, metadata, load, error, progress, abort) {
+      await this.$store.dispatch('compose/setUploading', true)
+
       const data = new FormData()
       data.append('photo', file, 'photo')
       data.append(this.imgflag, true)
@@ -137,7 +138,6 @@ export default {
 
     processed(error, file) {
       if (error) {
-        // TODO MINOR Error handling
       } else {
         this.$emit(
           'photoProcessed',
@@ -154,10 +154,15 @@ export default {
       this.$refs.pond.addFile(f)
     },
 
-    allProcessed() {
-      console.log('Our all proc')
+    async allProcessed() {
       this.$emit('allProcessed')
+      await this.$store.dispatch('compose/setUploading', false)
     }
+  },
+  blockkey(e) {
+    // We're blocking all interaction with this div while the load happens.
+    e.returnValue = false
+    return false
   }
 }
 </script>

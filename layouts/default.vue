@@ -268,8 +268,6 @@
 <style scoped lang="scss">
 @import 'color-vars';
 
-/*TODO DESIGN Shrink navbar on scroll? */
-
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -324,7 +322,6 @@ nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
   }
 }
 
-// TODO DESIGN Remove once we move to bootstrap breakpoints.
 $bootstrap-sm: 768px;
 
 #nav_collapse_mobile {
@@ -342,7 +339,6 @@ $bootstrap-sm: 768px;
     flex-basis: 25%;
     margin: 20px 0;
 
-    // TODO DESIGN Use bootstrap breakpoints
     @media (min-width: $bootstrap-sm) {
       flex-basis: unset;
     }
@@ -468,11 +464,7 @@ svg.fa-icon {
 }
 </style>
 <script>
-// TODO DESIGN Notification dropdown window isn't wide enough before it's loaded.
 // Import login modal as I've seen an issue where it's not in $refs when you click on the signin button too rapidly.
-// TODO ACCESSIBILITY Review all <a> and <nuxt-link> to see if they require aria-label throughout the site.
-// TODO ACCESSIBILITY Check if we have any image links without alt text.
-// TODO ACCESSIBILITY Test for keyboard navigation.
 import LoginModal from '~/components/LoginModal'
 const AboutMeModal = () => import('~/components/AboutMeModal')
 const ChatPopups = () => import('~/components/ChatPopups')

@@ -5,9 +5,6 @@
  * It will provide you a "groupid" property on your vue instance so you MUST
  * NOT also define that yourself (e.g. in the data function).
  *
- * TODO NS MINOR The URLs we produce would look prettier if we used the nameshort
- * property of a group.  You can get a group using either an id or the nameshort value.
- *
  * For example when you first visit /communityevents page it shows you events
  * from all your groups. You can select a group from the select and you will get
  * redirected to /communityevents/:id. We will save that :id.

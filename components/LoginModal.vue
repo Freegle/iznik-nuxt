@@ -12,13 +12,20 @@
     :hide-header-close="modalIsForced"
     :no-close-on-esc="modalIsForced"
   >
-    <!--    TODO MINOR Suppose you have a button which then forces you to log in, e.g. Add a volunteer op.  Once clicked, you-->
-    <!--    can't get out of this modal.  Probably that only happens when we want to force login before popping up another-->
-    <!--    modal and we're not navigating.-->
     <!-- This is required as the default bootstrap component makes the main title an h5 -->
     <template slot="modal-title">
       <h2>Let's get freegling!</h2>
     </template>
+    <p v-if="showSignUp" class="text-center">
+      You'll get emails.  Name, approx. location, and profile picture are public - you can hide your real name and
+      picture from Settings.  Logging in adds cookies and local
+      storage.  Read <nuxt-link target="_blank" to="/terms">
+        Terms of Use
+      </nuxt-link> and
+      <nuxt-link target="_blank" to="/privacy">
+        Privacy
+      </nuxt-link> for details.  Ok?  Now come on in...
+    </p>
     <div class="d-flex flex-column flex-lg-row justify-content-between p-3">
       <div class="signin__section--social">
         <h3 class="signin__header">
@@ -122,7 +129,7 @@
                 autocomplete="current-password"
               />
               <b-input-group-append>
-                <!-- TODO DESIGN MINOR The shadow on the input field that you get when you're focused ought really to include this append.-->
+                <!-- TODO RAHUL DESIGN MINOR The shadow on the input field that you get when you're focused ought really to include this append.-->
                 <b-button variant="white" class="transbord" title="Show password" @click="togglePassword">
                   <v-icon v-if="showPassword" title="Hide password" class="text-secondary" flip="horizontal" @click="togglePassword">
                     <v-icon name="eye" />
@@ -153,7 +160,7 @@
             Login Failed: {{ nativeLoginError }}
           </b-alert>
           <div v-if="!signUp" class="text-center">
-            <nuxt-link to="/forgot">
+            <nuxt-link to="/forgot" @click.native="forgot">
               I forgot my password
             </nuxt-link>
             <p class="mb-0">
@@ -166,15 +173,6 @@
         </b-form>
       </div>
     </div>
-    <p class="text-center">
-      You will receive emails, and your name and approximate location will be public.  You can
-      control privacy from Settings.  Read <nuxt-link target="_blank" to="/terms">
-        Terms of Use
-      </nuxt-link> and
-      <nuxt-link target="_blank" to="/privacy">
-        Privacy
-      </nuxt-link> for details.
-    </p>
   </b-modal>
 </template>
 
@@ -550,8 +548,15 @@ export default {
       e.preventDefault()
       e.stopPropagation()
     },
+
     togglePassword() {
       this.showPassword = !this.showPassword
+    },
+
+    forgot() {
+      this.hide()
+      this.$store.dispatch('auth/forceLogin', false)
+      this.$router.push('/forgot')
     }
   }
 }

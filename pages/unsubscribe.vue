@@ -50,7 +50,6 @@ import buildHead from '@/mixins/buildHead.js'
 import loginOptional from '@/mixins/loginOptional.js'
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect.vue')
 const ConfirmModal = () => import('~/components/ConfirmModal.vue')
-// TODO MINOR If you have to sign in, should go straight to confirmation once we return to the page signed in.
 const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {

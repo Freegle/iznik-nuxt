@@ -224,7 +224,7 @@
             <b-form-invalid-feedback class="mb-3">
               Please add at least one date
             </b-form-invalid-feedback>
-            <StartEndCollection v-if="eventEdit.dates" v-model="eventEdit.dates" add-date-if-empty />
+            <StartEndCollection v-if="eventEdit.dates" v-model="eventEdit.dates" required />
           </b-form-group>
           <b-form-group
             ref="eventEdit__contactname"
@@ -285,22 +285,22 @@
     </template>
     <template slot="modal-footer" slot-scope="{ ok, cancel }">
       <div v-if="event.canmodify" class="w-100">
-        <b-button v-if="!editing" variant="white" class="float-left" @click="editing = true">
+        <b-button v-if="!editing" variant="white" class="float-left" :disabled="uploadingPhoto" @click="editing = true">
           <v-icon name="pen" />
           Edit
         </b-button>
-        <b-button variant="white" class="float-left ml-1" @click="deleteIt">
+        <b-button variant="white" class="float-left ml-1" :disabled="uploadingPhoto" @click="deleteIt">
           <v-icon name="trash-alt" />
           Delete
         </b-button>
       </div>
-      <b-button v-if="!editing" variant="white" class="float-right" @click="cancel">
+      <b-button v-if="!editing" variant="white" class="float-right" :disabled="uploadingPhoto" @click="cancel">
         Close
       </b-button>
-      <b-button v-if="editing" variant="white" class="float-right" @click="dontSave">
+      <b-button v-if="editing" variant="white" class="float-right" :disabled="uploadingPhoto" @click="dontSave">
         Cancel
       </b-button>
-      <b-button v-if="editing" variant="success" class="float-right" @click="saveIt">
+      <b-button v-if="editing" variant="success" class="float-right" :disabled="uploadingPhoto" @click="saveIt">
         <v-icon v-if="saving" name="sync" class="fa-spin" />
         <v-icon v-else name="save" />
         <span v-if="isExisting">Save Changes</span>
@@ -340,10 +340,6 @@
 </style>
 
 <script>
-// TODO DESIGN This layout is staid table nonsense.  Surely we can make it more appealing?
-// TODO EH Don't allow submission before image upload complete.
-// TODO MINOR Wherever we have b-img (throughout the site, not just here) we should have @brokenImage.  Bet we don't.
-// TODO NS Set date to start at 9am rather than midnight.  Default end date to later than start date.
 import { required, maxLength } from 'vuelidate/lib/validators'
 import cloneDeep from 'lodash.clonedeep'
 import { validationMixin } from 'vuelidate'
@@ -411,6 +407,9 @@ export default {
   },
   data: initialData,
   computed: {
+    uploadingPhoto() {
+      return this.$store.getters['compose/getUploading']
+    },
     isExisting() {
       return Boolean(this.event.id)
     },
@@ -615,7 +614,6 @@ export default {
         required
       },
       dates: {
-        // TODO NS validate each entry is not more than 4 days in duration
         minLength: dates =>
           dates.filter(({ start, end }) => start && end).length > 0
       },

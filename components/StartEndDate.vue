@@ -1,6 +1,4 @@
 <template>
-  <!-- TODO MINOR This should be a fieldset within a form -->
-
   <div class="form__element p-2 d-flex justify-content-between flex-column flex-lg-row align-items-md-end">
     <div class="d-flex flex-column flex-md-row mb-3 mb-lg-0">
       <div class="mr-0 mr-md-4 mb-3 mb-md-0 d-flex flex-column">
@@ -34,8 +32,7 @@
       </div>
     </div>
     <div>
-      <!-- TODO EH Hide button if only one date present -->
-      <b-btn variant="white" size="sm" @click="$emit('remove')">
+      <b-btn v-if="removable" variant="white" size="sm" @click="$emit('remove')">
         <v-icon name="trash-alt" title="Delete this date" aria-hidden="true" />
         <span class="delete__label">Remove</span>
       </b-btn>
@@ -54,6 +51,11 @@ export default {
     value: {
       type: Object,
       required: true
+    },
+    removable: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   }
 }
