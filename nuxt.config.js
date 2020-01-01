@@ -466,6 +466,8 @@ if (process.env.NUXT_BUILD_TYPE === 'fdapp') {
 
   // Remove sentry
   config.modules = config.modules.filter(module => module !== '@nuxtjs/sentry')
+
+  delete config.buildModules
 }
 
 module.exports = config
