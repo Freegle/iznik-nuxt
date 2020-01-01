@@ -12,15 +12,18 @@ module.exports = {
       max_memory_restart: '1G',
       env_production: {
         PORT: 3000,
-        NODE_ENV: 'production'
+        NODE_ENV: 'production',
+        IZNIK_API: 'https://fdapilive.ilovefreegle.org'
       },
       env_development: {
         PORT: 3001,
-        NODE_ENV: 'production'
+        NODE_ENV: 'production',
+        IZNIK_API: 'https://fdapidev.ilovefreegle.org'
       },
       env_debug: {
         PORT: 3002,
-        NODE_ENV: 'development'
+        NODE_ENV: 'development',
+        IZNIK_API: 'https://fdapidbg.ilovefreegle.org'
       }
     }
   ],
