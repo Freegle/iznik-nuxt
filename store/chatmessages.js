@@ -80,11 +80,18 @@ export const actions = {
 
   async fetch({ commit, state }, params) {
     const { chatid, noContext } = params
+
+    let ctx = null
+
+    if (!noContext) {
+      ctx = state.contexts[chatid] || null
+    }
+
     const { chatmessages, chatusers, context } = await this.$api.chat.fetch(
       chatid,
       {
         limit: 30,
-        context: noContext ? null : state.contexts[chatid]
+        context: ctx
       }
     )
 
@@ -92,6 +99,7 @@ export const actions = {
       id: chatid,
       messages: chatmessages
     })
+
     commit('mergeUsers', {
       id: chatid,
       users: chatusers
