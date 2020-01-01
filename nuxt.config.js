@@ -192,6 +192,7 @@ module.exports = {
     { from: '^/groups', to: '/explore' },
     { from: '^/events', to: '/communityevents' },
     { from: '^/contact', to: '/help' },
+    { from: '^/newsfeed', to: '/chitchat' },
     { from: '^/handbook', to: '/help' }
   ],
 
