@@ -1,12 +1,20 @@
 #!/bin/bash
 # Script to deploy code in our environment.  See ecosystem.config.js for the details of the environment.
 
-[ "$#" -eq 1 ] || die "This script takes one argument, prod|dev|dbg"
+if [ "$#" -ne 1 ]
+then
+ echo "This script takes one argument, production|development|debug"
+ exit 1
+fi
 
 # Check the environment
-$ENV=$1
+ENV=$1
 
-[[ "$ENV" != "live" && "$ENV" != "dev" && "$ENV" != "dbg" ]] || die "Invalid environment."
+if [[ "$ENV" != "production" && "$ENV" != "development" && "$ENV" != "debug" ]] 
+then
+  echo "Invalid environment."
+  exit 2
+fi
 
 # Sort out some things which have on occasion blocked deployment
 pm2 --force deploy $ENV exec 'git checkout -- package-lock.json; git checkout -- static/sw.js; git checkout -- nuxt.config.js; npm rebuild node-sass --force'
