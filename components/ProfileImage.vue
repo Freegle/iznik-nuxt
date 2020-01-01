@@ -3,7 +3,7 @@
     rounded="circle"
     :thumbnail="isThumbnail"
     class="p-0"
-    :class="profile--{{size}}"
+    :class="'profile--' + size"
     :alt="altText"
     title="Profile"
     :src="image"

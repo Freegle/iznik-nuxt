@@ -5,7 +5,7 @@
         <div v-if="chatmessage.userid != $store.state.auth.user.id" class="media float-left">
           <div class="media-left">
             <div class="media-object">
-              <profile-image v-if="othericon" :image="othericon" class="profilesm mr-1 mb-1 mt-1 inline" is-thumbnail />
+              <profile-image v-if="othericon" :image="othericon" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
             </div>
           </div>
           <div :class="emessage ? 'media-body chatMessage theirs' : 'media-body'">
@@ -26,7 +26,7 @@
           </div>
           <div class="media-right">
             <div class="media-object">
-              <profile-image :image="me.profile.turl" class="profilesm ml-1 mb-1 mt-1 inline" is-thumbnail />
+              <profile-image :image="me.profile.turl" class="ml-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
             </div>
           </div>
         </div>
