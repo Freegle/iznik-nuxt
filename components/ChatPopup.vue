@@ -356,6 +356,11 @@ export default {
     })
     const fetched = this.$store.getters['chats/get'](this.id)
 
+    // Clear the context - infinite scroll will then pick up the messages.
+    await this.$store.dispatch('chatmessages/clearContext', {
+      chatid: this.id
+    })
+
     if (!fetched) {
       // This is an invalid chatid.  Remove it to stop it causing problems.
       this.chat = {
