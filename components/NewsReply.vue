@@ -248,7 +248,6 @@ export default {
       return this.$store.getters['auth/user']
     },
     tagusers() {
-      // TODO MINOR Would be nice to allow tagging of users who haven't contributed to the thread yet.  Same in NewsReply.
       const ret = []
       for (const user in this.users) {
         ret.push(this.users[user].displayname)
@@ -356,8 +355,6 @@ export default {
     if (parseInt(this.scrollTo) === this.replyid && this.$el.scrollIntoView) {
       // We want to scroll to this reply to make sure it's visible.
       this.$el.scrollIntoView()
-
-      // TODO DESIGN Can we have some visual highlighting of the element we've just scrolled to?
     }
   },
   methods: {

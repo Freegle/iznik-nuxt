@@ -65,7 +65,6 @@
 <style lang="scss">
 @import 'color-vars';
 
-/*TODO DESIGN Make this prettier.  See also NewUser. */
 .tooltip-inner {
   background-color: $color-white;
   color: $color-black;

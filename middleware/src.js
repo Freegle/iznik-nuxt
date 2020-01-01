@@ -1,14 +1,13 @@
 // Log any entries with a src parameter.
-import axios from 'axios'
 
-export default function({ store, route }) {
-  const API = process.env.API ? process.env.API : 'http://localhost:3000/'
-
+export default function({ store, route, $axios }) {
   if (route.query.src) {
-    return axios
-      .post(API + '/api/src', {
+    return $axios
+      .post(process.env.API + '/src', {
         src: route.query.src
       })
-      .catch(e => {})
+      .catch(e => {
+        console.error('SRC log failed', e)
+      })
   }
 }

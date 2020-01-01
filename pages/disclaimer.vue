@@ -1,5 +1,4 @@
 <template>
-  <!-- TODO DESIGN MINOR - Use a bootstrap container here rather than the grid/row layout -->
   <b-col>
     <b-row class="m-0">
       <b-col cols="0" md="3" />

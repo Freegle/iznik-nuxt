@@ -73,7 +73,6 @@
           <span v-if="expanded.replycount" class="float-right small text-muted mr-1">
             <v-icon name="user" class="d-inline" />&nbsp;<span class="d-inline">{{ expanded.replycount }}&nbsp;freegler<span v-if="expanded.replycount != 1">s</span>&nbsp;replied&nbsp;</span>
             <span v-if="expanded.groups && expanded.groups.length">
-              <!--        TODO DESIGN MINOR Having this on the next line is slightly messy -->
               <br>
               <b-btn
                 v-if="expanded.groups && expanded.groups.length"
@@ -122,8 +121,6 @@
           <b-col>
             <b-btn variant="success" block :disabled="replying" @click="sendReply">
               Send
-              <!--              TODO DESIGN If you've gone through sign in, and your eye is therefore elsewhere, this method of -->
-              <!--              indicating that we are sending a reply is probably too subtle to notice.-->
               <v-icon v-if="replying" name="sync" class="fa-spin" />
               <v-icon v-else name="angle-double-right" />&nbsp;
             </b-btn>
@@ -187,7 +184,6 @@ export default {
     NoticeMessage
   },
   props: {
-    // TODO MINOR We've moved away from individual props like this - should use a message prop.
     id: {
       type: Number,
       default: 0
@@ -351,11 +347,6 @@ export default {
             })
           }
 
-          // TODO EH MINOR If the group approves membership, then we will not actually be a member at this point, and might not
-          // become one if we are rejected.  Probably in that case we shouldn't be allowed to reply to this message, but
-          // we will.  I think this is the same behaviour as in the old version, but that needs testing and consideration
-          // of how to handle.
-
           // Now create the chat and send the first message.
           await this.$refs.chatbutton.openChat(null, this.reply, this.id)
           this.replying = false
@@ -372,8 +363,6 @@ export default {
           //
           // Setting the reply text here will get persisted to the store.  Once we log in and return to the message
           // page, then we will find this in the store and trigger the send of the reply.
-          // TODO NS The store is persisted asynchronously.  Probably it will have happened before the signin completes,
-          // but we don't actually guarantee that.  Nick, is this fixed by your change to persist on page destroy?
           await this.$store.dispatch('reply/set', {
             replyTo: this.id,
             replyMessage: this.reply

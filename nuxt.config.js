@@ -1,20 +1,32 @@
+import Vue from 'vue'
 import sitemap from './utils/sitemap.js'
 
-const pkg = require('./package')
 const FACEBOOK_APPID = '134980666550322'
 const SENTRY_DSN = 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170'
 
 require('dotenv').config()
+
+// We have two constants for the API location.  Why?
+// - IZNIK_API is the actual location of the server hosting the API.  It's not used directly by the code.
+// - API is the constant the code uses to make an API call - it's basically just a prefix.
+//
+// How do these get used?
+// - In axios-baseurl:
+//   - On the server we set the base URL to IZNIK_API.  We make calls to the API and don't have to worry about CORS.
+//   - On the client we don't set a base URL, so it goes to the server the client was served up from.  That then proxies
+//     it on to IZNIK_API via the proxy: directive below.
+// - The rest of the client code just uses the API prefix.  The base URL kicks in (or doesn't) as described above.
+const API = '/api'
+
+// IZNIK_API is where we send it to.  This avoids CORS issues (and removes preflight OPTIONS calls for GETs, which
+// hurt client performance).
+const IZNIK_API = process.env.IZNIK_API || 'https://fdapidbg.ilovefreegle.org'
 
 // This is where the user site is.
 const USER_SITE = 'https://www.ilovefreegle.org'
 
 // This is where images are served from.
 const IMAGE_SITE = 'https://images.ilovefreegle.org'
-
-// API is where we send it to.  This avoids CORS issues (and removes preflight OPTIONS calls for GETs, which
-// hurt client performance).
-const API = process.env.API || 'https://fdapidbg.ilovefreegle.org/api'
 
 // Long polls interact badly with per-host connection limits so send to here instead.
 const CHAT_HOST = 'https://users.ilovefreegle.org:555'
@@ -27,7 +39,7 @@ const DISABLE_ESLINT_AUTOFIX =
 const ESLINT_AUTOFIX = !DISABLE_ESLINT_AUTOFIX
 
 module.exports = {
-  mode: 'spa',
+  mode: 'universal',
 
   /*
   ** Headers.  Include default meta tags that will apply unless overridden by individual pages.  Every page that
@@ -180,6 +192,7 @@ module.exports = {
     { from: '^/groups', to: '/explore' },
     { from: '^/events', to: '/communityevents' },
     { from: '^/contact', to: '/help' },
+    { from: '^/newsfeed', to: '/chitchat' },
     { from: '^/handbook', to: '/help' }
   ],
 
@@ -272,9 +285,22 @@ module.exports = {
   },
 
   proxy: {
-    '/api/': API,
+    '/api/': IZNIK_API,
     '/adview.php': USER_SITE + '/adview.php'
   },
+
+  buildModules: [
+    [
+      '@nuxtjs/google-analytics',
+      {
+        id: 'UA-10627716-2',
+        beforeFirstHit() {
+          // This is necessary to ensure we don't need cookie consent - see /privacy.
+          Vue.$ga.set('anonymizeIp', true)
+        }
+      }
+    ]
+  ],
 
   /*
   ** Build configuration
@@ -286,7 +312,6 @@ module.exports = {
 
     extend(config, ctx) {
       if (process.env.NODE_ENV !== 'production') {
-        // TODO NS Did you add this or did I pick it up from somewhere?  Do you know why we do this?  Comment please.
         config.devtool = ctx.isClient ? 'eval-source-map' : 'inline-source-map'
       } else {
         // If we put them as files then we don't increase the bundle size.
@@ -358,12 +383,11 @@ module.exports = {
 
     loaders: {
       less: { javascriptEnabled: true }
-    },
+    }
   },
 
   sentry: {
     dsn: process.env.SENTRY_DSN,
-    // TODO MINOR Disabled publishRelease as causing build errors I don't understand.
     publishRelease: false,
     clientIntegrations: function(integrations) {
       // Don't include breadcrumbs as this makes POSTs too large, and they fail.
@@ -375,6 +399,7 @@ module.exports = {
 
   env: {
     API: API,
+    IZNIK_API: IZNIK_API,
     CHAT_HOST: CHAT_HOST,
     FACEBOOK_APPID: FACEBOOK_APPID,
     GOOGLE_MAPS_KEY: 'AIzaSyCdTSJKGWJUOx2pq1Y0f5in5g4kKAO5dgg',

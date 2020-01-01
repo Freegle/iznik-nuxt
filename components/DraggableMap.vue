@@ -52,7 +52,6 @@
   </div>
 </template>
 <script>
-// TODO DESIGN Make a bigger and more visible icon.
 import { gmapApi } from 'vue2-google-maps'
 
 export default {

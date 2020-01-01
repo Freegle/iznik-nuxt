@@ -46,8 +46,6 @@
 <style scoped>
 </style>
 <script>
-// TODO MINOR If we included more info from the server about the type of ModMail then we could decide more intelligently
-// whether or not to show the Edit button.
 import ChatBase from '~/components/ChatBase'
 
 export default {

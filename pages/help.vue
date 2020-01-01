@@ -6,13 +6,377 @@
         <h1>
           How can we help?
         </h1>
-        <p>
-          These are the most common questions we get asked - please have a look and see if this is what you need.
-        </p>
-        <VueFaqAccordion
-          :items="myItems"
-          class="mt-2 mb-2 p-0"
-        />
+
+        <b-card no-body>
+          <b-tabs content-class="mt-3" card>
+            <b-tab active>
+              <template v-slot:title>
+                <h4 class="ml-2 mr-2">
+                  Frequently Asked Questions
+                </h4>
+              </template>
+              <p>
+                These are the most common questions we get asked - please have a look and see if this is what you need.
+                If not, you can contact us lower down this page.
+              </p>
+              <p>Click on a question to expand the answer.</p>
+
+              <Question id="wanted">
+                <template slot="title">
+                  <b>How do I post a WANTED?</b>
+                </template>
+                <template slot="content">
+                  <p>
+                    If you're looking for something, use the <nuxt-link to="/find">
+                      Find
+                    </nuxt-link> feature.
+                  </p>
+                  <p>
+                    This will let you search what's currently on offer - and if you what you're looking for isn't
+                    there, you'll see a button to post a WANTED to ask people for it.
+                  </p>
+                </template>
+              </Question>
+              <Question id="toomany">
+                <template slot="title">
+                  <b>I'm getting too many emails</b>
+                </template>
+                <template slot="content">
+                  <p>
+                    If you go to the <nuxt-link to="/settings">
+                      Settings Page
+                    </nuxt-link> then you can change how many mails
+                    you get in your <em>Mail Settings</em>.
+                  </p>
+                  <p>
+                    If you want to pause mails for a while, you can do that there too.
+                  </p>
+                </template>
+              </Question>
+              <Question id="offertaken">
+                <template slot="title">
+                  <b>My OFFER has been TAKEN - what do I do?</b>
+                </template>
+                <template slot="content">
+                  <p>
+                    If someone has collected your OFFER, then make sure you're logged in (click on <em>Sign in</em> on
+                    the top left if you need to), then go to <nuxt-link to="/myposts">
+                      My Posts
+                    </nuxt-link>, find your post,
+                    and click this:
+                  </p>
+
+                  <b-btn variant="success">
+                    Mark as TAKEN
+                  </b-btn>
+
+                  <p>
+                    Similarly, if you have received your WANTED, go to <nuxt-link to="/myposts">
+                      My Posts
+                    </nuxt-link>, find your post,
+                    and click this:
+                  </p>
+
+                  <b-btn variant="success">
+                    Mark as RECEIVED
+                  </b-btn>
+
+                  <p>
+                    If you have multiple posts showing, you may need to click the post to expand it before the buttons appear.
+                  </p>
+                </template>
+              </Question>
+              <Question id="repost">
+                <template slot="title">
+                  <b>How can I repost something?</b>
+                </template>
+                <template slot="content">
+                  <p>
+                    If you've not had any replies, this happens automatically now.  Have a look on the
+                    <nuxt-link to="/">
+                      Home Page
+                    </nuxt-link>, and click on the post.  You can see the time until the
+                    auto-repost is due on there, like this:
+                  </p>
+                  <p>
+                    <span class="success"> Auto-repost due in 2 days</span>
+                  </p>
+                  <p>
+                    If you have had replies, you need to use the <em>Repost</em> button in the same place.
+                  </p>
+                </template>
+              </Question>
+              <Question id="changeemail">
+                <template slot="title">
+                  <b>How do I change my email address?</b>
+                </template>
+                <template slot="content">
+                  <p>
+                    You can do this from your <nuxt-link to="/settings">
+                      Settings
+                    </nuxt-link>, in the
+                    <em>Personal Information</em> section.
+                  </p>
+                </template>
+              </Question>
+              <Question id="unsubscribe">
+                <template slot="title">
+                  <b>How do I leave/unsubscribe?</b>
+                </template>
+                <template slot="content">
+                  <p>
+                    If you'd like to leave Freegle, then go <nuxt-link to="/unsubscribe">
+                      here
+                    </nuxt-link>.
+                  </p>
+                </template>
+              </Question>
+              <Question id="termsetc">
+                <template slot="title">
+                  <b>Where are your terms of use etc?</b>
+                </template>
+                <template slot="content">
+                  <p>
+                    Click to read our <nuxt-link to="/terms">
+                      terms of use
+                    </nuxt-link>,
+                    <nuxt-link to="/privacy">
+                      privacy statement
+                    </nuxt-link>, and
+                    <nuxt-link to="/disclaimer">
+                      disclaimer
+                    </nuxt-link>.
+                  </p>
+                </template>
+              </Question>
+              <Question id="whatdata">
+                <template slot="title">
+                  <b>What data do you store about me?</b>
+                </template>
+                <template slot="content">
+                  <p>
+                    You can see what data we store about you, and download it, <nuxt-link to="/mydata">
+                      here
+                    </nuxt-link>.
+                  </p>
+                </template>
+              </Question>
+              <Question id="youcanhelp">
+                <template slot="title">
+                  <b>How you can help!</b>
+                </template>
+                <template slot="content">
+                  <p>
+                    Freegle is run by volunteers - so if you can help, please get in touch!
+                  </p>
+                  <p>
+                    If you'd like to spread the word you can download a poster or ask for "business cards" to hand out:
+                  </p>
+                  <b-btn to="/spread" class="btn-success">
+                    Find out more
+                  </b-btn>
+                  <p>
+                    If you would like to help run one of the local communities, which is a good place to start, please use
+                    the <em>Contact</em> button below.
+                  </p>
+                  <p>
+                    You can also volunteer nationally.  We really need people in these areas:
+                  </p>
+                  <ul>
+                    <li>
+                      Publicity: if you can help locally or nationally, especially with councils, we'd love to hear from you.
+                    </li>
+                    <li>
+                      Fundraising: we run on volunteers and donations, and just about get by, but we could do so much more with more.
+                    </li>
+                    <li>
+                      Graphics: we need people who can produce striking images, posters, etc.
+                    </li>
+                    <li>
+                      User Experience (UX): if you work in this area we could use your help.
+                    </li>
+                    <li>
+                      IT geeks who know some of these: VueJS/Bootstrap 4/CSS/PHP/Percona/nginx - find us on
+                      <a target="_blank" href="https://github.com/Freegle">GitHub</a>.
+                    </li>
+                  </ul>
+                  <p>
+                    You can reach us at <a href="mailto:volunteers@ilovefreegle.org">volunteers@ilovefreegle.org</a>.
+                  </p>
+                  <p>
+                    Or if you'd like to donate to our charity, you can do that <nuxt-link to="/donate">
+                      here
+                    </nuxt-link> or
+                    here:
+                  </p>
+                  <p>
+                    <a target="_blank" rel="noopener" href="https://freegle.in/paypalbutton">
+                      <span class="btn btn-primary btn-lg">
+                        <img alt="PayPal" class="img-thumbnail" src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg">
+                        &nbsp;Donate
+                      </span>
+                    </a>
+                  </p>
+                </template>
+              </Question>
+            </b-tab>
+
+            <b-tab>
+              <template v-slot:title>
+                <h4 class="ml-2 mr-2">
+                  Why Freegle?
+                </h4>
+              </template>
+
+              <p>
+                Here's why we think you should freegle!  You can also read about how our charity is structured, why we
+                do what we do, and so on at <nuxt-link to="/about">
+                  About Us
+                </nuxt-link>.
+              </p>
+              <p>
+                Click on a question to expand the answer.
+              </p>
+
+              <Question id="convince">
+                <template slot="title">
+                  <b>Go on, convince me!</b>
+                </template>
+                <template slot="content">
+                  <h5>Because it saves money, time and the planet - and it's free.</h5>
+                  <p>What, you need more reasons? Ok!</p>
+                  <ul>
+                    <li>
+                      It's easy and convenient when giving - someone will come and take your stuff away, and you don't
+                      have to pay the council.
+                    </li>
+                    <li>
+                      You're helping out someone nearby - either giving them something they need, or giving them the gift
+                      of free space.
+                    </li>
+                    <li>
+                      It's good for the environment - it saves resources, and sometimes people will upcycle things to
+                      give them a whole new life. And it might reduce your council's costs a bit.
+                    </li>
+                    <li>
+                      It's fun! You meet lovely people, and each time you freegle you make the world just that little bit
+                      better.
+                    </li>
+                  </ul>
+                  <p>
+                    Don't just take our word for it - read other freeglers' <nuxt-link to="/stories">
+                      stories
+                    </nuxt-link>...
+                  </p>
+                </template>
+              </Question>
+              <Question id="surely">
+                <template slot="title">
+                  <b>Surely nobody would want this?</b>
+                </template>
+                <template slot="content">
+                  <p>
+                    You might not want something - but someone else might.  How would you find out?  Offer it up on Freegle!
+                  </p>
+                  <p>
+                    If someone wants it, great!  If nobody does, do whatever you were going to do with it otherwise.
+                  </p>
+                  <p>
+                    Give it a try - all you have to lose is your unwanted stuff!
+                  </p>
+                </template>
+              </Question>
+              <Question id="freecycle">
+                <template slot="title">
+                  <b>What about Freecycle?</b>
+                </template>
+                <template slot="content">
+                  <p>
+                    Freegle originally grew out of Freecycle a decade ago, but we've developed in different ways.
+                    So what are the differences?
+                  </p>
+                  <ul>
+                    <li>
+                      Our site is much easier to use.  We would say that...but it's true.
+                    </li>
+                    <li>
+                      We have a nice mobile app.  Get it on
+                      <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct">Google Play</a> or
+                      <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&amp;mt=8">iTunes</a>.
+                    </li>
+                    <li>
+                      We have lots of lovely, local, friendly volunteers to help you out.
+                    </li>
+                    <li>
+                      We're based in the UK and run by volunteers, whereas Freecycle is based in the US and centrally
+                      run.
+                    </li>
+                    <p>
+                      Plenty of people use both, so whatever works for you.  And make sure you tell other people about
+                      us - so many people have never heard of the idea at all, and throw away usable stuff.
+                    </p>
+                  </ul>
+                </template>
+              </Question>
+              <Question id="gumtree">
+                <template slot="title">
+                  <b>What about Gumtree?</b>
+                </template>
+                <template slot="content">
+                  <p>
+                    Gumtree does have a freebies section, but it's mostly about selling.  We're not in it to make a profit
+                    (we're a charity) so we're all about helping people to give and get things for free.
+                  </p>
+                </template>
+              </Question>
+              <Question id="ebay">
+                <template slot="title">
+                  <b>Why not eBay it?</b>
+                </template>
+                <template slot="content">
+                  <p>
+                    You could - and if you need the money, go for it.  But it's quite a hassle to do that, and then
+                    you have to post it off.  Plus people are quite picky about what they're paying for.
+                  </p>
+                  <p>
+                    You can also help us when you sell on <b>eBay</b>.  Make sure you're signed in to eBay, then click
+                    below and <em>Save as favourite</em>.
+                  </p>
+                  <a href="http://www.ebay.co.uk/egw/ebay-for-charity/charity-profile/Freegle/74430" target="_blank" rel="noopener">
+                    <b-img fluid class="img-rounded img-responsive" src="/ebayvote.PNG" />
+                  </a>
+                </template>
+              </Question>
+              <Question id="trashnothing">
+                <template slot="title">
+                  <b>What about Trash Nothing?</b>
+                </template>
+                <template slot="content">
+                  <p>
+                    Most Freegle communities are on trash nothing, and we're friends with them - so you can use
+                    Freegle communities from there if you like.
+                  </p>
+                </template>
+              </Question>
+              <Question id="charityshops">
+                <template slot="title">
+                  <b>What about charity shops?</b>
+                </template>
+                <template slot="content">
+                  <p>
+                    Charity shops are great - they help charities raise funds they need.  But you don't always
+                    know what will sell and what won't, and there are some things they won't take.  And you might
+                    not have any near you.
+                  </p>
+                  <p>
+                    But plenty of folk use both - as long as you don't throw it away if someone else could use it.
+                  </p>
+                </template>
+              </Question>
+            </b-tab>
+          </b-tabs>
+        </b-card>
+
         <h1>
           Something else?
         </h1>
@@ -59,228 +423,27 @@
 </template>
 
 <script>
+import { TabsPlugin } from 'bootstrap-vue'
+import Vue from 'vue'
+import Question from '../components/Question'
 import buildHead from '@/mixins/buildHead.js'
-// TODO DESIGN Make this a bit prettier.
-const VueFaqAccordion = () => import('vue-faq-accordion')
+
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
 const ChatButton = () => import('~/components/ChatButton.vue')
 const NoticeMessage = () => import('~/components/NoticeMessage')
-
-// TODO MINOR It's not ideal that the links below are a rather than nuxt-link, because that causes a page load.
-// TODO MINOR Would be nice to be able to do a direct URL link into each of these.
+Vue.use(TabsPlugin)
 
 export default {
   components: {
+    Question,
     GroupRememberSelect,
-    VueFaqAccordion,
     ChatButton,
     NoticeMessage
   },
   mixins: [buildHead],
   data() {
     return {
-      contactGroupId: null,
-      myItems: [
-        {
-          title: 'How do I post a WANTED?',
-          value:
-            '            <p>If you\'re looking for something, use the <a href="/find">Find</a> feature.</p>\n' +
-            '            <p>\n' +
-            "              This will let you search what's currently on offer - and if you what you're looking for isn't\n" +
-            "              there, you'll see a button to post a WANTED to ask people for it.\n" +
-            '            </p>\n',
-          category: '<h4>Frequently Asked Questions</h4>'
-        },
-        {
-          title: "I'm getting too many emails",
-          value:
-            '            <p>\n' +
-            '              If you go to the <a href="/settings">Settings Page</a> then you can change how many mails you get in\n' +
-            '              your <em>Mail Settings</em>.\n' +
-            '            </p>\n' +
-            '\n' +
-            '            <p>If you want to pause mails for a while, you can do that there too.</p>\n',
-          category: '<h4>Frequently Asked Questions</h4>'
-        },
-        {
-          title: 'My OFFER has been TAKEN - what do I do?',
-          value:
-            '            <p>\n' +
-            "              If someone has collected your OFFER, then make sure you're logged in (click on <em>Sign in</em> on\n" +
-            '              the top left if you need to), then go to <a href="/myposts">My Posts</a>, find your post, and click this:\n' +
-            '            </p>\n' +
-            '            <button class="btn btn-success inline mb-1">\n' +
-            '              Mark as TAKEN\n' +
-            '            </button>\n' +
-            '            <p>\n' +
-            '              Similarly, if you have received your WANTED, go to <a href="/myposts">My Posts</a>, find your post,\n' +
-            '              and click this:\n' +
-            '            </p>\n' +
-            '            <button class="btn btn-success inline mb-1">\n' +
-            '              Mark as RECEIVED\n' +
-            '            </button>\n' +
-            '            <p>If you have multiple posts showing, you may need to click the post to expand it before the buttons appear.</p>',
-          category: '<h4>Frequently Asked Questions</h4>'
-        },
-        {
-          title: 'How can I repost something?',
-          value:
-            '            <p>If you\'ve not had any replies, this happens automatically now.  Have a look on the <a href="/">Home Page</a>, and click on the post.  You can see the time until the auto-repost is due on there, like this:</p>\n' +
-            '            <p>\n' +
-            '              <span class="success"> Auto-repost due in 2 days</span></span>\n' +
-            '            </p>\n' +
-            '            <p>If you have had replies, you need to use the <em>Repost</em> button in the same place.</p>\n',
-          category: '<h4>Frequently Asked Questions</h4>'
-        },
-        {
-          title: 'How do I change my email address?',
-          value:
-            '            <p>You can do this from your <a href="/settings">Settings</a>, in the <em>Personal Information</em> section.</p>\n',
-          category: '<h4>Frequently Asked Questions</h4>'
-        },
-        {
-          title: 'How do I leave/unsubscribe?',
-          value:
-            '            <p>If you\'d like to leave Freegle, then go <a href="/unsubscribe">here</a>.</p>\n',
-          category: '<h4>Frequently Asked Questions</h4>'
-        },
-        {
-          title: 'Where are your terms of use etc?',
-          value:
-            '            <p>Click to read our <a href="/terms">terms of use</a>, <a href="/privacy">privacy statement</a>, and <a href="/disclaimer">disclaimer</a>.</p>\n',
-          category: '<h4>Frequently Asked Questions</h4>'
-        },
-        {
-          title: 'What data do you store about me?',
-          value:
-            '            <p>You can see what data we store about you, and download it, <a href="/mydata">here</a>.</p>\n',
-          category: '<h4>Frequently Asked Questions</h4>'
-        },
-        {
-          title: 'How you can help!',
-          value:
-            '            <p>Freegle is run by volunteers - so if you can help, please get in touch!</p>\n' +
-            '            <p>If you\'d like to spread the word you can download a poster or ask for "business cards" to hand out:</p>\n' +
-            '            <p />' +
-            '            <a href="/spread">' +
-            '            <button class="btn-success">\n' +
-            '              Find out more\n' +
-            '            </button>\n' +
-            '            </a>\n' +
-            '            </p>\n' +
-            '            <p>If you would like to help run one of the local communities, which is a good place to start, please use the <em>Contact</em> button below.</p>\n' +
-            '            <p>You can also volunteer nationally.  We really need people in these areas:</p>\n' +
-            '            <ul>\n' +
-            "              <li>Publicity: if you can help locally or nationally, especially with councils, we'd love to hear from you.</li>\n" +
-            '              <li>Fundraising: we run on volunteers and donations, and just about get by, but we could do so much more with more.</li>\n' +
-            '              <li>Graphics: we need people who can produce striking images, posters, etc.</li>\n' +
-            '              <li>User Experience (UX): if you work in this area we could use your help.</li>\n' +
-            '              <li>IT geeks who know some of these: VueJS/Bootstrap 4/CSS/PHP/Percona/nginx - find us on <a target="_blank" href="https://github.com/Freegle">GitHub</a>.</li>\n' +
-            '            </ul>\n' +
-            '            <p>\n' +
-            '              You can reach us at <a href="mailto:volunteers@ilovefreegle.org">volunteers@ilovefreegle.org</a>.\n' +
-            '            </p><p>Or if you\'d like to donate to our charity, you can do that <a href="/donate">here</a> or here:</p>\n' +
-            '            <p>\n' +
-            '              <a target="_blank" rel="noopener" href="https://freegle.in/paypalbutton">\n' +
-            '                <span class="btn btn-primary btn-lg">\n' +
-            '                  <img alt="PayPal" class="img-thumbnail" src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg">\n' +
-            '                  &nbsp;Donate\n' +
-            '                </span>\n' +
-            '              </a>\n' +
-            '            </p>\n',
-          category: '<h4>Frequently Asked Questions</h4>'
-        },
-
-        {
-          title: 'Go on, convince me!',
-          value:
-            "<h3>Because it saves money, time and the planet - and it's free.</h3>\n" +
-            '<p>What, you need more reasons?  Ok!</p>\n' +
-            '<ul>\n' +
-            '    <li>\n' +
-            "        It's easy and convenient when giving - someone will come and take your stuff away, and you don't have to\n" +
-            '        pay the council.\n' +
-            '    </li>\n' +
-            '    <li>\n' +
-            "        You're helping out someone nearby - either giving them something they need, or giving them the gift of\n" +
-            '        free space.\n' +
-            '    </li>\n' +
-            '    <li>\n' +
-            "        It's good for the environment - it saves resources, and sometimes people will upcycle things to give them a whole\n" +
-            "        new life.  And it might reduce your council's costs a bit.\n" +
-            '    </li>\n' +
-            '    <li>\n' +
-            "        It's fun!  You meet lovely people, and each time you freegle you make the world just that little bit better.\n" +
-            '    </li>\n' +
-            '</ul>\n' +
-            '<p>Don\'t just take our word for it - read other freeglers\' <a href="/stories">stories</a>...</p>',
-          category: '<h4>Why Freegle?</h4>'
-        },
-        {
-          title: 'Surely nobody would want this?',
-          value:
-            '<p>You might not want something - but someone else might.  How would you find out?  Offer it up on Freegle!</p>',
-          category: '<h4>Why Freegle?</h4>'
-        },
-        {
-          title: 'Surely nobody would give away this?',
-          value:
-            "<p>Same thing - maybe you wouldn't gve it away, but someone else might.  Have a look.</p>",
-          category: '<h4>Why Freegle?</h4>'
-        },
-        {
-          title: 'What about Freecycle?',
-          value:
-            "<p>Freegle originally grew out of Freecycle, but we've developed in different ways.  So what are the differences?</p>\n" +
-            '<ul>\n' +
-            '    <li>\n' +
-            "        Our site is much easier to use.  We would say that...but it's true.\n" +
-            '    </li>\n' +
-            '    <li>\n' +
-            '        We have a nice mobile app.  Get it on <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct">\n' +
-            '        Google Play\n' +
-            '        </a> or\n' +
-            '        <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&amp;mt=8">iTunes</a>.\n' +
-            '    </li>\n' +
-            '    <li>\n' +
-            '        We have lots of lovely, local, friendly volunteers to help you out.\n' +
-            '    </li>\n' +
-            '    <li>\n' +
-            "        We're based in the UK and run by volunteers, whereas Freecycle is based in the US.\n" +
-            '    </li>\n' +
-            '</ul>\n',
-          category: '<h4>Why Freegle?</h4>'
-        },
-        {
-          title: 'What about Gumtree?',
-          value:
-            '<p>\n' +
-            "    Gumtree does have a freebies section, but it's mostly about selling.  We're not in it to make a profit\n" +
-            "    (we're a charity) so we're all about helping people to give and get things for free.\n" +
-            '</p>\n',
-          category: '<h4>Why Freegle?</h4>'
-        },
-        {
-          title: 'Why not eBay it?',
-          value:
-            "<p>You could - and if you need the money, go for it.  But it's quite a hassle to do that, and then " +
-            "you have to post it off.  Plus people are quite picky about what they're paying for.</p>",
-          category: '<h4>Why Freegle?</h4>'
-        },
-        {
-          title: 'What about Trash Nothing?',
-          value:
-            '<p>Most Freegle communities are on trash nothing - so you can use them from there if you like.</p>',
-          category: '<h4>Why Freegle?</h4>'
-        },
-        {
-          title: 'What about charity shops?',
-          value:
-            "<p>Charity shops are great - they help charities raise funds they need.  But you don't always know what will\n" +
-            "    sell and what won't, and there are some things they won't take.</p>",
-          category: '<h4>Why Freegle?</h4>'
-        }
-      ]
+      contactGroupId: null
     }
   },
   computed: {

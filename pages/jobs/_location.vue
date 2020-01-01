@@ -47,7 +47,6 @@
 <style scoped>
 </style>
 <script>
-// TODO MINOR Infinite scroll (needs server changes).
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 

@@ -115,8 +115,6 @@ export default {
             .then(() => {
               this.$router.push('/find/whatnext')
             })
-        } else {
-          // TODO MINOR Error handling
         }
       })
     }

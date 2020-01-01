@@ -1,2 +1,23 @@
-pm2 --force deploy production exec 'git checkout -- package-lock.json; git checkout -- static/sw.js; git checkout -- nuxt.config.js; npm rebuild node-sass --force'
-pm2 --force deploy production update --force
+#!/bin/bash
+# Script to deploy code in our environment.  See ecosystem.config.js for the details of the environment.
+
+if [ "$#" -ne 1 ]
+then
+ echo "This script takes one argument, production|development|debug"
+ exit 1
+fi
+
+# Check the environment
+ENV=$1
+
+if [[ "$ENV" != "production" && "$ENV" != "development" && "$ENV" != "debug" ]] 
+then
+  echo "Invalid environment."
+  exit 2
+fi
+
+# Sort out some things which have on occasion blocked deployment
+pm2 --force deploy $ENV exec 'git checkout -- package-lock.json; git checkout -- static/sw.js; git checkout -- nuxt.config.js; npm rebuild node-sass --force'
+
+# Now deploy.
+pm2 --force deploy $ENV update --force

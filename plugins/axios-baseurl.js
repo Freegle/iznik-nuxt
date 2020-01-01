@@ -3,19 +3,20 @@
  *
  *   server:
  *
- *     - set baseURL to API
+ *     - set baseURL to IZNIK_API, which is the actual host serving the API.
  *     - makes requests to the directly to the API
  *     - we don't need to worry about the CORS stuff
  *
  *   client:
  *
- *     - no baseURL set
+ *     - don't set baseURL
  *     - makes API requests to current hostname in browser
- *     - the backend that served us is responsible for proxying to the right place
+ *     - the backend that served us is responsible for proxying to the right
+ *       place via the proxy: in nuxt.config.
  *
  */
 export default function({ $axios }) {
   if (process.server) {
-    $axios.defaults.baseURL = process.env.API
+    $axios.defaults.baseURL = process.env.IZNIK_API
   }
 }

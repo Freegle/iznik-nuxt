@@ -119,8 +119,6 @@ export default {
                 params: results[0]
               })
             })
-        } else {
-          // TODO MINOR Error handling
         }
       })
     }

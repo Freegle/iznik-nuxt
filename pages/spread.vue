@@ -136,9 +136,6 @@ import ValidatingFormInput from '../components/ValidatingFormInput'
 import validationHelpers from '@/mixins/validationHelpers'
 import loginRequired from '@/mixins/loginRequired.js'
 
-// TODO MINOR Record who downloads a poster.  Then we can chase them later to find out if they put them up.
-// TODO DESIGN This page is a bit of a guddle.  Various different things on it, feels cluttered.
-
 export default {
   components: { ValidatingForm, ValidatingFormInput, PosterModal },
   mixins: [loginRequired, buildHead, validationMixin, validationHelpers],

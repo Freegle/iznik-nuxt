@@ -4,7 +4,6 @@
       <b-col cols="0" md="3" class="d-none d-md-block" />
       <b-col cols="12" md="6" class="p-0 text-center">
         <div v-if="error">
-          <!--          TODO MINOR This could look prettier.-->
           <h1>Sorry, that message isn't around any more.</h1>
           <div class="bg-white">
             <p>If it was an OFFER, it's probably been TAKEN. If it was a WANTED, it's probably been RECEIVED.</p>
@@ -115,8 +114,6 @@ export default {
       // We are on the client and loading a page which we have rendered on the server rather than navigated to on the
       // client side.  We will therefore have rendered it logged out.  Refetch the message so that we get more info,
       // which we may do when logged in.
-      //
-      // TODO NS MINOR This is a generic problem.  Let's have a chat about it.
       this.$store.dispatch('messages/fetch', {
         id: this.id
       })

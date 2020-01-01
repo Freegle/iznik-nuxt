@@ -1,5 +1,4 @@
 <template>
-  <!-- TODO DESIGN MINOR - Use a bootstrap container here rather than the grid/row layout -->
   <b-col>
     <b-row class="m-0">
       <b-col cols="0" md="3" />
@@ -29,21 +28,51 @@
           i.e. the item name, approximate location, the description and any photos. No personal details are made public
           unless in this information.
         </p>
-        <h2>Cookies</h2>
+        <h2>Cookies and Tracking</h2>
         <p>
-          Most modern websites use cookies and other ways of remembering things in your browser.  We do too.
-          If you turn these off, then we're afraid the site won't work.
+          You'll have seen lots of irritating popups on websites about consent for cookies.  We don't have one of those
+          because we don't store any data for logged out visitors which would require that consent.
         </p>
-        <p>
-          If you're not sure what a cookie is, read about them <a href="http://en.wikipedia.org/wiki/HTTP_cookie" target="_blank" rel="noopener">here</a>.
-        </p>
-        <h2>Advertising</h2>
-        <p>
-          We show jobs ads from <a href="http://adview.online/">AdView</a>, both on the site and in emails.
-          We'd prefer not to,
-          but we don't raise enough from donations alone to keep going.
-          We pass them your IP address, but not your personal information.
-        </p>
+        <p>Here are some technical details on what happens when you're logged out.</p>
+        <ul>
+          <li>
+            We store a session cookie.  That's strictly necessary for the site to function, and does not require
+            consent.
+          </li>
+          <li>
+            We store some information in your browser's local storage, because of the way the site works.  There's not
+            much in it except if you're trying to reply to a post.  That's like the "shopping cart" example
+            in the Information Commissioner's
+            <a href="https://ico.org.uk/for-organisations/guide-to-pecr/cookies-and-similar-technologies/" target="_blank" rel="noopener">advice</a>
+            and does not require consent.
+          </li>
+          <li>
+            We use <a href="https://analytics.google.com">Google Analytics</a> to collect traffic statistics.  This is
+            configured in a way that means it <a href="https://law.stackexchange.com/questions/28367/gdpr-whats-classed-as-an-opt-in-for-google-analytics-cookie-and-do-i-need-to">does not require consent</a>.
+            We have a data processing agreement with Google, we have enabled IP anonymization/masking, disabled
+            data sharing, and are not using any other google services in combination with Google Analytics.
+          </li>
+          <li>
+            We use Google and Facebook's code to allow you to log in.  They store a few third-party cookies, of their
+            own, but before you've logged in they don't know who you are.  If you are concerned about these, you can
+            install a privacy blocker such as <a href="https://www.ghostery.com/">Ghostery</a> and still use the site.
+          </li>
+        </ul>
+        <p>Once you log in, you're giving us consent to do the following.</p>
+        <ul>
+          <li>
+            We store more information in your local storage.  Part of this is so that you don't need to log in as often,
+            and the rest is to speed up the site (it's a cache).
+          </li>
+          <li>
+            We show jobs ads from <a href="http://adview.online/">AdView</a>, both on the site and in emails.
+            We'd prefer not to,
+            but we don't raise enough from <nuxt-link to="/donate">
+              donations
+            </nuxt-link> alone to keep going.
+            We pass them your IP address, but not your personal information.
+          </li>
+        </ul>
         <h2>Sentry</h2>
         <p>
           When something goes wrong on the website, we log it to a third party site call
@@ -54,7 +83,8 @@
         </p>
         <h2>Got questions?</h2>
         <p>
-          If you have questions, please <nuxt-link to="/help">
+          Privacy is a complicate and important area, which we take seriously.  If you have questions or concerns,
+          please <nuxt-link to="/help">
             contact us.
           </nuxt-link>
         </p>

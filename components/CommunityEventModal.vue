@@ -340,9 +340,6 @@
 </style>
 
 <script>
-// TODO DESIGN This layout is staid table nonsense.  Surely we can make it more appealing?
-// TODO MINOR Wherever we have b-img (throughout the site, not just here) we should have @brokenImage.  Bet we don't.
-// TODO NS Set date to start at 9am rather than midnight.  Default end date to later than start date.
 import { required, maxLength } from 'vuelidate/lib/validators'
 import cloneDeep from 'lodash.clonedeep'
 import { validationMixin } from 'vuelidate'

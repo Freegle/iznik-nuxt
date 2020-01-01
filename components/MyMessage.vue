@@ -192,10 +192,6 @@ img.attachment {
 }
 </style>
 <script>
-// TODO DESIGN This is better than the old version, but it's still not quite right, in terms of alignment and sizes
-// of things.
-// TODO EH When we click to expand, the visible text may be off the top or bottom of the screen.  Need to make it visible.
-// TODO MINOR There's a window we've seen in the past where the autorepost hasn't happened yet.  Should say 'soon' if autorepost time is in the past.
 import ResizeText from 'vue-resize-text'
 
 const OutcomeModal = () => import('./OutcomeModal')

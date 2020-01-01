@@ -337,7 +337,6 @@
               </b-row>
               <b-row>
                 <b-col>
-                  <!-- TODO MINOR This should ideally be a b-alert when it pops up but if the page loads with it already present then it should be a notice-message component -->
                   <b-alert v-if="me.phone" show variant="info">
                     <p>
                       It costs Freegle to send these - if you can, please:
@@ -638,7 +637,6 @@ export default {
         force: true
       })
 
-      // TODO MINOR This use of getters is wrong; me should be a computed property.
       const me = this.$store.getters['auth/user']
       this.me = me
     },
@@ -694,7 +692,6 @@ export default {
         })
 
         if (data && data.ret === 10) {
-          // TODO MINOR Get rid of this magic number.
           this.$refs.emailconfirm.show()
         }
       }

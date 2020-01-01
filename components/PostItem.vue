@@ -61,8 +61,6 @@ export default {
   },
   methods: {
     input(newValue) {
-      // TODO NS MINOR I've changed Autocomplete to emit the input event', but here we split it.  Is this
-      // bad code?
       if (!newValue.length) {
         this.$emit('cleared')
       } else {

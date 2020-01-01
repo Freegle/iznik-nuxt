@@ -1,9 +1,5 @@
 @import 'color-vars';
 
-// TODO MINOR It's lame to use !important to override Bootstrap CSS.  We should make our CSS more specific, e.g.
-// by taking advantage of everything being under the id=__nuxt element that gets inserted.
-
-// TODO MINOR Would be nice to use bootstrap mixins for breakpoints.  Also in NewsReply.
 $bootstrap-xs: 576px;
 $bootstrap-sm: 768px;
 $bootstrap-md: 992px;
@@ -126,7 +122,6 @@ body {
   width: 35px !important;
   height: 35px !important;
 
-  // TODO DESIGN Use bootstrap breakpoints
   @media (min-width: $bootstrap-sm) {
     width: 50px !important;
     height: 50px !important;
@@ -147,7 +142,6 @@ body {
   top: 20px;
   left: 33px;
 
-  // TODO DESIGN Use bootstrap breakpoints
   @media (min-width: $bootstrap-sm) {
     top: 29px;
     left: 44px;
@@ -158,7 +152,6 @@ body {
   width: 30px !important;
   height: 30px !important;
 
-  // TODO DESIGN Use bootstrap breakpoints
   @media (min-width: $bootstrap-sm)  {
     width: 35px !important;
     height: 35px !important;
@@ -169,7 +162,6 @@ body {
   width: 15px !important;
   height: 15px !important;
 
-  // TODO DESIGN Use bootstrap breakpoints
   @media (min-width: $bootstrap-sm) {
     width: 25px !important;
     height: 25px !important;
@@ -232,8 +224,6 @@ button {
   }
 }
 
-/* TODO DESIGN I tried adding "appear" transitions, e.g. for elements in chitchat, or messages.  But they then don't
-    show the computed emessage property.  Don't know why */
 .fade-enter-active, .fade-leave-active {
     transition: opacity 1s;
 }

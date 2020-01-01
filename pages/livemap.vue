@@ -30,7 +30,6 @@
           >
             <div v-for="m in messagesToShow" :key="'marker-' + m.id">
               <RichMarker v-if="m.group.lat || m.group.lng" :position="{ lat: m.group.lat, lng: m.group.lng }">
-                <!--                TODO DESIGN This could have more pizzazz.-->
                 <b-card variant="white" class="text-left" style="max-width: 300px" @click="openIt(m.message.id)">
                   <b-card-title>
                     <span class="small">{{ m.message.subject }}</span>

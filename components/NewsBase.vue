@@ -57,7 +57,6 @@ export default {
       event.target.src = '/static/defaultprofile.png'
     },
     share() {
-      // TODO MINOR We have this method in here, but we put the actual modal in the template of the extending component.  Is this right?
       this.newsfeedModal = this.newsfeed
       this.$nextTick(() => {
         this.$bvModal.show('newsShareModal-' + this.newsfeed.id)

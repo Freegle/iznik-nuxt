@@ -38,7 +38,6 @@ export default {
   },
   methods: {
     love() {
-      // TODO MINOR This is a bit sluggish to do.  Needs visual indication that something is happening.
       this.$store.dispatch('newsfeed/love', {
         id: this.newsfeed.id,
         threadhead: this.newsfeed.threadhead

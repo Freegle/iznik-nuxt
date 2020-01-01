@@ -212,9 +212,6 @@ const ProfileModal = () => import('./ProfileModal')
 const AvailabilityModal = () => import('~/components/AvailabilityModal')
 const AddressModal = () => import('~/components/AddressModal')
 
-// TODO DESIGN The maximise icon from font awesome is not obvious.
-// TODO MINOR This has a lot of code overlap with ChatPane.  Shame on me.
-
 export default {
   components: {
     InfiniteLoading,
@@ -358,6 +355,11 @@ export default {
       id: this.id
     })
     const fetched = this.$store.getters['chats/get'](this.id)
+
+    // Clear the context - infinite scroll will then pick up the messages.
+    await this.$store.dispatch('chatmessages/clearContext', {
+      chatid: this.id
+    })
 
     if (!fetched) {
       // This is an invalid chatid.  Remove it to stop it causing problems.

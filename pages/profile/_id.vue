@@ -174,8 +174,6 @@
 }
 </style>
 <script>
-// TODO DESIGN The about me section needs nice big quotes round it.
-// TODO DESIGN This page is dull.  We could add newsfeed activity but most users won't have any.  What can we do?
 import twem from '~/assets/js/twem'
 import loginOptional from '@/mixins/loginOptional.js'
 

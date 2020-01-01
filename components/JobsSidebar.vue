@@ -21,8 +21,6 @@
   </div>
 </template>
 <script>
-// TODO DESIGN This sidebar is slow to appear, because the data comes from a third party website.  Should we have
-// a slide transition or something to make its appearance less disruptive?
 import Job from './Job'
 
 export default {

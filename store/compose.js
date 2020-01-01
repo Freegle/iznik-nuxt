@@ -185,9 +185,6 @@ export const actions = {
     // In earlier client versions, we recovered existing drafts from the server in case of interruption by user or errors.
     // But we don't need to do that, because our store remembers the contents of the message.  Orphaned drafts will
     // be pruned by the server.
-    //
-    // TODO MINOR Once the old client goes and we only have one set of code to worry about, we should simplify this into a
-    // single server call.
     const promises = []
     const results = []
     const self = this
