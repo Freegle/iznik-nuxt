@@ -328,3 +328,11 @@ legend {
   width: 0;
   height: 0;
 }
+
+.sidebar__wrapper {
+  height: calc(100vh - 100px);
+
+  .card-body .card {
+    border-radius: unset;
+  }
+}

@@ -28,10 +28,6 @@ export default {
 </script>
 
 <style scoped>
-.sidebar__wrapper {
-  height: calc(100vh - 100px);
-}
-
 .social-media__wrapper {
   margin-top: auto;
 }
