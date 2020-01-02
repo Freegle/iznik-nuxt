@@ -17,6 +17,9 @@
           <span v-else class="align-middle">
             {{ reply.user.displayname }}
           </span>
+          <span class="align-middle text-muted">
+            last wrote to you:
+          </span>
         </span>
       </b-col>
       <b-col cols="6">
