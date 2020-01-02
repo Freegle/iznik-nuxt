@@ -8,11 +8,11 @@ function extractQueryStringParams(url) {
     // http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
     const pl = /\+/g  // Regex for replacing addition symbol with a space
     const search = /([^&=]+)=?([^&]*)/g
-    const decode = s => { return decodeURIComponent(s.replace(pl, " ")) }
+    const decode = s => { return decodeURIComponent(s.replace(pl, ' ')) }
     urlParams = {}
     let match
     while ((match = search.exec(qs))) {
-      urlParams[decode(match[1])] = decode(match[2])
+      urlParams[decode(match[1]).replace(/\./g, "_")] = decode(match[2])
     }
   }
   return urlParams

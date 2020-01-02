@@ -476,7 +476,8 @@ export default {
       urlParams.yahoologin = true
       if (process.env.IS_APP) { // CC
         // urlParams.returnto = 'https://fdnuxt.ilovefreegle.org/'
-        urlParams.host = 'https://www.ilovefreegle.org'
+        // urlParams.host = 'https://www.ilovefreegle.org'
+        urlParams.host = 'https://fdnuxt.ilovefreegle.org'
       } else {
         urlParams.returnto = document.URL
         urlParams.host =
@@ -504,6 +505,7 @@ export default {
                     urlParams = ret
                     if (urlParams.yahoologin) {
                       console.log('loginYahoo D')
+                      console.log(urlParams)
                       this.$axios
                         .post(process.env.API + '/session', urlParams)
                         .then(result => {
