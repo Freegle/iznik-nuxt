@@ -119,6 +119,11 @@ export default {
                 params: results[0]
               })
             })
+        } else {
+          // Was probably already submitted
+          this.$router.push({
+            name: 'give-whatnext'
+          })
         }
       })
     }
