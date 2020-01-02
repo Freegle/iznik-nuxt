@@ -32,6 +32,5 @@ export default {
 .sidebar__item {
   flex: 0 1 50%;
   overflow-y: auto;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.125);
 }
 </style>
