@@ -308,14 +308,8 @@ export default {
 
     // For some reason we can't capture emitted events from the outcome modal so use root as a bus.
     this.$root.$on('outcome', groupid => {
-      console.log(
-        'Outcome',
-        groupid,
-        this.$refs,
-        this.$refs.askmodal !== undefined
-      )
       this.donationGroup = groupid
-      setTimeout(this.ask, 500)
+      this.ask()
     })
   },
   methods: {
@@ -387,12 +381,11 @@ export default {
       this.$refs.availabilitymodal.show()
     },
     ask(groupid) {
-      console.log('Ask', this, this.$refs.askmodal !== undefined)
       if (this.$refs.askmodal) {
-        console.log('Ask donation')
         this.$refs.askmodal.show()
       } else {
-        console.log("Don't ask, no ref")
+        // This would be a bug.  We've seen it during dev and so we have the if test to prevent client-visible errors.
+        console.error("Don't ask for donation, no ref")
       }
     }
   },

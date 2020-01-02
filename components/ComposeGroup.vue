@@ -11,8 +11,13 @@ export default {
     }
   },
   computed: {
-    group() {
-      return this.$store.getters['compose/getGroup']
+    group: {
+      get() {
+        return this.$store.getters['compose/getGroup']
+      },
+      set(value) {
+        this.$store.dispatch('compose/setGroup', value)
+      }
     },
     postcode() {
       const pc = this.$store.getters['compose/getPostcode']
