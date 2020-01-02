@@ -29,12 +29,9 @@ export default {
 </script>
 
 <style scoped>
-.sidebar__wrapper {
-  height: calc(100vh - 100px);
-}
-
 .sidebar__item {
   flex: 0 1 50%;
   overflow-y: auto;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.125);
 }
 </style>

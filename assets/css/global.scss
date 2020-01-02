@@ -316,3 +316,11 @@ legend {
 .pac-container {
   z-index: 10000;
 }
+
+.sidebar__wrapper {
+  height: calc(100vh - 100px);
+
+  .card-body .card {
+    border-radius: unset;
+  }
+}
