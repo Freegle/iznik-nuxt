@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import dayjs from 'dayjs'
 
 export const state = () => ({
   // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
@@ -13,9 +14,11 @@ export const mutations = {
 
   setList(state, list) {
     state.list = {}
+    const now = dayjs()
 
     if (list) {
       for (const item of list) {
+        item.daysago = now.diff(dayjs(item.date), 'days')
         Vue.set(state.list, item.id, item)
       }
     }
