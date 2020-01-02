@@ -469,14 +469,14 @@ export default {
 
       // We want to post to the server to do the login there.  We pass all the URL
       // parameters we have, which include the OpenID response.
-      const urlParams = {}
+      let urlParams = {}
       while ((match = search.exec(query)))
         urlParams[decode(match[1])] = decode(match[2])
 
       urlParams.yahoologin = true
       if (process.env.IS_APP) { // CC
-        urlParams.returnto = 'https://fdnuxt.ilovefreegle.org/'
-        urlParams.host = 'https://fdnuxt.ilovefreegle.org'
+        // urlParams.returnto = 'https://fdnuxt.ilovefreegle.org/'
+        urlParams.host = 'https://www.ilovefreegle.org'
       } else {
         urlParams.returnto = document.URL
         urlParams.host =
@@ -497,10 +497,35 @@ export default {
             //
             if (process.env.IS_APP) { // CC
               console.log('loginYahoo B')
-              appYahooLogin(ret.redirect)
+              urlParams = { status: 'init' }
+              appYahooLogin(ret.redirect,
+                  ret => { // arrow means .this. is correct
+                    console.log('loginYahoo C', ret)
+                    urlParams = ret
+                    if (urlParams.yahoologin) {
+                      console.log('loginYahoo D')
+                      this.$axios
+                        .post(process.env.API + '/session', urlParams)
+                        .then(result => {
+                          const ret = result.data
+                          if (ret.ret === 0) {
+                            // We are logged in.  Get the logged in user
+                            console.log('Logged in')
+                            this.$store.dispatch('auth/fetchUser')
+                            self.pleaseShowModal = false
+                          } else {
+                            console.error('Server login failed', ret)
+                            this.socialLoginError = 'Yahoo login failed: ' + ret.ret
+                          }
+                        })
+                    } else {
+                      this.socialLoginError = 'Yahoo login failed: ' + urlParams.status
+                    }
+                  }
+              )
               return
             }
-            console.log('loginYahoo C')
+            console.log('loginYahoo Z')
             // The URL returned by the server has its hostname in it, but perhaps we are running on a different
             // host, especially when developing.
             let url = ret.redirect
