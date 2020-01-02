@@ -99,9 +99,11 @@ export default {
 
     valid() {
       const messages = Object.values(this.$store.getters['compose/getMessages'])
-      let valid = true
+      let valid = false
 
-      if (messages) {
+      if (messages && messages.length) {
+        valid = true
+
         for (const message of messages) {
           if (this.ids.indexOf(message.id) !== -1 || !message.id) {
             const atts = Object.values(
