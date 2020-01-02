@@ -94,7 +94,6 @@
         </b-button>
       </template>
     </b-modal>
-    <DonationAskModal ref="askmodal" :groupid="groupid" />
   </div>
 </template>
 
@@ -108,12 +107,10 @@ option {
 
 <script>
 import Ratings from './Ratings'
-import DonationAskModal from './DonationAskModal'
 
 export default {
   components: {
-    Ratings,
-    DonationAskModal
+    Ratings
   },
   props: {
     message: {
@@ -164,6 +161,7 @@ export default {
 
       return options
     },
+
     groupid() {
       let ret = null
 
@@ -215,9 +213,9 @@ export default {
     },
 
     hide() {
+      // We're having trouble capturing events from this modal, so use root as a bus.
+      this.$root.$emit('outcome', this.groupid)
       this.showModal = false
-      console.log('Hide, ask', this.$refs)
-      this.$refs.askmodal.show()
     },
 
     changeType() {

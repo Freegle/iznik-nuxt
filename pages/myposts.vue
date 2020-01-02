@@ -183,6 +183,7 @@
       </b-col>
     </b-row>
     <AvailabilityModal v-if="me" ref="availabilitymodal" :thisuid="me.id" />
+    <DonationAskModal ref="askmodal" :groupid="donationGroup" />
   </b-container>
 </template>
 
@@ -194,6 +195,7 @@ const MyMessage = () => import('~/components/MyMessage.vue')
 const SidebarLeft = () => import('~/components/SidebarLeft')
 const SidebarRight = () => import('~/components/SidebarRight')
 const AvailabilityModal = () => import('~/components/AvailabilityModal')
+const DonationAskModal = () => import('~/components/DonationAskModal')
 
 export default {
   components: {
@@ -201,6 +203,7 @@ export default {
     MyMessage,
     SidebarLeft,
     SidebarRight,
+    DonationAskModal,
     AvailabilityModal
   },
   mixins: [loginRequired, buildHead],
@@ -214,7 +217,8 @@ export default {
       showOldWanteds: false,
       expand: false,
       removingSearch: null,
-      removedSearch: null
+      removedSearch: null,
+      donationGroup: null
     }
   },
   computed: {
@@ -301,6 +305,18 @@ export default {
       // Fetch the chats.  We need this so that we can find chats with unread messages which relate to our own posts
       await this.$store.dispatch('chats/listChats')
     })
+
+    // For some reason we can't capture emitted events from the outcome modal so use root as a bus.
+    this.$root.$on('outcome', groupid => {
+      console.log(
+        'Outcome',
+        groupid,
+        this.$refs,
+        this.$refs.askmodal !== undefined
+      )
+      this.donationGroup = groupid
+      setTimeout(this.ask, 500)
+    })
   },
   methods: {
     async loadMore() {
@@ -369,6 +385,15 @@ export default {
     },
     availability() {
       this.$refs.availabilitymodal.show()
+    },
+    ask(groupid) {
+      console.log('Ask', this, this.$refs.askmodal !== undefined)
+      if (this.$refs.askmodal) {
+        console.log('Ask donation')
+        this.$refs.askmodal.show()
+      } else {
+        console.log("Don't ask, no ref")
+      }
     }
   },
   head() {
