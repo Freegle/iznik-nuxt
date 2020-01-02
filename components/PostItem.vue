@@ -82,6 +82,9 @@ export default {
     },
     select(pc) {
       this.$emit('selected', pc)
+    },
+    set(value) {
+      this.$refs.autocomplete.setValue(value)
     }
   }
 }
