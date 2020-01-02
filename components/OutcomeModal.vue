@@ -95,6 +95,7 @@
       </template>
     </b-modal>
     <DonationAskModal ref="askmodal" :groupid="groupid" />
+    <RateAppModal ref="rateappmodal" />
   </div>
 </template>
 
@@ -109,11 +110,13 @@ option {
 <script>
 import Ratings from './Ratings'
 import DonationAskModal from './DonationAskModal'
+import RateAppModal from './RateAppModal' // CC
 
 export default {
   components: {
     Ratings,
-    DonationAskModal
+    DonationAskModal,
+    RateAppModal
   },
   props: {
     message: {
@@ -217,7 +220,12 @@ export default {
     hide() {
       this.showModal = false
       console.log('Hide, ask', this.$refs)
-      this.$refs.askmodal.show()
+      if (process.env.IS_APP && !window.localStorage.getItem('rateappnotagain')) { // CC
+        console.log('OutcomeModal showing RateApp...')
+        this.$refs.rateappmodal.show()
+      } else {
+        this.$refs.askmodal.show()
+      }
     },
 
     changeType() {

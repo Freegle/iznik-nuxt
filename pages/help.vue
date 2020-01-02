@@ -419,7 +419,7 @@
       <b-col cols="0" md="3" />
     </b-row>
     <client-only>
-      <RateAppModal ref="modal" />
+      <RateAppModal ref="rateappmodal" />
     </client-only>
   </div>
 </template>
@@ -434,7 +434,7 @@ const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
 const ChatButton = () => import('~/components/ChatButton.vue')
 const NoticeMessage = () => import('~/components/NoticeMessage')
 Vue.use(TabsPlugin)
-const RateAppModal = () => import('~/components/RateAppModal')
+const RateAppModal = () => import('~/components/RateAppModal') // CC
 
 export default {
   components: {
@@ -452,9 +452,8 @@ export default {
   },
   methods: { // CC
     showRateMe() {
-      window.localStorage.removeItem('rateappnotagain')
-      console.log('rateApp: REMOVE rateappnotagain')
-      this.$refs.modal.show()
+      // window.localStorage.removeItem('rateappnotagain')
+      this.$refs.rateappmodal.show()
     }
   },
   computed: {
