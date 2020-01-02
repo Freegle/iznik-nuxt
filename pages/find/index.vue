@@ -115,29 +115,36 @@ export default {
     getLocation() {},
     postcodeSelect(pc) {
       this.postcode = pc
-      this.$store.dispatch('compose/setPostcode', this.postcode)
+      const currentpc = this.$store.getters['compose/getPostcode']
 
-      // If we don't have a group currently which is in the list near this postcode, choose the closest.  That
-      // allows people to select further away groups if they wish.
-      const groupid = this.$store.getters['compose/getGroup']
+      if (!currentpc || currentpc.id !== pc.id) {
+        // The postcode has genuinely changed or been set for the first time.  We don't want to go through this code
+        // if the postcode is the same, otherwise we'll reset the group (which might have been changed from the first,
+        // for example in the give flow if you choose a different group.
+        this.$store.dispatch('compose/setPostcode', this.postcode)
 
-      if (pc && pc.groupsnear) {
-        let found = false
-        for (const group of pc.groupsnear) {
-          if (parseInt(group.id) === parseInt(groupid)) {
-            found = true
+        // If we don't have a group currently which is in the list near this postcode, choose the closest.  That
+        // allows people to select further away groups if they wish.
+        const groupid = this.$store.getters['compose/getGroup']
+
+        if (pc && pc.groupsnear) {
+          let found = false
+          for (const group of pc.groupsnear) {
+            if (parseInt(group.id) === parseInt(groupid)) {
+              found = true
+            }
           }
+
+          let group
+
+          if (!found) {
+            group = pc.groupsnear[0].id
+          } else {
+            group = groupid
+          }
+
+          this.$store.dispatch('compose/setGroup', group)
         }
-
-        let group
-
-        if (!found) {
-          group = pc.groupsnear[0].id
-        } else {
-          group = groupid
-        }
-
-        this.$store.dispatch('compose/setGroup', group)
       }
     },
     postcodeClear() {

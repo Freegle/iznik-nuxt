@@ -440,8 +440,7 @@ export default {
       // Reset body height.  Seems to break unless we wait for a bit.
       setTimeout(() => {
         let body = document.getElementsByTagName("body")[0];
-        body.style.minHeight = ''
-        body.style.overflowY = ''
+        body.classlist.remove('forcescroll')
       }, 500)
 
       // Callback Event
@@ -460,7 +459,7 @@ export default {
       // - make sure we have room to scroll
       // - scroll this input to the top
       let body = document.getElementsByTagName("body")[0];
-      body.style.minHeight = '200vh'
+      body.classList.add('forcescroll')
       this.$refs.input.scrollTop = 0
       body.style.overflowY = 'hidden'
 

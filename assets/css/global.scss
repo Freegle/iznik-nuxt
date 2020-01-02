@@ -317,6 +317,18 @@ legend {
   z-index: 10000;
 }
 
+.forcescroll {
+  overflow-y: scroll !important;
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important;  /* Internet Explorer 10+ */
+  min-height: 200vh !important;
+}
+
+.forcescroll::-webkit-scrollbar { /* WebKit */
+  width: 0;
+  height: 0;
+}
+
 .sidebar__wrapper {
   height: calc(100vh - 100px);
 
