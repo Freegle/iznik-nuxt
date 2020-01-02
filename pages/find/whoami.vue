@@ -115,6 +115,11 @@ export default {
             .then(() => {
               this.$router.push('/find/whatnext')
             })
+        } else {
+          // Was probably already submitted
+          this.$router.push({
+            name: 'give-whatnext'
+          })
         }
       })
     }

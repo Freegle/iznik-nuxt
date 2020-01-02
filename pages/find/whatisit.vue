@@ -99,9 +99,11 @@ export default {
 
     valid() {
       const messages = Object.values(this.$store.getters['compose/getMessages'])
-      let valid = true
+      let valid = false
 
-      if (messages) {
+      if (messages && messages.length) {
+        valid = true
+
         for (const message of messages) {
           if (this.ids.indexOf(message.id) !== -1 || !message.id) {
             const atts = Object.values(
@@ -141,27 +143,34 @@ export default {
       })
     },
     postcodeSelect(pc) {
-      this.$store.dispatch('compose/setPostcode', pc)
+      const currentpc = this.$store.getters['compose/getPostcode']
 
-      // If we don't have a group currently which is in the list near this postcode, choose the closest.  That
-      // allows people to select further away groups if they wish.
-      const groupid = this.$store.getters['compose/getGroup']
+      if (!currentpc || currentpc.id !== pc.id) {
+        // The postcode has genuinely changed or been set for the first time.  We don't want to go through this code
+        // if the postcode is the same, otherwise we'll reset the group (which might have been changed from the first,
+        // for example in the give flow if you choose a different group.
+        this.$store.dispatch('compose/setPostcode', pc)
 
-      if (pc && pc.groupsnear) {
-        let found = false
-        for (const group of pc.groupsnear) {
-          if (parseInt(group.id) === parseInt(groupid)) {
-            found = true
+        // If we don't have a group currently which is in the list near this postcode, choose the closest.  That
+        // allows people to select further away groups if they wish.
+        const groupid = this.$store.getters['compose/getGroup']
+
+        if (pc && pc.groupsnear) {
+          let found = false
+          for (const group of pc.groupsnear) {
+            if (parseInt(group.id) === parseInt(groupid)) {
+              found = true
+            }
           }
-        }
 
-        if (!found) {
-          this.group = pc.groupsnear[0].id
-        } else {
-          this.group = groupid
-        }
+          if (!found) {
+            this.group = pc.groupsnear[0].id
+          } else {
+            this.group = groupid
+          }
 
-        this.$store.dispatch('compose/setGroup', this.group)
+          this.$store.dispatch('compose/setGroup', this.group)
+        }
       }
     },
     next() {

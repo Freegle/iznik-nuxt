@@ -94,8 +94,6 @@
         </b-button>
       </template>
     </b-modal>
-    <DonationAskModal ref="askmodal" :groupid="groupid" />
-    <RateAppModal ref="rateappmodal" />
   </div>
 </template>
 
@@ -109,14 +107,10 @@ option {
 
 <script>
 import Ratings from './Ratings'
-import DonationAskModal from './DonationAskModal'
-import RateAppModal from './RateAppModal' // CC
 
 export default {
   components: {
-    Ratings,
-    DonationAskModal,
-    RateAppModal
+    Ratings
   },
   props: {
     message: {
@@ -167,6 +161,7 @@ export default {
 
       return options
     },
+
     groupid() {
       let ret = null
 
@@ -218,14 +213,9 @@ export default {
     },
 
     hide() {
+      // We're having trouble capturing events from this modal, so use root as a bus.
+      this.$root.$emit('outcome', this.groupid)
       this.showModal = false
-      console.log('Hide, ask', this.$refs)
-      if (process.env.IS_APP && !window.localStorage.getItem('rateappnotagain')) { // CC
-        console.log('OutcomeModal showing RateApp...')
-        this.$refs.rateappmodal.show()
-      } else {
-        this.$refs.askmodal.show()
-      }
     },
 
     changeType() {

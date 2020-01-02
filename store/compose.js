@@ -190,6 +190,8 @@ export const actions = {
     const self = this
     const messages = Object.entries(state.messages)
     let steps = 0
+
+    console.log('Submit', messages)
     for (const message of messages) {
       if (message.id < 0) {
         // 1) Create draft 2) Submit
@@ -200,11 +202,22 @@ export const actions = {
       }
     }
 
+    console.log('Steps', steps)
     // Add an extra step for below to show we've started.
     commit('initProgress', steps + 1)
 
     for (const [id, message] of messages) {
+      console.log('Submit message'.message)
       if (message.submitted) {
+        if (message.id < 0) {
+          commit('incProgress')
+          commit('incProgress')
+        } else {
+          commit('incProgress')
+          commit('incProgress')
+          commit('incProgress')
+        }
+
         continue
       }
 
@@ -326,7 +339,9 @@ export const actions = {
       promises.push(promise)
     }
 
+    console.log('Wait for', promises)
     await Promise.all(promises)
+    console.log('Done')
     commit('clear')
 
     return results

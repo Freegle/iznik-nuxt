@@ -183,6 +183,8 @@
       </b-col>
     </b-row>
     <AvailabilityModal v-if="me" ref="availabilitymodal" :thisuid="me.id" />
+    <DonationAskModal ref="askmodal" :groupid="donationGroup" />
+    <RateAppModal ref="rateappmodal" :groupid="donationGroup" />
   </b-container>
 </template>
 
@@ -194,6 +196,8 @@ const MyMessage = () => import('~/components/MyMessage.vue')
 const SidebarLeft = () => import('~/components/SidebarLeft')
 const SidebarRight = () => import('~/components/SidebarRight')
 const AvailabilityModal = () => import('~/components/AvailabilityModal')
+const DonationAskModal = () => import('~/components/DonationAskModal')
+const RateAppModal = () => import('~/components/RateAppModal')
 
 export default {
   components: {
@@ -201,7 +205,9 @@ export default {
     MyMessage,
     SidebarLeft,
     SidebarRight,
-    AvailabilityModal
+    DonationAskModal,
+    AvailabilityModal,
+    RateAppModal
   },
   mixins: [loginRequired, buildHead],
   data() {
@@ -214,7 +220,8 @@ export default {
       showOldWanteds: false,
       expand: false,
       removingSearch: null,
-      removedSearch: null
+      removedSearch: null,
+      donationGroup: null
     }
   },
   computed: {
@@ -301,6 +308,12 @@ export default {
       // Fetch the chats.  We need this so that we can find chats with unread messages which relate to our own posts
       await this.$store.dispatch('chats/listChats')
     })
+
+    // For some reason we can't capture emitted events from the outcome modal so use root as a bus.
+    this.$root.$on('outcome', groupid => {
+      this.donationGroup = groupid
+      this.ask()
+    })
   },
   methods: {
     async loadMore() {
@@ -369,6 +382,16 @@ export default {
     },
     availability() {
       this.$refs.availabilitymodal.show()
+    },
+    ask(groupid) {
+      if (process.env.IS_APP && !window.localStorage.getItem('rateappnotagain')) { // CC
+        this.$refs.rateappmodal.show()
+      } else if (this.$refs.askmodal) {
+        this.$refs.askmodal.show()
+      } else {
+        // This would be a bug.  We've seen it during dev and so we have the if test to prevent client-visible errors.
+        console.error("Don't ask for donation, no ref")
+      }
     }
   },
   head() {
