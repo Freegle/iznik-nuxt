@@ -1,0 +1,55 @@
+{
+  "name": "org.ilovefreegle.iphone",
+  "displayName": "Nuxt",
+  "version": "1.0.0",
+  "description": "A sample Apache Cordova application that responds to the deviceready event.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Apache Cordova Team",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "cordova-custom-config": "^5.1.0",
+    "cordova-ios": "^5.1.1",
+    "cordova-plugin-device": "^2.0.3",
+    "cordova-plugin-googleplus": "git+https://github.com/EddyVerbruggen/cordova-plugin-googleplus.git",
+    "cordova-plugin-inappbrowser": "^3.1.0",
+    "cordova-plugin-ios-camera-permissions": "1.2.0",
+    "cordova-plugin-network-information": "^2.0.2",
+    "cordova-plugin-splashscreen": "^5.0.3",
+    "cordova-plugin-x-socialsharing": "^5.6.3",
+    "es6-promise-plugin": "^4.2.2",
+    "phonegap-plugin-push": "^2.3.0"
+  },
+  "devDependencies": {
+    "cordova-plugin-whitelist": "^1.3.4"
+  },
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-whitelist": {},
+      "cordova-custom-config": {},
+      "cordova-plugin-device": {},
+      "cordova-plugin-inappbrowser": {},
+      "cordova-plugin-network-information": {},
+      "cordova-plugin-splashscreen": {},
+      "cordova-plugin-x-socialsharing": {
+        "PHOTO_LIBRARY_ADD_USAGE_DESCRIPTION": "This app requires photo library access to function properly.",
+        "PHOTO_LIBRARY_USAGE_DESCRIPTION": "This app requires photo library access to function properly."
+      },
+      "phonegap-plugin-push": {},
+      "cordova-plugin-ios-camera-permissions": {
+        "CAMERA_USAGE_DESCRIPTION": "So you can take a photo of an item to offer",
+        "MICROPHONE_USAGE_DESCRIPTION": "So you can say what you are looking for",
+        "PHOTOLIBRARY_ADD_USAGE_DESCRIPTION": "So you can send a photo of an item to offer",
+        "PHOTOLIBRARY_USAGE_DESCRIPTION": "So you can save a photo of an item to offer"
+      },
+      "cordova-plugin-googleplus": {
+        "REVERSED_CLIENT_ID": "com.googleusercontent.apps.423761283916-mfrb9i0ntt1omq2knit8j49agnhje648"
+      }
+    },
+    "platforms": [
+      "ios"
+    ]
+  }
+}
