@@ -77,4 +77,14 @@ export default {
     height: 50px;
   }
 }
+
+.profile--xl {
+  width: 100px;
+  height: 100px;
+
+  @include media-breakpoint-up(md) {
+    width: 100px;
+    height: 100px;
+  }
+}
 </style>
