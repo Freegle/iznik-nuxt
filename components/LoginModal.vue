@@ -475,9 +475,8 @@ export default {
 
       urlParams.yahoologin = true
       if (process.env.IS_APP) { // CC
-        // urlParams.returnto = 'https://fdnuxt.ilovefreegle.org/'
-        // urlParams.host = 'https://www.ilovefreegle.org'
-        urlParams.host = 'https://fdnuxt.ilovefreegle.org'
+        // Not needed: urlParams.returnto =
+        urlParams.host = 'https://www.ilovefreegle.org'
       } else {
         urlParams.returnto = document.URL
         urlParams.host =
@@ -497,14 +496,11 @@ export default {
             // We are not logged in - we need to redirect to Yahoo
             //
             if (process.env.IS_APP) { // CC
-              console.log('loginYahoo B')
               urlParams = { status: 'init' }
               appYahooLogin(ret.redirect,
                   ret => { // arrow means .this. is correct
-                    console.log('loginYahoo C', ret)
                     urlParams = ret
                     if (urlParams.yahoologin) {
-                      console.log('loginYahoo D')
                       console.log(urlParams)
                       this.$axios
                         .post(process.env.API + '/session', urlParams)
@@ -527,7 +523,6 @@ export default {
               )
               return
             }
-            console.log('loginYahoo Z')
             // The URL returned by the server has its hostname in it, but perhaps we are running on a different
             // host, especially when developing.
             let url = ret.redirect

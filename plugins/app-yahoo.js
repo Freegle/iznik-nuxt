@@ -12,13 +12,11 @@ function extractQueryStringParams(url) {
     urlParams = {}
     let match
     while ((match = search.exec(qs))) {
-      urlParams[decode(match[1]).replace(/\./g, "_")] = decode(match[2])
+      urlParams[decode(match[1]).replace(/\./g, "_")] = decode(match[2]) // Convert period to underscore to get through to openid.php
     }
   }
   return urlParams
 }
-
-let tryingYahooLogin = false
 
 export function appYahooLogin(yauthurl, callback) {
   const completeLoginCallback = callback
@@ -37,8 +35,6 @@ export function appYahooLogin(yauthurl, callback) {
     console.log('yloadstart: ', e)
 
     if (e && e.url) {
-      console.log('yloadstart url: ' + e.url)
-
       // Catch redirect after auth back to ilovefreegle
       if (
         e.url.indexOf('https://www.ilovefreegle.org/') === 0 ||
@@ -46,16 +42,13 @@ export function appYahooLogin(yauthurl, callback) {
         e.url.indexOf('https://fdnuxt.ilovefreegle.org/') === 0 ||
         e.url.indexOf('https://fdapidbg.ilovefreegle.org/') === 0
       ) {
-        console.log('yloadstart redirected back')
         authWindow.close()
         const urlParams = extractQueryStringParams(e.url)
         if (urlParams) {
           authGiven = true
           urlParams.yahoologin = true
-          console.log(urlParams)
 
           // Try logging in again at FD
-          console.log('Got URL params', urlParams)
           completeLoginCallback(urlParams)
         }
       }
@@ -68,6 +61,5 @@ export function appYahooLogin(yauthurl, callback) {
       console.log('Yahoo permission not given or failed')
       completeLoginCallback({ status: 'Yahoo permission not given or failed' })
     }
-    tryingYahooLogin = false
   })
 }
