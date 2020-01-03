@@ -16,16 +16,10 @@
                 width="70px"
                 @error.native="brokenImage"
               />
-              <b-img-lazy
-                rounded="circle"
-                thumbnail
-                class="profilesm p-0 mb-1 inline mr-1 mt-1"
-                alt="Profile picture"
-                title="Profile"
-                :src="otheruser.profile.turl"
-                @error.native="brokenImage"
-              /> <span class="small black"><b>{{ otheruser.displayname }}</b> has asked about:</span>
-              <br><h4>
+              <profile-image :image="otheruser.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
+              <span class="small black"><b>{{ otheruser.displayname }}</b> has asked about:</span>
+              <br>
+              <h4>
                 {{ refmsg.subject }}
               </h4>
             </b-card-title>
@@ -100,16 +94,20 @@
     </b-row>
   </div>
 </template>
-<style scoped>
-</style>
+
 <script>
 import ChatBase from '~/components/ChatBase'
 const NoticeMessage = () => import('~/components/NoticeMessage')
+const ProfileImage = () => import('~/components/ProfileImage')
 
 export default {
   components: {
-    NoticeMessage
+    NoticeMessage,
+    ProfileImage
   },
   extends: ChatBase
 }
 </script>
+
+<style scoped>
+</style>
