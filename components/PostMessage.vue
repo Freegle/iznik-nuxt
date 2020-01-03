@@ -58,7 +58,7 @@
         </b-form-select>
       </b-col>
       <b-col cols="9" class="pl-0 pr-0">
-        <PostItem :item="item" @selected="itemSelect" @cleared="itemClear" @typed="itemType" />
+        <PostItem ref="item" :item="item" @selected="itemSelect" @cleared="itemClear" @typed="itemType" />
       </b-col>
     </b-row>
     <b-row>
@@ -201,6 +201,12 @@ export default {
     },
     chooseSuggestion(suggestion) {
       this.item = suggestion.name
+      this.$refs.item.set(this.item)
+      this.$store.dispatch('compose/setItem', {
+        id: this.id,
+        item: this.item,
+        type: this.type
+      })
     },
     drop(e) {
       // Although it's probably not widely used (I didn't know it even worked) in the old code you could drag and drog

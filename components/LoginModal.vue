@@ -498,10 +498,9 @@ export default {
             if (process.env.IS_APP) { // CC
               urlParams = { status: 'init' }
               appYahooLogin(ret.redirect,
-                  ret => { // arrow means .this. is correct
+                  ret => { // arrow so .this. is correct
                     urlParams = ret
                     if (urlParams.yahoologin) {
-                      console.log(urlParams)
                       this.$axios
                         .post(process.env.API + '/session', urlParams)
                         .then(result => {

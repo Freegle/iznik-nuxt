@@ -440,7 +440,7 @@ export default {
       // Reset body height.  Seems to break unless we wait for a bit.
       setTimeout(() => {
         let body = document.getElementsByTagName("body")[0];
-        body.classlist.remove('forcescroll')
+        body.classList.remove('forcescroll')
       }, 500)
 
       // Callback Event

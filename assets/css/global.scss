@@ -27,13 +27,13 @@ $bootstrap-lg: 1200px;
   border-bottom: 1px solid $colour-info-bg;
 }
 
-.btn:hover {
+.pageContent .btn:hover {
   color: black !important;
   background-color: #fff !important;
   border-color: #204d74 !important;
 }
 
-.btn-white:hover {
+.pageContent .btn-white:hover {
   color:  white !important;
   background-color: $color-blue--light !important;
   border-color: #204d74 !important;
@@ -327,4 +327,12 @@ legend {
 .forcescroll::-webkit-scrollbar { /* WebKit */
   width: 0;
   height: 0;
+}
+
+.sidebar__wrapper {
+  height: calc(100vh - 100px);
+
+  .card-body .card {
+    border-radius: unset;
+  }
 }

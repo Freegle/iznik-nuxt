@@ -151,7 +151,7 @@
               <ul v-if="busy || searches && Object.keys(searches).length > 0" class="list-group list-group-horizontal flex-wrap">
                 <li v-for="search in searches" :key="'search-' + search.id" class="text-left mt-1 list-group-item bg-white border text-nowrap mr-2">
                   <b-btn variant="white d-inline">
-                    <v-icon name="search" /> {{ search.term }}
+                    <v-icon name="search" /> {{ search.term }} {{ search.daysago }}
                   </b-btn>
                   <span class="ml-3 d-inline clickme" @click="deleteSearch(search.id)">
                     <v-icon v-if="removingSearch === search.id" name="sync" class="text-success fa-spin" />
@@ -288,7 +288,12 @@ export default {
       return count
     },
     searches() {
-      const ret = this.$store.getters['searches/list']
+      // Show the searches within the last 90 days, most recent first.  Anything older is less likely to be relevant
+      // and it stops it growing forever, forcing them to delete things.
+      let ret = Object.values(this.$store.getters['searches/list'])
+      ret = ret.filter(a => a.daysago <= 90)
+      ret.sort((a, b) => a.daysago - b.daysago)
+
       return ret
     }
   },

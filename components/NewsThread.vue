@@ -76,15 +76,7 @@
                 <at-ta ref="at" :members="tagusers" class="flex-shrink-2 input-group" :filter-match="filterMatch">
                   <b-input-group-prepend>
                     <span class="input-group-text pl-1 pr-1">
-                      <b-img-lazy
-                        v-if="me.profile.turl"
-                        rounded="circle"
-                        thumbnail
-                        class="profilesm p-0 m-0 inline float-left"
-                        alt="Profile picture"
-                        title="Profile"
-                        :src="me.profile.turl"
-                      />
+                      <profile-image v-if="me.profile.turl" :image="me.profile.turl" class="m-0 inline float-left" is-thumbnail size="sm" />
                     </span>
                   </b-input-group-prepend>
                   <b-textarea
@@ -160,6 +152,7 @@ import NewsAlert from '~/components/NewsAlert'
 import NewsNoticeboard from '~/components/NewsNoticeboard'
 import NoticeMessage from '~/components/NoticeMessage'
 import NewsPreview from '~/components/NewsPreview'
+const ProfileImage = () => import('~/components/ProfileImage')
 const AtTa = process.browser
   ? require('vue-at/dist/vue-at-textarea')
   : undefined
@@ -181,7 +174,8 @@ export default {
     NewsNoticeboard,
     NoticeMessage,
     NewsPreview,
-    AtTa
+    AtTa,
+    ProfileImage
   },
   props: {
     id: {
