@@ -9,6 +9,8 @@ node ./node_modules/replace/bin/replace.js '\/app-store-black-sm.png' 'app-store
 node ./node_modules/replace/bin/replace.js '\/ebayvote.PNG' 'ebayvote.PNG' dist -r --quiet
 node ./node_modules/replace/bin/replace.js '\/businesscards\/' 'businesscards/' dist -r --quiet
 
+node ./node_modules/replace/bin/replace.js '<\/body>' '<script type="text/javascript" src="cordova.js"></script></body>' dist/index.html --quiet
+
 cd dist
 rm -r councils
 cd ..
