@@ -2,23 +2,13 @@
   <div>
     <b-row>
       <b-col cols="6" class="text-truncate">
-        <span class="">
-          <b-img-lazy
-            rounded="circle"
-            thumbnail
-            class="profilesm p-0 ml-1 mb-1 mt-2"
-            alt="Profile picture"
-            :src="reply.user.profile.turl"
-            @error.native="brokenImage"
-          />
+        <span>
+          <profile-image :image="reply.user.profile.turl" class="mr-1 mb-1 mt-2 inline" is-thumbnail size="sm" />
           <span v-if="unseen > 0" class="align-middle">
             <b>{{ reply.user.displayname }}</b>
           </span>
           <span v-else class="align-middle">
             {{ reply.user.displayname }}
-          </span>
-          <span class="align-middle text-muted">
-            last wrote to you:
           </span>
         </span>
       </b-col>
@@ -54,7 +44,7 @@
             </v-icon>
             Unpromise
           </b-btn>
-          <b-btn v-else-if="message.type === 'Offer'" variant="success" class="align-middle mt-1 mb-1" @click="promise">
+          <b-btn v-else variant="success" class="align-middle mt-1 mb-1" @click="promise">
             <v-icon name="handshake" /> Promise
           </b-btn>
           <b-btn variant="primary" class="align-middle mt-1 mb-1 mr-1" @click="chat">
@@ -74,35 +64,18 @@
   </div>
 </template>
 
-<style scoped lang="scss">
-@import 'color-vars';
-
-.snippet {
-  border: 1px solid $color-gray--light;
-  border-radius: 10px;
-  padding-top: 2px;
-  padding-bottom: 2px;
-  padding-left: 4px;
-  padding-right: 4px;
-  word-wrap: break-word;
-  line-height: 1.75;
-}
-
-.red {
-  color: $color-red;
-}
-</style>
 <script>
 const PromiseModal = () => import('./PromiseModal')
 const RenegeModal = () => import('./RenegeModal')
-
 const Ratings = () => import('~/components/Ratings')
+const ProfileImage = () => import('~/components/ProfileImage')
 
 export default {
   components: {
     Ratings,
     PromiseModal,
-    RenegeModal
+    RenegeModal,
+    ProfileImage
   },
   props: {
     message: {
@@ -145,9 +118,6 @@ export default {
     }
   },
   methods: {
-    brokenImage(event) {
-      event.target.src = '/static/defaultprofile.png'
-    },
     chat() {
       console.log('Open chat', this.reply.chatid)
       this.$store.dispatch('popupchats/popup', { id: this.reply.chatid })
@@ -161,3 +131,22 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
+.snippet {
+  border: 1px solid $color-gray--light;
+  border-radius: 10px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 4px;
+  padding-right: 4px;
+  word-wrap: break-word;
+  line-height: 1.75;
+}
+
+.red {
+  color: $color-red;
+}
+</style>
