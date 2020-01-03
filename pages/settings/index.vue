@@ -38,16 +38,7 @@
                 <b-col cols="12" sm="6" md="4" lg="3">
                   <b-card>
                     <b-card-body class="text-center p-2">
-                      <b-img-lazy
-                        v-if="me.profile.url"
-                        rounded="circle"
-                        thumbnail
-                        class="profile"
-                        alt="Profile picture"
-                        title="Profile"
-                        :src="profileurl"
-                        @error.native="brokenImage"
-                      />
+                      <profile-image v-if="me.profile.url" :image="profileurl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="xl" />
                       <br>
                       <toggle-button
                         :value="useprofile"
@@ -444,27 +435,6 @@
   </div>
 </template>
 
-<style scoped lang="scss">
-@import 'color-vars';
-
-.profile {
-  width: 100px !important;
-  height: 100px !important;
-}
-
-.groupprofile {
-  height: 100px !important;
-}
-
-.nocardbot .card-body {
-  padding-bottom: 0px;
-}
-
-h4 a {
-  color: $colour-header;
-}
-</style>
-
 <script>
 import Vue from 'vue'
 import DatePicker from 'vue2-datepicker'
@@ -479,6 +449,7 @@ const ProfileModal = () => import('~/components/ProfileModal')
 const Postcode = () => import('~/components/Postcode')
 const SettingsGroup = () => import('~/components/SettingsGroup')
 const NoticeMessage = () => import('~/components/NoticeMessage')
+const ProfileImage = () => import('~/components/ProfileImage')
 
 export default {
   components: {
@@ -491,7 +462,8 @@ export default {
     ProfileModal,
     Postcode,
     SettingsGroup,
-    NoticeMessage
+    NoticeMessage,
+    ProfileImage
   },
   mixins: [loginRequired, buildHead],
   data: function() {
@@ -824,3 +796,19 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
+.groupprofile {
+  height: 100px !important;
+}
+
+.nocardbot .card-body {
+  padding-bottom: 0px;
+}
+
+h4 a {
+  color: $colour-header;
+}
+</style>
