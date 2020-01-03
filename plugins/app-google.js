@@ -24,7 +24,7 @@ export function appGoogleLogin(callback) {
         offline: true // Must be true to get serverAuthCode
       },
       obj => { // SUCCESS
-        // console.log('google success', obj)
+        console.log('google success', obj)
         tryingGoogleLogin = false
         if (!obj.serverAuthCode) {
           completeLoginCallback({ status: 'No serverAuthCode' })

@@ -471,6 +471,7 @@ const ChatPopups = () => import('~/components/ChatPopups')
 const Notification = () => import('~/components/Notification')
 const NchanSubscriber = require('nchan')
 const InfiniteLoading = () => import('vue-infinite-loading')
+import { setBadgeCount } from '../plugins/app-init-push' // CC
 
 export default {
   components: {
@@ -518,11 +519,13 @@ export default {
     notificationCount() {
       return this.$store.getters['notifications/count']
     },
-    chatCount() {
-      return Object.values(this.$store.getters['chats/list']).reduce(
+    chatCount() { // CC
+      const chatcount = Object.values(this.$store.getters['chats/list']).reduce(
         (total, chat) => total + chat.unseen,
         0
-      )
+        )
+      setBadgeCount(chatcount) // CC
+      return chatcount 
     },
     spreadCount() {
       return this.me && this.me.invitesleft ? this.me.invitesleft : 0

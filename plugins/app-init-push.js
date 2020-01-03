@@ -210,6 +210,20 @@ export function logoutPushId() {
   console.log('logoutPushId')
 }
 
+// Set home screen badge count
+let lastBadgeCount = -1;
+export function setBadgeCount(badgeCount) {
+  if (badgeCount !== lastBadgeCount) {
+    if (process.env.IS_APP) {
+      console.log('setBadgeCount', badgeCount)
+      if (mobilePush) {
+        mobilePush.setApplicationIconBadgeNumber(function () { }, function () { }, badgeCount)
+        lastBadgeCount = badgeCount
+      }
+    }
+  }
+}
+
 /* // Fix up CSS cases with absolute url path
 var style = document.createElement('style')
 style.type = 'text/css'
@@ -239,13 +253,11 @@ export default ({ app, store }) => { // route
       () => pushstate.pushed,
       pushed => {
         if (pushed) {
-          console.log('--------------We have been pushed')
           store.dispatch('notifications/count')
           store.dispatch('chats/listChats')
 
           if (pushstate.route) {
             if (app.router.currentRoute.path !== pushstate.route) {
-              console.log('--------------go to ', pushstate.route)
               app.router.push(pushstate.route)
             }
           }
