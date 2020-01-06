@@ -16,6 +16,7 @@ export const mutations = {
     for (let i = 0; i < state.newsfeed.length; i++) {
       if (parseInt(state.newsfeed[i].id) === parseInt(item.id)) {
         // Already there - replace.
+        item.message = item.message + ''
         Vue.set(state.newsfeed, i, item)
         found = true
       }
@@ -41,6 +42,7 @@ export const mutations = {
 
     if (items) {
       for (const item of items) {
+        item.message = item.message + ''
         state.newsfeed.push(item)
       }
     }

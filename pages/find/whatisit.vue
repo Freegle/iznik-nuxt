@@ -14,7 +14,14 @@
               </b-card-body>
               <b-card-footer v-if="index === ids.length - 1" class="d-flex justify-content-between">
                 <div class="d-flex">
-                  <Postcode :focus="false" :find="false" size="md" class="d-inline" @selected="postcodeSelect" />
+                  <Postcode
+                    :focus="false"
+                    :find="false"
+                    size="md"
+                    class="d-inline"
+                    :value="postcode ? postcode.name : null"
+                    @selected="postcodeSelect"
+                  />
                   <ComposeGroup :width="200" />
                 </div>
               </b-card-footer>

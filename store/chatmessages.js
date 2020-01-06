@@ -25,6 +25,7 @@ export const mutations = {
     }
 
     for (const message of messages) {
+      message.message = message.message + ''
       Vue.set(state.messages[chatid], message.id, message)
     }
   },
