@@ -446,7 +446,8 @@ if (process.env.NUXT_BUILD_TYPE === 'fdapp') {
 
   config.mode = 'spa'
 
-  delete config.head
+  config.head.meta = []
+  config.head.link.splice(0, 1)
 
   config.router = { // https://nuxtjs.org/api/configuration-router/ 
     mode: 'hash'    // https://router.vuejs.org/api/#mode
@@ -469,6 +470,9 @@ if (process.env.NUXT_BUILD_TYPE === 'fdapp') {
 
   // Remove sentry
   config.modules = config.modules.filter(module => module !== '@nuxtjs/sentry')
+
+  // Remove favicon generator
+  config.modules = config.modules.filter(module => module !== 'nuxt-rfg-icon')
 
   delete config.buildModules
 }
