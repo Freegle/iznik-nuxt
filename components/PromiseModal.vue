@@ -73,11 +73,13 @@ export default {
         }
 
         for (const message of this.messages) {
-          options.push({
-            value: message.id,
-            text: message.subject,
-            selected: parseInt(this.selectedMessage) === parseInt(message.id)
-          })
+          if (!message.outcomes || message.outcomes.length === 0) {
+            options.push({
+              value: message.id,
+              text: message.subject,
+              selected: parseInt(this.selectedMessage) === parseInt(message.id)
+            })
+          }
         }
       } else {
         options.push({
