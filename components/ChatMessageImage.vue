@@ -18,15 +18,7 @@
             </div>
           </div>
           <div class="media-body">
-            <b-img-lazy
-              rounded="circle"
-              thumbnail
-              class="profilesm p-0 mb-1 inline mr-1 mt-1"
-              alt="Profile picture"
-              title="Profile"
-              :src="otheruser.profile.turl"
-              @error.native="brokenImage"
-            />
+            <profile-image :image="otheruser.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
           </div>
         </div>
         <div v-else class="media float-right">
@@ -44,15 +36,7 @@
           </div>
           <div class="media-right">
             <div class="media-object">
-              <b-img-lazy
-                rounded="circle"
-                thumbnail
-                class="profilesm p-0 ml-1 mb-1 inline mt-1"
-                alt="Profile picture"
-                title="Profile"
-                :src="me.profile.turl"
-                @error.native="brokenImage"
-              />
+              <profile-image :image="me.profile.turl" class="mr-1 ml-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
             </div>
           </div>
         </div>
@@ -60,15 +44,21 @@
     </b-row>
   </div>
 </template>
+
+<script>
+import ChatBase from '~/components/ChatBase'
+const ProfileImage = () => import('~/components/ProfileImage')
+
+export default {
+  components: {
+    ProfileImage
+  },
+  extends: ChatBase
+}
+</script>
+
 <style scoped>
 .chatimage {
   max-height: 50vh;
 }
 </style>
-<script>
-import ChatBase from '~/components/ChatBase'
-
-export default {
-  extends: ChatBase
-}
-</script>

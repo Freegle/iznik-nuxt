@@ -2,16 +2,7 @@
   <div>
     <b-row>
       <b-col>
-        <b-img-lazy
-          v-if="users[userid].profile.turl"
-          rounded="circle"
-          thumbnail
-          class="profile p-0 ml-1 mb-1 inline float-left mr-2"
-          alt="Profile picture"
-          title="Profile"
-          :src="users[userid].profile.turl"
-          @error.native="brokenImage"
-        />
+        <profile-image v-if="users[userid].profile.turl" :image="users[userid].profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="lg" />
         <v-icon v-if="users[userid].settings.showmod" name="leaf" class="showmod text-success" />
         <span class="text-success font-weight-bold">{{ users[userid].displayname }}</span>
         created an event: <b>{{ newsfeed.communityevent.title }}</b>
@@ -72,11 +63,13 @@
 import NewsBase from '~/components/NewsBase'
 import NewsLoveComment from '~/components/NewsLoveComment'
 const CommunityEventModal = () => import('~/components/CommunityEventModal')
+const ProfileImage = () => import('~/components/ProfileImage')
 
 export default {
   components: {
     NewsLoveComment,
-    CommunityEventModal
+    CommunityEventModal,
+    ProfileImage
   },
   extends: NewsBase,
   computed: {
