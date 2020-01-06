@@ -16,15 +16,7 @@
                 width="70px"
                 @error.native="brokenImage"
               />
-              <b-img-lazy
-                rounded="circle"
-                thumbnail
-                class="profilesm p-0 mb-1 inline mr-1 mt-1"
-                alt="Profile picture"
-                title="Profile"
-                :src="otheruser.profile.turl"
-                @error.native="brokenImage"
-              />
+              <profile-image :image="otheruser.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
               <span class="small black">Good news! You've been promised this:</span>
               <br>
               <h4>
