@@ -44,6 +44,11 @@ export default {
     Autocomplete
   },
   props: {
+    value: {
+      type: String,
+      required: false,
+      default: null
+    },
     focus: {
       type: Boolean,
       required: false,
@@ -78,16 +83,19 @@ export default {
 
     // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
     // need to render this on the server.
-    //
-    // If we are logged in then we may have a known location to use as the default.
-    const ret =
-      this.$store.getters['auth/user'] &&
-      this.$store.getters['auth/user'].settings &&
-      this.$store.getters['auth/user'].settings.mylocation
-        ? this.$store.getters['auth/user'].settings.mylocation.name
-        : null
+    let value = this.value
 
-    if (ret) {
+    if (!this.value) {
+      // If we are logged in then we may have a known location to use as the default.
+      value =
+        this.$store.getters['auth/user'] &&
+        this.$store.getters['auth/user'].settings &&
+        this.$store.getters['auth/user'].settings.mylocation
+          ? this.$store.getters['auth/user'].settings.mylocation.name
+          : null
+    }
+
+    if (value) {
       // Got one Set this as the default in the input.
       this.$refs.autocomplete.setValue(
         this.$store.getters['auth/user'].settings.mylocation.name
@@ -97,18 +105,18 @@ export default {
       // doesn't contain the groups near the location, so we need to fetch that.
       const loc = await this.$axios.get(process.env.API + '/locations', {
         params: {
-          typeahead: ret
+          typeahead: value
         }
       })
 
       this.$emit('selected', loc.data.locations[0])
     }
 
-    this.mylocation = ret
+    this.mylocation = value
 
     if (this.$refs.autocomplete) {
       // Might have gone from DOM by now due to navigation.
-      this.$refs.autocomplete.setValue(ret)
+      this.$refs.autocomplete.setValue(value)
 
       // We need some fettling of the input keystrokes.
       const input = this.$refs.autocomplete.$refs.input

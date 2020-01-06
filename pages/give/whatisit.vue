@@ -14,7 +14,14 @@
               </b-card-body>
               <b-card-footer v-if="index === ids.length - 1" class="d-flex justify-content-between">
                 <div class="d-flex">
-                  <Postcode :focus="false" :find="false" size="md" class="d-inline" @selected="postcodeSelect" />
+                  <Postcode
+                    :value="postcode ? postcode.name : null"
+                    :focus="false"
+                    :find="false"
+                    size="md"
+                    class="d-inline"
+                    @selected="postcodeSelect"
+                  />
                   <ComposeGroup :width="200" />
                 </div>
               </b-card-footer>
@@ -156,7 +163,7 @@ export default {
         // The postcode has genuinely changed or been set for the first time.  We don't want to go through this code
         // if the postcode is the same, otherwise we'll reset the group (which might have been changed from the first,
         // for example in the give flow if you choose a different group.
-        this.$store.dispatch('compose/setPostcode', this.postcode)
+        this.$store.dispatch('compose/setPostcode', pc)
 
         // If we don't have a group currently which is in the list near this postcode, choose the closest.  That
         // allows people to select further away groups if they wish.
