@@ -310,7 +310,13 @@ export default {
     },
 
     unseen() {
-      const unseen = this.$store.getters['chats/get'](this.id).unseen
+      let unseen = 0
+      const chat = this.$store.getters['chats/get'](this.id)
+
+      if (chat) {
+        unseen = chat.unseen
+      }
+
       return unseen
     },
 

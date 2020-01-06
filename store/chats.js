@@ -8,6 +8,9 @@ export const state = () => ({
 
 export const mutations = {
   addRoom(state, item) {
+    // This might be a number and therefore not of string type
+    item.snippet = item.snippet + ''
+
     Vue.set(state.list, parseInt(item.id), item)
   },
 
@@ -25,6 +28,8 @@ export const mutations = {
       for (const chat of chats) {
         // We might have a copy of the chat in store already.  If so, it may have more info than we have fetched
         // this time, so merge it.
+        chat.snippet = chat.snippet + ''
+
         Vue.set(
           state.list,
           parseInt(chat.id),
