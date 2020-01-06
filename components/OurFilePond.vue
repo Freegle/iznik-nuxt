@@ -9,7 +9,7 @@
       image-resize-target-width="800"
       image-resize-target-height="800"
       image-crop-aspect-ratio="1"
-      label-idle="Drag & Drop photos or <span class=&quot;btn btn-white ction&quot;> Browse </span>"
+      label-idle="Drag & Drop photos or <span class=&quot;btn btn-white&quot;> Browse </span>"
       :server="{ process, revert, restore, load, fetch }"
       @init="photoInit"
       @processfile="processed"
@@ -25,6 +25,7 @@ import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 import FilePondPluginImageTransform from 'filepond-plugin-image-transform'
 import FilePondPluginImageResize from 'filepond-plugin-image-resize'
+import { mobilestate } from '@/plugins/app-init-push' // CC
 
 const FilePond = vueFilePond(
   FilePondPluginFileValidateType,
@@ -78,8 +79,81 @@ export default {
     }
   },
   methods: {
-    photoInit: function() {
-      if (this.browse) {
+    takeAndroidPhoto: function () { // CC
+      const maxDimension = 800
+      navigator.camera.getPicture(imageURI => {
+          this.cameraSuccess(imageURI)
+        }, function (msg) {
+          this.cameraError(msg)
+        },
+        {
+          quality: 50,
+          destinationType: Camera.DestinationType.DATA_URL,
+          //destinationType: Camera.DestinationType.FILE_URI,
+          sourceType: Camera.PictureSourceType.CAMERA,
+          //allowEdit: true,	// Don't: adds unhelpful crop photo step
+          encodingType: Camera.EncodingType.JPEG,
+          targetWidth: maxDimension,
+          targetHeight: maxDimension,
+          //popoverOptions: CameraPopoverOptions,
+          saveToPhotoAlbum: true,
+          correctOrientation: true
+        }
+      )
+    },
+    cameraError: function (msg) {
+      setTimeout(function () {
+        if (msg === "No Image Selected") { msg = "No photo taken or chosen" }
+        if (msg === "Camera cancelled") { msg = "No photo taken or chosen" }
+        console.log(msg)
+      }, 0)
+    },
+    cameraSuccess: function (imageData) {
+      console.log("cameraSuccess " + imageData.length)
+      const contentType = 'image/jpeg'
+      const sliceSize = 512
+
+      const byteCharacters = atob(imageData)
+      const byteArrays = []
+
+      for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        let slice = byteCharacters.slice(offset, offset + sliceSize)
+
+        let byteNumbers = new Array(slice.length)
+        for (let i = 0; i < slice.length; i++) {
+          byteNumbers[i] = slice.charCodeAt(i)
+        }
+
+        let byteArray = new Uint8Array(byteNumbers)
+
+        byteArrays.push(byteArray)
+      }
+
+      const imageBlob = new Blob(byteArrays, { type: contentType })
+
+      this.$refs.pond.addFile(imageBlob)
+    },
+    photoInit: function () {
+      console.log('photoInit') // CC
+      if (process.env.IS_APP) {
+        if (mobilestate.isiOS) {
+          this.$refs.pond.labelIdle = '<span class="filepond--label-action btn btn-white">Take a photo or Browse</span>'
+        } else {
+          this.$refs.pond.labelIdle = '<span class="take-photo btn btn-default">Take Photo</span> or <span class="btn btn-white">Browse</span>'
+          this.$nextTick(() => {
+            const takePhoto = this.$el.querySelector('.take-photo')
+            takePhoto.addEventListener('click', e => {
+              this.takeAndroidPhoto()
+              e.preventDefault()
+              return false
+            })
+          })
+          if (this.browse) {
+            this.takeAndroidPhoto()
+          }
+        }
+      }
+      else if (this.browse) {
         // We have rendered the filepond instance.  Trigger browse so that they can upload a photo without an
         // extra click.
         this.$refs.pond.browse()
