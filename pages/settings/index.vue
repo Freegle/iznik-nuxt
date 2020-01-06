@@ -36,7 +36,7 @@
                         size="xl"
                       />
                       <br>
-                      <toggle-button
+                      <OurToggle
                         :value="useprofile"
                         class="mt-2"
                         :height="30"
@@ -212,7 +212,7 @@
             </template>
             <div v-if="me.groups.length">
               <p>You can pause regular emails for a while, for example if you're on holiday.</p>
-              <toggle-button
+              <OurToggle
                 v-model="emailsOn"
                 :height="34"
                 :width="150"
@@ -355,7 +355,7 @@
               <p>
                 Mail me chat messages from other freeglers I'm talking to about OFFERs and WANTEDs.
               </p>
-              <toggle-button
+              <OurToggle
                 v-model="me.settings.notifications.email"
                 :height="30"
                 :width="150"
@@ -368,7 +368,7 @@
               <p>
                 We can email you a copy of chat messages you send on here.
               </p>
-              <toggle-button
+              <OurToggle
                 v-model="me.settings.notifications.emailmine"
                 :height="30"
                 :width="150"
@@ -381,7 +381,7 @@
               <p>
                 We can email you if there's an unread notification on here, or about recent ChitChat posts from nearby freeglers.
               </p>
-              <toggle-button
+              <OurToggle
                 v-model="relevantallowed"
                 :height="30"
                 :width="150"
@@ -397,7 +397,7 @@
                 <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" target="_blank">Android</a> or
                 <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&mt=8" target="_blank">IOS</a> phone/tablet.
               </p>
-              <toggle-button
+              <OurToggle
                 v-model="me.settings.notifications.app"
                 :height="30"
                 :width="220"
@@ -410,7 +410,7 @@
               <p>
                 You'll see a popup asking if we can send these. They appear on your taskbar, or on mobile at the top. Also known as "web push" notifications.
               </p>
-              <toggle-button
+              <OurToggle
                 v-model="me.settings.notifications.push"
                 :height="30"
                 :width="220"
@@ -423,7 +423,7 @@
               <p>
                 This is the red bell icon you know and love. They don't show on mobile - Facebook doesn't do that.
               </p>
-              <toggle-button
+              <OurToggle
                 v-model="me.settings.notifications.facebook"
                 :height="30"
                 :width="220"
@@ -450,8 +450,6 @@
 
 <script>
 import Vue from 'vue'
-import DatePicker from 'vue2-datepicker'
-import { ToggleButton } from 'vue-js-toggle-button'
 import EmailConfirmModal from '~/components/EmailConfirmModal'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead'
@@ -464,10 +462,12 @@ const SettingsGroup = () => import('~/components/SettingsGroup')
 const NoticeMessage = () => import('~/components/NoticeMessage')
 const ProfileImage = () => import('~/components/ProfileImage')
 const OurFilePond = () => import('~/components/OurFilePond')
+const OurToggle = () => import('~/components/OurToggle')
+const DatePicker = () => import('vue2-datepicker')
 
 export default {
   components: {
-    ToggleButton,
+    OurToggle,
     DatePicker,
     EmailConfirmModal,
     AboutMeModal,
