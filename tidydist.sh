@@ -7,6 +7,7 @@ node ./node_modules/replace/bin/replace.js '\/en-play-badge.png' 'en-play-badge.
 node ./node_modules/replace/bin/replace.js '\/app-store-black-sm.png' 'app-store-black-sm.png' dist -r --quiet
 node ./node_modules/replace/bin/replace.js '\/ebayvote.PNG' 'ebayvote.PNG' dist -r --quiet
 node ./node_modules/replace/bin/replace.js '\/businesscards\/' 'businesscards/' dist -r --quiet
+node ./node_modules/replace/bin/replace.js '\/static\/' 'static/' dist -r --quiet
 
 node ./node_modules/replace/bin/replace.js '<\/body>' '<script type="text/javascript" src="cordova.js"></script></body>' dist/index.html --quiet
 
