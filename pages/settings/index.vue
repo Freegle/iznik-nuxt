@@ -11,12 +11,9 @@
             <b-card-body class="p-0 pt-1">
               <p class="text-muted">
                 This is what other freeglers can see about you.
-                <b-btn variant="success" class="float-right d-none d-sm-block" @click="viewProfile">
-                  <v-icon name="eye" /> View Your Profile
-                </b-btn>
               </p>
               <b-row>
-                <b-col cols="12" sm="6">
+                <b-col cols="12">
                   <b-input-group>
                     <b-input v-model="me.displayname" placeholder="Your name" />
                     <b-input-group-append>
@@ -27,15 +24,8 @@
                   </b-input-group>
                 </b-col>
               </b-row>
-              <b-row class="d-block d-sm-none">
-                <b-col>
-                  <b-btn variant="success" block class="mt-2" @click="viewProfile">
-                    <v-icon name="eye" /> View Your Profile
-                  </b-btn>
-                </b-col>
-              </b-row>
               <b-row class="mt-2">
-                <b-col cols="12" sm="6" md="4" lg="3">
+                <b-col cols="12" xl="6">
                   <b-card>
                     <b-card-body class="text-center p-2">
                       <profile-image v-if="me.profile.url" :image="profileurl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="xl" />
@@ -58,7 +48,7 @@
                     </b-card-body>
                   </b-card>
                 </b-col>
-                <b-col cols="12" sm="6" md="8" lg="9">
+                <b-col cols="12" xl="6">
                   <b-card nobody>
                     <b-card-body class="text-left p-0 p-sm-2">
                       <div v-if="aboutme">
@@ -78,6 +68,13 @@
                       </div>
                     </b-card-body>
                   </b-card>
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col>
+                  <b-btn variant="success" class="mt-2" @click="viewProfile">
+                    <v-icon name="eye" /> View Your Profile
+                  </b-btn>
                 </b-col>
               </b-row>
             </b-card-body>
