@@ -28,7 +28,13 @@
                 <b-col cols="12" xl="6">
                   <b-card>
                     <b-card-body class="text-center p-2">
-                      <profile-image v-if="me.profile.url" :image="profileurl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="xl" />
+                      <profile-image
+                        v-if="me.profile.url"
+                        :image="profileurl"
+                        class="mr-1 mb-1 mt-1 inline"
+                        is-thumbnail
+                        size="xl"
+                      />
                       <br>
                       <toggle-button
                         :value="useprofile"
@@ -42,9 +48,19 @@
                         @change="changeUseProfile"
                       />
                       <br>
-                      <b-btn variant="primary" class="mt-2">
+                      <b-btn variant="primary" class="mt-2" @click="uploadProfile">
                         <v-icon name="camera" /> Upload photo
                       </b-btn>
+                      <b-row v-if="uploading" class="bg-white">
+                        <b-col class="p-0">
+                          <OurFilePond
+                            imgtype="User"
+                            imgflag="user"
+                            :msgid="me.id"
+                            @photoProcessed="photoProcessed"
+                          />
+                        </b-col>
+                      </b-row>
                     </b-card-body>
                   </b-card>
                 </b-col>
@@ -447,6 +463,7 @@ const Postcode = () => import('~/components/Postcode')
 const SettingsGroup = () => import('~/components/SettingsGroup')
 const NoticeMessage = () => import('~/components/NoticeMessage')
 const ProfileImage = () => import('~/components/ProfileImage')
+const OurFilePond = () => import('~/components/OurFilePond')
 
 export default {
   components: {
@@ -460,7 +477,8 @@ export default {
     Postcode,
     SettingsGroup,
     NoticeMessage,
-    ProfileImage
+    ProfileImage,
+    OurFilePond
   },
   mixins: [loginRequired, buildHead],
   data: function() {
@@ -478,7 +496,8 @@ export default {
       savingPhone: false,
       savedPhone: false,
       removingPhone: false,
-      removedPhone: false
+      removedPhone: false,
+      uploading: false
     }
   },
   computed: {
@@ -783,6 +802,15 @@ export default {
     },
     addressBook() {
       this.$refs.addressModal.show()
+    },
+    photoProcessed(imageid, imagethumb, image) {
+      // We have uploaded a photo.  Remove the filepond instance.
+      this.uploading = false
+
+      this.$router.go()
+    },
+    uploadProfile() {
+      this.uploading = true
     }
   },
   head() {
