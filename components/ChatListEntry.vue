@@ -74,7 +74,7 @@ export default {
     },
 
     esnippet() {
-      let ret = twem.twem(this.$twemoji, this.chat.snippet)
+      let ret = twem.twem(this.$twemoji, this.chat.snippet.toString()) // CC
 
       // The way the snippet is constructed might lead to backslashes if we have an emoji.
       ret = ret.replace(/\\*$/, '') + '...'

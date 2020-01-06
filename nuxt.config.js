@@ -446,6 +446,8 @@ if (process.env.NUXT_BUILD_TYPE === 'fdapp') {
 
   config.mode = 'spa'
 
+  delete config.head
+
   config.router = { // https://nuxtjs.org/api/configuration-router/ 
     mode: 'hash'    // https://router.vuejs.org/api/#mode
   }

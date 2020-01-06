@@ -46,7 +46,7 @@ export default {
   },
   computed: {
     emessage() {
-      return twem.twem(this.$twemoji, this.chatmessage.message).trim()
+      return twem.twem(this.$twemoji, this.chatmessage.message.toString()).trim() // CC
     },
     othericon() {
       let ret = null

@@ -11,6 +11,11 @@ node ./node_modules/replace/bin/replace.js '\/businesscards\/' 'businesscards/' 
 
 node ./node_modules/replace/bin/replace.js '<\/body>' '<script type="text/javascript" src="cordova.js"></script></body>' dist/index.html --quiet
 
+node ./node_modules/replace/bin/replace.js '<link data-n-head="1" rel="icon" type="image\/x-icon" href="favicon.ico">' '' dist/index.html --quiet
+node ./node_modules/replace/bin/replace.js '<link data-n-head="1" rel="icon" type="image\/png" sizes="32x32" href="icons\/favicon-32x32.png">' '' dist/index.html --quiet
+node ./node_modules/replace/bin/replace.js '<link data-n-head="1" rel="icon" type="image\/png" sizes="16x16" href="icons\/favicon-16x16.png">' '' dist/index.html --quiet
+node ./node_modules/replace/bin/replace.js '<link data-n-head="1" rel="shortcut icon" href="icons\/favicon.ico">' '' dist/index.html --quiet
+
 cd dist
 rm -r councils
 cd ..
