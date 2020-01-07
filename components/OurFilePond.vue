@@ -88,7 +88,7 @@ export default {
       const maxDimension = 800
       navigator.camera.getPicture(imageURI => {
           this.cameraSuccess(imageURI)
-        }, function (msg) {
+        }, msg => {
           this.cameraError(msg)
         },
         {
