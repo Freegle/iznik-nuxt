@@ -11,12 +11,9 @@
             <b-card-body class="p-0 pt-1">
               <p class="text-muted">
                 This is what other freeglers can see about you.
-                <b-btn variant="success" class="float-right d-none d-sm-block" @click="viewProfile">
-                  <v-icon name="eye" /> View Your Profile
-                </b-btn>
               </p>
               <b-row>
-                <b-col cols="12" sm="6">
+                <b-col cols="12">
                   <b-input-group>
                     <b-input v-model="me.displayname" placeholder="Your name" />
                     <b-input-group-append>
@@ -27,29 +24,19 @@
                   </b-input-group>
                 </b-col>
               </b-row>
-              <b-row class="d-block d-sm-none">
-                <b-col>
-                  <b-btn variant="success" block class="mt-2" @click="viewProfile">
-                    <v-icon name="eye" /> View Your Profile
-                  </b-btn>
-                </b-col>
-              </b-row>
               <b-row class="mt-2">
-                <b-col cols="12" sm="6" md="4" lg="3">
+                <b-col cols="12" xl="6">
                   <b-card>
                     <b-card-body class="text-center p-2">
-                      <b-img-lazy
+                      <profile-image
                         v-if="me.profile.url"
-                        rounded="circle"
-                        thumbnail
-                        class="profile"
-                        alt="Profile picture"
-                        title="Profile"
-                        :src="profileurl"
-                        @error.native="brokenImage"
+                        :image="profileurl"
+                        class="mr-1 mb-1 mt-1 inline"
+                        is-thumbnail
+                        size="xl"
                       />
                       <br>
-                      <toggle-button
+                      <OurToggle
                         :value="useprofile"
                         class="mt-2"
                         :height="30"
@@ -61,13 +48,23 @@
                         @change="changeUseProfile"
                       />
                       <br>
-                      <b-btn variant="primary" class="mt-2">
+                      <b-btn variant="primary" class="mt-2" @click="uploadProfile">
                         <v-icon name="camera" /> Upload photo
                       </b-btn>
+                      <b-row v-if="uploading" class="bg-white">
+                        <b-col class="p-0">
+                          <OurFilePond
+                            imgtype="User"
+                            imgflag="user"
+                            :msgid="me.id"
+                            @photoProcessed="photoProcessed"
+                          />
+                        </b-col>
+                      </b-row>
                     </b-card-body>
                   </b-card>
                 </b-col>
-                <b-col cols="12" sm="6" md="8" lg="9">
+                <b-col cols="12" xl="6">
                   <b-card nobody>
                     <b-card-body class="text-left p-0 p-sm-2">
                       <div v-if="aboutme">
@@ -87,6 +84,13 @@
                       </div>
                     </b-card-body>
                   </b-card>
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col>
+                  <b-btn variant="success" class="mt-2" @click="viewProfile">
+                    <v-icon name="eye" /> View Your Profile
+                  </b-btn>
                 </b-col>
               </b-row>
             </b-card-body>
@@ -208,7 +212,7 @@
             </template>
             <div v-if="me.groups.length">
               <p>You can pause regular emails for a while, for example if you're on holiday.</p>
-              <toggle-button
+              <OurToggle
                 v-model="emailsOn"
                 :height="34"
                 :width="150"
@@ -351,7 +355,7 @@
               <p>
                 Mail me chat messages from other freeglers I'm talking to about OFFERs and WANTEDs.
               </p>
-              <toggle-button
+              <OurToggle
                 v-model="me.settings.notifications.email"
                 :height="30"
                 :width="150"
@@ -364,7 +368,7 @@
               <p>
                 We can email you a copy of chat messages you send on here.
               </p>
-              <toggle-button
+              <OurToggle
                 v-model="me.settings.notifications.emailmine"
                 :height="30"
                 :width="150"
@@ -377,7 +381,7 @@
               <p>
                 We can email you if there's an unread notification on here, or about recent ChitChat posts from nearby freeglers.
               </p>
-              <toggle-button
+              <OurToggle
                 v-model="relevantallowed"
                 :height="30"
                 :width="150"
@@ -393,7 +397,7 @@
                 <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" target="_blank">Android</a> or
                 <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&mt=8" target="_blank">IOS</a> phone/tablet.
               </p>
-              <toggle-button
+              <OurToggle
                 v-model="me.settings.notifications.app"
                 :height="30"
                 :width="220"
@@ -406,7 +410,7 @@
               <p>
                 You'll see a popup asking if we can send these. They appear on your taskbar, or on mobile at the top. Also known as "web push" notifications.
               </p>
-              <toggle-button
+              <OurToggle
                 v-model="me.settings.notifications.push"
                 :height="30"
                 :width="220"
@@ -419,7 +423,7 @@
               <p>
                 This is the red bell icon you know and love. They don't show on mobile - Facebook doesn't do that.
               </p>
-              <toggle-button
+              <OurToggle
                 v-model="me.settings.notifications.facebook"
                 :height="30"
                 :width="220"
@@ -444,31 +448,8 @@
   </div>
 </template>
 
-<style scoped lang="scss">
-@import 'color-vars';
-
-.profile {
-  width: 100px !important;
-  height: 100px !important;
-}
-
-.groupprofile {
-  height: 100px !important;
-}
-
-.nocardbot .card-body {
-  padding-bottom: 0px;
-}
-
-h4 a {
-  color: $colour-header;
-}
-</style>
-
 <script>
 import Vue from 'vue'
-import DatePicker from 'vue2-datepicker'
-import { ToggleButton } from 'vue-js-toggle-button'
 import EmailConfirmModal from '~/components/EmailConfirmModal'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead'
@@ -479,10 +460,14 @@ const ProfileModal = () => import('~/components/ProfileModal')
 const Postcode = () => import('~/components/Postcode')
 const SettingsGroup = () => import('~/components/SettingsGroup')
 const NoticeMessage = () => import('~/components/NoticeMessage')
+const ProfileImage = () => import('~/components/ProfileImage')
+const OurFilePond = () => import('~/components/OurFilePond')
+const OurToggle = () => import('~/components/OurToggle')
+const DatePicker = () => import('vue2-datepicker')
 
 export default {
   components: {
-    ToggleButton,
+    OurToggle,
     DatePicker,
     EmailConfirmModal,
     AboutMeModal,
@@ -491,7 +476,9 @@ export default {
     ProfileModal,
     Postcode,
     SettingsGroup,
-    NoticeMessage
+    NoticeMessage,
+    ProfileImage,
+    OurFilePond
   },
   mixins: [loginRequired, buildHead],
   data: function() {
@@ -509,7 +496,8 @@ export default {
       savingPhone: false,
       savedPhone: false,
       removingPhone: false,
-      removedPhone: false
+      removedPhone: false,
+      uploading: false
     }
   },
   computed: {
@@ -814,6 +802,15 @@ export default {
     },
     addressBook() {
       this.$refs.addressModal.show()
+    },
+    photoProcessed(imageid, imagethumb, image) {
+      // We have uploaded a photo.  Remove the filepond instance.
+      this.uploading = false
+
+      this.$router.go()
+    },
+    uploadProfile() {
+      this.uploading = true
     }
   },
   head() {
@@ -824,3 +821,19 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
+.groupprofile {
+  height: 100px !important;
+}
+
+.nocardbot .card-body {
+  padding-bottom: 0px;
+}
+
+h4 a {
+  color: $colour-header;
+}
+</style>

@@ -66,6 +66,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    msgid: {
+      type: Number,
+      required: false,
+      default: null
     }
   },
   data: function() {
@@ -168,6 +173,7 @@ export default {
       data.append('imgtype', this.imgtype)
       data.append('ocr', this.ocr)
       data.append('identify', this.identify)
+      data.append('msgid', this.msgid)
 
       const ret = await this.$axios.post(process.env.API + '/image', data, {
         headers: {
