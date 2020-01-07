@@ -114,7 +114,7 @@ export default {
       }, 0)
     },
     cameraSuccess: function (imageData) {
-      console.log("cameraSuccess " + imageData.length)
+      console.log("cameraSuccess size:" + imageData.length)
       const contentType = 'image/jpeg'
       const sliceSize = 512
 
@@ -145,14 +145,14 @@ export default {
           this.$refs.pond.labelIdle = '<span class="filepond--label-action btn btn-white">Take a photo or Browse</span>'
         } else {
           this.$refs.pond.labelIdle = '<span class="take-photo btn btn-default">Take Photo</span> or <span class="btn btn-white">Browse</span>'
-          this.$nextTick(() => {
+          setTimeout(() => { // this.$nextTick didn't work
             const takePhoto = this.$el.querySelector('.take-photo')
             takePhoto.addEventListener('click', e => {
               this.takeAndroidPhoto()
               e.preventDefault()
               return false
             })
-          })
+          }, 1000)
           if (this.browse) {
             this.takeAndroidPhoto()
           }
@@ -199,6 +199,7 @@ export default {
 
         load(ret.data.id)
       } else {
+        console.log('process Error',ret)
         error(
           ret.status === 200 ? ret.data.status : 'Network error ' + ret.status
         )
@@ -218,6 +219,7 @@ export default {
 
     processed(error, file) {
       if (error) {
+        console.log('processed Error', error)
       } else {
         this.$emit(
           'photoProcessed',
