@@ -3,14 +3,7 @@
     <div class="media clickme">
       <div class="media-left">
         <div class="media-object">
-          <b-img-lazy
-            rounded="circle"
-            thumbnail
-            class="profilesm p-0 ml-1 mb-1 mr-1"
-            :alt="'Profile picture for ' + notification.fromuser.displayname"
-            :src="notification.fromuser.profile.turl"
-            @error.native="brokenImage"
-          />
+          <profile-image :image="notification.fromuser.profile.turl" class="mr-1 mb-1 ml-1 inline" is-thumbnail size="sm" />
         </div>
       </div>
       <div v-if="notification.newsfeed" class="media-body">
@@ -31,6 +24,28 @@
     </div>
   </div>
 </template>
+
+<script>
+const ProfileImage = () => import('~/components/ProfileImage')
+
+export default {
+  components: {
+    ProfileImage
+  },
+  props: {
+    notification: {
+      type: Object,
+      required: true
+    }
+  },
+  methods: {
+    click() {
+      this.$router.push('/chitchat/' + this.notification.newsfeed.id)
+    }
+  }
+}
+</script>
+
 <style scoped>
 .media-object {
   width: 33px;
@@ -42,21 +57,3 @@ li > a {
   padding-left: 0px;
 }
 </style>
-<script>
-export default {
-  props: {
-    notification: {
-      type: Object,
-      required: true
-    }
-  },
-  methods: {
-    brokenImage(event) {
-      event.target.src = '/static/defaultprofile.png'
-    },
-    click() {
-      this.$router.push('/chitchat/' + this.notification.newsfeed.id)
-    }
-  }
-}
-</script>
