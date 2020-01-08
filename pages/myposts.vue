@@ -235,6 +235,8 @@ export default {
         }
       }
 
+      ret.sort(this.postSort)
+
       return ret
     },
 
@@ -246,6 +248,8 @@ export default {
           ret.push(message)
         }
       }
+
+      ret.sort(this.postSort)
 
       return ret
     },
@@ -391,6 +395,17 @@ export default {
       } else {
         // This would be a bug.  We've seen it during dev and so we have the if test to prevent client-visible errors.
         console.error("Don't ask for donation, no ref")
+      }
+    },
+    postSort(a, b) {
+      // Show promised items first, then by most recent activity.
+
+      if (a.promised && !b.promised) {
+        return -1
+      } else if (b.promised && !a.promised) {
+        return 1
+      } else {
+        return new Date(a.lastdate).getTime() - new Date(b.lastDate).getTime()
       }
     }
   },
