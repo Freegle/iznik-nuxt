@@ -3,17 +3,7 @@
     <div class="media clickme">
       <div class="media-left">
         <div class="media-object">
-          <b-img-lazy
-            v-if="users[userid].profile.turl"
-            rounded="circle"
-            thumbnail
-            class="profile p-0 ml-1 mb-1 inline float-left"
-            alt="Profile picture"
-            title="Profile"
-            :src="users[userid].profile.turl"
-            @error.native="brokenImage"
-            @click="showInfo"
-          />
+          <profile-image v-if="users[userid].profile.turl" :image="users[userid].profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="lg" />
           <v-icon v-if="users[userid].settings.showmod" name="leaf" class="showmod text-success" />
         </div>
       </div>
@@ -35,16 +25,18 @@
     <ProfileModal v-if="infoclick" :id="userid" ref="profilemodal" />
   </div>
 </template>
+
 <script>
 // Use import rather than async otherwise we have trouble with refs.
 import ProfileModal from '~/components/ProfileModal'
-
 import NewsUserInfo from '~/components/NewsUserInfo'
+const ProfileImage = () => import('~/components/ProfileImage')
 
 export default {
   components: {
     NewsUserInfo,
-    ProfileModal
+    ProfileModal,
+    ProfileImage
   },
   props: {
     userid: {
@@ -83,9 +75,6 @@ export default {
       this.$nextTick(() => {
         this.$refs.profilemodal.show()
       })
-    },
-    brokenImage(event) {
-      event.target.src = '/static/defaultprofile.png'
     }
   }
 }

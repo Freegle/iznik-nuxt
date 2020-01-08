@@ -2,16 +2,7 @@
   <div>
     <b-row>
       <b-col v-if="userid">
-        <b-img-lazy
-          v-if="users[userid].profile.turl"
-          rounded="circle"
-          thumbnail
-          class="profile p-0 ml-1 mb-1 inline float-left"
-          alt="Freegle logo"
-          title="Freegle logo"
-          :src="require(`@/static/icon.png`)"
-          @error.native="brokenImage"
-        />
+        <profile-image v-if="users[userid].profile.turl" :image="require(`@/static/icon.png`)" class="ml-1 mb-1 inline" is-thumbnail size="lg" />
         <span class="text-success font-weight-bold pl-2">
           Freegle
         </span>
@@ -64,15 +55,18 @@
     <NewsShareModal v-if="newsfeedModal" :newsfeed="newsfeedModal" />
   </div>
 </template>
+
 <script>
 import NewsBase from '~/components/NewsBase'
 import NewsLoveComment from '~/components/NewsLoveComment'
 const NewsShareModal = () => import('~/components/NewsShareModal')
+const ProfileImage = () => import('~/components/ProfileImage')
 
 export default {
   components: {
     NewsShareModal,
-    NewsLoveComment
+    NewsLoveComment,
+    ProfileImage
   },
   extends: NewsBase
 }

@@ -2,16 +2,7 @@
   <div>
     <b-row>
       <b-col>
-        <b-img-lazy
-          v-if="users[userid].profile.turl"
-          rounded="circle"
-          thumbnail
-          class="profile p-0 ml-1 mb-1 inline float-left mr-2"
-          alt="Profile picture"
-          title="Profile"
-          :src="users[userid].profile.turl"
-          @error.native="brokenImage"
-        />
+        <profile-image v-if="users[userid].profile.turl" :image="users[userid].profile.turl" class="ml-1 mr-2 mb-1 inline" is-thumbnail size="lg" />
         <v-icon v-if="users[userid].settings.showmod" name="leaf" class="showmod text-success" />
         <span class="text-success font-weight-bold">{{ users[userid].displayname }}</span>
         posted a volunteering opportunity: <b>{{ newsfeed.volunteering.title }}</b>
@@ -67,11 +58,13 @@
 import NewsBase from '~/components/NewsBase'
 import NewsLoveComment from '~/components/NewsLoveComment'
 const VolunteerOpportunityModal = () => import('./VolunteerOpportunityModal')
+const ProfileImage = () => import('~/components/ProfileImage')
 
 export default {
   components: {
     VolunteerOpportunityModal,
-    NewsLoveComment
+    NewsLoveComment,
+    ProfileImage
   },
   extends: NewsBase,
   methods: {

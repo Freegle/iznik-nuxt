@@ -1,14 +1,7 @@
 <template>
   <nuxt-link :to="'/profile/' + user.id" class="text-success decornone" :title="'Click to view profile for ' + user.displayname">
     <span class="text-muted small">
-      <b-img-lazy
-        rounded="circle"
-        thumbnail
-        class="profilesm p-0 ml-1 mb-1"
-        :alt="'Profile picture for ' + user.displayname"
-        :src="user.profile.turl"
-        @error.native="brokenImage"
-      />
+      <profile-image :image="user.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="sm" />
       Posted by {{ user.displayname }}
       <span v-if="user.info.openoffers + user.info.openwanteds > 0">
         &bull;
@@ -25,17 +18,18 @@
     </span>
   </nuxt-link>
 </template>
+
 <script>
+const ProfileImage = () => import('~/components/ProfileImage')
+
 export default {
+  components: {
+    ProfileImage
+  },
   props: {
     user: {
       type: Object,
       required: true
-    }
-  },
-  methods: {
-    brokenImage(event) {
-      event.target.src = '/static/defaultprofile.png'
     }
   }
 }

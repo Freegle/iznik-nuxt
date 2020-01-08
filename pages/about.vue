@@ -62,14 +62,7 @@
 
                   <b-list-group horizontal class="mb-1 mt-2 flex flex-wrap">
                     <b-list-group-item v-for="volunteer in volunteers" :key="'volunteering-' + volunteer.id" class="bg-transparent p-0">
-                      <b-img-lazy
-                        v-if="!volunteer.profile.default"
-                        class="profile"
-                        rounded="circle"
-                        :title="volunteer.displayname"
-                        :src="volunteer.profile.turl"
-                        @error.native="brokenImage"
-                      />
+                      <profile-image v-if="!volunteer.profile.default" :image="volunteer.profile.turl" size="lg" />
                     </b-list-group-item>
                   </b-list-group>
 
@@ -79,14 +72,7 @@
                     <div class="media clickme">
                       <div class="media-left">
                         <div class="media-object">
-                          <b-img-lazy
-                            v-if="!boardmember.profile.default"
-                            class="profile mr-2"
-                            rounded="circle"
-                            :title="boardmember.displayname"
-                            :src="boardmember.profile.turl"
-                            @error.native="brokenImage"
-                          />
+                          <profile-image v-if="!boardmember.profile.default" :image="boardmember.profile.turl" class="mr-2" size="lg" />
                         </div>
                       </div>
                       <div class="media-body">
@@ -215,10 +201,15 @@
     </b-row>
   </b-col>
 </template>
+
 <script>
 import buildHead from '@/mixins/buildHead.js'
+const ProfileImage = () => import('~/components/ProfileImage')
 
 export default {
+  components: {
+    ProfileImage
+  },
   mixins: [buildHead],
   computed: {},
   async asyncData({ app, params, store }) {
