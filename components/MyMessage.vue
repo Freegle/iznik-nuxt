@@ -67,7 +67,7 @@
                 </span>
                 <p>
                   <span v-for="group in message.groups" :key="'message-' + message.id + '-' + group.id" class="small text-muted">
-                    {{ group.arrival | timeago }} on {{ group.namedisplay }} <span class="text-faded small">#{{ message.id }}</span>
+                    {{ group.arrival | timeago }} on {{ group.namedisplay }} <nuxt-link :to="'/message/' + message.id"><span class="text-muted small">#{{ message.id }}</span></nuxt-link>
                   </span>
                 </p>
                 <span class="prewrap">
