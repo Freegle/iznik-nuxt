@@ -94,7 +94,7 @@ export const actions = {
     const { chatmessages, chatusers, context } = await this.$api.chat.fetch(
       chatid,
       {
-        limit: 30,
+        limit: 10,
         context: ctx
       }
     )
