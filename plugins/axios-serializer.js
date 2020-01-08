@@ -5,13 +5,15 @@ axios.defaults.paramsSerializer = params => {
   let options = ''
 
   keys.forEach(key => {
-    const isParamTypeObject = typeof params[key] === 'object'
+    if (params[key]) {
+      const isParamTypeObject = typeof params[key] === 'object'
 
-    if (!isParamTypeObject) {
-      options += `${key}=${params[key]}&`
-    } else {
-      for (const element in params[key]) {
-        options += `${key}[${element}]=${params[key][element]}&`
+      if (!isParamTypeObject) {
+        options += `${key}=${params[key]}&`
+      } else {
+        for (const element in params[key]) {
+          options += `${key}[${element}]=${params[key][element]}&`
+        }
       }
     }
   })
