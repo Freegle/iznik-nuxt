@@ -33,9 +33,6 @@
                   <a href="http://www.centralbedfordshire.gov.uk/waste/bulky/collection.aspx">Central Bedfordshire Council</a>
                 </li>
                 <li>
-                  <a href="http://www.greensuffolk.org/recycling/how-to-recycle/bulky-waste/">Suffolk County Council</a>
-                </li>
-                <li>
                   <a href="https://www.eden.gov.uk/bins-and-recycling/household-refuse/special-household-waste-collections/bulky-household-waste-collection/">Eden District Council</a>
                 </li>
                 <li>

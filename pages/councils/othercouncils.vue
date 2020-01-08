@@ -106,7 +106,7 @@
           <h3>Videos</h3>
           <p>
             Essex and Cumbria County Councils have produced a series of videos showing residents how to make best use
-            of Freegle.  You can find these in our <a href="/councils/videos">videos section</a>.
+            of Freegle.  You can find these in our <a href="/councils/photosvideos">videos section</a>.
           </p>
           <p>
             Cumbria County Council have also produced this child-friendly video as part of their ‘Rubbish Rebels’ series.

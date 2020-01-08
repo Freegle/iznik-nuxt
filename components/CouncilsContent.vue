@@ -40,7 +40,7 @@
           </a>
         </li>
         <li>
-          <a href="/councils/workbest#residents&quot;">
+          <a href="/councils/workbest#residents">
             Discussing Freegle with residents
           </a>
         </li>
