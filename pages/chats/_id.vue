@@ -21,7 +21,7 @@
         </li>
       </ul>
     </b-col>
-    <b-col cols="12" md="6" class="chatback">
+    <b-col cols="12" md="6" :class="'chatback ' + (selectedChatId ? 'd-block' : 'd-none d-md-block')">
       <ChatPane v-if="activeChat" :id="activeChat" />
     </b-col>
     <b-col cols="0" md="3" class="d-none d-md-block">
@@ -150,7 +150,7 @@ export default {
   },
 
   created() {
-    this.selectedChatId = this.$route.params.id
+    this.selectedChatId = parseInt(this.$route.params.id) || null
   },
   methods: {
     async markAllRead() {
