@@ -2,7 +2,7 @@
   <b-col>
     <b-row class="m-0">
       <b-col cols="0" md="3" class="d-none d-md-block" />
-      <b-col cols="12" md="6" class="p-0 text-center">
+      <b-col cols="12" md="6" class="p-0">
         <div v-if="error">
           <h1>Sorry, that message isn't around any more.</h1>
           <div class="bg-white">

@@ -116,8 +116,8 @@ export default {
     }
   },
   methods: {
-    promise() {
-      this.$store.dispatch('messages/promise', {
+    async promise() {
+      await this.$store.dispatch('messages/promise', {
         id: this.selectedMessage,
         userid: this.selectedUser
       })
