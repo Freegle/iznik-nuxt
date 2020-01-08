@@ -7,16 +7,7 @@
             <b-card-title>
               <div v-if="group">
                 <h4>
-                  <b-img-lazy
-                    v-if="group"
-                    rounded="circle"
-                    thumbnail
-                    class="profilesm p-0 mb-1 inline mr-1 mt-1"
-                    alt="Profile picture"
-                    title="Profile"
-                    :src="group.profile"
-                    @error.native="brokenImage"
-                  />
+                  <profile-image v-if="group" :image="group.profile" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
                   <span class="align-middle">
                     Message from {{ group.namedisplay }} Volunteers
                   </span>
@@ -43,12 +34,15 @@
     </b-row>
   </div>
 </template>
-<style scoped>
-</style>
+
 <script>
 import ChatBase from '~/components/ChatBase'
+const ProfileImage = () => import('~/components/ProfileImage')
 
 export default {
+  components: {
+    ProfileImage
+  },
   extends: ChatBase,
   computed: {
     group() {
@@ -88,3 +82,6 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+</style>
