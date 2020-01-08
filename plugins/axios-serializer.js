@@ -5,7 +5,7 @@ axios.defaults.paramsSerializer = params => {
   let options = ''
 
   keys.forEach(key => {
-    if (params[key]) {
+    if (params[key] !== null) {
       const isParamTypeObject = typeof params[key] === 'object'
 
       if (!isParamTypeObject) {
