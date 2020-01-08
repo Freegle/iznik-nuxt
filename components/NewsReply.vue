@@ -177,8 +177,8 @@ import NewsHighlight from '~/components/NewsHighlight'
 import ChatButton from '~/components/ChatButton'
 import NewsPreview from '~/components/NewsPreview'
 import NewsRefer from '~/components/NewsRefer'
+import ProfileImage from '~/components/ProfileImage'
 const ProfileModal = () => import('~/components/ProfileModal')
-const ProfileImage = () => import('~/components/ProfileImage')
 
 const AtTa = process.browser
   ? require('vue-at/dist/vue-at-textarea')

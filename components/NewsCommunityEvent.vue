@@ -62,8 +62,8 @@
 <script>
 import NewsBase from '~/components/NewsBase'
 import NewsLoveComment from '~/components/NewsLoveComment'
+import ProfileImage from '~/components/ProfileImage'
 const CommunityEventModal = () => import('~/components/CommunityEventModal')
-const ProfileImage = () => import('~/components/ProfileImage')
 
 export default {
   components: {

@@ -68,10 +68,10 @@
 </template>
 
 <script>
+import ProfileImage from '~/components/ProfileImage'
 const PromiseModal = () => import('./PromiseModal')
 const RenegeModal = () => import('./RenegeModal')
 const Ratings = () => import('~/components/Ratings')
-const ProfileImage = () => import('~/components/ProfileImage')
 
 export default {
   components: {

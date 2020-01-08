@@ -26,7 +26,7 @@
 </template>
 
 <script>
-const ProfileImage = () => import('~/components/ProfileImage')
+import ProfileImage from '~/components/ProfileImage'
 
 export default {
   components: {
