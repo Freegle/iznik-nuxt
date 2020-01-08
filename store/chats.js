@@ -57,6 +57,23 @@ export const getters = {
 
   list: state => {
     return state.list
+  },
+
+  getByUser: state => userid => {
+    let ret = null
+
+    Object.keys(state.list).forEach(key => {
+      const chat = state.list[key]
+
+      if (
+        parseInt(chat.user1) === parseInt(userid) ||
+        parseInt(chat.user2) === parseInt(userid)
+      ) {
+        ret = chat
+      }
+    })
+
+    return ret
   }
 }
 

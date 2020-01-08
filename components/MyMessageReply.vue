@@ -110,7 +110,6 @@ export default {
     promised() {
       if (this.message.promisecount) {
         for (const promise of this.message.promises) {
-          console.log('Propmised?', promise.userid, this.reply.user.id)
           if (promise.userid === this.reply.user.id) {
             return true
           }

@@ -312,7 +312,6 @@ export default {
           if (chat.refmsgids.indexOf(this.message.id) !== -1) {
             // This chat references this message
             ret.push(chat)
-            console.log('Chat ', this.message.id, chat.name)
           }
         }
       }

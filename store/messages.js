@@ -116,6 +116,40 @@ export const actions = {
     return data
   },
 
+  async updateChat({ dispatch }, userid) {
+    // Find the chat to this user and refetch the messages, so that if we have a chat window open or other data
+    // that depends on it, we update that.
+    const chatid = await dispatch(
+      'chats/openChatToUser',
+      {
+        userid: userid
+      },
+      {
+        root: true
+      }
+    )
+
+    await dispatch(
+      'chatmessages/clearContext',
+      {
+        chatid: chatid
+      },
+      {
+        root: true
+      }
+    )
+
+    await dispatch(
+      'chatmessages/fetch',
+      {
+        chatid: chatid
+      },
+      {
+        root: true
+      }
+    )
+  },
+
   async promise({ dispatch }, params) {
     await dispatch(
       'update',
@@ -123,6 +157,8 @@ export const actions = {
         action: 'Promise'
       })
     )
+
+    await dispatch('updateChat', params.userid)
   },
 
   async renege({ dispatch }, params) {
@@ -132,6 +168,8 @@ export const actions = {
         action: 'Renege'
       })
     )
+
+    await dispatch('updateChat', params.userid)
   },
 
   clear({ commit }) {
