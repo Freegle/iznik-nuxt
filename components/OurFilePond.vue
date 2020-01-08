@@ -173,6 +173,7 @@ export default {
       data.append('imgtype', this.imgtype)
       data.append('ocr', this.ocr)
       data.append('identify', this.identify)
+      console.log('msgid', this.msgid)
       data.append('msgid', this.msgid)
 
       const ret = await this.$axios.post(process.env.API + '/image', data, {
