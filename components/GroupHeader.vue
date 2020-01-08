@@ -15,7 +15,7 @@
             Leave
           </b-button>
         </span>
-        <b-link v-if="group.modsemail" :href="'mailto:' + group.modsemail">
+        <b-link v-if="modsemail" :href="'mailto:' + modsemail">
           <b-button class="mt-1 mr-1 d-block d-lg-none float-right" variant="white">
             <v-icon name="question-circle" />&nbsp;Contact&nbsp;volunteers
           </b-button>
@@ -47,7 +47,7 @@
       </b-col>
       <b-col lg="3" class="order-1 order-lg-2">
         <span class="d-none d-lg-block float-right">
-          <b-link :href="'mailto:' + group.modsemail">
+          <b-link :href="'mailto:' + modsemail">
             <b-button class="ml-1 mb-1" variant="white">
               <v-icon name="question-circle" />&nbsp;Contact&nbsp;volunteers
             </b-button>
@@ -96,6 +96,10 @@ export default {
     amAMember() {
       const member = this.$store.getters['auth/member'](this.group.id)
       return member
+    },
+    modsemail() {
+      // The server is confused and sometimes returns one or the other.  This is a bug.
+      return this.group.modsemail || this.group.modsmail
     }
   },
   methods: {
