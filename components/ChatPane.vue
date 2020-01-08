@@ -427,10 +427,6 @@ export default {
       chatid: this.id
     })
 
-    await this.$store.dispatch('chatmessages/fetch', {
-      chatid: this.id
-    })
-
     // Get the user info in case we need to warn about them.
     await this.$store.dispatch('user/fetch', {
       id: this.otheruser,
@@ -451,6 +447,7 @@ export default {
     },
     loadMore: function($state) {
       const currentCount = this.chatmessages.length
+      console.log('load more', currentCount)
 
       if (!this.scrolledToBottom) {
         // First load.  Scroll to the bottom when things have sorted themselves out.  This helps if we have messages
