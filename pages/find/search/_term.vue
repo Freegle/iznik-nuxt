@@ -270,7 +270,7 @@ export default {
   },
 
   head() {
-    return this.buildHead('Search results: ' + this.term)
+    return this.buildHead(this.term ? 'Search results: ' + this.term : 'Search')
   }
 }
 </script>
