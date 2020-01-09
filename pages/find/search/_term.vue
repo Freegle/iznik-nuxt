@@ -245,6 +245,9 @@ export default {
         }
       }
 
+      const groupid = this.$store.getters['compose/getGroup']
+      params.groupid = groupid
+
       this.$store
         .dispatch('messages/fetchMessages', params)
         .then(() => {
