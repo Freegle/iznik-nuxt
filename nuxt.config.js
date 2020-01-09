@@ -410,7 +410,8 @@ module.exports = {
     MODTOOLS: false,
     USER_SITE: USER_SITE,
     IMAGE_SITE: IMAGE_SITE,
-    SENTRY_DSN: SENTRY_DSN
+    SENTRY_DSN: SENTRY_DSN,
+    BUILD_DATE: new Date().toLocaleString(),
   },
 
   vue: {
