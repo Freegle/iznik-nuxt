@@ -28,9 +28,8 @@ const USER_SITE = 'https://www.ilovefreegle.org'
 // This is where images are served from.
 const IMAGE_SITE = 'https://images.ilovefreegle.org'
 
-// Now that we're using http2, long polls causing request stalling shoulw not be an issue, so we can point this at
-// the same site.
-const CHAT_HOST = 'https://www.ilovefreegle.org:555'
+// Long polls interact badly with per-host connection limits so send to here instead.
+const CHAT_HOST = 'https://users.ilovefreegle.org:555'
 
 // Allow disabling of eslint autofix by setting "DISABLE_ESLINT_AUTOFIX=true" in env (e.g. .env file)
 // defaults to enabling autofixing
