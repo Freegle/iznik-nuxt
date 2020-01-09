@@ -20,7 +20,6 @@ export const mutations = {
   },
 
   setBlocked(state, value) {
-    console.log('Blocked?', value)
     state.blocked = value
   }
 }
