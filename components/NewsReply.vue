@@ -470,8 +470,8 @@ export default {
 
   @include media-breakpoint-up(md) {
     width: 20px;
-    top: 29px;
-    left: 24px;
+    top: 28px;
+    left: 28px;
     padding: 3px;
   }
 }
