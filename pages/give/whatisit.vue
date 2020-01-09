@@ -32,7 +32,7 @@
           <b-btn v-if="ids.length > 1" variant="white" class="mr-1" @click="deleteItem">
             <v-icon name="trash-alt" />&nbsp;Delete last item
           </b-btn>
-          <b-btn variant="white" class="" @click="addItem">
+          <b-btn v-if="ids.length < 6" variant="white" class="" @click="addItem">
             <v-icon name="plus" />&nbsp;Add another item
           </b-btn>
         </div>
