@@ -260,7 +260,7 @@ export default {
 
   beforeDestroy() {
     if (this.bumpTimer) {
-      this.bumpTimer()
+      clearTimeout(this.bumpTimer)
     }
   },
   methods: {
