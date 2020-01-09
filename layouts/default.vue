@@ -621,10 +621,7 @@ export default {
       this.nchan = new NchanSubscriber(
         process.env.CHAT_HOST + '/subscribe?id=' + id,
         {
-          subscriber: ['websocket', 'eventsource', 'longpoll ']
-        },
-        {
-          subscriber: 'longpoll'
+          subscriber: ['longpoll']
         }
       )
 

@@ -164,6 +164,8 @@ export default {
 
         if (!lastRoute || lastRoute === 'news') {
           route = '/chitchat'
+        } else if (lastRoute === 'myposts') {
+          route = '/myposts'
         } else {
           route = '/communities'
         }
