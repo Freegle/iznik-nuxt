@@ -2,7 +2,7 @@ import Vue from 'vue'
 
 export const state = () => ({
   // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
-  // storage.
+  // storage.  Sparse arrays also kill Vue performance.
   messages: {},
   users: {},
   contexts: {}
@@ -21,7 +21,8 @@ export const mutations = {
         : payload.messages
 
     if (!state.messages[chatid]) {
-      Vue.set(state.messages, chatid, [])
+      // Again, don't use an array as this will be sparse.
+      Vue.set(state.messages, chatid, {})
     }
 
     for (const message of messages) {
@@ -54,12 +55,14 @@ export const mutations = {
 export const getters = {
   getMessages: state => chatid => {
     chatid = chatid + ''
-    const ret = state.messages[chatid] ? state.messages[chatid] : []
+    const ret = state.messages[chatid]
+      ? Object.values(state.messages[chatid])
+      : []
     return ret
   },
 
   getUsers: state => chatid => {
-    return state.users[chatid] ? state.users[chatid] : []
+    return state.users[chatid] ? Object.values(state.users[chatid]) : []
   },
 
   getContext: state => id => {
@@ -91,7 +94,7 @@ export const actions = {
     const { chatmessages, chatusers, context } = await this.$api.chat.fetch(
       chatid,
       {
-        limit: 30,
+        limit: 10,
         context: ctx
       }
     )

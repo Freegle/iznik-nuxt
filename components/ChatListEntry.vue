@@ -27,7 +27,7 @@
 
 <script>
 import twem from '~/assets/js/twem'
-const ProfileImage = () => import('~/components/ProfileImage')
+import ProfileImage from '~/components/ProfileImage'
 
 export default {
   components: {

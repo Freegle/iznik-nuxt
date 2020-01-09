@@ -97,9 +97,7 @@ export default {
 
     if (value) {
       // Got one Set this as the default in the input.
-      this.$refs.autocomplete.setValue(
-        this.$store.getters['auth/user'].settings.mylocation.name
-      )
+      this.$refs.autocomplete.setValue(value)
 
       // We want to signal that we have a selected value.  Unfortunately what we have in auth from the session call
       // doesn't contain the groups near the location, so we need to fetch that.

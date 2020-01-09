@@ -274,15 +274,11 @@ export default {
     },
 
     chatmessages() {
-      return Object.values(
-        this.$store.getters['chatmessages/getMessages'](this.id)
-      )
+      return this.$store.getters['chatmessages/getMessages'](this.id)
     },
 
     chatusers() {
-      return Object.values(
-        this.$store.getters['chatmessages/getUsers'](this.id)
-      )
+      return this.$store.getters['chatmessages/getUsers'](this.id)
     },
 
     otheruser() {

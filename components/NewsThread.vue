@@ -152,7 +152,7 @@ import NewsAlert from '~/components/NewsAlert'
 import NewsNoticeboard from '~/components/NewsNoticeboard'
 import NoticeMessage from '~/components/NoticeMessage'
 import NewsPreview from '~/components/NewsPreview'
-const ProfileImage = () => import('~/components/ProfileImage')
+import ProfileImage from '~/components/ProfileImage'
 const AtTa = process.browser
   ? require('vue-at/dist/vue-at-textarea')
   : undefined

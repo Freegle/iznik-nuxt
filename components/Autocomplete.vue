@@ -441,6 +441,7 @@ export default {
       setTimeout(() => {
         let body = document.getElementsByTagName("body")[0];
         body.classList.remove('forcescroll')
+        body.style.overflowY = null
       }, 500)
 
       // Callback Event

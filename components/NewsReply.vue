@@ -177,8 +177,8 @@ import NewsHighlight from '~/components/NewsHighlight'
 import ChatButton from '~/components/ChatButton'
 import NewsPreview from '~/components/NewsPreview'
 import NewsRefer from '~/components/NewsRefer'
+import ProfileImage from '~/components/ProfileImage'
 const ProfileModal = () => import('~/components/ProfileModal')
-const ProfileImage = () => import('~/components/ProfileImage')
 
 const AtTa = process.browser
   ? require('vue-at/dist/vue-at-textarea')
@@ -462,15 +462,17 @@ export default {
   border-radius: 50%;
   position: absolute;
   background-color: $color-white;
-  width: 15px;
-  padding-left: 3px;
-  padding-top: 3px;
-  top: 23px;
-  left: 23px;
+  width: 16px;
+  height: auto;
+  top: 19px;
+  left: 16px;
+  padding: 2px;
 
   @include media-breakpoint-up(md) {
-    top: 30px;
-    left: 26px;
+    width: 20px;
+    top: 28px;
+    left: 28px;
+    padding: 3px;
   }
 }
 </style>

@@ -453,6 +453,7 @@ import Vue from 'vue'
 import EmailConfirmModal from '~/components/EmailConfirmModal'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead'
+import ProfileImage from '~/components/ProfileImage'
 const AboutMeModal = () => import('~/components/AboutMeModal')
 const AvailabilityModal = () => import('~/components/AvailabilityModal')
 const AddressModal = () => import('~/components/AddressModal')
@@ -460,7 +461,6 @@ const ProfileModal = () => import('~/components/ProfileModal')
 const Postcode = () => import('~/components/Postcode')
 const SettingsGroup = () => import('~/components/SettingsGroup')
 const NoticeMessage = () => import('~/components/NoticeMessage')
-const ProfileImage = () => import('~/components/ProfileImage')
 const OurFilePond = () => import('~/components/OurFilePond')
 const OurToggle = () => import('~/components/OurToggle')
 const DatePicker = () => import('vue2-datepicker')

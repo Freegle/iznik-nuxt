@@ -17,7 +17,9 @@
                 <span v-if="unseen">
                   <b-badge variant="danger">{{ unseen }}</b-badge>
                 </span>
-                <ratings v-if="otheruser" :key="'otheruser-' + otheruser.id" size="sm" v-bind="otheruser" class="mr-2" />
+                <span class="mr-2 d-none d-sm-inline-block">
+                  <ratings v-if="otheruser" :key="'otheruser-' + otheruser.id" size="sm" v-bind="otheruser" />
+                </span>
               </b-col>
               <b-col cols="4" class="p-0">
                 <b-dropdown size="sm" variant="transparent" class="float-right" right>
@@ -35,9 +37,19 @@
                 <span class="float-right pl-1 mr-1 clickme" title="Popup chat window" @click="popup">
                   <v-icon name="window-restore" />
                 </span>
-                <b-btn variant="white" size="sm" class="float-right mr-2" @click="markRead">
+                <b-btn variant="white" size="sm" class="float-right mr-2 d-none d-sm-inline-block" @click="markRead">
                   Mark all read
                 </b-btn>
+              </b-col>
+            </b-row>
+            <b-row class="d-block d-sm-none">
+              <b-col class="p-0 pl-1 mb-1">
+                <span>
+                  <b-btn variant="white" size="sm" class="float-right" @click="markRead">
+                    Mark all read
+                  </b-btn>
+                  <ratings v-if="otheruser" :key="'otheruser-' + otheruser.id" size="sm" v-bind="otheruser" />
+                </span>
               </b-col>
             </b-row>
           </b-col>
@@ -321,16 +333,11 @@ export default {
     },
 
     chatmessages() {
-      const ret = Object.values(
-        this.$store.getters['chatmessages/getMessages'](this.id)
-      )
-      return ret
+      return this.$store.getters['chatmessages/getMessages'](this.id)
     },
 
     chatusers() {
-      return Object.values(
-        this.$store.getters['chatmessages/getUsers'](this.id)
-      )
+      return this.$store.getters['chatmessages/getUsers'](this.id)
     },
 
     otheruser() {
@@ -432,10 +439,6 @@ export default {
       chatid: this.id
     })
 
-    await this.$store.dispatch('chatmessages/fetch', {
-      chatid: this.id
-    })
-
     // Get the user info in case we need to warn about them.
     await this.$store.dispatch('user/fetch', {
       id: this.otheruser,
@@ -456,6 +459,7 @@ export default {
     },
     loadMore: function($state) {
       const currentCount = this.chatmessages.length
+      console.log('load more', currentCount)
 
       if (!this.scrolledToBottom) {
         // First load.  Scroll to the bottom when things have sorted themselves out.  This helps if we have messages

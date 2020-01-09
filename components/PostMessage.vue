@@ -1,15 +1,27 @@
 <template>
   <div>
     <b-row class="pr-0 mb-2">
-      <b-col cols="auto" class="mt-2 pl-0">
-        <b-btn variant="success" size="lg" @click="photoAdd" @drop.prevent="drop" @dragover.prevent>
+      <b-col cols="6" md="0" class="mt-2 pl-0">
+        <b-form-select v-model="type" size="lg" class="d-inline-block d-md-none">
+          <option value="Offer">
+            OFFER
+          </option>
+          <option value="Wanted">
+            WANTED
+          </option>
+        </b-form-select>
+      </b-col>
+      <b-col cols="6" md="12" class="pl-0">
+        <b-btn
+          variant="success"
+          size="lg"
+          class="mt-2"
+          @click="photoAdd"
+          @drop.prevent="drop"
+          @dragover.prevent
+        >
           <v-icon name="camera" />&nbsp;Add photos
         </b-btn>
-      </b-col>
-      <b-col class="text-center mt-2 pr-0">
-        <notice-message class="d-none d-md-inline-block float-right">
-          <v-icon name="info-circle" />&nbsp;Please add photos - you'll get a better response.
-        </notice-message>
       </b-col>
     </b-row>
     <b-row v-if="uploading" class="bg-white">
@@ -47,17 +59,17 @@
       </b-col>
     </b-row>
     <b-row>
-      <b-col cols="6" md="3" class="pl-0">
-        <b-form-select v-model="type">
-          <option value="Offer">
+      <b-col cols="0" md="3" class="pl-0 d-none d-md-inline-block">
+        <b-form-select v-model="type" readonly>
+          <option value="Offer" :disabled="type !== 'Offer'">
             OFFER
           </option>
-          <option value="Wanted">
+          <option value="Wanted" :disabled="type !== 'Wanted'">
             WANTED
           </option>
         </b-form-select>
       </b-col>
-      <b-col cols="9" class="pl-0 pr-0">
+      <b-col cols="12" md="9" class="pl-0 pr-0">
         <PostItem ref="item" :item="item" @selected="itemSelect" @cleared="itemClear" @typed="itemType" />
       </b-col>
     </b-row>
@@ -77,14 +89,12 @@
 const OurFilePond = () => import('~/components/OurFilePond')
 const PostPhoto = () => import('~/components/PostPhoto')
 const PostItem = () => import('~/components/PostItem')
-const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
     OurFilePond,
     PostPhoto,
-    PostItem,
-    NoticeMessage
+    PostItem
   },
   props: {
     id: {
