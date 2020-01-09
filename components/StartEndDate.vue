@@ -10,9 +10,8 @@
           class=""
           lang="en"
           type="datetime"
-          append-to-body
-          format="ddd, Do MMM HH:mm a"
-          :time-picker-options="{ start: '00:00', step: '00:30', end: '23:30' }"
+          :format="format"
+          :time-picker-options="{ start: '00:00', step: '00:30', end: '23:30', format: 'HH:mm' }"
           placeholder=""
         />
       </div>
@@ -24,9 +23,8 @@
           class=""
           lang="en"
           type="datetime"
-          append-to-body
-          format="ddd, Do MMM HH:mm a"
-          :time-picker-options="{ start: '00:00', step: '00:30', end: '23:30' }"
+          :format="format"
+          :time-picker-options="{ start: '00:00', step: '00:30', end: '23:30', format: 'HH:mm' }"
           placeholder=""
         />
       </div>
@@ -42,6 +40,11 @@
 
 <script>
 import DatePicker from 'vue2-datepicker'
+import 'vue2-datepicker/index.css'
+
+import dayjs from 'dayjs'
+
+const FORMAT = 'ddd, Do MMM HH:mm a'
 
 export default {
   components: {
@@ -56,6 +59,16 @@ export default {
       type: Boolean,
       required: false,
       default: true
+    }
+  },
+  created() {
+    this.format = {
+      stringify(date) {
+        return date ? dayjs(date).format(FORMAT) : ''
+      },
+      parse(value) {
+        return value ? dayjs(value, FORMAT).toDate() : null
+      }
     }
   }
 }
