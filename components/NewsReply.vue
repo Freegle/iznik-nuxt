@@ -462,15 +462,17 @@ export default {
   border-radius: 50%;
   position: absolute;
   background-color: $color-white;
-  width: 15px;
-  padding-left: 3px;
-  padding-top: 3px;
-  top: 23px;
-  left: 23px;
+  width: 16px;
+  height: auto;
+  top: 19px;
+  left: 16px;
+  padding: 2px;
 
   @include media-breakpoint-up(md) {
-    top: 30px;
-    left: 26px;
+    width: 20px;
+    top: 29px;
+    left: 24px;
+    padding: 3px;
   }
 }
 </style>
