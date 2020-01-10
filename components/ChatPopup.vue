@@ -338,8 +338,10 @@ export default {
         })
 
         this.$nextTick(() => {
-          const container = this.$el.querySelector('.chatContent')
-          container.scrollTop = container.scrollHeight
+          if (this.$el && this.$el.querySelector) {
+            const container = this.$el.querySelector('.chatContent')
+            container.scrollTop = container.scrollHeight
+          }
         })
       }
     }
@@ -390,8 +392,11 @@ export default {
               if (!this.scrolledToBottom) {
                 // First load.  Scroll to the bottom when things have sorted themselves out.
                 this.$nextTick(() => {
-                  const container = this.$el.querySelector('.chatContent')
-                  container.scrollTop = container.scrollHeight
+                  if (this.$el && this.$el.querySelector) {
+                    const container = this.$el.querySelector('.chatContent')
+                    container.scrollTop = container.scrollHeight
+                  }
+
                   this.scrolledToBottom = true
                 })
               }
@@ -423,8 +428,10 @@ export default {
 
       // Scroll to the bottom so we can see it.
       this.$nextTick(() => {
-        const container = this.$el.querySelector('.chatContent')
-        container.scrollTop = container.scrollHeight
+        if (this.$el && this.$el.querySelector) {
+          const container = this.$el.querySelector('.chatContent')
+          container.scrollTop = container.scrollHeight
+        }
       })
 
       // We also want to trigger an update in the chat list.

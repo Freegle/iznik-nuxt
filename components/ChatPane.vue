@@ -419,9 +419,11 @@ export default {
         })
 
         setTimeout(() => {
-          const container = this.$el.querySelector('.chatContent')
-          if (container) {
-            container.scrollTop = container.scrollHeight
+          if (this.$el && this.$el.querySelector) {
+            const container = this.$el.querySelector('.chatContent')
+            if (container) {
+              container.scrollTop = container.scrollHeight
+            }
           }
         }, 500)
       }
@@ -466,8 +468,10 @@ export default {
         // in our store, so we'll render some, otherwise we are stuck at the top until this fetch completes and we
         // scroll to the bottom below.
         this.$nextTick(() => {
-          const container = this.$el.querySelector('.chatContent')
-          container.scrollTop = container.scrollHeight
+          if (this.$el && this.$el.querySelector) {
+            const container = this.$el.querySelector('.chatContent')
+            container.scrollTop = container.scrollHeight
+          }
         })
       }
 
@@ -523,8 +527,10 @@ export default {
 
       // Scroll to the bottom so we can see it.
       this.$nextTick(() => {
-        const container = this.$el.querySelector('.chatContent')
-        container.scrollTop = container.scrollHeight
+        if (this.$el && this.$el.querySelector) {
+          const container = this.$el.querySelector('.chatContent')
+          container.scrollTop = container.scrollHeight
+        }
       })
 
       // We also want to trigger an update in the chat list.
