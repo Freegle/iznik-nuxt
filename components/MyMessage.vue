@@ -127,7 +127,7 @@
                 </b-list-group-item>
               </b-list-group>
               <b-list-group v-else horizontal class="flex-wrap">
-                <b-list-group-item v-if="message.type === 'Offer' && !taken" li>
+                <b-list-group-item v-if="message.type === 'Offer' && !taken">
                   <b-btn variant="success" class="d-inline mr-1" @click="outcome('Taken')">
                     <v-icon name="check" /> Mark as TAKEN
                   </b-btn>
