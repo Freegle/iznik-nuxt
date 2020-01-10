@@ -225,7 +225,6 @@ export default {
     },
 
     socialblocked() {
-      console.log('Compute social blocked', this.bump)
       const ret =
         this.bump &&
         (this.facebookDisabled || this.googleDisabled || this.yahooDisabled)
