@@ -35,10 +35,12 @@
 </template>
 <script>
 import Job from './Job'
+const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
-    Job
+    Job,
+    NoticeMessage
   },
   data: function() {
     return {}
