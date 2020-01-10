@@ -27,12 +27,13 @@ export function appGoogleLogin(callback) {
         console.log('google success', obj)
         tryingGoogleLogin = false
         if (!obj.serverAuthCode) {
-          completeLoginCallback({ status: 'No serverAuthCode. To fix this you may need to uninstall and re-install the app.' })
-          return
+          appGoogleLogout() // which should solve empty serverAuthCode, though app uninstall and re-install might be needed
+          completeLoginCallback({ status: 'No serverAuthCode. Please try again.' })
+        } else {
+          // Pass accessToken to do login at Freegle
+          const authResult = { code: obj.serverAuthCode } // accessToken
+          completeLoginCallback(authResult)
         }
-        // Pass accessToken to do login at Freegle
-        const authResult = { code: obj.serverAuthCode } // accessToken
-        completeLoginCallback(authResult)
       },
       msg => { // ERROR
         console.log('google error: ' + msg)
