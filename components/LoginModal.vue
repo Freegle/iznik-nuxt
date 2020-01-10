@@ -287,39 +287,48 @@ export default {
       e.stopPropagation()
 
       if (this.signUp) {
-        this.$store
-          .dispatch('auth/signup', {
-            firstname: this.firstname,
-            lastname: this.lastname,
-            email: this.email,
-            password: this.password
-          })
-          .then(() => {
-            // We are now logged in. Prompt the browser to remember the credentials.
-            if (window.PasswordCredential) {
-              try {
-                const c = new window.PasswordCredential(e.target)
-                navigator.credentials
-                  .store(c)
-                  .then(function() {
-                    self.pleaseShowModal = false
-                  })
-                  .catch(err => {
-                    console.error('Failed to save credentials', err)
-                  })
-              } catch (e) {
+        if (
+          !this.firstname ||
+          !this.lastname ||
+          !this.email ||
+          !this.password
+        ) {
+          this.nativeLoginError = 'Please fill out the form.'
+        } else {
+          this.$store
+            .dispatch('auth/signup', {
+              firstname: this.firstname,
+              lastname: this.lastname,
+              email: this.email,
+              password: this.password
+            })
+            .then(() => {
+              // We are now logged in. Prompt the browser to remember the credentials.
+              if (window.PasswordCredential) {
+                try {
+                  const c = new window.PasswordCredential(e.target)
+                  navigator.credentials
+                    .store(c)
+                    .then(function() {
+                      self.pleaseShowModal = false
+                    })
+                    .catch(err => {
+                      console.error('Failed to save credentials', err)
+                    })
+                } catch (e) {
+                  self.pleaseShowModal = false
+                }
+              } else {
                 self.pleaseShowModal = false
               }
-            } else {
-              self.pleaseShowModal = false
-            }
 
-            if (this.$nuxt.path === '/' || !this.$nuxt.path) {
-              // We've signed up from the home page.  Send them to chitchat - that shows some activity, and also
-              // has the Give/Find prompt.
-              this.$router.push('/chitchat')
-            }
-          })
+              if (this.$nuxt.path === '/' || !this.$nuxt.path) {
+                // We've signed up from the home page.  Send them to chitchat - that shows some activity, and also
+                // has the Give/Find prompt.
+                this.$router.push('/chitchat')
+              }
+            })
+        }
       } else {
         // Login
         this.$store
