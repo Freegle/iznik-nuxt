@@ -388,7 +388,7 @@ module.exports = {
   },
 
   sentry: {
-    dsn: process.env.SENTRY_DSN,
+    dsn: SENTRY_DSN,
     publishRelease: false,
     clientIntegrations: function(integrations) {
       // Don't include breadcrumbs as this makes POSTs too large, and they fail.
