@@ -302,6 +302,13 @@ export default {
     }
   },
   async mounted() {
+    // We want this to be our next home page.
+    try {
+      localStorage.setItem('Iznik>lasthomepage', 'myposts')
+    } catch (e) {
+      console.error('Save last route failed', e)
+    }
+
     await this.$store.dispatch('auth/fetchUser', {
       components: ['me', 'groups']
     })

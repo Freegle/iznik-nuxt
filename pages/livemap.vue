@@ -159,7 +159,6 @@ export default {
     },
 
     openIt(id) {
-      console.log('Open', id)
       window.open(process.env.USER_SITE + '/message/' + id)
     }
   },

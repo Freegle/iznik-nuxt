@@ -230,6 +230,7 @@ export default {
     },
 
     socialblocked() {
+      console.log('Compute social blocked', this.bump)
       const ret =
         this.bump &&
         (this.facebookDisabled || this.googleDisabled || this.yahooDisabled)
@@ -262,13 +263,23 @@ export default {
     }
   },
 
+  beforeDestroy() {
+    if (this.bumpTimer) {
+      clearTimeout(this.bumpTimer)
+    }
+  },
   methods: {
     tryLater() {
       this.nativeLoginError = 'Something went wrong; please try later.'
     },
-    show() {
-      // Force reconsideration of social signin disabled.
+    bumpIt() {
+      // Force reconsideration of social signin disabled.  Need to do that regularly in case the SDKs haven't loaded
+      // by the time we open the modal.
       this.bump = Date.now()
+      this.bumpTimer = setTimeout(this.bumpIt, 500)
+    },
+    show() {
+      this.bumpIt()
       this.pleaseShowModal = true
     },
     hide() {

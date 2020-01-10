@@ -1,5 +1,6 @@
 export const state = () => ({
-  list: []
+  list: [],
+  blocked: false
 })
 
 export const mutations = {
@@ -16,18 +17,32 @@ export const mutations = {
 
   clear(state) {
     state.list = []
+  },
+
+  setBlocked(state, value) {
+    state.blocked = value
   }
 }
 
 export const getters = {
   list: state => {
     return state.list
+  },
+
+  blocked: state => {
+    return state.blocked
   }
 }
 
 export const actions = {
   async fetch({ commit }, params) {
-    commit('setList', await this.$api.job.fetch(params))
+    try {
+      commit('setList', await this.$api.job.fetch(params))
+      commit('setBlocked', false)
+    } catch (e) {
+      // Typicall Ad Blockers.
+      commit('setBlocked', true)
+    }
   },
 
   clear({ commit }) {

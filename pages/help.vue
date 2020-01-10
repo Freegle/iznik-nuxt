@@ -8,8 +8,8 @@
         </h1>
 
         <p v-if="isApp">
-          If you like this app - or not - <a href='#' class="d-inline" @click="showRateMe">please leave a review</a>.<br/>
-          Mobile app build: {{ appBuildDate }}.
+          If you like this app - or not - <a href='#' class="d-inline" @click="showRateMe">please leave a review</a>.<br />
+          Mobile app build: {{ version }}.
         </p>
         <p>
         <b-card no-body>
@@ -420,6 +420,7 @@
               you are a member of the media and want to help publicise Freegle.  For urgent press enquiries only, call +44 (0)7962 449573.
             </li>
           </ul>
+          <p>This version of the site was built on {{ version }}.</p>
         </div>
       </b-col>
       <b-col cols="0" md="3" />
@@ -470,8 +471,10 @@ export default {
     isApp() {
       return process.env.IS_APP
     },
-    appBuildDate() {
-      return process.env.APP_BUILD_DATE
+    version() {
+      const date = new this.$dayjs(process.env.BUILD_DATE)
+
+      return date.format('Do MMMM, YYYY') + ' at ' + date.format('HH:MM')
     }
   },
   head() {

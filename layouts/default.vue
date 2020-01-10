@@ -626,11 +626,8 @@ export default {
       this.nchan = new NchanSubscriber(
         process.env.CHAT_HOST + '/subscribe?id=' + id,
         {
-          subscriber: ['websocket', 'eventsource', 'longpoll ']
-        },
-        // CC {
-        // CC  subscriber: 'longpoll'
-        // CC}
+          subscriber: ['longpoll']
+        }
       )
 
       // We store the last message we got from NCHAN.  This avoids us getting duplicate messages (triggering server

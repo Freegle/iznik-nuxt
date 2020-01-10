@@ -245,6 +245,9 @@ export default {
         }
       }
 
+      const groupid = this.$store.getters['compose/getGroup']
+      params.groupid = groupid
+
       this.$store
         .dispatch('messages/fetchMessages', params)
         .then(() => {
@@ -270,7 +273,7 @@ export default {
   },
 
   head() {
-    return this.buildHead('Search results: ' + this.term)
+    return this.buildHead(this.term ? 'Search results: ' + this.term : 'Search')
   }
 }
 </script>

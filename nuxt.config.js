@@ -31,9 +31,8 @@ const USER_SITE = 'https://www.ilovefreegle.org'
 // This is where images are served from.
 const IMAGE_SITE = 'https://images.ilovefreegle.org'
 
-// Now that we're using http2, long polls causing request stalling shoulw not be an issue, so we can point this at
-// the same site.
-const CHAT_HOST = 'https://www.ilovefreegle.org:555'
+// Long polls interact badly with per-host connection limits so send to here instead.
+const CHAT_HOST = 'https://users.ilovefreegle.org:555'
 
 // Allow disabling of eslint autofix by setting "DISABLE_ESLINT_AUTOFIX=true" in env (e.g. .env file)
 // defaults to enabling autofixing
@@ -201,7 +200,8 @@ const config = {
     { from: '^/events', to: '/communityevents' },
     { from: '^/contact', to: '/help' },
     { from: '^/newsfeed', to: '/chitchat' },
-    { from: '^/handbook', to: '/help' }
+    { from: '^/handbook', to: '/help' },
+    { from: '^//$', to: '/' }
   ],
 
   /*
@@ -417,9 +417,8 @@ const config = {
     MODTOOLS: false,
     USER_SITE: USER_SITE,
     IMAGE_SITE: IMAGE_SITE,
-    IS_APP: false,
-    APP_BUILD_DATE: new Date().toDateString(),
-    SENTRY_DSN: SENTRY_DSN
+    SENTRY_DSN: SENTRY_DSN,
+    BUILD_DATE: new Date().toLocaleString()
   },
 
   vue: {

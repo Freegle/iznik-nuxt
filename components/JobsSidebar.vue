@@ -1,6 +1,19 @@
 <template>
   <div class="mt-2">
-    <b-card v-if="jobs.length" variant="white" no-body>
+    <NoticeMessage v-if="blocked" variant="warning">
+      <h3>Please help keep Freegle running</h3>
+      <p>
+        We normally show job ads here.  It looks like you have an AdBlocker or security software which is blocking those.
+        We're not mad on ads either, but please consider donating to help us keep going:
+      </p>
+      <a href="https://freegle.in/paypalfundraiser" target="_blank">
+        <b-btn variant="primary" size="lg">
+          <b-img thumbnail alt="PayPal" src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg" />
+          &nbsp;Donate
+        </b-btn>
+      </a>
+    </NoticeMessage>
+    <b-card v-else-if="jobs.length" variant="white" no-body>
       <b-card-body class="p-0">
         <b-btn variant="white" class="float-right m-1" size="sm" to="/jobs">
           <v-icon name="search" /> View more
@@ -33,6 +46,9 @@ export default {
   computed: {
     jobs() {
       return this.$store.getters['jobs/list']
+    },
+    blocked() {
+      return this.$store.getters['jobs/blocked']
     }
   },
   mounted() {
