@@ -131,6 +131,11 @@ module.exports = {
       { rel: 'preconnect', href: 'https://www.facebook.com' },
       { rel: 'preconnect', href: 'https://connect.facebook.com' },
       { rel: 'preconnect', href: 'https://apis.google.com' }
+    ],
+    script: [
+      {
+        src: 'https://adview.online/js/pub/tracking.js?publisher=2053&channel=web&source=feed'
+      }
     ]
   },
 
