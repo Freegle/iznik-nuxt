@@ -1,5 +1,6 @@
 import { LoginError } from '../api/BaseAPI'
 import { savePushId, logoutPushId } from '@/plugins/app-init-push' // CC
+import { appGoogleLogout } from '@/plugins/app-google' // CC
 
 let first = true
 
@@ -110,6 +111,7 @@ export const actions = {
   },
 
   logout({ commit }) {
+    appGoogleLogout() // CC
     logoutPushId() // CC
     commit('setUser', null)
     this.$api.session.logout()

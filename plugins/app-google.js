@@ -45,3 +45,12 @@ export function appGoogleLogin(callback) {
     completeLoginCallback({ status: e.message })
   }
 }
+
+export function appGoogleLogout() {
+  if (process.env.IS_APP) {
+    console.log('appGoogleLogout start')
+    window.plugins.googleplus.logout(function (msg) {
+      console.log('appGoogleLogout done', msg)
+    })
+  }
+}
