@@ -154,7 +154,11 @@ export default {
               }
             })
 
-            if (res.data.ret === 0) {
+            if (
+              res.data.ret === 0 &&
+              res.data.location &&
+              res.data.location.name
+            ) {
               // Got it - put it in the autocomplete input, and indicate that we've selected it.
               this.$refs.autocomplete.setValue(res.data.location.name)
               this.$emit('selected', res.data.location)
