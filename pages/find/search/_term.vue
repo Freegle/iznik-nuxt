@@ -189,8 +189,12 @@ export default {
         this.results = null
       }
 
-      const input = this.$refs.autocomplete.$refs.input
-      this.$emit('typed', input.value)
+      if (this.$refs.autocomplete) {
+        // We've seen this not be defined - perhaps during navigation when we're destroying this component?
+        // If the ref isn't present then it doesn't make sense to emit the event.
+        const input = this.$refs.autocomplete.$refs.input
+        this.$emit('typed', input.value)
+      }
     },
     process(results) {
       const items =
