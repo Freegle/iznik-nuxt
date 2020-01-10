@@ -27,7 +27,7 @@ export function appGoogleLogin(callback) {
         console.log('google success', obj)
         tryingGoogleLogin = false
         if (!obj.serverAuthCode) {
-          completeLoginCallback({ status: 'No serverAuthCode' })
+          completeLoginCallback({ status: 'No serverAuthCode. To fix this you may need to uninstall and re-install the app.' })
           return
         }
         // Pass accessToken to do login at Freegle
