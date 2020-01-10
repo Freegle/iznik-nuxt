@@ -28,13 +28,15 @@
           <Message v-bind="message" />
         </div>
 
-        <infinite-loading :distance="distance" @infinite="loadMoreMessages">
-          <span slot="spinner">
-            <span slot="no-results" />
-            <span slot="no-more" />
-            <b-img-lazy src="~/static/loader.gif" alt="Loading" />
-          </span>
-        </infinite-loading>
+        <client-only>
+          <infinite-loading :distance="distance" @infinite="loadMoreMessages">
+            <span slot="spinner">
+              <span slot="no-results" />
+              <span slot="no-more" />
+              <b-img-lazy src="~/static/loader.gif" alt="Loading" />
+            </span>
+          </infinite-loading>
+        </client-only>
       </b-col>
     </b-row>
   </div>

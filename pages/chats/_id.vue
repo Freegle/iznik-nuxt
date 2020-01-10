@@ -20,10 +20,12 @@
           <ChatListEntry :id="chat.id" />
         </li>
       </ul>
-      <infinite-loading force-use-infinite-wrapper="#chatlist" :distance="distance" @infinite="loadMore">
-        <span slot="no-results" />
-        <span slot="no-more" />
-      </infinite-loading>
+      <client-only>
+        <infinite-loading force-use-infinite-wrapper="#chatlist" :distance="distance" @infinite="loadMore">
+          <span slot="no-results" />
+          <span slot="no-more" />
+        </infinite-loading>
+      </client-only>
     </b-col>
     <b-col cols="12" md="6" :class="'chatback ' + (selectedChatId ? 'd-block' : 'd-none d-md-block')">
       <ChatPane v-if="activeChat" :id="activeChat" />
