@@ -36,7 +36,7 @@
       </b-col>
       <b-col cols="12" xl="6">
         <span class="float-xl-right ml-2 mt-2 mb-2">
-          <b-btn v-if="promised" variant="warning" class="align-middle mt-1 mb-1" @click="unpromise">
+          <b-btn v-if="promised && !taken && !withdrawn" variant="warning" class="align-middle mt-1 mb-1" @click="unpromise">
             <v-icon>
               <v-icon name="handshake" />
               <v-icon
@@ -47,7 +47,7 @@
             </v-icon>
             Unpromise
           </b-btn>
-          <b-btn v-else-if="message.type === 'Offer'" variant="success" class="align-middle mt-1 mb-1" @click="promise">
+          <b-btn v-else-if="message.type === 'Offer' && !taken && !withdrawn" variant="success" class="align-middle mt-1 mb-1" @click="promise">
             <v-icon name="handshake" /> Promise
           </b-btn>
           <b-btn variant="primary" class="align-middle mt-1 mb-1 mr-1" @click="chat">
@@ -84,6 +84,21 @@ export default {
     message: {
       type: Object,
       required: true
+    },
+    taken: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    received: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    withdrawn: {
+      type: Boolean,
+      required: false,
+      default: false
     },
     reply: {
       type: Object,

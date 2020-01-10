@@ -26,7 +26,18 @@
                         <v-icon name="user" class="fa-fw" /> {{ message.replycount | pluralize(['reply', 'replies'], { includeNumber: true }) }}
                       </b-badge>
                     </span>
-                    <span v-if="message.promisecount > 0" class="ml-1">
+                    <span v-if="message.outcomes && message.outcomes.length > 0" class="ml-1">
+                      <b-badge v-if="taken" variant="success">
+                        <v-icon name="check" class="fa-fw" /> Taken
+                      </b-badge>
+                      <b-badge v-if="received" variant="success">
+                        <v-icon name="check" class="fa-fw" /> Received
+                      </b-badge>
+                      <b-badge v-if="withdrawn" variant="secondary">
+                        <v-icon name="check" class="fa-fw" /> Withdrawn
+                      </b-badge>
+                    </span>
+                    <span v-else-if="message.promisecount > 0" class="ml-1">
                       <b-badge variant="success">
                         <v-icon name="handshake" class="fa-fw" /> Promised
                       </b-badge>
@@ -77,12 +88,19 @@
                 <table v-if="replies.length > 0" class="table table-borderless table-striped mb-0">
                   <tbody>
                     <tr v-for="reply in replies" :key="'reply-' + reply.id">
-                      <MyMessageReply :reply="reply" :chats="chats" :message="message" />
+                      <MyMessageReply
+                        :reply="reply"
+                        :chats="chats"
+                        :message="message"
+                        :taken="taken"
+                        :received="received"
+                        :withdrawn="withdrawn"
+                      />
                     </tr>
                   </tbody>
                 </table>
                 <p v-else class="text-muted">
-                  No replies yet. <span v-if="message.willautorepost && message.canrepostat">Will auto-repost {{ message.canrepostat | timeago }}.</span>
+                  No replies yet. <span v-if="!taken && !received && message.willautorepost && message.canrepostat">Will auto-repost {{ message.canrepostat | timeago }}.</span>
                 </p>
               </b-card-text>
             </b-card-body>
@@ -102,24 +120,24 @@
                     <v-icon name="pen" /> Edit and Resend
                   </b-btn>
                 </b-list-group-item>
-                <b-list-group-item>
+                <b-list-group-item v-if="!withdrawn">
                   <b-btn variant="white" class="d-inline mr-1" @click="outcome('Withdrawn')">
                     <v-icon name="trash-alt" /> Withdraw
                   </b-btn>
                 </b-list-group-item>
               </b-list-group>
               <b-list-group v-else horizontal class="flex-wrap">
-                <b-list-group-item v-if="message.type === 'Offer' && (!message.outcomes || !message.outcomes.length)" li>
+                <b-list-group-item v-if="message.type === 'Offer' && !taken" li>
                   <b-btn variant="success" class="d-inline mr-1" @click="outcome('Taken')">
                     <v-icon name="check" /> Mark as TAKEN
                   </b-btn>
                 </b-list-group-item>
-                <b-list-group-item v-else-if="message.type === 'Wanted' && (!message.outcomes || !message.outcomes.length)">
+                <b-list-group-item v-else-if="message.type === 'Wanted' && !received">
                   <b-btn variant="success" class="d-inline mr-1" @click="outcome('Received')">
                     <v-icon name="check" /> Mark as Received
                   </b-btn>
                 </b-list-group-item>
-                <b-list-group-item v-if="!message.outcomes || !message.outcomes.length">
+                <b-list-group-item v-if="!taken && !received && !withdrawn">
                   <b-btn variant="white" class="d-inline mr-1" @click="outcome('Withdrawn')">
                     <v-icon name="trash-alt" /> Withdraw
                   </b-btn>
@@ -134,7 +152,7 @@
                     <v-icon name="sync" /> Post Again
                   </b-btn>
                 </b-list-group-item>
-                <b-list-group-item v-else-if="message.canrepostat">
+                <b-list-group-item v-else-if="!taken && !received && message.canrepostat">
                   <b-btn variant="white" disabled class="d-inline mr-1" title="You will be able to repost this soon">
                     <v-icon name="sync" /> Post Again <span class="small">{{ message.canrepostat | timeago }}</span>
                   </b-btn>
@@ -256,6 +274,18 @@ export default {
       return unseen
     },
 
+    taken() {
+      return this.hasOutcome('Taken')
+    },
+
+    received() {
+      return this.hasOutcome('Received')
+    },
+
+    withdrawn() {
+      return this.hasOutcome('Withdrawn')
+    },
+
     rejected() {
       let rejected = false
 
@@ -369,6 +399,20 @@ export default {
       this.$router.push(
         this.message.type === 'Offer' ? '/give/whatisit' : 'find/whatisit'
       )
+    },
+
+    hasOutcome(val) {
+      let ret = false
+
+      if (this.message.outcomes && this.message.outcomes.length) {
+        for (const outcome of this.message.outcomes) {
+          if (outcome.outcome === val) {
+            ret = true
+          }
+        }
+      }
+
+      return ret
     }
   }
 }
