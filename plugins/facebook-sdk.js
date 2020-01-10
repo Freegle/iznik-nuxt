@@ -10,7 +10,16 @@ VueFB.install = function install(Vue, options) {
     window.FB.init(options)
     window.FB.AppEvents.logPageView()
     Vue.FB = window.FB
-    window.dispatchEvent(new Event('fb-sdk-ready'))
+
+    // We need to have some special code for IE11 - see https://stackoverflow.com/questions/27176983/dispatchevent-not-working-in-ie11.
+    let event
+
+    if (typeof Event === 'function') {
+      event = new Event('fb-sdk-ready')
+    } else {
+      event = document.createEvent('Event')
+      event.initEvent('fb-sdk-ready', true, true)
+    }
   }
   ;(function(d, s, id) {
     try {

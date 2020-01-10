@@ -199,14 +199,27 @@ module.exports = {
     { from: '^/contact', to: '/help' },
     { from: '^/newsfeed', to: '/chitchat' },
     { from: '^/handbook', to: '/help' },
-    { from: '^/mypost/.*', to: '/myposts'},
+    { from: '^/mypost/.*', to: '/myposts' },
     { from: '^//$', to: '/' }
   ],
+
+  polyfill: {
+    // This is needed for IE11.
+    features: [
+      {
+        require: 'event-polyfill'
+      },
+      {
+        require: 'array-from-polyfill'
+      }
+    ]
+  },
 
   /*
   ** Nuxt.js modules
   */
   modules: [
+    'nuxt-polyfill',
     '@nuxtjs/sitemap',
     '@nuxtjs/sentry',
     'bootstrap-vue/nuxt',
