@@ -309,7 +309,7 @@ module.exports = {
   build: {
     // analyze: true,
 
-    transpile: [/^vue2-google-maps($|\/)/],
+    transpile: [/^vue2-google-maps($|\/)/, 'vue-lazy-youtube-video'],
 
     extend(config, ctx) {
       if (process.env.NODE_ENV !== 'production') {
@@ -367,7 +367,13 @@ module.exports = {
         const targets = isServer
           ? { node: '10' }
           : {
-              browsers: ['> 1%', 'last 2 versions', 'ie >= 8', 'safari >= 9']
+              browsers: [
+                '> 1%',
+                'last 2 versions',
+                'ie >= 8',
+                'safari >= 9',
+                'ios_saf >= 9'
+              ]
             }
         return [
           [
