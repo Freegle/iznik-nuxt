@@ -547,14 +547,14 @@ export default {
       }
     },
     me(newVal, oldVal) {
-      if (this.nchan) {
+      if (this.nchan && this.nchan.running) {
         // Stop old listen.
         try {
           this.nchan.stop()
         } catch (e) {}
-
-        this.nchan = null
       }
+
+      this.nchan = null
 
       if (newVal) {
         // We are now logged in.
@@ -606,14 +606,14 @@ export default {
     console.log('Destroy layout')
     clearTimeout(this.notificationPoll)
 
-    if (this.nchan) {
+    if (this.nchan && this.nchan.running) {
       console.log('Stop NCHAN')
       try {
         this.nchan.stop()
       } catch (e) {}
-
-      this.nchan = null
     }
+
+    this.nchan = null
   },
 
   methods: {
