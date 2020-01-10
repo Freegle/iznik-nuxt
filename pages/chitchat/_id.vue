@@ -245,6 +245,8 @@ export default {
 
     async loadMore($state) {
       this.busy = true
+      this.scrollTo = this.id
+
       const user = this.$store.getters['auth/user']
 
       if (!user) {
@@ -287,8 +289,6 @@ export default {
                 id: fetched.replyto
               })
             }
-
-            this.scrollTo = this.id
 
             $state.complete()
           } else {

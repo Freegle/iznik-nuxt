@@ -354,7 +354,9 @@ export default {
   mounted() {
     if (parseInt(this.scrollTo) === this.replyid && this.$el.scrollIntoView) {
       // We want to scroll to this reply to make sure it's visible.
-      this.$el.scrollIntoView()
+      this.$nextTick(() => {
+        this.$el.scrollIntoView()
+      })
     }
   },
   methods: {
