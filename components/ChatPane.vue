@@ -443,7 +443,7 @@ export default {
 
     // Get the user info in case we need to warn about them.
     await this.$store.dispatch('user/fetch', {
-      id: this.otheruser,
+      id: this.otheruser.id,
       info: true
     })
 
