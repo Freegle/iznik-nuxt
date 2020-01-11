@@ -303,7 +303,12 @@ module.exports = {
   ** Axios module configuration
   */
   axios: {
-    proxy: true
+    proxy: true,
+    retry: {
+      // Retry failed requests to give a bit more resilience to flaky networks, especially on mobile.
+      // Note that this doesn't retry requests that never complete.
+      retries: 3
+    }
   },
 
   proxy: {
