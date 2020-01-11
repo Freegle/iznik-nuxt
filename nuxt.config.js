@@ -20,7 +20,7 @@ const API = '/api'
 
 // IZNIK_API is where we send it to.  This avoids CORS issues (and removes preflight OPTIONS calls for GETs, which
 // hurt client performance).
-const IZNIK_API = process.env.IZNIK_API || 'https://fdapidbg.ilovefreegle.org'
+const IZNIK_API = process.env.IZNIK_API || 'https://fdapilive.ilovefreegle.org'
 
 // This is where the user site is.
 const USER_SITE = 'https://www.ilovefreegle.org'
