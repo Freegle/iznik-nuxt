@@ -57,6 +57,7 @@ export const actions = {
 
   async rate({ commit, dispatch }, { id, rating }) {
     await this.$api.user.rate(id, rating)
+
     // Fetch the user back into the store to update any ratings elsewhere
     await dispatch('fetch', { id, info: true })
   }

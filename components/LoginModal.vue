@@ -178,7 +178,7 @@
 
 <script>
 import Vue from 'vue'
-import { LoginError } from '../api/BaseAPI'
+import { LoginError, SignUpError } from '../api/BaseAPI'
 
 const NoticeMessage = () => import('~/components/NoticeMessage')
 
@@ -326,6 +326,15 @@ export default {
                 // We've signed up from the home page.  Send them to chitchat - that shows some activity, and also
                 // has the Give/Find prompt.
                 this.$router.push('/chitchat')
+              }
+            })
+            .catch(e => {
+              console.log('Signup failed', e)
+              if (e instanceof SignUpError) {
+                console.log('Login error')
+                this.nativeLoginError = e.status
+              } else {
+                throw e // let others bubble up
               }
             })
         }

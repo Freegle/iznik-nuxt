@@ -12,6 +12,13 @@ export class LoginError extends Error {
   }
 }
 
+export class SignUpError extends Error {
+  constructor(ret, status) {
+    super(status)
+    Object.assign(this, { ret, status })
+  }
+}
+
 export default class BaseAPI {
   constructor({ $axios }) {
     this.$axios = $axios

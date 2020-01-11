@@ -1,4 +1,4 @@
-import { LoginError } from '../api/BaseAPI'
+import { LoginError, SignUpError } from '../api/BaseAPI'
 
 let first = true
 
@@ -166,6 +166,7 @@ export const actions = {
         'X-HTTP-Method-Override': 'PUT'
       }
     })
+    const { ret, status } = res.data
 
     if (res.status === 200 && res.data.ret === 0) {
       commit('forceLogin', false)
@@ -174,8 +175,7 @@ export const actions = {
       dispatch('fetchUser')
     } else {
       // Sign up failed.
-      console.error('Login failed', res)
-      throw new Error('Login failed')
+      throw new SignUpError(ret, status)
     }
   },
 
