@@ -74,8 +74,8 @@
     <b-button v-if="showEarlierRepliesOption" variant="link" class="pl-0" @click.prevent="showAllReplies = true">
       Show earlier {{ numberOfRepliesNotShown | pluralize(['reply', 'replies']) }} ({{ numberOfRepliesNotShown }})
     </b-button>
-    <div v-if="repliestoshow && repliestoshow.length > 0" class="pl-3">
-      <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id" class="p-0 pt-1 pl-1 list-unstyled mb-1 border-left">
+    <div v-if="repliestoshow && repliestoshow.length > 0" :class="firstlevel ? 'pl-3' : ''">
+      <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id" :class="'p-0 pt-1 list-unstyled mb-1 ' + (firstlevel ? 'pl-1 border-left' : '')">
         <li>
           <news-refer v-if="entry.type.indexOf('ReferTo') === 0" :type="entry.type" />
           <news-reply v-else :key="'newsfeedreply-' + replyid + '-reply-' + entry.id" :replyid="entry.id" :users="users" :threadhead="threadhead" />
@@ -244,6 +244,10 @@ export default {
       const ret = this.$store.getters['newsfeed/get'](this.replyid)
       return ret
     },
+    firstlevel() {
+      // We need to know which are the first level replies, because we indent those but not any subsequent replies.
+      return this.reply && this.reply.replyto === this.reply.threadhead
+    },
     me() {
       return this.$store.getters['auth/user']
     },
@@ -369,6 +373,7 @@ export default {
       }, 25)
     },
     replyReply() {
+      console.log('Replying to', this.replyid, this.reply)
       this.replyingTo = this.replyid
       this.showReplyBox = true
 
