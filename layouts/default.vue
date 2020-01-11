@@ -604,7 +604,6 @@ export default {
     if (me) {
       // Set the context for sentry so that we know which users are having errors.
       this.$sentry.setUser({ userid: me.id })
-      this.$sentry.captureException(new Error('example'))
     }
   },
 
