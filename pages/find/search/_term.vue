@@ -189,7 +189,7 @@ export default {
         this.results = null
       }
 
-      if (this.$refs.autocomplete) {
+      if (this.$refs.autocomplete && this.$refs.autocomplete.$refs) {
         // We've seen this not be defined - perhaps during navigation when we're destroying this component?
         // If the ref isn't present then it doesn't make sense to emit the event.
         const input = this.$refs.autocomplete.$refs.input
