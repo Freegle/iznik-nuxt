@@ -210,6 +210,9 @@ module.exports = {
         require: 'event-polyfill'
       },
       {
+        require: 'custom-event-polyfill'
+      },
+      {
         require: 'array-from-polyfill'
       }
     ]
