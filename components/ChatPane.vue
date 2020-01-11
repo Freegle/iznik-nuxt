@@ -461,7 +461,6 @@ export default {
     },
     loadMore: function($state) {
       const currentCount = this.chatmessages.length
-      console.log('load more', currentCount)
 
       if (!this.scrolledToBottom) {
         // First load.  Scroll to the bottom when things have sorted themselves out.  This helps if we have messages
