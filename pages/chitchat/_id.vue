@@ -260,37 +260,35 @@ export default {
           const context = this.$store.getters['newsfeed/getContext']
 
           if (this.id) {
-            await this.$store.dispatch('newsfeed/clearFeed')
-
             // Just one - fetch it by id.
-            await this.$store.dispatch('newsfeed/fetch', {
-              id: this.id
-            })
+            let id = this.id
+            let item
+            let maxdepth = 10
 
-            // But maybe this isn't the thread head.
-            const fetched = this.$store.getters['newsfeed/get'](this.id)
+            do {
+              maxdepth--
 
-            if (fetched.threadhead && this.id !== fetched.threadhead) {
-              await this.$store.dispatch('newsfeed/clearFeed')
-              await this.$store.dispatch('newsfeed/fetch', {
-                id: fetched.threadhead
-              })
-
-              const threadhead = this.$store.getters['newsfeed/get'](this.id)
-
-              if (threadhead.threadhead !== threadhead.id) {
-                // Nope, still wasn't the head.
-                await this.$store.dispatch('newsfeed/clearFeed')
-                await this.$store.dispatch('newsfeed/fetch', {
-                  id: threadhead.threadhead
-                })
+              if (maxdepth <= 0) {
+                // Fallback to ensure no infinite loop in case of weird thread structure.  We're only supposed to allow
+                // replies and replies to replies, but we've had at least one but resulting in deeper nesting than that.
+                // Better to display any such threads as well as fix any bugs that create them.
+                break
               }
-            } else if (fetched.replyto && this.id !== fetched.replyto) {
+
               await this.$store.dispatch('newsfeed/clearFeed')
               await this.$store.dispatch('newsfeed/fetch', {
-                id: fetched.replyto
+                id: id
               })
-            }
+
+              item = this.$store.getters['newsfeed/get'](id)
+              const headid = parseInt(item.threadhead)
+
+              if (id === headid) {
+                break
+              } else {
+                id = headid
+              }
+            } while (true)
 
             $state.complete()
           } else {
