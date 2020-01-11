@@ -54,34 +54,30 @@
             </b-row>
           </b-col>
         </b-row>
-        <b-row class="chatContent" infinite-wrapper>
-          <b-col v-if="chat">
-            <infinite-loading direction="top" force-use-infinite-wrapper="true" :distance="distance" @infinite="loadMore">
-              <span slot="no-results" />
-              <span slot="no-more" />
-              <span slot="spinner">
-                <b-img-lazy src="~/static/loader.gif" alt="Loading" />
-              </span>
-            </infinite-loading>
-            <ul v-for="chatmessage in chatmessages" :key="'chatmessage-' + chatmessage.id" class="p-0 pt-1 list-unstyled mb-1">
-              <li v-if="chatmessage">
-                <ChatMessage
-                  :key="'chatmessage-' + chatmessage.id"
-                  :chatmessage="chatmessage"
-                  :chat="chat"
-                  :me="me"
-                  :otheruser="otheruser"
-                  :last="chatmessage.id === chatmessages[chatmessages.length - 1].id"
-                />
-              </li>
-            </ul>
-            <b-row v-if="chatBusy">
-              <b-col>
-                <b-img class="float-right" src="~static/loader.gif" />
-              </b-col>
-            </b-row>
-          </b-col>
-        </b-row>
+        <div v-if="chat" class="chatContent" infinite-wrapper>
+          <infinite-loading direction="top" force-use-infinite-wrapper="true" :distance="distance" @infinite="loadMore">
+            <span slot="no-results" />
+            <span slot="no-more" />
+            <span slot="spinner">
+              <b-img-lazy src="~/static/loader.gif" alt="Loading" />
+            </span>
+          </infinite-loading>
+          <ul v-for="chatmessage in chatmessages" :key="'chatmessage-' + chatmessage.id" class="p-0 pt-1 list-unstyled mb-1">
+            <li v-if="chatmessage">
+              <ChatMessage
+                :key="'chatmessage-' + chatmessage.id"
+                :chatmessage="chatmessage"
+                :chat="chat"
+                :me="me"
+                :otheruser="otheruser"
+                :last="chatmessage.id === chatmessages[chatmessages.length - 1].id"
+              />
+            </li>
+          </ul>
+          <div v-if="chatBusy" class="text-center">
+            <b-img class="float-right" src="~static/loader.gif" />
+          </div>
+        </div>
         <div class="chatFooter">
           <b-row v-if="uploading" class="bg-white">
             <b-col class="p-0">
@@ -195,49 +191,6 @@
     </client-only>
   </div>
 </template>
-<style scoped lang="scss">
-@import 'color-vars';
-
-.chatpane {
-  min-height: 100vh;
-}
-
-.chatHolder {
-  height: calc(100vh - 74px);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.chatTitle {
-  background-color: $color-blue--light;
-  color: $color-white;
-  font-weight: bold;
-  order: 1;
-}
-
-.chatWarning {
-  order: 2;
-  justify-content: flex-start;
-}
-
-.chatContent {
-  order: 3;
-  justify-content: flex-start;
-  flex-grow: 1;
-  overflow-y: auto;
-}
-
-.chatFooter {
-  order: 4;
-  justify-content: flex-end;
-  background-color: $color-white;
-}
-
-::v-deep .dropdown-toggle {
-  color: $color-white;
-}
-</style>
 <script>
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
@@ -662,3 +615,51 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+@import 'color-vars';
+
+.chatpane {
+  min-height: 100vh;
+}
+
+.chatHolder {
+  height: calc(100vh - 74px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.chatTitle {
+  background-color: $color-blue--light;
+  color: $color-white;
+  font-weight: bold;
+  order: 1;
+  z-index: 1000;
+}
+
+.chatTitle div {
+  background-color: $color-blue--light;
+}
+
+.chatWarning {
+  order: 2;
+  justify-content: flex-start;
+}
+
+.chatContent {
+  order: 3;
+  justify-content: flex-start;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.chatFooter {
+  order: 4;
+  justify-content: flex-end;
+  background-color: $color-white;
+}
+
+::v-deep .dropdown-toggle {
+  color: $color-white;
+}
+</style>
