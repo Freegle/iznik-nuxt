@@ -453,7 +453,7 @@ module.exports = {
   },
 
   router: {
-    middleware: ['keylogin', 'src']
+    middleware: ['src']
   },
 
   sitemap: {

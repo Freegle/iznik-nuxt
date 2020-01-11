@@ -607,6 +607,27 @@ export default {
     }
   },
 
+  async beforeCreate() {
+    if (this.$route.query.u && this.$route.query.k) {
+      // Log in using the username and key.
+      await this.$store.dispatch('auth/login', {
+        u: this.$route.query.u,
+        k: this.$route.query.k,
+        force: true
+      })
+
+      setTimeout(() => {
+        // Route to where we've been asked to go, without the auth info.  Don't really know why this requires a delay
+        // and a reload - obviously that means I don't understand the codepath properly.  But it works.
+        this.$router.push(this.$route.path, () => {
+          if (process.client) {
+            window.location.reload()
+          }
+        })
+      }, 1000)
+    }
+  },
+
   beforeDestroy() {
     console.log('Destroy layout')
     clearTimeout(this.notificationPoll)
