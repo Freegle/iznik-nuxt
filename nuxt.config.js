@@ -199,7 +199,6 @@ module.exports = {
     { from: '^/contact', to: '/help' },
     { from: '^/newsfeed', to: '/chitchat' },
     { from: '^/handbook', to: '/help' },
-    { from: '^/mypost/.*', to: '/myposts' },
     { from: '^//$', to: '/' }
   ],
 
