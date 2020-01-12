@@ -22,7 +22,7 @@
             </b-nav-item>
             <b-nav-item id="menu-option-myposts" class="text-center small p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
               <v-icon name="home" scale="2" /><br>
-              My&nbsp;Posts
+              My Posts
             </b-nav-item>
             <b-nav-item id="menu-option-give" class="text-center small p-0" to="/give" @mousedown="maybeReload('/give')">
               <v-icon name="gift" scale="2" /><br>
@@ -201,7 +201,7 @@
           </b-nav-item>
           <b-nav-item class="text-center p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
             <v-icon name="home" scale="2" /><br>
-            My&nbsp;Posts
+            My Posts
           </b-nav-item>
           <b-nav-item class="text-center p-0" to="/give" @mousedown="maybeReload('/give')">
             <v-icon name="gift" scale="2" /><br>
