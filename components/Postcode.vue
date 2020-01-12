@@ -167,7 +167,8 @@ export default {
             if (
               res.data.ret === 0 &&
               res.data.location &&
-              res.data.location.name
+              res.data.location.name &&
+              this.$refs.autocomplete
             ) {
               // Got it - put it in the autocomplete input, and indicate that we've selected it.
               this.$refs.autocomplete.setValue(res.data.location.name)
