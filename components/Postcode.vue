@@ -135,6 +135,9 @@ export default {
       } else {
         // We're now typing a postcode.  Hide the button so they don't decide to click that next
         this.showFind = false
+
+        // Hide the tooltip in case it's showing from a use of the find button.
+        this.showToolTip = false
       }
     },
     process(results) {
