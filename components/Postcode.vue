@@ -16,7 +16,7 @@
       :on-select="select"
     />
 
-    <div v-if="find">
+    <div v-if="showFind">
       <b-button variant="primary" :size="size" title="Find my location" @click="findLoc">
         <v-icon v-if="locating" name="sync" class="fa-spin" />
         <v-icon v-else-if="locationFailed" name="exclamation-triangle" />
@@ -72,7 +72,8 @@ export default {
       mylocation: null,
       locating: false,
       locationFailed: false,
-      showToolTip: false
+      showToolTip: false,
+      showFind: this.find
     }
   },
   async mounted() {
@@ -128,6 +129,12 @@ export default {
         // postcode any more.
         this.$emit('cleared')
         this.results = null
+
+        // We want to show the button in case they decide to use that instead.
+        this.showFind = true
+      } else {
+        // We're now typing a postcode.  Hide the button so they don't decide to click that next
+        this.showFind = false
       }
     },
     process(results) {
