@@ -9,7 +9,7 @@
 
         <p v-if="isApp">
           If you like this app - or not - <a href='#' class="d-inline" @click="showRateMe">please leave a review</a>.<br />
-          Mobile app build: {{ version }}.
+          Mobile app version: {{ mobileVersion }}.
         </p>
         <p>
         <b-card no-body>
@@ -470,6 +470,9 @@ export default {
     },
     isApp() {
       return process.env.IS_APP
+    },
+    mobileVersion() {
+      return process.env.MOBILE_VERSION
     },
     version() {
       const date = new this.$dayjs(process.env.BUILD_DATE)

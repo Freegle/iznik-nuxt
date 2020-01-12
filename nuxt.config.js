@@ -3,6 +3,7 @@ import sitemap from './utils/sitemap.js'
 
 const FACEBOOK_APPID = '134980666550322'
 const SENTRY_DSN = 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170'
+const MOBILE_VERSION = '2.0.1'
 
 require('dotenv').config()
 
@@ -190,7 +191,7 @@ const config = {
     { src: '~plugins/app-yahoo.js', mode: 'client' }
   ],
 
-  redirect: [
+  redirect: [ // In mobile app-init-push route needs updating as per here
     { from: '^/chat/(.*)$', to: '/chats/$1' },
     { from: '^/mygroups$', to: '/communities' },
     { from: '^/why$', to: '/help' },
@@ -454,6 +455,7 @@ if (process.env.NUXT_BUILD_TYPE === 'fdapp') {
   }
 
   config.env.IS_APP = true
+  config.env.MOBILE_VERSION = MOBILE_VERSION
 
   config.build.publicPath = '/js/'
 

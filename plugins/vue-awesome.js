@@ -90,4 +90,6 @@ require('vue-awesome/icons/brands/telegram')
 require('vue-awesome/icons/brands/twitter')
 require('vue-awesome/icons/brands/whatsapp')
 
+require('vue-awesome/icons/redo')
+
 Vue.component('v-icon', Icon)

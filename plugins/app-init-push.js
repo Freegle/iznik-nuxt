@@ -45,20 +45,6 @@ const cordovaApp = {
 
       // document.addEventListener("offline", function () { window.isOnline = false; console.log("offline"); window.showNetworkStatus() }, false);
       // document.addEventListener("online", function () { window.isOnline = true; console.log("online"); window.showNetworkStatus() }, false);
-      document.addEventListener(
-        'offline',
-        function () {
-          console.log('== EVENT offline')
-        },
-        false
-      )
-      document.addEventListener(
-        'online',
-        function () {
-          console.log('== EVENT online')
-        },
-        false
-      )
 
       // We have a busy indicator
       /* $(document).ajaxStop(function() {
@@ -175,7 +161,7 @@ const cordovaApp = {
         })
       }
     } catch (e) {
-      console.log('onDeviceReady catch',e)
+      console.log('onDeviceReady catch', e)
     }
   }
 }
@@ -257,8 +243,10 @@ export default ({ app, store }) => { // route
           store.dispatch('chats/listChats')
 
           if (pushstate.route) {
+            pushstate.route = pushstate.route.replace('/chat/', '/chats/') // Match redirects in nuxt.config.js
             if (app.router.currentRoute.path !== pushstate.route) {
-              app.router.push(pushstate.route)
+              console.log('GO TO ', pushstate.route)
+              app.router.push({ path: pushstate.route })
             }
           }
 

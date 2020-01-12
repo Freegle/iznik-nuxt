@@ -22,7 +22,7 @@
             </b-nav-item>
             <b-nav-item id="menu-option-myposts" class="text-center small p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
               <v-icon name="home" scale="2" /><br>
-              My&nbsp;Posts
+              My Posts
             </b-nav-item>
             <b-nav-item id="menu-option-give" class="text-center small p-0" to="/give" @mousedown="maybeReload('/give')">
               <v-icon name="gift" scale="2" /><br>
@@ -135,14 +135,18 @@
       </b-navbar-brand>
 
       <client-only>
-        <b-dropdown
-          v-if="loggedIn"
-          class="white text-center notiflist mr-2"
-          variant="success"
-          lazy
-          right
-          @shown="showNotifications"
-        >
+        <div v-if="isApp && loggedIn" id="menu-option-refresh-sm" class="text-white mr-3">
+          <div class="notifwrapper">
+            <v-icon name="redo" scale="2" @click="refresh" />
+          </div>
+        </div>
+
+        <b-dropdown v-if="loggedIn"
+                    class="white text-center notiflist mr-2"
+                    variant="success"
+                    lazy
+                    right
+                    @shown="showNotifications">
           <template slot="button-content">
             <div class="notifwrapper">
               <v-icon name="bell" scale="2" class="" />
@@ -168,7 +172,6 @@
             </span>
           </infinite-loading>
         </b-dropdown>
-
         <nuxt-link v-if="loggedIn" id="menu-option-chat-sm" class="text-white mr-3" to="/chats">
           <div class="notifwrapper">
             <v-icon name="comments" scale="2" /><br>
@@ -201,7 +204,7 @@
           </b-nav-item>
           <b-nav-item class="text-center p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
             <v-icon name="home" scale="2" /><br>
-            My&nbsp;Posts
+            My Posts
           </b-nav-item>
           <b-nav-item class="text-center p-0" to="/give" @mousedown="maybeReload('/give')">
             <v-icon name="gift" scale="2" /><br>
@@ -529,6 +532,9 @@ export default {
     },
     spreadCount() {
       return this.me && this.me.invitesleft ? this.me.invitesleft : 0
+    },
+    isApp() {
+      return process.env.IS_APP
     }
   },
 
@@ -762,6 +768,7 @@ export default {
     maybeReload(route) {
       if (this.$router.currentRoute.path === route) {
         // We have clicked to route to the page we're already on.  Force a full refresh.
+        console.log('RELOAD maybeReload')
         window.location.reload(true)
       }
     },
@@ -770,6 +777,10 @@ export default {
       await this.$store.dispatch('notifications/allSeen')
       await this.$store.dispatch('notifications/count')
       await this.$store.dispatch('notifications/list')
+    },
+
+    refresh() {
+      this.$router.go() // Works, but causes a complete reload from scratch
     }
   }
 }
