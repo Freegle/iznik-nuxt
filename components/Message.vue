@@ -269,7 +269,6 @@ export default {
       const msg = this.$store.getters['messages/get'](this.id)
 
       if (msg && msg.fromuser) {
-        console.log('Compute fromuser', msg.fromuser.id)
         return msg.fromuser.id
       }
 
