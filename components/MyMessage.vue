@@ -387,7 +387,7 @@ export default {
       })
 
       this.$router.push(
-        this.message.type === 'Offer' ? '/give/whatisit' : 'find/whatisit'
+        this.message.type === 'Offer' ? '/give/whatisit' : '/find/whatisit'
       )
     },
 
