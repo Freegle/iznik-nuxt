@@ -135,7 +135,8 @@ module.exports = {
     script: [
       {
         src:
-          'https://adview.online/js/pub/tracking.js?publisher=2053&channel=web&source=feed'
+          'https://adview.online/js/pub/tracking.js?publisher=2053&channel=web&source=feed',
+        defer: true
       }
     ]
   },
