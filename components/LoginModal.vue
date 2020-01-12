@@ -62,7 +62,7 @@
       </div>
       <div class="signin__section--freegle">
         <h3 class="signin__header">
-          <span v-if="showSignUp">Create an account on Freegle</span>
+          <span v-if="signUp">Create an account on Freegle</span>
           <span v-else>Continue with your Freegle account</span>
         </h3>
         <b-form ref="form" action="/" autocomplete="on" method="post" @submit="loginNative">
