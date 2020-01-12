@@ -1,0 +1,13 @@
+diff --git a/node_modules/defu/lib/index.js b/node_modules/defu/lib/index.js
+index 5258622..202c7f4 100644
+--- a/node_modules/defu/lib/index.js
++++ b/node_modules/defu/lib/index.js
+@@ -13,7 +13,7 @@ function defu (_obj, _defaults) {
+ 
+   const obj = Object.assign({}, _defaults)
+ 
+-  for (const key in _obj) {
++  for (let key in _obj) {
+     if (key === '__proto__' || key === 'constructor') {
+       continue
+     }

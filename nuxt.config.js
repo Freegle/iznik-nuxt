@@ -134,7 +134,8 @@ module.exports = {
     ],
     script: [
       {
-        src: 'https://adview.online/js/pub/tracking.js?publisher=2053&channel=web&source=feed'
+        src:
+          'https://adview.online/js/pub/tracking.js?publisher=2053&channel=web&source=feed'
       }
     ]
   },
@@ -442,7 +443,7 @@ module.exports = {
     USER_SITE: USER_SITE,
     IMAGE_SITE: IMAGE_SITE,
     SENTRY_DSN: SENTRY_DSN,
-    BUILD_DATE: new Date().toLocaleString(),
+    BUILD_DATE: new Date().toLocaleString()
   },
 
   vue: {
