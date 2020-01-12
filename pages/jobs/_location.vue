@@ -37,7 +37,7 @@
         <div v-for="job in jobs" :key="'job-' + job.onmousedown">
           <Job :job="job" class="mb-1" />
         </div>
-        <div v-if="!loading && (!jobs || jobs.length === 0)">
+        <div v-if="location && !loading && (!jobs || jobs.length === 0)">
           We didn't find any jobs here.  Please search somewhere else.
         </div>
       </b-col>
@@ -101,9 +101,12 @@ export default {
     document.head.appendChild(newScript)
 
     await this.$store.dispatch('jobs/clear')
-    await this.$store.dispatch('jobs/fetch', {
-      location: this.location
-    })
+
+    if (this.location) {
+      await this.$store.dispatch('jobs/fetch', {
+        location: this.location
+      })
+    }
 
     this.loading = false
   },
