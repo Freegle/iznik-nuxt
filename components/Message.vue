@@ -153,7 +153,7 @@
       </template>
     </b-modal>
     <ShareModal v-if="expanded" ref="shareModal" :message="$props" />
-    <ChatButton v-if="expanded && expanded.fromuser" ref="chatbutton" :userid="expanded.fromuser.id" class="d-none" />
+    <ChatButton ref="chatbutton" :userid="replyToUser" class="d-none" @sent="sentReply" />
     <MessageReportModal v-if="expanded" ref="reportModal" :message="$props" />
   </div>
 </template>
@@ -218,10 +218,6 @@ export default {
       type: Object,
       default: null
     },
-    fromuser: {
-      validator: prop => typeof prop === 'object' || typeof prop === 'number',
-      default: null
-    },
     promised: {
       type: Boolean,
       required: false,
@@ -268,6 +264,16 @@ export default {
     },
     ispromised() {
       return this.promised || (this.expanded && this.expanded.promised)
+    },
+    replyToUser() {
+      const msg = this.$store.getters['messages/get'](this.id)
+
+      if (msg && msg.fromuser) {
+        console.log('Compute fromuser', msg.fromuser.id)
+        return msg.fromuser.id
+      }
+
+      return null
     }
   },
   watch: {
@@ -325,6 +331,7 @@ export default {
     },
 
     async sendReply() {
+      console.log('Send reply', this.reply)
       if (this.reply) {
         const me = this.$store.getters['auth/user']
 
@@ -351,22 +358,27 @@ export default {
           }
 
           if (!found) {
+            // Not currently a member.
+            console.log('Need to join')
             await this.$store.dispatch('auth/joinGroup', {
               userid: me.id,
               groupid: tojoin
             })
+
+            // Have to get the message back, because as a non-member we couldn't see who sent it, and therefore
+            // who to reply to.
+            console.log('Fetch message back')
+            await this.$store.dispatch('messages/fetch', {
+              id: this.id
+            })
+            console.log('Fetched')
           }
 
           // Now create the chat and send the first message.
-          await this.$refs.chatbutton.openChat(null, this.reply, this.id)
-          this.replying = false
-
-          // Clear message now sent
-          this.reply = null
-
-          await this.$store.dispatch('reply/set', {
-            replyTo: null,
-            replyMessage: null
+          console.log('Prepare chat', this.reply, this.id, this.replyToUser)
+          this.$nextTick(() => {
+            console.log('Now open chat', this.reply, this.id, this.replyToUser)
+            this.$refs.chatbutton.openChat(null, this.reply, this.id)
           })
         } else {
           // We're not logged in yet.  We need to save the reply and force a sign in.
@@ -381,6 +393,23 @@ export default {
           this.$store.dispatch('auth/forceLogin', true)
         }
       }
+    },
+    async sentReply() {
+      console.log('Sent reply')
+      // This gets invoked when we have sent a message we passed to ChatButton.
+      this.replying = false
+
+      // Clear message now sent
+      this.reply = null
+
+      await this.$store.dispatch('reply/set', {
+        replyTo: null,
+        replyMessage: null
+      })
+
+      console.log('Open chat')
+      // Now create the chat and send the first message.
+      await this.$refs.chatbutton.openChat()
     }
   }
 }

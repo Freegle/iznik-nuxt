@@ -302,7 +302,7 @@ export default {
               email: this.email,
               password: this.password
             })
-            .then(() => {
+            .then(async () => {
               // We are now logged in. Prompt the browser to remember the credentials.
               if (window.PasswordCredential) {
                 try {
@@ -322,7 +322,16 @@ export default {
                 self.pleaseShowModal = false
               }
 
-              if (this.$nuxt.path === '/' || !this.$nuxt.path) {
+              console.log('Current path', this.$nuxt, this.$router, this.$route)
+              // Pick up the new user
+              console.log('Fetch user')
+              await this.$store.dispatch('auth/fetchUser', {
+                components: ['me'],
+                force: true
+              })
+              console.log('Fetched')
+
+              if (this.$route.path === '/' || !this.$route.path) {
                 // We've signed up from the home page.  Send them to chitchat - that shows some activity, and also
                 // has the Give/Find prompt.
                 this.$router.push('/chitchat')
@@ -501,7 +510,10 @@ export default {
           } else if (ret.ret === 0) {
             // We are logged in.  Get the logged in user
             console.log('Logged in')
-            this.$store.dispatch('auth/fetchUser')
+            this.$store.dispatch('auth/fetchUser', {
+              components: ['me'],
+              force: true
+            })
             self.pleaseShowModal = false
           } else {
             console.error('Server login failed', ret)
