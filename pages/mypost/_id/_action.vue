@@ -2,6 +2,9 @@
   <b-container fluid>
     <b-row class="m-0">
       <b-col cols="12" lg="6" offset-lg="3" class="p-0">
+        <div v-if="!message && !missing" class="text-center">
+          <b-img-lazy src="~/static/loader.gif" alt="Loading" />
+        </div>
         <MyMessage v-if="message" :message="message" :messages="[ message ]" :show-old="true" :expand="true" />
         <NoticeMessage v-if="missing" variant="danger" class="mt-1">
           Sorry, we couldn't find that message.  Perhaps it's been deleted, or perhaps the link you clicked on is

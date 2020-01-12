@@ -37,10 +37,14 @@ export const getters = {
 export const actions = {
   async fetch({ commit }, params) {
     try {
-      commit('setList', await this.$api.job.fetch(params))
+      const ret = await this.$api.job.fetch(params)
+      if (ret.ret === 0 && ret.adview && ret.adview.data) {
+        commit('setList', ret.adview.data)
+      }
+
       commit('setBlocked', false)
     } catch (e) {
-      // Typicall Ad Blockers.
+      // Typically Ad Blockers.
       commit('setBlocked', true)
     }
   },

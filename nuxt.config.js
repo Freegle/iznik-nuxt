@@ -312,8 +312,7 @@ module.exports = {
   },
 
   proxy: {
-    '/api/': IZNIK_API,
-    '/adview.php': USER_SITE + '/adview.php'
+    '/api/': IZNIK_API
   },
 
   buildModules: [
