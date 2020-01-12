@@ -564,6 +564,7 @@ export default {
         // On Done
         ajax.addEventListener('loadend', e => {
           const { responseText } = e.target
+          console.log("About to parse", responseText)
           const json = JSON.parse(responseText)
           // Callback Event
           this.onAjaxLoaded ? this.onAjaxLoaded(json) : null
