@@ -7,6 +7,7 @@
         </div>
         <MyMessage
           v-if="message"
+          :key="bump"
           :message="message"
           :messages="[ message ]"
           :show-old="true"
@@ -46,12 +47,32 @@ export default {
   data() {
     return {
       donationGroup: null,
-      missing: false
+      missing: false,
+      bump: Date.now()
     }
   },
   computed: {
+    me() {
+      return this.$store.getters['auth/user']
+    },
+
     message() {
       return this.$store.getters['messages/get'](this.id)
+    }
+  },
+  watch: {
+    async me(newVal, oldVal) {
+      if (newVal) {
+        if (!oldVal) {
+          // We have logged in. Fetch the message again because we won't have our details.
+          await this.$store.dispatch('messages/fetch', {
+            id: this.id
+          })
+
+          // Force re-render of the message, which will trigger any action we have.
+          this.bump = Date.now()
+        }
+      }
     }
   },
   beforeCreate() {
@@ -64,10 +85,14 @@ export default {
         id: this.id
       })
 
+      this.bump = Date.now()
+
       // If they have an intended outcome, then we save that to the server now.  This means that if they never
       // get round to doing anything else on this page we'll assume that's what they wanted.  We do this because
       // we've seen people click the button in the email a lot and then bail out.
-      if (this.action) {
+      const me = this.$store.getters['auth/user']
+
+      if (this.action && me) {
         let outcome = null
 
         if (this.action === 'repost') {

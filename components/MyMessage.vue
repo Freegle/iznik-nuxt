@@ -15,7 +15,7 @@
               <b-col>
                 <div class="d-flex">
                   <h3 class="text-wrap flex-shrink-2">
-                    {{ message.subject }}
+                    {{ message.subject }} Action {{ action }}
                     <span v-if="rejected" class="text-danger">
                       <v-icon name="exclamation-triangle" scale="2" />
                     </span>
@@ -327,19 +327,23 @@ export default {
   mounted() {
     this.expanded = this.expand
 
-    switch (this.action) {
-      case 'repost':
-        this.repost()
-        break
-      case 'withdraw':
-        this.outcome('Withdrawn')
-        break
-      case 'taken':
-        this.outcome('Taken')
-        break
-      case 'received':
-        this.outcome('Received')
-        break
+    const me = this.$store.getters['auth/user']
+
+    if (me) {
+      switch (this.action) {
+        case 'repost':
+          this.repost()
+          break
+        case 'withdraw':
+          this.outcome('Withdrawn')
+          break
+        case 'taken':
+          this.outcome('Taken')
+          break
+        case 'received':
+          this.outcome('Received')
+          break
+      }
     }
   },
   methods: {
