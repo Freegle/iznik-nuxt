@@ -181,36 +181,6 @@
     <MessageEditModal ref="editModal" :message="message" />
   </div>
 </template>
-
-<style scoped lang="scss">
-@import 'color-vars';
-
-.square {
-  object-fit: cover;
-  width: 75px;
-  height: 75px;
-}
-
-img.attachment {
-  max-height: 75px !important;
-  max-width: 75px !important;
-}
-
-.messagePhoto {
-  max-height: 600px !important;
-}
-
-.photobadge {
-  left: 150px;
-  top: -54px;
-  position: relative;
-}
-
-.noborder {
-  border: none !important;
-  border-color: $color-white !important;
-}
-</style>
 <script>
 import ResizeText from 'vue-resize-text'
 import OutcomeModal from './OutcomeModal'
@@ -248,6 +218,11 @@ export default {
     expand: {
       type: Boolean,
       required: false
+    },
+    action: {
+      type: String,
+      required: false,
+      default: null
     }
   },
   data: function() {
@@ -351,6 +326,21 @@ export default {
   },
   mounted() {
     this.expanded = this.expand
+
+    switch (this.action) {
+      case 'repost':
+        this.repost()
+        break
+      case 'withdraw':
+        this.outcome('Withdrawn')
+        break
+      case 'taken':
+        this.outcome('Taken')
+        break
+      case 'received':
+        this.outcome('Received')
+        break
+    }
   },
   methods: {
     toggle() {
@@ -417,3 +407,32 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+@import 'color-vars';
+
+.square {
+  object-fit: cover;
+  width: 75px;
+  height: 75px;
+}
+
+img.attachment {
+  max-height: 75px !important;
+  max-width: 75px !important;
+}
+
+.messagePhoto {
+  max-height: 600px !important;
+}
+
+.photobadge {
+  left: 150px;
+  top: -54px;
+  position: relative;
+}
+
+.noborder {
+  border: none !important;
+  border-color: $color-white !important;
+}
+</style>

@@ -5,18 +5,27 @@
         <div v-if="!message && !missing" class="text-center">
           <b-img-lazy src="~/static/loader.gif" alt="Loading" />
         </div>
-        <MyMessage v-if="message" :message="message" :messages="[ message ]" :show-old="true" :expand="true" />
-        <NoticeMessage v-if="missing" variant="danger" class="mt-1">
-          Sorry, we couldn't find that message.  Perhaps it's been deleted, or perhaps the link you clicked on is
-          wrong?
-        </NoticeMessage>
+        <MyMessage
+          v-if="message"
+          :message="message"
+          :messages="[ message ]"
+          :show-old="true"
+          :expand="true"
+          :action="action"
+        />
+        <div v-if="missing">
+          <NoticeMessage variant="danger" class="mt-1">
+            Sorry, we couldn't find that message.  Perhaps it's been deleted, or perhaps the link you clicked on is
+            wrong?
+          </NoticeMessage>
+          <div class="text-center">
+            <b-btn variant="white" size="lg" class="mt-2" to="/myposts">
+              Go to My Posts <v-icon name="angle-double-right" />
+            </b-btn>
+          </div>
+        </div>
       </b-col>
     </b-row>
-    <div class="text-center">
-      <b-btn variant="white" size="lg" class="mt-2" to="/myposts">
-        Go to My Posts <v-icon name="angle-double-right" />
-      </b-btn>
-    </div>
     <DonationAskModal ref="askmodal" :groupid="donationGroup" />
   </b-container>
 </template>
