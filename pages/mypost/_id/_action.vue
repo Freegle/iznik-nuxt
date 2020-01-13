@@ -24,7 +24,8 @@
             </p>
             <p>
               Your local volunteers can merge your accounts or help you work out what's going on.  Please quote
-              message <b>#{{ message.id }}</b> and your email address <b>{{ me.email }}</b>.
+              message <b>#{{ message.id }}</b>, your email address <b>{{ me.email }}</b> and any others you might have
+              used, and which email address you prefer.
             </p>
             <GroupSelect v-model="contactGroup" class="mt-2 mb-1" />
             <br>
