@@ -98,16 +98,6 @@ export default {
     }
   },
   async mounted() {
-    // Load the AdView scripts.
-    const newScript = document.createElement('script')
-    newScript.src =
-      'https://adview.online/js/pub/tracking.js?publisher=2053&channel=&source=feed'
-    newScript.onload = function() {
-      window.init() // window.onload isn't called so we do it manually.
-    }
-
-    document.head.appendChild(newScript)
-
     // Don't clear store - that means if we saw a job in the sidebar, then it will still be present.
     const ret = this.$store.getters['jobs/list']
 
