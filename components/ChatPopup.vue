@@ -441,21 +441,24 @@ export default {
     },
     send: async function() {
       let msg = this.sendmessage
-      this.sending = true
 
-      // Encode up any emojis.
-      msg = twem.untwem(msg)
+      if (msg) {
+        this.sending = true
 
-      // Send it
-      await this.$store.dispatch('chatmessages/send', {
-        roomid: this.id,
-        message: msg
-      })
+        // Encode up any emojis.
+        msg = twem.untwem(msg)
 
-      this._updateAfterSend()
+        // Send it
+        await this.$store.dispatch('chatmessages/send', {
+          roomid: this.id,
+          message: msg
+        })
 
-      // Clear the message now it's sent.
-      this.sendmessage = ''
+        this._updateAfterSend()
+
+        // Clear the message now it's sent.
+        this.sendmessage = ''
+      }
     },
     hide() {
       this.$store.dispatch('popupchats/hide', { id: this.chat.id })
