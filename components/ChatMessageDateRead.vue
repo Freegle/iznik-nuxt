@@ -1,5 +1,5 @@
 <template>
-  <b-row v-if="!chatmessage.sameaslast || last" class="text-muted small">
+  <b-row v-if="!chatmessage.sameasnext || last" class="text-muted small">
     <b-col v-if="chatmessage.userid !== me.id">
       <span style="padding-left: 30px">
         {{ $dayjs(chatmessage.date).fromNow() }}
