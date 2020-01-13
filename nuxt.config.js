@@ -321,7 +321,6 @@ const config = {
       // Note that this doesn't retry requests that never complete.
       retries: 10,
       retryDelay: (retryCount) => {
-        console.log("Custom retry for", retryCount)
         return retryCount * 1000
       }
     }
