@@ -59,7 +59,6 @@ export default {
   mixins: [loginOptional, buildHead],
   data: function() {
     return {
-      loading: true,
       searchLocation: null
     }
   },
@@ -89,26 +88,18 @@ export default {
       return ret
     }
   },
-  async mounted() {
-    // Load the AdView scripts.
-    const newScript = document.createElement('script')
-    newScript.src =
-      'https://adview.online/js/pub/tracking.js?publisher=2053&channel=&source=feed'
-    newScript.onload = function() {
-      window.init() // window.onload isn't called so we do it manually.
-    }
+  async asyncData({ app, params, store }) {
+    await store.dispatch('jobs/clear')
 
-    document.head.appendChild(newScript)
-
-    await this.$store.dispatch('jobs/clear')
-
-    if (this.location) {
-      await this.$store.dispatch('jobs/fetch', {
-        location: this.location
+    if (params.location) {
+      await store.dispatch('jobs/fetch', {
+        location: params.location
       })
     }
 
-    this.loading = false
+    return {
+      loading: false
+    }
   },
   beforeCreate() {
     this.suppliedLocation = this.$route.params.location

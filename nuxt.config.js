@@ -316,8 +316,14 @@ const config = {
     proxy: true,
     retry: {
       // Retry failed requests to give a bit more resilience to flaky networks, especially on mobile.
+      // This also helps with server upgrades.
+      //
       // Note that this doesn't retry requests that never complete.
-      retries: 3
+      retries: 10,
+      retryDelay: (retryCount) => {
+        console.log("Custom retry for", retryCount)
+        return retryCount * 1000
+      }
     }
   },
 

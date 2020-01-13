@@ -8,7 +8,7 @@
       </div>
       <div class="media-body">
         <span class="notification-title"><span>Your application was approved!</span>
-          <span>
+          <span v-if="notification.url">
             <br>"<b style="max-width: 200px; overflow-wrap: break-word">Visit the community <nuxt-link :to="notification.url">here</nuxt-link></b>"
           </span>
         </span>
