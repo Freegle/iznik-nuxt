@@ -5,15 +5,35 @@
         <div v-if="!message && !missing" class="text-center">
           <b-img-lazy src="~/static/loader.gif" alt="Loading" />
         </div>
-        <MyMessage
-          v-if="message"
-          :key="bump"
-          :message="message"
-          :messages="[ message ]"
-          :show-old="true"
-          :expand="true"
-          :action="action"
-        />
+        <div v-if="message">
+          <MyMessage
+            v-if="message.fromuser && me && message.fromuser === me.id"
+            :key="bump"
+            :message="message"
+            :messages="[ message ]"
+            :show-old="true"
+            :expand="true"
+            :action="action"
+          />
+          <b-alert variant="warning" class="mt-2" show>
+            <h3>That message wasn't sent from your account</h3>
+            <h5>{{ message.subject }}</h5>
+            <p>
+              This can happen if you have two different accounts on Freegle - e.g. if you use Google
+              to log in some of the time, and an email/password at other times.
+            </p>
+            <p>
+              Your local volunteers can merge your accounts or help you work out what's going on.  Please quote
+              message <b>#{{ message.id }}</b> and your email address <b>{{ me.email }}</b>.
+            </p>
+            <GroupSelect v-model="contactGroup" class="mt-2 mb-1" />
+            <br>
+            <ChatButton :groupid="contactGroup" size="lg" title="Contact community volunteers" variant="success" class="mb-2" />
+            <p class="mt-2">
+              ...or if you need to, you can contact our national support volunteers at <a href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</a>.
+            </p>
+          </b-alert>
+        </div>
         <div v-if="missing">
           <NoticeMessage variant="danger" class="mt-1">
             Sorry, we couldn't find that message.  Perhaps it's been deleted, or perhaps the link you clicked on is
@@ -32,6 +52,8 @@
 </template>
 <script>
 import NoticeMessage from '../../../components/NoticeMessage'
+import ChatButton from '../../../components/ChatButton'
+import GroupSelect from '../../../components/GroupSelect'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
 const MyMessage = () => import('~/components/MyMessage.vue')
@@ -39,6 +61,8 @@ const DonationAskModal = () => import('~/components/DonationAskModal')
 
 export default {
   components: {
+    GroupSelect,
+    ChatButton,
     NoticeMessage,
     MyMessage,
     DonationAskModal
@@ -47,6 +71,7 @@ export default {
   data() {
     return {
       donationGroup: null,
+      contactGroup: null,
       missing: false,
       bump: Date.now()
     }
@@ -69,6 +94,8 @@ export default {
             id: this.id
           })
 
+          this.setGroup()
+
           // Force re-render of the message, which will trigger any action we have.
           this.bump = Date.now()
         }
@@ -84,6 +111,8 @@ export default {
       await this.$store.dispatch('messages/fetch', {
         id: this.id
       })
+
+      this.setGroup()
 
       this.bump = Date.now()
 
@@ -131,6 +160,12 @@ export default {
       } else {
         // This would be a bug.  We've seen it during dev and so we have the if test to prevent client-visible errors.
         console.error("Don't ask for donation, no ref")
+      }
+    },
+
+    setGroup() {
+      if (this.message && this.message.groups && this.message.groups.length) {
+        this.contactGroup = this.message.groups[0].id
       }
     }
   },
