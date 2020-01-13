@@ -113,7 +113,22 @@ export default {
               id: results[0].groupid
             })
             .then(() => {
-              this.$router.push('/find/whatnext')
+              // Go to the next page.  The params we pass from the results may crucially include new user information,
+              // and depending on timing this may not appear in the first result, so look for one of those first.
+              let params = null
+
+              console.log('Got results', results)
+              results.forEach(res => {
+                if (params === null || res.newuser) {
+                  console.log('Save params', res)
+                  params = res
+                }
+              })
+
+              this.$router.push({
+                name: 'find-whatnext',
+                params: params
+              })
             })
         } else {
           // Was probably already submitted

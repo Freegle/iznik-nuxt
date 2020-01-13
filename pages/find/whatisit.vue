@@ -64,6 +64,7 @@
   </div>
 </template>
 <script>
+import NoticeMessage from '../../components/NoticeMessage'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 
@@ -74,6 +75,7 @@ const WizardProgress = () => import('~/components/WizardProgress')
 
 export default {
   components: {
+    NoticeMessage,
     PostMessage,
     Postcode,
     ComposeGroup,
@@ -86,6 +88,9 @@ export default {
   computed: {
     uploadingPhoto() {
       return this.$store.getters['compose/getUploading']
+    },
+    postcode() {
+      return this.$store.getters['compose/getPostcode']
     },
     ids() {
       const messages = Object.values(this.$store.getters['compose/getMessages'])
