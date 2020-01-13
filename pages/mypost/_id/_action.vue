@@ -16,7 +16,7 @@
             :action="action"
           />
           <b-alert variant="warning" class="mt-2" show>
-            <h3>That message wasn't sent from your account</h3>
+            <h3>That post wasn't made from this account</h3>
             <h5>{{ message.subject }}</h5>
             <p>
               This can happen if you have two different accounts on Freegle - e.g. if you use Google
