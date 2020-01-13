@@ -27,7 +27,7 @@
         </span>
         <br>
         <span class="text-muted small pl-0">
-          {{ $dayjs(newsfeed.added).fromNow() }}
+          {{ newsfeed.added | timeago }}
         </span>
         <NewsUserInfo :user="users[userid]" />
       </div>

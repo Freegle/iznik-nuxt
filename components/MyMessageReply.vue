@@ -31,7 +31,7 @@
           ...
         </span>
         <span class="small text-muted align-middle ml-2" :title="$dayjs(reply.lastdate).toLocaleString()">
-          {{ $dayjs(reply.lastdate).fromNow() }}
+          {{ reply.lastdate | timeago }}
         </span>
       </b-col>
       <b-col cols="12" xl="6">

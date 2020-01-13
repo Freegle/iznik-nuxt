@@ -10,7 +10,7 @@
           <b-badge variant="danger">{{ chat.unseen }}</b-badge>
         </span>
         <span class="float-right small text-muted">
-          {{ $dayjs(chat.lastdate).fromNow() }}
+          {{ chat.lastdate | timeago }}
         </span>
       </b-col>
     </b-row>
