@@ -7,7 +7,7 @@
         </div>
         <div v-if="message">
           <MyMessage
-            v-if="message.fromuser && me && message.fromuser === me.id"
+            v-if="message.fromuser && me && message.fromuser.id === me.id"
             :key="bump"
             :message="message"
             :messages="[ message ]"
@@ -15,7 +15,7 @@
             :expand="true"
             :action="action"
           />
-          <b-alert variant="warning" class="mt-2" show>
+          <b-alert v-else variant="warning" class="mt-2" show>
             <h3>That post wasn't made from this account</h3>
             <h5>{{ message.subject }}</h5>
             <p>
