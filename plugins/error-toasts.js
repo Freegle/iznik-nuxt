@@ -25,8 +25,9 @@ export default () => {
       })
       return true
     }
-
-    console.log('-------------errorHandler', err, vm, info) // CC
+    if( process.env.IS_APP) {
+      console.log('-------------errorHandler', err, vm, info)
+    }
 
     if (originalErrorHandler) {
       return originalErrorHandler(err, vm, info, ...rest)
