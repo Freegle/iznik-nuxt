@@ -612,7 +612,9 @@ export default {
       })
 
       this.me = this.$store.getters['auth/user']
-      this.emailsOn = !Object.keys(this.me).includes('onholidaytill')
+      if (this.me) {
+        this.emailsOn = !Object.keys(this.me).includes('onholidaytill')
+      }
     } catch (e) {
       console.error('Failed to fetch user', e)
     }

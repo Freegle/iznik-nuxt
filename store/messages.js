@@ -175,5 +175,9 @@ export const actions = {
   clear({ commit }) {
     commit('clear')
     commit('setContext', null)
+  },
+
+  async intend({ dispatch }, params) {
+    await this.$api.message.intend(params.id, params.outcome)
   }
 }

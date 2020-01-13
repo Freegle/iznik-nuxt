@@ -6,7 +6,7 @@ export default class InvitationAPI extends BaseAPI {
   }
 
   async add(data) {
-    const { id } = await this.$post('/invitation', data)
+    const { id } = await this.$put('/invitation', data)
     return id
   }
 

@@ -2,6 +2,6 @@
 // See https://stackoverflow.com/questions/52452501/how-to-add-a-polyfill-to-nuxt-2-0 for background.
 import 'core-js/es/set'
 import 'core-js/es/promise'
-import 'core-js/es/array/find'
-import 'core-js/es/array/find-index'
-import 'core-js/es/array/includes'
+
+// We need various polyfills for the Facebook SDK on IE11, and it's getting tedious to work out which.  Grab 'em all.
+import 'core-js/es/array'

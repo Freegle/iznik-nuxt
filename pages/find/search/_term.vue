@@ -76,14 +76,16 @@
               <message v-if="message.type == searchtype" v-bind="message" />
             </div>
 
-            <infinite-loading :key="searchtype" :distance="distance" @infinite="loadMore">
-              <span slot="no-results" />
-              <span slot="no-more" />
-              <span slot="spinner">
+            <client-only>
+              <infinite-loading :key="searchtype" :distance="distance" @infinite="loadMore">
                 <span slot="no-results" />
-                <b-img-lazy src="~/static/loader.gif" alt="Loading" />
-              </span>
-            </infinite-loading>
+                <span slot="no-more" />
+                <span slot="spinner">
+                  <span slot="no-results" />
+                  <b-img-lazy src="~/static/loader.gif" alt="Loading" />
+                </span>
+              </infinite-loading>
+            </client-only>
           </b-col>
         </b-row>
       </b-col>
@@ -187,8 +189,12 @@ export default {
         this.results = null
       }
 
-      const input = this.$refs.autocomplete.$refs.input
-      this.$emit('typed', input.value)
+      if (this.$refs.autocomplete && this.$refs.autocomplete.$refs) {
+        // We've seen this not be defined - perhaps during navigation when we're destroying this component?
+        // If the ref isn't present then it doesn't make sense to emit the event.
+        const input = this.$refs.autocomplete.$refs.input
+        this.$emit('typed', input.value)
+      }
     },
     process(results) {
       const items =

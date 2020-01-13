@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-2">
+  <div v-if="location" class="mt-2">
     <NoticeMessage v-if="blocked" variant="warning">
       <h3>Please help keep Freegle running</h3>
       <p>
@@ -35,13 +35,17 @@
 </template>
 <script>
 import Job from './Job'
+const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
-    Job
+    Job,
+    NoticeMessage
   },
   data: function() {
-    return {}
+    return {
+      location: null
+    }
   },
   computed: {
     jobs() {
@@ -55,23 +59,23 @@ export default {
     this.$store.dispatch('jobs/clear')
 
     const me = this.$store.getters['auth/user']
-    let location = null
-
     if (
       me &&
       me.settings &&
       me.settings.mylocation &&
       me.settings.mylocation.name
     ) {
-      location = me.settings.mylocation.name
+      this.location = me.settings.mylocation.name
     }
 
-    // Delay a little bit to give the main pane a chance to load.
-    setTimeout(() => {
-      this.$store.dispatch('jobs/fetch', {
-        location: location
-      })
-    }, 1000)
+    if (this.location) {
+      // Delay a little bit to give the main pane a chance to load.
+      setTimeout(() => {
+        this.$store.dispatch('jobs/fetch', {
+          location: this.location
+        })
+      }, 1000)
+    }
   },
   methods: {}
 }

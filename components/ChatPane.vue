@@ -54,34 +54,30 @@
             </b-row>
           </b-col>
         </b-row>
-        <b-row class="chatContent" infinite-wrapper>
-          <b-col v-if="chat">
-            <infinite-loading direction="top" force-use-infinite-wrapper="true" :distance="distance" @infinite="loadMore">
-              <span slot="no-results" />
-              <span slot="no-more" />
-              <span slot="spinner">
-                <b-img-lazy src="~/static/loader.gif" alt="Loading" />
-              </span>
-            </infinite-loading>
-            <ul v-for="chatmessage in chatmessages" :key="'chatmessage-' + chatmessage.id" class="p-0 pt-1 list-unstyled mb-1">
-              <li v-if="chatmessage">
-                <ChatMessage
-                  :key="'chatmessage-' + chatmessage.id"
-                  :chatmessage="chatmessage"
-                  :chat="chat"
-                  :me="me"
-                  :otheruser="otheruser"
-                  :last="chatmessage.id === chatmessages[chatmessages.length - 1].id"
-                />
-              </li>
-            </ul>
-            <b-row v-if="chatBusy">
-              <b-col>
-                <b-img class="float-right" src="~static/loader.gif" />
-              </b-col>
-            </b-row>
-          </b-col>
-        </b-row>
+        <div v-if="chat" class="chatContent" infinite-wrapper>
+          <infinite-loading direction="top" force-use-infinite-wrapper="true" :distance="distance" @infinite="loadMore">
+            <span slot="no-results" />
+            <span slot="no-more" />
+            <span slot="spinner">
+              <b-img-lazy src="~/static/loader.gif" alt="Loading" />
+            </span>
+          </infinite-loading>
+          <ul v-for="chatmessage in chatmessages" :key="'chatmessage-' + chatmessage.id" class="p-0 pt-1 list-unstyled mb-1">
+            <li v-if="chatmessage">
+              <ChatMessage
+                :key="'chatmessage-' + chatmessage.id"
+                :chatmessage="chatmessage"
+                :chat="chat"
+                :me="me"
+                :otheruser="otheruser"
+                :last="chatmessage.id === chatmessages[chatmessages.length - 1].id"
+              />
+            </li>
+          </ul>
+          <div v-if="chatBusy" class="text-center">
+            <b-img class="float-right" src="~static/loader.gif" />
+          </div>
+        </div>
         <div class="chatFooter">
           <b-row v-if="uploading" class="bg-white">
             <b-col class="p-0">
@@ -195,49 +191,6 @@
     </client-only>
   </div>
 </template>
-<style scoped lang="scss">
-@import 'color-vars';
-
-.chatpane {
-  min-height: 100vh;
-}
-
-.chatHolder {
-  height: calc(100vh - 74px);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.chatTitle {
-  background-color: $color-blue--light;
-  color: $color-white;
-  font-weight: bold;
-  order: 1;
-}
-
-.chatWarning {
-  order: 2;
-  justify-content: flex-start;
-}
-
-.chatContent {
-  order: 3;
-  justify-content: flex-start;
-  flex-grow: 1;
-  overflow-y: auto;
-}
-
-.chatFooter {
-  order: 4;
-  justify-content: flex-end;
-  background-color: $color-white;
-}
-
-::v-deep .dropdown-toggle {
-  color: $color-white;
-}
-</style>
 <script>
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
@@ -419,9 +372,11 @@ export default {
         })
 
         setTimeout(() => {
-          const container = this.$el.querySelector('.chatContent')
-          if (container) {
-            container.scrollTop = container.scrollHeight
+          if (this.$el && this.$el.querySelector) {
+            const container = this.$el.querySelector('.chatContent')
+            if (container) {
+              container.scrollTop = container.scrollHeight
+            }
           }
         }, 500)
       }
@@ -441,7 +396,7 @@ export default {
 
     // Get the user info in case we need to warn about them.
     await this.$store.dispatch('user/fetch', {
-      id: this.otheruser,
+      id: this.otheruser.id,
       info: true
     })
 
@@ -459,15 +414,16 @@ export default {
     },
     loadMore: function($state) {
       const currentCount = this.chatmessages.length
-      console.log('load more', currentCount)
 
       if (!this.scrolledToBottom) {
         // First load.  Scroll to the bottom when things have sorted themselves out.  This helps if we have messages
         // in our store, so we'll render some, otherwise we are stuck at the top until this fetch completes and we
         // scroll to the bottom below.
         this.$nextTick(() => {
-          const container = this.$el.querySelector('.chatContent')
-          container.scrollTop = container.scrollHeight
+          if (this.$el && this.$el.querySelector) {
+            const container = this.$el.querySelector('.chatContent')
+            container.scrollTop = container.scrollHeight
+          }
         })
       }
 
@@ -523,8 +479,10 @@ export default {
 
       // Scroll to the bottom so we can see it.
       this.$nextTick(() => {
-        const container = this.$el.querySelector('.chatContent')
-        container.scrollTop = container.scrollHeight
+        if (this.$el && this.$el.querySelector) {
+          const container = this.$el.querySelector('.chatContent')
+          container.scrollTop = container.scrollHeight
+        }
       })
 
       // We also want to trigger an update in the chat list.
@@ -657,3 +615,51 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+@import 'color-vars';
+
+.chatpane {
+  min-height: 100vh;
+}
+
+.chatHolder {
+  height: calc(100vh - 74px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.chatTitle {
+  background-color: $color-blue--light;
+  color: $color-white;
+  font-weight: bold;
+  order: 1;
+  z-index: 1000;
+}
+
+.chatTitle div {
+  background-color: $color-blue--light;
+}
+
+.chatWarning {
+  order: 2;
+  justify-content: flex-start;
+}
+
+.chatContent {
+  order: 3;
+  justify-content: flex-start;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.chatFooter {
+  order: 4;
+  justify-content: flex-end;
+  background-color: $color-white;
+}
+
+::v-deep .dropdown-toggle {
+  color: $color-white;
+}
+</style>

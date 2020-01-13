@@ -21,6 +21,3 @@ pm2 --force deploy $ENV exec 'git checkout -- package-lock.json; git checkout --
 
 # Now deploy.
 pm2 --force deploy $ENV update --force
-
-# Sometimes deploy leaves the environment down.
-pm2 restart ecosystem.config.js --env $ENV
