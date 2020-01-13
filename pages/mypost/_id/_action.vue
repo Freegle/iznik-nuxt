@@ -7,7 +7,7 @@
         </div>
         <div v-if="message">
           <MyMessage
-            v-if="message.fromuser && me && message.fromuser.id === me.id"
+            v-if="message.fromuser && me && message.fromuser === me.id"
             :key="bump"
             :message="message"
             :messages="[ message ]"
@@ -15,8 +15,8 @@
             :expand="true"
             :action="action"
           />
-          <b-alert v-else-if="me" variant="warning" class="mt-2" show>
-            <h3>That message wasn't sent from your account</h3>
+          <b-alert variant="warning" class="mt-2" show>
+            <h3>That post wasn't made from this account</h3>
             <h5>{{ message.subject }}</h5>
             <p>
               This can happen if you have two different accounts on Freegle - e.g. if you use Google
@@ -24,7 +24,8 @@
             </p>
             <p>
               Your local volunteers can merge your accounts or help you work out what's going on.  Please quote
-              message <b>#{{ message.id }}</b> and your email address <b>{{ me.email }}</b>.
+              message <b>#{{ message.id }}</b>, your email address <b>{{ me.email }}</b> and any others you might have
+              used, and which email address you prefer.
             </p>
             <GroupSelect v-model="contactGroup" class="mt-2 mb-1" />
             <br>
