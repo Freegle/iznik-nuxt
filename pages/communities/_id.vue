@@ -144,6 +144,13 @@ export default {
     this.$store.dispatch('auth/fetchUser', {
       components: ['me', 'groups']
     })
+
+    if (process.client && this.groupid) {
+      // Fetch this group for header info.
+      this.$store.dispatch('group/fetch', {
+        id: this.groupid
+      })
+    }
   },
   methods: {
     typeChange: function() {

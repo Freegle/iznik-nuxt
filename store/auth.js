@@ -152,7 +152,9 @@ export const actions = {
       commit('setUser', user)
 
       // We need to fetch the user again to get the groups, which aren't returned by the login API.
-      dispatch('fetchUser')
+      dispatch('fetchUser', {
+        components: ['me', 'groups']
+      })
     } else {
       // Login failed.
       throw new LoginError(ret, status)
@@ -178,7 +180,9 @@ export const actions = {
       commit('forceLogin', false)
 
       // We need to fetch the user to get the groups, persistent token etc.
-      dispatch('fetchUser')
+      dispatch('fetchUser', {
+        components: ['me', 'groups']
+      })
     } else {
       // Sign up failed.
       throw new SignUpError(ret, status)
@@ -190,6 +194,14 @@ export const actions = {
 
     params = params || {
       components: ['me', 'groups']
+    }
+
+    // If we have recently fetched the user without the groups, but we want them now, then ensure we refetch.
+    for (const component of params.components) {
+      if (component !== 'me' && !state.user[component]) {
+        console.log('Force fetch as component missing in user', component)
+        params.force = true
+      }
     }
 
     if (
@@ -212,7 +224,7 @@ export const actions = {
         // Save the persistent session token.
         me.persistent = persistent
 
-        if (groups) {
+        if (groups && groups.length) {
           me.groups = groups
           commit('setGroups', groups)
         }

@@ -113,16 +113,27 @@ export default {
         id: this.id
       })
 
+      const message = this.$store.getters['messages/get'](this.id)
+
       this.setGroup()
 
       this.bump = Date.now()
+
+      // Fetch the chats.  We need this so that we can find chats with unread messages which relate to our own posts
+      await this.$store.dispatch('chats/listChats')
+
+      // For some reason we can't capture emitted events from the outcome modal so use root as a bus.
+      this.$root.$on('outcome', groupid => {
+        this.donationGroup = groupid
+        this.ask()
+      })
 
       // If they have an intended outcome, then we save that to the server now.  This means that if they never
       // get round to doing anything else on this page we'll assume that's what they wanted.  We do this because
       // we've seen people click the button in the email a lot and then bail out.
       const me = this.$store.getters['auth/user']
 
-      if (this.action && me) {
+      if (this.action && me && me.id === message.fromuser.id) {
         let outcome = null
 
         if (this.action === 'repost') {
@@ -140,15 +151,6 @@ export default {
           })
         }
       }
-
-      // Fetch the chats.  We need this so that we can find chats with unread messages which relate to our own posts
-      await this.$store.dispatch('chats/listChats')
-
-      // For some reason we can't capture emitted events from the outcome modal so use root as a bus.
-      this.$root.$on('outcome', groupid => {
-        this.donationGroup = groupid
-        this.ask()
-      })
     } catch (e) {
       // We couldn't fetch that message.  Probably deleted.
       this.missing = true
