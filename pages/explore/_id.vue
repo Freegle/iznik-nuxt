@@ -84,11 +84,7 @@ export default {
       if (this.invalid) {
         return this.buildHead('Explore ' + this.id)
       } else {
-        return this.buildHead(
-          'Explore ' + group.namedisplay,
-          group.tagline,
-          group.profile
-        )
+        return this.buildHead(group.namedisplay, group.tagline, group.profile)
       }
     } else {
       return this.buildHead(
