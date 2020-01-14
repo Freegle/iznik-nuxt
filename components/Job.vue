@@ -44,7 +44,7 @@
         </b-row>
         <b-row>
           <b-col>
-            <a :onmousedown="job.onmousedown" target="_blank" :href="job.url" class="float-left">
+            <a ref="button" class="float-left" @click="fire">
               <b-btn variant="info">
                 More info <v-icon name="angle-double-right" />
               </b-btn>
@@ -80,6 +80,21 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    }
+  },
+  methods: {
+    fire(e) {
+      // We have to fire the pnpClick here - we can't insert it into the template because it gets escaped.
+      const tag = this.job.onmousedown.match(/'(.*)'/)
+
+      if (tag && tag.length > 1) {
+        // We create an URL like the pnpClick function does.
+        const url = this.job.url + '&psd=' + tag[1]
+        console.log('Open', url)
+        window.open(url, '_blank')
+
+        e.preventDefault()
+      }
     }
   }
 }
