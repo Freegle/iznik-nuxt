@@ -192,7 +192,7 @@ export const actions = {
 
     // If we have recently fetched the user without the groups, but we want them now, then ensure we refetch.
     for (const component of params.components) {
-      if (component !== 'me' && !state.user[component]) {
+      if (component !== 'me' && state.user && !state.user[component]) {
         console.log('Force fetch as component missing in user', component)
         params.force = true
       }
