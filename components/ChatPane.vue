@@ -54,7 +54,7 @@
             </b-row>
           </b-col>
         </b-row>
-        <div v-if="chat" class="chatContent" infinite-wrapper>
+        <div v-if="chat" class="chatContent row" infinite-wrapper>
           <infinite-loading direction="top" force-use-infinite-wrapper="true" :distance="distance" @infinite="loadMore">
             <span slot="no-results" />
             <span slot="no-more" />
@@ -62,9 +62,10 @@
               <b-img-lazy src="~/static/loader.gif" alt="Loading" />
             </span>
           </infinite-loading>
-          <ul v-for="chatmessage in chatmessages" :key="'chatmessage-' + chatmessage.id" class="p-0 pt-1 list-unstyled mb-1">
-            <li v-if="chatmessage">
+          <ul class="p-0 pt-1 list-unstyled mb-1">
+            <li v-for="chatmessage in chatmessages" :key="'chatmessage-' + chatmessage.id">
               <ChatMessage
+                v-if="chatmessage"
                 :key="'chatmessage-' + chatmessage.id"
                 :chatmessage="chatmessage"
                 :chat="chat"
@@ -654,6 +655,7 @@ export default {
   justify-content: flex-start;
   flex-grow: 1;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .chatFooter {

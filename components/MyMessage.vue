@@ -142,7 +142,7 @@
                     <v-icon name="trash-alt" /> Withdraw
                   </b-btn>
                 </b-list-group-item>
-                <b-list-group-item>
+                <b-list-group-item v-if="message.canedit">
                   <b-btn variant="primary" class="d-inline mr-1" @click="edit">
                     <v-icon name="pen" /> Edit
                   </b-btn>

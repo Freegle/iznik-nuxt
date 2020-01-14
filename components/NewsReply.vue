@@ -75,7 +75,7 @@
       Show earlier {{ numberOfRepliesNotShown | pluralize(['reply', 'replies']) }} ({{ numberOfRepliesNotShown }})
     </b-button>
     <div v-if="repliestoshow && repliestoshow.length > 0" :class="firstlevel ? 'pl-3' : ''">
-      <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id" :class="'p-0 pt-1 list-unstyled mb-1 ' + (firstlevel ? 'pl-1 border-left' : '')">
+      <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id" class="'p-0 pt-1 list-unstyled mb-1 pl-1 border-left">
         <li>
           <news-refer v-if="entry.type.indexOf('ReferTo') === 0" :type="entry.type" />
           <news-reply v-else :key="'newsfeedreply-' + replyid + '-reply-' + entry.id" :replyid="entry.id" :users="users" :threadhead="threadhead" />
@@ -272,7 +272,7 @@ export default {
     },
     emessage() {
       return this.reply.message
-        ? twem.twem(this.$twemoji, this.reply.message) + ''
+        ? (twem.twem(this.$twemoji, this.reply.message) + '').trim()
         : null
     },
     threadUsers() {

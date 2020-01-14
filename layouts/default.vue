@@ -257,12 +257,12 @@
       <AboutMeModal ref="modal" />
     </client-only>
     <div class="navbar-toggle" style="display: none" />
-    <div id="serverloader">
+    <div id="serverloader" class="bg-white">
       <b-img src="~/static/loader.gif" alt="Loading..." />
       <p>
         <b>Loading...</b>
         <br>
-        <a href="mailto:support@ilovefreegle.org" style="font-size: 12px">Stuck here?</a>
+        Stuck here? <a href="mailto:support@ilovefreegle.org">Contact us</a><br>Or try Chrome.
       </p>
     </div>
   </div>
@@ -445,11 +445,15 @@ svg.fa-icon {
 }
 
 #serverloader {
-  z-index: -1;
+  z-index: 1000;
   text-align: center;
   position: fixed; /* or absolute */
   top: calc(50% - 44px);
   left: calc(50% - 44px);
+  font-size: 12px;
+  padding: 5px;
+  border: 1px black;
+  border-radius: 5px;
   animation: 15s fadeIn;
 }
 
@@ -613,6 +617,9 @@ export default {
     if (me) {
       // Set the context for sentry so that we know which users are having errors.
       this.$sentry.setUser({ userid: me.id })
+
+      // Set the build date.  This may get superceded by Sentry releases, but it does little harm to add it in.
+      this.$sentry.setExtra('builddate', process.env.BUILD_DATE)
     }
   },
 
@@ -672,7 +679,7 @@ export default {
 
       // Disabled for now until things settle down.
       console.log('Not starting NCHAN')
-      // this.nchan.start()
+      this.nchan.start()
 
       this.nchan.on('error', function(code, descr) {
         console.error('NCHAN error', code, descr)

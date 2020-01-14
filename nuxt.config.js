@@ -200,7 +200,7 @@ const config = {
 
   redirect: [ // In mobile app-init-push route needs updating as per here
     { from: '^/chat/(.*)$', to: '/chats/$1' },
-    { from: '^/mygroups$', to: '/communities' },
+    { from: '^/mygroups(.*)$', to: '/communities$1' },
     { from: '^/why$', to: '/help' },
     { from: '^/contact$', to: '/help' },
     { from: '^/posters$', to: '/noticeboards' },
