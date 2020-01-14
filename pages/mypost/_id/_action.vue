@@ -109,6 +109,13 @@ export default {
   },
   async mounted() {
     try {
+      // Make sure we're logged in properly.  We've seen a problem where the intended post is rejected with a permissions
+      // error, probably because we're not logged in on the server but we are logged in on the client.
+      await this.$store.dispatch('auth/fetchUser', {
+        components: ['me', 'groups'],
+        force: true
+      })
+
       await this.$store.dispatch('messages/fetch', {
         id: this.id
       })
@@ -136,7 +143,8 @@ export default {
         if (outcome) {
           this.$store.dispatch('messages/intend', {
             id: this.id,
-            outcome: outcome
+            outcome: outcome,
+            loggedinas: me.id
           })
         }
       }
