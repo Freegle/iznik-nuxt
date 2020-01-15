@@ -19,17 +19,19 @@
         <div v-for="event in events" :key="'event-' + event.id" class="mt-2">
           <CommunityEvent v-if="!event.pending" :summary="false" :event="event" />
         </div>
-        <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" force-use-infinite-wrapper="body" @infinite="loadMore">
-          <span slot="no-results">
-            <notice-message v-if="!events || !events.length">
-              There are no community events to show.  Why not add one?
-            </notice-message>
-          </span>
-          <span slot="no-more" />
-          <span slot="spinner">
-            <b-img-lazy src="~/static/loader.gif" alt="Loading" />
-          </span>
-        </infinite-loading>
+        <client-only>
+          <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" force-use-infinite-wrapper="body" @infinite="loadMore">
+            <span slot="no-results">
+              <notice-message v-if="!events || !events.length">
+                There are no community events to show.  Why not add one?
+              </notice-message>
+            </span>
+            <span slot="no-more" />
+            <span slot="spinner">
+              <b-img-lazy src="~/static/loader.gif" alt="Loading" />
+            </span>
+          </infinite-loading>
+        </client-only>
       </b-col>
       <b-col cols="0" md="3" class="d-none d-md-block" />
     </b-row>

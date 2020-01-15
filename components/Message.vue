@@ -52,6 +52,9 @@
         <b-button v-if="!expanded" variant="white" class="mt-1" @click="expand">
           Read more and reply <v-icon name="angle-double-right" />
         </b-button>
+        <b-button v-else variant="link" class="d-block mt-1" @click="contract">
+          Close message
+        </b-button>
       </b-card-header>
       <b-card-body v-if="expanded" class="pl-1">
         <notice-message v-if="ispromised" variant="warning" class="mb-3 mt-1">
@@ -69,9 +72,14 @@
         </p>
 
         <div class="d-flex justify-content-between">
-          <MessageUserInfo v-if="expanded.fromuser" :user="expanded.fromuser" />
-          <span v-if="expanded.replycount" class="float-right small text-muted mr-1">
-            <v-icon name="user" class="d-inline" />&nbsp;<span class="d-inline">{{ expanded.replycount }}&nbsp;freegler<span v-if="expanded.replycount != 1">s</span>&nbsp;replied&nbsp;</span>
+          <MessageUserInfo v-if="expanded.fromuser" :user="expanded.fromuser" class="flex-grow-1" />
+          <span>
+            <span v-if="expanded.replycount" class="small text-muted mr-1">
+              <v-icon name="user" class="d-inline" />&nbsp;<span class="d-inline">{{ expanded.replycount }}&nbsp;freegler<span v-if="expanded.replycount != 1">s</span>&nbsp;replied&nbsp;</span>
+            </span>
+            <span v-else class="float-right small text-muted mr-1">
+              <v-icon name="user" class="d-inline" /> No replies yet
+            </span>
             <span v-if="expanded.groups && expanded.groups.length">
               <br>
               <b-btn
@@ -93,7 +101,6 @@
             <b-form-textarea
               v-if="expanded.type == 'Offer'"
               v-model="reply"
-              v-focus
               placeholder="Interested?  Please explain why you'd like it and when you can collect.  Always be polite and helpful."
               rows="3"
               max-rows="8"
@@ -102,7 +109,6 @@
             <b-form-textarea
               v-if="expanded.type == 'Wanted'"
               v-model="reply"
-              v-focus
               placeholder="Can you help?  If you have what they're looking for, let them know."
               rows="3"
               max-rows="8"
@@ -147,7 +153,7 @@
       </template>
     </b-modal>
     <ShareModal v-if="expanded" ref="shareModal" :message="$props" />
-    <ChatButton v-if="expanded && expanded.fromuser" ref="chatbutton" :userid="expanded.fromuser.id" class="d-none" />
+    <ChatButton ref="chatbutton" :userid="replyToUser" class="d-none" @sent="sentReply" />
     <MessageReportModal v-if="expanded" ref="reportModal" :message="$props" />
   </div>
 </template>
@@ -212,10 +218,6 @@ export default {
       type: Object,
       default: null
     },
-    fromuser: {
-      validator: prop => typeof prop === 'object' || typeof prop === 'number',
-      default: null
-    },
     promised: {
       type: Boolean,
       required: false,
@@ -262,15 +264,26 @@ export default {
     },
     ispromised() {
       return this.promised || (this.expanded && this.expanded.promised)
+    },
+    replyToUser() {
+      const msg = this.$store.getters['messages/get'](this.id)
+
+      if (msg && msg.fromuser) {
+        return msg.fromuser.id
+      }
+
+      return null
     }
   },
   watch: {
-    replyToSend(newVal, oldVal) {
+    async replyToSend(newVal, oldVal) {
       // Because of the way persistent store is restored, we might only find out that we have a reply to send post-mount.
-      if (newVal) {
-        console.log('Send on watch')
+      if (newVal && newVal.replyTo === this.id) {
+        await this.expand()
         this.reply = newVal.replyMessage
-        this.sendReply()
+        this.$nextTick(() => {
+          this.sendReply()
+        })
       }
     }
   },
@@ -299,6 +312,10 @@ export default {
       this.expanded = message
     },
 
+    contract() {
+      this.expanded = null
+    },
+
     async showPhotos() {
       await this.expand()
       this.$bvModal.show('photoModal-' + this.id)
@@ -313,8 +330,7 @@ export default {
     },
 
     async sendReply() {
-      console.log('Send reply', this.reply, this.$refs, this.expanded)
-
+      console.log('Send reply', this.reply)
       if (this.reply) {
         const me = this.$store.getters['auth/user']
 
@@ -341,22 +357,27 @@ export default {
           }
 
           if (!found) {
+            // Not currently a member.
+            console.log('Need to join')
             await this.$store.dispatch('auth/joinGroup', {
               userid: me.id,
               groupid: tojoin
             })
+
+            // Have to get the message back, because as a non-member we couldn't see who sent it, and therefore
+            // who to reply to.
+            console.log('Fetch message back')
+            await this.$store.dispatch('messages/fetch', {
+              id: this.id
+            })
+            console.log('Fetched')
           }
 
           // Now create the chat and send the first message.
-          await this.$refs.chatbutton.openChat(null, this.reply, this.id)
-          this.replying = false
-
-          // Clear message now sent
-          this.reply = null
-
-          await this.$store.dispatch('reply/set', {
-            replyTo: null,
-            replyMessage: null
+          console.log('Prepare chat', this.reply, this.id, this.replyToUser)
+          this.$nextTick(() => {
+            console.log('Now open chat', this.reply, this.id, this.replyToUser)
+            this.$refs.chatbutton.openChat(null, this.reply, this.id)
           })
         } else {
           // We're not logged in yet.  We need to save the reply and force a sign in.
@@ -371,6 +392,23 @@ export default {
           this.$store.dispatch('auth/forceLogin', true)
         }
       }
+    },
+    async sentReply() {
+      console.log('Sent reply')
+      // This gets invoked when we have sent a message we passed to ChatButton.
+      this.replying = false
+
+      // Clear message now sent
+      this.reply = null
+
+      await this.$store.dispatch('reply/set', {
+        replyTo: null,
+        replyMessage: null
+      })
+
+      console.log('Open chat')
+      // Now create the chat and send the first message.
+      await this.$refs.chatbutton.openChat()
     }
   }
 }

@@ -4,7 +4,7 @@ import { APIError } from '@/api/BaseAPI'
 const TOAST_EMAIL = 'support@ilovefreegle.org'
 const TOAST_TITLE = 'Sorry, something went wrong'
 const TOAST_MESSAGE = `
-  That might be a bug.
+  That might be a bug, or perhaps your network connection broke.
   Please try again - if you continue to have problems then
   please take a screenshot and contact ${TOAST_EMAIL}
 `

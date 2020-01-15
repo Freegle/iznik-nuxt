@@ -32,7 +32,7 @@
                 </div>
                 <span v-if="userid && users[userid]">
                   <span class="text-muted small">
-                    {{ $dayjs(reply.timestamp).fromNow() }}
+                    {{ reply.timestamp | timeago }}
                   </span>
                   <NewsUserInfo :user="users[userid]" />
                   <span>
@@ -74,8 +74,8 @@
     <b-button v-if="showEarlierRepliesOption" variant="link" class="pl-0" @click.prevent="showAllReplies = true">
       Show earlier {{ numberOfRepliesNotShown | pluralize(['reply', 'replies']) }} ({{ numberOfRepliesNotShown }})
     </b-button>
-    <div v-if="repliestoshow && repliestoshow.length > 0" class="pl-3">
-      <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id" class="p-0 pt-1 pl-1 list-unstyled mb-1 border-left">
+    <div v-if="repliestoshow && repliestoshow.length > 0" :class="firstlevel ? 'pl-3' : ''">
+      <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id" class="'p-0 pt-1 list-unstyled mb-1 pl-1 border-left">
         <li>
           <news-refer v-if="entry.type.indexOf('ReferTo') === 0" :type="entry.type" />
           <news-reply v-else :key="'newsfeedreply-' + replyid + '-reply-' + entry.id" :replyid="entry.id" :users="users" :threadhead="threadhead" />
@@ -244,6 +244,10 @@ export default {
       const ret = this.$store.getters['newsfeed/get'](this.replyid)
       return ret
     },
+    firstlevel() {
+      // We need to know which are the first level replies, because we indent those but not any subsequent replies.
+      return this.reply && this.reply.replyto === this.reply.threadhead
+    },
     me() {
       return this.$store.getters['auth/user']
     },
@@ -268,7 +272,7 @@ export default {
     },
     emessage() {
       return this.reply.message
-        ? twem.twem(this.$twemoji, this.reply.message) + ''
+        ? (twem.twem(this.$twemoji, this.reply.message) + '').trim()
         : null
     },
     threadUsers() {
@@ -354,7 +358,9 @@ export default {
   mounted() {
     if (parseInt(this.scrollTo) === this.replyid && this.$el.scrollIntoView) {
       // We want to scroll to this reply to make sure it's visible.
-      this.$el.scrollIntoView()
+      this.$nextTick(() => {
+        this.$el.scrollIntoView()
+      })
     }
   },
   methods: {
@@ -367,6 +373,7 @@ export default {
       }, 25)
     },
     replyReply() {
+      console.log('Replying to', this.replyid, this.reply)
       this.replyingTo = this.replyid
       this.showReplyBox = true
 
@@ -462,15 +469,17 @@ export default {
   border-radius: 50%;
   position: absolute;
   background-color: $color-white;
-  width: 15px;
-  padding-left: 3px;
-  padding-top: 3px;
-  top: 23px;
-  left: 23px;
+  width: 16px;
+  height: auto;
+  top: 19px;
+  left: 16px;
+  padding: 2px;
 
   @include media-breakpoint-up(md) {
-    top: 30px;
-    left: 26px;
+    width: 20px;
+    top: 28px;
+    left: 28px;
+    padding: 3px;
   }
 }
 </style>

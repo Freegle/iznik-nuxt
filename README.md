@@ -1,11 +1,7 @@
 # iznik-nuxt
 
-Iznik is a platform for online reuse of unwanted items.  This is a work-in-progress rewrite of
-the existing client, which you can find [here](https://github.com/Freegle/iznik-client).  
-
-The aim is to produce 
-something that looks very much like the existing site, but with a more modern codebase, and a fair number of
-niggles smoothed out.  More significant changes can come later.  
+Iznik is a platform for online reuse of unwanted items.  This is the new version of the front-end client
+for Freegle.  The old  version is [here](https://github.com/Freegle/iznik-client).  
 
 The development has been funded by [Freegle](https://www.ilovefreegle.org) for use in the UK, 
 but it is an open source platform which can be used or adapted by others.  Other contributors very welcome,
@@ -40,13 +36,6 @@ Briefly:
 that nice reactive stuff), with a standard layout and (crucially) a good Server Side 
 Rendering solution.
 * [BootstrapVue](https://bootstrap-vue.js.org/), which is Bootstrap v4 for Vue/Nuxt. 
-
-# Current Status
-
-This is in Beta.
-* Pretty much everything is there, but we have quite a few odds and ends to sort out.
-* We've done a first pass for how it displays on a mobile, but there will be some niggles at different screen sizes.
-* We've tested on Chrome only, and very few mobiles/tablets.
 
 <img src="http://www.browserstack.com/images/layout/browserstack-logo-600x315.png" width="280"/>
 

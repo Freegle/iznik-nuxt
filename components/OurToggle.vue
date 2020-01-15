@@ -1,5 +1,5 @@
 <template>
-  <toggle-button v-bind="$attrs" />
+  <toggle-button v-bind="$attrs" v-on="$listeners" />
 </template>
 <script>
 // This is a separate component partly because the toggle we use is not SSR-safe, and by async loading this component

@@ -3,7 +3,7 @@
     <file-pond
       ref="pond"
       name="photo"
-      allow-multiple="false"
+      :allow-multiple="multiple"
       accepted-file-types="image/jpeg, image/png, image/gif, image/jpg"
       :files="myFiles"
       image-resize-target-width="800"
@@ -156,6 +156,11 @@ export default {
           this.ocred,
           this.identified
         )
+
+        if (!this.multiple) {
+          // Only one, so the allProcessed event isn't fired by pond.
+          this.allProcessed()
+        }
       }
     },
 

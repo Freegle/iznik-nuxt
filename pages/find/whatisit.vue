@@ -32,7 +32,7 @@
           <b-btn v-if="ids.length > 1" variant="white" class="mr-1" @click="deleteItem">
             <v-icon name="trash-alt" />&nbsp;Delete item
           </b-btn>
-          <b-btn variant="white" class="" @click="addItem">
+          <b-btn v-if="ids.length < 6" variant="white" class="" @click="addItem">
             <v-icon name="plus" />&nbsp;Add another item
           </b-btn>
         </div>
@@ -64,6 +64,7 @@
   </div>
 </template>
 <script>
+import NoticeMessage from '../../components/NoticeMessage'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 
@@ -74,6 +75,7 @@ const WizardProgress = () => import('~/components/WizardProgress')
 
 export default {
   components: {
+    NoticeMessage,
     PostMessage,
     Postcode,
     ComposeGroup,
@@ -86,6 +88,9 @@ export default {
   computed: {
     uploadingPhoto() {
       return this.$store.getters['compose/getUploading']
+    },
+    postcode() {
+      return this.$store.getters['compose/getPostcode']
     },
     ids() {
       const messages = Object.values(this.$store.getters['compose/getMessages'])

@@ -274,15 +274,11 @@ export default {
     },
 
     chatmessages() {
-      return Object.values(
-        this.$store.getters['chatmessages/getMessages'](this.id)
-      )
+      return this.$store.getters['chatmessages/getMessages'](this.id)
     },
 
     chatusers() {
-      return Object.values(
-        this.$store.getters['chatmessages/getUsers'](this.id)
-      )
+      return this.$store.getters['chatmessages/getUsers'](this.id)
     },
 
     otheruser() {
@@ -342,8 +338,10 @@ export default {
         })
 
         this.$nextTick(() => {
-          const container = this.$el.querySelector('.chatContent')
-          container.scrollTop = container.scrollHeight
+          if (this.$el && this.$el.querySelector) {
+            const container = this.$el.querySelector('.chatContent')
+            container.scrollTop = container.scrollHeight
+          }
         })
       }
     }
@@ -394,8 +392,11 @@ export default {
               if (!this.scrolledToBottom) {
                 // First load.  Scroll to the bottom when things have sorted themselves out.
                 this.$nextTick(() => {
-                  const container = this.$el.querySelector('.chatContent')
-                  container.scrollTop = container.scrollHeight
+                  if (this.$el && this.$el.querySelector) {
+                    const container = this.$el.querySelector('.chatContent')
+                    container.scrollTop = container.scrollHeight
+                  }
+
                   this.scrolledToBottom = true
                 })
               }
@@ -427,8 +428,10 @@ export default {
 
       // Scroll to the bottom so we can see it.
       this.$nextTick(() => {
-        const container = this.$el.querySelector('.chatContent')
-        container.scrollTop = container.scrollHeight
+        if (this.$el && this.$el.querySelector) {
+          const container = this.$el.querySelector('.chatContent')
+          container.scrollTop = container.scrollHeight
+        }
       })
 
       // We also want to trigger an update in the chat list.
@@ -438,21 +441,24 @@ export default {
     },
     send: async function() {
       let msg = this.sendmessage
-      this.sending = true
 
-      // Encode up any emojis.
-      msg = twem.untwem(msg)
+      if (msg) {
+        this.sending = true
 
-      // Send it
-      await this.$store.dispatch('chatmessages/send', {
-        roomid: this.id,
-        message: msg
-      })
+        // Encode up any emojis.
+        msg = twem.untwem(msg)
 
-      this._updateAfterSend()
+        // Send it
+        await this.$store.dispatch('chatmessages/send', {
+          roomid: this.id,
+          message: msg
+        })
 
-      // Clear the message now it's sent.
-      this.sendmessage = ''
+        this._updateAfterSend()
+
+        // Clear the message now it's sent.
+        this.sendmessage = ''
+      }
     },
     hide() {
       this.$store.dispatch('popupchats/hide', { id: this.chat.id })

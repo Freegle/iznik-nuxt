@@ -1,6 +1,6 @@
 <template>
   <b-row class="m-0">
-    <b-col cols="12" md="3" :class="'chatlist p-0 bg-white ' + (selectedChatId ? 'd-none d-md-block' : '') + ' ' + selectedChatId">
+    <b-col id="chatlist" cols="12" md="3" :class="'chatlist p-0 bg-white ' + (selectedChatId ? 'd-none d-md-block' : '') + ' ' + selectedChatId">
       <b-card class="p-0">
         <b-card-body class="p-0">
           <b-row>
@@ -20,6 +20,12 @@
           <ChatListEntry :id="chat.id" />
         </li>
       </ul>
+      <client-only>
+        <infinite-loading force-use-infinite-wrapper="#chatlist" :distance="distance" @infinite="loadMore">
+          <span slot="no-results" />
+          <span slot="no-more" />
+        </infinite-loading>
+      </client-only>
     </b-col>
     <b-col cols="12" md="6" :class="'chatback ' + (selectedChatId ? 'd-block' : 'd-none d-md-block')">
       <ChatPane v-if="activeChat" :id="activeChat" />
@@ -49,15 +55,20 @@
 </style>
 
 <script>
+import InfiniteLoading from 'vue-infinite-loading'
 import SidebarRight from '../../components/SidebarRight'
 import buildHead from '@/mixins/buildHead'
 import loginRequired from '@/mixins/loginRequired.js'
+
+// We can't use async on ChatListEntry else the infinite scroll kicks in and tries to load everything while we are
+// still waiting for the import to complete.
+import ChatListEntry from '~/components/ChatListEntry.vue'
 const ChatPane = () => import('~/components/ChatPane.vue')
-const ChatListEntry = () => import('~/components/ChatListEntry.vue')
 const requestIdleCallback = () => import('~/assets/js/requestIdleCallback')
 
 export default {
   components: {
+    InfiniteLoading,
     SidebarRight,
     ChatPane,
     ChatListEntry
@@ -75,6 +86,8 @@ export default {
       search: null,
       searching: null,
       searchlast: null,
+      distance: 100,
+      showChats: 5,
       clientSearch: true
     }
   },
@@ -109,7 +122,7 @@ export default {
         })
       }
 
-      return chats
+      return chats.slice(0, this.showChats)
     },
 
     activeChat() {
@@ -192,6 +205,21 @@ export default {
         }
 
         this.searching = null
+      }
+    },
+
+    loadMore: function($state) {
+      // We use an infinite scroll on the list of chats because even though we have all the data in hand, the less
+      // we render onscreen the faster vue is to do so.
+      const chats = Object.values(this.$store.getters['chats/list'])
+
+      this.showChats += 5
+
+      if (this.showChats > chats.length) {
+        this.showChats = chats.length
+        $state.complete()
+      } else {
+        $state.loaded()
       }
     }
   },

@@ -10,7 +10,7 @@ fi
 # Check the environment
 ENV=$1
 
-if [[ "$ENV" != "production" && "$ENV" != "development" && "$ENV" != "debug" ]] 
+if [[ "$ENV" != "production" && "$ENV" != "development" && "$ENV" != "debug" ]]
 then
   echo "Invalid environment."
   exit 2

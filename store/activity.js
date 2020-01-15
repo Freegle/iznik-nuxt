@@ -28,7 +28,8 @@ export const getters = {
 
 export const actions = {
   async fetchRecentMessages({ commit }) {
-    commit('setRecentMessages', await this.$api.activity.fetch())
+    const res = await this.$api.activity.fetch()
+    commit('setRecentMessages', res.recentmessages)
   },
 
   clearRecentMessages({ commit }) {

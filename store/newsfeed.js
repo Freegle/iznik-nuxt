@@ -109,6 +109,30 @@ function findInReplies(replies, id) {
   return ret
 }
 
+function addUsersFromReplies(users, userids, replies) {
+  for (const reply of replies) {
+    if (reply.user) {
+      users[reply.user.id] = reply.user
+    }
+
+    if (reply.replies) {
+      // The server is peculiar in that it returns top-level reply users by object and users for replies to replies
+      // by userid.  This is too dangerous to change in the short term - see more below.
+      addUsersFromRepliesToReplies(users, userids, reply.replies)
+    }
+  }
+}
+
+function addUsersFromRepliesToReplies(users, userids, replies) {
+  for (const reply of replies) {
+    userids[reply.userid] = true
+
+    if (reply.replies) {
+      addUsersFromRepliesToReplies(users, userids, reply.replies)
+    }
+  }
+}
+
 export const getters = {
   get: state => id => {
     // This will get any newsfeed item, whether it's a top-level thread, a reply, or a reply to a reply.
@@ -209,14 +233,25 @@ export const actions = {
 
       if (user) {
         const users = {}
+        const userids = {}
         users[user.id] = user
 
         if (newsfeed.replies) {
-          // Also add in any users from replies.
-          for (const reply of newsfeed.replies) {
-            if (reply.user) {
-              users[reply.user.id] = reply.user
-            }
+          // Also add in any users from replies, and replies to replies.
+          addUsersFromReplies(users, userids, newsfeed.replies)
+        }
+
+        for (const userid in userids) {
+          if (!users[userid]) {
+            // We have a reply referenced by user id which we do not currently have.  Fetch it.
+            // This is not at all ideal because it requires further server calls.  However the server code is fragile
+            // in this area, and changing the call to fetch a single newsfeed item to return all the relevant users
+            // is dangerous.  For now we will live with the additional fetches and ugly code here.  Large threads
+            // are rare, so this is not a major issue.
+            const user = await this.$api.user.fetch({
+              id: userid
+            })
+            users[userid] = user
           }
         }
 

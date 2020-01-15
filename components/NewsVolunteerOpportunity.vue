@@ -8,7 +8,7 @@
         posted a volunteering opportunity: <b>{{ newsfeed.volunteering.title }}</b>
         <br>
         <span class="text-muted small">
-          {{ $dayjs(newsfeed.timestamp).fromNow() }}
+          {{ newsfeed.timestamp | timeago }}
         </span>
         on {{ newsfeed.volunteering.groups[0].namedisplay }}
       </b-col>

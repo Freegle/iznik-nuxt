@@ -11,22 +11,22 @@
         {{ job.snippet }}
       </p>
     </div>
-    <b-card v-else no-body variant="info" :class="highlight ? 'bg-info': ''">
-      <b-card-body>
-        <b-card-title>
+    <b-card v-else no-body variant="info" :class="highlight ? 'job-row bg-info': 'job-row'">
+      <b-card-body class="job-row">
+        <b-card-title class="job-title">
           {{ job.title }}
         </b-card-title>
         <b-card-sub-title v-if="job.location || job.postcode">
-          <span v-if="job.location">
+          <span v-if="job.location" class="location">
             {{ job.location }}
           </span>
           <span v-if="job.location && job.postcode">
             -
           </span>
-          <span v-if="job.postcode">
+          <span v-if="job.postcode" class="postcode">
             {{ job.postcode }}
           </span>
-          <span v-if="job.salary" class="float-right">
+          <span v-if="job.salary" class="float-right salary">
             {{ job.salary }}
           </span>
         </b-card-sub-title>
@@ -35,7 +35,7 @@
             <div class="media clickme">
               <div class="media-left" />
               <div class="media-body w-100">
-                <p class="text-truncate mt-2">
+                <p class="text-truncate mt-2 job-description">
                   {{ job.snippet }}
                 </p>
               </div>
@@ -44,11 +44,8 @@
         </b-row>
         <b-row>
           <b-col>
-            <a :onmousedown="job.onmousedown" target="_blank" :href="job.url" class="float-left">
-              <b-btn variant="info">
-                More info <v-icon name="angle-double-right" />
-              </b-btn>
-            </a>
+            <!-- eslint-disable-next-line -->
+            <span v-html="joblink" />
             <div v-if="job.logo" class="media-object">
               <b-img
                 class="float-right"
@@ -80,6 +77,36 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    }
+  },
+  computed: {
+    joblink() {
+      // AdView expects links in a particular format, which invoke its own onmouse down, and so we have to put the
+      // raw HTML in there via v-html.
+      return (
+        '<a target="_blank" class="float-left btn btn-info" ' +
+        'onmousedown="' +
+        this.job.onmousedown +
+        '" ' +
+        'href="' +
+        this.job.url +
+        '">More info &gt;</a>'
+      )
+    }
+  },
+  methods: {
+    fire(e) {
+      // We have to fire the pnpClick here - we can't insert it into the template because it gets escaped.
+      const tag = this.job.onmousedown.match(/'(.*)'/)
+
+      if (tag && tag.length > 1) {
+        // We create an URL like the pnpClick function does.
+        const url = this.job.url + '&psd=' + tag[1]
+        console.log('Open', url)
+        window.open(url, '_blank')
+
+        e.preventDefault()
+      }
     }
   }
 }

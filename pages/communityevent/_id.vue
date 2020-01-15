@@ -37,16 +37,26 @@ export default {
   async asyncData({ app, params, store }) {
     let invalid = false
 
-    try {
-      await store.dispatch('communityevents/fetch', {
-        id: params.id
-      })
-    } catch (e) {
+    if (params.id) {
+      try {
+        await store.dispatch('communityevents/fetch', {
+          id: params.id
+        })
+      } catch (e) {
+        invalid = true
+      }
+    } else {
       invalid = true
     }
 
     return {
       invalid: invalid
+    }
+  },
+  mounted() {
+    if (!this.$route.params.id) {
+      // Probably here by mistake - send to the list of all of them.
+      this.$router.push('/communityevents')
     }
   },
   head() {

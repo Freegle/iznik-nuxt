@@ -43,6 +43,13 @@ export default {
   methods: {
     async openChat(event, firstmessage, firstmsgid) {
       this.$emit('click')
+      console.log(
+        'Open chat',
+        firstmessage,
+        firstmsgid,
+        this.groupid,
+        this.userid
+      )
 
       if (this.groupid > 0) {
         // Open a chat to the mods
@@ -59,11 +66,15 @@ export default {
         })
 
         if (firstmessage) {
+          console.log('First message to send', firstmessage)
           await this.$store.dispatch('chatmessages/send', {
             roomid: chatid,
             message: firstmessage,
             refmsgid: firstmsgid
           })
+
+          console.log('Sent')
+          this.$emit('sent')
         }
 
         await this.$store.dispatch('popupchats/popup', {

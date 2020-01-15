@@ -68,13 +68,15 @@
               <NewsThread :id="entry.id" :key="'newsfeed-' + entry.id" :users="users" :scroll-to="scrollTo" />
             </li>
           </ul>
-          <infinite-loading :identifier="infiniteId" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
-            <span slot="no-results" />
-            <span slot="no-more" />
-            <span slot="spinner">
-              <b-img-lazy src="~/static/loader.gif" alt="Loading" />
-            </span>
-          </infinite-loading>
+          <client-only>
+            <infinite-loading :identifier="infiniteId" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
+              <span slot="no-results" />
+              <span slot="no-more" />
+              <span slot="spinner">
+                <b-img-lazy src="~/static/loader.gif" alt="Loading" />
+              </span>
+            </infinite-loading>
+          </client-only>
         </div>
       </b-col>
       <b-col cols="0" lg="3" class="d-none d-lg-block">
@@ -245,6 +247,8 @@ export default {
 
     async loadMore($state) {
       this.busy = true
+      this.scrollTo = this.id
+
       const user = this.$store.getters['auth/user']
 
       if (!user) {
@@ -256,39 +260,35 @@ export default {
           const context = this.$store.getters['newsfeed/getContext']
 
           if (this.id) {
-            await this.$store.dispatch('newsfeed/clearFeed')
-
             // Just one - fetch it by id.
-            await this.$store.dispatch('newsfeed/fetch', {
-              id: this.id
-            })
+            let id = this.id
+            let item
+            let maxdepth = 10
 
-            // But maybe this isn't the thread head.
-            const fetched = this.$store.getters['newsfeed/get'](this.id)
+            do {
+              maxdepth--
 
-            if (fetched.threadhead && this.id !== fetched.threadhead) {
-              await this.$store.dispatch('newsfeed/clearFeed')
-              await this.$store.dispatch('newsfeed/fetch', {
-                id: fetched.threadhead
-              })
-
-              const threadhead = this.$store.getters['newsfeed/get'](this.id)
-
-              if (threadhead.threadhead !== threadhead.id) {
-                // Nope, still wasn't the head.
-                await this.$store.dispatch('newsfeed/clearFeed')
-                await this.$store.dispatch('newsfeed/fetch', {
-                  id: threadhead.threadhead
-                })
+              if (maxdepth <= 0) {
+                // Fallback to ensure no infinite loop in case of weird thread structure.  We're only supposed to allow
+                // replies and replies to replies, but we've had at least one but resulting in deeper nesting than that.
+                // Better to display any such threads as well as fix any bugs that create them.
+                break
               }
-            } else if (fetched.replyto && this.id !== fetched.replyto) {
+
               await this.$store.dispatch('newsfeed/clearFeed')
               await this.$store.dispatch('newsfeed/fetch', {
-                id: fetched.replyto
+                id: id
               })
-            }
 
-            this.scrollTo = this.id
+              item = this.$store.getters['newsfeed/get'](id)
+              const headid = parseInt(item.threadhead)
+
+              if (id === headid) {
+                break
+              } else {
+                id = headid
+              }
+            } while (true)
 
             $state.complete()
           } else {

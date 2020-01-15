@@ -8,7 +8,7 @@
         created an event: <b>{{ newsfeed.communityevent.title }}</b>
         <br>
         <span class="text-muted small">
-          {{ $dayjs(newsfeed.timestamp).fromNow() }}
+          {{ newsfeed.timestamp | timeago }}
         </span>
         <span v-if="newsfeed.communityevent.groups.length > 0">
           on {{ newsfeed.communityevent.groups[0].namedisplay }}

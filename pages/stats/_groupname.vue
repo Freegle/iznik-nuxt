@@ -139,7 +139,7 @@
             </b-card-text>
           </b-card>
           <p class="mt-2">
-            If you want to find statistics for particular councils, click <nuxt-link to="/councils">
+            If you want to find statistics for particular councils, click <nuxt-link to="/stats/authorities">
               here
             </nuxt-link>.
           </p>
@@ -361,7 +361,6 @@ export default {
       let withdrawnWanted = 0
 
       for (const d of breakdown.Wanted) {
-        console.log('Wanted', d)
         totalWanted += d.count
 
         if (d.outcome === 'Received') {
@@ -467,7 +466,8 @@ export default {
     if (this.groupname) {
       return this.buildHead(
         'Statistics for ' + this.groupname,
-        'See stats and graphs for ' + this.groupname
+        'See stats and graphs for ' + this.groupname,
+        this.group ? this.group.profile : null
       )
     } else {
       return this.buildHead('Statistics', 'See stats and graphs for Freegle')

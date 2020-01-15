@@ -16,7 +16,7 @@
       :on-select="select"
     />
 
-    <div v-if="find">
+    <div v-if="showFind">
       <b-button variant="primary" :size="size" title="Find my location" @click="findLoc">
         <v-icon v-if="locating" name="sync" class="fa-spin" />
         <v-icon v-else-if="locationFailed" name="exclamation-triangle" />
@@ -72,7 +72,8 @@ export default {
       mylocation: null,
       locating: false,
       locationFailed: false,
-      showToolTip: false
+      showToolTip: false,
+      showFind: this.find
     }
   },
   async mounted() {
@@ -128,6 +129,15 @@ export default {
         // postcode any more.
         this.$emit('cleared')
         this.results = null
+
+        // We want to show the button in case they decide to use that instead.
+        this.showFind = true
+      } else {
+        // We're now typing a postcode.  Hide the button so they don't decide to click that next
+        this.showFind = false
+
+        // Hide the tooltip in case it's showing from a use of the find button.
+        this.showToolTip = false
       }
     },
     process(results) {
@@ -154,7 +164,12 @@ export default {
               }
             })
 
-            if (res.data.ret === 0) {
+            if (
+              res.data.ret === 0 &&
+              res.data.location &&
+              res.data.location.name &&
+              this.$refs.autocomplete
+            ) {
               // Got it - put it in the autocomplete input, and indicate that we've selected it.
               this.$refs.autocomplete.setValue(res.data.location.name)
               this.$emit('selected', res.data.location)
