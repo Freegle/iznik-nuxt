@@ -109,7 +109,35 @@ export default ({ store }) => {
             if (settingState) {
               // console.log('set state now')
               setInProgress = true
-              storage.setItem(key, JSON.stringify(settingState))
+              try {
+                storage.setItem(key, JSON.stringify(settingState))
+              } catch (e) {
+                // This is commonly a quota error.  Try saving just the bare essentials we need for handling
+                // signin, replies and posting.
+                console.log(
+                  'Failed to set full state of len',
+                  JSON.stringify(settingState).length
+                )
+
+                const smallerState = {
+                  auth: settingState.auth,
+                  compose: settingState.compose,
+                  reply: settingState.reply
+                }
+
+                try {
+                  storage.setItem(key, JSON.stringify(smallerState))
+                } catch (e) {
+                  // Plough on regardless and see what happens.  We'll probably get another exception and
+                  // fail, but not always.
+                  console.error(
+                    'Failed to set localStorage of size '.JSON.stringify(
+                      smallerState
+                    ).length
+                  )
+                }
+              }
+
               setInProgress = false
               settingState = null
               // console.log('completed set state')
