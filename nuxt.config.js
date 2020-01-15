@@ -314,7 +314,8 @@ module.exports = {
       retries: 10,
       retryDelay: (retryCount) => {
         return retryCount * 1000
-      }
+      },
+      shouldResetTimeout: true
     }
   },
 
