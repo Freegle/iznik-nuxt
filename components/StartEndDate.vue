@@ -58,11 +58,6 @@ const MAX_DURATION_DAYS = 3
 // Minimum length of event (it's rounded to 30 minute intervals anyway)
 const MIN_DURATION_MINUTES = 30
 
-// According to dayjs docs [1] "Do" (e.g. "4rd") is only available after adding the advanced formatter,
-// however it works without adding it, and this other list [2] shows "Do" as a valid format.
-// So, be aware it might go away in a future version, and need the advanced formatters adding.
-// [1] https://github.com/iamkun/dayjs/blob/dev/docs/en/API-reference.md#list-of-all-available-formats
-// [2] https://github.com/iamkun/dayjs/blob/dev/docs/en/Plugin.md#list-of-all-available-format-tokens
 const FORMAT = 'ddd, Do MMM HH:mm a'
 
 export default {
