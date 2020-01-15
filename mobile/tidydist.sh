@@ -10,6 +10,8 @@ node ./node_modules/replace/bin/replace.js '\/ebayvote.PNG' 'ebayvote.PNG' dist 
 node ./node_modules/replace/bin/replace.js '\/businesscards\/' 'businesscards/' dist -r --quiet
 node ./node_modules/replace/bin/replace.js '\/static\/' '' dist -r --quiet
 
+node ./node_modules/replace/bin/replace.js '<title>' '<meta name="viewport" content="user-scalable=yes, width=device-width, initial-scale=1"><title>' dist/index.html --quiet
+
 node ./node_modules/replace/bin/replace.js '<\/body>' '<script type="text/javascript" src="cordova.js"></script></body>' dist/index.html --quiet
 
 cd dist

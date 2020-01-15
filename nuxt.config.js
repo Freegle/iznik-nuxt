@@ -3,7 +3,7 @@ import sitemap from './utils/sitemap.js'
 
 const FACEBOOK_APPID = '134980666550322'
 const SENTRY_DSN = 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170'
-const MOBILE_VERSION = '2.0.3'
+const MOBILE_VERSION = '2.0.4'
 
 require('dotenv').config()
 
@@ -19,7 +19,8 @@ require('dotenv').config()
 // - The rest of the client code just uses the API prefix.  The base URL kicks in (or doesn't) as described above.
 let API = '/api'
 if (process.env.NUXT_BUILD_TYPE === 'fdapp') {
-  API = 'https://fdapidbg.ilovefreegle.org/api'
+  //API = 'https://fdapidbg.ilovefreegle.org/api'
+  API = 'https://www.ilovefreegle.org/api'
 }
 
 // IZNIK_API is where we send it to.  This avoids CORS issues (and removes preflight OPTIONS calls for GETs, which
