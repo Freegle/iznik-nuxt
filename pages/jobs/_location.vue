@@ -62,7 +62,7 @@ export default {
   data: function() {
     return {
       searchLocation: null,
-      loading: false
+      loading: true
     }
   },
   computed: {
@@ -99,6 +99,8 @@ export default {
         location: this.suppliedLocation
       })
     }
+
+    this.loading = false
   },
   beforeCreate() {
     this.suppliedLocation = this.$route.params.location
