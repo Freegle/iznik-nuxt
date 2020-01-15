@@ -30,7 +30,7 @@
 // Use import rather than async otherwise we have trouble with refs.
 import ProfileModal from '~/components/ProfileModal'
 import NewsUserInfo from '~/components/NewsUserInfo'
-const ProfileImage = () => import('~/components/ProfileImage')
+import ProfileImage from '~/components/ProfileImage'
 
 export default {
   components: {

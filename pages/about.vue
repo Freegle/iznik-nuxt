@@ -204,7 +204,7 @@
 
 <script>
 import buildHead from '@/mixins/buildHead.js'
-const ProfileImage = () => import('~/components/ProfileImage')
+import ProfileImage from '~/components/ProfileImage'
 
 export default {
   components: {

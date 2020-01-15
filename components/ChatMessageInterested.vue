@@ -91,8 +91,8 @@
 
 <script>
 import ChatBase from '~/components/ChatBase'
+import ProfileImage from '~/components/ProfileImage'
 const NoticeMessage = () => import('~/components/NoticeMessage')
-const ProfileImage = () => import('~/components/ProfileImage')
 
 export default {
   components: {

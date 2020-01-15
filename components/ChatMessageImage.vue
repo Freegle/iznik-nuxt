@@ -47,7 +47,7 @@
 
 <script>
 import ChatBase from '~/components/ChatBase'
-const ProfileImage = () => import('~/components/ProfileImage')
+import ProfileImage from '~/components/ProfileImage'
 
 export default {
   components: {

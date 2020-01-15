@@ -57,8 +57,8 @@
 <script>
 import NewsBase from '~/components/NewsBase'
 import NewsLoveComment from '~/components/NewsLoveComment'
+import ProfileImage from '~/components/ProfileImage'
 const VolunteerOpportunityModal = () => import('./VolunteerOpportunityModal')
-const ProfileImage = () => import('~/components/ProfileImage')
 
 export default {
   components: {
