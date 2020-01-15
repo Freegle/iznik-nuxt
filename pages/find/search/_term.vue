@@ -167,7 +167,8 @@ export default {
     this.$store.dispatch('messages/clear')
 
     // Focus on field to grab their attention.
-    this.$refs.autocomplete.$refs.input.focus()
+    //this.$refs.autocomplete.$refs.input.focus()
+    this.$refs.autocomplete.$refs.ref_div.focus()    
 
     // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
     // need to render this on the server.

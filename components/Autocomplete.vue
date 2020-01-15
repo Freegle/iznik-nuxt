@@ -1,6 +1,6 @@
 <template>
   <div :class="`${getClassName('wrapper')} autocomplete-wrapper`">
-    <b-input-group>
+    <b-input-group ref="ref_div" tabindex="0" class="ref-div">
       <input
         :id="id"
         ref="input"
@@ -70,10 +70,15 @@
 
 /* iteminp class is passed into this component in a prop */
 .iteminp ul {
+  /* 
   width: 100% !important;
   right: 0px !important;
-  padding-right: 15px !important;
-  padding-left: 15px !important;
+  margin-right: 15px !important;
+  margin-left: 15px !important;
+  */
+  /*Width adjusted for the border of the search options*/
+  width: 96% !important;
+  right: 13px !important;
 }
 
 /* postcodelist class is passed into this component in a prop */
@@ -157,6 +162,28 @@
 .autocomplete ul li.focus-list a span {
   /*backwards compat*/
   color: white;
+}
+
+
+/*Style for border round the search options*/
+.search_op {
+  border: 1px solid #61ae25;
+  border-radius: 0.2rem;
+}
+
+div .ref-div:focus {
+  background-color: #fff;
+  border-color: #80bdff;
+  outline: 0;
+  border-radius: 0.2rem;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.focus-class:focus {
+  border-color: #ced4da;
+  border-right: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
 
 /*.showAll-transition{
@@ -480,7 +507,7 @@ export default {
     },
 
     activeClass(i) {
-      const focusClass = i === this.focusList ? 'focus-list' : ''
+      const focusClass = i === this.focusList ? 'focus-list search_op' : ' search_op'
       return `${focusClass}`
     },
 
