@@ -90,12 +90,12 @@ export default {
       return ret
     }
   },
-  async asyncData({ app, params, store }) {
-    await store.dispatch('jobs/clear')
+  async mounted() {
+    await this.$store.dispatch('jobs/clear')
 
-    if (params.location) {
-      await store.dispatch('jobs/fetch', {
-        location: params.location
+    if (this.suppliedLocation) {
+      await this.$store.dispatch('jobs/fetch', {
+        location: this.suppliedLocation
       })
     }
 
