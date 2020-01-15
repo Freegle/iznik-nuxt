@@ -408,7 +408,9 @@ export default {
       await this.$store.dispatch('compose/setMessage', {
         id: this.message.id,
         item: this.message.item.name.trim(),
-        description: this.message.textbody.trim(),
+        description: this.message.textbody
+          ? this.message.textbody.trim()
+          : null,
         type: this.message.type
       })
 

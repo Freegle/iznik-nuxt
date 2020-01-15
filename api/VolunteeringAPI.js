@@ -6,7 +6,7 @@ export default class VolunteeringAPI extends BaseAPI {
   }
 
   save(data) {
-    return this.$post('/volunteering', data)
+    return this.$patch('/volunteering', data)
   }
 
   async add(data) {
