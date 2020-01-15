@@ -81,6 +81,8 @@ export default {
   },
   computed: {
     joblink() {
+      // AdView expects links in a particular format, which invoke its own onmouse down, and so we have to put the
+      // raw HTML in there via v-html.
       return (
         '<a target="_blank" class="float-left btn btn-info" ' +
         'onmousedown="' +

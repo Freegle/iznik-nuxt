@@ -1,47 +1,49 @@
 <template>
   <div>
-    <b-row class="m-0">
-      <b-col cols="0" md="3" class="d-none d-md-block" />
-      <b-col cols="12" md="6" class="p-0">
-        <h3>
-          Jobs
-          <span v-if="location">
-            near {{ location }}
-          </span>
-        </h3>
-        <p>
-          These are jobs
-          <span v-if="location">
-            near {{ location }},
-          </span>
-          which you might be interested in.
-        </p>
-        <p>
-          Freegle will get a small amount if you click to view any of them, which will help keep us going.
-        </p>
-        <b-input-group class="flex mb-2">
-          <b-form-input
-            v-model="searchLocation"
-            size="lg"
-            type="text"
-            placeholder="Where are you looking?  Use a postcode or town name"
-          />
-          <b-input-group-append>
-            <b-button variant="success" size="lg" @click="search">
-              <v-icon name="search" />&nbsp;Search
-            </b-button>
-          </b-input-group-append>
-        </b-input-group>
+    <client-only>
+      <b-row class="m-0">
+        <b-col cols="0" md="3" class="d-none d-md-block" />
+        <b-col cols="12" md="6" class="p-0">
+          <h3>
+            Jobs
+            <span v-if="location">
+              near {{ location }}
+            </span>
+          </h3>
+          <p>
+            These are jobs
+            <span v-if="location">
+              near {{ location }},
+            </span>
+            which you might be interested in.
+          </p>
+          <p>
+            Freegle will get a small amount if you click to view any of them, which will help keep us going.
+          </p>
+          <b-input-group class="flex mb-2">
+            <b-form-input
+              v-model="searchLocation"
+              size="lg"
+              type="text"
+              placeholder="Where are you looking?  Use a postcode or town name"
+            />
+            <b-input-group-append>
+              <b-button variant="success" size="lg" @click="search">
+                <v-icon name="search" />&nbsp;Search
+              </b-button>
+            </b-input-group-append>
+          </b-input-group>
 
-        <b-img-lazy v-if="loading && (!jobs || jobs.length === 0)" src="~/static/loader.gif" alt="Loading..." />
-        <div v-for="job in jobs" :key="'job-' + job.onmousedown">
-          <Job :job="job" class="mb-1" />
-        </div>
-        <div v-if="location && !loading && (!jobs || jobs.length === 0)">
-          We didn't find any jobs here.  Please search somewhere else.
-        </div>
-      </b-col>
-    </b-row>
+          <b-img-lazy v-if="loading && (!jobs || jobs.length === 0)" src="~/static/loader.gif" alt="Loading..." />
+          <div v-for="job in jobs" :key="'job-' + job.onmousedown">
+            <Job :job="job" class="mb-1" />
+          </div>
+          <div v-if="location && !loading && (!jobs || jobs.length === 0)">
+            We didn't find any jobs here.  Please search somewhere else.
+          </div>
+        </b-col>
+      </b-row>
+    </client-only>
   </div>
 </template>
 <style scoped>
