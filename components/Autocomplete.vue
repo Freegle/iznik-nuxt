@@ -563,12 +563,16 @@ export default {
         })
         // On Done
         ajax.addEventListener('loadend', e => {
-          const { responseText } = e.target
-          console.log("About to parse", responseText)
-          const json = JSON.parse(responseText)
-          // Callback Event
-          this.onAjaxLoaded ? this.onAjaxLoaded(json) : null
-          this.json = this.process ? this.process(json) : json
+          const { status, responseText } = e.target
+
+          if (status === 200) {
+            const json = JSON.parse(responseText)
+            // Callback Event
+            this.onAjaxLoaded ? this.onAjaxLoaded(json) : null
+            this.json = this.process ? this.process(json) : json
+          } else {
+            console.log("Autocomplete failed with", status)
+          }
 
           // We no longer have a request in progress.
           this.ajaxInProgress = null

@@ -10,10 +10,11 @@
           class=""
           lang="en"
           type="datetime"
-          append-to-body
-          format="ddd, Do MMM HH:mm a"
-          :time-picker-options="{ start: '00:00', step: '00:30', end: '23:30' }"
+          :format="format"
+          :time-picker-options="{ start: '00:00', step: '00:30', end: '23:30', format: 'HH:mm' }"
           placeholder=""
+          :disabled-date="startDateDisabled"
+          :default-value="todayAt9am"
         />
       </div>
       <div class="mr-lg-4 d-flex flex-column">
@@ -24,10 +25,12 @@
           class=""
           lang="en"
           type="datetime"
-          append-to-body
-          format="ddd, Do MMM HH:mm a"
-          :time-picker-options="{ start: '00:00', step: '00:30', end: '23:30' }"
+          :format="format"
+          :time-picker-options="{ start: '00:00', step: '00:30', end: '23:30', format: 'HH:mm' }"
           placeholder=""
+          :disabled-date="endDateDisabled"
+          :disabled-time="endTimeDisabled"
+          :default-value="oneHourAfterStart"
         />
       </div>
     </div>
@@ -42,6 +45,20 @@
 
 <script>
 import DatePicker from 'vue2-datepicker'
+import 'vue2-datepicker/index.css'
+
+import dayjs from 'dayjs'
+
+// Maximum number of days an event can be spread over
+// GOOD : friday, saturday, sunday = 3 days
+// BAD  : friday, saturday, sunday, monday = 4 days
+// (does not take into consideration the time)
+const MAX_DURATION_DAYS = 3
+
+// Minimum length of event (it's rounded to 30 minute intervals anyway)
+const MIN_DURATION_MINUTES = 30
+
+const FORMAT = 'ddd, Do MMM HH:mm a'
 
 export default {
   components: {
@@ -56,6 +73,74 @@ export default {
       type: Boolean,
       required: false,
       default: true
+    }
+  },
+  computed: {
+    oneHourAfterStart() {
+      return dayjs(this.value ? this.value.start : null).add(1, 'hour')
+    }
+  },
+  watch: {
+    'value.start'(start, oldStart) {
+      if (start) {
+        // when the start changes, shift the end too
+        const unit = dayjs(oldStart).isSame(dayjs(this.value.end), 'day')
+          ? // if start/end are on the same day, shift the end time
+            'minute'
+          : // otherwise only shift the end day
+            'day'
+        const changed = dayjs(start).diff(oldStart, unit)
+        if (changed !== 0) {
+          this.value.end = dayjs(this.value.end)
+            .add(changed, unit)
+            .toDate()
+        }
+      } else {
+        // clear the end date when the start date is cleared
+        this.value.end = null
+      }
+    }
+  },
+  created() {
+    // used for default start date, 9am bright and early :)
+    this.todayAt9am = dayjs()
+      .hour(9)
+      .minute(0)
+      .second(0)
+
+    // custom formatter using dayjs
+    this.format = {
+      stringify(date) {
+        return date ? dayjs(date).format(FORMAT) : ''
+      },
+      parse(value) {
+        return value ? dayjs(value, FORMAT).toDate() : null
+      }
+    }
+  },
+  methods: {
+    startDateDisabled(date) {
+      // not before today
+      return dayjs(date).isBefore(dayjs(), 'day')
+    },
+    endDateDisabled(date) {
+      return (
+        // not before today
+        dayjs(date).isBefore(dayjs(), 'day') ||
+        // not before the start date
+        dayjs(date).isBefore(dayjs(this.value.start), 'day') ||
+        // not more than 3 days long
+        dayjs(date).isAfter(
+          dayjs(this.value.start).add(MAX_DURATION_DAYS - 1, 'day'),
+          'day'
+        )
+      )
+    },
+    endTimeDisabled(date) {
+      // at least 30 minutes after the start time
+      return dayjs(date).isBefore(
+        dayjs(this.value.start).add(MIN_DURATION_MINUTES, 'minute')
+      )
     }
   }
 }

@@ -62,7 +62,7 @@ export default {
   data: function() {
     return {
       searchLocation: null,
-      loading: false
+      loading: true
     }
   },
   computed: {
@@ -94,11 +94,13 @@ export default {
   async mounted() {
     await this.$store.dispatch('jobs/clear')
 
-    if (this.suppliedLocation) {
+    if (this.location) {
       await this.$store.dispatch('jobs/fetch', {
-        location: this.suppliedLocation
+        location: this.location
       })
     }
+
+    this.loading = false
   },
   beforeCreate() {
     this.suppliedLocation = this.$route.params.location
