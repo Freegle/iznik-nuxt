@@ -61,7 +61,8 @@ export default {
   mixins: [loginOptional, buildHead],
   data: function() {
     return {
-      searchLocation: null
+      searchLocation: null,
+      loading: false
     }
   },
   computed: {
@@ -98,10 +99,6 @@ export default {
         location: this.suppliedLocation
       })
     }
-
-    return {
-      loading: false
-    }
   },
   beforeCreate() {
     this.suppliedLocation = this.$route.params.location
@@ -112,7 +109,6 @@ export default {
     }
   },
   head() {
-    console.log('Build head', this.location)
     return this.buildHead(
       'Jobs near ' + this.location,
       'These are job ads fairly close to the location.  Freegle gets a little bit to help keep us going if you click on them.'
