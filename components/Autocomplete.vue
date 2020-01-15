@@ -9,7 +9,7 @@
         :class="`${getClassName('input')} autocomplete-input`"
         :placeholder="placeholder"
         :name="name"
-        autocomplete="new-password"
+        autocomplete="off"
         @input="handleInput"
         @dblclick="handleDoubleClick"
         @blur="handleBlur"
@@ -441,7 +441,7 @@ export default {
       setTimeout(() => {
         let body = document.getElementsByTagName("body")[0];
         body.classList.remove('forcescroll')
-        body.style.overflowY = null
+        body.style.overflowY = ''
       }, 500)
 
       // Callback Event
@@ -564,6 +564,7 @@ export default {
         // On Done
         ajax.addEventListener('loadend', e => {
           const { responseText } = e.target
+          console.log("About to parse", responseText)
           const json = JSON.parse(responseText)
           // Callback Event
           this.onAjaxLoaded ? this.onAjaxLoaded(json) : null

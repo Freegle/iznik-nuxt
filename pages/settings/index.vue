@@ -379,7 +379,8 @@
                 @change="changeNotification($event, 'emailmine')"
               />
               <p>
-                We can email you if there's an unread notification on here, or about recent ChitChat posts from nearby freeglers.
+                We can email you if there's an unread notification on here, about OFFERs/WANTEDs you might be
+                interested in, or about recent ChitChat posts from nearby freeglers.
               </p>
               <OurToggle
                 v-model="relevantallowed"
@@ -504,7 +505,7 @@ export default {
     relevantallowed: {
       // This is 1/0 in the model whereas we want Boolean.
       set(val) {
-        Vue.set(this, 'me.relevantallowed', val ? 1 : 0)
+        Vue.set(this.me, 'relevantallowed', val ? 1 : 0)
       },
       get() {
         return Boolean(this.me.relevantallowed)
@@ -612,7 +613,9 @@ export default {
       })
 
       this.me = this.$store.getters['auth/user']
-      this.emailsOn = !Object.keys(this.me).includes('onholidaytill')
+      if (this.me) {
+        this.emailsOn = !Object.keys(this.me).includes('onholidaytill')
+      }
     } catch (e) {
       console.error('Failed to fetch user', e)
     }

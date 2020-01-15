@@ -20,7 +20,7 @@ const API = '/api'
 
 // IZNIK_API is where we send it to.  This avoids CORS issues (and removes preflight OPTIONS calls for GETs, which
 // hurt client performance).
-const IZNIK_API = process.env.IZNIK_API || 'https://fdapidbg.ilovefreegle.org'
+const IZNIK_API = process.env.IZNIK_API || 'https://fdapilive.ilovefreegle.org'
 
 // This is where the user site is.
 const USER_SITE = 'https://www.ilovefreegle.org'
@@ -131,6 +131,13 @@ module.exports = {
       { rel: 'preconnect', href: 'https://www.facebook.com' },
       { rel: 'preconnect', href: 'https://connect.facebook.com' },
       { rel: 'preconnect', href: 'https://apis.google.com' }
+    ],
+    script: [
+      {
+        src:
+          'https://adview.online/js/pub/tracking.js?publisher=2053&channel=web&source=feed',
+        defer: true
+      }
     ]
   },
 
@@ -185,7 +192,7 @@ module.exports = {
 
   redirect: [
     { from: '^/chat/(.*)$', to: '/chats/$1' },
-    { from: '^/mygroups$', to: '/communities' },
+    { from: '^/mygroups(.*)$', to: '/communities$1' },
     { from: '^/why$', to: '/help' },
     { from: '^/contact$', to: '/help' },
     { from: '^/posters$', to: '/noticeboards' },
@@ -197,10 +204,26 @@ module.exports = {
     { from: '^//$', to: '/' }
   ],
 
+  polyfill: {
+    // This is needed for IE11.
+    features: [
+      {
+        require: 'event-polyfill'
+      },
+      {
+        require: 'custom-event-polyfill'
+      },
+      {
+        require: 'array-from-polyfill'
+      }
+    ]
+  },
+
   /*
   ** Nuxt.js modules
   */
   modules: [
+    'nuxt-polyfill',
     '@nuxtjs/sitemap',
     '@nuxtjs/sentry',
     'bootstrap-vue/nuxt',
@@ -282,12 +305,21 @@ module.exports = {
   ** Axios module configuration
   */
   axios: {
-    proxy: true
+    proxy: true,
+    retry: {
+      // Retry failed requests to give a bit more resilience to flaky networks, especially on mobile.
+      // This also helps with server upgrades.
+      //
+      // Note that this doesn't retry requests that never complete.
+      retries: 10,
+      retryDelay: (retryCount) => {
+        return retryCount * 1000
+      }
+    }
   },
 
   proxy: {
-    '/api/': IZNIK_API,
-    '/adview.php': USER_SITE + '/adview.php'
+    '/api/': IZNIK_API
   },
 
   buildModules: [
@@ -309,7 +341,7 @@ module.exports = {
   build: {
     // analyze: true,
 
-    transpile: [/^vue2-google-maps($|\/)/],
+    transpile: [/^vue2-google-maps($|\/)/, 'vue-lazy-youtube-video'],
 
     extend(config, ctx) {
       if (process.env.NODE_ENV !== 'production') {
@@ -367,7 +399,13 @@ module.exports = {
         const targets = isServer
           ? { node: '10' }
           : {
-              browsers: ['> 1%', 'last 2 versions', 'ie >= 8', 'safari >= 9']
+              browsers: [
+                '> 1%',
+                'last 2 versions',
+                'ie >= 8',
+                'safari >= 9',
+                'ios_saf >= 9'
+              ]
             }
         return [
           [
@@ -388,7 +426,7 @@ module.exports = {
   },
 
   sentry: {
-    dsn: process.env.SENTRY_DSN,
+    dsn: SENTRY_DSN,
     publishRelease: false,
     clientIntegrations: function(integrations) {
       // Don't include breadcrumbs as this makes POSTs too large, and they fail.
@@ -410,7 +448,8 @@ module.exports = {
     MODTOOLS: false,
     USER_SITE: USER_SITE,
     IMAGE_SITE: IMAGE_SITE,
-    SENTRY_DSN: SENTRY_DSN
+    SENTRY_DSN: SENTRY_DSN,
+    BUILD_DATE: new Date().toLocaleString()
   },
 
   vue: {
@@ -420,7 +459,7 @@ module.exports = {
   },
 
   router: {
-    middleware: ['keylogin', 'src']
+    middleware: ['src']
   },
 
   sitemap: {

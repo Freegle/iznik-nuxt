@@ -166,6 +166,7 @@ export default {
         })
 
         this.invitemail = null
+        this.$v.$reset()
       }
     }
   },

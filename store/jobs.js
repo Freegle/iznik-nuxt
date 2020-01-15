@@ -40,7 +40,7 @@ export const actions = {
       commit('setList', await this.$api.job.fetch(params))
       commit('setBlocked', false)
     } catch (e) {
-      // Typicall Ad Blockers.
+      // Typically Ad Blockers.
       commit('setBlocked', true)
     }
   },

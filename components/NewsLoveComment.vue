@@ -3,7 +3,9 @@
     <ul v-if="newsfeed" class="list-unstyled list-inline d-inline-block">
       <li class="list-inline-item">
         <b-btn v-if="!newsfeed.loved" variant="white" size="sm" @click="love">
-          <v-icon name="heart" /><span class="d-none d-sm-inline">&nbsp;Love this</span>
+          <v-icon v-if="loving" name="sync" class="fa-spin text-success" />
+          <v-icon v-else name="heart" />
+          <span class="d-none d-sm-inline">Love this</span>
         </b-btn>
         <b-btn v-if="newsfeed.loved" variant="white" size="sm" @click="unlove">
           <v-icon name="heart" class="text-danger" /><span class="d-none d-sm-inline">&nbsp;Unlove this</span>
@@ -36,18 +38,31 @@ export default {
       required: true
     }
   },
+  data: function() {
+    return {
+      loving: false
+    }
+  },
   methods: {
-    love() {
-      this.$store.dispatch('newsfeed/love', {
+    async love() {
+      this.loving = true
+
+      await this.$store.dispatch('newsfeed/love', {
         id: this.newsfeed.id,
         threadhead: this.newsfeed.threadhead
       })
+
+      this.loving = false
     },
-    unlove() {
-      this.$store.dispatch('newsfeed/unlove', {
+    async unlove() {
+      this.loving = true
+
+      await this.$store.dispatch('newsfeed/unlove', {
         id: this.newsfeed.id,
         threadhead: this.newsfeed.threadhead
       })
+
+      this.loving = false
     },
     focusComment() {
       this.$emit('focus-comment')

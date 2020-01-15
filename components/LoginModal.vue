@@ -62,7 +62,7 @@
       </div>
       <div class="signin__section--freegle">
         <h3 class="signin__header">
-          <span v-if="showSignUp">Create an account on Freegle</span>
+          <span v-if="signUp">Create an account on Freegle</span>
           <span v-else>Continue with your Freegle account</span>
         </h3>
         <b-form ref="form" action="/" autocomplete="on" method="post" @submit="loginNative">
@@ -178,7 +178,7 @@
 
 <script>
 import Vue from 'vue'
-import { LoginError } from '../api/BaseAPI'
+import { LoginError, SignUpError } from '../api/BaseAPI'
 
 const NoticeMessage = () => import('~/components/NoticeMessage')
 
@@ -257,13 +257,23 @@ export default {
     }
   },
 
+  beforeDestroy() {
+    if (this.bumpTimer) {
+      clearTimeout(this.bumpTimer)
+    }
+  },
   methods: {
     tryLater() {
       this.nativeLoginError = 'Something went wrong; please try later.'
     },
-    show() {
-      // Force reconsideration of social signin disabled.
+    bumpIt() {
+      // Force reconsideration of social signin disabled.  Need to do that regularly in case the SDKs haven't loaded
+      // by the time we open the modal.
       this.bump = Date.now()
+      this.bumpTimer = setTimeout(this.bumpIt, 500)
+    },
+    show() {
+      this.bumpIt()
       this.pleaseShowModal = true
     },
     hide() {
@@ -277,39 +287,66 @@ export default {
       e.stopPropagation()
 
       if (this.signUp) {
-        this.$store
-          .dispatch('auth/signup', {
-            firstname: this.firstname,
-            lastname: this.lastname,
-            email: this.email,
-            password: this.password
-          })
-          .then(() => {
-            // We are now logged in. Prompt the browser to remember the credentials.
-            if (window.PasswordCredential) {
-              try {
-                const c = new window.PasswordCredential(e.target)
-                navigator.credentials
-                  .store(c)
-                  .then(function() {
-                    self.pleaseShowModal = false
-                  })
-                  .catch(err => {
-                    console.error('Failed to save credentials', err)
-                  })
-              } catch (e) {
+        if (
+          !this.firstname ||
+          !this.lastname ||
+          !this.email ||
+          !this.password
+        ) {
+          this.nativeLoginError = 'Please fill out the form.'
+        } else {
+          this.$store
+            .dispatch('auth/signup', {
+              firstname: this.firstname,
+              lastname: this.lastname,
+              email: this.email,
+              password: this.password
+            })
+            .then(async () => {
+              // We are now logged in. Prompt the browser to remember the credentials.
+              if (window.PasswordCredential) {
+                try {
+                  const c = new window.PasswordCredential(e.target)
+                  navigator.credentials
+                    .store(c)
+                    .then(function() {
+                      self.pleaseShowModal = false
+                    })
+                    .catch(err => {
+                      console.error('Failed to save credentials', err)
+                    })
+                } catch (e) {
+                  self.pleaseShowModal = false
+                }
+              } else {
                 self.pleaseShowModal = false
               }
-            } else {
-              self.pleaseShowModal = false
-            }
 
-            if (this.$nuxt.path === '/' || !this.$nuxt.path) {
-              // We've signed up from the home page.  Send them to chitchat - that shows some activity, and also
-              // has the Give/Find prompt.
-              this.$router.push('/chitchat')
-            }
-          })
+              console.log('Current path', this.$nuxt, this.$router, this.$route)
+              // Pick up the new user
+              console.log('Fetch user')
+              await this.$store.dispatch('auth/fetchUser', {
+                components: ['me'],
+                force: true
+              })
+              console.log('Fetched')
+
+              if (this.$route.path === '/' || !this.$route.path) {
+                // We've signed up from the home page.  Send them to chitchat - that shows some activity, and also
+                // has the Give/Find prompt.
+                this.$router.push('/chitchat')
+              }
+            })
+            .catch(e => {
+              console.log('Signup failed', e)
+              if (e instanceof SignUpError) {
+                console.log('Login error')
+                this.nativeLoginError = e.status
+              } else {
+                throw e // let others bubble up
+              }
+            })
+        }
       } else {
         // Login
         this.$store
@@ -473,7 +510,10 @@ export default {
           } else if (ret.ret === 0) {
             // We are logged in.  Get the logged in user
             console.log('Logged in')
-            this.$store.dispatch('auth/fetchUser')
+            this.$store.dispatch('auth/fetchUser', {
+              components: ['me'],
+              force: true
+            })
             self.pleaseShowModal = false
           } else {
             console.error('Server login failed', ret)

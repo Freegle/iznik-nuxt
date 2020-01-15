@@ -19,17 +19,19 @@
         <div v-for="volunteering in volunteerings" :key="'volunteering-' + volunteering.id" class="mt-2">
           <VolunteerOpportunity v-if="!volunteering.pending" :summary="false" :volunteering="volunteering" />
         </div>
-        <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" force-use-infinite-wrapper="body" @infinite="loadMore">
-          <span slot="no-results">
-            <notice-message v-if="!volunteerings || !volunteerings.length">
-              There are no volunteer opportunities to show.  Why not add one?
-            </notice-message>
-          </span>
-          <span slot="no-more" />
-          <span slot="spinner">
-            <b-img-lazy src="~/static/loader.gif" alt="Loading" />
-          </span>
-        </infinite-loading>
+        <client-only>
+          <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" force-use-infinite-wrapper="body" @infinite="loadMore">
+            <span slot="no-results">
+              <notice-message v-if="!volunteerings || !volunteerings.length">
+                There are no volunteer opportunities to show.  Why not add one?
+              </notice-message>
+            </span>
+            <span slot="no-more" />
+            <span slot="spinner">
+              <b-img-lazy src="~/static/loader.gif" alt="Loading" />
+            </span>
+          </infinite-loading>
+        </client-only>
       </b-col>
       <b-col cols="0" md="3" class="d-none d-md-block" />
     </b-row>

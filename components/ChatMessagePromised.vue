@@ -54,6 +54,17 @@
               <h4>
                 {{ refmsg.subject }}
               </h4>
+              <b-btn v-if="refmsg.promised" variant="warning" class="align-middle mt-1 mb-1" @click="unpromise">
+                <v-icon>
+                  <v-icon name="handshake" />
+                  <v-icon
+                    name="slash"
+                    style="transform: rotate(180deg)"
+                    class="red"
+                  />
+                </v-icon>
+                Unpromise
+              </b-btn>
             </b-card-title>
             <b-card-text>
               <div :class="emessage ? 'media-body chatMessage' : 'media-body'">
@@ -68,18 +79,26 @@
         </div>
       </b-col>
     </b-row>
+    <RenegeModal ref="renege" :messages="[ refmsg ]" :selected-message="refmsg.id" :users="[otheruser ]" :selected-user="otheruser.id" />
   </div>
 </template>
 
 <script>
 import ChatBase from '~/components/ChatBase'
 import ProfileImage from '~/components/ProfileImage'
+const RenegeModal = () => import('./RenegeModal')
 
 export default {
   components: {
-    ProfileImage
+    ProfileImage,
+    RenegeModal
   },
-  extends: ChatBase
+  extends: ChatBase,
+  methods: {
+    unpromise() {
+      this.$refs.renege.show()
+    }
+  }
 }
 </script>
 

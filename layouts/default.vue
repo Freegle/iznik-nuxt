@@ -22,7 +22,7 @@
             </b-nav-item>
             <b-nav-item id="menu-option-myposts" class="text-center small p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
               <v-icon name="home" scale="2" /><br>
-              My&nbsp;Posts
+              My Posts
             </b-nav-item>
             <b-nav-item id="menu-option-give" class="text-center small p-0" to="/give" @mousedown="maybeReload('/give')">
               <v-icon name="gift" scale="2" /><br>
@@ -201,7 +201,7 @@
           </b-nav-item>
           <b-nav-item class="text-center p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
             <v-icon name="home" scale="2" /><br>
-            My&nbsp;Posts
+            My Posts
           </b-nav-item>
           <b-nav-item class="text-center p-0" to="/give" @mousedown="maybeReload('/give')">
             <v-icon name="gift" scale="2" /><br>
@@ -254,12 +254,12 @@
       <AboutMeModal ref="modal" />
     </client-only>
     <div class="navbar-toggle" style="display: none" />
-    <div id="serverloader">
+    <div id="serverloader" class="bg-white">
       <b-img src="~/static/loader.gif" alt="Loading..." />
       <p>
         <b>Loading...</b>
         <br>
-        <a href="mailto:support@ilovefreegle.org" style="font-size: 12px">Stuck here?</a>
+        Stuck here? <a href="mailto:support@ilovefreegle.org">Contact us</a><br>Or try Chrome.
       </p>
     </div>
   </div>
@@ -442,11 +442,15 @@ svg.fa-icon {
 }
 
 #serverloader {
-  z-index: -1;
+  z-index: 1000;
   text-align: center;
   position: fixed; /* or absolute */
   top: calc(50% - 44px);
   left: calc(50% - 44px);
+  font-size: 12px;
+  padding: 5px;
+  border: 1px black;
+  border-radius: 5px;
   animation: 15s fadeIn;
 }
 
@@ -547,14 +551,14 @@ export default {
       }
     },
     me(newVal, oldVal) {
-      if (this.nchan) {
+      if (this.nchan && this.nchan.running) {
         // Stop old listen.
         try {
           this.nchan.stop()
         } catch (e) {}
-
-        this.nchan = null
       }
+
+      this.nchan = null
 
       if (newVal) {
         // We are now logged in.
@@ -600,20 +604,49 @@ export default {
         }
       }
     }, 5000)
+
+    if (me) {
+      // Set the context for sentry so that we know which users are having errors.
+      this.$sentry.setUser({ userid: me.id })
+
+      // Set the build date.  This may get superceded by Sentry releases, but it does little harm to add it in.
+      this.$sentry.setExtra('builddate', process.env.BUILD_DATE)
+    }
+  },
+
+  async beforeCreate() {
+    if (this.$route.query.u && this.$route.query.k) {
+      // Log in using the username and key.
+      await this.$store.dispatch('auth/login', {
+        u: this.$route.query.u,
+        k: this.$route.query.k,
+        force: true
+      })
+
+      setTimeout(() => {
+        // Route to where we've been asked to go, without the auth info.  Don't really know why this requires a delay
+        // and a reload - obviously that means I don't understand the codepath properly.  But it works.
+        this.$router.push(this.$route.path, () => {
+          if (process.client) {
+            window.location.reload()
+          }
+        })
+      }, 1000)
+    }
   },
 
   beforeDestroy() {
     console.log('Destroy layout')
     clearTimeout(this.notificationPoll)
 
-    if (this.nchan) {
+    if (this.nchan && this.nchan.running) {
       console.log('Stop NCHAN')
       try {
         this.nchan.stop()
       } catch (e) {}
-
-      this.nchan = null
     }
+
+    this.nchan = null
   },
 
   methods: {
@@ -633,6 +666,8 @@ export default {
         this.nchan.lastMessageId = lastNCHAN.id
       }
 
+      // Disabled for now until things settle down.
+      console.log('Not starting NCHAN')
       this.nchan.start()
 
       this.nchan.on('error', function(code, descr) {

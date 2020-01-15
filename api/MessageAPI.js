@@ -28,4 +28,12 @@ export default class MessageAPI extends BaseAPI {
   put(data) {
     return this.$put('/message', data)
   }
+
+  intend(id, outcome) {
+    return this.$post('/message', {
+      action: 'OutcomeIntended',
+      id: id,
+      outcome: outcome
+    })
+  }
 }

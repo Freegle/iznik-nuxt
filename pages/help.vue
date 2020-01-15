@@ -415,6 +415,7 @@
               you are a member of the media and want to help publicise Freegle.  For urgent press enquiries only, call +44 (0)7962 449573.
             </li>
           </ul>
+          <p>This version of the site was built on {{ version }}.</p>
         </div>
       </b-col>
       <b-col cols="0" md="3" />
@@ -450,6 +451,11 @@ export default {
     loggedIn() {
       const ret = Boolean(this.$store.getters['auth/user'])
       return ret
+    },
+    version() {
+      const date = new this.$dayjs(process.env.BUILD_DATE)
+
+      return date.format('Do MMMM, YYYY') + ' at ' + date.format('HH:MM')
     }
   },
   head() {

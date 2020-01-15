@@ -108,13 +108,15 @@
               </div>
               <hr class="text-muted">
             </div>
-            <infinite-loading v-if="browser" :distance="distance" @infinite="loadMoreList">
-              <span slot="no-results" />
-              <span slot="no-more" />
-              <span slot="spinner">
-                <b-img-lazy src="~/static/loader.gif" alt="Loading" />
-              </span>
-            </infinite-loading>
+            <client-only>
+              <infinite-loading v-if="browser" :distance="distance" @infinite="loadMoreList">
+                <span slot="no-results" />
+                <span slot="no-more" />
+                <span slot="spinner">
+                  <b-img-lazy src="~/static/loader.gif" alt="Loading" />
+                </span>
+              </infinite-loading>
+            </client-only>
           </b-card-body>
         </b-card>
         <h5 class="text-center mt-2">
