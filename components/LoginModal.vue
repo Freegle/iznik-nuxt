@@ -290,6 +290,8 @@ export default {
     },
     show() {
       this.pleaseShowModal = true
+      this.nativeLoginError = null
+      this.socialLoginError = null
     },
     hide() {
       this.pleaseShowModal = false
