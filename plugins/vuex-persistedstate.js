@@ -24,7 +24,8 @@ const keep = [
   'compose',
   'reply',
   'address',
-  'i18n'
+  'i18n',
+  'misc'
 ]
 
 export default ({ store }) => {
@@ -86,7 +87,6 @@ export default ({ store }) => {
       // We don't need it to be sync'd immediately, so we delay it until we're idle, and avoid duplicate requests
       // by overwriting them if we're not yet setting it.
       // console.log('Consider set state', settingState)
-
       if (settingState) {
         if (!setInProgress) {
           // We're not currently setting the state, we're waiting - so we can overwrite the state we're
@@ -122,18 +122,17 @@ export default ({ store }) => {
                 const smallerState = {
                   auth: settingState.auth,
                   compose: settingState.compose,
-                  reply: settingState.reply
+                  reply: settingState.reply,
+                  misc: settingState.misc
                 }
-
                 try {
                   storage.setItem(key, JSON.stringify(smallerState))
                 } catch (e) {
                   // Plough on regardless and see what happens.  We'll probably get another exception and
                   // fail, but not always.
                   console.error(
-                    'Failed to set localStorage of size '.JSON.stringify(
-                      smallerState
-                    ).length
+                    'Failed to set reduced state of size ',
+                    JSON.stringify(smallerState).length
                   )
                 }
               }

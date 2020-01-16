@@ -63,14 +63,14 @@
             </nuxt-link>
           </b-col>
         </b-row>
-        <b-row>
+        <b-row v-if="filteredMessages.length">
           <b-col class="text-center mt-3">
             <h2 v-if="!term || !term.length">
               Or just browse...
             </h2>
           </b-col>
         </b-row>
-        <b-row>
+        <b-row v-if="term || postcode">
           <b-col>
             <div v-for="message in filteredMessages" :key="'message-' + message.id" class="p-0">
               <message v-if="message.type == searchtype" v-bind="message" />
@@ -134,6 +134,12 @@ export default {
     }
   },
   computed: {
+    me() {
+      return this.$store.getters['auth/user']
+    },
+    postcode() {
+      return this.$store.getters['compose/getPostcode']
+    },
     messages() {
       let messages
 

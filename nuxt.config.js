@@ -68,6 +68,7 @@ const config = {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'author', name: 'author', content: 'Freegle' },
+      { name: 'supported-color-schemes', content: 'light'},
       {
         hid: 'description',
         name: 'description',
@@ -196,7 +197,8 @@ const config = {
     { src: '~plugins/app-init-push.js', mode: 'client' },
     { src: '~plugins/app-facebook.js', mode: 'client' },
     { src: '~plugins/app-google.js', mode: 'client' },
-    { src: '~plugins/app-yahoo.js', mode: 'client' }
+    { src: '~plugins/app-yahoo.js', mode: 'client' },
+    { src: '~plugins/inspectlet', ssr: false }
   ],
 
   redirect: [ // In mobile app-init-push route needs updating as per here
@@ -224,6 +226,10 @@ const config = {
       },
       {
         require: 'array-from-polyfill'
+      },
+      {
+        require: 'intersection-observer',
+        detect: () => 'IntersectionObserver' in window
       }
     ]
   },
@@ -350,6 +356,17 @@ const config = {
   */
   build: {
     // analyze: true,
+
+    // When you deploy a new version, old chunk files which hadn't yet been loaded by a client will no longer
+    // exist, and may cause errors. Nuxt has some rudimentary handling for this by reloading the whole page.
+    // There are some suggestions from Sentry that this doesn't always work, and there is a suggestion that
+    // this is a workaround.  Even if none of that really applies, this just changes the names of the chunks, and is
+    // therefore harmless.
+    // https://github.com/nuxt/nuxt.js/pull/3940
+    // https://stackoverflow.com/questions/59292564/nuxt-js-npm-run-build-results-in-some-js-files-being-not-found
+    filenames: {
+      chunk: ({ isDev }) => process.env.NODE_ENV === 'development' ? '[name].js' : '[chunkhash].js'
+    },
 
     transpile: [/^vue2-google-maps($|\/)/, 'vue-lazy-youtube-video'],
 
@@ -500,8 +517,6 @@ if (process.env.NUXT_BUILD_TYPE === 'fdapp') {
   config.build.publicPath = '/js/'
 
   config.build.optimization.minimize = false
-
-  config.plugins.push({ src: '~plugins/app-facebook.js', mode: 'client' })
 
   // Remove service worker
   // https://stackoverflow.com/questions/57822378/disable-service-workers-or-workbox-in-nuxtjs-app

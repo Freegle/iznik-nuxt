@@ -858,3 +858,17 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+$bootstrap-sm: 768px;
+
+.profile {
+  width: 35px !important;
+  height: 35px !important;
+
+  @media (min-width: $bootstrap-sm) {
+    width: 50px !important;
+    height: 50px !important;
+  }
+}
+</style>

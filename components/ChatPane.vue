@@ -55,11 +55,13 @@
           </b-col>
         </b-row>
         <div v-if="chat" class="chatContent row" infinite-wrapper>
-          <infinite-loading direction="top" force-use-infinite-wrapper="true" :distance="distance" @infinite="loadMore">
+          <infinite-loading direction="top" force-use-infinite-wrapper="true" :distance="distance" class="w-100" @infinite="loadMore">
             <span slot="no-results" />
             <span slot="no-more" />
-            <span slot="spinner">
-              <b-img-lazy src="~/static/loader.gif" alt="Loading" />
+            <span slot="spinner" class="w-100">
+              <div class="col text-center">
+                <b-img-lazy src="~/static/loader.gif" alt="Loading" />
+              </div>
             </span>
           </infinite-loading>
           <ul class="p-0 pt-1 list-unstyled mb-1">

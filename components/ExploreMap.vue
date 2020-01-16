@@ -22,7 +22,7 @@
             class="form-control"
             placeholder="Enter a location"
             :options="gb"
-            :types="['(regions)']"
+            :types="['(cities)']"
             @place_changed="getAddressData"
           />
         </client-only>

@@ -10,13 +10,13 @@
         :placeholder="placeholder"
         :name="name"
         autocomplete="off"
+        :invalid="invalid"
         @input="handleInput"
         @dblclick="handleDoubleClick"
         @blur="handleBlur"
         @keydown="handleKeyDown"
         @focus="handleFocus"
       >
-
       <b-input-group-append>
         <b-button variant="white" class="transbord">
           <!-- TODO RAHUL DESIGN The shadow on the input field that you get when you're focused ought really to include this append.-->
@@ -173,6 +173,11 @@
 .showAll-leave{
   display: none;
 }*/
+
+input[invalid='true'] {
+  box-shadow: 0 0 0 0.2rem $color-red;
+  border: 1px solid red;
+}
 </style>
 
 <script>
@@ -222,6 +227,11 @@ export default {
     filterByAnchor: {
       type: Boolean,
       default: true
+    },
+
+    restrict: {
+      type: Boolean,
+      default: false
     },
 
     // Anchor of list
@@ -298,7 +308,8 @@ export default {
       focusList: '',
       debounceTask: undefined,
       ajaxInProgress: null,
-      ajaxDeferred: null
+      ajaxDeferred: null,
+      invalid: false
     }
   },
 
@@ -533,6 +544,8 @@ export default {
     },
 
     doAjax(val) {
+      this.invalid = false
+
       if (this.ajaxInProgress) {
         // We're already doing a request.  Don't send another one, partly out of politeness to the server, and
         // partly because if they complete out of sequence then we will end up with the wrong values.
@@ -570,6 +583,18 @@ export default {
             // Callback Event
             this.onAjaxLoaded ? this.onAjaxLoaded(json) : null
             this.json = this.process ? this.process(json) : json
+
+            if (this.restrict && (!this.json || this.json.length === 0)) {
+              // What we have doesn't match.  Indicate that we have selected an invalid value.
+              if (this.onSelect) {
+                this.$emit('invalid')
+                this.invalid = true
+              }
+            }
+            else if (this.json && this.json.length === 1 && this.json[0].name.toLowerCase() === val.toLowerCase()) {
+              // There is only one value, and it matches the value we were searching for.  Autoselect it.
+              this.selectList(this.json[0])
+            }
           } else {
             console.log("Autocomplete failed with", status)
           }

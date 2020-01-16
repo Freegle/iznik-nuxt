@@ -12,17 +12,7 @@
             <div class="media clickme">
               <div class="media-left">
                 <div class="media-object">
-                  <b-img-lazy
-                    v-if="love.profile.turl"
-                    rounded="circle"
-                    thumbnail
-                    class="profile p-0 ml-1 mb-1 inline float-left"
-                    alt="Profile picture"
-                    title="Profile"
-                    :src="love.profile.turl"
-                    @error.native="brokenImage"
-                    @click="showInfo"
-                  />
+                  <profile-image v-if="love.profile.turl" :image="love.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="lg" />
                 </div>
               </div>
               <div class="media-body ml-2">
@@ -46,10 +36,12 @@
 </template>
 <script>
 import NewsUserInfo from '~/components/NewsUserInfo'
+import ProfileImage from '~/components/ProfileImage'
 
 export default {
   components: {
-    NewsUserInfo
+    NewsUserInfo,
+    ProfileImage
   },
   props: {
     id: {
@@ -92,9 +84,6 @@ export default {
     }
   },
   methods: {
-    brokenImage(event) {
-      event.target.src = '/static/defaultprofile.png'
-    },
     async show() {
       this.newsfeed = await this.$store.dispatch('newsfeed/fetch', {
         id: this.id,

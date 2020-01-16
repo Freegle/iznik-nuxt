@@ -563,7 +563,7 @@ export default {
           groupid: this.groupid
         })
 
-        if (this.volunteering.dates && this.volunteering.dates.length) {
+        if (dates && dates.length) {
           await this.$store.dispatch('volunteerops/setDates', {
             id,
             olddates: [],

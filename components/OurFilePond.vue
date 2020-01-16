@@ -25,13 +25,15 @@ import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 import FilePondPluginImageTransform from 'filepond-plugin-image-transform'
 import FilePondPluginImageResize from 'filepond-plugin-image-resize'
+import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation'
 import { mobilestate } from '@/plugins/app-init-push' // CC
 
 const FilePond = vueFilePond(
   FilePondPluginFileValidateType,
   FilePondPluginImagePreview,
   FilePondPluginImageTransform,
-  FilePondPluginImageResize
+  FilePondPluginImageResize,
+  FilePondPluginImageExifOrientation
 )
 
 export default {
@@ -143,6 +145,9 @@ export default {
       if (process.env.IS_APP) {
         if (mobilestate.isiOS) {
           this.$refs.pond.labelIdle = '<span class="filepond--label-action btn btn-white">Take a photo or Browse</span>'
+          if (this.browse) {
+            this.$refs.pond.browse()
+          }
         } else {
           this.$refs.pond.labelIdle = '<span class="take-photo btn btn-default">Take Photo</span> or <span class="btn btn-white">Browse</span>'
           setTimeout(() => { // this.$nextTick didn't work
@@ -153,9 +158,6 @@ export default {
               return false
             })
           }, 1000)
-          if (this.browse) {
-            this.takeAndroidPhoto()
-          }
         }
       }
       else if (this.browse) {

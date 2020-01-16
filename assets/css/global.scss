@@ -118,16 +118,6 @@ body {
   background-image: url('~static/wallpaper.png');
 }
 
-.profile {
-  width: 35px !important;
-  height: 35px !important;
-
-  @media (min-width: $bootstrap-sm) {
-    width: 50px !important;
-    height: 50px !important;
-  }
-}
-
 .showmod {
   border-radius: 50%;
   position: absolute;
@@ -145,26 +135,6 @@ body {
   @media (min-width: $bootstrap-sm) {
     top: 29px;
     left: 44px;
-  }
-}
-
-.profilemd {
-  width: 30px !important;
-  height: 30px !important;
-
-  @media (min-width: $bootstrap-sm)  {
-    width: 35px !important;
-    height: 35px !important;
-  }
-}
-
-.profilesm {
-  width: 15px !important;
-  height: 15px !important;
-
-  @media (min-width: $bootstrap-sm) {
-    width: 25px !important;
-    height: 25px !important;
   }
 }
 
