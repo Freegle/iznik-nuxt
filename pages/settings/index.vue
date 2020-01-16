@@ -810,7 +810,7 @@ export default {
       // We have uploaded a photo.  Remove the filepond instance.
       this.uploading = false
 
-      this.$router.go() // Works, but causes a complete reload from scratch
+      window.location.reload(true) // Works, but causes a complete reload from scratch
     },
     uploadProfile() {
       this.uploading = true

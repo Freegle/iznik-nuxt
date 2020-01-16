@@ -815,7 +815,7 @@ export default {
     },
 
     refresh() {
-      this.$router.go() // Works, but causes a complete reload from scratch
+      window.location.reload(true) // Works, but causes a complete reload from scratch. this.$router.go() doesn't work in iOS app
     }
   }
 }
