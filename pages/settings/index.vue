@@ -2,8 +2,8 @@
   <div v-if="me && me.settings && me.settings.notifications">
     <client-only>
       <b-row class="m-0">
-        <b-col cols="0" md="3" />
-        <b-col cols="12" md="6" class="p-0">
+        <b-col cols="0" lg="3" />
+        <b-col cols="12" lg="6" class="p-0">
           <b-card border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
             <template v-slot:header>
               <v-icon name="globe-europe" /> Your Public Profile
@@ -210,7 +210,7 @@
             <template v-slot:header>
               <v-icon name="envelope" /> Community Mail Settings
             </template>
-            <div v-if="me.groups.length">
+            <div v-if="me.groups && me.groups.length">
               <p>You can pause regular emails for a while, for example if you're on holiday.</p>
               <OurToggle
                 v-model="emailsOn"
@@ -256,7 +256,7 @@
                   </div>
                 </div>
                 <div v-else>
-                  <div v-if="me">
+                  <div v-if="me.groups">
                     <div v-for="group in me.groups" :key="'settingsgroup-' + group.id" class="list-unstyled">
                       <b-card v-if="group.type === 'Freegle'" class="nocardbot">
                         <b-card-title>
@@ -392,6 +392,19 @@
                 color="#61AE24"
                 @change="changeRelevant"
               />
+              <p>
+                We send occasional newsletters or collections of nice stories from other freeglers..
+              </p>
+              <OurToggle
+                v-model="newslettersallowed"
+                :height="30"
+                :width="150"
+                :font-size="14"
+                :sync="true"
+                :labels="{checked: 'Send Them', unchecked: 'No Thanks'}"
+                color="#61AE24"
+                @change="changeNewsletter"
+              />
               <h5>Other Alerts</h5>
               <p>
                 Apps for your
@@ -438,7 +451,7 @@
           </b-card>
           <br class="mb-4">
         </b-col>
-        <b-col cols="0" md="3" />
+        <b-col cols="0" lg="3" />
       </b-row>
       <AboutMeModal ref="aboutmemodal" @change="update" />
       <ProfileModal :id="me ? me.id : null" ref="profilemodal" />
@@ -509,6 +522,15 @@ export default {
       },
       get() {
         return Boolean(this.me.relevantallowed)
+      }
+    },
+    newslettersallowed: {
+      // This is 1/0 in the model whereas we want Boolean.
+      set(val) {
+        Vue.set(this.me, 'newslettersallowed', val ? 1 : 0)
+      },
+      get() {
+        return Boolean(this.me.newslettersallowed)
       }
     },
     aboutme() {
@@ -782,6 +804,11 @@ export default {
     async changeRelevant(e) {
       this.me = await this.$store.dispatch('auth/saveAndGet', {
         relevantallowed: e.value
+      })
+    },
+    async changeNewsletter(e) {
+      this.me = await this.$store.dispatch('auth/saveAndGet', {
+        newslettersallowed: e.value
       })
     },
     async changeHolidayDate(val) {
