@@ -260,7 +260,11 @@ export default {
   beforeDestroy() {
     if (this.bumpTimer) {
       clearTimeout(this.bumpTimer)
+      this.bumpTimer = null
     }
+  },
+  mounted() {
+    this.bumpIt()
   },
   methods: {
     tryLater() {
@@ -273,7 +277,6 @@ export default {
       this.bumpTimer = setTimeout(this.bumpIt, 500)
     },
     show() {
-      this.bumpIt()
       this.pleaseShowModal = true
     },
     hide() {
