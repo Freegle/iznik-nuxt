@@ -342,6 +342,17 @@ module.exports = {
   build: {
     // analyze: true,
 
+    // When you deploy a new version, old chunk files which hadn't yet been loaded by a client will no longer
+    // exist, and may cause errors. Nuxt has some rudimentary handling for this by reloading the whole page.
+    // There are some suggestions from Sentry that this doesn't always work, and there is a suggestion that
+    // this is a workaround.  Even if none of that really applies, this just changes the names of the chunks, and is
+    // therefore harmless.
+    // https://github.com/nuxt/nuxt.js/pull/3940
+    // https://stackoverflow.com/questions/59292564/nuxt-js-npm-run-build-results-in-some-js-files-being-not-found
+    filenames: {
+      chunk: ({ isDev }) => process.env.NODE_ENV === 'development' ? '[name].js' : '[chunkhash].js'
+    },
+
     transpile: [/^vue2-google-maps($|\/)/, 'vue-lazy-youtube-video'],
 
     extend(config, ctx) {
