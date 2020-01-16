@@ -570,6 +570,11 @@ export default {
             // Callback Event
             this.onAjaxLoaded ? this.onAjaxLoaded(json) : null
             this.json = this.process ? this.process(json) : json
+
+            if (this.json && this.json.length === 1 && this.json[0].name.toLowerCase() === val.toLowerCase()) {
+              // There is only one value, and it matches the value we were searching for.  Autoselect it.
+              this.selectList(this.json[0])
+            }
           } else {
             console.log("Autocomplete failed with", status)
           }
