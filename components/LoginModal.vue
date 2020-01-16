@@ -279,8 +279,12 @@ export default {
     this.bumpIt()
   },
   methods: {
-    tryLater() {
-      this.nativeLoginError = 'Something went wrong; please try later.'
+    tryLater(native) {
+      if (native) {
+        this.nativeLoginError = 'Something went wrong; please try later.'
+      } else {
+        this.socialLoginError = 'Something went wrong; please try later.'
+      }
     },
     bumpIt() {
       // Force reconsideration of social signin disabled.  Need to do that regularly in case the SDKs haven't loaded
@@ -534,11 +538,11 @@ export default {
             self.pleaseShowModal = false
           } else {
             console.error('Server login failed', ret)
-            this.tryLater()
+            this.tryLater(false)
           }
         })
         .catch(e => {
-          this.tryLater()
+          this.tryLater(false)
         })
     },
 
