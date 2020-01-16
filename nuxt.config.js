@@ -210,6 +210,12 @@ module.exports = {
     // This is needed for IE11.
     features: [
       {
+        require: 'mutation-observer'
+      },
+      {
+        require: 'promise-polyfill'
+      },
+      {
         require: 'event-polyfill'
       },
       {
