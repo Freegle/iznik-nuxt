@@ -653,10 +653,6 @@ export default {
       const me = this.$store.getters['auth/user']
       this.me = me
     },
-
-    brokenImage(event) {
-      event.target.src = '/static/defaultprofile.png'
-    },
     addAbout() {
       this.$refs.aboutmemodal.show()
     },

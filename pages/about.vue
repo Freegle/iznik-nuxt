@@ -232,12 +232,6 @@ export default {
       volunteers: volunteers.members
     }
   },
-  methods: {
-    brokenImage(event) {
-      console.error('Broken profile image', event.target.src)
-      event.target.src = '/static/defaultprofile.png'
-    }
-  },
   head() {
     return this.buildHead(
       'About Us',
