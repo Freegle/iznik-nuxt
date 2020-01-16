@@ -256,6 +256,18 @@ export default {
       }
     }
   },
+  watch: {
+    loggedIn(newVal, oldVal) {
+      if (newVal && !oldVal) {
+        // We are now logged in.  Reload the page to force refetches and re-renders of various components which might
+        // have stalled.
+        //
+        // Perhaps all components should watch me() to spot changes and re-render.  But that seems unlikely to
+        // be consistently coded.
+        this.$router.go()
+      }
+    }
+  },
 
   beforeDestroy() {
     if (this.bumpTimer) {
@@ -366,10 +378,6 @@ export default {
                   .store(c)
                   .then(function() {
                     self.pleaseShowModal = false
-
-                    // Reload the page to force refetches and re-renders of various components which might
-                    // have stalled.
-                    self.$router.go()
                   })
                   .catch(err => {
                     console.error('Failed to save credentials', err)
