@@ -5,7 +5,7 @@
         <profile-image v-if="users[userid].profile.turl" :image="users[userid].profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="lg" />
         <v-icon v-if="users[userid].settings.showmod" name="leaf" class="showmod text-success" />
         <span class="text-success font-weight-bold">{{ users[userid].displayname }}</span>
-        created an event: <b>{{ newsfeed.communityevent.title }}</b>
+        created an event<span class="d-none d-md-inline-block">:</span><br class="d-block d-md-none"> <b>{{ newsfeed.communityevent.title }}</b>
         <br>
         <span class="text-muted small">
           {{ newsfeed.timestamp | timeago }}

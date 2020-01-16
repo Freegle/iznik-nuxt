@@ -237,7 +237,7 @@
               id="location"
               v-model="volunteeringEdit.location"
               type="text"
-              placeholder="Where is it being held? Add a postcode to make sure people can find you!"
+              placeholder="Where does the volunteering happen? Add a postcode to make sure people can find you!"
               :validation="$v.volunteeringEdit.location"
               :validation-enabled="validationEnabled"
               :validation-messages="{
@@ -247,7 +247,7 @@
           </b-form-group>
           <b-form-group label="When is it?">
             <p>You can add multiple dates if the opportunity occurs several times.</p>
-            <StartEndCollection v-if="volunteering.dates" v-model="volunteering.dates" />
+            <StartEndCollection v-if="volunteeringEdit.dates" v-model="volunteeringEdit.dates" />
           </b-form-group>
           <b-form-group
             ref="volunteeringEdit__contactname"
@@ -479,7 +479,7 @@ export default {
       this.saving = false
     },
     async deleteIt() {
-      await this.$store.dispatch('volunteering/delete', {
+      await this.$store.dispatch('volunteerops/delete', {
         id: this.volunteering.id
       })
 

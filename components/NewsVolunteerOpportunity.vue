@@ -14,7 +14,7 @@
         />
         <v-icon v-if="users[userid].settings.showmod" name="leaf" class="showmod text-success" />
         <span class="text-success font-weight-bold">{{ users[userid].displayname }}</span>
-        posted a volunteering opportunity: <b>{{ newsfeed.volunteering.title }}</b>
+        posted a volunteering opportunity<span class="d-none d-md-inline-block">:</span><br class="d-block d-md-none"> <b>{{ newsfeed.volunteering.title }}</b>
         <br>
         <span class="text-muted small">
           {{ newsfeed.timestamp | timeago }}
