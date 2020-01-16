@@ -5,7 +5,6 @@
     v-model="showModal"
     title="Please check your mailbox"
     no-stacking
-    visible
     size="lg"
   >
     <p>We've sent you a verification mail.</p>

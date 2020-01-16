@@ -5,7 +5,6 @@
     ref="loginModal"
     v-model="showModal"
     no-stacking
-    visible
     size="lg"
     hide-footer
     no-close-on-backdrop
