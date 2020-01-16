@@ -146,8 +146,9 @@ export default {
         if (mobilestate.isiOS) {
           this.$refs.pond.labelIdle = '<span class="filepond--label-action btn btn-white">Take a photo or Browse</span>'
           if (this.browse) {
+            console.log("IOS BROWSE")
             this.$refs.pond.browse()
-          }
+          } else console.log("NO IOS BROWSE")
         } else {
           this.$refs.pond.labelIdle = '<span class="take-photo btn btn-default">Take Photo</span> or <span class="btn btn-white">Browse</span>'
           setTimeout(() => { // this.$nextTick didn't work
@@ -158,6 +159,9 @@ export default {
               return false
             })
           }, 1000)
+          if (this.browse) {
+            this.takeAndroidPhoto()
+          }
         }
       }
       else if (this.browse) {
