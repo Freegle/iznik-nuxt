@@ -57,16 +57,10 @@
                 width="70px"
                 @error.native="brokenImage"
               />
-              <b-img-lazy
-                rounded="circle"
-                thumbnail
-                class="profilesm p-0 mb-1 inline mr-1 mt-1"
-                alt="Profile picture"
-                title="Profile"
-                :src="me.profile.turl"
-                @error.native="brokenImage"
-              /> <span class="small black">You asked about:</span>
-              <br><h4>
+              <profile-image :image="me.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
+              <span class="small black">You asked about:</span>
+              <br>
+              <h4>
                 {{ refmsg.subject }}
               </h4>
             </b-card-title>
