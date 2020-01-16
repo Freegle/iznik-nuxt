@@ -685,7 +685,7 @@ export default {
 
       // Disabled for now until things settle down.
       console.log('Not starting NCHAN')
-      this.nchan.start()
+      // this.nchan.start()
 
       this.nchan.on('error', function(code, descr) {
         console.error('NCHAN error', code, descr)
