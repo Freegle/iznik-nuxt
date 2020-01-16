@@ -614,7 +614,7 @@ export default {
       }
     }, 5000)
 
-    if (me) {
+    if (me && !process.env.IS_APP) {
       // Set the context for sentry so that we know which users are having errors.
       this.$sentry.setUser({ userid: me.id })
 
