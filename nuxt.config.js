@@ -63,6 +63,7 @@ module.exports = {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'author', name: 'author', content: 'Freegle' },
+      { name: 'supported-color-schemes', content: 'light'},
       {
         hid: 'description',
         name: 'description',
