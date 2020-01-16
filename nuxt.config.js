@@ -216,6 +216,10 @@ module.exports = {
       },
       {
         require: 'array-from-polyfill'
+      },
+      {
+        require: 'intersection-observer',
+        detect: () => 'IntersectionObserver' in window
       }
     ]
   },

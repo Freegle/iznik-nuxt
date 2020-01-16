@@ -838,7 +838,7 @@ export default {
           const stored = localStorage.getItem('iznik')
           console.log('Parse stored')
           const decoded = JSON.parse(stored)
-          console.log('Decoded', decoded)
+          console.log('Decoded')
 
           if (decoded && decoded.misc && decoded.misc.localStorageMonitor) {
             console.log('Got back', decoded.misc.localStorageMonitor)
