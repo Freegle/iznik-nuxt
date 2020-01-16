@@ -10,6 +10,8 @@ module.exports = {
       xp_backoff_restart_delay: 100,
       watch: false,
       max_memory_restart: '1G',
+      wait_ready: true,
+      listen_timeout: 10000,
       env_production: {
         PORT: 3000,
         NODE_ENV: 'production',
