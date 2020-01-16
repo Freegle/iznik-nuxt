@@ -40,7 +40,7 @@ module.exports = {
       repo: 'git@github.com:Freegle/iznik-nuxt.git',
       path: '/var/www/fdnuxt.live',
       'post-deploy':
-        'npm install && npm run build && pm2 reload ecosystem.config.js --env production && sleep 60'
+        'npm install && npm run build && pm2 reload ecosystem.config.js --env production && /etc/waitfornode'
     },
     // The preview site which is used by volunteers for testing.  We're sticking with this name because it's firmly
     // ingrained into volunteers' heads.
