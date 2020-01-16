@@ -479,7 +479,7 @@ export default {
       this.saving = false
     },
     async deleteIt() {
-      await this.$store.dispatch('volunteering/delete', {
+      await this.$store.dispatch('volunteerops/delete', {
         id: this.volunteering.id
       })
 
