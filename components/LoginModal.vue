@@ -366,6 +366,10 @@ export default {
                   .store(c)
                   .then(function() {
                     self.pleaseShowModal = false
+
+                    // Reload the page to force refetches and re-renders of various components which might
+                    // have stalled.
+                    self.$router.go()
                   })
                   .catch(err => {
                     console.error('Failed to save credentials', err)
