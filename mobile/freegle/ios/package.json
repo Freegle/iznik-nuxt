@@ -1,14 +1,13 @@
 {
   "name": "org.ilovefreegle.iphone",
-  "displayName": "Nuxt",
+  "displayName": "Freegle",
   "version": "1.0.0",
-  "description": "A sample Apache Cordova application that responds to the deviceready event.",
+  "description": "Offer and request free items on your local Freegle reuse group",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Apache Cordova Team",
-  "license": "Apache-2.0",
+  "author": "Chris Cant",
   "dependencies": {
     "cordova-custom-config": "^5.1.0",
     "cordova-ios": "^5.1.1",
