@@ -81,6 +81,13 @@
           any of your personal data.
           You can read their privacy policy <a href="https://sentry.io/privacy/">here</a>.
         </p>
+        <h2>Inspectlet</h2>
+        <p>
+          On a small fraction of sessions, we use <a href="https://www.inspectlet.com/" target="_blank">Inspectlet</a>.
+          This helps us work out which bits of the website are working well for freeglers, and which aren't.
+          You can read their privacy policy <a href="https://docs.inspectlet.com/hc/en-us/articles/360002994432-Privacy-Impact-Assessment-under-GDPR">here</a>,
+          and opt out of this <a href="https://www.inspectlet.com/optout" target="_blank">here</a>.
+        </p>
         <h2>Got questions?</h2>
         <p>
           Privacy is a complicate and important area, which we take seriously.  If you have questions or concerns,
