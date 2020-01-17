@@ -86,7 +86,7 @@ export default {
     }
   },
   methods: {
-    takeAndroidPhoto: function () { // CC
+    takeAppPhoto: function () { // CC
       const maxDimension = 800
       navigator.camera.getPicture(imageURI => {
           this.cameraSuccess(imageURI)
@@ -146,22 +146,21 @@ export default {
         if (mobilestate.isiOS) {
           this.$refs.pond.labelIdle = '<span class="filepond--label-action btn btn-white">Take a photo or Browse</span>'
           if (this.browse) {
-            console.log("IOS BROWSE")
             this.$refs.pond.browse()
-          } else console.log("NO IOS BROWSE")
+          }
         } else {
           this.$refs.pond.labelIdle = '<span class="take-photo btn btn-default">Take Photo</span> or <span class="btn btn-white">Browse</span>'
           setTimeout(() => { // this.$nextTick didn't work
             const takePhoto = this.$el.querySelector('.take-photo')
             takePhoto.addEventListener('click', e => {
-              this.takeAndroidPhoto()
+              this.takeAppPhoto()
               e.preventDefault()
               return false
             })
           }, 1000)
-          if (this.browse) {
-            this.takeAndroidPhoto()
-          }
+        }
+        if (this.browse) {
+          this.takeAppPhoto()
         }
       }
       else if (this.browse) {
