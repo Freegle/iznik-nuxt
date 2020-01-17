@@ -473,76 +473,26 @@ export default {
 
     loginYahoo() {
       // Sadly Yahoo doesn't support a Javascript-only OAuth flow, so far as I can tell.  So what we do is
-      // post to the server, get a redirection URL from there, redirect on here to Yahoo to complete the
-      // signin, and then return to a /yahoologin route.
+      // redirect to Yahoo, which returns back to us with a code parameter, which we then pass to the server
+      // to complete the signin.  This replaces the old flow which stopped working in Jan 2020.
       this.nativeLoginError = null
       this.socialLoginError = null
-      let match
-      const pl = /\+/g // Regex for replacing addition symbol with a space
-      const search = /([^&=]+)=?([^&]*)/g
-      const decode = function(s) {
-        return decodeURIComponent(s.replace(pl, ' '))
-      }
-      const query = window.location.search.substring(1)
 
-      // We want to post to the server to do the login there.  We pass all the URL
-      // parameters we have, which include the OpenID response.
-      const urlParams = {}
-      while ((match = search.exec(query)))
-        urlParams[decode(match[1])] = decode(match[2])
+      const url =
+        'https://api.login.yahoo.com/oauth2/request_auth?client_id=' +
+        process.env.YAHOO_CLIENTID +
+        '&redirect_uri=' +
+        encodeURIComponent(
+          window.location.protocol +
+            '//' +
+            window.location.hostname +
+            (window.location.port ? ':' + window.location.port : '') +
+            '/yahoologin?returnto=' +
+            this.$route.fullPath
+        ) +
+        '&response_type=code&language=en-us&scope=sdpp-w'
 
-      urlParams.yahoologin = true
-      urlParams.returnto = document.URL
-      urlParams.host =
-        window.location.protocol +
-        '//' +
-        window.location.hostname +
-        (window.location.port ? ':' + window.location.port : '')
-
-      this.$axios
-        .post(process.env.API + '/session', urlParams)
-        .then(result => {
-          const ret = result.data
-
-          console.log('Default Session login returned', ret)
-          if (ret.redirect) {
-            // We are not logged in - we need to redirect to Yahoo
-            //
-            // The URL returned by the server has its hostname in it, but perhaps we are running on a different
-            // host, especially when developing.
-            let url = ret.redirect
-            const apihost = process.env.API.replace('https://', '').replace(
-              '/api',
-              ''
-            )
-
-            if (apihost) {
-              const re = new RegExp(apihost, 'g')
-              url = url.replace(
-                re,
-                window.location.hostname +
-                  (window.location.port ? ':' + window.location.port : '')
-              )
-            }
-
-            console.log('Redirect to Yahoo', url)
-            window.location = url
-          } else if (ret.ret === 0) {
-            // We are logged in.  Get the logged in user
-            console.log('Logged in')
-            this.$store.dispatch('auth/fetchUser', {
-              components: ['me'],
-              force: true
-            })
-            self.pleaseShowModal = false
-          } else {
-            console.error('Server login failed', ret)
-            this.tryLater(false)
-          }
-        })
-        .catch(e => {
-          this.tryLater(false)
-        })
+      window.location = url
     },
 
     clickShowSignUp(e) {
