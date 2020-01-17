@@ -15,7 +15,7 @@
           :style="'right: ' + width"
           @resizing="onResize"
         >
-          <div class="shadow chatHolder">
+          <div class="shadow chatHolder w-100">
             <b-row class="chatTitle m-0">
               <b-col v-if="chat" class="pr-3">
                 <b-row>
