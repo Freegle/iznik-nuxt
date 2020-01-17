@@ -86,8 +86,6 @@ export default {
           return 0
         })
 
-        console.log('Sorted', sorted)
-
         return sorted
       }
 
