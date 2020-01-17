@@ -1,0 +1,24 @@
+[
+  {
+    "relation": [ "delegate_permission/common.handle_all_urls" ],
+    "target": {
+      "namespace": "web",
+      "site": "https://ilovefreegle.org"
+    }
+  },
+  {
+    "relation": [ "delegate_permission/common.handle_all_urls" ],
+    "target": {
+      "namespace": "web",
+      "site": "https://www.ilovefreegle.org"
+    }
+  },
+  {
+    "relation": [ "delegate_permission/common.handle_all_urls" ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "org.ilovefreegle.direct",
+      "sha256_cert_fingerprints": [ "4C:5F:AF:84:D1:6F:5B:0C:E3:55:2C:3C:B1:BC:15:E8:A4:DC:1B:65:93:EF:84:7D:BB:49:52:7B:9A:BC:0F:5E" ]
+    }
+  }
+]
