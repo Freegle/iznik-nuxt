@@ -7,7 +7,7 @@
         </b-btn>
         <nuxt-link to="/volunteerings">
           <h4 class="pl-1 pt-1">
-            <v-icon name="calendar-alt" scale="2" /> Volunteer Opportunities
+            <v-icon name="hands-helping" scale="2" /> Volunteer Opportunities
           </h4>
         </nuxt-link>
         <p class="text-center small">

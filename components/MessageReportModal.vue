@@ -59,7 +59,7 @@ export default {
         await this.$store.dispatch('chatmessages/send', {
           roomid: chatid,
           message:
-            "I'm reporting https://" +
+            "I'm reporting " +
             process.env.USER_SITE +
             '/message/' +
             this.message.id +

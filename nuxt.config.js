@@ -188,7 +188,8 @@ module.exports = {
     { src: '~plugins/facebook-sdk', ssr: false },
     { src: '~plugins/google-sdk', ssr: false },
     { src: '~plugins/vue-social-sharing', ssr: false },
-    { src: '~plugins/vue-lazy-youtube-video', ssr: false }
+    { src: '~plugins/vue-lazy-youtube-video', ssr: false },
+    { src: '~plugins/inspectlet', ssr: false }
   ],
 
   redirect: [
@@ -208,6 +209,12 @@ module.exports = {
   polyfill: {
     // This is needed for IE11.
     features: [
+      {
+        require: 'mutation-observer'
+      },
+      {
+        require: 'promise-polyfill'
+      },
       {
         require: 'event-polyfill'
       },

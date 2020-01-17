@@ -3,6 +3,7 @@
     <autocomplete
       id="postcodeautocomplete"
       ref="autocomplete"
+      restrict
       :url="source"
       param="typeahead"
       anchor="name"
@@ -11,9 +12,10 @@
       :classes="{ input: 'form-control form-control-' + size + ' text-center pcinp', list: 'postcodelist' }"
       class="mr-1"
       :min="3"
-      :debounce="100"
+      :debounce="200"
       :process="process"
       :on-select="select"
+      @invalid="invalid"
     />
 
     <div v-if="showFind">
@@ -123,15 +125,18 @@ export default {
     }
   },
   methods: {
+    invalid() {
+      // Parent might want to know that we don't have a valid postcode any more.
+      this.$emit('cleared')
+      this.results = null
+
+      // We want to show the button in case they decide to use that instead.
+      this.showFind = true
+    },
     keydown(e) {
       if (e.which === 8) {
-        // Backspace means we no longer have a full postcode.  Parent might want to know that we don't have a valid
-        // postcode any more.
-        this.$emit('cleared')
-        this.results = null
-
-        // We want to show the button in case they decide to use that instead.
-        this.showFind = true
+        // Backspace means we no longer have a full postcode.
+        this.invalid()
       } else {
         // We're now typing a postcode.  Hide the button so they don't decide to click that next
         this.showFind = false
@@ -146,7 +151,11 @@ export default {
       return ret
     },
     select(pc) {
-      this.$emit('selected', pc)
+      if (pc) {
+        this.$emit('selected', pc)
+      } else {
+        this.$emit('cleared')
+      }
     },
     findLoc() {
       try {

@@ -5,7 +5,6 @@ export const state = () => ({})
 export const mutations = {
   set(state, params) {
     Vue.set(state, params.key, params.value)
-    console.log('Set', params.key, params.value, state)
   }
 }
 
@@ -15,7 +14,6 @@ export const getters = {
 
 export const actions = {
   set({ commit }, params) {
-    console.log('Set with', params)
     commit('set', params)
   }
 }

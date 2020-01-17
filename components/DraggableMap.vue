@@ -10,7 +10,7 @@
               placeholder="Enter a location"
               :options="gb"
               size="lg"
-              :types="['(regions)']"
+              :types="['(cities)']"
               @place_changed="getAddressData"
             />
             <b-button variant="primary" size="lg" class="mb-2 ml-2" title="Find my location" @click="findLoc">

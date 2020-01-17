@@ -40,7 +40,7 @@ module.exports = {
       repo: 'git@github.com:Freegle/iznik-nuxt.git',
       path: '/var/www/fdnuxt.live',
       'post-deploy':
-        'npm install && npm run build && pm2 reload ecosystem.config.js --env production'
+        'npm install && npm run build && pm2 reload ecosystem.config.js --env production && /etc/waitfornode'
     },
     // The preview site which is used by volunteers for testing.  We're sticking with this name because it's firmly
     // ingrained into volunteers' heads.
@@ -52,7 +52,7 @@ module.exports = {
       repo: 'git@github.com:Freegle/iznik-nuxt.git',
       path: '/var/www/fdnuxt.dev',
       'post-deploy':
-        'npm install && npm run build && pm2 reload ecosystem.config.js --env development'
+        'npm install && npm run build && pm2 reload ecosystem.config.js --env development && sleep 60'
     },
     // The development site (despite the name) which is used by developers.
     debug: {
@@ -63,7 +63,7 @@ module.exports = {
       repo: 'git@github.com:Freegle/iznik-nuxt.git',
       path: '/var/www/fdnuxt.dbg',
       'post-deploy':
-        'npm install && npm run build && pm2 reload ecosystem.config.js --env debug'
+        'npm install && npm run build && pm2 reload ecosystem.config.js --env debug && sleep 60'
     }
   }
 }
