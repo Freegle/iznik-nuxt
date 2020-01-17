@@ -62,6 +62,9 @@
           </b-card>
         </div>
         <NewsLocation v-if="!id" class="p-2" @changed="areaChange" />
+        <NoticeMessage v-if="id && newsfeed && newsfeed.length && !newsfeed[0].visible" class="mt-2">
+          Sorry, this thread isn't around any more.
+        </NoticeMessage>
         <div class=" p-0 pt-1 mb-1">
           <ul v-for="entry in newsfeed" :key="'newsfeed-' + entry.id + '-area-' + selectedArea" class="list-unstyled">
             <li v-if="entry && entry.visible && !entry.unfollowed && entry.threadhead === entry.id">
@@ -90,6 +93,7 @@
 import InfiniteLoading from 'vue-infinite-loading'
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
+import NoticeMessage from '../../components/NoticeMessage'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead'
 import twem from '~/assets/js/twem'
@@ -103,6 +107,7 @@ const NewsLocation = () => import('~/components/NewsLocation')
 
 export default {
   components: {
+    NoticeMessage,
     InfiniteLoading,
     NewsThread,
     OurFilePond,
