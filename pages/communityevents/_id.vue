@@ -20,7 +20,7 @@
           <CommunityEvent v-if="!event.pending" :summary="false" :event="event" />
         </div>
         <client-only>
-          <infinite-loading v-if="doneMount" :key="'infinite-' + groupid" :identifier="infiniteId" force-use-infinite-wrapper=".pageContent" @infinite="loadMore">
+          <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" force-use-infinite-wrapper="body" @infinite="loadMore">
             <span slot="no-results">
               <notice-message v-if="!events || !events.length">
                 There are no community events to show.  Why not add one?
@@ -62,8 +62,7 @@ export default {
     return {
       context: null,
       infiniteId: +new Date(),
-      complete: false,
-      doneMount: false
+      complete: false
     }
   },
   computed: {
@@ -100,14 +99,6 @@ export default {
   },
   mounted() {
     this.$store.dispatch('communityevents/clear')
-
-    if (process.client) {
-      console.log('DOne mount', document.getElementsByTagName('body').length)
-      setTimeout(() => {
-        console.log('set mount', document.getElementsByTagName('body').length)
-        this.doneMount = true
-      }, 500)
-    }
   },
   methods: {
     loadMore: async function($state) {
