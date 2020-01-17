@@ -22,6 +22,7 @@
     "cordova-plugin-x-socialsharing": "^5.6.3",
     "cordova-plugin-zoom-control-2": "^0.4.2",
     "cordova-support-google-services": "^1.3.2",
+    "cordova-webintent": "github:cordova-misc/cordova-webintent",
     "es6-promise-plugin": "^4.2.2",
     "phonegap-plugin-multidex": "^1.0.0",
     "phonegap-plugin-push": "git+https://github.com/phonegap/phonegap-plugin-push.git"
@@ -46,7 +47,8 @@
       "cordova-plugin-camera": {
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
       },
-      "cordova-plugin-zoom-control-2": {}
+      "cordova-plugin-zoom-control-2": {},
+      "cordova-webintent": {}
     },
     "platforms": [
       "android"

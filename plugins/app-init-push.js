@@ -168,6 +168,13 @@ const cordovaApp = {
           }
         })
       }
+
+      window.plugins.webintent.getUri(function(url) {
+        console.log('INTENT URL: ', url)
+      })
+      window.plugins.webintent.onNewIntent(function(url) {
+        console.log('INTENT onNewIntent: ', url)
+      })
     } catch (e) {
       console.log('onDeviceReady catch', e)
     }
