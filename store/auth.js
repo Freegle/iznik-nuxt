@@ -152,9 +152,13 @@ export const actions = {
       commit('setUser', user)
 
       // We need to fetch the user again to get the groups, which aren't returned by the login API.
-      dispatch('fetchUser', {
-        components: ['me', 'groups']
-      })
+      dispatch(
+        'fetchUser',
+        {
+          components: ['me', 'groups']
+        },
+        true
+      )
     } else {
       // Login failed.
       throw new LoginError(ret, status)

@@ -17,7 +17,7 @@
           </div>
 
           <client-only>
-            <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
+            <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" force-use-infinite-wrapper=".pageContent" :distance="distance" @infinite="loadMore">
               <span slot="no-results" />
               <span slot="no-more" />
               <span slot="spinner">

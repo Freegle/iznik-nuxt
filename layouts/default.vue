@@ -270,7 +270,8 @@
       <p>
         <b>Loading...</b>
         <br>
-        Stuck here? <a href="mailto:support@ilovefreegle.org">Contact us</a><br>Or try Chrome.
+        Stuck here? <a href="mailto:support@ilovefreegle.org">Contact us</a>
+        <br>Try refreshing.  Or Chrome.
       </p>
     </div>
   </div>
@@ -695,7 +696,7 @@ export default {
 
       // Disabled for now until things settle down.
       console.log('Not starting NCHAN')
-      this.nchan.start()
+      // this.nchan.start()
 
       this.nchan.on('error', function(code, descr) {
         console.error('NCHAN error', code, descr)

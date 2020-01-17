@@ -261,6 +261,18 @@ export default {
       }
     }
   },
+  watch: {
+    loggedIn(newVal, oldVal) {
+      if (newVal && !oldVal) {
+        // We are now logged in.  Reload the page to force refetches and re-renders of various components which might
+        // have stalled.
+        //
+        // Perhaps all components should watch me() to spot changes and re-render.  But that seems unlikely to
+        // be consistently coded.
+        this.$router.go()
+      }
+    }
+  },
 
   beforeDestroy() {
     if (this.bumpTimer) {
@@ -272,8 +284,12 @@ export default {
     this.bumpIt()
   },
   methods: {
-    tryLater() {
-      this.nativeLoginError = 'Something went wrong; please try later.'
+    tryLater(native) {
+      if (native) {
+        this.nativeLoginError = 'Something went wrong; please try later.'
+      } else {
+        this.socialLoginError = 'Something went wrong; please try later.'
+      }
     },
     bumpIt() {
       // Force reconsideration of social signin disabled.  Need to do that regularly in case the SDKs haven't loaded
@@ -283,6 +299,8 @@ export default {
     },
     show() {
       this.pleaseShowModal = true
+      this.nativeLoginError = null
+      this.socialLoginError = null
     },
     hide() {
       this.pleaseShowModal = false
@@ -591,11 +609,11 @@ export default {
             self.pleaseShowModal = false
           } else {
             console.error('Server login failed', ret)
-            this.tryLater()
+            this.tryLater(false)
           }
         })
         .catch(e => {
-          this.tryLater()
+          this.tryLater(false)
         })
     },
 
