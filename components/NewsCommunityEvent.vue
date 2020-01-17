@@ -2,8 +2,14 @@
   <div>
     <b-row>
       <b-col>
-        <profile-image v-if="users[userid].profile.turl" :image="users[userid].profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="lg" />
-        <v-icon v-if="users[userid].settings.showmod" name="leaf" class="showmod text-success" />
+        <profile-image
+          v-if="users[userid].profile.turl"
+          :image="users[userid].profile.turl"
+          class="mr-1 mb-1 mt-1 inline"
+          is-thumbnail
+          :is-moderator="users[userid].settings.showmod"
+          size="lg"
+        />
         <span class="text-success font-weight-bold">{{ users[userid].displayname }}</span>
         created an event<span class="d-none d-md-inline-block">:</span><br class="d-block d-md-none"> <b>{{ newsfeed.communityevent.title }}</b>
         <br>
