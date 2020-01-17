@@ -2,6 +2,7 @@
   <div>
     <div v-if="summary" class="ml-2 mr-2">
       <h6>
+        <!-- eslint-disable-next-line -->
         <span v-html="joblinksumm" />
       </h6>
       <p class="text-truncate mt-2">
