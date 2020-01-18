@@ -3,7 +3,7 @@
     <b-row class="m-0">
       <b-col cols="0" md="3" class="d-none d-md-block" />
       <b-col cols="12" md="6" class="p-0">
-        <div class="text-center">
+        <div>
           <h1>Shortlinks</h1>
           <h5>
             Shortlinks let people find Freegle communities quickly. On this page you can see all the shortlinks we have, and view statistics about them.
@@ -15,6 +15,16 @@
                 community in a particular way, and then see how effective that promotion was. Keep them
                 short (less typing) and memorable (less forgetting).
               </p>
+              <div class="d-flex justify-content-between">
+                <GroupSelect v-model="groupid" />
+                <b-form-input v-model="name" placeholder="Enter your shortlink name" maxlength="30" />
+                <b-btn variant="white" @click="create">
+                  <v-icon v-if="created" name="check" class="text-success" />
+                  <v-icon v-else-if="saving" name="sync" class="fa-spin" />
+                  <v-icon v-else name="save" />
+                  Create shortlink
+                </b-btn>
+              </div>
             </b-card-body>
           </b-card>
         </div>
@@ -56,13 +66,18 @@
 <style scoped>
 </style>
 <script>
+import GroupSelect from '../../components/GroupSelect'
 import loginOptional from '@/mixins/loginOptional.js'
 
 export default {
-  components: {},
+  components: { GroupSelect },
   mixins: [loginOptional],
   data: function() {
-    return {}
+    return {
+      groupid: null,
+      name: null,
+      saving: false
+    }
   },
   computed: {
     shortlinks() {
@@ -95,6 +110,27 @@ export default {
   async mounted() {
     await this.$store.dispatch('shortlinks/fetch')
   },
-  methods: {}
+  methods: {
+    async create() {
+      console.log('Create', this.groupid, this.name)
+      if (this.groupid && this.name) {
+        this.saving = true
+        const id = await this.$store.dispatch('shortlinks/add', {
+          groupid: this.groupid,
+          name: this.name
+        })
+        await this.$store.dispatch('shortlinks/fetch', {
+          id: id
+        })
+
+        this.saving = false
+        this.created = true
+
+        setTimeout(() => {
+          this.created = false
+        }, 10000)
+      }
+    }
+  }
 }
 </script>
