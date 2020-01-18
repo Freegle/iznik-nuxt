@@ -4,7 +4,7 @@
       ref="pond"
       name="photo"
       :allow-multiple="multiple"
-      accepted-file-types="image/jpeg, image/png, image/gif, image/jpg"
+      accepted-file-types=""
       :files="myFiles"
       image-resize-target-width="800"
       image-resize-target-height="800"
@@ -15,6 +15,8 @@
       @processfile="processed"
       @processfiles="allProcessed"
     />
+    <!--      accepted-file-types="image/jpeg, image/png, image/gif, image/jpg"
+-->
   </div>
 </template>
 <script>
@@ -159,7 +161,9 @@ export default {
             })
           }, 1000)
         }
+        console.log('Check browse')
         if (this.browse) {
+          console.log('Take photo')
           this.takeAppPhoto()
         }
       }

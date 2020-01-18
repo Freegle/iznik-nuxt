@@ -24,7 +24,7 @@ export function appYahooLogin(returnPath, callback) {
 
   if (navigator.connection.type === Connection.NONE) {
     console.log('No connection - please try again later.')
-    completeLoginCallback({ status: 'No connection' })
+    completeLoginCallback({ error: 'No connection' })
     return
   }
 
