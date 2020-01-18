@@ -202,13 +202,13 @@ nav .dropdown-toggle {
 }
 
 .forcebreak {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
   -ms-word-break: break-all;
-
-  /* Non standard for webkit */
   word-break: break-word;
-
-  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
   -moz-hyphens: auto;
+  -webkit-hyphens: auto;
   hyphens: auto;
 }
 
