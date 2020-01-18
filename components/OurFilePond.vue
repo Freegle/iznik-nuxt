@@ -4,7 +4,7 @@
       ref="pond"
       name="photo"
       :allow-multiple="multiple"
-      accepted-file-types=""
+      accepted-file-types="image/*"
       :files="myFiles"
       image-resize-target-width="800"
       image-resize-target-height="800"
@@ -15,11 +15,10 @@
       @processfile="processed"
       @processfiles="allProcessed"
     />
-    <!--      accepted-file-types="image/jpeg, image/png, image/gif, image/jpg"
--->
   </div>
 </template>
 <script>
+// accepted-file-types="image/jpeg, image/png, image/gif, image/jpg"
 import 'filepond/dist/filepond.min.css'
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
 import vueFilePond from 'vue-filepond'
@@ -161,9 +160,7 @@ export default {
             })
           }, 1000)
         }
-        console.log('Check browse')
         if (this.browse) {
-          console.log('Take photo')
           this.takeAppPhoto()
         }
       }
