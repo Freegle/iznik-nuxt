@@ -64,7 +64,7 @@
               </div>
             </span>
           </infinite-loading>
-          <ul class="p-0 pt-1 list-unstyled mb-1">
+          <ul class="p-0 pt-1 list-unstyled mb-1 w-100">
             <li v-for="chatmessage in chatmessages" :key="'chatmessage-' + chatmessage.id">
               <ChatMessage
                 v-if="chatmessage"
