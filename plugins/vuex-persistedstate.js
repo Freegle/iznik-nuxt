@@ -59,6 +59,11 @@ export default ({ store }) => {
       if (newstate.auth) {
         // Don't store the forceLogin, as that can result in the login popup on page refresh.
         delete newstate.auth.forceLogin
+
+        if (newstate.auth.user) {
+          // Ensure password not saved to local storage.
+          delete newstate.auth.user.password
+        }
       }
 
       if (state.address) {

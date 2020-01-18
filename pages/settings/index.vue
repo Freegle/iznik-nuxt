@@ -65,7 +65,7 @@
                   </b-card>
                 </b-col>
                 <b-col cols="12" xl="6">
-                  <b-card nobody>
+                  <b-card no-body>
                     <b-card-body class="text-left p-0 p-sm-2">
                       <div v-if="aboutme">
                         &quot;{{ aboutme }}&quot;
@@ -164,7 +164,17 @@
                     label="Your password:"
                   >
                     <b-input-group id="input-password">
-                      <b-input v-model="me.password" type="password" placeholder="Your password" label="Your password" />
+                      <b-input v-model="me.password" :type="showPassword ? 'text' : 'password'" placeholder="Your password" label="Your password" />
+                      <b-input-group-append>
+                        <!-- TODO RAHUL DESIGN MINOR The shadow on the input field that you get when you're focused ought really to include this append.-->
+                        <b-button variant="white" class="transbord" title="Show password" @click="togglePassword">
+                          <v-icon v-if="showPassword" title="Hide password" class="text-secondary" flip="horizontal">
+                            <v-icon name="eye" />
+                            <v-icon name="slash" />
+                          </v-icon>
+                          <v-icon v-else name="eye" class="text-secondary" />
+                        </b-button>
+                      </b-input-group-append>
                       <b-input-group-append>
                         <b-button variant="white" @click="savePassword">
                           <v-icon v-if="savingPassword" name="sync" class="text-success fa-spin" />
@@ -512,7 +522,8 @@ export default {
       savedPhone: false,
       removingPhone: false,
       removedPhone: false,
-      uploading: false
+      uploading: false,
+      showPassword: false
     }
   },
   computed: {
@@ -838,6 +849,9 @@ export default {
     },
     uploadProfile() {
       this.uploading = true
+    },
+    togglePassword() {
+      this.showPassword = !this.showPassword
     }
   },
   head() {
