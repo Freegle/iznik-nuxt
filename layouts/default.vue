@@ -257,7 +257,7 @@
       </b-alert>
     </div>
     <client-only>
-      <ChatPopups v-if="loggedIn" />
+      <ChatPopups v-if="loggedIn" class="d-none d-sm-block" />
       <LoginModal ref="loginModal" />
       <AboutMeModal ref="modal" />
     </client-only>

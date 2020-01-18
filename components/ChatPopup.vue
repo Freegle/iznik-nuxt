@@ -11,8 +11,8 @@
           :active="true"
           :prevent-deactivation="true"
           :min-width="320"
-          :min-height="400"
-          :max-height="500"
+          :min-height="minheight"
+          :max-height="maxheight"
           :style="'right: ' + width"
           @resizing="onResize"
         >
@@ -255,6 +255,21 @@ export default {
       }
     },
 
+    minheight() {
+      return Math.min(this.maxheight, 400)
+    },
+
+    maxheight() {
+      // We should not exceed the height of the navbar
+      let ret = null
+
+      if (process.client) {
+        ret = window.innerHeight - 68 - 50
+      }
+
+      return ret
+    },
+
     chat() {
       return this.$store.getters['chats/get'](this.id)
     },
@@ -366,6 +381,26 @@ export default {
         id: this.id
       }
       this.hide()
+    }
+
+    if (process.client) {
+      // Slightly clunky way to spot if a chat popup is too large for the screen.
+      setTimeout(() => {
+        const els = document.getElementsByClassName('resizable')
+        console.log('Found', els)
+        for (let i = 0; i < els.length; i++) {
+          const el = els[i]
+          console.log(el.style, this.maxheight)
+          const height = el.style.height
+
+          if (height) {
+            if (parseInt(el.style.height.replace('px', '')) > this.maxheight) {
+              console.log('Shrink')
+              el.style.height = this.maxheight + 'px'
+            }
+          }
+        }
+      }, 5000)
     }
   },
   methods: {
