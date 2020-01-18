@@ -118,26 +118,6 @@ body {
   background-image: url('~static/wallpaper.png');
 }
 
-.showmod {
-  border-radius: 50%;
-  position: absolute;
-  background-color: $color-white;
-  width: 24px;
-  height: 24px;
-  padding-left: 3px;
-  padding-top: 4px;
-  padding-right: 2px;
-  border: 1px solid $color-green--darker;
-
-  top: 20px;
-  left: 33px;
-
-  @media (min-width: $bootstrap-sm) {
-    top: 29px;
-    left: 44px;
-  }
-}
-
 // We have to go to some effort to style the resize grip.  We can't have it in a scoped style otherwise it won't
 // apply to the grip, and the image is small enough that it gets inlined into base64, so we can't use an
 // image file - instead we encode it here.

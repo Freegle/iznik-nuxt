@@ -2,8 +2,14 @@
   <div>
     <b-row>
       <b-col>
-        <profile-image v-if="users[userid].profile.turl" :image="users[userid].profile.turl" class="ml-1 mr-2 mb-1 inline" is-thumbnail size="lg" />
-        <v-icon v-if="users[userid].settings.showmod" name="leaf" class="showmod text-success" />
+        <profile-image
+          v-if="users[userid].profile.turl"
+          :image="users[userid].profile.turl"
+          class="ml-1 mr-2 mb-1 inline"
+          is-thumbnail
+          :is-moderator="users[userid].settings.showmod"
+          size="lg"
+        />
         <span class="text-success font-weight-bold">{{ users[userid].displayname }}</span>
         posted a volunteering opportunity<span class="d-none d-md-inline-block">:</span><br class="d-block d-md-none"> <b>{{ newsfeed.volunteering.title }}</b>
         <br>
