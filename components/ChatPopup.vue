@@ -12,6 +12,7 @@
           :prevent-deactivation="true"
           :min-width="320"
           :min-height="400"
+          :max-height="500"
           :style="'right: ' + width"
           @resizing="onResize"
         >
