@@ -18,9 +18,9 @@ function extractQueryStringParams(url) {
   return urlParams
 }
 
-export function appYahooLogin(yauthurl, callback) {
+export function appYahooLogin(returnPath, callback) {
   const completeLoginCallback = callback
-  console.log('appYahooLogin: ' + yauthurl)
+  console.log('appYahooLogin start', returnPath)
 
   if (navigator.connection.type === Connection.NONE) {
     console.log('No connection - please try again later.')
@@ -29,6 +29,14 @@ export function appYahooLogin(yauthurl, callback) {
   }
 
   let authGiven = false
+  const here = 'https://www.ilovefreegle.org'
+
+  const yauthurl =
+    'https://api.login.yahoo.com/oauth2/request_auth?client_id=' +
+    process.env.YAHOO_CLIENTID +
+    '&redirect_uri=' +
+    encodeURIComponent(here + '/yahoologin?returnto=' + returnPath) +
+    '&response_type=code&language=en-us&scope=sdpp-w'
 
   const authWindow = cordova.InAppBrowser.open(yauthurl, '_blank', 'location=yes,menubar=yes')
   authWindow.addEventListener('loadstart', e => {
@@ -46,7 +54,6 @@ export function appYahooLogin(yauthurl, callback) {
         const urlParams = extractQueryStringParams(e.url)
         if (urlParams) {
           authGiven = true
-          urlParams.yahoologin = true
 
           // Try logging in again at FD
           completeLoginCallback(urlParams)
@@ -59,7 +66,7 @@ export function appYahooLogin(yauthurl, callback) {
     console.log('Yahoo authWindow exit')
     if (!authGiven) {
       console.log('Yahoo permission not given or failed')
-      completeLoginCallback({ status: 'Yahoo permission not given or failed' })
+      completeLoginCallback({ error: 'Yahoo permission not given or failed' })
     }
   })
 }

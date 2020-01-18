@@ -5,7 +5,6 @@
     ref="loginModal"
     v-model="showModal"
     no-stacking
-    visible
     size="lg"
     hide-footer
     no-close-on-backdrop
@@ -512,9 +511,8 @@ export default {
     },
 
     loginYahoo() {
-      this.nativeLoginError = null
-      this.socialLoginError = null
       // Sadly Yahoo doesn't support a Javascript-only OAuth flow, so far as I can tell.  So what we do is
+      /*
       // post to the server, get a redirection URL from there, redirect on here to Yahoo to complete the
       // signin, and then return to a /yahoologin route.
       let match
@@ -596,25 +594,83 @@ export default {
                   (window.location.port ? ':' + window.location.port : '')
               )
             }
+      */
+      // redirect to Yahoo, which returns back to us with a code parameter, which we then pass to the server
+      // to complete the signin.  This replaces the old flow which stopped working in Jan 2020.
+      this.nativeLoginError = null
+      this.socialLoginError = null
 
-            console.log('Redirect to Yahoo', url)
-            window.location = url
-          } else if (ret.ret === 0) {
-            // We are logged in.  Get the logged in user
-            console.log('Logged in')
-            this.$store.dispatch('auth/fetchUser', {
-              components: ['me'],
-              force: true
-            })
-            self.pleaseShowModal = false
-          } else {
-            console.error('Server login failed', ret)
-            this.tryLater(false)
-          }
-        })
-        .catch(e => {
-          this.tryLater(false)
-        })
+      if (process.env.IS_APP) { // CC
+        appYahooLogin(this.$route.fullPath,
+          ret => { // arrow so .this. is correct
+            console.log('appYahooLogin completed', ret)
+            const returnto = ret.returnto
+            const code = ret.code
+            const me = this.$store.getters['auth/user']
+            if (me) {
+              // We are logged in.  Go back to where we want to be.
+              console.log('Already logged in')
+              if (returnto) {
+                // Go where we want to be.  Make sure we remove the code to avoid us trying to log in again.
+                console.log('Return to', returnto)
+                this.$router.push(returnto)
+              } else {
+                console.log('Just go home')
+                this.$router.push('/')
+              }
+            } else if (!code) {
+              this.socialLoginError = 'Yahoo login failed: '+ret.error
+            } else {
+              this.$axios
+                .post(process.env.API + '/session', {
+                  yahoocodelogin: code
+                })
+                .then(result => {
+                  const ret = result.data
+                  console.log('Yahoologin session login returned', ret)
+                  if (ret.ret === 0) {
+                    // Set the user to store the persistent token.
+                    ret.user.persistent = ret.persistent
+                    this.$store.dispatch('auth/setUser', ret.user)
+
+                    // We are logged in.  Get the logged in user
+                    console.log('Logged in')
+                    this.$store.dispatch('auth/fetchUser')
+                    self.pleaseShowModal = false
+
+                    if (returnto) {
+                      // Go where we want to be.  Make sure we remove the code to avoid us trying to log in again.
+                      console.log('Return to', returnto)
+                      this.$router.go(returnto)
+                    } else {
+                      console.log('Just go home')
+                      this.$router.push('/')
+                    }
+                  } else {
+                    console.error('Server login failed', ret)
+                    this.socialLoginError = 'Yahoo login failed'
+                  }
+                })
+            }
+          })
+      } else {
+
+        const url =
+          'https://api.login.yahoo.com/oauth2/request_auth?client_id=' +
+          process.env.YAHOO_CLIENTID +
+          '&redirect_uri=' +
+          encodeURIComponent(
+            window.location.protocol +
+            '//' +
+            window.location.hostname +
+            (window.location.port ? ':' + window.location.port : '') +
+            '/yahoologin?returnto=' +
+            this.$route.fullPath
+          ) +
+          '&response_type=code&language=en-us&scope=sdpp-w'
+
+        window.location = url
+      }
     },
 
     clickShowSignUp(e) {

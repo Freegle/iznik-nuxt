@@ -90,7 +90,7 @@
         </p>
         <h2>Got questions?</h2>
         <p>
-          Privacy is a complicate and important area, which we take seriously.  If you have questions or concerns,
+          Privacy is a complicated and important area, which we take seriously.  If you have questions or concerns,
           please <nuxt-link to="/help">
             contact us.
           </nuxt-link>
