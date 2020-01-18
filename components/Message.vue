@@ -96,6 +96,12 @@
         </div>
       </b-card-body>
       <b-card-footer v-if="expanded" class="p-1 pt-3">
+        <NoticeMessage v-if="sent" variant="info" class="d-block d-sm-none mb-1">
+          We've sent your message.  You can see replies in the
+          <nuxt-link to="/chats">
+            <v-icon name="comments" /> Chats
+          </nuxt-link> section.
+        </NoticeMessage>
         <b-row>
           <b-col class="d-flex">
             <b-form-textarea
@@ -233,7 +239,8 @@ export default {
     return {
       reply: null,
       expanded: null,
-      replying: false
+      replying: false,
+      sent: false
     }
   },
   computed: {
@@ -394,9 +401,9 @@ export default {
       }
     },
     async sentReply() {
-      console.log('Sent reply')
       // This gets invoked when we have sent a message we passed to ChatButton.
       this.replying = false
+      this.sent = true
 
       // Clear message now sent
       this.reply = null
@@ -406,7 +413,6 @@ export default {
         replyMessage: null
       })
 
-      console.log('Open chat')
       // Now create the chat and send the first message.
       await this.$refs.chatbutton.openChat()
     }
