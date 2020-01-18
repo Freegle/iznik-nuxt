@@ -483,9 +483,7 @@ export default {
       return Math.round(count)
     },
     weightData() {
-      const ret = [['Date', 'Count']]
-      let lastmon = null
-      let count = 0
+      const bymonth = []
 
       for (const groupid in this.stats) {
         const overlap = this.overlap(groupid)
@@ -495,17 +493,17 @@ export default {
         for (const a of weight) {
           const mon = a.date.substring(0, 7)
 
-          if (mon !== lastmon) {
-            if (lastmon !== null) {
-              ret.push([new Date(lastmon + '-01'), count])
-              count = 0
-            }
-
-            lastmon = mon
+          if (!bymonth[mon]) {
+            bymonth[mon] = 0
           }
 
-          count += a.count * overlap
+          bymonth[mon] += a.count * overlap
         }
+      }
+
+      const ret = [['Date', 'Count']]
+      for (const mon in bymonth) {
+        ret.push([new Date(mon + '-01'), bymonth[mon]])
       }
 
       return ret
@@ -554,6 +552,14 @@ export default {
         .toUpperCase()
       return start + ' - ' + end
     },
+    monthsCovered() {
+      const ret = this.$dayjs(this.endDate).diff(
+        this.$dayjs(this.startDate),
+        'months'
+      )
+      console.log('Months covered', this.startDate, this.endDate, ret)
+      return ret + 1
+    },
     end() {
       const end = this.$dayjs(this.endDate)
         .format('MMM YY')
@@ -583,19 +589,22 @@ export default {
 
       for (const ix in groups) {
         const group = groups[ix]
-        ret.push({
-          location: group.group.namedisplay + (group.overlap < 1 ? ' *' : ''),
-          members:
-            group.ApprovedMemberCount[group.ApprovedMemberCount.length - 1]
-              .count,
-          monthly:
-            Math.round(group.avpermonth) +
-            (group.overlap < 1
-              ? ' (<span class="text-muted small">of ' +
-                Math.round(group.totalweight) +
-                ')</span>'
-              : '')
-        })
+
+        if (group.ApprovedMemberCount.length > 0) {
+          ret.push({
+            location: group.group.namedisplay + (group.overlap < 1 ? ' *' : ''),
+            members:
+              group.ApprovedMemberCount[group.ApprovedMemberCount.length - 1]
+                .count,
+            monthly:
+              Math.round(group.avpermonth) +
+              (group.overlap < 1
+                ? ' (<span class="text-muted small">of ' +
+                  Math.round(group.totalweight) +
+                  ')</span>'
+                : '')
+          })
+        }
       }
 
       return ret
@@ -666,7 +675,7 @@ export default {
           totalWeight += w.count * overlap
         }
 
-        const avpermonth = totalWeight / 12
+        const avpermonth = totalWeight / this.monthsCovered
 
         // If there is only one group in the area we're looking at, or the group is entirely contained within the
         // area, then show it irrespective of activity otherwise it looks silly.
