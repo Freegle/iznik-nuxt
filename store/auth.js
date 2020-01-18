@@ -43,6 +43,9 @@ export const mutations = {
 
       // Remember that we have successfully logged in at some point.
       state.loggedInEver = true
+
+      // Ensure we don't store the password.
+      delete state.user.password
     } else if (state.user || state.user === {}) {
       state.user = null
       state.userFetched = null

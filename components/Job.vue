@@ -2,10 +2,8 @@
   <div>
     <div v-if="summary" class="ml-2 mr-2">
       <h6>
-        {{ job.title }}
-        <nuxt-link :to="'/job/' + job.id" class="float-right">
-          Read more <v-icon name="angle-double-right" />
-        </nuxt-link>
+        <!-- eslint-disable-next-line -->
+        <span v-html="joblinksumm" />
       </h6>
       <p class="text-truncate mt-2">
         {{ job.snippet }}
@@ -91,6 +89,21 @@ export default {
         'href="' +
         this.job.url +
         '">More info &gt;</a>'
+      )
+    },
+    joblinksumm() {
+      // AdView expects links in a particular format, which invoke its own onmouse down, and so we have to put the
+      // raw HTML in there via v-html.
+      return (
+        '<a target="_blank" class="" ' +
+        'onmousedown="' +
+        this.job.onmousedown +
+        '" ' +
+        'href="' +
+        this.job.url +
+        '">' +
+        this.job.title +
+        '</a>'
       )
     }
   },

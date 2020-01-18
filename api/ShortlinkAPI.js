@@ -6,7 +6,7 @@ export default class ShortlinkAPI extends BaseAPI {
   }
 
   async add(data) {
-    const { id } = await this.$post('/noticeboard', data)
+    const { id } = await this.$post('/shortlink', data)
     return id
   }
 }

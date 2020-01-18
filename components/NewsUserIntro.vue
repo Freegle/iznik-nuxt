@@ -3,8 +3,14 @@
     <div class="media clickme">
       <div class="media-left">
         <div class="media-object">
-          <profile-image v-if="users[userid].profile.turl" :image="users[userid].profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="lg" />
-          <v-icon v-if="users[userid].settings.showmod" name="leaf" class="showmod text-success" />
+          <profile-image
+            v-if="users[userid].profile.turl"
+            :image="users[userid].profile.turl"
+            class="ml-1 mb-1 inline"
+            is-thumbnail
+            :is-moderator="users[userid].settings.showmod"
+            size="lg"
+          />
         </div>
       </div>
       <div class="media-body ml-2">

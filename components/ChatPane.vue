@@ -34,7 +34,7 @@
                     Report this person
                   </b-dropdown-item>
                 </b-dropdown>
-                <span class="float-right pl-1 mr-1 clickme" title="Popup chat window" @click="popup">
+                <span class="float-right pl-1 mr-1 clickme d-none d-sm-inline-block" title="Popup chat window" @click="popup">
                   <v-icon name="window-restore" />
                 </span>
                 <b-btn variant="white" size="sm" class="float-right mr-2 d-none d-sm-inline-block" @click="markRead">
@@ -64,7 +64,7 @@
               </div>
             </span>
           </infinite-loading>
-          <ul class="p-0 pt-1 list-unstyled mb-1">
+          <ul class="p-0 pt-1 list-unstyled mb-1 w-100">
             <li v-for="chatmessage in chatmessages" :key="'chatmessage-' + chatmessage.id">
               <ChatMessage
                 v-if="chatmessage"

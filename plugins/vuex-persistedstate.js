@@ -28,10 +28,42 @@ const keep = [
   'misc'
 ]
 
+function trySaving(storage, settingState) {
+  try {
+    storage.setItem(STORAGE_KEY, JSON.stringify(settingState))
+  } catch (e) {
+    // This is commonly a quota error.  Try saving just the bare essentials we need for handling
+    // signin, replies and posting.
+    console.log(
+      'Failed to set full state of len',
+      JSON.stringify(settingState).length
+    )
+
+    const smallerState = {
+      auth: settingState.auth,
+      compose: settingState.compose,
+      reply: settingState.reply,
+      misc: settingState.misc
+    }
+    try {
+      storage.setItem(STORAGE_KEY, JSON.stringify(smallerState))
+    } catch (e) {
+      // Plough on regardless and see what happens.  We'll probably get another exception and
+      // fail, but not always.
+      console.error(
+        'Failed to set reduced state of size ',
+        JSON.stringify(smallerState).length
+      )
+    }
+  }
+}
 export default ({ store }) => {
   // Before leaving the page, make sure we save the state
   window.addEventListener('beforeunload', () => {
-    if (settingState) STORAGE.setItem(STORAGE_KEY, JSON.stringify(settingState))
+    console.log('Save state before unload')
+    if (settingState) {
+      trySaving(STORAGE, settingState)
+    }
   })
 
   createPersistedState({
@@ -59,6 +91,11 @@ export default ({ store }) => {
       if (newstate.auth) {
         // Don't store the forceLogin, as that can result in the login popup on page refresh.
         delete newstate.auth.forceLogin
+
+        if (newstate.auth.user) {
+          // Ensure password not saved to local storage.
+          delete newstate.auth.user.password
+        }
       }
 
       if (state.address) {
@@ -109,34 +146,7 @@ export default ({ store }) => {
             if (settingState) {
               // console.log('set state now')
               setInProgress = true
-              try {
-                storage.setItem(key, JSON.stringify(settingState))
-              } catch (e) {
-                // This is commonly a quota error.  Try saving just the bare essentials we need for handling
-                // signin, replies and posting.
-                console.log(
-                  'Failed to set full state of len',
-                  JSON.stringify(settingState).length
-                )
-
-                const smallerState = {
-                  auth: settingState.auth,
-                  compose: settingState.compose,
-                  reply: settingState.reply,
-                  misc: settingState.misc
-                }
-                try {
-                  storage.setItem(key, JSON.stringify(smallerState))
-                } catch (e) {
-                  // Plough on regardless and see what happens.  We'll probably get another exception and
-                  // fail, but not always.
-                  console.error(
-                    'Failed to set reduced state of size ',
-                    JSON.stringify(smallerState).length
-                  )
-                }
-              }
-
+              trySaving(storage, settingState)
               setInProgress = false
               settingState = null
               // console.log('completed set state')

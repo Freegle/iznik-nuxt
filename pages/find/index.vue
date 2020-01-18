@@ -99,12 +99,14 @@ export default {
   },
   computed: {
     extgroup() {
-      if (
-        this.postcode &&
-        this.postcode.groupsnear &&
-        this.postcode.groupsnear[0].external
-      ) {
-        return this.postcode.groupsnear[0].external
+      const groupid = this.$store.getters['compose/getGroup']
+
+      if (this.postcode && this.postcode.groupsnear) {
+        for (const group of this.postcode.groupsnear) {
+          if (group.id === groupid) {
+            return group.external
+          }
+        }
       }
 
       return null

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-while ! nc -z localhost 3000; do   
-  echo "..waiting for node..."
+while ! nc -z localhost 3000; do
+  echo "...waiting for node..."
   sleep 1
 done

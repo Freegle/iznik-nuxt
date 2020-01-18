@@ -6,8 +6,12 @@
           <tbody>
             <tr>
               <td style="vertical-align: top" class="clickme" title="Click to see their profile" @click="showInfo">
-                <profile-image :image="users[userid].profile.turl" class="ml-1 mr-2 mt-2 mb-1 inline float-left" :size="(reply.replyto !== threadhead.id) ? 'sm' : 'md'" />
-                <v-icon v-if="users[userid].settings.showmod && reply.replyto === threadhead.id" name="leaf" class="showmodsm text-success" />
+                <profile-image
+                  :image="users[userid].profile.turl"
+                  class="ml-1 mr-2 mt-2 mb-1 inline float-left"
+                  :is-moderator="users[userid].settings.showmod && reply.replyto === threadhead.id"
+                  :size="(reply.replyto !== threadhead.id) ? 'sm' : 'md'"
+                />
               </td>
               <td class="align-top">
                 <span class="text-success font-weight-bold clickme" title="Click to see their profile" @click="showInfo">{{ users[userid].displayname }}</span>
@@ -463,23 +467,5 @@ export default {
 .replytext {
   font-size: 14px;
   line-height: 1.2;
-}
-
-.showmodsm {
-  border-radius: 50%;
-  position: absolute;
-  background-color: $color-white;
-  width: 16px;
-  height: auto;
-  top: 19px;
-  left: 16px;
-  padding: 2px;
-
-  @include media-breakpoint-up(md) {
-    width: 20px;
-    top: 28px;
-    left: 28px;
-    padding: 3px;
-  }
 }
 </style>
