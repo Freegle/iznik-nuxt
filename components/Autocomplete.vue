@@ -214,7 +214,7 @@ export default {
     placeholder: String,
     required: Boolean,
 
-    // Intial Value
+    // Initial Value
     initValue: {
       type: String,
       default: ''
@@ -298,11 +298,18 @@ export default {
       required: false,
       default: ""
     },
+
+    timeout: {
+      type: Number,
+      required: false,
+      default: null
+    }
   },
 
   data() {
     return {
       showList: false,
+      showTimer: null,
       type: '',
       json: [],
       focusList: '',
@@ -355,9 +362,24 @@ export default {
       return className ? `${className}-${part}` : ''
     },
 
+    clearTimer() {
+      if (this.showTimer) {
+        clearTimeout(this.showTimer)
+      }
+    },
+
+    startTimer() {
+      this.clearTimer()
+      this.showTimer = setTimeout(() => {
+        this.showList = false
+        this.showTimer = null
+      }, 30000)
+    },
+
     // Netralize Autocomplete
     clearInput() {
       this.showList = false
+      this.clearTimer()
       this.type = ''
       this.json = []
       this.focusList = ''
@@ -374,6 +396,7 @@ export default {
     handleInput(e) {
       const { value } = e.target
       this.showList = true
+      this.startTimer()
       // Callback Event
       if (this.onInput) this.onInput(value)
       // If Debounce
@@ -413,9 +436,11 @@ export default {
           e.preventDefault()
           this.selectList(this.json[this.focusList])
           this.showList = false
+          this.clearTimer()
           break
         case ESC:
           this.showList = false
+          this.clearTimer()
           break
       }
 
@@ -445,6 +470,7 @@ export default {
       // Callback Event
       this.onShow ? this.onShow() : null
       this.showList = true
+      this.startTimer()
     },
 
     handleBlur(e) {
@@ -461,6 +487,7 @@ export default {
         // Callback Event
         this.onHide ? this.onHide() : null
         this.showList = false
+        this.clearTimer()
       }, 250)
     },
 
@@ -477,6 +504,7 @@ export default {
 
       // Force the list to show.
       this.showList = true
+      this.startTimer()
       let value = this.$refs.input.value
       if (value) {
         this.getData(value)
@@ -508,6 +536,7 @@ export default {
       }
       // Hide List
       this.showList = false
+      this.clearTimer()
       // Callback Event
       this.onSelect ? this.onSelect(clean) : null
     },
