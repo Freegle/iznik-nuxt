@@ -29,7 +29,7 @@
           </span>
         </b-card-title>
         <span v-for="group in groups" :key="'message-' + id + '-' + group.id" class="small muted">
-          {{ group.arrival | timeago }} on {{ group.namedisplay }}
+          {{ group.arrival | timeago }} on <nuxt-link :to="'/explore/' + group.groupid">{{ group.namedisplay }}</nuxt-link>
           <nuxt-link :to="'/message/' + id" class="text-sm small text-faded">
             #{{ id }}&nbsp;
           </nuxt-link>
