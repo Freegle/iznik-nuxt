@@ -18,15 +18,11 @@
       @invalid="invalid"
     />
 
-    <div v-if="showFind" class="">
-      <em class="pl-2 pr-2 align-middle d-none d-sm-inline"><b>Or</b></em>
-    </div>
-    <div v-if="showFind">
-      <b-button variant="primary" :size="size" title="Find my location" @click="findLoc">
+    <div v-if="find">
+      <b-button variant="primary" :size="size" title="Find my device's location instead of typing a postcode" @click="findLoc">
         <v-icon v-if="locating" name="sync" class="fa-spin" />
         <v-icon v-else-if="locationFailed" name="exclamation-triangle" />
         <v-icon v-else name="map-marker-alt" />
-        <span class="d-none d-sm-inline">&nbsp;Find my location</span>
       </b-button>
     </div>
 
@@ -77,8 +73,7 @@ export default {
       mylocation: null,
       locating: false,
       locationFailed: false,
-      showToolTip: false,
-      showFind: this.find
+      showToolTip: false
     }
   },
   async mounted() {
@@ -137,13 +132,7 @@ export default {
       if (e.which === 8) {
         // Backspace means we no longer have a full postcode.
         this.invalid()
-
-        // We're editing the postcode. Hide the button so they don't decide to click that next
-        this.showFind = false
       } else {
-        // We're now typing a postcode.  Hide the button so they don't decide to click that next
-        this.showFind = false
-
         // Hide the tooltip in case it's showing from a use of the find button.
         this.showToolTip = false
       }
