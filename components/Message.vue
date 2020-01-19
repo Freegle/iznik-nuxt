@@ -50,7 +50,7 @@
           <i>There's no description.</i>
         </div>
         <b-button v-if="!expanded" variant="white" class="mt-1" @click="expand">
-          Read more and reply <v-icon name="angle-double-right" />
+          See details and reply <v-icon name="angle-double-right" />
         </b-button>
         <b-button v-else variant="link" class="d-block mt-1" @click="contract">
           Close message

@@ -15,7 +15,7 @@
       <b-row>
         <b-col class="text-center">
           <b-btn variant="white" to="/stories" class="mt-2">
-            Read more stories...
+            Discover more stories...
           </b-btn>
         </b-col>
       </b-row>
