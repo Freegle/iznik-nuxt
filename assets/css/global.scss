@@ -286,3 +286,21 @@ legend {
     border-radius: unset;
   }
 }
+
+.pulsate {
+  -webkit-animation: pulsate 1s ease-out;
+  -webkit-animation-iteration-count: infinite;
+  opacity: 0.5;
+}
+
+@-webkit-keyframes pulsate {
+  0% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1.0;
+  }
+  100% {
+    opacity: 0.25;
+  }
+}

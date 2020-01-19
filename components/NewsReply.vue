@@ -432,19 +432,25 @@ export default {
     newlineReply() {
       this.replybox += '\n'
     },
-    love() {
+    love(e) {
+      const el = e.target
+      el.classList.add('pulsate')
       this.$store.dispatch('newsfeed/love', {
         id: this.replyid,
         replyto: this.reply.replyto,
         threadhead: this.reply.threadhead
       })
+      el.classList.remove('pulsate')
     },
-    unlove() {
+    unlove(e) {
+      const el = e.target
+      el.classList.add('pulsate')
       this.$store.dispatch('newsfeed/unlove', {
         id: this.replyid,
         replyto: this.reply.replyto,
         threadhead: this.reply.threadhead
       })
+      el.classList.remove('pulsate')
     },
     save() {
       this.$store.dispatch('newsfeed/edit', {
