@@ -397,15 +397,17 @@ export default {
       chatid: this.id
     })
 
-    // Get the user info in case we need to warn about them.
-    await this.$store.dispatch('user/fetch', {
-      id: this.otheruser.id,
-      info: true
-    })
+    if (this.otheruser) {
+      // Get the user info in case we need to warn about them.
+      await this.$store.dispatch('user/fetch', {
+        id: this.otheruser.id,
+        info: true
+      })
 
-    setTimeout(() => {
-      this.showReplyTime = false
-    }, 30000)
+      setTimeout(() => {
+        this.showReplyTime = false
+      }, 30000)
+    }
   },
 
   methods: {
