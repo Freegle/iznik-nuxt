@@ -1,10 +1,10 @@
 <template>
   <b-card bg-light>
     <b-row v-if="group.profile" class="mt-1">
-      <b-col cols="4" sm="2" lg="3" xl="2">
+      <b-col cols="4" md="2" lg="3" xl="2">
         <b-img-lazy rounded thumbnail alt="Community profile picture" :src="group.profile" class="js-pageimage" />
       </b-col>
-      <b-col cols="8" sm="5" lg="9" xl="5">
+      <b-col cols="8" md="6" lg="9" class="group-header-description">
         <b-card-title>
           {{ group.namedisplay }}
           <v-icon v-if="amAMember === 'Owner' || amAMember === 'Moderator'" name="crown" class="text-success" :title="'You have role ' + amAMember" />
@@ -13,22 +13,24 @@
         <p v-if="group.membercount" class="text-muted small">
           Founded {{ group.founded | dateonly }}. {{ group.membercount.toLocaleString() }} current freeglers.
           <br>
-          See
-          <nuxt-link :to="{ path: '/communityevents/' + group.id }">
-            community events
-          </nuxt-link>,
-          <nuxt-link :to="{ path: '/volunteerings/' + group.id }">
-            volunteer opportunities
-          </nuxt-link>,
-          <nuxt-link :to="{ path: '/stories/' + group.id }">
-            stories
-          </nuxt-link>, or
-          <nuxt-link :to="{ path: '/stats/' + group.nameshort }">
-            stats
-          </nuxt-link>
+          <span>
+            See
+            <nuxt-link :to="{ path: '/communityevents/' + group.id }">
+              community events
+            </nuxt-link>,
+            <nuxt-link :to="{ path: '/volunteerings/' + group.id }">
+              volunteer opportunities
+            </nuxt-link>,
+            <nuxt-link :to="{ path: '/stories/' + group.id }">
+              stories
+            </nuxt-link>, or
+            <nuxt-link :to="{ path: '/stats/' + group.nameshort }">
+              stats
+            </nuxt-link>
+          </span>
         </p>
       </b-col>
-      <b-col cols="12" sm="5" lg="12" xl="5" class="group-header-buttons">
+      <b-col cols="12" md="4" lg="12" class="group-header-buttons">
         <span>
           <b-link :href="'mailto:' + modsemail">
             <b-button class="ml-1 mb-1" variant="white">
@@ -60,8 +62,31 @@
 </template>
 
 <style scoped lang="scss">
+@import 'color-vars';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+
 .group-header-buttons {
+  margin-bottom: 20px;
   text-align: right;
+
+  @include media-breakpoint-up(xl) {
+    flex: 0 0 36%;
+    max-width: 36%;
+    padding-left: 0;
+  }
+}
+
+.group-header-description {
+  @include media-breakpoint-up(xl) {
+    padding-left: 0;
+    max-width: 47%;
+    flex: 0 0 47%;
+  }
+}
+
+.img-thumbnail {
   margin-bottom: 20px;
 }
 </style>
