@@ -85,7 +85,7 @@ export default class BaseAPI {
         method,
         path,
         '->',
-        `ret: ${data.ret} status: ${data.status || 'Unknown'}`
+        `ret: ${data?.ret || 'none'} status: ${data?.status || 'Unknown'}`
       ].join(' ')
       throw new APIError(
         {
