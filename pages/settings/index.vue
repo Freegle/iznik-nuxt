@@ -194,7 +194,7 @@
                     class="d-inline"
                   >
                     <b-input-group id="input-postcode">
-                      <postcode :focus="false" @selected="selectPostcode" />
+                      <postcode @selected="selectPostcode" />
                     </b-input-group>
                   </b-form-group>
 

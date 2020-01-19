@@ -18,6 +18,9 @@
       @invalid="invalid"
     />
 
+    <div v-if="showFind" class="">
+      <em class="pl-2 pr-2 align-middle d-none d-sm-inline"><b>Or</b></em>
+    </div>
     <div v-if="showFind">
       <b-button variant="primary" :size="size" title="Find my location" @click="findLoc">
         <v-icon v-if="locating" name="sync" class="fa-spin" />
@@ -54,7 +57,7 @@ export default {
     focus: {
       type: Boolean,
       required: false,
-      default: true
+      default: false
     },
     find: {
       type: Boolean,
