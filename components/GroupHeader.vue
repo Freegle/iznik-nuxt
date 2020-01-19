@@ -13,21 +13,19 @@
         <p v-if="group.membercount" class="text-muted small">
           Founded {{ group.founded | dateonly }}. {{ group.membercount.toLocaleString() }} current freeglers.
           <br>
-          <span>
-            See
-            <nuxt-link :to="{ path: '/communityevents/' + group.id }">
-              community events
-            </nuxt-link>,
-            <nuxt-link :to="{ path: '/volunteerings/' + group.id }">
-              volunteer opportunities
-            </nuxt-link>,
-            <nuxt-link :to="{ path: '/stories/' + group.id }">
-              stories
-            </nuxt-link>, or
-            <nuxt-link :to="{ path: '/stats/' + group.nameshort }">
-              stats
-            </nuxt-link>
-          </span>
+          See
+          <nuxt-link :to="{ path: '/communityevents/' + group.id }">
+            community events
+          </nuxt-link>,
+          <nuxt-link :to="{ path: '/volunteerings/' + group.id }">
+            volunteer opportunities
+          </nuxt-link>,
+          <nuxt-link :to="{ path: '/stories/' + group.id }">
+            stories
+          </nuxt-link>, or
+          <nuxt-link :to="{ path: '/stats/' + group.nameshort }">
+            stats
+          </nuxt-link>
         </p>
       </b-col>
       <b-col cols="12" md="4" lg="12" class="group-header-buttons">
