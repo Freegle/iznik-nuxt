@@ -94,12 +94,20 @@
                     @focus="focusedComment"
                   />
                 </at-ta>
-                <b-btn size="sm" variant="white" class="float-right flex-grow-1 ml-1">
+                <b-btn size="sm" variant="white" class="float-right flex-grow-1 ml-1" @click="photoAdd">
                   <v-icon name="camera" /><span class="d-none d-sm-inline">&nbsp;Photo</span>
                 </b-btn>
               </div>
             </b-col>
           </b-row>
+          <b-img v-if="imageid" lazy thumbnail :src="imagethumb" class="mt-1 ml-4 image__uploaded" />
+          <OurFilePond
+            v-if="uploading"
+            class="bg-white m-0 pondrow"
+            imgtype="Newsfeed"
+            imgflag="newsfeed"
+            @photoProcessed="photoProcessed"
+          />
         </span>
         <notice-message v-else>
           This thread is now closed.  Thanks to everyone who contributed.
@@ -138,6 +146,7 @@
 
 <script>
 import NewsReportModal from './NewsReportModal'
+import OurFilePond from './OurFilePond'
 import twem from '~/assets/js/twem'
 
 // Use standard import to avoid screen-flicker
@@ -162,6 +171,7 @@ const INITIAL_NUMBER_OF_REPLIES_TO_SHOW = 10
 export default {
   name: 'NewsThread',
   components: {
+    OurFilePond,
     NewsReportModal,
     NewsReply,
     NewsRefer,
@@ -210,7 +220,10 @@ export default {
       elementBackgroundColor: {
         CommunityEvent: 'card__community-event',
         VolunteerOpportunity: 'card__volunteer-opportunity'
-      }
+      },
+      uploading: false,
+      imageid: null,
+      imagethumb: null
     }
   },
   computed: {
@@ -324,13 +337,17 @@ export default {
         await this.$store.dispatch('newsfeed/send', {
           message: msg,
           replyto: this.replyingTo,
-          threadhead: this.newsfeed.threadhead
+          threadhead: this.newsfeed.threadhead,
+          imageid: this.imageid
         })
 
         // New message will be shown because it's in the store and we have a computed property.
 
         // Clear the textarea now it's sent.
         this.threadcomment = null
+
+        // And any image id
+        this.imageid = null
       }
     },
     newlineComment() {
@@ -385,6 +402,19 @@ export default {
     filterMatch(name, chunk) {
       // Only match at start of string.
       return name.toLowerCase().indexOf(chunk.toLowerCase()) === 0
+    },
+    photoAdd() {
+      // Flag that we're uploading.  This will trigger the render of the filepond instance and subsequently the
+      // init callback below.
+      this.uploading = true
+    },
+    photoProcessed(imageid, imagethumb) {
+      // We have uploaded a photo.  Remove the filepond instance.
+      this.uploading = false
+
+      // The imageid is in this.imageid
+      this.imageid = imageid
+      this.imagethumb = imagethumb
     }
   }
 }
@@ -416,5 +446,9 @@ export default {
 
 .card__default {
   background-color: $color-white;
+}
+
+.image__uploaded {
+  width: 100px;
 }
 </style>

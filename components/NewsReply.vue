@@ -27,10 +27,9 @@
                   <b-img
                     v-b-modal="'photoModal-' + replyid"
                     rounded
-                    class="clickme"
+                    class="clickme replyphoto"
                     alt="ChitChat photo"
                     :src="reply.image.paththumb"
-                    style="width: 150px"
                     @error.native="brokenImage"
                   />
                 </div>
@@ -116,12 +115,20 @@
               @focus="focusedReply"
             />
           </at-ta>
-          <b-btn size="sm" variant="white" class="flex-grow-1 float-right ml-1">
+          <b-btn size="sm" variant="white" class="flex-grow-1 float-right ml-1" @click="photoAdd">
             <v-icon name="camera" />&nbsp;Photo
           </b-btn>
         </div>
       </b-col>
     </b-row>
+    <b-img v-if="imageid" lazy thumbnail :src="imagethumb" class="mt-1 ml-4 image__uploaded" />
+    <OurFilePond
+      v-if="uploading"
+      class="bg-white m-0 pondrow"
+      imgtype="Newsfeed"
+      imgflag="newsfeed"
+      @photoProcessed="photoProcessed"
+    />
     <b-modal
       v-if="reply.image"
       :id="'photoModal-' + replyid"
@@ -174,6 +181,7 @@
 
 <script>
 import NewsLovesModal from './NewsLovesModal'
+import OurFilePond from './OurFilePond'
 import twem from '~/assets/js/twem'
 
 import NewsUserInfo from '~/components/NewsUserInfo'
@@ -193,6 +201,7 @@ const INITIAL_NUMBER_OF_REPLIES_TO_SHOW = 5
 export default {
   name: 'NewsReply',
   components: {
+    OurFilePond,
     NewsLovesModal,
     NewsUserInfo,
     NewsHighlight,
@@ -228,7 +237,10 @@ export default {
       replyingTo: null,
       replybox: null,
       infoclick: false,
-      showAllReplies: false
+      showAllReplies: false,
+      uploading: false,
+      imageid: null,
+      imagethumb: null
     }
   },
   computed: {
@@ -403,7 +415,8 @@ export default {
         await this.$store.dispatch('newsfeed/send', {
           message: msg,
           replyto: this.replyingTo,
-          threadhead: this.reply.threadhead
+          threadhead: this.reply.threadhead,
+          imageid: this.imageid
         })
 
         // New message will be shown because it's in the store and we have a computed property.
@@ -411,6 +424,9 @@ export default {
         // Clear and hide the textarea now it's sent.
         this.replybox = null
         this.showReplyBox = false
+
+        // And any image id
+        this.imageid = null
       }
     },
     newlineReply() {
@@ -453,6 +469,19 @@ export default {
     filterMatch(name, chunk) {
       // Only match at start of string.
       return name.toLowerCase().indexOf(chunk.toLowerCase()) === 0
+    },
+    photoAdd() {
+      // Flag that we're uploading.  This will trigger the render of the filepond instance and subsequently the
+      // init callback below.
+      this.uploading = true
+    },
+    photoProcessed(imageid, imagethumb) {
+      // We have uploaded a photo.  Remove the filepond instance.
+      this.uploading = false
+
+      // The imageid is in this.imageid
+      this.imageid = imageid
+      this.imagethumb = imagethumb
     }
   }
 }
@@ -467,5 +496,13 @@ export default {
 .replytext {
   font-size: 14px;
   line-height: 1.2;
+}
+
+.replyphoto {
+  width: 150px;
+}
+
+.image__uploaded {
+  width: 100px;
 }
 </style>

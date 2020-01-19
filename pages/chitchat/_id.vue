@@ -350,9 +350,6 @@ export default {
       // We have uploaded a photo.  Remove the filepond instance.
       this.uploading = false
 
-      // Show the chat busy indicator.
-      this.chatBusy = true
-
       // The imageid is in this.imageid
       this.imageid = imageid
       this.imagethumb = imagethumb
