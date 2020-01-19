@@ -80,12 +80,15 @@ export default class BaseAPI {
         !(path === '/session' && method === 'POST') &&
         data.ret !== 999)
     ) {
+      const retstr = data && data.ret ? data.ret : 'Unknown'
+      const statusstr = data && data.status ? data.status : 'Unknown'
+
       const message = [
         'API Error',
         method,
         path,
         '->',
-        `ret: ${data?.ret || 'none'} status: ${data?.status || 'Unknown'}`
+        `ret: ${retstr} status: ${statusstr}`
       ].join(' ')
       throw new APIError(
         {
