@@ -20,7 +20,7 @@
               <a v-if="extgroup" :href="extgroup">
                 <v-icon name="check-circle" class="text-success mt-2 fa-bh" scale="5" />
               </a>
-              <nuxt-link v-else to="/find/whatisit">
+              <nuxt-link v-else to="/find/search">
                 <v-icon name="check-circle" class="text-success mt-2 fa-bh" scale="5" />
               </nuxt-link>
             </b-col>
