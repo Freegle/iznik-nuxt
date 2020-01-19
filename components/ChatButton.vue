@@ -1,23 +1,27 @@
 <template>
   <span>
-    <span v-if="size === 'naked'" class="d-none d-sm-inline-block" @click="gotoChat(true)">
-      {{ title }}
-    </span>
-    <span v-if="size === 'naked'" class="d-inline-block d-sm-none" @click="gotoChat(false)">
-      {{ title }}
-    </span>
-    <b-btn :size="size" :variant="variant" class="d-inline-block d-none" @click="gotoChat(false)">
-      <v-icon name="comments" />
-      <span v-if="title">
+    <span v-if="size === 'naked'">
+      <span class="d-none d-sm-inline-block" @click="gotoChat(true)">
         {{ title }}
       </span>
-    </b-btn>
-    <b-btn :size="size" :variant="variant" class="d-none d-sm-inline" @click="gotoChat(true)">
-      <v-icon name="comments" />
-      <span v-if="title">
+      <span class="d-inline-block d-sm-none" @click="gotoChat(false)">
         {{ title }}
       </span>
-    </b-btn>
+    </span>
+    <span v-else>
+      <b-btn :size="size" :variant="variant" class="d-none d-sm-inline" @click="gotoChat(true)">
+        <v-icon name="comments" />
+        <span v-if="title">
+          {{ title }}
+        </span>
+      </b-btn>
+      <b-btn :size="size" :variant="variant" class="d-inline-block d-sm-none" @click="gotoChat(false)">
+        <v-icon name="comments" />
+        <span v-if="title">
+          {{ title }}
+        </span>
+      </b-btn>
+    </span>
   </span>
 </template>
 <script>
