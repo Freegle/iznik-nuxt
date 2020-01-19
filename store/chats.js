@@ -84,7 +84,18 @@ export const actions = {
       summary: true,
       search: params && params.search ? params.search : null
     }
-    commit('setList', await this.$api.chat.listChats(params))
+
+    try {
+      commit('setList', await this.$api.chat.listChats(params))
+    } catch (e) {
+      // This happens a lot on mobile when the network is flaky.  It's not necessarily an end-user visible error,
+      // so there is no point letting it ripple up to Sentry.
+      console.log('Failed to list chats')
+
+      if (!params.noerror) {
+        throw e
+      }
+    }
   },
 
   async openChatToMods({ dispatch, commit }, params) {
