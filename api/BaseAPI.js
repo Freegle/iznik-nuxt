@@ -52,7 +52,11 @@ export default class BaseAPI {
       }
     }
 
-    // HTTP errors real errors.
+    // HTTP errors are real errors.
+    //
+    // We've sometimes seen 200 response codes with no returned data (I saw this myself on a train with flaky
+    // signal).  So that's an error if it happens.
+    //
     // data.ret holds the server error.
     // - 1 means not logged in, and that's ok.
     // - POSTs to session can return errors we want to handle.
@@ -61,6 +65,7 @@ export default class BaseAPI {
     // - otherwise pop up an error.
     if (
       status !== 200 ||
+      !data ||
       (data.ret !== 0 &&
         !(data.ret === 1 && data.status === 'Not logged in') &&
         !(path === '/session' && method === 'POST') &&
