@@ -14,7 +14,19 @@ export default () => {
   Vue.config.errorHandler = (err, vm, info, ...rest) => {
     if (err instanceof APIError && vm && vm.$bvToast) {
       const { request, response } = err
-      console.error(err, { request, response })
+      try {
+        // We have seen Sentry issues which look as though our console.error log here is itself causing an exception,
+        // on older devices which might be less good at using console on complex objects.
+        //
+        // So log more carefully.
+        console.log('Vue errorHandler')
+        console.log('Err', err)
+        console.log('Request', request)
+        console.error('Response', response)
+      } catch (e) {
+        console.error('Error in toast logging', e)
+      }
+
       vm.$bvToast.toast(TOAST_MESSAGE, {
         title: TOAST_TITLE,
         variant: 'danger',
