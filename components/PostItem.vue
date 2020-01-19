@@ -16,6 +16,7 @@
           size="60"
           maxlength="60"
           spellcheck="true"
+          :timeout="30000"
           placeholder="In a single word or phrase, what is it?"
           @input="input"
         />
