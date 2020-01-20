@@ -15,7 +15,7 @@
               <b-col>
                 <div class="d-flex">
                   <h3 class="text-wrap flex-shrink-2">
-                    {{ message.subject }} Action {{ action }}
+                    {{ message.subject }}
                     <span v-if="rejected" class="text-danger">
                       <v-icon name="exclamation-triangle" scale="2" />
                     </span>
