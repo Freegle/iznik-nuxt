@@ -52,9 +52,19 @@
         <b-button v-if="!expanded" variant="white" class="mt-1" @click="expand">
           See details and reply <v-icon name="angle-double-right" />
         </b-button>
-        <b-button v-else variant="link" class="d-block mt-1" @click="contract">
-          Close message
-        </b-button>
+        <div v-else class="d-flex justify-content-between mt-1">
+          <b-button variant="link" @click="contract">
+            Close post
+          </b-button>
+          <b-btn
+            v-if="expanded.groups && expanded.groups.length"
+            variant="link"
+            class="mr-2"
+            @click="report"
+          >
+            Report this post
+          </b-btn>
+        </div>
       </b-card-header>
       <b-card-body v-if="expanded" class="pl-1">
         <notice-message v-if="ispromised" variant="warning" class="mb-3 mt-1">
@@ -79,18 +89,6 @@
             </span>
             <span v-else class="float-right small text-muted mr-1">
               <v-icon name="user" class="d-inline" /> No replies yet
-            </span>
-            <span v-if="expanded.groups && expanded.groups.length">
-              <br>
-              <b-btn
-                v-if="expanded.groups && expanded.groups.length"
-                variant="link"
-                class="ml-1 float-right p-0 mr-1 "
-                size="sm"
-                @click="report"
-              >
-                Report this post
-              </b-btn>
             </span>
           </span>
         </div>
