@@ -59,7 +59,7 @@
             </span>
             Chat
           </b-btn>
-          <b-btn variant="primary" class="d-inline-block d-none align-middle mt-1 mb-1 mr-1" @click="chat(false)">
+          <b-btn variant="primary" class="d-inline-block d-sm-none align-middle mt-1 mb-1 mr-1" @click="chat(false)">
             <b-badge v-if="unseen > 0" variant="danger">
               {{ unseen }}
             </b-badge>
