@@ -15,7 +15,6 @@
               <b-card-footer v-if="index === ids.length - 1" class="d-flex justify-content-between">
                 <div class="d-flex">
                   <Postcode
-                    :focus="false"
                     :find="false"
                     size="md"
                     class="d-inline"

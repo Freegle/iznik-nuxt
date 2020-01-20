@@ -202,13 +202,13 @@ nav .dropdown-toggle {
 }
 
 .forcebreak {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
   -ms-word-break: break-all;
-
-  /* Non standard for webkit */
   word-break: break-word;
-
-  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
   -moz-hyphens: auto;
+  -webkit-hyphens: auto;
   hyphens: auto;
 }
 
@@ -284,5 +284,23 @@ legend {
 
   .card-body .card {
     border-radius: unset;
+  }
+}
+
+.pulsate {
+  -webkit-animation: pulsate 1s ease-out;
+  -webkit-animation-iteration-count: infinite;
+  opacity: 0.5;
+}
+
+@-webkit-keyframes pulsate {
+  0% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1.0;
+  }
+  100% {
+    opacity: 0.25;
   }
 }

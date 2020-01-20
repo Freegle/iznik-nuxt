@@ -1,27 +1,10 @@
 <template>
   <b-card bg-light>
     <b-row v-if="group.profile" class="mt-1">
-      <b-col lg="2" class="order-0">
+      <b-col cols="4" md="2" lg="3" xl="2">
         <b-img-lazy rounded thumbnail alt="Community profile picture" :src="group.profile" class="js-pageimage" />
-        <span v-if="showJoin">
-          <b-button v-if="!amAMember" class="mt-1 float-right d-lg-none float-lg-none" variant="success" @click="join">
-            <v-icon v-if="joiningOrLeaving" name="sync" class="fa-spin" />
-            <v-icon v-else name="plus" />&nbsp;
-            Join
-          </b-button>
-          <b-button v-else-if="amAMember === 'Member'" class="mt-1 float-right d-lg-none float-lg-none" variant="white" @click="leave">
-            <v-icon v-if="joiningOrLeaving" name="sync" class="fa-spin" />
-            <v-icon v-else name="trash-alt" />&nbsp;
-            Leave
-          </b-button>
-        </span>
-        <b-link v-if="modsemail" :href="'mailto:' + modsemail">
-          <b-button class="mt-1 mr-1 d-block d-lg-none float-right" variant="white">
-            <v-icon name="question-circle" />&nbsp;Contact&nbsp;volunteers
-          </b-button>
-        </b-link>
       </b-col>
-      <b-col class="order-3 order-lg-1">
+      <b-col cols="8" md="6" lg="9" class="group-header-description">
         <b-card-title>
           {{ group.namedisplay }}
           <v-icon v-if="amAMember === 'Owner' || amAMember === 'Moderator'" name="crown" class="text-success" :title="'You have role ' + amAMember" />
@@ -45,8 +28,8 @@
           </nuxt-link>
         </p>
       </b-col>
-      <b-col lg="3" class="order-1 order-lg-2">
-        <span class="d-none d-lg-block float-right">
+      <b-col cols="12" md="4" lg="12" class="group-header-buttons">
+        <span>
           <b-link :href="'mailto:' + modsemail">
             <b-button class="ml-1 mb-1" variant="white">
               <v-icon name="question-circle" />&nbsp;Contact&nbsp;volunteers
@@ -75,6 +58,37 @@
     </b-row>
   </b-card>
 </template>
+
+<style scoped lang="scss">
+@import 'color-vars';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+
+.group-header-buttons {
+  margin-bottom: 20px;
+  text-align: right;
+
+  @include media-breakpoint-up(xl) {
+    flex: 0 0 36%;
+    max-width: 36%;
+    padding-left: 0;
+  }
+}
+
+.group-header-description {
+  @include media-breakpoint-up(xl) {
+    padding-left: 0;
+    max-width: 47%;
+    flex: 0 0 47%;
+  }
+}
+
+.img-thumbnail {
+  margin-bottom: 20px;
+}
+</style>
+
 <script>
 export default {
   props: {

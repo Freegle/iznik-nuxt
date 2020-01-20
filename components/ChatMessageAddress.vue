@@ -9,14 +9,16 @@
             </b-card-title>
             <b-card-text>
               <b-row>
-                <b-col cols="12" md="8">
+                <b-col>
                   <pre v-if="chatmessage.address.id" :class="chatmessage.address.instructions ? '' : 'mb-2'">{{ chatmessage.address.multiline }}</pre><pre v-else>This address has been deleted.</pre>
                   <hr v-if="chatmessage.address.instructions">
                   <div v-if="chatmessage.address.instructions" class="mb-2">
                     {{ chatmessage.address.instructions }}
                   </div>
                 </b-col>
-                <b-col cols="12" md="4" style="margin-top:-30px">
+              </b-row>
+              <b-row>
+                <b-col>
                   <b-embed type="iframe" aspect="1by1" allowfullscreen :src="'https://www.google.com/maps/embed/v1/place?key=AIzaSyArVxoX781qdcbmQZi1PKHX-qa0bPbboH4&q=' + chatmessage.address.postcode.lat + ',' + chatmessage.address.postcode.lng" />
                 </b-col>
               </b-row>
@@ -30,14 +32,16 @@
             </b-card-title>
             <b-card-text>
               <b-row>
-                <b-col cols="12" md="8">
+                <b-col cols="12">
                   <pre v-if="chatmessage.address.id" :class="chatmessage.address.instructions ? '' : 'mb-2'">{{ chatmessage.address.multiline }}</pre><pre v-else>This address has been deleted.</pre>
                   <hr v-if="chatmessage.address.instructions">
                   <div v-if="chatmessage.address.instructions" class="mb-2">
                     {{ chatmessage.address.instructions }}
                   </div>
                 </b-col>
-                <b-col cols="12" md="4" style="margin-top:-30px">
+              </b-row>
+              <b-row>
+                <b-col>
                   <b-embed type="iframe" aspect="1by1" allowfullscreen :src="'https://www.google.com/maps/embed/v1/place?key=AIzaSyArVxoX781qdcbmQZi1PKHX-qa0bPbboH4&q=' + chatmessage.address.postcode.lat + ',' + chatmessage.address.postcode.lng" />
                 </b-col>
               </b-row>
@@ -48,8 +52,6 @@
     </b-row>
   </div>
 </template>
-<style scoped>
-</style>
 <script>
 import ChatBase from '~/components/ChatBase'
 
@@ -57,3 +59,5 @@ export default {
   extends: ChatBase
 }
 </script>
+<style scoped>
+</style>

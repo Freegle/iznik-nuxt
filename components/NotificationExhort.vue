@@ -6,7 +6,7 @@
           <v-icon name="heart" scale="2" />
         </div>
       </div>
-      <div class="media-body">
+      <div class="media-body pl-1">
         <span class="notification-title"><span>{{ notification.title }}</span>
           <span v-if="notification.text">
             <br>"<b style="max-width: 200px; overflow-wrap: break-word">{{ notification.text }}</b>"

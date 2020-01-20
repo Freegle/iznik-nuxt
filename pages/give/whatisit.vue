@@ -16,7 +16,6 @@
                 <div class="d-flex">
                   <Postcode
                     :value="postcode ? postcode.name : null"
-                    :focus="false"
                     :find="false"
                     size="md"
                     class="d-inline"

@@ -29,7 +29,7 @@
           </span>
         </b-card-title>
         <span v-for="group in groups" :key="'message-' + id + '-' + group.id" class="small muted">
-          {{ group.arrival | timeago }} on {{ group.namedisplay }}
+          {{ group.arrival | timeago }} on <nuxt-link :to="'/explore/' + group.groupid">{{ group.namedisplay }}</nuxt-link>
           <nuxt-link :to="'/message/' + id" class="text-sm small text-faded">
             #{{ id }}&nbsp;
           </nuxt-link>
@@ -50,7 +50,7 @@
           <i>There's no description.</i>
         </div>
         <b-button v-if="!expanded" variant="white" class="mt-1" @click="expand">
-          Read more and reply <v-icon name="angle-double-right" />
+          See details and reply <v-icon name="angle-double-right" />
         </b-button>
         <b-button v-else variant="link" class="d-block mt-1" @click="contract">
           Close message
@@ -96,6 +96,12 @@
         </div>
       </b-card-body>
       <b-card-footer v-if="expanded" class="p-1 pt-3">
+        <NoticeMessage v-if="sent" variant="info" class="d-block d-sm-none mb-1">
+          We've sent your message.  You can see replies in the
+          <nuxt-link to="/chats">
+            <v-icon name="comments" /> Chats
+          </nuxt-link> section.
+        </NoticeMessage>
         <b-row>
           <b-col class="d-flex">
             <b-form-textarea
@@ -233,7 +239,8 @@ export default {
     return {
       reply: null,
       expanded: null,
-      replying: false
+      replying: false,
+      sent: false
     }
   },
   computed: {
@@ -421,9 +428,9 @@ export default {
       }
     },
     async sentReply() {
-      console.log('Sent reply')
       // This gets invoked when we have sent a message we passed to ChatButton.
       this.replying = false
+      this.sent = true
 
       // Clear message now sent
       this.reply = null
@@ -433,7 +440,6 @@ export default {
         replyMessage: null
       })
 
-      console.log('Open chat')
       // Now create the chat and send the first message.
       await this.$refs.chatbutton.openChat()
     }

@@ -27,7 +27,7 @@
                 <PostItem :item="item" @selected="itemSelect" @typed="itemType" />
               </b-col>
               <b-col cols="6" md="3">
-                <Postcode :focus="false" :find="false" size="md" @selected="postcodeSelect" @cleared="postcodeClear" />
+                <Postcode :find="false" size="md" @selected="postcodeSelect" @cleared="postcodeClear" />
               </b-col>
             </b-row>
           </div>

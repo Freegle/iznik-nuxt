@@ -1,14 +1,27 @@
 <template>
   <span>
-    <span v-if="size === 'naked'" @click="openChat">
-      {{ title }}
-    </span>
-    <b-btn v-else :size="size" :variant="variant" @click="openChat">
-      <v-icon name="comments" />
-      <span v-if="title">
+    <span v-if="size === 'naked'">
+      <span class="d-none d-sm-inline-block" @click="gotoChat(true)">
         {{ title }}
       </span>
-    </b-btn>
+      <span class="d-inline-block d-sm-none" @click="gotoChat(false)">
+        {{ title }}
+      </span>
+    </span>
+    <span v-else>
+      <b-btn :size="size" :variant="variant" class="d-none d-sm-inline" @click="gotoChat(true)">
+        <v-icon name="comments" />
+        <span v-if="title">
+          {{ title }}
+        </span>
+      </b-btn>
+      <b-btn :size="size" :variant="variant" class="d-inline-block d-sm-none" @click="gotoChat(false)">
+        <v-icon name="comments" />
+        <span v-if="title">
+          {{ title }}
+        </span>
+      </b-btn>
+    </span>
   </span>
 </template>
 <script>
@@ -41,7 +54,12 @@ export default {
     }
   },
   methods: {
-    async openChat(event, firstmessage, firstmsgid) {
+    gotoChat(popup) {
+      console.log('Go to chat', popup)
+      this.openChat(null, null, null, popup)
+    },
+
+    async openChat(event, firstmessage, firstmsgid, popup) {
       this.$emit('click')
       console.log(
         'Open chat',
@@ -57,9 +75,13 @@ export default {
           groupid: this.groupid
         })
 
-        await this.$store.dispatch('popupchats/popup', {
-          id: chatid
-        })
+        if (popup) {
+          await this.$store.dispatch('popupchats/popup', {
+            id: chatid
+          })
+        } else {
+          this.$router.go('/chats/' + chatid)
+        }
       } else if (this.userid > 0) {
         const chatid = await this.$store.dispatch('chats/openChatToUser', {
           userid: this.userid
@@ -77,9 +99,13 @@ export default {
           this.$emit('sent')
         }
 
-        await this.$store.dispatch('popupchats/popup', {
-          id: chatid
-        })
+        if (popup) {
+          await this.$store.dispatch('popupchats/popup', {
+            id: chatid
+          })
+        } else {
+          this.$router.go('/chats/' + chatid)
+        }
       }
     }
   }

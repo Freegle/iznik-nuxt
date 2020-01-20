@@ -750,7 +750,8 @@ export default {
         await this.$store.dispatch('notifications/count')
         await this.$store.dispatch('chats/listChats', {
           chattypes: ['User2User', 'User2Mod'],
-          summary: true
+          summary: true,
+          noerror: true
         })
       }
 
