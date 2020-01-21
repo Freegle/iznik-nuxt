@@ -2,9 +2,9 @@
   <div>
     <b-row class="pb-1">
       <b-col>
-        <div v-if="chatmessage.userid != $store.state.auth.user.id" class="media float-left">
-          <div class="media-left">
-            <div class="media-object">
+        <div v-if="chatmessage.userid != $store.state.auth.user.id" class="">
+          <div class="chatMessageProfilePic">
+            <div>
               <profile-image v-if="othericon" :image="othericon" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
             </div>
           </div>
@@ -16,7 +16,7 @@
             </span>
           </div>
         </div>
-        <div v-else class="media float-right">
+        <div v-else class="myChatMessage">
           <div :class="emessage ? 'media-body chatMessage mine' : 'media-body'">
             <span>
               <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap"><b>{{ emessage }}</b></span>
@@ -24,7 +24,7 @@
               <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
             </span>
           </div>
-          <div class="media-right">
+          <div class="chatMessageProfilePic">
             <div class="media-object">
               <profile-image :image="me.profile.turl" class="ml-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
             </div>
@@ -47,6 +47,15 @@
   padding-right: 4px;
   word-wrap: break-word;
   line-height: 1.75;
+  display: inline-block;
+}
+
+.chatMessageProfilePic {
+  display: inline-block;
+}
+
+.myChatMessage {
+  text-align: right;
 }
 
 .theirs {
