@@ -27,6 +27,10 @@
               there was fantastic. Her talk was really inspirational and it was amazing to hear about all the
               great work she has done so thank you for helping us get her there!&quot;</i>Becky Kenton Lake, Waste Strategy Projects Officer, Oxfordshire County Council.
           </p>
+          <p>
+            Oxfordshire County Council have created a <a href="https://www.oxfordshire.gov.uk/residents/environment-and-planning/waste-and-recycling/household-waste/repair-reuse-or-recycle" target="_blank">Waste Wizard</a> which directs residents to repair, reuse and recycling options, including pointing people towards Freegle.
+            This is a really easy way to let people know about Freegle and other similar organisations that help maximise reuse locally.
+          </p>
           <div class="row">
             <div class="col-sm-6">
               <b-img fluid src="/councils/OxfordshireReusesEvent1.jpg" />

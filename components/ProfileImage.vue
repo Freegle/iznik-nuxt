@@ -1,5 +1,5 @@
 <template>
-  <div class="profile-image__container">
+  <span class="profile-image__container">
     <b-img-lazy
       rounded="circle"
       :thumbnail="isThumbnail"
@@ -11,7 +11,7 @@
       @error.native="brokenProfileImage"
     />
     <v-icon v-if="isModerator" name="leaf" class="profile-image__moderator mb-0" :class="'profile-image__moderator--' + size" />
-  </div>
+  </span>
 </template>
 
 <script>

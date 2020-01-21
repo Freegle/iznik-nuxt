@@ -293,10 +293,15 @@ export default {
     totalWeight() {
       const weights = this.$store.getters['stats/get']('Weight')
       let total = 0
+      const now = dayjs()
 
       if (weights) {
         for (const w of weights) {
-          total += w.count
+          console.log(w.date, dayjs(w.date).diff(now, 'days'))
+          if (now.diff(dayjs(w.date), 'days') <= 365) {
+            console.log('Include')
+            total += w.count
+          }
         }
       }
 

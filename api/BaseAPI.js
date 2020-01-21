@@ -58,6 +58,12 @@ export default class BaseAPI {
           method,
           url: process.env.API + path
         }))
+      } else if (e.message.match(/.*aborted.*/i)) {
+        // We've seen requests get aborted immediately after beforeunload().  Makes sense to abort the requests
+        // when you're leaving a page.  No point in rippling those errors up to result in Sentry errors.
+        // Swallow these by returning a problem that never resolves.  Possible memory leak but it's a rare case.
+        console.log('Aborted - ignore')
+        return new Promise(function(resolve) {})
       }
     }
 
@@ -107,6 +113,7 @@ export default class BaseAPI {
         message
       )
     }
+
     return data
   }
 
