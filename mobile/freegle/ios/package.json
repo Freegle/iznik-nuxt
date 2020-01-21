@@ -13,6 +13,7 @@
     "cordova-ios": "^5.1.1",
     "cordova-plugin-camera": "^4.1.0",
     "cordova-plugin-device": "^2.0.3",
+    "cordova-plugin-geolocation": "^4.0.2",
     "cordova-plugin-googleplus": "git+https://github.com/EddyVerbruggen/cordova-plugin-googleplus.git",
     "cordova-plugin-inappbrowser": "^3.1.0",
     "cordova-plugin-ios-camera-permissions": "1.2.0",
@@ -49,7 +50,8 @@
         "REVERSED_CLIENT_ID": "com.googleusercontent.apps.423761283916-mfrb9i0ntt1omq2knit8j49agnhje648"
       },
       "cordova-plugin-statusbar": {},
-      "cordova-plugin-camera": {}
+      "cordova-plugin-camera": {},
+      "cordova-plugin-geolocation": {}
     },
     "platforms": [
       "ios"

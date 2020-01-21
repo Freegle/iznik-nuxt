@@ -96,7 +96,7 @@
             <string>To find your location when offering an item</string>
         </config-file>
     </platform>
-        <platform name="ios">
+    <platform name="ios">
         <resource-file src="GoogleService-Info.plist" />
     </platform>
 </widget>
