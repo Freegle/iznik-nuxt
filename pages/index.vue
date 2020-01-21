@@ -46,7 +46,7 @@
         <StoriesLanding class="mt-4" />
         <div style="height:80px" />
       </b-col>
-      <b-col cols="0" lg="3">
+      <b-col v-if="!isApp" cols="0" lg="3">
         <b-row class="d-none d-lg-block">
           <b-col>
             <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" class="float-right mt-2" target="_blank">
@@ -118,6 +118,9 @@ export default {
   },
 
   computed: {
+    isApp() {
+      return process.env.IS_APP
+    },
     me() {
       const user = this.$store.getters['auth/user']
       return user
