@@ -151,7 +151,7 @@
                   <span v-b-tooltip.hover.top title="Promise an item to this person" class="ml-1 mr-2" @click="promise">
                     <v-icon scale="2" name="handshake" />
                   </span>
-                  <span v-b-tooltip.hover.top title="Send your address" disabled class="mr-2">
+                  <span v-b-tooltip.hover.top title="Send your address" disabled class="mr-2" @click="addressBook">
                     <v-icon scale="2" name="address-book" />
                   </span>
                   <span v-b-tooltip.hover.top title="Update your availability" class="mr-2" @click="availability">
