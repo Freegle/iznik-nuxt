@@ -2,7 +2,7 @@
   <div>
     <b-row class="pb-1">
       <b-col>
-        <div v-if="chatmessage.userid != $store.state.auth.user.id" class="">
+        <div v-if="chatmessage.userid != $store.state.auth.user.id">
           <div class="chatMessageProfilePic">
             <div>
               <profile-image v-if="othericon" :image="othericon" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
