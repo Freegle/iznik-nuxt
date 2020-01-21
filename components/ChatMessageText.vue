@@ -25,7 +25,7 @@
             </span>
           </div>
           <div class="chatMessageProfilePic">
-            <div class="media-object">
+            <div>
               <profile-image :image="me.profile.turl" class="ml-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
             </div>
           </div>
