@@ -56,7 +56,11 @@ export default {
 
   methods: {
     click: function() {
+      console.log('Click on chat in list entry')
+      console.log('Chat id', this.id)
+      console.log('Route')
       this.$router.push('/chats/' + this.id)
+      console.log('Routed')
     }
   }
 }
