@@ -15,7 +15,7 @@
       </b-col>
     </b-row>
     <b-row>
-      <b-col v-if="chat.snippet" class="pl-4 truncate">
+      <b-col v-if="chat.snippet && chat.snippet !== 'false'" class="pl-4 truncate">
         {{ esnippet }}
       </b-col>
       <b-col v-else class="pl-4">
