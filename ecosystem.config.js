@@ -40,7 +40,7 @@ module.exports = {
       repo: 'git@github.com:Freegle/iznik-nuxt.git',
       path: '/var/www/fdnuxt.live',
       'post-deploy':
-        'npm install && npm run build && php ./mungeindex.php > /tmp/a.a && cp /tmp/a.a .nuxt/index.js && pm2 reload FD-production && /etc/waitfornode'
+        'monit stop nginx && npm install && npm run build && php ./mungeindex.php > /tmp/a.a && cp /tmp/a.a .nuxt/index.js && pm2 reload FD-production && /etc/waitfornode && monit start nginx'
     },
     // The preview site which is used by volunteers for testing.  We're sticking with this name because it's firmly
     // ingrained into volunteers' heads.

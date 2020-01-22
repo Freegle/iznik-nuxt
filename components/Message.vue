@@ -315,6 +315,14 @@ export default {
       const message = this.$store.getters['messages/get'](this.id)
 
       this.expanded = message
+
+      const me = this.$store.getters['auth/user']
+
+      if (me) {
+        this.$store.dispatch('messages/view', {
+          id: this.id
+        })
+      }
     },
 
     contract() {
