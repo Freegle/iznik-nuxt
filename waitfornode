@@ -1,6 +1,12 @@
 #!/bin/bash
 
-while ! nc -z localhost 3000; do
+while ! nc -z localhost 30; do
   echo "...waiting for node..."
   sleep 1
+done
+
+while ! nc -z localhost 3000; do
+  pm2 restart FD-production
+  echo "...restarted, waiting for node..."
+  sleep 30
 done
