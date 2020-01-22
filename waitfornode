@@ -3,13 +3,13 @@
 for try in {1..30} ; do
   nc -z localhost 3000
   [[ "$?" -eq 0 ]] && exit
-  echo "...waiting for node..."
+  echo "...waiting for node on `hostname`..."
   sleep 1
 done
 
 for try in {1..3000} ; do
   #pm2 restart FD-production
-  echo "...restarted, waiting for node..."
+  echo "...restarted, waiting for node on `hostname`..."
   nc -z localhost 3000
   [[ "$?" -eq 0 ]] && exit
   sleep 30
