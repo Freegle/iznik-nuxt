@@ -364,9 +364,8 @@ module.exports = {
     // to the current env value.
     render: {
       resourcesLoaded(resources) {
-        console.log('Resource', resources)
         const path =
-          process.env.NODE_ENV === ('development' || !process.env.CDN)
+          (process.env.NODE_ENV === 'development' || process.env.CDN === undefined)
             ? '/_nuxt'
             : process.env.CDN
         resources.clientManifest && (resources.clientManifest.publicPath = path)
