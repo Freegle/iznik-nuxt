@@ -15,17 +15,20 @@ module.exports = {
       env_production: {
         PORT: 3000,
         NODE_ENV: 'production',
-        IZNIK_API: 'https://fdapilive.ilovefreegle.org'
+        IZNIK_API: 'https://fdapilive.ilovefreegle.org',
+        CDN: 'https://freeglecdn.azureedge.net'
       },
       env_development: {
         PORT: 3001,
         NODE_ENV: 'production',
-        IZNIK_API: 'https://fdapidev.ilovefreegle.org'
+        IZNIK_API: 'https://fdapidev.ilovefreegle.org',
+        CDN: 'https://freeglecdndev.azureedge.net'
       },
       env_debug: {
         PORT: 3002,
         NODE_ENV: 'development',
-        IZNIK_API: 'https://fdapidbg.ilovefreegle.org'
+        IZNIK_API: 'https://fdapidbg.ilovefreegle.org',
+        CDN: 'https://freeglecdndbg.azureedge.net'
       }
     }
   ],

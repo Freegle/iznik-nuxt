@@ -360,6 +360,11 @@ module.exports = {
   build: {
     // analyze: true,
 
+    // We have a caching CDN in front of our site.  This is particularly useful for old script files which have
+    // been deleted by a new pm2 deploy on the server, but which may be loaded by a client which is open in a
+    // browser but which has not yet loaded all script files.
+    publicPath: process.env.NODE_ENV === ('development' || !process.env.CDN) ? '/_nuxt' : process.env.CDN,
+
     // When you deploy a new version, old chunk files which hadn't yet been loaded by a client will no longer
     // exist, and may cause errors. Nuxt has some rudimentary handling for this by reloading the whole page.
     // There are some suggestions from Sentry that this doesn't always work, and there is a suggestion that
