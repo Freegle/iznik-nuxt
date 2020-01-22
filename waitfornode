@@ -8,7 +8,7 @@ for try in {1..30} ; do
 done
 
 for try in {1..3000} ; do
-  #pm2 restart FD-production
+  pm2 restart FD-production
   echo "...restarted, waiting for node on `hostname`..."
   nc -z localhost 3000
   [[ "$?" -eq 0 ]] && exit
