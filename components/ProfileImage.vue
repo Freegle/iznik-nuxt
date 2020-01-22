@@ -6,7 +6,6 @@
       class="p-0"
       :class="'profile--' + size"
       :alt="altText"
-      title="Profile"
       :src="image"
       @error.native="brokenProfileImage"
     />
