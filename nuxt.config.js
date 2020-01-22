@@ -354,16 +354,31 @@ module.exports = {
     ]
   ],
 
+  hooks: {
+    // We have a caching CDN in front of our site.  This is particularly useful for old script files which have
+    // been deleted by a new pm2 deploy on the server, but which may be loaded by a client which is open in a
+    // browser but which has not yet loaded all script files.
+    //
+    // Nuxt doesn't allow the publicPath (CDN url) to be overridden at run time - it's baked into the manifest at
+    // build time.  This hook intercepts the VueRenderer when it has loaded the manifest and updates the publicPath
+    // to the current env value.
+    render: {
+      resourcesLoaded(resources) {
+        console.log('Resource', resources)
+        const path =
+          process.env.NODE_ENV === ('development' || !process.env.CDN)
+            ? '/_nuxt'
+            : process.env.CDN
+        resources.clientManifest && (resources.clientManifest.publicPath = path)
+      }
+    }
+  },
+
   /*
   ** Build configuration
   */
   build: {
     // analyze: true,
-
-    // We have a caching CDN in front of our site.  This is particularly useful for old script files which have
-    // been deleted by a new pm2 deploy on the server, but which may be loaded by a client which is open in a
-    // browser but which has not yet loaded all script files.
-    publicPath: process.env.NODE_ENV === ('development' || !process.env.CDN) ? '/_nuxt' : process.env.CDN,
 
     // When you deploy a new version, old chunk files which hadn't yet been loaded by a client will no longer
     // exist, and may cause errors. Nuxt has some rudimentary handling for this by reloading the whole page.
