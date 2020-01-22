@@ -3,7 +3,8 @@ import sitemap from './utils/sitemap.js'
 
 const FACEBOOK_APPID = '134980666550322'
 const SENTRY_DSN = 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170'
-const YAHOO_CLIENTID = 'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
+const YAHOO_CLIENTID =
+  'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
 
 require('dotenv').config()
 
@@ -64,7 +65,7 @@ module.exports = {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'author', name: 'author', content: 'Freegle' },
-      { name: 'supported-color-schemes', content: 'light'},
+      { name: 'supported-color-schemes', content: 'light' },
       {
         hid: 'description',
         name: 'description',
@@ -325,8 +326,12 @@ module.exports = {
       //
       // Note that this doesn't retry requests that never complete.
       retries: 10,
-      retryDelay: (retryCount) => {
+      retryDelay: retryCount => {
         return retryCount * 1000
+      },
+      retryCondition: error => {
+        console.log('Axios Error', error)
+        return true
       },
       shouldResetTimeout: true
     }
@@ -363,7 +368,8 @@ module.exports = {
     // https://github.com/nuxt/nuxt.js/pull/3940
     // https://stackoverflow.com/questions/59292564/nuxt-js-npm-run-build-results-in-some-js-files-being-not-found
     filenames: {
-      chunk: ({ isDev }) => process.env.NODE_ENV === 'development' ? '[name].js' : '[chunkhash].js'
+      chunk: ({ isDev }) =>
+        process.env.NODE_ENV === 'development' ? '[name].js' : '[chunkhash].js'
     },
 
     transpile: [/^vue2-google-maps($|\/)/, 'vue-lazy-youtube-video'],
