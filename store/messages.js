@@ -179,5 +179,9 @@ export const actions = {
 
   async intend({ dispatch }, params) {
     await this.$api.message.intend(params.id, params.outcome)
+  },
+
+  async view({ dispatch }, params) {
+    await this.$api.message.view(params.id)
   }
 }

@@ -139,6 +139,14 @@ export default {
         id: this.id
       })
     }
+
+    const me = this.$store.getters['auth/user']
+
+    if (me) {
+      this.$store.dispatch('messages/view', {
+        id: this.id
+      })
+    }
   }
 }
 </script>
