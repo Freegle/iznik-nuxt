@@ -62,10 +62,12 @@
 
                   <b-list-group horizontal class="mb-1 mt-2 flex flex-wrap">
                     <b-list-group-item v-for="volunteer in volunteers" :key="'volunteering-' + volunteer.id" class="bg-transparent p-0">
-                      <profile-image v-if="!volunteer.profile.default"
-                                     :image="volunteer.profile.turl"
-                                     size="lg"
-                                     :altText="'Profile picture for ' + volunteer.displayname" />
+                      <profile-image
+                        v-if="!volunteer.profile.default"
+                        :image="volunteer.profile.turl"
+                        size="lg"
+                        :alt-text="'Profile picture for ' + volunteer.displayname"
+                      />
                     </b-list-group-item>
                   </b-list-group>
 
@@ -75,11 +77,13 @@
                     <div class="media clickme">
                       <div class="media-left">
                         <div class="media-object">
-                          <profile-image v-if="!boardmember.profile.default"
-                                         :image="boardmember.profile.turl"
-                                         class="mr-2"
-                                         size="lg"
-                                         :altText="'Profile picture for ' + boardmember.displayname" />
+                          <profile-image
+                            v-if="!boardmember.profile.default"
+                            :image="boardmember.profile.turl"
+                            class="mr-2"
+                            size="lg"
+                            :alt-text="'Profile picture for ' + boardmember.displayname"
+                          />
                         </div>
                       </div>
                       <div class="media-body">
