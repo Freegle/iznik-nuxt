@@ -16,6 +16,10 @@
         <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
         <b-collapse v-if="loggedIn" id="nav_collapse" ref="nav_collapse" is-nav>
           <b-navbar-nav>
+            <b-nav-item id="menu-option-mygroups" class="text-center small p-0" to="/communities" @mousedown="maybeReload('/communities')">
+              <v-icon name="users" scale="2" /><br>
+              Communities
+            </b-nav-item>
             <b-nav-item id="menu-option-chitchat" class="text-center small p-0" to="/chitchat" @mousedown="maybeReload('/chitchat')">
               <v-icon name="coffee" scale="2" /><br>
               ChitChat
@@ -31,10 +35,6 @@
             <b-nav-item id="menu-option-find" class="text-center small p-0" to="/find" @mousedown="maybeReload('/find')">
               <v-icon name="search" scale="2" /><br>
               Find
-            </b-nav-item>
-            <b-nav-item id="menu-option-mygroups" class="text-center small p-0" to="/communities" @mousedown="maybeReload('/communities')">
-              <v-icon name="users" scale="2" /><br>
-              Communities
             </b-nav-item>
             <b-nav-item id="menu-option-explore" class="text-center small p-0" to="/explore" @mousedown="maybeReload('/explore')">
               <v-icon name="map-marker-alt" scale="2" /><br>
@@ -195,6 +195,10 @@
 
       <b-collapse v-if="loggedIn" id="nav_collapse_mobile" ref="nav_collapse_mobile" class="w-100 ourBack">
         <b-navbar-nav class="ml-auto flex-row flex-wrap small">
+          <b-nav-item class="text-center p-0" to="/communities" @mousedown="maybeReload('/communities')">
+            <v-icon name="users" scale="2" /><br>
+            Communities
+          </b-nav-item>
           <b-nav-item class="text-center p-0 white" to="/chitchat" @mousedown="maybeReload('/chitchat')">
             <v-icon name="coffee" scale="2" /><br>
             ChitChat
@@ -210,10 +214,6 @@
           <b-nav-item class="text-center p-0" to="/find" @mousedown="maybeReload('/find')">
             <v-icon name="search" scale="2" /><br>
             Find
-          </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/communities" @mousedown="maybeReload('/communities')">
-            <v-icon name="users" scale="2" /><br>
-            Communities
           </b-nav-item>
           <b-nav-item class="text-center p-0" to="/explore" @mousedown="maybeReload('/explore')">
             <v-icon name="map-marker-alt" scale="2" /><br>
