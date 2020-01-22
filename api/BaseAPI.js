@@ -1,3 +1,11 @@
+let Sentry
+
+if (process.client) {
+  Sentry = require('@sentry/browser')
+} else {
+  Sentry = require('@sentry/node')
+}
+
 export class APIError extends Error {
   constructor({ request, response }, message) {
     super(message)
@@ -89,6 +97,17 @@ export default class BaseAPI {
       const retstr = data && data.ret ? data.ret : 'Unknown'
       const statusstr = data && data.status ? data.status : 'Unknown'
 
+      Sentry.captureException(
+        'API request failed ' +
+          path +
+          ' returned HTTP ' +
+          status +
+          ' ret ' +
+          retstr +
+          ' status ' +
+          statusstr
+      )
+
       const message = [
         'API Error',
         method,
@@ -96,6 +115,7 @@ export default class BaseAPI {
         '->',
         `ret: ${retstr} status: ${statusstr}`
       ].join(' ')
+
       throw new APIError(
         {
           request: {
