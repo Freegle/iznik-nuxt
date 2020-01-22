@@ -55,8 +55,6 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch('jobs/clear')
-
     const me = this.$store.getters['auth/user']
     if (
       me &&
