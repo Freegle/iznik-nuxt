@@ -29,7 +29,7 @@
           <img alt="Twitter" src="~/static/twitter.png" width="40">
         </a>
         <a href="https://github.com/Freegle/iznik-nuxt" title="We're open source - find us on GitHub" target="_blank" class="float-right">
-          <img alt="GitHub" src="~/static/GitHub_Logo.png">
+          <img alt="GitHub" src="~/static/github.svg" width="40">
         </a>
       </div>
     </b-card>
