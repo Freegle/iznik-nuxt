@@ -56,22 +56,25 @@
   .chatMessage {
     margin-left: auto;
   }
+
+  .chatMessageProfilePic {
+    left: 0;
+  }
 }
 
 .chatMessageProfilePic {
   min-width: 25px;
   position: relative;
-  bottom: 6px;
+  top: 3px;
+  left: 3px;
 
   @include media-breakpoint-up(md) {
     min-width: 35px;
-    bottom: 3px;
   }
 }
 
 .chatMessageWrapper {
   display: flex;
-  align-items: flex-end;
   padding-right: 10px;
 
   &.myChatMessage {
