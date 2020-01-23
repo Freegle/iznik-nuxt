@@ -1,8 +1,8 @@
 <template>
   <div>
     <b-row>
-      <b-col v-if="userid">
-        <profile-image v-if="users[userid].profile.turl" :image="require(`@/static/icon.png`)" class="ml-1 mb-1 inline" is-thumbnail size="lg" />
+      <b-col>
+        <profile-image :image="require(`@/static/icon.png`)" class="ml-1 mb-1 inline" is-thumbnail size="lg" />
         <span class="text-success font-weight-bold pl-2">
           Freegle
         </span>
