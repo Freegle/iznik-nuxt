@@ -348,9 +348,8 @@ export default {
               console.log('Fetched')
 
               if (this.$route.path === '/' || !this.$route.path) {
-                // We've signed up from the home page.  Send them to chitchat - that shows some activity, and also
-                // has the Give/Find prompt.
-                this.$router.push('/chitchat')
+                // We've signed up from the home page.  Send them to the explore page to find a group.
+                this.$router.push('/explore')
               }
             })
             .catch(e => {
