@@ -25,7 +25,7 @@ const API = '/api'
 const IZNIK_API = process.env.IZNIK_API || 'https://fdapilive.ilovefreegle.org'
 
 // This is the CDN for this site.
-const CDN = process.env.CDN || '/_nuxt'
+const CDN = process.env.CDN
 
 // This is where the user site is.
 const USER_SITE = 'https://www.ilovefreegle.org'
@@ -184,6 +184,7 @@ module.exports = {
     { src: '~/plugins/dayjs' },
 
     // Some plugins are client-side features
+    { src: '~plugins/cdn', ssr: false },
     { src: '~plugins/visibility.js', ssr: false },
     { src: '~plugins/error-toasts.js', ssr: false },
     { src: '~plugins/vuex-persistedstate', ssr: false },
