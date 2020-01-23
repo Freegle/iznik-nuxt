@@ -390,8 +390,16 @@ module.exports = {
     // https://github.com/nuxt/nuxt.js/pull/3940
     // https://stackoverflow.com/questions/59292564/nuxt-js-npm-run-build-results-in-some-js-files-being-not-found
     filenames: {
-      chunk: ({ isDev }) =>
-        process.env.NODE_ENV === 'development' ? '[name].js' : '[chunkhash].js'
+      chunk: ({ isDev }) => {
+        let ret = process.env.NODE_ENV === 'development' ? '[name].js' : '[chunkhash].js'
+
+        if (process.env.CDN !== undefined) {
+          // Return this so that dynamically loaded chunks get pulled from the CDN.
+          ret = process.env.CDN + '/_nuxt' + ret
+        }
+
+        return ret
+      }
     },
 
     transpile: [/^vue2-google-maps($|\/)/, 'vue-lazy-youtube-video'],
