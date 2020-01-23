@@ -43,7 +43,7 @@ module.exports = {
       repo: 'git@github.com:Freegle/iznik-nuxt.git',
       path: '/var/www/fdnuxt.live',
       'post-deploy':
-        'monit stop nginx && rsync -a app4:/var/build/iznik-nuxt/ . && cp restartfd /etc && chmod +x /etc/restartfd && cp waitfornode /etc && chmod +x /etc/waitfornode && pm2 restart FD-production --update-env && /etc/waitfornode && monit start nginx'
+        'monit stop nginx && rsync -a app4:/var/build/iznik-nuxt/ . && npx patch-package && cp restartfd /etc && chmod +x /etc/restartfd && cp waitfornode /etc && chmod +x /etc/waitfornode && pm2 restart FD-production --update-env && /etc/waitfornode && monit start nginx'
     },
     // The preview site which is used by volunteers for testing.  We're sticking with this name because it's firmly
     // ingrained into volunteers' heads.
@@ -55,7 +55,7 @@ module.exports = {
       repo: 'git@github.com:Freegle/iznik-nuxt.git',
       path: '/var/www/fdnuxt.dev',
       'post-deploy':
-        'rsync -a app4:/var/build/iznik-nuxt/ . && cp restartfd /etc && chmod +x /etc/restartfd && cp waitfornode /etc && chmod +x /etc/waitfornode && pm2 restart FD-development --update-env && /etc/waitfornode'
+        'rsync -a app4:/var/build/iznik-nuxt/ . && npx patch-package && cp restartfd /etc && chmod +x /etc/restartfd && cp waitfornode /etc && chmod +x /etc/waitfornode && pm2 restart FD-development --update-env && /etc/waitfornode'
     },
     // The site which (despite the name) which is used by developers.
     debug: {
@@ -66,7 +66,7 @@ module.exports = {
       repo: 'git@github.com:Freegle/iznik-nuxt.git',
       path: '/var/www/fdnuxt.dbg',
       'post-deploy':
-        'rsync -a app4:/var/build/iznik-nuxt/ . && cp restartfd /etc && chmod +x /etc/restartfd && cp waitfornode /etc && chmod +x /etc/waitfornode && pm2 restart FD-debug --update-env && /etc/waitfornode'
+        'rsync -a app4:/var/build/iznik-nuxt/ . && npx patch-package && cp restartfd /etc && chmod +x /etc/restartfd && cp waitfornode /etc && chmod +x /etc/waitfornode && pm2 restart FD-debug --update-env && /etc/waitfornode'
     }
   }
 }
