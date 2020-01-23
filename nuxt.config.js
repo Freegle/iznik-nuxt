@@ -24,6 +24,9 @@ const API = '/api'
 // hurt client performance).
 const IZNIK_API = process.env.IZNIK_API || 'https://fdapilive.ilovefreegle.org'
 
+// This is the CDN for this site.
+const CDN = process.env.CDN || '/_nuxt'
+ 
 // This is where the user site is.
 const USER_SITE = 'https://www.ilovefreegle.org'
 
@@ -365,9 +368,9 @@ module.exports = {
     render: {
       resourcesLoaded(resources) {
         const path =
-          (process.env.NODE_ENV === 'development' || process.env.CDN === undefined)
+          process.env.CDN === undefined
             ? '/_nuxt'
-            : process.env.CDN
+            : (process.env.CDN + '/_nuxt')
         resources.clientManifest && (resources.clientManifest.publicPath = path)
       }
     }
@@ -489,6 +492,7 @@ module.exports = {
   env: {
     API: API,
     IZNIK_API: IZNIK_API,
+    CDN: CDN,
     CHAT_HOST: CHAT_HOST,
     FACEBOOK_APPID: FACEBOOK_APPID,
     YAHOO_CLIENTID: YAHOO_CLIENTID,
