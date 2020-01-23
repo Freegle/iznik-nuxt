@@ -529,7 +529,7 @@ $color-google: #4285f4;
 $color-yahoo: #6b0094;
 
 .signin__section--social {
-  flex: 0 1 100%;
+  flex: 0 1 auto;
 
   @include media-breakpoint-up(lg) {
     flex: 0 1 37%;
@@ -537,7 +537,7 @@ $color-yahoo: #6b0094;
 }
 
 .signin__section--freegle {
-  flex: 0 1 100%;
+  flex: 0 1 auto;
 
   @include media-breakpoint-up(lg) {
     flex: 0 1 44%;
