@@ -2,13 +2,13 @@
   <div>
     <b-row class="pb-1">
       <b-col>
-        <div v-if="chatmessage.userid != $store.state.auth.user.id">
+        <div v-if="chatmessage.userid != $store.state.auth.user.id" class="chatMessageWrapper">
           <div class="chatMessageProfilePic">
             <div>
               <profile-image v-if="othericon" :image="othericon" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
             </div>
           </div>
-          <div :class="emessage ? 'media-body chatMessage theirs' : 'media-body'">
+          <div :class="emessage ? 'chatMessage theirs' : ''">
             <span>
               <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap"><b>{{ emessage }}</b></span>
               <span v-else class="prewrap forcebreak">{{ emessage }}</span>
@@ -16,8 +16,8 @@
             </span>
           </div>
         </div>
-        <div v-else class="myChatMessage">
-          <div :class="emessage ? 'media-body chatMessage mine' : 'media-body'">
+        <div v-else class="myChatMessage chatMessageWrapper">
+          <div :class="emessage ? 'chatMessage mine' : ''">
             <span>
               <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap"><b>{{ emessage }}</b></span>
               <span v-else class="prewrap forcebreak">{{ emessage }}</span>
@@ -37,6 +37,9 @@
 
 <style scoped lang="scss">
 @import 'color-vars';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
 
 .chatMessage {
   border: 1px solid $color-gray--light;
@@ -47,15 +50,37 @@
   padding-right: 4px;
   word-wrap: break-word;
   line-height: 1.75;
-  display: inline-block;
-}
-
-.chatMessageProfilePic {
-  display: inline-block;
 }
 
 .myChatMessage {
-  text-align: right;
+  .chatMessage {
+    margin-left: auto;
+  }
+
+  .chatMessageProfilePic {
+    left: 0;
+  }
+}
+
+.chatMessageProfilePic {
+  min-width: 25px;
+  position: relative;
+  top: 3px;
+  left: 3px;
+
+  @include media-breakpoint-up(md) {
+    min-width: 35px;
+  }
+}
+
+.chatMessageWrapper {
+  display: flex;
+  padding-right: 10px;
+
+  &.myChatMessage {
+    padding-left: 10px;
+    padding-right: 0;
+  }
 }
 
 .theirs {
