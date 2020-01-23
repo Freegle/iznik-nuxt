@@ -398,20 +398,27 @@ export default {
       id: this.id
     })
 
-    await this.$store.dispatch('chatmessages/clearContext', {
-      chatid: this.id
-    })
+    const chat = this.$store.getters['chats/get'](this.id)
 
-    if (this.otheruser) {
-      // Get the user info in case we need to warn about them.
-      await this.$store.dispatch('user/fetch', {
-        id: this.otheruser.id,
-        info: true
+    if (chat) {
+      await this.$store.dispatch('chatmessages/clearContext', {
+        chatid: this.id
       })
 
-      setTimeout(() => {
-        this.showReplyTime = false
-      }, 30000)
+      if (this.otheruser) {
+        // Get the user info in case we need to warn about them.
+        await this.$store.dispatch('user/fetch', {
+          id: this.otheruser.id,
+          info: true
+        })
+
+        setTimeout(() => {
+          this.showReplyTime = false
+        }, 30000)
+      }
+    } else {
+      // Invalid chat id
+      this.$router.push('/chats')
     }
   },
 
