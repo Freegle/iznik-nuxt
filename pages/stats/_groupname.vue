@@ -297,9 +297,7 @@ export default {
 
       if (weights) {
         for (const w of weights) {
-          console.log(w.date, dayjs(w.date).diff(now, 'days'))
           if (now.diff(dayjs(w.date), 'days') <= 365) {
-            console.log('Include')
             total += w.count
           }
         }

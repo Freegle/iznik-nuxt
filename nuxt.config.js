@@ -26,7 +26,7 @@ const IZNIK_API = process.env.IZNIK_API || 'https://fdapilive.ilovefreegle.org'
 
 // This is the CDN for this site.
 const CDN = process.env.CDN || '/_nuxt'
- 
+
 // This is where the user site is.
 const USER_SITE = 'https://www.ilovefreegle.org'
 
@@ -332,8 +332,8 @@ module.exports = {
       retryDelay: retryCount => {
         return retryCount * 1000
       },
+      // eslint-disable-next-line handle-callback-err
       retryCondition: error => {
-        console.log('Axios Error', error)
         return true
       },
       shouldResetTimeout: true
