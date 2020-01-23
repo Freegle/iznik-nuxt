@@ -58,7 +58,7 @@ export const actions = {
         commit('setLastLocation', params.location)
       }
     } catch (e) {
-      // Typically Ad Blockers.
+      // Typically Ad Blockers, though might be an error timeout.
       commit('setBlocked', true)
     }
   },

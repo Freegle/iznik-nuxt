@@ -23,6 +23,7 @@ git checkout -- nuxt.config.js && \
 npm rebuild node-sass --force && \
 git pull && \
 npm install && \
+npx patch-package && \
 npm run build && \
 php ./mungeindex.php > /tmp/a.a && cp /tmp/a.a .nuxt/index.js
 
