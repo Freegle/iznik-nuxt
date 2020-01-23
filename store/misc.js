@@ -1,6 +1,8 @@
 import Vue from 'vue'
 
-export const state = () => ({})
+export const state = () => ({
+  cdn: process.env.CDN
+})
 
 export const mutations = {
   set(state, params) {
