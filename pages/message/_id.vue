@@ -3,9 +3,9 @@
     <b-row class="m-0">
       <b-col cols="0" md="3" class="d-none d-md-block" />
       <b-col cols="12" md="6" class="p-0">
-        <div v-if="error">
+        <div v-if="error" class="bg-white p-2">
           <h1>Sorry, that message isn't around any more.</h1>
-          <div class="bg-white">
+          <div>
             <p>If it was an OFFER, it's probably been TAKEN. If it was a WANTED, it's probably been RECEIVED.</p>
             <p>Why not look for something else?</p>
           </div>
@@ -23,7 +23,7 @@
             </b-col>
           </b-row>
         </div>
-        <div v-else-if="message.outcomes && message.outcomes.length > 0">
+        <div v-else-if="message && message.outcomes && message.outcomes.length > 0">
           <h1>{{ message.subject }}</h1>
           <NoticeMessage variant="info">
             <p>Sorry, that message is no longer available.  Why not look for something else?</p>
@@ -89,18 +89,26 @@ export default {
     }
   },
   async asyncData({ app, params, store }) {
-    try {
-      await store.dispatch('messages/fetch', {
-        id: params.id
-      })
+    if (params.id) {
+      try {
+        await store.dispatch('messages/fetch', {
+          id: params.id
+        })
 
-      const message = store.getters['messages/get'](params.id)
+        const message = store.getters['messages/get'](params.id)
 
-      return {
-        message: message,
-        error: false
+        return {
+          message: message,
+          error: false
+        }
+      } catch (e) {
+        return {
+          message: null,
+          error: true
+        }
       }
-    } catch (e) {
+    } else {
+      // No supplied id.  The default error will do.
       return {
         message: null,
         error: true
@@ -131,21 +139,23 @@ export default {
     }
   },
   mounted() {
-    if (process.browser && this.message && !this.message.fromuser) {
-      // We are on the client and loading a page which we have rendered on the server rather than navigated to on the
-      // client side.  We will therefore have rendered it logged out.  Refetch the message so that we get more info,
-      // which we may do when logged in.
-      this.$store.dispatch('messages/fetch', {
-        id: this.id
-      })
-    }
+    if (this.id) {
+      if (process.browser && this.message && !this.message.fromuser) {
+        // We are on the client and loading a page which we have rendered on the server rather than navigated to on the
+        // client side.  We will therefore have rendered it logged out.  Refetch the message so that we get more info,
+        // which we may do when logged in.
+        this.$store.dispatch('messages/fetch', {
+          id: this.id
+        })
+      }
 
-    const me = this.$store.getters['auth/user']
+      const me = this.$store.getters['auth/user']
 
-    if (me) {
-      this.$store.dispatch('messages/view', {
-        id: this.id
-      })
+      if (me) {
+        this.$store.dispatch('messages/view', {
+          id: this.id
+        })
+      }
     }
   }
 }
