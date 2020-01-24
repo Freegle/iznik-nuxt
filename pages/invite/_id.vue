@@ -15,13 +15,18 @@ export default {
     this.id = this.$route.params.id
   },
   async mounted() {
-    // Record the acceptance
-    await this.$store.dispatch('invitations/edit', {
-      id: this.id,
-      outcome: 'Accepted'
-    })
+    if (this.id) {
+      // Record the acceptance
+      await this.$store.dispatch('invitations/edit', {
+        id: this.id,
+        outcome: 'Accepted'
+      })
 
-    this.$router.push('/')
+      this.$router.push('/')
+    } else {
+      // Probably they're looking for the Spread page.
+      this.$router.push('/spread')
+    }
   },
   head() {
     return this.buildHead('Invitation', "You've been invited to Freegle")
