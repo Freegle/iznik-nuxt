@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-2">
+  <div>
     <b-card v-if="events.length" variant="white" no-body>
       <b-card-body class="p-0">
         <b-btn variant="white" class="float-right m-1" @click="showEventModal">

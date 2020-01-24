@@ -1,7 +1,7 @@
 <template>
   <b-container fluid>
     <b-row class="m-0">
-      <b-col cols="0" lg="3" class="d-none d-lg-block">
+      <b-col cols="0" lg="3" class="d-none d-lg-block p-0 pr-1">
         <SidebarLeft :show-community-events="true" :show-bot-left="true" />
       </b-col>
       <b-col cols="12" lg="6" class="p-0">
@@ -28,7 +28,7 @@
           </client-only>
         </div>
       </b-col>
-      <b-col cols="0" lg="3" class="d-none d-lg-block">
+      <b-col cols="0" lg="3" class="d-none d-lg-block p-0 pl-1">
         <sidebar-right show-volunteer-opportunities />
       </b-col>
     </b-row>
