@@ -1,5 +1,5 @@
 <template>
-  <div v-if="location" class="mt-2">
+  <div v-if="location">
     <NoticeMessage v-if="blocked" variant="warning">
       <h3>Please help keep Freegle running</h3>
       <p>
@@ -26,25 +26,39 @@
         <p class="text-center small">
           Jobs near you.  Freegle gets a small amount if you click.
         </p>
-        <div v-for="job in jobs" :key="'job-' + job.onmousedown" class="">
+        <div v-for="job in visibleJobs" :key="'job-' + job.onmousedown" class="">
           <Job :summary="true" :job="job" />
         </div>
+        <client-only>
+          <infinite-loading key="infinitejobs" @infinite="loadMore">
+            <span slot="no-results">
+              <notice-message v-if="!jobs || !jobs.length">
+                We can't find any jobs at the moment.
+              </notice-message>
+            </span>
+            <span slot="no-more" />
+            <span slot="spinner" />
+          </infinite-loading>
+        </client-only>
       </b-card-body>
     </b-card>
   </div>
 </template>
 <script>
+import InfiniteLoading from 'vue-infinite-loading'
 import Job from './Job'
 const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
     Job,
-    NoticeMessage
+    NoticeMessage,
+    InfiniteLoading
   },
   data: function() {
     return {
-      location: null
+      location: null,
+      show: 0
     }
   },
   computed: {
@@ -53,6 +67,15 @@ export default {
     },
     blocked() {
       return this.$store.getters['jobs/blocked']
+    },
+    visibleJobs() {
+      if (process.browser) {
+        // We have an infinite scroll - return as many as we're currently showing.
+        return this.jobs.slice(0, this.show)
+      } else {
+        // SSR - return all for SEO.
+        return this.job
+      }
     }
   },
   mounted() {
@@ -75,6 +98,16 @@ export default {
       }, 1000)
     }
   },
-  methods: {}
+  methods: {
+    loadMore($state) {
+      // We use an infinite load for the list because it's a lot of DOM to add at initial page load.
+      if (this.show < this.jobs.length) {
+        this.show++
+        $state.loaded()
+      } else {
+        $state.complete()
+      }
+    }
+  }
 }
 </script>

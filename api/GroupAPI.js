@@ -6,8 +6,8 @@ export default class GroupAPI extends BaseAPI {
     return groups
   }
 
-  async fetch(id) {
-    const { group } = await this.$get('/group', { id })
+  async fetch(id, log) {
+    const { group } = await this.$get('/group', { id }, log)
     return group
   }
 }

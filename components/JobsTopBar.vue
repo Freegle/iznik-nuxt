@@ -16,7 +16,7 @@
     <div v-else>
       <div class="mb-1 text-center small text-muted">
         Jobs near you.  Freegle gets a small amount if you click, which helps keep us going.  <nuxt-link to="/jobs">
-          See more
+          See more jobs
         </nuxt-link>.
       </div>
       <div v-for="job in jobs" :key="'job-' + job.onmousedown" class="">

@@ -59,15 +59,17 @@ export default {
       this.openChat(null, null, null, popup)
     },
 
-    async openChat(event, firstmessage, firstmsgid, popup) {
+    async openChat(event, firstmessage, firstmsgid, popup, route = true) {
       this.$emit('click')
       console.log(
         'Open chat',
         firstmessage,
         firstmsgid,
         this.groupid,
-        this.userid
+        this.userid,
+        popup
       )
+      console.trace()
 
       if (this.groupid > 0) {
         // Open a chat to the mods
@@ -103,8 +105,8 @@ export default {
           await this.$store.dispatch('popupchats/popup', {
             id: chatid
           })
-        } else {
-          this.$router.go('/chats/' + chatid)
+        } else if (route) {
+          this.$router.push('/chats/' + chatid)
         }
       }
     }

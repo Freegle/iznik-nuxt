@@ -12,6 +12,8 @@ module.exports = {
       max_memory_restart: '1G',
       wait_ready: true,
       listen_timeout: 10000,
+
+      // These envs need to match cdn.js if you want to use a CDN.
       env_production: {
         PORT: 3000,
         NODE_ENV: 'production',

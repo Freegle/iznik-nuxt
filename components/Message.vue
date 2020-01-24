@@ -2,67 +2,169 @@
   <div>
     <b-card class="p-0 mb-1" variant="success">
       <b-card-header :class="'pl-2 pr-2 clearfix' + (ispromised ? ' promisedfade' : '')">
-        <b-card-title class="msgsubj mb-0">
-          <span v-if="attachments && attachments.length > 0" class="float-right clickme" @click="showPhotos">
-            <b-badge v-if="attachments.length > 1" class="photobadge" variant="primary">+{{ attachments.length - 1 }} <v-icon name="camera" /></b-badge>
+        <b-card-title class="msgsubj mb-0 d-block d-sm-none">
+          <div class="d-flex flex-column justify-content-end">
+            <div class="d-flex">
+              <Highlighter
+                v-if="matchedon"
+                :search-words="[matchedon.word]"
+                :text-to-highlight="eSubject"
+                highlight-class-name="highlight"
+              />
+              <span v-else>
+                {{ eSubject }}
+              </span>
+            </div>
+            <div v-for="group in groups" :key="'message-' + id + '-' + group.id" class="small muted">
+              <div class="small">
+                {{ group.arrival | timeago }} on <nuxt-link :to="'/explore/' + group.groupid">
+                  {{ group.namedisplay }}
+                </nuxt-link>
+              </div>
+            </div>
+          </div>
+          <div v-if="attachments && attachments.length > 0" class="d-block mt-1 d-sm-none clickme position-relative" @click="showPhotos">
+            <b-badge v-if="attachments.length > 1" class="photobadge" variant="primary">
+              +{{ attachments.length - 1 }} <v-icon name="camera" />
+            </b-badge>
             <b-img-lazy
               rounded
-              thumbnail
+              fluid-grow
               class="attachment p-0 square"
               alt="Item picture"
               title="Item picture"
               :src="attachments[0].paththumb"
             />
-            <br>
-          </span>
-          <b-btn v-if="expanded" variant="white" class="float-right mr-1" title="Share" @click="share">
-            <v-icon name="share-alt" />
-          </b-btn>
-          <Highlighter
-            v-if="matchedon"
-            :search-words="[matchedon.word]"
-            :text-to-highlight="eSubject"
-            highlight-class-name="highlight"
-          />
-          <span v-else>
-            {{ eSubject }}
-          </span>
+          </div>
+          <div class="small">
+            <div v-if="eSnippet && eSnippet !== 'null' && !expanded">
+              <b class="snippet black">
+                <Highlighter
+                  v-if="matchedon"
+                  :search-words="[matchedon.word]"
+                  :text-to-highlight="eSnippet"
+                  highlight-class-name="highlight"
+                />
+                <span v-else>{{ eSnippet }}</span>
+                ...
+              </b>
+            </div>
+            <div v-if="!eSnippet || eSnippet === 'null' && !expanded">
+              <i>There's no description.</i>
+            </div>
+            <b-button v-if="!expanded" variant="white" class="mt-1" @click="expand">
+              See details and reply <v-icon name="angle-double-right" />
+            </b-button>
+          </div>
         </b-card-title>
-        <span v-for="group in groups" :key="'message-' + id + '-' + group.id" class="small muted">
-          {{ group.arrival | timeago }} on <nuxt-link :to="'/explore/' + group.groupid">{{ group.namedisplay }}</nuxt-link>
-          <nuxt-link :to="'/message/' + id" class="text-sm small text-faded">
-            #{{ id }}&nbsp;
-          </nuxt-link>
-        </span>
-        <div v-if="eSnippet && eSnippet !== 'null' && !expanded">
-          <b class="snippet black">
-            <Highlighter
-              v-if="matchedon"
-              :search-words="[matchedon.word]"
-              :text-to-highlight="eSnippet"
-              highlight-class-name="highlight"
-            />
-            <span v-else>{{ eSnippet }}</span>
-            ...
-          </b>
-        </div>
-        <div v-if="!eSnippet || eSnippet === 'null' && !expanded">
-          <i>There's no description.</i>
-        </div>
-        <b-button v-if="!expanded" variant="white" class="mt-1" @click="expand">
-          See details and reply <v-icon name="angle-double-right" />
-        </b-button>
-        <div v-else class="d-flex justify-content-between mt-1">
-          <b-button variant="link" @click="contract">
-            Close post
-          </b-button>
+        <b-card-title class="msgsubj mb-0 d-none d-sm-block">
+          <div class="d-flex justify-content-between">
+            <div class="d-flex flex-column flex-grow-1">
+              <Highlighter
+                v-if="matchedon"
+                :search-words="[matchedon.word]"
+                :text-to-highlight="eSubject"
+                highlight-class-name="highlight"
+              />
+              <span v-else>
+                {{ eSubject }}
+              </span>
+              <div v-for="group in groups" :key="'message-' + id + '-' + group.id" class="small d-none d-sm-block">
+                <div class="small">
+                  {{ group.arrival | timeago }} on <nuxt-link :to="'/explore/' + group.groupid">
+                    {{ group.namedisplay }}
+                  </nuxt-link>
+                  <nuxt-link :to="'/message/' + id" class="text-sm small text-faded">
+                    #{{ id }}&nbsp;
+                  </nuxt-link>
+                </div>
+              </div>
+              <div flex-grow-1 class="small">
+                <div v-if="eSnippet && eSnippet !== 'null' && !expanded">
+                  <b class="snippet black">
+                    <Highlighter
+                      v-if="matchedon"
+                      :search-words="[matchedon.word]"
+                      :text-to-highlight="eSnippet"
+                      highlight-class-name="highlight"
+                    />
+                    <span v-else>{{ eSnippet }}</span>
+                    ...
+                  </b>
+                </div>
+                <div v-if="!eSnippet || eSnippet === 'null' && !expanded">
+                  <i>There's no description.</i>
+                </div>
+                <b-button v-if="!expanded" variant="white" class="mt-1" @click="expand">
+                  See details and reply <v-icon name="angle-double-right" />
+                </b-button>
+              </div>
+              <div class="d-flex justify-content-between">
+                <b-button v-if="expanded && !hideClose" size="sm" variant="link" class="grey" @click="contract">
+                  Close post
+                </b-button>
+                <b-btn
+                  v-if="expanded && expanded.groups && expanded.groups.length"
+                  variant="link"
+                  class="mr-2 grey"
+                  size="sm"
+                  @click="report"
+                >
+                  Report this post
+                </b-btn>
+                <b-btn
+                  v-if="expanded"
+                  variant="white"
+                  class="mr-4"
+                  title="Share"
+                  size="sm"
+                  @click="share"
+                >
+                  <v-icon name="share-alt" />
+                </b-btn>
+              </div>
+            </div>
+            <div v-if="attachments && attachments.length > 0" class="clickme position-relative" @click="showPhotos">
+              <b-badge v-if="attachments.length > 1" class="photobadge" variant="primary">
+                +{{ attachments.length - 1 }} <v-icon name="camera" />
+              </b-badge>
+              <b-img-lazy
+                rounded
+                thumbnail
+                class="attachment p-0 square nottoobig"
+                alt="Item picture"
+                title="Item picture"
+                :src="attachments[0].paththumb"
+              />
+            </div>
+          </div>
+        </b-card-title>
+        <div v-if="expanded" class="d-flex justify-content-between mt-1 d-block d-sm-none">
+          <div class="flex-grow-2 ">
+            <b-button v-if="expanded && !hideClose" size="sm" variant="link" class="grey" @click="contract">
+              Close post
+            </b-button>
+          </div>
+          <div class="flex-grow-1">
+            <b-btn
+              v-if="expanded.groups && expanded.groups.length"
+              variant="link"
+              class="mr-2 grey"
+              size="sm"
+              @click="report"
+            >
+              Report this post
+            </b-btn>
+          </div>
           <b-btn
-            v-if="expanded.groups && expanded.groups.length"
-            variant="link"
-            class="mr-2"
-            @click="report"
+            v-if="expanded"
+            variant="white"
+            class="mr-1"
+            title="Share"
+            size="sm"
+            @click="share"
           >
-            Report this post
+            <v-icon name="share-alt" />
           </b-btn>
         </div>
       </b-card-header>
@@ -119,7 +221,12 @@
               class="flex-shrink-2"
             />
             <div class="flex-grow-1 text-right ml-2 d-none d-md-block">
-              <b-btn variant="success" :disabled="replying" @click="sendReply">
+              <b-btn variant="success" :disabled="replying" class="d-inline-block d-sm-none" @click="sendReply(false)">
+                Send
+                <v-icon v-if="replying" name="sync" class="fa-spin" />
+                <v-icon v-else name="angle-double-right" />&nbsp;
+              </b-btn>
+              <b-btn variant="success" :disabled="replying" class="d-none d-sm-inline-block" @click="sendReply(true)">
                 Send
                 <v-icon v-if="replying" name="sync" class="fa-spin" />
                 <v-icon v-else name="angle-double-right" />&nbsp;
@@ -129,7 +236,12 @@
         </b-row>
         <b-row class="d-block d-md-none mt-2">
           <b-col>
-            <b-btn variant="success" block :disabled="replying" @click="sendReply">
+            <b-btn variant="success" block :disabled="replying" class="d-inline-block d-sm-none" @click="sendReply(false)">
+              Send
+              <v-icon v-if="replying" name="sync" class="fa-spin" />
+              <v-icon v-else name="angle-double-right" />&nbsp;
+            </b-btn>
+            <b-btn variant="success" block :disabled="replying" class="d-none d-sm-inline-block" @click="sendReply(true)">
               Send
               <v-icon v-if="replying" name="sync" class="fa-spin" />
               <v-icon v-else name="angle-double-right" />&nbsp;
@@ -156,20 +268,11 @@
         </b-button>
       </template>
     </b-modal>
-    <ShareModal v-if="expanded" ref="shareModal" :message="$props" />
+    <ShareModal v-if="expanded && expanded.url" ref="shareModal" :message="expanded" />
     <ChatButton ref="chatbutton" :userid="replyToUser" class="d-none" @sent="sentReply" />
     <MessageReportModal v-if="expanded" ref="reportModal" :message="$props" />
   </div>
 </template>
-<style scoped>
-.highlight {
-  padding: 0;
-}
-
-.promisedfade {
-  opacity: 0.3;
-}
-</style>
 <script>
 // Need to import rather than async otherwise the render doesn't happen and ref isn't set.
 import ChatButton from './ChatButton'
@@ -231,6 +334,16 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    hideClose: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    url: {
+      type: String,
+      required: false,
+      default: null
     }
   },
   data: function() {
@@ -369,7 +482,9 @@ export default {
       this.$refs.reportModal.show()
     },
 
-    async sendReply() {
+    async sendReply(popup) {
+      // We have different buttons which display at different screen sizes.  Which of those is visible and hence
+      // clicked tells us whether we want to open this chat in a popup or not.
       console.log('Send reply', this.reply)
       if (this.reply) {
         const me = this.$store.getters['auth/user']
@@ -416,8 +531,23 @@ export default {
           // Now create the chat and send the first message.
           console.log('Prepare chat', this.reply, this.id, this.replyToUser)
           this.$nextTick(() => {
-            console.log('Now open chat', this.reply, this.id, this.replyToUser)
-            this.$refs.chatbutton.openChat(null, this.reply, this.id)
+            console.log(
+              'Now open chat',
+              this.reply,
+              this.id,
+              this.replyToUser,
+              popup
+            )
+
+            // Open the chat.  We don't want to move from this page - either we'll get a popup chat (so we can
+            // see the reply went) or we're on mobile and we'll display the sent message notice.
+            this.$refs.chatbutton.openChat(
+              null,
+              this.reply,
+              this.id,
+              popup,
+              false
+            )
           })
         } else {
           // We're not logged in yet.  We need to save the reply and force a sign in.
@@ -445,9 +575,6 @@ export default {
         replyTo: null,
         replyMessage: null
       })
-
-      // Now create the chat and send the first message.
-      await this.$refs.chatbutton.openChat()
     }
   }
 }
@@ -476,7 +603,7 @@ h4.snippet {
   height: 200px;
 }
 
-img.attachment {
+.nottoobig {
   max-height: 150px !important;
   max-width: 150px !important;
 }
@@ -491,12 +618,24 @@ img.attachment {
 }
 
 .photobadge {
-  left: 150px;
-  top: -54px;
-  position: relative;
+  right: 10px;
+  position: absolute;
+  top: 10px;
 }
 
 .msgsubj {
   color: $colour-info-fg !important;
+}
+
+.highlight {
+  padding: 0;
+}
+
+.promisedfade {
+  opacity: 0.3;
+}
+
+.grey {
+  color: $color-gray--base;
 }
 </style>

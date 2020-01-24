@@ -1,8 +1,8 @@
 <template>
   <b-col>
     <b-row class="m-0">
-      <b-col cols="0" md="3" class="d-none d-md-block" />
-      <b-col cols="12" md="6" class="p-0">
+      <b-col cols="0" xl="3" class="d-none d-xl-block" />
+      <b-col cols="12" xl="6" class="p-0">
         <div v-if="error" class="bg-white p-2">
           <h1>Sorry, that message isn't around any more.</h1>
           <div>
@@ -43,10 +43,10 @@
           </b-row>
         </div>
         <div v-else>
-          <message v-if="message" ref="message" v-bind="message" :start-expanded="true" />
+          <message v-if="message" ref="message" v-bind="message" :start-expanded="true" hide-close />
         </div>
       </b-col>
-      <b-col cols="0" md="3" class="d-none d-md-block" />
+      <b-col cols="0" xl="3" class="d-none d-xl-block" />
     </b-row>
   </b-col>
 </template>
