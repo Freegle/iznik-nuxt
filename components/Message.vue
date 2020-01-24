@@ -268,7 +268,7 @@
         </b-button>
       </template>
     </b-modal>
-    <ShareModal v-if="expanded" ref="shareModal" :message="$props" />
+    <ShareModal v-if="expanded && expanded.url" ref="shareModal" :message="expanded" />
     <ChatButton ref="chatbutton" :userid="replyToUser" class="d-none" @sent="sentReply" />
     <MessageReportModal v-if="expanded" ref="reportModal" :message="$props" />
   </div>
@@ -339,6 +339,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    url: {
+      type: String,
+      required: false,
+      default: null
     }
   },
   data: function() {
