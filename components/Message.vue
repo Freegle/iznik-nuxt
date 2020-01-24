@@ -2,24 +2,39 @@
   <div>
     <b-card class="p-0 mb-1" variant="success">
       <b-card-header :class="'pl-2 pr-2 clearfix' + (ispromised ? ' promisedfade' : '')">
-        <b-card-title class="msgsubj mb-0 d-block d-sm-none d-flex flex-column justify-content-end">
-          <div class="d-flex">
-            <Highlighter
-              v-if="matchedon"
-              :search-words="[matchedon.word]"
-              :text-to-highlight="eSubject"
-              highlight-class-name="highlight"
-            />
-            <span v-else>
-              {{ eSubject }}
-            </span>
-          </div>
-          <div v-for="group in groups" :key="'message-' + id + '-' + group.id" class="small muted">
-            <div class="small">
-              {{ group.arrival | timeago }} on <nuxt-link :to="'/explore/' + group.groupid">
-                {{ group.namedisplay }}
-              </nuxt-link>
+        <b-card-title class="msgsubj mb-0 d-block d-sm-none">
+          <div class="d-flex flex-column justify-content-end">
+            <div class="d-flex">
+              <Highlighter
+                v-if="matchedon"
+                :search-words="[matchedon.word]"
+                :text-to-highlight="eSubject"
+                highlight-class-name="highlight"
+              />
+              <span v-else>
+                {{ eSubject }}
+              </span>
             </div>
+            <div v-for="group in groups" :key="'message-' + id + '-' + group.id" class="small muted">
+              <div class="small">
+                {{ group.arrival | timeago }} on <nuxt-link :to="'/explore/' + group.groupid">
+                  {{ group.namedisplay }}
+                </nuxt-link>
+              </div>
+            </div>
+          </div>
+          <div v-if="attachments && attachments.length > 0" class="d-block d-sm-none clickme position-relative" @click="showPhotos">
+            <b-badge v-if="attachments.length > 1" class="photobadge" variant="primary">
+              +{{ attachments.length - 1 }} <v-icon name="camera" />
+            </b-badge>
+            <b-img-lazy
+              rounded
+              fluid-grow
+              class="attachment p-0 square"
+              alt="Item picture"
+              title="Item picture"
+              :src="attachments[0].paththumb"
+            />
           </div>
         </b-card-title>
         <b-card-title class="msgsubj mb-0 d-none d-sm-block">
@@ -132,19 +147,6 @@
         </div>
       </b-card-header>
       <b-card-body v-if="expanded" class="pl-1">
-        <div v-if="attachments && attachments.length > 0" class="d-block d-sm-none clickme position-relative" @click="showPhotos">
-          <b-badge v-if="attachments.length > 1" class="photobadge" variant="primary">
-            +{{ attachments.length - 1 }} <v-icon name="camera" />
-          </b-badge>
-          <b-img-lazy
-            rounded
-            fluid-grow
-            class="attachment p-0 square"
-            alt="Item picture"
-            title="Item picture"
-            :src="attachments[0].paththumb"
-          />
-        </div>
         <notice-message v-if="ispromised" variant="warning" class="mb-3 mt-1">
           This item has already been promised to someone.  You can still reply - you might get it if someone
           else drops out.
