@@ -353,9 +353,8 @@ export default {
               console.log('Fetched')
 
               if (this.$route.path === '/' || !this.$route.path) {
-                // We've signed up from the home page.  Send them to chitchat - that shows some activity, and also
-                // has the Give/Find prompt.
-                this.$router.push('/chitchat')
+                // We've signed up from the home page.  Send them to the explore page to find a group.
+                this.$router.push('/explore')
               }
             })
             .catch(e => {
@@ -624,7 +623,7 @@ $color-google: #4285f4;
 $color-yahoo: #6b0094;
 
 .signin__section--social {
-  flex: 0 1 100%;
+  flex: 0 1 auto;
 
   @include media-breakpoint-up(lg) {
     flex: 0 1 37%;
@@ -632,7 +631,7 @@ $color-yahoo: #6b0094;
 }
 
 .signin__section--freegle {
-  flex: 0 1 100%;
+  flex: 0 1 auto;
 
   @include media-breakpoint-up(lg) {
     flex: 0 1 44%;

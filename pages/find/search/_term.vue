@@ -48,7 +48,8 @@
         </b-row>
         <b-row>
           <b-col class="text-center mt-2 mb-2">
-            <em>Or</em>
+            <em v-if="filteredMessages.length">Or</em>
+            <em v-else>No posts found.</em>
           </b-col>
         </b-row>
         <b-row>

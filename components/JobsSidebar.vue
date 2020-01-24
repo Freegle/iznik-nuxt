@@ -3,7 +3,7 @@
     <NoticeMessage v-if="blocked" variant="warning">
       <h3>Please help keep Freegle running</h3>
       <p>
-        We normally show job ads here.  It looks like you have an AdBlocker or security software which is blocking those.
+        We normally show job ads here.  It looks like you may have an AdBlocker or security software which is blocking those.
         We're not mad on ads either, but please consider donating to help us keep going:
       </p>
       <a href="https://freegle.in/paypalfundraiser" target="_blank">
@@ -56,8 +56,6 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch('jobs/clear')
-
     const me = this.$store.getters['auth/user']
     if (
       me &&

@@ -124,13 +124,12 @@ export const actions = {
 
   async fetch({ commit }, { id: chatid }) {
     if (!chatid) return
+
     const { chatroom } = await this.$api.chat.fetchChat(chatid)
+
     if (chatroom) {
       // Valid chatid
       commit('addRoom', chatroom)
-    } else {
-      // Invalid
-      console.error('Invalid chat id', chatid)
     }
   },
 

@@ -1,3 +1,11 @@
+let Sentry
+
+if (process.client) {
+  Sentry = require('@sentry/browser')
+} else {
+  Sentry = require('@sentry/node')
+}
+
 export class APIError extends Error {
   constructor({ request, response }, message) {
     super(message)
@@ -24,7 +32,7 @@ export default class BaseAPI {
     this.$axios = $axios
   }
 
-  async $request(method, path, config) {
+  async $request(method, path, config, logError = true) {
     let status = null
     let data = null
 
@@ -89,6 +97,19 @@ export default class BaseAPI {
       const retstr = data && data.ret ? data.ret : 'Unknown'
       const statusstr = data && data.status ? data.status : 'Unknown'
 
+      if (logError) {
+        Sentry.captureException(
+          'API request failed ' +
+            path +
+            ' returned HTTP ' +
+            status +
+            ' ret ' +
+            retstr +
+            ' status ' +
+            statusstr
+        )
+      }
+
       const message = [
         'API Error',
         method,
@@ -96,6 +117,7 @@ export default class BaseAPI {
         '->',
         `ret: ${retstr} status: ${statusstr}`
       ].join(' ')
+
       throw new APIError(
         {
           request: {
@@ -117,32 +139,37 @@ export default class BaseAPI {
     return data
   }
 
-  $get(path, params = {}) {
-    return this.$request('GET', path, { params })
+  $get(path, params = {}, logError = true) {
+    return this.$request('GET', path, { params }, logError)
   }
 
-  $post(path, data) {
-    return this.$request('POST', path, { data })
+  $post(path, data, logError = true) {
+    return this.$request('POST', path, { data }, logError)
   }
 
-  $postOverride(overrideMethod, path, data) {
-    return this.$request('POST', path, {
-      data,
-      headers: {
-        'X-HTTP-Method-Override': overrideMethod
-      }
-    })
+  $postOverride(overrideMethod, path, data, logError = true) {
+    return this.$request(
+      'POST',
+      path,
+      {
+        data,
+        headers: {
+          'X-HTTP-Method-Override': overrideMethod
+        }
+      },
+      logError
+    )
   }
 
-  $put(path, data) {
-    return this.$postOverride('PUT', path, data)
+  $put(path, data, logError = true) {
+    return this.$postOverride('PUT', path, data, logError)
   }
 
-  $patch(path, data) {
-    return this.$postOverride('PATCH', path, data)
+  $patch(path, data, logError = true) {
+    return this.$postOverride('PATCH', path, data, logError)
   }
 
-  $del(path, data, config = {}) {
-    return this.$postOverride('DELETE', path, data)
+  $del(path, data, config = {}, logError = true) {
+    return this.$postOverride('DELETE', path, data, logError)
   }
 }

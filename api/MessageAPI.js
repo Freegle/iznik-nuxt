@@ -36,4 +36,11 @@ export default class MessageAPI extends BaseAPI {
       outcome: outcome
     })
   }
+
+  view(id) {
+    return this.$post('/message', {
+      action: 'View',
+      id: id
+    })
+  }
 }

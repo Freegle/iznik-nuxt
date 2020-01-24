@@ -3,8 +3,9 @@ import sitemap from './utils/sitemap.js'
 
 const FACEBOOK_APPID = '134980666550322'
 const SENTRY_DSN = 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170'
-const YAHOO_CLIENTID = 'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
-const MOBILE_VERSION = '2.0.10'
+const YAHOO_CLIENTID =
+  'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
+const MOBILE_VERSION = '2.0.11'
 
 require('dotenv').config()
 
@@ -27,6 +28,9 @@ if (process.env.NUXT_BUILD_TYPE === 'fdapp') {
 // IZNIK_API is where we send it to.  This avoids CORS issues (and removes preflight OPTIONS calls for GETs, which
 // hurt client performance).
 const IZNIK_API = process.env.IZNIK_API || 'https://fdapilive.ilovefreegle.org'
+
+// This is the CDN for this site.
+const CDN = process.env.CDN || '/_nuxt'
 
 // This is where the user site is.
 const USER_SITE = 'https://www.ilovefreegle.org'
@@ -69,7 +73,7 @@ const config = {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'author', name: 'author', content: 'Freegle' },
-      { name: 'supported-color-schemes', content: 'light'},
+      { name: 'supported-color-schemes', content: 'light' },
       {
         hid: 'description',
         name: 'description',
@@ -334,8 +338,12 @@ const config = {
       //
       // Note that this doesn't retry requests that never complete.
       retries: 10,
-      retryDelay: (retryCount) => {
+      retryDelay: retryCount => {
         return retryCount * 1000
+      },
+      // eslint-disable-next-line handle-callback-err
+      retryCondition: error => {
+        return true
       },
       shouldResetTimeout: true
     }
@@ -358,6 +366,25 @@ const config = {
     ]
   ],
 
+  hooks: {
+    // We have a caching CDN in front of our site.  This is particularly useful for old script files which have
+    // been deleted by a new pm2 deploy on the server, but which may be loaded by a client which is open in a
+    // browser but which has not yet loaded all script files.
+    //
+    // Nuxt doesn't allow the publicPath (CDN url) to be overridden at run time - it's baked into the manifest at
+    // build time.  This hook intercepts the VueRenderer when it has loaded the manifest and updates the publicPath
+    // to the current env value.
+    render: {
+      resourcesLoaded(resources) {
+        const path =
+          process.env.CDN === undefined
+            ? '/_nuxt'
+            : (process.env.CDN + '/_nuxt')
+        resources.clientManifest && (resources.clientManifest.publicPath = path)
+      }
+    }
+  },
+
   /*
   ** Build configuration
   */
@@ -372,7 +399,8 @@ const config = {
     // https://github.com/nuxt/nuxt.js/pull/3940
     // https://stackoverflow.com/questions/59292564/nuxt-js-npm-run-build-results-in-some-js-files-being-not-found
     filenames: {
-      chunk: ({ isDev }) => process.env.NODE_ENV === 'development' ? '[name].js' : '[chunkhash].js'
+      chunk: ({ isDev }) =>
+        process.env.NODE_ENV === 'development' ? '[name].js' : '[chunkhash].js'
     },
 
     transpile: [/^vue2-google-maps($|\/)/, 'vue-lazy-youtube-video'],
@@ -473,6 +501,7 @@ const config = {
   env: {
     API: API,
     IZNIK_API: IZNIK_API,
+    CDN: CDN,
     CHAT_HOST: CHAT_HOST,
     FACEBOOK_APPID: FACEBOOK_APPID,
     YAHOO_CLIENTID: YAHOO_CLIENTID,

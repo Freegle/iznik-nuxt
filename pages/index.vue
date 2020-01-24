@@ -159,18 +159,16 @@ export default {
   },
   methods: {
     goHome() {
-      let route = '/chitchat'
+      let route = '/communities'
 
       // Logged in homepage - on client side we want to load the last page, for logged in users.
       try {
         const lastRoute = localStorage.getItem('Iznik>lasthomepage')
 
-        if (!lastRoute || lastRoute === 'news') {
+        if (lastRoute === 'news') {
           route = '/chitchat'
         } else if (lastRoute === 'myposts') {
           route = '/myposts'
-        } else {
-          route = '/communities'
         }
 
         if (this.$nuxt.path !== route) {

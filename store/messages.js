@@ -106,7 +106,12 @@ export const actions = {
 
   async update({ commit, dispatch }, params) {
     const data = await this.$api.message.update(params)
-    await dispatch('fetch', { id: params.id })
+
+    if (!data.deleted) {
+      // Fetch back the updated version.
+      await dispatch('fetch', { id: params.id })
+    }
+
     return data
   },
 
@@ -179,5 +184,9 @@ export const actions = {
 
   async intend({ dispatch }, params) {
     await this.$api.message.intend(params.id, params.outcome)
+  },
+
+  async view({ dispatch }, params) {
+    await this.$api.message.view(params.id)
   }
 }

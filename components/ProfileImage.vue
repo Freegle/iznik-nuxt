@@ -6,7 +6,6 @@
       class="p-0"
       :class="'profile--' + size"
       :alt="altText"
-      title="Profile"
       :src="image"
       @error.native="brokenProfileImage"
     />
@@ -60,8 +59,8 @@ export default {
 @import 'bootstrap/scss/mixins/_breakpoints';
 
 .profile--sm {
-  width: 15px;
-  height: 15px;
+  width: 20px;
+  height: 20px;
 
   @include media-breakpoint-up(md) {
     width: 25px;
