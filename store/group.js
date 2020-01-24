@@ -75,6 +75,8 @@ export const actions = {
   },
 
   async fetch({ commit }, { id }) {
-    commit('add', await this.$api.group.fetch(id))
+    // Don't log errors - an invalid group name is common due to old links floating around, and isn't an error worth
+    // logging.
+    commit('add', await this.$api.group.fetch(id, false))
   }
 }
