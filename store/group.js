@@ -75,8 +75,16 @@ export const actions = {
   },
 
   async fetch({ commit }, { id }) {
-    // Don't log errors - an invalid group name is common due to old links floating around, and isn't an error worth
-    // logging.
-    commit('add', await this.$api.group.fetch(id, false))
+    commit(
+      'add',
+      await this.$api.group.fetch(id, function(data) {
+        if (data && data.ret === 2) {
+          // Not hosting a group isn't worth logging.
+          return false
+        } else {
+          return true
+        }
+      })
+    )
   }
 }

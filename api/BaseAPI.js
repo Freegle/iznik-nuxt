@@ -85,7 +85,7 @@ export default class BaseAPI {
     // - POSTs to session can return errors we want to handle.
     // - 999 can happen if people double-click, and we should just quietly drop it because the first click will
     //   probably do the right thing.
-    // - otherwise pop up an error.
+    // - otherwise throw an exception.
     if (
       status !== 200 ||
       !data ||
@@ -97,7 +97,14 @@ export default class BaseAPI {
       const retstr = data && data.ret ? data.ret : 'Unknown'
       const statusstr = data && data.status ? data.status : 'Unknown'
 
-      if (logError) {
+      // Whether or not we log this error to Sentry depends.  Most errors are worth logging, because they're unexpected.
+      // But some API calls are expected to fail, and throw an exception which is then handled in the code.  We don't
+      // want to log those, otherwise we will spend time investigating them in Sentry.  So we have a parameter which
+      // indicates whether we want to log this to Sentry - which can be a boolean or a function for more complex
+      // decisions.
+      const log = typeof logError === 'function' ? logError(data) : logError
+
+      if (log) {
         Sentry.captureException(
           'API request failed ' +
             path +
