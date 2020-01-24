@@ -1,5 +1,5 @@
 <template>
-  <div v-if="location" class="mt-2">
+  <div v-if="location">
     <NoticeMessage v-if="blocked" variant="warning">
       <h3>Please help keep Freegle running</h3>
       <p>
