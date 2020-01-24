@@ -1,6 +1,6 @@
 <template>
   <b-row class="m-0">
-    <b-col id="chatlist" cols="12" md="3" :class="'chatlist p-0 bg-white ' + (selectedChatId ? 'd-none d-md-block' : '') + ' ' + selectedChatId">
+    <b-col id="chatlist" cols="12" md="3" xl="2" :class="'chatlist p-0 bg-white ' + (selectedChatId ? 'd-none d-md-block' : '') + ' ' + selectedChatId">
       <b-card class="p-0">
         <b-card-body class="p-0">
           <b-row>
@@ -27,10 +27,10 @@
         </infinite-loading>
       </client-only>
     </b-col>
-    <b-col cols="12" md="6" :class="'chatback ' + (selectedChatId ? 'd-block' : 'd-none d-md-block')">
+    <b-col cols="12" md="9" xl="7" :class="'chatback ' + (selectedChatId ? 'd-block' : 'd-none d-md-block')">
       <ChatPane v-if="activeChat" :id="activeChat" />
     </b-col>
-    <b-col cols="0" md="3" class="d-none d-md-block">
+    <b-col cols="0" xl="3" class="d-none d-xl-block">
       <SidebarRight :show-volunteer-opportunities="false" :show-job-opportunities="true" />
     </b-col>
   </b-row>

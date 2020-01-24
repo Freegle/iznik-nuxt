@@ -119,7 +119,7 @@
           </b-row>
           <b-row v-if="!spammer" class="bg-white">
             <b-col class="p-0 pt-1 pb-1">
-              <div class="d-none d-xl-block">
+              <div class="d-none d-lg-block">
                 <span v-if="chat && chat.chattype === 'User2User' && otheruser">
                   <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person" @click="promise">
                     <v-icon name="handshake" />&nbsp;Promise
@@ -146,7 +146,7 @@
                   <v-icon name="camera" />
                 </b-btn>
               </div>
-              <div class="d-flex d-xl-none justify-content-between align-middle">
+              <div class="d-flex d-lg-none justify-content-between align-middle">
                 <span v-if="chat && chat.chattype === 'User2User' && otheruser" v-b-tooltip.hover.top title="Promise an item to this person" class="ml-1 mr-2" @click="promise">
                   <v-icon scale="2" name="handshake" />
                 </span>
