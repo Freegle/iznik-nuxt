@@ -23,7 +23,7 @@
               </div>
             </div>
           </div>
-          <div v-if="attachments && attachments.length > 0" class="d-block d-sm-none clickme position-relative" @click="showPhotos">
+          <div v-if="attachments && attachments.length > 0" class="d-block mt-1 d-sm-none clickme position-relative" @click="showPhotos">
             <b-badge v-if="attachments.length > 1" class="photobadge" variant="primary">
               +{{ attachments.length - 1 }} <v-icon name="camera" />
             </b-badge>
@@ -35,6 +35,26 @@
               title="Item picture"
               :src="attachments[0].paththumb"
             />
+          </div>
+          <div class="small">
+            <div v-if="eSnippet && eSnippet !== 'null' && !expanded">
+              <b class="snippet black">
+                <Highlighter
+                  v-if="matchedon"
+                  :search-words="[matchedon.word]"
+                  :text-to-highlight="eSnippet"
+                  highlight-class-name="highlight"
+                />
+                <span v-else>{{ eSnippet }}</span>
+                ...
+              </b>
+            </div>
+            <div v-if="!eSnippet || eSnippet === 'null' && !expanded">
+              <i>There's no description.</i>
+            </div>
+            <b-button v-if="!expanded" variant="white" class="mt-1" @click="expand">
+              See details and reply <v-icon name="angle-double-right" />
+            </b-button>
           </div>
         </b-card-title>
         <b-card-title class="msgsubj mb-0 d-none d-sm-block">
@@ -49,7 +69,7 @@
               <span v-else>
                 {{ eSubject }}
               </span>
-              <div v-for="group in groups" :key="'message-' + id + '-' + group.id" class="small d-none d-sm-block flex-grow-1">
+              <div v-for="group in groups" :key="'message-' + id + '-' + group.id" class="small d-none d-sm-block">
                 <div class="small">
                   {{ group.arrival | timeago }} on <nuxt-link :to="'/explore/' + group.groupid">
                     {{ group.namedisplay }}
@@ -58,6 +78,26 @@
                     #{{ id }}&nbsp;
                   </nuxt-link>
                 </div>
+              </div>
+              <div flex-grow-1 class="small">
+                <div v-if="eSnippet && eSnippet !== 'null' && !expanded">
+                  <b class="snippet black">
+                    <Highlighter
+                      v-if="matchedon"
+                      :search-words="[matchedon.word]"
+                      :text-to-highlight="eSnippet"
+                      highlight-class-name="highlight"
+                    />
+                    <span v-else>{{ eSnippet }}</span>
+                    ...
+                  </b>
+                </div>
+                <div v-if="!eSnippet || eSnippet === 'null' && !expanded">
+                  <i>There's no description.</i>
+                </div>
+                <b-button v-if="!expanded" variant="white" class="mt-1" @click="expand">
+                  See details and reply <v-icon name="angle-double-right" />
+                </b-button>
               </div>
               <div class="d-flex justify-content-between">
                 <b-button v-if="expanded && !hideClose" size="sm" variant="link" class="grey" @click="contract">
@@ -99,25 +139,7 @@
             </div>
           </div>
         </b-card-title>
-        <div v-if="eSnippet && eSnippet !== 'null' && !expanded">
-          <b class="snippet black">
-            <Highlighter
-              v-if="matchedon"
-              :search-words="[matchedon.word]"
-              :text-to-highlight="eSnippet"
-              highlight-class-name="highlight"
-            />
-            <span v-else>{{ eSnippet }}</span>
-            ...
-          </b>
-        </div>
-        <div v-if="!eSnippet || eSnippet === 'null' && !expanded">
-          <i>There's no description.</i>
-        </div>
-        <b-button v-if="!expanded" variant="white" class="mt-1" @click="expand">
-          See details and reply <v-icon name="angle-double-right" />
-        </b-button>
-        <div v-else class="d-flex justify-content-between mt-1 d-block d-sm-none">
+        <div v-if="expanded" class="d-flex justify-content-between mt-1 d-block d-sm-none">
           <div class="flex-grow-2 ">
             <b-button v-if="expanded && !hideClose" size="sm" variant="link" class="grey" @click="contract">
               Close post
