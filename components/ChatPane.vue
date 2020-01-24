@@ -6,7 +6,7 @@
           <b-col v-if="chat">
             <b-row>
               <b-col cols="8" class="p-0 pl-1">
-                <span v-if="(chat.chattype == 'User2User' || chat.chattype == 'User2Mod')" class="d-inline">
+                <span v-if="(chat.chattype == 'User2User' || chat.chattype == 'User2Mod')" class="d-inline clickme">
                   <span @click="showInfo">
                     {{ chat.name }}
                   </span>
