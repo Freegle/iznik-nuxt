@@ -199,7 +199,12 @@
               class="flex-shrink-2"
             />
             <div class="flex-grow-1 text-right ml-2 d-none d-md-block">
-              <b-btn variant="success" :disabled="replying" @click="sendReply">
+              <b-btn variant="success" :disabled="replying" class="d-inline-block d-sm-none" @click="sendReply(false)">
+                Send
+                <v-icon v-if="replying" name="sync" class="fa-spin" />
+                <v-icon v-else name="angle-double-right" />&nbsp;
+              </b-btn>
+              <b-btn variant="success" :disabled="replying" class="d-none d-sm-inline-block" @click="sendReply(true)">
                 Send
                 <v-icon v-if="replying" name="sync" class="fa-spin" />
                 <v-icon v-else name="angle-double-right" />&nbsp;
@@ -209,7 +214,12 @@
         </b-row>
         <b-row class="d-block d-md-none mt-2">
           <b-col>
-            <b-btn variant="success" block :disabled="replying" @click="sendReply">
+            <b-btn variant="success" block :disabled="replying" class="d-inline-block d-sm-none" @click="sendReply(false)">
+              Send
+              <v-icon v-if="replying" name="sync" class="fa-spin" />
+              <v-icon v-else name="angle-double-right" />&nbsp;
+            </b-btn>
+            <b-btn variant="success" block :disabled="replying" class="d-none d-sm-inline-block" @click="sendReply(true)">
               Send
               <v-icon v-if="replying" name="sync" class="fa-spin" />
               <v-icon v-else name="angle-double-right" />&nbsp;
@@ -418,7 +428,9 @@ export default {
       this.$refs.reportModal.show()
     },
 
-    async sendReply() {
+    async sendReply(popup) {
+      // We have different buttons which display at different screen sizes.  Which of those is visible and hence
+      // clicked tells us whether we want to open this chat in a popup or not.
       console.log('Send reply', this.reply)
       if (this.reply) {
         const me = this.$store.getters['auth/user']
@@ -465,8 +477,23 @@ export default {
           // Now create the chat and send the first message.
           console.log('Prepare chat', this.reply, this.id, this.replyToUser)
           this.$nextTick(() => {
-            console.log('Now open chat', this.reply, this.id, this.replyToUser)
-            this.$refs.chatbutton.openChat(null, this.reply, this.id)
+            console.log(
+              'Now open chat',
+              this.reply,
+              this.id,
+              this.replyToUser,
+              popup
+            )
+
+            // Open the chat.  We don't want to move from this page - either we'll get a popup chat (so we can
+            // see the reply went) or we're on mobile and we'll display the sent message notice.
+            this.$refs.chatbutton.openChat(
+              null,
+              this.reply,
+              this.id,
+              popup,
+              false
+            )
           })
         } else {
           // We're not logged in yet.  We need to save the reply and force a sign in.
@@ -494,9 +521,6 @@ export default {
         replyTo: null,
         replyMessage: null
       })
-
-      // Now create the chat and send the first message.
-      await this.$refs.chatbutton.openChat()
     }
   }
 }
