@@ -145,7 +145,7 @@
                     label="Your email address:"
                   >
                     <b-input-group id="input-email">
-                      <b-input v-model="me.email" placeholder="Your email" label="Your email address" />
+                      <b-input v-model="me.email" placeholder="Your email" label="Your email address" type="email" />
                       <b-input-group-append>
                         <b-button variant="white" @click="saveEmail">
                           <v-icon v-if="savingEmail" name="sync" class="text-success fa-spin" />

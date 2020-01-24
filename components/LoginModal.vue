@@ -122,6 +122,7 @@
               name="email"
               class="mb-3"
               autocomplete="username email"
+              type="email"
             />
           </b-form-group>
           <b-form-group
