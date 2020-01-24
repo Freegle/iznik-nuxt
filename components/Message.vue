@@ -2,38 +2,88 @@
   <div>
     <b-card class="p-0 mb-1" variant="success">
       <b-card-header :class="'pl-2 pr-2 clearfix' + (ispromised ? ' promisedfade' : '')">
-        <b-card-title class="msgsubj mb-0">
-          <span v-if="attachments && attachments.length > 0" class="float-right clickme" @click="showPhotos">
-            <b-badge v-if="attachments.length > 1" class="photobadge" variant="primary">+{{ attachments.length - 1 }} <v-icon name="camera" /></b-badge>
-            <b-img-lazy
-              rounded
-              thumbnail
-              class="attachment p-0 square"
-              alt="Item picture"
-              title="Item picture"
-              :src="attachments[0].paththumb"
+        <b-card-title class="msgsubj mb-0 d-block d-sm-none d-flex flex-column justify-content-end">
+          <div class="d-flex">
+            <Highlighter
+              v-if="matchedon"
+              :search-words="[matchedon.word]"
+              :text-to-highlight="eSubject"
+              highlight-class-name="highlight"
             />
-            <br>
-          </span>
-          <b-btn v-if="expanded" variant="white" class="float-right mr-1" title="Share" @click="share">
-            <v-icon name="share-alt" />
-          </b-btn>
-          <Highlighter
-            v-if="matchedon"
-            :search-words="[matchedon.word]"
-            :text-to-highlight="eSubject"
-            highlight-class-name="highlight"
-          />
-          <span v-else>
-            {{ eSubject }}
-          </span>
+            <span v-else>
+              {{ eSubject }}
+            </span>
+          </div>
+          <div v-for="group in groups" :key="'message-' + id + '-' + group.id" class="small muted">
+            <div class="small">
+              {{ group.arrival | timeago }} on <nuxt-link :to="'/explore/' + group.groupid">
+                {{ group.namedisplay }}
+              </nuxt-link>
+            </div>
+          </div>
         </b-card-title>
-        <span v-for="group in groups" :key="'message-' + id + '-' + group.id" class="small muted">
-          {{ group.arrival | timeago }} on <nuxt-link :to="'/explore/' + group.groupid">{{ group.namedisplay }}</nuxt-link>
-          <nuxt-link :to="'/message/' + id" class="text-sm small text-faded">
-            #{{ id }}&nbsp;
-          </nuxt-link>
-        </span>
+        <b-card-title class="msgsubj mb-0 d-none d-sm-block">
+          <div class="d-flex justify-content-between">
+            <div class="d-flex flex-column flex-grow-1">
+              <Highlighter
+                v-if="matchedon"
+                :search-words="[matchedon.word]"
+                :text-to-highlight="eSubject"
+                highlight-class-name="highlight"
+              />
+              <span v-else>
+                {{ eSubject }}
+              </span>
+              <div v-for="group in groups" :key="'message-' + id + '-' + group.id" class="small d-none d-sm-block flex-grow-1">
+                <div class="small">
+                  {{ group.arrival | timeago }} on <nuxt-link :to="'/explore/' + group.groupid">
+                    {{ group.namedisplay }}
+                  </nuxt-link>
+                  <nuxt-link :to="'/message/' + id" class="text-sm small text-faded">
+                    #{{ id }}&nbsp;
+                  </nuxt-link>
+                </div>
+              </div>
+              <div class="d-flex justify-content-between">
+                <b-button v-if="expanded && !hideClose" size="sm" variant="link" class="grey" @click="contract">
+                  Close post
+                </b-button>
+                <b-btn
+                  v-if="expanded && expanded.groups && expanded.groups.length"
+                  variant="link"
+                  class="mr-2 grey"
+                  size="sm"
+                  @click="report"
+                >
+                  Report this post
+                </b-btn>
+                <b-btn
+                  v-if="expanded"
+                  variant="white"
+                  class="mr-4"
+                  title="Share"
+                  size="sm"
+                  @click="share"
+                >
+                  <v-icon name="share-alt" />
+                </b-btn>
+              </div>
+            </div>
+            <div v-if="attachments && attachments.length > 0" class="clickme position-relative" @click="showPhotos">
+              <b-badge v-if="attachments.length > 1" class="photobadge" variant="primary">
+                +{{ attachments.length - 1 }} <v-icon name="camera" />
+              </b-badge>
+              <b-img-lazy
+                rounded
+                thumbnail
+                class="attachment p-0 square nottoobig"
+                alt="Item picture"
+                title="Item picture"
+                :src="attachments[0].paththumb"
+              />
+            </div>
+          </div>
+        </b-card-title>
         <div v-if="eSnippet && eSnippet !== 'null' && !expanded">
           <b class="snippet black">
             <Highlighter
@@ -52,23 +102,49 @@
         <b-button v-if="!expanded" variant="white" class="mt-1" @click="expand">
           See details and reply <v-icon name="angle-double-right" />
         </b-button>
-        <div v-else class="d-flex justify-content-between mt-1">
-          <b-button v-if="!hideClose" size="sm" variant="link" @click="contract">
-            Close post
-          </b-button>
-          <span v-else />
+        <div v-else class="d-flex justify-content-between mt-1 d-block d-sm-none">
+          <div class="flex-grow-2 ">
+            <b-button v-if="expanded && !hideClose" size="sm" variant="link" class="grey" @click="contract">
+              Close post
+            </b-button>
+          </div>
+          <div class="flex-grow-1">
+            <b-btn
+              v-if="expanded.groups && expanded.groups.length"
+              variant="link"
+              class="mr-2 grey"
+              size="sm"
+              @click="report"
+            >
+              Report this post
+            </b-btn>
+          </div>
           <b-btn
-            v-if="expanded.groups && expanded.groups.length"
-            variant="link"
-            class="mr-2"
+            v-if="expanded"
+            variant="white"
+            class="mr-1"
+            title="Share"
             size="sm"
-            @click="report"
+            @click="share"
           >
-            Report this post
+            <v-icon name="share-alt" />
           </b-btn>
         </div>
       </b-card-header>
       <b-card-body v-if="expanded" class="pl-1">
+        <div v-if="attachments && attachments.length > 0" class="d-block d-sm-none clickme position-relative" @click="showPhotos">
+          <b-badge v-if="attachments.length > 1" class="photobadge" variant="primary">
+            +{{ attachments.length - 1 }} <v-icon name="camera" />
+          </b-badge>
+          <b-img-lazy
+            rounded
+            fluid-grow
+            class="attachment p-0 square"
+            alt="Item picture"
+            title="Item picture"
+            :src="attachments[0].paththumb"
+          />
+        </div>
         <notice-message v-if="ispromised" variant="warning" class="mb-3 mt-1">
           This item has already been promised to someone.  You can still reply - you might get it if someone
           else drops out.
@@ -163,15 +239,6 @@
     <MessageReportModal v-if="expanded" ref="reportModal" :message="$props" />
   </div>
 </template>
-<style scoped>
-.highlight {
-  padding: 0;
-}
-
-.promisedfade {
-  opacity: 0.3;
-}
-</style>
 <script>
 // Need to import rather than async otherwise the render doesn't happen and ref isn't set.
 import ChatButton from './ChatButton'
@@ -456,7 +523,7 @@ h4.snippet {
   height: 200px;
 }
 
-img.attachment {
+.nottoobig {
   max-height: 150px !important;
   max-width: 150px !important;
 }
@@ -471,12 +538,24 @@ img.attachment {
 }
 
 .photobadge {
-  left: 150px;
-  top: -54px;
-  position: relative;
+  right: 10px;
+  position: absolute;
+  top: 10px;
 }
 
 .msgsubj {
   color: $colour-info-fg !important;
+}
+
+.highlight {
+  padding: 0;
+}
+
+.promisedfade {
+  opacity: 0.3;
+}
+
+.grey {
+  color: $color-gray--base;
 }
 </style>
