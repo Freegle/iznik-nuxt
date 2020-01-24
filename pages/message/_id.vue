@@ -43,7 +43,7 @@
           </b-row>
         </div>
         <div v-else>
-          <message v-if="message" ref="message" v-bind="message" :start-expanded="true" />
+          <message v-if="message" ref="message" v-bind="message" :start-expanded="true" hide-close />
         </div>
       </b-col>
       <b-col cols="0" md="3" class="d-none d-md-block" />

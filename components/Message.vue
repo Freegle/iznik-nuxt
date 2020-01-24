@@ -53,13 +53,15 @@
           See details and reply <v-icon name="angle-double-right" />
         </b-button>
         <div v-else class="d-flex justify-content-between mt-1">
-          <b-button variant="link" @click="contract">
+          <b-button v-if="!hideClose" size="sm" variant="link" @click="contract">
             Close post
           </b-button>
+          <span v-else />
           <b-btn
             v-if="expanded.groups && expanded.groups.length"
             variant="link"
             class="mr-2"
+            size="sm"
             @click="report"
           >
             Report this post
@@ -228,6 +230,11 @@ export default {
       default: false
     },
     startExpanded: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    hideClose: {
       type: Boolean,
       required: false,
       default: false
