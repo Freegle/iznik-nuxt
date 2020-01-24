@@ -40,4 +40,8 @@ export default class ChatAPI extends BaseAPI {
   blockChat(chatid) {
     return this.$post('/chatrooms', { id: chatid, status: 'Blocked' })
   }
+
+  unseenCount(chatid) {
+    return this.$get('/chatrooms', { count: true })
+  }
 }

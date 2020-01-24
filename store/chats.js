@@ -74,6 +74,13 @@ export const getters = {
     })
 
     return ret
+  },
+
+  unseenCount: state => {
+    return Object.values(state.list).reduce(
+      (total, chat) => total + chat.unseen,
+      0
+    )
   }
 }
 
@@ -152,5 +159,10 @@ export const actions = {
   async block({ dispatch, commit }, params) {
     await this.$api.chat.blockChat(params.id)
     await dispatch('listChats')
+  },
+
+  async unseenCount({ dispatch, commit }) {
+    const ret = await this.$api.chat.unseenCount()
+    return ret.count
   }
 }
