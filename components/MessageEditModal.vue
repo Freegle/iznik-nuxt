@@ -11,7 +11,7 @@
           Edit <em>{{ message.subject }}</em>
         </template>
         <template slot="default">
-          <div v-if="item">
+          <div v-if="message.location">
             <b-row>
               <b-col cols="6" md="3">
                 <b-form-select v-model="message.type">
@@ -24,7 +24,7 @@
                 </b-form-select>
               </b-col>
               <b-col cols="6">
-                <PostItem :item="item" @selected="itemSelect" @typed="itemType" />
+                <PostItem :item="item" @selected="itemSelect" @cleared="itemClear" @typed="itemType" />
               </b-col>
               <b-col cols="6" md="3">
                 <Postcode :find="false" size="md" @selected="postcodeSelect" @cleared="postcodeClear" />
@@ -139,24 +139,26 @@ export default {
       this.showModal = false
     },
     async save() {
-      const attids = []
-      this.saving = true
+      if (this.item && (this.message.textbody || this.attachments.length)) {
+        const attids = []
+        this.saving = true
 
-      for (const att of this.attachments) {
-        attids.push(att.id)
+        for (const att of this.attachments) {
+          attids.push(att.id)
+        }
+
+        await this.$store.dispatch('messages/patch', {
+          id: this.message.id,
+          msgtype: this.message.type,
+          item: this.item,
+          location: this.postcode.name,
+          textbody: this.message.textbody,
+          attachments: attids
+        })
+
+        this.saving = null
+        this.hide()
       }
-
-      await this.$store.dispatch('messages/patch', {
-        id: this.message.id,
-        msgtype: this.message.type,
-        item: this.item,
-        location: this.postcode.name,
-        textbody: this.$refs.textbody.value,
-        attachments: attids
-      })
-
-      this.saving = null
-      this.hide()
     },
     removePhoto(id) {
       this.attachments = this.attachments.filter(item => {
@@ -180,6 +182,9 @@ export default {
     },
     itemType(value) {
       this.item = value
+    },
+    itemClear() {
+      this.item = null
     },
     itemSelect(item) {
       this.item = item.name
