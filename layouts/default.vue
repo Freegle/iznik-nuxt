@@ -583,7 +583,7 @@ export default {
     }
   },
 
-  async mounted() {
+  mounted() {
     if (document) {
       // We added a basic loader into the HTML.  This helps if we are loaded on an old browser where our JS bombs
       // out - at least we display something, with a link to support.  But now we're up and running, remove that.
@@ -593,9 +593,6 @@ export default {
       const l = document.getElementById('serverloader')
       l.style.display = 'none'
     }
-
-    // Clear old notifications because they're probably out of date now.
-    await this.$store.dispatch('notifications/clear')
 
     const me = this.$store.getters['auth/user']
 
@@ -735,7 +732,17 @@ export default {
       const me = this.$store.getters['auth/user']
 
       if (me && me.id) {
+        const currentCount = this.$store.getters['notifications/count']
+        const notifications = this.$store.getters['notifications/list']
         await this.$store.dispatch('notifications/count')
+        const newCount = this.$store.getters['notifications/count']
+
+        if (newCount !== currentCount || !notifications.length) {
+          // Changed or don't know it yet.  Get the list so that it will display zippily when they click.
+          await this.$store.dispatch('notifications/clear')
+          await this.$store.dispatch('notifications/list')
+        }
+
         await this.$store.dispatch('chats/listChats', {
           chattypes: ['User2User', 'User2Mod'],
           summary: true,
