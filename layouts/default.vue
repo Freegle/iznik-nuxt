@@ -759,17 +759,18 @@ export default {
       this.$refs.modal.show()
     },
 
-    logOut() {
+    async logOut() {
       // Remove all cookies, both client and server.  This seems to be necessary to kill off the PHPSESSID cookie
       // on the server, which would otherwise keep us logged in despite our efforts.
       try {
         this.$cookies.removeAll()
       } catch (e) {}
 
+      await this.$store.dispatch('auth/logout')
+      this.$store.dispatch('auth/forceLogin', false)
+
       // Go to the landing page.
       this.$router.push('/')
-
-      this.$store.dispatch('auth/logout')
     },
 
     loadMore: function($state) {
