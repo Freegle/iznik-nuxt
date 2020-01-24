@@ -1,0 +1,29 @@
+<template>
+  <b-card v-if="messages && messages.length" bg-light>
+    <b-card-title>
+      Recently Viewed
+    </b-card-title>
+    <div v-for="message in messages" :key="'message-' + message.id">
+      <nuxt-link :to="'/message/' + message.id">
+        {{ message.subject }}
+      </nuxt-link>
+      <span class="small text-muted">
+        {{ message.viewedat | timeago }}
+      </span>
+    </div>
+  </b-card>
+</template>
+<script>
+export default {
+  name: 'Viewed',
+  computed: {
+    messages() {
+      console.log('Compute messages', this.$store.getters['messages/getViewed'])
+      return this.$store.getters['messages/getViewed']
+    }
+  },
+  async mounted() {
+    await this.$store.dispatch('messages/fetchViewed')
+  }
+}
+</script>

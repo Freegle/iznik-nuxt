@@ -5,6 +5,7 @@
         <SidebarLeft :show-community-events="true" :show-bot-left="true" />
       </b-col>
       <b-col cols="12" lg="6" class="p-0">
+        <Viewed class="mb-1" />
         <JobsTopBar />
         <div>
           <div class="d-flex mt-2 mb-3 selection__wrapper justify-content-between">
@@ -37,6 +38,7 @@
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
 import GroupSelect from '../../components/GroupSelect'
+import Viewed from '../../components/Viewed'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
 import createGroupRoute from '@/mixins/createGroupRoute'
@@ -48,6 +50,7 @@ const SidebarRight = () => import('~/components/SidebarRight')
 
 export default {
   components: {
+    Viewed,
     GroupSelect,
     InfiniteLoading,
     JobsTopBar,

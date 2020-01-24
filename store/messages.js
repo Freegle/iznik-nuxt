@@ -5,6 +5,8 @@ export const state = () => ({
   // Use array because we need to store them in the order returned by the server.
   list: [],
 
+  viewed: [],
+
   // The context from the last fetch, used for fetchMore.
   context: null
 })
@@ -45,6 +47,9 @@ export const mutations = {
   },
   setContext(state, ctx) {
     state.context = ctx
+  },
+  setViewed(state, viewed) {
+    state.viewed = viewed
   }
 }
 
@@ -81,6 +86,9 @@ export const getters = {
   },
   getAll: state => {
     return state.list
+  },
+  getViewed: state => {
+    return state.viewed
   }
 }
 
@@ -188,5 +196,16 @@ export const actions = {
 
   async view({ dispatch }, params) {
     await this.$api.message.view(params.id)
+  },
+
+  async fetchViewed({ commit, rootGetters }) {
+    const me = rootGetters['auth/user']
+
+    const { messages } = await this.$api.message.fetchMessages({
+      collection: 'Viewed',
+      fromuser: me.id
+    })
+
+    commit('setViewed', messages)
   }
 }
