@@ -367,6 +367,12 @@ export default {
     }
   },
   watch: {
+    me(newVal, oldVal) {
+      if (!oldVal && newVal) {
+        console.log('we are now logged in')
+        this.fetchChat()
+      }
+    },
     async unseen(newVal, oldVal) {
       // The unseen count will get changed by reactivity from the store.  If that's the chat we have in our pane
       // then that will trigger this watch, which we can use to pick up the new message.
@@ -391,35 +397,8 @@ export default {
     }
   },
 
-  async beforeMount() {
-    // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
-    // need to render this pane on the server.
-    await this.$store.dispatch('chats/fetch', {
-      id: this.id
-    })
-
-    const chat = this.$store.getters['chats/get'](this.id)
-
-    if (chat) {
-      await this.$store.dispatch('chatmessages/clearContext', {
-        chatid: this.id
-      })
-
-      if (this.otheruser) {
-        // Get the user info in case we need to warn about them.
-        await this.$store.dispatch('user/fetch', {
-          id: this.otheruser.id,
-          info: true
-        })
-
-        setTimeout(() => {
-          this.showReplyTime = false
-        }, 30000)
-      }
-    } else {
-      // Invalid chat id
-      this.$router.push('/chats')
-    }
+  beforeMount() {
+    this.fetchChat()
   },
 
   methods: {
@@ -631,6 +610,36 @@ export default {
     },
     report() {
       this.$refs.chatreport.show()
+    },
+    async fetchChat() {
+      // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
+      // need to render this pane on the server.
+      await this.$store.dispatch('chats/fetch', {
+        id: this.id
+      })
+
+      const chat = this.$store.getters['chats/get'](this.id)
+
+      if (chat) {
+        await this.$store.dispatch('chatmessages/clearContext', {
+          chatid: this.id
+        })
+
+        if (this.otheruser) {
+          // Get the user info in case we need to warn about them.
+          await this.$store.dispatch('user/fetch', {
+            id: this.otheruser.id,
+            info: true
+          })
+
+          setTimeout(() => {
+            this.showReplyTime = false
+          }, 30000)
+        }
+      } else {
+        // Invalid chat id
+        this.$router.push('/chats')
+      }
     }
   }
 }
