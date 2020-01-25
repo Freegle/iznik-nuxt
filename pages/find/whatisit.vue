@@ -185,7 +185,12 @@ export default {
       }
     },
     next() {
-      this.$router.push('/find/whoami')
+      const currentpc = this.$store.getters['compose/getPostcode']
+
+      if (currentpc) {
+        // We shouldn't be able to progress if we didn't have a postcode.
+        this.$router.push('/find/whoami')
+      }
     }
   },
 

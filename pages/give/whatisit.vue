@@ -153,7 +153,12 @@ export default {
       })
     },
     next() {
-      this.$router.push('/give/whoami')
+      const currentpc = this.$store.getters['compose/getPostcode']
+
+      if (currentpc) {
+        // We shouldn't be able to progress if we didn't have a postcode.
+        this.$router.push('/give/whoami')
+      }
     },
     postcodeSelect(pc) {
       const currentpc = this.$store.getters['compose/getPostcode']
