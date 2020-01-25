@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span ref="breakpoint" class="d-inline-block d-sm-none" />
+    <span ref="breakpoint" class="d-inline d-sm-none" />
     <b-card class="p-0 mb-1" variant="success">
       <b-card-header :class="'pl-2 pr-2 clearfix' + (ispromised ? ' promisedfade' : '')">
         <b-card-title class="msgsubj mb-0 d-block d-sm-none">
