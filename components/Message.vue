@@ -1,5 +1,6 @@
 <template>
   <div>
+    <span ref="breakpoint" class="d-inline-block d-sm-none" />
     <b-card class="p-0 mb-1" variant="success">
       <b-card-header :class="'pl-2 pr-2 clearfix' + (ispromised ? ' promisedfade' : '')">
         <b-card-title class="msgsubj mb-0 d-block d-sm-none">
@@ -221,12 +222,7 @@
               class="flex-shrink-2"
             />
             <div class="flex-grow-1 text-right ml-2 d-none d-md-block">
-              <b-btn variant="success" :disabled="replying" class="d-inline-block d-sm-none" @click="sendReply(false)">
-                Send
-                <v-icon v-if="replying" name="sync" class="fa-spin" />
-                <v-icon v-else name="angle-double-right" />&nbsp;
-              </b-btn>
-              <b-btn variant="success" :disabled="replying" class="d-none d-sm-inline-block" @click="sendReply(true)">
+              <b-btn variant="success" :disabled="replying" @click="sendReply">
                 Send
                 <v-icon v-if="replying" name="sync" class="fa-spin" />
                 <v-icon v-else name="angle-double-right" />&nbsp;
@@ -236,12 +232,7 @@
         </b-row>
         <b-row class="d-block d-md-none mt-2">
           <b-col>
-            <b-btn variant="success" block :disabled="replying" class="d-inline-block d-sm-none" @click="sendReply(false)">
-              Send
-              <v-icon v-if="replying" name="sync" class="fa-spin" />
-              <v-icon v-else name="angle-double-right" />&nbsp;
-            </b-btn>
-            <b-btn variant="success" block :disabled="replying" class="d-none d-sm-inline-block" @click="sendReply(true)">
+            <b-btn variant="success" block :disabled="replying" @click="sendReply">
               Send
               <v-icon v-if="replying" name="sync" class="fa-spin" />
               <v-icon v-else name="angle-double-right" />&nbsp;
@@ -396,10 +387,12 @@ export default {
   watch: {
     async replyToSend(newVal, oldVal) {
       // Because of the way persistent store is restored, we might only find out that we have a reply to send post-mount.
+      console.log('replyToSend')
       if (newVal && newVal.replyTo === this.id) {
         await this.expand()
         this.reply = newVal.replyMessage
         this.$nextTick(() => {
+          console.log('send it')
           this.sendReply()
         })
       }
@@ -416,6 +409,7 @@ export default {
       // Because of the way persistent store is restored, we might or might not know that we have a reply to send here.
       this.reply = reply.replyMessage
       await this.expand()
+      console.log('Send it')
       this.sendReply()
     }
   },
@@ -455,10 +449,11 @@ export default {
       this.$refs.reportModal.show()
     },
 
-    async sendReply(popup) {
+    async sendReply() {
       // We have different buttons which display at different screen sizes.  Which of those is visible and hence
       // clicked tells us whether we want to open this chat in a popup or not.
-      console.log('Send reply', this.reply)
+      const popup = this.sm()
+      console.log('Send reply', this.reply, popup)
       if (this.reply) {
         const me = this.$store.getters['auth/user']
 
@@ -548,6 +543,27 @@ export default {
         replyTo: null,
         replyMessage: null
       })
+    },
+
+    sm() {
+      // Detect breakpoint by checking computing style of an element which uses the bootstrap classes
+      let ret = false
+
+      if (process.client) {
+        const el = this.$refs.breakpoint
+        if (el) {
+          const display = getComputedStyle(el, null).display
+          console.log('Display', display)
+
+          if (display === 'none') {
+            ret = true
+          }
+        }
+      }
+
+      console.log('>= Small?', ret)
+
+      return ret
     }
   }
 }
