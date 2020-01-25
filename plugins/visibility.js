@@ -12,7 +12,6 @@ export default ({ store }) => {
       const currentCount = store.getters['chats/unseenCount']
       const newCount = await store.dispatch('chats/unseenCount')
 
-      console.log('Visibiility', currentCount, newCount)
       if (newCount !== currentCount) {
         // It's changed - the up to date chat rooms.
         await store.dispatch('chats/listChats', {
