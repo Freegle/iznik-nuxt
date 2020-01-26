@@ -50,7 +50,7 @@
                 ...
               </b>
             </div>
-            <div v-if="!eSnippet || eSnippet === 'null' && !expanded">
+            <div v-if="(!eSnippet || eSnippet === 'null') && !expanded">
               <i>There's no description.</i>
             </div>
             <b-button v-if="!expanded" variant="white" class="mt-1" @click="expand">
@@ -93,7 +93,7 @@
                     ...
                   </b>
                 </div>
-                <div v-if="!eSnippet || eSnippet === 'null' && !expanded">
+                <div v-if="(!eSnippet || eSnippet === 'null') && !expanded">
                   <i>There's no description.</i>
                 </div>
                 <b-button v-if="!expanded" variant="white" class="mt-1" @click="expand">
