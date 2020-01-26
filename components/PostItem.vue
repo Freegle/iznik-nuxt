@@ -18,6 +18,7 @@
           spellcheck="true"
           :timeout="30000"
           placeholder="In a single word or phrase, what is it?"
+          close-button
           @input="input"
         />
       </b-col>

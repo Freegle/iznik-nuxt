@@ -32,13 +32,14 @@
 
     <div
       v-show="showList && json.length"
-      :class="`${getClassName('list')} autocomplete autocomplete-list`"
+      :class="`${getClassName('list')} autocomplete autocomplete-list position-relative`"
     >
+      <v-icon v-if="closeButton" name="times-circle" class="close mt-1 clickme" scale="2" @click="close" />
       <ul>
         <li
           v-for="(data, i) in json"
           :key="'autocomplete' + data.id"
-          :class="activeClass(i)"
+          :class="activeClass(i) + ' pr-4'"
         >
           <a
             href="#"
@@ -157,6 +158,12 @@
 .autocomplete ul li.focus-list a span {
   /*backwards compat*/
   color: white;
+}
+
+.close {
+  position: absolute;
+  right: 0px;
+  z-index: 2000;
 }
 
 /*.showAll-transition{
@@ -303,6 +310,12 @@ export default {
       type: Number,
       required: false,
       default: null
+    },
+
+    closeButton: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
 
@@ -654,6 +667,11 @@ export default {
 
     search() {
       this.$emit('search')
+    },
+
+    close() {
+      this.showList = false
+      this.clearTimer()
     }
   }
 }
