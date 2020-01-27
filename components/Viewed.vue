@@ -18,7 +18,6 @@ export default {
   name: 'Viewed',
   computed: {
     messages() {
-      console.log('Compute messages', this.$store.getters['messages/getViewed'])
       return this.$store.getters['messages/getViewed']
     }
   },
