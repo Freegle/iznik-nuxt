@@ -2,8 +2,8 @@
   <div v-if="me && me.settings && me.settings.notifications">
     <client-only>
       <b-row class="m-0">
-        <b-col cols="0" lg="3" />
-        <b-col cols="12" lg="6" class="p-0">
+        <b-col cols="0" xl="3" />
+        <b-col cols="12" xl="6" class="p-0">
           <b-card border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
             <template v-slot:header>
               <v-icon name="globe-europe" /> Your Public Profile
@@ -461,7 +461,7 @@
           </b-card>
           <br class="mb-4">
         </b-col>
-        <b-col cols="0" lg="3" />
+        <b-col cols="0" xl="3" />
       </b-row>
       <AboutMeModal ref="aboutmemodal" @change="update" />
       <ProfileModal :id="me ? me.id : null" ref="profilemodal" />
