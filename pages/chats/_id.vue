@@ -1,39 +1,41 @@
 <template>
-  <b-row class="m-0">
-    <b-col id="chatlist" cols="12" md="3" xl="2" :class="'chatlist p-0 bg-white ' + (selectedChatId ? 'd-none d-md-block' : '') + ' ' + selectedChatId">
-      <b-card class="p-0">
-        <b-card-body class="p-0">
-          <b-row>
-            <b-col>
-              <b-form-input v-model="search" placeholder="Search chats" @update="searchChange" />
-            </b-col>
-            <b-col>
-              <b-btn class="float-right" variant="white" @click="markAllRead">
-                <v-icon name="check" /> Mark all read
-              </b-btn>
-            </b-col>
-          </b-row>
-        </b-card-body>
-      </b-card>
-      <ul v-for="chat in sortedChats" :key="'chat-' + chat.id" class="p-0 pt-1 list-unstyled mb-1">
-        <li :class="{ active: chat && parseInt(activeChat) === parseInt(chat.id) }">
-          <ChatListEntry :id="chat.id" />
-        </li>
-      </ul>
-      <client-only>
-        <infinite-loading force-use-infinite-wrapper="#chatlist" :distance="distance" @infinite="loadMore">
-          <span slot="no-results" />
-          <span slot="no-more" />
-        </infinite-loading>
-      </client-only>
-    </b-col>
-    <b-col cols="12" md="9" xl="7" :class="'chatback ' + (selectedChatId ? 'd-block' : 'd-none d-md-block')">
-      <ChatPane v-if="activeChat" :id="activeChat" />
-    </b-col>
-    <b-col cols="0" xl="3" class="d-none d-xl-block p-0 pl-1">
-      <SidebarRight :show-volunteer-opportunities="false" :show-job-opportunities="true" />
-    </b-col>
-  </b-row>
+  <client-only>
+    <b-row class="m-0">
+      <b-col id="chatlist" cols="12" md="3" xl="2" :class="'chatlist p-0 bg-white ' + (selectedChatId ? 'd-none d-md-block' : '') + ' ' + selectedChatId">
+        <b-card class="p-0">
+          <b-card-body class="p-0">
+            <b-row>
+              <b-col>
+                <b-form-input v-model="search" placeholder="Search chats" @update="searchChange" />
+              </b-col>
+              <b-col>
+                <b-btn class="float-right" variant="white" @click="markAllRead">
+                  <v-icon name="check" /> Mark all read
+                </b-btn>
+              </b-col>
+            </b-row>
+          </b-card-body>
+        </b-card>
+        <ul v-for="chat in sortedChats" :key="'chat-' + chat.id" class="p-0 pt-1 list-unstyled mb-1">
+          <li :class="{ active: chat && parseInt(activeChat) === parseInt(chat.id) }">
+            <ChatListEntry :id="chat.id" />
+          </li>
+        </ul>
+        <client-only>
+          <infinite-loading force-use-infinite-wrapper="#chatlist" :distance="distance" @infinite="loadMore">
+            <span slot="no-results" />
+            <span slot="no-more" />
+          </infinite-loading>
+        </client-only>
+      </b-col>
+      <b-col cols="12" md="9" xl="7" :class="'chatback ' + (selectedChatId ? 'd-block' : 'd-none d-md-block')">
+        <ChatPane v-if="activeChat" :id="activeChat" />
+      </b-col>
+      <b-col cols="0" xl="3" class="d-none d-xl-block p-0 pl-1">
+        <SidebarRight :show-volunteer-opportunities="false" :show-job-opportunities="true" />
+      </b-col>
+    </b-row>
+  </client-only>
 </template>
 
 <style scoped lang="scss">
