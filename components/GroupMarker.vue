@@ -4,7 +4,7 @@
       <div @click="goto">
         <b-img v-if="size ==='poor'" src="/mapmarker.gif" />
         <div v-if="size === 'rich'" class="text-center">
-          <group-profile-image :image="group.profile ? group.profile : '/icon.png'" />
+          <group-profile-image :image="group.profile ? group.profile : '/icon.png'" :alt-text="'Profile picture for ' + group.namedisplay" />
           <br>
           <h5 class="text-break mt-1 p-2 bg-white text-success border border-success rounded thick">
             {{ group.namedisplay }}

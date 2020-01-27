@@ -79,7 +79,7 @@
               <div class="media clickme">
                 <div class="media-left">
                   <div class="media-object">
-                    <group-profile-image :image="g.profile ? g.profile : '/icon.png'" class="mr-2" />
+                    <group-profile-image :image="g.profile ? g.profile : '/icon.png'" :alt-text="'Profile picture for ' + g.namedisplay" class="mr-2" />
                   </div>
                 </div>
                 <div class="media-body">
