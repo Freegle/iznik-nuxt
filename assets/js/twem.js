@@ -1,5 +1,10 @@
 const twem = {
   twem: function(twemoji, msg) {
+    if (typeof msg === 'number') {
+      // This can happen if people post just numeric values.
+      msg += ''
+    }
+
     if (typeof msg === 'string') {
       msg = msg.replace(/\\\\u(.*?)\\\\u/g, function(
         match,
