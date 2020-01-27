@@ -149,43 +149,7 @@
     </b-row>
   </div>
 </template>
-<style scoped lang="scss">
-@import 'color-vars';
 
-$bootstrap-sm: 768px;
-
-.chart-wrapper {
-  flex-direction: column;
-
-  @media (min-width: $bootstrap-sm) {
-    flex-direction: row;
-  }
-}
-
-.card {
-  &.chart {
-    height: 100%;
-  }
-}
-
-.titlelogo {
-  width: 140px;
-  height: 140px;
-  object-fit: cover;
-}
-
-.purple {
-  color: $color-purple !important;
-}
-
-.gold {
-  color: $color-gold !important;
-}
-
-.green {
-  color: green !important;
-}
-</style>
 <script>
 import dayjs from 'dayjs'
 import { GChart } from 'vue-google-charts'
@@ -480,3 +444,42 @@ export default {
   methods: {}
 }
 </script>
+
+<style scoped lang="scss">
+@import 'color-vars';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+
+.chart-wrapper {
+  flex-direction: column;
+
+  @include media-breakpoint-up(md) {
+    flex-direction: row;
+  }
+}
+
+.card {
+  &.chart {
+    height: 100%;
+  }
+}
+
+.titlelogo {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+}
+
+.purple {
+  color: $color-purple !important;
+}
+
+.gold {
+  color: $color-gold !important;
+}
+
+.green {
+  color: green !important;
+}
+</style>

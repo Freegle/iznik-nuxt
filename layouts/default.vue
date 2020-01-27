@@ -279,6 +279,9 @@
 
 <style scoped lang="scss">
 @import 'color-vars';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
 
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
@@ -334,8 +337,6 @@ nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
   }
 }
 
-$bootstrap-sm: 768px;
-
 #nav_collapse_mobile {
   margin-top: 5px;
 
@@ -351,7 +352,7 @@ $bootstrap-sm: 768px;
     flex-basis: 25%;
     margin: 20px 0;
 
-    @media (min-width: $bootstrap-sm) {
+    @include media-breakpoint-up(md) {
       flex-basis: unset;
     }
   }
