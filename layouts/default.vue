@@ -190,7 +190,10 @@
       </b-navbar-nav>
 
       <b-navbar-nav class="">
-        <b-navbar-toggle v-if="loggedIn" target="nav_collapse_mobile" />
+        <b-btn v-if="loggedIn" v-b-toggle.nav_collapse_mobile class="toggler white">
+          <v-icon name="bars" class="mb-1" scale="1.5" />
+        </b-btn>
+        <!--        <b-navbar-toggle v-if="loggedIn" target="nav_collapse_mobile" class="navbar-dark" />-->
       </b-navbar-nav>
 
       <b-collapse v-if="loggedIn" id="nav_collapse_mobile" ref="nav_collapse_mobile" class="w-100 ourBack">
@@ -480,10 +483,25 @@ svg.fa-icon {
   position: fixed;
   bottom: 0%;
 }
+
+.toggler {
+  background: transparent;
+  border-color: white;
+}
+
+.toggler:hover {
+  background: white !important;
+  color: $colour-success !important;
+}
+
+.toggler svg {
+  vertical-align: -20px;
+}
 </style>
 <script>
 // Import login modal as I've seen an issue where it's not in $refs when you click on the signin button too rapidly.
 import LoginModal from '~/components/LoginModal'
+
 const AboutMeModal = () => import('~/components/AboutMeModal')
 const ChatPopups = () => import('~/components/ChatPopups')
 const Notification = () => import('~/components/Notification')
