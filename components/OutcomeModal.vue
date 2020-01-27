@@ -56,13 +56,13 @@
               How do you feel about freegling just now?
             </p>
             <b-button-group>
-              <b-button variant="success" size="lg" @click="happiness = 'Happy'">
+              <b-button :pressed="happiness === 'Happy'" variant="success" size="lg" class="shadow-none" @click="happiness = 'Happy'">
                 <v-icon name="smile" scale="2" /> Happy
               </b-button>
-              <b-button variant="white" size="lg" @click="happiness = 'Fine'">
+              <b-button :pressed="happiness === 'Fine'" variant="white" size="lg" class="shadow-none" @click="happiness = 'Fine'">
                 <v-icon name="meh" scale="2" color="grey" /> Fine
               </b-button>
-              <b-button variant="danger" size="lg" @click="happiness = 'Unhappy'">
+              <b-button :pressed="happiness === 'Unhappy'" variant="danger" size="lg" class="shadow-none" @click="happiness = 'Unhappy'">
                 <v-icon name="frown" scale="2" /> Sad
               </b-button>
             </b-button-group>
@@ -96,15 +96,6 @@
     </b-modal>
   </div>
 </template>
-
-<style scoped lang="scss">
-@import 'color-vars';
-
-option {
-  color: $color-black !important;
-}
-</style>
-
 <script>
 import Ratings from './Ratings'
 
@@ -234,3 +225,14 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+@import 'color-vars';
+
+option {
+  color: $color-black !important;
+}
+
+.btn[aria-pressed='true'] {
+  box-shadow: 0px 0px 5px 2px $color-blue--base !important;
+}
+</style>
