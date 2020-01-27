@@ -11,6 +11,7 @@
         :name="name"
         autocomplete="off"
         :invalid="invalid"
+        :size="size"
         @input="handleInput"
         @dblclick="handleDoubleClick"
         @blur="handleBlur"
@@ -18,7 +19,7 @@
         @focus="handleFocus"
       >
       <b-input-group-append>
-        <b-button variant="white" class="transbord">
+        <b-button variant="white" class="transbord p-0 pr-2">
           <!-- TODO RAHUL DESIGN The shadow on the input field that you get when you're focused ought really to include this append.-->
           <v-icon name="sync" :class="'text-success fa-spin ' + (ajaxInProgress ? 'visible': 'invisible')" />
         </b-button>
@@ -316,6 +317,12 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+
+    size: {
+      type: Number,
+      required: false,
+      default: null
     }
   },
 

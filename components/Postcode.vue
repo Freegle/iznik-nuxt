@@ -15,6 +15,7 @@
       :debounce="200"
       :process="process"
       :on-select="select"
+      :size="10"
       @invalid="invalid"
     />
 

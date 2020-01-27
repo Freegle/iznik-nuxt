@@ -12,17 +12,15 @@
               <b-card-body class="pt-0 pb-1">
                 <PostMessage :id="id" type="Offer" />
               </b-card-body>
-              <b-card-footer v-if="index === ids.length - 1" class="d-flex justify-content-between">
-                <div class="d-flex">
-                  <Postcode
-                    :value="postcode ? postcode.name : null"
-                    :find="false"
-                    size="md"
-                    class="d-inline"
-                    @selected="postcodeSelect"
-                  />
-                  <ComposeGroup :width="200" />
-                </div>
+              <b-card-footer v-if="index === ids.length - 1" class="d-flex justify-content-between p-0 pt-1">
+                <Postcode
+                  :value="postcode ? postcode.name : null"
+                  :find="false"
+                  size="md"
+                  class="d-inline"
+                  @selected="postcodeSelect"
+                />
+                <ComposeGroup class="cg" />
               </b-card-footer>
             </b-card>
           </li>
@@ -201,3 +199,9 @@ export default {
   }
 }
 </script>
+<style scoped>
+.cg {
+  flex-basis: 25%;
+  flex-grow: 1;
+}
+</style>
