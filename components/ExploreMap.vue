@@ -79,13 +79,7 @@
               <div class="media clickme">
                 <div class="media-left">
                   <div class="media-object">
-                    <b-img-lazy
-                      thumbnail
-                      :alt="'Profile picture for ' + g.namedisplay"
-                      :src="g.profile ? g.profile : '/icon.png'"
-                      class="mr-2 groupprofile"
-                      @error.native="brokenImage"
-                    />
+                    <group-profile-image :image="g.profile ? g.profile : '/icon.png'" class="mr-2" />
                   </div>
                 </div>
                 <div class="media-body">
@@ -132,21 +126,17 @@
     </b-row>
   </div>
 </template>
-<style scoped>
-.groupprofile {
-  object-fit: cover;
-  width: 100px;
-  height: 100px;
-}
-</style>
+
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
 import GroupMarker from '~/components/GroupMarker.vue'
+import GroupProfileImage from '~/components/GroupProfileImage'
 
 export default {
   components: {
     InfiniteLoading,
-    GroupMarker
+    GroupMarker,
+    GroupProfileImage
   },
   props: {
     region: {
@@ -283,10 +273,6 @@ export default {
           }
         }
       }
-    },
-    brokenImage(event) {
-      console.error('Broken profile image', event.target.src)
-      event.target.src = '/static/defaultprofile.png'
     },
     loadMoreList($state) {
       // We use an infinite load for the list because it's a lot of DOM to add at initial page load.

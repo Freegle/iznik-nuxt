@@ -4,13 +4,7 @@
       <div @click="goto">
         <b-img v-if="size ==='poor'" src="/mapmarker.gif" />
         <div v-if="size === 'rich'" class="text-center">
-          <b-img
-            thumbnail
-            :alt="'Profile picture for ' + group.namedisplay"
-            :src="group.profile ? group.profile : '/icon.png'"
-            class="groupprofile"
-            @error.native="brokenImage"
-          />
+          <group-profile-image :image="group.profile ? group.profile : '/icon.png'" />
           <br>
           <h5 class="text-break mt-1 p-2 bg-white text-success border border-success rounded thick">
             {{ group.namedisplay }}
@@ -21,26 +15,14 @@
   </div>
 </template>
 
-<style scoped lang="scss">
-@import 'color-vars';
-
-.groupprofile {
-  object-fit: cover;
-  width: 100px;
-  height: 100px;
-}
-
-.thick {
-  border: 2px solid $color-green--darker !important;
-}
-</style>
-
 <script>
 import RichMarker from './RichMarker.vue'
+import GroupProfileImage from '~/components/GroupProfileImage'
 
 export default {
   components: {
-    RichMarker
+    RichMarker,
+    GroupProfileImage
   },
   props: {
     group: {
@@ -57,12 +39,17 @@ export default {
     this.$refs.rich.getMarker().setMap(null)
   },
   methods: {
-    brokenImage(event) {
-      event.target.src = '/static/defaultprofile.png'
-    },
     goto() {
       this.$router.push('/explore/' + this.group.nameshort)
     }
   }
 }
 </script>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
+.thick {
+  border: 2px solid $color-green--darker !important;
+}
+</style>
