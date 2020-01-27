@@ -333,7 +333,7 @@
 }
 
 .green {
-  color: green !important;
+  color: $color-green--darker !important;
 }
 
 .iconlist {
