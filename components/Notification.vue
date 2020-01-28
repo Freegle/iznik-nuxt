@@ -1,5 +1,5 @@
 <template>
-  <div style="white-space: normal" :class="notification.seen ? '' : 'bg-info'" @click="click" @mouseover="markSeen">
+  <div class="notification__wrapper" :class="notification.seen ? '' : 'bg-info'" @click="click" @mouseover="markSeen">
     <notification-loved-post v-if="notification.type === 'LovedPost'" :notification="notification" />
     <notification-loved-comment v-else-if="notification.type === 'LovedComment'" :notification="notification" />
     <notification-comment-on-post v-else-if="notification.type === 'CommentOnYourPost'" :notification="notification" />
@@ -15,6 +15,7 @@
     </span>
   </div>
 </template>
+
 <script>
 // TODO MINOR Some people haven't had Pavlovian training from Facebook to click on red notifications.  Consider a one-off
 //   popup to alert people to go and look at notifications or chat replies the first time they get one.
@@ -76,3 +77,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.notification__wrapper {
+  white-space: normal;
+}
+</style>

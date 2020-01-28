@@ -59,8 +59,7 @@
                   <v-icon name="handshake" />
                   <v-icon
                     name="slash"
-                    style="transform: rotate(180deg)"
-                    class="red"
+                    class="unpromise__slash"
                   />
                 </v-icon>
                 Unpromise
@@ -102,5 +101,11 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import 'color-vars';
+
+.unpromise__slash {
+  transform: rotate(180deg);
+  color: $color-red;
+}
 </style>
