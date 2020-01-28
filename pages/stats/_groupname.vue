@@ -63,12 +63,26 @@
           </b-card>
           <b-card variant="white" class="mt-2">
             <b-card-text>
-              <h3>Activity</h3>
-              <p>This includes people OFFERing something, posting a WANTED for something, or searching for something.</p>
+              <h3 class="d-flex justify-content-between">
+                <span>
+                  {{ graphTitles[graphType] }}
+                </span>
+                <b-form-select v-model="graphType" :options="graphTypes" class="graphSelect" />
+              </h3>
+              <p v-if="graphType === 'Activity'">
+                This includes people OFFERing something, posting a WANTED for something, or searching for something.
+              </p>
+              <p v-if="graphType === 'ApprovedMessageCount'">
+                This includes people OFFERing something or posting a WANTED for something.
+              </p>
+              <p v-if="graphType === 'Searches'">
+                This includes people searching for something.
+              </p>
               <GChart
+                :key="graphType"
                 type="LineChart"
-                :data="activityData"
-                :options="activityOptions"
+                :data="graphData"
+                :options="graphOptions"
               />
             </b-card-text>
           </b-card>
@@ -169,23 +183,16 @@ export default {
       loading: false,
       dataready: false,
       group: null,
-      activityOptions: {
-        title: 'Activity',
-        interpolateNulls: false,
-        animation: {
-          duration: 5000,
-          easing: 'out',
-          startup: true
-        },
-        legend: { position: 'none' },
-        chartArea: { width: '80%', height: '80%' },
-        vAxis: { viewWindow: { min: 0 } },
-        hAxis: {
-          format: 'MMM yyyy'
-        },
-        series: {
-          0: { color: 'blue' }
-        }
+      graphType: 'Activity',
+      graphTypes: [
+        { value: 'Activity', text: 'Activity' },
+        { value: 'ApprovedMessageCount', text: 'OFFERS/WANTEDs' },
+        { value: 'Searches', text: 'Searches' }
+      ],
+      graphTitles: {
+        Activity: 'Activity',
+        ApprovedMessageCount: 'OFFERs and WANTED',
+        Searches: 'Searches'
       },
       balanceOptions: {
         title: 'Post Balance',
@@ -254,6 +261,26 @@ export default {
     }
   },
   computed: {
+    graphOptions() {
+      return {
+        title: this.graphTitles[this.graphType],
+        interpolateNulls: false,
+        animation: {
+          duration: 5000,
+          easing: 'out',
+          startup: true
+        },
+        legend: { position: 'none' },
+        chartArea: { width: '80%', height: '80%' },
+        vAxis: { viewWindow: { min: 0 } },
+        hAxis: {
+          format: 'MMM yyyy'
+        },
+        series: {
+          0: { color: 'blue' }
+        }
+      }
+    },
     totalWeight() {
       const weights = this.$store.getters['stats/get']('Weight')
       let total = 0
@@ -277,9 +304,9 @@ export default {
     totalCO2() {
       return Math.round(this.totalWeight * 0.51)
     },
-    activityData() {
+    graphData() {
       const ret = [['Date', 'Count']]
-      const activity = this.$store.getters['stats/get']('Activity')
+      const activity = this.$store.getters['stats/get'](this.graphType)
 
       if (activity) {
         for (const a of activity) {
@@ -481,5 +508,9 @@ export default {
 
 .green {
   color: $color-green--darker !important;
+}
+
+.graphSelect {
+  max-width: 200px;
 }
 </style>
