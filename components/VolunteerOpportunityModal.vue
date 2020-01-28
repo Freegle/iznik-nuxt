@@ -529,7 +529,7 @@ export default {
         const { id } = this.volunteering
         // This is an edit.
         if (this.shouldUpdatePhoto) {
-          await this.$store.dispatch('communityevents/setPhoto', {
+          await this.$store.dispatch('volunteerops/setPhoto', {
             id,
             photoid: this.volunteeringEdit.photo.id
           })
