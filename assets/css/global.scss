@@ -23,15 +23,15 @@
 }
 
 .pageContent .btn:hover {
-  color: black !important;
-  background-color: #fff !important;
-  border-color: #204d74 !important;
+  color: $color-black !important;
+  background-color: $color-white !important;
+  border-color: $color-blue--2 !important;
 }
 
 .pageContent .btn-white:hover {
-  color:  white !important;
+  color: $color-white !important;
   background-color: $color-blue--light !important;
-  border-color: #204d74 !important;
+  border-color: $color-blue--2 !important;
 }
 
 .btn-primary {

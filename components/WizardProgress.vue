@@ -74,7 +74,7 @@ export default {
   height: 8px;
   box-shadow: none;
   margin: 20px 0;
-  background-color: #e9ecef;
+  background-color: $color-gray-3;
 }
 
 .wizard > .wizard__step:first-child > .wizard__progress {

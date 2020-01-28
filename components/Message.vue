@@ -602,7 +602,7 @@ h4.snippet {
 }
 
 .highlight {
-  color: darkorange;
+  color: $color-orange--dark;
   background-color: initial;
 }
 
