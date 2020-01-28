@@ -373,13 +373,14 @@ export default {
   }
 }
 </script>
+
 <style scoped lang="scss">
 @import 'color-vars';
 
 .otherborder {
   border-radius: 50%;
   padding: 3px;
-  background-color: white;
+  background-color: $color-white;
   border: 2px solid $color-blue--light;
 }
 </style>
