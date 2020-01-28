@@ -70,13 +70,16 @@
                 <b-form-select v-model="graphType" :options="graphTypes" class="graphSelect" />
               </h3>
               <p v-if="graphType === 'Activity'">
-                This includes people OFFERing something, posting a WANTED for something, or searching for something.
+                This includes people OFFERing something, posting a WANTED for something, or replying to an OFFER/WANTED.
               </p>
               <p v-if="graphType === 'ApprovedMessageCount'">
                 This includes people OFFERing something or posting a WANTED for something.
               </p>
               <p v-if="graphType === 'Searches'">
                 This includes people searching for something.
+              </p>
+              <p v-if="graphType === 'Replies'">
+                This includes people replying to an OFFER or a WANTED.
               </p>
               <GChart
                 :key="graphType"
@@ -187,12 +190,14 @@ export default {
       graphTypes: [
         { value: 'Activity', text: 'Activity' },
         { value: 'ApprovedMessageCount', text: 'OFFERS/WANTEDs' },
-        { value: 'Searches', text: 'Searches' }
+        { value: 'Searches', text: 'Searches' },
+        { value: 'Replies', text: 'Replies' }
       ],
       graphTitles: {
         Activity: 'Activity',
         ApprovedMessageCount: 'OFFERs and WANTED',
-        Searches: 'Searches'
+        Searches: 'Searches',
+        Replies: 'Replies'
       },
       balanceOptions: {
         title: 'Post Balance',
