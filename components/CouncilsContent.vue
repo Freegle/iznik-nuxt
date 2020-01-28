@@ -69,6 +69,11 @@
             Christmas toolkit
           </a>
         </li>
+        <li>
+          <a href="/councils/workbest#valentine">
+            Valentine's Day toolkit
+          </a>
+        </li>
       </ul>
     </p>
     <p>

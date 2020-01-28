@@ -182,6 +182,77 @@
               </a>
             </div>
           </div>
+          <h3>Valentine's Day</h3>
+          <h4>Facebook</h4>
+          <div class="row">
+            <div class="col-sm-4">
+              <a target="_blank" href="/councils/socialmedia/FB_avatar_valentines.png">
+                <b-img fluid thumbnail src="/councils/socialmedia/FB_avatar_valentines.png" />
+              </a>
+            </div>
+            <div class="col-sm-4">
+              <a target="_blank" href="/councils/socialmedia/Valentine_Freegle_online_dating_Facebook.png">
+                <b-img fluid thumbnail src="/councils/socialmedia/Valentine_Freegle_online_dating_Facebook.png" />
+              </a>
+            </div>
+            <div class="col-sm-4">
+              <a target="_blank" href="/councils/socialmedia/Valentinefreegle2_200_facebook.png">
+                <b-img fluid thumbnail src="/councils/socialmedia/Valentinefreegle2_200_facebook.png" />
+              </a>
+            </div>
+            <div class="col-sm-4" />
+          </div>
+          <h4>Twitter</h4>
+          <div class="row">
+            <div class="col-sm-4">
+              <a target="_blank" href="/councils/socialmedia/Valentine_Freegle_online_dating_twitter.png">
+                <b-img fluid thumbnail src="/councils/socialmedia/Valentine_Freegle_online_dating_twitter.png" />
+              </a>
+            </div>
+            <div class="col-sm-4">
+              <a target="_blank" href="/councils/socialmedia/Valentine_Freegle_online_dating_2_twitter.png">
+                <b-img fluid thumbnail src="/councils/socialmedia/Valentine_Freegle_online_dating_2_twitter.png" />
+              </a>
+            </div>
+            <div class="col-sm-4">
+              <a target="_blank" href="/councils/socialmedia/Valentinefreegle2_128_Twitter.png">
+                <b-img fluid thumbnail src="/councils/socialmedia/Valentinefreegle2_128_Twitter.png" />
+              </a>
+            </div>
+          </div>
+          <h4>Instagram</h4>
+          <div class="row">
+            <div class="col-sm-4">
+              <a target="_blank" href="/councils/socialmedia/Valentine_Freegle_online_dating_IG.png">
+                <b-img fluid thumbnail src="/councils/socialmedia/Valentine_Freegle_online_dating_IG.png" />
+              </a>
+            </div>
+          </div>
+          <h4>General</h4>
+          <div class="row">
+            <div class="col-sm-4">
+              <a target="_blank" href="/councils/socialmedia/valentinefreegle2.jpg">
+                <b-img fluid thumbnail src="/councils/socialmedia/valentinefreegle2.jpg" />
+              </a>
+            </div>
+            <div class="col-sm-4">
+              <a target="_blank" href="/councils/socialmedia/Valentinefreegle2_160.png">
+                <b-img fluid thumbnail src="/councils/socialmedia/Valentinefreegle2_160.png" />
+              </a>
+            </div>
+            <div class="col-sm-4">
+              <a target="_blank" href="/councils/socialmedia/Valentinefreegle2_250_Yahoo.png">
+                <b-img fluid thumbnail src="/councils/socialmedia/Valentinefreegle2_250_Yahoo.png" />
+              </a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4">
+              <a target="_blank" href="/councils/socialmedia/Valentinefreegle2_320.png">
+                <b-img fluid thumbnail src="/councils/socialmedia/Valentinefreegle2_320.png" />
+              </a>
+            </div>
+          </div>
         </b-card-text>
       </b-card>
     </b-col>
