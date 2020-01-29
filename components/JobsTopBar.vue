@@ -1,5 +1,5 @@
 <template>
-  <div v-if="location" class="mb-2 jobbox bg-light overflow-hidden">
+  <div v-if="location" class="mb-2 bg-light">
     <NoticeMessage v-if="blocked" variant="warning">
       <h3>Please help keep Freegle running</h3>
       <p>
@@ -13,7 +13,7 @@
         </b-btn>
       </a>
     </NoticeMessage>
-    <div v-else>
+    <div v-else class="jobbox overflow-hidden">
       <div class="mb-1 text-center small text-muted">
         Jobs near you.  Freegle gets a small amount if you click, which helps keep us going.  <nuxt-link to="/jobs">
           See more jobs
@@ -25,11 +25,7 @@
     </div>
   </div>
 </template>
-<style scoped>
-.jobbox {
-  height: 220px;
-}
-</style>
+
 <script>
 import Job from './Job'
 import NoticeMessage from './NoticeMessage'
@@ -77,3 +73,9 @@ export default {
   methods: {}
 }
 </script>
+
+<style scoped>
+.jobbox {
+  height: 220px;
+}
+</style>
