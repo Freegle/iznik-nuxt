@@ -100,8 +100,10 @@ export default {
       let chats = Object.values(this.$store.getters['chats/list'])
 
       chats.sort(function(a, b) {
-        if (b.unseen !== a.unseen) {
-          return b.unseen - a.unseen
+        const aunseen = Math.max(1, a.unseen)
+        const bunseen = Math.max(1, b.unseen)
+        if (bunseen !== aunseen) {
+          return bunseen - aunseen
         } else {
           return new Date(b.lastdate) - new Date(a.lastdate)
         }
