@@ -215,12 +215,14 @@ export default {
     },
 
     async fetchUser(userid) {
-      await this.$store.dispatch('user/fetch', {
-        id: userid,
-        info: true
-      })
+      if (userid) {
+        await this.$store.dispatch('user/fetch', {
+          id: userid,
+          info: true
+        })
 
-      this.fetchedUser = this.$store.getters['user/get'](userid)
+        this.fetchedUser = this.$store.getters['user/get'](userid)
+      }
     }
   }
 }
