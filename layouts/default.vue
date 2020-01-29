@@ -633,12 +633,40 @@ export default {
       }
     }, 5000)
 
-    if (me) {
-      // Set the context for sentry so that we know which users are having errors.
-      this.$sentry.setUser({ userid: me.id })
-
+    try {
       // Set the build date.  This may get superceded by Sentry releases, but it does little harm to add it in.
       this.$sentry.setExtra('builddate', process.env.BUILD_DATE)
+
+      if (me) {
+        // Set the context for sentry so that we know which users are having errors.
+        this.$sentry.setUser({ userid: me.id })
+
+        // eslint-disable-next-line no-undef
+        if (__insp) {
+          // eslint-disable-next-line no-undef
+          __insp.push([
+            'tagSession',
+            {
+              userid: me.id,
+              builddate: process.env.BUILD_DATE
+            }
+          ])
+        }
+      } else {
+        // eslint-disable-next-line no-undef,no-lonely-if
+        if (__insp) {
+          // eslint-disable-next-line no-undef
+          __insp.push([
+            'tagSession',
+            {
+              userid: 'Logged out',
+              builddate: process.env.BUILD_DATE
+            }
+          ])
+        }
+      }
+    } catch (e) {
+      console.log('Failed to set context', e)
     }
 
     this.monitorLocalStorage()
