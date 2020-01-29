@@ -1,5 +1,5 @@
 <template>
-  <b-card v-if="messages && messages.length" bg-light>
+  <b-card v-if="messages && messages.length" bg-light class="recentviews">
     <b-card-title>
       Recently Viewed
     </b-card-title>
