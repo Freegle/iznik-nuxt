@@ -335,36 +335,6 @@
     </template>
   </b-modal>
 </template>
-
-<style scoped lang="scss">
-@import 'color-vars';
-
-.field {
-  font-weight: bold;
-  color: $color-green--darker;
-}
-
-.topleft {
-  top: 12px;
-  left: 10px;
-  position: absolute;
-}
-
-.topright {
-  top: 12px;
-  right: 10px;
-  position: absolute;
-}
-
-.container {
-  position: relative;
-}
-
-.rotate__icon {
-  color: $color-white;
-}
-</style>
-
 <script>
 import { required, maxLength } from 'vuelidate/lib/validators'
 import cloneDeep from 'lodash.clonedeep'
@@ -657,3 +627,35 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+@import 'color-vars';
+
+.field {
+  font-weight: bold;
+  color: $color-green--darker;
+}
+
+.topleft {
+  top: 12px;
+  left: 10px;
+  position: absolute;
+}
+
+.topright {
+  top: 12px;
+  right: 10px;
+  position: absolute;
+}
+
+.container {
+  position: relative;
+}
+
+.rotate__icon {
+  color: $color-white;
+}
+
+.modal-footer > div {
+  width: 100%;
+}
+</style>
