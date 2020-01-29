@@ -420,7 +420,7 @@ export default {
         this.$sentry.setUser({ userid: me.id })
 
         // eslint-disable-next-line no-undef
-        if (__insp) {
+        if (typeof __insp !== 'undefined') {
           // eslint-disable-next-line no-undef
           __insp.push([
             'tagSession',
@@ -432,7 +432,7 @@ export default {
         }
       } else {
         // eslint-disable-next-line no-undef,no-lonely-if
-        if (__insp) {
+        if (typeof __insp !== 'undefined') {
           // eslint-disable-next-line no-undef
           __insp.push([
             'tagSession',
