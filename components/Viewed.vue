@@ -3,13 +3,15 @@
     <b-card-title>
       Recently Viewed
     </b-card-title>
-    <div v-for="message in messages" :key="'message-' + message.id">
-      <nuxt-link :to="'/message/' + message.id">
-        {{ message.subject }}
-      </nuxt-link>
-      <span class="small text-muted">
-        {{ message.viewedat | timeago }}
-      </span>
+    <div v-for="(message, index) in messages" :key="'message-' + message.id">
+      <div :class="index > 1 ? 'd-none d-md-block' : ''">
+        <nuxt-link :to="'/message/' + message.id">
+          {{ message.subject }}
+        </nuxt-link>
+        <span class="small text-muted">
+          {{ message.viewedat | timeago }}
+        </span>
+      </div>
     </div>
   </b-card>
 </template>
