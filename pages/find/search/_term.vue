@@ -1,7 +1,8 @@
 <template>
   <div>
     <b-row class="m-0">
-      <b-col cols="12" lg="6" class="p-0" offset-lg="3">
+      <b-col cols="0" md="3" />
+      <b-col cols="12" md="6" class="p-0">
         <h1 class="text-center">
           Ok, what are you looking for?
         </h1>
@@ -76,16 +77,14 @@
               <message v-if="message.type == searchtype" v-bind="message" />
             </div>
 
-            <client-only>
-              <infinite-loading :key="searchtype" :distance="distance" @infinite="loadMore">
+            <infinite-loading :key="searchtype" :distance="distance" @infinite="loadMore">
+              <span slot="no-results" />
+              <span slot="no-more" />
+              <span slot="spinner">
                 <span slot="no-results" />
-                <span slot="no-more" />
-                <span slot="spinner">
-                  <span slot="no-results" />
-                  <b-img-lazy src="~/static/loader.gif" alt="Loading" />
-                </span>
-              </infinite-loading>
-            </client-only>
+                <b-img-lazy src="~/static/loader.gif" alt="Loading" />
+              </span>
+            </infinite-loading>
           </b-col>
         </b-row>
       </b-col>
@@ -104,10 +103,9 @@
 </style>
 
 <script>
-// TODO RAHUL DESIGN Maybe some kind of border round the search options.
-// TODO RAHUL DESIGN When you focus on the search box, there's a drop shadow to highlight it, but that only goes round
+// TODO DESIGN Maybe some kind of border round the search options.
+// TODO DESIGN When you focus on the search box, there's a drop shadow to highlight it, but that only goes round
 //      the input, and not also round the button, which it should.
-import InfiniteLoading from 'vue-infinite-loading'
 import Autocomplete from '~/components/Autocomplete'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
@@ -115,7 +113,6 @@ const Message = () => import('~/components/Message.vue')
 
 export default {
   components: {
-    InfiniteLoading,
     Autocomplete,
     Message
   },
@@ -167,8 +164,7 @@ export default {
     this.$store.dispatch('messages/clear')
 
     // Focus on field to grab their attention.
-    //this.$refs.autocomplete.$refs.input.focus()
-    this.$refs.autocomplete.$refs.ref_div.focus()   
+    this.$refs.autocomplete.$refs.search_div.focus()
 
     // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
     // need to render this on the server.
@@ -190,12 +186,8 @@ export default {
         this.results = null
       }
 
-      if (this.$refs.autocomplete && this.$refs.autocomplete.$refs) {
-        // We've seen this not be defined - perhaps during navigation when we're destroying this component?
-        // If the ref isn't present then it doesn't make sense to emit the event.
-        const input = this.$refs.autocomplete.$refs.input
-        this.$emit('typed', input.value)
-      }
+      const input = this.$refs.autocomplete.$refs.input
+      this.$emit('typed', input.value)
     },
     process(results) {
       const items =
@@ -252,9 +244,6 @@ export default {
         }
       }
 
-      const groupid = this.$store.getters['compose/getGroup']
-      params.groupid = groupid
-
       this.$store
         .dispatch('messages/fetchMessages', params)
         .then(() => {
@@ -280,7 +269,7 @@ export default {
   },
 
   head() {
-    return this.buildHead(this.term ? 'Search results: ' + this.term : 'Search')
+    return this.buildHead('Search results: ' + this.term)
   }
 }
 </script>

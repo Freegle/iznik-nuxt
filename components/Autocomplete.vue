@@ -1,15 +1,15 @@
 <template>
   <div :class="`${getClassName('wrapper')} autocomplete-wrapper`">
-    <b-input-group  ref="ref_div" tabindex="0" class="ref-div">
+    <b-input-group ref="search_div" tabindex="0" class="search-div">
       <input
         :id="id"
         ref="input"
         v-model="type"
         type="text"
-        :class="`${getClassName('input')} autocomplete-input`"
+        :class="`${getClassName('input')} autocomplete-input no-focus`"
         :placeholder="placeholder"
         :name="name"
-        autocomplete="off"
+        autocomplete="new-password"
         @input="handleInput"
         @dblclick="handleDoubleClick"
         @blur="handleBlur"
@@ -19,7 +19,7 @@
 
       <b-input-group-append>
         <b-button variant="white" class="transbord">
-          <!-- TODO RAHUL DESIGN The shadow on the input field that you get when you're focused ought really to include this append.-->
+          <!-- TODO DESIGN MINOR The shadow on the input field that you get when you're focused ought really to include this append.-->
           <v-icon name="sync" :class="'text-success fa-spin ' + (ajaxInProgress ? 'visible': 'invisible')" />
         </b-button>
       </b-input-group-append>
@@ -38,7 +38,7 @@
         <li
           v-for="(data, i) in json"
           :key="'autocomplete' + data.id"
-          :class="activeClass(i)"
+          :class="`${activeClass(i)} search_op`"
         >
           <a
             href="#"
@@ -70,12 +70,6 @@
 
 /* iteminp class is passed into this component in a prop */
 .iteminp ul {
-  /* 
-  width: 100% !important;
-  right: 0px !important;
-  margin-right: 15px !important;
-  margin-left: 15px !important;
-  */
   /*Width adjusted for the border of the search options*/
   width: 96% !important;
   right: 13px !important;
@@ -164,14 +158,13 @@
   color: white;
 }
 
-
 /*Style for border round the search options*/
 .search_op {
-  border: 1px solid #61ae25;
+  border: 1px solid $colour-success;
   border-radius: 0.2rem;
 }
 
-div .ref-div:focus {
+.search-div:focus {
   background-color: #fff;
   border-color: #80bdff;
   outline: 0;
@@ -179,7 +172,7 @@ div .ref-div:focus {
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
-.focus-class:focus {
+.no-focus:focus {
   border-color: #ced4da;
   border-right: none;
   -webkit-box-shadow: none;
@@ -464,13 +457,6 @@ export default {
     },
 
     handleBlur(e) {
-      // Reset body height.  Seems to break unless we wait for a bit.
-      setTimeout(() => {
-        let body = document.getElementsByTagName("body")[0];
-        body.classList.remove('forcescroll')
-        body.style.overflowY = ''
-      }, 500)
-
       // Callback Event
       this.onBlur ? this.onBlur(e) : null
       setTimeout(() => {
@@ -482,14 +468,6 @@ export default {
 
     handleFocus(e) {
       this.focusList = 0
-
-      // On mobile, the on screen keyboard can obscure the dropdown.  So:
-      // - make sure we have room to scroll
-      // - scroll this input to the top
-      let body = document.getElementsByTagName("body")[0];
-      body.classList.add('forcescroll')
-      this.$refs.input.scrollTop = 0
-      body.style.overflowY = 'hidden'
 
       // Force the list to show.
       this.showList = true
@@ -506,8 +484,8 @@ export default {
       this.focusList = i
     },
 
-     activeClass(i) {
-      const focusClass = i === this.focusList ? 'focus-list search_op' : ' search_op'
+    activeClass(i) {
+      const focusClass = i === this.focusList ? 'focus-list ' : ''
       return `${focusClass}`
     },
 
@@ -591,7 +569,6 @@ export default {
         // On Done
         ajax.addEventListener('loadend', e => {
           const { responseText } = e.target
-          console.log("About to parse", responseText)
           const json = JSON.parse(responseText)
           // Callback Event
           this.onAjaxLoaded ? this.onAjaxLoaded(json) : null
