@@ -121,8 +121,10 @@ export default {
 
             // A message is valid if there is an item, and either a description or a photo.
             if (
+              !message.item ||
               !message.item.trim() ||
-              (!message.description.trim() && !atts.length)
+              ((!message.description || !message.description.trim()) &&
+                !atts.length)
             ) {
               valid = false
             }
