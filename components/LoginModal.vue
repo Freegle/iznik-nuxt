@@ -630,9 +630,7 @@ $color-yahoo: #6b0094;
 }
 
 .transbord {
-  // TODO DESIGN MINOR This colour is copied from bootstrap $input-border-color and should be done better.  Sorry Jason.
-  // See also Autocomplete.
-  border-color: #ced4da;
+  border-color: $color-gray-4;
   border-left: none;
 }
 </style>

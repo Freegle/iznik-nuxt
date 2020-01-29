@@ -60,134 +60,6 @@
   </div>
 </template>
 
-<style scoped lang="scss">
-@import 'color-vars';
-
-.transbord {
-  // TODO DESIGN MINOR This colour is copied from bootstrap $input-border-color and should be done better.  Sorry Jason.
-  // See also LoginModal
-  border-color: #ced4da;
-  border-left: none;
-}
-
-/* iteminp class is passed into this component in a prop */
-.iteminp ul {
-  width: 100% !important;
-  right: 0px !important;
-  padding-right: 15px !important;
-  padding-left: 15px !important;
-}
-
-/* postcodelist class is passed into this component in a prop */
-.postcodelist {
-  z-index: 900;
-}
-
-.postcodelist li {
-  box-shadow: 1px 3px 5px 3px $color-black-opacity-60;
-  width: 238px;
-}
-
-/* Deep selector for scoped CSS */
-::v-deep .pcinp {
-  min-width: 100px;
-  max-width: 238px;
-  margin: 0 auto;
-}
-
-.transition,
-.autocomplete,
-.showAll-transition,
-.autocomplete ul,
-.autocomplete ul li a {
-  transition: all 0.3s ease-out;
-  -moz-transition: all 0.3s ease-out;
-  -webkit-transition: all 0.3s ease-out;
-  -o-transition: all 0.3s ease-out;
-}
-
-.autocomplete ul {
-  font-family: sans-serif;
-  position: absolute;
-  list-style: none;
-  background: $color-gray--lighter;
-  padding: 0;
-  margin: 0;
-  display: inline-block;
-  min-width: 15%;
-  margin-top: 0px;
-  z-index: 1000;
-  right: 48%;
-}
-
-/*.autocomplete ul:before{*/
-/*content: "";*/
-/*display: block;*/
-/*position: absolute;*/
-/*height: 0;*/
-/*width: 0;*/
-/*border: 10px solid transparent;*/
-/*border-bottom: 10px solid $color-gray--lighter;*/
-/*left: 46%;*/
-/*top: -20px*/
-/*}*/
-
-.autocomplete ul li a {
-  text-decoration: none;
-  display: block;
-  padding: 5px;
-  padding-left: 10px;
-}
-
-.autocomplete ul li a:hover,
-.autocomplete ul li.focus-list a {
-  color: white;
-  background: $color-blue--lighter;
-}
-
-.autocomplete ul li a span, /*backwards compat*/
-.autocomplete ul li a .autocomplete-anchor-label {
-  display: block;
-  margin-top: 3px;
-  color: grey;
-  font-size: 13px;
-}
-
-.autocomplete ul li a:hover .autocomplete-anchor-label,
-.autocomplete ul li.focus-list a span, /*backwards compat*/
-.autocomplete ul li a:hover .autocomplete-anchor-label,
-.autocomplete ul li.focus-list a span {
-  /*backwards compat*/
-  color: white;
-}
-
-.close {
-  position: absolute;
-  right: 0px;
-  z-index: 2000;
-}
-
-/*.showAll-transition{
-  opacity: 1;
-  height: 50px;
-  overflow: hidden;
-}
-
-.showAll-enter{
-  opacity: 0.3;
-  height: 0;
-}
-
-.showAll-leave{
-  display: none;
-}*/
-
-input[invalid='true'] {
-  box-shadow: 0 0 0 0.2rem $color-red;
-  border: 1px solid red;
-}
-</style>
-
 <script>
 /*
 * Originally based on:
@@ -685,3 +557,129 @@ export default {
 
 /* eslint-enable */
 </script>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
+.transbord {
+  border-color: $color-gray-4;
+  border-left: none;
+}
+
+/* iteminp class is passed into this component in a prop */
+.iteminp ul {
+  width: 100% !important;
+  right: 0px !important;
+  padding-right: 15px !important;
+  padding-left: 15px !important;
+}
+
+/* postcodelist class is passed into this component in a prop */
+.postcodelist {
+  z-index: 900;
+}
+
+.postcodelist li {
+  box-shadow: 1px 3px 5px 3px $color-black-opacity-60;
+  width: 238px;
+}
+
+/* Deep selector for scoped CSS */
+::v-deep .pcinp {
+  min-width: 100px;
+  max-width: 238px;
+  margin: 0 auto;
+}
+
+.transition,
+.autocomplete,
+.showAll-transition,
+.autocomplete ul,
+.autocomplete ul li a {
+  transition: all 0.3s ease-out;
+  -moz-transition: all 0.3s ease-out;
+  -webkit-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+}
+
+.autocomplete ul {
+  font-family: sans-serif;
+  position: absolute;
+  list-style: none;
+  background: $color-gray--lighter;
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+  min-width: 15%;
+  margin-top: 0px;
+  z-index: 1000;
+  right: 48%;
+}
+
+/*.autocomplete ul:before{*/
+/*content: "";*/
+/*display: block;*/
+/*position: absolute;*/
+/*height: 0;*/
+/*width: 0;*/
+/*border: 10px solid transparent;*/
+/*border-bottom: 10px solid $color-gray--lighter;*/
+/*left: 46%;*/
+/*top: -20px*/
+/*}*/
+
+.autocomplete ul li a {
+  text-decoration: none;
+  display: block;
+  padding: 5px;
+  padding-left: 10px;
+}
+
+.autocomplete ul li a:hover,
+.autocomplete ul li.focus-list a {
+  color: $color-white;
+  background: $color-blue--lighter;
+}
+
+.autocomplete ul li a span, /*backwards compat*/
+.autocomplete ul li a .autocomplete-anchor-label {
+  display: block;
+  margin-top: 3px;
+  color: $color-gray--dark;
+  font-size: 13px;
+}
+
+.autocomplete ul li a:hover .autocomplete-anchor-label,
+.autocomplete ul li.focus-list a span, /*backwards compat*/
+.autocomplete ul li a:hover .autocomplete-anchor-label,
+.autocomplete ul li.focus-list a span {
+  /*backwards compat*/
+  color: $color-white;
+}
+
+.close {
+  position: absolute;
+  right: 0px;
+  z-index: 2000;
+}
+
+/*.showAll-transition{
+  opacity: 1;
+  height: 50px;
+  overflow: hidden;
+}
+
+.showAll-enter{
+  opacity: 0.3;
+  height: 0;
+}
+
+.showAll-leave{
+  display: none;
+}*/
+
+input[invalid='true'] {
+  box-shadow: 0 0 0 0.2rem $color-red;
+  border: 1px solid red;
+}
+</style>
