@@ -87,11 +87,6 @@ module.exports = {
         property: 'og:image',
         content: USER_SITE + '/icon.png'
       },
-      {
-        hid: 'og:video',
-        property: 'og:video',
-        content: 'https://www.youtube.com/embed/Gw_wpkbNQY8'
-      },
       { hid: 'og:locale', property: 'og:locale', content: 'en_GB' },
       { hid: 'og:title', property: 'og:title', content: 'Freegle - Don\'t throw it away, give it away!' },
       { hid: 'og:site_name', property: 'og:site_name', content: 'Freegle' },
