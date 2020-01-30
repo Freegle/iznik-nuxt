@@ -355,9 +355,7 @@
                     <p>
                       It costs Freegle to send these - if you can, please:
                     </p>
-                    <b-btn variant="primary" to="https://freegle.in/paypalfundraiser" target="_blank">
-                      Donate to help
-                    </b-btn>
+                    <donation-button />
                   </b-alert>
                 </b-col>
               </b-row>
@@ -489,6 +487,7 @@ const NoticeMessage = () => import('~/components/NoticeMessage')
 const OurFilePond = () => import('~/components/OurFilePond')
 const OurToggle = () => import('~/components/OurToggle')
 const DatePicker = () => import('vue2-datepicker')
+const DonationButton = () => import('~/components/DonationButton')
 
 export default {
   components: {
@@ -503,7 +502,8 @@ export default {
     SettingsGroup,
     NoticeMessage,
     ProfileImage,
-    OurFilePond
+    OurFilePond,
+    DonationButton
   },
   mixins: [loginRequired, buildHead],
   data: function() {

@@ -18,12 +18,7 @@
               This month we're trying to raise <b>&pound;{{ target }}</b><span v-if="groupid && !targetMet"> for this community</span>.
               If you can, <b>please donate &pound;3</b> to keep us running - but anything you can give is very welcome.
             </p>
-            <a href="https://freegle.in/paypalfundraiser" target="_blank">
-              <b-btn variant="primary" size="lg">
-                <b-img thumbnail alt="PayPal" src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg" />
-                &nbsp;Donate
-              </b-btn>
-            </a>
+            <donation-button />
             <p class="mt-2">
               A <a target="_blank" href="https://freegle.in/paypalbutton">monthly donation</a> of &pound;1 would really help.
               You can find other ways to donate (e.g. bank transfer or cheque) <nuxt-link to="/donate">
@@ -45,12 +40,15 @@
     </b-modal>
   </div>
 </template>
+
 <script>
 import DonationThermometer from './DonationThermometer'
+import DonationButton from './DonationButton'
 
 export default {
   components: {
-    DonationThermometer
+    DonationThermometer,
+    DonationButton
   },
   props: {
     groupid: {

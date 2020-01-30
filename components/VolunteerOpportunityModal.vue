@@ -31,12 +31,7 @@
           (and Freegle!).
         </p>
         <p>Freegle is free to use, but not free to run.  If you can, <b>please donate &pound;1</b> to keep us running - but anything you can give is very welcome.</p>
-        <a href="https://freegle.in/paypalfundraiser" target="_blank">
-          <b-btn variant="primary" size="lg">
-            <b-img thumbnail alt="PayPal" src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg" />
-            &nbsp;Donate
-          </b-btn>
-        </a>
+        <donation-button />
       </div>
       <div v-else>
         <div v-if="!editing">
@@ -358,6 +353,7 @@
     </template>
   </b-modal>
 </template>
+
 <script>
 import cloneDeep from 'lodash.clonedeep'
 import { validationMixin } from 'vuelidate'
@@ -372,6 +368,7 @@ const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
 const OurFilePond = () => import('~/components/OurFilePond')
 const StartEndCollection = () => import('~/components/StartEndCollection')
 const NoticeMessage = () => import('~/components/NoticeMessage')
+const DonationButton = () => import('~/components/DonationButton')
 
 function initialVolunteering() {
   return {
@@ -414,7 +411,8 @@ export default {
     GroupRememberSelect,
     OurFilePond,
     StartEndCollection,
-    NoticeMessage
+    NoticeMessage,
+    DonationButton
   },
   mixins: [validationMixin, validationHelpers],
   props: {
@@ -652,6 +650,7 @@ export default {
   }
 }
 </script>
+
 <style scoped lang="scss">
 @import 'color-vars';
 
