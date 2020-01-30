@@ -151,7 +151,7 @@
               <ul v-if="busy || searches && Object.keys(searches).length > 0" class="list-group list-group-horizontal flex-wrap">
                 <li v-for="search in searches" :key="'search-' + search.id" class="text-left mt-1 list-group-item bg-white border text-nowrap mr-2">
                   <b-btn :to="'/find/search/' + search.term" variant="white d-inline">
-                    <v-icon name="search" /> {{ search.term }} {{ search.daysago }}
+                    <v-icon name="search" /> {{ search.term }} <span class="text-muted small">{{ search.daysago | pluralize(['day ago', 'days ago'], { includeNumber: true }) }}</span>
                   </b-btn>
                   <span class="ml-3 d-inline clickme" @click="deleteSearch(search.id)">
                     <v-icon v-if="removingSearch === search.id" name="sync" class="text-success fa-spin" />
