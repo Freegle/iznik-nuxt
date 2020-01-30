@@ -1,5 +1,5 @@
 <template>
-  <b-form-select v-model="group" :style="width ? ('width: ' + width + 'px') : ''" :options="groupOptions" @change="change" />
+  <b-form-select v-model="group" :style="(width ? ('width: ' + width + 'px') : '') + '; max-width: 300px;'" :options="groupOptions" @change="change" />
 </template>
 <script>
 export default {

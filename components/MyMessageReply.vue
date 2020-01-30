@@ -41,8 +41,7 @@
               <v-icon name="handshake" />
               <v-icon
                 name="slash"
-                style="transform: rotate(180deg)"
-                class="red"
+                class="unpromise__slash"
               />
             </v-icon>
             Unpromise
@@ -177,7 +176,8 @@ export default {
   line-height: 1.75;
 }
 
-.red {
+.unpromise__slash {
+  transform: rotate(180deg);
   color: $color-red;
 }
 </style>

@@ -9,7 +9,7 @@
       <div class="media-body">
         <span class="notification-title"><span>Your application was approved!</span>
           <span v-if="notification.url">
-            <br>"<b style="max-width: 200px; overflow-wrap: break-word">Visit the community <nuxt-link :to="notification.url">here</nuxt-link></b>"
+            <br>"<b class="notification__message">Visit the community <nuxt-link :to="notification.url">here</nuxt-link></b>"
           </span>
         </span>
         <div class="notification-meta">
@@ -19,17 +19,7 @@
     </div>
   </div>
 </template>
-<style scoped>
-.media-object {
-  width: 33px;
-  height: 28px;
-  padding-top: 5px;
-}
 
-.notification-title {
-  max-width: 280px;
-}
-</style>
 <script>
 export default {
   props: {
@@ -41,3 +31,19 @@ export default {
   methods: {}
 }
 </script>
+
+<style scoped>
+.media-object {
+  width: 33px;
+  height: 28px;
+  padding-top: 5px;
+}
+
+.notification-title {
+  max-width: 280px;
+}
+.notification__message {
+  max-width: 200px;
+  overflow-wrap: break-word;
+}
+</style>

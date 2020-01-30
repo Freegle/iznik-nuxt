@@ -139,6 +139,10 @@ export const actions = {
   },
 
   async login({ commit, dispatch }, params) {
+    if (process.env.IS_APP) {
+      params.mobile = true
+      params.appversion = process.env.MOBILE_VERSION
+    }
     const res = await this.$api.session.login(params)
     const { ret, status, user, persistent } = res
 

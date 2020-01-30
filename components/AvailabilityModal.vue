@@ -133,7 +133,8 @@ export default {
       showModal: false,
       schedule: null,
       saving: false,
-      otherSchedule: null
+      otherSchedule: null,
+      bump: Date.now() // Lazy way of forcing table to be up to date.
     }
   },
   computed: {
@@ -184,7 +185,7 @@ export default {
     items() {
       const ret = []
 
-      if (this.schedule) {
+      if (this.schedule && this.bump) {
         // hour in the schedule data structure is misnamed - at the moment it runs from 0..2 and is really a slot
         // of morning/afternoon/evening.
         //
@@ -323,6 +324,10 @@ export default {
       }
     },
     toggle(data) {
+      // Force the table to re-render.  This is lazy - we could work harder to ensure that the right data is reactive.
+      // But it's not worth the effort given that this isn't a performance-critical area.
+      this.bump = Date.now()
+
       if (this.mine) {
         const hour = data.index
         const day = data.field.key.substring(3)
@@ -341,14 +346,17 @@ export default {
 
             if (d.unix() === e.unix()) {
               this.schedule.schedule[index].available = !existing.available
+              console.log('Found')
               found = true
             }
           })
         } else {
+          console.log('Wipe')
           this.schedule.schedule = []
         }
 
         if (!found) {
+          console.log('Not found')
           this.schedule.schedule.push({
             date: dayjs()
               .add(day, 'day')
@@ -365,13 +373,14 @@ export default {
   }
 }
 </script>
+
 <style scoped lang="scss">
 @import 'color-vars';
 
 .otherborder {
   border-radius: 50%;
   padding: 3px;
-  background-color: white;
+  background-color: $color-white;
   border: 2px solid $color-blue--light;
 }
 </style>

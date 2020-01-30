@@ -314,7 +314,7 @@
               <b-form-input
                 id="contacturl"
                 v-model="volunteeringEdit.contacturl"
-                type="tel"
+                type="url"
                 placeholder="Is there more information on the web? (Optional)"
               />
             </b-form-group>
@@ -358,36 +358,6 @@
     </template>
   </b-modal>
 </template>
-
-<style scoped lang="scss">
-@import 'color-vars';
-
-.field {
-  font-weight: bold;
-  color: $color-green--darker;
-}
-
-.topleft {
-  top: 12px;
-  left: 10px;
-  position: absolute;
-}
-
-.topright {
-  top: 12px;
-  right: 10px;
-  position: absolute;
-}
-
-.container {
-  position: relative;
-}
-
-.rotate__icon {
-  color: $color-white;
-}
-</style>
-
 <script>
 import cloneDeep from 'lodash.clonedeep'
 import { validationMixin } from 'vuelidate'
@@ -529,7 +499,7 @@ export default {
         const { id } = this.volunteering
         // This is an edit.
         if (this.shouldUpdatePhoto) {
-          await this.$store.dispatch('communityevents/setPhoto', {
+          await this.$store.dispatch('volunteerops/setPhoto', {
             id,
             photoid: this.volunteeringEdit.photo.id
           })
@@ -682,3 +652,35 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+@import 'color-vars';
+
+.field {
+  font-weight: bold;
+  color: $color-green--darker;
+}
+
+.topleft {
+  top: 12px;
+  left: 10px;
+  position: absolute;
+}
+
+.topright {
+  top: 12px;
+  right: 10px;
+  position: absolute;
+}
+
+.container {
+  position: relative;
+}
+
+.rotate__icon {
+  color: $color-white;
+}
+
+.modal-footer > div {
+  width: 100%;
+}
+</style>

@@ -9,7 +9,7 @@
       <div class="media-body">
         <span class="notification-title"><span>Tell us about yourself!</span>
           <span>
-            <br>"<b style="max-width: 200px; overflow-wrap: break-word">Click to introduce yourself to other freeglers by telling us a bit about you.  You'll get a better response and it makes freegling more fun.</b>"
+            <br>"<b class="introduction">Click to introduce yourself to other freeglers by telling us a bit about you.  You'll get a better response and it makes freegling more fun.</b>"
           </span>
         </span>
         <div class="notification-meta">
@@ -19,17 +19,7 @@
     </div>
   </div>
 </template>
-<style scoped>
-.media-object {
-  width: 33px;
-  height: 28px;
-  padding-top: 5px;
-}
 
-.notification-title {
-  max-width: 280px;
-}
-</style>
 <script>
 export default {
   components: {},
@@ -46,3 +36,20 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.media-object {
+  width: 33px;
+  height: 28px;
+  padding-top: 5px;
+}
+
+.notification-title {
+  max-width: 280px;
+}
+
+.introduction {
+  max-width: 200px;
+  overflow-wrap: break-word;
+}
+</style>

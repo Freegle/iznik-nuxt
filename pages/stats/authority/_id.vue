@@ -303,48 +303,7 @@
     </b-row>
   </div>
 </template>
-<style scoped lang="scss">
-@import 'color-vars';
 
-.title {
-  background-color: green;
-  color: white !important;
-}
-
-.titlelogo {
-  width: 72px;
-}
-
-.titleicon {
-  width: 2rem;
-  height: 2rem;
-}
-
-.head {
-  font-size: 2rem;
-}
-
-.purple {
-  color: $color-purple !important;
-}
-
-.gold {
-  color: $color-gold !important;
-}
-
-.green {
-  color: green !important;
-}
-
-.iconlist {
-  white-space: nowrap;
-  overflow-x: hidden;
-}
-
-::v-deep .mx-datepicker {
-  width: 100px;
-}
-</style>
 <script>
 // There are a bunch of icons we need only on this page.  By requiring them here we avoid
 // requiring them in the vue-awesome plugin.  That makes them available everywhere - but
@@ -793,3 +752,46 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
+.title {
+  background-color: $color-green--darker;
+  color: $color-white !important;
+}
+
+.titlelogo {
+  width: 72px;
+}
+
+.titleicon {
+  width: 2rem;
+  height: 2rem;
+}
+
+.head {
+  font-size: 2rem;
+}
+
+.purple {
+  color: $color-purple !important;
+}
+
+.gold {
+  color: $color-gold !important;
+}
+
+.green {
+  color: $color-green--darker !important;
+}
+
+.iconlist {
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+
+::v-deep .mx-datepicker {
+  width: 100px;
+}
+</style>

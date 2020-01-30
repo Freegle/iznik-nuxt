@@ -122,6 +122,7 @@
               name="email"
               class="mb-3"
               autocomplete="username email"
+              type="email"
             />
           </b-form-group>
           <b-form-group
@@ -464,8 +465,7 @@ export default {
         if (authResult.code) { // status, code
           await this.$store.dispatch('auth/login', {
             googleauthcode: authResult.code,
-            googlelogin: true,
-            mobile: true
+            googlelogin: true
           })
           // We are now logged in.
           console.log('Logged in')
@@ -724,9 +724,7 @@ $color-yahoo: #6b0094;
 }
 
 .transbord {
-  // TODO DESIGN MINOR This colour is copied from bootstrap $input-border-color and should be done better.  Sorry Jason.
-  // See also Autocomplete.
-  border-color: #ced4da;
+  border-color: $color-gray-4;
   border-left: none;
 }
 </style>

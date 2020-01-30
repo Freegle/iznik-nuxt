@@ -196,6 +196,19 @@
               live stats
             </nuxt> pages.
           </p>
+          <a id="valentine" class="anchor" />
+          <h3>
+            Valentine's Day toolkit
+          </h3>
+          <p>
+            Valentine's Day is a great excuse to remind people about Freegle, after all it is online dating for
+            unwanted stuff!
+            We have a host of ready-made social media templates for Twitter, Facebook and Instagram which are free
+            for your to <nuxt-link to="/councils/socialmedia#valentine">
+              download and use
+            </nuxt-link>.
+            You can even add your own logo if you want to.
+          </p>
           <h4>Track your comms</h4>
           <p>
             If you’d like a trackable link to add to your comms that will generate stats specifically for the link,

@@ -18,6 +18,7 @@
           spellcheck="true"
           :timeout="30000"
           placeholder="In a single word or phrase, what is it?"
+          close-button
           @input="input"
         />
       </b-col>
@@ -53,9 +54,6 @@ export default {
     }
   },
   mounted() {
-    // Focus on field to grab their attention.
-    this.$refs.autocomplete.$refs.input.focus()
-
     // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
     // need to render this on the server.
     this.$refs.autocomplete.setValue(this.item)

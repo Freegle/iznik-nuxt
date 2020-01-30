@@ -8,7 +8,7 @@
             block
             href="#"
             variant="white"
-            class="text-left text-truncate noborder"
+            class="text-left text-truncate noborder hover"
             @click="toggle"
           >
             <b-row>
@@ -467,5 +467,10 @@ img.attachment {
 .noborder {
   border: none !important;
   border-color: $color-white !important;
+}
+
+.hover:hover {
+  color: initial;
+  background-color: $colour-success-bg !important;
 }
 </style>

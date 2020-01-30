@@ -69,7 +69,6 @@ export default {
         this.userid,
         popup
       )
-      console.trace()
 
       if (this.groupid > 0) {
         // Open a chat to the mods

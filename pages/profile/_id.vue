@@ -260,9 +260,13 @@ export default {
       const ret = []
 
       for (const message of this.messages) {
+        // We need to check the fromuser.  This is because we've seen a slow call from another page complete and
+        // pollute the store with messages from other people.
         if (
           message.type === type &&
-          (!message.outcomes || message.outcomes.length === 0)
+          (!message.outcomes || message.outcomes.length === 0) &&
+          message.fromuser &&
+          parseInt(message.fromuser.id) === parseInt(this.id)
         ) {
           ret.push(message)
         }

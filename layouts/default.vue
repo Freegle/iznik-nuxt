@@ -193,7 +193,10 @@
       </b-navbar-nav>
 
       <b-navbar-nav class="">
-        <b-navbar-toggle v-if="loggedIn" target="nav_collapse_mobile" />
+        <b-btn v-if="loggedIn" v-b-toggle.nav_collapse_mobile class="toggler white">
+          <v-icon name="bars" class="mb-1" scale="1.5" />
+        </b-btn>
+        <!--        <b-navbar-toggle v-if="loggedIn" target="nav_collapse_mobile" class="navbar-dark" />-->
       </b-navbar-nav>
 
       <b-collapse v-if="loggedIn" id="nav_collapse_mobile" ref="nav_collapse_mobile" class="w-100 ourBack">
@@ -277,216 +280,10 @@
   </div>
 </template>
 
-<style scoped lang="scss">
-@import 'color-vars';
-
-html {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, sans-serif;
-  font-size: 16px;
-  word-spacing: 1px;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
-}
-
-#navbar_large .nav-item {
-  width: 80px;
-  text-align: center;
-}
-
-/* Style the external nav-link class */
-::v-deep .nav-link {
-  padding-left: 2px !important;
-  padding-right: 2px !important;
-  padding-top: 0px !important;
-  padding-bottom: 0px !important;
-}
-
-nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
-  color: $color-white-opacity-50 !important;
-}
-
-.navbar-dark .navbar-nav .nav-link {
-  color: $color-white !important;
-
-  &:hover,
-  &:focus {
-    color: $color-white-opacity-75 !important;
-  }
-}
-
-#menu-option-chat-sm {
-  &:hover,
-  &:focus {
-    color: $color-white-opacity-75 !important;
-  }
-
-  &.nuxt-link-active {
-    color: $color-white-opacity-50 !important;
-
-    &:hover,
-    &:focus {
-      color: $color-white-opacity-75 !important;
-    }
-  }
-}
-
-$bootstrap-sm: 768px;
-
-#nav_collapse_mobile {
-  margin-top: 5px;
-
-  .navbar-nav {
-    border-top: 1px solid $color-gray--light;
-    padding-top: 5px;
-    margin-top: 5px;
-    justify-content: center;
-  }
-
-  .nav-item {
-    flex: 1;
-    flex-basis: 25%;
-    margin: 20px 0;
-
-    @media (min-width: $bootstrap-sm) {
-      flex-basis: unset;
-    }
-  }
-
-  a {
-    &.nav-link {
-      color: $color-white;
-    }
-  }
-}
-
-.pageContent {
-  padding-top: 68px;
-}
-
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-  margin: 0;
-}
-
-.notiflist {
-  max-width: 100%;
-}
-
-/* These classes style the external b-nav-item-dropdown component */
-.notiflist ::v-deep .dropdown-menu {
-  height: 500px;
-  overflow-y: auto;
-}
-
-.notiflist ::v-deep .dropdown-item {
-  width: 300px;
-  max-width: 100%;
-  padding-left: 5px;
-  overflow-wrap: break-word;
-}
-
-.ourBack {
-  background-color: $colour-success !important;
-}
-
-nav .navbar-nav li a {
-  color: $color-gray--light !important;
-}
-
-nav .navbar-nav li a.nuxt-link-active {
-  color: $color-white !important;
-}
-
-.navbar-brand a {
-  color: $color-white !important;
-}
-
-.navbar a.navbar-brand {
-  padding: 0px;
-}
-
-.navbar .logo {
-  width: 58px !important;
-  padding: 0px;
-  margin-top: -5px;
-  margin-bottom: -5px;
-}
-
-body.modal-open {
-  padding-right: 0px !important;
-}
-
-svg.fa-icon {
-  height: 32px;
-}
-
-.signindisabled {
-  opacity: 0.2;
-  pointer-events: none;
-}
-
-.notifwrapper {
-  position: relative;
-}
-
-.notifbadge {
-  position: absolute;
-  top: 0px;
-  left: 24px;
-}
-
-.notifbadgesm {
-  position: absolute;
-  top: 0px;
-  left: 18px;
-}
-
-.chatbadge {
-  position: absolute;
-  top: 0px;
-  left: 25px;
-}
-
-#serverloader {
-  z-index: 1000;
-  text-align: center;
-  position: fixed; /* or absolute */
-  top: calc(50% - 44px);
-  left: calc(50% - 44px);
-  font-size: 12px;
-  padding: 5px;
-  border: 1px black;
-  border-radius: 5px;
-  animation: 15s fadeIn;
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  90% {
-    opacity: 0;
-  }
-  100% {
-    visibility: visible;
-    opacity: 1;
-  }
-}
-
-.storage {
-  position: fixed;
-  bottom: 0%;
-}
-</style>
 <script>
 // Import login modal as I've seen an issue where it's not in $refs when you click on the signin button too rapidly.
 import LoginModal from '~/components/LoginModal'
+
 const AboutMeModal = () => import('~/components/AboutMeModal')
 const ChatPopups = () => import('~/components/ChatPopups')
 const Notification = () => import('~/components/Notification')
@@ -623,12 +420,42 @@ export default {
       }
     }, 5000)
 
-    if (me && !process.env.IS_APP) {
-      // Set the context for sentry so that we know which users are having errors.
-      this.$sentry.setUser({ userid: me.id })
-
+    try {
       // Set the build date.  This may get superceded by Sentry releases, but it does little harm to add it in.
-      this.$sentry.setExtra('builddate', process.env.BUILD_DATE)
+      if (!process.env.IS_APP)
+        this.$sentry.setExtra('builddate', process.env.BUILD_DATE)
+
+      if (me) {
+        // Set the context for sentry so that we know which users are having errors.
+        if (!process.env.IS_APP)
+          this.$sentry.setUser({ userid: me.id })
+
+        // eslint-disable-next-line no-undef
+        if (typeof __insp !== 'undefined') {
+          // eslint-disable-next-line no-undef
+          __insp.push([
+            'tagSession',
+            {
+              userid: me.id,
+              builddate: process.env.BUILD_DATE
+            }
+          ])
+        }
+      } else {
+        // eslint-disable-next-line no-undef,no-lonely-if
+        if (typeof __insp !== 'undefined') {
+          // eslint-disable-next-line no-undef
+          __insp.push([
+            'tagSession',
+            {
+              userid: 'Logged out',
+              builddate: process.env.BUILD_DATE
+            }
+          ])
+        }
+      }
+    } catch (e) {
+      console.log('Failed to set context', e)
     }
 
     this.monitorLocalStorage()
@@ -771,17 +598,18 @@ export default {
       this.$refs.modal.show()
     },
 
-    logOut() {
+    async logOut() {
       // Remove all cookies, both client and server.  This seems to be necessary to kill off the PHPSESSID cookie
       // on the server, which would otherwise keep us logged in despite our efforts.
       try {
         this.$cookies.removeAll()
       } catch (e) {}
 
+      await this.$store.dispatch('auth/logout')
+      this.$store.dispatch('auth/forceLogin', false)
+
       // Go to the landing page.
       this.$router.push('/')
-
-      this.$store.dispatch('auth/logout')
     },
 
     loadMore: function($state) {
@@ -898,3 +726,226 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+@import 'color-vars';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+
+html {
+  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 16px;
+  word-spacing: 1px;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+
+#navbar_large .nav-item {
+  width: 80px;
+  text-align: center;
+}
+
+/* Style the external nav-link class */
+::v-deep .nav-link {
+  padding-left: 2px !important;
+  padding-right: 2px !important;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
+  color: $color-white-opacity-50 !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: $color-white !important;
+
+  &:hover,
+  &:focus {
+    color: $color-white-opacity-75 !important;
+  }
+}
+
+#menu-option-chat-sm {
+  &:hover,
+  &:focus {
+    color: $color-white-opacity-75 !important;
+  }
+
+  &.nuxt-link-active {
+    color: $color-white-opacity-50 !important;
+
+    &:hover,
+    &:focus {
+      color: $color-white-opacity-75 !important;
+    }
+  }
+}
+
+#nav_collapse_mobile {
+  margin-top: 5px;
+
+  .navbar-nav {
+    border-top: 1px solid $color-gray--light;
+    padding-top: 5px;
+    margin-top: 5px;
+    justify-content: center;
+  }
+
+  .nav-item {
+    flex: 1;
+    flex-basis: 25%;
+    margin: 20px 0;
+
+    @include media-breakpoint-up(md) {
+      flex-basis: unset;
+    }
+  }
+
+  a {
+    &.nav-link {
+      color: $color-white;
+    }
+  }
+}
+
+.pageContent {
+  padding-top: 68px;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.notiflist {
+  max-width: 100%;
+}
+
+/* These classes style the external b-nav-item-dropdown component */
+.notiflist ::v-deep .dropdown-menu {
+  height: 500px;
+  overflow-y: auto;
+}
+
+.notiflist ::v-deep .dropdown-item {
+  width: 300px;
+  max-width: 100%;
+  padding-left: 5px;
+  overflow-wrap: break-word;
+}
+
+.ourBack {
+  background-color: $colour-success !important;
+}
+
+nav .navbar-nav li a {
+  color: $color-gray--light !important;
+}
+
+nav .navbar-nav li a.nuxt-link-active {
+  color: $color-white !important;
+}
+
+.navbar-brand a {
+  color: $color-white !important;
+}
+
+.navbar a.navbar-brand {
+  padding: 0px;
+}
+
+.navbar .logo {
+  width: 58px !important;
+  padding: 0px;
+  margin-top: -5px;
+  margin-bottom: -5px;
+}
+
+body.modal-open {
+  padding-right: 0px !important;
+}
+
+svg.fa-icon {
+  height: 32px;
+}
+
+.signindisabled {
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.notifwrapper {
+  position: relative;
+}
+
+.notifbadge {
+  position: absolute;
+  top: 0px;
+  left: 24px;
+}
+
+.notifbadgesm {
+  position: absolute;
+  top: 0px;
+  left: 18px;
+}
+
+.chatbadge {
+  position: absolute;
+  top: 0px;
+  left: 25px;
+}
+
+#serverloader {
+  z-index: 1000;
+  text-align: center;
+  position: fixed; /* or absolute */
+  top: calc(50% - 44px);
+  left: calc(50% - 44px);
+  font-size: 12px;
+  padding: 5px;
+  border: 1px black;
+  border-radius: 5px;
+  animation: 15s fadeIn;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  90% {
+    opacity: 0;
+  }
+  100% {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.storage {
+  position: fixed;
+  bottom: 0%;
+}
+
+.toggler {
+  background: transparent;
+  border-color: $color-white;
+}
+
+.toggler:hover {
+  background: $color-white !important;
+  color: $colour-success !important;
+}
+
+.toggler svg {
+  vertical-align: -20px;
+}
+</style>

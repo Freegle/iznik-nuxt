@@ -5,7 +5,7 @@
         <table v-if="users[userid].profile">
           <tbody>
             <tr>
-              <td style="vertical-align: top" class="clickme" title="Click to see their profile" @click="showInfo">
+              <td class="clickme align-top" title="Click to see their profile" @click="showInfo">
                 <profile-image
                   :image="users[userid].profile.turl"
                   class="ml-1 mr-2 mt-2 mb-1 inline float-left"

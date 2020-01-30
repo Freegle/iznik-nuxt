@@ -19,17 +19,12 @@
           See more jobs
         </nuxt-link>.
       </div>
-      <div v-for="job in jobs" :key="'job-' + job.onmousedown" class="">
-        <Job :summary="true" :job="job" />
+      <div v-for="(job, index) in jobs" :key="'job-' + job.onmousedown" class="">
+        <Job :summary="true" :job="job" :class="index > 1 ? 'd-none d-md-block' : ''" />
       </div>
     </div>
   </div>
 </template>
-<style scoped>
-.jobbox {
-  height: 220px;
-}
-</style>
 <script>
 import Job from './Job'
 import NoticeMessage from './NoticeMessage'

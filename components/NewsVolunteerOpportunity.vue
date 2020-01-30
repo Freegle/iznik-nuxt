@@ -6,7 +6,7 @@
         :image="users[userid].profile.turl"
         class="ml-1 mr-2 mb-1 inline"
         is-thumbnail
-        :is-moderator="users[userid].settings.showmod"
+        :is-moderator="(Boolean)(users[userid].settings.showmod)"
         size="lg"
       />
       <span class="text-success font-weight-bold">{{ users[userid].displayname }}</span>

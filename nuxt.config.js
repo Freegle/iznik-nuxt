@@ -5,7 +5,7 @@ const FACEBOOK_APPID = '134980666550322'
 const SENTRY_DSN = 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170'
 const YAHOO_CLIENTID =
   'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
-const MOBILE_VERSION = '2.0.11'
+const MOBILE_VERSION = '2.0.12'
 
 require('dotenv').config()
 
@@ -92,14 +92,11 @@ const config = {
         property: 'og:image',
         content: USER_SITE + '/icon.png'
       },
-      {
-        hid: 'og:video',
-        property: 'og:video',
-        content: 'https://www.youtube.com/embed/Gw_wpkbNQY8'
-      },
       { hid: 'og:locale', property: 'og:locale', content: 'en_GB' },
-      { hid: 'og:title', property: 'og:title', content: 'Freegle' },
+      { hid: 'og:title', property: 'og:title', content: 'Freegle - Don\'t throw it away, give it away!' },
       { hid: 'og:site_name', property: 'og:site_name', content: 'Freegle' },
+      { hid: 'og:url', property: 'og:url', content: 'https://www.ilovefreegle.org' },
+      { hid: 'fb:app_id', property: 'fb:app_id', content: FACEBOOK_APPID },
       {
         hid: 'og:description',
         property: 'og:description',
@@ -108,7 +105,7 @@ const config = {
       },
       { hid: 'fb:app_id', property: 'og:site_name', content: FACEBOOK_APPID },
 
-      { hid: 'twitter:title', name: 'twitter:title', content: 'Freegle' },
+      { hid: 'twitter:title', name: 'twitter:title', content: 'Freegle - Don\'t throw it away, give it away!' },
       {
         hid: 'twitter:description',
         name: 'twitter:description',

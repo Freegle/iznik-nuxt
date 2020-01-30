@@ -9,7 +9,7 @@
       <div class="media-body">
         <span class="notification-title"><span>Your application requires approval</span>
           <span>
-            <br>"<b style="max-width: 200px; overflow-wrap: break-word">We'll let you know soon.</b>"
+            <br>"<b class="notification__message">We'll let you know soon.</b>"
           </span>
         </span>
         <div class="notification-meta">
@@ -19,17 +19,7 @@
     </div>
   </div>
 </template>
-<style scoped>
-.media-object {
-  width: 33px;
-  height: 28px;
-  padding-top: 5px;
-}
 
-.notification-title {
-  max-width: 280px;
-}
-</style>
 <script>
 export default {
   props: {
@@ -41,3 +31,20 @@ export default {
   methods: {}
 }
 </script>
+
+<style scoped>
+.media-object {
+  width: 33px;
+  height: 28px;
+  padding-top: 5px;
+}
+
+.notification-title {
+  max-width: 280px;
+}
+
+.notification__message {
+  max-width: 200px;
+  overflow-wrap: break-word;
+}
+</style>

@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-column sidebar__wrapper">
-    <CommunityEventSidebar v-if="showCommunityEvents" class="flex-grow-1" style="overflow-y: auto" />
+    <CommunityEventSidebar v-if="showCommunityEvents" class="flex-grow-1 sidebar__community-event" />
     <BotLeftBox v-if="showBotLeft" class="social-media__wrapper flex-shrink-2" />
   </div>
 </template>
@@ -30,5 +30,9 @@ export default {
 <style scoped>
 .social-media__wrapper {
   margin-top: auto;
+}
+
+.sidebar__community-event {
+  overflow-y: auto;
 }
 </style>

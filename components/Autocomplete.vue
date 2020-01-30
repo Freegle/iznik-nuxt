@@ -11,6 +11,7 @@
         :name="name"
         autocomplete="off"
         :invalid="invalid"
+        :size="size"
         @input="handleInput"
         @dblclick="handleDoubleClick"
         @blur="handleBlur"
@@ -18,7 +19,7 @@
         @focus="handleFocus"
       >
       <b-input-group-append>
-        <b-button variant="white" class="transbord">
+        <b-button variant="white" class="transbord p-0 pr-2">
           <!-- TODO RAHUL DESIGN The shadow on the input field that you get when you're focused ought really to include this append.-->
           <v-icon name="sync" :class="'text-success fa-spin ' + (ajaxInProgress ? 'visible': 'invisible')" />
         </b-button>
@@ -32,13 +33,14 @@
 
     <div
       v-show="showList && json.length"
-      :class="`${getClassName('list')} autocomplete autocomplete-list`"
+      :class="`${getClassName('list')} autocomplete autocomplete-list position-relative`"
     >
+      <v-icon v-if="closeButton" name="times-circle" class="close mt-1 clickme" scale="2" @click="close" />
       <ul>
         <li
           v-for="(data, i) in json"
           :key="'autocomplete' + data.id"
-          :class="activeClass(i)"
+          :class="activeClass(i) + ' pr-4'"
         >
           <a
             href="#"
@@ -57,128 +59,6 @@
     </div>
   </div>
 </template>
-
-<style scoped lang="scss">
-@import 'color-vars';
-
-.transbord {
-  // TODO DESIGN MINOR This colour is copied from bootstrap $input-border-color and should be done better.  Sorry Jason.
-  // See also LoginModal
-  border-color: #ced4da;
-  border-left: none;
-}
-
-/* iteminp class is passed into this component in a prop */
-.iteminp ul {
-  width: 100% !important;
-  right: 0px !important;
-  padding-right: 15px !important;
-  padding-left: 15px !important;
-}
-
-/* postcodelist class is passed into this component in a prop */
-.postcodelist {
-  z-index: 900;
-}
-
-.postcodelist li {
-  box-shadow: 1px 3px 5px 3px $color-black-opacity-60;
-  width: 238px;
-}
-
-/* Deep selector for scoped CSS */
-::v-deep .pcinp {
-  min-width: 100px;
-  max-width: 238px;
-  margin: 0 auto;
-}
-
-.transition,
-.autocomplete,
-.showAll-transition,
-.autocomplete ul,
-.autocomplete ul li a {
-  transition: all 0.3s ease-out;
-  -moz-transition: all 0.3s ease-out;
-  -webkit-transition: all 0.3s ease-out;
-  -o-transition: all 0.3s ease-out;
-}
-
-.autocomplete ul {
-  font-family: sans-serif;
-  position: absolute;
-  list-style: none;
-  background: $color-gray--lighter;
-  padding: 0;
-  margin: 0;
-  display: inline-block;
-  min-width: 15%;
-  margin-top: 0px;
-  z-index: 1000;
-  right: 48%;
-}
-
-/*.autocomplete ul:before{*/
-/*content: "";*/
-/*display: block;*/
-/*position: absolute;*/
-/*height: 0;*/
-/*width: 0;*/
-/*border: 10px solid transparent;*/
-/*border-bottom: 10px solid $color-gray--lighter;*/
-/*left: 46%;*/
-/*top: -20px*/
-/*}*/
-
-.autocomplete ul li a {
-  text-decoration: none;
-  display: block;
-  padding: 5px;
-  padding-left: 10px;
-}
-
-.autocomplete ul li a:hover,
-.autocomplete ul li.focus-list a {
-  color: white;
-  background: $color-blue--lighter;
-}
-
-.autocomplete ul li a span, /*backwards compat*/
-.autocomplete ul li a .autocomplete-anchor-label {
-  display: block;
-  margin-top: 3px;
-  color: grey;
-  font-size: 13px;
-}
-
-.autocomplete ul li a:hover .autocomplete-anchor-label,
-.autocomplete ul li.focus-list a span, /*backwards compat*/
-.autocomplete ul li a:hover .autocomplete-anchor-label,
-.autocomplete ul li.focus-list a span {
-  /*backwards compat*/
-  color: white;
-}
-
-/*.showAll-transition{
-  opacity: 1;
-  height: 50px;
-  overflow: hidden;
-}
-
-.showAll-enter{
-  opacity: 0.3;
-  height: 0;
-}
-
-.showAll-leave{
-  display: none;
-}*/
-
-input[invalid='true'] {
-  box-shadow: 0 0 0 0.2rem $color-red;
-  border: 1px solid red;
-}
-</style>
 
 <script>
 /*
@@ -300,6 +180,18 @@ export default {
     },
 
     timeout: {
+      type: Number,
+      required: false,
+      default: null
+    },
+
+    closeButton: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
+    size: {
       type: Number,
       required: false,
       default: null
@@ -654,9 +546,140 @@ export default {
 
     search() {
       this.$emit('search')
+    },
+
+    close() {
+      this.showList = false
+      this.clearTimer()
     }
   }
 }
 
 /* eslint-enable */
 </script>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
+.transbord {
+  border-color: $color-gray-4;
+  border-left: none;
+}
+
+/* iteminp class is passed into this component in a prop */
+.iteminp ul {
+  width: 100% !important;
+  right: 0px !important;
+  padding-right: 15px !important;
+  padding-left: 15px !important;
+}
+
+/* postcodelist class is passed into this component in a prop */
+.postcodelist {
+  z-index: 900;
+}
+
+.postcodelist li {
+  box-shadow: 1px 3px 5px 3px $color-black-opacity-60;
+  width: 238px;
+}
+
+/* Deep selector for scoped CSS */
+::v-deep .pcinp {
+  min-width: 100px;
+  max-width: 238px;
+  margin: 0 auto;
+}
+
+.transition,
+.autocomplete,
+.showAll-transition,
+.autocomplete ul,
+.autocomplete ul li a {
+  transition: all 0.3s ease-out;
+  -moz-transition: all 0.3s ease-out;
+  -webkit-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+}
+
+.autocomplete ul {
+  font-family: sans-serif;
+  position: absolute;
+  list-style: none;
+  background: $color-gray--lighter;
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+  min-width: 15%;
+  margin-top: 0px;
+  z-index: 1000;
+  right: 48%;
+}
+
+/*.autocomplete ul:before{*/
+/*content: "";*/
+/*display: block;*/
+/*position: absolute;*/
+/*height: 0;*/
+/*width: 0;*/
+/*border: 10px solid transparent;*/
+/*border-bottom: 10px solid $color-gray--lighter;*/
+/*left: 46%;*/
+/*top: -20px*/
+/*}*/
+
+.autocomplete ul li a {
+  text-decoration: none;
+  display: block;
+  padding: 5px;
+  padding-left: 10px;
+}
+
+.autocomplete ul li a:hover,
+.autocomplete ul li.focus-list a {
+  color: $color-white;
+  background: $color-blue--lighter;
+}
+
+.autocomplete ul li a span, /*backwards compat*/
+.autocomplete ul li a .autocomplete-anchor-label {
+  display: block;
+  margin-top: 3px;
+  color: $color-gray--dark;
+  font-size: 13px;
+}
+
+.autocomplete ul li a:hover .autocomplete-anchor-label,
+.autocomplete ul li.focus-list a span, /*backwards compat*/
+.autocomplete ul li a:hover .autocomplete-anchor-label,
+.autocomplete ul li.focus-list a span {
+  /*backwards compat*/
+  color: $color-white;
+}
+
+.close {
+  position: absolute;
+  right: 0px;
+  z-index: 2000;
+}
+
+/*.showAll-transition{
+  opacity: 1;
+  height: 50px;
+  overflow: hidden;
+}
+
+.showAll-enter{
+  opacity: 0.3;
+  height: 0;
+}
+
+.showAll-leave{
+  display: none;
+}*/
+
+input[invalid='true'] {
+  box-shadow: 0 0 0 0.2rem $color-red;
+  border: 1px solid red;
+}
+</style>
