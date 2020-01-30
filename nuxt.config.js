@@ -93,7 +93,7 @@ module.exports = {
         content: 'https://www.youtube.com/embed/Gw_wpkbNQY8'
       },
       { hid: 'og:locale', property: 'og:locale', content: 'en_GB' },
-      { hid: 'og:title', property: 'og:title', content: 'Freegle' },
+      { hid: 'og:title', property: 'og:title', content: 'Freegle - Don\'t throw it away, give it away!' },
       { hid: 'og:site_name', property: 'og:site_name', content: 'Freegle' },
       {
         hid: 'og:description',
@@ -103,7 +103,7 @@ module.exports = {
       },
       { hid: 'fb:app_id', property: 'og:site_name', content: FACEBOOK_APPID },
 
-      { hid: 'twitter:title', name: 'twitter:title', content: 'Freegle' },
+      { hid: 'twitter:title', name: 'twitter:title', content: 'Freegle - Don\'t throw it away, give it away!' },
       {
         hid: 'twitter:description',
         name: 'twitter:description',
