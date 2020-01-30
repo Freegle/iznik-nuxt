@@ -291,7 +291,7 @@
               <b-form-input
                 id="contacturl"
                 v-model="eventEdit.contacturl"
-                type="tel"
+                type="url"
                 placeholder="Is there more information on the web? (Optional)"
               />
             </b-form-group>
