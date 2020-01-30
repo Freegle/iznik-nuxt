@@ -95,6 +95,8 @@ module.exports = {
       { hid: 'og:locale', property: 'og:locale', content: 'en_GB' },
       { hid: 'og:title', property: 'og:title', content: 'Freegle - Don\'t throw it away, give it away!' },
       { hid: 'og:site_name', property: 'og:site_name', content: 'Freegle' },
+      { hid: 'og:url', property: 'og:url', content: 'https://www.ilovefreegle.org' },
+      { hid: 'fb:app_id', property: 'fd:app_id', content: FACEBOOK_APPID },
       {
         hid: 'og:description',
         property: 'og:description',
