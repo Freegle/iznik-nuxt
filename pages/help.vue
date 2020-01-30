@@ -210,12 +210,7 @@
                     here:
                   </p>
                   <p>
-                    <a target="_blank" rel="noopener" href="https://freegle.in/paypalbutton">
-                      <span class="btn btn-primary btn-lg">
-                        <img alt="PayPal" class="img-thumbnail" src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg">
-                        &nbsp;Donate
-                      </span>
-                    </a>
+                    <donation-button :direct-donation="true" />
                   </p>
                 </template>
               </Question>
@@ -453,6 +448,8 @@ import buildHead from '@/mixins/buildHead.js'
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
 const ChatButton = () => import('~/components/ChatButton.vue')
 const NoticeMessage = () => import('~/components/NoticeMessage')
+const DonationButton = () => import('~/components/DonationButton')
+
 Vue.use(TabsPlugin)
 
 export default {
@@ -460,7 +457,8 @@ export default {
     Question,
     GroupRememberSelect,
     ChatButton,
-    NoticeMessage
+    NoticeMessage,
+    DonationButton
   },
   mixins: [buildHead],
   data() {

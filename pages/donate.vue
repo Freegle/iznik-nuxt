@@ -16,12 +16,7 @@
           <p><b>This month we're trying to raise &pound;{{ target }} from donations - can you help?</b></p>
           <h3>If you can, please donate &pound;3.</h3>
           <p>...but anything you can give is very welcome.</p>
-          <a target="_blank" rel="noopener" href="https://freegle.in/paypalbutton">
-            <b-btn variant="primary" size="lg">
-              <b-img alt="PayPal" thumbnail src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg" />
-              &nbsp;Donate
-            </b-btn>
-          </a>
+          <donation-button :direct-donation="true" />
         </b-card-text>
       </b-card>
       <h2 class="mt-2">
@@ -111,12 +106,17 @@
     </b-col>
   </b-row>
 </template>
+
 <script>
 import DonationThermometer from '../components/DonationThermometer'
+import DonationButton from '../components/DonationButton'
 import buildHead from '@/mixins/buildHead.js'
 
 export default {
-  components: { DonationThermometer },
+  components: {
+    DonationThermometer,
+    DonationButton
+  },
   mixins: [buildHead],
   computed: {
     target() {
