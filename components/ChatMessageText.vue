@@ -1,7 +1,7 @@
 <template>
   <div class="pb-1">
     <div class="chatMessageWrapper" :class="messageIsFromCurrentUser ? 'myChatMessage' : ''">
-      <div class="chatMessage" :class="messageIsFromCurrentUser ? 'mine' : 'theirs'">
+      <div class="chatMessage chatMessage__owner">
         <span>
           <span v-if="messageIsNew" class="prewrap"><b>{{ emessage }}</b></span>
           <span v-else class="prewrap forcebreak">{{ emessage }}</span>
@@ -55,7 +55,17 @@ export default {
   line-height: 1.75;
 }
 
+.chatMessage__owner {
+  background-color: $color-white;
+  order: 2;
+}
+
 .myChatMessage {
+  .chatMessage__owner {
+    background-color: $color-green--light;
+    order: 0;
+  }
+
   .chatMessage {
     margin-left: auto;
   }
@@ -85,15 +95,6 @@ export default {
     padding-left: 10px;
     padding-right: 0;
   }
-}
-
-.theirs {
-  background-color: $color-white;
-  order: 2;
-}
-
-.mine {
-  background-color: $color-green--light;
 }
 
 :-ms-fullscreen,
