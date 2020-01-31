@@ -355,7 +355,7 @@
                     <p>
                       It costs Freegle to send these - if you can, please:
                     </p>
-                    <donate-button />
+                    <donation-button />
                   </b-alert>
                 </b-col>
               </b-row>
@@ -487,7 +487,7 @@ const NoticeMessage = () => import('~/components/NoticeMessage')
 const OurFilePond = () => import('~/components/OurFilePond')
 const OurToggle = () => import('~/components/OurToggle')
 const DatePicker = () => import('vue2-datepicker')
-const DonateButton = () => import('~/components/DonateButton')
+const DonationButton = () => import('~/components/DonationButton')
 
 export default {
   components: {
@@ -503,7 +503,7 @@ export default {
     NoticeMessage,
     ProfileImage,
     OurFilePond,
-    DonateButton
+    DonationButton
   },
   mixins: [loginRequired, buildHead],
   data: function() {
