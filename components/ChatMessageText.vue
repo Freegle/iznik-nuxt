@@ -11,9 +11,7 @@
             </span>
           </div>
           <div class="chatMessageProfilePic">
-            <div>
-              <profile-image :image="messageIsFromCurrentUser ? me.profile.turl : othericon" class="ml-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
-            </div>
+            <profile-image :image="messageIsFromCurrentUser ? me.profile.turl : othericon" class="ml-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
           </div>
         </div>
         <!--
