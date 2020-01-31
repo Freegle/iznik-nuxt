@@ -47,10 +47,7 @@ export default {
 .chatMessage {
   border: 1px solid $color-gray--light;
   border-radius: 10px;
-  padding-top: 2px;
-  padding-bottom: 2px;
-  padding-left: 4px;
-  padding-right: 4px;
+  padding: 2px 4px 2px 4px;
   word-wrap: break-word;
   line-height: 1.75;
 }
