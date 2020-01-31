@@ -108,7 +108,11 @@ export const actions = {
   },
 
   async fetch({ commit }, params) {
-    const { message } = await this.$api.message.fetch(params)
+    // Don't log errors on fetches of individual messages
+    const { message } = await this.$api.message.fetch(params, data => {
+      return data.ret !== 3
+    })
+
     commit('add', message)
   },
 
