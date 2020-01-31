@@ -46,10 +46,13 @@ export default {
   extends: ChatBase,
   computed: {
     messageIsFromCurrentUser() {
-      return this.chatmessage.userid === $store.state.auth.user.id
+      return this.chatmessage.userid === this.$store.state.auth.user.id
     },
     messageIsNew() {
-      return chatmessage.secondsago < 60 || chatmessage.id > chat.lastmsgseen
+      return (
+        this.chatmessage.secondsago < 60 ||
+        this.chatmessage.id > this.chat.lastmsgseen
+      )
     }
   }
 }
