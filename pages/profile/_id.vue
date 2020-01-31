@@ -261,12 +261,13 @@ export default {
 
       for (const message of this.messages) {
         // We need to check the fromuser.  This is because we've seen a slow call from another page complete and
-        // pollute the store with messages from other people.
+        // pollute the store with messages from other people.  We might not have the fromuser if we're logged out,
+        // though.  That leaves a slight bug in place.
         if (
           message.type === type &&
           (!message.outcomes || message.outcomes.length === 0) &&
-          message.fromuser &&
-          parseInt(message.fromuser.id) === parseInt(this.id)
+          (!message.fromuser ||
+            parseInt(message.fromuser.id) === parseInt(this.id))
         ) {
           ret.push(message)
         }
