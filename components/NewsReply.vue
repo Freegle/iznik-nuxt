@@ -110,8 +110,8 @@
               class="p-0 pl-1 pt-1"
               @keydown.enter.exact.prevent
               @keyup.enter.exact="sendReply"
-              @keydown.enter.shift.exact="newlineReply"
-              @keydown.alt.shift.exact="newlineReply"
+              @keydown.enter.shift.exact.prevent="newlineReply"
+              @keydown.alt.shift.exact.prevent="newlineReply"
               @focus="focusedReply"
             />
           </at-ta>
@@ -430,7 +430,13 @@ export default {
       }
     },
     newlineReply() {
-      this.replybox += '\n'
+      const p = this.$refs.replybox.selectionStart
+      if (p) {
+        this.replybox =
+          this.replybox.substring(0, p) + '\n' + this.replybox.substring(p)
+      } else {
+        this.replybox += '\n'
+      }
     },
     love(e) {
       const el = e.target

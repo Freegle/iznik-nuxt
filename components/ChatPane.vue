@@ -105,14 +105,15 @@
               </notice-message>
               <b-form-textarea
                 v-if="!spammer"
+                ref="chatarea"
                 v-model="sendmessage"
                 placeholder="Type here..."
                 rows="3"
                 max-rows="8"
                 @keydown.enter.exact.prevent
                 @keyup.enter.exact="send"
-                @keydown.enter.shift.exact="newline"
-                @keydown.alt.shift.exact="newline"
+                @keydown.enter.shift.exact.prevent="newline"
+                @keydown.alt.shift.exact.prevent="newline"
                 @focus="markRead"
               />
             </b-col>
@@ -466,7 +467,15 @@ export default {
       }
     },
     newline: function() {
-      this.sendmessage += '\n'
+      const p = this.$refs.chatarea.selectionStart
+      if (p) {
+        this.sendmessage =
+          this.sendmessage.substring(0, p) +
+          '\n' +
+          this.sendmessage.substring(p)
+      } else {
+        this.sendmessage += '\n'
+      }
     },
     _updateAfterSend: function() {
       this.chatBusy = false

@@ -77,6 +77,7 @@
                   </p>
                   <b-form-textarea
                     v-if="!spammer"
+                    ref="chatarea"
                     v-model="sendmessage"
                     placeholder="Type here..."
                     rows="2"
@@ -456,7 +457,15 @@ export default {
       }
     },
     newline: function() {
-      this.sendmessage += '\n'
+      const p = this.$refs.chatarea.selectionStart
+      if (p) {
+        this.sendmessage =
+          this.sendmessage.substring(0, p) +
+          '\n' +
+          this.sendmessage.substring(p)
+      } else {
+        this.sendmessage += '\n'
+      }
     },
     _updateAfterSend() {
       this.sending = false
