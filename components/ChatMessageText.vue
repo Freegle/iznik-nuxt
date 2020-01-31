@@ -1,6 +1,6 @@
 <template>
   <div class="pb-1">
-    <div class="chatMessageWrapper" :class="messageIsFromCurrentUser ? 'myChatMessage' : ''">
+    <div class="chatMessageWrapper" :class="{myChatMessage : messageIsFromCurrentUser }">
       <div class="chatMessage chatMessage__owner">
         <span>
           <span v-if="messageIsNew" class="prewrap"><b>{{ emessage }}</b></span>
