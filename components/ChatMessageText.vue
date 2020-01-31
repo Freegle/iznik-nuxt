@@ -93,12 +93,4 @@ export default {
     padding-right: 0;
   }
 }
-
-:-ms-fullscreen,
-:root .ie11up {
-  .media {
-    /*On IE11 this stops the chat messages being only a character wide.   */
-    min-width: 40%;
-  }
-}
 </style>
