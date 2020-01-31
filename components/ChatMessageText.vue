@@ -1,51 +1,17 @@
 <template>
-  <div>
-    <b-row class="pb-1">
-      <b-col>
-        <div class="chatMessageWrapper" :class="messageIsFromCurrentUser ? 'myChatMessage' : ''">
-          <div class="chatMessage" :class="messageIsFromCurrentUser ? 'mine' : 'theirs'">
-            <span>
-              <span v-if="messageIsNew" class="prewrap"><b>{{ emessage }}</b></span>
-              <span v-else class="prewrap forcebreak">{{ emessage }}</span>
-              <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
-            </span>
-          </div>
-          <div class="chatMessageProfilePic">
-            <profile-image :image="messageIsFromCurrentUser ? me.profile.turl : othericon" class="ml-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
-          </div>
-        </div>
-        <!--
-        <div v-if="messageIsFromCurrentUser" class="myChatMessage chatMessageWrapper">
-          <div :class="emessage ? 'chatMessage mine' : ''">
-            <span>
-              <span v-if="messageIsNew" class="prewrap"><b>{{ emessage }}</b></span>
-              <span v-else class="prewrap forcebreak">{{ emessage }}</span>
-              <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
-            </span>
-          </div>
-          <div class="chatMessageProfilePic">
-            <div>
-              <profile-image :image="me.profile.turl" class="ml-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
-            </div>
-          </div>
-        </div>
-        <div v-else class="chatMessageWrapper">
-          <div class="chatMessageProfilePic">
-            <div>
-              <profile-image v-if="othericon" :image="othericon" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
-            </div>
-          </div>
-          <div :class="emessage ? 'chatMessage theirs' : ''">
-            <span>
-              <span v-if="messageIsNew" class="prewrap"><b>{{ emessage }}</b></span>
-              <span v-else class="prewrap forcebreak">{{ emessage }}</span>
-              <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
-            </span>
-          </div>
-        </div>
-      -->
-      </b-col>
-    </b-row>
+  <div class="pb-1">
+    <div class="chatMessageWrapper" :class="messageIsFromCurrentUser ? 'myChatMessage' : ''">
+      <div class="chatMessage" :class="messageIsFromCurrentUser ? 'mine' : 'theirs'">
+        <span>
+          <span v-if="messageIsNew" class="prewrap"><b>{{ emessage }}</b></span>
+          <span v-else class="prewrap forcebreak">{{ emessage }}</span>
+          <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
+        </span>
+      </div>
+      <div class="chatMessageProfilePic">
+        <profile-image :image="messageIsFromCurrentUser ? me.profile.turl : othericon" class="ml-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
+      </div>
+    </div>
   </div>
 </template>
 
