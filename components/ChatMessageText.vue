@@ -104,6 +104,7 @@ export default {
   position: relative;
   top: 3px;
   left: 3px;
+  margin-right: 5px;
 
   @include media-breakpoint-up(md) {
     min-width: 35px;
