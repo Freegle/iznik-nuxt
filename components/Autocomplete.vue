@@ -19,7 +19,7 @@
         @focus="handleFocus"
       >
       <b-input-group-append>
-        <b-button variant="white" class="transbord p-0 pr-2">
+        <b-button variant="white" class="transbord p-0 pr-2" tabindex="-1">
           <!-- TODO RAHUL DESIGN The shadow on the input field that you get when you're focused ought really to include this append.-->
           <v-icon name="sync" :class="'text-success fa-spin ' + (ajaxInProgress ? 'visible': 'invisible')" />
         </b-button>
