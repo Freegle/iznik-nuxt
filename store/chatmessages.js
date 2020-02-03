@@ -139,5 +139,9 @@ export const actions = {
       chatid: roomid,
       noContext: true
     })
+  },
+
+  async rsvp({ commit, dispatch }, { id, roomid, value }) {
+    await this.$api.chat.rsvp(roomid, id, value)
   }
 }
