@@ -13,7 +13,7 @@
         <p v-if="group.membercount" class="text-muted small">
           Founded {{ group.founded | dateonly }}. {{ group.membercount.toLocaleString() }} current freeglers.
           <br>
-          <span class="d-none d-md-block d-lg-none d-xl-block">
+          <span class="d-none d-sm-block d-lg-none d-xl-block">
             See
             <nuxt-link :to="{ path: '/communityevents/' + group.id }">
               community events
@@ -27,12 +27,28 @@
             <nuxt-link :to="{ path: '/stats/' + group.nameshort }">
               stats
             </nuxt-link>
+          </span>
+          <span class="group-header-buttons-small d-none d-sm-block d-md-none">
+            <b-link :href="'mailto:' + modsemail">
+              <b-button class="mb-1" variant="white">
+                <v-icon name="question-circle" />&nbsp;Contact&nbsp;volunteers
+              </b-button>
+            </b-link>
+            <b-button v-if="!amAMember" class="mb-1" variant="success" @click="join">
+              <v-icon v-if="joiningOrLeaving" name="sync" class="fa-spin" />
+              <v-icon v-else name="plus" />&nbsp;
+              Join
+            </b-button>
+            <b-button v-else-if="amAMember === 'Member'" class="mb-1" variant="white" @click="leave">
+              <v-icon v-if="joiningOrLeaving" name="sync" class="fa-spin" />
+              <v-icon v-else name="trash-alt" />&nbsp;Leave
+            </b-button>
           </span>
         </p>
       </b-col>
       <b-col cols="12" md="4" lg="12" class="group-header-buttons">
         <p v-if="group.membercount" class="text-muted small">
-          <span class="d-lg-block d-md-none d-xl-none">
+          <span class="d-lg-block d-sm-none d-xl-none">
             See
             <nuxt-link :to="{ path: '/communityevents/' + group.id }">
               community events
@@ -48,7 +64,7 @@
             </nuxt-link>
           </span>
         </p>
-        <span>
+        <span class="d-sm-none d-md-block">
           <b-link :href="'mailto:' + modsemail">
             <b-button class="ml-1 mb-1" variant="white">
               <v-icon name="question-circle" />&nbsp;Contact&nbsp;volunteers
@@ -141,13 +157,18 @@ export default {
 .group-header-buttons {
   margin-bottom: 20px;
   text-align: right;
-  
+
   @include media-breakpoint-up(md) {
     text-align: right;
   }
-  
+
   @include media-breakpoint-up(lg) {
     text-align: left;
+  }
+
+  @include media-breakpoint-between(md, md) {
+    flex: 0 0 33%;
+    max-width: 33%;
   }
 
   @include media-breakpoint-up(xl) {
@@ -156,6 +177,10 @@ export default {
     padding-left: 0;
     text-align: right;
   }
+}
+
+.group-header-buttons-small {
+  margin-top: 10px;
 }
 
 .group-header-description {
