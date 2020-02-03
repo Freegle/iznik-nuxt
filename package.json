@@ -40,7 +40,7 @@
     "filepond": "^4.9.2",
     "filepond-plugin-file-validate-type": "^1.2.4",
     "filepond-plugin-image-exif-orientation": "^1.0.6",
-    "filepond-plugin-image-preview": "^4.2.1",
+    "filepond-plugin-image-preview": "^4.6.1",
     "filepond-plugin-image-resize": "^2.0.4",
     "filepond-plugin-image-transform": "^3.3.3",
     "googlemaps-rich-marker-web": "^1.0.3",

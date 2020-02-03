@@ -6,12 +6,7 @@
         We normally show job ads here.  It looks like you may have an AdBlocker or security software which is blocking those.
         We're not mad on ads either, but please consider donating to help us keep going:
       </p>
-      <a href="https://freegle.in/paypalfundraiser" target="_blank">
-        <b-btn variant="primary" size="lg">
-          <b-img thumbnail alt="PayPal" src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg" />
-          &nbsp;Donate
-        </b-btn>
-      </a>
+      <donation-button />
     </NoticeMessage>
     <b-card v-else-if="jobs.length" variant="white" no-body>
       <b-card-body class="p-0">
@@ -44,16 +39,19 @@
     </b-card>
   </div>
 </template>
+
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
 import Job from './Job'
 const NoticeMessage = () => import('~/components/NoticeMessage')
+const DonationButton = () => import('~/components/DonationButton')
 
 export default {
   components: {
     Job,
     NoticeMessage,
-    InfiniteLoading
+    InfiniteLoading,
+    DonationButton
   },
   data: function() {
     return {

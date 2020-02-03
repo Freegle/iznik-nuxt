@@ -36,8 +36,6 @@ export const getters = {
 
 export const actions = {
   async fetch({ commit }, params) {
-    // Make sure we have up to date info.
-    params.force = true
     commit('set', await this.$api.dashboard.fetch(params))
   },
 

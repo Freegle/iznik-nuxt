@@ -6,12 +6,7 @@
         We normally show job ads here.  It looks like you may have an AdBlocker or security software which is blocking those.
         We're not mad on ads either, but please consider donating to help us keep going:
       </p>
-      <a href="https://freegle.in/paypalfundraiser" target="_blank">
-        <b-btn variant="primary" size="lg">
-          <b-img thumbnail alt="PayPal" src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg" />
-          &nbsp;Donate
-        </b-btn>
-      </a>
+      <donation-button />
     </NoticeMessage>
     <div v-else>
       <div class="mb-1 text-center small text-muted">
@@ -25,14 +20,17 @@
     </div>
   </div>
 </template>
+
 <script>
 import Job from './Job'
 import NoticeMessage from './NoticeMessage'
+import DonationButton from './DonationButton'
 
 export default {
   components: {
     NoticeMessage,
-    Job
+    Job,
+    DonationButton
   },
   data: function() {
     return {

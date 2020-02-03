@@ -89,8 +89,8 @@
                     spellcheck="true"
                     placeholder="Write a comment on this thread and hit enter..."
                     class="p-0 pl-1 pt-1"
-                    @keydown.enter.shift.exact="newlineComment"
-                    @keydown.alt.shift.exact="newlineComment"
+                    @keydown.enter.shift.exact.prevent="newlineComment"
+                    @keydown.alt.shift.exact.prevent="newlineComment"
                     @focus="focusedComment"
                   />
                 </at-ta>
@@ -354,7 +354,15 @@ export default {
       }
     },
     newlineComment() {
-      this.threadcomment += '\n'
+      const p = this.$refs.threadcomment.selectionStart
+      if (p) {
+        this.threadcomment =
+          this.threadcomment.substring(0, p) +
+          '\n' +
+          this.threadcomment.substring(p)
+      } else {
+        this.threadcomment += '\n'
+      }
     },
     show() {
       this.$refs.editModal.show()

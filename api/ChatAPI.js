@@ -23,7 +23,14 @@ export default class ChatAPI extends BaseAPI {
   }
 
   send(data) {
-    return this.$post('/chatmessages', data)
+    return this.$post('/chatmessages', data, function(data) {
+      if (data && data.ret === 4) {
+        // Don't log errors for banned users.
+        return false
+      } else {
+        return true
+      }
+    })
   }
 
   nudge(roomid) {

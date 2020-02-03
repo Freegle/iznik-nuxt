@@ -215,12 +215,7 @@
                     here:
                   </p>
                   <p>
-                    <a target="_blank" rel="noopener" href="https://freegle.in/paypalbutton">
-                      <span class="btn btn-primary btn-lg">
-                        <img alt="PayPal" class="img-thumbnail" src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg">
-                        &nbsp;Donate
-                      </span>
-                    </a>
+                    <donation-button :direct-donation="true" />
                   </p>
                 </template>
               </Question>
@@ -461,6 +456,8 @@ import buildHead from '@/mixins/buildHead.js'
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
 const ChatButton = () => import('~/components/ChatButton.vue')
 const NoticeMessage = () => import('~/components/NoticeMessage')
+const DonationButton = () => import('~/components/DonationButton')
+
 Vue.use(TabsPlugin)
 const RateAppModal = () => import('~/components/RateAppModal') // CC
 
@@ -470,7 +467,8 @@ export default {
     GroupRememberSelect,
     ChatButton,
     NoticeMessage,
-    RateAppModal
+    RateAppModal,
+    DonationButton
   },
   mixins: [buildHead],
   data() {
@@ -498,7 +496,7 @@ export default {
     version() {
       const date = new this.$dayjs(process.env.BUILD_DATE)
 
-      return date.format('Do MMMM, YYYY') + ' at ' + date.format('HH:MM')
+      return date.format('Do MMMM, YYYY') + ' at ' + date.format('HH:mm')
     }
   },
   head() {
