@@ -17,7 +17,11 @@
                 @error.native="brokenImage"
               />
               <profile-image :image="otheruser.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
-              <span class="small black"><b>{{ otheruser.displayname }}</b> has asked about:</span>
+              <span class="small black"><b>{{ otheruser.displayname }}</b> has
+                <span v-if="refmsg && refmsg.type === 'Offer'">asked</span>
+                <span v-else>replied</span>
+                about:
+              </span>
               <br>
               <h4>
                 {{ refmsg.subject }}

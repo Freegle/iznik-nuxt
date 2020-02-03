@@ -1,10 +1,10 @@
 <template>
   <b-card bg-light>
     <b-row v-if="group.profile" class="mt-1">
-      <b-col cols="4" md="2" lg="3" xl="2">
+      <b-col cols="5" md="2" lg="3" xl="2">
         <b-img-lazy rounded thumbnail alt="Community profile picture" :src="group.profile" class="js-pageimage" />
       </b-col>
-      <b-col cols="8" md="6" lg="9" class="group-header-description">
+      <b-col cols="7" md="6" lg="9" class="group-header-description">
         <b-card-title>
           {{ group.namedisplay }}
           <v-icon v-if="amAMember === 'Owner' || amAMember === 'Moderator'" name="crown" class="text-success" :title="'You have role ' + amAMember" />
@@ -13,23 +13,58 @@
         <p v-if="group.membercount" class="text-muted small">
           Founded {{ group.founded | dateonly }}. {{ group.membercount.toLocaleString() }} current freeglers.
           <br>
-          See
-          <nuxt-link :to="{ path: '/communityevents/' + group.id }">
-            community events
-          </nuxt-link>,
-          <nuxt-link :to="{ path: '/volunteerings/' + group.id }">
-            volunteer opportunities
-          </nuxt-link>,
-          <nuxt-link :to="{ path: '/stories/' + group.id }">
-            stories
-          </nuxt-link>, or
-          <nuxt-link :to="{ path: '/stats/' + group.nameshort }">
-            stats
-          </nuxt-link>
+          <span class="d-none d-sm-block d-lg-none d-xl-block">
+            See
+            <nuxt-link :to="{ path: '/communityevents/' + group.id }">
+              community events
+            </nuxt-link>,
+            <nuxt-link :to="{ path: '/volunteerings/' + group.id }">
+              volunteer opportunities
+            </nuxt-link>,
+            <nuxt-link :to="{ path: '/stories/' + group.id }">
+              stories
+            </nuxt-link>, or
+            <nuxt-link :to="{ path: '/stats/' + group.nameshort }">
+              stats
+            </nuxt-link>
+          </span>
+          <span class="group-header-buttons-small d-none d-sm-block d-md-none">
+            <b-link :href="'mailto:' + modsemail">
+              <b-button class="mb-1" variant="white">
+                <v-icon name="question-circle" />&nbsp;Contact&nbsp;volunteers
+              </b-button>
+            </b-link>
+            <b-button v-if="!amAMember" class="mb-1" variant="success" @click="join">
+              <v-icon v-if="joiningOrLeaving" name="sync" class="fa-spin" />
+              <v-icon v-else name="plus" />&nbsp;
+              Join
+            </b-button>
+            <b-button v-else-if="amAMember === 'Member'" class="mb-1" variant="white" @click="leave">
+              <v-icon v-if="joiningOrLeaving" name="sync" class="fa-spin" />
+              <v-icon v-else name="trash-alt" />&nbsp;Leave
+            </b-button>
+          </span>
         </p>
       </b-col>
       <b-col cols="12" md="4" lg="12" class="group-header-buttons">
-        <span>
+        <p v-if="group.membercount" class="text-muted small">
+          <span class="d-lg-block d-sm-none d-xl-none">
+            See
+            <nuxt-link :to="{ path: '/communityevents/' + group.id }">
+              community events
+            </nuxt-link>,
+            <nuxt-link :to="{ path: '/volunteerings/' + group.id }">
+              volunteer opportunities
+            </nuxt-link>,
+            <nuxt-link :to="{ path: '/stories/' + group.id }">
+              stories
+            </nuxt-link>, or
+            <nuxt-link :to="{ path: '/stats/' + group.nameshort }">
+              stats
+            </nuxt-link>
+          </span>
+        </p>
+        <span class="d-sm-none d-md-block">
           <b-link :href="'mailto:' + modsemail">
             <b-button class="ml-1 mb-1" variant="white">
               <v-icon name="question-circle" />&nbsp;Contact&nbsp;volunteers
@@ -123,11 +158,32 @@ export default {
   margin-bottom: 20px;
   text-align: right;
 
+  @include media-breakpoint-up(md) {
+    text-align: right;
+  }
+
+  @include media-breakpoint-up(lg) {
+    text-align: left;
+  }
+
+  // md, md is intentional. The way bootstrap 'between' mixin works is to take
+  // the second argument and find the next breakpoint. So this is effectively
+  // active between 768px and 991px.
+  @include media-breakpoint-between(md, md) {
+    flex: 0 0 33%;
+    max-width: 33%;
+  }
+
   @include media-breakpoint-up(xl) {
     flex: 0 0 36%;
     max-width: 36%;
     padding-left: 0;
+    text-align: right;
   }
+}
+
+.group-header-buttons-small {
+  margin-top: 10px;
 }
 
 .group-header-description {

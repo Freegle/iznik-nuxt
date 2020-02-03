@@ -1,6 +1,7 @@
 <template>
   <div>
     <file-pond
+      v-if="supported"
       ref="pond"
       name="photo"
       :allow-multiple="multiple"
@@ -15,6 +16,9 @@
       @processfile="processed"
       @processfiles="allProcessed"
     />
+    <div v-else>
+      Sorry, photo uploads aren't supported on this browser.  Maybe it's old?
+    </div>
   </div>
 </template>
 <script>
@@ -81,12 +85,17 @@ export default {
       image: null,
       ocred: null,
       identified: null,
-      myFiles: []
+      myFiles: [],
+      supported: true
     }
   },
   methods: {
     photoInit: function() {
-      if (this.browse) {
+      if (!this.$refs.pond._pond) {
+        // This is the only way of finding out if the browser is supported - see
+        // https://github.com/pqina/vue-filepond/issues/136
+        this.supported = false
+      } else if (this.browse) {
         // We have rendered the filepond instance.  Trigger browse so that they can upload a photo without an
         // extra click.
         this.$refs.pond.browse()
