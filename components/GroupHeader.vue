@@ -166,6 +166,9 @@ export default {
     text-align: left;
   }
 
+  // md, md is intentional. The way bootstrap 'between' mixin works is to take
+  // the second argument and find the next breakpoint. So this is effectively
+  // active between 768px and 991px.
   @include media-breakpoint-between(md, md) {
     flex: 0 0 33%;
     max-width: 33%;
