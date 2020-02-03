@@ -474,7 +474,7 @@ export default {
     version() {
       const date = new this.$dayjs(process.env.BUILD_DATE)
 
-      return date.format('Do MMMM, YYYY') + ' at ' + date.format('HH:MM')
+      return date.format('Do MMMM, YYYY') + ' at ' + date.format('HH:mm')
     }
   },
   head() {
