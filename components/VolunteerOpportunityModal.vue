@@ -577,8 +577,6 @@ export default {
           this.added = true
         }
       }
-
-      this.hide()
     },
     async dontSave() {
       // We may have updated the opportunity during the edit.  Fetch it again to reset those changes.

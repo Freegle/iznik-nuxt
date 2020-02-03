@@ -539,8 +539,6 @@ export default {
           this.added = true
         }
       }
-
-      this.hide()
     },
     async dontSave() {
       // We may have updated the event during the edit.  Fetch it again to reset those changes.
