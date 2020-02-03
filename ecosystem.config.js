@@ -12,20 +12,25 @@ module.exports = {
       max_memory_restart: '1G',
       wait_ready: true,
       listen_timeout: 10000,
+
+      // These envs need to match cdn.js if you want to use a CDN.
       env_production: {
         PORT: 3000,
         NODE_ENV: 'production',
-        IZNIK_API: 'https://fdapilive.ilovefreegle.org'
+        IZNIK_API: 'https://fdapilive.ilovefreegle.org',
+        CDN: 'https://freeglecdn.azureedge.net'
       },
       env_development: {
         PORT: 3001,
         NODE_ENV: 'production',
-        IZNIK_API: 'https://fdapidev.ilovefreegle.org'
+        IZNIK_API: 'https://fdapidev.ilovefreegle.org',
+        CDN: 'https://freeglecdndev.azureedge.net'
       },
       env_debug: {
         PORT: 3002,
         NODE_ENV: 'development',
-        IZNIK_API: 'https://fdapidbg.ilovefreegle.org'
+        IZNIK_API: 'https://fdapidbg.ilovefreegle.org',
+        CDN: 'https://freeglecdndbg.azureedge.net'
       }
     }
   ],
@@ -40,7 +45,7 @@ module.exports = {
       repo: 'git@github.com:Freegle/iznik-nuxt.git',
       path: '/var/www/fdnuxt.live',
       'post-deploy':
-        'npm install && npm run build && pm2 reload ecosystem.config.js --env production && /etc/waitfornode'
+        'monit stop nginx && rsync -a app4:/var/build/iznik-nuxt/ . && npx patch-package && cp restartfd /etc && chmod +x /etc/restartfd && cp waitfornode /etc && chmod +x /etc/waitfornode && pm2 restart FD-production --update-env && /etc/waitfornode && monit start nginx'
     },
     // The preview site which is used by volunteers for testing.  We're sticking with this name because it's firmly
     // ingrained into volunteers' heads.
@@ -52,9 +57,9 @@ module.exports = {
       repo: 'git@github.com:Freegle/iznik-nuxt.git',
       path: '/var/www/fdnuxt.dev',
       'post-deploy':
-        'npm install && npm run build && pm2 reload ecosystem.config.js --env development && sleep 60'
+        'rsync -a app4:/var/build/iznik-nuxt/ . && npx patch-package && cp restartfd /etc && chmod +x /etc/restartfd && cp waitfornode /etc && chmod +x /etc/waitfornode && pm2 restart FD-development --update-env && /etc/waitfornode'
     },
-    // The development site (despite the name) which is used by developers.
+    // The site which (despite the name) which is used by developers.
     debug: {
       user: 'root',
       key: '/root/.ssh/id_rsa',
@@ -63,7 +68,7 @@ module.exports = {
       repo: 'git@github.com:Freegle/iznik-nuxt.git',
       path: '/var/www/fdnuxt.dbg',
       'post-deploy':
-        'npm install && npm run build && pm2 reload ecosystem.config.js --env debug && sleep 60'
+        'rsync -a app4:/var/build/iznik-nuxt/ . && npx patch-package && cp restartfd /etc && chmod +x /etc/restartfd && cp waitfornode /etc && chmod +x /etc/waitfornode && pm2 restart FD-debug --update-env && /etc/waitfornode'
     }
   }
 }

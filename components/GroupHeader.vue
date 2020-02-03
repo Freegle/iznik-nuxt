@@ -67,7 +67,7 @@
       </b-col>
     </b-row>
     <b-row>
-      <b-col style="max-height: 300px; overflow-y: auto">
+      <b-col class="group-description">
         <p v-if="!group.description">
           Give and get stuff for free with {{ group.namedisplay }}.  Offer things you don't need, and ask for things you'd like.  Don't just recycle - reuse with Freegle!
         </p>
@@ -77,45 +77,6 @@
     </b-row>
   </b-card>
 </template>
-
-<style scoped lang="scss">
-@import 'color-vars';
-@import '~bootstrap/scss/functions';
-@import '~bootstrap/scss/variables';
-@import '~bootstrap/scss/mixins/_breakpoints';
-
-.group-header-buttons {
-  margin-bottom: 20px;
-  text-align: left;
-
-  @include media-breakpoint-up(md) {
-    text-align: right;
-  }
-
-  @include media-breakpoint-up(lg) {
-    text-align: left;
-  }
-
-  @include media-breakpoint-up(xl) {
-    flex: 0 0 36%;
-    max-width: 36%;
-    padding-left: 0;
-    text-align: right;
-  }
-}
-
-.group-header-description {
-  @include media-breakpoint-up(xl) {
-    padding-left: 0;
-    max-width: 47%;
-    flex: 0 0 47%;
-  }
-}
-
-.img-thumbnail {
-  margin-bottom: 20px;
-}
-</style>
 
 <script>
 export default {
@@ -170,3 +131,47 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+@import 'color-vars';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+
+.group-header-buttons {
+  margin-bottom: 20px;
+  text-align: right;
+  
+  @include media-breakpoint-up(md) {
+    text-align: right;
+  }
+  
+  @include media-breakpoint-up(lg) {
+    text-align: left;
+  }
+
+  @include media-breakpoint-up(xl) {
+    flex: 0 0 36%;
+    max-width: 36%;
+    padding-left: 0;
+    text-align: right;
+  }
+}
+
+.group-header-description {
+  @include media-breakpoint-up(xl) {
+    padding-left: 0;
+    max-width: 47%;
+    flex: 0 0 47%;
+  }
+}
+
+.img-thumbnail {
+  margin-bottom: 20px;
+}
+
+.group-description {
+  max-height: 300px;
+  overflow-y: auto;
+}
+</style>

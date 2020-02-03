@@ -210,12 +210,28 @@
                     here:
                   </p>
                   <p>
-                    <a target="_blank" rel="noopener" href="https://freegle.in/paypalbutton">
-                      <span class="btn btn-primary btn-lg">
-                        <img alt="PayPal" class="img-thumbnail" src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg">
-                        &nbsp;Donate
-                      </span>
+                    <donation-button :direct-donation="true" />
+                  </p>
+                </template>
+              </Question>
+              <Question id="mobile">
+                <template slot="title">
+                  <b>Do you have a mobile app?</b>
+                </template>
+                <template slot="content">
+                  <p>
+                    We do! Freegling is easy on mobiles and tablets, and you get notifications of replies so you don't have to rely on email. Download using these links or search for Freegle in your app store - it's free!
+                  </p>
+                  <div class="d-flex justify-content-between">
+                    <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" class="mt-2" target="_blank">
+                      <img alt="Freegle Android app on Google Play" title="Freegle Android app on Google Play" class="img-responsive" src="/en-play-badge.png">
                     </a>
+                    <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&amp;mt=8" class="mt-2" target="_blank">
+                      <img alt="Freegle app for iPhone, iPad, and iPod touch" title="Freegle app for iPhone, iPad, and iPod touch" class="img-responsive" src="/app-store-black-sm.png">
+                    </a>
+                  </div>
+                  <p class="mt-2">
+                    The app is only available in the UK app stores. We support Android 4.4/iOS 9 or later.
                   </p>
                 </template>
               </Question>
@@ -432,6 +448,8 @@ import buildHead from '@/mixins/buildHead.js'
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
 const ChatButton = () => import('~/components/ChatButton.vue')
 const NoticeMessage = () => import('~/components/NoticeMessage')
+const DonationButton = () => import('~/components/DonationButton')
+
 Vue.use(TabsPlugin)
 
 export default {
@@ -439,7 +457,8 @@ export default {
     Question,
     GroupRememberSelect,
     ChatButton,
-    NoticeMessage
+    NoticeMessage,
+    DonationButton
   },
   mixins: [buildHead],
   data() {

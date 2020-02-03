@@ -63,12 +63,29 @@
           </b-card>
           <b-card variant="white" class="mt-2">
             <b-card-text>
-              <h3>Activity</h3>
-              <p>This includes people OFFERing something, posting a WANTED for something, or searching for something.</p>
+              <h3 class="d-flex justify-content-between">
+                <span>
+                  {{ graphTitles[graphType] }}
+                </span>
+                <b-form-select v-model="graphType" :options="graphTypes" class="graphSelect" />
+              </h3>
+              <p v-if="graphType === 'Activity'">
+                This includes people OFFERing something, posting a WANTED for something, or replying to an OFFER/WANTED.
+              </p>
+              <p v-if="graphType === 'ApprovedMessageCount'">
+                This includes people OFFERing something or posting a WANTED for something.
+              </p>
+              <p v-if="graphType === 'Searches'">
+                This includes people searching for something.
+              </p>
+              <p v-if="graphType === 'Replies'">
+                This includes people replying to an OFFER or a WANTED.
+              </p>
               <GChart
+                :key="graphType"
                 type="LineChart"
-                :data="activityData"
-                :options="activityOptions"
+                :data="graphData"
+                :options="graphOptions"
               />
             </b-card-text>
           </b-card>
@@ -149,43 +166,7 @@
     </b-row>
   </div>
 </template>
-<style scoped lang="scss">
-@import 'color-vars';
 
-$bootstrap-sm: 768px;
-
-.chart-wrapper {
-  flex-direction: column;
-
-  @media (min-width: $bootstrap-sm) {
-    flex-direction: row;
-  }
-}
-
-.card {
-  &.chart {
-    height: 100%;
-  }
-}
-
-.titlelogo {
-  width: 140px;
-  height: 140px;
-  object-fit: cover;
-}
-
-.purple {
-  color: $color-purple !important;
-}
-
-.gold {
-  color: $color-gold !important;
-}
-
-.green {
-  color: green !important;
-}
-</style>
 <script>
 import dayjs from 'dayjs'
 import { GChart } from 'vue-google-charts'
@@ -205,23 +186,18 @@ export default {
       loading: false,
       dataready: false,
       group: null,
-      activityOptions: {
-        title: 'Activity',
-        interpolateNulls: false,
-        animation: {
-          duration: 5000,
-          easing: 'out',
-          startup: true
-        },
-        legend: { position: 'none' },
-        chartArea: { width: '80%', height: '80%' },
-        vAxis: { viewWindow: { min: 0 } },
-        hAxis: {
-          format: 'MMM yyyy'
-        },
-        series: {
-          0: { color: 'blue' }
-        }
+      graphType: 'Activity',
+      graphTypes: [
+        { value: 'Activity', text: 'Activity' },
+        { value: 'ApprovedMessageCount', text: 'OFFERS/WANTEDs' },
+        { value: 'Searches', text: 'Searches' },
+        { value: 'Replies', text: 'Replies' }
+      ],
+      graphTitles: {
+        Activity: 'Activity',
+        ApprovedMessageCount: 'OFFERs and WANTED',
+        Searches: 'Searches',
+        Replies: 'Replies'
       },
       balanceOptions: {
         title: 'Post Balance',
@@ -290,13 +266,36 @@ export default {
     }
   },
   computed: {
+    graphOptions() {
+      return {
+        title: this.graphTitles[this.graphType],
+        interpolateNulls: false,
+        animation: {
+          duration: 5000,
+          easing: 'out',
+          startup: true
+        },
+        legend: { position: 'none' },
+        chartArea: { width: '80%', height: '80%' },
+        vAxis: { viewWindow: { min: 0 } },
+        hAxis: {
+          format: 'MMM yyyy'
+        },
+        series: {
+          0: { color: 'blue' }
+        }
+      }
+    },
     totalWeight() {
       const weights = this.$store.getters['stats/get']('Weight')
       let total = 0
+      const now = dayjs()
 
       if (weights) {
         for (const w of weights) {
-          total += w.count
+          if (now.diff(dayjs(w.date), 'days') <= 365) {
+            total += w.count
+          }
         }
       }
 
@@ -310,9 +309,9 @@ export default {
     totalCO2() {
       return Math.round(this.totalWeight * 0.51)
     },
-    activityData() {
+    graphData() {
       const ret = [['Date', 'Count']]
-      const activity = this.$store.getters['stats/get']('Activity')
+      const activity = this.$store.getters['stats/get'](this.graphType)
 
       if (activity) {
         for (const a of activity) {
@@ -477,3 +476,46 @@ export default {
   methods: {}
 }
 </script>
+
+<style scoped lang="scss">
+@import 'color-vars';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+
+.chart-wrapper {
+  flex-direction: column;
+
+  @include media-breakpoint-up(md) {
+    flex-direction: row;
+  }
+}
+
+.card {
+  &.chart {
+    height: 100%;
+  }
+}
+
+.titlelogo {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+}
+
+.purple {
+  color: $color-purple !important;
+}
+
+.gold {
+  color: $color-gold !important;
+}
+
+.green {
+  color: $color-green--darker !important;
+}
+
+.graphSelect {
+  max-width: 200px;
+}
+</style>

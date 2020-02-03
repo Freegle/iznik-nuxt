@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-2">
+  <div class="mb-2">
     <b-card v-if="opportunities.length" variant="white" no-body>
       <b-card-body class="p-0">
         <b-btn variant="white" class="float-right m-1" @click="showVolunteerModal">

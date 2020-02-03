@@ -75,6 +75,16 @@ export const actions = {
   },
 
   async fetch({ commit }, { id }) {
-    commit('add', await this.$api.group.fetch(id))
+    commit(
+      'add',
+      await this.$api.group.fetch(id, function(data) {
+        if (data && data.ret === 2) {
+          // Not hosting a group isn't worth logging.
+          return false
+        } else {
+          return true
+        }
+      })
+    )
   }
 }

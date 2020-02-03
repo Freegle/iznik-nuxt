@@ -8,14 +8,14 @@
             block
             href="#"
             variant="white"
-            class="text-left text-truncate noborder"
+            class="text-left text-truncate noborder hover"
             @click="toggle"
           >
             <b-row>
               <b-col>
                 <div class="d-flex">
                   <h3 class="text-wrap flex-shrink-2">
-                    {{ message.subject }} Action {{ action }}
+                    {{ message.subject }}
                     <span v-if="rejected" class="text-danger">
                       <v-icon name="exclamation-triangle" scale="2" />
                     </span>
@@ -440,5 +440,10 @@ img.attachment {
 .noborder {
   border: none !important;
   border-color: $color-white !important;
+}
+
+.hover:hover {
+  color: initial;
+  background-color: $colour-success-bg !important;
 }
 </style>

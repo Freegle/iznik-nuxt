@@ -1,7 +1,7 @@
 <template>
   <b-container v-if="me" fluid>
     <b-row class="m-0">
-      <b-col cols="0" lg="3" class="d-none d-lg-block">
+      <b-col cols="0" lg="3" class="d-none d-lg-block p-0 pr-1">
         <SidebarLeft :show-community-events="true" :show-bot-left="true" />
       </b-col>
       <b-col cols="12" lg="6" class="newsfeedHolder p-0">
@@ -82,7 +82,7 @@
           </client-only>
         </div>
       </b-col>
-      <b-col cols="0" lg="3" class="d-none d-lg-block">
+      <b-col cols="0" lg="3" class="d-none d-lg-block p-0 pl-1">
         <sidebar-right show-volunteer-opportunities show-job-opportunities />
       </b-col>
     </b-row>
@@ -349,9 +349,6 @@ export default {
     photoProcessed(imageid, imagethumb) {
       // We have uploaded a photo.  Remove the filepond instance.
       this.uploading = false
-
-      // Show the chat busy indicator.
-      this.chatBusy = true
 
       // The imageid is in this.imageid
       this.imageid = imageid

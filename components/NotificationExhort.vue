@@ -6,10 +6,10 @@
           <v-icon name="heart" scale="2" />
         </div>
       </div>
-      <div class="media-body">
+      <div class="media-body pl-1">
         <span class="notification-title"><span>{{ notification.title }}</span>
           <span v-if="notification.text">
-            <br>"<b style="max-width: 200px; overflow-wrap: break-word">{{ notification.text }}</b>"
+            <br>"<b class="notification__message">{{ notification.text }}</b>"
           </span>
         </span>
         <div class="notification-meta">
@@ -19,17 +19,7 @@
     </div>
   </div>
 </template>
-<style scoped>
-.media-object {
-  width: 33px;
-  height: 28px;
-  padding-top: 5px;
-}
 
-.notification-title {
-  max-width: 280px;
-}
-</style>
 <script>
 export default {
   props: {
@@ -45,3 +35,20 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.media-object {
+  width: 33px;
+  height: 28px;
+  padding-top: 5px;
+}
+
+.notification-title {
+  max-width: 280px;
+}
+
+.notification__message {
+  max-width: 200px;
+  overflow-wrap: break-word;
+}
+</style>

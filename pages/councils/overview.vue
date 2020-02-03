@@ -38,7 +38,7 @@
             <p><b>Don't throw it away, give it away!</b></p>
           </NoticeMessage>
           <p>
-            If you're interested in how Freegle is structured and why we do it, read more <nuxt-link to="/about">
+            If you're interested in how Freegle is structured and why we do it, find out more <nuxt-link to="/about">
               here
             </nuxt-link>.
           </p>

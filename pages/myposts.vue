@@ -1,7 +1,7 @@
 <template>
   <b-container fluid>
     <b-row class="m-0">
-      <b-col cols="0" lg="3" class="d-none d-lg-block">
+      <b-col cols="0" lg="3" class="d-none d-lg-block p-0 pr-1">
         <SidebarLeft :show-community-events="true" :show-bot-left="true" />
       </b-col>
       <b-col cols="12" lg="6" class="p-0">
@@ -150,8 +150,8 @@
               </p>
               <ul v-if="busy || searches && Object.keys(searches).length > 0" class="list-group list-group-horizontal flex-wrap">
                 <li v-for="search in searches" :key="'search-' + search.id" class="text-left mt-1 list-group-item bg-white border text-nowrap mr-2">
-                  <b-btn variant="white d-inline">
-                    <v-icon name="search" /> {{ search.term }} {{ search.daysago }}
+                  <b-btn :to="'/find/search/' + search.term" variant="white d-inline">
+                    <v-icon name="search" /> {{ search.term }} <span class="text-muted small">{{ search.daysago | pluralize(['day ago', 'days ago'], { includeNumber: true }) }}</span>
                   </b-btn>
                   <span class="ml-3 d-inline clickme" @click="deleteSearch(search.id)">
                     <v-icon v-if="removingSearch === search.id" name="sync" class="text-success fa-spin" />
@@ -178,7 +178,7 @@
           </b-card-body>
         </b-card>
       </b-col>
-      <b-col cols="0" lg="3" class="d-none d-lg-block">
+      <b-col cols="0" lg="3" class="d-none d-lg-block p-0 pl-1">
         <sidebar-right show-volunteer-opportunities />
       </b-col>
     </b-row>

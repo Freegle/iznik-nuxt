@@ -5,6 +5,8 @@ export const state = () => ({
   // Use array because we need to store them in the order returned by the server.
   list: [],
 
+  viewed: [],
+
   // The context from the last fetch, used for fetchMore.
   context: null
 })
@@ -45,6 +47,9 @@ export const mutations = {
   },
   setContext(state, ctx) {
     state.context = ctx
+  },
+  setViewed(state, viewed) {
+    state.viewed = viewed
   }
 }
 
@@ -81,6 +86,9 @@ export const getters = {
   },
   getAll: state => {
     return state.list
+  },
+  getViewed: state => {
+    return state.viewed
   }
 }
 
@@ -100,13 +108,22 @@ export const actions = {
   },
 
   async fetch({ commit }, params) {
-    const { message } = await this.$api.message.fetch(params)
+    // Don't log errors on fetches of individual messages
+    const { message } = await this.$api.message.fetch(params, data => {
+      return data.ret !== 3
+    })
+
     commit('add', message)
   },
 
   async update({ commit, dispatch }, params) {
     const data = await this.$api.message.update(params)
-    await dispatch('fetch', { id: params.id })
+
+    if (!data.deleted) {
+      // Fetch back the updated version.
+      await dispatch('fetch', { id: params.id })
+    }
+
     return data
   },
 
@@ -179,5 +196,20 @@ export const actions = {
 
   async intend({ dispatch }, params) {
     await this.$api.message.intend(params.id, params.outcome)
+  },
+
+  async view({ dispatch }, params) {
+    await this.$api.message.view(params.id)
+  },
+
+  async fetchViewed({ commit, rootGetters }) {
+    const me = rootGetters['auth/user']
+
+    const { messages } = await this.$api.message.fetchMessages({
+      collection: 'Viewed',
+      fromuser: me.id
+    })
+
+    commit('setViewed', messages)
   }
 }

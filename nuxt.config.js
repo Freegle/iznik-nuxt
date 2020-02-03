@@ -3,7 +3,8 @@ import sitemap from './utils/sitemap.js'
 
 const FACEBOOK_APPID = '134980666550322'
 const SENTRY_DSN = 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170'
-const YAHOO_CLIENTID = 'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
+const YAHOO_CLIENTID =
+  'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
 
 require('dotenv').config()
 
@@ -22,6 +23,9 @@ const API = '/api'
 // IZNIK_API is where we send it to.  This avoids CORS issues (and removes preflight OPTIONS calls for GETs, which
 // hurt client performance).
 const IZNIK_API = process.env.IZNIK_API || 'https://fdapilive.ilovefreegle.org'
+
+// This is the CDN for this site.
+const CDN = process.env.CDN
 
 // This is where the user site is.
 const USER_SITE = 'https://www.ilovefreegle.org'
@@ -64,7 +68,7 @@ module.exports = {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'author', name: 'author', content: 'Freegle' },
-      { name: 'supported-color-schemes', content: 'light'},
+      { name: 'supported-color-schemes', content: 'light' },
       {
         hid: 'description',
         name: 'description',
@@ -83,14 +87,11 @@ module.exports = {
         property: 'og:image',
         content: USER_SITE + '/icon.png'
       },
-      {
-        hid: 'og:video',
-        property: 'og:video',
-        content: 'https://www.youtube.com/embed/Gw_wpkbNQY8'
-      },
       { hid: 'og:locale', property: 'og:locale', content: 'en_GB' },
-      { hid: 'og:title', property: 'og:title', content: 'Freegle' },
+      { hid: 'og:title', property: 'og:title', content: 'Freegle - Don\'t throw it away, give it away!' },
       { hid: 'og:site_name', property: 'og:site_name', content: 'Freegle' },
+      { hid: 'og:url', property: 'og:url', content: 'https://www.ilovefreegle.org' },
+      { hid: 'fb:app_id', property: 'fb:app_id', content: FACEBOOK_APPID },
       {
         hid: 'og:description',
         property: 'og:description',
@@ -99,7 +100,7 @@ module.exports = {
       },
       { hid: 'fb:app_id', property: 'og:site_name', content: FACEBOOK_APPID },
 
-      { hid: 'twitter:title', name: 'twitter:title', content: 'Freegle' },
+      { hid: 'twitter:title', name: 'twitter:title', content: 'Freegle - Don\'t throw it away, give it away!' },
       {
         hid: 'twitter:description',
         name: 'twitter:description',
@@ -180,6 +181,7 @@ module.exports = {
     { src: '~/plugins/dayjs' },
 
     // Some plugins are client-side features
+    { src: '~plugins/cdn', ssr: false },
     { src: '~plugins/visibility.js', ssr: false },
     { src: '~plugins/error-toasts.js', ssr: false },
     { src: '~plugins/vuex-persistedstate', ssr: false },
@@ -325,8 +327,12 @@ module.exports = {
       //
       // Note that this doesn't retry requests that never complete.
       retries: 10,
-      retryDelay: (retryCount) => {
+      retryDelay: retryCount => {
         return retryCount * 1000
+      },
+      // eslint-disable-next-line handle-callback-err
+      retryCondition: error => {
+        return true
       },
       shouldResetTimeout: true
     }
@@ -349,6 +355,25 @@ module.exports = {
     ]
   ],
 
+  hooks: {
+    // We have a caching CDN in front of our site.  This is particularly useful for old script files which have
+    // been deleted by a new pm2 deploy on the server, but which may be loaded by a client which is open in a
+    // browser but which has not yet loaded all script files.
+    //
+    // Nuxt doesn't allow the publicPath (CDN url) to be overridden at run time - it's baked into the manifest at
+    // build time.  This hook intercepts the VueRenderer when it has loaded the manifest and updates the publicPath
+    // to the current env value.
+    render: {
+      resourcesLoaded(resources) {
+        const path =
+          process.env.CDN === undefined
+            ? '/_nuxt'
+            : (process.env.CDN + '/_nuxt')
+        resources.clientManifest && (resources.clientManifest.publicPath = path)
+      }
+    }
+  },
+
   /*
   ** Build configuration
   */
@@ -363,7 +388,8 @@ module.exports = {
     // https://github.com/nuxt/nuxt.js/pull/3940
     // https://stackoverflow.com/questions/59292564/nuxt-js-npm-run-build-results-in-some-js-files-being-not-found
     filenames: {
-      chunk: ({ isDev }) => process.env.NODE_ENV === 'development' ? '[name].js' : '[chunkhash].js'
+      chunk: ({ isDev }) =>
+        process.env.NODE_ENV === 'development' ? '[name].js' : '[chunkhash].js'
     },
 
     transpile: [/^vue2-google-maps($|\/)/, 'vue-lazy-youtube-video'],
@@ -464,6 +490,7 @@ module.exports = {
   env: {
     API: API,
     IZNIK_API: IZNIK_API,
+    CDN: CDN,
     CHAT_HOST: CHAT_HOST,
     FACEBOOK_APPID: FACEBOOK_APPID,
     YAHOO_CLIENTID: YAHOO_CLIENTID,

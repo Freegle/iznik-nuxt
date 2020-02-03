@@ -1,8 +1,8 @@
 import BaseAPI from '@/api/BaseAPI'
 
 export default class MessageAPI extends BaseAPI {
-  fetch(params) {
-    return this.$get('/message', params)
+  fetch(params, logError = true) {
+    return this.$get('/message', params, logError)
   }
 
   fetchMessages(params) {
@@ -34,6 +34,13 @@ export default class MessageAPI extends BaseAPI {
       action: 'OutcomeIntended',
       id: id,
       outcome: outcome
+    })
+  }
+
+  view(id) {
+    return this.$post('/message', {
+      action: 'View',
+      id: id
     })
   }
 }

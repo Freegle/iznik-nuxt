@@ -16,6 +16,10 @@
         <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
         <b-collapse v-if="loggedIn" id="nav_collapse" ref="nav_collapse" is-nav>
           <b-navbar-nav>
+            <b-nav-item id="menu-option-mygroups" class="text-center small p-0" to="/communities" @mousedown="maybeReload('/communities')">
+              <v-icon name="users" scale="2" /><br>
+              Communities
+            </b-nav-item>
             <b-nav-item id="menu-option-chitchat" class="text-center small p-0" to="/chitchat" @mousedown="maybeReload('/chitchat')">
               <v-icon name="coffee" scale="2" /><br>
               ChitChat
@@ -31,10 +35,6 @@
             <b-nav-item id="menu-option-find" class="text-center small p-0" to="/find" @mousedown="maybeReload('/find')">
               <v-icon name="search" scale="2" /><br>
               Find
-            </b-nav-item>
-            <b-nav-item id="menu-option-mygroups" class="text-center small p-0" to="/communities" @mousedown="maybeReload('/communities')">
-              <v-icon name="users" scale="2" /><br>
-              Communities
             </b-nav-item>
             <b-nav-item id="menu-option-explore" class="text-center small p-0" to="/explore" @mousedown="maybeReload('/explore')">
               <v-icon name="map-marker-alt" scale="2" /><br>
@@ -190,11 +190,18 @@
       </b-navbar-nav>
 
       <b-navbar-nav class="">
-        <b-navbar-toggle v-if="loggedIn" target="nav_collapse_mobile" />
+        <b-btn v-if="loggedIn" v-b-toggle.nav_collapse_mobile class="toggler white">
+          <v-icon name="bars" class="mb-1" scale="1.5" />
+        </b-btn>
+        <!--        <b-navbar-toggle v-if="loggedIn" target="nav_collapse_mobile" class="navbar-dark" />-->
       </b-navbar-nav>
 
       <b-collapse v-if="loggedIn" id="nav_collapse_mobile" ref="nav_collapse_mobile" class="w-100 ourBack">
         <b-navbar-nav class="ml-auto flex-row flex-wrap small">
+          <b-nav-item class="text-center p-0" to="/communities" @mousedown="maybeReload('/communities')">
+            <v-icon name="users" scale="2" /><br>
+            Communities
+          </b-nav-item>
           <b-nav-item class="text-center p-0 white" to="/chitchat" @mousedown="maybeReload('/chitchat')">
             <v-icon name="coffee" scale="2" /><br>
             ChitChat
@@ -210,10 +217,6 @@
           <b-nav-item class="text-center p-0" to="/find" @mousedown="maybeReload('/find')">
             <v-icon name="search" scale="2" /><br>
             Find
-          </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/communities" @mousedown="maybeReload('/communities')">
-            <v-icon name="users" scale="2" /><br>
-            Communities
           </b-nav-item>
           <b-nav-item class="text-center p-0" to="/explore" @mousedown="maybeReload('/explore')">
             <v-icon name="map-marker-alt" scale="2" /><br>
@@ -257,7 +260,7 @@
       </b-alert>
     </div>
     <client-only>
-      <ChatPopups v-if="loggedIn" />
+      <ChatPopups v-if="loggedIn" class="d-none d-sm-block" />
       <LoginModal ref="loginModal" />
       <AboutMeModal ref="modal" />
     </client-only>
@@ -274,8 +277,442 @@
   </div>
 </template>
 
+<script>
+// Import login modal as I've seen an issue where it's not in $refs when you click on the signin button too rapidly.
+import LoginModal from '~/components/LoginModal'
+
+const AboutMeModal = () => import('~/components/AboutMeModal')
+const ChatPopups = () => import('~/components/ChatPopups')
+const Notification = () => import('~/components/Notification')
+const NchanSubscriber = require('nchan')
+const InfiniteLoading = () => import('vue-infinite-loading')
+
+export default {
+  components: {
+    InfiniteLoading,
+    ChatPopups,
+    Notification,
+    AboutMeModal,
+    LoginModal
+  },
+
+  data: function() {
+    return {
+      complete: false,
+      distance: 1000,
+      notificationPoll: null,
+      nchan: null,
+      logo: require(`@/static/icon.png`),
+      localStorageErrors: false
+    }
+  },
+
+  head() {
+    const totalCount = this.notificationCount + this.chatCount
+    return {
+      titleTemplate: totalCount > 0 ? `(${totalCount}) %s` : '%s'
+    }
+  },
+
+  computed: {
+    loggedIn() {
+      const ret = Boolean(this.$store.getters['auth/user'])
+      return ret
+    },
+    me() {
+      return this.$store.getters['auth/user']
+    },
+    notifications() {
+      const notifications = this.$store.getters['notifications/list']
+
+      notifications.sort(function(a, b) {
+        return new Date(b.timestamp) - new Date(a.timestamp)
+      })
+
+      return notifications
+    },
+    notificationCount() {
+      return this.$store.getters['notifications/count']
+    },
+    chatCount() {
+      return this.$store.getters['chats/unseenCount']
+    },
+    spreadCount() {
+      return this.me && this.me.invitesleft ? this.me.invitesleft : 0
+    }
+  },
+
+  watch: {
+    $route() {
+      // Close the dropdown menu when we move around.
+      if (
+        this.$refs.nav_collapse &&
+        this.$refs.nav_collapse.$el.classList.contains('show')
+      ) {
+        this.$root.$emit('bv::toggle::collapse', 'nav_collapse')
+      }
+
+      if (
+        this.$refs.nav_collapse_mobile &&
+        this.$refs.nav_collapse_mobile.$el.classList.contains('show')
+      ) {
+        this.$root.$emit('bv::toggle::collapse', 'nav_collapse_mobile')
+      }
+    },
+    me(newVal, oldVal) {
+      if (this.nchan && this.nchan.running) {
+        // Stop old listen.
+        try {
+          this.nchan.stop()
+        } catch (e) {}
+      }
+
+      this.nchan = null
+
+      if (newVal) {
+        // We are now logged in.
+        console.log('Start NCHAN from watch')
+        this.startNCHAN(newVal.id)
+      }
+    }
+  },
+
+  mounted() {
+    if (document) {
+      // We added a basic loader into the HTML.  This helps if we are loaded on an old browser where our JS bombs
+      // out - at least we display something, with a link to support.  But now we're up and running, remove that.
+      //
+      // We have an animation on the loader so that it only becomes visible after ~10s.  That prevents page flicker
+      // if we manage to get up and running rapidly.
+      const l = document.getElementById('serverloader')
+      l.style.display = 'none'
+    }
+
+    const me = this.$store.getters['auth/user']
+
+    if (me && me.id) {
+      console.log('Start NCHAN from mount')
+      this.startNCHAN(me.id)
+
+      // Get notifications and poll regularly for new ones.  Would be nice if this was event driven instead but requires server work.
+      this.getNotificationCount()
+    }
+
+    // Look for a custom logo.
+    setTimeout(async () => {
+      const res = await this.$axios.get(process.env.API + '/logo')
+
+      if (res.status === 200) {
+        const ret = res.data
+
+        if (ret.ret === 0 && ret.logo) {
+          this.logo = ret.logo.path
+        }
+      }
+    }, 5000)
+
+    try {
+      // Set the build date.  This may get superceded by Sentry releases, but it does little harm to add it in.
+      this.$sentry.setExtra('builddate', process.env.BUILD_DATE)
+
+      if (me) {
+        // Set the context for sentry so that we know which users are having errors.
+        this.$sentry.setUser({ userid: me.id })
+
+        // eslint-disable-next-line no-undef
+        if (typeof __insp !== 'undefined') {
+          // eslint-disable-next-line no-undef
+          __insp.push([
+            'tagSession',
+            {
+              userid: me.id,
+              builddate: process.env.BUILD_DATE
+            }
+          ])
+        }
+      } else {
+        // eslint-disable-next-line no-undef,no-lonely-if
+        if (typeof __insp !== 'undefined') {
+          // eslint-disable-next-line no-undef
+          __insp.push([
+            'tagSession',
+            {
+              userid: 'Logged out',
+              builddate: process.env.BUILD_DATE
+            }
+          ])
+        }
+      }
+    } catch (e) {
+      console.log('Failed to set context', e)
+    }
+
+    this.monitorLocalStorage()
+  },
+
+  async beforeCreate() {
+    if (this.$route.query.u && this.$route.query.k) {
+      // Log in using the username and key.
+      await this.$store.dispatch('auth/login', {
+        u: this.$route.query.u,
+        k: this.$route.query.k,
+        force: true
+      })
+
+      setTimeout(() => {
+        // Route to where we've been asked to go, without the auth info.  Don't really know why this requires a delay
+        // and a reload - obviously that means I don't understand the codepath properly.  But it works.
+        this.$router.push(this.$route.path, () => {
+          if (process.client) {
+            window.location.reload()
+          }
+        })
+      }, 1000)
+    }
+  },
+
+  beforeDestroy() {
+    console.log('Destroy layout')
+    clearTimeout(this.notificationPoll)
+
+    if (this.nchan && this.nchan.running) {
+      console.log('Stop NCHAN')
+      try {
+        this.nchan.stop()
+      } catch (e) {}
+    }
+
+    this.nchan = null
+  },
+
+  methods: {
+    startNCHAN(id) {
+      this.nchan = new NchanSubscriber(
+        process.env.CHAT_HOST + '/subscribe?id=' + id,
+        {
+          subscriber: ['longpoll']
+        }
+      )
+
+      // We store the last message we got from NCHAN.  This avoids us getting duplicate messages (triggering server
+      // work) when we load up.
+      const lastNCHAN = this.$store.getters['auth/nchan']
+
+      if (lastNCHAN) {
+        this.nchan.lastMessageId = lastNCHAN.id
+      }
+
+      // Disabled for now until things settle down.
+      console.log('Not starting NCHAN')
+      // this.nchan.start()
+
+      this.nchan.on('error', function(code, descr) {
+        console.error('NCHAN error', code, descr)
+      })
+
+      this.nchan.on('message', async (ret, meta) => {
+        console.log('NCHAN', ret, meta)
+
+        if (meta.id) {
+          this.$store.dispatch('auth/setNCHAN', {
+            id: meta.id
+          })
+        }
+
+        if (ret) {
+          ret = JSON.parse(ret)
+
+          // We will get notified for both MT and FD chats.  But we only want to react to
+          // the one which this client actually is.
+          const mt =
+            ret && Object.keys(ret).includes('modtools') ? ret.modtools : false
+
+          if (process.env.MODTOOLS === mt && ret && ret.text) {
+            const data = ret.text
+
+            if (data) {
+              if (data.newroom) {
+                // We have been notified that we are now in a new chat.  Load it into the store; once we've
+                // done that then anything else needed will follow.
+                console.log('Load new room', data.newroom)
+                await this.$store.dispatch('chats/fetch', {
+                  id: data.newroom
+                })
+              } else if (data.roomid) {
+                // Activity on this room.  Fetch it.
+                console.log('Activity on room', data.roomid)
+                await this.$store.dispatch('chats/fetch', {
+                  id: data.roomid
+                })
+              }
+            }
+          }
+        }
+      })
+    },
+    async getNotificationCount() {
+      const me = this.$store.getters['auth/user']
+
+      if (me && me.id) {
+        let currentCount = this.$store.getters['notifications/count']
+        const notifications = this.$store.getters['notifications/list']
+        await this.$store.dispatch('notifications/count')
+        let newCount = this.$store.getters['notifications/count']
+
+        if (newCount !== currentCount || !notifications.length) {
+          // Changed or don't know it yet.  Get the list so that it will display zippily when they click.
+          await this.$store.dispatch('notifications/clear')
+          await this.$store.dispatch('notifications/list')
+        }
+
+        currentCount = this.$store.getters['chats/unseenCount']
+        newCount = await this.$store.dispatch('chats/unseenCount')
+
+        if (newCount !== currentCount) {
+          await this.$store.dispatch('chats/listChats', {
+            chattypes: ['User2User', 'User2Mod'],
+            summary: true,
+            noerror: true
+          })
+        }
+      }
+
+      this.notificationPoll = setTimeout(this.getNotificationCount, 30000)
+    },
+
+    showAboutMe() {
+      this.$refs.modal.show()
+    },
+
+    async logOut() {
+      // Remove all cookies, both client and server.  This seems to be necessary to kill off the PHPSESSID cookie
+      // on the server, which would otherwise keep us logged in despite our efforts.
+      try {
+        this.$cookies.removeAll()
+      } catch (e) {}
+
+      await this.$store.dispatch('auth/logout')
+      this.$store.dispatch('auth/forceLogin', false)
+
+      // Go to the landing page.
+      this.$router.push('/')
+    },
+
+    loadMore: function($state) {
+      const currentCount = this.notifications.length
+
+      if (this.complete) {
+        $state.complete()
+      } else {
+        this.busy = true
+        this.$store
+          .dispatch('notifications/list')
+          .then(() => {
+            try {
+              const notifications = this.$store.getters['notifications/list']
+
+              if (currentCount === notifications.length) {
+                this.complete = true
+                $state.complete()
+              } else {
+                $state.loaded()
+              }
+              this.busy = false
+            } catch (e) {
+              console.error(e)
+              console.log('Error')
+            }
+          })
+          .catch(e => {
+            console.error(e)
+            this.busy = false
+            $state.complete()
+          })
+      }
+    },
+
+    showNotifications() {
+      // We want to make sure we have the most up to date notifications.
+      this.$store.dispatch('notifications/clearContext')
+      this.$store.dispatch('notifications/list')
+    },
+
+    requestLogin() {
+      this.$refs.loginModal.show()
+    },
+
+    maybeReload(route) {
+      if (this.$router.currentRoute.path === route) {
+        // We have clicked to route to the page we're already on.  Force a full refresh.
+        window.location.reload(true)
+      }
+    },
+
+    async markAllRead() {
+      await this.$store.dispatch('notifications/allSeen')
+      await this.$store.dispatch('notifications/count')
+      await this.$store.dispatch('notifications/list')
+    },
+
+    monitorLocalStorage() {
+      // We have trouble on some devices setting info to localStorage, due to quota or security reasons.  This can
+      // break us.  Try to set something to local storage so that we can check if it makes it there;
+      // if not, then do a toast.
+      console.log('Monitor local storage')
+      const now = Date.now()
+      this.$store.dispatch('misc/set', {
+        key: 'localStorageMonitor',
+        value: now
+      })
+
+      setTimeout(() => {
+        // Go directly to local storage to see if it's made it.
+        console.log('Now check if it made it')
+        let ok = false
+
+        try {
+          console.log('Get data')
+          const stored = localStorage.getItem('iznik')
+          console.log('Parse stored')
+          const decoded = JSON.parse(stored)
+          console.log('Decoded')
+
+          if (decoded && decoded.misc && decoded.misc.localStorageMonitor) {
+            console.log('Got back', decoded.misc.localStorageMonitor)
+            const age =
+              now - new Date(decoded.misc.localStorageMonitor).getTime()
+            console.log('Age', age)
+
+            if (age < 60000) {
+              console.log('Ok')
+              ok = true
+            }
+          } else {
+            console.log("Doesn't have what we expect", decoded)
+          }
+        } catch (e) {
+          console.log('Failed to parse local storage')
+        }
+
+        if (!ok) {
+          console.error('Errors with local storage')
+          this.localStorageErrors = true
+
+          setTimeout(() => {
+            this.localStorageErrors = false
+          }, 30000)
+        }
+      }, 30000)
+    }
+  }
+}
+</script>
+
 <style scoped lang="scss">
 @import 'color-vars';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
 
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
@@ -331,8 +768,6 @@ nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
   }
 }
 
-$bootstrap-sm: 768px;
-
 #nav_collapse_mobile {
   margin-top: 5px;
 
@@ -348,7 +783,7 @@ $bootstrap-sm: 768px;
     flex-basis: 25%;
     margin: 20px 0;
 
-    @media (min-width: $bootstrap-sm) {
+    @include media-breakpoint-up(md) {
       flex-basis: unset;
     }
   }
@@ -480,394 +915,18 @@ svg.fa-icon {
   position: fixed;
   bottom: 0%;
 }
-</style>
-<script>
-// Import login modal as I've seen an issue where it's not in $refs when you click on the signin button too rapidly.
-import LoginModal from '~/components/LoginModal'
-const AboutMeModal = () => import('~/components/AboutMeModal')
-const ChatPopups = () => import('~/components/ChatPopups')
-const Notification = () => import('~/components/Notification')
-const NchanSubscriber = require('nchan')
-const InfiniteLoading = () => import('vue-infinite-loading')
 
-export default {
-  components: {
-    InfiniteLoading,
-    ChatPopups,
-    Notification,
-    AboutMeModal,
-    LoginModal
-  },
-
-  data: function() {
-    return {
-      complete: false,
-      distance: 1000,
-      notificationPoll: null,
-      nchan: null,
-      logo: require(`@/static/icon.png`),
-      localStorageErrors: false
-    }
-  },
-
-  head() {
-    const totalCount = this.notificationCount + this.chatCount
-    return {
-      titleTemplate: totalCount > 0 ? `(${totalCount}) %s` : '%s'
-    }
-  },
-
-  computed: {
-    loggedIn() {
-      const ret = Boolean(this.$store.getters['auth/user'])
-      return ret
-    },
-    me() {
-      return this.$store.getters['auth/user']
-    },
-    notifications() {
-      const notifications = this.$store.getters['notifications/list']
-
-      notifications.sort(function(a, b) {
-        return new Date(b.timestamp) - new Date(a.timestamp)
-      })
-
-      return notifications
-    },
-    notificationCount() {
-      return this.$store.getters['notifications/count']
-    },
-    chatCount() {
-      return Object.values(this.$store.getters['chats/list']).reduce(
-        (total, chat) => total + chat.unseen,
-        0
-      )
-    },
-    spreadCount() {
-      return this.me && this.me.invitesleft ? this.me.invitesleft : 0
-    }
-  },
-
-  watch: {
-    $route() {
-      // Close the dropdown menu when we move around.
-      if (
-        this.$refs.nav_collapse &&
-        this.$refs.nav_collapse.$el.classList.contains('show')
-      ) {
-        this.$root.$emit('bv::toggle::collapse', 'nav_collapse')
-      }
-
-      if (
-        this.$refs.nav_collapse_mobile &&
-        this.$refs.nav_collapse_mobile.$el.classList.contains('show')
-      ) {
-        this.$root.$emit('bv::toggle::collapse', 'nav_collapse_mobile')
-      }
-    },
-    me(newVal, oldVal) {
-      if (this.nchan && this.nchan.running) {
-        // Stop old listen.
-        try {
-          this.nchan.stop()
-        } catch (e) {}
-      }
-
-      this.nchan = null
-
-      if (newVal) {
-        // We are now logged in.
-        console.log('Start NCHAN from watch')
-        this.startNCHAN(newVal.id)
-      }
-    }
-  },
-
-  async mounted() {
-    if (document) {
-      // We added a basic loader into the HTML.  This helps if we are loaded on an old browser where our JS bombs
-      // out - at least we display something, with a link to support.  But now we're up and running, remove that.
-      //
-      // We have an animation on the loader so that it only becomes visible after ~10s.  That prevents page flicker
-      // if we manage to get up and running rapidly.
-      const l = document.getElementById('serverloader')
-      l.style.display = 'none'
-    }
-
-    // Clear old notifications because they're probably out of date now.
-    await this.$store.dispatch('notifications/clear')
-
-    const me = this.$store.getters['auth/user']
-
-    if (me && me.id) {
-      console.log('Start NCHAN from mount')
-      this.startNCHAN(me.id)
-
-      // Get notifications and poll regularly for new ones.  Would be nice if this was event driven instead but requires server work.
-      this.getNotificationCount()
-    }
-
-    // Look for a custom logo.
-    setTimeout(async () => {
-      const res = await this.$axios.get(process.env.API + '/logo')
-
-      if (res.status === 200) {
-        const ret = res.data
-
-        if (ret.ret === 0 && ret.logo) {
-          this.logo = ret.logo.path
-        }
-      }
-    }, 5000)
-
-    if (me) {
-      // Set the context for sentry so that we know which users are having errors.
-      this.$sentry.setUser({ userid: me.id })
-
-      // Set the build date.  This may get superceded by Sentry releases, but it does little harm to add it in.
-      this.$sentry.setExtra('builddate', process.env.BUILD_DATE)
-    }
-
-    this.monitorLocalStorage()
-  },
-
-  async beforeCreate() {
-    if (this.$route.query.u && this.$route.query.k) {
-      // Log in using the username and key.
-      await this.$store.dispatch('auth/login', {
-        u: this.$route.query.u,
-        k: this.$route.query.k,
-        force: true
-      })
-
-      setTimeout(() => {
-        // Route to where we've been asked to go, without the auth info.  Don't really know why this requires a delay
-        // and a reload - obviously that means I don't understand the codepath properly.  But it works.
-        this.$router.push(this.$route.path, () => {
-          if (process.client) {
-            window.location.reload()
-          }
-        })
-      }, 1000)
-    }
-  },
-
-  beforeDestroy() {
-    console.log('Destroy layout')
-    clearTimeout(this.notificationPoll)
-
-    if (this.nchan && this.nchan.running) {
-      console.log('Stop NCHAN')
-      try {
-        this.nchan.stop()
-      } catch (e) {}
-    }
-
-    this.nchan = null
-  },
-
-  methods: {
-    startNCHAN(id) {
-      this.nchan = new NchanSubscriber(
-        process.env.CHAT_HOST + '/subscribe?id=' + id,
-        {
-          subscriber: ['longpoll']
-        }
-      )
-
-      // We store the last message we got from NCHAN.  This avoids us getting duplicate messages (triggering server
-      // work) when we load up.
-      const lastNCHAN = this.$store.getters['auth/nchan']
-
-      if (lastNCHAN) {
-        this.nchan.lastMessageId = lastNCHAN.id
-      }
-
-      // Disabled for now until things settle down.
-      console.log('Not starting NCHAN')
-      // this.nchan.start()
-
-      this.nchan.on('error', function(code, descr) {
-        console.error('NCHAN error', code, descr)
-      })
-
-      this.nchan.on('message', async (ret, meta) => {
-        console.log('NCHAN', ret, meta)
-
-        if (meta.id) {
-          this.$store.dispatch('auth/setNCHAN', {
-            id: meta.id
-          })
-        }
-
-        if (ret) {
-          ret = JSON.parse(ret)
-
-          // We will get notified for both MT and FD chats.  But we only want to react to
-          // the one which this client actually is.
-          const mt =
-            ret && Object.keys(ret).includes('modtools') ? ret.modtools : false
-
-          if (process.env.MODTOOLS === mt && ret && ret.text) {
-            const data = ret.text
-
-            if (data) {
-              if (data.newroom) {
-                // We have been notified that we are now in a new chat.  Load it into the store; once we've
-                // done that then anything else needed will follow.
-                console.log('Load new room', data.newroom)
-                await this.$store.dispatch('chats/fetch', {
-                  id: data.newroom
-                })
-              } else if (data.roomid) {
-                // Activity on this room.  Fetch it.
-                console.log('Activity on room', data.roomid)
-                await this.$store.dispatch('chats/fetch', {
-                  id: data.roomid
-                })
-              }
-            }
-          }
-        }
-      })
-    },
-    async getNotificationCount() {
-      const me = this.$store.getters['auth/user']
-
-      if (me && me.id) {
-        await this.$store.dispatch('notifications/count')
-        await this.$store.dispatch('chats/listChats', {
-          chattypes: ['User2User', 'User2Mod'],
-          summary: true
-        })
-      }
-
-      this.notificationPoll = setTimeout(this.getNotificationCount, 30000)
-    },
-
-    showAboutMe() {
-      this.$refs.modal.show()
-    },
-
-    logOut() {
-      // Remove all cookies, both client and server.  This seems to be necessary to kill off the PHPSESSID cookie
-      // on the server, which would otherwise keep us logged in despite our efforts.
-      try {
-        this.$cookies.removeAll()
-      } catch (e) {}
-
-      // Go to the landing page.
-      this.$router.push('/')
-
-      this.$store.dispatch('auth/logout')
-    },
-
-    loadMore: function($state) {
-      const currentCount = this.notifications.length
-
-      if (this.complete) {
-        $state.complete()
-      } else {
-        this.busy = true
-        this.$store
-          .dispatch('notifications/list')
-          .then(() => {
-            try {
-              const notifications = this.$store.getters['notifications/list']
-
-              if (currentCount === notifications.length) {
-                this.complete = true
-                $state.complete()
-              } else {
-                $state.loaded()
-              }
-              this.busy = false
-            } catch (e) {
-              console.error(e)
-              console.log('Error')
-            }
-          })
-          .catch(e => {
-            console.error(e)
-            this.busy = false
-            $state.complete()
-          })
-      }
-    },
-
-    showNotifications() {
-      // We want to make sure we have the most up to date notifications.
-      this.$store.dispatch('notifications/clearContext')
-      this.$store.dispatch('notifications/list')
-    },
-
-    requestLogin() {
-      this.$refs.loginModal.show()
-    },
-
-    maybeReload(route) {
-      if (this.$router.currentRoute.path === route) {
-        // We have clicked to route to the page we're already on.  Force a full refresh.
-        window.location.reload(true)
-      }
-    },
-
-    async markAllRead() {
-      await this.$store.dispatch('notifications/allSeen')
-      await this.$store.dispatch('notifications/count')
-      await this.$store.dispatch('notifications/list')
-    },
-
-    monitorLocalStorage() {
-      // We have trouble on some devices setting info to localStorage, due to quota or security reasons.  This can
-      // break us.  Try to set something to local storage so that we can check if it makes it there;
-      // if not, then do a toast.
-      console.log('Monitor local storage')
-      const now = Date.now()
-      this.$store.dispatch('misc/set', {
-        key: 'localStorageMonitor',
-        value: now
-      })
-
-      setTimeout(() => {
-        // Go directly to local storage to see if it's made it.
-        console.log('Now check if it made it')
-        let ok = false
-
-        try {
-          console.log('Get data')
-          const stored = localStorage.getItem('iznik')
-          console.log('Parse stored')
-          const decoded = JSON.parse(stored)
-          console.log('Decoded')
-
-          if (decoded && decoded.misc && decoded.misc.localStorageMonitor) {
-            console.log('Got back', decoded.misc.localStorageMonitor)
-            const age =
-              now - new Date(decoded.misc.localStorageMonitor).getTime()
-            console.log('Age', age)
-
-            if (age < 60000) {
-              console.log('Ok')
-              ok = true
-            }
-          } else {
-            console.log("Doesn't have what we expect", decoded)
-          }
-        } catch (e) {
-          console.log('Failed to parse local storage')
-        }
-
-        if (!ok) {
-          console.error('Errors with local storage')
-          this.localStorageErrors = true
-
-          setTimeout(() => {
-            this.localStorageErrors = false
-          }, 30000)
-        }
-      }, 30000)
-    }
-  }
+.toggler {
+  background: transparent;
+  border-color: $color-white;
 }
-</script>
+
+.toggler:hover {
+  background: $color-white !important;
+  color: $colour-success !important;
+}
+
+.toggler svg {
+  vertical-align: -20px;
+}
+</style>

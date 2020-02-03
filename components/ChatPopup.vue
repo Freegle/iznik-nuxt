@@ -11,7 +11,8 @@
           :active="true"
           :prevent-deactivation="true"
           :min-width="320"
-          :min-height="400"
+          :min-height="minheight"
+          :max-height="maxheight"
           :style="'right: ' + width"
           @resizing="onResize"
         >
@@ -76,6 +77,7 @@
                   </p>
                   <b-form-textarea
                     v-if="!spammer"
+                    ref="chatarea"
                     v-model="sendmessage"
                     placeholder="Type here..."
                     rows="2"
@@ -254,6 +256,21 @@ export default {
       }
     },
 
+    minheight() {
+      return Math.min(this.maxheight, 400)
+    },
+
+    maxheight() {
+      // We should not exceed the height of the navbar
+      let ret = null
+
+      if (process.client) {
+        ret = window.innerHeight - 68 - 50
+      }
+
+      return ret
+    },
+
     chat() {
       return this.$store.getters['chats/get'](this.id)
     },
@@ -366,6 +383,26 @@ export default {
       }
       this.hide()
     }
+
+    if (process.client) {
+      // Slightly clunky way to spot if a chat popup is too large for the screen.
+      setTimeout(() => {
+        const els = document.getElementsByClassName('resizable')
+        console.log('Found', els)
+        for (let i = 0; i < els.length; i++) {
+          const el = els[i]
+          console.log(el.style, this.maxheight)
+          const height = el.style.height
+
+          if (height) {
+            if (parseInt(el.style.height.replace('px', '')) > this.maxheight) {
+              console.log('Shrink')
+              el.style.height = this.maxheight + 'px'
+            }
+          }
+        }
+      }, 5000)
+    }
   },
   methods: {
     showInfo() {
@@ -420,7 +457,15 @@ export default {
       }
     },
     newline: function() {
-      this.sendmessage += '\n'
+      const p = this.$refs.chatarea.selectionStart
+      if (p) {
+        this.sendmessage =
+          this.sendmessage.substring(0, p) +
+          '\n' +
+          this.sendmessage.substring(p)
+      } else {
+        this.sendmessage += '\n'
+      }
     },
     _updateAfterSend() {
       this.sending = false

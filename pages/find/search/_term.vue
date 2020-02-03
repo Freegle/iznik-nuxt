@@ -35,7 +35,7 @@
                 :min="2"
                 :debounce="100"
                 :process="process"
-                size="60"
+                :size="60"
                 maxlength="60"
                 spellcheck="true"
                 placeholder="e.g. sofa, bike, desk..."
@@ -48,7 +48,8 @@
         </b-row>
         <b-row>
           <b-col class="text-center mt-2 mb-2">
-            <em>Or</em>
+            <em v-if="filteredMessages.length">Or</em>
+            <em v-else-if="!busy">No posts found.</em>
           </b-col>
         </b-row>
         <b-row>
@@ -128,9 +129,9 @@ export default {
       ],
       searchtype: 'Offer',
       source: process.env.API + '/item',
-      context: null,
       complete: false,
-      distance: 1000
+      distance: 1000,
+      busy: false
     }
   },
   computed: {
@@ -171,9 +172,6 @@ export default {
 
     // Ensure we have no cached messages for other searches/groups
     this.$store.dispatch('messages/clear')
-
-    // Focus on field to grab their attention.
-    this.$refs.autocomplete.$refs.input.focus()
 
     // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
     // need to render this on the server.
@@ -243,7 +241,6 @@ export default {
           collection: 'Approved',
           summary: true,
           messagetype: this.searchtype,
-          context: this.context,
           search: term,
           nearlocation: postcode ? postcode.id : null,
           subaction: 'searchmess'
@@ -252,8 +249,7 @@ export default {
         params = {
           collection: 'Approved',
           summary: true,
-          types: [this.searchtype],
-          context: this.context
+          types: [this.searchtype]
         }
       }
 
@@ -263,19 +259,18 @@ export default {
       this.$store
         .dispatch('messages/fetchMessages', params)
         .then(() => {
-          this.busy = false
-
-          this.context = this.$store.getters['messages/getContext']
-
           if (currentCount === this.messages.length) {
             this.complete = true
             $state.complete()
           } else {
             $state.loaded()
           }
+
+          this.busy = false
         })
         .catch(() => {
           $state.complete()
+          this.busy = false
         })
     },
     changetype: function() {

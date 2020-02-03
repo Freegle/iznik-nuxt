@@ -20,14 +20,17 @@ export const mutations = {
         ? Object.values(payload.messages)
         : payload.messages
 
-    if (!state.messages[chatid]) {
-      // Again, don't use an array as this will be sparse.
-      Vue.set(state.messages, chatid, {})
-    }
+    if (messages) {
+      // We've seen messages be undefined in some flaky network cases.
+      if (!state.messages[chatid]) {
+        // Again, don't use an array as this will be sparse.
+        Vue.set(state.messages, chatid, {})
+      }
 
-    for (const message of messages) {
-      message.message = message.message + ''
-      Vue.set(state.messages[chatid], message.id, message)
+      for (const message of messages) {
+        message.message = message.message + ''
+        Vue.set(state.messages[chatid], message.id, message)
+      }
     }
   },
 

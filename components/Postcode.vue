@@ -15,15 +15,15 @@
       :debounce="200"
       :process="process"
       :on-select="select"
+      :size="10"
       @invalid="invalid"
     />
 
-    <div v-if="showFind">
-      <b-button variant="primary" :size="size" title="Find my location" @click="findLoc">
+    <div v-if="find">
+      <b-button variant="primary" :size="size" title="Find my device's location instead of typing a postcode" @click="findLoc">
         <v-icon v-if="locating" name="sync" class="fa-spin" />
         <v-icon v-else-if="locationFailed" name="exclamation-triangle" />
         <v-icon v-else name="map-marker-alt" />
-        <span class="d-none d-sm-inline">&nbsp;Find my location</span>
       </b-button>
     </div>
 
@@ -54,7 +54,7 @@ export default {
     focus: {
       type: Boolean,
       required: false,
-      default: true
+      default: false
     },
     find: {
       type: Boolean,
@@ -74,8 +74,7 @@ export default {
       mylocation: null,
       locating: false,
       locationFailed: false,
-      showToolTip: false,
-      showFind: this.find
+      showToolTip: false
     }
   },
   async mounted() {
@@ -129,18 +128,12 @@ export default {
       // Parent might want to know that we don't have a valid postcode any more.
       this.$emit('cleared')
       this.results = null
-
-      // We want to show the button in case they decide to use that instead.
-      this.showFind = true
     },
     keydown(e) {
       if (e.which === 8) {
         // Backspace means we no longer have a full postcode.
         this.invalid()
       } else {
-        // We're now typing a postcode.  Hide the button so they don't decide to click that next
-        this.showFind = false
-
         // Hide the tooltip in case it's showing from a use of the find button.
         this.showToolTip = false
       }

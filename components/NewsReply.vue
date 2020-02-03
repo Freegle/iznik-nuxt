@@ -5,9 +5,13 @@
         <table v-if="users[userid].profile">
           <tbody>
             <tr>
-              <td style="vertical-align: top" class="clickme" title="Click to see their profile" @click="showInfo">
-                <profile-image :image="users[userid].profile.turl" class="ml-1 mr-2 mt-2 mb-1 inline float-left" :size="(reply.replyto !== threadhead.id) ? 'sm' : 'md'" />
-                <v-icon v-if="users[userid].settings.showmod && reply.replyto === threadhead.id" name="leaf" class="showmodsm text-success" />
+              <td class="clickme align-top" title="Click to see their profile" @click="showInfo">
+                <profile-image
+                  :image="users[userid].profile.turl"
+                  class="ml-1 mr-2 mt-2 mb-1 inline float-left"
+                  :is-moderator="users[userid].settings.showmod && reply.replyto === threadhead.id"
+                  :size="(reply.replyto !== threadhead.id) ? 'sm' : 'md'"
+                />
               </td>
               <td class="align-top">
                 <span class="text-success font-weight-bold clickme" title="Click to see their profile" @click="showInfo">{{ users[userid].displayname }}</span>
@@ -23,10 +27,9 @@
                   <b-img
                     v-b-modal="'photoModal-' + replyid"
                     rounded
-                    class="clickme"
+                    class="clickme replyphoto"
                     alt="ChitChat photo"
                     :src="reply.image.paththumb"
-                    style="width: 150px"
                     @error.native="brokenImage"
                   />
                 </div>
@@ -107,17 +110,25 @@
               class="p-0 pl-1 pt-1"
               @keydown.enter.exact.prevent
               @keyup.enter.exact="sendReply"
-              @keydown.enter.shift.exact="newlineReply"
-              @keydown.alt.shift.exact="newlineReply"
+              @keydown.enter.shift.exact.prevent="newlineReply"
+              @keydown.alt.shift.exact.prevent="newlineReply"
               @focus="focusedReply"
             />
           </at-ta>
-          <b-btn size="sm" variant="white" class="flex-grow-1 float-right ml-1">
+          <b-btn size="sm" variant="white" class="flex-grow-1 float-right ml-1" @click="photoAdd">
             <v-icon name="camera" />&nbsp;Photo
           </b-btn>
         </div>
       </b-col>
     </b-row>
+    <b-img v-if="imageid" lazy thumbnail :src="imagethumb" class="mt-1 ml-4 image__uploaded" />
+    <OurFilePond
+      v-if="uploading"
+      class="bg-white m-0 pondrow"
+      imgtype="Newsfeed"
+      imgflag="newsfeed"
+      @photoProcessed="photoProcessed"
+    />
     <b-modal
       v-if="reply.image"
       :id="'photoModal-' + replyid"
@@ -170,6 +181,7 @@
 
 <script>
 import NewsLovesModal from './NewsLovesModal'
+import OurFilePond from './OurFilePond'
 import twem from '~/assets/js/twem'
 
 import NewsUserInfo from '~/components/NewsUserInfo'
@@ -189,6 +201,7 @@ const INITIAL_NUMBER_OF_REPLIES_TO_SHOW = 5
 export default {
   name: 'NewsReply',
   components: {
+    OurFilePond,
     NewsLovesModal,
     NewsUserInfo,
     NewsHighlight,
@@ -224,7 +237,10 @@ export default {
       replyingTo: null,
       replybox: null,
       infoclick: false,
-      showAllReplies: false
+      showAllReplies: false,
+      uploading: false,
+      imageid: null,
+      imagethumb: null
     }
   },
   computed: {
@@ -399,7 +415,8 @@ export default {
         await this.$store.dispatch('newsfeed/send', {
           message: msg,
           replyto: this.replyingTo,
-          threadhead: this.reply.threadhead
+          threadhead: this.reply.threadhead,
+          imageid: this.imageid
         })
 
         // New message will be shown because it's in the store and we have a computed property.
@@ -407,24 +424,39 @@ export default {
         // Clear and hide the textarea now it's sent.
         this.replybox = null
         this.showReplyBox = false
+
+        // And any image id
+        this.imageid = null
       }
     },
     newlineReply() {
-      this.replybox += '\n'
+      const p = this.$refs.replybox.selectionStart
+      if (p) {
+        this.replybox =
+          this.replybox.substring(0, p) + '\n' + this.replybox.substring(p)
+      } else {
+        this.replybox += '\n'
+      }
     },
-    love() {
+    love(e) {
+      const el = e.target
+      el.classList.add('pulsate')
       this.$store.dispatch('newsfeed/love', {
         id: this.replyid,
         replyto: this.reply.replyto,
         threadhead: this.reply.threadhead
       })
+      el.classList.remove('pulsate')
     },
-    unlove() {
+    unlove(e) {
+      const el = e.target
+      el.classList.add('pulsate')
       this.$store.dispatch('newsfeed/unlove', {
         id: this.replyid,
         replyto: this.reply.replyto,
         threadhead: this.reply.threadhead
       })
+      el.classList.remove('pulsate')
     },
     save() {
       this.$store.dispatch('newsfeed/edit', {
@@ -449,6 +481,19 @@ export default {
     filterMatch(name, chunk) {
       // Only match at start of string.
       return name.toLowerCase().indexOf(chunk.toLowerCase()) === 0
+    },
+    photoAdd() {
+      // Flag that we're uploading.  This will trigger the render of the filepond instance and subsequently the
+      // init callback below.
+      this.uploading = true
+    },
+    photoProcessed(imageid, imagethumb) {
+      // We have uploaded a photo.  Remove the filepond instance.
+      this.uploading = false
+
+      // The imageid is in this.imageid
+      this.imageid = imageid
+      this.imagethumb = imagethumb
     }
   }
 }
@@ -465,21 +510,11 @@ export default {
   line-height: 1.2;
 }
 
-.showmodsm {
-  border-radius: 50%;
-  position: absolute;
-  background-color: $color-white;
-  width: 16px;
-  height: auto;
-  top: 19px;
-  left: 16px;
-  padding: 2px;
+.replyphoto {
+  width: 150px;
+}
 
-  @include media-breakpoint-up(md) {
-    width: 20px;
-    top: 28px;
-    left: 28px;
-    padding: 3px;
-  }
+.image__uploaded {
+  width: 100px;
 }
 </style>

@@ -1,4 +1,6 @@
 export const state = () => ({
+  lastLocation: null,
+  lastFetched: null,
   list: [],
   blocked: false
 })
@@ -21,6 +23,11 @@ export const mutations = {
 
   setBlocked(state, value) {
     state.blocked = value
+  },
+
+  setLastLocation(state, location) {
+    state.lastFetched = Date.now()
+    state.lastLocation = location
   }
 }
 
@@ -35,12 +42,23 @@ export const getters = {
 }
 
 export const actions = {
-  async fetch({ commit }, params) {
+  async fetch({ state, commit }, params) {
     try {
-      commit('setList', await this.$api.job.fetch(params))
-      commit('setBlocked', false)
+      const now = Date.now()
+
+      if (
+        state.lastFetched &&
+        params.location === state.lastLocation &&
+        now - state.lastFetched < 10 * 60 * 60
+      ) {
+        // We have fetched jobs in the last few minutes.  No need to fetch again.
+      } else {
+        commit('setList', await this.$api.job.fetch(params))
+        commit('setBlocked', false)
+        commit('setLastLocation', params.location)
+      }
     } catch (e) {
-      // Typically Ad Blockers.
+      // Typically Ad Blockers, though might be an error timeout.
       commit('setBlocked', true)
     }
   },

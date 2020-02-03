@@ -1,10 +1,5 @@
 @import 'color-vars';
 
-$bootstrap-xs: 576px;
-$bootstrap-sm: 768px;
-$bootstrap-md: 992px;
-$bootstrap-lg: 1200px;
-
 .bg-success {
   background-color: $colour-success-bg !important;
   color: $colour-success-fg !important;
@@ -28,15 +23,15 @@ $bootstrap-lg: 1200px;
 }
 
 .pageContent .btn:hover {
-  color: black !important;
-  background-color: #fff !important;
-  border-color: #204d74 !important;
+  color: $color-black !important;
+  background-color: $color-white !important;
+  border-color: $color-blue--2 !important;
 }
 
 .pageContent .btn-white:hover {
-  color:  white !important;
+  color: $color-white !important;
   background-color: $color-blue--light !important;
-  border-color: #204d74 !important;
+  border-color: $color-blue--2 !important;
 }
 
 .btn-primary {
@@ -116,26 +111,6 @@ div[variant="success"] .card-header {
 
 body {
   background-image: url('~static/wallpaper.png');
-}
-
-.showmod {
-  border-radius: 50%;
-  position: absolute;
-  background-color: $color-white;
-  width: 24px;
-  height: 24px;
-  padding-left: 3px;
-  padding-top: 4px;
-  padding-right: 2px;
-  border: 1px solid $color-green--darker;
-
-  top: 20px;
-  left: 33px;
-
-  @media (min-width: $bootstrap-sm) {
-    top: 29px;
-    left: 44px;
-  }
 }
 
 // We have to go to some effort to style the resize grip.  We can't have it in a scoped style otherwise it won't
@@ -222,13 +197,13 @@ nav .dropdown-toggle {
 }
 
 .forcebreak {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
   -ms-word-break: break-all;
-
-  /* Non standard for webkit */
   word-break: break-word;
-
-  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
   -moz-hyphens: auto;
+  -webkit-hyphens: auto;
   hyphens: auto;
 }
 
@@ -304,5 +279,23 @@ legend {
 
   .card-body .card {
     border-radius: unset;
+  }
+}
+
+.pulsate {
+  -webkit-animation: pulsate 1s ease-out;
+  -webkit-animation-iteration-count: infinite;
+  opacity: 0.5;
+}
+
+@-webkit-keyframes pulsate {
+  0% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1.0;
+  }
+  100% {
+    opacity: 0.25;
   }
 }

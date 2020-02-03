@@ -6,7 +6,7 @@
           <b-col v-if="chat">
             <b-row>
               <b-col cols="8" class="p-0 pl-1">
-                <span v-if="(chat.chattype == 'User2User' || chat.chattype == 'User2Mod')" class="d-inline">
+                <span v-if="(chat.chattype == 'User2User' || chat.chattype == 'User2Mod')" class="d-inline clickme">
                   <span @click="showInfo">
                     {{ chat.name }}
                   </span>
@@ -34,7 +34,7 @@
                     Report this person
                   </b-dropdown-item>
                 </b-dropdown>
-                <span class="float-right pl-1 mr-1 clickme" title="Popup chat window" @click="popup">
+                <span class="float-right pl-1 mr-1 clickme d-none d-sm-inline-block" title="Popup chat window" @click="popup">
                   <v-icon name="window-restore" />
                 </span>
                 <b-btn variant="white" size="sm" class="float-right mr-2 d-none d-sm-inline-block" @click="markRead">
@@ -64,7 +64,7 @@
               </div>
             </span>
           </infinite-loading>
-          <ul class="p-0 pt-1 list-unstyled mb-1">
+          <ul class="p-0 pt-1 list-unstyled mb-1 w-100">
             <li v-for="chatmessage in chatmessages" :key="'chatmessage-' + chatmessage.id">
               <ChatMessage
                 v-if="chatmessage"
@@ -105,21 +105,22 @@
               </notice-message>
               <b-form-textarea
                 v-if="!spammer"
+                ref="chatarea"
                 v-model="sendmessage"
                 placeholder="Type here..."
                 rows="3"
                 max-rows="8"
                 @keydown.enter.exact.prevent
                 @keyup.enter.exact="send"
-                @keydown.enter.shift.exact="newline"
-                @keydown.alt.shift.exact="newline"
+                @keydown.enter.shift.exact.prevent="newline"
+                @keydown.alt.shift.exact.prevent="newline"
                 @focus="markRead"
               />
             </b-col>
           </b-row>
           <b-row v-if="!spammer" class="bg-white">
             <b-col class="p-0 pt-1 pb-1">
-              <div class="d-none d-xl-block">
+              <div class="d-none d-lg-block">
                 <span v-if="chat && chat.chattype === 'User2User' && otheruser">
                   <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person" @click="promise">
                     <v-icon name="handshake" />&nbsp;Promise
@@ -146,32 +147,37 @@
                   <v-icon name="camera" />
                 </b-btn>
               </div>
-              <div class="d-block d-xl-none">
-                <span v-if="chat && chat.chattype === 'User2User' && otheruser">
-                  <span v-b-tooltip.hover.top title="Promise an item to this person" class="ml-1 mr-2" @click="promise">
-                    <v-icon scale="2" name="handshake" />
-                  </span>
-                  <span v-b-tooltip.hover.top title="Send your address" disabled class="mr-2">
-                    <v-icon scale="2" name="address-book" />
-                  </span>
-                  <span v-b-tooltip.hover.top title="Update your availability" class="mr-2" @click="availability">
-                    <v-icon scale="2" name="calendar-alt" />
-                  </span>
-                  <span v-b-tooltip.hover.top title="Info about this freegler" class="mr-2" @click="showInfo">
-                    <v-icon scale="2" name="info-circle" />
-                  </span>
-                  <span v-b-tooltip.hover.top title="Waiting for a reply?  Nudge this freegler." class="mr-2" @click="nudge">
-                    <v-icon scale="2" name="bell" />
-                  </span>
+              <div class="d-flex d-lg-none justify-content-between align-middle">
+                <span v-if="chat && chat.chattype === 'User2User' && otheruser" v-b-tooltip.hover.top title="Promise an item to this person" class="ml-1 mr-2" @click="promise">
+                  <v-icon scale="2" name="handshake" />
                 </span>
-                <b-btn variant="primary" class="float-right ml-1 mr-1" @click="send">
+                <span
+                  v-if="chat && chat.chattype === 'User2User' && otheruser"
+                  v-b-tooltip.hover.top
+                  title="Send your address"
+                  disabled
+                  class="mr-2"
+                  @click="addressBook"
+                >
+                  <v-icon scale="2" name="address-book" />
+                </span>
+                <span v-if="chat && chat.chattype === 'User2User' && otheruser" v-b-tooltip.hover.top title="Update your availability" class="mr-2" @click="availability">
+                  <v-icon scale="2" name="calendar-alt" />
+                </span>
+                <span v-if="chat && chat.chattype === 'User2User' && otheruser" v-b-tooltip.hover.top title="Info about this freegler" class="mr-2" @click="showInfo">
+                  <v-icon scale="2" name="info-circle" />
+                </span>
+                <span v-if="chat && chat.chattype === 'User2User' && otheruser" v-b-tooltip.hover.top title="Waiting for a reply?  Nudge this freegler." class="mr-2" @click="nudge">
+                  <v-icon scale="2" name="bell" />
+                </span>
+                <span class="" @click="photoAdd">
+                  <v-icon scale="2" name="camera" />
+                </span>
+                <b-btn variant="primary" @click="send">
                   Send
                   <v-icon v-if="sending" name="sync" class="fa-spin" title="Sending..." />
                   <v-icon v-else name="angle-double-right" title="Send" />
                 </b-btn>
-                <span class="float-right mr-2" @click="photoAdd">
-                  <v-icon scale="2" name="camera" />
-                </span>
               </div>
             </b-col>
           </b-row>
@@ -362,6 +368,12 @@ export default {
     }
   },
   watch: {
+    me(newVal, oldVal) {
+      if (!oldVal && newVal) {
+        console.log('we are now logged in')
+        this.fetchChat()
+      }
+    },
     async unseen(newVal, oldVal) {
       // The unseen count will get changed by reactivity from the store.  If that's the chat we have in our pane
       // then that will trigger this watch, which we can use to pick up the new message.
@@ -386,26 +398,8 @@ export default {
     }
   },
 
-  async beforeMount() {
-    // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
-    // need to render this pane on the server.
-    await this.$store.dispatch('chats/fetch', {
-      id: this.id
-    })
-
-    await this.$store.dispatch('chatmessages/clearContext', {
-      chatid: this.id
-    })
-
-    // Get the user info in case we need to warn about them.
-    await this.$store.dispatch('user/fetch', {
-      id: this.otheruser.id,
-      info: true
-    })
-
-    setTimeout(() => {
-      this.showReplyTime = false
-    }, 30000)
+  beforeMount() {
+    this.fetchChat()
   },
 
   methods: {
@@ -473,7 +467,15 @@ export default {
       }
     },
     newline: function() {
-      this.sendmessage += '\n'
+      const p = this.$refs.chatarea.selectionStart
+      if (p) {
+        this.sendmessage =
+          this.sendmessage.substring(0, p) +
+          '\n' +
+          this.sendmessage.substring(p)
+      } else {
+        this.sendmessage += '\n'
+      }
     },
     _updateAfterSend: function() {
       this.chatBusy = false
@@ -617,6 +619,36 @@ export default {
     },
     report() {
       this.$refs.chatreport.show()
+    },
+    async fetchChat() {
+      // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
+      // need to render this pane on the server.
+      await this.$store.dispatch('chats/fetch', {
+        id: this.id
+      })
+
+      const chat = this.$store.getters['chats/get'](this.id)
+
+      if (chat) {
+        await this.$store.dispatch('chatmessages/clearContext', {
+          chatid: this.id
+        })
+
+        if (this.otheruser) {
+          // Get the user info in case we need to warn about them.
+          await this.$store.dispatch('user/fetch', {
+            id: this.otheruser.id,
+            info: true
+          })
+
+          setTimeout(() => {
+            this.showReplyTime = false
+          }, 30000)
+        }
+      } else {
+        // Invalid chat id
+        this.$router.push('/chats')
+      }
     }
   }
 }

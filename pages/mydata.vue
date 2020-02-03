@@ -164,7 +164,7 @@
               </div>
               <h2>Your profile pictures</h2>
               <div v-for="image in status.data.images" :key="image.thumb">
-                <b-img-lazy thumbnail :src="image.thumb" class="profile" />
+                <profile-image :image="image.thumb" is-thumbnail size="lg" />
               </div>
               <h2>Logins</h2>
               <p>These are the ways in which you have registered to use the site.</p>
@@ -760,6 +760,7 @@
 import ShowMore from '../components/ShowMore'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
+import ProfileImage from '~/components/ProfileImage'
 
 const NoticeMessage = () => import('~/components/NoticeMessage')
 const ExportPost = () => import('~/components/ExportPost')
@@ -772,7 +773,8 @@ export default {
     NoticeMessage,
     ExportPost,
     ExportChat,
-    Ratings
+    Ratings,
+    ProfileImage
   },
   mixins: [loginRequired, buildHead],
   data: function() {
@@ -858,17 +860,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-$bootstrap-sm: 768px;
-
-.profile {
-  width: 35px !important;
-  height: 35px !important;
-
-  @media (min-width: $bootstrap-sm) {
-    width: 50px !important;
-    height: 50px !important;
-  }
-}
-</style>

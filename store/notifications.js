@@ -95,14 +95,20 @@ export const actions = {
     const me = rootGetters['auth/user']
 
     if (me) {
-      const res = await this.$axios.get(process.env.API + '/notification', {
-        params: {
-          count: true
-        }
-      })
+      try {
+        const res = await this.$axios.get(process.env.API + '/notification', {
+          params: {
+            count: true
+          }
+        })
 
-      if (res.status === 200) {
-        commit('setCount', res.data.count)
+        if (res.status === 200) {
+          commit('setCount', res.data.count)
+        }
+      } catch (e) {
+        // This happens a lot on mobile when the network is flaky.  It's not an end-user visible error, so there
+        // is no point letting it ripple up to Sentry.
+        console.log('Failed to query notifications')
       }
     }
   },

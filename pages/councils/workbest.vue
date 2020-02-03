@@ -47,8 +47,11 @@
               <b>A-Z</b> - If you have an A-Z of waste and recycling, please list Freegle as an option.  Brighton & Hove
               City Council are a great example of how this can be done - see <a href="https://www.brighton-hove.gov.uk/content/environment/recycling-rubbish-and-street-cleaning/recycling-a-z" target="_blank">here</a>.
             </li>
+            <li>
+              Oxfordshire County Council have created a <a href="https://www.oxfordshire.gov.uk/residents/environment-and-planning/waste-and-recycling/household-waste/repair-reuse-or-recycle" target="_blank">Waste Wizard</a> which directs residents to repair, reuse and recycling options, including pointing people towards Freegle.
+              This is a really easy way to let people know about Freegle and other similar organisations that help maximise reuse locally.
+            </li>
           </ul>
-          </p>
           <a id="residents" class="anchor" />
           <h3>
             Advice for discussing Freegle with residents
@@ -192,6 +195,19 @@
             authority area by checking our <nuxt to="/stats/authorities">
               live stats
             </nuxt> pages.
+          </p>
+          <a id="valentine" class="anchor" />
+          <h3>
+            Valentine's Day toolkit
+          </h3>
+          <p>
+            Valentine's Day is a great excuse to remind people about Freegle, after all it is online dating for
+            unwanted stuff!
+            We have a host of ready-made social media templates for Twitter, Facebook and Instagram which are free
+            for your to <nuxt-link to="/councils/socialmedia#valentine">
+              download and use
+            </nuxt-link>.
+            You can even add your own logo if you want to.
           </p>
           <h4>Track your comms</h4>
           <p>

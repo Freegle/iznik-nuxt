@@ -12,18 +12,15 @@
               <b-card-body class="pt-0 pb-1">
                 <PostMessage :id="id" type="Offer" />
               </b-card-body>
-              <b-card-footer v-if="index === ids.length - 1" class="d-flex justify-content-between">
-                <div class="d-flex">
-                  <Postcode
-                    :value="postcode ? postcode.name : null"
-                    :focus="false"
-                    :find="false"
-                    size="md"
-                    class="d-inline"
-                    @selected="postcodeSelect"
-                  />
-                  <ComposeGroup :width="200" />
-                </div>
+              <b-card-footer v-if="index === ids.length - 1" class="d-flex justify-content-between p-0 pt-1">
+                <Postcode
+                  :value="postcode ? postcode.name : null"
+                  :find="false"
+                  size="md"
+                  class="d-inline"
+                  @selected="postcodeSelect"
+                />
+                <ComposeGroup class="cg" />
               </b-card-footer>
             </b-card>
           </li>
@@ -32,7 +29,7 @@
           <b-btn v-if="ids.length > 1" variant="white" class="mr-1" @click="deleteItem">
             <v-icon name="trash-alt" />&nbsp;Delete last item
           </b-btn>
-          <b-btn v-if="ids.length < 6" variant="white" class="" @click="addItem">
+          <b-btn v-if="ids.length < 6" variant="primary" class="" @click="addItem">
             <v-icon name="plus" />&nbsp;Add another item
           </b-btn>
         </div>
@@ -123,7 +120,12 @@ export default {
             )
 
             // A message is valid if there is an item, and either a description or a photo.
-            if (!message.item || (!message.description && !atts.length)) {
+            if (
+              !message.item ||
+              !message.item.trim() ||
+              ((!message.description || !message.description.trim()) &&
+                !atts.length)
+            ) {
               valid = false
             }
           }
@@ -154,7 +156,12 @@ export default {
       })
     },
     next() {
-      this.$router.push('/give/whoami')
+      const currentpc = this.$store.getters['compose/getPostcode']
+
+      if (currentpc) {
+        // We shouldn't be able to progress if we didn't have a postcode.
+        this.$router.push('/give/whoami')
+      }
     },
     postcodeSelect(pc) {
       const currentpc = this.$store.getters['compose/getPostcode']
@@ -197,3 +204,9 @@ export default {
   }
 }
 </script>
+<style scoped>
+.cg {
+  flex-basis: 25%;
+  flex-grow: 1;
+}
+</style>

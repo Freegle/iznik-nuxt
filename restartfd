@@ -1,0 +1,6 @@
+#!/bin/bash
+cd /var/www/fdnuxt.live
+export PM2_HOME=/root/.pm2
+/usr/bin/pm2 restart all --update-env > /tmp/restartfd.out
+sleep 10
+/usr/bin/pm2 resurrect >> /tmp/restartfd.out

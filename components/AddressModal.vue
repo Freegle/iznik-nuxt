@@ -61,7 +61,7 @@
             <p>Choose a postcode:</p>
             <b-row>
               <b-col>
-                <Postcode @selected="postcodeSelect" @cleared="postcodeCleared" />
+                <Postcode focus @selected="postcodeSelect" @cleared="postcodeCleared" />
               </b-col>
             </b-row>
             <p class="mt-2">

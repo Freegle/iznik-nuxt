@@ -1,14 +1,16 @@
 <template>
-  <b-img-lazy
-    rounded="circle"
-    :thumbnail="isThumbnail"
-    class="p-0"
-    :class="'profile--' + size"
-    :alt="altText"
-    title="Profile"
-    :src="image"
-    @error.native="brokenProfileImage"
-  />
+  <span class="profile-image__container">
+    <b-img-lazy
+      rounded="circle"
+      :thumbnail="isThumbnail"
+      class="p-0"
+      :class="'profile--' + size"
+      :alt="altText"
+      :src="image"
+      @error.native="brokenProfileImage"
+    />
+    <v-icon v-if="isModerator" name="leaf" class="profile-image__moderator mb-0" :class="'profile-image__moderator--' + size" />
+  </span>
 </template>
 
 <script>
@@ -32,6 +34,10 @@ export default {
       type: Boolean,
       required: false
     },
+    isModerator: {
+      type: Boolean,
+      required: false
+    },
     size: {
       type: String,
       required: false,
@@ -47,13 +53,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import 'color-vars';
 @import 'bootstrap/scss/_functions';
 @import 'bootstrap/scss/_variables';
 @import 'bootstrap/scss/mixins/_breakpoints';
 
 .profile--sm {
-  width: 15px;
-  height: 15px;
+  width: 20px;
+  height: 20px;
 
   @include media-breakpoint-up(md) {
     width: 25px;
@@ -88,6 +95,69 @@ export default {
   @include media-breakpoint-up(md) {
     width: 100px;
     height: 100px;
+  }
+}
+
+.profile-image__container {
+  position: relative;
+  padding-right: 5px;
+  padding-bottom: 3px;
+}
+
+.profile-image__moderator {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: $color-white;
+  border-radius: 50%;
+  color: $colour-success;
+}
+
+.profile-image__moderator--sm {
+  padding: 2px;
+  width: 12px;
+  height: 12px;
+
+  @include media-breakpoint-up(md) {
+    padding: 3px;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.profile-image__moderator--md {
+  padding: 2px;
+  width: 16px;
+  height: 16px;
+
+  @include media-breakpoint-up(md) {
+    padding: 3px;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.profile-image__moderator--lg {
+  padding: 2px;
+  width: 18px;
+  height: 18px;
+
+  @include media-breakpoint-up(md) {
+    padding: 3px;
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.profile-image__moderator--xl {
+  padding: 2px;
+  width: 24px;
+  height: 24px;
+
+  @include media-breakpoint-up(md) {
+    padding: 3px;
+    width: 36px;
+    height: 36px;
   }
 }
 </style>

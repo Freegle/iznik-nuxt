@@ -2,32 +2,32 @@
   <div>
     <b-row class="pb-1">
       <b-col>
-        <div v-if="chatmessage.userid != $store.state.auth.user.id" class="media float-left">
-          <div class="media-left">
-            <div class="media-object">
+        <div v-if="messageIsFromCurrentUser" class="myChatMessage chatMessageWrapper">
+          <div :class="emessage ? 'chatMessage mine' : ''">
+            <span>
+              <span v-if="messageIsNew" class="prewrap"><b>{{ emessage }}</b></span>
+              <span v-else class="prewrap forcebreak">{{ emessage }}</span>
+              <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
+            </span>
+          </div>
+          <div class="chatMessageProfilePic">
+            <div>
+              <profile-image :image="me.profile.turl" class="ml-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
+            </div>
+          </div>
+        </div>
+        <div v-else class="chatMessageWrapper">
+          <div class="chatMessageProfilePic">
+            <div>
               <profile-image v-if="othericon" :image="othericon" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
             </div>
           </div>
-          <div :class="emessage ? 'media-body chatMessage theirs' : 'media-body'">
+          <div :class="emessage ? 'chatMessage theirs' : ''">
             <span>
-              <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap"><b>{{ emessage }}</b></span>
+              <span v-if="messageIsNew" class="prewrap"><b>{{ emessage }}</b></span>
               <span v-else class="prewrap forcebreak">{{ emessage }}</span>
               <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
             </span>
-          </div>
-        </div>
-        <div v-else class="media float-right">
-          <div :class="emessage ? 'media-body chatMessage mine' : 'media-body'">
-            <span>
-              <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap"><b>{{ emessage }}</b></span>
-              <span v-else class="prewrap forcebreak">{{ emessage }}</span>
-              <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
-            </span>
-          </div>
-          <div class="media-right">
-            <div class="media-object">
-              <profile-image :image="me.profile.turl" class="ml-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
-            </div>
           </div>
         </div>
       </b-col>
@@ -35,8 +35,34 @@
   </div>
 </template>
 
+<script>
+import ChatBase from '~/components/ChatBase'
+import ProfileImage from '~/components/ProfileImage'
+
+export default {
+  components: {
+    ProfileImage
+  },
+  extends: ChatBase,
+  computed: {
+    messageIsFromCurrentUser() {
+      return this.chatmessage.userid === this.$store.state.auth.user.id
+    },
+    messageIsNew() {
+      return (
+        this.chatmessage.secondsago < 60 ||
+        this.chatmessage.id > this.chat.lastmsgseen
+      )
+    }
+  }
+}
+</script>
+
 <style scoped lang="scss">
 @import 'color-vars';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
 
 .chatMessage {
   border: 1px solid $color-gray--light;
@@ -49,6 +75,37 @@
   line-height: 1.75;
 }
 
+.myChatMessage {
+  .chatMessage {
+    margin-left: auto;
+  }
+
+  .chatMessageProfilePic {
+    left: 0;
+  }
+}
+
+.chatMessageProfilePic {
+  min-width: 25px;
+  position: relative;
+  top: 3px;
+  left: 3px;
+
+  @include media-breakpoint-up(md) {
+    min-width: 35px;
+  }
+}
+
+.chatMessageWrapper {
+  display: flex;
+  padding-right: 10px;
+
+  &.myChatMessage {
+    padding-left: 10px;
+    padding-right: 0;
+  }
+}
+
 .theirs {
   background-color: $color-white;
 }
@@ -57,15 +114,3 @@
   background-color: $color-green--light;
 }
 </style>
-
-<script>
-import ChatBase from '~/components/ChatBase'
-import ProfileImage from '~/components/ProfileImage'
-
-export default {
-  components: {
-    ProfileImage
-  },
-  extends: ChatBase
-}
-</script>

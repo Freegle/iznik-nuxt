@@ -41,8 +41,7 @@
               <v-icon name="handshake" />
               <v-icon
                 name="slash"
-                style="transform: rotate(180deg)"
-                class="red"
+                class="unpromise__slash"
               />
             </v-icon>
             Unpromise
@@ -50,7 +49,16 @@
           <b-btn v-else-if="message.type === 'Offer' && !taken && !withdrawn" variant="success" class="align-middle mt-1 mb-1" @click="promise">
             <v-icon name="handshake" /> Promise
           </b-btn>
-          <b-btn variant="primary" class="align-middle mt-1 mb-1 mr-1" @click="chat">
+          <b-btn variant="primary" class="d-none d-sm-inline-block align-middle mt-1 mb-1 mr-1" @click="chat(true)">
+            <b-badge v-if="unseen > 0" variant="danger">
+              {{ unseen }}
+            </b-badge>
+            <span v-else>
+              <v-icon name="comments" />
+            </span>
+            Chat
+          </b-btn>
+          <b-btn variant="primary" class="d-inline-block d-sm-none align-middle mt-1 mb-1 mr-1" @click="chat(false)">
             <b-badge v-if="unseen > 0" variant="danger">
               {{ unseen }}
             </b-badge>
@@ -135,9 +143,14 @@ export default {
     }
   },
   methods: {
-    chat() {
-      console.log('Open chat', this.reply.chatid)
-      this.$store.dispatch('popupchats/popup', { id: this.reply.chatid })
+    chat(popup) {
+      console.log('Open chat', this.reply.chatid, popup)
+
+      if (popup) {
+        this.$store.dispatch('popupchats/popup', { id: this.reply.chatid })
+      } else {
+        this.$router.push('/chats/' + this.reply.chatid)
+      }
     },
     promise() {
       this.$refs.promise.show()
@@ -163,7 +176,8 @@ export default {
   line-height: 1.75;
 }
 
-.red {
+.unpromise__slash {
+  transform: rotate(180deg);
   color: $color-red;
 }
 </style>

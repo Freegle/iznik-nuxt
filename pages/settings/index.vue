@@ -2,8 +2,8 @@
   <div v-if="me && me.settings && me.settings.notifications">
     <client-only>
       <b-row class="m-0">
-        <b-col cols="0" lg="3" />
-        <b-col cols="12" lg="6" class="p-0">
+        <b-col cols="0" xl="3" />
+        <b-col cols="12" xl="6" class="p-0">
           <b-card border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
             <template v-slot:header>
               <v-icon name="globe-europe" /> Your Public Profile
@@ -65,7 +65,7 @@
                   </b-card>
                 </b-col>
                 <b-col cols="12" xl="6">
-                  <b-card nobody>
+                  <b-card no-body>
                     <b-card-body class="text-left p-0 p-sm-2">
                       <div v-if="aboutme">
                         &quot;{{ aboutme }}&quot;
@@ -145,7 +145,7 @@
                     label="Your email address:"
                   >
                     <b-input-group id="input-email">
-                      <b-input v-model="me.email" placeholder="Your email" label="Your email address" />
+                      <b-input v-model="me.email" placeholder="Your email" label="Your email address" type="email" />
                       <b-input-group-append>
                         <b-button variant="white" @click="saveEmail">
                           <v-icon v-if="savingEmail" name="sync" class="text-success fa-spin" />
@@ -164,7 +164,17 @@
                     label="Your password:"
                   >
                     <b-input-group id="input-password">
-                      <b-input v-model="me.password" type="password" placeholder="Your password" label="Your password" />
+                      <b-input v-model="me.password" :type="showPassword ? 'text' : 'password'" placeholder="Your password" label="Your password" />
+                      <b-input-group-append>
+                        <!-- TODO RAHUL DESIGN MINOR The shadow on the input field that you get when you're focused ought really to include this append.-->
+                        <b-button variant="white" class="transbord" title="Show password" @click="togglePassword">
+                          <v-icon v-if="showPassword" title="Hide password" class="text-secondary" flip="horizontal">
+                            <v-icon name="eye" />
+                            <v-icon name="slash" />
+                          </v-icon>
+                          <v-icon v-else name="eye" class="text-secondary" />
+                        </b-button>
+                      </b-input-group-append>
                       <b-input-group-append>
                         <b-button variant="white" @click="savePassword">
                           <v-icon v-if="savingPassword" name="sync" class="text-success fa-spin" />
@@ -184,7 +194,7 @@
                     class="d-inline"
                   >
                     <b-input-group id="input-postcode">
-                      <postcode :focus="false" @selected="selectPostcode" />
+                      <postcode @selected="selectPostcode" />
                     </b-input-group>
                   </b-form-group>
 
@@ -345,9 +355,7 @@
                     <p>
                       It costs Freegle to send these - if you can, please:
                     </p>
-                    <b-btn variant="primary" to="https://freegle.in/paypalfundraiser" target="_blank">
-                      Donate to help
-                    </b-btn>
+                    <donation-button />
                   </b-alert>
                 </b-col>
               </b-row>
@@ -379,8 +387,21 @@
                 @change="changeNotification($event, 'emailmine')"
               />
               <p>
-                We can email you if there's an unread notification on here, about OFFERs/WANTEDs you might be
-                interested in, or about recent ChitChat posts from nearby freeglers.
+                We can email you if there's an unread notification on here, or about recent ChitChat posts from nearby
+                freeglers.
+              </p>
+              <OurToggle
+                v-model="notificationmails"
+                :height="30"
+                :width="150"
+                :font-size="14"
+                :sync="true"
+                :labels="{checked: 'Send Them', unchecked: 'No Thanks'}"
+                color="#61AE24"
+                @change="changeNotifChitchat"
+              />
+              <p>
+                We can email you about OFFERs/WANTEDs you might be interested in.
               </p>
               <OurToggle
                 v-model="relevantallowed"
@@ -451,7 +472,7 @@
           </b-card>
           <br class="mb-4">
         </b-col>
-        <b-col cols="0" lg="3" />
+        <b-col cols="0" xl="3" />
       </b-row>
       <AboutMeModal ref="aboutmemodal" @change="update" />
       <ProfileModal :id="me ? me.id : null" ref="profilemodal" />
@@ -479,6 +500,7 @@ const NoticeMessage = () => import('~/components/NoticeMessage')
 const OurFilePond = () => import('~/components/OurFilePond')
 const OurToggle = () => import('~/components/OurToggle')
 const DatePicker = () => import('vue2-datepicker')
+const DonationButton = () => import('~/components/DonationButton')
 
 export default {
   components: {
@@ -493,7 +515,8 @@ export default {
     SettingsGroup,
     NoticeMessage,
     ProfileImage,
-    OurFilePond
+    OurFilePond,
+    DonationButton
   },
   mixins: [loginRequired, buildHead],
   data: function() {
@@ -512,7 +535,8 @@ export default {
       savedPhone: false,
       removingPhone: false,
       removedPhone: false,
-      uploading: false
+      uploading: false,
+      showPassword: false
     }
   },
   computed: {
@@ -523,6 +547,15 @@ export default {
       },
       get() {
         return Boolean(this.me.relevantallowed)
+      }
+    },
+    notificationmails: {
+      // This is 1/0 in the model whereas we want Boolean.
+      set(val) {
+        Vue.set(this.me, 'notificationmails', val ? 1 : 0)
+      },
+      get() {
+        return Boolean(this.me.settings.notificationmails)
       }
     },
     newslettersallowed: {
@@ -803,6 +836,13 @@ export default {
         relevantallowed: e.value
       })
     },
+    async changeNotifChitchat(e) {
+      const settings = this.me.settings
+      settings.notificationmails = e.value
+      this.me = await this.$store.dispatch('auth/saveAndGet', {
+        settings: settings
+      })
+    },
     async changeNewsletter(e) {
       this.me = await this.$store.dispatch('auth/saveAndGet', {
         newslettersallowed: e.value
@@ -838,6 +878,9 @@ export default {
     },
     uploadProfile() {
       this.uploading = true
+    },
+    togglePassword() {
+      this.showPassword = !this.showPassword
     }
   },
   head() {

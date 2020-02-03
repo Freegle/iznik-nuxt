@@ -1,31 +1,26 @@
 <template>
   <div>
-    <b-row>
-      <b-col v-if="userid">
-        <profile-image v-if="users[userid].profile.turl" :image="require(`@/static/icon.png`)" class="ml-1 mb-1 inline" is-thumbnail size="lg" />
-        <span class="text-success font-weight-bold pl-2">
-          Freegle
-        </span>
-        <br>
-        <span class="text-muted small pl-2">
-          {{ newsfeed.timestamp | timeago }}
-        </span>
-      </b-col>
-    </b-row>
+    <div>
+      <profile-image :image="require(`@/static/icon.png`)" class="ml-1 mb-1 inline" is-thumbnail size="lg" />
+      <span class="text-success font-weight-bold pl-2">
+        Freegle
+      </span>
+      <br>
+      <span class="text-muted small pl-2">
+        {{ newsfeed.timestamp | timeago }}
+      </span>
+    </div>
     <span v-if="newsfeed.message" class="font-weight-bold prewrap forcebreak">{{ emessage }}</span>
     <div>
-      <b-row v-if="newsfeed.image">
-        <b-col>
-          <b-img
-            v-b-modal="'photoModal-' + newsfeed.id"
-            thumbnail
-            rounded
-            lazy
-            :src="newsfeed.image.paththumb"
-            class="clickme"
-          />
-        </b-col>
-      </b-row>
+      <b-img
+        v-if="newsfeed.image"
+        v-b-modal="'photoModal-' + newsfeed.id"
+        thumbnail
+        rounded
+        lazy
+        :src="newsfeed.image.paththumb"
+        class="clickme"
+      />
     </div>
     <div class="mt-2">
       <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />

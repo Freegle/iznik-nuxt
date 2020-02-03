@@ -1,59 +1,62 @@
 <template>
   <div>
-    <b-row>
-      <b-col>
-        <profile-image v-if="users[userid].profile.turl" :image="users[userid].profile.turl" class="ml-1 mr-2 mb-1 inline" is-thumbnail size="lg" />
-        <v-icon v-if="users[userid].settings.showmod" name="leaf" class="showmod text-success" />
-        <span class="text-success font-weight-bold">{{ users[userid].displayname }}</span>
-        posted a volunteering opportunity<span class="d-none d-md-inline-block">:</span><br class="d-block d-md-none"> <b>{{ newsfeed.volunteering.title }}</b>
-        <br>
-        <span class="text-muted small">
-          {{ newsfeed.timestamp | timeago }}
-        </span>
-        on {{ newsfeed.volunteering.groups[0].namedisplay }}
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col cols="12" :lg="newsfeed.volunteering.photo ? 8 : 12">
-        <span v-if="newsfeed.volunteering.description" class="text-truncate d-block">
-          <v-icon name="info-circle" class="fa-fw" /> {{ newsfeed.volunteering.description }}
-        </span>
-        <span v-if="newsfeed.volunteering.location" class="text-truncate d-block">
-          <v-icon name="map-marker-alt" class="fa-fw" /> {{ newsfeed.volunteering.location }}
-        </span>
-        <br>
-        <b-btn variant="primary" class="mt-2" @click="moreInfo">
+    <div>
+      <profile-image
+        v-if="users[userid].profile.turl"
+        :image="users[userid].profile.turl"
+        class="ml-1 mr-2 mb-1 inline"
+        is-thumbnail
+        :is-moderator="(Boolean)(users[userid].settings.showmod)"
+        size="lg"
+      />
+      <span class="text-success font-weight-bold">{{ users[userid].displayname }}</span>
+      posted a volunteering opportunity<span class="d-none d-md-inline-block">:</span><br class="d-block d-md-none"> <b>{{ newsfeed.volunteering.title }}</b>
+      <br>
+      <span class="text-muted small">
+        {{ newsfeed.timestamp | timeago }}
+      </span>
+      on {{ newsfeed.volunteering.groups[0].namedisplay }}
+    </div>
+    <div class="volunteering__container">
+      <div class="volunteering__description">
+        <div v-if="newsfeed.volunteering.description" class="text-truncate">
+          <v-icon name="info-circle" class="fa-fw" />
+          {{ newsfeed.volunteering.description }}
+        </div>
+        <div v-if="newsfeed.volunteering.location" class="text-truncate">
+          <v-icon name="map-marker-alt" class="fa-fw" />
+          {{ newsfeed.volunteering.location }}
+        </div>
+        <b-btn variant="primary" class="mt-3 mb-2" @click="moreInfo">
           <v-icon name="info-circle" /> More info
         </b-btn>
-      </b-col>
-      <b-col v-if="newsfeed.volunteering.photo" cols="12" lg="4">
+      </div>
+      <div class="volunteering__photo">
         <b-img
+          v-if="newsfeed.volunteering.photo"
           thumbnail
           rounded
           lazy
           :src="newsfeed.volunteering.photo.paththumb"
-          class="clickme d-inline-block mt-2 mt-md-0 float-md-right"
+          class="clickme mt-2 mt-md-0"
           @click="moreInfo"
         />
-      </b-col>
-    </b-row>
+      </div>
+    </div>
     <hr>
-    <b-row class="mt-2">
-      <b-col>
-        <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
-        <span class="float-right d-inline-block">
-          <b-btn variant="white" size="sm" @click="addOpportunity">
-            <v-icon name="plus" /> Add your opportunity
-          </b-btn>
-        </span>
-      </b-col>
-    </b-row>
+    <div class="mt-2">
+      <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
+      <span class="float-right d-inline-block">
+        <b-btn variant="white" size="sm" @click="addOpportunity">
+          <v-icon name="plus" /> Add your opportunity
+        </b-btn>
+      </span>
+    </div>
     <VolunteerOpportunityModal ref="addOpportunity" :start-edit="true" />
     <VolunteerOpportunityModal ref="moreInfo" :volunteering="newsfeed.volunteering" />
   </div>
 </template>
-<style scoped>
-</style>
+
 <script>
 import NewsBase from '~/components/NewsBase'
 import NewsLoveComment from '~/components/NewsLoveComment'
@@ -77,3 +80,32 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+
+.volunteering__container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.volunteering__description {
+  width: 100%;
+
+  @include media-breakpoint-up(lg) {
+    width: 65%;
+    padding-right: 15px;
+  }
+}
+
+.volunteering__photo {
+  width: 100%;
+
+  @include media-breakpoint-up(lg) {
+    width: 30%;
+  }
+}
+</style>

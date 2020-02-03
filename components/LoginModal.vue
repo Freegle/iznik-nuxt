@@ -60,11 +60,23 @@
         <div class="divider" />
       </div>
       <div class="signin__section--freegle">
-        <h3 class="signin__header">
-          <span v-if="signUp">Create an account on Freegle</span>
+        <h3 class="signin__header pb-0">
+          <span v-if="signUp">
+            Create an account on Freegle
+          </span>
           <span v-else>Continue with your Freegle account</span>
         </h3>
-        <b-form ref="form" action="/" autocomplete="on" method="post" @submit="loginNative">
+        <span v-if="signUp" class="text-center">
+          <b>Already a freegler? <a href="#" @click="clickShowSignIn">Sign In</a></b>
+        </span>
+        <b-form
+          ref="form"
+          action="/"
+          autocomplete="on"
+          method="post"
+          class="mt-1"
+          @submit="loginNative"
+        >
           <div v-if="signUp">
             <b-form-group
               id="firstnameGroup"
@@ -110,6 +122,7 @@
               name="email"
               class="mb-3"
               autocomplete="username email"
+              type="email"
             />
           </b-form-group>
           <b-form-group
@@ -124,13 +137,13 @@
                 ref="password"
                 v-model="password"
                 name="password"
-                :type="showPassword ? 'input' : 'password'"
+                :type="showPassword ? 'text' : 'password'"
                 autocomplete="current-password"
               />
               <b-input-group-append>
                 <!-- TODO RAHUL DESIGN MINOR The shadow on the input field that you get when you're focused ought really to include this append.-->
                 <b-button variant="white" class="transbord" title="Show password" @click="togglePassword">
-                  <v-icon v-if="showPassword" title="Hide password" class="text-secondary" flip="horizontal" @click="togglePassword">
+                  <v-icon v-if="showPassword" title="Hide password" class="text-secondary" flip="horizontal">
                     <v-icon name="eye" />
                     <v-icon name="slash" />
                   </v-icon>
@@ -166,9 +179,6 @@
               New freegler? <a href="#" @click="clickShowSignUp">Sign Up</a>
             </p>
           </div>
-          <p v-else class="text-center">
-            Already a freegler? <a href="#" @click="clickShowSignIn">Sign In</a>
-          </p>
         </b-form>
       </div>
     </div>
@@ -255,19 +265,6 @@ export default {
       }
     }
   },
-  watch: {
-    loggedIn(newVal, oldVal) {
-      if (newVal && !oldVal) {
-        // We are now logged in.  Reload the page to force refetches and re-renders of various components which might
-        // have stalled.
-        //
-        // Perhaps all components should watch me() to spot changes and re-render.  But that seems unlikely to
-        // be consistently coded.
-        this.$router.go()
-      }
-    }
-  },
-
   beforeDestroy() {
     if (this.bumpTimer) {
       clearTimeout(this.bumpTimer)
@@ -352,9 +349,8 @@ export default {
               console.log('Fetched')
 
               if (this.$route.path === '/' || !this.$route.path) {
-                // We've signed up from the home page.  Send them to chitchat - that shows some activity, and also
-                // has the Give/Find prompt.
-                this.$router.push('/chitchat')
+                // We've signed up from the home page.  Send them to the explore page to find a group.
+                this.$router.push('/explore')
               }
             })
             .catch(e => {
@@ -533,7 +529,7 @@ $color-google: #4285f4;
 $color-yahoo: #6b0094;
 
 .signin__section--social {
-  flex: 0 1 100%;
+  flex: 0 1 auto;
 
   @include media-breakpoint-up(lg) {
     flex: 0 1 37%;
@@ -541,7 +537,7 @@ $color-yahoo: #6b0094;
 }
 
 .signin__section--freegle {
-  flex: 0 1 100%;
+  flex: 0 1 auto;
 
   @include media-breakpoint-up(lg) {
     flex: 0 1 44%;
@@ -634,9 +630,7 @@ $color-yahoo: #6b0094;
 }
 
 .transbord {
-  // TODO DESIGN MINOR This colour is copied from bootstrap $input-border-color and should be done better.  Sorry Jason.
-  // See also Autocomplete.
-  border-color: #ced4da;
+  border-color: $color-gray-4;
   border-left: none;
 }
 </style>

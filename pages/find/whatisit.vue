@@ -12,18 +12,15 @@
               <b-card-body class="pt-0 pb-1">
                 <PostMessage :id="id" type="Wanted" />
               </b-card-body>
-              <b-card-footer v-if="index === ids.length - 1" class="d-flex justify-content-between">
-                <div class="d-flex">
-                  <Postcode
-                    :focus="false"
-                    :find="false"
-                    size="md"
-                    class="d-inline"
-                    :value="postcode ? postcode.name : null"
-                    @selected="postcodeSelect"
-                  />
-                  <ComposeGroup :width="200" />
-                </div>
+              <b-card-footer v-if="index === ids.length - 1" class="d-flex justify-content-between p-0 pt-1">
+                <Postcode
+                  :find="false"
+                  size="md"
+                  class="d-inline"
+                  :value="postcode ? postcode.name : null"
+                  @selected="postcodeSelect"
+                />
+                <ComposeGroup class="cg" />
               </b-card-footer>
             </b-card>
           </li>
@@ -32,7 +29,7 @@
           <b-btn v-if="ids.length > 1" variant="white" class="mr-1" @click="deleteItem">
             <v-icon name="trash-alt" />&nbsp;Delete item
           </b-btn>
-          <b-btn v-if="ids.length < 6" variant="white" class="" @click="addItem">
+          <b-btn v-if="ids.length < 6" variant="primary" class="" @click="addItem">
             <v-icon name="plus" />&nbsp;Add another item
           </b-btn>
         </div>
@@ -186,7 +183,12 @@ export default {
       }
     },
     next() {
-      this.$router.push('/find/whoami')
+      const currentpc = this.$store.getters['compose/getPostcode']
+
+      if (currentpc) {
+        // We shouldn't be able to progress if we didn't have a postcode.
+        this.$router.push('/find/whoami')
+      }
     }
   },
 
@@ -198,3 +200,9 @@ export default {
   }
 }
 </script>
+<style scoped>
+.cg {
+  flex-basis: 25%;
+  flex-grow: 1;
+}
+</style>

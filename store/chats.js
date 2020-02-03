@@ -74,6 +74,13 @@ export const getters = {
     })
 
     return ret
+  },
+
+  unseenCount: state => {
+    return Object.values(state.list).reduce(
+      (total, chat) => total + chat.unseen,
+      0
+    )
   }
 }
 
@@ -84,7 +91,18 @@ export const actions = {
       summary: true,
       search: params && params.search ? params.search : null
     }
-    commit('setList', await this.$api.chat.listChats(params))
+
+    try {
+      commit('setList', await this.$api.chat.listChats(params))
+    } catch (e) {
+      // This happens a lot on mobile when the network is flaky.  It's not necessarily an end-user visible error,
+      // so there is no point letting it ripple up to Sentry.
+      console.log('Failed to list chats')
+
+      if (!params.noerror) {
+        throw e
+      }
+    }
   },
 
   async openChatToMods({ dispatch, commit }, params) {
@@ -113,13 +131,12 @@ export const actions = {
 
   async fetch({ commit }, { id: chatid }) {
     if (!chatid) return
+
     const { chatroom } = await this.$api.chat.fetchChat(chatid)
+
     if (chatroom) {
       // Valid chatid
       commit('addRoom', chatroom)
-    } else {
-      // Invalid
-      console.error('Invalid chat id', chatid)
     }
   },
 
@@ -142,5 +159,10 @@ export const actions = {
   async block({ dispatch, commit }, params) {
     await this.$api.chat.blockChat(params.id)
     await dispatch('listChats')
+  },
+
+  async unseenCount({ dispatch, commit }) {
+    const ret = await this.$api.chat.unseenCount()
+    return ret.count
   }
 }
