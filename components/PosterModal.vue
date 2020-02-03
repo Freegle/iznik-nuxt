@@ -16,7 +16,7 @@
     <b-input
       v-model="name"
       placeholder="Where is it?  E.g. village green, supermarket, name of cafe..."
-      size="60"
+      :size="60"
       maxlength="60"
       spellcheck="true"
       class="mb-1"

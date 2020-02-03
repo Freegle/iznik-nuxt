@@ -175,7 +175,7 @@ export default {
         id: this.message.id,
         outcome: this.type,
         happiness: this.happiness,
-        comments: this.comments,
+        comment: this.comments,
         userid: this.selectedUser
       })
 

@@ -20,7 +20,7 @@
           :debounce="100"
           :process="process"
           :on-select="select"
-          size="60"
+          :size="60"
           maxlength="60"
           spellcheck="true"
           placeholder="Type here then click to choose an area"

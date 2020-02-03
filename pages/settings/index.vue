@@ -387,8 +387,21 @@
                 @change="changeNotification($event, 'emailmine')"
               />
               <p>
-                We can email you if there's an unread notification on here, about OFFERs/WANTEDs you might be
-                interested in, or about recent ChitChat posts from nearby freeglers.
+                We can email you if there's an unread notification on here, or about recent ChitChat posts from nearby
+                freeglers.
+              </p>
+              <OurToggle
+                v-model="notificationmails"
+                :height="30"
+                :width="150"
+                :font-size="14"
+                :sync="true"
+                :labels="{checked: 'Send Them', unchecked: 'No Thanks'}"
+                color="#61AE24"
+                @change="changeNotifChitchat"
+              />
+              <p>
+                We can email you about OFFERs/WANTEDs you might be interested in.
               </p>
               <OurToggle
                 v-model="relevantallowed"
@@ -534,6 +547,15 @@ export default {
       },
       get() {
         return Boolean(this.me.relevantallowed)
+      }
+    },
+    notificationmails: {
+      // This is 1/0 in the model whereas we want Boolean.
+      set(val) {
+        Vue.set(this.me, 'notificationmails', val ? 1 : 0)
+      },
+      get() {
+        return Boolean(this.me.settings.notificationmails)
       }
     },
     newslettersallowed: {
@@ -812,6 +834,13 @@ export default {
     async changeRelevant(e) {
       this.me = await this.$store.dispatch('auth/saveAndGet', {
         relevantallowed: e.value
+      })
+    },
+    async changeNotifChitchat(e) {
+      const settings = this.me.settings
+      settings.notificationmails = e.value
+      this.me = await this.$store.dispatch('auth/saveAndGet', {
+        settings: settings
       })
     },
     async changeNewsletter(e) {

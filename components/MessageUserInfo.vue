@@ -4,6 +4,9 @@
       <profile-image :image="user.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="sm" />
       <span class="flex-grow-1">
         Posted by {{ user.displayname }}
+        <span v-if="user.milesaway">
+          &bull; <b>about {{ user.milesaway | pluralize('mile', { includeNumber: true }) }} away</b>
+        </span>
         <br class="d-block d-sm-none">
         <span v-if="user.info.openoffers + user.info.openwanteds > 0">
           <span class="d-none d-sm-inline">&bull;</span>

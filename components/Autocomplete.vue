@@ -19,7 +19,7 @@
         @focus="handleFocus"
       >
       <b-input-group-append>
-        <b-button variant="white" class="transbord p-0 pr-2">
+        <b-button variant="white" class="transbord p-0 pr-2" tabindex="-1">
           <!-- TODO RAHUL DESIGN The shadow on the input field that you get when you're focused ought really to include this append.-->
           <v-icon name="sync" :class="'text-success fa-spin ' + (ajaxInProgress ? 'visible': 'invisible')" />
         </b-button>
@@ -389,10 +389,12 @@ export default {
       // On mobile, the on screen keyboard can obscure the dropdown.  So:
       // - make sure we have room to scroll
       // - scroll this input to the top
-      let body = document.getElementsByTagName("body")[0];
-      body.classList.add('forcescroll')
-      this.$refs.input.scrollTop = 0
-      body.style.overflowY = 'hidden'
+      this.$nextTick(() => {
+        let body = document.getElementsByTagName("body")[0];
+        body.classList.add('forcescroll')
+        this.$refs.input.scrollTop = 0
+        body.style.overflowY = 'hidden'
+      })
 
       // Force the list to show.
       this.showList = true

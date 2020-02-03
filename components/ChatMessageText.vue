@@ -1,16 +1,14 @@
 <template>
-  <div class="pb-1">
-    <div class="chatMessageWrapper" :class="{ myChatMessage : messageIsFromCurrentUser }">
-      <div class="chatMessage chatMessage__owner">
-        <span>
-          <span v-if="messageIsNew" class="prewrap"><b>{{ emessage }}</b></span>
-          <span v-else class="prewrap forcebreak">{{ emessage }}</span>
-          <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
-        </span>
-      </div>
-      <div class="chatMessageProfilePic">
-        <profile-image :image="messageIsFromCurrentUser ? me.profile.turl : othericon" class="ml-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
-      </div>
+  <div class="chatMessageWrapper pb-1" :class="{ myChatMessage : messageIsFromCurrentUser }">
+    <div class="chatMessage chatMessage__owner">
+      <span>
+        <span v-if="messageIsNew" class="prewrap"><b>{{ emessage }}</b></span>
+        <span v-else class="prewrap forcebreak">{{ emessage }}</span>
+        <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
+      </span>
+    </div>
+    <div class="chatMessageProfilePic">
+      <profile-image :image="messageIsFromCurrentUser ? me.profile.turl : othericon" class="ml-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
     </div>
   </div>
 </template>
