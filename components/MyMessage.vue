@@ -365,6 +365,7 @@ export default {
       return unseen
     },
     outcome(type) {
+      console.log('Show outcome', type)
       this.$refs.outcomeModal.show(type)
     },
     share() {
