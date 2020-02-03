@@ -19,10 +19,10 @@
     <template slot="modal-footer">
       <div class="d-flex justify-content-between w-100">
         <b-button variant="info" @click="no">
-          No, hide this chat
+          No reply expected
         </b-button>
         <b-button variant="success" @click="yes">
-          Yes, keep this chat
+          Yes, I expect a reply
         </b-button>
       </div>
     </template>
