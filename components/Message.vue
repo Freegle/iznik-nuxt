@@ -185,7 +185,7 @@
         </p>
 
         <div class="d-flex justify-content-between">
-          <MessageUserInfo v-if="expanded.fromuser" :user="expanded.fromuser" class="flex-grow-1" />
+          <MessageUserInfo v-if="expanded.fromuser" :user="expanded.fromuser" :milesaway="milesaway" class="flex-grow-1" />
           <span>
             <span v-if="expanded.replycount" class="small text-muted mr-1">
               <v-icon name="user" class="d-inline" />&nbsp;<span class="d-inline">{{ expanded.replycount }}&nbsp;freegler<span v-if="expanded.replycount != 1">s</span>&nbsp;replied&nbsp;</span>
@@ -333,6 +333,11 @@ export default {
     },
     url: {
       type: String,
+      required: false,
+      default: null
+    },
+    milesaway: {
+      type: Number,
       required: false,
       default: null
     }
