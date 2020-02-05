@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="group in groups" :key="'message-' + id + '-' + group.id" class="message-history d-none d-sm-block">
+    <div v-for="group in groups" :key="'message-' + id + '-' + group.id" class="message-history">
       {{ group.arrival | timeago }} on <nuxt-link :to="'/explore/' + group.groupid">
         {{ group.namedisplay }}
       </nuxt-link>
@@ -33,7 +33,7 @@ export default {
 
 <style scoped>
 .message-history {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 400;
 }
 </style>
