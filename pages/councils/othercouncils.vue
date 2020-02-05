@@ -27,10 +27,6 @@
               there was fantastic. Her talk was really inspirational and it was amazing to hear about all the
               great work she has done so thank you for helping us get her there!&quot;</i>Becky Kenton Lake, Waste Strategy Projects Officer, Oxfordshire County Council.
           </p>
-          <p>
-            Oxfordshire County Council have created a <a href="https://www.oxfordshire.gov.uk/residents/environment-and-planning/waste-and-recycling/household-waste/repair-reuse-or-recycle" target="_blank">Waste Wizard</a> which directs residents to repair, reuse and recycling options, including pointing people towards Freegle.
-            This is a really easy way to let people know about Freegle and other similar organisations that help maximise reuse locally.
-          </p>
           <div class="row">
             <div class="col-sm-6">
               <b-img fluid src="/councils/OxfordshireReusesEvent1.jpg" />
@@ -47,7 +43,7 @@
               <b-img fluid src="/councils/OxfordshireReusesEvent5.jpg" />
             </div>
           </div>
-          <h3>
+          <h3 class="mt-3">
             Cumbria County Council’s partnership working with Freegle
           </h3>
           <p>
@@ -67,6 +63,10 @@
             The Love Essex website has a dedicated
             <a href="http://www.loveessex.org/news-and-ideas/have-items-you-no-longer-want-freegle-can-help/" target="_blank">Freegle page</a>
             which you could replicate for your council.
+          </p>
+          <p>
+            Oxfordshire County Council have created a <a href="https://www.oxfordshire.gov.uk/residents/environment-and-planning/waste-and-recycling/household-waste/repair-reuse-or-recycle" target="_blank">Waste Wizard</a> which directs residents to repair, reuse and recycling options, including pointing people towards Freegle.
+            This is a really easy way to let people know about Freegle and other similar organisations that help maximise reuse locally.
           </p>
 
           <h3>Leaflets</h3>
