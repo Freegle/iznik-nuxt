@@ -4,8 +4,8 @@
     <b-card class="p-0 mb-1" variant="success">
       <b-card-header :class="'pl-2 pr-2 clearfix' + (ispromised ? ' promisedfade' : '')">
         <b-card-title class="msgsubj mb-0 d-block d-sm-none">
-          <div class="d-flex flex-column justify-content-end">
-            <div class="d-flex">
+          <div>
+            <div>
               <Highlighter
                 v-if="matchedon"
                 :search-words="[matchedon.word]"
