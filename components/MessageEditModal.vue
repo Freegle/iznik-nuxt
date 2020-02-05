@@ -24,7 +24,7 @@
                 </b-form-select>
               </b-col>
               <b-col cols="6">
-                <PostItem ref="item" v-model="item" @input="itemType" />
+                <PostItem ref="item" v-model="item" />
               </b-col>
               <b-col cols="6" md="3">
                 <Postcode :find="false" size="md" @selected="postcodeSelect" @cleared="postcodeClear" />
