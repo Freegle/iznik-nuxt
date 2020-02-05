@@ -15,6 +15,7 @@
           placeholder=""
           :disabled-date="startDateDisabled"
           :default-value="todayAt9am"
+          :editable="false"
         />
       </div>
       <div class="mr-lg-4 d-flex flex-column">
@@ -31,6 +32,7 @@
           :disabled-date="endDateDisabled"
           :disabled-time="endTimeDisabled"
           :default-value="oneHourAfterStart"
+          :editable="false"
         />
       </div>
     </div>
