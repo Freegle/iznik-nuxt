@@ -17,15 +17,6 @@
               </span>
             </div>
             <MessageHistory :id="id" :groups="groups" />
-            <!--
-            <div v-for="group in groups" :key="'message-' + id + '-' + group.id" class="small muted">
-              <div class="small">
-                {{ group.arrival | timeago }} on <nuxt-link :to="'/explore/' + group.groupid">
-                  {{ group.namedisplay }}
-                </nuxt-link>
-              </div>
-            </div>
-          -->
           </div>
           <div v-if="attachments && attachments.length > 0" class="d-block mt-1 d-sm-none clickme position-relative" @click="showPhotos">
             <b-badge v-if="attachments.length > 1" class="photobadge" variant="primary">
@@ -74,18 +65,6 @@
                 {{ eSubject }}
               </span>
               <MessageHistory :id="id" :display-message-link="true" :groups="groups" />
-              <!--
-              <div v-for="group in groups" :key="'message-' + id + '-' + group.id" class="small d-none d-sm-block">
-                <div class="small">
-                  {{ group.arrival | timeago }} on <nuxt-link :to="'/explore/' + group.groupid">
-                    {{ group.namedisplay }}
-                  </nuxt-link>
-                  <nuxt-link :to="'/message/' + id" class="text-sm small text-faded">
-                    #{{ id }}&nbsp;
-                  </nuxt-link>
-                </div>
-              </div>
-            -->
               <div flex-grow-1 class="small">
                 <div v-if="eSnippet && eSnippet !== 'null' && !expanded">
                   <b class="snippet black">
