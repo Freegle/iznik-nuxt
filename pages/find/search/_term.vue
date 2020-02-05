@@ -54,14 +54,9 @@
         </b-row>
         <b-row>
           <b-col class="text-center">
-            <nuxt-link to="/find/whatisit">
-              <b-btn v-if="!term || !term.length" variant="white" size="lg">
-                Post a WANTED
-              </b-btn>
-              <b-btn v-else variant="primary" size="lg">
-                Post a WANTED
-              </b-btn>
-            </nuxt-link>
+            <b-btn to="/find/whatisit" size="lg" :variant="searchTermEntered ? 'primary' : 'white'">
+              Post a WANTED
+            </b-btn>
           </b-col>
         </b-row>
         <b-row v-if="filteredMessages.length">
@@ -94,15 +89,6 @@
     </b-row>
   </div>
 </template>
-
-<style scoped lang="scss">
-@import 'color-vars';
-
-.form-group {
-  border: 1px $color-gray--dark solid;
-  border-radius: 0.2rem;
-}
-</style>
 
 <script>
 // TODO RAHUL DESIGN Maybe some kind of border round the search options.
@@ -156,6 +142,9 @@ export default {
       return this.messages.filter(message => {
         return !message.outcomes || message.outcomes.length === 0
       })
+    },
+    searchTermEntered() {
+      return this.term && this.term.length
     }
   },
   asyncData({ app, params, store }) {
@@ -284,3 +273,12 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
+.form-group {
+  border: 1px $color-gray--dark solid;
+  border-radius: 0.2rem;
+}
+</style>
