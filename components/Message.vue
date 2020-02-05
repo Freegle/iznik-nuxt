@@ -64,7 +64,7 @@
               <span v-else>
                 {{ eSubject }}
               </span>
-              <MessageHistory :id="id" :display-message-link="true" :groups="groups" />
+              <MessageHistory :id="id" display-message-link :groups="groups" />
               <div flex-grow-1 class="small">
                 <div v-if="eSnippet && eSnippet !== 'null' && !expanded">
                   <b class="snippet black">
