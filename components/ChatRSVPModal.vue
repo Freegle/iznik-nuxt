@@ -51,15 +51,12 @@ export default {
       const me = this.$store.getters['auth/user']
       const myid = me ? me.id : null
 
-      console.log('Messages', this.chatmessages)
       for (const msg of this.chatmessages) {
-        console.log('Message', parseInt(msg.userid), parseInt(myid))
         if (parseInt(msg.userid) === parseInt(myid)) {
           ret = msg
         }
       }
 
-      console.log('My last', ret)
       return ret
     }
   },

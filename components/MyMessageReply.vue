@@ -143,11 +143,27 @@ export default {
     }
   },
   methods: {
-    chat(popup) {
-      console.log('Open chat', this.reply.chatid, popup)
+    async chat(popup) {
+      // We might have closed off the chat, in which case it will no longer appear in our list.
+      const chats = Object.values(this.$store.getters['chats/list'])
+      let found = false
+      for (const chat of chats) {
+        if (parseInt(chat.id) === parseInt(this.reply.chatid)) {
+          found = true
+        }
+      }
+
+      if (!found) {
+        // We did close it, so we need to reopen it.
+        await this.$store.dispatch('chats/openChatToUser', {
+          userid: this.reply.user.id
+        })
+      }
 
       if (popup) {
-        this.$store.dispatch('popupchats/popup', { id: this.reply.chatid })
+        await this.$store.dispatch('popupchats/popup', {
+          id: this.reply.chatid
+        })
       } else {
         this.$router.push('/chats/' + this.reply.chatid)
       }
