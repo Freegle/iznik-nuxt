@@ -24,6 +24,10 @@ export default {
   mounted() {
     this.createMarker()
   },
+  beforeDestroy() {
+    // We have to remove the marker from the map otherwise we get screen trozzle.
+    this.marker.setMap(null)
+  },
   methods: {
     createMarker() {
       let el = this.$parent
