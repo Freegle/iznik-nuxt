@@ -36,7 +36,8 @@ export default {
   },
   beforeDestroy() {
     // We have to remove the marker from the map otherwise we get screen trozzle.
-    this.$refs.rich.getMarker().setMap(null)
+    console.log('Hide marker')
+    this.$refs.rich.getMarker().postion = new window.google.maps.LatLng(0, 0)
   },
   methods: {
     goto() {

@@ -22,15 +22,15 @@
                 </span>
               </b-col>
               <b-col cols="4" class="p-0">
-                <b-dropdown size="sm" variant="transparent" class="float-right" right>
+                <b-dropdown v-if="chat.chattype === 'User2User'" size="sm" variant="transparent" class="float-right" right>
                   <template slot="button-content" />
-                  <b-dropdown-item v-if="chat.chattype === 'User2User'" @click="showhide">
+                  <b-dropdown-item @click="showhide">
                     Hide this chat
                   </b-dropdown-item>
-                  <b-dropdown-item v-if="chat.chattype === 'User2User'" @click="showblock">
+                  <b-dropdown-item @click="showblock">
                     Block this person
                   </b-dropdown-item>
-                  <b-dropdown-item v-if="chat.chattype === 'User2User'" @click="report">
+                  <b-dropdown-item @click="report">
                     Report this person
                   </b-dropdown-item>
                 </b-dropdown>
