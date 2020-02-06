@@ -13,7 +13,7 @@
         Please let us know if you're expecting to talk to this freegler again soon.
       </p>
       <p>
-        If you're not, we can hide the chat from your list for now.
+        If you're not, we can hide the chat from your list for now.  You can still find it from My Posts.
       </p>
     </template>
     <template slot="modal-footer">
