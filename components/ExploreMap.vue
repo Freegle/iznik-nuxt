@@ -62,6 +62,7 @@
             }"
             @zoom_changed="zoomChanged"
             @bounds_changed="boundsChanged"
+            @idle="idle"
           >
             <div v-for="g in groupsInBounds" :key="'marker-' + g.id + '-' + zoom">
               <GroupMarker v-if="g.onmap" :group="g" :size="largeMarkers ? 'rich' : 'poor'" />
@@ -129,6 +130,7 @@
 
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
+import { gmapApi } from 'vue2-google-maps'
 import GroupMarker from '~/components/GroupMarker.vue'
 import GroupProfileImage from '~/components/GroupProfileImage'
 
@@ -143,6 +145,31 @@ export default {
       type: String,
       required: false,
       default: null
+    },
+    track: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    swlat: {
+      type: Number,
+      required: false,
+      default: null
+    },
+    swlng: {
+      type: Number,
+      required: false,
+      default: null
+    },
+    nelat: {
+      type: Number,
+      required: false,
+      default: null
+    },
+    nelng: {
+      type: Number,
+      required: false,
+      default: null
     }
   },
   data: function() {
@@ -155,7 +182,8 @@ export default {
         componentRestrictions: {
           country: ['gb']
         }
-      }
+      },
+      initialBounds: false
     }
   },
   computed: {
@@ -272,6 +300,28 @@ export default {
             lng: bounds.getSouthWest().lng()
           }
         }
+
+        this.setUrl()
+      }
+    },
+    setUrl: function() {
+      if (this.track) {
+        // We've been asked to update the URL as we move around the map.
+        let url = this.$route.fullPath
+        const p = url.indexOf('?')
+        url = p !== -1 ? url.substring(0, p) : url
+        const precis = 10000
+        url =
+          url +
+          '?bounds=' +
+          Math.round(this.bounds.sw.lat * precis) / precis +
+          ',' +
+          Math.round(this.bounds.sw.lng * precis) / precis +
+          ',' +
+          Math.round(this.bounds.ne.lat * precis) / precis +
+          ',' +
+          Math.round(this.bounds.ne.lng * precis) / precis
+        this.$router.replace(url)
       }
     },
     loadMoreList($state) {
@@ -281,6 +331,20 @@ export default {
         $state.loaded()
       } else {
         $state.complete()
+      }
+    },
+    idle() {
+      const google = gmapApi()
+
+      if ((this.swlat || this.swlng) && !this.initialBounds) {
+        // We've been asked to set the bounds of the map.
+        this.initialBounds = true
+        this.$refs.gmap.$mapObject.fitBounds(
+          new google.maps.LatLngBounds(
+            new google.maps.LatLng(this.swlat, this.swlng),
+            new google.maps.LatLng(this.nelat, this.nelng)
+          )
+        )
       }
     }
   }
