@@ -76,7 +76,8 @@ export default {
     return {
       groupid: null,
       name: null,
-      saving: false
+      saving: false,
+      created: false
     }
   },
   computed: {
