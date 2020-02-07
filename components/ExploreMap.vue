@@ -343,7 +343,8 @@ export default {
           new google.maps.LatLngBounds(
             new google.maps.LatLng(this.swlat, this.swlng),
             new google.maps.LatLng(this.nelat, this.nelng)
-          )
+          ),
+          0
         )
       }
     }
