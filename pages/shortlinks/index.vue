@@ -6,7 +6,8 @@
         <div>
           <h1>Shortlinks</h1>
           <h5>
-            Shortlinks let people find Freegle communities quickly. On this page you can see all the shortlinks we have, and view statistics about them.
+            Shortlinks let people find Freegle communities quickly. On this page you can see the shortlinks for
+            your communities, and view statistics about them.
           </h5>
           <b-card no-body>
             <b-card-body>
@@ -67,11 +68,11 @@
 </style>
 <script>
 import GroupSelect from '../../components/GroupSelect'
-import loginOptional from '@/mixins/loginOptional.js'
+import loginRequired from '../../mixins/loginRequired'
 
 export default {
   components: { GroupSelect },
-  mixins: [loginOptional],
+  mixins: [loginRequired],
   data: function() {
     return {
       groupid: null,
@@ -113,7 +114,6 @@ export default {
   },
   methods: {
     async create() {
-      console.log('Create', this.groupid, this.name)
       if (this.groupid && this.name) {
         this.saving = true
         const id = await this.$store.dispatch('shortlinks/add', {
