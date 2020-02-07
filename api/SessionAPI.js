@@ -41,4 +41,11 @@ export default class SessionAPI extends BaseAPI {
   forget() {
     return this.$post('/session', { action: 'Forget' })
   }
+
+  related(userlist) {
+    return this.$post('/session', {
+      action: 'Related',
+      userlist: userlist
+    })
+  }
 }
