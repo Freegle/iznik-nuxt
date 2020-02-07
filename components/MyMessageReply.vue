@@ -10,8 +10,11 @@
           <span v-else class="align-middle">
             {{ reply.user.displayname }}
           </span>
-          <span class="align-middle text-muted">
+          <span v-if="reply.lastuserid !== myid" class="align-middle text-muted">
             last wrote to you:
+          </span>
+          <span v-else class="align-middle text-muted">
+            you last sent:
           </span>
         </span>
       </b-col>
@@ -118,6 +121,10 @@ export default {
     }
   },
   computed: {
+    myid() {
+      const me = this.$store.getters['auth/user']
+      return me.id
+    },
     unseen() {
       // See if this reply has unseen messages in the chats.
       let unseen = 0
