@@ -2,7 +2,7 @@
   <div>
     <RichMarker ref="rich" :key="size" :position="{ lat: group.lat, lng: group.lng }">
       <div @click="goto">
-        <b-img v-if="size ==='poor'" src="/mapmarker.gif" />
+        <b-img v-if="size ==='poor'" src="/mapmarker.gif" :title="group.namedisplay" />
         <div v-if="size === 'rich'" class="text-center">
           <group-profile-image :image="group.profile ? group.profile : '/icon.png'" :alt-text="'Profile picture for ' + group.namedisplay" size="sm" />
           <br>
