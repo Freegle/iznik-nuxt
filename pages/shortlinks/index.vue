@@ -6,10 +6,9 @@
         <div>
           <h1>Shortlinks</h1>
           <h5>
-            Shortlinks let people find Freegle communities quickly. On this page you can see the shortlinks for
-            your communities, and view statistics about them.
+            Shortlinks let people find Freegle communities quickly. On this page you can see all the shortlinks we have, and view statistics about them.
           </h5>
-          <b-card no-body>
+          <b-card v-if="groupOptions.length" no-body>
             <b-card-body>
               <p>
                 You can also create your own shortlinks. This is particularly useful if you want to promote a
@@ -17,7 +16,7 @@
                 short (less typing) and memorable (less forgetting).
               </p>
               <div class="d-flex justify-content-between">
-                <GroupSelect v-model="groupid" />
+                <b-select v-model="groupid" :options="groupOptions" />
                 <b-form-input v-model="name" placeholder="Enter your shortlink name" maxlength="30" />
                 <b-btn variant="white" @click="create">
                   <v-icon v-if="created" name="check" class="text-success" />
@@ -67,18 +66,17 @@
 <style scoped>
 </style>
 <script>
-import GroupSelect from '../../components/GroupSelect'
 import loginRequired from '../../mixins/loginRequired'
 
 export default {
-  components: { GroupSelect },
   mixins: [loginRequired],
   data: function() {
     return {
-      groupid: null,
+      groupid: -1,
       name: null,
       saving: false,
-      created: false
+      created: false,
+      groups: []
     }
   },
   computed: {
@@ -107,10 +105,31 @@ export default {
       }
 
       return null
+    },
+    groupOptions() {
+      const options = []
+
+      options.push({
+        value: -1,
+        html: '<em>-- Please choose --</em>'
+      })
+
+      for (const group in this.groups) {
+        options.push({
+          value: this.groups[group].id,
+          text: this.groups[group].namedisplay
+        })
+      }
+
+      return options
     }
   },
   async mounted() {
     await this.$store.dispatch('shortlinks/fetch')
+    await this.$store.dispatch('group/list', {
+      grouptype: 'Freegle'
+    })
+    this.groups = this.$store.getters['group/list']
   },
   methods: {
     async create() {
