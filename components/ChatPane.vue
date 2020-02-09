@@ -208,6 +208,7 @@ import InfiniteLoading from 'vue-infinite-loading'
 import ChatBlockModal from './ChatBlockModal'
 import ChatHideModal from './ChatHideModal'
 import twem from '~/assets/js/twem'
+import chatCollate from '@/mixins/chatCollate.js'
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
 import ChatMessage from '~/components/ChatMessage.vue'
@@ -238,6 +239,7 @@ export default {
     ChatReportModal,
     ChatRSVPModal
   },
+  mixins: [chatCollate],
   props: {
     id: {
       type: Number,
@@ -299,7 +301,9 @@ export default {
     },
 
     chatmessages() {
-      return this.$store.getters['chatmessages/getMessages'](this.id)
+      return this.chatCollate(
+        this.$store.getters['chatmessages/getMessages'](this.id)
+      )
     },
 
     chatusers() {

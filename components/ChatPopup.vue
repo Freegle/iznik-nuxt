@@ -205,6 +205,7 @@ import twem from '~/assets/js/twem'
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
 import ChatMessage from '~/components/ChatMessage.vue'
+import chatCollate from '@/mixins/chatCollate.js'
 
 Vue.use(TooltipPlugin)
 const VueDraggableResizable = () => import('vue-draggable-resizable')
@@ -225,6 +226,7 @@ export default {
     AvailabilityModal,
     AddressModal
   },
+  mixins: [chatCollate],
   props: {
     id: {
       type: Number,
@@ -291,7 +293,9 @@ export default {
     },
 
     chatmessages() {
-      return this.$store.getters['chatmessages/getMessages'](this.id)
+      return this.chatCollate(
+        this.$store.getters['chatmessages/getMessages'](this.id)
+      )
     },
 
     chatusers() {
