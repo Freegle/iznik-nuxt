@@ -134,7 +134,7 @@
                 </b-list-group-item>
                 <b-list-group-item v-else-if="message.type === 'Wanted' && !received">
                   <b-btn variant="success" class="d-inline mr-1" @click="outcome('Received')">
-                    <v-icon name="check" /> Mark as Received
+                    <v-icon name="check" /> Mark as RECEIVED
                   </b-btn>
                 </b-list-group-item>
                 <b-list-group-item v-if="!taken && !received && !withdrawn">
@@ -369,7 +369,6 @@ export default {
       return unseen
     },
     outcome(type) {
-      console.log('Show outcome', type)
       this.$refs.outcomeModal.show(type)
     },
     share() {
