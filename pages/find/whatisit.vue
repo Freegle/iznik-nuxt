@@ -26,6 +26,9 @@
           </li>
         </ul>
         <div class="d-flex justify-content-end ml-1 mr-1">
+          <b-btn v-if="ids.length === 1 && notblank" variant="white" class="mr-1" @click="deleteItem">
+            <v-icon name="trash-alt" />&nbsp;Clear item
+          </b-btn>
           <b-btn v-if="ids.length > 1" variant="white" class="mr-1" @click="deleteItem">
             <v-icon name="trash-alt" />&nbsp;Delete item
           </b-btn>
@@ -83,6 +86,24 @@ export default {
     return {}
   },
   computed: {
+    notblank() {
+      let ret = false
+      const messages = Object.values(this.$store.getters['compose/getMessages'])
+      if (messages && messages.length > 0) {
+        const message = messages[0]
+
+        const atts = Object.values(
+          this.$store.getters['compose/getAttachments'](message.id)
+        )
+
+        ret =
+          (message.item && message.item.trim()) ||
+          (message.description && message.description.trim()) ||
+          atts.length
+      }
+
+      return ret
+    },
     uploadingPhoto() {
       return this.$store.getters['compose/getUploading']
     },
