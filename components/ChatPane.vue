@@ -629,11 +629,15 @@ export default {
       this.$store.dispatch('chats/hide', {
         id: this.id
       })
+
+      this.$router.push('/chats')
     },
     block() {
       this.$store.dispatch('chats/block', {
         id: this.id
       })
+
+      this.$router.push('/chats')
     },
     report() {
       this.$refs.chatreport.show()
