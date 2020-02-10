@@ -22,15 +22,15 @@
                 </span>
               </b-col>
               <b-col cols="4" class="p-0">
-                <b-dropdown size="sm" variant="transparent" class="float-right" right>
+                <b-dropdown v-if="chat.chattype === 'User2User'" size="sm" variant="transparent" class="float-right" right>
                   <template slot="button-content" />
-                  <b-dropdown-item v-if="chat.chattype === 'User2User'" @click="showhide">
+                  <b-dropdown-item @click="showhide">
                     Hide this chat
                   </b-dropdown-item>
-                  <b-dropdown-item v-if="chat.chattype === 'User2User'" @click="showblock">
+                  <b-dropdown-item @click="showblock">
                     Block this person
                   </b-dropdown-item>
-                  <b-dropdown-item v-if="chat.chattype === 'User2User'" @click="report">
+                  <b-dropdown-item @click="report">
                     Report this person
                   </b-dropdown-item>
                 </b-dropdown>
@@ -196,6 +196,7 @@
           :chatid="chat.id"
           @confirm="hide"
         />
+        <ChatRSVPModal :id="id" ref="rsvp" />
       </div>
     </client-only>
   </div>
@@ -219,6 +220,7 @@ const NoticeMessage = () => import('~/components/NoticeMessage')
 const AvailabilityModal = () => import('~/components/AvailabilityModal')
 const AddressModal = () => import('~/components/AddressModal')
 const ChatReportModal = () => import('~/components/ChatReportModal')
+const ChatRSVPModal = () => import('~/components/ChatRSVPModal')
 
 export default {
   components: {
@@ -233,7 +235,8 @@ export default {
     NoticeMessage,
     ChatBlockModal,
     ChatHideModal,
-    ChatReportModal
+    ChatReportModal,
+    ChatRSVPModal
   },
   props: {
     id: {
@@ -259,7 +262,8 @@ export default {
       ouroffers: null,
       sending: false,
       scrolledToBottom: false,
-      showReplyTime: true
+      showReplyTime: true,
+      RSVP: true
     }
   },
   computed: {
@@ -477,7 +481,7 @@ export default {
         this.sendmessage += '\n'
       }
     },
-    _updateAfterSend: function() {
+    _updateAfterSend: async function() {
       this.chatBusy = false
       this.sending = false
       this.lastFetched = new Date()
@@ -491,7 +495,7 @@ export default {
       })
 
       // We also want to trigger an update in the chat list.
-      this.$store.dispatch('chats/fetch', {
+      await this.$store.dispatch('chats/fetch', {
         id: this.id
       })
     },
@@ -502,6 +506,12 @@ export default {
       if (msg) {
         this.sending = true
 
+        // If the current last message in this chat is an "interested", then we're going to ask if they
+        // expect a reply.
+        const RSVP =
+          this.chatmessages.length &&
+          this.chatmessages[this.chatmessages.length - 1].type === 'Interested'
+
         // Encode up any emojis.
         msg = twem.untwem(msg)
 
@@ -511,10 +521,14 @@ export default {
           message: msg
         })
 
-        this._updateAfterSend()
-
         // Clear the message now it's sent.
         this.sendmessage = ''
+
+        await this._updateAfterSend()
+
+        if (RSVP) {
+          this.$refs.rsvp.show()
+        }
       }
     },
     popup() {

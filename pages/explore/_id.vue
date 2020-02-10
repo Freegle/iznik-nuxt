@@ -9,7 +9,14 @@
     </b-row>
     <div v-else>
       <ExploreGroup v-if="id" :id="id" />
-      <ExploreMap v-else />
+      <ExploreMap
+        v-else
+        :swlat="swlat"
+        :swlng="swlng"
+        :nelat="nelat"
+        :nelng="nelng"
+        track
+      />
     </div>
   </div>
 </template>
@@ -29,7 +36,11 @@ export default {
   mixins: [loginOptional, buildHead],
   data: function() {
     return {
-      id: null
+      id: null,
+      swlat: null,
+      swlng: null,
+      nelat: null,
+      nelng: null
     }
   },
   async asyncData({ app, params, store }) {
@@ -72,6 +83,16 @@ export default {
   },
   created() {
     this.id = this.$route.params.id
+
+    const re = /(.*),(.*),(.*),(.*)/
+    const matches = re.exec(this.$route.query.bounds)
+
+    if (this.$route.query.bounds && matches.length === 5) {
+      this.swlat = parseFloat(matches[1])
+      this.swlng = parseFloat(matches[2])
+      this.nelat = parseFloat(matches[3])
+      this.nelng = parseFloat(matches[4])
+    }
   },
   head() {
     let group

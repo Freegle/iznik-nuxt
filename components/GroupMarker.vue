@@ -2,13 +2,13 @@
   <div>
     <RichMarker ref="rich" :key="size" :position="{ lat: group.lat, lng: group.lng }">
       <div @click="goto">
-        <b-img v-if="size ==='poor'" src="/mapmarker.gif" />
+        <b-img v-if="size ==='poor'" src="/mapmarker.gif" :title="group.namedisplay" />
         <div v-if="size === 'rich'" class="text-center">
-          <group-profile-image :image="group.profile ? group.profile : '/icon.png'" :alt-text="'Profile picture for ' + group.namedisplay" />
+          <group-profile-image :image="group.profile ? group.profile : '/icon.png'" :alt-text="'Profile picture for ' + group.namedisplay" size="sm" />
           <br>
-          <h5 class="text-break mt-1 p-2 bg-white text-success border border-success rounded thick">
+          <h6 class="text-break mt-1 p-2 bg-white text-success border border-success rounded thick">
             {{ group.namedisplay }}
-          </h5>
+          </h6>
         </div>
       </div>
     </RichMarker>
@@ -33,10 +33,6 @@ export default {
       type: String,
       required: true
     }
-  },
-  beforeDestroy() {
-    // We have to remove the marker from the map otherwise we get screen trozzle.
-    this.$refs.rich.getMarker().setMap(null)
   },
   methods: {
     goto() {

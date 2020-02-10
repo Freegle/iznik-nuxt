@@ -266,7 +266,8 @@
             </h2>
             <b-table striped :items="items" :fields="fields">
               <template v-slot:cell(members)="data">
-                {{ data.value.toLocaleString() }}
+                <!-- eslint-disable-next-line -->
+                <span v-html="data.value" />
               </template>
               <template v-slot:cell(monthly)="data">
                 <!-- eslint-disable-next-line -->
@@ -553,8 +554,19 @@ export default {
           ret.push({
             location: group.group.namedisplay + (group.overlap < 1 ? ' *' : ''),
             members:
-              group.ApprovedMemberCount[group.ApprovedMemberCount.length - 1]
-                .count,
+              Math.round(
+                group.ApprovedMemberCount[group.ApprovedMemberCount.length - 1]
+                  .count * group.overlap
+              ).toLocaleString() +
+              (group.overlap < 1
+                ? ' (<span class="text-muted small">of ' +
+                  Math.round(
+                    group.ApprovedMemberCount[
+                      group.ApprovedMemberCount.length - 1
+                    ].count
+                  ).toLocaleString() +
+                  ')</span>'
+                : ''),
             monthly:
               Math.round(group.avpermonth) +
               (group.overlap < 1

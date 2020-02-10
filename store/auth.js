@@ -10,7 +10,8 @@ export const state = () => ({
   userFetched: null,
   groups: [],
   nchan: null,
-  loggedInEver: false
+  loggedInEver: false,
+  userlist: []
 })
 
 const NONMIN = ['me', 'groups', 'aboutme', 'phone', 'notifications']
@@ -46,6 +47,19 @@ export const mutations = {
 
       // Ensure we don't store the password.
       delete state.user.password
+
+      // Keep track of which users we log in as.
+      if (!state.userlist) {
+        state.userlist = []
+      }
+
+      if (state.userlist.indexOf(user.id) === -1) {
+        if (state.userlist.length > 9) {
+          this.pop()
+        }
+
+        state.userlist.unshift(user.id)
+      }
     } else if (state.user || state.user === {}) {
       state.user = null
       state.userFetched = null
@@ -138,7 +152,7 @@ export const actions = {
     console.log('auth.setUser ',value?value.persistent:'null')
   },
 
-  async login({ commit, dispatch }, params) {
+  async login({ commit, dispatch, state }, params) {
     if (process.env.IS_APP) {
       params.mobile = true
       params.appversion = process.env.MOBILE_VERSION
@@ -166,6 +180,11 @@ export const actions = {
         },
         true
       )
+
+      if (state.userlist.length > 1) {
+        // Logged in as multiple users.  Let the server know.
+        await this.$api.session.related(state.userlist)
+      }
     } else {
       // Login failed.
       throw new LoginError(ret, status)

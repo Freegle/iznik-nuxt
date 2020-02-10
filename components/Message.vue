@@ -4,8 +4,8 @@
     <b-card class="p-0 mb-1" variant="success">
       <b-card-header :class="'pl-2 pr-2 clearfix' + (ispromised ? ' promisedfade' : '')">
         <b-card-title class="msgsubj mb-0 d-block d-sm-none">
-          <div class="d-flex flex-column justify-content-end">
-            <div class="d-flex">
+          <div>
+            <div>
               <Highlighter
                 v-if="matchedon"
                 :search-words="[matchedon.word]"
@@ -16,13 +16,7 @@
                 {{ eSubject }}
               </span>
             </div>
-            <div v-for="group in groups" :key="'message-' + id + '-' + group.id" class="small muted">
-              <div class="small">
-                {{ group.arrival | timeago }} on <nuxt-link :to="'/explore/' + group.groupid">
-                  {{ group.namedisplay }}
-                </nuxt-link>
-              </div>
-            </div>
+            <MessageHistory :id="id" :groups="groups" />
           </div>
           <div v-if="attachments && attachments.length > 0" class="d-block mt-1 d-sm-none clickme position-relative" @click="showPhotos">
             <b-badge v-if="attachments.length > 1" class="photobadge" variant="primary">
@@ -70,16 +64,7 @@
               <span v-else>
                 {{ eSubject }}
               </span>
-              <div v-for="group in groups" :key="'message-' + id + '-' + group.id" class="small d-none d-sm-block">
-                <div class="small">
-                  {{ group.arrival | timeago }} on <nuxt-link :to="'/explore/' + group.groupid">
-                    {{ group.namedisplay }}
-                  </nuxt-link>
-                  <nuxt-link :to="'/message/' + id" class="text-sm small text-faded">
-                    #{{ id }}&nbsp;
-                  </nuxt-link>
-                </div>
-              </div>
+              <MessageHistory :id="id" display-message-link :groups="groups" />
               <div flex-grow-1 class="small">
                 <div v-if="eSnippet && eSnippet !== 'null' && !expanded">
                   <b class="snippet black">
@@ -185,7 +170,7 @@
         </p>
 
         <div class="d-flex justify-content-between">
-          <MessageUserInfo v-if="expanded.fromuser" :user="expanded.fromuser" class="flex-grow-1" />
+          <MessageUserInfo v-if="expanded.fromuser" :user="expanded.fromuser" :milesaway="milesaway" class="flex-grow-1" />
           <span>
             <span v-if="expanded.replycount" class="small text-muted mr-1">
               <v-icon name="user" class="d-inline" />&nbsp;<span class="d-inline">{{ expanded.replycount }}&nbsp;freegler<span v-if="expanded.replycount != 1">s</span>&nbsp;replied&nbsp;</span>
@@ -264,6 +249,7 @@
     <MessageReportModal v-if="expanded" ref="reportModal" :message="$props" />
   </div>
 </template>
+
 <script>
 // Need to import rather than async otherwise the render doesn't happen and ref isn't set.
 import ChatButton from './ChatButton'
@@ -276,6 +262,7 @@ const Highlighter = () => import('vue-highlight-words')
 const MessageUserInfo = () => import('~/components/MessageUserInfo')
 const ImageCarousel = () => import('./ImageCarousel')
 const NoticeMessage = () => import('~/components/NoticeMessage')
+const MessageHistory = () => import('~/components/MessageHistory')
 
 export default {
   components: {
@@ -285,7 +272,8 @@ export default {
     ShareModal,
     MessageReportModal,
     ImageCarousel,
-    NoticeMessage
+    NoticeMessage,
+    MessageHistory
   },
   props: {
     id: {
@@ -333,6 +321,11 @@ export default {
     },
     url: {
       type: String,
+      required: false,
+      default: null
+    },
+    milesaway: {
+      type: Number,
       required: false,
       default: null
     }

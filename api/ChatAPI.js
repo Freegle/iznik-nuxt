@@ -51,4 +51,12 @@ export default class ChatAPI extends BaseAPI {
   unseenCount(chatid) {
     return this.$get('/chatrooms', { count: true })
   }
+
+  rsvp(roomid, id, value) {
+    return this.$patch('/chatmessages', {
+      roomid: roomid,
+      id: id,
+      replyexpected: value
+    })
+  }
 }

@@ -4,8 +4,8 @@
       <profile-image :image="user.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="sm" />
       <span class="flex-grow-1">
         Posted by {{ user.displayname }}
-        <span v-if="user.milesaway">
-          &bull; <b>about {{ user.milesaway | pluralize('mile', { includeNumber: true }) }} away</b>
+        <span v-if="milesaway">
+          &bull; <b>about {{ milesaway | pluralize('mile', { includeNumber: true }) }} away</b>
         </span>
         <br class="d-block d-sm-none">
         <span v-if="user.info.openoffers + user.info.openwanteds > 0">
@@ -36,6 +36,11 @@ export default {
     user: {
       type: Object,
       required: true
+    },
+    milesaway: {
+      type: Number,
+      required: false,
+      default: null
     }
   }
 }

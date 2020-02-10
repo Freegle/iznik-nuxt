@@ -205,11 +205,13 @@ export const actions = {
   async fetchViewed({ commit, rootGetters }) {
     const me = rootGetters['auth/user']
 
-    const { messages } = await this.$api.message.fetchMessages({
-      collection: 'Viewed',
-      fromuser: me.id
-    })
+    if (me) {
+      const { messages } = await this.$api.message.fetchMessages({
+        collection: 'Viewed',
+        fromuser: me.id
+      })
 
-    commit('setViewed', messages)
+      commit('setViewed', messages)
+    }
   }
 }

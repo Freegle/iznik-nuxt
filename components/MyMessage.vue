@@ -238,10 +238,12 @@ export default {
       const chats = Object.values(this.$store.getters['chats/list'])
       let unseen = 0
 
-      for (const reply of this.message.replies) {
-        for (const chat of chats) {
-          if (chat.id === reply.chatid) {
-            unseen += chat.unseen
+      if (this.message && this.message.replies) {
+        for (const reply of this.message.replies) {
+          for (const chat of chats) {
+            if (chat.id === reply.chatid) {
+              unseen += chat.unseen
+            }
           }
         }
       }
@@ -296,10 +298,12 @@ export default {
       const ret = []
       const retids = []
 
-      for (const reply of this.message.replies) {
-        if (retids.indexOf(reply.user.id) === -1) {
-          ret.push(reply.user)
-          retids[reply.userid] = true
+      if (this.message && this.message.replies) {
+        for (const reply of this.message.replies) {
+          if (retids.indexOf(reply.user.id) === -1) {
+            ret.push(reply.user)
+            retids[reply.userid] = true
+          }
         }
       }
 
@@ -365,6 +369,7 @@ export default {
       return unseen
     },
     outcome(type) {
+      console.log('Show outcome', type)
       this.$refs.outcomeModal.show(type)
     },
     share() {

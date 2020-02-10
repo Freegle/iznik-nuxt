@@ -1,7 +1,7 @@
 <template>
   <b-img-lazy
     thumbnail
-    class="profile-image"
+    :class="profileClass"
     :alt="altText"
     :src="image"
     @error.native="brokenProfileImage"
@@ -32,6 +32,16 @@ export default {
     isModerator: {
       type: Boolean,
       required: false
+    },
+    size: {
+      type: String,
+      required: false,
+      default: null
+    }
+  },
+  computed: {
+    profileClass() {
+      return this.size === 'sm' ? 'profile-image-sm' : 'profile-image'
     }
   },
   methods: {
@@ -46,5 +56,10 @@ export default {
 .profile-image {
   width: 100px;
   height: 100px;
+}
+
+.profile-image-sm {
+  width: 60px;
+  height: 60px;
 }
 </style>

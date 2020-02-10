@@ -154,10 +154,20 @@ export default {
         id: this.groupid
       })
     }
+
+    // We might have a preference for which type of posts we view.
+    const postType = this.$store.getters['misc/get']('postType')
+    if (postType) {
+      this.selectedType = postType
+    }
   },
   methods: {
     typeChange: function() {
       this.infiniteId++
+      this.$store.dispatch('misc/set', {
+        key: 'postType',
+        value: this.selectedType
+      })
     },
 
     loadMore: function($state) {

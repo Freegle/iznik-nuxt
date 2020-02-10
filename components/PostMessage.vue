@@ -70,7 +70,7 @@
         </b-form-select>
       </b-col>
       <b-col cols="12" md="9" class="pl-0 pr-0">
-        <PostItem ref="item" :item="item" @selected="itemSelect" @cleared="itemClear" @typed="itemType" />
+        <PostItem ref="item" v-model="item" @input="itemType" />
       </b-col>
     </b-row>
     <b-row>
@@ -190,24 +190,15 @@ export default {
       })
     },
     itemType(value) {
-      this.item = value
-      this.$store.dispatch('compose/setItem', {
-        id: this.id,
-        item: this.item,
-        type: this.type
-      })
-    },
-    itemSelect(item) {
-      this.item = item.name
-      this.$store.dispatch('compose/setItem', {
-        id: this.id,
-        item: this.item,
-        type: this.type
-      })
-    },
-    itemClear() {
-      this.item = null
-      this.uploading = false
+      if (value) {
+        this.$store.dispatch('compose/setItem', {
+          id: this.id,
+          item: this.item,
+          type: this.type
+        })
+      } else {
+        this.uploading = false
+      }
     },
     chooseSuggestion(suggestion) {
       this.item = suggestion.name
