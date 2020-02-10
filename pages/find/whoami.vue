@@ -55,6 +55,7 @@
 
 <script>
 import loginOptional from '@/mixins/loginOptional.js'
+import compose from '@/mixins/compose.js'
 import buildHead from '@/mixins/buildHead.js'
 
 const WizardProgress = () => import('~/components/WizardProgress')
@@ -63,7 +64,7 @@ export default {
   components: {
     WizardProgress
   },
-  mixins: [loginOptional, buildHead],
+  mixins: [loginOptional, buildHead, compose],
   data() {
     return {
       id: null,
@@ -71,31 +72,14 @@ export default {
     }
   },
   computed: {
-    email: {
-      get() {
-        let email = null
-        const user = this.$store.getters['auth/user']
-
-        if (user && user.email) {
-          // If we're logged in, then we have an email from that which takes precedence.
-          email = user.email
-
-          // Save it in case we're logged out next time.
-          this.$store.dispatch('compose/setEmail', email)
-        } else {
-          // See if we have a local email stored from last time we were logged in.
-          email = this.$store.getters['compose/getEmail']
-        }
-
-        return email
-      },
-      set(newValue) {
-        this.$store.dispatch('compose/setEmail', newValue)
-      }
-    },
     progressValue() {
       const progress = this.$store.getters['compose/getProgress']
       return progress
+    }
+  },
+  mounted() {
+    if (!this.valid) {
+      this.$router.push('/find/whatisit')
     }
   },
   methods: {
