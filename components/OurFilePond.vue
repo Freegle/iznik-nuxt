@@ -166,7 +166,7 @@ export default {
           }, 1000)
         }
         if (this.browse) {
-          this.takeAppPhoto()
+          // NO: don't show camera automatically: this.takeAppPhoto()
         }
       }
       else if (!this.$refs.pond._pond) {
