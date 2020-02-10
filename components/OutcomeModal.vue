@@ -191,7 +191,10 @@ export default {
           this.comments = 'Thanks, this has now been received.'
           break
         case 'Withdrawn':
-          this.comments = 'Sorry, this is no longer available.'
+          this.comments =
+            this.type === 'Offer'
+              ? 'Sorry, this is no longer available.'
+              : "Thanks, I'm no longer looking for this."
           break
       }
     },
