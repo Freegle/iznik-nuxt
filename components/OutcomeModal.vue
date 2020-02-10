@@ -15,17 +15,17 @@
         </b-row>
         <b-row>
           <b-col>
-            <b-select v-model="type" class="font-weight-bold" @change="changeType">
-              <option value="Taken">
-                Taken by
-              </option>
-              <option value="Received">
-                Received from
-              </option>
-              <option value="Withdrawn">
+            <span class="font-weight-bold align-middle">
+              <span v-if="type === 'Taken'">
+                Taken by:
+              </span>
+              <span v-if="type === 'Received'">
+                Received from:
+              </span>
+              <span v-if="type === 'Withdrawn'">
                 Withdrawn
-              </option>
-            </b-select>
+              </span>
+            </span>
           </b-col>
           <b-col>
             <b-select
@@ -207,11 +207,6 @@ export default {
       // We're having trouble capturing events from this modal, so use root as a bus.
       this.$root.$emit('outcome', this.groupid)
       this.showModal = false
-    },
-
-    changeType() {
-      this.selectedUser = -1
-      this.setComments()
     },
 
     async fetchUser(userid) {

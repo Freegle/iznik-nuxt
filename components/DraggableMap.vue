@@ -112,7 +112,12 @@ export default {
   created() {
     this.zoom = this.initialZoom
   },
-  async mounted() {},
+  mounted() {
+    setTimeout(() => {
+      // This fixes a problem where the map displays grey when you reopen the modal.
+      window.google.maps.event.trigger(this.$refs.gmap.$mapObject, 'resize')
+    }, 1000)
+  },
 
   methods: {
     zoomChanged: function(zoom) {
