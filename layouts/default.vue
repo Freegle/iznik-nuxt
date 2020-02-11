@@ -256,7 +256,7 @@
     <client-only>
       <ChatPopups v-if="loggedIn" class="d-none d-sm-block" />
       <LoginModal ref="loginModal" />
-      <AboutMeModal ref="modal" />
+      <AboutMeModal ref="aboutMeModal" />
     </client-only>
     <div class="navbar-toggle" style="display: none" />
     <div id="serverloader" class="bg-white">
@@ -574,7 +574,7 @@ export default {
     },
 
     showAboutMe() {
-      this.$refs.modal.show()
+      this.$refs.aboutMeModal.show()
     },
 
     async logOut() {
