@@ -51,7 +51,7 @@
           </b-navbar-nav>
           <b-navbar-nav class="ml-auto">
             <b-nav-item id="menu-option-notification" class="text-center p-0" />
-            <b-nav-item-dropdown class="white text-center notiflist" lazy right @shown="showNotifications">
+            <b-nav-item-dropdown class="white text-center notiflist" lazy right @shown="loadLatestNotifications">
               <template slot="button-content">
                 <div class="notifwrapper text-center small">
                   <v-icon name="bell" scale="2" />
@@ -141,7 +141,7 @@
           variant="success"
           lazy
           right
-          @shown="showNotifications"
+          @shown="loadLatestNotifications"
         >
           <template slot="button-content">
             <div class="notifwrapper">
@@ -624,7 +624,7 @@ export default {
       }
     },
 
-    showNotifications() {
+    loadLatestNotifications() {
       // We want to make sure we have the most up to date notifications.
       this.$store.dispatch('notifications/clearContext')
       this.$store.dispatch('notifications/list')
