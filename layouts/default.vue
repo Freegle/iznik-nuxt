@@ -70,7 +70,7 @@
               <b-dropdown-item v-for="notification in notifications" :key="'notification-' + notification.id" class="p-0 notpad">
                 <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
               </b-dropdown-item>
-              <infinite-loading :distance="distance" @infinite="loadMore">
+              <infinite-loading :distance="distance" @infinite="loadMoreNotifications">
                 <span slot="no-results" />
                 <span slot="no-more" />
                 <span slot="spinner">
@@ -160,7 +160,7 @@
           <b-dropdown-item v-for="notification in notifications" :key="'notification-' + notification.id" class="p-0 notpad">
             <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
           </b-dropdown-item>
-          <infinite-loading :distance="distance" @infinite="loadMore">
+          <infinite-loading :distance="distance" @infinite="loadMoreNotifications">
             <span slot="no-results" />
             <span slot="no-more" />
             <span slot="spinner">
@@ -591,7 +591,7 @@ export default {
       this.$router.push('/')
     },
 
-    loadMore: function($state) {
+    loadMoreNotifications: function($state) {
       const currentCount = this.notifications.length
 
       if (this.complete) {
