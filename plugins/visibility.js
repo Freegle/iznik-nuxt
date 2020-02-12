@@ -7,7 +7,7 @@ export default ({ store }) => {
     if (me && visible) {
       // We have become visible.  Refetch our notification count and chat count, which are the two key things which
       // produce red badges people should click on.
-      store.dispatch('notifications/count')
+      store.dispatch('notifications/getCurrentCount')
 
       const currentCount = store.getters['chats/unseenCount']
       const newCount = await store.dispatch('chats/unseenCount')
