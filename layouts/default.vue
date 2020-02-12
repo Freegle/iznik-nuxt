@@ -318,16 +318,18 @@ export default {
       return this.$store.getters['auth/user']
     },
     notifications() {
-      const notifications = this.$store.getters['notifications/list']
+      const notifications = this.$store.getters['notifications/getCurrentList']
 
-      notifications.sort(function(a, b) {
-        return new Date(b.timestamp) - new Date(a.timestamp)
-      })
+      if (notifications) {
+        notifications.sort(function(a, b) {
+          return new Date(b.timestamp) - new Date(a.timestamp)
+        })
+      }
 
       return notifications
     },
     notificationCount() {
-      return this.$store.getters['notifications/count']
+      return this.$store.getters['notifications/getCurrentCount']
     },
     chatCount() {
       return this.$store.getters['chats/unseenCount']
@@ -389,8 +391,8 @@ export default {
       console.log('Start NCHAN from mount')
       this.startNCHAN(me.id)
 
-      // Get notifications and poll regularly for new ones.  Would be nice if this was event driven instead but requires server work.
-      this.getNotificationCount()
+      // Get notifications and chats and poll regularly for new ones.  Would be nice if this was event driven instead but requires server work.
+      this.fetchLatestNotificationAndChats()
     }
 
     // Look for a custom logo.
@@ -543,19 +545,21 @@ export default {
         }
       })
     },
-    async getNotificationCount() {
+    async fetchLatestNotificationAndChats() {
       const me = this.$store.getters['auth/user']
 
       if (me && me.id) {
-        let currentCount = this.$store.getters['notifications/count']
-        const notifications = this.$store.getters['notifications/list']
-        await this.$store.dispatch('notifications/count')
-        let newCount = this.$store.getters['notifications/count']
+        let currentCount = this.$store.getters['notifications/getCurrentCount']
+        const notifications = this.$store.getters[
+          'notifications/getCurrentList'
+        ]
+        await this.$store.dispatch('notifications/updateNotificationCount')
+        let newCount = this.$store.getters['notifications/getCurrentCount']
 
         if (newCount !== currentCount || !notifications.length) {
           // Changed or don't know it yet.  Get the list so that it will display zippily when they click.
           await this.$store.dispatch('notifications/clear')
-          await this.$store.dispatch('notifications/list')
+          await this.$store.dispatch('notifications/fetchNextListChunk')
         }
 
         currentCount = this.$store.getters['chats/unseenCount']
@@ -570,7 +574,10 @@ export default {
         }
       }
 
-      this.notificationPoll = setTimeout(this.getNotificationCount, 30000)
+      this.notificationPoll = setTimeout(
+        this.fetchLatestNotificationAndChats,
+        30000
+      )
     },
 
     showAboutMe() {
@@ -599,10 +606,12 @@ export default {
       } else {
         this.busy = true
         this.$store
-          .dispatch('notifications/list')
+          .dispatch('notifications/fetchNextListChunk')
           .then(() => {
             try {
-              const notifications = this.$store.getters['notifications/list']
+              const notifications = this.$store.getters[
+                'notifications/getCurrentList'
+              ]
 
               if (currentCount === notifications.length) {
                 this.complete = true
@@ -628,7 +637,7 @@ export default {
       // We want to make sure we have the most up to date notifications.
       this.complete = false
       this.$store.dispatch('notifications/clear')
-      this.$store.dispatch('notifications/list')
+      this.$store.dispatch('notifications/fetchNextListChunk')
     },
 
     requestLogin() {
@@ -644,8 +653,8 @@ export default {
 
     async markAllRead() {
       await this.$store.dispatch('notifications/allSeen')
-      await this.$store.dispatch('notifications/count')
-      await this.$store.dispatch('notifications/list')
+      await this.$store.dispatch('notifications/updateNotificationCount')
+      await this.$store.dispatch('notifications/fetchNextListChunk')
     }
   }
 }
