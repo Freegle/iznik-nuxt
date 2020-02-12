@@ -121,6 +121,16 @@ export default {
         })
       }
 
+      options.sort((a, b) => {
+        if (a.value === -1) {
+          return -1
+        } else if (b.value === -1) {
+          return 1
+        } else {
+          return a.text.toLowerCase().localeCompare(b.text.toLowerCase())
+        }
+      })
+
       return options
     }
   },
