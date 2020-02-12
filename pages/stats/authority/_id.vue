@@ -457,7 +457,7 @@ export default {
   mixins: [loginOptional, buildHead],
   data() {
     return {
-      tables: true,
+      tables: false,
       startDate: null,
       endDate: null,
       authority: null,
