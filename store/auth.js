@@ -64,6 +64,10 @@ export const mutations = {
     }
   },
 
+  unbounce(state) {
+    state.user.bouncing = 0
+  },
+
   setLoggedInEver(state, value) {
     state.loggedInEver = value
   },
@@ -268,6 +272,11 @@ export const actions = {
       components: ['me', 'groups', 'aboutme']
     })
     return data
+  },
+
+  async unbounce({ commit, dispatch, state }, params) {
+    await this.$api.user.unbounce(params.id)
+    commit('unbounce')
   },
 
   async saveAndGet({ commit, dispatch, state }, params) {
