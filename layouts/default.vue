@@ -250,8 +250,8 @@
       </b-collapse>
     </b-navbar>
 
-
     <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent" />
+    <BouncingEmail />
     <LocalStorageMonitor />
     <client-only>
       <ChatPopups v-if="loggedIn" class="d-none d-sm-block" />
@@ -275,6 +275,7 @@
 // Import login modal as I've seen an issue where it's not in $refs when you click on the signin button too rapidly.
 import LoginModal from '~/components/LoginModal'
 import LocalStorageMonitor from '~/components/LocalStorageMonitor'
+import BouncingEmail from '~/components/BouncingEmail'
 
 const AboutMeModal = () => import('~/components/AboutMeModal')
 const ChatPopups = () => import('~/components/ChatPopups')
@@ -289,7 +290,8 @@ export default {
     Notification,
     AboutMeModal,
     LoginModal,
-    LocalStorageMonitor
+    LocalStorageMonitor,
+    BouncingEmail
   },
 
   data: function() {

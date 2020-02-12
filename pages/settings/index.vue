@@ -156,6 +156,16 @@
                       </b-input-group-append>
                     </b-input-group>
                   </b-form-group>
+                  <NoticeMessage v-if="me.bouncing" variant="danger" class="mb-2">
+                    <p>We can't send to your email address.  Please change it to a valid one and press <em>Save</em>.</p>
+                    <p>Or if you're sure it's valid:</p>
+                    <b-button variant="white" @click="unbounce">
+                      <v-icon v-if="unbouncing" name="sync" class="text-success fa-spin" />
+                      <v-icon v-else-if="unbounced" name="check" class="text-success" />
+                      <v-icon v-else name="check" />
+                      Try again
+                    </b-button>
+                  </NoticeMessage>
                 </b-col>
               </b-row>
               <b-row>
@@ -535,6 +545,8 @@ export default {
       savedPhone: false,
       removingPhone: false,
       removedPhone: false,
+      unbouncing: false,
+      unbounced: false,
       uploading: false,
       showPassword: false
     }
@@ -743,6 +755,21 @@ export default {
       this.savedEmail = true
       setTimeout(() => {
         this.savedEmail = false
+      }, 2000)
+    },
+    async unbounce() {
+      this.unbouncing = true
+
+      if (this.me.email && this.me.bouncing) {
+        await this.$store.dispatch('auth/unbounce', {
+          id: this.me.id
+        })
+      }
+
+      this.unbouncing = false
+      this.unbounced = true
+      setTimeout(() => {
+        this.unbounced = false
       }, 2000)
     },
     async savePostcode() {
