@@ -51,7 +51,7 @@
           </b-navbar-nav>
           <b-navbar-nav class="ml-auto">
             <b-nav-item id="menu-option-notification" class="text-center p-0" />
-            <b-nav-item-dropdown class="white text-center notiflist" lazy right @shown="showNotifications">
+            <b-nav-item-dropdown class="white text-center notiflist" lazy right @shown="loadLatestNotifications">
               <template slot="button-content">
                 <div class="notifwrapper text-center small">
                   <v-icon name="bell" scale="2" />
@@ -70,7 +70,7 @@
               <b-dropdown-item v-for="notification in notifications" :key="'notification-' + notification.id" class="p-0 notpad">
                 <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
               </b-dropdown-item>
-              <infinite-loading :distance="distance" @infinite="loadMore">
+              <infinite-loading :distance="distance" @infinite="loadMoreNotifications">
                 <span slot="no-results" />
                 <span slot="no-more" />
                 <span slot="spinner">
@@ -141,7 +141,7 @@
           variant="success"
           lazy
           right
-          @shown="showNotifications"
+          @shown="loadLatestNotifications"
         >
           <template slot="button-content">
             <div class="notifwrapper">
@@ -160,7 +160,7 @@
           <b-dropdown-item v-for="notification in notifications" :key="'notification-' + notification.id" class="p-0 notpad">
             <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
           </b-dropdown-item>
-          <infinite-loading :distance="distance" @infinite="loadMore">
+          <infinite-loading :distance="distance" @infinite="loadMoreNotifications">
             <span slot="no-results" />
             <span slot="no-more" />
             <span slot="spinner">
@@ -256,7 +256,7 @@
     <client-only>
       <ChatPopups v-if="loggedIn" class="d-none d-sm-block" />
       <LoginModal ref="loginModal" />
-      <AboutMeModal ref="modal" />
+      <AboutMeModal ref="aboutMeModal" />
     </client-only>
     <div class="navbar-toggle" style="display: none" />
     <div id="serverloader" class="bg-white">
@@ -583,7 +583,7 @@ export default {
     },
 
     showAboutMe() {
-      this.$refs.modal.show()
+      this.$refs.aboutMeModal.show()
     },
 
     async logOut() {
@@ -600,7 +600,7 @@ export default {
       this.$router.push('/')
     },
 
-    loadMore: function($state) {
+    loadMoreNotifications: function($state) {
       const currentCount = this.notifications.length
 
       if (this.complete) {
@@ -635,7 +635,7 @@ export default {
       }
     },
 
-    showNotifications() {
+    loadLatestNotifications() {
       // We want to make sure we have the most up to date notifications.
       this.complete = false
       this.$store.dispatch('notifications/clear')
