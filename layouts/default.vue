@@ -329,7 +329,7 @@ export default {
       return notifications
     },
     notificationCount() {
-      return this.$store.getters['notifications/getCurrentCount']
+      return this.$store.getters['notifications/getUnreadCount']
     },
     chatCount() {
       return this.$store.getters['chats/unseenCount']
@@ -549,12 +549,14 @@ export default {
       const me = this.$store.getters['auth/user']
 
       if (me && me.id) {
-        let currentCount = this.$store.getters['notifications/getCurrentCount']
+        let currentCount = this.$store.getters['notifications/getUnreadCount']
         const notifications = this.$store.getters[
           'notifications/getCurrentList'
         ]
-        await this.$store.dispatch('notifications/updateNotificationCount')
-        let newCount = this.$store.getters['notifications/getCurrentCount']
+        await this.$store.dispatch(
+          'notifications/updateUnreadNotificationCount'
+        )
+        let newCount = this.$store.getters['notifications/getUnreadCount']
 
         if (newCount !== currentCount || !notifications.length) {
           // Changed or don't know it yet.  Get the list so that it will display zippily when they click.
@@ -653,7 +655,7 @@ export default {
 
     async markAllRead() {
       await this.$store.dispatch('notifications/allSeen')
-      await this.$store.dispatch('notifications/updateNotificationCount')
+      await this.$store.dispatch('notifications/updateUnreadNotificationCount')
       await this.$store.dispatch('notifications/fetchNextListChunk')
     }
   }
