@@ -74,7 +74,7 @@ export const getters = {
 }
 
 export const actions = {
-  async fetchLatestList({ commit, state }, params) {
+  async fetchNextListChunk({ commit, state }, params) {
     const res = await this.$axios.get(process.env.API + '/notification', {
       params: {
         context: state.context
