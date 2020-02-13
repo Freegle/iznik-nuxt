@@ -21,8 +21,19 @@
       </div>
       <b-input v-model="subject" class="mt-2" />
       <b-textarea v-model="body" rows="10" class="mt-2" />
+      <div v-if="stdmsg && stdmsg.newdelstatus !== 'UNCHANGED'" class="mt-1">
+        <v-icon name="cog" />
+        Change email frequency to <em>{{ emailfrequency }}</em>
+      </div>
+      <div v-if="stdmsg && stdmsg.newmodstatus !== 'UNCHANGED'" class="mt-1">
+        <v-icon name="cog" />
+        Change moderation status to <em>{{ modstatus }}</em>
+      </div>
     </template>
-    <template slot="modal-footer" slot-scope="{ ok, cancel }">
+    <template slot="modal-footer" slot-scope="{ cancel }">
+      <b-btn variant="success" @click="process">
+        {{ processLabel }}
+      </b-btn>
       <b-button variant="white" @click="cancel">
         Cancel
       </b-button>
@@ -81,6 +92,83 @@ export default {
       }
 
       return ret
+    },
+
+    processLabel() {
+      if (this.stdmsg) {
+        switch (this.stdmsg.action) {
+          case 'Approve':
+          case 'Approve Member':
+            return 'Send and Approve'
+          case 'Reject':
+          case 'Reject Member':
+            return 'Send and Reject'
+          case 'Leave':
+          case 'Leave Member':
+          case 'Leave Approved Message':
+          case 'Leave Approved Member':
+            return 'Send and Leave'
+          case 'Delete':
+          case 'Delete Approved Message':
+          case 'Delete Approved Member':
+            return 'Send and Delete'
+          case 'Edit':
+            return 'Save Edit'
+          default:
+            return 'Unknown Action - Bug'
+        }
+      } else {
+        return null
+      }
+    },
+
+    modstatus() {
+      if (this.stdmsg) {
+        switch (this.stdmsg.newmodstatus) {
+          case 'UNCHANGED':
+            return 'Unchanged'
+          case 'MODERATOED':
+            return 'Moerated'
+          case 'DEFAULT':
+            return 'Group Settings'
+          case 'PROHIBITED':
+            return "Can't Post"
+        }
+      }
+
+      return null
+    },
+
+    emailfrequency() {
+      if (this.stdmsg) {
+        switch (this.stdmsg.newdelstatus) {
+          case 'DIGEST':
+            return 24
+          case 'NONE':
+            return 0
+          case 'SINGLE':
+            return -1
+          case 'ANNOUNCEMENT':
+            return 0
+        }
+      }
+
+      return 0
+    },
+
+    delstatus() {
+      if (this.stdmsg) {
+        switch (this.emailfrequency) {
+          case 24:
+            return 'Every Day'
+          case 0:
+            return 'Never'
+          case -1:
+            return 'Immediately'
+        }
+      }
+
+      return 'Unknown'
     }
   },
   methods: {
@@ -203,9 +291,6 @@ export default {
           )
         }
 
-        // TODO $otherapplied
-        text = text.replace(/\$otherapplied/g, '')
-
         text = text.replace(/\$membermail/g, this.message.fromaddr)
         const from = this.message.fromuser.realemail
           ? this.message.fromuser.realemail
@@ -229,6 +314,10 @@ export default {
       }
 
       return text
+    },
+
+    process() {
+      console.log('Time do do something')
     }
   }
 }
