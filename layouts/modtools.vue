@@ -49,6 +49,9 @@
         </div>
         <nuxt-link to="/modtools/messages/pending" class="pl-3">
           Pending
+          <b-badge v-if="getCount('pending')" variant="danger">
+            {{ getCount('pending') }}
+          </b-badge>
         </nuxt-link>
         <nuxt-link to="/modtools/messages/approved" class="pl-3">
           Approved
@@ -88,6 +91,9 @@ export default {
     me() {
       return this.$store.getters['auth/user']
     },
+    work() {
+      return this.$store.getters['auth/work']
+    },
     chatCount() {
       return this.$store.getters['chats/unseenCount']
     }
@@ -112,6 +118,16 @@ export default {
     }
   },
 
+  mounted() {
+    this.workTimer = setTimeout(this.checkWork, 0)
+  },
+
+  beforeDestroy() {
+    if (this.workTimer) {
+      clearTimeout(this.workTimer)
+    }
+  },
+
   methods: {
     async logOut() {
       // Remove all cookies, both client and server.  This seems to be necessary to kill off the PHPSESSID cookie
@@ -128,6 +144,26 @@ export default {
     },
     requestLogin() {
       this.$refs.loginModal.show()
+    },
+    checkWork() {
+      this.$store.dispatch('auth/fetchUser', {
+        components: ['work'],
+        force: true,
+        modtools: true
+      })
+
+      setTimeout(this.checkWork, 30000)
+    },
+    getCount(type) {
+      console.log('Got work', this.work)
+      for (const key in this.work) {
+        console.log('Check', key, this.work[key])
+        if (key === type) {
+          return this.work[key]
+        }
+      }
+
+      return 0
     }
   },
 
@@ -246,7 +282,7 @@ body.modal-open {
 
 .leftmenu {
   height: 100vh;
-  width: 200px;
+  min-width: 200px;
   padding-top: 68px;
   font-size: 1.4em;
   background-color: $color-modtools-leftmenu-bg;

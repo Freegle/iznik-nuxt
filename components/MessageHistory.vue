@@ -4,7 +4,7 @@
       {{ group.arrival | timeago }} on <nuxt-link :to="'/explore/' + group.groupid">
         {{ group.namedisplay }}
       </nuxt-link>
-      <nuxt-link v-if="displayMessageLink" :to="'/message/' + message.id" class="text-faded">
+      <nuxt-link v-if="displayMessageLink" :to="'/message/' + message.id" :class="modinfo ? '' : 'text-faded'">
         #{{ message.id }}
       </nuxt-link>
       <span v-if="modinfo">

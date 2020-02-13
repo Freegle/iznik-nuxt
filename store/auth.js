@@ -9,7 +9,9 @@ export const state = () => ({
   groups: [],
   nchan: null,
   loggedInEver: false,
-  userlist: []
+  userlist: [],
+  work: [],
+  discourse: {}
 })
 
 const NONMIN = ['me', 'groups', 'aboutme', 'phone', 'notifications']
@@ -76,6 +78,14 @@ export const mutations = {
     state.groups = groups
   },
 
+  setWork(state, work) {
+    state.work = work
+  },
+
+  setDiscourse(state, work) {
+    state.discourse = work
+  },
+
   setFetched(state, val) {
     state.userFetched = val
   },
@@ -96,6 +106,11 @@ export const getters = {
 
   user: state => {
     const ret = state.user
+    return ret
+  },
+
+  work: state => {
+    const ret = state.work
     return ret
   },
 
@@ -242,7 +257,13 @@ export const actions = {
       // Set the time now; this avoids multiple fetches at the start of page loads.
       commit('setFetched', Date.now())
 
-      const { me, persistent, groups } = await this.$api.session.fetch(params)
+      const {
+        me,
+        persistent,
+        groups,
+        work,
+        discourse
+      } = await this.$api.session.fetch(params)
 
       if (me) {
         // Save the persistent session token.
@@ -256,6 +277,14 @@ export const actions = {
         // Set the user, which will trigger various re-rendering if we were required to be logged in.
         commit('setUser', me, params.components)
         commit('forceLogin', false)
+      }
+
+      if (work) {
+        commit('setWork', work)
+      }
+
+      if (discourse) {
+        commit('setDiscourse', discourse)
       }
     }
   },

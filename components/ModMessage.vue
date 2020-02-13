@@ -22,7 +22,7 @@
               </b-input-group>
             </div>
           </div>
-          <MessageHistory :message="message" modinfo />
+          <MessageHistory :message="message" modinfo display-message-link />
         </div>
         <div>
           <b-btn v-if="!editing" variant="white" @click="editing = true">
