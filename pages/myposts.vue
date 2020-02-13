@@ -59,7 +59,7 @@
                 Stuff you're giving away.
               </p>
               <b-img-lazy v-if="busy && offers.length === 0" src="~/static/loader.gif" alt="Loading..." />
-              <div v-if="busy || activeOfferCount > 0">
+              <div v-if="busy || activeOfferCount > 0 || (showOldOffers && offers.length > 0)">
                 <div v-for="message in offers" :key="'message-' + message.id" class="p-0 text-left mt-1">
                   <MyMessage :message="message" :messages="messages" :show-old="showOldOffers" :expand="expand" />
                 </div>
@@ -111,7 +111,7 @@
               <p v-if="wanteds.length > 0" class="text-muted">
                 Stuff you're trying to find.
               </p>
-              <div v-if="busy || activeWantedCount > 0">
+              <div v-if="busy || activeWantedCount > 0 || (showOldWanteds && wanteds.length > 0)">
                 <div v-for="message in wanteds" :key="'message-' + message.id" class="p-0 text-left mt-1">
                   <MyMessage :message="message" :messages="messages" :show-old="showOldWanteds" :expand="expand" />
                 </div>
