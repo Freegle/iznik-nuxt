@@ -22,6 +22,8 @@
       :variant="variant(stdmsg)"
       :icon="icon(stdmsg)"
       :label="stdmsg.title"
+      :stdmsg="stdmsg"
+      :message="message"
     />
     <b-btn v-if="rareToShow && !showRare" variant="white" class="mb-1" @click="showRare = true">
       <v-icon name="caret-down" /> +{{ rareToShow }}...
@@ -40,7 +42,7 @@ export default {
     },
     modconfig: {
       type: Object,
-      required: true
+      required: false
     }
   },
   data: function() {
@@ -74,14 +76,22 @@ export default {
       return this.filterByAction.length - this.filtered.length
     },
     filterByAction() {
-      return this.modconfig.stdmsgs.filter(stdmsg => {
-        return this.validActions.indexOf(stdmsg.action) !== -1
-      })
+      if (this.modconfig) {
+        return this.modconfig.stdmsgs.filter(stdmsg => {
+          return this.validActions.indexOf(stdmsg.action) !== -1
+        })
+      }
+
+      return []
     },
     filtered() {
-      return this.filterByAction.filter(stdmsg => {
-        return this.showRare || !parseInt(stdmsg.rarelyused)
-      })
+      if (this.modconfig) {
+        return this.filterByAction.filter(stdmsg => {
+          return this.showRare || !parseInt(stdmsg.rarelyused)
+        })
+      }
+
+      return []
     }
   },
   methods: {

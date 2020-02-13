@@ -48,15 +48,17 @@
         <div>
           Messages
         </div>
-        <nuxt-link to="/modtools/messages/pending" class="pl-3 d-block">
-          Pending
+        <div>
+          <!-- eslint-disable-next-line -->
+          <nuxt-link to="/modtools/messages/pending" class="pl-3">Pending</nuxt-link>
           <b-badge v-if="getCount('pending')" variant="danger">
             {{ getCount('pending') }}
           </b-badge>
-        </nuxt-link>
-        <nuxt-link to="/modtools/messages/approved" class="pl-3 d-block">
-          Approved
-        </nuxt-link>
+        </div>
+        <div>
+          <!-- eslint-disable-next-line -->
+          <nuxt-link to="/modtools/messages/approved" class="pl-3">Approved</nuxt-link>
+        </div>
       </div>
       <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent flex-grow-1" />
     </div>

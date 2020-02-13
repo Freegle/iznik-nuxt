@@ -32,7 +32,7 @@ export default {
       return this.countType('Offer')
     },
     wanteds() {
-      return this.countType('Wanteds')
+      return this.countType('Wanted')
     }
   },
   methods: {

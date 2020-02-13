@@ -215,8 +215,6 @@ export default {
         ret = configs.find(config => config.id === configid)
       }
 
-      console.log('ModConfig', ret)
-
       return ret
     }
   },

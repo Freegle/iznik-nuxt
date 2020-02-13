@@ -31,6 +31,7 @@ import UserAPI from './UserAPI.js'
 import UserSearchAPI from './UserSearchAPI.js'
 import VolunteeringAPI from './VolunteeringAPI.js'
 import ShortlinkAPI from './ShortlinkAPI'
+import ModConfigsAPI from './ModConfigsAPI'
 
 export default ({ $axios }) => {
   const options = { $axios }
@@ -47,6 +48,7 @@ export default ({ $axios }) => {
     job: new JobAPI(options),
     memberships: new MembershipsAPI(options),
     message: new MessageAPI(options),
+    modconfigs: new ModConfigsAPI(options),
     news: new NewsAPI(options),
     noticeboard: new NoticeboardAPI(options),
     notification: new NotificationAPI(options),

@@ -4,13 +4,16 @@
       <v-icon :name="icon" /> {{ label }}
     </b-btn>
     <ConfirmModal ref="confirm" @confirm="deleteConfirmed" />
+    <ModStdMessageModal ref="stdmsg" :stdmsgid="stdmsg ? stdmsg.id : null" :message="message" />
   </div>
 </template>
 <script>
 import ConfirmModal from './ConfirmModal'
+import ModStdMessageModal from './ModStdMessageModal'
 
 export default {
   components: {
+    ModStdMessageModal,
     ConfirmModal
   },
   props: {
@@ -56,6 +59,7 @@ export default {
         // Standard delete button
       } else {
         // Something else
+        this.$refs.stdmsg.show()
       }
     },
     approveIt() {
