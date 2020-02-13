@@ -26,6 +26,7 @@ export default {
     }
   },
   watch: {
+    // TODO Watch for work changes and reload?
     groupid() {
       this.context = null
       this.$store.dispatch('messages/clear')

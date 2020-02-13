@@ -40,6 +40,7 @@
     <div class="d-flex">
       <div class="leftmenu">
         <!--        TODO Counts for work-->
+        <!--        TODO Reload on click-->
         <nuxt-link to="/modtools">
           Dashboard
         </nuxt-link>
@@ -47,13 +48,13 @@
         <div>
           Messages
         </div>
-        <nuxt-link to="/modtools/messages/pending" class="pl-3">
+        <nuxt-link to="/modtools/messages/pending" class="pl-3 d-block">
           Pending
           <b-badge v-if="getCount('pending')" variant="danger">
             {{ getCount('pending') }}
           </b-badge>
         </nuxt-link>
-        <nuxt-link to="/modtools/messages/approved" class="pl-3">
+        <nuxt-link to="/modtools/messages/approved" class="pl-3 d-block">
           Approved
         </nuxt-link>
       </div>
@@ -120,6 +121,7 @@ export default {
 
   mounted() {
     this.workTimer = setTimeout(this.checkWork, 0)
+    this.$store.dispatch('modconfigs/fetch')
   },
 
   beforeDestroy() {
