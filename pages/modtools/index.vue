@@ -1,6 +1,6 @@
 <template>
   <div>
-    Yo
+    TODO Revamped dashboard here.
   </div>
 </template>
 <style scoped>
