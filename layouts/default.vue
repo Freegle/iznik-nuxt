@@ -682,6 +682,10 @@ html {
   box-sizing: border-box;
 }
 
+.pageContent {
+  background-image: url('~static/wallpaper.png');
+}
+
 #navbar_large .nav-item {
   width: 80px;
   text-align: center;
@@ -812,11 +816,6 @@ body.modal-open {
 
 svg.fa-icon {
   height: 32px;
-}
-
-.signindisabled {
-  opacity: 0.2;
-  pointer-events: none;
 }
 
 .notifwrapper {
