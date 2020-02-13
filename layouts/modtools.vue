@@ -1,7 +1,7 @@
 <template>
   <div class="pageback">
     <b-navbar id="navbar" type="dark" class="navback" fixed="top">
-      <b-navbar-brand to="/" class="p-0">
+      <b-navbar-brand to="/modtools" class="p-0">
         <b-img
           class="logo mr-2"
           height="58"
@@ -15,11 +15,11 @@
         <b-navbar-nav />
         <b-navbar-nav class="ml-auto">
           <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse" class="text-center p-0" />
-          <b-nav-item v-if="loggedIn" id="menu-option-modtools-chat" class="text-center small p-0" to="/modtools/chats" @mousedown="maybeReload('/modtools/chats')">
+          <b-nav-item v-if="loggedIn" id="menu-option-modtools-chat" class="text-center p-0" to="/modtools/chats">
             <div class="notifwrapper">
               <v-icon name="comments" scale="2" /><br>
               Chats
-              <b-badge v-if="chatCount" variant="danger" class="ml-3 chatbadge">
+              <b-badge v-if="chatCount" variant="danger">
                 {{ chatCount }}
               </b-badge>
             </div>
