@@ -316,8 +316,75 @@ export default {
       return text
     },
 
-    process() {
-      console.log('Time do do something')
+    async process() {
+      if (this.stdmsg && this.stdmsg.newdelstatus) {
+        await this.$store.dispatch('user/edit', {
+          id: this.message.fromuser.id,
+          groupid: this.groupid,
+          emailfrequency: this.emailfrequency
+        })
+      }
+
+      if (this.stdmsg && this.stdmsg.newmodstatus) {
+        await this.$store.dispatch('user/edit', {
+          id: this.message.fromuser.id,
+          groupid: this.groupid,
+          ourPostingStatus: this.stdmsg.newmodstatus
+        })
+      }
+
+      if (this.stdmsg) {
+        switch (this.stdmsg.action) {
+          case 'Approve':
+            await this.$store.dispatch('messages/approve', {
+              id: this.message.id,
+              groupid: this.groupid,
+              subject: this.subject,
+              body: this.body,
+              stdmsgid: this.stdmsg.id
+            })
+            break
+          case 'Leave':
+            await this.$store.dispatch('messages/reply', {
+              id: this.message.id,
+              groupid: this.groupid,
+              subject: this.subject,
+              body: this.body,
+              stdmsgid: this.stdmsg.id
+            })
+            break
+          case 'Reject':
+            await this.$store.dispatch('messages/reject', {
+              id: this.message.id,
+              groupid: this.groupid,
+              subject: this.subject,
+              body: this.body,
+              stdmsgid: this.stdmsg.id
+            })
+            break
+          case 'Delete':
+            await this.$store.dispatch('messages/delete', {
+              id: this.message.id,
+              groupid: this.groupid,
+              subject: this.subject,
+              body: this.body,
+              stdmsgid: this.stdmsg.id
+            })
+            break
+          case 'Edit':
+            // TODO
+            break
+          default:
+            console.error('Unknown stdmsg action', this.action)
+        }
+      }
+
+      // Ensure the counts are updated.
+      await this.$store.dispatch('auth/fetchUser', {
+        components: ['work'],
+        force: true,
+        modtools: true
+      })
     }
   }
 }

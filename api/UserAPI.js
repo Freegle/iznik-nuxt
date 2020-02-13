@@ -13,4 +13,8 @@ export default class UserAPI extends BaseAPI {
   unbounce(id) {
     return this.$post('/user', { id: id, action: 'Unbounce' })
   }
+
+  save(event) {
+    return this.$patch('/user', event)
+  }
 }

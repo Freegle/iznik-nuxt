@@ -4,7 +4,7 @@
       <v-icon :name="icon" /> {{ label }}
     </b-btn>
     <ConfirmModal ref="confirm" @confirm="deleteConfirmed" />
-    <ModStdMessageModal ref="stdmsg" :stdmsgid="stdmsg ? stdmsg.id : null" :message="message" />
+    <ModStdMessageModal v-if="stdmsg" ref="stdmsg" :stdmsgid="stdmsg.id" :message="message" />
   </div>
 </template>
 <script>
@@ -49,7 +49,17 @@ export default {
       default: false
     }
   },
-  computed: {},
+  computed: {
+    groupid() {
+      let ret = null
+
+      if (this.message && this.message.groups && this.message.groups.length) {
+        ret = this.message.groups[0].groupid
+      }
+
+      return ret
+    }
+  },
   methods: {
     click() {
       if (this.approve) {
