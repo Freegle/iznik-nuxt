@@ -1,5 +1,5 @@
 <template>
-  <span class="border border-info rounded p-2">
+  <span class="border border-info rounded p-1">
     <b-badge variant="light">
       <v-icon name="gift" class="fa-fw" /> {{ offers }}
     </b-badge>

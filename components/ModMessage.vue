@@ -61,32 +61,32 @@
             <MessageReplyInfo :message="message" class="d-inline" />
           </b-col>
           <b-col cols="12" lg="4">
-            <div class="rounded border border-info p-2">
+            <div class="rounded border border-info p-2 d-flex justify-content-between flex-wrap">
               <MessageUserInfo :user="message.fromuser" modinfo :groupid="message.groups[0].groupid" />
-              <ModPostingHistory :user="message.fromuser" />
-              <div>
-                <b-btn variant="link" @click="showMailSettings = !showMailSettings">
-                  <span v-if="showMailSettings">
-                    Hide mail settings
-                  </span>
-                  <span v-else>
-                    Show mail settings
-                  </span>
-                </b-btn>
-              </div>
-              <SettingsGroup
-                v-if="showMailSettings"
-                :groupid="message.groups[0].groupid"
-                :emailfrequency="membership.emailfrequency"
-                :volunteeringallowed="Boolean(membership.volunteeringallowed)"
-                :eventsallowed="Boolean(membership.eventsallowed)"
-              />
-              <!--              TODO Handle changes-->
               <!--              Email list-->
               <!--              Active on-->
               <!--              Group list-->
               <!--              Applied list-->
             </div>
+            <div>
+              <b-btn variant="link" @click="showMailSettings = !showMailSettings">
+                <span v-if="showMailSettings">
+                  Hide mail settings
+                </span>
+                <span v-else>
+                  Show mail settings
+                </span>
+              </b-btn>
+            </div>
+            <SettingsGroup
+              v-if="showMailSettings"
+              :groupid="message.groups[0].groupid"
+              :emailfrequency="membership.emailfrequency"
+              :volunteeringallowed="Boolean(membership.volunteeringallowed)"
+              :eventsallowed="Boolean(membership.eventsallowed)"
+              class="border border-info mt-2 p-1"
+            />
+            <!--              TODO Handle changes-->
           </b-col>
         </b-row>
       </b-card-body>
@@ -100,7 +100,6 @@ import MessageHistory from './MessageHistory'
 import MessageUserInfo from './MessageUserInfo'
 import MessageReplyInfo from './MessageReplyInfo'
 import SettingsGroup from './SettingsGroup'
-import ModPostingHistory from './ModPostingHistory'
 import ModImage from './ModImage'
 import twem from '~/assets/js/twem'
 
@@ -108,7 +107,6 @@ export default {
   name: 'ModMessage',
   components: {
     ModImage,
-    ModPostingHistory,
     SettingsGroup,
     MessageReplyInfo,
     MessageUserInfo,

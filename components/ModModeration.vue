@@ -1,5 +1,5 @@
 <template>
-  <b-select v-model="postingStatus" :options="options" class="d-inline sel" disabled />
+  <b-select v-model="postingStatus" :options="options" class="d-inline sel" disabled size="lg" />
 </template>
 <script>
 export default {

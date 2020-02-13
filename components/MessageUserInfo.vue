@@ -1,5 +1,5 @@
 <template>
-  <span class="w-100 d-flex justify-content-between">
+  <div class="w-100 d-flex justify-content-between flex-wrap">
     <nuxt-link :to="'/profile/' + user.id" class="text-success decornone" :title="'Click to view profile for ' + user.displayname">
       <span class="text-muted small d-flex justify-content-between">
         <profile-image :image="user.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="sm" />
@@ -26,22 +26,27 @@
         </span>
       </span>
     </nuxt-link>
-    <div v-if="modinfo && membership" class="d-flex flex-grow-1 justify-content-between">
-      <span class="ml-2">
-        <v-icon name="calendar-alt" />
-        <span :class="joinedAge <= 31 ? 'text-danger' : ''">Joined {{ membership.added | dateshort }}</span>
-      </span>
-      <ModModeration :membership="membership" class="ml-2" />
-    </div>
-  </span>
+    <span v-if="modinfo && membership" class="ml-2">
+      <v-icon name="calendar-alt" />
+      <span :class="joinedAge <= 31 ? 'text-danger' : ''">Joined {{ membership.added | dateshort }}</span>
+    </span>
+    <span v-if="modinfo && membership" class="ml-2">
+      <v-icon name="envelope" />
+      {{ email }}
+    </span>
+    <ModModeration v-if="modinfo && membership" :membership="membership" />
+    <ModPostingHistory v-if="modinfo" :user="user" />
+  </div>
 </template>
 
 <script>
+import ModPostingHistory from './ModPostingHistory'
 import ProfileImage from '~/components/ProfileImage'
 const ModModeration = () => import('./ModModeration')
 
 export default {
   components: {
+    ModPostingHistory,
     ModModeration,
     ProfileImage
   },
@@ -84,6 +89,19 @@ export default {
       }
 
       return null
+    },
+    email() {
+      let ret = null
+      this.user.emails.forEach(email => {
+        if (
+          email.email &&
+          email.email.indexOf('users.ilovefreegle.org') === -1
+        ) {
+          ret = email.email
+        }
+      })
+
+      return ret
     }
   }
 }
