@@ -85,7 +85,7 @@ export default {
   mixins: [loginOptional, buildHead, compose],
   data: function() {
     return {
-      postType: 'Wantd'
+      postType: 'Wanted'
     }
   },
   methods: {
