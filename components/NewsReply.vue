@@ -409,7 +409,7 @@ export default {
     },
     async sendReply() {
       // Encode up any emojis.
-      if (this.replybox) {
+      if (this.replybox && this.replybox.trim()) {
         const msg = twem.untwem(this.replybox)
 
         await this.$store.dispatch('newsfeed/send', {
