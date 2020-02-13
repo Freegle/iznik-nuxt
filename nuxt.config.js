@@ -125,7 +125,7 @@ module.exports = {
       { hid: 'twitter:site', name: 'twitter:site', content: 'thisisfreegle' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      // { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'preconnect', href: 'https://i.ytimg.com' },
       { rel: 'preconnect', href: 'https://s.ytimg.com' },
       { rel: 'preconnect', href: 'https://www.youtube.com' },

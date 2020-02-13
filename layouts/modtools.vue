@@ -46,7 +46,7 @@
         <div>
           Messages
         </div>
-        <nuxt-link to="/modtools/pending" class="pl-3">
+        <nuxt-link to="/modtools/messages/pending" class="pl-3">
           Pending
         </nuxt-link>
       </div>
@@ -124,6 +124,21 @@ export default {
     },
     requestLogin() {
       this.$refs.loginModal.show()
+    }
+  },
+
+  head() {
+    // TODO Counts
+    const totalCount = this.chatCount
+    return {
+      titleTemplate: totalCount > 0 ? `(${totalCount}) ModTools` : 'ModTools',
+      link: [
+        {
+          rel: 'icon',
+          type: 'image/x-icon',
+          href: '/icon_modtools.png'
+        }
+      ]
     }
   }
 }

@@ -307,7 +307,14 @@ export default {
   head() {
     const totalCount = this.notificationCount + this.chatCount
     return {
-      titleTemplate: totalCount > 0 ? `(${totalCount}) %s` : '%s'
+      titleTemplate: totalCount > 0 ? `(${totalCount}) %s` : '%s',
+      link: [
+        {
+          rel: 'icon',
+          type: 'image/x-icon',
+          href: '/icon.png'
+        }
+      ]
     }
   },
 
