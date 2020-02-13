@@ -1,11 +1,43 @@
 <template>
   <div>
     <b-card bg-variant="white" no-body>
-      <b-card-header>
+      <b-card-header class="d-flex justify-content-between">
         <!--        TODO Edits-->
         <!--        TODO Colour code-->
-        {{ eSubject }}
-        <MessageHistory :message="message" modinfo />
+        <div>
+          <div v-if="!editing">
+            {{ eSubject }}
+          </div>
+          <div v-else>
+            <div v-if="message.location">
+              <b-input-group>
+                <b-select v-model="message.type" :options="typeOptions" class="type" />
+                <b-input v-model="message.item.name" />
+                <b-input v-model="message.location.name" class="location" />
+              </b-input-group>
+            </div>
+            <div v-else>
+              <b-input-group>
+                <b-input v-model="message.subject" />
+              </b-input-group>
+            </div>
+          </div>
+          <MessageHistory :message="message" modinfo />
+        </div>
+        <div>
+          <b-btn v-if="!editing" variant="white" @click="editing = true">
+            <v-icon name="pen" /> Edit
+          </b-btn>
+          <b-btn v-if="editing" variant="white" @click="editing = false">
+            <v-icon name="" /> Cancel
+          </b-btn>
+          <b-button v-if="editing" variant="white" disabled @click="save">
+            <v-icon v-if="saving" name="sync" class="text-success fa-spin" />
+            <v-icon v-else-if="saved" name="check" class="text-success" />
+            <v-icon v-else name="save" />
+            Save
+          </b-button>
+        </div>
         <!--        TODO Duplicates, related-->
         <!--        Worry Words-->
         <!--        Outcomes-->
@@ -15,37 +47,17 @@
         <!--        Held by-->
         <b-row>
           <b-col cols="12" lg="8">
-            <div v-if="message.location">
-              <b-input-group>
-                <b-select v-model="message.type" :options="typeOptions" class="type" />
-                <b-input v-model="message.item.name" />
-                <b-input v-model="message.location.name" class="location" />
-                <b-input-group-append>
-                  <b-button variant="white" disabled @click="saveStructuredSubject">
-                    <v-icon v-if="savingSubject" name="sync" class="text-success fa-spin" />
-                    <v-icon v-else-if="savedSubject" name="check" class="text-success" />
-                    <v-icon v-else name="save" />
-                    Save
-                  </b-button>
-                </b-input-group-append>
-              </b-input-group>
-            </div>
-            <div v-else>
-              <b-input-group>
-                <b-input v-model="message.subject" />
-                <b-input-group-append>
-                  <b-button variant="white" disabled @click="saveUnstructuredSubject">
-                    <v-icon v-if="savingSubject" name="sync" class="text-success fa-spin" />
-                    <v-icon v-else-if="savedSubject" name="check" class="text-success" />
-                    <v-icon v-else name="save" />
-                    Save
-                  </b-button>
-                </b-input-group-append>
-              </b-input-group>
-            </div>
+            <b-form-textarea
+              v-if="editing"
+              v-model="message.textbody"
+              rows="8"
+              class="mb-3"
+            />
             <!-- eslint-disable-next-line -->
-            <div class="mt-3 mb-3 rounded border pl-1 pr-1 prewrap forcebreak font-weight-bold">{{ message.textbody }}</div>
-            <!--        TODO Attachments-->
+            <div v-else class="mb-3 rounded border p-2 prewrap forcebreak font-weight-bold">{{ eBody }}</div>
+            <div v-if="message.attachments && message.attachments.length" class="d-flex">
+              <ModImage v-for="attachment in message.attachments" :key="'attachment-' + attachment.id" :attachment="attachment" class="d-inline pr-1" />
+            </div>
             <MessageReplyInfo :message="message" class="d-inline" />
           </b-col>
           <b-col cols="12" lg="4">
@@ -89,11 +101,13 @@ import MessageUserInfo from './MessageUserInfo'
 import MessageReplyInfo from './MessageReplyInfo'
 import SettingsGroup from './SettingsGroup'
 import ModPostingHistory from './ModPostingHistory'
+import ModImage from './ModImage'
 import twem from '~/assets/js/twem'
 
 export default {
   name: 'ModMessage',
   components: {
+    ModImage,
     ModPostingHistory,
     SettingsGroup,
     MessageReplyInfo,
@@ -108,9 +122,10 @@ export default {
   },
   data: function() {
     return {
-      savingSubject: false,
-      savedSubject: false,
-      showMailSettings: false
+      saving: false,
+      saved: false,
+      showMailSettings: false,
+      editing: false
     }
   },
   computed: {
