@@ -67,7 +67,6 @@
             <div class="rounded border border-info p-2 d-flex justify-content-between flex-wrap">
               <MessageUserInfo :user="message.fromuser" modinfo :groupid="message.groups[0].groupid" />
               <!--              Email list-->
-              <!--              Active on-->
               <!--              Group list-->
               <!--              Applied list-->
             </div>
@@ -122,6 +121,11 @@
           </b-col>
         </b-row>
       </b-card-body>
+      <b-card-footer>
+        <b-btn v-if="pending" variant="success" @click="approve">
+          <v-icon name="check" /> Approve
+        </b-btn>
+      </b-card-footer>
     </b-card>
   </div>
 </template>
@@ -181,26 +185,40 @@ export default {
     eBody() {
       return twem.twem(this.$twemoji, this.message.textbody)
     },
+    groupid() {
+      return this.message.groups && this.message.groups.length > 0
+        ? this.message.groups[0].groupid
+        : null
+    },
     membership() {
       let ret = null
-      const groupid =
-        this.message.groups && this.message.groups.length > 0
-          ? this.message.groups[0].groupid
-          : null
 
-      if (groupid) {
-        ret = this.message.fromuser.memberof.find(g => g.id === groupid)
+      if (this.groupid) {
+        ret = this.message.fromuser.memberof.find(g => g.id === this.groupid)
+      }
+
+      return ret
+    },
+    pending() {
+      let ret = false
+
+      if (this.message.groups) {
+        this.message.groups.forEach(group => {
+          if (group.collection === 'Pending') {
+            ret = true
+          }
+        })
       }
 
       return ret
     }
   },
   methods: {
-    saveStructuredSubject() {
-      // TODO
-    },
-    saveUnstructuredSubject() {
-      // TODO
+    approve() {
+      this.$store.dispatch('messages/approve', {
+        id: this.message.id,
+        groupid: this.groupid
+      })
     }
   }
 }

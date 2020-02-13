@@ -43,4 +43,16 @@ export default class MessageAPI extends BaseAPI {
       id: id
     })
   }
+
+  approve(id, groupid, subject = null, stdmsgid = null, body = null) {
+    return this.$post('/message', {
+      action: 'Approve',
+      id: id,
+      groupid: groupid,
+      subject: subject,
+      stdmsgid: stdmsgid,
+      body: body,
+      modtools: true
+    })
+  }
 }

@@ -213,5 +213,12 @@ export const actions = {
 
       commit('setViewed', messages)
     }
+  },
+
+  async approve({ commit }, params) {
+    await this.$api.message.approve(params.id, params.groupid)
+    commit('remove', {
+      id: params.id
+    })
   }
 }
