@@ -125,8 +125,12 @@
         <b-btn v-if="pending" variant="success" @click="approve">
           <v-icon name="check" /> Approve
         </b-btn>
+        <b-btn variant="danger" @click="deleteIt">
+          <v-icon name="trash-alt" /> Delete
+        </b-btn>
       </b-card-footer>
     </b-card>
+    <ConfirmModal ref="confirm" @confirm="deleteConfirmed" />
   </div>
 </template>
 <script>
@@ -138,11 +142,13 @@ import MessageReplyInfo from './MessageReplyInfo'
 import SettingsGroup from './SettingsGroup'
 import ModImage from './ModImage'
 import NoticeMessage from './NoticeMessage'
+import ConfirmModal from './ConfirmModal'
 import twem from '~/assets/js/twem'
 
 export default {
   name: 'ModMessage',
   components: {
+    ConfirmModal,
     NoticeMessage,
     ModImage,
     SettingsGroup,
@@ -215,6 +221,15 @@ export default {
   },
   methods: {
     approve() {
+      this.$store.dispatch('messages/approve', {
+        id: this.message.id,
+        groupid: this.groupid
+      })
+    },
+    deleteIt() {
+      this.$refs.confirm.show()
+    },
+    deleteConfirmed() {
       this.$store.dispatch('messages/approve', {
         id: this.message.id,
         groupid: this.groupid

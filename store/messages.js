@@ -220,5 +220,12 @@ export const actions = {
     commit('remove', {
       id: params.id
     })
+  },
+
+  async delete({ commit }, params) {
+    await this.$api.message.delete(params.id, params.groupid)
+    commit('remove', {
+      id: params.id
+    })
   }
 }

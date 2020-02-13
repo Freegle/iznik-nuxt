@@ -155,9 +155,7 @@ export default {
       setTimeout(this.checkWork, 30000)
     },
     getCount(type) {
-      console.log('Got work', this.work)
       for (const key in this.work) {
-        console.log('Check', key, this.work[key])
         if (key === type) {
           return this.work[key]
         }
