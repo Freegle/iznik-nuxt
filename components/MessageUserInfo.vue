@@ -32,7 +32,7 @@
     </span>
     <span v-if="modinfo && membership" class="ml-2">
       <v-icon name="envelope" />
-      {{ email }}
+      {{ user.email }}
     </span>
     <ModModeration v-if="modinfo && membership" :membership="membership" />
     <ModPostingHistory v-if="modinfo" :user="user" />
@@ -89,19 +89,6 @@ export default {
       }
 
       return null
-    },
-    email() {
-      let ret = null
-      this.user.emails.forEach(email => {
-        if (
-          email.email &&
-          email.email.indexOf('users.ilovefreegle.org') === -1
-        ) {
-          ret = email.email
-        }
-      })
-
-      return ret
     }
   }
 }
