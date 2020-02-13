@@ -1,5 +1,5 @@
 <template>
-  <div class="w-100 d-flex justify-content-between flex-wrap">
+  <div class="d-flex justify-content-between flex-wrap">
     <nuxt-link :to="'/profile/' + user.id" class="text-success decornone" :title="'Click to view profile for ' + user.displayname">
       <span class="text-muted small d-flex justify-content-between">
         <profile-image :image="user.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="sm" />
@@ -7,11 +7,11 @@
           <span class="align-middle">
             Posted by {{ user.displayname }}
           </span>
-          <span v-if="milesaway">
+          <span v-if="milesaway" class="align-middle">
             &bull; <b>about {{ milesaway | pluralize('mile', { includeNumber: true }) }} away</b>
           </span>
           <br class="d-block d-sm-none">
-          <span v-if="!modinfo && (user.info.openoffers + user.info.openwanteds > 0)">
+          <span v-if="!modinfo && (user.info.openoffers + user.info.openwanteds > 0)" class="align-middle">
             <span class="d-none d-sm-inline">&bull;</span>
             <span v-if="user.info.openoffers" class="text-success">
               {{ user.info.openoffers | pluralize([ 'open OFFER', 'open OFFERs' ], { includeNumber: true }) }}
