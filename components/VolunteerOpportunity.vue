@@ -123,7 +123,7 @@
                 rounded
                 thumbnail
                 class="square float-right"
-                alt="Opportunity photo"
+                generator-unable-to-provide-required-alt=""
                 title="Opportunity photo"
               />
             </b-col>

@@ -11,7 +11,7 @@
                 rounded
                 thumbnail
                 class="chatimage"
-                alt="Chat image"
+                generator-unable-to-provide-required-alt=""
                 :src="chatmessage.image.path"
                 @error.native="brokenImage"
               />
@@ -29,7 +29,7 @@
               rounded
               thumbnail
               class="chatimage"
-              alt="Chat image"
+              generator-unable-to-provide-required-alt=""
               :src="chatmessage.image.path"
               @error.native="brokenImage"
             />
