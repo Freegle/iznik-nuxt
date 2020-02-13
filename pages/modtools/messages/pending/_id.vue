@@ -1,12 +1,11 @@
 <template>
   <div>
-    <JobsTopBar />
-    <GroupSelect v-model="groupid" all modonly />
-    <div v-for="message in messages" :key="'messagelist-' + message.id" class="p-0 mt-2">
-      <ModMessage :message="message" />
-    </div>
-
     <client-only>
+      <GroupSelect v-model="groupid" all modonly />
+      <div v-for="message in messages" :key="'messagelist-' + message.id" class="p-0 mt-2">
+        <ModMessage :message="message" />
+      </div>
+
       <infinite-loading :key="'infinite-' + groupid" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
         <span slot="no-results" />
         <span slot="no-more" />
@@ -20,14 +19,13 @@
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
 import ModMessage from '../../../../components/ModMessage'
-import JobsTopBar from '@/components/JobsTopBar'
 import GroupSelect from '@/components/GroupSelect'
 import loginRequired from '@/mixins/loginRequired'
 import createGroupRoute from '@/mixins/createGroupRoute'
 
 export default {
   layout: 'modtools',
-  components: { ModMessage, GroupSelect, JobsTopBar, InfiniteLoading },
+  components: { ModMessage, GroupSelect, InfiniteLoading },
   mixins: [loginRequired, createGroupRoute('modtools/messages/pending')],
   data: function() {
     return {
