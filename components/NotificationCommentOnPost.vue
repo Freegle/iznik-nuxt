@@ -7,7 +7,7 @@
         </div>
       </div>
       <div class="media-body">
-        <span class="notification-title"><span>{{ notification.fromuser.displayname }} commented on your post</span>
+        <span class="notification-title"><span>{{ notification.fromuser.displayname }} commented</span>
           <span v-if="notification.newsfeed.message">
             <br>"<b>{{ notification.newsfeed.message }}</b>"
           </span>
