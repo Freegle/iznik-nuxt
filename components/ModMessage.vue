@@ -68,13 +68,21 @@
               <!--              Group list-->
               <!--              Applied list-->
             </div>
-            <div>
+            <div class="d-flex justify-content-between">
               <b-btn variant="link" @click="showMailSettings = !showMailSettings">
                 <span v-if="showMailSettings">
                   Hide mail settings
                 </span>
                 <span v-else>
                   Show mail settings
+                </span>
+              </b-btn>
+              <b-btn variant="link" @click="showActions = !showActions">
+                <span v-if="showActions">
+                  Hide actions
+                </span>
+                <span v-else>
+                  Show actions
                 </span>
               </b-btn>
             </div>
@@ -86,6 +94,27 @@
               :eventsallowed="Boolean(membership.eventsallowed)"
               class="border border-info mt-2 p-1"
             />
+            <div v-if="showActions">
+              <!--              TODO Actions-->
+              <b-btn variant="white" disabled>
+                <v-icon name="times" /> Remove
+              </b-btn>
+              <b-btn variant="white" disabled>
+                <v-icon name="trash-alt" /> Ban
+              </b-btn>
+              <b-btn variant="white" disabled>
+                <v-icon name="ban" /> Scammer
+              </b-btn>
+              <b-btn variant="white" disabled>
+                <v-icon name="check" /> Whitelist
+              </b-btn>
+              <b-btn variant="white" disabled>
+                <v-icon name="tag" /> Add note
+              </b-btn>
+              <b-btn variant="white" disabled>
+                <v-icon name="trash-alt" /> Purge
+              </b-btn>
+            </div>
             <!--              TODO Handle changes-->
           </b-col>
         </b-row>
@@ -123,6 +152,7 @@ export default {
       saving: false,
       saved: false,
       showMailSettings: false,
+      showActions: false,
       editing: false
     }
   },
