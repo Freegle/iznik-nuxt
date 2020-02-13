@@ -689,10 +689,6 @@ html {
   box-sizing: border-box;
 }
 
-.pageContent {
-  background-image: url('~static/wallpaper.png');
-}
-
 #navbar_large .nav-item {
   width: 80px;
   text-align: center;
