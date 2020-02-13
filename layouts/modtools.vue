@@ -50,6 +50,9 @@
         <nuxt-link to="/modtools/messages/pending" class="pl-3">
           Pending
         </nuxt-link>
+        <nuxt-link to="/modtools/messages/approved" class="pl-3">
+          Approved
+        </nuxt-link>
       </div>
       <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent flex-grow-1" />
     </div>

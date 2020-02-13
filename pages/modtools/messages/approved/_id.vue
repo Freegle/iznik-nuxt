@@ -25,12 +25,12 @@ export default {
   layout: 'modtools',
   mixins: [
     loginRequired,
-    createGroupRoute('modtools/messages/pending'),
+    createGroupRoute('modtools/messages/approved'),
     modMessagesPage
   ],
   data: function() {
     return {
-      collection: 'Pending'
+      collection: 'Approved'
     }
   }
 }
