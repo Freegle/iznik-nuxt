@@ -4,18 +4,20 @@
       <v-icon :name="icon" /> {{ label }}
     </b-btn>
     <ConfirmModal ref="confirm" @confirm="deleteConfirmed" />
-    <ModStdMessageModal v-if="stdmsg" ref="stdmsg" :stdmsgid="stdmsg.id" :message="message" />
+    <ModStdMessageModal v-if="showModal" ref="stdmodal" :stdmsgid="stdmsg.id" :message="message" />
   </div>
 </template>
 <script>
 import ConfirmModal from './ConfirmModal'
-import ModStdMessageModal from './ModStdMessageModal'
+import WaitForRef from '@/mixins/waitForRef'
+const ModStdMessageModal = () => import('./ModStdMessageModal')
 
 export default {
   components: {
     ModStdMessageModal,
     ConfirmModal
   },
+  mixins: [WaitForRef],
   props: {
     message: {
       type: Object,
@@ -49,6 +51,11 @@ export default {
       default: false
     }
   },
+  data: function() {
+    return {
+      showModal: false
+    }
+  },
   computed: {
     groupid() {
       let ret = null
@@ -68,8 +75,11 @@ export default {
       } else if (this.delete) {
         // Standard delete button
       } else {
-        // Something else
-        this.$refs.stdmsg.show()
+        // Something else.  We want to show the modal.  Setting this will cause it to render here.
+        this.showModal = true
+        this.waitForRef('stdmodal', () => {
+          this.$refs.stdmodal.show()
+        })
       }
     },
     approveIt() {
