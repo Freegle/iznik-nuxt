@@ -57,6 +57,8 @@
               class="mb-3"
             />
             <!-- eslint-disable-next-line -->
+            <div v-else-if="!eBody" class="mb-3 rounded border p-2 prewrap forcebreak font-weight-bold"><em>This message is blank.</em></div>
+            <!-- eslint-disable-next-line -->
             <div v-else class="mb-3 rounded border p-2 prewrap forcebreak font-weight-bold">{{ eBody }}</div>
             <div v-if="message.attachments && message.attachments.length" class="d-flex">
               <ModImage v-for="attachment in message.attachments" :key="'attachment-' + attachment.id" :attachment="attachment" class="d-inline pr-1" />
