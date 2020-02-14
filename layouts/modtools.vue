@@ -14,6 +14,24 @@
       <client-only>
         <b-navbar-nav />
         <b-navbar-nav class="ml-auto">
+          <b-nav-item-dropdown right class="d-block d-sm-none">
+            <template v-slot:button-content>
+              <v-icon name="envelope" scale="2" /><br>
+              Messages
+              <b-badge v-if="getCount('pending')" variant="danger">
+                {{ getCount('pending') }}
+              </b-badge>
+            </template>
+            <b-dropdown-item href="/modtools/messages/pending">
+              Pending
+              <b-badge v-if="getCount('pending')" variant="danger">
+                {{ getCount('pending') }}
+              </b-badge>
+            </b-dropdown-item>
+            <b-dropdown-item href="/modtools/messages/approved">
+              Approved
+            </b-dropdown-item>
+          </b-nav-item-dropdown>
           <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse" class="text-center p-0" />
           <b-nav-item v-if="loggedIn" id="menu-option-modtools-chat" class="text-center p-0" to="/modtools/chats">
             <div class="notifwrapper">
@@ -38,7 +56,7 @@
     </b-navbar>
 
     <div class="d-flex">
-      <div class="leftmenu">
+      <div class="leftmenu d-none d-sm-block">
         <!--        TODO Counts for work-->
         <!--        TODO Reload on click-->
         <nuxt-link to="/modtools">
@@ -170,7 +188,7 @@ export default {
         }
       }
 
-      return 0
+      return 1
     }
   },
 

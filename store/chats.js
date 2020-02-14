@@ -85,9 +85,11 @@ export const getters = {
 }
 
 export const actions = {
-  async listChats({ commit }, params) {
+  async listChats({ commit, rootGetters }, params) {
+    const modtools = rootGetters['misc/get']('modtools')
+
     params = params || {
-      chattypes: params.modtools ? ['User2Mod'] : ['User2User', 'User2Mod'],
+      chattypes: modtools ? ['User2Mod'] : ['User2User', 'User2Mod'],
       search: params && params.search ? params.search : null
     }
 
