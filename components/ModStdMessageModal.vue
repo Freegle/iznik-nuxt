@@ -382,8 +382,7 @@ export default {
       // Ensure the counts are updated.
       await this.$store.dispatch('auth/fetchUser', {
         components: ['work'],
-        force: true,
-        modtools: true
+        force: true
       })
     }
   }

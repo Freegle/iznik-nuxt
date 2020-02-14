@@ -44,7 +44,7 @@ const DISABLE_ESLINT_AUTOFIX =
 const ESLINT_AUTOFIX = !DISABLE_ESLINT_AUTOFIX
 
 module.exports = {
-  mode: 'spa',
+  mode: 'universal',
 
   /*
   ** Headers.  Include default meta tags that will apply unless overridden by individual pages.  Every page that
@@ -498,7 +498,6 @@ module.exports = {
     GOOGLE_API_KEY: 'AIzaSyArVxoX781qdcbmQZi1PKHX-qa0bPbboH4',
     GOOGLE_CLIENT_ID:
       '423761283916-1rpa8120tpudgv4nf44cpmlf8slqbf4f.apps.googleusercontent.com',
-    MODTOOLS: false,
     USER_SITE: USER_SITE,
     IMAGE_SITE: IMAGE_SITE,
     SENTRY_DSN: SENTRY_DSN,

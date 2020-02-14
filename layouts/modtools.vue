@@ -122,6 +122,12 @@ export default {
   },
 
   mounted() {
+    // Ensure we know whether we're FD or MT.
+    this.$store.dispatch('misc/set', {
+      key: 'modtools',
+      value: true
+    })
+
     this.workTimer = setTimeout(this.checkWork, 0)
     this.$store.dispatch('modconfigs/fetch')
   },
@@ -152,8 +158,7 @@ export default {
     checkWork() {
       this.$store.dispatch('auth/fetchUser', {
         components: ['work'],
-        force: true,
-        modtools: true
+        force: true
       })
 
       setTimeout(this.checkWork, 30000)

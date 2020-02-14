@@ -87,10 +87,11 @@ export const getters = {
 export const actions = {
   async listChats({ commit }, params) {
     params = params || {
-      chattypes: ['User2User', 'User2Mod'],
-      summary: true,
+      chattypes: params.modtools ? ['User2Mod'] : ['User2User', 'User2Mod'],
       search: params && params.search ? params.search : null
     }
+
+    params.summary = true
 
     try {
       commit('setList', await this.$api.chat.listChats(params))

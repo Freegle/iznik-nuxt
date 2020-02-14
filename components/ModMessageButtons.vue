@@ -42,7 +42,8 @@ export default {
     },
     modconfig: {
       type: Object,
-      required: false
+      required: false,
+      default: null
     }
   },
   data: function() {

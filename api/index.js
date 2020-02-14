@@ -33,8 +33,8 @@ import VolunteeringAPI from './VolunteeringAPI.js'
 import ShortlinkAPI from './ShortlinkAPI'
 import ModConfigsAPI from './ModConfigsAPI'
 
-export default ({ $axios }) => {
-  const options = { $axios }
+export default ({ $axios, store }) => {
+  const options = { $axios, store }
   return {
     activity: new ActivityAPI(options),
     address: new AddressAPI(options),

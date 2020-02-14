@@ -51,8 +51,7 @@ export default class MessageAPI extends BaseAPI {
       groupid: groupid,
       subject: subject,
       stdmsgid: stdmsgid,
-      body: body,
-      modtools: true
+      body: body
     })
   }
 
@@ -63,8 +62,7 @@ export default class MessageAPI extends BaseAPI {
       groupid: groupid,
       subject: subject,
       stdmsgid: stdmsgid,
-      body: body,
-      modtools: true
+      body: body
     })
   }
 
@@ -75,8 +73,7 @@ export default class MessageAPI extends BaseAPI {
       groupid: groupid,
       subject: subject,
       stdmsgid: stdmsgid,
-      body: body,
-      modtools: true
+      body: body
     })
   }
 
@@ -87,8 +84,7 @@ export default class MessageAPI extends BaseAPI {
       groupid: groupid,
       subject: subject,
       stdmsgid: stdmsgid,
-      body: body,
-      modtools: true
+      body: body
     })
   }
 }

@@ -3,6 +3,7 @@ import visibility from '@/utils/visibility'
 export default ({ store }) => {
   store.watch(() => visibility.visible, async function(visible) {
     const me = store.getters['auth/user']
+    const modtools = store.getters['misc/get']('modtools')
 
     if (me && visible) {
       // We have become visible.  Refetch our notification count and chat count, which are the two key things which
@@ -13,9 +14,9 @@ export default ({ store }) => {
       const newCount = await store.dispatch('chats/unseenCount')
 
       if (newCount !== currentCount) {
-        // It's changed - the up to date chat rooms.
+        // It's changed - get the up to date chat rooms.
         await store.dispatch('chats/listChats', {
-          chattypes: ['User2User', 'User2Mod'],
+          chattypes: modtools ? ['User2Mod'] : ['User2User', 'User2Mod'],
           summary: true,
           noerror: true
         })

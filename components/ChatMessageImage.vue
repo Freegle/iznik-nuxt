@@ -18,7 +18,7 @@
             </div>
           </div>
           <div class="media-body">
-            <profile-image :image="otheruser.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
+            <profile-image v-if="otheruser" :image="otheruser.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
           </div>
         </div>
         <div v-else class="media float-right">

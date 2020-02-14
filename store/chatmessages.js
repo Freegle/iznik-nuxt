@@ -121,8 +121,6 @@ export const actions = {
   },
 
   async send({ commit, dispatch }, params) {
-    params.modtools = process.env.MODTOOLS
-
     await this.$api.chat.send(params)
 
     // Get the latest messages back.  Passing no context will fetch the latest.

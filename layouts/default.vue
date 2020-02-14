@@ -384,6 +384,12 @@ export default {
   },
 
   mounted() {
+    // Ensure we know whether we're FD or MT.
+    this.$store.dispatch('misc/set', {
+      key: 'modtools',
+      value: false
+    })
+
     if (document) {
       // We added a basic loader into the HTML.  This helps if we are loaded on an old browser where our JS bombs
       // out - at least we display something, with a link to support.  But now we're up and running, remove that.
@@ -531,7 +537,7 @@ export default {
           const mt =
             ret && Object.keys(ret).includes('modtools') ? ret.modtools : false
 
-          if (process.env.MODTOOLS === mt && ret && ret.text) {
+          if (!mt && ret && ret.text) {
             const data = ret.text
 
             if (data) {

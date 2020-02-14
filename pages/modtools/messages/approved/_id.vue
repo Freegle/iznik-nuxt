@@ -5,6 +5,9 @@
       <div v-for="message in messages" :key="'messagelist-' + message.id" class="p-0 mt-2">
         <ModMessage :message="message" />
       </div>
+      <p v-if="!messages.length">
+        There are no messages at the moment.
+      </p>
 
       <infinite-loading :key="'infinite-' + groupid" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
         <span slot="no-results" />
