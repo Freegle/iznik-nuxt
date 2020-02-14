@@ -48,7 +48,7 @@
                   <v-icon name="handshake" class="fa-fw" /> Promised
                 </b-badge>
               </span>
-              <span class="ml-1">
+              <span v-if="unseen > 0" class="ml-1">
                 <b-badge variant="danger">
                   <v-icon name="comments" class="fa-fw" /> {{ unseen }} unread
                 </b-badge>
