@@ -26,7 +26,7 @@
               rounded
               fluid-grow
               class="attachment p-0 square"
-              alt="Item picture"
+              generator-unable-to-provide-required-alt=""
               title="Item picture"
               :src="attachments[0].paththumb"
             />
@@ -118,7 +118,7 @@
                 rounded
                 thumbnail
                 class="attachment p-0 square nottoobig"
-                alt="Item picture"
+                generator-unable-to-provide-required-alt=""
                 title="Item picture"
                 :src="attachments[0].paththumb"
               />

@@ -71,7 +71,7 @@
                     rounded
                     thumbnail
                     class="attachment p-0 square mb-1"
-                    alt="Item picture"
+                    generator-unable-to-provide-required-alt=""
                     title="Item picture"
                     :src="message.attachments[0].paththumb"
                   />

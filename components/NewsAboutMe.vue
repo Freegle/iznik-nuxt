@@ -30,7 +30,7 @@
       :id="'photoModal-' + newsfeed.id"
       ref="photoModal"
       title="ChitChat Photo"
-      alt="ChitChat Photo"
+      generator-unable-to-provide-required-alt=""
       size="lg"
       no-stacking
       ok-only

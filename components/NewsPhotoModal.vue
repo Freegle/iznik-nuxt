@@ -41,7 +41,7 @@
           :src="src + '?' + cacheBust"
           rounded
           fluid
-          alt="ChitChat Photo"
+          generator-unable-to-provide-required-alt=""
           @error.native="brokenImage"
         />
       </div>
