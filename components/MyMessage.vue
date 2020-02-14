@@ -11,51 +11,49 @@
             class="text-left text-truncate noborder hover"
             @click="toggle"
           >
-            <b-row>
-              <b-col>
-                <div class="d-flex">
-                  <h3 class="text-wrap flex-shrink-2">
-                    {{ message.subject }}
-                    <span v-if="rejected" class="text-danger">
-                      <v-icon name="exclamation-triangle" scale="2" />
-                    </span>
-                  </h3>
-                  <div class="flex-grow-1 text-right">
-                    <span v-if="message.replycount > 0" class="ml-1">
-                      <b-badge variant="info">
-                        <v-icon name="user" class="fa-fw" /> {{ message.replycount | pluralize(['reply', 'replies'], { includeNumber: true }) }}
-                      </b-badge>
-                    </span>
-                    <span v-if="message.outcomes && message.outcomes.length > 0" class="ml-1">
-                      <b-badge v-if="taken" variant="success">
-                        <v-icon name="check" class="fa-fw" /> Taken
-                      </b-badge>
-                      <b-badge v-if="received" variant="success">
-                        <v-icon name="check" class="fa-fw" /> Received
-                      </b-badge>
-                      <b-badge v-if="withdrawn" variant="secondary">
-                        <v-icon name="check" class="fa-fw" /> Withdrawn
-                      </b-badge>
-                    </span>
-                    <span v-else-if="message.promisecount > 0" class="ml-1">
-                      <b-badge variant="success">
-                        <v-icon name="handshake" class="fa-fw" /> Promised
-                      </b-badge>
-                    </span>
-                    <span v-if="unseen > 0" class="ml-1">
-                      <b-badge variant="danger">
-                        <v-icon name="comments" class="fa-fw" /> {{ unseen }} unread
-                      </b-badge>
-                    </span>
-                    <b-btn class="ml-1" variant="white">
-                      <v-icon v-if="!expanded" name="caret-down" />
-                      <v-icon v-else name="caret-up" />
-                      <template slot="button-content" />
-                    </b-btn>
-                  </div>
-                </div>
-              </b-col>
-            </b-row>
+            <div class="d-flex justify-content-between">
+              <h3 class="text-wrap flex-shrink-2">
+                {{ message.subject }}
+                <span v-if="rejected" class="text-danger">
+                  <v-icon name="exclamation-triangle" scale="2" />
+                </span>
+              </h3>
+              <span>
+                <b-btn class="ml-1" variant="white">
+                  <v-icon v-if="!expanded" name="caret-down" />
+                  <v-icon v-else name="caret-up" />
+                  <template slot="button-content" />
+                </b-btn>
+              </span>
+            </div>
+            <div>
+              <span v-if="message.replycount > 0" class="ml-1">
+                <b-badge variant="info">
+                  <v-icon name="user" class="fa-fw" /> {{ message.replycount | pluralize(['reply', 'replies'], { includeNumber: true }) }}
+                </b-badge>
+              </span>
+              <span v-if="message.outcomes && message.outcomes.length > 0" class="ml-1">
+                <b-badge v-if="taken" variant="success">
+                  <v-icon name="check" class="fa-fw" /> Taken
+                </b-badge>
+                <b-badge v-if="received" variant="success">
+                  <v-icon name="check" class="fa-fw" /> Received
+                </b-badge>
+                <b-badge v-if="withdrawn" variant="secondary">
+                  <v-icon name="check" class="fa-fw" /> Withdrawn
+                </b-badge>
+              </span>
+              <span v-else-if="message.promisecount > 0" class="ml-1">
+                <b-badge variant="success">
+                  <v-icon name="handshake" class="fa-fw" /> Promised
+                </b-badge>
+              </span>
+              <span v-if="unseen > 0" class="ml-1">
+                <b-badge variant="danger">
+                  <v-icon name="comments" class="fa-fw" /> {{ unseen }} unread
+                </b-badge>
+              </span>
+            </div>
           </b-button>
         </b-card-header>
         <b-collapse :id="'mypost-' + message.id" :visible="expanded" role="tabpanel" @show="expanded = true" @hidden="expanded = false">
