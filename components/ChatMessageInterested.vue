@@ -10,7 +10,7 @@
                 class="float-right"
                 rounded
                 thumbnail
-                alt="Item photo"
+                generator-unable-to-provide-required-alt=""
                 lazy
                 :src="refmsg.attachments[0].paththumb"
                 width="70px"
@@ -55,7 +55,7 @@
                 class="float-right"
                 rounded
                 thumbnail
-                alt="Item photo"
+                generator-unable-to-provide-required-alt=""
                 lazy
                 :src="refmsg.attachments[0].paththumb"
                 width="70px"

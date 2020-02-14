@@ -5,7 +5,7 @@
       center
       class="img-thumbnail square"
       :src="attachment.path"
-      alt="Message photo "
+      generator-unable-to-provide-required-alt=""
     />
     <!--    TODO Modal to zoom, rotate, delete-->
   </span>
