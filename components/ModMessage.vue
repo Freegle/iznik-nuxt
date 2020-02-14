@@ -122,7 +122,7 @@
         </b-row>
       </b-card-body>
       <b-card-footer>
-        <ModMessageButtons :message="message" :modconfig="modconfig" />
+        <ModMessageButtons v-if="showButtons" :message="message" :modconfig="modconfig" />
       </b-card-footer>
     </b-card>
   </div>
@@ -162,7 +162,8 @@ export default {
       saved: false,
       showMailSettings: false,
       showActions: false,
-      editing: false
+      editing: false,
+      showButtons: false
     }
   },
   computed: {
@@ -217,6 +218,13 @@ export default {
 
       return ret
     }
+  },
+  mounted() {
+    // Delay showing buttons.  That means we get some important stuff on the screen more rapidly, as there may be
+    // many buttons and it's quite a hit on the DOM.  This improves mobiles.
+    this.$nextTick(() => {
+      this.showButtons = true
+    })
   },
   methods: {}
 }

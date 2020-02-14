@@ -9,7 +9,11 @@ export default {
   data: function() {
     return {
       context: null,
-      distance: 1000
+      // We fetch less stuff at once for MT.  This is because for slow devices and networks the time to fetch and
+      // render is significant, and each of these consumes a lot of screen space.  So by fetching and rendering less,
+      // we increase how fast it feels.
+      distance: 1000,
+      limit: 2
     }
   },
   computed: {
@@ -66,7 +70,8 @@ export default {
           collection: this.collection,
           modtools: true,
           summary: false,
-          context: this.context
+          context: this.context,
+          limit: this.limit
         })
         .then(() => {
           this.context = this.$store.getters['messages/getContext']
