@@ -272,13 +272,20 @@ export default {
     me() {
       // The user who is us
       let ret = null
-      const me = this.$store.getters['auth/user']
-      if (this.chat && this.chat.user1 && me) {
-        ret =
-          this.chat.user1 &&
-          this.chat.user1.id === this.$store.getters['auth/user'].id
-            ? this.chat.user1
-            : this.chat.user2
+      const modtools = this.$store.getters['misc/get']('modtools')
+
+      if (modtools) {
+        // Me is me.
+        ret = this.$store.getters['auth/user']
+      } else {
+        const me = this.$store.getters['auth/user']
+        if (this.chat && this.chat.user1 && me) {
+          ret =
+            this.chat.user1 &&
+            this.chat.user1.id === this.$store.getters['auth/user'].id
+              ? this.chat.user1
+              : this.chat.user2
+        }
       }
 
       return ret
@@ -669,7 +676,8 @@ export default {
         }
       } else {
         // Invalid chat id
-        this.$router.push('/chats')
+        const modtools = this.$store.getters['misc/get']('modtools')
+        this.$router.push((modtools ? '/modtools' : '') + '/chats')
       }
     }
   }

@@ -391,8 +391,24 @@ function initialVolunteering() {
 }
 
 function initialData() {
+  const volunteeringEdit = cloneDeep(this.volunteering)
+
+  if (volunteeringEdit.dates) {
+    // May need to convert to date objects.
+    for (let i = 0; i < volunteeringEdit.dates.length; i++) {
+      if (typeof volunteeringEdit.dates[i].start === 'string') {
+        volunteeringEdit.dates[i].start = new Date(
+          volunteeringEdit.dates[i].start
+        )
+      }
+      if (typeof volunteeringEdit.dates[i].end === 'string') {
+        volunteeringEdit.dates[i].end = new Date(volunteeringEdit.dates[i].end)
+      }
+    }
+  }
+
   return {
-    volunteeringEdit: cloneDeep(this.volunteering),
+    volunteeringEdit: volunteeringEdit,
     showModal: false,
     editing: false,
     added: false,

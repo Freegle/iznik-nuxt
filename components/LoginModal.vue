@@ -15,7 +15,7 @@
     <template slot="modal-title">
       <h2>Let's get freegling!</h2>
     </template>
-    <p v-if="showSignUp" class="text-center">
+    <p v-if="signUp" class="text-center">
       You'll get emails.  Name, approx. location, and profile picture are public - you can hide your real name and
       picture from Settings.  Logging in adds cookies and local
       storage.  Read <nuxt-link target="_blank" to="/terms">

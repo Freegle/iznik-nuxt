@@ -1,5 +1,5 @@
 <template>
-  <div v-if="location" class="mb-2 jobbox bg-light overflow-hidden">
+  <div v-if="location" class="mb-2 jobbox bg-light overflow-hidden forcewrap">
     <NoticeMessage v-if="blocked" variant="warning">
       <h3>Please help keep Freegle running</h3>
       <p>

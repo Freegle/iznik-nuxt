@@ -40,7 +40,7 @@
     <b-row>
       <b-col cols="12" sm="6">
         <b-form-group label="Community Event mails:">
-          <toggle-button
+          <OurToggle
             :value="eventsallowed"
             class="mt-2"
             :height="30"
@@ -55,7 +55,7 @@
       </b-col>
       <b-col cols="12" sm="6">
         <b-form-group label="Volunteer Opportunity mails:">
-          <toggle-button
+          <OurToggle
             :value="volunteeringallowed"
             class="mt-2"
             :height="30"
@@ -72,11 +72,11 @@
   </div>
 </template>
 <script>
-import { ToggleButton } from 'vue-js-toggle-button'
+const OurToggle = () => import('~/components/OurToggle')
 
 export default {
   components: {
-    ToggleButton
+    OurToggle
   },
   props: {
     groupid: {

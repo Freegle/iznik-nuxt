@@ -11,14 +11,14 @@
                 rounded
                 thumbnail
                 class="chatimage"
-                alt="Chat image"
+                generator-unable-to-provide-required-alt=""
                 :src="chatmessage.image.path"
                 @error.native="brokenImage"
               />
             </div>
           </div>
           <div class="media-body">
-            <profile-image :image="otheruser.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
+            <profile-image v-if="otheruser" :image="otheruser.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
           </div>
         </div>
         <div v-else class="media float-right">
@@ -29,7 +29,7 @@
               rounded
               thumbnail
               class="chatimage"
-              alt="Chat image"
+              generator-unable-to-provide-required-alt=""
               :src="chatmessage.image.path"
               @error.native="brokenImage"
             />

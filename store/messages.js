@@ -213,5 +213,54 @@ export const actions = {
 
       commit('setViewed', messages)
     }
+  },
+
+  async approve({ commit }, params) {
+    await this.$api.message.approve(
+      params.id,
+      params.groupid,
+      params.subject,
+      params.stdmsgid,
+      params.body
+    )
+    commit('remove', {
+      id: params.id
+    })
+  },
+
+  async reject({ commit }, params) {
+    await this.$api.message.reject(
+      params.id,
+      params.groupid,
+      params.subject,
+      params.stdmsgid,
+      params.body
+    )
+    commit('remove', {
+      id: params.id
+    })
+  },
+
+  async reply({ commit }, params) {
+    await this.$api.message.reply(
+      params.id,
+      params.groupid,
+      params.subject,
+      params.stdmsgid,
+      params.body
+    )
+  },
+
+  async delete({ commit }, params) {
+    await this.$api.message.delete(
+      params.id,
+      params.groupid,
+      params.subject,
+      params.stdmsgid,
+      params.body
+    )
+    commit('remove', {
+      id: params.id
+    })
   }
 }

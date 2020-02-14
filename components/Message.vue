@@ -16,7 +16,7 @@
                 {{ eSubject }}
               </span>
             </div>
-            <MessageHistory :id="id" :groups="groups" />
+            <MessageHistory :message="$props" />
           </div>
           <div v-if="attachments && attachments.length > 0" class="d-block mt-1 d-sm-none clickme position-relative" @click="showPhotos">
             <b-badge v-if="attachments.length > 1" class="photobadge" variant="primary">
@@ -26,7 +26,7 @@
               rounded
               fluid-grow
               class="attachment p-0 square"
-              alt="Item picture"
+              generator-unable-to-provide-required-alt=""
               title="Item picture"
               :src="attachments[0].paththumb"
             />
@@ -64,7 +64,7 @@
               <span v-else>
                 {{ eSubject }}
               </span>
-              <MessageHistory :id="id" display-message-link :groups="groups" />
+              <MessageHistory :message="$props" display-message-link />
               <div flex-grow-1 class="small">
                 <div v-if="eSnippet && eSnippet !== 'null' && !expanded">
                   <b class="snippet black">
@@ -118,7 +118,7 @@
                 rounded
                 thumbnail
                 class="attachment p-0 square nottoobig"
-                alt="Item picture"
+                generator-unable-to-provide-required-alt=""
                 title="Item picture"
                 :src="attachments[0].paththumb"
               />
@@ -171,14 +171,7 @@
 
         <div class="d-flex justify-content-between">
           <MessageUserInfo v-if="expanded.fromuser" :user="expanded.fromuser" :milesaway="milesaway" class="flex-grow-1" />
-          <span>
-            <span v-if="expanded.replycount" class="small text-muted mr-1">
-              <v-icon name="user" class="d-inline" />&nbsp;<span class="d-inline">{{ expanded.replycount }}&nbsp;freegler<span v-if="expanded.replycount != 1">s</span>&nbsp;replied&nbsp;</span>
-            </span>
-            <span v-else class="float-right small text-muted mr-1">
-              <v-icon name="user" class="d-inline" /> No replies yet
-            </span>
-          </span>
+          <MessageReplyInfo :message="expanded" />
         </div>
       </b-card-body>
       <b-card-footer v-if="expanded" class="p-1 pt-3">
@@ -256,6 +249,7 @@ import ChatButton from './ChatButton'
 import ShareModal from './ShareModal'
 import MessageReportModal from './MessageReportModal'
 
+import MessageReplyInfo from './MessageReplyInfo'
 import twem from '~/assets/js/twem'
 
 const Highlighter = () => import('vue-highlight-words')
@@ -266,6 +260,7 @@ const MessageHistory = () => import('~/components/MessageHistory')
 
 export default {
   components: {
+    MessageReplyInfo,
     ChatButton,
     MessageUserInfo,
     Highlighter,

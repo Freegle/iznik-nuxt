@@ -43,4 +43,48 @@ export default class MessageAPI extends BaseAPI {
       id: id
     })
   }
+
+  approve(id, groupid, subject = null, stdmsgid = null, body = null) {
+    return this.$post('/message', {
+      action: 'Approve',
+      id: id,
+      groupid: groupid,
+      subject: subject,
+      stdmsgid: stdmsgid,
+      body: body
+    })
+  }
+
+  reply(id, groupid, subject = null, stdmsgid = null, body = null) {
+    return this.$post('/message', {
+      action: 'Reply',
+      id: id,
+      groupid: groupid,
+      subject: subject,
+      stdmsgid: stdmsgid,
+      body: body
+    })
+  }
+
+  reject(id, groupid, subject = null, stdmsgid = null, body = null) {
+    return this.$post('/message', {
+      action: 'Reject',
+      id: id,
+      groupid: groupid,
+      subject: subject,
+      stdmsgid: stdmsgid,
+      body: body
+    })
+  }
+
+  delete(id, groupid, subject = null, stdmsgid = null, body = null) {
+    return this.$post('/message', {
+      action: 'Delete',
+      id: id,
+      groupid: groupid,
+      subject: subject,
+      stdmsgid: stdmsgid,
+      body: body
+    })
+  }
 }

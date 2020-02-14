@@ -365,8 +365,22 @@ function initialEvent() {
 }
 
 function initialData() {
+  const eventEdit = cloneDeep(this.event)
+
+  if (eventEdit.dates) {
+    // May need to convert to date objects.
+    for (let i = 0; i < eventEdit.dates.length; i++) {
+      if (typeof eventEdit.dates[i].start === 'string') {
+        eventEdit.dates[i].start = new Date(eventEdit.dates[i].start)
+      }
+      if (typeof eventEdit.dates[i].end === 'string') {
+        eventEdit.dates[i].end = new Date(eventEdit.dates[i].end)
+      }
+    }
+  }
+
   return {
-    eventEdit: cloneDeep(this.event),
+    eventEdit: eventEdit,
     showModal: false,
     editing: false,
     added: false,

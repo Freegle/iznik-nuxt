@@ -75,9 +75,6 @@
               <p v-if="graphType === 'ApprovedMessageCount'">
                 This includes people OFFERing something or posting a WANTED for something.
               </p>
-              <p v-if="graphType === 'Searches'">
-                This includes people searching for something.
-              </p>
               <p v-if="graphType === 'Replies'">
                 This includes people replying to an OFFER or a WANTED.
               </p>
@@ -190,13 +187,11 @@ export default {
       graphTypes: [
         { value: 'Activity', text: 'Activity' },
         { value: 'ApprovedMessageCount', text: 'OFFERS/WANTEDs' },
-        { value: 'Searches', text: 'Searches' },
         { value: 'Replies', text: 'Replies' }
       ],
       graphTitles: {
         Activity: 'Activity',
         ApprovedMessageCount: 'OFFERs and WANTED',
-        Searches: 'Searches',
         Replies: 'Replies'
       },
       balanceOptions: {

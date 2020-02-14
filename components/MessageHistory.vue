@@ -1,12 +1,21 @@
 <template>
   <div>
-    <div v-for="group in groups" :key="'message-' + id + '-' + group.id" class="message-history">
+    <div v-for="group in message.groups" :key="'message-' + message.id + '-' + group.id" class="message-history">
       {{ group.arrival | timeago }} on <nuxt-link :to="'/explore/' + group.groupid">
         {{ group.namedisplay }}
       </nuxt-link>
-      <nuxt-link v-if="displayMessageLink" :to="'/message/' + id" class="text-faded">
-        #{{ id }}
+      <nuxt-link v-if="displayMessageLink" :to="'/message/' + message.id" :class="modinfo ? '' : 'text-faded'">
+        #{{ message.id }}
       </nuxt-link>
+      <span v-if="modinfo">
+        via {{ message.source }}
+        <span v-if="message.fromip">
+          from IP {{ message.fromip }} in <span :class="message.fromcountry === 'United Kingdom' ? '' : 'text-danger'">{{ message.fromcountry }}</span>
+        </span>
+        <span v-else>
+          IP unavailable
+        </span>
+      </span>
     </div>
   </div>
 </template>
@@ -24,6 +33,14 @@ export default {
       default: () => []
     },
     displayMessageLink: {
+      type: Boolean,
+      default: false
+    },
+    message: {
+      type: Object,
+      required: true
+    },
+    modinfo: {
       type: Boolean,
       default: false
     }

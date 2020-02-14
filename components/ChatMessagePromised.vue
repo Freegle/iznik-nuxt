@@ -10,7 +10,7 @@
                 class="float-right"
                 rounded
                 thumbnail
-                alt="Item photo"
+                generator-unable-to-provide-required-alt=""
                 lazy
                 :src="refmsg.attachments[0].paththumb"
                 width="70px"
@@ -42,7 +42,7 @@
                 class="float-right"
                 rounded
                 thumbnail
-                alt="Item photo"
+                generator-unable-to-provide-required-alt=""
                 lazy
                 :src="refmsg.attachments[0].paththumb"
                 width="70px"
@@ -54,7 +54,7 @@
               <h4>
                 {{ refmsg.subject }}
               </h4>
-              <b-btn v-if="refmsg.promised" variant="warning" class="align-middle mt-1 mb-1" @click="unpromise">
+              <b-btn v-if="refmsg.promised && !hasOutcome" variant="warning" class="align-middle mt-1 mb-1" @click="unpromise">
                 <v-icon>
                   <v-icon name="handshake" />
                   <v-icon
@@ -93,6 +93,11 @@ export default {
     RenegeModal
   },
   extends: ChatBase,
+  computed: {
+    hasOutcome() {
+      return this.refmsg && this.refmsg.outcomes && this.refmsg.outcomes.length
+    }
+  },
   methods: {
     unpromise() {
       this.$refs.renege.show()

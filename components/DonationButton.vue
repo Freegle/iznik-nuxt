@@ -24,9 +24,10 @@ export default {
   },
   computed: {
     donationLink() {
-      return this.directDonation
-        ? 'https://freegle.in/paypalbutton'
-        : 'https://freegle.in/paypalfundraiser'
+      return 'http://freegle.in/paypalbutton1325'
+      // return this.directDonation
+      //   ? 'https://freegle.in/paypalbutton'
+      //   : 'https://freegle.in/paypalfundraiser'
     }
   }
 }

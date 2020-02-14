@@ -38,7 +38,7 @@
       :id="'photoModal-' + story.photo.id"
       ref="photoModal"
       title="Story Photo"
-      alt="Story Photo"
+      generator-unable-to-provide-required-alt=""
       size="lg"
       no-stacking
       ok-only

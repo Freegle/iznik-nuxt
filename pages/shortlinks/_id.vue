@@ -6,10 +6,12 @@
         <h3>{{ shortlink.name }}</h3>
         <p>
           <a :href="'https://freegle.in/' + shortlink.name" target="_blank">{{ 'https://freegle.in/' + shortlink.name }}</a>
-          is a shortlink for the community
-          <nuxt-link :to="'/explore/' + shortlink.nameshort">
-            {{ shortlink.nameshort }}
-          </nuxt-link>.
+          <span v-if="shortlink.nameshort">
+            is a shortlink for the community
+            <nuxt-link :to="'/explore/' + shortlink.nameshort">
+              {{ shortlink.nameshort }}
+            </nuxt-link>.
+          </span>
         </p>
         <p>
           Here's a graph of clicks on this shortlink over time. If you don't see anything, there haven't been any yet!

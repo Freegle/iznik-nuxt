@@ -44,6 +44,12 @@ export default {
       required: false,
       default: false
     },
+    // Whether to only show groups on which we are a mod.
+    modonly: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     size: {
       type: String,
       required: false,
@@ -95,7 +101,12 @@ export default {
       const myGroups = this.$store.getters['auth/groups']
 
       for (const group of myGroups) {
-        if (group.type === 'Freegle') {
+        if (
+          group.type === 'Freegle' &&
+          (!this.modonly ||
+            group.role === 'Owner' ||
+            group.role === 'Moderator')
+        ) {
           groups.push({
             value: group.id,
             text: group.namedisplay,

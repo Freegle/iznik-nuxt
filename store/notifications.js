@@ -6,7 +6,7 @@ import twem from '~/assets/js/twem'
 export const state = () => ({
   list: [],
   context: null,
-  count: 0
+  unreadCount: 0
 })
 
 function compareNotificationIDs(x, y) {
@@ -38,8 +38,8 @@ export const mutations = {
     }
   },
 
-  setCount(state, count) {
-    state.count = count
+  setUnreadCount(state, unreadCount) {
+    state.unreadCount = unreadCount
   },
 
   setContext(state, params) {
@@ -60,7 +60,7 @@ export const mutations = {
 }
 
 export const getters = {
-  list: state => {
+  getCurrentList: state => {
     return state.list
   },
 
@@ -68,13 +68,13 @@ export const getters = {
     return state.context
   },
 
-  count: state => {
-    return state.count
+  getUnreadCount: state => {
+    return state.unreadCount
   }
 }
 
 export const actions = {
-  async list({ commit, state }, params) {
+  async fetchNextListChunk({ commit, state }, params) {
     const res = await this.$axios.get(process.env.API + '/notification', {
       params: {
         context: state.context
@@ -90,7 +90,7 @@ export const actions = {
     }
   },
 
-  async count({ commit, state, rootGetters }, params) {
+  async updateUnreadNotificationCount({ commit, state, rootGetters }, params) {
     // Check if we're logged in - no point checking for notifications if we're not.
     const me = rootGetters['auth/user']
 
@@ -103,7 +103,7 @@ export const actions = {
         })
 
         if (res.status === 200) {
-          commit('setCount', res.data.count)
+          commit('setUnreadCount', res.data.count)
         }
       } catch (e) {
         // This happens a lot on mobile when the network is flaky.  It's not an end-user visible error, so there

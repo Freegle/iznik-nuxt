@@ -5,7 +5,7 @@ const FACEBOOK_APPID = '134980666550322'
 const SENTRY_DSN = 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170'
 const YAHOO_CLIENTID =
   'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
-const MOBILE_VERSION = '2.0.14'
+const MOBILE_VERSION = '2.0.15'
 
 require('dotenv').config()
 
@@ -130,7 +130,7 @@ const config = {
       { hid: 'twitter:site', name: 'twitter:site', content: 'thisisfreegle' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      // { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'preconnect', href: 'https://i.ytimg.com' },
       { rel: 'preconnect', href: 'https://s.ytimg.com' },
       { rel: 'preconnect', href: 'https://www.youtube.com' },
@@ -507,7 +507,6 @@ const config = {
     GOOGLE_API_KEY: 'AIzaSyArVxoX781qdcbmQZi1PKHX-qa0bPbboH4',
     GOOGLE_CLIENT_ID:
       '423761283916-1rpa8120tpudgv4nf44cpmlf8slqbf4f.apps.googleusercontent.com',
-    MODTOOLS: false,
     USER_SITE: USER_SITE,
     IMAGE_SITE: IMAGE_SITE,
     SENTRY_DSN: SENTRY_DSN,

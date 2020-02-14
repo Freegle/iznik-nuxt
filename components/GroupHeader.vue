@@ -1,8 +1,8 @@
 <template>
   <b-card bg-light>
-    <b-row v-if="group.profile" class="mt-1">
+    <b-row class="mt-1">
       <b-col cols="5" md="2" lg="3" xl="2">
-        <b-img-lazy rounded thumbnail alt="Community profile picture" :src="group.profile" class="js-pageimage" />
+        <b-img-lazy rounded thumbnail alt="Community profile picture" :src="group.profile ? group.profile : '/icon.png'" class="js-pageimage" />
       </b-col>
       <b-col cols="7" md="6" lg="9" class="group-header-description">
         <b-card-title>

@@ -60,5 +60,9 @@ export const actions = {
 
     // Fetch the user back into the store to update any ratings elsewhere
     await dispatch('fetch', { id, info: true })
+  },
+
+  async edit({ commit, dispatch }, params) {
+    await this.$api.user.save(params)
   }
 }

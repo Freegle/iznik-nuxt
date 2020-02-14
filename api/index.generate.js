@@ -24,7 +24,7 @@ const INDEX_FILENAME = join(__dirname, 'index.js')
 const TYPING_FILENAME = join(__dirname, 'index.d.ts')
 
 const DO_NOT_EDIT_WARNING = `
-/*    --- DO NOT EDIT --- 
+/*    --- DO NOT EDIT ---
  *
  * This file was generating using api/${basename(__filename)}
  * You can regenerate it by running:
@@ -69,8 +69,8 @@ function generateIndex(entries) {
     '',
     generateImports(entries),
     '',
-    'export default ({ $axios }) => {',
-    'const options = { $axios }',
+    'export default ({ $axios, store }) => {',
+    'const options = { $axios, store }',
     'return {'
   )
 

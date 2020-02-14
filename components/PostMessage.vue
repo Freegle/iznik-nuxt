@@ -145,8 +145,7 @@ export default {
       return this.$store.getters['compose/getAttachments'](this.id)
     },
     placeholder() {
-      const msg = this.$store.getters['compose/getMessage'](this.id)
-      return msg && msg.type === 'Offer'
+      return this.type === 'Offer'
         ? 'Please give a few details if possible, e.g. colour, condition, size etc.'
         : "Please give a few more details about what you're looking for, and why you'd like it."
     }

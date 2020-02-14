@@ -51,7 +51,7 @@
           </b-navbar-nav>
           <b-navbar-nav class="ml-auto">
             <b-nav-item id="menu-option-notification" class="text-center p-0" />
-            <b-nav-item-dropdown class="white text-center notiflist" lazy right @shown="showNotifications">
+            <b-nav-item-dropdown class="white text-center notiflist" lazy right @shown="loadLatestNotifications">
               <template slot="button-content">
                 <div class="notifwrapper text-center small">
                   <v-icon name="bell" scale="2" />
@@ -70,7 +70,7 @@
               <b-dropdown-item v-for="notification in notifications" :key="'notification-' + notification.id" class="p-0 notpad">
                 <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
               </b-dropdown-item>
-              <infinite-loading :distance="distance" @infinite="loadMore">
+              <infinite-loading :distance="distance" @infinite="loadMoreNotifications">
                 <span slot="no-results" />
                 <span slot="no-more" />
                 <span slot="spinner">
@@ -141,12 +141,14 @@
           </div>
         </div>
 
-        <b-dropdown v-if="loggedIn"
-                    class="white text-center notiflist mr-2"
-                    variant="success"
-                    lazy
-                    right
-                    @shown="showNotifications">
+        <b-dropdown
+          v-if="loggedIn"
+          class="white text-center notiflist mr-2"
+          variant="success"
+          lazy
+          right
+          @shown="loadLatestNotifications"
+        >
           <template slot="button-content">
             <div class="notifwrapper">
               <v-icon name="bell" scale="2" class="" />
@@ -164,7 +166,7 @@
           <b-dropdown-item v-for="notification in notifications" :key="'notification-' + notification.id" class="p-0 notpad">
             <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
           </b-dropdown-item>
-          <infinite-loading :distance="distance" @infinite="loadMore">
+          <infinite-loading :distance="distance" @infinite="loadMoreNotifications">
             <span slot="no-results" />
             <span slot="no-more" />
             <span slot="spinner">
@@ -253,13 +255,13 @@
       </b-collapse>
     </b-navbar>
 
-
     <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent" />
+    <BouncingEmail />
     <LocalStorageMonitor />
     <client-only>
       <ChatPopups v-if="loggedIn" class="d-none d-sm-block" />
       <LoginModal ref="loginModal" />
-      <AboutMeModal ref="modal" />
+      <AboutMeModal ref="aboutMeModal" />
     </client-only>
     <div class="navbar-toggle" style="display: none" />
     <div id="serverloader" class="bg-white">
@@ -278,6 +280,7 @@
 // Import login modal as I've seen an issue where it's not in $refs when you click on the signin button too rapidly.
 import LoginModal from '~/components/LoginModal'
 import LocalStorageMonitor from '~/components/LocalStorageMonitor'
+import BouncingEmail from '~/components/BouncingEmail'
 
 const AboutMeModal = () => import('~/components/AboutMeModal')
 const ChatPopups = () => import('~/components/ChatPopups')
@@ -293,7 +296,8 @@ export default {
     Notification,
     AboutMeModal,
     LoginModal,
-    LocalStorageMonitor
+    LocalStorageMonitor,
+    BouncingEmail
   },
 
   data: function() {
@@ -309,7 +313,14 @@ export default {
   head() {
     const totalCount = this.notificationCount + this.chatCount
     return {
-      titleTemplate: totalCount > 0 ? `(${totalCount}) %s` : '%s'
+      titleTemplate: totalCount > 0 ? `(${totalCount}) %s` : '%s',
+      link: [
+        {
+          rel: 'icon',
+          type: 'image/x-icon',
+          href: '/icon.png'
+        }
+      ]
     }
   },
 
@@ -322,16 +333,18 @@ export default {
       return this.$store.getters['auth/user']
     },
     notifications() {
-      const notifications = this.$store.getters['notifications/list']
+      const notifications = this.$store.getters['notifications/getCurrentList']
 
-      notifications.sort(function(a, b) {
-        return new Date(b.timestamp) - new Date(a.timestamp)
-      })
+      if (notifications) {
+        notifications.sort(function(a, b) {
+          return new Date(b.timestamp) - new Date(a.timestamp)
+        })
+      }
 
       return notifications
     },
     notificationCount() {
-      return this.$store.getters['notifications/count']
+      return this.$store.getters['notifications/getUnreadCount']
     },
     chatCount() {
       const chatcount = this.$store.getters['chats/unseenCount'] // CC
@@ -382,6 +395,12 @@ export default {
   },
 
   mounted() {
+    // Ensure we know whether we're FD or MT.
+    this.$store.dispatch('misc/set', {
+      key: 'modtools',
+      value: false
+    })
+
     if (document) {
       // We added a basic loader into the HTML.  This helps if we are loaded on an old browser where our JS bombs
       // out - at least we display something, with a link to support.  But now we're up and running, remove that.
@@ -398,8 +417,8 @@ export default {
       console.log('Start NCHAN from mount')
       this.startNCHAN(me.id)
 
-      // Get notifications and poll regularly for new ones.  Would be nice if this was event driven instead but requires server work.
-      this.getNotificationCount()
+      // Get notifications and chats and poll regularly for new ones.  Would be nice if this was event driven instead but requires server work.
+      this.fetchLatestNotificationAndChats()
     }
 
     // Look for a custom logo.
@@ -533,7 +552,7 @@ export default {
           const mt =
             ret && Object.keys(ret).includes('modtools') ? ret.modtools : false
 
-          if (process.env.MODTOOLS === mt && ret && ret.text) {
+          if (!mt && ret && ret.text) {
             const data = ret.text
 
             if (data) {
@@ -556,20 +575,24 @@ export default {
         }
       })
     },
-    async getNotificationCount() {
+    async fetchLatestNotificationAndChats() {
       const me = this.$store.getters['auth/user']
 
       if (me && me.id) {
         console.log("getNotificationCount for me")  // CC just this added
-        let currentCount = this.$store.getters['notifications/count']
-        const notifications = this.$store.getters['notifications/list']
-        await this.$store.dispatch('notifications/count')
-        let newCount = this.$store.getters['notifications/count']
+        let currentCount = this.$store.getters['notifications/getUnreadCount']
+        const notifications = this.$store.getters[
+          'notifications/getCurrentList'
+        ]
+        await this.$store.dispatch(
+          'notifications/updateUnreadNotificationCount'
+        )
+        let newCount = this.$store.getters['notifications/getUnreadCount']
 
         if (newCount !== currentCount || !notifications.length) {
           // Changed or don't know it yet.  Get the list so that it will display zippily when they click.
           await this.$store.dispatch('notifications/clear')
-          await this.$store.dispatch('notifications/list')
+          await this.$store.dispatch('notifications/fetchNextListChunk')
         }
 
         currentCount = this.$store.getters['chats/unseenCount']
@@ -584,11 +607,14 @@ export default {
         }
       }
 
-      this.notificationPoll = setTimeout(this.getNotificationCount, 30000)
+      this.notificationPoll = setTimeout(
+        this.fetchLatestNotificationAndChats,
+        30000
+      )
     },
 
     showAboutMe() {
-      this.$refs.modal.show()
+      this.$refs.aboutMeModal.show()
     },
 
     async logOut() {
@@ -605,7 +631,7 @@ export default {
       this.$router.push('/')
     },
 
-    loadMore: function($state) {
+    loadMoreNotifications: function($state) {
       const currentCount = this.notifications.length
 
       if (this.complete) {
@@ -613,10 +639,12 @@ export default {
       } else {
         this.busy = true
         this.$store
-          .dispatch('notifications/list')
+          .dispatch('notifications/fetchNextListChunk')
           .then(() => {
             try {
-              const notifications = this.$store.getters['notifications/list']
+              const notifications = this.$store.getters[
+                'notifications/getCurrentList'
+              ]
 
               if (currentCount === notifications.length) {
                 this.complete = true
@@ -638,10 +666,11 @@ export default {
       }
     },
 
-    showNotifications() {
+    loadLatestNotifications() {
       // We want to make sure we have the most up to date notifications.
-      this.$store.dispatch('notifications/clearContext')
-      this.$store.dispatch('notifications/list')
+      this.complete = false
+      this.$store.dispatch('notifications/clear')
+      this.$store.dispatch('notifications/fetchNextListChunk')
     },
 
     requestLogin() {
@@ -662,8 +691,8 @@ export default {
 
     async markAllRead() {
       await this.$store.dispatch('notifications/allSeen')
-      await this.$store.dispatch('notifications/count')
-      await this.$store.dispatch('notifications/list')
+      await this.$store.dispatch('notifications/updateUnreadNotificationCount')
+      await this.$store.dispatch('notifications/fetchNextListChunk')
     }
   }
 }
@@ -817,11 +846,6 @@ body.modal-open {
 
 svg.fa-icon {
   height: 32px;
-}
-
-.signindisabled {
-  opacity: 0.2;
-  pointer-events: none;
 }
 
 .notifwrapper {

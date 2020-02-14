@@ -54,7 +54,10 @@ export default {
   async mounted() {
     // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
     // need to render this on the server.
-    await this.$store.dispatch('chats/listChats')
+    const modtools = this.$store.getters['misc/get']('modtools')
+    await this.$store.dispatch('chats/listChats', {
+      chattypes: modtools ? ['User2Mod'] : ['User2User', 'User2Mod']
+    })
   },
   methods: {}
 }

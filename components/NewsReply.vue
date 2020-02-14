@@ -28,7 +28,7 @@
                     v-b-modal="'photoModal-' + replyid"
                     rounded
                     class="clickme replyphoto"
-                    alt="ChitChat photo"
+                    generator-unable-to-provide-required-alt=""
                     :src="reply.image.paththumb"
                     @error.native="brokenImage"
                   />
@@ -134,7 +134,7 @@
       :id="'photoModal-' + replyid"
       ref="photoModal"
       title="ChitChat Photo"
-      alt="ChitChat Photo"
+      generator-unable-to-provide-required-alt=""
       size="lg"
       no-stacking
       ok-only
@@ -409,7 +409,7 @@ export default {
     },
     async sendReply() {
       // Encode up any emojis.
-      if (this.replybox) {
+      if (this.replybox && this.replybox.trim()) {
         const msg = twem.untwem(this.replybox)
 
         await this.$store.dispatch('newsfeed/send', {

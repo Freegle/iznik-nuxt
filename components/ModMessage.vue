@@ -1,0 +1,231 @@
+<template>
+  <div>
+    <b-card bg-variant="white" no-body>
+      <b-card-header class="d-flex justify-content-between">
+        <!--        TODO Edits-->
+        <!--        TODO Colour code-->
+        <div>
+          <div v-if="!editing">
+            {{ eSubject }}
+          </div>
+          <div v-else>
+            <div v-if="message.location">
+              <b-input-group>
+                <b-select v-model="message.type" :options="typeOptions" class="type" />
+                <b-input v-model="message.item.name" />
+                <b-input v-model="message.location.name" class="location" />
+              </b-input-group>
+            </div>
+            <div v-else>
+              <b-input-group>
+                <b-input v-model="message.subject" />
+              </b-input-group>
+            </div>
+          </div>
+          <MessageHistory :message="message" modinfo display-message-link />
+        </div>
+        <div>
+          <b-btn v-if="!editing" variant="white" @click="editing = true">
+            <v-icon name="pen" /> Edit
+          </b-btn>
+          <b-btn v-if="editing" variant="white" @click="editing = false">
+            <v-icon name="" /> Cancel
+          </b-btn>
+          <b-button v-if="editing" variant="white" disabled @click="save">
+            <v-icon v-if="saving" name="sync" class="text-success fa-spin" />
+            <v-icon v-else-if="saved" name="check" class="text-success" />
+            <v-icon v-else name="save" />
+            Save
+          </b-button>
+        </div>
+        <!--        TODO Duplicates, related-->
+        <!--        Worry Words-->
+        <!--        Outcomes-->
+        <!--        View Source-->
+      </b-card-header>
+      <b-card-body>
+        <!--        Held by-->
+        <b-row>
+          <b-col cols="12" lg="8">
+            <NoticeMessage v-if="message.fromuser.activedistance > 50" variant="warning" class="mb-2">
+              This freegler is active on groups {{ message.fromuser.activedistance }} miles apart.
+            </NoticeMessage>
+            <b-form-textarea
+              v-if="editing"
+              v-model="message.textbody"
+              rows="8"
+              class="mb-3"
+            />
+            <!-- eslint-disable-next-line -->
+            <div v-else class="mb-3 rounded border p-2 prewrap forcebreak font-weight-bold">{{ eBody }}</div>
+            <div v-if="message.attachments && message.attachments.length" class="d-flex">
+              <ModImage v-for="attachment in message.attachments" :key="'attachment-' + attachment.id" :attachment="attachment" class="d-inline pr-1" />
+            </div>
+            <MessageReplyInfo :message="message" class="d-inline" />
+          </b-col>
+          <b-col cols="12" lg="4">
+            <div class="rounded border border-info p-2 d-flex justify-content-between flex-wrap">
+              <MessageUserInfo :user="message.fromuser" modinfo :groupid="message.groups[0].groupid" />
+              <!--              Email list-->
+              <!--              Group list-->
+              <!--              Applied list-->
+            </div>
+            <div class="d-flex justify-content-between">
+              <b-btn variant="link" @click="showMailSettings = !showMailSettings">
+                <span v-if="showMailSettings">
+                  Hide mail settings
+                </span>
+                <span v-else>
+                  Show mail settings
+                </span>
+              </b-btn>
+              <b-btn variant="link" @click="showActions = !showActions">
+                <span v-if="showActions">
+                  Hide actions
+                </span>
+                <span v-else>
+                  Show actions
+                </span>
+              </b-btn>
+            </div>
+            <SettingsGroup
+              v-if="showMailSettings"
+              :groupid="message.groups[0].groupid"
+              :emailfrequency="membership.emailfrequency"
+              :volunteeringallowed="Boolean(membership.volunteeringallowed)"
+              :eventsallowed="Boolean(membership.eventsallowed)"
+              class="border border-info mt-2 p-1"
+            />
+            <div v-if="showActions">
+              <!--              TODO Actions-->
+              <b-btn variant="white" disabled>
+                <v-icon name="times" /> Remove
+              </b-btn>
+              <b-btn variant="white" disabled>
+                <v-icon name="trash-alt" /> Ban
+              </b-btn>
+              <b-btn variant="white" disabled>
+                <v-icon name="ban" /> Scammer
+              </b-btn>
+              <b-btn variant="white" disabled>
+                <v-icon name="check" /> Whitelist
+              </b-btn>
+              <b-btn variant="white" disabled>
+                <v-icon name="tag" /> Add note
+              </b-btn>
+              <b-btn variant="white" disabled>
+                <v-icon name="trash-alt" /> Purge
+              </b-btn>
+            </div>
+            <!--              TODO Handle changes-->
+          </b-col>
+        </b-row>
+      </b-card-body>
+      <b-card-footer>
+        <ModMessageButtons :message="message" :modconfig="modconfig" />
+      </b-card-footer>
+    </b-card>
+  </div>
+</template>
+<script>
+// TODO Validation
+// - item length
+import MessageHistory from './MessageHistory'
+import MessageUserInfo from './MessageUserInfo'
+import MessageReplyInfo from './MessageReplyInfo'
+import SettingsGroup from './SettingsGroup'
+import ModImage from './ModImage'
+import NoticeMessage from './NoticeMessage'
+import ModMessageButtons from './ModMessageButtons'
+import twem from '~/assets/js/twem'
+
+export default {
+  name: 'ModMessage',
+  components: {
+    ModMessageButtons,
+    NoticeMessage,
+    ModImage,
+    SettingsGroup,
+    MessageReplyInfo,
+    MessageUserInfo,
+    MessageHistory
+  },
+  props: {
+    message: {
+      type: Object,
+      required: true
+    }
+  },
+  data: function() {
+    return {
+      saving: false,
+      saved: false,
+      showMailSettings: false,
+      showActions: false,
+      editing: false
+    }
+  },
+  computed: {
+    typeOptions() {
+      // TODO Per group keywords
+      return [
+        {
+          value: 'Offer',
+          text: 'OFFER'
+        },
+        {
+          value: 'Wanted',
+          text: 'WANTED'
+        }
+      ]
+    },
+    eSubject() {
+      return twem.twem(this.$twemoji, this.message.subject)
+    },
+    eBody() {
+      return twem.twem(this.$twemoji, this.message.textbody)
+    },
+    groupid() {
+      return this.message.groups && this.message.groups.length > 0
+        ? this.message.groups[0].groupid
+        : null
+    },
+    membership() {
+      let ret = null
+
+      if (this.groupid) {
+        ret = this.message.fromuser.memberof.find(g => g.id === this.groupid)
+      }
+
+      return ret
+    },
+    modconfig() {
+      const groups = this.$store.getters['auth/groups']
+      let ret = null
+      let configid = null
+
+      if (groups) {
+        groups.forEach(group => {
+          if (group.id === this.groupid) {
+            configid = group.configid
+          }
+        })
+
+        const configs = this.$store.getters['modconfigs/configs']
+        ret = configs.find(config => config.id === configid)
+      }
+
+      return ret
+    }
+  },
+  methods: {}
+}
+</script>
+<style scoped>
+.type {
+  max-width: 150px;
+}
+.location {
+  max-width: 250px;
+}
+</style>

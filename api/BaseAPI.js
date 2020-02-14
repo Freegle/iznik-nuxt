@@ -28,13 +28,20 @@ export class SignUpError extends Error {
 }
 
 export default class BaseAPI {
-  constructor({ $axios }) {
+  constructor({ $axios, store }) {
     this.$axios = $axios
+    this.store = store
   }
 
   async $request(method, path, config, logError = true) {
     let status = null
     let data = null
+    const modtools = this.store.getters['misc/get']('modtools')
+
+    if (config.params) {
+      // Ensure we tell the API whether we are FD or MT.  Doing it here avoids all the calling code needing to know.
+      config.params.modtools = modtools
+    }
 
     try {
       const ret = await this.$axios.request({

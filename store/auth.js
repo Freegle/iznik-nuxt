@@ -11,7 +11,9 @@ export const state = () => ({
   groups: [],
   nchan: null,
   loggedInEver: false,
-  userlist: []
+  userlist: [],
+  work: [],
+  discourse: {}
 })
 
 const NONMIN = ['me', 'groups', 'aboutme', 'phone', 'notifications']
@@ -66,12 +68,24 @@ export const mutations = {
     }
   },
 
+  unbounce(state) {
+    state.user.bouncing = 0
+  },
+
   setLoggedInEver(state, value) {
     state.loggedInEver = value
   },
 
   setGroups(state, groups) {
     state.groups = groups
+  },
+
+  setWork(state, work) {
+    state.work = work
+  },
+
+  setDiscourse(state, work) {
+    state.discourse = work
   },
 
   setFetched(state, val) {
@@ -94,6 +108,11 @@ export const getters = {
 
   user: state => {
     const ret = state.user
+    return ret
+  },
+
+  work: state => {
+    const ret = state.work
     return ret
   },
 
@@ -229,7 +248,6 @@ export const actions = {
     // If we have recently fetched the user without the groups, but we want them now, then ensure we refetch.
     for (const component of params.components) {
       if (component !== 'me' && state.user && !state.user[component]) {
-        console.log('Force fetch as component missing in user', component)
         params.force = true
       }
     }
@@ -248,7 +266,13 @@ export const actions = {
       // Set the time now; this avoids multiple fetches at the start of page loads.
       commit('setFetched', Date.now())
 
-      const { me, persistent, groups } = await this.$api.session.fetch(params)
+      const {
+        me,
+        persistent,
+        groups,
+        work,
+        discourse
+      } = await this.$api.session.fetch(params)
 
       if (me) {
         // Save the persistent session token.
@@ -265,6 +289,14 @@ export const actions = {
 
         await savePushId(this) // Tell server our mobile push notification id, if available // CC
       }
+
+      if (work) {
+        commit('setWork', work)
+      }
+
+      if (discourse) {
+        commit('setDiscourse', discourse)
+      }
     }
   },
 
@@ -280,6 +312,11 @@ export const actions = {
       components: ['me', 'groups', 'aboutme']
     })
     return data
+  },
+
+  async unbounce({ commit, dispatch, state }, params) {
+    await this.$api.user.unbounce(params.id)
+    commit('unbounce')
   },
 
   async saveAndGet({ commit, dispatch, state }, params) {

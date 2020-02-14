@@ -98,7 +98,7 @@
                 rounded
                 thumbnail
                 class="square float-right"
-                alt="Event photo"
+                generator-unable-to-provide-required-alt=""
                 title="Event photo"
               />
             </b-col>
