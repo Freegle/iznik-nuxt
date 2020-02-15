@@ -114,6 +114,11 @@ export const getters = {
     return ret
   },
 
+  discourse: state => {
+    const ret = state.discourse
+    return ret
+  },
+
   groups: state => {
     return state.groups
   },

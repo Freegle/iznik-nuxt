@@ -16,8 +16,11 @@
         <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown right class="d-block d-sm-none">
             <template v-slot:button-content>
-              <v-icon name="envelope" scale="2" /><br>
-              Messages
+              <span class="d-none d-sm-inline">
+                <v-icon name="envelope" scale="2" /><br>
+                Messages
+              </span>
+              <v-icon name="envelope" class="d-inline d-sm-none" scale="2" />
               <b-badge v-if="getCount('pending')" variant="danger">
                 {{ getCount('pending') }}
               </b-badge>
@@ -32,11 +35,25 @@
               Approved
             </b-dropdown-item>
           </b-nav-item-dropdown>
-          <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse" class="text-center p-0" />
+          <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse" class="text-center p-0" @click="discourse">
+            <div class="notifwrapper">
+              <span class="d-none d-sm-inline">
+                <v-icon name="users" scale="2" /><br>
+                Mods
+              </span>
+              <v-icon name="users" class="d-inline d-sm-none" scale="2" />
+              <b-badge v-if="discourseCount" variant="success">
+                {{ discourseCount }}
+              </b-badge>
+            </div>
+          </b-nav-item>
           <b-nav-item v-if="loggedIn" id="menu-option-modtools-chat" class="text-center p-0" to="/modtools/chats">
             <div class="notifwrapper">
-              <v-icon name="comments" scale="2" /><br>
-              Chats
+              <span class="d-none d-sm-inline">
+                <v-icon name="comments" scale="2" /><br>
+                Chats
+              </span>
+              <v-icon name="comments" class="d-inline d-sm-none" scale="2" />
               <b-badge v-if="chatCount" variant="danger">
                 {{ chatCount }}
               </b-badge>
@@ -117,6 +134,12 @@ export default {
     },
     chatCount() {
       return this.$store.getters['chats/unseenCount']
+    },
+    discourseCount() {
+      const discourse = this.$store.getters['auth/discourse']
+      return discourse
+        ? discourse.notifications + discourse.newtopics + discourse.unreadtopics
+        : 0
     }
   },
 
@@ -194,6 +217,9 @@ export default {
       }
 
       return 1
+    },
+    discourse() {
+      window.open('https://discourse.ilovefreegle.org/')
     }
   },
 
