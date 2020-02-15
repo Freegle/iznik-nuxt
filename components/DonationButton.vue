@@ -44,7 +44,7 @@ export default {
   },
   computed: {
     donationLink() {
-      return 'https://freegle.in/' + this.link
+      return 'https://freegle.in/' + (this.link || 'paypal1510')
     }
   },
   methods: {
