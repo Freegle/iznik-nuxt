@@ -174,9 +174,11 @@ export default {
   methods: {
     async show() {
       // Get the full standard message
-      this.stdmsg = await this.$store.dispatch('stdmsgs/fetch', {
-        id: this.stdmsgid
-      })
+      if (this.stdmsgid) {
+        this.stdmsg = await this.$store.dispatch('stdmsgs/fetch', {
+          id: this.stdmsgid
+        })
+      }
 
       // Calculate initial subject.
       if (this.stdmsg) {

@@ -3,8 +3,9 @@
     <b-btn :variant="variant" class="mb-1" @click="click">
       <v-icon :name="icon" /> {{ label }}
     </b-btn>
-    <ConfirmModal v-if="showDeleteModal" ref="confirm" @confirm="deleteConfirmed" />
-    <ModStdMessageModal v-if="showStdMsgModal" ref="stdmodal" :stdmsgid="stdmsg.id" :message="message" />
+    <ConfirmModal v-if="showDeleteModal" ref="deleteConfirm" @confirm="deleteConfirmed" />
+    <ConfirmModal v-if="showSpamModal" ref="spamConfirm" @confirm="spamConfirmed" />
+    <ModStdMessageModal v-if="showStdMsgModal" ref="stdmodal" :stdmsgid="stdmsg ? stdmsg.id : null" :message="message" />
   </div>
 </template>
 <script>
@@ -54,7 +55,8 @@ export default {
   data: function() {
     return {
       showDeleteModal: false,
-      showStdMsgModal: false
+      showStdMsgModal: false,
+      showSpamModal: false
     }
   },
   computed: {
@@ -75,9 +77,13 @@ export default {
         this.approveIt()
       } else if (this.delete) {
         // Standard delete button
+        this.deleteIt()
+      } else if (this.spam) {
+        // Standard spam button
+        this.spamIt()
       } else {
         // Something else.  We want to show the modal.  Setting this will cause it to render here.
-        this.showModal = true
+        this.showStdMsgModal = true
         this.waitForRef('stdmodal', () => {
           this.$refs.stdmodal.show()
         })
@@ -90,12 +96,25 @@ export default {
       })
     },
     deleteIt() {
+      this.showDeleteModal = true
       this.waitForRef('config', () => {
-        this.$refs.confirm.show()
+        this.$refs.deleteConfirm.show()
+      })
+    },
+    spamIt() {
+      this.showSpamModal = true
+      this.waitForRef('config', () => {
+        this.$refs.spamConfirm.show()
       })
     },
     deleteConfirmed() {
       this.$store.dispatch('messages/approve', {
+        id: this.message.id,
+        groupid: this.groupid
+      })
+    },
+    spamConfirmed() {
+      this.$store.dispatch('messages/spam', {
         id: this.message.id,
         groupid: this.groupid
       })

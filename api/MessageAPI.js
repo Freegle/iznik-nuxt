@@ -87,4 +87,12 @@ export default class MessageAPI extends BaseAPI {
       body: body
     })
   }
+
+  spam(id, groupid) {
+    return this.$post('/message', {
+      action: 'Spam',
+      id: id,
+      groupid: groupid
+    })
+  }
 }

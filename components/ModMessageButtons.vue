@@ -17,6 +17,30 @@
       label="Delete"
     />
     <ModMessageButton
+      v-if="approved"
+      :message="message"
+      variant="success"
+      icon="envelope"
+      leave
+      label="Reply"
+    />
+    <ModMessageButton
+      v-if="approved"
+      :message="message"
+      variant="danger"
+      icon="trash-alt"
+      delete
+      label="Delete"
+    />
+    <ModMessageButton
+      v-if="approved"
+      :message="message"
+      variant="info"
+      icon="ban"
+      spam
+      label="Spam"
+    />
+    <ModMessageButton
       v-for="stdmsg in filtered"
       :key="stdmsg.id"
       :variant="variant(stdmsg)"
@@ -53,17 +77,13 @@ export default {
   },
   computed: {
     pending() {
-      let ret = false
-
-      if (this.message.groups) {
-        this.message.groups.forEach(group => {
-          if (group.collection === 'Pending') {
-            ret = true
-          }
-        })
-      }
-
-      return ret
+      return this.hasCollection('Pending')
+    },
+    approved() {
+      return this.hasCollection('Approved')
+    },
+    spam() {
+      return this.hasCollection('Spam')
     },
     validActions() {
       // The standard messages we show depend on the valid ones for this type of message.
@@ -142,6 +162,20 @@ export default {
         default:
           return 'white'
       }
+    },
+
+    hasCollection(coll) {
+      let ret = false
+
+      if (this.message.groups) {
+        this.message.groups.forEach(group => {
+          if (group.collection === coll) {
+            ret = true
+          }
+        })
+      }
+
+      return ret
     }
   }
 }

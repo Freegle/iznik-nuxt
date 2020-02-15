@@ -39,7 +39,7 @@
             <div class="notifwrapper">
               <span class="d-none d-sm-inline">
                 <v-icon name="users" scale="2" /><br>
-                Mods
+                Us
               </span>
               <v-icon name="users" class="d-inline d-sm-none" scale="2" />
               <b-badge v-if="discourseCount" variant="success">
@@ -216,7 +216,7 @@ export default {
         }
       }
 
-      return 1
+      return 0
     },
     discourse() {
       window.open('https://discourse.ilovefreegle.org/')
