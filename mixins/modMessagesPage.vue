@@ -13,7 +13,8 @@ export default {
       // render is significant, and each of these consumes a lot of screen space.  So by fetching and rendering less,
       // we increase how fast it feels.
       distance: 1000,
-      limit: 2
+      limit: 2,
+      workType: null
     }
   },
   computed: {
@@ -27,10 +28,15 @@ export default {
       }
 
       return messages
+    },
+    work() {
+      // Count for the type of work we're interested in.
+      const work = this.$store.getters['auth/work']
+      const count = this.workType ? work[this.workType] : 0
+      return count
     }
   },
   watch: {
-    // TODO Watch for work changes and reload?
     groupid() {
       this.context = null
       this.$store.dispatch('messages/clear')
@@ -42,6 +48,12 @@ export default {
         await this.$store.dispatch('group/fetch', {
           id: this.groupid
         })
+      }
+    },
+    work(newVal, oldVal) {
+      if (newVal > oldVal) {
+        // There's new stuff to do.  Reload.
+        this.$store.dispatch('messages/clear')
       }
     }
   },

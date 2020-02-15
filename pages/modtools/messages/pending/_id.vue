@@ -8,11 +8,9 @@
 
       <infinite-loading :key="'infinite-' + groupid" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
         <span slot="no-results">
-          There are no messages at the moment.
+          There are no messages at the moment.  This will refresh automatically.
         </span>
-        <span slot="no-more">
-          There are no more messages.
-        </span>
+        <span slot="no-more" />
         <span slot="spinner">
           <b-img-lazy src="~/static/loader.gif" alt="Loading" />
         </span>
@@ -34,7 +32,8 @@ export default {
   ],
   data: function() {
     return {
-      collection: 'Pending'
+      collection: 'Pending',
+      workType: 'pending'
     }
   }
 }

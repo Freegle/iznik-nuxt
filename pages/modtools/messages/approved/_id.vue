@@ -10,9 +10,7 @@
         <span slot="no-results">
           There are no messages at the moment.
         </span>
-        <span slot="no-more">
-          There are no more messages.
-        </span>
+        <span slot="no-more" />
         <span slot="spinner">
           <b-img-lazy src="~/static/loader.gif" alt="Loading" />
         </span>
