@@ -384,6 +384,11 @@ export default {
   },
 
   mounted() {
+    if (process.browser) {
+      // Add class for screen background.
+      document.body.classList.add('fd')
+    }
+
     // Ensure we know whether we're FD or MT.
     this.$store.dispatch('misc/set', {
       key: 'modtools',

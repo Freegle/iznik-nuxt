@@ -109,8 +109,12 @@ div[variant="success"] .card-header {
   display: block;
 }
 
-body {
+body.fd {
   background-image: url('~static/wallpaper.png');
+}
+
+body.modtools {
+  background-color: $color-modtools-green--light;
 }
 
 // We have to go to some effort to style the resize grip.  We can't have it in a scoped style otherwise it won't

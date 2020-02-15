@@ -140,6 +140,11 @@ export default {
   },
 
   mounted() {
+    if (process.browser) {
+      // Add class for screen background.
+      document.body.classList.add('modtools')
+    }
+
     // Ensure we know whether we're FD or MT.
     this.$store.dispatch('misc/set', {
       key: 'modtools',
@@ -225,10 +230,6 @@ html {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
-}
-
-.pageback {
-  background-color: $color-modtools-green--light;
 }
 
 #navbar .nav-item {
