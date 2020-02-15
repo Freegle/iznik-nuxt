@@ -3,9 +3,8 @@
     <b-card bg-variant="white" no-body>
       <b-card-header class="d-flex justify-content-between">
         <!--        TODO Edits-->
-        <!--        TODO Colour code-->
         <div>
-          <div v-if="!editing">
+          <div v-if="!editing" :class="subjectClass + ' font-weight-bold'">
             {{ eSubject }}
           </div>
           <div v-else>
@@ -26,7 +25,7 @@
         </div>
         <div>
           <b-btn v-if="!editing" variant="white" @click="editing = true">
-            <v-icon name="pen" /> Edit
+            <v-icon name="pen" /><span class="d-none d-sm-inline"> Edit</span>
           </b-btn>
           <b-btn v-if="editing" variant="white" @click="editing = false">
             <v-icon name="" /> Cancel
@@ -57,34 +56,77 @@
               class="mb-3"
             />
             <!-- eslint-disable-next-line -->
+            <div v-else-if="!eBody" class="mb-3 rounded border p-2 prewrap forcebreak font-weight-bold"><em>This message is blank.</em></div>
+            <!-- eslint-disable-next-line -->
             <div v-else class="mb-3 rounded border p-2 prewrap forcebreak font-weight-bold">{{ eBody }}</div>
             <div v-if="message.attachments && message.attachments.length" class="d-flex">
               <ModImage v-for="attachment in message.attachments" :key="'attachment-' + attachment.id" :attachment="attachment" class="d-inline pr-1" />
             </div>
-            <MessageReplyInfo :message="message" class="d-inline" />
+            <MessageReplyInfo v-if="!pending || message.replies && message.replies.length" :message="message" class="d-inline" />
           </b-col>
           <b-col cols="12" lg="4">
             <div class="rounded border border-info p-2 d-flex justify-content-between flex-wrap">
-              <MessageUserInfo :user="message.fromuser" modinfo :groupid="message.groups[0].groupid" />
-              <!--              Email list-->
-              <!--              Group list-->
-              <!--              Applied list-->
+              <MessageUserInfo :message="message" :user="message.fromuser" modinfo :groupid="message.groups[0].groupid" />
+              <!-- TODO             Group list-->
+              <!-- TODO             Applied list-->
             </div>
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between flex-wrap">
               <b-btn variant="link" @click="showMailSettings = !showMailSettings">
                 <span v-if="showMailSettings">
-                  Hide mail settings
+                  <v-icon name="cog" />
+                  <span class="d-inline d-sm-none">
+                    Hide
+                  </span>
+                  <span class="d-none d-sm-inline">
+                    Hide mail settings
+                  </span>
                 </span>
                 <span v-else>
-                  Show mail settings
+                  <v-icon name="cog" />
+                  <span class="d-inline d-sm-none">
+                    Settings
+                  </span>
+                  <span class="d-none d-sm-inline">
+                    Show mail settings
+                  </span>
+                </span>
+              </b-btn>
+              <b-btn v-if="message.fromuser.emails && message.fromuser.emails.length" variant="link" @click="showEmails = !showEmails">
+                <v-icon name="envelope" />
+                <span v-if="showEmails">
+                  <span class="d-inline d-sm-none">
+                    Hide
+                  </span>
+                  <span class="d-none d-sm-inline">
+                    Show {{ message.fromuser.emails.length | pluralize('email', { includeNumber: true }) }}
+                  </span>
+                </span>
+                <span v-else>
+                  <span class="d-inline d-sm-none">
+                    <v-icon name="envelope" /> {{ message.fromuser.emails.length }}
+                  </span>
+                  <span class="d-none d-sm-inline">
+                    Show {{ message.fromuser.emails.length | pluralize('email', { includeNumber: true }) }}
+                  </span>
                 </span>
               </b-btn>
               <b-btn variant="link" @click="showActions = !showActions">
+                <v-icon name="hammer" />
                 <span v-if="showActions">
-                  Hide actions
+                  <span class="d-inline d-sm-none">
+                    Hide
+                  </span>
+                  <span class="d-none d-sm-inline">
+                    Show actions
+                  </span>
                 </span>
                 <span v-else>
-                  Show actions
+                  <span class="d-inline d-sm-none">
+                    Actions
+                  </span>
+                  <span class="d-none d-sm-inline">
+                    Show actions
+                  </span>
                 </span>
               </b-btn>
             </div>
@@ -96,6 +138,11 @@
               :eventsallowed="Boolean(membership.eventsallowed)"
               class="border border-info mt-2 p-1"
             />
+            <div v-if="showEmails">
+              <div v-for="email in message.fromuser.emails" :key="email.id">
+                {{ email.email }} <v-icon v-if="email.preferred" name="start" />
+              </div>
+            </div>
             <div v-if="showActions">
               <!--              TODO Actions-->
               <b-btn variant="white" disabled>
@@ -162,10 +209,24 @@ export default {
       saved: false,
       showMailSettings: false,
       showActions: false,
+      showEmails: false,
       editing: false
     }
   },
   computed: {
+    pending() {
+      let ret = false
+
+      if (this.message.groups) {
+        this.message.groups.forEach(group => {
+          if (group.collection === 'Pending') {
+            ret = true
+          }
+        })
+      }
+
+      return ret
+    },
     typeOptions() {
       // TODO Per group keywords
       return [
@@ -213,6 +274,17 @@ export default {
 
         const configs = this.$store.getters['modconfigs/configs']
         ret = configs.find(config => config.id === configid)
+      }
+
+      return ret
+    },
+    subjectClass() {
+      let ret = 'text-success'
+
+      if (this.modconfig.coloursubj) {
+        ret = this.message.subject.match(this.modconfig.subjreg)
+          ? 'text-success'
+          : 'text-danger'
       }
 
       return ret

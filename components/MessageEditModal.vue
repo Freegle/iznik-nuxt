@@ -122,7 +122,7 @@ export default {
     },
     placeholder() {
       return this.message && this.message.type === 'Offer'
-        ? 'Please give a few details if possible, e.g. colour, condition, size etc.'
+        ? 'Please give a few details, e.g. colour, condition, size etc.'
         : "Please give a few more details about what you're looking for, and why you'd like it."
     }
   },

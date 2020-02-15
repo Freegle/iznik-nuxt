@@ -30,11 +30,10 @@
       <v-icon name="calendar-alt" />
       <span :class="joinedAge <= 31 ? 'text-danger' : ''">Joined {{ membership.added | dateshort }}</span>
     </span>
-    <span v-if="modinfo && membership" class="ml-2">
-      <v-icon name="envelope" />
-      {{ user.email }}
-    </span>
-    <ModModeration v-if="modinfo && membership" :membership="membership" />
+    <span v-if="modinfo && membership" class="ml-2 text-truncate email">
+      <!-- eslint-disable-next-line -->
+      <v-icon name="hashtag" />{{ user.id }}</span>
+    <ModModeration v-if="modinfo && membership" :user="user" :membership="membership" />
     <ModPostingHistory v-if="modinfo" :user="user" />
   </div>
 </template>
@@ -54,6 +53,10 @@ export default {
     user: {
       type: Object,
       required: true
+    },
+    message: {
+      type: Object,
+      required: false
     },
     milesaway: {
       type: Number,
@@ -93,3 +96,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+.email {
+  max-width: 200px;
+}
+</style>

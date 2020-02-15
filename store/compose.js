@@ -173,7 +173,7 @@ export const actions = {
   clearMessage({ commit }, params) {
     commit('clearMessage', params)
   },
-  async submit({ dispatch, commit, state, store }) {
+  async submit({ dispatch, commit, state, store }, params) {
     // This is the most important bit of code in the client :-).  We have our messages in the compose store.
     //
     // For messages we've just created, the server has a two stage process - create a draft and submit it, so that's
@@ -191,14 +191,16 @@ export const actions = {
     const messages = Object.entries(state.messages)
     let steps = 0
 
-    console.log('Submit', messages)
+    console.log('Submit', messages, params.type)
     for (const message of messages) {
-      if (message.id < 0) {
-        // 1) Create draft 2) Submit
-        steps += 2
-      } else {
-        // 1) Edit message 2) Convert to draft 3) Submit
-        steps += 3
+      if (message.type === params.type) {
+        if (message.id < 0) {
+          // 1) Create draft 2) Submit
+          steps += 2
+        } else {
+          // 1) Edit message 2) Convert to draft 3) Submit
+          steps += 3
+        }
       }
     }
 
@@ -207,99 +209,51 @@ export const actions = {
     commit('initProgress', steps + 1)
 
     for (const [id, message] of messages) {
-      console.log('Submit message'.message)
-      if (message.submitted) {
-        if (message.id < 0) {
-          commit('incProgress')
-          commit('incProgress')
-        } else {
-          commit('incProgress')
-          commit('incProgress')
-          commit('incProgress')
-        }
-
-        continue
-      }
-
-      console.log('Submit', id, message, state.attachments[message.id])
-      let promise
-
-      if (message.id < 0) {
-        // This is a draft we have composed on the client, which doesn't have a corresponding server message yet.
-        const attids = []
-
-        if (state.attachments[message.id]) {
-          for (const att in state.attachments[message.id]) {
-            attids.push(state.attachments[message.id][att].id)
+      if (message.type === params.type) {
+        console.log('Submit message'.message)
+        if (message.submitted) {
+          if (message.id < 0) {
+            commit('incProgress')
+            commit('incProgress')
+          } else {
+            commit('incProgress')
+            commit('incProgress')
+            commit('incProgress')
           }
+
+          continue
         }
 
-        const data = {
-          collection: 'Draft',
-          locationid: state.postcode.id,
-          messagetype: message.type,
-          item: message.item,
-          textbody: message.description,
-          attachments: attids,
-          groupid: state.group
-        }
+        console.log('Submit', id, message, state.attachments[message.id])
+        let promise
 
-        promise = new Promise((resolve, reject) => {
-          self.$api.message.put(data).then(({ id }) => {
-            commit('incProgress')
-            // We've created a draft.  Submit it
+        if (message.id < 0) {
+          // This is a draft we have composed on the client, which doesn't have a corresponding server message yet.
+          const attids = []
 
-            self.$api.message
-              .joinAndPost(id, state.email)
-              .then(({ groupid, newuser, newpassword }) => {
-                commit('incProgress')
-                // Success
-                commit('setMessage', {
-                  id: message.id,
-                  submitted: true,
-                  item: null,
-                  description: null
-                })
-                commit('setAttachments', [])
-                results.push({
-                  id: message.id,
-                  groupid,
-                  newuser,
-                  newpassword
-                })
+          if (state.attachments[message.id]) {
+            for (const att in state.attachments[message.id]) {
+              attids.push(state.attachments[message.id][att].id)
+            }
+          }
 
-                resolve(groupid)
-              })
-              .catch(function(e) {
-                // Failed
-                console.error('Post of message failed', e)
-                reject(e)
-              })
-          })
-        })
-      } else {
-        // This is one of our messages which we are reposting.  We need to edit it (to update it from our client
-        // copy), convert it back to draft, and then submit.
-        promise = new Promise(function(resolve, reject) {
-          dispatch('messages/patch', message, {
-            root: true
-          }).then(() => {
-            commit('incProgress')
+          const data = {
+            collection: 'Draft',
+            locationid: state.postcode.id,
+            messagetype: message.type,
+            item: message.item,
+            textbody: message.description,
+            attachments: attids,
+            groupid: state.group
+          }
 
-            dispatch(
-              'messages/update',
-              {
-                id: message.id,
-                action: 'RejectToDraft'
-              },
-              {
-                root: true
-              }
-            ).then(() => {
+          promise = new Promise((resolve, reject) => {
+            self.$api.message.put(data).then(({ id }) => {
               commit('incProgress')
+              // We've created a draft.  Submit it
 
               self.$api.message
-                .joinAndPost(message.id, state.email)
+                .joinAndPost(id, state.email)
                 .then(({ groupid, newuser, newpassword }) => {
                   commit('incProgress')
                   // Success
@@ -319,24 +273,74 @@ export const actions = {
 
                   resolve(groupid)
                 })
-                .catch(e => {
+                .catch(function(e) {
                   // Failed
                   console.error('Post of message failed', e)
                   reject(e)
                 })
-                .catch(e => {
-                  console.error('Edit of existing message failed', e)
-                })
             })
           })
+        } else {
+          // This is one of our messages which we are reposting.  We need to edit it (to update it from our client
+          // copy), convert it back to draft, and then submit.
+          promise = new Promise(function(resolve, reject) {
+            dispatch('messages/patch', message, {
+              root: true
+            }).then(() => {
+              commit('incProgress')
+
+              dispatch(
+                'messages/update',
+                {
+                  id: message.id,
+                  action: 'RejectToDraft'
+                },
+                {
+                  root: true
+                }
+              ).then(() => {
+                commit('incProgress')
+
+                self.$api.message
+                  .joinAndPost(message.id, state.email)
+                  .then(({ groupid, newuser, newpassword }) => {
+                    commit('incProgress')
+                    // Success
+                    commit('setMessage', {
+                      id: message.id,
+                      submitted: true,
+                      item: null,
+                      description: null
+                    })
+                    commit('setAttachments', [])
+                    results.push({
+                      id: message.id,
+                      groupid,
+                      newuser,
+                      newpassword
+                    })
+
+                    resolve(groupid)
+                  })
+                  .catch(e => {
+                    // Failed
+                    console.error('Post of message failed', e)
+                    reject(e)
+                  })
+                  .catch(e => {
+                    console.error('Edit of existing message failed', e)
+                  })
+              })
+            })
+          })
+        }
+
+        Vue.nextTick(() => {
+          commit('incProgress')
         })
+
+        promises.push(promise)
       }
-
-      Vue.nextTick(() => {
-        commit('incProgress')
-      })
-
-      promises.push(promise)
     }
 
     console.log('Wait for', promises)

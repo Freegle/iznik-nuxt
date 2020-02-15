@@ -3,19 +3,22 @@
     <b-btn :variant="variant" class="mb-1" @click="click">
       <v-icon :name="icon" /> {{ label }}
     </b-btn>
-    <ConfirmModal ref="confirm" @confirm="deleteConfirmed" />
-    <ModStdMessageModal v-if="stdmsg" ref="stdmsg" :stdmsgid="stdmsg.id" :message="message" />
+    <ConfirmModal v-if="showDeleteModal" ref="deleteConfirm" @confirm="deleteConfirmed" />
+    <ConfirmModal v-if="showSpamModal" ref="spamConfirm" @confirm="spamConfirmed" />
+    <ModStdMessageModal v-if="showStdMsgModal" ref="stdmodal" :stdmsgid="stdmsg ? stdmsg.id : null" :message="message" />
   </div>
 </template>
 <script>
 import ConfirmModal from './ConfirmModal'
-import ModStdMessageModal from './ModStdMessageModal'
+import WaitForRef from '@/mixins/waitForRef'
+const ModStdMessageModal = () => import('./ModStdMessageModal')
 
 export default {
   components: {
     ModStdMessageModal,
     ConfirmModal
   },
+  mixins: [WaitForRef],
   props: {
     message: {
       type: Object,
@@ -49,6 +52,13 @@ export default {
       default: false
     }
   },
+  data: function() {
+    return {
+      showDeleteModal: false,
+      showStdMsgModal: false,
+      showSpamModal: false
+    }
+  },
   computed: {
     groupid() {
       let ret = null
@@ -67,9 +77,16 @@ export default {
         this.approveIt()
       } else if (this.delete) {
         // Standard delete button
+        this.deleteIt()
+      } else if (this.spam) {
+        // Standard spam button
+        this.spamIt()
       } else {
-        // Something else
-        this.$refs.stdmsg.show()
+        // Something else.  We want to show the modal.  Setting this will cause it to render here.
+        this.showStdMsgModal = true
+        this.waitForRef('stdmodal', () => {
+          this.$refs.stdmodal.show()
+        })
       }
     },
     approveIt() {
@@ -79,10 +96,25 @@ export default {
       })
     },
     deleteIt() {
-      this.$refs.confirm.show()
+      this.showDeleteModal = true
+      this.waitForRef('config', () => {
+        this.$refs.deleteConfirm.show()
+      })
+    },
+    spamIt() {
+      this.showSpamModal = true
+      this.waitForRef('config', () => {
+        this.$refs.spamConfirm.show()
+      })
     },
     deleteConfirmed() {
       this.$store.dispatch('messages/approve', {
+        id: this.message.id,
+        groupid: this.groupid
+      })
+    },
+    spamConfirmed() {
+      this.$store.dispatch('messages/spam', {
         id: this.message.id,
         groupid: this.groupid
       })
@@ -90,5 +122,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-</style>

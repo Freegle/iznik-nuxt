@@ -88,39 +88,43 @@ export default {
 
       this.$store.dispatch('compose/setEmail', this.$refs.email.value)
 
-      this.$store.dispatch('compose/submit').then(results => {
-        // Fetch the group we posted on so that it's in the store for the whatsnext page - it might not be if
-        // we weren't a member or logged in.
-        if (results.length > 0 && results[0].groupid) {
-          this.$store
-            .dispatch('group/fetch', {
-              id: results[0].groupid
-            })
-            .then(() => {
-              // Go to the next page.  The params we pass from the results may crucially include new user information,
-              // and depending on timing this may not appear in the first result, so look for one of those first.
-              let params = null
-
-              console.log('Got results', results)
-              results.forEach(res => {
-                if (params === null || res.newuser) {
-                  console.log('Save params', res)
-                  params = res
-                }
+      this.$store
+        .dispatch('compose/submit', {
+          type: 'Wanted'
+        })
+        .then(results => {
+          // Fetch the group we posted on so that it's in the store for the whatsnext page - it might not be if
+          // we weren't a member or logged in.
+          if (results.length > 0 && results[0].groupid) {
+            this.$store
+              .dispatch('group/fetch', {
+                id: results[0].groupid
               })
+              .then(() => {
+                // Go to the next page.  The params we pass from the results may crucially include new user information,
+                // and depending on timing this may not appear in the first result, so look for one of those first.
+                let params = null
 
-              this.$router.push({
-                name: 'find-whatnext',
-                params: params
+                console.log('Got results', results)
+                results.forEach(res => {
+                  if (params === null || res.newuser) {
+                    console.log('Save params', res)
+                    params = res
+                  }
+                })
+
+                this.$router.push({
+                  name: 'find-whatnext',
+                  params: params
+                })
               })
+          } else {
+            // Was probably already submitted
+            this.$router.push({
+              name: 'give-whatnext'
             })
-        } else {
-          // Was probably already submitted
-          this.$router.push({
-            name: 'give-whatnext'
-          })
-        }
-      })
+          }
+        })
     }
   },
 

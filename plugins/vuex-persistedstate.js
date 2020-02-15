@@ -1,7 +1,6 @@
 // ~/plugins/localStorage
 
 import createPersistedState from 'vuex-persistedstate'
-import cloneDeep from 'lodash.clonedeep'
 import requestIdleCallback from '~/assets/js/requestIdleCallback'
 
 const STORAGE = localStorage
@@ -11,26 +10,40 @@ const STORAGE_KEY = 'iznik'
 let settingState = null
 let setInProgress = false
 
-// Some store paths we want to persist, either because they're short or valuable.
-//
-// It would be nice to keep the first n notifications, chitchat etc.  But we'd need to think about how this
-// interacted with infinite scroll to make sure we didn't get stuck on old data.
-const keep = [
-  'auth',
-  'localization.locale',
-  'group',
-  'chats',
-  'popupchats',
-  'compose',
-  'reply',
-  'address',
-  'i18n',
-  'misc'
-]
+// We want to persist a subset of the store.  How we do this affects performance a lot.   The most efficient
+// way is to build up a new object with shallow copies of data.  We used to cloneDeep some of the object and
+// delete bits of it, which was poor.  This is a data structure that indicates what we want to copy, either
+// entirely (null), or excluding some properties, or only including some properties.
+const keep = {
+  auth: {
+    // Don't store the forceLogin, as that can result in the login popup on page refresh.
+    // Ensure password not saved to local storage.
+    exclude: ['forceLogin']
+  },
+  group: null,
+  chats: null,
+  popupchats: null,
+  compose: {
+    // Don't remember that we're uploading, else we might get stuck.
+    exclude: ['uploading']
+  },
+  reply: null,
+  misc: null,
+  newsfeed: {
+    // We don't want to save most newsfeed info, but this controls where we show.
+    include: ['area']
+  }
+}
 
 function trySaving(storage, settingState) {
   try {
-    storage.setItem(STORAGE_KEY, JSON.stringify(settingState))
+    const serialised = JSON.stringify(settingState)
+
+    // Sometimes we'll get as far as here and end up with something exactly the same as what is already stored.
+    // Writing is presumed to be slower than reading, especially mobile, so swap a read for a write in that case.
+    if (storage.getItem(STORAGE_KEY) !== serialised) {
+      storage.setItem(STORAGE_KEY, serialised)
+    }
   } catch (e) {
     // This is commonly a quota error.  Try saving just the bare essentials we need for handling
     // signin, replies and posting.
@@ -72,50 +85,42 @@ export default ({ store }) => {
     storage: STORAGE,
 
     reducer: function(state, paths) {
-      // Earlier we used cloneDeep on the whole thing and then deleted what we didn't need.
-      // But cloneDeep is very slow.
       const newstate = {}
-      for (const key in state) {
-        if (keep.indexOf(key) !== -1) {
-          newstate[key] = cloneDeep(state[key])
+
+      for (const key in keep) {
+        if (keep[key] === null) {
+          // Copy the whole thing.
+          newstate[key] = state[key]
+        } else if (keep[key].include) {
+          newstate[key] = {}
+
+          keep[key].include.forEach(inc => {
+            // We want to include this.
+            newstate[key][inc] = state[key][inc]
+          })
+        } else if (keep[key].exclude) {
+          newstate[key] = {}
+
+          for (const inc in state[key]) {
+            if (keep[key].exclude.indexOf(inc) === -1) {
+              // This is not excluded
+              newstate[key][inc] = state[key][inc]
+            }
+          }
         }
       }
 
-      if (state.newsfeed) {
-        // We don't want to save most newsfeed info, but this controls where we show.
-        newstate.newsfeed = {
-          area: state.newsfeed.area
+      // User is a special case as we want to exclude user.password, and it's not worth making the above code
+      // generic enough to handle that.
+      if (state.user) {
+        newstate.user = {}
+
+        for (const inc in state.user) {
+          if (inc !== 'password') {
+            newstate.user[inc] = state.user[inc]
+          }
         }
       }
-
-      if (newstate.auth) {
-        // Don't store the forceLogin, as that can result in the login popup on page refresh.
-        delete newstate.auth.forceLogin
-
-        if (newstate.auth.user) {
-          // Ensure password not saved to local storage.
-          delete newstate.auth.user.password
-        }
-      }
-
-      if (state.address) {
-        // Don't store the list - long and confidential.
-        delete newstate.address.list
-      }
-
-      if (state.compose) {
-        // Don't remember that we're uploading, else we might get stuck.
-        delete newstate.compose.uploading
-      }
-
-      // for (const field of Object.keys(newstate)) {
-      //   console.log(
-      //     'Field',
-      //     field,
-      //     JSON.stringify(newstate[field]).length,
-      //     newstate[field]
-      //   )
-      // }
 
       return newstate
     },

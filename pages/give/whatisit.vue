@@ -89,20 +89,6 @@ export default {
     }
   },
   methods: {
-    addItem() {
-      // Find a new id.
-      let nextId = -1
-      for (const id of this.ids) {
-        nextId = Math.min(id, nextId)
-      }
-
-      this.$store.dispatch('compose/setMessage', {
-        id: --nextId,
-        item: null,
-        description: null,
-        type: 'Offer'
-      })
-    },
     next() {
       const currentpc = this.$store.getters['compose/getPostcode']
 

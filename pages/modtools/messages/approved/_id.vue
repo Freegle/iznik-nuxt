@@ -2,15 +2,14 @@
   <div>
     <client-only>
       <GroupSelect v-model="groupid" all modonly />
-      <div v-for="message in messages" :key="'messagelist-' + message.id" class="p-0 mt-2">
+      <div v-for="message in visibleMessages" :key="'messagelist-' + message.id" class="p-0 mt-2">
         <ModMessage :message="message" />
       </div>
-      <p v-if="!messages.length">
-        There are no messages at the moment.
-      </p>
 
       <infinite-loading :key="'infinite-' + groupid" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
-        <span slot="no-results" />
+        <span slot="no-results">
+          There are no messages at the moment.
+        </span>
         <span slot="no-more" />
         <span slot="spinner">
           <b-img-lazy src="~/static/loader.gif" alt="Loading" />

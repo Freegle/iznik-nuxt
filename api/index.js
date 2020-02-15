@@ -11,6 +11,7 @@
 import ActivityAPI from './ActivityAPI.js'
 import AddressAPI from './AddressAPI.js'
 import AuthorityAPI from './AuthorityAPI.js'
+import BanditAPI from './BanditAPI.js'
 import ChatAPI from './ChatAPI.js'
 import CommunityEventAPI from './CommunityEventAPI.js'
 import DashboardAPI from './DashboardAPI.js'
@@ -20,18 +21,18 @@ import InvitationAPI from './InvitationAPI.js'
 import JobAPI from './JobAPI.js'
 import MembershipsAPI from './MembershipsAPI.js'
 import MessageAPI from './MessageAPI.js'
+import ModConfigsAPI from './ModConfigsAPI.js'
 import NewsAPI from './NewsAPI.js'
 import NoticeboardAPI from './NoticeboardAPI.js'
 import NotificationAPI from './NotificationAPI.js'
 import ScheduleAPI from './ScheduleAPI.js'
 import SessionAPI from './SessionAPI.js'
+import ShortlinkAPI from './ShortlinkAPI.js'
 import StoriesAPI from './StoriesAPI.js'
 import TeamAPI from './TeamAPI.js'
 import UserAPI from './UserAPI.js'
 import UserSearchAPI from './UserSearchAPI.js'
 import VolunteeringAPI from './VolunteeringAPI.js'
-import ShortlinkAPI from './ShortlinkAPI'
-import ModConfigsAPI from './ModConfigsAPI'
 
 export default ({ $axios, store }) => {
   const options = { $axios, store }
@@ -39,6 +40,7 @@ export default ({ $axios, store }) => {
     activity: new ActivityAPI(options),
     address: new AddressAPI(options),
     authority: new AuthorityAPI(options),
+    bandit: new BanditAPI(options),
     chat: new ChatAPI(options),
     communityevent: new CommunityEventAPI(options),
     dashboard: new DashboardAPI(options),
@@ -54,7 +56,7 @@ export default ({ $axios, store }) => {
     notification: new NotificationAPI(options),
     schedule: new ScheduleAPI(options),
     session: new SessionAPI(options),
-    shortlinks: new ShortlinkAPI(options),
+    shortlink: new ShortlinkAPI(options),
     stories: new StoriesAPI(options),
     team: new TeamAPI(options),
     user: new UserAPI(options),
