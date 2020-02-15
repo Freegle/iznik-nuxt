@@ -3,8 +3,8 @@
     <b-btn :variant="variant" class="mb-1" @click="click">
       <v-icon :name="icon" /> {{ label }}
     </b-btn>
-    <ConfirmModal ref="confirm" @confirm="deleteConfirmed" />
-    <ModStdMessageModal v-if="showModal" ref="stdmodal" :stdmsgid="stdmsg.id" :message="message" />
+    <ConfirmModal v-if="showDeleteModal" ref="confirm" @confirm="deleteConfirmed" />
+    <ModStdMessageModal v-if="showStdMsgModal" ref="stdmodal" :stdmsgid="stdmsg.id" :message="message" />
   </div>
 </template>
 <script>
@@ -53,7 +53,8 @@ export default {
   },
   data: function() {
     return {
-      showModal: false
+      showDeleteModal: false,
+      showStdMsgModal: false
     }
   },
   computed: {
@@ -89,7 +90,9 @@ export default {
       })
     },
     deleteIt() {
-      this.$refs.confirm.show()
+      this.waitForRef('config', () => {
+        this.$refs.confirm.show()
+      })
     },
     deleteConfirmed() {
       this.$store.dispatch('messages/approve', {
@@ -100,5 +103,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-</style>
