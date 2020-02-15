@@ -30,7 +30,7 @@
       <v-icon name="calendar-alt" />
       <span :class="joinedAge <= 31 ? 'text-danger' : ''">Joined {{ membership.added | dateshort }}</span>
     </span>
-    <span v-if="modinfo && membership" class="ml-2">
+    <span v-if="modinfo && membership" class="ml-2 text-truncate email">
       <v-icon name="envelope" />
       <span v-if="message && message.source === 'Email'">
         {{ message.fromaddr }}
@@ -102,3 +102,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+.email {
+  max-width: 200px;
+}
+</style>

@@ -68,9 +68,8 @@
           <b-col cols="12" lg="4">
             <div class="rounded border border-info p-2 d-flex justify-content-between flex-wrap">
               <MessageUserInfo :message="message" :user="message.fromuser" modinfo :groupid="message.groups[0].groupid" />
-              <!--              Email list-->
-              <!--              Group list-->
-              <!--              Applied list-->
+              <!-- TODO             Group list-->
+              <!-- TODO             Applied list-->
             </div>
             <div class="d-flex justify-content-between">
               <b-btn variant="link" @click="showMailSettings = !showMailSettings">
@@ -79,6 +78,14 @@
                 </span>
                 <span v-else>
                   Show mail settings
+                </span>
+              </b-btn>
+              <b-btn v-if="message.fromuser.emails && message.fromuser.emails.length" variant="link" @click="showEmails = !showEmails">
+                <span v-if="showEmails">
+                  Hide emails
+                </span>
+                <span v-else>
+                  Show {{ message.fromuser.emails.length | pluralize('email', { includeNumber: true }) }}
                 </span>
               </b-btn>
               <b-btn variant="link" @click="showActions = !showActions">
@@ -98,6 +105,11 @@
               :eventsallowed="Boolean(membership.eventsallowed)"
               class="border border-info mt-2 p-1"
             />
+            <div v-if="showEmails">
+              <div v-for="email in message.fromuser.emails" :key="email.id">
+                {{ email.email }} <v-icon v-if="email.preferred" name="start" />
+              </div>
+            </div>
             <div v-if="showActions">
               <!--              TODO Actions-->
               <b-btn variant="white" disabled>
@@ -164,6 +176,7 @@ export default {
       saved: false,
       showMailSettings: false,
       showActions: false,
+      showEmails: false,
       editing: false,
       showButtons: false
     }
