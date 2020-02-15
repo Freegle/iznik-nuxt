@@ -8,13 +8,13 @@ export default {
 
       let ids = []
       for (const message of messages) {
-        if (message.id && message.type === 'Offer') {
+        if (message.id && message.type === this.postType) {
           ids.push(message.id)
         }
       }
 
       if (ids.length === 0) {
-        ids = [-1]
+        ids = [this.getId()]
       }
 
       return ids
@@ -134,16 +134,24 @@ export default {
         }
       }
     },
-    addItem() {
-      // Find a new id.
+    getId() {
+      // Find a new id.  Use the messages because ids is filtered by type.
       let nextId = -1
-      for (const id of this.ids) {
-        nextId = Math.min(id, nextId)
+      const messages = Object.values(this.$store.getters['compose/getMessages'])
+
+      for (const message of messages) {
+        nextId = Math.min(message.id, nextId)
       }
 
-      console.log('Next id', nextId)
+      nextId--
+
+      return nextId
+    },
+    addItem() {
+      const id = this.getId()
+
       this.$store.dispatch('compose/setMessage', {
-        id: --nextId,
+        id: id,
         item: null,
         description: null,
         type: this.postType
