@@ -1,10 +1,14 @@
 <template>
-  <b-select v-model="postingStatus" :options="options" class="d-inline sel" disabled size="lg" />
+  <b-select v-model="postingStatus" :options="options" class="d-inline sel" size="lg" @change="changed" />
 </template>
 <script>
 export default {
   props: {
     membership: {
+      type: Object,
+      required: true
+    },
+    user: {
       type: Object,
       required: true
     }
@@ -31,7 +35,15 @@ export default {
       ]
     }
   },
-  methods: {}
+  methods: {
+    async changed(newval) {
+      await this.$store.dispatch('user/edit', {
+        id: this.user.id,
+        groupid: this.membership.id,
+        ourPostingStatus: newval
+      })
+    }
+  }
 }
 </script>
 <style scoped>

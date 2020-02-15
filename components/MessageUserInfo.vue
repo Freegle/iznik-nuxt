@@ -39,7 +39,7 @@
         {{ user.email }}
       </span>
     </span>
-    <ModModeration v-if="modinfo && membership" :membership="membership" />
+    <ModModeration v-if="modinfo && membership" :user="user" :membership="membership" />
     <ModPostingHistory v-if="modinfo" :user="user" />
   </div>
 </template>
