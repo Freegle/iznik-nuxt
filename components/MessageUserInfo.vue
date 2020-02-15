@@ -31,14 +31,8 @@
       <span :class="joinedAge <= 31 ? 'text-danger' : ''">Joined {{ membership.added | dateshort }}</span>
     </span>
     <span v-if="modinfo && membership" class="ml-2 text-truncate email">
-      <v-icon name="envelope" />
-      <span v-if="message && message.source === 'Email'">
-        {{ message.fromaddr }}
-      </span>
-      <span v-else>
-        {{ user.email }}
-      </span>
-    </span>
+      <!-- eslint-disable-next-line -->
+      <v-icon name="hashtag" />{{ user.id }}</span>
     <ModModeration v-if="modinfo && membership" :user="user" :membership="membership" />
     <ModPostingHistory v-if="modinfo" :user="user" />
   </div>

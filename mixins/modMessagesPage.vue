@@ -14,11 +14,24 @@ export default {
       // we increase how fast it feels.
       distance: 1000,
       limit: 2,
-      workType: null
+      workType: null,
+      show: 0
     }
   },
   computed: {
-    messages: function() {
+    visibleMessages() {
+      const ret = this.messages.slice(0, this.show).filter(message => {
+        // Make sure we don't pick up any messages from the wrong collection if we have a fetch which completes late
+        // and puts them in the store.
+        return (
+          message.groups &&
+          message.groups.length &&
+          message.groups[0].collection === this.collection
+        )
+      })
+      return ret
+    },
+    messages() {
       let messages
 
       if (this.groupid) {
@@ -74,31 +87,39 @@ export default {
   },
   methods: {
     loadMore: function($state) {
-      const currentCount = this.messages.length
+      if (this.show < this.messages.length) {
+        // This means that we will gradually add the messages that we have fetched from the server into the DOM.
+        // Doing that means that we will complete our initial render more rapidly and thus appear faster.
+        this.show++
+        $state.loaded()
+      } else {
+        const currentCount = this.messages.length
 
-      this.$store
-        .dispatch('messages/fetchMessages', {
-          groupid: this.groupid,
-          collection: this.collection,
-          modtools: true,
-          summary: false,
-          context: this.context,
-          limit: this.limit
-        })
-        .then(() => {
-          this.context = this.$store.getters['messages/getContext']
+        this.$store
+          .dispatch('messages/fetchMessages', {
+            groupid: this.groupid,
+            collection: this.collection,
+            modtools: true,
+            summary: false,
+            context: this.context,
+            limit: this.limit
+          })
+          .then(() => {
+            this.context = this.$store.getters['messages/getContext']
 
-          if (currentCount === this.messages.length) {
-            this.complete = true
+            if (currentCount === this.messages.length) {
+              this.complete = true
+              $state.complete()
+            } else {
+              $state.loaded()
+              this.show++
+            }
+          })
+          .catch(e => {
             $state.complete()
-          } else {
-            $state.loaded()
-          }
-        })
-        .catch(e => {
-          $state.complete()
-          console.log('Complete on error', e)
-        })
+            console.log('Complete on error', e)
+          })
+      }
     }
   }
 }

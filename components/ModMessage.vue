@@ -26,7 +26,7 @@
         </div>
         <div>
           <b-btn v-if="!editing" variant="white" @click="editing = true">
-            <v-icon name="pen" /> Edit
+            <v-icon name="pen" /><span class="d-none d-sm-inline"> Edit</span>
           </b-btn>
           <b-btn v-if="editing" variant="white" @click="editing = false">
             <v-icon name="" /> Cancel
@@ -71,29 +71,63 @@
               <!-- TODO             Group list-->
               <!-- TODO             Applied list-->
             </div>
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between flex-wrap">
               <b-btn variant="link" @click="showMailSettings = !showMailSettings">
                 <span v-if="showMailSettings">
-                  Hide mail settings
+                  <v-icon name="cog" />
+                  <span class="d-inline d-sm-none">
+                    Hide
+                  </span>
+                  <span class="d-none d-sm-inline">
+                    Hide mail settings
+                  </span>
                 </span>
                 <span v-else>
-                  Show mail settings
+                  <v-icon name="cog" />
+                  <span class="d-inline d-sm-none">
+                    Settings
+                  </span>
+                  <span class="d-none d-sm-inline">
+                    Show mail settings
+                  </span>
                 </span>
               </b-btn>
               <b-btn v-if="message.fromuser.emails && message.fromuser.emails.length" variant="link" @click="showEmails = !showEmails">
+                <v-icon name="envelope" />
                 <span v-if="showEmails">
-                  Hide emails
+                  <span class="d-inline d-sm-none">
+                    Hide
+                  </span>
+                  <span class="d-none d-sm-inline">
+                    Show {{ message.fromuser.emails.length | pluralize('email', { includeNumber: true }) }}
+                  </span>
                 </span>
                 <span v-else>
-                  Show {{ message.fromuser.emails.length | pluralize('email', { includeNumber: true }) }}
+                  <span class="d-inline d-sm-none">
+                    <v-icon name="email" /> {{ message.fromuser.emails.length }}
+                  </span>
+                  <span class="d-none d-sm-inline">
+                    Show {{ message.fromuser.emails.length | pluralize('email', { includeNumber: true }) }}
+                  </span>
                 </span>
               </b-btn>
               <b-btn variant="link" @click="showActions = !showActions">
+                <v-icon name="hammer" />
                 <span v-if="showActions">
-                  Hide actions
+                  <span class="d-inline d-sm-none">
+                    Hide
+                  </span>
+                  <span class="d-none d-sm-inline">
+                    Show actions
+                  </span>
                 </span>
                 <span v-else>
-                  Show actions
+                  <span class="d-inline d-sm-none">
+                    Actions
+                  </span>
+                  <span class="d-none d-sm-inline">
+                    Show actions
+                  </span>
                 </span>
               </b-btn>
             </div>
@@ -250,9 +284,9 @@ export default {
   mounted() {
     // Delay showing buttons.  That means we get some important stuff on the screen more rapidly, as there may be
     // many buttons and it's quite a hit on the DOM.  This improves mobiles.
-    this.$nextTick(() => {
+    setTimeout(() => {
       this.showButtons = true
-    })
+    }, 100)
   },
   methods: {}
 }
