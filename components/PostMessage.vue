@@ -48,7 +48,7 @@
         <hr>
       </b-col>
     </b-row>
-    <b-row v-if="suggestions.length">
+    <b-row v-if="suggestions.length && !item.length">
       <b-col>
         <b-card v-if="attachments.length" bg-variant="info" class="mb-1">
           <p>Based on your photo, here's what we think it might be.  Click to choose.</p>
