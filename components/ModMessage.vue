@@ -63,7 +63,7 @@
             <div v-if="message.attachments && message.attachments.length" class="d-flex">
               <ModImage v-for="attachment in message.attachments" :key="'attachment-' + attachment.id" :attachment="attachment" class="d-inline pr-1" />
             </div>
-            <MessageReplyInfo :message="message" class="d-inline" />
+            <MessageReplyInfo v-if="!pending" :message="message" class="d-inline" />
           </b-col>
           <b-col cols="12" lg="4">
             <div class="rounded border border-info p-2 d-flex justify-content-between flex-wrap">
@@ -169,6 +169,19 @@ export default {
     }
   },
   computed: {
+    pending() {
+      let ret = false
+
+      if (this.message.groups) {
+        this.message.groups.forEach(group => {
+          if (group.collection === 'Pending') {
+            ret = true
+          }
+        })
+      }
+
+      return ret
+    },
     typeOptions() {
       // TODO Per group keywords
       return [
