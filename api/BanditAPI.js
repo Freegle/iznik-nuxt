@@ -6,11 +6,11 @@ export default class ChatAPI extends BaseAPI {
     return ret.variant
   }
 
-  shown({ uid, variant, score }) {
-    return this.$post('/abtest', { uid, variant, score, shown: true })
+  shown({ uid, variant }) {
+    return this.$post('/abtest', { uid, variant, shown: true })
   }
 
-  chosen({ uid, variant }) {
+  chosen({ uid, variant, score }) {
     return this.$post('/abtest', { uid, variant, action: true })
   }
 }
