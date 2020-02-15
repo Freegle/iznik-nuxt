@@ -3,9 +3,8 @@
     <b-card bg-variant="white" no-body>
       <b-card-header class="d-flex justify-content-between">
         <!--        TODO Edits-->
-        <!--        TODO Colour code-->
         <div>
-          <div v-if="!editing">
+          <div v-if="!editing" :class="subjectClass + ' font-weight-bold'">
             {{ eSubject }}
           </div>
           <div v-else>
@@ -63,7 +62,7 @@
             <div v-if="message.attachments && message.attachments.length" class="d-flex">
               <ModImage v-for="attachment in message.attachments" :key="'attachment-' + attachment.id" :attachment="attachment" class="d-inline pr-1" />
             </div>
-            <MessageReplyInfo v-if="!pending" :message="message" class="d-inline" />
+            <MessageReplyInfo v-if="!pending || message.replies && message.replies.length" :message="message" class="d-inline" />
           </b-col>
           <b-col cols="12" lg="4">
             <div class="rounded border border-info p-2 d-flex justify-content-between flex-wrap">
@@ -104,7 +103,7 @@
                 </span>
                 <span v-else>
                   <span class="d-inline d-sm-none">
-                    <v-icon name="email" /> {{ message.fromuser.emails.length }}
+                    <v-icon name="envelope" /> {{ message.fromuser.emails.length }}
                   </span>
                   <span class="d-none d-sm-inline">
                     Show {{ message.fromuser.emails.length | pluralize('email', { includeNumber: true }) }}
@@ -170,7 +169,7 @@
         </b-row>
       </b-card-body>
       <b-card-footer>
-        <ModMessageButtons v-if="showButtons" :message="message" :modconfig="modconfig" />
+        <ModMessageButtons :message="message" :modconfig="modconfig" />
       </b-card-footer>
     </b-card>
   </div>
@@ -211,8 +210,7 @@ export default {
       showMailSettings: false,
       showActions: false,
       showEmails: false,
-      editing: false,
-      showButtons: false
+      editing: false
     }
   },
   computed: {
@@ -278,15 +276,20 @@ export default {
         ret = configs.find(config => config.id === configid)
       }
 
+      console.log('ModConfig', ret)
+      return ret
+    },
+    subjectClass() {
+      let ret = 'text-success'
+
+      if (this.modconfig.coloursubj) {
+        ret = this.message.subject.match(this.modconfig.subjreg)
+          ? 'text-success'
+          : 'text-danger'
+      }
+
       return ret
     }
-  },
-  mounted() {
-    // Delay showing buttons.  That means we get some important stuff on the screen more rapidly, as there may be
-    // many buttons and it's quite a hit on the DOM.  This improves mobiles.
-    setTimeout(() => {
-      this.showButtons = true
-    }, 100)
   },
   methods: {}
 }
