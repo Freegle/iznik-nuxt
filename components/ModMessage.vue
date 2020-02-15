@@ -67,7 +67,7 @@
           </b-col>
           <b-col cols="12" lg="4">
             <div class="rounded border border-info p-2 d-flex justify-content-between flex-wrap">
-              <MessageUserInfo :user="message.fromuser" modinfo :groupid="message.groups[0].groupid" />
+              <MessageUserInfo :message="message" :user="message.fromuser" modinfo :groupid="message.groups[0].groupid" />
               <!--              Email list-->
               <!--              Group list-->
               <!--              Applied list-->

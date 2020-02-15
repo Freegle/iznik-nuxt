@@ -32,7 +32,12 @@
     </span>
     <span v-if="modinfo && membership" class="ml-2">
       <v-icon name="envelope" />
-      {{ user.email }}
+      <span v-if="message && message.source === 'Email'">
+        {{ message.fromaddr }}
+      </span>
+      <span v-else>
+        {{ user.email }}
+      </span>
     </span>
     <ModModeration v-if="modinfo && membership" :membership="membership" />
     <ModPostingHistory v-if="modinfo" :user="user" />
@@ -54,6 +59,10 @@ export default {
     user: {
       type: Object,
       required: true
+    },
+    message: {
+      type: Object,
+      required: false
     },
     milesaway: {
       type: Number,
