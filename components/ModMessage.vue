@@ -49,6 +49,7 @@
             <NoticeMessage v-if="message.fromuser.activedistance > 50" variant="warning" class="mb-2">
               This freegler is active on groups {{ message.fromuser.activedistance }} miles apart.
             </NoticeMessage>
+            <ModMessageWorry v-if="message.worry" :message="message" />
             <b-form-textarea
               v-if="editing"
               v-model="message.textbody"
@@ -184,11 +185,13 @@ import SettingsGroup from './SettingsGroup'
 import ModImage from './ModImage'
 import NoticeMessage from './NoticeMessage'
 import ModMessageButtons from './ModMessageButtons'
+import ModMessageWorry from './ModMessageWorry'
 import twem from '~/assets/js/twem'
 
 export default {
   name: 'ModMessage',
   components: {
+    ModMessageWorry,
     ModMessageButtons,
     NoticeMessage,
     ModImage,
