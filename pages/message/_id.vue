@@ -124,7 +124,7 @@ export default {
 
     if (message) {
       if (message.snippet) {
-        snip = twem.twem(this.$emoji, message.snippet)
+        snip = twem.twem(this.$emoji, message.snippet) + '...'
       } else {
         snip = 'Click for more details'
       }
