@@ -138,6 +138,11 @@
                     <v-icon name="bell" />&nbsp;Nudge
                   </b-btn>
                 </span>
+                <span v-if="chat && chat.chattype === 'User2Mod'">
+                  <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler" @click="showInfo">
+                    <v-icon name="info-circle" />&nbsp;Info
+                  </b-btn>
+                </span>
                 <b-btn variant="primary" class="float-right ml-1" @click="send">
                   Send&nbsp;
                   <v-icon v-if="sending" name="sync" class="fa-spin" title="Sending..." />
@@ -209,6 +214,7 @@ import ChatBlockModal from './ChatBlockModal'
 import ChatHideModal from './ChatHideModal'
 import twem from '~/assets/js/twem'
 import chatCollate from '@/mixins/chatCollate.js'
+import WaitForRef from '@/mixins/waitForRef'
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
 import ChatMessage from '~/components/ChatMessage.vue'
@@ -239,7 +245,7 @@ export default {
     ChatReportModal,
     ChatRSVPModal
   },
-  mixins: [chatCollate],
+  mixins: [chatCollate, WaitForRef],
   props: {
     id: {
       type: Number,
@@ -320,18 +326,21 @@ export default {
     otheruser() {
       // The user who isn't us.
       let ret = null
+      const me = this.$store.getters['auth/user']
 
-      if (
-        this.chat &&
-        this.chat.chattype === 'User2User' &&
-        this.chat.user1 &&
-        this.$store.getters['auth/user']
-      ) {
-        ret =
-          this.chat.user1 &&
-          this.chat.user1.id === this.$store.getters['auth/user'].id
-            ? this.chat.user2
-            : this.chat.user1
+      if (this.chat) {
+        if (this.chat.chattype === 'User2User' && this.chat.user1 && me) {
+          ret =
+            this.chat.user1 && this.chat.user1.id === me.id
+              ? this.chat.user2
+              : this.chat.user1
+        } else if (
+          this.chat.chattype === 'User2Mod' &&
+          me.id !== this.chat.user1.id
+        ) {
+          // We are a mod.
+          ret = this.chat.user1
+        }
       }
 
       return ret
@@ -419,7 +428,9 @@ export default {
 
   methods: {
     showInfo() {
-      this.$refs.profile.show()
+      this.waitForRef('profile', () => {
+        this.$refs.profile.show()
+      })
     },
     availability() {
       this.$refs.availabilitymodal.show()
