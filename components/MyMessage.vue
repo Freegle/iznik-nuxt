@@ -145,7 +145,7 @@
                     <v-icon name="pen" /> Edit
                   </b-btn>
                 </b-list-group-item>
-                <b-list-group-item v-if="message.canrepost || true">
+                <b-list-group-item v-if="message.canrepost">
                   <b-btn variant="white" class="d-inline mr-1" @click="repost">
                     <v-icon name="sync" /> Post Again
                   </b-btn>
