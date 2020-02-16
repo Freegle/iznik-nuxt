@@ -122,8 +122,8 @@
         <div>
           <!-- eslint-disable-next-line -->
           <nuxt-link to="/modtools/members/pending" class="pl-3">Pending</nuxt-link>
-          <b-badge v-if="getCount('pending')" variant="danger">
-            {{ getCount('pending') }}
+          <b-badge v-if="getCount('pendingmembers')" variant="danger">
+            {{ getCount('pendingmembers') }}
           </b-badge>
         </div>
         <div>
