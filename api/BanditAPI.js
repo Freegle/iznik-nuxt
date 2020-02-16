@@ -11,6 +11,6 @@ export default class ChatAPI extends BaseAPI {
   }
 
   chosen({ uid, variant, score }) {
-    return this.$post('/abtest', { uid, variant, action: true })
+    return this.$post('/abtest', { uid, variant, action: true, score })
   }
 }
