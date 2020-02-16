@@ -16,7 +16,10 @@
         <div>
           {{ fromName }}
           <br>
-          {{ message.fromuser.displayname }} &lt;{{ toEmail }}&gt;
+          {{ message.fromuser.displayname }}
+          <span v-if="toEmail">
+            &lt;{{ toEmail }}&gt;
+          </span>
         </div>
       </div>
       <b-input v-model="subject" class="mt-2" />
