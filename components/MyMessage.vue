@@ -145,7 +145,7 @@
                     <v-icon name="pen" /> Edit
                   </b-btn>
                 </b-list-group-item>
-                <b-list-group-item v-if="message.canrepost">
+                <b-list-group-item v-if="message.canrepost || true">
                   <b-btn variant="white" class="d-inline mr-1" @click="repost">
                     <v-icon name="sync" /> Post Again
                   </b-btn>
@@ -388,6 +388,14 @@ export default {
           : null,
         type: this.message.type
       })
+
+      // Set the current location and nearby groups, too, since we're about to use them
+      const loc = await this.$axios.get(process.env.API + '/locations', {
+        params: {
+          typeahead: this.message.location.name
+        }
+      })
+      await this.$store.dispatch('compose/setPostcode', loc.data.locations[0])
 
       await this.$store.dispatch('compose/setAttachmentsForMessage', {
         id: this.message.id,
