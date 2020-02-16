@@ -35,6 +35,27 @@
               Approved
             </b-dropdown-item>
           </b-nav-item-dropdown>
+          <b-nav-item-dropdown right class="d-block d-sm-none">
+            <template v-slot:button-content>
+              <span class="d-none d-sm-inline">
+                <v-icon name="users" scale="2" /><br>
+                Members
+              </span>
+              <v-icon name="users" class="d-inline d-sm-none" scale="2" />
+              <b-badge v-if="getCount('pendingmembers')" variant="danger">
+                {{ getCount('pendingmembers') }}
+              </b-badge>
+            </template>
+            <b-dropdown-item href="/modtools/members/pending">
+              Pending
+              <b-badge v-if="getCount('pending')" variant="danger">
+                {{ getCount('pendingmembers') }}
+              </b-badge>
+            </b-dropdown-item>
+            <b-dropdown-item href="/modtools/members/approved">
+              Approved
+            </b-dropdown-item>
+          </b-nav-item-dropdown>
           <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse" class="text-center p-0" @click="discourse">
             <div class="notifwrapper">
               <span class="d-none d-sm-inline">
@@ -93,6 +114,21 @@
         <div>
           <!-- eslint-disable-next-line -->
           <nuxt-link to="/modtools/messages/approved" class="pl-3">Approved</nuxt-link>
+        </div>
+        <hr>
+        <div>
+          Members
+        </div>
+        <div>
+          <!-- eslint-disable-next-line -->
+          <nuxt-link to="/modtools/members/pending" class="pl-3">Pending</nuxt-link>
+          <b-badge v-if="getCount('pending')" variant="danger">
+            {{ getCount('pending') }}
+          </b-badge>
+        </div>
+        <div>
+          <!-- eslint-disable-next-line -->
+          <nuxt-link to="/modtools/members/approved" class="pl-3">Approved</nuxt-link>
         </div>
       </div>
       <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent flex-grow-1" />

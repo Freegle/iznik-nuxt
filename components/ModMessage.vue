@@ -130,6 +130,7 @@
                 </span>
               </b-btn>
             </div>
+            <!--          TODO Bind to event and handle changes-->
             <SettingsGroup
               v-if="showMailSettings"
               :groupid="message.groups[0].groupid"
@@ -164,7 +165,6 @@
                 <v-icon name="trash-alt" /> Purge
               </b-btn>
             </div>
-            <!--              TODO Handle changes-->
           </b-col>
         </b-row>
       </b-card-body>

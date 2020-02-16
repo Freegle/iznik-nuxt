@@ -1,4 +1,3 @@
-<script>
 import InfiniteLoading from 'vue-infinite-loading'
 import ModMessage from '@/components/ModMessage'
 import GroupSelect from '@/components/GroupSelect'
@@ -26,7 +25,8 @@ export default {
         return (
           message.groups &&
           message.groups.length &&
-          message.groups[0].collection === this.collection
+          message.groups[0].collection === this.collection &&
+          (!this.groupid || this.groupid === message.groups[0].groupid)
         )
       })
       return ret
@@ -123,4 +123,3 @@ export default {
     }
   }
 }
-</script>

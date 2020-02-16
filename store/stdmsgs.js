@@ -23,7 +23,6 @@ export const getters = {
 export const actions = {
   async fetch({ state, commit }, params) {
     const { stdmsg } = await this.$api.modconfigs.fetchStdMsg(params.id)
-    console.log('Fetched', stdmsg)
     commit('set', stdmsg)
     return stdmsg
   }
