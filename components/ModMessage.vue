@@ -61,7 +61,7 @@
             <!-- eslint-disable-next-line -->
             <div v-else class="mb-3 rounded border p-2 prewrap forcebreak font-weight-bold">{{ eBody }}</div>
             <div v-if="message.attachments && message.attachments.length" class="d-flex">
-              <ModImage v-for="attachment in message.attachments" :key="'attachment-' + attachment.id" :attachment="attachment" class="d-inline pr-1" />
+              <ModPhoto v-for="attachment in message.attachments" :key="'attachment-' + attachment.id" :message="message" :attachment="attachment" class="d-inline pr-1" />
             </div>
             <MessageReplyInfo v-if="!pending || message.replies && message.replies.length" :message="message" class="d-inline" />
           </b-col>
@@ -182,7 +182,7 @@ import MessageHistory from './MessageHistory'
 import MessageUserInfo from './MessageUserInfo'
 import MessageReplyInfo from './MessageReplyInfo'
 import SettingsGroup from './SettingsGroup'
-import ModImage from './ModImage'
+import ModPhoto from './ModPhoto'
 import NoticeMessage from './NoticeMessage'
 import ModMessageButtons from './ModMessageButtons'
 import ModMessageWorry from './ModMessageWorry'
@@ -194,7 +194,7 @@ export default {
     ModMessageWorry,
     ModMessageButtons,
     NoticeMessage,
-    ModImage,
+    ModPhoto,
     SettingsGroup,
     MessageReplyInfo,
     MessageUserInfo,

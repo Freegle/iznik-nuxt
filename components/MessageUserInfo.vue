@@ -56,7 +56,8 @@ export default {
     },
     message: {
       type: Object,
-      required: false
+      required: false,
+      default: null
     },
     milesaway: {
       type: Number,
