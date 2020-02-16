@@ -49,6 +49,12 @@
             <NoticeMessage v-if="message.fromuser.activedistance > 50" variant="warning" class="mb-2">
               This freegler is active on groups {{ message.fromuser.activedistance }} miles apart.
             </NoticeMessage>
+            <NoticeMessage v-if="message.spamreason" variant="warning" class="mb-2">
+              {{ spamreason }}
+            </NoticeMessage>
+            <NoticeMessage v-else-if="spam" variant="warning" class="mb-2">
+              We think this message might be spam.
+            </NoticeMessage>
             <ModMessageWorry v-if="message.worry" :message="message" />
             <b-form-textarea
               v-if="editing"
@@ -218,18 +224,15 @@ export default {
   },
   computed: {
     pending() {
-      let ret = false
-
-      if (this.message.groups) {
-        this.message.groups.forEach(group => {
-          if (group.collection === 'Pending') {
-            ret = true
-          }
-        })
-      }
-
-      return ret
+      return this.hasCollection('Pending')
     },
+    approved() {
+      return this.hasCollection('Approved')
+    },
+    spam() {
+      return this.hasCollection('Spam')
+    },
+
     typeOptions() {
       // TODO Per group keywords
       return [
@@ -293,7 +296,21 @@ export default {
       return ret
     }
   },
-  methods: {}
+  methods: {
+    hasCollection(coll) {
+      let ret = false
+
+      if (this.message.groups) {
+        this.message.groups.forEach(group => {
+          if (group.collection === coll) {
+            ret = true
+          }
+        })
+      }
+
+      return ret
+    }
+  }
 }
 </script>
 <style scoped>

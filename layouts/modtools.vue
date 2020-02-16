@@ -34,6 +34,12 @@
             <b-dropdown-item href="/modtools/messages/approved">
               Approved
             </b-dropdown-item>
+            <b-dropdown-item href="/modtools/messages/pending">
+              Spam
+              <b-badge v-if="getCount('spam')" variant="danger">
+                {{ getCount('spam') }}
+              </b-badge>
+            </b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown right class="d-block d-sm-none">
             <template v-slot:button-content>
@@ -114,6 +120,13 @@
         <div>
           <!-- eslint-disable-next-line -->
           <nuxt-link to="/modtools/messages/approved" class="pl-3">Approved</nuxt-link>
+        </div>
+        <div>
+          <!-- eslint-disable-next-line -->
+          <nuxt-link to="/modtools/messages/spam" class="pl-3">Spam</nuxt-link>
+          <b-badge v-if="getCount('spam')" variant="danger">
+            {{ getCount('spam') }}
+          </b-badge>
         </div>
         <hr>
         <div>

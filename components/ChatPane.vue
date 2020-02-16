@@ -328,7 +328,7 @@ export default {
       let ret = null
       const me = this.$store.getters['auth/user']
 
-      if (this.chat) {
+      if (this.chat && me) {
         if (this.chat.chattype === 'User2User' && this.chat.user1 && me) {
           ret =
             this.chat.user1 && this.chat.user1.id === me.id
@@ -336,6 +336,7 @@ export default {
               : this.chat.user1
         } else if (
           this.chat.chattype === 'User2Mod' &&
+          this.chat.user1 &&
           me.id !== this.chat.user1.id
         ) {
           // We are a mod.

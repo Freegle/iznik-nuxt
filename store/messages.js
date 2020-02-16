@@ -235,6 +235,13 @@ export const actions = {
     })
   },
 
+  async notspam({ commit }, params) {
+    await this.$api.message.notspam(params.id, params.groupid)
+    commit('remove', {
+      id: params.id
+    })
+  },
+
   async reject({ commit }, params) {
     await this.$api.message.reject(
       params.id,

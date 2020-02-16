@@ -41,6 +41,22 @@
       label="Spam"
     />
     <ModMessageButton
+      v-if="spam"
+      :message="message"
+      variant="danger"
+      icon="trash-alt"
+      spam
+      label="Spam"
+    />
+    <ModMessageButton
+      v-if="spam"
+      :message="message"
+      variant="success"
+      icon="check"
+      notspam
+      label="Not spam"
+    />
+    <ModMessageButton
       v-for="stdmsg in filtered"
       :key="stdmsg.id"
       :variant="variant(stdmsg)"
@@ -89,9 +105,11 @@ export default {
       // The standard messages we show depend on the valid ones for this type of message.
       if (this.pending) {
         return ['Approve', 'Reject', 'Leave', 'Delete', 'Edit']
-      } else {
+      } else if (this.approved) {
         return ['Leave Approved Message', 'Delete Approved Message', 'Edit']
       }
+
+      return []
     },
     rareToShow() {
       return this.filterByAction.length - this.filtered.length

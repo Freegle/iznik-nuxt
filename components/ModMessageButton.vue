@@ -50,6 +50,16 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    spam: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    notspam: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
@@ -81,6 +91,9 @@ export default {
       } else if (this.spam) {
         // Standard spam button
         this.spamIt()
+      } else if (this.notspam) {
+        // Standard notspam button
+        this.notSpamIt()
       } else {
         // Something else.  We want to show the modal.  Setting this will cause it to render here.
         this.showStdMsgModal = true
@@ -102,9 +115,15 @@ export default {
       })
     },
     spamIt() {
-      this.showSpamModal = true
-      this.waitForRef('config', () => {
-        this.$refs.spamConfirm.show()
+      this.$store.dispatch('messages/spam', {
+        id: this.message.id,
+        groupid: this.groupid
+      })
+    },
+    notSpamIt() {
+      this.$store.dispatch('messages/notspam', {
+        id: this.message.id,
+        groupid: this.groupid
       })
     },
     deleteConfirmed() {
