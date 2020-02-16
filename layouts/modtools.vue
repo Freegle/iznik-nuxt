@@ -65,10 +65,10 @@
           <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse" class="text-center p-0" @click="discourse">
             <div class="notifwrapper">
               <span class="d-none d-sm-inline">
-                <v-icon name="users" scale="2" /><br>
+                <v-icon name="brands/discourse" scale="2" class="discourse" /><br>
                 Us
               </span>
-              <v-icon name="users" class="d-inline d-sm-none" scale="2" />
+              <v-icon name="brands/discourse" class="d-inline d-sm-none discourse" scale="2" />
               <b-badge v-if="discourseCount" variant="success">
                 {{ discourseCount }}
               </b-badge>
@@ -348,7 +348,8 @@ nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
   background-color: $color-modtools-blue--dark !important;
 }
 
-nav .navbar-nav li a {
+nav .navbar-nav li a,
+.discourse {
   color: $color-gray--light !important;
 }
 

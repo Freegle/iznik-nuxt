@@ -87,6 +87,7 @@ require('vue-awesome/icons/utensils')
 require('vue-awesome/icons/window-maximize')
 require('vue-awesome/icons/window-restore')
 
+require('vue-awesome/icons/brands/discourse')
 require('vue-awesome/icons/brands/facebook')
 require('vue-awesome/icons/brands/google-plus')
 require('vue-awesome/icons/brands/pinterest')
