@@ -67,7 +67,7 @@
       />
       <ModMessageButton
         :message="message"
-        variant="info"
+        variant="danger"
         icon="ban"
         spam
         label="Spam"

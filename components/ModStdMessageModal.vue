@@ -78,7 +78,8 @@ export default {
       this.message.fromuser.emails.forEach(email => {
         if (
           email.email &&
-          email.email.indexOf('users.ilovefreegle.org') === -1
+          email.email.indexOf('users.ilovefreegle.org') === -1 &&
+          (ret === null || email.preferred)
         ) {
           ret = email.email
         }
@@ -96,7 +97,6 @@ export default {
 
       return ret
     },
-
     processLabel() {
       if (this.stdmsg) {
         switch (this.stdmsg.action) {
@@ -124,7 +124,6 @@ export default {
         return null
       }
     },
-
     modstatus() {
       if (this.stdmsg) {
         switch (this.stdmsg.newmodstatus) {
@@ -141,7 +140,6 @@ export default {
 
       return null
     },
-
     emailfrequency() {
       if (this.stdmsg) {
         switch (this.stdmsg.newdelstatus) {
@@ -158,7 +156,6 @@ export default {
 
       return 0
     },
-
     delstatus() {
       if (this.stdmsg) {
         switch (this.emailfrequency) {
