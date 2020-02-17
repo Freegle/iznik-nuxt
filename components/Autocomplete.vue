@@ -220,7 +220,7 @@ export default {
       return 'type-postcode-wrap ' + (this.focused ? ' type-postcode-wrap-focus' : '')
     },
     parentClass() {
-      return 'd-flex ' + (this.searchbutton ? 'type-postcode-parent-focus' : '')
+      return 'd-flex ' + (this.searchbutton ? 'type-postcode-parent-focus' : '') + (this.invalid ? ' invalid' : '')
     }
   },
 
@@ -721,5 +721,13 @@ input[invalid='true'] {
 }
 button.btn.searchbutton.btn-success.btn-lg {
   border-radius: 0 4px 4px 0;
+}
+.invalid {
+  box-shadow: 0 0 0 0.2rem #ff0000;
+  border: none;
+  border-radius: 4px;
+}
+input[invalid='true'] {
+  box-shadow: none;
 }
 </style>
