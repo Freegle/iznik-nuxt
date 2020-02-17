@@ -102,15 +102,19 @@ export const actions = {
       }
     )
 
-    commit('mergeMessages', {
-      id: chatid,
-      messages: chatmessages
-    })
+    if (chatmessages) {
+      commit('mergeMessages', {
+        id: chatid,
+        messages: chatmessages
+      })
+    }
 
-    commit('mergeUsers', {
-      id: chatid,
-      users: chatusers
-    })
+    if (chatusers) {
+      commit('mergeUsers', {
+        id: chatid,
+        users: chatusers
+      })
+    }
 
     if (!noContext) {
       commit('setContext', {

@@ -3,6 +3,7 @@ import Icon from 'vue-awesome/components/Icon.vue'
 
 // We list the icons we use explicitly because this reduces our bundle size.
 require('vue-awesome/icons/address-book')
+require('vue-awesome/icons/arrow-circle-right')
 require('vue-awesome/icons/angle-double-right')
 require('vue-awesome/icons/baby-carriage')
 require('vue-awesome/icons/balance-scale-left')
@@ -58,7 +59,9 @@ require('vue-awesome/icons/meh')
 require('vue-awesome/icons/map-marker-alt')
 require('vue-awesome/icons/map-marked-alt')
 require('vue-awesome/icons/mobile-alt')
+require('vue-awesome/icons/pause')
 require('vue-awesome/icons/pen')
+require('vue-awesome/icons/play')
 require('vue-awesome/icons/plus')
 require('vue-awesome/icons/print')
 require('vue-awesome/icons/question-circle')

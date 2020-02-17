@@ -39,7 +39,6 @@ export default {
       return this.$store.getters['auth/work']
     },
     getClass() {
-      console.log('Route path', this.$route.path)
       return 'pl-3 ' + (this.$route.path === this.link ? 'active' : '')
     }
   },
