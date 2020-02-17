@@ -32,7 +32,7 @@
     </span>
     <span v-if="modinfo && membership" class="ml-2 text-truncate email">
       <!-- eslint-disable-next-line -->
-      <v-icon name="hashtag" />{{ user.id }}</span>
+      <v-icon name="hashtag" class="text-muted" scale="0.8" />{{ user.id }}</span>
     <ModModeration v-if="modinfo && membership" :user="user" :membership="membership" />
     <ModPostingHistory v-if="modinfo" :user="user" />
   </div>
