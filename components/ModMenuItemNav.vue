@@ -52,9 +52,12 @@ export default {
   methods: {
     getCount(types) {
       let total = 0
-      for (const key in this.work) {
-        if (types.indexOf(key) !== -1) {
-          total += this.work[key]
+
+      if (types) {
+        for (const key in this.work) {
+          if (types.indexOf(key) !== -1) {
+            total += this.work[key]
+          }
         }
       }
 
