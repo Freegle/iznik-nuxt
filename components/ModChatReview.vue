@@ -3,10 +3,10 @@
     <b-card no-body>
       <b-card-header>
         <div class="d-flex justify-content-start flex-wrap">
-          <ModChatReviewUser :user="message.fromuser" class="mr-2" />
+          <ModChatReviewUser :user="message.fromuser" class="mr-2" tag="From: " />
           <v-icon name="arrow-circle-right" scale="2" class="mt-1 text-info" />
-          <ModChatReviewUser :user="message.touser" class="ml-2" />
-          <!--          TODO Notes-->
+          <ModChatReviewUser :user="message.touser" class="ml-2" tag="To: " />
+          <!--          TODO Add note -->
           <!--          TODO View Original Email-->
           <!--          TODO View Conversation-->
         </div>
@@ -33,37 +33,37 @@
             <v-icon name="info-circle" /> {{ message.touser.displayname }} is on {{ message.group.namedisplay }}, which you mod.
           </span>
           <span>
-            <v-icon name="hashtag" />{{ message.id }}
+            <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ message.id }}
           </span>
         </div>
       </b-card-body>
       <b-card-footer>
-        <d class="d-flex flex-wrap justify-content-start">
-          <b-btn variant="white" class="mr-2">
+        <div class="d-flex flex-wrap justify-content-start">
+          <b-btn variant="white" class="mr-2 mb-1">
             <v-icon name="comments" /> View Chat
           </b-btn>
-          <b-btn v-if="message.held" variant="warning" class="mr-2">
+          <b-btn v-if="message.held" variant="warning" class="mr-2 mb-1" @click="release">
             <v-icon name="play" /> Release
           </b-btn>
-          <b-btn v-if="!message.held" variant="primary" class="mr-2">
+          <b-btn v-if="!message.held" variant="primary" class="mr-2 mb-1">
             <v-icon name="exclamation-triangle" /> Add Mod Message
           </b-btn>
-          <b-btn v-if="!message.held" variant="success" class="mr-2">
+          <b-btn v-if="!message.held" variant="success" class="mr-2 mb-1" @click="approve">
             <v-icon name="check" /> Approve - Not Spam
           </b-btn>
-          <b-btn v-if="!message.held" variant="success" class="mr-2">
+          <b-btn v-if="!message.held" variant="success" class="mr-2 mb-1" @click="whitelist">
             <v-icon name="check" /> Approve and whitelist
           </b-btn>
-          <b-btn v-if="!message.held" variant="warning" class="mr-2">
+          <b-btn v-if="!message.held" variant="warning" class="mr-2 mb-1" @click="hold">
             <v-icon name="pause" /> Hold
           </b-btn>
-          <b-btn v-if="!message.held" variant="danger" class="mr-2">
+          <b-btn v-if="!message.held" variant="danger" class="mr-2 mb-1" @click="reject">
             <v-icon name="trash-alt" /> Delete
           </b-btn>
-          <b-btn v-if="!message.held" variant="danger" class="mr-2">
+          <b-btn v-if="!message.held" variant="danger" class="mr-2 mb-1" @click="reject">
             <v-icon name="ban" /> Spam
           </b-btn>
-        </d>
+        </div>
       </b-card-footer>
     </b-card>
   </div>
@@ -71,6 +71,7 @@
 <script>
 import NoticeMessage from './NoticeMessage'
 import ModChatReviewUser from './ModChatReviewUser'
+
 export default {
   components: { ModChatReviewUser, NoticeMessage },
   props: {
@@ -82,6 +83,38 @@ export default {
   computed: {
     me() {
       return this.$store.getters['auth/user']
+    }
+  },
+  methods: {
+    release() {
+      this.$store.dispatch('chatmessages/release', {
+        id: this.message.id,
+        chatid: null
+      })
+    },
+    hold() {
+      this.$store.dispatch('chatmessages/hold', {
+        id: this.message.id,
+        chatid: null
+      })
+    },
+    approve() {
+      this.$store.dispatch('chatmessages/approve', {
+        id: this.message.id,
+        chatid: null
+      })
+    },
+    reject() {
+      this.$store.dispatch('chatmessages/reject', {
+        id: this.message.id,
+        chatid: null
+      })
+    },
+    whitelist() {
+      this.$store.dispatch('chatmessages/whitelist', {
+        id: this.message.id,
+        chatid: null
+      })
     }
   }
 }

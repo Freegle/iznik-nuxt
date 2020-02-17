@@ -6,6 +6,9 @@
       </span>
       {{ name }}
     </span>
+    <span class="d-inline d-sm-none">
+      {{ name }}
+    </span>
     <v-icon v-if="icon" :name="icon" class="d-inline d-sm-none" scale="2" />
     <b-badge v-if="getCount(count)" :variant="countVariant">
       {{ getCount(count) }}
@@ -22,7 +25,8 @@ export default {
     },
     name: {
       type: String,
-      required: true
+      required: false,
+      default: null
     },
     icon: {
       type: String,
@@ -30,7 +34,7 @@ export default {
       default: null
     },
     count: {
-      type: String,
+      type: Array,
       required: false,
       default: null
     },
@@ -46,14 +50,15 @@ export default {
     }
   },
   methods: {
-    getCount(type) {
+    getCount(types) {
+      let total = 0
       for (const key in this.work) {
-        if (key === type) {
-          return this.work[key]
+        if (types.indexOf(key) !== -1) {
+          total += this.work[key]
         }
       }
 
-      return 0
+      return total
     }
   }
 }

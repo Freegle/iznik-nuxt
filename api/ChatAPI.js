@@ -2,7 +2,9 @@ import BaseAPI from '@/api/BaseAPI'
 
 export default class ChatAPI extends BaseAPI {
   fetch(chatid, { limit, context }) {
-    return this.$get(`/chat/rooms/${chatid}/messages`, { limit, context })
+    return chatid
+      ? this.$get(`/chat/rooms/${chatid}/messages`, { limit, context })
+      : this.$get(`/chatmessages`, { limit, context })
   }
 
   async listChats(params) {
@@ -33,9 +35,9 @@ export default class ChatAPI extends BaseAPI {
     })
   }
 
-  nudge(roomid) {
+  nudge(chatid) {
     return this.$post('/chatrooms', {
-      id: roomid,
+      id: chatid,
       action: 'Nudge'
     })
   }
@@ -52,9 +54,32 @@ export default class ChatAPI extends BaseAPI {
     return this.$get('/chatrooms', { count: true })
   }
 
-  rsvp(roomid, id, value) {
+  hold(msgid) {
+    return this.$post('/chatmessages', { id: msgid, action: 'Hold' })
+  }
+
+  release(msgid) {
+    return this.$post('/chatmessages', { id: msgid, action: 'Release' })
+  }
+
+  reject(msgid) {
+    return this.$post('/chatmessages', { id: msgid, action: 'Reject' })
+  }
+
+  approve(msgid) {
+    return this.$post('/chatmessages', { id: msgid, action: 'Approve' })
+  }
+
+  whitelist(msgid) {
+    return this.$post('/chatmessages', {
+      id: msgid,
+      action: 'ApproveAllFuture'
+    })
+  }
+
+  rsvp(chatid, id, value) {
     return this.$patch('/chatmessages', {
-      roomid: roomid,
+      chatid: chatid,
       id: id,
       replyexpected: value
     })

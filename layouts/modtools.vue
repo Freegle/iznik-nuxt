@@ -16,24 +16,27 @@
         <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown right class="d-block d-sm-none">
             <template v-slot:button-content>
-              <ModMenuItemNav name="Messages" count="pending" icon="envelope" />
+              <ModMenuItemNav :count="['pending', 'chatreview']" icon="envelope" />
             </template>
             <b-dropdown-item href="/modtools/messages/pending">
-              <ModMenuItemNav name="Pending" count="pending" />
+              <ModMenuItemNav name="Pending" :count="['pending']" />
             </b-dropdown-item>
             <b-dropdown-item href="/modtools/messages/approved">
               <ModMenuItemNav name="Approved" />
             </b-dropdown-item>
             <b-dropdown-item href="/modtools/messages/pending">
-              <ModMenuItemNav name="Spam" count="spam" />
+              <ModMenuItemNav name="Spam" :count="['spam']" />
+            </b-dropdown-item>
+            <b-dropdown-item href="/modtools/chats/spam">
+              <ModMenuItemNav name="Chat Review" :count="['chatreview']" />
             </b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown right class="d-block d-sm-none">
             <template v-slot:button-content>
-              <ModMenuItemNav name="Members" count="pendingmembers" icon="users" />
+              <ModMenuItemNav :count="['pendingmembers']" icon="users" />
             </template>
             <b-dropdown-item href="/modtools/members/pending">
-              <ModMenuItemNav name="Pending" count="pendingmembers" />
+              <ModMenuItemNav name="Pending" :count="['pendingmembers']" />
             </b-dropdown-item>
             <b-dropdown-item href="/modtools/members/approved">
               <ModMenuItemNav name="Approved" />
@@ -42,7 +45,7 @@
           <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse" class="text-center p-0" @click="discourse">
             <div class="notifwrapper">
               <span class="d-none d-sm-inline">
-                <v-icon name="brands/discourse" scale="2" class="discourse" /><br>
+                <v-icon name="brands/discourse" scale="2" class="discourse " /><br>
                 Us
               </span>
               <v-icon name="brands/discourse" class="d-inline d-sm-none discourse" scale="2" />
@@ -54,7 +57,7 @@
           <b-nav-item v-if="loggedIn" id="menu-option-modtools-chat" class="text-center p-0" to="/modtools/chats">
             <div class="notifwrapper">
               <span class="d-none d-sm-inline">
-                <v-icon name="comments" scale="2" /><br>
+                <v-icon name="comments" scale="2" class="" /><br>
                 Chats
               </span>
               <v-icon name="comments" class="d-inline d-sm-none" scale="2" />
@@ -64,7 +67,7 @@
             </div>
           </b-nav-item>
           <b-nav-item v-if="loggedIn" id="menu-option-modtools-logout" class="text-center p-0 small" @click="logOut()">
-            <v-icon name="sign-out-alt" scale="2" /><br>
+            <v-icon name="sign-out-alt" scale="2" class="" /><br>
             Logout
           </b-nav-item>
           <b-nav-item v-if="!loggedIn">

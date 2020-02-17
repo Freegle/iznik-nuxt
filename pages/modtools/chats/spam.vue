@@ -21,8 +21,8 @@ import InfiniteLoading from 'vue-infinite-loading'
 import ModChatReview from '../../../components/ModChatReview'
 import loginRequired from '@/mixins/loginRequired.js'
 
-// We need an id for the store.  This is as good as any.
-const REVIEWCHAT = 0
+// We need an id for the store.  The null value is a special case used just for retrieving chat review messages.
+const REVIEWCHAT = null
 
 export default {
   layout: 'modtools',
@@ -44,11 +44,12 @@ export default {
   },
   computed: {
     visibleMessages() {
-      return this.messages.slice(0, this.show)
+      return this.messages.slice(0, this.show).filter(message => {
+        return message !== null
+      })
     },
     messages() {
       const ret = this.$store.getters['chatmessages/getMessages'](REVIEWCHAT)
-      console.log('Got messages', ret)
       return ret
     },
     work() {

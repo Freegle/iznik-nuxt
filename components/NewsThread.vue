@@ -65,7 +65,7 @@
             />
           </li>
         </ul>
-        <span v-if="!newsfeed.closed" class="text-small">
+        <span v-if="!newsfeed.closed">
           <b-row>
             <b-col>
               <div
