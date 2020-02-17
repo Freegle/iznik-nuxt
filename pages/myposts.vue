@@ -190,6 +190,7 @@
 <script>
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
+import waitForRef from '@/mixins/waitForRef'
 const JobsTopBar = () => import('../components/JobsTopBar')
 const MyMessage = () => import('~/components/MyMessage.vue')
 const SidebarLeft = () => import('~/components/SidebarLeft')
@@ -206,7 +207,7 @@ export default {
     DonationAskModal,
     AvailabilityModal
   },
-  mixins: [loginRequired, buildHead],
+  mixins: [loginRequired, buildHead, waitForRef],
   data() {
     return {
       id: null,
@@ -429,12 +430,9 @@ export default {
       this.$refs.availabilitymodal.show()
     },
     ask(groupid) {
-      if (this.$refs.askmodal) {
+      this.waitForRef('askmodal', () => {
         this.$refs.askmodal.show()
-      } else {
-        // This would be a bug.  We've seen it during dev and so we have the if test to prevent client-visible errors.
-        console.error("Don't ask for donation, no ref")
-      }
+      })
     },
     postSort(a, b) {
       // Show promised items first, then by most recent activity.
