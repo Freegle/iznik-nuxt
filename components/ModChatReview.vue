@@ -18,7 +18,7 @@
             you before releasing it.
           </span>
           <span v-else>
-            Held by <span v-if="me.id === message.held.id">you</span><b v-else>{{ message.held.name }}</b>
+            Held by <b>{{ message.held.name }}</b>
             {{ message.held.timestamp | timeago }}.  Please check with them before releasing it.
           </span>
         </NoticeMessage>

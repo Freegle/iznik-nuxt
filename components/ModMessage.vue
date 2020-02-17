@@ -46,6 +46,16 @@
         <!--        Held by-->
         <b-row>
           <b-col cols="12" lg="8">
+            <div v-if="message.heldby">
+              <NoticeMessage v-if="me.id === message.heldby.id" variant="warning" class="mb-2">
+                You held this {{ message.heldby.timestamp | timeago }}.  Other people will see a warning to check with
+                you before releasing it.
+              </NoticeMessage>
+              <NoticeMessage v-else variant="warning" class="mb-2">
+                Held by <b>{{ message.heldby.name }}</b>
+                {{ message.heldby.timestamp | timeago }}.  Please check with them before releasing it.
+              </NoticeMessage>
+            </div>
             <NoticeMessage v-if="message.fromuser.activedistance > 50" variant="warning" class="mb-2">
               This freegler is active on groups {{ message.fromuser.activedistance }} miles apart.
             </NoticeMessage>
@@ -223,6 +233,9 @@ export default {
     }
   },
   computed: {
+    me() {
+      return this.$store.getters['auth/user']
+    },
     pending() {
       return this.hasCollection('Pending')
     },

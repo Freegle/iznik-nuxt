@@ -56,6 +56,16 @@ export default {
       required: false,
       default: false
     },
+    hold: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    release: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     notspam: {
       type: Boolean,
       required: false,
@@ -94,6 +104,12 @@ export default {
       } else if (this.notspam) {
         // Standard notspam button
         this.notSpamIt()
+      } else if (this.hold) {
+        // Standard hold button
+        this.holdIt()
+      } else if (this.release) {
+        // Standard release button
+        this.releaseIt()
       } else {
         // Something else.  We want to show the modal.  Setting this will cause it to render here.
         this.showStdMsgModal = true
@@ -136,6 +152,16 @@ export default {
       this.$store.dispatch('messages/spam', {
         id: this.message.id,
         groupid: this.groupid
+      })
+    },
+    holdIt() {
+      this.$store.dispatch('messages/hold', {
+        id: this.message.id
+      })
+    },
+    releaseIt() {
+      this.$store.dispatch('messages/release', {
+        id: this.message.id
       })
     }
   }

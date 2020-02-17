@@ -1,74 +1,109 @@
 <template>
   <div>
-    <ModMessageButton
-      v-if="pending"
-      :message="message"
-      variant="success"
-      icon="check"
-      approve
-      label="Approve"
-    />
-    <!--    TODO Reject, Hold, Release -->
-    <ModMessageButton
-      v-if="pending"
-      :message="message"
-      variant="danger"
-      icon="trash-alt"
-      delete
-      label="Delete"
-    />
-    <ModMessageButton
-      v-if="approved"
-      :message="message"
-      variant="success"
-      icon="envelope"
-      leave
-      label="Reply"
-    />
-    <ModMessageButton
-      v-if="approved"
-      :message="message"
-      variant="danger"
-      icon="trash-alt"
-      delete
-      label="Delete"
-    />
-    <ModMessageButton
-      v-if="approved"
-      :message="message"
-      variant="info"
-      icon="ban"
-      spam
-      label="Spam"
-    />
-    <ModMessageButton
-      v-if="spam"
-      :message="message"
-      variant="danger"
-      icon="trash-alt"
-      spam
-      label="Spam"
-    />
-    <ModMessageButton
-      v-if="spam"
-      :message="message"
-      variant="success"
-      icon="check"
-      notspam
-      label="Not spam"
-    />
-    <ModMessageButton
-      v-for="stdmsg in filtered"
-      :key="stdmsg.id"
-      :variant="variant(stdmsg)"
-      :icon="icon(stdmsg)"
-      :label="stdmsg.title"
-      :stdmsg="stdmsg"
-      :message="message"
-    />
-    <b-btn v-if="rareToShow && !showRare" variant="white" class="mb-1" @click="showRare = true">
-      <v-icon name="caret-down" /> +{{ rareToShow }}...
-    </b-btn>
+    <div v-if="pending" class="d-inline">
+      <ModMessageButton
+        v-if="!message.heldby"
+        :message="message"
+        variant="success"
+        icon="check"
+        approve
+        label="Approve"
+      />
+      <!--    TODO Reject, Hold, Release -->
+      <ModMessageButton
+        v-if="!message.heldby"
+        :message="message"
+        variant="warning"
+        icon="times"
+        reject
+        label="Reject"
+      />
+      <ModMessageButton
+        v-if="!message.heldby"
+        :message="message"
+        variant="danger"
+        icon="trash-alt"
+        delete
+        label="Delete"
+      />
+      <ModMessageButton
+        v-if="!message.heldby"
+        :message="message"
+        variant="warning"
+        icon="pause"
+        hold
+        label="Hold"
+      />
+      <ModMessageButton
+        v-if="message.heldby"
+        :message="message"
+        variant="warning"
+        icon="play"
+        release
+        label="Release"
+      />
+      <ModMessageButton
+        v-if="!message.heldby"
+        :message="message"
+        variant="danger"
+        icon="ban"
+        spam
+        label="Spam"
+      />
+    </div>
+    <div v-if="approved" class="d-inline">
+      <ModMessageButton
+        :message="message"
+        variant="success"
+        icon="envelope"
+        leave
+        label="Reply"
+      />
+      <ModMessageButton
+        :message="message"
+        variant="danger"
+        icon="trash-alt"
+        delete
+        label="Delete"
+      />
+      <ModMessageButton
+        :message="message"
+        variant="info"
+        icon="ban"
+        spam
+        label="Spam"
+      />
+    </div>
+    <div v-if="spam" class="d-inline">
+      <ModMessageButton
+        :message="message"
+        variant="danger"
+        icon="trash-alt"
+        spam
+        label="Spam"
+      />
+      <ModMessageButton
+        :message="message"
+        variant="success"
+        icon="check"
+        notspam
+        label="Not spam"
+      />
+    </div>
+    <div v-if="!message.heldby" class="d-lg-inline">
+      <ModMessageButton
+        v-for="stdmsg in filtered"
+        :key="stdmsg.id"
+        :variant="variant(stdmsg)"
+        :icon="icon(stdmsg)"
+        :label="stdmsg.title"
+        :stdmsg="stdmsg"
+        :message="message"
+      />
+      <b-btn v-if="rareToShow && !showRare" variant="white" class="mb-1" @click="showRare = true">
+        <v-icon name="caret-down" /> +{{ rareToShow }}...
+      </b-btn>
+    </div>
   </div>
 </template>
 <script>
@@ -177,7 +212,7 @@ export default {
         case 'Delete Approved Member':
           return 'danger'
         case 'Edit':
-          return 'info'
+          return 'primary'
         default:
           return 'white'
       }

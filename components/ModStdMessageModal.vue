@@ -383,12 +383,6 @@ export default {
             console.error('Unknown stdmsg action', this.action)
         }
       }
-
-      // Ensure the counts are updated.
-      await this.$store.dispatch('auth/fetchUser', {
-        components: ['work'],
-        force: true
-      })
     }
   }
 }

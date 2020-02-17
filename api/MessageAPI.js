@@ -103,4 +103,18 @@ export default class MessageAPI extends BaseAPI {
       groupid: groupid
     })
   }
+
+  hold(id) {
+    return this.$post('/message', {
+      action: 'Hold',
+      id: id
+    })
+  }
+
+  release(id) {
+    return this.$post('/message', {
+      action: 'Release',
+      id: id
+    })
+  }
 }

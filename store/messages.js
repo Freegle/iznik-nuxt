@@ -215,7 +215,7 @@ export const actions = {
     }
   },
 
-  async approve({ commit }, params) {
+  async approve({ commit, dispatch }, params) {
     await this.$api.message.approve(
       params.id,
       params.groupid,
@@ -223,26 +223,62 @@ export const actions = {
       params.stdmsgid,
       params.body
     )
+
     commit('remove', {
       id: params.id
     })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
   },
 
-  async spam({ commit }, params) {
+  async spam({ commit, dispatch }, params) {
     await this.$api.message.spam(params.id, params.groupid)
+
     commit('remove', {
       id: params.id
     })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
   },
 
-  async notspam({ commit }, params) {
+  async notspam({ commit, dispatch }, params) {
     await this.$api.message.notspam(params.id, params.groupid)
+
     commit('remove', {
       id: params.id
     })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
   },
 
-  async reject({ commit }, params) {
+  async reject({ commit, dispatch }, params) {
     await this.$api.message.reject(
       params.id,
       params.groupid,
@@ -250,12 +286,24 @@ export const actions = {
       params.stdmsgid,
       params.body
     )
+
     commit('remove', {
       id: params.id
     })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
   },
 
-  async reply({ commit }, params) {
+  async reply({ commit, dispatch }, params) {
     await this.$api.message.reply(
       params.id,
       params.groupid,
@@ -263,9 +311,20 @@ export const actions = {
       params.stdmsgid,
       params.body
     )
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
   },
 
-  async delete({ commit }, params) {
+  async delete({ commit, dispatch }, params) {
     await this.$api.message.delete(
       params.id,
       params.groupid,
@@ -273,8 +332,40 @@ export const actions = {
       params.stdmsgid,
       params.body
     )
+
     commit('remove', {
       id: params.id
     })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
+  },
+
+  async hold({ dispatch, commit }, params) {
+    await this.$api.message.hold(params.id)
+    const { message } = await this.$api.message.fetch({
+      id: params.id,
+      messagehistory: true
+    })
+    console.log('Held', message)
+    commit('add', message)
+  },
+
+  async release({ dispatch, commit }, params) {
+    await this.$api.message.release(params.id)
+    const { message } = await this.$api.message.fetch({
+      id: params.id,
+      messagehistory: true
+    })
+    console.log('Released', message)
+    commit('add', message)
   }
 }
