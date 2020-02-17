@@ -121,7 +121,7 @@ export default {
             return 'Unknown Action - Bug'
         }
       } else {
-        return null
+        return 'Send'
       }
     },
     modstatus() {

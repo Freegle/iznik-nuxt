@@ -133,7 +133,7 @@ export default {
     spamIt() {
       this.showSpamModal = true
       this.waitForRef('spamConfirm', () => {
-        this.$refs.deleteConfirm.show()
+        this.$refs.spamConfirm.show()
       })
     },
     notSpamIt() {
