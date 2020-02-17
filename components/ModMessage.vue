@@ -43,7 +43,6 @@
         <!--        View Source-->
       </b-card-header>
       <b-card-body>
-        <!--        Held by-->
         <b-row>
           <b-col cols="12" lg="8">
             <div v-if="message.heldby">

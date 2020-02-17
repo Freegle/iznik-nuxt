@@ -126,14 +126,14 @@ export default {
     },
     deleteIt() {
       this.showDeleteModal = true
-      this.waitForRef('config', () => {
+      this.waitForRef('deleteConfirm', () => {
         this.$refs.deleteConfirm.show()
       })
     },
     spamIt() {
-      this.$store.dispatch('messages/spam', {
-        id: this.message.id,
-        groupid: this.groupid
+      this.showSpamModal = true
+      this.waitForRef('spamConfirm', () => {
+        this.$refs.deleteConfirm.show()
       })
     },
     notSpamIt() {

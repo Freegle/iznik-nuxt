@@ -9,7 +9,6 @@
         approve
         label="Approve"
       />
-      <!--    TODO Reject, Hold, Release -->
       <ModMessageButton
         v-if="!message.heldby"
         :message="message"

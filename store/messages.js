@@ -355,7 +355,6 @@ export const actions = {
       id: params.id,
       messagehistory: true
     })
-    console.log('Held', message)
     commit('add', message)
   },
 
@@ -365,7 +364,6 @@ export const actions = {
       id: params.id,
       messagehistory: true
     })
-    console.log('Released', message)
     commit('add', message)
   }
 }

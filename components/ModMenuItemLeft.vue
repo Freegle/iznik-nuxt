@@ -5,6 +5,9 @@
     <b-badge v-if="count && getCount(count)" :variant="countVariant">
       {{ getCount(count) }}
     </b-badge>
+    <b-badge v-if="othercount && getCount(othercount)" variant="light">
+      {{ getCount(othercount) }}
+    </b-badge>
   </div>
 </template>
 <script>
@@ -19,6 +22,11 @@ export default {
       required: true
     },
     count: {
+      type: String,
+      required: false,
+      default: null
+    },
+    othercount: {
       type: String,
       required: false,
       default: null

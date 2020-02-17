@@ -19,16 +19,16 @@
               <ModMenuItemNav :count="['pending', 'chatreview']" icon="envelope" />
             </template>
             <b-dropdown-item href="/modtools/messages/pending">
-              <ModMenuItemNav name="Pending" :count="['pending']" />
+              <ModMenuItemNav name="Pending" :count="['pending']" :othercount="['pending']" />
             </b-dropdown-item>
             <b-dropdown-item href="/modtools/messages/approved">
               <ModMenuItemNav name="Approved" />
             </b-dropdown-item>
-            <b-dropdown-item href="/modtools/messages/pending">
-              <ModMenuItemNav name="Spam" :count="['spam']" />
+            <b-dropdown-item href="/modtools/messages/spam">
+              <ModMenuItemNav name="Spam" :count="['spam']" :othercount="['spamother']" />
             </b-dropdown-item>
-            <b-dropdown-item href="/modtools/chats/spam">
-              <ModMenuItemNav name="Chat Review" :count="['chatreview']" />
+            <b-dropdown-item href="/modtools/chats/review">
+              <ModMenuItemNav name="Chat Review" :count="['chatreview']" :othercount="['chatreviewother']" />
             </b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown right class="d-block d-sm-none">
@@ -88,14 +88,14 @@
           <div>
             Messages
           </div>
-          <ModMenuItemLeft link="/modtools/messages/pending" name="Pending" count="pending" indent />
+          <ModMenuItemLeft link="/modtools/messages/pending" name="Pending" count="pending" othercount="pendingother" indent />
           <ModMenuItemLeft link="/modtools/messages/approved" name="Approved" indent />
-          <ModMenuItemLeft link="/modtools/messages/spam" name="Spam" count="spam" indent />
+          <ModMenuItemLeft link="/modtools/messages/spam" name="Spam" count="spam" othercount="spamother" indent />
           <hr>
           <div>
             Members
           </div>
-          <ModMenuItemLeft link="/modtools/members/pending" name="Pending" count="pendingmembers" indent />
+          <ModMenuItemLeft link="/modtools/members/pending" name="Pending" count="pendingmembers" othercount="pendingmembersother" indent />
           <ModMenuItemLeft link="/modtools/members/Approved" name="Approved" indent />
           <hr>
           <div>
