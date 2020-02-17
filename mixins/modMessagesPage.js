@@ -66,8 +66,15 @@ export default {
     work(newVal, oldVal) {
       console.log('Work change', newVal, oldVal)
       if (newVal > oldVal) {
-        // There's new stuff to do.  Reload.
-        this.$store.dispatch('messages/clear')
+        // There's new stuff to fetch.
+        console.log('Fetch')
+        this.$store.dispatch('messages/fetchMessages', {
+          groupid: this.groupid,
+          collection: this.collection,
+          modtools: true,
+          summary: false,
+          limit: Math.max(this.limit, newVal)
+        })
       }
     }
   },
