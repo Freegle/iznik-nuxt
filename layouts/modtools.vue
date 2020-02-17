@@ -1,17 +1,17 @@
 <template>
-  <div class="pageback">
-    <b-navbar id="navbar" type="dark" class="navback" fixed="top">
-      <b-navbar-brand to="/modtools" class="p-0">
-        <b-img
-          class="logo mr-2"
-          height="58"
-          width="58"
-          rounded
-          :src="logo"
-          alt="Home"
-        />
-      </b-navbar-brand>
-      <client-only>
+  <client-only>
+    <div class="pageback">
+      <b-navbar id="navbar" type="dark" class="navback" fixed="top">
+        <b-navbar-brand to="/modtools" class="p-0">
+          <b-img
+            class="logo mr-2"
+            height="58"
+            width="58"
+            rounded
+            :src="logo"
+            alt="Home"
+          />
+        </b-navbar-brand>
         <b-navbar-nav />
         <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown right class="d-block d-sm-none">
@@ -76,41 +76,39 @@
             </b-btn>
           </b-nav-item>
         </b-navbar-nav>
-      </client-only>
-    </b-navbar>
+      </b-navbar>
 
-    <div class="d-flex">
-      <div class="leftmenu d-none d-sm-block">
-        <!--        TODO Reload on click-->
-        <nuxt-link to="/modtools">
-          Dashboard
-        </nuxt-link>
-        <hr>
-        <div>
-          Messages
+      <div class="d-flex">
+        <div class="leftmenu d-none d-sm-block">
+          <!--        TODO Reload on click-->
+          <nuxt-link to="/modtools">
+            Dashboard
+          </nuxt-link>
+          <hr>
+          <div>
+            Messages
+          </div>
+          <ModMenuItemLeft link="/modtools/messages/pending" name="Pending" count="pending" indent />
+          <ModMenuItemLeft link="/modtools/messages/approved" name="Approved" indent />
+          <ModMenuItemLeft link="/modtools/messages/spam" name="Spam" count="spam" indent />
+          <hr>
+          <div>
+            Members
+          </div>
+          <ModMenuItemLeft link="/modtools/members/pending" name="Pending" count="pendingmembers" indent />
+          <ModMenuItemLeft link="/modtools/members/Approved" name="Approved" indent />
+          <hr>
+          <div>
+            Chat
+          </div>
+          <ModMenuItemLeft link="/modtools/chats/review" name="Review" count="chatreview" indent />
         </div>
-        <ModMenuItemLeft link="/modtools/messages/pending" name="Pending" count="pending" indent />
-        <ModMenuItemLeft link="/modtools/messages/approved" name="Approved" indent />
-        <ModMenuItemLeft link="/modtools/messages/spam" name="Spam" count="spam" indent />
-        <hr>
-        <div>
-          Members
-        </div>
-        <ModMenuItemLeft link="/modtools/members/pending" name="Pending" count="pendingmembers" indent />
-        <ModMenuItemLeft link="/modtools/members/Approved" name="Approved" indent />
-        <hr>
-        <div>
-          Chat
-        </div>
-        <ModMenuItemLeft link="/modtools/chats/review" name="Review" count="chatreview" indent />
+        <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent flex-grow-1" />
       </div>
-      <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent flex-grow-1" />
-    </div>
-    <client-only>
       <ChatPopups v-if="loggedIn" class="d-none d-sm-block" />
       <LoginModal ref="loginModal" />
-    </client-only>
-  </div>
+    </div>
+  </client-only>
 </template>
 
 <script>
