@@ -1,36 +1,35 @@
 <template>
   <div :class="`${getClassName('wrapper')} autocomplete-wrapper`">
-    <b-input-group>
-      <input
-        :id="id"
-        ref="input"
-        v-model="type"
-        type="text"
-        :class="`${getClassName('input')} autocomplete-input`"
-        :placeholder="placeholder"
-        :name="name"
-        autocomplete="off"
-        :invalid="invalid"
-        :size="size"
-        @input="handleInput"
-        @dblclick="handleDoubleClick"
-        @blur="handleBlur"
-        @keydown="handleKeyDown"
-        @focus="handleFocus"
-      >
-      <b-input-group-append>
-        <b-button variant="white" class="transbord p-0 pr-2" tabindex="-1">
-          <!-- TODO RAHUL DESIGN The shadow on the input field that you get when you're focused ought really to include this append.-->
-          <v-icon name="sync" :class="'text-success fa-spin ' + (ajaxInProgress ? 'visible': 'invisible')" />
-        </b-button>
-      </b-input-group-append>
-      <b-input-group-append v-if="searchbutton">
-        <b-button variant="success" size="lg" @click="search">
-          <v-icon name="search" />&nbsp;Search
-        </b-button>
-      </b-input-group-append>
-    </b-input-group>
-
+    <div :class="parentClass">
+      <b-input-group :class="wrapClass">
+        <input
+          :id="id"
+          ref="input"
+          v-model="type"
+          type="text"
+          :class="`${getClassName('input')} autocomplete-input`"
+          :placeholder="placeholder"
+          :name="name"
+          autocomplete="off"
+          :invalid="invalid"
+          :size="size"
+          @input="handleInput"
+          @dblclick="handleDoubleClick"
+          @blur="handleBlur"
+          @keydown="handleKeyDown"
+          @focus="handleFocus"
+        >
+        <b-input-group-append>
+          <b-button variant="white" class="transbord p-0 pr-2" tabindex="-1">
+            <!-- TODO RAHUL DESIGN The shadow on the input field that you get when you're focused ought really to include this append.-->
+            <v-icon name="sync" :class="'text-success fa-spin ' + (ajaxInProgress ? 'visible': 'invisible')" />
+          </b-button>
+        </b-input-group-append>
+      </b-input-group>
+      <b-button v-if="searchbutton" variant="success" size="lg" class="searchbutton" @click="search">
+        <v-icon name="search" />&nbsp;Search
+      </b-button>
+    </div>
     <div
       v-show="showList && json.length"
       :class="`${getClassName('list')} autocomplete autocomplete-list position-relative`"
@@ -208,7 +207,8 @@ export default {
       debounceTask: undefined,
       ajaxInProgress: null,
       ajaxDeferred: null,
-      invalid: false
+      invalid: false,
+      focused: false
     }
   },
 
@@ -216,6 +216,12 @@ export default {
     faSearch() {
       return faSearch
     },
+    wrapClass() {
+      return 'type-postcode-wrap ' + (this.focused ? ' type-postcode-wrap-focus' : '')
+    },
+    parentClass() {
+      return 'd-flex ' + (this.searchbutton ? 'type-postcode-parent-focus' : '')
+    }
   },
 
   watch: {
@@ -366,6 +372,8 @@ export default {
     },
 
     handleBlur(e) {
+      this.focused = false
+
       // Reset body height.  Seems to break unless we wait for a bit.
       setTimeout(() => {
         let body = document.getElementsByTagName("body")[0];
@@ -384,6 +392,7 @@ export default {
     },
 
     handleFocus(e) {
+      this.focused = true
       this.focusList = 0
 
       // On mobile, the on screen keyboard can obscure the dropdown.  So:
@@ -683,5 +692,34 @@ export default {
 input[invalid='true'] {
   box-shadow: 0 0 0 0.2rem $color-red;
   border: 1px solid red;
+}
+.type-postcode-wrap input:focus {
+  outline: none;
+  box-shadow: none;
+  border: 1px solid #ced4da;
+}
+.type-postcode-wrap-focus {
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+.input-group.type-postcode-wrap {
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
+.type-postcode-parent-focus .input-group {
+  border: 1px solid #ced4da;
+  border-radius: 4px 0 0 4px;
+}
+.input-group.type-postcode-wrap input,
+.input-group-append button {
+  border: none;
+}
+.input-group-append button:focus {
+  outline: none;
+  box-shadow: none;
+}
+button.btn.searchbutton.btn-success.btn-lg {
+  border-radius: 0 4px 4px 0;
 }
 </style>
