@@ -16,50 +16,27 @@
         <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown right class="d-block d-sm-none">
             <template v-slot:button-content>
-              <span class="d-none d-sm-inline">
-                <v-icon name="envelope" scale="2" /><br>
-                Messages
-              </span>
-              <v-icon name="envelope" class="d-inline d-sm-none" scale="2" />
-              <b-badge v-if="getCount('pending')" variant="danger">
-                {{ getCount('pending') }}
-              </b-badge>
+              <ModMenuItemNav name="Messages" count="pending" icon="envelope" />
             </template>
             <b-dropdown-item href="/modtools/messages/pending">
-              Pending
-              <b-badge v-if="getCount('pending')" variant="danger">
-                {{ getCount('pending') }}
-              </b-badge>
+              <ModMenuItemNav name="Pending" count="pending" />
             </b-dropdown-item>
             <b-dropdown-item href="/modtools/messages/approved">
-              Approved
+              <ModMenuItemNav name="Approved" />
             </b-dropdown-item>
             <b-dropdown-item href="/modtools/messages/pending">
-              Spam
-              <b-badge v-if="getCount('spam')" variant="danger">
-                {{ getCount('spam') }}
-              </b-badge>
+              <ModMenuItemNav name="Spam" count="spam" />
             </b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown right class="d-block d-sm-none">
             <template v-slot:button-content>
-              <span class="d-none d-sm-inline">
-                <v-icon name="users" scale="2" /><br>
-                Members
-              </span>
-              <v-icon name="users" class="d-inline d-sm-none" scale="2" />
-              <b-badge v-if="getCount('pendingmembers')" variant="danger">
-                {{ getCount('pendingmembers') }}
-              </b-badge>
+              <ModMenuItemNav name="Members" count="pendingmembers" icon="users" />
             </template>
             <b-dropdown-item href="/modtools/members/pending">
-              Pending
-              <b-badge v-if="getCount('pending')" variant="danger">
-                {{ getCount('pendingmembers') }}
-              </b-badge>
+              <ModMenuItemNav name="Pending" count="pendingmembers" />
             </b-dropdown-item>
             <b-dropdown-item href="/modtools/members/approved">
-              Approved
+              <ModMenuItemNav name="Approved" />
             </b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse" class="text-center p-0" @click="discourse">
@@ -101,7 +78,6 @@
 
     <div class="d-flex">
       <div class="leftmenu d-none d-sm-block">
-        <!--        TODO Counts for work-->
         <!--        TODO Reload on click-->
         <nuxt-link to="/modtools">
           Dashboard
@@ -110,39 +86,15 @@
         <div>
           Messages
         </div>
-        <div>
-          <!-- eslint-disable-next-line -->
-          <nuxt-link to="/modtools/messages/pending" class="pl-3">Pending</nuxt-link>
-          <b-badge v-if="getCount('pending')" variant="danger">
-            {{ getCount('pending') }}
-          </b-badge>
-        </div>
-        <div>
-          <!-- eslint-disable-next-line -->
-          <nuxt-link to="/modtools/messages/approved" class="pl-3">Approved</nuxt-link>
-        </div>
-        <div>
-          <!-- eslint-disable-next-line -->
-          <nuxt-link to="/modtools/messages/spam" class="pl-3">Spam</nuxt-link>
-          <b-badge v-if="getCount('spam')" variant="danger">
-            {{ getCount('spam') }}
-          </b-badge>
-        </div>
+        <ModMenuItemLeft link="/modtools/messages/pending" name="Pending" count="pending" indent />
+        <ModMenuItemLeft link="/modtools/messages/approved" name="Approved" indent />
+        <ModMenuItemLeft link="/modtools/messages/spam" name="Spam" count="spam" indent />
         <hr>
         <div>
           Members
         </div>
-        <div>
-          <!-- eslint-disable-next-line -->
-          <nuxt-link to="/modtools/members/pending" class="pl-3">Pending</nuxt-link>
-          <b-badge v-if="getCount('pendingmembers')" variant="danger">
-            {{ getCount('pendingmembers') }}
-          </b-badge>
-        </div>
-        <div>
-          <!-- eslint-disable-next-line -->
-          <nuxt-link to="/modtools/members/approved" class="pl-3">Approved</nuxt-link>
-        </div>
+        <ModMenuItemLeft link="/modtools/members/pending" name="Pending" count="pendingmembers" indent />
+        <ModMenuItemLeft link="/modtools/members/Approved" name="Approved" indent />
       </div>
       <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent flex-grow-1" />
     </div>
@@ -154,12 +106,16 @@
 </template>
 
 <script>
+import ModMenuItemLeft from '../components/ModMenuItemLeft'
+import ModMenuItemNav from '../components/ModMenuItemNav'
 import LoginModal from '~/components/LoginModal'
 
 const ChatPopups = () => import('~/components/ChatPopups')
 
 export default {
   components: {
+    ModMenuItemNav,
+    ModMenuItemLeft,
     ChatPopups,
     LoginModal
   },
@@ -177,9 +133,6 @@ export default {
     },
     me() {
       return this.$store.getters['auth/user']
-    },
-    work() {
-      return this.$store.getters['auth/work']
     },
     chatCount() {
       return this.$store.getters['chats/unseenCount']
@@ -257,15 +210,6 @@ export default {
       })
 
       setTimeout(this.checkWork, 30000)
-    },
-    getCount(type) {
-      for (const key in this.work) {
-        if (key === type) {
-          return this.work[key]
-        }
-      }
-
-      return 0
     },
     discourse() {
       window.open('https://discourse.ilovefreegle.org/')
@@ -345,7 +289,7 @@ nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
 }
 
 .navback {
-  background-color: $color-modtools-blue--dark !important;
+  background-color: $color-modtools-blue--dark;
 }
 
 nav .navbar-nav li a,
