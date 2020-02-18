@@ -319,7 +319,7 @@ export default {
     },
 
     async process() {
-      if (this.stdmsg && this.stdmsg.newdelstatus) {
+      if (this.stdmsg && this.stdmsg.newdelstatus !== 'UNCHANGED') {
         await this.$store.dispatch('user/edit', {
           id: this.message.fromuser.id,
           groupid: this.groupid,
@@ -327,7 +327,7 @@ export default {
         })
       }
 
-      if (this.stdmsg && this.stdmsg.newmodstatus) {
+      if (this.stdmsg && this.stdmsg.newmodstatus !== 'UNCHANGED') {
         await this.$store.dispatch('user/edit', {
           id: this.message.fromuser.id,
           groupid: this.groupid,
@@ -336,6 +336,7 @@ export default {
       }
 
       if (this.stdmsg) {
+        console.log('Action ', this.stdmsg.action)
         switch (this.stdmsg.action) {
           case 'Approve':
             await this.$store.dispatch('messages/approve', {
@@ -380,6 +381,8 @@ export default {
             console.error('Unknown stdmsg action', this.action)
         }
       }
+
+      this.hide()
     }
   }
 }
