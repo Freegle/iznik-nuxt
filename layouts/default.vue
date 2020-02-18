@@ -104,7 +104,7 @@
               <v-icon name="cog" scale="2" /><br>
               Settings
             </b-nav-item>
-            <b-nav-item id="menu-option-logout" class="text-center p-0 small" @click="logOut()">
+            <b-nav-item id="menu-option-logout" class="text-center p-0 small" @click="logOut">
               <v-icon name="sign-out-alt" scale="2" /><br>
               Logout
             </b-nav-item>
@@ -609,12 +609,16 @@ export default {
     async logOut() {
       // Remove all cookies, both client and server.  This seems to be necessary to kill off the PHPSESSID cookie
       // on the server, which would otherwise keep us logged in despite our efforts.
+      console.log('Remove cookies')
       try {
         this.$cookies.removeAll()
       } catch (e) {}
 
+      console.log('log out')
       await this.$store.dispatch('auth/logout')
+      console.log('Force login')
       this.$store.dispatch('auth/forceLogin', false)
+      console.log('Route')
 
       // Go to the landing page.
       this.$router.push('/')
