@@ -143,7 +143,6 @@ export default {
           })
         }
 
-        console.log('Stdmsg', this.stdmsg)
         this.showStdMsgModal = true
         this.waitForRef('stdmodal', () => {
           this.$refs.stdmodal.show()

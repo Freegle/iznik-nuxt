@@ -329,6 +329,7 @@ export default {
           })
           break
         case 'Leave':
+        case 'Leave Approved Message':
           await this.$store.dispatch('messages/reply', {
             id: this.message.id,
             groupid: this.groupid,
@@ -347,6 +348,7 @@ export default {
           })
           break
         case 'Delete':
+        case 'Delete Approved Message':
           await this.$store.dispatch('messages/delete', {
             id: this.message.id,
             groupid: this.groupid,
@@ -359,7 +361,7 @@ export default {
           // TODO
           break
         default:
-          console.error('Unknown stdmsg action', this.action)
+          console.error('Unknown stdmsg action', this.stdmsg.action)
       }
 
       this.hide()
