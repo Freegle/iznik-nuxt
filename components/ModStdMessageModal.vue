@@ -16,7 +16,10 @@
         <div>
           {{ fromName }}
           <br>
-          {{ message.fromuser.displayname }} &lt;{{ toEmail }}&gt;
+          {{ message.fromuser.displayname }}
+          <span v-if="toEmail">
+            &lt;{{ toEmail }}&gt;
+          </span>
         </div>
       </div>
       <b-input v-model="subject" class="mt-2" />
@@ -75,7 +78,8 @@ export default {
       this.message.fromuser.emails.forEach(email => {
         if (
           email.email &&
-          email.email.indexOf('users.ilovefreegle.org') === -1
+          email.email.indexOf('users.ilovefreegle.org') === -1 &&
+          (ret === null || email.preferred)
         ) {
           ret = email.email
         }
@@ -93,7 +97,6 @@ export default {
 
       return ret
     },
-
     processLabel() {
       if (this.stdmsg) {
         switch (this.stdmsg.action) {
@@ -118,10 +121,9 @@ export default {
             return 'Unknown Action - Bug'
         }
       } else {
-        return null
+        return 'Send'
       }
     },
-
     modstatus() {
       if (this.stdmsg) {
         switch (this.stdmsg.newmodstatus) {
@@ -138,7 +140,6 @@ export default {
 
       return null
     },
-
     emailfrequency() {
       if (this.stdmsg) {
         switch (this.stdmsg.newdelstatus) {
@@ -155,7 +156,6 @@ export default {
 
       return 0
     },
-
     delstatus() {
       if (this.stdmsg) {
         switch (this.emailfrequency) {
@@ -380,12 +380,6 @@ export default {
             console.error('Unknown stdmsg action', this.action)
         }
       }
-
-      // Ensure the counts are updated.
-      await this.$store.dispatch('auth/fetchUser', {
-        components: ['work'],
-        force: true
-      })
     }
   }
 }

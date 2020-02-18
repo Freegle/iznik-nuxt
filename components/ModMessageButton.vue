@@ -50,6 +50,26 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    spam: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    hold: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    release: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    notspam: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
@@ -81,6 +101,15 @@ export default {
       } else if (this.spam) {
         // Standard spam button
         this.spamIt()
+      } else if (this.notspam) {
+        // Standard notspam button
+        this.notSpamIt()
+      } else if (this.hold) {
+        // Standard hold button
+        this.holdIt()
+      } else if (this.release) {
+        // Standard release button
+        this.releaseIt()
       } else {
         // Something else.  We want to show the modal.  Setting this will cause it to render here.
         this.showStdMsgModal = true
@@ -97,14 +126,20 @@ export default {
     },
     deleteIt() {
       this.showDeleteModal = true
-      this.waitForRef('config', () => {
+      this.waitForRef('deleteConfirm', () => {
         this.$refs.deleteConfirm.show()
       })
     },
     spamIt() {
       this.showSpamModal = true
-      this.waitForRef('config', () => {
+      this.waitForRef('spamConfirm', () => {
         this.$refs.spamConfirm.show()
+      })
+    },
+    notSpamIt() {
+      this.$store.dispatch('messages/notspam', {
+        id: this.message.id,
+        groupid: this.groupid
       })
     },
     deleteConfirmed() {
@@ -117,6 +152,16 @@ export default {
       this.$store.dispatch('messages/spam', {
         id: this.message.id,
         groupid: this.groupid
+      })
+    },
+    holdIt() {
+      this.$store.dispatch('messages/hold', {
+        id: this.message.id
+      })
+    },
+    releaseIt() {
+      this.$store.dispatch('messages/release', {
+        id: this.message.id
       })
     }
   }

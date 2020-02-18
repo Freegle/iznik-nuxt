@@ -17,102 +17,88 @@
           @resizing="onResize"
         >
           <div class="shadow chatHolder w-100">
-            <b-row class="chatTitle m-0">
-              <b-col v-if="chat" class="pr-3">
-                <b-row>
-                  <b-col class="p-0 pl-3">
-                    <span class="chatname text-truncate">
-                      <span v-if="(chat.chattype == 'User2User' || chat.chattype == 'User2Mod')">
-                        <span @click="showInfo">
-                          {{ chat.name }}
-                        </span>
-                      </span>
-                      <span v-else>
-                        {{ chat.name }}
-                      </span>
-                    </span>
-                    <span v-if="chat.unseen">
-                      <b-badge variant="danger">{{ chat.unseen }}</b-badge>
-                    </span>
-                    <ratings v-if="otheruser" :key="'otheruser-' + (otheruser ? otheruser.id : null)" size="sm" v-bind="otheruser" class="pl-1 pt-1" />
-                    <span class="pl-2 pr-1 float-right" @click="hide">
-                      <v-icon name="times" scale="1.5" class="clickme mt-1" title="Hide chat window" />
-                    </span>
-                    <span class="pl-1 float-right" @click="maximise">
-                      <v-icon name="window-maximize" scale="1.5" class="clickme mt-1" title="Maximise chat window" />
-                    </span>
-                  </b-col>
-                </b-row>
-              </b-col>
-            </b-row>
-            <b-row class="chatContent m-0" infinite-wrapper>
-              <b-col v-if="chat">
-                <infinite-loading direction="top" force-use-infinite-wrapper="true" :distance="distance" @infinite="loadMore">
-                  <span slot="no-results" />
-                  <span slot="no-more" />
-                  <span slot="spinner">
-                    <b-img-lazy src="~/static/loader.gif" alt="Loading" />
+            <div v-if="chat" class="chatTitle">
+              <span class="chatname text-truncate">
+                <span v-if="(chat.chattype == 'User2User' || chat.chattype == 'User2Mod')">
+                  <span @click="showInfo">
+                    {{ chat.name }}
                   </span>
-                </infinite-loading>
-                <ul v-for="chatmessage in chatmessages" :key="'chatmessage-' + chatmessage.id" class="p-0 pt-1 list-unstyled mb-1">
-                  <li v-if="chatmessage">
-                    <ChatMessage
-                      :key="'chatmessage-' + chatmessage.id"
-                      :chatmessage="chatmessage"
-                      :chat="chat"
-                      :me="me"
-                      :otheruser="otheruser"
-                      :last="chatmessage.id === chatmessages[chatmessages.length - 1].id"
-                    />
-                  </li>
-                </ul>
-              </b-col>
-            </b-row>
-            <div class="chatFooter">
-              <b-row class="m-0">
-                <b-col class="p-0">
-                  <p v-if="spammer" class="bg-danger white p-2 mb-0">
-                    This person has been reported as a spammer or scammer.  Please do not talk to them and under no circumstances
-                    send them any money.
-                  </p>
-                  <b-form-textarea
-                    v-if="!spammer"
-                    ref="chatarea"
-                    v-model="sendmessage"
-                    placeholder="Type here..."
-                    rows="2"
-                    max-rows="4"
-                    @keydown.enter.exact.prevent
-                    @keyup.enter.exact="send"
-                    @keydown.enter.shift.exact="newline"
-                    @keydown.alt.shift.exact="newline"
-                    @focus="markRead"
+                </span>
+                <span v-else>
+                  {{ chat.name }}
+                </span>
+              </span>
+              <span v-if="chat.unseen">
+                <b-badge variant="danger">{{ chat.unseen }}</b-badge>
+              </span>
+              <ratings v-if="otheruser" :key="'otheruser-' + (otheruser ? otheruser.id : null)" size="sm" v-bind="otheruser" class="pl-1 pt-1" />
+              <span class="pl-2 pr-1 float-right" @click="hide">
+                <v-icon name="times" scale="1.5" class="clickme mt-1" title="Hide chat window" />
+              </span>
+              <span class="pl-1 float-right" @click="maximise">
+                <v-icon name="window-maximize" scale="1.5" class="clickme mt-1" title="Maximise chat window" />
+              </span>
+            </div>
+            <div v-if="chat" class="chatContent m-0" infinite-wrapper>
+              <infinite-loading direction="top" force-use-infinite-wrapper="true" :distance="distance" @infinite="loadMore">
+                <span slot="no-results" />
+                <span slot="no-more" />
+                <span slot="spinner">
+                  <b-img-lazy src="~/static/loader.gif" alt="Loading" />
+                </span>
+              </infinite-loading>
+              <ul v-for="chatmessage in chatmessages" :key="'chatmessage-' + chatmessage.id" class="p-0 pt-1 list-unstyled mb-1">
+                <li v-if="chatmessage">
+                  <ChatMessage
+                    :key="'chatmessage-' + chatmessage.id"
+                    :chatmessage="chatmessage"
+                    :chat="chat"
+                    :me="me"
+                    :otheruser="otheruser"
+                    :last="chatmessage.id === chatmessages[chatmessages.length - 1].id"
                   />
-                </b-col>
-              </b-row>
-              <b-row class="m-0">
-                <b-col v-if="!spammer" class="p-0 pt-1 pb-1">
-                  <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person" class="ml-1" @click="promise">
-                    <v-icon name="handshake" />
-                  </b-btn>
-                  <b-btn v-b-tooltip.hover.top variant="white" title="Send your address" @click="addressBook">
-                    <v-icon name="address-book" />
-                  </b-btn>
-                  <b-btn v-b-tooltip.hover.top variant="white" title="Update your availability" @click="availability">
-                    <v-icon name="calendar-alt" />
-                  </b-btn>
-                  <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler" @click="showInfo">
-                    <v-icon name="info-circle" />
-                  </b-btn>
-                  <b-btn v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
-                    <v-icon name="bell" />
-                  </b-btn>
-                  <b-btn variant="primary" class="float-right mr-1" @click="send">
-                    <v-icon v-if="sending" name="sync" class="fa-spin" title="Sending..." />
-                    <v-icon v-else name="angle-double-right" title="Send" />
-                  </b-btn>
-                </b-col>
-              </b-row>
+                </li>
+              </ul>
+            </div>
+            <div class="chatFooter">
+              <p v-if="spammer" class="bg-danger white p-2 mb-0">
+                This person has been reported as a spammer or scammer.  Please do not talk to them and under no circumstances
+                send them any money.
+              </p>
+              <b-form-textarea
+                v-if="!spammer"
+                ref="chatarea"
+                v-model="sendmessage"
+                placeholder="Type here..."
+                rows="2"
+                max-rows="4"
+                @keydown.enter.exact.prevent
+                @keyup.enter.exact="send"
+                @keydown.enter.shift.exact="newline"
+                @keydown.alt.shift.exact="newline"
+                @focus="markRead"
+              />
+              <div v-if="!spammer" class="pt-1 pb-1">
+                <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person" class="ml-1" @click="promise">
+                  <v-icon name="handshake" />
+                </b-btn>
+                <b-btn v-b-tooltip.hover.top variant="white" title="Send your address" @click="addressBook">
+                  <v-icon name="address-book" />
+                </b-btn>
+                <b-btn v-b-tooltip.hover.top variant="white" title="Update your availability" @click="availability">
+                  <v-icon name="calendar-alt" />
+                </b-btn>
+                <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler" @click="showInfo">
+                  <v-icon name="info-circle" />
+                </b-btn>
+                <b-btn v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
+                  <v-icon name="bell" />
+                </b-btn>
+                <b-btn variant="primary" class="float-right mr-1" @click="send">
+                  <v-icon v-if="sending" name="sync" class="fa-spin" title="Sending..." />
+                  <v-icon v-else name="angle-double-right" title="Send" />
+                </b-btn>
+              </div>
             </div>
           </div>
         </vue-draggable-resizable>
@@ -215,6 +201,8 @@ const ProfileModal = () => import('./ProfileModal')
 const AvailabilityModal = () => import('~/components/AvailabilityModal')
 const AddressModal = () => import('~/components/AddressModal')
 
+const HEIGHT = 400
+
 export default {
   components: {
     InfiniteLoading,
@@ -259,7 +247,7 @@ export default {
     },
 
     minheight() {
-      return Math.min(this.maxheight, 400)
+      return Math.min(this.maxheight, HEIGHT)
     },
 
     maxheight() {
@@ -326,7 +314,7 @@ export default {
     height() {
       return this.chat && this.chat.remember && this.chat.remember.height
         ? this.chat.remember.height
-        : 400
+        : HEIGHT
     },
     right() {
       let right = 0

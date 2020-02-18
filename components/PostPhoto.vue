@@ -27,16 +27,19 @@
         />
       </v-icon>
     </span>
-    <b-img lazy :src="paththumb + '?' + cacheBust" rounded thumbnail class="imagepreview" />
+    <b-img
+      lazy
+      :src="paththumb + '?' + cacheBust"
+      rounded
+      thumbnail
+      class="square imagepreview"
+      @click="$emit('click') "
+    />
   </div>
 </template>
 
 <style scoped lang="scss">
 @import 'color-vars';
-
-.imagepreview {
-  width: 150px;
-}
 
 .bottomright {
   bottom: 12px;
@@ -62,6 +65,12 @@
 
 .image__icon {
   color: $color-white;
+}
+
+.square {
+  object-fit: cover;
+  width: 200px;
+  height: 200px;
 }
 </style>
 
@@ -103,9 +112,11 @@ export default {
     },
     rotateLeft() {
       this.rotate(90)
+      this.cacheBust = Date.now()
     },
     rotateRight() {
       this.rotate(-90)
+      this.cacheBust = Date.now()
     }
   }
 }

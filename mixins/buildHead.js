@@ -38,6 +38,12 @@ export default {
       })
 
       meta.push({
+        hid: 'og:url',
+        property: 'og:url',
+        content: process.env.USER_SITE + this.$route.fullPath
+      })
+
+      meta.push({
         hid: 'twitter:image',
         property: 'twitter:image',
         content: retImage

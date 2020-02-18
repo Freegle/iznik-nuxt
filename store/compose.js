@@ -281,24 +281,33 @@ export const actions = {
             })
           })
         } else {
-          // This is one of our messages which we are reposting.  We need to edit it (to update it from our client
-          // copy), convert it back to draft, and then submit.
+          // This is one of our existing messages which we are reposting.  We need to convert it back to a draft,
+          // edit it (to update it from our client data), and then submit.
           promise = new Promise(function(resolve, reject) {
-            dispatch('messages/patch', message, {
-              root: true
-            }).then(() => {
+            dispatch(
+              'messages/update',
+              {
+                id: message.id,
+                action: 'RejectToDraft'
+              },
+              {
+                root: true
+              }
+            ).then(() => {
               commit('incProgress')
 
-              dispatch(
-                'messages/update',
-                {
-                  id: message.id,
-                  action: 'RejectToDraft'
-                },
-                {
-                  root: true
-                }
-              ).then(() => {
+              const data = {
+                id: message.id,
+                locationid: state.postcode.id,
+                messagetype: message.type,
+                item: message.item,
+                textbody: message.description,
+                groupid: state.group
+              }
+
+              dispatch('messages/patch', data, {
+                root: true
+              }).then(() => {
                 commit('incProgress')
 
                 self.$api.message

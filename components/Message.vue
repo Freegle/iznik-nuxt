@@ -504,11 +504,9 @@ export default {
 
             // Have to get the message back, because as a non-member we couldn't see who sent it, and therefore
             // who to reply to.
-            console.log('Fetch message back')
             await this.$store.dispatch('messages/fetch', {
               id: this.id
             })
-            console.log('Fetched')
           }
 
           // Now create the chat and send the first message.

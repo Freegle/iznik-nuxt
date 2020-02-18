@@ -5,8 +5,6 @@ export const state = () => ({
   // Use array because we need to store them in the order returned by the server.
   list: [],
 
-  viewed: [],
-
   // The context from the last fetch, used for fetchMore.
   context: null
 })
@@ -47,9 +45,6 @@ export const mutations = {
   },
   setContext(state, ctx) {
     state.context = ctx
-  },
-  setViewed(state, viewed) {
-    state.viewed = viewed
   }
 }
 
@@ -75,25 +70,19 @@ export const getters = {
     return ret
   },
   getByGroup: state => groupid => {
-    const ret = state.list.filter(message => {
-      return (
-        message.groups.length > 0 &&
-        parseInt(message.groups[0].groupid) === parseInt(groupid)
-      )
+    const ret = state.list.filter(member => {
+      return parseInt(member.groupid) === parseInt(groupid)
     })
 
     return ret
   },
   getAll: state => {
     return state.list
-  },
-  getViewed: state => {
-    return state.viewed
   }
 }
 
 export const actions = {
-  async fetchMessages({ commit, state }, params) {
+  async fetchMembers({ commit, state }, params) {
     if (params.context) {
       // Ensure the context is a real object, in case it has been in the store.
       const ctx = cloneDeep(params.context)
@@ -102,22 +91,30 @@ export const actions = {
       params.context = state.context
     }
 
-    const { messages, context } = await this.$api.message.fetchMessages(params)
-    commit('addAll', messages)
+    const { members, context } = await this.$api.memberships.fetchMembers(
+      params
+    )
+
+    for (let i = 0; i < members.length; i++) {
+      // The server doesn't return the collection but this is useful to have in the store.
+      members[i].collection = params.collection
+    }
+
+    commit('addAll', members)
     commit('setContext', context)
   },
 
   async fetch({ commit }, params) {
-    // Don't log errors on fetches of individual messages
-    const { message } = await this.$api.message.fetch(params, data => {
+    // Don't log errors on fetches of individual members
+    const { member } = await this.$api.memberships.fetch(params, data => {
       return data.ret !== 3
     })
 
-    commit('add', message)
+    commit('add', member)
   },
 
   async update({ commit, dispatch }, params) {
-    const data = await this.$api.message.update(params)
+    const data = await this.$api.memberships.update(params)
 
     if (!data.deleted) {
       // Fetch back the updated version.
@@ -128,13 +125,13 @@ export const actions = {
   },
 
   async patch({ commit, dispatch }, params) {
-    const data = await this.$api.message.save(params)
+    const data = await this.$api.memberships.save(params)
     await dispatch('fetch', { id: params.id })
     return data
   },
 
   async updateChat({ dispatch }, userid) {
-    // Find the chat to this user and refetch the messages, so that if we have a chat window open or other data
+    // Find the chat to this user and refetch the members, so that if we have a chat window open or other data
     // that depends on it, we update that.
     const chatid = await dispatch(
       'chats/openChatToUser',
@@ -147,7 +144,7 @@ export const actions = {
     )
 
     await dispatch(
-      'chatmessages/clearContext',
+      'chatmembers/clearContext',
       {
         chatid: chatid
       },
@@ -157,7 +154,7 @@ export const actions = {
     )
 
     await dispatch(
-      'chatmessages/fetch',
+      'chatmembers/fetch',
       {
         chatid: chatid
       },
@@ -194,176 +191,59 @@ export const actions = {
     commit('setContext', null)
   },
 
-  async intend({ dispatch }, params) {
-    await this.$api.message.intend(params.id, params.outcome)
-  },
-
-  async view({ dispatch }, params) {
-    await this.$api.message.view(params.id)
-  },
-
-  async fetchViewed({ commit, rootGetters }) {
-    const me = rootGetters['auth/user']
-
-    if (me) {
-      const { messages } = await this.$api.message.fetchMessages({
-        collection: 'Viewed',
-        fromuser: me.id
-      })
-
-      commit('setViewed', messages)
-    }
-  },
-
-  async approve({ commit, dispatch }, params) {
-    await this.$api.message.approve(
+  async approve({ commit }, params) {
+    await this.$api.memberships.approve(
       params.id,
       params.groupid,
       params.subject,
       params.stdmsgid,
       params.body
     )
-
     commit('remove', {
       id: params.id
     })
-
-    dispatch(
-      'auth/fetchUser',
-      {
-        components: ['work'],
-        force: true
-      },
-      {
-        root: true
-      }
-    )
   },
 
-  async spam({ commit, dispatch }, params) {
-    await this.$api.message.spam(params.id, params.groupid)
-
+  async spam({ commit }, params) {
+    await this.$api.memberships.spam(params.id, params.groupid)
     commit('remove', {
       id: params.id
     })
-
-    dispatch(
-      'auth/fetchUser',
-      {
-        components: ['work'],
-        force: true
-      },
-      {
-        root: true
-      }
-    )
   },
 
-  async notspam({ commit, dispatch }, params) {
-    await this.$api.message.notspam(params.id, params.groupid)
-
-    commit('remove', {
-      id: params.id
-    })
-
-    dispatch(
-      'auth/fetchUser',
-      {
-        components: ['work'],
-        force: true
-      },
-      {
-        root: true
-      }
-    )
-  },
-
-  async reject({ commit, dispatch }, params) {
-    await this.$api.message.reject(
+  async reject({ commit }, params) {
+    await this.$api.memberships.reject(
       params.id,
       params.groupid,
       params.subject,
       params.stdmsgid,
       params.body
     )
-
     commit('remove', {
       id: params.id
     })
-
-    dispatch(
-      'auth/fetchUser',
-      {
-        components: ['work'],
-        force: true
-      },
-      {
-        root: true
-      }
-    )
   },
 
-  async reply({ commit, dispatch }, params) {
-    await this.$api.message.reply(
+  async reply({ commit }, params) {
+    await this.$api.memberships.reply(
       params.id,
       params.groupid,
       params.subject,
       params.stdmsgid,
       params.body
     )
-
-    dispatch(
-      'auth/fetchUser',
-      {
-        components: ['work'],
-        force: true
-      },
-      {
-        root: true
-      }
-    )
   },
 
-  async delete({ commit, dispatch }, params) {
-    await this.$api.message.delete(
+  async delete({ commit }, params) {
+    await this.$api.memberships.delete(
       params.id,
       params.groupid,
       params.subject,
       params.stdmsgid,
       params.body
     )
-
     commit('remove', {
       id: params.id
     })
-
-    dispatch(
-      'auth/fetchUser',
-      {
-        components: ['work'],
-        force: true
-      },
-      {
-        root: true
-      }
-    )
-  },
-
-  async hold({ dispatch, commit }, params) {
-    await this.$api.message.hold(params.id)
-    const { message } = await this.$api.message.fetch({
-      id: params.id,
-      messagehistory: true
-    })
-    commit('add', message)
-  },
-
-  async release({ dispatch, commit }, params) {
-    await this.$api.message.release(params.id)
-    const { message } = await this.$api.message.fetch({
-      id: params.id,
-      messagehistory: true
-    })
-    commit('add', message)
   }
 }

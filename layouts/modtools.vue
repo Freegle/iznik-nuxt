@@ -1,47 +1,54 @@
 <template>
-  <div class="pageback">
-    <b-navbar id="navbar" type="dark" class="navback" fixed="top">
-      <b-navbar-brand to="/modtools" class="p-0">
-        <b-img
-          class="logo mr-2"
-          height="58"
-          width="58"
-          rounded
-          :src="logo"
-          alt="Home"
-        />
-      </b-navbar-brand>
-      <client-only>
+  <client-only>
+    <div class="pageback">
+      <b-navbar id="navbar" type="dark" class="navback" fixed="top">
+        <b-navbar-brand to="/modtools" class="p-0">
+          <b-img
+            class="logo mr-2"
+            height="58"
+            width="58"
+            rounded
+            :src="logo"
+            alt="Home"
+          />
+        </b-navbar-brand>
         <b-navbar-nav />
         <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown right class="d-block d-sm-none">
             <template v-slot:button-content>
-              <span class="d-none d-sm-inline">
-                <v-icon name="envelope" scale="2" /><br>
-                Messages
-              </span>
-              <v-icon name="envelope" class="d-inline d-sm-none" scale="2" />
-              <b-badge v-if="getCount('pending')" variant="danger">
-                {{ getCount('pending') }}
-              </b-badge>
+              <ModMenuItemNav :count="['pending', 'chatreview']" icon="envelope" />
             </template>
             <b-dropdown-item href="/modtools/messages/pending">
-              Pending
-              <b-badge v-if="getCount('pending')" variant="danger">
-                {{ getCount('pending') }}
-              </b-badge>
+              <ModMenuItemNav name="Pending" :count="['pending']" :othercount="['pending']" />
             </b-dropdown-item>
             <b-dropdown-item href="/modtools/messages/approved">
-              Approved
+              <ModMenuItemNav name="Approved" />
+            </b-dropdown-item>
+            <b-dropdown-item href="/modtools/messages/spam">
+              <ModMenuItemNav name="Spam" :count="['spam']" :othercount="['spamother']" />
+            </b-dropdown-item>
+            <b-dropdown-item href="/modtools/chats/review">
+              <ModMenuItemNav name="Chat Review" :count="['chatreview']" :othercount="['chatreviewother']" />
+            </b-dropdown-item>
+          </b-nav-item-dropdown>
+          <b-nav-item-dropdown right class="d-block d-sm-none">
+            <template v-slot:button-content>
+              <ModMenuItemNav :count="['pendingmembers']" icon="users" />
+            </template>
+            <b-dropdown-item href="/modtools/members/pending">
+              <ModMenuItemNav name="Pending" :count="['pendingmembers']" />
+            </b-dropdown-item>
+            <b-dropdown-item href="/modtools/members/approved">
+              <ModMenuItemNav name="Approved" />
             </b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse" class="text-center p-0" @click="discourse">
             <div class="notifwrapper">
               <span class="d-none d-sm-inline">
-                <v-icon name="users" scale="2" /><br>
+                <v-icon name="brands/discourse" scale="2" class="discourse " /><br>
                 Us
               </span>
-              <v-icon name="users" class="d-inline d-sm-none" scale="2" />
+              <v-icon name="brands/discourse" class="d-inline d-sm-none discourse" scale="2" />
               <b-badge v-if="discourseCount" variant="success">
                 {{ discourseCount }}
               </b-badge>
@@ -50,7 +57,7 @@
           <b-nav-item v-if="loggedIn" id="menu-option-modtools-chat" class="text-center p-0" to="/modtools/chats">
             <div class="notifwrapper">
               <span class="d-none d-sm-inline">
-                <v-icon name="comments" scale="2" /><br>
+                <v-icon name="comments" scale="2" class="" /><br>
                 Chats
               </span>
               <v-icon name="comments" class="d-inline d-sm-none" scale="2" />
@@ -60,7 +67,7 @@
             </div>
           </b-nav-item>
           <b-nav-item v-if="loggedIn" id="menu-option-modtools-logout" class="text-center p-0 small" @click="logOut()">
-            <v-icon name="sign-out-alt" scale="2" /><br>
+            <v-icon name="sign-out-alt" scale="2" class="" /><br>
             Logout
           </b-nav-item>
           <b-nav-item v-if="!loggedIn">
@@ -69,48 +76,52 @@
             </b-btn>
           </b-nav-item>
         </b-navbar-nav>
-      </client-only>
-    </b-navbar>
+      </b-navbar>
 
-    <div class="d-flex">
-      <div class="leftmenu d-none d-sm-block">
-        <!--        TODO Counts for work-->
-        <!--        TODO Reload on click-->
-        <nuxt-link to="/modtools">
-          Dashboard
-        </nuxt-link>
-        <hr>
-        <div>
-          Messages
+      <div class="d-flex">
+        <div class="leftmenu d-none d-sm-block">
+          <!--        TODO Reload on click-->
+          <nuxt-link to="/modtools">
+            Dashboard
+          </nuxt-link>
+          <hr>
+          <div>
+            Messages
+          </div>
+          <ModMenuItemLeft link="/modtools/messages/pending" name="Pending" count="pending" othercount="pendingother" indent />
+          <ModMenuItemLeft link="/modtools/messages/approved" name="Approved" indent />
+          <ModMenuItemLeft link="/modtools/messages/spam" name="Spam" count="spam" othercount="spamother" indent />
+          <hr>
+          <div>
+            Members
+          </div>
+          <ModMenuItemLeft link="/modtools/members/pending" name="Pending" count="pendingmembers" othercount="pendingmembersother" indent />
+          <ModMenuItemLeft link="/modtools/members/Approved" name="Approved" indent />
+          <hr>
+          <div>
+            Chat
+          </div>
+          <ModMenuItemLeft link="/modtools/chats/review" name="Review" count="chatreview" indent />
         </div>
-        <div>
-          <!-- eslint-disable-next-line -->
-          <nuxt-link to="/modtools/messages/pending" class="pl-3">Pending</nuxt-link>
-          <b-badge v-if="getCount('pending')" variant="danger">
-            {{ getCount('pending') }}
-          </b-badge>
-        </div>
-        <div>
-          <!-- eslint-disable-next-line -->
-          <nuxt-link to="/modtools/messages/approved" class="pl-3">Approved</nuxt-link>
-        </div>
+        <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent flex-grow-1" />
       </div>
-      <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent flex-grow-1" />
-    </div>
-    <client-only>
       <ChatPopups v-if="loggedIn" class="d-none d-sm-block" />
       <LoginModal ref="loginModal" />
-    </client-only>
-  </div>
+    </div>
+  </client-only>
 </template>
 
 <script>
+import ModMenuItemLeft from '../components/ModMenuItemLeft'
+import ModMenuItemNav from '../components/ModMenuItemNav'
 import LoginModal from '~/components/LoginModal'
 
 const ChatPopups = () => import('~/components/ChatPopups')
 
 export default {
   components: {
+    ModMenuItemNav,
+    ModMenuItemLeft,
     ChatPopups,
     LoginModal
   },
@@ -128,9 +139,6 @@ export default {
     },
     me() {
       return this.$store.getters['auth/user']
-    },
-    work() {
-      return this.$store.getters['auth/work']
     },
     chatCount() {
       return this.$store.getters['chats/unseenCount']
@@ -208,15 +216,6 @@ export default {
       })
 
       setTimeout(this.checkWork, 30000)
-    },
-    getCount(type) {
-      for (const key in this.work) {
-        if (key === type) {
-          return this.work[key]
-        }
-      }
-
-      return 0
     },
     discourse() {
       window.open('https://discourse.ilovefreegle.org/')
@@ -296,10 +295,11 @@ nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
 }
 
 .navback {
-  background-color: $color-modtools-blue--dark !important;
+  background-color: $color-modtools-blue--dark;
 }
 
-nav .navbar-nav li a {
+nav .navbar-nav li a,
+.discourse {
   color: $color-gray--light !important;
 }
 

@@ -13,6 +13,10 @@ export const mutations = {
     Object.assign(state.messages, {})
   },
 
+  clearMessage(state, payload) {
+    Vue.set(state.messages[payload.chatid], payload.id, null)
+  },
+
   mergeMessages(state, payload) {
     const chatid = payload.id + ''
     const messages =
@@ -102,15 +106,19 @@ export const actions = {
       }
     )
 
-    commit('mergeMessages', {
-      id: chatid,
-      messages: chatmessages
-    })
+    if (chatmessages) {
+      commit('mergeMessages', {
+        id: chatid,
+        messages: chatmessages
+      })
+    }
 
-    commit('mergeUsers', {
-      id: chatid,
-      users: chatusers
-    })
+    if (chatusers) {
+      commit('mergeUsers', {
+        id: chatid,
+        users: chatusers
+      })
+    }
 
     if (!noContext) {
       commit('setContext', {
@@ -141,5 +149,45 @@ export const actions = {
 
   async rsvp({ commit, dispatch }, { id, roomid, value }) {
     await this.$api.chat.rsvp(roomid, id, value)
+  },
+
+  async hold({ commit, dispatch, rootGetters }, { id, chatid }) {
+    await this.$api.chat.hold(id)
+    await dispatch('fetch', {
+      chatid: chatid,
+      noContext: true
+    })
+  },
+
+  async release({ commit, dispatch }, { id, chatid }) {
+    await this.$api.chat.release(id)
+    await dispatch('fetch', {
+      chatid: chatid,
+      noContext: true
+    })
+  },
+
+  async reject({ commit, dispatch }, { id, chatid }) {
+    await this.$api.chat.reject(id)
+    commit('clearMessage', {
+      id,
+      chatid
+    })
+  },
+
+  async approve({ commit, dispatch }, { id, chatid }) {
+    await this.$api.chat.approve(id)
+    commit('clearMessage', {
+      id,
+      chatid
+    })
+  },
+
+  async whitelist({ commit, dispatch }, { id, chatid }) {
+    await this.$api.chat.whitelist(id)
+    commit('clearMessage', {
+      id,
+      chatid
+    })
   }
 }

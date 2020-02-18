@@ -154,7 +154,6 @@ export default {
     },
 
     score(value) {
-      console.log('Score', value)
       this.$api.bandit.chosen({
         uid: 'donation',
         variant: this.variant,

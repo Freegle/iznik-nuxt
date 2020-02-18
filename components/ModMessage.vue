@@ -43,12 +43,28 @@
         <!--        View Source-->
       </b-card-header>
       <b-card-body>
-        <!--        Held by-->
         <b-row>
           <b-col cols="12" lg="8">
+            <div v-if="message.heldby">
+              <NoticeMessage v-if="me.id === message.heldby.id" variant="warning" class="mb-2">
+                You held this {{ message.heldby.timestamp | timeago }}.  Other people will see a warning to check with
+                you before releasing it.
+              </NoticeMessage>
+              <NoticeMessage v-else variant="warning" class="mb-2">
+                Held by <b>{{ message.heldby.name }}</b>
+                {{ message.heldby.timestamp | timeago }}.  Please check with them before releasing it.
+              </NoticeMessage>
+            </div>
             <NoticeMessage v-if="message.fromuser.activedistance > 50" variant="warning" class="mb-2">
               This freegler is active on groups {{ message.fromuser.activedistance }} miles apart.
             </NoticeMessage>
+            <NoticeMessage v-if="message.spamreason" variant="warning" class="mb-2">
+              {{ spamreason }}
+            </NoticeMessage>
+            <NoticeMessage v-else-if="spam" variant="warning" class="mb-2">
+              We think this message might be spam.
+            </NoticeMessage>
+            <ModMessageWorry v-if="message.worry" :message="message" />
             <b-form-textarea
               v-if="editing"
               v-model="message.textbody"
@@ -60,7 +76,7 @@
             <!-- eslint-disable-next-line -->
             <div v-else class="mb-3 rounded border p-2 prewrap forcebreak font-weight-bold">{{ eBody }}</div>
             <div v-if="message.attachments && message.attachments.length" class="d-flex">
-              <ModImage v-for="attachment in message.attachments" :key="'attachment-' + attachment.id" :attachment="attachment" class="d-inline pr-1" />
+              <ModPhoto v-for="attachment in message.attachments" :key="'attachment-' + attachment.id" :message="message" :attachment="attachment" class="d-inline pr-1" />
             </div>
             <MessageReplyInfo v-if="!pending || message.replies && message.replies.length" :message="message" class="d-inline" />
           </b-col>
@@ -130,6 +146,7 @@
                 </span>
               </b-btn>
             </div>
+            <!--          TODO Bind to event and handle changes-->
             <SettingsGroup
               v-if="showMailSettings"
               :groupid="message.groups[0].groupid"
@@ -164,7 +181,6 @@
                 <v-icon name="trash-alt" /> Purge
               </b-btn>
             </div>
-            <!--              TODO Handle changes-->
           </b-col>
         </b-row>
       </b-card-body>
@@ -181,17 +197,19 @@ import MessageHistory from './MessageHistory'
 import MessageUserInfo from './MessageUserInfo'
 import MessageReplyInfo from './MessageReplyInfo'
 import SettingsGroup from './SettingsGroup'
-import ModImage from './ModImage'
+import ModPhoto from './ModPhoto'
 import NoticeMessage from './NoticeMessage'
 import ModMessageButtons from './ModMessageButtons'
+import ModMessageWorry from './ModMessageWorry'
 import twem from '~/assets/js/twem'
 
 export default {
   name: 'ModMessage',
   components: {
+    ModMessageWorry,
     ModMessageButtons,
     NoticeMessage,
-    ModImage,
+    ModPhoto,
     SettingsGroup,
     MessageReplyInfo,
     MessageUserInfo,
@@ -214,19 +232,19 @@ export default {
     }
   },
   computed: {
-    pending() {
-      let ret = false
-
-      if (this.message.groups) {
-        this.message.groups.forEach(group => {
-          if (group.collection === 'Pending') {
-            ret = true
-          }
-        })
-      }
-
-      return ret
+    me() {
+      return this.$store.getters['auth/user']
     },
+    pending() {
+      return this.hasCollection('Pending')
+    },
+    approved() {
+      return this.hasCollection('Approved')
+    },
+    spam() {
+      return this.hasCollection('Spam')
+    },
+
     typeOptions() {
       // TODO Per group keywords
       return [
@@ -290,7 +308,21 @@ export default {
       return ret
     }
   },
-  methods: {}
+  methods: {
+    hasCollection(coll) {
+      let ret = false
+
+      if (this.message.groups) {
+        this.message.groups.forEach(group => {
+          if (group.collection === coll) {
+            ret = true
+          }
+        })
+      }
+
+      return ret
+    }
+  }
 }
 </script>
 <style scoped>

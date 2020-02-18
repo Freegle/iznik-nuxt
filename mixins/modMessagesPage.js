@@ -1,4 +1,3 @@
-<script>
 import InfiniteLoading from 'vue-infinite-loading'
 import ModMessage from '@/components/ModMessage'
 import GroupSelect from '@/components/GroupSelect'
@@ -26,7 +25,8 @@ export default {
         return (
           message.groups &&
           message.groups.length &&
-          message.groups[0].collection === this.collection
+          message.groups[0].collection === this.collection &&
+          (!this.groupid || this.groupid === message.groups[0].groupid)
         )
       })
       return ret
@@ -64,9 +64,17 @@ export default {
       }
     },
     work(newVal, oldVal) {
+      console.log('Work change', newVal, oldVal)
       if (newVal > oldVal) {
-        // There's new stuff to do.  Reload.
-        this.$store.dispatch('messages/clear')
+        // There's new stuff to fetch.
+        console.log('Fetch')
+        this.$store.dispatch('messages/fetchMessages', {
+          groupid: this.groupid,
+          collection: this.collection,
+          modtools: true,
+          summary: false,
+          limit: Math.max(this.limit, newVal)
+        })
       }
     }
   },
@@ -123,4 +131,3 @@ export default {
     }
   }
 }
-</script>
