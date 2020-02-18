@@ -222,7 +222,7 @@
             <v-icon name="map-marker-alt" scale="2" /><br>
             Explore
           </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/communityevents" @mousedown="maybeReload('/communityevetns')">
+          <b-nav-item class="text-center p-0" to="/communityevents" @mousedown="maybeReload('/communityevents')">
             <v-icon name="calendar-alt" scale="2" /><br>
             Events
           </b-nav-item>
