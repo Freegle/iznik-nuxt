@@ -1,6 +1,6 @@
 <template>
   <div class="d-inline">
-    <b-btn :variant="variant" class="mb-1" @click="click">
+    <b-btn :variant="variant" class="mb-1" :disabled="disabled" @click="click">
       <v-icon :name="icon" /> {{ label }}
     </b-btn>
     <ConfirmModal v-if="showDeleteModal" ref="deleteConfirm" @confirm="deleteConfirmed" />
@@ -40,6 +40,11 @@ export default {
     icon: {
       type: String,
       required: true
+    },
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: false
     },
     approve: {
       type: Boolean,

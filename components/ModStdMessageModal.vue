@@ -336,7 +336,6 @@ export default {
       }
 
       if (this.stdmsg) {
-        console.log('Action ', this.stdmsg.action)
         switch (this.stdmsg.action) {
           case 'Approve':
             await this.$store.dispatch('messages/approve', {
