@@ -47,7 +47,7 @@ export default {
         valid = true
 
         for (const message of messages) {
-          if (this.ids.indexOf(message.id) !== -1 || !message.id) {
+          if (message.id && message.type === this.postType) {
             const atts = Object.values(
               this.$store.getters['compose/getAttachments'](message.id)
             )
