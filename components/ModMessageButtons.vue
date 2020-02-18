@@ -96,7 +96,7 @@
         :variant="variant(stdmsg)"
         :icon="icon(stdmsg)"
         :label="stdmsg.title"
-        :stdmsg="stdmsg"
+        :stdmsgid="stdmsg.id"
         :message="message"
         :disabled="stdmsg.action === 'Edit'"
       />
