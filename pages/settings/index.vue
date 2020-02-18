@@ -327,7 +327,7 @@
                 in other ways.
               </p>
               <notice-message variant="warning">
-                Email doesn't always get through, so check your spam folders, and check <em>Chat</em> on here occasionally.
+                Email doesn't always get through, so check your spam folders, and check <em><nuxt-link to="/chats">Chats</nuxt-link></em> on here occasionally.
               </notice-message>
               <hr>
               <h5>Text Alerts</h5>
