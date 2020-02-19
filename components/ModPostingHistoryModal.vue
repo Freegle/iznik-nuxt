@@ -13,7 +13,13 @@
             <div>{{ message.arrival | datetimeshort }}</div>
           </b-col>
           <b-col cols="4" sm="2">
-            <div><v-icon name="hashtag" scale="0.75" class="text-muted" />{{ message.id }}</div>
+            <div>
+              <v-icon name="hashtag" scale="0.75" class="text-muted" />{{ message.id }}
+              <span v-if="message.repost">
+                <v-icon v-if="message.autorepost" name="sync" class="text-danger" title="Auto-repost" />
+                <v-icon v-else name="hand-paper" class="text-danger" title="Manual repost" />
+              </span>
+            </div>
           </b-col>
           <b-col cols="12" sm="7">
             <div>
@@ -53,7 +59,6 @@ export default {
   },
   computed: {
     messages() {
-      console.log('Messages for', this.user)
       const ret = this.user.messagehistory.filter(message => {
         return !this.type || this.type === message.type
       })
@@ -61,6 +66,10 @@ export default {
       ret.forEach(message => {
         const group = this.$store.getters['auth/groupById'](message.groupid)
         message.groupname = group.namedisplay
+      })
+
+      ret.sort((a, b) => {
+        return new Date(b.arrival).getTime() - new Date(a.arrival).getTime()
       })
 
       return ret
