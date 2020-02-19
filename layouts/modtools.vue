@@ -33,7 +33,7 @@
           </b-nav-item-dropdown>
           <b-nav-item-dropdown right class="d-block d-sm-none">
             <template v-slot:button-content>
-              <ModMenuItemNav :count="['pendingmembers']" icon="users" />
+              <ModMenuItemNav :count="['pendingmembers', 'stories']" icon="users" />
             </template>
             <b-dropdown-item href="/modtools/members/pending">
               <ModMenuItemNav name="Pending" :count="['pendingmembers']" />
