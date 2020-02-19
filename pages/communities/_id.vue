@@ -8,7 +8,7 @@
         <Viewed v-if="!simple" class="mb-1" />
         <JobsTopBar />
         <div>
-          <div v-if="!simple" class="d-flex mt-2 mb-3 selection__wrapper justify-content-between">
+          <div class="d-flex mt-2 mb-3 selection__wrapper justify-content-between">
             <GroupSelect v-model="groupid" class="m-3" all />
             <b-form-select v-model="selectedType" class="m-3 typeSelect" value="All" :options="typeOptions" @change="typeChange" />
           </div>
