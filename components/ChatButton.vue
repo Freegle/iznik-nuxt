@@ -85,7 +85,8 @@ export default {
         }
       } else if (this.userid > 0) {
         const chatid = await this.$store.dispatch('chats/openChatToUser', {
-          userid: this.userid
+          userid: this.userid,
+          groupid: this.groupid
         })
 
         if (firstmessage) {

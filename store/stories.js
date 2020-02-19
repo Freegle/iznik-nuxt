@@ -23,6 +23,10 @@ export const mutations = {
 
   clear(state) {
     state.list = {}
+  },
+
+  clearStory(state, id) {
+    Vue.delete(state.list, id)
   }
 }
 
@@ -72,5 +76,25 @@ export const actions = {
   async unlove({ commit, dispatch }, params) {
     await this.$api.stories.unlove(params.id)
     await dispatch('fetch', params)
+  },
+
+  async dontUseForPublicity({ commit, dispatch }, params) {
+    await this.$api.stories.dontUseForPublicity(params.id)
+    commit('clearStory', params.id)
+  },
+
+  async useForPublicity({ commit, dispatch }, params) {
+    await this.$api.stories.useForPublicity(params.id)
+    commit('clearStory', params.id)
+  },
+
+  async dontUseForNewsletter({ commit, dispatch }, params) {
+    await this.$api.stories.dontUseForNewsletter(params.id)
+    commit('clearStory', params.id)
+  },
+
+  async useForNewsletter({ commit, dispatch }, params) {
+    await this.$api.stories.useForNewsletter(params.id)
+    commit('clearStory', params.id)
   }
 }

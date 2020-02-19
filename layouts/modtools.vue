@@ -41,6 +41,9 @@
             <b-dropdown-item href="/modtools/members/approved">
               <ModMenuItemNav name="Approved" />
             </b-dropdown-item>
+            <b-dropdown-item href="/modtools/members/stories">
+              <ModMenuItemNav name="Stories" :count="['stories']" />
+            </b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse" class="text-center p-0" @click="discourse">
             <div class="notifwrapper">
@@ -96,7 +99,8 @@
             Members
           </div>
           <ModMenuItemLeft link="/modtools/members/pending" name="Pending" count="pendingmembers" othercount="pendingmembersother" indent />
-          <ModMenuItemLeft link="/modtools/members/Approved" name="Approved" indent />
+          <ModMenuItemLeft link="/modtools/members/approved" name="Approved" indent />
+          <ModMenuItemLeft link="/modtools/members/stories" name="Stories" indent count="stories" />
           <hr>
           <div>
             Chat

@@ -117,9 +117,12 @@ export const actions = {
     return id
   },
 
-  async openChatToUser({ dispatch, commit }, params) {
+  async openChatToUser({ dispatch, commit, rootGetters }, params) {
+    const modtools = rootGetters['misc/get']('modtools')
+
     const id = await dispatch('openChat', {
-      chattype: 'User2User',
+      chattype: modtools ? 'User2Mod' : 'User2User',
+      groupid: params.groupid,
       userid: params.userid
     })
 
