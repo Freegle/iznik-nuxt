@@ -7,6 +7,7 @@
       <b-col cols="12" lg="6" class="p-0">
         <JobsTopBar />
         <b-card
+          v-if="!simple"
           class="mt-2"
           border-variant="info"
           header="info"
@@ -131,6 +132,7 @@
           </b-card-body>
         </b-card>
         <b-card
+          v-if="!simple"
           class="mt-2"
           border-variant="info"
           header="info"

@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column sidebar__wrapper">
+  <div v-if="!simple" class="d-flex flex-column sidebar__wrapper">
     <VolunteerOpportunitySidebar v-if="showVolunteerOpportunities" :class="itemclass" />
     <JobsSidebar v-if="showJobOpportunities" :class="itemclass" />
   </div>

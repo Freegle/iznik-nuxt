@@ -95,7 +95,7 @@
               </b-row>
             </b-card-body>
           </b-card>
-          <b-card border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
+          <b-card v-if="!simple" border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
             <template v-slot:header>
               <v-icon name="globe-europe" /> Arranging Collections
             </template>
@@ -314,7 +314,7 @@
               You're not a member of any communities yet.
             </div>
           </b-card>
-          <b-card border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
+          <b-card v-if="!simple" border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
             <template v-slot:header>
               <v-icon name="bell" /> Chat Notifications
             </template>

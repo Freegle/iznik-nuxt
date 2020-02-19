@@ -5,10 +5,10 @@
         <SidebarLeft :show-community-events="true" :show-bot-left="true" />
       </b-col>
       <b-col cols="12" lg="6" class="p-0">
-        <Viewed class="mb-1" />
+        <Viewed v-if="!simple" class="mb-1" />
         <JobsTopBar />
         <div>
-          <div class="d-flex mt-2 mb-3 selection__wrapper justify-content-between">
+          <div v-if="!simple" class="d-flex mt-2 mb-3 selection__wrapper justify-content-between">
             <GroupSelect v-model="groupid" class="m-3" all />
             <b-form-select v-model="selectedType" class="m-3 typeSelect" value="All" :options="typeOptions" @change="typeChange" />
           </div>
@@ -87,9 +87,10 @@ export default {
   },
   computed: {
     group: function() {
-      const ret = this.groupid
-        ? this.$store.getters['group/get'](this.groupid)
-        : null
+      const ret =
+        !this.simple && this.groupid
+          ? this.$store.getters['group/get'](this.groupid)
+          : null
 
       return ret
     },

@@ -4,16 +4,12 @@
       <b-col id="chatlist" cols="12" md="3" xl="2" :class="'chatlist p-0 bg-white ' + (selectedChatId ? 'd-none d-md-block' : '') + ' ' + selectedChatId">
         <b-card class="p-0">
           <b-card-body class="p-0">
-            <b-row>
-              <b-col>
-                <b-form-input v-model="search" placeholder="Search chats" @update="searchChange" />
-              </b-col>
-              <b-col>
-                <b-btn class="float-right" variant="white" @click="markAllRead">
-                  <v-icon name="check" /> Mark all read
-                </b-btn>
-              </b-col>
-            </b-row>
+            <div class="d-flex justify-content-between">
+              <b-form-input v-model="search" placeholder="Search chats" class="flex-shrink-1" @update="searchChange" />
+              <b-btn class="float-right" variant="white" @click="markAllRead">
+                <v-icon name="check" /> Mark all read
+              </b-btn>
+            </div>
           </b-card-body>
         </b-card>
         <ul v-for="chat in sortedChats" :key="'chat-' + chat.id" class="p-0 pt-1 list-unstyled mb-1">

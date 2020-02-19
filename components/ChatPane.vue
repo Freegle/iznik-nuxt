@@ -125,16 +125,16 @@
                   <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person" @click="promise">
                     <v-icon name="handshake" />&nbsp;Promise
                   </b-btn>
-                  <b-btn v-b-tooltip.hover.top variant="white" title="Send your address" @click="addressBook">
+                  <b-btn v-if="!simple" v-b-tooltip.hover.top variant="white" title="Send your address" @click="addressBook">
                     <v-icon name="address-book" />&nbsp;Address
                   </b-btn>
-                  <b-btn v-b-tooltip.hover.top variant="white" title="Update your availability" @click="availability">
+                  <b-btn v-if="!simple" v-b-tooltip.hover.top variant="white" title="Update your availability" @click="availability">
                     <v-icon name="calendar-alt" />&nbsp;Availability
                   </b-btn>
                   <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler" @click="showInfo">
                     <v-icon name="info-circle" />&nbsp;Info
                   </b-btn>
-                  <b-btn v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
+                  <b-btn v-if="!simple" v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
                     <v-icon name="bell" />&nbsp;Nudge
                   </b-btn>
                 </span>

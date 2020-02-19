@@ -14,13 +14,13 @@
       </b-navbar-brand>
       <client-only>
         <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
-        <b-collapse v-if="loggedIn" id="nav_collapse" ref="nav_collapse" is-nav>
+        <b-collapse v-if="loggedIn" id="nav_collapse" ref="nav_collapse" is-nav class="flex-nowrap">
           <b-navbar-nav>
             <b-nav-item id="menu-option-mygroups" class="text-center small p-0" to="/communities" @mousedown="maybeReload('/communities')">
               <v-icon name="users" scale="2" /><br>
               Communities
             </b-nav-item>
-            <b-nav-item id="menu-option-chitchat" class="text-center small p-0" to="/chitchat" @mousedown="maybeReload('/chitchat')">
+            <b-nav-item v-if="!simple" id="menu-option-chitchat" class="text-center small p-0" to="/chitchat" @mousedown="maybeReload('/chitchat')">
               <v-icon name="coffee" scale="2" /><br>
               ChitChat
             </b-nav-item>
@@ -40,18 +40,23 @@
               <v-icon name="map-marker-alt" scale="2" /><br>
               Explore
             </b-nav-item>
-            <b-nav-item id="menu-option-communityevents" class="text-center small p-0" to="/communityevents" @mousedown="maybeReload('/communityevents')">
+            <b-nav-item v-if="!simple" id="menu-option-communityevents" class="text-center small p-0" to="/communityevents" @mousedown="maybeReload('/communityevents')">
               <v-icon name="calendar-alt" scale="2" /><br>
               Events
             </b-nav-item>
-            <b-nav-item id="menu-option-volunteering" class="text-center small p-0" to="/volunteerings" @mousedown="maybeReload('/volunteerings')">
+            <b-nav-item v-if="!simple" id="menu-option-volunteering" class="text-center small p-0" to="/volunteerings" @mousedown="maybeReload('/volunteerings')">
               <v-icon name="hands-helping" scale="2" /><br>
               Volunteer
             </b-nav-item>
           </b-navbar-nav>
+          <client-only>
+            <div class="w-100 d-flex justify-content-center pb-2">
+              <SimpleView />
+            </div>
+          </client-only>
           <b-navbar-nav class="ml-auto">
             <b-nav-item id="menu-option-notification" class="text-center p-0" />
-            <b-nav-item-dropdown class="white text-center notiflist" lazy right @shown="loadLatestNotifications">
+            <b-nav-item-dropdown v-if="!simple" class="white text-center notiflist" lazy right @shown="loadLatestNotifications">
               <template slot="button-content">
                 <div class="notifwrapper text-center small">
                   <v-icon name="bell" scale="2" />
@@ -87,7 +92,7 @@
                 </b-badge>
               </div>
             </b-nav-item>
-            <b-nav-item id="menu-option-spread" class="text-center small p-0" to="/spread" @mousedown="maybeReload('/spread')">
+            <b-nav-item v-if="!simple" id="menu-option-spread" class="text-center small p-0" to="/spread" @mousedown="maybeReload('/spread')">
               <div class="notifwrapper">
                 <v-icon name="bullhorn" scale="2" /><br>
                 Spread
@@ -202,7 +207,7 @@
             <v-icon name="users" scale="2" /><br>
             Communities
           </b-nav-item>
-          <b-nav-item class="text-center p-0 white" to="/chitchat" @mousedown="maybeReload('/chitchat')">
+          <b-nav-item v-if="!simple" class="text-center p-0 white" to="/chitchat" @mousedown="maybeReload('/chitchat')">
             <v-icon name="coffee" scale="2" /><br>
             ChitChat
           </b-nav-item>
@@ -222,15 +227,15 @@
             <v-icon name="map-marker-alt" scale="2" /><br>
             Explore
           </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/communityevents" @mousedown="maybeReload('/communityevents')">
+          <b-nav-item v-if="!simple" class="text-center p-0" to="/communityevents" @mousedown="maybeReload('/communityevents')">
             <v-icon name="calendar-alt" scale="2" /><br>
             Events
           </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/volunteerings" @mousedown="maybeReload('/volunteerings')">
+          <b-nav-item v-if="!simple" class="text-center p-0" to="/volunteerings" @mousedown="maybeReload('/volunteerings')">
             <v-icon name="hands-helping" scale="2" /><br>
             Volunteer
           </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/spread" @mousedown="maybeReload('/spread')">
+          <b-nav-item v-if="!simple" class="text-center p-0" to="/spread" @mousedown="maybeReload('/spread')">
             <v-icon name="bullhorn" scale="2" /><br>
             Spread
           </b-nav-item>
@@ -273,6 +278,7 @@
 
 <script>
 // Import login modal as I've seen an issue where it's not in $refs when you click on the signin button too rapidly.
+import SimpleView from '../components/SimpleView'
 import LoginModal from '~/components/LoginModal'
 import LocalStorageMonitor from '~/components/LocalStorageMonitor'
 import BouncingEmail from '~/components/BouncingEmail'
@@ -285,6 +291,7 @@ const InfiniteLoading = () => import('vue-infinite-loading')
 
 export default {
   components: {
+    SimpleView,
     InfiniteLoading,
     ChatPopups,
     Notification,
