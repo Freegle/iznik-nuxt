@@ -1,8 +1,8 @@
 <template>
   <div>
     <b-row class="pb-1">
-      <b-col>
-        <div v-if="chatmessage.userid != $store.state.auth.user.id" class="media">
+      <b-col cols="12" sm="6" :offset-sm="chatmessage.userid != myid ? 0 : 6">
+        <div v-if="chatmessage.userid != myid" class="media">
           <b-card border-variant="success">
             <b-card-title>
               <h4>{{ otheruser.displayname }} sent an address:</h4>
