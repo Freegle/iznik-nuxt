@@ -21,6 +21,9 @@
         <!-- eslint-disable-next-line -->
         <h3>{{ story.headline }}</h3>
         <b>{{ story.story }}</b>
+        <NoticeMessage v-if="!story.public" variant="info" class="mt-1">
+          They've said this story isn't public, so this is just for you to read and then click Hide. You might also like to thank them via Chat.
+        </NoticeMessage>
       </b-card-body>
       <b-card-footer>
         <div class="d-flex flex-wrap justify-content-start">
@@ -38,9 +41,6 @@
             class="mr-2 mb-1"
           />
         </div>
-        <NoticeMessage v-if="!story.public" variant="info">
-          The member has said this story isn't public, so this is just for you to read and then click Hide. You might also like to thank them via Chat.
-        </NoticeMessage>
       </b-card-footer>
     </b-card>
   </div>
