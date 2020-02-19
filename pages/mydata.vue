@@ -17,9 +17,9 @@
                 You can also download all this data
                 in a commonly-used machine-readable format (<a href="https://www.json.org/" target="_blank">JSON</a>).
               </p>
-              <a :href="downloadlink" download="mydata.json">
+              <b-button :href="downloadlink" download="mydata.json" variant="white">
                 Download in machine-readable format
-              </a>
+              </b-button>
               <p class="mt-2">
                 There may be a lot of information here, so if you have any questions, please
                 <nuxt-link to="/help">
