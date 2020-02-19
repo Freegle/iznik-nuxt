@@ -103,7 +103,7 @@
               </b-card-text>
             </b-card-body>
             <b-card-footer>
-              <div class="float-right text-faded">
+              <div v-if="!simple" class="float-right text-faded">
                 <b-btn variant="white" title="Share" @click="share">
                   <v-icon name="share-alt" /> Share
                 </b-btn>

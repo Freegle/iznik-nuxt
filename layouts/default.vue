@@ -51,7 +51,7 @@
           </b-navbar-nav>
           <client-only>
             <div class="w-100 d-flex justify-content-center pb-2">
-              <SimpleView />
+              <SimpleView navbar />
             </div>
           </client-only>
           <b-navbar-nav class="ml-auto">

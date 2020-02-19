@@ -4,6 +4,24 @@
       <b-row class="m-0">
         <b-col cols="0" xl="3" />
         <b-col cols="12" xl="6" class="p-0">
+          <NoticeMessage variant="info" class="mt-2">
+            <div v-if="simple">
+              <p>
+                You are viewing the simple version of the site, so you won't see community features like ChitChat,
+                community events or volunteer opportunities.  Some advanced settings won't show in this page.
+              </p>
+            </div>
+            <div v-else>
+              <p>
+                You are viewing the full version of the site.  If you find this is too "busy", you can choose to view
+                a simplified version.
+              </p>
+            </div>
+            <p>
+              You can toggle which version you see by clicking here:
+            </p>
+            <SimpleView />
+          </NoticeMessage>
           <b-card border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
             <template v-slot:header>
               <v-icon name="globe-europe" /> Your Public Profile
@@ -495,6 +513,7 @@
 
 <script>
 import Vue from 'vue'
+import SimpleView from '../../components/SimpleView'
 import EmailConfirmModal from '~/components/EmailConfirmModal'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead'
@@ -514,6 +533,7 @@ const DonationButton = () => import('~/components/DonationButton')
 
 export default {
   components: {
+    SimpleView,
     OurToggle,
     DatePicker,
     EmailConfirmModal,

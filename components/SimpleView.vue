@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loggedIn" class="wrapper" title="Toggle between the full website and a simplified version">
+  <div v-if="loggedIn" :class="navbar ? 'wrapper' : ''" title="Toggle between the full website and a simplified version">
     <OurToggle
       :value="view"
       :height="36"
@@ -16,6 +16,12 @@ const OurToggle = () => import('~/components/OurToggle')
 
 export default {
   components: { OurToggle },
+  props: {
+    navbar: {
+      type: Boolean,
+      required: false
+    }
+  },
   computed: {
     view() {
       return !this.simple
