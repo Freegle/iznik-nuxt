@@ -9,7 +9,9 @@
               <v-icon name="hashtag" scale="0.75" class="text-muted" />{{ story.user.id }}
             </span>
           </span>
-          <span>{{ story.datge | timeago }}</span>
+          <span>
+            on {{ groupname }} {{ story.date | timeago }}
+          </span>
           <span>
             <v-icon name="hashtag" scale="0.75" class="text-muted" />{{ story.id }}
           </span>
@@ -53,6 +55,18 @@ export default {
     story: {
       type: Object,
       required: true
+    }
+  },
+  computed: {
+    groupname() {
+      let ret = null
+      const group = this.$store.getters['group/get'](this.story.groupid)
+
+      if (group) {
+        ret = group.namedisplay
+      }
+
+      return ret
     }
   },
   methods: {
