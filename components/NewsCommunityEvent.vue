@@ -2,7 +2,7 @@
   <div>
     <b-row>
       <b-col>
-        <profile-image
+        <ProfileImage
           v-if="users[userid].profile.turl"
           :image="users[userid].profile.turl"
           class="mr-1 mb-1 mt-1 inline"

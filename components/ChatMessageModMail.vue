@@ -7,7 +7,7 @@
             <b-card-title>
               <div v-if="group">
                 <h4>
-                  <profile-image v-if="group" :image="group.profile" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
+                  <ProfileImage v-if="group" :image="group.profile" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
                   <span class="align-middle">
                     Message from {{ group.namedisplay }} Volunteers
                   </span>

@@ -3,7 +3,7 @@
     <b-row>
       <b-col cols="6" class="text-truncate">
         <span>
-          <profile-image :image="reply.user.profile.turl" class="mr-1 mb-1 mt-2 inline" is-thumbnail size="sm" />
+          <ProfileImage :image="reply.user.profile.turl" class="mr-1 mb-1 mt-2 inline" is-thumbnail size="sm" />
           <span v-if="unseen > 0" class="align-middle">
             <b>{{ reply.user.displayname }}</b>
           </span>

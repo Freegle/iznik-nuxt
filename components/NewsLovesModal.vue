@@ -12,7 +12,7 @@
             <div class="media clickme">
               <div class="media-left">
                 <div class="media-object">
-                  <profile-image v-if="love.profile.turl" :image="love.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="lg" />
+                  <ProfileImage v-if="love.profile.turl" :image="love.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="lg" />
                 </div>
               </div>
               <div class="media-body ml-2">

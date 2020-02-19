@@ -4,6 +4,7 @@
       <b-card-header>
         <div class="d-flex justify-content-between flex-wrap w-100">
           <span>
+            <ProfileImage :image="story.user.profile.turl" class="mr-1 ml-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
             <b>{{ story.user.email }}</b>
             <span class="small">
               <v-icon name="hashtag" scale="0.75" class="text-muted" />{{ story.user.id }}
@@ -48,9 +49,10 @@
 <script>
 import NoticeMessage from './NoticeMessage'
 import ChatButton from './ChatButton'
+import ProfileImage from './ProfileImage'
 
 export default {
-  components: { ChatButton, NoticeMessage },
+  components: { ProfileImage, ChatButton, NoticeMessage },
   props: {
     story: {
       type: Object,

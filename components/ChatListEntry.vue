@@ -2,7 +2,7 @@
   <div v-if="chat" class="clickme noselect" @click="click">
     <b-row class="ml-1 mr-1">
       <b-col class="pl-0">
-        <profile-image v-if="chat.icon" :image="chat.icon" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="md" />
+        <ProfileImage v-if="chat.icon" :image="chat.icon" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="md" />
         <span class="pl-0 mb-0 chatname">
           {{ chat.name }}
         </span>

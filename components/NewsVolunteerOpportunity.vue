@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <profile-image
+      <ProfileImage
         v-if="users[userid].profile.turl"
         :image="users[userid].profile.turl"
         class="ml-1 mr-2 mb-1 inline"

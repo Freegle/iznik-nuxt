@@ -1,5 +1,5 @@
 <template>
-  <span class="profile-image__container">
+  <span class="ProfileImage__container">
     <b-img-lazy
       rounded="circle"
       :thumbnail="isThumbnail"
@@ -9,7 +9,7 @@
       :src="image"
       @error.native="brokenProfileImage"
     />
-    <v-icon v-if="isModerator" name="leaf" class="profile-image__moderator mb-0" :class="'profile-image__moderator--' + size" />
+    <v-icon v-if="isModerator" name="leaf" class="ProfileImage__moderator mb-0" :class="'ProfileImage__moderator--' + size" />
   </span>
 </template>
 
@@ -98,13 +98,13 @@ export default {
   }
 }
 
-.profile-image__container {
+.ProfileImage__container {
   position: relative;
   padding-right: 5px;
   padding-bottom: 3px;
 }
 
-.profile-image__moderator {
+.ProfileImage__moderator {
   position: absolute;
   bottom: 0;
   right: 0;
@@ -113,7 +113,7 @@ export default {
   color: $colour-success;
 }
 
-.profile-image__moderator--sm {
+.ProfileImage__moderator--sm {
   padding: 2px;
   width: 12px;
   height: 12px;
@@ -125,7 +125,7 @@ export default {
   }
 }
 
-.profile-image__moderator--md {
+.ProfileImage__moderator--md {
   padding: 2px;
   width: 16px;
   height: 16px;
@@ -137,7 +137,7 @@ export default {
   }
 }
 
-.profile-image__moderator--lg {
+.ProfileImage__moderator--lg {
   padding: 2px;
   width: 18px;
   height: 18px;
@@ -149,7 +149,7 @@ export default {
   }
 }
 
-.profile-image__moderator--xl {
+.ProfileImage__moderator--xl {
   padding: 2px;
   width: 24px;
   height: 24px;

@@ -164,7 +164,7 @@
               </div>
               <h2>Your profile pictures</h2>
               <div v-for="image in status.data.images" :key="image.thumb">
-                <profile-image :image="image.thumb" is-thumbnail size="lg" />
+                <ProfileImage :image="image.thumb" is-thumbnail size="lg" />
               </div>
               <h2>Logins</h2>
               <p>These are the ways in which you have registered to use the site.</p>

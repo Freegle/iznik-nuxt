@@ -3,7 +3,7 @@
     <div class="media clickme">
       <div class="media-left">
         <div class="media-object">
-          <profile-image :image="notification.fromuser.profile.turl" class="mr-1 mb-1 ml-1 inline" is-thumbnail size="sm" />
+          <ProfileImage :image="notification.fromuser.profile.turl" class="mr-1 mb-1 ml-1 inline" is-thumbnail size="sm" />
         </div>
       </div>
       <div v-if="notification.newsfeed" class="media-body">

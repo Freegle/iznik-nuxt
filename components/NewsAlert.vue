@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <profile-image :image="require(`@/static/icon.png`)" class="ml-1 mb-1 inline" is-thumbnail size="lg" />
+      <ProfileImage :image="require(`@/static/icon.png`)" class="ml-1 mb-1 inline" is-thumbnail size="lg" />
       <span class="text-success font-weight-bold pl-2">
         Freegle
       </span>

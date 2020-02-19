@@ -6,7 +6,7 @@
           <tbody>
             <tr>
               <td class="clickme align-top" title="Click to see their profile" @click="showInfo">
-                <profile-image
+                <ProfileImage
                   :image="users[userid].profile.turl"
                   class="ml-1 mr-2 mt-2 mb-1 inline float-left"
                   :is-moderator="users[userid].settings.showmod && reply.replyto === threadhead.id"
@@ -95,7 +95,7 @@
           <at-ta ref="at" :members="tagusers" class="pl-4 flex-shrink-2 input-group" :filter-match="filterMatch">
             <b-input-group-prepend>
               <span class="input-group-text pl-1 pr-1">
-                <profile-image v-if="me.profile.turl" :image="me.profile.turl" class="m-0 inline float-left" is-thumbnail size="sm" />
+                <ProfileImage v-if="me.profile.turl" :image="me.profile.turl" class="m-0 inline float-left" is-thumbnail size="sm" />
               </span>
             </b-input-group-prepend>
             <b-textarea

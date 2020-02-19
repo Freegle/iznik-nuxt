@@ -46,7 +46,7 @@
                 <b-col cols="12" xl="6">
                   <b-card>
                     <b-card-body class="text-center p-2">
-                      <profile-image
+                      <ProfileImage
                         v-if="me.profile.url"
                         :image="profileurl"
                         class="mr-1 mb-1 mt-1 inline"

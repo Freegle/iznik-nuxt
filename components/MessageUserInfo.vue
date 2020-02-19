@@ -2,7 +2,7 @@
   <div class="d-flex justify-content-between flex-wrap">
     <nuxt-link :to="'/profile/' + user.id" class="text-success decornone" :title="'Click to view profile for ' + user.displayname">
       <span class="text-muted small d-flex justify-content-between">
-        <profile-image :image="user.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="sm" />
+        <ProfileImage :image="user.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="sm" />
         <span class="flex-grow-1">
           <span class="align-middle">
             Posted by {{ user.displayname }}

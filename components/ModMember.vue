@@ -6,7 +6,7 @@
           <v-icon name="envelope" /> {{ member.email }}
         </div>
         <div>
-          <profile-image :image="member.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="sm" />
+          <ProfileImage :image="member.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="sm" />
           {{ member.displayname }}
         </div>
         <div>
