@@ -467,10 +467,6 @@ export default {
     }
   },
   computed: {
-    loggedIn() {
-      const ret = Boolean(this.$store.getters['auth/user'])
-      return ret
-    },
     version() {
       const date = new this.$dayjs(process.env.BUILD_DATE)
 

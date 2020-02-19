@@ -230,9 +230,6 @@ export default {
     newsfeed() {
       return this.$store.getters['newsfeed/get'](this.id)
     },
-    me() {
-      return this.$store.getters['auth/user']
-    },
     tagusers() {
       const ret = []
       for (const user in this.users) {

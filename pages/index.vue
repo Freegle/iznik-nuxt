@@ -117,13 +117,6 @@ export default {
     }
   },
 
-  computed: {
-    me() {
-      const user = this.$store.getters['auth/user']
-      return user
-    }
-  },
-
   mounted() {
     if (process.browser) {
       const user = this.$store.getters['auth/user']

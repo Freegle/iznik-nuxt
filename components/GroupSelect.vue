@@ -66,10 +66,6 @@ export default {
       }
     },
 
-    me() {
-      return this.$store.getters['auth/user']
-    },
-
     groupOptions() {
       const groups = []
 

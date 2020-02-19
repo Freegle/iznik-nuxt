@@ -68,9 +68,6 @@ export default {
   computed: {
     events() {
       return this.$store.getters['communityevents/sortedList']
-    },
-    me() {
-      return this.$store.getters['auth/user']
     }
   },
   async asyncData({ app, params, store }) {

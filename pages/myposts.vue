@@ -223,10 +223,6 @@ export default {
     }
   },
   computed: {
-    me() {
-      return this.$store.getters['auth/user']
-    },
-
     wanteds() {
       const ret = []
 

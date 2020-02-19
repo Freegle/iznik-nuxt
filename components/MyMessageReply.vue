@@ -121,10 +121,6 @@ export default {
     }
   },
   computed: {
-    myid() {
-      const me = this.$store.getters['auth/user']
-      return me.id
-    },
     unseen() {
       // See if this reply has unseen messages in the chats.
       let unseen = 0

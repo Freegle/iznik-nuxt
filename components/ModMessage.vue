@@ -232,9 +232,6 @@ export default {
     }
   },
   computed: {
-    me() {
-      return this.$store.getters['auth/user']
-    },
     pending() {
       return this.hasCollection('Pending')
     },

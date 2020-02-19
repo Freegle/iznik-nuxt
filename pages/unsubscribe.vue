@@ -68,10 +68,6 @@ export default {
     }
   },
   computed: {
-    loggedIn() {
-      const ret = Boolean(this.$store.getters['auth/user'])
-      return ret
-    },
     groupCount() {
       const myGroups = this.$store.getters['auth/groups']
       return myGroups ? myGroups.length : 0

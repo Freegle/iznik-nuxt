@@ -65,9 +65,6 @@ export default {
     }
   },
   computed: {
-    me() {
-      return this.$store.getters['auth/user']
-    },
     fromName() {
       return this.me.displayname
     },

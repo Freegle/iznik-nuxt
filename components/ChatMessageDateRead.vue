@@ -27,11 +27,6 @@ export default {
       required: false,
       default: false
     }
-  },
-  computed: {
-    me() {
-      return this.$store.getters['auth/user']
-    }
   }
 }
 </script>

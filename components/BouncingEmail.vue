@@ -16,11 +16,6 @@ import NoticeMessage from '../components/NoticeMessage'
 export default {
   components: {
     NoticeMessage
-  },
-  computed: {
-    me() {
-      return this.$store.getters['auth/user']
-    }
   }
 }
 </script>

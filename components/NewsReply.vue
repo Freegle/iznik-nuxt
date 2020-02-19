@@ -264,9 +264,6 @@ export default {
       // We need to know which are the first level replies, because we indent those but not any subsequent replies.
       return this.reply && this.reply.replyto === this.reply.threadhead
     },
-    me() {
-      return this.$store.getters['auth/user']
-    },
     tagusers() {
       const ret = []
       for (const user in this.users) {

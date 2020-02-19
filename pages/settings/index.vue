@@ -531,7 +531,6 @@ export default {
   mixins: [loginRequired, buildHead],
   data: function() {
     return {
-      me: null,
       emailsOn: null,
       pc: null,
       showAdvanced: false,
@@ -680,7 +679,6 @@ export default {
         force: true
       })
 
-      this.me = this.$store.getters['auth/user']
       if (this.me) {
         this.emailsOn = !Object.keys(this.me).includes('onholidaytill')
       }
@@ -695,9 +693,6 @@ export default {
         components: ['me', 'groups', 'aboutme'],
         force: true
       })
-
-      const me = this.$store.getters['auth/user']
-      this.me = me
     },
     addAbout() {
       this.$refs.aboutmemodal.show()
@@ -711,12 +706,12 @@ export default {
     async changeUseProfile(c, e) {
       const settings = this.me.settings
       settings.useprofile = c.value
-      this.me = await this.$store.dispatch('auth/saveAndGet', {
+      await this.$store.dispatch('auth/saveAndGet', {
         settings: settings
       })
     },
     async saveName() {
-      this.me = await this.$store.dispatch('auth/saveAndGet', {
+      await this.$store.dispatch('auth/saveAndGet', {
         displayname: this.me.displayname
       })
     },
@@ -727,7 +722,7 @@ export default {
       this.savingPassword = true
 
       if (this.me.password) {
-        this.me = await this.$store.dispatch('auth/saveAndGet', {
+        await this.$store.dispatch('auth/saveAndGet', {
           password: this.me.password
         })
       }
@@ -778,7 +773,7 @@ export default {
 
       if (!settings.mylocation || settings.mylocation.id !== this.pc.id) {
         settings.mylocation = this.pc
-        this.me = await this.$store.dispatch('auth/saveAndGet', {
+        await this.$store.dispatch('auth/saveAndGet', {
           settings: settings
         })
       }
@@ -854,42 +849,42 @@ export default {
     async changeNotification(e, type) {
       const settings = this.me.settings
       settings.notifications[type] = e.value
-      this.me = await this.$store.dispatch('auth/saveAndGet', {
+      await this.$store.dispatch('auth/saveAndGet', {
         settings: settings
       })
     },
     async changeRelevant(e) {
-      this.me = await this.$store.dispatch('auth/saveAndGet', {
+      await this.$store.dispatch('auth/saveAndGet', {
         relevantallowed: e.value
       })
     },
     async changeNotifChitchat(e) {
       const settings = this.me.settings
       settings.notificationmails = e.value
-      this.me = await this.$store.dispatch('auth/saveAndGet', {
+      await this.$store.dispatch('auth/saveAndGet', {
         settings: settings
       })
     },
     async changeNewsletter(e) {
-      this.me = await this.$store.dispatch('auth/saveAndGet', {
+      await this.$store.dispatch('auth/saveAndGet', {
         newslettersallowed: e.value
       })
     },
     async changeHolidayDate(val) {
-      this.me = await this.$store.dispatch('auth/saveAndGet', {
+      await this.$store.dispatch('auth/saveAndGet', {
         onholidaytill: val
       })
     },
     async changeHolidayToggle(val) {
       if (val.value) {
         // Turned mails back on
-        this.me = await this.$store.dispatch('auth/saveAndGet', {
+        await this.$store.dispatch('auth/saveAndGet', {
           onholidaytill: null
         })
       }
     },
     async leaveGroup(id) {
-      this.me = await this.$store.dispatch('auth/leaveGroup', {
+      await this.$store.dispatch('auth/leaveGroup', {
         userid: this.me.id,
         groupid: id
       })

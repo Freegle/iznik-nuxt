@@ -93,9 +93,6 @@ export default {
     }
   },
   computed: {
-    me() {
-      return this.$store.getters['auth/user']
-    },
     group() {
       const groupid = this.$store.getters['compose/getGroup']
       const group = this.$store.getters['group/get'](groupid)

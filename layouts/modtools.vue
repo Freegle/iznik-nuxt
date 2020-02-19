@@ -133,13 +133,6 @@ export default {
   },
 
   computed: {
-    loggedIn() {
-      const ret = Boolean(this.$store.getters['auth/user'])
-      return ret
-    },
-    me() {
-      return this.$store.getters['auth/user']
-    },
     chatCount() {
       return this.$store.getters['chats/unseenCount']
     },

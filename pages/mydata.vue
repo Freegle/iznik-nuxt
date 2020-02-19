@@ -787,16 +787,6 @@ export default {
     }
   },
   computed: {
-    me() {
-      return this.$store.getters['auth/user']
-    },
-    mod() {
-      return (
-        this.me.systemrole === 'Moderator' ||
-        this.me.systemrole === 'Support' ||
-        this.me.systemrole === 'Admin'
-      )
-    },
     downloadlink() {
       return process.env.API + '/export?id=' + this.id + '&tag=' + this.tag
     }

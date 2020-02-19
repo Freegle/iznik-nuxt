@@ -80,10 +80,6 @@ export default {
     }
   },
   computed: {
-    loggedIn() {
-      const ret = Boolean(this.$store.getters['auth/user'])
-      return ret
-    },
     story() {
       return this.$store.getters['stories/get'](this.id)
     }

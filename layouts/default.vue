@@ -319,13 +319,6 @@ export default {
   },
 
   computed: {
-    loggedIn() {
-      const ret = Boolean(this.$store.getters['auth/user'])
-      return ret
-    },
-    me() {
-      return this.$store.getters['auth/user']
-    },
     notifications() {
       const notifications = this.$store.getters['notifications/getCurrentList']
 

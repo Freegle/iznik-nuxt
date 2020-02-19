@@ -205,10 +205,6 @@ export default {
     }
   },
   computed: {
-    myid() {
-      const me = this.$store.getters['auth/user']
-      return me ? me.id : null
-    },
     user() {
       const ret = this.id ? this.$store.getters['user/get'](this.id) : null
       return ret
