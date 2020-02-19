@@ -48,7 +48,7 @@
           <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse" class="text-center p-0" @click="discourse">
             <div class="notifwrapper">
               <span class="d-none d-sm-inline">
-                <v-icon name="brands/discourse" scale="2" class="discourse " /><br>
+                <v-icon name="brands/discourse" scale="2" class="fa-fw" /><br>
                 Us
               </span>
               <v-icon name="brands/discourse" class="d-inline d-sm-none discourse" scale="2" />
@@ -60,7 +60,7 @@
           <b-nav-item v-if="loggedIn" id="menu-option-modtools-chat" class="text-center p-0" to="/modtools/chats">
             <div class="notifwrapper">
               <span class="d-none d-sm-inline">
-                <v-icon name="comments" scale="2" class="" /><br>
+                <v-icon name="comments" scale="2" class="fa-fw" /><br>
                 Chats
               </span>
               <v-icon name="comments" class="d-inline d-sm-none" scale="2" />
@@ -69,8 +69,8 @@
               </b-badge>
             </div>
           </b-nav-item>
-          <b-nav-item v-if="loggedIn" id="menu-option-modtools-logout" class="text-center p-0 small" @click="logOut()">
-            <v-icon name="sign-out-alt" scale="2" class="" /><br>
+          <b-nav-item v-if="loggedIn" id="menu-option-modtools-logout" class="text-center p-0" @click="logOut()">
+            <v-icon name="sign-out-alt" scale="2" class="d-inline fa-fw" /><br>
             Logout
           </b-nav-item>
           <b-nav-item v-if="!loggedIn">
@@ -339,5 +339,10 @@ body.modal-open {
   a {
     color: $color-modtools-menu;
   }
+}
+
+.fa-fw {
+  width: 2rem;
+  height: 2rem;
 }
 </style>
