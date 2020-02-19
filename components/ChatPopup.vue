@@ -18,7 +18,7 @@
         >
           <div class="shadow chatHolder w-100">
             <div v-if="chat" class="chatTitle">
-              <span class="chatname text-truncate">
+              <span class="chatname text-truncate align-middle ml-3">
                 <span v-if="(chat.chattype == 'User2User' || chat.chattype == 'User2Mod')">
                   <span @click="showInfo">
                     {{ chat.name }}
