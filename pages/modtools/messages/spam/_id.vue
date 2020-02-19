@@ -1,7 +1,7 @@
 <template>
   <div>
     <client-only>
-      <GroupSelect v-model="groupid" all modonly />
+      <GroupSelect v-model="groupid" all modonly :work="['spam', 'spamother']" />
       <div v-for="message in visibleMessages" :key="'messagelist-' + message.id" class="p-0 mt-2">
         <ModMessage :message="message" />
       </div>
