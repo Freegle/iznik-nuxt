@@ -53,7 +53,6 @@
                     :key="'chatmessage-' + chatmessage.id"
                     :chatmessage="chatmessage"
                     :chat="chat"
-                    :me="me"
                     :otheruser="otheruser"
                     :last="chatmessage.id === chatmessages[chatmessages.length - 1].id"
                   />
@@ -234,18 +233,6 @@ export default {
     }
   },
   computed: {
-    me() {
-      // The user who is us
-      if (this.chat && this.chat.user1 && this.$store.getters['auth/user']) {
-        return this.chat.user1 &&
-          this.chat.user1.id === this.$store.getters['auth/user'].id
-          ? this.chat.user1
-          : this.chat.user2
-      } else {
-        return null
-      }
-    },
-
     minheight() {
       return Math.min(this.maxheight, HEIGHT)
     },

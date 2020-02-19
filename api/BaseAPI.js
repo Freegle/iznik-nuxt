@@ -38,10 +38,16 @@ export default class BaseAPI {
     let data = null
     const modtools = this.store.getters['misc/get']('modtools')
 
-    if (config.params) {
-      // Ensure we tell the API whether we are FD or MT.  Doing it here avoids all the calling code needing to know.
-      config.params.modtools = modtools
+    // Ensure we tell the API whether we are FD or MT.  Doing it here avoids all the calling code needing to know.
+    if (method !== 'POST') {
+      if (config.params) {
+        config.params.modtools = modtools
+      }
+    } else {
+      config.data.modtools = modtools
     }
+
+    console.log('After modification', method, modtools, config)
 
     try {
       const ret = await this.$axios.request({

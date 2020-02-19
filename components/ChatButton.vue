@@ -71,8 +71,12 @@ export default {
       )
 
       if (this.groupid > 0) {
-        // Open a chat to the mods
+        // Open a chat to the mods.  If we are in FD then we just pass the group id and the chat opens from us to the
+        // mods; if we're in MT we pass the groupid and userid and it opens from us mods to the user.
+        const modtools = this.$store.getters['misc/get']('modtools')
+
         const chatid = await this.$store.dispatch('chats/openChatToMods', {
+          userid: modtools ? this.userid : null,
           groupid: this.groupid
         })
 
@@ -85,8 +89,7 @@ export default {
         }
       } else if (this.userid > 0) {
         const chatid = await this.$store.dispatch('chats/openChatToUser', {
-          userid: this.userid,
-          groupid: this.groupid
+          userid: this.userid
         })
 
         if (firstmessage) {

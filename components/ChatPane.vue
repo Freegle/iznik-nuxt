@@ -71,7 +71,6 @@
                 :key="'chatmessage-' + chatmessage.id"
                 :chatmessage="chatmessage"
                 :chat="chat"
-                :me="me"
                 :otheruser="otheruser"
                 :last="chatmessage.id === chatmessages[chatmessages.length - 1].id"
               />

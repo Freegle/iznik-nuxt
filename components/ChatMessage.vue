@@ -61,10 +61,6 @@ export default {
       type: Object,
       required: true
     },
-    me: {
-      type: Object,
-      required: true
-    },
     otheruser: {
       required: true,
       validator: prop => typeof prop === 'object' || prop === null
