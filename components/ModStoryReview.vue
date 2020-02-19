@@ -10,7 +10,7 @@
             </span>
           </span>
           <span>
-            on {{ groupname }} {{ story.date | timeago }}
+            member of <b>{{ groupname }}</b>, posted {{ story.date | timeago }}
           </span>
           <span>
             <v-icon name="hashtag" scale="0.75" class="text-muted" />{{ story.id }}
