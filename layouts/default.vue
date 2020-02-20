@@ -121,7 +121,7 @@
         <client-only>
           <b-nav-item>
             <div v-if="!loggedIn" class="btn btn-white" @click="requestLogin">
-              Sign in
+              Sign&nbsp;in
             </div>
           </b-nav-item>
         </client-only>
@@ -248,7 +248,7 @@
             <v-icon name="cog" scale="2" /><br>
             Settings
           </b-nav-item>
-          <b-nav-item class="text-center p-0" @click="logOut()">
+          <b-nav-item class="text-center p-0" @click="logOut">
             <v-icon name="sign-out-alt" scale="2" /><br>
             Logout
           </b-nav-item>
