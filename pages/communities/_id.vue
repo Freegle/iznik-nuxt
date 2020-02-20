@@ -87,10 +87,9 @@ export default {
   },
   computed: {
     group: function() {
-      const ret =
-        !this.simple && this.groupid
-          ? this.$store.getters['group/get'](this.groupid)
-          : null
+      const ret = this.groupid
+        ? this.$store.getters['group/get'](this.groupid)
+        : null
 
       return ret
     },
