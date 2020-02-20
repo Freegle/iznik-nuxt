@@ -47,8 +47,6 @@ export default class BaseAPI {
       config.data.modtools = modtools
     }
 
-    console.log('After modification', method, modtools, config)
-
     try {
       const ret = await this.$axios.request({
         ...config,

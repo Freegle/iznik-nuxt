@@ -1,5 +1,5 @@
 <template>
-  <div class="d-inline">
+  <div class="d-inline clickme" @click="click">
     <span class="d-none d-sm-inline">
       <span v-if="icon">
         <v-icon :name="icon" scale="2" /><br>
@@ -70,6 +70,17 @@ export default {
       }
 
       return total
+    },
+    click(e) {
+      if (this.link) {
+        if (this.$route.fullPath === this.link) {
+          // Click on current route.  Reload.
+          e.stopPropagation()
+          this.$router.go()
+        } else {
+          this.$router.push(this.link)
+        }
+      }
     }
   }
 }

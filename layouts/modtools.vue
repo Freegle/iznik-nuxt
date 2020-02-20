@@ -18,31 +18,31 @@
             <template v-slot:button-content>
               <ModMenuItemNav :count="['pending', 'chatreview']" icon="envelope" />
             </template>
-            <b-dropdown-item href="/modtools/messages/pending">
-              <ModMenuItemNav name="Pending" :count="['pending']" :othercount="['pending']" />
+            <b-dropdown-item>
+              <ModMenuItemNav name="Pending" :count="['pending']" :othercount="['pending']" link="/modtools/messages/pending" />
             </b-dropdown-item>
-            <b-dropdown-item href="/modtools/messages/approved">
-              <ModMenuItemNav name="Approved" />
+            <b-dropdown-item>
+              <ModMenuItemNav name="Approved" link="/modtools/messages/approved" />
             </b-dropdown-item>
-            <b-dropdown-item href="/modtools/messages/spam">
-              <ModMenuItemNav name="Spam" :count="['spam']" :othercount="['spamother']" />
+            <b-dropdown-item>
+              <ModMenuItemNav name="Spam" :count="['spam']" :othercount="['spamother']" link="/modtools/messages/spam" />
             </b-dropdown-item>
-            <b-dropdown-item href="/modtools/chats/review">
-              <ModMenuItemNav name="Chat Review" :count="['chatreview']" :othercount="['chatreviewother']" />
+            <b-dropdown-item>
+              <ModMenuItemNav name="Chat Review" :count="['chatreview']" :othercount="['chatreviewother']" link="/modtools/chats/review" />
             </b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown right class="d-block d-sm-none">
             <template v-slot:button-content>
               <ModMenuItemNav :count="['pendingmembers', 'stories']" icon="users" />
             </template>
-            <b-dropdown-item href="/modtools/members/pending">
-              <ModMenuItemNav name="Pending" :count="['pendingmembers']" />
+            <b-dropdown-item>
+              <ModMenuItemNav name="Pending" :count="['pendingmembers']" link="/modtools/members/pending" />
             </b-dropdown-item>
-            <b-dropdown-item href="/modtools/members/approved">
-              <ModMenuItemNav name="Approved" />
+            <b-dropdown-item>
+              <ModMenuItemNav name="Approved" link="/modtools/members/approved" />
             </b-dropdown-item>
-            <b-dropdown-item href="/modtools/members/stories">
-              <ModMenuItemNav name="Stories" :count="['stories']" />
+            <b-dropdown-item>
+              <ModMenuItemNav name="Stories" :count="['stories']" href="/modtools/members/stories" />
             </b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse" class="text-center p-0" @click="discourse">
@@ -83,7 +83,6 @@
 
       <div class="d-flex">
         <div class="leftmenu d-none d-sm-block">
-          <!--        TODO Reload on click-->
           <nuxt-link to="/modtools">
             Dashboard
           </nuxt-link>

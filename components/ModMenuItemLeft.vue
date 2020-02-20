@@ -1,7 +1,7 @@
 <template>
   <div :class="getClass">
     <!-- eslint-disable-next-line -->
-    <span v-if="indent">&nbsp;&nbsp;</span><nuxt-link :to="link">{{ name }}</nuxt-link>
+    <span v-if="indent">&nbsp;&nbsp;</span><nuxt-link :to="link" @click.native="click">{{ name }}</nuxt-link>
     <b-badge v-if="count && getCount(count)" :variant="countVariant">
       {{ getCount(count) }}
     </b-badge>
@@ -59,6 +59,13 @@ export default {
       }
 
       return 0
+    },
+    click(e) {
+      if (this.$route.fullPath === e.target) {
+        // Click on current route.  Reload.
+        e.stopPropagation()
+        this.$router.go()
+      }
     }
   }
 }
