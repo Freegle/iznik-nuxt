@@ -435,20 +435,20 @@ export default {
         this.replybox += '\n'
       }
     },
-    love(e) {
+    async love(e) {
       const el = e.target
       el.classList.add('pulsate')
-      this.$store.dispatch('newsfeed/love', {
+      await this.$store.dispatch('newsfeed/love', {
         id: this.replyid,
         replyto: this.reply.replyto,
         threadhead: this.reply.threadhead
       })
       el.classList.remove('pulsate')
     },
-    unlove(e) {
+    async unlove(e) {
       const el = e.target
       el.classList.add('pulsate')
-      this.$store.dispatch('newsfeed/unlove', {
+      await this.$store.dispatch('newsfeed/unlove', {
         id: this.replyid,
         replyto: this.reply.replyto,
         threadhead: this.reply.threadhead
