@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Navbar for large screens-->
-    <b-navbar id="navbar_large" toggleable="xl" type="dark" class="ourBack d-none d-xl-flex" fixed="top">
+    <b-navbar id="navbar_large" toggleable="xl" type="dark" class="ourBack d-none d-xl-flex pl-1" fixed="top">
       <b-navbar-brand to="/" class="p-0">
         <b-img
           class="logo mr-2"
@@ -50,12 +50,13 @@
             </b-nav-item>
           </b-navbar-nav>
           <client-only>
-            <div class="w-100 d-flex justify-content-center pb-2">
-              <SimpleView :key="'simpleview-' + simple" navbar />
+            <div class="w-100 d-flex justify-content-center">
+              <div class="simplewrapper pb-2">
+                <SimpleView :key="'simpleview-' + simple" navbar />
+              </div>
             </div>
           </client-only>
           <b-navbar-nav class="ml-auto">
-            <b-nav-item id="menu-option-notification" class="text-center p-0" />
             <b-nav-item-dropdown v-if="!simple" class="white text-center notiflist" lazy right @shown="loadLatestNotifications">
               <template slot="button-content">
                 <div class="notifwrapper text-center small">
@@ -705,7 +706,7 @@ html {
 }
 
 #navbar_large .nav-item {
-  width: 80px;
+  width: 70px;
   text-align: center;
 }
 
@@ -896,5 +897,9 @@ svg.fa-icon {
 
 .toggler svg {
   vertical-align: -20px;
+}
+
+.simplewrapper {
+  width: 150px;
 }
 </style>
