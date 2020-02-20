@@ -9,7 +9,7 @@
     <b-badge :variant="user.modmails > 0 ? 'danger' : 'light'">
       <v-icon name="exclamation-triangle" class="fa-fw" /> {{ user.modmails }}
     </b-badge>
-    <b-btn variant="link" size="sm" class="clickme" @click="showHistory()">
+    <b-btn variant="link" size="sm" class="clickme" @click="showHistory)">
       View posts
     </b-btn>
     <b-btn variant="link" size="sm">
