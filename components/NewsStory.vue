@@ -5,7 +5,7 @@
       <b-col>
         <b-card variant="success" no-body>
           <b-card-header>
-            {{ newsfeed.story.headline }}
+            <b>{{ newsfeed.story.headline }}</b>
           </b-card-header>
           <b-card-text class="p-2">
             <b-img
