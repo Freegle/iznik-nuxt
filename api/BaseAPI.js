@@ -44,6 +44,10 @@ export default class BaseAPI {
         config.params.modtools = modtools
       }
     } else {
+      if (!config.data) {
+        config.data = {}
+      }
+
       config.data.modtools = modtools
     }
 
