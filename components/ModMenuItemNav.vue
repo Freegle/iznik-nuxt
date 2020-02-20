@@ -13,7 +13,7 @@
     <b-badge v-if="getCount(count)" :variant="countVariant">
       {{ getCount(count) }}
     </b-badge>
-    <b-badge v-if="getCount(othercount)" variant="light">
+    <b-badge v-if="getCount(othercount)" variant="info">
       {{ getCount(othercount) }}
     </b-badge>
   </div>
