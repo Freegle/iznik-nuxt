@@ -104,7 +104,7 @@
           <div>
             Chat
           </div>
-          <ModMenuItemLeft link="/modtools/chats/review" name="Review" count="chatreview" indent />
+          <ModMenuItemLeft link="/modtools/chats/review" name="Review" count="chatreview" othercount="chatreviewother" indent />
         </div>
         <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent flex-grow-1" />
       </div>
