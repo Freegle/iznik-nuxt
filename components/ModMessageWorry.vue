@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NoticeMessage v-for="word in message.worry" :key="'worry-' + word.id" variant="warning" class="mb-1">
+    <NoticeMessage v-for="word in message.worry" :key="'worry-' + word.worryword.id" variant="warning" class="mb-1">
       <p v-if="word.worryword.type === 'Review'">
         This post contains a keyword which means it's flagged up for review.  If you can't see anything wrong with it, then it's fine.
       </p>
