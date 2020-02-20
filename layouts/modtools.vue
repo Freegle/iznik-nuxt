@@ -28,7 +28,7 @@
               <ModMenuItemNav name="Spam" :count="['spam']" :othercount="['spamother']" link="/modtools/messages/spam" />
             </b-dropdown-item>
             <b-dropdown-item>
-              <ModMenuItemNav name="Chat Review" :count="['chatreview']" :othercount="['chatreviewother']" link="/modtools/chats/review" />
+              <ModMenuItemNav name="Chat Review" :count="['chatreview']" link="/modtools/chats/review" />
             </b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown right class="d-block d-sm-none">
@@ -104,7 +104,7 @@
           <div>
             Chat
           </div>
-          <ModMenuItemLeft link="/modtools/chats/review" name="Review" count="chatreview" othercount="chatreviewother" indent />
+          <ModMenuItemLeft link="/modtools/chats/review" name="Review" count="chatreview" indent />
         </div>
         <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent flex-grow-1" />
       </div>
