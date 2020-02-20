@@ -6,7 +6,6 @@
           <b-button
             :v-b-toggle="'mypost-' + message.id"
             block
-            href="#"
             variant="white"
             class="text-left text-truncate noborder hover"
             @click="toggle"
