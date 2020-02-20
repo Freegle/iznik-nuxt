@@ -33,7 +33,7 @@
           </b-nav-item-dropdown>
           <b-nav-item-dropdown right class="d-block d-sm-none">
             <template v-slot:button-content>
-              <ModMenuItemNav :count="['pendingmembers', 'stories']" icon="users" />
+              <ModMenuItemNav v-if="hasPermissionNewsletter" :count="['pendingmembers', 'stories', 'newsletterstories']" icon="users" />
             </template>
             <b-dropdown-item>
               <ModMenuItemNav name="Pending" :count="['pendingmembers']" link="/modtools/members/pending" />
@@ -43,6 +43,9 @@
             </b-dropdown-item>
             <b-dropdown-item>
               <ModMenuItemNav name="Stories" :count="['stories']" href="/modtools/members/stories" />
+            </b-dropdown-item>
+            <b-dropdown-item>
+              <ModMenuItemNav name="Stories" :count="['newsletterstories']" href="/modtools/members/newsletter" />
             </b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse" class="text-center p-0" @click="discourse">
@@ -100,6 +103,7 @@
           <ModMenuItemLeft link="/modtools/members/pending" name="Pending" count="pendingmembers" othercount="pendingmembersother" indent />
           <ModMenuItemLeft link="/modtools/members/approved" name="Approved" indent />
           <ModMenuItemLeft link="/modtools/members/stories" name="Stories" indent count="stories" />
+          <ModMenuItemLeft v-if="hasPermissionNewsletter" link="/modtools/members/newsletter" name="Newsletter" indent count="newsletterstories" />
           <hr>
           <div>
             Chat

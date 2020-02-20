@@ -4,7 +4,7 @@
       There are no stories to review at the moment.
     </NoticeMessage>
     <div v-for="story in stories" :key="'story-' + story.id" class="mt-2">
-      <ModStoryReview :story="story" />
+      <ModStoryReview :story="story" newsletter />
     </div>
   </div>
 </template>
@@ -35,7 +35,8 @@ export default {
   async asyncData({ app, params, store }) {
     await store.dispatch('stories/clear')
     await store.dispatch('stories/fetch', {
-      reviewed: 0
+      reviewed: 0,
+      newsletter: true
     })
   },
 

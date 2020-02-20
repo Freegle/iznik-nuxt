@@ -31,9 +31,14 @@
           <b-btn variant="warning" class="mr-2 mb-1" @click="dontUseForPublicity">
             <v-icon name="times" /> Hide
           </b-btn>
-          <b-btn v-if="story.public" variant="success" class="mr-2 mb-1" @click="useForPublicity">
-            <v-icon name="times" /> Good for publicity
-          </b-btn>
+          <div v-if="story.public">
+            <b-btn v-if="newsletter" variant="success" class="mr-2 mb-1" @click="useForNewsletter">
+              <v-icon name="times" /> Good for newsletter
+            </b-btn>
+            <b-btn v-else variant="success" class="mr-2 mb-1" @click="useForPublicity">
+              <v-icon name="times" /> Good for publicity
+            </b-btn>
+          </div>
           <ChatButton
             :userid="story.user.id"
             :groupid="story.groupid"
@@ -57,6 +62,11 @@ export default {
     story: {
       type: Object,
       required: true
+    },
+    newsletter: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   computed: {
@@ -72,6 +82,11 @@ export default {
     }
   },
   methods: {
+    async useForNewsletter() {
+      await this.$store.dispatch('stories/useForNewsletter', {
+        id: this.story.id
+      })
+    },
     async useForPublicity() {
       await this.$store.dispatch('stories/useForPublicity', {
         id: this.story.id
