@@ -141,10 +141,12 @@
       </template>
     </b-modal>
     <NewsReportModal :id="newsfeed.id" ref="newsreport" />
+    <ConfirmModal v-if="showDeleteModal" ref="deleteConfirm" :title="'Delete thread started by ' + users[newsfeed.userid].displayname" @confirm="deleteConfirmed" />
   </div>
 </template>
 
 <script>
+import waitForRef from '../mixins/waitForRef'
 import NewsReportModal from './NewsReportModal'
 import OurFilePond from './OurFilePond'
 import twem from '~/assets/js/twem'
@@ -162,6 +164,9 @@ import NewsNoticeboard from '~/components/NewsNoticeboard'
 import NoticeMessage from '~/components/NoticeMessage'
 import NewsPreview from '~/components/NewsPreview'
 import ProfileImage from '~/components/ProfileImage'
+
+const ConfirmModal = () => import('~/components/ConfirmModal.vue')
+
 const AtTa = process.browser
   ? require('vue-at/dist/vue-at-textarea')
   : undefined
@@ -185,8 +190,10 @@ export default {
     NoticeMessage,
     NewsPreview,
     AtTa,
-    ProfileImage
+    ProfileImage,
+    ConfirmModal
   },
+  mixins: [waitForRef],
   props: {
     id: {
       type: Number,
@@ -223,7 +230,8 @@ export default {
       },
       uploading: false,
       imageid: null,
-      imagethumb: null
+      imagethumb: null,
+      showDeleteModal: false
     }
   },
   computed: {
@@ -370,6 +378,12 @@ export default {
       this.$refs.editModal.hide()
     },
     deleteIt() {
+      this.showDeleteModal = true
+      this.waitForRef('deleteConfirm', () => {
+        this.$refs.deleteConfirm.show()
+      })
+    },
+    deleteConfirmed() {
       this.$store.dispatch('newsfeed/delete', {
         id: this.id,
         threadhead: this.id

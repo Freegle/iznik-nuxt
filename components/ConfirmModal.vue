@@ -2,15 +2,12 @@
   <b-modal
     id="confirmmodal"
     v-model="showModal"
-    title="Are you sure?"
+    :title="title"
     no-stacking
   >
     <template slot="default">
-      <b-row>
-        <b-col>
-          <p>Are you sure you want to do this?</p>
-        </b-col>
-      </b-row>
+      <!-- eslint-disable-next-line -->
+      <div v-html="message" />
     </template>
     <template slot="modal-footer" slot-scope="{ ok, cancel }">
       <b-button variant="white" @click="cancel">
@@ -24,6 +21,18 @@
 </template>
 <script>
 export default {
+  props: {
+    title: {
+      type: String,
+      required: false,
+      default: 'Are you sure?'
+    },
+    message: {
+      type: String,
+      required: false,
+      default: '<p>Are you sure you want to do this?</p>'
+    }
+  },
   data: function() {
     return {
       showModal: false
