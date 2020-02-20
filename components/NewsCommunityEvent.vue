@@ -1,15 +1,15 @@
 <template>
   <div>
-    <b-row>
-      <b-col>
-        <ProfileImage
-          v-if="users[userid].profile.turl"
-          :image="users[userid].profile.turl"
-          class="mr-1 mb-1 mt-1 inline"
-          is-thumbnail
-          :is-moderator="(Boolean)(users[userid].settings.showmod)"
-          size="lg"
-        />
+    <div class="d-flex">
+      <ProfileImage
+        v-if="users[userid].profile.turl"
+        :image="users[userid].profile.turl"
+        class="mr-1 mb-1 mt-1 inline"
+        is-thumbnail
+        :is-moderator="(Boolean)(users[userid].settings.showmod)"
+        size="lg"
+      />
+      <div>
         <span class="text-success font-weight-bold">{{ users[userid].displayname }}</span>
         created an event<span class="d-none d-md-inline-block">:</span><br class="d-block d-md-none"> <b>{{ newsfeed.communityevent.title }}</b>
         <br>
@@ -19,8 +19,8 @@
         <span v-if="newsfeed.communityevent.groups.length > 0">
           on {{ newsfeed.communityevent.groups[0].namedisplay }}
         </span>
-      </b-col>
-    </b-row>
+      </div>
+    </div>
     <b-row>
       <b-col cols="12" :lg="newsfeed.communityevent.photo ? 8 : 12">
         <span v-if="newsfeed.communityevent.description" class="text-truncate d-block">

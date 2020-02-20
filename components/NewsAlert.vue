@@ -1,14 +1,16 @@
 <template>
   <div>
-    <div>
+    <div class="d-flex">
       <ProfileImage :image="require(`@/static/icon.png`)" class="ml-1 mb-1 inline" is-thumbnail size="lg" />
-      <span class="text-success font-weight-bold pl-2">
-        Freegle
-      </span>
-      <br>
-      <span class="text-muted small pl-2">
-        {{ newsfeed.timestamp | timeago }}
-      </span>
+      <div>
+        <span class="text-success font-weight-bold pl-2">
+          Freegle
+        </span>
+        <br>
+        <span class="text-muted small pl-2">
+          {{ newsfeed.timestamp | timeago }}
+        </span>
+      </div>
     </div>
     <span v-if="newsfeed.message" class="font-weight-bold prewrap forcebreak">{{ emessage }}</span>
     <div>
