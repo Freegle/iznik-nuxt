@@ -303,7 +303,7 @@ export default {
     return {
       complete: false,
       distance: 1000,
-      notificationPoll: null,
+      chatPoll: null,
       nchan: null,
       logo: require(`@/static/icon.png`)
     }
@@ -411,7 +411,8 @@ export default {
       this.startNCHAN(me.id)
 
       // Get notifications and chats and poll regularly for new ones.  Would be nice if this was event driven instead but requires server work.
-      this.fetchLatestNotificationAndChats()
+      this.fetchLatestChats()
+      this.$store.dispatch('notifications/updateNotifications')
     }
 
     // Look for a custom logo.
@@ -487,7 +488,7 @@ export default {
 
   beforeDestroy() {
     console.log('Destroy layout')
-    clearTimeout(this.notificationPoll)
+    clearTimeout(this.chatPoll)
 
     if (this.nchan && this.nchan.running) {
       console.log('Stop NCHAN')
@@ -564,27 +565,12 @@ export default {
         }
       })
     },
-    async fetchLatestNotificationAndChats() {
+    async fetchLatestChats() {
       const me = this.$store.getters['auth/user']
 
       if (me && me.id) {
-        let currentCount = this.$store.getters['notifications/getUnreadCount']
-        const notifications = this.$store.getters[
-          'notifications/getCurrentList'
-        ]
-        await this.$store.dispatch(
-          'notifications/updateUnreadNotificationCount'
-        )
-        let newCount = this.$store.getters['notifications/getUnreadCount']
-
-        if (newCount !== currentCount || !notifications.length) {
-          // Changed or don't know it yet.  Get the list so that it will display zippily when they click.
-          await this.$store.dispatch('notifications/clear')
-          await this.$store.dispatch('notifications/fetchNextListChunk')
-        }
-
-        currentCount = this.$store.getters['chats/unseenCount']
-        newCount = await this.$store.dispatch('chats/unseenCount')
+        const currentCount = this.$store.getters['chats/unseenCount']
+        const newCount = await this.$store.dispatch('chats/unseenCount')
 
         if (newCount !== currentCount) {
           await this.$store.dispatch('chats/listChats', {
@@ -595,10 +581,7 @@ export default {
         }
       }
 
-      this.notificationPoll = setTimeout(
-        this.fetchLatestNotificationAndChats,
-        30000
-      )
+      this.chatPoll = setTimeout(this.fetchLatestChats, 30000)
     },
 
     showAboutMe() {

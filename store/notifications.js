@@ -113,6 +113,28 @@ export const actions = {
     }
   },
 
+  // Make sure that the notifications are kept up to date
+  async updateNotifications() {
+    const me = this.$store.getters['auth/user']
+
+    if (me && me.id) {
+      const currentCount = this.$store.getters['notifications/getUnreadCount']
+      const notifications = this.$store.getters['notifications/getCurrentList']
+      await this.$store.dispatch('notifications/updateUnreadNotificationCount')
+      const newCount = this.$store.getters['notifications/getUnreadCount']
+
+      if (newCount !== currentCount || !notifications.length) {
+        // Changed or don't know it yet.  Get the list so that it will display zippily when they click.
+        await this.$store.dispatch('notifications/clear')
+        await this.$store.dispatch('notifications/fetchNextListChunk')
+      }
+    }
+
+    // Continuously check for updated notifications
+    // No need to clear the timeout
+    setTimeout(this.updateNotifications, 30000)
+  },
+
   clear({ commit }) {
     commit('setContext', {
       ctx: null
