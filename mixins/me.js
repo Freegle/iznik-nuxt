@@ -25,25 +25,25 @@ Vue.mixin({
       if (!this.me) {
         // Always show simple for logged out.
         ret = true
-        console.log('Logged out - simple')
+        // console.log('Logged out - simple')
       } else if (
         this.me.settings &&
         (this.me.settings.simple === true || this.me.settings.simple === false)
       ) {
         // We have a preference.
         ret = this.me.settings.simple
-        console.log('Preference - simple', ret)
+        // console.log('Preference - simple', ret)
       } else if (
         this.me.added &&
         Date.now() - new Date(this.me.added).getTime() < 3 * 24 * 60 * 60 * 1000
       ) {
         // We have no preference and we're a new user.
         ret = true
-        console.log('No preference, new', this.me.added)
+        // console.log('No preference, new', this.me.added)
       } else {
         // We have no preference and we're an established user.
         ret = false
-        console.log('No preference, established')
+        // console.log('No preference, established')
       }
 
       // console.log('compute simple', ret, this.me)
