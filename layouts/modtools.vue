@@ -72,7 +72,7 @@
               </b-badge>
             </div>
           </b-nav-item>
-          <b-nav-item v-if="loggedIn" id="menu-option-modtools-logout" class="text-center p-0" @click="logOut)">
+          <b-nav-item v-if="loggedIn" id="menu-option-modtools-logout" class="text-center p-0" @click="logOut">
             <v-icon name="sign-out-alt" scale="2" class="d-inline fa-fw" /><br>
             Logout
           </b-nav-item>

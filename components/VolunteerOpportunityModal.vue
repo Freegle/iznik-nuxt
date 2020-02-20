@@ -4,7 +4,7 @@
     v-model="showModal"
     size="lg"
     no-stacking
-    @hidden="reset)"
+    @hidden="reset"
   >
     <template slot="modal-header">
       <h4 v-if="added">
