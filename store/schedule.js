@@ -1,16 +1,19 @@
+import Vue from 'vue'
+
 export const state = () => ({
   schedule: {}
 })
 
 export const mutations = {
   set(state, schedule) {
-    state.schedule = schedule
+    Vue.set(state.schedule, schedule.userid, schedule)
+    console.log('Set schedule', schedule.userid, state)
   }
 }
 
 export const getters = {
-  get: state => () => {
-    return state.schedule
+  get: state => userid => {
+    return state.schedule[userid]
   }
 }
 

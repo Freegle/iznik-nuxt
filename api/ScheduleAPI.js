@@ -1,7 +1,7 @@
 import BaseAPI from '@/api/BaseAPI'
 
 export default class ScheduleAPI extends BaseAPI {
-  async fetch({ commit }, params) {
+  async fetch(params) {
     const { schedule } = await this.$get('/schedule', params)
     return schedule
   }

@@ -433,7 +433,9 @@ export default {
       })
     },
     availability() {
-      this.$refs.availabilitymodal.show()
+      this.waitForRef('availabilitymodal', () => {
+        this.$refs.availabilitymodal.show()
+      })
     },
     loadMore: function($state) {
       const currentCount = this.chatmessages.length
