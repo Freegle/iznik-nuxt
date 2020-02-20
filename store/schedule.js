@@ -7,7 +7,6 @@ export const state = () => ({
 export const mutations = {
   set(state, schedule) {
     Vue.set(state.schedule, schedule.userid, schedule)
-    console.log('Set schedule', schedule.userid, state)
   }
 }
 

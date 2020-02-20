@@ -281,7 +281,7 @@ export default {
         userid: this.thisuid
       })
 
-      this.schedule = this.$store.getters['schedule/get'](this.myid)
+      this.schedule = this.$store.getters['schedule/get'](this.thisuid)
 
       this.showModal = true
 
@@ -298,7 +298,7 @@ export default {
 
       this.scheduleWatch = this.$store.watch(
         (state, getters) => {
-          return this.$store.getters['schedule/get'](this.myid)
+          return this.$store.getters['schedule/get'](this.thisuid)
         },
         newValue => {
           this.schedule = newValue
