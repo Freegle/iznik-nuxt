@@ -67,7 +67,8 @@ export default {
       console.log('Work change', newVal, oldVal)
       if (newVal > oldVal) {
         // There's new stuff to fetch.
-        console.log('Fetch')
+        this.$store.dispatch('messages/clear')
+
         this.$store.dispatch('messages/fetchMessages', {
           groupid: this.groupid,
           collection: this.collection,
@@ -75,6 +76,17 @@ export default {
           summary: false,
           limit: Math.max(this.limit, newVal)
         })
+
+        // Force them to show.
+        let messages
+
+        if (this.groupid) {
+          messages = this.$store.getters['messages/getByGroup'](this.groupid)
+        } else {
+          messages = this.$store.getters['messages/getAll']
+        }
+
+        this.show = messages.length
       }
     }
   },
