@@ -64,10 +64,9 @@ export default {
       }
     },
     work(newVal, oldVal) {
-      console.log('Work change', newVal, oldVal)
       if (newVal > oldVal) {
         // There's new stuff to fetch.
-        this.$store.dispatch('messages/clear')
+        this.$store.dispatch('messages/clearContext')
 
         this.$store.dispatch('messages/fetchMessages', {
           groupid: this.groupid,

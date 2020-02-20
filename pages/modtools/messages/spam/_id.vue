@@ -2,7 +2,7 @@
   <div>
     <client-only>
       <GroupSelect v-model="groupid" all modonly :work="['spam', 'spamother']" />
-      <NoticeMessage v-if="!messages.length">
+      <NoticeMessage v-if="!messages.length" class="mt-2">
         There are no messages at the moment.  This will refresh automatically.
       </NoticeMessage>
       <div v-for="message in visibleMessages" :key="'messagelist-' + message.id" class="p-0 mt-2">

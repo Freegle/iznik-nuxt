@@ -60,7 +60,6 @@ export default {
   },
   watch: {
     work(newVal, oldVal) {
-      console.log('Work change', newVal, oldVal)
       if (newVal > oldVal) {
         // There's new stuff to do.  Reload.
         this.$store.dispatch('chatmessages/clearContext', {

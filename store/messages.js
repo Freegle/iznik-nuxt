@@ -189,6 +189,10 @@ export const actions = {
     await dispatch('updateChat', params.userid)
   },
 
+  clearContext({ commit }) {
+    commit('setContext', null)
+  },
+
   clear({ commit }) {
     commit('clear')
     commit('setContext', null)
