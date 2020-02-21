@@ -217,10 +217,10 @@ export default {
       return faSearch
     },
     wrapClass() {
-      return 'type-postcode-wrap ' + (this.focused ? ' type-postcode-wrap-focus' : '')
+      return 'autocomplete-wrap ' + (this.focused ? ' autocomplete-wrap-focus' : '')
     },
     parentClass() {
-      return 'd-flex ' + (this.searchbutton ? 'type-postcode-parent-focus' : '') + (this.invalid ? ' invalid' : '')
+      return 'd-flex ' + (this.searchbutton ? 'autocomplete-parent-focus' : '') + (this.invalid ? ' invalid' : '')
     }
   },
 
@@ -585,12 +585,12 @@ export default {
   padding-left: 15px !important;
 }
 
-/* postcodelist class is passed into this component in a prop */
-.postcodelist {
+/* autocompletelist class is passed into this component in a prop */
+.autocompletelist {
   z-index: 900;
 }
 
-.postcodelist li {
+.autocompletelist li {
   box-shadow: 1px 3px 5px 3px $color-black-opacity-60;
   width: 238px;
 }
@@ -693,25 +693,25 @@ input[invalid='true'] {
   box-shadow: 0 0 0 0.2rem $color-red;
   border: 1px solid red;
 }
-.type-postcode-wrap input:focus {
+.autocomplete-wrap input:focus {
   outline: none;
   box-shadow: none;
-  border: 1px solid #ced4da;
+  border: 1px solid $color-gray-4;
 }
-.type-postcode-wrap-focus {
-  border-color: #80bdff;
+.autocomplete-wrap-focus {
+  border-color: $color-blue--light;
   outline: 0;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
-.input-group.type-postcode-wrap {
-  border: 1px solid #ced4da;
+.input-group.autocomplete-wrap {
+  border: 1px solid $color-gray-4;
   border-radius: 4px;
 }
-.type-postcode-parent-focus .input-group {
-  border: 1px solid #ced4da;
+.autocomplete-parent-focus .input-group {
+  border: 1px solid $color-gray-4;
   border-radius: 4px 0 0 4px;
 }
-.input-group.type-postcode-wrap input,
+.input-group.autocomplete-wrap input,
 .input-group-append button {
   border: none;
 }
@@ -723,7 +723,7 @@ button.btn.searchbutton.btn-success.btn-lg {
   border-radius: 0 4px 4px 0;
 }
 .invalid {
-  box-shadow: 0 0 0 0.2rem #ff0000;
+  box-shadow: 0 0 0 0.2rem $color-red;
   border: none;
   border-radius: 4px;
 }
