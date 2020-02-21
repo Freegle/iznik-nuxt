@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="border border-success rounded mb-1">
     <div class="d-flex justify-content-between flex-wrap">
-      <div class="d-flex align-content-start mb-1">
+      <div class="d-flex align-content-start mb-1 flex-grow-1">
         <ProfileImage :image="reply.user.profile.turl" class="m-1" is-thumbnail size="sm" />
         <div class="text-truncate">
           <!-- eslint-disable-next-line -->
@@ -29,8 +29,8 @@
           </span>
         </div>
       </div>
-      <ratings v-bind="reply.user" class="pl-1 pt-1 mt-1" />
-      <div class="pt-1">
+      <ratings v-bind="reply.user" class="pl-1 pt-1 mt-1 mr-2 flex-shrink-1" />
+      <div class="pt-1 flex-shrink-1 ml-2">
         <b-btn v-if="promised && !taken && !withdrawn" variant="warning" class="align-middle mt-1 mb-1" @click="unpromise">
           <v-icon>
             <v-icon name="handshake" />
