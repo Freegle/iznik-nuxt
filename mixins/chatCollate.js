@@ -25,6 +25,8 @@ export default {
           i + 1 < msgs.length &&
           msgs[i].sameasnext &&
           msgs[i].message &&
+          !msgs[i].refmsg &&
+          !msgs[i + 1].refmsg &&
           msgs[i + 1].message &&
           (!msgs[i].replyexpected || msgs[i].replyreceived) &&
           new Date(msgs[i + 1].date).getTime() -
