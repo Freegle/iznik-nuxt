@@ -546,11 +546,13 @@ export default {
       if (msg) {
         this.sending = true
 
-        // If the current last message in this chat is an "interested", then we're going to ask if they
-        // expect a reply.
+        // If the current last message in this chat is an "interested" from the other party, then we're going to ask
+        // if they expect a reply.
         const RSVP =
           this.chatmessages.length &&
-          this.chatmessages[this.chatmessages.length - 1].type === 'Interested'
+          this.chatmessages[this.chatmessages.length - 1].type ===
+            'Interested' &&
+          this.chatmessages[this.chatmessages.length - 1].userid !== this.myid
 
         // Encode up any emojis.
         msg = twem.untwem(msg)
