@@ -14,7 +14,7 @@
         posted a volunteering opportunity<span class="d-none d-md-inline-block">:</span><br class="d-block d-md-none"> <b>{{ newsfeed.volunteering.title }}</b>
         <br>
         <span class="text-muted small">
-          {{ newsfeed.timestamp | timeago }}
+          {{ newsfeed.added | timeago }}
         </span>
         on {{ newsfeed.volunteering.groups[0].namedisplay }}
       </div>

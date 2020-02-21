@@ -8,7 +8,7 @@
         </span>
         <br>
         <span class="text-muted small pl-2">
-          {{ newsfeed.timestamp | timeago }}
+          {{ newsfeed.added | timeago }}
         </span>
       </div>
     </div>

@@ -14,7 +14,7 @@
         created an event<span class="d-none d-md-inline-block">:</span><br class="d-block d-md-none"> <b>{{ newsfeed.communityevent.title }}</b>
         <br>
         <span class="text-muted small">
-          {{ newsfeed.timestamp | timeago }}
+          {{ newsfeed.added | timeago }}
         </span>
         <span v-if="newsfeed.communityevent.groups.length > 0">
           on {{ newsfeed.communityevent.groups[0].namedisplay }}

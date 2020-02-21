@@ -35,7 +35,7 @@
                 </div>
                 <span v-if="userid && users[userid]">
                   <span class="text-muted small">
-                    {{ reply.timestamp | timeago }}
+                    {{ reply.added | timeago }}
                   </span>
                   <NewsUserInfo :user="users[userid]" />
                   <span>
