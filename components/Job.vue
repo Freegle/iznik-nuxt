@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @click="clicked">
     <div v-if="summary" class="ml-2 mr-2">
       <h6>
         <!-- eslint-disable-next-line -->
@@ -108,18 +108,10 @@ export default {
     }
   },
   methods: {
-    fire(e) {
-      // We have to fire the pnpClick here - we can't insert it into the template because it gets escaped.
-      const tag = this.job.onmousedown.match(/'(.*)'/)
-
-      if (tag && tag.length > 1) {
-        // We create an URL like the pnpClick function does.
-        const url = this.job.url + '&psd=' + tag[1]
-        console.log('Open', url)
-        window.open(url, '_blank')
-
-        e.preventDefault()
-      }
+    clicked() {
+      this.$store.dispatch('jobs/log', {
+        link: this.job.url
+      })
     }
   }
 }

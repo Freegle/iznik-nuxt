@@ -10,4 +10,8 @@ export default class JobAPI extends BaseAPI {
       throw new Error('Unexpected API data returned', ret)
     }
   }
+
+  async log(params) {
+    await this.$post('/adview', params)
+  }
 }
