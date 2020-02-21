@@ -203,7 +203,7 @@
           :chatid="chat.id"
           @confirm="hide"
         />
-        <ChatRSVPModal :id="id" ref="rsvp" :user="otheruser" />
+        <ChatRSVPModal v-if="RSVP" :id="id" ref="rsvp" :user="otheruser" />
       </div>
     </client-only>
   </div>
@@ -569,6 +569,7 @@ export default {
         await this._updateAfterSend()
 
         if (RSVP) {
+          this.RSVP = true
           this.waitForRef('rsvp', () => {
             this.$refs.rsvp.show()
           })

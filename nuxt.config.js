@@ -457,8 +457,8 @@ module.exports = {
                 '> 1%',
                 'last 2 versions',
                 'ie >= 8',
-                'safari >= 9',
-                'ios_saf >= 9'
+                'safari > 9',
+                'ios_saf > 9'
               ]
             }
         return [
