@@ -1,27 +1,28 @@
 <template>
   <div v-if="chat" class="clickme noselect" @click="click">
-    <b-row class="ml-1 mr-1">
-      <b-col class="pl-0">
-        <ProfileImage v-if="chat.icon" :image="chat.icon" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="md" />
-        <span class="pl-0 mb-0 chatname">
-          {{ chat.name }}
-        </span>
-        <span v-if="chat.unseen">
-          <b-badge variant="danger">{{ chat.unseen }}</b-badge>
-        </span>
-        <span class="float-right small text-muted">
-          {{ chat.lastdate | timeago }}
-        </span>
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col v-if="chat.snippet && chat.snippet !== 'false'" class="pl-4 truncate">
+    <div class="ml-1 mr-1">
+      <ProfileImage v-if="chat.icon" :image="chat.icon" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="md" />
+      <span class="pl-0 mb-0 chatname">
+        {{ chat.name }}
+      </span>
+      <span v-if="chat.unseen">
+        <b-badge variant="danger">{{ chat.unseen }}</b-badge>
+      </span>
+      <span class="float-right small text-muted">
+        {{ chat.lastdate | timeago }}
+      </span>
+    </div>
+    <div>
+      <b-badge v-if="chat.replyexpected" variant="danger" class="ml-4">
+        RSVP - please reply
+      </b-badge>
+      <div v-else-if="chat.snippet && chat.snippet !== 'false'" class="pl-4 truncate">
         {{ esnippet }}
-      </b-col>
-      <b-col v-else class="pl-4">
+      </div>
+      <div v-else class="pl-4">
         ...
-      </b-col>
-    </b-row>
+      </div>
+    </div>
   </div>
 </template>
 

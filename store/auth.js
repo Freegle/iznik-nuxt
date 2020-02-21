@@ -240,6 +240,9 @@ export const actions = {
       components: ['me', 'groups']
     }
 
+    // Always fetch the number of replies we're expecting.
+    params.components.push('expectedreplies')
+
     // If we have recently fetched the user without the groups, but we want them now, then ensure we refetch.
     for (const component of params.components) {
       if (component !== 'me' && state.user && !state.user[component]) {

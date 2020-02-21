@@ -92,7 +92,10 @@
           </b-row>
           <b-row>
             <b-col class="p-0">
-              <notice-message v-if="userHasReneged" variant="warning">
+              <notice-message v-if="expectedreply" variant="warning" @click.native="showInfo">
+                <v-icon name="exclamation-triangle" />&nbsp;{{ expectedreply | pluralize(['freegler is', 'freeglers are'], { includeNumber: true }) }} still waiting for them to reply.  You might not hear back from them.
+              </notice-message>
+              <notice-message v-else-if="userHasReneged" variant="warning" @click.native="showInfo">
                 <v-icon name="exclamation-triangle" />&nbsp;Things haven't always worked out for this freegler.  That might not be their fault, but please make very clear arrangements.
               </notice-message>
               <notice-message v-if="!spammer && showReplyTime && replytime" class="clickme" @click.native="showInfo">
@@ -356,6 +359,19 @@ export default {
 
       if (this.otheruser) {
         ret = this.otheruser.spammer
+      }
+
+      return ret
+    },
+
+    expectedreply() {
+      let ret = 0
+
+      if (this.otheruser) {
+        const user = this.$store.getters['user/get'](this.otheruser.id)
+        if (user && user.info) {
+          ret = user.info.expectedreply
+        }
       }
 
       return ret

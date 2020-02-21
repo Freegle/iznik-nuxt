@@ -5,6 +5,7 @@
         <SidebarLeft :show-community-events="true" :show-bot-left="true" />
       </b-col>
       <b-col cols="12" lg="6" class="p-0">
+        <ExpectedRepliesWarning v-if="me.expectedreplies" :count="me.expectedreplies" />
         <JobsTopBar />
         <b-card
           v-if="!simple"
@@ -199,6 +200,8 @@ const SidebarLeft = () => import('~/components/SidebarLeft')
 const SidebarRight = () => import('~/components/SidebarRight')
 const AvailabilityModal = () => import('~/components/AvailabilityModal')
 const DonationAskModal = () => import('~/components/DonationAskModal')
+const ExpectedRepliesWarning = () =>
+  import('~/components/ExpectedRepliesWarning')
 
 export default {
   components: {
@@ -207,7 +210,8 @@ export default {
     SidebarLeft,
     SidebarRight,
     DonationAskModal,
-    AvailabilityModal
+    AvailabilityModal,
+    ExpectedRepliesWarning
   },
   mixins: [loginRequired, buildHead, waitForRef],
   data() {

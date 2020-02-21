@@ -615,11 +615,8 @@ export default {
         this.$cookies.removeAll()
       } catch (e) {}
 
-      console.log('log out')
       await this.$store.dispatch('auth/logout')
-      console.log('Force login')
       this.$store.dispatch('auth/forceLogin', false)
-      console.log('Route')
 
       // Go to the landing page.
       this.$router.push('/')

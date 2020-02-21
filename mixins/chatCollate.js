@@ -26,11 +26,13 @@ export default {
           msgs[i].sameasnext &&
           msgs[i].message &&
           msgs[i + 1].message &&
+          (!msgs[i].replyexpected || msgs[i].replyreceived) &&
           new Date(msgs[i + 1].date).getTime() -
             new Date(msgs[i].date).getTime() <
             10 * 60 * 1000
         ) {
-          // The next message is within from the same user, within ten minutes.   Collate.
+          // The next message is within from the same user, within ten minutes, and not expecting a reply (in which
+          // case we want to show that).   Collate.
           last += '\n' + msgs[i].message
         } else if (last) {
           // We have collated text to pull in.  Need to avoid references.
