@@ -569,7 +569,9 @@ export default {
         await this._updateAfterSend()
 
         if (RSVP) {
-          this.$refs.rsvp.show()
+          this.waitForRef('profile', () => {
+            this.$refs.rsvp.show()
+          })
         }
       }
     },
