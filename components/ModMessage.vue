@@ -59,7 +59,7 @@
               This freegler is active on groups {{ message.fromuser.activedistance }} miles apart.
             </NoticeMessage>
             <NoticeMessage v-if="message.spamreason" variant="warning" class="mb-2">
-              {{ spamreason }}
+              {{ message.spamreason }}
             </NoticeMessage>
             <NoticeMessage v-else-if="spam" variant="warning" class="mb-2">
               We think this message might be spam.
