@@ -55,7 +55,7 @@
                 {{ message.heldby.timestamp | timeago }}.  Please check with them before releasing it.
               </NoticeMessage>
             </div>
-            <NoticeMessage v-if="message.fromuser.activedistance > 50" variant="warning" class="mb-2">
+            <NoticeMessage v-if="message.fromuser && message.fromuser.activedistance > 50" variant="warning" class="mb-2">
               This freegler is active on groups {{ message.fromuser.activedistance }} miles apart.
             </NoticeMessage>
             <NoticeMessage v-if="message.spamreason" variant="warning" class="mb-2">
@@ -82,7 +82,10 @@
           </b-col>
           <b-col cols="12" lg="4">
             <div class="rounded border border-info p-2 d-flex justify-content-between flex-wrap">
-              <MessageUserInfo :message="message" :user="message.fromuser" modinfo :groupid="message.groups[0].groupid" />
+              <MessageUserInfo v-if="message.fromuser" :message="message" :user="message.fromuser" modinfo :groupid="message.groups[0].groupid" />
+              <NoticeMessage v-else variant="danger">
+                Can't identify sender.  Probably a bug.
+              </NoticeMessage>
               <!-- TODO             Group list-->
               <!-- TODO             Applied list-->
             </div>
@@ -107,7 +110,7 @@
                   </span>
                 </span>
               </b-btn>
-              <b-btn v-if="message.fromuser.emails && message.fromuser.emails.length" variant="link" @click="showEmails = !showEmails">
+              <b-btn v-if="message.fromuser && message.fromuser.emails && message.fromuser.emails.length" variant="link" @click="showEmails = !showEmails">
                 <v-icon name="envelope" />
                 <span v-if="showEmails">
                   <span class="d-inline d-sm-none">
