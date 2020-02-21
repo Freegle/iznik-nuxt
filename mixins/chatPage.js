@@ -20,16 +20,23 @@ export default {
 
   computed: {
     sortedChats() {
-      // We sort chats by unread first, then
+      // We sort chats by RSVP first, then unread, then last time.
       let chats = Object.values(this.$store.getters['chats/list'])
 
       chats.sort(function(a, b) {
-        const aunseen = Math.max(1, a.unseen)
-        const bunseen = Math.max(1, b.unseen)
-        if (bunseen !== aunseen) {
-          return bunseen - aunseen
+        const aexpected = a.replyexpected
+        const bexpected = b.replyexpected
+
+        if (aexpected !== bexpected) {
+          return bexpected - aexpected
         } else {
-          return new Date(b.lastdate) - new Date(a.lastdate)
+          const aunseen = Math.max(1, a.unseen)
+          const bunseen = Math.max(1, b.unseen)
+          if (bunseen !== aunseen) {
+            return bunseen - aunseen
+          } else {
+            return new Date(b.lastdate) - new Date(a.lastdate)
+          }
         }
       })
 
