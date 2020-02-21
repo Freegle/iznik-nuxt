@@ -7,7 +7,7 @@
       <p>
         Please don't leave them hanging!  Other people will see that you haven't replied yet.
       </p>
-      <b-btn to="/chats" variant="success" size="lg">
+      <b-btn variant="success" size="lg" @click="go">
         Reply now
       </b-btn>
     </NoticeMessage>
@@ -21,6 +21,23 @@ export default {
     count: {
       type: Number,
       required: true
+    }
+  },
+  mounted() {
+    // Record the show
+    this.$api.bandit.shown({
+      uid: 'rsvp',
+      variant: 'warning'
+    })
+  },
+  methods: {
+    go() {
+      this.$api.bandit.chosen({
+        uid: 'rsvp',
+        variant: 'warning'
+      })
+
+      this.$router.push('/chats')
     }
   }
 }
