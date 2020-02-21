@@ -26,18 +26,21 @@ export default {
       chats.sort(function(a, b) {
         const aexpected = a.replyexpected
         const bexpected = b.replyexpected
+        let ret = null
 
         if (aexpected !== bexpected) {
-          return bexpected - aexpected
+          ret = bexpected - aexpected
         } else {
-          const aunseen = Math.max(1, a.unseen)
-          const bunseen = Math.max(1, b.unseen)
+          const aunseen = Math.max(0, a.unseen)
+          const bunseen = Math.max(0, b.unseen)
           if (bunseen !== aunseen) {
-            return bunseen - aunseen
+            ret = bunseen - aunseen
           } else {
-            return new Date(b.lastdate) - new Date(a.lastdate)
+            ret = new Date(b.lastdate) - new Date(a.lastdate)
           }
         }
+
+        return ret
       })
 
       if (this.search && this.clientSearch) {
