@@ -101,60 +101,41 @@
                 </p>
               </b-card-text>
             </b-card-body>
-            <b-card-footer>
-              <div v-if="!simple" class="float-right text-faded">
-                <b-btn variant="white" title="Share" @click="share">
+            <b-card-footer class="p-1">
+              <div class="d-flex justify-content-start flex-wrap">
+                <b-btn v-if="rejected" variant="warning" class="m-1" @click="repost">
+                  <v-icon name="pen" /> Edit and Resend
+                </b-btn>
+                <b-btn v-if="rejected && !withdrawn" variant="white" class="m-1" @click="outcome('Withdrawn')">
+                  <v-icon name="trash-alt" /> Withdraw
+                </b-btn>
+                <b-btn v-if="!rejected && message.type === 'Offer' && !taken" variant="success" class="m-1" @click="outcome('Taken')">
+                  <v-icon name="check" /> Mark as TAKEN
+                </b-btn>
+                <b-btn v-if="!rejected && message.type === 'Wanted' && !received" variant="success" class="m-1" @click="outcome('Received')">
+                  <v-icon name="check" /> Mark as RECEIVED
+                </b-btn>
+                <b-btn v-if="!rejected && !taken && !received && !withdrawn" variant="white" class="m-1" @click="outcome('Withdrawn')">
+                  <v-icon name="trash-alt" /> Withdraw
+                </b-btn>
+                <b-btn v-if="!rejected && message.canedit" variant="primary" class="m-1" @click="edit">
+                  <v-icon name="pen" /> Edit
+                </b-btn>
+                <b-btn v-if="!rejected && message.canrepost" variant="white" class="m-1" @click="repost">
+                  <v-icon name="sync" /> Repost
+                </b-btn>
+                <b-btn v-else-if="!rejected && !taken && !received && message.canrepostat" variant="white" disabled class="m-1" title="You will be able to repost this soon">
+                  <v-icon name="sync" /> Repost <span class="small">{{ message.canrepostat | timeago }}</span>
+                </b-btn>
+                <b-btn v-if="!rejected && !simple" variant="white" title="Share" class="m-1 text-faded" @click="share">
                   <v-icon name="share-alt" /> Share
                 </b-btn>
-                <br>
-                <nuxt-link :to="'/message/' + message.id" target="_blank" class="text-faded">
-                  #{{ message.id }}
-                </nuxt-link>
+                <div class="align-self-end">
+                  <nuxt-link :to="'/message/' + message.id" target="_blank" class="text-faded">
+                    #{{ message.id }}
+                  </nuxt-link>
+                </div>
               </div>
-              <b-list-group v-if="rejected" horizontal class="flex-wrap">
-                <b-list-group-item>
-                  <b-btn variant="warning" class="d-inline mr-1" @click="repost">
-                    <v-icon name="pen" /> Edit and Resend
-                  </b-btn>
-                </b-list-group-item>
-                <b-list-group-item v-if="!withdrawn">
-                  <b-btn variant="white" class="d-inline mr-1" @click="outcome('Withdrawn')">
-                    <v-icon name="trash-alt" /> Withdraw
-                  </b-btn>
-                </b-list-group-item>
-              </b-list-group>
-              <b-list-group v-else horizontal class="flex-wrap">
-                <b-list-group-item v-if="message.type === 'Offer' && !taken">
-                  <b-btn variant="success" class="d-inline mr-1" @click="outcome('Taken')">
-                    <v-icon name="check" /> Mark as TAKEN
-                  </b-btn>
-                </b-list-group-item>
-                <b-list-group-item v-else-if="message.type === 'Wanted' && !received">
-                  <b-btn variant="success" class="d-inline mr-1" @click="outcome('Received')">
-                    <v-icon name="check" /> Mark as RECEIVED
-                  </b-btn>
-                </b-list-group-item>
-                <b-list-group-item v-if="!taken && !received && !withdrawn">
-                  <b-btn variant="white" class="d-inline mr-1" @click="outcome('Withdrawn')">
-                    <v-icon name="trash-alt" /> Withdraw
-                  </b-btn>
-                </b-list-group-item>
-                <b-list-group-item v-if="message.canedit">
-                  <b-btn variant="primary" class="d-inline mr-1" @click="edit">
-                    <v-icon name="pen" /> Edit
-                  </b-btn>
-                </b-list-group-item>
-                <b-list-group-item v-if="message.canrepost">
-                  <b-btn variant="white" class="d-inline mr-1" @click="repost">
-                    <v-icon name="sync" /> Post Again
-                  </b-btn>
-                </b-list-group-item>
-                <b-list-group-item v-else-if="!taken && !received && message.canrepostat">
-                  <b-btn variant="white" disabled class="d-inline mr-1" title="You will be able to repost this soon">
-                    <v-icon name="sync" /> Post Again <span class="small">{{ message.canrepostat | timeago }}</span>
-                  </b-btn>
-                </b-list-group-item>
-              </b-list-group>
             </b-card-footer>
           </div>
         </b-collapse>
