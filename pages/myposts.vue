@@ -5,7 +5,7 @@
         <SidebarLeft :show-community-events="true" :show-bot-left="true" />
       </b-col>
       <b-col cols="12" lg="6" class="p-0">
-        <ExpectedRepliesWarning v-if="me.expectedreplies" :count="me.expectedreplies" />
+        <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" />
         <JobsTopBar />
         <b-card
           v-if="!simple"
