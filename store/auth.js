@@ -55,7 +55,7 @@ export const mutations = {
 
       if (state.userlist.indexOf(user.id) === -1) {
         if (state.userlist.length > 9) {
-          this.state.userlist.pop()
+          state.userlist.pop()
         }
 
         state.userlist.unshift(user.id)
