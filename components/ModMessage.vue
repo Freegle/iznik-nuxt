@@ -330,13 +330,23 @@ export default {
     async save() {
       this.saving = true
 
-      await this.$store.dispatch('messages/patch', {
-        id: this.message.id,
-        msgtype: this.message.type,
-        item: this.message.item.name,
-        location: this.message.location.name,
-        textbody: this.message.textbody
-      })
+      if (this.message.location) {
+        // Well-structured message
+        await this.$store.dispatch('messages/patch', {
+          id: this.message.id,
+          msgtype: this.message.type,
+          item: this.message.item.name,
+          location: this.message.location.name,
+          textbody: this.message.textbody
+        })
+      } else {
+        // Not
+        await this.$store.dispatch('messages/patch', {
+          id: this.message.id,
+          subject: this.message.subject,
+          textbody: this.message.textbody
+        })
+      }
 
       this.saving = false
       this.editing = false
