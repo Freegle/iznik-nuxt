@@ -17,7 +17,7 @@
         </span>
       </span>
     </div>
-    <div v-if="message.groups && message.groups.length && message.groups[0].arrival !== message.date" class="small">
+    <div v-if="modinfo && message.groups && message.groups.length && message.groups[0].arrival !== message.date" class="small">
       First posted {{ message.date | datetime }}
     </div>
   </div>
