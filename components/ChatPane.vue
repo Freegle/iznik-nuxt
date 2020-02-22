@@ -273,7 +273,7 @@ export default {
       sending: false,
       scrolledToBottom: false,
       showReplyTime: true,
-      RSVP: true
+      RSVP: false
     }
   },
   computed: {
