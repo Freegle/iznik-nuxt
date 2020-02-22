@@ -2,17 +2,16 @@
   <div>
     <b-card bg-variant="white" no-body>
       <b-card-header class="d-flex justify-content-between">
-        <!--        TODO Edits-->
         <div>
           <div v-if="!editing" :class="subjectClass + ' font-weight-bold'">
             {{ eSubject }}
           </div>
           <div v-else>
-            <div v-if="message.location">
+            <div v-if="message.location" class="d-flex justify-content-start">
+              <b-select v-model="message.type" :options="typeOptions" class="type mr-1" size="lg" />
+              <b-input v-model="message.item.name" size="lg" class="mr-1" />
               <b-input-group>
-                <b-select v-model="message.type" :options="typeOptions" class="type" />
-                <b-input v-model="message.item.name" />
-                <b-input v-model="message.location.name" class="location" />
+                <Postcode :value="message.location.name" :find="false" @selected="postcodeSelect" />
               </b-input-group>
             </div>
             <div v-else>
@@ -27,15 +26,6 @@
           <b-btn v-if="!editing" variant="white" @click="editing = true">
             <v-icon name="pen" /><span class="d-none d-sm-inline"> Edit</span>
           </b-btn>
-          <b-btn v-if="editing" variant="white" @click="editing = false">
-            <v-icon name="" /> Cancel
-          </b-btn>
-          <b-button v-if="editing" variant="white" disabled @click="save">
-            <v-icon v-if="saving" name="sync" class="text-success fa-spin" />
-            <v-icon v-else-if="saved" name="check" class="text-success" />
-            <v-icon v-else name="save" />
-            Save
-          </b-button>
         </div>
         <!--        TODO Duplicates, related-->
         <!--        Worry Words-->
@@ -188,7 +178,16 @@
         </b-row>
       </b-card-body>
       <b-card-footer>
-        <ModMessageButtons :message="message" :modconfig="modconfig" />
+        <ModMessageButtons v-if="!editing" :message="message" :modconfig="modconfig" />
+        <b-btn v-if="editing" variant="white" @click="editing = false">
+          <v-icon name="times" /> Cancel
+        </b-btn>
+        <b-button v-if="editing" variant="success" @click="save">
+          <v-icon v-if="saving" name="sync" class="text-success fa-spin" />
+          <v-icon v-else-if="saved" name="check" class="text-success" />
+          <v-icon v-else name="save" />
+          Save
+        </b-button>
       </b-card-footer>
     </b-card>
   </div>
@@ -204,11 +203,13 @@ import ModPhoto from './ModPhoto'
 import NoticeMessage from './NoticeMessage'
 import ModMessageButtons from './ModMessageButtons'
 import ModMessageWorry from './ModMessageWorry'
+import Postcode from './Postcode'
 import twem from '~/assets/js/twem'
 
 export default {
   name: 'ModMessage',
   components: {
+    Postcode,
     ModMessageWorry,
     ModMessageButtons,
     NoticeMessage,
@@ -321,6 +322,24 @@ export default {
       }
 
       return ret
+    },
+    postcodeSelect(pc) {
+      console.log('Selected', pc)
+      this.message.location = pc
+    },
+    async save() {
+      this.saving = true
+
+      await this.$store.dispatch('messages/patch', {
+        id: this.message.id,
+        msgtype: this.message.type,
+        item: this.message.item.name,
+        location: this.message.location.name,
+        textbody: this.message.textbody
+      })
+
+      this.saving = false
+      this.editing = false
     }
   }
 }
