@@ -316,9 +316,9 @@ export default {
     },
 
     chatmessages() {
-      return this.chatCollate(
-        this.$store.getters['chatmessages/getMessages'](this.id)
-      )
+      const msgs = this.$store.getters['chatmessages/getMessages'](this.id)
+      const ret = this.chatCollate(msgs)
+      return ret
     },
 
     chatusers() {
@@ -410,7 +410,6 @@ export default {
   watch: {
     me(newVal, oldVal) {
       if (!oldVal && newVal) {
-        console.log('we are now logged in')
         this.fetchChat()
       }
     },
@@ -440,6 +439,28 @@ export default {
 
   beforeMount() {
     this.fetchChat()
+  },
+
+  async mounted() {
+    // We don't want to clear the store, because cached messages make us look zippy.  But there might be new messages.
+    // So fetch until we stop finding new messages.  We can't rely on infinite scroll because we might already be full.
+    await this.$store.dispatch('chatmessages/clearContext', {
+      chatid: this.id
+    })
+
+    let msgs
+    let count
+
+    do {
+      msgs = this.$store.getters['chatmessages/getMessages'](this.id)
+      count = msgs.length
+
+      await this.$store.dispatch('chatmessages/fetch', {
+        chatid: this.id
+      })
+
+      msgs = this.$store.getters['chatmessages/getMessages'](this.id)
+    } while (msgs.length !== count)
   },
 
   methods: {
