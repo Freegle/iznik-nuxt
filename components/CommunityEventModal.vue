@@ -100,7 +100,7 @@
               Website
             </b-col>
             <b-col cols="8" md="9" class="forcebreak">
-              <a :href="event.contacturl">{{ event.contacturl }}</a>
+              <a :href="event.contacturl" target="_blank" rel="noopener noreferrer">{{ event.contacturl }}</a>
             </b-col>
           </b-row>
 
