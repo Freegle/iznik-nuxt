@@ -7,7 +7,7 @@
           <!-- eslint-disable-next-line -->
           <span  class="align-middle" v-if="unseen > 0"><b>{{ reply.user.displayname }}</b></span>
           <!-- eslint-disable-next-line -->
-          <span v-else class="align-middle">{{ reply.user.displayname }}</span>
+          <span v-else class="align-middle"><b>{{ reply.user.displayname }}</b></span>
           <span v-if="reply.lastuserid !== myid" class="align-middle text-muted">
             last wrote to you:
           </span>
@@ -15,8 +15,8 @@
             you last sent:
           </span>
           <br>
-          <span v-if="unseen > 0" class="bg-white snippet">
-            <b>{{ reply.snippet }}...</b>
+          <span v-if="unseen > 0" class="bg-white snippet text-primary">
+            {{ reply.snippet }}...
           </span>
           <span v-else-if="reply.snippet" class="bg-white snippet">
             {{ reply.snippet }}...
