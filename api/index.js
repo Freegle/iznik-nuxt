@@ -28,6 +28,7 @@ import NotificationAPI from './NotificationAPI.js'
 import ScheduleAPI from './ScheduleAPI.js'
 import SessionAPI from './SessionAPI.js'
 import ShortlinkAPI from './ShortlinkAPI.js'
+import StatusAPI from './StatusAPI.js'
 import StoriesAPI from './StoriesAPI.js'
 import TeamAPI from './TeamAPI.js'
 import UserAPI from './UserAPI.js'
@@ -57,6 +58,7 @@ export default ({ $axios, store }) => {
     schedule: new ScheduleAPI(options),
     session: new SessionAPI(options),
     shortlink: new ShortlinkAPI(options),
+    status: new StatusAPI(options),
     stories: new StoriesAPI(options),
     team: new TeamAPI(options),
     user: new UserAPI(options),

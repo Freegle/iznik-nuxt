@@ -14,9 +14,22 @@ Vue.mixin({
     },
     mod() {
       return (
-        this.me.systemrole === 'Moderator' ||
-        this.me.systemrole === 'Support' ||
-        this.me.systemrole === 'Admin'
+        this.me &&
+        (this.me.systemrole === 'Moderator' ||
+          this.me.systemrole === 'Support' ||
+          this.me.systemrole === 'Admin')
+      )
+    },
+    support() {
+      return this.me && this.me.systemrole === 'Support'
+    },
+    admin() {
+      return this.me && this.me.systemrole === 'Admin'
+    },
+    supportOrAdmin() {
+      return (
+        this.me &&
+        (this.me.systemrole === 'Support' || this.me.systemrole === 'Admin')
       )
     },
     simple() {

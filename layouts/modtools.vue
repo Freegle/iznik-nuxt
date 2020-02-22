@@ -2,7 +2,7 @@
   <client-only>
     <div class="pageback">
       <b-navbar id="navbar" type="dark" class="navback" fixed="top">
-        <b-navbar-brand to="/modtools" class="p-0">
+        <b-navbar-brand to="/modtools" class="p-0 d-flex">
           <b-img
             class="logo mr-2"
             height="58"
@@ -11,12 +11,13 @@
             :src="logo"
             alt="Home"
           />
+          <ModStatus v-if="supportOrAdmin" class="mt-3" />
         </b-navbar-brand>
         <b-navbar-nav />
         <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown right class="d-block d-sm-none">
             <template v-slot:button-content>
-              <ModMenuItemNav :count="['pending', 'chatreview']" icon="envelope" />
+              <ModMenuItemNav :count="['pending', 'chatreview']" icon="envelope" class="menuicon" />
             </template>
             <b-dropdown-item>
               <ModMenuItemNav name="Pending" :count="['pending']" :othercount="['pending']" link="/modtools/messages/pending" />
@@ -33,7 +34,7 @@
           </b-nav-item-dropdown>
           <b-nav-item-dropdown right class="d-block d-sm-none">
             <template v-slot:button-content>
-              <ModMenuItemNav v-if="hasPermissionNewsletter" :count="['pendingmembers', 'stories', 'newsletterstories']" icon="users" />
+              <ModMenuItemNav v-if="hasPermissionNewsletter" :count="['pendingmembers', 'stories', 'newsletterstories']" icon="users" class="menuicon" />
             </template>
             <b-dropdown-item>
               <ModMenuItemNav name="Pending" :count="['pendingmembers']" link="/modtools/members/pending" />
@@ -48,7 +49,7 @@
               <ModMenuItemNav name="Stories" :count="['newsletterstories']" href="/modtools/members/newsletter" />
             </b-dropdown-item>
           </b-nav-item-dropdown>
-          <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse" class="text-center p-0" @click="discourse">
+          <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse" class="text-center p-0 menuicon" @click="discourse">
             <div class="notifwrapper">
               <span class="d-none d-sm-inline">
                 <v-icon name="brands/discourse" scale="2" class="fa-fw" /><br>
@@ -124,13 +125,15 @@ import ModMenuItemNav from '../components/ModMenuItemNav'
 import LoginModal from '~/components/LoginModal'
 
 const ChatPopups = () => import('~/components/ChatPopups')
+const ModStatus = () => import('~/components/ModStatus')
 
 export default {
   components: {
     ModMenuItemNav,
     ModMenuItemLeft,
     ChatPopups,
-    LoginModal
+    LoginModal,
+    ModStatus
   },
 
   data: function() {
@@ -347,5 +350,10 @@ body.modal-open {
 .fa-fw {
   width: 2rem;
   height: 2rem;
+}
+
+.menuicon {
+  position: relative;
+  top: 13px;
 }
 </style>

@@ -30,6 +30,7 @@ import NotificationAPI from './NotificationAPI.js'
 import ScheduleAPI from './ScheduleAPI.js'
 import SessionAPI from './SessionAPI.js'
 import ShortlinkAPI from './ShortlinkAPI.js'
+import StatusAPI from './StatusAPI.js'
 import StoriesAPI from './StoriesAPI.js'
 import TeamAPI from './TeamAPI.js'
 import UserAPI from './UserAPI.js'
@@ -57,6 +58,7 @@ interface API {
   schedule: ScheduleAPI;
   session: SessionAPI;
   shortlink: ShortlinkAPI;
+  status: StatusAPI;
   stories: StoriesAPI;
   team: TeamAPI;
   user: UserAPI;
