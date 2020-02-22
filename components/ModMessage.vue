@@ -245,7 +245,6 @@ export default {
     spam() {
       return this.hasCollection('Spam')
     },
-
     typeOptions() {
       // TODO Per group keywords
       return [

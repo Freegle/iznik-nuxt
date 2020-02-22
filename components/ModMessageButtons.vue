@@ -98,7 +98,6 @@
         :label="stdmsg.title"
         :stdmsgid="stdmsg.id"
         :message="message"
-        :disabled="stdmsg.action === 'Edit'"
       />
       <b-btn
         v-if="rareToShow && !showRare"
