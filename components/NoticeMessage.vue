@@ -25,6 +25,12 @@ export default {
   border-style: solid;
 }
 
+.notice--success {
+  background-color: $colour-success-bg;
+  border-color: $colour-success-border;
+  color: $colour-success-fg;
+}
+
 .notice--info {
   background-color: $color-blue--x-light;
   border-color: $color-blue-x-light2;

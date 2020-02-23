@@ -1,5 +1,5 @@
 <template>
-  <span title="Platform Status - click for more info" @click="clicked">
+  <span v-if="tried" title="Platform Status - click for more info" @click="clicked">
     <span v-if="fine" class="fine" />
     <span v-if="warning" class="warning" />
     <span v-if="error" class="error" />
@@ -47,7 +47,8 @@ export default {
       overall: 'green',
       status: null,
       updated: null,
-      show: false
+      show: false,
+      tried: false
     }
   },
   computed: {
@@ -62,7 +63,7 @@ export default {
       return this.outOfDate || (this.status && this.status.warning)
     },
     fine() {
-      return this.status ? this.status.fine : false
+      return !this.error && !this.warning
     },
     headline() {
       if (this.outOfDate) {
@@ -87,6 +88,9 @@ export default {
   methods: {
     async checkStatus() {
       this.status = await this.$api.status.fetch()
+
+      this.tried = true
+
       if (this.status.ret === 0) {
         this.updated = Date.now()
       }
