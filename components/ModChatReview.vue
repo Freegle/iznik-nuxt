@@ -39,13 +39,13 @@
       </b-card-body>
       <b-card-footer>
         <div class="d-flex flex-wrap justify-content-start">
-          <b-btn variant="white" class="mr-2 mb-1">
+          <b-btn variant="white" class="mr-2 mb-1" @click="view">
             <v-icon name="comments" /> View Chat
           </b-btn>
           <b-btn v-if="message.held" variant="warning" class="mr-2 mb-1" @click="release">
             <v-icon name="play" /> Release
           </b-btn>
-          <b-btn v-if="!message.held" variant="primary" class="mr-2 mb-1">
+          <b-btn v-if="!message.held" variant="primary" class="mr-2 mb-1" disabled>
             <v-icon name="exclamation-triangle" /> Add Mod Message
           </b-btn>
           <b-btn v-if="!message.held" variant="success" class="mr-2 mb-1" @click="approve">
@@ -66,14 +66,18 @@
         </div>
       </b-card-footer>
     </b-card>
+    <ModChatReviewModal ref="modal" :message="message" />
   </div>
 </template>
 <script>
+import waitForRef from '../mixins/waitForRef'
 import NoticeMessage from './NoticeMessage'
 import ModChatReviewUser from './ModChatReviewUser'
+import ModChatReviewModal from './ModChatReviewModal'
 
 export default {
-  components: { ModChatReviewUser, NoticeMessage },
+  components: { ModChatReviewModal, ModChatReviewUser, NoticeMessage },
+  mixins: [waitForRef],
   props: {
     message: {
       type: Object,
@@ -109,6 +113,11 @@ export default {
       this.$store.dispatch('chatmessages/whitelist', {
         id: this.message.id,
         chatid: null
+      })
+    },
+    view() {
+      this.waitForRef('modal', () => {
+        this.$refs.modal.show()
       })
     }
   }
