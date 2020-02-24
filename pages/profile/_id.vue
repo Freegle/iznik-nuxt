@@ -3,7 +3,7 @@
     <div v-if="user">
       <b-row>
         <b-col cols="12" md="6" offset-md="3">
-          <b-card variant="white">
+          <b-card variant="white" border-variant="success" class="mt-1">
             <b-card-body class="p-0">
               <div class="m-0">
                 <b-media>
@@ -88,7 +88,7 @@
               </p>
             </b-card-body>
           </b-card>
-          <b-card border-variant="info" header-text-variant="text-info" class="mt-2">
+          <b-card border-variant="success" header-text-variant="text-info" class="mt-2">
             <template v-slot:header>
               <v-icon name="search" />
               {{ activeWanteds.length }} active {{ activeWanteds.length | pluralize(['WANTED', 'WANTEDs']) }}
@@ -104,7 +104,7 @@
               </p>
             </b-card-body>
           </b-card>
-          <b-card border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
+          <b-card border-variant="success" header-bg-variant="info" header-text-variant="white" class="mt-2">
             <template v-slot:header>
               <v-icon name="chart-bar" />
               <span v-if="user.info.offers + user.info.wanteds + user.info.replies > 0">Activity in the last 90 days</span>
