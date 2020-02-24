@@ -100,6 +100,11 @@ const cordovaApp = {
           // The watch code below also calls savePushId() in case we've already logged in
         })
 
+        // Android 6
+        mobilePush.on('replyToChat', function(data) {
+          console.log('REPLY TO CHAT',data)
+        })
+
         // Called to handle a push notification
         //
         // Note: before each notification, we send a first notification with count = 0 to clear notifications in Android
@@ -140,6 +145,11 @@ const cordovaApp = {
             console.log('clearAllNotifications')
           }
           mobilePush.setApplicationIconBadgeNumber(function () { }, function () { }, data.count)
+
+          if ('inlineReply' in data.additionalData) {
+            const inlineReply = data.additionalData.inlineReply
+            console.log('======== inlineReply', inlineReply)
+          }
 
           if (!doubleEvent) {
             // Pass route to go to (or update) but only if in background or just starting app
