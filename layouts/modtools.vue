@@ -49,13 +49,13 @@
               <ModMenuItemNav name="Stories" :count="['newsletterstories']" href="/modtools/members/newsletter" />
             </b-dropdown-item>
           </b-nav-item-dropdown>
-          <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse" class="text-center p-0 menuicon" @click="discourse">
+          <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse" class="text-center p-0" @click="discourse">
             <div class="notifwrapper">
               <span class="d-none d-sm-inline">
                 <v-icon name="brands/discourse" scale="2" class="fa-fw" /><br>
                 Us
               </span>
-              <v-icon name="brands/discourse" class="d-inline d-sm-none discourse" scale="2" />
+              <v-icon name="brands/discourse" class="d-inline d-sm-none" scale="2" />
               <b-badge v-if="discourseCount" variant="success">
                 {{ discourseCount }}
               </b-badge>
