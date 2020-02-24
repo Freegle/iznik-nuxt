@@ -16,7 +16,7 @@
         <p>
           Please let us know if you're expecting to talk to <em>{{ user.displayname }}</em> again soon.
         </p>
-        <p>
+        <p v-if="dohide">
           If you're not, we will hide the chat from your list for now.  You can still find it from My Posts.
         </p>
       </div>
@@ -58,6 +58,7 @@ export default {
     return {
       showModal: false,
       chaseup: false,
+      dohide: false,
       variant: null
     }
   },
@@ -85,6 +86,7 @@ export default {
     })
 
     this.chaseup = variant.variant === 'chaseup'
+    this.dohide = variant.variant === 'expectingreply'
 
     this.$api.bandit.shown({
       uid: 'askrsvp',
@@ -128,7 +130,7 @@ export default {
         })
       }
 
-      if (!this.chaseup) {
+      if (this.dohide) {
         await this.$store.dispatch('chats/hide', {
           id: this.id
         })
