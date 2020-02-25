@@ -265,5 +265,14 @@ export const actions = {
     commit('remove', {
       userid: params.userid
     })
+  },
+
+  async ban({ commit }, params) {
+    // Ban member.
+    await this.$api.memberships.ban(params.userid, params.groupid)
+
+    commit('remove', {
+      userid: params.userid
+    })
   }
 }

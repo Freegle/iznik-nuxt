@@ -3,7 +3,7 @@
     <b-btn variant="white" @click="remove">
       <v-icon name="times" /> Remove
     </b-btn>
-    <b-btn variant="white" disabled>
+    <b-btn variant="white" @click="ban">
       <v-icon name="trash-alt" /> Ban
     </b-btn>
     <b-btn variant="white" disabled>
@@ -19,6 +19,7 @@
       <v-icon name="trash-alt" /> Purge
     </b-btn>
     <ConfirmModal v-if="removeConfirm" ref="removeConfirm" :title="'Remove ' + displayname + ' from ' + groupname + '?'" @confirm="removeConfirmed" />
+    <ConfirmModal v-if="banConfirm" ref="banConfirm" :title="'Ban ' + displayname + ' from ' + groupname + '?'" @confirm="banConfirmed" />
   </div>
 </template>
 <script>
@@ -41,6 +42,7 @@ export default {
   data: function() {
     return {
       removeConfirm: false,
+      banConfirm: false,
       user: null
     }
   },
@@ -77,6 +79,23 @@ export default {
     },
     removeConfirmed() {
       this.$store.dispatch('members/remove', {
+        userid: this.userid,
+        groupid: this.groupid
+      })
+    },
+    async ban() {
+      if (!this.user) {
+        await this.fetchUser()
+      }
+
+      this.banConfirm = true
+
+      this.waitForRef('banConfirm', () => {
+        this.$refs.banConfirm.show()
+      })
+    },
+    banConfirmed() {
+      this.$store.dispatch('members/ban', {
         userid: this.userid,
         groupid: this.groupid
       })
