@@ -22,13 +22,24 @@
           </span>
         </div>
       </div>
-      <b-input v-model="subject" class="mt-2" />
+      <div v-if="stdmsg.action === 'Edit' && message.location" class="d-flex justify-content-start">
+        <b-select v-model="message.type" :options="typeOptions" class="type mr-1" size="lg" />
+        <b-input v-model="message.item.name" size="lg" class="mr-1" />
+        <b-input-group>
+          <Postcode :value="message.location.name" :find="false" @selected="postcodeSelect" />
+        </b-input-group>
+      </div>
+      <div v-else>
+        <b-input-group>
+          <b-input v-model="subject" class="mt-2" />
+        </b-input-group>
+      </div>
       <b-textarea v-model="body" rows="10" class="mt-2" />
-      <div v-if="stdmsg && stdmsg.newdelstatus !== 'UNCHANGED'" class="mt-1">
+      <div v-if="stdmsg.newdelstatus && stdmsg.newdelstatus !== 'UNCHANGED'" class="mt-1">
         <v-icon name="cog" />
         Change email frequency to <em>{{ emailfrequency }}</em>
       </div>
-      <div v-if="stdmsg && stdmsg.newmodstatus !== 'UNCHANGED'" class="mt-1">
+      <div v-if="stdmsg.newmodstatus && stdmsg.newmodstatus !== 'UNCHANGED'" class="mt-1">
         <v-icon name="cog" />
         Change moderation status to <em>{{ modstatus }}</em>
       </div>
@@ -44,16 +55,17 @@
   </b-modal>
 </template>
 <script>
+import Postcode from './Postcode'
 export default {
+  components: { Postcode },
   props: {
     message: {
       type: Object,
       required: true
     },
-    stdmsgid: {
-      type: Number,
-      required: false,
-      default: null
+    stdmsg: {
+      type: Object,
+      required: true
     }
   },
   data: function() {
@@ -61,15 +73,11 @@ export default {
       showModal: false,
       subject: null,
       body: null,
-      stdmsg: null,
       keywordList: ['Offer', 'Taken', 'Wanted', 'Received', 'Other'],
       recentDays: 31
     }
   },
   computed: {
-    me() {
-      return this.$store.getters['auth/user']
-    },
     fromName() {
       return this.me.displayname
     },
@@ -87,7 +95,19 @@ export default {
 
       return ret
     },
-
+    typeOptions() {
+      // TODO Per group keywords
+      return [
+        {
+          value: 'Offer',
+          text: 'OFFER'
+        },
+        {
+          value: 'Wanted',
+          text: 'WANTED'
+        }
+      ]
+    },
     groupid() {
       let ret = null
 
@@ -98,98 +118,77 @@ export default {
       return ret
     },
     processLabel() {
-      if (this.stdmsg) {
-        switch (this.stdmsg.action) {
-          case 'Approve':
-          case 'Approve Member':
-            return 'Send and Approve'
-          case 'Reject':
-          case 'Reject Member':
-            return 'Send and Reject'
-          case 'Leave':
-          case 'Leave Member':
-          case 'Leave Approved Message':
-          case 'Leave Approved Member':
-            return 'Send and Leave'
-          case 'Delete':
-          case 'Delete Approved Message':
-          case 'Delete Approved Member':
-            return 'Send and Delete'
-          case 'Edit':
-            return 'Save Edit'
-          default:
-            return 'Unknown Action - Bug'
-        }
-      } else {
-        return 'Send'
+      switch (this.stdmsg.action) {
+        case 'Approve':
+        case 'Approve Member':
+          return 'Send and Approve'
+        case 'Reject':
+        case 'Reject Member':
+          return 'Send and Reject'
+        case 'Leave':
+        case 'Leave Member':
+        case 'Leave Approved Message':
+        case 'Leave Approved Member':
+          return 'Send and Leave'
+        case 'Delete':
+        case 'Delete Approved Message':
+        case 'Delete Approved Member':
+          return 'Send and Delete'
+        case 'Edit':
+          return 'Save Edit'
+        default:
+          return 'Send'
       }
     },
     modstatus() {
-      if (this.stdmsg) {
-        switch (this.stdmsg.newmodstatus) {
-          case 'UNCHANGED':
-            return 'Unchanged'
-          case 'MODERATOED':
-            return 'Moerated'
-          case 'DEFAULT':
-            return 'Group Settings'
-          case 'PROHIBITED':
-            return "Can't Post"
-        }
+      switch (this.stdmsg.newmodstatus) {
+        case 'UNCHANGED':
+          return 'Unchanged'
+        case 'MODERATOED':
+          return 'Moerated'
+        case 'DEFAULT':
+          return 'Group Settings'
+        case 'PROHIBITED':
+          return "Can't Post"
+        default:
+          return null
       }
-
-      return null
     },
     emailfrequency() {
-      if (this.stdmsg) {
-        switch (this.stdmsg.newdelstatus) {
-          case 'DIGEST':
-            return 24
-          case 'NONE':
-            return 0
-          case 'SINGLE':
-            return -1
-          case 'ANNOUNCEMENT':
-            return 0
-        }
+      switch (this.stdmsg.newdelstatus) {
+        case 'DIGEST':
+          return 24
+        case 'NONE':
+          return 0
+        case 'SINGLE':
+          return -1
+        case 'ANNOUNCEMENT':
+          return 0
+        default:
+          return 0
       }
-
-      return 0
     },
     delstatus() {
-      if (this.stdmsg) {
-        switch (this.emailfrequency) {
-          case 24:
-            return 'Every Day'
-          case 0:
-            return 'Never'
-          case -1:
-            return 'Immediately'
-        }
+      switch (this.emailfrequency) {
+        case 24:
+          return 'Every Day'
+        case 0:
+          return 'Never'
+        case -1:
+          return 'Immediately'
+        default:
+          return 'Unknown'
       }
-
-      return 'Unknown'
     }
   },
   methods: {
-    async show() {
-      // Get the full standard message
-      if (this.stdmsgid) {
-        this.stdmsg = await this.$store.dispatch('stdmsgs/fetch', {
-          id: this.stdmsgid
-        })
-      }
-
+    show() {
       // Calculate initial subject.
-      if (this.stdmsg) {
-        this.subject =
-          (this.stdmsg.subjpref ? this.stdmsg.subjpref : 'Re') +
-          ': ' +
-          this.message.subject +
-          (this.stdmsg.subjsuff ? this.stdmsg.subjsuff : '')
-      } else {
-        this.subject = 'Re: ' + this.message.subject
-      }
+      this.subject =
+        (this.stdmsg.subjpref ? this.stdmsg.subjpref : 'Re') +
+        ': ' +
+        this.message.subject +
+        (this.stdmsg.subjsuff ? this.stdmsg.subjsuff : '')
 
       this.subject = this.substitutionStrings(this.subject)
 
@@ -197,16 +196,75 @@ export default {
       let msg = this.message.textbody
 
       if (msg) {
-        // We have an existing body to include.
-        msg = '> ' + msg.replace(/((\r\n)|\r|\n)/gm, '\n> ')
+        // We have an existing body to include.  Quote it, unless it's an edit.
+        const edit = this.stdmsg && this.stdmsg.action === 'Edit'
+        if (!edit) {
+          msg = '> ' + msg.replace(/((\r\n)|\r|\n)/gm, '\n> ')
+        }
 
         if (this.stdmsg) {
-          // Add text
-          msg = (this.stdmsg.body ? this.stdmsg.body + '\n\n' : '') + msg
+          if (this.stdmsg.body) {
+            // Text to insert.
+            if (this.stdmsg.insert === 'Top') {
+              msg = this.stdmsg.body.trim() + '\n\n' + msg
+            } else {
+              msg = msg + '\n\n' + this.stdmsg.body.trim()
+            }
+          }
+
+          if (this.stdmsg.edittext === 'Correct Case') {
+            // First the subject
+            const matches = /(.*?):([^)].*)\((.*)\)/.exec(this.subject)
+            if (matches && matches.length > 0 && matches[0].length > 0) {
+              this.subject =
+                matches[1] +
+                ': ' +
+                matches[2].toLowerCase().trim() +
+                ' (' +
+                matches[3] +
+                ')'
+            } else {
+              this.subject = this.subject.toLowerCase().trim()
+            }
+
+            // Now the this.textbody.
+            msg = msg.toLowerCase()
+
+            // Contentious choice of single space
+            msg = msg.replace(/\.( |(&nbsp;))+/g, '. ')
+            msg = msg.replace(/\.\n/g, '.[-<br>-]. ')
+            msg = msg.replace(/\.\s\n/g, '. [-<br>-]. ')
+            const wordSplit = '. '
+            const wordArray = msg.split(wordSplit)
+            const numWords = wordArray.length
+
+            for (let x = 0; x < numWords; x++) {
+              if (wordArray[x]) {
+                wordArray[x] = wordArray[x].replace(
+                  wordArray[x].charAt(0),
+                  wordArray[x].charAt(0).toUpperCase()
+                )
+
+                if (x === 0) {
+                  msg = wordArray[x] + '. '
+                } else if (x !== numWords - 1) {
+                  msg = msg + wordArray[x] + '. '
+                } else if (x === numWords - 1) {
+                  msg = msg + wordArray[x]
+                }
+              }
+            }
+
+            msg = msg.replace(/\[-<br>-\]\.\s/g, '\n')
+            msg = msg.replace(/\si\s/g, ' I ')
+            msg = msg.replace(/(<p>.)/i, (a, b) => {
+              return b.toUpperCase()
+            })
+          }
         }
       } else if (this.stdmsg) {
         // No existing body
-        msg = this.stdmsg.body
+        msg = '\n\n' + this.stdmsg.body
       }
 
       this.body = this.substitutionStrings(msg)
@@ -319,7 +377,10 @@ export default {
     },
 
     async process() {
-      if (this.stdmsg && this.stdmsg.newdelstatus) {
+      if (
+        this.stdmsg.newdelstatus &&
+        this.stdmsg.newdelstatus !== 'UNCHANGED'
+      ) {
         await this.$store.dispatch('user/edit', {
           id: this.message.fromuser.id,
           groupid: this.groupid,
@@ -327,7 +388,10 @@ export default {
         })
       }
 
-      if (this.stdmsg && this.stdmsg.newmodstatus) {
+      if (
+        this.stdmsg.newmodstatus &&
+        this.stdmsg.newmodstatus !== 'UNCHANGED'
+      ) {
         await this.$store.dispatch('user/edit', {
           id: this.message.fromuser.id,
           groupid: this.groupid,
@@ -335,51 +399,69 @@ export default {
         })
       }
 
-      if (this.stdmsg) {
-        switch (this.stdmsg.action) {
-          case 'Approve':
-            await this.$store.dispatch('messages/approve', {
+      switch (this.stdmsg.action) {
+        case 'Approve':
+          await this.$store.dispatch('messages/approve', {
+            id: this.message.id,
+            groupid: this.groupid,
+            subject: this.subject,
+            body: this.body,
+            stdmsgid: this.stdmsg.id
+          })
+          break
+        case 'Leave':
+        case 'Leave Approved Message':
+          await this.$store.dispatch('messages/reply', {
+            id: this.message.id,
+            groupid: this.groupid,
+            subject: this.subject,
+            body: this.body,
+            stdmsgid: this.stdmsg.id
+          })
+          break
+        case 'Reject':
+          await this.$store.dispatch('messages/reject', {
+            id: this.message.id,
+            groupid: this.groupid,
+            subject: this.subject,
+            body: this.body,
+            stdmsgid: this.stdmsg.id
+          })
+          break
+        case 'Delete':
+        case 'Delete Approved Message':
+          await this.$store.dispatch('messages/delete', {
+            id: this.message.id,
+            groupid: this.groupid,
+            subject: this.subject,
+            body: this.body,
+            stdmsgid: this.stdmsg.id
+          })
+          break
+        case 'Edit':
+          if (this.message.location) {
+            // Well-structured message
+            await this.$store.dispatch('messages/patch', {
               id: this.message.id,
-              groupid: this.groupid,
-              subject: this.subject,
-              body: this.body,
-              stdmsgid: this.stdmsg.id
+              msgtype: this.message.type,
+              item: this.message.item.name,
+              location: this.message.location.name,
+              textbody: this.body
             })
-            break
-          case 'Leave':
-            await this.$store.dispatch('messages/reply', {
+          } else {
+            // Not
+            await this.$store.dispatch('messages/patch', {
               id: this.message.id,
-              groupid: this.groupid,
               subject: this.subject,
-              body: this.body,
-              stdmsgid: this.stdmsg.id
+              textbody: this.body
             })
-            break
-          case 'Reject':
-            await this.$store.dispatch('messages/reject', {
-              id: this.message.id,
-              groupid: this.groupid,
-              subject: this.subject,
-              body: this.body,
-              stdmsgid: this.stdmsg.id
-            })
-            break
-          case 'Delete':
-            await this.$store.dispatch('messages/delete', {
-              id: this.message.id,
-              groupid: this.groupid,
-              subject: this.subject,
-              body: this.body,
-              stdmsgid: this.stdmsg.id
-            })
-            break
-          case 'Edit':
-            // TODO
-            break
-          default:
-            console.error('Unknown stdmsg action', this.action)
-        }
+          }
+          break
+        default:
+          console.error('Unknown stdmsg action', this.stdmsg.action)
       }
+
+      this.hide()
     }
   }
 }

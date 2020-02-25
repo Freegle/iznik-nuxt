@@ -104,6 +104,7 @@ import dayjs from 'dayjs'
 
 import { TablePlugin } from 'bootstrap-vue'
 import Vue from 'vue'
+
 Vue.use(TablePlugin)
 
 export default {
@@ -133,7 +134,6 @@ export default {
       showModal: false,
       schedule: null,
       saving: false,
-      otherSchedule: null,
       bump: Date.now() // Lazy way of forcing table to be up to date.
     }
   },
@@ -180,6 +180,12 @@ export default {
       }
 
       return ret
+    },
+
+    otherSchedule() {
+      return this.otheruid
+        ? this.$store.getters['schedule/get'](this.otheruid)
+        : null
     },
 
     items() {
@@ -232,7 +238,7 @@ export default {
               other: false
             }
 
-            if (this.otheruid) {
+            if (this.otheruid && this.otherSchedule) {
               let otherAvailable = false
 
               for (const existing of this.otherSchedule.schedule) {
@@ -269,15 +275,13 @@ export default {
         await this.$store.dispatch('schedule/fetch', {
           userid: this.otheruid
         })
-
-        this.otherSchedule = this.$store.getters['schedule/get']()
       }
 
       await this.$store.dispatch('schedule/fetch', {
         userid: this.thisuid
       })
 
-      this.schedule = this.$store.getters['schedule/get']()
+      this.schedule = this.$store.getters['schedule/get'](this.thisuid)
 
       this.showModal = true
 
@@ -294,7 +298,7 @@ export default {
 
       this.scheduleWatch = this.$store.watch(
         (state, getters) => {
-          return this.$store.getters['schedule/get']()
+          return this.$store.getters['schedule/get'](this.thisuid)
         },
         newValue => {
           this.schedule = newValue

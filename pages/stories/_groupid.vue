@@ -61,10 +61,6 @@ export default {
     }
   },
   computed: {
-    loggedIn() {
-      const ret = Boolean(this.$store.getters['auth/user'])
-      return ret
-    },
     sortedStories() {
       let stories = this.$store.getters['stories/list']
 

@@ -177,17 +177,41 @@ export const actions = {
 
   async approve({ commit, dispatch }, { id, chatid }) {
     await this.$api.chat.approve(id)
+
     commit('clearMessage', {
       id,
       chatid
     })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
   },
 
   async whitelist({ commit, dispatch }, { id, chatid }) {
     await this.$api.chat.whitelist(id)
+
     commit('clearMessage', {
       id,
       chatid
     })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
   }
 }

@@ -80,11 +80,6 @@ export default {
       required: true
     }
   },
-  computed: {
-    me() {
-      return this.$store.getters['auth/user']
-    }
-  },
   methods: {
     release() {
       this.$store.dispatch('chatmessages/release', {

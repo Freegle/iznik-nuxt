@@ -4,7 +4,7 @@
     v-model="showModal"
     size="lg"
     no-stacking
-    @hidden="reset()"
+    @hidden="reset"
   >
     <template slot="modal-header">
       <h4 v-if="added">
@@ -100,7 +100,7 @@
               Website
             </b-col>
             <b-col cols="8" md="9" class="forcebreak">
-              <a :href="event.contacturl">{{ event.contacturl }}</a>
+              <a :href="event.contacturl" target="_blank" rel="noopener noreferrer">{{ event.contacturl }}</a>
             </b-col>
           </b-row>
 

@@ -57,7 +57,7 @@ export const mutations = {
 
       if (state.userlist.indexOf(user.id) === -1) {
         if (state.userlist.length > 9) {
-          this.pop()
+          state.userlist.pop()
         }
 
         state.userlist.unshift(user.id)
@@ -249,6 +249,9 @@ export const actions = {
     params = params || {
       components: ['me', 'groups']
     }
+
+    // Always fetch the number of replies we're expecting.
+    params.components.push('expectedreplies')
 
     // If we have recently fetched the user without the groups, but we want them now, then ensure we refetch.
     for (const component of params.components) {

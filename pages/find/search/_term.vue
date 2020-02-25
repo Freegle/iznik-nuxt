@@ -121,9 +121,6 @@ export default {
     }
   },
   computed: {
-    me() {
-      return this.$store.getters['auth/user']
-    },
     postcode() {
       return this.$store.getters['compose/getPostcode']
     },

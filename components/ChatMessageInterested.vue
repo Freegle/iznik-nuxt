@@ -16,7 +16,7 @@
                 width="70px"
                 @error.native="brokenImage"
               />
-              <profile-image :image="otheruser.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
+              <ProfileImage :image="otheruser.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
               <span class="small black"><b>{{ otheruser.displayname }}</b> has
                 <span v-if="refmsg && refmsg.type === 'Offer'">asked</span>
                 <span v-else>replied</span>
@@ -61,7 +61,7 @@
                 width="70px"
                 @error.native="brokenImage"
               />
-              <profile-image :image="me.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
+              <ProfileImage :image="me.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
               <span class="small black">You asked about:</span>
               <br>
               <h4>

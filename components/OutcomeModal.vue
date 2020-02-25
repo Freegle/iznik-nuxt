@@ -192,7 +192,7 @@ export default {
           break
         case 'Withdrawn':
           this.comments =
-            this.type === 'Taken'
+            this.message.type === 'Offer'
               ? 'Sorry, this is no longer available.'
               : "Thanks, I'm no longer looking for this."
           break

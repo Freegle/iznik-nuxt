@@ -59,10 +59,6 @@ export default {
     }
   },
   computed: {
-    me() {
-      const user = this.$store.getters['auth/user']
-      return user
-    },
     selectedArea: {
       get: function() {
         const remembered = this.$store.getters['newsfeed/area']

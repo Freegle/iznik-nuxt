@@ -16,7 +16,7 @@
                 width="70px"
                 @error.native="brokenImage"
               />
-              <profile-image :image="otheruser.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
+              <ProfileImage :image="otheruser.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
               <span class="small black">Sorry...this is no longer promised to you:</span>
               <br>
               <h4>
@@ -48,7 +48,7 @@
                 width="70px"
                 @error.native="brokenImage"
               />
-              <profile-image :image="me.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
+              <ProfileImage :image="me.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
               <span class="small black">You cancelled your promise to <b>{{ otheruser.displayname }}</b> for:</span>
               <br>
               <h4>

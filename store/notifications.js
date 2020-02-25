@@ -130,11 +130,11 @@ export const actions = {
   async seen({ commit, dispatch }, { id }) {
     commit('seen', id)
     await this.$api.notification.seen(id)
-    await dispatch('count')
+    await dispatch('updateUnreadNotificationCount')
   },
 
   async allSeen({ dispatch }) {
     await this.$api.notification.allSeen()
-    await dispatch('count')
+    await dispatch('updateUnreadNotificationCount')
   }
 }

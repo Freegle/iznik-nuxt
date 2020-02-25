@@ -120,10 +120,6 @@ export default {
   computed: {
     isApp() {
       return process.env.IS_APP
-    },
-    me() {
-      const user = this.$store.getters['auth/user']
-      return user
     }
   },
 

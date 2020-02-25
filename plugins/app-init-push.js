@@ -1,13 +1,15 @@
 import Vue from 'vue'
 
-export let mobilestate = {
+export const mobilestate = {
   isiOS: false
 }
 
 const pushstate = Vue.observable({
   pushed: false, // Set to true to handle push in Vue context
   route: false,
-  mobilePushId: false // Note: mobilePushId is the same regardless of which user is logged in
+  mobilePushId: false, // Note: mobilePushId is the same regardless of which user is logged in
+  inlineReply: false,
+  chatid: false
 })
 
 let acceptedMobilePushId = false
@@ -100,82 +102,11 @@ const cordovaApp = {
           // The watch code below also calls savePushId() in case we've already logged in
         })
 
-        // Android 6
-        mobilePush.on('replyToChat', function(data) {
-          console.log('REPLY TO CHAT',data)
+        mobilePush.on('notification', function (data) { // Normal notification
+          handleNotification('notification', data)
         })
-
-        // Called to handle a push notification
-        //
-        // Note: before each notification, we send a first notification with count = 0 to clear notifications in Android
-        // Each notification will arrive twice if received in background/stopped: a doubleEvent
-        //
-        // Android:
-        //  In foregound:   foreground: true:   doubleEvent: false
-        //  In background:  foreground: false:  doubleEvent: false
-        //           then:  foreground: false:  doubleEvent: true
-        //  Not running:    as per background
-        //
-        // iOS:
-        //  In foregound:   foreground: true:   doubleEvent: false
-        //  In background:  foreground: false:  doubleEvent: false
-        //           then:  foreground: false:  doubleEvent: true
-        //  Not running:    as per background?
-        //
-        // Navigating in background works, so quit if doubleEvent
-
-        mobilePush.on('notification', function (data) {
-          console.log('push notification')
-          console.log(data)
-          const foreground = data.additionalData.foreground.toString() === 'true' // Was first called in foreground or background
-          //let msgid = new Date().getTime() // Can't tell if double event if notId not given
-          let msgid = 0
-          if ('notId' in data.additionalData) {
-            msgid = data.additionalData.notId
-          }
-          const doubleEvent = !foreground && msgid !== 0 && msgid === lastPushMsgid
-          lastPushMsgid = msgid
-          if (!('count' in data)) {
-            data.count = 0
-          }
-          data.count = parseInt(data.count)
-          console.log('foreground ' + foreground + ' double ' + doubleEvent + ' msgid: ' + msgid + ' count: ' + data.count)
-          if (data.count === 0) {
-            mobilePush.clearAllNotifications() // no success and error fns given
-            console.log('clearAllNotifications')
-          }
-          mobilePush.setApplicationIconBadgeNumber(function () { }, function () { }, data.count)
-
-          if ('inlineReply' in data.additionalData) {
-            const inlineReply = data.additionalData.inlineReply
-            console.log('======== inlineReply', inlineReply)
-          }
-
-          if (!doubleEvent) {
-            // Pass route to go to (or update) but only if in background or just starting app
-            // Note: if in foreground then rely on count updates to inform user
-            if (!foreground && 'route' in data.additionalData) {
-              pushstate.route = data.additionalData.route // eg /chat/123456 or /chats
-            }
-
-            // Trigger event handler
-            pushstate.pushed = true
-          }
-
-          // iOS needs to be told when we've finished: do it after a short delay to allow our code to run
-          if (mobilestate.isiOS) {
-            setTimeout(function () {
-              mobilePush.finish(
-                function () {
-                  console.log('iOS push finished OK')
-                },
-                function () {
-                  console.log('iOS push finished error')
-                },
-                data.additionalData.notId
-              )
-            }, 50)
-          }
+        mobilePush.on('replyToChat', function (data) { // Reply action: reply given or Reply button pressed
+          handleNotification('replyToChat', data)
         })
       }
 
@@ -190,6 +121,89 @@ const cordovaApp = {
     }
   }
 }
+
+// Called to handle a push notification
+// - normal notification
+// - replyToChat reply given or Reply button pressed
+//
+// Note: before each notification, we send a first notification with count = 0 to clear notifications in Android
+// Each notification will arrive twice if received in background/stopped: a doubleEvent
+//
+// Android:
+//  In foregound:   foreground: true:   doubleEvent: false
+//  In background:  foreground: false:  doubleEvent: false
+//           then:  foreground: false:  doubleEvent: true
+//  Not running:    as per background
+//
+// iOS:
+//  In foregound:   foreground: true:   doubleEvent: false
+//  In background:  foreground: false:  doubleEvent: false
+//           then:  foreground: false:  doubleEvent: true
+//  Not running:    as per background?
+//
+// Navigating in background works, so quit if doubleEvent
+
+function handleNotification(notificationType, data) {
+  console.log('push notification', notificationType)
+  console.log(data)
+  const foreground = data.additionalData.foreground.toString() === 'true' // Was first called in foreground or background
+  // let msgid = new Date().getTime() // Can't tell if double event if notId not given
+  let msgid = 0
+  if ('notId' in data.additionalData) {
+    msgid = data.additionalData.notId
+  }
+  const doubleEvent = !foreground && msgid !== 0 && msgid === lastPushMsgid
+  lastPushMsgid = msgid
+  if (!('count' in data)) {
+    data.count = 0
+  }
+  data.count = parseInt(data.count)
+  console.log('foreground ' + foreground + ' double ' + doubleEvent + ' msgid: ' + msgid + ' count: ' + data.count)
+  if (data.count === 0) {
+    mobilePush.clearAllNotifications() // no success and error fns given
+    console.log('clearAllNotifications')
+  }
+  mobilePush.setApplicationIconBadgeNumber(function () { }, function () { }, data.count)
+
+  if (!mobilestate.isiOS && 'inlineReply' in data.additionalData) {
+    const inlineReply = data.additionalData.inlineReply.trim()
+    console.log('======== inlineReply', inlineReply)
+    if (inlineReply) {
+      pushstate.inlineReply = inlineReply
+      pushstate.chatid = parseInt(data.additionalData.chatids)
+      // Trigger event handler
+      pushstate.pushed = true
+      return
+    }
+  }
+
+  if (!doubleEvent) {
+    // Pass route to go to (or update) but only if in background or just starting app
+    // Note: if in foreground then rely on count updates to inform user
+    if (!foreground && 'route' in data.additionalData) {
+      pushstate.route = data.additionalData.route // eg /chat/123456 or /chats
+    }
+
+    // Trigger event handler
+    pushstate.pushed = true
+  }
+
+  // iOS needs to be told when we've finished: do it after a short delay to allow our code to run
+  if (mobilestate.isiOS) {
+    setTimeout(function () {
+      mobilePush.finish(
+        function () {
+          console.log('iOS push finished OK')
+        },
+        function () {
+          console.log('iOS push finished error')
+        },
+        data.additionalData.notId
+      )
+    }, 50)
+  }
+}
+
 
 // Tell server our push notification id
 // Cope if not logged in ie do it later
@@ -235,18 +249,7 @@ export function setBadgeCount(badgeCount) {
   }
 }
 
-/* // Fix up CSS cases with absolute url path
-var style = document.createElement('style')
-style.type = 'text/css'
-var css = '.bodyback { background-image: url("' + iznikroot + 'images/wallpaper.png") !important; } \r'
-css += '.dd .ddTitle{color:#000;background:#e2e2e4 url("' + iznikroot + 'images/msdropdown/skin1/title-bg.gif") repeat-x left top !important; } \r'
-css += '.dd .ddArrow{width:16px;height:16px; margin-top:-8px; background:url("' + iznikroot + 'images/msdropdown/skin1/dd_arrow.gif") no-repeat !important;} \r'
-css += '.splitter { background: url("' + iznikroot + 'images/vsizegrip.png") center center no-repeat !important; } \r'
-style.innerHTML = css
-//console.log(css)
-document.getElementsByTagName('head')[0].appendChild(style) */
-
-// When the plugin is loaded at runtime, a watches are setup...
+// When the plugin is loaded at runtime, watches are setup...
 // https://github.com/vuejs/rfcs/blob/function-apis/active-rfcs/0000-function-api.md#watchers
 export default ({ app, store }) => { // route
   if (process.env.IS_APP) {
@@ -264,6 +267,19 @@ export default ({ app, store }) => { // route
       () => pushstate.pushed,
       pushed => {
         if (pushed) {
+          if (pushstate.inlineReply) {
+            console.log('WATCH inlineReply', pushstate.chatid, pushstate.inlineReply)
+            const params = {
+              roomid: pushstate.chatid,
+              message: pushstate.inlineReply
+            }
+            store.$api.chat.send(params)
+            pushstate.inlineReply = false
+            pushstate.pushed = false
+            pushstate.route = false
+            return
+          }
+
           store.dispatch('notifications/count')
           store.dispatch('chats/listChats')
 

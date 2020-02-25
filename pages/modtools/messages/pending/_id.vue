@@ -1,15 +1,16 @@
 <template>
   <div>
     <client-only>
-      <GroupSelect v-model="groupid" all modonly />
+      <GroupSelect v-model="groupid" all modonly :work="['pending', 'pendingother']" />
+      <NoticeMessage v-if="!messages.length" class="mt-2">
+        There are no messages at the moment.  This will refresh automatically.
+      </NoticeMessage>
       <div v-for="message in visibleMessages" :key="'messagelist-' + message.id" class="p-0 mt-2">
         <ModMessage :message="message" />
       </div>
 
-      <infinite-loading :key="'infinite-' + groupid" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
-        <span slot="no-results">
-          There are no messages at the moment.  This will refresh automatically.
-        </span>
+      <infinite-loading :key="'infinite-' + groupid + '-' + messages.length" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
+        <span slot="no-results" />
         <span slot="no-more" />
         <span slot="spinner">
           <b-img-lazy src="~/static/loader.gif" alt="Loading" />
@@ -19,11 +20,13 @@
   </div>
 </template>
 <script>
+import NoticeMessage from '../../../../components/NoticeMessage'
 import loginRequired from '@/mixins/loginRequired'
 import modMessagesPage from '@/mixins/modMessagesPage'
 import createGroupRoute from '@/mixins/createGroupRoute'
 
 export default {
+  components: { NoticeMessage },
   layout: 'modtools',
   mixins: [
     loginRequired,

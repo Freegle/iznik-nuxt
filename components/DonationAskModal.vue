@@ -8,9 +8,11 @@
       no-stacking
     >
       <template slot="default">
-        <b-row>
-          <b-col>
-            <DonationThermometer ref="thermo" class="float-right text-center" :groupid="groupid" />
+        <div class="d-flex justify-content-between">
+          <div style="width:250px" class="mr-4 pt-4 d-none d-sm-block">
+            <b-img-lazy v-if="variant === 'whatyoucanrunning'" fluid src="/running.gif" />
+          </div>
+          <div>
             <p>
               <b>{{ groupname }}</b> is a charity that's free to use, but not free to run.
             </p>
@@ -35,12 +37,13 @@
               </b>
               to keep us running.
             </p>
+            <donation-button v-if="variant === 'whatyoucanrunning'" link="paypal1510" @clicked="score(5)" />
             <donation-button v-if="variant === 'whatyoucan'" link="paypal1510" @clicked="score(5)" />
             <donation-button v-if="variant === 'link1'" link="paypal1" @clicked="score(1)" />
             <donation-button v-if="variant === 'link3'" link="paypal3" @clicked="score(3)" />
             <donation-button v-if="variant === 'buttons1'" link="paypal1" show="£1" @clicked="score(1)" />
             <donation-button v-if="variant === 'buttons3'" link="paypal3" show="£3" @clicked="score(3)" />
-            <donation-button v-if="variant === 'buttons1monthly'" link="paypal1" show="£1/month" monthly @clicked="score(12)" />
+            <donation-button v-if="variant === 'buttons1monthly'" link="paypal1" show="£1/month" monthly @clicked="score(4)" />
             <div v-if="variant === 'buttons1510'" class="d-flex justify-content-between flex-wrap">
               <donation-button link="paypal1" show="£1" @clicked="score(1)" />
               <donation-button link="paypal5" show="£5" @clicked="score(5)" />
@@ -59,8 +62,12 @@
               This will contribute to the general fund for the ongoing support of Freegle.  If we raise more than the
               target, we'll use it to support other communities.
             </p>
-          </b-col>
-        </b-row>
+            <div v-if="variant === 'whatyoucanrunning'" class="w-100 d-flex justify-content-center">
+              <img src="/running.gif" class="d-block d-sm-none img-fluid " width="200">
+            </div>
+          </div>
+          <DonationThermometer ref="thermo" :groupid="groupid" />
+        </div>
       </template>
       <template slot="modal-footer" slot-scope="{ cancel }">
         <b-button variant="success" @click="cancel">

@@ -4,6 +4,24 @@
       <b-row class="m-0">
         <b-col cols="0" xl="3" />
         <b-col cols="12" xl="6" class="p-0">
+          <NoticeMessage variant="info" class="mt-2">
+            <div v-if="simple">
+              <p>
+                You are viewing the simple version of the site, so you won't see community features like ChitChat,
+                community events or volunteer opportunities.  Some advanced settings won't show in this page.
+              </p>
+            </div>
+            <div v-else>
+              <p>
+                You are viewing the full version of the site.  If you find this is too "busy", you can choose to view
+                a simplified version.
+              </p>
+            </div>
+            <p>
+              You can toggle which version you see by clicking here:
+            </p>
+            <SimpleView />
+          </NoticeMessage>
           <b-card border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
             <template v-slot:header>
               <v-icon name="globe-europe" /> Your Public Profile
@@ -28,7 +46,7 @@
                 <b-col cols="12" xl="6">
                   <b-card>
                     <b-card-body class="text-center p-2">
-                      <profile-image
+                      <ProfileImage
                         v-if="me.profile.url"
                         :image="profileurl"
                         class="mr-1 mb-1 mt-1 inline"
@@ -95,7 +113,7 @@
               </b-row>
             </b-card-body>
           </b-card>
-          <b-card border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
+          <b-card v-if="!simple" border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
             <template v-slot:header>
               <v-icon name="globe-europe" /> Arranging Collections
             </template>
@@ -314,7 +332,7 @@
               You're not a member of any communities yet.
             </div>
           </b-card>
-          <b-card border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
+          <b-card v-if="!simple" border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
             <template v-slot:header>
               <v-icon name="bell" /> Chat Notifications
             </template>
@@ -327,7 +345,7 @@
                 in other ways.
               </p>
               <notice-message variant="warning">
-                Email doesn't always get through, so check your spam folders, and check <em>Chat</em> on here occasionally.
+                Email doesn't always get through, so check your spam folders, and check <em><nuxt-link to="/chats">Chats</nuxt-link></em> on here occasionally.
               </notice-message>
               <hr>
               <h5>Text Alerts</h5>
@@ -495,6 +513,7 @@
 
 <script>
 import Vue from 'vue'
+import SimpleView from '../../components/SimpleView'
 import EmailConfirmModal from '~/components/EmailConfirmModal'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead'
@@ -514,6 +533,7 @@ const DonationButton = () => import('~/components/DonationButton')
 
 export default {
   components: {
+    SimpleView,
     OurToggle,
     DatePicker,
     EmailConfirmModal,
@@ -531,7 +551,6 @@ export default {
   mixins: [loginRequired, buildHead],
   data: function() {
     return {
-      me: null,
       emailsOn: null,
       pc: null,
       showAdvanced: false,
@@ -680,7 +699,6 @@ export default {
         force: true
       })
 
-      this.me = this.$store.getters['auth/user']
       if (this.me) {
         this.emailsOn = !Object.keys(this.me).includes('onholidaytill')
       }
@@ -695,9 +713,6 @@ export default {
         components: ['me', 'groups', 'aboutme'],
         force: true
       })
-
-      const me = this.$store.getters['auth/user']
-      this.me = me
     },
     addAbout() {
       this.$refs.aboutmemodal.show()
@@ -711,12 +726,12 @@ export default {
     async changeUseProfile(c, e) {
       const settings = this.me.settings
       settings.useprofile = c.value
-      this.me = await this.$store.dispatch('auth/saveAndGet', {
+      await this.$store.dispatch('auth/saveAndGet', {
         settings: settings
       })
     },
     async saveName() {
-      this.me = await this.$store.dispatch('auth/saveAndGet', {
+      await this.$store.dispatch('auth/saveAndGet', {
         displayname: this.me.displayname
       })
     },
@@ -727,7 +742,7 @@ export default {
       this.savingPassword = true
 
       if (this.me.password) {
-        this.me = await this.$store.dispatch('auth/saveAndGet', {
+        await this.$store.dispatch('auth/saveAndGet', {
           password: this.me.password
         })
       }
@@ -778,7 +793,7 @@ export default {
 
       if (!settings.mylocation || settings.mylocation.id !== this.pc.id) {
         settings.mylocation = this.pc
-        this.me = await this.$store.dispatch('auth/saveAndGet', {
+        await this.$store.dispatch('auth/saveAndGet', {
           settings: settings
         })
       }
@@ -854,42 +869,42 @@ export default {
     async changeNotification(e, type) {
       const settings = this.me.settings
       settings.notifications[type] = e.value
-      this.me = await this.$store.dispatch('auth/saveAndGet', {
+      await this.$store.dispatch('auth/saveAndGet', {
         settings: settings
       })
     },
     async changeRelevant(e) {
-      this.me = await this.$store.dispatch('auth/saveAndGet', {
+      await this.$store.dispatch('auth/saveAndGet', {
         relevantallowed: e.value
       })
     },
     async changeNotifChitchat(e) {
       const settings = this.me.settings
       settings.notificationmails = e.value
-      this.me = await this.$store.dispatch('auth/saveAndGet', {
+      await this.$store.dispatch('auth/saveAndGet', {
         settings: settings
       })
     },
     async changeNewsletter(e) {
-      this.me = await this.$store.dispatch('auth/saveAndGet', {
+      await this.$store.dispatch('auth/saveAndGet', {
         newslettersallowed: e.value
       })
     },
     async changeHolidayDate(val) {
-      this.me = await this.$store.dispatch('auth/saveAndGet', {
+      await this.$store.dispatch('auth/saveAndGet', {
         onholidaytill: val
       })
     },
     async changeHolidayToggle(val) {
       if (val.value) {
         // Turned mails back on
-        this.me = await this.$store.dispatch('auth/saveAndGet', {
+        await this.$store.dispatch('auth/saveAndGet', {
           onholidaytill: null
         })
       }
     },
     async leaveGroup(id) {
-      this.me = await this.$store.dispatch('auth/leaveGroup', {
+      await this.$store.dispatch('auth/leaveGroup', {
         userid: this.me.id,
         groupid: id
       })

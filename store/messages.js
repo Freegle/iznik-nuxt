@@ -127,9 +127,17 @@ export const actions = {
     return data
   },
 
-  async patch({ commit, dispatch }, params) {
+  async patch({ commit, dispatch, rootGetters }, params) {
     const data = await this.$api.message.save(params)
-    await dispatch('fetch', { id: params.id })
+    const parms = { id: params.id }
+
+    const modtools = rootGetters['misc/get']('modtools')
+
+    if (modtools) {
+      parms.messagehistory = true
+    }
+
+    await dispatch('fetch', parms)
     return data
   },
 
@@ -187,6 +195,10 @@ export const actions = {
     )
 
     await dispatch('updateChat', params.userid)
+  },
+
+  clearContext({ commit }) {
+    commit('setContext', null)
   },
 
   clear({ commit }) {

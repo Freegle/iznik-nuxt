@@ -62,7 +62,7 @@
 
                   <b-list-group horizontal class="mb-1 mt-2 flex flex-wrap">
                     <b-list-group-item v-for="volunteer in volunteers" :key="'volunteering-' + volunteer.id" class="bg-transparent p-0">
-                      <profile-image
+                      <ProfileImage
                         v-if="!volunteer.profile.default"
                         :image="volunteer.profile.turl"
                         size="lg"
@@ -77,7 +77,7 @@
                     <div class="media clickme">
                       <div class="media-left">
                         <div class="media-object">
-                          <profile-image
+                          <ProfileImage
                             v-if="!boardmember.profile.default"
                             :image="boardmember.profile.turl"
                             class="mr-2"

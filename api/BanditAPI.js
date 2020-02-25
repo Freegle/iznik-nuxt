@@ -1,6 +1,6 @@
 import BaseAPI from '@/api/BaseAPI'
 
-export default class ChatAPI extends BaseAPI {
+export default class BanditAPI extends BaseAPI {
   async choose({ uid }) {
     const ret = await this.$get('/abtest', { uid })
     return ret.variant

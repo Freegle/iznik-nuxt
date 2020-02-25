@@ -218,7 +218,8 @@ export default {
         await this.$store.dispatch('stories/add', {
           headline: this.story.headline,
           story: this.story.story,
-          photo: this.story.photo ? this.story.photo.id : null
+          photo: this.story.photo ? this.story.photo.id : null,
+          public: this.allowpublic
         })
 
         this.thankyou = true

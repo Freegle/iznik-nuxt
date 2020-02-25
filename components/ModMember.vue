@@ -6,7 +6,7 @@
           <v-icon name="envelope" /> {{ member.email }}
         </div>
         <div>
-          <profile-image :image="member.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="sm" />
+          <ProfileImage :image="member.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="sm" />
           {{ member.displayname }}
         </div>
         <div>
@@ -31,10 +31,10 @@
           />
           <div>
             <h4>
-              <b-badge :variant="offers > 0 ? 'success' : 'light'">
+              <b-badge :variant="offers > 0 ? 'success' : 'light'" @click="showHistory('Offer')">
                 <v-icon name="gift" class="fa-fw" /> {{ offers | pluralize([ 'OFFER', 'OFFERs' ], { includeNumber: true }) }}
               </b-badge>
-              <b-badge :variant="wanteds > 0 ? 'success' : 'light'">
+              <b-badge :variant="wanteds > 0 ? 'success' : 'light'" @click="showHistory('Wanted')">
                 <v-icon name="search" class="fa-fw" /> {{ wanteds | pluralize([ 'WANTED', 'WANTEDs' ], { includeNumber: true }) }}
               </b-badge>
               <b-badge :variant="member.modmails > 0 ? 'danger' : 'light'">
@@ -81,8 +81,7 @@
                 </span>
               </span>
             </b-btn>
-            <b-btn variant="link">
-              <!--      TODO Show modal-->
+            <b-btn variant="link" @click="showHistory">
               View posts
             </b-btn>
             <b-btn variant="link">
@@ -104,23 +103,28 @@
         <!--        <ModMessageButtons :message="message" :modconfig="modconfig" />-->
       </b-card-footer>
     </b-card>
+    <ModPostingHistoryModal ref="history" :user="member" :type="type" />
   </div>
 </template>
 <script>
 // TODO Validation
 // - item length
+import waitForRef from '../mixins/waitForRef'
 import SettingsGroup from './SettingsGroup'
 import NoticeMessage from './NoticeMessage'
 import ProfileImage from './ProfileImage'
+import ModPostingHistoryModal from './ModPostingHistoryModal'
 
 export default {
   name: 'ModMember',
   components: {
+    ModPostingHistoryModal,
     ProfileImage,
     // ModMessageButtons,
     NoticeMessage,
     SettingsGroup
   },
+  mixins: [waitForRef],
   props: {
     member: {
       type: Object,
@@ -131,7 +135,8 @@ export default {
     return {
       saving: false,
       saved: false,
-      showEmails: false
+      showEmails: false,
+      type: null
     }
   },
   computed: {
@@ -177,6 +182,12 @@ export default {
       })
 
       return count
+    },
+    showHistory(type = null) {
+      this.type = type
+      this.waitForRef('history', () => {
+        this.$refs.history.show()
+      })
     }
   }
 }

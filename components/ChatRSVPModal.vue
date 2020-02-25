@@ -2,22 +2,35 @@
   <b-modal
     id="chatrsvpmodal"
     v-model="showModal"
-    title="Do you expect a reply?"
+    :title="chaseup ? 'Shall we chase them up?' : 'Do you expect a reply?'"
     no-stacking
     no-close-on-backdrop
     hide-header-close
     no-close-on-esc
   >
     <template slot="default">
-      <p>
-        Please let us know if you're expecting to talk to this freegler again soon.
-      </p>
-      <p>
-        If you're not, we can hide the chat from your list for now.  You can still find it from My Posts.
-      </p>
+      <div v-if="chaseup">
+        <p>Shall we remind <em>{{ user.displayname }}</em> if they don't reply?</p>
+      </div>
+      <div v-else>
+        <p>
+          Please let us know if you're expecting to talk to <em>{{ user.displayname }}</em> again soon.
+        </p>
+        <p v-if="dohide">
+          If you're not, we will hide the chat from your list for now.  You can still find it from My Posts.
+        </p>
+      </div>
     </template>
     <template slot="modal-footer">
-      <div class="d-flex justify-content-between w-100">
+      <div v-if="chaseup" class="d-flex justify-content-between w-100">
+        <b-button variant="info" @click="no">
+          No thanks
+        </b-button>
+        <b-button variant="success" @click="yes">
+          Yes please
+        </b-button>
+      </div>
+      <div v-else class="d-flex justify-content-between w-100">
         <b-button variant="info" @click="no">
           No reply expected
         </b-button>
@@ -35,11 +48,18 @@ export default {
     id: {
       type: Number,
       required: true
+    },
+    user: {
+      type: Object,
+      required: true
     }
   },
   data: function() {
     return {
-      showModal: false
+      showModal: false,
+      chaseup: false,
+      dohide: false,
+      variant: null
     }
   },
   computed: {
@@ -60,6 +80,21 @@ export default {
       return ret
     }
   },
+  async mounted() {
+    const variant = await this.$api.bandit.choose({
+      uid: 'askrsvp'
+    })
+
+    this.chaseup = variant.variant === 'chaseup'
+    this.dohide = variant.variant === 'expectingreply'
+
+    this.$api.bandit.shown({
+      uid: 'askrsvp',
+      variant: variant.variant
+    })
+
+    this.variant = variant.variant
+  },
   methods: {
     show() {
       this.showModal = true
@@ -79,6 +114,11 @@ export default {
       }
 
       this.hide()
+
+      this.$api.bandit.chosen({
+        uid: 'askrsvp',
+        variant: this.variant
+      })
     },
 
     async no() {
@@ -90,11 +130,18 @@ export default {
         })
       }
 
-      await this.$store.dispatch('chats/hide', {
-        id: this.id
-      })
+      if (this.dohide) {
+        await this.$store.dispatch('chats/hide', {
+          id: this.id
+        })
+      }
 
       this.hide()
+
+      this.$api.bandit.chosen({
+        uid: 'askrsvp',
+        variant: this.variant
+      })
     }
   }
 }

@@ -5,6 +5,7 @@
         <SidebarLeft :show-community-events="true" :show-bot-left="true" />
       </b-col>
       <b-col cols="12" lg="6" class="newsfeedHolder p-0">
+        <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" />
         <b-card v-if="!id">
           <b-card-text>
             <h5 class="text-center mb-3">
@@ -104,9 +105,12 @@ const OurFilePond = () => import('~/components/OurFilePond')
 const SidebarLeft = () => import('~/components/SidebarLeft')
 const SidebarRight = () => import('~/components/SidebarRight')
 const NewsLocation = () => import('~/components/NewsLocation')
+const ExpectedRepliesWarning = () =>
+  import('~/components/ExpectedRepliesWarning')
 
 export default {
   components: {
+    ExpectedRepliesWarning,
     NoticeMessage,
     InfiniteLoading,
     NewsThread,
@@ -141,10 +145,6 @@ export default {
   },
 
   computed: {
-    me() {
-      const user = this.$store.getters['auth/user']
-      return user
-    },
     selectedArea: {
       get: function() {
         const remembered = this.$store.getters['newsfeed/area']

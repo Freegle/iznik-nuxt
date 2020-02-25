@@ -2,7 +2,7 @@
   <client-only>
     <div class="pageback">
       <b-navbar id="navbar" type="dark" class="navback" fixed="top">
-        <b-navbar-brand to="/modtools" class="p-0">
+        <b-navbar-brand to="/modtools" class="p-0 d-flex">
           <b-img
             class="logo mr-2"
             height="58"
@@ -11,41 +11,48 @@
             :src="logo"
             alt="Home"
           />
+          <ModStatus v-if="supportOrAdmin" class="mt-3" />
         </b-navbar-brand>
         <b-navbar-nav />
         <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown right class="d-block d-sm-none">
             <template v-slot:button-content>
-              <ModMenuItemNav :count="['pending', 'chatreview']" icon="envelope" />
+              <ModMenuItemNav :count="['pending', 'chatreview']" icon="envelope" class="menuicon" />
             </template>
-            <b-dropdown-item href="/modtools/messages/pending">
-              <ModMenuItemNav name="Pending" :count="['pending']" :othercount="['pending']" />
+            <b-dropdown-item>
+              <ModMenuItemNav name="Pending" :count="['pending']" :othercount="['pending']" link="/modtools/messages/pending" />
             </b-dropdown-item>
-            <b-dropdown-item href="/modtools/messages/approved">
-              <ModMenuItemNav name="Approved" />
+            <b-dropdown-item>
+              <ModMenuItemNav name="Approved" link="/modtools/messages/approved" />
             </b-dropdown-item>
-            <b-dropdown-item href="/modtools/messages/spam">
-              <ModMenuItemNav name="Spam" :count="['spam']" :othercount="['spamother']" />
+            <b-dropdown-item>
+              <ModMenuItemNav name="Spam" :count="['spam']" :othercount="['spamother']" link="/modtools/messages/spam" />
             </b-dropdown-item>
-            <b-dropdown-item href="/modtools/chats/review">
-              <ModMenuItemNav name="Chat Review" :count="['chatreview']" :othercount="['chatreviewother']" />
+            <b-dropdown-item>
+              <ModMenuItemNav name="Chat Review" :count="['chatreview']" link="/modtools/chats/review" />
             </b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown right class="d-block d-sm-none">
             <template v-slot:button-content>
-              <ModMenuItemNav :count="['pendingmembers']" icon="users" />
+              <ModMenuItemNav v-if="hasPermissionNewsletter" :count="['pendingmembers', 'stories', 'newsletterstories']" icon="users" class="menuicon" />
             </template>
-            <b-dropdown-item href="/modtools/members/pending">
-              <ModMenuItemNav name="Pending" :count="['pendingmembers']" />
+            <b-dropdown-item>
+              <ModMenuItemNav name="Pending" :count="['pendingmembers']" link="/modtools/members/pending" />
             </b-dropdown-item>
-            <b-dropdown-item href="/modtools/members/approved">
-              <ModMenuItemNav name="Approved" />
+            <b-dropdown-item>
+              <ModMenuItemNav name="Approved" link="/modtools/members/approved" />
+            </b-dropdown-item>
+            <b-dropdown-item>
+              <ModMenuItemNav name="Stories" :count="['stories']" href="/modtools/members/stories" />
+            </b-dropdown-item>
+            <b-dropdown-item>
+              <ModMenuItemNav name="Stories" :count="['newsletterstories']" href="/modtools/members/newsletter" />
             </b-dropdown-item>
           </b-nav-item-dropdown>
-          <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse" class="text-center p-0" @click="discourse">
+          <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse" class="text-center p-0 menuicon" @click="discourse">
             <div class="notifwrapper">
               <span class="d-none d-sm-inline">
-                <v-icon name="brands/discourse" scale="2" class="discourse " /><br>
+                <v-icon name="brands/discourse" scale="2" class="fa-fw" /><br>
                 Us
               </span>
               <v-icon name="brands/discourse" class="d-inline d-sm-none discourse" scale="2" />
@@ -57,7 +64,7 @@
           <b-nav-item v-if="loggedIn" id="menu-option-modtools-chat" class="text-center p-0" to="/modtools/chats">
             <div class="notifwrapper">
               <span class="d-none d-sm-inline">
-                <v-icon name="comments" scale="2" class="" /><br>
+                <v-icon name="comments" scale="2" class="fa-fw" /><br>
                 Chats
               </span>
               <v-icon name="comments" class="d-inline d-sm-none" scale="2" />
@@ -66,8 +73,8 @@
               </b-badge>
             </div>
           </b-nav-item>
-          <b-nav-item v-if="loggedIn" id="menu-option-modtools-logout" class="text-center p-0 small" @click="logOut()">
-            <v-icon name="sign-out-alt" scale="2" class="" /><br>
+          <b-nav-item v-if="loggedIn" id="menu-option-modtools-logout" class="text-center p-0" @click="logOut">
+            <v-icon name="sign-out-alt" scale="2" class="d-inline fa-fw" /><br>
             Logout
           </b-nav-item>
           <b-nav-item v-if="!loggedIn">
@@ -80,7 +87,6 @@
 
       <div class="d-flex">
         <div class="leftmenu d-none d-sm-block">
-          <!--        TODO Reload on click-->
           <nuxt-link to="/modtools">
             Dashboard
           </nuxt-link>
@@ -96,7 +102,9 @@
             Members
           </div>
           <ModMenuItemLeft link="/modtools/members/pending" name="Pending" count="pendingmembers" othercount="pendingmembersother" indent />
-          <ModMenuItemLeft link="/modtools/members/Approved" name="Approved" indent />
+          <ModMenuItemLeft link="/modtools/members/approved" name="Approved" indent />
+          <ModMenuItemLeft link="/modtools/members/stories" name="Stories" indent count="stories" />
+          <ModMenuItemLeft v-if="hasPermissionNewsletter" link="/modtools/members/newsletter" name="Newsletter" indent count="newsletterstories" />
           <hr>
           <div>
             Chat
@@ -117,13 +125,15 @@ import ModMenuItemNav from '../components/ModMenuItemNav'
 import LoginModal from '~/components/LoginModal'
 
 const ChatPopups = () => import('~/components/ChatPopups')
+const ModStatus = () => import('~/components/ModStatus')
 
 export default {
   components: {
     ModMenuItemNav,
     ModMenuItemLeft,
     ChatPopups,
-    LoginModal
+    LoginModal,
+    ModStatus
   },
 
   data: function() {
@@ -133,13 +143,6 @@ export default {
   },
 
   computed: {
-    loggedIn() {
-      const ret = Boolean(this.$store.getters['auth/user'])
-      return ret
-    },
-    me() {
-      return this.$store.getters['auth/user']
-    },
     chatCount() {
       return this.$store.getters['chats/unseenCount']
     },
@@ -342,5 +345,15 @@ body.modal-open {
   a {
     color: $color-modtools-menu;
   }
+}
+
+.fa-fw {
+  width: 2rem;
+  height: 2rem;
+}
+
+.menuicon {
+  position: relative;
+  top: 13px;
 }
 </style>

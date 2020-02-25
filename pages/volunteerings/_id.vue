@@ -70,9 +70,6 @@ export default {
   computed: {
     volunteerings() {
       return this.$store.getters['volunteerops/sortedList']
-    },
-    me() {
-      return this.$store.getters['auth/user']
     }
   },
   async asyncData({ app, params, store }) {

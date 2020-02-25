@@ -65,5 +65,9 @@ export const actions = {
 
   clear({ commit }) {
     commit('clear')
+  },
+
+  log({ commit }, params) {
+    this.$api.job.log(params)
   }
 }

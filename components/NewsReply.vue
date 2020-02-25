@@ -6,7 +6,7 @@
           <tbody>
             <tr>
               <td class="clickme align-top" title="Click to see their profile" @click="showInfo">
-                <profile-image
+                <ProfileImage
                   :image="users[userid].profile.turl"
                   class="ml-1 mr-2 mt-2 mb-1 inline float-left"
                   :is-moderator="users[userid].settings.showmod && reply.replyto === threadhead.id"
@@ -35,7 +35,7 @@
                 </div>
                 <span v-if="userid && users[userid]">
                   <span class="text-muted small">
-                    {{ reply.timestamp | timeago }}
+                    {{ reply.added | timeago }}
                   </span>
                   <NewsUserInfo :user="users[userid]" />
                   <span>
@@ -95,7 +95,7 @@
           <at-ta ref="at" :members="tagusers" class="pl-4 flex-shrink-2 input-group" :filter-match="filterMatch">
             <b-input-group-prepend>
               <span class="input-group-text pl-1 pr-1">
-                <profile-image v-if="me.profile.turl" :image="me.profile.turl" class="m-0 inline float-left" is-thumbnail size="sm" />
+                <ProfileImage v-if="me.profile.turl" :image="me.profile.turl" class="m-0 inline float-left" is-thumbnail size="sm" />
               </span>
             </b-input-group-prepend>
             <b-textarea
@@ -176,10 +176,12 @@
     </b-modal>
     <ProfileModal v-if="infoclick" :id="userid" ref="profilemodal" />
     <NewsLovesModal :id="replyid" ref="loveModal" />
+    <ConfirmModal v-if="showDeleteModal" ref="deleteConfirm" :title="'Delete reply from ' + users[userid].displayname" @confirm="deleteConfirmed" />
   </div>
 </template>
 
 <script>
+import waitForRef from '../mixins/waitForRef'
 import NewsLovesModal from './NewsLovesModal'
 import OurFilePond from './OurFilePond'
 import twem from '~/assets/js/twem'
@@ -190,7 +192,9 @@ import ChatButton from '~/components/ChatButton'
 import NewsPreview from '~/components/NewsPreview'
 import NewsRefer from '~/components/NewsRefer'
 import ProfileImage from '~/components/ProfileImage'
+
 const ProfileModal = () => import('~/components/ProfileModal')
+const ConfirmModal = () => import('~/components/ConfirmModal.vue')
 
 const AtTa = process.browser
   ? require('vue-at/dist/vue-at-textarea')
@@ -210,8 +214,10 @@ export default {
     NewsPreview,
     NewsRefer,
     AtTa,
-    ProfileImage
+    ProfileImage,
+    ConfirmModal
   },
+  mixins: [waitForRef],
   props: {
     threadhead: {
       type: Object,
@@ -240,7 +246,8 @@ export default {
       showAllReplies: false,
       uploading: false,
       imageid: null,
-      imagethumb: null
+      imagethumb: null,
+      showDeleteModal: false
     }
   },
   computed: {
@@ -263,9 +270,6 @@ export default {
     firstlevel() {
       // We need to know which are the first level replies, because we indent those but not any subsequent replies.
       return this.reply && this.reply.replyto === this.reply.threadhead
-    },
-    me() {
-      return this.$store.getters['auth/user']
     },
     tagusers() {
       const ret = []
@@ -438,20 +442,20 @@ export default {
         this.replybox += '\n'
       }
     },
-    love(e) {
+    async love(e) {
       const el = e.target
       el.classList.add('pulsate')
-      this.$store.dispatch('newsfeed/love', {
+      await this.$store.dispatch('newsfeed/love', {
         id: this.replyid,
         replyto: this.reply.replyto,
         threadhead: this.reply.threadhead
       })
       el.classList.remove('pulsate')
     },
-    unlove(e) {
+    async unlove(e) {
       const el = e.target
       el.classList.add('pulsate')
-      this.$store.dispatch('newsfeed/unlove', {
+      await this.$store.dispatch('newsfeed/unlove', {
         id: this.replyid,
         replyto: this.reply.replyto,
         threadhead: this.reply.threadhead
@@ -467,6 +471,12 @@ export default {
       this.$refs.editModal.hide()
     },
     deleteReply() {
+      this.showDeleteModal = true
+      this.waitForRef('deleteConfirm', () => {
+        this.$refs.deleteConfirm.show()
+      })
+    },
+    deleteConfirm() {
       this.$store.dispatch('newsfeed/delete', {
         id: this.replyid,
         threadhead: this.threadhead.id

@@ -5,7 +5,8 @@
         <SidebarLeft :show-community-events="true" :show-bot-left="true" />
       </b-col>
       <b-col cols="12" lg="6" class="p-0">
-        <Viewed class="mb-1" />
+        <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" />
+        <Viewed v-if="!simple" class="mb-1" />
         <JobsTopBar />
         <div>
           <div class="d-flex mt-2 mb-3 selection__wrapper justify-content-between">
@@ -47,6 +48,8 @@ const GroupHeader = () => import('~/components/GroupHeader.vue')
 const Message = () => import('~/components/Message.vue')
 const SidebarLeft = () => import('~/components/SidebarLeft')
 const SidebarRight = () => import('~/components/SidebarRight')
+const ExpectedRepliesWarning = () =>
+  import('~/components/ExpectedRepliesWarning')
 
 export default {
   components: {
@@ -57,7 +60,8 @@ export default {
     GroupHeader,
     Message,
     SidebarLeft,
-    SidebarRight
+    SidebarRight,
+    ExpectedRepliesWarning
   },
   mixins: [loginRequired, buildHead, createGroupRoute('communities')],
   data: function() {

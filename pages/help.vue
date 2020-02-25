@@ -483,10 +483,6 @@ export default {
     }
   },
   computed: {
-    loggedIn() {
-      const ret = Boolean(this.$store.getters['auth/user'])
-      return ret
-    },
     isApp() {
       return process.env.IS_APP
     },

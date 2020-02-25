@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Navbar for large screens-->
-    <b-navbar id="navbar_large" toggleable="xl" type="dark" class="ourBack d-none d-xl-flex" fixed="top">
+    <b-navbar id="navbar_large" toggleable="xl" type="dark" class="ourBack d-none d-xl-flex pl-1" fixed="top">
       <b-navbar-brand to="/" class="p-0">
         <b-img
           class="logo mr-2"
@@ -14,13 +14,13 @@
       </b-navbar-brand>
       <client-only>
         <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
-        <b-collapse v-if="loggedIn" id="nav_collapse" ref="nav_collapse" is-nav>
+        <b-collapse v-if="loggedIn" id="nav_collapse" ref="nav_collapse" is-nav class="flex-nowrap">
           <b-navbar-nav>
             <b-nav-item id="menu-option-mygroups" class="text-center small p-0" to="/communities" @mousedown="maybeReload('/communities')">
               <v-icon name="users" scale="2" /><br>
               Communities
             </b-nav-item>
-            <b-nav-item id="menu-option-chitchat" class="text-center small p-0" to="/chitchat" @mousedown="maybeReload('/chitchat')">
+            <b-nav-item v-if="!simple" id="menu-option-chitchat" class="text-center small p-0" to="/chitchat" @mousedown="maybeReload('/chitchat')">
               <v-icon name="coffee" scale="2" /><br>
               ChitChat
             </b-nav-item>
@@ -40,18 +40,24 @@
               <v-icon name="map-marker-alt" scale="2" /><br>
               Explore
             </b-nav-item>
-            <b-nav-item id="menu-option-communityevents" class="text-center small p-0" to="/communityevents" @mousedown="maybeReload('/communityevents')">
+            <b-nav-item v-if="!simple" id="menu-option-communityevents" class="text-center small p-0" to="/communityevents" @mousedown="maybeReload('/communityevents')">
               <v-icon name="calendar-alt" scale="2" /><br>
               Events
             </b-nav-item>
-            <b-nav-item id="menu-option-volunteering" class="text-center small p-0" to="/volunteerings" @mousedown="maybeReload('/volunteerings')">
+            <b-nav-item v-if="!simple" id="menu-option-volunteering" class="text-center small p-0" to="/volunteerings" @mousedown="maybeReload('/volunteerings')">
               <v-icon name="hands-helping" scale="2" /><br>
               Volunteer
             </b-nav-item>
           </b-navbar-nav>
+          <client-only>
+            <div class="w-100 d-flex justify-content-center">
+              <div class="simplewrapper pb-2">
+                <SimpleView :key="'simpleview-' + simple" navbar />
+              </div>
+            </div>
+          </client-only>
           <b-navbar-nav class="ml-auto">
-            <b-nav-item id="menu-option-notification" class="text-center p-0" />
-            <b-nav-item-dropdown class="white text-center notiflist" lazy right @shown="loadLatestNotifications">
+            <b-nav-item-dropdown v-if="!simple" class="white text-center notiflist" lazy right @shown="loadLatestNotifications">
               <template slot="button-content">
                 <div class="notifwrapper text-center small">
                   <v-icon name="bell" scale="2" />
@@ -87,7 +93,7 @@
                 </b-badge>
               </div>
             </b-nav-item>
-            <b-nav-item id="menu-option-spread" class="text-center small p-0" to="/spread" @mousedown="maybeReload('/spread')">
+            <b-nav-item v-if="!simple" id="menu-option-spread" class="text-center small p-0" to="/spread" @mousedown="maybeReload('/spread')">
               <div class="notifwrapper">
                 <v-icon name="bullhorn" scale="2" /><br>
                 Spread
@@ -104,7 +110,7 @@
               <v-icon name="cog" scale="2" /><br>
               Settings
             </b-nav-item>
-            <b-nav-item id="menu-option-logout" class="text-center p-0 small" @click="logOut()">
+            <b-nav-item id="menu-option-logout" class="text-center p-0 small" @click="logOut">
               <v-icon name="sign-out-alt" scale="2" /><br>
               Logout
             </b-nav-item>
@@ -115,7 +121,7 @@
         <client-only>
           <b-nav-item>
             <div v-if="!loggedIn" class="btn btn-white" @click="requestLogin">
-              Sign in
+              Sign&nbsp;in
             </div>
           </b-nav-item>
         </client-only>
@@ -207,7 +213,7 @@
             <v-icon name="users" scale="2" /><br>
             Communities
           </b-nav-item>
-          <b-nav-item class="text-center p-0 white" to="/chitchat" @mousedown="maybeReload('/chitchat')">
+          <b-nav-item v-if="!simple" class="text-center p-0 white" to="/chitchat" @mousedown="maybeReload('/chitchat')">
             <v-icon name="coffee" scale="2" /><br>
             ChitChat
           </b-nav-item>
@@ -227,15 +233,15 @@
             <v-icon name="map-marker-alt" scale="2" /><br>
             Explore
           </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/communityevents" @mousedown="maybeReload('/communityevetns')">
+          <b-nav-item v-if="!simple" class="text-center p-0" to="/communityevents" @mousedown="maybeReload('/communityevents')">
             <v-icon name="calendar-alt" scale="2" /><br>
             Events
           </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/volunteerings" @mousedown="maybeReload('/volunteerings')">
+          <b-nav-item v-if="!simple" class="text-center p-0" to="/volunteerings" @mousedown="maybeReload('/volunteerings')">
             <v-icon name="hands-helping" scale="2" /><br>
             Volunteer
           </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/spread" @mousedown="maybeReload('/spread')">
+          <b-nav-item v-if="!simple" class="text-center p-0" to="/spread" @mousedown="maybeReload('/spread')">
             <v-icon name="bullhorn" scale="2" /><br>
             Spread
           </b-nav-item>
@@ -247,7 +253,7 @@
             <v-icon name="cog" scale="2" /><br>
             Settings
           </b-nav-item>
-          <b-nav-item class="text-center p-0" @click="logOut()">
+          <b-nav-item class="text-center p-0" @click="logOut">
             <v-icon name="sign-out-alt" scale="2" /><br>
             Logout
           </b-nav-item>
@@ -278,6 +284,7 @@
 
 <script>
 // Import login modal as I've seen an issue where it's not in $refs when you click on the signin button too rapidly.
+import SimpleView from '../components/SimpleView'
 import LoginModal from '~/components/LoginModal'
 import LocalStorageMonitor from '~/components/LocalStorageMonitor'
 import BouncingEmail from '~/components/BouncingEmail'
@@ -291,6 +298,7 @@ import { setBadgeCount } from '../plugins/app-init-push' // CC
 
 export default {
   components: {
+    SimpleView,
     InfiniteLoading,
     ChatPopups,
     Notification,
@@ -325,13 +333,6 @@ export default {
   },
 
   computed: {
-    loggedIn() {
-      const ret = Boolean(this.$store.getters['auth/user'])
-      return ret
-    },
-    me() {
-      return this.$store.getters['auth/user']
-    },
     notifications() {
       const notifications = this.$store.getters['notifications/getCurrentList']
 
@@ -625,6 +626,7 @@ export default {
     async logOut() {
       // Remove all cookies, both client and server.  This seems to be necessary to kill off the PHPSESSID cookie
       // on the server, which would otherwise keep us logged in despite our efforts.
+      console.log('Remove cookies')
       try {
         this.$cookies.removeAll()
       } catch (e) {}
@@ -722,7 +724,7 @@ html {
 }
 
 #navbar_large .nav-item {
-  width: 80px;
+  width: 70px;
   text-align: center;
 }
 
@@ -913,5 +915,9 @@ svg.fa-icon {
 
 .toggler svg {
   vertical-align: -20px;
+}
+
+.simplewrapper {
+  width: 150px;
 }
 </style>

@@ -18,7 +18,7 @@
         >
           <div class="shadow chatHolder w-100">
             <div v-if="chat" class="chatTitle">
-              <span class="chatname text-truncate">
+              <span class="chatname text-truncate align-middle ml-3">
                 <span v-if="(chat.chattype == 'User2User' || chat.chattype == 'User2Mod')">
                   <span @click="showInfo">
                     {{ chat.name }}
@@ -53,7 +53,6 @@
                     :key="'chatmessage-' + chatmessage.id"
                     :chatmessage="chatmessage"
                     :chat="chat"
-                    :me="me"
                     :otheruser="otheruser"
                     :last="chatmessage.id === chatmessages[chatmessages.length - 1].id"
                   />
@@ -82,16 +81,16 @@
                 <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person" class="ml-1" @click="promise">
                   <v-icon name="handshake" />
                 </b-btn>
-                <b-btn v-b-tooltip.hover.top variant="white" title="Send your address" @click="addressBook">
+                <b-btn v-if="!simple" v-b-tooltip.hover.top variant="white" title="Send your address" @click="addressBook">
                   <v-icon name="address-book" />
                 </b-btn>
-                <b-btn v-b-tooltip.hover.top variant="white" title="Update your availability" @click="availability">
+                <b-btn v-if="!simple" v-b-tooltip.hover.top variant="white" title="Update your availability" @click="availability">
                   <v-icon name="calendar-alt" />
                 </b-btn>
                 <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler" @click="showInfo">
                   <v-icon name="info-circle" />
                 </b-btn>
-                <b-btn v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
+                <b-btn v-if="!simple" v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
                   <v-icon name="bell" />
                 </b-btn>
                 <b-btn variant="primary" class="float-right mr-1" @click="send">
@@ -234,18 +233,6 @@ export default {
     }
   },
   computed: {
-    me() {
-      // The user who is us
-      if (this.chat && this.chat.user1 && this.$store.getters['auth/user']) {
-        return this.chat.user1 &&
-          this.chat.user1.id === this.$store.getters['auth/user'].id
-          ? this.chat.user1
-          : this.chat.user2
-      } else {
-        return null
-      }
-    },
-
     minheight() {
       return Math.min(this.maxheight, HEIGHT)
     },
@@ -363,10 +350,12 @@ export default {
     })
     const fetched = this.$store.getters['chats/get'](this.id)
 
-    // Clear the context - infinite scroll will then pick up the messages.
+    // Clear the context and messages - infinite scroll will then pick up the messages.
     await this.$store.dispatch('chatmessages/clearContext', {
       chatid: this.id
     })
+
+    await this.$store.dispatch('chatmessages/clearMessages')
 
     if (!fetched) {
       // This is an invalid chatid.  Remove it to stop it causing problems.

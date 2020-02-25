@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div>
-      <profile-image
+    <div class="d-flex">
+      <ProfileImage
         v-if="users[userid].profile.turl"
         :image="users[userid].profile.turl"
         class="ml-1 mr-2 mb-1 inline"
@@ -9,13 +9,15 @@
         :is-moderator="(Boolean)(users[userid].settings.showmod)"
         size="lg"
       />
-      <span class="text-success font-weight-bold">{{ users[userid].displayname }}</span>
-      posted a volunteering opportunity<span class="d-none d-md-inline-block">:</span><br class="d-block d-md-none"> <b>{{ newsfeed.volunteering.title }}</b>
-      <br>
-      <span class="text-muted small">
-        {{ newsfeed.timestamp | timeago }}
-      </span>
-      on {{ newsfeed.volunteering.groups[0].namedisplay }}
+      <div>
+        <span class="text-success font-weight-bold">{{ users[userid].displayname }}</span>
+        posted a volunteering opportunity<span class="d-none d-md-inline-block">:</span><br class="d-block d-md-none"> <b>{{ newsfeed.volunteering.title }}</b>
+        <br>
+        <span class="text-muted small">
+          {{ newsfeed.added | timeago }}
+        </span>
+        on {{ newsfeed.volunteering.groups[0].namedisplay }}
+      </div>
     </div>
     <div class="volunteering__container">
       <div class="volunteering__description">

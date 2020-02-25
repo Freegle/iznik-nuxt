@@ -2,17 +2,16 @@
   <div>
     <b-card bg-variant="white" no-body>
       <b-card-header class="d-flex justify-content-between">
-        <!--        TODO Edits-->
         <div>
           <div v-if="!editing" :class="subjectClass + ' font-weight-bold'">
             {{ eSubject }}
           </div>
           <div v-else>
-            <div v-if="message.location">
+            <div v-if="message.location" class="d-flex justify-content-start">
+              <b-select v-model="message.type" :options="typeOptions" class="type mr-1" size="lg" />
+              <b-input v-model="message.item.name" size="lg" class="mr-1" />
               <b-input-group>
-                <b-select v-model="message.type" :options="typeOptions" class="type" />
-                <b-input v-model="message.item.name" />
-                <b-input v-model="message.location.name" class="location" />
+                <Postcode :value="message.location.name" :find="false" @selected="postcodeSelect" />
               </b-input-group>
             </div>
             <div v-else>
@@ -27,15 +26,6 @@
           <b-btn v-if="!editing" variant="white" @click="editing = true">
             <v-icon name="pen" /><span class="d-none d-sm-inline"> Edit</span>
           </b-btn>
-          <b-btn v-if="editing" variant="white" @click="editing = false">
-            <v-icon name="" /> Cancel
-          </b-btn>
-          <b-button v-if="editing" variant="white" disabled @click="save">
-            <v-icon v-if="saving" name="sync" class="text-success fa-spin" />
-            <v-icon v-else-if="saved" name="check" class="text-success" />
-            <v-icon v-else name="save" />
-            Save
-          </b-button>
         </div>
         <!--        TODO Duplicates, related-->
         <!--        Worry Words-->
@@ -55,11 +45,11 @@
                 {{ message.heldby.timestamp | timeago }}.  Please check with them before releasing it.
               </NoticeMessage>
             </div>
-            <NoticeMessage v-if="message.fromuser.activedistance > 50" variant="warning" class="mb-2">
+            <NoticeMessage v-if="message.fromuser && message.fromuser.activedistance > 50" variant="warning" class="mb-2">
               This freegler is active on groups {{ message.fromuser.activedistance }} miles apart.
             </NoticeMessage>
             <NoticeMessage v-if="message.spamreason" variant="warning" class="mb-2">
-              {{ spamreason }}
+              {{ message.spamreason }}
             </NoticeMessage>
             <NoticeMessage v-else-if="spam" variant="warning" class="mb-2">
               We think this message might be spam.
@@ -82,7 +72,10 @@
           </b-col>
           <b-col cols="12" lg="4">
             <div class="rounded border border-info p-2 d-flex justify-content-between flex-wrap">
-              <MessageUserInfo :message="message" :user="message.fromuser" modinfo :groupid="message.groups[0].groupid" />
+              <MessageUserInfo v-if="message.fromuser" :message="message" :user="message.fromuser" modinfo :groupid="message.groups[0].groupid" />
+              <NoticeMessage v-else variant="danger">
+                Can't identify sender.  Probably a bug.
+              </NoticeMessage>
               <!-- TODO             Group list-->
               <!-- TODO             Applied list-->
             </div>
@@ -107,7 +100,7 @@
                   </span>
                 </span>
               </b-btn>
-              <b-btn v-if="message.fromuser.emails && message.fromuser.emails.length" variant="link" @click="showEmails = !showEmails">
+              <b-btn v-if="message.fromuser && message.fromuser.emails && message.fromuser.emails.length" variant="link" @click="showEmails = !showEmails">
                 <v-icon name="envelope" />
                 <span v-if="showEmails">
                   <span class="d-inline d-sm-none">
@@ -185,7 +178,16 @@
         </b-row>
       </b-card-body>
       <b-card-footer>
-        <ModMessageButtons :message="message" :modconfig="modconfig" />
+        <ModMessageButtons v-if="!editing" :message="message" :modconfig="modconfig" />
+        <b-btn v-if="editing" variant="white" @click="editing = false">
+          <v-icon name="times" /> Cancel
+        </b-btn>
+        <b-button v-if="editing" variant="success" @click="save">
+          <v-icon v-if="saving" name="sync" class="text-success fa-spin" />
+          <v-icon v-else-if="saved" name="check" class="text-success" />
+          <v-icon v-else name="save" />
+          Save
+        </b-button>
       </b-card-footer>
     </b-card>
   </div>
@@ -201,11 +203,13 @@ import ModPhoto from './ModPhoto'
 import NoticeMessage from './NoticeMessage'
 import ModMessageButtons from './ModMessageButtons'
 import ModMessageWorry from './ModMessageWorry'
+import Postcode from './Postcode'
 import twem from '~/assets/js/twem'
 
 export default {
   name: 'ModMessage',
   components: {
+    Postcode,
     ModMessageWorry,
     ModMessageButtons,
     NoticeMessage,
@@ -232,9 +236,6 @@ export default {
     }
   },
   computed: {
-    me() {
-      return this.$store.getters['auth/user']
-    },
     pending() {
       return this.hasCollection('Pending')
     },
@@ -244,7 +245,6 @@ export default {
     spam() {
       return this.hasCollection('Spam')
     },
-
     typeOptions() {
       // TODO Per group keywords
       return [
@@ -321,6 +321,34 @@ export default {
       }
 
       return ret
+    },
+    postcodeSelect(pc) {
+      console.log('Selected', pc)
+      this.message.location = pc
+    },
+    async save() {
+      this.saving = true
+
+      if (this.message.location) {
+        // Well-structured message
+        await this.$store.dispatch('messages/patch', {
+          id: this.message.id,
+          msgtype: this.message.type,
+          item: this.message.item.name,
+          location: this.message.location.name,
+          textbody: this.message.textbody
+        })
+      } else {
+        // Not
+        await this.$store.dispatch('messages/patch', {
+          id: this.message.id,
+          subject: this.message.subject,
+          textbody: this.message.textbody
+        })
+      }
+
+      this.saving = false
+      this.editing = false
     }
   }
 }

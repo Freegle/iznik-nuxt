@@ -54,6 +54,14 @@ export default {
       type: String,
       required: false,
       default: 'md'
+    },
+    // Whether to show work counts in the group names.
+    work: {
+      type: Array,
+      required: false,
+      default: function() {
+        return []
+      }
     }
   },
   computed: {
@@ -64,10 +72,6 @@ export default {
       set(val) {
         this.$emit('input', val)
       }
-    },
-
-    me() {
-      return this.$store.getters['auth/user']
     },
 
     groupOptions() {
@@ -107,9 +111,24 @@ export default {
             group.role === 'Owner' ||
             group.role === 'Moderator')
         ) {
+          let text = group.namedisplay
+
+          if (this.work) {
+            this.work.forEach(type => {
+              if (group.work && group.work[type]) {
+                text +=
+                  ' (' +
+                  group.work[type] +
+                  ')' +
+                  (group.mysettings && group.mysettings.active === 0
+                    ? ' - backup'
+                    : '')
+              }
+            })
+          }
           groups.push({
             value: group.id,
-            text: group.namedisplay,
+            text: text,
             selected: this.selectedGroup === group.id
           })
         }

@@ -3,7 +3,7 @@
     <div class="media clickme">
       <div class="media-left">
         <div class="media-object">
-          <profile-image
+          <ProfileImage
             v-if="users[userid].profile.turl"
             :image="users[userid].profile.turl"
             class="ml-1 mb-1 inline"

@@ -29,9 +29,6 @@ export default {
         ? twem.twem(this.$twemoji, this.newsfeed.message)
         : null
     },
-    me() {
-      return this.$store.getters['auth/user']
-    },
     newsfeed() {
       return this.$store.getters['newsfeed/get'](this.id)
     },

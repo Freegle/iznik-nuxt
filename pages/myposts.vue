@@ -5,8 +5,10 @@
         <SidebarLeft :show-community-events="true" :show-bot-left="true" />
       </b-col>
       <b-col cols="12" lg="6" class="p-0">
+        <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" />
         <JobsTopBar />
         <b-card
+          v-if="!simple"
           class="mt-2"
           border-variant="info"
           header="info"
@@ -131,6 +133,7 @@
           </b-card-body>
         </b-card>
         <b-card
+          v-if="!simple"
           class="mt-2"
           border-variant="info"
           header="info"
@@ -191,6 +194,7 @@
 <script>
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
+import waitForRef from '@/mixins/waitForRef'
 const JobsTopBar = () => import('../components/JobsTopBar')
 const MyMessage = () => import('~/components/MyMessage.vue')
 const SidebarLeft = () => import('~/components/SidebarLeft')
@@ -198,6 +202,8 @@ const SidebarRight = () => import('~/components/SidebarRight')
 const AvailabilityModal = () => import('~/components/AvailabilityModal')
 const DonationAskModal = () => import('~/components/DonationAskModal')
 const RateAppModal = () => import('~/components/RateAppModal')
+const ExpectedRepliesWarning = () =>
+  import('~/components/ExpectedRepliesWarning')
 
 export default {
   components: {
@@ -207,9 +213,10 @@ export default {
     SidebarRight,
     DonationAskModal,
     AvailabilityModal,
-    RateAppModal
+    RateAppModal,
+    ExpectedRepliesWarning
   },
-  mixins: [loginRequired, buildHead],
+  mixins: [loginRequired, buildHead, waitForRef],
   data() {
     return {
       id: null,
@@ -225,10 +232,6 @@ export default {
     }
   },
   computed: {
-    me() {
-      return this.$store.getters['auth/user']
-    },
-
     wanteds() {
       const ret = []
 
@@ -434,11 +437,10 @@ export default {
     ask(groupid) {
       if (process.env.IS_APP && !window.localStorage.getItem('rateappnotagain')) { // CC
         this.$refs.rateappmodal.show()
-      } else if (this.$refs.askmodal) {
-        this.$refs.askmodal.show()
       } else {
-        // This would be a bug.  We've seen it during dev and so we have the if test to prevent client-visible errors.
-        console.error("Don't ask for donation, no ref")
+        this.waitForRef('askmodal', () => {
+          this.$refs.askmodal.show()
+        })
       }
     },
     postSort(a, b) {

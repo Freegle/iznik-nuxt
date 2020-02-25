@@ -96,10 +96,15 @@
         :variant="variant(stdmsg)"
         :icon="icon(stdmsg)"
         :label="stdmsg.title"
-        :stdmsg="stdmsg"
+        :stdmsgid="stdmsg.id"
         :message="message"
       />
-      <b-btn v-if="rareToShow && !showRare" variant="white" class="mb-1" @click="showRare = true">
+      <b-btn
+        v-if="rareToShow && !showRare"
+        variant="white"
+        class="mb-1"
+        @click="showRare = true"
+      >
         <v-icon name="caret-down" /> +{{ rareToShow }}...
       </b-btn>
     </div>

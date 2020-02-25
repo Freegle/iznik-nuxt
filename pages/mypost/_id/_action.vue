@@ -78,10 +78,6 @@ export default {
     }
   },
   computed: {
-    me() {
-      return this.$store.getters['auth/user']
-    },
-
     message() {
       return this.$store.getters['messages/get'](this.id)
     }

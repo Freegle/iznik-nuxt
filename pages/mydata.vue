@@ -17,9 +17,9 @@
                 You can also download all this data
                 in a commonly-used machine-readable format (<a href="https://www.json.org/" target="_blank">JSON</a>).
               </p>
-              <a :href="downloadlink" download="mydata.json">
+              <b-button :href="downloadlink" download="mydata.json" variant="white">
                 Download in machine-readable format
-              </a>
+              </b-button>
               <p class="mt-2">
                 There may be a lot of information here, so if you have any questions, please
                 <nuxt-link to="/help">
@@ -164,7 +164,7 @@
               </div>
               <h2>Your profile pictures</h2>
               <div v-for="image in status.data.images" :key="image.thumb">
-                <profile-image :image="image.thumb" is-thumbnail size="lg" />
+                <ProfileImage :image="image.thumb" is-thumbnail size="lg" />
               </div>
               <h2>Logins</h2>
               <p>These are the ways in which you have registered to use the site.</p>
@@ -787,16 +787,6 @@ export default {
     }
   },
   computed: {
-    me() {
-      return this.$store.getters['auth/user']
-    },
-    mod() {
-      return (
-        this.me.systemrole === 'Moderator' ||
-        this.me.systemrole === 'Support' ||
-        this.me.systemrole === 'Admin'
-      )
-    },
     downloadlink() {
       return process.env.API + '/export?id=' + this.id + '&tag=' + this.tag
     }

@@ -1,78 +1,69 @@
 <template>
-  <div>
-    <b-row>
-      <b-col cols="6" class="text-truncate">
-        <span>
-          <profile-image :image="reply.user.profile.turl" class="mr-1 mb-1 mt-2 inline" is-thumbnail size="sm" />
-          <span v-if="unseen > 0" class="align-middle">
-            <b>{{ reply.user.displayname }}</b>
-          </span>
-          <span v-else class="align-middle">
-            {{ reply.user.displayname }}
-          </span>
+  <div class="border border-success rounded mb-1">
+    <div class="d-flex justify-content-between flex-wrap">
+      <div class="d-flex align-content-start mb-1 flex-grow-1">
+        <ProfileImage :image="reply.user.profile.turl" class="m-1" is-thumbnail size="sm" />
+        <div class="text-truncate">
+          <!-- eslint-disable-next-line -->
+          <span  class="align-middle" v-if="unseen > 0"><b>{{ reply.user.displayname }}</b></span>
+          <!-- eslint-disable-next-line -->
+          <span v-else class="align-middle"><b>{{ reply.user.displayname }}</b></span>
           <span v-if="reply.lastuserid !== myid" class="align-middle text-muted">
             last wrote to you:
           </span>
           <span v-else class="align-middle text-muted">
             you last sent:
           </span>
-        </span>
-      </b-col>
-      <b-col cols="6">
-        <ratings v-bind="reply.user" class="pl-1 pt-1 float-right mt-1 mr-1" size="sm" />
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col cols="12" xl="6">
-        <span v-if="unseen > 0" class="ml-1 bg-white snippet">
-          <b>{{ reply.snippet }}...</b>
-        </span>
-        <span v-else-if="reply.snippet" class="ml-1 bg-white snippet">
-          {{ reply.snippet }}...
-        </span>
-        <span v-else class="ml-1">
-          ...
-        </span>
-        <span class="small text-muted align-middle ml-2" :title="$dayjs(reply.lastdate).toLocaleString()">
-          {{ reply.lastdate | timeago }}
-        </span>
-      </b-col>
-      <b-col cols="12" xl="6">
-        <span class="float-xl-right ml-2 mt-2 mb-2">
-          <b-btn v-if="promised && !taken && !withdrawn" variant="warning" class="align-middle mt-1 mb-1" @click="unpromise">
-            <v-icon>
-              <v-icon name="handshake" />
-              <v-icon
-                name="slash"
-                class="unpromise__slash"
-              />
-            </v-icon>
-            Unpromise
-          </b-btn>
-          <b-btn v-else-if="message.type === 'Offer' && !taken && !withdrawn" variant="success" class="align-middle mt-1 mb-1" @click="promise">
-            <v-icon name="handshake" /> Promise
-          </b-btn>
-          <b-btn variant="primary" class="d-none d-sm-inline-block align-middle mt-1 mb-1 mr-1" @click="chat(true)">
-            <b-badge v-if="unseen > 0" variant="danger">
-              {{ unseen }}
-            </b-badge>
-            <span v-else>
-              <v-icon name="comments" />
-            </span>
-            Chat
-          </b-btn>
-          <b-btn variant="primary" class="d-inline-block d-sm-none align-middle mt-1 mb-1 mr-1" @click="chat(false)">
-            <b-badge v-if="unseen > 0" variant="danger">
-              {{ unseen }}
-            </b-badge>
-            <span v-else>
-              <v-icon name="comments" />
-            </span>
-            Chat
-          </b-btn>
-        </span>
-      </b-col>
-    </b-row>
+          <br>
+          <span v-if="unseen > 0" class="bg-white snippet text-primary">
+            {{ reply.snippet }}...
+          </span>
+          <span v-else-if="reply.snippet" class="bg-white snippet">
+            {{ reply.snippet }}...
+          </span>
+          <span v-else class="ml-4">
+            ...
+          </span>
+          <span class="small text-muted align-middle ml-2" :title="$dayjs(reply.lastdate).toLocaleString()">
+            {{ reply.lastdate | timeago }}
+          </span>
+        </div>
+      </div>
+      <ratings v-bind="reply.user" class="pl-1 pt-1 mt-1 mr-2 flex-shrink-1" />
+      <div class="pt-1 flex-shrink-1 ml-2">
+        <b-btn v-if="promised && !taken && !withdrawn" variant="warning" class="align-middle mt-1 mb-1" @click="unpromise">
+          <v-icon>
+            <v-icon name="handshake" />
+            <v-icon
+              name="slash"
+              class="unpromise__slash"
+            />
+          </v-icon>
+          Unpromise
+        </b-btn>
+        <b-btn v-else-if="message.type === 'Offer' && !taken && !withdrawn" variant="success" class="align-middle mt-1 mb-1" @click="promise">
+          <v-icon name="handshake" /> Promise
+        </b-btn>
+        <b-btn variant="primary" class="d-none d-sm-inline-block align-middle mt-1 mb-1 mr-1" @click="chat(true)">
+          <b-badge v-if="unseen > 0" variant="danger">
+            {{ unseen }}
+          </b-badge>
+          <span v-else>
+            <v-icon name="comments" />
+          </span>
+          Chat
+        </b-btn>
+        <b-btn variant="primary" class="d-inline-block d-sm-none align-middle mt-1 mb-1 mr-1" @click="chat(false)">
+          <b-badge v-if="unseen > 0" variant="danger">
+            {{ unseen }}
+          </b-badge>
+          <span v-else>
+            <v-icon name="comments" />
+          </span>
+          Chat
+        </b-btn>
+      </div>
+    </div>
     <PromiseModal ref="promise" :messages="[ message ]" :selected-message="message.id" :users="[ reply.user ]" :selected-user="reply.user.id" />
     <RenegeModal ref="renege" :messages="[ message ]" :selected-message="message.id" :users="[ reply.user ]" :selected-user="reply.user.id" />
   </div>
@@ -121,10 +112,6 @@ export default {
     }
   },
   computed: {
-    myid() {
-      const me = this.$store.getters['auth/user']
-      return me.id
-    },
     unseen() {
       // See if this reply has unseen messages in the chats.
       let unseen = 0

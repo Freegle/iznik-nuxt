@@ -41,7 +41,7 @@ export default {
   },
   computed: {
     profileClass() {
-      return this.size === 'sm' ? 'profile-image-sm' : 'profile-image'
+      return this.size === 'sm' ? 'ProfileImage-sm' : 'ProfileImage'
     }
   },
   methods: {
@@ -53,12 +53,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.profile-image {
+.ProfileImage {
   width: 100px;
   height: 100px;
 }
 
-.profile-image-sm {
+.ProfileImage-sm {
   width: 60px;
   height: 60px;
 }

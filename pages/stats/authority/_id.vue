@@ -22,24 +22,24 @@
               <b-tbody>
                 <b-tr>
                   <b-td>Memberships</b-td>
-                  <b-td>{{ last3MonthsMembersTotal[0].toLocaleString() }}</b-td>
-                  <b-td>{{ last3MonthsMembersTotal[1].toLocaleString() }}</b-td>
-                  <b-td>{{ last3MonthsMembersTotal[2].toLocaleString() }}</b-td>
-                  <b-td>{{ last3MonthsMembersTotal[2].toLocaleString() }}</b-td>
+                  <b-td>{{ last3MonthsMembersTotal[0] ? last3MonthsMembersTotal[0].toLocaleString() : '-' }}</b-td>
+                  <b-td>{{ last3MonthsMembersTotal[1] ? last3MonthsMembersTotal[1].toLocaleString() : '-' }}</b-td>
+                  <b-td>{{ last3MonthsMembersTotal[2] ? last3MonthsMembersTotal[2].toLocaleString() : '-' }}</b-td>
+                  <b-td>{{ last3MonthsMembersTotal[2] ? last3MonthsMembersTotal[2].toLocaleString() : '-' }}</b-td>
                 </b-tr>
                 <b-tr>
                   <b-td>Individuals</b-td>
-                  <b-td>{{ last3MonthsUsersTotal[0].toLocaleString() }}</b-td>
-                  <b-td>{{ last3MonthsUsersTotal[1].toLocaleString() }}</b-td>
-                  <b-td>{{ last3MonthsUsersTotal[2].toLocaleString() }}</b-td>
-                  <b-td>{{ last3MonthsUsersTotal[2].toLocaleString() }}</b-td>
+                  <b-td>{{ last3MonthsUsersTotal[0] ? last3MonthsUsersTotal[0].toLocaleString() : '-' }}</b-td>
+                  <b-td>{{ last3MonthsUsersTotal[1] ? last3MonthsUsersTotal[1].toLocaleString() : '-' }}</b-td>
+                  <b-td>{{ last3MonthsUsersTotal[2] ? last3MonthsUsersTotal[2].toLocaleString() : '-' }}</b-td>
+                  <b-td>{{ last3MonthsUsersTotal[2] ? last3MonthsUsersTotal[2].toLocaleString() : '-' }}</b-td>
                 </b-tr>
                 <b-tr>
                   <b-td>Kilograms reused</b-td>
-                  <b-td>{{ last3MonthsKgsTotal[0].toLocaleString() }}</b-td>
-                  <b-td>{{ last3MonthsKgsTotal[1].toLocaleString() }}</b-td>
-                  <b-td>{{ last3MonthsKgsTotal[2].toLocaleString() }}</b-td>
-                  <b-td>{{ (last3MonthsKgsTotal[0] + last3MonthsKgsTotal[1] + last3MonthsKgsTotal[2]).toLocaleString() }}</b-td>
+                  <b-td>{{ last3MonthsKgsTotal[0] ? last3MonthsKgsTotal[0].toLocaleString() : '-' }}}</b-td>
+                  <b-td>{{ last3MonthsKgsTotal[1] ? last3MonthsKgsTotal[1].toLocaleString() : '-' }}}</b-td>
+                  <b-td>{{ last3MonthsKgsTotal[2] ? last3MonthsKgsTotal[2].toLocaleString() : '-' }}}</b-td>
+                  <b-td>{{ ((last3MonthsKgsTotal[0] ? last3MonthsKgsTotal[0] : 0) + (last3MonthsKgsTotal[1] ? last3MonthsKgsTotal[1] : 0) + (last3MonthsKgsTotal[2] ? last3MonthsKgsTotal[2] : 0)).toLocaleString() }}</b-td>
                 </b-tr>
                 <b-tr>
                   <b-td>CO2 saved (tonnes)</b-td>
@@ -50,17 +50,17 @@
                 </b-tr>
                 <b-tr>
                   <b-td>Benefit (£)</b-td>
-                  <b-td>{{ last3MonthsBenefitTotal[0].toLocaleString() }}</b-td>
-                  <b-td>{{ last3MonthsBenefitTotal[1].toLocaleString() }}</b-td>
-                  <b-td>{{ last3MonthsBenefitTotal[2].toLocaleString() }}</b-td>
-                  <b-td>{{ (last3MonthsBenefitTotal[0] + last3MonthsBenefitTotal[1] + last3MonthsBenefitTotal[2]).toLocaleString() }}</b-td>
+                  <b-td>{{ last3MonthsBenefitTotal[0] ? last3MonthsBenefitTotal[0].toLocaleString() : '-' }}</b-td>
+                  <b-td>{{ last3MonthsBenefitTotal[1] ? last3MonthsBenefitTotal[1].toLocaleString() : '-' }}</b-td>
+                  <b-td>{{ last3MonthsBenefitTotal[2] ? last3MonthsBenefitTotal[2].toLocaleString() : '-' }}</b-td>
+                  <b-td>{{ ((last3MonthsBenefitTotal[0] ? last3MonthsBenefitTotal[0].toLocaleString() : 0) + (last3MonthsBenefitTotal[1] ? last3MonthsBenefitTotal[1].toLocaleString() : 0) + (last3MonthsBenefitTotal[2] ? last3MonthsBenefitTotal[2].toLocaleString() : 0)).toLocaleString() }}</b-td>
                 </b-tr>
                 <b-tr>
                   <b-td>Gifts</b-td>
-                  <b-td>{{ last3MonthsGiftsTotal[0].toLocaleString() }}</b-td>
-                  <b-td>{{ last3MonthsGiftsTotal[1].toLocaleString() }}</b-td>
-                  <b-td>{{ last3MonthsGiftsTotal[2].toLocaleString() }}</b-td>
-                  <b-td>{{ (last3MonthsGiftsTotal[0] + last3MonthsGiftsTotal[1] + last3MonthsGiftsTotal[2]).toLocaleString() }}</b-td>
+                  <b-td>{{ last3MonthsGiftsTotal[0] ? last3MonthsGiftsTotal[0].toLocaleString() : '-' }}</b-td>
+                  <b-td>{{ last3MonthsGiftsTotal[1] ? last3MonthsGiftsTotal[1].toLocaleString() : '-' }}</b-td>
+                  <b-td>{{ last3MonthsGiftsTotal[2] ? last3MonthsGiftsTotal[2].toLocaleString() : '-' }}</b-td>
+                  <b-td>{{ ((last3MonthsGiftsTotal[0] ? last3MonthsGiftsTotal[0].toLocaleString() : 0) + (last3MonthsGiftsTotal[1] ? last3MonthsGiftsTotal[1].toLocaleString() : 0) + (last3MonthsGiftsTotal[2] ? last3MonthsGiftsTotal[2].toLocaleString() : 0)).toLocaleString() }}</b-td>
                 </b-tr>
               </b-tbody>
             </b-table-simple>
@@ -1056,6 +1056,7 @@ export default {
     },
     toggle() {
       this.tables = !this.tables
+      console.log('Toggled tables', this.tables)
     }
   },
   head() {

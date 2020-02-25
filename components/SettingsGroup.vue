@@ -37,7 +37,7 @@
         </b-btn>
       </b-col>
     </b-row>
-    <b-row>
+    <b-row v-if="!simple">
       <b-col cols="12" sm="6">
         <b-form-group label="Community Event mails:">
           <OurToggle

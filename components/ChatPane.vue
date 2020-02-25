@@ -71,7 +71,6 @@
                 :key="'chatmessage-' + chatmessage.id"
                 :chatmessage="chatmessage"
                 :chat="chat"
-                :me="me"
                 :otheruser="otheruser"
                 :last="chatmessage.id === chatmessages[chatmessages.length - 1].id"
               />
@@ -93,7 +92,10 @@
           </b-row>
           <b-row>
             <b-col class="p-0">
-              <notice-message v-if="userHasReneged" variant="warning">
+              <notice-message v-if="expectedreply" variant="warning" @click.native="showInfo">
+                <v-icon name="exclamation-triangle" />&nbsp;{{ expectedreply | pluralize(['freegler is', 'freeglers are'], { includeNumber: true }) }} still waiting for them to reply.  You might not hear back from them.
+              </notice-message>
+              <notice-message v-else-if="userHasReneged" variant="warning" @click.native="showInfo">
                 <v-icon name="exclamation-triangle" />&nbsp;Things haven't always worked out for this freegler.  That might not be their fault, but please make very clear arrangements.
               </notice-message>
               <notice-message v-if="!spammer && showReplyTime && replytime" class="clickme" @click.native="showInfo">
@@ -125,16 +127,16 @@
                   <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person" @click="promise">
                     <v-icon name="handshake" />&nbsp;Promise
                   </b-btn>
-                  <b-btn v-b-tooltip.hover.top variant="white" title="Send your address" @click="addressBook">
+                  <b-btn v-if="!simple" v-b-tooltip.hover.top variant="white" title="Send your address" @click="addressBook">
                     <v-icon name="address-book" />&nbsp;Address
                   </b-btn>
-                  <b-btn v-b-tooltip.hover.top variant="white" title="Update your availability" @click="availability">
+                  <b-btn v-if="!simple" v-b-tooltip.hover.top variant="white" title="Update your availability" @click="availability">
                     <v-icon name="calendar-alt" />&nbsp;Availability
                   </b-btn>
                   <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler" @click="showInfo">
                     <v-icon name="info-circle" />&nbsp;Info
                   </b-btn>
-                  <b-btn v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
+                  <b-btn v-if="!simple" v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
                     <v-icon name="bell" />&nbsp;Nudge
                   </b-btn>
                 </span>
@@ -201,7 +203,7 @@
           :chatid="chat.id"
           @confirm="hide"
         />
-        <ChatRSVPModal :id="id" ref="rsvp" />
+        <ChatRSVPModal v-if="RSVP" :id="id" ref="rsvp" :user="otheruser" />
       </div>
     </client-only>
   </div>
@@ -271,7 +273,7 @@ export default {
       sending: false,
       scrolledToBottom: false,
       showReplyTime: true,
-      RSVP: true
+      RSVP: false
     }
   },
   computed: {
@@ -314,9 +316,9 @@ export default {
     },
 
     chatmessages() {
-      return this.chatCollate(
-        this.$store.getters['chatmessages/getMessages'](this.id)
-      )
+      const msgs = this.$store.getters['chatmessages/getMessages'](this.id)
+      const ret = this.chatCollate(msgs)
+      return ret
     },
 
     chatusers() {
@@ -362,6 +364,19 @@ export default {
       return ret
     },
 
+    expectedreply() {
+      let ret = 0
+
+      if (this.otheruser) {
+        const user = this.$store.getters['user/get'](this.otheruser.id)
+        if (user && user.info) {
+          ret = user.info.expectedreply
+        }
+      }
+
+      return ret
+    },
+
     replytime() {
       let ret = null
       let secs = null
@@ -395,7 +410,6 @@ export default {
   watch: {
     me(newVal, oldVal) {
       if (!oldVal && newVal) {
-        console.log('we are now logged in')
         this.fetchChat()
       }
     },
@@ -427,6 +441,28 @@ export default {
     this.fetchChat()
   },
 
+  async mounted() {
+    // We don't want to clear the store, because cached messages make us look zippy.  But there might be new messages.
+    // So fetch until we stop finding new messages.  We can't rely on infinite scroll because we might already be full.
+    await this.$store.dispatch('chatmessages/clearContext', {
+      chatid: this.id
+    })
+
+    let msgs
+    let count
+
+    do {
+      msgs = this.$store.getters['chatmessages/getMessages'](this.id)
+      count = msgs.length
+
+      await this.$store.dispatch('chatmessages/fetch', {
+        chatid: this.id
+      })
+
+      msgs = this.$store.getters['chatmessages/getMessages'](this.id)
+    } while (msgs.length !== count)
+  },
+
   methods: {
     showInfo() {
       this.waitForRef('profile', () => {
@@ -434,7 +470,9 @@ export default {
       })
     },
     availability() {
-      this.$refs.availabilitymodal.show()
+      this.waitForRef('availabilitymodal', () => {
+        this.$refs.availabilitymodal.show()
+      })
     },
     loadMore: function($state) {
       const currentCount = this.chatmessages.length
@@ -529,11 +567,13 @@ export default {
       if (msg) {
         this.sending = true
 
-        // If the current last message in this chat is an "interested", then we're going to ask if they
-        // expect a reply.
+        // If the current last message in this chat is an "interested" from the other party, then we're going to ask
+        // if they expect a reply.
         const RSVP =
           this.chatmessages.length &&
-          this.chatmessages[this.chatmessages.length - 1].type === 'Interested'
+          this.chatmessages[this.chatmessages.length - 1].type ===
+            'Interested' &&
+          this.chatmessages[this.chatmessages.length - 1].userid !== this.myid
 
         // Encode up any emojis.
         msg = twem.untwem(msg)
@@ -550,7 +590,10 @@ export default {
         await this._updateAfterSend()
 
         if (RSVP) {
-          this.$refs.rsvp.show()
+          this.RSVP = true
+          this.waitForRef('rsvp', () => {
+            this.$refs.rsvp.show()
+          })
         }
       }
     },

@@ -60,22 +60,30 @@ export default {
   },
   watch: {
     work(newVal, oldVal) {
-      console.log('Work change', newVal, oldVal)
       if (newVal > oldVal) {
         // There's new stuff to do.  Reload.
         this.$store.dispatch('chatmessages/clearContext', {
           id: REVIEWCHAT
         })
+
         this.$store.dispatch('chatmessages/clearMessages')
       }
     }
   },
-  mounted() {
+  async mounted() {
     // We don't want to pick up any real chat messages.
     this.$store.dispatch('chatmessages/clearContext', {
       id: REVIEWCHAT
     })
     this.$store.dispatch('chatmessages/clearMessages')
+
+    await this.$store.dispatch('chatmessages/fetch', {
+      chatid: REVIEWCHAT,
+      limit: this.limit
+    })
+
+    const msgs = this.$store.getters['chatmessages/getMessages'](REVIEWCHAT)
+    this.show = msgs.length
   },
   methods: {
     loadMore: function($state) {

@@ -145,9 +145,6 @@ export default {
     }
   },
   computed: {
-    me() {
-      return this.$store.getters['auth/user']
-    },
     invitations() {
       return Object.values(this.$store.getters['invitations/list'])
     }

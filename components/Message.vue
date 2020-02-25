@@ -85,7 +85,7 @@
                   See details and reply <v-icon name="angle-double-right" />
                 </b-button>
               </div>
-              <div class="d-flex justify-content-between">
+              <div v-if="!simple" class="d-flex justify-content-between">
                 <b-button v-if="expanded && !hideClose" size="sm" variant="link" class="grey" @click="contract">
                   Close post
                 </b-button>
@@ -125,7 +125,7 @@
             </div>
           </div>
         </b-card-title>
-        <div v-if="expanded" class="d-flex justify-content-between mt-1 d-block d-sm-none">
+        <div v-if="!simple && expanded" class="d-flex justify-content-between mt-1 d-block d-sm-none">
           <div class="flex-grow-2 ">
             <b-button v-if="expanded && !hideClose" size="sm" variant="link" class="grey" @click="contract">
               Close post
@@ -169,7 +169,7 @@
           /><span v-else>{{ expanded.textbody }}</span>
         </p>
 
-        <div class="d-flex justify-content-between">
+        <div v-if="!simple" class="d-flex justify-content-between">
           <MessageUserInfo v-if="expanded.fromuser" :user="expanded.fromuser" :milesaway="milesaway" class="flex-grow-1" />
           <MessageReplyInfo :message="expanded" />
         </div>

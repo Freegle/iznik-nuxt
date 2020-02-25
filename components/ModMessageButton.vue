@@ -1,11 +1,11 @@
 <template>
   <div class="d-inline">
-    <b-btn :variant="variant" class="mb-1" @click="click">
+    <b-btn :variant="variant" class="mb-1" :disabled="disabled" @click="click">
       <v-icon :name="icon" /> {{ label }}
     </b-btn>
     <ConfirmModal v-if="showDeleteModal" ref="deleteConfirm" @confirm="deleteConfirmed" />
     <ConfirmModal v-if="showSpamModal" ref="spamConfirm" @confirm="spamConfirmed" />
-    <ModStdMessageModal v-if="showStdMsgModal" ref="stdmodal" :stdmsgid="stdmsg ? stdmsg.id : null" :message="message" />
+    <ModStdMessageModal v-if="showStdMsgModal" ref="stdmodal" :stdmsg="stdmsg" :message="message" />
   </div>
 </template>
 <script>
@@ -24,8 +24,8 @@ export default {
       type: Object,
       required: true
     },
-    stdmsg: {
-      type: Object,
+    stdmsgid: {
+      type: Number,
       required: false,
       default: null
     },
@@ -40,6 +40,11 @@ export default {
     icon: {
       type: String,
       required: true
+    },
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: false
     },
     approve: {
       type: Boolean,
@@ -70,13 +75,24 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    reject: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    leave: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
     return {
       showDeleteModal: false,
       showStdMsgModal: false,
-      showSpamModal: false
+      showSpamModal: false,
+      stdmsg: null
     }
   },
   computed: {
@@ -91,27 +107,42 @@ export default {
     }
   },
   methods: {
-    click() {
+    async click() {
       if (this.approve) {
-        // Standard approve button
+        // Standard approve button - no modal.
         this.approveIt()
       } else if (this.delete) {
-        // Standard delete button
+        // Standard delete button - no modal.
         this.deleteIt()
       } else if (this.spam) {
-        // Standard spam button
+        // Standard spam button - no modal.
         this.spamIt()
       } else if (this.notspam) {
-        // Standard notspam button
+        // Standard notspam button - no modal.
         this.notSpamIt()
       } else if (this.hold) {
-        // Standard hold button
+        // Standard hold button - no modal.
         this.holdIt()
       } else if (this.release) {
-        // Standard release button
+        // Standard release button - no modal.
         this.releaseIt()
       } else {
-        // Something else.  We want to show the modal.  Setting this will cause it to render here.
+        // We want to show a modal.
+        if (this.reject) {
+          this.stdmsg = {
+            action: 'Reject'
+          }
+        } else if (this.leave) {
+          this.stdmsg = {
+            action: 'Leave'
+          }
+        } else if (this.stdmsgid) {
+          // We have a standard message.  Fetch it.
+          this.stdmsg = await this.$store.dispatch('stdmsgs/fetch', {
+            id: this.stdmsgid
+          })
+        }
+
         this.showStdMsgModal = true
         this.waitForRef('stdmodal', () => {
           this.$refs.stdmodal.show()

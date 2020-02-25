@@ -169,13 +169,16 @@ const config = {
     '~/plugins/directives',
 
     // Iznik $api setup
-    { src: '~plugins/api.js' },
+    { src: '~/plugins/api.js' },
+
+    // Global mixins.
+    { src: '~/mixins/me.js' },
 
     // Our parameters serialize differently from axios defaults
-    { src: '~plugins/axios-serializer.js' },
-    { src: '~plugins/axios-login.js' },
+    { src: '~/plugins/axios-serializer.js' },
+    { src: '~/plugins/axios-login.js' },
 
-    // { src: '~plugins/axios-log.js' },
+    // { src: '~/plugins/axios-log.js' },
 
     { src: '~/plugins/vuejs-thermometer' },
     { src: '~/plugins/qs' },
@@ -186,22 +189,22 @@ const config = {
     { src: '~/plugins/dayjs' },
 
     // Some plugins are client-side features
-    { src: '~plugins/cdn', ssr: false },
-    { src: '~plugins/visibility.js', ssr: false },
-    { src: '~plugins/error-toasts.js', ssr: false },
-    { src: '~plugins/vuex-persistedstate', ssr: false },
-    { src: '~plugins/vue2-google-maps.js', ssr: false },
-    { src: '~plugins/vue-awesome.js', ssr: false },
-    { src: '~plugins/vue-read-more', ssr: false },
-    { src: '~plugins/facebook-sdk', ssr: false },
-    { src: '~plugins/google-sdk', ssr: false },
-    { src: '~plugins/vue-social-sharing', ssr: false },
-    { src: '~plugins/vue-lazy-youtube-video', ssr: false },
-    { src: '~plugins/app-init-push.js', mode: 'client' },
-    { src: '~plugins/app-facebook.js', mode: 'client' },
-    { src: '~plugins/app-google.js', mode: 'client' },
-    { src: '~plugins/app-yahoo.js', mode: 'client' },
-    { src: '~plugins/inspectlet', ssr: false }
+    { src: '~/plugins/cdn', ssr: false },
+    { src: '~/plugins/visibility.js', ssr: false },
+    { src: '~/plugins/error-toasts.js', ssr: false },
+    { src: '~/plugins/vuex-persistedstate', ssr: false },
+    { src: '~/plugins/vue2-google-maps.js', ssr: false },
+    { src: '~/plugins/vue-awesome.js', ssr: false },
+    { src: '~/plugins/vue-read-more', ssr: false },
+    { src: '~/plugins/facebook-sdk', ssr: false },
+    { src: '~/plugins/google-sdk', ssr: false },
+    { src: '~/plugins/vue-social-sharing', ssr: false },
+    { src: '~/plugins/vue-lazy-youtube-video', ssr: false },
+    { src: '~/plugins/inspectlet', ssr: false },
+    { src: '~/plugins/app-init-push.js', mode: 'client' },
+    { src: '~/plugins/app-facebook.js', mode: 'client' },
+    { src: '~/plugins/app-google.js', mode: 'client' },
+    { src: '~/plugins/app-yahoo.js', mode: 'client' },
   ],
 
   redirect: [ // In mobile app-init-push route needs updating as per here
@@ -463,8 +466,8 @@ const config = {
                 '> 1%',
                 'last 2 versions',
                 'ie >= 8',
-                'safari >= 9',
-                'ios_saf >= 9'
+                'safari > 9',
+                'ios_saf > 9'
               ]
             }
         return [

@@ -18,7 +18,7 @@
             </div>
           </div>
           <div class="media-body">
-            <profile-image v-if="otheruser" :image="otheruser.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
+            <ProfileImage v-if="otheruser" :image="otheruser.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
           </div>
         </div>
         <div v-else class="media float-right">
@@ -36,7 +36,7 @@
           </div>
           <div class="media-right">
             <div class="media-object">
-              <profile-image :image="me.profile.turl" class="mr-1 ml-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
+              <ProfileImage :image="me.profile.turl" class="mr-1 ml-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
             </div>
           </div>
         </div>
