@@ -246,7 +246,7 @@ export default {
             } else {
               msg = msg + '\n\n' + this.stdmsg.body.trim()
             }
-          } else if (msg) {
+          } else if (this.stdmsg.action !== 'Edit' && msg) {
             // No text to insert - add a couple of blank lines at the top for typing.
             msg = '\n\n' + msg
           }
@@ -262,6 +262,8 @@ export default {
                 ' (' +
                 matches[3] +
                 ')'
+
+              this.message.item.name = this.message.item.name.toLowerCase()
             } else {
               this.subject = this.subject.toLowerCase().trim()
             }
