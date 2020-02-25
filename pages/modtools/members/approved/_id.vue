@@ -7,9 +7,15 @@
         <ModMember :member="member" />
       </div>
 
+      <NoticeMessage v-if="!members.length && !busy" class="mt-2">
+        There are no members at the moment.
+      </NoticeMessage>
+
       <infinite-loading :key="'infinite-' + groupid" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
         <span slot="no-results">
-          There are no members at the moment.
+          <span v-if="!busy">
+            There are no members at the moment.
+          </span>
         </span>
         <span slot="no-more" />
         <span slot="spinner">
