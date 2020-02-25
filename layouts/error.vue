@@ -4,14 +4,14 @@
     <div class="error">
       <h1 v-if="error.statusCode===404">
         <div class="error__heading--main">
-          Oh No! That page doesn't seem to exist
+          Oh no! That page doesn't seem to exist...
         </div>
         <div class="error__heading--sub">
-          Maybe it's been Freegled
+          Maybe it's been freegled?
         </div>
       </h1>
       <h1 v-else class="error__heading--main">
-        An error has occured
+        Oh dear! Something went wrong...
       </h1>
       <p>
         <nuxt-link to="/">
