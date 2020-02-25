@@ -13,6 +13,7 @@
       <h1 v-else class="error__heading--main">
         Oh dear! Something went wrong...
       </h1>
+      <p>Error was: {{ JSON.stringify(error) }}</p>
       <p>
         <nuxt-link to="/">
           Click here

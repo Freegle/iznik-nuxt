@@ -305,7 +305,7 @@ export const actions = {
   async saveEmail({ commit, dispatch, state }, params) {
     const data = await this.$api.session.save(params)
     await dispatch('fetchUser', {
-      components: ['me', 'groups', 'aboutme']
+      components: NONMIN
     })
     return data
   },
