@@ -34,6 +34,12 @@
           <b-input v-model="subject" class="mt-2" />
         </b-input-group>
       </div>
+      <NoticeMessage v-if="warning" variant="warning" class="mt-1 mb-1">
+        <p>Please check your message in case it needs updating:</p>
+        <p>
+          <b>{{ warning }}</b>
+        </p>
+      </NoticeMessage>
       <b-textarea v-model="body" rows="10" class="mt-2" />
       <div v-if="stdmsg.newdelstatus && stdmsg.newdelstatus !== 'UNCHANGED'" class="mt-1">
         <v-icon name="cog" />
@@ -56,8 +62,10 @@
 </template>
 <script>
 import Postcode from './Postcode'
+import NoticeMessage from './NoticeMessage'
+
 export default {
-  components: { Postcode },
+  components: { NoticeMessage, Postcode },
   props: {
     message: {
       type: Object,
@@ -179,6 +187,34 @@ export default {
         default:
           return 'Unknown'
       }
+    },
+    warning() {
+      let ret = null
+
+      if (this.body) {
+        const checks = {
+          yahoo:
+            'Yahoo Groups is no longer supported, so any mention of it is probably out of date.',
+          republisher:
+            'Republisher is old and any mention of it is probably not valid any more.',
+          messagemaker:
+            'The Message Maker is no longer a separate tool; please just refer people to www.ilovefreegle.org.',
+          cafe:
+            'The ChitChat area of the site is the please for cafe-type requests now.',
+          newsfeed: 'Newsfeed is now called ChitChat.',
+          freegledirect:
+            'Freegle Direct is no longer an active term; we just talk about "our website" now.'
+        }
+
+        const trimmed = this.body.replace(/\s/g, '').toLowerCase()
+        for (const keyword in checks) {
+          if (trimmed.indexOf(keyword) !== -1) {
+            ret = checks[keyword]
+          }
+        }
+      }
+
+      return ret
     }
   },
   methods: {
@@ -210,6 +246,9 @@ export default {
             } else {
               msg = msg + '\n\n' + this.stdmsg.body.trim()
             }
+          } else if (this.stdmsg.action !== 'Edit' && msg) {
+            // No text to insert - add a couple of blank lines at the top for typing.
+            msg = '\n\n' + msg
           }
 
           if (this.stdmsg.edittext === 'Correct Case') {
@@ -223,6 +262,8 @@ export default {
                 ' (' +
                 matches[3] +
                 ')'
+
+              this.message.item.name = this.message.item.name.toLowerCase()
             } else {
               this.subject = this.subject.toLowerCase().trim()
             }
@@ -292,6 +333,8 @@ export default {
 
         text = text.replace(/\$groupname/g, group.nameshort)
         text = text.replace(/\$owneremail/g, group.modsemail)
+        text = text.replace(/\$volunteersemail/g, group.modsemail)
+        text = text.replace(/\$volunteeremail/g, group.modsemail)
         text = text.replace(/\$groupemail/g, group.groupemail)
         text = text.replace(/\$groupurl/g, group.url)
         text = text.replace(/\$myname/g, this.me.displayname)

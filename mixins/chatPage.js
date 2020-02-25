@@ -128,12 +128,14 @@ export default {
         this.searching = val
         this.clientSearch = true
 
+        const modtools = this.$store.getters['misc/get']('modtools')
+
         await this.$store.dispatch('chats/listChats', {
           search: val,
-          summary: true
+          summary: true,
+          chattypes: modtools ? ['User2Mod'] : ['User2User', 'User2Mod']
         })
 
-        this.chats = Object.values(this.$store.getters['chats/list'])
         this.clientSearch = false
 
         while (this.searchlast) {
@@ -144,8 +146,6 @@ export default {
             search: val2,
             summary: true
           })
-
-          this.chats = Object.values(this.$store.getters['chats/list'])
         }
 
         this.searching = null

@@ -514,11 +514,13 @@
 <script>
 import Vue from 'vue'
 import SimpleView from '../../components/SimpleView'
-import EmailConfirmModal from '~/components/EmailConfirmModal'
+import WaitForRef from '@/mixins/waitForRef'
 import loginRequired from '@/mixins/loginRequired.js'
+import EmailConfirmModal from '~/components/EmailConfirmModal'
 import buildHead from '@/mixins/buildHead'
 import ProfileImage from '~/components/ProfileImage'
 import 'vue2-datepicker/index.css'
+
 const AboutMeModal = () => import('~/components/AboutMeModal')
 const AvailabilityModal = () => import('~/components/AvailabilityModal')
 const AddressModal = () => import('~/components/AddressModal')
@@ -548,7 +550,7 @@ export default {
     OurFilePond,
     DonationButton
   },
-  mixins: [loginRequired, buildHead],
+  mixins: [loginRequired, buildHead, WaitForRef],
   data: function() {
     return {
       emailsOn: null,
@@ -710,7 +712,7 @@ export default {
   methods: {
     async update() {
       await this.$store.dispatch('auth/fetchUser', {
-        components: ['me', 'groups', 'aboutme'],
+        components: ['me', 'groups', 'aboutme', 'notifications'],
         force: true
       })
     },
@@ -762,7 +764,9 @@ export default {
         })
 
         if (data && data.ret === 10) {
-          this.$refs.emailconfirm.show()
+          this.waitForRef('emailconfirm', () => {
+            this.$refs.emailconfirm.show()
+          })
         }
       }
 
@@ -851,7 +855,7 @@ export default {
       }
 
       await this.$store.dispatch('auth/fetchUser', {
-        components: ['me', 'groups', 'aboutme']
+        components: ['me', 'groups', 'aboutme', 'notifications']
       })
     },
     async groupChange(e) {
@@ -863,7 +867,7 @@ export default {
       await this.$store.dispatch('auth/setGroup', params)
 
       await this.$store.dispatch('auth/fetchUser', {
-        components: ['me', 'groups', 'aboutme']
+        components: ['me', 'groups', 'aboutme', 'notifications']
       })
     },
     async changeNotification(e, type) {

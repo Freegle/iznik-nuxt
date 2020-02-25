@@ -348,7 +348,8 @@ export default {
       return this.$store.getters['notifications/getUnreadCount']
     },
     chatCount() {
-      const chatcount = this.$store.getters['chats/unseenCount'] // CC
+      // Don't show so many that the layout breaks.
+      const chatcount = Math.min(999, this.$store.getters['chats/unseenCount']) // CC
       setBadgeCount(chatcount) // CC
       return chatcount 
     },

@@ -6,10 +6,12 @@
         <ModMessage :message="message" />
       </div>
 
+      <NoticeMessage v-if="!messages.length && !busy" class="mt-2">
+        There are no messages at the moment.  This will refresh automatically.
+      </NoticeMessage>
+
       <infinite-loading :key="'infinite-' + groupid" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
-        <span slot="no-results">
-          There are no messages at the moment.
-        </span>
+        <span slot="no-results" />
         <span slot="no-more" />
         <span slot="spinner">
           <b-img-lazy src="~/static/loader.gif" alt="Loading" />

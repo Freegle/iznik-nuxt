@@ -8,7 +8,7 @@
       no-stacking
     >
       <template slot="default">
-        <b-row v-for="message in messages" :key="message.id">
+        <b-row v-for="message in messages" :key="'postinghistory-' + message.id">
           <b-col cols="8" sm="3">
             <div>{{ message.arrival | datetimeshort }}</div>
           </b-col>

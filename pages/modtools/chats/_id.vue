@@ -5,7 +5,14 @@
         <b-card class="p-0">
           <b-card-body class="p-0">
             <div class="d-flex justify-content-between">
-              <b-form-input v-model="search" placeholder="Search chats" class="flex-shrink-1" @update="searchChange" />
+              <b-input-group>
+                <b-form-input v-model="search" placeholder="Search chats" class="flex-shrink-1" :disabled="searching" @update="searchChange" />
+                <b-input-group-append>
+                  <b-button variant="white" class="greybord p-0 pr-2" tabindex="-1">
+                    <v-icon name="sync" :class="'ml-1 text-success fa-spin ' + (searching ? 'visible': 'invisible')" />
+                  </b-button>
+                </b-input-group-append>
+              </b-input-group>
               <b-btn class="float-right" variant="white" @click="markAllRead">
                 <v-icon name="check" /> Mark all read
               </b-btn>
@@ -17,6 +24,9 @@
             <ChatListEntry :id="chat.id" />
           </li>
         </ul>
+        <p v-if="!sortedChats || !sortedChats.length" class="ml-2">
+          No chats to show.
+        </p>
         <client-only>
           <infinite-loading force-use-infinite-wrapper="#chatlist" :distance="distance" @infinite="loadMore">
             <span slot="no-results" />
@@ -75,5 +85,9 @@ export default {
   max-height: calc(100vh - 74px);
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+.greybord {
+  border-color: $color-gray-4;
 }
 </style>

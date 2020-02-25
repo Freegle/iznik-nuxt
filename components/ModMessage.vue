@@ -153,27 +153,7 @@
                 {{ email.email }} <v-icon v-if="email.preferred" name="start" />
               </div>
             </div>
-            <div v-if="showActions">
-              <!--              TODO Actions-->
-              <b-btn variant="white" disabled>
-                <v-icon name="times" /> Remove
-              </b-btn>
-              <b-btn variant="white" disabled>
-                <v-icon name="trash-alt" /> Ban
-              </b-btn>
-              <b-btn variant="white" disabled>
-                <v-icon name="ban" /> Scammer
-              </b-btn>
-              <b-btn variant="white" disabled>
-                <v-icon name="check" /> Whitelist
-              </b-btn>
-              <b-btn variant="white" disabled>
-                <v-icon name="tag" /> Add note
-              </b-btn>
-              <b-btn variant="white" disabled>
-                <v-icon name="trash-alt" /> Purge
-              </b-btn>
-            </div>
+            <ModMemberActions v-if="showActions" :id="message.fromuser.id" :groupid="message.groups[0].groupid" />
           </b-col>
         </b-row>
       </b-card-body>
@@ -204,11 +184,13 @@ import NoticeMessage from './NoticeMessage'
 import ModMessageButtons from './ModMessageButtons'
 import ModMessageWorry from './ModMessageWorry'
 import Postcode from './Postcode'
+import ModMemberActions from './ModMemberActions'
 import twem from '~/assets/js/twem'
 
 export default {
   name: 'ModMessage',
   components: {
+    ModMemberActions,
     Postcode,
     ModMessageWorry,
     ModMessageButtons,

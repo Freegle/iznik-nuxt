@@ -14,7 +14,8 @@ export default {
       distance: 1000,
       limit: 2,
       workType: null,
-      show: 0
+      show: 0,
+      busy: false
     }
   },
   computed: {
@@ -85,6 +86,8 @@ export default {
   },
   methods: {
     loadMore: function($state) {
+      this.busy = true
+
       if (this.show < this.members.length) {
         // This means that we will gradually add the members that we have fetched from the server into the DOM.
         // Doing that means that we will complete our initial render more rapidly and thus appear faster.
@@ -107,14 +110,17 @@ export default {
 
             if (currentCount === this.members.length) {
               this.complete = true
+              this.busy = false
               $state.complete()
             } else {
               $state.loaded()
+              this.busy = false
               this.show++
             }
           })
           .catch(e => {
             $state.complete()
+            this.busy = false
             console.log('Complete on error', e)
           })
       }
