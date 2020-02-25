@@ -191,12 +191,12 @@
         </div>
         <PromiseModal ref="promise" :messages="ouroffers" :selected-message="likelymsg ? likelymsg : 0" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
         <ProfileModal :id="otheruser ? otheruser.id : null" ref="profile" />
-        <AvailabilityModal v-if="me" ref="availabilitymodal" :otheruid="otheruser ? otheruser.id : null" :chatid="chat.id" :thisuid="me.id" />
+        <AvailabilityModal v-if="me && chat" ref="availabilitymodal" :otheruid="otheruser ? otheruser.id : null" :chatid="chat.id" :thisuid="me.id" />
         <AddressModal ref="addressModal" :choose="true" @chosen="sendAddress" />
-        <ChatBlockModal v-if="chat.chattype === 'User2User'" :id="id" ref="chatblock" :user="otheruser" @confirm="block" />
-        <ChatHideModal v-if="chat.chattype === 'User2User'" :id="id" ref="chathide" :user="otheruser" @confirm="hide" />
+        <ChatBlockModal v-if="chat && chat.chattype === 'User2User'" :id="id" ref="chatblock" :user="otheruser" @confirm="block" />
+        <ChatHideModal v-if="chat && chat.chattype === 'User2User'" :id="id" ref="chathide" :user="otheruser" @confirm="hide" />
         <ChatReportModal
-          v-if="chat.chattype === 'User2User'"
+          v-if="chat && chat.chattype === 'User2User'"
           :id="'report-' + id"
           ref="chatreport"
           :user="otheruser"
