@@ -36,9 +36,9 @@
                 </b-tr>
                 <b-tr>
                   <b-td>Kilograms reused</b-td>
-                  <b-td>{{ last3MonthsKgsTotal[0] ? last3MonthsKgsTotal[0].toLocaleString() : '-' }}}</b-td>
-                  <b-td>{{ last3MonthsKgsTotal[1] ? last3MonthsKgsTotal[1].toLocaleString() : '-' }}}</b-td>
-                  <b-td>{{ last3MonthsKgsTotal[2] ? last3MonthsKgsTotal[2].toLocaleString() : '-' }}}</b-td>
+                  <b-td>{{ last3MonthsKgsTotal[0] ? last3MonthsKgsTotal[0].toLocaleString() : '-' }}</b-td>
+                  <b-td>{{ last3MonthsKgsTotal[1] ? last3MonthsKgsTotal[1].toLocaleString() : '-' }}</b-td>
+                  <b-td>{{ last3MonthsKgsTotal[2] ? last3MonthsKgsTotal[2].toLocaleString() : '-' }}</b-td>
                   <b-td>{{ ((last3MonthsKgsTotal[0] ? last3MonthsKgsTotal[0] : 0) + (last3MonthsKgsTotal[1] ? last3MonthsKgsTotal[1] : 0) + (last3MonthsKgsTotal[2] ? last3MonthsKgsTotal[2] : 0)).toLocaleString() }}</b-td>
                 </b-tr>
                 <b-tr>
@@ -758,7 +758,8 @@ export default {
       this.memberData.forEach(data => {
         if (typeof data[0] !== 'string') {
           for (let mon = 2; mon >= 0; mon--) {
-            if (this.last3Months[mon].isSame(new this.$dayjs(data[0]))) {
+            // Need to use isSame(,'day') to handle DST.
+            if (this.last3Months[mon].isSame(new this.$dayjs(data[0]), 'day')) {
               ret[mon] = data[1]
             }
           }
@@ -935,8 +936,16 @@ export default {
       const stats = []
 
       const authority = store.getters['authorities/get'](id)
-      const start = this.$dayjs(this.startDate).format('YYYY-MM-DD')
-      const end = this.$dayjs(this.endDate).format('YYYY-MM-DD')
+
+      // We only query in full months, and the server expects the end date to be exclusive.
+      const start = this.$dayjs(this.startDate)
+        .startOf('month')
+        .format('YYYY-MM-DD')
+
+      const end = this.$dayjs(this.endDate)
+        .endOf('month')
+        .add(1, 'day')
+        .format('YYYY-MM-DD')
 
       for (const group of authority.groups) {
         await store.dispatch('stats/clear')
