@@ -31,6 +31,7 @@ export default {
     },
     members() {
       let members
+      console.log('Compute members')
 
       if (this.groupid) {
         members = this.$store.getters['members/getByGroup'](this.groupid)

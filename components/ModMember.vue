@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="member">
     <b-card bg-variant="white" no-body>
       <b-card-header class="d-flex justify-content-between flex-wrap">
         <div>
@@ -13,7 +13,7 @@
           <v-icon name="calendar-alt" /> {{ member.joined | datetimeshort }}
         </div>
         <div>
-          <v-icon name="hashtag" />{{ member.id }}
+          <v-icon name="hashtag" />{{ member.userid }}
         </div>
       </b-card-header>
       <b-card-body>
@@ -41,27 +41,7 @@
                 <v-icon name="exclamation-triangle" class="fa-fw" /> {{ member.modmails | pluralize([ 'Modmail', 'Modmails' ], { includeNumber: true }) }}
               </b-badge>
             </h4>
-            <div>
-              <!--              TODO Actions-->
-              <b-btn variant="white" disabled>
-                <v-icon name="times" /> Remove
-              </b-btn>
-              <b-btn variant="white" disabled>
-                <v-icon name="trash-alt" /> Ban
-              </b-btn>
-              <b-btn variant="white" disabled>
-                <v-icon name="ban" /> Scammer
-              </b-btn>
-              <b-btn variant="white" disabled>
-                <v-icon name="check" /> Whitelist
-              </b-btn>
-              <b-btn variant="white" disabled>
-                <v-icon name="tag" /> Add note
-              </b-btn>
-              <b-btn variant="white" disabled>
-                <v-icon name="trash-alt" /> Purge
-              </b-btn>
-            </div>
+            <ModMemberActions :userid="member.userid" :groupid="groupid" />
             <b-btn v-if="member.emails && member.emails.length" variant="link" @click="showEmails = !showEmails">
               <v-icon name="envelope" />
               <span v-if="showEmails">
@@ -114,10 +94,12 @@ import SettingsGroup from './SettingsGroup'
 import NoticeMessage from './NoticeMessage'
 import ProfileImage from './ProfileImage'
 import ModPostingHistoryModal from './ModPostingHistoryModal'
+import ModMemberActions from './ModMemberActions'
 
 export default {
   name: 'ModMember',
   components: {
+    ModMemberActions,
     ModPostingHistoryModal,
     ProfileImage,
     // ModMessageButtons,

@@ -37,7 +37,15 @@ export const mutations = {
   },
   remove(state, item) {
     state.list = state.list.filter(obj => {
-      return parseInt(obj.id) !== parseInt(item.id)
+      if (
+        (parseInt(item.id) && parseInt(item.id) === parseInt(obj.id)) ||
+        (parseInt(item.userid) &&
+          parseInt(item.userid) === parseInt(obj.userid))
+      ) {
+        return false
+      } else {
+        return true
+      }
     })
   },
   clear(state) {
@@ -235,6 +243,8 @@ export const actions = {
   },
 
   async delete({ commit }, params) {
+    // Delete pending member.
+
     await this.$api.memberships.delete(
       params.id,
       params.groupid,
@@ -244,6 +254,16 @@ export const actions = {
     )
     commit('remove', {
       id: params.id
+    })
+  },
+
+  async remove({ commit }, params) {
+    // Remove approved  member.
+
+    await this.$api.memberships.remove(params.userid, params.groupid)
+
+    commit('remove', {
+      userid: params.userid
     })
   }
 }

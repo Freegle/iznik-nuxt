@@ -73,6 +73,13 @@ export default class MembershipsAPI extends BaseAPI {
     })
   }
 
+  remove(userid, groupid) {
+    return this.$del('/memberships', {
+      userid: userid,
+      groupid: groupid
+    })
+  }
+
   spam(id, groupid) {
     return this.$post('/memberships', {
       action: 'Spam',
