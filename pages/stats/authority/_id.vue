@@ -53,14 +53,14 @@
                   <b-td>{{ last3MonthsBenefitTotal[0] ? last3MonthsBenefitTotal[0].toLocaleString() : '-' }}</b-td>
                   <b-td>{{ last3MonthsBenefitTotal[1] ? last3MonthsBenefitTotal[1].toLocaleString() : '-' }}</b-td>
                   <b-td>{{ last3MonthsBenefitTotal[2] ? last3MonthsBenefitTotal[2].toLocaleString() : '-' }}</b-td>
-                  <b-td>{{ ((last3MonthsBenefitTotal[0] ? last3MonthsBenefitTotal[0].toLocaleString() : 0) + (last3MonthsBenefitTotal[1] ? last3MonthsBenefitTotal[1].toLocaleString() : 0) + (last3MonthsBenefitTotal[2] ? last3MonthsBenefitTotal[2].toLocaleString() : 0)).toLocaleString() }}</b-td>
+                  <b-td>{{ ((last3MonthsBenefitTotal[0] ? last3MonthsBenefitTotal[0] : 0) + (last3MonthsBenefitTotal[1] ? last3MonthsBenefitTotal[1] : 0) + (last3MonthsBenefitTotal[2] ? last3MonthsBenefitTotal[2] : 0)).toLocaleString() }}</b-td>
                 </b-tr>
                 <b-tr>
                   <b-td>Gifts</b-td>
                   <b-td>{{ last3MonthsGiftsTotal[0] ? last3MonthsGiftsTotal[0].toLocaleString() : '-' }}</b-td>
                   <b-td>{{ last3MonthsGiftsTotal[1] ? last3MonthsGiftsTotal[1].toLocaleString() : '-' }}</b-td>
                   <b-td>{{ last3MonthsGiftsTotal[2] ? last3MonthsGiftsTotal[2].toLocaleString() : '-' }}</b-td>
-                  <b-td>{{ ((last3MonthsGiftsTotal[0] ? last3MonthsGiftsTotal[0].toLocaleString() : 0) + (last3MonthsGiftsTotal[1] ? last3MonthsGiftsTotal[1].toLocaleString() : 0) + (last3MonthsGiftsTotal[2] ? last3MonthsGiftsTotal[2].toLocaleString() : 0)).toLocaleString() }}</b-td>
+                  <b-td>{{ ((last3MonthsGiftsTotal[0] ? last3MonthsGiftsTotal[0] : 0) + (last3MonthsGiftsTotal[1] ? last3MonthsGiftsTotal[1] : 0) + (last3MonthsGiftsTotal[2] ? last3MonthsGiftsTotal[2] : 0)).toLocaleString() }}</b-td>
                 </b-tr>
               </b-tbody>
             </b-table-simple>
@@ -727,12 +727,23 @@ export default {
     },
     last3Months() {
       const now = this.$dayjs()
+      const end = this.$dayjs(this.endDate)
 
-      return [
-        now.subtract(3, 'month').startOf('month'),
-        now.subtract(2, 'month').startOf('month'),
-        now.subtract(1, 'month').startOf('month')
-      ]
+      if (end.isSame(now, 'month')) {
+        // We're in the current month.  Want to start from last month, as that is complete.
+        return [
+          now.subtract(3, 'month').startOf('month'),
+          now.subtract(2, 'month').startOf('month'),
+          now.subtract(1, 'month').startOf('month')
+        ]
+      } else {
+        // Start from the supplied month.
+        return [
+          end.subtract(2, 'month').startOf('month'),
+          end.subtract(1, 'month').startOf('month'),
+          end.startOf('month')
+        ]
+      }
     },
     last3MonthsLabels() {
       return [
@@ -860,7 +871,9 @@ export default {
           thisone[4] = thisone[3] - thisone[1]
 
           for (let i = 1; i < 5; i++) {
-            thisone[i] = thisone[i].toLocaleString()
+            if (thisone[i]) {
+              thisone[i] = thisone[i].toLocaleString()
+            }
           }
         }
 
@@ -883,7 +896,9 @@ export default {
           thisone[8] = thisone[5] + thisone[6] + thisone[7]
 
           for (let i = 5; i < 9; i++) {
-            thisone[i] = thisone[i].toLocaleString()
+            if (thisone[i]) {
+              thisone[i] = thisone[i].toLocaleString()
+            }
           }
         }
 
