@@ -19,9 +19,6 @@
     </b-alert>
     <div v-else-if="me">
       <client-only>
-        <p>
-          Not visible ? {{ notVisible }}
-        </p>
         <div class="chatHolder">
           <b-row class="chatTitle">
             <b-col v-if="chat">
@@ -214,8 +211,8 @@
           <ProfileModal :id="otheruser ? otheruser.id : null" ref="profile" />
           <AvailabilityModal v-if="me && chat" ref="availabilitymodal" :otheruid="otheruser ? otheruser.id : null" :chatid="chat.id" :thisuid="me.id" />
           <AddressModal ref="addressModal" :choose="true" @chosen="sendAddress" />
-          <ChatBlockModal v-if="chat && chat.chattype === 'User2User'" :id="id" ref="chatblock" :user="otheruser" @confirm="block" />
-          <ChatHideModal v-if="chat && chat.chattype === 'User2User'" :id="id" ref="chathide" :user="otheruser" @confirm="hide" />
+          <ChatBlockModal v-if="chat && chat.chattype === 'User2User' && otheruser" :id="id" ref="chatblock" :user="otheruser" @confirm="block" />
+          <ChatHideModal v-if="chat && chat.chattype === 'User2User' && otheruser" :id="id" ref="chathide" :user="otheruser" @confirm="hide" />
           <ChatReportModal
             v-if="chat && chat.chattype === 'User2User'"
             :id="'report-' + id"

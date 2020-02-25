@@ -17,6 +17,9 @@
             <ChatListEntry :id="chat.id" />
           </li>
         </ul>
+        <p v-if="!sortedChats || !sortedChats.length" class="ml-2">
+          No chats to show.
+        </p>
         <client-only>
           <infinite-loading force-use-infinite-wrapper="#chatlist" :distance="distance" @infinite="loadMore">
             <span slot="no-results" />

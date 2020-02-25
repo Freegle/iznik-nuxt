@@ -342,7 +342,8 @@ export default {
       return this.$store.getters['notifications/getUnreadCount']
     },
     chatCount() {
-      return this.$store.getters['chats/unseenCount']
+      // Don't show so many that the layout breaks.
+      return Math.min(999, this.$store.getters['chats/unseenCount'])
     },
     spreadCount() {
       return this.me && this.me.invitesleft ? this.me.invitesleft : 0
