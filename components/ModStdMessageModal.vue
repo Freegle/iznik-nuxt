@@ -333,6 +333,8 @@ export default {
 
         text = text.replace(/\$groupname/g, group.nameshort)
         text = text.replace(/\$owneremail/g, group.modsemail)
+        text = text.replace(/\$volunteersemail/g, group.modsemail)
+        text = text.replace(/\$volunteeremail/g, group.modsemail)
         text = text.replace(/\$groupemail/g, group.groupemail)
         text = text.replace(/\$groupurl/g, group.url)
         text = text.replace(/\$myname/g, this.me.displayname)
