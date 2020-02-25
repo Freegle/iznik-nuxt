@@ -5,7 +5,7 @@
         <SidebarLeft :show-community-events="true" :show-bot-left="true" />
       </b-col>
       <b-col cols="12" lg="6" class="newsfeedHolder p-0">
-        <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" />
+        <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" :chats="me.expectedchats" />
         <b-card v-if="!id">
           <b-card-text>
             <h5 class="text-center mb-3">
