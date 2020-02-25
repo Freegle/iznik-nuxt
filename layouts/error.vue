@@ -10,10 +10,12 @@
           Maybe it's been freegled?
         </div>
       </h1>
-      <h1 v-else class="error__heading--main">
-        Oh dear! Something went wrong...
-      </h1>
-      <p>Error was: {{ JSON.stringify(error) }}</p>
+      <div v-else>
+        <h1 class="error__heading--main">
+          Oh dear! Something went wrong...
+        </h1>
+        <p>Error was: {{ JSON.stringify(error) }}</p>
+      </div>
       <p>
         <nuxt-link to="/">
           Click here
