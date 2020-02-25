@@ -29,10 +29,13 @@
         </div>
 
         <client-only>
+          <NoticeMessage v-if="!busy && !filteredMessages.length" variant="info" class="mt-2">
+            There are no messages on this group yet.
+          </NoticeMessage>
           <infinite-loading :distance="distance" @infinite="loadMoreMessages">
+            <span slot="no-results" />
+            <span slot="no-more" />
             <span slot="spinner">
-              <span slot="no-results" />
-              <span slot="no-more" />
               <b-img-lazy src="~/static/loader.gif" alt="Loading" />
             </span>
           </infinite-loading>
@@ -43,11 +46,13 @@
 </template>
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
+import NoticeMessage from './NoticeMessage'
 const groupHeader = () => import('~/components/GroupHeader.vue')
 const Message = () => import('~/components/Message.vue')
 
 export default {
   components: {
+    NoticeMessage,
     InfiniteLoading,
     groupHeader,
     Message
@@ -100,6 +105,16 @@ export default {
     loadMoreMessages: function($state) {
       this.busy = true
 
+      let messages
+
+      if (this.group) {
+        messages = this.$store.getters['messages/getByGroup'](this.group.id)
+      } else {
+        messages = this.$store.getters['messages/getAll']
+      }
+
+      const lastCount = messages.length
+
       this.$store
         .dispatch('messages/fetchMessages', {
           groupid: this.group ? this.group.id : null,
@@ -112,7 +127,18 @@ export default {
           this.busy = false
 
           this.context = this.$store.getters['messages/getContext']
-          $state.loaded()
+
+          if (this.group) {
+            messages = this.$store.getters['messages/getByGroup'](this.group.id)
+          } else {
+            messages = this.$store.getters['messages/getAll']
+          }
+
+          if (messages.length === lastCount) {
+            $state.complete()
+          } else {
+            $state.loaded()
+          }
         })
         .catch(() => {
           $state.complete()
