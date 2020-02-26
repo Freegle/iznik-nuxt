@@ -160,6 +160,7 @@
   color: $color-white;
   font-weight: bold;
   order: 1;
+  flex-shrink: 0;
 }
 
 .chatWarning {
@@ -179,6 +180,7 @@
   order: 4;
   justify-content: flex-end;
   background-color: $color-white;
+  flex-shrink: 0;
 }
 </style>
 
