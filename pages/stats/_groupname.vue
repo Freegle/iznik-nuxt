@@ -438,7 +438,7 @@ export default {
     const start = dayjs()
       .subtract(1, 'year')
       .subtract(1, 'month')
-      .set('day', 1)
+      .startOf('month')
       .format('YYYY-MM-DD')
 
     await this.$store.dispatch('stats/clear')
