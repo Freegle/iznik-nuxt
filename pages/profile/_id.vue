@@ -8,7 +8,7 @@
               <div class="m-0">
                 <b-media>
                   <template slot="aside">
-                    <b-img lazy :src="user.profile.url" class="coverprofileimage" />
+                    <ProfileImage :image="user.profile.url" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="lg" />
                   </template>
                   <b-media-body class="align-top">
                     <div class="float-right">
@@ -143,41 +143,6 @@
   </div>
 </template>
 
-<style scoped lang="scss">
-@import 'color-vars';
-
-.coverphoto {
-  height: 100px !important;
-  width: 100% !important;
-  background-image: url('~static/wallpaper.png');
-}
-
-.coverprofilecircle {
-  width: 100px;
-  height: 100px;
-  background-color: $color-gray--base;
-  border-radius: 50%;
-  /*margin: 10px;*/
-}
-
-.coverprofileimage {
-  margin-top: 1px;
-  margin-left: 1px;
-  width: 98px;
-  height: 98px;
-  border-radius: 98px;
-  border: 3px solid $color-white;
-}
-
-.covername {
-  left: 108px;
-  position: absolute;
-  width: calc(100% - 105px);
-  padding-top: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
-}
-</style>
 <script>
 import NoticeMessage from '../../components/NoticeMessage'
 import twem from '~/assets/js/twem'
@@ -187,6 +152,7 @@ import Ratings from '~/components/Ratings'
 import ReplyTime from '~/components/ReplyTime'
 import Message from '~/components/Message.vue'
 import ChatButton from '~/components/ChatButton'
+import ProfileImage from '~/components/ProfileImage'
 
 export default {
   components: {
@@ -194,7 +160,8 @@ export default {
     Ratings,
     ReplyTime,
     Message,
-    ChatButton
+    ChatButton,
+    ProfileImage
   },
   mixins: [loginOptional],
   props: {},
@@ -274,3 +241,30 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
+.coverphoto {
+  height: 100px !important;
+  width: 100% !important;
+  background-image: url('~static/wallpaper.png');
+}
+
+.coverprofilecircle {
+  width: 100px;
+  height: 100px;
+  background-color: $color-gray--base;
+  border-radius: 50%;
+  /*margin: 10px;*/
+}
+
+.covername {
+  left: 108px;
+  position: absolute;
+  width: calc(100% - 105px);
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+</style>
