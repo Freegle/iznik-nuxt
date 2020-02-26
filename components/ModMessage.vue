@@ -41,7 +41,7 @@
                 you before releasing it.
               </NoticeMessage>
               <NoticeMessage v-else variant="warning" class="mb-2">
-                Held by <b>{{ message.heldby.name }}</b>
+                Held by <b>{{ message.heldby.displayname }}</b>
                 {{ message.heldby.timestamp | timeago }}.  Please check with them before releasing it.
               </NoticeMessage>
             </div>
