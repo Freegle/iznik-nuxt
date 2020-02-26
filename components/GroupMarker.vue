@@ -36,7 +36,11 @@ export default {
   },
   methods: {
     goto() {
-      this.$router.push('/explore/' + this.group.nameshort)
+      if (this.group.external) {
+        window.open(this.group.external)
+      } else {
+        this.$router.push('/explore/' + this.group.nameshort)
+      }
     }
   }
 }
