@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     brokenProfileImage(event) {
-      event.target.src = '/static/defaultprofile.png'
+      event.target.src = '/icon.png'
     }
   }
 }
