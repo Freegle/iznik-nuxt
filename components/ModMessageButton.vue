@@ -180,7 +180,7 @@ export default {
       })
     },
     spamConfirmed() {
-      this.$store.dispatch('messages/spam', {
+      this.$store.dispatch('messages/review', {
         id: this.message.id,
         groupid: this.groupid
       })
