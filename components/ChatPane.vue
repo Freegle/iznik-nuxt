@@ -792,6 +792,7 @@ export default {
   font-weight: bold;
   order: 1;
   z-index: 1000;
+  flex-shrink: 0;
 }
 
 .chatTitle div {
@@ -815,6 +816,7 @@ export default {
   order: 4;
   justify-content: flex-end;
   background-color: $color-white;
+  flex-shrink: 0;
 }
 
 ::v-deep .dropdown-toggle {
