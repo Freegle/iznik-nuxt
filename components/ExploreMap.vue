@@ -84,17 +84,29 @@
                   </div>
                 </div>
                 <div class="media-body">
-                  <b-btn variant="success" class="float-right mr-2" :to="'/explore/' + g.nameshort">
-                    Explore
-                  </b-btn>
-                  <nuxt-link :to="'/explore/' + g.nameshort">
-                    {{ g.namedisplay }}
-                  </nuxt-link>
+                  <div v-if="g.external">
+                    <a :href="g.external" target="_blank" rel="noopener noreferrer">
+                      <b-btn variant="success" class="float-right mr-2">
+                        Explore
+                      </b-btn>
+                      <a target="_blank" rel="noopener noreferrer" :href="g.external">
+                        {{ g.namedisplay }}
+                      </a>
+                    </a>
+                  </div>
+                  <div v-else>
+                    <b-btn variant="success" class="float-right mr-2" :to="'/explore/' + g.nameshort">
+                      Explore
+                    </b-btn>
+                    <nuxt-link :to="'/explore/' + g.nameshort">
+                      {{ g.namedisplay }}
+                    </nuxt-link>
+                  </div>
                   <div v-if="g.tagline">
                     {{ g.tagline }}
                   </div>
                   <br v-else>
-                  <span class="text-muted">
+                  <span v-if="!g.external" class="text-muted">
                     <a :href="'mailto:' + g.nameshort + '-volunteers@ilovefreegle.org'">
                       <v-icon name="envelope" title="Contact volunteers" />
                     </a>

@@ -7,9 +7,11 @@
       <p>
         Please don't leave them hanging!  Other people will see that you haven't replied yet.
       </p>
-      <b-btn variant="success" size="lg" @click="go">
-        Reply now
-      </b-btn>
+      <div v-for="chat in chats" :key="'expectedreply-' + chat.id">
+        <b-btn variant="success" size="lg" @click="go(chat.id)">
+          Reply to {{ chat.name }} now
+        </b-btn>
+      </div>
     </NoticeMessage>
   </div>
 </template>
@@ -21,6 +23,10 @@ export default {
     count: {
       type: Number,
       required: true
+    },
+    chats: {
+      type: Array,
+      required: true
     }
   },
   mounted() {
@@ -31,13 +37,13 @@ export default {
     })
   },
   methods: {
-    go() {
+    go(id) {
       this.$api.bandit.chosen({
         uid: 'rsvp',
         variant: 'warning'
       })
 
-      this.$router.push('/chats')
+      this.$router.push('/chats/' + id)
     }
   }
 }
