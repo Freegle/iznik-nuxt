@@ -176,7 +176,7 @@
     </b-modal>
     <ProfileModal v-if="infoclick" :id="userid" ref="profilemodal" />
     <NewsLovesModal :id="replyid" ref="loveModal" />
-    <ConfirmModal v-if="showDeleteModal" ref="deleteConfirm" :title="'Delete reply from ' + users[userid].displayname" @confirm="deleteConfirmed" />
+    <ConfirmModal v-if="showDeleteModal" ref="deleteConfirm" :title="'Delete reply from ' + users[userid].displayname" @confirm="deleteConfirm" />
   </div>
 </template>
 
