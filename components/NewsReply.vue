@@ -9,7 +9,7 @@
                 <ProfileImage
                   :image="users[userid].profile.turl"
                   class="ml-1 mr-2 mt-2 mb-1 inline float-left"
-                  :is-moderator="users[userid].settings.showmod && reply.replyto === threadhead.id"
+                  :is-moderator="(Boolean)(users[userid].settings.showmod && reply.replyto === threadhead.id)"
                   :size="(reply.replyto !== threadhead.id) ? 'sm' : 'md'"
                 />
               </td>
