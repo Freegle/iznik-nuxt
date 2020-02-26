@@ -3,8 +3,8 @@
     <b-btn :variant="variant" class="mb-1" :disabled="disabled" @click="click">
       <v-icon :name="icon" /> {{ label }}
     </b-btn>
-    <ConfirmModal v-if="showDeleteModal" ref="deleteConfirm" @confirm="deleteConfirmed" />
-    <ConfirmModal v-if="showSpamModal" ref="spamConfirm" @confirm="spamConfirmed" />
+    <ConfirmModal v-if="showDeleteModal" ref="deleteConfirm" :title="'Delete: ' + message.subject" @confirm="deleteConfirmed" />
+    <ConfirmModal v-if="showSpamModal" ref="spamConfirm" :title="'Mark as Spam: ' + message.subject" @confirm="spamConfirmed" />
     <ModStdMessageModal v-if="showStdMsgModal" ref="stdmodal" :stdmsg="stdmsg" :message="message" />
   </div>
 </template>
@@ -174,7 +174,7 @@ export default {
       })
     },
     deleteConfirmed() {
-      this.$store.dispatch('messages/approve', {
+      this.$store.dispatch('messages/delete', {
         id: this.message.id,
         groupid: this.groupid
       })
