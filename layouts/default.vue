@@ -14,8 +14,8 @@
       </b-navbar-brand>
       <client-only>
         <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
-        <b-collapse v-if="loggedIn" id="nav_collapse" ref="nav_collapse" is-nav class="flex-nowrap">
-          <b-navbar-nav class="justify-content-between">
+        <b-collapse v-if="loggedIn" id="nav_collapse" ref="nav_collapse" is-nav class="flex-nowrap justify-content-between">
+          <b-navbar-nav>
             <b-nav-item id="menu-option-mygroups" class="text-center small p-0" to="/communities" @mousedown="maybeReload('/communities')">
               <v-icon name="users" scale="2" /><br>
               Communities
