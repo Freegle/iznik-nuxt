@@ -1,6 +1,6 @@
 import BaseAPI from '@/api/BaseAPI'
 
-export default class ShortlinkAPI extends BaseAPI {
+export default class ShortlinksAPI extends BaseAPI {
   fetch(params) {
     return this.$get('/shortlink', params)
   }
