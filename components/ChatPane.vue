@@ -459,35 +459,27 @@ export default {
   },
 
   async mounted() {
-    // Check if the chat is one of ours.  It might not be if we have clicked on a chat notification but we're
-    // logged in with the wrong user.
-    const chat = this.$store.getters['chats/get'](this.id)
+    // We don't want to clear the store, because cached messages make us look zippy.  But there might be new messages
+    // since we updated our store. So fetch until we stop finding new messages.
+    //
+    // We can't rely on infinite scroll because we might already be full.
+    await this.$store.dispatch('chatmessages/clearContext', {
+      chatid: this.id
+    })
 
-    if (!chat) {
-      this.notVisible = true
-    } else {
-      // We don't want to clear the store, because cached messages make us look zippy.  But there might be new messages
-      // since we updated our store. So fetch until we stop finding new messages.
-      //
-      // We can't rely on infinite scroll because we might already be full.
-      await this.$store.dispatch('chatmessages/clearContext', {
+    let msgs
+    let count
+
+    do {
+      msgs = this.$store.getters['chatmessages/getMessages'](this.id)
+      count = msgs.length
+
+      await this.$store.dispatch('chatmessages/fetch', {
         chatid: this.id
       })
 
-      let msgs
-      let count
-
-      do {
-        msgs = this.$store.getters['chatmessages/getMessages'](this.id)
-        count = msgs.length
-
-        await this.$store.dispatch('chatmessages/fetch', {
-          chatid: this.id
-        })
-
-        msgs = this.$store.getters['chatmessages/getMessages'](this.id)
-      } while (msgs.length !== count)
-    }
+      msgs = this.$store.getters['chatmessages/getMessages'](this.id)
+    } while (msgs.length !== count)
   },
 
   methods: {
@@ -739,6 +731,8 @@ export default {
       })
 
       const chat = this.$store.getters['chats/get'](this.id)
+
+      this.notVisible = false
 
       if (chat) {
         await this.$store.dispatch('chatmessages/clearContext', {
