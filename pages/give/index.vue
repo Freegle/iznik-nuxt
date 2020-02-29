@@ -26,21 +26,23 @@
             </b-col>
           </b-row>
         </transition>
-        <b-row v-if="postcode" class="mt-1">
-          <b-col class="text-center">
-            Freegle has local communities for each area.  We'll show your offer on this community first:
-          </b-col>
-        </b-row>
-        <b-row v-if="postcode" class="mt-1">
-          <b-col class="text-center">
-            <ComposeGroup />
-          </b-col>
-        </b-row>
-        <b-row v-if="postcode" class="mt-1">
-          <b-col class="text-center text-muted">
-            Click on the name above to choose a different community.
-          </b-col>
-        </b-row>
+        <div v-if="!extgroup">
+          <b-row v-if="postcode" class="mt-1">
+            <b-col class="text-center">
+              Freegle has local communities for each area.  We'll show your offer on this community first:
+            </b-col>
+          </b-row>
+          <b-row v-if="postcode" class="mt-1">
+            <b-col class="text-center">
+              <ComposeGroup />
+            </b-col>
+          </b-row>
+          <b-row v-if="postcode" class="mt-1">
+            <b-col class="text-center text-muted">
+              Click on the name above to choose a different community.
+            </b-col>
+          </b-row>
+        </div>
         <transition name="fade">
           <div v-if="extgroup">
             <notice-message variant="info" class="mt-1">
