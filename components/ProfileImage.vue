@@ -6,7 +6,7 @@
       class="p-0"
       :class="'profile--' + size"
       :alt="altText"
-      :src="image"
+      :src="validImage"
       @error.native="brokenProfileImage"
     />
     <v-icon v-if="isModerator" name="leaf" class="ProfileImage__moderator mb-0" :class="'ProfileImage__moderator--' + size" />
@@ -42,6 +42,11 @@ export default {
       type: String,
       required: false,
       default: 'md'
+    }
+  },
+  computed: {
+    validImage() {
+      return this.image || '/static/defaultprofile.png'
     }
   },
   methods: {
