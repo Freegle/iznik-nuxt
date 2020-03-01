@@ -31,7 +31,7 @@ export default {
   layout: 'modtools',
   mixins: [
     loginRequired,
-    createGroupRoute('modtools/messages/spam'),
+    createGroupRoute('modtools/messages/review'),
     modMessagesPage
   ],
   data: function() {

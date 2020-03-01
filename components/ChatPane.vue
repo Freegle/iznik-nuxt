@@ -1,14 +1,23 @@
 <template>
   <div>
     <b-alert v-if="notVisible" variant="warning" class="mt-2" show>
-      <h3>That chat isn't for this account</h3>
+      <h3>
+        That chat isn't for
+        <span v-if="me && me.email">{{ me.email }}</span>
+        <span v-else>this account </span>
+      </h3>
       <p>
-        This usually happens if you have two different accounts on Freegle - e.g. if you use Google
-        to log in some of the time, and an email/password at other times.
+        This usually happens if you have two different accounts on Freegle.  Your local volunteers can merge your
+        accounts or help you work out what's going on.
+      </p>
+      <p v-if="me && urlid">
+        Please copy and paste this and send it to them:
+      </p>
+      <p v-if="me && urlid">
+        <b>#{{ me.id }} and #{{ urlid }}</b>
       </p>
       <p>
-        Your local volunteers can merge your accounts or help you work out what's going on.  Please quote
-        let them know any email addresses you might have used, and which email address you prefer.
+        Please also let them know your main email address.
       </p>
       <GroupSelect v-model="contactGroup" class="mt-2 mb-1" />
       <br>
@@ -298,32 +307,11 @@ export default {
       showReplyTime: true,
       RSVP: false,
       notVisible: false,
-      contactGroup: null
+      contactGroup: null,
+      urlid: null
     }
   },
   computed: {
-    me() {
-      // The user who is us
-      let ret = null
-      const modtools = this.$store.getters['misc/get']('modtools')
-
-      if (modtools) {
-        // Me is me.
-        ret = this.$store.getters['auth/user']
-      } else {
-        const me = this.$store.getters['auth/user']
-        if (this.chat && this.chat.user1 && me) {
-          ret =
-            this.chat.user1 &&
-            this.chat.user1.id === this.$store.getters['auth/user'].id
-              ? this.chat.user1
-              : this.chat.user2
-        }
-      }
-
-      return ret
-    },
-
     chat() {
       const ret = this.$store.getters['chats/get'](this.id)
       return ret
@@ -461,41 +449,37 @@ export default {
       }
     }
   },
+  created() {
+    console.log('Route', this.$route)
+    this.urlid = this.$route.query.u
+  },
 
   beforeMount() {
     this.fetchChat()
   },
 
   async mounted() {
-    // Check if the chat is one of ours.  It might not be if we have clicked on a chat notification but we're
-    // logged in with the wrong user.
-    const chat = this.$store.getters['chats/get'](this.id)
+    // We don't want to clear the store, because cached messages make us look zippy.  But there might be new messages
+    // since we updated our store. So fetch until we stop finding new messages.
+    //
+    // We can't rely on infinite scroll because we might already be full.
+    await this.$store.dispatch('chatmessages/clearContext', {
+      chatid: this.id
+    })
 
-    if (!chat) {
-      this.notVisible = true
-    } else {
-      // We don't want to clear the store, because cached messages make us look zippy.  But there might be new messages
-      // since we updated our store. So fetch until we stop finding new messages.
-      //
-      // We can't rely on infinite scroll because we might already be full.
-      await this.$store.dispatch('chatmessages/clearContext', {
+    let msgs
+    let count
+
+    do {
+      msgs = this.$store.getters['chatmessages/getMessages'](this.id)
+      count = msgs.length
+
+      await this.$store.dispatch('chatmessages/fetch', {
         chatid: this.id
       })
 
-      let msgs
-      let count
-
-      do {
-        msgs = this.$store.getters['chatmessages/getMessages'](this.id)
-        count = msgs.length
-
-        await this.$store.dispatch('chatmessages/fetch', {
-          chatid: this.id
-        })
-
-        msgs = this.$store.getters['chatmessages/getMessages'](this.id)
-      } while (msgs.length !== count)
-    }
+      msgs = this.$store.getters['chatmessages/getMessages'](this.id)
+    } while (msgs.length !== count)
   },
 
   methods: {
@@ -747,6 +731,8 @@ export default {
       })
 
       const chat = this.$store.getters['chats/get'](this.id)
+
+      this.notVisible = false
 
       if (chat) {
         await this.$store.dispatch('chatmessages/clearContext', {

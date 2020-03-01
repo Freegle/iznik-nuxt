@@ -29,7 +29,7 @@ import NoticeboardAPI from './NoticeboardAPI.js'
 import NotificationAPI from './NotificationAPI.js'
 import ScheduleAPI from './ScheduleAPI.js'
 import SessionAPI from './SessionAPI.js'
-import ShortlinkAPI from './ShortlinkAPI.js'
+import ShortlinksAPI from './ShortlinksAPI.js'
 import StatusAPI from './StatusAPI.js'
 import StoriesAPI from './StoriesAPI.js'
 import TeamAPI from './TeamAPI.js'
@@ -57,7 +57,7 @@ interface API {
   notification: NotificationAPI;
   schedule: ScheduleAPI;
   session: SessionAPI;
-  shortlink: ShortlinkAPI;
+  shortlinks: ShortlinksAPI;
   status: StatusAPI;
   stories: StoriesAPI;
   team: TeamAPI;

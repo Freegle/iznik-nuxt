@@ -17,7 +17,7 @@
           @resizing="onResize"
         >
           <div class="shadow chatHolder w-100">
-            <div v-if="chat" class="chatTitle">
+            <div v-if="chat" class="chatTitle flex-shrink-0">
               <span class="chatname text-truncate align-middle ml-3">
                 <span v-if="(chat.chattype == 'User2User' || chat.chattype == 'User2Mod')">
                   <span @click="showInfo">
@@ -59,7 +59,7 @@
                 </li>
               </ul>
             </div>
-            <div class="chatFooter">
+            <div class="chatFooter flex-shrink-0">
               <p v-if="spammer" class="bg-danger white p-2 mb-0">
                 This person has been reported as a spammer or scammer.  Please do not talk to them and under no circumstances
                 send them any money.

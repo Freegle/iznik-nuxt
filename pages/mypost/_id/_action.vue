@@ -23,10 +23,13 @@
               to log in some of the time, and an email/password at other times.
             </p>
             <p>
-              Your local volunteers can merge your accounts or help you work out what's going on.  Please quote
-              message <b>#{{ message.id }}</b>, your email address <b>{{ me.email }}</b> and any others you might have
-              used, and which email address you prefer.
+              Your local volunteers can merge your accounts or help you work out what's going on.  Please copy and paste
+              this and send it to them:
             </p>
+            <p>
+              <b>Message#{{ message.id }}, logged in as {{ me.email }}</b>
+            </p>
+            <p>Please also let them know your main email address.</p>
             <GroupSelect v-model="contactGroup" class="mt-2 mb-1" />
             <br>
             <ChatButton :groupid="contactGroup" size="lg" title="Contact community volunteers" variant="success" class="mb-2" />

@@ -26,7 +26,7 @@
               <ModMenuItemNav name="Approved" link="/modtools/messages/approved" />
             </b-dropdown-item>
             <b-dropdown-item>
-              <ModMenuItemNav name="Spam" :count="['spam']" :othercount="['spamother']" link="/modtools/messages/spam" />
+              <ModMenuItemNav name="Review" :count="['spam']" :othercount="['spamother']" link="/modtools/messages/review" />
             </b-dropdown-item>
             <b-dropdown-item>
               <ModMenuItemNav name="Chat Review" :count="['chatreview']" link="/modtools/chats/review" />
@@ -96,7 +96,7 @@
           </div>
           <ModMenuItemLeft link="/modtools/messages/pending" name="Pending" count="pending" othercount="pendingother" indent />
           <ModMenuItemLeft link="/modtools/messages/approved" name="Approved" indent />
-          <ModMenuItemLeft link="/modtools/messages/spam" name="Spam" count="spam" othercount="spamother" indent />
+          <ModMenuItemLeft link="/modtools/messages/review" name="Review" count="spam" othercount="spamother" indent />
           <hr>
           <div>
             Members

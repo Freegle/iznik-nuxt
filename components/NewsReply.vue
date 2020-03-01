@@ -9,7 +9,7 @@
                 <ProfileImage
                   :image="users[userid].profile.turl"
                   class="ml-1 mr-2 mt-2 mb-1 inline float-left"
-                  :is-moderator="users[userid].settings.showmod && reply.replyto === threadhead.id"
+                  :is-moderator="(Boolean)(users[userid].settings.showmod && reply.replyto === threadhead.id)"
                   :size="(reply.replyto !== threadhead.id) ? 'sm' : 'md'"
                 />
               </td>
@@ -176,7 +176,7 @@
     </b-modal>
     <ProfileModal v-if="infoclick" :id="userid" ref="profilemodal" />
     <NewsLovesModal :id="replyid" ref="loveModal" />
-    <ConfirmModal v-if="showDeleteModal" ref="deleteConfirm" :title="'Delete reply from ' + users[userid].displayname" @confirm="deleteConfirmed" />
+    <ConfirmModal v-if="showDeleteModal" ref="deleteConfirm" :title="'Delete reply from ' + users[userid].displayname" @confirm="deleteConfirm" />
   </div>
 </template>
 

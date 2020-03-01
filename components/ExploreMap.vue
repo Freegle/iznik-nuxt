@@ -77,7 +77,7 @@
           <b-card-body style="height: 500px; overflow-y: scroll" class="p-0">
             <p>This list will change as you zoom or move around the map.</p>
             <div v-for="g in groupsInList" :key="'groupsInBounds-' + g.id">
-              <div class="media clickme">
+              <div v-if="g.onmap" class="media clickme">
                 <div class="media-left">
                   <div class="media-object">
                     <group-ProfileImage :image="g.profile ? g.profile : '/icon.png'" :alt-text="'Profile picture for ' + g.namedisplay" class="mr-2" />
@@ -111,9 +111,14 @@
                       <v-icon name="envelope" title="Contact volunteers" />
                     </a>
                   </span>
+                  <span v-else-if="g.contactmail">
+                    <a :href="'mailto:' + g.contactmail">
+                      <v-icon name="envelope" title="Contact volunteers" />
+                    </a>
+                  </span>
                 </div>
               </div>
-              <hr class="text-muted">
+              <hr v-if="g.onmap" class="text-muted">
             </div>
             <client-only>
               <infinite-loading v-if="browser" :distance="distance" @infinite="loadMoreList">

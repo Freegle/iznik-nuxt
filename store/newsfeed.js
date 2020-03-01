@@ -230,6 +230,7 @@ export const actions = {
       commit('addNewsfeed', newsfeed)
 
       const { user } = newsfeed
+      console.log('Fetched', user)
 
       if (user) {
         const users = {}
@@ -255,6 +256,7 @@ export const actions = {
           }
         }
 
+        console.log('Merge', users)
         commit('mergeUsers', { users })
       }
     }

@@ -29,7 +29,7 @@ export default {
 
       if (this.postcode) {
         for (const group of this.postcode.groupsnear) {
-          if (group.type === 'Freegle' && group.onhere) {
+          if (group.type === 'Freegle') {
             ret.push({
               value: group.id,
               text: group.namedisplay ? group.namedisplay : group.nameshort

@@ -17,7 +17,11 @@ export default {
       region: null
     }
   },
-  asyncData({ app, params, store }) {
+  async asyncData({ app, params, store }) {
+    await store.dispatch('group/list', {
+      grouptype: 'Freegle'
+    })
+
     return {
       region: params.region
     }
