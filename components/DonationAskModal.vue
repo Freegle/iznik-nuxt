@@ -9,8 +9,8 @@
     >
       <template slot="default">
         <div class="d-flex justify-content-between">
-          <div style="width:250px" class="mr-4 pt-4 d-none d-sm-block">
-            <b-img-lazy v-if="variant === 'whatyoucanrunning'" fluid src="/running.gif" />
+          <div v-if="variant === 'whatyoucanrunning'" style="width:250px" class="mr-4 pt-4 d-none d-sm-block">
+            <b-img-lazy fluid src="/running.gif" />
           </div>
           <div>
             <p>
@@ -45,14 +45,14 @@
             <donation-button v-if="variant === 'buttons3'" link="paypal3" show="£3" @clicked="score(3)" />
             <donation-button v-if="variant === 'buttons1monthly'" link="paypal1" show="£1/month" monthly @clicked="score(4)" />
             <div v-if="variant === 'buttons1510'" class="d-flex justify-content-between flex-wrap">
-              <donation-button link="paypal1" show="£1" @clicked="score(1)" />
-              <donation-button link="paypal5" show="£5" @clicked="score(5)" />
-              <donation-button link="paypal10" show="£10" @clicked="score(10)" />
+              <donation-button link="paypal1" show="£1" class="mb-1" @clicked="score(1)" />
+              <donation-button link="paypal5" show="£5" class="mb-1" @clicked="score(5)" />
+              <donation-button link="paypal10" show="£10" class="mb-1" @clicked="score(10)" />
             </div>
             <div v-if="variant === 'buttons51025'" class="d-flex justify-content-between flex-wrap">
-              <donation-button link="paypal5" show="£5" @clicked="score(5)" />
-              <donation-button link="paypal10" show="£10" @clicked="score(10)" />
-              <donation-button link="paypal25" show="£25" @clicked="score(25)" />
+              <donation-button link="paypal5" show="£5" class="mb-1" @clicked="score(5)" />
+              <donation-button link="paypal10" show="£10" class="mb-1" @clicked="score(10)" />
+              <donation-button link="paypal25" show="£25" class="mb-1" @clicked="score(25)" />
             </div>
             <p class="mt-2">
               <!-- eslint-disable-next-line -->
