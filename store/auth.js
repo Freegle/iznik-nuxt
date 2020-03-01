@@ -47,22 +47,24 @@ export const mutations = {
 
       // Ensure we don't store the password.
       delete state.user.password
-
-      // Keep track of which users we log in as.
-      if (!state.userlist) {
-        state.userlist = []
-      }
-
-      if (state.userlist.indexOf(user.id) === -1) {
-        if (state.userlist.length > 9) {
-          state.userlist.pop()
-        }
-
-        state.userlist.unshift(user.id)
-      }
     } else if (state.user || state.user === {}) {
       state.user = null
       state.userFetched = null
+    }
+  },
+
+  addRelated(state, id) {
+    // Keep track of which users we log in as.
+    if (!state.userlist) {
+      state.userlist = []
+    }
+
+    if (state.userlist.indexOf(id) === -1) {
+      if (state.userlist.length > 9) {
+        state.userlist.pop()
+      }
+
+      state.userlist.unshift(id)
     }
   },
 
@@ -164,6 +166,10 @@ export const actions = {
   setUser({ commit }, value) {
     commit('setUser', value)
 
+    if (value) {
+      commit('addRelated', value.id)
+    }
+
     // Set or clear our auth token to be used on all API requests.
     this.$axios.defaults.headers.common.Authorization = value
       ? 'Iznik ' + value.persistent
@@ -185,6 +191,7 @@ export const actions = {
 
       // Login succeeded.  Set the user, which will trigger various rerendering if we were required to be logged in.
       commit('setUser', user)
+      commit('addRelated', user.id)
 
       // We need to fetch the user again to get the groups, which aren't returned by the login API.
       dispatch(
@@ -283,6 +290,7 @@ export const actions = {
 
         // Set the user, which will trigger various re-rendering if we were required to be logged in.
         commit('setUser', me, params.components)
+        commit('addRelated', me.id)
         commit('forceLogin', false)
       }
 
@@ -352,5 +360,15 @@ export const actions = {
 
   loggedInEver({ commit }, value) {
     commit('setLoggedInEver', value)
+  },
+
+  async addRelatedUser({ state, commit, dispatch }, params) {
+    console.log('add Related', params.id)
+    commit('addRelated', params.id)
+
+    if (state.userlist.length > 1) {
+      // Logged in as multiple users.  Let the server know.
+      await this.$api.session.related(state.userlist)
+    }
   }
 }
