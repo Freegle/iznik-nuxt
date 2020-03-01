@@ -17,7 +17,7 @@
         <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown right class="d-block d-sm-none">
             <template v-slot:button-content>
-              <ModMenuItemNav :count="['pending', 'chatreview']" icon="envelope" class="menuicon" />
+              <ModMenuItemNav :count="['pending', 'chatreview', 'editreview']" icon="envelope" class="menuicon" />
             </template>
             <b-dropdown-item>
               <ModMenuItemNav name="Pending" :count="['pending']" :othercount="['pending']" link="/modtools/messages/pending" />
@@ -27,6 +27,9 @@
             </b-dropdown-item>
             <b-dropdown-item>
               <ModMenuItemNav name="Spam" :count="['spam']" :othercount="['spamother']" link="/modtools/messages/spam" />
+            </b-dropdown-item>
+            <b-dropdown-item>
+              <ModMenuItemNav name="Edits" :count="['editreview']" link="/modtools/messages/edits" />
             </b-dropdown-item>
             <b-dropdown-item>
               <ModMenuItemNav name="Chat Review" :count="['chatreview']" link="/modtools/chats/review" />
@@ -97,6 +100,7 @@
           <ModMenuItemLeft link="/modtools/messages/pending" name="Pending" count="pending" othercount="pendingother" indent />
           <ModMenuItemLeft link="/modtools/messages/approved" name="Approved" indent />
           <ModMenuItemLeft link="/modtools/messages/spam" name="Spam" count="spam" othercount="spamother" indent />
+          <ModMenuItemLeft link="/modtools/messages/edits" name="Edits" count="editreview" indent />
           <hr>
           <div>
             Members

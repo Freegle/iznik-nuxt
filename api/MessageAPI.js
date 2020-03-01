@@ -117,4 +117,18 @@ export default class MessageAPI extends BaseAPI {
       id: id
     })
   }
+
+  acceptEdits(id) {
+    return this.$post('/message', {
+      action: 'AcceptEdits',
+      id: id
+    })
+  }
+
+  revertEdits(id) {
+    return this.$post('/message', {
+      action: 'RevertEdits',
+      id: id
+    })
+  }
 }

@@ -85,6 +85,16 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    acceptedits: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    revertedits: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
@@ -126,6 +136,10 @@ export default {
       } else if (this.release) {
         // Standard release button - no modal.
         this.releaseIt()
+      } else if (this.acceptedits) {
+        this.acceptEdits()
+      } else if (this.revertedits) {
+        this.revertEdits()
       } else {
         // We want to show a modal.
         if (this.reject) {
@@ -192,6 +206,16 @@ export default {
     },
     releaseIt() {
       this.$store.dispatch('messages/release', {
+        id: this.message.id
+      })
+    },
+    acceptEdits() {
+      this.$store.dispatch('messages/acceptedits', {
+        id: this.message.id
+      })
+    },
+    revertEdits() {
+      this.$store.dispatch('messages/revertedits', {
         id: this.message.id
       })
     }

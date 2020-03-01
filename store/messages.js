@@ -377,5 +377,43 @@ export const actions = {
       messagehistory: true
     })
     commit('add', message)
+  },
+
+  async acceptedits({ dispatch, commit }, params) {
+    await this.$api.message.acceptEdits(params.id)
+
+    commit('remove', {
+      id: params.id
+    })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
+  },
+
+  async revertedits({ dispatch, commit }, params) {
+    await this.$api.message.revertEdits(params.id)
+
+    commit('remove', {
+      id: params.id
+    })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
   }
 }

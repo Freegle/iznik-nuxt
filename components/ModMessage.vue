@@ -3,10 +3,7 @@
     <b-card bg-variant="white" no-body>
       <b-card-header class="d-flex justify-content-between">
         <div>
-          <div v-if="!editing" :class="subjectClass + ' font-weight-bold'">
-            {{ eSubject }}
-          </div>
-          <div v-else>
+          <div v-if="editing">
             <div v-if="message.location" class="d-flex justify-content-start">
               <b-select v-model="message.type" :options="typeOptions" class="type mr-1" size="lg" />
               <b-input v-model="message.item.name" size="lg" class="mr-1" />
@@ -20,6 +17,10 @@
               </b-input-group>
             </div>
           </div>
+          <Diff v-else-if="editreview" :old="oldSubject" :new="newSubject" class="font-weight-bold" />
+          <div v-else :class="subjectClass + ' font-weight-bold'">
+            {{ eSubject }}
+          </div>
           <MessageHistory :message="message" modinfo display-message-link />
         </div>
         <div>
@@ -28,7 +29,6 @@
           </b-btn>
         </div>
         <!--        TODO Duplicates, related-->
-        <!--        Worry Words-->
         <!--        Outcomes-->
         <!--        View Source-->
       </b-card-header>
@@ -61,6 +61,8 @@
               rows="8"
               class="mb-3"
             />
+            <!-- eslint-disable-next-line -->
+            <Diff v-else-if="editreview" class="mb-3 rounded border p-2 prewrap forcebreak font-weight-bold" :old="oldBody" :new="newBody" />
             <!-- eslint-disable-next-line -->
             <div v-else-if="!eBody" class="mb-3 rounded border p-2 prewrap forcebreak font-weight-bold"><em>This message is blank.</em></div>
             <!-- eslint-disable-next-line -->
@@ -158,7 +160,7 @@
         </b-row>
       </b-card-body>
       <b-card-footer>
-        <ModMessageButtons v-if="!editing" :message="message" :modconfig="modconfig" />
+        <ModMessageButtons v-if="!editing" :message="message" :modconfig="modconfig" :editreview="editreview" />
         <b-btn v-if="editing" variant="white" @click="editing = false">
           <v-icon name="times" /> Cancel
         </b-btn>
@@ -185,11 +187,13 @@ import ModMessageButtons from './ModMessageButtons'
 import ModMessageWorry from './ModMessageWorry'
 import Postcode from './Postcode'
 import ModMemberActions from './ModMemberActions'
+import Diff from './Diff'
 import twem from '~/assets/js/twem'
 
 export default {
   name: 'ModMessage',
   components: {
+    Diff,
     ModMemberActions,
     Postcode,
     ModMessageWorry,
@@ -205,6 +209,11 @@ export default {
     message: {
       type: Object,
       required: true
+    },
+    editreview: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
@@ -288,6 +297,76 @@ export default {
       }
 
       return ret
+    },
+    oldSubject() {
+      if (!this.editreview || !this.message || !this.message.edits) {
+        return null
+      }
+
+      // Edits are in descending time order.
+      let oldest = null
+
+      this.message.edits.forEach(edit => {
+        if (edit.reviewrequired && edit.oldsubject) {
+          oldest = edit.oldsubject
+        }
+      })
+
+      return oldest
+    },
+    newSubject() {
+      if (!this.editreview || !this.message || !this.message.edits) {
+        return null
+      }
+
+      // Find the newest and oldest texts; intermediates are just confusing.
+      // Edits are in descending time order.
+      let newest = null
+
+      this.message.edits.forEach(edit => {
+        if (edit.reviewrequired) {
+          if (edit.newsubject && !newest) {
+            newest = edit.newsubject
+          }
+        }
+      })
+
+      return newest
+    },
+    oldBody() {
+      if (!this.editreview || !this.message || !this.message.edits) {
+        return null
+      }
+
+      // Edits are in descending time order.
+      let oldest = null
+
+      this.message.edits.forEach(edit => {
+        if (edit.reviewrequired && edit.oldtext) {
+          oldest = edit.oldtext
+        }
+      })
+
+      return oldest
+    },
+    newBody() {
+      if (!this.editreview || !this.message || !this.message.edits) {
+        return null
+      }
+
+      // Find the newest and oldest texts; intermediates are just confusing.
+      // Edits are in descending time order.
+      let newest = null
+
+      this.message.edits.forEach(edit => {
+        if (edit.reviewrequired) {
+          if (edit.newtext && !newest) {
+            newest = edit.newtext
+          }
+        }
+      })
+
+      return newest
     }
   },
   methods: {
