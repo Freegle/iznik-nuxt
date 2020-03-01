@@ -8,7 +8,8 @@
       </p>
       <p>
         Your local volunteers can merge your accounts or help you work out what's going on.  Please
-        let them know any email addresses you might have used, and which email address you prefer.
+        let them know your email address <b>{{ me.email }}</b>, any other email addresses you might have used, and
+        which email address you prefer.
       </p>
       <GroupSelect v-model="contactGroup" class="mt-2 mb-1" />
       <br>
