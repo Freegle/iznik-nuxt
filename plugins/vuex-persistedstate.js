@@ -21,7 +21,6 @@ const keep = {
     exclude: ['forceLogin']
   },
   group: null,
-  chats: null,
   popupchats: null,
   compose: {
     // Don't remember that we're uploading, else we might get stuck.
@@ -49,7 +48,8 @@ function trySaving(storage, settingState) {
     // signin, replies and posting.
     console.log(
       'Failed to set full state of len',
-      JSON.stringify(settingState).length
+      JSON.stringify(settingState).length,
+      settingState
     )
 
     const smallerState = {
@@ -86,8 +86,15 @@ export default ({ store }) => {
 
     reducer: function(state, paths) {
       const newstate = {}
+      const tokeep = keep
 
-      for (const key in keep) {
+      // Chats is a special case, as we only want to persist user chats, not ModTools ones (because there can
+      // be lots of those).
+      if (!state.misc || !state.misc.modtools) {
+        tokeep.chats = null
+      }
+
+      for (const key in tokeep) {
         if (keep[key] === null) {
           // Copy the whole thing.
           newstate[key] = state[key]
