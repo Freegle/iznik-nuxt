@@ -15,7 +15,8 @@ export default {
       limit: 2,
       workType: null,
       show: 0,
-      busy: false
+      busy: false,
+      collection: 'Approved'
     }
   },
   computed: {
