@@ -197,7 +197,6 @@
           <b-btn v-if="loggedIn" v-b-toggle.nav_collapse_mobile class="toggler white">
             <v-icon name="bars" class="mb-1" scale="1.5" />
           </b-btn>
-        <!--        <b-navbar-toggle v-if="loggedIn" target="nav_collapse_mobile" class="navbar-dark" />-->
         </b-navbar-nav>
       </div>
       <b-collapse v-if="loggedIn" id="nav_collapse_mobile" ref="nav_collapse_mobile" class="w-100 ourBack">
