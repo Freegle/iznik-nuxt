@@ -46,14 +46,21 @@
               Last active: {{ member.lastaccess | timeago }}
             </div>
             <ModMemberActions :userid="member.userid" :groupid="groupid" />
-            <div v-if="memberof" class="mt-2">
+            <div v-if="memberof && memberof.length" class="mt-2">
               <span class="small">
+                <v-icon name="users" />
                 <span v-for="m in memberof" :key="'membership-' + m.membershipid" class="border border-info rounded p-1 mr-1">
                   {{ m.namedisplay }} <span class="text-muted small">{{ m.added | timeago }}</span>
                 </span>
               </span>
               <b-badge v-if="hiddenmemberofs" variant="info" class="clickme" @click="allmemberships = !allmemberships">
                 +{{ hiddenmemberofs }} groups
+              </b-badge>
+            </div>
+            <div v-if="member.logins && member.logins.length" class="mt-2">
+              <v-icon name="padlock" />
+              <b-badge v-for="l in member.logins" :key="'login-' + l.id" variant="info" class="border border-info rounded p-1 mr-1">
+                {{ l.type }} login {{ l.lastaccess | timeago }}
               </b-badge>
             </div>
             <b-btn v-if="member.emails && member.emails.length" variant="link" @click="showEmails = !showEmails">
@@ -82,9 +89,7 @@
               <!--      TODO Show modal-->
               View logs
             </b-btn>
-            <!-- TODO             Group list-->
             <!-- TODO             Applied list-->
-
             <div v-if="showEmails">
               <div v-for="email in member.emails" :key="email.id">
                 {{ email.email }} <v-icon v-if="email.preferred" name="start" />

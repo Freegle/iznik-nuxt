@@ -170,7 +170,6 @@ export default {
         // if (ic >= Math.min(e1.length, e1.length) / 2) {
         //   ret = true
         // }
-        console.log('Emails', e1, e2, this.findLongest(e1, e2))
         if (this.findLongest(e1, e2) >= LONG_THRESHOLD) {
           ret = true
         }
