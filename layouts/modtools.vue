@@ -45,6 +45,9 @@
             <b-dropdown-item>
               <ModMenuItemNav name="Approved" link="/modtools/members/approved" />
             </b-dropdown-item>
+            <b-dropdown-item v-if="supportOrAdmin">
+              <ModMenuItemNav name="Related" link="/modtools/members/related" :count="['relatedmembers']" />
+            </b-dropdown-item>
             <b-dropdown-item>
               <ModMenuItemNav name="Stories" :count="['stories']" href="/modtools/members/stories" />
             </b-dropdown-item>
@@ -107,6 +110,7 @@
           </div>
           <ModMenuItemLeft link="/modtools/members/pending" name="Pending" count="pendingmembers" othercount="pendingmembersother" indent />
           <ModMenuItemLeft link="/modtools/members/approved" name="Approved" indent />
+          <ModMenuItemLeft link="/modtools/members/related" name="Related" count="relatedmembers" indent />
           <ModMenuItemLeft link="/modtools/members/stories" name="Stories" indent count="stories" />
           <ModMenuItemLeft v-if="hasPermissionNewsletter" link="/modtools/members/newsletter" name="Newsletter" indent count="newsletterstories" />
           <hr>
