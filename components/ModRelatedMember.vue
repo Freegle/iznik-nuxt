@@ -111,24 +111,14 @@ export default {
     },
     probablySame() {
       return (
-        this.similarNameOrEmail &&
-        (this.groupsInCommon ||
-          this.activeSameDay ||
-          !this.joined1 ||
-          !this.joined2)
+        this.similarNameOrEmail && (this.groupsInCommon || this.activeSameDay)
       )
     },
     suggestion() {
       let ret = null
 
       if (this.probablySame) {
-        if (this.postedOrJoined1 && this.postedOrJoined2) {
-          ret = 'Ask member which they prefer'
-        } else if (this.postedOrJoined1 && !this.postedOrJoined2) {
-          ret = 'Merge right into left'
-        } else if (!this.postedOrJoined1 && this.postedOrJoined2) {
-          ret = 'Merge left into right'
-        } else if (this.activeSameDay) {
+        if (this.activeSameDay) {
           ret = 'Ask member which they prefer'
         } else if (
           this.$dayjs(this.user1.lastaccess).isBefore(

@@ -13,23 +13,22 @@
           </li>
           <ul>
             <li>they have groups in common, or</li>
-            <li>one of them has joined a group and one hasn't, or</li>
             <li>they are both active on the same device on the same day</li>
           </ul>
         </ul>
         <p>
-          If we don't think they're the same person, then sleuthing is required using Support Tools.  If they are
-          genuinely different users then we should ignore this report.
+          If we don't have reason to think they're probably the same person, then:
         </p>
+        <ul>
+          <li>Sleuthing is required using Support Tools.  </li>
+          <li>
+            If they are genuinely different users then we should ignore this report.
+          </li>
+        </ul>
         <p>If we think they are the same person, then we consider a merge:</p>
         <ul>
-          <li>If they have joined groups from both users, we suggest you ask them which they prefer.  We can't really decide.</li>
-          <li>If they've joined groups from only one of them, we suggest merging into that one.  The other was probably logging in accidentally a different way.</li>
-          <li>If they've not joined groups from either user:</li>
-          <ul>
-            <li>If they're both active on the same day, we suggest you ask them which they prefer.  We can't really decide.</li>
-            <li>Otherwise we suggest merging into the most recently active.  The other is probably an old login or one they've forgotten about (but might remember later and get confused).</li>
-          </ul>
+          <li>If they're both active on the same day, we suggest you ask them which they prefer.  We can't really decide.</li>
+          <li>Otherwise we suggest merging into the most recently active.  That's probably the one with the most active email address.</li>
         </ul>
       </NoticeMessage>
       <GroupSelect v-model="groupid" all modonly />
