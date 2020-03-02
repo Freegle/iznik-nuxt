@@ -15,7 +15,7 @@
         Posted: {{ whichposted }}
       </div>
       <div>
-        Joined: {{ whichjoined }}
+        Joined a group: {{ whichjoined }}
       </div>
       <div>
         Active same day? <span v-if="activeSameDay"><b>Yes</b></span><span v-else>No</span>
@@ -25,6 +25,9 @@
       </div>
       <div>
         Groups in common: <span v-if="groupsInCommon"><b>Yes</b></span><span v-else>No</span>
+      </div>
+      <div>
+        Probably the same: <span v-if="probablySame"><b>Yes</b></span><span v-else>No</span>
       </div>
       <br>
       <div v-if="suggestion">
@@ -79,6 +82,12 @@ export default {
     joined2() {
       return this.isMember(this.user2)
     },
+    postedOrJoined1() {
+      return this.posted1 || this.joined1
+    },
+    postedOrJoined2() {
+      return this.posted2 || this.joined2
+    },
     whichjoined() {
       return this.count(this.joined1, this.joined2)
     },
@@ -101,21 +110,25 @@ export default {
       )
     },
     probablySame() {
-      return this.groupsInCommon && this.similarNameOrEmail
+      return (
+        this.similarNameOrEmail &&
+        (this.groupsInCommon ||
+          this.activeSameDay ||
+          !this.joined1 ||
+          !this.joined2)
+      )
     },
     suggestion() {
       let ret = null
-      let merge = false
 
       if (this.probablySame) {
-        // The same. Merge to the most recently active.
-        merge = true
-      } else if (this.similarNameOrEmail && (!this.joined1 || !this.joined2)) {
-        merge = true
-      }
-
-      if (merge) {
-        if (this.activeSameDay) {
+        if (this.postedOrJoined1 && this.postedOrJoined2) {
+          ret = 'Ask member which they prefer'
+        } else if (this.postedOrJoined1 && !this.postedOrJoined2) {
+          ret = 'Merge right into left'
+        } else if (!this.postedOrJoined1 && this.postedOrJoined2) {
+          ret = 'Merge left into right'
+        } else if (this.activeSameDay) {
           ret = 'Ask member which they prefer'
         } else if (
           this.$dayjs(this.user1.lastaccess).isBefore(
