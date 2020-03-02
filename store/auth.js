@@ -11,7 +11,8 @@ export const state = () => ({
   loggedInEver: false,
   userlist: [],
   work: [],
-  discourse: {}
+  discourse: {},
+  loginType: null
 })
 
 const NONMIN = ['me', 'groups', 'aboutme', 'phone', 'notifications']
@@ -94,6 +95,10 @@ export const mutations = {
 
   setNCHAN(state, val) {
     state.nchan = val
+  },
+
+  setLoginType(state, val) {
+    state.loginType = val
   }
 }
 
@@ -143,6 +148,10 @@ export const getters = {
 
   nchan: state => {
     return state.nchan
+  },
+
+  loginType: state => {
+    return state.loginType
   }
 }
 
@@ -370,5 +379,9 @@ export const actions = {
       // Logged in as multiple users.  Let the server know.
       await this.$api.session.related(state.userlist)
     }
+  },
+
+  setLoginType({ commit }, value) {
+    commit('setLoginType', value)
   }
 }

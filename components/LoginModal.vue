@@ -25,6 +25,9 @@
         Privacy
       </nuxt-link> for details.  Ok?  Now come on in...
     </p>
+    <p v-if="loginType" class="text-center font-weight-bold">
+      You usually sign in using {{ loginType }}.
+    </p>
     <div class="d-flex flex-column flex-lg-row justify-content-between p-3">
       <div class="signin__section--social">
         <h3 class="signin__header">
@@ -125,6 +128,12 @@
               type="email"
             />
           </b-form-group>
+          <NoticeMessage v-if="referToGoogleButton">
+            Please use the <em>Continue with Google</em> button to sign in.  That way you don't need to remember a password on this site.
+          </NoticeMessage>
+          <NoticeMessage v-if="referToYahooButton">
+            Please use the <em>Continue with Yahoo</em> button to sign in.  That way you don't need to remember a password on this site.
+          </NoticeMessage>
           <b-form-group
             id="passwordGroup"
             label="Your password"
@@ -258,6 +267,22 @@ export default {
       } else {
         return !this.loggedInEver || this.showSignUp
       }
+    },
+
+    referToGoogleButton() {
+      return (
+        this.email &&
+        (this.email.toLowerCase().indexOf('gmail') !== -1 ||
+          this.email.toLowerCase().indexOf('googlemail') !== -1)
+      )
+    },
+
+    referToYahooButton() {
+      return this.email && this.email.toLowerCase().indexOf('yahoo') !== -1
+    },
+
+    loginType() {
+      return this.$store.getters['auth/loginType']
     }
   },
   beforeDestroy() {
@@ -292,6 +317,8 @@ export default {
       this.pleaseShowModal = false
     },
     loginNative(e) {
+      this.$store.dispatch('auth/setLoginType', 'Freegle')
+
       const self = this
       this.nativeLoginError = null
       this.socialLoginError = null
@@ -395,6 +422,8 @@ export default {
       }
     },
     async loginFacebook() {
+      this.$store.dispatch('auth/setLoginType', 'Facebook')
+
       this.nativeLoginError = null
       this.socialLoginError = null
       try {
@@ -430,6 +459,8 @@ export default {
     },
 
     loginGoogle() {
+      this.$store.dispatch('auth/setLoginType', 'Google')
+
       this.nativeLoginError = null
       this.socialLoginError = null
       const params = {
@@ -461,6 +492,8 @@ export default {
     },
 
     loginYahoo() {
+      this.$store.dispatch('auth/setLoginType', 'Yahoo')
+
       // Sadly Yahoo doesn't support a Javascript-only OAuth flow, so far as I can tell.  So what we do is
       // redirect to Yahoo, which returns back to us with a code parameter, which we then pass to the server
       // to complete the signin.  This replaces the old flow which stopped working in Jan 2020.
