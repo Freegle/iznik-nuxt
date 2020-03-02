@@ -33,9 +33,7 @@
             <GroupSelect v-model="contactGroup" class="mt-2 mb-1" />
             <br>
             <ChatButton :groupid="contactGroup" size="lg" title="Contact community volunteers" variant="success" class="mb-2" />
-            <p class="mt-2">
-              ...or if you need to, you can contact our national support volunteers at <a href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</a>.
-            </p>
+            <p class="mt-2" />
           </b-alert>
         </div>
         <div v-if="missing">
@@ -113,8 +111,14 @@ export default {
       })
 
       const message = this.$store.getters['messages/get'](this.id)
+      const me = this.$store.getters['auth/user']
 
-      this.setGroup()
+      if (message && message.fromuser && me && message.fromuser.id !== me.id) {
+        // Message was from a different user.  Probably logged in as the wrong user.  Let the server know.
+        this.$store.dispatch('auth/addRelatedUser', {
+          id: message.fromuser.id
+        })
+      }
 
       this.bump = Date.now()
 
@@ -130,8 +134,6 @@ export default {
       // If they have an intended outcome, then we save that to the server now.  This means that if they never
       // get round to doing anything else on this page we'll assume that's what they wanted.  We do this because
       // we've seen people click the button in the email a lot and then bail out.
-      const me = this.$store.getters['auth/user']
-
       if (this.action && me && me.id === message.fromuser.id) {
         let outcome = null
 

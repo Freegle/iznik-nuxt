@@ -14,7 +14,7 @@
       </b-navbar-brand>
       <client-only>
         <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
-        <b-collapse v-if="loggedIn" id="nav_collapse" ref="nav_collapse" is-nav class="flex-nowrap">
+        <b-collapse v-if="loggedIn" id="nav_collapse" ref="nav_collapse" is-nav class="flex-nowrap justify-content-between">
           <b-navbar-nav>
             <b-nav-item id="menu-option-mygroups" class="text-center small p-0" to="/communities" @mousedown="maybeReload('/communities')">
               <v-icon name="users" scale="2" /><br>
@@ -50,13 +50,11 @@
             </b-nav-item>
           </b-navbar-nav>
           <client-only>
-            <div class="w-100 d-flex justify-content-center">
-              <div class="simplewrapper pb-2">
-                <SimpleView :key="'simpleview-' + simple" navbar />
-              </div>
+            <div class="simplewrapper pb-2">
+              <SimpleView :key="'simpleview-' + simple" navbar />
             </div>
           </client-only>
-          <b-navbar-nav class="ml-auto">
+          <b-navbar-nav>
             <b-nav-item-dropdown v-if="!simple" class="white text-center notiflist" lazy right @shown="loadLatestNotifications">
               <template slot="button-content">
                 <div class="notifwrapper text-center small">

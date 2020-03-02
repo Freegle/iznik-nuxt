@@ -17,14 +17,18 @@
         <b>#{{ me.id }} and #{{ urlid }}</b>
       </p>
       <p>
+        <<<<<<< HEAD
         Please also let them know your main email address.
+        =======
+        Your local volunteers can merge your accounts or help you work out what's going on.  Please
+        let them know your email address <b>{{ me.email }}</b>, any other email addresses you might have used, and
+        which email address you prefer.
+        >>>>>>> pull/212
       </p>
       <GroupSelect v-model="contactGroup" class="mt-2 mb-1" />
       <br>
       <ChatButton :groupid="contactGroup" size="lg" title="Contact community volunteers" variant="success" class="mb-2" />
-      <p class="mt-2">
-        ...or if you need to, you can contact our national support volunteers at <a href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</a>.
-      </p>
+      <p class="mt-2" />
     </b-alert>
     <div v-else-if="me">
       <client-only>
@@ -753,6 +757,13 @@ export default {
       } else {
         // Invalid chat id
         this.notVisible = true
+
+        if (this.$route.query.u) {
+          // Probably logged in as the wrong user.  Let the server know.
+          this.$store.dispatch('auth/addRelatedUser', {
+            id: this.$route.query.u
+          })
+        }
       }
     }
   }

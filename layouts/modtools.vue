@@ -29,21 +29,21 @@
               <ModMenuItemNav name="Review" :count="['spam']" :othercount="['spamother']" link="/modtools/messages/review" />
             </b-dropdown-item>
             <b-dropdown-item>
+              <ModMenuItemNav name="Edits" :count="['editreview']" link="/modtools/messages/edits" />
+            </b-dropdown-item>
+            <b-dropdown-item>
               <ModMenuItemNav name="Chat Review" :count="['chatreview']" link="/modtools/chats/review" />
             </b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown right class="d-block d-sm-none">
             <template v-slot:button-content>
-              <ModMenuItemNav v-if="hasPermissionNewsletter" :count="['pendingmembers', 'stories', 'newsletterstories', (supportOrAdmin ? 'relatedmembers' : '')]" icon="users" class="menuicon" />
+              <ModMenuItemNav v-if="hasPermissionNewsletter" :count="['pendingmembers', 'stories', 'newsletterstories']" icon="users" class="menuicon" />
             </template>
             <b-dropdown-item>
               <ModMenuItemNav name="Pending" :count="['pendingmembers']" link="/modtools/members/pending" />
             </b-dropdown-item>
             <b-dropdown-item>
               <ModMenuItemNav name="Approved" link="/modtools/members/approved" />
-            </b-dropdown-item>
-            <b-dropdown-item v-if="supportOrAdmin">
-              <ModMenuItemNav name="Related" link="/modtools/members/related" :count="['relatedmembers']" />
             </b-dropdown-item>
             <b-dropdown-item>
               <ModMenuItemNav name="Stories" :count="['stories']" href="/modtools/members/stories" />
@@ -100,13 +100,13 @@
           <ModMenuItemLeft link="/modtools/messages/pending" name="Pending" count="pending" othercount="pendingother" indent />
           <ModMenuItemLeft link="/modtools/messages/approved" name="Approved" indent />
           <ModMenuItemLeft link="/modtools/messages/review" name="Review" count="spam" othercount="spamother" indent />
+          <ModMenuItemLeft link="/modtools/messages/edits" name="Edits" count="editreview" indent />
           <hr>
           <div>
             Members
           </div>
           <ModMenuItemLeft link="/modtools/members/pending" name="Pending" count="pendingmembers" othercount="pendingmembersother" indent />
           <ModMenuItemLeft link="/modtools/members/approved" name="Approved" indent />
-          <ModMenuItemLeft link="/modtools/members/related" name="Related" indent count="relatedmembers" />
           <ModMenuItemLeft link="/modtools/members/stories" name="Stories" indent count="stories" />
           <ModMenuItemLeft v-if="hasPermissionNewsletter" link="/modtools/members/newsletter" name="Newsletter" indent count="newsletterstories" />
           <hr>
