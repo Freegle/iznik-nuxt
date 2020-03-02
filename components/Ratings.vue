@@ -9,7 +9,7 @@
           v-b-tooltip.hover.top
           :size="size"
           :variant="user.info.ratings.Mine === 'Up' ? 'primary' : (user.info.ratings.Up > 0 ? 'success' : 'white')"
-          :title="user.info.ratings.Up + ' freegler' + ((user.info.ratings.Up !== 1) ? 's' : '') + '  gave them a thumbs up.  Click to rate.'"
+          :title="user.info.ratings.Up + ' freegler' + ((user.info.ratings.Up !== 1) ? 's' : '') + '  gave them a thumbs up.  Click to rate, click again to reverse.'"
           :disabled="(user.id === myid ? 'true' : undefined)"
           @click="up"
         >
@@ -19,7 +19,7 @@
           v-b-tooltip.hover.top
           :size="size"
           :variant="user.info.ratings.Mine === 'Down' ? 'primary' : (user.info.ratings.Down > 0 ? 'warning' : 'white')"
-          :title="user.info.ratings.Down + ' freegler' + ((user.info.ratings.Down !== 1) ? 's' : '') + '  gave them a thumbs down.  Click to rate.'"
+          :title="user.info.ratings.Down + ' freegler' + ((user.info.ratings.Down !== 1) ? 's' : '') + '  gave them a thumbs down.  Click to rate, click again to reverse.'"
           :disabled="user.id === myid ? 'true' : undefined"
           @click="down"
         >
