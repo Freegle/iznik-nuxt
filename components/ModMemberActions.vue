@@ -1,9 +1,9 @@
 <template>
   <div>
-    <b-btn variant="white" @click="remove">
+    <b-btn v-if="groupid" variant="white" @click="remove">
       <v-icon name="times" /> Remove
     </b-btn>
-    <b-btn variant="white" @click="ban">
+    <b-btn v-if="groupid" variant="white" @click="ban">
       <v-icon name="trash-alt" /> Ban
     </b-btn>
     <b-btn variant="white" disabled>
@@ -12,7 +12,7 @@
     <b-btn variant="white" disabled>
       <v-icon name="check" /> Whitelist
     </b-btn>
-    <b-btn variant="white" disabled>
+    <b-btn v-if="groupid" variant="white" disabled>
       <v-icon name="tag" /> Add note
     </b-btn>
     <b-btn v-if="supportOrAdmin" variant="white" disabled>
@@ -36,7 +36,8 @@ export default {
     },
     groupid: {
       type: Number,
-      required: true
+      required: false,
+      default: null
     }
   },
   data: function() {

@@ -65,7 +65,7 @@ export default {
 
       ret.forEach(message => {
         const group = this.$store.getters['auth/groupById'](message.groupid)
-        message.groupname = group.namedisplay
+        message.groupname = group ? group.namedisplay : '#' + message.groupid
       })
 
       ret.sort((a, b) => {
