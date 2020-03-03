@@ -38,7 +38,7 @@
       </div>
       <div class="mt-2">
         <b-btn variant="success" disabled>
-          Merge left &lt;&lt; right
+          Merge right >> left
         </b-btn>
         <b-btn variant="primary" disabled>
           Merge left >> right
