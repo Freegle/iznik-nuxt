@@ -20,6 +20,7 @@ import GroupAPI from './GroupAPI.js'
 import InvitationAPI from './InvitationAPI.js'
 import JobAPI from './JobAPI.js'
 import MembershipsAPI from './MembershipsAPI.js'
+import MergeAPI from './MergeAPI.js'
 import MessageAPI from './MessageAPI.js'
 import ModConfigsAPI from './ModConfigsAPI.js'
 import NewsAPI from './NewsAPI.js'
@@ -51,6 +52,7 @@ export default ({ $axios, store }) => {
     invitation: new InvitationAPI(options),
     job: new JobAPI(options),
     memberships: new MembershipsAPI(options),
+    merge: new MergeAPI(options),
     message: new MessageAPI(options),
     modconfigs: new ModConfigsAPI(options),
     news: new NewsAPI(options),

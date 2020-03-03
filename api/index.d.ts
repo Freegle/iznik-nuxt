@@ -22,6 +22,7 @@ import GroupAPI from './GroupAPI.js'
 import InvitationAPI from './InvitationAPI.js'
 import JobAPI from './JobAPI.js'
 import MembershipsAPI from './MembershipsAPI.js'
+import MergeAPI from './MergeAPI.js'
 import MessageAPI from './MessageAPI.js'
 import ModConfigsAPI from './ModConfigsAPI.js'
 import NewsAPI from './NewsAPI.js'
@@ -51,6 +52,7 @@ interface API {
   invitation: InvitationAPI;
   job: JobAPI;
   memberships: MembershipsAPI;
+  merge: MergeAPI;
   message: MessageAPI;
   modconfigs: ModConfigsAPI;
   news: NewsAPI;

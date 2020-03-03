@@ -43,7 +43,7 @@
         <b-btn variant="primary" disabled>
           Merge left >> right
         </b-btn>
-        <b-btn variant="white" disabled>
+        <b-btn variant="info" @click="ask">
           Ask member about merge
         </b-btn>
         <b-btn variant="white" disabled>
@@ -283,6 +283,12 @@ export default {
       }
 
       return ret
+    },
+    ask() {
+      this.$store.dispatch('members/askMerge', {
+        user1: this.user1.id,
+        user2: this.user2.id
+      })
     }
   }
 }

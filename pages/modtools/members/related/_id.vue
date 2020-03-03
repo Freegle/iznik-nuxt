@@ -22,8 +22,8 @@
   </div>
 </template>
 <script>
-import NoticeMessage from '../../../../components/NoticeMessage'
-import ModHelpRelated from '../../../../components/ModHelpRelated'
+import NoticeMessage from '@/components/NoticeMessage'
+import ModHelpRelated from '@/components/ModHelpRelated'
 import loginRequired from '@/mixins/loginRequired'
 import modMembersPage from '@/mixins/modMembersPage'
 import createGroupRoute from '@/mixins/createGroupRoute'
@@ -40,6 +40,36 @@ export default {
   data: function() {
     return {
       collection: 'Related'
+    }
+  },
+  computed: {
+    members() {
+      return this.$store.getters['members/getAll']
+    },
+    visibleMembers() {
+      const ret = this.members.filter(member => {
+        if (!this.groupid) {
+          // No group filter
+          return true
+        }
+
+        let found = false
+        member.memberof.forEach(group => {
+          if (parseInt(group.id) === this.groupid) {
+            found = true
+          }
+        })
+
+        member.relatedto.memberof.forEach(group => {
+          if (parseInt(group.id) === this.groupid) {
+            found = true
+          }
+        })
+
+        return found
+      })
+
+      return ret
     }
   },
   methods: {
