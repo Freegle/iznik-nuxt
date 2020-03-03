@@ -9,24 +9,47 @@
         <Viewed v-if="!simple" class="mb-1" />
         <JobsTopBar />
         <div>
-          <div class="d-flex mt-2 mb-3 selection__wrapper justify-content-between">
-            <GroupSelect v-model="groupid" class="m-3" all />
-            <b-form-select v-model="selectedType" class="m-3 typeSelect" value="All" :options="typeOptions" @change="typeChange" />
-          </div>
-          <groupHeader v-if="group" :key="'groupheader-' + groupid" :group="group" :show-join="true" />
-          <div v-for="message in filteredMessages" :key="'messagelist-' + message.id" class="p-0">
-            <message v-if="(selectedType === 'All' || message.type == selectedType) && (!message.outcomes || message.outcomes.length === 0)" v-bind="message" />
-          </div>
+          <NoticeMessage v-if="!anyGroups" variant="success" class="mt-2 text-center font-weight-bold">
+            <p>You're not a member of any communities yet.  Why not explore to find one?</p>
+            <div class="d-flex justify-content-around mb-2">
+              <b-btn size="lg" variant="success" to="/explore" class="mb-2">
+                <v-icon name="map-marker-alt" /> Explore communities
+              </b-btn>
+            </div>
+            <p>Or get freegling:</p>
+            <b-row class="mt-2">
+              <b-col class="half-pad-col-right" cols="6" md="5">
+                <b-btn block variant="success" class="float-left" size="lg" to="/give">
+                  <v-icon name="gift" />&nbsp;Give Stuff
+                </b-btn>
+              </b-col>
+              <b-col class="half-pad-col-left" offset="0" offset-md="2" cols="6" md="5">
+                <b-btn block variant="primary" class="float-right" size="lg" to="/find">
+                  <v-icon name="search" />&nbsp;Find Stuff
+                </b-btn>
+              </b-col>
+            </b-row>
+          </NoticeMessage>
+          <div v-else>
+            <div class="d-flex mt-2 mb-3 selection__wrapper justify-content-between">
+              <GroupSelect v-model="groupid" class="m-3" all />
+              <b-form-select v-model="selectedType" class="m-3 typeSelect" value="All" :options="typeOptions" @change="typeChange" />
+            </div>
+            <groupHeader v-if="group" :key="'groupheader-' + groupid" :group="group" :show-join="true" />
+            <div v-for="message in filteredMessages" :key="'messagelist-' + message.id" class="p-0">
+              <message v-if="(selectedType === 'All' || message.type == selectedType) && (!message.outcomes || message.outcomes.length === 0)" v-bind="message" />
+            </div>
 
-          <client-only>
-            <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
-              <span slot="no-results" />
-              <span slot="no-more" />
-              <span slot="spinner">
-                <b-img-lazy src="~/static/loader.gif" alt="Loading" />
-              </span>
-            </infinite-loading>
-          </client-only>
+            <client-only>
+              <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
+                <span slot="no-results" />
+                <span slot="no-more" />
+                <span slot="spinner">
+                  <b-img-lazy src="~/static/loader.gif" alt="Loading" />
+                </span>
+              </infinite-loading>
+            </client-only>
+          </div>
         </div>
       </b-col>
       <b-col cols="0" lg="3" class="d-none d-lg-block p-0 pl-1">
@@ -50,9 +73,11 @@ const SidebarLeft = () => import('~/components/SidebarLeft')
 const SidebarRight = () => import('~/components/SidebarRight')
 const ExpectedRepliesWarning = () =>
   import('~/components/ExpectedRepliesWarning')
+const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
+    NoticeMessage,
     Viewed,
     GroupSelect,
     InfiniteLoading,
@@ -119,6 +144,12 @@ export default {
       return this.messages.filter(message => {
         return !message.outcomes || message.outcomes.length === 0
       })
+    },
+
+    anyGroups() {
+      const groups = this.$store.getters['auth/groups']
+
+      return groups && groups.length
     }
   },
   watch: {
