@@ -58,7 +58,7 @@
               </b-badge>
             </div>
             <div v-if="member.logins && member.logins.length" class="mt-2">
-              <v-icon name="padlock" />
+              <v-icon name="lock" />
               <b-badge v-for="l in member.logins" :key="'login-' + l.id" variant="info" class="border border-info rounded p-1 mr-1">
                 {{ l.type }} login {{ l.lastaccess | timeago }}
               </b-badge>
