@@ -295,6 +295,9 @@ export const actions = {
         if (groups && groups.length) {
           me.groups = groups
           commit('setGroups', groups)
+        } else if (params.components.indexOf('groups')) {
+          // We asked for groups but got none, so we're not a member of any.
+          commit('setGroups', [])
         }
 
         // Set the user, which will trigger various re-rendering if we were required to be logged in.
