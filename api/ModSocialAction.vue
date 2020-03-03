@@ -3,6 +3,7 @@
     <b-card-header>
       Share to community Facebook pages
     </b-card-header>
+    <!-- eslint-disable-next-line-->
     <b-card-body v-html="item.iframe" />
     <b-card-footer :key="'sharelist-' + shared.length">
       <!--      TODO Share/hide all buttons-->
