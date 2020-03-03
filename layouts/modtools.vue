@@ -61,7 +61,7 @@
                 <v-icon name="brands/discourse" scale="2" class="fa-fw" /><br>
                 Us
               </span>
-              <v-icon name="brands/discourse" class="d-inline d-sm-none" scale="2" />
+              <v-icon name="brands/discourse" class="d-inline d-sm-none mt-2" scale="2" />
               <b-badge v-if="discourseCount" variant="success">
                 {{ discourseCount }}
               </b-badge>
