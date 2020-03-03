@@ -70,8 +70,11 @@
           <span v-else>Continue with your Freegle account</span>
         </h3>
         <span v-if="signUp" class="text-center">
-          <b>Already a freegler? <a href="#" @click="clickShowSignIn">Sign In</a></b>
-        </span>
+          <b>Already a freegler?
+            <b-btn variant="link" class="font-weight-bold pl-1 py-0 border-0 align-top" @click="clickShowSignIn">
+              Sign In
+            </b-btn>
+          </b></span>
         <b-form
           ref="form"
           action="/"
@@ -185,7 +188,10 @@
               I forgot my password
             </nuxt-link>
             <p class="mb-0">
-              New freegler? <a href="#" @click="clickShowSignUp">Sign Up</a>
+              New freegler?
+              <b-btn variant="link" class="pl-1 pr-0 py-0 border-0 align-top" @click="clickShowSignUp">
+                Sign Up
+              </b-btn>
             </p>
           </div>
         </b-form>
