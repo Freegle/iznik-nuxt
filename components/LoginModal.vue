@@ -223,7 +223,8 @@ export default {
       forceSignIn: false,
       nativeLoginError: null,
       socialLoginError: null,
-      showPassword: false
+      showPassword: false,
+      loginType: null
     }
   },
 
@@ -285,10 +286,6 @@ export default {
 
     referToYahooButton() {
       return this.email && this.email.toLowerCase().indexOf('yahoo') !== -1
-    },
-
-    loginType() {
-      return this.$store.getters['auth/loginType']
     }
   },
   beforeDestroy() {
@@ -299,6 +296,10 @@ export default {
   },
   mounted() {
     this.bumpIt()
+
+    // Get the login type here rather than a computed property to avoid it flickering on the screen when you click
+    // the login button.
+    this.loginType = this.$store.getters['auth/loginType']
   },
   methods: {
     tryLater(native) {
