@@ -44,7 +44,7 @@
           Merge left >> right
         </b-btn>
         <b-btn variant="info" @click="ask">
-          Ask member about merge
+          Ask member what they want
         </b-btn>
         <b-btn variant="white" disabled>
           Ignore
