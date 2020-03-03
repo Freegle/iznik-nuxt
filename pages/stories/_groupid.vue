@@ -119,7 +119,9 @@ export default {
   },
   head() {
     return this.buildHead(
-      this.groupname ? 'Stories for ' + this.groupname : 'Stories',
+      this.groupname
+        ? 'Stories for ' + this.groupname
+        : 'Stories from freeglers',
       'Real stories from real freeglers.'
     )
   }
