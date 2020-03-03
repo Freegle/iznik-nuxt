@@ -42,8 +42,11 @@
                 <v-icon name="exclamation-triangle" class="fa-fw" /> {{ member.modmails | pluralize([ 'Modmail', 'Modmails' ], { includeNumber: true }) }}
               </b-badge>
             </h4>
-            <div v-if="member.lastaccess" class="mb-1">
+            <div v-if="member.lastaccess" :class="'mb-1 ' + (inactive ? 'text-danger': '')">
               Last active: {{ member.lastaccess | timeago }}
+              <span v-if="inactive">
+                - won't send mails
+              </span>
             </div>
             <ModMemberActions :userid="member.userid" :groupid="groupid" />
             <div v-if="memberof && memberof.length" class="mt-2">
@@ -91,8 +94,8 @@
             </b-btn>
             <!-- TODO             Applied list-->
             <div v-if="showEmails">
-              <div v-for="email in member.emails" :key="email.id">
-                {{ email.email }} <v-icon v-if="email.preferred" name="start" />
+              <div v-for="e in member.emails" :key="e.id">
+                {{ e.email }} <v-icon v-if="e.preferred" name="start" />
               </div>
             </div>
           </div>
@@ -211,6 +214,15 @@ export default {
         : this.member && this.member.memberof.length > MEMBERSHIPS_SHOW
           ? this.member.memberof.length - MEMBERSHIPS_SHOW
           : 0
+    },
+    inactive() {
+      // This code matches server code in sendOurMails.
+      return (
+        this.member &&
+        this.member.lastaccess &&
+        this.$dayjs().diff(this.$dayjs(this.member.lastaccess), 'days') >=
+          (365 * 24 * 60 * 60) / 2
+      )
     }
   },
   methods: {
