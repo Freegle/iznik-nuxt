@@ -135,14 +135,20 @@ export default {
     },
     async join() {
       const me = this.$store.getters['auth/user']
-      this.joiningOrLeaving = true
 
-      await this.$store.dispatch('auth/joinGroup', {
-        userid: me.id,
-        groupid: this.group.id
-      })
+      if (!me) {
+        // We need to force them to log in.
+        this.$router.push('/explore/join/' + this.group.id)
+      } else {
+        this.joiningOrLeaving = true
 
-      this.joiningOrLeaving = false
+        await this.$store.dispatch('auth/joinGroup', {
+          userid: me.id,
+          groupid: this.group.id
+        })
+
+        this.joiningOrLeaving = false
+      }
     }
   }
 }
