@@ -80,6 +80,11 @@
                 Continue
               </b-btn>
             </div>
+            <hr>
+            <p>
+              If you have problems or questions, please contact our support volunteers at
+              <a href="mailto:geeks@ilovefreegle.org">geeks@ilovefreegle.org</a>
+            </p>
           </div>
         </div>
       </b-col>
