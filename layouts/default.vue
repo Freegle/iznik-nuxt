@@ -115,10 +115,10 @@
           </b-navbar-nav>
         </b-collapse>
       </client-only>
-      <b-navbar-nav class="ml-auto">
+      <b-navbar-nav v-if="!loggedIn" class="ml-auto">
         <client-only>
           <b-nav-item>
-            <div v-if="!loggedIn" class="btn btn-white" @click="requestLogin">
+            <div class="btn btn-white" @click="requestLogin">
               Sign&nbsp;in
             </div>
           </b-nav-item>
