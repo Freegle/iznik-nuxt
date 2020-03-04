@@ -44,8 +44,8 @@ export default {
 }
 
 .notice--danger {
-  background-color: $color-red;
-  border-color: $color-red;
-  color: $color-white;
+  background-color: $color-red--lighter;
+  border-color: $color-red--light;
+  color: $color-red--dark;
 }
 </style>
