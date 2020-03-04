@@ -117,7 +117,7 @@ export default {
     suggestion() {
       let ret = null
 
-      if (this.probablySame) {
+      if (this.probablySame && !this.user1.spammer && !this.user2.spammer) {
         if (this.activeSameDay) {
           ret = 'Ask member which they prefer'
         } else if (

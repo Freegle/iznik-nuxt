@@ -40,7 +40,9 @@ export const mutations = {
       if (
         (parseInt(item.id) && parseInt(item.id) === parseInt(obj.id)) ||
         (parseInt(item.userid) &&
-          parseInt(item.userid) === parseInt(obj.userid))
+          parseInt(item.userid) === parseInt(obj.userid)) ||
+        (parseInt(item.userid) &&
+          parseInt(item.userid) === parseInt(obj.relatedto.userid))
       ) {
         return false
       } else {

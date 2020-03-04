@@ -80,11 +80,9 @@ import NoticeMessage from './NoticeMessage'
 import ModChatReviewUser from './ModChatReviewUser'
 import ModChatReviewModal from './ModChatReviewModal'
 import ChatMessage from './ChatMessage'
-import ModSpammer from './ModSpammer'
 
 export default {
   components: {
-    ModSpammer,
     ChatMessage,
     ModChatReviewModal,
     ModChatReviewUser,
