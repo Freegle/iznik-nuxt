@@ -16,7 +16,7 @@
           </p>
           <p>
             <b>No need to say what you're giving/seeking. </b>This is just to introduce yourself to other people, if
-            you want to.
+            you want to.  If you want to talk to someone specific, use the <em>Message</em> link on their profile.
           </p>
           <b-form-textarea
             v-model="text"

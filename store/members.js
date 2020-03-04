@@ -274,5 +274,13 @@ export const actions = {
     commit('remove', {
       userid: params.userid
     })
+  },
+
+  async askMerge({ commit }, params) {
+    await this.$api.merge.ask(params)
+
+    commit('remove', {
+      userid: params.user1
+    })
   }
 }

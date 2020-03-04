@@ -23,7 +23,12 @@
           </span>
         </NoticeMessage>
         <div class="rounded bg-white p-2 font-weight-bold border border-warning mb-2">
-          {{ message.message }}
+          <div v-if="message.mesage">
+            {{ message.message }}
+          </div>
+          <div v-else>
+            <ChatMessage :chat="null" :chatmessage="message" :otheruser="null" last />
+          </div>
         </div>
         <div class="d-flex justify-content-between flex-wrap">
           <span>
@@ -74,9 +79,15 @@ import waitForRef from '../mixins/waitForRef'
 import NoticeMessage from './NoticeMessage'
 import ModChatReviewUser from './ModChatReviewUser'
 import ModChatReviewModal from './ModChatReviewModal'
+import ChatMessage from './ChatMessage'
 
 export default {
-  components: { ModChatReviewModal, ModChatReviewUser, NoticeMessage },
+  components: {
+    ChatMessage,
+    ModChatReviewModal,
+    ModChatReviewUser,
+    NoticeMessage
+  },
   mixins: [waitForRef],
   props: {
     message: {

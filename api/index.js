@@ -20,6 +20,7 @@ import GroupAPI from './GroupAPI.js'
 import InvitationAPI from './InvitationAPI.js'
 import JobAPI from './JobAPI.js'
 import MembershipsAPI from './MembershipsAPI.js'
+import MergeAPI from './MergeAPI.js'
 import MessageAPI from './MessageAPI.js'
 import ModConfigsAPI from './ModConfigsAPI.js'
 import NewsAPI from './NewsAPI.js'
@@ -28,6 +29,7 @@ import NotificationAPI from './NotificationAPI.js'
 import ScheduleAPI from './ScheduleAPI.js'
 import SessionAPI from './SessionAPI.js'
 import ShortlinksAPI from './ShortlinksAPI.js'
+import SocialActionsAPI from './SocialActionsAPI.js'
 import StatusAPI from './StatusAPI.js'
 import StoriesAPI from './StoriesAPI.js'
 import TeamAPI from './TeamAPI.js'
@@ -50,6 +52,7 @@ export default ({ $axios, store }) => {
     invitation: new InvitationAPI(options),
     job: new JobAPI(options),
     memberships: new MembershipsAPI(options),
+    merge: new MergeAPI(options),
     message: new MessageAPI(options),
     modconfigs: new ModConfigsAPI(options),
     news: new NewsAPI(options),
@@ -58,6 +61,7 @@ export default ({ $axios, store }) => {
     schedule: new ScheduleAPI(options),
     session: new SessionAPI(options),
     shortlinks: new ShortlinksAPI(options),
+    socialactions: new SocialActionsAPI(options),
     status: new StatusAPI(options),
     stories: new StoriesAPI(options),
     team: new TeamAPI(options),

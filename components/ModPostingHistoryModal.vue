@@ -8,6 +8,9 @@
       no-stacking
     >
       <template slot="default">
+        <NoticeMessage v-if="!messages.length" variant="info">
+          There are no posts to show.
+        </NoticeMessage>
         <b-row v-for="message in messages" :key="'postinghistory-' + message.id">
           <b-col cols="8" sm="3">
             <div>{{ message.arrival | datetimeshort }}</div>
@@ -40,7 +43,9 @@
   </div>
 </template>
 <script>
+import NoticeMessage from './NoticeMessage'
 export default {
+  components: { NoticeMessage },
   props: {
     user: {
       type: Object,
@@ -65,7 +70,7 @@ export default {
 
       ret.forEach(message => {
         const group = this.$store.getters['auth/groupById'](message.groupid)
-        message.groupname = group.namedisplay
+        message.groupname = group ? group.namedisplay : '#' + message.groupid
       })
 
       ret.sort((a, b) => {

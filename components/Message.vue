@@ -375,12 +375,10 @@ export default {
   watch: {
     async replyToSend(newVal, oldVal) {
       // Because of the way persistent store is restored, we might only find out that we have a reply to send post-mount.
-      console.log('replyToSend')
       if (newVal && newVal.replyTo === this.id) {
         await this.expand()
         this.reply = newVal.replyMessage
         this.$nextTick(() => {
-          console.log('send it')
           this.sendReply()
         })
       }

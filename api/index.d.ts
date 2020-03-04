@@ -22,6 +22,7 @@ import GroupAPI from './GroupAPI.js'
 import InvitationAPI from './InvitationAPI.js'
 import JobAPI from './JobAPI.js'
 import MembershipsAPI from './MembershipsAPI.js'
+import MergeAPI from './MergeAPI.js'
 import MessageAPI from './MessageAPI.js'
 import ModConfigsAPI from './ModConfigsAPI.js'
 import NewsAPI from './NewsAPI.js'
@@ -30,6 +31,7 @@ import NotificationAPI from './NotificationAPI.js'
 import ScheduleAPI from './ScheduleAPI.js'
 import SessionAPI from './SessionAPI.js'
 import ShortlinksAPI from './ShortlinksAPI.js'
+import SocialActionsAPI from './SocialActionsAPI.js'
 import StatusAPI from './StatusAPI.js'
 import StoriesAPI from './StoriesAPI.js'
 import TeamAPI from './TeamAPI.js'
@@ -50,6 +52,7 @@ interface API {
   invitation: InvitationAPI;
   job: JobAPI;
   memberships: MembershipsAPI;
+  merge: MergeAPI;
   message: MessageAPI;
   modconfigs: ModConfigsAPI;
   news: NewsAPI;
@@ -58,6 +61,7 @@ interface API {
   schedule: ScheduleAPI;
   session: SessionAPI;
   shortlinks: ShortlinksAPI;
+  socialactions: SocialActionsAPI;
   status: StatusAPI;
   stories: StoriesAPI;
   team: TeamAPI;

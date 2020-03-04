@@ -15,7 +15,7 @@
                 community in a particular way, and then see how effective that promotion was. Keep them
                 short (less typing) and memorable (less forgetting).
               </p>
-              <div class="d-flex justify-content-between">
+              <div class="d-flex justify-content-between flex-wrap">
                 <b-select v-model="groupid" :options="groupOptions" />
                 <b-form-input v-model="name" placeholder="Enter your shortlink name" maxlength="30" />
                 <b-btn variant="white" @click="create">

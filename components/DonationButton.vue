@@ -9,7 +9,7 @@
       aria-label="Donate to Freegle with PayPal (opens in a new tab)"
     >
       <b-img alt="" src="~/static/pp_cc_mark_37x23.jpg" class="mr-2 d-none d-sm-inline" />
-      Donate <span v-if="show">{{ show }}</span>
+      <span v-if="!show">Donate </span><span v-if="show">{{ show }}</span>
     </b-button>
     <div v-if="monthly" class="text-success font-weight-bold">
       You'll need to click the monthly box on the next page

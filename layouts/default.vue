@@ -14,7 +14,7 @@
       </b-navbar-brand>
       <client-only>
         <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
-        <b-collapse v-if="loggedIn" id="nav_collapse" ref="nav_collapse" is-nav class="flex-nowrap">
+        <b-collapse v-if="loggedIn" id="nav_collapse" ref="nav_collapse" is-nav class="flex-nowrap justify-content-between">
           <b-navbar-nav>
             <b-nav-item id="menu-option-mygroups" class="text-center small p-0" to="/communities" @mousedown="maybeReload('/communities')">
               <v-icon name="users" scale="2" /><br>
@@ -50,13 +50,11 @@
             </b-nav-item>
           </b-navbar-nav>
           <client-only>
-            <div class="w-100 d-flex justify-content-center">
-              <div class="simplewrapper pb-2">
-                <SimpleView :key="'simpleview-' + simple" navbar />
-              </div>
+            <div class="simplewrapper pb-2">
+              <SimpleView :key="'simpleview-' + simple" navbar />
             </div>
           </client-only>
-          <b-navbar-nav class="ml-auto">
+          <b-navbar-nav>
             <b-nav-item-dropdown v-if="!simple" class="white text-center notiflist" lazy right @shown="loadLatestNotifications">
               <template slot="button-content">
                 <div class="notifwrapper text-center small">
@@ -128,8 +126,8 @@
       </b-navbar-nav>
     </b-navbar>
     <!-- Navbar for small screens -->
-    <b-navbar id="navbar_small" toggleable="xl" type="dark" class="ourBack d-flex justify-content-end d-xl-none" fixed="top">
-      <b-navbar-brand to="/" class="p-0 mr-auto">
+    <b-navbar id="navbar_small" toggleable="xl" type="dark" class="ourBack d-flex justify-content-between d-xl-none" fixed="top">
+      <b-navbar-brand to="/" class="p-0">
         <b-img
           class="logo mr-2"
           height="58"
@@ -139,74 +137,70 @@
           alt="Home"
         />
       </b-navbar-brand>
-
-      <client-only>
-        <div v-if="isApp && loggedIn" id="menu-option-refresh-sm" class="text-white mr-3">
-          <div class="notifwrapper">
-            <v-icon name="redo" scale="2" @click="refresh" />
-          </div>
-        </div>
-
-        <b-dropdown
-          v-if="loggedIn"
-          class="white text-center notiflist mr-2"
-          variant="success"
-          lazy
-          right
-          @shown="loadLatestNotifications"
-        >
-          <template slot="button-content">
+      <div class="d-flex align-items-center">
+        <client-only>
+          <div v-if="isApp && loggedIn" id="menu-option-refresh-sm" class="text-white mr-3">
             <div class="notifwrapper">
-              <v-icon name="bell" scale="2" class="" />
-              <b-badge v-if="notificationCount" variant="danger" class="notifbadgesm">
-                {{ notificationCount }}
+              <v-icon name="redo" scale="2" @click="refresh" />
+            </div>
+          </div>
+          <b-dropdown v-if="loggedIn"
+                      class="white text-center notiflist mr-2"
+                      variant="success"
+                      lazy
+                      right
+                      @shown="loadLatestNotifications">
+            <template slot="button-content">
+              <div class="notifwrapper">
+                <v-icon name="bell" scale="2" class="" />
+                <b-badge v-if="notificationCount" variant="danger" class="notifbadgesm">
+                  {{ notificationCount }}
+                </b-badge>
+              </div>
+            </template>
+            <b-dropdown-item class="text-right">
+              <b-btn variant="white" size="sm" @click="markAllRead">
+                Mark all read
+              </b-btn>
+            </b-dropdown-item>
+            <b-dropdown-divider />
+            <b-dropdown-item v-for="notification in notifications" :key="'notification-' + notification.id" class="p-0 notpad">
+              <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
+            </b-dropdown-item>
+            <infinite-loading :distance="distance" @infinite="loadMoreNotifications">
+              <span slot="no-results" />
+              <span slot="no-more" />
+              <span slot="spinner">
+                <b-img-lazy src="~/static/loader.gif" alt="Loading" />
+              </span>
+            </infinite-loading>
+          </b-dropdown>
+          <nuxt-link v-if="loggedIn" id="menu-option-chat-sm" class="text-white mr-3" to="/chats">
+            <div class="notifwrapper">
+              <v-icon name="comments" scale="2" /><br>
+              <b-badge v-if="chatCount" variant="danger" class="chatbadge">
+                {{ chatCount }}
               </b-badge>
             </div>
-          </template>
-          <b-dropdown-item class="text-right">
-            <b-btn variant="white" size="sm" @click="markAllRead">
-              Mark all read
-            </b-btn>
-          </b-dropdown-item>
-          <b-dropdown-divider />
-          <b-dropdown-item v-for="notification in notifications" :key="'notification-' + notification.id" class="p-0 notpad">
-            <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
-          </b-dropdown-item>
-          <infinite-loading :distance="distance" @infinite="loadMoreNotifications">
-            <span slot="no-results" />
-            <span slot="no-more" />
-            <span slot="spinner">
-              <b-img-lazy src="~/static/loader.gif" alt="Loading" />
-            </span>
-          </infinite-loading>
-        </b-dropdown>
-        <nuxt-link v-if="loggedIn" id="menu-option-chat-sm" class="text-white mr-3" to="/chats">
-          <div class="notifwrapper">
-            <v-icon name="comments" scale="2" /><br>
-            <b-badge v-if="chatCount" variant="danger" class="chatbadge">
-              {{ chatCount }}
-            </b-badge>
-          </div>
-        </nuxt-link>
-      </client-only>
-
-      <b-navbar-nav>
-        <client-only>
-          <b-nav-item v-if="!loggedIn">
-            <div class="btn btn-white" @click="requestLogin">
-              Sign in
-            </div>
-          </b-nav-item>
+          </nuxt-link>
         </client-only>
-      </b-navbar-nav>
 
-      <b-navbar-nav class="">
-        <b-btn v-if="loggedIn" v-b-toggle.nav_collapse_mobile class="toggler white">
-          <v-icon name="bars" class="mb-1" scale="1.5" />
-        </b-btn>
-        <!--        <b-navbar-toggle v-if="loggedIn" target="nav_collapse_mobile" class="navbar-dark" />-->
-      </b-navbar-nav>
+        <b-navbar-nav>
+          <client-only>
+            <b-nav-item v-if="!loggedIn">
+              <div class="btn btn-white" @click="requestLogin">
+                Sign in
+              </div>
+            </b-nav-item>
+          </client-only>
+        </b-navbar-nav>
 
+        <b-navbar-nav class="">
+          <b-btn v-if="loggedIn" v-b-toggle.nav_collapse_mobile class="toggler white">
+            <v-icon name="bars" class="mb-1" scale="1.5" />
+          </b-btn>
+        </b-navbar-nav>
+      </div>
       <b-collapse v-if="loggedIn" id="nav_collapse_mobile" ref="nav_collapse_mobile" class="w-100 ourBack">
         <b-navbar-nav class="ml-auto flex-row flex-wrap small">
           <b-nav-item class="text-center p-0" to="/communities" @mousedown="maybeReload('/communities')">

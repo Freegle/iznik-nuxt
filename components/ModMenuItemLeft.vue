@@ -1,7 +1,7 @@
 <template>
   <div :class="getClass">
     <!-- eslint-disable-next-line -->
-    <span v-if="indent">&nbsp;&nbsp;</span><nuxt-link :to="link" @click.native="click">{{ name }}</nuxt-link>
+    <span v-if="indent" class="pl-3" /><nuxt-link :to="link" @click.native="click">{{ name }}</nuxt-link>
     <b-badge v-if="count && getCount(count)" :variant="countVariant">
       {{ getCount(count) }}
     </b-badge>
@@ -47,7 +47,7 @@ export default {
       return this.$store.getters['auth/work']
     },
     getClass() {
-      return 'pl-3 ' + (this.$route.path === this.link ? 'active' : '')
+      return 'pl-1 ' + (this.$route.path === this.link ? 'active' : '')
     }
   },
   methods: {

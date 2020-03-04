@@ -3,7 +3,7 @@
     <b-card bg-variant="white" no-body>
       <b-card-header class="d-flex justify-content-between flex-wrap">
         <div>
-          <v-icon name="envelope" /> {{ member.email }}
+          <v-icon name="envelope" /> {{ email }}
         </div>
         <div>
           <ProfileImage :image="member.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="sm" />
@@ -23,6 +23,7 @@
         <div class="d-flex justify-content-between flex-wrap">
           <!--          TODO Bind to event and handle changes-->
           <SettingsGroup
+            v-if="groupid"
             :groupid="groupid"
             :emailfrequency="member.emailfrequency"
             :volunteeringallowed="Boolean(member.volunteeringallowed)"
@@ -41,7 +42,30 @@
                 <v-icon name="exclamation-triangle" class="fa-fw" /> {{ member.modmails | pluralize([ 'Modmail', 'Modmails' ], { includeNumber: true }) }}
               </b-badge>
             </h4>
+            <div v-if="member.lastaccess" :class="'mb-1 ' + (inactive ? 'text-danger': '')">
+              Last active: {{ member.lastaccess | timeago }}
+              <span v-if="inactive">
+                - won't send mails
+              </span>
+            </div>
             <ModMemberActions :userid="member.userid" :groupid="groupid" />
+            <div v-if="memberof && memberof.length" class="mt-2">
+              <span class="small">
+                <v-icon name="users" />
+                <span v-for="m in memberof" :key="'membership-' + m.membershipid" class="border border-info rounded p-1 mr-1">
+                  {{ m.namedisplay }} <span class="text-muted small">{{ m.added | timeago }}</span>
+                </span>
+              </span>
+              <b-badge v-if="hiddenmemberofs" variant="info" class="clickme" @click="allmemberships = !allmemberships">
+                +{{ hiddenmemberofs }} groups
+              </b-badge>
+            </div>
+            <div v-if="member.logins && member.logins.length" class="mt-2">
+              <v-icon name="lock" />
+              <b-badge v-for="l in member.logins" :key="'login-' + l.id" variant="info" class="border border-info rounded p-1 mr-1">
+                {{ l.type }} login {{ l.lastaccess | timeago }}
+              </b-badge>
+            </div>
             <b-btn v-if="member.emails && member.emails.length" variant="link" @click="showEmails = !showEmails">
               <v-icon name="envelope" />
               <span v-if="showEmails">
@@ -68,12 +92,10 @@
               <!--      TODO Show modal-->
               View logs
             </b-btn>
-            <!-- TODO             Group list-->
             <!-- TODO             Applied list-->
-
             <div v-if="showEmails">
-              <div v-for="email in member.emails" :key="email.id">
-                {{ email.email }} <v-icon v-if="email.preferred" name="start" />
+              <div v-for="e in member.emails" :key="e.id">
+                {{ e.email }} <v-icon v-if="e.preferred" name="start" />
               </div>
             </div>
           </div>
@@ -95,6 +117,8 @@ import NoticeMessage from './NoticeMessage'
 import ProfileImage from './ProfileImage'
 import ModPostingHistoryModal from './ModPostingHistoryModal'
 import ModMemberActions from './ModMemberActions'
+
+const MEMBERSHIPS_SHOW = 3
 
 export default {
   name: 'ModMember',
@@ -118,10 +142,25 @@ export default {
       saving: false,
       saved: false,
       showEmails: false,
-      type: null
+      type: null,
+      allmemberships: false
     }
   },
   computed: {
+    email() {
+      // Depending on which context we're used it, we might or might not have an email returned.
+      let ret = this.member.email
+
+      if (!this.member.email && this.member.emails) {
+        this.member.emails.forEach(e => {
+          if (!e.ourdomain && (!ret || e.preferred)) {
+            ret = e.email
+          }
+        })
+      }
+
+      return ret
+    },
     pending() {
       return this.member.collection === 'Pending'
     },
@@ -151,6 +190,39 @@ export default {
       }
 
       return ret
+    },
+    memberof() {
+      if (!this.member || !this.member.memberof) {
+        return null
+      }
+
+      const ms = this.member.memberof
+
+      ms.sort(function(a, b) {
+        return new Date(b.added).getTime() - new Date(a.added).getTime()
+      })
+
+      if (this.allmemberships) {
+        return ms
+      } else {
+        return ms.slice(0, MEMBERSHIPS_SHOW)
+      }
+    },
+    hiddenmemberofs() {
+      return this.allmemberships
+        ? 0
+        : this.member && this.member.memberof.length > MEMBERSHIPS_SHOW
+          ? this.member.memberof.length - MEMBERSHIPS_SHOW
+          : 0
+    },
+    inactive() {
+      // This code matches server code in sendOurMails.
+      return (
+        this.member &&
+        this.member.lastaccess &&
+        this.$dayjs().diff(this.$dayjs(this.member.lastaccess), 'days') >=
+          (365 * 24 * 60 * 60) / 2
+      )
     }
   },
   methods: {

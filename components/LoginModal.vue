@@ -25,6 +25,9 @@
         Privacy
       </nuxt-link> for details.  Ok?  Now come on in...
     </p>
+    <p v-if="loginType" class="text-center font-weight-bold">
+      You usually sign in using {{ loginType }}.
+    </p>
     <div class="d-flex flex-column flex-lg-row justify-content-between p-3">
       <div class="signin__section--social">
         <h3 class="signin__header">
@@ -67,8 +70,11 @@
           <span v-else>Continue with your Freegle account</span>
         </h3>
         <span v-if="signUp" class="text-center">
-          <b>Already a freegler? <a href="#" @click="clickShowSignIn">Sign In</a></b>
-        </span>
+          <b>Already a freegler?
+            <b-btn variant="link" class="font-weight-bold pl-1 py-0 border-0 align-top" @click="clickShowSignIn">
+              Sign In
+            </b-btn>
+          </b></span>
         <b-form
           ref="form"
           action="/"
@@ -125,6 +131,12 @@
               type="email"
             />
           </b-form-group>
+          <NoticeMessage v-if="referToGoogleButton">
+            Please use the <em>Continue with Google</em> button to sign in.  That way you don't need to remember a password on this site.
+          </NoticeMessage>
+          <NoticeMessage v-if="referToYahooButton">
+            Please use the <em>Continue with Yahoo</em> button to sign in.  That way you don't need to remember a password on this site.
+          </NoticeMessage>
           <b-form-group
             id="passwordGroup"
             label="Your password"
@@ -176,7 +188,10 @@
               I forgot my password
             </nuxt-link>
             <p class="mb-0">
-              New freegler? <a href="#" @click="clickShowSignUp">Sign Up</a>
+              New freegler?
+              <b-btn variant="link" class="pl-1 pr-0 py-0 border-0 align-top" @click="clickShowSignUp">
+                Sign Up
+              </b-btn>
             </p>
           </div>
         </b-form>
@@ -211,7 +226,8 @@ export default {
       forceSignIn: false,
       nativeLoginError: null,
       socialLoginError: null,
-      showPassword: false
+      showPassword: false,
+      loginType: null
     }
   },
 
@@ -263,6 +279,18 @@ export default {
       } else {
         return !this.loggedInEver || this.showSignUp
       }
+    },
+
+    referToGoogleButton() {
+      return (
+        this.email &&
+        (this.email.toLowerCase().indexOf('gmail') !== -1 ||
+          this.email.toLowerCase().indexOf('googlemail') !== -1)
+      )
+    },
+
+    referToYahooButton() {
+      return this.email && this.email.toLowerCase().indexOf('yahoo') !== -1
     }
   },
   beforeDestroy() {
@@ -273,6 +301,10 @@ export default {
   },
   mounted() {
     this.bumpIt()
+
+    // Get the login type here rather than a computed property to avoid it flickering on the screen when you click
+    // the login button.
+    this.loginType = this.$store.getters['auth/loginType']
   },
   methods: {
     tryLater(native) {
@@ -297,6 +329,8 @@ export default {
       this.pleaseShowModal = false
     },
     loginNative(e) {
+      this.$store.dispatch('auth/setLoginType', 'Freegle')
+
       const self = this
       this.nativeLoginError = null
       this.socialLoginError = null
@@ -400,6 +434,8 @@ export default {
       }
     },
     async loginFacebook() {
+      this.$store.dispatch('auth/setLoginType', 'Facebook')
+
       this.nativeLoginError = null
       this.socialLoginError = null
       try {
@@ -445,6 +481,8 @@ export default {
     },
 
     async loginGoogle() { // CC
+      this.$store.dispatch('auth/setLoginType', 'Google')
+
       this.nativeLoginError = null
       this.socialLoginError = null
       if (process.env.IS_APP) { // CC..
@@ -499,6 +537,8 @@ export default {
     },
 
     loginYahoo() {
+      this.$store.dispatch('auth/setLoginType', 'Yahoo')
+
       // Sadly Yahoo doesn't support a Javascript-only OAuth flow, so far as I can tell.  So what we do is
       // redirect to Yahoo, which returns back to us with a code parameter, which we then pass to the server
       // to complete the signin.  This replaces the old flow which stopped working in Jan 2020.

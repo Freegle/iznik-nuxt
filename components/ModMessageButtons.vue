@@ -1,6 +1,29 @@
 <template>
   <div>
-    <div v-if="pending" class="d-inline">
+    <div v-if="editreview" class="d-inline">
+      <ModMessageButton
+        :message="message"
+        variant="success"
+        icon="check"
+        acceptedits
+        label="Accept Edit"
+      />
+      <ModMessageButton
+        :message="message"
+        variant="danger"
+        icon="times"
+        revertedits
+        label="Reject Edit"
+      />
+      <ModMessageButton
+        :message="message"
+        variant="success"
+        icon="envelope"
+        leave
+        label="Reply"
+      />
+    </div>
+    <div v-else-if="pending" class="d-inline">
       <ModMessageButton
         v-if="!message.heldby"
         :message="message"
@@ -50,7 +73,7 @@
         label="Spam"
       />
     </div>
-    <div v-if="approved" class="d-inline">
+    <div v-else-if="approved" class="d-inline">
       <ModMessageButton
         :message="message"
         variant="success"
@@ -73,7 +96,7 @@
         label="Spam"
       />
     </div>
-    <div v-if="spam" class="d-inline">
+    <div v-else-if="spam" class="d-inline">
       <ModMessageButton
         :message="message"
         variant="danger"
@@ -89,7 +112,7 @@
         label="Not spam"
       />
     </div>
-    <div v-if="!message.heldby" class="d-lg-inline">
+    <div v-if="!editreview && !message.heldby" class="d-lg-inline">
       <ModMessageButton
         v-for="stdmsg in filtered"
         :key="stdmsg.id"
@@ -124,6 +147,11 @@ export default {
       type: Object,
       required: false,
       default: null
+    },
+    editreview: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {

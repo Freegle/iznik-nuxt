@@ -29,12 +29,15 @@
               <ModMenuItemNav name="Review" :count="['spam']" :othercount="['spamother']" link="/modtools/messages/review" />
             </b-dropdown-item>
             <b-dropdown-item>
+              <ModMenuItemNav name="Edits" :count="['editreview']" link="/modtools/messages/edits" />
+            </b-dropdown-item>
+            <b-dropdown-item>
               <ModMenuItemNav name="Chat Review" :count="['chatreview']" link="/modtools/chats/review" />
             </b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown right class="d-block d-sm-none">
             <template v-slot:button-content>
-              <ModMenuItemNav v-if="hasPermissionNewsletter" :count="['pendingmembers', 'stories', 'newsletterstories']" icon="users" class="menuicon" />
+              <ModMenuItemNav v-if="hasPermissionNewsletter" :count="['pendingmembers', 'stories', 'newsletterstories', 'socialactions']" icon="users" class="menuicon" />
             </template>
             <b-dropdown-item>
               <ModMenuItemNav name="Pending" :count="['pendingmembers']" link="/modtools/members/pending" />
@@ -42,11 +45,17 @@
             <b-dropdown-item>
               <ModMenuItemNav name="Approved" link="/modtools/members/approved" />
             </b-dropdown-item>
+            <b-dropdown-item v-if="supportOrAdmin">
+              <ModMenuItemNav name="Related" link="/modtools/members/related" :count="['relatedmembers']" />
+            </b-dropdown-item>
             <b-dropdown-item>
               <ModMenuItemNav name="Stories" :count="['stories']" href="/modtools/members/stories" />
             </b-dropdown-item>
             <b-dropdown-item>
-              <ModMenuItemNav name="Stories" :count="['newsletterstories']" href="/modtools/members/newsletter" />
+              <ModMenuItemNav name="Newsletter" :count="['newsletterstories']" href="/modtools/members/newsletter" />
+            </b-dropdown-item>
+            <b-dropdown-item>
+              <ModMenuItemNav name="Publicity" :count="['socialactions']" href="/modtools/publicity" />
             </b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse" class="text-center p-0" @click="discourse">
@@ -55,7 +64,7 @@
                 <v-icon name="brands/discourse" scale="2" class="fa-fw" /><br>
                 Us
               </span>
-              <v-icon name="brands/discourse" class="d-inline d-sm-none" scale="2" />
+              <v-icon name="brands/discourse" class="d-inline d-sm-none mt-2" scale="2" />
               <b-badge v-if="discourseCount" variant="success">
                 {{ discourseCount }}
               </b-badge>
@@ -87,29 +96,33 @@
 
       <div class="d-flex">
         <div class="leftmenu d-none d-sm-block">
-          <nuxt-link to="/modtools">
+          <nuxt-link to="/modtools" class="pl-1">
             Dashboard
           </nuxt-link>
           <hr>
-          <div>
+          <div class="pl-1">
             Messages
           </div>
           <ModMenuItemLeft link="/modtools/messages/pending" name="Pending" count="pending" othercount="pendingother" indent />
           <ModMenuItemLeft link="/modtools/messages/approved" name="Approved" indent />
           <ModMenuItemLeft link="/modtools/messages/review" name="Review" count="spam" othercount="spamother" indent />
+          <ModMenuItemLeft link="/modtools/messages/edits" name="Edits" count="editreview" indent />
           <hr>
-          <div>
+          <div class="pl-1">
             Members
           </div>
           <ModMenuItemLeft link="/modtools/members/pending" name="Pending" count="pendingmembers" othercount="pendingmembersother" indent />
           <ModMenuItemLeft link="/modtools/members/approved" name="Approved" indent />
+          <ModMenuItemLeft link="/modtools/members/related" name="Related" count="relatedmembers" indent />
           <ModMenuItemLeft link="/modtools/members/stories" name="Stories" indent count="stories" />
           <ModMenuItemLeft v-if="hasPermissionNewsletter" link="/modtools/members/newsletter" name="Newsletter" indent count="newsletterstories" />
           <hr>
-          <div>
+          <div class="pl-1">
             Chat
           </div>
           <ModMenuItemLeft link="/modtools/chats/review" name="Review" count="chatreview" indent />
+          <hr>
+          <ModMenuItemLeft link="/modtools/publicity" name="Publicity" count="socialactions" />
         </div>
         <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent flex-grow-1" />
       </div>

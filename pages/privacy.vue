@@ -5,7 +5,7 @@
         Privacy
       </h1>
       <p>
-        We won’t pass on your email address to anyone else, and other freeglers can't see it.
+        We won’t pass on your email address to any organisation outside Freegle, and other freeglers can't see it.
       </p>
       <p>
         Other freeglers can see your name, profile picture and approximate location.  If you don't want that, you can change it in <nuxt-link to="/settings">
@@ -25,6 +25,10 @@
         So that potential new users can see what is being offered on Freegle, we make some details of posts public,
         i.e. the item name, approximate location, the description and any photos. No personal details are made public
         unless in this information.
+      </p>
+      <p>
+        Norfolk Freegle is a separate legal entity, which is affiliated with Freegle UK, and we share data (in
+        technical GDPR terms this is a joint controller arrangement).
       </p>
       <h2>Cookies and Tracking</h2>
       <p>

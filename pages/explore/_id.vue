@@ -53,11 +53,16 @@ export default {
       // Get the group and approved messages for this group.  We're only interested in showing OFFERs and WANTEDs, and
       // ask for summary info for speed.
       try {
-        await store.dispatch('group/fetch', {
-          id: params.id
-        })
+        let group = store.getters['group/get'](params.id)
 
-        const group = store.getters['group/get'](params.id)
+        if (!group) {
+          // Not fetched yet.
+          await store.dispatch('group/fetch', {
+            id: params.id
+          })
+
+          group = store.getters['group/get'](params.id)
+        }
 
         await store.dispatch('messages/fetchMessages', {
           groupid: group.id,
