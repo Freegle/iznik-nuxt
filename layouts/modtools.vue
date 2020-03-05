@@ -45,7 +45,7 @@
             <b-dropdown-item>
               <ModMenuItemNav name="Approved" link="/modtools/members/approved" />
             </b-dropdown-item>
-            <b-dropdown-item v-if="supportOrAdmin">
+            <b-dropdown-item>
               <ModMenuItemNav name="Related" link="/modtools/members/related" :count="['relatedmembers']" />
             </b-dropdown-item>
             <b-dropdown-item>

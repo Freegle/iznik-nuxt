@@ -9,40 +9,32 @@
           <ModMember :member="user2" />
         </b-col>
       </b-row>
+      <div class="d-flex flex-wrap justify-content-start pills mt-2">
+        <b-btn v-if="whichposted === 'Both'" variant="warning" class="mr-1">
+          Posted: {{ whichposted }}
+        </b-btn>
+        <b-btn v-else variant="white" class="mr-1">
+          Posted: {{ whichposted }}
+        </b-btn>
+        <b-btn variant="white" class="mr-1">
+          Joined a group: {{ whichjoined }}
+        </b-btn>
+        <b-btn v-if="activeSameDay" variant="primary" class="mr-1">
+          Active same day
+        </b-btn>
+        <b-btn v-if="similarNameOrEmail" variant="primary" class="mr-1">
+          Similar name/email
+        </b-btn>
+        <b-btn v-if="groupsInCommon" variant="primary" class="mr-1">
+          Groups in common
+        </b-btn>
+        <b-btn v-if="probablySame" variant="success" class="mr-1">
+          Probably the same
+        </b-btn>
+      </div>
     </b-card-body>
     <b-card-footer>
-      <div>
-        Posted: {{ whichposted }}
-      </div>
-      <div>
-        Joined a group: {{ whichjoined }}
-      </div>
-      <div>
-        Active same day? <span v-if="activeSameDay"><b>Yes</b></span><span v-else>No</span>
-      </div>
-      <div>
-        Similar name/email: <span v-if="similarNameOrEmail"><b>Yes</b></span><span v-else>No</span>
-      </div>
-      <div>
-        Groups in common: <span v-if="groupsInCommon"><b>Yes</b></span><span v-else>No</span>
-      </div>
-      <div>
-        Probably the same: <span v-if="probablySame"><b>Yes</b></span><span v-else>No</span>
-      </div>
-      <br>
-      <div v-if="suggestion">
-        Suggestion: <b>{{ suggestion }}</b>
-      </div>
-      <div v-else>
-        Sleuthing required
-      </div>
       <div class="mt-2">
-        <b-btn variant="success" disabled>
-          Merge right >> left
-        </b-btn>
-        <b-btn variant="primary" disabled>
-          Merge left >> right
-        </b-btn>
         <b-btn variant="info" @click="ask">
           Ask member what they want
         </b-btn>
@@ -113,24 +105,6 @@ export default {
       return (
         this.similarNameOrEmail && (this.groupsInCommon || this.activeSameDay)
       )
-    },
-    suggestion() {
-      let ret = null
-
-      if (this.probablySame && !this.user1.spammer && !this.user2.spammer) {
-        if (this.activeSameDay) {
-          ret = 'Ask member which they prefer'
-        } else if (
-          this.$dayjs(this.user1.lastaccess).isBefore(
-            this.$dayjs(this.user2.lastaccess)
-          )
-        ) {
-          ret = 'Merge left into right'
-        } else {
-          ret = 'Merge right into left'
-        }
-      }
-      return ret
     },
     groupsInCommon() {
       const common = this.user1.memberof.filter(group => {
@@ -299,3 +273,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+.pills .btn {
+  border-radius: 20px;
+}
+</style>
