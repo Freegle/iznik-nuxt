@@ -10,7 +10,7 @@
       <div class="m-0 coverphoto">
         <b-media>
           <template slot="aside">
-            <ProfileImage :image="user.profile.url" class="mr-1 ml-1 mb-1 mt-1 inline" is-thumbnail size="lg" />
+            <b-img lazy :src="user.profile.url" class="coverprofileimage" />
           </template>
           <b-media-body class="align-top">
             <h4 class="d-inline-block w-100 overflow-hidden">
@@ -126,9 +126,52 @@
   </b-modal>
 </template>
 
+<style scoped lang="scss">
+@import 'color-vars';
+
+::v-deep .media .align-self-start {
+  margin-right: 0.25rem !important;
+}
+
+::v-deep .modal-header {
+  padding: 0px;
+}
+
+.coverphoto {
+  height: 100px !important;
+  width: 100% !important;
+  background-image: url('~static/wallpaper.png');
+}
+
+.coverprofilecircle {
+  width: 100px;
+  height: 100px;
+  background-color: $color-gray--base;
+  border-radius: 50%;
+  /*margin: 10px;*/
+}
+
+.coverprofileimage {
+  margin-top: 1px;
+  margin-left: 1px;
+  width: 98px;
+  height: 98px;
+  border-radius: 98px;
+  border: 3px solid $color-white;
+}
+
+.covername {
+  left: 108px;
+  position: absolute;
+  width: calc(100% - 105px);
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+</style>
+
 <script>
 import twem from '~/assets/js/twem'
-import ProfileImage from '~/components/ProfileImage'
 
 const Ratings = () => import('~/components/Ratings')
 const ReplyTime = () => import('~/components/ReplyTime')
@@ -140,8 +183,7 @@ export default {
     Ratings,
     ReplyTime,
     ChatButton,
-    NoticeMessage,
-    ProfileImage
+    NoticeMessage
   },
   props: {
     id: {
@@ -188,38 +230,3 @@ export default {
   }
 }
 </script>
-
-<style scoped lang="scss">
-@import 'color-vars';
-
-::v-deep .media .align-self-start {
-  margin-right: 0.25rem !important;
-}
-
-::v-deep .modal-header {
-  padding: 0px;
-}
-
-.coverphoto {
-  height: 100px !important;
-  width: 100% !important;
-  background-image: url('~static/wallpaper.png');
-}
-
-.coverprofilecircle {
-  width: 100px;
-  height: 100px;
-  background-color: $color-gray--base;
-  border-radius: 50%;
-  /*margin: 10px;*/
-}
-
-.covername {
-  left: 108px;
-  position: absolute;
-  width: calc(100% - 105px);
-  padding-top: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
-}
-</style>
