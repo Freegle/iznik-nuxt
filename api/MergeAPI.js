@@ -10,6 +10,10 @@ export default class MergeAPI extends BaseAPI {
     return this.$put('/merge', params)
   }
 
+  ignore(params) {
+    return this.$del('/merge', params)
+  }
+
   accept(params) {
     return this.$post('/merge', {
       id: params.id,

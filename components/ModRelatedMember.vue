@@ -46,7 +46,7 @@
         <b-btn variant="info" @click="ask">
           Ask member what they want
         </b-btn>
-        <b-btn variant="white" disabled>
+        <b-btn variant="white" @click="ignore">
           Ignore
         </b-btn>
       </div>
@@ -286,6 +286,12 @@ export default {
     },
     ask() {
       this.$store.dispatch('members/askMerge', {
+        user1: this.user1.id,
+        user2: this.user2.id
+      })
+    },
+    ignore() {
+      this.$store.dispatch('members/ignoreMerge', {
         user1: this.user1.id,
         user2: this.user2.id
       })

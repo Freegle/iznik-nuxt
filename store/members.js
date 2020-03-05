@@ -284,5 +284,13 @@ export const actions = {
     commit('remove', {
       userid: params.user1
     })
+  },
+
+  async ignoreMerge({ commit }, params) {
+    await this.$api.merge.ignore(params)
+
+    commit('remove', {
+      userid: params.user1
+    })
   }
 }
