@@ -1,7 +1,7 @@
 <template>
   <div>
     <client-only>
-      <GroupSelect v-model="groupid" all modonly />
+      <GroupSelect v-model="groupid" modonly />
       <div v-for="member in visibleMembers" :key="'memberlist-' + member.id" class="p-0 mt-2">
         <ModMember :member="member" />
       </div>
