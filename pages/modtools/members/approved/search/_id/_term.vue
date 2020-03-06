@@ -39,12 +39,12 @@ export default {
   data: function() {
     return {
       collection: 'Approved',
-      groupid: null
+      groupid: null,
+      search: null
     }
   },
   watch: {
     groupid(newVal) {
-      console.log('Changed group', newVal)
       this.$router.push(
         '/modtools/members/approved/search/' + newVal + '/' + this.search
       )
