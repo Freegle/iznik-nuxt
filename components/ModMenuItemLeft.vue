@@ -61,7 +61,7 @@ export default {
       return 0
     },
     click(e) {
-      if (this.$route.fullPath === e.target) {
+      if (e.target.href.endsWith(this.$route.fullPath)) {
         // Click on current route.  Reload.
         e.stopPropagation()
         this.$router.go()
