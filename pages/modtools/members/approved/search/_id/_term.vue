@@ -3,7 +3,7 @@
     <client-only>
       <div class="d-flex justify-content-between">
         <GroupSelect v-model="groupid" modonly />
-        <ModMemberSearchbox :groupid="parseInt(groupid)" :disabled="!parseInt(groupid)" />
+        <ModMemberSearchbox v-model="search" :groupid="parseInt(groupid)" :disabled="!parseInt(groupid)" />
       </div>
       <div v-if="groupid">
         <div v-for="member in visibleMembers" :key="'memberlist-' + member.id" class="p-0 mt-2">
@@ -26,25 +26,40 @@
   </div>
 </template>
 <script>
-import ModMember from '../../../../components/ModMember'
-import NoticeMessage from '../../../../components/NoticeMessage'
-import ModMemberSearchbox from '../../../../components/ModMemberSearchbox'
+import ModMember from '@/components/ModMember'
+import NoticeMessage from '@/components/NoticeMessage'
 import loginRequired from '@/mixins/loginRequired'
 import modMembersPage from '@/mixins/modMembersPage'
-import createGroupRoute from '@/mixins/createGroupRoute'
+import ModMemberSearchbox from '@/components/ModMemberSearchbox'
 
 export default {
   components: { ModMemberSearchbox, NoticeMessage, ModMember },
   layout: 'modtools',
-  mixins: [
-    loginRequired,
-    createGroupRoute('modtools/members/approved'),
-    modMembersPage
-  ],
+  mixins: [loginRequired, modMembersPage],
   data: function() {
     return {
-      collection: 'Approved'
+      collection: 'Approved',
+      groupid: null
     }
+  },
+  watch: {
+    groupid(newVal) {
+      console.log('Changed group', newVal)
+      this.$router.push(
+        '/modtools/members/approved/search/' + newVal + '/' + this.search
+      )
+    },
+    search(newVal) {
+      if (!newVal) {
+        // Cleared box.
+        this.$router.push('/modtools/members/approved/' + this.groupid)
+      }
+    }
+  },
+  created() {
+    this.groupid = parseInt(this.$route.params.id)
+    this.search = this.$route.params.term
+    console.log('Search', this.groupid, this.term)
   }
 }
 </script>

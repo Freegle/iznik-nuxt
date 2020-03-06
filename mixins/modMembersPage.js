@@ -16,7 +16,8 @@ export default {
       workType: null,
       show: 0,
       busy: false,
-      collection: 'Approved'
+      collection: 'Approved',
+      search: null
     }
   },
   computed: {
@@ -104,7 +105,8 @@ export default {
             modtools: true,
             summary: false,
             context: this.context,
-            limit: this.limit
+            limit: this.limit,
+            search: this.search
           })
           .then(() => {
             this.context = this.$store.getters['members/getContext']
