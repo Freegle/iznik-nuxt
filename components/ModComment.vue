@@ -4,7 +4,10 @@
       <b>{{ savedComment['user' + n] }}</b>
     </div>
     <div class="small">
-      <v-icon name="tag" /> by {{ savedComment.byuser.displayname }} {{ savedComment.date | timeago }}
+      <span v-if="savedComment.byuser">
+        <v-icon name="tag" /> by {{ savedComment.byuser.displayname }}
+      </span>
+      {{ savedComment.date | timeago }}
       <span v-if="savedComment.groupid">
         on {{ groupname }}
       </span>
