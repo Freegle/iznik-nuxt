@@ -73,7 +73,7 @@ export default {
       let ret = false
 
       this.groups.forEach(group => {
-        if (!group.shared) {
+        if (this.shared.indexOf(group.id) === -1) {
           ret = true
         }
       })
