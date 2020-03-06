@@ -22,6 +22,13 @@ export const mutations = {
       state.list.push(item)
     }
   },
+  updateComments(state, item) {
+    Object.keys(state.list).forEach(key => {
+      if (parseInt(state.list[key].userid) === parseInt(item.userid)) {
+        state.list[key].comments = item.comments
+      }
+    })
+  },
   addAll(state, items) {
     items.forEach(item => {
       const existing = state.list.findIndex(obj => {
@@ -292,5 +299,9 @@ export const actions = {
     commit('remove', {
       userid: params.user1
     })
+  },
+
+  updateComments({ commit }, params) {
+    commit('updateComments', params)
   }
 }

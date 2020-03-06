@@ -52,7 +52,6 @@ export default {
       this.$nextTick(() => {
         const url =
           '/modtools/members/approved/search/' + this.groupid + '/' + this.term
-        console.log('Search', url)
         this.$router.push(url)
       })
     }

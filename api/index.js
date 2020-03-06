@@ -13,6 +13,7 @@ import AddressAPI from './AddressAPI.js'
 import AuthorityAPI from './AuthorityAPI.js'
 import BanditAPI from './BanditAPI.js'
 import ChatAPI from './ChatAPI.js'
+import CommentAPI from './CommentAPI.js'
 import CommunityEventAPI from './CommunityEventAPI.js'
 import DashboardAPI from './DashboardAPI.js'
 import DonationsAPI from './DonationsAPI.js'
@@ -45,6 +46,7 @@ export default ({ $axios, store }) => {
     authority: new AuthorityAPI(options),
     bandit: new BanditAPI(options),
     chat: new ChatAPI(options),
+    comment: new CommentAPI(options),
     communityevent: new CommunityEventAPI(options),
     dashboard: new DashboardAPI(options),
     donations: new DonationsAPI(options),

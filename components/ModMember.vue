@@ -17,6 +17,7 @@
         </div>
       </b-card-header>
       <b-card-body>
+        <ModComments :user="member" />
         <ModSpammer v-if="member.spammer" :user="member" />
         <NoticeMessage v-if="member.activedistance > 50" variant="warning" class="mb-2">
           This freegler is active on groups {{ member.activedistance }} miles apart.
@@ -119,12 +120,14 @@ import ProfileImage from './ProfileImage'
 import ModPostingHistoryModal from './ModPostingHistoryModal'
 import ModMemberActions from './ModMemberActions'
 import ModSpammer from './ModSpammer'
+import ModComments from './ModComments'
 
 const MEMBERSHIPS_SHOW = 3
 
 export default {
   name: 'ModMember',
   components: {
+    ModComments,
     ModSpammer,
     ModMemberActions,
     ModPostingHistoryModal,
@@ -245,7 +248,8 @@ export default {
       this.waitForRef('history', () => {
         this.$refs.history.show()
       })
-    }
+    },
+    updateComments() {}
   }
 }
 </script>

@@ -59,7 +59,6 @@ export default {
   created() {
     this.groupid = parseInt(this.$route.params.id)
     this.search = this.$route.params.term
-    console.log('Search', this.groupid, this.term)
   }
 }
 </script>
