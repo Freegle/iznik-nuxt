@@ -231,7 +231,7 @@ export default {
         },
         legend: { position: 'none' },
         chartArea: { width: '80%', height: '80%' },
-        bar: { groupWidth: '98%' },
+        bar: { groupWidth: '100%' },
         vAxis: { viewWindow: { min: 0 } },
         hAxis: {
           format: 'MMM yyyy'

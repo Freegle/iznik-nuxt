@@ -468,7 +468,7 @@ export default {
         interpolateNulls: false,
         legend: { position: 'none' },
         chartArea: { width: '80%', height: '80%' },
-        bar: { groupWidth: '98%' },
+        bar: { groupWidth: '100%' },
         vAxis: { viewWindow: { min: 0 } },
         hAxis: {
           format: 'MMM yyyy'
@@ -953,7 +953,8 @@ export default {
           group: group.id,
           grouptype: 'Freegle',
           start: start,
-          end: end
+          end: end,
+          force: true
         })
 
         // Check if the group has a significant overlap. No point cluttering things up with groups which don't really

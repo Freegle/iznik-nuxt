@@ -2,7 +2,7 @@
   <div class="form__element p-2 d-flex justify-content-between flex-column flex-lg-row align-items-md-end">
     <div class="d-flex flex-column flex-md-row mb-3 mb-lg-0">
       <div class="mr-0 mr-md-4 mb-3 mb-md-0 d-flex flex-column">
-        <label for="startDate" class="date__label">Starts at:</label>
+        <label for="startDate" class="date__label">{{ fromLabel }}</label>
         <!-- Add form-control class to get focus etc. -->
         <date-picker
           id="startDate"
@@ -19,7 +19,7 @@
         />
       </div>
       <div class="mr-lg-4 d-flex flex-column">
-        <label for="endDate" class="date__label">Ends at:</label>
+        <label for="endDate" class="date__label">{{ toLabel }}</label>
         <date-picker
           id="endDate"
           v-model="value.end"
@@ -75,6 +75,16 @@ export default {
       type: Boolean,
       required: false,
       default: true
+    },
+    fromLabel: {
+      type: String,
+      required: false,
+      default: 'Starts at:'
+    },
+    toLabel: {
+      type: String,
+      required: false,
+      default: 'Ends at:'
     }
   },
   computed: {
