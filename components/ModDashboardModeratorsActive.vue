@@ -1,10 +1,11 @@
 <template>
-  <div>
+  <div v-if="groupid">
+    <h2>Active Volunteers</h2>
     <b-img v-if="loading" src="~/static/loader.gif" alt="Loading" />
-    <div v-else-if="UsersReplying && UsersReplying.length">
+    <div v-else-if="ModeratorsActive && ModeratorsActive.length">
       <b-card no-body>
         <b-card-body>
-          <b-row v-for="user in UsersReplying" :key="'popular-' + user.id">
+          <b-row v-for="user in ModeratorsActive" :key="'popular-' + user.id">
             <b-col cols="2" class="text-nowrap">
               <v-icon name="hashtag" scale="0.75" class="text-muted" />{{ user.id }}
             </b-col>
@@ -13,7 +14,7 @@
               {{ user.displayname }}
             </b-col>
             <b-col cols="2">
-              {{ user.replies | pluralize(['reply', 'replies'], { includeNumber: true }) }}
+              {{ user.lastactive | timeago }}
             </b-col>
           </b-row>
         </b-card-body>
@@ -30,8 +31,8 @@ export default {
   extends: ModDashboardBase,
   data: function() {
     return {
-      askfor: ['UsersReplying'],
-      UsersReplying: null
+      askfor: ['ModeratorsActive'],
+      ModeratorsActive: null
     }
   }
 }

@@ -30,7 +30,8 @@
     </div>
     <div v-if="start && end">
       <ModDashboardRecentCounts :groupid="groupid" :start="start" :end="end" />
-      <ModDashboardPopularPosts :groupid="groupid" :start="start" :end="end" />
+      <ModDashboardModeratorsActive :groupid="groupid" :start="start" :end="end" />
+      <ModDashboardPopularPosts :groupid="groupid" :start="start" :end="end" class="mt-2" />
       <h2 class="mt-2">
         Active Freeglers
       </h2>
@@ -57,9 +58,11 @@ import 'vue2-datepicker/index.css'
 import ModDashboardPopularPosts from '../../components/ModDashboardPopularPosts'
 import ModDashboardFreeglersPosting from '../../components/ModDashboardFreeglersPosting'
 import ModDashboardFreeglersReplying from '../../components/ModDashboardFreeglersReplying'
+import ModDashboardModeratorsActive from '../../components/ModDashboardModeratorsActive'
 
 export default {
   components: {
+    ModDashboardModeratorsActive,
     ModDashboardFreeglersReplying,
     ModDashboardFreeglersPosting,
     ModDashboardPopularPosts,

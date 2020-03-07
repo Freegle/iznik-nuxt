@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2>Popular Posts</h2>
-    <p>These are the most viewed posts on the website.</p>
+    <p>These are the posts which are most viewed (on the website), and most replied to (on the website or by email).</p>
     <b-img v-if="loading" src="~/static/loader.gif" alt="Loading" />
     <div v-else-if="PopularPosts && PopularPosts.length">
       <b-card no-body>
