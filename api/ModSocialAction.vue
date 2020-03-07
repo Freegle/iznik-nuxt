@@ -5,26 +5,26 @@
     </b-card-header>
     <!-- eslint-disable-next-line-->
     <b-card-body v-html="item.iframe" />
-    <b-card-footer :key="'sharelist-' + shared.length">
+    <b-card-footer :key="'sharelist-' + actioned.length">
       <!--      TODO Share/hide all buttons-->
-      <b-btn variant="success" class="mb-1 mr-1" disabled>
+      <b-btn variant="success" class="mb-1 mr-1" @click="shareAll">
         <v-icon name="share-alt" />
         Share all
       </b-btn>
       <b-btn
         v-for="group in groups"
         :key="'socialaction-' + group.id"
-        :variant="group.shared ? 'white' : 'primary'"
+        :variant="group.actioned ? 'white' : 'primary'"
         class="mb-1 mr-1"
-        :disabled="group.shared"
+        :disabled="group.actioned"
         @click="share(group)"
       >
-        <v-icon v-if="group.sharing" name="sync" class="fa-spin" />
-        <v-icon v-else-if="group.shared" name="check" />
+        <v-icon v-if="group.busy" name="sync" class="fa-spin" />
+        <v-icon v-else-if="group.actioned" name="check" />
         <v-icon v-else name="share-alt" />
         {{ group.namedisplay }}
       </b-btn>
-      <b-btn variant="danger" class="mb-1 mr-1" disabled>
+      <b-btn variant="danger" class="mb-1 mr-1" @click="hideAll">
         <v-icon name="trash-alt" />
         Hide all
       </b-btn>
@@ -41,7 +41,7 @@ export default {
   },
   data: function() {
     return {
-      shared: []
+      actioned: []
     }
   },
   computed: {
@@ -53,8 +53,8 @@ export default {
       this.item.uids.forEach(uid => {
         for (const group of groups) {
           if (group.type === 'Freegle' && group.facebook) {
-            if (this.shared.indexOf(group.id) !== -1) {
-              group.shared = true
+            if (this.actioned.indexOf(group.id) !== -1) {
+              group.actioned = true
             }
 
             group.facebook.forEach(facebook => {
@@ -73,7 +73,7 @@ export default {
       let ret = false
 
       this.groups.forEach(group => {
-        if (this.shared.indexOf(group.id) === -1) {
+        if (this.actioned.indexOf(group.id) === -1) {
           ret = true
         }
       })
@@ -84,16 +84,38 @@ export default {
   },
   methods: {
     async share(group) {
-      console.log('Share', group)
-      this.shared.push(group.id)
-      group.sharing = true
+      group.busy = true
       await this.$store.dispatch('publicity/share', {
         id: this.item.id,
         uid: group.facebookuid
       })
-      group.sharing = false
-      group.shared = true
-      console.log('Shared')
+      group.busy = false
+      group.actioned = true
+      this.actioned.push(group.id)
+    },
+    async hide(group) {
+      group.busy = true
+      await this.$store.dispatch('publicity/hide', {
+        id: this.item.id,
+        uid: group.facebookuid
+      })
+      group.busy = false
+      group.actioned = true
+      this.actioned.push(group.id)
+    },
+    shareAll() {
+      this.groups.forEach(group => {
+        if (this.actioned.indexOf(group.id) === -1) {
+          this.share(group)
+        }
+      })
+    },
+    hideAll() {
+      this.groups.forEach(group => {
+        if (this.actioned.indexOf(group.id) === -1) {
+          this.hide(group)
+        }
+      })
     }
   }
 }
