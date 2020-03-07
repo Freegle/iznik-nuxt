@@ -31,6 +31,18 @@
     <div v-if="start && end">
       <ModDashboardRecentCounts :groupid="groupid" :start="start" :end="end" />
       <ModDashboardPopularPosts :groupid="groupid" :start="start" :end="end" />
+      <h2 class="mt-2">
+        Active Freeglers
+      </h2>
+      <p>These are the freeglers who've done most on the site recently.</p>
+      <b-row>
+        <b-col cols="12" xl="6">
+          <ModDashboardFreeglersPosting :groupid="groupid" :start="start" :end="end" />
+        </b-col>
+        <b-col cols="12" xl="6">
+          <ModDashboardFreeglersReplying :groupid="groupid" :start="start" :end="end" />
+        </b-col>
+      </b-row>
     </div>
   </div>
 </template>
@@ -43,9 +55,13 @@ import ModDashboardRecentCounts from '../../components/ModDashboardRecentCounts'
 import GroupSelect from '../../components/GroupSelect'
 import 'vue2-datepicker/index.css'
 import ModDashboardPopularPosts from '../../components/ModDashboardPopularPosts'
+import ModDashboardFreeglersPosting from '../../components/ModDashboardFreeglersPosting'
+import ModDashboardFreeglersReplying from '../../components/ModDashboardFreeglersReplying'
 
 export default {
   components: {
+    ModDashboardFreeglersReplying,
+    ModDashboardFreeglersPosting,
     ModDashboardPopularPosts,
     GroupSelect,
     ModDashboardRecentCounts,

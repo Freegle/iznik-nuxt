@@ -2,9 +2,9 @@
   <div>
     <h2>Popular Posts</h2>
     <p>These are the most viewed posts on the website.</p>
-    <div v-if="PopularPosts && PopularPosts.length">
-      <b-img v-if="loading" src="~/static/loader.gif" alt="Loading" />
-      <b-card v-else no-body>
+    <b-img v-if="loading" src="~/static/loader.gif" alt="Loading" />
+    <div v-else-if="PopularPosts && PopularPosts.length">
+      <b-card no-body>
         <b-card-body>
           <b-row v-for="msg in PopularPosts" :key="'popular-' + msg.id">
             <b-col cols="2">
