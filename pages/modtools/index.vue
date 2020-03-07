@@ -30,6 +30,7 @@
     </div>
     <div v-if="start && end">
       <ModDashboardRecentCounts :groupid="groupid" :start="start" :end="end" />
+      <ModDashboardPopularPosts :groupid="groupid" :start="start" :end="end" />
     </div>
   </div>
 </template>
@@ -41,9 +42,15 @@ import loginRequired from '../../mixins/loginRequired'
 import ModDashboardRecentCounts from '../../components/ModDashboardRecentCounts'
 import GroupSelect from '../../components/GroupSelect'
 import 'vue2-datepicker/index.css'
+import ModDashboardPopularPosts from '../../components/ModDashboardPopularPosts'
 
 export default {
-  components: { GroupSelect, ModDashboardRecentCounts, DatePicker },
+  components: {
+    ModDashboardPopularPosts,
+    GroupSelect,
+    ModDashboardRecentCounts,
+    DatePicker
+  },
   layout: 'modtools',
   mixins: [loginRequired],
   data: function() {

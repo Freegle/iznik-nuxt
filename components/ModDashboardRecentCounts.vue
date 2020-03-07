@@ -1,7 +1,7 @@
 <template>
   <div v-if="RecentCounts">
-    <p :class="loading ? 'text-faded' : ''">
-      There have been
+    <p :class="loading ? 'text-faded pulsate' : ''">
+      During this time here have been
       <b>{{ RecentCounts.newmessages | pluralize('new post', { includeNumber: true }) }}</b> and
       <b>{{ RecentCounts.newmembers | pluralize('new member', { includeNumber: true }) }}</b>.
     </p>
