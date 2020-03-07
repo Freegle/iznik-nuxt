@@ -1,5 +1,5 @@
 <template>
-  <div class="d-inline clickme" @click="click">
+  <div class="d-inline clickme" @mousedown.native="click">
     <span class="d-none d-sm-inline">
       <span v-if="icon">
         <v-icon :name="icon" scale="2" /><br>
