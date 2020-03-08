@@ -57,7 +57,6 @@ export default {
       const ret = []
 
       for (const group of groups) {
-        console.log('consider', group.nameshort, group.twitter)
         if (
           group.type === 'Freegle' &&
           (group.role === 'Moderator' || group.role === 'Owner') &&

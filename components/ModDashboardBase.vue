@@ -23,22 +23,33 @@ export default {
   },
   watch: {
     groupid(newVal, oldVal) {
-      this.fetch()
+      this.$nextTick(() => {
+        this.fetch()
+      })
     },
     start(newVal, oldVal) {
-      this.fetch()
+      this.$nextTick(() => {
+        this.fetch()
+      })
     },
     end(newVal, oldVal) {
-      this.fetch()
+      this.$nextTick(() => {
+        this.fetch()
+      })
     }
   },
   mounted() {
-    console.log('mounted')
     this.fetch()
   },
   methods: {
     async fetch() {
-      if (this.askfor && this.start && this.end) {
+      if (
+        this.askfor &&
+        this.start &&
+        this.end &&
+        this.askfor &&
+        this.askfor.length
+      ) {
         this.loading = true
         const res = await this.$api.dashboard.fetch({
           components: this.askfor,

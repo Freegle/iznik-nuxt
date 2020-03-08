@@ -246,7 +246,6 @@ export default {
       return this.totalMembers
     },
     scale() {
-      console.log('Scale', this.fullStats ? 3 : 4)
       return this.fullStats ? 3 : 4
     },
     heading() {

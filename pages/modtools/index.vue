@@ -47,6 +47,7 @@
           <ModDashboardFreeglersReplying :groupid="groupid" :start="start" :end="end" />
         </b-col>
       </b-row>
+      <ModDashboardStats :groupid="groupid" :start="start" :end="end" />
     </div>
   </div>
 </template>
@@ -65,9 +66,11 @@ import ModDashboardModeratorsActive from '../../components/ModDashboardModerator
 import ModMissingFacebook from '../../components/ModMissingFacebook'
 import ModMissingTwitter from '../../components/ModMissingTwitter'
 import ModMissingProfile from '../../components/ModMissingProfile'
+import ModDashboardStats from '../../components/ModDashboardStats'
 
 export default {
   components: {
+    ModDashboardStats,
     ModMissingProfile,
     ModMissingTwitter,
     ModMissingFacebook,

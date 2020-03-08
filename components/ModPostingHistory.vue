@@ -65,9 +65,7 @@ export default {
     }
   },
   mounted() {
-    console.log('Mounted', this.user)
     if (!this.user.info) {
-      console.log('Fetch')
       // Fetch with info so that we can display more.
       this.$store.dispatch('user/fetch', {
         id: this.user.id,
