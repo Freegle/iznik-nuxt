@@ -17,4 +17,10 @@ export default class UserAPI extends BaseAPI {
   save(event) {
     return this.$patch('/user', event)
   }
+
+  purge(id) {
+    return this.$del('/user', {
+      id
+    })
+  }
 }

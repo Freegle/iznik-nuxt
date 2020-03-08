@@ -24,6 +24,15 @@ export const mutations = {
     for (const item of items) {
       Vue.set(state.list, item.id, item)
     }
+  },
+  remove(state, item) {
+    state.list = state.list.filter(obj => {
+      if (parseInt(item.id) && parseInt(item.id) === parseInt(obj.id)) {
+        return false
+      } else {
+        return true
+      }
+    })
   }
 }
 
@@ -64,5 +73,13 @@ export const actions = {
 
   async edit({ commit, dispatch }, params) {
     await this.$api.user.save(params)
+  },
+
+  async purge({ commit, dispatch }, params) {
+    await this.$api.user.purge(params)
+
+    commit('remove', {
+      id: params.id
+    })
   }
 }

@@ -285,6 +285,14 @@ export const actions = {
     })
   },
 
+  async purge({ commit }, params) {
+    await this.$api.user.purge(params.userid)
+
+    commit('remove', {
+      userid: params.userid
+    })
+  },
+
   async askMerge({ commit }, params) {
     await this.$api.merge.ask(params)
 
