@@ -26,41 +26,7 @@
           </b-col>
         </b-row>
         <div v-if="dataready">
-          <b-card variant="white" class="mt-2">
-            <b-card-text>
-              <b-row class="p-0">
-                <b-col class="text-center">
-                  <v-icon name="balance-scale-left" class="purple" scale="4" />
-                  <h2 class="purple">
-                    {{ totalWeight.toLocaleString() }}
-                    <br>
-                    TONNES
-                  </h2>
-                </b-col>
-                <b-col class="text-center">
-                  <v-icon name="calculator" class="gold" scale="4" />
-                  <h2 class="gold">
-                    £{{ totalBenefit.toLocaleString() }}
-                    <br>
-                    BENEFIT
-                  </h2>
-                </b-col>
-                <b-col class="text-center">
-                  <v-icon name="cloud" class="green" scale="4" />
-                  <h2 class="green">
-                    {{ totalCO2.toLocaleString() }}
-                    <br>
-                    TONNES CO2
-                  </h2>
-                </b-col>
-              </b-row>
-              <b-row>
-                <b-col class="text-center text-muted">
-                  These three figures are totals over the last 12 months.
-                </b-col>
-              </b-row>
-            </b-card-text>
-          </b-card>
+          <Impact range="the last 12 months" :total-benefit="totalBenefit" :total-c-o2="totalCO2" :total-weight="totalWeight" class="mt-2" />
           <b-card variant="white" class="mt-2">
             <b-card-text>
               <h3 class="d-flex justify-content-between">
@@ -167,6 +133,7 @@
 <script>
 import dayjs from 'dayjs'
 import { GChart } from 'vue-google-charts'
+import Impact from '../../components/Impact'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 
@@ -174,6 +141,7 @@ const GroupHeader = () => import('~/components/GroupHeader.vue')
 
 export default {
   components: {
+    Impact,
     GChart,
     GroupHeader
   },
@@ -471,7 +439,6 @@ export default {
   methods: {}
 }
 </script>
-
 <style scoped lang="scss">
 @import 'color-vars';
 @import '~bootstrap/scss/functions';

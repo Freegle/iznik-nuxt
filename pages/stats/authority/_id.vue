@@ -182,178 +182,18 @@
                 icon="/mapmarker.gif"
               />
             </GmapMap>
-            <b-card variant="white" class="border-white" no-body>
-              <b-card-body class="pb-0">
-                <b-row class="p-0">
-                  <b-col class="text-center">
-                    <v-icon name="balance-scale-left" class="gold titleicon" scale="3" />
-                    <h5 class="gold">
-                      {{ totalWeight.toLocaleString() }}
-                      <br>
-                      TONNES
-                      <br>
-                      <span class="text-muted small">
-                        {{ range }}
-                      </span>
-                    </h5>
-                  </b-col>
-                  <b-col class="text-center">
-                    <v-icon name="calculator" class="gold titleicon" scale="3" />
-                    <h5 class="gold">
-                      £{{ totalBenefit.toLocaleString() }}
-                      <br>
-                      BENEFIT
-                      <br>
-                      <span class="text-muted small">
-                        {{ range }}
-                      </span>
-                    </h5>
-                  </b-col>
-                  <b-col class="text-center">
-                    <v-icon name="cloud" class="gold titleicon" scale="3" />
-                    <h5 class="gold">
-                      {{ totalCO2.toLocaleString() }}
-                      <br>
-                      TONNES CO2
-                      <br>
-                      <span class="text-muted small">
-                        {{ range }}
-                      </span>
-                    </h5>
-                  </b-col>
-                  <b-col class="text-center">
-                    <v-icon name="gift" class="purple titleicon" scale="3" />
-                    <h5 class="purple">
-                      {{ totalGifts.toLocaleString() }}
-                      <br>
-                      {{ totalGifts | pluralize(['GIFT', 'GIFTS'], { includeNumber: false }) }}
-                      <br>
-                      <span class="text-muted small">
-                        {{ range }}
-                      </span>
-                    </h5>
-                  </b-col>
-                  <b-col class="text-center">
-                    <v-icon name="users" class="text-primary titleicon" scale="3" />
-                    <h5 class="text-primary">
-                      {{ totalMembers.toLocaleString() }}
-                      <br>
-                      {{ totalMembers | pluralize(['MEMBER', 'MEMBERS'], { includeNumber: false }) }}
-                      <br>
-                      <span class="text-muted small">
-                        {{ end }}
-                      </span>
-                    </h5>
-                  </b-col>
-                  <b-col class="text-center">
-                    <v-icon name="map-marker-alt" class="green titleicon" scale="3" />
-                    <h5 class="green">
-                      {{ groupcount.toLocaleString() }}
-                      <br>
-                      {{ groupcount | pluralize(['COMMUNITY', 'COMMUNITIES'], { includeNumber: false }) }}
-                      <br>
-                      <span class="text-muted small">
-                        {{ groupcount | pluralize(['SERVES', 'SERVE'], { includeNumber: false }) }} THIS AREA
-                      </span>
-                    </h5>
-                  </b-col>
-                </b-row>
-              </b-card-body>
-            </b-card>
-            <b-row class="m-0 border border-light">
-              <b-col class="bg-white text-faded">
-                <div class="iconlist">
-                  <v-icon name="glass-martini" />
-                  <v-icon name="camera" />
-                  <v-icon name="print" />
-                  <v-icon name="binoculars" />
-                  <v-icon name="umbrella" />
-                  <v-icon name="coffee" />
-                  <v-icon name="bath" />
-                  <v-icon name="clock" />
-                  <v-icon name="bicycle" />
-                  <v-icon name="hat-wizard" />
-                  <v-icon name="bed" />
-                  <v-icon name="laptop" />
-                  <v-icon name="gift" />
-                  <v-icon name="utensils" />
-                  <v-icon name="tablet-alt" />
-                  <v-icon name="crown" />
-                  <v-icon name="baby-carriage" />
-                  <v-icon name="headphones" />
-                  <v-icon name="tv" />
-                  <v-icon name="car" />
-                  <v-icon name="socks" />
-                  <v-icon name="mobile-alt" />
-                  <v-icon name="glass-martini" />
-                  <v-icon name="camera" />
-                  <v-icon name="print" />
-                  <v-icon name="binoculars" />
-                  <v-icon name="umbrella" />
-                  <v-icon name="coffee" />
-                  <v-icon name="bath" />
-                  <v-icon name="clock" />
-                  <v-icon name="bicycle" />
-                  <v-icon name="hat-wizard" />
-                  <v-icon name="bed" />
-                  <v-icon name="laptop" />
-                  <v-icon name="gift" />
-                  <v-icon name="utensils" />
-                  <v-icon name="tablet-alt" />
-                  <v-icon name="crown" />
-                  <v-icon name="baby-carriage" />
-                  <v-icon name="headphones" />
-                  <v-icon name="tv" />
-                  <v-icon name="car" />
-                  <v-icon name="socks" />
-                  <v-icon name="mobile-alt" />
-                  <v-icon name="glass-martini" />
-                  <v-icon name="camera" />
-                  <v-icon name="print" />
-                  <v-icon name="binoculars" />
-                  <v-icon name="umbrella" />
-                  <v-icon name="coffee" />
-                  <v-icon name="bath" />
-                  <v-icon name="clock" />
-                  <v-icon name="bicycle" />
-                  <v-icon name="hat-wizard" />
-                  <v-icon name="bed" />
-                  <v-icon name="laptop" />
-                  <v-icon name="gift" />
-                  <v-icon name="utensils" />
-                  <v-icon name="tablet-alt" />
-                  <v-icon name="crown" />
-                  <v-icon name="baby-carriage" />
-                  <v-icon name="headphones" />
-                  <v-icon name="tv" />
-                  <v-icon name="car" />
-                  <v-icon name="socks" />
-                  <v-icon name="mobile-alt" />
-                  <v-icon name="glass-martini" />
-                  <v-icon name="camera" />
-                  <v-icon name="print" />
-                  <v-icon name="binoculars" />
-                  <v-icon name="umbrella" />
-                  <v-icon name="coffee" />
-                  <v-icon name="bath" />
-                  <v-icon name="clock" />
-                  <v-icon name="bicycle" />
-                  <v-icon name="hat-wizard" />
-                  <v-icon name="bed" />
-                  <v-icon name="laptop" />
-                  <v-icon name="gift" />
-                  <v-icon name="utensils" />
-                  <v-icon name="tablet-alt" />
-                  <v-icon name="crown" />
-                  <v-icon name="baby-carriage" />
-                  <v-icon name="headphones" />
-                  <v-icon name="tv" />
-                  <v-icon name="car" />
-                  <v-icon name="socks" />
-                  <v-icon name="mobile-alt" />
-                </div>
-              </b-col>
-            </b-row>
+            <Impact
+              :total-weight="totalWeight"
+              :total-benefit="totalBenefit"
+              :total-c-o2="totalCO2"
+              :total-gifts="totalGifts"
+              :total-members="totalMembers"
+              :group-count="groupcount "
+              :range="range"
+              :start="start"
+              :end="end"
+              border
+            />
             <b-row class="m-0">
               <b-col class="border border-white p-0 bg-white text-center pt-1">
                 <H5>WEIGHTS (KG)</H5>
@@ -438,6 +278,7 @@ import { TablePlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import DatePicker from 'vue2-datepicker'
 import 'vue2-datepicker/index.css'
+import Impact from '../../../components/Impact'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 
@@ -451,6 +292,7 @@ const CO2_PER_TONNE = 0.51
 export default {
   layout: 'empty',
   components: {
+    Impact,
     GChart,
     DatePicker
   },
@@ -1102,11 +944,6 @@ export default {
   width: 72px;
 }
 
-.titleicon {
-  width: 2rem;
-  height: 2rem;
-}
-
 .head {
   font-size: 2rem;
 }
@@ -1121,11 +958,6 @@ export default {
 
 .green {
   color: $color-green--darker !important;
-}
-
-.iconlist {
-  white-space: nowrap;
-  overflow-x: hidden;
 }
 
 ::v-deep .mx-datepicker {
