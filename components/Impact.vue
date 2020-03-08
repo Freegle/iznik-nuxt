@@ -6,7 +6,7 @@
           <b-col class="text-center">
             <v-icon name="balance-scale-left" :class="fullStats ? 'gold titleicon' : 'purple'" :scale="scale" />
             <component :is="heading" :class="fullStats ? 'gold' : 'purple'">
-              {{ totalWeight.toLocaleString() }}
+              {{ roundIt(totalWeight).toLocaleString() }}
               <br>
               TONNES
               <span v-if="range && fullStats">
@@ -20,7 +20,7 @@
           <b-col class="text-center">
             <v-icon name="calculator" :class="'gold ' + (fullStats ? 'titleicon' : '')" :scale="scale" />
             <component :is="heading" class="gold">
-              £{{ totalBenefit.toLocaleString() }}
+              £{{ roundIt(totalBenefit).toLocaleString() }}
               <br>
               BENEFIT
               <span v-if="range && fullStats">
@@ -34,7 +34,7 @@
           <b-col class="text-center">
             <v-icon name="cloud" :class="fullStats ? 'gold titleicon' : 'green'" :scale="scale" />
             <component :is="heading" :class="fullStats ? 'gold' : 'green'">
-              {{ totalCO2.toLocaleString() }}
+              {{ roundIt(totalCO2).toLocaleString() }}
               <br>
               TONNES CO2
               <span v-if="range && fullStats">
@@ -250,6 +250,20 @@ export default {
     },
     heading() {
       return this.fullStats ? 'h5' : 'h2'
+    }
+  },
+  methods: {
+    roundIt(val) {
+      let ret = null
+
+      if (val < 100) {
+        ret = Math.round(val * 10) / 10
+      } else {
+        ret = Math.round(val)
+      }
+
+      console.log('Round', val, ret)
+      return ret
     }
   }
 }
