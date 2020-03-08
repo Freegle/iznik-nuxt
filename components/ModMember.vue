@@ -111,8 +111,8 @@
   </div>
 </template>
 <script>
-// TODO Validation
-// - item length
+// TODO View Profile modal
+// TODO Count of replies
 import waitForRef from '../mixins/waitForRef'
 import SettingsGroup from './SettingsGroup'
 import NoticeMessage from './NoticeMessage'

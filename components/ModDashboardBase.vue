@@ -38,10 +38,7 @@ export default {
   },
   methods: {
     async fetch() {
-      console.log('Consider fetch', this.askfor, this.start, this.end)
-
       if (this.askfor && this.start && this.end) {
-        console.log('do fetch')
         this.loading = true
         const res = await this.$api.dashboard.fetch({
           components: this.askfor,
@@ -51,9 +48,7 @@ export default {
           group: this.groupid
         })
 
-        console.log('returned', res)
         Object.keys(res).forEach(comp => {
-          console.log('Set', comp, res[comp])
           this[comp] = res[comp]
         })
 
