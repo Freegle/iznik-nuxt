@@ -130,10 +130,7 @@ export default {
       if (e1 && e2) {
         e1 = e1.substring(e1, e1.indexOf('@'))
         e2 = e2.substring(e2, e2.indexOf('@'))
-        // const ic = this.commonCharacterCount(e1, e2)
-        // if (ic >= Math.min(e1.length, e1.length) / 2) {
-        //   ret = true
-        // }
+
         if (this.findLongest(e1, e2) >= LONG_THRESHOLD) {
           ret = true
         }
@@ -141,13 +138,6 @@ export default {
 
       const n1 = this.user1.displayname
       const n2 = this.user2.displayname
-
-      // if (
-      //   this.commonCharacterCount(n1, n2) >=
-      //   Math.min(n1.length, n2.length) / 2
-      // ) {
-      //   ret = true
-      // }
 
       if (this.findLongest(n1, n2) >= LONG_THRESHOLD) {
         ret = true
@@ -173,20 +163,6 @@ export default {
       } else {
         return 'Neither'
       }
-    },
-    commonCharacterCount(s1, s2) {
-      let count = 0
-      s1 = s1.split('')
-      s2 = s2.split('')
-
-      s1.forEach(e => {
-        if (s2.includes(e)) {
-          count++
-          s2.splice(s2.indexOf(e), 1)
-        }
-      })
-
-      return count
     },
     findLongest(s1, s2) {
       // From https://codereview.stackexchange.com/questions/210940/find-longest-common-string-subsequence

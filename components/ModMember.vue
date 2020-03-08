@@ -65,7 +65,7 @@
             <div v-if="member.logins && member.logins.length" class="mt-2">
               <v-icon name="lock" />
               <b-badge v-for="l in member.logins" :key="'login-' + l.id" variant="info" class="border border-info rounded p-1 mr-1">
-                {{ l.type }} login {{ l.lastaccess | timeago }}
+                {{ loginType(l.type) }} login {{ l.lastaccess | timeago }}
               </b-badge>
             </div>
             <b-btn v-if="member.emails && member.emails.length" variant="link" @click="showEmails = !showEmails">
@@ -249,7 +249,30 @@ export default {
         this.$refs.history.show()
       })
     },
-    updateComments() {}
+    loginType(type) {
+      let ret = type
+
+      switch (type) {
+        case 'Native': {
+          ret = 'Email/Password'
+          break
+        }
+        case 'Facebook': {
+          ret = 'Facebook'
+          break
+        }
+        case 'Yahoo': {
+          ret = 'Yahoo'
+          break
+        }
+        case 'Google': {
+          ret = 'Google'
+          break
+        }
+      }
+
+      return ret
+    }
   }
 }
 </script>
