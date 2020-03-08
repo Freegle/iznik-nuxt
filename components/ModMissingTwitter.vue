@@ -61,6 +61,7 @@ export default {
         if (
           group.type === 'Freegle' &&
           (group.role === 'Moderator' || group.role === 'Owner') &&
+          group.publish &&
           group.twitter &&
           (!group.twitter.valid || group.twitter.locked)
         ) {
@@ -80,7 +81,8 @@ export default {
       for (const group of groups) {
         if (
           group.type === 'Freegle' &&
-          (group.role === 'Moderator' || group.role === 'Owner')
+          (group.role === 'Moderator' || group.role === 'Owner') &&
+          group.publish
         ) {
           if (!group.twitter) {
             ret.push({

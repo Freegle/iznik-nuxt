@@ -4,6 +4,7 @@
     <p>Here's your dashboard, where you can see what your communities have been doing recently.</p>
     <ModMissingFacebook />
     <ModMissingTwitter class="mt-1" />
+    <ModMissingProfile class="mt-1" />
     <div class="d-flex mb-2 mt-2">
       <div class="borderit d-flex flex-column">
         <label for="dashboardgroup">Choose community:</label>
@@ -63,9 +64,11 @@ import ModDashboardFreeglersReplying from '../../components/ModDashboardFreegler
 import ModDashboardModeratorsActive from '../../components/ModDashboardModeratorsActive'
 import ModMissingFacebook from '../../components/ModMissingFacebook'
 import ModMissingTwitter from '../../components/ModMissingTwitter'
+import ModMissingProfile from '../../components/ModMissingProfile'
 
 export default {
   components: {
+    ModMissingProfile,
     ModMissingTwitter,
     ModMissingFacebook,
     ModDashboardModeratorsActive,

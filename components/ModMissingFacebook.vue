@@ -54,7 +54,8 @@ export default {
         if (
           group.type === 'Freegle' &&
           group.facebook &&
-          (group.role === 'Moderator' || group.role === 'Owner')
+          (group.role === 'Moderator' || group.role === 'Owner') &&
+          group.publish
         ) {
           for (const fb of group.facebook) {
             if (!fb.valid && fb.type === 'Page') {
@@ -76,7 +77,8 @@ export default {
       for (const group of groups) {
         if (
           group.type === 'Freegle' &&
-          (group.role === 'Moderator' || group.role === 'Owner')
+          (group.role === 'Moderator' || group.role === 'Owner') &&
+          group.publish
         ) {
           if (!group.facebook) {
             ret.push({
