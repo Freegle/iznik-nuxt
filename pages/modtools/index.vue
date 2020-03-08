@@ -3,6 +3,7 @@
     <h2>Hello, {{ me.displayname }}</h2>
     <p>Here's your dashboard, where you can see what your communities have been doing recently.</p>
     <ModMissingFacebook />
+    <ModMissingTwitter class="mt-1" />
     <div class="d-flex mb-2 mt-2">
       <div class="borderit d-flex flex-column">
         <label for="dashboardgroup">Choose community:</label>
@@ -61,9 +62,11 @@ import ModDashboardFreeglersPosting from '../../components/ModDashboardFreeglers
 import ModDashboardFreeglersReplying from '../../components/ModDashboardFreeglersReplying'
 import ModDashboardModeratorsActive from '../../components/ModDashboardModeratorsActive'
 import ModMissingFacebook from '../../components/ModMissingFacebook'
+import ModMissingTwitter from '../../components/ModMissingTwitter'
 
 export default {
   components: {
+    ModMissingTwitter,
     ModMissingFacebook,
     ModDashboardModeratorsActive,
     ModDashboardFreeglersReplying,

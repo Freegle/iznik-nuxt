@@ -2,16 +2,22 @@
   <div>
     <NoticeMessage v-if="invalid.length" variant="danger">
       <div v-if="summary">
-        <v-icon name="exclamation-triangle" /> {{ invalid.length }} Facebook {{ invalid.length | pluralize(['page has', 'pages have']) }} become unlinked.
+        <v-icon name="exclamation-triangle" /> {{ invalid.length }} Twitter {{ invalid.length | pluralize(['account has', 'accounts have']) }} become unlinked.
         <b-btn variant="white" @click="expand">
           Click to view
         </b-btn>
       </div>
       <div v-else>
-        <div v-for="(inv) of invalid" :key="'fbinvalid-' + inv.page.uid">
-          Facebook page <a :href="'https://facebook.com/' + inv.page.id" target="_blank" rel="noopener nofollower">{{ inv.page.name }}</a>
+        <div v-for="(inv) of invalid" :key="'twinvalid-' + inv.account.name">
+          Twitter account <a :href="'https://twitter.com/' + inv.account.name" target="_blank" rel="noopener nofollower">{{ inv.account.name }}</a>
           for group
           <b>{{ inv.group.namedisplay }}</b>
+          <span v-if="inv.account.locked">
+            is locked
+          </span>
+          <span v-else>
+            is invalid
+          </span>
           <b-btn variant="link" disabled class="mb-1">
             Relink
           </b-btn>
@@ -21,15 +27,15 @@
     </NoticeMessage>
     <NoticeMessage v-if="notlinked.length" variant="warning" class="mt-1">
       <div v-if="summary">
-        <v-icon name="exclamation-triangle" /> {{ notlinked.length | pluralize('group', { includeNumber: true }) }} need to be linked to a Facebook page.
+        <v-icon name="exclamation-triangle" /> {{ notlinked.length | pluralize('group', { includeNumber: true }) }} need to be linked to a Twitter account.
         <b-btn variant="white" @click="expand">
           Click to view
         </b-btn>
       </div>
       <div v-else>
-        <p>Groups can be linked to a Facebook page, to get extra publicity. Some of your groups aren't.</p>
+        <p>Groups can be linked to a Twitter account, to get extra publicity. Some of your groups aren't.</p>
         <p>Please link from <em>Settings->Group Settings</em>.</p>
-        <div v-for="(inv) of notlinked" :key="'fbnotlinked-' + inv.group.id">
+        <div v-for="(inv) of notlinked" :key="'twnotlinked-' + inv.group.id">
           <b>{{ inv.group.namedisplay }}</b>
         </div>
       </div>
@@ -51,19 +57,17 @@ export default {
       const ret = []
 
       for (const group of groups) {
+        console.log('consider', group.nameshort, group.twitter)
         if (
           group.type === 'Freegle' &&
-          group.facebook &&
-          (group.role === 'Moderator' || group.role === 'Owner')
+          (group.role === 'Moderator' || group.role === 'Owner') &&
+          group.twitter &&
+          (!group.twitter.valid || group.twitter.locked)
         ) {
-          for (const fb of group.facebook) {
-            if (!fb.valid && fb.type === 'Page') {
-              ret.push({
-                page: fb,
-                group: group
-              })
-            }
-          }
+          ret.push({
+            account: group.twitter,
+            group: group
+          })
         }
       }
 
@@ -78,7 +82,7 @@ export default {
           group.type === 'Freegle' &&
           (group.role === 'Moderator' || group.role === 'Owner')
         ) {
-          if (!group.facebook) {
+          if (!group.twitter) {
             ret.push({
               group: group
             })
