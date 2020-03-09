@@ -11,7 +11,7 @@
             :src="logo"
             alt="Home"
           />
-          <ModStatus v-if="supportOrAdmin" class="mt-3" />
+          <ModStatus class="mt-3" />
         </b-navbar-brand>
         <b-navbar-nav />
         <b-navbar-nav class="ml-auto">

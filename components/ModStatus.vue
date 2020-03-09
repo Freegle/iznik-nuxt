@@ -1,8 +1,8 @@
 <template>
   <span v-if="tried" title="Platform Status - click for more info" @click="clicked">
-    <span v-if="fine" class="fine" />
-    <span v-if="warning" class="warning" />
     <span v-if="error" class="error" />
+    <span v-else-if="warning" class="warning" />
+    <span v-else-if="fine" class="fine" />
     <b-modal
       id="statusmmodal"
       v-model="show"
@@ -10,8 +10,14 @@
       :title="'Platform Status: ' + headline"
     >
       <template slot="default">
-        <NoticeMessage v-if="warning || error" variant="warning" class="mb-2">
+        <NoticeMessage v-if="(warning || error) && supportOrAdmin" variant="warning" class="mb-2">
           There is a problem. Please alert geeks@ilovefreegle.org if this persists for more than an hour.
+        </NoticeMessage>
+        <NoticeMessage v-else-if="error" variant="warning" class="mb-2">
+          There's a problem, and parts of the system may not be working.  The Geeks will be on the case.
+        </NoticeMessage>
+        <NoticeMessage v-else-if="warning" variant="warning" class="mb-2">
+          There's a problem, but the system should still be working.  The Geeks will be on the case.
         </NoticeMessage>
         <NoticeMessage v-else variant="success">
           Everything seems fine.
