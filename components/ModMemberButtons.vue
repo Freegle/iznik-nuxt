@@ -48,7 +48,9 @@
         icon="ban"
         spam
         label="Spam"
+        disabled
       />
+      <!--      TODO Spam button-->
     </div>
     <div v-else-if="spam" class="d-inline">
       <ModMemberButton
@@ -64,6 +66,7 @@
         icon="check"
         notspam
         label="Not a spammer"
+        disabled
       />
       <ModMemberButton
         :member="member"
@@ -94,6 +97,7 @@
         icon="ban"
         spam
         label="Spam"
+        disabled
       />
     </div>
     <div v-if="!member.heldby" class="d-lg-inline">

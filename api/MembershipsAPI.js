@@ -29,10 +29,10 @@ export default class MembershipsAPI extends BaseAPI {
     return this.$put('/memberships', data)
   }
 
-  approve(id, groupid, subject = null, stdmsgid = null, body = null) {
+  approve(userid, groupid, subject = null, stdmsgid = null, body = null) {
     return this.$post('/memberships', {
-      action: 'Approve',
-      id: id,
+      action: 'Approve Member',
+      userid: userid,
       groupid: groupid,
       subject: subject,
       stdmsgid: stdmsgid,
@@ -40,10 +40,10 @@ export default class MembershipsAPI extends BaseAPI {
     })
   }
 
-  reply(id, groupid, subject = null, stdmsgid = null, body = null) {
+  reply(userid, groupid, subject = null, stdmsgid = null, body = null) {
     return this.$post('/memberships', {
-      action: 'Reply',
-      id: id,
+      action: 'Leave Approved Member',
+      userid: userid,
       groupid: groupid,
       subject: subject,
       stdmsgid: stdmsgid,
@@ -51,10 +51,10 @@ export default class MembershipsAPI extends BaseAPI {
     })
   }
 
-  reject(id, groupid, subject = null, stdmsgid = null, body = null) {
+  reject(userid, groupid, subject = null, stdmsgid = null, body = null) {
     return this.$post('/memberships', {
-      action: 'Reject',
-      id: id,
+      action: 'Reject Member',
+      userid: userid,
       groupid: groupid,
       subject: subject,
       stdmsgid: stdmsgid,
@@ -62,10 +62,10 @@ export default class MembershipsAPI extends BaseAPI {
     })
   }
 
-  delete(id, groupid, subject = null, stdmsgid = null, body = null) {
+  delete(userid, groupid, subject = null, stdmsgid = null, body = null) {
     return this.$post('/memberships', {
-      action: 'Delete',
-      id: id,
+      action: 'Delete Approved Member',
+      userid: userid,
       groupid: groupid,
       subject: subject,
       stdmsgid: stdmsgid,
@@ -88,10 +88,10 @@ export default class MembershipsAPI extends BaseAPI {
     })
   }
 
-  spam(id, groupid) {
+  spam(userid, groupid) {
     return this.$post('/memberships', {
       action: 'Spam',
-      id: id,
+      userid: userid,
       groupid: groupid
     })
   }

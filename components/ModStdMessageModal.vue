@@ -22,19 +22,17 @@
           </span>
         </div>
       </div>
-      <div v-if="message">
-        <div v-if="stdmsg.action === 'Edit' && message.location" class="d-flex justify-content-start">
-          <b-select v-model="message.type" :options="typeOptions" class="type mr-1" size="lg" />
-          <b-input v-model="message.item.name" size="lg" class="mr-1" />
-          <b-input-group>
-            <Postcode :value="message.location.name" :find="false" @selected="postcodeSelect" />
-          </b-input-group>
-        </div>
-        <div v-else>
-          <b-input-group>
-            <b-input v-model="subject" class="mt-2" />
-          </b-input-group>
-        </div>
+      <div v-if="message && stdmsg.action === 'Edit' && message.location" class="d-flex justify-content-start">
+        <b-select v-model="message.type" :options="typeOptions" class="type mr-1" size="lg" />
+        <b-input v-model="message.item.name" size="lg" class="mr-1" />
+        <b-input-group>
+          <Postcode :value="message.location.name" :find="false" @selected="postcodeSelect" />
+        </b-input-group>
+      </div>
+      <div v-else>
+        <b-input-group>
+          <b-input v-model="subject" class="mt-2" />
+        </b-input-group>
       </div>
       <NoticeMessage v-if="warning" variant="warning" class="mt-1 mb-1">
         <p>Please check your message in case it needs updating:</p>
@@ -500,10 +498,29 @@ export default {
             stdmsgid: this.stdmsg.id
           })
           break
+        case 'Approve Member':
+          await this.$store.dispatch('members/approve', {
+            id: this.member.userid,
+            groupid: this.groupid,
+            subject: this.subject,
+            body: this.body,
+            stdmsgid: this.stdmsg.id
+          })
+          break
         case 'Leave':
         case 'Leave Approved Message':
           await this.$store.dispatch('messages/reply', {
             id: this.message.id,
+            groupid: this.groupid,
+            subject: this.subject,
+            body: this.body,
+            stdmsgid: this.stdmsg.id
+          })
+          break
+        case 'Leave Member':
+        case 'Leave Approved Member':
+          await this.$store.dispatch('members/reply', {
+            id: this.member.userid,
             groupid: this.groupid,
             subject: this.subject,
             body: this.body,
@@ -519,10 +536,29 @@ export default {
             stdmsgid: this.stdmsg.id
           })
           break
+        case 'Reject Member':
+          await this.$store.dispatch('members/reject', {
+            id: this.member.userid,
+            groupid: this.groupid,
+            subject: this.subject,
+            body: this.body,
+            stdmsgid: this.stdmsg.id
+          })
+          break
         case 'Delete':
         case 'Delete Approved Message':
           await this.$store.dispatch('messages/delete', {
             id: this.message.id,
+            groupid: this.groupid,
+            subject: this.subject,
+            body: this.body,
+            stdmsgid: this.stdmsg.id
+          })
+          break
+        case 'Delete Member':
+        case 'Delete Approved Member':
+          await this.$store.dispatch('members/delete', {
+            id: this.member.userid,
             groupid: this.groupid,
             subject: this.subject,
             body: this.body,

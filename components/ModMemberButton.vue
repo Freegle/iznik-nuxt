@@ -146,7 +146,7 @@ export default {
     },
     approveIt() {
       this.$store.dispatch('members/approve', {
-        id: this.member.id,
+        id: this.member.userid,
         groupid: this.groupid
       })
     },
@@ -164,30 +164,30 @@ export default {
     },
     notSpamIt() {
       this.$store.dispatch('members/notspam', {
-        id: this.member.id,
+        id: this.member.userid,
         groupid: this.groupid
       })
     },
     deleteConfirmed() {
       this.$store.dispatch('members/delete', {
-        id: this.member.id,
+        id: this.member.userid,
         groupid: this.groupid
       })
     },
     spamConfirmed() {
       this.$store.dispatch('members/spam', {
-        id: this.member.id,
+        id: this.member.userid,
         groupid: this.groupid
       })
     },
     holdIt() {
       this.$store.dispatch('members/hold', {
-        id: this.member.id
+        id: this.member.userid
       })
     },
     releaseIt() {
       this.$store.dispatch('members/release', {
-        id: this.member.id
+        id: this.member.userid
       })
     }
   }

@@ -49,6 +49,7 @@ export const mutations = {
         (parseInt(item.userid) &&
           parseInt(item.userid) === parseInt(obj.userid)) ||
         (parseInt(item.userid) &&
+          obj.relatedto &&
           parseInt(item.userid) === parseInt(obj.relatedto.userid))
       ) {
         return false
@@ -217,14 +218,14 @@ export const actions = {
       params.body
     )
     commit('remove', {
-      id: params.id
+      userid: params.id
     })
   },
 
   async spam({ commit }, params) {
     await this.$api.memberships.spam(params.id, params.groupid)
     commit('remove', {
-      id: params.id
+      userid: params.id
     })
   },
 
@@ -237,7 +238,7 @@ export const actions = {
       params.body
     )
     commit('remove', {
-      id: params.id
+      userid: params.id
     })
   },
 
@@ -261,8 +262,9 @@ export const actions = {
       params.stdmsgid,
       params.body
     )
+
     commit('remove', {
-      id: params.id
+      userid: params.id
     })
   },
 
