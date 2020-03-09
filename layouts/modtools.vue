@@ -37,13 +37,16 @@
           </b-nav-item-dropdown>
           <b-nav-item-dropdown right class="d-block d-sm-none">
             <template v-slot:button-content>
-              <ModMenuItemNav v-if="hasPermissionNewsletter" :count="['pendingmembers', 'stories', 'newsletterstories', 'socialactions']" icon="users" class="menuicon" />
+              <ModMenuItemNav v-if="hasPermissionNewsletter" :count="['pendingmembers', 'spammembers', 'stories', 'newsletterstories', 'socialactions']" icon="users" class="menuicon" />
             </template>
             <b-dropdown-item>
               <ModMenuItemNav name="Pending" :count="['pendingmembers']" link="/modtools/members/pending" />
             </b-dropdown-item>
             <b-dropdown-item>
               <ModMenuItemNav name="Approved" link="/modtools/members/approved" />
+            </b-dropdown-item>
+            <b-dropdown-item>
+              <ModMenuItemNav name="Review" :count="['spammembers']" link="/modtools/members/review" />
             </b-dropdown-item>
             <b-dropdown-item>
               <ModMenuItemNav name="Related" link="/modtools/members/related" :count="['relatedmembers']" />
@@ -113,6 +116,7 @@
           </div>
           <ModMenuItemLeft link="/modtools/members/pending" name="Pending" count="pendingmembers" othercount="pendingmembersother" indent />
           <ModMenuItemLeft link="/modtools/members/approved" name="Approved" indent />
+          <ModMenuItemLeft link="/modtools/members/review" name="Review" count="spammembers" othercount="spammembersother" indent />
           <ModMenuItemLeft link="/modtools/members/related" name="Related" count="relatedmembers" indent />
           <ModMenuItemLeft link="/modtools/members/stories" name="Stories" indent count="stories" />
           <ModMenuItemLeft v-if="hasPermissionNewsletter" link="/modtools/members/newsletter" name="Newsletter" indent count="newsletterstories" />

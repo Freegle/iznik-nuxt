@@ -110,7 +110,7 @@
         </div>
       </b-card-body>
       <b-card-footer>
-        <!--        <ModMessageButtons :message="message" :modconfig="modconfig" />-->
+        <ModMemberButtons :member="member" :modconfig="modconfig" />
       </b-card-footer>
     </b-card>
     <ModPostingHistoryModal ref="history" :user="member" :type="type" />
@@ -118,7 +118,6 @@
 </template>
 <script>
 // TODO View Profile modal
-// TODO Count of replies
 import waitForRef from '../mixins/waitForRef'
 import SettingsGroup from './SettingsGroup'
 import NoticeMessage from './NoticeMessage'
@@ -127,12 +126,14 @@ import ModPostingHistoryModal from './ModPostingHistoryModal'
 import ModMemberActions from './ModMemberActions'
 import ModSpammer from './ModSpammer'
 import ModComments from './ModComments'
+import ModMemberButtons from './ModMemberButtons'
 
 const MEMBERSHIPS_SHOW = 3
 
 export default {
   name: 'ModMember',
   components: {
+    ModMemberButtons,
     ModComments,
     ModSpammer,
     ModMemberActions,

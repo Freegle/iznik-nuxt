@@ -1,95 +1,49 @@
 <template>
   <div>
-    <div v-if="editreview" class="d-inline">
-      <ModMessageButton
-        :message="message"
-        variant="success"
-        icon="check"
-        acceptedits
-        label="Accept Edit"
-      />
-      <ModMessageButton
-        :message="message"
-        variant="danger"
-        icon="times"
-        revertedits
-        label="Reject Edit"
-      />
-      <ModMessageButton
-        :message="message"
-        variant="success"
-        icon="envelope"
-        leave
-        label="Reply"
-      />
-    </div>
-    <div v-else-if="pending" class="d-inline">
-      <ModMessageButton
-        v-if="!message.heldby"
-        :message="message"
+    <div v-if="pending" class="d-inline">
+      <ModMemberButton
+        v-if="!member.heldby"
+        :member="member"
         variant="success"
         icon="check"
         approve
         label="Approve"
       />
-      <ModMessageButton
-        v-if="!message.heldby"
-        :message="message"
+      <ModMemberButton
+        v-if="!member.heldby"
+        :member="member"
         variant="warning"
         icon="times"
         reject
         label="Reject"
       />
-      <ModMessageButton
-        v-if="!message.heldby"
-        :message="message"
+      <ModMemberButton
+        v-if="!member.heldby"
+        :member="member"
         variant="danger"
         icon="trash-alt"
         delete
         label="Delete"
       />
-      <ModMessageButton
-        v-if="!message.heldby"
-        :message="message"
+      <ModMemberButton
+        v-if="!member.heldby"
+        :member="member"
         variant="warning"
         icon="pause"
         hold
         label="Hold"
       />
-      <ModMessageButton
-        v-if="message.heldby"
-        :message="message"
+      <ModMemberButton
+        v-if="member.heldby"
+        :member="member"
         variant="warning"
         icon="play"
         release
         label="Release"
       />
-      <ModMessageButton
-        v-if="!message.heldby"
-        :message="message"
-        variant="danger"
-        icon="ban"
-        spam
-        label="Spam"
-      />
-    </div>
-    <div v-else-if="approved" class="d-inline">
-      <ModMessageButton
-        :message="message"
-        variant="success"
-        icon="envelope"
-        leave
-        label="Reply"
-      />
-      <ModMessageButton
-        :message="message"
-        variant="danger"
-        icon="trash-alt"
-        delete
-        label="Delete"
-      />
-      <ModMessageButton
-        :message="message"
+      <ModMemberButton
+        v-if="!member.heldby"
+        :member="member"
         variant="danger"
         icon="ban"
         spam
@@ -97,30 +51,60 @@
       />
     </div>
     <div v-else-if="spam" class="d-inline">
-      <ModMessageButton
-        :message="message"
+      <ModMemberButton
+        :member="member"
         variant="danger"
         icon="trash-alt"
-        spam
-        label="Spam"
+        delete
+        label="Remove"
       />
-      <ModMessageButton
-        :message="message"
+      <ModMemberButton
+        :member="member"
         variant="success"
         icon="check"
         notspam
-        label="Not spam"
+        label="Not a spammer"
+      />
+      <ModMemberButton
+        :member="member"
+        variant="success"
+        icon="envelope"
+        leave
+        label="Mail"
       />
     </div>
-    <div v-if="!editreview && !message.heldby" class="d-lg-inline">
-      <ModMessageButton
+    <div v-else-if="approved" class="d-inline">
+      <ModMemberButton
+        :member="member"
+        variant="success"
+        icon="envelope"
+        leave
+        label="Reply"
+      />
+      <ModMemberButton
+        :member="member"
+        variant="danger"
+        icon="trash-alt"
+        delete
+        label="Delete"
+      />
+      <ModMemberButton
+        :member="member"
+        variant="danger"
+        icon="ban"
+        spam
+        label="Spam"
+      />
+    </div>
+    <div v-if="!member.heldby" class="d-lg-inline">
+      <ModMemberButton
         v-for="stdmsg in filtered"
         :key="stdmsg.id"
         :variant="variant(stdmsg)"
         :icon="icon(stdmsg)"
         :label="stdmsg.title"
         :stdmsgid="stdmsg.id"
-        :message="message"
+        :member="member"
       />
       <b-btn
         v-if="rareToShow && !showRare"
@@ -134,12 +118,12 @@
   </div>
 </template>
 <script>
-import ModMessageButton from './ModMessageButton'
+import ModMemberButton from './ModMemberButton'
 
 export default {
-  components: { ModMessageButton },
+  components: { ModMemberButton },
   props: {
-    message: {
+    member: {
       type: Object,
       required: true
     },
@@ -147,11 +131,6 @@ export default {
       type: Object,
       required: false,
       default: null
-    },
-    editreview: {
-      type: Boolean,
-      required: false,
-      default: false
     }
   },
   data: function() {
@@ -167,14 +146,14 @@ export default {
       return this.hasCollection('Approved')
     },
     spam() {
-      return this.hasCollection('Spam')
+      return this.member.spammer
     },
     validActions() {
-      // The standard messages we show depend on the valid ones for this type of message.
+      // The standard messages we show depend on the valid ones for this type of member.
       if (this.pending) {
-        return ['Approve', 'Reject', 'Leave', 'Delete', 'Edit']
+        return ['Approve Member', 'Reject Member', 'Leave Member']
       } else if (this.approved) {
-        return ['Leave Approved Message', 'Delete Approved Message', 'Edit']
+        return ['Leave Approved Member', 'Delete Approved Member']
       }
 
       return []
@@ -204,15 +183,14 @@ export default {
   methods: {
     icon(stdmsg) {
       switch (stdmsg.action) {
-        case 'Approve':
+        case 'Approve Member':
           return 'check'
-        case 'Reject':
+        case 'Reject Member':
           return 'times'
-        case 'Leave':
-        case 'Leave Approved Message':
+        case 'Leave Member':
+        case 'Leave Approved Member':
           return 'envelope'
-        case 'Delete':
-        case 'Delete Approved Message':
+        case 'Delete Approved Member':
           return 'trash-alt'
         case 'Edit':
           return 'pen'
@@ -223,15 +201,14 @@ export default {
 
     variant(stdmsg) {
       switch (stdmsg.action) {
-        case 'Approve':
+        case 'Approve Member':
           return 'success'
-        case 'Reject':
+        case 'Reject Member':
           return 'warning'
-        case 'Leave':
-        case 'Leave Approved Message':
+        case 'Leave Member':
+        case 'Leave Approved Member':
           return 'primary'
-        case 'Delete':
-        case 'Delete Approved Message':
+        case 'Delete Approved Member':
           return 'danger'
         case 'Edit':
           return 'primary'
@@ -243,9 +220,9 @@ export default {
     hasCollection(coll) {
       let ret = false
 
-      if (this.message.groups) {
-        this.message.groups.forEach(group => {
-          if (group.collection === coll) {
+      if (this.member.memberof) {
+        this.member.memberof.forEach(group => {
+          if (group.id === this.member.groupid && group.collection === coll) {
             ret = true
           }
         })

@@ -2,7 +2,7 @@
   <b-modal
     id="stdmsgmodal"
     v-model="showModal"
-    :title="message.subject"
+    :title="message ? message.subject : ('Message to ' + member.displayname)"
     no-stacking
     size="lg"
   >
@@ -16,23 +16,25 @@
         <div>
           {{ fromName }}
           <br>
-          {{ message.fromuser.displayname }}
+          {{ message ? message.fromuser.displayname : member.displayname }}
           <span v-if="toEmail">
             &lt;{{ toEmail }}&gt;
           </span>
         </div>
       </div>
-      <div v-if="stdmsg.action === 'Edit' && message.location" class="d-flex justify-content-start">
-        <b-select v-model="message.type" :options="typeOptions" class="type mr-1" size="lg" />
-        <b-input v-model="message.item.name" size="lg" class="mr-1" />
-        <b-input-group>
-          <Postcode :value="message.location.name" :find="false" @selected="postcodeSelect" />
-        </b-input-group>
-      </div>
-      <div v-else>
-        <b-input-group>
-          <b-input v-model="subject" class="mt-2" />
-        </b-input-group>
+      <div v-if="message">
+        <div v-if="stdmsg.action === 'Edit' && message.location" class="d-flex justify-content-start">
+          <b-select v-model="message.type" :options="typeOptions" class="type mr-1" size="lg" />
+          <b-input v-model="message.item.name" size="lg" class="mr-1" />
+          <b-input-group>
+            <Postcode :value="message.location.name" :find="false" @selected="postcodeSelect" />
+          </b-input-group>
+        </div>
+        <div v-else>
+          <b-input-group>
+            <b-input v-model="subject" class="mt-2" />
+          </b-input-group>
+        </div>
       </div>
       <NoticeMessage v-if="warning" variant="warning" class="mt-1 mb-1">
         <p>Please check your message in case it needs updating:</p>
@@ -69,7 +71,13 @@ export default {
   props: {
     message: {
       type: Object,
-      required: true
+      required: false,
+      default: null
+    },
+    member: {
+      type: Object,
+      required: false,
+      default: null
     },
     stdmsg: {
       type: Object,
@@ -86,20 +94,27 @@ export default {
     }
   },
   computed: {
+    user() {
+      return this.message ? this.message.fromuser : this.member
+    },
     fromName() {
       return this.me.displayname
     },
     toEmail() {
       let ret = null
-      this.message.fromuser.emails.forEach(email => {
-        if (
-          email.email &&
-          email.email.indexOf('users.ilovefreegle.org') === -1 &&
-          (ret === null || email.preferred)
-        ) {
-          ret = email.email
-        }
-      })
+      if (this.member) {
+        ret = this.member.email
+      } else {
+        this.message.fromuser.emails.forEach(email => {
+          if (
+            email.email &&
+            email.email.indexOf('users.ilovefreegle.org') === -1 &&
+            (ret === null || email.preferred)
+          ) {
+            ret = email.email
+          }
+        })
+      }
 
       return ret
     },
@@ -119,7 +134,13 @@ export default {
     groupid() {
       let ret = null
 
-      if (this.message && this.message.groups && this.message.groups.length) {
+      if (this.member) {
+        ret = this.member.groupid
+      } else if (
+        this.message &&
+        this.message.groups &&
+        this.message.groups.length
+      ) {
         ret = this.message.groups[0].groupid
       }
 
@@ -220,22 +241,30 @@ export default {
   methods: {
     show() {
       // Calculate initial subject.
-      this.subject =
-        (this.stdmsg.subjpref ? this.stdmsg.subjpref : 'Re') +
-        ': ' +
-        this.message.subject +
-        (this.stdmsg.subjsuff ? this.stdmsg.subjsuff : '')
+      if (this.member) {
+        this.subject =
+          (this.stdmsg.subjpref ? this.stdmsg.subjpref : 'Re:') +
+          (this.stdmsg.subjsuff ? this.stdmsg.subjsuff : '')
+      } else {
+        this.subject =
+          (this.stdmsg.subjpref ? this.stdmsg.subjpref : 'Re') +
+          ': ' +
+          this.message.subject +
+          (this.stdmsg.subjsuff ? this.stdmsg.subjsuff : '')
+      }
 
       this.subject = this.substitutionStrings(this.subject)
 
       // Calculate initial body
-      let msg = this.message.textbody
+      let msg = this.message ? this.message.textbody : ''
 
-      if (msg) {
-        // We have an existing body to include.  Quote it, unless it's an edit.
-        const edit = this.stdmsg && this.stdmsg.action === 'Edit'
-        if (!edit) {
-          msg = '> ' + msg.replace(/((\r\n)|\r|\n)/gm, '\n> ')
+      if (msg || this.member) {
+        if (msg) {
+          // We have an existing body to include.  Quote it, unless it's an edit.
+          const edit = this.stdmsg && this.stdmsg.action === 'Edit'
+          if (!edit) {
+            msg = '> ' + msg.replace(/((\r\n)|\r|\n)/gm, '\n> ')
+          }
         }
 
         if (this.stdmsg) {
@@ -320,7 +349,6 @@ export default {
     substitutionStrings(text) {
       const self = this
       const group = this.$store.getters['auth/groupById'](this.groupid)
-      const msgdate = this.$dayjs(this.message.date)
 
       if (text) {
         if (this.modconfig) {
@@ -341,16 +369,23 @@ export default {
         text = text.replace(/\$nummembers/g, group.membercount)
         text = text.replace(/\$nummods/g, group.modcount)
 
-        text = text.replace(/\$origsubj/g, this.message.subject)
+        text = text.replace(
+          /\$origsubj/g,
+          this.message ? this.message.subject : ''
+        )
 
-        if (this.message.fromuser) {
-          const history = this.message.fromuser.messagehistory
+        if (this.user.messagehistory) {
+          const history = this.user.messagehistory
           let recentmsg = ''
           let count = 0
           if (history.length) {
             history.forEach(msg => {
               if (msg.daysago < self.recentDays) {
-                recentmsg += msgdate.format('lll') + ' - ' + msg.subject + '\n'
+                recentmsg +=
+                  this.$dayjs(msg.date).format('lll') +
+                  ' - ' +
+                  msg.subject +
+                  '\n'
                 count++
               }
             })
@@ -365,7 +400,10 @@ export default {
               history.forEach(msg => {
                 if (msg.type === keyword && msg.daysago < self.recentDays) {
                   recentmsg +=
-                    msgdate.format('lll') + ' - ' + msg.subject + '\n'
+                    this.$dayjs(msg.date).format('lll') +
+                    ' - ' +
+                    msg.subject +
+                    '\n'
                   count++
                 }
               })
@@ -384,28 +422,38 @@ export default {
 
         text = text.replace(
           /\$memberreason/g,
-          this.message.joincomment ? this.message.joincomment : ''
+          this.member.joincomment ? this.member.joincomment : ''
         )
 
-        if (this.message.joined) {
+        if (this.member && this.member.joined) {
           text = text.replace(
             /\$membersubdate/g,
-            new this.$dayjs(this.message.joined).format('lll')
+            new this.$dayjs(this.member.joined).format('lll')
           )
         }
 
-        text = text.replace(/\$membermail/g, this.message.fromaddr)
-        const from = this.message.fromuser.realemail
-          ? this.message.fromuser.realemail
-          : this.message.fromaddr
+        text = text.replace(
+          /\$membermail/g,
+          this.message ? this.message.fromaddr : this.member.email
+        )
+        let from
+
+        if (this.message) {
+          from = this.message.fromuser.realemail
+            ? this.message.fromuser.realemail
+            : this.message.fromaddr
+        } else {
+          from = this.member.email
+        }
+
         const fromid = from.substring(0, from.indexOf('@'))
         text = text.replace(/\$memberid/g, fromid)
-        const membername = this.message.fromuser.displayname | fromid
+        const membername = this.user.displayname | fromid
         text = text.replace(/\$membername/g, membername)
 
         let summ = ''
 
-        if (this.message.duplicates) {
+        if (this.message && this.message.duplicates) {
           this.message.duplicates.forEach(m => {
             summ +=
               new this.$dayjs(m.date).format('lll') + ' - ' + m.subject + '\n'
@@ -425,7 +473,7 @@ export default {
         this.stdmsg.newdelstatus !== 'UNCHANGED'
       ) {
         await this.$store.dispatch('user/edit', {
-          id: this.message.fromuser.id,
+          id: this.memberid,
           groupid: this.groupid,
           emailfrequency: this.emailfrequency
         })
@@ -436,7 +484,7 @@ export default {
         this.stdmsg.newmodstatus !== 'UNCHANGED'
       ) {
         await this.$store.dispatch('user/edit', {
-          id: this.message.fromuser.id,
+          id: this.memberid,
           groupid: this.groupid,
           ourPostingStatus: this.stdmsg.newmodstatus
         })
