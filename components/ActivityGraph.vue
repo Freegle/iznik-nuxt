@@ -16,6 +16,18 @@
       <p v-if="graphType === 'Replies'">
         This includes people replying to an OFFER or a WANTED.
       </p>
+      <p v-if="graphType === 'Offers'">
+        Just OFFERs.  This is estimated from the message total and the split by type across the whole period.
+      </p>
+      <p v-if="graphType === 'Wanteds'">
+        Just WANTEDs.  This is estimated from the message total and the split by type across the whole period.
+      </p>
+      <p v-if="graphType === 'Weight'">
+        These are weight estimates based on the items which we know are TAKEN/RECEIVED.
+      </p>
+      <p v-if="graphType === 'Outcomes'">
+        These are the posts marked as TAKEN/RECEIVED.
+      </p>
       <div v-if="loading" class="height text-muted pulsate align-middle d-flex flex-column">
         Loading...
       </div>
@@ -26,9 +38,6 @@
         :data="graphData"
         :options="graphOptions"
       />
-      <div v-if="graphType === 'Offers' || graphType === 'Wanteds'" class="text-muted text-center mt-2">
-        This is estimated from the message total and the split by type across the whole period.
-      </div>
     </b-card-text>
   </b-card>
 </template>
@@ -63,6 +72,16 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    weights: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    successful: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
@@ -73,29 +92,44 @@ export default {
       ApprovedMessageCount: null,
       Activity: null,
       Replies: null,
+      Weight: null,
+      Outcomes: null,
       graphType: 'Activity',
       graphTypes: [],
       graphTitles: {
         Activity: 'Activity',
         ApprovedMessageCount: 'OFFERs and WANTED',
-        Replies: 'Replies'
+        Replies: 'Replies',
+        Offers: 'OFFERs only',
+        Wanteds: 'WANTEDs only',
+        Weight: 'Weights',
+        Outcomes: 'Successful'
       }
     }
 
     ret.graphTypes.push({ value: 'Activity', text: 'Activity' })
 
-    if (this.offers) {
-      ret.graphTypes.push({ value: 'Offers', text: 'OFFERs' })
-    }
-
-    if (this.wanteds) {
-      ret.graphTypes.push({ value: 'Wanteds', text: 'WANTEDs' })
-    }
-
     ret.graphTypes.push({
       value: 'ApprovedMessageCount',
       text: 'OFFERS+WANTEDs'
     })
+
+    if (this.successful) {
+      ret.graphTypes.push({ value: 'Outcomes', text: 'Successful posts' })
+    }
+
+    if (this.offers) {
+      ret.graphTypes.push({ value: 'Offers', text: 'Just OFFERs' })
+    }
+
+    if (this.wanteds) {
+      ret.graphTypes.push({ value: 'Wanteds', text: 'Just WANTEDs' })
+    }
+
+    if (this.weights) {
+      ret.graphTypes.push({ value: 'Weight', text: 'Weight estimates' })
+    }
+
     ret.graphTypes.push({ value: 'Replies', text: 'Replies' })
 
     return ret
@@ -105,7 +139,7 @@ export default {
       let hformat
 
       if (this.units === 'week' || this.units === 'day') {
-        hformat = 'DD MMM yyyy'
+        hformat = 'dd MMM yyyy'
       } else if (this.units === 'month') {
         hformat = 'MMM yyyy'
       } else if (this.units === 'year') {

@@ -55,7 +55,15 @@
         </b-col>
       </b-row>
       <ModDashboardImpact :groupid="groupid" :start="start" :end="end" class="mt-2" />
-      <ActivityGraph :groupid="groupid" :start="start" :end="end" offers wanteds />
+      <ActivityGraph
+        :groupid="groupid"
+        :start="start"
+        :end="end"
+        offers
+        wanteds
+        weights
+        successful
+      />
     </div>
   </div>
 </template>
