@@ -23,19 +23,13 @@ export default {
   },
   watch: {
     groupid(newVal, oldVal) {
-      this.$nextTick(() => {
-        this.fetch()
-      })
+      this.maybeFetch()
     },
     start(newVal, oldVal) {
-      this.$nextTick(() => {
-        this.fetch()
-      })
+      this.maybeFetch()
     },
     end(newVal, oldVal) {
-      this.$nextTick(() => {
-        this.fetch()
-      })
+      this.maybeFetch()
     }
   },
   mounted() {
@@ -64,6 +58,15 @@ export default {
         })
 
         this.loading = false
+      }
+    },
+    maybeFetch() {
+      if (!this.loading) {
+        this.loading = true
+
+        this.$nextTick(() => {
+          this.fetch()
+        })
       }
     }
   }

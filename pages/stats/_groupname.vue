@@ -27,31 +27,7 @@
         </b-row>
         <div v-if="dataready">
           <Impact range="the last 12 months" :total-benefit="totalBenefit" :total-c-o2="totalCO2" :total-weight="totalWeight" class="mt-2" />
-          <b-card variant="white" class="mt-2">
-            <b-card-text>
-              <h3 class="d-flex justify-content-between">
-                <span>
-                  {{ graphTitles[graphType] }}
-                </span>
-                <b-form-select v-model="graphType" :options="graphTypes" class="graphSelect" />
-              </h3>
-              <p v-if="graphType === 'Activity'">
-                This includes people OFFERing something, posting a WANTED for something, or replying to an OFFER/WANTED.
-              </p>
-              <p v-if="graphType === 'ApprovedMessageCount'">
-                This includes people OFFERing something or posting a WANTED for something.
-              </p>
-              <p v-if="graphType === 'Replies'">
-                This includes people replying to an OFFER or a WANTED.
-              </p>
-              <GChart
-                :key="graphType"
-                type="LineChart"
-                :data="graphData"
-                :options="graphOptions"
-              />
-            </b-card-text>
-          </b-card>
+          <ActivityGraph :groupid="group.id" :start="start.toDate()" :end="end.toDate()" />
           <b-row class="mt-2 chart-wrapper">
             <b-col>
               <b-card variant="white" class="chart">
@@ -134,6 +110,7 @@
 import dayjs from 'dayjs'
 import { GChart } from 'vue-google-charts'
 import Impact from '../../components/Impact'
+import ActivityGraph from '../../components/ActivityGraph'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 
@@ -141,6 +118,7 @@ const GroupHeader = () => import('~/components/GroupHeader.vue')
 
 export default {
   components: {
+    ActivityGraph,
     Impact,
     GChart,
     GroupHeader
@@ -149,19 +127,10 @@ export default {
   data: function() {
     return {
       loading: false,
+      start: null,
+      end: null,
       dataready: false,
       group: null,
-      graphType: 'Activity',
-      graphTypes: [
-        { value: 'Activity', text: 'Activity' },
-        { value: 'ApprovedMessageCount', text: 'OFFERS/WANTEDs' },
-        { value: 'Replies', text: 'Replies' }
-      ],
-      graphTitles: {
-        Activity: 'Activity',
-        ApprovedMessageCount: 'OFFERs and WANTED',
-        Replies: 'Replies'
-      },
       balanceOptions: {
         title: 'Post Balance',
         chartArea: { width: '80%', height: '80%' },
@@ -229,26 +198,6 @@ export default {
     }
   },
   computed: {
-    graphOptions() {
-      return {
-        title: this.graphTitles[this.graphType],
-        interpolateNulls: false,
-        animation: {
-          duration: 5000,
-          easing: 'out',
-          startup: true
-        },
-        legend: { position: 'none' },
-        chartArea: { width: '80%', height: '80%' },
-        vAxis: { viewWindow: { min: 0 } },
-        hAxis: {
-          format: 'MMM yyyy'
-        },
-        series: {
-          0: { color: 'blue' }
-        }
-      }
-    },
     totalWeight() {
       const weights = this.$store.getters['stats/get']('Weight')
       let total = 0
@@ -271,18 +220,6 @@ export default {
     },
     totalCO2() {
       return this.totalWeight * 0.51
-    },
-    graphData() {
-      const ret = [['Date', 'Count']]
-      const activity = this.$store.getters['stats/get'](this.graphType)
-
-      if (activity) {
-        for (const a of activity) {
-          ret.push([new Date(a.date), parseInt(a.count)])
-        }
-      }
-
-      return ret
     },
     balanceData() {
       const breakdown = this.$store.getters['stats/get']('MessageBreakdown')
@@ -403,18 +340,22 @@ export default {
       }
     }
 
-    const start = dayjs()
+    this.start = dayjs()
       .subtract(1, 'year')
       .subtract(1, 'month')
       .startOf('month')
-      .format('YYYY-MM-DD')
+
+    this.end = dayjs()
+      .subtract(1, 'month')
+      .endOf('month')
 
     await this.$store.dispatch('stats/clear')
     await this.$store.dispatch('stats/fetch', {
       group: groupid,
       grouptype: 'Freegle',
       systemwide: groupid === null,
-      start: start
+      start: this.start.format('YYYY-MM-DD'),
+      end: this.end.format('YYYY-MM-DD')
     })
 
     this.loading = false
@@ -475,9 +416,5 @@ export default {
 
 .green {
   color: $color-green--darker !important;
-}
-
-.graphSelect {
-  max-width: 200px;
 }
 </style>

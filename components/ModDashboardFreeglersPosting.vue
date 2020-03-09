@@ -4,7 +4,11 @@
       <b-card-body>
         <b-row><b-col>&nbsp;</b-col></b-row>
         <b-row><b-col>&nbsp;</b-col></b-row>
-        <b-row><b-col>&nbsp;</b-col></b-row>
+        <b-row>
+          <b-col class="text-faded pulsate text-center">
+            Loading...
+          </b-col>
+        </b-row>
         <b-row><b-col>&nbsp;</b-col></b-row>
         <b-row><b-col>&nbsp;</b-col></b-row>
       </b-card-body>

@@ -8,27 +8,34 @@
     <div class="d-flex mb-2 mt-2">
       <div class="borderit d-flex flex-column">
         <label for="dashboardgroup">Choose community:</label>
-        <GroupSelect id="dashboardgroup" v-model="groupid" all modonly active />
+        <GroupSelect id="dashboardgroup" v-model="groupidi" all modonly active />
       </div>
       <div class="borderit d-flex flex-column">
-        <label for="startDate" class="date__label">From:</label>
+        <label for="startDate">From:</label>
         <date-picker
           id="startDate"
-          v-model="start"
+          v-model="starti"
           lang="en"
           type="date"
           format="YYYY-MM-DD"
+          :disabled-date="notbeforeepoch"
         />
       </div>
       <div class="borderit d-flex flex-column">
-        <label for="endDate" class="date__label">To:</label>
+        <label for="endDate">To:</label>
         <date-picker
           id="endDate"
-          v-model="end"
+          v-model="endi"
           lang="en"
           type="date"
           format="YYYY-MM-DD"
+          :disabled-date="notbeforestart"
         />
+      </div>
+      <div class="borderit d-flex flex-column justify-content-end">
+        <b-btn variant="white" @click="update">
+          <v-icon name="sync" /> Update
+        </b-btn>
       </div>
     </div>
     <div v-if="start && end">
@@ -114,6 +121,9 @@ export default {
   data: function() {
     return {
       groupid: null,
+      groupidi: null,
+      starti: null,
+      endi: null,
       start: null,
       end: null,
       dateFormat: null
@@ -125,6 +135,26 @@ export default {
       .subtract(7, 'days')
       .toDate()
     this.end = new Date()
+    this.starti = this.start
+    this.endi = this.end
+  },
+  methods: {
+    notbeforeepoch(date) {
+      // We only have stats back to this point.
+      return !this.$dayjs(date).isSameOrAfter(this.$dayjs('2015-08-24'))
+    },
+    notbeforestart(date) {
+      const d = this.$dayjs(date)
+      const now = this.$dayjs()
+
+      return d.isAfter(now) || !d.isAfter(this.$dayjs(this.starti))
+    },
+    update() {
+      // A manual click to do the refresh avoids multiple refreshes when tweaking dates.
+      this.start = this.starti
+      this.end = this.endi
+      this.groupid = this.groupidi
+    }
   }
 }
 </script>

@@ -1,13 +1,17 @@
 <template>
-  <div>
+  <ModDashboardSkeleton v-if="loading" />
+  <div v-else class="mb-4">
     <ModDashboardImpact :groupid="groupid" :start="start" :end="end" class="mt-2" />
+    <ActivityGraph :groupid="groupid" :start="start" :end="end" />
   </div>
 </template>
 <script>
 import ModDashboardImpact from './ModDashboardImpact'
+import ActivityGraph from './ActivityGraph'
+import ModDashboardSkeleton from '@/components/ModDashboardSkeleton'
 
 export default {
-  components: { ModDashboardImpact },
+  components: { ActivityGraph, ModDashboardImpact, ModDashboardSkeleton },
   props: {
     groupid: {
       type: Number,
@@ -30,19 +34,13 @@ export default {
   },
   watch: {
     start() {
-      this.$nextTick(() => {
-        this.fetchStats()
-      })
+      this.maybeFetch()
     },
     end() {
-      this.$nextTick(() => {
-        this.fetchStats()
-      })
+      this.maybeFetch()
     },
     groupid() {
-      this.$nextTick(() => {
-        this.fetchStats()
-      })
+      this.maybeFetch()
     }
   },
   mounted() {
@@ -50,8 +48,6 @@ export default {
   },
   methods: {
     async fetchStats() {
-      this.loading = true
-
       await this.$store.dispatch('stats/clear')
 
       if (this.start) {
@@ -67,6 +63,15 @@ export default {
       }
 
       this.loading = false
+    },
+    maybeFetch() {
+      if (!this.loading) {
+        this.loading = true
+
+        this.$nextTick(() => {
+          this.fetchStats()
+        })
+      }
     }
   }
 }
