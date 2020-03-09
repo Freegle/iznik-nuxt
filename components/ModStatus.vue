@@ -11,7 +11,8 @@
     >
       <template slot="default">
         <NoticeMessage v-if="(warning || error) && supportOrAdmin" variant="warning" class="mb-2">
-          There is a problem. Please alert geeks@ilovefreegle.org if this persists for more than an hour.
+          There is a problem. Please alert geeks@ilovefreegle.org if this persists for more than an hour,
+          unless it just mentions security patches.
         </NoticeMessage>
         <NoticeMessage v-else-if="error" variant="warning" class="mb-2">
           There's a problem, and parts of the system may not be working.  The Geeks will be on the case.
