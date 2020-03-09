@@ -1,4 +1,6 @@
 <script>
+import Vue from 'vue'
+
 export default {
   props: {
     groupid: {
@@ -54,7 +56,8 @@ export default {
         })
 
         Object.keys(res).forEach(comp => {
-          this[comp] = res[comp]
+          // eslint-disable-next-line
+          Vue.set(this, comp, res[comp])
         })
 
         this.loading = false

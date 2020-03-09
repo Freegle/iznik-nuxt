@@ -16,16 +16,24 @@
       <p v-if="graphType === 'Replies'">
         This includes people replying to an OFFER or a WANTED.
       </p>
+      <div v-if="loading" class="height text-muted pulsate align-middle d-flex flex-column">
+        Loading...
+      </div>
       <GChart
+        v-else
         :key="graphType"
         :type="units === 'day' ? 'LineChart' : 'ColumnChart'"
         :data="graphData"
         :options="graphOptions"
       />
+      <div v-if="graphType === 'Offers' || graphType === 'Wanteds'" class="text-muted text-center mt-2">
+        This is estimated from the message total and the split by type across the whole period.
+      </div>
     </b-card-text>
   </b-card>
 </template>
 <script>
+import Vue from 'vue'
 import { GChart } from 'vue-google-charts'
 
 export default {
@@ -45,22 +53,52 @@ export default {
     end: {
       type: Date,
       required: true
+    },
+    offers: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    wanteds: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
-    return {
+    const ret = {
+      loading: true,
+      askfor: ['ApprovedMessageCount', 'Activity', 'Replies'],
+      MessageBreakdown: null,
+      ApprovedMessageCount: null,
+      Activity: null,
+      Replies: null,
       graphType: 'Activity',
-      graphTypes: [
-        { value: 'Activity', text: 'Activity' },
-        { value: 'ApprovedMessageCount', text: 'OFFERS/WANTEDs' },
-        { value: 'Replies', text: 'Replies' }
-      ],
+      graphTypes: [],
       graphTitles: {
         Activity: 'Activity',
         ApprovedMessageCount: 'OFFERs and WANTED',
         Replies: 'Replies'
       }
     }
+
+    ret.graphTypes.push({ value: 'Activity', text: 'Activity' })
+
+    if (this.offers) {
+      ret.graphTypes.push({ value: 'Offers', text: 'OFFERs' })
+    }
+
+    if (this.wanteds) {
+      ret.graphTypes.push({ value: 'Wanteds', text: 'WANTEDs' })
+    }
+
+    ret.graphTypes.push({
+      value: 'ApprovedMessageCount',
+      text: 'OFFERS+WANTEDs'
+    })
+    ret.graphTypes.push({ value: 'Replies', text: 'Replies' })
+
+    return ret
   },
   computed: {
     graphOptions() {
@@ -114,8 +152,7 @@ export default {
     },
     graphData() {
       const ret = [['Date', 'Count']]
-      const activity = this.$store.getters['stats/get'](this.graphType)
-      console.log('Duration', this.duration, this.units)
+      const activity = this[this.graphType]
       const data = []
       const startd = this.$dayjs(this.start).startOf('day')
       const endd = this.$dayjs(this.end).endOf('day')
@@ -148,6 +185,93 @@ export default {
       }
 
       return ret
+    },
+    Offers() {
+      return this.approvedSplit(this.graphType)
+    },
+    Wanteds() {
+      return this.approvedSplit(this.graphType)
+    }
+  },
+  watch: {
+    start() {
+      this.maybeFetch()
+    },
+    end() {
+      this.maybeFetch()
+    },
+    groupid() {
+      this.maybeFetch()
+    },
+    graphType() {
+      this.maybeFetch()
+    }
+  },
+  mounted() {
+    this.fetch()
+  },
+  methods: {
+    async fetch() {
+      console.log('Fetch', this.graphType)
+      this.loading = true
+
+      let comp = [this.graphType]
+
+      if (this.graphType === 'Offers' || this.graphType === 'Wanteds') {
+        // These are not stored separately by the server so we get the total and the split.
+        comp = ['ApprovedMessageCount', 'MessageBreakdown']
+      }
+
+      const res = await this.$api.dashboard.fetch({
+        components: comp,
+        start: this.start.toISOString(),
+        end: this.end.toISOString(),
+        allgroups: !this.groupid,
+        group: this.groupid
+      })
+
+      Object.keys(res).forEach(comp => {
+        // eslint-disable-next-line
+        Vue.set(this, comp, res[comp])
+      })
+
+      this.loading = false
+    },
+    maybeFetch() {
+      if (!this.loading) {
+        this.loading = true
+
+        this.$nextTick(() => {
+          this.fetch()
+        })
+      }
+    },
+    approvedSplit(type) {
+      // We want to return the approved message count, adjusted by the message breakdown for this type.
+      console.log(
+        'Approved split',
+        type,
+        this.MessageBreakdown,
+        this.ApprovedMessageCount
+      )
+
+      type = type.replace('s', '')
+
+      const factor =
+        this.MessageBreakdown[type] /
+        (this.MessageBreakdown.Offer + this.MessageBreakdown.Wanted)
+      console.log('Factor', factor)
+
+      const ret = []
+      this.ApprovedMessageCount.forEach(ent => {
+        ret.push({
+          date: ent.date,
+          count: Math.round(ent.count) * factor
+        })
+      })
+
+      console.log('Returning', ret)
+      return ret
     }
   }
 }
@@ -155,5 +279,9 @@ export default {
 <style scoped>
 .graphSelect {
   max-width: 200px;
+}
+
+.height {
+  height: 200px;
 }
 </style>

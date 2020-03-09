@@ -2,16 +2,14 @@
   <ModDashboardSkeleton v-if="loading" />
   <div v-else class="mb-4">
     <ModDashboardImpact :groupid="groupid" :start="start" :end="end" class="mt-2" />
-    <ActivityGraph :groupid="groupid" :start="start" :end="end" />
   </div>
 </template>
 <script>
 import ModDashboardImpact from './ModDashboardImpact'
-import ActivityGraph from './ActivityGraph'
 import ModDashboardSkeleton from '@/components/ModDashboardSkeleton'
 
 export default {
-  components: { ActivityGraph, ModDashboardImpact, ModDashboardSkeleton },
+  components: { ModDashboardImpact, ModDashboardSkeleton },
   props: {
     groupid: {
       type: Number,
