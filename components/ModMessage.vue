@@ -45,6 +45,8 @@
                 {{ message.heldby.timestamp | timeago }}.  Please check with them before releasing it.
               </NoticeMessage>
             </div>
+            <ModComments :user="message.fromuser" />
+            <ModSpammer v-if="message.fromuser.spammer" :user="message.fromuser" />
             <NoticeMessage v-if="message.fromuser && message.fromuser.activedistance > 50" variant="warning" class="mb-2">
               This freegler is active on groups {{ message.fromuser.activedistance }} miles apart.
             </NoticeMessage>
@@ -188,11 +190,15 @@ import ModMessageWorry from './ModMessageWorry'
 import Postcode from './Postcode'
 import ModMemberActions from './ModMemberActions'
 import Diff from './Diff'
+import ModSpammer from './ModSpammer'
+import ModComments from './ModComments'
 import twem from '~/assets/js/twem'
 
 export default {
   name: 'ModMessage',
   components: {
+    ModComments,
+    ModSpammer,
     Diff,
     ModMemberActions,
     Postcode,
