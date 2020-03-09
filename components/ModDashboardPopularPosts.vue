@@ -2,7 +2,15 @@
   <div>
     <h2>Popular Posts</h2>
     <p>These are the posts which are most viewed (on the website), and most replied to (on the website or by email).</p>
-    <b-img v-if="loading" src="~/static/loader.gif" alt="Loading" />
+    <b-card v-if="loading" no-body>
+      <b-card-body>
+        <b-row><b-col>&nbsp;</b-col></b-row>
+        <b-row><b-col>&nbsp;</b-col></b-row>
+        <b-row><b-col>&nbsp;</b-col></b-row>
+        <b-row><b-col>&nbsp;</b-col></b-row>
+        <b-row><b-col>&nbsp;</b-col></b-row>
+      </b-card-body>
+    </b-card>
     <div v-else-if="PopularPosts && PopularPosts.length">
       <b-card no-body>
         <b-card-body>

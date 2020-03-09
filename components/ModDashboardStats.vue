@@ -1,9 +1,6 @@
 <template>
   <div>
-    <b-img v-if="loading" src="~/static/loader.gif" alt="Loading" />
-    <div v-else>
-      <ModDashboardImpact :groupid="groupid" :start="start" :end="end" class="mt-2" />
-    </div>
+    <ModDashboardImpact :groupid="groupid" :start="start" :end="end" class="mt-2" />
   </div>
 </template>
 <script>
@@ -68,8 +65,6 @@ export default {
           wibble: true
         })
       }
-
-      console.log('Got stats')
 
       this.loading = false
     }

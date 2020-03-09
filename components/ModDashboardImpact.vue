@@ -28,16 +28,13 @@ export default {
       let total = 0
       const start = this.$dayjs(this.start)
       const end = this.$dayjs(this.end)
-      console.log('Got weights', weights, this.start, this.end)
 
       if (weights) {
         for (const w of weights) {
-          console.log('Consider', w.date)
           if (
             start.isSameOrBefore(this.$dayjs(w.date), 'days') &&
             end.isSameOrAfter(this.$dayjs(w.date), 'days')
           ) {
-            console.log('Include')
             total += w.count
           }
         }

@@ -1,6 +1,14 @@
 <template>
   <div>
-    <b-img v-if="loading" src="~/static/loader.gif" alt="Loading" />
+    <b-card v-if="loading" no-body>
+      <b-card-body>
+        <b-row><b-col>&nbsp;</b-col></b-row>
+        <b-row><b-col>&nbsp;</b-col></b-row>
+        <b-row><b-col>&nbsp;</b-col></b-row>
+        <b-row><b-col>&nbsp;</b-col></b-row>
+        <b-row><b-col>&nbsp;</b-col></b-row>
+      </b-card-body>
+    </b-card>
     <div v-else-if="UsersReplying && UsersReplying.length">
       <b-card no-body>
         <b-card-body>

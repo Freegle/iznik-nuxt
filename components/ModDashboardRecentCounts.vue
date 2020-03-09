@@ -1,7 +1,7 @@
 <template>
   <div v-if="RecentCounts">
     <p v-if="loading" class="text-faded pulsate">
-      Loading
+      Loading...
     </p>
     <p v-else>
       During this time there have been

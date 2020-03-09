@@ -56,30 +56,57 @@
 <script>
 import DatePicker from 'vue2-datepicker'
 import loginRequired from '../../mixins/loginRequired'
-import ModDashboardRecentCounts from '../../components/ModDashboardRecentCounts'
 import GroupSelect from '../../components/GroupSelect'
 import 'vue2-datepicker/index.css'
-import ModDashboardPopularPosts from '../../components/ModDashboardPopularPosts'
-import ModDashboardFreeglersPosting from '../../components/ModDashboardFreeglersPosting'
-import ModDashboardFreeglersReplying from '../../components/ModDashboardFreeglersReplying'
-import ModDashboardModeratorsActive from '../../components/ModDashboardModeratorsActive'
+import ModDashboardSkeleton from '../../components/ModDashboardSkeleton'
 import ModMissingFacebook from '../../components/ModMissingFacebook'
 import ModMissingTwitter from '../../components/ModMissingTwitter'
 import ModMissingProfile from '../../components/ModMissingProfile'
 import ModDashboardStats from '../../components/ModDashboardStats'
+import lazyLoadComponent from '@/utils/lazy-load-component'
+
+// We lazy load these components below, but by importing them here it means they can render their own
+// loading indicators rather than using the lazyload text.
+// import('@/components/ModDashboardRecentCounts.vue')
+// import('@/components/ModDashboardPopularPosts.vue')
+// import('@/components/ModDashboardModeratorsActive.vue')
+// import('@/components/ModDashboardFreeglersReplying.vue')
+// import('@/components/ModDashboardFreeglersPosting.vue')
 
 export default {
+  // We use a lazy-loading trick from https://markus.oberlehner.net/blog/lazy-load-vue-components-when-they-become-visible/.
+  // This avoids hitting the server with expensive calls if people don't scroll down.
   components: {
     ModDashboardStats,
     ModMissingProfile,
     ModMissingTwitter,
     ModMissingFacebook,
-    ModDashboardModeratorsActive,
-    ModDashboardFreeglersReplying,
-    ModDashboardFreeglersPosting,
-    ModDashboardPopularPosts,
     GroupSelect,
-    ModDashboardRecentCounts,
+    ModDashboardRecentCounts: lazyLoadComponent({
+      componentFactory: () =>
+        import('@/components/ModDashboardRecentCounts.vue'),
+      loading: ModDashboardSkeleton
+    }),
+    ModDashboardPopularPosts: lazyLoadComponent({
+      componentFactory: () =>
+        import('@/components/ModDashboardPopularPosts.vue'),
+      loading: ModDashboardSkeleton
+    }),
+    ModDashboardModeratorsActive: lazyLoadComponent({
+      componentFactory: () =>
+        import('@/components/ModDashboardModeratorsActive.vue'),
+      loading: ModDashboardSkeleton
+    }),
+    ModDashboardFreeglersReplying: lazyLoadComponent({
+      componentFactory: () =>
+        import('@/components/ModDashboardFreeglersReplying.vue'),
+      loading: ModDashboardSkeleton
+    }),
+    ModDashboardFreeglersPosting: lazyLoadComponent({
+      componentFactory: () =>
+        import('@/components/ModDashboardFreeglersPosting.vue'),
+      loading: ModDashboardSkeleton
+    }),
     DatePicker
   },
   layout: 'modtools',
