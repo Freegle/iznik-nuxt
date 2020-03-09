@@ -212,7 +212,19 @@ export default {
         console.log('collected data', data)
 
         for (const d in data) {
-          ret.push([new Date(d), data[d]])
+          let lab = null
+
+          if (this.units === 'day') {
+            lab = new Date(d)
+          } else if (this.units === 'week') {
+            lab = 'w/c ' + this.$dayjs(d).format('DD-MMM')
+          } else if (this.units === 'month') {
+            lab = this.$dayjs(d).format('MMM YYYY')
+          } else if (this.units === 'year') {
+            lab = this.$dayjs(d).format('YYYY')
+          }
+
+          ret.push([lab, data[d]])
         }
 
         console.log('Converted data', ret)

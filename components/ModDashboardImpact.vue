@@ -2,7 +2,28 @@
   <div>
     <h2>Impact</h2>
     <p>This is our estimate of the impact your active communities have had.</p>
-    <Impact :range="startf + ' - ' + endf" :total-benefit="totalBenefit" :total-c-o2="totalCO2" :total-weight="totalWeight" class="mt-2" />
+    <b-card v-if="loading" no-body>
+      <b-card-body>
+        <b-row><b-col>&nbsp;</b-col></b-row>
+        <b-row><b-col>&nbsp;</b-col></b-row>
+        <b-row>
+          <b-col class="text-faded pulsate text-center">
+            Loading...
+          </b-col>
+        </b-row>
+        <b-row><b-col>&nbsp;</b-col></b-row>
+        <b-row><b-col>&nbsp;</b-col></b-row>
+        <b-row><b-col>&nbsp;</b-col></b-row>
+      </b-card-body>
+    </b-card>
+    <Impact
+      v-else
+      :range="startf + ' - ' + endf"
+      :total-benefit="totalBenefit"
+      :total-c-o2="totalCO2"
+      :total-weight="totalWeight"
+      class="mt-2"
+    />
   </div>
 </template>
 <script>
