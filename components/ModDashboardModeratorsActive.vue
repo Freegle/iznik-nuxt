@@ -33,7 +33,7 @@
       </div>
     </div>
     <div v-else>
-      <p>Select a community and click <em>Update</em> to show the active moderators.</p>
+      <p>Select a community and click <em>Update</em> to show the active volunteers for that community.</p>
     </div>
   </div>
 </template>
