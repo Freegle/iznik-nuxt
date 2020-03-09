@@ -50,6 +50,12 @@ export default {
       required: false,
       default: false
     },
+    // Whether "All my communities" should be "My active communities"
+    active: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     size: {
       type: String,
       required: false,
@@ -80,7 +86,9 @@ export default {
       if (this.all) {
         groups.push({
           value: null,
-          text: '-- All my communities --',
+          text: this.active
+            ? '-- My active communities --'
+            : '-- All my communities --',
           selected: this.selectedGroup === null
         })
       } else {

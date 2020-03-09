@@ -4,7 +4,7 @@
       Loading
     </p>
     <p v-else>
-      During this time here have been
+      During this time there have been
       <b>{{ RecentCounts.newmessages | pluralize('new post', { includeNumber: true }) }}</b> and
       <b>{{ RecentCounts.newmembers | pluralize('new member', { includeNumber: true }) }}</b>.
     </p>

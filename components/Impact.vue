@@ -262,7 +262,6 @@ export default {
         ret = Math.round(val)
       }
 
-      console.log('Round', val, ret)
       return ret
     }
   }

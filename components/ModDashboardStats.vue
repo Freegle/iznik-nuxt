@@ -55,13 +55,6 @@ export default {
     async fetchStats() {
       this.loading = true
 
-      console.log(
-        'Load stats for ',
-        this.start.toString(),
-        this.end.toString(),
-        this.groupid
-      )
-
       await this.$store.dispatch('stats/clear')
 
       if (this.start) {

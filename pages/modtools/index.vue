@@ -8,7 +8,7 @@
     <div class="d-flex mb-2 mt-2">
       <div class="borderit d-flex flex-column">
         <label for="dashboardgroup">Choose community:</label>
-        <GroupSelect id="dashboardgroup" v-model="groupid" all modonly />
+        <GroupSelect id="dashboardgroup" v-model="groupid" all modonly active />
       </div>
       <div class="borderit d-flex flex-column">
         <label for="startDate" class="date__label">From:</label>
