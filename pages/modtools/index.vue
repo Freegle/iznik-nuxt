@@ -54,6 +54,7 @@
           <ModDashboardFreeglersReplying :groupid="groupid" :start="start" :end="end" />
         </b-col>
       </b-row>
+      <ModDashboardImpact :groupid="groupid" :start="start" :end="end" class="mt-2" />
       <ActivityGraph :groupid="groupid" :start="start" :end="end" offers wanteds />
     </div>
   </div>
@@ -70,6 +71,7 @@ import ModMissingFacebook from '../../components/ModMissingFacebook'
 import ModMissingTwitter from '../../components/ModMissingTwitter'
 import ModMissingProfile from '../../components/ModMissingProfile'
 import ActivityGraph from '../../components/ActivityGraph'
+import ModDashboardImpact from '../../components/ModDashboardImpact'
 import lazyLoadComponent from '@/utils/lazy-load-component'
 
 // We lazy load these components below, but by importing them here it means they can render their own
@@ -84,6 +86,7 @@ export default {
   // We use a lazy-loading trick from https://markus.oberlehner.net/blog/lazy-load-vue-components-when-they-become-visible/.
   // This avoids hitting the server with expensive calls if people don't scroll down.
   components: {
+    ModDashboardImpact,
     ActivityGraph,
     ModMissingProfile,
     ModMissingTwitter,

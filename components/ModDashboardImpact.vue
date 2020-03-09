@@ -14,7 +14,8 @@ export default {
   extends: ModDashboardBase,
   data: function() {
     return {
-      askfor: []
+      askfor: ['Weight'],
+      Weight: null
     }
   },
   computed: {
@@ -25,7 +26,7 @@ export default {
       return this.$dayjs(this.end).format('YYYY-MM-DD')
     },
     totalWeight() {
-      const weights = this.$store.getters['stats/get']('Weight')
+      const weights = this.Weight
       let total = 0
       const start = this.$dayjs(this.start)
       const end = this.$dayjs(this.end)
