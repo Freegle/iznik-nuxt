@@ -39,9 +39,7 @@ export default {
     }
   },
   mounted() {
-    this.$nextTick(() => {
-      this.fetch()
-    })
+    this.fetch()
   },
   methods: {
     async fetch() {

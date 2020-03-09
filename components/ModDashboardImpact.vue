@@ -1,6 +1,7 @@
 <template>
   <div>
     <h2>Impact</h2>
+    <p>This is our estimate of the impact your active communities have had.</p>
     <Impact :range="startf + ' - ' + endf" :total-benefit="totalBenefit" :total-c-o2="totalCO2" :total-weight="totalWeight" class="mt-2" />
   </div>
 </template>

@@ -11,7 +11,7 @@ export const mutations = {
 
   set(state, stats) {
     for (const type in stats) {
-      state[type] = []
+      Vue.set(state, type, [])
 
       for (const ix in stats[type]) {
         Vue.set(state[type], ix, stats[type][ix])
