@@ -1,19 +1,19 @@
 <template>
-  <div class="d-inline clickme" @mousedown.native="click">
+  <div class="d-inline clickme" @click="click">
     <span class="d-none d-sm-inline">
       <span v-if="icon">
         <v-icon :name="icon" scale="2" /><br>
       </span>
       {{ name }}
     </span>
-    <span class="d-inline d-sm-none">
+    <span v-if="name" class="d-inline d-sm-none largeish">
       {{ name }}
     </span>
     <v-icon v-if="icon" :name="icon" class="d-inline d-sm-none" scale="2" />
-    <b-badge v-if="getCount(count)" :variant="countVariant">
+    <b-badge v-if="getCount(count)" :variant="countVariant" class="leftandtop">
       {{ getCount(count) }}
     </b-badge>
-    <b-badge v-if="getCount(othercount)" variant="info">
+    <b-badge v-if="getCount(othercount)" variant="info" class="leftanddown">
       {{ getCount(othercount) }}
     </b-badge>
   </div>
@@ -85,3 +85,20 @@ export default {
   }
 }
 </script>
+<style scoped>
+.leftanddown {
+  position: relative;
+  left: -10px;
+  top: 12px;
+}
+
+.leftandtop {
+  position: relative;
+  left: -10px;
+  top: -12px;
+}
+
+.largeish {
+  font-size: 2em !important;
+}
+</style>

@@ -1,23 +1,63 @@
 <template>
   <client-only>
     <div class="pageback">
-      <b-navbar id="navbar" type="dark" class="navback" fixed="top">
+      <b-navbar id="navbar" type="dark" class="navback pl-0 pl-sm-2 pr-0 pr-sm-2" fixed="top">
         <b-navbar-brand to="/modtools" class="p-0 d-flex">
           <b-img
-            class="logo mr-2"
+            class="logo"
             height="58"
             width="58"
             rounded
             :src="logo"
             alt="Home"
           />
-          <ModStatus class="mt-3" />
+          <ModStatus class="status" />
         </b-navbar-brand>
         <b-navbar-nav />
-        <b-navbar-nav class="ml-auto">
-          <b-nav-item-dropdown right class="d-block d-sm-none">
+        <!-- Larger screens -->
+        <b-navbar-nav class="d-none d-sm-flex ml-auto">
+          <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse2" class="text-center p-0" @click="discourse">
+            <div>
+              <span class="d-none d-sm-inline">
+                <v-icon name="brands/discourse" scale="2" class="fa-fw" /><br>
+                Us
+              </span>
+              <v-icon name="brands/discourse" class="d-inline d-sm-none mt-2" scale="2" />
+              <b-badge v-if="discourseCount" variant="success">
+                {{ discourseCount }}
+              </b-badge>
+            </div>
+          </b-nav-item>
+          <b-nav-item v-if="loggedIn" id="menu-option-modtools-chat2" class="text-center p-0" to="/modtools/chats">
+            <div>
+              <span class="d-none d-sm-inline">
+                <v-icon name="comments" scale="2" class="fa-fw" /><br>
+                Chats
+              </span>
+              <v-icon name="comments" class="d-inline d-sm-none" scale="2" />
+              <b-badge v-if="chatCount" variant="danger">
+                {{ chatCount }}
+              </b-badge>
+            </div>
+          </b-nav-item>
+          <b-nav-item v-if="loggedIn" id="menu-option-modtools-logout2" class="text-center p-0" @click="logOut">
+            <span class="d-none d-sm-inline">
+              <v-icon name="sign-out-alt" scale="2" class="fa-fw" /><br>
+              Logout
+            </span>
+            <v-icon name="sign-out-alt" class="d-inline d-sm-none" scale="2" />
+          </b-nav-item>
+          <b-nav-item v-if="!loggedIn">
+            <b-btn variant="white" @click="requestLogin">
+              Sign in
+            </b-btn>
+          </b-nav-item>
+        </b-navbar-nav>
+        <!-- Mobile screens -->
+        <b-navbar-nav class="w-100 d-flex d-sm-none justify-content-between ml-sm-auto pr-4">
+          <b-nav-item-dropdown class="pt-1">
             <template v-slot:button-content>
-              <ModMenuItemNav :count="['pending', 'chatreview']" icon="envelope" class="menuicon" />
+              <ModMenuItemNav :count="['pending', 'chatreview']" icon="envelope" />
             </template>
             <b-dropdown-item>
               <ModMenuItemNav name="Pending" :count="['pending']" :othercount="['pending']" link="/modtools/messages/pending" />
@@ -35,9 +75,9 @@
               <ModMenuItemNav name="Chat Review" :count="['chatreview']" link="/modtools/chats/review" />
             </b-dropdown-item>
           </b-nav-item-dropdown>
-          <b-nav-item-dropdown right class="d-block d-sm-none">
+          <b-nav-item-dropdown right class="pt-1">
             <template v-slot:button-content>
-              <ModMenuItemNav v-if="hasPermissionNewsletter" :count="['pendingmembers', 'spammembers', 'stories', 'newsletterstories', 'socialactions']" icon="users" class="menuicon" />
+              <ModMenuItemNav v-if="hasPermissionNewsletter" :count="['relatedmembers', 'pendingmembers', 'spammembers', 'stories', 'newsletterstories', 'socialactions']" icon="users" />
             </template>
             <b-dropdown-item>
               <ModMenuItemNav name="Pending" :count="['pendingmembers']" link="/modtools/members/pending" />
@@ -61,33 +101,24 @@
               <ModMenuItemNav name="Publicity" :count="['socialactions']" href="/modtools/publicity" />
             </b-dropdown-item>
           </b-nav-item-dropdown>
-          <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse" class="text-center p-0" @click="discourse">
-            <div class="notifwrapper">
-              <span class="d-none d-sm-inline">
-                <v-icon name="brands/discourse" scale="2" class="fa-fw" /><br>
-                Us
-              </span>
-              <v-icon name="brands/discourse" class="d-inline d-sm-none mt-2" scale="2" />
+          <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse" @click="discourse">
+            <div>
+              <v-icon name="brands/discourse" class="mt-1" scale="2" />
               <b-badge v-if="discourseCount" variant="success">
                 {{ discourseCount }}
               </b-badge>
             </div>
           </b-nav-item>
-          <b-nav-item v-if="loggedIn" id="menu-option-modtools-chat" class="text-center p-0" to="/modtools/chats">
-            <div class="notifwrapper">
-              <span class="d-none d-sm-inline">
-                <v-icon name="comments" scale="2" class="fa-fw" /><br>
-                Chats
-              </span>
-              <v-icon name="comments" class="d-inline d-sm-none" scale="2" />
+          <b-nav-item v-if="loggedIn" id="menu-option-modtools-chat" to="/modtools/chats">
+            <div>
+              <v-icon name="comments" class="mt-1" scale="2" />
               <b-badge v-if="chatCount" variant="danger">
                 {{ chatCount }}
               </b-badge>
             </div>
           </b-nav-item>
           <b-nav-item v-if="loggedIn" id="menu-option-modtools-logout" class="text-center p-0" @click="logOut">
-            <v-icon name="sign-out-alt" scale="2" class="d-inline fa-fw" /><br>
-            Logout
+            <v-icon name="sign-out-alt" class="mt-1" scale="2" />
           </b-nav-item>
           <b-nav-item v-if="!loggedIn">
             <b-btn variant="white" @click="requestLogin">
@@ -278,9 +309,11 @@ html {
   box-sizing: border-box;
 }
 
-#navbar .nav-item {
-  width: 80px;
-  text-align: center;
+@include media-breakpoint-up(sm) {
+  #navbar .nav-item {
+    width: 80px;
+    text-align: center;
+  }
 }
 
 .pageContent {
@@ -370,8 +403,9 @@ body.modal-open {
   height: 2rem;
 }
 
-.menuicon {
+.status {
+  left: -16px;
   position: relative;
-  top: 13px;
+  top: 35px;
 }
 </style>
