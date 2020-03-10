@@ -1,6 +1,7 @@
 <template>
-  <span v-if="tried" title="Platform Status - click for more info" @click="clicked">
-    <span v-if="error" class="error" />
+  <span title="Platform Status - click for more info" @click="clicked">
+    <span v-if="!tried" class="trying" />
+    <span v-else-if="error" class="error" />
     <span v-else-if="warning" class="warning" />
     <span v-else-if="fine" class="fine" />
     <b-modal
@@ -114,6 +115,14 @@ export default {
 </script>
 <style scoped lang="scss">
 @import 'color-vars';
+
+.trying {
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  background-color: $color-gray--light;
+  display: block;
+}
 
 .error {
   border-radius: 50%;
