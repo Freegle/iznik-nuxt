@@ -42,11 +42,15 @@
       </NoticeMessage>
       <b-textarea v-model="body" rows="10" class="mt-2" />
       <div v-if="stdmsg.newdelstatus && stdmsg.newdelstatus !== 'UNCHANGED'" class="mt-1">
-        <v-icon name="cog" />
+        <v-icon v-if="changingNewDelStatus" name="sync" class="text-success fa-spin" />
+        <v-icon v-else-if="changedNewDelStatus" name="check" class="text-success" />
+        <v-icon v-else name="cog" />
         Change email frequency to <em>{{ emailfrequency }}</em>
       </div>
       <div v-if="stdmsg.newmodstatus && stdmsg.newmodstatus !== 'UNCHANGED'" class="mt-1">
-        <v-icon name="cog" />
+        <v-icon v-if="changingNewModStatus" name="sync" class="text-success fa-spin" />
+        <v-icon v-else-if="changedNewModStatus" name="check" class="text-success" />
+        <v-icon v-else name="cog" />
         Change moderation status to <em>{{ modstatus }}</em>
       </div>
       <NoticeMessage v-if="stdmsg.autosend" variant="info">
@@ -91,7 +95,11 @@ export default {
       subject: null,
       body: null,
       keywordList: ['Offer', 'Taken', 'Wanted', 'Received', 'Other'],
-      recentDays: 31
+      recentDays: 31,
+      changingNewModStatus: false,
+      changedNewModStatus: false,
+      changingNewDelStatus: false,
+      changedNewDelStatus: false
     }
   },
   computed: {
@@ -473,22 +481,28 @@ export default {
         this.stdmsg.newdelstatus &&
         this.stdmsg.newdelstatus !== 'UNCHANGED'
       ) {
+        this.changingNewDelStatus = true
         await this.$store.dispatch('user/edit', {
           id: this.memberid,
           groupid: this.groupid,
           emailfrequency: this.emailfrequency
         })
+        this.changingNewDelStatus = false
+        this.changedNewDelStatus = true
       }
 
       if (
         this.stdmsg.newmodstatus &&
         this.stdmsg.newmodstatus !== 'UNCHANGED'
       ) {
+        this.changingNewModStatus = true
         await this.$store.dispatch('user/edit', {
           id: this.memberid,
           groupid: this.groupid,
           ourPostingStatus: this.stdmsg.newmodstatus
         })
+        this.changingNewModStatus = false
+        this.changedNewModStatus = true
       }
 
       switch (this.stdmsg.action) {
