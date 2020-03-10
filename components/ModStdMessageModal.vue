@@ -49,6 +49,9 @@
         <v-icon name="cog" />
         Change moderation status to <em>{{ modstatus }}</em>
       </div>
+      <NoticeMessage v-if="stdmsg.autosend" variant="info">
+        Autosend is disabled while we're still testing this version.
+      </NoticeMessage>
     </template>
     <template slot="modal-footer" slot-scope="{ cancel }">
       <b-btn variant="success" @click="process">
