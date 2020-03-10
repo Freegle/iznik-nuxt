@@ -2,9 +2,9 @@
   <client-only>
     <div class="pageback">
       <b-navbar id="navbar" type="dark" class="navback pl-0 pl-sm-2 pr-0 pr-sm-2" fixed="top">
-        <b-navbar-brand to="/modtools" class="p-0 d-flex">
+        <b-navbar-brand class="p-0 d-flex" @click="clicklogo">
           <b-img
-            class="logo"
+            class="logo clickme"
             height="58"
             width="58"
             rounded
@@ -130,9 +130,7 @@
 
       <div class="d-flex">
         <div class="leftmenu d-none d-sm-block">
-          <nuxt-link to="/modtools" class="pl-1">
-            Dashboard
-          </nuxt-link>
+          <ModMenuItemLeft link="/modtools" name="Dashboard" />
           <hr>
           <div class="pl-1">
             Messages
@@ -271,6 +269,15 @@ export default {
     },
     discourse() {
       window.open('https://discourse.ilovefreegle.org/')
+    },
+    clicklogo(e) {
+      if (this.$route.fullPath === '/modtools') {
+        // Click on current route.  Reload.
+        e.stopPropagation()
+        this.$router.go()
+      } else {
+        this.$router.push('/modtools')
+      }
     }
   },
 
@@ -404,8 +411,8 @@ body.modal-open {
 }
 
 .status {
-  left: -16px;
+  left: -13px;
   position: relative;
-  top: 35px;
+  top: -10px;
 }
 </style>

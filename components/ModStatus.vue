@@ -104,8 +104,10 @@ export default {
 
       this.timer = setTimeout(this.checkStatus, 30000)
     },
-    clicked() {
+    clicked(e) {
       this.show = true
+      e.preventDefault()
+      e.stopPropagation()
     }
   }
 }

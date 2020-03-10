@@ -78,7 +78,7 @@ export default {
 @import 'color-vars';
 
 .active {
-  background-color: $color-modtools-blue--dark;
+  background-color: $color-blue--light;
 
   a {
     color: $color-white;
