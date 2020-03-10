@@ -9,7 +9,7 @@
 
       <NoticeMessage v-if="!members.length && !busy" class="mt-2">
         There are no related members at the moment.  Sometimes you'll see the count show a member, and then when
-        you click here to look at it we'll look a bit closer and discover it doesn't need your attention.
+        you click here to look at it we'll look a bit closer and discover it doesn't need your attention - that's normal.
       </NoticeMessage>
 
       <infinite-loading :key="'infinite-' + groupid + '-' + visibleMembers.length" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">

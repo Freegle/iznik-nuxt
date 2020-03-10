@@ -95,4 +95,20 @@ export default class MembershipsAPI extends BaseAPI {
       groupid: groupid
     })
   }
+
+  hold(userid, groupid) {
+    return this.$post('/memberships', {
+      action: 'Hold',
+      userid: userid,
+      groupid: groupid
+    })
+  }
+
+  release(userid, groupid) {
+    return this.$post('/memberships', {
+      action: 'Release',
+      userid: userid,
+      groupid: groupid
+    })
+  }
 }

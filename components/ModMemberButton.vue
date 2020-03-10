@@ -182,12 +182,14 @@ export default {
     },
     holdIt() {
       this.$store.dispatch('members/hold', {
-        id: this.member.userid
+        userid: this.member.userid,
+        groupid: this.groupid
       })
     },
     releaseIt() {
       this.$store.dispatch('members/release', {
-        id: this.member.userid
+        userid: this.member.userid,
+        groupid: this.groupid
       })
     }
   }

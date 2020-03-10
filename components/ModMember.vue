@@ -17,6 +17,15 @@
         </div>
       </b-card-header>
       <b-card-body>
+        <div v-if="member.heldby">
+          <NoticeMessage v-if="me.id === member.heldby.id" variant="warning" class="mb-2">
+            You held this member.  Other people will see a warning to check with
+            you before releasing them.
+          </NoticeMessage>
+          <NoticeMessage v-else variant="warning" class="mb-2">
+            Held by <b>{{ member.heldby.displayname }}</b>.  Please check before releasing them.
+          </NoticeMessage>
+        </div>
         <ModComments :user="member" />
         <ModSpammer v-if="member.spammer" :user="member" />
         <NoticeMessage v-if="member.activedistance > 50" variant="warning" class="mb-2">

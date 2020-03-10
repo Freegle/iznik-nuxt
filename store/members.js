@@ -63,6 +63,28 @@ export const mutations = {
   },
   setContext(state, ctx) {
     state.context = ctx
+  },
+  hold(state, params) {
+    // We can't fetch a single membership, so mutate in here rather than refetch.
+    Object.keys(state.list).forEach(key => {
+      if (
+        parseInt(state.list[key].userid) === parseInt(params.userid) &&
+        parseInt(state.list[key].groupid) === parseInt(params.groupid)
+      ) {
+        state.list[key].heldby = params.me
+      }
+    })
+  },
+  release(state, params) {
+    // We can't fetch a single membership, so mutate in here rather than refetch.
+    Object.keys(state.list).forEach(key => {
+      if (
+        parseInt(state.list[key].userid) === parseInt(params.userid) &&
+        parseInt(state.list[key].groupid) === parseInt(params.groupid)
+      ) {
+        state.list[key].heldby = null
+      }
+    })
   }
 }
 
@@ -313,5 +335,17 @@ export const actions = {
 
   updateComments({ commit }, params) {
     commit('updateComments', params)
+  },
+
+  async hold({ dispatch, commit, rootGetters }, params) {
+    await this.$api.memberships.hold(params.userid, params.groupid)
+    params.me = rootGetters['auth/user']
+    commit('hold', params)
+  },
+
+  async release({ dispatch, commit, rootGetters }, params) {
+    await this.$api.memberships.release(params.userid, params.groupid)
+    params.me = rootGetters['auth/user']
+    commit('release', params)
   }
 }
