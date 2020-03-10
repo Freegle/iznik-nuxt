@@ -5,32 +5,51 @@
     <ModMissingFacebook />
     <ModMissingTwitter class="mt-1" />
     <ModMissingProfile class="mt-1" />
-    <div class="d-flex mb-2 mt-2">
+    <div class="d-flex mb-2 mt-2 flex-wrap">
       <div class="borderit d-flex flex-column">
         <label for="dashboardgroup">Choose community:</label>
         <GroupSelect id="dashboardgroup" v-model="groupidi" all modonly active />
       </div>
       <div class="borderit d-flex flex-column">
-        <label for="startDate">From:</label>
-        <date-picker
-          id="startDate"
-          v-model="starti"
-          lang="en"
-          type="date"
-          format="YYYY-MM-DD"
-          :disabled-date="notbeforeepoch"
-        />
+        <label for="showInfo">Show info from:</label>
+        <b-select id="showInfo" v-model="showInfo">
+          <option value="week">
+            Last 7 days
+          </option>
+          <option value="month">
+            The last month
+          </option>
+          <option value="year">
+            The last 12 months
+          </option>
+          <option value="custom">
+            Specific dates
+          </option>
+        </b-select>
       </div>
-      <div class="borderit d-flex flex-column">
-        <label for="endDate">To:</label>
-        <date-picker
-          id="endDate"
-          v-model="endi"
-          lang="en"
-          type="date"
-          format="YYYY-MM-DD"
-          :disabled-date="notbeforestart"
-        />
+      <div v-if="showInfo === 'custom'" class="d-flex flex-wrap">
+        <div class="borderit d-flex flex-column">
+          <label for="startDate">From:</label>
+          <date-picker
+            id="startDate"
+            v-model="starti"
+            lang="en"
+            type="date"
+            format="YYYY-MM-DD"
+            :disabled-date="notbeforeepoch"
+          />
+        </div>
+        <div class="borderit d-flex flex-column">
+          <label for="endDate">To:</label>
+          <date-picker
+            id="endDate"
+            v-model="endi"
+            lang="en"
+            type="date"
+            format="YYYY-MM-DD"
+            :disabled-date="notbeforestart"
+          />
+        </div>
       </div>
       <div class="borderit d-flex flex-column justify-content-end">
         <b-btn variant="white" @click="update">
@@ -141,14 +160,26 @@ export default {
       dateFormat: null
     }
   },
-  computed: {},
+  computed: {
+    showInfo: {
+      get() {
+        return this.$store.getters['misc/get']('dashboardShowInfo') || 'week'
+      },
+      set(newValue) {
+        this.$store.dispatch('misc/set', {
+          key: 'dashboardShowInfo',
+          value: newValue
+        })
+      }
+    }
+  },
+  watch: {
+    showInfo() {
+      this.update()
+    }
+  },
   mounted() {
-    this.start = this.$dayjs()
-      .subtract(7, 'days')
-      .toDate()
-    this.end = new Date()
-    this.starti = this.start
-    this.endi = this.end
+    this.update()
   },
   methods: {
     notbeforeepoch(date) {
@@ -163,6 +194,33 @@ export default {
     },
     update() {
       // A manual click to do the refresh avoids multiple refreshes when tweaking dates.
+      switch (this.showInfo) {
+        case 'week': {
+          this.starti = this.$dayjs()
+            .subtract(7, 'days')
+            .toDate()
+          this.endi = new Date()
+          break
+        }
+        case 'month': {
+          this.starti = this.$dayjs()
+            .subtract(1, 'month')
+            .toDate()
+          this.endi = new Date()
+          break
+        }
+        case 'year': {
+          this.starti = this.$dayjs()
+            .subtract(1, 'year')
+            .toDate()
+          this.endi = new Date()
+          break
+        }
+        case 'custom': {
+          // Do nothing - use the values in the input.
+        }
+      }
+
       this.start = this.starti
       this.end = this.endi
       this.groupid = this.groupidi
