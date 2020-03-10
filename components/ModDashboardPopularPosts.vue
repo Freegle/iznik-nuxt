@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Popular Posts</h2>
+    <h2>Popular Posts <span class="text-muted">on {{ groupName }}</span></h2>
     <p>These are the posts which are most viewed (on the website), and most replied to (on the website or by email).</p>
     <b-card v-if="loading" no-body>
       <b-card-body>

@@ -8,6 +8,10 @@ export default {
       required: false,
       default: null
     },
+    groupName: {
+      type: String,
+      required: true
+    },
     start: {
       type: Date,
       required: true

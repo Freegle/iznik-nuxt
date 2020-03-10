@@ -3,7 +3,7 @@
     <b-card-text>
       <h3 class="d-flex justify-content-between">
         <span>
-          {{ graphTitles[graphType] }}
+          {{ graphTitles[graphType] }} <span v-if="groupName" class="text-muted">on {{ groupName }}</span>
         </span>
         <b-form-select v-model="graphType" :options="graphTypes" class="graphSelect" />
       </h3>
@@ -52,6 +52,11 @@ export default {
   props: {
     groupid: {
       type: Number,
+      required: false,
+      default: null
+    },
+    groupName: {
+      type: String,
       required: false,
       default: null
     },

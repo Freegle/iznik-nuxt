@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Active Volunteers</h2>
+    <h2>Active Volunteers <span class="text-muted">on {{ groupName }}</span></h2>
     <div v-if="groupid">
       <b-card v-if="loading" no-body>
         <b-card-body>
