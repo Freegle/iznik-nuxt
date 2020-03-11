@@ -103,7 +103,7 @@
               </span>
             </b-btn>
             <b-btn variant="link" @click="showHistory">
-              View osts
+              View posts
             </b-btn>
             <b-btn variant="link">
               <!--      TODO Show modal-->

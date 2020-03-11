@@ -131,7 +131,7 @@ export default {
         e1 = e1.substring(e1, e1.indexOf('@'))
         e2 = e2.substring(e2, e2.indexOf('@'))
 
-        if (this.findLongest(e1, e2) >= LONG_THRESHOLD) {
+        if (e1 && e2 && this.findLongest(e1, e2) >= LONG_THRESHOLD) {
           ret = true
         }
       }
@@ -139,7 +139,7 @@ export default {
       const n1 = this.user1.displayname
       const n2 = this.user2.displayname
 
-      if (this.findLongest(n1, n2) >= LONG_THRESHOLD) {
+      if (n1 && n2 && this.findLongest(n1, n2) >= LONG_THRESHOLD) {
         ret = true
       }
 
@@ -166,11 +166,12 @@ export default {
     },
     findLongest(s1, s2) {
       // From https://codereview.stackexchange.com/questions/210940/find-longest-common-string-subsequence
-      const removeDistinct = (s1, s2) =>
-        s1
-          .split('')
-          .filter(c => s2.includes(c))
-          .join('')
+      const removeDistinct = (s1, s2) => console.log('Find longest', s1, s2)
+      s1.split('')
+        .filter(c => {
+          ;(s2 + '').includes(c)
+        })
+        .join('')
       const findFirstSeq = (s1, s2) => {
         let seq = ''
         let i
@@ -213,12 +214,17 @@ export default {
       }
       const s1D = removeDistinct(s1, s2)
       const s2D = removeDistinct(s2, s1)
-      if (s1D === s2D) {
-        return s1D.length
+      if (s1D && s2D) {
+        if (s1D === s2D) {
+          return s1D.length
+        }
+
+        findSubseq(s1D, s2D)
+        const ret = findSubseq(s2D, s1D)
+        return ret ? ret.length : 0
+      } else {
+        return 0
       }
-      findSubseq(s1D, s2D)
-      const ret = findSubseq(s2D, s1D)
-      return ret ? ret.length : 0
     },
     email(member) {
       // Depending on which context we're used it, we might or might not have an email returned.
