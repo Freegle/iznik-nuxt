@@ -1,7 +1,7 @@
 <template>
   <client-only>
     <div class="pageback">
-      <b-navbar id="navbar" type="dark" class="navback p-0 p-sm-2" fixed="top">
+      <b-navbar id="navbar" type="dark" class="navback p-0 p-sm-1" fixed="top">
         <b-navbar-brand class="p-0 pr-2 d-flex" @click="clicklogo">
           <b-img
             class="logo clickme"
