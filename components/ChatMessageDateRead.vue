@@ -1,7 +1,7 @@
 <template>
   <b-row v-if="!chatmessage.sameasnext || last" class="text-muted small">
     <b-col v-if="chatmessage.userid !== me.id">
-      <span class="chat__dateread--theirs">
+      <span class="chat__dateread--theirs" :title="chatmessage.date | datetimeshort">
         {{ chatmessage.date | timeago }}
       </span>
       <b-badge v-if="chatmessage.replyexpected && !chatmessage.replyreceived" variant="danger">
