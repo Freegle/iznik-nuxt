@@ -82,14 +82,17 @@ export default {
   async asyncData({ app, params, store }) {
     let chats = Object.values(store.getters['chats/list'])
 
-    if (chats) {
+    if (chats && chats.length) {
       // Got some - can start rendering.  Fire off an update to refresh us later if they've changed.  No rush, so
       // wait for idle.
 
       requestIdleCallback(() => this.listChats)
     } else {
       // Not got any - need to get them before we can proceed.
-      await this.listChats()
+      const modtools = store.getters['misc/get']('modtools')
+      await store.dispatch('chats/listChats', {
+        chattypes: modtools ? ['User2Mod'] : ['User2User', 'User2Mod']
+      })
     }
 
     chats = Object.values(store.getters['chats/list'])
