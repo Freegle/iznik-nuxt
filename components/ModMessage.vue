@@ -29,12 +29,16 @@
           </b-btn>
         </div>
         <!--        TODO Duplicates, related-->
-        <!--        Outcomes-->
         <!--        View Source-->
       </b-card-header>
       <b-card-body>
         <b-row>
           <b-col cols="12" lg="8">
+            <NoticeMessage v-if="message.outcomes && message.outcomes.length" class="mb-1">
+              {{ message.outcomes[0].outcome.toUpperCase() }}
+              at
+              {{ message.outcomes[0].timestamp | datetimeshort }}
+            </NoticeMessage>
             <div v-if="message.heldby">
               <NoticeMessage v-if="me.id === message.heldby.id" variant="warning" class="mb-2">
                 You held this {{ message.heldby.timestamp | timeago }}.  Other people will see a warning to check with
