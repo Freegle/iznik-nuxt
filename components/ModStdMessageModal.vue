@@ -54,7 +54,8 @@
         Change moderation status to <em>{{ modstatus }}</em>
       </div>
       <NoticeMessage v-if="stdmsg.autosend" variant="info">
-        Autosend is disabled while we're still testing this version.
+        Autosend is disabled while we're still testing this version.  Please review the message to make sure
+        it looks ok and any substitution strings have expanded correctly, before sending it.
       </NoticeMessage>
     </template>
     <template slot="modal-footer" slot-scope="{ cancel }">
