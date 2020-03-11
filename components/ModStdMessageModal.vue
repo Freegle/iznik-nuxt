@@ -429,15 +429,17 @@ export default {
           })
         }
 
-        text = text.replace(
-          /\$memberreason/g,
-          this.member.joincomment ? this.member.joincomment : ''
-        )
+        if (this.member) {
+          text = text.replace(
+            /\$memberreason/g,
+            this.member.joincomment ? this.member.joincomment : ''
+          )
+        }
 
-        if (this.member && this.member.joined) {
+        if (this.user && this.user.joined) {
           text = text.replace(
             /\$membersubdate/g,
-            new this.$dayjs(this.member.joined).format('lll')
+            new this.$dayjs(this.user.joined).format('lll')
           )
         }
 
