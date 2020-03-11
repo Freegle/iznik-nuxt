@@ -194,7 +194,7 @@ export default {
       })
     },
     spamConfirmed() {
-      this.$store.dispatch('messages/review', {
+      this.$store.dispatch('messages/spam', {
         id: this.message.id,
         groupid: this.groupid
       })

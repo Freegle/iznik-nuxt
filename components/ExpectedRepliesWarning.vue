@@ -5,7 +5,7 @@
         <b>{{ count | pluralize(['freegler is', 'freeglers are'], { includeNumber: true }) }} waiting for you to reply.</b>
       </p>
       <p>
-        Please don't leave them hanging!  Other people will see that you haven't replied yet.
+        Please don't leave them hanging!  Let them know if you're no longer interested, or other people will see that you haven't replied yet.
       </p>
       <div v-for="chat in chats" :key="'expectedreply-' + chat.id">
         <b-btn variant="success" size="lg" @click="go(chat.id)">

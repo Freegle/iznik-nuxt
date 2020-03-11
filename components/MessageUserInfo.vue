@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex justify-content-between flex-wrap">
+  <div class="d-flex justify-content-between flex-wrap order-0">
     <nuxt-link :to="'/profile/' + user.id" class="text-success decornone" :title="'Click to view profile for ' + user.displayname">
       <span class="text-muted small d-flex justify-content-between">
         <ProfileImage :image="user.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="sm" />
@@ -26,15 +26,16 @@
         </span>
       </span>
     </nuxt-link>
-    <span v-if="modinfo && membership" class="ml-2">
+    <span v-if="modinfo && membership" class="ml-2 order-1 order-sm-1 small">
       <v-icon name="calendar-alt" />
       <span :class="joinedAge <= 31 ? 'text-danger' : ''">Joined {{ membership.added | dateshort }}</span>
     </span>
-    <span v-if="modinfo && membership" class="ml-2 text-truncate email">
+    <span v-if="modinfo && membership" class="ml-2 text-truncate small email order-3 order-md-1">
       <!-- eslint-disable-next-line -->
-      <v-icon name="hashtag" class="text-muted" scale="0.8" />{{ user.id }}</span>
-    <ModModeration v-if="modinfo && membership" :user="user" :membership="membership" />
-    <ModPostingHistory v-if="modinfo" :user="user" />
+      <v-icon name="hashtag" class="text-muted" scale="0.8" />{{ user.id }}
+    </span>
+    <ModModeration v-if="modinfo && membership" :user="user" :membership="membership" class="order-2 order-md-3 order-lg-4" />
+    <ModPostingHistory v-if="modinfo" :user="user" class="order-4 order-md-4 order-lg-3 mt-1 mt-md-0" />
   </div>
 </template>
 

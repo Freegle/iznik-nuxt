@@ -21,11 +21,15 @@
   </div>
 </template>
 <script>
+import NoticeMessage from '../../../../components/NoticeMessage'
+import ModMessage from '../../../../components/ModMessage'
+import GroupSelect from '../../../../components/GroupSelect'
 import loginRequired from '@/mixins/loginRequired'
 import modMessagesPage from '@/mixins/modMessagesPage'
 import createGroupRoute from '@/mixins/createGroupRoute'
 
 export default {
+  components: { GroupSelect, ModMessage, NoticeMessage },
   layout: 'modtools',
   mixins: [
     loginRequired,

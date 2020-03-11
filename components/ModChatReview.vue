@@ -27,7 +27,7 @@
             {{ message.message }}
           </div>
           <div v-else>
-            <ChatMessage :chat="null" :chatmessage="message" :otheruser="null" last />
+            <ChatMessage :chat="message.chatroom" :chatmessage="message" :otheruser="message.userid === message.fromuser.id ? message.touser : message.fromuser" last />
           </div>
         </div>
         <div class="d-flex justify-content-between flex-wrap">

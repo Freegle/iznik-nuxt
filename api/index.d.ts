@@ -15,6 +15,7 @@ import AddressAPI from './AddressAPI.js'
 import AuthorityAPI from './AuthorityAPI.js'
 import BanditAPI from './BanditAPI.js'
 import ChatAPI from './ChatAPI.js'
+import CommentAPI from './CommentAPI.js'
 import CommunityEventAPI from './CommunityEventAPI.js'
 import DashboardAPI from './DashboardAPI.js'
 import DonationsAPI from './DonationsAPI.js'
@@ -45,6 +46,7 @@ interface API {
   authority: AuthorityAPI;
   bandit: BanditAPI;
   chat: ChatAPI;
+  comment: CommentAPI;
   communityevent: CommunityEventAPI;
   dashboard: DashboardAPI;
   donations: DonationsAPI;

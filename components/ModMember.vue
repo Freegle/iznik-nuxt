@@ -17,6 +17,17 @@
         </div>
       </b-card-header>
       <b-card-body>
+        <div v-if="member.heldby">
+          <NoticeMessage v-if="me.id === member.heldby.id" variant="warning" class="mb-2">
+            You held this member.  Other people will see a warning to check with
+            you before releasing them.
+          </NoticeMessage>
+          <NoticeMessage v-else variant="warning" class="mb-2">
+            Held by <b>{{ member.heldby.displayname }}</b>.  Please check before releasing them.
+          </NoticeMessage>
+        </div>
+        <ModComments :user="member" />
+        <ModSpammer v-if="member.spammer" :user="member" />
         <NoticeMessage v-if="member.activedistance > 50" variant="warning" class="mb-2">
           This freegler is active on groups {{ member.activedistance }} miles apart.
         </NoticeMessage>
@@ -32,14 +43,20 @@
           />
           <div>
             <h4>
-              <b-badge :variant="offers > 0 ? 'success' : 'light'" @click="showHistory('Offer')">
+              <b-badge :variant="offers > 0 ? 'success' : 'light'" title="Recent OFFERs" @click="showHistory('Offer')">
                 <v-icon name="gift" class="fa-fw" /> {{ offers | pluralize([ 'OFFER', 'OFFERs' ], { includeNumber: true }) }}
               </b-badge>
-              <b-badge :variant="wanteds > 0 ? 'success' : 'light'" @click="showHistory('Wanted')">
+              <b-badge :variant="wanteds > 0 ? 'success' : 'light'" title="Recent WANTEDs" @click="showHistory('Wanted')">
                 <v-icon name="search" class="fa-fw" /> {{ wanteds | pluralize([ 'WANTED', 'WANTEDs' ], { includeNumber: true }) }}
               </b-badge>
-              <b-badge :variant="member.modmails > 0 ? 'danger' : 'light'">
+              <b-badge :variant="member.modmails > 0 ? 'danger' : 'light'" title="Recent ModMails">
                 <v-icon name="exclamation-triangle" class="fa-fw" /> {{ member.modmails | pluralize([ 'Modmail', 'Modmails' ], { includeNumber: true }) }}
+              </b-badge>
+              <b-badge v-if="userinfo" :variant="userinfo.replies > 0 ? 'success' : 'light'" title="Recent replies to posts">
+                <v-icon name="reply" class="fa-fw" /> {{ userinfo.replies | pluralize([ 'reply', 'replies' ], { includeNumber: true }) }}
+              </b-badge>
+              <b-badge v-if="userinfo" :variant="userinfo.expectedreplies > 0 ? 'danger' : 'light'" title="Recent outstanding replies requested">
+                <v-icon name="clock" class="fa-fw" /> {{ (userinfo.expectedreplies || 0) | pluralize('RSVP', { includeNumber: true }) }}
               </b-badge>
             </h4>
             <div v-if="member.lastaccess" :class="'mb-1 ' + (inactive ? 'text-danger': '')">
@@ -50,12 +67,12 @@
             </div>
             <ModMemberActions :userid="member.userid" :groupid="groupid" />
             <div v-if="memberof && memberof.length" class="mt-2">
-              <span class="small">
+              <div class="small">
                 <v-icon name="users" />
                 <span v-for="m in memberof" :key="'membership-' + m.membershipid" class="border border-info rounded p-1 mr-1">
-                  {{ m.namedisplay }} <span class="text-muted small">{{ m.added | timeago }}</span>
+                  {{ m.namedisplay.length > 23 ? (m.namedisplay.substring(0, 20) + '...') : m.namedisplay }} <span class="text-muted small">{{ m.added | timeago }}</span>
                 </span>
-              </span>
+              </div>
               <b-badge v-if="hiddenmemberofs" variant="info" class="clickme" @click="allmemberships = !allmemberships">
                 +{{ hiddenmemberofs }} groups
               </b-badge>
@@ -63,7 +80,7 @@
             <div v-if="member.logins && member.logins.length" class="mt-2">
               <v-icon name="lock" />
               <b-badge v-for="l in member.logins" :key="'login-' + l.id" variant="info" class="border border-info rounded p-1 mr-1">
-                {{ l.type }} login {{ l.lastaccess | timeago }}
+                {{ loginType(l.type) }} login {{ l.lastaccess | timeago }}
               </b-badge>
             </div>
             <b-btn v-if="member.emails && member.emails.length" variant="link" @click="showEmails = !showEmails">
@@ -102,27 +119,32 @@
         </div>
       </b-card-body>
       <b-card-footer>
-        <!--        <ModMessageButtons :message="message" :modconfig="modconfig" />-->
+        <ModMemberButtons :member="member" :modconfig="modconfig" />
       </b-card-footer>
     </b-card>
     <ModPostingHistoryModal ref="history" :user="member" :type="type" />
   </div>
 </template>
 <script>
-// TODO Validation
-// - item length
+// TODO View Profile modal
 import waitForRef from '../mixins/waitForRef'
 import SettingsGroup from './SettingsGroup'
 import NoticeMessage from './NoticeMessage'
 import ProfileImage from './ProfileImage'
 import ModPostingHistoryModal from './ModPostingHistoryModal'
 import ModMemberActions from './ModMemberActions'
+import ModSpammer from './ModSpammer'
+import ModComments from './ModComments'
+import ModMemberButtons from './ModMemberButtons'
 
 const MEMBERSHIPS_SHOW = 3
 
 export default {
   name: 'ModMember',
   components: {
+    ModMemberButtons,
+    ModComments,
+    ModSpammer,
     ModMemberActions,
     ModPostingHistoryModal,
     ProfileImage,
@@ -223,6 +245,24 @@ export default {
         this.$dayjs().diff(this.$dayjs(this.member.lastaccess), 'days') >=
           (365 * 24 * 60 * 60) / 2
       )
+    },
+    userinfo() {
+      const user = this.$store.getters['user/get'](this.member.userid)
+
+      if (user && user.info) {
+        return user.info
+      }
+
+      return null
+    }
+  },
+  mounted() {
+    if (!this.member.info) {
+      // Fetch with info so that we can display more.
+      this.$store.dispatch('user/fetch', {
+        id: this.member.userid,
+        info: true
+      })
     }
   },
   methods: {
@@ -242,6 +282,30 @@ export default {
       this.waitForRef('history', () => {
         this.$refs.history.show()
       })
+    },
+    loginType(type) {
+      let ret = type
+
+      switch (type) {
+        case 'Native': {
+          ret = 'Email/Password'
+          break
+        }
+        case 'Facebook': {
+          ret = 'Facebook'
+          break
+        }
+        case 'Yahoo': {
+          ret = 'Yahoo'
+          break
+        }
+        case 'Google': {
+          ret = 'Google'
+          break
+        }
+      }
+
+      return ret
     }
   }
 }

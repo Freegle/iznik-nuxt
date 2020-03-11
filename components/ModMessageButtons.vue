@@ -205,19 +205,14 @@ export default {
     icon(stdmsg) {
       switch (stdmsg.action) {
         case 'Approve':
-        case 'Approve Member':
           return 'check'
         case 'Reject':
-        case 'Reject Member':
           return 'times'
         case 'Leave':
-        case 'Leave Member':
         case 'Leave Approved Message':
-        case 'Leave Approved Member':
           return 'envelope'
         case 'Delete':
         case 'Delete Approved Message':
-        case 'Delete Approved Member':
           return 'trash-alt'
         case 'Edit':
           return 'pen'
@@ -229,19 +224,14 @@ export default {
     variant(stdmsg) {
       switch (stdmsg.action) {
         case 'Approve':
-        case 'Approve Member':
           return 'success'
         case 'Reject':
-        case 'Reject Member':
           return 'warning'
         case 'Leave':
-        case 'Leave Member':
         case 'Leave Approved Message':
-        case 'Leave Approved Member':
           return 'primary'
         case 'Delete':
         case 'Delete Approved Message':
-        case 'Delete Approved Member':
           return 'danger'
         case 'Edit':
           return 'primary'

@@ -1,23 +1,64 @@
 <template>
   <client-only>
     <div class="pageback">
-      <b-navbar id="navbar" type="dark" class="navback" fixed="top">
-        <b-navbar-brand to="/modtools" class="p-0 d-flex">
+      <b-navbar id="navbar" type="dark" class="navback p-0 p-sm-1" fixed="top">
+        <b-navbar-brand class="p-0 pr-2 d-flex" @click="clicklogo">
           <b-img
-            class="logo mr-2"
-            height="58"
-            width="58"
+            class="logo clickme"
+            fluid
             rounded
             :src="logo"
             alt="Home"
           />
-          <ModStatus v-if="supportOrAdmin" class="mt-3" />
+          <ModStatus class="status" />
         </b-navbar-brand>
         <b-navbar-nav />
-        <b-navbar-nav class="ml-auto">
-          <b-nav-item-dropdown right class="d-block d-sm-none">
+        <!-- Larger screens -->
+        <b-navbar-nav class="d-none d-sm-flex ml-auto">
+          <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse2" class="text-center p-0" @click="discourse">
+            <div>
+              <span class="d-none d-sm-inline">
+                <v-icon name="brands/discourse" scale="2" class="fw" /><br>
+                Us
+              </span>
+              <v-icon name="brands/discourse" class="d-inline d-sm-none mt-2" scale="2" />
+              <b-badge v-show="discourseCount" variant="success">
+                {{ discourseCount }}
+              </b-badge>
+            </div>
+          </b-nav-item>
+          <b-nav-item v-if="loggedIn" id="menu-option-modtools-chat2" class="text-center p-0" to="/modtools/chats">
+            <div>
+              <span class="d-none d-sm-inline">
+                <v-icon name="comments" scale="2" class="fw" /><br>
+                Chats
+              </span>
+              <v-icon name="comments" class="d-inline d-sm-none" scale="2" />
+              <b-badge v-show="chatCount" variant="danger">
+                {{ chatCount }}
+              </b-badge>
+            </div>
+          </b-nav-item>
+          <b-nav-item v-if="loggedIn" id="menu-option-modtools-logout2" class="text-center p-0" @click="logOut">
+            <span class="d-none d-sm-inline">
+              <v-icon name="sign-out-alt" scale="2" class="fw" /><br>
+              Logout
+            </span>
+            <v-icon name="sign-out-alt" class="d-inline d-sm-none" scale="2" />
+          </b-nav-item>
+          <b-nav-item v-if="!loggedIn">
+            <b-btn variant="white" @click="requestLogin">
+              Sign in
+            </b-btn>
+          </b-nav-item>
+        </b-navbar-nav>
+        <!-- Larger screens end -->
+
+        <!-- Mobile screens -->
+        <b-navbar-nav class="w-100 d-flex d-sm-none justify-content-between ml-sm-auto pr-1">
+          <b-nav-item-dropdown class="pt-2">
             <template v-slot:button-content>
-              <ModMenuItemNav :count="['pending', 'chatreview']" icon="envelope" class="menuicon" />
+              <ModMenuItemNav :count="['pending', 'chatreview']" icon="envelope" count-on-top />
             </template>
             <b-dropdown-item>
               <ModMenuItemNav name="Pending" :count="['pending']" :othercount="['pending']" link="/modtools/messages/pending" />
@@ -35,9 +76,9 @@
               <ModMenuItemNav name="Chat Review" :count="['chatreview']" link="/modtools/chats/review" />
             </b-dropdown-item>
           </b-nav-item-dropdown>
-          <b-nav-item-dropdown right class="d-block d-sm-none">
+          <b-nav-item-dropdown class="pt-2">
             <template v-slot:button-content>
-              <ModMenuItemNav v-if="hasPermissionNewsletter" :count="['pendingmembers', 'stories', 'newsletterstories', 'socialactions']" icon="users" class="menuicon" />
+              <ModMenuItemNav :count="[ 'stories', 'newsletterstories','relatedmembers', 'pendingmembers', 'spammembers', 'socialactions']" icon="users" count-on-top />
             </template>
             <b-dropdown-item>
               <ModMenuItemNav name="Pending" :count="['pendingmembers']" link="/modtools/members/pending" />
@@ -45,60 +86,50 @@
             <b-dropdown-item>
               <ModMenuItemNav name="Approved" link="/modtools/members/approved" />
             </b-dropdown-item>
-            <b-dropdown-item v-if="supportOrAdmin">
+            <b-dropdown-item>
+              <ModMenuItemNav name="Review" :count="['spammembers']" link="/modtools/members/review" />
+            </b-dropdown-item>
+            <b-dropdown-item>
               <ModMenuItemNav name="Related" link="/modtools/members/related" :count="['relatedmembers']" />
             </b-dropdown-item>
             <b-dropdown-item>
               <ModMenuItemNav name="Stories" :count="['stories']" href="/modtools/members/stories" />
             </b-dropdown-item>
-            <b-dropdown-item>
+            <b-dropdown-item v-if="hasPermissionNewsletter">
               <ModMenuItemNav name="Newsletter" :count="['newsletterstories']" href="/modtools/members/newsletter" />
             </b-dropdown-item>
             <b-dropdown-item>
               <ModMenuItemNav name="Publicity" :count="['socialactions']" href="/modtools/publicity" />
             </b-dropdown-item>
           </b-nav-item-dropdown>
-          <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse" class="text-center p-0" @click="discourse">
-            <div class="notifwrapper">
-              <span class="d-none d-sm-inline">
-                <v-icon name="brands/discourse" scale="2" class="fa-fw" /><br>
-                Us
-              </span>
-              <v-icon name="brands/discourse" class="d-inline d-sm-none mt-2" scale="2" />
-              <b-badge v-if="discourseCount" variant="success">
-                {{ discourseCount }}
-              </b-badge>
-            </div>
-          </b-nav-item>
-          <b-nav-item v-if="loggedIn" id="menu-option-modtools-chat" class="text-center p-0" to="/modtools/chats">
-            <div class="notifwrapper">
-              <span class="d-none d-sm-inline">
-                <v-icon name="comments" scale="2" class="fa-fw" /><br>
-                Chats
-              </span>
-              <v-icon name="comments" class="d-inline d-sm-none" scale="2" />
-              <b-badge v-if="chatCount" variant="danger">
-                {{ chatCount }}
-              </b-badge>
-            </div>
-          </b-nav-item>
-          <b-nav-item v-if="loggedIn" id="menu-option-modtools-logout" class="text-center p-0" @click="logOut">
-            <v-icon name="sign-out-alt" scale="2" class="d-inline fa-fw" /><br>
-            Logout
-          </b-nav-item>
+
+          <b-nav-item-dropdown v-if="loggedIn" id="menu-option-modtools-discourse" class="pt-2">
+            <template v-slot:button-content>
+              <ModMenuItemNav :value="discourseCount" icon="brands/discourse" count-variant="success" count-on-top @click.native="discourse" />
+            </template>
+          </b-nav-item-dropdown>
+          <b-nav-item-dropdown v-if="loggedIn" id="menu-option-modtools-discourse" class="pt-2">
+            <template v-slot:button-content>
+              <ModMenuItemNav :value="chatCount" icon="comments" count-on-top @click.native="chats" />
+            </template>
+          </b-nav-item-dropdown>
+          <b-nav-item-dropdown v-if="loggedIn" id="menu-option-modtools-discourse" class="pt-2" @click="logOut">
+            <template v-slot:button-content>
+              <ModMenuItemNav icon="sign-out-alt" count-on-top />
+            </template>
+          </b-nav-item-dropdown>
           <b-nav-item v-if="!loggedIn">
             <b-btn variant="white" @click="requestLogin">
               Sign in
             </b-btn>
           </b-nav-item>
         </b-navbar-nav>
+        <!-- Mobile screens end -->
       </b-navbar>
 
       <div class="d-flex">
         <div class="leftmenu d-none d-sm-block">
-          <nuxt-link to="/modtools" class="pl-1">
-            Dashboard
-          </nuxt-link>
+          <ModMenuItemLeft link="/modtools" name="Dashboard" />
           <hr>
           <div class="pl-1">
             Messages
@@ -113,6 +144,7 @@
           </div>
           <ModMenuItemLeft link="/modtools/members/pending" name="Pending" count="pendingmembers" othercount="pendingmembersother" indent />
           <ModMenuItemLeft link="/modtools/members/approved" name="Approved" indent />
+          <ModMenuItemLeft link="/modtools/members/review" name="Review" count="spammembers" othercount="spammembersother" indent />
           <ModMenuItemLeft link="/modtools/members/related" name="Related" count="relatedmembers" indent />
           <ModMenuItemLeft link="/modtools/members/stories" name="Stories" indent count="stories" />
           <ModMenuItemLeft v-if="hasPermissionNewsletter" link="/modtools/members/newsletter" name="Newsletter" indent count="newsletterstories" />
@@ -136,9 +168,9 @@
 import ModMenuItemLeft from '../components/ModMenuItemLeft'
 import ModMenuItemNav from '../components/ModMenuItemNav'
 import LoginModal from '~/components/LoginModal'
+import ModStatus from '~/components/ModStatus'
 
 const ChatPopups = () => import('~/components/ChatPopups')
-const ModStatus = () => import('~/components/ModStatus')
 
 export default {
   components: {
@@ -234,8 +266,24 @@ export default {
 
       setTimeout(this.checkWork, 30000)
     },
-    discourse() {
+    discourse(e) {
       window.open('https://discourse.ilovefreegle.org/')
+      e.stopPropagation()
+      e.preventDefault()
+    },
+    chats(e) {
+      this.$router.push('/modtools/chats')
+      e.stopPropagation()
+      e.preventDefault()
+    },
+    clicklogo(e) {
+      if (this.$route.fullPath === '/modtools') {
+        // Click on current route.  Reload.
+        e.stopPropagation()
+        this.$router.go()
+      } else {
+        this.$router.push('/modtools')
+      }
     }
   },
 
@@ -274,9 +322,11 @@ html {
   box-sizing: border-box;
 }
 
-#navbar .nav-item {
-  width: 80px;
-  text-align: center;
+@include media-breakpoint-up(sm) {
+  #navbar .nav-item {
+    width: 80px;
+    text-align: center;
+  }
 }
 
 .pageContent {
@@ -334,9 +384,8 @@ nav .navbar-nav li a.nuxt-link-active {
 
 .navbar .logo {
   width: 58px !important;
+  height: 58px !important;
   padding: 0px;
-  margin-top: -5px;
-  margin-bottom: -5px;
 }
 
 body.modal-open {
@@ -361,13 +410,26 @@ body.modal-open {
   }
 }
 
-.fa-fw {
+.fw {
   width: 2rem;
   height: 2rem;
 }
 
-.menuicon {
+.status {
+  left: -13px;
   position: relative;
-  top: 13px;
+  top: 1px;
+}
+
+.leftanddown {
+  position: relative;
+  left: -10px;
+  top: 12px;
+}
+
+.leftandtop {
+  position: relative;
+  left: 25px;
+  top: -39px;
 }
 </style>

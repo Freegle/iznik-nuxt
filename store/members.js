@@ -22,6 +22,13 @@ export const mutations = {
       state.list.push(item)
     }
   },
+  updateComments(state, item) {
+    Object.keys(state.list).forEach(key => {
+      if (parseInt(state.list[key].userid) === parseInt(item.userid)) {
+        state.list[key].comments = item.comments
+      }
+    })
+  },
   addAll(state, items) {
     items.forEach(item => {
       const existing = state.list.findIndex(obj => {
@@ -40,7 +47,10 @@ export const mutations = {
       if (
         (parseInt(item.id) && parseInt(item.id) === parseInt(obj.id)) ||
         (parseInt(item.userid) &&
-          parseInt(item.userid) === parseInt(obj.userid))
+          parseInt(item.userid) === parseInt(obj.userid)) ||
+        (parseInt(item.userid) &&
+          obj.relatedto &&
+          parseInt(item.userid) === parseInt(obj.relatedto.userid))
       ) {
         return false
       } else {
@@ -53,6 +63,28 @@ export const mutations = {
   },
   setContext(state, ctx) {
     state.context = ctx
+  },
+  hold(state, params) {
+    // We can't fetch a single membership, so mutate in here rather than refetch.
+    Object.keys(state.list).forEach(key => {
+      if (
+        parseInt(state.list[key].userid) === parseInt(params.userid) &&
+        parseInt(state.list[key].groupid) === parseInt(params.groupid)
+      ) {
+        state.list[key].heldby = params.me
+      }
+    })
+  },
+  release(state, params) {
+    // We can't fetch a single membership, so mutate in here rather than refetch.
+    Object.keys(state.list).forEach(key => {
+      if (
+        parseInt(state.list[key].userid) === parseInt(params.userid) &&
+        parseInt(state.list[key].groupid) === parseInt(params.groupid)
+      ) {
+        state.list[key].heldby = null
+      }
+    })
   }
 }
 
@@ -208,14 +240,14 @@ export const actions = {
       params.body
     )
     commit('remove', {
-      id: params.id
+      userid: params.id
     })
   },
 
   async spam({ commit }, params) {
     await this.$api.memberships.spam(params.id, params.groupid)
     commit('remove', {
-      id: params.id
+      userid: params.id
     })
   },
 
@@ -228,7 +260,7 @@ export const actions = {
       params.body
     )
     commit('remove', {
-      id: params.id
+      userid: params.id
     })
   },
 
@@ -252,8 +284,9 @@ export const actions = {
       params.stdmsgid,
       params.body
     )
+
     commit('remove', {
-      id: params.id
+      userid: params.id
     })
   },
 
@@ -276,11 +309,43 @@ export const actions = {
     })
   },
 
+  async purge({ commit }, params) {
+    await this.$api.user.purge(params.userid)
+
+    commit('remove', {
+      userid: params.userid
+    })
+  },
+
   async askMerge({ commit }, params) {
     await this.$api.merge.ask(params)
 
     commit('remove', {
       userid: params.user1
     })
+  },
+
+  async ignoreMerge({ commit }, params) {
+    await this.$api.merge.ignore(params)
+
+    commit('remove', {
+      userid: params.user1
+    })
+  },
+
+  updateComments({ commit }, params) {
+    commit('updateComments', params)
+  },
+
+  async hold({ dispatch, commit, rootGetters }, params) {
+    await this.$api.memberships.hold(params.userid, params.groupid)
+    params.me = rootGetters['auth/user']
+    commit('hold', params)
+  },
+
+  async release({ dispatch, commit, rootGetters }, params) {
+    await this.$api.memberships.release(params.userid, params.groupid)
+    params.me = rootGetters['auth/user']
+    commit('release', params)
   }
 }

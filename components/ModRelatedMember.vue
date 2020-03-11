@@ -9,44 +9,36 @@
           <ModMember :member="user2" />
         </b-col>
       </b-row>
+      <div class="d-flex flex-wrap justify-content-start pills mt-2">
+        <b-btn v-if="whichposted === 'Both'" variant="warning" class="mr-1">
+          Posted: {{ whichposted }}
+        </b-btn>
+        <b-btn v-else variant="white" class="mr-1">
+          Posted: {{ whichposted }}
+        </b-btn>
+        <b-btn variant="white" class="mr-1">
+          Joined a group: {{ whichjoined }}
+        </b-btn>
+        <b-btn v-if="activeSameDay" variant="primary" class="mr-1">
+          Active same day
+        </b-btn>
+        <b-btn v-if="similarNameOrEmail" variant="primary" class="mr-1">
+          Similar name/email
+        </b-btn>
+        <b-btn v-if="groupsInCommon" variant="primary" class="mr-1">
+          Groups in common
+        </b-btn>
+        <b-btn v-if="probablySame" variant="success" class="mr-1">
+          Probably the same
+        </b-btn>
+      </div>
     </b-card-body>
     <b-card-footer>
-      <div>
-        Posted: {{ whichposted }}
-      </div>
-      <div>
-        Joined a group: {{ whichjoined }}
-      </div>
-      <div>
-        Active same day? <span v-if="activeSameDay"><b>Yes</b></span><span v-else>No</span>
-      </div>
-      <div>
-        Similar name/email: <span v-if="similarNameOrEmail"><b>Yes</b></span><span v-else>No</span>
-      </div>
-      <div>
-        Groups in common: <span v-if="groupsInCommon"><b>Yes</b></span><span v-else>No</span>
-      </div>
-      <div>
-        Probably the same: <span v-if="probablySame"><b>Yes</b></span><span v-else>No</span>
-      </div>
-      <br>
-      <div v-if="suggestion">
-        Suggestion: <b>{{ suggestion }}</b>
-      </div>
-      <div v-else>
-        Sleuthing required
-      </div>
       <div class="mt-2">
-        <b-btn variant="success" disabled>
-          Merge right >> left
-        </b-btn>
-        <b-btn variant="primary" disabled>
-          Merge left >> right
-        </b-btn>
         <b-btn variant="info" @click="ask">
           Ask member what they want
         </b-btn>
-        <b-btn variant="white" disabled>
+        <b-btn variant="white" @click="ignore">
           Ignore
         </b-btn>
       </div>
@@ -114,24 +106,6 @@ export default {
         this.similarNameOrEmail && (this.groupsInCommon || this.activeSameDay)
       )
     },
-    suggestion() {
-      let ret = null
-
-      if (this.probablySame) {
-        if (this.activeSameDay) {
-          ret = 'Ask member which they prefer'
-        } else if (
-          this.$dayjs(this.user1.lastaccess).isBefore(
-            this.$dayjs(this.user2.lastaccess)
-          )
-        ) {
-          ret = 'Merge left into right'
-        } else {
-          ret = 'Merge right into left'
-        }
-      }
-      return ret
-    },
     groupsInCommon() {
       const common = this.user1.memberof.filter(group => {
         const gid = group.id
@@ -156,11 +130,8 @@ export default {
       if (e1 && e2) {
         e1 = e1.substring(e1, e1.indexOf('@'))
         e2 = e2.substring(e2, e2.indexOf('@'))
-        // const ic = this.commonCharacterCount(e1, e2)
-        // if (ic >= Math.min(e1.length, e1.length) / 2) {
-        //   ret = true
-        // }
-        if (this.findLongest(e1, e2) >= LONG_THRESHOLD) {
+
+        if (e1 && e2 && this.findLongest(e1, e2) >= LONG_THRESHOLD) {
           ret = true
         }
       }
@@ -168,14 +139,7 @@ export default {
       const n1 = this.user1.displayname
       const n2 = this.user2.displayname
 
-      // if (
-      //   this.commonCharacterCount(n1, n2) >=
-      //   Math.min(n1.length, n2.length) / 2
-      // ) {
-      //   ret = true
-      // }
-
-      if (this.findLongest(n1, n2) >= LONG_THRESHOLD) {
+      if (n1 && n2 && this.findLongest(n1, n2) >= LONG_THRESHOLD) {
         ret = true
       }
 
@@ -200,27 +164,14 @@ export default {
         return 'Neither'
       }
     },
-    commonCharacterCount(s1, s2) {
-      let count = 0
-      s1 = s1.split('')
-      s2 = s2.split('')
-
-      s1.forEach(e => {
-        if (s2.includes(e)) {
-          count++
-          s2.splice(s2.indexOf(e), 1)
-        }
-      })
-
-      return count
-    },
     findLongest(s1, s2) {
       // From https://codereview.stackexchange.com/questions/210940/find-longest-common-string-subsequence
-      const removeDistinct = (s1, s2) =>
-        s1
-          .split('')
-          .filter(c => s2.includes(c))
-          .join('')
+      const removeDistinct = (s1, s2) => console.log('Find longest', s1, s2)
+      s1.split('')
+        .filter(c => {
+          ;(s2 + '').includes(c)
+        })
+        .join('')
       const findFirstSeq = (s1, s2) => {
         let seq = ''
         let i
@@ -263,12 +214,17 @@ export default {
       }
       const s1D = removeDistinct(s1, s2)
       const s2D = removeDistinct(s2, s1)
-      if (s1D === s2D) {
-        return s1D.length
+      if (s1D && s2D) {
+        if (s1D === s2D) {
+          return s1D.length
+        }
+
+        findSubseq(s1D, s2D)
+        const ret = findSubseq(s2D, s1D)
+        return ret ? ret.length : 0
+      } else {
+        return 0
       }
-      findSubseq(s1D, s2D)
-      const ret = findSubseq(s2D, s1D)
-      return ret ? ret.length : 0
     },
     email(member) {
       // Depending on which context we're used it, we might or might not have an email returned.
@@ -289,7 +245,18 @@ export default {
         user1: this.user1.id,
         user2: this.user2.id
       })
+    },
+    ignore() {
+      this.$store.dispatch('members/ignoreMerge', {
+        user1: this.user1.id,
+        user2: this.user2.id
+      })
     }
   }
 }
 </script>
+<style scoped>
+.pills .btn {
+  border-radius: 20px;
+}
+</style>

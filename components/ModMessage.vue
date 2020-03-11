@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-card bg-variant="white" no-body>
-      <b-card-header class="d-flex justify-content-between">
+      <b-card-header class="d-flex justify-content-between p-1">
         <div>
           <div v-if="editing">
             <div v-if="message.location" class="d-flex justify-content-start">
@@ -29,12 +29,16 @@
           </b-btn>
         </div>
         <!--        TODO Duplicates, related-->
-        <!--        Outcomes-->
         <!--        View Source-->
       </b-card-header>
-      <b-card-body>
+      <b-card-body class="p-1">
         <b-row>
           <b-col cols="12" lg="8">
+            <NoticeMessage v-if="message.outcomes && message.outcomes.length" class="mb-1">
+              {{ message.outcomes[0].outcome.toUpperCase() }}
+              at
+              {{ message.outcomes[0].timestamp | datetimeshort }}
+            </NoticeMessage>
             <div v-if="message.heldby">
               <NoticeMessage v-if="me.id === message.heldby.id" variant="warning" class="mb-2">
                 You held this {{ message.heldby.timestamp | timeago }}.  Other people will see a warning to check with
@@ -45,6 +49,8 @@
                 {{ message.heldby.timestamp | timeago }}.  Please check with them before releasing it.
               </NoticeMessage>
             </div>
+            <ModComments :user="message.fromuser" />
+            <ModSpammer v-if="message.fromuser.spammer" :user="message.fromuser" />
             <NoticeMessage v-if="message.fromuser && message.fromuser.activedistance > 50" variant="warning" class="mb-2">
               This freegler is active on groups {{ message.fromuser.activedistance }} miles apart.
             </NoticeMessage>
@@ -188,11 +194,15 @@ import ModMessageWorry from './ModMessageWorry'
 import Postcode from './Postcode'
 import ModMemberActions from './ModMemberActions'
 import Diff from './Diff'
+import ModSpammer from './ModSpammer'
+import ModComments from './ModComments'
 import twem from '~/assets/js/twem'
 
 export default {
   name: 'ModMessage',
   components: {
+    ModComments,
+    ModSpammer,
     Diff,
     ModMemberActions,
     Postcode,
