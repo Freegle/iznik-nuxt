@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-card bg-variant="white" no-body>
-      <b-card-header class="d-flex justify-content-between">
+      <b-card-header class="d-flex justify-content-between p-1">
         <div>
           <div v-if="editing">
             <div v-if="message.location" class="d-flex justify-content-start">
@@ -31,7 +31,7 @@
         <!--        TODO Duplicates, related-->
         <!--        View Source-->
       </b-card-header>
-      <b-card-body>
+      <b-card-body class="p-1">
         <b-row>
           <b-col cols="12" lg="8">
             <NoticeMessage v-if="message.outcomes && message.outcomes.length" class="mb-1">
