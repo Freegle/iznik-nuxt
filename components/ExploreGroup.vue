@@ -67,7 +67,6 @@ export default {
 
   data: function() {
     return {
-      group: null,
       busy: false,
       context: null,
       distance: 1000
@@ -91,13 +90,25 @@ export default {
       return this.messages.filter(message => {
         return !message.outcomes || message.outcomes.length === 0
       })
+    },
+
+    group() {
+      return this.$store.getters['group/get'](this.id)
     }
   },
 
   mounted() {
     // asyncData in the parent has populated the store.
     // We have the group id or name in this.id.  Fetch the group.
-    this.group = this.$store.getters['group/get'](this.id)
+    const group = this.$store.getters['group/get'](this.id)
+
+    if (!group.membercount) {
+      // Don't seem to have it all yet.
+      this.$store.dispatch('group/fetch', {
+        id: this.id
+      })
+    }
+
     this.context = this.$store.getters['messages/getContext']
   },
 

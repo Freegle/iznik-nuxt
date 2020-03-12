@@ -9,7 +9,7 @@
           v-b-tooltip.hover.top
           :size="size"
           :variant="user.info.ratings.Mine === 'Up' ? 'primary' : (user.info.ratings.Up > 0 ? 'success' : 'white')"
-          :title="user.info.ratings.Up + ' freegler' + ((user.info.ratings.Up !== 1) ? 's' : '') + '  gave them a thumbs up.  Click to rate, click again to reverse.'"
+          :title="uptitle"
           :disabled="(user.id === myid ? 'true' : undefined)"
           @click="up"
         >
@@ -19,7 +19,7 @@
           v-b-tooltip.hover.top
           :size="size"
           :variant="user.info.ratings.Mine === 'Down' ? 'primary' : (user.info.ratings.Down > 0 ? 'warning' : 'white')"
-          :title="user.info.ratings.Down + ' freegler' + ((user.info.ratings.Down !== 1) ? 's' : '') + '  gave them a thumbs down.  Click to rate, click again to reverse.'"
+          :title="downtitle"
           :disabled="user.id === myid ? 'true' : undefined"
           @click="down"
         >
@@ -73,6 +73,30 @@ export default {
     user() {
       const ret = this.id ? this.$store.getters['user/get'](this.id) : null
       return ret
+    },
+    uptitle() {
+      if (this.user.info.ratings.Mine === 'Up') {
+        return 'You gave them a thumbs up.  Click to undo.'
+      } else {
+        return (
+          this.user.info.ratings.Up +
+          ' freegler' +
+          (this.user.info.ratings.Up !== 1 ? 's' : '') +
+          '  gave them a thumbs up.  Click to rate, click again to undo.'
+        )
+      }
+    },
+    downtitle() {
+      if (this.user.info.ratings.Mine === 'Down') {
+        return 'You gave them a thumbs down.  Click to undo.'
+      } else {
+        return (
+          this.user.info.ratings.Down +
+          ' freegler' +
+          (this.user.info.ratings.Down !== 1 ? 's' : '') +
+          '  gave them a thumbs Down.  Click to rate, click again to undo.'
+        )
+      }
     }
   },
   async mounted() {
@@ -97,11 +121,19 @@ export default {
     },
 
     async up() {
-      await this.rate('Up')
+      if (this.user.info.ratings.Mine === 'Up') {
+        await this.rate(null)
+      } else {
+        await this.rate('Up')
+      }
     },
 
     async down() {
-      await this.rate('Down')
+      if (this.user.info.ratings.Mine === 'Down') {
+        await this.rate(null)
+      } else {
+        await this.rate('Down')
+      }
     }
   }
 }

@@ -51,7 +51,7 @@
                         :image="profileurl"
                         class="mr-1 mb-1 mt-1 inline"
                         is-thumbnail
-                        size="xl"
+                        size="xxl"
                       />
                       <br>
                       <OurToggle

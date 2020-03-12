@@ -223,7 +223,7 @@
           <ChatBlockModal v-if="chat && chat.chattype === 'User2User' && otheruser" :id="id" ref="chatblock" :user="otheruser" @confirm="block" />
           <ChatHideModal v-if="chat && chat.chattype === 'User2User' && otheruser" :id="id" ref="chathide" :user="otheruser" @confirm="hide" />
           <ChatReportModal
-            v-if="chat && chat.chattype === 'User2User'"
+            v-if="otheruser && chat && chat.chattype === 'User2User'"
             :id="'report-' + id"
             ref="chatreport"
             :user="otheruser"

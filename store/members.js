@@ -231,7 +231,7 @@ export const actions = {
     commit('setContext', null)
   },
 
-  async approve({ commit }, params) {
+  async approve({ commit, dispatch }, params) {
     await this.$api.memberships.approve(
       params.id,
       params.groupid,
@@ -242,16 +242,38 @@ export const actions = {
     commit('remove', {
       userid: params.id
     })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
   },
 
-  async spam({ commit }, params) {
+  async spam({ commit, dispatch }, params) {
     await this.$api.memberships.spam(params.id, params.groupid)
     commit('remove', {
       userid: params.id
     })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
   },
 
-  async reject({ commit }, params) {
+  async reject({ commit, dispatch }, params) {
     await this.$api.memberships.reject(
       params.id,
       params.groupid,
@@ -262,6 +284,17 @@ export const actions = {
     commit('remove', {
       userid: params.id
     })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
   },
 
   async reply({ commit }, params) {
@@ -274,7 +307,7 @@ export const actions = {
     )
   },
 
-  async delete({ commit }, params) {
+  async delete({ commit, dispatch }, params) {
     // Delete pending member.
 
     await this.$api.memberships.delete(
@@ -288,9 +321,20 @@ export const actions = {
     commit('remove', {
       userid: params.id
     })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
   },
 
-  async remove({ commit }, params) {
+  async remove({ commit, dispatch }, params) {
     // Remove approved  member.
 
     await this.$api.memberships.remove(params.userid, params.groupid)
@@ -298,39 +342,94 @@ export const actions = {
     commit('remove', {
       userid: params.userid
     })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
   },
 
-  async ban({ commit }, params) {
+  async ban({ commit, dispatch }, params) {
     // Ban member.
     await this.$api.memberships.ban(params.userid, params.groupid)
 
     commit('remove', {
       userid: params.userid
     })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
   },
 
-  async purge({ commit }, params) {
+  async purge({ commit, dispatch }, params) {
     await this.$api.user.purge(params.userid)
 
     commit('remove', {
       userid: params.userid
     })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
   },
 
-  async askMerge({ commit }, params) {
+  async askMerge({ commit, dispatch }, params) {
     await this.$api.merge.ask(params)
 
     commit('remove', {
       userid: params.user1
     })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
   },
 
-  async ignoreMerge({ commit }, params) {
+  async ignoreMerge({ commit, dispatch }, params) {
     await this.$api.merge.ignore(params)
 
     commit('remove', {
       userid: params.user1
     })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
   },
 
   updateComments({ commit }, params) {
