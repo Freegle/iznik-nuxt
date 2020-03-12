@@ -106,6 +106,20 @@ export default {
 }
 
 .profile--xl {
+  width: 93px;
+  height: 93px;
+  min-width: 93px;
+  min-height: 93px;
+
+  @include media-breakpoint-up(md) {
+    width: 93px;
+    height: 93px;
+    min-width: 93px;
+    min-height: 93px;
+  }
+}
+
+.profile--xxl {
   width: 75px;
   height: 75px;
   min-width: 75px;
@@ -171,6 +185,18 @@ export default {
 }
 
 .ProfileImage__moderator--xl {
+  padding: 2px;
+  width: 24px;
+  height: 24px;
+
+  @include media-breakpoint-up(md) {
+    padding: 3px;
+    width: 36px;
+    height: 36px;
+  }
+}
+
+.ProfileImage__moderator--xxl {
   padding: 2px;
   width: 24px;
   height: 24px;
