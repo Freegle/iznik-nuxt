@@ -123,35 +123,38 @@ export default {
       }
     },
     async searchChange(val) {
-      // Trigger a server search
-      if (this.searching) {
-        // Queue until we've finished.
-        this.searchlast = val
-      } else {
-        this.searching = val
-        this.clientSearch = true
+      // Only search once we have a few characters, otherwise it takes an age.
+      if (val && val.length > 3) {
+        // Trigger a server search
+        if (this.searching) {
+          // Queue until we've finished.
+          this.searchlast = val
+        } else {
+          this.searching = val
+          this.clientSearch = true
 
-        const modtools = this.$store.getters['misc/get']('modtools')
+          const modtools = this.$store.getters['misc/get']('modtools')
 
-        await this.$store.dispatch('chats/listChats', {
-          search: val,
-          summary: true,
-          chattypes: modtools ? ['User2Mod'] : ['User2User', 'User2Mod']
-        })
-
-        this.clientSearch = false
-
-        while (this.searchlast) {
-          // We have another search queued.
-          const val2 = this.searchlast
-          this.searchlast = null
           await this.$store.dispatch('chats/listChats', {
-            search: val2,
-            summary: true
+            search: val,
+            summary: true,
+            chattypes: modtools ? ['User2Mod'] : ['User2User', 'User2Mod']
           })
-        }
 
-        this.searching = null
+          this.clientSearch = false
+
+          while (this.searchlast) {
+            // We have another search queued.
+            const val2 = this.searchlast
+            this.searchlast = null
+            await this.$store.dispatch('chats/listChats', {
+              search: val2,
+              summary: true
+            })
+          }
+
+          this.searching = null
+        }
       }
     },
 
