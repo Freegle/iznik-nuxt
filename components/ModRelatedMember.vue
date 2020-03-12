@@ -157,9 +157,9 @@ export default {
       if (l && r) {
         return 'Both'
       } else if (l) {
-        return 'Left only'
+        return 'First only'
       } else if (r) {
-        return 'Right only'
+        return 'Second only'
       } else {
         return 'Neither'
       }

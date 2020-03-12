@@ -66,13 +66,16 @@
               </span>
             </div>
             <ModMemberActions :userid="member.userid" :groupid="groupid" />
-            <div v-if="memberof && memberof.length" class="mt-2">
-              <div class="small">
-                <v-icon name="users" />
+            <div class="mt-2 small">
+              <v-icon name="users" />
+              <span v-if="memberof && memberof.length">
                 <span v-for="m in memberof" :key="'membership-' + m.membershipid" class="border border-info rounded p-1 mr-1">
                   {{ m.namedisplay.length > 23 ? (m.namedisplay.substring(0, 20) + '...') : m.namedisplay }} <span class="text-muted small">{{ m.added | timeago }}</span>
                 </span>
-              </div>
+              </span>
+              <span v-else class="border border-info rounded p-1 mr-1">
+                Not on any communities
+              </span>
               <b-badge v-if="hiddenmemberofs" variant="info" class="clickme" @click="allmemberships = !allmemberships">
                 +{{ hiddenmemberofs }} groups
               </b-badge>
