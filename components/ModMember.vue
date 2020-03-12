@@ -108,8 +108,7 @@
             <b-btn variant="link" @click="showHistory">
               View posts
             </b-btn>
-            <b-btn variant="link">
-              <!--      TODO Show modal-->
+            <b-btn variant="link" @click="showLogs">
               View logs
             </b-btn>
             <!-- TODO             Applied list-->
@@ -126,6 +125,7 @@
       </b-card-footer>
     </b-card>
     <ModPostingHistoryModal ref="history" :user="member" :type="type" />
+    <ModLogsModal ref="logs" :userid="member.userid" />
   </div>
 </template>
 <script>
@@ -139,12 +139,14 @@ import ModMemberActions from './ModMemberActions'
 import ModSpammer from './ModSpammer'
 import ModComments from './ModComments'
 import ModMemberButtons from './ModMemberButtons'
+import ModLogsModal from './ModLogsModal'
 
 const MEMBERSHIPS_SHOW = 3
 
 export default {
   name: 'ModMember',
   components: {
+    ModLogsModal,
     ModMemberButtons,
     ModComments,
     ModSpammer,
@@ -284,6 +286,11 @@ export default {
       this.type = type
       this.waitForRef('history', () => {
         this.$refs.history.show()
+      })
+    },
+    showLogs() {
+      this.waitForRef('logs', () => {
+        this.$refs.logs.show()
       })
     },
     loginType(type) {

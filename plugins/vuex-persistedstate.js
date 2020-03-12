@@ -58,6 +58,7 @@ function trySaving(storage, settingState) {
       reply: settingState.reply,
       misc: settingState.misc
     }
+
     try {
       storage.setItem(STORAGE_KEY, JSON.stringify(smallerState))
     } catch (e) {
@@ -126,6 +127,9 @@ export default ({ store }) => {
           if (inc !== 'password') {
             newstate.user[inc] = state.user[inc]
           }
+
+          // Don't copy any cached users
+          newstate.user.list = []
         }
       }
 

@@ -16,6 +16,10 @@ function getUserByID(state, id) {
 
 export const mutations = {
   add(state, item) {
+    if (state.list === null) {
+      state.list = []
+    }
+
     Vue.set(state.list, item.id, item)
   },
 

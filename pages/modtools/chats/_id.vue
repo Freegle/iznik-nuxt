@@ -6,7 +6,7 @@
           <b-card-body class="p-0">
             <div class="d-flex justify-content-between">
               <b-input-group>
-                <b-form-input v-model="search" placeholder="Search chats" class="flex-shrink-1" :disabled="searching" @update="searchChange" />
+                <b-form-input v-model="search" placeholder="Search chats" class="flex-shrink-1" :disabled="searching !== null" @update="searchChange" />
                 <b-input-group-append>
                   <b-button variant="white" class="greybord p-0 pr-2" tabindex="-1">
                     <v-icon name="sync" :class="'ml-1 text-success fa-spin ' + (searching ? 'visible': 'invisible')" />

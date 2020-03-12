@@ -2,13 +2,13 @@
   <div>
     <b-row class="pb-1">
       <b-col>
-        <div v-if="chatmessage.userid != $store.state.auth.user.id" class="media">
+        <div v-if="!otheruser || chatmessage.userid != me.id" class="media">
           <b-card border-variant="warning">
             <b-card-title>
               <h4><v-icon name="bell" />&nbsp;You've been nudged!</h4>
             </b-card-title>
             <b-card-text>
-              {{ otheruser.displayname }} is waiting for you to reply.
+              {{ otheruser ? otheruser.displayname : 'Someone' }} is waiting for you to reply.
             </b-card-text>
           </b-card>
         </div>
