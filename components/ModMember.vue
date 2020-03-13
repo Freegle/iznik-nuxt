@@ -98,7 +98,6 @@
             <b-btn variant="link" @click="showLogs">
               View logs
             </b-btn>
-            <!-- TODO             Applied list-->
             <div v-if="showEmails">
               <div v-for="e in member.emails" :key="e.id">
                 {{ e.email }} <v-icon v-if="e.preferred" name="start" />

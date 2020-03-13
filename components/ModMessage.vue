@@ -84,8 +84,6 @@
               <NoticeMessage v-else variant="danger">
                 Can't identify sender.  Probably a bug.
               </NoticeMessage>
-              <!-- TODO             Group list-->
-              <!-- TODO             Applied list-->
             </div>
             <div class="d-flex justify-content-between flex-wrap">
               <b-btn variant="link" @click="showMailSettings = !showMailSettings">
