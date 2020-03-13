@@ -87,6 +87,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    systemwide: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
@@ -263,7 +268,6 @@ export default {
   },
   methods: {
     async fetch() {
-      console.log('Fetch', this.graphType)
       this.loading = true
 
       let comp = [this.graphType]
@@ -277,8 +281,9 @@ export default {
         components: comp,
         start: this.start.toISOString(),
         end: this.end.toISOString(),
-        allgroups: !this.groupid,
-        group: this.groupid
+        allgroups: !this.systemwide && !this.groupid,
+        group: this.groupid,
+        systemwide: this.systemwide
       })
 
       Object.keys(res).forEach(comp => {
