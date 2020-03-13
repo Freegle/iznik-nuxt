@@ -338,29 +338,51 @@ export default {
       return this.$store.getters['chatmessages/getUsers'](this.id)
     },
 
-    otheruser() {
+    otheruserid() {
       // The user who isn't us.
       let ret = null
-      const me = this.$store.getters['auth/user']
 
-      if (this.chat && me) {
-        if (this.chat.chattype === 'User2User' && this.chat.user1 && me) {
+      if (this.chat && this.me) {
+        if (this.chat.chattype === 'User2User' && this.chat.user1 && this.me) {
           ret =
-            this.chat.user1 && this.chat.user1.id === me.id
-              ? this.chat.user2
-              : this.chat.user1
+            this.chat.user1 && this.chat.user1.id === this.me.id
+              ? this.chat.user2.id
+              : this.chat.user1.id
         } else if (
           this.chat.chattype === 'User2Mod' &&
           this.chat.user1 &&
-          me.id !== this.chat.user1.id
+          this.me.id !== this.chat.user1.id
         ) {
           // We are a mod.
-          ret = this.chat.user1
+          ret = this.chat.user1.id
         }
       }
 
+      console.log('Other user id', ret)
+
       return ret
     },
+
+    otheruser() {
+      // We get this from the store rather than the chat object, if we can, because we fetched it in fetchChat, and
+      // that copy has more info, which we need.
+      let user = null
+
+      if (this.otheruserid) {
+        user = this.$store.getters['user/get'](this.otheruserid)
+
+        if (!user) {
+          console.log('Get from chat', this.otheruserid, this.chat)
+          user =
+            this.otheruserid === this.chat.user1.id
+              ? this.chat.user1
+              : this.chat.user2
+        }
+      }
+
+      return user
+    },
+
     userHasReneged() {
       return this.otheruser
         ? this.$store.getters['user/userHasReneged'](this.otheruser.id)
@@ -380,11 +402,8 @@ export default {
     expectedreply() {
       let ret = 0
 
-      if (this.otheruser) {
-        const user = this.$store.getters['user/get'](this.otheruser.id)
-        if (user && user.info) {
-          ret = user.info.expectedreply
-        }
+      if (this.otheruser && this.otheruser.info) {
+        ret = this.otheruser.info.expectedreply
       }
 
       return ret
@@ -394,11 +413,8 @@ export default {
       let ret = null
       let secs = null
 
-      if (this.otheruser) {
-        const user = this.$store.getters['user/get'](this.otheruser.id)
-        if (user && user.info) {
-          secs = user.info.replytime
-        }
+      if (this.otheruser && this.otheruser.info) {
+        secs = this.otheruser.info.replytime
       }
 
       if (secs) {
