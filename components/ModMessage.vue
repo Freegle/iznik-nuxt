@@ -144,7 +144,6 @@
                 </span>
               </b-btn>
             </div>
-            <!--          TODO Bind to event and handle changes-->
             <SettingsGroup
               v-if="showMailSettings"
               :groupid="message.groups[0].groupid"
@@ -152,6 +151,7 @@
               :volunteeringallowed="Boolean(membership.volunteeringallowed)"
               :eventsallowed="Boolean(membership.eventsallowed)"
               class="border border-info mt-2 p-1"
+              @change="settingsChange"
             />
             <div v-if="showEmails">
               <div v-for="email in message.fromuser.emails" :key="email.id">
@@ -178,8 +178,6 @@
   </div>
 </template>
 <script>
-// TODO Validation
-// - item length
 import MessageHistory from './MessageHistory'
 import MessageUserInfo from './MessageUserInfo'
 import MessageReplyInfo from './MessageReplyInfo'
@@ -417,6 +415,15 @@ export default {
 
       this.saving = false
       this.editing = false
+    },
+
+    settingsChange(e) {
+      const params = {
+        userid: this.message.fromuser.id,
+        groupid: this.groupid
+      }
+      params[e.param] = e.val
+      this.$store.dispatch('members/patch', params)
     }
   }
 }

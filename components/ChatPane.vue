@@ -365,8 +365,6 @@ export default {
         }
       }
 
-      console.log('Other user id', ret)
-
       return ret
     },
 
@@ -733,8 +731,6 @@ export default {
       this.$refs.chatreport.show()
     },
     async fetchChat() {
-      console.log('fetch chat')
-
       // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
       // need to render this pane on the server.
       await this.$store.dispatch('chats/fetch', {

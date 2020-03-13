@@ -32,14 +32,16 @@
           This freegler is active on groups {{ member.activedistance }} miles apart.
         </NoticeMessage>
         <div class="d-flex justify-content-between flex-wrap">
-          <!--          TODO Bind to event and handle changes-->
           <SettingsGroup
             v-if="groupid"
             :groupid="groupid"
             :emailfrequency="member.emailfrequency"
             :volunteeringallowed="Boolean(member.volunteeringallowed)"
             :eventsallowed="Boolean(member.eventsallowed)"
+            :moderation="member.ourpostingstatus"
+            :userid="member.userid"
             class="border border-info p-1 flex-grow-1 mr-1"
+            @change="settingsChange"
           />
           <div>
             <h4>
@@ -278,6 +280,15 @@ export default {
       }
 
       return ret
+    },
+
+    settingsChange(e) {
+      const params = {
+        userid: this.member.userid,
+        groupid: e.groupid
+      }
+      params[e.param] = e.val
+      this.$store.dispatch('members/patch', params)
     }
   }
 }

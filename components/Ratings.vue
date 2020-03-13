@@ -72,7 +72,6 @@ export default {
   computed: {
     user() {
       const ret = this.id ? this.$store.getters['user/get'](this.id) : null
-      console.log('Ratings compute user', this.id, ret)
       return ret
     },
     uptitle() {

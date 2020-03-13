@@ -63,7 +63,6 @@ export default {
       this.showModal = false
     },
     async fetchChunk($state) {
-      console.log('Fetch chunk', this.logs.length)
       this.busy = true
       const currentCount = this.logs.length
 
