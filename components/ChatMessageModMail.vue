@@ -13,6 +13,9 @@
                   </span>
                 </h4>
               </div>
+              <h4 v-else>
+                Message from Freegle Volunteers
+              </h4>
             </b-card-title>
             <b-card-text>
               <div :class="emessage ? 'media-body chatMessage' : 'media-body'">
@@ -22,11 +25,14 @@
                   <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
                 </span>
               </div>
-              <hr>
-              <p>If you have been asked to edit and resend this message, you can do so here:</p>
-              <b-btn variant="warning" @click="repost">
-                <v-icon name="pen" /> Edit and Resend
-              </b-btn>
+              <div v-if="chatmessage.refmsgid">
+                <hr>
+                {{ chatmessage.refmsg }}
+                <p>If you have been asked to edit and resend this message, you can do so here:</p>
+                <b-btn variant="warning" @click="repost">
+                  <v-icon name="pen" /> Edit and Resend
+                </b-btn>
+              </div>
             </b-card-text>
           </b-card>
         </div>
