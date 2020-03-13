@@ -83,7 +83,7 @@
           </b-row>
           <div v-if="chat" class="chatContent row" infinite-wrapper>
             <infinite-loading
-              v-if="otheruser"
+              v-if="otheruser || chat.chattype === 'User2Mod'"
               direction="top"
               force-use-infinite-wrapper="true"
               :distance="distance"
@@ -98,7 +98,7 @@
                 </div>
               </span>
             </infinite-loading>
-            <ul v-if="otheruser" class="p-0 pt-1 list-unstyled mb-1 w-100">
+            <ul v-if="otheruser || chat.chattype === 'User2Mod'" class="p-0 pt-1 list-unstyled mb-1 w-100">
               <li v-for="chatmessage in chatmessages" :key="'chatmessage-' + chatmessage.id">
                 <ChatMessage
                   v-if="chatmessage"
