@@ -66,20 +66,7 @@
               </span>
             </div>
             <ModMemberActions :userid="member.userid" :groupid="groupid" />
-            <div class="mt-2 small">
-              <v-icon name="users" />
-              <span v-if="memberof && memberof.length">
-                <span v-for="m in memberof" :key="'membership-' + m.membershipid" class="border border-info rounded p-1 mr-1">
-                  {{ m.namedisplay.length > 23 ? (m.namedisplay.substring(0, 20) + '...') : m.namedisplay }} <span class="text-muted small">{{ m.added | timeago }}</span>
-                </span>
-              </span>
-              <span v-else class="border border-info rounded p-1 mr-1">
-                Not on any communities
-              </span>
-              <b-badge v-if="hiddenmemberofs" variant="info" class="clickme" @click="allmemberships = !allmemberships">
-                +{{ hiddenmemberofs }} groups
-              </b-badge>
-            </div>
+            <ModMemberships :user="member" />
             <div v-if="member.logins && member.logins.length" class="mt-2">
               <v-icon name="lock" />
               <b-badge v-for="l in member.logins" :key="'login-' + l.id" variant="info" class="border border-info rounded p-1 mr-1">
@@ -140,12 +127,12 @@ import ModSpammer from './ModSpammer'
 import ModComments from './ModComments'
 import ModMemberButtons from './ModMemberButtons'
 import ModLogsModal from './ModLogsModal'
-
-const MEMBERSHIPS_SHOW = 3
+import ModMemberships from './ModMemberships'
 
 export default {
   name: 'ModMember',
   components: {
+    ModMemberships,
     ModLogsModal,
     ModMemberButtons,
     ModComments,
@@ -217,30 +204,6 @@ export default {
       }
 
       return ret
-    },
-    memberof() {
-      if (!this.member || !this.member.memberof) {
-        return null
-      }
-
-      const ms = this.member.memberof
-
-      ms.sort(function(a, b) {
-        return new Date(b.added).getTime() - new Date(a.added).getTime()
-      })
-
-      if (this.allmemberships) {
-        return ms
-      } else {
-        return ms.slice(0, MEMBERSHIPS_SHOW)
-      }
-    },
-    hiddenmemberofs() {
-      return this.allmemberships
-        ? 0
-        : this.member && this.member.memberof.length > MEMBERSHIPS_SHOW
-          ? this.member.memberof.length - MEMBERSHIPS_SHOW
-          : 0
     },
     inactive() {
       // This code matches server code in sendOurMails.

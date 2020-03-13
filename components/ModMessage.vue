@@ -109,18 +109,17 @@
                 </span>
               </b-btn>
               <b-btn v-if="message.fromuser && message.fromuser.emails && message.fromuser.emails.length" variant="link" @click="showEmails = !showEmails">
-                <v-icon name="envelope" />
                 <span v-if="showEmails">
                   <span class="d-inline d-sm-none">
                     Hide
                   </span>
                   <span class="d-none d-sm-inline">
-                    Show {{ message.fromuser.emails.length | pluralize('email', { includeNumber: true }) }}
+                    Hide {{ message.fromuser.emails.length | pluralize('email', { includeNumber: true }) }}
                   </span>
                 </span>
                 <span v-else>
                   <span class="d-inline d-sm-none">
-                    <v-icon name="envelope" /> {{ message.fromuser.emails.length }}
+                    <v-icon name="envelope" /> {{ message.fromuser.emails.length | pluralize('email', { includeNumber: true }) }}
                   </span>
                   <span class="d-none d-sm-inline">
                     Show {{ message.fromuser.emails.length | pluralize('email', { includeNumber: true }) }}

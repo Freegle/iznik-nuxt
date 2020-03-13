@@ -6,7 +6,6 @@
     <!-- eslint-disable-next-line-->
     <b-card-body v-html="item.iframe" />
     <b-card-footer :key="'sharelist-' + actioned.length">
-      <!--      TODO Share/hide all buttons-->
       <b-btn variant="success" class="mb-1 mr-1" @click="shareAll">
         <v-icon name="share-alt" />
         Share all
