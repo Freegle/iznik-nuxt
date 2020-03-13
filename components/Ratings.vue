@@ -1,7 +1,7 @@
 <template>
   <client-only>
     <span class="d-inline">
-      <span v-if="user">
+      <span v-if="user && user.info">
         <span v-if="showName">
           {{ user.displayname }}
         </span>
