@@ -288,8 +288,33 @@ export default {
   },
 
   head() {
-    // TODO Counts
-    const totalCount = this.chatCount
+    let totalCount = this.chatCount
+
+    const work = this.$store.getters['auth/work']
+
+    // All the types of work which are worth nagging about.
+    for (const key of [
+      'pendingvolunteering',
+      'spammerpendingadd',
+      'spammerpendingremove',
+      'socialactions',
+      'chatreview',
+      'relatedmembers',
+      'stories',
+      'newsletterstories',
+      'pending',
+      'spam',
+      'pendingmembers',
+      'pendingevents',
+      'spammembers',
+      'editreview',
+      'pendingadmins'
+    ]) {
+      if (work[key]) {
+        totalCount += work[key]
+      }
+    }
+
     return {
       titleTemplate: totalCount > 0 ? `(${totalCount}) ModTools` : 'ModTools',
       link: [
