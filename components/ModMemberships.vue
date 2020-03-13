@@ -74,7 +74,6 @@ export default {
       const ms = this.user.applied.filter(g => {
         let member = false
         this.user.memberof.forEach(h => {
-          console.log('Check', h, h.id, g.id)
           if (h.id === g.id) {
             member = true
           }
