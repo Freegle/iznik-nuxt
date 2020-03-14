@@ -36,7 +36,7 @@
     </span>
     <ModModeration v-if="modinfo && membership" :user="user" :membership="membership" class="order-2 order-md-3 order-lg-4" />
     <ModPostingHistory v-if="modinfo" :user="user" class="order-4 order-md-4 order-lg-3 mt-1 mt-md-0" />
-    <ModMemberships :user="user" class="order-5" />
+    <ModMemberships v-if="modinfo" :user="user" class="order-5" />
   </div>
 </template>
 
