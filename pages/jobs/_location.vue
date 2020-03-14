@@ -110,7 +110,7 @@ export default {
   },
   head() {
     return this.buildHead(
-      'Jobs near ' + this.location,
+      'Jobs' + this.location ? ' near ' + this.location : '',
       'These are job ads fairly close to the location.  Freegle gets a little bit to help keep us going if you click on them.'
     )
   }
