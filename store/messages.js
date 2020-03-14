@@ -379,8 +379,8 @@ export const actions = {
     commit('add', message)
   },
 
-  async acceptedits({ dispatch, commit }, params) {
-    await this.$api.message.acceptEdits(params.id)
+  async approveedits({ dispatch, commit }, params) {
+    await this.$api.message.approveEdits(params.id)
 
     commit('remove', {
       id: params.id

@@ -5,7 +5,7 @@
         :message="message"
         variant="success"
         icon="check"
-        acceptedits
+        approveedits
         label="Accept Edit"
       />
       <ModMessageButton
