@@ -76,11 +76,54 @@
       <p v-else>
         No memberships.
       </p>
+      <h3 class="mt-2">
+        Other Known Emails
+      </h3>
+      <div v-for="otheremail in otherEmails" :key="'otheremail-' + otheremail.id">
+        {{ otheremail.email }}
+        <span class="text-muted" :title="otheremail.toLocaleString()">
+          added {{ otheremail.added | timeago }}
+        </span>
+      </div>
+      <h3 class="mt-2">
+        Membership History
+      </h3>
+      <h4>Recent Applications</h4>
+      <div v-if="user.applied && user.applied.length">
+        <div v-for="applied in user.applied" :key="'applied-' + applied.id">
+          {{ applied.nameshort }}
+          <span class="text-muted" :title="applied.added.toLocaleString()">
+            {{ applied.added | timeago }}
+          </span>
+        </div>
+      </div>
+      <div v-else>
+        No recent applications.
+      </div>
+      <h4 class="mt-2">
+        Full History
+      </h4>
+      <div v-if="membershipHistoriesShown.length">
+        <div v-for="membershiphistory in membershipHistoriesShown" :key="'membershiphistory-' + membershiphistory.timestamp">
+          {{ membershiphistory.group.nameshort }}
+          <span class="text-muted" :title="membershiphistory.timestamp.toLocaleString()">
+            {{ membershiphistory.timestamp | timeago }}
+          </span>
+        </div>
+        <b-btn v-if="!showAllMembershipHistories && membershipHistoriesUnshown" variant="white" class="mt-1" @click="showAllMembershipHistories = true">
+          Show +{{ membershipsUnshown }}
+        </b-btn>
+      </div>
+      <div v-else>
+        No application history.
+      </div>
     </b-card-body>
   </b-card>
 </template>
 <script>
 import ModSupportMembership from './ModSupportMembership'
+
+const SHOW = 3
 
 export default {
   components: { ModSupportMembership },
@@ -98,7 +141,8 @@ export default {
   data: function() {
     return {
       expanded: true,
-      showAllMemberships: false
+      showAllMemberships: false,
+      showAllMembershipHistories: false
     }
   },
   computed: {
@@ -119,14 +163,45 @@ export default {
     memberships() {
       return this.showAllMemberships
         ? this.freegleMemberships
-        : this.freegleMemberships.slice(0, 3)
+        : this.freegleMemberships.slice(0, SHOW)
     },
     membershipsUnshown() {
       const ret =
-        this.freegleMemberships.length > 3
-          ? this.freegleMemberships.length - 3
+        this.freegleMemberships.length > SHOW
+          ? this.freegleMemberships.length - SHOW
           : 0
-      console.log('Unshown', ret)
+      return ret
+    },
+    otherEmails() {
+      return this.user.emails.filter(e => {
+        return e.email !== this.user.email && !e.ourdomain
+      })
+    },
+    membershiphistories() {
+      const times = []
+      const ret = []
+
+      if (this.user && this.user.membershiphistory) {
+        this.user.membershiphistory.forEach(h => {
+          if (times.indexOf(h.timestamp) === -1) {
+            times.push(h.timestamp)
+            ret.push(h)
+          }
+        })
+      }
+
+      return ret
+    },
+    membershipHistoriesShown() {
+      return this.showAllMembershipHistories
+        ? this.membershiphistories
+        : this.membershiphistories.slice(0, SHOW)
+    },
+    membershipHistoriesUnshown() {
+      const ret =
+        this.membershiphistories.length > SHOW
+          ? this.membershiphistories.length - SHOW
+          : 0
       return ret
     }
   },
