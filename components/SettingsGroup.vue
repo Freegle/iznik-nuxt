@@ -30,11 +30,18 @@
           </b-form-select>
         </b-form-group>
       </b-col>
-      <b-col cols="12" sm="6">
-        <b-btn v-if="leave" variant="white" class="float-right mt-4" @click="leaveGroup">
+      <b-col v-if="leave" cols="12" sm="6">
+        <b-btn variant="white" class="float-right mt-4" @click="leaveGroup">
           <v-icon v-if="leaving" class="text-success fa-spin" />
           <v-icon v-else name="trash-alt" /> Leave
         </b-btn>
+      </b-col>
+      <b-col v-if="moderation">
+        <b-form-group
+          label="Moderation status:"
+        >
+          <ModModeration v-if="user" :membership="membership" :user="user" size="md" />
+        </b-form-group>
       </b-col>
     </b-row>
     <b-row v-if="!simple">
@@ -72,10 +79,12 @@
   </div>
 </template>
 <script>
+import ModModeration from './ModModeration'
 const OurToggle = () => import('~/components/OurToggle')
 
 export default {
   components: {
+    ModModeration,
     OurToggle
   },
   props: {
@@ -100,11 +109,40 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    moderation: {
+      type: String,
+      required: false,
+      default: null
+    },
+    userid: {
+      type: Number,
+      required: false,
+      default: null
     }
   },
   data: function() {
     return {
       leaving: false
+    }
+  },
+  computed: {
+    user() {
+      return this.userid ? this.$store.getters['user/get'](this.userid) : null
+    },
+    membership() {
+      let ret = null
+
+      if (this.user && this.user.memberof) {
+        this.user.memberof.forEach(g => {
+          if (g.id === this.groupid) {
+            ret = g
+          }
+        })
+      }
+
+      console.log('membership', ret)
+      return ret
     }
   },
   methods: {

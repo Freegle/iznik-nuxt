@@ -9,7 +9,8 @@ export default {
       searchlast: null,
       distance: 100,
       showChats: 5,
-      clientSearch: true
+      complete: false,
+      bump: Date.now()
     }
   },
 
@@ -21,7 +22,7 @@ export default {
   computed: {
     sortedChats() {
       // We sort chats by RSVP first, then unread, then last time.
-      let chats = Object.values(this.$store.getters['chats/list'])
+      const chats = Object.values(this.$store.getters['chats/list'])
 
       chats.sort(function(a, b) {
         const aexpected = a.replyexpected
@@ -43,7 +44,13 @@ export default {
         return ret
       })
 
-      if (this.search && this.clientSearch) {
+      return chats
+    },
+
+    filteredChats() {
+      let chats = this.sortedChats
+
+      if (chats && this.search) {
         // We apply the search on names in here so that we can respond on the client rapidly while the background server
         // search is more thorough.
         const l = this.search.toLowerCase()
@@ -60,7 +67,14 @@ export default {
         })
       }
 
-      return chats.slice(0, this.showChats)
+      return chats
+    },
+
+    visibleChats() {
+      const chats = this.filteredChats
+        ? this.filteredChats.slice(0, this.showChats)
+        : []
+      return chats
     },
 
     activeChat() {
@@ -70,7 +84,7 @@ export default {
       if (this.selectedChatId) {
         // We have selected one - try to find it
         return this.selectedChatId
-      } else if (this.sortedChats && this.sortedChats.length) {
+      } else if (this.sortedChats && this.sortedChats[0]) {
         // None selected - use the first if we have some.
         ret = this.sortedChats[0].id
       }
@@ -105,6 +119,19 @@ export default {
   created() {
     this.selectedChatId = parseInt(this.$route.params.id) || null
   },
+
+  watch: {
+    filteredChats(newVal, oldVal) {
+      // We've changed what we're filtering on so reset what we show.
+      this.complete = false
+      this.bump = Date.now()
+    },
+    search(newVal, oldVal) {
+      this.showChats = 0
+      this.bump = Date.now()
+    }
+  },
+
   methods: {
     async listChats() {
       const modtools = this.$store.getters['misc/get']('modtools')
@@ -122,24 +149,20 @@ export default {
         }
       }
     },
-    async searchChange(val) {
-      // Trigger a server search
+    async searchMore() {
       if (this.searching) {
         // Queue until we've finished.
-        this.searchlast = val
+        this.searchlast = this.search
       } else {
-        this.searching = val
-        this.clientSearch = true
+        this.searching = this.search
 
         const modtools = this.$store.getters['misc/get']('modtools')
 
         await this.$store.dispatch('chats/listChats', {
-          search: val,
+          search: this.search,
           summary: true,
           chattypes: modtools ? ['User2Mod'] : ['User2User', 'User2Mod']
         })
-
-        this.clientSearch = false
 
         while (this.searchlast) {
           // We have another search queued.
@@ -158,13 +181,13 @@ export default {
     loadMore: function($state) {
       // We use an infinite scroll on the list of chats because even though we have all the data in hand, the less
       // we render onscreen the faster vue is to do so.
-      const chats = Object.values(this.$store.getters['chats/list'])
-
-      this.showChats += 5
+      const chats = this.filteredChats
+      this.showChats++
 
       if (this.showChats > chats.length) {
         this.showChats = chats.length
         $state.complete()
+        this.complete = true
       } else {
         $state.loaded()
       }

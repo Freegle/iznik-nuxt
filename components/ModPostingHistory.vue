@@ -18,19 +18,20 @@
     <b-btn variant="link" size="sm" class="clickme" @click="showHistory(null)">
       Posts
     </b-btn>
-    <b-btn variant="link" size="sm">
-      <!--      TODO Show modal-->
+    <b-btn variant="link" size="sm" @click="showLogs">
       Logs
     </b-btn>
     <ModPostingHistoryModal ref="history" :user="user" :type="type" />
+    <ModLogsModal ref="logs" :userid="user.id" />
   </span>
 </template>
 <script>
 import waitForRef from '../mixins/waitForRef'
 import ModPostingHistoryModal from './ModPostingHistoryModal'
+import ModLogsModal from './ModLogsModal'
 
 export default {
-  components: { ModPostingHistoryModal },
+  components: { ModLogsModal, ModPostingHistoryModal },
   mixins: [waitForRef],
   props: {
     user: {
@@ -89,6 +90,11 @@ export default {
       this.type = type
       this.waitForRef('history', () => {
         this.$refs.history.show()
+      })
+    },
+    showLogs() {
+      this.waitForRef('logs', () => {
+        this.$refs.logs.show()
       })
     }
   }

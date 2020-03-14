@@ -32,14 +32,16 @@
           This freegler is active on groups {{ member.activedistance }} miles apart.
         </NoticeMessage>
         <div class="d-flex justify-content-between flex-wrap">
-          <!--          TODO Bind to event and handle changes-->
           <SettingsGroup
             v-if="groupid"
             :groupid="groupid"
             :emailfrequency="member.emailfrequency"
             :volunteeringallowed="Boolean(member.volunteeringallowed)"
             :eventsallowed="Boolean(member.eventsallowed)"
+            :moderation="member.ourpostingstatus"
+            :userid="member.userid"
             class="border border-info p-1 flex-grow-1 mr-1"
+            @change="settingsChange"
           />
           <div>
             <h4>
@@ -66,20 +68,7 @@
               </span>
             </div>
             <ModMemberActions :userid="member.userid" :groupid="groupid" />
-            <div class="mt-2 small">
-              <v-icon name="users" />
-              <span v-if="memberof && memberof.length">
-                <span v-for="m in memberof" :key="'membership-' + m.membershipid" class="border border-info rounded p-1 mr-1">
-                  {{ m.namedisplay.length > 23 ? (m.namedisplay.substring(0, 20) + '...') : m.namedisplay }} <span class="text-muted small">{{ m.added | timeago }}</span>
-                </span>
-              </span>
-              <span v-else class="border border-info rounded p-1 mr-1">
-                Not on any communities
-              </span>
-              <b-badge v-if="hiddenmemberofs" variant="info" class="clickme" @click="allmemberships = !allmemberships">
-                +{{ hiddenmemberofs }} groups
-              </b-badge>
-            </div>
+            <ModMemberships :user="member" />
             <div v-if="member.logins && member.logins.length" class="mt-2">
               <v-icon name="lock" />
               <b-badge v-for="l in member.logins" :key="'login-' + l.id" variant="info" class="border border-info rounded p-1 mr-1">
@@ -108,11 +97,9 @@
             <b-btn variant="link" @click="showHistory">
               View posts
             </b-btn>
-            <b-btn variant="link">
-              <!--      TODO Show modal-->
+            <b-btn variant="link" @click="showLogs">
               View logs
             </b-btn>
-            <!-- TODO             Applied list-->
             <div v-if="showEmails">
               <div v-for="e in member.emails" :key="e.id">
                 {{ e.email }} <v-icon v-if="e.preferred" name="start" />
@@ -126,6 +113,7 @@
       </b-card-footer>
     </b-card>
     <ModPostingHistoryModal ref="history" :user="member" :type="type" />
+    <ModLogsModal ref="logs" :userid="member.userid" />
   </div>
 </template>
 <script>
@@ -139,12 +127,14 @@ import ModMemberActions from './ModMemberActions'
 import ModSpammer from './ModSpammer'
 import ModComments from './ModComments'
 import ModMemberButtons from './ModMemberButtons'
-
-const MEMBERSHIPS_SHOW = 3
+import ModLogsModal from './ModLogsModal'
+import ModMemberships from './ModMemberships'
 
 export default {
   name: 'ModMember',
   components: {
+    ModMemberships,
+    ModLogsModal,
     ModMemberButtons,
     ModComments,
     ModSpammer,
@@ -216,30 +206,6 @@ export default {
 
       return ret
     },
-    memberof() {
-      if (!this.member || !this.member.memberof) {
-        return null
-      }
-
-      const ms = this.member.memberof
-
-      ms.sort(function(a, b) {
-        return new Date(b.added).getTime() - new Date(a.added).getTime()
-      })
-
-      if (this.allmemberships) {
-        return ms
-      } else {
-        return ms.slice(0, MEMBERSHIPS_SHOW)
-      }
-    },
-    hiddenmemberofs() {
-      return this.allmemberships
-        ? 0
-        : this.member && this.member.memberof.length > MEMBERSHIPS_SHOW
-          ? this.member.memberof.length - MEMBERSHIPS_SHOW
-          : 0
-    },
     inactive() {
       // This code matches server code in sendOurMails.
       return (
@@ -286,6 +252,11 @@ export default {
         this.$refs.history.show()
       })
     },
+    showLogs() {
+      this.waitForRef('logs', () => {
+        this.$refs.logs.show()
+      })
+    },
     loginType(type) {
       let ret = type
 
@@ -309,6 +280,15 @@ export default {
       }
 
       return ret
+    },
+
+    settingsChange(e) {
+      const params = {
+        userid: this.member.userid,
+        groupid: e.groupid
+      }
+      params[e.param] = e.val
+      this.$store.dispatch('members/patch', params)
     }
   }
 }

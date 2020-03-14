@@ -465,7 +465,8 @@ export default {
     save() {
       this.$store.dispatch('newsfeed/edit', {
         id: this.replyid,
-        message: this.reply.message
+        message: this.reply.message,
+        threadhead: this.reply.threadhead
       })
 
       this.$refs.editModal.hide()
@@ -483,7 +484,7 @@ export default {
       })
     },
     brokenImage(event) {
-      event.target.src = '/static/defaultprofile.png'
+      event.target.src = '/defaultprofile.png'
     },
     showLove() {
       this.$refs.loveModal.show()

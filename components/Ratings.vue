@@ -1,7 +1,7 @@
 <template>
   <client-only>
     <span class="d-inline">
-      <span v-if="user">
+      <span v-if="user && user.info">
         <span v-if="showName">
           {{ user.displayname }}
         </span>
@@ -99,17 +99,20 @@ export default {
       }
     }
   },
-  async mounted() {
+  mounted() {
     // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
     // need to render this pane on the server.
-    const user = this.$store.getters['user/get'](this.id)
+    if (this.id) {
+      const user = this.$store.getters['user/get'](this.id)
 
-    if (!user || !user.info) {
-      // Not in the store yet - fetch.
-      await this.$store.dispatch('user/fetch', {
-        id: this.id,
-        info: true
-      })
+      if (!user || !user.info) {
+        // Not in the store yet - fetch.
+        console.log('Ratings need to fetch user', this.id)
+        this.$store.dispatch('user/fetch', {
+          id: this.id,
+          info: true
+        })
+      }
     }
   },
   methods: {

@@ -1,5 +1,5 @@
 <template>
-  <b-select v-model="postingStatus" :options="options" class="d-inline sel" size="lg" @change="changed" />
+  <b-select v-model="postingStatus" :options="options" class="d-inline sel" :size="size" @change="changed" />
 </template>
 <script>
 export default {
@@ -11,6 +11,11 @@ export default {
     user: {
       type: Object,
       required: true
+    },
+    size: {
+      type: String,
+      required: false,
+      default: 'lg'
     }
   },
   computed: {

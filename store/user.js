@@ -14,14 +14,38 @@ function getUserByID(state, id) {
   return state.list[id]
 }
 
+function hasReneged(user) {
+  // If the user can't be found then return false
+  return user && user.info
+    ? user.info.reneged &&
+        user.info.reneged > 1 &&
+        (user.info.reneged * 100) / (user.info.reneged + user.info.collected) >
+          25
+    : false
+}
+
 export const mutations = {
   add(state, item) {
-    Vue.set(state.list, item.id, item)
+    if (state.list === null) {
+      state.list = []
+    }
+
+    item.hasReneged = hasReneged(item)
+
+    if (state.list[item.id]) {
+      // When we're fetching logs from Support Tools we have unusual info in store, and we
+      // don't want to lose it by overwriting.
+      Vue.set(state.list, item.id, Object.assign(state.list[item.id], item))
+    } else {
+      Vue.set(state.list, item.id, item)
+    }
   },
 
   setList(state, items) {
     state.list = {}
     for (const item of items) {
+      item.hasReneged = hasReneged(item)
+
       Vue.set(state.list, item.id, item)
     }
   },
@@ -43,25 +67,24 @@ export const getters = {
 
   list: state => {
     return state.list
-  },
-
-  userHasReneged: state => id => {
-    const user = getUserByID(state, id)
-
-    // If the user can't be found then return false
-    return user && user.info
-      ? user.info.reneged &&
-          user.info.reneged > 1 &&
-          (user.info.reneged * 100) /
-            (user.info.reneged + user.info.collected) >
-            25
-      : false
   }
 }
 
 export const actions = {
+  clear({ commit }) {
+    commit('setList', [])
+  },
+
   async fetch({ commit }, params) {
-    commit('add', await this.$api.user.fetch(params))
+    const ret = await this.$api.user.fetch(params)
+
+    if (params.search) {
+      ret.forEach(user => {
+        commit('add', user)
+      })
+    } else {
+      commit('add', ret)
+    }
   },
 
   async rate({ commit, dispatch }, { id, rating }) {

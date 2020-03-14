@@ -31,7 +31,7 @@
               <span v-if="chat.unseen">
                 <b-badge variant="danger">{{ chat.unseen }}</b-badge>
               </span>
-              <ratings v-if="otheruser" :key="'otheruser-' + (otheruser ? otheruser.id : null)" size="sm" v-bind="otheruser" class="pl-1 pt-1" />
+              <ratings v-if="otheruser" :id="otheruser.id" :key="'otheruser-' + (otheruser ? otheruser.id : null)" size="sm" class="pl-1 pt-1" />
               <span class="pl-2 pr-1 float-right" @click="hide">
                 <v-icon name="times" scale="1.5" class="clickme mt-1" title="Hide chat window" />
               </span>

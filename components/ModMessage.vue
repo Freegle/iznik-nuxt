@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-card bg-variant="white" no-body>
-      <b-card-header class="d-flex justify-content-between p-1">
+      <b-card-header class="d-flex justify-content-between p-1 p-md-2">
         <div>
           <div v-if="editing">
             <div v-if="message.location" class="d-flex justify-content-start">
@@ -31,7 +31,7 @@
         <!--        TODO Duplicates, related-->
         <!--        View Source-->
       </b-card-header>
-      <b-card-body class="p-1">
+      <b-card-body class="p-1 p-md-2">
         <b-row>
           <b-col cols="12" lg="8">
             <NoticeMessage v-if="message.outcomes && message.outcomes.length" class="mb-1">
@@ -84,8 +84,6 @@
               <NoticeMessage v-else variant="danger">
                 Can't identify sender.  Probably a bug.
               </NoticeMessage>
-              <!-- TODO             Group list-->
-              <!-- TODO             Applied list-->
             </div>
             <div class="d-flex justify-content-between flex-wrap">
               <b-btn variant="link" @click="showMailSettings = !showMailSettings">
@@ -109,18 +107,17 @@
                 </span>
               </b-btn>
               <b-btn v-if="message.fromuser && message.fromuser.emails && message.fromuser.emails.length" variant="link" @click="showEmails = !showEmails">
-                <v-icon name="envelope" />
                 <span v-if="showEmails">
                   <span class="d-inline d-sm-none">
                     Hide
                   </span>
                   <span class="d-none d-sm-inline">
-                    Show {{ message.fromuser.emails.length | pluralize('email', { includeNumber: true }) }}
+                    Hide {{ message.fromuser.emails.length | pluralize('email', { includeNumber: true }) }}
                   </span>
                 </span>
                 <span v-else>
                   <span class="d-inline d-sm-none">
-                    <v-icon name="envelope" /> {{ message.fromuser.emails.length }}
+                    <v-icon name="envelope" /> {{ message.fromuser.emails.length | pluralize('email', { includeNumber: true }) }}
                   </span>
                   <span class="d-none d-sm-inline">
                     Show {{ message.fromuser.emails.length | pluralize('email', { includeNumber: true }) }}
@@ -147,7 +144,6 @@
                 </span>
               </b-btn>
             </div>
-            <!--          TODO Bind to event and handle changes-->
             <SettingsGroup
               v-if="showMailSettings"
               :groupid="message.groups[0].groupid"
@@ -155,6 +151,7 @@
               :volunteeringallowed="Boolean(membership.volunteeringallowed)"
               :eventsallowed="Boolean(membership.eventsallowed)"
               class="border border-info mt-2 p-1"
+              @change="settingsChange"
             />
             <div v-if="showEmails">
               <div v-for="email in message.fromuser.emails" :key="email.id">
@@ -181,8 +178,6 @@
   </div>
 </template>
 <script>
-// TODO Validation
-// - item length
 import MessageHistory from './MessageHistory'
 import MessageUserInfo from './MessageUserInfo'
 import MessageReplyInfo from './MessageReplyInfo'
@@ -420,6 +415,15 @@ export default {
 
       this.saving = false
       this.editing = false
+    },
+
+    settingsChange(e) {
+      const params = {
+        userid: this.message.fromuser.id,
+        groupid: this.groupid
+      }
+      params[e.param] = e.val
+      this.$store.dispatch('members/patch', params)
     }
   }
 }

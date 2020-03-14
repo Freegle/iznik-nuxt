@@ -6,9 +6,7 @@
           <ModChatReviewUser :user="message.fromuser" class="mr-2" tag="From: " />
           <v-icon name="arrow-circle-right" scale="2" class="mt-1 text-info" />
           <ModChatReviewUser :user="message.touser" class="ml-2" tag="To: " />
-          <!--          TODO Add note -->
           <!--          TODO View Original Email-->
-          <!--          TODO View Conversation-->
         </div>
       </b-card-header>
       <b-card-body>
@@ -50,7 +48,7 @@
           <b-btn v-if="message.held" variant="warning" class="mr-2 mb-1" @click="release">
             <v-icon name="play" /> Release
           </b-btn>
-          <b-btn v-if="!message.held" variant="primary" class="mr-2 mb-1" disabled>
+          <b-btn v-if="!message.held" variant="primary" class="mr-2 mb-1" @click="modnote">
             <v-icon name="exclamation-triangle" /> Add Mod Message
           </b-btn>
           <b-btn v-if="!message.held" variant="success" class="mr-2 mb-1" @click="approve">
@@ -72,6 +70,7 @@
       </b-card-footer>
     </b-card>
     <ModChatReviewModal ref="modal" :message="message" />
+    <ModChatNoteModal v-if="message" ref="modnote" :chatid="message.chatid" />
   </div>
 </template>
 <script>
@@ -80,9 +79,11 @@ import NoticeMessage from './NoticeMessage'
 import ModChatReviewUser from './ModChatReviewUser'
 import ModChatReviewModal from './ModChatReviewModal'
 import ChatMessage from './ChatMessage'
+import ModChatNoteModal from './ModChatNoteModal'
 
 export default {
   components: {
+    ModChatNoteModal,
     ChatMessage,
     ModChatReviewModal,
     ModChatReviewUser,
@@ -129,6 +130,11 @@ export default {
     view() {
       this.waitForRef('modal', () => {
         this.$refs.modal.show()
+      })
+    },
+    modnote() {
+      this.waitForRef('modnote', () => {
+        this.$refs.modnote.show()
       })
     }
   }

@@ -21,6 +21,10 @@ export default class MembershipsAPI extends BaseAPI {
     return this.$get('/memberships', params)
   }
 
+  save(event) {
+    return this.$patch('/memberships', event)
+  }
+
   del(id) {
     return this.$del('/memberships', { id })
   }

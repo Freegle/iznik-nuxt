@@ -45,7 +45,7 @@
                     <b-badge variant="danger">{{ unseen }}</b-badge>
                   </span>
                   <span class="mr-2 d-none d-sm-inline-block">
-                    <ratings v-if="otheruser" :key="'otheruser-' + otheruser.id" size="sm" v-bind="otheruser" />
+                    <Ratings v-if="otheruser" :id="otheruserid" :key="'otheruser-' + otheruserid" size="sm" />
                   </span>
                 </b-col>
                 <b-col cols="4" class="p-0">
@@ -75,14 +75,21 @@
                     <b-btn variant="white" size="sm" class="float-right" @click="markRead">
                       Mark all read
                     </b-btn>
-                    <ratings v-if="otheruser" :key="'otheruser-' + otheruser.id" size="sm" v-bind="otheruser" />
+                    <Ratings v-if="otheruser" :id="otheruserid" :key="'otheruser-' + otheruser.id" size="sm" />
                   </span>
                 </b-col>
               </b-row>
             </b-col>
           </b-row>
           <div v-if="chat" class="chatContent row" infinite-wrapper>
-            <infinite-loading direction="top" force-use-infinite-wrapper="true" :distance="distance" class="w-100" @infinite="loadMore">
+            <infinite-loading
+              v-if="otheruser || chat.chattype === 'User2Mod'"
+              direction="top"
+              force-use-infinite-wrapper="true"
+              :distance="distance"
+              class="w-100"
+              @infinite="loadMore"
+            >
               <span slot="no-results" />
               <span slot="no-more" />
               <span slot="spinner" class="w-100">
@@ -91,7 +98,7 @@
                 </div>
               </span>
             </infinite-loading>
-            <ul class="p-0 pt-1 list-unstyled mb-1 w-100">
+            <ul v-if="otheruser || chat.chattype === 'User2Mod'" class="p-0 pt-1 list-unstyled mb-1 w-100">
               <li v-for="chatmessage in chatmessages" :key="'chatmessage-' + chatmessage.id">
                 <ChatMessage
                   v-if="chatmessage"
@@ -122,7 +129,7 @@
                 <notice-message v-if="expectedreply" variant="warning" @click.native="showInfo">
                   <v-icon name="exclamation-triangle" />&nbsp;{{ expectedreply | pluralize(['freegler is', 'freeglers are'], { includeNumber: true }) }} still waiting for them to reply.  You might not hear back from them.
                 </notice-message>
-                <notice-message v-else-if="userHasReneged" variant="warning" @click.native="showInfo">
+                <notice-message v-else-if="otheruser && otheruser.hasReneged" variant="warning" @click.native="showInfo">
                   <v-icon name="exclamation-triangle" />&nbsp;Things haven't always worked out for this freegler.  That might not be their fault, but please make very clear arrangements.
                 </notice-message>
                 <notice-message v-if="!spammer && showReplyTime && replytime" class="clickme" @click.native="showInfo">
@@ -338,33 +345,39 @@ export default {
       return this.$store.getters['chatmessages/getUsers'](this.id)
     },
 
-    otheruser() {
+    otheruserid() {
       // The user who isn't us.
       let ret = null
-      const me = this.$store.getters['auth/user']
 
-      if (this.chat && me) {
-        if (this.chat.chattype === 'User2User' && this.chat.user1 && me) {
+      if (this.chat && this.me) {
+        if (this.chat.chattype === 'User2User' && this.chat.user1 && this.me) {
           ret =
-            this.chat.user1 && this.chat.user1.id === me.id
-              ? this.chat.user2
-              : this.chat.user1
+            this.chat.user1 && this.chat.user1.id === this.me.id
+              ? this.chat.user2.id
+              : this.chat.user1.id
         } else if (
           this.chat.chattype === 'User2Mod' &&
           this.chat.user1 &&
-          me.id !== this.chat.user1.id
+          this.me.id !== this.chat.user1.id
         ) {
           // We are a mod.
-          ret = this.chat.user1
+          ret = this.chat.user1.id
         }
       }
 
       return ret
     },
-    userHasReneged() {
-      return this.otheruser
-        ? this.$store.getters['user/userHasReneged'](this.otheruser.id)
-        : false
+
+    otheruser() {
+      // We get this from the store rather than the chat object, because we fetched it in fetchChat, and
+      // that copy has more info, which we need.
+      let user = null
+
+      if (this.otheruserid) {
+        user = this.$store.getters['user/get'](this.otheruserid)
+      }
+
+      return user
     },
 
     spammer() {
@@ -380,11 +393,8 @@ export default {
     expectedreply() {
       let ret = 0
 
-      if (this.otheruser) {
-        const user = this.$store.getters['user/get'](this.otheruser.id)
-        if (user && user.info) {
-          ret = user.info.expectedreply
-        }
+      if (this.otheruser && this.otheruser.info) {
+        ret = this.otheruser.info.expectedreply
       }
 
       return ret
@@ -394,11 +404,8 @@ export default {
       let ret = null
       let secs = null
 
-      if (this.otheruser) {
-        const user = this.$store.getters['user/get'](this.otheruser.id)
-        if (user && user.info) {
-          secs = user.info.replytime
-        }
+      if (this.otheruser && this.otheruser.info) {
+        secs = this.otheruser.info.replytime
       }
 
       if (secs) {
@@ -739,10 +746,11 @@ export default {
           chatid: this.id
         })
 
-        if (this.otheruser) {
+        if (this.otheruserid) {
           // Get the user info in case we need to warn about them.
+          console.log('mounted fetch user', this.otheruserid)
           await this.$store.dispatch('user/fetch', {
-            id: this.otheruser.id,
+            id: this.otheruserid,
             info: true
           })
 

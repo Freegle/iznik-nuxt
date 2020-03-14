@@ -89,7 +89,6 @@ export default {
   methods: {
     loadMore: function($state) {
       this.busy = true
-      console.log('load more')
 
       if (this.show < this.members.length) {
         // This means that we will gradually add the members that we have fetched from the server into the DOM.
@@ -99,7 +98,6 @@ export default {
       } else {
         const currentCount = this.members.length
 
-        console.log('Fetch')
         this.$store
           .dispatch('members/fetchMembers', {
             groupid: this.groupid,

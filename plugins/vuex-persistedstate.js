@@ -58,6 +58,7 @@ function trySaving(storage, settingState) {
       reply: settingState.reply,
       misc: settingState.misc
     }
+
     try {
       storage.setItem(STORAGE_KEY, JSON.stringify(smallerState))
     } catch (e) {
@@ -117,13 +118,13 @@ export default ({ store }) => {
         }
       }
 
-      // User is a special case as we want to exclude user.password, and it's not worth making the above code
-      // generic enough to handle that.
+      // User is a special case as we want to exclude user.password and the cached user list, and it's not
+      // worth making the above code generic enough to handle that.
       if (state.user) {
         newstate.user = {}
 
         for (const inc in state.user) {
-          if (inc !== 'password') {
+          if (inc !== 'password' && inc !== 'list') {
             newstate.user[inc] = state.user[inc]
           }
         }

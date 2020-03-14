@@ -38,7 +38,7 @@
                 class="mb-1 mt-1"
                 @click="hide"
               />
-              <ratings size="sm" v-bind="user" class="pt-1 mt-1" />
+              <ratings :id="user.id" size="sm" class="pt-1 mt-1" />
             </h4>
           </b-media-body>
         </b-media>
@@ -48,7 +48,7 @@
       <notice-message v-if="user.info.expectedreply" variant="warning">
         <v-icon name="exclamation-triangle" />&nbsp;{{ user.info.expectedreply | pluralize(['freegler is', 'freeglers are'], { includeNumber: true }) }} still waiting for them to reply.
       </notice-message>
-      <notice-message v-else-if="userHasReneged" variant="warning">
+      <notice-message v-else-if="user.hasReneged" variant="warning">
         <v-icon name="exclamation-triangle" />&nbsp;Things haven't always worked out for this freegler.  That might not be their fault, but please make very clear arrangements.
       </notice-message>
       <div v-if="aboutme" class="mb-1">
@@ -164,9 +164,6 @@ export default {
       return this.user && this.user.info && this.user.info.aboutme
         ? twem.twem(this.$twemoji, this.user.info.aboutme.text)
         : null
-    },
-    userHasReneged() {
-      return this.$store.getters['user/userHasReneged'](this.id)
     }
   },
   async mounted() {

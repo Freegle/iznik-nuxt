@@ -22,7 +22,7 @@
                         class="float-right mb-1"
                       />
                       <br>
-                      <ratings size="sm" v-bind="user" class="pl-1 pt-1 d-block" />
+                      <ratings :id="user.id" size="sm" class="pl-1 pt-1 d-block" />
                     </div>
                     <h4 class="d-inline-block">
                       {{ user.displayname }}
