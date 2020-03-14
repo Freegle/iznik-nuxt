@@ -70,7 +70,6 @@ export default {
       return this.searchresults.length === 1
     },
     visible() {
-      console.log('Compute visible', this.searchresults, this.show)
       return this.searchresults && this.searchresults.length
         ? this.searchresults.slice(0, this.show)
         : []
@@ -99,7 +98,6 @@ export default {
       // We use an infinite scroll on the list of chats because even though we have all the data in hand, the less
       // we render onscreen the faster vue is to do so.
       this.show++
-      console.log('Load more', this.show)
 
       if (this.show > this.searchresults.length) {
         this.showChats = this.searchresults.length
