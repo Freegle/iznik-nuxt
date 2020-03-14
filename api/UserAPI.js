@@ -2,9 +2,14 @@ import BaseAPI from '@/api/BaseAPI'
 
 export default class UserAPI extends BaseAPI {
   async fetch(params) {
-    const { user, logcontext } = await this.$get('/user', params)
-    user.logcontext = logcontext
-    return user
+    const { user, users, logcontext } = await this.$get('/user', params)
+
+    if (user) {
+      user.logcontext = logcontext
+      return user
+    } else {
+      return users
+    }
   }
 
   rate(id, rating) {

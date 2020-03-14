@@ -101,6 +101,9 @@
             <b-dropdown-item>
               <ModMenuItemNav name="Publicity" :count="['socialactions']" href="/modtools/publicity" />
             </b-dropdown-item>
+            <b-dropdown-item>
+              <ModMenuItemNav name="Support" href="/modtools/support" />
+            </b-dropdown-item>
           </b-nav-item-dropdown>
 
           <b-nav-item-dropdown v-if="loggedIn" id="menu-option-modtools-discourse" class="pt-2">
@@ -155,6 +158,8 @@
           <ModMenuItemLeft link="/modtools/chats/review" name="Review" count="chatreview" indent />
           <hr>
           <ModMenuItemLeft link="/modtools/publicity" name="Publicity" count="socialactions" />
+          <hr>
+          <ModMenuItemLeft link="/modtools/support" name="Support" />
         </div>
         <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent flex-grow-1" />
       </div>

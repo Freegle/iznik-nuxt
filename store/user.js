@@ -65,8 +65,20 @@ export const getters = {
 }
 
 export const actions = {
+  clear({ commit }) {
+    commit('setList', [])
+  },
+
   async fetch({ commit }, params) {
-    commit('add', await this.$api.user.fetch(params))
+    const ret = await this.$api.user.fetch(params)
+
+    if (params.search) {
+      ret.forEach(user => {
+        commit('add', user)
+      })
+    } else {
+      commit('add', ret)
+    }
   },
 
   async rate({ commit, dispatch }, { id, rating }) {
