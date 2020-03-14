@@ -3,23 +3,20 @@
     <div v-if="supportOrAdmin">
       <div>
         <h2>Find User</h2>
-        <b-row>
-          <b-col cols="12" md="6">
-            <b-input-group class="mb-2">
-              <b-form-input
-                v-model="searchuser"
-                placeholder="Email, numerical id, or ~- encoded id"
-                @keyup.enter.exact="usersearch"
-              />
-              <b-input-group-append>
-                <b-button variant="success" @click="usersearch">
-                  <v-icon v-if="searching" name="sync" class="fa-spin" />
-                  <v-icon v-else name="search" /> Find user
-                </b-button>
-              </b-input-group-append>
-            </b-input-group>
-          </b-col>
-        </b-row>
+        <b-input-group class="mb-2">
+          <b-form-input
+            v-model="searchuser"
+            placeholder="Email, numerical id, or ~- encoded id"
+            class="max"
+            @keyup.enter.exact="usersearch"
+          />
+          <b-input-group-append>
+            <b-button variant="success" @click="usersearch">
+              <v-icon v-if="searching" name="sync" class="fa-spin" />
+              <v-icon v-else name="search" /> Find user
+            </b-button>
+          </b-input-group-append>
+        </b-input-group>
         <ModSupportUser v-for="user in visible" :id="user.id" :key="user.id" :expand="expand" />
         <infinite-loading v-if="searchresults.length" key="infiniteusers" @infinite="loadMoreUsers">
           <span slot="no-results">
@@ -115,3 +112,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+.max {
+  max-width: 300px;
+}
+</style>
