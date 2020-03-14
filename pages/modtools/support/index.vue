@@ -17,16 +17,18 @@
             </b-button>
           </b-input-group-append>
         </b-input-group>
-        <ModSupportUser v-for="user in visible" :id="user.id" :key="user.id" :expand="expand" />
-        <infinite-loading v-if="searchresults.length" key="infiniteusers" @infinite="loadMoreUsers">
-          <span slot="no-results">
-            <notice-message v-if="!searchresults">
-              No users found.
-            </notice-message>
-          </span>
-          <span slot="no-more" />
-          <span slot="spinner" />
-        </infinite-loading>
+        <div v-if="!searching && searchuser && searched">
+          <ModSupportUser v-for="user in visible" :id="user.id" :key="user.id" :expand="expand" />
+          <infinite-loading key="infiniteusers" @infinite="loadMoreUsers">
+            <div slot="no-results">
+              <p class="text-left">
+                No users found.
+              </p>
+            </div>
+            <span slot="no-more" />
+            <span slot="spinner" />
+          </infinite-loading>
+        </div>
       </div>
     </div>
     <NoticeMessage v-else variant="warning">
@@ -52,7 +54,8 @@ export default {
     return {
       searching: false,
       searchuser: null,
-      show: 0
+      show: 0,
+      searched: false
     }
   },
   computed: {
@@ -93,6 +96,7 @@ export default {
       })
 
       this.searching = false
+      this.searched = true
     },
     loadMoreUsers: function($state) {
       // We use an infinite scroll on the list of chats because even though we have all the data in hand, the less
@@ -100,7 +104,7 @@ export default {
       this.show++
 
       if (this.show > this.searchresults.length) {
-        this.showChats = this.searchresults.length
+        this.show = this.searchresults.length
         $state.complete()
         this.complete = true
       } else {

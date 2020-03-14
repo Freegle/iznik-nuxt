@@ -187,38 +187,33 @@
       <h3 class="mt-2">
         Chats
       </h3>
-      <div v-if="chatsShown && chatsShown.length">
-        <b-row v-for="chat in chatsShown" :key="'chathistory-' + chat.id">
-          <b-col cols="3" md="2" class="p-1 order-1 text-muted small">
-            <v-icon name="hashtag" scale="0.5" class="text-muted" />{{ chat.id }}
-          </b-col>
-          <b-col cols="1">
-            <v-icon v-if="chat.chattype === 'User2User'" class="text-success" name="user" />
-            <v-icon v-else-if="chat.chattype === 'User2Mod' || chat.chattype === 'Mod2Mod'" class="text-warning" name="crown" />
-          </b-col>
-          <b-col cols="4" md="2" class="p-1 order-1" :title="chat.lastdate | datetime">
-            {{ chat.lastdate | timeago }}
-          </b-col>
-          <b-col cols="12" md="5" class="p-1 order-3 order-md-2">
-            {{ chat.name }}
-          </b-col>
-          <b-col cols="4" md="2" class="p-1 order-2 order-md-3 small text-muted">
-            <ModChatViewButton :id="chat.id" />
-          </b-col>
-        </b-row>
-        <infinite-loading v-if="chatsFiltered && chatsFiltered.length" key="infinitechats" @infinite="loadMoreChats">
-          <span slot="no-results">
-            <notice-message v-if="!chatsFiltered">
-              No chats.
-            </notice-message>
-          </span>
-          <span slot="no-more" />
-          <span slot="spinner" />
-        </infinite-loading>
-      </div>
-      <p v-else>
-        No chats.
-      </p>
+      <b-row v-for="chat in chatsShown" :key="'chathistory-' + chat.id">
+        <b-col cols="3" md="2" class="p-1 order-1 text-muted small">
+          <v-icon name="hashtag" scale="0.5" class="text-muted" />{{ chat.id }}
+        </b-col>
+        <b-col cols="1">
+          <v-icon v-if="chat.chattype === 'User2User'" class="text-success" name="user" />
+          <v-icon v-else-if="chat.chattype === 'User2Mod' || chat.chattype === 'Mod2Mod'" class="text-warning" name="crown" />
+        </b-col>
+        <b-col cols="4" md="2" class="p-1 order-1" :title="chat.lastdate | datetime">
+          {{ chat.lastdate | timeago }}
+        </b-col>
+        <b-col cols="12" md="5" class="p-1 order-3 order-md-2">
+          {{ chat.name }}
+        </b-col>
+        <b-col cols="4" md="2" class="p-1 order-2 order-md-3 small text-muted">
+          <ModChatViewButton :id="chat.id" />
+        </b-col>
+      </b-row>
+      <infinite-loading key="infinitechats" @infinite="loadMoreChats">
+        <span slot="no-results">
+          <p class="text-left">
+            No chats.
+          </p>
+        </span>
+        <span slot="no-more" />
+        <span slot="spinner" />
+      </infinite-loading>
     </b-card-body>
     <ModLogsModal ref="logs" :userid="user.id" />
     <ConfirmModal v-if="purgeConfirm" ref="purgeConfirm" :title="'Purge ' + user.displayname + ' from the system?'" message="<p><b>This can't be undone.</b></p><p>Are you completely sure you want to do this?</p>" @confirm="purgeConfirmed" />
@@ -232,7 +227,6 @@ import ModSupportMembership from './ModSupportMembership'
 import ModLogsModal from './ModLogsModal'
 import ConfirmModal from './ConfirmModal'
 import ProfileModal from './ProfileModal'
-import NoticeMessage from './NoticeMessage'
 import ModChatViewButton from './ModChatViewButton'
 
 const SHOW = 3
@@ -240,7 +234,6 @@ const SHOW = 3
 export default {
   components: {
     ModChatViewButton,
-    NoticeMessage,
     ProfileModal,
     ConfirmModal,
     ModLogsModal,
