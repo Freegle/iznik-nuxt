@@ -46,8 +46,6 @@ export default {
       } else {
         $state.complete()
       }
-
-      console.log('Load more', this.showChats)
     }
   }
 }

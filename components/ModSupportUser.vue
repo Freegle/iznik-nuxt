@@ -1,11 +1,11 @@
 <template>
-  <b-card v-if="user" no-body>
-    <b-card-header class="clickme" @click="expanded = !expanded">
+  <b-card v-if="user" no-body class="p-0">
+    <b-card-header class="clickme p-1" @click="expanded = !expanded">
       <b-row>
-        <b-col cols="8" sm="3" class="order-1">
-          <v-icon name="envelope" /> {{ user.email }}
+        <b-col cols="10" sm="4" class="order-1 truncate" :title="user.email">
+          <v-icon name="envelope" />&nbsp;{{ user.email }}
         </b-col>
-        <b-col cols="1" sm="1" class="order-3 order-sm-7">
+        <b-col cols="2" sm="1" class="order-2 order-sm-7">
           <span class="d-block d-sm-none float-right">
             <v-icon v-if="!expanded" name="caret-down" />
             <v-icon v-else name="caret-up" />
@@ -15,18 +15,18 @@
             <v-icon v-else name="caret-up" />
           </b-btn>
         </b-col>
-        <b-col cols="8" sm="3" class="order-4">
+        <b-col cols="12" sm="3" class="order-3 truncate">
           <v-icon name="user" /> {{ user.displayname }}
         </b-col>
-        <b-col cols="3" sm="2" class="order-2">
+        <b-col cols="5" sm="2" class="order-4">
           <v-icon name="hashtag" scale="0.75" class="text-muted" />{{ user.id }}
         </b-col>
-        <b-col cols="4" sm="2" class="order-5">
+        <b-col cols="7" sm="2" class="order-5 text-right">
           {{ user.lastaccess | timeago }}
         </b-col>
       </b-row>
     </b-card-header>
-    <b-card-body v-if="expanded">
+    <b-card-body v-if="expanded" class="p-1">
       <div class="d-flex flex-wrap">
         <b-btn variant="white" disabled class="mr-2 mb-1">
           <v-icon name="ban" /> Scammer
