@@ -46,12 +46,12 @@ export default {
   },
   computed: {
     validImage() {
-      return this.image || '/static/defaultprofile.png'
+      return this.image || '/defaultprofile.png'
     }
   },
   methods: {
     brokenProfileImage(event) {
-      event.target.src = '/static/defaultprofile.png'
+      event.target.src = '/defaultprofile.png'
     }
   }
 }
