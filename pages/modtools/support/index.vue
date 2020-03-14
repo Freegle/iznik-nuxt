@@ -20,9 +20,16 @@
             </b-input-group>
           </b-col>
         </b-row>
-        <div v-if="searchuser && searchuser.length">
-          <ModSupportUser v-for="user in searchresults" :id="user.id" :key="user.id" :expand="expand" />
-        </div>
+        <ModSupportUser v-for="user in visible" :id="user.id" :key="user.id" :expand="expand" />
+        <infinite-loading v-if="searchresults.length" key="infiniteusers" @infinite="loadMoreUsers">
+          <span slot="no-results">
+            <notice-message v-if="!searchresults">
+              No users found.
+            </notice-message>
+          </span>
+          <span slot="no-more" />
+          <span slot="spinner" />
+        </infinite-loading>
       </div>
     </div>
     <NoticeMessage v-else variant="warning">
@@ -31,6 +38,7 @@
   </div>
 </template>
 <script>
+import InfiniteLoading from 'vue-infinite-loading'
 import ModSupportUser from '../../../components/ModSupportUser'
 import loginRequired from '@/mixins/loginRequired.js'
 import NoticeMessage from '@/components/NoticeMessage'
@@ -38,23 +46,37 @@ import NoticeMessage from '@/components/NoticeMessage'
 export default {
   components: {
     ModSupportUser,
-    NoticeMessage
+    NoticeMessage,
+    InfiniteLoading
   },
   layout: 'modtools',
   mixins: [loginRequired],
   data: function() {
     return {
       searching: false,
-      searchuser: null
+      searchuser: null,
+      show: 0
     }
   },
   computed: {
     searchresults() {
       const ret = this.$store.getters['user/list']
-      return Object.values(ret)
+
+      // Show most recent first
+      return Object.values(ret).sort((a, b) => {
+        return (
+          new Date(b.lastaccess).getTime() - new Date(a.lastaccess).getTime()
+        )
+      })
     },
     expand() {
       return this.searchresults.length === 1
+    },
+    visible() {
+      console.log('Compute visible', this.searchresults, this.show)
+      return this.searchresults && this.searchresults.length
+        ? this.searchresults.slice(0, this.show)
+        : []
     }
   },
   mounted() {
@@ -65,6 +87,8 @@ export default {
     async usersearch() {
       this.searching = true
 
+      this.show = 0
+
       await this.$store.dispatch('user/clear')
 
       await this.$store.dispatch('user/fetch', {
@@ -73,6 +97,20 @@ export default {
       })
 
       this.searching = false
+    },
+    loadMoreUsers: function($state) {
+      // We use an infinite scroll on the list of chats because even though we have all the data in hand, the less
+      // we render onscreen the faster vue is to do so.
+      this.show++
+      console.log('Load more', this.show)
+
+      if (this.show > this.searchresults.length) {
+        this.showChats = this.searchresults.length
+        $state.complete()
+        this.complete = true
+      } else {
+        $state.loaded()
+      }
     }
   }
 }

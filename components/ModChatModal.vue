@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-modal
-      :id="'messageReportModal-' + message.id"
+      :id="'messageReportModal-' + id"
       v-model="showModal"
       size="lg"
       no-stacking
@@ -61,8 +61,8 @@ export default {
   components: { ChatMessage, InfiniteLoading },
   mixins: [chatCollate],
   props: {
-    message: {
-      type: Object,
+    id: {
+      type: Number,
       required: true
     }
   },
@@ -85,18 +85,18 @@ export default {
     },
     chatmessages() {
       return this.chatCollate(
-        this.$store.getters['chatmessages/getMessages'](this.message.chatid)
+        this.$store.getters['chatmessages/getMessages'](this.id)
       )
     }
   },
   methods: {
     async show() {
       await this.$store.dispatch('chats/fetch', {
-        id: this.message.chatid
+        id: this.id
       })
 
       // Take a copy rather than use computed as it isn't ours and will vanish from the store.
-      this.chat = this.$store.getters['chats/get'](this.message.chatid)
+      this.chat = this.$store.getters['chats/get'](this.id)
 
       this.showModal = true
     },
@@ -112,7 +112,7 @@ export default {
         this.busy = true
         this.$store
           .dispatch('chatmessages/fetch', {
-            chatid: this.message.chatid
+            chatid: this.id
           })
           .then(() => {
             if (!this.scrolledToBottom) {
@@ -120,7 +120,6 @@ export default {
               this.$nextTick(() => {
                 if (this.$el && this.$el.querySelector) {
                   const container = this.$refs.chatContent
-                  console.log('Container', container)
                   if (container) {
                     container.scrollTop = container.scrollHeight
                     this.scrolledToBottom = true

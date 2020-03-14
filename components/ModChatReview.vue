@@ -42,6 +42,7 @@
       </b-card-body>
       <b-card-footer>
         <div class="d-flex flex-wrap justify-content-start">
+          <ModChatViewButton :id="message.chatid" />
           <b-btn variant="white" class="mr-2 mb-1" @click="view">
             <v-icon name="comments" /> View Chat
           </b-btn>
@@ -69,7 +70,6 @@
         </div>
       </b-card-footer>
     </b-card>
-    <ModChatReviewModal ref="modal" :message="message" />
     <ModChatNoteModal v-if="message" ref="modnote" :chatid="message.chatid" />
   </div>
 </template>
@@ -77,15 +77,15 @@
 import waitForRef from '../mixins/waitForRef'
 import NoticeMessage from './NoticeMessage'
 import ModChatReviewUser from './ModChatReviewUser'
-import ModChatReviewModal from './ModChatReviewModal'
 import ChatMessage from './ChatMessage'
 import ModChatNoteModal from './ModChatNoteModal'
+import ModChatViewButton from './ModChatViewButton'
 
 export default {
   components: {
+    ModChatViewButton,
     ModChatNoteModal,
     ChatMessage,
-    ModChatReviewModal,
     ModChatReviewUser,
     NoticeMessage
   },
@@ -125,11 +125,6 @@ export default {
       this.$store.dispatch('chatmessages/whitelist', {
         id: this.message.id,
         chatid: null
-      })
-    },
-    view() {
-      this.waitForRef('modal', () => {
-        this.$refs.modal.show()
       })
     },
     modnote() {

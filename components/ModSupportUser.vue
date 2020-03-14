@@ -2,22 +2,27 @@
   <b-card v-if="user" no-body>
     <b-card-header class="clickme" @click="expanded = !expanded">
       <b-row>
-        <b-col cols="12" sm="3">
+        <b-col cols="8" sm="3" class="order-1">
           <v-icon name="envelope" /> {{ user.email }}
         </b-col>
-        <b-col cols="12" sm="3">
+        <b-col cols="1" sm="1" class="order-3 order-sm-7">
+          <span class="d-block d-sm-none float-right">
+            <v-icon v-if="!expanded" name="caret-down" />
+            <v-icon v-else name="caret-up" />
+          </span>
+          <b-btn variant="white" size="sm" class="d-none d-sm-block float-right">
+            <v-icon v-if="!expanded" name="caret-down" />
+            <v-icon v-else name="caret-up" />
+          </b-btn>
+        </b-col>
+        <b-col cols="8" sm="3" class="order-4">
           <v-icon name="user" /> {{ user.displayname }}
         </b-col>
-        <b-col cols="6" sm="3">
+        <b-col cols="3" sm="2" class="order-2">
           <v-icon name="hashtag" scale="0.75" class="text-muted" />{{ user.id }}
         </b-col>
-        <b-col cols="6" sm="3">
-          <div class="float-right">
-            <b-btn variant="white" size="sm">
-              <v-icon v-if="!expanded" name="caret-down" />
-              <v-icon v-else name="caret-up" />
-            </b-btn>
-          </div>
+        <b-col cols="4" sm="2" class="order-5">
+          {{ user.lastaccess | timeago }}
         </b-col>
       </b-row>
     </b-card-header>
@@ -73,7 +78,7 @@
       <h3 class="mt-2">
         Memberships
       </h3>
-      <div v-if="memberships">
+      <div v-if="memberships && memberships.length">
         <div v-for="membership in memberships" :key="'membership-' + membership.id">
           <ModSupportMembership :membership="membership" />
         </div>
@@ -87,18 +92,23 @@
       <h3 class="mt-2">
         Other Known Emails
       </h3>
-      <div v-for="otheremail in otherEmails" :key="'otheremail-' + otheremail.id">
-        {{ otheremail.email }}
-        <span class="text-muted" :title="otheremail.toLocaleString()">
-          added {{ otheremail.added | timeago }}
-        </span>
+      <div v-if="otherEmails && otherEmails.length">
+        <div v-for="otheremail in otherEmails" :key="'otheremail-' + otheremail.id">
+          {{ otheremail.email }}
+          <span class="text-muted" :title="otheremail.toLocaleString()">
+            added {{ otheremail.added | timeago }}
+          </span>
+        </div>
       </div>
+      <p v-else>
+        No other emails.
+      </p>
       <h3 class="mt-2">
         Membership History
       </h3>
       <h4>Recent Applications</h4>
       <div v-if="user.applied && user.applied.length">
-        <div v-for="applied in user.applied" :key="'applied-' + applied.added">
+        <div v-for="applied in user.applied" :key="'applied-' + id + '-' + applied.added">
           {{ applied.nameshort }}
           <span class="text-muted" :title="applied.added.toLocaleString()">
             {{ applied.added | timeago }}
@@ -129,7 +139,7 @@
         Posting History
       </h3>
       <div v-if="messageHistoriesShown.length">
-        <b-row v-for="message in messageHistoriesShown" :key="'messagehistory-' + message.id" class="pl-3">
+        <b-row v-for="message in messageHistoriesShown" :key="'messagehistory-' + id + '-' + message.id" class="pl-3">
           <b-col cols="4" md="2" class="order-1 p-1 small">
             {{ message.arrival | datetimeshort }}
           </b-col>
@@ -149,6 +159,66 @@
           Show +{{ messageHistoriesUnshown }}
         </b-btn>
       </div>
+      <p v-else>
+        No posting history.
+      </p>
+      <h3 class="mt-2">
+        Recent Emails
+      </h3>
+      <div v-if="emailHistoriesShown.length">
+        <b-row v-for="email in emailHistoriesShown" :key="'emailhistory-' + email.id" class="pl-3">
+          <b-col cols="6" md="3" class="p-1 order-1" :title="email.timestamp | datetime">
+            {{ email.timestamp | timeago }}
+          </b-col>
+          <b-col cols="12" md="6" class="p-1 order-3 order-md-2">
+            {{ email.subject }}
+          </b-col>
+          <b-col cols="5" md="3" class="p-1 order-2 order-md-3 small text-muted">
+            {{ email.status }}
+          </b-col>
+        </b-row>
+        <b-btn v-if="!showAllEmailHistories && emailHistoriesUnshown" variant="white" class="mt-1" @click="showAllEmailHistories = true">
+          Show +{{ emailHistoriesUnshown }}
+        </b-btn>
+      </div>
+      <p v-else>
+        No recent emails.
+      </p>
+      <h3 class="mt-2">
+        Chats
+      </h3>
+      <div v-if="chatsShown && chatsShown.length">
+        <b-row v-for="chat in chatsShown" :key="'chathistory-' + chat.id">
+          <b-col cols="3" md="2" class="p-1 order-1 text-muted small">
+            <v-icon name="hashtag" scale="0.5" class="text-muted" />{{ chat.id }}
+          </b-col>
+          <b-col cols="1">
+            <v-icon v-if="chat.chattype === 'User2User'" class="text-success" name="user" />
+            <v-icon v-else-if="chat.chattype === 'User2Mod' || chat.chattype === 'Mod2Mod'" class="text-warning" name="crown" />
+          </b-col>
+          <b-col cols="4" md="2" class="p-1 order-1" :title="chat.lastdate | datetime">
+            {{ chat.lastdate | timeago }}
+          </b-col>
+          <b-col cols="12" md="5" class="p-1 order-3 order-md-2">
+            {{ chat.name }}
+          </b-col>
+          <b-col cols="4" md="2" class="p-1 order-2 order-md-3 small text-muted">
+            <ModChatViewButton :id="chat.id" />
+          </b-col>
+        </b-row>
+        <infinite-loading v-if="chatsFiltered && chatsFiltered.length" key="infinitechats" @infinite="loadMoreChats">
+          <span slot="no-results">
+            <notice-message v-if="!chatsFiltered">
+              No chats.
+            </notice-message>
+          </span>
+          <span slot="no-more" />
+          <span slot="spinner" />
+        </infinite-loading>
+      </div>
+      <p v-else>
+        No chats.
+      </p>
     </b-card-body>
     <ModLogsModal ref="logs" :userid="user.id" />
     <ConfirmModal v-if="purgeConfirm" ref="purgeConfirm" :title="'Purge ' + user.displayname + ' from the system?'" message="<p><b>This can't be undone.</b></p><p>Are you completely sure you want to do this?</p>" @confirm="purgeConfirmed" />
@@ -156,20 +226,26 @@
   </b-card>
 </template>
 <script>
+import InfiniteLoading from 'vue-infinite-loading'
 import waitForRef from '../mixins/waitForRef'
 import ModSupportMembership from './ModSupportMembership'
 import ModLogsModal from './ModLogsModal'
 import ConfirmModal from './ConfirmModal'
 import ProfileModal from './ProfileModal'
+import NoticeMessage from './NoticeMessage'
+import ModChatViewButton from './ModChatViewButton'
 
 const SHOW = 3
 
 export default {
   components: {
+    ModChatViewButton,
+    NoticeMessage,
     ProfileModal,
     ConfirmModal,
     ModLogsModal,
-    ModSupportMembership
+    ModSupportMembership,
+    InfiniteLoading
   },
   mixins: [waitForRef],
   props: {
@@ -190,7 +266,9 @@ export default {
       showAllMemberships: false,
       showAllMembershipHistories: false,
       showAllMessages: false,
-      showAllMessageHistories: false
+      showAllMessageHistories: false,
+      showAllEmailHistories: false,
+      showChats: 0
     }
   },
   computed: {
@@ -263,6 +341,28 @@ export default {
           ? this.user.messagehistory.length - SHOW
           : 0
       return ret
+    },
+    emailHistoriesShown() {
+      return this.showAllEmailHistories
+        ? this.user.emailhistory
+        : this.user.emailhistory.slice(0, SHOW)
+    },
+    emailHistoriesUnshown() {
+      const ret =
+        this.user.emailhistory.length > SHOW
+          ? this.user.emailhistory.length - SHOW
+          : 0
+      return ret
+    },
+    chatsFiltered() {
+      return this.user.chatrooms
+        .filter(c => c.chattype !== 'Mod2Mod')
+        .sort((a, b) => {
+          return new Date(b.lastdate).getTime() - new Date(a.lastdate).getTime()
+        })
+    },
+    chatsShown() {
+      return this.chatsFiltered.slice(0, this.showChats)
     }
   },
   mounted() {
@@ -291,6 +391,15 @@ export default {
       this.waitForRef('purgeConfirm', () => {
         this.$refs.purgeConfirm.show()
       })
+    },
+    loadMoreChats($state) {
+      // We use an infinite load for the list because it's a lot of DOM to add at initial page load.
+      if (this.showChats < this.chatsFiltered.length) {
+        this.showChats++
+        $state.loaded()
+      } else {
+        $state.complete()
+      }
     }
   }
 }
