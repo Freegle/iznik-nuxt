@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-card no-body>
-      <b-card-body>
+      <b-card-body class="pl-3 pr-2 pt-2 pb-0">
         <b-row>
           <b-col cols="12" md="6">
             <div class="d-flex justify-content-between flex-wrap">

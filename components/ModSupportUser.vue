@@ -49,7 +49,7 @@
         <b-col cols="12" md="6">
           <div class="d-flex justify-content-between">
             <div>
-              <v-icon name="globe-europe" /> Location on ChitChat
+              <v-icon class="text-muted" name="globe-europe" /> Location on ChitChat
             </div>
             <div>
               {{ user.publiclocation.display }}
@@ -61,7 +61,7 @@
         <b-col cols="12" md="6">
           <div class="d-flex justify-content-between">
             <div>
-              <v-icon name="lock" /> Best guess lat/lng
+              <v-icon class="text-muted" name="lock" /> Best guess lat/lng
             </div>
             <div>
               {{ Math.round(user.privateposition.lat * 100) / 100 }}, {{ Math.round(user.privateposition.lng * 100) / 100 }}
@@ -125,6 +125,30 @@
       <div v-else>
         No application history.
       </div>
+      <h3 class="mt-2">
+        Posting History
+      </h3>
+      <div v-if="messageHistoriesShown.length">
+        <b-row v-for="message in messageHistoriesShown" :key="'messagehistory-' + message.id" class="pl-3">
+          <b-col cols="4" md="2" class="order-1 p-1 small">
+            {{ message.arrival | datetimeshort }}
+          </b-col>
+          <b-col cols="4" md="2" class="order-3 order-md-2 p-1 small">
+            <a target="_blank" :href="'https://www.ilovefreegle.org/message/' + message.id" rel="noopener noreferrer">
+              <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ message.id }}
+            </a>
+          </b-col>
+          <b-col cols="8" md="6" class="order-2 order-md-3 p-1">
+            {{ message.subject }}
+          </b-col>
+          <b-col cols="6" md="2" class="small order-4 p-1">
+            {{ message.fromaddr }}
+          </b-col>
+        </b-row>
+        <b-btn v-if="!showAllMessageHistories && messageHistoriesUnshown" variant="white" class="mt-1" @click="showAllMessageHistories = true">
+          Show +{{ messageHistoriesUnshown }}
+        </b-btn>
+      </div>
     </b-card-body>
     <ModLogsModal ref="logs" :userid="user.id" />
     <ConfirmModal v-if="purgeConfirm" ref="purgeConfirm" :title="'Purge ' + user.displayname + ' from the system?'" message="<p><b>This can't be undone.</b></p><p>Are you completely sure you want to do this?</p>" @confirm="purgeConfirmed" />
@@ -164,7 +188,9 @@ export default {
       expanded: true,
       purgeConfirm: false,
       showAllMemberships: false,
-      showAllMembershipHistories: false
+      showAllMembershipHistories: false,
+      showAllMessages: false,
+      showAllMessageHistories: false
     }
   },
   computed: {
@@ -223,6 +249,18 @@ export default {
       const ret =
         this.membershiphistories.length > SHOW
           ? this.membershiphistories.length - SHOW
+          : 0
+      return ret
+    },
+    messageHistoriesShown() {
+      return this.showAllMessageHistories
+        ? this.user.messagehistory
+        : this.user.messagehistory.slice(0, SHOW)
+    },
+    messageHistoriesUnshown() {
+      const ret =
+        this.user.messagehistory.length > SHOW
+          ? this.user.messagehistory.length - SHOW
           : 0
       return ret
     }

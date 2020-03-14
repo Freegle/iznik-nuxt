@@ -242,7 +242,6 @@
         </span>
         <span v-else-if="log.subtype === 'Edit'">
           Edited standard message <span v-if="log.stdmsg">{{ log.stdmsg.name }}</span>
-          {{ JSON.stringify(log.stdmsg) }}
         </span>
         <span v-else>
           <div class="text-muted">Unknown log type {{ log.type }} subtype {{ log.subtype }}</div>
