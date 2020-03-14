@@ -43,9 +43,6 @@
       <b-card-footer>
         <div class="d-flex flex-wrap justify-content-start">
           <ModChatViewButton :id="message.chatid" />
-          <b-btn variant="white" class="mr-2 mb-1" @click="view">
-            <v-icon name="comments" /> View Chat
-          </b-btn>
           <b-btn v-if="message.held" variant="warning" class="mr-2 mb-1" @click="release">
             <v-icon name="play" /> Release
           </b-btn>
