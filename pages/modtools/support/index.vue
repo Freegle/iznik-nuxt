@@ -3,22 +3,24 @@
     <div v-if="supportOrAdmin">
       <div>
         <h2>Find User</h2>
-        <b-input-group class="mb-2">
-          <b-form-input
-            v-model="searchuser"
-            placeholder="Email, numerical id, or ~- encoded id"
-          />
-          <b-input-group-append>
-            <b-button variant="success" @click="usersearch">
-              <v-icon v-if="searching" name="sync" class="fa-spin" />
-              <v-icon v-else name="search" /> Find user
-            </b-button>
-          </b-input-group-append>
-        </b-input-group>
+        <b-row>
+          <b-col cols="12" md="6">
+            <b-input-group class="mb-2">
+              <b-form-input
+                v-model="searchuser"
+                placeholder="Email, numerical id, or ~- encoded id"
+                @keyup.enter.exact="usersearch"
+              />
+              <b-input-group-append>
+                <b-button variant="success" @click="usersearch">
+                  <v-icon v-if="searching" name="sync" class="fa-spin" />
+                  <v-icon v-else name="search" /> Find user
+                </b-button>
+              </b-input-group-append>
+            </b-input-group>
+          </b-col>
+        </b-row>
         <div v-if="searchuser && searchuser.length">
-          <p>
-            This search only matches from the left or right hand sides, otherwise it's too slow at the moment. So test@gmail.co would work, as would gmail.com, but est@gmail.com wouldn't.
-          </p>
           <ModSupportUser v-for="user in searchresults" :id="user.id" :key="user.id" :expand="expand" />
         </div>
       </div>

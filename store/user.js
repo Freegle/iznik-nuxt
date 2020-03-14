@@ -32,7 +32,13 @@ export const mutations = {
 
     item.hasReneged = hasReneged(item)
 
-    Vue.set(state.list, item.id, item)
+    if (state.list[item.id]) {
+      // When we're fetching logs from Support Tools we have unusual info in store, and we
+      // don't want to lose it by overwriting.
+      Vue.set(state.list, item.id, Object.assign(state.list[item.id], item))
+    } else {
+      Vue.set(state.list, item.id, item)
+    }
   },
 
   setList(state, items) {

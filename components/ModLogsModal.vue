@@ -69,7 +69,8 @@ export default {
       await this.$store.dispatch('user/fetch', {
         id: this.userid,
         logs: true,
-        logcontext: this.user ? this.user.logcontext : null
+        logcontext:
+          this.user && this.user.logcontext ? this.user.logcontext : null
       })
 
       // The logs are returned in chunks - grab the next chunk and append to ours.
@@ -82,8 +83,6 @@ export default {
       } else {
         $state.loaded()
       }
-
-      console.log('Fetched chunk of logs.', this.logs.length)
 
       this.busy = false
     }

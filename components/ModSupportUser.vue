@@ -1,30 +1,32 @@
 <template>
   <b-card v-if="user" no-body>
-    <b-card-header>
-      <div class="d-flex justify-content-between flex-wrap">
-        <div>
+    <b-card-header class="clickme" @click="expanded = !expanded">
+      <b-row>
+        <b-col cols="12" sm="3">
           <v-icon name="envelope" /> {{ user.email }}
-        </div>
-        <div>
+        </b-col>
+        <b-col cols="12" sm="3">
           <v-icon name="user" /> {{ user.displayname }}
-        </div>
-        <div>
+        </b-col>
+        <b-col cols="6" sm="3">
           <v-icon name="hashtag" scale="0.75" class="text-muted" />{{ user.id }}
-        </div>
-        <div @click="expanded = !expanded">
-          <b-btn variant="white" size="sm">
-            <v-icon v-if="!expanded" name="caret-down" />
-            <v-icon v-else name="caret-up" />
-          </b-btn>
-        </div>
-      </div>
+        </b-col>
+        <b-col cols="6" sm="3">
+          <div class="float-right">
+            <b-btn variant="white" size="sm">
+              <v-icon v-if="!expanded" name="caret-down" />
+              <v-icon v-else name="caret-up" />
+            </b-btn>
+          </div>
+        </b-col>
+      </b-row>
     </b-card-header>
     <b-card-body v-if="expanded">
       <div class="d-flex flex-wrap">
         <b-btn variant="white" disabled class="mr-2 mb-1">
           <v-icon name="ban" /> Scammer
         </b-btn>
-        <b-btn variant="white" disabled class="mr-2 mb-1">
+        <b-btn variant="white" class="mr-2 mb-1" @click="purge">
           <v-icon name="trash-alt" /> Purge
         </b-btn>
         <b-btn variant="white" disabled class="mr-2 mb-1">
@@ -32,6 +34,12 @@
         </b-btn>
         <b-btn variant="white" disabled class="mr-2 mb-1">
           <v-icon name="equals" /> Merge
+        </b-btn>
+        <b-btn variant="white" class="mr-2 mb-1" @click="logs">
+          <v-icon name="book-open" /> Logs
+        </b-btn>
+        <b-btn variant="white" class="mr-2 mb-1" @click="profile">
+          <v-icon name="user" /> Profile
         </b-btn>
       </div>
       <h3 class="mt-2">
@@ -90,7 +98,7 @@
       </h3>
       <h4>Recent Applications</h4>
       <div v-if="user.applied && user.applied.length">
-        <div v-for="applied in user.applied" :key="'applied-' + applied.id">
+        <div v-for="applied in user.applied" :key="'applied-' + applied.added">
           {{ applied.nameshort }}
           <span class="text-muted" :title="applied.added.toLocaleString()">
             {{ applied.added | timeago }}
@@ -118,15 +126,28 @@
         No application history.
       </div>
     </b-card-body>
+    <ModLogsModal ref="logs" :userid="user.id" />
+    <ConfirmModal v-if="purgeConfirm" ref="purgeConfirm" :title="'Purge ' + user.displayname + ' from the system?'" message="<p><b>This can't be undone.</b></p><p>Are you completely sure you want to do this?</p>" @confirm="purgeConfirmed" />
+    <ProfileModal v-if="user && user.info" :id="id" ref="profile" />
   </b-card>
 </template>
 <script>
+import waitForRef from '../mixins/waitForRef'
 import ModSupportMembership from './ModSupportMembership'
+import ModLogsModal from './ModLogsModal'
+import ConfirmModal from './ConfirmModal'
+import ProfileModal from './ProfileModal'
 
 const SHOW = 3
 
 export default {
-  components: { ModSupportMembership },
+  components: {
+    ProfileModal,
+    ConfirmModal,
+    ModLogsModal,
+    ModSupportMembership
+  },
+  mixins: [waitForRef],
   props: {
     id: {
       type: Number,
@@ -141,6 +162,7 @@ export default {
   data: function() {
     return {
       expanded: true,
+      purgeConfirm: false,
       showAllMemberships: false,
       showAllMembershipHistories: false
     }
@@ -208,6 +230,30 @@ export default {
   mounted() {
     this.expanded = this.expand
   },
-  methods: {}
+  methods: {
+    logs() {
+      this.$refs.logs.show()
+    },
+    async profile() {
+      await this.$store.dispatch('user/fetch', {
+        id: this.id,
+        info: true
+      })
+
+      this.$refs.profile.show()
+    },
+    purgeConfirmed() {
+      this.$store.dispatch('members/purge', {
+        userid: this.id
+      })
+    },
+    purge() {
+      this.purgeConfirm = true
+
+      this.waitForRef('purgeConfirm', () => {
+        this.$refs.purgeConfirm.show()
+      })
+    }
+  }
 }
 </script>
