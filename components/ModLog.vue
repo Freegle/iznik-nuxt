@@ -11,34 +11,34 @@
     <b-col cols="7" class="forcebreak">
       <span v-if="log.type === 'Group'">
         <span v-if="log.subtype === 'Joined'">
-          Joined {{ log.group.namedisplay }}
+          Joined {{ loggroup.namedisplay }}
         </span>
         <span v-else-if="log.subtype === 'Applied'">
-          Applied to {{ log.group.namedisplay }}
+          Applied to {{ loggroup.namedisplay }}
         </span>
         <span v-else-if="log.subtype === 'Left'">
           <span v-if="log.user && log.byuser && log.byuser.id !== log.user.id">
             Removed member
-            <span v-if="log.user.displayname.length > 1">
+            <span v-if="log.user.displayname && log.user.displayname.length > 1">
               {{ log.user.displayname }}
             </span>
             <span v-else>
               <em>(No name)</em>
             </span>
-            #{{ log.user.id }} from {{ log.group.namedisplay }}
+            #{{ log.user.id }} from {{ loggroup.namedisplay }}
             <span v-if="log.text">
               {{ log.text }}
             </span>
           </span>
           <span v-else>
-            Left {{ log.group.namedisplay }}
+            Left {{ loggroup.namedisplay }}
           </span>
         </span>
         <span v-else-if="log.subtype === 'Edit'">
           {{ log.byuser.displayname }} edited group settings
         </span>
         <span v-else-if="log.subtype === 'Autoapproved'">
-          Auto-approved on {{ log.group.namedisplay }} - not moderated in time
+          Auto-approved on {{ loggroup.namedisplay }} - not moderated in time
         </span>
         <span v-else>
           <div class="text-muted">Unknown log type {{ log.type }} subtype {{ log.subtype }}</div>
@@ -47,8 +47,8 @@
       <span v-if="log.type === 'Message'">
         <span v-if="log.subtype === 'Received'">
           Posted #{{ log.msgid }} <em>{{ log.message.subject }}</em>
-          <span v-if="log.group">
-            to {{ log.group.namedisplay }
+          <span v-if="loggroup">
+            to {{ loggroup.namedisplay }
           </span>
           <span v-if="log.message.sourceheader">
             via {{ log.message.sourceheader }}
@@ -56,8 +56,8 @@
         </span>
         <span v-else-if="log.subtype === 'Autoreposted'">
           Autoreposted #{{ log.msgid }} <em>{{ log.message.subject }}</em>
-          <span v-if="log.group">
-            to {{ log.group.namedisplay }}
+          <span v-if="loggroup">
+            to {{ loggroup.namedisplay }}
           </span>
           repost {{ log.text }}
         </span>
@@ -65,7 +65,7 @@
           Approved message #{{ log.msgid }}
           <span v-if="log.message"><em>{{ log.message.subject }}</em></span>
           <span v-if="log.stdmsg"> using <em>{{ log.stdmsg.title }} </em></span>
-          <span v-if="log.group"> on {{ log.group.namedisplay }}</span>
+          <span v-if="loggroup"> on {{ loggroup.namedisplay }}</span>
         </span>
         <span v-else-if="log.subtype === 'Rejected'">
           <NoticeMessage variant="danger">
@@ -73,7 +73,7 @@
             <span v-if="log.message"><em>{{ log.message.subject }}</em></span>
             <span v-if="log.text && log.text.length > 0"> with <em>{{ log.text }} </em></span>
             <span v-if="log.stdmsg"> using <em>{{ log.stdmsg.title }} </em></span>
-            <span v-if="log.group"> on {{ log.group.namedisplay }}</span>
+            <span v-if="loggroup"> on {{ loggroup.namedisplay }}</span>
           </NoticeMessage>
         </span>
         <span v-else-if="log.subtype === 'Replied'">
@@ -95,14 +95,14 @@
               <em>{{ log.message.subject }}</em>
             </span>
             <span v-if="log.stdmsg"> using <em>{{ log.stdmsg.title }} </em></span>
-            <span v-if="log.group"> from {{ log.group.namedisplay }}</span>
+            <span v-if="loggroup"> from {{ loggroup.namedisplay }}</span>
           </NoticeMessage>>
         </span>
         <span v-else-if="log.subtype === 'Hold'">
-          Held #{{ log.msgid }} <span v-if="log.message"><em>{{ log.message.subject }}</em></span><span v-if="log.group"> on {{ log.group.namedisplay }}</span>
+          Held #{{ log.msgid }} <span v-if="log.message"><em>{{ log.message.subject }}</em></span><span v-if="loggroup"> on {{ loggroup.namedisplay }}</span>
         </span>
         <span v-else-if="log.subtype === 'Release'">
-          Released #{{ log.msgid }} <span v-if="log.message"><em>{{ log.message.subject }}</em></span><span v-if="log.group"> on {{ log.group.namedisplay }}</span>
+          Released #{{ log.msgid }} <span v-if="log.message"><em>{{ log.message.subject }}</em></span><span v-if="loggroup"> on {{ loggroup.namedisplay }}</span>
         </span>
         <span v-else-if="log.subtype === 'Edit'">
           Edited #{{ log.msgid }} {{ log.text }}
@@ -144,20 +144,20 @@
           Created
         </span>
         <span v-else-if="log.subtype === 'RoleChange'">
-          Role on {{ log.group.namedisplay }} changed to {{ log.text }}
+          Role on {{ loggroup.namedisplay }} changed to {{ log.text }}
         </span>
         <span v-else-if="log.subtype === 'Merged'">
           Merged with another user - {{ log.text }}
         </span>
         <span v-else-if="log.subtype === 'Approved'">
           Approved member <span v-if="user.displayname.length > 1">{{ user.displayname }}</span>
-          <span v-else><em>(No name)</em></span> #{{ user.id }} on {{ log.group.namedisplay }}
+          <span v-else><em>(No name)</em></span> #{{ user.id }} on {{ loggroup.namedisplay }}
         </span>
         <span v-else-if="log.subtype === 'Rejected'">
-          Rejected member {{ log.text }} on {{ log.group.namedisplay }} using <em>{{ log.stdmsg.title }}</em>
+          Rejected member {{ log.text }} on {{ loggroup.namedisplay }} using <em>{{ log.stdmsg.title }}</em>
         </span>
         <span v-else-if="log.subtype === 'Deleted'">
-          Deleted member {{ log.text }} <span v-if="log.group">on {{ log.group.namedisplay }}</span>
+          Deleted member {{ log.text }} <span v-if="loggroup">on {{ loggroup.namedisplay }}</span>
         </span>
         <span v-else-if="log.subtype === 'Mailed'">
           <NoticeMessage variant="danger">
@@ -171,10 +171,10 @@
           </NoticeMessage>>
         </span>
         <span v-else-if="log.subtype === 'Hold'">
-          Held member <span v-if="user.displayname.length > 1">{{ user.displayname }}</span><span v-else><em>(No name)</em></span> #{{ user.id }} on {{ log.group.namedisplay }}
+          Held member <span v-if="user.displayname.length > 1">{{ user.displayname }}</span><span v-else><em>(No name)</em></span> #{{ user.id }} on {{ loggroup.namedisplay }}
         </span>
         <span v-else-if="log.subtype === 'Release'">
-          Released member <span v-if="user.displayname.length > 1">{{ user.displayname }}</span><span v-else><em>(No name)</em></span> #{{ user.id }} on {{ log.group.namedisplay }}
+          Released member <span v-if="user.displayname.length > 1">{{ user.displayname }}</span><span v-else><em>(No name)</em></span> #{{ user.id }} on {{ loggroup.namedisplay }}
         </span>
         <span v-else-if="log.subtype === 'Suspect'">
           Detected as suspicious<span v-if="log.text">: {{ log.text }}</span>
@@ -198,13 +198,13 @@
           Turned off volunteering mails by email
         </span>
         <span v-else-if="log.subtype === 'YahooApplied'">
-          Triggered application to Yahoo Group {{ log.group.namedisplay }}.
+          Triggered application to Yahoo Group {{ loggroup.namedisplay }}.
         </span>
         <span v-else-if="log.subtype === 'YahooJoined'">
-          Yahoo informed us that the member {{ log.text }} has joined {{ log.group.namedisplay }}.
+          Yahoo informed us that the member {{ log.text }} has joined {{ loggroup.namedisplay }}.
         </span>
         <span v-else-if="log.subtype === 'YahooConfirmed'">
-          Confirmed join request to Yahoo for member {{ log.text }} on {{ log.group.namedisplay }}.
+          Confirmed join request to Yahoo for member {{ log.text }} on {{ loggroup.namedisplay }}.
         </span>
         <span v-else-if="log.subtype === 'SuspendMail'">
           Stop mailing this member as they are bouncing.
@@ -242,6 +242,7 @@
         </span>
         <span v-else-if="log.subtype === 'Edit'">
           Edited standard message <span v-if="log.stdmsg">{{ log.stdmsg.name }}</span>
+          {{ JSON.stringify(log.stdmsg) }}
         </span>
         <span v-else>
           <div class="text-muted">Unknown log type {{ log.type }} subtype {{ log.subtype }}</div>
@@ -262,6 +263,16 @@ export default {
     log: {
       type: Object,
       required: true
+    }
+  },
+  computed: {
+    loggroup() {
+      return (
+        this.log.group || {
+          id: -1,
+          namedisplay: '(Deleted group)'
+        }
+      )
     }
   }
 }
