@@ -139,7 +139,7 @@
         Posting History
       </h3>
       <div v-if="messageHistoriesShown.length">
-        <b-row v-for="message in messageHistoriesShown" :key="'messagehistory-' + id + '-' + message.id" class="pl-3">
+        <b-row v-for="message in messageHistoriesShown" :key="'messagehistory-' + message.arrival + '-' + message.id" class="pl-3">
           <b-col cols="4" md="2" class="order-1 p-1 small">
             {{ message.arrival | datetimeshort }}
           </b-col>
@@ -187,33 +187,7 @@
       <h3 class="mt-2">
         Chats
       </h3>
-      <b-row v-for="chat in chatsShown" :key="'chathistory-' + chat.id">
-        <b-col cols="3" md="2" class="p-1 order-1 text-muted small">
-          <v-icon name="hashtag" scale="0.5" class="text-muted" />{{ chat.id }}
-        </b-col>
-        <b-col cols="1">
-          <v-icon v-if="chat.chattype === 'User2User'" class="text-success" name="user" />
-          <v-icon v-else-if="chat.chattype === 'User2Mod' || chat.chattype === 'Mod2Mod'" class="text-warning" name="crown" />
-        </b-col>
-        <b-col cols="4" md="2" class="p-1 order-1" :title="chat.lastdate | datetime">
-          {{ chat.lastdate | timeago }}
-        </b-col>
-        <b-col cols="12" md="5" class="p-1 order-3 order-md-2">
-          {{ chat.name }}
-        </b-col>
-        <b-col cols="4" md="2" class="p-1 order-2 order-md-3 small text-muted">
-          <ModChatViewButton :id="chat.id" />
-        </b-col>
-      </b-row>
-      <infinite-loading key="infinitechats" @infinite="loadMoreChats">
-        <span slot="no-results">
-          <p class="text-left">
-            No chats.
-          </p>
-        </span>
-        <span slot="no-more" />
-        <span slot="spinner" />
-      </infinite-loading>
+      <ModSupportChatList :chats="chatsFiltered" />
     </b-card-body>
     <ModLogsModal ref="logs" :userid="user.id" />
     <ConfirmModal v-if="purgeConfirm" ref="purgeConfirm" :title="'Purge ' + user.displayname + ' from the system?'" message="<p><b>This can't be undone.</b></p><p>Are you completely sure you want to do this?</p>" @confirm="purgeConfirmed" />
@@ -221,24 +195,22 @@
   </b-card>
 </template>
 <script>
-import InfiniteLoading from 'vue-infinite-loading'
 import waitForRef from '../mixins/waitForRef'
 import ModSupportMembership from './ModSupportMembership'
 import ModLogsModal from './ModLogsModal'
 import ConfirmModal from './ConfirmModal'
 import ProfileModal from './ProfileModal'
-import ModChatViewButton from './ModChatViewButton'
+import ModSupportChatList from './ModSupportChatList'
 
 const SHOW = 3
 
 export default {
   components: {
-    ModChatViewButton,
+    ModSupportChatList,
     ProfileModal,
     ConfirmModal,
     ModLogsModal,
-    ModSupportMembership,
-    InfiniteLoading
+    ModSupportMembership
   },
   mixins: [waitForRef],
   props: {
@@ -260,8 +232,7 @@ export default {
       showAllMembershipHistories: false,
       showAllMessages: false,
       showAllMessageHistories: false,
-      showAllEmailHistories: false,
-      showChats: 0
+      showAllEmailHistories: false
     }
   },
   computed: {
@@ -353,9 +324,6 @@ export default {
         .sort((a, b) => {
           return new Date(b.lastdate).getTime() - new Date(a.lastdate).getTime()
         })
-    },
-    chatsShown() {
-      return this.chatsFiltered.slice(0, this.showChats)
     }
   },
   mounted() {
@@ -384,15 +352,6 @@ export default {
       this.waitForRef('purgeConfirm', () => {
         this.$refs.purgeConfirm.show()
       })
-    },
-    loadMoreChats($state) {
-      // We use an infinite load for the list because it's a lot of DOM to add at initial page load.
-      if (this.showChats < this.chatsFiltered.length) {
-        this.showChats++
-        $state.loaded()
-      } else {
-        $state.complete()
-      }
     }
   }
 }

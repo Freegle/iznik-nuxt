@@ -8,6 +8,7 @@
             v-model="searchuser"
             placeholder="Email, numerical id, or ~- encoded id"
             class="max"
+            :disabled="searching"
             @keyup.enter.exact="usersearch"
           />
           <b-input-group-append>
@@ -84,19 +85,23 @@ export default {
   },
   methods: {
     async usersearch() {
-      this.searching = true
+      const val = this.searchuser.trim()
 
-      this.show = 0
+      if (val) {
+        this.searching = true
 
-      await this.$store.dispatch('user/clear')
+        this.show = 0
 
-      await this.$store.dispatch('user/fetch', {
-        search: this.searchuser,
-        emailhistory: true
-      })
+        await this.$store.dispatch('user/clear')
 
-      this.searching = false
-      this.searched = true
+        await this.$store.dispatch('user/fetch', {
+          search: val,
+          emailhistory: true
+        })
+
+        this.searching = false
+        this.searched = true
+      }
     },
     loadMoreUsers: function($state) {
       // We use an infinite scroll on the list of chats because even though we have all the data in hand, the less
