@@ -102,7 +102,7 @@
               <ModMenuItemNav name="Publicity" :count="['socialactions']" href="/modtools/publicity" />
             </b-dropdown-item>
             <b-dropdown-item>
-              <ModMenuItemNav name="Support" href="/modtools/support" />
+              <ModMenuItemNav name="Support" link="/modtools/support" />
             </b-dropdown-item>
           </b-nav-item-dropdown>
 
