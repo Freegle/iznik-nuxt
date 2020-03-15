@@ -513,7 +513,7 @@ const config = {
     USER_SITE: USER_SITE,
     IMAGE_SITE: IMAGE_SITE,
     SENTRY_DSN: SENTRY_DSN,
-    BUILD_DATE: new Date().toLocaleString()
+    BUILD_DATE: new Date().toLocaleString('en-US')
   },
 
   vue: {
@@ -544,7 +544,7 @@ if (process.env.NUXT_BUILD_TYPE === 'fdapp') {
   config.head.meta = []
   config.head.link.splice(0, 1)
 
-  config.router = { // https://nuxtjs.org/api/configuration-router/ 
+  config.router = { // https://nuxtjs.org/api/configuration-router/
     mode: 'hash'    // https://router.vuejs.org/api/#mode
   }
 
