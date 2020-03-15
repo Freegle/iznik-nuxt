@@ -108,6 +108,9 @@
               <ModMenuItemNav name="Publicity" :count="['socialactions']" href="/modtools/publicity" />
             </b-dropdown-item>
             <b-dropdown-item>
+              <ModMenuItemNav name="Teams" link="/modtools/teams" />
+            </b-dropdown-item>
+            <b-dropdown-item>
               <ModMenuItemNav name="Support" link="/modtools/support" />
             </b-dropdown-item>
           </b-nav-item-dropdown>
@@ -172,7 +175,7 @@
           <ModMenuItemLeft link="/modtools/logs" name="Logs TODO" />
           <ModMenuItemLeft link="/modtools/support" name="Support" />
           <ModMenuItemLeft link="/modtools/settings" name="Settings TODO" />
-          <ModMenuItemLeft link="/modtools/teams" name="Teams TODO" />
+          <ModMenuItemLeft link="/modtools/teams" name="Teams" />
           <a href="https://discourse.ilovefreegle.org" rel="noopener noreferrer" target="_blank" class="pl-1">Help</a>
         </div>
         <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent flex-grow-1" />
