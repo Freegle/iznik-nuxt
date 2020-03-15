@@ -44,6 +44,7 @@ module.exports = {
       ref: 'origin/master',
       repo: 'git@github.com:Freegle/iznik-nuxt.git',
       path: '/var/www/fdnuxt.live',
+      'pre-deploy-local': 'git checkout -- package-lock.json && git checkout -- static/sw.js && git checkout -- nuxt.config.js',
       'post-deploy':
         'monit stop nginx && rsync -a app4:/var/build/iznik-nuxt/ . && npx patch-package && cp restartfd /etc && chmod +x /etc/restartfd && cp waitfornode /etc && chmod +x /etc/waitfornode && pm2 restart FD-production --update-env && /etc/waitfornode && monit start nginx'
     },
@@ -56,6 +57,7 @@ module.exports = {
       ref: 'origin/master',
       repo: 'git@github.com:Freegle/iznik-nuxt.git',
       path: '/var/www/fdnuxt.dev',
+      'pre-deploy-local': 'git checkout -- package-lock.json && git checkout -- static/sw.js && git checkout -- nuxt.config.js',
       'post-deploy':
         'rsync -a app4:/var/build/iznik-nuxt/ . && npx patch-package && cp restartfd /etc && chmod +x /etc/restartfd && cp waitfornode /etc && chmod +x /etc/waitfornode && pm2 restart FD-development --update-env && /etc/waitfornode'
     },
@@ -67,6 +69,7 @@ module.exports = {
       ref: 'origin/master',
       repo: 'git@github.com:Freegle/iznik-nuxt.git',
       path: '/var/www/fdnuxt.dbg',
+      'pre-deploy-local': 'git checkout -- package-lock.json && git checkout -- static/sw.js && git checkout -- nuxt.config.js',
       'post-deploy':
         'rsync -a app4:/var/build/iznik-nuxt/ . && npx patch-package && cp restartfd /etc && chmod +x /etc/restartfd && cp waitfornode /etc && chmod +x /etc/waitfornode && pm2 restart FD-debug --update-env && /etc/waitfornode'
     }
