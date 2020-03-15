@@ -104,5 +104,9 @@ export const actions = {
     commit('remove', {
       id: params.id
     })
+  },
+
+  async unbounce({ commit, dispatch }, params) {
+    await this.$api.user.unbounce(params.id)
   }
 }

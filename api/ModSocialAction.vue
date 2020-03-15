@@ -82,15 +82,17 @@ export default {
     }
   },
   methods: {
-    async share(group) {
+    share(group) {
       group.busy = true
-      await this.$store.dispatch('publicity/share', {
-        id: this.item.id,
-        uid: group.facebookuid
+      this.$nextTick(async () => {
+        await this.$store.dispatch('publicity/share', {
+          id: this.item.id,
+          uid: group.facebookuid
+        })
+        group.busy = false
+        group.actioned = true
+        this.actioned.push(group.id)
       })
-      group.busy = false
-      group.actioned = true
-      this.actioned.push(group.id)
     },
     async hide(group) {
       group.busy = true

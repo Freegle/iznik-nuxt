@@ -31,6 +31,7 @@
         <NoticeMessage v-if="member.activedistance > 50" variant="warning" class="mb-2">
           This freegler is active on groups {{ member.activedistance }} miles apart.
         </NoticeMessage>
+        <ModBouncing v-if="member.bouncing" :user="member" />
         <div class="d-flex justify-content-between flex-wrap">
           <SettingsGroup
             v-if="groupid"
@@ -129,10 +130,12 @@ import ModComments from './ModComments'
 import ModMemberButtons from './ModMemberButtons'
 import ModLogsModal from './ModLogsModal'
 import ModMemberships from './ModMemberships'
+import ModBouncing from './ModBouncing'
 
 export default {
   name: 'ModMember',
   components: {
+    ModBouncing,
     ModMemberships,
     ModLogsModal,
     ModMemberButtons,

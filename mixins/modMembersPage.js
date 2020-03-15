@@ -17,7 +17,8 @@ export default {
       show: 0,
       busy: false,
       collection: 'Approved',
-      search: null
+      search: null,
+      filter: 0
     }
   },
   computed: {
@@ -27,7 +28,8 @@ export default {
         // and puts them in the store.
         return (
           member.collection === this.collection &&
-          (!this.groupid || member.groupid === this.groupid)
+          (!this.groupid || member.groupid === this.groupid) &&
+          this.matchFilter(member)
         )
       })
       return ret
@@ -52,6 +54,10 @@ export default {
   },
   watch: {
     groupid() {
+      this.context = null
+      this.$store.dispatch('members/clear')
+    },
+    filter() {
       this.context = null
       this.$store.dispatch('members/clear')
     },
@@ -106,7 +112,8 @@ export default {
             summary: false,
             context: this.context,
             limit: this.limit,
-            search: this.search
+            search: this.search,
+            filter: this.filter
           })
           .then(() => {
             this.context = this.$store.getters['members/getContext']
@@ -127,6 +134,66 @@ export default {
             console.log('Complete on error', e)
           })
       }
+    },
+
+    matchFilter(member) {
+      let ret = true
+
+      //   <option value="0">
+      //   All members
+      // </option>
+      // <option value="3">
+      //   Bouncing
+      //   </option>
+      //   <option value="2">
+      //   Moderation Team
+      // </option>
+      // <option value="1">
+      //   With notes
+      // </option>
+      // <option value="4">
+      //   Most active web
+      // </option>
+      // <option value="5" disabled>
+      // Banned
+      // </option>
+
+      switch (this.filter) {
+        case 0: {
+          ret = true
+          break
+        }
+
+        case 3: {
+          ret = member.bouncing
+          break
+        }
+
+        case 2: {
+          ret =
+            member.systemrole === 'Moderator' ||
+            member.systemrole === 'Support' ||
+            member.systemrole === 'Admin'
+          break
+        }
+
+        case 1: {
+          ret = member.comments
+          break
+        }
+
+        case 4: {
+          // Not much we can do to verify this.
+          break
+        }
+
+        case 5: {
+          // TODO Banned
+          break
+        }
+      }
+
+      return ret
     }
   }
 }
