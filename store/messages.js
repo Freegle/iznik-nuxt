@@ -8,7 +8,10 @@ export const state = () => ({
   viewed: [],
 
   // The context from the last fetch, used for fetchMore.
-  context: null
+  context: null,
+
+  // For spotting when we clear under the feet of an outstanding fetch
+  instance: 1
 })
 
 export const mutations = {
@@ -44,6 +47,12 @@ export const mutations = {
   },
   clear(state) {
     state.list = []
+
+    if (state.instance) {
+      state.instance++
+    } else {
+      state.instance = 1
+    }
   },
   setContext(state, ctx) {
     state.context = ctx
@@ -94,6 +103,10 @@ export const getters = {
 
 export const actions = {
   async fetchMessages({ commit, state }, params) {
+    // Watch out for the store being cleared under the feet of this fetch. If that happens then we throw away the
+    // results.
+    const instance = state.instance
+
     if (params.context) {
       // Ensure the context is a real object, in case it has been in the store.
       const ctx = cloneDeep(params.context)
@@ -103,8 +116,11 @@ export const actions = {
     }
 
     const { messages, context } = await this.$api.message.fetchMessages(params)
-    commit('addAll', messages)
-    commit('setContext', context)
+
+    if (state.instance === instance) {
+      commit('addAll', messages)
+      commit('setContext', context)
+    }
   },
 
   async fetch({ commit }, params) {

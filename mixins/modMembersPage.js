@@ -23,16 +23,7 @@ export default {
   },
   computed: {
     visibleMembers() {
-      const ret = this.members.slice(0, this.show).filter(member => {
-        // Make sure we don't pick up any members from the wrong collection if we have a fetch which completes late
-        // and puts them in the store.
-        return (
-          member.collection === this.collection &&
-          (!this.groupid || member.groupid === this.groupid) &&
-          this.matchFilter(member)
-        )
-      })
-      return ret
+      return this.members.slice(0, this.show)
     },
     members() {
       let members
@@ -134,66 +125,6 @@ export default {
             console.log('Complete on error', e)
           })
       }
-    },
-
-    matchFilter(member) {
-      let ret = true
-
-      //   <option value="0">
-      //   All members
-      // </option>
-      // <option value="3">
-      //   Bouncing
-      //   </option>
-      //   <option value="2">
-      //   Moderation Team
-      // </option>
-      // <option value="1">
-      //   With notes
-      // </option>
-      // <option value="4">
-      //   Most active web
-      // </option>
-      // <option value="5" disabled>
-      // Banned
-      // </option>
-
-      switch (this.filter) {
-        case 0: {
-          ret = true
-          break
-        }
-
-        case 3: {
-          ret = member.bouncing
-          break
-        }
-
-        case 2: {
-          ret =
-            member.systemrole === 'Moderator' ||
-            member.systemrole === 'Support' ||
-            member.systemrole === 'Admin'
-          break
-        }
-
-        case 1: {
-          ret = member.comments
-          break
-        }
-
-        case 4: {
-          // Not much we can do to verify this.
-          break
-        }
-
-        case 5: {
-          // TODO Banned
-          break
-        }
-      }
-
-      return ret
     }
   }
 }

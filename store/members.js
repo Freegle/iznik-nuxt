@@ -6,7 +6,10 @@ export const state = () => ({
   list: [],
 
   // The context from the last fetch, used for fetchMore.
-  context: null
+  context: null,
+
+  // For spotting when we clear under the feet of an outstanding fetch
+  instance: 1
 })
 
 export const mutations = {
@@ -60,6 +63,12 @@ export const mutations = {
   },
   clear(state) {
     state.list = []
+
+    if (state.instance) {
+      state.instance++
+    } else {
+      state.instance = 1
+    }
   },
   setContext(state, ctx) {
     state.context = ctx
@@ -123,6 +132,10 @@ export const getters = {
 
 export const actions = {
   async fetchMembers({ commit, state }, params) {
+    // Watch out for the store being cleared under the feet of this fetch. If that happens then we throw away the
+    // results.
+    const instance = state.instance
+
     if (params.context) {
       // Ensure the context is a real object, in case it has been in the store.
       const ctx = cloneDeep(params.context)
@@ -135,13 +148,15 @@ export const actions = {
       params
     )
 
-    for (let i = 0; i < members.length; i++) {
-      // The server doesn't return the collection but this is useful to have in the store.
-      members[i].collection = params.collection
-    }
+    if (state.instance === instance) {
+      for (let i = 0; i < members.length; i++) {
+        // The server doesn't return the collection but this is useful to have in the store.
+        members[i].collection = params.collection
+      }
 
-    commit('addAll', members)
-    commit('setContext', context)
+      commit('addAll', members)
+      commit('setContext', context)
+    }
   },
 
   async fetch({ commit }, params) {

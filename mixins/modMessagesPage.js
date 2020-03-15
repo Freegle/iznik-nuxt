@@ -20,26 +20,7 @@ export default {
   },
   computed: {
     visibleMessages() {
-      const ret = this.messages.slice(0, this.show).filter(message => {
-        if (this.collection === 'Edit') {
-          // The collection of the message isn't relevant for edits.
-          return (
-            message.groups &&
-            message.groups.length &&
-            (!this.groupid || this.groupid === message.groups[0].groupid)
-          )
-        } else {
-          // Make sure we don't pick up any messages from the wrong collection if we have a fetch which completes late
-          // and puts them in the store.
-          return (
-            message.groups &&
-            message.groups.length &&
-            message.groups[0].collection === this.collection &&
-            (!this.groupid || this.groupid === message.groups[0].groupid)
-          )
-        }
-      })
-      return ret
+      return this.messages.slice(0, this.show)
     },
     messages() {
       let messages
