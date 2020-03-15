@@ -748,7 +748,6 @@ export default {
 
         if (this.otheruserid) {
           // Get the user info in case we need to warn about them.
-          console.log('mounted fetch user', this.otheruserid)
           await this.$store.dispatch('user/fetch', {
             id: this.otheruserid,
             info: true
