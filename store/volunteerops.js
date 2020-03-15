@@ -76,8 +76,8 @@ export const mutations = {
     state.context = params.ctx
   },
 
-  remove(state, params) {
-    delete state.list[params.id]
+  delete(state, params) {
+    Vue.delete(state.list, params.id)
   }
 }
 

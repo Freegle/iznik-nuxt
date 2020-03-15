@@ -55,7 +55,6 @@ export default {
   },
   methods: {
     gotoChat(popup) {
-      console.log('Go to chat', popup)
       this.openChat(null, null, null, popup)
     },
 
