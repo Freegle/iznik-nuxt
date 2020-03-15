@@ -15,7 +15,7 @@
     <option value="4">
       Most active web
     </option>
-    <option value="5" disabled>
+    <option value="5">
       Banned
     </option>
   </b-select>

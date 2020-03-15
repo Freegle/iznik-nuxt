@@ -55,7 +55,7 @@ export default {
     return {
       collection: 'Approved',
       search: null,
-      filter: 0
+      filter: '0'
     }
   },
   watch: {
