@@ -43,6 +43,7 @@ export default {
   watch: {
     groupid() {
       this.context = null
+      this.show = 0
       this.$store.dispatch('messages/clear')
     },
     async group(newValue, oldValue) {

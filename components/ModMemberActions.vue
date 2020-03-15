@@ -1,9 +1,9 @@
 <template>
   <div>
-    <b-btn v-if="groupid" variant="white" @click="remove">
+    <b-btn v-if="groupid && !banned" variant="white" @click="remove">
       <v-icon name="times" /> Remove
     </b-btn>
-    <b-btn v-if="groupid" variant="white" @click="ban">
+    <b-btn v-if="groupid && !banned" variant="white" @click="ban">
       <v-icon name="trash-alt" /> Ban
     </b-btn>
     <b-btn variant="white" disabled>
@@ -41,6 +41,11 @@ export default {
       type: Number,
       required: false,
       default: null
+    },
+    banned: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {

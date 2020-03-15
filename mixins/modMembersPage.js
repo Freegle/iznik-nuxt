@@ -46,10 +46,12 @@ export default {
   watch: {
     groupid() {
       this.context = null
+      this.show = 0
       this.$store.dispatch('members/clear')
     },
     filter() {
       this.context = null
+      this.show = 0
       this.$store.dispatch('members/clear')
     },
     async group(newValue, oldValue) {

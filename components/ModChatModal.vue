@@ -44,8 +44,8 @@
           </ul>
         </div>
       </template>
-      <template slot="modal-footer" slot-scope="{ cancel }">
-        <b-button variant="white" @click="cancel">
+      <template slot="modal-footer">
+        <b-button variant="white" @click="closeit">
           Close
         </b-button>
       </template>
@@ -145,6 +145,16 @@ export default {
             $state.complete()
           })
       }
+    },
+    async closeit() {
+      // We have loaded this chat into store, but it's probably not ours.  So update the list, otherwise next
+      // time we go into chats we'll see weirdness.
+      const modtools = this.$store.getters['misc/get']('modtools')
+      await this.$store.dispatch('chats/listChats', {
+        chattypes: modtools ? ['User2Mod'] : ['User2User', 'User2Mod']
+      })
+
+      this.hide()
     }
   }
 }

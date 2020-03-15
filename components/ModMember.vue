@@ -71,7 +71,7 @@
                 - won't send mails
               </span>
             </div>
-            <ModMemberActions :userid="member.userid" :groupid="groupid" />
+            <ModMemberActions :userid="member.userid" :groupid="groupid" :banned="(Boolean)(member.bandate)" />
             <ModMemberships :user="member" />
             <div v-if="member.logins && member.logins.length" class="mt-2">
               <v-icon name="lock" />
