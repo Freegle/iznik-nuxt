@@ -162,12 +162,18 @@
             Chat
           </div>
           <ModMenuItemLeft link="/modtools/chats/review" name="Review" count="chatreview" indent />
+          <ModMenuItemLeft link="/modtools/happieness" name="Happiness TODO" indent />
           <hr>
           <ModMenuItemLeft link="/modtools/communityevents" name="Events" count="pendingevents" />
           <ModMenuItemLeft link="/modtools/volunteering" name="Volunteering" count="pendingvolunteering" />
           <ModMenuItemLeft link="/modtools/publicity" name="Publicity" count="socialactions" />
+          <ModMenuItemLeft link="/modtools/admins" name="Admins TODO" count="pendingadmins" />
           <hr>
+          <ModMenuItemLeft link="/modtools/logs" name="Logs TODO" />
           <ModMenuItemLeft link="/modtools/support" name="Support" />
+          <ModMenuItemLeft link="/modtools/settings" name="Settings TODO" />
+          <ModMenuItemLeft link="/modtools/teams" name="Teams TODO" />
+          <a href="https://discourse.ilovefreegle.org" rel="noopener noreferrer" target="_blank" class="pl-1">Help</a>
         </div>
         <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent flex-grow-1" />
       </div>
