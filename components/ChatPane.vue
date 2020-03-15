@@ -126,10 +126,18 @@
             </b-row>
             <b-row>
               <b-col class="p-0">
-                <notice-message v-if="expectedreply" variant="warning" @click.native="showInfo">
+                <notice-message v-if="badratings" variant="warning" class="clickme" @click.native="showInfo">
+                  <p>
+                    <v-icon name="exclamation-triangle" />&nbsp;Other people have given this freegler a lot of thumbs down ratings.
+                    That might not be their fault, but please make very clear arrangements.  If you have a good
+                    experience with them, give them a thumbs up.
+                  </p>
+                  <Ratings v-if="otheruser" :id="otheruserid" :key="'otheruser-' + otheruserid" />
+                </notice-message>
+                <notice-message v-else-if="expectedreply" variant="warning" class="clickme" @click.native="showInfo">
                   <v-icon name="exclamation-triangle" />&nbsp;{{ expectedreply | pluralize(['freegler is', 'freeglers are'], { includeNumber: true }) }} still waiting for them to reply.  You might not hear back from them.
                 </notice-message>
-                <notice-message v-else-if="otheruser && otheruser.hasReneged" variant="warning" @click.native="showInfo">
+                <notice-message v-else-if="otheruser && otheruser.hasReneged" variant="warning" class="clickme" @click.native="showInfo">
                   <v-icon name="exclamation-triangle" />&nbsp;Things haven't always worked out for this freegler.  That might not be their fault, but please make very clear arrangements.
                 </notice-message>
                 <notice-message v-if="!spammer && showReplyTime && replytime" class="clickme" @click.native="showInfo">
@@ -385,6 +393,22 @@ export default {
 
       if (this.otheruser) {
         ret = this.otheruser.spammer
+      }
+
+      return ret
+    },
+
+    badratings() {
+      let ret = false
+
+      if (
+        this.otheruser &&
+        this.otheruser.info &&
+        this.otheruser.info.ratings &&
+        this.otheruser.info.ratings.Down > 2 &&
+        this.otheruser.info.ratings.Down > 2 * this.otheruser.info.ratings.Up
+      ) {
+        ret = true
       }
 
       return ret
