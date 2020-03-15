@@ -5,7 +5,12 @@
         <b-row>
           <b-col cols="12" md="4">
             <div>
-              <h4>{{ membership.nameshort }}</h4>
+              <h4>
+                <v-icon v-if="membership.role === 'Owner'" name="crown" class="text-warning" title="Owner" />
+                <v-icon v-if="membership.role === 'Moderator'" name="crown" class="text-info" title="Moderator" />
+                <v-icon v-if="membership.role === 'Member'" name="user" class="text-success" title="Member" />
+                {{ membership.nameshort }}
+              </h4>
             </div>
           </b-col>
           <b-col cols="6" md="4">
