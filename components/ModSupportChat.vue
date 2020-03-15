@@ -14,7 +14,7 @@
       {{ chat.name }}
     </b-col>
     <b-col cols="3" md="2" class="p-0 order-5 order-md-4 small text-muted">
-      <ModChatViewButton :id="chat.id" />
+      <ModChatViewButton :id="chat.id" :pov="pov" />
     </b-col>
   </b-row>
 </template>
@@ -26,6 +26,11 @@ export default {
     chat: {
       type: Object,
       required: true
+    },
+    pov: {
+      type: Number,
+      required: false,
+      default: null
     }
   }
 }

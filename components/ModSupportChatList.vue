@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ModSupportChat v-for="chat in chatsShown" :key="'chathistory-' + chat.id" :chat="chat" />
+    <ModSupportChat v-for="chat in chatsShown" :key="'chathistory-' + chat.id" :chat="chat" :pov="pov" />
     <infinite-loading key="infinitechats" :distance="1000" @infinite="loadMoreChats">
       <span slot="no-results">
         <p class="text-left">
@@ -25,6 +25,11 @@ export default {
     chats: {
       type: Array,
       required: true
+    },
+    pov: {
+      type: Number,
+      required: false,
+      default: null
     }
   },
   data: function() {

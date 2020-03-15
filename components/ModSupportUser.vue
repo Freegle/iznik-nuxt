@@ -187,7 +187,7 @@
       <h3 class="mt-2">
         Chats
       </h3>
-      <ModSupportChatList :chats="chatsFiltered" />
+      <ModSupportChatList :chats="chatsFiltered" :pov="user.id" />
     </b-card-body>
     <ModLogsModal ref="logs" :userid="user.id" />
     <ConfirmModal v-if="purgeConfirm" ref="purgeConfirm" :title="'Purge ' + user.displayname + ' from the system?'" message="<p><b>This can't be undone.</b></p><p>Are you completely sure you want to do this?</p>" @confirm="purgeConfirmed" />

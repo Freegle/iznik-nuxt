@@ -39,6 +39,7 @@
                 :chat="chat"
                 :otheruser="chat.user1.id === chatmessage.userid ? chat.user2 : chat.user1"
                 :last="chatmessage.id === chatmessages[chatmessages.length - 1].id"
+                :pov="pov"
               />
             </li>
           </ul>
@@ -54,14 +55,18 @@
 </template>
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
-import ChatMessage from './ChatMessage'
 import chatCollate from '@/mixins/chatCollate.js'
+import ChatMessage from '@/components/ChatMessage'
 
 export default {
   components: { ChatMessage, InfiniteLoading },
   mixins: [chatCollate],
   props: {
     id: {
+      type: Number,
+      required: true
+    },
+    pov: {
       type: Number,
       required: true
     }
@@ -77,11 +82,32 @@ export default {
     }
   },
   computed: {
+    // Depending on our p.o.v. we may need to swap user1 and user2
     user1() {
-      return this.chat ? this.chat.user1 : null
+      let ret = null
+
+      if (this.chat) {
+        if (this.chat.user1.id === this.pov) {
+          ret = this.chat.user2
+        } else {
+          ret = this.chat.user1
+        }
+      }
+
+      return ret
     },
     user2() {
-      return this.chat ? this.chat.user2 : null
+      let ret = null
+
+      if (this.chat) {
+        if (this.chat.user2 && this.chat.user2.id === this.pov) {
+          ret = this.chat.user2
+        } else {
+          ret = this.chat.user1
+        }
+      }
+
+      return ret
     },
     chatmessages() {
       return this.chatCollate(

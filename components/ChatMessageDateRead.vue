@@ -22,18 +22,10 @@
 </template>
 
 <script>
+import ChatBase from './ChatBase'
+
 export default {
-  props: {
-    chatmessage: {
-      type: Object,
-      required: true
-    },
-    last: {
-      type: Boolean,
-      required: false,
-      default: false
-    }
-  }
+  extends: ChatBase
 }
 </script>
 

@@ -3,7 +3,7 @@
     <b-btn variant="white" class="mr-2 mb-1" @click="view">
       <v-icon name="comments" /> View Chat
     </b-btn>
-    <ModChatModal v-if="showModal" :id="id" ref="modal" />
+    <ModChatModal v-if="showModal" :id="id" ref="modal" :pov="pov" />
   </div>
 </template>
 <script>
@@ -17,6 +17,11 @@ export default {
     id: {
       type: Number,
       required: true
+    },
+    pov: {
+      type: Number,
+      required: false,
+      default: null
     }
   },
   data: function() {

@@ -38,6 +38,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    pov: {
+      type: Number,
+      required: false,
+      default: null
     }
   },
   computed: {
@@ -70,6 +75,18 @@ export default {
         : {
             subject: 'A message which no longer exists'
           }
+    },
+    // We override the normal methods because we might have an explicit point-of-view to honour.
+    me() {
+      if (!this.pov) {
+        return this.$store.getters['auth/user']
+      } else if (this.chat.user1 && this.chat.user1.id === this.pov) {
+        return this.chat.user1
+      } else if (this.chat.user2 && this.chat.user2.id === this.pov) {
+        return this.chat.user2
+      } else {
+        return this.$store.getters['auth/user']
+      }
     }
   },
   methods: {

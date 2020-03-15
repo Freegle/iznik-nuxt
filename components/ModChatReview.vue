@@ -42,8 +42,17 @@
       </b-card-body>
       <b-card-footer>
         <div class="d-flex flex-wrap justify-content-start">
-          <ModChatViewButton :id="message.chatid" />
-          <b-btn v-if="message.held" variant="warning" class="mr-2 mb-1" @click="release">
+          <ModChatViewButton
+            :id="message.chatid"
+            :pov="message.userid"
+          />
+          <b-btn
+            v-if="
+              message.held"
+            variant="warning"
+            class="mr-2 mb-1"
+            @click="release"
+          >
             <v-icon name="play" /> Release
           </b-btn>
           <b-btn v-if="!message.held" variant="primary" class="mr-2 mb-1" @click="modnote">
@@ -64,6 +73,7 @@
           <b-btn v-if="!message.held" variant="danger" class="mr-2 mb-1" @click="reject">
             <v-icon name="ban" /> Spam
           </b-btn>
+          </modchatviewbutton>
         </div>
       </b-card-footer>
     </b-card>
