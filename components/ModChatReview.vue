@@ -42,10 +42,17 @@
       </b-card-body>
       <b-card-footer>
         <div class="d-flex flex-wrap justify-content-start">
-          <b-btn variant="white" class="mr-2 mb-1" @click="view">
-            <v-icon name="comments" /> View Chat
-          </b-btn>
-          <b-btn v-if="message.held" variant="warning" class="mr-2 mb-1" @click="release">
+          <ModChatViewButton
+            :id="message.chatid"
+            :pov="message.userid"
+          />
+          <b-btn
+            v-if="
+              message.held"
+            variant="warning"
+            class="mr-2 mb-1"
+            @click="release"
+          >
             <v-icon name="play" /> Release
           </b-btn>
           <b-btn v-if="!message.held" variant="primary" class="mr-2 mb-1" @click="modnote">
@@ -66,10 +73,10 @@
           <b-btn v-if="!message.held" variant="danger" class="mr-2 mb-1" @click="reject">
             <v-icon name="ban" /> Spam
           </b-btn>
+          </modchatviewbutton>
         </div>
       </b-card-footer>
     </b-card>
-    <ModChatReviewModal ref="modal" :message="message" />
     <ModChatNoteModal v-if="message" ref="modnote" :chatid="message.chatid" />
   </div>
 </template>
@@ -77,15 +84,15 @@
 import waitForRef from '../mixins/waitForRef'
 import NoticeMessage from './NoticeMessage'
 import ModChatReviewUser from './ModChatReviewUser'
-import ModChatReviewModal from './ModChatReviewModal'
 import ChatMessage from './ChatMessage'
 import ModChatNoteModal from './ModChatNoteModal'
+import ModChatViewButton from './ModChatViewButton'
 
 export default {
   components: {
+    ModChatViewButton,
     ModChatNoteModal,
     ChatMessage,
-    ModChatReviewModal,
     ModChatReviewUser,
     NoticeMessage
   },
@@ -125,11 +132,6 @@ export default {
       this.$store.dispatch('chatmessages/whitelist', {
         id: this.message.id,
         chatid: null
-      })
-    },
-    view() {
-      this.waitForRef('modal', () => {
-        this.$refs.modal.show()
       })
     },
     modnote() {

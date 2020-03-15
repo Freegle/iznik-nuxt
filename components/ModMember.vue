@@ -31,6 +31,10 @@
         <NoticeMessage v-if="member.activedistance > 50" variant="warning" class="mb-2">
           This freegler is active on groups {{ member.activedistance }} miles apart.
         </NoticeMessage>
+        <ModBouncing v-if="member.bouncing" :user="member" />
+        <NoticeMessage v-if="member.bandate">
+          Banned <span :title="member.bandate | datetime">{{ member.bandate | timeago }}</span> <span v-if="member.bannedby">by #{{ member.bannedby }}</span> - check logs for info.
+        </NoticeMessage>
         <div class="d-flex justify-content-between flex-wrap">
           <SettingsGroup
             v-if="groupid"
@@ -67,7 +71,7 @@
                 - won't send mails
               </span>
             </div>
-            <ModMemberActions :userid="member.userid" :groupid="groupid" />
+            <ModMemberActions :userid="member.userid" :groupid="groupid" :banned="(Boolean)(member.bandate)" />
             <ModMemberships :user="member" />
             <div v-if="member.logins && member.logins.length" class="mt-2">
               <v-icon name="lock" />
@@ -129,10 +133,12 @@ import ModComments from './ModComments'
 import ModMemberButtons from './ModMemberButtons'
 import ModLogsModal from './ModLogsModal'
 import ModMemberships from './ModMemberships'
+import ModBouncing from './ModBouncing'
 
 export default {
   name: 'ModMember',
   components: {
+    ModBouncing,
     ModMemberships,
     ModLogsModal,
     ModMemberButtons,

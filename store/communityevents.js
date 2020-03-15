@@ -55,7 +55,7 @@ export const mutations = {
   },
 
   delete(state, params) {
-    delete state.list[params.id]
+    Vue.delete(state.list, params.id)
   }
 }
 
@@ -164,7 +164,7 @@ export const actions = {
     await dispatch('fetch', { id: event.id })
   },
   async delete({ commit, dispatch }, params) {
-    await this.$api.del(params.id)
+    await this.$api.communityevent.del(params.id)
     commit('delete', { id: params.id })
   },
   async add({ commit, dispatch }, event) {

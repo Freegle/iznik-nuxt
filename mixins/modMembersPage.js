@@ -17,20 +17,13 @@ export default {
       show: 0,
       busy: false,
       collection: 'Approved',
-      search: null
+      search: null,
+      filter: 0
     }
   },
   computed: {
     visibleMembers() {
-      const ret = this.members.slice(0, this.show).filter(member => {
-        // Make sure we don't pick up any members from the wrong collection if we have a fetch which completes late
-        // and puts them in the store.
-        return (
-          member.collection === this.collection &&
-          (!this.groupid || member.groupid === this.groupid)
-        )
-      })
-      return ret
+      return this.members.slice(0, this.show)
     },
     members() {
       let members
@@ -53,6 +46,12 @@ export default {
   watch: {
     groupid() {
       this.context = null
+      this.show = 0
+      this.$store.dispatch('members/clear')
+    },
+    filter() {
+      this.context = null
+      this.show = 0
       this.$store.dispatch('members/clear')
     },
     async group(newValue, oldValue) {
@@ -106,7 +105,8 @@ export default {
             summary: false,
             context: this.context,
             limit: this.limit,
-            search: this.search
+            search: this.search,
+            filter: this.filter
           })
           .then(() => {
             this.context = this.$store.getters['members/getContext']

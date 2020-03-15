@@ -1,21 +1,21 @@
 <template>
   <div>
-    <chat-message-text v-if="chatmessage.type === 'Default'" :chat="chat" :chatmessage="chatmessage" :otheruser="otheruser" />
-    <chat-message-image v-else-if="chatmessage.type === 'Image'" :chat="chat" :chatmessage="chatmessage" :otheruser="otheruser" />
-    <chat-message-interested v-else-if="chatmessage.type === 'Interested'" :chat="chat" :chatmessage="chatmessage" :otheruser="otheruser" />
-    <chat-message-completed v-else-if="chatmessage.type === 'Completed'" :chat="chat" :chatmessage="chatmessage" :otheruser="otheruser" />
-    <chat-message-promised v-else-if="chatmessage.type === 'Promised'" :chat="chat" :chatmessage="chatmessage" :otheruser="otheruser" />
-    <chat-message-reneged v-else-if="chatmessage.type === 'Reneged'" :chat="chat" :chatmessage="chatmessage" :otheruser="otheruser" />
-    <chat-message-address v-else-if="chatmessage.type === 'Address'" :chat="chat" :chatmessage="chatmessage" :otheruser="otheruser" />
-    <chat-message-nudge v-else-if="chatmessage.type === 'Nudge'" :chat="chat" :chatmessage="chatmessage" :otheruser="otheruser" />
-    <chat-message-mod-mail v-else-if="chatmessage.type === 'ModMail'" :chat="chat" :chatmessage="chatmessage" :otheruser="null" />
-    <chat-message-schedule v-else-if="chatmessage.type === 'Schedule'" :chat="chat" :chatmessage="chatmessage" :otheruser="otheruser" />
-    <chat-message-schedule v-else-if="chatmessage.type === 'ScheduleUpdated'" :chat="chat" :chatmessage="chatmessage" :otheruser="otheruser" />
-    <chat-message-report v-else-if="chatmessage.type === 'ReportedUser'" :chat="chat" :chatmessage="chatmessage" :otheruser="otheruser" />
+    <chat-message-text v-if="chatmessage.type === 'Default'" :chat="chat" :chatmessage="chatmessage" :otheruser="otheruser" :pov="pov" />
+    <chat-message-image v-else-if="chatmessage.type === 'Image'" :chat="chat" :chatmessage="chatmessage" :otheruser="otheruser" :pov="pov" />
+    <chat-message-interested v-else-if="chatmessage.type === 'Interested'" :chat="chat" :chatmessage="chatmessage" :otheruser="otheruser" :pov="pov" />
+    <chat-message-completed v-else-if="chatmessage.type === 'Completed'" :chat="chat" :chatmessage="chatmessage" :otheruser="otheruser" :pov="pov" />
+    <chat-message-promised v-else-if="chatmessage.type === 'Promised'" :chat="chat" :chatmessage="chatmessage" :otheruser="otheruser" :pov="pov" />
+    <chat-message-reneged v-else-if="chatmessage.type === 'Reneged'" :chat="chat" :chatmessage="chatmessage" :otheruser="otheruser" :pov="pov" />
+    <chat-message-address v-else-if="chatmessage.type === 'Address'" :chat="chat" :chatmessage="chatmessage" :otheruser="otheruser" :pov="pov" />
+    <chat-message-nudge v-else-if="chatmessage.type === 'Nudge'" :chat="chat" :chatmessage="chatmessage" :otheruser="otheruser" :pov="pov" />
+    <chat-message-mod-mail v-else-if="chatmessage.type === 'ModMail'" :chat="chat" :chatmessage="chatmessage" :otheruser="null" :pov="pov" />
+    <chat-message-schedule v-else-if="chatmessage.type === 'Schedule'" :chat="chat" :chatmessage="chatmessage" :otheruser="otheruser" :pov="pov" />
+    <chat-message-schedule v-else-if="chatmessage.type === 'ScheduleUpdated'" :chat="chat" :chatmessage="chatmessage" :otheruser="otheruser" :pov="pov" />
+    <chat-message-report v-else-if="chatmessage.type === 'ReportedUser'" :chat="chat" :chatmessage="chatmessage" :otheruser="otheruser" :pov="pov" />
     <div v-else>
       Unknown chat message type {{ chatmessage.type }}
     </div>
-    <chat-message-date-read :chatmessage="chatmessage" :last="last" />
+    <chat-message-date-read :chat="chat" :chatmessage="chatmessage" :otheruser="otheruser" :last="last" :pov="pov" />
   </div>
 </template>
 <style scoped>
@@ -69,6 +69,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    pov: {
+      type: Number,
+      required: false,
+      default: null
     }
   },
   methods: {}

@@ -58,7 +58,7 @@
         <b-navbar-nav class="w-100 d-flex d-sm-none justify-content-between ml-sm-auto pr-1">
           <b-nav-item-dropdown class="pt-2">
             <template v-slot:button-content>
-              <ModMenuItemNav :count="['pending', 'chatreview']" icon="envelope" count-on-top />
+              <ModMenuItemNav :count="['pending', 'chatreview', 'pendingevents', 'pendingvolunteering']" icon="envelope" count-on-top />
             </template>
             <b-dropdown-item>
               <ModMenuItemNav name="Pending" :count="['pending']" :othercount="['pending']" link="/modtools/messages/pending" />
@@ -74,6 +74,12 @@
             </b-dropdown-item>
             <b-dropdown-item>
               <ModMenuItemNav name="Chat Review" :count="['chatreview']" link="/modtools/chats/review" />
+            </b-dropdown-item>
+            <b-dropdown-item>
+              <ModMenuItemNav name="Events" :count="['pendingevents']" href="/modtools/communityevents" />
+            </b-dropdown-item>
+            <b-dropdown-item>
+              <ModMenuItemNav name="Volunteering" :count="['pendingvolunteering']" href="/modtools/volunteering" />
             </b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown class="pt-2">
@@ -102,7 +108,10 @@
               <ModMenuItemNav name="Publicity" :count="['socialactions']" href="/modtools/publicity" />
             </b-dropdown-item>
             <b-dropdown-item>
-              <ModMenuItemNav name="Support" href="/modtools/support" />
+              <ModMenuItemNav name="Teams" link="/modtools/teams" />
+            </b-dropdown-item>
+            <b-dropdown-item>
+              <ModMenuItemNav name="Support" link="/modtools/support" />
             </b-dropdown-item>
           </b-nav-item-dropdown>
 
@@ -156,10 +165,18 @@
             Chat
           </div>
           <ModMenuItemLeft link="/modtools/chats/review" name="Review" count="chatreview" indent />
+          <ModMenuItemLeft link="/modtools/happieness" name="Happiness TODO" indent />
           <hr>
+          <ModMenuItemLeft link="/modtools/communityevents" name="Events" count="pendingevents" />
+          <ModMenuItemLeft link="/modtools/volunteering" name="Volunteering" count="pendingvolunteering" />
           <ModMenuItemLeft link="/modtools/publicity" name="Publicity" count="socialactions" />
+          <ModMenuItemLeft link="/modtools/admins" name="Admins TODO" count="pendingadmins" />
           <hr>
+          <ModMenuItemLeft link="/modtools/logs" name="Logs TODO" />
           <ModMenuItemLeft link="/modtools/support" name="Support" />
+          <ModMenuItemLeft link="/modtools/settings" name="Settings TODO" />
+          <ModMenuItemLeft link="/modtools/teams" name="Teams" />
+          <a href="https://discourse.ilovefreegle.org" rel="noopener noreferrer" target="_blank" class="pl-1">Help</a>
         </div>
         <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent flex-grow-1" />
       </div>

@@ -118,9 +118,9 @@ export default class MessageAPI extends BaseAPI {
     })
   }
 
-  acceptEdits(id) {
+  approveEdits(id) {
     return this.$post('/message', {
-      action: 'AcceptEdits',
+      action: 'ApproveEdits',
       id: id
     })
   }

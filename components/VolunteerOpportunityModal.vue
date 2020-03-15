@@ -340,14 +340,14 @@
         <b-button v-if="!editing" variant="white" class="float-right" :disabled="uploadingPhoto" @click="cancel">
           Close
         </b-button>
-        <b-button v-if="editing" variant="white" class="float-right" :disabled="uploadingPhoto" @click="dontSave">
-          Cancel
-        </b-button>
         <b-button v-if="editing" variant="success" class="float-right" :disabled="uploadingPhoto" @click="saveIt">
           <v-icon v-if="saving" name="sync" class="fa-spin" />
           <v-icon v-else name="save" />
           <span v-if="volunteering.id">Save Changes</span>
           <span v-else>Add Opportunity</span>
+        </b-button>
+        <b-button v-if="editing" variant="white" class="float-right mr-1" :disabled="uploadingPhoto" @click="dontSave">
+          Cancel
         </b-button>
       </div>
     </template>

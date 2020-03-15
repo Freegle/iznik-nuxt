@@ -6,5 +6,6 @@
 <style scoped>
 .height {
   height: 200px;
+  min-height: 200px;
 }
 </style>

@@ -67,6 +67,14 @@ export default {
         })
       }
 
+      const modtools = this.$store.getters['misc/get']('modtools')
+
+      if (modtools) {
+        // We want to filter out any chats which are between users - they shouldn't show on MT and can be in the store
+        // if we are viewing reported chats.
+        chats = chats.filter(chat => chat.chattype !== 'User2User')
+      }
+
       return chats
     },
 

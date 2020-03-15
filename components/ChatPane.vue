@@ -126,19 +126,29 @@
             </b-row>
             <b-row>
               <b-col class="p-0">
-                <notice-message v-if="expectedreply" variant="warning" @click.native="showInfo">
-                  <v-icon name="exclamation-triangle" />&nbsp;{{ expectedreply | pluralize(['freegler is', 'freeglers are'], { includeNumber: true }) }} still waiting for them to reply.  You might not hear back from them.
-                </notice-message>
-                <notice-message v-else-if="otheruser && otheruser.hasReneged" variant="warning" @click.native="showInfo">
-                  <v-icon name="exclamation-triangle" />&nbsp;Things haven't always worked out for this freegler.  That might not be their fault, but please make very clear arrangements.
-                </notice-message>
-                <notice-message v-if="!spammer && showReplyTime && replytime" class="clickme" @click.native="showInfo">
-                  <v-icon name="info-circle" />&nbsp;Typically replies in <b>{{ replytime }}</b>.  Click for more info.
-                </notice-message>
-                <notice-message v-if="spammer" variant="danger">
-                  This person has been reported as a spammer or scammer.  Please do not talk to them and under no circumstances
-                  send them any money.
-                </notice-message>
+                <div v-if="showNotices">
+                  <notice-message v-if="badratings" variant="warning" class="clickme" @click.native="showInfo">
+                    <p>
+                      <v-icon name="exclamation-triangle" />&nbsp;This freegler has a lot of thumbs down ratings.
+                      That might not be their fault, but please make very clear arrangements.  If you have a good
+                      experience with them, give them a thumbs up.
+                    </p>
+                    <Ratings v-if="otheruser" :id="otheruserid" :key="'otheruser-' + otheruserid" />
+                  </notice-message>
+                  <notice-message v-else-if="expectedreply" variant="warning" class="clickme" @click.native="showInfo">
+                    <v-icon name="exclamation-triangle" />&nbsp;{{ expectedreply | pluralize(['freegler is', 'freeglers are'], { includeNumber: true }) }} still waiting for them to reply.  You might not hear back from them.
+                  </notice-message>
+                  <notice-message v-else-if="otheruser && otheruser.hasReneged" variant="warning" class="clickme" @click.native="showInfo">
+                    <v-icon name="exclamation-triangle" />&nbsp;Things haven't always worked out for this freegler.  That might not be their fault, but please make very clear arrangements.
+                  </notice-message>
+                  <notice-message v-if="!spammer && replytime" class="clickme" @click.native="showInfo">
+                    <v-icon name="info-circle" />&nbsp;Typically replies in <b>{{ replytime }}</b>.  Click for more info.
+                  </notice-message>
+                  <notice-message v-if="spammer" variant="danger">
+                    This person has been reported as a spammer or scammer.  Please do not talk to them and under no circumstances
+                    send them any money.
+                  </notice-message>
+                </div>
                 <b-form-textarea
                   v-if="!spammer"
                   ref="chatarea"
@@ -311,7 +321,7 @@ export default {
       ouroffers: null,
       sending: false,
       scrolledToBottom: false,
-      showReplyTime: true,
+      showNotices: true,
       RSVP: false,
       notVisible: false,
       contactGroup: null,
@@ -385,6 +395,22 @@ export default {
 
       if (this.otheruser) {
         ret = this.otheruser.spammer
+      }
+
+      return ret
+    },
+
+    badratings() {
+      let ret = false
+
+      if (
+        this.otheruser &&
+        this.otheruser.info &&
+        this.otheruser.info.ratings &&
+        this.otheruser.info.ratings.Down > 2 &&
+        this.otheruser.info.ratings.Down > 2 * this.otheruser.info.ratings.Up
+      ) {
+        ret = true
       }
 
       return ret
@@ -748,14 +774,13 @@ export default {
 
         if (this.otheruserid) {
           // Get the user info in case we need to warn about them.
-          console.log('mounted fetch user', this.otheruserid)
           await this.$store.dispatch('user/fetch', {
             id: this.otheruserid,
             info: true
           })
 
           setTimeout(() => {
-            this.showReplyTime = false
+            this.showNotices = false
           }, 30000)
         }
       } else {

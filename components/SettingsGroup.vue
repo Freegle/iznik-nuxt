@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="membership">
     <b-row>
       <b-col cols="12" sm="6">
         <b-form-group
@@ -141,7 +141,6 @@ export default {
         })
       }
 
-      console.log('membership', ret)
       return ret
     }
   },

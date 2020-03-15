@@ -1,20 +1,27 @@
 <template>
   <div>
     <b-card no-body>
-      <b-card-body>
+      <b-card-body class="pl-3 pr-2 pt-2 pb-0">
         <b-row>
-          <b-col cols="12" md="6">
-            <div class="d-flex justify-content-between flex-wrap">
-              <div>
-                <h4>{{ membership.nameshort }}</h4>
-              </div>
-              <div class="pt-1">
-                {{ membership.added | datetimeshort }}
-              </div>
-              <b-btn variant="white" size="sm">
-                Remove
-              </b-btn>
+          <b-col cols="12" md="4">
+            <div>
+              <h4>
+                <v-icon v-if="membership.role === 'Owner'" name="crown" class="text-warning" title="Owner" />
+                <v-icon v-if="membership.role === 'Moderator'" name="crown" class="text-info" title="Moderator" />
+                <v-icon v-if="membership.role === 'Member'" name="user" class="text-success" title="Member" />
+                {{ membership.nameshort }}
+              </h4>
             </div>
+          </b-col>
+          <b-col cols="6" md="4">
+            <div class="pt-1">
+              {{ membership.added | datetimeshort }}
+            </div>
+          </b-col>
+          <b-col cols="6" md="4">
+            <b-btn variant="white" size="sm">
+              Remove
+            </b-btn>
           </b-col>
         </b-row>
         <div class="d-flex flex-wrap pt-1">

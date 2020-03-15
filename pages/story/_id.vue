@@ -86,7 +86,9 @@ export default {
       return this.buildHead('Story #' + this.id)
     } else {
       return this.buildHead(
-        'Freegle Story: ' + this.story.headline,
+        this.story
+          ? 'Freegle Story: ' + this.story.headline
+          : 'Freegle Stories',
         this.story.story,
         this.story.photo
       )

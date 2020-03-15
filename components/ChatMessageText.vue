@@ -24,7 +24,7 @@ export default {
   extends: ChatBase,
   computed: {
     messageIsFromCurrentUser() {
-      return this.chatmessage.userid === this.$store.state.auth.user.id
+      return this.chatmessage.userid === this.me.id
     },
     messageIsNew() {
       return (

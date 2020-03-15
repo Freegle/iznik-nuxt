@@ -2,12 +2,12 @@
   <div>
     <b-row class="pb-1">
       <b-col>
-        <div v-if="chatmessage.userid != $store.state.auth.user.id" class="media">
+        <div v-if="chatmessage.userid != myid" class="media">
           <b-card border-variant="success">
             <b-card-title>
               <b-img
                 v-if="refmsg && refmsg.attachments && refmsg.attachments.length > 0"
-                class="float-right"
+                class="float-right ml-1"
                 rounded
                 thumbnail
                 generator-unable-to-provide-required-alt=""
