@@ -13,13 +13,13 @@
       <b-btn
         v-for="group in groups"
         :key="'socialaction-' + group.id"
-        :variant="group.actioned ? 'white' : 'primary'"
+        :variant="isActioned(group.id) ? 'white' : 'primary'"
         class="mb-1 mr-1"
-        :disabled="group.actioned"
+        :disabled="isActioned(group.id)"
         @click="share(group)"
       >
-        <v-icon v-if="group.busy" name="sync" class="fa-spin" />
-        <v-icon v-else-if="group.actioned" name="check" />
+        <v-icon v-if="isBusy(group.id)" name="sync" class="fa-spin" />
+        <v-icon v-else-if="isActioned(group.id)" name="check" />
         <v-icon v-else name="share-alt" />
         {{ group.namedisplay }}
       </b-btn>
@@ -40,6 +40,7 @@ export default {
   },
   data: function() {
     return {
+      busy: [],
       actioned: []
     }
   },
@@ -52,10 +53,6 @@ export default {
       this.item.uids.forEach(uid => {
         for (const group of groups) {
           if (group.type === 'Freegle' && group.facebook) {
-            if (this.actioned.indexOf(group.id) !== -1) {
-              group.actioned = true
-            }
-
             group.facebook.forEach(facebook => {
               if (parseInt(facebook.uid) === parseInt(uid)) {
                 group.facebookuid = facebook.uid
@@ -77,31 +74,36 @@ export default {
         }
       })
 
-      console.log('Some left?', ret)
       return ret
     }
   },
   methods: {
-    share(group) {
-      group.busy = true
-      this.$nextTick(async () => {
-        await this.$store.dispatch('publicity/share', {
-          id: this.item.id,
-          uid: group.facebookuid
-        })
-        group.busy = false
-        group.actioned = true
-        this.actioned.push(group.id)
+    async share(group) {
+      this.busy.push(group.id)
+
+      await this.$store.dispatch('publicity/share', {
+        id: this.item.id,
+        uid: group.facebookuid
       })
+
+      this.busy = this.busy.filter(g => {
+        return g.id !== group.id
+      })
+
+      this.actioned.push(group.id)
     },
     async hide(group) {
-      group.busy = true
+      this.busy.push(group.id)
+
       await this.$store.dispatch('publicity/hide', {
         id: this.item.id,
         uid: group.facebookuid
       })
-      group.busy = false
-      group.actioned = true
+
+      this.busy = this.busy.filter(g => {
+        return g.id !== group.id
+      })
+
       this.actioned.push(group.id)
     },
     shareAll() {
@@ -117,6 +119,12 @@ export default {
           this.hide(group)
         }
       })
+    },
+    isActioned(groupid) {
+      return this.actioned.indexOf(groupid) !== -1
+    },
+    isBusy(groupid) {
+      return this.busy.indexOf(groupid) !== -1
     }
   }
 }

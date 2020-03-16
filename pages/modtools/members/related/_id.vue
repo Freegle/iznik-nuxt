@@ -11,7 +11,7 @@
         There are no related members at the moment.
       </NoticeMessage>
 
-      <infinite-loading :key="'infinite-' + groupid + '-' + visibleMembers.length" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
+      <infinite-loading :key="'infinite-' + groupid + '-' + members.length" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
         <span slot="no-results" />
         <span slot="no-more" />
         <span slot="spinner">
