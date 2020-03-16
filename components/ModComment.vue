@@ -24,12 +24,14 @@
 </template>
 <script>
 import cloneDeep from 'lodash.clonedeep'
+import waitForRef from '../mixins/waitForRef'
 import NoticeMessage from './NoticeMessage'
 import ModCommentEditModal from './ModCommentEditModal'
 const ConfirmModal = () => import('~/components/ConfirmModal.vue')
 
 export default {
   components: { ModCommentEditModal, NoticeMessage, ConfirmModal },
+  mixins: [waitForRef],
   props: {
     comment: {
       type: Object,
@@ -71,11 +73,11 @@ export default {
       // The server API doesn't make it easy to refresh comments on memberships, because we can't refetch a
       // specific membership id.  Instead fetch the user and then pass any comments to the store to update there.
       await this.$store.dispatch('user/fetch', {
-        id: this.comment.userid,
+        id: this.user.id,
         info: true
       })
 
-      const user = this.$store.getters['user/get'](this.comment.userid)
+      const user = this.$store.getters['user/get'](this.user.id)
 
       await this.$store.dispatch('members/updateComments', {
         userid: user.id,
@@ -85,10 +87,14 @@ export default {
       this.savedComment = user.comments.find(comm => {
         return comm.id === this.savedComment.id
       })
+
+      this.$emit('updated')
     },
 
     deleteIt() {
-      this.$refs.confirm.show()
+      this.waitForRef('confirm', () => {
+        this.$refs.confirm.show()
+      })
     },
 
     async deleteConfirmed() {
@@ -99,7 +105,9 @@ export default {
     },
 
     editIt() {
-      this.$refs.editComment.show()
+      this.waitForRef('editComment', () => {
+        this.$refs.editComment.show()
+      })
     }
   }
 }
