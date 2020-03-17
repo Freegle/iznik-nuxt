@@ -34,7 +34,7 @@
         <b-btn variant="white" class="mr-2 mb-1" @click="purge">
           <v-icon name="trash-alt" /> Purge
         </b-btn>
-        <b-btn variant="white" disabled class="mr-2 mb-1">
+        <b-btn variant="white" class="mr-2 mb-1" :href="user.loginlink" target="_blank" rel="noopener noreferrer">
           <v-icon name="user" /> Impersonate
         </b-btn>
         <b-btn variant="white" disabled class="mr-2 mb-1">
