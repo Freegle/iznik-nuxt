@@ -76,10 +76,10 @@
               <ModMenuItemNav name="Chat Review" :count="['chatreview']" link="/modtools/chats/review" />
             </b-dropdown-item>
             <b-dropdown-item>
-              <ModMenuItemNav name="Events" :count="['pendingevents']" href="/modtools/communityevents" />
+              <ModMenuItemNav name="Events" :count="['pendingevents']" link="/modtools/communityevents" />
             </b-dropdown-item>
             <b-dropdown-item>
-              <ModMenuItemNav name="Volunteering" :count="['pendingvolunteering']" href="/modtools/volunteering" />
+              <ModMenuItemNav name="Volunteering" :count="['pendingvolunteering']" link="/modtools/volunteering" />
             </b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown class="pt-2">
