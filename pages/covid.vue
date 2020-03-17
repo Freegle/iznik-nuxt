@@ -16,10 +16,16 @@
         <b-col cols="12" md="8" offset-md="2">
           <div class="d-flex justify-content-between w-100 mb-2">
             <b-btn variant="success" size="lg" class="mr-3" @click="offer">
-              <v-icon name="hand-holding-heart" /> I can help
+              <client-only>
+                <v-icon name="hand-holding-heart" />
+              </client-only>
+              I can help
             </b-btn>
             <b-btn variant="primary" size="lg" @click="need">
-              <v-icon name="cart-plus" /> I need help
+              <client-only>
+                <v-icon name="cart-plus" />
+              </client-only>
+              I need help
             </b-btn>
           </div>
         </b-col>
@@ -37,7 +43,6 @@
       <p>
         We won't pass on your details before
         getting back in touch with you.  If you need urgent help, look at the
-        <!-- eslint-disable-next-line -->
         <a href="https://www.nhs.uk/conditions/coronavirus-covid-19/" target="_blank" rel="noopener noreferrer">NHS website</a>.
       </p>
     </div>
