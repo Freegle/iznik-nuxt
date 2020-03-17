@@ -5,11 +5,11 @@
         COVID-19 - Can you help?
       </h1>
       <p>
-        Over the next couple of months, quite a lot of people may be ill and need help with practical things like
-        shopping and medicines.  Maybe not yet, but maybe soon.
+        Over the next couple of months, quite a lot of people may be ill or self-isolating.  They may need help with
+        practical things like shopping and medicines, or with online support.  Maybe not yet, but maybe soon.
       </p>
       <p>
-        Maybe you can help.  Maybe you
+        Perhaps you can help.  Perhaps you
         (or someone you know) will need help.  Let's see if we can connect people so that we're ready.
       </p>
       <b-row>

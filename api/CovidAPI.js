@@ -6,4 +6,9 @@ export default class CovidAPI extends BaseAPI {
       helptype: type
     })
   }
+
+  async fetch() {
+    const ret = await this.$get('/covid')
+    return ret.covids
+  }
 }
