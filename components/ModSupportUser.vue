@@ -27,6 +27,7 @@
       </b-row>
     </b-card-header>
     <b-card-body v-if="expanded" class="p-1">
+      <ModSpammer v-if="user.spammer" class="mb-2" :user="user" />
       <div class="d-flex flex-wrap">
         <b-btn variant="white" disabled class="mr-2 mb-1">
           <v-icon name="ban" /> Scammer
@@ -201,11 +202,13 @@ import ModLogsModal from './ModLogsModal'
 import ConfirmModal from './ConfirmModal'
 import ProfileModal from './ProfileModal'
 import ModSupportChatList from './ModSupportChatList'
+import ModSpammer from './ModSpammer'
 
 const SHOW = 3
 
 export default {
   components: {
+    ModSpammer,
     ModSupportChatList,
     ProfileModal,
     ConfirmModal,
