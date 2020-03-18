@@ -56,7 +56,7 @@
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
 import chatCollate from '@/mixins/chatCollate.js'
-import ChatMessage from '@/components/ChatMessage'
+const ChatMessage = () => import('@/components/ChatMessage')
 
 export default {
   components: { ChatMessage, InfiniteLoading },
