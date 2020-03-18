@@ -45,7 +45,7 @@
       </div>
     </template>
     <template slot="default">
-      <notice-message v-if="user.info.expectedreply" variant="warning">
+      <notice-message v-if="user.info && user.info.expectedreply" variant="warning">
         <v-icon name="exclamation-triangle" />&nbsp;{{ user.info.expectedreply | pluralize(['freegler is', 'freeglers are'], { includeNumber: true }) }} still waiting for them to reply.
       </notice-message>
       <notice-message v-else-if="user.hasReneged" variant="warning">
