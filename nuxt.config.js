@@ -366,18 +366,15 @@ module.exports = {
     // Nuxt doesn't allow the publicPath (CDN url) to be overridden at run time - it's baked into the manifest at
     // build time.  This hook intercepts the VueRenderer when it has loaded the manifest and updates the publicPath
     // to the current env value.
-    //
-    // Disabling CDN on different as part of transition to new CDN hosting.  Doing it this way because PM2 is
-    // rubbish at updating environment variables.
-    // render: {
-    //   resourcesLoaded(resources) {
-    //     const path =
-    //       process.env.CDN === undefined
-    //         ? '/_nuxt'
-    //         : (process.env.CDN + '/_nuxt')
-    //     resources.clientManifest && (resources.clientManifest.publicPath = path)
-    //   }
-    // }
+    render: {
+      resourcesLoaded(resources) {
+        const path =
+          process.env.CDN === undefined
+            ? '/_nuxt'
+            : (process.env.CDN + '/_nuxt')
+        resources.clientManifest && (resources.clientManifest.publicPath = path)
+      }
+    }
   },
 
   /*

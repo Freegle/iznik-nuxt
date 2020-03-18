@@ -24,7 +24,7 @@ module.exports = {
         PORT: 3001,
         NODE_ENV: 'production',
         IZNIK_API: 'https://fdapidev.ilovefreegle.org',
-        // CDN: 'https://freeglecdndev.azureedge.net'
+        CDN: 'https://freeglecdndev.azureedge.net'
       },
       env_debug: {
         PORT: 3002,
