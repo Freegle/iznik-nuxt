@@ -83,6 +83,11 @@
         </b-col>
       </b-row>
       <h3 class="mt-2">
+        Logins
+      </h3>
+      <ModMemberLogins :member="user" />
+      <!--      TODO Reset password-->
+      <h3 class="mt-2">
         Memberships
       </h3>
       <div v-if="memberships && memberships.length">
@@ -210,11 +215,13 @@ import ConfirmModal from './ConfirmModal'
 import ProfileModal from './ProfileModal'
 import ModSupportChatList from './ModSupportChatList'
 import ModSpammer from './ModSpammer'
+import ModMemberLogins from './ModMemberLogins'
 
 const SHOW = 3
 
 export default {
   components: {
+    ModMemberLogins,
     ModSpammer,
     ModSupportChatList,
     ProfileModal,

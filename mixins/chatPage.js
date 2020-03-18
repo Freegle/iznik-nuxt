@@ -86,12 +86,6 @@ export default {
         ? this.filteredChats.slice(0, this.showChats)
         : []
 
-      for (let j = 0; j < chats.length; j++) {
-        if (chats[j].id === 8146240) {
-          console.log('At', 8146240, j, chats)
-        }
-      }
-
       return chats
     },
 

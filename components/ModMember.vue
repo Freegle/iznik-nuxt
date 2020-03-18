@@ -263,31 +263,6 @@ export default {
         this.$refs.logs.show()
       })
     },
-    loginType(type) {
-      let ret = type
-
-      switch (type) {
-        case 'Native': {
-          ret = 'Email/Password'
-          break
-        }
-        case 'Facebook': {
-          ret = 'Facebook'
-          break
-        }
-        case 'Yahoo': {
-          ret = 'Yahoo'
-          break
-        }
-        case 'Google': {
-          ret = 'Google'
-          break
-        }
-      }
-
-      return ret
-    },
-
     settingsChange(e) {
       const params = {
         userid: this.member.userid,
