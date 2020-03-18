@@ -63,9 +63,19 @@ export default {
     }
   },
   computed: {
-    needHelp() {
+    needCount() {
       return this.users.filter(u => {
         return u.covid.type === 'NeedHelp'
+      }).length
+    },
+    canCount() {
+      return this.users.filter(u => {
+        return u.covid.type === 'CanHelp'
+      }).length
+    },
+    needHelp() {
+      return this.users.filter(u => {
+        return u.covid.type === 'NeedHelp' && !u.covid.closed
       })
     },
     visibleNeed() {
@@ -73,7 +83,7 @@ export default {
     },
     canHelp() {
       return this.users.filter(u => {
-        return u.covid.type === 'CanHelp'
+        return u.covid.type === 'CanHelp' && !u.covid.closed
       })
     },
     visibleCan() {
@@ -92,8 +102,8 @@ export default {
     replyData() {
       return [
         ['Type', 'Count'],
-        ['Need Help (' + this.needHelp.length + ')', this.needHelp.length],
-        ['Can Help (' + this.canHelp.length + ')', this.canHelp.length]
+        ['Need Help (' + this.needCount + ')', this.needCount],
+        ['Can Help (' + this.canCount + ')', this.canCount]
       ]
     }
   },
