@@ -18,8 +18,8 @@
         :disabled="isActioned(group.id)"
         @click="share(group)"
       >
-        <v-icon v-if="isBusy(group.id)" name="sync" class="fa-spin" />
-        <v-icon v-else-if="isActioned(group.id)" name="check" />
+        <v-icon v-if="isActioned(group.id)" name="check" />
+        <v-icon v-else-if="isBusy(group.id)" name="sync" class="fa-spin" />
         <v-icon v-else name="share-alt" />
         {{ group.namedisplay }}
       </b-btn>
