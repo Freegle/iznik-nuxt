@@ -154,6 +154,7 @@
             <a target="_blank" :href="'https://www.ilovefreegle.org/message/' + message.id" rel="noopener noreferrer">
               <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ message.id }}
             </a>
+            <span :class="message.collection != 'Approved' ? 'text-danger' : 'text-muted'">{{ message.collection }}</span>
           </b-col>
           <b-col cols="8" md="6" class="order-2 order-md-3 p-1">
             {{ message.subject }}
