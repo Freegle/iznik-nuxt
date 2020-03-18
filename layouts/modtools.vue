@@ -61,7 +61,7 @@
               <ModMenuItemNav :count="['pending', 'chatreview', 'pendingevents', 'pendingvolunteering']" icon="envelope" count-on-top />
             </template>
             <b-dropdown-item>
-              <ModMenuItemNav name="Pending" :count="['pending']" :othercount="['pending']" link="/modtools/messages/pending" />
+              <ModMenuItemNav name="Pending" :count="['pending']" :othercount="['pendingother']" link="/modtools/messages/pending" />
             </b-dropdown-item>
             <b-dropdown-item>
               <ModMenuItemNav name="Approved" link="/modtools/messages/approved" />
