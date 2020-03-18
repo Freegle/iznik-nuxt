@@ -323,10 +323,22 @@ export default {
           : 0
       return ret
     },
+    sortedHistories() {
+      const ret =
+        this.user.emailhistory && this.user.emailhistory.length
+          ? this.user.emailhistory
+          : []
+
+      ret.sort(function(a, b) {
+        return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+      })
+
+      return ret
+    },
     emailHistoriesShown() {
       return this.showAllEmailHistories
-        ? this.user.emailhistory
-        : this.user.emailhistory.slice(0, SHOW)
+        ? this.sortedHistories
+        : this.sortedHistories.slice(0, SHOW)
     },
     emailHistoriesUnshown() {
       const ret =
