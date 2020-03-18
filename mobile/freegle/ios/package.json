@@ -21,6 +21,8 @@
     "cordova-plugin-splashscreen": "^5.0.3",
     "cordova-plugin-statusbar": "^2.4.3",
     "cordova-plugin-wkwebview-engine": "^1.2.1",
+    "cordova-plugin-x-socialsharing": "^5.6.4",
+    "es6-promise-plugin": "^4.2.2",
     "phonegap-plugin-push": "^2.3.0"
   },
   "devDependencies": {
@@ -47,6 +49,10 @@
       "cordova-plugin-inappbrowser": {},
       "cordova-plugin-googleplus": {
         "REVERSED_CLIENT_ID": "com.googleusercontent.apps.423761283916-mfrb9i0ntt1omq2knit8j49agnhje648"
+      },
+      "cordova-plugin-x-socialsharing": {
+        "PHOTO_LIBRARY_USAGE_DESCRIPTION": "This app uses your photo library",
+        "PHOTO_LIBRARY_ADD_USAGE_DESCRIPTION": "This app saves images your photo library"
       }
     },
     "platforms": [
