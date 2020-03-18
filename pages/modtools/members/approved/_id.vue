@@ -23,7 +23,7 @@
           </span>
         </infinite-loading>
       </div>
-      <NoticeMessage v-else variant="info">
+      <NoticeMessage v-else variant="info" class="mt-2">
         Please select a group.
       </NoticeMessage>
     </client-only>

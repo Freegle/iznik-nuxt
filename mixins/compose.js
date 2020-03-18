@@ -1,6 +1,8 @@
 export default {
-  data: {
-    postType: null
+  data: function() {
+    return {
+      postType: null
+    }
   },
   computed: {
     ids() {

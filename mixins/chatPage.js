@@ -25,20 +25,23 @@ export default {
       const chats = Object.values(this.$store.getters['chats/list'])
 
       chats.sort(function(a, b) {
-        const aexpected = a.replyexpected
-        const bexpected = b.replyexpected
+        const aexpected = a.replyexpected && !a.replyreceived
+        const bexpected = b.replyexpected && !b.replyreceived
+        const aunseen = Math.max(0, a.unseen)
+        const bunseen = Math.max(0, b.unseen)
+
         let ret = null
 
         if (aexpected !== bexpected) {
           ret = bexpected - aexpected
+        } else if (bunseen !== aunseen) {
+          ret = bunseen - aunseen
+        } else if (a.lastdate && !b.lastdate) {
+          ret = -1
+        } else if (b.lastdate && !a.lastdate) {
+          ret = 1
         } else {
-          const aunseen = Math.max(0, a.unseen)
-          const bunseen = Math.max(0, b.unseen)
-          if (bunseen !== aunseen) {
-            ret = bunseen - aunseen
-          } else {
-            ret = new Date(b.lastdate) - new Date(a.lastdate)
-          }
+          ret = new Date(b.lastdate) - new Date(a.lastdate)
         }
 
         return ret
@@ -82,6 +85,7 @@ export default {
       const chats = this.filteredChats
         ? this.filteredChats.slice(0, this.showChats)
         : []
+
       return chats
     },
 

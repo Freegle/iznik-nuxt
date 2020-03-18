@@ -484,7 +484,7 @@ export default {
       })
     },
     brokenImage(event) {
-      event.target.src = '/defaultprofile.png'
+      event.target.src = require('~/static/defaultprofile.png')
     },
     showLove() {
       this.$refs.loveModal.show()

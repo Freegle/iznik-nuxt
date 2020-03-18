@@ -3,10 +3,12 @@
     <b-card no-body>
       <b-card-header>
         <div class="d-flex justify-content-start flex-wrap">
-          <ModChatReviewUser :user="message.fromuser" class="mr-2" tag="From: " />
+          <ModChatReviewUser :user="message.fromuser" class="mr-2" tag="From: " :groupid="message.group.id" />
           <v-icon name="arrow-circle-right" scale="2" class="mt-1 text-info" />
-          <ModChatReviewUser :user="message.touser" class="ml-2" tag="To: " />
-          <!--          TODO View Original Email-->
+          <ModChatReviewUser :user="message.touser" class="ml-2" tag="To: " :groupid="message.group.id" />
+          <span v-if="message.msgid">
+            TODO View original mail
+          </span>
         </div>
       </b-card-header>
       <b-card-body>
@@ -34,6 +36,9 @@
           </span>
           <span>
             <v-icon name="info-circle" /> {{ message.touser.displayname }} is on {{ message.group.namedisplay }}, which you mod.
+            <b-btn :to="'/modtools/members/approved/search/' + message.group.id + '/' + message.touser.id" variant="link" class="p-0 border-0 align-top">
+              Go to membership
+            </b-btn>
           </span>
           <span>
             <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ message.id }}
@@ -73,7 +78,6 @@
           <b-btn v-if="!message.held" variant="danger" class="mr-2 mb-1" @click="reject">
             <v-icon name="ban" /> Spam
           </b-btn>
-          </modchatviewbutton>
         </div>
       </b-card-footer>
     </b-card>

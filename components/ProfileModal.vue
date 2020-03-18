@@ -1,6 +1,6 @@
 <template>
   <b-modal
-    v-if="id && user"
+    v-if="id && user && user.info"
     id="profilemodal"
     v-model="showModal"
     size="lg"

@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     brokenProfileImage(event) {
-      event.target.src = '/icon.png'
+      event.target.src = require('~/static/icon.png')
     }
   }
 }
