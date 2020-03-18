@@ -369,15 +369,15 @@ module.exports = {
     //
     // Disabling CDN on different as part of transition to new CDN hosting.  Doing it this way because PM2 is
     // rubbish at updating environment variables.
-    render: {
-      resourcesLoaded(resources) {
-        const path =
-          process.env.CDN === undefined
-            ? '/_nuxt'
-            : (process.env.CDN + '/_nuxt')
-        resources.clientManifest && (resources.clientManifest.publicPath = path)
-      }
-    }
+    // render: {
+    //   resourcesLoaded(resources) {
+    //     const path =
+    //       process.env.CDN === undefined
+    //         ? '/_nuxt'
+    //         : (process.env.CDN + '/_nuxt')
+    //     resources.clientManifest && (resources.clientManifest.publicPath = path)
+    //   }
+    // }
   },
 
   /*
