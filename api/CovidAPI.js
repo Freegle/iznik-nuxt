@@ -11,4 +11,8 @@ export default class CovidAPI extends BaseAPI {
     const ret = await this.$get('/covid')
     return ret.covids
   }
+
+  async patch(params) {
+    await this.$patch('/covid', params)
+  }
 }

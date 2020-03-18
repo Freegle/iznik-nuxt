@@ -30,10 +30,10 @@
       <NoticeMessage v-if="user.covid.comments" variant="info" class="mb-2">
         {{ user.covid.comments }}
       </NoticeMessage>
-      <p v-if="user.covid.contacted">
+      <p v-if="user.covid.contacted" class="text-success">
         Contacted {{ user.covid.contacted | timeago }}
       </p>
-      <p v-else>
+      <p v-else class="text-warning">
         Not contacted yet.
       </p>
       <ModSpammer v-if="user.spammer" class="mb-2" :user="user" />
@@ -43,6 +43,12 @@
         </b-btn>
         <b-btn variant="white" class="mr-2 mb-1" @click="profile">
           <v-icon name="user" /> Profile
+        </b-btn>
+        <b-btn variant="success" class="mr-2 mb-1" @click="contacted">
+          <v-icon name="check" /> Contacted
+        </b-btn>
+        <b-btn variant="info" class="mr-2 mb-1" @click="close">
+          <v-icon name="times" /> Close
         </b-btn>
       </div>
       <h3 class="mt-2">
@@ -238,6 +244,18 @@ export default {
     },
     logs() {
       this.$refs.logs.show()
+    },
+    contacted() {
+      this.$api.covid.patch({
+        id: this.user.id,
+        contacted: new Date().toISOString()
+      })
+    },
+    closed() {
+      this.$api.covid.patch({
+        id: this.user.id,
+        closed: new Date().toISOString()
+      })
     }
   }
 }
