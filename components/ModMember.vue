@@ -73,12 +73,7 @@
             </div>
             <ModMemberActions :userid="member.userid" :groupid="groupid" :banned="(Boolean)(member.bandate)" />
             <ModMemberships :user="member" />
-            <div v-if="member.logins && member.logins.length" class="mt-2">
-              <v-icon name="lock" />
-              <b-badge v-for="l in member.logins" :key="'login-' + l.id" variant="info" class="border border-info rounded p-1 mr-1">
-                {{ loginType(l.type) }} login {{ l.lastaccess | timeago }}
-              </b-badge>
-            </div>
+            <ModMemberLogins :member="member" />
             <b-btn v-if="member.emails && member.emails.length" variant="link" @click="showEmails = !showEmails">
               <v-icon name="envelope" />
               <span v-if="showEmails">
@@ -134,10 +129,12 @@ import ModMemberButtons from './ModMemberButtons'
 import ModLogsModal from './ModLogsModal'
 import ModMemberships from './ModMemberships'
 import ModBouncing from './ModBouncing'
+import ModMemberLogins from './ModMemberLogins'
 
 export default {
   name: 'ModMember',
   components: {
+    ModMemberLogins,
     ModBouncing,
     ModMemberships,
     ModLogsModal,
