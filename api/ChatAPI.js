@@ -3,7 +3,18 @@ import BaseAPI from '@/api/BaseAPI'
 export default class ChatAPI extends BaseAPI {
   fetch(chatid, { limit, context }) {
     return chatid
-      ? this.$get(`/chat/rooms/${chatid}/messages`, { limit, context })
+      ? this.$get(
+          `/chat/rooms/${chatid}/messages`,
+          { limit, context },
+          function(data) {
+            if (data && data.ret === 2) {
+              // We handle this in the chat page
+              return false
+            } else {
+              return true
+            }
+          }
+        )
       : this.$get(`/chatmessages`, { limit, context })
   }
 
@@ -27,7 +38,7 @@ export default class ChatAPI extends BaseAPI {
   send(data) {
     return this.$post('/chatmessages', data, function(data) {
       if (data && data.ret === 4) {
-        // Don't log errors for banned users.
+        // Don't log errors for banned users - handled elsewhere.
         return false
       } else {
         return true
