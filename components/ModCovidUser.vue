@@ -3,7 +3,9 @@
     <b-card-header class="clickme p-1" @click="expanded = !expanded">
       <b-row>
         <b-col cols="10" sm="4" class="order-1 truncate" :title="email">
-          <v-icon name="envelope" />&nbsp;{{ email }}
+          <v-icon v-if="user.covid.contacted" name="check" class="text-success" />
+          <v-icon v-else name="exclamation-triangle" class="text-warning" />
+          {{ email }}
         </b-col>
         <b-col cols="2" sm="1" class="order-2 order-sm-7">
           <span class="d-block d-sm-none float-right">
@@ -47,7 +49,7 @@
         <b-btn variant="success" class="mr-2 mb-1" @click="contacted">
           <v-icon name="check" /> Contacted
         </b-btn>
-        <b-btn variant="info" class="mr-2 mb-1" @click="close">
+        <b-btn variant="info" class="mr-2 mb-1" @click="closed">
           <v-icon name="times" /> Close
         </b-btn>
       </div>
