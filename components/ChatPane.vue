@@ -234,7 +234,7 @@
             </b-row>
           </div>
           <PromiseModal ref="promise" :messages="ouroffers" :selected-message="likelymsg ? likelymsg : 0" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
-          <ProfileModal :id="otheruser ? otheruser.id : null" ref="profile" />
+          <ProfileModal v-if="otheruser" :id="otheruser ? otheruser.id : null" ref="profile" />
           <AvailabilityModal v-if="me && chat" ref="availabilitymodal" :otheruid="otheruser ? otheruser.id : null" :chatid="chat.id" :thisuid="me.id" />
           <AddressModal ref="addressModal" :choose="true" @chosen="sendAddress" />
           <ChatBlockModal v-if="chat && chat.chattype === 'User2User' && otheruser" :id="id" ref="chatblock" :user="otheruser" @confirm="block" />

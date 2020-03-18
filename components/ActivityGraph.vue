@@ -1,11 +1,14 @@
 <template>
   <b-card variant="white" class="mt-2">
     <b-card-text>
-      <h3 class="d-flex justify-content-between">
+      <h3 class="d-flex justify-content-between flex-wrap">
         <span>
           {{ graphTitles[graphType] }} <span v-if="groupName" class="text-muted">on {{ groupName }}</span>
         </span>
-        <b-form-select v-model="graphType" :options="graphTypes" class="graphSelect" />
+        <div class="d-flex">
+          <b-form-select v-model="units" :options="unitOptions" class="graphSelect mr-1" />
+          <b-form-select v-model="graphType" :options="graphTypes" class="graphSelect" />
+        </div>
       </h3>
       <p v-if="graphType === 'Activity'">
         This includes people OFFERing something, posting a WANTED for something, or replying to an OFFER/WANTED.
@@ -114,7 +117,26 @@ export default {
         Wanteds: 'WANTEDs only',
         Weight: 'Weights',
         Outcomes: 'Successful'
-      }
+      },
+      units: 'year',
+      unitOptions: [
+        {
+          value: 'day',
+          text: 'Day'
+        },
+        {
+          value: 'week',
+          text: 'Week'
+        },
+        {
+          value: 'month',
+          text: 'Month'
+        },
+        {
+          value: 'year',
+          text: 'Year'
+        }
+      ]
     }
 
     ret.graphTypes.push({ value: 'Activity', text: 'Activity' })
@@ -181,18 +203,6 @@ export default {
         .endOf('day')
         .diff(this.$dayjs(this.start).startOf('day'), 'day')
       return d
-    },
-    units() {
-      // Choose the units to display on the graph based on the range it covers.
-      if (this.duration < 31) {
-        return 'day'
-      } else if (this.duration < 31 * 3) {
-        return 'week'
-      } else if (this.duration < 2 * 365) {
-        return 'month'
-      } else {
-        return 'year'
-      }
     },
     graphData() {
       const ret = [['Date', 'Count']]
@@ -270,6 +280,8 @@ export default {
     async fetch() {
       this.loading = true
 
+      this.units = this.defaultUnits()
+
       let comp = [this.graphType]
 
       if (this.graphType === 'Offers' || this.graphType === 'Wanteds') {
@@ -328,6 +340,18 @@ export default {
 
       console.log('Returning', ret)
       return ret
+    },
+    defaultUnits() {
+      // Choose the units to display on the graph based on the range it covers.
+      if (this.duration < 31) {
+        return 'day'
+      } else if (this.duration < 31 * 3) {
+        return 'week'
+      } else if (this.duration < 2 * 365) {
+        return 'month'
+      } else {
+        return 'year'
+      }
     }
   }
 }

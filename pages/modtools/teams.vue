@@ -9,8 +9,8 @@
       </p>
 
       <div class="d-flex flex-wrap">
-        <b-btn v-for="team in teams" :key="'team-' + team.name" variant="white" class="m-1" @click="selectTeam(team)">
-          {{ team.name }}
+        <b-btn v-for="t in teams" :key="'team-' + t.name" variant="white" class="m-1" @click="selectTeam(t)">
+          {{ t.name }}
         </b-btn>
       </div>
 

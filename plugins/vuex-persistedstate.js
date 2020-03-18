@@ -20,7 +20,6 @@ const keep = {
     // Ensure password not saved to local storage.
     exclude: ['forceLogin']
   },
-  group: null,
   popupchats: null,
   compose: {
     // Don't remember that we're uploading, else we might get stuck.

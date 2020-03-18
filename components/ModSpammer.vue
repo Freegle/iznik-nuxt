@@ -1,5 +1,5 @@
 <template>
-  <NoticeMessage :variant="user.spammer.collection === 'Whitelisted' ? 'success' : 'warning'" class="mb-1">
+  <NoticeMessage :variant="variant" class="mb-1">
     <div>
       {{ user.spammer.collection }}: {{ user.spammer.reason }}
     </div>
@@ -16,6 +16,21 @@ export default {
     user: {
       type: Object,
       required: true
+    }
+  },
+  computed: {
+    variant() {
+      switch (this.user.spammer.collection) {
+        case 'Spammer': {
+          return 'danger'
+        }
+        case 'Whitelisted': {
+          return 'success'
+        }
+        default: {
+          return 'warning'
+        }
+      }
     }
   }
 }
