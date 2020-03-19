@@ -38,29 +38,34 @@
       <p>
         We don't know how many responses we get.  Maybe we'll just get a few - if so then we'll leave it in the
         (washed) hands of other people.  Maybe we'll get loads, and we'll need to work out how to put people
-        in touch safely - that would be a good problem to have.
+        in touch safely - that would be a good problem to have.  We won't pass on your details before
+        getting back in touch with you.
       </p>
       <p>
-        We won't pass on your details before
-        getting back in touch with you.  If you need urgent help, look at the
+        Always freegle responsibly - avoid contact, wash your hands, self-isolate if you're unwell or vulnerable.
+        If you need urgent help, look at the
         <a href="https://www.nhs.uk/conditions/coronavirus-covid-19/" target="_blank" rel="noopener noreferrer">NHS website</a>.
       </p>
     </div>
-    <CovidModal ref="thanks" />
+    <CovidThanksModal ref="thanks" />
+    <CovidInfoModal v-if="type" ref="info" :type="type" @hide="thank" />
   </div>
 </template>
 
 <script>
-import CovidModal from '../components/CovidModal'
+import CovidThanksModal from '../components/CovidThanksModal'
+import CovidInfoModal from '../components/CovidInfoModal'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 import waitForRef from '@/mixins/waitForRef'
 
 export default {
-  components: { CovidModal },
+  components: { CovidInfoModal, CovidThanksModal },
   mixins: [buildHead, loginOptional, waitForRef],
   data: function() {
-    return {}
+    return {
+      type: null
+    }
   },
   watch: {
     me(newme) {
@@ -79,29 +84,36 @@ export default {
     },
     async record(type) {
       console.log('Record', type)
+      await this.$store.dispatch('misc/set', {
+        key: 'covid',
+        value: type
+      })
+
+      this.type = type
+
       if (this.myid) {
         await this.$api.covid.record(type)
-        this.waitForRef('thanks', () => {
-          this.$refs.thanks.show()
+        console.log('Wait')
+        this.waitForRef('info', () => {
+          console.log('Open')
+          this.$refs.info.show()
         })
       } else {
-        await this.$store.dispatch('misc/set', {
-          key: 'covid',
-          value: type
-        })
-
-        console.log('Force login')
         this.$store.dispatch('auth/forceLogin', true)
       }
     },
     mounted() {
       const type = this.$store.getters['misc/get']('covid')
       const me = this.$store.getters['auth/user']
-      console.log('Mounted', type, me)
 
       if (me && type) {
         this.record(type)
       }
+    },
+    thank() {
+      this.waitForRef('thanks', () => {
+        this.$refs.thanks.show()
+      })
     }
   },
   head() {

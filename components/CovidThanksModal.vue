@@ -2,7 +2,7 @@
   <div>
     <client-only>
       <b-modal
-        id="covidmodal"
+        id="CovidThanks"
         v-model="showModal"
         title="Thanks"
         no-stacking
