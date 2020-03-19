@@ -13,6 +13,16 @@
         (or someone you know) will need help.  Let's see if we can connect people so that we're ready.
       </p>
       <b-row>
+        <b-col class="text-center">
+          <h4>What's your postcode?</h4>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col class="text-center mb-2 mt-2">
+          <postcode class="justify-content-center" :find="false" @selected="postcodeSelect" @cleared="postcodeClear" />
+        </b-col>
+      </b-row>
+      <b-row>
         <b-col cols="12" md="8" offset-md="2">
           <div class="d-flex justify-content-between w-100 mb-2">
             <b-btn variant="success" size="lg" class="mr-3" @click="offer">
@@ -55,12 +65,13 @@
 <script>
 import CovidThanksModal from '../components/CovidThanksModal'
 import CovidInfoModal from '../components/CovidInfoModal'
+import Postcode from '../components/Postcode'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 import waitForRef from '@/mixins/waitForRef'
 
 export default {
-  components: { CovidInfoModal, CovidThanksModal },
+  components: { Postcode, CovidInfoModal, CovidThanksModal },
   mixins: [buildHead, loginOptional, waitForRef],
   data: function() {
     return {
@@ -94,6 +105,17 @@ export default {
       if (this.myid) {
         await this.$api.covid.record(type)
         console.log('Wait')
+
+        const settings = this.me.settings
+        const pc = this.$store.getters['misc/get']('covidpc')
+
+        if (!settings.mylocation || settings.mylocation.id !== pc) {
+          settings.mylocation = pc
+          await this.$store.dispatch('auth/saveAndGet', {
+            settings: settings
+          })
+        }
+
         this.waitForRef('info', () => {
           console.log('Open')
           this.$refs.info.show()
@@ -113,6 +135,22 @@ export default {
     thank() {
       this.waitForRef('thanks', () => {
         this.$refs.thanks.show()
+      })
+    },
+    postcodeSelect(pc) {
+      this.postcode = pc
+
+      this.$store.dispatch('misc/set', {
+        key: 'covidpc',
+        value: pc
+      })
+    },
+    postcodeClear() {
+      this.postcode = null
+
+      this.$store.dispatch('misc/set', {
+        key: 'covidpc',
+        value: null
       })
     }
   },
