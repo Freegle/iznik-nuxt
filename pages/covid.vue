@@ -52,9 +52,14 @@
         getting back in touch with you.
       </p>
       <p>
-        Always freegle responsibly - avoid contact, wash your hands, self-isolate if you're unwell or vulnerable.
-        If you need urgent help, look at the
+        <b>Always freegle responsibly</b> - avoid contact, wash your hands, self-isolate if you're unwell or vulnerable.
+        <b>If you need urgent help</b>, look at the
         <a href="https://www.nhs.uk/conditions/coronavirus-covid-19/" target="_blank" rel="noopener noreferrer">NHS website</a>.
+      </p>
+      <p>
+        Freegle is free to use but not free to run. We've had people ask how they can support us - that's not the
+        most urgent thing just now, but you can donate
+        <a href="https://freegle.in/paypal1510" target="_blank" rel="noopener noreferrer">here</a>.
       </p>
     </div>
     <CovidThanksModal ref="thanks" />
