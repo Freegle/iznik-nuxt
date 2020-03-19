@@ -56,11 +56,6 @@
         <b>If you need urgent help</b>, look at the
         <a href="https://www.nhs.uk/conditions/coronavirus-covid-19/" target="_blank" rel="noopener noreferrer">NHS website</a>.
       </p>
-      <p>
-        Freegle is free to use but not free to run. We've had people ask how they can support us - that's not the
-        most urgent thing just now, but you can donate
-        <a href="https://freegle.in/paypal1510" target="_blank" rel="noopener noreferrer">here</a>.
-      </p>
     </div>
     <CovidThanksModal ref="thanks" />
     <CovidInfoModal v-if="type" ref="info" :type="type" @hide="thank" />
