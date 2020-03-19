@@ -58,7 +58,7 @@
         <b-navbar-nav class="w-100 d-flex d-sm-none justify-content-between ml-sm-auto pr-1">
           <b-nav-item-dropdown class="pt-2">
             <template v-slot:button-content>
-              <ModMenuItemNav :count="['pending', 'chatreview', 'pendingevents', 'pendingvolunteering']" icon="envelope" count-on-top />
+              <ModMenuItemNav :count="['pending', 'chatreview', 'pendingevents', 'pendingvolunteering', 'pendingadmins']" icon="envelope" count-on-top />
             </template>
             <b-dropdown-item>
               <ModMenuItemNav name="Pending" :count="['pending']" :othercount="['pendingother']" link="/modtools/messages/pending" />
@@ -80,6 +80,9 @@
             </b-dropdown-item>
             <b-dropdown-item>
               <ModMenuItemNav name="Volunteering" :count="['pendingvolunteering']" link="/modtools/volunteering" />
+            </b-dropdown-item>
+            <b-dropdown-item>
+              <ModMenuItemNav name="Admins" :count="['pendingadmins']" link="/modtools/admins" />
             </b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown class="pt-2">
@@ -170,7 +173,7 @@
           <ModMenuItemLeft link="/modtools/communityevents" name="Events" count="pendingevents" />
           <ModMenuItemLeft link="/modtools/volunteering" name="Volunteering" count="pendingvolunteering" />
           <ModMenuItemLeft link="/modtools/publicity" name="Publicity" count="socialactions" />
-          <ModMenuItemLeft link="/modtools/admins" name="Admins TODO" count="pendingadmins" />
+          <ModMenuItemLeft link="/modtools/admins" name="Admins" count="pendingadmins" />
           <hr>
           <ModMenuItemLeft link="/modtools/logs" name="Logs TODO" />
           <ModMenuItemLeft link="/modtools/support" name="Support" />
