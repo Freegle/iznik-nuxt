@@ -110,7 +110,14 @@ export default {
   layout: 'modtools',
   async mounted() {
     const ret = await this.$api.covid.fetch()
-    this.users = Object.values(ret)
+    this.users = Object.values(ret).sort((a, b) => {
+      console.log('Sort', a, b)
+      return (
+        new Date(b.covid.timestamp).getTime() -
+        new Date(a.covid.timestamp).getTime()
+      )
+    })
+
     this.loading = false
   }
 }
