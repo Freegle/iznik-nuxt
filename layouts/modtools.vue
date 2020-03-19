@@ -174,6 +174,22 @@
           <ModMenuItemLeft link="/modtools/volunteering" name="Volunteering" count="pendingvolunteering" />
           <ModMenuItemLeft link="/modtools/publicity" name="Publicity" count="socialactions" />
           <ModMenuItemLeft link="/modtools/admins" name="Admins" count="pendingadmins" />
+          <div>
+            <hr>
+            <div class="pl-1">
+              Spammers TODO
+            </div>
+            <ModMenuItemLeft link="/modtools/spammers/confirmed" name="Confirmed" indent />
+            <ModMenuItemLeft v-if="supportOrAdmin" link="/modtools/spammers/pendingadd" name="Pending Add" count="spammerpendingadd" indent />
+            <ModMenuItemLeft
+              v-if="supportOrAdmin"
+              link="/modtools/spammers/pendingremove"
+              name="Pending Remove"
+              count="spammerpendingremove"
+              indent
+            />
+            <ModMenuItemLeft link="/modtools/spammers/whitelisted" name="Whitelisted" indent />
+          </div>
           <hr>
           <ModMenuItemLeft link="/modtools/logs" name="Logs TODO" />
           <ModMenuItemLeft link="/modtools/support" name="Support" />
@@ -336,6 +352,7 @@ export default {
       'pendingadmins'
     ]) {
       if (work[key]) {
+        console.log('Got work', key)
         totalCount += work[key]
       }
     }
@@ -452,7 +469,7 @@ body.modal-open {
   height: 100vh;
   min-width: 200px;
   padding-top: 68px;
-  font-size: 1.4em;
+  font-size: 1.2em;
   background-color: $color-modtools-leftmenu-bg;
 
   a {
