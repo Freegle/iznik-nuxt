@@ -106,20 +106,6 @@ export default {
 }
 
 .profile--xl {
-  width: 93px;
-  height: 93px;
-  min-width: 93px;
-  min-height: 93px;
-
-  @include media-breakpoint-up(md) {
-    width: 93px;
-    height: 93px;
-    min-width: 93px;
-    min-height: 93px;
-  }
-}
-
-.profile--xxl {
   width: 75px;
   height: 75px;
   min-width: 75px;
