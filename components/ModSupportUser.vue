@@ -28,6 +28,8 @@
     </b-card-header>
     <b-card-body v-if="expanded" class="p-1">
       <ModSpammer v-if="user.spammer" class="mb-2" :user="user" />
+      <ModComments :user="user" />
+
       <div class="d-flex flex-wrap">
         <b-btn variant="white" disabled class="mr-2 mb-1">
           <v-icon name="ban" /> Scammer
@@ -46,6 +48,9 @@
         </b-btn>
         <b-btn variant="white" class="mr-2 mb-1" @click="profile">
           <v-icon name="user" /> Profile
+        </b-btn>
+        <b-btn variant="white" class="mr-2 mb-1" @click="addAComment">
+          <v-icon name="tag" /> Add note
         </b-btn>
       </div>
       <h3 class="mt-2">
@@ -216,11 +221,13 @@ import ProfileModal from './ProfileModal'
 import ModSupportChatList from './ModSupportChatList'
 import ModSpammer from './ModSpammer'
 import ModMemberLogins from './ModMemberLogins'
+import ModComments from './ModComments'
 
 const SHOW = 3
 
 export default {
   components: {
+    ModComments,
     ModMemberLogins,
     ModSpammer,
     ModSupportChatList,
