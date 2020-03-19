@@ -8,7 +8,8 @@
             <v-icon v-else name="exclamation-triangle" class="text-warning" />
           </span>
           {{ email }}
-          <v-icon v-if="user.covid.info" name="info-circle" />
+          <v-icon v-if="user.covid.info && user.covid.info != '[]'" name="info-circle" />
+          <v-icon v-if="user.covid.info && info && info.other" name="comments" />
         </b-col>
         <b-col cols="2" sm="1" class="order-2 order-sm-7">
           <span class="d-block d-sm-none float-right">
@@ -50,10 +51,10 @@
           <v-icon name="user" /> Profile
         </b-btn>
         <b-btn variant="success" class="mr-2 mb-1" @click="contacted">
-          <v-icon name="check" /> Contacted
+          <v-icon name="check" /> Mark Contacted
         </b-btn>
         <b-btn variant="info" class="mr-2 mb-1" @click="closed">
-          <v-icon name="times" /> Close
+          <v-icon name="times" /> Close - No Further Action
         </b-btn>
       </div>
       <h3>Info</h3>
@@ -66,7 +67,7 @@
             <b-td>
               <b-form-checkbox
                 id="checkbox-shopping"
-                value="info.shopping"
+                v-model="info.shopping"
                 readonly
               />
             </b-td>
@@ -133,7 +134,7 @@
           </b-tr>
           <b-tr>
             <b-td colspan="2">
-              <b-textarea v-model="info.other" placeholder="Anything else you'd like to say?" readonly />
+              <b-textarea v-model="info.other" placeholder="No other info" readonly />
             </b-td>
           </b-tr>
         </b-tbody>

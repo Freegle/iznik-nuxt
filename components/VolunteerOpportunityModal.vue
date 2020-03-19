@@ -126,6 +126,9 @@
                 :state="validationEnabled ? !$v.groupid.$invalid : null"
               >
                 <groupRememberSelect v-model="groupid" remember="editopportunity" :systemwide="true" />
+                <NoticeMessage v-if="groupid === -2" variant="danger" class="mt-1">
+                  This is a national volunteer opportunity which will go out to all communities. Please review carefully.
+                </NoticeMessage>
                 <b-form-invalid-feedback>
                   Please select a community
                 </b-form-invalid-feedback>

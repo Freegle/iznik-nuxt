@@ -1,5 +1,10 @@
 <template>
   <div>
+    <NoticeMessage variant="danger">
+      This is an experimental and rapidly changing interface.  You can view things, but please don't start actively
+      using it without talking to Edward first.  We are not ready to do that generally and could get ourselves in
+      a fankle.
+    </NoticeMessage>
     <div v-if="mod">
       <div>
         <b-tabs content-class="mt-3" card>
@@ -9,10 +14,16 @@
                 Summary
               </h2>
             </template>
+            <div class="d-flex mb-2">
+              <GroupSelect v-model="groupid" all :systemwide="supportOrAdmin" />
+              <b-btn variant="success" @click="loadit">
+                Load data
+              </b-btn>
+            </div>
             <div v-if="loading">
               <b-img src="~/static/loader.gif" alt="Loading" />
             </div>
-            <div v-else>
+            <div v-else-if="loaded">
               <GChart
                 type="PieChart"
                 :data="replyData"
@@ -51,15 +62,19 @@
 <script>
 import { GChart } from 'vue-google-charts'
 import ModCovidUser from '../../components/ModCovidUser'
+import GroupSelect from '../../components/GroupSelect'
+import NoticeMessage from '../../components/NoticeMessage'
 import loginRequired from '@/mixins/loginRequired.js'
 
 export default {
-  components: { ModCovidUser, GChart },
+  components: { NoticeMessage, GroupSelect, ModCovidUser, GChart },
   mixins: [loginRequired],
   data: function() {
     return {
       users: [],
-      loading: true
+      loading: false,
+      loaded: false,
+      groupid: null
     }
   },
   computed: {
@@ -108,17 +123,21 @@ export default {
     }
   },
   layout: 'modtools',
-  async mounted() {
-    const ret = await this.$api.covid.fetch()
-    this.users = Object.values(ret).sort((a, b) => {
-      console.log('Sort', a, b)
-      return (
-        new Date(b.covid.timestamp).getTime() -
-        new Date(a.covid.timestamp).getTime()
-      )
-    })
+  methods: {
+    async loadit() {
+      this.loading = true
 
-    this.loading = false
+      const ret = await this.$api.covid.fetch(this.groupid)
+      this.users = Object.values(ret).sort((a, b) => {
+        return (
+          new Date(b.covid.timestamp).getTime() -
+          new Date(a.covid.timestamp).getTime()
+        )
+      })
+
+      this.loading = false
+      this.loaded = true
+    }
   }
 }
 </script>
