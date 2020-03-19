@@ -145,12 +145,18 @@ export default {
         }
       ]
 
+      const singles = {}
+
       if (this.properties) {
         Object.values(this.properties).forEach(address => {
-          ret.push({
-            value: address.id,
-            text: address.singleline
-          })
+          if (!singles[address.singleline]) {
+            ret.push({
+              value: address.id,
+              text: address.singleline
+            })
+
+            singles[address.singleline] = true
+          }
         })
       }
 
