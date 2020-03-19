@@ -159,37 +159,19 @@
           </div>
           <ModMenuItemLeft link="/modtools/members/pending" name="Pending" count="pendingmembers" othercount="pendingmembersother" indent />
           <ModMenuItemLeft link="/modtools/members/approved" name="Approved" indent />
-          <ModMenuItemLeft link="/modtools/members/review" name="Review" count="spammembers" othercount="spammembersother" indent />
+          <ModMenuItemLeft link="/modtools/members/review" name="Member Review" count="spammembers" othercount="spammembersother" indent />
+          <ModMenuItemLeft link="/modtools/chats/review" name="Chat Review" count="chatreview" indent />
           <ModMenuItemLeft link="/modtools/members/related" name="Related" count="relatedmembers" indent />
           <ModMenuItemLeft link="/modtools/members/stories" name="Stories" indent count="stories" />
           <ModMenuItemLeft v-if="hasPermissionNewsletter" link="/modtools/members/newsletter" name="Newsletter" indent count="newsletterstories" />
-          <hr>
-          <div class="pl-1">
-            Chat
-          </div>
-          <ModMenuItemLeft link="/modtools/chats/review" name="Review" count="chatreview" indent />
           <ModMenuItemLeft link="/modtools/happieness" name="Happiness TODO" indent />
+          <hr>
           <hr>
           <ModMenuItemLeft link="/modtools/communityevents" name="Events" count="pendingevents" />
           <ModMenuItemLeft link="/modtools/volunteering" name="Volunteering" count="pendingvolunteering" />
           <ModMenuItemLeft link="/modtools/publicity" name="Publicity" count="socialactions" />
           <ModMenuItemLeft link="/modtools/admins" name="Admins" count="pendingadmins" />
-          <div>
-            <hr>
-            <div class="pl-1">
-              Spammers TODO
-            </div>
-            <ModMenuItemLeft link="/modtools/spammers/confirmed" name="Confirmed" indent />
-            <ModMenuItemLeft v-if="supportOrAdmin" link="/modtools/spammers/pendingadd" name="Pending Add" count="spammerpendingadd" indent />
-            <ModMenuItemLeft
-              v-if="supportOrAdmin"
-              link="/modtools/spammers/pendingremove"
-              name="Pending Remove"
-              count="spammerpendingremove"
-              indent
-            />
-            <ModMenuItemLeft link="/modtools/spammers/whitelisted" name="Whitelisted" indent />
-          </div>
+          <ModMenuItemLeft link="/modtools/spammers" name="Spammers TODO" count="spammerpendingadd" />
           <hr>
           <ModMenuItemLeft link="/modtools/logs" name="Logs TODO" />
           <ModMenuItemLeft link="/modtools/support" name="Support" />
