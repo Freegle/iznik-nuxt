@@ -49,9 +49,6 @@
         <b-btn variant="white" class="mr-2 mb-1" @click="profile">
           <v-icon name="user" /> Profile
         </b-btn>
-        <b-btn variant="white" class="mr-2 mb-1" @click="addAComment">
-          <v-icon name="tag" /> Add note
-        </b-btn>
       </div>
       <h3 class="mt-2">
         Location
