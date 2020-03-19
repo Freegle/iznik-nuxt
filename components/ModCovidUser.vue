@@ -1,6 +1,6 @@
 <template>
   <b-card v-if="user" no-body class="p-0">
-    <b-card-header class="clickme p-1" @click="expanded = !expanded">
+    <b-card-header class="clickme p-1" @click="expandit">
       <b-row>
         <b-col cols="10" sm="4" class="order-1 truncate" :title="email">
           <span v-if="user.covid.type === 'NeedHelp'">
@@ -50,6 +50,7 @@
         <b-btn variant="white" class="mr-2 mb-1" @click="profile">
           <v-icon name="user" /> Profile
         </b-btn>
+        <Ratings v-if="expanded" :id="user.id" disabled class="mr-2" />
         <b-btn variant="success" class="mr-2 mb-1" @click="contacted">
           <v-icon name="check" /> Mark Contacted
         </b-btn>
@@ -243,6 +244,7 @@ import ModSpammer from './ModSpammer'
 import ModLogsModal from './ModLogsModal'
 import ChatButton from './ChatButton'
 import NoticeMessage from './NoticeMessage'
+import Ratings from './Ratings'
 
 Vue.use(TablePlugin)
 
@@ -250,6 +252,7 @@ const SHOW = 3
 
 export default {
   components: {
+    Ratings,
     NoticeMessage,
     ChatButton,
     ModLogsModal,
@@ -331,16 +334,22 @@ export default {
     }
   },
   methods: {
-    async profile() {
+    async fetchUser() {
       await this.$store.dispatch('user/fetch', {
         id: this.id,
         info: true
       })
-
-      this.$refs.profile.show()
+    },
+    async profile() {
+      await this.fetchUser()
+      this.waitForRef('profile', () => {
+        this.$refs.profile.show()
+      })
     },
     logs() {
-      this.$refs.logs.show()
+      this.waitForRef('logs', () => {
+        this.$refs.logs.show()
+      })
     },
     contacted() {
       this.$api.covid.patch({
@@ -353,6 +362,9 @@ export default {
         id: this.user.id,
         closed: new Date().toISOString()
       })
+    },
+    expandit() {
+      this.expanded = !this.expanded
     }
   }
 }
