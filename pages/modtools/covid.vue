@@ -30,6 +30,12 @@
                 :options="replyOptions"
                 class="max"
               />
+              <GChart
+                type="PieChart"
+                :data="statusData"
+                :options="statusOptions"
+                class="max"
+              />
             </div>
           </b-tab>
           <b-tab id="needTab">
@@ -88,6 +94,21 @@ export default {
         return u.covid.type === 'CanHelp'
       }).length
     },
+    closedCount() {
+      return this.users.filter(u => {
+        return u.covid.closed
+      }).length
+    },
+    contactCount() {
+      return this.users.filter(u => {
+        return u.covid.contacted && !u.covid.closed
+      }).length
+    },
+    pendingCount() {
+      return this.users.filter(u => {
+        return !u.covid.contacted && !u.covid.closed
+      }).length
+    },
     needHelp() {
       return this.users.filter(u => {
         return u.covid.type === 'NeedHelp' && !u.covid.closed
@@ -119,6 +140,25 @@ export default {
         ['Type', 'Count'],
         ['Need Help (' + this.needCount + ')', this.needCount],
         ['Can Help (' + this.canCount + ')', this.canCount]
+      ]
+    },
+    statusOptions() {
+      return {
+        title: 'Current Status',
+        chartArea: { width: '200px', height: '200px' },
+        slices: {
+          0: { color: 'grey' },
+          1: { color: 'blue' },
+          2: { color: 'orange' }
+        }
+      }
+    },
+    statusData() {
+      return [
+        ['Type', 'Count'],
+        ['Closed (' + this.closedCount + ')', this.closedCount],
+        ['Contacted (' + this.contactCount + ')', this.contactCount],
+        ['Pending (' + this.pendingCount + ')', this.pendingCount]
       ]
     }
   },

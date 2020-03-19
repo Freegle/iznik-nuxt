@@ -33,8 +33,13 @@
       </b-row>
     </b-card-header>
     <b-card-body v-if="expanded" class="p-1">
-      <NoticeMessage v-if="user.covid.comments" variant="info" class="mb-2">
-        {{ user.covid.comments }}
+      <NoticeMessage variant="info" class="mb-2">
+        <b-textarea v-model="user.covid.comments" placeholder="No comments">
+          {{ user.covid.comments }}
+        </b-textarea>
+        <b-btn variant="white" @click="saveInfo">
+          <v-icon name="save" /> Save
+        </b-btn>
       </NoticeMessage>
       <p v-if="user.covid.contacted" class="text-success">
         Contacted {{ user.covid.contacted | timeago }}
@@ -365,6 +370,12 @@ export default {
     },
     expandit() {
       this.expanded = !this.expanded
+    },
+    saveInfo() {
+      this.$api.covid.patch({
+        id: this.user.id,
+        comments: this.user.covid.comments
+      })
     }
   }
 }
