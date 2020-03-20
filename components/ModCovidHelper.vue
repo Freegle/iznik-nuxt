@@ -1,7 +1,7 @@
 <template>
   <b-tr>
     <b-td>
-      <a :href="'https://www.ilovefreele.org/profile/' + helper.id" target="_blank">
+      <a :href="'https://www.ilovefreegle.org/profile/' + helper.id" target="_blank">
         {{ helper.displayname }}
       </a>
     </b-td>
