@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>People who can help</h3>
+    <h3>People who may help</h3>
     <p>Here are some people near you who have offered to help.</p>
     <NoticeMessage variant="warning" class="mb-2">
       Freegle hasn't vetted these people - we're just putting you in touch.  Make sure you're safe.

@@ -2,7 +2,7 @@
   <b-modal
     id="confirmmodal"
     v-model="showModal"
-    title="Suggestions for people to help"
+    title="Suggestions Preview"
     no-stacking
     size="lg"
   >
