@@ -2,16 +2,19 @@
   <b-card v-if="covid" no-body class="p-0">
     <b-card-header class="clickme p-1" @click="expandit">
       <b-row>
-        <b-col cols="10" sm="4" class="order-1 truncate" :title="email">
+        <b-col cols="9" sm="3" class="order-1 truncate">
           <!--          <span v-if="covid.type === 'NeedHelp'">-->
           <!--            <v-icon v-if="covid.contacted" name="check" class="text-success" />-->
           <!--            <v-icon v-else name="exclamation-triangle" class="text-warning" />-->
           <!--          </span>-->
-          {{ email }}
-          <v-icon v-if="covid.info && covid.info != '[]'" name="info-circle" />
-          <v-icon v-if="covid.info && info && info.other" name="comments" />
+          <span :title="email">{{ email }}</span>
         </b-col>
-        <b-col cols="2" sm="1" class="order-2 order-sm-7">
+        <b-col cols="1" class="order-2">
+          <v-icon v-if="covid.phone" name="mobile-alt" title="Phone number provided" class="ml-2 mr-2" />
+          <v-icon v-if="covid.intro" name="book-open" title="Intro provided" class="ml-2 mr-2" />
+          <v-icon v-if="info.other" name="comment" title="Comments to volunteers" class="ml-2 mr-2" />
+        </b-col>
+        <b-col cols="2" sm="1" class="order-3 order-sm-8">
           <span class="d-block d-sm-none float-right">
             <v-icon v-if="!expanded" name="caret-down" />
             <v-icon v-else name="caret-up" />
@@ -21,13 +24,13 @@
             <v-icon v-else name="caret-up" />
           </b-btn>
         </b-col>
-        <b-col cols="12" sm="3" class="order-3 truncate">
+        <b-col cols="12" sm="3" class="order-4 truncate">
           <v-icon name="user" /> {{ covid.user.displayname }}
         </b-col>
-        <b-col cols="5" sm="2" class="order-4">
+        <b-col cols="5" sm="2" class="order-5">
           <v-icon name="hashtag" scale="0.75" class="text-muted" />{{ covid.userid }}
         </b-col>
-        <b-col cols="7" sm="2" class="order-5 text-right">
+        <b-col cols="7" sm="2" class="order-6 text-right">
           {{ covid.lastaccess | timeago }}
         </b-col>
       </b-row>
@@ -83,6 +86,9 @@
                   Miles away
                 </b-th>
                 <b-th>
+                  Info
+                </b-th>
+                <b-th>
                   Their Response
                 </b-th>
                 <b-th>
@@ -109,7 +115,7 @@
       <h3 class="mt-2">
         Info
       </h3>
-      <ModCovidInfo :info="info" />
+      <ModCovidInfo :covid="covid" />
       <h3 class="mt-2">
         Location
       </h3>

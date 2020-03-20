@@ -9,6 +9,11 @@
       {{ (Math.round(helper.distance * 10) / 10) | pluralize('mile', { includeNumber: true }) }}
     </b-td>
     <b-td>
+      <v-icon v-if="helper.covid.phone" name="mobile-alt" title="Phone number provided" />
+      <v-icon v-if="helper.covid.intro" name="book-open" title="Intro provided" />
+      <v-icon v-if="info.other" name="comment" title="Comment to volunteers provided" />
+    </b-td>
+    <b-td>
       <b-btn v-if="helper.covid.info" variant="white" @click="showInfo = true">
         Response
       </b-btn>
@@ -23,34 +28,7 @@
         size="lg"
       >
         <template slot="default">
-          <div class="d-flex justify-content-between mb-2">
-            <div>
-              Phone number:
-            </div>
-            <div>
-              <div v-if="helper.covid.info.phone">
-                {{ helper.covid.info.phone }}
-              </div>
-              <div v-else>
-                None so far.
-              </div>
-            </div>
-          </div>
-          <div class="d-flex justify-content-between mb-2">
-            <div>
-              Intro from them:
-            </div>
-            <div>
-              <div v-if="helper.covid.info.info">
-                {{ helper.covid.info.intro }}
-              </div>
-              <div v-else>
-                None so far.
-              </div>
-            </div>
-          </div>
-          <p>Things they can help with:</p>
-          <ModCovidInfo :info="JSON.parse(helper.covid.info)" />
+          <ModCovidInfo :covid="helper.covid" />
         </template>
         <template slot="modal-footer" slot-scope="{ ok, cancel }">
           <b-button variant="white" @click="cancel">
@@ -79,6 +57,7 @@
 </template>
 <script>
 import ModCovidInfo from './ModCovidInfo'
+
 export default {
   components: { ModCovidInfo },
   props: {
@@ -94,6 +73,19 @@ export default {
   data: function() {
     return {
       showInfo: false
+    }
+  },
+  computed: {
+    info() {
+      if (this.helper.covid && this.helper.covid.info) {
+        if (this.helper.covid.info === '[]') {
+          return {}
+        } else {
+          return JSON.parse(this.helper.covid.info)
+        }
+      } else {
+        return {}
+      }
     }
   },
   methods: {

@@ -74,8 +74,23 @@
         </b-td>
       </b-tr>
       <b-tr>
+        <b-td>
+          Phone number
+        </b-td>
+        <b-td>
+          <b>{{ covid.phone }}</b>
+        </b-td>
+      </b-tr>
+      <b-tr>
         <b-td colspan="2">
-          <b-textarea v-model="info.other" placeholder="No info provided to volunteers on initial response" readonly rows="4" />
+          <p>Info provided to volunteers on initial response:</p>
+          <b-textarea v-model="info.other" placeholder="No info provided to volunteers" readonly rows="4" />
+        </b-td>
+      </b-tr>
+      <b-tr>
+        <b-td colspan="2">
+          <p>Intro provided on follow up mail</p>
+          <b-textarea v-model="covid.intro" placeholder="No intro provided" readonly rows="4" />
         </b-td>
       </b-tr>
     </b-tbody>
@@ -89,9 +104,22 @@ Vue.use(TablePlugin)
 
 export default {
   props: {
-    info: {
+    covid: {
       type: Object,
       required: true
+    }
+  },
+  computed: {
+    info() {
+      if (this.covid && this.covid.info) {
+        if (this.covid.info === '[]') {
+          return {}
+        } else {
+          return JSON.parse(this.covid.info)
+        }
+      } else {
+        return {}
+      }
     }
   }
 }
