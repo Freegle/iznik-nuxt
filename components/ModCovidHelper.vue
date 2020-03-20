@@ -2,7 +2,7 @@
   <b-tr>
     <b-td>
       <a :href="'https://www.ilovefreegle.org/profile/' + helper.id" target="_blank">
-        {{ helper.displayname }} {{ selected }}
+        {{ helper.displayname }}
       </a>
     </b-td>
     <b-td>
