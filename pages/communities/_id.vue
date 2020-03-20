@@ -5,6 +5,11 @@
         <SidebarLeft :show-community-events="true" :show-bot-left="true" />
       </b-col>
       <b-col cols="12" lg="6" class="p-0">
+        <div class="text-danger text-center bg-white">
+          COVID-19 - can you help your neighbours?  Do you need help?  Click <nuxt-link to="/covid">
+            here
+          </nuxt-link>
+        </div>
         <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" :chats="me.expectedchats" />
         <Viewed v-if="!simple" class="mb-1" />
         <JobsTopBar />

@@ -75,7 +75,7 @@
       </b-tr>
       <b-tr>
         <b-td colspan="2">
-          <b-textarea v-model="info.other" placeholder="No other info" readonly rows="4" />
+          <b-textarea v-model="info.other" placeholder="No info provided to volunteers on initial response" readonly rows="4" />
         </b-td>
       </b-tr>
     </b-tbody>

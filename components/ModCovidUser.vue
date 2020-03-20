@@ -55,7 +55,7 @@
         <b-btn variant="white" class="mr-2 mb-1" @click="profile">
           <v-icon name="user" /> Profile
         </b-btn>
-        <Ratings v-if="expanded" :id="user.id" disabled class="mr-2" />
+        <Ratings v-if="expanded" :id="user.id" class="mr-2" />
         <!--        <b-btn variant="success" class="mr-2 mb-1" @click="contacted">-->
         <!--          <v-icon name="check" /> Mark Contacted-->
         <!--        </b-btn>-->
@@ -72,28 +72,36 @@
           thumbs up/down and kudos (calculated Freegle "reputation" based on their activity).  Click name to view
           profile.
         </p>
-        <b-table-simple v-if="sortedHelpers && sortedHelpers.length">
-          <b-tbody>
-            <b-tr>
-              <b-th>
-                Name
-              </b-th>
-              <b-th>
-                Miles away
-              </b-th>
-              <b-th>
-                Their Response
-              </b-th>
-              <b-th>
-                Ratings
-              </b-th>
-              <b-th>
-                Kudos
-              </b-th>
-            </b-tr>
-            <ModCovidHelper v-for="helper in sortedHelpers" :key="'helper-' + helper.id" :helper="helper" />
-          </b-tbody>
-        </b-table-simple>
+        <div v-if="sortedHelpers && sortedHelpers.length">
+          <b-table-simple>
+            <b-tbody>
+              <b-tr>
+                <b-th>
+                  Name
+                </b-th>
+                <b-th>
+                  Miles away
+                </b-th>
+                <b-th>
+                  Their Response
+                </b-th>
+                <b-th>
+                  Ratings
+                </b-th>
+                <b-th>
+                  Kudos
+                </b-th>
+                <b-th>
+                  Select
+                </b-th>
+              </b-tr>
+              <ModCovidHelper v-for="helper in sortedHelpers" :key="'helper-' + helper.id" :helpee="user.id" :helper="helper" />
+            </b-tbody>
+          </b-table-simple>
+          <b-btn class="mt-2" size="lg" variant="success" @click="dispatch">
+            Send suggestions (not really yet)
+          </b-btn>
+        </div>
         <p v-else>
           No helpers found yet.
         </p>
@@ -298,9 +306,15 @@ export default {
       return ret
     },
     info() {
-      return this.user && this.user.covid && this.user.covid.info
-        ? JSON.parse(this.user.covid.info)
-        : {}
+      if (this.user && this.user.covid && this.user.covid.info) {
+        if (this.user.covid.info === '[]') {
+          return {}
+        } else {
+          return JSON.parse(this.user.covid.info)
+        }
+      } else {
+        return {}
+      }
     },
     sortedHelpers() {
       const ret = this.helpers
@@ -377,6 +391,9 @@ export default {
         id: this.user.id,
         comments: this.user.covid.comments
       })
+    },
+    dispatch() {
+      this.$api.covid.dispatch(this.user.id)
     }
   }
 }

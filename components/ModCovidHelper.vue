@@ -14,7 +14,7 @@
       </b-btn>
       <b-modal
         v-if="helper.covid.info"
-        :id="'helperModal-' + id"
+        :id="'helperModal-' + helper.id"
         ref="helperModal"
         v-model="showInfo"
         title="Their Response"
@@ -23,6 +23,33 @@
         size="lg"
       >
         <template slot="default">
+          <div class="d-flex justify-content-between mb-2">
+            <div>
+              Phone number:
+            </div>
+            <div>
+              <div v-if="helper.covid.info.phone">
+                {{ helper.covid.info.phone }}
+              </div>
+              <div v-else>
+                None so far.
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <div>
+              Intro from them:
+            </div>
+            <div>
+              <div v-if="helper.covid.info.info">
+                {{ helper.covid.info.intro }}
+              </div>
+              <div v-else>
+                None so far.
+              </div>
+            </div>
+          </div>
+          <p>Things they can help with:</p>
           <ModCovidInfo :info="JSON.parse(helper.covid.info)" />
         </template>
         <template slot="modal-footer" slot-scope="{ ok, cancel }">
@@ -45,6 +72,9 @@
     <b-td>
       {{ helper.kudos }}
     </b-td>
+    <b-td>
+      <b-checkbox v-model="helper.select" @change="change" />
+    </b-td>
   </b-tr>
 </template>
 <script>
@@ -55,11 +85,25 @@ export default {
     helper: {
       type: Object,
       required: true
+    },
+    helpee: {
+      type: Number,
+      required: true
     }
   },
   data: function() {
     return {
       showInfo: false
+    }
+  },
+  methods: {
+    change(val) {
+      console.log('Changed', val, this.helper.select)
+      if (val) {
+        this.$api.covid.suggest(this.helper.id, this.helpee)
+      } else {
+        this.$api.covid.remove(this.helper.id, this.helpee)
+      }
     }
   }
 }
