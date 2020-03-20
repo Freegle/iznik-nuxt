@@ -58,7 +58,7 @@
       </p>
     </div>
     <CovidThanksModal ref="thanks" />
-    <CovidInfoModal v-if="type" ref="info" :type="type" @hide="thank" />
+    <CovidInfoModal v-if="type" :id="type" ref="info" @hide="thank" />
   </div>
 </template>
 
@@ -103,8 +103,9 @@ export default {
       this.type = type
 
       if (this.myid) {
-        await this.$api.covid.record(type)
-        console.log('Wait')
+        await this.$store.dispatch('covid/record', {
+          type
+        })
 
         const settings = this.me.settings
         const pc = this.$store.getters['misc/get']('covidpc')
@@ -117,7 +118,6 @@ export default {
         }
 
         this.waitForRef('info', () => {
-          console.log('Open')
           this.$refs.info.show()
         })
       } else {

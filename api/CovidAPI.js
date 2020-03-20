@@ -8,17 +8,13 @@ export default class CovidAPI extends BaseAPI {
     })
   }
 
-  async fetch(groupid) {
-    const ret = await this.$get('/covid', {
-      groupid
-    })
+  async fetchGroup(params) {
+    const ret = await this.$get('/covid', params)
     return ret.covids
   }
 
-  async fetchOne(id) {
-    const ret = await this.$get('/covid', {
-      id
-    })
+  async fetchOne(params) {
+    const ret = await this.$get('/covid', params)
     return ret.covid
   }
 

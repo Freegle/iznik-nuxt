@@ -33,26 +33,20 @@
       </NoticeMessage>
       <hr>
       <p>
-        Freegle won't use this for anything else and we'll delete it all once this is all over.  You can also
-        view/update the information you gave us before.
+        Freegle won't use this for anything else and we'll delete it all once this is all over.
       </p>
-      <b-btn variant="white" size="lg" @click="offer">
-        <v-icon name="info-circle" /> View
-      </b-btn>
-      <CovidInfoModal ref="infomodal" type="CanHelp" />
     </div>
   </div>
 </template>
 
 <script>
 import NoticeMessage from '../../components/NoticeMessage'
-import CovidInfoModal from '@/components/CovidInfoModal'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
 import waitForRef from '@/mixins/waitForRef'
 
 export default {
-  components: { NoticeMessage, CovidInfoModal },
+  components: { NoticeMessage },
   mixins: [buildHead, loginRequired, waitForRef],
   data: function() {
     return {
@@ -80,8 +74,14 @@ export default {
     async save() {
       this.saving = true
 
-      await this.$api.covid.patch({
-        id: this.myid,
+      await this.$store.dispatch('covid/fetch', {
+        userid: this.myid
+      })
+
+      const covid = this.$store.getters['covid/getByUserId'](this.myid)
+
+      await this.$store.dispatch('covid/edit', {
+        id: covid.id,
         phone: this.phone,
         intro: this.intro
       })

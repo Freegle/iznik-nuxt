@@ -118,7 +118,11 @@ export default {
       this.showModal = true
     },
     async hide() {
-      await this.$api.covid.record(this.type, this.info)
+      await this.$store.dispatch('covid/record', {
+        type: this.type,
+        info: this.info
+      })
+
       this.$emit('hide')
       this.showModal = false
     }

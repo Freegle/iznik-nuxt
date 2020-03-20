@@ -98,11 +98,16 @@ export default {
   },
   methods: {
     change(val) {
-      console.log('Changed', val, this.helper.select)
       if (val) {
-        this.$api.covid.suggest(this.helper.id, this.helpee)
+        this.$store.dispatch('covid/suggest', {
+          helper: this.helper.id,
+          helpee: this.helpee
+        })
       } else {
-        this.$api.covid.remove(this.helper.id, this.helpee)
+        this.$store.dispatch('covid/remove', {
+          helper: this.helper.id,
+          helpee: this.helpee
+        })
       }
     }
   }

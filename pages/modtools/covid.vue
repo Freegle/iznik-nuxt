@@ -45,7 +45,7 @@
               </h2>
             </template>
             <div v-if="needHelp && needHelp.length">
-              <ModCovidUser v-for="user in needHelp" :key="user.id" :user="user" />
+              <ModCovidUser v-for="covid in needHelp" :key="'needhelp-' + covid.id" :covidid="covid.id" />
             </div>
           </b-tab>
           <b-tab id="canTab">
@@ -55,9 +55,7 @@
               </h2>
             </template>
             <div v-if="canHelp && canHelp.length">
-              <ModCovidUser v-for="user in canHelp" :key="'needhelp-' + user.id" :user="user">
-                {{ user.id }}
-              </ModCovidUser>
+              <ModCovidUser v-for="covid in canHelp" :key="'canhelp-' + covid.id" :covidid="covid.id" />
             </div>
           </b-tab>
         </b-tabs>
@@ -77,49 +75,55 @@ export default {
   mixins: [loginRequired],
   data: function() {
     return {
-      users: [],
       loading: false,
       loaded: false,
       groupid: null
     }
   },
   computed: {
+    covids() {
+      const covids = Object.values(this.$store.getters['covid/list'])
+      covids.sort((a, b) => {
+        return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+      })
+      return covids
+    },
     needCount() {
-      return this.users.filter(u => {
-        return u.covid.type === 'NeedHelp'
+      return this.covids.filter(u => {
+        return u.type === 'NeedHelp'
       }).length
     },
     canCount() {
-      return this.users.filter(u => {
-        return u.covid.type === 'CanHelp'
+      return this.covids.filter(u => {
+        return u.type === 'CanHelp'
       }).length
     },
     closedCount() {
-      return this.users.filter(u => {
-        return u.covid.closed
+      return this.covids.filter(u => {
+        return u.type === 'NeedHelp' && u.closed
       }).length
     },
-    contactCount() {
-      return this.users.filter(u => {
-        return u.covid.contacted && !u.covid.closed
+    suggestedCount() {
+      return this.covids.filter(u => {
+        return u.type === 'NeedHelp' && u.dispatched && !u.closed
       }).length
     },
     pendingCount() {
-      return this.users.filter(u => {
-        return !u.covid.contacted && !u.covid.closed
+      return this.covids.filter(u => {
+        return u.type === 'NeedHelp' && !u.dispatched && !u.closed
       }).length
     },
     needHelp() {
-      return this.users.filter(u => {
-        return u.covid.type === 'NeedHelp' && !u.covid.closed
+      return this.covids.filter(u => {
+        return u.type === 'NeedHelp' && !u.closed
       })
     },
     visibleNeed() {
       return this.needHelp.slice(0, this.showNeed)
     },
     canHelp() {
-      return this.users.filter(u => {
-        return u.covid.type === 'CanHelp' && !u.covid.closed
+      return this.covids.filter(u => {
+        return u.type === 'CanHelp' && !u.closed
       })
     },
     visibleCan() {
@@ -127,7 +131,7 @@ export default {
     },
     replyOptions() {
       return {
-        title: this.users.length + ' Replies',
+        title: this.covids.length + ' Replies',
         chartArea: { width: '200px', height: '200px' },
         slices: {
           1: { color: 'green' },
@@ -144,11 +148,11 @@ export default {
     },
     statusOptions() {
       return {
-        title: 'Current Status',
+        title: 'Help Request Status',
         chartArea: { width: '200px', height: '200px' },
         slices: {
           0: { color: 'grey' },
-          1: { color: 'blue' },
+          1: { color: 'green' },
           2: { color: 'orange' }
         }
       }
@@ -157,7 +161,7 @@ export default {
       return [
         ['Type', 'Count'],
         ['Closed (' + this.closedCount + ')', this.closedCount],
-        ['Contacted (' + this.contactCount + ')', this.contactCount],
+        ['Suggested (' + this.suggestedCount + ')', this.suggestedCount],
         ['Pending (' + this.pendingCount + ')', this.pendingCount]
       ]
     }
@@ -167,12 +171,8 @@ export default {
     async loadit() {
       this.loading = true
 
-      const ret = await this.$api.covid.fetch(this.groupid)
-      this.users = Object.values(ret).sort((a, b) => {
-        return (
-          new Date(b.covid.timestamp).getTime() -
-          new Date(a.covid.timestamp).getTime()
-        )
+      await this.$store.dispatch('covid/fetchGroup', {
+        groupid: this.groupid
       })
 
       this.loading = false
