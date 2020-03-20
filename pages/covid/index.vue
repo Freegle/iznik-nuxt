@@ -63,9 +63,9 @@
 </template>
 
 <script>
-import CovidThanksModal from '../components/CovidThanksModal'
-import CovidInfoModal from '../components/CovidInfoModal'
-import Postcode from '../components/Postcode'
+import CovidThanksModal from '@/components/CovidThanksModal'
+import CovidInfoModal from '@/components/CovidInfoModal'
+import Postcode from '@/components/Postcode'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 import waitForRef from '@/mixins/waitForRef'
