@@ -78,7 +78,7 @@
               </b-tr>
               <b-tr>
                 <b-td colspan="2">
-                  <b-textarea v-model="info.other" placeholder="Anything else you'd like to say?" />
+                  <b-textarea v-model="info.other" placeholder="Anything other info for our volunteers?" />
                 </b-td>
               </b-tr>
             </b-tbody>

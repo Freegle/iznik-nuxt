@@ -334,7 +334,6 @@ export default {
       'pendingadmins'
     ]) {
       if (work[key]) {
-        console.log('Got work', key)
         totalCount += work[key]
       }
     }

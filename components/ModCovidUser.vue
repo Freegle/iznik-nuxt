@@ -3,10 +3,10 @@
     <b-card-header class="clickme p-1" @click="expandit">
       <b-row>
         <b-col cols="10" sm="4" class="order-1 truncate" :title="email">
-          <span v-if="user.covid.type === 'NeedHelp'">
-            <v-icon v-if="user.covid.contacted" name="check" class="text-success" />
-            <v-icon v-else name="exclamation-triangle" class="text-warning" />
-          </span>
+          <!--          <span v-if="user.covid.type === 'NeedHelp'">-->
+          <!--            <v-icon v-if="user.covid.contacted" name="check" class="text-success" />-->
+          <!--            <v-icon v-else name="exclamation-triangle" class="text-warning" />-->
+          <!--          </span>-->
           {{ email }}
           <v-icon v-if="user.covid.info && user.covid.info != '[]'" name="info-circle" />
           <v-icon v-if="user.covid.info && info && info.other" name="comments" />
@@ -34,19 +34,19 @@
     </b-card-header>
     <b-card-body v-if="expanded" class="p-1">
       <NoticeMessage variant="info" class="mb-2">
-        <b-textarea v-model="user.covid.comments" placeholder="No comments">
+        <b-textarea v-model="user.covid.comments" placeholder="You can save comments about them here.">
           {{ user.covid.comments }}
         </b-textarea>
-        <b-btn variant="white" @click="saveInfo">
+        <b-btn variant="white" class="mt-1" @click="saveInfo">
           <v-icon name="save" /> Save
         </b-btn>
       </NoticeMessage>
-      <p v-if="user.covid.contacted" class="text-success">
-        Contacted {{ user.covid.contacted | timeago }}
-      </p>
-      <p v-else class="text-warning">
-        Not contacted yet.
-      </p>
+      <!--      <p v-if="user.covid.contacted" class="text-success">-->
+      <!--        Contacted {{ user.covid.contacted | timeago }}-->
+      <!--      </p>-->
+      <!--      <p v-else class="text-warning">-->
+      <!--        Not contacted yet.-->
+      <!--      </p>-->
       <ModSpammer v-if="user.spammer" class="mb-2" :user="user" />
       <div class="d-flex flex-wrap">
         <b-btn variant="white" class="mr-2 mb-1" @click="logs">
@@ -56,187 +56,147 @@
           <v-icon name="user" /> Profile
         </b-btn>
         <Ratings v-if="expanded" :id="user.id" disabled class="mr-2" />
-        <b-btn variant="success" class="mr-2 mb-1" @click="contacted">
-          <v-icon name="check" /> Mark Contacted
-        </b-btn>
+        <!--        <b-btn variant="success" class="mr-2 mb-1" @click="contacted">-->
+        <!--          <v-icon name="check" /> Mark Contacted-->
+        <!--        </b-btn>-->
         <b-btn variant="info" class="mr-2 mb-1" @click="closed">
           <v-icon name="times" /> Close - No Further Action
         </b-btn>
       </div>
-      <h3>Info</h3>
-      <b-table-simple>
-        <b-tbody>
-          <b-tr>
-            <b-td>
-              Shopping/prescriptions
-            </b-td>
-            <b-td>
-              <b-form-checkbox
-                id="checkbox-shopping"
-                v-model="info.shopping"
-                readonly
-              />
-            </b-td>
-          </b-tr>
-          <b-tr>
-            <b-td>
-              Taking out bins
-            </b-td>
-            <b-td>
-              <b-form-checkbox
-                id="checkbox-bins"
-                v-model="info.bins"
-                readonly
-              />
-            </b-td>
-          </b-tr>
-          <b-tr>
-            <b-td>
-              Making a meal
-            </b-td>
-            <b-td>
-              <b-form-checkbox
-                id="checkbox-meal"
-                v-model="info.meal"
-                readonly
-              />
-            </b-td>
-          </b-tr>
-          <b-tr>
-            <b-td>
-              Dog-walking
-            </b-td>
-            <b-td>
-              <b-form-checkbox
-                id="checkbox-dogs"
-                v-model="info.dogs"
-                readonly
-              />
-            </b-td>
-          </b-tr>
-          <b-tr>
-            <b-td>
-              Phone/Online chat
-            </b-td>
-            <b-td>
-              <b-form-checkbox
-                id="checkbox-online"
-                v-model="info.online"
-                readonly
-              />
-            </b-td>
-          </b-tr>
-          <b-tr>
-            <b-td>
-              Organising this response
-            </b-td>
-            <b-td>
-              <b-form-checkbox
-                id="checkbox-organising"
-                v-model="info.organising"
-                readonly
-              />
-            </b-td>
-          </b-tr>
-          <b-tr>
-            <b-td colspan="2">
-              <b-textarea v-model="info.other" placeholder="No other info" readonly />
-            </b-td>
-          </b-tr>
-        </b-tbody>
-        <h3 class="mt-2">
-          Location
+      <div v-if="user.covid.type === 'NeedHelp'">
+        <h3 class="mt2">
+          Possible Helpers
         </h3>
-        <b-row>
-          <b-col cols="12" md="6">
-            <div class="d-flex justify-content-between">
-              <div>
-                <v-icon class="text-muted" name="globe-europe" /> Location on ChitChat
-              </div>
-              <div v-if="user.publiclocation">
-                {{ user.publiclocation.display }}
-              </div>
-              <div v-else>
-                Unknown
-              </div>
+        <p>
+          Choose around 3 people if possible - ideally the closest plus a couple who are close with good
+          thumbs up/down and kudos (calculated Freegle "reputation" based on their activity).  Click name to view
+          profile.
+        </p>
+        <b-table-simple v-if="sortedHelpers && sortedHelpers.length">
+          <b-tbody>
+            <b-tr>
+              <b-th>
+                Name
+              </b-th>
+              <b-th>
+                Miles away
+              </b-th>
+              <b-th>
+                Their Response
+              </b-th>
+              <b-th>
+                Ratings
+              </b-th>
+              <b-th>
+                Kudos
+              </b-th>
+            </b-tr>
+            <ModCovidHelper v-for="helper in sortedHelpers" :key="'helper-' + helper.id" :helper="helper" />
+          </b-tbody>
+        </b-table-simple>
+        <p v-else>
+          No helpers found yet.
+        </p>
+      </div>
+      <h3 class="mt-2">
+        Info
+      </h3>
+      <ModCovidInfo :info="info" />
+      <h3 class="mt-2">
+        Location
+      </h3>
+      <b-row>
+        <b-col cols="12" md="6">
+          <div class="d-flex justify-content-between">
+            <div>
+              <v-icon class="text-muted" name="globe-europe" /> Location on ChitChat
             </div>
+            <div v-if="user.publiclocation">
+              {{ user.publiclocation.display }}
+            </div>
+            <div v-else>
+              Unknown
+            </div>
+          </div>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col cols="12" md="6">
+          <div class="d-flex justify-content-between">
+            <div>
+              <v-icon class="text-muted" name="lock" /> Best guess lat/lng
+            </div>
+            <div v-if="user.privateposition">
+              {{ Math.round(user.privateposition.lat * 100) / 100 }}, {{ Math.round(user.privateposition.lng * 100) / 100 }}
+              <a :href="'https://www.google.com/maps?q=' + user.privateposition.lat + ',' + user.privateposition.lng" target="_blank" rel="noopener">Show on map</a>
+            </div>
+            <div v-else>
+              Not known
+            </div>
+          </div>
+        </b-col>
+      </b-row>
+      <h3 class="mt-2">
+        Chat as Mod
+      </h3>
+      <div v-if="memberships && memberships.length" class="mt-2">
+        <div v-for="membership in memberships" :key="'membership-' + membership.id">
+          <ChatButton
+            :userid="user.id"
+            :groupid="membership.id"
+            :title="'Chat from ' + membership.nameshort + ' Mods'"
+            variant="white"
+            class="mr-2 mb-1"
+          />
+        </div>
+        <b-btn v-if="!showAllMemberships && membershipsUnshown" variant="white" class="mt-1" @click="showAllMemberships = true">
+          Show +{{ membershipsUnshown }}
+        </b-btn>
+      </div>
+      <p v-else>
+        No memberships.
+      </p>
+      <h3 class="mt-2">
+        Other Known Emails
+      </h3>
+      <div v-if="otherEmails && otherEmails.length">
+        <div v-for="otheremail in otherEmails" :key="'otheremail-' + otheremail.id">
+          {{ otheremail.email }}
+          <span class="text-muted" :title="otheremail.toLocaleString()">
+            added {{ otheremail.added | timeago }}
+          </span>
+        </div>
+      </div>
+      <p v-else>
+        No other emails.
+      </p>
+      <h3 class="mt-2">
+        Posting History
+      </h3>
+      <div v-if="messageHistoriesShown.length">
+        <b-row v-for="message in messageHistoriesShown" :key="'messagehistory-' + message.arrival + '-' + message.id" class="pl-3">
+          <b-col cols="4" md="2" class="order-1 p-1 small">
+            {{ message.arrival | datetimeshort }}
+          </b-col>
+          <b-col cols="4" md="2" class="order-3 order-md-2 p-1 small">
+            <a target="_blank" :href="'https://www.ilovefreegle.org/message/' + message.id" rel="noopener noreferrer">
+              <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ message.id }}
+            </a>
+          </b-col>
+          <b-col cols="8" md="6" class="order-2 order-md-3 p-1">
+            {{ message.subject }}
+          </b-col>
+          <b-col cols="6" md="2" class="small order-4 p-1">
+            {{ message.fromaddr }}
           </b-col>
         </b-row>
-        <b-row>
-          <b-col cols="12" md="6">
-            <div class="d-flex justify-content-between">
-              <div>
-                <v-icon class="text-muted" name="lock" /> Best guess lat/lng
-              </div>
-              <div v-if="user.privateposition">
-                {{ Math.round(user.privateposition.lat * 100) / 100 }}, {{ Math.round(user.privateposition.lng * 100) / 100 }}
-                <a :href="'https://www.google.com/maps?q=' + user.privateposition.lat + ',' + user.privateposition.lng" target="_blank" rel="noopener">Show on map</a>
-              </div>
-              <div v-else>
-                Not known
-              </div>
-            </div>
-          </b-col>
-        </b-row>
-        <div v-if="memberships && memberships.length" class="mt-2">
-          <div v-for="membership in memberships" :key="'membership-' + membership.id">
-            <ChatButton
-              :userid="user.id"
-              :groupid="membership.id"
-              :title="'Chat from ' + membership.nameshort + ' Mods'"
-              variant="white"
-              class="mr-2 mb-1"
-            />
-          </div>
-          <b-btn v-if="!showAllMemberships && membershipsUnshown" variant="white" class="mt-1" @click="showAllMemberships = true">
-            Show +{{ membershipsUnshown }}
-          </b-btn>
-        </div>
-        <p v-else>
-          No memberships.
-        </p>
-        <h3 class="mt-2">
-          Other Known Emails
-        </h3>
-        <div v-if="otherEmails && otherEmails.length">
-          <div v-for="otheremail in otherEmails" :key="'otheremail-' + otheremail.id">
-            {{ otheremail.email }}
-            <span class="text-muted" :title="otheremail.toLocaleString()">
-              added {{ otheremail.added | timeago }}
-            </span>
-          </div>
-        </div>
-        <p v-else>
-          No other emails.
-        </p>
-        <h3 class="mt-2">
-          Posting History
-        </h3>
-        <div v-if="messageHistoriesShown.length">
-          <b-row v-for="message in messageHistoriesShown" :key="'messagehistory-' + message.arrival + '-' + message.id" class="pl-3">
-            <b-col cols="4" md="2" class="order-1 p-1 small">
-              {{ message.arrival | datetimeshort }}
-            </b-col>
-            <b-col cols="4" md="2" class="order-3 order-md-2 p-1 small">
-              <a target="_blank" :href="'https://www.ilovefreegle.org/message/' + message.id" rel="noopener noreferrer">
-                <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ message.id }}
-              </a>
-            </b-col>
-            <b-col cols="8" md="6" class="order-2 order-md-3 p-1">
-              {{ message.subject }}
-            </b-col>
-            <b-col cols="6" md="2" class="small order-4 p-1">
-              {{ message.fromaddr }}
-            </b-col>
-          </b-row>
-          <b-btn v-if="!showAllMessageHistories && messageHistoriesUnshown" variant="white" class="mt-1" @click="showAllMessageHistories = true">
-            Show +{{ messageHistoriesUnshown }}
-          </b-btn>
-        </div>
-        <p v-else>
-          No posting history.
-        </p>
-      </b-table-simple>
+        <b-btn v-if="!showAllMessageHistories && messageHistoriesUnshown" variant="white" class="mt-1" @click="showAllMessageHistories = true">
+          Show +{{ messageHistoriesUnshown }}
+        </b-btn>
+      </div>
+      <p v-else>
+        No posting history.
+      </p>
     </b-card-body>
     <ModLogsModal ref="logs" :userid="user.id" />
   </b-card>
@@ -250,6 +210,8 @@ import ModLogsModal from './ModLogsModal'
 import ChatButton from './ChatButton'
 import NoticeMessage from './NoticeMessage'
 import Ratings from './Ratings'
+import ModCovidHelper from './ModCovidHelper'
+import ModCovidInfo from './ModCovidInfo'
 
 Vue.use(TablePlugin)
 
@@ -257,6 +219,8 @@ const SHOW = 3
 
 export default {
   components: {
+    ModCovidInfo,
+    ModCovidHelper,
     Ratings,
     NoticeMessage,
     ChatButton,
@@ -274,7 +238,8 @@ export default {
     return {
       expanded: false,
       showAllMemberships: false,
-      showAllMessageHistories: false
+      showAllMessageHistories: false,
+      helpers: []
     }
   },
   computed: {
@@ -336,6 +301,33 @@ export default {
       return this.user && this.user.covid && this.user.covid.info
         ? JSON.parse(this.user.covid.info)
         : {}
+    },
+    sortedHelpers() {
+      const ret = this.helpers
+      let mindist = 1000
+
+      ret.forEach(a => {
+        mindist = Math.min(a.distance, mindist)
+      })
+
+      if (ret) {
+        // Sort to put the closest at the top, then the ones with highest kudos.
+        ret.sort((a, b) => {
+          if (a.distance === mindist) {
+            return -1
+          } else if (b.distance === mindist) {
+            return 1
+          } else if (a.kudos && !b.kudos) {
+            return -1
+          } else if (!a.kudos && b.kudos) {
+            return 1
+          } else {
+            return parseInt(b.kudos) - parseInt(a.kudos)
+          }
+        })
+      }
+
+      return ret
     }
   },
   methods: {
@@ -344,6 +336,11 @@ export default {
         id: this.id,
         info: true
       })
+    },
+    async fetchMatches() {
+      const ret = await this.$api.covid.fetchOne(this.user.id)
+      this.helpers = Object.values(ret.helpers)
+      console.log('Fetched', ret, this.helpers)
     },
     async profile() {
       await this.fetchUser()
@@ -370,6 +367,10 @@ export default {
     },
     expandit() {
       this.expanded = !this.expanded
+
+      if (this.user.covid.type === 'NeedHelp') {
+        this.fetchMatches()
+      }
     },
     saveInfo() {
       this.$api.covid.patch({
