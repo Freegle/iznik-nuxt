@@ -37,7 +37,7 @@
     </b-card-header>
     <b-card-body v-if="expanded && covid.user" class="p-1">
       <NoticeMessage variant="info" class="mb-2">
-        <b-textarea v-model="covid.comments" placeholder="You can save comments about them here.">
+        <b-textarea v-model="covid.comments" placeholder="You can save comments about them here.  They are only visible to mods.">
           {{ covid.comments }}
         </b-textarea>
         <b-btn variant="white" class="mt-1" @click="saveInfo">

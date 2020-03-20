@@ -58,7 +58,7 @@
       </p>
     </div>
     <CovidThanksModal ref="thanks" />
-    <CovidInfoModal v-if="type" :id="type" ref="info" @hide="thank" />
+    <CovidInfoModal v-if="type" ref="info" :type="type" @hide="thank" />
   </div>
 </template>
 
