@@ -101,7 +101,7 @@
                   Select
                 </b-th>
               </b-tr>
-              <ModCovidHelper v-for="helper in sortedHelpers" :key="'helper-' + helper.id" :helpee="covid.id" :helper="helper" />
+              <ModCovidHelper v-for="helper in sortedHelpers" :key="'helper-' + helper.id" :helpee="covid.user.id" :helper="helper" />
             </b-tbody>
           </b-table-simple>
           <b-btn class="mt-2" size="lg" variant="success" @click="dispatch">

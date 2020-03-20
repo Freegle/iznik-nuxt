@@ -22,25 +22,25 @@ export default class CovidAPI extends BaseAPI {
     await this.$patch('/covid', params)
   }
 
-  async suggest(helper, helpee) {
+  async suggest(params) {
     await this.$post('/covid', {
-      helper,
-      helpee,
+      helper: params.helper,
+      helpee: params.helpee,
       action: 'Suggest'
     })
   }
 
-  async remove(helper, helpee) {
+  async remove(params) {
     await this.$post('/covid', {
-      helper,
-      helpee,
+      helper: params.helper,
+      helpee: params.helpee,
       action: 'Remove'
     })
   }
 
-  async dispatch(helpee) {
+  async dispatch(params) {
     await this.$post('/covid', {
-      helpee,
+      helpee: params.helpee,
       action: 'Dispatch'
     })
   }

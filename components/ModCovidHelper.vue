@@ -2,7 +2,7 @@
   <b-tr>
     <b-td>
       <a :href="'https://www.ilovefreegle.org/profile/' + helper.id" target="_blank">
-        {{ helper.displayname }}
+        {{ helper.displayname }} {{ selected }}
       </a>
     </b-td>
     <b-td>
@@ -51,7 +51,7 @@
       {{ helper.kudos }}
     </b-td>
     <b-td>
-      <b-checkbox v-model="helper.select" @change="change" />
+      <b-checkbox v-model="selected" @change="change" />
     </b-td>
   </b-tr>
 </template>
@@ -86,22 +86,29 @@ export default {
       } else {
         return {}
       }
+    },
+    selected: {
+      get() {
+        return this.helper.selected
+      },
+      set(val) {
+        console.log('Set ', val)
+        if (val) {
+          this.$store.dispatch('covid/suggest', {
+            helper: this.helper.id,
+            helpee: this.helpee
+          })
+        } else {
+          this.$store.dispatch('covid/remove', {
+            helper: this.helper.id,
+            helpee: this.helpee
+          })
+        }
+      }
     }
   },
   methods: {
-    change(val) {
-      if (val) {
-        this.$store.dispatch('covid/suggest', {
-          helper: this.helper.id,
-          helpee: this.helpee
-        })
-      } else {
-        this.$store.dispatch('covid/remove', {
-          helper: this.helper.id,
-          helpee: this.helpee
-        })
-      }
-    }
+    change(val) {}
   }
 }
 </script>
