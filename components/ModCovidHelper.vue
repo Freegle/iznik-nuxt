@@ -92,7 +92,6 @@ export default {
         return this.helper.selected
       },
       set(val) {
-        console.log('Set ', val)
         if (val) {
           this.$store.dispatch('covid/suggest', {
             helper: this.helper.id,

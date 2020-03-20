@@ -107,6 +107,9 @@
           <b-btn class="mt-2" size="lg" variant="success" @click="dispatch">
             Send suggestions (not really yet)
           </b-btn>
+          <b-btn class="mt-2 ml-2" size="lg" variant="white" @click="preview">
+            Preview suggestions
+          </b-btn>
         </div>
         <p v-else>
           No helpers found yet.
@@ -213,6 +216,7 @@
       </p>
     </b-card-body>
     <ModLogsModal ref="logs" :userid="covid.user.id" />
+    <CovidSuggestionsModal :id="covid.id" ref="preview" />
   </b-card>
 </template>
 <script>
@@ -226,6 +230,7 @@ import NoticeMessage from './NoticeMessage'
 import Ratings from './Ratings'
 import ModCovidHelper from './ModCovidHelper'
 import ModCovidInfo from './ModCovidInfo'
+import CovidSuggestionsModal from './CovidSuggestionsModal'
 
 Vue.use(TablePlugin)
 
@@ -233,6 +238,7 @@ const SHOW = 3
 
 export default {
   components: {
+    CovidSuggestionsModal,
     ModCovidInfo,
     ModCovidHelper,
     Ratings,
@@ -409,6 +415,11 @@ export default {
     dispatch() {
       this.$store.dispatch('covid/dispatch', {
         id: this.covid.user.id
+      })
+    },
+    preview() {
+      this.waitForRef('preview', () => {
+        this.$refs.preview.show()
       })
     }
   }
