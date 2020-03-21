@@ -93,10 +93,9 @@
           <div class="d-flex justify-content-between">
             <div>
               <v-icon class="text-muted" name="lock" /> Rough actual location
-              {{ JSON.stringify(covid.user.privateposition) }}
             </div>
             <div v-if="covid.user.privateposition && covid.user.privateposition.length">
-              {{ Math.round(covid.user.privateposition[0] * 100) / 100 }}, {{ Math.round(covid.user.privateposition[0] * 100) / 100 }}
+              {{ Math.round(covid.user.privateposition[0] * 100) / 100 }}, {{ Math.round(covid.user.privateposition[1] * 100) / 100 }}
               <a :href="'https://www.google.com/maps?q=' + covid.user.privateposition[0] + ',' + covid.user.privateposition[1]" target="_blank" rel="noopener">Show on map</a>
             </div>
             <div v-else class="text-danger">

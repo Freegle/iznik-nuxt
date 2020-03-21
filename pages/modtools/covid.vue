@@ -14,7 +14,7 @@
               </h2>
             </template>
             <div class="d-flex mb-2">
-              <GroupSelect v-model="groupid" all />
+              <GroupSelect v-model="groupid" all :systemwide="supportOrAdmin" />
               <b-btn variant="success" @click="loadit">
                 Load data
               </b-btn>
@@ -27,13 +27,13 @@
                 type="PieChart"
                 :data="replyData"
                 :options="replyOptions"
-                class="max"
+                class="chart"
               />
               <GChart
                 type="PieChart"
                 :data="statusData"
                 :options="statusOptions"
-                class="max"
+                class="chart"
               />
             </div>
           </b-tab>
@@ -205,5 +205,9 @@ export default {
 <style scoped>
 .max {
   max-width: 320px;
+}
+
+.chart {
+  max-width: 400px;
 }
 </style>
