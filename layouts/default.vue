@@ -17,7 +17,7 @@
         <b-collapse v-if="loggedIn" id="nav_collapse" ref="nav_collapse" is-nav class="flex-nowrap justify-content-between">
           <b-navbar-nav>
             <b-nav-item id="menu-option-mygroups" class="text-center small p-0" to="/communities" @mousedown="maybeReload('/communities')">
-              <v-icon name="users" scale="2" /><br>
+              <v-icon name="users" scale="2" class="ml-2" /><br>
               Communities
             </b-nav-item>
             <b-nav-item v-if="!simple" id="menu-option-chitchat" class="text-center small p-0" to="/chitchat" @mousedown="maybeReload('/chitchat')">
