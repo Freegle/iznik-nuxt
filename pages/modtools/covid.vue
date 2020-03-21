@@ -102,9 +102,16 @@ export default {
         return u.type === 'NeedHelp' && u.closed
       }).length
     },
+    viewedCount() {
+      return this.covids.filter(u => {
+        return u.type === 'NeedHelp' && u.viewedown
+      }).length
+    },
     suggestedCount() {
       return this.covids.filter(u => {
-        return u.type === 'NeedHelp' && u.dispatched && !u.closed
+        return (
+          u.type === 'NeedHelp' && u.dispatched && !u.closed && !u.viewedown
+        )
       }).length
     },
     pendingCount() {
@@ -161,6 +168,7 @@ export default {
         ['Type', 'Count'],
         ['Closed (' + this.closedCount + ')', this.closedCount],
         ['Suggested (' + this.suggestedCount + ')', this.suggestedCount],
+        ['Viewed (' + this.viewedCount + ')', this.viewedCount],
         ['Pending (' + this.pendingCount + ')', this.pendingCount]
       ]
     }

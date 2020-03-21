@@ -8,6 +8,8 @@
           <!--            <v-icon v-else name="exclamation-triangle" class="text-warning" />-->
           <!--          </span>-->
           <span :title="email">{{ email }}</span>
+          <v-icon v-if="covid.dispatched" name="check" title="Suggestions sent" />
+          <v-icon v-if="covid.viewedown" name="eye" title="Suggestions viewed" />
         </b-col>
         <b-col cols="1" class="order-2">
           <v-icon v-if="covid.phone" name="mobile-alt" title="Phone number provided" class="ml-2 mr-2" />
@@ -70,6 +72,12 @@
         <h3 class="mt2">
           Possible Helpers
         </h3>
+        <NoticeMessage v-if="covid.viewedown" variant="success">
+          Suggestions sent to this person have been viewed.  There's probably no need to send more.
+        </NoticeMessage>
+        <NoticeMessage v-else-if="covid.dispatched" variant="info">
+          Suggestions have been sent to this person.  You can select more and send them if you want.
+        </NoticeMessage>
         <p>
           Choose around 3 people if possible - ideally the closest plus a couple who are close with good
           thumbs up/down and kudos (calculated Freegle "reputation" based on their activity).  Click name to view
