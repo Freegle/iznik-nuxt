@@ -9,6 +9,7 @@
       <NoticeMessage v-else-if="!myid" variant="info">
         Please log in to view the people who may be able to help.
       </NoticeMessage>
+      <p>If you have problems with this page please mail us at <a href="mailto:covid19@ilovefreegle.org">covid19@ilovefreegle.org</a></p>
     </div>
   </div>
 </template>
