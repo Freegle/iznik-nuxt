@@ -13,6 +13,7 @@
                 Summary
               </h2>
             </template>
+            <p>All My Communities includes groups you're a backup mod on.</p>
             <div class="d-flex mb-2">
               <GroupSelect v-model="groupid" all :systemwide="supportOrAdmin" />
               <b-btn variant="success" @click="loadit">
@@ -104,13 +105,23 @@ export default {
     },
     viewedCount() {
       return this.covids.filter(u => {
-        return u.type === 'NeedHelp' && u.viewedown
+        // We've sent some suggestions and viewed them since.
+        return (
+          u.type === 'NeedHelp' &&
+          u.dispatched &&
+          u.viewedown &&
+          this.$dayjs(u.viewedown).isSameOrAfter(u.dispatched)
+        )
       }).length
     },
     suggestedCount() {
       return this.covids.filter(u => {
+        // We've sent some suggestions and not viewed them since.
         return (
-          u.type === 'NeedHelp' && u.dispatched && !u.closed && !u.viewedown
+          u.type === 'NeedHelp' &&
+          u.dispatched &&
+          (!u.viewedown ||
+            !this.$dayjs(u.viewedown).isSameOrAfter(u.dispatched))
         )
       }).length
     },

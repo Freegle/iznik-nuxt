@@ -58,7 +58,7 @@
         </b-btn>
         <Ratings v-if="expanded" :id="covid.id" class="mr-2" />
         <b-btn variant="info" class="mr-2 mb-1" @click="closed">
-          <v-icon name="times" /> Close - No Further Action
+          <v-icon name="times" /> Close - No Action Required
         </b-btn>
       </div>
       <h3 class="mt-2">
@@ -96,7 +96,7 @@
             </div>
             <div v-if="covid.user.privateposition && covid.user.privateposition.length">
               {{ Math.round(covid.user.privateposition[0] * 100) / 100 }}, {{ Math.round(covid.user.privateposition[1] * 100) / 100 }}
-              <a :href="'https://www.google.com/maps?q=' + covid.user.privateposition[0] + ',' + covid.user.privateposition[1]" target="_blank" rel="noopener">Show on map</a>
+              <a :href="'https://www.google.com/maps/place/' + covid.user.privateposition[0] + ',' + covid.user.privateposition[1] + '/@' + covid.user.privateposition[0] + ',' + covid.user.privateposition[1] + ',14z'" target="_blank" rel="noopener">Show on map</a>
             </div>
             <div v-else class="text-danger">
               Not known - can't suggest anyone yet
