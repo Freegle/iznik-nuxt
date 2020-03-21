@@ -82,7 +82,6 @@ export const actions = {
 
   async fetchGroup({ commit }, params) {
     const covids = await this.$api.covid.fetchGroup(params)
-    console.log('Fetched', covids)
     commit('setList', Object.values(covids))
   },
 

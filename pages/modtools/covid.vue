@@ -41,8 +41,13 @@
             <div v-if="loading">
               <b-img src="~/static/loader.gif" alt="Loading" />
             </div>
-            <div v-else-if="needHelp && needHelp.length">
-              <ModCovidUser v-for="covid in needHelp" :key="'needhelp-' + covid.id" :covidid="covid.id" />
+            <div v-else>
+              <ModCovidUser v-for="covid in visible" :key="'needhelp-' + covid.id" :covidid="covid.id" />
+              <infinite-loading :key="'infinite-' + groupid + '-' + tabIndex" force-use-infinite-wrapper="body" :distance="1000" @infinite="loadMore">
+                <span slot="no-results" />
+                <span slot="no-more" />
+                <span slot="spinner" />
+              </infinite-loading>
             </div>
           </b-tab>
           <b-tab id="canTab">
@@ -54,8 +59,13 @@
             <div v-if="loading">
               <b-img src="~/static/loader.gif" alt="Loading" />
             </div>
-            <div v-else-if="canHelp && canHelp.length">
-              <ModCovidUser v-for="covid in canHelp" :key="'canhelp-' + covid.id" :covidid="covid.id" />
+            <div v-else>
+              <ModCovidUser v-for="covid in visible" :key="'canhelp-' + covid.id" :covidid="covid.id" />
+              <infinite-loading :key="'infinite-' + groupid + '-' + tabIndex" force-use-infinite-wrapper="body" :distance="1000" @infinite="loadMore">
+                <span slot="no-results" />
+                <span slot="no-more" />
+                <span slot="spinner" />
+              </infinite-loading>
             </div>
           </b-tab>
         </b-tabs>
@@ -64,6 +74,7 @@
   </div>
 </template>
 <script>
+import InfiniteLoading from 'vue-infinite-loading'
 import { GChart } from 'vue-google-charts'
 import ModCovidUser from '../../components/ModCovidUser'
 import GroupSelect from '../../components/GroupSelect'
@@ -71,14 +82,21 @@ import NoticeMessage from '../../components/NoticeMessage'
 import loginRequired from '@/mixins/loginRequired.js'
 
 export default {
-  components: { NoticeMessage, GroupSelect, ModCovidUser, GChart },
+  components: {
+    NoticeMessage,
+    GroupSelect,
+    ModCovidUser,
+    GChart,
+    InfiniteLoading
+  },
   mixins: [loginRequired],
   data: function() {
     return {
       loading: false,
       loaded: false,
       groupid: null,
-      tabIndex: 0
+      tabIndex: 0,
+      show: 0
     }
   },
   computed: {
@@ -88,37 +106,27 @@ export default {
     covids() {
       const covids = Object.values(this.$store.getters['covid/list'])
       covids.sort((a, b) => {
-        return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+        // Sort to show closed at the bottom, then dispatched, then most recent first.
+        if (a.closed && !b.closed) {
+          return -1
+        } else if (!a.closed && b.closed) {
+          return 1
+        } else if (a.dispatched && !b.dispatched) {
+          return 1
+        } else if (!a.dispatched && b.dispatched) {
+          return -1
+        } else {
+          return (
+            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+          )
+        }
       })
+
       return covids
     },
-    needHelp() {
-      return this.covids
-        .filter(u => {
-          return u.type === 'NeedHelp' && !u.closed
-        })
-        .sort((a, b) => {
-          if (a.dispatched && !b.dispatched) {
-            return 1
-          } else if (!a.dispatched && b.dispatched) {
-            return -1
-          } else {
-            return (
-              new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-            )
-          }
-        })
-    },
-    visibleNeed() {
-      return this.needHelp.slice(0, this.showNeed)
-    },
-    canHelp() {
-      return this.covids.filter(u => {
-        return u.type === 'CanHelp' && !u.closed
-      })
-    },
-    visibleCan() {
-      return this.needHelp.slice(0, this.showCan)
+    visible() {
+      const ret = this.covids ? this.covids.slice(0, this.show) : []
+      return ret
     },
     replyOptions() {
       return {
@@ -170,8 +178,6 @@ export default {
       this.fetchCounts()
     },
     tabIndex(newVal) {
-      console.log('Tab now', newVal)
-
       if (newVal === 1) {
         this.fetchData('NeedHelp')
       } else if (newVal === 2) {
@@ -200,6 +206,15 @@ export default {
       await this.$store.dispatch('covid/counts', {
         groupid: this.groupid
       })
+    },
+    loadMore($state) {
+      // We use an infinite load for the list because it's a lot of DOM to add at initial page load.
+      if (this.show < this.covids.length) {
+        this.show++
+        $state.loaded()
+      } else {
+        $state.complete()
+      }
     }
   }
 }
