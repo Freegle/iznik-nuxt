@@ -1,9 +1,9 @@
 <template>
   <b-card v-if="covid" no-body class="p-0">
-    <b-card-header class="clickme p-1" @click="expandit">
+    <b-card-header :class="getClass() + ' clickme p-1'" @click="expandit">
       <b-row>
         <b-col cols="9" sm="3" class="order-1 truncate">
-          <span :title="email">{{ email }}</span>
+          <span :title="email">{{ email }}</span> {{ covid.closed }}
           <v-icon v-if="covid.dispatched" name="check" title="Suggestions sent" />
           <v-icon v-if="covid.viewedown" name="eye" title="Suggestions viewed" />
         </b-col>
@@ -29,7 +29,7 @@
           <v-icon name="hashtag" scale="0.75" class="text-muted" />{{ covid.userid }}
         </b-col>
         <b-col cols="7" sm="2" class="order-6 text-right">
-          {{ covid.lastaccess | timeago }}
+          {{ covid.timestamp }}
         </b-col>
       </b-row>
     </b-card-header>
@@ -435,7 +435,25 @@ export default {
       this.waitForRef('preview', () => {
         this.$refs.preview.show()
       })
+    },
+    getClass() {
+      let ret = ''
+
+      if (this.covid.closed) {
+        ret = 'strike'
+      } else if (this.covid.dispatched) {
+        ret = 'bg-white'
+      } else {
+        ret = 'bg-warning'
+      }
+
+      return ret
     }
   }
 }
 </script>
+<style scoped>
+.strike {
+  text-decoration: line-through !important;
+}
+</style>

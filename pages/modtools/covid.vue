@@ -108,17 +108,17 @@ export default {
       covids.sort((a, b) => {
         // Sort to show closed at the bottom, then dispatched, then most recent first.
         if (a.closed && !b.closed) {
-          return -1
-        } else if (!a.closed && b.closed) {
           return 1
+        } else if (!a.closed && b.closed) {
+          return -1
         } else if (a.dispatched && !b.dispatched) {
           return 1
         } else if (!a.dispatched && b.dispatched) {
           return -1
         } else {
-          return (
-            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-          )
+          const ret =
+            new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+          return ret
         }
       })
 
@@ -130,7 +130,7 @@ export default {
     },
     replyOptions() {
       return {
-        title: this.covids.length + ' Replies',
+        title: this.counts.NeedHelp + this.counts.CanHelp + ' Replies',
         chartArea: { width: '200px', height: '200px' },
         slices: {
           1: { color: 'green' },
@@ -163,8 +163,6 @@ export default {
         this.counts.closedNeedHelp -
         this.counts.dispatched -
         this.counts.viewedown
-
-      console.log('Pending', pending)
 
       return [
         ['Type', 'Count'],
