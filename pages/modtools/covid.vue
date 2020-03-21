@@ -119,6 +119,10 @@ export default {
           return 1
         } else if (!a.dispatched && b.dispatched) {
           return -1
+        } else if (!a.user.privateposition && b.user.privateposition) {
+          return 1
+        } else if (a.user.privateposition && !b.user.privateposition) {
+          return -1
         } else {
           const ret =
             new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()

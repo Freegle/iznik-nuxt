@@ -8,6 +8,7 @@
           <v-icon v-if="covid.viewedown" name="eye" title="Suggestions viewed" />
         </b-col>
         <b-col cols="1" class="order-2">
+          <v-icon v-if="!covid.user.privateposition" class="text-danger" name="map-marker-alt" title="No location" />
           <v-icon v-if="covid.phone" name="mobile-alt" title="Phone number provided" class="ml-2 mr-2" />
           <v-icon v-if="covid.intro" name="book-open" title="Intro provided" class="ml-2 mr-2" />
           <v-icon v-if="info.other" name="comment" title="Comments to volunteers" class="ml-2 mr-2" />
@@ -40,7 +41,7 @@
       <NoticeMessage v-else-if="covid.dispatched" variant="info">
         Suggestions have been sent to this person.  You can select more and send them if you want.
       </NoticeMessage>
-      <NoticeMessage variant="info" class="mb-2">
+      <NoticeMessage variant="white" class="mt-2 mb-2">
         <b-textarea v-model="covid.comments" placeholder="You can save comments about them here.  They are only visible to mods but are covered by GDPR.  Be nice.">
           {{ covid.comments }}
         </b-textarea>
@@ -73,6 +74,9 @@
       <h3 class="mt-2">
         Location
       </h3>
+      <NoticeMessage v-if="!(covid.user.privateposition && covid.user.privateposition.length)" variant="danger">
+        We don't have a postcode for this person yet.  We'll send them email reminders for three days.
+      </NoticeMessage>
       <b-row>
         <b-col cols="12" md="6">
           <div class="d-flex justify-content-between">

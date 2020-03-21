@@ -50,11 +50,11 @@
     <b-td>
       {{ helper.kudos }}
     </b-td>
-    <b-td>
+    <b-td :class="helper.covid.selectcount >= 2 ? 'text-danger' : ''">
       {{ helper.covid.selectcount }}
     </b-td>
     <b-td>
-      <b-checkbox v-model="selected" @change="change" />
+      <b-checkbox v-model="selected" :disabled="helper.covid.selectcount >= 3" @change="change" />
     </b-td>
   </b-tr>
 </template>
