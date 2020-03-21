@@ -3,10 +3,6 @@
     <b-card-header class="clickme p-1" @click="expandit">
       <b-row>
         <b-col cols="9" sm="3" class="order-1 truncate">
-          <!--          <span v-if="covid.type === 'NeedHelp'">-->
-          <!--            <v-icon v-if="covid.contacted" name="check" class="text-success" />-->
-          <!--            <v-icon v-else name="exclamation-triangle" class="text-warning" />-->
-          <!--          </span>-->
           <span :title="email">{{ email }}</span>
           <v-icon v-if="covid.dispatched" name="check" title="Suggestions sent" />
           <v-icon v-if="covid.viewedown" name="eye" title="Suggestions viewed" />
@@ -38,6 +34,12 @@
       </b-row>
     </b-card-header>
     <b-card-body v-if="expanded && covid.user" class="p-1">
+      <NoticeMessage v-if="covid.viewedown" variant="success">
+        Suggestions sent to this person have been viewed.  There's probably no need to send more.
+      </NoticeMessage>
+      <NoticeMessage v-else-if="covid.dispatched" variant="info">
+        Suggestions have been sent to this person.  You can select more and send them if you want.
+      </NoticeMessage>
       <NoticeMessage variant="info" class="mb-2">
         <b-textarea v-model="covid.comments" placeholder="You can save comments about them here.  They are only visible to mods but are covered by GDPR.  Be nice.">
           {{ covid.comments }}
@@ -46,12 +48,6 @@
           <v-icon name="save" /> Save
         </b-btn>
       </NoticeMessage>
-      <!--      <p v-if="covid.contacted" class="text-success">-->
-      <!--        Contacted {{ covid.contacted | timeago }}-->
-      <!--      </p>-->
-      <!--      <p v-else class="text-warning">-->
-      <!--        Not contacted yet.-->
-      <!--      </p>-->
       <ModSpammer v-if="covid.spammer" class="mb-2" :user="user" />
       <div class="d-flex flex-wrap">
         <b-btn variant="white" class="mr-2 mb-1" @click="logs">
@@ -61,23 +57,58 @@
           <v-icon name="user" /> Profile
         </b-btn>
         <Ratings v-if="expanded" :id="covid.id" class="mr-2" />
-        <!--        <b-btn variant="success" class="mr-2 mb-1" @click="contacted">-->
-        <!--          <v-icon name="check" /> Mark Contacted-->
-        <!--        </b-btn>-->
         <b-btn variant="info" class="mr-2 mb-1" @click="closed">
           <v-icon name="times" /> Close - No Further Action
         </b-btn>
       </div>
+      <h3 class="mt-2">
+        <span v-if="covid.type === 'NeedHelp'">
+          What they need help with
+        </span>
+        <span v-else>
+          How they can help
+        </span>
+      </h3>
+      <ModCovidInfo :covid="covid" />
+      <h3 class="mt-2">
+        Location
+      </h3>
+      <b-row>
+        <b-col cols="12" md="6">
+          <div class="d-flex justify-content-between">
+            <div>
+              <v-icon class="text-muted" name="globe-europe" /> Public location on ChitChat
+            </div>
+            <div v-if="covid.publiclocation">
+              {{ covid.publiclocation.display }}
+            </div>
+            <div v-else>
+              Unknown
+            </div>
+          </div>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col cols="12" md="6">
+          <div class="d-flex justify-content-between">
+            <div>
+              <v-icon class="text-muted" name="lock" /> Rough actual location
+              {{ JSON.stringify(covid.user.privateposition) }}
+            </div>
+            <div v-if="covid.user.privateposition && covid.user.privateposition.length">
+              {{ Math.round(covid.user.privateposition[0] * 100) / 100 }}, {{ Math.round(covid.user.privateposition[0] * 100) / 100 }}
+              <a :href="'https://www.google.com/maps?q=' + covid.user.privateposition[0] + ',' + covid.user.privateposition[1]" target="_blank" rel="noopener">Show on map</a>
+            </div>
+            <div v-else class="text-danger">
+              Not known - can't suggest anyone yet
+            </div>
+          </div>
+        </b-col>
+      </b-row>
       <div v-if="covid.type === 'NeedHelp'">
         <h3 class="mt2">
           Possible Helpers
         </h3>
-        <NoticeMessage v-if="covid.viewedown" variant="success">
-          Suggestions sent to this person have been viewed.  There's probably no need to send more.
-        </NoticeMessage>
-        <NoticeMessage v-else-if="covid.dispatched" variant="info">
-          Suggestions have been sent to this person.  You can select more and send them if you want.
-        </NoticeMessage>
         <p>
           Choose around 3 people if possible - ideally the closest plus a couple who are close with good
           thumbs up/down and kudos (calculated Freegle "reputation" based on their activity).  Click name to view
@@ -126,44 +157,6 @@
           No helpers found yet.
         </p>
       </div>
-      <h3 class="mt-2">
-        Info
-      </h3>
-      <ModCovidInfo :covid="covid" />
-      <h3 class="mt-2">
-        Location
-      </h3>
-      <b-row>
-        <b-col cols="12" md="6">
-          <div class="d-flex justify-content-between">
-            <div>
-              <v-icon class="text-muted" name="globe-europe" /> Location on ChitChat
-            </div>
-            <div v-if="covid.publiclocation">
-              {{ covid.publiclocation.display }}
-            </div>
-            <div v-else>
-              Unknown
-            </div>
-          </div>
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col cols="12" md="6">
-          <div class="d-flex justify-content-between">
-            <div>
-              <v-icon class="text-muted" name="lock" /> Best guess lat/lng
-            </div>
-            <div v-if="covid.user.privateposition">
-              {{ Math.round(covid.user.privateposition.lat * 100) / 100 }}, {{ Math.round(covid.user.privateposition.lng * 100) / 100 }}
-              <a :href="'https://www.google.com/maps?q=' + covid.user.privateposition.lat + ',' + covid.user.privateposition.lng" target="_blank" rel="noopener">Show on map</a>
-            </div>
-            <div v-else>
-              Not known
-            </div>
-          </div>
-        </b-col>
-      </b-row>
       <h3 class="mt-2">
         Chat as Mod
       </h3>
@@ -374,6 +367,7 @@ export default {
         }
       }
 
+      console.log('Sorted', ret, this.helpers)
       return ret
     }
   },
@@ -402,13 +396,13 @@ export default {
     },
     contacted() {
       this.$store.dispatch('covid/edit', {
-        id: this.covid.user.id,
+        id: this.covid.id,
         contacted: new Date().toISOString()
       })
     },
     closed() {
       this.$store.dispatch('covid/edit', {
-        id: this.covid.user.id,
+        id: this.covid.id,
         closed: new Date().toISOString()
       })
     },
@@ -421,7 +415,7 @@ export default {
     },
     saveInfo() {
       this.$store.dispatch('covid/edit', {
-        id: this.covid.user.id,
+        id: this.covid.id,
         comments: this.covid.comments
       })
     },
