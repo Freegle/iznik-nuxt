@@ -110,7 +110,8 @@ export default {
   },
   mounted() {
     this.$store.dispatch('covid/fetch', {
-      id: this.id
+      id: this.id,
+      viewsuggestions: true
     })
 
     this.busy = false

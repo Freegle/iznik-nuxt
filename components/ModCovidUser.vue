@@ -105,6 +105,9 @@
             </b-tbody>
           </b-table-simple>
           <b-btn class="mt-2" size="lg" variant="success" @click="dispatch">
+            <v-icon v-if="dispatching" name="sync" class="fa-spin" />
+            <v-icon v-else-if="dispatched" name="check" />
+            <v-icon v-else name="envelope" />
             Send suggestions
           </b-btn>
           <b-btn class="mt-2 ml-2" size="lg" variant="white" @click="preview">
@@ -258,7 +261,9 @@ export default {
     return {
       expanded: false,
       showAllMemberships: false,
-      showAllMessageHistories: false
+      showAllMessageHistories: false,
+      dispatching: false,
+      dispatched: false
     }
   },
   computed: {
@@ -412,10 +417,19 @@ export default {
         comments: this.covid.comments
       })
     },
-    dispatch() {
-      this.$store.dispatch('covid/dispatch', {
-        id: this.covid.user.id
+    async dispatch() {
+      this.dispatching = true
+
+      await this.$store.dispatch('covid/dispatch', {
+        id: this.covid.id
       })
+
+      this.dispatching = false
+      this.dispatched = true
+
+      setTimeout(() => {
+        this.dispatched = false
+      }, 5000)
     },
     preview() {
       this.waitForRef('preview', () => {

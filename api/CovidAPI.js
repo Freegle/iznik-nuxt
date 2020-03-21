@@ -40,7 +40,7 @@ export default class CovidAPI extends BaseAPI {
 
   async dispatch(params) {
     await this.$post('/covid', {
-      helpee: params.helpee,
+      id: params.id,
       action: 'Dispatch'
     })
   }

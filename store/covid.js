@@ -116,7 +116,7 @@ export const actions = {
     await this.$api.covid.dispatch(params)
 
     await dispatch('fetch', {
-      id: params.helpee
+      id: params.id
     })
   }
 }
