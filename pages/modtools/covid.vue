@@ -1,7 +1,7 @@
 <template>
   <div>
     <NoticeMessage variant="danger">
-      This is an experimental and rapidly changing interface.  It will very soon be live - do not click buttons
+      This is an experimental and rapidly changing interface.  It is now live - do not click buttons
       just to see what they do as this may affect real people.
     </NoticeMessage>
     <div v-if="mod">
@@ -160,9 +160,11 @@ export default {
     statusData() {
       const pending =
         this.counts.NeedHelp -
-        this.counts.closed -
+        this.counts.closedNeedHelp -
         this.counts.dispatched -
         this.counts.viewedown
+
+      console.log('Pending', pending)
 
       return [
         ['Type', 'Count'],

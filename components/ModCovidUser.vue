@@ -366,7 +366,6 @@ export default {
         }
       }
 
-      console.log('Sorted', ret, this.helpers)
       return ret
     }
   },
