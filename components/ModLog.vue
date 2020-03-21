@@ -1,7 +1,7 @@
 <template>
   <b-row>
     <b-col cols="3">
-      {{ log.timestamp | dateshort }}
+      {{ log.timestamp | datetimeshort }}
     </b-col>
     <b-col cols="2" class="forcebreak">
       <span v-if="log.user && log.byuser && log.byuser.id !== log.user.id">
