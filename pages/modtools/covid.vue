@@ -1,9 +1,8 @@
 <template>
   <div>
     <NoticeMessage variant="danger">
-      This is an experimental and rapidly changing interface.  You can view things, but please don't start actively
-      using it without talking to Edward first.  We are not ready to do that generally and could get ourselves in
-      a fankle.
+      This is an experimental and rapidly changing interface.  It will very soon be live - do not click buttons
+      just to see what they do as this may affect real people.
     </NoticeMessage>
     <div v-if="mod">
       <div>
@@ -15,7 +14,7 @@
               </h2>
             </template>
             <div class="d-flex mb-2">
-              <GroupSelect v-model="groupid" all :systemwide="supportOrAdmin" />
+              <GroupSelect v-model="groupid" all />
               <b-btn variant="success" @click="loadit">
                 Load data
               </b-btn>
