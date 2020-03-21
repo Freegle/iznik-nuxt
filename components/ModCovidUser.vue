@@ -105,7 +105,7 @@
             </b-tbody>
           </b-table-simple>
           <b-btn class="mt-2" size="lg" variant="success" @click="dispatch">
-            Send suggestions (not really yet)
+            Send suggestions
           </b-btn>
           <b-btn class="mt-2 ml-2" size="lg" variant="white" @click="preview">
             Preview suggestions
