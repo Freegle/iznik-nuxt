@@ -6,7 +6,7 @@
     </NoticeMessage>
     <div v-if="mod">
       <div>
-        <b-tabs content-class="mt-3" card>
+        <b-tabs v-model="tabIndex" content-class="mt-3" card>
           <b-tab active>
             <template v-slot:title>
               <h2 class="ml-2 mr-2">
@@ -16,14 +16,8 @@
             <p>All My Communities includes groups you're a backup mod on.</p>
             <div class="d-flex mb-2">
               <GroupSelect v-model="groupid" all :systemwide="supportOrAdmin" />
-              <b-btn variant="success" @click="loadit">
-                Load data
-              </b-btn>
             </div>
-            <div v-if="loading">
-              <b-img src="~/static/loader.gif" alt="Loading" />
-            </div>
-            <div v-else-if="counts">
+            <div v-if="counts">
               <GChart
                 type="PieChart"
                 :data="replyData"
@@ -44,7 +38,10 @@
                 Need Help
               </h2>
             </template>
-            <div v-if="needHelp && needHelp.length">
+            <div v-if="loading">
+              <b-img src="~/static/loader.gif" alt="Loading" />
+            </div>
+            <div v-else-if="needHelp && needHelp.length">
               <ModCovidUser v-for="covid in needHelp" :key="'needhelp-' + covid.id" :covidid="covid.id" />
             </div>
           </b-tab>
@@ -54,7 +51,10 @@
                 Can Help
               </h2>
             </template>
-            <div v-if="canHelp && canHelp.length">
+            <div v-if="loading">
+              <b-img src="~/static/loader.gif" alt="Loading" />
+            </div>
+            <div v-else-if="canHelp && canHelp.length">
               <ModCovidUser v-for="covid in canHelp" :key="'canhelp-' + covid.id" :covidid="covid.id" />
             </div>
           </b-tab>
@@ -77,7 +77,8 @@ export default {
     return {
       loading: false,
       loaded: false,
-      groupid: null
+      groupid: null,
+      tabIndex: 0
     }
   },
   computed: {
@@ -167,6 +168,15 @@ export default {
   watch: {
     groupid() {
       this.fetchCounts()
+    },
+    tabIndex(newVal) {
+      console.log('Tab now', newVal)
+
+      if (newVal === 1) {
+        this.fetchData('NeedHelp')
+      } else if (newVal === 2) {
+        this.fetchData('CanHelp')
+      }
     }
   },
   mounted() {
@@ -174,11 +184,12 @@ export default {
   },
   layout: 'modtools',
   methods: {
-    async loadit() {
+    async fetchData(type) {
       this.loading = true
 
       await this.$store.dispatch('covid/fetchGroup', {
-        groupid: this.groupid
+        groupid: this.groupid,
+        helptype: type
       })
 
       this.loading = false
