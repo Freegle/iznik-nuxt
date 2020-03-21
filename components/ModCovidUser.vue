@@ -136,6 +136,9 @@
                   Kudos
                 </b-th>
                 <b-th>
+                  Already
+                </b-th>
+                <b-th>
                   Select
                 </b-th>
               </b-tr>

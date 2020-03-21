@@ -60,6 +60,10 @@
               <b-img src="~/static/loader.gif" alt="Loading" />
             </div>
             <div v-else>
+              <p>
+                You don't need to do anything with these, unless you see something interested in what they've
+                said.  Later we'll make sure we get back to everyone.
+              </p>
               <ModCovidUser v-for="covid in visible" :key="'canhelp-' + covid.id" :covidid="covid.id" />
               <infinite-loading :key="'infinite-' + groupid + '-' + tabIndex" force-use-infinite-wrapper="body" :distance="1000" @infinite="loadMore">
                 <span slot="no-results" />
@@ -178,6 +182,8 @@ export default {
       this.fetchCounts()
     },
     tabIndex(newVal) {
+      this.fetchCounts()
+
       if (newVal === 1) {
         this.fetchData('NeedHelp')
       } else if (newVal === 2) {

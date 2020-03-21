@@ -51,6 +51,9 @@
       {{ helper.kudos }}
     </b-td>
     <b-td>
+      {{ helper.covid.selectcount }}
+    </b-td>
+    <b-td>
       <b-checkbox v-model="selected" @change="change" />
     </b-td>
   </b-tr>
