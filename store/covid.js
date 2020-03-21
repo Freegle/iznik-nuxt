@@ -1,10 +1,15 @@
 import Vue from 'vue'
 
 export const state = () => ({
-  list: {}
+  list: {},
+  counts: {}
 })
 
 export const mutations = {
+  setCounts(state, counts) {
+    state.counts = counts
+  },
+
   add(state, item) {
     Vue.set(state.list, item.id, item)
   },
@@ -25,6 +30,8 @@ export const mutations = {
 }
 
 export const getters = {
+  counts: state => state.counts,
+
   get: state => id => {
     let ret = null
 
@@ -59,6 +66,15 @@ export const getters = {
 }
 
 export const actions = {
+  async counts({ commit }, params) {
+    const ret = await this.$api.covid.counts({
+      groupid: params.groupid,
+      counts: true
+    })
+
+    commit('setCounts', ret)
+  },
+
   async fetch({ commit }, params) {
     const covid = await this.$api.covid.fetchOne(params)
     commit('add', covid)

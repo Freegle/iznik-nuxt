@@ -18,6 +18,11 @@ export default class CovidAPI extends BaseAPI {
     return ret.covid
   }
 
+  async counts(params) {
+    const ret = await this.$get('/covid', params)
+    return ret.counts
+  }
+
   async patch(params) {
     await this.$patch('/covid', params)
   }

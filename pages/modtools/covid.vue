@@ -23,7 +23,7 @@
             <div v-if="loading">
               <b-img src="~/static/loader.gif" alt="Loading" />
             </div>
-            <div v-else-if="loaded">
+            <div v-else-if="counts">
               <GChart
                 type="PieChart"
                 :data="replyData"
@@ -81,54 +81,15 @@ export default {
     }
   },
   computed: {
+    counts() {
+      return this.$store.getters['covid/counts']
+    },
     covids() {
       const covids = Object.values(this.$store.getters['covid/list'])
       covids.sort((a, b) => {
         return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
       })
       return covids
-    },
-    needCount() {
-      return this.covids.filter(u => {
-        return u.type === 'NeedHelp'
-      }).length
-    },
-    canCount() {
-      return this.covids.filter(u => {
-        return u.type === 'CanHelp'
-      }).length
-    },
-    closedCount() {
-      return this.covids.filter(u => {
-        return u.type === 'NeedHelp' && u.closed
-      }).length
-    },
-    viewedCount() {
-      return this.covids.filter(u => {
-        // We've sent some suggestions and viewed them since.
-        return (
-          u.type === 'NeedHelp' &&
-          u.dispatched &&
-          u.viewedown &&
-          this.$dayjs(u.viewedown).isSameOrAfter(u.dispatched)
-        )
-      }).length
-    },
-    suggestedCount() {
-      return this.covids.filter(u => {
-        // We've sent some suggestions and not viewed them since.
-        return (
-          u.type === 'NeedHelp' &&
-          u.dispatched &&
-          (!u.viewedown ||
-            !this.$dayjs(u.viewedown).isSameOrAfter(u.dispatched))
-        )
-      }).length
-    },
-    pendingCount() {
-      return this.covids.filter(u => {
-        return u.type === 'NeedHelp' && !u.dispatched && !u.closed
-      }).length
     },
     needHelp() {
       return this.covids
@@ -171,8 +132,8 @@ export default {
     replyData() {
       return [
         ['Type', 'Count'],
-        ['Need Help (' + this.needCount + ')', this.needCount],
-        ['Can Help (' + this.canCount + ')', this.canCount]
+        ['Need Help (' + this.counts.NeedHelp + ')', this.counts.NeedHelp],
+        ['Can Help (' + this.counts.CanHelp + ')', this.counts.CanHelp]
       ]
     },
     statusOptions() {
@@ -188,14 +149,28 @@ export default {
       }
     },
     statusData() {
+      const pending =
+        this.counts.NeedHelp -
+        this.counts.closed -
+        this.counts.dispatched -
+        this.counts.viewedown
+
       return [
         ['Type', 'Count'],
-        ['Closed (' + this.closedCount + ')', this.closedCount],
-        ['Suggested (' + this.suggestedCount + ')', this.suggestedCount],
-        ['Viewed (' + this.viewedCount + ')', this.viewedCount],
-        ['Pending (' + this.pendingCount + ')', this.pendingCount]
+        ['Closed (' + this.counts.closed + ')', this.counts.closed],
+        ['Suggested (' + this.counts.dispatched + ')', this.counts.dispatched],
+        ['Viewed (' + this.counts.viewedown + ')', this.counts.viewedown],
+        ['Pending (' + pending + ')', pending]
       ]
     }
+  },
+  watch: {
+    groupid() {
+      this.fetchCounts()
+    }
+  },
+  mounted() {
+    this.fetchCounts()
   },
   layout: 'modtools',
   methods: {
@@ -209,6 +184,11 @@ export default {
       this.loading = false
       this.loaded = true
       this.expanded = false
+    },
+    async fetchCounts() {
+      await this.$store.dispatch('covid/counts', {
+        groupid: this.groupid
+      })
     }
   }
 }
