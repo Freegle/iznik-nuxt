@@ -79,8 +79,8 @@
             <div>
               <v-icon class="text-muted" name="globe-europe" /> Public location on ChitChat
             </div>
-            <div v-if="covid.publiclocation">
-              {{ covid.publiclocation.display }}
+            <div v-if="covid.user.publiclocation">
+              {{ covid.user.publiclocation.display }}
             </div>
             <div v-else>
               Unknown
@@ -95,7 +95,7 @@
               <v-icon class="text-muted" name="lock" /> Rough actual location
             </div>
             <div v-if="covid.user.privateposition && covid.user.privateposition.length">
-              {{ Math.round(covid.user.privateposition[0] * 100) / 100 }}, {{ Math.round(covid.user.privateposition[1] * 100) / 100 }}
+              {{ covid.user.privateposition[0] }}, {{ covid.user.privateposition[1] }}
               <a :href="'https://www.google.com/maps/place/' + covid.user.privateposition[0] + ',' + covid.user.privateposition[1] + '/@' + covid.user.privateposition[0] + ',' + covid.user.privateposition[1] + ',14z'" target="_blank" rel="noopener">Show on map</a>
             </div>
             <div v-else class="text-danger">
