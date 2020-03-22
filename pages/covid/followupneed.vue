@@ -32,7 +32,9 @@ export default {
   mixins: [buildHead, loginRequired, waitForRef],
   data: function() {
     return {
-      busy: true
+      busy: true,
+      savingnolonger: false,
+      savednolonger: false
     }
   },
   computed: {
@@ -75,7 +77,7 @@ export default {
     async nolonger() {
       this.savingnolonger = true
 
-      await this.$store.dispatch('covid/edit', {
+      await this.$store.dispatch('covid/nolonger', {
         id: this.covidid,
         closed: new Date().toISOString(),
         nolonger: 1

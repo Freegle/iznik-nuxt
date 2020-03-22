@@ -108,7 +108,7 @@ export default {
     async nolonger() {
       this.savingnolonger = true
 
-      await this.$store.dispatch('covid/edit', {
+      await this.$store.dispatch('covid/nolonger', {
         id: this.covidid,
         closed: new Date().toISOString(),
         nolonger: 1

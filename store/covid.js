@@ -111,6 +111,10 @@ export const actions = {
     })
   },
 
+  async nolonger({ commit, dispatch }, params) {
+    await this.$api.covid.patch(params)
+  },
+
   async suggest({ commit, dispatch }, params) {
     await this.$api.covid.suggest(params)
 
