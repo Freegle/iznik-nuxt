@@ -9,6 +9,12 @@
       <NoticeMessage v-else-if="!myid" variant="info">
         Please log in to view the people who may be able to help.
       </NoticeMessage>
+      <b-btn variant="primary" size="lg" class="mt-1 mb-2" @click="nolonger">
+        <v-icon v-if="savingnolonger" name="sync" class="fa-spin" />
+        <v-icon v-else-if="savednolonger" name="check" />
+        <v-icon v-else name="thumbs-up" />
+        I no longer need help
+      </b-btn>
       <p>If you have problems with this page please mail us at <a href="mailto:covid19@ilovefreegle.org">covid19@ilovefreegle.org</a></p>
     </div>
   </div>
@@ -65,6 +71,18 @@ export default {
       })
 
       this.busy = false
+    },
+    async nolonger() {
+      this.savingnolonger = true
+
+      await this.$store.dispatch('covid/edit', {
+        id: this.covidid,
+        closed: new Date().toISOString(),
+        nolonger: 1
+      })
+
+      this.savingnolonger = false
+      this.savednolonger = true
     }
   },
   head() {

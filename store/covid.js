@@ -115,7 +115,7 @@ export const actions = {
     await this.$api.covid.suggest(params)
 
     await dispatch('fetch', {
-      id: params.helpee
+      userid: params.helpee
     })
   },
 
@@ -123,7 +123,23 @@ export const actions = {
     await this.$api.covid.remove(params)
 
     await dispatch('fetch', {
-      id: params.helpee
+      userid: params.helpee
+    })
+  },
+
+  async hold({ commit, dispatch }, params) {
+    await this.$api.covid.hold(params)
+
+    await dispatch('fetch', {
+      id: params.id
+    })
+  },
+
+  async release({ commit, dispatch }, params) {
+    await this.$api.covid.release(params)
+
+    await dispatch('fetch', {
+      id: params.id
     })
   },
 

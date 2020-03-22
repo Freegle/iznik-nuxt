@@ -49,4 +49,18 @@ export default class CovidAPI extends BaseAPI {
       action: 'Dispatch'
     })
   }
+
+  async hold(params) {
+    await this.$post('/covid', {
+      id: params.id,
+      action: 'Hold'
+    })
+  }
+
+  async release(params) {
+    await this.$post('/covid', {
+      id: params.id,
+      action: 'Release'
+    })
+  }
 }

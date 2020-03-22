@@ -5,7 +5,8 @@
         <b-col cols="9" sm="3" class="order-1 truncate">
           <span :title="email">{{ email }}</span> {{ covid.closed }}
           <v-icon v-if="covid.dispatched" name="check" title="Suggestions sent" />
-          <v-icon v-if="covid.viewedown" name="eye" title="Suggestions viewed" />
+          <v-icon v-if="covid.dispatched && covid.viewedown" name="eye" title="Suggestions viewed" />
+          <v-icon v-if="covid.heldby" name="pause" title="Held" />
         </b-col>
         <b-col cols="1" class="order-2">
           <v-icon v-if="!covid.user.privateposition" class="text-danger" name="map-marker-alt" title="No location" />
@@ -35,7 +36,7 @@
       </b-row>
     </b-card-header>
     <b-card-body v-if="expanded && covid.user" class="p-1">
-      <NoticeMessage v-if="covid.viewedown" variant="success">
+      <NoticeMessage v-if="covid.dispatched && covid.viewedown" variant="success">
         Suggestions sent to this person have been viewed.  There's probably no need to send more.
       </NoticeMessage>
       <NoticeMessage v-else-if="covid.dispatched" variant="info">
@@ -58,6 +59,12 @@
           <v-icon name="user" /> Profile
         </b-btn>
         <Ratings v-if="expanded" :id="covid.id" class="mr-2" />
+        <b-btn v-if="covid.heldby" variant="primary" class="mr-2 mb-1" @click="release">
+          <v-icon name="play" /> Release
+        </b-btn>
+        <b-btn v-else variant="primary" class="mr-2 mb-1" @click="hold">
+          <v-icon name="pause" /> Hold
+        </b-btn>
         <b-btn variant="info" class="mr-2 mb-1" @click="closed">
           <v-icon name="times" /> Close - No Action Required
         </b-btn>
@@ -315,9 +322,15 @@ export default {
       return ret
     },
     otherEmails() {
-      return this.covid.user.emails.filter(e => {
-        return e.email !== this.covid.user.email && !e.ourdomain
-      })
+      let ret = this.covid.user.emails
+
+      if (ret) {
+        ret = ret.filter(e => {
+          return e.email !== this.covid.user.email && !e.ourdomain
+        })
+      }
+
+      return ret
     },
     messageHistoriesShown() {
       return this.showAllMessageHistories
@@ -411,6 +424,18 @@ export default {
         closed: new Date().toISOString()
       })
     },
+    hold() {
+      this.$store.dispatch('covid/hold', {
+        id: this.covid.id
+      })
+
+      this.expanded = false
+    },
+    release() {
+      this.$store.dispatch('covid/release', {
+        id: this.covid.id
+      })
+    },
     expandit() {
       this.expanded = !this.expanded
 
@@ -448,6 +473,8 @@ export default {
 
       if (this.covid.closed) {
         ret = 'strike'
+      } else if (this.covid.heldby) {
+        ret = 'bg-info'
       } else if (this.covid.dispatched) {
         ret = 'bg-white'
       } else {

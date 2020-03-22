@@ -123,6 +123,10 @@ export default {
           return 1
         } else if (a.user.privateposition && !b.user.privateposition) {
           return -1
+        } else if (a.heldby && !b.heldby) {
+          return 1
+        } else if (!a.heldby && b.heldby) {
+          return -1
         } else {
           const ret =
             new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()

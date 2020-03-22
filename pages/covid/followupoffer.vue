@@ -20,12 +20,20 @@
         <b class="mt-1">Introduce yourself</b>
       </label>
       <b-textarea id="intro" v-model="intro" placeholder="Say a bit about yourself for the person who needs help." class="mt-1 mb-1" rows="3" />
-      <b-btn variant="success" size="lg" class="mt-1 mb-2" @click="save">
-        <v-icon v-if="saving" name="sync" class="fa-spin" />
-        <v-icon v-else-if="saved" name="check" />
-        <v-icon v-else name="save" />
-        Save
-      </b-btn>
+      <div class="d-flex justify-content-between">
+        <b-btn variant="success" size="lg" class="mt-1 mb-2" @click="save">
+          <v-icon v-if="saving" name="sync" class="fa-spin" />
+          <v-icon v-else-if="saved" name="check" />
+          <v-icon v-else name="save" />
+          Save
+        </b-btn>
+        <b-btn variant="primary" size="lg" class="mt-1 mb-2" @click="nolonger">
+          <v-icon v-if="savingnolonger" name="sync" class="fa-spin" />
+          <v-icon v-else-if="savednolonger" name="check" />
+          <v-icon v-else name="save" />
+          No longer available
+        </b-btn>
+      </div>
       <NoticeMessage v-if="saved" variant="info">
         Thanks, we'll be in touch.  Please be patient - we'll all be dealing with this for a while, and we're
         trying to build a list of people who can help over the next few weeks, not just
@@ -54,7 +62,10 @@ export default {
       phone: null,
       intro: null,
       saving: false,
-      saved: false
+      saved: false,
+      savingnolonger: false,
+      savednolonger: false,
+      covidid: null
     }
   },
   watch: {
@@ -65,6 +76,17 @@ export default {
       }
     }
   },
+  async mounted() {
+    await this.$store.dispatch('covid/fetch', {
+      userid: this.myid
+    })
+
+    const covid = this.$store.getters['covid/getByUserId'](this.myid)
+
+    this.covidid = covid.id
+    this.phone = covid.phone
+    this.intro = covid.intro
+  },
   methods: {
     offer() {
       this.waitForRef('infomodal', () => {
@@ -74,20 +96,26 @@ export default {
     async save() {
       this.saving = true
 
-      await this.$store.dispatch('covid/fetch', {
-        userid: this.myid
-      })
-
-      const covid = this.$store.getters['covid/getByUserId'](this.myid)
-
       await this.$store.dispatch('covid/edit', {
-        id: covid.id,
+        id: this.covidid,
         phone: this.phone,
         intro: this.intro
       })
 
       this.saving = false
       this.saved = true
+    },
+    async nolonger() {
+      this.savingnolonger = true
+
+      await this.$store.dispatch('covid/edit', {
+        id: this.covidid,
+        closed: new Date().toISOString(),
+        nolonger: 1
+      })
+
+      this.savingnolonger = false
+      this.savednolonger = true
     }
   },
   head() {
