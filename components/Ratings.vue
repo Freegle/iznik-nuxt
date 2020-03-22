@@ -10,7 +10,7 @@
           :size="size"
           :variant="user.info.ratings.Mine === 'Up' ? 'primary' : (user.info.ratings.Up > 0 ? 'success' : 'white')"
           :title="uptitle"
-          :disabled="(user.id === myid ? 'true' : undefined)"
+          :disabled="((disabled || user.id === myid) ? 'true' : undefined)"
           @click="up"
         >
           <v-icon name="thumbs-up" />&nbsp;{{ user.info.ratings.Up }}
@@ -20,17 +20,27 @@
           :size="size"
           :variant="user.info.ratings.Mine === 'Down' ? 'primary' : (user.info.ratings.Down > 0 ? 'warning' : 'white')"
           :title="downtitle"
-          :disabled="user.id === myid ? 'true' : undefined"
+          :disabled="(disabled || user.id === myid) ? 'true' : undefined"
           @click="down"
         >
           <v-icon name="thumbs-down" />&nbsp;{{ user.info.ratings.Down }}
         </b-btn>
       </span>
-      <span v-else>
-        <b-btn variant="white" title="No ratings yet.  Click to rate." @click="up">
+      <span v-else-if="user">
+        <b-btn
+          variant="white"
+          title="No ratings yet.  Click to rate."
+          :disabled="(disabled || user.id === myid) ? 'true' : undefined"
+          @click="up"
+        >
           <v-icon name="thumbs-up" />&nbsp;0
         </b-btn>
-        <b-btn variant="white" title="No ratings yet.  Click to rate." @click="down">
+        <b-btn
+          variant="white"
+          title="No ratings yet.  Click to rate."
+          :disabled="(disabled || user.id === myid) ? 'true' : undefined"
+          @click="down"
+        >
           <v-icon name="thumbs-down" />&nbsp;0
         </b-btn>
       </span>
@@ -56,9 +66,9 @@ export default {
       default: 'md'
     },
     disabled: {
-      type: String,
+      type: Boolean,
       required: false,
-      default: ''
+      default: false
     },
     showName: {
       type: Boolean,

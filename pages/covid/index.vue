@@ -13,6 +13,16 @@
         (or someone you know) will need help.  Let's see if we can connect people so that we're ready.
       </p>
       <b-row>
+        <b-col class="text-center">
+          <h4>What's your postcode?</h4>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col class="text-center mb-2 mt-2">
+          <postcode class="justify-content-center" :find="false" @selected="postcodeSelect" @cleared="postcodeClear" />
+        </b-col>
+      </b-row>
+      <b-row>
         <b-col cols="12" md="8" offset-md="2">
           <div class="d-flex justify-content-between w-100 mb-2">
             <b-btn variant="success" size="lg" class="mr-3" @click="offer">
@@ -38,29 +48,35 @@
       <p>
         We don't know how many responses we get.  Maybe we'll just get a few - if so then we'll leave it in the
         (washed) hands of other people.  Maybe we'll get loads, and we'll need to work out how to put people
-        in touch safely - that would be a good problem to have.
+        in touch safely - that would be a good problem to have.  We won't pass on your details before
+        getting back in touch with you.
       </p>
       <p>
-        We won't pass on your details before
-        getting back in touch with you.  If you need urgent help, look at the
+        <b>Always freegle responsibly</b> - avoid contact, wash your hands, self-isolate if you're unwell or vulnerable.
+        <b>If you need urgent help</b>, look at the
         <a href="https://www.nhs.uk/conditions/coronavirus-covid-19/" target="_blank" rel="noopener noreferrer">NHS website</a>.
       </p>
     </div>
-    <CovidModal ref="thanks" />
+    <CovidThanksModal ref="thanks" />
+    <CovidInfoModal v-if="type" ref="info" :type="type" @hide="thank" />
   </div>
 </template>
 
 <script>
-import CovidModal from '../components/CovidModal'
+import CovidThanksModal from '@/components/CovidThanksModal'
+import CovidInfoModal from '@/components/CovidInfoModal'
+import Postcode from '@/components/Postcode'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 import waitForRef from '@/mixins/waitForRef'
 
 export default {
-  components: { CovidModal },
+  components: { Postcode, CovidInfoModal, CovidThanksModal },
   mixins: [buildHead, loginOptional, waitForRef],
   data: function() {
-    return {}
+    return {
+      type: null
+    }
   },
   watch: {
     me(newme) {
@@ -79,29 +95,63 @@ export default {
     },
     async record(type) {
       console.log('Record', type)
+      await this.$store.dispatch('misc/set', {
+        key: 'covid',
+        value: type
+      })
+
+      this.type = type
+
       if (this.myid) {
-        await this.$api.covid.record(type)
-        this.waitForRef('thanks', () => {
-          this.$refs.thanks.show()
-        })
-      } else {
-        await this.$store.dispatch('misc/set', {
-          key: 'covid',
-          value: type
+        await this.$store.dispatch('covid/record', {
+          type
         })
 
-        console.log('Force login')
+        const settings = this.me.settings
+        const pc = this.$store.getters['misc/get']('covidpc')
+
+        if (!settings.mylocation || settings.mylocation.id !== pc) {
+          settings.mylocation = pc
+          await this.$store.dispatch('auth/saveAndGet', {
+            settings: settings
+          })
+        }
+
+        this.waitForRef('info', () => {
+          this.$refs.info.show()
+        })
+      } else {
         this.$store.dispatch('auth/forceLogin', true)
       }
     },
     mounted() {
       const type = this.$store.getters['misc/get']('covid')
       const me = this.$store.getters['auth/user']
-      console.log('Mounted', type, me)
 
       if (me && type) {
         this.record(type)
       }
+    },
+    thank() {
+      this.waitForRef('thanks', () => {
+        this.$refs.thanks.show()
+      })
+    },
+    postcodeSelect(pc) {
+      this.postcode = pc
+
+      this.$store.dispatch('misc/set', {
+        key: 'covidpc',
+        value: pc
+      })
+    },
+    postcodeClear() {
+      this.postcode = null
+
+      this.$store.dispatch('misc/set', {
+        key: 'covidpc',
+        value: null
+      })
     }
   },
   head() {

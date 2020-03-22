@@ -10,15 +10,20 @@
       <span v-if="modinfo">
         via {{ message.source }}
         <span v-if="message.fromip">
-          from IP {{ message.fromip }} in <span :class="message.fromcountry === 'United Kingdom' ? '' : 'text-danger'">{{ message.fromcountry }}</span>
+          from IP {{ message.fromip }} in <span :class="message.fromcountry === 'United Kingdom' ? '' : 'text-danger'">{{ message.fromcountry }}.</span>
         </span>
         <span v-else>
-          IP unavailable
+          IP unavailable.
         </span>
+      </span>
+      <span v-if="group.approvedby">
+        Approved by {{ group.approvedby.displayname }}
       </span>
     </div>
     <div v-if="modinfo && message.groups && message.groups.length && message.groups[0].arrival !== message.date" class="small">
-      First posted {{ message.date | datetime }}
+      <span v-if="!today">
+        First posted {{ message.date | datetime }}
+      </span>
     </div>
   </div>
 </template>
@@ -46,6 +51,11 @@ export default {
     modinfo: {
       type: Boolean,
       default: false
+    }
+  },
+  computed: {
+    today() {
+      return this.$dayjs(this.message.date).isSame(this.$dayjs(), 'day')
     }
   }
 }

@@ -41,7 +41,18 @@
       </ul>
 
       <div class="text-muted">
-        Freegle is registered as a charity with HMRC (ref. XT32865).
+        <p>Freegle is registered as a charity with HMRC (ref. XT32865).</p>
+        <div>
+          <span class="text-muted">Kindly supported by</span><br>
+          <div class="d-flex flex-wrap justify-content-between">
+            <a target="_blank" rel="noopener" href="https://www.bytemark.co.uk/company/case-studies/freegle/">
+              <img src="/bytemark.png" alt="Bytemark Logo" width="165px">
+            </a>
+            <a target="_blank" rel="noopener" href="https://www.mythic-beasts.com">
+              <img src="/mythic-beasts.png" alt="Mythic Beasts Logo" width="165px">
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </footer>

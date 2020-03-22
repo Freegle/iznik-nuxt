@@ -28,6 +28,8 @@
     </b-card-header>
     <b-card-body v-if="expanded" class="p-1">
       <ModSpammer v-if="user.spammer" class="mb-2" :user="user" />
+      <ModComments :user="user" />
+
       <div class="d-flex flex-wrap">
         <b-btn variant="white" disabled class="mr-2 mb-1">
           <v-icon name="ban" /> Scammer
@@ -90,6 +92,7 @@
       <h3 class="mt-2">
         Memberships
       </h3>
+      <!--      TODO Show if banned-->
       <div v-if="memberships && memberships.length">
         <div v-for="membership in memberships" :key="'membership-' + membership.id">
           <ModSupportMembership :membership="membership" />
@@ -216,11 +219,13 @@ import ProfileModal from './ProfileModal'
 import ModSupportChatList from './ModSupportChatList'
 import ModSpammer from './ModSpammer'
 import ModMemberLogins from './ModMemberLogins'
+import ModComments from './ModComments'
 
 const SHOW = 3
 
 export default {
   components: {
+    ModComments,
     ModMemberLogins,
     ModSpammer,
     ModSupportChatList,
@@ -323,10 +328,22 @@ export default {
           : 0
       return ret
     },
+    sortedHistories() {
+      const ret =
+        this.user.emailhistory && this.user.emailhistory.length
+          ? this.user.emailhistory
+          : []
+
+      ret.sort(function(a, b) {
+        return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+      })
+
+      return ret
+    },
     emailHistoriesShown() {
       return this.showAllEmailHistories
-        ? this.user.emailhistory
-        : this.user.emailhistory.slice(0, SHOW)
+        ? this.sortedHistories
+        : this.sortedHistories.slice(0, SHOW)
     },
     emailHistoriesUnshown() {
       const ret =

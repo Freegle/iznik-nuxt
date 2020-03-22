@@ -52,19 +52,10 @@ export default {
     othericon() {
       let ret = null
 
-      if (
-        this.chat.chattype === 'User2User' &&
-        this.otheruser &&
-        this.otheruser.profile &&
-        this.otheruser.profile.turl
-      ) {
-        ret = this.otheruser.profile.turl
-      } else if (
-        this.chat.chattype === 'User2Mod' &&
-        this.chat.group &&
-        this.chat.group.profile
-      ) {
-        ret = this.chat.group.profile
+      if (this.chatmessage.userid === this.me.id) {
+        ret = this.me.profile.turl
+      } else {
+        ret = this.chat.icon
       }
 
       return ret

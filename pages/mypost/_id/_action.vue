@@ -19,21 +19,21 @@
             <h3>That post wasn't made from this account</h3>
             <h5>{{ message.subject }}</h5>
             <p>
-              This can happen if you have two different accounts on Freegle - e.g. if you use Google
-              to log in some of the time, and an email/password at other times.
+              This can happen if you have two different accounts on Freegle.  We can merge your accounts or help
+              you work out what is going on.
             </p>
+            <b-btn variant="success" class="mb-2" size="lg" :href="'mailto:support@ilovefreegle.org?subject=I may have two acounts (Message #' + message.id + ', logged in as id #' + myid + ')&body=Please can you help?  My main email address is...'">
+              Contact our Support Volunteers
+            </b-btn>
             <p>
-              Your local volunteers can merge your accounts or help you work out what's going on.  Please copy and paste
-              this and send it to them:
+              If that button doesn't work then please mail support@ilovefreegle.org.  Please copy and paste this and send it to them:
             </p>
             <p>
               <b>Message#{{ message.id }}, logged in as {{ me.email }}</b>
             </p>
-            <p>Please also let them know your main email address.</p>
-            <GroupSelect v-model="contactGroup" class="mt-2 mb-1" />
-            <br>
-            <ChatButton :groupid="contactGroup" size="lg" title="Contact community volunteers" variant="success" class="mb-2" />
-            <p class="mt-2" />
+            <p>
+              Please also let them know your main email address.
+            </p>
           </b-alert>
         </div>
         <div v-if="missing">
@@ -54,8 +54,6 @@
 </template>
 <script>
 import NoticeMessage from '../../../components/NoticeMessage'
-import ChatButton from '../../../components/ChatButton'
-import GroupSelect from '../../../components/GroupSelect'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
 const MyMessage = () => import('~/components/MyMessage.vue')
@@ -63,8 +61,6 @@ const DonationAskModal = () => import('~/components/DonationAskModal')
 
 export default {
   components: {
-    GroupSelect,
-    ChatButton,
     NoticeMessage,
     MyMessage,
     DonationAskModal

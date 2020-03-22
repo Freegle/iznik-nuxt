@@ -12,6 +12,7 @@
 
 import ActivityAPI from './ActivityAPI.js'
 import AddressAPI from './AddressAPI.js'
+import AdminsAPI from './AdminsAPI.js'
 import AuthorityAPI from './AuthorityAPI.js'
 import BanditAPI from './BanditAPI.js'
 import ChatAPI from './ChatAPI.js'
@@ -44,6 +45,7 @@ import VolunteeringAPI from './VolunteeringAPI.js'
 interface API {
   activity: ActivityAPI;
   address: AddressAPI;
+  admins: AdminsAPI;
   authority: AuthorityAPI;
   bandit: BanditAPI;
   chat: ChatAPI;

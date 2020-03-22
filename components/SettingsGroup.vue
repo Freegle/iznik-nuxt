@@ -1,5 +1,5 @@
 <template>
-  <div v-if="membership">
+  <div>
     <b-row>
       <b-col cols="12" sm="6">
         <b-form-group
@@ -36,7 +36,7 @@
           <v-icon v-else name="trash-alt" /> Leave
         </b-btn>
       </b-col>
-      <b-col v-if="moderation">
+      <b-col v-if="moderation && membership">
         <b-form-group
           label="Moderation status:"
         >

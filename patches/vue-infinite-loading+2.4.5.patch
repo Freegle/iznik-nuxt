@@ -1,0 +1,13 @@
+diff --git a/node_modules/vue-infinite-loading/src/components/InfiniteLoading.vue b/node_modules/vue-infinite-loading/src/components/InfiniteLoading.vue
+index cde2678..7ee89a9 100644
+--- a/node_modules/vue-infinite-loading/src/components/InfiniteLoading.vue
++++ b/node_modules/vue-infinite-loading/src/components/InfiniteLoading.vue
+@@ -320,7 +320,7 @@ export default {
+       }
+ 
+       if (!result) {
+-        if (elm.tagName === 'BODY') {
++        if (elm.tagName === 'BODY' || !elm.parentNode) {
+           result = window;
+         } else if (!this.forceUseInfiniteWrapper && ['scroll', 'auto'].indexOf(getComputedStyle(elm).overflowY) > -1) {
+           result = elm;

@@ -2,14 +2,15 @@
   <div>
     <client-only>
       <b-modal
-        id="covidmodal"
+        id="CovidThanks"
         v-model="showModal"
         title="Thanks"
         no-stacking
       >
         <template slot="default">
-          <p>Thanks, we've recorded your interest.</p>
+          <p>Thanks, we've recorded your interest.  We will get back to you, but it may be a few days.</p>
           <p>Like we said, we don't know if this will work out.  But it's worth a try.  Thanks for freegling.</p>
+          <p>Feel free to share this link to other people who might be interested.</p>
           <social-sharing
             url="https://www.ilovefreegle.org/covid"
             title="COVID-19 - Can you help?"

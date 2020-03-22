@@ -7,24 +7,23 @@
         <span v-else>this account </span>
       </h3>
       <p>
-        This usually happens if you have two different accounts on Freegle.  Your local volunteers can merge your
+        This usually happens if you have two different accounts on Freegle.  We can merge your
         accounts or help you work out what's going on.
       </p>
-      <p v-if="me && urlid">
-        Please copy and paste this and send it to them:
-      </p>
-      <p v-if="me && urlid">
-        <b>#{{ me.id }} and #{{ urlid }}</b>
-      </p>
-      <p>
-        Please also let them know your main email address.
-      </p>
-      <GroupSelect v-model="contactGroup" class="mt-2 mb-1" />
-      <br>
-      <ChatButton :groupid="contactGroup" size="lg" title="Contact community volunteers" variant="success" class="mb-2" />
-      <p class="mt-2">
-        ...or if you need to, you can contact our national support volunteers at <a href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</a>.
-      </p>
+      <div v-if="me && urlid">
+        <b-btn variant="success" class="mb-2" size="lg" :href="'mailto:support@ilovefreegle.org?subject=I may have two acounts (#' + myid + ' and #' + urlid + ')&body=Please can you help?  My main email address is...'">
+          Contact our Support Volunteers
+        </b-btn>
+        <p>
+          If that button doesn't work then please mail support@ilovefreegle.org.  Please copy and paste this and send it to them:
+        </p>
+        <p>
+          <b>#{{ me.id }} and #{{ urlid }}</b>
+        </p>
+        <p>
+          Please also let them know your main email address.
+        </p>
+      </div>
     </b-alert>
     <div v-else-if="me">
       <client-only>
@@ -275,8 +274,6 @@ const AvailabilityModal = () => import('~/components/AvailabilityModal')
 const AddressModal = () => import('~/components/AddressModal')
 const ChatReportModal = () => import('~/components/ChatReportModal')
 const ChatRSVPModal = () => import('~/components/ChatRSVPModal')
-const GroupSelect = () => import('~/components/GroupSelect')
-const ChatButton = () => import('~/components/ChatButton.vue')
 
 export default {
   components: {
@@ -292,9 +289,7 @@ export default {
     ChatBlockModal,
     ChatHideModal,
     ChatReportModal,
-    ChatRSVPModal,
-    GroupSelect,
-    ChatButton
+    ChatRSVPModal
   },
   mixins: [chatCollate, WaitForRef],
   props: {

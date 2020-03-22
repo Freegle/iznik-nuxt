@@ -86,7 +86,7 @@
               </NoticeMessage>
             </div>
             <div class="d-flex justify-content-between flex-wrap">
-              <b-btn variant="link" @click="showMailSettings = !showMailSettings">
+              <b-btn variant="link" @click="toggleMail">
                 <span v-if="showMailSettings">
                   <v-icon name="cog" />
                   <span class="d-inline d-sm-none">
@@ -131,7 +131,7 @@
                     Hide
                   </span>
                   <span class="d-none d-sm-inline">
-                    Show actions
+                    Hide actions
                   </span>
                 </span>
                 <span v-else>
@@ -151,6 +151,7 @@
               :volunteeringallowed="Boolean(membership.volunteeringallowed)"
               :eventsallowed="Boolean(membership.eventsallowed)"
               class="border border-info mt-2 p-1"
+              :userid="message.fromuser.id"
               @change="settingsChange"
             />
             <div v-if="showEmails">
@@ -424,6 +425,17 @@ export default {
       }
       params[e.param] = e.val
       this.$store.dispatch('members/patch', params)
+    },
+
+    async toggleMail() {
+      this.showMailSettings = !this.showMailSettings
+
+      if (this.showMailSettings) {
+        // Get the user into the store for SettingsGroup.
+        await this.$store.dispatch('user/fetch', {
+          id: this.message.fromuser.id
+        })
+      }
     }
   }
 }

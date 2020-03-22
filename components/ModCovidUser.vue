@@ -1,11 +1,20 @@
 <template>
-  <b-card v-if="user" no-body class="p-0">
-    <b-card-header class="clickme p-1" @click="expanded = !expanded">
+  <b-card v-if="covid" no-body class="p-0">
+    <b-card-header :class="getClass() + ' clickme p-1'" @click="expandit">
       <b-row>
-        <b-col cols="10" sm="4" class="order-1 truncate" :title="email">
-          <v-icon name="envelope" />&nbsp;{{ email }}
+        <b-col cols="9" sm="3" class="order-1 truncate">
+          <span :title="email">{{ email }}</span> {{ covid.closed }}
+          <v-icon v-if="covid.dispatched" name="check" title="Suggestions sent" />
+          <v-icon v-if="covid.dispatched && covid.viewedown" name="eye" title="Suggestions viewed" />
+          <v-icon v-if="covid.heldby" name="pause" title="Held" />
         </b-col>
-        <b-col cols="2" sm="1" class="order-2 order-sm-7">
+        <b-col cols="1" class="order-2">
+          <v-icon v-if="!covid.user.privateposition" class="text-danger" name="map-marker-alt" title="No location" />
+          <v-icon v-if="covid.phone" name="mobile-alt" title="Phone number provided" class="ml-2 mr-2" />
+          <v-icon v-if="covid.intro" name="book-open" title="Intro provided" class="ml-2 mr-2" />
+          <v-icon v-if="info.other" name="comment" title="Comments to volunteers" class="ml-2 mr-2" />
+        </b-col>
+        <b-col cols="2" sm="1" class="order-3 order-sm-8">
           <span class="d-block d-sm-none float-right">
             <v-icon v-if="!expanded" name="caret-down" />
             <v-icon v-else name="caret-up" />
@@ -15,28 +24,33 @@
             <v-icon v-else name="caret-up" />
           </b-btn>
         </b-col>
-        <b-col cols="12" sm="3" class="order-3 truncate">
-          <v-icon name="user" /> {{ user.displayname }}
+        <b-col cols="12" sm="3" class="order-4 truncate">
+          <v-icon name="user" /> {{ covid.user.displayname }}
         </b-col>
-        <b-col cols="5" sm="2" class="order-4">
-          <v-icon name="hashtag" scale="0.75" class="text-muted" />{{ user.id }}
+        <b-col cols="5" sm="2" class="order-5">
+          <v-icon name="hashtag" scale="0.75" class="text-muted" />{{ covid.userid }}
         </b-col>
-        <b-col cols="7" sm="2" class="order-5 text-right">
-          {{ user.lastaccess | timeago }}
+        <b-col cols="7" sm="2" class="order-6 text-right">
+          {{ covid.timestamp }}
         </b-col>
       </b-row>
     </b-card-header>
-    <b-card-body v-if="expanded" class="p-1">
-      <NoticeMessage v-if="user.covid.comments" variant="info" class="mb-2">
-        {{ user.covid.comments }}
+    <b-card-body v-if="expanded && covid.user" class="p-1">
+      <NoticeMessage v-if="covid.dispatched && covid.viewedown" variant="success">
+        Suggestions sent to this person have been viewed.  There's probably no need to send more.
       </NoticeMessage>
-      <p v-if="user.covid.contacted" class="text-success">
-        Contacted {{ user.covid.contacted | timeago }}
-      </p>
-      <p v-else class="text-warning">
-        Not contacted yet.
-      </p>
-      <ModSpammer v-if="user.spammer" class="mb-2" :user="user" />
+      <NoticeMessage v-else-if="covid.dispatched" variant="info">
+        Suggestions have been sent to this person.  You can select more and send them if you want.
+      </NoticeMessage>
+      <NoticeMessage variant="white" class="mt-2 mb-2">
+        <b-textarea v-model="covid.comments" placeholder="You can save comments about them here.  They are only visible to mods but are covered by GDPR.  Be nice.">
+          {{ covid.comments }}
+        </b-textarea>
+        <b-btn variant="white" class="mt-1" @click="saveInfo">
+          <v-icon name="save" /> Save
+        </b-btn>
+      </NoticeMessage>
+      <ModSpammer v-if="covid.spammer" class="mb-2" :user="user" />
       <div class="d-flex flex-wrap">
         <b-btn variant="white" class="mr-2 mb-1" @click="logs">
           <v-icon name="book-open" /> Logs
@@ -44,24 +58,40 @@
         <b-btn variant="white" class="mr-2 mb-1" @click="profile">
           <v-icon name="user" /> Profile
         </b-btn>
-        <b-btn variant="success" class="mr-2 mb-1" @click="contacted">
-          <v-icon name="check" /> Contacted
+        <Ratings v-if="expanded" :id="covid.id" class="mr-2" />
+        <b-btn v-if="covid.heldby" variant="primary" class="mr-2 mb-1" @click="release">
+          <v-icon name="play" /> Release
         </b-btn>
-        <b-btn variant="info" class="mr-2 mb-1" @click="close">
-          <v-icon name="times" /> Close
+        <b-btn v-else variant="primary" class="mr-2 mb-1" @click="hold">
+          <v-icon name="pause" /> Hold
+        </b-btn>
+        <b-btn variant="info" class="mr-2 mb-1" @click="closed">
+          <v-icon name="times" /> Close - No Action Required
         </b-btn>
       </div>
       <h3 class="mt-2">
+        <span v-if="covid.type === 'NeedHelp'">
+          What they need help with
+        </span>
+        <span v-else>
+          How they can help
+        </span>
+      </h3>
+      <ModCovidInfo :covid="covid" />
+      <h3 class="mt-2">
         Location
       </h3>
+      <NoticeMessage v-if="!(covid.user.privateposition && covid.user.privateposition.length)" variant="danger">
+        We don't have a postcode for this person yet.  We'll send them email reminders for three days.
+      </NoticeMessage>
       <b-row>
         <b-col cols="12" md="6">
           <div class="d-flex justify-content-between">
             <div>
-              <v-icon class="text-muted" name="globe-europe" /> Location on ChitChat
+              <v-icon class="text-muted" name="globe-europe" /> Public location on ChitChat
             </div>
-            <div v-if="user.publiclocation">
-              {{ user.publiclocation.display }}
+            <div v-if="covid.user.publiclocation">
+              {{ covid.user.publiclocation.display }}
             </div>
             <div v-else>
               Unknown
@@ -73,22 +103,80 @@
         <b-col cols="12" md="6">
           <div class="d-flex justify-content-between">
             <div>
-              <v-icon class="text-muted" name="lock" /> Best guess lat/lng
+              <v-icon class="text-muted" name="lock" /> Rough actual location
             </div>
-            <div v-if="user.privateposition">
-              {{ Math.round(user.privateposition.lat * 100) / 100 }}, {{ Math.round(user.privateposition.lng * 100) / 100 }}
-              <a :href="'https://www.google.com/maps?q=' + user.privateposition.lat + ',' + user.privateposition.lng" target="_blank" rel="noopener">Show on map</a>
+            <div v-if="covid.user.privateposition && covid.user.privateposition.length">
+              {{ covid.user.privateposition[0] }}, {{ covid.user.privateposition[1] }}
+              <a :href="'https://www.google.com/maps/place/' + covid.user.privateposition[0] + ',' + covid.user.privateposition[1] + '/@' + covid.user.privateposition[0] + ',' + covid.user.privateposition[1] + ',14z'" target="_blank" rel="noopener">Show on map</a>
             </div>
-            <div v-else>
-              Not known
+            <div v-else class="text-danger">
+              Not known - can't suggest anyone yet
             </div>
           </div>
         </b-col>
       </b-row>
+      <div v-if="covid.type === 'NeedHelp'">
+        <h3 class="mt2">
+          Possible Helpers
+        </h3>
+        <p>
+          Choose around 3 people if possible - ideally the closest plus a couple who are close with good
+          thumbs up/down and kudos (calculated Freegle "reputation" based on their activity).  Click name to view
+          profile.
+        </p>
+        <div v-if="sortedHelpers && sortedHelpers.length">
+          <b-table-simple>
+            <b-tbody>
+              <b-tr>
+                <b-th>
+                  Name
+                </b-th>
+                <b-th>
+                  Miles away
+                </b-th>
+                <b-th>
+                  Info
+                </b-th>
+                <b-th>
+                  Their Response
+                </b-th>
+                <b-th>
+                  Ratings
+                </b-th>
+                <b-th>
+                  Kudos
+                </b-th>
+                <b-th>
+                  Already
+                </b-th>
+                <b-th>
+                  Select
+                </b-th>
+              </b-tr>
+              <ModCovidHelper v-for="helper in sortedHelpers" :key="'helper-' + helper.id" :helpee="covid.user.id" :helper="helper" />
+            </b-tbody>
+          </b-table-simple>
+          <b-btn class="mt-2" size="lg" variant="success" @click="dispatch">
+            <v-icon v-if="dispatching" name="sync" class="fa-spin" />
+            <v-icon v-else-if="dispatched" name="check" />
+            <v-icon v-else name="envelope" />
+            Send suggestions
+          </b-btn>
+          <b-btn class="mt-2 ml-2" size="lg" variant="white" @click="preview">
+            Preview suggestions
+          </b-btn>
+        </div>
+        <p v-else>
+          No helpers found yet.
+        </p>
+      </div>
+      <h3 class="mt-2">
+        Chat as Mod
+      </h3>
       <div v-if="memberships && memberships.length" class="mt-2">
         <div v-for="membership in memberships" :key="'membership-' + membership.id">
           <ChatButton
-            :userid="user.id"
+            :userid="covid.user.id"
             :groupid="membership.id"
             :title="'Chat from ' + membership.nameshort + ' Mods'"
             variant="white"
@@ -144,20 +232,33 @@
         No posting history.
       </p>
     </b-card-body>
-    <ModLogsModal ref="logs" :userid="user.id" />
+    <ModLogsModal ref="logs" :userid="covid.user.id" />
+    <CovidSuggestionsModal :id="covid.id" ref="preview" />
   </b-card>
 </template>
 <script>
+import Vue from 'vue'
+import { TablePlugin } from 'bootstrap-vue'
 import waitForRef from '../mixins/waitForRef'
 import ModSpammer from './ModSpammer'
 import ModLogsModal from './ModLogsModal'
 import ChatButton from './ChatButton'
 import NoticeMessage from './NoticeMessage'
+import Ratings from './Ratings'
+import ModCovidHelper from './ModCovidHelper'
+import ModCovidInfo from './ModCovidInfo'
+import CovidSuggestionsModal from './CovidSuggestionsModal'
+
+Vue.use(TablePlugin)
 
 const SHOW = 3
 
 export default {
   components: {
+    CovidSuggestionsModal,
+    ModCovidInfo,
+    ModCovidHelper,
+    Ratings,
     NoticeMessage,
     ChatButton,
     ModLogsModal,
@@ -165,8 +266,8 @@ export default {
   },
   mixins: [waitForRef],
   props: {
-    user: {
-      type: Object,
+    covidid: {
+      type: Number,
       required: true
     }
   },
@@ -174,16 +275,21 @@ export default {
     return {
       expanded: false,
       showAllMemberships: false,
-      showAllMessageHistories: false
+      showAllMessageHistories: false,
+      dispatching: false,
+      dispatched: false
     }
   },
   computed: {
+    covid() {
+      return this.$store.getters['covid/get'](this.covidid)
+    },
     email() {
       // Depending on which context we're used it, we might or might not have an email returned.
-      let ret = this.user.email
+      let ret = this.covid.user.email
 
-      if (!this.user.email && this.user.emails) {
-        this.user.emails.forEach(e => {
+      if (!this.covid.user.email && this.covid.user.emails) {
+        this.covid.user.emails.forEach(e => {
           if (!e.ourdomain && (!ret || e.preferred)) {
             ret = e.email
           }
@@ -193,8 +299,8 @@ export default {
       return ret
     },
     freegleMemberships() {
-      return this.user && this.user.memberof
-        ? this.user.memberof
+      return this.covid.user && this.covid.user.memberof
+        ? this.covid.user.memberof
             .filter(m => m.type === 'Freegle')
             .sort(function(a, b) {
               return a.nameshort
@@ -216,47 +322,172 @@ export default {
       return ret
     },
     otherEmails() {
-      return this.user.emails.filter(e => {
-        return e.email !== this.user.email && !e.ourdomain
-      })
+      let ret = this.covid.user.emails
+
+      if (ret) {
+        ret = ret.filter(e => {
+          return e.email !== this.covid.user.email && !e.ourdomain
+        })
+      }
+
+      return ret
     },
     messageHistoriesShown() {
       return this.showAllMessageHistories
-        ? this.user.messagehistory
-        : this.user.messagehistory.slice(0, SHOW)
+        ? this.covid.user.messagehistory
+        : this.covid.user.messagehistory.slice(0, SHOW)
     },
     messageHistoriesUnshown() {
       const ret =
-        this.user.messagehistory.length > SHOW
-          ? this.user.messagehistory.length - SHOW
+        this.covid.user.messagehistory.length > SHOW
+          ? this.covid.user.messagehistory.length - SHOW
           : 0
+      return ret
+    },
+    info() {
+      if (this.covid && this.covid.info) {
+        if (this.covid.info === '[]') {
+          return {}
+        } else {
+          return JSON.parse(this.covid.info)
+        }
+      } else {
+        return {}
+      }
+    },
+    helpers() {
+      return this.covid.helpers ? Object.values(this.covid.helpers) : []
+    },
+    sortedHelpers() {
+      const ret = this.helpers
+
+      if (ret) {
+        let mindist = 1000
+
+        ret.forEach(a => {
+          mindist = Math.min(a.distance, mindist)
+        })
+
+        if (ret) {
+          // Sort to put the closest at the top, then the ones with highest kudos.
+          ret.sort((a, b) => {
+            if (a.distance === mindist) {
+              return -1
+            } else if (b.distance === mindist) {
+              return 1
+            } else if (a.kudos && !b.kudos) {
+              return -1
+            } else if (!a.kudos && b.kudos) {
+              return 1
+            } else {
+              return parseInt(b.kudos) - parseInt(a.kudos)
+            }
+          })
+        }
+      }
+
       return ret
     }
   },
   methods: {
-    async profile() {
+    async fetchUser() {
       await this.$store.dispatch('user/fetch', {
-        id: this.id,
+        id: this.covid.userid,
         info: true
       })
-
-      this.$refs.profile.show()
+    },
+    async fetch() {
+      await this.$store.dispatch('covid/fetch', {
+        id: this.covid.id
+      })
+    },
+    async profile() {
+      await this.fetchUser()
+      this.waitForRef('profile', () => {
+        this.$refs.profile.show()
+      })
     },
     logs() {
-      this.$refs.logs.show()
+      this.waitForRef('logs', () => {
+        this.$refs.logs.show()
+      })
     },
     contacted() {
-      this.$api.covid.patch({
-        id: this.user.id,
+      this.$store.dispatch('covid/edit', {
+        id: this.covid.id,
         contacted: new Date().toISOString()
       })
     },
     closed() {
-      this.$api.covid.patch({
-        id: this.user.id,
+      this.$store.dispatch('covid/edit', {
+        id: this.covid.id,
         closed: new Date().toISOString()
       })
+    },
+    hold() {
+      this.$store.dispatch('covid/hold', {
+        id: this.covid.id
+      })
+
+      this.expanded = false
+    },
+    release() {
+      this.$store.dispatch('covid/release', {
+        id: this.covid.id
+      })
+    },
+    expandit() {
+      this.expanded = !this.expanded
+
+      if (this.covid.type === 'NeedHelp') {
+        this.fetch()
+      }
+    },
+    saveInfo() {
+      this.$store.dispatch('covid/edit', {
+        id: this.covid.id,
+        comments: this.covid.comments
+      })
+    },
+    async dispatch() {
+      this.dispatching = true
+
+      await this.$store.dispatch('covid/dispatch', {
+        id: this.covid.id
+      })
+
+      this.dispatching = false
+      this.dispatched = true
+
+      setTimeout(() => {
+        this.dispatched = false
+      }, 5000)
+    },
+    preview() {
+      this.waitForRef('preview', () => {
+        this.$refs.preview.show()
+      })
+    },
+    getClass() {
+      let ret = ''
+
+      if (this.covid.closed) {
+        ret = 'strike'
+      } else if (this.covid.heldby) {
+        ret = 'bg-info'
+      } else if (this.covid.dispatched) {
+        ret = 'bg-white'
+      } else {
+        ret = 'bg-warning'
+      }
+
+      return ret
     }
   }
 }
 </script>
+<style scoped>
+.strike {
+  text-decoration: line-through !important;
+}
+</style>

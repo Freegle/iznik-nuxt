@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="org.ilovefreegle.iphone" ios-CFBundleVersion="226" version="2.0.22" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="org.ilovefreegle.iphone" ios-CFBundleVersion="227" version="2.0.23" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Freegle</name>
     <description>Offer and request free items on your local Freegle reuse group</description>
 
