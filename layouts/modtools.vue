@@ -84,6 +84,9 @@
             <b-dropdown-item>
               <ModMenuItemNav name="Admins" :count="['pendingadmins']" link="/modtools/admins" />
             </b-dropdown-item>
+            <b-dropdown-item>
+              <ModMenuItemNav name="Logs" link="/modtools/logs" />
+            </b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown class="pt-2">
             <template v-slot:button-content>
@@ -115,6 +118,9 @@
             </b-dropdown-item>
             <b-dropdown-item>
               <ModMenuItemNav name="Support" link="/modtools/support" />
+            </b-dropdown-item>
+            <b-dropdown-item>
+              <ModMenuItemNav name="Logs" link="/modtools/logs" />
             </b-dropdown-item>
           </b-nav-item-dropdown>
 
@@ -173,7 +179,7 @@
           <ModMenuItemLeft link="/modtools/admins" name="Admins" count="pendingadmins" />
           <ModMenuItemLeft link="/modtools/spammers" name="Spammers TODO" count="spammerpendingadd" />
           <hr>
-          <ModMenuItemLeft link="/modtools/logs" name="Logs TODO" />
+          <ModMenuItemLeft link="/modtools/logs" name="Logs" />
           <ModMenuItemLeft link="/modtools/support" name="Support" />
           <ModMenuItemLeft link="/modtools/settings" name="Settings TODO" />
           <ModMenuItemLeft link="/modtools/teams" name="Teams" />
