@@ -12,7 +12,7 @@
           There are no logs to show.
         </NoticeMessage>
         <div v-else>
-          <ModLog v-for="log in logs" :key="'log-' + log.id" :user="user" :log="log" />
+          <ModLog v-for="log in logs" :key="'log-' + log.id" :log="log" />
         </div>
         <infinite-loading :key="'infinite-' + userid" @infinite="fetchChunk">
           <span slot="no-results" />
