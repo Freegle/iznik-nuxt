@@ -9,7 +9,7 @@
       <NoticeMessage v-else-if="!myid" variant="info">
         Please log in to view the people who may be able to help.
       </NoticeMessage>
-      <b-btn variant="primary" size="lg" class="mt-1 mb-2" @click="nolonger">
+      <b-btn v-if="!busy" variant="primary" size="lg" class="mt-1 mb-2" @click="nolonger">
         <v-icon v-if="savingnolonger" name="sync" class="fa-spin" />
         <v-icon v-else-if="savednolonger" name="check" />
         <v-icon v-else name="thumbs-up" />
@@ -32,9 +32,10 @@ export default {
   mixins: [buildHead, loginRequired, waitForRef],
   data: function() {
     return {
-      busy: true,
+      busy: false,
       savingnolonger: false,
-      savednolonger: false
+      savednolonger: false,
+      covidid: null
     }
   },
   computed: {
@@ -71,6 +72,12 @@ export default {
       await this.$store.dispatch('covid/fetch', {
         userid: this.myid
       })
+
+      const covid = this.$store.getters['covid/getByUserId'](this.myid)
+
+      this.covidid = covid.id
+      this.phone = covid.phone
+      this.intro = covid.intro
 
       this.busy = false
     },

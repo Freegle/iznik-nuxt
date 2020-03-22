@@ -20,7 +20,7 @@
         <b class="mt-1">Introduce yourself</b>
       </label>
       <b-textarea id="intro" v-model="intro" placeholder="Say a bit about yourself for the person who needs help." class="mt-1 mb-1" rows="3" />
-      <div class="d-flex justify-content-between">
+      <div v-if="!busy" class="d-flex justify-content-between">
         <b-btn variant="success" size="lg" class="mt-1 mb-2" @click="save">
           <v-icon v-if="saving" name="sync" class="fa-spin" />
           <v-icon v-else-if="saved" name="check" />
@@ -58,6 +58,7 @@ export default {
   mixins: [buildHead, loginRequired, waitForRef],
   data: function() {
     return {
+      busy: false,
       type: null,
       phone: null,
       intro: null,
@@ -76,18 +77,27 @@ export default {
       }
     }
   },
-  async mounted() {
-    await this.$store.dispatch('covid/fetch', {
-      userid: this.myid
-    })
-
-    const covid = this.$store.getters['covid/getByUserId'](this.myid)
-
-    this.covidid = covid.id
-    this.phone = covid.phone
-    this.intro = covid.intro
+  mounted() {
+    if (this.myid) {
+      this.fetchCovid()
+    }
   },
   methods: {
+    async fetchCovid() {
+      this.busy = true
+
+      await this.$store.dispatch('covid/fetch', {
+        userid: this.myid
+      })
+
+      const covid = this.$store.getters['covid/getByUserId'](this.myid)
+
+      this.covidid = covid.id
+      this.phone = covid.phone
+      this.intro = covid.intro
+
+      this.busy = false
+    },
     offer() {
       this.waitForRef('infomodal', () => {
         this.$refs.infomodal.show()
