@@ -14,7 +14,7 @@ export default {
   data: function() {
     return {
       distance: 1000,
-      limit: 5,
+      limit: 50,
       show: 0,
       busy: false
     }
