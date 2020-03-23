@@ -17,11 +17,7 @@
         <h5>
           All completely free. Freegle: it's like online dating for stuff.
         </h5>
-        <p class="text-danger font-weight-bold">
-          We're doing our bit for COVID-19.  <nuxt-link to="/covid">
-            Find out more
-          </nuxt-link>
-        </p>
+        <CovidWarning />
         <b-row class="mt-4">
           <b-col class="half-pad-col-right" cols="6" md="5">
             <b-btn block variant="success" class="float-left" size="lg" to="/give">
@@ -107,11 +103,13 @@
 </style>
 
 <script>
+import CovidWarning from '../components/CovidWarning'
 const StoriesLanding = () => import('~/components/StoriesLanding.vue')
 const MainFooter = () => import('~/components/MainFooter.vue')
 
 export default {
   components: {
+    CovidWarning,
     StoriesLanding,
     MainFooter
   },

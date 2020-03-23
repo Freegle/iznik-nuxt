@@ -4,6 +4,7 @@
       <b-col cols="12" lg="6" class="p-0" offset-lg="3">
         <div>
           <h1>Volunteer Opportunities</h1>
+          <CovidWarning />
           <p>Are you a charity or good cause that needs volunteers? Ask our lovely community of freeglers to help.</p>
           <b-row class="mb-3">
             <b-col>
@@ -41,6 +42,7 @@
 
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
+import CovidWarning from '../../components/CovidWarning'
 import loginOptional from '@/mixins/loginOptional.js'
 import createGroupRoute from '@/mixins/createGroupRoute'
 import buildHead from '@/mixins/buildHead.js'
@@ -53,6 +55,7 @@ const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
+    CovidWarning,
     InfiniteLoading,
     GroupSelect,
     VolunteerOpportunity,
