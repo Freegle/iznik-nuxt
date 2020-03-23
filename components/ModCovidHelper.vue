@@ -4,6 +4,10 @@
       <a :href="'https://www.ilovefreegle.org/profile/' + helper.id" target="_blank">
         {{ helper.displayname }}
       </a>
+      <br>
+      <span class="text-muted small">
+        Joined {{ helper.added | timeago }}
+      </span>
     </b-td>
     <b-td>
       {{ (Math.round(helper.distance * 10) / 10) | pluralize('mile', { includeNumber: true }) }}
