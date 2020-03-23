@@ -1,34 +1,25 @@
 <template>
   <div class="d-flex justify-content-center">
     <div class="disclaimer__container px-3 bg-white">
-      <h1>
-        COVID-19 - Next Step
-      </h1>
-      <CovidSuggestions v-if="id" :id="id" />
-      <b-img v-else-if="busy" src="~/static/loader.gif" alt="Loading" />
-      <NoticeMessage v-else-if="!myid" variant="info">
-        Please log in to view the people who may be able to help.
+      <NoticeMessage variant="danger">
+        <p>
+          We are sorry to say that in the light of the Government's announcement on 23rd March, we are suspending
+          our COVID-19 assistance service.  If you are vulnerable, please register using the Government scheme
+          <a href="https://www.gov.uk/coronavirus-extremely-vulnerable">here</a>.
+        </p>
       </NoticeMessage>
-      <b-btn v-if="!busy" variant="primary" size="lg" class="mt-1 mb-2" @click="nolonger">
-        <v-icon v-if="savingnolonger" name="sync" class="fa-spin" />
-        <v-icon v-else-if="savednolonger" name="check" />
-        <v-icon v-else name="thumbs-up" />
-        I no longer need help
-      </b-btn>
-      <p>If you have problems with this page please mail us at <a href="mailto:covid19@ilovefreegle.org">covid19@ilovefreegle.org</a></p>
     </div>
   </div>
 </template>
 
 <script>
-import CovidSuggestions from '../../components/CovidSuggestions'
 import NoticeMessage from '../../components/NoticeMessage'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
 import waitForRef from '@/mixins/waitForRef'
 
 export default {
-  components: { NoticeMessage, CovidSuggestions },
+  components: { NoticeMessage },
   mixins: [buildHead, loginRequired, waitForRef],
   data: function() {
     return {
