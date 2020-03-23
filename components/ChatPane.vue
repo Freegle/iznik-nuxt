@@ -7,23 +7,29 @@
         <span v-else>this account </span>
       </h3>
       <p>
-        This usually happens if you have two different accounts on Freegle.  We can merge your
-        accounts or help you work out what's going on.
+        Please change your email from <nuxt-link to="/settings">
+          Settings
+        </nuxt-link> if necessary - we'll
+        merge your accounts.
       </p>
-      <div v-if="me && urlid">
-        <b-btn variant="success" class="mb-2" size="lg" :href="'mailto:support@ilovefreegle.org?subject=I may have two acounts (#' + myid + ' and #' + urlid + ')&body=Please can you help?  My main email address is...'">
-          Contact our Support Volunteers
-        </b-btn>
-        <p>
-          If that button doesn't work then please mail support@ilovefreegle.org.  Please copy and paste this and send it to them:
-        </p>
-        <p>
-          <b>#{{ me.id }} and #{{ urlid }}</b>
-        </p>
-        <p>
-          Please also let them know your main email address.
-        </p>
-      </div>
+      <!--      <p>-->
+      <!--        This usually happens if you have two different accounts on Freegle.  We can merge your-->
+      <!--        accounts or help you work out what's going on.-->
+      <!--      </p>-->
+      <!--      <div v-if="me && urlid">-->
+      <!--        <b-btn variant="success" class="mb-2" size="lg" :href="'mailto:support@ilovefreegle.org?subject=I may have two acounts (#' + myid + ' and #' + urlid + ')&body=Please can you help?  My main email address is...'">-->
+      <!--          Contact our Support Volunteers-->
+      <!--        </b-btn>-->
+      <!--        <p>-->
+      <!--          If that button doesn't work then please mail support@ilovefreegle.org.  Please copy and paste this and send it to them:-->
+      <!--        </p>-->
+      <!--        <p>-->
+      <!--          <b>#{{ me.id }} and #{{ urlid }}</b>-->
+      <!--        </p>-->
+      <!--        <p>-->
+      <!--          Please also let them know your main email address.-->
+      <!--        </p>-->
+      <!--      </div>-->
     </b-alert>
     <div v-else-if="me">
       <client-only>
