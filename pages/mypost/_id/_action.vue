@@ -6,52 +6,7 @@
           <b-img-lazy src="~/static/loader.gif" alt="Loading" />
         </div>
         <div v-if="message">
-          <MyMessage
-            v-if="message.fromuser && me && message.fromuser.id === me.id"
-            :key="bump"
-            :message="message"
-            :messages="[ message ]"
-            :show-old="true"
-            :expand="true"
-            :action="action"
-          />
-          <b-alert v-else variant="warning" class="mt-2" show>
-            <h3>That post wasn't made from {{ me.email }}.</h3>
-            <h5>{{ message.subject }}</h5>
-            <p>
-              Please change your email from <nuxt-link to="/settings">
-                Settings
-              </nuxt-link> if necessary - we'll
-              merge your accounts.
-            </p>
-            <!--            <p>-->
-            <!--              This can happen if you have two different accounts on Freegle.  We can merge your accounts or help-->
-            <!--              you work out what is going on.-->
-            <!--            </p>-->
-            <!--            <b-btn variant="success" class="mb-2" size="lg" :href="'mailto:support@ilovefreegle.org?subject=I may have two acounts (Message #' + message.id + ', logged in as id #' + myid + ')&body=Please can you help?  My main email address is...'">-->
-            <!--              Contact our Support Volunteers-->
-            <!--            </b-btn>-->
-            <!--            <p>-->
-            <!--              If that button doesn't work then please mail support@ilovefreegle.org.  Please copy and paste this and send it to them:-->
-            <!--            </p>-->
-            <!--            <p>-->
-            <!--              <b>Message#{{ message.id }}, logged in as {{ me.email }}</b>-->
-            <!--            </p>-->
-            <!--            <p>-->
-            <!--              Please also let them know your main email address.-->
-            <!--            </p>-->
-          </b-alert>
-        </div>
-        <div v-if="missing">
-          <NoticeMessage variant="danger" class="mt-1">
-            Sorry, we couldn't find that message.  Perhaps it's been deleted, or perhaps the link you clicked on is
-            wrong?
-          </NoticeMessage>
-          <div class="text-center">
-            <b-btn variant="white" size="lg" class="mt-2" to="/myposts">
-              Go to My Posts <v-icon name="angle-double-right" />
-            </b-btn>
-          </div>
+          <CovidWarning />
         </div>
       </b-col>
     </b-row>
@@ -59,16 +14,14 @@
   </b-container>
 </template>
 <script>
-import NoticeMessage from '../../../components/NoticeMessage'
+import CovidWarning from '../../../components/CovidWarning'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
-const MyMessage = () => import('~/components/MyMessage.vue')
 const DonationAskModal = () => import('~/components/DonationAskModal')
 
 export default {
   components: {
-    NoticeMessage,
-    MyMessage,
+    CovidWarning,
     DonationAskModal
   },
   mixins: [loginRequired, buildHead],
