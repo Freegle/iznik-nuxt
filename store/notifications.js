@@ -134,7 +134,7 @@ export const actions = {
     // No need to clear the timeout
     setTimeout(() => {
       dispatch('updateNotifications')
-    }, 20000)
+    }, 30000)
   },
 
   clear({ commit }) {
