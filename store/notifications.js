@@ -132,7 +132,9 @@ export const actions = {
 
     // Continuously check for updated notifications
     // No need to clear the timeout
-    setTimeout(this.updateNotifications, 30000)
+    setTimeout(() => {
+      dispatch('updateNotifications')
+    }, 20000)
   },
 
   clear({ commit }) {
