@@ -1,48 +1,13 @@
 <template>
   <div class="d-flex justify-content-center">
     <div class="disclaimer__container px-3 bg-white">
-      <h1 class="text-center">
-        COVID-19 - Next Step
-      </h1>
-      <p>
-        Thanks so much for offering to help.  We want to make sure we do this safely, especially since people
-        will be more vulnerable just now.
-      </p>
-      <p>
-        We would like a contact phone number and a little introduction about yourself.  We will pass this on to
-        people near you who we think need help.
-      </p>
-      <label for="phone">
-        <b>Contact phone number</b>
-      </label>
-      <b-input id="phone" v-model="phone" type="tel" placeholder="Please enter a contact phone number" class="mb-1" />
-      <label for="intro">
-        <b class="mt-1">Introduce yourself</b>
-      </label>
-      <b-textarea id="intro" v-model="intro" placeholder="Say a bit about yourself for the person who needs help." class="mt-1 mb-1" rows="3" />
-      <div v-if="!busy" class="d-flex justify-content-between">
-        <b-btn variant="success" size="lg" class="mt-1 mb-2" @click="save">
-          <v-icon v-if="saving" name="sync" class="fa-spin" />
-          <v-icon v-else-if="saved" name="check" />
-          <v-icon v-else name="save" />
-          Save
-        </b-btn>
-        <b-btn variant="primary" size="lg" class="mt-1 mb-2" @click="nolonger">
-          <v-icon v-if="savingnolonger" name="sync" class="fa-spin" />
-          <v-icon v-else-if="savednolonger" name="check" />
-          <v-icon v-else name="save" />
-          No longer available
-        </b-btn>
-      </div>
-      <NoticeMessage v-if="saved" variant="info">
-        Thanks, we'll be in touch.  Please be patient - we'll all be dealing with this for a while, and we're
-        trying to build a list of people who can help over the next few weeks, not just
-        this afternoon.
+      <NoticeMessage variant="danger">
+        <p>
+          We are sorry to say that in the light of the Government's announcement on 23rd March, we are suspending
+          our COVID-19 assistance service.  If you are vulnerable, please register using the Government scheme
+          <a href="https://www.gov.uk/coronavirus-extremely-vulnerable">here</a>.
+        </p>
       </NoticeMessage>
-      <hr>
-      <p>
-        Freegle won't use this for anything else and we'll delete it all once this is all over.
-      </p>
     </div>
   </div>
 </template>
