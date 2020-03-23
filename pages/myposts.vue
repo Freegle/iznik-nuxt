@@ -5,6 +5,7 @@
         <SidebarLeft :show-community-events="true" :show-bot-left="true" />
       </b-col>
       <b-col cols="12" lg="6" class="p-0">
+        <CovidWarning />
         <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" :chats="me.expectedchats" />
         <JobsTopBar />
         <b-card
@@ -192,6 +193,7 @@
 </template>
 
 <script>
+import CovidWarning from '../components/CovidWarning'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
 import waitForRef from '@/mixins/waitForRef'
@@ -207,6 +209,7 @@ const ExpectedRepliesWarning = () =>
 
 export default {
   components: {
+    CovidWarning,
     JobsTopBar,
     MyMessage,
     SidebarLeft,

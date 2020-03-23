@@ -43,6 +43,7 @@
           </b-row>
         </div>
         <div v-else>
+          <CovidWarning />
           <message v-if="message" ref="message" v-bind="message" :start-expanded="true" hide-close />
         </div>
       </b-col>
@@ -54,6 +55,7 @@
 </style>
 <script>
 import NoticeMessage from '../../components/NoticeMessage'
+import CovidWarning from '../../components/CovidWarning'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 import twem from '~/assets/js/twem'
@@ -62,6 +64,7 @@ const Message = () => import('~/components/Message.vue')
 
 export default {
   components: {
+    CovidWarning,
     NoticeMessage,
     Message
   },

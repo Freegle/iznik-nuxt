@@ -4,6 +4,7 @@
       <b-col cols="12" lg="6" class="p-0" offset-lg="3">
         <div>
           <h1>Community Events</h1>
+          <CovidWarning />
           <p>These are local events, posted by other freeglers like you.</p>
           <b-row class="mb-3">
             <b-col>
@@ -40,6 +41,7 @@
 </template>
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
+import CovidWarning from '../../components/CovidWarning'
 import loginOptional from '@/mixins/loginOptional.js'
 import createGroupRoute from '@/mixins/createGroupRoute'
 import buildHead from '@/mixins/buildHead.js'
@@ -51,6 +53,7 @@ const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
+    CovidWarning,
     InfiniteLoading,
     GroupSelect,
     CommunityEvent,

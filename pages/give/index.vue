@@ -14,6 +14,7 @@
             <postcode class="justify-content-center" @selected="postcodeSelect" @cleared="postcodeClear" />
           </b-col>
         </b-row>
+        <CovidWarning class="mt-2" />
         <transition name="fade">
           <b-row v-if="postcode">
             <b-col class="text-center">
@@ -79,6 +80,7 @@ select {
 
 <script>
 import NoticeMessage from '../../components/NoticeMessage'
+import CovidWarning from '../../components/CovidWarning'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 
@@ -89,6 +91,7 @@ const WizardProgress = () => import('~/components/WizardProgress')
 export default {
   options: () => {},
   components: {
+    CovidWarning,
     NoticeMessage,
     Postcode,
     ComposeGroup,
