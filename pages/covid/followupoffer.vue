@@ -70,8 +70,9 @@ export default {
     }
   },
   watch: {
-    me(newme) {
+    async me(newme) {
       const type = this.$store.getters['misc/get']('covid')
+      await this.fetchCovid()
       if (newme && type) {
         this.record(type)
       }
@@ -93,6 +94,7 @@ export default {
       const covid = this.$store.getters['covid/getByUserId'](this.myid)
 
       this.covidid = covid.id
+      console.log('Fetched covid', this.covidid)
       this.phone = covid.phone
       this.intro = covid.intro
 
@@ -105,6 +107,8 @@ export default {
     },
     async save() {
       this.saving = true
+
+      console.log('Save with ', this.covidid)
 
       await this.$store.dispatch('covid/edit', {
         id: this.covidid,

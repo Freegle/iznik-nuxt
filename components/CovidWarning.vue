@@ -34,20 +34,20 @@ export default {
   components: { DonationButton, NoticeMessage },
   computed: {
     show() {
-      return this.$store.getters['misc/get']('covidwarning')
+      return !this.$store.getters['misc/get']('hidecovidwarning')
     }
   },
   methods: {
     hideit() {
       this.$store.dispatch('misc/set', {
-        key: 'covidwarning',
-        value: false
+        key: 'hidecovidwarning',
+        value: true
       })
     },
     showit() {
       this.$store.dispatch('misc/set', {
-        key: 'covidwarning',
-        value: true
+        key: 'hidecovidwarning',
+        value: false
       })
     }
   }

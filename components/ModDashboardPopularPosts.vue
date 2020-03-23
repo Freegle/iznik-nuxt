@@ -27,12 +27,12 @@
             <b-col cols="8" sm="6" class="text-success font-weight-bold">
               {{ msg.subject }}
             </b-col>
-            <b-col cols="6">
+            <b-col cols="6" sm="2">
               <div>
                 <v-icon name="eye" /> {{ msg.views | pluralize('view', { includeNumber: true }) }}
               </div>
             </b-col>
-            <b-col cols="6">
+            <b-col cols="6" sm="2">
               <div>
                 <v-icon name="reply" /> {{ msg.replies | pluralize(['reply', 'replies'], { includeNumber: true }) }}
               </div>
