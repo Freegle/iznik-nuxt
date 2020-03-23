@@ -23,7 +23,7 @@
     </p>
     <DonationButton link="paypal1" show="£1/month" monthly />
   </NoticeMessage>
-  <div v-else class="text-danger float-right clickme" @click="showit">
+  <div v-else class="text-danger text-right clickme" @click="showit">
     Show COVID-19 warning.
   </div>
 </template>
