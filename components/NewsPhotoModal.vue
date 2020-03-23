@@ -125,7 +125,7 @@ export default {
       this.rotate(-90)
     },
     brokenImage(event) {
-      event.target.src = '/static/placeholder.jpg'
+      event.target.src = require('~/static/placeholder.jpg')
     }
   }
 }

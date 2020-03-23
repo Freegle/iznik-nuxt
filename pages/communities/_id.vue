@@ -5,6 +5,7 @@
         <SidebarLeft :show-community-events="true" :show-bot-left="true" />
       </b-col>
       <b-col cols="12" lg="6" class="p-0">
+        <CovidWarning />
         <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" :chats="me.expectedchats" />
         <Viewed v-if="!simple" class="mb-1" />
         <JobsTopBar />
@@ -63,6 +64,7 @@
 import InfiniteLoading from 'vue-infinite-loading'
 import GroupSelect from '../../components/GroupSelect'
 import Viewed from '../../components/Viewed'
+import CovidWarning from '../../components/CovidWarning'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
 import createGroupRoute from '@/mixins/createGroupRoute'
@@ -77,6 +79,7 @@ const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
+    CovidWarning,
     NoticeMessage,
     Viewed,
     GroupSelect,

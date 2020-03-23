@@ -12,16 +12,19 @@
 
 import ActivityAPI from './ActivityAPI.js'
 import AddressAPI from './AddressAPI.js'
+import AdminsAPI from './AdminsAPI.js'
 import AuthorityAPI from './AuthorityAPI.js'
 import BanditAPI from './BanditAPI.js'
 import ChatAPI from './ChatAPI.js'
 import CommentAPI from './CommentAPI.js'
 import CommunityEventAPI from './CommunityEventAPI.js'
+import CovidAPI from './CovidAPI.js'
 import DashboardAPI from './DashboardAPI.js'
 import DonationsAPI from './DonationsAPI.js'
 import GroupAPI from './GroupAPI.js'
 import InvitationAPI from './InvitationAPI.js'
 import JobAPI from './JobAPI.js'
+import LogsAPI from './LogsAPI.js'
 import MembershipsAPI from './MembershipsAPI.js'
 import MergeAPI from './MergeAPI.js'
 import MessageAPI from './MessageAPI.js'
@@ -43,16 +46,19 @@ import VolunteeringAPI from './VolunteeringAPI.js'
 interface API {
   activity: ActivityAPI;
   address: AddressAPI;
+  admins: AdminsAPI;
   authority: AuthorityAPI;
   bandit: BanditAPI;
   chat: ChatAPI;
   comment: CommentAPI;
   communityevent: CommunityEventAPI;
+  covid: CovidAPI;
   dashboard: DashboardAPI;
   donations: DonationsAPI;
   group: GroupAPI;
   invitation: InvitationAPI;
   job: JobAPI;
+  logs: LogsAPI;
   memberships: MembershipsAPI;
   merge: MergeAPI;
   message: MessageAPI;

@@ -126,6 +126,9 @@
                 :state="validationEnabled ? !$v.groupid.$invalid : null"
               >
                 <groupRememberSelect v-model="groupid" remember="editopportunity" :systemwide="true" />
+                <NoticeMessage v-if="groupid === -2" variant="danger" class="mt-1">
+                  This is a national volunteer opportunity which will go out to all communities. Please review carefully.
+                </NoticeMessage>
                 <b-form-invalid-feedback>
                   Please select a community
                 </b-form-invalid-feedback>
@@ -340,14 +343,14 @@
         <b-button v-if="!editing" variant="white" class="float-right" :disabled="uploadingPhoto" @click="cancel">
           Close
         </b-button>
-        <b-button v-if="editing" variant="white" class="float-right" :disabled="uploadingPhoto" @click="dontSave">
-          Cancel
-        </b-button>
         <b-button v-if="editing" variant="success" class="float-right" :disabled="uploadingPhoto" @click="saveIt">
           <v-icon v-if="saving" name="sync" class="fa-spin" />
           <v-icon v-else name="save" />
           <span v-if="volunteering.id">Save Changes</span>
           <span v-else>Add Opportunity</span>
+        </b-button>
+        <b-button v-if="editing" variant="white" class="float-right mr-1" :disabled="uploadingPhoto" @click="dontSave">
+          Cancel
         </b-button>
       </div>
     </template>

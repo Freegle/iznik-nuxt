@@ -1,5 +1,5 @@
 <template>
-  <span title="Platform Status - click for more info" @click="clicked">
+  <span title="Platform Status - click for more info" class="clickme" @click="clicked">
     <span v-if="!tried" class="trying" />
     <span v-else-if="error" class="error" />
     <span v-else-if="warning" class="warning" />

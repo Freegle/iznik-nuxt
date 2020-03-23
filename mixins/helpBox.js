@@ -1,6 +1,8 @@
 export default {
-  data: {
-    id: null
+  data: function() {
+    return {
+      id: null
+    }
   },
   computed: {
     helpKey() {

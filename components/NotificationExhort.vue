@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     brokenImage(event) {
-      event.target.src = '/static/defaultprofile.png'
+      event.target.src = require('~/static/defaultprofile.png')
     }
   }
 }

@@ -58,10 +58,10 @@
         <b-navbar-nav class="w-100 d-flex d-sm-none justify-content-between ml-sm-auto pr-1">
           <b-nav-item-dropdown class="pt-2">
             <template v-slot:button-content>
-              <ModMenuItemNav :count="['pending', 'chatreview']" icon="envelope" count-on-top />
+              <ModMenuItemNav :count="['pending', 'chatreview', 'pendingevents', 'pendingvolunteering', 'pendingadmins']" icon="envelope" count-on-top />
             </template>
             <b-dropdown-item>
-              <ModMenuItemNav name="Pending" :count="['pending']" :othercount="['pending']" link="/modtools/messages/pending" />
+              <ModMenuItemNav name="Pending" :count="['pending']" :othercount="['pendingother']" link="/modtools/messages/pending" />
             </b-dropdown-item>
             <b-dropdown-item>
               <ModMenuItemNav name="Approved" link="/modtools/messages/approved" />
@@ -74,6 +74,18 @@
             </b-dropdown-item>
             <b-dropdown-item>
               <ModMenuItemNav name="Chat Review" :count="['chatreview']" link="/modtools/chats/review" />
+            </b-dropdown-item>
+            <b-dropdown-item>
+              <ModMenuItemNav name="Events" :count="['pendingevents']" link="/modtools/communityevents" />
+            </b-dropdown-item>
+            <b-dropdown-item>
+              <ModMenuItemNav name="Volunteering" :count="['pendingvolunteering']" link="/modtools/volunteering" />
+            </b-dropdown-item>
+            <b-dropdown-item>
+              <ModMenuItemNav name="Admins" :count="['pendingadmins']" link="/modtools/admins" />
+            </b-dropdown-item>
+            <b-dropdown-item>
+              <ModMenuItemNav name="Logs" link="/modtools/logs" />
             </b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown class="pt-2">
@@ -100,6 +112,15 @@
             </b-dropdown-item>
             <b-dropdown-item>
               <ModMenuItemNav name="Publicity" :count="['socialactions']" href="/modtools/publicity" />
+            </b-dropdown-item>
+            <b-dropdown-item>
+              <ModMenuItemNav name="Teams" link="/modtools/teams" />
+            </b-dropdown-item>
+            <b-dropdown-item>
+              <ModMenuItemNav name="Support" link="/modtools/support" />
+            </b-dropdown-item>
+            <b-dropdown-item>
+              <ModMenuItemNav name="Logs" link="/modtools/logs" />
             </b-dropdown-item>
           </b-nav-item-dropdown>
 
@@ -144,17 +165,26 @@
           </div>
           <ModMenuItemLeft link="/modtools/members/pending" name="Pending" count="pendingmembers" othercount="pendingmembersother" indent />
           <ModMenuItemLeft link="/modtools/members/approved" name="Approved" indent />
-          <ModMenuItemLeft link="/modtools/members/review" name="Review" count="spammembers" othercount="spammembersother" indent />
+          <ModMenuItemLeft link="/modtools/members/review" name="Member Review" count="spammembers" othercount="spammembersother" indent />
+          <ModMenuItemLeft link="/modtools/chats/review" name="Chat Review" count="chatreview" indent />
           <ModMenuItemLeft link="/modtools/members/related" name="Related" count="relatedmembers" indent />
           <ModMenuItemLeft link="/modtools/members/stories" name="Stories" indent count="stories" />
           <ModMenuItemLeft v-if="hasPermissionNewsletter" link="/modtools/members/newsletter" name="Newsletter" indent count="newsletterstories" />
+          <ModMenuItemLeft link="/modtools/happieness" name="Happiness TODO" indent />
           <hr>
-          <div class="pl-1">
-            Chat
-          </div>
-          <ModMenuItemLeft link="/modtools/chats/review" name="Review" count="chatreview" indent />
           <hr>
+          <ModMenuItemLeft link="/modtools/communityevents" name="Events" count="pendingevents" />
+          <ModMenuItemLeft link="/modtools/volunteering" name="Volunteering" count="pendingvolunteering" />
           <ModMenuItemLeft link="/modtools/publicity" name="Publicity" count="socialactions" />
+          <ModMenuItemLeft link="/modtools/admins" name="Admins" count="pendingadmins" />
+          <ModMenuItemLeft link="/modtools/spammers" name="Spammers TODO" count="spammerpendingadd" />
+          <hr>
+          <ModMenuItemLeft link="/modtools/logs" name="Logs" />
+          <ModMenuItemLeft link="/modtools/support" name="Support" />
+          <ModMenuItemLeft link="/modtools/settings" name="Settings TODO" />
+          <ModMenuItemLeft link="/modtools/teams" name="Teams" />
+          <ModMenuItemLeft link="/modtools/covid" name="COVID-19" />
+          <a href="https://discourse.ilovefreegle.org" rel="noopener noreferrer" target="_blank" class="pl-1">Help</a>
         </div>
         <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent flex-grow-1" />
       </div>
@@ -288,8 +318,33 @@ export default {
   },
 
   head() {
-    // TODO Counts
-    const totalCount = this.chatCount
+    let totalCount = this.chatCount
+
+    const work = this.$store.getters['auth/work']
+
+    // All the types of work which are worth nagging about.
+    for (const key of [
+      'pendingvolunteering',
+      'spammerpendingadd',
+      'spammerpendingremove',
+      'socialactions',
+      'chatreview',
+      'relatedmembers',
+      'stories',
+      'newsletterstories',
+      'pending',
+      'spam',
+      'pendingmembers',
+      'pendingevents',
+      'spammembers',
+      'editreview',
+      'pendingadmins'
+    ]) {
+      if (work[key]) {
+        totalCount += work[key]
+      }
+    }
+
     return {
       titleTemplate: totalCount > 0 ? `(${totalCount}) ModTools` : 'ModTools',
       link: [
@@ -402,7 +457,7 @@ body.modal-open {
   height: 100vh;
   min-width: 200px;
   padding-top: 68px;
-  font-size: 1.4em;
+  font-size: 1.2em;
   background-color: $color-modtools-leftmenu-bg;
 
   a {

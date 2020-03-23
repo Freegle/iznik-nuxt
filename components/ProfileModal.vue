@@ -1,6 +1,6 @@
 <template>
   <b-modal
-    v-if="id && user"
+    v-if="id && user && user.info"
     id="profilemodal"
     v-model="showModal"
     size="lg"
@@ -10,7 +10,7 @@
       <div class="m-0 coverphoto">
         <b-media>
           <template slot="aside">
-            <b-img lazy :src="user.profile.url" class="coverprofileimage" />
+            <ProfileImage :image="user.profile.url" class="mr-1 ml-1 mb-1 mt-1 inline" is-thumbnail size="xl" />
           </template>
           <b-media-body class="align-top">
             <h4 class="d-inline-block w-100 overflow-hidden">
@@ -38,7 +38,7 @@
                 class="mb-1 mt-1"
                 @click="hide"
               />
-              <ratings size="sm" v-bind="user" class="pt-1 mt-1" />
+              <ratings :id="user.id" size="sm" class="pt-1 mt-1" />
             </h4>
           </b-media-body>
         </b-media>
@@ -48,7 +48,7 @@
       <notice-message v-if="user.info.expectedreply" variant="warning">
         <v-icon name="exclamation-triangle" />&nbsp;{{ user.info.expectedreply | pluralize(['freegler is', 'freeglers are'], { includeNumber: true }) }} still waiting for them to reply.
       </notice-message>
-      <notice-message v-else-if="userHasReneged" variant="warning">
+      <notice-message v-else-if="user.hasReneged" variant="warning">
         <v-icon name="exclamation-triangle" />&nbsp;Things haven't always worked out for this freegler.  That might not be their fault, but please make very clear arrangements.
       </notice-message>
       <div v-if="aboutme" class="mb-1">
@@ -126,6 +126,66 @@
   </b-modal>
 </template>
 
+<script>
+import twem from '~/assets/js/twem'
+import ProfileImage from '~/components/ProfileImage'
+
+const Ratings = () => import('~/components/Ratings')
+const ReplyTime = () => import('~/components/ReplyTime')
+const ChatButton = () => import('~/components/ChatButton.vue')
+const NoticeMessage = () => import('~/components/NoticeMessage')
+
+export default {
+  components: {
+    Ratings,
+    ReplyTime,
+    ChatButton,
+    NoticeMessage,
+    ProfileImage
+  },
+  props: {
+    id: {
+      type: Number,
+      required: false,
+      default: 0
+    }
+  },
+  data: function() {
+    return {
+      showModal: false
+    }
+  },
+  computed: {
+    user() {
+      const ret = this.id ? this.$store.getters['user/get'](this.id) : null
+      return ret
+    },
+    aboutme() {
+      return this.user && this.user.info && this.user.info.aboutme
+        ? twem.twem(this.$twemoji, this.user.info.aboutme.text)
+        : null
+    }
+  },
+  async mounted() {
+    // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
+    // need to render this pane on the server.
+    await this.$store.dispatch('user/fetch', {
+      id: this.id,
+      info: true
+    })
+  },
+  methods: {
+    show() {
+      this.showModal = true
+    },
+
+    hide() {
+      this.showModal = false
+    }
+  }
+}
+</script>
+
 <style scoped lang="scss">
 @import 'color-vars';
 
@@ -151,15 +211,6 @@
   /*margin: 10px;*/
 }
 
-.coverprofileimage {
-  margin-top: 1px;
-  margin-left: 1px;
-  width: 98px;
-  height: 98px;
-  border-radius: 98px;
-  border: 3px solid $color-white;
-}
-
 .covername {
   left: 108px;
   position: absolute;
@@ -169,64 +220,3 @@
   padding-right: 10px;
 }
 </style>
-
-<script>
-import twem from '~/assets/js/twem'
-
-const Ratings = () => import('~/components/Ratings')
-const ReplyTime = () => import('~/components/ReplyTime')
-const ChatButton = () => import('~/components/ChatButton.vue')
-const NoticeMessage = () => import('~/components/NoticeMessage')
-
-export default {
-  components: {
-    Ratings,
-    ReplyTime,
-    ChatButton,
-    NoticeMessage
-  },
-  props: {
-    id: {
-      type: Number,
-      required: false,
-      default: 0
-    }
-  },
-  data: function() {
-    return {
-      showModal: false
-    }
-  },
-  computed: {
-    user() {
-      const ret = this.id ? this.$store.getters['user/get'](this.id) : null
-      return ret
-    },
-    aboutme() {
-      return this.user && this.user.info && this.user.info.aboutme
-        ? twem.twem(this.$twemoji, this.user.info.aboutme.text)
-        : null
-    },
-    userHasReneged() {
-      return this.$store.getters['user/userHasReneged'](this.id)
-    }
-  },
-  async mounted() {
-    // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
-    // need to render this pane on the server.
-    await this.$store.dispatch('user/fetch', {
-      id: this.id,
-      info: true
-    })
-  },
-  methods: {
-    show() {
-      this.showModal = true
-    },
-
-    hide() {
-      this.showModal = false
-    }
-  }
-}
-</script>

@@ -86,7 +86,7 @@ export default {
       required: false,
       default: false
     },
-    acceptedits: {
+    approveedits: {
       type: Boolean,
       required: false,
       default: false
@@ -136,8 +136,8 @@ export default {
       } else if (this.release) {
         // Standard release button - no modal.
         this.releaseIt()
-      } else if (this.acceptedits) {
-        this.acceptEdits()
+      } else if (this.approveedits) {
+        this.approveEdits()
       } else if (this.revertedits) {
         this.revertEdits()
       } else {
@@ -209,8 +209,8 @@ export default {
         id: this.message.id
       })
     },
-    acceptEdits() {
-      this.$store.dispatch('messages/acceptedits', {
+    approveEdits() {
+      this.$store.dispatch('messages/approveedits', {
         id: this.message.id
       })
     },

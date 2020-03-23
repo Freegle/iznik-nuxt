@@ -2,7 +2,7 @@
   <div>
     <b-row class="pb-1">
       <b-col>
-        <div v-if="chatmessage.userid != $store.state.auth.user.id" class="media">
+        <div v-if="chatmessage.userid != myid" class="media">
           <b-card border-variant="success">
             <b-card-title>
               <b-img
@@ -16,12 +16,14 @@
                 width="70px"
                 @error.native="brokenImage"
               />
-              <ProfileImage :image="otheruser.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
-              <span class="small black"><b>{{ otheruser.displayname }}</b> has
-                <span v-if="refmsg && refmsg.type === 'Offer'">asked</span>
-                <span v-else>replied</span>
-                about:
-              </span>
+              <div v-if="otheruser">
+                <ProfileImage :image="otheruser.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
+                <span class="small black"><b>{{ otheruser.displayname }}</b> has
+                  <span v-if="refmsg && refmsg.type === 'Offer'">asked</span>
+                  <span v-else>replied</span>
+                  about:
+                </span>
+              </div>
               <br>
               <h4>
                 {{ refmsg.subject }}

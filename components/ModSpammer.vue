@@ -1,7 +1,7 @@
 <template>
-  <NoticeMessage :variant="user.spammer.collection === 'Whitelisted' ? 'success' : 'warning'" class="mb-1">
+  <NoticeMessage :variant="variant" class="mb-1">
     <div>
-      {{ user.spammer.collection }}: {{ user.spammer.reason }}
+      {{ collname }}: {{ user.spammer.reason }}
     </div>
     <div class="small">
       Added by #{{ user.spammer.byuserid }} {{ user.spammer.added | timeago }}
@@ -16,6 +16,39 @@ export default {
     user: {
       type: Object,
       required: true
+    }
+  },
+  computed: {
+    variant() {
+      switch (this.user.spammer.collection) {
+        case 'Spammer': {
+          return 'danger'
+        }
+        case 'Whitelisted': {
+          return 'success'
+        }
+        default: {
+          return 'warning'
+        }
+      }
+    },
+    collname() {
+      switch (this.user.spammer.collection) {
+        case 'Spammer': {
+          return 'Confirmed Spammer'
+        }
+        case 'Whitelisted': {
+          return 'Whitelisted'
+        }
+        case 'PendingAdd': {
+          return 'Unconfirmed Spammer'
+        }
+        case 'PendingRemove': {
+          return 'Disputed Spammer'
+        }
+        default:
+          return this.user.spammer.collection
+      }
     }
   }
 }

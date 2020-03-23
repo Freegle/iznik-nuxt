@@ -17,14 +17,14 @@
       <b-card no-body>
         <b-card-body>
           <b-row v-for="user in UsersPosting" :key="'popular-' + user.id">
-            <b-col cols="2" class="text-nowrap">
+            <b-col cols="4" md="3" class="text-nowrap">
               <v-icon name="hashtag" scale="0.75" class="text-muted" />{{ user.id }}
             </b-col>
-            <b-col cols="6" class="text-success font-weight-bold">
+            <b-col cols="8" md="6" class="text-success font-weight-bold">
               <ProfileImage :image="user.profile.turl" is-thumbnail size="sm" :is-moderator="user.systemrole === 'Moderator' || user.systemrole === 'Support' || user.systemrole === 'Admin'" />
               {{ user.displayname }}
             </b-col>
-            <b-col cols="2">
+            <b-col cols="12" md="3">
               {{ user.posts | pluralize('post', { includeNumber: true }) }}
             </b-col>
           </b-row>

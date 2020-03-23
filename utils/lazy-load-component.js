@@ -34,6 +34,7 @@ export default function lazyLoadComponent({
           observer.unobserve(this.$el)
           componentFactory().then(resolveComponent)
         })
+
         observer.observe(this.$el)
       },
       render(createElement) {

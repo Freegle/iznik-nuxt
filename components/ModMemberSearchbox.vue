@@ -1,5 +1,5 @@
 <template>
-  <b-input-group class="flex">
+  <b-input-group class="flex max">
     <b-form-input
       v-model="term"
       type="text"
@@ -58,3 +58,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+.max {
+  max-width: 300px;
+}
+</style>

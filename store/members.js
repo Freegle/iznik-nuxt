@@ -6,7 +6,10 @@ export const state = () => ({
   list: [],
 
   // The context from the last fetch, used for fetchMore.
-  context: null
+  context: null,
+
+  // For spotting when we clear under the feet of an outstanding fetch
+  instance: 1
 })
 
 export const mutations = {
@@ -60,6 +63,12 @@ export const mutations = {
   },
   clear(state) {
     state.list = []
+
+    if (state.instance) {
+      state.instance++
+    } else {
+      state.instance = 1
+    }
   },
   setContext(state, ctx) {
     state.context = ctx
@@ -123,6 +132,10 @@ export const getters = {
 
 export const actions = {
   async fetchMembers({ commit, state }, params) {
+    // Watch out for the store being cleared under the feet of this fetch. If that happens then we throw away the
+    // results.
+    const instance = state.instance
+
     if (params.context) {
       // Ensure the context is a real object, in case it has been in the store.
       const ctx = cloneDeep(params.context)
@@ -135,13 +148,15 @@ export const actions = {
       params
     )
 
-    for (let i = 0; i < members.length; i++) {
-      // The server doesn't return the collection but this is useful to have in the store.
-      members[i].collection = params.collection
-    }
+    if (state.instance === instance) {
+      for (let i = 0; i < members.length; i++) {
+        // The server doesn't return the collection but this is useful to have in the store.
+        members[i].collection = params.collection
+      }
 
-    commit('addAll', members)
-    commit('setContext', context)
+      commit('addAll', members)
+      commit('setContext', context)
+    }
   },
 
   async fetch({ commit }, params) {
@@ -231,7 +246,7 @@ export const actions = {
     commit('setContext', null)
   },
 
-  async approve({ commit }, params) {
+  async approve({ commit, dispatch }, params) {
     await this.$api.memberships.approve(
       params.id,
       params.groupid,
@@ -242,16 +257,38 @@ export const actions = {
     commit('remove', {
       userid: params.id
     })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
   },
 
-  async spam({ commit }, params) {
+  async spam({ commit, dispatch }, params) {
     await this.$api.memberships.spam(params.id, params.groupid)
     commit('remove', {
       userid: params.id
     })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
   },
 
-  async reject({ commit }, params) {
+  async reject({ commit, dispatch }, params) {
     await this.$api.memberships.reject(
       params.id,
       params.groupid,
@@ -262,6 +299,17 @@ export const actions = {
     commit('remove', {
       userid: params.id
     })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
   },
 
   async reply({ commit }, params) {
@@ -274,7 +322,7 @@ export const actions = {
     )
   },
 
-  async delete({ commit }, params) {
+  async delete({ commit, dispatch }, params) {
     // Delete pending member.
 
     await this.$api.memberships.delete(
@@ -288,9 +336,20 @@ export const actions = {
     commit('remove', {
       userid: params.id
     })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
   },
 
-  async remove({ commit }, params) {
+  async remove({ commit, dispatch }, params) {
     // Remove approved  member.
 
     await this.$api.memberships.remove(params.userid, params.groupid)
@@ -298,39 +357,94 @@ export const actions = {
     commit('remove', {
       userid: params.userid
     })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
   },
 
-  async ban({ commit }, params) {
+  async ban({ commit, dispatch }, params) {
     // Ban member.
     await this.$api.memberships.ban(params.userid, params.groupid)
 
     commit('remove', {
       userid: params.userid
     })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
   },
 
-  async purge({ commit }, params) {
+  async purge({ commit, dispatch }, params) {
     await this.$api.user.purge(params.userid)
 
     commit('remove', {
       userid: params.userid
     })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
   },
 
-  async askMerge({ commit }, params) {
+  async askMerge({ commit, dispatch }, params) {
     await this.$api.merge.ask(params)
 
     commit('remove', {
       userid: params.user1
     })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
   },
 
-  async ignoreMerge({ commit }, params) {
+  async ignoreMerge({ commit, dispatch }, params) {
     await this.$api.merge.ignore(params)
 
     commit('remove', {
       userid: params.user1
     })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
   },
 
   updateComments({ commit }, params) {

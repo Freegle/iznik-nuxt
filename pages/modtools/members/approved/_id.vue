@@ -3,6 +3,7 @@
     <client-only>
       <div class="d-flex justify-content-between">
         <GroupSelect v-model="groupid" modonly />
+        <ModMemberTypeSelect v-model="filter" />
         <ModMemberSearchbox v-model="search" :groupid="parseInt(groupid)" :disabled="!parseInt(groupid)" />
       </div>
       <div v-if="groupid">
@@ -14,7 +15,7 @@
           There are no members at the moment.
         </NoticeMessage>
 
-        <infinite-loading :key="'infinite-' + groupid" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
+        <infinite-loading :key="'infinite-' + groupid + '-' + filter" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
           <span slot="no-results" />
           <span slot="no-more" />
           <span slot="spinner">
@@ -22,6 +23,9 @@
           </span>
         </infinite-loading>
       </div>
+      <NoticeMessage v-else variant="info" class="mt-2">
+        Please select a group.
+      </NoticeMessage>
     </client-only>
   </div>
 </template>
@@ -29,12 +33,18 @@
 import ModMember from '../../../../components/ModMember'
 import NoticeMessage from '../../../../components/NoticeMessage'
 import ModMemberSearchbox from '../../../../components/ModMemberSearchbox'
+import ModMemberTypeSelect from '../../../../components/ModMemberTypeSelect'
 import loginRequired from '@/mixins/loginRequired'
 import modMembersPage from '@/mixins/modMembersPage'
 import createGroupRoute from '@/mixins/createGroupRoute'
 
 export default {
-  components: { ModMemberSearchbox, NoticeMessage, ModMember },
+  components: {
+    ModMemberTypeSelect,
+    ModMemberSearchbox,
+    NoticeMessage,
+    ModMember
+  },
   layout: 'modtools',
   mixins: [
     loginRequired,
@@ -44,7 +54,8 @@ export default {
   data: function() {
     return {
       collection: 'Approved',
-      search: null
+      search: null,
+      filter: '0'
     }
   },
   watch: {

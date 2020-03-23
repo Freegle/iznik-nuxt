@@ -10,16 +10,19 @@
 
 import ActivityAPI from './ActivityAPI.js'
 import AddressAPI from './AddressAPI.js'
+import AdminsAPI from './AdminsAPI.js'
 import AuthorityAPI from './AuthorityAPI.js'
 import BanditAPI from './BanditAPI.js'
 import ChatAPI from './ChatAPI.js'
 import CommentAPI from './CommentAPI.js'
 import CommunityEventAPI from './CommunityEventAPI.js'
+import CovidAPI from './CovidAPI.js'
 import DashboardAPI from './DashboardAPI.js'
 import DonationsAPI from './DonationsAPI.js'
 import GroupAPI from './GroupAPI.js'
 import InvitationAPI from './InvitationAPI.js'
 import JobAPI from './JobAPI.js'
+import LogsAPI from './LogsAPI.js'
 import MembershipsAPI from './MembershipsAPI.js'
 import MergeAPI from './MergeAPI.js'
 import MessageAPI from './MessageAPI.js'
@@ -43,16 +46,19 @@ export default ({ $axios, store }) => {
   return {
     activity: new ActivityAPI(options),
     address: new AddressAPI(options),
+    admins: new AdminsAPI(options),
     authority: new AuthorityAPI(options),
     bandit: new BanditAPI(options),
     chat: new ChatAPI(options),
     comment: new CommentAPI(options),
     communityevent: new CommunityEventAPI(options),
+    covid: new CovidAPI(options),
     dashboard: new DashboardAPI(options),
     donations: new DonationsAPI(options),
     group: new GroupAPI(options),
     invitation: new InvitationAPI(options),
     job: new JobAPI(options),
+    logs: new LogsAPI(options),
     memberships: new MembershipsAPI(options),
     merge: new MergeAPI(options),
     message: new MessageAPI(options),

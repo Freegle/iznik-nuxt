@@ -7,24 +7,23 @@
         <span v-else>this account </span>
       </h3>
       <p>
-        This usually happens if you have two different accounts on Freegle.  Your local volunteers can merge your
+        This usually happens if you have two different accounts on Freegle.  We can merge your
         accounts or help you work out what's going on.
       </p>
-      <p v-if="me && urlid">
-        Please copy and paste this and send it to them:
-      </p>
-      <p v-if="me && urlid">
-        <b>#{{ me.id }} and #{{ urlid }}</b>
-      </p>
-      <p>
-        Please also let them know your main email address.
-      </p>
-      <GroupSelect v-model="contactGroup" class="mt-2 mb-1" />
-      <br>
-      <ChatButton :groupid="contactGroup" size="lg" title="Contact community volunteers" variant="success" class="mb-2" />
-      <p class="mt-2">
-        ...or if you need to, you can contact our national support volunteers at <a href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</a>.
-      </p>
+      <div v-if="me && urlid">
+        <b-btn variant="success" class="mb-2" size="lg" :href="'mailto:support@ilovefreegle.org?subject=I may have two acounts (#' + myid + ' and #' + urlid + ')&body=Please can you help?  My main email address is...'">
+          Contact our Support Volunteers
+        </b-btn>
+        <p>
+          If that button doesn't work then please mail support@ilovefreegle.org.  Please copy and paste this and send it to them:
+        </p>
+        <p>
+          <b>#{{ me.id }} and #{{ urlid }}</b>
+        </p>
+        <p>
+          Please also let them know your main email address.
+        </p>
+      </div>
     </b-alert>
     <div v-else-if="me">
       <client-only>
@@ -45,7 +44,7 @@
                     <b-badge variant="danger">{{ unseen }}</b-badge>
                   </span>
                   <span class="mr-2 d-none d-sm-inline-block">
-                    <ratings v-if="otheruser" :key="'otheruser-' + otheruser.id" size="sm" v-bind="otheruser" />
+                    <Ratings v-if="otheruser" :id="otheruserid" :key="'otheruser-' + otheruserid" size="sm" />
                   </span>
                 </b-col>
                 <b-col cols="4" class="p-0">
@@ -75,14 +74,21 @@
                     <b-btn variant="white" size="sm" class="float-right" @click="markRead">
                       Mark all read
                     </b-btn>
-                    <ratings v-if="otheruser" :key="'otheruser-' + otheruser.id" size="sm" v-bind="otheruser" />
+                    <Ratings v-if="otheruser" :id="otheruserid" :key="'otheruser-' + otheruser.id" size="sm" />
                   </span>
                 </b-col>
               </b-row>
             </b-col>
           </b-row>
           <div v-if="chat" class="chatContent row" infinite-wrapper>
-            <infinite-loading direction="top" force-use-infinite-wrapper="true" :distance="distance" class="w-100" @infinite="loadMore">
+            <infinite-loading
+              v-if="otheruser || chat.chattype === 'User2Mod'"
+              direction="top"
+              force-use-infinite-wrapper="true"
+              :distance="distance"
+              class="w-100"
+              @infinite="loadMore"
+            >
               <span slot="no-results" />
               <span slot="no-more" />
               <span slot="spinner" class="w-100">
@@ -91,7 +97,7 @@
                 </div>
               </span>
             </infinite-loading>
-            <ul class="p-0 pt-1 list-unstyled mb-1 w-100">
+            <ul v-if="otheruser || chat.chattype === 'User2Mod'" class="p-0 pt-1 list-unstyled mb-1 w-100">
               <li v-for="chatmessage in chatmessages" :key="'chatmessage-' + chatmessage.id">
                 <ChatMessage
                   v-if="chatmessage"
@@ -119,19 +125,29 @@
             </b-row>
             <b-row>
               <b-col class="p-0">
-                <notice-message v-if="expectedreply" variant="warning" @click.native="showInfo">
-                  <v-icon name="exclamation-triangle" />&nbsp;{{ expectedreply | pluralize(['freegler is', 'freeglers are'], { includeNumber: true }) }} still waiting for them to reply.  You might not hear back from them.
-                </notice-message>
-                <notice-message v-else-if="userHasReneged" variant="warning" @click.native="showInfo">
-                  <v-icon name="exclamation-triangle" />&nbsp;Things haven't always worked out for this freegler.  That might not be their fault, but please make very clear arrangements.
-                </notice-message>
-                <notice-message v-if="!spammer && showReplyTime && replytime" class="clickme" @click.native="showInfo">
-                  <v-icon name="info-circle" />&nbsp;Typically replies in <b>{{ replytime }}</b>.  Click for more info.
-                </notice-message>
-                <notice-message v-if="spammer" variant="danger">
-                  This person has been reported as a spammer or scammer.  Please do not talk to them and under no circumstances
-                  send them any money.
-                </notice-message>
+                <div v-if="showNotices">
+                  <notice-message v-if="badratings" variant="warning" class="clickme" @click.native="showInfo">
+                    <p>
+                      <v-icon name="exclamation-triangle" />&nbsp;This freegler has a lot of thumbs down ratings.
+                      That might not be their fault, but please make very clear arrangements.  If you have a good
+                      experience with them, give them a thumbs up.
+                    </p>
+                    <Ratings v-if="otheruser" :id="otheruserid" :key="'otheruser-' + otheruserid" />
+                  </notice-message>
+                  <notice-message v-else-if="expectedreply" variant="warning" class="clickme" @click.native="showInfo">
+                    <v-icon name="exclamation-triangle" />&nbsp;{{ expectedreply | pluralize(['freegler is', 'freeglers are'], { includeNumber: true }) }} still waiting for them to reply.  You might not hear back from them.
+                  </notice-message>
+                  <notice-message v-else-if="otheruser && otheruser.hasReneged" variant="warning" class="clickme" @click.native="showInfo">
+                    <v-icon name="exclamation-triangle" />&nbsp;Things haven't always worked out for this freegler.  That might not be their fault, but please make very clear arrangements.
+                  </notice-message>
+                  <notice-message v-if="!spammer && replytime" class="clickme" @click.native="showInfo">
+                    <v-icon name="info-circle" />&nbsp;Typically replies in <b>{{ replytime }}</b>.  Click for more info.
+                  </notice-message>
+                  <notice-message v-if="spammer" variant="danger">
+                    This person has been reported as a spammer or scammer.  Please do not talk to them and under no circumstances
+                    send them any money.
+                  </notice-message>
+                </div>
                 <b-form-textarea
                   v-if="!spammer"
                   ref="chatarea"
@@ -217,13 +233,13 @@
             </b-row>
           </div>
           <PromiseModal ref="promise" :messages="ouroffers" :selected-message="likelymsg ? likelymsg : 0" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
-          <ProfileModal :id="otheruser ? otheruser.id : null" ref="profile" />
+          <ProfileModal v-if="otheruser" :id="otheruser ? otheruser.id : null" ref="profile" />
           <AvailabilityModal v-if="me && chat" ref="availabilitymodal" :otheruid="otheruser ? otheruser.id : null" :chatid="chat.id" :thisuid="me.id" />
           <AddressModal ref="addressModal" :choose="true" @chosen="sendAddress" />
           <ChatBlockModal v-if="chat && chat.chattype === 'User2User' && otheruser" :id="id" ref="chatblock" :user="otheruser" @confirm="block" />
           <ChatHideModal v-if="chat && chat.chattype === 'User2User' && otheruser" :id="id" ref="chathide" :user="otheruser" @confirm="hide" />
           <ChatReportModal
-            v-if="chat && chat.chattype === 'User2User'"
+            v-if="otheruser && chat && chat.chattype === 'User2User'"
             :id="'report-' + id"
             ref="chatreport"
             :user="otheruser"
@@ -258,8 +274,6 @@ const AvailabilityModal = () => import('~/components/AvailabilityModal')
 const AddressModal = () => import('~/components/AddressModal')
 const ChatReportModal = () => import('~/components/ChatReportModal')
 const ChatRSVPModal = () => import('~/components/ChatRSVPModal')
-const GroupSelect = () => import('~/components/GroupSelect')
-const ChatButton = () => import('~/components/ChatButton.vue')
 
 export default {
   components: {
@@ -275,9 +289,7 @@ export default {
     ChatBlockModal,
     ChatHideModal,
     ChatReportModal,
-    ChatRSVPModal,
-    GroupSelect,
-    ChatButton
+    ChatRSVPModal
   },
   mixins: [chatCollate, WaitForRef],
   props: {
@@ -304,7 +316,7 @@ export default {
       ouroffers: null,
       sending: false,
       scrolledToBottom: false,
-      showReplyTime: true,
+      showNotices: true,
       RSVP: false,
       notVisible: false,
       contactGroup: null,
@@ -338,33 +350,39 @@ export default {
       return this.$store.getters['chatmessages/getUsers'](this.id)
     },
 
-    otheruser() {
+    otheruserid() {
       // The user who isn't us.
       let ret = null
-      const me = this.$store.getters['auth/user']
 
-      if (this.chat && me) {
-        if (this.chat.chattype === 'User2User' && this.chat.user1 && me) {
+      if (this.chat && this.me) {
+        if (this.chat.chattype === 'User2User' && this.chat.user1 && this.me) {
           ret =
-            this.chat.user1 && this.chat.user1.id === me.id
-              ? this.chat.user2
-              : this.chat.user1
+            this.chat.user1 && this.chat.user1.id === this.me.id
+              ? this.chat.user2.id
+              : this.chat.user1.id
         } else if (
           this.chat.chattype === 'User2Mod' &&
           this.chat.user1 &&
-          me.id !== this.chat.user1.id
+          this.me.id !== this.chat.user1.id
         ) {
           // We are a mod.
-          ret = this.chat.user1
+          ret = this.chat.user1.id
         }
       }
 
       return ret
     },
-    userHasReneged() {
-      return this.otheruser
-        ? this.$store.getters['user/userHasReneged'](this.otheruser.id)
-        : false
+
+    otheruser() {
+      // We get this from the store rather than the chat object, because we fetched it in fetchChat, and
+      // that copy has more info, which we need.
+      let user = null
+
+      if (this.otheruserid) {
+        user = this.$store.getters['user/get'](this.otheruserid)
+      }
+
+      return user
     },
 
     spammer() {
@@ -377,14 +395,27 @@ export default {
       return ret
     },
 
+    badratings() {
+      let ret = false
+
+      if (
+        this.otheruser &&
+        this.otheruser.info &&
+        this.otheruser.info.ratings &&
+        this.otheruser.info.ratings.Down > 2 &&
+        this.otheruser.info.ratings.Down > 2 * this.otheruser.info.ratings.Up
+      ) {
+        ret = true
+      }
+
+      return ret
+    },
+
     expectedreply() {
       let ret = 0
 
-      if (this.otheruser) {
-        const user = this.$store.getters['user/get'](this.otheruser.id)
-        if (user && user.info) {
-          ret = user.info.expectedreply
-        }
+      if (this.otheruser && this.otheruser.info) {
+        ret = this.otheruser.info.expectedreply
       }
 
       return ret
@@ -394,11 +425,8 @@ export default {
       let ret = null
       let secs = null
 
-      if (this.otheruser) {
-        const user = this.$store.getters['user/get'](this.otheruser.id)
-        if (user && user.info) {
-          secs = user.info.replytime
-        }
+      if (this.otheruser && this.otheruser.info) {
+        secs = this.otheruser.info.replytime
       }
 
       if (secs) {
@@ -739,15 +767,15 @@ export default {
           chatid: this.id
         })
 
-        if (this.otheruser) {
+        if (this.otheruserid) {
           // Get the user info in case we need to warn about them.
           await this.$store.dispatch('user/fetch', {
-            id: this.otheruser.id,
+            id: this.otheruserid,
             info: true
           })
 
           setTimeout(() => {
-            this.showReplyTime = false
+            this.showNotices = false
           }, 30000)
         }
       } else {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-modal
-      :id="'messageReportModal-' + message.id"
+      :id="'messageReportModal-' + id"
       v-model="showModal"
       size="lg"
       no-stacking
@@ -39,13 +39,14 @@
                 :chat="chat"
                 :otheruser="chat.user1.id === chatmessage.userid ? chat.user2 : chat.user1"
                 :last="chatmessage.id === chatmessages[chatmessages.length - 1].id"
+                :pov="pov"
               />
             </li>
           </ul>
         </div>
       </template>
-      <template slot="modal-footer" slot-scope="{ cancel }">
-        <b-button variant="white" @click="cancel">
+      <template slot="modal-footer">
+        <b-button variant="white" @click="closeit">
           Close
         </b-button>
       </template>
@@ -54,15 +55,19 @@
 </template>
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
-import ChatMessage from './ChatMessage'
 import chatCollate from '@/mixins/chatCollate.js'
+const ChatMessage = () => import('@/components/ChatMessage')
 
 export default {
   components: { ChatMessage, InfiniteLoading },
   mixins: [chatCollate],
   props: {
-    message: {
-      type: Object,
+    id: {
+      type: Number,
+      required: true
+    },
+    pov: {
+      type: Number,
       required: true
     }
   },
@@ -77,26 +82,47 @@ export default {
     }
   },
   computed: {
+    // Depending on our p.o.v. we may need to swap user1 and user2
     user1() {
-      return this.chat ? this.chat.user1 : null
+      let ret = null
+
+      if (this.chat) {
+        if (this.chat.user1.id === this.pov) {
+          ret = this.chat.user2
+        } else {
+          ret = this.chat.user1
+        }
+      }
+
+      return ret
     },
     user2() {
-      return this.chat ? this.chat.user2 : null
+      let ret = null
+
+      if (this.chat) {
+        if (this.chat.user2 && this.chat.user2.id === this.pov) {
+          ret = this.chat.user2
+        } else {
+          ret = this.chat.user1
+        }
+      }
+
+      return ret
     },
     chatmessages() {
       return this.chatCollate(
-        this.$store.getters['chatmessages/getMessages'](this.message.chatid)
+        this.$store.getters['chatmessages/getMessages'](this.id)
       )
     }
   },
   methods: {
     async show() {
       await this.$store.dispatch('chats/fetch', {
-        id: this.message.chatid
+        id: this.id
       })
 
       // Take a copy rather than use computed as it isn't ours and will vanish from the store.
-      this.chat = this.$store.getters['chats/get'](this.message.chatid)
+      this.chat = this.$store.getters['chats/get'](this.id)
 
       this.showModal = true
     },
@@ -112,7 +138,7 @@ export default {
         this.busy = true
         this.$store
           .dispatch('chatmessages/fetch', {
-            chatid: this.message.chatid
+            chatid: this.id
           })
           .then(() => {
             if (!this.scrolledToBottom) {
@@ -120,7 +146,6 @@ export default {
               this.$nextTick(() => {
                 if (this.$el && this.$el.querySelector) {
                   const container = this.$refs.chatContent
-                  console.log('Container', container)
                   if (container) {
                     container.scrollTop = container.scrollHeight
                     this.scrolledToBottom = true
@@ -146,6 +171,16 @@ export default {
             $state.complete()
           })
       }
+    },
+    async closeit() {
+      // We have loaded this chat into store, but it's probably not ours.  So update the list, otherwise next
+      // time we go into chats we'll see weirdness.
+      const modtools = this.$store.getters['misc/get']('modtools')
+      await this.$store.dispatch('chats/listChats', {
+        chattypes: modtools ? ['User2Mod'] : ['User2User', 'User2Mod']
+      })
+
+      this.hide()
     }
   }
 }

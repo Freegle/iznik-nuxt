@@ -2,9 +2,6 @@
   <client-only>
     <div>
       <b-form-select v-model="selectedGroup" size=":size" :options="groupOptions" />
-      <NoticeMessage v-if="selectedGroup === -2" variant="danger" class="mt-1">
-        This is a national volunteer opportunity which will go out to all communities. Please review carefully.
-      </NoticeMessage>
     </div>
   </client-only>
 </template>
@@ -14,9 +11,7 @@ select {
 }
 </style>
 <script>
-import NoticeMessage from './NoticeMessage'
 export default {
-  components: { NoticeMessage },
   props: {
     /**
      * Selected value

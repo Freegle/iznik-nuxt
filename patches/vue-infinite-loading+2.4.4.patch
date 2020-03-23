@@ -1860,7 +1860,7 @@ index d456353..bc35641 100644
 +++ b/node_modules/vue-infinite-loading/src/components/InfiniteLoading.vue
 @@ -320,7 +320,7 @@ export default {
        }
- 
+
        if (!result) {
 -        if (elm.tagName === 'BODY') {
 +        if (elm.tagName === 'BODY' || !elm.parentNode) {

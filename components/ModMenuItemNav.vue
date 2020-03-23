@@ -7,7 +7,7 @@
     <b-badge :variant="countVariant" :class="(countOnTop ? 'leftandtop' : 'largeish') + (showValue ? '' : ' hideme')">
       {{ showValue }}
     </b-badge>
-    <b-badge v-show="getCount(othercount)" variant="info" :class="'countOnTop' ? 'leftanddown' : ''">
+    <b-badge v-show="getCount(othercount)" variant="info" :class="countOnTop ? 'leftanddown' : 'largeish'">
       {{ getCount(othercount) }}
     </b-badge>
   </div>

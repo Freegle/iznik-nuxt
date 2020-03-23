@@ -107,7 +107,7 @@
                   </div>
                   <br v-else>
                   <span v-if="!g.external" class="text-muted">
-                    <a :href="'mailto:' + g.nameshort + '-volunteers@ilovefreegle.org'">
+                    <a :href="'mailto:' + g.modsmail">
                       <v-icon name="envelope" title="Contact volunteers" />
                     </a>
                   </span>

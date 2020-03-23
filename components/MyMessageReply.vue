@@ -29,7 +29,7 @@
           </span>
         </div>
       </div>
-      <ratings v-bind="reply.user" class="pl-1 pt-1 mt-1 mr-2 flex-shrink-1" />
+      <ratings :id="reply.user.id" class="pl-1 pt-1 mt-1 mr-2 flex-shrink-1" />
       <div class="pt-1 flex-shrink-1 ml-2">
         <b-btn v-if="promised && !taken && !withdrawn" variant="warning" class="align-middle mt-1 mb-1" @click="unpromise">
           <v-icon>

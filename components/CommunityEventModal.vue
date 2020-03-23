@@ -18,10 +18,14 @@
           Add Event
         </span>
       </h4>
-      <span v-else>
+      <div v-else>
         <h4>{{ event.title }}</h4>
         <a :href="event.url" target="_blank" class="small">{{ event.url }}</a>
-      </span>
+        <div class="text-danger">
+          Many events are disrupted due to COVID-19 - please check if they are going ahead.  If your event is
+          cancelled please use the Edit button to let us know.
+        </div>
+      </div>
     </template>
     <template slot="default">
       <div v-if="added">
@@ -317,14 +321,14 @@
         <b-button v-if="!editing" variant="white" class="float-right" :disabled="uploadingPhoto" @click="cancel">
           Close
         </b-button>
-        <b-button v-if="editing" variant="white" class="float-right" :disabled="uploadingPhoto" @click="dontSave">
-          Cancel
-        </b-button>
         <b-button v-if="editing" variant="success" class="float-right" :disabled="uploadingPhoto" @click="saveIt">
           <v-icon v-if="saving" name="sync" class="fa-spin" />
           <v-icon v-else name="save" />
           <span v-if="isExisting">Save Changes</span>
           <span v-else>Add Event</span>
+        </b-button>
+        <b-button v-if="editing" variant="white" class="float-right mr-1" :disabled="uploadingPhoto" @click="dontSave">
+          Cancel
         </b-button>
       </div>
     </template>

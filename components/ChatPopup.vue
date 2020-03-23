@@ -31,7 +31,7 @@
               <span v-if="chat.unseen">
                 <b-badge variant="danger">{{ chat.unseen }}</b-badge>
               </span>
-              <ratings v-if="otheruser" :key="'otheruser-' + (otheruser ? otheruser.id : null)" size="sm" v-bind="otheruser" class="pl-1 pt-1" />
+              <ratings v-if="otheruser" :id="otheruser.id" :key="'otheruser-' + (otheruser ? otheruser.id : null)" size="sm" class="pl-1 pt-1" />
               <span class="pl-2 pr-1 float-right" @click="hide">
                 <v-icon name="times" scale="1.5" class="clickme mt-1" title="Hide chat window" />
               </span>
@@ -102,7 +102,7 @@
           </div>
         </vue-draggable-resizable>
         <PromiseModal ref="promise" :messages="ouroffers" :selected-message="likelymsg ? likelymsg : 0" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
-        <ProfileModal :id="otheruser ? otheruser.id : null" ref="profile" />
+        <ProfileModal v-if="otheruser" :id="otheruser ? otheruser.id : null" ref="profile" />
         <AvailabilityModal ref="availabilitymodal" :otheruid="otheruser ? otheruser.id : null" :thisuid="me.id" />
         <AddressModal ref="addressModal" :choose="true" @chosen="sendAddress" />
       </div>
@@ -189,6 +189,7 @@ import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import InfiniteLoading from 'vue-infinite-loading'
 import twem from '~/assets/js/twem'
+import waitForRef from '@/mixins/waitForRef'
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
 import ChatMessage from '~/components/ChatMessage.vue'
@@ -215,7 +216,7 @@ export default {
     AvailabilityModal,
     AddressModal
   },
-  mixins: [chatCollate],
+  mixins: [chatCollate, waitForRef],
   props: {
     id: {
       type: Number,
@@ -389,10 +390,14 @@ export default {
   },
   methods: {
     showInfo() {
-      this.$refs.profile.show()
+      this.waitForRef('propfile', () => {
+        this.$refs.profile.show()
+      })
     },
     availability() {
-      this.$refs.availabilitymodal.show()
+      this.waitForRef('availabilitymodal', () => {
+        this.$refs.availabilitymodal.show()
+      })
     },
     loadMore: function($state) {
       const currentCount = this.chatmessages.length
