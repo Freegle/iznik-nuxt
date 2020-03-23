@@ -1,19 +1,15 @@
 <template>
   <div v-if="!simple" class="d-flex flex-column sidebar__wrapper">
-    <VolunteerOpportunitySidebar v-if="showVolunteerOpportunities" :class="itemclass" />
     <JobsSidebar v-if="showJobOpportunities" :class="itemclass" />
   </div>
 </template>
 
 <script>
 import JobsSidebar from './JobsSidebar'
-const VolunteerOpportunitySidebar = () =>
-  import('~/components/VolunteerOpportunitySidebar')
 
 export default {
   components: {
-    JobsSidebar,
-    VolunteerOpportunitySidebar
+    JobsSidebar
   },
   props: {
     showVolunteerOpportunities: {

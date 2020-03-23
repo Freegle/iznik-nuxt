@@ -1,55 +1,36 @@
 <template>
-  <NoticeMessage v-if="show" variant="danger">
-    <b-btn variant="link" class="float-right" @click="hideit">
-      Hide this
-    </b-btn>
+  <NoticeMessage variant="danger">
     <p>
-      <b>COVID-19 is serious - don't freegle unless it's essential.  Please offer essential things others
-        might need.</b>
-    </p>
-    <p />
-    <p>
-      The virus lasts on surfaces - probably a few hours on cardboard, longer on metal.
-      Keep safe distances.  Wear gloves.  Wipe down items (degreasing kitchen cleaner is good).  Wash your hands.
+      <b>Very sadly, Freegle has suspended OFFER/WANTED posts due to COVID-19.</b>
     </p>
     <p>
-      We're doing our bit to provide practical help.  You can too.  <nuxt-link to="/covid">
-        Find out more
-      </nuxt-link>
+      If possible, please hold on to your stuff and post it when we re-open.  There will be
+      a lot of people who are struggling and will need things when that happens.  We’ll email you
+      when we’re back.
     </p>
     <p>
-      Like many people, charities and businesses, Freegle will struggle.  We don't
-      get government help.  If you can, please help make sure we're here for you in six months:
+      Freegle also needs your help.  We are funded mostly from donations given by freeglers - no freegling means we
+      won’t be getting donations.  Lots of charities and businesses will be struggling, but if you want us to
+      be here for you in six months’ time then please set up a regular donation:
+
+      <DonationButton link="paypal1" show="£1/month" monthly class="mt-2" />
     </p>
-    <DonationButton link="paypal1" show="£1/month" monthly />
+    <p>
+      Our <nuxt-link to="/chitchat">
+        ChitChat section
+      </nuxt-link> is staying open.  Join us here to swap hints,
+      tips and tell others how you’re filling your day.  Share your knowledge and questions on upcycling, reuse,
+      crafts, gardening, cooking, hobbies etc.
+    </p>
+    <p>
+      See you on the other side!
+    </p>
   </NoticeMessage>
-  <div v-else class="text-danger text-right clickme" @click="showit">
-    Show COVID-19 warning.
-  </div>
 </template>
 <script>
 import NoticeMessage from './NoticeMessage'
 import DonationButton from './DonationButton'
 export default {
-  components: { DonationButton, NoticeMessage },
-  computed: {
-    show() {
-      return !this.$store.getters['misc/get']('hidecovidwarning')
-    }
-  },
-  methods: {
-    hideit() {
-      this.$store.dispatch('misc/set', {
-        key: 'hidecovidwarning',
-        value: true
-      })
-    },
-    showit() {
-      this.$store.dispatch('misc/set', {
-        key: 'hidecovidwarning',
-        value: false
-      })
-    }
-  }
+  components: { DonationButton, NoticeMessage }
 }
 </script>
