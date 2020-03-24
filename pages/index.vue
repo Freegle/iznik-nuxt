@@ -108,6 +108,12 @@ export default {
   },
 
   mounted() {
+    console.log('ROOT INDEX MOUNTED')
+    if (process.env.IS_MTAPP) {
+      console.log('ROOT INDEX MOUNTED MTAPP')
+      this.$router.push('modtools')
+      return
+    }
     if (process.browser) {
       const user = this.$store.getters['auth/user']
 

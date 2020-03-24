@@ -25,6 +25,9 @@ if ((process.env.NUXT_BUILD_TYPE === 'fdapp') || (process.env.NUXT_BUILD_TYPE ==
   //API = 'https://fdapidbg.ilovefreegle.org/api'
   API = 'https://www.ilovefreegle.org/api'
 }
+if (process.env.NUXT_BUILD_TYPE === 'mtapp') {
+  API = 'https://dev.ilovefreegle.org/api'
+}
 
 // IZNIK_API is where we send it to.  This avoids CORS issues (and removes preflight OPTIONS calls for GETs, which
 // hurt client performance).
@@ -548,7 +551,9 @@ if ((process.env.NUXT_BUILD_TYPE === 'fdapp') || (process.env.NUXT_BUILD_TYPE ==
   config.router = { // https://nuxtjs.org/api/configuration-router/
     mode: 'hash'    // https://router.vuejs.org/api/#mode
   }
-
+  if (process.env.NUXT_BUILD_TYPE === 'mtapp') {
+    //config.router.base = 'modtools/'
+  }
   config.env.IS_APP = true
   config.env.IS_MTAPP = process.env.NUXT_BUILD_TYPE === 'mtapp'
   if (process.env.NUXT_BUILD_TYPE === 'fdapp') {
