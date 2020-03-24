@@ -1,44 +1,47 @@
 {
-  "name": "org.ilovefreegle.modtools",
-  "version": "0.0.17",
-  "displayName": "ModTools",
+  "name": "com.example.hello",
+  "displayName": "HelloWorld",
+  "version": "1.0.0",
+  "description": "A sample Apache Cordova application that responds to the deviceready event.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ecosystem:cordova"
+  ],
+  "author": "Apache Cordova Team",
+  "license": "Apache-2.0",
   "cordova": {
-    "platforms": [
-      "android"
-    ],
     "plugins": {
-      "cordova-plugin-whitelist": {},
       "cordova-plugin-statusbar": {},
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-network-information": {},
       "cordova-plugin-inappbrowser": {},
       "cordova-plugin-geolocation": {},
-      "cordova-plugin-file": {},
-      "cordova-plugin-googleplus": {
-        "PLAY_SERVICES_VERSION": "15.0.1"
-      },
-      "cordova-support-google-services": {},
-      "phonegap-plugin-push": {
-        "ANDROID_SUPPORT_V13_VERSION": "27.+",
-        "FCM_VERSION": "17.0.+"
-      }
-    }
+      "cordova-plugin-googleplus": {},
+      "phonegap-plugin-push": {},
+      "cordova-plugin-whitelist": {}
+    },
+    "platforms": [
+      "android"
+    ]
   },
   "dependencies": {
     "cordova-android": "^8.1.0",
-    "cordova-plugin-device": "^2.0.1",
-    "cordova-plugin-file": "^6.0.2",
-    "cordova-plugin-geolocation": "^4.0.1",
-    "cordova-plugin-googleplus": "git+https://github.com/EddyVerbruggen/cordova-plugin-googleplus.git",
-    "cordova-plugin-inappbrowser": "^2.0.2",
-    "cordova-plugin-network-information": "^2.0.1",
-    "cordova-plugin-push": "0.0.1",
-    "cordova-plugin-splashscreen": "^5.0.2",
-    "cordova-plugin-statusbar": "^2.4.1",
-    "cordova-plugin-whitelist": "^1.3.3",
-    "cordova-support-google-services": "^1.2.1",
+    "cordova-plugin-device": "^2.0.3",
+    "cordova-plugin-geolocation": "^4.0.2",
+    "cordova-plugin-googleplus": "^8.4.0",
+    "cordova-plugin-inappbrowser": "^3.2.0",
+    "cordova-plugin-network-information": "^2.0.2",
+    "cordova-plugin-splashscreen": "^5.0.3",
+    "cordova-plugin-statusbar": "^2.4.3",
+    "cordova-support-google-services": "^1.3.2",
     "phonegap-plugin-multidex": "^1.0.0",
-    "phonegap-plugin-push": "git+https://github.com/phonegap/phonegap-plugin-push.git"
+    "phonegap-plugin-push": "^2.3.0"
+  },
+  "devDependencies": {
+    "cordova-plugin-whitelist": "1"
   }
 }

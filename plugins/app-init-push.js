@@ -82,14 +82,12 @@ const cordovaApp = {
         mobilePush = window.PushNotification.init({
           android: {
             senderID: '423761283916', // FCM: https://console.firebase.google.com/project/scenic-oxygen-849/settings/general/android:org.ilovefreegle.direct
-            // senderID: "845879623324", // Old GCM way
             sound: false,
-            iconColor: '#5EcA24', // Freegle green
+            iconColor: process.env.IS_MTAPP ? '#003366' : '#5EcA24', // ModTools blue | Freegle green
             icon: 'icon'
             // forceShow: true,
           },
           ios: {
-            // senderID: "845879623324",
             alert: true,
             badge: true,
             sound: false

@@ -28,15 +28,16 @@
     <splash density="mdpi" height="470" orientation="portrait" platform="android" src="package-assets/Tile320x470.png" width="320" />
     <splash density="hdpi" height="640" orientation="portrait" platform="android" src="package-assets/Tile480x640.png" width="480" />
     <splash density="xhdpi" height="960" orientation="portrait" platform="android" src="package-assets/Tile720x960.png" width="720" />
-    <platform name="android">
-        <resource-file src="package-assets/colors.xml" target="/app/src/main/res/values/colors.xml" />
-        <icon background="@color/background" density="ldpi" foreground="package-assets/Tile36.png" />
-        <icon background="@color/background" density="mdpi" foreground="package-assets/mipmap-mdpi/mt_launcher.png" />
-        <icon background="@color/background" density="hdpi" foreground="package-assets/mipmap-hdpi/mt_launcher.png" />
-        <icon background="@color/background" density="xhdpi" foreground="package-assets/mipmap-xhdpi/mt_launcher.png" />
-        <icon background="@color/background" density="xxhdpi" foreground="package-assets/mipmap-xxhdpi/mt_launcher.png" />
-        <icon background="@color/background" density="xxxhdpi" foreground="package-assets/mipmap-xxxhdpi/mt_launcher.png" />
-    </platform>
+
+  <platform name="android">
+    <resource-file src="package-assets/colors.xml" target="/app/src/main/res/values/colors.xml" />
+    <icon background="@color/background" density="ldpi" foreground="package-assets/Tile36.png"/>
+    <icon background="@color/background" density="mdpi" foreground="package-assets/mipmap-mdpi/mt_launcher.png" />
+    <icon background="@color/background" density="hdpi" foreground="package-assets/mipmap-hdpi/mt_launcher.png" />
+    <icon background="@color/background" density="xhdpi" foreground="package-assets/mipmap-xhdpi/mt_launcher.png" />
+    <icon background="@color/background" density="xxhdpi" foreground="package-assets/mipmap-xxhdpi/mt_launcher.png" />
+    <icon background="@color/background" density="xxxhdpi" foreground="package-assets/mipmap-xxxhdpi/mt_launcher.png" />
+  </platform>
     <icon height="29" platform="ios" src="package-assets/Tile29.png" width="29" />
     <icon height="58" platform="ios" src="package-assets/Tile58.png" width="58" />
     <icon height="87" platform="ios" src="package-assets/Tile87.png" width="87" />
@@ -67,33 +68,10 @@
         <preference name="SplashMaintainAspectRatio" value="true" />
     </platform>
     <platform name="android">
-        <preference name="android-minSdkVersion" value="19" />
-        <preference name="android-targetSdkVersion" value="28" />
-    </platform>
-    <platform name="ios">
-        <preference name="Orientation" value="all" />
-        <preference name="deployment-target" value="8.0" />
-    </platform>
-    <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
-    <plugin name="cordova-plugin-statusbar" spec="^2.4.1" />
-    <plugin name="cordova-plugin-device" spec="^2.0.1" />
-    <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
-    <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
-    <plugin name="cordova-plugin-inappbrowser" spec="^2.0.2" />
-    <plugin name="cordova-plugin-geolocation" spec="^4.0.1" />
-    <plugin name="cordova-plugin-googleplus" spec="https://github.com/EddyVerbruggen/cordova-plugin-googleplus">
-        <variable name="PLAY_SERVICES_VERSION" value="15.0.1" />
-    </plugin>
-    <platform name="android">
         <resource-file src="google-services.json" target="app/google-services.json" />
     </platform>
     <hook src="scripts/before_build.sh" type="before_build" />
     <platform name="android">
         <resource-file src="google-services.json" target="app/google-services.json" />
     </platform>
-    <plugin name="cordova-support-google-services" spec="^1.2.1" />
-    <plugin name="phonegap-plugin-push" spec="https://github.com/phonegap/phonegap-plugin-push.git">
-        <variable name="ANDROID_SUPPORT_V13_VERSION" value="27.+" />
-        <variable name="FCM_VERSION" value="15.0.2" />
-    </plugin>
 </widget>
