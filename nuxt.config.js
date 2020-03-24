@@ -6,6 +6,7 @@ const SENTRY_DSN = 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170'
 const YAHOO_CLIENTID =
   'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
 const MOBILE_VERSION = '2.0.25'
+const MODTOOLS_VERSION = '0.3.0'
 
 require('dotenv').config()
 
@@ -20,7 +21,7 @@ require('dotenv').config()
 //     it on to IZNIK_API via the proxy: directive below.
 // - The rest of the client code just uses the API prefix.  The base URL kicks in (or doesn't) as described above.
 let API = '/api'
-if (process.env.NUXT_BUILD_TYPE === 'fdapp') {
+if ((process.env.NUXT_BUILD_TYPE === 'fdapp') || (process.env.NUXT_BUILD_TYPE === 'mtapp')) {
   //API = 'https://fdapidbg.ilovefreegle.org/api'
   API = 'https://www.ilovefreegle.org/api'
 }
@@ -536,7 +537,7 @@ const config = {
   }
 }
 
-if (process.env.NUXT_BUILD_TYPE === 'fdapp') {
+if ((process.env.NUXT_BUILD_TYPE === 'fdapp') || (process.env.NUXT_BUILD_TYPE === 'mtapp')) {
   console.log('NUXT_BUILD_TYPE', process.env.NUXT_BUILD_TYPE)
 
   config.mode = 'spa'
@@ -549,7 +550,12 @@ if (process.env.NUXT_BUILD_TYPE === 'fdapp') {
   }
 
   config.env.IS_APP = true
-  config.env.MOBILE_VERSION = MOBILE_VERSION
+  config.env.IS_MTAPP = process.env.NUXT_BUILD_TYPE === 'mtapp'
+  if (process.env.NUXT_BUILD_TYPE === 'fdapp') {
+    config.env.MOBILE_VERSION = MOBILE_VERSION
+  } else {
+    config.env.MOBILE_VERSION = MODTOOLS_VERSION
+  }
 
   config.build.publicPath = '/js/'
 
