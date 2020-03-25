@@ -7,7 +7,7 @@
       <b-col cols="12" lg="6" class="newsfeedHolder p-0">
         <CovidWarning />
         <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" :chats="me.expectedchats" />
-        <b-card v-if="!id">
+        <b-card v-if="!id && false">
           <b-card-text>
             <h5 class="text-center mb-3">
               Looking for your posts?  Click
