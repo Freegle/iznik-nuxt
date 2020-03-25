@@ -20,7 +20,7 @@ script:
 - ln -s ../iznik-nuxt/mobile/freegle/icons icons
 - ln -s ../iznik-nuxt/mobile/freegle/package-assets package-assets
 - ln -s ../iznik-nuxt/mobile/freegle/scripts scripts
-- ln -s ../iznik-nuxt/mobile/google-services.json google-services.json
+- ln -s ../iznik-nuxt/google-services.json google-services.json
 - ln -s ../iznik-nuxt/dist www
 - ls -l
 - cordova platform add android
