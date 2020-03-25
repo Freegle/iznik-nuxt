@@ -2,5 +2,7 @@ language: node_js
 branches:
   only:
     app
+before_install:
+  - npm install
 script:
   - npm run fdapp
