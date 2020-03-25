@@ -12,7 +12,7 @@
         </span>
         <span v-else>
           <span class="notification-title"><span>{{ notification.fromuser.displayname }} loves your post</span>
-            <span v-if="notification.newsfeed.message">
+            <span v-if="notification.newsfeed.message" class="forcebreak">
               <br>"<b>{{ notification.newsfeed.message }}</b>"
             </span>
           </span>
