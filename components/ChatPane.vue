@@ -175,19 +175,19 @@
                 <div class="d-none d-lg-block">
                   <span v-if="chat && chat.chattype === 'User2User' && otheruser">
                     <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person" @click="promise">
-                      <v-icon name="handshake" />&nbsp;Promise
+                      <v-icon name="handshake" class="fa-fw" />&nbsp;Promise
                     </b-btn>
                     <b-btn v-if="!simple" v-b-tooltip.hover.top variant="white" title="Send your address" @click="addressBook">
-                      <v-icon name="address-book" />&nbsp;Address
+                      <v-icon name="address-book" class="fa-fw" />&nbsp;Address
                     </b-btn>
                     <b-btn v-if="!simple" v-b-tooltip.hover.top variant="white" title="Update your availability" @click="availability">
-                      <v-icon name="calendar-alt" />&nbsp;Availability
+                      <v-icon name="calendar-alt" class="fa-fw" />&nbsp;Availability
                     </b-btn>
                     <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler" @click="showInfo">
-                      <v-icon name="info-circle" />&nbsp;Info
+                      <v-icon name="info-circle" class="fa-fw" />&nbsp;Info
                     </b-btn>
                     <b-btn v-if="!simple" v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
-                      <v-icon name="bell" />&nbsp;Nudge
+                      <v-icon name="bell" class="fa-fw" />&nbsp;Nudge
                     </b-btn>
                   </span>
                   <span v-if="chat && chat.chattype === 'User2Mod'">
@@ -205,10 +205,13 @@
                   </b-btn>
                 </div>
                 <div class="d-flex d-lg-none justify-content-between align-middle">
-                  <span v-if="chat && chat.chattype === 'User2User' && otheruser" v-b-tooltip.hover.top title="Promise an item to this person" class="ml-1 mr-2" @click="promise">
-                    <v-icon scale="2" name="handshake" />
-                  </span>
-                  <span
+                  <div v-if="chat && chat.chattype === 'User2User' && otheruser" v-b-tooltip.hover.top title="Promise an item to this person" class="ml-1 mr-2" @click="promise">
+                    <v-icon scale="2" name="handshake" class="fa-mob" />
+                    <div class="mobtext">
+                      Promise
+                    </div>
+                  </div>
+                  <div
                     v-if="chat && chat.chattype === 'User2User' && otheruser"
                     v-b-tooltip.hover.top
                     title="Send your address"
@@ -216,20 +219,35 @@
                     class="mr-2"
                     @click="addressBook"
                   >
-                    <v-icon scale="2" name="address-book" />
-                  </span>
-                  <span v-if="chat && chat.chattype === 'User2User' && otheruser" v-b-tooltip.hover.top title="Update your availability" class="mr-2" @click="availability">
-                    <v-icon scale="2" name="calendar-alt" />
-                  </span>
-                  <span v-if="chat && chat.chattype === 'User2User' && otheruser" v-b-tooltip.hover.top title="Info about this freegler" class="mr-2" @click="showInfo">
-                    <v-icon scale="2" name="info-circle" />
-                  </span>
-                  <span v-if="chat && chat.chattype === 'User2User' && otheruser" v-b-tooltip.hover.top title="Waiting for a reply?  Nudge this freegler." class="mr-2" @click="nudge">
-                    <v-icon scale="2" name="bell" />
-                  </span>
-                  <span class="" @click="photoAdd">
-                    <v-icon scale="2" name="camera" />
-                  </span>
+                    <v-icon scale="2" name="address-book" class="fa-mob" />
+                    <div class="mobtext">
+                      Address
+                    </div>
+                  </div>
+                  <div v-if="chat && chat.chattype === 'User2User' && otheruser" v-b-tooltip.hover.top title="Update your availability" class="mr-2" @click="availability">
+                    <v-icon scale="2" name="calendar-alt" class="fa-mob" />
+                    <div class="mobtext">
+                      Available
+                    </div>
+                  </div>
+                  <div v-if="chat && chat.chattype === 'User2User' && otheruser" v-b-tooltip.hover.top title="Info about this freegler" class="mr-2" @click="showInfo">
+                    <v-icon scale="2" name="info-circle" class="fa-mob" />
+                    <div class="mobtext">
+                      Info
+                    </div>
+                  </div>
+                  <div v-if="chat && chat.chattype === 'User2User' && otheruser" v-b-tooltip.hover.top title="Waiting for a reply?  Nudge this freegler." class="mr-2" @click="nudge">
+                    <v-icon scale="2" name="bell" class="fa-mob" />
+                    <div class="mobtext">
+                      Nudge
+                    </div>
+                  </div>
+                  <div class="" @click="photoAdd">
+                    <v-icon scale="2" name="camera" class="fa-mob" />
+                    <div class="mobtext">
+                      Photo
+                    </div>
+                  </div>
                   <b-btn variant="primary" @click="send">
                     Send
                     <v-icon v-if="sending" name="sync" class="fa-spin" title="Sending..." />
@@ -844,5 +862,16 @@ export default {
 
 ::v-deep .dropdown-toggle {
   color: $color-white;
+}
+
+.mobtext {
+  font-size: 0.6em;
+  text-align: center !important;
+}
+
+.fa-mob {
+  width: 2rem;
+  height: 2rem;
+  width: 100%;
 }
 </style>
