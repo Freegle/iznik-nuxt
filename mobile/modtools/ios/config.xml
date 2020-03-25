@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="org.ilovefreegle.modtools" ios-CFBundleVersion="149" version="0.2.24" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="org.ilovefreegle.modtools" ios-CFBundleVersion="300" version="0.3.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>ModTools</name>
     <description>Tool to help moderators of Freegle and similar groups</description>
     <author email="geeks@ilovefreegle.org" href="https://ilovefreegle.org">
@@ -13,18 +13,13 @@
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
     <allow-intent href="wss:*" />
+    <platform name="android">
+        <allow-intent href="market:*" />
+    </platform>
     <platform name="ios">
         <allow-intent href="itmss:*" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
-    </platform>
-    <platform name="ios">
-        <config-file overwrite="true" parent="NSLocationAlwaysUsageDescription" platform="ios" target="*-Info.plist">
-            <string>To find your location when moderating</string>
-        </config-file>
-        <config-file overwrite="true" parent="NSLocationWhenInUseUsageDescription" platform="ios" target="*-Info.plist">
-            <string>To find your location when moderating</string>
-        </config-file>
     </platform>
     <platform name="ios">
         <splash src="package-assets/Default@2x~universal~anyany.png" />
@@ -57,32 +52,6 @@
         <preference name="StatusBarStyle" value="lightcontent" />
     </platform>
     <platform name="ios">
-        <preference name="Orientation" value="all" />
-        <preference name="deployment-target" value="9.0" />
-    </platform>
-    <plugin name="cordova-plugin-compat" spec="^1.2.0" />
-    <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
-    <plugin name="cordova-plugin-device" spec="^2.0.2" />
-    <plugin name="cordova-plugin-googleplus" spec="https://github.com/EddyVerbruggen/cordova-plugin-googleplus">
-        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.423761283916-rj53j0aoud6dgh3dnblschc72l052oie" />
-    </plugin>
-    <plugin name="cordova-plugin-inappbrowser" spec="^3.0.0" />
-    <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
-    <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
-    <plugin name="cordova-plugin-statusbar" spec="^2.4.2" />
-    <platform name="ios">
         <resource-file src="GoogleService-Info.plist" />
     </platform>
-    <plugin name="cordova-plugin-facebook4" spec="^1.10.1">
-        <variable name="APP_ID" value="134980666550322" />
-        <variable name="APP_NAME" value="Freegle" />
-    </plugin>
-    <plugin name="cordova-plugin-ios-camera-permissions" spec="^1.2.0">
-        <variable name="CAMERA_USAGE_DESCRIPTION" value="So you can take a photo in reply to a member chat" />
-        <variable name="MICROPHONE_USAGE_DESCRIPTION" value="So you can say what text to reply in a member chat" />
-        <variable name="PHOTOLIBRARY_ADD_USAGE_DESCRIPTION" value="So you can send a photo in reply to a member chat" />
-        <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="So you can save a photo when replying to a member chat" />
-    </plugin>
-    <plugin name="phonegap-plugin-push" spec="^2.2.3" />
-    <engine name="ios" spec="^5.0.1" />
 </widget>
