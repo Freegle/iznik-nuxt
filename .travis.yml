@@ -1,7 +1,29 @@
-language: node_js
-dist: xenial
+dist: trusty
+
+env:
+  global:
+    - ANDROID_API_LEVEL=29
+    - ANDROID_BUILD_TOOLS_VERSION=29.0.2
+    - TERM=dumb # Keep gradle from crapping all over the log
+  matrix:
+    - nodejs_version=12
+
+language: android
+jdk:
+  - oraclejdk8
+
+android:
+  components:
+    - tools
+    - build-tools-$ANDROID_BUILD_TOOLS_VERSION
+    - android-$ANDROID_API_LEVEL
+  licenses:
+    - 'android-sdk-preview-license-.+'
+    - 'android-sdk-license-.+'
+    - 'google-gdk-license-.+'
+
 node_js:
-- 11
+- 12
 branches:
   only: app
 before_install:
@@ -10,6 +32,10 @@ before_install:
 - tar xvf mobile/app-secrets.tar
 - npm install
 - npm install -g cordova
+- node --version
+- npm --version
+- gradle --version
+
 script:
 - npm run fdapp
 - mkdir ../iznik-nuxt-app
@@ -22,15 +48,7 @@ script:
 - cp ../iznik-nuxt/google-services.json google-services.json
 - ln -s ../iznik-nuxt/dist www
 - ls -l
-- cordova plugin rm cordova-plugin-camera
-- cordova plugin rm cordova-plugin-device
-- cordova plugin rm cordova-plugin-geolocation
-- cordova plugin rm cordova-plugin-googleplus
-- cordova plugin rm cordova-plugin-inappbrowser
-- cordova plugin rm cordova-plugin-network-information
-- cordova plugin rm cordova-plugin-splashscreen
-- cordova plugin rm cordova-plugin-x-socialsharing
-- cordova plugin rm cordova-plugin-zoom-control-2
-- cordova plugin rm phonegap-plugin-push
 - cordova platform add android
+- ls -l platform
+- ls -l platform/android
 - cordova build
