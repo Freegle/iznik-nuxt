@@ -8,7 +8,7 @@ before_install:
 - openssl aes-256-cbc -K $encrypted_a57fb8741d35_key -iv $encrypted_a57fb8741d35_iv
   -in mobile/app-secrets.tar.enc -out mobile/app-secrets.tar -d
 - tar xvf mobile/app-secrets.tar
-- ls -l mobile
+- ls -l
 - npm install
 - npm install -g cordova
 script:
