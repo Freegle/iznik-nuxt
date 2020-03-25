@@ -149,7 +149,7 @@
                   <notice-message v-if="!spammer && replytime" class="clickme" @click.native="showInfo">
                     <v-icon name="info-circle" />&nbsp;Typically replies in <b>{{ replytime }}</b>.  Click for more info.
                   </notice-message>
-                  <notice-message v-if="spammer" variant="danger">
+                  <notice-message v-if="spammer && spammer.collection !== 'Whitelisted'" variant="danger">
                     This person has been reported as a spammer or scammer.  Please do not talk to them and under no circumstances
                     send them any money.
                   </notice-message>
