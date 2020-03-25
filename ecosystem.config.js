@@ -46,7 +46,7 @@ module.exports = {
       'pre-setup': 'echo `hostname` && git checkout -- package-lock.json && git checkout -- static/sw.js && git checkout -- nuxt.config.js',
       path: '/var/www/fdnuxt.live',
       'post-deploy':
-        'monit stop nginx && --exclude .git rsync -a app4:/var/build/iznik-nuxt/ . && npx patch-package && cp restartfd /etc && chmod +x /etc/restartfd && cp waitfornode /etc && chmod +x /etc/waitfornode && pm2 restart FD-production --update-env && /etc/waitfornode && monit start nginx'
+        'monit stop nginx && rsync --exclude .git -a app4:/var/build/iznik-nuxt/ . && npx patch-package && cp restartfd /etc && chmod +x /etc/restartfd && cp waitfornode /etc && chmod +x /etc/waitfornode && pm2 restart FD-production --update-env && /etc/waitfornode && monit start nginx'
     },
     // The preview site which is used by volunteers for testing.  We're sticking with this name because it's firmly
     // ingrained into volunteers' heads.
