@@ -33,6 +33,7 @@ before_install:
 - nvm install $nodejs_version
 - npm install
 - npm install -g cordova
+- npm install -g q
 - node --version
 - npm --version
 - gradle --version
