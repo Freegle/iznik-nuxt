@@ -22,12 +22,12 @@ export default {
       required: true
     },
     count: {
-      type: String,
+      type: Array,
       required: false,
       default: null
     },
     othercount: {
-      type: String,
+      type: Array,
       required: false,
       default: null
     },
@@ -51,14 +51,18 @@ export default {
     }
   },
   methods: {
-    getCount(type) {
-      for (const key in this.work) {
-        if (key === type) {
-          return this.work[key]
+    getCount(types) {
+      let total = 0
+
+      if (types) {
+        for (const key in this.work) {
+          if (types.indexOf(key) !== -1) {
+            total += this.work[key]
+          }
         }
       }
 
-      return 0
+      return total
     },
     click(e) {
       if (this.link) {

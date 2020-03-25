@@ -92,14 +92,6 @@ export default class MembershipsAPI extends BaseAPI {
     })
   }
 
-  spam(userid, groupid) {
-    return this.$post('/memberships', {
-      action: 'Spam',
-      userid: userid,
-      groupid: groupid
-    })
-  }
-
   hold(userid, groupid) {
     return this.$post('/memberships', {
       action: 'Hold',

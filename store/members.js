@@ -270,24 +270,6 @@ export const actions = {
     )
   },
 
-  async spam({ commit, dispatch }, params) {
-    await this.$api.memberships.spam(params.id, params.groupid)
-    commit('remove', {
-      userid: params.id
-    })
-
-    dispatch(
-      'auth/fetchUser',
-      {
-        components: ['work'],
-        force: true
-      },
-      {
-        root: true
-      }
-    )
-  },
-
   async reject({ commit, dispatch }, params) {
     await this.$api.memberships.reject(
       params.id,
