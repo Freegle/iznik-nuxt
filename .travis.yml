@@ -8,7 +8,6 @@ before_install:
 - openssl aes-256-cbc -K $encrypted_a57fb8741d35_key -iv $encrypted_a57fb8741d35_iv
   -in mobile/app-secrets.tar.enc -out mobile/app-secrets.tar -d
 - tar xvf mobile/app-secrets.tar
-- ls -l
 - npm install
 - npm install -g cordova
 script:
@@ -20,8 +19,18 @@ script:
 - ln -s ../iznik-nuxt/mobile/freegle/icons icons
 - ln -s ../iznik-nuxt/mobile/freegle/package-assets package-assets
 - ln -s ../iznik-nuxt/mobile/freegle/scripts scripts
-- ln -s ../iznik-nuxt/google-services.json google-services.json
+- cp ../iznik-nuxt/google-services.json google-services.json
 - ln -s ../iznik-nuxt/dist www
 - ls -l
+- cordova plugin rm cordova-plugin-camera
+- cordova plugin rm cordova-plugin-device
+- cordova plugin rm cordova-plugin-geolocation
+- cordova plugin rm cordova-plugin-googleplus
+- cordova plugin rm cordova-plugin-inappbrowser
+- cordova plugin rm cordova-plugin-network-information
+- cordova plugin rm cordova-plugin-splashscreen
+- cordova plugin rm cordova-plugin-x-socialsharing
+- cordova plugin rm cordova-plugin-zoom-control-2
+- cordova plugin rm phonegap-plugin-push
 - cordova platform add android
 - cordova build
