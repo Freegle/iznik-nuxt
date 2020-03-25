@@ -36,6 +36,7 @@ import ScheduleAPI from './ScheduleAPI.js'
 import SessionAPI from './SessionAPI.js'
 import ShortlinksAPI from './ShortlinksAPI.js'
 import SocialActionsAPI from './SocialActionsAPI.js'
+import SpammersAPI from './SpammersAPI.js'
 import StatusAPI from './StatusAPI.js'
 import StoriesAPI from './StoriesAPI.js'
 import TeamAPI from './TeamAPI.js'
@@ -70,6 +71,7 @@ interface API {
   session: SessionAPI;
   shortlinks: ShortlinksAPI;
   socialactions: SocialActionsAPI;
+  spammers: SpammersAPI;
   status: StatusAPI;
   stories: StoriesAPI;
   team: TeamAPI;

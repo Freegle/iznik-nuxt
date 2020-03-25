@@ -53,7 +53,7 @@ const DISABLE_ESLINT_AUTOFIX =
 const ESLINT_AUTOFIX = !DISABLE_ESLINT_AUTOFIX
 
 const config = {
-  mode: 'universal',
+  mode: 'spa',
 
   /*
   ** Headers.  Include default meta tags that will apply unless overridden by individual pages.  Every page that

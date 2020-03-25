@@ -41,7 +41,7 @@ module.exports = {
       user: 'root',
       key: '/root/.ssh/id_rsa',
       host: ['46.43.9.246', '5.28.62.22'],
-      ref: 'origin/BigSwitch',
+      ref: 'origin/master',
       repo: 'git@github.com:Freegle/iznik-nuxt.git',
       'pre-setup': 'echo `hostname` && git checkout -- package-lock.json && git checkout -- static/sw.js && git checkout -- nuxt.config.js',
       path: '/var/www/fdnuxt.live',

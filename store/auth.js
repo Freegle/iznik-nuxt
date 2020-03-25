@@ -238,6 +238,15 @@ export const actions = {
     })
   },
 
+  async unsubscribe({ commit, dispatch }, params) {
+    const res = await this.$axios.post(process.env.API + '/session', {
+      action: 'Unsubscribe',
+      email: params.email
+    })
+
+    return res.data
+  },
+
   async signup({ commit, dispatch }, params) {
     const res = await this.$axios.post(process.env.API + '/user', params, {
       headers: {

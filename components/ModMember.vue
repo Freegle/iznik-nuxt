@@ -153,6 +153,11 @@ export default {
     member: {
       type: Object,
       required: true
+    },
+    spammerlist: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {

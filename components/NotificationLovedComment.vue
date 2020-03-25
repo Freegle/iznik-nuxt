@@ -8,7 +8,7 @@
       </div>
       <div class="media-body">
         <span class="notification-title"><span>{{ notification.fromuser.displayname }} loves your comment</span>
-          <span v-if="notification.newsfeed.message">
+          <span v-if="notification.newsfeed.message" class="forcebreak">
             <br>"<b>{{ notification.newsfeed.message }}</b>"
           </span>
         </span>

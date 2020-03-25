@@ -5,8 +5,9 @@
         <SidebarLeft :show-community-events="true" :show-bot-left="true" />
       </b-col>
       <b-col cols="12" lg="6" class="newsfeedHolder p-0">
+        <CovidWarning />
         <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" :chats="me.expectedchats" />
-        <b-card v-if="!id">
+        <b-card v-if="!id && false">
           <b-card-text>
             <h5 class="text-center mb-3">
               Looking for your posts?  Click
@@ -95,6 +96,7 @@ import InfiniteLoading from 'vue-infinite-loading'
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import NoticeMessage from '../../components/NoticeMessage'
+import CovidWarning from '../../components/CovidWarning'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead'
 import twem from '~/assets/js/twem'
@@ -110,6 +112,7 @@ const ExpectedRepliesWarning = () =>
 
 export default {
   components: {
+    CovidWarning,
     ExpectedRepliesWarning,
     NoticeMessage,
     InfiniteLoading,
