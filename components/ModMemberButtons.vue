@@ -55,25 +55,29 @@
     <div v-else-if="spam" class="d-inline">
       <ModMemberButton
         :member="member"
-        variant="danger"
-        icon="trash-alt"
-        delete
-        label="Remove"
-      />
-      <ModMemberButton
-        :member="member"
         variant="success"
-        icon="check"
-        notspam
-        label="Not a spammer"
+        icon="times"
+        delete
+        label="Request removal"
         disabled
       />
       <ModMemberButton
+        v-if="supportOrAdmin"
         :member="member"
-        variant="success"
-        icon="envelope"
-        leave
-        label="Mail"
+        variant="danger"
+        icon="trash-alt"
+        delete
+        label="Remove from list"
+        disabled
+      />
+      <ModMemberButton
+        v-if="supportOrAdmin"
+        :member="member"
+        variant="primary"
+        icon="check"
+        notspam
+        label="Whitelist"
+        disabled
       />
     </div>
     <div v-else-if="approved" class="d-inline">

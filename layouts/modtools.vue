@@ -82,6 +82,9 @@
               <ModMenuItemNav name="Volunteering" :count="['pendingvolunteering']" link="/modtools/volunteering" />
             </b-dropdown-item>
             <b-dropdown-item>
+              <ModMenuItemNav name="Spammers" :count="['spammerpendingadd', 'spammerpendingremove']" link="/modtools/spammers" />
+            </b-dropdown-item>
+            <b-dropdown-item>
               <ModMenuItemNav name="Admins" :count="['pendingadmins']" link="/modtools/admins" />
             </b-dropdown-item>
             <b-dropdown-item>
@@ -177,7 +180,7 @@
           <ModMenuItemLeft link="/modtools/volunteering" name="Volunteering" count="pendingvolunteering" />
           <ModMenuItemLeft link="/modtools/publicity" name="Publicity" count="socialactions" />
           <ModMenuItemLeft link="/modtools/admins" name="Admins" count="pendingadmins" />
-          <ModMenuItemLeft link="/modtools/spammers" name="Spammers TODO" count="spammerpendingadd" />
+          <ModMenuItemLeft link="/modtools/spammers" name="Spammers" count="['spammerpendingadd', 'spammerpendingremove']" />
           <hr>
           <ModMenuItemLeft link="/modtools/logs" name="Logs" />
           <ModMenuItemLeft link="/modtools/support" name="Support" />
