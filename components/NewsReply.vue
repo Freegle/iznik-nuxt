@@ -108,6 +108,7 @@
               spellcheck="true"
               placeholder="Write a reply to this comment and hit enter..."
               class="p-0 pl-1 pt-1"
+              autocapitalize="none"
               @keydown.enter.exact.prevent
               @keyup.enter.exact="sendReply"
               @keydown.enter.shift.exact.prevent="newlineReply"

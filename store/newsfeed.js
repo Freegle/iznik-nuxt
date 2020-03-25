@@ -255,7 +255,6 @@ export const actions = {
           }
         }
 
-        console.log('Merge', users)
         commit('mergeUsers', { users })
       }
     }

@@ -71,6 +71,7 @@
                 placeholder="Type here..."
                 rows="2"
                 max-rows="4"
+                autocapitalize="none"
                 @keydown.enter.exact.prevent
                 @keyup.enter.exact="send"
                 @keydown.enter.shift.exact="newline"
