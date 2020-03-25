@@ -186,7 +186,6 @@
           <ModMenuItemLeft link="/modtools/support" name="Support" />
           <ModMenuItemLeft link="/modtools/settings" name="Settings TODO" />
           <ModMenuItemLeft link="/modtools/teams" name="Teams" />
-          <ModMenuItemLeft link="/modtools/covid" name="COVID-19" />
           <a href="https://discourse.ilovefreegle.org" rel="noopener noreferrer" target="_blank" class="pl-1">Help</a>
         </div>
         <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent flex-grow-1" />
