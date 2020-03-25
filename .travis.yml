@@ -1,26 +1,24 @@
-# https://docs.travis-ci.com/user/languages/javascript-with-nodejs/
 language: node_js
-# https://docs.travis-ci.com/user/reference/xenial/
 dist: xenial
 node_js:
-  - 11
+- 11
 branches:
-  only:
-    app
+  only: app
 before_install:
-  - npm install
-  - npm install -g cordova
+- openssl aes-256-cbc -K $encrypted_a57fb8741d35_key -iv $encrypted_a57fb8741d35_iv
+  -in app-secrets.tar.enc -out app-secrets.tar -d
+- npm install
+- npm install -g cordova
 script:
-  - npm run fdapp
-  - mkdir ../iznik-nuxt-app
-  - cd ../iznik-nuxt-app
-  - ln -s ../iznik-nuxt/mobile/freegle/android/config.xml config.xml
-  - ln -s ../iznik-nuxt/mobile/freegle/android/package-json package-json
-  - ln -s ../iznik-nuxt/mobile/freegle/icons icons
-  - ln -s ../iznik-nuxt/mobile/freegle/package-assets package-assets
-  - ln -s ../iznik-nuxt/mobile/freegle/scripts scripts
-  - ln -s ../iznik-nuxt/dist www
-  - ls -l
-  - cordova platform add android
-  - cordova build
-
+- npm run fdapp
+- mkdir ../iznik-nuxt-app
+- cd ../iznik-nuxt-app
+- ln -s ../iznik-nuxt/mobile/freegle/android/config.xml config.xml
+- ln -s ../iznik-nuxt/mobile/freegle/android/package-json package-json
+- ln -s ../iznik-nuxt/mobile/freegle/icons icons
+- ln -s ../iznik-nuxt/mobile/freegle/package-assets package-assets
+- ln -s ../iznik-nuxt/mobile/freegle/scripts scripts
+- ln -s ../iznik-nuxt/dist www
+- ls -l
+- cordova platform add android
+- cordova build
