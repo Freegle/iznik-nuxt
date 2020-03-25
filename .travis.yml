@@ -9,5 +9,17 @@ branches:
     app
 before_install:
   - npm install
+  - npm install -g cordova
 script:
   - npm run fdapp
+  - mkdir ../iznik-nuxt-app
+  - cd ../iznik-nuxt-app
+  - ln -s ../iznik-nuxt/mobile/freegle/android/config.xml config.xml
+  - ln -s ../iznik-nuxt/mobile/freegle/android/package-json package-json
+  - ln -s ../iznik-nuxt/mobile/freegle/icons icons
+  - ln -s ../iznik-nuxt/mobile/freegle/package-assets package-assets
+  - ln -s ../iznik-nuxt/mobile/freegle/scripts scripts
+  - ln -s ../iznik-nuxt/dist www
+  - cordova add android
+  - cordova build
+
