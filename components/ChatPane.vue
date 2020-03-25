@@ -70,7 +70,7 @@
                     <v-icon name="window-restore" />
                   </span>
                   <b-btn variant="white" size="sm" class="float-right mr-2 d-none d-sm-inline-block" @click="markRead">
-                    Mark all read
+                    Mark read
                   </b-btn>
                 </b-col>
               </b-row>
