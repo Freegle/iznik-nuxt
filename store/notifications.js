@@ -64,6 +64,18 @@ export const getters = {
     return state.list
   },
 
+  getCurrentListInDescendingDateOrder: state => {
+    const notifications = state.list
+
+    if (notifications) {
+      notifications.sort(function(a, b) {
+        return new Date(b.timestamp) - new Date(a.timestamp)
+      })
+    }
+
+    return notifications
+  },
+
   getContext: state => {
     return state.context
   },
