@@ -1,4 +1,9 @@
+# https://docs.travis-ci.com/user/languages/javascript-with-nodejs/
 language: node_js
+# https://docs.travis-ci.com/user/reference/xenial/
+dist: xenial
+node_js:
+  - 11
 branches:
   only:
     app
