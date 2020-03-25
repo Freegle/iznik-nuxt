@@ -394,7 +394,11 @@ export default {
     spammer() {
       let ret = false
 
-      if (this.otheruser) {
+      if (
+        this.otheruser &&
+        this.otheruser.spammer &&
+        this.otheruser.spammer.collection !== 'Whitelisted'
+      ) {
         ret = this.otheruser.spammer
       }
 
