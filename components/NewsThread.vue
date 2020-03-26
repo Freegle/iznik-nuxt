@@ -89,6 +89,7 @@
                     spellcheck="true"
                     placeholder="Write a comment on this thread and hit enter..."
                     class="p-0 pl-1 pt-1"
+                    autocapitalize="none"
                     @keydown.enter.shift.exact.prevent="newlineComment"
                     @keydown.alt.shift.exact.prevent="newlineComment"
                     @focus="focusedComment"
@@ -339,6 +340,7 @@ export default {
       this.replyingTo = this.newsfeed.id
     },
     async sendComment() {
+      console.log('Send', this.threadcomment)
       if (this.threadcomment && this.threadcomment.trim()) {
         // Encode up any emojis.
         const msg = twem.untwem(this.threadcomment)
@@ -357,6 +359,8 @@ export default {
         // And any image id
         this.imageid = null
       }
+
+      return false
     },
     newlineComment() {
       const p = this.$refs.threadcomment.selectionStart

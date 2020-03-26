@@ -6,6 +6,7 @@
         placeholder="Email, numerical id, or ~- encoded id"
         class="max"
         :disabled="searching"
+        autocapitalize="none"
         @keyup.enter.exact="usersearch"
       />
       <b-input-group-append>

@@ -84,6 +84,100 @@ export const actions = {
     }
   },
 
+  async report({ commit, dispatch }, params) {
+    await this.$api.spammers.add({
+      userid: params.userid,
+      collection: 'PendingAdd',
+      reason: params.reason
+    })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
+  },
+
+  async confirm({ commit, dispatch }, params) {
+    await this.$api.spammers.patch({
+      id: params.id,
+      userid: params.userid,
+      collection: 'Spammer'
+    })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
+  },
+
+  async requestremove({ commit, dispatch }, params) {
+    await this.$api.spammers.add({
+      id: params.id,
+      userid: params.userid,
+      collection: 'PendingRemove'
+    })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
+  },
+
+  async remove({ commit, dispatch }, params) {
+    await this.$api.spammers.del({
+      id: params.id,
+      userid: params.userid
+    })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
+  },
+
+  async whitelist({ commit, dispatch }, params) {
+    await this.$api.spammers.patch({
+      id: params.id,
+      userid: params.userid,
+      collection: 'Whitelisted'
+    })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
+  },
+
   clear({ commit }) {
     commit('clear')
     commit('setContext', null)

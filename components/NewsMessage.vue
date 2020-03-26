@@ -13,11 +13,18 @@
         class="clickme"
       />
     </div>
-    <div class="mt-2">
+    <div class="mt-2 d-flex justify-content-between">
       <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
-      <b-btn variant="white" size="sm" class="float-right d-inline-block" @click="share">
-        <v-icon name="share-alt" /> Share
-      </b-btn>
+      <div>
+        <ChatButton
+          :userid="newsfeed.userid"
+          title="Message"
+          size="sm"
+        />
+        <b-btn variant="white" size="sm" class="d-inline-block" @click="share">
+          <v-icon name="share-alt" /> Share
+        </b-btn>
+      </div>
     </div>
     <b-modal
       v-if="newsfeed.image"
@@ -42,6 +49,7 @@
   </div>
 </template>
 <script>
+import ChatButton from './ChatButton'
 import NewsBase from '~/components/NewsBase'
 import NewsUserIntro from '~/components/NewsUserIntro'
 
@@ -50,6 +58,7 @@ const NewsShareModal = () => import('~/components/NewsShareModal')
 
 export default {
   components: {
+    ChatButton,
     NewsShareModal,
     NewsUserIntro,
     NewsLoveComment

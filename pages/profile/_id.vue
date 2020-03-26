@@ -3,43 +3,7 @@
     <div v-if="user" class="profile__wrapper">
       <b-card variant="white" border-variant="success" class="mt-1">
         <b-card-body class="p-0">
-          <div class="m-0">
-            <b-media>
-              <template slot="aside">
-                <ProfileImage :image="user.profile.url" class="mb-1 mt-1 inline" is-thumbnail size="xl" />
-              </template>
-              <b-media-body class="align-top d-flex justify-content-between profile__info">
-                <div>
-                  <h4 class="d-inline-block">
-                    {{ user.displayname }}
-                  </h4>
-                  <div>
-                    <div class="text-muted">
-                      <span class="glyphicon glyphicon-heart" /> Freegler since {{ user.added | dateonly }}.
-                    </div>
-                    <span v-if="user.settings.showmod" class="text-muted">
-                      <v-icon name="leaf" /> Freegle Volunteer
-                    </span>
-                  </div>
-                </div>
-                <div>
-                  <div class="small text-faded mb-1 text-left text-lg-right">
-                    #{{ id }}
-                  </div>
-                  <div class="d-flex flex-row flex-lg-column align-items-baseline">
-                    <ChatButton
-                      v-if="user.id !== myid"
-                      :userid="user.id"
-                      size="sm"
-                      title="Message"
-                      class="mb-1 order-1 order-lg-0 align-self-lg-center"
-                    />
-                    <ratings :id="user.id" size="sm" class="pt-1 mr-2 mr-lg-0 d-block" />
-                  </div>
-                </div>
-              </b-media-body>
-            </b-media>
-          </div>
+          <profile-header :user="user" class="m-0" />
         </b-card-body>
       </b-card>
       <b-card v-if="aboutme" variant="white" class="mt-2">
@@ -147,20 +111,16 @@ import NoticeMessage from '../../components/NoticeMessage'
 import twem from '~/assets/js/twem'
 import loginOptional from '@/mixins/loginOptional.js'
 
-import Ratings from '~/components/Ratings'
 import ReplyTime from '~/components/ReplyTime'
 import Message from '~/components/Message.vue'
-import ChatButton from '~/components/ChatButton'
-import ProfileImage from '~/components/ProfileImage'
+import ProfileHeader from '~/components/ProfileHeader'
 
 export default {
   components: {
     NoticeMessage,
-    Ratings,
     ReplyTime,
     Message,
-    ChatButton,
-    ProfileImage
+    ProfileHeader
   },
   mixins: [loginOptional],
   props: {},
@@ -247,12 +207,6 @@ export default {
 @import 'bootstrap/scss/_variables';
 @import 'bootstrap/scss/mixins/_breakpoints';
 
-.coverphoto {
-  height: 100px !important;
-  width: 100% !important;
-  background-image: url('~static/wallpaper.png');
-}
-
 .covername {
   left: 108px;
   position: absolute;
@@ -272,14 +226,6 @@ export default {
     margin: 0 auto;
     padding-left: 0;
     padding-right: 0;
-  }
-}
-
-.profile__info {
-  flex-direction: column;
-
-  @include media-breakpoint-up(lg) {
-    flex-direction: row;
   }
 }
 </style>

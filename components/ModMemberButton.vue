@@ -1,20 +1,24 @@
 <template>
   <div class="d-inline">
     <b-btn :variant="variant" class="mb-1" :disabled="disabled" @click="click">
-      <v-icon :name="icon" /> {{ label }}
+      <v-icon v-if="done" name="check" />
+      <v-icon v-else-if="doing" name="sync" class="fa-spin" />
+      <v-icon v-else :name="icon" /> {{ label }}
     </b-btn>
     <ConfirmModal v-if="showDeleteModal" ref="deleteConfirm" :title="'Delete: ' + member.displayname" @confirm="deleteConfirmed" />
-    <ConfirmModal v-if="showSpamModal" ref="spamConfirm" :title="'Mark as Spammer: ' + member.displayname" @confirm="spamConfirmed" />
+    <ModSpammerReport v-if="showSpamModal" ref="spamConfirm" :user="member" />
     <ModStdMessageModal v-if="showStdMsgModal" ref="stdmodal" :stdmsg="stdmsg" :member="member" />
   </div>
 </template>
 <script>
 import ConfirmModal from './ConfirmModal'
+import ModSpammerReport from './ModSpammerReport'
 import WaitForRef from '@/mixins/waitForRef'
 const ModStdMessageModal = () => import('./ModStdMessageModal')
 
 export default {
   components: {
+    ModSpammerReport,
     ModStdMessageModal,
     ConfirmModal
   },
@@ -56,7 +60,27 @@ export default {
       required: false,
       default: false
     },
-    spam: {
+    spamreport: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    spamrequestremove: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    spamremove: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    spamconfirm: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    spamwhitelist: {
       type: Boolean,
       required: false,
       default: false
@@ -67,11 +91,6 @@ export default {
       default: false
     },
     release: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    notspam: {
       type: Boolean,
       required: false,
       default: false
@@ -92,6 +111,8 @@ export default {
       showDeleteModal: false,
       showStdMsgModal: false,
       showSpamModal: false,
+      doing: false,
+      done: false,
       stdmsg: null
     }
   },
@@ -109,12 +130,16 @@ export default {
       } else if (this.delete) {
         // Standard delete button - no modal.
         this.deleteIt()
-      } else if (this.spam) {
-        // Standard spam button - no modal.
-        this.spamIt()
-      } else if (this.notspam) {
-        // Standard notspam button - no modal.
-        this.notSpamIt()
+      } else if (this.spamreport) {
+        this.spamReport()
+      } else if (this.spamconfirm) {
+        this.spamConfirm()
+      } else if (this.spamrequestremove) {
+        this.spamRequestRemove()
+      } else if (this.spamremove) {
+        this.spamRemove()
+      } else if (this.spamwhitelist) {
+        this.spamWhitelist()
       } else if (this.hold) {
         // Standard hold button - no modal.
         this.holdIt()
@@ -156,26 +181,46 @@ export default {
         this.$refs.deleteConfirm.show()
       })
     },
-    spamIt() {
+    spamReport() {
       this.showSpamModal = true
       this.waitForRef('spamConfirm', () => {
         this.$refs.spamConfirm.show()
       })
     },
-    notSpamIt() {
-      this.$store.dispatch('members/notspam', {
-        id: this.member.userid,
-        groupid: this.groupid
+    async spamConfirm() {
+      this.doing = true
+      await this.$store.dispatch('spammers/confirm', {
+        id: this.member.spammer.id,
+        userid: this.member.userid
       })
+      this.done = true
+    },
+    async spamRequestRemove() {
+      this.doing = true
+      await this.$store.dispatch('spammers/requestremove', {
+        id: this.member.spammer.id,
+        userid: this.member.userid
+      })
+      this.done = true
+    },
+    async spamRemove() {
+      this.doing = true
+      await this.$store.dispatch('spammers/remove', {
+        id: this.member.spammer.id,
+        userid: this.member.userid
+      })
+      this.done = true
+    },
+    async spamWhitelist() {
+      this.doing = true
+      await this.$store.dispatch('spammers/whitelist', {
+        id: this.member.spammer.id,
+        userid: this.member.userid
+      })
+      this.done = true
     },
     deleteConfirmed() {
       this.$store.dispatch('members/delete', {
-        id: this.member.userid,
-        groupid: this.groupid
-      })
-    },
-    spamConfirmed() {
-      this.$store.dispatch('members/spam', {
         id: this.member.userid,
         groupid: this.groupid
       })

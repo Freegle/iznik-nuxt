@@ -5,6 +5,7 @@
       type="text"
       placeholder="Search email/name/id"
       :disabled="disabled"
+      autocapitalize="none"
       @keyup.native.enter="search"
     />
     <b-input-group-append>

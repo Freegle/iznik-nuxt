@@ -46,39 +46,63 @@
         :member="member"
         variant="danger"
         icon="ban"
-        spam
-        label="Spam"
-        disabled
+        spamreport
+        label="Spammer"
       />
-      <!--      TODO Spam button-->
     </div>
     <div v-else-if="spam" class="d-inline">
-      <ModMemberButton
-        :member="member"
-        variant="success"
-        icon="times"
-        delete
-        label="Request removal"
-        disabled
-      />
-      <ModMemberButton
-        v-if="supportOrAdmin"
-        :member="member"
-        variant="danger"
-        icon="trash-alt"
-        delete
-        label="Remove from list"
-        disabled
-      />
-      <ModMemberButton
-        v-if="supportOrAdmin"
-        :member="member"
-        variant="primary"
-        icon="check"
-        notspam
-        label="Whitelist"
-        disabled
-      />
+      <div v-if="member.spammer.collection === 'PendingAdd'" class="d-inline">
+        <ModMemberButton
+          v-if="supportOrAdmin"
+          :member="member"
+          variant="success"
+          icon="check"
+          spamconfirm
+          label="Confirm add to spammer list"
+        />
+        <ModMemberButton
+          v-if="supportOrAdmin"
+          :member="member"
+          variant="danger"
+          icon="trash-alt"
+          spamremove
+          label="Reject add to spammer list"
+        />
+        <ModMemberButton
+          v-if="supportOrAdmin"
+          :member="member"
+          variant="primary"
+          icon="check"
+          spamwhitelist
+          label="Whitelist"
+        />
+        <ModMemberButton
+          v-else
+          :member="member"
+          variant="success"
+          icon="times"
+          spamrequestremove
+          label="Request removal"
+        />
+      </div>
+      <div v-else class="d-inline">
+        <ModMemberButton
+          v-if="supportOrAdmin"
+          :member="member"
+          variant="danger"
+          icon="trash-alt"
+          spamremove
+          label="Remove from spammer list"
+        />
+        <ModMemberButton
+          v-else
+          :member="member"
+          variant="success"
+          icon="times"
+          spamrequestremove
+          label="Request removal"
+        />
+      </div>
     </div>
     <div v-else-if="approved" class="d-inline">
       <ModMemberButton
@@ -99,9 +123,8 @@
         :member="member"
         variant="danger"
         icon="ban"
-        spam
-        label="Spam"
-        disabled
+        spamreport
+        label="Spammer"
       />
     </div>
     <div v-if="!member.heldby" class="d-lg-inline">
@@ -127,9 +150,11 @@
 </template>
 <script>
 import ModMemberButton from './ModMemberButton'
+import waitForRef from '@/mixins/waitForRef'
 
 export default {
   components: { ModMemberButton },
+  mixins: [waitForRef],
   props: {
     member: {
       type: Object,
@@ -143,7 +168,8 @@ export default {
   },
   data: function() {
     return {
-      showRare: false
+      showRare: false,
+      showSpamModal: false
     }
   },
   computed: {

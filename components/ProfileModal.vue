@@ -7,41 +7,8 @@
     no-stacking
   >
     <template slot="modal-header">
-      <div class="m-0 coverphoto">
-        <b-media>
-          <template slot="aside">
-            <ProfileImage :image="user.profile.url" class="mr-1 ml-1 mb-1 mt-1 inline" is-thumbnail size="xl" />
-          </template>
-          <b-media-body class="align-top">
-            <h4 class="d-inline-block w-100 overflow-hidden">
-              <span class="small">
-                <span class="small text-faded float-right mr-1 d-none d-sm-inline-block">#{{ id }}</span>
-              </span>
-              {{ user.displayname }}
-              <br>
-              <div class="small">
-                <span class="small">
-                  Freegler since {{ user.added | dateonly }}.
-                </span>
-              </div>
-              <span v-if="user.settings.showmod" class="small text-muted">
-                <span class="small">
-                  <v-icon name="leaf" /> Freegle Volunteer
-                </span>
-              </span>
-              <ChatButton
-                :userid="id"
-                size="sm"
-                title="Message"
-                variant="white"
-                :disabled="user.id === myid ? 'true' : undefined"
-                class="mb-1 mt-1"
-                @click="hide"
-              />
-              <ratings :id="user.id" size="sm" class="pt-1 mt-1" />
-            </h4>
-          </b-media-body>
-        </b-media>
+      <div class="coverphoto">
+        <profile-header :user="user" class="flex-grow-1 px-3 py-2" />
       </div>
     </template>
     <template slot="default">
@@ -128,20 +95,16 @@
 
 <script>
 import twem from '~/assets/js/twem'
-import ProfileImage from '~/components/ProfileImage'
+import ProfileHeader from '~/components/ProfileHeader'
 
-const Ratings = () => import('~/components/Ratings')
 const ReplyTime = () => import('~/components/ReplyTime')
-const ChatButton = () => import('~/components/ChatButton.vue')
 const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
-    Ratings,
     ReplyTime,
-    ChatButton,
     NoticeMessage,
-    ProfileImage
+    ProfileHeader
   },
   props: {
     id: {
@@ -198,17 +161,9 @@ export default {
 }
 
 .coverphoto {
-  height: 100px !important;
+  min-height: 100px !important;
   width: 100% !important;
   background-image: url('~static/wallpaper.png');
-}
-
-.coverprofilecircle {
-  width: 100px;
-  height: 100px;
-  background-color: $color-gray--base;
-  border-radius: 50%;
-  /*margin: 10px;*/
 }
 
 .covername {

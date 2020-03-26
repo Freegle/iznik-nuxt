@@ -14,6 +14,7 @@
               v-model="term"
               type="text"
               placeholder="Search name/email/subject"
+              autocapitalize="none"
               @keyup.native.enter="search"
             />
             <b-input-group-append>

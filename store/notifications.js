@@ -113,6 +113,30 @@ export const actions = {
     }
   },
 
+  // Make sure that the notifications are kept up to date
+  async updateNotifications({ dispatch, rootGetters }, params) {
+    const me = rootGetters['auth/user']
+
+    if (me && me.id) {
+      const currentCount = rootGetters['notifications/getUnreadCount']
+      const notifications = rootGetters['notifications/getCurrentList']
+      await dispatch('updateUnreadNotificationCount')
+      const newCount = rootGetters['notifications/getUnreadCount']
+
+      if (newCount !== currentCount || !notifications.length) {
+        // Changed or don't know it yet.  Get the list so that it will display zippily when they click.
+        await dispatch('clear')
+        await dispatch('fetchNextListChunk')
+      }
+    }
+
+    // Continuously check for updated notifications
+    // No need to clear the timeout
+    setTimeout(() => {
+      dispatch('updateNotifications')
+    }, 30000)
+  },
+
   clear({ commit }) {
     commit('setContext', {
       ctx: null
