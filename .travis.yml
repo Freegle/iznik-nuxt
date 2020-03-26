@@ -50,7 +50,7 @@ script:
 - ln -s ../iznik-nuxt/dist www
 - cordova platform rm android
 - cordova platform add android
-- cordova build -- --keystore="../iznik-nuxt/android-chrisphdcccom.keystore" --storePassword="$storepass"
+- cordova build -- --keystore="../iznik-nuxt/android-chrisphdcccom.new.keystore" --storePassword="$storepass"
   --password="$keypass" --alias="$keystorealias"
 - cd ../iznik-nuxt
 before_cache:
