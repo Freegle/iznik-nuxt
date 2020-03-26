@@ -50,8 +50,7 @@ script:
 - ln -s ../iznik-nuxt/dist www
 - cordova platform rm android
 - cordova platform add android
-- echo "$something"
-- cordova build -- --keystore="../iznik-nuxt/mobile/android-chrisphdcccom.keystore" --storePassword="$storepass" --password==""$keypass" --alias="$keystorealias"
+- cordova build -- --keystore="../iznik-nuxt/mobile/android-chrisphdcccom.keystore" --storePassword="$storepass" --password=="$keypass" --alias="$keystorealias"
 #- "./gradlew assembleRelease"
 #- jarsigner -verbose -sigalg SHA1withRSA -storepass $storepass -keypass $keypass -digestalg SHA1 -keystore mobile/android-chrisphdcccom.keystore ../iznik-nuxt-app/platforms/android/app/build/outputs/apk/debug/app-debug.apk $keystorealias
 #- zipalign -v 4 ../iznik-nuxt-app/platforms/android/app/build/outputs/apk/debug/app-debug.apk PATH_TO_/MY_RELEASE.apk- cd ../iznik-nuxt
