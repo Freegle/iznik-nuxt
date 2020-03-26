@@ -31,9 +31,9 @@ before_install:
   -in mobile/app-secrets.tar.enc -out mobile/app-secrets.tar -d
 - tar xvf mobile/app-secrets.tar
 - nvm install $nodejs_version
-- npm install
 - npm install -g cordova
 - npm install -g q
+- npm install
 - node --version
 - npm --version
 - gradle --version
@@ -54,12 +54,16 @@ script:
 - cordova platform add android
 - ls -l platforms
 - ls -l platforms/android
+- ls -l node_modules
+- npm i .
+- ls -l node_modules
 - sh ./scripts/before_build.sh
 - cordova build
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
 cache:
   directories:
     - $HOME/.gradle/caches/
