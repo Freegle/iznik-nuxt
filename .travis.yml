@@ -23,8 +23,11 @@ android:
   - google-gdk-license-.+
 before_install:
 - openssl aes-256-cbc -K $encrypted_a57fb8741d35_key -iv $encrypted_a57fb8741d35_iv
+  -in app-secrets.tar.enc -out app-secrets.tar -d
+- openssl aes-256-cbc -K $encrypted_a57fb8741d35_key -iv $encrypted_a57fb8741d35_iv
   -in mobile/app-secrets.tar.enc -out mobile/app-secrets.tar -d
 - tar xvf mobile/app-secrets.tar
+- ls -l mobile
 - nvm install $nodejs_version
 - npm install -g cordova
 - npm install -g q
@@ -46,6 +49,7 @@ script:
 - cordova platform rm android
 - cordova platform add android
 - cordova build
+- cd ../iznik-nuxt
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
 - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
