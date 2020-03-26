@@ -31,7 +31,7 @@
   <preference name="FadeSplashScreen" value="false" />
   <platform name="android">
     <preference name="android-minSdkVersion" value="19" />
-    <preference name="android-targetSdkVersion" value="28" />
+    <preference name="android-targetSdkVersion" value="29" />
   </platform>
   <platform name="ios">
     <preference name="deployment-target" value="8.0" />
