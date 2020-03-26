@@ -49,15 +49,8 @@ script:
 - ln -s ../iznik-nuxt/mobile/freegle/scripts scripts
 - cp ../iznik-nuxt/google-services.json google-services.json
 - ln -s ../iznik-nuxt/dist www
-- ls -l
 - cordova platform rm android
 - cordova platform add android
-- ls -l platforms
-- ls -l platforms/android
-- ls -l node_modules
-#- npm i .
-#- ls -l node_modules
-- sh ./scripts/before_build.sh
 - cordova build
 
 before_cache:
