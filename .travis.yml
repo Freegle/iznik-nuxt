@@ -1,31 +1,26 @@
 dist: trusty
-
 branches:
   only: app
-
 env:
   global:
-    - ANDROID_API_LEVEL=28
-    - ANDROID_BUILD_TOOLS_VERSION=28.0.3
-    - TERM=dumb # Keep gradle from crapping all over the log
+  - ANDROID_API_LEVEL=28
+  - ANDROID_BUILD_TOOLS_VERSION=28.0.3
+  - TERM=dumb
   matrix:
-    - nodejs_version=12
-
+  - nodejs_version=12
 language: android
 jdk:
-  - oraclejdk8
-
+- oraclejdk8
 android:
   components:
-    - tools
-    - build-tools-$ANDROID_BUILD_TOOLS_VERSION
-    - android-$ANDROID_API_LEVEL
-    - extra
+  - tools
+  - build-tools-$ANDROID_BUILD_TOOLS_VERSION
+  - android-$ANDROID_API_LEVEL
+  - extra
   licenses:
-    - 'android-sdk-preview-license-.+'
-    - 'android-sdk-license-.+'
-    - 'google-gdk-license-.+'
-
+  - android-sdk-preview-license-.+
+  - android-sdk-license-.+
+  - google-gdk-license-.+
 before_install:
 - openssl aes-256-cbc -K $encrypted_a57fb8741d35_key -iv $encrypted_a57fb8741d35_iv
   -in mobile/app-secrets.tar.enc -out mobile/app-secrets.tar -d
@@ -37,7 +32,6 @@ before_install:
 - node --version
 - npm --version
 - gradle --version
-
 script:
 - npm run fdapp
 - mkdir ../iznik-nuxt-app
@@ -52,13 +46,19 @@ script:
 - cordova platform rm android
 - cordova platform add android
 - cordova build
-
 before_cache:
-  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
   directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
-    - $HOME/.android/build-cache
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
+  - "$HOME/.android/build-cache"
+deploy:
+  provider: releases
+  api_key:
+    secure: S+1f7ZdQf6C/dH8Cx0i/gtX1hko6xRE9my5j4Kvp9vc5K/frbQGWEM8eqKOmVAvVs+eoN6sFO+tv6mUyRZ4pFzOxxLlVSd0taEgf9NuIxrmclMbAa9f6TpA0g5QTZH0ARYZg5pr9gX4HpKlYlkoO0Roac8VK6d1yO2FFK5eN+KO3+NPCvSA0vIJip4BYTBKCzmDC/AmZWhlBaQSZUVpv5kiItiPO8jM5a5FE+KmDZ0bPBr6t41CFHTivJ5iKt+AfIkALa8er4WMteXCLI8yRt6T7jut8oIDGx5awCtve4v5LL+gTh39XSTdSsEyUCmP395W1CxXT6HjvIIVc4yvqmZ+3KEdM6MuayZZsHbcooqtEC5hht/OQ147eEpV0MZ+Ebn2as0wFcy4783KF9HxX3RppyA4ptVj91baBl99s1c8i11pti7i45dT82l5D71CDhwAfhtMG9CDfPvkHcb9q9J1jN8pYmi39h9iDJS7O7a1XbePJIM33yUrO9uq2w5Id9aIWBlyECMiPNZe1PqTlJlUzGbeSkvoKvj1TzUyiBCYMrJMQoRwAaaeZbR2NkeXGgKwCmMAAsQGHs0hbEDnIrRyp/0L+jyvkiZEiC0ffKYRdu5P2VOGi7DkDu0SCeChUW7dndzXLckMpPE7o92EWXkzXJmzqIt7JuTq08+ngyJU=
+  file: "../iznik-nuxt-app/platforms/android/app/build/outputs/apk/debug/app-debug.apk"
+  on:
+    repo: Freegle/iznik-nuxt
+    branch: app
