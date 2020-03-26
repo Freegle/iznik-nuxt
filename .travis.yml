@@ -51,7 +51,7 @@ script:
 - cordova platform rm android
 - cordova platform add android
 - cordova build -- --keystore="../iznik-nuxt/android-chrisphdcccom.keystore" --storePassword="$storepass"
-  --password=="$keypass" --alias="$keystorealias"
+  --password="$keypass" --alias="$keystorealias"
 - cd ../iznik-nuxt
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
