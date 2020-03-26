@@ -136,6 +136,120 @@ export const getters = {
   }
 }
 
+function calculateSteps(messages, type, commit) {
+  let steps = 0
+  console.log('Calculate steps', messages, type)
+
+  // eslint-disable-next-line no-unused-vars
+  for (const [id, message] of messages) {
+    if (message.type === type && !message.submitted) {
+      if (message.id < 0) {
+        // 1) Create draft 2) Submit
+        steps += 2
+      } else {
+        // 1) Edit message 2) Convert to draft 3) Submit
+        steps += 3
+      }
+    }
+  }
+
+  console.log('Steps', steps)
+
+  // Add an extra step to be used immediately to show we've started.
+  commit('initProgress', steps + 1)
+}
+
+async function createDraft(message, state, commit) {
+  console.log('Create draft', message)
+  const attids = []
+
+  if (state.attachments[message.id]) {
+    for (const att in state.attachments[message.id]) {
+      attids.push(state.attachments[message.id][att].id)
+    }
+  }
+
+  const data = {
+    collection: 'Draft',
+    locationid: state.postcode.id,
+    messagetype: message.type,
+    item: message.item,
+    textbody: message.description,
+    attachments: attids,
+    groupid: state.group
+  }
+
+  console.log('Data for put', data)
+  const { id } = await this.$api.message.put(data)
+  console.log('Returned', id)
+  commit('incProgress')
+  return id
+}
+
+async function submitDraft(id, email, commit) {
+  console.log('Submit draft', id, email)
+  const ret = await this.$api.message.joinAndPost(id, email)
+  console.log('Returned', ret)
+  commit('incProgress')
+  return ret
+}
+
+function markSubmitted(id, commit) {
+  console.log('Mark submitted', id)
+  commit('setMessage', {
+    id: id,
+    submitted: true,
+    item: null,
+    description: null
+  })
+
+  commit('setAttachments', [])
+}
+
+async function backToDraft(id, dispatch, commit) {
+  console.log('Back to draft', id)
+  await dispatch(
+    'messages/update',
+    {
+      id: id,
+      action: 'RejectToDraft'
+    },
+    {
+      root: true
+    }
+  )
+
+  commit('incProgress')
+}
+
+async function updateIt(
+  id,
+  locationid,
+  messagetype,
+  item,
+  textbody,
+  groupid,
+  dispatch,
+  commit
+) {
+  const data = {
+    id,
+    locationid,
+    messagetype,
+    item,
+    textbody,
+    groupid
+  }
+
+  console.log('Update it', data)
+
+  await dispatch('messages/patch', data, {
+    root: true
+  })
+
+  commit('incProgress')
+}
+
 export const actions = {
   setUploading({ commit }, value) {
     commit('setUploading', value)
@@ -185,175 +299,76 @@ export const actions = {
     // In earlier client versions, we recovered existing drafts from the server in case of interruption by user or errors.
     // But we don't need to do that, because our store remembers the contents of the message.  Orphaned drafts will
     // be pruned by the server.
-    const promises = []
     const results = []
-    const self = this
     const messages = Object.entries(state.messages)
-    let steps = 0
-
     console.log('Submit', messages, params.type)
-    for (const message of messages) {
-      if (message.type === params.type) {
-        if (message.id < 0) {
-          // 1) Create draft 2) Submit
-          steps += 2
-        } else {
-          // 1) Edit message 2) Convert to draft 3) Submit
-          steps += 3
-        }
-      }
-    }
 
-    console.log('Steps', steps)
-    // Add an extra step for below to show we've started.
-    commit('initProgress', steps + 1)
+    calculateSteps(messages, params.type, commit)
+
+    // Before we do anything, give a spurious sense of progress.
+    commit('incProgress')
 
     for (const [id, message] of messages) {
-      if (message.type === params.type) {
-        console.log('Submit message'.message)
-        if (message.submitted) {
-          if (message.id < 0) {
-            commit('incProgress')
-            commit('incProgress')
-          } else {
-            commit('incProgress')
-            commit('incProgress')
-            commit('incProgress')
-          }
+      if (message.type === params.type && !message.submitted) {
+        console.log(
+          'Submit message',
+          id,
+          message,
+          state.attachments[message.id]
+        )
 
-          continue
-        }
-
-        console.log('Submit', id, message, state.attachments[message.id])
-        let promise
+        let result
 
         if (message.id < 0) {
           // This is a draft we have composed on the client, which doesn't have a corresponding server message yet.
-          const attids = []
+          // We need to:
+          // - create a drafted
+          // - submit it
+          // - mark it in our store as submitted.
+          console.log('Draft')
+          const id = await createDraft.call(this, message, state, commit)
 
-          if (state.attachments[message.id]) {
-            for (const att in state.attachments[message.id]) {
-              attids.push(state.attachments[message.id][att].id)
-            }
-          }
+          const { groupid, newuser, newpassword } = await submitDraft.call(
+            this,
+            id,
+            state.email,
+            commit
+          )
 
-          const data = {
-            collection: 'Draft',
-            locationid: state.postcode.id,
-            messagetype: message.type,
-            item: message.item,
-            textbody: message.description,
-            attachments: attids,
-            groupid: state.group
-          }
-
-          promise = new Promise((resolve, reject) => {
-            self.$api.message.put(data).then(({ id }) => {
-              commit('incProgress')
-              // We've created a draft.  Submit it
-
-              self.$api.message
-                .joinAndPost(id, state.email)
-                .then(({ groupid, newuser, newpassword }) => {
-                  commit('incProgress')
-                  // Success
-                  commit('setMessage', {
-                    id: message.id,
-                    submitted: true,
-                    item: null,
-                    description: null
-                  })
-                  commit('setAttachments', [])
-                  results.push({
-                    id: message.id,
-                    groupid,
-                    newuser,
-                    newpassword
-                  })
-
-                  resolve(groupid)
-                })
-                .catch(function(e) {
-                  // Failed
-                  console.error('Post of message failed', e)
-                  reject(e)
-                })
-            })
-          })
+          result = { id, groupid, newuser, newpassword }
         } else {
           // This is one of our existing messages which we are reposting.  We need to convert it back to a draft,
           // edit it (to update it from our client data), and then submit.
-          promise = new Promise(function(resolve, reject) {
-            dispatch(
-              'messages/update',
-              {
-                id: message.id,
-                action: 'RejectToDraft'
-              },
-              {
-                root: true
-              }
-            ).then(() => {
-              commit('incProgress')
+          console.log('Existing message')
+          const id = message.id
+          await backToDraft(id, dispatch, commit)
+          await updateIt(
+            id,
+            state.postcode.id,
+            message.type,
+            message.item,
+            message.description,
+            state.group,
+            dispatch,
+            commit
+          )
 
-              const data = {
-                id: message.id,
-                locationid: state.postcode.id,
-                messagetype: message.type,
-                item: message.item,
-                textbody: message.description,
-                groupid: state.group
-              }
+          const { groupid, newuser, newpassword } = await submitDraft.call(
+            this,
+            id,
+            state.email,
+            commit
+          )
 
-              dispatch('messages/patch', data, {
-                root: true
-              }).then(() => {
-                commit('incProgress')
-
-                self.$api.message
-                  .joinAndPost(message.id, state.email)
-                  .then(({ groupid, newuser, newpassword }) => {
-                    commit('incProgress')
-                    // Success
-                    commit('setMessage', {
-                      id: message.id,
-                      submitted: true,
-                      item: null,
-                      description: null
-                    })
-                    commit('setAttachments', [])
-                    results.push({
-                      id: message.id,
-                      groupid,
-                      newuser,
-                      newpassword
-                    })
-
-                    resolve(groupid)
-                  })
-                  .catch(e => {
-                    // Failed
-                    console.error('Post of message failed', e)
-                    reject(e)
-                  })
-                  .catch(e => {
-                    console.error('Edit of existing message failed', e)
-                  })
-              })
-            })
-          })
+          result = { id, groupid, newuser, newpassword }
         }
 
-        Vue.nextTick(() => {
-          commit('incProgress')
-        })
-
-        promises.push(promise)
+        console.log('Got result', result)
+        results.push(result)
+        markSubmitted(result.id, commit)
       }
     }
 
-    console.log('Wait for', promises)
-    await Promise.all(promises)
     console.log('Done')
     commit('clear')
 
