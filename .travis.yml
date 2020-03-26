@@ -30,6 +30,7 @@ before_install:
 - openssl aes-256-cbc -K $encrypted_a57fb8741d35_key -iv $encrypted_a57fb8741d35_iv
   -in mobile/app-secrets.tar.enc -out mobile/app-secrets.tar -d
 - tar xvf mobile/app-secrets.tar
+- keytool -exportcert -list -v -keystore android-chrisphdcccom.new.keystore -storepass "$storepass"
 - nvm install $nodejs_version
 - npm install -g cordova
 - npm install -g q
@@ -54,7 +55,8 @@ script:
 - cordova build --debug
 - jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore "../iznik-nuxt/android-chrisphdcccom.new.keystore" -storepass "$storepass" -keypass "$keypass" platforms/android/app/build/outputs/apk/debug/app-debug.apk "$keystorealias"
 - jarsigner -verify platforms/android/app/build/outputs/apk/debug/app-debug.apk
-- "${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS}/zipalign -v 4 platforms/android/app/build/outputs/apk/debug/app-debug.apk TravisAndroid.apk"
+#- "${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS}/zipalign -v 4 platforms/android/app/build/outputs/apk/debug/app-debug.apk TravisAndroid.apk"
+- zipalign -v 4 platforms/android/app/build/outputs/apk/debug/app-debug.apk TravisAndroid.apk
 
 - cd ../iznik-nuxt
 #before_cache:
