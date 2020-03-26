@@ -29,7 +29,6 @@ before_install:
 - openssl aes-256-cbc -K $encrypted_a57fb8741d35_key -iv $encrypted_a57fb8741d35_iv
   -in mobile/app-secrets.tar.enc -out mobile/app-secrets.tar -d
 - tar xvf mobile/app-secrets.tar
-- ls -l mobile
 - nvm install $nodejs_version
 - npm install -g cordova
 - npm install -g q
@@ -50,7 +49,7 @@ script:
 - ln -s ../iznik-nuxt/dist www
 - cordova platform rm android
 - cordova platform add android
-- cordova build -- --keystore="../iznik-nuxt/mobile/android-chrisphdcccom.keystore" --storePassword="$storepass" --password=="$keypass" --alias="$keystorealias"
+- cordova build -- --keystore="../iznik-nuxt/android-chrisphdcccom.keystore" --storePassword="$storepass" --password=="$keypass" --alias="$keystorealias"
 #- "./gradlew assembleRelease"
 #- jarsigner -verbose -sigalg SHA1withRSA -storepass $storepass -keypass $keypass -digestalg SHA1 -keystore mobile/android-chrisphdcccom.keystore ../iznik-nuxt-app/platforms/android/app/build/outputs/apk/debug/app-debug.apk $keystorealias
 #- zipalign -v 4 ../iznik-nuxt-app/platforms/android/app/build/outputs/apk/debug/app-debug.apk PATH_TO_/MY_RELEASE.apk- cd ../iznik-nuxt
@@ -62,6 +61,11 @@ cache:
   - "$HOME/.gradle/caches/"
   - "$HOME/.gradle/wrapper/"
   - "$HOME/.android/build-cache"
+before_deploy:
+  - git config --local user.name "$gitusername"
+  - git config --local user.email "$gitemail"
+  - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
+  - git tag $TRAVIS_TAG
 #deploy:
 #  provider: releases
 #  api_key:
