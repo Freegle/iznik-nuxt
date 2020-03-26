@@ -43,7 +43,7 @@ script:
 - mkdir ../iznik-nuxt-app
 - cd ../iznik-nuxt-app
 - ln -s ../iznik-nuxt/mobile/freegle/android/config.xml config.xml
-- ln -s ../iznik-nuxt/mobile/freegle/android/package-json package-json
+- ln -s ../iznik-nuxt/mobile/freegle/android/package.json package.json
 - ln -s ../iznik-nuxt/mobile/freegle/icons icons
 - ln -s ../iznik-nuxt/mobile/freegle/package-assets package-assets
 - ln -s ../iznik-nuxt/mobile/freegle/scripts scripts
@@ -55,8 +55,8 @@ script:
 - ls -l platforms
 - ls -l platforms/android
 - ls -l node_modules
-- npm i .
-- ls -l node_modules
+#- npm i .
+#- ls -l node_modules
 - sh ./scripts/before_build.sh
 - cordova build
 
