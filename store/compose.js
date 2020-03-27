@@ -160,7 +160,7 @@ function calculateSteps(messages, type, drafts, commit) {
 }
 
 async function createDraft(message, state, commit) {
-  console.log('Create draft', message)
+  console.log('Create draft', message, state.email)
   const attids = []
 
   if (state.attachments[message.id]) {
@@ -176,7 +176,8 @@ async function createDraft(message, state, commit) {
     item: message.item,
     textbody: message.description,
     attachments: attids,
-    groupid: state.group
+    groupid: state.group,
+    email: state.email
   }
 
   console.log('Data for put', data)
@@ -312,7 +313,7 @@ export const actions = {
           // - create a drafted
           // - submit it
           // - mark it in our store as submitted.
-          console.log('Draft')
+          console.log('Draft', state.email)
           await createDraft.call(this, message, state, commit)
         } else {
           // This is one of our existing messages which we are reposting.  We need to convert it back to a draft,
