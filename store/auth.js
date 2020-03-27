@@ -1,4 +1,6 @@
 import { LoginError, SignUpError } from '../api/BaseAPI'
+import { savePushId, logoutPushId } from '@/plugins/app-init-push' // CC
+import { appGoogleLogout } from '@/plugins/app-google' // CC
 
 let first = true
 
@@ -161,6 +163,8 @@ export const actions = {
   },
 
   logout({ commit }) {
+    appGoogleLogout() // CC
+    logoutPushId() // CC
     commit('setUser', null)
     this.$api.session.logout()
     this.$axios.defaults.headers.common.Authorization = null
@@ -183,9 +187,15 @@ export const actions = {
     this.$axios.defaults.headers.common.Authorization = value
       ? 'Iznik ' + value.persistent
       : null
+
+    console.log('auth.setUser ',value?value.persistent:'null')
   },
 
   async login({ commit, dispatch, state }, params) {
+    if (process.env.IS_APP) {
+      params.mobile = true
+      params.appversion = process.env.MOBILE_VERSION
+    }
     const res = await this.$api.session.login(params)
     const { ret, status, user, persistent } = res
 
@@ -313,6 +323,8 @@ export const actions = {
         commit('setUser', me, params.components)
         commit('addRelated', me.id)
         commit('forceLogin', false)
+
+        await savePushId(this) // Tell server our mobile push notification id, if available // CC
       }
 
       if (work) {

@@ -1,8 +1,82 @@
-language: node_js
+dist: trusty
 branches:
-  only:
-    app
+  only: app
+env:
+  global:
+  - ANDROID_API_LEVEL=28
+  - ANDROID_BUILD_TOOLS_VERSION=28.0.3
+  - TERM=dumb
+  - secure: tAFeuO4fqT+S+Vv+TcdXk4LRlcbsDEZbkShzxnzw3b0QFgQyaotzzQrDaW9S6KPO8knGy7RQoHEavS7wXSgis5h/fRnNiLWo3MoykdKvjx0TwTt7yTaDbgvI2H/xo8zE6DFU8jqH4KVwBq5LFikUJd0hx7uqw86IrR9kYj5R563UZqEacfsR5BWrYWqX5WwZInMnCY6SesKyL3q6F60D6z6Blwdq0evsj05oHWfxmZeSbzboOUg/Is6IBtUGMQRrWGsAdR4x73SiZ9APDfIB4C7oeput+GfOZPjTDoDt8defL6+IyLhw7kqcgQUhA9Lu+Ke2H/0KgHqBk7W1WDeh36s3DIv7MwkhQU+3ks1jdbs0dFWVmdm/yF+GCWy/sEdtFEzCfBh0o0kKfujauJx+T0A/GugaHlTN2fhFXvJ0XHrkoNjsQnNlzWyz/2gmiHLpK9ASFovrrNioq2achgisOlym3Kq10CdaGkfYNN8jHzzXaWVaS00ugMPIcAE4KbQmwav0AN+C9DwplO/yan4bai7/y5roYGRsR8z/MiZJAXH40bFGl8oI0Xl+1zTURR1J0/qKp8DJgZG8XLFWAWfoZOWouvZDNQqHWQU6JLWQgL5GFdhI0PcYZD7OSUEwAzbg19Ko4Lj+S3DhoJCpqP4/7tAmkd8FofCAmdAKXyToa7c=
+  - secure: rayt52s00RAeAtR0THQs2tAmbb5d0UgJscOodMSNOoNbo7Mdn81TMZJBaOr0hRkv2hS/Eq36IliYHduKL79/mlJqIkpWPLXLI+GXn3zMTfanoq7oRyVYS0ToQk8AZ1Uva6G314TscaP/8QYWaRw4R5rj0SPTBlEp7uCg/uQfQltZeyglRX+CbUh7VgNWmM3zDRpO2Pr3kEOd6rRNgtAigUNYYq6C1hWJD4NQMdi65vPFAXMV5cQhAh7w/IvYeRSneFcxlFo7InxEx2Rm/rn/Wh0aDggljyaQSbYW1WpwUNssrNhmLNdJCd/KNMQoW0MHU0uZcawvvc8m0vDmyuArMSMTGBV4ujISZJjIOO6Jy6LEESALMDoHccsrljs7DmLTfQOF5ITEpzVm87xss7+2/oz9rewFyd2PTjBRCVcT5M3xhDThS0xFXBsM2/uExL0IZY1otwfBPVj2nmSQkBRvXHEQj6qgALwG0mp1WueE5OKZZLHoCrb3wyvk76jwovAvOolizhFWKnQ1Iz3Nv1AjRS5TjuVI3Z98TMCxNcQC9nwdzopjCQH4DHzvnyvYI6arcyEt+2z3fUKP2Qo9oKK2+l3U4AUUy+sWuk6xYYqnS+2wgg9VQ1hsOBkaafrN3EFnDXQEx3NfIk4zAA2GngKOMNqC7C9XuggxXE7dL9vCIyU=
+  - secure: QPcVS/eMqGLfQbaWLJvCQH+KzVweAKz/lZ5G/Z8pl5tH1+ReqeysvXp1Nt+9k/HGRMLxrFCnkzamNUuf7OyO1o+itdNAeH+nxseKdp2sR7Q60SOzPkkfFdHX58tliaRaqkLybgZhd+tDJw4qoP+nApWwrKmIWem+OfTO0WTGky+ewrjur4um6ocyKetXVCC4syzxNQTZyGay8yrKXcYCYywkyvtsq5kFRdldsY7qS7XzDDVsULgCtlp+T08MaCloUU6j9qDvoCnwW9csNeDNd3f79rt1/HPiOdjVzTNZ6GeeDkIpqApRNv+lZRKNjVyG+XDvvE7VEJYJZHh7Vy6Pj3meSaLh+P7jdWc6BPZ8IMnNJyWuTuoPJo/AeFjNyX6M92mKYr1U6CgGS2KIPMdr3cUzFMPAe7JCyVlHhfZl7iObvEOELrggpdxYXj74YQG7outeRFMcpOJZs997CaT2rEi57aut8lJlSxhUbdmC2Fxf0QvR2XQA6bG/x115VGwr0wAmuVmlmEfkWCElSgpHQB6ZfXSyQoupj+po//eZb6Ei323pW1vXmKCrbmy/nrWlDvidjjFhTWJ8d+DnHVgSVguXt031luAfAFe4L7qX23hlWFOPYKHlnmoovyd9UEH1f5jF/9MlXqpTmGkH/YLxFGE4mLzQd115W1lNEDX3UEc=
+  - secure: yZ3yFpDqo1baosTwhttl9Vlx2pbPXa9uAI9OGEZDD/KHqavdnoFq1ItOheZdYXz6yuNkyOsMKEPDgbURgPQLjUsG5JUSxDjBt2XbJhLiVmpy4Ur4wX9x11MmAMuoEjDj4yFO1POpg+NszFpP4OW4+BryIuyOOWdyFEIRRE9keDzelcLTedltQT+AeV8bdJeb2CMoBiHd6VOltceUEBaiXiK9BUJUhg7c+c+0wpGU5Vh3FnhLc5zmMWMe5PVVxn9hI4g0sB7vUmg1johEMCkcH31IebhdUX7hxH9b9gj4BeZjJ63SoRljZCJE10cKd1T8+3RhZXtP1nU+c3RgwinAFbbod1RF2FU5MNNEZfJVGQ4SYM3RtmWRfuidjRxTmgEf9222XkRPzJbNiK/CqXbxWDWifyX/eHHoOBBkIFu0f9Q2OweCiX1LeHe9by8Ng/bGgpJw8NhL70fMzrTdoQlRBn0/2rY9F8+tkbkekp9RxugATh/g3WnBsxp+D8RgM+PXdZ5o4QqRCzblrvyOFfxyqHTDmWkA77c1UC8Jnc6Oac/tyh9+ZDDF36Tj+0J3hsXdnO2wTAxKMkTnIBpuyzLMLEiJbO2McIldGbOteK4mOQRt7ttfNV4vsysuLNDdkOOKVjZzvBdjuQhOTWKoTdkBwOSdcaTXksZuoTu2sWQIOmA=
+  matrix:
+  - nodejs_version=12
+language: android
+jdk:
+- oraclejdk8
+android:
+  components:
+  - tools
+  - build-tools-$ANDROID_BUILD_TOOLS_VERSION
+  - android-$ANDROID_API_LEVEL
+  - extra
+  licenses:
+  - android-sdk-preview-license-.+
+  - android-sdk-license-.+
+  - google-gdk-license-.+
 before_install:
-  - npm install
+- openssl aes-256-cbc -K $encrypted_a57fb8741d35_key -iv $encrypted_a57fb8741d35_iv
+  -in mobile/app-secrets.tar.enc -out mobile/app-secrets.tar -d
+- tar xvf mobile/app-secrets.tar
+#- keytool -exportcert -list -v -keystore android-chrisphdcccom.new.keystore -storepass "$storepass"
+- nvm install $nodejs_version
+- npm install -g cordova
+- npm install -g q
+- npm install
+- node --version
+- npm --version
+- gradle --version
 script:
-  - npm run fdapp
+- npm run fdapp
+- mkdir ../iznik-nuxt-app
+- cd ../iznik-nuxt-app
+- ln -s ../iznik-nuxt/mobile/freegle/android/config.xml config.xml
+- ln -s ../iznik-nuxt/mobile/freegle/android/package.json package.json
+- ln -s ../iznik-nuxt/mobile/freegle/icons icons
+- ln -s ../iznik-nuxt/mobile/freegle/package-assets package-assets
+- ln -s ../iznik-nuxt/mobile/freegle/scripts scripts
+- cp ../iznik-nuxt/google-services.json google-services.json
+- ln -s ../iznik-nuxt/dist www
+- cordova platform rm android
+- cordova platform add android
+- cordova build --debug -- --keystore="../iznik-nuxt/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
+- cp ../iznik-nuxt-app/platforms/android/app/build/outputs/apk/debug/app-debug.apk Freegle-app-debug-$(date +'%Y%m%d%H%M%S').apk
+#- cordova build --release -- --keystore="../iznik-nuxt/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
+#- cp ../iznik-nuxt-app/platforms/android/app/build/outputs/apk/release/app-release.apk Freegle-app-release-$(date +'%Y%m%d%H%M%S').apk
+- ls -l
+- cd ../iznik-nuxt
+before_cache:
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
+  - "$HOME/.android/build-cache"
+before_deploy:
+- git config --local user.name "$gitusername"
+- git config --local user.email "$gitemail"
+- export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
+- git tag $TRAVIS_TAG
+deploy:
+  provider: releases
+  api_key:
+    secure: S+1f7ZdQf6C/dH8Cx0i/gtX1hko6xRE9my5j4Kvp9vc5K/frbQGWEM8eqKOmVAvVs+eoN6sFO+tv6mUyRZ4pFzOxxLlVSd0taEgf9NuIxrmclMbAa9f6TpA0g5QTZH0ARYZg5pr9gX4HpKlYlkoO0Roac8VK6d1yO2FFK5eN+KO3+NPCvSA0vIJip4BYTBKCzmDC/AmZWhlBaQSZUVpv5kiItiPO8jM5a5FE+KmDZ0bPBr6t41CFHTivJ5iKt+AfIkALa8er4WMteXCLI8yRt6T7jut8oIDGx5awCtve4v5LL+gTh39XSTdSsEyUCmP395W1CxXT6HjvIIVc4yvqmZ+3KEdM6MuayZZsHbcooqtEC5hht/OQ147eEpV0MZ+Ebn2as0wFcy4783KF9HxX3RppyA4ptVj91baBl99s1c8i11pti7i45dT82l5D71CDhwAfhtMG9CDfPvkHcb9q9J1jN8pYmi39h9iDJS7O7a1XbePJIM33yUrO9uq2w5Id9aIWBlyECMiPNZe1PqTlJlUzGbeSkvoKvj1TzUyiBCYMrJMQoRwAaaeZbR2NkeXGgKwCmMAAsQGHs0hbEDnIrRyp/0L+jyvkiZEiC0ffKYRdu5P2VOGi7DkDu0SCeChUW7dndzXLckMpPE7o92EWXkzXJmzqIt7JuTq08+ngyJU=
+  #file: "../iznik-nuxt-app/platforms/android/app/build/outputs/apk/debug/app-debug.apk"
+  file_glob: true
+  file: ../iznik-nuxt-app/Freegle-app-*
+  on:
+    repo: Freegle/iznik-nuxt
+    branch: app
+

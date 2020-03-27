@@ -5,7 +5,7 @@ const VueFB = {}
 
 VueFB.install = function install(Vue, options) {
   Vue.FB = undefined
-
+  if (process.env.IS_APP) return // CC
   window.fbAsyncInit = function() {
     window.FB.init(options)
     window.FB.AppEvents.logPageView()

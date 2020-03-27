@@ -139,6 +139,11 @@
       </b-navbar-brand>
       <div class="d-flex align-items-center">
         <client-only>
+          <div v-if="isApp && loggedIn" id="menu-option-refresh-sm" class="text-white mr-3">
+            <div class="notifwrapper">
+              <v-icon name="redo" scale="2" @click="refresh" />
+            </div>
+          </div>
           <b-dropdown
             v-if="loggedIn"
             class="white text-center notiflist mr-2"
@@ -171,7 +176,6 @@
               </span>
             </infinite-loading>
           </b-dropdown>
-
           <nuxt-link v-if="loggedIn" id="menu-option-chat-sm" class="text-white mr-3" to="/chats">
             <div class="notifwrapper">
               <v-icon name="comments" scale="2" /><br>
@@ -285,6 +289,7 @@ const ChatPopups = () => import('~/components/ChatPopups')
 const Notification = () => import('~/components/Notification')
 const NchanSubscriber = require('nchan')
 const InfiniteLoading = () => import('vue-infinite-loading')
+import { setBadgeCount } from '../plugins/app-init-push' // CC
 
 export default {
   components: {
@@ -333,10 +338,15 @@ export default {
     },
     chatCount() {
       // Don't show so many that the layout breaks.
-      return Math.min(999, this.$store.getters['chats/unseenCount'])
+      const chatcount = Math.min(999, this.$store.getters['chats/unseenCount']) // CC
+      setBadgeCount(chatcount) // CC
+      return chatcount 
     },
     spreadCount() {
       return this.me && this.me.invitesleft ? this.me.invitesleft : 0
+    },
+    isApp() {
+      return process.env.IS_APP
     }
   },
 
@@ -423,11 +433,13 @@ export default {
 
     try {
       // Set the build date.  This may get superceded by Sentry releases, but it does little harm to add it in.
-      this.$sentry.setExtra('builddate', process.env.BUILD_DATE)
+      if (!process.env.IS_APP)
+        this.$sentry.setExtra('builddate', process.env.BUILD_DATE)
 
       if (me) {
         // Set the context for sentry so that we know which users are having errors.
-        this.$sentry.setUser({ userid: me.id })
+        if (!process.env.IS_APP)
+          this.$sentry.setUser({ userid: me.id })
 
         // eslint-disable-next-line no-undef
         if (typeof __insp !== 'undefined') {
@@ -490,6 +502,8 @@ export default {
 
   methods: {
     startNCHAN(id) {
+      console.log('NCHAN COMMENTED OUT')
+      return
       this.nchan = new NchanSubscriber(
         process.env.CHAT_HOST + '/subscribe?id=' + id,
         {
@@ -640,8 +654,13 @@ export default {
     maybeReload(route) {
       if (this.$router.currentRoute.path === route) {
         // We have clicked to route to the page we're already on.  Force a full refresh.
+        console.log('RELOAD maybeReload')
         window.location.reload(true)
       }
+    },
+
+    refresh() {
+      window.location.reload(true) // Works, but causes a complete reload from scratch. this.$router.go() doesn't work in iOS app
     },
 
     async markAllRead() {

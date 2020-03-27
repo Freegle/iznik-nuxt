@@ -19,6 +19,8 @@ export default class SessionAPI extends BaseAPI {
     fbaccesstoken,
     googlelogin,
     googleauthcode,
+    mobile, // CC
+    appversion, // CC
     u,
     k
   }) {
@@ -29,6 +31,8 @@ export default class SessionAPI extends BaseAPI {
       fbaccesstoken,
       googlelogin,
       googleauthcode,
+      mobile, // CC
+      appversion, // CC
       u,
       k
     })

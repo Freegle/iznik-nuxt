@@ -1,4 +1,4 @@
-if (process.env.NODE_ENV === 'production' && Math.random() <= 0.1) {
+if (!process.env.IS_APP && process.env.NODE_ENV === 'production' && Math.random() <= 0.1) {
   // Only run in production, on the client side (not SSR) and for 10% of users.  Inspectlet will also filter these
   // based on the settings we have there, and as we're only using the free plan we will only record a few.
   if (process.client) {

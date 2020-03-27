@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="org.ilovefreegle.modtools" ios-CFBundleVersion="300" version="0.3.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>ModTools</name>
+    <description>Tool to help moderators of Freegle and similar groups</description>
+    <author email="geeks@ilovefreegle.org" href="https://ilovefreegle.org">
+		Chris Cant, Freegle Ltd</author>
+    <content src="index.html" />
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <allow-intent href="wss:*" />
+    <platform name="android">
+        <allow-intent href="market:*" />
+    </platform>
+    <platform name="ios">
+        <allow-intent href="itmss:*" />
+        <allow-intent href="itms:*" />
+        <allow-intent href="itms-apps:*" />
+    </platform>
+    <platform name="ios">
+        <splash src="package-assets/Default@2x~universal~anyany.png" />
+    </platform>
+    <icon height="29" platform="ios" src="package-assets/Tile29.png" width="29" />
+    <icon height="58" platform="ios" src="package-assets/Tile58.png" width="58" />
+    <icon height="87" platform="ios" src="package-assets/Tile87.png" width="87" />
+    <icon height="60" platform="ios" src="package-assets/Tile60.png" width="60" />
+    <icon height="120" platform="ios" src="package-assets/Tile120.png" width="120" />
+    <icon height="180" platform="ios" src="package-assets/Tile180.png" width="180" />
+    <icon height="76" platform="ios" src="package-assets/Tile76.png" width="76" />
+    <icon height="152" platform="ios" src="package-assets/Tile152.png" width="152" />
+    <icon height="40" platform="ios" src="package-assets/Tile40.png" width="40" />
+    <icon height="80" platform="ios" src="package-assets/Tile80.png" width="80" />
+    <icon height="57" platform="ios" src="package-assets/Tile57.png" width="57" />
+    <icon height="114" platform="ios" src="package-assets/Tile114.png" width="114" />
+    <icon height="72" platform="ios" src="package-assets/Tile72.png" width="72" />
+    <icon height="144" platform="ios" src="package-assets/Tile144.png" width="144" />
+    <icon height="50" platform="ios" src="package-assets/Tile50.png" width="50" />
+    <icon height="100" platform="ios" src="package-assets/Tile100.png" width="100" />
+    <icon height="167" platform="ios" src="package-assets/Tile167.png" width="167" />
+    <icon height="1024" platform="ios" src="package-assets/Tile1024.png" width="1024" />
+    <platform name="ios">
+        <preference name="AutoHideSplashScreen" value="true" />
+        <preference name="FadeSplashScreen" value="false" />
+        <preference name="FadeSplashScreenDuration" value="2" />
+        <preference name="ShowSplashScreenSpinner" value="false" />
+        <preference name="StatusBarOverlaysWebView" value="false" />
+        <preference name="StatusBarBackgroundColor" value="#000000" />
+        <preference name="StatusBarStyle" value="lightcontent" />
+    </platform>
+    <platform name="ios">
+        <resource-file src="GoogleService-Info.plist" />
+    </platform>
+</widget>
