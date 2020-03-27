@@ -12,7 +12,7 @@
       <b-tab>
         <template v-slot:title>
           <h2 class="ml-2 mr-2">
-            Group
+            Community
           </h2>
         </template>
         <ModSettingsGroup />
