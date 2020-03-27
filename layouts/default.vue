@@ -328,15 +328,9 @@ export default {
 
   computed: {
     notifications() {
-      const notifications = this.$store.getters['notifications/getCurrentList']
-
-      if (notifications) {
-        notifications.sort(function(a, b) {
-          return new Date(b.timestamp) - new Date(a.timestamp)
-        })
-      }
-
-      return notifications
+      return this.$store.getters[
+        'notifications/getCurrentListInDescendingDateOrder'
+      ]
     },
     notificationCount() {
       return this.$store.getters['notifications/getUnreadCount']

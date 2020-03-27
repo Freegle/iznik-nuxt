@@ -4,12 +4,19 @@
       Hide this
     </b-btn>
     <p>
-      <b>Very sadly, Freegle has suspended OFFER/WANTED posts due to COVID-19.</b>
+      <b>Very sadly, Freegle has suspended people collecting items due to COVID-19.</b>
     </p>
     <p>
-      If possible, please hold on to your stuff and post it when we re-open.  There will be
-      a lot of people who are struggling and will need things when that happens.  We’ll email you
-      when we’re back.
+      But you can still offer your stuff and we'll let people know about it when we re-open.  That way you can declutter
+      while you're stuck at home.  Don't mope and mutter, just de-clutter!
+    </p>
+    <b-btn variant="success" size="lg" to="/give" class="mb-2">
+      <v-icon name="gift" />&nbsp;Give Stuff
+    </b-btn>
+    <p>
+      We’ll email you
+      when we’re back.  There will be
+      a lot of people who are struggling and will need things then.
     </p>
     <p>
       Freegle also needs your help.  We are funded mostly from donations given by freeglers - no freegling means we

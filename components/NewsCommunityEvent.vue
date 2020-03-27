@@ -21,50 +21,49 @@
         </span>
       </div>
     </div>
-    <b-row>
-      <b-col cols="12" :lg="newsfeed.communityevent.photo ? 8 : 12">
-        <span v-if="newsfeed.communityevent.description" class="text-truncate d-block">
-          <v-icon name="info-circle" class="fa-fw" /> {{ newsfeed.communityevent.description }}
-        </span>
-        <span v-if="newsfeed.communityevent.location" class="text-truncate d-block">
-          <v-icon name="map-marker-alt" class="fa-fw" /> {{ newsfeed.communityevent.location }}
-        </span>
-        <span v-if="date">
+    <div class="communityevent__container">
+      <div class="communityevent__description">
+        <div v-if="newsfeed.communityevent.description" class="text-truncate">
+          <v-icon name="info-circle" class="fa-fw" />
+          {{ newsfeed.communityevent.description }}
+        </div>
+        <div v-if="newsfeed.communityevent.location" class="text-truncate">
+          <v-icon name="map-marker-alt" class="fa-fw" />
+          {{ newsfeed.communityevent.location }}
+        </div>
+        <div v-if="date">
           <v-icon name="calendar-alt" /> {{ date.start }} - {{ date.end }}
-        </span>
-        <br>
-        <b-btn variant="primary" class="mt-2" @click="moreInfo">
-          <v-icon name="info-circle" class="fa-fw" /> More info
+        </div>
+        <b-btn variant="primary" class="mt-3 mb-2" @click="moreInfo">
+          <v-icon name="info-circle" /> More info
         </b-btn>
-      </b-col>
-      <b-col v-if="newsfeed.communityevent.photo" cols="12" lg="4">
+      </div>
+      <div class="communityevent__photo">
         <b-img
+          v-if="newsfeed.communityevent.photo"
           thumbnail
           rounded
           lazy
           :src="newsfeed.communityevent.photo.paththumb"
-          class="clickme d-inline-block mt-2 mt-md-0 float-md-right"
+          class="clickme mt-2 mt-md-0"
           @click="moreInfo"
         />
-      </b-col>
-    </b-row>
+      </div>
+    </div>
     <hr>
-    <b-row class="mt-2">
-      <b-col>
-        <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
-        <span class="float-right d-inline-block">
-          <b-btn variant="white" size="sm" @click="addEvent">
-            <v-icon name="plus" /> Add your event
-          </b-btn>
-        </span>
-      </b-col>
-    </b-row>
+    <div class="mt-2">
+      <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
+      <span class="float-right d-inline-block">
+        <b-btn variant="white" size="sm" @click="addEvent">
+          <v-icon name="plus" /> Add your event
+        </b-btn>
+      </span>
+    </div>
     <CommunityEventModal ref="addEvent" :start-edit="true" />
     <CommunityEventModal ref="moreInfo" :event="newsfeed.communityevent" />
   </div>
 </template>
-<style scoped>
-</style>
+
 <script>
 import NewsBase from '~/components/NewsBase'
 import NewsLoveComment from '~/components/NewsLoveComment'
@@ -123,3 +122,32 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+
+.communityevent__container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.communityevent__description {
+  width: 100%;
+
+  @include media-breakpoint-up(lg) {
+    width: 65%;
+    padding-right: 15px;
+  }
+}
+
+.communityevent__photo {
+  width: 100%;
+
+  @include media-breakpoint-up(lg) {
+    width: 30%;
+  }
+}
+</style>

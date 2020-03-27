@@ -12,7 +12,12 @@
           >
             <div class="d-flex justify-content-between">
               <h3 class="text-wrap flex-shrink-2">
-                {{ message.subject }}
+                <span v-if="message.isdraft">
+                  {{ message.type.toUpperCase() }}: {{ message.subject }} ({{ message.area.name }} {{ message.postcode.name }})
+                </span>
+                <span v-else>
+                  {{ message.subject }}
+                </span>
                 <span v-if="rejected" class="text-danger">
                   <v-icon name="exclamation-triangle" scale="2" />
                 </span>
@@ -103,7 +108,8 @@
             </b-card-body>
             <b-card-footer class="p-1">
               <div class="d-flex justify-content-start flex-wrap">
-                <b-btn v-if="rejected" variant="warning" class="m-1" @click="repost">
+                <!--                COVID-->
+                <b-btn v-if="rejected && false" variant="warning" class="m-1" @click="repost">
                   <v-icon name="pen" /> Edit and Resend
                 </b-btn>
                 <b-btn v-if="rejected && !withdrawn" variant="white" class="m-1" @click="outcome('Withdrawn')">
@@ -121,13 +127,13 @@
                 <b-btn v-if="!rejected && message.canedit" variant="primary" class="m-1" @click="edit">
                   <v-icon name="pen" /> Edit
                 </b-btn>
-                <b-btn v-if="!rejected && message.canrepost" variant="white" class="m-1" @click="repost">
+                <b-btn v-if="false && !rejected && message.canrepost" variant="white" class="m-1" @click="repost">
                   <v-icon name="sync" /> Repost
                 </b-btn>
-                <b-btn v-else-if="!rejected && !taken && !received && message.canrepostat" variant="white" disabled class="m-1" title="You will be able to repost this soon">
+                <b-btn v-else-if="false && !rejected && !taken && !received && message.canrepostat" variant="white" disabled class="m-1" title="You will be able to repost this soon">
                   <v-icon name="sync" /> Repost <span class="small">{{ message.canrepostat | timeago }}</span>
                 </b-btn>
-                <b-btn v-if="!rejected && !simple" variant="white" title="Share" class="m-1 text-faded" @click="share">
+                <b-btn v-if="false && !rejected && !simple" variant="white" title="Share" class="m-1 text-faded" @click="share">
                   <v-icon name="share-alt" /> Share
                 </b-btn>
                 <div class="align-self-end">
@@ -254,22 +260,26 @@ export default {
     },
 
     replies() {
-      // Show the replies with unseen messages first, then most recent
-      // console.log('Sort replies', this.message.replies, this)
-      const self = this
-      return [...this.message.replies].sort((a, b) => {
-        const aunseen = self.countUnseen(a)
-        const bunseen = self.countUnseen(b)
-        const adate = new Date(a.lastdate).getTime()
-        const bdate = new Date(b.lastdate).getTime()
+      if (this.message.isdraft) {
+        return []
+      } else {
+        // Show the replies with unseen messages first, then most recent
+        // console.log('Sort replies', this.message.replies, this)
+        const self = this
+        return [...this.message.replies].sort((a, b) => {
+          const aunseen = self.countUnseen(a)
+          const bunseen = self.countUnseen(b)
+          const adate = new Date(a.lastdate).getTime()
+          const bdate = new Date(b.lastdate).getTime()
 
-        // console.log('Unseen', aunseen, bunseen, adate, bdate)
-        if (aunseen !== bunseen) {
-          return bunseen - aunseen
-        } else {
-          return bdate - adate
-        }
-      })
+          // console.log('Unseen', aunseen, bunseen, adate, bdate)
+          if (aunseen !== bunseen) {
+            return bunseen - aunseen
+          } else {
+            return bdate - adate
+          }
+        })
+      }
     },
 
     replyusers() {

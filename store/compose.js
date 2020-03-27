@@ -136,7 +136,7 @@ export const getters = {
   }
 }
 
-function calculateSteps(messages, type, commit) {
+function calculateSteps(messages, type, drafts, commit) {
   let steps = 0
   console.log('Calculate steps', messages, type)
 
@@ -287,6 +287,56 @@ export const actions = {
   clearMessage({ commit }, params) {
     commit('clearMessage', params)
   },
+
+  async saveDraft({ dispatch, commit, state, store }, params) {
+    const messages = Object.entries(state.messages)
+    console.log('Save drafts', messages, params.type)
+
+    calculateSteps(messages, params.type, true, commit)
+
+    // Before we do anything, give a spurious sense of progress.
+    commit('incProgress')
+
+    for (const [id, message] of messages) {
+      if (message.type === params.type && !message.submitted) {
+        console.log(
+          'Save draft message',
+          id,
+          message,
+          state.attachments[message.id]
+        )
+
+        if (message.id < 0) {
+          // This is a draft we have composed on the client, which doesn't have a corresponding server message yet.
+          // We need to:
+          // - create a drafted
+          // - submit it
+          // - mark it in our store as submitted.
+          console.log('Draft')
+          await createDraft.call(this, message, state, commit)
+        } else {
+          // This is one of our existing messages which we are reposting.  We need to convert it back to a draft,
+          // edit it (to update it from our client data), and then submit.
+          console.log('Existing message')
+          const id = message.id
+          await backToDraft(id, dispatch, commit)
+          await updateIt(
+            id,
+            state.postcode.id,
+            message.type,
+            message.item,
+            message.description,
+            state.group,
+            dispatch,
+            commit
+          )
+        }
+      }
+    }
+
+    console.log('Done')
+    commit('clear')
+  },
   async submit({ dispatch, commit, state, store }, params) {
     // This is the most important bit of code in the client :-).  We have our messages in the compose store.
     //
@@ -295,15 +345,11 @@ export const actions = {
     //
     // For messages which we are reposting, we need to edit them to pick up updated, convert them back into a draft,
     // and then submit them.
-    //
-    // In earlier client versions, we recovered existing drafts from the server in case of interruption by user or errors.
-    // But we don't need to do that, because our store remembers the contents of the message.  Orphaned drafts will
-    // be pruned by the server.
     const results = []
     const messages = Object.entries(state.messages)
     console.log('Submit', messages, params.type)
 
-    calculateSteps(messages, params.type, commit)
+    calculateSteps(messages, params.type, false, commit)
 
     // Before we do anything, give a spurious sense of progress.
     commit('incProgress')

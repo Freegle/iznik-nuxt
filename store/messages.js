@@ -119,7 +119,11 @@ export const actions = {
 
     if (state.instance === instance) {
       commit('addAll', messages)
-      commit('setContext', context)
+
+      if (params.collection !== 'Draft') {
+        // We don't use context for drafts - there aren't many.
+        commit('setContext', context)
+      }
     }
   },
 
