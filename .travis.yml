@@ -50,7 +50,7 @@ script:
 - ln -s ../iznik-nuxt/dist www
 - cordova platform rm android
 - cordova platform add android
-#- cordova plugin add cordova-plugin-geolocation --variable GPS_REQUIRED="false" --variable ANDROID_GPS_REQUIRED="false"
+#- cordova plugin add https://github.com/apache/cordova-plugin-geolocation.git --variable GPS_REQUIRED="false" --variable ANDROID_GPS_REQUIRED="false"
 - cordova build --debug -- --keystore="../iznik-nuxt/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
 - cp ../iznik-nuxt-app/platforms/android/app/build/outputs/apk/debug/app-debug.apk Freegle-app-debug-$(date +'%Y%m%d%H%M%S').apk
 - cordova build --release -- --keystore="../iznik-nuxt/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
