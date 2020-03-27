@@ -149,6 +149,8 @@
             class="white text-center notiflist mr-2"
             variant="success"
             lazy
+            right
+            boundary="viewport"
             @shown="loadLatestNotifications"
           >
             <template slot="button-content">

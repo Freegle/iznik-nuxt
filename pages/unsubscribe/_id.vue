@@ -191,7 +191,7 @@ export default {
         this.leaving = true
 
         const ret = await this.$store.dispatch('auth/unsubscribe', {
-          email: this.email
+          email: this.email.trim()
         })
 
         console.log('Returned', ret)

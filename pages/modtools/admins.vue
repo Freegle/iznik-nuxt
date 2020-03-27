@@ -164,7 +164,7 @@ export default {
       this.creating = true
 
       await this.$api.admins.add({
-        groupid: this.groupidcreate,
+        groupid: this.groupidcreate > 0 ? this.groupidcreate : null,
         subject: this.subject,
         text: this.body
       })

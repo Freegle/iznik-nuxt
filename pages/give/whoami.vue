@@ -92,7 +92,8 @@ export default {
 
       // COVID
       await this.$store.dispatch('compose/saveDraft', {
-        type: 'Offer'
+        type: 'Offer',
+        email: email
       })
 
       this.$router.push('/give/queued')
