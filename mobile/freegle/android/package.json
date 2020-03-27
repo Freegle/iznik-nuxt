@@ -49,7 +49,7 @@
       },
       "cordova-plugin-zoom-control-2": {},
       "cordova-plugin-geolocation": {
-        "ANDROID_GPS_REQUIRED": "false"
+        "GPS_REQUIRED": "false"
       }
     },
     "platforms": [
