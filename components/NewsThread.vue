@@ -9,7 +9,7 @@
               <b-dropdown-item :href="'/chitchat/' + newsfeed.id" target="_blank">
                 Open in new window
               </b-dropdown-item>
-              <b-dropdown-item :b-v-modal="'newsEdit' + newsfeed.id" @click="show">
+              <b-dropdown-item v-if="parseInt(me.id) === parseInt(newsfeed.userid) || mod" :b-v-modal="'newsEdit' + newsfeed.id" @click="show">
                 Edit
               </b-dropdown-item>
               <b-dropdown-item @click="unfollow">
