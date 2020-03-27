@@ -252,6 +252,7 @@ export default {
   },
 
   mounted() {
+    console.log('MODTOOLS.VUE mounted')
     if (process.browser) {
       // Add class for screen background.
       document.body.classList.add('modtools')
@@ -288,6 +289,7 @@ export default {
       this.$router.push('/')
     },
     requestLogin() {
+      console.log('MODTOOLS.VUE requestLogin')
       this.$refs.loginModal.show()
     },
     checkWork() {
@@ -353,7 +355,7 @@ export default {
         {
           rel: 'icon',
           type: 'image/x-icon',
-          href: '/icon_modtools.png'
+          href: require(`@/static/icon_modtools.png`)
         }
       ]
     }

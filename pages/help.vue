@@ -7,6 +7,11 @@
           How can we help?
         </h1>
 
+        <p v-if="isApp">
+          If you like this app - or not - <a href='#' class="d-inline" @click="showRateMe">please leave a review</a>.<br />
+          Mobile app version: {{ mobileVersion }}.
+        </p>
+        <p>
         <b-card no-body>
           <b-tabs content-class="mt-3" card>
             <b-tab active>
@@ -436,6 +441,9 @@
       </b-col>
       <b-col cols="0" md="3" />
     </b-row>
+    <client-only>
+      <RateAppModal ref="rateappmodal" />
+    </client-only>
   </div>
 </template>
 
@@ -451,6 +459,7 @@ const NoticeMessage = () => import('~/components/NoticeMessage')
 const DonationButton = () => import('~/components/DonationButton')
 
 Vue.use(TabsPlugin)
+const RateAppModal = () => import('~/components/RateAppModal') // CC
 
 export default {
   components: {
@@ -458,6 +467,7 @@ export default {
     GroupRememberSelect,
     ChatButton,
     NoticeMessage,
+    RateAppModal,
     DonationButton
   },
   mixins: [buildHead],
@@ -466,7 +476,19 @@ export default {
       contactGroupId: null
     }
   },
+  methods: { // CC
+    showRateMe() {
+      window.localStorage.removeItem('rateappnotagain')
+      this.$refs.rateappmodal.show()
+    }
+  },
   computed: {
+    isApp() {
+      return process.env.IS_APP
+    },
+    mobileVersion() {
+      return process.env.MOBILE_VERSION
+    },
     version() {
       const date = new this.$dayjs(process.env.BUILD_DATE)
 

@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="org.ilovefreegle.iphone" ios-CFBundleVersion="230" version="2.0.26" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Freegle</name>
+    <description>Offer and request free items on your local Freegle reuse group</description>
+
+    <author email="geeks@ilovefreegle.org" href="https://ilovefreegle.org">
+        Chris Cant, Freegle Ltd
+    </author>
+    <content src="index.html" />
+    <plugin name="cordova-plugin-whitelist" spec="1" />
+    <access origin="*" />
+    <allow-navigation href="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <allow-intent href="wss:*" />
+    <platform name="android">
+        <allow-intent href="market:*" />
+    </platform>
+    <platform name="ios">
+        <allow-intent href="itmss:*" />
+        <allow-intent href="itms:*" />
+        <allow-intent href="itms-apps:*" />
+    </platform>
+    <platform name="ios">
+        <preference name="StatusBarOverlaysWebView" value="false" />
+        <preference name="StatusBarBackgroundColor" value="#ffffff" />
+        <preference name="StatusBarStyle" value="default" />
+        <preference name="Orientation" value="all" />
+    </platform>
+    <platform name="ios">
+        <preference name="deployment-target" value="9.0" />
+        <preference name="enableViewportScale" value="true" />
+    </platform>
+    <preference name="SplashScreenDelay" value="1000" />
+    <preference name="FadeSplashScreen" value="false" />
+    <platform name="ios">
+        <splash src="package-assets/Default@2x~universal~anyany.png" />
+    </platform>
+    <icon height="29" platform="ios" src="package-assets/FreegleLaunch29.png" width="29" />
+    <icon height="58" platform="ios" src="package-assets/FreegleLaunch58.png" width="58" />
+    <icon height="87" platform="ios" src="package-assets/FreegleLaunch87.png" width="87" />
+    <icon height="60" platform="ios" src="package-assets/FreegleLaunch60.png" width="60" />
+    <icon height="120" platform="ios" src="package-assets/FreegleLaunch120.png" width="120" />
+    <icon height="180" platform="ios" src="package-assets/FreegleLaunch180.png" width="180" />
+    <icon height="76" platform="ios" src="package-assets/FreegleLaunch76.png" width="76" />
+    <icon height="152" platform="ios" src="package-assets/FreegleLaunch152.png" width="152" />
+    <icon height="40" platform="ios" src="package-assets/FreegleLaunch40.png" width="40" />
+    <icon height="80" platform="ios" src="package-assets/FreegleLaunch80.png" width="80" />
+    <icon height="57" platform="ios" src="package-assets/FreegleLaunch57.png" width="57" />
+    <icon height="114" platform="ios" src="package-assets/FreegleLaunch114.png" width="114" />
+    <icon height="72" platform="ios" src="package-assets/FreegleLaunch72.png" width="72" />
+    <icon height="144" platform="ios" src="package-assets/FreegleLaunch144.png" width="144" />
+    <icon height="50" platform="ios" src="package-assets/FreegleLaunch50.png" width="50" />
+    <icon height="100" platform="ios" src="package-assets/FreegleLaunch100.png" width="100" />
+    <icon height="167" platform="ios" src="package-assets/FreegleLaunch167.png" width="167" />
+    <icon height="1024" platform="ios" src="package-assets/FreegleLaunch1024.png" width="1024" />
+    <platform name="ios">
+        <config-file parent="LSApplicationQueriesSchemes" platform="ios" target="*-Info.plist">
+            <array>
+                <string>fb</string>
+                <string>fbapi</string>
+                <string>fbauth2</string>
+                <string>fbshareextension</string>
+                <string>fb-messenger-api</string>
+                <string>twitter</string>
+                <string>viber</string>
+                <string>whatsapp</string>
+                <string>wechat</string>
+                <string>line</string>
+                <string>instagram</string>
+                <string>kakaotalk</string>
+                <string>mqq</string>
+                <string>vk</string>
+                <string>comgooglemaps</string>
+                <string>googlephotos</string>
+                <string>ha</string>
+                <string>fbapi20130214</string>
+                <string>fbapi20130410</string>
+                <string>fbapi20130702</string>
+                <string>fbapi20131010</string>
+                <string>fbapi20131219</string>
+                <string>fbapi20140410</string>
+                <string>fbapi20140116</string>
+                <string>fbapi20150313</string>
+                <string>fbapi20150629</string>
+                <string>fbapi20160328</string>
+            </array>
+        </config-file>
+        <config-file overwrite="true" parent="NSLocationAlwaysUsageDescription" platform="ios" target="*-Info.plist">
+            <string>To find your location when offering an item</string>
+        </config-file>
+        <config-file overwrite="true" parent="NSLocationWhenInUseUsageDescription" platform="ios" target="*-Info.plist">
+            <string>To find your location when offering an item</string>
+        </config-file>
+    </platform>
+    <platform name="ios">
+        <resource-file src="GoogleService-Info.plist" />
+    </platform>
+    <platform name="ios">
+      <preference name="WKWebViewOnly" value="true" />
+      	<feature name="CDVWKWebViewEngine">
+		    <param name="ios-package" value="CDVWKWebViewEngine" />
+  	  </feature>
+	    <preference name="CordovaWebViewEngine" value="CDVWKWebViewEngine" />
+    </platform>
+</widget>

@@ -88,7 +88,32 @@ export default {
     share(story) {
       this.modalStory = story
       this.$nextTick(() => {
-        this.$bvModal.show('storiesShareModal-' + story.id)
+        if (process.env.IS_APP) { // CC..
+          const href = 'https://www.ilovefreegle.org/story/' + this.story.id + '?src=mobileshare'
+          console.log('Story.vue share', href)
+          const subject = 'Sharing Freegle story: ' + this.story.headline
+          // https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin
+          const options = {
+            message: this.story.story + "\n\n",  // not supported on some apps (Facebook, Instagram)
+            subject: 'Sharing Freegle story: ' + this.story.headline,      // for email
+            //files: ['', ''], // an array of filenames either locally or remotely
+            url: href,
+            //chooserTitle: 'Pick an app' // Android only, you can override the default share sheet title
+          }
+
+          const onSuccess = function (result) {
+            console.log("Share completed? " + result.completed)   // On Android apps mostly return false even while it's true
+            console.log("Shared to app: " + result.app)           // On Android result.app is currently empty. On iOS it's empty when sharing is cancelled (result.completed=false)
+          }
+
+          const onError = function (msg) {
+            console.log("Sharing failed with message: " + msg)
+          }
+
+          window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError)
+        } else {
+          this.$bvModal.show('storiesShareModal-' + story.id)
+        }
       })
     },
     async love() {
