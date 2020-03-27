@@ -78,6 +78,11 @@ export default {
       type: Number,
       required: false,
       default: null
+    },
+    groupid: {
+      type: Number,
+      required: false,
+      default: null
     }
   },
   data: function() {
@@ -190,6 +195,8 @@ export default {
       data.append('identify', this.identify)
       if (this.msgid) {
         data.append('msgid', this.msgid)
+      } else if (this.groupid) {
+        data.append('groupid', this.groupid)
       }
 
       const ret = await this.$axios.post(process.env.API + '/image', data, {
