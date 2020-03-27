@@ -203,6 +203,9 @@
 <script>
 import Vue from 'vue'
 import { LoginError, SignUpError } from '../api/BaseAPI'
+import { appFacebookLogin } from '../plugins/app-facebook' // CC
+import { appGoogleLogin } from '../plugins/app-google' // CC
+import { appYahooLogin } from '../plugins/app-yahoo' // CC
 
 const NoticeMessage = () => import('~/components/NoticeMessage')
 
@@ -232,10 +235,12 @@ export default {
     // Use of this.bump means we will recompute when we need to, i.e. when the modal is shown.  This is overriding
     // normal reactivity but that's because the SDKs we use aren't written in Vue.
     facebookDisabled() {
+      if (process.env.IS_APP) return false // CC
       return this.bump && typeof Vue.FB === 'undefined'
     },
 
     googleDisabled() {
+      if (process.env.IS_APP) return false // CC
       return this.bump && (!window || !window.gapi || !window.gapi.client)
     },
 
@@ -435,14 +440,24 @@ export default {
       this.socialLoginError = null
       try {
         let response = null
-        const promise = new Promise(function(resolve) {
-          Vue.FB.login(
-            function(ret) {
+        const promise = new Promise(function (resolve, reject) { // CC
+          if (process.env.IS_APP) {
+            appFacebookLogin(function (ret) {
+              if (ret.status !== 'connected') {
+                reject(new Error(ret.status))
+              }
               response = ret
               resolve()
-            },
-            { scope: 'email' }
-          )
+            })
+          } else {
+            Vue.FB.login(
+              function (ret) {
+                response = ret
+                resolve()
+              },
+              { scope: 'email' }
+            )
+          }
         })
 
         await promise
@@ -465,37 +480,60 @@ export default {
       }
     },
 
-    loginGoogle() {
+    async loginGoogle() { // CC
       this.$store.dispatch('auth/setLoginType', 'Google')
 
       this.nativeLoginError = null
       this.socialLoginError = null
-      const params = {
-        clientid: process.env.GOOGLE_CLIENT_ID,
-        cookiepolicy: 'single_host_origin',
-        callback: async authResult => {
-          console.log('Signin returned', authResult)
-          if (authResult.access_token) {
-            console.log('Signed in')
-
-            await this.$store.dispatch('auth/login', {
-              googleauthcode: authResult.code,
-              googlelogin: true
-            })
-
-            // We are now logged in.
-            console.log('Logged in')
-            self.pleaseShowModal = false
-          } else if (authResult.error) {
-            this.socialLoginError = 'Google login failed: ' + authResult.error
-          }
-        },
-        immediate: false,
-        scope: 'profile email',
-        app_package_name: 'org.ilovefreegle.direct'
+      if (process.env.IS_APP) { // CC..
+        let authResult = { status: 'init' }
+        await new Promise(function (resolve) {
+          appGoogleLogin(function (ret) {
+            authResult = ret
+            resolve()
+          })
+        })
+        if (authResult.code) { // status, code
+          await this.$store.dispatch('auth/login', {
+            googleauthcode: authResult.code,
+            googlelogin: true
+          })
+          // We are now logged in.
+          console.log('Logged in')
+          self.pleaseShowModal = false
+        }
+        else {
+          this.socialLoginError = 'Google login error ' + authResult.status
+        }
       }
+      else {  // ..CC
+        const params = {
+          clientid: process.env.GOOGLE_CLIENT_ID,
+          cookiepolicy: 'single_host_origin',
+          callback: async authResult => {
+            console.log('Signin returned', authResult)
+            if (authResult.access_token) {
+              console.log('Signed in')
 
-      window.gapi.auth.signIn(params)
+              await this.$store.dispatch('auth/login', {
+                googleauthcode: authResult.code,
+                googlelogin: true
+              })
+
+              // We are now logged in.
+              console.log('Logged in')
+              self.pleaseShowModal = false
+            } else if (authResult.error) {
+              this.socialLoginError = 'Google login failed: ' + authResult.error
+            }
+          },
+          immediate: false,
+          scope: 'profile email',
+          app_package_name: 'org.ilovefreegle.direct'
+        }
+
+        window.gapi.auth.signIn(params)
+      }
     },
 
     loginYahoo() {
@@ -507,21 +545,77 @@ export default {
       this.nativeLoginError = null
       this.socialLoginError = null
 
-      const url =
-        'https://api.login.yahoo.com/oauth2/request_auth?client_id=' +
-        process.env.YAHOO_CLIENTID +
-        '&redirect_uri=' +
-        encodeURIComponent(
-          window.location.protocol +
+      if (process.env.IS_APP) { // CC
+        appYahooLogin(this.$route.fullPath,
+          ret => { // arrow so .this. is correct
+            console.log('appYahooLogin completed', ret)
+            const returnto = ret.returnto
+            const code = ret.code
+            const me = this.$store.getters['auth/user']
+            if (me) {
+              // We are logged in.  Go back to where we want to be.
+              console.log('Already logged in')
+              if (returnto) {
+                // Go where we want to be.  Make sure we remove the code to avoid us trying to log in again.
+                console.log('Return to', returnto)
+                this.$router.push(returnto)
+              } else {
+                console.log('Just go home')
+                this.$router.push('/')
+              }
+            } else if (!code) {
+              this.socialLoginError = 'Yahoo login failed: '+ret.error
+            } else {
+              this.$axios
+                .post(process.env.API + '/session', {
+                  yahoocodelogin: code
+                })
+                .then(result => {
+                  const ret = result.data
+                  console.log('Yahoologin session login returned', ret)
+                  if (ret.ret === 0) {
+                    // Set the user to store the persistent token.
+                    ret.user.persistent = ret.persistent
+                    this.$store.dispatch('auth/setUser', ret.user)
+
+                    // We are logged in.  Get the logged in user
+                    console.log('Logged in')
+                    this.$store.dispatch('auth/fetchUser')
+                    self.pleaseShowModal = false
+
+                    if (returnto) {
+                      // Go where we want to be.  Make sure we remove the code to avoid us trying to log in again.
+                      console.log('Return to', returnto)
+                      this.$router.go(returnto)
+                    } else {
+                      console.log('Just go home')
+                      this.$router.push('/')
+                    }
+                  } else {
+                    console.error('Server login failed', ret)
+                    this.socialLoginError = 'Yahoo login failed'
+                  }
+                })
+            }
+          })
+      } else {
+
+        const url =
+          'https://api.login.yahoo.com/oauth2/request_auth?client_id=' +
+          process.env.YAHOO_CLIENTID +
+          '&redirect_uri=' +
+          encodeURIComponent(
+            window.location.protocol +
             '//' +
             window.location.hostname +
             (window.location.port ? ':' + window.location.port : '') +
             '/yahoologin?returnto=' +
             this.$route.fullPath
-        ) +
-        '&response_type=code&language=en-us&scope=sdpp-w'
+          ) +
+          '&response_type=code&language=en-us&scope=sdpp-w'
 
-      window.location = url
+        window.location = url
+      }
     },
 
     clickShowSignUp(e) {

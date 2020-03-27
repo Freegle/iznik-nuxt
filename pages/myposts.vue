@@ -232,6 +232,7 @@
     </b-row>
     <AvailabilityModal v-if="me" ref="availabilitymodal" :thisuid="me.id" />
     <DonationAskModal ref="askmodal" :groupid="donationGroup" />
+    <RateAppModal ref="rateappmodal" :groupid="donationGroup" />
   </b-container>
 </template>
 
@@ -246,6 +247,7 @@ const SidebarLeft = () => import('~/components/SidebarLeft')
 const SidebarRight = () => import('~/components/SidebarRight')
 const AvailabilityModal = () => import('~/components/AvailabilityModal')
 const DonationAskModal = () => import('~/components/DonationAskModal')
+const RateAppModal = () => import('~/components/RateAppModal')
 const ExpectedRepliesWarning = () =>
   import('~/components/ExpectedRepliesWarning')
 
@@ -258,7 +260,9 @@ export default {
     SidebarRight,
     DonationAskModal,
     AvailabilityModal,
-    ExpectedRepliesWarning
+    RateAppModal,
+    ExpectedRepliesWarning,
+    AvailabilityModal
   },
   mixins: [loginRequired, buildHead, waitForRef],
   data() {
@@ -482,9 +486,13 @@ export default {
       this.$refs.availabilitymodal.show()
     },
     ask(groupid) {
-      this.waitForRef('askmodal', () => {
-        this.$refs.askmodal.show()
-      })
+      if (process.env.IS_APP && !window.localStorage.getItem('rateappnotagain')) { // CC
+        this.$refs.rateappmodal.show()
+      } else {
+        this.waitForRef('askmodal', () => {
+          this.$refs.askmodal.show()
+        })
+      }
     },
     postSort(a, b) {
       // Show promised items first, then by most recent activity.

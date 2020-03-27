@@ -5,6 +5,8 @@ const FACEBOOK_APPID = '134980666550322'
 const SENTRY_DSN = 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170'
 const YAHOO_CLIENTID =
   'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
+const MOBILE_VERSION = '2.0.26'
+const MODTOOLS_VERSION = '0.3.0'
 
 require('dotenv').config()
 
@@ -18,7 +20,14 @@ require('dotenv').config()
 //   - On the client we don't set a base URL, so it goes to the server the client was served up from.  That then proxies
 //     it on to IZNIK_API via the proxy: directive below.
 // - The rest of the client code just uses the API prefix.  The base URL kicks in (or doesn't) as described above.
-const API = '/api'
+let API = '/api'
+if ((process.env.NUXT_BUILD_TYPE === 'fdapp') || (process.env.NUXT_BUILD_TYPE === 'mtapp')) {
+  //API = 'https://fdapidbg.ilovefreegle.org/api'
+  API = 'https://www.ilovefreegle.org/api'
+}
+if (process.env.NUXT_BUILD_TYPE === 'mtapp') {
+  API = 'https://dev.ilovefreegle.org/api'
+}
 
 // IZNIK_API is where we send it to.  This avoids CORS issues (and removes preflight OPTIONS calls for GETs, which
 // hurt client performance).
@@ -43,8 +52,8 @@ const DISABLE_ESLINT_AUTOFIX =
   process.env.DISABLE_ESLINT_AUTOFIX !== 'false'
 const ESLINT_AUTOFIX = !DISABLE_ESLINT_AUTOFIX
 
-module.exports = {
-  mode: 'universal',
+const config = {
+  mode: 'spa',
 
   /*
   ** Headers.  Include default meta tags that will apply unless overridden by individual pages.  Every page that
@@ -195,10 +204,14 @@ module.exports = {
     { src: '~/plugins/google-sdk', ssr: false },
     { src: '~/plugins/vue-social-sharing', ssr: false },
     { src: '~/plugins/vue-lazy-youtube-video', ssr: false },
-    { src: '~/plugins/inspectlet', ssr: false }
+    { src: '~/plugins/inspectlet', ssr: false },
+    { src: '~/plugins/app-init-push.js', mode: 'client' },
+    { src: '~/plugins/app-facebook.js', mode: 'client' },
+    { src: '~/plugins/app-google.js', mode: 'client' },
+    { src: '~/plugins/app-yahoo.js', mode: 'client' },
   ],
 
-  redirect: [
+  redirect: [ // In mobile app-init-push route needs updating as per here
     { from: '^/chat/(.*)$', to: '/chats/$1' },
     { from: '^/mygroups(.*)$', to: '/communities$1' },
     { from: '^/why$', to: '/help' },
@@ -504,7 +517,7 @@ module.exports = {
     USER_SITE: USER_SITE,
     IMAGE_SITE: IMAGE_SITE,
     SENTRY_DSN: SENTRY_DSN,
-    BUILD_DATE: new Date().toLocaleString()
+    BUILD_DATE: new Date().toLocaleString('en-US')
   },
 
   vue: {
@@ -526,3 +539,47 @@ module.exports = {
     gzip: true
   }
 }
+
+if ((process.env.NUXT_BUILD_TYPE === 'fdapp') || (process.env.NUXT_BUILD_TYPE === 'mtapp')) {
+  console.log('NUXT_BUILD_TYPE', process.env.NUXT_BUILD_TYPE)
+
+  config.mode = 'spa'
+
+  config.head.meta = []
+  config.head.link.splice(0, 1)
+
+  config.router = { // https://nuxtjs.org/api/configuration-router/
+    mode: 'hash'    // https://router.vuejs.org/api/#mode
+  }
+  if (process.env.NUXT_BUILD_TYPE === 'mtapp') {
+    //config.router.base = 'modtools/'
+  }
+  config.env.IS_APP = true
+  config.env.IS_MTAPP = process.env.NUXT_BUILD_TYPE === 'mtapp'
+  if (process.env.NUXT_BUILD_TYPE === 'fdapp') {
+    config.env.MOBILE_VERSION = MOBILE_VERSION
+  } else {
+    config.env.MOBILE_VERSION = MODTOOLS_VERSION
+  }
+
+  config.build.publicPath = '/js/'
+
+  config.build.optimization.minimize = false
+
+  // Remove service worker
+  // https://stackoverflow.com/questions/57822378/disable-service-workers-or-workbox-in-nuxtjs-app
+  config.modules = config.modules.filter(module => module !== '@nuxtjs/pwa')
+
+  // Remove sitemap
+  config.modules = config.modules.filter(module => module !== '@nuxtjs/sitemap')
+
+  // Remove sentry
+  config.modules = config.modules.filter(module => module !== '@nuxtjs/sentry')
+
+  // Remove favicon generator
+  config.modules = config.modules.filter(module => module !== 'nuxt-rfg-icon')
+
+  delete config.buildModules
+}
+
+module.exports = config

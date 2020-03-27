@@ -51,7 +51,7 @@ export default {
 
       return {
         title: title,
-        meta: meta
+        meta: process.env.IS_APP ? [] : meta // CC
       }
     }
   }

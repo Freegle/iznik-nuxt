@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h2>Hello, {{ me.displayname }}</h2>
+    <h2 v-if="me">Hello, {{ me.displayname }}</h2>
+    <h2 v-else>Hello there</h2>
     <p>Here's your dashboard, where you can see what your communities have been doing recently.</p>
     <ModMissingFacebook />
     <ModMissingTwitter class="mt-1" />
@@ -30,25 +31,21 @@
       <div v-if="showInfo === 'custom'" class="d-flex flex-wrap">
         <div class="borderit d-flex flex-column">
           <label for="startDate">From:</label>
-          <date-picker
-            id="startDate"
-            v-model="starti"
-            lang="en"
-            type="date"
-            format="YYYY-MM-DD"
-            :disabled-date="notbeforeepoch"
-          />
+          <date-picker id="startDate"
+                       v-model="starti"
+                       lang="en"
+                       type="date"
+                       format="YYYY-MM-DD"
+                       :disabled-date="notbeforeepoch" />
         </div>
         <div class="borderit d-flex flex-column">
           <label for="endDate">To:</label>
-          <date-picker
-            id="endDate"
-            v-model="endi"
-            lang="en"
-            type="date"
-            format="YYYY-MM-DD"
-            :disabled-date="notbeforestart"
-          />
+          <date-picker id="endDate"
+                       v-model="endi"
+                       lang="en"
+                       type="date"
+                       format="YYYY-MM-DD"
+                       :disabled-date="notbeforestart" />
         </div>
       </div>
       <div class="borderit d-flex flex-column justify-content-end">
@@ -74,16 +71,14 @@
         </b-col>
       </b-row>
       <ModDashboardImpact :groupid="groupid" :start="start" :group-name="groupName" :end="end" class="mt-2" />
-      <ActivityGraph
-        :groupid="groupid"
-        :group-name="groupName"
-        :start="start"
-        :end="end"
-        offers
-        wanteds
-        weights
-        successful
-      />
+      <ActivityGraph :groupid="groupid"
+                     :group-name="groupName"
+                     :start="start"
+                     :end="end"
+                     offers
+                     wanteds
+                     weights
+                     successful />
       <!--      TODO TN vs email vs web stats-->
     </div>
   </div>
@@ -198,6 +193,7 @@ export default {
     }
   },
   mounted() {
+    console.log('MODTOOLS INDEX MOUNTED')
     this.update()
   },
   methods: {

@@ -5,12 +5,12 @@
       ref="pond"
       name="photo"
       :allow-multiple="multiple"
-      accepted-file-types="image/jpeg, image/png, image/gif, image/jpg"
+      accepted-file-types="image/*"
       :files="myFiles"
       image-resize-target-width="800"
       image-resize-target-height="800"
       image-crop-aspect-ratio="1"
-      label-idle="Drag & Drop photos or <span class=&quot;btn btn-white ction&quot;> Browse </span>"
+      label-idle="Drag & Drop photos or <span class=&quot;btn btn-white&quot;> Browse </span>"
       :server="{ process, revert, restore, load, fetch }"
       @init="photoInit"
       @processfile="processed"
@@ -22,6 +22,7 @@
   </div>
 </template>
 <script>
+// accepted-file-types="image/jpeg, image/png, image/gif, image/jpg"
 import 'filepond/dist/filepond.min.css'
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
 import vueFilePond from 'vue-filepond'
@@ -30,6 +31,7 @@ import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 import FilePondPluginImageTransform from 'filepond-plugin-image-transform'
 import FilePondPluginImageResize from 'filepond-plugin-image-resize'
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation'
+import { mobilestate } from '@/plugins/app-init-push' // CC
 
 const FilePond = vueFilePond(
   FilePondPluginFileValidateType,
@@ -90,8 +92,84 @@ export default {
     }
   },
   methods: {
-    photoInit: function() {
-      if (!this.$refs.pond._pond) {
+    takeAppPhoto: function () { // CC
+      const maxDimension = 800
+      navigator.camera.getPicture(imageURI => {
+          this.cameraSuccess(imageURI)
+        }, msg => {
+          this.cameraError(msg)
+        },
+        {
+          quality: 50,
+          destinationType: Camera.DestinationType.DATA_URL,
+          //destinationType: Camera.DestinationType.FILE_URI,
+          sourceType: Camera.PictureSourceType.CAMERA,
+          //allowEdit: true,	// Don't: adds unhelpful crop photo step
+          encodingType: Camera.EncodingType.JPEG,
+          targetWidth: maxDimension,
+          targetHeight: maxDimension,
+          //popoverOptions: CameraPopoverOptions,
+          saveToPhotoAlbum: true,
+          correctOrientation: true
+        }
+      )
+    },
+    cameraError: function (msg) {
+      setTimeout(function () {
+        if (msg === "No Image Selected") { msg = "No photo taken or chosen" }
+        if (msg === "Camera cancelled") { msg = "No photo taken or chosen" }
+        console.log(msg)
+      }, 0)
+    },
+    cameraSuccess: function (imageData) {
+      console.log("cameraSuccess size:" + imageData.length)
+      const contentType = 'image/jpeg'
+      const sliceSize = 512
+
+      const byteCharacters = atob(imageData)
+      const byteArrays = []
+
+      for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        let slice = byteCharacters.slice(offset, offset + sliceSize)
+
+        let byteNumbers = new Array(slice.length)
+        for (let i = 0; i < slice.length; i++) {
+          byteNumbers[i] = slice.charCodeAt(i)
+        }
+
+        let byteArray = new Uint8Array(byteNumbers)
+
+        byteArrays.push(byteArray)
+      }
+
+      const imageBlob = new Blob(byteArrays, { type: contentType })
+
+      this.$refs.pond.addFile(imageBlob)
+    },
+    photoInit: function () {
+      console.log('photoInit') // CC
+      if (process.env.IS_APP) {
+        if (mobilestate.isiOS) {
+          this.$refs.pond.labelIdle = '<span class="filepond--label-action btn btn-white">Take a photo or Browse</span>'
+          if (this.browse) {
+            this.$refs.pond.browse()
+          }
+        } else {
+          this.$refs.pond.labelIdle = '<span class="take-photo btn btn-default">Take Photo</span> or <span class="btn btn-white">Browse</span>'
+          setTimeout(() => { // this.$nextTick didn't work
+            const takePhoto = this.$el.querySelector('.take-photo')
+            takePhoto.addEventListener('click', e => {
+              this.takeAppPhoto()
+              e.preventDefault()
+              return false
+            })
+          }, 1000)
+        }
+        if (this.browse) {
+          // NO: don't show camera automatically: this.takeAppPhoto()
+        }
+      }
+      else if (!this.$refs.pond._pond) {
         // This is the only way of finding out if the browser is supported - see
         // https://github.com/pqina/vue-filepond/issues/136
         this.supported = false
@@ -110,7 +188,6 @@ export default {
       data.append('imgtype', this.imgtype)
       data.append('ocr', this.ocr)
       data.append('identify', this.identify)
-
       if (this.msgid) {
         data.append('msgid', this.msgid)
       }
@@ -139,6 +216,7 @@ export default {
 
         load(ret.data.id)
       } else {
+        console.log('process Error',ret)
         error(
           ret.status === 200 ? ret.data.status : 'Network error ' + ret.status
         )
@@ -158,6 +236,7 @@ export default {
 
     processed(error, file) {
       if (error) {
+        console.log('processed Error', error)
       } else {
         this.$emit(
           'photoProcessed',
