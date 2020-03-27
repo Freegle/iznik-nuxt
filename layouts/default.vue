@@ -145,6 +145,7 @@
             variant="success"
             lazy
             right
+            boundary="viewport"
             @shown="loadLatestNotifications"
           >
             <template slot="button-content">
