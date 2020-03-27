@@ -10,4 +10,8 @@ export default class GroupAPI extends BaseAPI {
     const { group } = await this.$get('/group', { id, polygon }, log)
     return group
   }
+
+  async patch(params) {
+    await this.$patch('/group', params)
+  }
 }

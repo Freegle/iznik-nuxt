@@ -86,5 +86,13 @@ export const actions = {
         }
       })
     )
+  },
+
+  async update({ dispatch }, params) {
+    await this.$api.group.patch(params)
+    await dispatch('fetch', {
+      id: params.id,
+      polygon: true
+    })
   }
 }

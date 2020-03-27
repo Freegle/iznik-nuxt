@@ -22,7 +22,8 @@ export default {
     },
     handler: {
       type: Function,
-      required: true
+      required: false,
+      default: null
     },
     timeout: {
       type: Number,
@@ -43,15 +44,27 @@ export default {
   },
   methods: {
     async click() {
+      this.done = false
       this.doing = true
 
-      await this.handler()
+      if (this.handler) {
+        await this.handler()
 
-      this.doing = false
-      this.done = true
-      setTimeout(() => {
-        this.done = false
-      }, this.timeout)
+        this.doing = false
+        this.done = true
+        setTimeout(() => {
+          this.done = false
+        }, this.timeout)
+      } else {
+        // Pretend it took a second.
+        setTimeout(() => {
+          this.doing = false
+          this.done = true
+          setTimeout(() => {
+            this.done = false
+          }, this.timeout)
+        }, 1000)
+      }
     }
   }
 }

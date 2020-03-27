@@ -18,12 +18,7 @@
       <b-input-group id="input-email">
         <b-input v-model="me.email" placeholder="Your email" label="Your email address" type="email" />
         <b-input-group-append>
-          <b-button variant="white" @click="saveEmail">
-            <v-icon v-if="savingEmail" name="sync" class="text-success fa-spin" />
-            <v-icon v-else-if="savedEmail" name="check" class="text-success" />
-            <v-icon v-else name="save" />
-            Save
-          </b-button>
+          <SpinButton variant="white" name="save" label="Save" :handler="saveEmail" />
         </b-input-group-append>
       </b-input-group>
     </b-form-group>
@@ -83,12 +78,7 @@ const OurToggle = () => import('@/components/OurToggle')
 export default {
   components: { SpinButton, OurToggle },
   data: function() {
-    return {
-      savingEmail: false,
-      savedEmail: false,
-      savingName: false,
-      savedName: false
-    }
+    return {}
   },
   computed: {
     beep: {
@@ -124,19 +114,11 @@ export default {
   },
   methods: {
     async saveName() {
-      this.savingName = true
       await this.$store.dispatch('auth/saveAndGet', {
         displayname: this.me.displayname
       })
-      this.savingName = false
-      this.savedName = true
-      setTimeout(() => {
-        this.savedName = false
-      }, 2000)
     },
     async saveEmail() {
-      this.savingEmail = true
-
       if (this.me.email) {
         const data = await this.$store.dispatch('auth/saveEmail', {
           email: this.me.email
@@ -148,12 +130,6 @@ export default {
           })
         }
       }
-
-      this.savingEmail = false
-      this.savedEmail = true
-      setTimeout(() => {
-        this.savedEmail = false
-      }, 2000)
     },
     async saveSetting(name, val) {
       const settings = this.me.settings
