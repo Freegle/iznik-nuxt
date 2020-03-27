@@ -144,12 +144,13 @@
               <v-icon name="redo" scale="2" @click="refresh" />
             </div>
           </div>
-          <b-dropdown v-if="loggedIn"
-                      class="white text-center notiflist mr-2"
-                      variant="success"
-                      lazy
-                      right
-                      @shown="loadLatestNotifications">
+          <b-dropdown
+            v-if="loggedIn"
+            class="white text-center notiflist mr-2"
+            variant="success"
+            lazy
+            @shown="loadLatestNotifications"
+          >
             <template slot="button-content">
               <div class="notifwrapper">
                 <v-icon name="bell" scale="2" class="" />
