@@ -1,0 +1,58 @@
+<template>
+  <b-button :variant="variant" @click="click">
+    <v-icon v-if="done" name="check" :class="spinclass" />
+    <v-icon v-else-if="doing" name="sync" :class="'fa-spin ' + spinclass" />
+    <v-icon v-else :name="name" />&nbsp;{{ label }}
+  </b-button>
+</template>
+<script>
+export default {
+  props: {
+    variant: {
+      type: String,
+      required: true
+    },
+    name: {
+      type: String,
+      required: true
+    },
+    label: {
+      type: String,
+      required: true
+    },
+    handler: {
+      type: Function,
+      required: true
+    },
+    timeout: {
+      type: Number,
+      required: false,
+      default: 5000
+    },
+    spinclass: {
+      type: String,
+      required: false,
+      default: 'text-success'
+    }
+  },
+  data: function() {
+    return {
+      doing: false,
+      done: false
+    }
+  },
+  methods: {
+    async click() {
+      this.doing = true
+
+      await this.handler()
+
+      this.doing = false
+      this.done = true
+      setTimeout(() => {
+        this.done = false
+      }, this.timeout)
+    }
+  }
+}
+</script>
