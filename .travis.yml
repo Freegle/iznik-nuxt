@@ -38,6 +38,10 @@ before_install:
 - npm --version
 - gradle --version
 script:
+- export MOBILE_VERSION=$(grep -Po "MOBILE_VERSION = '\K.*?(?=')" nuxt.config.js)
+- export MODTOOLS_VERSION=$(grep -Po "MODTOOLS_VERSION = '\K.*?(?=')" nuxt.config.js)
+- env | grep '^MOBILE_VERSION='
+- env | grep '^MODTOOLS_VERSION='
 - npm run fdapp
 - mkdir ../iznik-nuxt-app
 - cd ../iznik-nuxt-app
@@ -51,14 +55,10 @@ script:
 - cordova platform rm android
 - cordova platform add android
 #- cordova plugin add https://github.com/apache/cordova-plugin-geolocation.git --variable GPS_REQUIRED="false" --variable ANDROID_GPS_REQUIRED="false"
-- export MOBILE_VERSION=$(grep -Po "MOBILE_VERSION = '\K.*?(?=')" ../iznik-nuxt/nuxt.config.js)
-- export MODTOOLS_VERSION=$(grep -Po "MODTOOLS_VERSION = '\K.*?(?=')" ../iznik-nuxt/nuxt.config.js)
-- env | grep '^MOBILE_VERSION='
-- env | grep '^MODTOOLS_VERSION='
 - cordova build --debug -- --keystore="../iznik-nuxt/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
-- cp ../iznik-nuxt-app/platforms/android/app/build/outputs/apk/debug/app-debug.apk Freegle-app-$(MOBILE_VERSION)-debug-$(date +'%Y%m%d%H%M%S').apk
+- cp ../iznik-nuxt-app/platforms/android/app/build/outputs/apk/debug/app-debug.apk Freegle-app-$MOBILE_VERSION-debug-$(date +'%Y%m%d%H%M%S').apk
 - cordova build --release -- --keystore="../iznik-nuxt/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
-- cp ../iznik-nuxt-app/platforms/android/app/build/outputs/apk/release/app-release.apk Freegle-app-$(MOBILE_VERSION)-release-$(date +'%Y%m%d%H%M%S').apk
+- cp ../iznik-nuxt-app/platforms/android/app/build/outputs/apk/release/app-release.apk Freegle-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').apk
 - ls -l
 - cd ../iznik-nuxt
 before_cache:
