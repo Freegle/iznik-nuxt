@@ -69,16 +69,10 @@
 
       <b-card no-body class="mb-2">
         <b-card-header>
-          Global Settings
+          Appearance
         </b-card-header>
         <b-card-body>
-          <p>
-            These settings affect how this group behaves for all mods and members. If you change them,
-            it'll affect other people.
-          </p>
-          <h4>
-            Appearance
-          </h4>
+          <h4 />
           <b-form-group label="Profile picture">
             <b-form-text class="mb-2">
               This is used in emails and on the site. It needs to look good small, like a Facebook profile picture.
@@ -117,7 +111,7 @@
           />
         </b-card-body>
       </b-card>
-      TODO
+      TODO Mapping
     </div>
   </div>
 </template>
