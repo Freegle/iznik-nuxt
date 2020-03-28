@@ -28,6 +28,16 @@
         </b-row>
       </b-card-header>
       <b-card-body v-if="expanded">
+        <NoticeMessage v-if="admin.heldby" variant="warning" class="mb-2">
+          Held
+          <span v-if="holder">
+            by {{ holder.displayname }}
+          </span>.
+          Please check before releasing it.
+          <span class="text-muted small">
+            {{ admin.heldat | timeago }}
+          </span>
+        </NoticeMessage>
         <b-form-group
           label="Subject of ADMIN:"
           label-for="subject"
@@ -55,16 +65,22 @@
         </b-form-group>
       </b-card-body>
       <b-card-footer v-if="expanded">
-        <b-btn variant="warning" @click="deleteIt">
+        <b-btn v-if="!admin.heldby" variant="warning" @click="deleteIt">
           <v-icon name="trash-alt" /> Delete
         </b-btn>
-        <b-btn variant="primary" @click="save">
+        <b-btn v-if="!admin.heldby" variant="primary" @click="save">
           <v-icon v-if="saving" name="sync" class="text-success fa-spin" />
           <v-icon v-else-if="saved" name="check" class="text-success" />
           <v-icon v-else name="save" />
           Save changes
         </b-btn>
-        <b-btn variant="success" @click="approve">
+        <b-btn v-if="!admin.heldby" variant="white" @click="hold">
+          <v-icon name="pause" /> Hold
+        </b-btn>
+        <b-btn v-else variant="primary" @click="release">
+          <v-icon name="play" /> Release
+        </b-btn>
+        <b-btn v-if="!admin.heldby" variant="success" @click="approve">
           <v-icon name="check" /> Approve and Send
         </b-btn>
       </b-card-footer>
@@ -74,10 +90,11 @@
 </template>
 <script>
 import ConfirmModal from './ConfirmModal'
+import NoticeMessage from './NoticeMessage'
 import waitForRef from '@/mixins/waitForRef'
 
 export default {
-  components: { ConfirmModal },
+  components: { NoticeMessage, ConfirmModal },
   mixins: [waitForRef],
   props: {
     id: {
@@ -109,10 +126,22 @@ export default {
       }
 
       return ret
+    },
+    holder() {
+      return this.admin.heldby
+        ? this.$store.getters['user/get'](this.admin.heldby)
+        : null
     }
   },
   mounted() {
     this.expanded = this.open
+
+    if (this.admin.heldby) {
+      // Get them in store so we can display their name.
+      this.$store.dispatch('user/fetch', {
+        id: this.admin.heldby
+      })
+    }
   },
   methods: {
     deleteIt() {
@@ -140,6 +169,16 @@ export default {
       setTimeout(() => {
         this.saved = false
       }, 2000)
+    },
+    hold() {
+      this.$store.dispatch('admins/hold', {
+        id: this.admin.id
+      })
+    },
+    release() {
+      this.$store.dispatch('admins/release', {
+        id: this.admin.id
+      })
     },
     approve() {
       this.$store.dispatch('admins/approve', {
