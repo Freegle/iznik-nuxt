@@ -87,5 +87,41 @@ export const actions = {
   async delete({ commit }, params) {
     await this.$api.admins.del(params)
     commit('clearAdmin', params.id)
+  },
+
+  async hold({ commit, dispatch }, params) {
+    await this.$api.admins.hold(params.id)
+    await dispatch('fetch', {
+      id: params.id
+    })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
+  },
+
+  async release({ commit, dispatch }, params) {
+    await this.$api.admins.release(params.id)
+    await dispatch('fetch', {
+      id: params.id
+    })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
   }
 }

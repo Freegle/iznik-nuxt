@@ -17,4 +17,18 @@ export default class AdminsAPI extends BaseAPI {
   async del(data) {
     await this.$del('/admin', data)
   }
+
+  async hold(id) {
+    await this.$post('/admin', {
+      id,
+      action: 'Hold'
+    })
+  }
+
+  async release(id) {
+    await this.$post('/admin', {
+      id,
+      action: 'Release'
+    })
+  }
 }

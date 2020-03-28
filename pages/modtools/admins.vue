@@ -27,6 +27,10 @@
               </h2>
             </template>
             <GroupSelect v-model="groupidcreate" modonly :systemwide="supportOrAdmin" class="mb-2" />
+            <NoticeMessage v-if="groupidcreate < 0" class="mt-1 mb-1" variant="danger">
+              This is a suggested ADMIN.  All local communities will get "copies" of this (unless they've opted out),
+              and mods can then edit/approve/reject them.  Members won't receive multiple copies.
+            </NoticeMessage>
             <b-form-group
               label="Subject of ADMIN:"
               label-for="subject"
@@ -52,11 +56,16 @@
                 rows="15"
               />
             </b-form-group>
-            <b-btn class="mt-2 mb-2" size="lg" variant="success" :disabled="createinvalid" @click="create">
+            <b-btn class="mt-2 mb-2" size="lg" :variant="groupidcreate < 0 ? 'danger' : 'success'" :disabled="createinvalid" @click="create">
               <v-icon v-if="created" name="check" />
               <v-icon v-else-if="creating" name="sync" class="fa-spin" />
               <v-icon v-else name="save" />
-              Send to Pending ADMINs
+              <span v-if="groupidcreate < 0">
+                Send to all communities
+              </span>
+              <span v-else>
+                Send to Pending ADMINs
+              </span>
             </b-btn>
             <p>It's a good idea to have a fellow mod take a look at an ADMIN before it goes out, to spot typos.</p>
           </b-tab>
@@ -82,10 +91,11 @@
 <script>
 import GroupSelect from '../../components/GroupSelect'
 import ModAdmin from '../../components/ModAdmin'
+import NoticeMessage from '../../components/NoticeMessage'
 import loginRequired from '@/mixins/loginRequired.js'
 
 export default {
-  components: { ModAdmin, GroupSelect },
+  components: { NoticeMessage, ModAdmin, GroupSelect },
   mixins: [loginRequired],
   data: function() {
     return {

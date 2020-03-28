@@ -67,25 +67,35 @@
                 <notice-message v-if="rejected" class="mb-3">
                   <v-icon name="exclamation-triangle" scale="2" /> This post has been returned to you.
                 </notice-message>
-                <span v-if="message.attachments.length > 0" class="float-right clickme" @click="showPhotos">
-                  <b-badge v-if="message.attachments.length > 1" class="photobadge" variant="primary">+{{ message.attachments.length - 1 }} <v-icon name="camera" /></b-badge>
-                  <b-img-lazy
-                    rounded
-                    thumbnail
-                    class="attachment p-0 square mb-1"
-                    generator-unable-to-provide-required-alt=""
-                    title="Item picture"
-                    :src="message.attachments[0].paththumb"
-                  />
-                </span>
-                <p>
-                  <span v-for="group in message.groups" :key="'message-' + message.id + '-' + group.id" class="small text-muted">
-                    {{ group.arrival | timeago }} on {{ group.namedisplay }} <nuxt-link :to="'/message/' + message.id"><span class="text-muted small">#{{ message.id }}</span></nuxt-link>
-                  </span>
-                </p>
-                <span class="prewrap">
-                  <read-more v-if="message && message.textbody" :text="message.textbody" :max-chars="maxChars" class="nopara" />
-                </span>
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <p>
+                      <span v-for="group in message.groups" :key="'message-' + message.id + '-' + group.id" class="small text-muted">
+                        {{ group.arrival | timeago }} on {{ group.namedisplay }} <nuxt-link :to="'/message/' + message.id"><span class="text-muted small">#{{ message.id }}</span></nuxt-link>
+                      </span>
+                    </p>
+                    <span class="prewrap">
+                      <read-more v-if="message && message.textbody" :text="message.textbody" :max-chars="maxChars" class="nopara" />
+                    </span>
+                  </div>
+                  <div>
+                    <div v-if="message.attachments.length > 0" class="clickme position-relative" @click="showPhotos">
+                      <div class="small">
+                        <b-badge v-if="message.attachments.length > 1" class="photobadge" variant="primary">
+                          +{{ message.attachments.length - 1 }} <v-icon name="camera" />
+                        </b-badge>
+                      </div>
+                      <b-img-lazy
+                        rounded
+                        thumbnail
+                        class="attachment p-0 square mb-1"
+                        generator-unable-to-provide-required-alt=""
+                        title="Item picture"
+                        :src="message.attachments[0].paththumb"
+                      />
+                    </div>
+                  </div>
+                </div>
                 <hr>
                 <table v-if="replies.length > 0" class="table table-borderless table-striped mb-0">
                   <tbody>
@@ -459,9 +469,9 @@ img.attachment {
 }
 
 .photobadge {
-  left: 150px;
-  top: -54px;
-  position: relative;
+  right: 5px;
+  position: absolute;
+  top: 5px;
 }
 
 .noborder {
