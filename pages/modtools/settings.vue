@@ -36,7 +36,11 @@ import loginRequired from '@/mixins/loginRequired.js'
 
 export default {
   layout: 'modtools',
-  components: { ModSettingsModConfig, ModSettingsGroup, ModSettingsPersonal },
+  components: {
+    ModSettingsModConfig,
+    ModSettingsGroup,
+    ModSettingsPersonal
+  },
   mixins: [loginRequired]
 }
 </script>

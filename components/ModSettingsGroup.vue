@@ -109,6 +109,23 @@
             type="textarea"
             :rows="10"
           />
+          <b-form-group label="Description">
+            <b-form-text class="mb-2">
+              This is a longer description which will display on the community page and elsewhere on the site.
+              HTML is OK in here, and if you're really geeky, Bootstrap-4 styling.
+            </b-form-text>
+            <div v-if="!editingDescription">
+              <!-- eslint-disable-next-line -->
+              <div v-html="group.description" class="border border-info rounded p-2 mb-2" />
+              <b-btn variant="white" @click="editingDescription = true">
+                <v-icon name="pen" /> Edit
+              </b-btn>
+            </div>
+            <div v-else>
+              <VueEditor v-model="group.description" />
+              <SpinButton variant="white" name="save" label="Save" :handler="saveDescription" class="mt-2" />
+            </div>
+          </b-form-group>
         </b-card-body>
       </b-card>
       TODO Mapping
@@ -121,21 +138,31 @@ import ModSettingShortlink from './ModSettingShortlink'
 import GroupProfileImage from './GroupProfileImage'
 import OurFilePond from './OurFilePond'
 import ModGroupSetting from './ModGroupSetting'
+import SpinButton from './SpinButton'
 const OurToggle = () => import('@/components/OurToggle')
+
+let VueEditor
+
+if (process.client) {
+  VueEditor = require('vue2-editor').VueEditor
+}
 
 export default {
   components: {
+    SpinButton,
     ModGroupSetting,
     OurFilePond,
     GroupProfileImage,
     OurToggle,
     ModSettingShortlink,
-    GroupSelect
+    GroupSelect,
+    VueEditor
   },
   data: function() {
     return {
       groupid: null,
-      uploadingProfile: false
+      uploadingProfile: false,
+      editingDescription: false
     }
   },
   computed: {
@@ -192,6 +219,8 @@ export default {
   },
   methods: {
     async fetchGroup() {
+      this.editingDescription = false
+
       await this.$store.dispatch('group/fetch', {
         id: this.groupid,
         polygon: true
@@ -245,6 +274,14 @@ export default {
       data[name] = val
 
       this.$store.dispatch('group/update', data)
+    },
+    async saveDescription() {
+      await this.$store.dispatch('group/update', {
+        id: this.groupid,
+        description: this.group.description
+      })
+
+      this.editingDescription = false
     }
   }
 }
