@@ -6,7 +6,7 @@
         <v-icon name="plus" /> Add Group TODO
       </b-btn>
     </div>
-    <div v-if="group" class="mt-2">
+    <div v-if="group && group.mysettings" class="mt-2">
       <b-card no-body class="mb-2">
         <b-card-header>
           Community Addresses
