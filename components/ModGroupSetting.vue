@@ -21,12 +21,27 @@
         </b-col>
       </b-row>
     </div>
+    <div v-else-if="type === 'toggle'">
+      <OurToggle
+        v-model="value"
+        class="mt-2"
+        :height="30"
+        :width="toggleWidth"
+        :font-size="14"
+        :sync="true"
+        :labels="{checked: toggleChecked, unchecked: toggleUnchecked}"
+        color="#61AE24"
+        @change="save"
+      />
+    </div>
   </b-form-group>
 </template>
 <script>
 import SpinButton from './SpinButton'
+const OurToggle = () => import('@/components/OurToggle')
+
 export default {
-  components: { SpinButton },
+  components: { OurToggle, SpinButton },
   props: {
     name: {
       type: String,
@@ -54,6 +69,21 @@ export default {
       type: Number,
       required: false,
       default: 3
+    },
+    toggleWidth: {
+      type: Number,
+      required: false,
+      default: 150
+    },
+    toggleChecked: {
+      type: String,
+      required: false,
+      default: null
+    },
+    toggleUnchecked: {
+      type: String,
+      required: false,
+      default: null
     }
   },
   data: function() {
@@ -128,7 +158,6 @@ export default {
         data[top] = topobj[top]
       }
 
-      console.log('Patch data', data)
       await this.$store.dispatch('group/update', data)
     },
     getValueFromGroup() {
@@ -141,7 +170,11 @@ export default {
 
         if (p === -1) {
           // Got there.
-          this.value = obj[name]
+          if (this.type === 'toggle') {
+            this.value = Boolean(parseInt(obj[name]))
+          } else {
+            this.value = obj[name]
+          }
         } else {
           const l1 = name.substring(0, p)
           const l2 = name.substring(p + 1)

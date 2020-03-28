@@ -72,7 +72,7 @@
           Appearance
         </b-card-header>
         <b-card-body>
-          <p>These are various settings about how the community appears to freeglers on the site and in emails</p>
+          <p>These are various settings about how the community appears to freeglers on the site and in emails.</p>
           <b-form-group label="Profile picture">
             <b-form-text class="mb-2">
               This is used in emails and on the site. It needs to look good small, like a Facebook profile picture.
@@ -128,7 +128,7 @@
           </b-form-group>
           <b-form-group label="Keywords">
             <p>You can change the keywords shown in the subject line for posts, and used in other places.</p>
-            <div class="d-flex flex-wrap border rounder border-info p-2">
+            <div class="d-flex flex-wrap justify-content-between border rounder border-info p-2">
               <ModGroupSetting
                 :groupid="groupid"
                 name="settings.keywords.offer"
@@ -157,7 +157,288 @@
           </b-form-group>
         </b-card-body>
       </b-card>
+      <b-card no-body class="mb-2">
+        <b-card-header>
+          Features for Members
+        </b-card-header>
+        <b-card-body>
+          <p>
+            These affect how the community (the code, not the people) behaves for members.
+          </p>
+          <ModGroupSetting
+            :groupid="groupid"
+            name="settings.communityevents"
+            label="Community Events"
+            description="Whether members can post local community events."
+            type="toggle"
+            toggle-checked="Yes"
+            toggle-unchecked="No"
+          />
+          <ModGroupSetting
+            :groupid="groupid"
+            name="settings.volunteering"
+            label="Volunteer Opportunities"
+            description="Whether members can post requests for volunteers."
+            type="toggle"
+            toggle-checked="Yes"
+            toggle-unchecked="No"
+          />
+          <ModGroupSetting
+            :groupid="groupid"
+            name="settings.stories"
+            label="Stories"
+            description="Whether members are prompted to tell us their Freegle Story for publicity."
+            type="toggle"
+            toggle-checked="Yes"
+            toggle-unchecked="No"
+          />
+          <ModGroupSetting
+            :groupid="groupid"
+            name="settings.allowedits.moderated"
+            label="Moderated members can edit?"
+            description="When this setting is Yes (for most communities), moderated members can edit their own posts; edits go live immediately but are retrospectively reviewed from Messages->Edits. When this setting is No, moderated members cannot edit."
+            type="toggle"
+            toggle-checked="Yes"
+            toggle-unchecked="No"
+          />
+          <ModGroupSetting
+            :groupid="groupid"
+            name="settings.allowedits.group"
+            label="Members on Group Settings can edit?"
+            description="When this setting is Yes (for most groups), members on Group Settings can edit their own posts; edits go live immediately. When this setting is No, members on Group Settings cannot edit."
+            type="toggle"
+            toggle-checked="Yes"
+            toggle-unchecked="No"
+          />
+          <ModGroupSetting
+            :groupid="groupid"
+            name="settings.relevant"
+            label="Send relevant messages to members?"
+            description="Email specific messages to members based on their searches and posting history.  Members can turn this on/off themselves, so you would only turn this off if you want to override their decision."
+            type="toggle"
+            toggle-checked="Yes"
+            toggle-unchecked="No"
+          />
+          <ModGroupSetting
+            :groupid="groupid"
+            name="settings.newsfeed"
+            label="Send occasional digests of chitchat to members?"
+            description="We can send an occasional mail to members of recent activity from other members on ChitChat (like the old cafe groups).  This encourages them to take part.  Members can turn this off themselves, so you would only turn this off if you want to override their decision."
+            type="toggle"
+            toggle-checked="Yes"
+            toggle-unchecked="No"
+          />
+          <ModGroupSetting
+            :groupid="groupid"
+            name="settings.newsletter"
+            label="Send newsletters to members?"
+            description="Email occasional newsletters to members.  Members can turn this on/off themselves, so you would only turn this off if you want to override their decision."
+            type="toggle"
+            toggle-checked="Yes"
+            toggle-unchecked="No"
+          />
+          <ModGroupSetting
+            :groupid="groupid"
+            name="settings.reposts.chaseups"
+            label="Chaseup"
+            description="Ask what's happening with the item this number of days after the last reply (0 to disable)"
+            class="mr-2"
+          />
+          <ModGroupSetting
+            :groupid="groupid"
+            name="settings.reposts.max"
+            label="Max auto-reposts"
+            description="Auto-reposting is proven to help more posts get replies. We mail the member before auto-reposting, and we don't auto-repost messages which have replies (which might be in progress).  0 to disable."
+            class="mr-2"
+          />
+          <ModGroupSetting
+            :groupid="groupid"
+            name="settings.reposts.offer"
+            label="OFFER repost time"
+            description="Controls the member can manually repost, and when auto-repost kicks in."
+            class="mr-2"
+          />
+          <ModGroupSetting
+            :groupid="groupid"
+            name="settings.reposts.wanted"
+            label="WANTED repost time"
+            description="Controls the member can manually repost, and when auto-repost kicks in."
+            class="mr-2"
+          />
+        </b-card-body>
+      </b-card>
+      <b-card no-body class="mb-2">
+        <b-card-header>
+          Features for Moderators
+        </b-card-header>
+        <b-card-body>
+          <p>
+            These affect how the community (the code, not the people) behaves for volunteers; they're less
+            obvious to members.
+          </p>
+          <ModGroupSetting
+            :groupid="groupid"
+            name="settings.approvemembers"
+            label="New Member approval"
+            description="Normally members can join immediately and get freegling. Some communities prefer to approve new members manually, which gives more control but loses potential members."
+            type="toggle"
+            toggle-checked="Yes"
+            toggle-unchecked="No"
+          />
+          <ModGroupSetting
+            :groupid="groupid"
+            name="settings.moderated"
+            label="All Posts Moderated"
+            description="When this setting is No (for most groups), all new members are Moderated and members can be changed to Group Settings (meaning unmoderated) once they have made a valid post. When this setting is Yes, all posts must be moderated no matter what setting the user has."
+            type="toggle"
+            toggle-checked="Yes"
+            toggle-unchecked="No"
+          />
+          <ModGroupSetting
+            :groupid="groupid"
+            name="settings.autoadmins"
+            label="Suggest ADMINs?"
+            description="Freegle has a selection of ADMINs which you can adapt to your group, which we can suggest from time to time.  You can edit or delete each suggested ADMIN, so you'd only turn this off if you never wanted to even seen them."
+            type="toggle"
+            toggle-checked="Yes"
+            toggle-unchecked="No"
+          />
+        </b-card-body>
+      </b-card>
+      <b-card no-body class="mb-2">
+        <b-card-header>
+          Spam Detection
+        </b-card-header>
+        <b-card-body>
+          <p>
+            These are protection features to stop spammers or scammers targeting freeglers.  It's highly recommended
+            to turn all these on.
+          </p>
+          <ModGroupSetting
+            :groupid="groupid"
+            name="settings.spammers.check"
+            label="Check for spammer members?"
+            description="We can automatically check your membership for known spammers."
+            type="toggle"
+            toggle-checked="Yes"
+            toggle-unchecked="No"
+          />
+          <ModGroupSetting
+            :groupid="groupid"
+            name="settings.spammers.remove"
+            label="Auto-remove spammer members?"
+            description="We can automatically remove known spammers."
+            type="toggle"
+            toggle-checked="Yes"
+            toggle-unchecked="No"
+          />
+          <ModGroupSetting
+            :groupid="groupid"
+            name="settings.spammers.messagereview"
+            label="Check for spam messages to group?"
+            description="Check posted messages and put possible spam in Messages->Spam?"
+            type="toggle"
+            toggle-checked="Yes"
+            toggle-unchecked="No"
+          />
+        </b-card-body>
+      </b-card>
+
+      <b-card no-body class="mb-2">
+        <b-card-header>
+          Duplicate Detection
+        </b-card-header>
+        <b-card-body>
+          <ModGroupSetting
+            :groupid="groupid"
+            name="settings.duplicates.check"
+            label="Flag duplicate messages?"
+            description="We can flag messages which look the same in ModTools."
+            type="toggle"
+            toggle-checked="Yes"
+            toggle-unchecked="No"
+          />
+          <div class="d-flex flex-wrap">
+            <ModGroupSetting
+              :groupid="groupid"
+              name="settings.duplicates.offer"
+              label="OFFER duplicate period"
+              class="mr-2"
+            />
+            <ModGroupSetting
+              :groupid="groupid"
+              name="settings.duplicates.taken"
+              label="TAKEN duplicate period"
+              class="mr-2"
+            />
+            <ModGroupSetting
+              :groupid="groupid"
+              name="settings.duplicates.wanted"
+              label="WANTED duplicate period"
+              class="mr-2"
+            />
+            <ModGroupSetting
+              :groupid="groupid"
+              name="settings.duplicates.received"
+              label="RECEIVED duplicate period"
+              class="mr-2"
+            />
+          </div>
+          <b-form-text class="mb-2">
+            All periods are in days.
+          </b-form-text>
+        </b-card-body>
+      </b-card>
+
+      <b-card no-body class="mb-2">
+        <b-card-header>
+          Status
+        </b-card-header>
+        <b-card-body>
+          <p>
+            These are various high-level settings about how the community behaves.  Normally you don't change
+            these once a community is live.
+          </p>
+          <ModGroupSetting
+            :groupid="groupid"
+            name="publish"
+            label="Enabled on website?"
+            description="Is this available for people to use?"
+            type="toggle"
+            toggle-checked="Visible"
+            toggle-unchecked="Hidden"
+          />
+          <ModGroupSetting
+            :groupid="groupid"
+            name="onhere"
+            label="Hosted on the site?"
+            description="Hosted on www.ilovefreegle (normally yes, but some are hosted elsewhere)."
+            type="toggle"
+            toggle-checked="Hosted"
+            toggle-unchecked="Elsewhere"
+          />
+          <ModGroupSetting
+            :groupid="groupid"
+            name="ontn"
+            label="On TrashNothing?"
+            description="On trashnothing.com too?"
+            type="toggle"
+            toggle-checked="On TN"
+            toggle-unchecked="Not on TN"
+          />
+          <ModGroupSetting
+            :groupid="groupid"
+            name="mentored"
+            label="Mentor Caretakers?"
+            description="Whether this community is being run by Mentor Caretakers"
+            type="toggle"
+            toggle-checked="Mentors"
+            toggle-unchecked="Local volunteers"
+          />
+        </b-card-body>
+      </b-card>
       TODO Mapping
+      TODO Social integration
     </div>
   </div>
 </template>
