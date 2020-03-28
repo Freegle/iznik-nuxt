@@ -72,7 +72,7 @@
           Appearance
         </b-card-header>
         <b-card-body>
-          <h4 />
+          <p>These are various settings about how the community appears to freeglers on the site and in emails</p>
           <b-form-group label="Profile picture">
             <b-form-text class="mb-2">
               This is used in emails and on the site. It needs to look good small, like a Facebook profile picture.
@@ -124,6 +124,35 @@
             <div v-else>
               <VueEditor v-model="group.description" />
               <SpinButton variant="white" name="save" label="Save" :handler="saveDescription" class="mt-2" />
+            </div>
+          </b-form-group>
+          <b-form-group label="Keywords">
+            <p>You can change the keywords shown in the subject line for posts, and used in other places.</p>
+            <div class="d-flex flex-wrap border rounder border-info p-2">
+              <ModGroupSetting
+                :groupid="groupid"
+                name="settings.keywords.offer"
+                label="OFFER keyword"
+                class="mr-2"
+              />
+              <ModGroupSetting
+                :groupid="groupid"
+                name="settings.keywords.taken"
+                label="TAKEN keyword"
+                class="mr-2"
+              />
+              <ModGroupSetting
+                :groupid="groupid"
+                name="settings.keywords.wanted"
+                label="WANTED keyword"
+                class="mr-2"
+              />
+              <ModGroupSetting
+                :groupid="groupid"
+                name="settings.keywords.received"
+                label="RECEIVED keyword"
+                class="mr-2"
+              />
             </div>
           </b-form-group>
         </b-card-body>
@@ -292,5 +321,10 @@ export default {
 input,
 select {
   max-width: 300px;
+}
+
+.card {
+  border-width: medium;
+  border-color: $colour-success-border;
 }
 </style>

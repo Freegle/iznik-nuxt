@@ -1,6 +1,6 @@
 <template>
   <b-form-group :label="label">
-    <b-form-text class="mb-2">
+    <b-form-text v-if="description" class="mb-2">
       {{ description }}
     </b-form-text>
     <b-input-group v-if="type === 'input'">
@@ -42,7 +42,8 @@ export default {
     },
     description: {
       type: String,
-      required: true
+      required: false,
+      default: null
     },
     type: {
       type: String,
@@ -67,7 +68,6 @@ export default {
   },
   watch: {
     groupid(newval) {
-      console.log('Group changed', newval)
       this.getValueFromGroup()
     }
   },
@@ -75,18 +75,80 @@ export default {
     this.getValueFromGroup()
   },
   methods: {
+    /**
+     * From https://stackoverflow.com/questions/18936915/dynamically-set-property-of-nested-object
+     *
+     * Dynamically sets a deeply nested value in an object.
+     * Optionally "bores" a path to it if its undefined.
+     * @function
+     * @param {!object} obj  - The object which contains the value you want to change/set.
+     * @param {!array} path  - The array representation of path to the value you want to change/set.
+     * @param {!mixed} value - The value you want to set it to.
+     * @param {boolean} setrecursively - If true, will set value of non-existing path as well.
+     */
+    setDeep(obj, path, value, setrecursively = false) {
+      let level = 0
+
+      path.reduce((a, b) => {
+        level++
+
+        if (
+          setrecursively &&
+          typeof a[b] === 'undefined' &&
+          level !== path.length
+        ) {
+          a[b] = {}
+          return a[b]
+        }
+
+        if (level === path.length) {
+          a[b] = value
+          return value
+        } else {
+          return a[b]
+        }
+      }, obj)
+    },
+
     async save() {
       const data = {
         id: this.groupid
       }
 
-      data[this.name] = this.value
+      const p = this.name.indexOf('.')
 
+      if (p === -1) {
+        // Top level property
+        data[this.name] = this.value
+      } else {
+        // Lower down - we send the top one but we need to modify it wherever it is.
+        const top = this.name.substring(0, p)
+        const topobj = this.$store.getters['group/get'](this.groupid)
+        this.setDeep(topobj, this.name.split('.'), this.value)
+        data[top] = topobj[top]
+      }
+
+      console.log('Patch data', data)
       await this.$store.dispatch('group/update', data)
     },
     getValueFromGroup() {
-      const group = this.$store.getters['group/get'](this.groupid)
-      this.value = group[this.name]
+      let obj = this.$store.getters['group/get'](this.groupid)
+      let name = this.name
+      let p
+
+      do {
+        p = name.indexOf('.')
+
+        if (p === -1) {
+          // Got there.
+          this.value = obj[name]
+        } else {
+          const l1 = name.substring(0, p)
+          const l2 = name.substring(p + 1)
+          obj = obj[l1]
+          name = l2
+        }
+      } while (p !== -1)
     }
   }
 }
