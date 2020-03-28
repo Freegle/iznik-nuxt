@@ -10,7 +10,10 @@
             {{ admin.created | timeago }}
           </b-col>
           <b-col cols="12" md="4">
-            <span v-if="admin.createdby">
+            <span v-if="admin.parentid">
+              Suggested ADMIN
+            </span>
+            <span v-else-if="admin.createdby">
               Created by
               {{ admin.createdby.displayname }}
               <span class="text-muted small">
@@ -37,6 +40,23 @@
           <span class="text-muted small">
             {{ admin.heldat | timeago }}
           </span>
+        </NoticeMessage>
+        <NoticeMessage v-if="admin.parentid && !admin.complete" variant="info" class="mb-2">
+          <p>
+            This is a copy of a suggested ADMIN which you might like to send on your group.
+          </p>
+          <p>
+            You can
+            edit it and <em>Save changes</em>, then <em>Approve and send</em>.
+          </p>
+          <ul>
+            <li><b>It's always good to put your names at the end.</b></li>
+            <li>Any changes you make will only apply to this copy.</li>
+            <li>Members on multiple groups will only get one copy of this kind of ADMIN.</li>
+          </ul>
+          <p class="topspace">
+            If this isn't suitable for your group, then click <em>Delete</em>.
+          </p>
         </NoticeMessage>
         <b-form-group
           label="Subject of ADMIN:"
