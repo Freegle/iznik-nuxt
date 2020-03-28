@@ -77,7 +77,7 @@ script:
 - cordova build --release -- --keystore="../iznik-nuxt/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
 - cp platforms/android/app/build/outputs/apk/release/app-release.apk ../iznik-nuxt/releases/ModTools-app-$MODTOOLS_VERSION-release-$(date +'%Y%m%d%H%M%S').apk
 - cd ../iznik-nuxt
-- ls -l releases
+- rm mobile/app-secrets.tar android-chrisphdcccom.new.keystore google-services.json GoogleService-Info.plist
 
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
