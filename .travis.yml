@@ -1,6 +1,11 @@
 language: objective-c
 osx_image: xcode11
-env: nodejs_version=12
+env:
+  matrix:
+  - nodejs_version=12
+  global:
+  - secure: hmlHnPPjAI+U0/PYhJwk9vlZBFToUrtRF6WbJ4SC7Elc01S5/8C/AGERo3aIRF8S1mtKVPzHNg3VcYRGeG2l3CuBJbnhnb0O6wcjtv+7WJwaAOFBtNv8Y4qD9e0lpAASeiwqwQYVZovj87tfQVyDvqLRiFvdDll8XjidrSWrnbOeEKXD3RLqPLowbdmVN2VQk+SzqO8VXMw0ZJywV7HrvreFCH9ddI3atlh+HXX8q8aAhGeyddJohgug3C7dWF/cbeXD2OQJAsQ9fjkW2ON2BVfbhSM1ZJG9aSaN238yBIjvCHGtgAaJA2LvABnOq8piOJ4LfwKr46NBoK3fcrL2L8nNEHbhces77VjQuHE0A8mmmvBEo2n3/cKiq3WH6W5uKG5BQZIZs8PcBYdzk65ueAabRxIG42XlREDfwFgFfuu3PaKnfWQ3raBzqOUDJBQ+Zz2H52oakC/kvgKcxMpEuO4Mjwck404Dx7xUvg+sUKlU3pLapc9yrH5e32gnMabuMbYQjW+Oq3DCqzr69qn3bW2QPoR+RjQ/dNdsUpwRulAYi1OMQ09CHHOwk57ZRq0VZIxVndQ5kEvavASzbcD3MMuIM6b51zTu3ZO5teiUASkNVQKAMdEMUaLiaZHfyehvkHchDzrP2EeQdAme2x4OZQltNd8rrw8B0yNEE5xnAbs=
+  - secure: xAtLc5TisQm9MWn3FIOAv0Q/xrAMjQjt+t11W4TMmKPpBQyWmputE9amEHx1QXGpdK1r+pVYku7vjtewPcyCbQw2XT3EH00jx9HHBClnqRcArbBIlAvktVvZ9hwTswbk7R9dRren+9qP60pOzM4U31H+RHW305KxmA2v9Q1THribRqFbCLNBJD52+HrXfScQJZy/RxiRS1Mox/CsgD+dxQwNgy7zTNw3sNBPzZ+kMLrei1ZkvIfJUZIGqg7WVkPtgaLjMHO6ZSyMnrOYW0mlzYaIJzLXgeYAoNBJrACWEVh+yPOYM76SsRg0YXxULVcSL2b9ekgmVKB+GI4vhAUYWBVMs+I9VkPVaCB0zd4pQV8PkCvn9HPv1Ha1FGI38+i1ou2aNmz7sNxKQvAcxN8U8SVzTFgwN52J99SM4tzScZdnFoRiIKbehHUbQfwQV/yeUpXyKYFz2aBEVH5s7esows536wQbLamesoPDneq0hIbZWzjwsCdgJv34Mn+OlqH7/qKuhSyyEgqY5fHq9tjmaIPCMdcVVcVvetlz5dMq2EpEYj9PieW+9p2ErUWRQ0YpRtyTiEMcFS7ehYd21UhfwFNLsePirhsJeSxlsmthGGVhxyKc+qTQOOH+bJ5IbF6JTEgHzn8qGx0sfR37cRRZvl3sCKCTP3LkGJb+7BgiIKQ=
 jdk:
 - oraclejdk8
 before_install:
@@ -15,9 +20,7 @@ before_install:
 script:
 - export MOBILE_VERSION=$(grep -Po "MOBILE_VERSION = '\K.*?(?=')" nuxt.config.js)
 - export MODTOOLS_VERSION=$(grep -Po "MODTOOLS_VERSION = '\K.*?(?=')" nuxt.config.js)
-
 - mkdir releases
-
 - npm run fdapp
 - mkdir ../iznik-nuxt-app
 - cd ../iznik-nuxt-app
