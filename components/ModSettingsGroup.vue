@@ -419,11 +419,79 @@
       <b-card no-body class="mb-2">
         <b-card-header>
           <b-btn v-b-toggle.accordion-maps block href="#" variant="primary">
-            TODO Mapping
+            Mapping
           </b-btn>
         </b-card-header>
         <b-collapse id="accordion-maps" accordion="settings-accordion" role="tabpanel">
-          <b-card-body />
+          <b-card-body>
+            <b-form-group label="Region">
+              <b-form-text class="mb-2">
+                Each community is an in region of the UK.
+                <span v-if="region">
+                  You can see other communities in this region
+                  <!-- eslint-disable-next-line -->
+                  <nuxt-link :to="'/explore/region/' + group.region">here</nuxt-link>.
+                </span>
+              </b-form-text>
+              <b-select v-model="region" :options="regionOptions" class="font-weight-bold" />
+            </b-form-group>
+            <ModGroupSetting
+              :groupid="groupid"
+              name="cga"
+              label="Core Group Area (CGA)"
+              description="This is the area that the community 'owns'."
+              type="textarea"
+              :rows="3"
+            />
+            <ModGroupSetting
+              :groupid="groupid"
+              name="dpa"
+              label="Default Posting Area (DPA)"
+              description="This is the area for which this the community is the default one suggested for freeglers to use."
+              type="textarea"
+              :rows="3"
+            />
+            <b-form-text class="mb-2">
+              You can visualise these areas by cutting and pasting the data into <a href="https://arthur-e.github.io/Wicket/sandbox-gmaps3.html" target="_blank" rel="noopener noreferrer">this tool</a>.
+              You can also view all community areas
+              <!-- eslint-disable-next-line -->
+              <nuxt-link to="/settings/all/map">here TODO</nuxt-link>.
+            </b-form-text>
+            <b-form-group label="Areas">
+              <b-form-text class="mb-2">
+                Each postcode in a group lies within an area, which is something that a freegler would recognise as a
+                description of a rough location.  You can set these areas up here:
+              </b-form-text>
+              <b-btn variant="white" disabled :to="'/settings/' + groupid + '/map' ">
+                <v-icon name="map-marker-alt" /> View Areas TODO
+              </b-btn>
+            </b-form-group>
+            <ModGroupSetting
+              :groupid="groupid"
+              name="settings.includearea"
+              label="Inclue area name in post location?"
+              description="When constructing a post subject, should we include the area name?"
+              type="toggle"
+              toggle-checked="Yes"
+              toggle-unchecked="No"
+            />
+            <ModGroupSetting
+              :groupid="groupid"
+              name="settings.includepc"
+              label="Inclue postcode in post location?"
+              description="When constructing a post subject, should we include the first part of the postcode?"
+              type="toggle"
+              toggle-checked="Yes"
+              toggle-unchecked="No"
+            />
+            <ModGroupSetting
+              :groupid="groupid"
+              name="settings.map.zoom"
+              label="Default zoom for maps"
+              description="Where we show maps on the site for this community, which Google zoom level should we use?"
+              class="mr-2"
+            />
+          </b-card-body>
         </b-collapse>
       </b-card>
       <b-card no-body class="mb-2">
@@ -465,6 +533,15 @@
               type="toggle"
               toggle-checked="Hosted"
               toggle-unchecked="Elsewhere"
+            />
+            <ModGroupSetting
+              :groupid="groupid"
+              name="onmap"
+              label="Shown on the map?"
+              description="Normally you'd set this yes, except for a few hidden test groups"
+              type="toggle"
+              toggle-checked="Visible"
+              toggle-unchecked="Hidden"
             />
             <ModGroupSetting
               :groupid="groupid"
@@ -538,6 +615,14 @@ export default {
         this.saveMembershipSetting('active', newval ? 1 : 0)
       }
     },
+    region: {
+      get() {
+        return this.group.region
+      },
+      set(newval) {
+        this.saveGroupSetting('region', newval)
+      }
+    },
     modconfig: {
       get() {
         return parseInt(this.group.mysettings.configid)
@@ -565,6 +650,22 @@ export default {
       })
 
       return ret
+    },
+    regionOptions() {
+      return [
+        { text: 'East', value: 'East' },
+        { text: 'London', value: 'London' },
+        { text: 'Midlands West', value: 'West Midlands' },
+        { text: 'Midlands East', value: 'East Midlands' },
+        { text: 'North East', value: 'North East' },
+        { text: 'North West', value: 'North West' },
+        { text: 'Northern Ireland', value: 'Northern Ireland' },
+        { text: 'South East', value: 'South East' },
+        { text: 'South West', value: 'South West' },
+        { text: 'Wales', value: 'Wales' },
+        { text: 'Yorkshire and the Humber', value: 'Yorkshire and the Humber' },
+        { text: 'Scotland', value: 'Scotland' }
+      ]
     }
   },
   watch: {
