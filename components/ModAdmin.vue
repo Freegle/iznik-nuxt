@@ -64,7 +64,7 @@
           />
         </b-form-group>
       </b-card-body>
-      <b-card-footer v-if="expanded">
+      <b-card-footer v-if="expanded && !admin.complete">
         <b-btn v-if="!admin.heldby" variant="warning" @click="deleteIt">
           <v-icon name="trash-alt" /> Delete
         </b-btn>
