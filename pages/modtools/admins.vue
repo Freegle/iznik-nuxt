@@ -27,6 +27,10 @@
               </h2>
             </template>
             <GroupSelect v-model="groupidcreate" modonly :systemwide="supportOrAdmin" class="mb-2" />
+            <NoticeMessage v-if="groupidcreate < 0" class="mt-1 mb-1" variant="danger">
+              This is a suggested ADMIN.  All local groups will get "copies" of this (unless they've opted out), and can then
+              edit/approve/reject them.  Members won't receive multiple copies.
+            </NoticeMessage>
             <b-form-group
               label="Subject of ADMIN:"
               label-for="subject"
@@ -82,10 +86,11 @@
 <script>
 import GroupSelect from '../../components/GroupSelect'
 import ModAdmin from '../../components/ModAdmin'
+import NoticeMessage from '../../components/NoticeMessage'
 import loginRequired from '@/mixins/loginRequired.js'
 
 export default {
-  components: { ModAdmin, GroupSelect },
+  components: { NoticeMessage, ModAdmin, GroupSelect },
   mixins: [loginRequired],
   data: function() {
     return {
