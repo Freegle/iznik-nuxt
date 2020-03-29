@@ -194,6 +194,10 @@
                     <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler" @click="showInfo">
                       <v-icon name="info-circle" />&nbsp;Info
                     </b-btn>
+                    <b-btn v-if="mod" variant="white" @click="spamReport">
+                      <v-icon name="ban" /> Spammer
+                    </b-btn>
+                    <ModSpammerReport v-if="showSpamModal" ref="spamConfirm" :user="otheruser" />
                   </span>
                   <b-btn variant="primary" class="float-right ml-1" @click="send">
                     Send&nbsp;
@@ -299,9 +303,11 @@ const AvailabilityModal = () => import('~/components/AvailabilityModal')
 const AddressModal = () => import('~/components/AddressModal')
 const ChatReportModal = () => import('~/components/ChatReportModal')
 const ChatRSVPModal = () => import('~/components/ChatRSVPModal')
+const ModSpammerReport = () => import('~/components/ModSpammerReport')
 
 export default {
   components: {
+    ModSpammerReport,
     InfiniteLoading,
     Ratings,
     ChatMessage,
@@ -345,7 +351,8 @@ export default {
       RSVP: false,
       notVisible: false,
       contactGroup: null,
-      urlid: null
+      urlid: null,
+      showSpamModal: false
     }
   },
   computed: {
@@ -811,6 +818,12 @@ export default {
         // Invalid chat id
         this.notVisible = true
       }
+    },
+    spamReport() {
+      this.showSpamModal = true
+      this.waitForRef('spamConfirm', () => {
+        this.$refs.spamConfirm.show()
+      })
     }
   }
 }
