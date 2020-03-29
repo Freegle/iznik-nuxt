@@ -139,7 +139,7 @@ module.exports = {
       {
         src:
           'https://adview.online/js/pub/tracking.js?publisher=2053&channel=web&source=feed',
-        defer: true
+        async: true
       }
     ]
   },
