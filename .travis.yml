@@ -20,6 +20,9 @@ before_install:
 - tar xvf mobile/app-secrets.tar
 - ls -l
 
+- sed -i "s/iosDeveloper/$iosDeveloper/g" mobile/build.json
+- cat mobile/build.json
+
 - chmod +x mobile/add-key.sh
 - ./mobile/add-key.sh
 
@@ -48,10 +51,7 @@ script:
 - ln -s ../iznik-nuxt/dist www
 - cordova platform rm ios
 - cordova platform add ios
-
-- echo '{ "ios": { "debug": { "codeSignIdentity": "iPhone Developer", "developmentTeam": "'$iosDeveloper'", "packageType": "development" }, "release": { "codeSignIdentity": "iPhone Developer", "developmentTeam": "'$iosDeveloper'", "packageType": "app-store" } } }' >build.json
-- cat build.json
-
+- cp ../iznik-nuxt/mobile/build.json .
 # https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
 - cordova build --debug --device -- --codeSignIdentity="iPhone Developer" --developmentTeam="$iosDeveloper" --packageType="development" 
   --iCloudContainerEnvironment="Development" --automaticProvisioning="true"
