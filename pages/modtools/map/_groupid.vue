@@ -1,6 +1,7 @@
 <template>
   <div class="bg-white">
-    <ModGroupMap :groups="true" />
+    <ModGroupMap v-if="groupid" :groupid="groupid" />
+    <ModGroupMap v-else :groups="true" />
   </div>
 </template>
 <script>
@@ -12,6 +13,14 @@ export default {
   components: {
     ModGroupMap
   },
-  mixins: [loginRequired]
+  mixins: [loginRequired],
+  data: function() {
+    return {
+      groupid: null
+    }
+  },
+  created() {
+    this.groupid = parseInt(this.$route.params.groupid)
+  }
 }
 </script>

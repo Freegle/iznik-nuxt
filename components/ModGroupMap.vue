@@ -46,13 +46,14 @@
           <div v-if="selectedName" class="mb-2">
             <h5>{{ selectedName }}</h5>
             <b-textarea v-model="selectedWKT" rows="4" />
+            TODO Edit area, change name
           </div>
           <h5>Postcode Tester</h5>
           <p>
             You can see which community and area a postcode will map to. It may take upto an hour after changing a polygon
             before postcodes will map to it.
           </p>
-          <Postcode :find="false" @selected="postcodeSelect" @cleared="postcodeCleared" />
+          <Postcode :find="false" @selected="postcodeSelect" />
           <div v-if="postcode" class="mt-2">
             <p>
               <b>Community:</b>
@@ -92,6 +93,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    groupid: {
+      type: Number,
+      required: false,
+      default: null
     }
   },
   data: function() {
@@ -106,6 +112,7 @@ export default {
       cgaMapped: [],
       dpaMapped: [],
       groupCentres: [],
+      areaMapped: [],
       dpa: false,
       cga: true,
       shade: true,
@@ -153,26 +160,93 @@ export default {
       }
 
       return ret
+    },
+    locationsInBounds() {
+      const locations = Object.values(this.$store.getters['locations/list'])
+      const ret = []
+
+      if (this.bounds) {
+        for (const location of locations) {
+          if (
+            location.lat >= this.bounds.sw.lat &&
+            location.lng >= this.bounds.sw.lng &&
+            location.lat <= this.bounds.ne.lat &&
+            location.lng <= this.bounds.ne.lng
+          ) {
+            ret.push(location)
+          }
+        }
+      }
+
+      return ret
     }
   },
   watch: {
     cga() {
-      this.addGroups(true)
+      this.addAreas(true)
     },
     dpa() {
-      this.addGroups(true)
+      this.addAreas(true)
     },
     shade() {
-      this.addGroups(true)
+      this.addAreas(true)
+    },
+    locationsInBounds(newlocs) {
+      // Map all locations which are new
+      newlocs.forEach(l => {
+        if (!this.areaMapped[l.id] && l.polygon) {
+          const obj = this.mapPoly(l.polygon, {
+            strokeColor: 'darkblue',
+            fillColor: 'darkgreen',
+            fillOpacity: 0.6
+          })
+
+          this.areaMapped[l.id] = {
+            id: l.id,
+            obj: obj
+          }
+
+          const google = this.google()
+          google.maps.event.addListener(obj, 'click', () => {
+            this.selectArea(obj, l.name, '', l.polygon)
+          })
+        }
+      })
     }
   },
   async mounted() {
     if (this.groups) {
+      // We want to show all groups
       await this.$store.dispatch('group/list', {
         grouptype: 'Freegle'
       })
 
-      this.addGroups()
+      this.addAreas()
+    } else {
+      // Areas for a specific group.
+      await this.$store.dispatch('group/fetch', {
+        id: this.groupid,
+        polygon: true
+      })
+
+      const group = this.$store.getters['group/get'](this.groupid)
+
+      // We want to find the area for this group.  Convert the CGA into an object so that we can get
+      // bounds from it.  Need to wait for the map to be loaded before we can start messing with google.
+      this.$refs.gmap.$mapPromise.then(map => {
+        const google = this.google()
+
+        // Set up idle handler for map
+        google.maps.event.addListener(map, 'idle', this.idle)
+
+        // Now change the bounds of the map, which will cause that handler to kick in.
+        const wkt = new Wkt.Wkt()
+        wkt.read(group.cga)
+
+        const obj = wkt.toObject()
+        const bounds = obj.getBounds()
+        map.fitBounds(bounds)
+      })
     }
   },
   methods: {
@@ -198,7 +272,7 @@ export default {
           }
         }
 
-        this.addGroups()
+        this.addAreas()
       }
     },
     mapPoly: function(poly, options) {
@@ -226,7 +300,6 @@ export default {
     selectArea(obj, name, tag, poly) {
       if (this.selectedObj) {
         // Reset the colour on a previously selected object.
-        console.log('Old', this.selectedObj)
         this.selectedObj.setOptions({ strokeColor: this.selectOldColour })
       }
 
@@ -255,7 +328,7 @@ export default {
 
       return google
     },
-    addGroups(clear) {
+    addAreas(clear) {
       const google = gmapApi()
       const mapobj = this.$refs.gmap.$mapObject
 
@@ -279,72 +352,86 @@ export default {
 
       let options
 
-      this.groupsInBounds.forEach(g => {
-        if (this.cga && g.polyofficial && !this.cgaMapped[g.id]) {
-          if (this.shade) {
-            options = {
-              strokeColor: 'darkgreen',
-              fillColor: '#EEFFCC',
-              fillOpacity: 0.6
+      if (this.groups) {
+        this.groupsInBounds.forEach(g => {
+          if (this.cga && g.polyofficial && !this.cgaMapped[g.id]) {
+            if (this.shade) {
+              options = {
+                strokeColor: 'darkgreen',
+                fillColor: '#EEFFCC',
+                fillOpacity: 0.6
+              }
+            } else {
+              options = {
+                strokeColor: 'darkgreen',
+                fillOpacity: 0
+              }
             }
-          } else {
-            options = {
-              strokeColor: 'darkgreen',
-              fillOpacity: 0
-            }
+
+            const obj = this.mapPoly(g.polyofficial, options)
+            this.cgaMapped[g.id] = obj
+
+            google.maps.event.addListener(obj, 'click', () => {
+              this.selectArea(obj, g.namedisplay, 'CGA', g.polyofficial)
+            })
           }
 
-          const obj = this.mapPoly(g.polyofficial, options)
-          this.cgaMapped[g.id] = obj
+          if (this.dpa && g.poly && !this.dpaMapped[g.id]) {
+            if (this.shade) {
+              options = {
+                strokeColor: 'darkblue',
+                fillColor: '#EEFFCC',
+                fillOpacity: 0.6
+              }
+            } else {
+              options = {
+                strokeColor: 'darkblue',
+                fillOpacity: 0
+              }
+            }
 
-          google.maps.event.addListener(obj, 'click', () => {
-            this.selectArea(obj, g.namedisplay, 'CGA', g.polyofficial)
+            const obj = this.mapPoly(g.poly, options)
+            this.dpaMapped[g.id] = obj
+
+            google.maps.event.addListener(obj, 'click', () => {
+              this.selectArea(obj, g.namedisplay, 'DPA', g.poly)
+            })
+          }
+
+          this.groupCentres[g.id] = new google.maps.Marker({
+            position: new google.maps.LatLng(g.lat, g.lng),
+            map: mapobj,
+            title: g.namedisplay,
+            icon: {
+              path: google.maps.SymbolPath.CIRCLE,
+              fillColor: 'darkgreen',
+              fillOpacity: 1,
+              strokeColor: 'darkgrey',
+              strokeOpacity: 1,
+              strokeWeight: 1,
+              scale: 7
+            }
           })
-        }
-
-        if (this.dpa && g.poly && !this.dpaMapped[g.id]) {
-          if (this.shade) {
-            options = {
-              strokeColor: 'darkblue',
-              fillColor: '#EEFFCC',
-              fillOpacity: 0.6
-            }
-          } else {
-            options = {
-              strokeColor: 'darkblue',
-              fillOpacity: 0
-            }
-          }
-
-          const obj = this.mapPoly(g.poly, options)
-          this.dpaMapped[g.id] = obj
-
-          google.maps.event.addListener(obj, 'click', () => {
-            this.selectArea(obj, g.namedisplay, 'DPA', g.poly)
-          })
-        }
-
-        this.groupCentres[g.id] = new google.maps.Marker({
-          position: new google.maps.LatLng(g.lat, g.lng),
-          map: mapobj,
-          title: g.namedisplay,
-          icon: {
-            path: google.maps.SymbolPath.CIRCLE,
-            fillColor: 'darkgreen',
-            fillOpacity: 1,
-            strokeColor: 'darkgrey',
-            strokeOpacity: 1,
-            strokeWeight: 1,
-            scale: 7
-          }
         })
-      })
+      }
     },
     postcodeSelect(pc) {
       this.postcode = pc
     },
     postcodeClear() {
       this.postcode = null
+    },
+    async idle() {
+      const bounds = this.$refs.gmap.$mapObject.getBounds()
+
+      const data = {
+        swlat: bounds.getSouthWest().lat(),
+        swlng: bounds.getSouthWest().lng(),
+        nelat: bounds.getNorthEast().lat(),
+        nelng: bounds.getNorthEast().lng()
+      }
+
+      await this.$store.dispatch('locations/fetch', data)
     }
   }
 }
