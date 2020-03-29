@@ -31,8 +31,8 @@ before_install:
 - npm --version
 - npm install
 script:
-- export MOBILE_VERSION=$(grep -Po "MOBILE_VERSION = '\K.*?(?=')" nuxt.config.js)
-- export MODTOOLS_VERSION=$(grep -Po "MODTOOLS_VERSION = '\K.*?(?=')" nuxt.config.js)
+- export MOBILE_VERSION=$(grep -o "MOBILE_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MOBILE_VERSION = '//; s/'.*//")
+- export MODTOOLS_VERSION=$(grep -o "MODTOOLS_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MODTOOLS_VERSION = '//; s/'.*//")
 - env | grep '^MOBILE_VERSION='
 - env | grep '^MODTOOLS_VERSION='
 
