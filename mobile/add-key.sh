@@ -10,7 +10,7 @@ security default-keychain -s ios-build.keychain
 security unlock-keychain -p travis ios-build.keychain
 
 # Added: unlock default keychain https://stackoverflow.com/questions/46295291/allowprovisioningupdates-doesnt-work/47076629#47076629
-security unlock-keychain ~/Library/Keychains/login.keychain-db
+# security unlock-keychain ~/Library/Keychains/login.keychain-db
 
 # Set keychain timeout to 1 hour for long builds
 # see http://www.egeek.me/2013/02/23/jenkins-and-xcode-user-interaction-is-not-allowed/
