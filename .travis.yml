@@ -34,8 +34,8 @@ before_install:
 script:
 - export MOBILE_VERSION=$(grep -o "MOBILE_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MOBILE_VERSION = '//; s/'.*//")
 - export MODTOOLS_VERSION=$(grep -o "MODTOOLS_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MODTOOLS_VERSION = '//; s/'.*//")
-- env | grep '^MOBILE_VERSION='
-- env | grep '^MODTOOLS_VERSION='
+#- env | grep '^MOBILE_VERSION='
+#- env | grep '^MODTOOLS_VERSION='
 
 - mkdir releases
 
