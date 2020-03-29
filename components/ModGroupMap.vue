@@ -21,28 +21,29 @@
           <b>Shade areas</b>
         </b-form-checkbox>
       </div>
-      <GmapMap
-        ref="gmap"
-        :center="{lat:53.9450, lng:-2.5209}"
-        :zoom="zoom"
-        :style="'width: ' + mapWidth + '; height: ' + mapWidth + 'px'"
-        :options="{
-          zoomControl: true,
-          mapTypeControl: false,
-          scaleControl: false,
-          streetViewControl: false,
-          rotateControl: false,
-          fullscreenControl: true,
-          disableDefaultUi: false,
-          gestureHandling: 'greedy'
-        }"
-        @zoom_changed="zoomChanged"
-        @bounds_changed="boundsChanged"
-      >
-        <div v-for="g in groupsInBounds" :key="'marker-' + g.id + '-' + zoom">
-          <!--          <GroupMarker v-if="g.onmap" :group="g" :size="largeMarkers ? 'rich' : 'poor'" />-->
-        </div>
-      </GmapMap>
+      <b-row class="m-0">
+        <b-col cols="12" md="8" lg="9">
+          <GmapMap
+            ref="gmap"
+            :center="{lat:53.9450, lng:-2.5209}"
+            :zoom="zoom"
+            :style="'width: ' + mapWidth + '; height: ' + mapWidth + 'px'"
+            :options="{
+              zoomControl: true,
+              mapTypeControl: false,
+              scaleControl: false,
+              streetViewControl: false,
+              rotateControl: false,
+              fullscreenControl: true,
+              disableDefaultUi: false,
+              gestureHandling: 'greedy'
+            }"
+            @zoom_changed="zoomChanged"
+            @bounds_changed="boundsChanged"
+          />
+        </b-col>
+        <b-col cols="12" md="4" lg="3" />
+      </b-row>
     </client-only>
   </div>
 </template>
@@ -72,6 +73,7 @@ export default {
       },
       cgaMapped: [],
       dpaMapped: [],
+      groupCentres: [],
       dpa: false,
       cga: true,
       shade: true
@@ -89,7 +91,7 @@ export default {
       let height = 0
 
       if (process.browser) {
-        height = window.innerHeight - 66 - 45
+        height = window.innerHeight - 66 - 100
         height = height < 200 ? 200 : height
       }
 
@@ -208,12 +210,18 @@ export default {
         this.cgaMapped.forEach(g => {
           g.setMap(null)
         })
+
         this.dpaMapped.forEach(g => {
+          g.setMap(null)
+        })
+
+        this.groupCentres.forEach(g => {
           g.setMap(null)
         })
 
         this.cgaMapped = []
         this.dpaMapped = []
+        this.groupCentres = []
       }
 
       let options
@@ -252,6 +260,24 @@ export default {
 
           this.dpaMapped[g.id] = this.mapPoly(g.poly, options)
         }
+
+        const google = gmapApi()
+        const mapobj = this.$refs.gmap.$mapObject
+
+        this.groupCentres[g.id] = new google.maps.Marker({
+          position: new google.maps.LatLng(g.lat, g.lng),
+          map: mapobj,
+          title: g.namedisplay,
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            fillColor: 'darkgreen',
+            fillOpacity: 1,
+            strokeColor: 'darkgrey',
+            strokeOpacity: 1,
+            strokeWeight: 1,
+            scale: 7
+          }
+        })
       })
     }
   }
