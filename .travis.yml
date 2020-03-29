@@ -19,7 +19,7 @@ before_install:
   -in mobile/app-secrets.tar.enc -out mobile/app-secrets.tar -d
 - tar xvf mobile/app-secrets.tar
 - ls -l
-- ./mobile/add-key.sh
+#- ./mobile/add-key.sh
 #- mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
 #- cp "./scripts/profile/$PROFILE_NAME.mobileprovision" ~/Library/MobileDevice/Provisioning\ Profiles/
 - nvm install $nodejs_version
