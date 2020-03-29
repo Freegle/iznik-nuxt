@@ -31,6 +31,8 @@ before_install:
 script:
 - export MOBILE_VERSION=$(grep -Po "MOBILE_VERSION = '\K.*?(?=')" nuxt.config.js)
 - export MODTOOLS_VERSION=$(grep -Po "MODTOOLS_VERSION = '\K.*?(?=')" nuxt.config.js)
+- env | grep '^MOBILE_VERSION='
+- env | grep '^MODTOOLS_VERSION='
 
 - mkdir releases
 
@@ -46,6 +48,10 @@ script:
 - ln -s ../iznik-nuxt/dist www
 - cordova platform rm ios
 - cordova platform add ios
+
+- echo '{ "ios": { "debug": { "codeSignIdentity": "iPhone Developer", "developmentTeam": "'$iosDeveloper'", "packageType": "development" }, "release": { "codeSignIdentity": "iPhone Developer", "developmentTeam": "'$iosDeveloper'", "packageType": "app-store" } } }' >build.json
+- cat build.json
+
 # https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
 - cordova build --debug --device -- --codeSignIdentity="iPhone Developer" --developmentTeam="$iosDeveloper" --packageType="development" 
   --iCloudContainerEnvironment="Development" --automaticProvisioning="true"
