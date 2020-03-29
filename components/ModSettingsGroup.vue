@@ -497,11 +497,53 @@
       <b-card no-body class="mb-2">
         <b-card-header>
           <b-btn v-b-toggle.accordion-social block href="#" variant="primary">
-            TODO Social Media
+            Social Media
           </b-btn>
         </b-card-header>
         <b-collapse id="accordion-social" accordion="settings-accordion" role="tabpanel">
-          <b-card-body />
+          <b-card-body>
+            <b-form-text class="mb-2">
+              You can auto-tweet the subject and picture of posts to attract more people to your group.
+            </b-form-text>
+            <NoticeMessage v-if="group.twitter.locked" variant="danger">
+              This group's Twitter account has been locked.  Please log in to Twitter to unlock it.  Then
+              we'll try again to tweet.  After that, you may need to link it again - if so you'll see a
+              message here.
+            </NoticeMessage>
+            <NoticeMessage v-else-if="!group.twitter.valid" variant="warning">
+              This group is not linked to a Twitter account.  Please link it to get more publicity.
+            </NoticeMessage>
+            <div v-else>
+              <v-icon name="check" class="text-success" /> Linked to
+              <a :href="'https://twitter.com/' + group.twitter.name">@{{ group.twitter.name }}</a>
+              <span class="text-muted small">
+                {{ group.twitter.authdate | dateshort }}
+              </span>
+            </div>
+            <b-btn variant="white" class="mt-2" :href="'https://modtools.org/twitter/twitter_request.php?groupid=' + group.id" target="_blank" rel="noopener noreferrer">
+              Link to Twitter
+            </b-btn>
+
+            <b-form-text class="mb-2">
+              You can link to a group Facebook page to attract more people to your group.
+            </b-form-text>
+
+            <div v-if="group.facebook && group.facebook.length">
+              <div v-for="facebook in group.facebook" :key="'facebook-' + facebook.id">
+                <v-icon name="check" class="text-success" /> Linked to
+                <a :href="'https://facebook.com/' + facebook.id">{{ facebook.name }}</a>
+                <span class="text-muted small">
+                  {{ facebook.authdate | dateshort }}
+                </span>
+              </div>
+            </div>
+            <NoticeMessage v-else variant="warning">
+              This group is not linked to Facebook.  Please link it to get more publicity.
+            </NoticeMessage>
+            <b-btn variant="white" class="mt-2" :href="'https://modtools.org/facebook/facebook_request.php?type=Page&groupid=' + group.id" target="_blank" rel="noopener noreferrer">
+              Link to Facebook
+            </b-btn>
+          </b-card-body>
         </b-collapse>
       </b-card>
       <b-card no-body class="mb-2">
@@ -561,6 +603,15 @@
               toggle-checked="Mentors"
               toggle-unchecked="Local volunteers"
             />
+            <p v-if="group.affiliationconfirmed">
+              Affiliation last confirmed {{ group.affiliationconfirmed | dateshort }}
+              <span class="text-muted">
+                by <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ group.affiliationconfirmedby }}
+              </span>
+            </p>
+            <p v-else>
+              Affiliation not confirmed yet.
+            </p>
           </b-card-body>
         </b-collapse>
       </b-card>
@@ -574,6 +625,7 @@ import GroupProfileImage from './GroupProfileImage'
 import OurFilePond from './OurFilePond'
 import ModGroupSetting from './ModGroupSetting'
 import SpinButton from './SpinButton'
+import NoticeMessage from './NoticeMessage'
 const OurToggle = () => import('@/components/OurToggle')
 
 let VueEditor
@@ -584,6 +636,7 @@ if (process.client) {
 
 export default {
   components: {
+    NoticeMessage,
     SpinButton,
     ModGroupSetting,
     OurFilePond,
