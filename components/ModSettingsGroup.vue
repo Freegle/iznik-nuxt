@@ -455,14 +455,14 @@
               You can visualise these areas by cutting and pasting the data into <a href="https://arthur-e.github.io/Wicket/sandbox-gmaps3.html" target="_blank" rel="noopener noreferrer">this tool</a>.
               You can also view all community areas
               <!-- eslint-disable-next-line -->
-              <nuxt-link to="/settings/all/map">here TODO</nuxt-link>.
+              <nuxt-link to="/modtools/map">here</nuxt-link>.
             </b-form-text>
             <b-form-group label="Areas">
               <b-form-text class="mb-2">
                 Each postcode in a group lies within an area, which is something that a freegler would recognise as a
                 description of a rough location.  You can set these areas up here:
               </b-form-text>
-              <b-btn variant="white" disabled :to="'/settings/' + groupid + '/map' ">
+              <b-btn variant="white" :to="'/modtools/map/' + groupid + '/map' ">
                 <v-icon name="map-marker-alt" /> View Areas TODO
               </b-btn>
             </b-form-group>
