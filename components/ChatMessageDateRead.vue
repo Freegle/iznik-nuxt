@@ -3,6 +3,9 @@
     <b-col v-if="chatmessage.userid !== me.id">
       <span class="chat__dateread--theirs" :title="chatmessage.date | datetimeshort">
         {{ chatmessage.date | timeago }}
+        <span v-if="chatmessage.bymailid" class="clickme" :title="'Received by email #' + chatmessage.bymailid + ' click to view'" @click="viewOriginal">
+          <v-icon name="info-circle" />
+        </span>
       </span>
       <b-badge v-if="chatmessage.replyexpected && !chatmessage.replyreceived" variant="danger">
         RSVP - reply expected
@@ -13,19 +16,43 @@
         <v-icon v-if="chatmessage.seenbyall" name="check" class="text-success" />
         <v-icon v-else-if="chatmessage.mailedtoall" name="envelope" />
         {{ chatmessage.date | timeago }}
+        <span v-if="chatmessage.bymailid" class="clickme" :title="'Received by email #' + chatmessage.bymailid + ' click to view'" @click="viewOriginal">
+          <v-icon name="info-circle" />
+        </span>
         <b-badge v-if="chatmessage.replyexpected && !chatmessage.replyreceived" variant="info">
           RSVP - reply requested
         </b-badge>
       </span>
+      <ModChatMessageEmailModal v-if="showOriginal" :id="chatmessage.bymailid" ref="original" />
     </b-col>
   </b-row>
 </template>
 
 <script>
 import ChatBase from './ChatBase'
+import waitForRef from '@/mixins/waitForRef'
+const ModChatMessageEmailModal = () =>
+  import('~/components/ModChatMessageEmailModal')
 
 export default {
-  extends: ChatBase
+  components: {
+    ModChatMessageEmailModal
+  },
+  extends: ChatBase,
+  mixins: [waitForRef],
+  data: function() {
+    return {
+      showOriginal: false
+    }
+  },
+  methods: {
+    viewOriginal() {
+      this.showOriginal = true
+      this.waitForRef('original', () => {
+        this.$refs.original.show()
+      })
+    }
+  }
 }
 </script>
 
