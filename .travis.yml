@@ -21,8 +21,8 @@ before_install:
 - ls -l
 
 - sed --help
-- echo -i s/iosDeveloper/$iosDeveloper/g mobile/build.json
-#- sed -i s/iosDeveloper/$iosDeveloper/g mobile/build.json
+- echo -i s,iosDeveloper,$iosDeveloper,g mobile/build.json
+#- sed -i s,iosDeveloper,$iosDeveloper,g mobile/build.json
 - cat mobile/build.json
 
 - chmod +x mobile/add-key.sh
