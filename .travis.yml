@@ -20,9 +20,9 @@ before_install:
 - tar xvf mobile/app-secrets.tar
 - ls -l
 
-- sed --help
-- echo -i s,iosDeveloper,$iosDeveloper,g mobile/build.json
-#- sed -i s,iosDeveloper,$iosDeveloper,g mobile/build.json
+#- sed --help
+#- echo -i s,iosDeveloper,$iosDeveloper,g mobile/build.json
+- sed -i -e "s,iosDeveloper,$iosDeveloper,g" mobile/build.json
 - cat mobile/build.json
 
 - chmod +x mobile/add-key.sh
