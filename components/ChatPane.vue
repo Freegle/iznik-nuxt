@@ -240,6 +240,12 @@
                       Info
                     </div>
                   </div>
+                  <div v-if="chat && chat.chattype === 'User2Mod' && mod" v-b-tooltip.hover.top title="Report as spammer" class="mr-2" @click="spamReport">
+                    <v-icon scale="2" name="ban" class="fa-mob" />
+                    <div class="mobtext">
+                      Spammer
+                    </div>
+                  </div>
                   <div v-if="chat && chat.chattype === 'User2User' && otheruser" v-b-tooltip.hover.top title="Waiting for a reply?  Nudge this freegler." class="mr-2" @click="nudge">
                     <v-icon scale="2" name="bell" class="fa-mob" />
                     <div class="mobtext">
