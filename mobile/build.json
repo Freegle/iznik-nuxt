@@ -4,7 +4,7 @@
       "codeSignIdentity": "iPhone Developer",
       "developmentTeam": "iosDeveloper",
       "packageType": "development",
-      "automaticProvisioning": true,
+      "provisioningProfile": "Freegle_adhoc_0320",
       "buildFlag": [
         "EMBEDDED_CONTENT_CONTAINS_SWIFT = YES",
         "ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES=NO",
@@ -16,7 +16,7 @@
       "codeSignIdentity": "iPhone Developer",
       "developmentTeam": "iosDeveloper",
       "packageType": "app-store",
-      "automaticProvisioning": true,
+      "provisioningProfile": "Freegle_0320",
       "buildFlag": [
         "EMBEDDED_CONTENT_CONTAINS_SWIFT = YES",
         "ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES=NO",
