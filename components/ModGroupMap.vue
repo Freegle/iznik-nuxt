@@ -86,6 +86,16 @@ import Wkt from 'wicket'
 import 'wicket/wicket-gmap3'
 import Postcode from './Postcode'
 
+const GROUP_FILL_COLOUR = '#EEFFCC'
+const AREA_FILL_COLOUR = 'darkgreen'
+const FILL_OPACITY = 0.6
+const CGA_BOUNDARY_COLOUR = 'darkgreen'
+const DPA_BOUNDARY_COLOUR = 'darkblue'
+const AREA_BOUNDARY_COLOUR = 'darkblue'
+const CENTRE_FILL_COLOUR = 'darkgreen'
+const CENTRE_BORDER_COLOUR = 'darkgrey'
+const SELECTED = '#990000'
+
 export default {
   components: { Postcode },
   props: {
@@ -188,17 +198,25 @@ export default {
     dpa() {
       this.addAreas(true)
     },
-    shade() {
-      this.addAreas(true)
+    shade(newval) {
+      if (this.groups) {
+        this.addAreas(true)
+      } else {
+        this.areaMapped.forEach(a => {
+          a.obj.setOptions({
+            fillOpacity: newval ? FILL_OPACITY : 0
+          })
+        })
+      }
     },
     locationsInBounds(newlocs) {
       // Map all locations which are new
       newlocs.forEach(l => {
         if (!this.areaMapped[l.id] && l.polygon) {
           const obj = this.mapPoly(l.polygon, {
-            strokeColor: 'darkblue',
-            fillColor: 'darkgreen',
-            fillOpacity: 0.6
+            strokeColor: AREA_BOUNDARY_COLOUR,
+            fillColor: AREA_FILL_COLOUR,
+            fillOpacity: FILL_OPACITY
           })
 
           this.areaMapped[l.id] = {
@@ -307,7 +325,7 @@ export default {
       this.selectedWKT = poly
       this.selectedObj = obj
       this.selectOldColour = obj.strokeColor
-      obj.setOptions({ strokeColor: '#990000' })
+      obj.setOptions({ strokeColor: SELECTED })
     },
     google() {
       const google = gmapApi()
@@ -345,9 +363,14 @@ export default {
           g.setMap(null)
         })
 
+        this.areaMapped.forEach(g => {
+          g.obj.setMap(null)
+        })
+
         this.cgaMapped = []
         this.dpaMapped = []
         this.groupCentres = []
+        this.areaMapped = []
       }
 
       let options
@@ -357,9 +380,9 @@ export default {
           if (this.cga && g.polyofficial && !this.cgaMapped[g.id]) {
             if (this.shade) {
               options = {
-                strokeColor: 'darkgreen',
-                fillColor: '#EEFFCC',
-                fillOpacity: 0.6
+                strokeColor: CGA_BOUNDARY_COLOUR,
+                fillColor: GROUP_FILL_COLOUR,
+                fillOpacity: FILL_OPACITY
               }
             } else {
               options = {
@@ -379,13 +402,13 @@ export default {
           if (this.dpa && g.poly && !this.dpaMapped[g.id]) {
             if (this.shade) {
               options = {
-                strokeColor: 'darkblue',
-                fillColor: '#EEFFCC',
-                fillOpacity: 0.6
+                strokeColor: DPA_BOUNDARY_COLOUR,
+                fillColor: GROUP_FILL_COLOUR,
+                fillOpacity: FILL_OPACITY
               }
             } else {
               options = {
-                strokeColor: 'darkblue',
+                strokeColor: DPA_BOUNDARY_COLOUR,
                 fillOpacity: 0
               }
             }
@@ -404,9 +427,9 @@ export default {
             title: g.namedisplay,
             icon: {
               path: google.maps.SymbolPath.CIRCLE,
-              fillColor: 'darkgreen',
+              fillColor: CENTRE_FILL_COLOUR,
               fillOpacity: 1,
-              strokeColor: 'darkgrey',
+              strokeColor: CENTRE_BORDER_COLOUR,
               strokeOpacity: 1,
               strokeWeight: 1,
               scale: 7
