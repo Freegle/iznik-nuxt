@@ -1,5 +1,6 @@
 language: objective-c
-osx_image: xcode11
+os: osx
+osx_image: xcode11.3
 branches:
   only: app
 env:
