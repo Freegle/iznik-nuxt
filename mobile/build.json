@@ -4,25 +4,13 @@
       "codeSignIdentity": "iPhone Developer",
       "developmentTeam": "iosDeveloper",
       "packageType": "development",
-      "provisioningProfile": "Freegle_adhoc_0320",
-      "buildFlag": [
-        "EMBEDDED_CONTENT_CONTAINS_SWIFT = YES",
-        "ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES=NO",
-        "LD_RUNPATH_SEARCH_PATHS = \"@executable_path/Frameworks\""
-      ],
-      "iCloudContainerEnvironment": "Development"
+      "provisioningProfile": "Freegle_adhoc_0320"
     },
     "release": {
       "codeSignIdentity": "iPhone Developer",
       "developmentTeam": "iosDeveloper",
       "packageType": "app-store",
-      "provisioningProfile": "Freegle_0320",
-      "buildFlag": [
-        "EMBEDDED_CONTENT_CONTAINS_SWIFT = YES",
-        "ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES=NO",
-        "LD_RUNPATH_SEARCH_PATHS = \"@executable_path/Frameworks\""
-      ],
-      "iCloudContainerEnvironment": "Production"
+      "provisioningProfile": "Freegle_0320"
     }
   }
 }
