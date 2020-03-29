@@ -31,7 +31,7 @@
       <ModComments :user="user" />
 
       <div class="d-flex flex-wrap">
-        <b-btn variant="white" disabled class="mr-2 mb-1">
+        <b-btn variant="white" class="mr-2 mb-1" @click="spamReport">
           <v-icon name="ban" /> Scammer
         </b-btn>
         <b-btn variant="white" class="mr-2 mb-1" @click="purge">
@@ -208,6 +208,7 @@
     <ModLogsModal ref="logs" :userid="user.id" />
     <ConfirmModal v-if="purgeConfirm" ref="purgeConfirm" :title="'Purge ' + user.displayname + ' from the system?'" message="<p><b>This can't be undone.</b></p><p>Are you completely sure you want to do this?</p>" @confirm="purgeConfirmed" />
     <ProfileModal v-if="user && user.info" :id="id" ref="profile" />
+    <ModSpammerReport v-if="showSpamModal" ref="spamConfirm" :user="user" />
   </b-card>
 </template>
 <script>
@@ -220,11 +221,13 @@ import ModSupportChatList from './ModSupportChatList'
 import ModSpammer from './ModSpammer'
 import ModMemberLogins from './ModMemberLogins'
 import ModComments from './ModComments'
+import ModSpammerReport from './ModSpammerReport'
 
 const SHOW = 3
 
 export default {
   components: {
+    ModSpammerReport,
     ModComments,
     ModMemberLogins,
     ModSpammer,
@@ -254,7 +257,8 @@ export default {
       showAllMembershipHistories: false,
       showAllMessages: false,
       showAllMessageHistories: false,
-      showAllEmailHistories: false
+      showAllEmailHistories: false,
+      showSpamModal: false
     }
   },
   computed: {
@@ -385,6 +389,12 @@ export default {
 
       this.waitForRef('purgeConfirm', () => {
         this.$refs.purgeConfirm.show()
+      })
+    },
+    spamReport() {
+      this.showSpamModal = true
+      this.waitForRef('spamConfirm', () => {
+        this.$refs.spamConfirm.show()
       })
     }
   }
