@@ -22,7 +22,7 @@
         </b-form-checkbox>
       </div>
       <b-row class="m-0">
-        <b-col cols="12" md="8" lg="9">
+        <b-col cols="12" md="8" lg="9" class="p-0">
           <GmapMap
             ref="gmap"
             :center="{lat:53.9450, lng:-2.5209}"
@@ -42,7 +42,38 @@
             @bounds_changed="boundsChanged"
           />
         </b-col>
-        <b-col cols="12" md="4" lg="3" />
+        <b-col cols="12" md="4" lg="3">
+          <div v-if="selectedName" class="mb-2">
+            <h5>{{ selectedName }}</h5>
+            <b-textarea v-model="selectedWKT" rows="4" />
+          </div>
+          <h5>Postcode Tester</h5>
+          <p>
+            You can see which community and area a postcode will map to. It may take upto an hour after changing a polygon
+            before postcodes will map to it.
+          </p>
+          <Postcode :find="false" @selected="postcodeSelect" @cleared="postcodeCleared" />
+          <div v-if="postcode" class="mt-2">
+            <p>
+              <b>Community:</b>
+            </p>
+            <p v-if="postcode.groupsnear && postcode.groupsnear.length">
+              {{ postcode.groupsnear[0].namedisplay }}
+            </p>
+            <p v-else>
+              No community found
+            </p>
+            <p>
+              <b>Area:</b>
+            </p>
+            <p v-if="postcode.area">
+              {{ postcode.area.name }}
+            </p>
+            <p v-else>
+              No area found
+            </p>
+          </div>
+        </b-col>
       </b-row>
     </client-only>
   </div>
@@ -52,9 +83,10 @@
 import { gmapApi } from 'vue2-google-maps'
 import Wkt from 'wicket'
 import 'wicket/wicket-gmap3'
+import Postcode from './Postcode'
 
 export default {
-  components: {},
+  components: { Postcode },
   props: {
     groups: {
       type: Boolean,
@@ -76,7 +108,12 @@ export default {
       groupCentres: [],
       dpa: false,
       cga: true,
-      shade: true
+      shade: true,
+      selectedName: null,
+      selectedWKT: null,
+      selectedObj: null,
+      selectOldColour: null,
+      postcode: null
     }
   },
   computed: {
@@ -186,6 +223,19 @@ export default {
 
       return obj
     },
+    selectArea(obj, name, tag, poly) {
+      if (this.selectedObj) {
+        // Reset the colour on a previously selected object.
+        console.log('Old', this.selectedObj)
+        this.selectedObj.setOptions({ strokeColor: this.selectOldColour })
+      }
+
+      this.selectedName = name + ' ' + tag
+      this.selectedWKT = poly
+      this.selectedObj = obj
+      this.selectOldColour = obj.strokeColor
+      obj.setOptions({ strokeColor: '#990000' })
+    },
     google() {
       const google = gmapApi()
 
@@ -206,6 +256,9 @@ export default {
       return google
     },
     addGroups(clear) {
+      const google = gmapApi()
+      const mapobj = this.$refs.gmap.$mapObject
+
       if (clear) {
         this.cgaMapped.forEach(g => {
           g.setMap(null)
@@ -241,7 +294,12 @@ export default {
             }
           }
 
-          this.cgaMapped[g.id] = this.mapPoly(g.polyofficial, options)
+          const obj = this.mapPoly(g.polyofficial, options)
+          this.cgaMapped[g.id] = obj
+
+          google.maps.event.addListener(obj, 'click', () => {
+            this.selectArea(obj, g.namedisplay, 'CGA', g.polyofficial)
+          })
         }
 
         if (this.dpa && g.poly && !this.dpaMapped[g.id]) {
@@ -258,11 +316,13 @@ export default {
             }
           }
 
-          this.dpaMapped[g.id] = this.mapPoly(g.poly, options)
-        }
+          const obj = this.mapPoly(g.poly, options)
+          this.dpaMapped[g.id] = obj
 
-        const google = gmapApi()
-        const mapobj = this.$refs.gmap.$mapObject
+          google.maps.event.addListener(obj, 'click', () => {
+            this.selectArea(obj, g.namedisplay, 'DPA', g.poly)
+          })
+        }
 
         this.groupCentres[g.id] = new google.maps.Marker({
           position: new google.maps.LatLng(g.lat, g.lng),
@@ -279,6 +339,12 @@ export default {
           }
         })
       })
+    },
+    postcodeSelect(pc) {
+      this.postcode = pc
+    },
+    postcodeClear() {
+      this.postcode = null
     }
   }
 }
