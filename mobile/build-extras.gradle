@@ -1,0 +1,8 @@
+apply plugin: 'com.github.triplet.play'
+
+android {
+    play {
+      track = 'beta' //'alpha','beta' or 'production'
+      serviceAccountCredentials = file('api-freegle-google-play-deployment.json')
+    }
+}
