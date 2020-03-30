@@ -418,6 +418,11 @@ export default {
 
       if (this.otheruserid) {
         user = this.$store.getters['user/get'](this.otheruserid)
+
+        if (user) {
+          // We need this set as ModSpammerReport requires it.
+          user.userid = this.otheruserid
+        }
       }
 
       return user
