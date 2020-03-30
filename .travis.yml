@@ -31,8 +31,8 @@ before_install:
 - node --version
 - npm --version
 - npm install
-- brew update
-- brew install xctool
+#- brew update
+#- brew install xctool ALREADY INSTALLED
 
 script:
 - export MOBILE_VERSION=$(grep -o "MOBILE_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MOBILE_VERSION = '//; s/'.*//")
