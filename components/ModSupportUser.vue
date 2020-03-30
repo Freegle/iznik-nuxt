@@ -88,7 +88,18 @@
         Logins
       </h3>
       <ModMemberLogins :member="user" />
-      <!--      TODO Reset password-->
+      <b-input-group class="mt-2">
+        <b-input
+          v-model="newpassword"
+          type="text"
+          placeholder="Reset password"
+          autocomplete="off"
+          class="max"
+        />
+        <b-input-group-append>
+          <SpinButton variant="white" name="save" label="Set Password" :handler="setPassword" />
+        </b-input-group-append>
+      </b-input-group>
       <h3 class="mt-2">
         Memberships
       </h3>
@@ -222,11 +233,13 @@ import ModSpammer from './ModSpammer'
 import ModMemberLogins from './ModMemberLogins'
 import ModComments from './ModComments'
 import ModSpammerReport from './ModSpammerReport'
+import SpinButton from './SpinButton'
 
 const SHOW = 3
 
 export default {
   components: {
+    SpinButton,
     ModSpammerReport,
     ModComments,
     ModMemberLogins,
@@ -258,7 +271,8 @@ export default {
       showAllMessages: false,
       showAllMessageHistories: false,
       showAllEmailHistories: false,
-      showSpamModal: false
+      showSpamModal: false,
+      newpassword: null
     }
   },
   computed: {
@@ -396,7 +410,20 @@ export default {
       this.waitForRef('spamConfirm', () => {
         this.$refs.spamConfirm.show()
       })
+    },
+    async setPassword() {
+      if (this.newpassword) {
+        await this.$store.dispatch('user/edit', {
+          id: this.user.id,
+          password: this.newpassword
+        })
+      }
     }
   }
 }
 </script>
+<style scoped>
+.max {
+  max-width: 200px;
+}
+</style>
