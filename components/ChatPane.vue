@@ -38,7 +38,12 @@
             <b-col v-if="chat">
               <b-row>
                 <b-col cols="8" class="p-0 pl-1">
-                  <span v-if="(chat.chattype == 'User2User' || chat.chattype == 'User2Mod')" class="d-inline clickme">
+                  <span v-if="chat.chattype === 'User2Mod' && mod" class="d-inline clickme hidelink">
+                    <nuxt-link :to="'/modtools/members/approved/search/' + chat.group.id + '/' + otheruserid">
+                      {{ chat.name }}
+                    </nuxt-link>
+                  </span>
+                  <span v-else-if="(chat.chattype == 'User2User' || chat.chattype == 'User2Mod')" class="d-inline clickme">
                     <span @click="showInfo">
                       {{ chat.name }}
                     </span>
@@ -897,5 +902,10 @@ export default {
   width: 2rem;
   height: 2rem;
   width: 100%;
+}
+
+.hidelink a {
+  text-decoration: none;
+  color: white;
 }
 </style>
