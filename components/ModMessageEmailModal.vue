@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-modal
-      id="modChatMessageModal"
+      id="modEmailMessageModal"
       v-model="showModal"
       size="lg"
       no-stacking
@@ -42,7 +42,8 @@ export default {
   methods: {
     async show() {
       await this.$store.dispatch('messages/fetch', {
-        id: this.id
+        id: this.id,
+        messagehistory: true
       })
 
       this.showModal = true

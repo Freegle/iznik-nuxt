@@ -24,12 +24,14 @@
           <MessageHistory :message="message" modinfo display-message-link />
         </div>
         <div>
+          <b-btn v-if="message.source === 'Email'" variant="white" @click="viewSource">
+            <v-icon name="book-open" /><span class="d-none d-sm-inline"> View Email Source</span>
+          </b-btn>
           <b-btn v-if="!editing" variant="white" @click="editing = true">
             <v-icon name="pen" /><span class="d-none d-sm-inline"> Edit</span>
           </b-btn>
         </div>
         <!--        TODO Duplicates, related-->
-        <!--        View Source-->
       </b-card-header>
       <b-card-body class="p-1 p-md-2">
         <b-row>
@@ -176,6 +178,7 @@
         </b-button>
       </b-card-footer>
     </b-card>
+    <ModMessageEmailModal v-if="message.source === 'Email'" :id="message.id" ref="original" />
   </div>
 </template>
 <script>
@@ -192,11 +195,14 @@ import ModMemberActions from './ModMemberActions'
 import Diff from './Diff'
 import ModSpammer from './ModSpammer'
 import ModComments from './ModComments'
+import ModMessageEmailModal from './ModMessageEmailModal'
 import twem from '~/assets/js/twem'
+import waitForRef from '@/mixins/waitForRef'
 
 export default {
   name: 'ModMessage',
   components: {
+    ModMessageEmailModal,
     ModComments,
     ModSpammer,
     Diff,
@@ -211,6 +217,7 @@ export default {
     MessageUserInfo,
     MessageHistory
   },
+  mixins: [waitForRef],
   props: {
     message: {
       type: Object,
@@ -436,6 +443,14 @@ export default {
           id: this.message.fromuser.id
         })
       }
+    },
+
+    viewSource() {
+      console.log('View source')
+      this.waitForRef('original', () => {
+        console.log('Now')
+        this.$refs.original.show()
+      })
     }
   }
 }

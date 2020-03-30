@@ -82,7 +82,7 @@
       </b-card-footer>
     </b-card>
     <ModChatNoteModal v-if="message" ref="modnote" :chatid="message.chatid" />
-    <ModChatMessageEmailModal v-if="showOriginal" :id="chatmessage.bymailid" ref="original" />
+    <ModMessageEmailModal v-if="showOriginal" :id="chatmessage.bymailid" ref="original" />
   </div>
 </template>
 <script>
@@ -92,8 +92,7 @@ import ModChatReviewUser from './ModChatReviewUser'
 import ChatMessage from './ChatMessage'
 import ModChatNoteModal from './ModChatNoteModal'
 import ModChatViewButton from './ModChatViewButton'
-const ModChatMessageEmailModal = () =>
-  import('~/components/ModChatMessageEmailModal')
+const ModMessageEmailModal = () => import('~/components/ModMessageEmailModal')
 
 export default {
   components: {
@@ -102,7 +101,7 @@ export default {
     ChatMessage,
     ModChatReviewUser,
     NoticeMessage,
-    ModChatMessageEmailModal
+    ModMessageEmailModal
   },
   mixins: [waitForRef],
   props: {

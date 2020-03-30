@@ -33,7 +33,7 @@
           RSVP - reply requested
         </b-badge>
       </span>
-      <ModChatMessageEmailModal v-if="showOriginal" :id="chatmessage.bymailid" ref="original" />
+      <ModMessageEmailModal v-if="showOriginal" :id="chatmessage.bymailid" ref="original" />
     </b-col>
   </b-row>
 </template>
@@ -41,12 +41,11 @@
 <script>
 import ChatBase from './ChatBase'
 import waitForRef from '@/mixins/waitForRef'
-const ModChatMessageEmailModal = () =>
-  import('~/components/ModChatMessageEmailModal')
+const ModMessageEmailModal = () => import('~/components/ModMessageEmailModal')
 
 export default {
   components: {
-    ModChatMessageEmailModal
+    ModMessageEmailModal
   },
   extends: ChatBase,
   mixins: [waitForRef],
