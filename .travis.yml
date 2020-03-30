@@ -58,16 +58,26 @@ script:
 - ln -s ../iznik-nuxt/mobile/freegle/icons icons
 - ln -s ../iznik-nuxt/mobile/freegle/package-assets package-assets
 - ln -s ../iznik-nuxt/mobile/freegle/scripts scripts
+- chmod +x scripts/before_build.sh
 - cp ../iznik-nuxt/google-services.json google-services.json
 - ln -s ../iznik-nuxt/dist www
 - cordova platform rm android
 - cordova platform add android
+# Build debug build
 - cordova build --debug -- --keystore="../iznik-nuxt/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
 - cp platforms/android/app/build/outputs/apk/debug/app-debug.apk ../iznik-nuxt/releases/Freegle-app-$MOBILE_VERSION-debug-$(date +'%Y%m%d%H%M%S').apk
+# Build release build
 - cordova build --release -- --keystore="../iznik-nuxt/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
+- cp platforms/android/app/build/outputs/apk/release/app-release.apk ../iznik-nuxt/releases/Freegle-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').apk
+# Publish to Google Play beta track
+- sed -i "/3.3.0'/aclasspath 'com.github.triplet.gradle:play-publisher:2.0.0-rc1'" platforms/android/build.gradle
+- cat platforms/android/build.gradle
 - cp ../iznik-nuxt/mobile/build-extras.gradle platforms/android/app
 - cp ../iznik-nuxt/api-freegle-google-play-deployment.json platforms/android/app
-- cp platforms/android/app/build/outputs/apk/release/app-release.apk ../iznik-nuxt/releases/Freegle-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').apk
+- cd platforms/android
+- ./gradlew app:publishReleaseApk
+- cd ../..
+
 - cd ../iznik-nuxt
 
 - npm run mtapp
@@ -78,6 +88,7 @@ script:
 - ln -s ../iznik-nuxt/mobile/modtools/icons icons
 - ln -s ../iznik-nuxt/mobile/modtools/package-assets package-assets
 - ln -s ../iznik-nuxt/mobile/modtools/scripts scripts
+- chmod +x scripts/before_build.sh
 - cp ../iznik-nuxt/google-services.json google-services.json
 - ln -s ../iznik-nuxt/dist www
 - cordova platform rm android
