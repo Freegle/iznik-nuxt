@@ -67,7 +67,6 @@ script:
 - cordova build --debug -- --keystore="../iznik-nuxt/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
 - cp platforms/android/app/build/outputs/apk/debug/app-debug.apk ../iznik-nuxt/releases/Freegle-app-$MOBILE_VERSION-debug-$(date +'%Y%m%d%H%M%S').apk
 # Build release build
-- ls -l platforms/android/app/src/main/res/drawable-hdpi/
 - cordova build --release -- --keystore="../iznik-nuxt/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
 - cp platforms/android/app/build/outputs/apk/release/app-release.apk ../iznik-nuxt/releases/Freegle-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').apk
 # Publish to Google Play beta track
