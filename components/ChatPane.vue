@@ -38,7 +38,7 @@
             <b-col v-if="chat">
               <b-row>
                 <b-col cols="8" class="p-0 pl-1">
-                  <span v-if="chat.chattype === 'User2Mod' && mod" class="d-inline clickme hidelink">
+                  <span v-if="chat.chattype === 'User2Mod' && mod && chat.group" class="d-inline clickme hidelink">
                     <nuxt-link :to="'/modtools/members/approved/search/' + chat.group.id + '/' + otheruserid">
                       {{ chat.name }}
                     </nuxt-link>
