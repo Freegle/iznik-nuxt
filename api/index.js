@@ -22,6 +22,7 @@ import DonationsAPI from './DonationsAPI.js'
 import GroupAPI from './GroupAPI.js'
 import InvitationAPI from './InvitationAPI.js'
 import JobAPI from './JobAPI.js'
+import LocationAPI from './LocationAPI.js'
 import LogsAPI from './LogsAPI.js'
 import MembershipsAPI from './MembershipsAPI.js'
 import MergeAPI from './MergeAPI.js'
@@ -59,6 +60,7 @@ export default ({ $axios, store }) => {
     group: new GroupAPI(options),
     invitation: new InvitationAPI(options),
     job: new JobAPI(options),
+    location: new LocationAPI(options),
     logs: new LogsAPI(options),
     memberships: new MembershipsAPI(options),
     merge: new MergeAPI(options),

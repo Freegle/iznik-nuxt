@@ -24,6 +24,7 @@ import DonationsAPI from './DonationsAPI.js'
 import GroupAPI from './GroupAPI.js'
 import InvitationAPI from './InvitationAPI.js'
 import JobAPI from './JobAPI.js'
+import LocationAPI from './LocationAPI.js'
 import LogsAPI from './LogsAPI.js'
 import MembershipsAPI from './MembershipsAPI.js'
 import MergeAPI from './MergeAPI.js'
@@ -59,6 +60,7 @@ interface API {
   group: GroupAPI;
   invitation: InvitationAPI;
   job: JobAPI;
+  location: LocationAPI;
   logs: LogsAPI;
   memberships: MembershipsAPI;
   merge: MergeAPI;

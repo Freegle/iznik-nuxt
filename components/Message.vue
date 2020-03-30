@@ -20,7 +20,7 @@
           </div>
           <div v-if="attachments && attachments.length > 0" class="d-block mt-1 d-sm-none clickme position-relative" @click="showPhotos">
             <b-badge v-if="attachments.length > 1" class="photobadge" variant="primary">
-              +{{ attachments.length - 1 }} <v-icon name="camera" />
+              {{ attachments.length }} <v-icon name="camera" />
             </b-badge>
             <b-img-lazy
               rounded
@@ -118,7 +118,7 @@
             </div>
             <div v-if="attachments && attachments.length > 0" class="clickme position-relative" @click="showPhotos">
               <b-badge v-if="attachments.length > 1" class="photobadge" variant="primary">
-                +{{ attachments.length - 1 }} <v-icon name="camera" />
+                {{ attachments.length }} <v-icon name="camera" />
               </b-badge>
               <b-img-lazy
                 rounded

@@ -6,9 +6,9 @@
           <ModChatReviewUser :user="message.fromuser" class="mr-2" tag="From: " :groupid="message.group.id" />
           <v-icon name="arrow-circle-right" scale="2" class="mt-1 text-info" />
           <ModChatReviewUser :user="message.touser" class="ml-2" tag="To: " :groupid="message.group.id" />
-          <span v-if="message.msgid">
-            TODO View original mail
-          </span>
+          <b-btn v-if="message.msgid" variant="white" @click="viewOriginal">
+            <v-icon name="info-circle" /> View original email
+          </b-btn>
         </div>
       </b-card-header>
       <b-card-body>
@@ -82,6 +82,7 @@
       </b-card-footer>
     </b-card>
     <ModChatNoteModal v-if="message" ref="modnote" :chatid="message.chatid" />
+    <ModMessageEmailModal v-if="showOriginal" :id="chatmessage.bymailid" ref="original" />
   </div>
 </template>
 <script>
@@ -91,6 +92,7 @@ import ModChatReviewUser from './ModChatReviewUser'
 import ChatMessage from './ChatMessage'
 import ModChatNoteModal from './ModChatNoteModal'
 import ModChatViewButton from './ModChatViewButton'
+const ModMessageEmailModal = () => import('~/components/ModMessageEmailModal')
 
 export default {
   components: {
@@ -98,13 +100,19 @@ export default {
     ModChatNoteModal,
     ChatMessage,
     ModChatReviewUser,
-    NoticeMessage
+    NoticeMessage,
+    ModMessageEmailModal
   },
   mixins: [waitForRef],
   props: {
     message: {
       type: Object,
       required: true
+    }
+  },
+  data: function() {
+    return {
+      showOriginal: false
     }
   },
   methods: {
@@ -141,6 +149,12 @@ export default {
     modnote() {
       this.waitForRef('modnote', () => {
         this.$refs.modnote.show()
+      })
+    },
+    viewOriginal() {
+      this.showOriginal = true
+      this.waitForRef('original', () => {
+        this.$refs.original.show()
       })
     }
   }

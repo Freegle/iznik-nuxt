@@ -52,7 +52,10 @@ export default {
       // Tick to allow value to appear.
       this.$nextTick(() => {
         const url =
-          '/modtools/members/approved/search/' + this.groupid + '/' + this.term
+          '/modtools/members/approved/search/' +
+          this.groupid +
+          '/' +
+          this.term.trim()
         this.$router.push(url)
       })
     }

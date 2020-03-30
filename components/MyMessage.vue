@@ -82,7 +82,7 @@
                     <div v-if="message.attachments.length > 0" class="clickme position-relative" @click="showPhotos">
                       <div class="small">
                         <b-badge v-if="message.attachments.length > 1" class="photobadge" variant="primary">
-                          +{{ message.attachments.length - 1 }} <v-icon name="camera" />
+                          {{ message.attachments.length }} <v-icon name="camera" />
                         </b-badge>
                       </div>
                       <b-img-lazy

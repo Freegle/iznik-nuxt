@@ -38,7 +38,12 @@
             <b-col v-if="chat">
               <b-row>
                 <b-col cols="8" class="p-0 pl-1">
-                  <span v-if="(chat.chattype == 'User2User' || chat.chattype == 'User2Mod')" class="d-inline clickme">
+                  <span v-if="chat.chattype === 'User2Mod' && mod && chat.group" class="d-inline clickme hidelink">
+                    <nuxt-link :to="'/modtools/members/approved/search/' + chat.group.id + '/' + otheruserid">
+                      {{ chat.name }}
+                    </nuxt-link>
+                  </span>
+                  <span v-else-if="(chat.chattype == 'User2User' || chat.chattype == 'User2Mod')" class="d-inline clickme">
                     <span @click="showInfo">
                       {{ chat.name }}
                     </span>
@@ -194,6 +199,10 @@
                     <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler" @click="showInfo">
                       <v-icon name="info-circle" />&nbsp;Info
                     </b-btn>
+                    <b-btn v-if="mod" variant="white" @click="spamReport">
+                      <v-icon name="ban" /> Spammer
+                    </b-btn>
+                    <ModSpammerReport v-if="showSpamModal" ref="spamConfirm" :user="otheruser" />
                   </span>
                   <b-btn variant="primary" class="float-right ml-1" @click="send">
                     Send&nbsp;
@@ -234,6 +243,12 @@
                     <v-icon scale="2" name="info-circle" class="fa-mob" />
                     <div class="mobtext">
                       Info
+                    </div>
+                  </div>
+                  <div v-if="chat && chat.chattype === 'User2Mod' && mod" v-b-tooltip.hover.top title="Report as spammer" class="mr-2" @click="spamReport">
+                    <v-icon scale="2" name="ban" class="fa-mob" />
+                    <div class="mobtext">
+                      Spammer
                     </div>
                   </div>
                   <div v-if="chat && chat.chattype === 'User2User' && otheruser" v-b-tooltip.hover.top title="Waiting for a reply?  Nudge this freegler." class="mr-2" @click="nudge">
@@ -299,9 +314,11 @@ const AvailabilityModal = () => import('~/components/AvailabilityModal')
 const AddressModal = () => import('~/components/AddressModal')
 const ChatReportModal = () => import('~/components/ChatReportModal')
 const ChatRSVPModal = () => import('~/components/ChatRSVPModal')
+const ModSpammerReport = () => import('~/components/ModSpammerReport')
 
 export default {
   components: {
+    ModSpammerReport,
     InfiniteLoading,
     Ratings,
     ChatMessage,
@@ -345,7 +362,8 @@ export default {
       RSVP: false,
       notVisible: false,
       contactGroup: null,
-      urlid: null
+      urlid: null,
+      showSpamModal: false
     }
   },
   computed: {
@@ -405,6 +423,11 @@ export default {
 
       if (this.otheruserid) {
         user = this.$store.getters['user/get'](this.otheruserid)
+
+        if (user) {
+          // We need this set as ModSpammerReport requires it.
+          user.userid = this.otheruserid
+        }
       }
 
       return user
@@ -811,6 +834,12 @@ export default {
         // Invalid chat id
         this.notVisible = true
       }
+    },
+    spamReport() {
+      this.showSpamModal = true
+      this.waitForRef('spamConfirm', () => {
+        this.$refs.spamConfirm.show()
+      })
     }
   }
 }
@@ -873,5 +902,10 @@ export default {
   width: 2rem;
   height: 2rem;
   width: 100%;
+}
+
+.hidelink a {
+  text-decoration: none;
+  color: white;
 }
 </style>
