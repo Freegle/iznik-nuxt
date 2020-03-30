@@ -13,8 +13,18 @@
     </b-col>
     <b-col v-else>
       <span class="float-right chat__dateread--mine">
-        <v-icon v-if="chatmessage.seenbyall" name="check" class="text-success" />
-        <v-icon v-else-if="chatmessage.mailedtoall" name="envelope" />
+        <span v-if="chatmessage.seenbyall" title="This message has been read.">
+          <v-icon name="check" class="text-success" />
+        </span>
+        <span v-else-if="chatmessage.mailedtoall" title="This message has been sent out by email.">
+          <v-icon name="envelope" />
+        </span>
+        <span v-else-if="otheruser && otheruser.settings && otheruser.settings.notifications && !otheruser.settings.notifications.email" title="This freegler has email notifications turned off, so they will need to read this on the site.">
+          <v-icon name="check" class="text-muted" />
+        </span>
+        <span v-else title="This message hasn't been read or sent by email yet - it will be soon">
+          <v-icon name="check" class="text-muted" />
+        </span>
         {{ chatmessage.date | timeago }}
         <span v-if="chatmessage.bymailid" class="clickme" :title="'Received by email #' + chatmessage.bymailid + ' click to view'" @click="viewOriginal">
           <v-icon name="info-circle" />
