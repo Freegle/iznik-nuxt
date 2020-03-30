@@ -19,9 +19,6 @@
         <span v-else-if="chatmessage.mailedtoall" title="This message has been sent out by email from our system.">
           <v-icon name="envelope" />
         </span>
-        <span v-else-if="otheruser && otheruser.settings && otheruser.settings.notifications && !otheruser.settings.notifications.email" title="This freegler has email notifications turned off, so they will need to read this on the site.">
-          <v-icon name="check" class="text-muted" />
-        </span>
         <span v-else title="This message has been delivered in Chat.  Depending on the other freegler's settings it may also be sent out by email soon - then this would turn into a little envelope.">
           <v-icon name="check" class="text-muted" />
         </span>
