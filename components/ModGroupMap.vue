@@ -601,6 +601,7 @@ export default {
       this.selectedWKT = newwkt
     },
     async saveArea() {
+      this.busy = true
       if (!this.selectedId) {
         // This is a new area.
         await this.$store.dispatch('locations/add', {
@@ -617,8 +618,11 @@ export default {
       }
 
       this.clearSelection()
+      this.busy = false
     },
     async deleteArea() {
+      this.busy = true
+
       await this.$store.dispatch('locations/delete', {
         id: this.selectedId,
         groupid: this.groupid
@@ -628,6 +632,7 @@ export default {
       this.selectedObj.setMap(null)
 
       this.clearSelection()
+      this.busy = false
     },
     cancelArea() {
       // Delete the currently selected area from the map.
