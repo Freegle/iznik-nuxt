@@ -1,8 +1,7 @@
 <template>
   <b-row>
-    <b-col cols="4" md="2" class="order-1 ">
-      <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ volunteer.id }}
-    </b-col>
+    <b-col cols="4" md="2" class="order-1 " />
+    <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ volunteer.userid }}
     <b-col cols="12" md="3" class="order-4 order-md-2">
       {{ volunteer.displayname }}
     </b-col>
