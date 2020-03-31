@@ -45,8 +45,8 @@ before_install:
 - gradle --version
 - npm install
 script:
-- export MOBILE_VERSION=$(grep -Po "MOBILE_VERSION = '\K.*?(?=')" nuxt.config.js)
-- export MODTOOLS_VERSION=$(grep -Po "MODTOOLS_VERSION = '\K.*?(?=')" nuxt.config.js)
+- export MOBILE_VERSION=$(grep -o "MOBILE_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MOBILE_VERSION = '//; s/'.*//")
+- export MODTOOLS_VERSION=$(grep -o "MODTOOLS_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MODTOOLS_VERSION = '//; s/'.*//")
 
 - mkdir releases
 
@@ -92,11 +92,22 @@ script:
 - ln -s ../iznik-nuxt/dist www
 - cordova platform rm android
 - cordova platform add android
+# Build debug build
 - cordova build --debug -- --keystore="../iznik-nuxt/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
 - cp platforms/android/app/build/outputs/apk/debug/app-debug.apk ../iznik-nuxt/releases/ModTools-app-$MODTOOLS_VERSION-debug-$(date +'%Y%m%d%H%M%S').apk
+# Build release build
 - cordova build --release -- --keystore="../iznik-nuxt/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
 - cp platforms/android/app/build/outputs/apk/release/app-release.apk ../iznik-nuxt/releases/ModTools-app-$MODTOOLS_VERSION-release-$(date +'%Y%m%d%H%M%S').apk
+# Publish to Google Play beta track
+- sed -i "/3.3.0'/aclasspath 'com.github.triplet.gradle:play-publisher:2.0.0-rc1'" platforms/android/build.gradle
+- cp ../iznik-nuxt/mobile/build-extras.gradle platforms/android/app
+- cp ../iznik-nuxt/api-freegle-google-play-deployment.json platforms/android/app
+- cd platforms/android
+- ./gradlew app:publishReleaseApk || true # Ignore errors
+- cd ../..
+
 - cd ../iznik-nuxt
+
 - rm mobile/app-secrets.tar android-chrisphdcccom.new.keystore google-services.json GoogleService-Info.plist
 
 before_cache:
