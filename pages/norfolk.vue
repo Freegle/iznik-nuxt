@@ -18,7 +18,13 @@
       <p>
         We closed the old Norfolk & Waveney Freegle site on 26th March 2020 with memberships, passwords and current
         offers/requests/transactions for the past 30 days being transferred over. Everyone was allocated to a
-        community based on the postcode(s) on their Norfolk Freegle account. If you had an account on Norfolk Freegle,
+        community based on their primary postcode) on their Norfolk Freegle account.  You are welcome to join others
+        too if they are suitable for you - explore them <nuxt-link to="/explore/region/East">
+          here
+        </nuxt-link>.
+      </p>
+      <p>
+        If you had an account on Norfolk Freegle,
         you can now use the same details in order to sign in to Freegle.
       </p>
       <b-btn variant="success" size="lg" to="/chitchat" class="mb-1">
@@ -28,7 +34,7 @@
         Any questions?  There is a Help page <nuxt-link to="/help">
           here
         </nuxt-link>
-        and you are always very welcome to email us directly if that doesn’t give you the answers.
+        and you are always very welcome to email contact us through there if you need more help.
       </p>
       <p>
         We’re excited to be on this new website, we hope you enjoy freegling with us here.
