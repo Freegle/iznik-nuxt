@@ -4,7 +4,18 @@
       {{ collname }}: {{ user.spammer.reason }}
     </div>
     <div class="small">
-      Added by #{{ user.spammer.byuserid }} {{ user.spammer.added | timeago }}
+      <span v-if="user.spammer.collection === 'PendingAdd'">
+        Reported
+      </span>
+      <span v-else>
+        Added
+      </span>
+      by
+      {{ user.spammer.byuser.displayname }}
+      <span v-if="user.spammer.byuser">
+        (<a href="'mailto:' + user.spammer.byuser.email">{{ user.spammer.byuser.email }}</a>)
+      </span>
+      #{{ user.spammer.byuserid }} {{ user.spammer.added | timeago }}
     </div>
   </NoticeMessage>
 </template>

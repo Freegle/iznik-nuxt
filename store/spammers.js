@@ -22,7 +22,6 @@ export const mutations = {
       })
 
       if (existing !== -1) {
-        // Ensure userid is set - used by member views.
         Vue.set(state.list, existing, item)
       } else {
         state.list.push(item)

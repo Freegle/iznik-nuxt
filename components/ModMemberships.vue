@@ -14,7 +14,7 @@
       +{{ hiddenmemberofs }} groups
     </b-badge>
     <span v-if="applied && applied.length">
-      <span v-for="m in applied" :key="'membership-' + m.membershipid" class="border border-info rounded p-1 mr-1">
+      <span v-for="m in applied" :key="'memberapplied-' + m.id + '-' + m.userid + '-' + m.added" class="border border-info rounded p-1 mr-1">
         Applied {{ m.namedisplay.length > 23 ? (m.namedisplay.substring(0, 20) + '...') : m.namedisplay }}
         <span :class="'small ' + (daysago(m.added) < 31 ? 'text-danger font-weight-bold' : 'text-muted')">{{ m.added | timeago }}</span>
       </span>
