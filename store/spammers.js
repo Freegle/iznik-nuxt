@@ -119,6 +119,10 @@ export const actions = {
         root: true
       }
     )
+
+    commit('remove', {
+      id: params.id
+    })
   },
 
   async requestremove({ commit, dispatch }, params) {
@@ -156,6 +160,10 @@ export const actions = {
         root: true
       }
     )
+
+    commit('remove', {
+      id: params.id
+    })
   },
 
   async whitelist({ commit, dispatch }, params) {
@@ -175,6 +183,10 @@ export const actions = {
         root: true
       }
     )
+
+    commit('remove', {
+      id: params.id
+    })
   },
 
   clear({ commit }) {
