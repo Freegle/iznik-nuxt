@@ -2,15 +2,18 @@
   <div>
     <client-only>
       <div class="maptools d-flex mb-1 justify-content-between">
-        <gmap-autocomplete
-          id="autocomplete"
-          v-focus
-          class="form-control max"
-          placeholder="Enter a location"
-          :options="gb"
-          :types="['(cities)']"
-          @place_changed="getAddressData"
-        />
+        <div class="d-flex">
+          <gmap-autocomplete
+            id="autocomplete"
+            v-focus
+            class="form-control max"
+            placeholder="Enter a location"
+            :options="gb"
+            :types="['(cities)']"
+            @place_changed="getAddressData"
+          />
+          <v-icon name="sync" :class="busy ? 'text-success fa-spin ml-4 mt-1' : 'text-faded ml-4 mt-1'" scale="2" />
+        </div>
         <b-form-checkbox v-if="groups" v-model="cga" class="ml-2">
           <b style="color: darkgreen">Show CGAs</b>
         </b-form-checkbox>
@@ -130,7 +133,8 @@ export default {
       selectedWKT: null,
       selectedObj: null,
       selectOldColour: null,
-      postcode: null
+      postcode: null,
+      busy: false
     }
   },
   computed: {
@@ -445,6 +449,7 @@ export default {
       this.postcode = null
     },
     async idle() {
+      this.busy = true
       const bounds = this.$refs.gmap.$mapObject.getBounds()
 
       const data = {
@@ -455,6 +460,7 @@ export default {
       }
 
       await this.$store.dispatch('locations/fetch', data)
+      this.busy = false
     }
   }
 }
