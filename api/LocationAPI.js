@@ -13,7 +13,12 @@ export default class LocationAPI extends BaseAPI {
     return this.$patch('/locations', data)
   }
 
-  del(id) {
-    return this.$del('/locations', { id })
+  del(id, groupid) {
+    return this.$post('/locations', {
+      id,
+      action: 'Exclude',
+      byname: false,
+      groupid: groupid
+    })
   }
 }
