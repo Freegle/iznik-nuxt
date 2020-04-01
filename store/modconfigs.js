@@ -49,7 +49,7 @@ export const actions = {
 
   async updateConfig({ state, dispatch }, params) {
     await this.$api.modconfigs.patchConfig(params)
-    await dispatch('fetch', {
+    await dispatch('fetchConfig', {
       id: params.id,
       configuring: true
     })

@@ -84,6 +84,16 @@ export default {
       type: String,
       required: false,
       default: null
+    },
+    valueChecked: {
+      type: String,
+      required: false,
+      default: null
+    },
+    valueUnchecked: {
+      type: String,
+      required: false,
+      default: null
     }
   },
   data: function() {
@@ -93,13 +103,24 @@ export default {
   },
   computed: {
     config() {
-      console.log('Compute config')
       return this.$store.getters['modconfigs/current']
     },
     value: {
       get() {
-        console.log('Get', this.name, this.config)
-        return this.config ? this.config[this.name] : null
+        let ret = null
+
+        if (this.config) {
+          if (this.type === 'toggle') {
+            ret = this.config[this.name]
+
+            if (this.valueChecked) {
+              ret = ret === this.valueChecked
+            }
+          } else {
+            ret = this.config[this.name]
+          }
+        }
+        return ret
       },
       set(newval) {
         this.forSave = newval
@@ -112,7 +133,18 @@ export default {
         id: this.configid
       }
 
-      data[this.name] = this.forSave
+      if (this.type === 'toggle') {
+        // We can override the values sent.
+        if (this.forSave) {
+          data[this.name] = this.valueChecked ? this.valueChecked : this.forSave
+        } else {
+          data[this.name] = this.valueUnchecked
+            ? this.valueUnchecked
+            : this.forSave
+        }
+      } else {
+        data[this.name] = this.forSave
+      }
 
       await this.$store.dispatch('modconfigs/updateConfig', data)
     }
