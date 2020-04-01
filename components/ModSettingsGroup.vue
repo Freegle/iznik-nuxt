@@ -64,10 +64,10 @@
                 color="#61AE24"
               />
             </b-form-group>
-            <b-form-group label="ModConfig to use for this community:">
+            <b-form-group label="Standard Messages to use for this community:">
               <b-form-text class="mb-2">
-                The ModConfig you use controls behaviour such as which standard message buttons you can use.
-                You can see ModConfig settings on the separate tab.
+                The Standard Messages you choose controls which collection of standard message buttons you can use.
+                You can see the settings for them on the separate tab.
               </b-form-text>
               <b-select v-model="modconfig" :options="modConfigOptions" class="mb-2 font-weight-bold" />
             </b-form-group>

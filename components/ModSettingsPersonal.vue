@@ -2,7 +2,7 @@
   <div>
     <b-form-group label="Your visible name">
       <b-form-text class="mb-2">
-        This is your name as displayed publicly to other users, including in the $myname substitution string.
+        This is your name as displayed publicly to other users, including in the <em>$myname</em> substitution string.
       </b-form-text>
       <b-input-group>
         <b-input v-model="me.displayname" placeholder="Your name" />

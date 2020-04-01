@@ -20,7 +20,7 @@
       <b-tab>
         <template v-slot:title>
           <h2 class="ml-2 mr-2">
-            ModConfig
+            Standard Messages
           </h2>
         </template>
         <ModSettingsModConfig />

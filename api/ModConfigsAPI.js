@@ -6,4 +6,13 @@ export default class ModConfigsAPI extends BaseAPI {
       id
     })
   }
+
+  async fetchConfig(params) {
+    const ret = await this.$get('/modconfig', params)
+    return ret.config
+  }
+
+  async patchConfig(params) {
+    await this.$patch('/modconfig', params)
+  }
 }
