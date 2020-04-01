@@ -264,7 +264,9 @@ export default {
     })
 
     this.workTimer = setTimeout(this.checkWork, 0)
-    this.$store.dispatch('modconfigs/fetch')
+    this.$store.dispatch('modconfigs/fetch', {
+      all: true
+    })
   },
 
   beforeDestroy() {

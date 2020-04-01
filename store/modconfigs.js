@@ -30,7 +30,7 @@ export const getters = {
 export const actions = {
   async fetch({ state, commit }, params) {
     const { configs } = await this.$api.session.fetch({
-      components: ['configs'],
+      components: params.all ? ['allconfigs'] : ['configs'],
       modtools: true
     })
 
@@ -56,11 +56,17 @@ export const actions = {
   },
 
   async add({ commit, getters, dispatch }, params) {
-    const { id } = await this.$api.modconfig.add(params)
-    await dispatch('fetch', {
+    const id = await this.$api.modconfigs.addModConfig(params)
+
+    await dispatch('fetchConfig', {
       id,
       configuring: true
     })
+
     return id
+  },
+
+  async delete({ commit, getters, dispatch }, params) {
+    await this.$api.modconfigs.deleteConfig(params)
   }
 }

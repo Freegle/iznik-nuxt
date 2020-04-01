@@ -6,9 +6,14 @@
     </p>
     <div class="d-flex justify-content-between flex-wrap">
       <b-select v-model="configid" :options="configOptions" class="mb-2 font-weight-bold" />
-      <b-btn variant="white" disabled>
-        <v-icon name="plus" /> Add new configuration TODO
-      </b-btn>
+      <div>
+        <b-input-group>
+          <b-input v-model="newconfigname" />
+          <b-input-group-append>
+            <SpinButton variant="white" name="plus" label="Create new" :handler="create" />
+          </b-input-group-append>
+        </b-input-group>
+      </div>
     </div>
     <b-img v-if="loading" src="~static/loader.gif" class="d-block mt-2" />
     <div v-else-if="configid && config">
@@ -164,14 +169,16 @@
           </b-card-body>
         </b-collapse>
       </b-card>
-      <div class="d-flex justify-content-between flex-wrap">
-        <b-btn variant="white" disabled>
-          <v-icon name="plus" /> Copy TODO
-        </b-btn>
-        <b-btn variant="white" disabled>
-          <v-icon name="trash-alt" /> Delete TODO
-        </b-btn>
-      </div>
+      <b-input-group class="mt-2">
+        <b-input v-model="copyconfigname" />
+        <b-input-group-append>
+          <SpinButton variant="white" name="plus" label="Copy to" :handler="copy" />
+        </b-input-group-append>
+      </b-input-group>
+      <b-btn variant="white" class="mt-2" @click="deleteIt">
+        <v-icon name="trash-alt" /> Delete
+      </b-btn>
+      <ConfirmModal v-if="showDeleteModal" ref="deleteConfirm" :title="'Delete: ' + config.name" @confirm="deleteConfirmed" />
     </div>
   </div>
 </template>
@@ -179,17 +186,27 @@
 import ModConfigSetting from './ModConfigSetting'
 import NoticeMessage from './NoticeMessage'
 import ModSettingsStandardMessageSet from './ModSettingsStandardMessageSet'
+import SpinButton from './SpinButton'
+import ConfirmModal from './ConfirmModal'
+import waitForRef from '@/mixins/waitForRef'
+
 export default {
   components: {
+    ConfirmModal,
+    SpinButton,
     ModSettingsStandardMessageSet,
     NoticeMessage,
     ModConfigSetting
   },
+  mixins: [waitForRef],
   data: function() {
     return {
       configid: null,
       loading: false,
-      showUsing: false
+      showUsing: false,
+      newconfigname: null,
+      copyconfigname: null,
+      showDeleteModal: false
     }
   },
   computed: {
@@ -221,12 +238,54 @@ export default {
       this.loading = true
       this.showUsing = false
 
-      await this.$store.dispatch('modconfigs/fetchConfig', {
-        id: newval,
+      if (newval) {
+        await this.$store.dispatch('modconfigs/fetchConfig', {
+          id: newval,
+          configuring: true
+        })
+      }
+
+      this.loading = false
+    }
+  },
+  methods: {
+    async create() {
+      this.configid = await this.$store.dispatch('modconfigs/add', {
+        name: this.newconfigname,
         configuring: true
       })
 
-      this.loading = false
+      await this.$store.dispatch('modconfigs/fetch', {
+        all: true
+      })
+    },
+    async copy() {
+      this.configid = await this.$store.dispatch('modconfigs/add', {
+        name: this.copyconfigname,
+        id: this.config.id,
+        configuring: true
+      })
+
+      await this.$store.dispatch('modconfigs/fetch', {
+        all: true
+      })
+    },
+    deleteIt() {
+      this.showDeleteModal = true
+      this.waitForRef('deleteConfirm', () => {
+        this.$refs.deleteConfirm.show()
+      })
+    },
+    async deleteConfirmed() {
+      await this.$store.dispatch('modconfigs/delete', {
+        id: this.configid
+      })
+
+      await this.$store.dispatch('modconfigs/fetch', {
+        all: true
+      })
+
+      this.configid = null
     }
   }
 }

@@ -16,6 +16,10 @@ export default class ModConfigsAPI extends BaseAPI {
     await this.$patch('/modconfig', params)
   }
 
+  async deleteConfig(params) {
+    await this.$del('/modconfig', params)
+  }
+
   async patchStdMsg(params) {
     await this.$patch('/stdmsg', params)
   }
