@@ -53,5 +53,14 @@ export const actions = {
       id: params.id,
       configuring: true
     })
+  },
+
+  async add({ commit, getters, dispatch }, params) {
+    const { id } = await this.$api.modconfig.add(params)
+    await dispatch('fetch', {
+      id,
+      configuring: true
+    })
+    return id
   }
 }

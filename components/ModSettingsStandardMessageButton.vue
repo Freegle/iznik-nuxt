@@ -28,9 +28,7 @@ export default {
   methods: {
     click() {
       this.showModal = true
-      console.log('Click')
       this.waitForRef('msgmodal', () => {
-        console.log('Show')
         this.$refs.msgmodal.show()
       })
     }

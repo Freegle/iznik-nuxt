@@ -101,15 +101,18 @@
         </template>
         <template slot="modal-footer" slot-scope="{ ok, cancel }">
           <div class="d-flex justify-content-between flex-wrap w-100">
-            <b-button variant="danger" @click="deleteIt">
-              Delete
-            </b-button>
+            <div>
+              <b-button v-if="id" variant="danger" @click="deleteIt">
+                Delete
+              </b-button>
+            </div>
             <div>
               <b-button variant="white" class="mr-2" @click="cancel">
                 Cancel
               </b-button>
               <b-button variant="success" @click="save">
-                Save
+                <span v-if="id">Save</span>
+                <span v-else>Add</span>
               </b-button>
             </div>
           </div>
@@ -123,12 +126,14 @@ export default {
   props: {
     id: {
       type: Number,
-      required: true
+      required: false,
+      default: null
     }
   },
   data: function() {
     return {
       showModal: false,
+      newmsg: [],
       options: [
         { value: null, text: '-- Pending Messages -- ' },
         { value: 'Approve', text: 'Approve' },
@@ -153,33 +158,55 @@ export default {
       return this.$store.getters['modconfigs/current']
     },
     stdmsg() {
-      console.log('Config', this.config)
-      return this.config
-        ? this.config.stdmsgs.find(s => {
-            return s.id === this.id
-          })
-        : null
+      if (!this.id) {
+        // Creating.
+        return this.newmsg
+      } else {
+        // Existing - find it in the config.
+        return this.config
+          ? this.config.stdmsgs.find(s => {
+              return s.id === this.id
+            })
+          : null
+      }
     }
   },
   methods: {
     async show() {
       // Fetch the current value, if any, before opening the modal.
-      await this.$store.dispatch('stdmsgs/fetch', {
-        id: this.id
-      })
+      if (this.id) {
+        await this.$store.dispatch('stdmsgs/fetch', {
+          id: this.id
+        })
+      }
+
       this.showModal = true
     },
     hide() {
       this.showModal = false
+      this.$emit('hide')
     },
     async save() {
-      await this.$store.dispatch('stdmsgs/update', {
-        ...this.stdmsg
-      })
+      if (!this.id) {
+        await this.$store.dispatch('stdmsgs/add', {
+          ...this.stdmsg,
+          configid: this.config.id
+        })
+      } else {
+        await this.$store.dispatch('stdmsgs/update', {
+          ...this.stdmsg
+        })
+      }
+
       this.hide()
     },
-    deleteIt() {
-      // TODO
+    async deleteIt() {
+      await this.$store.dispatch('stdmsgs/delete', {
+        id: this.stdmsg.id,
+        configid: this.config.id
+      })
+
+      this.hide()
     }
   }
 }

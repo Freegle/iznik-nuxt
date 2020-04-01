@@ -27,10 +27,11 @@ export const actions = {
     return stdmsg
   },
 
-  async update({ state, dispatch }, params) {
-    await this.$api.modconfigs.patchStdMsg(params)
+  async delete({ state, commit, dispatch }, params) {
+    await this.$api.modconfigs.deleteStdMsg(params)
+
     await dispatch(
-      'modconfigs',
+      'modconfigs/fetchConfig',
       {
         id: params.configid,
         configuring: true
@@ -39,5 +40,34 @@ export const actions = {
         root: true
       }
     )
+  },
+
+  async update({ state, dispatch }, params) {
+    await this.$api.modconfigs.patchStdMsg(params)
+    await dispatch(
+      'modconfigs/fetchConfig',
+      {
+        id: params.configid,
+        configuring: true
+      },
+      {
+        root: true
+      }
+    )
+  },
+
+  async add({ commit, getters, dispatch }, params) {
+    const { id } = await this.$api.modconfigs.addStdMsg(params)
+    await dispatch(
+      'modconfigs/fetchConfig',
+      {
+        id: params.configid,
+        configuring: true
+      },
+      {
+        root: true
+      }
+    )
+    return id
   }
 }
