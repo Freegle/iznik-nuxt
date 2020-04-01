@@ -1,6 +1,6 @@
 <template>
   <div class="d-inline">
-    <b-btn :variant="variant(stdmsg)" class="mb-1" @click="click">
+    <b-btn :variant="variant(stdmsg)" class="mb-1 mr-2" @click="click">
       <v-icon :name="icon(stdmsg)" /> {{ stdmsg.title }}
     </b-btn>
     <ModSettingsStandardMessageModal v-if="showModal" :id="stdmsg.id" ref="msgmodal" />

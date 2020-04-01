@@ -164,7 +164,7 @@ export default {
   methods: {
     async show() {
       // Fetch the current value, if any, before opening the modal.
-      await this.$store.dispatch('stdmsg/fetch', {
+      await this.$store.dispatch('stdmsgs/fetch', {
         id: this.id
       })
       this.showModal = true
@@ -172,8 +172,14 @@ export default {
     hide() {
       this.showModal = false
     },
-    save() {
+    async save() {
+      await this.$store.dispatch('stdmsgs/update', {
+        ...this.stdmsg
+      })
       this.hide()
+    },
+    deleteIt() {
+      // TODO
     }
   }
 }

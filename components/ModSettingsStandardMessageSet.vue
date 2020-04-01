@@ -20,7 +20,7 @@
       pages (e.g. put the ones you use most first).
     </p>
     TODO ADD
-    <draggable v-model="stdmsgscopy" group="buttons" class="d-flex justify-content-start flex-wrap" @end="updateOrder">
+    <draggable v-model="stdmsgscopy" group="buttons" class="d-flex justify-content-center flex-wrap" @end="updateOrder">
       <div
         v-for="stdmsg in stdmsgscopy"
         :key="'stdmsg-' + stdmsg.id"
@@ -28,7 +28,6 @@
         <ModSettingsStandardMessageButton
           v-if="visible(stdmsg)"
           :stdmsg="stdmsg"
-          class="mr-2"
         />
       </div>
     </draggable>

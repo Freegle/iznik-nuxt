@@ -602,6 +602,7 @@ export default {
     },
     async saveArea() {
       this.busy = true
+
       if (!this.selectedId) {
         // This is a new area.
         await this.$store.dispatch('locations/add', {

@@ -25,5 +25,19 @@ export const actions = {
     const { stdmsg } = await this.$api.modconfigs.fetchStdMsg(params.id)
     commit('set', stdmsg)
     return stdmsg
+  },
+
+  async update({ state, dispatch }, params) {
+    await this.$api.modconfigs.patchStdMsg(params)
+    await dispatch(
+      'modconfigs',
+      {
+        id: params.configid,
+        configuring: true
+      },
+      {
+        root: true
+      }
+    )
   }
 }
