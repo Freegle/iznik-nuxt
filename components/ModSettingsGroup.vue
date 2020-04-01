@@ -469,7 +469,7 @@
             <ModGroupSetting
               :groupid="groupid"
               name="settings.includearea"
-              label="Inclue area name in post location?"
+              label="Include area name in post location?"
               description="When constructing a post subject, should we include the area name?"
               type="toggle"
               toggle-checked="Yes"
@@ -478,7 +478,7 @@
             <ModGroupSetting
               :groupid="groupid"
               name="settings.includepc"
-              label="Inclue postcode in post location?"
+              label="Include postcode in post location?"
               description="When constructing a post subject, should we include the first part of the postcode?"
               type="toggle"
               toggle-checked="Yes"
