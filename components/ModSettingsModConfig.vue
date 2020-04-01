@@ -169,15 +169,17 @@
           </b-card-body>
         </b-collapse>
       </b-card>
-      <b-input-group class="mt-2">
-        <b-input v-model="copyconfigname" />
-        <b-input-group-append>
-          <SpinButton variant="white" name="plus" label="Copy to" :handler="copy" />
-        </b-input-group-append>
-      </b-input-group>
-      <b-btn variant="white" class="mt-2" @click="deleteIt">
-        <v-icon name="trash-alt" /> Delete
-      </b-btn>
+      <div class="d-flex justify-content-between">
+        <b-input-group class="mt-2">
+          <b-input v-model="copyconfigname" />
+          <b-input-group-append>
+            <SpinButton variant="white" name="plus" label="Copy to" :handler="copy" />
+          </b-input-group-append>
+        </b-input-group>
+        <b-btn variant="white" class="mt-2" @click="deleteIt">
+          <v-icon name="trash-alt" /> Delete
+        </b-btn>
+      </div>
       <ConfirmModal v-if="showDeleteModal" ref="deleteConfirm" :title="'Delete: ' + config.name" @confirm="deleteConfirmed" />
     </div>
   </div>
