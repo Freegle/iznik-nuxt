@@ -132,7 +132,7 @@
                 </b-btn>
               </div>
               <div v-else>
-                <VueEditor v-model="group.description" />
+                <VueEditor v-model="group.description" :editor-options="editorOptions" />
                 <SpinButton variant="white" name="save" label="Save" :handler="saveDescription" class="mt-2" />
               </div>
             </b-form-group>
@@ -626,12 +626,16 @@ import OurFilePond from './OurFilePond'
 import ModGroupSetting from './ModGroupSetting'
 import SpinButton from './SpinButton'
 import NoticeMessage from './NoticeMessage'
+
 const OurToggle = () => import('@/components/OurToggle')
 
-let VueEditor
+let VueEditor, htmlEditButton
 
 if (process.client) {
+  htmlEditButton = require('quill-html-edit-button').htmlEditButton
   VueEditor = require('vue2-editor').VueEditor
+  const Quill = require('vue2-editor').Quill
+  Quill.register('modules/htmlEditButton', htmlEditButton)
 }
 
 export default {
@@ -650,7 +654,12 @@ export default {
     return {
       groupid: null,
       uploadingProfile: false,
-      editingDescription: false
+      editingDescription: false,
+      editorOptions: {
+        modules: {
+          htmlEditButton: {}
+        }
+      }
     }
   },
   computed: {
