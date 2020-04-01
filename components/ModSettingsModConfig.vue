@@ -2,7 +2,11 @@
   <div>
     <p>
       Standard Messages (aka ModConfigs) are configurations which can be applied to multiple communities so that
-      they behave the same way - for example so that they have the same set of message approval/rejection buttons.
+      they behave the same way - mostly so that they have the same set of approval/rejection buttons for
+      messages/members.
+    </p>
+    <p>
+      You configure different sets of buttons for different pages, so there's a section for each.
     </p>
     <div class="d-flex justify-content-between flex-wrap">
       <b-select v-model="configid" :options="configOptions" class="mb-2 font-weight-bold" />
@@ -10,7 +14,7 @@
         <b-input-group>
           <b-input v-model="newconfigname" />
           <b-input-group-append>
-            <SpinButton variant="white" name="plus" label="Create new" :handler="create" />
+            <SpinButton variant="white" name="plus" label="Create" :handler="create" />
           </b-input-group-append>
         </b-input-group>
       </div>
@@ -173,7 +177,7 @@
         <b-input-group class="mt-2">
           <b-input v-model="copyconfigname" />
           <b-input-group-append>
-            <SpinButton variant="white" name="plus" label="Copy to" :handler="copy" />
+            <SpinButton variant="white" name="plus" label="Copy" :handler="copy" />
           </b-input-group-append>
         </b-input-group>
         <b-btn variant="white" class="mt-2" @click="deleteIt">
