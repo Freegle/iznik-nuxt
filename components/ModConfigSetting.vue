@@ -23,7 +23,7 @@
     </div>
     <div v-else-if="type === 'toggle'">
       <OurToggle
-        v-model="value"
+        v-model="toggleValue"
         class="mt-2"
         :height="30"
         :width="toggleWidth"
@@ -33,6 +33,9 @@
         color="#61AE24"
         @change="save"
       />
+    </div>
+    <div v-else-if="type === 'select'">
+      <b-select v-model="value" :options="options" class="mt-2" @change="save" />
     </div>
   </b-form-group>
 </template>
@@ -94,6 +97,11 @@ export default {
       type: String,
       required: false,
       default: null
+    },
+    options: {
+      type: Array,
+      required: false,
+      default: () => []
     }
   },
   data: function() {
@@ -124,6 +132,14 @@ export default {
       },
       set(newval) {
         this.forSave = newval
+      }
+    },
+    toggleValue: {
+      get() {
+        return Boolean(this.value)
+      },
+      set(newval) {
+        this.value = newval
       }
     }
   },

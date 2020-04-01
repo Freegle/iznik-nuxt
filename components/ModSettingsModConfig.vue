@@ -4,7 +4,12 @@
       Standard Messages (aka ModConfigs) are configurations which can be applied to multiple communities so that
       they behave the same way - for example so that they have the same set of message approval/rejection buttons.
     </p>
-    <b-select v-model="configid" :options="configOptions" class="mb-2 font-weight-bold" />
+    <div class="d-flex justify-content-between flex-wrap">
+      <b-select v-model="configid" :options="configOptions" class="mb-2 font-weight-bold" />
+      <b-btn variant="white" disabled>
+        <v-icon name="plus" /> Add new configuration TODO
+      </b-btn>
+    </div>
     <b-img v-if="loading" src="~static/loader.gif" class="d-block mt-2" />
     <div v-else-if="configid && config">
       <b-card no-body class="mb-2 mt-1">
@@ -68,7 +73,7 @@
               value-unchecked="Groupname Moderator"
               toggle-checked="Own Name"
               toggle-unchecked="$groupname Moderator"
-              toggle-width="200"
+              :toggle-width="200"
             />
             <ModConfigSetting
               :configid="configid"
@@ -114,60 +119,64 @@
       <b-card no-body class="mb-2 mt-1">
         <b-card-header>
           <b-btn v-b-toggle.accordion-pendingmessages block href="#" variant="primary">
-            Pending Messages TODO
+            Pending Messages
           </b-btn>
         </b-card-header>
         <b-collapse id="accordion-pendingmessages" accordion="settings-accordion" role="tabpanel">
-          <b-card-body />
+          <b-card-body>
+            <ModSettingsStandardMessageSet cc="ccrejectto" addr="ccrejectaddr" :types="['Approve', 'Reject', 'Leave', 'Delete', 'Edit']" />
+          </b-card-body>
         </b-collapse>
       </b-card>
       <b-card no-body class="mb-2 mt-1">
         <b-card-header>
           <b-btn v-b-toggle.accordion-approvedmessages block href="#" variant="primary">
-            Approved Messages TODO
+            Approved Messages
           </b-btn>
         </b-card-header>
         <b-collapse id="accordion-approvedmessages" accordion="settings-accordion" role="tabpanel">
-          <b-card-body />
+          <b-card-body>
+            <ModSettingsStandardMessageSet cc="ccfollowupto" addr="ccfollowupaddr" :types="['Leave Approved Message', 'Delete Approved Message', 'Edit']" />
+          </b-card-body>
         </b-collapse>
       </b-card>
       <b-card no-body class="mb-2 mt-1">
         <b-card-header>
           <b-btn v-b-toggle.accordion-pendingmembers block href="#" variant="primary">
-            Pending Members TODO
+            Pending Members
           </b-btn>
         </b-card-header>
         <b-collapse id="accordion-pendingmembers" accordion="settings-accordion" role="tabpanel">
-          <b-card-body />
+          <b-card-body>
+            <ModSettingsStandardMessageSet cc="ccrejmembto" addr="ccrejmembaddr" :types="['Approve Member', 'Reject Member', 'Leave Member']" />
+          </b-card-body>
         </b-collapse>
       </b-card>
       <b-card no-body class="mb-2 mt-1">
         <b-card-header>
           <b-btn v-b-toggle.accordion-approvedmembers block href="#" variant="primary">
-            Approved Members TODO
+            Approved Members
           </b-btn>
         </b-card-header>
         <b-collapse id="accordion-approvedmembers" accordion="settings-accordion" role="tabpanel">
-          <b-card-body />
+          <b-card-body>
+            <ModSettingsStandardMessageSet cc="ccrejmembto" addr="ccrejmembaddr" :types="['Leave Approved Member', 'Delete Approved Member']" />
+          </b-card-body>
         </b-collapse>
       </b-card>
     </div>
-    <!--      <p>-->
-    <!--        Standard messages appear as buttons on other pages, and allow you to quickly-->
-    <!--        send a message to a user, and perform common operations on them such as changing their moderation-->
-    <!--        status.-->
-    <!--      </p>-->
-    <!--      <p>-->
-    <!--        Click on a button to edit the message. Drag and drop to change the order.-->
-    <!--      </p>-->
-  </div>
   </div>
 </template>
 <script>
 import ModConfigSetting from './ModConfigSetting'
 import NoticeMessage from './NoticeMessage'
+import ModSettingsStandardMessageSet from './ModSettingsStandardMessageSet'
 export default {
-  components: { NoticeMessage, ModConfigSetting },
+  components: {
+    ModSettingsStandardMessageSet,
+    NoticeMessage,
+    ModConfigSetting
+  },
   data: function() {
     return {
       configid: null,
