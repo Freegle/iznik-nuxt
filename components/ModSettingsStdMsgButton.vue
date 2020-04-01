@@ -1,6 +1,6 @@
 <template>
   <div class="d-inline">
-    <b-btn :variant="variant(stdmsg)" class="mb-1" :disabled="disabled" @click="click">
+    <b-btn :variant="variant(stdmsg)" class="mb-1" @click="click">
       <v-icon :name="icon(stdmsg)" /> {{ stdmsg.title }}
     </b-btn>
   </div>
@@ -14,6 +14,11 @@ export default {
     stdmsg: {
       type: Object,
       required: true
+    }
+  },
+  methods: {
+    click() {
+      // TODO EDIT
     }
   }
 }

@@ -18,21 +18,28 @@
     <p>
       Click on a button to edit the message. Drag and drop to change the order.
     </p>
-    <div class="d-flex justify-content-start flex-wrap">
-      <ModSettingsStdMsgButton
-        v-for="stdmsg in stdmsgs"
+    TODO ADD
+    <draggable v-model="stdmsgscopy" group="buttons" class="d-flex justify-content-start flex-wrap" @end="updateOrder">
+      <div
+        v-for="stdmsg in stdmsgscopy"
         :key="'stdmsg-' + stdmsg.id"
-        :stdmsg="stdmsg"
-        class="mr-2"
-      />
-    </div>
+      >
+        <ModSettingsStdMsgButton
+          v-if="visible(stdmsg)"
+          :stdmsg="stdmsg"
+          class="mr-2"
+        />
+      </div>
+    </draggable>
   </div>
 </template>
 <script>
+import draggable from 'vuedraggable'
 import ModConfigSetting from './ModConfigSetting'
 import ModSettingsStdMsgButton from './ModSettingsStdMsgButton'
+
 export default {
-  components: { ModSettingsStdMsgButton, ModConfigSetting },
+  components: { ModSettingsStdMsgButton, ModConfigSetting, draggable },
   props: {
     cc: {
       type: String,
@@ -53,20 +60,58 @@ export default {
         { value: 'Nobody', text: 'Nobody' },
         { value: 'Me', text: 'Me' },
         { value: 'Specific', text: 'Specific email' }
-      ]
+      ],
+      stdmsgscopy: null
     }
   },
   computed: {
     config() {
       return this.$store.getters['modconfigs/current']
+    }
+  },
+  mounted() {
+    this.copyStdMsgs(this.config.stdmsgs)
+  },
+  methods: {
+    updateOrder() {
+      // Undivided joy, we have new order.
+      const newOrder = this.stdmsgscopy.map(s => s.id)
+
+      this.$store.dispatch('modconfigs/updateConfig', {
+        id: this.config.id,
+        messageorder: JSON.stringify(newOrder)
+      })
     },
-    stdmsgs() {
-      return (
-        this.config &&
-        this.config.stdmsgs.filter(s => {
-          return this.types.indexOf(s.action) !== -1
-        })
-      )
+    visible(stdmsg) {
+      return this.types.indexOf(stdmsg.action) !== -1
+    },
+    copyStdMsgs(stdmsgs) {
+      // We need to sort them according to the message order.
+      let order = this.config.messageorder
+      console.log('Got order', order)
+      let copy = []
+
+      if (order) {
+        order = JSON.parse(order)
+        console.log('Decoded')
+        do {
+          const thisone = parseInt(order.shift())
+          console.log('Look for', thisone)
+
+          stdmsgs.forEach(s => {
+            console.log('Compare', thisone, parseInt(s.id))
+            if (thisone === parseInt(s.id)) {
+              console.log('Found')
+              copy.push(s)
+            }
+          })
+          console.log('continue', order.length)
+        } while (order.length)
+      } else {
+        copy = stdmsgs
+      }
+
+      this.stdmsgscopy = copy
     }
   }
 }
