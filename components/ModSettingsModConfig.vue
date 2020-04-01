@@ -164,6 +164,14 @@
           </b-card-body>
         </b-collapse>
       </b-card>
+      <div class="d-flex justify-content-between flex-wrap">
+        <b-btn variant="white" disabled>
+          <v-icon name="plus" /> Copy TODO
+        </b-btn>
+        <b-btn variant="white" disabled>
+          <v-icon name="trash-alt" /> Delete TODO
+        </b-btn>
+      </div>
     </div>
   </div>
 </template>

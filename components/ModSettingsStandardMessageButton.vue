@@ -1,0 +1,39 @@
+<template>
+  <div class="d-inline">
+    <b-btn :variant="variant(stdmsg)" class="mb-1" @click="click">
+      <v-icon :name="icon(stdmsg)" /> {{ stdmsg.title }}
+    </b-btn>
+    <ModSettingsStandardMessageModal v-if="showModal" :id="stdmsg.id" ref="msgmodal" />
+  </div>
+</template>
+<script>
+import stdmsgs from '../mixins/stdmsgs'
+import ModSettingsStandardMessageModal from './ModSettingsStandardMessageModal'
+import waitForRef from '@/mixins/waitForRef'
+
+export default {
+  components: { ModSettingsStandardMessageModal },
+  mixins: [stdmsgs, waitForRef],
+  props: {
+    stdmsg: {
+      type: Object,
+      required: true
+    }
+  },
+  data: function() {
+    return {
+      showModal: false
+    }
+  },
+  methods: {
+    click() {
+      this.showModal = true
+      console.log('Click')
+      this.waitForRef('msgmodal', () => {
+        console.log('Show')
+        this.$refs.msgmodal.show()
+      })
+    }
+  }
+}
+</script>

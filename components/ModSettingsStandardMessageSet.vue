@@ -16,7 +16,8 @@
       description="This is the address to BCC messages to."
     />
     <p>
-      Click on a button to edit the message. Drag and drop to change the order.
+      Click on a button to edit the message. Drag and drop to change the order that they'll show in on the relevant
+      pages (e.g. put the ones you use most first).
     </p>
     TODO ADD
     <draggable v-model="stdmsgscopy" group="buttons" class="d-flex justify-content-start flex-wrap" @end="updateOrder">
@@ -24,7 +25,7 @@
         v-for="stdmsg in stdmsgscopy"
         :key="'stdmsg-' + stdmsg.id"
       >
-        <ModSettingsStdMsgButton
+        <ModSettingsStandardMessageButton
           v-if="visible(stdmsg)"
           :stdmsg="stdmsg"
           class="mr-2"
@@ -36,10 +37,10 @@
 <script>
 import draggable from 'vuedraggable'
 import ModConfigSetting from './ModConfigSetting'
-import ModSettingsStdMsgButton from './ModSettingsStdMsgButton'
+import ModSettingsStandardMessageButton from './ModSettingsStandardMessageButton'
 
 export default {
-  components: { ModSettingsStdMsgButton, ModConfigSetting, draggable },
+  components: { ModSettingsStandardMessageButton, ModConfigSetting, draggable },
   props: {
     cc: {
       type: String,
@@ -88,24 +89,18 @@ export default {
     copyStdMsgs(stdmsgs) {
       // We need to sort them according to the message order.
       let order = this.config.messageorder
-      console.log('Got order', order)
       let copy = []
 
       if (order) {
         order = JSON.parse(order)
-        console.log('Decoded')
         do {
           const thisone = parseInt(order.shift())
-          console.log('Look for', thisone)
 
           stdmsgs.forEach(s => {
-            console.log('Compare', thisone, parseInt(s.id))
             if (thisone === parseInt(s.id)) {
-              console.log('Found')
               copy.push(s)
             }
           })
-          console.log('continue', order.length)
         } while (order.length)
       } else {
         copy = stdmsgs

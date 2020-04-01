@@ -27,7 +27,7 @@
       </b-tab>
       <b-tab>
         <template v-slot:title>
-          <h2 class="ml-2 mr-2">
+          <h2 class="ml-2 mr-2 text-muted">
             Bulk Operations
           </h2>
         </template>
