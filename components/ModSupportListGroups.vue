@@ -1,13 +1,16 @@
 <template>
   <div>
     <SpinButton variant="success" name="users" label="Fetch Groups" spinclass="text-white" :handler="fetchGroups" />
-    <div v-if="groups && groups.length" class="mt-2">
+    <div v-if="fetched && groups && groups.length" class="mt-2">
       <p>
-        Here you can see info about all Freegle groups. Click on the column headings to sort.
+        Here you can see info about all Freegle groups. Click on the column headings to sort.  Click on the dropdown
+        arrow to filter.
       </p>
       <hot-table
+        ref="hot"
         width="100%"
-        :data="data"
+        height="600px"
+        :data="groups"
         :col-headers="headers"
         license-key="non-commercial-and-evaluation"
         class="bg-white"
@@ -16,6 +19,8 @@
         :filters="true"
         :cells="cells"
         :columns="columns"
+        :manual-column-freeze="true"
+        :after-render="afterRender"
       />
     </div>
   </div>
@@ -24,10 +29,11 @@
 import SpinButton from './SpinButton'
 import 'handsontable/dist/handsontable.full.css'
 
-let HotTable
+let HotTable, Handsontable
 
 if (process.client) {
   HotTable = require('@handsontable/vue').HotTable
+  Handsontable = require('handsontable').default
 }
 
 export default {
@@ -38,14 +44,16 @@ export default {
   data: function() {
     return {
       busy: false,
+      fetched: false,
       headers: [
         'ID',
         'Short Name',
         'Display Name',
         'Last Auto-Approve',
         'Recent Auto-Approves',
-        'Last on MT',
         'Active Mods',
+        'Last Moderated',
+        'Last on MT',
         'Publish?',
         'FD?',
         'TN?',
@@ -55,87 +63,95 @@ export default {
         'Founded',
         'Affiliation Confirmed',
         'Backup Owners Active',
-        'Backup Mods Active',
-        'At Risk?'
+        'Backup Mods Active'
       ],
-      atts: [
-        'id',
-        'nameshort',
-        'namedisplay',
-        'lastautoapprove',
-        'recentautoapproves',
-        'lastmodactive',
-        'activemodcount',
-        'lastmoderated',
-        'publish',
-        'onhere',
-        'ontn',
-        'region',
-        'lat',
-        'lng',
-        'founded',
-        'affiliationconfirmed',
-        'backupownersactive',
-        'backupmodsactive',
-        'atrisk'
-      ],
+      atts: [],
       columns: [
         {
+          data: 'id',
           type: 'numeric'
         },
         {
+          data: 'nameshort',
           type: 'text'
         },
         {
+          data: 'namedisplay',
           type: 'text'
         },
         {
-          type: 'date'
+          data: 'lastautoapprove',
+          type: 'date',
+          renderer: this.forceDate
         },
         {
-          type: 'date'
+          data: 'recentautoapproves',
+          type: 'numeric',
+          renderer: this.numberDash
         },
         {
-          type: 'date'
+          data: 'activemodcount',
+          type: 'numeric',
+          renderer: this.forceNumeric
         },
         {
-          type: 'numeric'
+          data: 'lastmoderated',
+          type: 'date',
+          renderer: this.forceDate
         },
         {
-          type: 'date'
+          data: 'lastmodactive',
+          type: 'date',
+          renderer: this.forceDate
         },
         {
-          type: 'checkbox'
+          data: 'publish',
+          type: 'checkbox',
+          renderer: this.forceBool
         },
         {
-          type: 'checkbox'
+          data: 'onhere',
+          type: 'checkbox',
+          renderer: this.forceBool
         },
         {
-          type: 'checkbox'
+          data: 'ontn',
+          type: 'checkbox',
+          renderer: this.forceBool
         },
         {
+          data: 'region',
           type: 'text'
         },
         {
-          type: 'numeric'
+          data: 'lat',
+          type: 'numeric',
+          renderer: this.latLng
         },
         {
-          type: 'numeric'
+          data: 'lng',
+          type: 'numeric',
+          renderer: this.latLng
         },
         {
-          type: 'date'
+          data: 'founded',
+          type: 'date',
+          renderer: this.forceDate
         },
         {
-          type: 'date'
+          data: 'affiliationconfirmed',
+          type: 'date',
+          renderer: this.forceDate
         },
         {
-          type: 'numeric'
+          data: 'backupownersactive',
+          type: 'numeric',
+          renderer: this.forceNumeric
         },
         {
-          type: 'numeric'
-        },
-        {
-          type: 'checkbox'
+          data: 'backupmodsactive',
+          type: 'numeric',
+          renderer: this.forceNumeric
         }
       ]
     }
@@ -143,39 +159,112 @@ export default {
   computed: {
     groups() {
       return Object.values(this.$store.getters['group/list'])
-    },
-    data() {
-      const ret = []
-
-      this.groups.forEach(g => {
-        const thisone = []
-
-        this.atts.forEach(a => {
-          const val = g[a]
-
-          // eslint-disable-next-line
-          thisone.push(val)
-        })
-
-        ret.push(thisone)
-      })
-
-      console.log('Returning', ret)
-      return ret
     }
   },
   methods: {
     async fetchGroups() {
-      console.log('Fetch groups')
       await this.$store.dispatch('group/list', {
         grouptype: 'Freegle',
         support: true
       })
+
+      // This prevents us rendering partial data that happens to be in store.
+      this.fetched = true
     },
     cells(row, col, prop) {
       return {
         editor: false
       }
+    },
+    forceBool(hotInstance, td, row, column, prop, value, cellProperties) {
+      Handsontable.renderers.CheckboxRenderer.call(
+        this,
+        hotInstance,
+        td,
+        row,
+        column,
+        prop,
+        Boolean(parseInt(value)),
+        cellProperties
+      )
+    },
+    forceNumeric(hotInstance, td, row, column, prop, value, cellProperties) {
+      Handsontable.renderers.NumericRenderer.call(
+        this,
+        hotInstance,
+        td,
+        row,
+        column,
+        prop,
+        parseInt(value),
+        cellProperties
+      )
+    },
+    forceDate(hotInstance, td, row, column, prop, value, cellProperties) {
+      let val = '-'
+      td.style.textAlign = 'right'
+
+      if (value) {
+        val = this.$dayjs(value).format('YYYY-MM-DD')
+      }
+
+      Handsontable.renderers.TextRenderer.call(
+        this,
+        hotInstance,
+        td,
+        row,
+        column,
+        prop,
+        val,
+        cellProperties
+      )
+    },
+    numberDash(hotInstance, td, row, column, prop, value, cellProperties) {
+      const val = parseInt(value)
+
+      if (val) {
+        Handsontable.renderers.NumericRenderer.call(
+          this,
+          hotInstance,
+          td,
+          row,
+          column,
+          prop,
+          val,
+          cellProperties
+        )
+      } else {
+        td.style.textAlign = 'right'
+        Handsontable.renderers.TextRenderer.call(
+          this,
+          hotInstance,
+          td,
+          row,
+          column,
+          prop,
+          '-',
+          cellProperties
+        )
+      }
+    },
+    latLng(hotInstance, td, row, column, prop, value, cellProperties) {
+      Handsontable.renderers.NumericRenderer.call(
+        this,
+        hotInstance,
+        td,
+        row,
+        column,
+        prop,
+        Math.round(parseFloat(value) * 100) / 100,
+        cellProperties
+      )
+    },
+    afterRender() {
+      const inst = this.$refs.hot.hotInstance
+
+      // Freeze the name
+      const plugin = inst.getPlugin('ManualColumnFreeze')
+      plugin.freezeColumn(1)
     }
   }
 }
