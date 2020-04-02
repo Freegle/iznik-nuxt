@@ -158,7 +158,14 @@ export default {
   },
   computed: {
     groups() {
-      return Object.values(this.$store.getters['group/list'])
+      const ret = Object.values(this.$store.getters['group/list'])
+      ret.sort((a, b) => {
+        return a.nameshort
+          .toLowerCase()
+          .localeCompare(b.nameshort.toLowerCase())
+      })
+
+      return ret
     }
   },
   methods: {
