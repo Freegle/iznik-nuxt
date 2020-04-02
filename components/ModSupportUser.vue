@@ -32,7 +32,7 @@
 
       <div class="d-flex flex-wrap">
         <b-btn variant="white" class="mr-2 mb-1" @click="spamReport">
-          <v-icon name="ban" /> Scammer
+          <v-icon name="ban" /> Spammer
         </b-btn>
         <b-btn variant="white" class="mr-2 mb-1" @click="purge">
           <v-icon name="trash-alt" /> Purge

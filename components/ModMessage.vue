@@ -161,7 +161,7 @@
                 {{ email.email }} <v-icon v-if="email.preferred" name="start" />
               </div>
             </div>
-            <ModMemberActions v-if="showActions" :id="message.fromuser.id" :groupid="message.groups[0].groupid" />
+            <ModMemberActions v-if="showActions" :userid="message.fromuser.id" :groupid="message.groups[0].groupid" />
           </b-col>
         </b-row>
       </b-card-body>
