@@ -255,14 +255,19 @@ export default {
       return this.hasCollection('Spam')
     },
     typeOptions() {
-      // TODO MT Per group keywords
       return [
         {
           value: 'Offer',
-          text: 'OFFER'
+          text:
+            this.group && this.group.settings && this.group.settings.keywords
+              ? this.group.settings.keywords.offer
+              : 'OFFER'
         },
         {
-          value: 'Wanted',
+          value:
+            this.group && this.group.settings && this.group.settings.keywords
+              ? this.group.settings.keywords.wanted
+              : 'Wanted',
           text: 'WANTED'
         }
       ]
@@ -272,6 +277,11 @@ export default {
     },
     eBody() {
       return twem.twem(this.$twemoji, this.message.textbody)
+    },
+    group() {
+      return this.groupid
+        ? this.$store.getters['auth/groupById'](this.groupid)
+        : null
     },
     groupid() {
       return this.message.groups && this.message.groups.length > 0
