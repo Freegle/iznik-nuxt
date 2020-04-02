@@ -106,7 +106,7 @@
       <!--      TODO MT POSTLAUNCH Show if banned-->
       <div v-if="memberships && memberships.length">
         <div v-for="membership in memberships" :key="'membership-' + membership.id">
-          <ModSupportMembership :membership="membership" />
+          <ModSupportMembership :membership="membership" :userid="user.id" />
         </div>
         <b-btn v-if="!showAllMemberships && membershipsUnshown" variant="white" class="mt-1" @click="showAllMemberships = true">
           Show +{{ membershipsUnshown }}

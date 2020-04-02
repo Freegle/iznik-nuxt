@@ -173,7 +173,10 @@ export const actions = {
 
     if (!data.deleted) {
       // Fetch back the updated version.
-      await dispatch('fetch', { id: params.id })
+      await dispatch('fetch', {
+        userid: params.userid,
+        groupid: params.groupid
+      })
     }
 
     return data

@@ -107,8 +107,9 @@
           </div>
         </div>
       </b-card-body>
-      <b-card-footer>
+      <b-card-footer class="d-flex justify-content-between">
         <ModMemberButtons :member="member" :modconfig="modconfig" />
+        <ModRole :userid="member.userid" :groupid="groupid" :role="member.role" />
       </b-card-footer>
     </b-card>
     <ModPostingHistoryModal ref="history" :user="member" :type="type" />
@@ -130,10 +131,12 @@ import ModLogsModal from './ModLogsModal'
 import ModMemberships from './ModMemberships'
 import ModBouncing from './ModBouncing'
 import ModMemberLogins from './ModMemberLogins'
+import ModRole from './ModRole'
 
 export default {
   name: 'ModMember',
   components: {
+    ModRole,
     ModMemberLogins,
     ModBouncing,
     ModMemberships,
@@ -271,7 +274,7 @@ export default {
         groupid: e.groupid
       }
       params[e.param] = e.val
-      this.$store.dispatch('members/patch', params)
+      this.$store.dispatch('members/updateById', params)
     }
   }
 }
