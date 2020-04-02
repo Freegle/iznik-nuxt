@@ -81,7 +81,7 @@ export default {
         },
         {
           data: 'lastautoapprove',
-          type: 'date',
+          type: 'text',
           renderer: this.forceDate
         },
         {
@@ -96,12 +96,12 @@ export default {
         },
         {
           data: 'lastmoderated',
-          type: 'date',
+          type: 'text',
           renderer: this.forceDate
         },
         {
           data: 'lastmodactive',
-          type: 'date',
+          type: 'text',
           renderer: this.forceDate
         },
         {
@@ -135,12 +135,12 @@ export default {
         },
         {
           data: 'founded',
-          type: 'date',
+          type: 'text',
           renderer: this.forceDate
         },
         {
           data: 'affiliationconfirmed',
-          type: 'date',
+          type: 'text',
           renderer: this.forceDate
         },
         {
