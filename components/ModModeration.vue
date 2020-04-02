@@ -24,7 +24,7 @@ export default {
         return this.membership.ourpostingstatus || 'MODERATED'
       },
       set(val) {
-        // TODO
+        // TODO MT
       }
     },
     options() {

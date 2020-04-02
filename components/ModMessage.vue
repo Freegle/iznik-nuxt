@@ -31,7 +31,7 @@
             <v-icon name="pen" /><span class="d-none d-sm-inline"> Edit</span>
           </b-btn>
         </div>
-        <!--        TODO Duplicates, related-->
+        <!--        TODO MT Duplicates, related-->
       </b-card-header>
       <b-card-body class="p-1 p-md-2">
         <b-row>
@@ -255,7 +255,7 @@ export default {
       return this.hasCollection('Spam')
     },
     typeOptions() {
-      // TODO Per group keywords
+      // TODO MT Per group keywords
       return [
         {
           value: 'Offer',

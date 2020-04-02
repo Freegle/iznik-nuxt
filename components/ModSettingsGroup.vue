@@ -110,7 +110,7 @@
               label="Tagline"
               description="This should be short and snappy. Include some local reference that people in your area will feel connected to."
             />
-            <!--          TODO Worry words in group description-->
+            <!--          TODO MT POSTLAUNCH Worry words in group description-->
             <ModGroupSetting
               :groupid="groupid"
               name="welcomemail"

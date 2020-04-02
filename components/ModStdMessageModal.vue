@@ -129,7 +129,7 @@ export default {
       return ret
     },
     typeOptions() {
-      // TODO Per group keywords
+      // TODO MT Per group keywords
       return [
         {
           value: 'Offer',

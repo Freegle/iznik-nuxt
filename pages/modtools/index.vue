@@ -84,7 +84,7 @@
         weights
         successful
       />
-      <!--      TODO TN vs email vs web stats-->
+      <!--      TODO MT POSTLAUNCH TN vs email vs web stats-->
     </div>
   </div>
 </template>

@@ -12,11 +12,10 @@
           Facebook page <a :href="'https://facebook.com/' + inv.page.id" target="_blank" rel="noopener nofollower">{{ inv.page.name }}</a>
           for group
           <b>{{ inv.group.namedisplay }}</b>
-          <b-btn variant="link" disabled class="mb-1">
+          <b-btn variant="white" class="mt-2" :href="'https://modtools.org/facebook/facebook_request.php?type=Page&groupid=' + inv.group.id" target="_blank" rel="noopener noreferrer">
             Relink
           </b-btn>
         </div>
-        <!--        TODO Relink-->
       </div>
     </NoticeMessage>
     <NoticeMessage v-if="notlinked.length" variant="warning" class="mt-1">

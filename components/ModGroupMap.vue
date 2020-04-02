@@ -559,10 +559,6 @@ export default {
         this.changeHandler
       )
 
-      // Click to show info
-      // TODO
-      // google.maps.event.addListener(obj, 'click', self.changeHandler(self, area, obj, false))
-
       // Allow us to change this object.
       this.selectedObj.setOptions({ editable: true })
     },
