@@ -165,7 +165,7 @@
           </b-col>
         </b-row>
       </b-card-body>
-      <b-card-footer>
+      <b-card-footer v-if="!noactions">
         <ModMessageButtons v-if="!editing" :message="message" :modconfig="modconfig" :editreview="editreview" />
         <b-btn v-if="editing" variant="white" @click="editing = false">
           <v-icon name="times" /> Cancel
@@ -224,6 +224,11 @@ export default {
       required: true
     },
     editreview: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    noactions: {
       type: Boolean,
       required: false,
       default: false
@@ -303,7 +308,7 @@ export default {
     subjectClass() {
       let ret = 'text-success'
 
-      if (this.modconfig.coloursubj) {
+      if (this.modconfig && this.modconfig.coloursubj) {
         ret = this.message.subject.match(this.modconfig.subjreg)
           ? 'text-success'
           : 'text-danger'

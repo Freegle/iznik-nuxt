@@ -435,5 +435,14 @@ export const actions = {
         root: true
       }
     )
+  },
+
+  async search({ dispatch, commit }, params) {
+    const { messages } = await this.$api.message.fetchMessages({
+      subaction: 'searchall',
+      search: params.term,
+      exactonly: true
+    })
+    commit('addAll', messages)
   }
 }
