@@ -174,12 +174,10 @@
           </b-dropdown>
 
           <nuxt-link v-if="loggedIn" id="menu-option-chat-sm" class="text-white mr-3" to="/chats">
-            <div class="notifwrapper">
-              <v-icon name="comments" scale="2" /><br>
-              <b-badge v-if="chatCount" variant="danger" class="chatbadge">
-                {{ chatCount }}
-              </b-badge>
-            </div>
+            <v-icon name="comments" scale="2" /><br>
+            <b-badge v-if="chatCount" variant="danger" class="chatbadge">
+              {{ chatCount }}
+            </b-badge>
           </nuxt-link>
         </client-only>
 
