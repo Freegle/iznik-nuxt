@@ -11,14 +11,16 @@
           </b-col>
         </b-row>
         <b-row>
-          <b-col class="text-center">
-            <b-form-radio-group
-              v-model="searchtype"
-              :options="options"
-              name="radio-inline"
-              class="mt-2 mb-2"
-              @change="changetype"
-            />
+          <b-col class="d-flex justify-content-center mt-3 mb-3">
+            <div class="term__search-options">
+              <b-form-radio-group
+                v-model="searchtype"
+                :options="options"
+                name="radio-inline"
+                class="mt-2 mb-2"
+                @change="changetype"
+              />
+            </div>
           </b-col>
         </b-row>
         <b-row>
@@ -91,7 +93,6 @@
 </template>
 
 <script>
-// TODO RAHUL DESIGN Maybe some kind of border round the search options.
 import InfiniteLoading from 'vue-infinite-loading'
 import Autocomplete from '~/components/Autocomplete'
 import loginOptional from '@/mixins/loginOptional.js'
@@ -275,5 +276,13 @@ export default {
 .form-group {
   border: 1px $color-gray--dark solid;
   border-radius: 0.2rem;
+}
+
+.term__search-options {
+  display: inline-block;
+  border: 1px solid $color-gray--base;
+  border-radius: 3px;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 </style>
