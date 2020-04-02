@@ -380,8 +380,8 @@ export default {
     },
     selectArea(id, obj, name, tag, poly) {
       if (this.selectedObj) {
-        // Reset the colour on a previously selected object.
-        this.selectedObj.setOptions({ strokeColor: this.selectOldColour })
+        // Remove any colouring or changes to the previous selection.
+        this.cancelArea()
       }
 
       this.selectedName = name + ' ' + tag
