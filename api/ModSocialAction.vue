@@ -48,14 +48,14 @@ export default {
     groups() {
       const ret = []
 
-      let groups = this.$store.getters['auth/groups']
+      const groups = this.$store.getters['auth/groups']
 
       // Sort so we get the buttons in alphabetical order.
-      groups = groups.sort((a, b) => {
-        return a.namedisplay
-          .toLowerCase()
-          .localeCompare(b.namedisplay.toLowerCase())
-      })
+      // groups = groups.sort((a, b) => {
+      //   return a.namedisplay
+      //     .toLowerCase()
+      //     .localeCompare(b.namedisplay.toLowerCase())
+      // })
 
       this.item.uids.forEach(uid => {
         for (const group of groups) {
