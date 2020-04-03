@@ -87,7 +87,6 @@ export default {
   },
   methods: {
     loadMore: function($state) {
-      console.log('Load more members')
       this.busy = true
 
       if (this.show < this.members.length) {

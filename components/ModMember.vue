@@ -308,7 +308,6 @@ export default {
         }
       }
 
-      console.log('Notifications', ret)
       return ret
     },
     userinfo() {
@@ -379,7 +378,10 @@ export default {
     },
     async changeNotification(e, type) {
       const settings = this.settings
-      settings.notifications[type] = e.value
+      const notifications = this.notifications
+      notifications[type] = e.value
+      settings.notifications = notifications
+
       await this.$store.dispatch('user/edit', {
         id: this.user.id,
         settings: settings
