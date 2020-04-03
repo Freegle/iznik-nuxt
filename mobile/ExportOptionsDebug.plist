@@ -20,7 +20,7 @@
 	<key>stripSwiftSymbols</key>
 	<true/>
 	<key>teamID</key>
-	<string>$iosDeveloper</string>
+	<string>iosDeveloper</string>
 	<key>thinning</key>
 	<string>&lt;none&gt;</string>
 </dict>
