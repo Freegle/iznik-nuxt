@@ -21,7 +21,6 @@ before_install:
 - tar xvf mobile/app-secrets.tar
 - ls -l
 
-- sed -i -e "s,iosDeveloper,$iosDeveloper,g" mobile/build.json
 - sed -i -e "s,iosDeveloper,$iosDeveloper,g" mobile/ExportOptionsDebug.plist
 - sed -i -e "s,iosDeveloper,$iosDeveloper,g" mobile/ExportOptionsRelease.plist
 - cat mobile/Export*
@@ -54,9 +53,11 @@ script:
 - ln -s ../iznik-nuxt/dist www
 - cordova platform rm ios
 - cordova platform add ios
-- cp ../iznik-nuxt/mobile/build.json .
 # https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
-- cordova build --debug --device
+- cordova build --debug --device -- --codeSignIdentity="Apple Development" --developmentTeam="$iosDeveloper" --packageType="development" --automaticProvisioning="false" --provisioningProfile=="Freegle adhoc 0320"
+- cp ../iznik-nuxt/mobile/ExportOptionsDebug.plist .
+
+#- cordova build --debug --device
 #- cordova build --debug --device -- --codeSignIdentity="iPhone Developer" --developmentTeam="$iosDeveloper" --packageType="development" 
 #  --iCloudContainerEnvironment="Development" --automaticProvisioning="true"
 # "provisioningProfile": "926c2bd6-8de9-4c2f-8407-1016d2d12954",
