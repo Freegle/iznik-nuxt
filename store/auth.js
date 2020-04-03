@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import { LoginError, SignUpError } from '../api/BaseAPI'
 
 let first = true
@@ -37,9 +38,23 @@ export const mutations = {
           state.user[component] = user[component]
         }
       } else {
-        // Merge everything, because that's what we fetched.
+        // Merge everything, because that's what we fetched.  We need to merge because there are some codepaths
+        // where we get called without components being set which would otherwise result in lost data.  That may be
+        // a bug in the client, which we could probably fix.  Because we merge we have a tendency to preserve
+        // data which is pruned as null by the server, e.g. the newslettersallowed setting.  That's definitely a
+        // bug, but we can't change the server behaviour at this point because of old clients.  The effect is that
+        // if a mod sets these mail settings off, the user's client may still show them as on because they're in
+        // local storage.  If we are returning the settings field then we will be returning the relevant ones if
+        // set, so by setting them off first we ensure that what we end up with reflects the server settings.  This
+        // is a poor fix, and the real fix is to change the server pruning behaviour so that it explicitly returns
+        // the values.
+        if (user.settings) {
+          Vue.set(state.user, 'relevantallowed', 0)
+          Vue.set(state.user, 'newslettersallowed', 0)
+        }
+
         for (const key in user) {
-          state.user[key] = user[key]
+          Vue.set(state.user, key, user[key])
         }
       }
 
