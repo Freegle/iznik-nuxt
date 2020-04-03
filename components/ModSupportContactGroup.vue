@@ -93,12 +93,35 @@
       size="lg"
       :handler="send"
     />
+    <b-btn variant="white" size="lg" class="mt-2 mb-2 d-block" @click="fetch">
+      Show history
+    </b-btn>
+    <b-img v-if="busy" src="~/static/loader.gif" alt="Loading" class="d-block" />
+    <div v-else-if="alerts && alerts.length">
+      <b-row>
+        <b-col cols="6" lg="2">
+          <b>Created</b>
+        </b-col>
+        <b-col cols="6" lg="2">
+          <b>Complete</b>
+        </b-col>
+        <b-col cols="6" lg="2">
+          <b>To</b>
+        </b-col>
+        <b-col cols="6" lg="4">
+          <b>Subject</b>
+        </b-col>
+        <b-col cols="6" lg="2" />
+      </b-row>
+      <ModAlertHistory v-for="alert in alerts" :key="'alert-' + alert.id" :alert="alert" />
+    </div>
   </div>
 </template>
 <script>
 import GroupSelect from './GroupSelect'
 import NoticeMessage from './NoticeMessage'
 import SpinButton from './SpinButton'
+import ModAlertHistory from './ModAlertHistory'
 
 let VueEditor, htmlEditButton
 
@@ -110,9 +133,16 @@ if (process.client) {
 }
 
 export default {
-  components: { SpinButton, NoticeMessage, GroupSelect, VueEditor },
+  components: {
+    ModAlertHistory,
+    SpinButton,
+    NoticeMessage,
+    GroupSelect,
+    VueEditor
+  },
   data: function() {
     return {
+      busy: false,
       from: null,
       groupid: null,
       tryhard: false,
@@ -130,6 +160,9 @@ export default {
   computed: {
     valid() {
       return this.from && this.groupid > 0 && this.subject && this.text
+    },
+    alerts() {
+      return Object.values(this.$store.getters['alert/list'])
     }
   },
   methods: {
@@ -143,6 +176,13 @@ export default {
         askclick: this.confirm,
         tryhard: this.tryhard
       })
+    },
+    async fetch() {
+      this.busy = true
+
+      await this.$store.dispatch('alert/fetch')
+
+      this.busy = false
     }
   }
 }

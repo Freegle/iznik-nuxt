@@ -41,7 +41,7 @@ export default {
       default: false
     },
     size: {
-      type: Boolean,
+      type: String,
       required: false,
       default: null
     }
