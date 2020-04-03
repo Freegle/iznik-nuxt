@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import { LoginError, SignUpError } from '../api/BaseAPI'
 
 let first = true
@@ -38,11 +37,9 @@ export const mutations = {
           state.user[component] = user[component]
         }
       } else {
-        // Set everything, because that's what we fetched.
-        state.user = []
-
+        // Merge everything, because that's what we fetched.
         for (const key in user) {
-          Vue.set(state.user, key, user[key])
+          state.user[key] = user[key]
         }
       }
 
