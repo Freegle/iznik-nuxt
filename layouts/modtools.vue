@@ -108,13 +108,13 @@
               <ModMenuItemNav name="Related" link="/modtools/members/related" :count="['relatedmembers']" />
             </b-dropdown-item>
             <b-dropdown-item>
-              <ModMenuItemNav name="Stories" :count="['stories']" href="/modtools/members/stories" />
+              <ModMenuItemNav name="Stories" :count="['stories']" link="/modtools/members/stories" />
             </b-dropdown-item>
             <b-dropdown-item v-if="hasPermissionNewsletter">
-              <ModMenuItemNav name="Newsletter" :count="['newsletterstories']" href="/modtools/members/newsletter" />
+              <ModMenuItemNav name="Newsletter" :count="['newsletterstories']" link="/modtools/members/newsletter" />
             </b-dropdown-item>
             <b-dropdown-item>
-              <ModMenuItemNav name="Publicity" :count="['socialactions']" href="/modtools/publicity" />
+              <ModMenuItemNav name="Publicity" :count="['socialactions']" link="/modtools/publicity" />
             </b-dropdown-item>
             <b-dropdown-item>
               <ModMenuItemNav name="Teams" link="/modtools/teams" />
@@ -265,7 +265,9 @@ export default {
     })
 
     this.workTimer = setTimeout(this.checkWork, 0)
-    this.$store.dispatch('modconfigs/fetch')
+    this.$store.dispatch('modconfigs/fetch', {
+      all: true
+    })
   },
 
   beforeDestroy() {

@@ -3,13 +3,13 @@
     <b-card-text class="">
       <div class="d-block d-sm-none w-100">
         <b-form-select v-model="selectedArea" :options="areaOptions" class="d-block" @change="areaChange" />
-        <div v-if="me.settings.mylocation && me.settings.mylocation.area.name" class="d-block mt-1">
+        <div v-if="me.settings && me.settings.mylocation && me.settings.mylocation.area.name" class="d-block mt-1">
           <v-icon name="map-marker-alt" />
           <span>{{ me.settings.mylocation.area.name }}</span>
         </div>
       </div>
       <div class="d-none d-sm-flex align-items-center">
-        <div v-if="me.settings.mylocation && me.settings.mylocation.area.name" class="w-50">
+        <div v-if="me.settings && me.settings.mylocation && me.settings.mylocation.area.name" class="w-50">
           <v-icon name="map-marker-alt" />
           <span>{{ me.settings.mylocation.area.name }}</span>
         </div>

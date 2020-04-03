@@ -22,7 +22,6 @@ export const mutations = {
       })
 
       if (existing !== -1) {
-        // Ensure userid is set - used by member views.
         Vue.set(state.list, existing, item)
       } else {
         state.list.push(item)
@@ -120,6 +119,10 @@ export const actions = {
         root: true
       }
     )
+
+    commit('remove', {
+      id: params.id
+    })
   },
 
   async requestremove({ commit, dispatch }, params) {
@@ -157,6 +160,10 @@ export const actions = {
         root: true
       }
     )
+
+    commit('remove', {
+      id: params.id
+    })
   },
 
   async whitelist({ commit, dispatch }, params) {
@@ -176,6 +183,10 @@ export const actions = {
         root: true
       }
     )
+
+    commit('remove', {
+      id: params.id
+    })
   },
 
   clear({ commit }) {

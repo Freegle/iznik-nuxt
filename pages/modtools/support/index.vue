@@ -19,6 +19,30 @@
             </template>
             <ModSupportFindGroup />
           </b-tab>
+          <b-tab>
+            <template v-slot:title>
+              <h2 class="ml-2 mr-2">
+                Find Message
+              </h2>
+            </template>
+            <ModSupportFindMessage />
+          </b-tab>
+          <b-tab>
+            <template v-slot:title>
+              <h2 class="ml-2 mr-2">
+                List Groups
+              </h2>
+            </template>
+            <ModSupportListGroups />
+          </b-tab>
+          <b-tab>
+            <template v-slot:title>
+              <h2 class="ml-2 mr-2">
+                Add Group
+              </h2>
+            </template>
+            <ModSupportAddGroup />
+          </b-tab>
         </b-tabs>
       </div>
     </div>
@@ -30,11 +54,17 @@
 <script>
 import ModSupportFindGroup from '../../../components/ModSupportFindGroup'
 import ModSupportFindUser from '../../../components/ModSupportFindUser'
+import ModSupportFindMessage from '../../../components/ModSupportFindMessage'
+import ModSupportListGroups from '../../../components/ModSupportListGroups'
+import ModSupportAddGroup from '../../../components/ModSupportAddGroup'
 import loginRequired from '@/mixins/loginRequired.js'
 import NoticeMessage from '@/components/NoticeMessage'
 
 export default {
   components: {
+    ModSupportAddGroup,
+    ModSupportListGroups,
+    ModSupportFindMessage,
     ModSupportFindUser,
     ModSupportFindGroup,
     NoticeMessage

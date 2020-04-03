@@ -106,9 +106,65 @@
             </div>
           </div>
         </div>
+        <div v-if="user && user.id">
+          <hr>
+          <div class="d-flex justify-content-between flex-wrap">
+            <OurToggle
+              v-model="notifications.email"
+              :height="30"
+              :width="200"
+              :font-size="14"
+              :sync="true"
+              :labels="{checked: 'Chat On', unchecked: 'Chat Off'}"
+              color="#61AE24"
+              @change="changeNotification($event, 'email')"
+            />
+            <OurToggle
+              v-model="notifications.emailmine"
+              :height="30"
+              :width="200"
+              :font-size="14"
+              :sync="true"
+              :labels="{checked: 'Own Chats On', unchecked: 'Own Chats Off'}"
+              color="#61AE24"
+              @change="changeNotification($event, 'emailmine')"
+            />
+            <OurToggle
+              v-model="settings.notificationmails"
+              :height="30"
+              :width="200"
+              :font-size="14"
+              :sync="true"
+              :labels="{checked: 'Notification/ChitChat On', unchecked: 'Notification/ChitChat On'}"
+              color="#61AE24"
+              @change="changeNotifChitchat"
+            />
+            <OurToggle
+              v-model="relevantallowed"
+              :height="30"
+              :width="200"
+              :font-size="14"
+              :sync="true"
+              :labels="{checked: 'Suggestions On', unchecked: 'Suggestions Off'}"
+              color="#61AE24"
+              @change="changeRelevant"
+            />
+            <OurToggle
+              v-model="newslettersallowed"
+              :height="30"
+              :width="200"
+              :font-size="14"
+              :sync="true"
+              :labels="{checked: 'Newsletters On', unchecked: 'Newsletters Off'}"
+              color="#61AE24"
+              @change="changeNewsletter"
+            />
+          </div>
+        </div>
       </b-card-body>
-      <b-card-footer>
+      <b-card-footer class="d-flex justify-content-between">
         <ModMemberButtons :member="member" :modconfig="modconfig" />
+        <ModRole :userid="member.userid" :groupid="groupid" :role="member.role" />
       </b-card-footer>
     </b-card>
     <ModPostingHistoryModal ref="history" :user="member" :type="type" />
@@ -116,7 +172,7 @@
   </div>
 </template>
 <script>
-// TODO View Profile modal
+// TODO MT POSTLAUNCH View Profile modal
 import waitForRef from '../mixins/waitForRef'
 import SettingsGroup from './SettingsGroup'
 import NoticeMessage from './NoticeMessage'
@@ -130,10 +186,14 @@ import ModLogsModal from './ModLogsModal'
 import ModMemberships from './ModMemberships'
 import ModBouncing from './ModBouncing'
 import ModMemberLogins from './ModMemberLogins'
+import ModRole from './ModRole'
+const OurToggle = () => import('@/components/OurToggle')
 
 export default {
   name: 'ModMember',
   components: {
+    OurToggle,
+    ModRole,
     ModMemberLogins,
     ModBouncing,
     ModMemberships,
@@ -223,6 +283,33 @@ export default {
           (365 * 24 * 60 * 60) / 2
       )
     },
+    user() {
+      return this.$store.getters['user/get'](this.member.userid)
+    },
+    settings() {
+      if (this.user && this.user.settings && this.user.settings) {
+        return this.user.settings
+      } else {
+        return {}
+      }
+    },
+    notifications() {
+      let ret = {}
+
+      if (this.settings && this.settings.notifications) {
+        ret = this.settings.notifications
+      } else {
+        ret = {
+          email: true,
+          emailmine: false,
+          push: true,
+          facebook: true,
+          app: true
+        }
+      }
+
+      return ret
+    },
     userinfo() {
       const user = this.$store.getters['user/get'](this.member.userid)
 
@@ -231,6 +318,22 @@ export default {
       }
 
       return null
+    },
+    relevantallowed: {
+      get() {
+        return this.user && Boolean(this.user.relevantallowed)
+      },
+      set(newval) {
+        this.user.relevantallowed = newval
+      }
+    },
+    newslettersallowed: {
+      get() {
+        return this.user && Boolean(this.user.newslettersallowed)
+      },
+      set(newval) {
+        this.user.newslettersallowed = newval
+      }
     }
   },
   mounted() {
@@ -271,7 +374,38 @@ export default {
         groupid: e.groupid
       }
       params[e.param] = e.val
-      this.$store.dispatch('members/patch', params)
+      this.$store.dispatch('members/updateById', params)
+    },
+    async changeNotification(e, type) {
+      const settings = this.settings
+      const notifications = this.notifications
+      notifications[type] = e.value
+      settings.notifications = notifications
+
+      await this.$store.dispatch('user/edit', {
+        id: this.user.id,
+        settings: settings
+      })
+    },
+    async changeRelevant(e) {
+      await this.$store.dispatch('user/edit', {
+        id: this.user.id,
+        relevantallowed: e.value
+      })
+    },
+    async changeNotifChitchat(e) {
+      const settings = this.user.settings
+      settings.notificationmails = e.value
+      await this.$store.dispatch('user/edit', {
+        id: this.user.id,
+        settings: settings
+      })
+    },
+    async changeNewsletter(e) {
+      await this.$store.dispatch('user/edit', {
+        id: this.user.id,
+        newslettersallowed: e.value
+      })
     }
   }
 }

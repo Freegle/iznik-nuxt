@@ -6,10 +6,10 @@
     <b-btn v-if="groupid && !banned" variant="white" @click="ban">
       <v-icon name="trash-alt" /> Ban
     </b-btn>
-    <b-btn variant="white" disabled>
-      <v-icon name="ban" /> Scammer
+    <b-btn variant="white" @click="spamReport">
+      <v-icon name="ban" /> Spammer
     </b-btn>
-    <b-btn variant="white" disabled>
+    <b-btn v-if="supportOrAdmin" variant="white" @click="spamWhitelist">
       <v-icon name="check" /> Whitelist
     </b-btn>
     <b-btn v-if="groupid" variant="white" @click="addAComment">
@@ -22,15 +22,17 @@
     <ConfirmModal v-if="banConfirm" ref="banConfirm" :title="'Ban ' + displayname + ' from ' + groupname + '?'" @confirm="banConfirmed" />
     <ConfirmModal v-if="purgeConfirm" ref="purgeConfirm" :title="'Purge ' + displayname + ' from the system?'" message="<p><b>This can't be undone.</b></p><p>Are you completely sure you want to do this?</p>" @confirm="purgeConfirmed" />
     <ModCommentAddModal v-if="addComment" ref="addComment" :user="user" :groupid="groupid" @added="updateComments" />
+    <ModSpammerReport v-if="showSpamModal" ref="spamConfirm" :user="user" :whitelist="whitelist" />
   </div>
 </template>
 <script>
 import waitForRef from '../mixins/waitForRef'
 import ModCommentAddModal from './ModCommentAddModal'
+import ModSpammerReport from './ModSpammerReport'
 const ConfirmModal = () => import('./ConfirmModal')
 
 export default {
-  components: { ModCommentAddModal, ConfirmModal },
+  components: { ModSpammerReport, ModCommentAddModal, ConfirmModal },
   mixins: [waitForRef],
   props: {
     userid: {
@@ -54,7 +56,9 @@ export default {
       banConfirm: false,
       purgeConfirm: false,
       addComment: false,
-      user: null
+      user: null,
+      showSpamModal: false,
+      whitelist: false
     }
   },
   computed: {
@@ -150,6 +154,30 @@ export default {
       await this.$store.dispatch('members/updateComments', {
         userid: this.user.id,
         comments: user.comments
+      })
+    },
+    async spamReport() {
+      if (!this.user) {
+        await this.fetchUser()
+      }
+
+      this.whitelist = true
+      this.showSpamModal = true
+
+      this.waitForRef('spamConfirm', () => {
+        this.$refs.spamConfirm.show()
+      })
+    },
+    async spamWhitelist() {
+      if (!this.user) {
+        await this.fetchUser()
+      }
+
+      this.whitelist = true
+      this.showSpamModal = true
+
+      this.waitForRef('spamConfirm', () => {
+        this.$refs.spamConfirm.show()
       })
     }
   }

@@ -71,15 +71,17 @@
         </b-col>
       </b-row>
       <ModDashboardImpact :groupid="groupid" :start="start" :group-name="groupName" :end="end" class="mt-2" />
-      <ActivityGraph :groupid="groupid"
-                     :group-name="groupName"
-                     :start="start"
-                     :end="end"
-                     offers
-                     wanteds
-                     weights
-                     successful />
-      <!--      TODO TN vs email vs web stats-->
+      <ActivityGraph
+        :groupid="groupid"
+        :group-name="groupName"
+        :start="start"
+        :end="end"
+        offers
+        wanteds
+        weights
+        successful
+      />
+      <!--      TODO MT POSTLAUNCH TN vs email vs web stats-->
     </div>
   </div>
 </template>

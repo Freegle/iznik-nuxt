@@ -3,7 +3,7 @@
     <client-only>
       <div class="d-flex justify-content-between">
         <GroupSelect v-model="groupid" modonly />
-        <ModMemberSearchbox v-model="search" :groupid="parseInt(groupid)" :disabled="!parseInt(groupid)" />
+        <ModMemberSearchbox v-model="search" :groupid="groupid" />
       </div>
       <div v-if="groupid">
         <div v-for="member in visibleMembers" :key="'memberlist-' + member.id" class="p-0 mt-2">
@@ -45,9 +45,11 @@ export default {
   },
   watch: {
     groupid(newVal) {
-      this.$router.push(
-        '/modtools/members/approved/search/' + newVal + '/' + this.search
-      )
+      if (newVal) {
+        this.$router.push(
+          '/modtools/members/approved/search/' + newVal + '/' + this.search
+        )
+      }
     },
     search(newVal) {
       if (!newVal) {

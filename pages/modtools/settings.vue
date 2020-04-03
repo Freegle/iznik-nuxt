@@ -20,10 +20,21 @@
       <b-tab>
         <template v-slot:title>
           <h2 class="ml-2 mr-2">
-            ModConfig
+            Standard Messages
           </h2>
         </template>
         <ModSettingsModConfig />
+      </b-tab>
+      <b-tab>
+        <template v-slot:title>
+          <h2 class="ml-2 mr-2 text-muted">
+            Bulk Operations
+          </h2>
+        </template>
+        <p>
+          All the old bulk operations were to do with Yahoo.  We will need to do some new ones for native groups.
+          TODO
+        </p>
       </b-tab>
     </b-tabs>
   </div>

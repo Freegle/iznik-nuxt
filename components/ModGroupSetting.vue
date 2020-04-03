@@ -186,3 +186,11 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+@import 'color-vars';
+
+input,
+select {
+  max-width: 300px;
+}
+</style>

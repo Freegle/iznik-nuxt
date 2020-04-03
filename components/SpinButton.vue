@@ -1,5 +1,5 @@
 <template>
-  <b-button :variant="variant" @click="click">
+  <b-button :variant="variant" :disabled="disabled" @click="click">
     <v-icon v-if="done" name="check" :class="spinclass" />
     <v-icon v-else-if="doing" name="sync" :class="'fa-spin ' + spinclass" />
     <v-icon v-else :name="name" />&nbsp;{{ label }}
@@ -34,6 +34,11 @@ export default {
       type: String,
       required: false,
       default: 'text-success'
+    },
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
@@ -44,26 +49,28 @@ export default {
   },
   methods: {
     async click() {
-      this.done = false
-      this.doing = true
+      if (!this.doing) {
+        this.done = false
+        this.doing = true
 
-      if (this.handler) {
-        await this.handler()
+        if (this.handler) {
+          await this.handler()
 
-        this.doing = false
-        this.done = true
-        setTimeout(() => {
-          this.done = false
-        }, this.timeout)
-      } else {
-        // Pretend it took a second.
-        setTimeout(() => {
           this.doing = false
           this.done = true
           setTimeout(() => {
             this.done = false
           }, this.timeout)
-        }, 1000)
+        } else {
+          // Pretend it took a second.
+          setTimeout(() => {
+            this.doing = false
+            this.done = true
+            setTimeout(() => {
+              this.done = false
+            }, this.timeout)
+          }, 1000)
+        }
       }
     }
   }

@@ -31,6 +31,8 @@
   </b-card>
 </template>
 <script>
+import cloneDeep from 'lodash.clonedeep'
+
 export default {
   props: {
     item: {
@@ -48,7 +50,15 @@ export default {
     groups() {
       const ret = []
 
-      const groups = this.$store.getters['auth/groups']
+      // Cloning to avoid some strange issues which cause loops.
+      let groups = cloneDeep(this.$store.getters['auth/groups'])
+
+      // Sort so we get the buttons in alphabetical order.
+      groups = groups.sort((a, b) => {
+        return a.namedisplay
+          .toLowerCase()
+          .localeCompare(b.namedisplay.toLowerCase())
+      })
 
       this.item.uids.forEach(uid => {
         for (const group of groups) {

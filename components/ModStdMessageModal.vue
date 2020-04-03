@@ -129,17 +129,27 @@ export default {
       return ret
     },
     typeOptions() {
-      // TODO Per group keywords
       return [
         {
           value: 'Offer',
-          text: 'OFFER'
+          text:
+            this.group && this.group.settings && this.group.settings.keywords
+              ? this.group.settings.keywords.offer
+              : 'OFFER'
         },
         {
-          value: 'Wanted',
+          value:
+            this.group && this.group.settings && this.group.settings.keywords
+              ? this.group.settings.keywords.wanted
+              : 'Wanted',
           text: 'WANTED'
         }
       ]
+    },
+    group() {
+      return this.groupid
+        ? this.$store.getters['auth/groupById'](this.groupid)
+        : null
     },
     groupid() {
       let ret = null
@@ -508,6 +518,7 @@ export default {
         this.changedNewModStatus = true
       }
 
+      console.log('Action', this.stdmsg.action)
       switch (this.stdmsg.action) {
         case 'Approve':
           await this.$store.dispatch('messages/approve', {

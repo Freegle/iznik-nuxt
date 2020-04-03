@@ -40,12 +40,12 @@
             </template>
           </b-tab>
         </b-tabs>
-        <ModMember v-for="spammer in spammers" :key="'spammer-' + tabIndex + '-' + spammer.id" :member="spammer.user" />
+        <ModMember v-for="spammer in visibleSpammers" :key="'spammer-' + tabIndex + '-' + spammer.id" :member="spammer.user" />
         <b-img v-if="busy" src="~/static/loader.gif" alt="Loading" />
         <div v-else-if="!spammers.length">
           Nothing to show just now.
         </div>
-        <infinite-loading :key="'infinite-' + '-' + tabIndex" force-use-infinite-wrapper="body" :distance="1000" @infinite="loadMore">
+        <infinite-loading :key="'infinite-' + '-' + tabIndex + '-' + bump" force-use-infinite-wrapper="body" :distance="1000" @infinite="loadMore">
           <span slot="no-results" />
           <span slot="no-more" />
           <span slot="spinner" />
@@ -71,7 +71,8 @@ export default {
     return {
       tabIndex: 0,
       show: 0,
-      busy: false
+      busy: false,
+      bump: 0
     }
   },
   computed: {
@@ -84,7 +85,14 @@ export default {
       return work.spammerpendingremove
     },
     spammers() {
-      return this.$store.getters['spammers/list'](this.collection)
+      const ret = this.$store.getters['spammers/list'](this.collection)
+
+      // Need to move the byuser into the spammer object so that ModSpammer finds it.
+      ret.forEach(s => {
+        s.user.spammer.byuser = s.byuser
+      })
+
+      return ret
     },
     visibleSpammers() {
       return this.spammers ? this.spammers.slice(0, this.show) : []
@@ -95,7 +103,7 @@ export default {
           return 'PendingAdd'
         }
         case 1: {
-          return 'Approved'
+          return 'Spammer'
         }
         case 2: {
           return 'Whitelisted'
@@ -110,8 +118,8 @@ export default {
   },
   watch: {
     tabIndex(newVal) {
-      console.log('New tab', newVal)
       this.$store.dispatch('spammers/clear')
+      this.bump++
     },
     $route(to, from) {
       console.log('Route', to, from)

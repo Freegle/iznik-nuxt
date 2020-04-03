@@ -22,7 +22,9 @@
             Relink
           </b-btn>
         </div>
-        <!--        TODO Relink-->
+        <b-btn variant="white" class="mt-2" :href="'https://modtools.org/twitter/twitter_request.php?groupid=' + inv.group.id" target="_blank" rel="noopener noreferrer">
+          Link to Twitter
+        </b-btn>
       </div>
     </NoticeMessage>
     <NoticeMessage v-if="notlinked.length" variant="warning" class="mt-1">

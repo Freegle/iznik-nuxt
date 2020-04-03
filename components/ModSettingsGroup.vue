@@ -64,10 +64,10 @@
                 color="#61AE24"
               />
             </b-form-group>
-            <b-form-group label="ModConfig to use for this community:">
+            <b-form-group label="Standard Messages to use for this community:">
               <b-form-text class="mb-2">
-                The ModConfig you use controls behaviour such as which standard message buttons you can use.
-                You can see ModConfig settings on the separate tab.
+                The Standard Messages you choose controls which collection of standard message buttons you can use.
+                You can see the settings for them on the separate tab.
               </b-form-text>
               <b-select v-model="modconfig" :options="modConfigOptions" class="mb-2 font-weight-bold" />
             </b-form-group>
@@ -110,7 +110,7 @@
               label="Tagline"
               description="This should be short and snappy. Include some local reference that people in your area will feel connected to."
             />
-            <!--          TODO Worry words in group description-->
+            <!--          TODO MT POSTLAUNCH Worry words in group description-->
             <ModGroupSetting
               :groupid="groupid"
               name="welcomemail"
@@ -132,7 +132,7 @@
                 </b-btn>
               </div>
               <div v-else>
-                <VueEditor v-model="group.description" />
+                <VueEditor v-model="group.description" :editor-options="editorOptions" />
                 <SpinButton variant="white" name="save" label="Save" :handler="saveDescription" class="mt-2" />
               </div>
             </b-form-group>
@@ -469,7 +469,7 @@
             <ModGroupSetting
               :groupid="groupid"
               name="settings.includearea"
-              label="Inclue area name in post location?"
+              label="Include area name in post location?"
               description="When constructing a post subject, should we include the area name?"
               type="toggle"
               toggle-checked="Yes"
@@ -478,7 +478,7 @@
             <ModGroupSetting
               :groupid="groupid"
               name="settings.includepc"
-              label="Inclue postcode in post location?"
+              label="Include postcode in post location?"
               description="When constructing a post subject, should we include the first part of the postcode?"
               type="toggle"
               toggle-checked="Yes"
@@ -626,12 +626,16 @@ import OurFilePond from './OurFilePond'
 import ModGroupSetting from './ModGroupSetting'
 import SpinButton from './SpinButton'
 import NoticeMessage from './NoticeMessage'
+
 const OurToggle = () => import('@/components/OurToggle')
 
-let VueEditor
+let VueEditor, htmlEditButton
 
 if (process.client) {
+  htmlEditButton = require('quill-html-edit-button').htmlEditButton
   VueEditor = require('vue2-editor').VueEditor
+  const Quill = require('vue2-editor').Quill
+  Quill.register('modules/htmlEditButton', htmlEditButton)
 }
 
 export default {
@@ -650,7 +654,12 @@ export default {
     return {
       groupid: null,
       uploadingProfile: false,
-      editingDescription: false
+      editingDescription: false,
+      editorOptions: {
+        modules: {
+          htmlEditButton: {}
+        }
+      }
     }
   },
   computed: {

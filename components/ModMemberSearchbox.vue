@@ -24,7 +24,8 @@ export default {
   props: {
     groupid: {
       type: Number,
-      required: true
+      required: false,
+      default: null
     },
     disabled: {
       type: Boolean,
@@ -53,8 +54,7 @@ export default {
       this.$nextTick(() => {
         const url =
           '/modtools/members/approved/search/' +
-          this.groupid +
-          '/' +
+          (this.groupid ? this.groupid + '/' : '') +
           this.term.trim()
         this.$router.push(url)
       })

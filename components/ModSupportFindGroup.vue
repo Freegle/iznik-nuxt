@@ -15,7 +15,7 @@
         {{ group.namedisplay }}
       </h4>
       <div class="d-flex">
-        <p>TODO Make toggles work from here?</p>
+        <p>TODO MT Make toggles work from here?</p>
         <OurToggle
           :value="(Boolean)(group.publish)"
           :height="36"
@@ -96,7 +96,7 @@
         CGA
       </h4>
       <b-textarea v-model="group.cga" rows="4" class="mb-2" />
-      <p>TODO Save updates to CGA and DPA</p>
+      <p>TODO MT Save updates to CGA and DPA</p>
       <b-btn variant="white" disabled>
         Save Update
       </b-btn>
@@ -110,7 +110,6 @@
       <h4 class="mt-2">
         Volunteers
       </h4>
-      <p>TODO Make group toggle work from here</p>
       <OurToggle
         :value="(Boolean)(!group.mentored)"
         :height="36"
@@ -120,8 +119,8 @@
         readonly
         class="mr-2"
       />
-      <p>TODO Allow changing of role, plus also on members page</p>
-      <ModSupportFindGroupVolunteer v-for="volunteer in sortedVolunteers" :key="'volunteer-' + volunteer.id" :volunteer="volunteer" />
+      <b-img-lazy v-if="fetchingVolunteers" src="~/static/loader.gif" alt="Loading" class="d-block" />
+      <ModSupportFindGroupVolunteer v-for="volunteer in sortedVolunteers" :key="'volunteer-' + volunteer.id" :volunteer="volunteer" :groupid="group.id " />
     </div>
   </div>
 </template>
@@ -140,7 +139,8 @@ export default {
   },
   data: function() {
     return {
-      searchgroup: null
+      searchgroup: null,
+      fetchingVolunteers: false
     }
   },
   computed: {
@@ -223,6 +223,7 @@ export default {
       })
 
       // And the list of volunteers
+      this.fetchingVolunteers = true
       this.$store.dispatch('members/clear')
 
       this.$store.dispatch('members/fetchMembers', {
@@ -233,6 +234,8 @@ export default {
         limit: 1000,
         filter: 2
       })
+
+      this.fetchingVolunteers = false
     }
   },
   async mounted() {
@@ -243,7 +246,7 @@ export default {
   },
   methods: {
     canonGroupName(name) {
-      return name.toLowerCase().replace(/-|_| /g, '')
+      return name ? name.toLowerCase().replace(/-|_| /g, '') : null
     }
   }
 }

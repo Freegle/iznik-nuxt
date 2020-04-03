@@ -94,5 +94,29 @@ export const actions = {
       id: params.id,
       polygon: true
     })
+  },
+
+  async add({ commit }, params) {
+    const id = await this.$api.group.add({
+      grouptype: 'Freegle',
+      action: 'Create',
+      name: params.nameshort
+    })
+
+    this.$api.group.patch({
+      id: id,
+      namefull: params.namefull,
+      publish: 0,
+      polyofficial: params.cga,
+      poly: params.dpa,
+      lat: params.lat,
+      lng: params.lng,
+      onyahoo: 0,
+      onhere: 1,
+      licenserequired: 0,
+      showonyahoo: 0
+    })
+
+    return id
   }
 }

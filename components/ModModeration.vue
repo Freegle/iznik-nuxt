@@ -23,8 +23,12 @@ export default {
       get() {
         return this.membership.ourpostingstatus || 'MODERATED'
       },
-      set(val) {
-        // TODO
+      async set(val) {
+        await this.$store.dispatch('user/edit', {
+          id: this.user.id,
+          groupid: this.membership.groupid,
+          ourPostingStatus: val
+        })
       }
     },
     options() {

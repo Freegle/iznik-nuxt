@@ -15,6 +15,10 @@ export const mutations = {
 
   clear(state) {
     state.list = {}
+  },
+
+  clearOne(state, id) {
+    Vue.delete(state.list, id)
   }
 }
 
@@ -41,18 +45,20 @@ export const actions = {
   },
 
   async delete({ commit, getters, dispatch }, params) {
-    await this.$api.locations.del(params.id)
-    await dispatch('fetch')
+    await this.$api.location.del(params.id, params.groupid)
+    // Server doesn't support fetching of an individual location so we don't fetch.
+    commit('clearOne', params.id)
   },
 
   async add({ commit, getters, dispatch }, params) {
-    const { id } = await this.$api.locations.add(params)
-    await dispatch('fetch', { id })
+    const { id } = await this.$api.location.add(params)
+
+    // Server doesn't support fetching of an individual location so we don't fetch.
     return id
   },
 
   async update({ commit, getters, dispatch }, params) {
-    await this.$api.locations.update(params)
-    await dispatch('fetch', { id: params.id })
+    await this.$api.location.update(params)
+    // Server doesn't support fetching of an individual location so we don't fetch.
   }
 }

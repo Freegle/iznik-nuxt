@@ -27,12 +27,18 @@
       </b-row>
     </b-card-header>
     <b-card-body v-if="expanded" class="p-1">
+      <NoticeMessage v-if="user.systemrole === 'Admin'" class="mb-2">
+        This user has admin rights.
+      </NoticeMessage>
+      <NoticeMessage v-if="user.systemrole === 'Support'" class="mb-2">
+        This user has support rights.
+      </NoticeMessage>
       <ModSpammer v-if="user.spammer" class="mb-2" :user="user" />
       <ModComments :user="user" />
 
       <div class="d-flex flex-wrap">
         <b-btn variant="white" class="mr-2 mb-1" @click="spamReport">
-          <v-icon name="ban" /> Scammer
+          <v-icon name="ban" /> Spammer
         </b-btn>
         <b-btn variant="white" class="mr-2 mb-1" @click="purge">
           <v-icon name="trash-alt" /> Purge
@@ -103,10 +109,10 @@
       <h3 class="mt-2">
         Memberships
       </h3>
-      <!--      TODO Show if banned-->
+      <!--      TODO MT POSTLAUNCH Show if banned-->
       <div v-if="memberships && memberships.length">
         <div v-for="membership in memberships" :key="'membership-' + membership.id">
-          <ModSupportMembership :membership="membership" />
+          <ModSupportMembership :membership="membership" :userid="user.id" />
         </div>
         <b-btn v-if="!showAllMemberships && membershipsUnshown" variant="white" class="mt-1" @click="showAllMemberships = true">
           Show +{{ membershipsUnshown }}
@@ -234,11 +240,13 @@ import ModMemberLogins from './ModMemberLogins'
 import ModComments from './ModComments'
 import ModSpammerReport from './ModSpammerReport'
 import SpinButton from './SpinButton'
+import NoticeMessage from './NoticeMessage'
 
 const SHOW = 3
 
 export default {
   components: {
+    NoticeMessage,
     SpinButton,
     ModSpammerReport,
     ModComments,

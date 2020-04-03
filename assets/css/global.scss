@@ -149,6 +149,10 @@ button {
   border-radius : .2rem;
 }
 
+.card-header-tabs li a {
+  border: 1px lightgrey solid !important;
+}
+
 .nodecor {
   text-decoration: none !important;
   color: $color-black !important;

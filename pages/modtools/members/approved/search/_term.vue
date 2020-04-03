@@ -3,10 +3,9 @@
     <client-only>
       <div class="d-flex justify-content-between">
         <GroupSelect v-model="groupid" modonly />
-        <ModMemberTypeSelect v-model="filter" />
-        <ModMemberSearchbox v-model="search" :groupid="groupid" />
+        <ModMemberSearchbox v-model="search" />
       </div>
-      <div v-if="groupid">
+      <div>
         <div v-for="member in visibleMembers" :key="'memberlist-' + member.id" class="p-0 mt-2">
           <ModMember :member="member" />
         </div>
@@ -15,7 +14,7 @@
           There are no members at the moment.
         </NoticeMessage>
 
-        <infinite-loading :key="'infinite-' + groupid + '-' + filter" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
+        <infinite-loading :key="'infinite-' + groupid" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
           <span slot="no-results" />
           <span slot="no-more" />
           <span slot="spinner">
@@ -23,48 +22,45 @@
           </span>
         </infinite-loading>
       </div>
-      <NoticeMessage v-else variant="info" class="mt-2">
-        Please select a community or search for someone across all your communities.
-      </NoticeMessage>
     </client-only>
   </div>
 </template>
 <script>
-import ModMember from '../../../../components/ModMember'
-import NoticeMessage from '../../../../components/NoticeMessage'
-import ModMemberSearchbox from '../../../../components/ModMemberSearchbox'
-import ModMemberTypeSelect from '../../../../components/ModMemberTypeSelect'
+import ModMember from '@/components/ModMember'
+import NoticeMessage from '@/components/NoticeMessage'
 import loginRequired from '@/mixins/loginRequired'
 import modMembersPage from '@/mixins/modMembersPage'
-import createGroupRoute from '@/mixins/createGroupRoute'
+import ModMemberSearchbox from '@/components/ModMemberSearchbox'
 
 export default {
-  components: {
-    ModMemberTypeSelect,
-    ModMemberSearchbox,
-    NoticeMessage,
-    ModMember
-  },
+  components: { ModMemberSearchbox, NoticeMessage, ModMember },
   layout: 'modtools',
-  mixins: [
-    loginRequired,
-    createGroupRoute('modtools/members/approved'),
-    modMembersPage
-  ],
+  mixins: [loginRequired, modMembersPage],
   data: function() {
     return {
       collection: 'Approved',
-      search: null,
-      filter: '0'
+      groupid: null,
+      search: null
     }
   },
   watch: {
+    groupid(newVal) {
+      if (newVal) {
+        this.$router.push(
+          '/modtools/members/approved/search/' + newVal + '/' + this.search
+        )
+      }
+    },
     search(newVal) {
       if (!newVal) {
         // Cleared box.
         this.$router.push('/modtools/members/approved/' + this.groupid)
       }
     }
+  },
+  created() {
+    this.groupid = parseInt(this.$route.params.id)
+    this.search = this.$route.params.term
   }
 }
 </script>

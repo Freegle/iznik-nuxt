@@ -31,7 +31,7 @@
             <v-icon name="pen" /><span class="d-none d-sm-inline"> Edit</span>
           </b-btn>
         </div>
-        <!--        TODO Duplicates, related-->
+        <!--        TODO MT Duplicates, related-->
       </b-card-header>
       <b-card-body class="p-1 p-md-2">
         <b-row>
@@ -161,11 +161,11 @@
                 {{ email.email }} <v-icon v-if="email.preferred" name="start" />
               </div>
             </div>
-            <ModMemberActions v-if="showActions" :id="message.fromuser.id" :groupid="message.groups[0].groupid" />
+            <ModMemberActions v-if="showActions" :userid="message.fromuser.id" :groupid="message.groups[0].groupid" />
           </b-col>
         </b-row>
       </b-card-body>
-      <b-card-footer>
+      <b-card-footer v-if="!noactions">
         <ModMessageButtons v-if="!editing" :message="message" :modconfig="modconfig" :editreview="editreview" />
         <b-btn v-if="editing" variant="white" @click="editing = false">
           <v-icon name="times" /> Cancel
@@ -227,6 +227,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    noactions: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
@@ -250,14 +255,19 @@ export default {
       return this.hasCollection('Spam')
     },
     typeOptions() {
-      // TODO Per group keywords
       return [
         {
           value: 'Offer',
-          text: 'OFFER'
+          text:
+            this.group && this.group.settings && this.group.settings.keywords
+              ? this.group.settings.keywords.offer
+              : 'OFFER'
         },
         {
-          value: 'Wanted',
+          value:
+            this.group && this.group.settings && this.group.settings.keywords
+              ? this.group.settings.keywords.wanted
+              : 'Wanted',
           text: 'WANTED'
         }
       ]
@@ -267,6 +277,11 @@ export default {
     },
     eBody() {
       return twem.twem(this.$twemoji, this.message.textbody)
+    },
+    group() {
+      return this.groupid
+        ? this.$store.getters['auth/groupById'](this.groupid)
+        : null
     },
     groupid() {
       return this.message.groups && this.message.groups.length > 0
@@ -303,7 +318,7 @@ export default {
     subjectClass() {
       let ret = 'text-success'
 
-      if (this.modconfig.coloursubj) {
+      if (this.modconfig && this.modconfig.coloursubj) {
         ret = this.message.subject.match(this.modconfig.subjreg)
           ? 'text-success'
           : 'text-danger'
@@ -431,7 +446,7 @@ export default {
         groupid: this.groupid
       }
       params[e.param] = e.val
-      this.$store.dispatch('members/patch', params)
+      this.$store.dispatch('members/updateById', params)
     },
 
     async toggleMail() {

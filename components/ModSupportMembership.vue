@@ -19,9 +19,12 @@
             </div>
           </b-col>
           <b-col cols="6" md="4">
-            <b-btn variant="white" size="sm">
-              Remove
-            </b-btn>
+            <div class="d-flex flex-column justify-content-between">
+              <ModRole :userid="userid" :groupid="membership.id" :role="membership.role" />
+              <div>
+                <SpinButton variant="white" class="mt-1" :handler="remove" name="trash-alt" label="Remove" />
+              </div>
+            </div>
           </b-col>
         </b-row>
         <div class="d-flex flex-wrap pt-1">
@@ -98,21 +101,65 @@
   </div>
 </template>
 <script>
+import ModRole from './ModRole'
+import SpinButton from './SpinButton'
 const OurToggle = () => import('~/components/OurToggle')
 
 export default {
-  components: { OurToggle },
+  components: { SpinButton, ModRole, OurToggle },
   props: {
     membership: {
       type: Object,
       required: true
+    },
+    userid: {
+      type: Number,
+      required: true
     }
   },
   methods: {
-    changeEvents() {},
-    changeVolunteering() {},
-    changeFrequency() {},
-    changePostingStatus() {}
+    async changeEvents(newval) {
+      const params = {
+        userid: this.userid,
+        groupid: this.membership.id,
+        eventsallowed: newval.value
+      }
+
+      await this.$store.dispatch('members/update', params)
+    },
+    async changeVolunteering(newval) {
+      const params = {
+        userid: this.userid,
+        groupid: this.membership.id,
+        volunteeringallowed: newval.value
+      }
+
+      await this.$store.dispatch('members/update', params)
+    },
+    async changeFrequency(newval) {
+      const params = {
+        userid: this.userid,
+        groupid: this.membership.id,
+        emailfrequency: newval.value
+      }
+
+      await this.$store.dispatch('members/update', params)
+    },
+    async changePostingStatus(newval) {
+      const params = {
+        userid: this.userid,
+        groupid: this.membership.id,
+        ourpostingstatus: newval.value
+      }
+
+      await this.$store.dispatch('members/update', params)
+    },
+    remove() {
+      this.$store.dispatch('members/remove', {
+        userid: this.userid,
+        groupid: this.groupid
+      })
+    }
   }
 }
 </script>
