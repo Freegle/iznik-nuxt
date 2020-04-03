@@ -576,9 +576,16 @@ export default {
     relevantallowed: {
       // This is 1/0 in the model whereas we want Boolean.
       set(val) {
+        console.log('Set relevant allowed', val)
         Vue.set(this.me, 'relevantallowed', val ? 1 : 0)
       },
       get() {
+        console.log(
+          'Get relevantallowed',
+          this.me.relevantallowed,
+          this.me,
+          Boolean(this.me.relevantallowed)
+        )
         return Boolean(this.me.relevantallowed)
       }
     },
