@@ -14,4 +14,9 @@ export default class GroupAPI extends BaseAPI {
   async patch(params) {
     await this.$patch('/group', params)
   }
+
+  async add(params) {
+    const { id } = await this.$post('/group', params)
+    return id
+  }
 }

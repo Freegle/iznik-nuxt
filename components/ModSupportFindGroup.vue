@@ -243,7 +243,7 @@ export default {
   },
   methods: {
     canonGroupName(name) {
-      return name.toLowerCase().replace(/-|_| /g, '')
+      return name ? name.toLowerCase().replace(/-|_| /g, '') : null
     }
   }
 }
