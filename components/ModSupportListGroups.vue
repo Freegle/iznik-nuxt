@@ -6,6 +6,9 @@
         Here you can see info about all Freegle groups. Click on the column headings to sort.  Click on the dropdown
         arrow to filter.
       </p>
+      <p>
+        Groups with the ID in light blue are mentor caretaker groups.
+      </p>
       <hot-table
         ref="hot"
         width="100%"
@@ -69,7 +72,8 @@ export default {
       columns: [
         {
           data: 'id',
-          type: 'numeric'
+          type: 'numeric',
+          renderer: this.colourMentor
         },
         {
           data: 'nameshort',
@@ -192,6 +196,24 @@ export default {
         column,
         prop,
         Boolean(parseInt(value)),
+        cellProperties
+      )
+    },
+    colourMentor(hotInstance, td, row, column, prop, value, cellProperties) {
+      const group = this.$store.getters['group/get'](value)
+
+      if (group.mentored) {
+        td.style.backgroundColor = 'lightblue'
+      }
+
+      Handsontable.renderers.NumericRenderer.call(
+        this,
+        hotInstance,
+        td,
+        row,
+        column,
+        prop,
+        parseInt(value),
         cellProperties
       )
     },
