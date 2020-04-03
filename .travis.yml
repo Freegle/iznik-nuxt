@@ -23,8 +23,6 @@ before_install:
 
 - sed -i '' "s,iosDeveloper,$iosDeveloper,g" mobile/ExportOptionsDebug.plist
 - sed -i '' "s,iosDeveloper,$iosDeveloper,g" mobile/ExportOptionsRelease.plist
-- ls -l mobile/Export*
-- cat mobile/Export*
 
 - chmod +x mobile/add-key.sh
 - ./mobile/add-key.sh
@@ -54,11 +52,11 @@ script:
 - ln -s ../iznik-nuxt/dist www
 - cordova platform rm ios
 - cordova platform add ios
-- sed -i '' "/ProvisioningStyle = Automatic;/a\DevelopmentTeam = GMYU3K9D84;" platforms/ios/Freegle.xcodeproj/project.pbxproj
-- sed -i '' "/WK_WEB_VIEW_ONLY = 1;/a\CODE_SIGN_IDENTITY = 'iPhone Distribution';" platforms/ios/Freegle.xcodeproj/project.pbxproj
-- sed -i '' "/WK_WEB_VIEW_ONLY = 1;/a\CODE_SIGN_STYLE = Manual;" platforms/ios/Freegle.xcodeproj/project.pbxproj
-- sed -i '' "/WK_WEB_VIEW_ONLY = 1;/a\PROVISIONING_PROFILE_SPECIFIER = 'Freegle adhoc 0320';" platforms/ios/Freegle.xcodeproj/project.pbxproj
-- sed -i '' "/WK_WEB_VIEW_ONLY = 1;/a\DEVELOPMENT_TEAM = GMYU3K9D84;" platforms/ios/Freegle.xcodeproj/project.pbxproj
+- sed -i '' "/ProvisioningStyle = Automatic;/& DevelopmentTeam = GMYU3K9D84;" platforms/ios/Freegle.xcodeproj/project.pbxproj
+- sed -i '' "/WK_WEB_VIEW_ONLY = 1;/& CODE_SIGN_IDENTITY = 'iPhone Distribution';" platforms/ios/Freegle.xcodeproj/project.pbxproj
+- sed -i '' "/WK_WEB_VIEW_ONLY = 1;/& CODE_SIGN_STYLE = Manual;" platforms/ios/Freegle.xcodeproj/project.pbxproj
+- sed -i '' "/WK_WEB_VIEW_ONLY = 1;/& PROVISIONING_PROFILE_SPECIFIER = 'Freegle adhoc 0320';" platforms/ios/Freegle.xcodeproj/project.pbxproj
+- sed -i '' "/WK_WEB_VIEW_ONLY = 1;/& DEVELOPMENT_TEAM = GMYU3K9D84;" platforms/ios/Freegle.xcodeproj/project.pbxproj
 - cat platforms/ios/Freegle.xcodeproj/project.pbxproj
 # https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
 - cordova build --debug --device -- --codeSignIdentity="Apple Development" --developmentTeam="$iosDeveloper" --packageType="development" --automaticProvisioning="false" --provisioningProfile=="Freegle adhoc 0320" || true
