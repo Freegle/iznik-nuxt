@@ -37,7 +37,6 @@ export default {
   },
   methods: {
     async change(newval) {
-      console.log('Changed', newval)
       const params = {
         userid: this.userid,
         groupid: this.groupid,
