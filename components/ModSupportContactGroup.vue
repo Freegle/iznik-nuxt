@@ -162,7 +162,12 @@ export default {
       return this.from && this.groupid > 0 && this.subject && this.text
     },
     alerts() {
-      return Object.values(this.$store.getters['alert/list'])
+      const alerts = Object.values(this.$store.getters['alert/list'])
+      alerts.sort(function(a, b) {
+        return new Date(b.created).getTime() - new Date(a.created).getTime()
+      })
+
+      return alerts
     }
   },
   methods: {
