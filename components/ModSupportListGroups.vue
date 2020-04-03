@@ -302,4 +302,10 @@ export default {
 input {
   max-width: 300px;
 }
+
+::v-deep .handsontable table thead th,
+::v-deep .handsontable table tbody td {
+  white-space: pre-line;
+  max-width: 150px;
+}
 </style>
