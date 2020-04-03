@@ -1,5 +1,5 @@
 <template>
-  <b-button :variant="variant" :disabled="disabled" @click="click">
+  <b-button :variant="variant" :disabled="disabled" :size="size" @click="click">
     <v-icon v-if="done" name="check" :class="spinclass" />
     <v-icon v-else-if="doing" name="sync" :class="'fa-spin ' + spinclass" />
     <v-icon v-else :name="name" />&nbsp;{{ label }}
@@ -39,6 +39,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    size: {
+      type: Boolean,
+      required: false,
+      default: null
     }
   },
   data: function() {
