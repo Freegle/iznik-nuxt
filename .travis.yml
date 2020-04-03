@@ -21,8 +21,8 @@ before_install:
 - tar xvf mobile/app-secrets.tar
 - ls -l
 
-- sed -i "s,iosDeveloper,$iosDeveloper,g" mobile/ExportOptionsDebug.plist
-- sed -i "s,iosDeveloper,$iosDeveloper,g" mobile/ExportOptionsRelease.plist
+- sed -i '' "s,iosDeveloper,$iosDeveloper,g" mobile/ExportOptionsDebug.plist
+- sed -i '' "s,iosDeveloper,$iosDeveloper,g" mobile/ExportOptionsRelease.plist
 - ls -l mobile/Export*
 - cat mobile/Export*
 
@@ -54,11 +54,11 @@ script:
 - ln -s ../iznik-nuxt/dist www
 - cordova platform rm ios
 - cordova platform add ios
-- sed -i "/ProvisioningStyle = Automatic;/aDevelopmentTeam = GMYU3K9D84;" platforms/ios/Freegle.xcodeproj/project.pbxproj
-- sed -i "/WK_WEB_VIEW_ONLY = 1;/aCODE_SIGN_IDENTITY = 'iPhone Distribution';" platforms/ios/Freegle.xcodeproj/project.pbxproj
-- sed -i "/WK_WEB_VIEW_ONLY = 1;/aCODE_SIGN_STYLE = Manual;" platforms/ios/Freegle.xcodeproj/project.pbxproj
-- sed -i "/WK_WEB_VIEW_ONLY = 1;/aPROVISIONING_PROFILE_SPECIFIER = 'Freegle adhoc 0320';" platforms/ios/Freegle.xcodeproj/project.pbxproj
-- sed -i "/WK_WEB_VIEW_ONLY = 1;/aDEVELOPMENT_TEAM = GMYU3K9D84;" platforms/ios/Freegle.xcodeproj/project.pbxproj
+- sed -i '' "/ProvisioningStyle = Automatic;/aDevelopmentTeam = GMYU3K9D84;" platforms/ios/Freegle.xcodeproj/project.pbxproj
+- sed -i '' "/WK_WEB_VIEW_ONLY = 1;/aCODE_SIGN_IDENTITY = 'iPhone Distribution';" platforms/ios/Freegle.xcodeproj/project.pbxproj
+- sed -i '' "/WK_WEB_VIEW_ONLY = 1;/aCODE_SIGN_STYLE = Manual;" platforms/ios/Freegle.xcodeproj/project.pbxproj
+- sed -i '' "/WK_WEB_VIEW_ONLY = 1;/aPROVISIONING_PROFILE_SPECIFIER = 'Freegle adhoc 0320';" platforms/ios/Freegle.xcodeproj/project.pbxproj
+- sed -i '' "/WK_WEB_VIEW_ONLY = 1;/aDEVELOPMENT_TEAM = GMYU3K9D84;" platforms/ios/Freegle.xcodeproj/project.pbxproj
 - cat platforms/ios/Freegle.xcodeproj/project.pbxproj
 # https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
 - cordova build --debug --device -- --codeSignIdentity="Apple Development" --developmentTeam="$iosDeveloper" --packageType="development" --automaticProvisioning="false" --provisioningProfile=="Freegle adhoc 0320" || true
