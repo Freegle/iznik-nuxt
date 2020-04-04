@@ -19,7 +19,6 @@ before_install:
 - openssl aes-256-cbc -K $encrypted_a57fb8741d35_key -iv $encrypted_a57fb8741d35_iv
   -in mobile/app-secrets.tar.enc -out mobile/app-secrets.tar -d
 - tar xvf mobile/app-secrets.tar
-- ls -l
 
 - sed -i '' "s,iosDeveloper,$iosDeveloper,g" mobile/ExportOptionsDebug.plist
 - sed -i '' "s,iosDeveloper,$iosDeveloper,g" mobile/ExportOptionsRelease.plist
@@ -52,21 +51,43 @@ script:
 - ln -s ../iznik-nuxt/dist www
 - cordova platform rm ios
 - cordova platform add ios
+
+# Build debug build
 - sed -i '' "s/ProvisioningStyle = Automatic;/& DevelopmentTeam = GMYU3K9D84;/" platforms/ios/Freegle.xcodeproj/project.pbxproj
 - sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& CODE_SIGN_IDENTITY = 'iPhone Distribution';/" platforms/ios/Freegle.xcodeproj/project.pbxproj
 - sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& CODE_SIGN_STYLE = Manual;/" platforms/ios/Freegle.xcodeproj/project.pbxproj
 - sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& PROVISIONING_PROFILE_SPECIFIER = 'Freegle adhoc 0320';/" platforms/ios/Freegle.xcodeproj/project.pbxproj
 - sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& DEVELOPMENT_TEAM = GMYU3K9D84;/" platforms/ios/Freegle.xcodeproj/project.pbxproj
-- cat platforms/ios/Freegle.xcodeproj/project.pbxproj
 # https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
 - cordova build --debug --device -- --codeSignIdentity="Apple Development" --developmentTeam="$iosDeveloper" --packageType="development" --automaticProvisioning="false" --provisioningProfile=="Freegle adhoc 0320" || true
 - cp ../iznik-nuxt/mobile/ExportOptionsDebug.plist .
 - cd platforms/ios
 - xcodebuild -exportArchive -archivePath Freegle.xcarchive -exportOptionsPlist ../../ExportOptionsDebug.plist -exportPath build/device -allowProvisioningUpdates
-- ls -l build/device
+- cp build/device/Freegle.ipa ../../../iznik-nuxt/releases/Freegle-app-$MOBILE_VERSION-debug-$(date +'%Y%m%d%H%M%S').ipa
+- cd ../..
+
+# Build release build
+#- sed -i '' "s/ProvisioningStyle = Automatic;/& DevelopmentTeam = GMYU3K9D84;/" platforms/ios/Freegle.xcodeproj/project.pbxproj
+#- sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& CODE_SIGN_IDENTITY = 'iPhone Distribution';/" platforms/ios/Freegle.xcodeproj/project.pbxproj
+#- sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& CODE_SIGN_STYLE = Manual;/" platforms/ios/Freegle.xcodeproj/project.pbxproj
+#- sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& PROVISIONING_PROFILE_SPECIFIER = 'Freegle adhoc 0320';/" platforms/ios/Freegle.xcodeproj/project.pbxproj
+#- sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& DEVELOPMENT_TEAM = GMYU3K9D84;/" platforms/ios/Freegle.xcodeproj/project.pbxproj
+- cat platforms/ios/Freegle.xcodeproj/project.pbxproj
+# https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
+- cordova build --release --device -- --codeSignIdentity="Apple Development" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile=="Freegle 0320" || true
+- cp ../iznik-nuxt/mobile/ExportOptionsRelease.plist .
+- cd platforms/ios
+- xcodebuild -exportArchive -archivePath Freegle.xcarchive -exportOptionsPlist ../../ExportOptionsRelease.plist -exportPath build/device -allowProvisioningUpdates
 - cp build/device/Freegle.ipa ../../../iznik-nuxt/releases/Freegle-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').ipa
 - cd ../..
+
+
 - cd ../iznik-nuxt
+
+
+
+
+
 - ls -l releases
 
 after_script:
@@ -75,7 +96,7 @@ after_script:
 before_deploy:
 - git config --local user.name "$gitusername"
 - git config --local user.email "$gitemail"
-- export TRAVIS_TAG=Travis-builds-$MOBILE_VERSION-$MODTOOLS_VERSION-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)
+- export TRAVIS_TAG=Travis-builds-ios-$MOBILE_VERSION-$MODTOOLS_VERSION-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)
 - env | grep '^TRAVIS_TAG='
 - git tag $TRAVIS_TAG
 
