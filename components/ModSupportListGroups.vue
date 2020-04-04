@@ -12,7 +12,7 @@
       <hot-table
         ref="hot"
         width="100%"
-        height="600px"
+        :height="height + 'px'"
         :data="groups"
         :col-headers="headers"
         license-key="non-commercial-and-evaluation"
@@ -48,6 +48,7 @@ export default {
     return {
       busy: false,
       fetched: false,
+      height: 600,
       headers: [
         'ID',
         'Short Name',
@@ -172,6 +173,14 @@ export default {
       return ret
     }
   },
+  mounted() {
+    this.checkHeight()
+  },
+  beforeDestroy() {
+    if (this.heightTimer) {
+      clearTimeout(this.heightTimer)
+    }
+  },
   methods: {
     async fetchGroups() {
       await this.$store.dispatch('group/list', {
@@ -294,6 +303,19 @@ export default {
       // Freeze the name
       const plugin = inst.getPlugin('ManualColumnFreeze')
       plugin.freezeColumn(1)
+    },
+    checkHeight() {
+      if (process.client) {
+        const height = Math.floor(window.innerHeight)
+
+        if (this.$refs.hot) {
+          const rect = this.$refs.hot.$el.getBoundingClientRect()
+
+          this.height = height - rect.top - 50
+        }
+
+        this.heightTimer = setTimeout(this.checkHeight, 100)
+      }
     }
   }
 }
