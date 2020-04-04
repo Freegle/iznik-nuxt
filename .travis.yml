@@ -81,13 +81,7 @@ script:
 - cp build/device/Freegle.ipa ../../../iznik-nuxt/releases/Freegle-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').ipa
 - cd ../..
 
-
 - cd ../iznik-nuxt
-
-
-
-
-
 - ls -l releases
 
 after_script:
