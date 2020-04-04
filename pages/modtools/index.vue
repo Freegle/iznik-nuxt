@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="me">
     <h2>Hello, {{ me.displayname }}</h2>
     <p>Here's your dashboard, where you can see what your communities have been doing recently.</p>
     <ModMissingFacebook />
