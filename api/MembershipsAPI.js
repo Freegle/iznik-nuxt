@@ -107,4 +107,8 @@ export default class MembershipsAPI extends BaseAPI {
       groupid: groupid
     })
   }
+
+  happinessReviewed(params) {
+    return this.$post('/memberships', params)
+  }
 }

@@ -114,6 +114,9 @@
               <ModMenuItemNav name="Newsletter" :count="['newsletterstories']" link="/modtools/members/newsletter" />
             </b-dropdown-item>
             <b-dropdown-item>
+              <ModMenuItemNav name="Feedback" link="/modtools/members/feedback" :othercount="['happiness']" />
+            </b-dropdown-item>
+            <b-dropdown-item>
               <ModMenuItemNav name="Publicity" :count="['socialactions']" link="/modtools/publicity" />
             </b-dropdown-item>
             <b-dropdown-item>
@@ -173,7 +176,7 @@
           <ModMenuItemLeft link="/modtools/members/related" name="Related" :count="['relatedmembers']" indent />
           <ModMenuItemLeft link="/modtools/members/stories" name="Stories" indent :count="['stories']" />
           <ModMenuItemLeft v-if="hasPermissionNewsletter" link="/modtools/members/newsletter" name="Newsletter" indent :count="['newsletterstories']" />
-          <ModMenuItemLeft link="/modtools/happiness" name="Happiness TODO" indent />
+          <ModMenuItemLeft link="/modtools/members/feedback" name="Feedback" indent :othercount="['happiness']" />
           <hr>
           <hr>
           <ModMenuItemLeft link="/modtools/communityevents" name="Events" :count="['pendingevents']" />

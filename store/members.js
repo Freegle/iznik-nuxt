@@ -446,5 +446,14 @@ export const actions = {
     await this.$api.memberships.release(params.userid, params.groupid)
     params.me = rootGetters['auth/user']
     commit('release', params)
+  },
+
+  async happinessReviewed({ dispatch, commit, rootGetters }, params) {
+    await this.$api.memberships.happinessReviewed({
+      userid: params.userid,
+      groupid: params.groupid,
+      happinessid: params.happinessid,
+      action: 'HappinessReviewed'
+    })
   }
 }

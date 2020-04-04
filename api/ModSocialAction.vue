@@ -51,14 +51,7 @@ export default {
       const ret = []
 
       // Cloning to avoid some strange issues which cause loops.
-      let groups = cloneDeep(this.$store.getters['auth/groups'])
-
-      // Sort so we get the buttons in alphabetical order.
-      groups = groups.sort((a, b) => {
-        return a.namedisplay
-          .toLowerCase()
-          .localeCompare(b.namedisplay.toLowerCase())
-      })
+      const groups = cloneDeep(this.$store.getters['auth/groups'])
 
       this.item.uids.forEach(uid => {
         for (const group of groups) {
@@ -71,6 +64,13 @@ export default {
             })
           }
         }
+      })
+
+      // Sort so we get the buttons in alphabetical order.
+      ret.sort((a, b) => {
+        return a.namedisplay
+          .toLowerCase()
+          .localeCompare(b.namedisplay.toLowerCase())
       })
 
       return ret
