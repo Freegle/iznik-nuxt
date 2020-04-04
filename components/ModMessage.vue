@@ -24,6 +24,7 @@
           <MessageHistory :message="message" modinfo display-message-link />
           <ModMessageDuplicate v-for="duplicate in duplicates" :key="'duplicate-' + duplicate.id" :message="duplicate" />
           <ModMessageCrosspost v-for="crosspost in crossposts" :key="'crosspost-' + crosspost.id" :message="crosspost" />
+          <ModMessageRelated v-for="related in message.related" :key="'related-' + related.id" :message="related" />
         </div>
         <div>
           <b-btn v-if="message.source === 'Email'" variant="white" @click="viewSource">
@@ -199,12 +200,14 @@ import ModComments from './ModComments'
 import ModMessageEmailModal from './ModMessageEmailModal'
 import ModMessageDuplicate from './ModMessageDuplicate'
 import ModMessageCrosspost from './ModMessageCrosspost'
+import ModMessageRelated from './ModMessageRelated'
 import twem from '~/assets/js/twem'
 import waitForRef from '@/mixins/waitForRef'
 
 export default {
   name: 'ModMessage',
   components: {
+    ModMessageRelated,
     ModMessageCrosspost,
     ModMessageDuplicate,
     ModMessageEmailModal,
