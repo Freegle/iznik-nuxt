@@ -18,7 +18,7 @@
       {{ alert.subject }}
     </b-col>
     <b-col cols="6" lg="2">
-      <b-btn variant="white" class="mr-1">
+      <b-btn variant="white" class="mr-1" @click="stats">
         Show Stats
       </b-btn>
       <b-btn variant="white" @click="details">
@@ -26,14 +26,16 @@
       </b-btn>
     </b-col>
     <ModAlertHistoryDetailsModal v-if="showDetails" :id="alert.id" ref="detailsModal" />
+    <ModAlertHistoryStatsModal v-if="showStats" :id="alert.id" ref="statsModal" />
   </b-row>
 </template>
 <script>
 import ModAlertHistoryDetailsModal from './ModAlertHistoryDetailsModal'
+import ModAlertHistoryStatsModal from './ModAlertHistoryStatsModal'
 import waitForRef from '@/mixins/waitForRef'
 
 export default {
-  components: { ModAlertHistoryDetailsModal },
+  components: { ModAlertHistoryStatsModal, ModAlertHistoryDetailsModal },
   mixins: [waitForRef],
   props: {
     alert: {
@@ -43,7 +45,8 @@ export default {
   },
   data: function() {
     return {
-      showDetails: false
+      showDetails: false,
+      showStats: false
     }
   },
   methods: {
@@ -52,6 +55,13 @@ export default {
 
       this.waitForRef('detailsModal', () => {
         this.$refs.detailsModal.show()
+      })
+    },
+    stats() {
+      this.showStats = true
+
+      this.waitForRef('statsModal', () => {
+        this.$refs.statsModal.show()
       })
     }
   }

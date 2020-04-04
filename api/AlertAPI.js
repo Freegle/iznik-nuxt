@@ -8,4 +8,8 @@ export default class AlertAPI extends BaseAPI {
   add(data) {
     return this.$put('/alert', data)
   }
+
+  record(data) {
+    return this.$post('/alert', data)
+  }
 }

@@ -36,7 +36,7 @@
     <label>
       To:
     </label>
-    <GroupSelect v-model="groupid" systemwide />
+    <GroupSelect v-model="groupid" systemwide all />
     <NoticeMessage v-if="groupid < 0" variant="danger" class="mt-2 mb-2">
       This will go to all groups.
     </NoticeMessage>
@@ -44,10 +44,10 @@
       Try hard?
     </label>
     <b-select v-model="tryhard">
-      <option value="false">
+      <option :value="false">
         Just mail primary email
       </option>
-      <option value="true">
+      <option :value="true">
         Mail all email addresses we know
       </option>
     </b-select>
@@ -55,10 +55,10 @@
       Confirm receipt
     </label>
     <b-select v-model="confirm">
-      <option value="false">
+      <option :value="false">
         Don't ask to click
       </option>
-      <option value="true">
+      <option :value="true">
         Ask them to click to confirm receipt
       </option>
     </b-select>
@@ -178,8 +178,8 @@ export default {
         subject: this.subject,
         text: this.text,
         html: this.html,
-        askclick: this.confirm,
-        tryhard: this.tryhard
+        askclick: this.confirm ? 1 : 0,
+        tryhard: this.tryhard ? 1 : 0
       })
     },
     async fetch() {

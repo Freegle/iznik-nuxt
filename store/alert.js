@@ -53,5 +53,12 @@ export const actions = {
     const { id } = await this.$api.alert.add(params)
     await dispatch('fetch', { id })
     return id
+  },
+
+  async record({ commit, getters, dispatch }, params) {
+    await this.$api.alert.record({
+      trackid: params.id,
+      action: 'clicked'
+    })
   }
 }
