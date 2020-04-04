@@ -93,11 +93,7 @@
       size="lg"
       :handler="send"
     />
-    <b-btn variant="white" size="lg" class="mt-2 mb-2 d-block" @click="fetch">
-      Show history
-    </b-btn>
-    <b-img v-if="busy" src="~/static/loader.gif" alt="Loading" class="d-block" />
-    <div v-else-if="alerts && alerts.length">
+    <div v-if="alerts && alerts.length">
       <b-row>
         <b-col cols="6" lg="2">
           <b>Created</b>
@@ -115,6 +111,10 @@
       </b-row>
       <ModAlertHistory v-for="alert in alerts" :key="'alert-' + alert.id" :alert="alert" />
     </div>
+    <b-img v-else-if="busy" src="~/static/loader.gif" alt="Loading" class="d-block" />
+    <b-btn v-else variant="white" size="lg" class="mt-2 mb-2 d-block" @click="fetch">
+      Show history
+    </b-btn>
   </div>
 </template>
 <script>
