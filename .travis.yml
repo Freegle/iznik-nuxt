@@ -59,21 +59,12 @@ script:
 - sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& DEVELOPMENT_TEAM = GMYU3K9D84;/" platforms/ios/Freegle.xcodeproj/project.pbxproj
 - cat platforms/ios/Freegle.xcodeproj/project.pbxproj
 # https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
-- cordova build --debug --device -- --codeSignIdentity="Apple Development" --developmentTeam="$iosDeveloper" --packageType="development" --automaticProvisioning="false" --provisioningProfile=="Freegle adhoc 0320" || true
-- cp ../iznik-nuxt/mobile/ExportOptionsDebug.plist .
-- cd platforms/ios
-- xcodebuild -exportArchive -archivePath Freegle.xcarchive -exportOptionsPlist ../../ExportOptionsDebug.plist -exportPath build/device -allowProvisioningUpdates
-- ls -l build/device
+- cordova build --debug --device -- --codeSignIdentity="Apple Development" --developmentTeam="$iosDeveloper" --packageType="development" --automaticProvisioning="false" --provisioningProfile=="Freegle adhoc 0320"
 
-#- cordova build --debug --device
-#- cordova build --debug --device -- --codeSignIdentity="iPhone Developer" --developmentTeam="$iosDeveloper" --packageType="development" 
-#  --iCloudContainerEnvironment="Development" --automaticProvisioning="true"
-# "provisioningProfile": "926c2bd6-8de9-4c2f-8407-1016d2d12954",
-# "packageType": "app-store"
-# cordova build --device --buildFlag="MYSETTING=myvalue" --buildFlag="MY_OTHER_SETTING=othervalue"
-#				"EMBEDDED_CONTENT_CONTAINS_SWIFT = YES",
-#				"ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES=NO",
-#				"LD_RUNPATH_SEARCH_PATHS = \"@executable_path/Frameworks\""
+#- cp ../iznik-nuxt/mobile/ExportOptionsDebug.plist .
+#- cd platforms/ios
+#- xcodebuild -exportArchive -archivePath Freegle.xcarchive -exportOptionsPlist ../../ExportOptionsDebug.plist -exportPath build/device -allowProvisioningUpdates
+#- ls -l build/device
 
 after_script:
 - rm -f "~/Library/MobileDevice/Provisioning Profiles/*.mobileprovision"
