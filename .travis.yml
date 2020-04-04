@@ -62,10 +62,28 @@ script:
 - cordova build --debug --device -- --codeSignIdentity="Apple Development" --developmentTeam="$iosDeveloper" --packageType="development" --automaticProvisioning="false" --provisioningProfile=="Freegle adhoc 0320" || true
 - cp ../iznik-nuxt/mobile/ExportOptionsDebug.plist .
 - cd platforms/ios
-- cat ../../ExportOptionsDebug.plist
 - xcodebuild -exportArchive -archivePath Freegle.xcarchive -exportOptionsPlist ../../ExportOptionsDebug.plist -exportPath build/device -allowProvisioningUpdates
 - ls -l build/device
+- cp build/device/Freegle.ipa ../../../iznik-nuxt/releases/Freegle-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').ipa
 - cd ../..
 
 after_script:
 - rm -f "~/Library/MobileDevice/Provisioning Profiles/*.mobileprovision"
+
+before_deploy:
+- git config --local user.name "$gitusername"
+- git config --local user.email "$gitemail"
+- export TRAVIS_TAG=Travis-builds-$MOBILE_VERSION-$MODTOOLS_VERSION-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)
+- env | grep '^TRAVIS_TAG='
+- git tag $TRAVIS_TAG
+
+deploy:
+  provider: releases
+  api_key:
+    secure: S+1f7ZdQf6C/dH8Cx0i/gtX1hko6xRE9my5j4Kvp9vc5K/frbQGWEM8eqKOmVAvVs+eoN6sFO+tv6mUyRZ4pFzOxxLlVSd0taEgf9NuIxrmclMbAa9f6TpA0g5QTZH0ARYZg5pr9gX4HpKlYlkoO0Roac8VK6d1yO2FFK5eN+KO3+NPCvSA0vIJip4BYTBKCzmDC/AmZWhlBaQSZUVpv5kiItiPO8jM5a5FE+KmDZ0bPBr6t41CFHTivJ5iKt+AfIkALa8er4WMteXCLI8yRt6T7jut8oIDGx5awCtve4v5LL+gTh39XSTdSsEyUCmP395W1CxXT6HjvIIVc4yvqmZ+3KEdM6MuayZZsHbcooqtEC5hht/OQ147eEpV0MZ+Ebn2as0wFcy4783KF9HxX3RppyA4ptVj91baBl99s1c8i11pti7i45dT82l5D71CDhwAfhtMG9CDfPvkHcb9q9J1jN8pYmi39h9iDJS7O7a1XbePJIM33yUrO9uq2w5Id9aIWBlyECMiPNZe1PqTlJlUzGbeSkvoKvj1TzUyiBCYMrJMQoRwAaaeZbR2NkeXGgKwCmMAAsQGHs0hbEDnIrRyp/0L+jyvkiZEiC0ffKYRdu5P2VOGi7DkDu0SCeChUW7dndzXLckMpPE7o92EWXkzXJmzqIt7JuTq08+ngyJU=
+  skip_cleanup: true
+  file_glob: true
+  file: ./releases/*.ipa
+  on:
+    repo: Freegle/iznik-nuxt
+    branch: app-ios
