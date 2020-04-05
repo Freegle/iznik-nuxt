@@ -351,6 +351,13 @@ export default {
   methods: {
     popup() {
       this.$store.dispatch('popupchats/popup', { id: this.chat.id })
+    },
+    hide() {
+      this.$store.dispatch('chats/hide', {
+        id: this.id
+      })
+
+      this.$router.push('/chats')
     }
   }
 }
