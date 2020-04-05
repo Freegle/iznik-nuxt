@@ -18,9 +18,9 @@ security unlock-keychain -p travis ios-build.keychain
 security set-keychain-settings -t 3600 -l ~/Library/Keychains/ios-build.keychain
 
 # Add certificates to keychain and allow codesign to access them
-security import mobile/AppleWWDRCA.cer -k ~/Library/Keychains/ios-build.keychain -T /usr/bin/codesign -T /usr/bin/productsign
-security import Freegle0320.cer -k ~/Library/Keychains/ios-build.keychain -T /usr/bin/codesign -T /usr/bin/productsign
-security import Freegle0320.p12 -k ~/Library/Keychains/ios-build.keychain -P $iossignkey -T /usr/bin/codesign -T /usr/bin/productsign
+security import mobile/AppleWWDRCA.cer -k ~/Library/Keychains/ios-build.keychain -T /usr/bin/codesign -T /usr/bin/xcrun
+security import Freegle0320.cer -k ~/Library/Keychains/ios-build.keychain -T /usr/bin/codesign -T /usr/bin/xcrun
+security import Freegle0320.p12 -k ~/Library/Keychains/ios-build.keychain -P $iossignkey -T /usr/bin/codesign -T /usr/bin/xcrun
 
 # https://stackoverflow.com/a/40870033/1972627
 security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k travis ios-build.keychain
