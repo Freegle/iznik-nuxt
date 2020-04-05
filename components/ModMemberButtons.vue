@@ -110,7 +110,7 @@
         variant="success"
         icon="envelope"
         leave
-        label="Reply"
+        label="Mail"
       />
       <ModMemberButton
         :member="member"
@@ -127,7 +127,7 @@
         label="Spammer"
       />
     </div>
-    <div v-if="!member.heldby" class="d-lg-inline">
+    <div v-if="!member.heldby" class="d-inline">
       <ModMemberButton
         v-for="stdmsg in filtered"
         :key="stdmsg.id"
