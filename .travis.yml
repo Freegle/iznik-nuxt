@@ -1,3 +1,4 @@
+# Based on https://dev.to/geojow/deploying-an-ios-app-with-travisci--testflight-1naa and others - thanks
 language: objective-c
 os: osx
 osx_image: xcode11.3
@@ -41,6 +42,7 @@ script:
 
 - mkdir releases
 
+# FREEGLE app
 - npm run fdapp
 - mkdir ../iznik-nuxt-app
 - cd ../iznik-nuxt-app
@@ -79,9 +81,52 @@ script:
 - cd platforms/ios
 - xcodebuild -exportArchive -archivePath Freegle.xcarchive -exportOptionsPlist ../../ExportOptionsRelease.plist -exportPath build/device -allowProvisioningUpdates
 - cp build/device/Freegle.ipa ../../../iznik-nuxt/releases/Freegle-ios-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').ipa
-- xcrun altool --upload-app --type ios --file "build/device/Freegle.ipa" --username $AppleUserId --password "$AppleAppSpecificPwd"
+- xcrun altool --upload-app --type ios --file "build/device/Freegle.ipa" --username $AppleUserId --password "$AppleAppSpecificPwd" || true
 - cd ../..
 
+# MODTOOLS app
+- npm run mtapp
+- mkdir ../iznik-nuxt-mt
+- cd ../iznik-nuxt-mt
+- ln -s ../iznik-nuxt/mobile/modtools/ios/config.xml config.xml
+- ln -s ../iznik-nuxt/mobile/modtools/ios/package.json package.json
+- ln -s ../iznik-nuxt/mobile/modtools/icons icons
+- ln -s ../iznik-nuxt/mobile/modtools/package-assets package-assets
+- ln -s ../iznik-nuxt/mobile/modtools/scripts scripts
+- cp ../iznik-nuxt/GoogleService-Info.plist GoogleService-Info.plist
+- ln -s ../iznik-nuxt/dist www
+- cordova platform rm ios
+- cordova platform add ios
+
+# Build debug build
+- sed -i '' "s/ProvisioningStyle = Automatic;/& DevelopmentTeam = GMYU3K9D84;/" platforms/ios/ModTools.xcodeproj/project.pbxproj
+- sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& CODE_SIGN_IDENTITY = 'iPhone Distribution';/" platforms/ios/ModTools.xcodeproj/project.pbxproj
+- sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& CODE_SIGN_STYLE = Manual;/" platforms/ios/ModTools.xcodeproj/project.pbxproj
+- sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& PROVISIONING_PROFILE_SPECIFIER = 'ModTools adhoc 0320';/" platforms/ios/ModTools.xcodeproj/project.pbxproj
+- sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& DEVELOPMENT_TEAM = GMYU3K9D84;/" platforms/ios/ModTools.xcodeproj/project.pbxproj
+# https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
+- cordova build --debug --device -- --codeSignIdentity="Apple Development" --developmentTeam="$iosDeveloper" --packageType="development" --automaticProvisioning="false" --provisioningProfile=="ModTools adhoc 0320" >buildlogdebug.txt || true
+# Sign properly: export as ipa
+- cp ../iznik-nuxt/mobile/ExportOptionsDebug.plist .
+- cd platforms/ios
+- xcodebuild -exportArchive -archivePath ModTools.xcarchive -exportOptionsPlist ../../ExportOptionsDebug.plist -exportPath build/device -allowProvisioningUpdates
+- cp build/device/ModTools.ipa ../../../iznik-nuxt/releases/ModTools-ios-app-$MODTOOLS_VERSION-debug-$(date +'%Y%m%d%H%M%S').ipa
+- cd ../..
+
+# Build release build
+- sed -i '' "s/ModTools adhoc 0320/ModTools 0320/" platforms/ios/ModTools.xcodeproj/project.pbxproj
+- cat platforms/ios/ModTools.xcodeproj/project.pbxproj
+# https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
+- cordova build --release --device -- --codeSignIdentity="Apple Development" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile=="ModTools 0320"  >buildlogrelease.txt || true
+# Sign properly: upload and not export
+- cp ../iznik-nuxt/mobile/ExportOptionsRelease.plist .
+- cd platforms/ios
+- xcodebuild -exportArchive -archivePath ModTools.xcarchive -exportOptionsPlist ../../ExportOptionsRelease.plist -exportPath build/device -allowProvisioningUpdates
+- cp build/device/ModTools.ipa ../../../iznik-nuxt/releases/ModTools-ios-app-$MODTOOLS_VERSION-release-$(date +'%Y%m%d%H%M%S').ipa
+- xcrun altool --upload-app --type ios --file "build/device/ModTools.ipa" --username $AppleUserId --password "$AppleAppSpecificPwd" || true
+- cd ../..
+
+# DONE
 - cd ../iznik-nuxt
 - ls -l releases
 
@@ -92,7 +137,7 @@ after_script:
 before_deploy:
 - git config --local user.name "$gitusername"
 - git config --local user.email "$gitemail"
-- export TRAVIS_TAG=Travis-builds-ios-$MOBILE_VERSION-$MODTOOLS_VERSION-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)
+- export TRAVIS_TAG=Travis-ios-builds-$MOBILE_VERSION-$MODTOOLS_VERSION-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)
 - env | grep '^TRAVIS_TAG='
 - git tag $TRAVIS_TAG
 
