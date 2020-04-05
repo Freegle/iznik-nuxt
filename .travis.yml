@@ -76,13 +76,15 @@ script:
 - cp ../iznik-nuxt/mobile/ExportOptionsRelease.plist .
 - cd platforms/ios
 - xcodebuild -exportArchive -archivePath Freegle.xcarchive -exportOptionsPlist ../../ExportOptionsRelease.plist -exportPath build/device -allowProvisioningUpdates
-# - cp build/device/Freegle.ipa ../../../iznik-nuxt/releases/Freegle-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').ipa
+- cp build/device/Freegle.ipa ../../../iznik-nuxt/releases/Freegle-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').ipa
+- xcrun altool --upload-app --type ios --file "build/device/Freegle.ipa" --username $AppleUserId --password "$AppleAppSpecificPwd"
 - cd ../..
 
 - cd ../iznik-nuxt
 - ls -l releases
 
 after_script:
+- security delete-keychain ios-build.keychain
 - rm -f "~/Library/MobileDevice/Provisioning Profiles/*.mobileprovision"
 
 before_deploy:
