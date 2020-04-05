@@ -8,6 +8,13 @@
         <h6 class="text-break mt-1 p-2 bg-white text-success border border-success rounded thick">
           {{ user.displayname }}
         </h6>
+        <ChatButton
+          v-if="user.userid !== myid"
+          :userid="user.userid"
+          size="sm"
+          title="Chat"
+          chattype="User2User"
+        />
       </div>
     </RichMarker>
   </div>
@@ -15,10 +22,12 @@
 
 <script>
 import RichMarker from './RichMarker.vue'
+import ChatButton from './ChatButton'
 import ProfileImage from '~/components/ProfileImage'
 
 export default {
   components: {
+    ChatButton,
     RichMarker,
     ProfileImage
   },
@@ -30,6 +39,10 @@ export default {
     size: {
       type: String,
       required: true
+    },
+    chat: {
+      type: Boolean,
+      required: false
     }
   }
 }
