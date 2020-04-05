@@ -1,7 +1,6 @@
 <template>
-  <div>
-    <h2 v-if="me">Hello, {{ me.displayname }}</h2>
-    <h2 v-else>Hello there</h2>
+  <div v-if="me">
+    <h2>Hello, {{ me.displayname }}</h2>
     <p>Here's your dashboard, where you can see what your communities have been doing recently.</p>
     <ModMissingFacebook />
     <ModMissingTwitter class="mt-1" />

@@ -11,6 +11,7 @@
 import ActivityAPI from './ActivityAPI.js'
 import AddressAPI from './AddressAPI.js'
 import AdminsAPI from './AdminsAPI.js'
+import AlertAPI from './AlertAPI.js'
 import AuthorityAPI from './AuthorityAPI.js'
 import BanditAPI from './BanditAPI.js'
 import ChatAPI from './ChatAPI.js'
@@ -49,6 +50,7 @@ export default ({ $axios, store }) => {
     activity: new ActivityAPI(options),
     address: new AddressAPI(options),
     admins: new AdminsAPI(options),
+    alert: new AlertAPI(options),
     authority: new AuthorityAPI(options),
     bandit: new BanditAPI(options),
     chat: new ChatAPI(options),

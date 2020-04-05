@@ -350,7 +350,6 @@ export default {
 
             if (d.unix() === e.unix()) {
               this.schedule.schedule[index].available = !existing.available
-              console.log('Found')
               found = true
             }
           })
