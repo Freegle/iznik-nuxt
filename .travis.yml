@@ -125,7 +125,7 @@ cache:
 before_deploy:
 - git config --local user.name "$gitusername"
 - git config --local user.email "$gitemail"
-- export TRAVIS_TAG=Travis-builds-$MOBILE_VERSION-$MODTOOLS_VERSION-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)
+- export TRAVIS_TAG=Travis-android-builds-$MOBILE_VERSION-$MODTOOLS_VERSION-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)
 - env | grep '^TRAVIS_TAG='
 - git tag $TRAVIS_TAG
 deploy:
