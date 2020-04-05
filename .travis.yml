@@ -59,7 +59,8 @@ script:
 - sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& PROVISIONING_PROFILE_SPECIFIER = 'Freegle adhoc 0320';/" platforms/ios/Freegle.xcodeproj/project.pbxproj
 - sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& DEVELOPMENT_TEAM = GMYU3K9D84;/" platforms/ios/Freegle.xcodeproj/project.pbxproj
 # https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
-- cordova build --debug --device -- --codeSignIdentity="Apple Development" --developmentTeam="$iosDeveloper" --packageType="development" --automaticProvisioning="false" --provisioningProfile=="Freegle adhoc 0320" || true
+- cordova build --debug --device -- --codeSignIdentity="Apple Development" --developmentTeam="$iosDeveloper" --packageType="development" --automaticProvisioning="false" --provisioningProfile=="Freegle adhoc 0320" >buildlogdebug.txt || true
+# Sign properly: export as ipa
 - cp ../iznik-nuxt/mobile/ExportOptionsDebug.plist .
 - cd platforms/ios
 - xcodebuild -exportArchive -archivePath Freegle.xcarchive -exportOptionsPlist ../../ExportOptionsDebug.plist -exportPath build/device -allowProvisioningUpdates
@@ -67,18 +68,15 @@ script:
 - cd ../..
 
 # Build release build
-#- sed -i '' "s/ProvisioningStyle = Automatic;/& DevelopmentTeam = GMYU3K9D84;/" platforms/ios/Freegle.xcodeproj/project.pbxproj
-#- sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& CODE_SIGN_IDENTITY = 'iPhone Distribution';/" platforms/ios/Freegle.xcodeproj/project.pbxproj
-#- sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& CODE_SIGN_STYLE = Manual;/" platforms/ios/Freegle.xcodeproj/project.pbxproj
-#- sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& PROVISIONING_PROFILE_SPECIFIER = 'Freegle adhoc 0320';/" platforms/ios/Freegle.xcodeproj/project.pbxproj
-#- sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& DEVELOPMENT_TEAM = GMYU3K9D84;/" platforms/ios/Freegle.xcodeproj/project.pbxproj
+- sed -i '' "s/Freegle adhoc 0320/Freegle 0320/" platforms/ios/Freegle.xcodeproj/project.pbxproj
 - cat platforms/ios/Freegle.xcodeproj/project.pbxproj
 # https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
-- cordova build --release --device -- --codeSignIdentity="Apple Development" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile=="Freegle 0320" || true
+- cordova build --release --device -- --codeSignIdentity="Apple Development" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile=="Freegle 0320"  >buildlogrelease.txt || true
+# Sign properly: upload and not export
 - cp ../iznik-nuxt/mobile/ExportOptionsRelease.plist .
 - cd platforms/ios
 - xcodebuild -exportArchive -archivePath Freegle.xcarchive -exportOptionsPlist ../../ExportOptionsRelease.plist -exportPath build/device -allowProvisioningUpdates
-- cp build/device/Freegle.ipa ../../../iznik-nuxt/releases/Freegle-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').ipa
+# - cp build/device/Freegle.ipa ../../../iznik-nuxt/releases/Freegle-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').ipa
 - cd ../..
 
 - cd ../iznik-nuxt
