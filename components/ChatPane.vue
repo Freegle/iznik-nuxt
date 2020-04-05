@@ -357,7 +357,8 @@ export default {
         id: this.id
       })
 
-      this.$router.push('/chats')
+      const modtools = this.$store.getters['misc/get']('modtools')
+      this.$router.push((modtools ? '/modtools' : '') + '/chats')
     }
   }
 }
