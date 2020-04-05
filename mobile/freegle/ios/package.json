@@ -1,6 +1,6 @@
 {
   "name": "org.ilovefreegle.iphone",
-  "displayName": "Freegle",
+  "displayName": "Freegle iOS",
   "version": "1.0.0",
   "description": "Offer and request free items on your local Freegle reuse group",
   "main": "index.js",
