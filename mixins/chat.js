@@ -145,7 +145,6 @@ export default {
         }
       }
 
-      console.log('Popup other user', user)
       return user
     },
 
@@ -377,27 +376,38 @@ export default {
           chatid: this.id
         })
 
-        // We don't want to clear the store, because cached messages make us look zippy.  But there might be new messages
-        // since we updated our store. So fetch until we stop finding new messages.
-        //
-        // We can't rely on infinite scroll because we might already be full.
-        await this.$store.dispatch('chatmessages/clearContext', {
-          chatid: this.id
-        })
+        let msgs = this.$store.getters['chatmessages/getMessages'](this.id)
 
-        let msgs
-        let count
+        if (msgs.length) {
+          // We have some messages in the store.  This can make us look zippy, so we want to use them if possible.
+          // But there might be new messages since we last updated our store.  We can't rely on
+          // infinite scroll to pick them up, because that's at the top of a chat and any messages we are missing
+          // will be at the bottom.
+          //
+          // So we want to fetch existing messages.  If we stop finding new messages then we know we're done.
+          // But if we find that we're fetching too many, just bail out and clear the store to let infinite scroll
+          // handle it.  This avoids accidentally working back to the start of time.
+          const initialCount = msgs.length
+          let count
 
-        do {
-          msgs = this.$store.getters['chatmessages/getMessages'](this.id)
-          count = msgs.length
+          do {
+            msgs = this.$store.getters['chatmessages/getMessages'](this.id)
+            count = msgs.length
 
-          await this.$store.dispatch('chatmessages/fetch', {
-            chatid: this.id
-          })
+            await this.$store.dispatch('chatmessages/fetch', {
+              chatid: this.id
+            })
 
-          msgs = this.$store.getters['chatmessages/getMessages'](this.id)
-        } while (msgs.length !== count)
+            msgs = this.$store.getters['chatmessages/getMessages'](this.id)
+          } while (msgs.length !== count && count - initialCount < 50)
+
+          if (count - initialCount >= 50) {
+            // This seems to be dragging on. Bail out.
+            await this.$store.dispatch('chatmessages/clearMessages', {
+              chatid: this.id
+            })
+          }
+        }
 
         if (this.otheruserid) {
           // Get the user info in case we need to warn about them.
