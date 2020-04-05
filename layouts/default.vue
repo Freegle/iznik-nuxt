@@ -178,7 +178,8 @@
               </span>
             </infinite-loading>
           </b-dropdown>
-          <nuxt-link v-if="loggedIn" id="menu-option-chat-sm" class="text-white mr-3" to="/chats">
+
+          <nuxt-link v-if="loggedIn" id="menu-option-chat-sm" class="text-white mr-3 position-relative" to="/chats">
             <v-icon name="comments" scale="2" /><br>
             <b-badge v-if="chatCount" variant="danger" class="chatbadge">
               {{ chatCount }}

@@ -164,7 +164,16 @@
       </b-card-body>
       <b-card-footer class="d-flex justify-content-between">
         <ModMemberButtons :member="member" :modconfig="modconfig" />
-        <ModRole :userid="member.userid" :groupid="groupid" :role="member.role" />
+        <div class="d-flex">
+          <ModRole :userid="member.userid" :groupid="groupid" :role="member.role" />
+          <ChatButton
+            :userid="member.userid"
+            :groupid="member.groupid"
+            title="Chat"
+            variant="white"
+            class="ml-1"
+          />
+        </div>
       </b-card-footer>
     </b-card>
     <ModPostingHistoryModal ref="history" :user="member" :type="type" />
@@ -187,11 +196,13 @@ import ModMemberships from './ModMemberships'
 import ModBouncing from './ModBouncing'
 import ModMemberLogins from './ModMemberLogins'
 import ModRole from './ModRole'
+import ChatButton from './ChatButton'
 const OurToggle = () => import('@/components/OurToggle')
 
 export default {
   name: 'ModMember',
   components: {
+    ChatButton,
     OurToggle,
     ModRole,
     ModMemberLogins,

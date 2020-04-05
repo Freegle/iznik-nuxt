@@ -26,7 +26,7 @@ if ((process.env.NUXT_BUILD_TYPE === 'fdapp') || (process.env.NUXT_BUILD_TYPE ==
   API = 'https://www.ilovefreegle.org/api'
 }
 if (process.env.NUXT_BUILD_TYPE === 'mtapp') {
-  API = 'https://dev.ilovefreegle.org/api'
+  API = 'https://dev.modtools.org/api'
 }
 
 // IZNIK_API is where we send it to.  This avoids CORS issues (and removes preflight OPTIONS calls for GETs, which
