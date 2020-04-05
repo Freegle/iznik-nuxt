@@ -92,6 +92,7 @@ script:
 - cp build/device/Freegle.ipa ../../../iznik-nuxt/releases/Freegle-ios-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').ipa
 - xcrun altool --upload-app --type ios --file "build/device/Freegle.ipa" --username $AppleUserId --password "$AppleAppSpecificPwd" || true
 - cd ../..
+- cd ../iznik-nuxt
 
 # MODTOOLS app
 - npm run mtapp
