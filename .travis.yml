@@ -5,17 +5,25 @@ osx_image: xcode11.3
 branches:
   only: app-ios
 env:
+  global:
+  # gitusername
+  - secure: tAFeuO4fqT+S+Vv+TcdXk4LRlcbsDEZbkShzxnzw3b0QFgQyaotzzQrDaW9S6KPO8knGy7RQoHEavS7wXSgis5h/fRnNiLWo3MoykdKvjx0TwTt7yTaDbgvI2H/xo8zE6DFU8jqH4KVwBq5LFikUJd0hx7uqw86IrR9kYj5R563UZqEacfsR5BWrYWqX5WwZInMnCY6SesKyL3q6F60D6z6Blwdq0evsj05oHWfxmZeSbzboOUg/Is6IBtUGMQRrWGsAdR4x73SiZ9APDfIB4C7oeput+GfOZPjTDoDt8defL6+IyLhw7kqcgQUhA9Lu+Ke2H/0KgHqBk7W1WDeh36s3DIv7MwkhQU+3ks1jdbs0dFWVmdm/yF+GCWy/sEdtFEzCfBh0o0kKfujauJx+T0A/GugaHlTN2fhFXvJ0XHrkoNjsQnNlzWyz/2gmiHLpK9ASFovrrNioq2achgisOlym3Kq10CdaGkfYNN8jHzzXaWVaS00ugMPIcAE4KbQmwav0AN+C9DwplO/yan4bai7/y5roYGRsR8z/MiZJAXH40bFGl8oI0Xl+1zTURR1J0/qKp8DJgZG8XLFWAWfoZOWouvZDNQqHWQU6JLWQgL5GFdhI0PcYZD7OSUEwAzbg19Ko4Lj+S3DhoJCpqP4/7tAmkd8FofCAmdAKXyToa7c=
+  # gitemail
+  - secure: rayt52s00RAeAtR0THQs2tAmbb5d0UgJscOodMSNOoNbo7Mdn81TMZJBaOr0hRkv2hS/Eq36IliYHduKL79/mlJqIkpWPLXLI+GXn3zMTfanoq7oRyVYS0ToQk8AZ1Uva6G314TscaP/8QYWaRw4R5rj0SPTBlEp7uCg/uQfQltZeyglRX+CbUh7VgNWmM3zDRpO2Pr3kEOd6rRNgtAigUNYYq6C1hWJD4NQMdi65vPFAXMV5cQhAh7w/IvYeRSneFcxlFo7InxEx2Rm/rn/Wh0aDggljyaQSbYW1WpwUNssrNhmLNdJCd/KNMQoW0MHU0uZcawvvc8m0vDmyuArMSMTGBV4ujISZJjIOO6Jy6LEESALMDoHccsrljs7DmLTfQOF5ITEpzVm87xss7+2/oz9rewFyd2PTjBRCVcT5M3xhDThS0xFXBsM2/uExL0IZY1otwfBPVj2nmSQkBRvXHEQj6qgALwG0mp1WueE5OKZZLHoCrb3wyvk76jwovAvOolizhFWKnQ1Iz3Nv1AjRS5TjuVI3Z98TMCxNcQC9nwdzopjCQH4DHzvnyvYI6arcyEt+2z3fUKP2Qo9oKK2+l3U4AUUy+sWuk6xYYqnS+2wgg9VQ1hsOBkaafrN3EFnDXQEx3NfIk4zAA2GngKOMNqC7C9XuggxXE7dL9vCIyU=
+  # storepass
+  - secure: QPcVS/eMqGLfQbaWLJvCQH+KzVweAKz/lZ5G/Z8pl5tH1+ReqeysvXp1Nt+9k/HGRMLxrFCnkzamNUuf7OyO1o+itdNAeH+nxseKdp2sR7Q60SOzPkkfFdHX58tliaRaqkLybgZhd+tDJw4qoP+nApWwrKmIWem+OfTO0WTGky+ewrjur4um6ocyKetXVCC4syzxNQTZyGay8yrKXcYCYywkyvtsq5kFRdldsY7qS7XzDDVsULgCtlp+T08MaCloUU6j9qDvoCnwW9csNeDNd3f79rt1/HPiOdjVzTNZ6GeeDkIpqApRNv+lZRKNjVyG+XDvvE7VEJYJZHh7Vy6Pj3meSaLh+P7jdWc6BPZ8IMnNJyWuTuoPJo/AeFjNyX6M92mKYr1U6CgGS2KIPMdr3cUzFMPAe7JCyVlHhfZl7iObvEOELrggpdxYXj74YQG7outeRFMcpOJZs997CaT2rEi57aut8lJlSxhUbdmC2Fxf0QvR2XQA6bG/x115VGwr0wAmuVmlmEfkWCElSgpHQB6ZfXSyQoupj+po//eZb6Ei323pW1vXmKCrbmy/nrWlDvidjjFhTWJ8d+DnHVgSVguXt031luAfAFe4L7qX23hlWFOPYKHlnmoovyd9UEH1f5jF/9MlXqpTmGkH/YLxFGE4mLzQd115W1lNEDX3UEc=
+  # keypass
+  - secure: yZ3yFpDqo1baosTwhttl9Vlx2pbPXa9uAI9OGEZDD/KHqavdnoFq1ItOheZdYXz6yuNkyOsMKEPDgbURgPQLjUsG5JUSxDjBt2XbJhLiVmpy4Ur4wX9x11MmAMuoEjDj4yFO1POpg+NszFpP4OW4+BryIuyOOWdyFEIRRE9keDzelcLTedltQT+AeV8bdJeb2CMoBiHd6VOltceUEBaiXiK9BUJUhg7c+c+0wpGU5Vh3FnhLc5zmMWMe5PVVxn9hI4g0sB7vUmg1johEMCkcH31IebhdUX7hxH9b9gj4BeZjJ63SoRljZCJE10cKd1T8+3RhZXtP1nU+c3RgwinAFbbod1RF2FU5MNNEZfJVGQ4SYM3RtmWRfuidjRxTmgEf9222XkRPzJbNiK/CqXbxWDWifyX/eHHoOBBkIFu0f9Q2OweCiX1LeHe9by8Ng/bGgpJw8NhL70fMzrTdoQlRBn0/2rY9F8+tkbkekp9RxugATh/g3WnBsxp+D8RgM+PXdZ5o4QqRCzblrvyOFfxyqHTDmWkA77c1UC8Jnc6Oac/tyh9+ZDDF36Tj+0J3hsXdnO2wTAxKMkTnIBpuyzLMLEiJbO2McIldGbOteK4mOQRt7ttfNV4vsysuLNDdkOOKVjZzvBdjuQhOTWKoTdkBwOSdcaTXksZuoTu2sWQIOmA=
+  # iosDeveloper
+  - secure: hmlHnPPjAI+U0/PYhJwk9vlZBFToUrtRF6WbJ4SC7Elc01S5/8C/AGERo3aIRF8S1mtKVPzHNg3VcYRGeG2l3CuBJbnhnb0O6wcjtv+7WJwaAOFBtNv8Y4qD9e0lpAASeiwqwQYVZovj87tfQVyDvqLRiFvdDll8XjidrSWrnbOeEKXD3RLqPLowbdmVN2VQk+SzqO8VXMw0ZJywV7HrvreFCH9ddI3atlh+HXX8q8aAhGeyddJohgug3C7dWF/cbeXD2OQJAsQ9fjkW2ON2BVfbhSM1ZJG9aSaN238yBIjvCHGtgAaJA2LvABnOq8piOJ4LfwKr46NBoK3fcrL2L8nNEHbhces77VjQuHE0A8mmmvBEo2n3/cKiq3WH6W5uKG5BQZIZs8PcBYdzk65ueAabRxIG42XlREDfwFgFfuu3PaKnfWQ3raBzqOUDJBQ+Zz2H52oakC/kvgKcxMpEuO4Mjwck404Dx7xUvg+sUKlU3pLapc9yrH5e32gnMabuMbYQjW+Oq3DCqzr69qn3bW2QPoR+RjQ/dNdsUpwRulAYi1OMQ09CHHOwk57ZRq0VZIxVndQ5kEvavASzbcD3MMuIM6b51zTu3ZO5teiUASkNVQKAMdEMUaLiaZHfyehvkHchDzrP2EeQdAme2x4OZQltNd8rrw8B0yNEE5xnAbs=
+  # iossignkey
+  - secure: 15jfRUxEczZHSeN8ArUbwHRW9/29tONqURf9H91UA+BkcrbONL1YRpqEbuArTx91ruoSC8tD7CmXch3XCww3BzJ3CepIDQLRlYoxGvAAKsqCGMoifki0nlsL8SvNTHRLBFfmiGDPL9LqYm/mG5JIXTsdXfiObynBoyod/kj8JuyiV3Gt/+I9mkiC/pKLkf2gVbsb6KEOWZmgcZOv1yZREybsjAzyvP3SfFKZKtXaAH3AFNFmpc0QyqOItCEMNrJbnA+/Gj7mZ2Ly2K8U2zg4dYPVN1LQzTweZcJsp5wfF+cprxnC5IOFCPFMnVoinNtJ1YrOL4C5DIcXAqWiMg+LuScedZfTrPiMWAH3gc7NO2ojGJqnzUw/5zxVbjzFk+PijiTSbWjolF8FxO0xpapVWrZdMOdx/OSLj2Kqse1EBr+mx2LB+c5ugqtAOb5xzw8tMqj5Og67XSN+0w+l6wTwXtPyQYakf5EcnCwkPdkuQ4FyQixOz3ATNoN9tv0/gqNbEyl+PZw+SrhBNVaQDQGbXsDJFeaI8EoB33li9VjKreFgITtZzx5B/F9VzUgjUspfe1l+kGTb9Go3um8Eqn885kuZjR0QwL2eZ/IlSr+jY7BoJ+KabaSyx6ia0iZdfr38ZkJ47BBHY/Mankf3v0pyZ/G+76rE0auGzJHi/9SnMGg=
+  # AppleUserId
+  - secure: pbKnWGzTOKEImh9DaA15u5OsAmvO1z/cLVPjAX5rGv0x6u27ereDY7EfwXL6yyp7MWeeWCMaEPoblZ1W2Kw0GvJq81TVAOm6yClurZ+hWssbhXV4d7QrIyTKj65FCrxLh1ngYCCdkgxnV9KZtUqQqY+GMrxPIqwNzD3cRvHUsKF9Y+KKo1pwkKa3OuU4UajRe9zY8R6H/PyCxF5RndRI5CHttDkL5QYkN+JC1vQp5W6qlNceuHh/QEEHR4pfZRSS5pclWn6meml1B6MCpeJppPOpnTw9S2eDIbZOAsBClU48H7UGQQj8c85BZ6Yo9AF9b2FZxO1JRHIuSfJqzRCIGyNkxgWJYew/KzrUpx5GMYnWnjVuLY8wIrJnRda0HZjYyjSa+HtGAZDpUmFElzRVc6Sa6/aoE1OEtWvUdXmngqbGaUcgflqCkBOP5WYbw9xvsEdphxcIiWVG/FaGYqDJ+zUzIIASsYruspnMac9uJoIWy24B0hiNpqGCfmWBMVqaVsRduOmsMRwCthGizXMdpSdDyQKtg0Bmp8rQuBeQGJB0zMLHXyHN/cJ0cCHQaq5qrDIbOh9FlN6gG1WPWD7AMthHgBQdltYwNKb31Pqk1oWGsRizGjzz1huu5GLG3baSKQJtd3HphzfmKpWX0pplr3K4WLv6svcqRBJXD9BQJdg=
+  # AppleAppSpecificPwd
+  - secure: qdl34Gubayu7mYGRNKer1VhS2NggqSfb7q0WnMGFNXCUHkuXSrr/UH+2rWaK4bNXeHJs9MpqX9bCBd9XqOKpF2EOadgip7f8ItgfrgLUFQxV+HdOzHucph4OSI/kDfikh15xDCIlfG8yHzwJvKOX/2Mx/vGDLLiAojhJ5k7lwdSoPIn0W0xLFvwYgWQgS+xHXpOAXEhLlz4s62J1ORyURpGxoLpN0gGLVQ4kFMV0qu0xPTSlx1ZYeTFiP3Ic+4jwuh153xFQ4DBcOuBqOi9Why9JETJLZFNrUKy0PnYbXHdYDc+TspnX5p5xV4HuaghsAdnrPHdPD3Xfmvot+WtTMZT7tfQvhOlQ2puywj7i3wJvwh96Re8aBPWpnJVUCZfTawXHIHOc2iec2Yff5wrPL6Udg9GtgfkGaAQwCFRJlbQgNdKnlUvFAwam08IkwNrkR23MTDikQrfCrKb3Pzh2j+1qU04ECAcZrO2ZvtkZ7650pFueEfkAJE8Ukrmmi/svZaLaAarN86vCLLhl8dIyRTTWCiC5Jx+sPwx3jf6U7c3VL37tclB3ZrgE2F6r1haxR3Y+rD0nQNZoGpTAQJCK+vsgvr7lRR9wQuIYQDygHmHrRfMp15ONIOfA8Y8+2JBbJWtB8e9D+7xgz6kGmSiEb9Zt8oqXqFp3jzO6jXAAf6g=
   matrix:
   - nodejs_version=12
-  global:
-  - secure: tAFeuO4fqT+S+Vv+TcdXk4LRlcbsDEZbkShzxnzw3b0QFgQyaotzzQrDaW9S6KPO8knGy7RQoHEavS7wXSgis5h/fRnNiLWo3MoykdKvjx0TwTt7yTaDbgvI2H/xo8zE6DFU8jqH4KVwBq5LFikUJd0hx7uqw86IrR9kYj5R563UZqEacfsR5BWrYWqX5WwZInMnCY6SesKyL3q6F60D6z6Blwdq0evsj05oHWfxmZeSbzboOUg/Is6IBtUGMQRrWGsAdR4x73SiZ9APDfIB4C7oeput+GfOZPjTDoDt8defL6+IyLhw7kqcgQUhA9Lu+Ke2H/0KgHqBk7W1WDeh36s3DIv7MwkhQU+3ks1jdbs0dFWVmdm/yF+GCWy/sEdtFEzCfBh0o0kKfujauJx+T0A/GugaHlTN2fhFXvJ0XHrkoNjsQnNlzWyz/2gmiHLpK9ASFovrrNioq2achgisOlym3Kq10CdaGkfYNN8jHzzXaWVaS00ugMPIcAE4KbQmwav0AN+C9DwplO/yan4bai7/y5roYGRsR8z/MiZJAXH40bFGl8oI0Xl+1zTURR1J0/qKp8DJgZG8XLFWAWfoZOWouvZDNQqHWQU6JLWQgL5GFdhI0PcYZD7OSUEwAzbg19Ko4Lj+S3DhoJCpqP4/7tAmkd8FofCAmdAKXyToa7c=
-  - secure: rayt52s00RAeAtR0THQs2tAmbb5d0UgJscOodMSNOoNbo7Mdn81TMZJBaOr0hRkv2hS/Eq36IliYHduKL79/mlJqIkpWPLXLI+GXn3zMTfanoq7oRyVYS0ToQk8AZ1Uva6G314TscaP/8QYWaRw4R5rj0SPTBlEp7uCg/uQfQltZeyglRX+CbUh7VgNWmM3zDRpO2Pr3kEOd6rRNgtAigUNYYq6C1hWJD4NQMdi65vPFAXMV5cQhAh7w/IvYeRSneFcxlFo7InxEx2Rm/rn/Wh0aDggljyaQSbYW1WpwUNssrNhmLNdJCd/KNMQoW0MHU0uZcawvvc8m0vDmyuArMSMTGBV4ujISZJjIOO6Jy6LEESALMDoHccsrljs7DmLTfQOF5ITEpzVm87xss7+2/oz9rewFyd2PTjBRCVcT5M3xhDThS0xFXBsM2/uExL0IZY1otwfBPVj2nmSQkBRvXHEQj6qgALwG0mp1WueE5OKZZLHoCrb3wyvk76jwovAvOolizhFWKnQ1Iz3Nv1AjRS5TjuVI3Z98TMCxNcQC9nwdzopjCQH4DHzvnyvYI6arcyEt+2z3fUKP2Qo9oKK2+l3U4AUUy+sWuk6xYYqnS+2wgg9VQ1hsOBkaafrN3EFnDXQEx3NfIk4zAA2GngKOMNqC7C9XuggxXE7dL9vCIyU=
-  - secure: QPcVS/eMqGLfQbaWLJvCQH+KzVweAKz/lZ5G/Z8pl5tH1+ReqeysvXp1Nt+9k/HGRMLxrFCnkzamNUuf7OyO1o+itdNAeH+nxseKdp2sR7Q60SOzPkkfFdHX58tliaRaqkLybgZhd+tDJw4qoP+nApWwrKmIWem+OfTO0WTGky+ewrjur4um6ocyKetXVCC4syzxNQTZyGay8yrKXcYCYywkyvtsq5kFRdldsY7qS7XzDDVsULgCtlp+T08MaCloUU6j9qDvoCnwW9csNeDNd3f79rt1/HPiOdjVzTNZ6GeeDkIpqApRNv+lZRKNjVyG+XDvvE7VEJYJZHh7Vy6Pj3meSaLh+P7jdWc6BPZ8IMnNJyWuTuoPJo/AeFjNyX6M92mKYr1U6CgGS2KIPMdr3cUzFMPAe7JCyVlHhfZl7iObvEOELrggpdxYXj74YQG7outeRFMcpOJZs997CaT2rEi57aut8lJlSxhUbdmC2Fxf0QvR2XQA6bG/x115VGwr0wAmuVmlmEfkWCElSgpHQB6ZfXSyQoupj+po//eZb6Ei323pW1vXmKCrbmy/nrWlDvidjjFhTWJ8d+DnHVgSVguXt031luAfAFe4L7qX23hlWFOPYKHlnmoovyd9UEH1f5jF/9MlXqpTmGkH/YLxFGE4mLzQd115W1lNEDX3UEc=
-  - secure: yZ3yFpDqo1baosTwhttl9Vlx2pbPXa9uAI9OGEZDD/KHqavdnoFq1ItOheZdYXz6yuNkyOsMKEPDgbURgPQLjUsG5JUSxDjBt2XbJhLiVmpy4Ur4wX9x11MmAMuoEjDj4yFO1POpg+NszFpP4OW4+BryIuyOOWdyFEIRRE9keDzelcLTedltQT+AeV8bdJeb2CMoBiHd6VOltceUEBaiXiK9BUJUhg7c+c+0wpGU5Vh3FnhLc5zmMWMe5PVVxn9hI4g0sB7vUmg1johEMCkcH31IebhdUX7hxH9b9gj4BeZjJ63SoRljZCJE10cKd1T8+3RhZXtP1nU+c3RgwinAFbbod1RF2FU5MNNEZfJVGQ4SYM3RtmWRfuidjRxTmgEf9222XkRPzJbNiK/CqXbxWDWifyX/eHHoOBBkIFu0f9Q2OweCiX1LeHe9by8Ng/bGgpJw8NhL70fMzrTdoQlRBn0/2rY9F8+tkbkekp9RxugATh/g3WnBsxp+D8RgM+PXdZ5o4QqRCzblrvyOFfxyqHTDmWkA77c1UC8Jnc6Oac/tyh9+ZDDF36Tj+0J3hsXdnO2wTAxKMkTnIBpuyzLMLEiJbO2McIldGbOteK4mOQRt7ttfNV4vsysuLNDdkOOKVjZzvBdjuQhOTWKoTdkBwOSdcaTXksZuoTu2sWQIOmA=
-  - secure: hmlHnPPjAI+U0/PYhJwk9vlZBFToUrtRF6WbJ4SC7Elc01S5/8C/AGERo3aIRF8S1mtKVPzHNg3VcYRGeG2l3CuBJbnhnb0O6wcjtv+7WJwaAOFBtNv8Y4qD9e0lpAASeiwqwQYVZovj87tfQVyDvqLRiFvdDll8XjidrSWrnbOeEKXD3RLqPLowbdmVN2VQk+SzqO8VXMw0ZJywV7HrvreFCH9ddI3atlh+HXX8q8aAhGeyddJohgug3C7dWF/cbeXD2OQJAsQ9fjkW2ON2BVfbhSM1ZJG9aSaN238yBIjvCHGtgAaJA2LvABnOq8piOJ4LfwKr46NBoK3fcrL2L8nNEHbhces77VjQuHE0A8mmmvBEo2n3/cKiq3WH6W5uKG5BQZIZs8PcBYdzk65ueAabRxIG42XlREDfwFgFfuu3PaKnfWQ3raBzqOUDJBQ+Zz2H52oakC/kvgKcxMpEuO4Mjwck404Dx7xUvg+sUKlU3pLapc9yrH5e32gnMabuMbYQjW+Oq3DCqzr69qn3bW2QPoR+RjQ/dNdsUpwRulAYi1OMQ09CHHOwk57ZRq0VZIxVndQ5kEvavASzbcD3MMuIM6b51zTu3ZO5teiUASkNVQKAMdEMUaLiaZHfyehvkHchDzrP2EeQdAme2x4OZQltNd8rrw8B0yNEE5xnAbs=
-  - secure: 15jfRUxEczZHSeN8ArUbwHRW9/29tONqURf9H91UA+BkcrbONL1YRpqEbuArTx91ruoSC8tD7CmXch3XCww3BzJ3CepIDQLRlYoxGvAAKsqCGMoifki0nlsL8SvNTHRLBFfmiGDPL9LqYm/mG5JIXTsdXfiObynBoyod/kj8JuyiV3Gt/+I9mkiC/pKLkf2gVbsb6KEOWZmgcZOv1yZREybsjAzyvP3SfFKZKtXaAH3AFNFmpc0QyqOItCEMNrJbnA+/Gj7mZ2Ly2K8U2zg4dYPVN1LQzTweZcJsp5wfF+cprxnC5IOFCPFMnVoinNtJ1YrOL4C5DIcXAqWiMg+LuScedZfTrPiMWAH3gc7NO2ojGJqnzUw/5zxVbjzFk+PijiTSbWjolF8FxO0xpapVWrZdMOdx/OSLj2Kqse1EBr+mx2LB+c5ugqtAOb5xzw8tMqj5Og67XSN+0w+l6wTwXtPyQYakf5EcnCwkPdkuQ4FyQixOz3ATNoN9tv0/gqNbEyl+PZw+SrhBNVaQDQGbXsDJFeaI8EoB33li9VjKreFgITtZzx5B/F9VzUgjUspfe1l+kGTb9Go3um8Eqn885kuZjR0QwL2eZ/IlSr+jY7BoJ+KabaSyx6ia0iZdfr38ZkJ47BBHY/Mankf3v0pyZ/G+76rE0auGzJHi/9SnMGg=
-  - secure: pbKnWGzTOKEImh9DaA15u5OsAmvO1z/cLVPjAX5rGv0x6u27ereDY7EfwXL6yyp7MWeeWCMaEPoblZ1W2Kw0GvJq81TVAOm6yClurZ+hWssbhXV4d7QrIyTKj65FCrxLh1ngYCCdkgxnV9KZtUqQqY+GMrxPIqwNzD3cRvHUsKF9Y+KKo1pwkKa3OuU4UajRe9zY8R6H/PyCxF5RndRI5CHttDkL5QYkN+JC1vQp5W6qlNceuHh/QEEHR4pfZRSS5pclWn6meml1B6MCpeJppPOpnTw9S2eDIbZOAsBClU48H7UGQQj8c85BZ6Yo9AF9b2FZxO1JRHIuSfJqzRCIGyNkxgWJYew/KzrUpx5GMYnWnjVuLY8wIrJnRda0HZjYyjSa+HtGAZDpUmFElzRVc6Sa6/aoE1OEtWvUdXmngqbGaUcgflqCkBOP5WYbw9xvsEdphxcIiWVG/FaGYqDJ+zUzIIASsYruspnMac9uJoIWy24B0hiNpqGCfmWBMVqaVsRduOmsMRwCthGizXMdpSdDyQKtg0Bmp8rQuBeQGJB0zMLHXyHN/cJ0cCHQaq5qrDIbOh9FlN6gG1WPWD7AMthHgBQdltYwNKb31Pqk1oWGsRizGjzz1huu5GLG3baSKQJtd3HphzfmKpWX0pplr3K4WLv6svcqRBJXD9BQJdg=
-  - secure: qdl34Gubayu7mYGRNKer1VhS2NggqSfb7q0WnMGFNXCUHkuXSrr/UH+2rWaK4bNXeHJs9MpqX9bCBd9XqOKpF2EOadgip7f8ItgfrgLUFQxV+HdOzHucph4OSI/kDfikh15xDCIlfG8yHzwJvKOX/2Mx/vGDLLiAojhJ5k7lwdSoPIn0W0xLFvwYgWQgS+xHXpOAXEhLlz4s62J1ORyURpGxoLpN0gGLVQ4kFMV0qu0xPTSlx1ZYeTFiP3Ic+4jwuh153xFQ4DBcOuBqOi9Why9JETJLZFNrUKy0PnYbXHdYDc+TspnX5p5xV4HuaghsAdnrPHdPD3Xfmvot+WtTMZT7tfQvhOlQ2puywj7i3wJvwh96Re8aBPWpnJVUCZfTawXHIHOc2iec2Yff5wrPL6Udg9GtgfkGaAQwCFRJlbQgNdKnlUvFAwam08IkwNrkR23MTDikQrfCrKb3Pzh2j+1qU04ECAcZrO2ZvtkZ7650pFueEfkAJE8Ukrmmi/svZaLaAarN86vCLLhl8dIyRTTWCiC5Jx+sPwx3jf6U7c3VL37tclB3ZrgE2F6r1haxR3Y+rD0nQNZoGpTAQJCK+vsgvr7lRR9wQuIYQDygHmHrRfMp15ONIOfA8Y8+2JBbJWtB8e9D+7xgz6kGmSiEb9Zt8oqXqFp3jzO6jXAAf6g=
 jdk:
 - oraclejdk8
 before_install:
@@ -23,8 +31,10 @@ before_install:
   -in mobile/app-secrets.tar.enc -out mobile/app-secrets.tar -d
 - tar xvf mobile/app-secrets.tar
 
-- sed -i '' "s,iosDeveloper,$iosDeveloper,g" mobile/ExportOptionsDebug.plist
-- sed -i '' "s,iosDeveloper,$iosDeveloper,g" mobile/ExportOptionsRelease.plist
+- sed -i '' "s,iosDeveloper,$iosDeveloper,g" mobile/ExportOptionsFreegleDebug.plist
+- sed -i '' "s,iosDeveloper,$iosDeveloper,g" mobile/ExportOptionsFreegleRelease.plist
+- sed -i '' "s,iosDeveloper,$iosDeveloper,g" mobile/ExportOptionsModToolsDebug.plist
+- sed -i '' "s,iosDeveloper,$iosDeveloper,g" mobile/ExportOptionsModToolsRelease.plist
 
 - chmod +x mobile/add-key.sh
 - ./mobile/add-key.sh
@@ -65,21 +75,20 @@ script:
 # https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
 - cordova build --debug --device -- --codeSignIdentity="Apple Development" --developmentTeam="$iosDeveloper" --packageType="development" --automaticProvisioning="false" --provisioningProfile=="Freegle adhoc 0320" >buildlogdebug.txt || true
 # Sign properly: export as ipa
-- cp ../iznik-nuxt/mobile/ExportOptionsDebug.plist .
+- cp ../iznik-nuxt/mobile/ExportOptionsFreegleDebug.plist .
 - cd platforms/ios
-- xcodebuild -exportArchive -archivePath Freegle.xcarchive -exportOptionsPlist ../../ExportOptionsDebug.plist -exportPath build/device -allowProvisioningUpdates
+- xcodebuild -exportArchive -archivePath Freegle.xcarchive -exportOptionsPlist ../../ExportOptionsFreegleDebug.plist -exportPath build/device -allowProvisioningUpdates
 - cp build/device/Freegle.ipa ../../../iznik-nuxt/releases/Freegle-ios-app-$MOBILE_VERSION-debug-$(date +'%Y%m%d%H%M%S').ipa
 - cd ../..
 
 # Build release build
 - sed -i '' "s/Freegle adhoc 0320/Freegle 0320/" platforms/ios/Freegle.xcodeproj/project.pbxproj
-- cat platforms/ios/Freegle.xcodeproj/project.pbxproj
 # https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
 - cordova build --release --device -- --codeSignIdentity="Apple Development" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile=="Freegle 0320"  >buildlogrelease.txt || true
 # Sign properly: upload and not export
-- cp ../iznik-nuxt/mobile/ExportOptionsRelease.plist .
+- cp ../iznik-nuxt/mobile/ExportOptionsFreegleRelease.plist .
 - cd platforms/ios
-- xcodebuild -exportArchive -archivePath Freegle.xcarchive -exportOptionsPlist ../../ExportOptionsRelease.plist -exportPath build/device -allowProvisioningUpdates
+- xcodebuild -exportArchive -archivePath Freegle.xcarchive -exportOptionsPlist ../../ExportOptionsFreegleRelease.plist -exportPath build/device -allowProvisioningUpdates
 - cp build/device/Freegle.ipa ../../../iznik-nuxt/releases/Freegle-ios-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').ipa
 - xcrun altool --upload-app --type ios --file "build/device/Freegle.ipa" --username $AppleUserId --password "$AppleAppSpecificPwd" || true
 - cd ../..
@@ -107,9 +116,9 @@ script:
 # https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
 - cordova build --debug --device -- --codeSignIdentity="Apple Development" --developmentTeam="$iosDeveloper" --packageType="development" --automaticProvisioning="false" --provisioningProfile=="ModTools adhoc 0320" >buildlogdebug.txt || true
 # Sign properly: export as ipa
-- cp ../iznik-nuxt/mobile/ExportOptionsDebug.plist .
+- cp ../iznik-nuxt/mobile/ExportOptionsModToolsDebug.plist .
 - cd platforms/ios
-- xcodebuild -exportArchive -archivePath ModTools.xcarchive -exportOptionsPlist ../../ExportOptionsDebug.plist -exportPath build/device -allowProvisioningUpdates
+- xcodebuild -exportArchive -archivePath ModTools.xcarchive -exportOptionsPlist ../../ExportOptionsModToolsDebug.plist -exportPath build/device -allowProvisioningUpdates
 - cp build/device/ModTools.ipa ../../../iznik-nuxt/releases/ModTools-ios-app-$MODTOOLS_VERSION-debug-$(date +'%Y%m%d%H%M%S').ipa
 - cd ../..
 
@@ -119,9 +128,9 @@ script:
 # https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
 - cordova build --release --device -- --codeSignIdentity="Apple Development" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile=="ModTools 0320"  >buildlogrelease.txt || true
 # Sign properly: upload and not export
-- cp ../iznik-nuxt/mobile/ExportOptionsRelease.plist .
+- cp ../iznik-nuxt/mobile/ExportOptionsModToolsRelease.plist .
 - cd platforms/ios
-- xcodebuild -exportArchive -archivePath ModTools.xcarchive -exportOptionsPlist ../../ExportOptionsRelease.plist -exportPath build/device -allowProvisioningUpdates
+- xcodebuild -exportArchive -archivePath ModTools.xcarchive -exportOptionsPlist ../../ExportOptionsModToolsRelease.plist -exportPath build/device -allowProvisioningUpdates
 - cp build/device/ModTools.ipa ../../../iznik-nuxt/releases/ModTools-ios-app-$MODTOOLS_VERSION-release-$(date +'%Y%m%d%H%M%S').ipa
 - xcrun altool --upload-app --type ios --file "build/device/ModTools.ipa" --username $AppleUserId --password "$AppleAppSpecificPwd" || true
 - cd ../..
