@@ -90,6 +90,9 @@
             <b-dropdown-item>
               <ModMenuItemNav name="Logs" link="/modtools/logs" />
             </b-dropdown-item>
+            <b-dropdown-item>
+              <ModMenuItemNav name="Settings" :count="['pendingadmins']" link="/modtools/settings" />
+            </b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown class="pt-2">
             <template v-slot:button-content>
