@@ -351,6 +351,14 @@ export default {
   methods: {
     popup() {
       this.$store.dispatch('popupchats/popup', { id: this.chat.id })
+    },
+    hide() {
+      this.$store.dispatch('chats/hide', {
+        id: this.id
+      })
+
+      const modtools = this.$store.getters['misc/get']('modtools')
+      this.$router.push((modtools ? '/modtools' : '') + '/chats')
     }
   }
 }

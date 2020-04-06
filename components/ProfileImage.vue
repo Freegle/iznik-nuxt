@@ -3,8 +3,7 @@
     <b-img-lazy
       rounded="circle"
       :thumbnail="isThumbnail"
-      class="p-0"
-      :class="'profile--' + size"
+      :class="className"
       :alt="altText"
       :src="validImage"
       @error.native="brokenProfileImage"
@@ -42,11 +41,24 @@ export default {
       type: String,
       required: false,
       default: 'md'
+    },
+    border: {
+      type: Boolean,
+      required: false
     }
   },
   computed: {
     validImage() {
       return this.image || require('~/static/defaultprofile.png')
+    },
+    className() {
+      let ret = 'p-0 profile--' + this.size
+
+      if (this.border) {
+        ret += ' ourBorder'
+      }
+
+      return ret
     }
   },
   methods: {
@@ -192,5 +204,9 @@ export default {
     width: 36px;
     height: 36px;
   }
+}
+
+.ourBorder {
+  border: 2px solid $colour-success-fg;
 }
 </style>

@@ -254,6 +254,13 @@ export default {
       this.loading = false
     }
   },
+  beforeDestroy() {
+    // Refetch the configs into the session so that if we go to a page where the config is used, the changes will
+    // be reflected.
+    this.$store.dispatch('modconfigs/fetch', {
+      all: true
+    })
+  },
   methods: {
     async create() {
       this.configid = await this.$store.dispatch('modconfigs/add', {
