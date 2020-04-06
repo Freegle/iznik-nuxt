@@ -521,7 +521,7 @@ export default {
         this.message.fromuser.messagehistory
       ) {
         this.message.fromuser.messagehistory.forEach(message => {
-          if (message.daysago < 60) {
+          if (message.id !== this.message.id && message.daysago < 60) {
             if (this.canonSubj(message.subject) === subj) {
               // No point displaying any group tag in the duplicate.
               message.subject = message.subject.replace(/\[.*\](.*)/, '$1')
