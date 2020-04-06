@@ -260,4 +260,9 @@ export default {
 .pills .btn {
   border-radius: 20px;
 }
+
+.pills .btn:hover {
+  color: black !important;
+  background-color: white !important;
+}
 </style>
