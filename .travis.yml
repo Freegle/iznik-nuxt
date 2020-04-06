@@ -85,7 +85,7 @@ script:
 - sed -i '' "s/Freegle adhoc 0320/Freegle 0320/" platforms/ios/Freegle.xcodeproj/project.pbxproj
 # https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
 - cordova build --release --device -- --codeSignIdentity="Apple Development" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile=="Freegle 0320"  >buildlogrelease.txt || true
-# Sign properly: upload and not export
+# Sign properly: export and then upload
 - cp ../iznik-nuxt/mobile/ExportOptionsFreegleRelease.plist .
 - cd platforms/ios
 - xcodebuild -exportArchive -archivePath Freegle.xcarchive -exportOptionsPlist ../../ExportOptionsFreegleRelease.plist -exportPath build/device -allowProvisioningUpdates
@@ -129,7 +129,7 @@ script:
 - cat platforms/ios/ModTools.xcodeproj/project.pbxproj
 # https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
 - cordova build --release --device -- --codeSignIdentity="Apple Development" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile=="ModTools 0320"  >buildlogrelease.txt || true
-# Sign properly: upload and not export
+# Sign properly: export and then upload
 - cp ../iznik-nuxt/mobile/ExportOptionsModToolsRelease.plist .
 - cd platforms/ios
 - xcodebuild -exportArchive -archivePath ModTools.xcarchive -exportOptionsPlist ../../ExportOptionsModToolsRelease.plist -exportPath build/device -allowProvisioningUpdates
