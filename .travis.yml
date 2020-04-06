@@ -37,6 +37,8 @@ android:
   - android-sdk-preview-license-.+
   - android-sdk-license-.+
   - google-gdk-license-.+
+
+################
 before_install:
 - openssl aes-256-cbc -K $encrypted_a57fb8741d35_key -iv $encrypted_a57fb8741d35_iv
   -in mobile/app-secrets.tar.enc -out mobile/app-secrets.tar -d
@@ -48,12 +50,15 @@ before_install:
 - npm --version
 - gradle --version
 - npm install
+
+################
 script:
 - export MOBILE_VERSION=$(grep -o "MOBILE_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MOBILE_VERSION = '//; s/'.*//")
 - export MODTOOLS_VERSION=$(grep -o "MODTOOLS_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MODTOOLS_VERSION = '//; s/'.*//")
 
 - mkdir releases
 
+# FREEGLE app
 - npm run fdapp
 - mkdir ../iznik-nuxt-app
 - cd ../iznik-nuxt-app
@@ -83,6 +88,7 @@ script:
 
 - cd ../iznik-nuxt
 
+# MODTOOLS app
 - npm run mtapp
 - mkdir ../iznik-nuxt-mt
 - cd ../iznik-nuxt-mt
@@ -114,6 +120,7 @@ script:
 
 - rm mobile/app-secrets.tar android-chrisphdcccom.new.keystore google-services.json GoogleService-Info.plist
 
+################
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
 - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -122,12 +129,16 @@ cache:
   - "$HOME/.gradle/caches/"
   - "$HOME/.gradle/wrapper/"
   - "$HOME/.android/build-cache"
+
+################
 before_deploy:
 - git config --local user.name "$gitusername"
 - git config --local user.email "$gitemail"
 - export TRAVIS_TAG=Travis-android-builds-$MOBILE_VERSION-$MODTOOLS_VERSION-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)
 - env | grep '^TRAVIS_TAG='
 - git tag $TRAVIS_TAG
+
+################
 deploy:
   provider: releases
   api_key:
