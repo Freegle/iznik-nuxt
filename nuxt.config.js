@@ -5,8 +5,8 @@ const FACEBOOK_APPID = '134980666550322'
 const SENTRY_DSN = 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170'
 const YAHOO_CLIENTID =
   'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
-const MOBILE_VERSION = '2.0.28'
-const MODTOOLS_VERSION = '0.3.1'
+const MOBILE_VERSION = '2.0.29'
+const MODTOOLS_VERSION = '0.3.2'
 
 require('dotenv').config()
 
@@ -556,11 +556,8 @@ if ((process.env.NUXT_BUILD_TYPE === 'fdapp') || (process.env.NUXT_BUILD_TYPE ==
   }
   config.env.IS_APP = true
   config.env.IS_MTAPP = process.env.NUXT_BUILD_TYPE === 'mtapp'
-  if (process.env.NUXT_BUILD_TYPE === 'fdapp') {
-    config.env.MOBILE_VERSION = MOBILE_VERSION
-  } else {
-    config.env.MOBILE_VERSION = MODTOOLS_VERSION
-  }
+  config.env.MOBILE_VERSION = MOBILE_VERSION
+  config.env.MODTOOLS_VERSION = MODTOOLS_VERSION
 
   config.build.publicPath = '/js/'
 
