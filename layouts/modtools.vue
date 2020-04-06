@@ -464,7 +464,6 @@ body.modal-open {
 }
 
 .leftmenu {
-  height: 100vh;
   min-width: 200px;
   padding-top: 68px;
   font-size: 1.2em;
