@@ -286,6 +286,9 @@ export default {
     }
   },
   methods: {
+    hide() {
+      this.$store.dispatch('popupchats/hide', { id: this.chat.id })
+    },
     maximise() {
       const modtools = this.$store.getters['misc/get']('modtools')
       this.$store.dispatch('popupchats/hide', { id: this.chat.id })

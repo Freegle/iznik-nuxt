@@ -121,8 +121,13 @@ export const actions = {
   async openChatToUser({ dispatch, commit, rootGetters }, params) {
     const modtools = rootGetters['misc/get']('modtools')
 
+    // We migtht have a type override.  Otherwise open a user chat on FD and mod chat on MT.
     const id = await dispatch('openChat', {
-      chattype: modtools ? 'User2Mod' : 'User2User',
+      chattype: params.chattype
+        ? params.chattype
+        : modtools
+          ? 'User2Mod'
+          : 'User2User',
       groupid: params.groupid,
       userid: params.userid
     })

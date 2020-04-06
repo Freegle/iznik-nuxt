@@ -180,7 +180,7 @@ export default {
       this.$store.dispatch('admins/edit', {
         id: this.admin.id,
         subject: this.admin.subject,
-        text: this.admin.body,
+        text: this.admin.text,
         pending: 1
       })
 

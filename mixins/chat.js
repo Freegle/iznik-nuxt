@@ -466,13 +466,6 @@ export default {
     },
     showblock() {
       this.$refs.chatblock.show()
-    },
-    hide() {
-      this.$store.dispatch('chats/hide', {
-        id: this.id
-      })
-
-      this.$router.push('/chats')
     }
   },
   watch: {

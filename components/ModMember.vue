@@ -55,8 +55,8 @@
               <b-badge :variant="wanteds > 0 ? 'success' : 'light'" title="Recent WANTEDs" @click="showHistory('Wanted')">
                 <v-icon name="search" class="fa-fw" /> {{ wanteds | pluralize([ 'WANTED', 'WANTEDs' ], { includeNumber: true }) }}
               </b-badge>
-              <b-badge :variant="member.modmails > 0 ? 'danger' : 'light'" title="Recent ModMails">
-                <v-icon name="exclamation-triangle" class="fa-fw" /> {{ member.modmails | pluralize([ 'Modmail', 'Modmails' ], { includeNumber: true }) }}
+              <b-badge :variant="(member.modmails && member.modmails) > 0 ? 'danger' : 'light'" title="Recent ModMails">
+                <v-icon name="exclamation-triangle" class="fa-fw" /> {{ (member.modmails ? member.modmails : 0) | pluralize([ 'Modmail', 'Modmails' ], { includeNumber: true }) }}
               </b-badge>
               <b-badge v-if="userinfo" :variant="userinfo.replies > 0 ? 'success' : 'light'" title="Recent replies to posts">
                 <v-icon name="reply" class="fa-fw" /> {{ userinfo.replies | pluralize([ 'reply', 'replies' ], { includeNumber: true }) }}
