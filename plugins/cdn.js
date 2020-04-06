@@ -10,7 +10,7 @@ if (process.client) {
       break
     case 'dev.ilovefreegle.org':
       // eslint-disable-next-line no-undef,camelcase
-      __webpack_public_path__ = 'https://static.ilovefreegle.org' + '/_nuxt/'
+      __webpack_public_path__ = 'https://staticdev.ilovefreegle.org' + '/_nuxt/'
       break
     case 'www.ilovefreegle.org':
       // eslint-disable-next-line no-undef,camelcase
