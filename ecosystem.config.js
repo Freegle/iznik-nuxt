@@ -18,19 +18,19 @@ module.exports = {
         PORT: 3000,
         NODE_ENV: 'production',
         IZNIK_API: 'https://fdapilive.ilovefreegle.org',
-        CDN: 'https://freeglecdn.azureedge.net'
+        CDN: 'https://staticlive.ilovefreegle.org'
       },
       env_development: {
         PORT: 3001,
         NODE_ENV: 'production',
         IZNIK_API: 'https://fdapidev.ilovefreegle.org',
-        CDN: 'https://freeglecdndev.azureedge.net'
+        CDN: 'https://staticdev.ilovefreegle.org'
       },
       env_debug: {
         PORT: 3002,
         NODE_ENV: 'development',
         IZNIK_API: 'https://fdapidbg.ilovefreegle.org',
-        CDN: 'https://freeglecdndbg.azureedge.net'
+        CDN: 'https://staticdbg.ilovefreegle.org'
       }
     }
   ],
