@@ -9,10 +9,12 @@
       </div>
       <div v-else>
         <div v-for="(inv) of invalid" :key="'fbinvalid-' + inv.page.uid">
-          Facebook page <a :href="'https://facebook.com/' + inv.page.id" target="_blank" rel="noopener nofollower">{{ inv.page.name }}</a>
-          for group
-          <b>{{ inv.group.namedisplay }}</b>
-          <b-btn variant="white" class="mt-2" :href="'https://modtools.org/facebook/facebook_request.php?type=Page&groupid=' + inv.group.id" target="_blank" rel="noopener noreferrer">
+          <p>
+            Facebook page <a :href="'https://facebook.com/' + inv.page.id" target="_blank" rel="noopener nofollower">{{ inv.page.name }}</a>
+            for community
+            <b>{{ inv.group.namedisplay }}</b>
+          </p>
+          <b-btn variant="white" :href="'https://modtools.org/facebook/facebook_request.php?type=Page&groupid=' + inv.group.id" target="_blank" rel="noopener noreferrer">
             Relink
           </b-btn>
         </div>
@@ -26,10 +28,12 @@
         </b-btn>
       </div>
       <div v-else>
-        <p>Groups can be linked to a Facebook page, to get extra publicity. Some of your groups aren't.</p>
-        <p>Please link from <em>Settings->Group Settings</em>.</p>
+        <p>Communities can be linked to a Facebook page, to get extra publicity. Some of your groups aren't.</p>
+        <p>Please click to go to the Settings page where you can link from the <em>Social Media</em> section.</p>
         <div v-for="(inv) of notlinked" :key="'fbnotlinked-' + inv.group.id">
-          <b>{{ inv.group.namedisplay }}</b>
+          <nuxt-link :to="'/modtools/settings/' + inv.group.id">
+            {{ inv.group.namedisplay }}
+          </nuxt-link>
         </div>
       </div>
     </NoticeMessage>
