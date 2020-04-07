@@ -984,7 +984,6 @@ h4 a {
   position: absolute;
   height: 100%;
   width: 100%;
-  padding: 1px;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
   border-radius: 3px;
 }
