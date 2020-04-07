@@ -289,16 +289,19 @@ export default {
 
   methods: {
     updateFavicon() {
-      // This is a bit of a hack, but seems necessary to make the favicon update.
-      const link =
-        document.querySelector("link[rel*='icon']") ||
-        document.createElement('link')
-      link.type = 'image/x-icon'
-      link.rel = 'shortcut icon'
-      link.href = require('~/static/icon_modtools.png')
-      document.getElementsByTagName('head')[0].appendChild(link)
+      if (process.client) {
+        // This is a bit of a hack, but seems necessary to make the favicon stick.
+        const link =
+          document.querySelector("link[rel*='icon']") ||
+          document.createElement('link')
+        link.type = 'image/x-icon'
+        link.rel = 'icon'
+        link.href = require('~/static/icon_modtools.png')
+        document.getElementsByTagName('head')[0].appendChild(link)
+        console.log('Update favicon')
+      }
 
-      this.faviconTimer = setTimeout(this.updateFavicon, 1000)
+      this.faviconTimer = setTimeout(this.updateFavicon, 100)
     },
     async logOut() {
       // Remove all cookies, both client and server.  This seems to be necessary to kill off the PHPSESSID cookie
@@ -373,16 +376,25 @@ export default {
       }
     }
 
-    return {
-      titleTemplate: totalCount > 0 ? `(${totalCount}) ModTools` : 'ModTools',
-      link: [
+    console.log('Update head')
+
+    const ret = {
+      titleTemplate: totalCount > 0 ? `(${totalCount}) ModTools` : 'ModTools'
+    }
+
+    if (process.client) {
+      this.updateFavicon()
+    } else {
+      ret.link = [
         {
           rel: 'icon',
           type: 'image/x-icon',
-          href: '/icon_modtools.png?t=' + Date.now()
+          href: require('~/static/icon_modtools.png')
         }
       ]
     }
+
+    return ret
   }
 }
 </script>
