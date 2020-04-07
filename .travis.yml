@@ -121,15 +121,14 @@ script:
 ##- sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& DEVELOPMENT_TEAM = GMYU3K9D84;/" platforms/ios/ModTools.xcodeproj/project.pbxproj
 ##- cat platforms/ios/ModTools.xcodeproj/project.pbxproj
 # https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
-- cordova build --debug --device --buildFlag="-UseModernBuildSystem=0" --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="ad-hoc" --automaticProvisioning="false" --provisioningProfile="ModTools adhoc 0320" 
-#>buildlogdebug.txt
+- cordova build --debug --device --buildFlag="-UseModernBuildSystem=0" --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="ad-hoc" --automaticProvisioning="false" --provisioningProfile="ModTools adhoc 0320" >buildlogdebug.txt
 ### Sign properly: export as ipa
 ##- cp ../iznik-nuxt/mobile/ExportOptionsModToolsDebug.plist .
 ##- cd platforms/ios
 ##- xcodebuild -exportArchive -archivePath ModTools.xcarchive -exportOptionsPlist ../../ExportOptionsModToolsDebug.plist -exportPath build/device -allowProvisioningUpdates
 ##- cp build/device/ModTools.ipa ../../../iznik-nuxt/releases/ModTools-ios-app-$MODTOOLS_VERSION-debug-$(date +'%Y%m%d%H%M%S').ipa
 ##- cd ../..
-- cp platforms/iosbuild/device/ModTools.ipa ../iznik-nuxt/releases/ModTools-ios-app-$MODTOOLS_VERSION-debug-$(date +'%Y%m%d%H%M%S').ipa
+- cp platforms/ios/build/device/ModTools.ipa ../iznik-nuxt/releases/ModTools-ios-app-$MODTOOLS_VERSION-debug-$(date +'%Y%m%d%H%M%S').ipa
 
 # Build release build
 ##- sed -i '' "s/ModTools adhoc 0320/ModTools 0320/" platforms/ios/ModTools.xcodeproj/project.pbxproj
