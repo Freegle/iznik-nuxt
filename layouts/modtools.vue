@@ -298,7 +298,6 @@ export default {
         link.rel = 'icon'
         link.href = require('~/static/icon_modtools.png')
         document.getElementsByTagName('head')[0].appendChild(link)
-        console.log('Update favicon')
       }
 
       this.faviconTimer = setTimeout(this.updateFavicon, 100)
@@ -375,8 +374,6 @@ export default {
         totalCount += work[key]
       }
     }
-
-    console.log('Update head')
 
     const ret = {
       titleTemplate: totalCount > 0 ? `(${totalCount}) ModTools` : 'ModTools'
