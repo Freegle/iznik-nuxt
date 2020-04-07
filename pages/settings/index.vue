@@ -190,9 +190,17 @@
                 <b-col cols="12" sm="6">
                   <b-form-group
                     label="Your password:"
+                    label-for="password"
+                    class="font-weight-bold"
                   >
                     <b-input-group id="input-password">
-                      <b-input v-model="me.password" :type="showPassword ? 'text' : 'password'" placeholder="Your password" class="password__input" />
+                      <b-input
+                        id="password"
+                        v-model="me.password"
+                        :type="showPassword ? 'text' : 'password'"
+                        placeholder="Your password"
+                        class="password__input"
+                      />
                       <span class="password__focus-element" />
                       <b-input-group-append>
                         <b-button variant="white" class="transbord" title="Show password" :aria-label="showPassword ? 'hide password' : 'show password'" @click="togglePassword">
@@ -211,6 +219,7 @@
                           Save
                         </b-button>
                       </b-input-group-append>
+                      </label></label>
                     </b-input-group>
                   </b-form-group>
                 </b-col>
