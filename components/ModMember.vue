@@ -169,7 +169,7 @@
       <b-card-footer class="d-flex justify-content-between">
         <ModMemberButtons :member="member" :modconfig="modconfig" />
         <div class="d-flex">
-          <ModRole :userid="member.userid" :groupid="groupid" :role="member.role" />
+          <ModRole v-if="groupid" :userid="member.userid" :groupid="groupid" :role="member.role" />
           <ChatButton
             :userid="member.userid"
             :groupid="member.groupid"
