@@ -192,10 +192,10 @@
                     label="Your password:"
                   >
                     <b-input-group id="input-password">
-                      <b-input v-model="me.password" :type="showPassword ? 'text' : 'password'" placeholder="Your password" label="Your password" class="password__input" />
+                      <b-input v-model="me.password" :type="showPassword ? 'text' : 'password'" placeholder="Your password" class="password__input" />
                       <span class="password__focus-element" />
                       <b-input-group-append>
-                        <b-button variant="white" class="transbord" title="Show password" @click="togglePassword">
+                        <b-button variant="white" class="transbord" title="Show password" :aria-label="showPassword ? 'hide password' : 'show password'" @click="togglePassword">
                           <v-icon v-if="showPassword" title="Hide password" class="text-secondary" flip="horizontal">
                             <v-icon name="eye" />
                             <v-icon name="slash" />
@@ -204,7 +204,7 @@
                         </b-button>
                       </b-input-group-append>
                       <b-input-group-append>
-                        <b-button variant="white" @click="savePassword">
+                        <b-button variant="white" aria-label="Save password" @click="savePassword">
                           <v-icon v-if="savingPassword" name="sync" class="text-success fa-spin" />
                           <v-icon v-else-if="savedPassword" name="check" class="text-success" />
                           <v-icon v-else name="save" />&nbsp;
