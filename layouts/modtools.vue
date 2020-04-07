@@ -273,15 +273,33 @@ export default {
     this.$store.dispatch('modconfigs/fetch', {
       all: true
     })
+
+    this.updateFavicon()
   },
 
   beforeDestroy() {
     if (this.workTimer) {
       clearTimeout(this.workTimer)
     }
+
+    if (this.faviconTimer) {
+      clearTimeout(this.faviconTimer)
+    }
   },
 
   methods: {
+    updateFavicon() {
+      // This is a bit of a hack, but seems necessary to make the favicon update.
+      const link =
+        document.querySelector("link[rel*='icon']") ||
+        document.createElement('link')
+      link.type = 'image/x-icon'
+      link.rel = 'shortcut icon'
+      link.href = require('~/static/icon_modtools.png')
+      document.getElementsByTagName('head')[0].appendChild(link)
+
+      this.faviconTimer = setTimeout(this.updateFavicon, 1000)
+    },
     async logOut() {
       // Remove all cookies, both client and server.  This seems to be necessary to kill off the PHPSESSID cookie
       // on the server, which would otherwise keep us logged in despite our efforts.
