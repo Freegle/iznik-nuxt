@@ -2,7 +2,7 @@
   <div>
     <client-only>
       <ModHelpRelated />
-      <GroupSelect v-model="groupid" all modonly systemwide />
+      <GroupSelect v-model="groupid" all modonly systemwide :work="['relatedmembers']" />
       <div v-for="member in visibleMembers" :key="'memberlist-' + member.id" class="p-0 mt-2">
         <ModRelatedMember :member="member" />
       </div>

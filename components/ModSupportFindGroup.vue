@@ -118,7 +118,7 @@
         readonly
         class="mr-2"
       />
-      <b-img-lazy v-if="fetchingVolunteers" src="~/static/loader.gif" alt="Loading" class="d-block" />
+      <b-img v-if="fetchingVolunteers" src="~/static/loader.gif" alt="Loading" class="d-block" />
       <ModSupportFindGroupVolunteer v-for="volunteer in sortedVolunteers" :key="'volunteer-' + volunteer.id" :volunteer="volunteer" :groupid="group.id " />
     </div>
   </div>
@@ -225,7 +225,7 @@ export default {
       this.fetchingVolunteers = true
       this.$store.dispatch('members/clear')
 
-      this.$store.dispatch('members/fetchMembers', {
+      await this.$store.dispatch('members/fetchMembers', {
         groupid: this.groupid,
         collection: 'Approved',
         modtools: true,
