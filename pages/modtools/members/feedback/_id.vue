@@ -48,7 +48,7 @@ export default {
   layout: 'modtools',
   mixins: [
     loginRequired,
-    createGroupRoute('modtools/members/happiness'),
+    createGroupRoute('modtools/members/feedback'),
     modMembersPage
   ],
   data: function() {
