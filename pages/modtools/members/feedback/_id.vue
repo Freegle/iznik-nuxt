@@ -54,7 +54,7 @@ export default {
   data: function() {
     return {
       collection: 'Happiness',
-      filter: null
+      filter: 'Unhappy'
     }
   },
   watch: {
