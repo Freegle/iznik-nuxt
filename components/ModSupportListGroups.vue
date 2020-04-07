@@ -57,7 +57,6 @@ export default {
         'Auto-Approve %',
         'Active Mods',
         'Last Moderated',
-        'Last on MT',
         'Publish?',
         'FD?',
         'TN?',
@@ -101,11 +100,6 @@ export default {
         },
         {
           data: 'lastmoderated',
-          type: 'text',
-          renderer: this.forceDate
-        },
-        {
-          data: 'lastmodactive',
           type: 'text',
           renderer: this.forceDate
         },
