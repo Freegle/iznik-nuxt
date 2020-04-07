@@ -14,7 +14,7 @@
             for community
             <b>{{ inv.group.namedisplay }}</b>
           </p>
-          <b-btn variant="white" :href="'https://modtools.org/facebook/facebook_request.php?type=Page&groupid=' + inv.group.id" target="_blank" rel="noopener noreferrer">
+          <b-btn class="mb-2" variant="white" :href="'https://modtools.org/facebook/facebook_request.php?type=Page&groupid=' + inv.group.id" target="_blank" rel="noopener noreferrer">
             Relink
           </b-btn>
         </div>
@@ -22,7 +22,7 @@
     </NoticeMessage>
     <NoticeMessage v-if="notlinked.length" variant="warning" class="mt-1">
       <div v-if="summary">
-        <v-icon name="exclamation-triangle" /> {{ notlinked.length | pluralize('group', { includeNumber: true }) }} need to be linked to a Facebook page.
+        <v-icon name="exclamation-triangle" /> {{ notlinked.length | pluralize(['community needs', 'communities need'], { includeNumber: true }) }} need to be linked to a Facebook page.
         <b-btn variant="white" @click="expand">
           Click to view
         </b-btn>
