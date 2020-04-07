@@ -361,7 +361,7 @@ export default {
         {
           rel: 'icon',
           type: 'image/x-icon',
-          href: '/icon_modtools.png'
+          href: '/icon_modtools.png?t=' + Date.now()
         }
       ]
     }
