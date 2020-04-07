@@ -2,7 +2,7 @@
   <div class="mt-2 small">
     <div v-if="memberof && memberof.length">
       <div v-for="m in memberof" :key="'membership-' + m.membershipid" class="p-1 mr-1">
-        {{ m.namedisplay.length > 32 ? (m.namedisplay.substring(0, 32) + '...') : m.namedisplay }}
+        <b>{{ m.namedisplay.length > 32 ? (m.namedisplay.substring(0, 32) + '...') : m.namedisplay }}</b>
         <span :class="'small ' + (daysago(m.added) < 31 ? 'text-danger font-weight-bold' : 'text-muted')">{{ m.added | timeago }}</span>
       </div>
     </div>
@@ -14,7 +14,7 @@
     </b-badge>
     <div v-if="visibleApplied && visibleApplied.length">
       <div v-for="m in visibleApplied" :key="'memberapplied-' + m.id + '-' + m.userid + '-' + m.added" class="p-1 mr-1">
-        Applied {{ m.namedisplay.length > 32 ? (m.namedisplay.substring(0, 32) + '...') : m.namedisplay }}
+        <b>Applied {{ m.namedisplay.length > 32 ? (m.namedisplay.substring(0, 32) + '...') : m.namedisplay }}</b>
         <span :class="'small ' + (daysago(m.added) < 31 ? 'text-danger font-weight-bold' : 'text-muted')">{{ m.added | timeago }}</span>
       </div>
     </div>
