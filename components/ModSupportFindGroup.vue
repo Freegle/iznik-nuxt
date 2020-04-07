@@ -15,7 +15,6 @@
         {{ group.namedisplay }}
       </h4>
       <div class="d-flex">
-        <p>TODO MT Make toggles work from here?</p>
         <OurToggle
           :value="(Boolean)(group.publish)"
           :height="36"
