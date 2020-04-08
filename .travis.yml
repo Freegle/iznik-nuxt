@@ -1,3 +1,4 @@
+# iOS TRAVIS SCRIPT - exists on app-ios branch which otherwise should be an exact copy of the app branch (for Android)
 # Based on https://dev.to/geojow/deploying-an-ios-app-with-travisci--testflight-1naa and others - thanks
 language: objective-c
 os: osx
