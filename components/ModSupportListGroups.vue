@@ -54,10 +54,9 @@ export default {
         'Short Name',
         'Display Name',
         'Last Auto-Approve',
-        'Recent Auto-Approves',
+        'Auto-Approve %',
         'Active Mods',
         'Last Moderated',
-        'Last on MT',
         'Publish?',
         'FD?',
         'TN?',
@@ -90,9 +89,9 @@ export default {
           renderer: this.forceDate
         },
         {
-          data: 'recentautoapproves',
+          data: 'recentautoapprovespercent',
           type: 'numeric',
-          renderer: this.numberDash
+          renderer: this.autoApproves
         },
         {
           data: 'activemodcount',
@@ -101,11 +100,6 @@ export default {
         },
         {
           data: 'lastmoderated',
-          type: 'text',
-          renderer: this.forceDate
-        },
-        {
-          data: 'lastmodactive',
           type: 'text',
           renderer: this.forceDate
         },
@@ -235,6 +229,24 @@ export default {
         column,
         prop,
         parseInt(value),
+        cellProperties
+      )
+    },
+    autoApproves(hotInstance, td, row, column, prop, value, cellProperties) {
+      const auto = parseInt(value)
+
+      if (auto > 50) {
+        td.style.backgroundColor = 'orange'
+      }
+
+      Handsontable.renderers.NumericRenderer.call(
+        this,
+        hotInstance,
+        td,
+        row,
+        column,
+        prop,
+        auto,
         cellProperties
       )
     },
