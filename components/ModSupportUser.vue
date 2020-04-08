@@ -225,7 +225,7 @@
     <ModLogsModal ref="logs" :userid="user.id" />
     <ConfirmModal v-if="purgeConfirm" ref="purgeConfirm" :title="'Purge ' + user.displayname + ' from the system?'" message="<p><b>This can't be undone.</b></p><p>Are you completely sure you want to do this?</p>" @confirm="purgeConfirmed" />
     <ProfileModal v-if="user && user.info" :id="id" ref="profile" />
-    <ModSpammerReport v-if="showSpamModal" ref="spamConfirm" :user="user" />
+    <ModSpammerReport v-if="showSpamModal" ref="spamConfirm" :user="reportUser" />
   </b-card>
 </template>
 <script>
@@ -286,6 +286,13 @@ export default {
   computed: {
     user() {
       return this.$store.getters['user/get'](this.id)
+    },
+    reportUser() {
+      return {
+        // Due to inconsistencies about userid vs id in objects.
+        userid: this.user.id,
+        displayname: this.user.displayname
+      }
     },
     freegleMemberships() {
       return this.user && this.user.memberof

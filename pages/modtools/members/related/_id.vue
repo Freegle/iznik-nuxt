@@ -2,7 +2,7 @@
   <div>
     <client-only>
       <ModHelpRelated />
-      <GroupSelect v-model="groupid" all modonly />
+      <GroupSelect v-model="groupid" all modonly systemwide :work="['relatedmembers']" />
       <div v-for="member in visibleMembers" :key="'memberlist-' + member.id" class="p-0 mt-2">
         <ModRelatedMember :member="member" />
       </div>
@@ -26,20 +26,16 @@ import NoticeMessage from '@/components/NoticeMessage'
 import ModHelpRelated from '@/components/ModHelpRelated'
 import loginRequired from '@/mixins/loginRequired'
 import modMembersPage from '@/mixins/modMembersPage'
-import createGroupRoute from '@/mixins/createGroupRoute'
 import ModRelatedMember from '@/components/ModRelatedMember'
 
 export default {
   components: { ModHelpRelated, ModRelatedMember, NoticeMessage },
   layout: 'modtools',
-  mixins: [
-    loginRequired,
-    createGroupRoute('modtools/members/related'),
-    modMembersPage
-  ],
+  mixins: [loginRequired, modMembersPage],
   data: function() {
     return {
-      collection: 'Related'
+      collection: 'Related',
+      groupid: null
     }
   },
   computed: {
@@ -48,7 +44,7 @@ export default {
     },
     visibleMembers() {
       const ret = this.members.filter(member => {
-        if (!this.groupid) {
+        if (this.groupid <= 0) {
           // No group filter
           return true
         }

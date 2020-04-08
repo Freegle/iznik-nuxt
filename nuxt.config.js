@@ -6,7 +6,7 @@ const SENTRY_DSN = 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170'
 const YAHOO_CLIENTID =
   'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
 const MOBILE_VERSION = '2.0.29'
-const MODTOOLS_VERSION = '0.3.2'
+const MODTOOLS_VERSION = '0.3.3'
 
 require('dotenv').config()
 
@@ -26,7 +26,7 @@ if ((process.env.NUXT_BUILD_TYPE === 'fdapp') || (process.env.NUXT_BUILD_TYPE ==
   API = 'https://www.ilovefreegle.org/api'
 }
 if (process.env.NUXT_BUILD_TYPE === 'mtapp') {
-  API = 'https://dev.modtools.org/api'
+  API = 'https://modtools.org/api'
 }
 
 // IZNIK_API is where we send it to.  This avoids CORS issues (and removes preflight OPTIONS calls for GETs, which

@@ -99,6 +99,10 @@
             <b-btn variant="link" @click="showLogs">
               View logs
             </b-btn>
+            <b-btn variant="link" @click="showProfile">
+              View profile
+            </b-btn>
+            <ProfileModal :id="member.userid" ref="profilemodal" />
             <div v-if="showEmails">
               <div v-for="e in member.emails" :key="e.id">
                 {{ e.email }} <v-icon v-if="e.preferred" name="start" />
@@ -165,7 +169,7 @@
       <b-card-footer class="d-flex justify-content-between">
         <ModMemberButtons :member="member" :modconfig="modconfig" />
         <div class="d-flex">
-          <ModRole :userid="member.userid" :groupid="groupid" :role="member.role" />
+          <ModRole v-if="groupid" :userid="member.userid" :groupid="groupid" :role="member.role" />
           <ChatButton
             :userid="member.userid"
             :groupid="member.groupid"
@@ -197,11 +201,13 @@ import ModBouncing from './ModBouncing'
 import ModMemberLogins from './ModMemberLogins'
 import ModRole from './ModRole'
 import ChatButton from './ChatButton'
+import ProfileModal from './ProfileModal'
 const OurToggle = () => import('@/components/OurToggle')
 
 export default {
   name: 'ModMember',
   components: {
+    ProfileModal,
     ChatButton,
     OurToggle,
     ModRole,
@@ -416,6 +422,11 @@ export default {
       await this.$store.dispatch('user/edit', {
         id: this.user.id,
         newslettersallowed: e.value
+      })
+    },
+    showProfile() {
+      this.waitForRef('profilemodal', () => {
+        this.$refs.profilemodal.show()
       })
     }
   }
