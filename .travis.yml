@@ -1,3 +1,4 @@
+# Android TRAVIS SCRIPT - exists on app branch for trigger build only.  Note that the iOS Travis script is on app-ios branch
 dist: trusty
 branches:
   only: app
@@ -149,4 +150,3 @@ deploy:
   on:
     repo: Freegle/iznik-nuxt
     branch: app
-
