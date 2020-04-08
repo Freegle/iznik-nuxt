@@ -274,15 +274,35 @@ export default {
     this.$store.dispatch('modconfigs/fetch', {
       all: true
     })
+
+    this.updateFavicon()
   },
 
   beforeDestroy() {
     if (this.workTimer) {
       clearTimeout(this.workTimer)
     }
+
+    if (this.faviconTimer) {
+      clearTimeout(this.faviconTimer)
+    }
   },
 
   methods: {
+    updateFavicon() {
+      if (process.client) {
+        // This is a bit of a hack, but seems necessary to make the favicon stick.
+        const link =
+          document.querySelector("link[rel*='icon']") ||
+          document.createElement('link')
+        link.type = 'image/x-icon'
+        link.rel = 'icon'
+        link.href = require('~/static/icon_modtools.png')
+        document.getElementsByTagName('head')[0].appendChild(link)
+      }
+
+      this.faviconTimer = setTimeout(this.updateFavicon, 100)
+    },
     async logOut() {
       // Remove all cookies, both client and server.  This seems to be necessary to kill off the PHPSESSID cookie
       // on the server, which would otherwise keep us logged in despite our efforts.
@@ -357,16 +377,23 @@ export default {
       }
     }
 
-    return {
-      titleTemplate: totalCount > 0 ? `(${totalCount}) ModTools` : 'ModTools',
-      link: [
+    const ret = {
+      titleTemplate: totalCount > 0 ? `(${totalCount}) ModTools` : 'ModTools'
+    }
+
+    if (process.client) {
+      this.updateFavicon()
+    } else {
+      ret.link = [
         {
           rel: 'icon',
           type: 'image/x-icon',
-          href: require(`@/static/icon_modtools.png`)
+          href: require('~/static/icon_modtools.png')
         }
       ]
     }
+
+    return ret
   }
 }
 </script>

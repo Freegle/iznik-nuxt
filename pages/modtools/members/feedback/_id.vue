@@ -1,6 +1,7 @@
 <template>
   <div>
     <client-only>
+      <ModHelpFeedback />
       <div class="d-flex justify-content-between">
         <GroupSelect v-model="groupid" modonly all />
         <b-select v-model="filter">
@@ -37,6 +38,7 @@
   </div>
 </template>
 <script>
+import ModHelpFeedback from '../../../../components/ModHelpFeedback'
 import NoticeMessage from '@/components/NoticeMessage'
 import loginRequired from '@/mixins/loginRequired'
 import modMembersPage from '@/mixins/modMembersPage'
@@ -44,17 +46,17 @@ import createGroupRoute from '@/mixins/createGroupRoute'
 import ModMemberHappiness from '@/components/ModMemberHappiness'
 
 export default {
-  components: { ModMemberHappiness, NoticeMessage },
+  components: { ModHelpFeedback, ModMemberHappiness, NoticeMessage },
   layout: 'modtools',
   mixins: [
     loginRequired,
-    createGroupRoute('modtools/members/happiness'),
+    createGroupRoute('modtools/members/feedback'),
     modMembersPage
   ],
   data: function() {
     return {
       collection: 'Happiness',
-      filter: null
+      filter: 'Unhappy'
     }
   },
   watch: {

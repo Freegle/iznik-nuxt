@@ -1,6 +1,6 @@
 <template>
   <div class="bg-white">
-    <b-tabs content-class="mt-3" card>
+    <b-tabs v-model="tabIndex" content-class="mt-3" card>
       <b-tab>
         <template v-slot:title>
           <h2 class="ml-2 mr-2">
@@ -15,7 +15,7 @@
             Community
           </h2>
         </template>
-        <ModSettingsGroup />
+        <ModSettingsGroup :initial-group="loadGroup" />
       </b-tab>
       <b-tab>
         <template v-slot:title>
@@ -40,9 +40,9 @@
   </div>
 </template>
 <script>
-import ModSettingsPersonal from '../../components/ModSettingsPersonal'
-import ModSettingsGroup from '../../components/ModSettingsGroup'
-import ModSettingsModConfig from '../../components/ModSettingsModConfig'
+import ModSettingsPersonal from '@/components/ModSettingsPersonal'
+import ModSettingsGroup from '@/components/ModSettingsGroup'
+import ModSettingsModConfig from '@/components/ModSettingsModConfig'
 import loginRequired from '@/mixins/loginRequired.js'
 
 export default {
@@ -52,6 +52,24 @@ export default {
     ModSettingsGroup,
     ModSettingsPersonal
   },
-  mixins: [loginRequired]
+  mixins: [loginRequired],
+  data: function() {
+    return {
+      tabIndex: null,
+      loadGroup: null
+    }
+  },
+  created() {
+    this.loadGroup = parseInt(this.$route.params.id) || null
+  },
+  mounted() {
+    console.log('Mounted', this.loadGroup)
+    if (this.loadGroup) {
+      // We've been asked to load group setting.
+      this.$nextTick(() => {
+        this.tabIndex = 1
+      })
+    }
+  }
 }
 </script>

@@ -44,7 +44,7 @@ export default {
     }
   },
   watch: {
-    groupid() {
+    groupid(oldValue, newValue) {
       this.context = null
       this.show = 0
       this.$store.dispatch('members/clear')

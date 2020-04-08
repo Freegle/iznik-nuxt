@@ -49,7 +49,8 @@
           <span class="p-2 social-button__text font-weight-bold">Continue with Yahoo</span>
         </b-btn>
         <notice-message v-if="socialblocked" variant="warning">
-          Social sign in blocked - check your privacy settings
+          Social sign in blocked - check your privacy settings, including any ad blockers such as
+          Adblock Plus.
         </notice-message>
         <b-alert v-if="socialLoginError" variant="danger" show>
           Login Failed: {{ socialLoginError }}
