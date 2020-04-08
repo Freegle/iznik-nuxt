@@ -22,7 +22,7 @@
     <ConfirmModal v-if="banConfirm" ref="banConfirm" :title="'Ban ' + displayname + ' from ' + groupname + '?'" @confirm="banConfirmed" />
     <ConfirmModal v-if="purgeConfirm" ref="purgeConfirm" :title="'Purge ' + displayname + ' from the system?'" message="<p><b>This can't be undone.</b></p><p>Are you completely sure you want to do this?</p>" @confirm="purgeConfirmed" />
     <ModCommentAddModal v-if="addComment" ref="addComment" :user="user" :groupid="groupid" @added="updateComments" />
-    <ModSpammerReport v-if="showSpamModal" ref="spamConfirm" :user="user" :whitelist="whitelist" />
+    <ModSpammerReport v-if="showSpamModal" ref="spamConfirm" :user="reportUser" :whitelist="whitelist" />
   </div>
 </template>
 <script>
@@ -70,6 +70,13 @@ export default {
     },
     groupname() {
       return this.group ? this.group.nameshort : null
+    },
+    reportUser() {
+      return {
+        // Due to inconsistencies about userid vs id in objects.
+        userid: this.user.id,
+        displayname: this.user.displayname
+      }
     }
   },
   methods: {
@@ -161,7 +168,7 @@ export default {
         await this.fetchUser()
       }
 
-      this.whitelist = true
+      this.whitelist = false
       this.showSpamModal = true
 
       this.waitForRef('spamConfirm', () => {
