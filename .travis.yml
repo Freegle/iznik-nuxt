@@ -68,6 +68,9 @@ script:
 - cordova platform rm ios
 - cordova platform add ios
 
+# Fix cordova-ios
+- sed -i '' "s/PROVISIONING_PROFILE =/PROVISIONING_PROFILE_SPECIFIER =/" platforms/ios/cordova/lib/build.js
+
 # Build debug build
 ##- sed -i '' "s/ProvisioningStyle = Automatic;/& DevelopmentTeam = GMYU3K9D84;/" platforms/ios/Freegle.xcodeproj/project.pbxproj
 ##- sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& CODE_SIGN_IDENTITY = 'iPhone Distribution';/" platforms/ios/Freegle.xcodeproj/project.pbxproj
@@ -75,7 +78,8 @@ script:
 ##- sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& PROVISIONING_PROFILE_SPECIFIER = 'Freegle adhoc 0320';/" platforms/ios/Freegle.xcodeproj/project.pbxproj
 ##- sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& DEVELOPMENT_TEAM = GMYU3K9D84;/" platforms/ios/Freegle.xcodeproj/project.pbxproj
 # https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
-- cordova build --debug --device --buildFlag="-UseModernBuildSystem=0" --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="ad-hoc" --automaticProvisioning="false" --provisioningProfile="Freegle adhoc 0320" >buildlogdebug.txt
+- cordova build --debug --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="ad-hoc" --automaticProvisioning="false" --provisioningProfile="Freegle adhoc 0320" >buildlogdebug.txt
+###- cordova build --debug --device --buildFlag="-UseModernBuildSystem=0" --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="ad-hoc" --automaticProvisioning="false" --provisioningProfile="Freegle adhoc 0320" >buildlogdebug.txt
 ### Sign properly: export as ipa
 ##- cp ../iznik-nuxt/mobile/ExportOptionsFreegleDebug.plist .
 ##- cd platforms/ios
@@ -114,6 +118,9 @@ script:
 - cordova platform rm ios
 - cordova platform add ios
 
+# Fix cordova-ios
+- sed -i '' "s/PROVISIONING_PROFILE =/PROVISIONING_PROFILE_SPECIFIER =/" platforms/ios/cordova/lib/build.js
+
 # Build debug build
 ##- sed -i '' "s/ProvisioningStyle = Automatic;/& DevelopmentTeam = GMYU3K9D84;/" platforms/ios/ModTools.xcodeproj/project.pbxproj
 ##- sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& CODE_SIGN_IDENTITY = 'iPhone Distribution';/" platforms/ios/ModTools.xcodeproj/project.pbxproj
@@ -122,7 +129,8 @@ script:
 ##- sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& DEVELOPMENT_TEAM = GMYU3K9D84;/" platforms/ios/ModTools.xcodeproj/project.pbxproj
 ##- cat platforms/ios/ModTools.xcodeproj/project.pbxproj
 # https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
-- cordova build --debug --device --buildFlag="-UseModernBuildSystem=0" --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="ad-hoc" --automaticProvisioning="false" --provisioningProfile="ModTools adhoc 0320" >buildlogdebug.txt
+- cordova build --debug --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="ad-hoc" --automaticProvisioning="false" --provisioningProfile="ModTools adhoc 0320" >buildlogdebug.txt
+###- cordova build --debug --device --buildFlag="-UseModernBuildSystem=0" --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="ad-hoc" --automaticProvisioning="false" --provisioningProfile="ModTools adhoc 0320" >buildlogdebug.txt
 ### Sign properly: export as ipa
 ##- cp ../iznik-nuxt/mobile/ExportOptionsModToolsDebug.plist .
 ##- cd platforms/ios
