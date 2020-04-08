@@ -188,39 +188,7 @@
               </b-row>
               <b-row>
                 <b-col cols="12" sm="6">
-                  <b-form-group
-                    label="Your password:"
-                    label-for="password"
-                    class="font-weight-bold"
-                  >
-                    <b-input-group id="input-password">
-                      <b-input
-                        id="password"
-                        v-model="me.password"
-                        :type="showPassword ? 'text' : 'password'"
-                        placeholder="Your password"
-                        class="password__input"
-                      />
-                      <span class="password__focus-element" />
-                      <b-input-group-append>
-                        <b-button variant="white" class="transbord" title="Show password" :aria-label="showPassword ? 'hide password' : 'show password'" @click="togglePassword">
-                          <v-icon v-if="showPassword" title="Hide password" class="text-secondary" flip="horizontal">
-                            <v-icon name="eye" />
-                            <v-icon name="slash" />
-                          </v-icon>
-                          <v-icon v-else name="eye" class="text-secondary" />
-                        </b-button>
-                      </b-input-group-append>
-                      <b-input-group-append>
-                        <b-button variant="white" aria-label="Save password" @click="savePassword">
-                          <v-icon v-if="savingPassword" name="sync" class="text-success fa-spin" />
-                          <v-icon v-else-if="savedPassword" name="check" class="text-success" />
-                          <v-icon v-else name="save" />&nbsp;
-                          Save
-                        </b-button>
-                      </b-input-group-append>
-                    </b-input-group>
-                  </b-form-group>
+                  <PasswordEntry />
                 </b-col>
               </b-row>
               <b-row>
@@ -540,6 +508,7 @@ const OurFilePond = () => import('~/components/OurFilePond')
 const OurToggle = () => import('~/components/OurToggle')
 const DatePicker = () => import('vue2-datepicker')
 const DonationButton = () => import('~/components/DonationButton')
+const PasswordEntry = () => import('~/components/PasswordEntry')
 
 export default {
   components: {
@@ -556,7 +525,8 @@ export default {
     NoticeMessage,
     ProfileImage,
     OurFilePond,
-    DonationButton
+    DonationButton,
+    PasswordEntry
   },
   mixins: [loginRequired, buildHead, WaitForRef],
   data: function() {
@@ -568,16 +538,13 @@ export default {
       savedPostcode: false,
       savingEmail: false,
       savedEmail: false,
-      savingPassword: false,
-      savedPassword: false,
       savingPhone: false,
       savedPhone: false,
       removingPhone: false,
       removedPhone: false,
       unbouncing: false,
       unbounced: false,
-      uploading: false,
-      showPassword: false
+      uploading: false
     }
   },
   computed: {
@@ -755,21 +722,6 @@ export default {
     selectPostcode(pc) {
       this.pc = pc
     },
-    async savePassword() {
-      this.savingPassword = true
-
-      if (this.me.password) {
-        await this.$store.dispatch('auth/saveAndGet', {
-          password: this.me.password
-        })
-      }
-
-      this.savingPassword = false
-      this.savedPassword = true
-      setTimeout(() => {
-        this.savedPassword = false
-      }, 2000)
-    },
     async saveEmail() {
       this.savingEmail = true
 
@@ -939,9 +891,6 @@ export default {
     },
     uploadProfile() {
       this.uploading = true
-    },
-    togglePassword() {
-      this.showPassword = !this.showPassword
     }
   },
   head() {
@@ -966,24 +915,5 @@ export default {
 
 h4 a {
   color: $colour-header;
-}
-
-/* These classes are to give the complete password group of elements a focus indicator */
-/* when the individual password input element gets focus.  It should not display for the */
-/* other two individual elements */
-.password__input:focus {
-  /* Get rid of any default focus on the password input element added by bootstrap */
-  box-shadow: none;
-  border-right-color: $color-black;
-}
-
-.password__input:focus + .password__focus-element {
-  /* Add bootstrap style focus to the span element.  This element should encompass */
-  /* the whole password group */
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-  border-radius: 3px;
 }
 </style>
