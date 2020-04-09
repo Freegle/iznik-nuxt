@@ -144,9 +144,9 @@
               <ModMenuItemNav :value="chatCount" icon="comments" count-on-top @click.native="chats" />
             </template>
           </b-nav-item-dropdown>
-          <b-nav-item-dropdown v-if="loggedIn" id="menu-option-modtools-discourse" class="pt-2" @click="logOut">
+          <b-nav-item-dropdown v-if="loggedIn" id="menu-option-modtools-discourse" class="pt-2">
             <template v-slot:button-content>
-              <ModMenuItemNav icon="sign-out-alt" count-on-top />
+              <ModMenuItemNav icon="sign-out-alt" count-on-top @click.native="logOut" />
             </template>
           </b-nav-item-dropdown>
           <b-nav-item v-if="!loggedIn">
@@ -306,6 +306,7 @@ export default {
     async logOut() {
       // Remove all cookies, both client and server.  This seems to be necessary to kill off the PHPSESSID cookie
       // on the server, which would otherwise keep us logged in despite our efforts.
+      console.log('Logout')
       try {
         this.$cookies.removeAll()
       } catch (e) {}
@@ -314,7 +315,7 @@ export default {
       this.$store.dispatch('auth/forceLogin', false)
 
       // Go to the landing page.
-      this.$router.push('/')
+      this.$router.push('/modtools')
     },
     requestLogin() {
       this.$refs.loginModal.show()
