@@ -6,7 +6,7 @@
     <b-badge variant="light" class="clickme" title="Recent WANTEDs" @click="showHistory('Wanted')">
       <v-icon name="search" class="fa-fw" /> {{ wanteds }}
     </b-badge>
-    <b-badge :variant="user.modmails > 0 ? 'danger' : 'light'" title="ModMails">
+    <b-badge :variant="user.modmails > 0 ? 'danger' : 'light'" class="clickme" title="ModMails" @click="showModmails">
       <v-icon name="exclamation-triangle" class="fa-fw" /> {{ user.modmails }}
     </b-badge>
     <b-badge v-if="userinfo" :variant="userinfo.replies > 0 ? 'success' : 'light'" title="Recent replies to posts">
@@ -22,7 +22,7 @@
       Logs
     </b-btn>
     <ModPostingHistoryModal ref="history" :user="user" :type="type" />
-    <ModLogsModal ref="logs" :userid="user.id" />
+    <ModLogsModal ref="logs" :userid="user.id" :modmailsonly="modmailsonly" />
   </span>
 </template>
 <script>
@@ -41,7 +41,8 @@ export default {
   },
   data: function() {
     return {
-      type: null
+      type: null,
+      modmailsonly: false
     }
   },
   computed: {
@@ -93,6 +94,15 @@ export default {
       })
     },
     showLogs() {
+      this.modmailsonly = false
+
+      this.waitForRef('logs', () => {
+        this.$refs.logs.show()
+      })
+    },
+    showModmails() {
+      this.modmailsonly = true
+
       this.waitForRef('logs', () => {
         this.$refs.logs.show()
       })
