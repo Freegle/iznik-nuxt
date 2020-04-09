@@ -13,7 +13,12 @@
   >
     <!-- This is required as the default bootstrap component makes the main title an h5 -->
     <template slot="modal-title">
-      <h2>Let's get freegling!</h2>
+      <h2 v-if="!modtools">
+        Let's get freegling!
+      </h2>
+      <h2 v-else>
+        Please log in to ModTools
+      </h2>
     </template>
     <p v-if="signUp" class="text-center">
       You'll get emails.  Name, approx. location, and profile picture are public - you can hide your real name and
@@ -230,6 +235,9 @@ export default {
   },
 
   computed: {
+    modtools() {
+      return this.$store.getters['misc/get']('modtools')
+    },
     // Use of this.bump means we will recompute when we need to, i.e. when the modal is shown.  This is overriding
     // normal reactivity but that's because the SDKs we use aren't written in Vue.
     facebookDisabled() {
