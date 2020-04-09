@@ -41,6 +41,9 @@ export default {
       const work = this.$store.getters['auth/work']
       const count = this.workType ? work[this.workType] : 0
       return count
+    },
+    group() {
+      return this.$store.getters['group/get'](this.groupid)
     }
   },
   watch: {
