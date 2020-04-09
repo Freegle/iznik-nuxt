@@ -2,13 +2,14 @@
   <client-only>
     <div class="pageback">
       <b-navbar id="navbar" type="dark" class="navback p-0 p-sm-1" fixed="top">
-        <b-navbar-brand class="p-0 pr-2 d-flex" @click="clicklogo">
+        <b-navbar-brand class="p-0 pr-2 d-flex">
           <b-img
             class="logo clickme"
             fluid
             rounded
             :src="logo"
             alt="Home"
+            @click="clicklogo"
           />
           <ModStatus class="status" />
         </b-navbar-brand>
@@ -82,7 +83,7 @@
               <ModMenuItemNav name="Volunteering" :count="['pendingvolunteering']" link="/modtools/volunteering" />
             </b-dropdown-item>
             <b-dropdown-item>
-              <ModMenuItemNav name="Spammers" :count="['spammerpendingadd', 'spammerpendingremove']" link="/modtools/spammers" />
+              <ModMenuItemNav name="Spammers" :count="supportOrAdmin ? ['spammerpendingadd', 'spammerpendingremove'] : []" link="/modtools/spammers" />
             </b-dropdown-item>
             <b-dropdown-item>
               <ModMenuItemNav name="Admins" :count="['pendingadmins']" link="/modtools/admins" />
@@ -186,7 +187,7 @@
           <ModMenuItemLeft link="/modtools/volunteering" name="Volunteering" :count="['pendingvolunteering']" />
           <ModMenuItemLeft link="/modtools/publicity" name="Publicity" :count="['socialactions']" />
           <ModMenuItemLeft link="/modtools/admins" name="Admins" :count="['pendingadmins']" />
-          <ModMenuItemLeft link="/modtools/spammers" name="Spammers" :count="['spammerpendingadd', 'spammerpendingremove']" />
+          <ModMenuItemLeft link="/modtools/spammers" name="Spammers" :count="supportOrAdmin ? ['spammerpendingadd', 'spammerpendingremove'] : []" />
           <hr>
           <ModMenuItemLeft link="/modtools/logs" name="Logs" />
           <ModMenuItemLeft link="/modtools/support" name="Support" />
