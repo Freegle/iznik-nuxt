@@ -1,32 +1,18 @@
 <template>
   <div>
-    <p>
-      You can search for message by id, or by subject.  This will only return the first few results, so the more
-      specific, the better.
-    </p>
     <b-input-group>
-      <b-input v-model="term" placeholder="Message id or subject" @keyup.native.enter="search" />
+      <b-input v-model="term" placeholder="Search message id or subject" @keyup.native.enter="search" />
       <b-input-group-append>
         <SpinButton variant="success" name="search" label="Search" :handler="search" :disabled="!term" />
       </b-input-group-append>
     </b-input-group>
-    <b-img-lazy v-if="busy" src="~/static/loader.gif" alt="Loading" />
-    <div v-else class="mt-2">
-      <ModMessage
-        v-for="message in messages"
-        :key="'message-' + message.id"
-        :message="message"
-        noactions
-      />
-    </div>
   </div>
 </template>
 <script>
 import SpinButton from './SpinButton'
-import ModMessage from './ModMessage'
+
 export default {
   components: {
-    ModMessage,
     SpinButton
   },
   data: function() {
@@ -35,17 +21,11 @@ export default {
       busy: false
     }
   },
-  computed: {
-    messages() {
-      return this.$store.getters['messages/getAll']
-    }
-  },
   methods: {
     async search() {
       this.busy = true
       const term = this.term.trim()
 
-      console.log('Search', term)
       await this.$store.dispatch('messages/clear')
 
       if (!isNaN(term)) {
