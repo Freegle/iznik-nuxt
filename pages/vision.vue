@@ -133,7 +133,8 @@ export default {
                         self.captures.push({
                           id: self.captures.length,
                           src: imgsrc,
-                          text: result.text
+                          text: result.authors.join(',')
+                          // result.text[0].description
                         })
                       }
                     })
