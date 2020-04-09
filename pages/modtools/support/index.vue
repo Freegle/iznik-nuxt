@@ -30,8 +30,7 @@
               specific, the better.
             </p>
             <ModFindMessage />
-            <b-img-lazy v-if="busy" src="~/static/loader.gif" alt="Loading" />
-            <div v-else class="mt-2">
+            <div v-if="message && messages" class="mt-2">
               <ModMessage
                 v-for="message in messages"
                 :key="'message-' + message.id"

@@ -59,7 +59,13 @@
                   </span>
                 </b-col>
                 <b-col cols="4" class="p-0">
-                  <b-dropdown v-if="chat.chattype === 'User2User'" size="sm" variant="transparent" class="float-right" right>
+                  <b-dropdown v-if="mod && chat.chattype === 'User2Mod' && otheruser" size="sm" variant="transparent" class="float-right" right>
+                    <template slot="button-content" />
+                    <b-dropdown-item @click="showhide">
+                      Hide this chat
+                    </b-dropdown-item>
+                  </b-dropdown>
+                  <b-dropdown v-if="chat.chattype === 'User2User' && otheruser" size="sm" variant="transparent" class="float-right" right>
                     <template slot="button-content" />
                     <b-dropdown-item @click="showhide">
                       Hide this chat
@@ -278,7 +284,7 @@
           <AvailabilityModal v-if="me && chat" ref="availabilitymodal" :otheruid="otheruser ? otheruser.id : null" :chatid="chat.id" :thisuid="me.id" />
           <AddressModal ref="addressModal" :choose="true" @chosen="sendAddress" />
           <ChatBlockModal v-if="chat && chat.chattype === 'User2User' && otheruser" :id="id" ref="chatblock" :user="otheruser" @confirm="block" />
-          <ChatHideModal v-if="chat && chat.chattype === 'User2User' && otheruser" :id="id" ref="chathide" :user="otheruser" @confirm="hide" />
+          <ChatHideModal v-if="chat && otheruser && ((chat.chattype === 'User2User') || (chat.chattype === 'User2Mod' && mod))" :id="id" ref="chathide" :user="otheruser" @confirm="hide" />
           <ChatReportModal
             v-if="otheruser && chat && chat.chattype === 'User2User'"
             :id="'report-' + id"
