@@ -7,6 +7,9 @@
         <ModMemberSearchbox v-model="search" :groupid="groupid" />
       </div>
       <div v-if="groupid">
+        <p v-if="group" class="mt-1">
+          This group has {{ group.membercount | pluralize('member', { includeNumber: true }) }}.
+        </p>
         <div v-for="member in visibleMembers" :key="'memberlist-' + member.id" class="p-0 mt-2">
           <ModMember :member="member" />
         </div>

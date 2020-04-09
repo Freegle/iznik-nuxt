@@ -41,10 +41,13 @@ export default {
       const work = this.$store.getters['auth/work']
       const count = this.workType ? work[this.workType] : 0
       return count
+    },
+    group() {
+      return this.$store.getters['group/get'](this.groupid)
     }
   },
   watch: {
-    groupid() {
+    groupid(oldValue, newValue) {
       this.context = null
       this.show = 0
       this.$store.dispatch('members/clear')

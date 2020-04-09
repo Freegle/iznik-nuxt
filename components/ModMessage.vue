@@ -22,6 +22,9 @@
             {{ eSubject }}
           </div>
           <MessageHistory :message="message" modinfo display-message-link />
+          <ModMessageDuplicate v-for="duplicate in duplicates" :key="'duplicate-' + duplicate.id" :message="duplicate" />
+          <ModMessageCrosspost v-for="crosspost in crossposts" :key="'crosspost-' + crosspost.id" :message="crosspost" />
+          <ModMessageRelated v-for="related in message.related" :key="'related-' + related.id" :message="related" />
         </div>
         <div>
           <b-btn v-if="message.source === 'Email'" variant="white" @click="viewSource">
@@ -31,7 +34,6 @@
             <v-icon name="pen" /><span class="d-none d-sm-inline"> Edit</span>
           </b-btn>
         </div>
-        <!--        TODO MT Duplicates, related-->
       </b-card-header>
       <b-card-body class="p-1 p-md-2">
         <b-row>
@@ -196,12 +198,18 @@ import Diff from './Diff'
 import ModSpammer from './ModSpammer'
 import ModComments from './ModComments'
 import ModMessageEmailModal from './ModMessageEmailModal'
+import ModMessageDuplicate from './ModMessageDuplicate'
+import ModMessageCrosspost from './ModMessageCrosspost'
+import ModMessageRelated from './ModMessageRelated'
 import twem from '~/assets/js/twem'
 import waitForRef from '@/mixins/waitForRef'
 
 export default {
   name: 'ModMessage',
   components: {
+    ModMessageRelated,
+    ModMessageCrosspost,
+    ModMessageDuplicate,
     ModMessageEmailModal,
     ModComments,
     ModSpammer,
@@ -395,6 +403,32 @@ export default {
       })
 
       return newest
+    },
+    duplicateAge() {
+      let ret = 31
+      let check = false
+
+      this.message.groups.forEach(g => {
+        const group = this.$store.getters['group/get'](g.groupid)
+
+        if (
+          !group.settings ||
+          !group.settings.duplicates ||
+          group.settings.duplicates.check
+        ) {
+          check = true
+          const msgtype = this.message.type.toLowerCase()
+          ret = Math.min(ret, group.settings.duplicates[msgtype])
+        }
+      })
+
+      return check ? ret : ret
+    },
+    crossposts() {
+      return this.checkHistory(false)
+    },
+    duplicates() {
+      return this.checkHistory(true)
     }
   },
   methods: {
@@ -439,7 +473,6 @@ export default {
       this.saving = false
       this.editing = false
     },
-
     settingsChange(e) {
       const params = {
         userid: this.message.fromuser.id,
@@ -448,7 +481,6 @@ export default {
       params[e.param] = e.val
       this.$store.dispatch('members/updateById', params)
     },
-
     async toggleMail() {
       this.showMailSettings = !this.showMailSettings
 
@@ -459,13 +491,59 @@ export default {
         })
       }
     },
-
     viewSource() {
       console.log('View source')
       this.waitForRef('original', () => {
         console.log('Now')
         this.$refs.original.show()
       })
+    },
+    canonSubj(subj) {
+      subj = subj.toLocaleLowerCase()
+
+      // Remove any group tag
+      subj = subj.replace(/^\[.*?\](.*)/, '$1')
+
+      // Remove duplicate spaces
+      subj = subj.replace(/\s+/g, ' ')
+
+      subj = subj.trim()
+
+      return subj
+    },
+    checkHistory(duplicateCheck) {
+      const ret = []
+      const subj = this.canonSubj(this.message.subject)
+
+      if (
+        this.message &&
+        this.message.fromuser &&
+        this.message.fromuser.messagehistory
+      ) {
+        this.message.fromuser.messagehistory.forEach(message => {
+          if (message.id !== this.message.id && message.daysago < 60) {
+            if (this.canonSubj(message.subject) === subj) {
+              // No point displaying any group tag in the duplicate.
+              message.subject = message.subject.replace(/\[.*\](.*)/, '$1')
+
+              // Check whether there are groups in common.
+              const groupsInCommon = this.message.groups
+                .map(g => g.groupid)
+                .filter(g => g === message.groupid).length
+
+              if (duplicateCheck && groupsInCommon) {
+                // Same group - so this is a duplicate
+                ret.push(message)
+              } else if (!duplicateCheck && !groupsInCommon) {
+                // Different group - so this is a crosspost.
+                ret.push(message)
+              }
+            }
+          }
+        })
+      }
+
+      return ret
     }
   }
 }

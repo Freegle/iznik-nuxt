@@ -64,6 +64,7 @@
                 This person has been reported as a spammer or scammer.  Please do not talk to them and under no circumstances
                 send them any money.
               </p>
+              <ModComments v-if="mod && chat && chat.chattype === 'User2Mod' && otheruser" :user="otheruser" class="mt-1" />
               <b-form-textarea
                 v-if="!spammer"
                 ref="chatarea"
@@ -189,8 +190,9 @@
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import InfiniteLoading from 'vue-infinite-loading'
-import twem from '~/assets/js/twem'
+import ModComments from './ModComments'
 import waitForRef from '@/mixins/waitForRef'
+import chat from '@/mixins/chat.js'
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
 import ChatMessage from '~/components/ChatMessage.vue'
@@ -208,6 +210,7 @@ const HEIGHT = 400
 
 export default {
   components: {
+    ModComments,
     InfiniteLoading,
     VueDraggableResizable,
     Ratings,
@@ -217,30 +220,11 @@ export default {
     AvailabilityModal,
     AddressModal
   },
-  mixins: [chatCollate, waitForRef],
-  props: {
-    id: {
-      type: Number,
-      required: true
-    }
-  },
-  data: function() {
-    return {
-      lastFetched: new Date(),
-      complete: false,
-      sendmessage: null,
-      distance: 1000,
-      likelymsg: null,
-      ouroffers: null,
-      sending: false,
-      scrolledToBottom: false
-    }
-  },
+  mixins: [chatCollate, waitForRef, chat],
   computed: {
     minheight() {
       return Math.min(this.maxheight, HEIGHT)
     },
-
     maxheight() {
       // We should not exceed the height of the navbar
       let ret = null
@@ -250,56 +234,6 @@ export default {
       }
 
       return ret
-    },
-
-    chat() {
-      return this.$store.getters['chats/get'](this.id)
-    },
-
-    spammer() {
-      let ret = false
-
-      if (
-        this.otheruser &&
-        this.otheruser.spammer &&
-        this.otheruser.spammer.collection !== 'Whitelisted'
-      ) {
-        ret = this.otheruser.spammer
-      }
-
-      return ret
-    },
-
-    unseen() {
-      const unseen = this.$store.getters['chats/get'](this.id).unseen
-      return unseen
-    },
-
-    chatmessages() {
-      return this.chatCollate(
-        this.$store.getters['chatmessages/getMessages'](this.id)
-      )
-    },
-
-    chatusers() {
-      return this.$store.getters['chatmessages/getUsers'](this.id)
-    },
-
-    otheruser() {
-      // The user who isn't us.
-      if (
-        this.chat &&
-        this.chat.chattype === 'User2User' &&
-        this.chat.user1 &&
-        this.$store.getters['auth/user']
-      ) {
-        return this.chat.user1 &&
-          this.chat.user1.id === this.$store.getters['auth/user'].id
-          ? this.chat.user2
-          : this.chat.user1
-      } else {
-        return null
-      }
     },
     width() {
       return this.chat && this.chat.remember && this.chat.remember.width
@@ -328,48 +262,9 @@ export default {
       return right
     }
   },
-  watch: {
-    async unseen(newVal, oldVal) {
-      // The unseen count will get changed by reactivity from the store.  If that's the chat we have in our pane
-      // then that will trigger this watch, which we can use to pick up the new message.
-      if (newVal > oldVal) {
-        // New unread message.  Pick it up.
-        await this.$store.dispatch('chatmessages/clearContext', {
-          chatid: this.id
-        })
-        await this.$store.dispatch('chatmessages/fetch', {
-          chatid: this.id
-        })
-
-        this.$nextTick(() => {
-          if (this.$el && this.$el.querySelector) {
-            const container = this.$el.querySelector('.chatContent')
-            container.scrollTop = container.scrollHeight
-          }
-        })
-      }
-    }
-  },
-  async mounted() {
-    // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
-    // need to render this pane on the server.
-    await this.$store.dispatch('chats/fetch', {
-      id: this.id
-    })
-    const fetched = this.$store.getters['chats/get'](this.id)
-
-    // Clear the context and messages - infinite scroll will then pick up the messages.
-    await this.$store.dispatch('chatmessages/clearContext', {
-      chatid: this.id
-    })
-
-    await this.$store.dispatch('chatmessages/clearMessages')
-
-    if (!fetched) {
+  mounted() {
+    if (this.notVisible) {
       // This is an invalid chatid.  Remove it to stop it causing problems.
-      this.chat = {
-        id: this.id
-      }
       this.hide()
     }
 
@@ -377,15 +272,12 @@ export default {
       // Slightly clunky way to spot if a chat popup is too large for the screen.
       setTimeout(() => {
         const els = document.getElementsByClassName('resizable')
-        console.log('Found', els)
         for (let i = 0; i < els.length; i++) {
           const el = els[i]
-          console.log(el.style, this.maxheight)
           const height = el.style.height
 
           if (height) {
             if (parseInt(el.style.height.replace('px', '')) > this.maxheight) {
-              console.log('Shrink')
               el.style.height = this.maxheight + 'px'
             }
           }
@@ -394,116 +286,15 @@ export default {
     }
   },
   methods: {
-    showInfo() {
-      this.waitForRef('propfile', () => {
-        this.$refs.profile.show()
-      })
-    },
-    availability() {
-      this.waitForRef('availabilitymodal', () => {
-        this.$refs.availabilitymodal.show()
-      })
-    },
-    loadMore: function($state) {
-      const currentCount = this.chatmessages.length
-
-      if (this.complete) {
-        $state.complete()
-      } else {
-        this.busy = true
-        this.$store
-          .dispatch('chatmessages/fetch', {
-            chatid: this.id
-          })
-          .then(() => {
-            try {
-              this.lastFetched = new Date()
-
-              if (!this.scrolledToBottom) {
-                // First load.  Scroll to the bottom when things have sorted themselves out.
-                this.$nextTick(() => {
-                  if (this.$el && this.$el.querySelector) {
-                    const container = this.$el.querySelector('.chatContent')
-                    container.scrollTop = container.scrollHeight
-                  }
-
-                  this.scrolledToBottom = true
-                })
-              }
-
-              if (currentCount === this.chatmessages.length) {
-                this.complete = true
-                $state.complete()
-              } else {
-                $state.loaded()
-              }
-              this.busy = false
-            } catch (e) {
-              console.error(e)
-            }
-          })
-          .catch(e => {
-            console.error(e)
-            this.busy = false
-            $state.complete()
-          })
-      }
-    },
-    newline: function() {
-      const p = this.$refs.chatarea.selectionStart
-      if (p) {
-        this.sendmessage =
-          this.sendmessage.substring(0, p) +
-          '\n' +
-          this.sendmessage.substring(p)
-      } else {
-        this.sendmessage += '\n'
-      }
-    },
-    _updateAfterSend() {
-      this.sending = false
-      this.lastFetched = new Date()
-
-      // Scroll to the bottom so we can see it.
-      this.$nextTick(() => {
-        if (this.$el && this.$el.querySelector) {
-          const container = this.$el.querySelector('.chatContent')
-          container.scrollTop = container.scrollHeight
-        }
-      })
-
-      // We also want to trigger an update in the chat list.
-      this.$store.dispatch('chats/fetch', {
-        id: this.id
-      })
-    },
-    send: async function() {
-      let msg = this.sendmessage
-
-      if (msg) {
-        this.sending = true
-
-        // Encode up any emojis.
-        msg = twem.untwem(msg)
-
-        // Send it
-        await this.$store.dispatch('chatmessages/send', {
-          roomid: this.id,
-          message: msg
-        })
-
-        this._updateAfterSend()
-
-        // Clear the message now it's sent.
-        this.sendmessage = ''
-      }
-    },
     hide() {
       this.$store.dispatch('popupchats/hide', { id: this.chat.id })
     },
     maximise() {
+      const modtools = this.$store.getters['misc/get']('modtools')
       this.$store.dispatch('popupchats/hide', { id: this.chat.id })
-      this.$router.push('/chats/' + this.chat.id)
+      this.$router.push(
+        (modtools ? '/modtools' : '') + '/chats/' + this.chat.id
+      )
     },
     onResize: function(x, y, width, height) {
       this.$store.dispatch('popupchats/popup', {
@@ -511,68 +302,6 @@ export default {
         width: width,
         height: height
       })
-      console.log('Stored', width, height)
-    },
-    promise() {
-      // Show the modal first, as eye candy.
-      this.$refs.promise.show()
-
-      this.$nextTick(async () => {
-        // Get our offers.
-        const me = this.$store.getters['auth/user']
-        await this.$store.dispatch('messages/clear')
-        await this.$store.dispatch('messages/fetchMessages', {
-          fromuser: me.id,
-          types: ['Offer'],
-          hasoutcome: false,
-          limit: 100,
-          collection: 'AllUser'
-        })
-
-        this.ouroffers = this.$store.getters['messages/getAll']
-
-        // Find the last message referenced in this chat, if any.  That's the most likely one you'd want to promise,
-        // so it should be the default.
-        this.likelymsg = 0
-
-        for (const msg of this.chatmessages) {
-          if (msg.refmsg) {
-            // Check that it's still in our list of messages
-            for (const ours of this.ouroffers) {
-              if (ours.id === msg.refmsg.id) {
-                this.likelymsg = msg.refmsg.id
-              }
-            }
-          }
-        }
-
-        this._updateAfterSend()
-      })
-    },
-    async nudge() {
-      await this.$store.dispatch('chatmessages/nudge', {
-        roomid: this.id
-      })
-
-      this._updateAfterSend()
-    },
-    async markRead() {
-      await this.$store.dispatch('chats/markSeen', {
-        id: this.id
-      })
-
-      this._updateAfterSend()
-    },
-    addressBook() {
-      this.$refs.addressModal.show()
-    },
-    sendAddress(id) {
-      this.$store
-        .dispatch('chatmessages/send', {
-          roomid: this.id,
-          addressid: id
-        })
-        .then(this._updateAfterSend)
     }
   }
 }

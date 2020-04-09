@@ -51,6 +51,10 @@
               <p>
                 Please make it payable to Freegle Limited and send to Freegle, 150 Whitecross, Abingdon, Oxon, OX13 6BT.
               </p>
+              <p>
+                If you do this, please complete a Gift Aid
+                Declaration <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfSWQ_hlOflsS6AfwPEmIlYxLuf1u5-iDspZKr20K-yj1hrVQ/viewform">here</a>.
+              </p>
             </b-card-text>
           </b-card>
         </b-col>

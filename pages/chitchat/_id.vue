@@ -266,12 +266,13 @@ export default {
       } else {
         try {
           const context = this.$store.getters['newsfeed/getContext']
+          const visited = []
 
           if (this.id) {
             // Just one - fetch it by id.
             let id = this.id
             let item
-            let maxdepth = 10
+            let maxdepth = 100
 
             do {
               maxdepth--
@@ -291,9 +292,10 @@ export default {
               item = this.$store.getters['newsfeed/get'](id)
               const headid = parseInt(item.threadhead)
 
-              if (id === headid) {
+              if (id === headid || visited.indexOf(headid) !== -1) {
                 break
               } else {
+                visited.push(headid)
                 id = headid
               }
             } while (true)

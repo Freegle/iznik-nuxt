@@ -1,25 +1,24 @@
 <template>
   <div class="mt-2 small">
-    <v-icon name="users" />
-    <span v-if="memberof && memberof.length">
-      <span v-for="m in memberof" :key="'membership-' + m.membershipid" class="border border-info rounded p-1 mr-1">
-        {{ m.namedisplay.length > 23 ? (m.namedisplay.substring(0, 20) + '...') : m.namedisplay }}
+    <div v-if="memberof && memberof.length">
+      <div v-for="m in memberof" :key="'membership-' + m.membershipid" class="p-1 mr-1">
+        <b>{{ m.namedisplay.length > 32 ? (m.namedisplay.substring(0, 32) + '...') : m.namedisplay }}</b>
         <span :class="'small ' + (daysago(m.added) < 31 ? 'text-danger font-weight-bold' : 'text-muted')">{{ m.added | timeago }}</span>
-      </span>
-    </span>
-    <span v-else class="border border-info rounded p-1 mr-1">
+      </div>
+    </div>
+    <div v-else class="p-1 mr-1">
       Not on any communities
-    </span>
-    <b-badge v-if="hiddenmemberofs" variant="info" class="clickme" @click="allmemberships = !allmemberships">
+    </div>
+    <b-badge v-if="hiddenmemberofs" variant="info" class="clickme mb-1" @click="allmemberships = !allmemberships">
       +{{ hiddenmemberofs }} groups
     </b-badge>
-    <span v-if="applied && applied.length">
-      <span v-for="m in applied" :key="'memberapplied-' + m.id + '-' + m.userid + '-' + m.added" class="border border-info rounded p-1 mr-1">
-        Applied {{ m.namedisplay.length > 23 ? (m.namedisplay.substring(0, 20) + '...') : m.namedisplay }}
+    <div v-if="visibleApplied && visibleApplied.length">
+      <div v-for="m in visibleApplied" :key="'memberapplied-' + m.id + '-' + m.userid + '-' + m.added" class="p-1 mr-1">
+        <b>Applied {{ m.namedisplay.length > 32 ? (m.namedisplay.substring(0, 32) + '...') : m.namedisplay }}</b>
         <span :class="'small ' + (daysago(m.added) < 31 ? 'text-danger font-weight-bold' : 'text-muted')">{{ m.added | timeago }}</span>
-      </span>
-    </span>
-    <b-badge v-if="hiddenapplieds" variant="info" class="clickme" @click="allapplied= !allapplied">
+      </div>
+    </div>
+    <b-badge v-if="hiddenapplieds" variant="info" class="clickme mb-1" @click="allapplied= !allapplied">
       +{{ hiddenapplieds }} applied
     </b-badge>
   </div>
@@ -65,7 +64,7 @@ export default {
           ? this.user.memberof.length - MEMBERSHIPS_SHOW
           : 0
     },
-    applied() {
+    filteredApplied() {
       if (!this.user || !this.user.applied) {
         return null
       }
@@ -86,17 +85,20 @@ export default {
         return new Date(b.added).getTime() - new Date(a.added).getTime()
       })
 
+      return ms
+    },
+    visibleApplied() {
       if (this.allapplied) {
-        return ms
+        return this.filteredApplied
       } else {
-        return ms.slice(0, MEMBERSHIPS_SHOW)
+        return this.filteredApplied.slice(0, MEMBERSHIPS_SHOW)
       }
     },
     hiddenapplieds() {
       return this.allapplied
         ? 0
-        : this.user && this.user.applied.length > MEMBERSHIPS_SHOW
-          ? this.user.applied.length - MEMBERSHIPS_SHOW
+        : this.filteredApplied.length > MEMBERSHIPS_SHOW
+          ? this.filteredApplied.length - MEMBERSHIPS_SHOW
           : 0
     }
   },

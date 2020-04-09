@@ -51,6 +51,11 @@ export default {
       type: Number,
       required: false,
       default: null
+    },
+    chattype: {
+      type: String,
+      required: false,
+      default: null
     }
   },
   methods: {
@@ -88,7 +93,8 @@ export default {
         }
       } else if (this.userid > 0) {
         const chatid = await this.$store.dispatch('chats/openChatToUser', {
-          userid: this.userid
+          userid: this.userid,
+          chattype: this.chattype
         })
 
         if (firstmessage) {

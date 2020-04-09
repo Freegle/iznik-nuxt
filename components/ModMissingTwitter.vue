@@ -8,37 +8,38 @@
         </b-btn>
       </div>
       <div v-else>
-        <div v-for="(inv) of invalid" :key="'twinvalid-' + inv.account.name">
-          Twitter account <a :href="'https://twitter.com/' + inv.account.name" target="_blank" rel="noopener nofollower">{{ inv.account.name }}</a>
-          for group
-          <b>{{ inv.group.namedisplay }}</b>
-          <span v-if="inv.account.locked">
-            is locked
-          </span>
-          <span v-else>
-            is invalid
-          </span>
-          <b-btn variant="link" disabled class="mb-1">
+        <div v-for="(inv) of invalid" :key="'twinvalid-' + inv.group.id">
+          <p>
+            Twitter account <a :href="'https://twitter.com/' + inv.account.name" target="_blank" rel="noopener nofollower">{{ inv.account.name }}</a>
+            for group
+            <b>{{ inv.group.namedisplay }}</b>
+            <span v-if="inv.account.locked">
+              is locked
+            </span>
+            <span v-else>
+              is invalid
+            </span>
+          </p>
+          <b-btn class="mb-2" variant="white" :href="'https://modtools.org/twitter/twitter_request.php?groupid=' + inv.group.id" target="_blank" rel="noopener noreferrer">
             Relink
           </b-btn>
         </div>
-        <b-btn variant="white" class="mt-2" :href="'https://modtools.org/twitter/twitter_request.php?groupid=' + inv.group.id" target="_blank" rel="noopener noreferrer">
-          Link to Twitter
-        </b-btn>
       </div>
     </NoticeMessage>
     <NoticeMessage v-if="notlinked.length" variant="warning" class="mt-1">
       <div v-if="summary">
-        <v-icon name="exclamation-triangle" /> {{ notlinked.length | pluralize('group', { includeNumber: true }) }} need to be linked to a Twitter account.
+        <v-icon name="exclamation-triangle" /> {{ notlinked.length | pluralize(['community needs', 'communities need'], { includeNumber: true }) }} need to be linked to a Twitter account.
         <b-btn variant="white" @click="expand">
           Click to view
         </b-btn>
       </div>
       <div v-else>
-        <p>Groups can be linked to a Twitter account, to get extra publicity. Some of your groups aren't.</p>
-        <p>Please link from <em>Settings->Group Settings</em>.</p>
+        <p>Communities can be linked to a Twitter account, to get extra publicity. Some of your groups aren't.</p>
+        <p>Please click to go to the Settings page where you can link from the <em>Social Media</em> section.</p>
         <div v-for="(inv) of notlinked" :key="'twnotlinked-' + inv.group.id">
-          <b>{{ inv.group.namedisplay }}</b>
+          <nuxt-link :to="'/modtools/settings/' + inv.group.id">
+            {{ inv.group.namedisplay }}
+          </nuxt-link>
         </div>
       </div>
     </NoticeMessage>
@@ -73,6 +74,7 @@ export default {
         }
       }
 
+      console.log('Invalid', ret)
       return ret
     },
     notlinked() {
@@ -93,6 +95,7 @@ export default {
         }
       }
 
+      console.log('Not linked', ret)
       return ret
     }
   },

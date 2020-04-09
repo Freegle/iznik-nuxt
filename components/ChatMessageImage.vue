@@ -53,7 +53,12 @@ export default {
   components: {
     ProfileImage
   },
-  extends: ChatBase
+  extends: ChatBase,
+  methods: {
+    brokenImage(event) {
+      event.target.src = require('~/static/placeholder.jpg')
+    }
+  }
 }
 </script>
 

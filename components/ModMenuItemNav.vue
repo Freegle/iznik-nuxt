@@ -1,5 +1,5 @@
 <template>
-  <div class="d-inline clickme" @click="click">
+  <div class="d-inline clickme small" @click="click">
     <span v-if="name" class="d-inline d-sm-none largeish">
       {{ name }}
     </span>

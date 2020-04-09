@@ -184,9 +184,16 @@ export default {
     rareToShow() {
       return this.filterByAction.length - this.filtered.length
     },
+    stdmsgs() {
+      if (this.modconfig) {
+        return this.copyStdMsgs(this.modconfig)
+      } else {
+        return []
+      }
+    },
     filterByAction() {
       if (this.modconfig) {
-        return this.modconfig.stdmsgs.filter(stdmsg => {
+        return this.stdmsgs.filter(stdmsg => {
           return this.validActions.indexOf(stdmsg.action) !== -1
         })
       }

@@ -38,6 +38,7 @@
 </template>
 <script>
 import draggable from 'vuedraggable'
+import stdmsgs from '../mixins/stdmsgs'
 import ModConfigSetting from './ModConfigSetting'
 import ModSettingsStandardMessageButton from './ModSettingsStandardMessageButton'
 import ModSettingsStandardMessageModal from './ModSettingsStandardMessageModal'
@@ -50,7 +51,7 @@ export default {
     draggable,
     ModSettingsStandardMessageModal
   },
-  mixins: [waitForRef],
+  mixins: [waitForRef, stdmsgs],
   props: {
     cc: {
       type: String,
@@ -85,11 +86,11 @@ export default {
   watch: {
     config(newval) {
       console.log('New config')
-      this.copyStdMsgs(newval.stdmsgs)
+      this.stdmsgscopy = this.copyStdMsgs(newval)
     }
   },
   mounted() {
-    this.copyStdMsgs(this.config.stdmsgs)
+    this.stdmsgscopy = this.copyStdMsgs(this.config)
   },
   methods: {
     updateOrder() {
@@ -103,35 +104,6 @@ export default {
     },
     visible(stdmsg) {
       return this.types.indexOf(stdmsg.action) !== -1
-    },
-    copyStdMsgs(stdmsgs) {
-      // We need to sort them according to the message order.
-      let order = this.config.messageorder
-      let copy = []
-
-      if (order) {
-        order = JSON.parse(order)
-        do {
-          const thisone = parseInt(order.shift())
-
-          stdmsgs.forEach(s => {
-            if (thisone === parseInt(s.id)) {
-              copy.push(s)
-            }
-          })
-        } while (order.length)
-
-        // Might have some which aren't listed in the order - they go at the end.
-        stdmsgs.forEach(s => {
-          if (order.indexOf(s.id) === -1) {
-            copy.push(s)
-          }
-        })
-      } else {
-        copy = stdmsgs
-      }
-
-      this.stdmsgscopy = copy
     },
     add() {
       this.showModal = true
@@ -147,8 +119,7 @@ export default {
       })
 
       const config = this.$store.getters['modconfigs/current']
-      console.log('Copy after fetch', config)
-      this.copyStdMsgs(config.stdmsgs)
+      this.stdmsgscopy = this.copyStdMsgs(config)
       this.bump++
     }
   }

@@ -6,17 +6,30 @@ if (process.client) {
   switch (location.hostname) {
     case 'iznik.ilovefreegle.org':
       // eslint-disable-next-line no-undef,camelcase
-      __webpack_public_path__ =
-        'https://freeglecdndbg.azureedge.net' + '/_nuxt/'
+      __webpack_public_path__ = 'https://staticdbg.ilovefreegle.org' + '/_nuxt/'
       break
     case 'dev.ilovefreegle.org':
       // eslint-disable-next-line no-undef,camelcase
-      __webpack_public_path__ =
-        'https://freeglecdndev.azureedge.net' + '/_nuxt/'
+      __webpack_public_path__ = 'https://staticdev.ilovefreegle.org' + '/_nuxt/'
       break
     case 'www.ilovefreegle.org':
       // eslint-disable-next-line no-undef,camelcase
-      __webpack_public_path__ = 'https://freeglecdn.azureedge.net' + '/_nuxt/'
+      __webpack_public_path__ =
+        'https://staticlive.ilovefreegle.org' + '/_nuxt/'
+      break
+    case 'iznik.modtools.org':
+      // eslint-disable-next-line no-undef,camelcase
+      __webpack_public_path__ = 'https://staticdbg.ilovefreegle.org' + '/_nuxt/'
+      break
+    case 'dev.modtools.org':
+      // eslint-disable-next-line no-undef,camelcase
+      __webpack_public_path__ = 'https://staticdev.ilovefreegle.org' + '/_nuxt/'
+      break
+    case 'modtools.org':
+    case 'www.modtools.org':
+      // eslint-disable-next-line no-undef,camelcase
+      __webpack_public_path__ =
+        'https://staticlive.ilovefreegle.org' + '/_nuxt/'
       break
   }
 }

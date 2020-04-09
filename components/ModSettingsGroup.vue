@@ -650,6 +650,13 @@ export default {
     GroupSelect,
     VueEditor
   },
+  props: {
+    initialGroup: {
+      type: Number,
+      required: false,
+      default: null
+    }
+  },
   data: function() {
     return {
       groupid: null,
@@ -736,6 +743,7 @@ export default {
     }
   },
   mounted() {
+    this.groupid = this.initialGroup
     this.fetchConfigs()
   },
   methods: {

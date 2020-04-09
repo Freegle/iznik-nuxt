@@ -4,6 +4,14 @@
     <div>
       <div>
         <b-tabs v-model="tabIndex" content-class="mt-3" card lazy>
+          <b-tab id="Spammers" :active="!supportOrAdmin">
+            <template v-slot:title>
+              <h2 class="ml-2 mr-2">
+                Confirmed Spammers
+              </h2>
+            </template>
+            <!--            TODO Search-->
+          </b-tab>
           <b-tab v-if="supportOrAdmin" id="PendingAdd">
             <template v-slot:title>
               <h2 class="ml-2 mr-2">
@@ -13,14 +21,6 @@
                 </b-badge>
               </h2>
             </template>
-          </b-tab>
-          <b-tab id="Spammers" :active="!supportOrAdmin">
-            <template v-slot:title>
-              <h2 class="ml-2 mr-2">
-                Confirmed Spammers
-              </h2>
-            </template>
-            TODO Search
           </b-tab>
           <b-tab v-if="supportOrAdmin" id="Whitelisted">
             <template v-slot:title>
@@ -98,22 +98,29 @@ export default {
       return this.spammers ? this.spammers.slice(0, this.show) : []
     },
     collection() {
+      let ret = null
+
       switch (this.tabIndex) {
         case 0: {
-          return 'PendingAdd'
+          ret = 'Spammer'
+          break
         }
         case 1: {
-          return 'Spammer'
+          ret = 'PendingAdd'
+          break
         }
         case 2: {
-          return 'Whitelisted'
+          ret = 'Whitelisted'
+          break
         }
         case 3: {
-          return 'PendingRemove'
+          ret = 'PendingRemove'
+          break
         }
       }
 
-      return null
+      console.log('Spammer collection', this.tabIndex, ret)
+      return ret
     }
   },
   watch: {
@@ -125,6 +132,14 @@ export default {
       console.log('Route', to, from)
       // Clear store when we move away to prevent items showing again when we come back on potentially a different tab.
       this.$store.dispatch('spammers/clear')
+    }
+  },
+  mounted() {
+    // Start in Pending Add if they have rights to see it.
+    if (this.supportOrAdmin) {
+      this.tabIndex = 0
+    } else {
+      this.tabIndex = 1
     }
   },
   layout: 'modtools',

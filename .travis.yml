@@ -1,3 +1,4 @@
+# Android TRAVIS SCRIPT - exists on app branch for trigger build only.  Note that the iOS Travis script is on app-ios branch
 dist: trusty
 branches:
   only: app
@@ -18,6 +19,10 @@ env:
   - secure: hmlHnPPjAI+U0/PYhJwk9vlZBFToUrtRF6WbJ4SC7Elc01S5/8C/AGERo3aIRF8S1mtKVPzHNg3VcYRGeG2l3CuBJbnhnb0O6wcjtv+7WJwaAOFBtNv8Y4qD9e0lpAASeiwqwQYVZovj87tfQVyDvqLRiFvdDll8XjidrSWrnbOeEKXD3RLqPLowbdmVN2VQk+SzqO8VXMw0ZJywV7HrvreFCH9ddI3atlh+HXX8q8aAhGeyddJohgug3C7dWF/cbeXD2OQJAsQ9fjkW2ON2BVfbhSM1ZJG9aSaN238yBIjvCHGtgAaJA2LvABnOq8piOJ4LfwKr46NBoK3fcrL2L8nNEHbhces77VjQuHE0A8mmmvBEo2n3/cKiq3WH6W5uKG5BQZIZs8PcBYdzk65ueAabRxIG42XlREDfwFgFfuu3PaKnfWQ3raBzqOUDJBQ+Zz2H52oakC/kvgKcxMpEuO4Mjwck404Dx7xUvg+sUKlU3pLapc9yrH5e32gnMabuMbYQjW+Oq3DCqzr69qn3bW2QPoR+RjQ/dNdsUpwRulAYi1OMQ09CHHOwk57ZRq0VZIxVndQ5kEvavASzbcD3MMuIM6b51zTu3ZO5teiUASkNVQKAMdEMUaLiaZHfyehvkHchDzrP2EeQdAme2x4OZQltNd8rrw8B0yNEE5xnAbs=
   # iossignkey
   - secure: 15jfRUxEczZHSeN8ArUbwHRW9/29tONqURf9H91UA+BkcrbONL1YRpqEbuArTx91ruoSC8tD7CmXch3XCww3BzJ3CepIDQLRlYoxGvAAKsqCGMoifki0nlsL8SvNTHRLBFfmiGDPL9LqYm/mG5JIXTsdXfiObynBoyod/kj8JuyiV3Gt/+I9mkiC/pKLkf2gVbsb6KEOWZmgcZOv1yZREybsjAzyvP3SfFKZKtXaAH3AFNFmpc0QyqOItCEMNrJbnA+/Gj7mZ2Ly2K8U2zg4dYPVN1LQzTweZcJsp5wfF+cprxnC5IOFCPFMnVoinNtJ1YrOL4C5DIcXAqWiMg+LuScedZfTrPiMWAH3gc7NO2ojGJqnzUw/5zxVbjzFk+PijiTSbWjolF8FxO0xpapVWrZdMOdx/OSLj2Kqse1EBr+mx2LB+c5ugqtAOb5xzw8tMqj5Og67XSN+0w+l6wTwXtPyQYakf5EcnCwkPdkuQ4FyQixOz3ATNoN9tv0/gqNbEyl+PZw+SrhBNVaQDQGbXsDJFeaI8EoB33li9VjKreFgITtZzx5B/F9VzUgjUspfe1l+kGTb9Go3um8Eqn885kuZjR0QwL2eZ/IlSr+jY7BoJ+KabaSyx6ia0iZdfr38ZkJ47BBHY/Mankf3v0pyZ/G+76rE0auGzJHi/9SnMGg=
+  # AppleUserId
+  - secure: pbKnWGzTOKEImh9DaA15u5OsAmvO1z/cLVPjAX5rGv0x6u27ereDY7EfwXL6yyp7MWeeWCMaEPoblZ1W2Kw0GvJq81TVAOm6yClurZ+hWssbhXV4d7QrIyTKj65FCrxLh1ngYCCdkgxnV9KZtUqQqY+GMrxPIqwNzD3cRvHUsKF9Y+KKo1pwkKa3OuU4UajRe9zY8R6H/PyCxF5RndRI5CHttDkL5QYkN+JC1vQp5W6qlNceuHh/QEEHR4pfZRSS5pclWn6meml1B6MCpeJppPOpnTw9S2eDIbZOAsBClU48H7UGQQj8c85BZ6Yo9AF9b2FZxO1JRHIuSfJqzRCIGyNkxgWJYew/KzrUpx5GMYnWnjVuLY8wIrJnRda0HZjYyjSa+HtGAZDpUmFElzRVc6Sa6/aoE1OEtWvUdXmngqbGaUcgflqCkBOP5WYbw9xvsEdphxcIiWVG/FaGYqDJ+zUzIIASsYruspnMac9uJoIWy24B0hiNpqGCfmWBMVqaVsRduOmsMRwCthGizXMdpSdDyQKtg0Bmp8rQuBeQGJB0zMLHXyHN/cJ0cCHQaq5qrDIbOh9FlN6gG1WPWD7AMthHgBQdltYwNKb31Pqk1oWGsRizGjzz1huu5GLG3baSKQJtd3HphzfmKpWX0pplr3K4WLv6svcqRBJXD9BQJdg=
+  # AppleAppSpecificPwd
+  - secure: qdl34Gubayu7mYGRNKer1VhS2NggqSfb7q0WnMGFNXCUHkuXSrr/UH+2rWaK4bNXeHJs9MpqX9bCBd9XqOKpF2EOadgip7f8ItgfrgLUFQxV+HdOzHucph4OSI/kDfikh15xDCIlfG8yHzwJvKOX/2Mx/vGDLLiAojhJ5k7lwdSoPIn0W0xLFvwYgWQgS+xHXpOAXEhLlz4s62J1ORyURpGxoLpN0gGLVQ4kFMV0qu0xPTSlx1ZYeTFiP3Ic+4jwuh153xFQ4DBcOuBqOi9Why9JETJLZFNrUKy0PnYbXHdYDc+TspnX5p5xV4HuaghsAdnrPHdPD3Xfmvot+WtTMZT7tfQvhOlQ2puywj7i3wJvwh96Re8aBPWpnJVUCZfTawXHIHOc2iec2Yff5wrPL6Udg9GtgfkGaAQwCFRJlbQgNdKnlUvFAwam08IkwNrkR23MTDikQrfCrKb3Pzh2j+1qU04ECAcZrO2ZvtkZ7650pFueEfkAJE8Ukrmmi/svZaLaAarN86vCLLhl8dIyRTTWCiC5Jx+sPwx3jf6U7c3VL37tclB3ZrgE2F6r1haxR3Y+rD0nQNZoGpTAQJCK+vsgvr7lRR9wQuIYQDygHmHrRfMp15ONIOfA8Y8+2JBbJWtB8e9D+7xgz6kGmSiEb9Zt8oqXqFp3jzO6jXAAf6g=
   matrix:
   - nodejs_version=12
 language: android
@@ -33,6 +38,8 @@ android:
   - android-sdk-preview-license-.+
   - android-sdk-license-.+
   - google-gdk-license-.+
+
+################
 before_install:
 - openssl aes-256-cbc -K $encrypted_a57fb8741d35_key -iv $encrypted_a57fb8741d35_iv
   -in mobile/app-secrets.tar.enc -out mobile/app-secrets.tar -d
@@ -44,12 +51,15 @@ before_install:
 - npm --version
 - gradle --version
 - npm install
+
+################
 script:
 - export MOBILE_VERSION=$(grep -o "MOBILE_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MOBILE_VERSION = '//; s/'.*//")
 - export MODTOOLS_VERSION=$(grep -o "MODTOOLS_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MODTOOLS_VERSION = '//; s/'.*//")
 
 - mkdir releases
 
+# FREEGLE app
 - npm run fdapp
 - mkdir ../iznik-nuxt-app
 - cd ../iznik-nuxt-app
@@ -65,10 +75,10 @@ script:
 - cordova platform add android
 # Build debug build
 - cordova build --debug -- --keystore="../iznik-nuxt/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
-- cp platforms/android/app/build/outputs/apk/debug/app-debug.apk ../iznik-nuxt/releases/Freegle-app-$MOBILE_VERSION-debug-$(date +'%Y%m%d%H%M%S').apk
+- cp platforms/android/app/build/outputs/apk/debug/app-debug.apk ../iznik-nuxt/releases/Freegle-android-app-$MOBILE_VERSION-debug-$(date +'%Y%m%d%H%M%S').apk
 # Build release build
 - cordova build --release -- --keystore="../iznik-nuxt/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
-- cp platforms/android/app/build/outputs/apk/release/app-release.apk ../iznik-nuxt/releases/Freegle-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').apk
+- cp platforms/android/app/build/outputs/apk/release/app-release.apk ../iznik-nuxt/releases/Freegle-android-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').apk
 # Publish to Google Play beta track
 - sed -i "/3.3.0'/aclasspath 'com.github.triplet.gradle:play-publisher:2.0.0-rc1'" platforms/android/build.gradle
 - cp ../iznik-nuxt/mobile/build-extras.gradle platforms/android/app
@@ -79,6 +89,7 @@ script:
 
 - cd ../iznik-nuxt
 
+# MODTOOLS app
 - npm run mtapp
 - mkdir ../iznik-nuxt-mt
 - cd ../iznik-nuxt-mt
@@ -94,10 +105,10 @@ script:
 - cordova platform add android
 # Build debug build
 - cordova build --debug -- --keystore="../iznik-nuxt/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
-- cp platforms/android/app/build/outputs/apk/debug/app-debug.apk ../iznik-nuxt/releases/ModTools-app-$MODTOOLS_VERSION-debug-$(date +'%Y%m%d%H%M%S').apk
+- cp platforms/android/app/build/outputs/apk/debug/app-debug.apk ../iznik-nuxt/releases/ModTools-android-app-$MODTOOLS_VERSION-debug-$(date +'%Y%m%d%H%M%S').apk
 # Build release build
 - cordova build --release -- --keystore="../iznik-nuxt/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
-- cp platforms/android/app/build/outputs/apk/release/app-release.apk ../iznik-nuxt/releases/ModTools-app-$MODTOOLS_VERSION-release-$(date +'%Y%m%d%H%M%S').apk
+- cp platforms/android/app/build/outputs/apk/release/app-release.apk ../iznik-nuxt/releases/ModTools-android-app-$MODTOOLS_VERSION-release-$(date +'%Y%m%d%H%M%S').apk
 # Publish to Google Play beta track
 - sed -i "/3.3.0'/aclasspath 'com.github.triplet.gradle:play-publisher:2.0.0-rc1'" platforms/android/build.gradle
 - cp ../iznik-nuxt/mobile/build-extras.gradle platforms/android/app
@@ -110,6 +121,7 @@ script:
 
 - rm mobile/app-secrets.tar android-chrisphdcccom.new.keystore google-services.json GoogleService-Info.plist
 
+################
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
 - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -118,12 +130,16 @@ cache:
   - "$HOME/.gradle/caches/"
   - "$HOME/.gradle/wrapper/"
   - "$HOME/.android/build-cache"
+
+################
 before_deploy:
 - git config --local user.name "$gitusername"
 - git config --local user.email "$gitemail"
-- export TRAVIS_TAG=Travis-builds-$MOBILE_VERSION-$MODTOOLS_VERSION-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)
+- export TRAVIS_TAG=Travis-android-builds-$MOBILE_VERSION-$MODTOOLS_VERSION-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)
 - env | grep '^TRAVIS_TAG='
 - git tag $TRAVIS_TAG
+
+################
 deploy:
   provider: releases
   api_key:
@@ -134,4 +150,3 @@ deploy:
   on:
     repo: Freegle/iznik-nuxt
     branch: app
-

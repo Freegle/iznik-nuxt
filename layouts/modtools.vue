@@ -2,13 +2,14 @@
   <client-only>
     <div class="pageback">
       <b-navbar id="navbar" type="dark" class="navback p-0 p-sm-1" fixed="top">
-        <b-navbar-brand class="p-0 pr-2 d-flex" @click="clicklogo">
+        <b-navbar-brand class="p-0 pr-2 d-flex">
           <b-img
             class="logo clickme"
             fluid
             rounded
             :src="logo"
             alt="Home"
+            @click="clicklogo"
           />
           <ModStatus class="status" />
         </b-navbar-brand>
@@ -82,13 +83,16 @@
               <ModMenuItemNav name="Volunteering" :count="['pendingvolunteering']" link="/modtools/volunteering" />
             </b-dropdown-item>
             <b-dropdown-item>
-              <ModMenuItemNav name="Spammers" :count="['spammerpendingadd', 'spammerpendingremove']" link="/modtools/spammers" />
+              <ModMenuItemNav name="Spammers" :count="supportOrAdmin ? ['spammerpendingadd', 'spammerpendingremove'] : []" link="/modtools/spammers" />
             </b-dropdown-item>
             <b-dropdown-item>
               <ModMenuItemNav name="Admins" :count="['pendingadmins']" link="/modtools/admins" />
             </b-dropdown-item>
             <b-dropdown-item>
               <ModMenuItemNav name="Logs" link="/modtools/logs" />
+            </b-dropdown-item>
+            <b-dropdown-item>
+              <ModMenuItemNav name="Settings" :count="['pendingadmins']" link="/modtools/settings" />
             </b-dropdown-item>
           </b-nav-item-dropdown>
           <b-nav-item-dropdown class="pt-2">
@@ -112,6 +116,9 @@
             </b-dropdown-item>
             <b-dropdown-item v-if="hasPermissionNewsletter">
               <ModMenuItemNav name="Newsletter" :count="['newsletterstories']" link="/modtools/members/newsletter" />
+            </b-dropdown-item>
+            <b-dropdown-item>
+              <ModMenuItemNav name="Feedback" link="/modtools/members/feedback" :othercount="['happiness']" />
             </b-dropdown-item>
             <b-dropdown-item>
               <ModMenuItemNav name="Publicity" :count="['socialactions']" link="/modtools/publicity" />
@@ -173,14 +180,14 @@
           <ModMenuItemLeft link="/modtools/members/related" name="Related" :count="['relatedmembers']" indent />
           <ModMenuItemLeft link="/modtools/members/stories" name="Stories" indent :count="['stories']" />
           <ModMenuItemLeft v-if="hasPermissionNewsletter" link="/modtools/members/newsletter" name="Newsletter" indent :count="['newsletterstories']" />
-          <ModMenuItemLeft link="/modtools/happiness" name="Happiness TODO" indent />
+          <ModMenuItemLeft link="/modtools/members/feedback" name="Feedback" indent :othercount="['happiness']" />
           <hr>
           <hr>
           <ModMenuItemLeft link="/modtools/communityevents" name="Events" :count="['pendingevents']" />
           <ModMenuItemLeft link="/modtools/volunteering" name="Volunteering" :count="['pendingvolunteering']" />
           <ModMenuItemLeft link="/modtools/publicity" name="Publicity" :count="['socialactions']" />
           <ModMenuItemLeft link="/modtools/admins" name="Admins" :count="['pendingadmins']" />
-          <ModMenuItemLeft link="/modtools/spammers" name="Spammers" :count="['spammerpendingadd', 'spammerpendingremove']" />
+          <ModMenuItemLeft link="/modtools/spammers" name="Spammers" :count="supportOrAdmin ? ['spammerpendingadd', 'spammerpendingremove'] : []" />
           <hr>
           <ModMenuItemLeft link="/modtools/logs" name="Logs" />
           <ModMenuItemLeft link="/modtools/support" name="Support" />
@@ -268,15 +275,35 @@ export default {
     this.$store.dispatch('modconfigs/fetch', {
       all: true
     })
+
+    this.updateFavicon()
   },
 
   beforeDestroy() {
     if (this.workTimer) {
       clearTimeout(this.workTimer)
     }
+
+    if (this.faviconTimer) {
+      clearTimeout(this.faviconTimer)
+    }
   },
 
   methods: {
+    updateFavicon() {
+      if (process.client) {
+        // This is a bit of a hack, but seems necessary to make the favicon stick.
+        const link =
+          document.querySelector("link[rel*='icon']") ||
+          document.createElement('link')
+        link.type = 'image/x-icon'
+        link.rel = 'icon'
+        link.href = require('~/static/icon_modtools.png')
+        document.getElementsByTagName('head')[0].appendChild(link)
+      }
+
+      this.faviconTimer = setTimeout(this.updateFavicon, 100)
+    },
     async logOut() {
       // Remove all cookies, both client and server.  This seems to be necessary to kill off the PHPSESSID cookie
       // on the server, which would otherwise keep us logged in despite our efforts.
@@ -351,16 +378,23 @@ export default {
       }
     }
 
-    return {
-      titleTemplate: totalCount > 0 ? `(${totalCount}) ModTools` : 'ModTools',
-      link: [
+    const ret = {
+      titleTemplate: totalCount > 0 ? `(${totalCount}) ModTools` : 'ModTools'
+    }
+
+    if (process.client) {
+      this.updateFavicon()
+    } else {
+      ret.link = [
         {
           rel: 'icon',
           type: 'image/x-icon',
-          href: require(`@/static/icon_modtools.png`)
+          href: require('~/static/icon_modtools.png')
         }
       ]
     }
+
+    return ret
   }
 }
 </script>
@@ -460,7 +494,6 @@ body.modal-open {
 }
 
 .leftmenu {
-  height: 100vh;
   min-width: 200px;
   padding-top: 68px;
   font-size: 1.2em;

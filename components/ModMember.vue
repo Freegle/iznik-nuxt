@@ -55,8 +55,8 @@
               <b-badge :variant="wanteds > 0 ? 'success' : 'light'" title="Recent WANTEDs" @click="showHistory('Wanted')">
                 <v-icon name="search" class="fa-fw" /> {{ wanteds | pluralize([ 'WANTED', 'WANTEDs' ], { includeNumber: true }) }}
               </b-badge>
-              <b-badge :variant="member.modmails > 0 ? 'danger' : 'light'" title="Recent ModMails">
-                <v-icon name="exclamation-triangle" class="fa-fw" /> {{ member.modmails | pluralize([ 'Modmail', 'Modmails' ], { includeNumber: true }) }}
+              <b-badge :variant="(member.modmails && member.modmails) > 0 ? 'danger' : 'light'" title="Recent ModMails">
+                <v-icon name="exclamation-triangle" class="fa-fw" /> {{ (member.modmails ? member.modmails : 0) | pluralize([ 'Modmail', 'Modmails' ], { includeNumber: true }) }}
               </b-badge>
               <b-badge v-if="userinfo" :variant="userinfo.replies > 0 ? 'success' : 'light'" title="Recent replies to posts">
                 <v-icon name="reply" class="fa-fw" /> {{ userinfo.replies | pluralize([ 'reply', 'replies' ], { includeNumber: true }) }}
@@ -99,6 +99,10 @@
             <b-btn variant="link" @click="showLogs">
               View logs
             </b-btn>
+            <b-btn variant="link" @click="showProfile">
+              View profile
+            </b-btn>
+            <ProfileModal :id="member.userid" ref="profilemodal" />
             <div v-if="showEmails">
               <div v-for="e in member.emails" :key="e.id">
                 {{ e.email }} <v-icon v-if="e.preferred" name="start" />
@@ -164,7 +168,16 @@
       </b-card-body>
       <b-card-footer class="d-flex justify-content-between">
         <ModMemberButtons :member="member" :modconfig="modconfig" />
-        <ModRole :userid="member.userid" :groupid="groupid" :role="member.role" />
+        <div class="d-flex">
+          <ModRole v-if="groupid" :userid="member.userid" :groupid="groupid" :role="member.role" />
+          <ChatButton
+            :userid="member.userid"
+            :groupid="member.groupid"
+            title="Chat"
+            variant="white"
+            class="ml-1"
+          />
+        </div>
       </b-card-footer>
     </b-card>
     <ModPostingHistoryModal ref="history" :user="member" :type="type" />
@@ -187,11 +200,15 @@ import ModMemberships from './ModMemberships'
 import ModBouncing from './ModBouncing'
 import ModMemberLogins from './ModMemberLogins'
 import ModRole from './ModRole'
+import ChatButton from './ChatButton'
+import ProfileModal from './ProfileModal'
 const OurToggle = () => import('@/components/OurToggle')
 
 export default {
   name: 'ModMember',
   components: {
+    ProfileModal,
+    ChatButton,
     OurToggle,
     ModRole,
     ModMemberLogins,
@@ -405,6 +422,11 @@ export default {
       await this.$store.dispatch('user/edit', {
         id: this.user.id,
         newslettersallowed: e.value
+      })
+    },
+    showProfile() {
+      this.waitForRef('profilemodal', () => {
+        this.$refs.profilemodal.show()
       })
     }
   }

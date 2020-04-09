@@ -38,6 +38,14 @@
           <b-tab>
             <template v-slot:title>
               <h2 class="ml-2 mr-2">
+                Contact Group
+              </h2>
+            </template>
+            <ModSupportContactGroup />
+          </b-tab>
+          <b-tab>
+            <template v-slot:title>
+              <h2 class="ml-2 mr-2">
                 Add Group
               </h2>
             </template>
@@ -57,11 +65,13 @@ import ModSupportFindUser from '../../../components/ModSupportFindUser'
 import ModSupportFindMessage from '../../../components/ModSupportFindMessage'
 import ModSupportListGroups from '../../../components/ModSupportListGroups'
 import ModSupportAddGroup from '../../../components/ModSupportAddGroup'
+import ModSupportContactGroup from '../../../components/ModSupportContactGroup'
 import loginRequired from '@/mixins/loginRequired.js'
 import NoticeMessage from '@/components/NoticeMessage'
 
 export default {
   components: {
+    ModSupportContactGroup,
     ModSupportAddGroup,
     ModSupportListGroups,
     ModSupportFindMessage,

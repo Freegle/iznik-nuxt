@@ -1,8 +1,10 @@
 <template>
-  <div>
-    <h2 v-if="me">Hello, {{ me.displayname }}</h2>
-    <h2 v-else>Hello there</h2>
+  <div v-if="me">
+    <h2>Hello, {{ me.displayname }}</h2>
     <p>Here's your dashboard, where you can see what your communities have been doing recently.</p>
+    <p v-if="isApp">
+      ModTools app version: {{ modtoolsVersion }}.
+    </p>
     <ModMissingFacebook />
     <ModMissingTwitter class="mt-1" />
     <ModMissingProfile class="mt-1" />
@@ -159,6 +161,12 @@ export default {
     }
   },
   computed: {
+    isApp() {
+      return process.env.IS_APP
+    },
+    modtoolsVersion() {
+      return process.env.MODTOOLS_VERSION
+    },
     showInfo: {
       get() {
         return this.$store.getters['misc/get']('dashboardShowInfo') || 'week'
