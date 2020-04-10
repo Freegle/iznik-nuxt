@@ -94,18 +94,32 @@
         Logins
       </h3>
       <ModMemberLogins :member="user" />
-      <b-input-group class="mt-2">
-        <b-input
-          v-model="newpassword"
-          type="text"
-          placeholder="Reset password"
-          autocomplete="off"
-          class="max"
-        />
-        <b-input-group-append>
-          <SpinButton variant="white" name="save" label="Set Password" :handler="setPassword" />
-        </b-input-group-append>
-      </b-input-group>
+      <div class="d-flex justify-content-between flex-wrap">
+        <b-input-group class="mt-2">
+          <b-input
+            v-model="newpassword"
+            type="text"
+            placeholder="Reset password"
+            autocomplete="off"
+            class="max"
+          />
+          <b-input-group-append>
+            <SpinButton variant="white" name="save" label="Set Password" :handler="setPassword" />
+          </b-input-group-append>
+        </b-input-group>
+        <b-input-group class="mt-2">
+          <b-input
+            v-model="newemail"
+            type="text"
+            placeholder="Add email"
+            autocomplete="off"
+            class="max"
+          />
+          <b-input-group-append>
+            <SpinButton variant="white" name="save" label="Add Email" :handler="addEmail" />
+          </b-input-group-append>
+        </b-input-group>
+      </div>
       <h3 class="mt-2">
         Memberships
       </h3>
@@ -280,7 +294,8 @@ export default {
       showAllMessageHistories: false,
       showAllEmailHistories: false,
       showSpamModal: false,
-      newpassword: null
+      newpassword: null,
+      newemail: null
     }
   },
   computed: {
@@ -431,6 +446,14 @@ export default {
         await this.$store.dispatch('user/edit', {
           id: this.user.id,
           password: this.newpassword
+        })
+      }
+    },
+    async addEmail() {
+      if (this.newemail) {
+        await this.$store.dispatch('user/addEmail', {
+          id: this.user.id,
+          email: this.newemail
         })
       }
     }
