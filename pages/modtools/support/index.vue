@@ -30,7 +30,7 @@
               specific, the better.
             </p>
             <ModFindMessage />
-            <div v-if="message && messages" class="mt-2">
+            <div v-if="messages" class="mt-2">
               <ModMessage
                 v-for="message in messages"
                 :key="'message-' + message.id"
