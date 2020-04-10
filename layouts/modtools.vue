@@ -292,13 +292,19 @@ export default {
     updateFavicon() {
       if (process.client) {
         // This is a bit of a hack, but seems necessary to make the favicon stick.
-        const link =
-          document.querySelector("link[rel*='icon']") ||
-          document.createElement('link')
-        link.type = 'image/x-icon'
-        link.rel = 'icon'
-        link.href = require('~/static/icon_modtools.png')
-        document.getElementsByTagName('head')[0].appendChild(link)
+        //
+        // Check if it's ok first, as otherwise we keep fetching the icon.
+        let link = document.querySelector("link[rel*='icon']")
+
+        if (!link) {
+          link = document.createElement('link')
+          link.type = 'image/x-icon'
+          link.rel = 'icon'
+          link.href = require('~/static/icon_modtools.png')
+          document.getElementsByTagName('head')[0].appendChild(link)
+        } else if (link.href.indexOf('icon_modtools.png') === -1) {
+          link.href = require('~/static/icon_modtools.png')
+        }
       }
 
       this.faviconTimer = setTimeout(this.updateFavicon, 100)
