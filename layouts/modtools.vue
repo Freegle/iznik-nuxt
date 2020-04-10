@@ -56,7 +56,7 @@
         <!-- Larger screens end -->
 
         <!-- Mobile screens -->
-        <b-navbar-nav class="w-100 d-flex d-sm-none justify-content-between ml-sm-auto pr-1">
+        <b-navbar-nav class="w-100 d-flex d-lg-none justify-content-between">
           <b-nav-item-dropdown class="pt-2">
             <template v-slot:button-content>
               <ModMenuItemNav :count="['pending', 'chatreview', 'pendingevents', 'pendingvolunteering', 'pendingadmins']" icon="envelope" count-on-top />
@@ -159,7 +159,7 @@
       </b-navbar>
 
       <div class="d-flex">
-        <div class="leftmenu d-none d-sm-block">
+        <div class="leftmenu d-none d-lg-block">
           <ModMenuItemLeft link="/modtools" name="Dashboard" />
           <hr>
           <div class="pl-1">
