@@ -6,7 +6,7 @@
     <b-input-group v-if="type === 'input'">
       <b-input v-model="value" />
       <b-input-group-append>
-        <SpinButton variant="white" name="save" label="Save" :handler="save" />
+        <SpinButton variant="white" name="save" label="Save" :handler="save" :disabled="readonly" />
       </b-input-group-append>
     </b-input-group>
     <div v-else-if="type === 'textarea'">
@@ -17,7 +17,14 @@
       </b-row>
       <b-row>
         <b-col>
-          <SpinButton variant="white" name="save" label="Save" :handler="save" class="mt-2" />
+          <SpinButton
+            variant="white"
+            name="save"
+            label="Save"
+            :handler="save"
+            class="mt-2"
+            :disabled="readonly"
+          />
         </b-col>
       </b-row>
     </div>
@@ -31,6 +38,7 @@
         :sync="true"
         :labels="{checked: toggleChecked, unchecked: toggleUnchecked}"
         color="#61AE24"
+        :disabled="readonly"
         @change="save"
       />
     </div>
@@ -92,6 +100,9 @@ export default {
     }
   },
   computed: {
+    readonly() {
+      return this.group.myrole !== 'Owner'
+    },
     group() {
       return this.$store.getters['group/get'](this.groupid)
     }
