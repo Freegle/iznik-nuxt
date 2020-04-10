@@ -9,7 +9,7 @@
           {{ user.displayname }}
         </h6>
         <ChatButton
-          v-if="user.userid !== myid"
+          v-if="user.userid !== myid && false"
           :userid="user.userid"
           size="sm"
           title="Chat"
