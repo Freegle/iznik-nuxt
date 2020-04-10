@@ -20,6 +20,10 @@ export default class UserAPI extends BaseAPI {
     return this.$post('/user', { id: id, action: 'Unbounce' })
   }
 
+  addEmail(id, email) {
+    return this.$post('/user', { id: id, action: 'AddEmail', email: email })
+  }
+
   save(event) {
     return this.$patch('/user', event)
   }
