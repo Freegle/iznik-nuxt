@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-input-group>
-      <b-input v-model="term" placeholder="Message id/subject" @keyup.native.enter="search" />
+      <b-input v-model="term" placeholder="Email address/name" @keyup.native.enter="search" />
       <b-input-group-append>
         <SpinButton variant="success" name="search" label="Search" :handler="search" :disabled="!term" />
       </b-input-group-append>
@@ -35,29 +35,12 @@ export default {
 
       await this.$store.dispatch('messages/clear')
 
-      if (!isNaN(term)) {
-        // This is a raw message id
-        await this.searchById(term)
-      } else if (term.substring(0, 1) === '#' && !isNaN(term.substring(1))) {
-        // This is a #id
-        await this.searchById(term.substring(1))
-      } else {
-        this.searchBySubject(this.term)
-      }
-
-      this.busy = false
-    },
-    async searchById(id) {
-      await this.$store.dispatch('messages/fetch', {
-        id: id,
-        messagehistory: true
-      })
-    },
-    async searchBySubject(subj) {
-      await this.$store.dispatch('messages/search', {
-        term: subj,
+      await this.$store.dispatch('messages/searchMember', {
+        term: term,
         groupid: this.groupid
       })
+
+      this.busy = false
     }
   }
 }

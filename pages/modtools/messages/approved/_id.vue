@@ -3,6 +3,7 @@
     <client-only>
       <div class="d-flex justify-content-between flex-wrap">
         <GroupSelect v-model="groupid" all modonly />
+        <ModFindMessagesFromMember />
         <ModFindMessage />
       </div>
       <div>
@@ -30,12 +31,19 @@ import NoticeMessage from '../../../../components/NoticeMessage'
 import ModMessage from '../../../../components/ModMessage'
 import GroupSelect from '../../../../components/GroupSelect'
 import ModFindMessage from '../../../../components/ModFindMessage'
+import ModFindMessagesFromMember from '../../../../components/ModFindMessagesFromMember'
 import loginRequired from '@/mixins/loginRequired'
 import modMessagesPage from '@/mixins/modMessagesPage'
 import createGroupRoute from '@/mixins/createGroupRoute'
 
 export default {
-  components: { ModFindMessage, GroupSelect, ModMessage, NoticeMessage },
+  components: {
+    ModFindMessagesFromMember,
+    ModFindMessage,
+    GroupSelect,
+    ModMessage,
+    NoticeMessage
+  },
   layout: 'modtools',
   mixins: [
     loginRequired,
