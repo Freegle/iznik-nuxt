@@ -308,7 +308,7 @@ import ChatHideModal from './ChatHideModal'
 import ModComments from './ModComments'
 import chatCollate from '@/mixins/chatCollate.js'
 import chat from '@/mixins/chat.js'
-import WaitForRef from '@/mixins/waitForRef'
+import waitForRef from '@/mixins/waitForRef'
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
 import ChatMessage from '~/components/ChatMessage.vue'
@@ -342,7 +342,7 @@ export default {
     ChatReportModal,
     ChatRSVPModal
   },
-  mixins: [chatCollate, WaitForRef, chat],
+  mixins: [chatCollate, waitForRef, chat],
   watch: {
     me(newVal, oldVal) {
       if (!oldVal && newVal) {

@@ -104,12 +104,14 @@
       </div>
       <ChatPopups v-if="loggedIn" class="d-none d-sm-block" />
       <LoginModal ref="loginModal" />
+      <div id="sizer" ref="sizer" class="d-none d-lg-block" />
     </div>
   </client-only>
 </template>
 
 <script>
 import ModMenuItemLeft from '../components/ModMenuItemLeft'
+import waitForRef from '../mixins/waitForRef'
 import LoginModal from '~/components/LoginModal'
 import ModStatus from '~/components/ModStatus'
 
@@ -122,7 +124,7 @@ export default {
     LoginModal,
     ModStatus
   },
-
+  mixins: [waitForRef],
   data: function() {
     return {
       logo: require(`@/static/icon_modtools.png`),
@@ -130,7 +132,6 @@ export default {
       sliding: false
     }
   },
-
   computed: {
     chatCount() {
       // Don't show so many that the layout breaks.
@@ -171,7 +172,6 @@ export default {
       return this.$store.getters['auth/work']
     }
   },
-
   watch: {
     $route() {
       // Close the dropdown menu when we move around.
@@ -190,11 +190,18 @@ export default {
       }
     }
   },
-
   mounted() {
     if (process.browser) {
       // Add class for screen background.
       document.body.classList.add('modtools')
+
+      this.waitForRef('sizer', () => {
+        const el = document.getElementById('sizer')
+        if (getComputedStyle(el).display === 'block') {
+          // Large screen, show menu by default.
+          this.showMenu = true
+        }
+      })
     }
 
     // Ensure we know whether we're FD or MT.
@@ -210,7 +217,6 @@ export default {
 
     this.updateFavicon()
   },
-
   beforeDestroy() {
     if (this.workTimer) {
       clearTimeout(this.workTimer)
@@ -220,7 +226,6 @@ export default {
       clearTimeout(this.faviconTimer)
     }
   },
-
   methods: {
     updateFavicon() {
       if (process.client) {
@@ -303,7 +308,6 @@ export default {
       return total
     }
   },
-
   head() {
     let totalCount = this.chatCount
 
