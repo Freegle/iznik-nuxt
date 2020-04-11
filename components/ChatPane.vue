@@ -99,7 +99,7 @@
           </b-row>
           <div v-if="chat" class="chatContent row" infinite-wrapper>
             <infinite-loading
-              v-if="otheruser || chat.chattype === 'User2Mod'"
+              v-if="otheruser || chat.chattype === 'User2Mod' || chat.chattype === 'Mod2Mod'"
               direction="top"
               force-use-infinite-wrapper="true"
               :distance="distance"

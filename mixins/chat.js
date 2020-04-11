@@ -177,7 +177,6 @@ export default {
       })
     },
     loadMore: function($state) {
-      console.log('Load more', this.chat)
       const currentCount = this.chatmessages.length
 
       if (!this.scrolledToBottom) {
