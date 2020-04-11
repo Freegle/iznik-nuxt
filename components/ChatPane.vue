@@ -89,7 +89,7 @@
                 <b-col class="p-0 pl-1 mb-1">
                   <span>
                     <b-btn variant="white" size="sm" class="float-right" @click="markRead">
-                      Mark all read
+                      Mark read
                     </b-btn>
                     <Ratings v-if="otheruser" :id="otheruserid" :key="'otheruser-' + otheruser.id" size="sm" />
                   </span>

@@ -452,7 +452,7 @@ body.modal-open {
 }
 
 .leftmenu {
-  min-width: 200px;
+  min-width: 180px;
   padding-top: 68px;
   font-size: 1.2em;
   background-color: $color-modtools-leftmenu-bg;

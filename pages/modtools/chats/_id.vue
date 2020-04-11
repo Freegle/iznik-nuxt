@@ -4,9 +4,9 @@
       <b-col id="chatlist" cols="12" md="4" :class="'chatlist p-0 bg-white ' + (selectedChatId ? 'd-none d-md-block' : '') + ' ' + selectedChatId">
         <b-card class="p-0">
           <b-card-body class="p-0">
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between flex-wrap">
               <b-form-input v-model="search" placeholder="Search chats" class="flex-shrink-1" :disabled="searching !== null" />
-              <b-btn class="float-right" variant="white" @click="markAllRead">
+              <b-btn class="mt-1" variant="white" @click="markAllRead">
                 <v-icon name="check" /> Mark all read
               </b-btn>
             </div>
