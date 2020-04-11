@@ -141,6 +141,11 @@ export default {
     search(newVal, oldVal) {
       this.showChats = 0
       this.bump = Date.now()
+
+      if (!newVal) {
+        // Force a refresh to remove any old chats.
+        this.listChats()
+      }
     }
   },
 
