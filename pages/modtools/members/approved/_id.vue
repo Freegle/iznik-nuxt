@@ -3,7 +3,13 @@
     <client-only>
       <div class="d-flex justify-content-between">
         <GroupSelect v-model="groupid" modonly />
-        <ModMemberTypeSelect v-model="filter" />
+        <div class="d-flex">
+          <ModMemberTypeSelect v-model="filter" />
+          <b-btn variant="white" class="ml-2" @click="addMember">
+            <v-icon name="plus" /> Add
+          </b-btn>
+          <ModAddMemberModal ref="addmodal" />
+        </div>
         <ModMemberSearchbox v-model="search" :groupid="groupid" />
       </div>
       <div v-if="groupid">
@@ -37,12 +43,15 @@ import ModMember from '../../../../components/ModMember'
 import NoticeMessage from '../../../../components/NoticeMessage'
 import ModMemberSearchbox from '../../../../components/ModMemberSearchbox'
 import ModMemberTypeSelect from '../../../../components/ModMemberTypeSelect'
+import ModAddMemberModal from '../../../../components/ModAddMemberModal'
 import loginRequired from '@/mixins/loginRequired'
 import modMembersPage from '@/mixins/modMembersPage'
 import createGroupRoute from '@/mixins/createGroupRoute'
+import waitForRef from '@/mixins/waitForRef'
 
 export default {
   components: {
+    ModAddMemberModal,
     ModMemberTypeSelect,
     ModMemberSearchbox,
     NoticeMessage,
@@ -52,7 +61,8 @@ export default {
   mixins: [
     loginRequired,
     createGroupRoute('modtools/members/approved'),
-    modMembersPage
+    modMembersPage,
+    waitForRef
   ],
   data: function() {
     return {
@@ -67,6 +77,15 @@ export default {
         // Cleared box.
         this.$router.push('/modtools/members/approved/' + this.groupid)
       }
+    }
+  },
+  methods: {
+    addMember() {
+      console.log('Wait for ref')
+      this.waitForRef('addmodal', () => {
+        console.log('Got')
+        this.$refs.addmodal.show()
+      })
     }
   }
 }
