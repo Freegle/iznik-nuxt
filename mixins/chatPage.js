@@ -117,7 +117,9 @@ export default {
       // Not got any - need to get them before we can proceed.
       const modtools = store.getters['misc/get']('modtools')
       await store.dispatch('chats/listChats', {
-        chattypes: modtools ? ['User2Mod'] : ['User2User', 'User2Mod']
+        chattypes: modtools
+          ? ['User2Mod', 'Mod2Mod']
+          : ['User2User', 'User2Mod']
       })
     }
 
@@ -153,7 +155,9 @@ export default {
     async listChats() {
       const modtools = this.$store.getters['misc/get']('modtools')
       await this.$store.dispatch('chats/listChats', {
-        chattypes: modtools ? ['User2Mod'] : ['User2User', 'User2Mod']
+        chattypes: modtools
+          ? ['User2Mod', 'Mod2Mod']
+          : ['User2User', 'User2Mod']
       })
     },
 
@@ -178,7 +182,9 @@ export default {
         await this.$store.dispatch('chats/listChats', {
           search: this.search,
           summary: true,
-          chattypes: modtools ? ['User2Mod'] : ['User2User', 'User2Mod']
+          chattypes: modtools
+            ? ['User2Mod', 'Mod2Mod']
+            : ['User2User', 'User2Mod']
         })
 
         while (this.searchlast) {

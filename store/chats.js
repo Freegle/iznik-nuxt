@@ -89,7 +89,7 @@ export const actions = {
     const modtools = rootGetters['misc/get']('modtools')
 
     params = params || {
-      chattypes: modtools ? ['User2Mod'] : ['User2User', 'User2Mod'],
+      chattypes: modtools ? ['User2Mod', 'Mod2Mod'] : ['User2User', 'User2Mod'],
       search: params && params.search ? params.search : null
     }
 

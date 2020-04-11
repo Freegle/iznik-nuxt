@@ -114,7 +114,7 @@
                 </div>
               </span>
             </infinite-loading>
-            <ul v-if="otheruser || chat.chattype === 'User2Mod'" class="p-0 pt-1 list-unstyled mb-1 w-100">
+            <ul v-if="otheruser || chat.chattype === 'User2Mod' || chat.chattype === 'Mod2Mod'" class="p-0 pt-1 list-unstyled mb-1 w-100">
               <li v-for="chatmessage in chatmessages" :key="'chatmessage-' + chatmessage.id">
                 <ChatMessage
                   v-if="chatmessage"
