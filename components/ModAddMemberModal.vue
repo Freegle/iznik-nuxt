@@ -53,14 +53,12 @@ export default {
   },
   methods: {
     show() {
-      console.log('Show')
       this.showModal = true
     },
     hide() {
       this.showModal = false
     },
     async add() {
-      console.log('Add')
       this.addedId = await this.$store.dispatch('user/add', {
         email: this.email
       })

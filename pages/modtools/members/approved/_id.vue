@@ -9,6 +9,10 @@
             <v-icon name="plus" /> Add
           </b-btn>
           <ModAddMemberModal ref="addmodal" />
+          <b-btn variant="white" class="ml-2" @click="mergeMember">
+            <v-icon name="equals" /> Merge
+          </b-btn>
+          <ModMergeMemberModal ref="mergemodal" />
         </div>
         <ModMemberSearchbox v-model="search" :groupid="groupid" />
       </div>
@@ -44,6 +48,7 @@ import NoticeMessage from '../../../../components/NoticeMessage'
 import ModMemberSearchbox from '../../../../components/ModMemberSearchbox'
 import ModMemberTypeSelect from '../../../../components/ModMemberTypeSelect'
 import ModAddMemberModal from '../../../../components/ModAddMemberModal'
+import ModMergeMemberModal from '../../../../components/ModMergeMemberModal'
 import loginRequired from '@/mixins/loginRequired'
 import modMembersPage from '@/mixins/modMembersPage'
 import createGroupRoute from '@/mixins/createGroupRoute'
@@ -51,6 +56,7 @@ import waitForRef from '@/mixins/waitForRef'
 
 export default {
   components: {
+    ModMergeMemberModal,
     ModAddMemberModal,
     ModMemberTypeSelect,
     ModMemberSearchbox,
@@ -81,10 +87,13 @@ export default {
   },
   methods: {
     addMember() {
-      console.log('Wait for ref')
       this.waitForRef('addmodal', () => {
-        console.log('Got')
         this.$refs.addmodal.show()
+      })
+    },
+    mergeMember() {
+      this.waitForRef('mergemodal', () => {
+        this.$refs.mergemodal.show()
       })
     }
   }

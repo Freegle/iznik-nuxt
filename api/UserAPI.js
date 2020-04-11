@@ -28,6 +28,15 @@ export default class UserAPI extends BaseAPI {
     return this.$put('/user', { email: email })
   }
 
+  merge(email1, email2, reason) {
+    return this.$post('/user', {
+      email1,
+      email2,
+      reason,
+      action: 'Merge'
+    })
+  }
+
   save(event) {
     return this.$patch('/user', event)
   }
