@@ -39,9 +39,14 @@
             </div>
           </b-nav-item>
           <b-nav-item v-if="loggedIn">
-            <b-btn variant="white" class="menu" @click="toggleMenu">
-              <v-icon name="bars" class="mb-1" scale="2.2" />
-            </b-btn>
+            <div class="position-relative">
+              <b-btn variant="white" class="menu" @click="toggleMenu">
+                <v-icon name="bars" class="mb-1" scale="2.2" />
+              </b-btn>
+              <b-badge v-show="menuCount" v-if="!showMenu" variant="danger" class="menuCount position-absolute">
+                {{ menuCount }}
+              </b-badge>
+            </div>
           </b-nav-item>
           <b-nav-item v-if="!loggedIn">
             <b-btn variant="white" @click="requestLogin">
@@ -139,6 +144,31 @@ export default {
     },
     slideclass() {
       return this.showMenu ? 'slide-in' : 'slide-out'
+    },
+    menuCount() {
+      const counts = [
+        'pending',
+        'spam',
+        'editreview',
+        'pendingmembers',
+        'spammembers',
+        'chatreview',
+        'relatedmembers',
+        'stories',
+        'newsletterstories',
+        'pendingevents',
+        'pendingvolunteeering',
+        'socialactions',
+        'pendingadmins'
+      ]
+
+      if (this.supportOrAdmin) {
+        counts.push(['spammerpendingadd', 'spammerpendingremove'])
+      }
+      return this.getCount(counts)
+    },
+    work() {
+      return this.$store.getters['auth/work']
     }
   },
 
@@ -258,6 +288,19 @@ export default {
     },
     toggleMenu() {
       this.showMenu = !this.showMenu
+    },
+    getCount(types) {
+      let total = 0
+
+      if (types) {
+        for (const key in this.work) {
+          if (types.indexOf(key) !== -1) {
+            total += this.work[key]
+          }
+        }
+      }
+
+      return total
     }
   },
 
@@ -439,7 +482,21 @@ body.modal-open {
 }
 
 .menu {
-  color: $color-modtools-blue--dark;
+  color: $color-modtools-blue--dark !important;
   background-color: $color-white;
+}
+
+@include media-breakpoint-down(xs) {
+  .menuCount {
+    right: 7px;
+    top: 5px;
+  }
+}
+
+@include media-breakpoint-up(sm) {
+  .menuCount {
+    right: 15px;
+    top: 5px;
+  }
 }
 </style>
