@@ -102,11 +102,17 @@ export default {
       return ret
     }
   },
-  async mounted() {
-    await this.$store.dispatch('members/clear')
-    await this.$store.dispatch('members/fetchMembers', {
-      collection: 'Nearby'
-    })
+  watch: {
+    myid(newVal) {
+      if (newVal) {
+        this.fetch()
+      }
+    }
+  },
+  mounted() {
+    if (this.myid) {
+      this.fetch()
+    }
   },
   methods: {
     google() {
@@ -144,6 +150,12 @@ export default {
           }
         }
       }
+    },
+    async fetch() {
+      await this.$store.dispatch('members/clear')
+      await this.$store.dispatch('members/fetchMembers', {
+        collection: 'Nearby'
+      })
     }
   }
 }
