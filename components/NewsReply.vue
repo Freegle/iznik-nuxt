@@ -1,5 +1,5 @@
 <template>
-  <div v-if="reply && userid && users[userid] && reply.visible">
+  <div v-if="reply && userid && users[userid] && reply.visible" :class="scrollToThis ? 'bg-info' : ''">
     <b-row class="p-0">
       <b-col class="p-0">
         <table v-if="users[userid].profile">
@@ -81,7 +81,14 @@
       <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id" class="'p-0 pt-1 list-unstyled mb-1 pl-1 border-left">
         <li>
           <news-refer v-if="entry.type.indexOf('ReferTo') === 0" :type="entry.type" />
-          <news-reply v-else :key="'newsfeedreply-' + replyid + '-reply-' + entry.id" :replyid="entry.id" :users="users" :threadhead="threadhead" />
+          <news-reply
+            v-else
+            :key="'newsfeedreply-' + replyid + '-reply-' + entry.id"
+            :replyid="entry.id"
+            :users="users"
+            :threadhead="threadhead"
+            :scroll-to="scrollTo"
+          />
         </li>
       </ul>
     </div>
@@ -374,6 +381,9 @@ export default {
       }
 
       return this.visiblereplies.length - INITIAL_NUMBER_OF_REPLIES_TO_SHOW
+    },
+    scrollToThis() {
+      return parseInt(this.scrollTo) === this.replyid
     }
   },
   mounted() {
