@@ -313,8 +313,6 @@ export const actions = {
         }
       }
 
-      console.log('Current total', currentTotal, state.work)
-
       const {
         me,
         persistent,
@@ -331,8 +329,6 @@ export const actions = {
         }
       }
 
-      console.log('Compare', currentTotal, newTotal)
-
       if (
         newTotal > currentTotal &&
         ((state.user && state.user.settings.playbeep) ||
@@ -347,7 +343,6 @@ export const actions = {
         try {
           // Some browsers prevent us using play unless in response to a
           // user gesture, so catch any exception.
-          console.log('Play')
           sound.play()
         } catch (e) {
           console.log('Failed to play beep', e.message)
