@@ -1,6 +1,6 @@
 <template>
-  <div v-if="reply && userid && users[userid] && reply.visible" :class="scrollToThis ? 'bg-info' : ''">
-    <b-row class="p-0">
+  <div v-if="reply && userid && users[userid] && reply.visible">
+    <b-row class="p-0" :class="scrollToThis ? 'bg-info' : ''">
       <b-col class="p-0">
         <table v-if="users[userid].profile">
           <tbody>
