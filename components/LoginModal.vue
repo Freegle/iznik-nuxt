@@ -515,6 +515,7 @@ export default {
       // to complete the signin.  This replaces the old flow which stopped working in Jan 2020.
       this.nativeLoginError = null
       this.socialLoginError = null
+      const modtools = this.$store.getters['misc/get']('modtools')
 
       const url =
         'https://api.login.yahoo.com/oauth2/request_auth?client_id=' +
@@ -525,6 +526,7 @@ export default {
             '//' +
             window.location.hostname +
             (window.location.port ? ':' + window.location.port : '') +
+            (modtools ? 'modtools/' : '') +
             '/yahoologin?returnto=' +
             this.$route.fullPath
         ) +
