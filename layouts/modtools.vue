@@ -216,7 +216,6 @@ export default {
       all: true
     })
 
-    if (!process.env.IS_APP)
     this.updateFavicon()
   },
   beforeDestroy() {
@@ -230,6 +229,7 @@ export default {
   },
   methods: {
     updateFavicon() {
+      if (process.env.IS_APP) return;
       if (process.client) {
         // This is a bit of a hack, but seems necessary to make the favicon stick.
         //
