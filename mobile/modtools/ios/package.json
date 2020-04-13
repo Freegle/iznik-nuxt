@@ -14,6 +14,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "cordova-ios": "^5.1.1",
+    "cordova-plugin-camera": "^4.1.0",
     "cordova-plugin-device": "^2.0.3",
     "cordova-plugin-googleplus": "^8.4.0",
     "cordova-plugin-inappbrowser": "^3.2.0",
@@ -45,7 +46,8 @@
         "PHOTOLIBRARY_USAGE_DESCRIPTION": "So you can save a photo when replying to a member chat"
       },
       "phonegap-plugin-push": {},
-      "cordova-plugin-wkwebview-engine": {}
+      "cordova-plugin-wkwebview-engine": {},
+      "cordova-plugin-camera": {}
     },
     "platforms": [
       "ios"
