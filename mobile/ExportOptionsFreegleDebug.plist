@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>compileBitcode</key>
-	<true/>
+	<false/>
 	<key>destination</key>
 	<string>export</string>
 	<key>method</key>
