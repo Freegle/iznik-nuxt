@@ -514,7 +514,7 @@
 <script>
 import Vue from 'vue'
 import SimpleView from '../../components/SimpleView'
-import WaitForRef from '@/mixins/waitForRef'
+import waitForRef from '@/mixins/waitForRef'
 import loginRequired from '@/mixins/loginRequired.js'
 import EmailConfirmModal from '~/components/EmailConfirmModal'
 import buildHead from '@/mixins/buildHead'
@@ -550,7 +550,7 @@ export default {
     OurFilePond,
     DonationButton
   },
-  mixins: [loginRequired, buildHead, WaitForRef],
+  mixins: [loginRequired, buildHead, waitForRef],
   data: function() {
     return {
       emailsOn: null,

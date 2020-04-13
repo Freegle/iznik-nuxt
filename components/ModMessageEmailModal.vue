@@ -1,6 +1,7 @@
 <template>
   <div>
     <b-modal
+      v-if="message"
       id="modEmailMessageModal"
       v-model="showModal"
       size="lg"
@@ -27,6 +28,11 @@ export default {
     id: {
       type: Number,
       required: true
+    },
+    collection: {
+      type: String,
+      required: false,
+      default: null
     }
   },
   data: function() {
@@ -43,7 +49,8 @@ export default {
     async show() {
       await this.$store.dispatch('messages/fetch', {
         id: this.id,
-        messagehistory: true
+        messagehistory: true,
+        collection: this.collection
       })
 
       this.showModal = true

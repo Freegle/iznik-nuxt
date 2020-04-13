@@ -59,7 +59,13 @@
                   </span>
                 </b-col>
                 <b-col cols="4" class="p-0">
-                  <b-dropdown v-if="chat.chattype === 'User2User'" size="sm" variant="transparent" class="float-right" right>
+                  <b-dropdown v-if="mod && chat.chattype === 'User2Mod' && otheruser" size="sm" variant="transparent" class="float-right" right>
+                    <template slot="button-content" />
+                    <b-dropdown-item @click="showhide">
+                      Hide this chat
+                    </b-dropdown-item>
+                  </b-dropdown>
+                  <b-dropdown v-if="chat.chattype === 'User2User' && otheruser" size="sm" variant="transparent" class="float-right" right>
                     <template slot="button-content" />
                     <b-dropdown-item @click="showhide">
                       Hide this chat
@@ -83,7 +89,7 @@
                 <b-col class="p-0 pl-1 mb-1">
                   <span>
                     <b-btn variant="white" size="sm" class="float-right" @click="markRead">
-                      Mark all read
+                      Mark read
                     </b-btn>
                     <Ratings v-if="otheruser" :id="otheruserid" :key="'otheruser-' + otheruser.id" size="sm" />
                   </span>
@@ -93,7 +99,7 @@
           </b-row>
           <div v-if="chat" class="chatContent row" infinite-wrapper>
             <infinite-loading
-              v-if="otheruser || chat.chattype === 'User2Mod'"
+              v-if="otheruser || chat.chattype === 'User2Mod' || chat.chattype === 'Mod2Mod'"
               direction="top"
               force-use-infinite-wrapper="true"
               :distance="distance"
@@ -108,7 +114,7 @@
                 </div>
               </span>
             </infinite-loading>
-            <ul v-if="otheruser || chat.chattype === 'User2Mod'" class="p-0 pt-1 list-unstyled mb-1 w-100">
+            <ul v-if="otheruser || chat.chattype === 'User2Mod' || chat.chattype === 'Mod2Mod'" class="p-0 pt-1 list-unstyled mb-1 w-100">
               <li v-for="chatmessage in chatmessages" :key="'chatmessage-' + chatmessage.id">
                 <ChatMessage
                   v-if="chatmessage"
@@ -278,7 +284,7 @@
           <AvailabilityModal v-if="me && chat" ref="availabilitymodal" :otheruid="otheruser ? otheruser.id : null" :chatid="chat.id" :thisuid="me.id" />
           <AddressModal ref="addressModal" :choose="true" @chosen="sendAddress" />
           <ChatBlockModal v-if="chat && chat.chattype === 'User2User' && otheruser" :id="id" ref="chatblock" :user="otheruser" @confirm="block" />
-          <ChatHideModal v-if="chat && chat.chattype === 'User2User' && otheruser" :id="id" ref="chathide" :user="otheruser" @confirm="hide" />
+          <ChatHideModal v-if="chat && otheruser && ((chat.chattype === 'User2User') || (chat.chattype === 'User2Mod' && mod))" :id="id" ref="chathide" :user="otheruser" @confirm="hide" />
           <ChatReportModal
             v-if="otheruser && chat && chat.chattype === 'User2User'"
             :id="'report-' + id"
@@ -302,7 +308,7 @@ import ChatHideModal from './ChatHideModal'
 import ModComments from './ModComments'
 import chatCollate from '@/mixins/chatCollate.js'
 import chat from '@/mixins/chat.js'
-import WaitForRef from '@/mixins/waitForRef'
+import waitForRef from '@/mixins/waitForRef'
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
 import ChatMessage from '~/components/ChatMessage.vue'
@@ -336,7 +342,7 @@ export default {
     ChatReportModal,
     ChatRSVPModal
   },
-  mixins: [chatCollate, WaitForRef, chat],
+  mixins: [chatCollate, waitForRef, chat],
   watch: {
     me(newVal, oldVal) {
       if (!oldVal && newVal) {

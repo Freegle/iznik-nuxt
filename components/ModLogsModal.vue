@@ -3,7 +3,7 @@
     <b-modal
       :id="'modLogsModal-' + userid"
       v-model="showModal"
-      :title="user ? ('Logs for ' + user.displayname) : 'Logs'"
+      :title="title"
       size="lg"
       no-stacking
     >
@@ -41,6 +41,11 @@ export default {
     userid: {
       type: Number,
       required: true
+    },
+    modmailsonly: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
@@ -53,6 +58,19 @@ export default {
   computed: {
     user() {
       return this.$store.getters['user/get'](this.userid)
+    },
+    title() {
+      let ret
+
+      if (this.modmailsonly) {
+        ret = 'Modmails '
+      } else {
+        ret = 'Logs '
+      }
+
+      ret += this.user ? 'for ' + this.user.displayname : ''
+
+      return ret
     }
   },
   methods: {
@@ -69,6 +87,7 @@ export default {
       await this.$store.dispatch('user/fetch', {
         id: this.userid,
         logs: true,
+        modmailsonly: this.modmailsonly,
         logcontext:
           this.user && this.user.logcontext ? this.user.logcontext : null
       })

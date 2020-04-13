@@ -25,7 +25,19 @@
                 Find Message
               </h2>
             </template>
-            <ModSupportFindMessage />
+            <p>
+              You can search for message by id, or by subject.  This will only return the first few results, so the more
+              specific, the better.
+            </p>
+            <ModFindMessage />
+            <div v-if="messages" class="mt-2">
+              <ModMessage
+                v-for="message in messages"
+                :key="'message-' + message.id"
+                :message="message"
+                noactions
+              />
+            </div>
           </b-tab>
           <b-tab>
             <template v-slot:title>
@@ -62,25 +74,32 @@
 <script>
 import ModSupportFindGroup from '../../../components/ModSupportFindGroup'
 import ModSupportFindUser from '../../../components/ModSupportFindUser'
-import ModSupportFindMessage from '../../../components/ModSupportFindMessage'
+import ModFindMessage from '../../../components/ModFindMessage'
 import ModSupportListGroups from '../../../components/ModSupportListGroups'
 import ModSupportAddGroup from '../../../components/ModSupportAddGroup'
 import ModSupportContactGroup from '../../../components/ModSupportContactGroup'
 import loginRequired from '@/mixins/loginRequired.js'
 import NoticeMessage from '@/components/NoticeMessage'
+import ModMessage from '@/components/ModMessage'
 
 export default {
   components: {
     ModSupportContactGroup,
     ModSupportAddGroup,
     ModSupportListGroups,
-    ModSupportFindMessage,
+    ModFindMessage,
     ModSupportFindUser,
     ModSupportFindGroup,
-    NoticeMessage
+    NoticeMessage,
+    ModMessage
   },
   layout: 'modtools',
-  mixins: [loginRequired]
+  mixins: [loginRequired],
+  computed: {
+    messages() {
+      return this.$store.getters['messages/getAll']
+    }
+  }
 }
 </script>
 <style scoped>

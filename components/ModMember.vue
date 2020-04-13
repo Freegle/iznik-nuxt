@@ -55,7 +55,7 @@
               <b-badge :variant="wanteds > 0 ? 'success' : 'light'" title="Recent WANTEDs" @click="showHistory('Wanted')">
                 <v-icon name="search" class="fa-fw" /> {{ wanteds | pluralize([ 'WANTED', 'WANTEDs' ], { includeNumber: true }) }}
               </b-badge>
-              <b-badge :variant="(member.modmails && member.modmails) > 0 ? 'danger' : 'light'" title="Recent ModMails">
+              <b-badge :variant="(member.modmails && member.modmails) > 0 ? 'danger' : 'light'" title="Recent ModMails" @click="showModmails">
                 <v-icon name="exclamation-triangle" class="fa-fw" /> {{ (member.modmails ? member.modmails : 0) | pluralize([ 'Modmail', 'Modmails' ], { includeNumber: true }) }}
               </b-badge>
               <b-badge v-if="userinfo" :variant="userinfo.replies > 0 ? 'success' : 'light'" title="Recent replies to posts">
@@ -181,7 +181,7 @@
       </b-card-footer>
     </b-card>
     <ModPostingHistoryModal ref="history" :user="member" :type="type" />
-    <ModLogsModal ref="logs" :userid="member.userid" />
+    <ModLogsModal ref="logs" :userid="member.userid" :modmailsonly="modmailsonly" />
   </div>
 </template>
 <script>
@@ -243,7 +243,8 @@ export default {
       saved: false,
       showEmails: false,
       type: null,
-      allmemberships: false
+      allmemberships: false,
+      modmailsonly: false
     }
   },
   computed: {
@@ -381,6 +382,16 @@ export default {
       })
     },
     showLogs() {
+      this.modmailsonly = false
+
+      this.waitForRef('logs', () => {
+        this.$refs.logs.show()
+      })
+    },
+    showModmails() {
+      console.log('Show mod mails')
+      this.modmailsonly = true
+
       this.waitForRef('logs', () => {
         this.$refs.logs.show()
       })

@@ -83,6 +83,9 @@
         <b-collapse id="accordion-appearance" accordion="settings-accordion" role="tabpanel">
           <b-card-body>
             <p>These are various settings about how the community appears to freeglers on the site and in emails.</p>
+            <p v-if="readonly" class="text-info">
+              Only owners can change these settings.
+            </p>
             <b-form-group label="Profile picture">
               <b-form-text class="mb-2">
                 This is used in emails and on the site. It needs to look good small, like a Facebook profile picture.
@@ -93,7 +96,7 @@
                 :image="group.profile ? group.profile : '/placeholder.png'"
                 :alt-text="'Profile picture for ' + group.namedisplay"
               />
-              <b-btn variant="primary" class="mt-2 d-block" @click="uploadProfile">
+              <b-btn v-if="!readonly" variant="primary" class="mt-2 d-block" @click="uploadProfile">
                 <v-icon name="camera" /> Upload photo
               </b-btn>
               <OurFilePond
@@ -127,7 +130,7 @@
               <div v-if="!editingDescription">
                 <!-- eslint-disable-next-line -->
                 <div v-html="group.description" class="border border-info rounded p-2 mb-2" />
-                <b-btn variant="white" @click="editingDescription = true">
+                <b-btn v-if="!readonly" variant="white" @click="editingDescription = true">
                   <v-icon name="pen" /> Edit
                 </b-btn>
               </div>
@@ -178,6 +181,9 @@
           <b-card-body>
             <p>
               These affect how the community (the code, not the people) behaves for members.
+            </p>
+            <p v-if="readonly" class="text-info">
+              Only owners can change these settings.
             </p>
             <ModGroupSetting
               :groupid="groupid"
@@ -294,6 +300,9 @@
               These affect how the community (the code, not the people) behaves for volunteers; they're less
               obvious to members.
             </p>
+            <p v-if="readonly" class="text-info">
+              Only owners can change these settings.
+            </p>
             <ModGroupSetting
               :groupid="groupid"
               name="settings.approvemembers"
@@ -336,6 +345,9 @@
               These are protection features to stop spammers or scammers targeting freeglers.  It's highly recommended
               to turn all these on.
             </p>
+            <p v-if="readonly" class="text-info">
+              Only owners can change these settings.
+            </p>
             <ModGroupSetting
               :groupid="groupid"
               name="settings.spammers.check"
@@ -375,6 +387,9 @@
         </b-card-header>
         <b-collapse id="accordion-dups" accordion="settings-accordion" role="tabpanel">
           <b-card-body>
+            <p v-if="readonly" class="text-info">
+              Only owners can change these settings.
+            </p>
             <ModGroupSetting
               :groupid="groupid"
               name="settings.duplicates.check"
@@ -424,6 +439,9 @@
         </b-card-header>
         <b-collapse id="accordion-maps" accordion="settings-accordion" role="tabpanel">
           <b-card-body>
+            <p v-if="readonly" class="text-info">
+              Only owners can change these settings.
+            </p>
             <b-form-group label="Region">
               <b-form-text class="mb-2">
                 Each community is an in region of the UK.
@@ -433,7 +451,7 @@
                   <nuxt-link :to="'/explore/region/' + group.region">here</nuxt-link>.
                 </span>
               </b-form-text>
-              <b-select v-model="region" :options="regionOptions" class="font-weight-bold" />
+              <b-select v-model="region" :options="regionOptions" class="font-weight-bold" :disabled="readonly" />
             </b-form-group>
             <ModGroupSetting
               :groupid="groupid"
@@ -553,6 +571,9 @@
           </b-btn>
         </b-card-header>
         <b-collapse id="accordion-stats" accordion="settings-accordion" role="tabpanel">
+          <p v-if="readonly" class="text-info">
+            Only owners can change these settings.
+          </p>
           <b-card-body>
             <p>
               These are various high-level settings about how the community behaves.  Normally you don't change
@@ -670,6 +691,9 @@ export default {
     }
   },
   computed: {
+    readonly() {
+      return this.group.myrole !== 'Owner'
+    },
     group() {
       return this.$store.getters['group/get'](this.groupid)
     },

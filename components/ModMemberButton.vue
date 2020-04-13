@@ -13,7 +13,7 @@
 <script>
 import ConfirmModal from './ConfirmModal'
 import ModSpammerReport from './ModSpammerReport'
-import WaitForRef from '@/mixins/waitForRef'
+import waitForRef from '@/mixins/waitForRef'
 const ModStdMessageModal = () => import('./ModStdMessageModal')
 
 export default {
@@ -22,7 +22,7 @@ export default {
     ModStdMessageModal,
     ConfirmModal
   },
-  mixins: [WaitForRef],
+  mixins: [waitForRef],
   props: {
     member: {
       type: Object,

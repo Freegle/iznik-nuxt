@@ -1,6 +1,12 @@
 <template>
   <div>
-    <p>Here's a map showing the approximate location of recently active volunteers.  Hello us!</p>
+    <NoticeMessage variant="info">
+      <p>Here's a map showing the approximate location of recently active volunteers.  Hello us!</p>
+      <p>Fancy a blether? Come and say hi in the Cafe - it's always nice to hear from new folk.</p>
+      <b-btn variant="success" href="https://discourse.ilovefreegle.org/c/cafe" target="_blank">
+        Visit the Cafe
+      </b-btn>
+    </NoticeMessage>
     <client-only>
       <GmapMap
         ref="gmap"
@@ -31,10 +37,11 @@
 <script>
 import { gmapApi } from 'vue2-google-maps'
 import UserMarker from '../../components/UserMarker'
+import NoticeMessage from '../../components/NoticeMessage'
 import loginRequired from '@/mixins/loginRequired.js'
 
 export default {
-  components: { UserMarker },
+  components: { NoticeMessage, UserMarker },
   layout: 'modtools',
   mixins: [loginRequired],
   data: function() {
@@ -55,7 +62,7 @@ export default {
       let height = 0
 
       if (process.browser) {
-        height = window.innerHeight - 66 - 100
+        height = window.innerHeight - 66 - 150
         height = height < 200 ? 200 : height
       }
 
@@ -95,11 +102,17 @@ export default {
       return ret
     }
   },
-  async mounted() {
-    await this.$store.dispatch('members/clear')
-    await this.$store.dispatch('members/fetchMembers', {
-      collection: 'Nearby'
-    })
+  watch: {
+    myid(newVal) {
+      if (newVal) {
+        this.fetch()
+      }
+    }
+  },
+  mounted() {
+    if (this.myid) {
+      this.fetch()
+    }
   },
   methods: {
     google() {
@@ -137,6 +150,12 @@ export default {
           }
         }
       }
+    },
+    async fetch() {
+      await this.$store.dispatch('members/clear')
+      await this.$store.dispatch('members/fetchMembers', {
+        collection: 'Nearby'
+      })
     }
   }
 }

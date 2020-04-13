@@ -13,16 +13,14 @@
           />
           <ModStatus class="status" />
         </b-navbar-brand>
-        <b-navbar-nav />
-        <!-- Larger screens -->
-        <b-navbar-nav class="d-none d-sm-flex ml-auto">
+        <b-navbar-nav class="d-flex w-100 justify-content-end">
           <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse2" class="text-center p-0" @click="discourse">
             <div>
               <span class="d-none d-sm-inline">
                 <v-icon name="brands/discourse" scale="2" class="fw" /><br>
                 Us
               </span>
-              <v-icon name="brands/discourse" class="d-inline d-sm-none mt-2" scale="2" />
+              <v-icon name="brands/discourse" class="d-inline d-sm-none ml-2 mr-2 mt-2" scale="2.5" />
               <b-badge v-show="discourseCount" variant="success">
                 {{ discourseCount }}
               </b-badge>
@@ -34,18 +32,21 @@
                 <v-icon name="comments" scale="2" class="fw" /><br>
                 Chats
               </span>
-              <v-icon name="comments" class="d-inline d-sm-none" scale="2" />
+              <v-icon name="comments" class="d-inline d-sm-none ml-2 mr-4 mt-2" scale="2.5" />
               <b-badge v-show="chatCount" variant="danger">
                 {{ chatCount }}
               </b-badge>
             </div>
           </b-nav-item>
-          <b-nav-item v-if="loggedIn" id="menu-option-modtools-logout2" class="text-center p-0" @click="logOut">
-            <span class="d-none d-sm-inline">
-              <v-icon name="sign-out-alt" scale="2" class="fw" /><br>
-              Logout
-            </span>
-            <v-icon name="sign-out-alt" class="d-inline d-sm-none" scale="2" />
+          <b-nav-item v-if="loggedIn">
+            <div class="position-relative">
+              <b-btn variant="white" class="menu" @click="toggleMenu">
+                <v-icon name="bars" class="mb-1" scale="2.2" />
+              </b-btn>
+              <b-badge v-show="menuCount" v-if="!showMenu" variant="danger" class="menuCount position-absolute">
+                {{ menuCount }}
+              </b-badge>
+            </div>
           </b-nav-item>
           <b-nav-item v-if="!loggedIn">
             <b-btn variant="white" @click="requestLogin">
@@ -53,113 +54,10 @@
             </b-btn>
           </b-nav-item>
         </b-navbar-nav>
-        <!-- Larger screens end -->
-
-        <!-- Mobile screens -->
-        <b-navbar-nav class="w-100 d-flex d-sm-none justify-content-between ml-sm-auto pr-1">
-          <b-nav-item-dropdown class="pt-2">
-            <template v-slot:button-content>
-              <ModMenuItemNav :count="['pending', 'chatreview', 'pendingevents', 'pendingvolunteering', 'pendingadmins']" icon="envelope" count-on-top />
-            </template>
-            <b-dropdown-item>
-              <ModMenuItemNav name="Pending" :count="['pending']" :othercount="['pendingother']" link="/modtools/messages/pending" />
-            </b-dropdown-item>
-            <b-dropdown-item>
-              <ModMenuItemNav name="Approved" link="/modtools/messages/approved" />
-            </b-dropdown-item>
-            <b-dropdown-item>
-              <ModMenuItemNav name="Review" :count="['spam']" :othercount="['spamother']" link="/modtools/messages/review" />
-            </b-dropdown-item>
-            <b-dropdown-item>
-              <ModMenuItemNav name="Edits" :count="['editreview']" link="/modtools/messages/edits" />
-            </b-dropdown-item>
-            <b-dropdown-item>
-              <ModMenuItemNav name="Chat Review" :count="['chatreview']" link="/modtools/chats/review" />
-            </b-dropdown-item>
-            <b-dropdown-item>
-              <ModMenuItemNav name="Events" :count="['pendingevents']" link="/modtools/communityevents" />
-            </b-dropdown-item>
-            <b-dropdown-item>
-              <ModMenuItemNav name="Volunteering" :count="['pendingvolunteering']" link="/modtools/volunteering" />
-            </b-dropdown-item>
-            <b-dropdown-item>
-              <ModMenuItemNav name="Spammers" :count="supportOrAdmin ? ['spammerpendingadd', 'spammerpendingremove'] : []" link="/modtools/spammers" />
-            </b-dropdown-item>
-            <b-dropdown-item>
-              <ModMenuItemNav name="Admins" :count="['pendingadmins']" link="/modtools/admins" />
-            </b-dropdown-item>
-            <b-dropdown-item>
-              <ModMenuItemNav name="Logs" link="/modtools/logs" />
-            </b-dropdown-item>
-            <b-dropdown-item>
-              <ModMenuItemNav name="Settings" :count="['pendingadmins']" link="/modtools/settings" />
-            </b-dropdown-item>
-          </b-nav-item-dropdown>
-          <b-nav-item-dropdown class="pt-2">
-            <template v-slot:button-content>
-              <ModMenuItemNav :count="[ 'stories', 'newsletterstories','relatedmembers', 'pendingmembers', 'spammembers', 'socialactions']" icon="users" count-on-top />
-            </template>
-            <b-dropdown-item>
-              <ModMenuItemNav name="Pending" :count="['pendingmembers']" link="/modtools/members/pending" />
-            </b-dropdown-item>
-            <b-dropdown-item>
-              <ModMenuItemNav name="Approved" link="/modtools/members/approved" />
-            </b-dropdown-item>
-            <b-dropdown-item>
-              <ModMenuItemNav name="Review" :count="['spammembers']" link="/modtools/members/review" />
-            </b-dropdown-item>
-            <b-dropdown-item>
-              <ModMenuItemNav name="Related" link="/modtools/members/related" :count="['relatedmembers']" />
-            </b-dropdown-item>
-            <b-dropdown-item>
-              <ModMenuItemNav name="Stories" :count="['stories']" link="/modtools/members/stories" />
-            </b-dropdown-item>
-            <b-dropdown-item v-if="hasPermissionNewsletter">
-              <ModMenuItemNav name="Newsletter" :count="['newsletterstories']" link="/modtools/members/newsletter" />
-            </b-dropdown-item>
-            <b-dropdown-item>
-              <ModMenuItemNav name="Feedback" link="/modtools/members/feedback" :othercount="['happiness']" />
-            </b-dropdown-item>
-            <b-dropdown-item>
-              <ModMenuItemNav name="Publicity" :count="['socialactions']" link="/modtools/publicity" />
-            </b-dropdown-item>
-            <b-dropdown-item>
-              <ModMenuItemNav name="Teams" link="/modtools/teams" />
-            </b-dropdown-item>
-            <b-dropdown-item>
-              <ModMenuItemNav name="Support" link="/modtools/support" />
-            </b-dropdown-item>
-            <b-dropdown-item>
-              <ModMenuItemNav name="Logs" link="/modtools/logs" />
-            </b-dropdown-item>
-          </b-nav-item-dropdown>
-
-          <b-nav-item-dropdown v-if="loggedIn" id="menu-option-modtools-discourse" class="pt-2">
-            <template v-slot:button-content>
-              <ModMenuItemNav :value="discourseCount" icon="brands/discourse" count-variant="success" count-on-top @click.native="discourse" />
-            </template>
-          </b-nav-item-dropdown>
-          <b-nav-item-dropdown v-if="loggedIn" id="menu-option-modtools-discourse" class="pt-2">
-            <template v-slot:button-content>
-              <ModMenuItemNav :value="chatCount" icon="comments" count-on-top @click.native="chats" />
-            </template>
-          </b-nav-item-dropdown>
-          <b-nav-item-dropdown v-if="loggedIn" id="menu-option-modtools-discourse" class="pt-2" @click="logOut">
-            <template v-slot:button-content>
-              <ModMenuItemNav icon="sign-out-alt" count-on-top />
-            </template>
-          </b-nav-item-dropdown>
-          <b-nav-item v-if="!loggedIn">
-            <b-btn variant="white" @click="requestLogin">
-              Sign in
-            </b-btn>
-          </b-nav-item>
-        </b-navbar-nav>
-        <!-- Mobile screens end -->
       </b-navbar>
 
       <div class="d-flex">
-        <div class="leftmenu d-none d-sm-block">
+        <div v-if="showMenu" class="leftmenu">
           <ModMenuItemLeft link="/modtools" name="Dashboard" />
           <hr>
           <div class="pl-1">
@@ -193,19 +91,27 @@
           <ModMenuItemLeft link="/modtools/support" name="Support" />
           <ModMenuItemLeft link="/modtools/settings" name="Settings" />
           <ModMenuItemLeft link="/modtools/teams" name="Teams" />
-          <a href="https://discourse.ilovefreegle.org" rel="noopener noreferrer" target="_blank" class="pl-1">Help</a>
+          <div>
+            <a href="https://discourse.ilovefreegle.org" rel="noopener noreferrer" target="_blank" class="pl-1">Help</a>
+          </div>
+          <div>
+            <a href="#" class="pl-1" @click="logOut">
+              Logout
+            </a>
+          </div>
         </div>
         <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent flex-grow-1" />
       </div>
       <ChatPopups v-if="loggedIn" class="d-none d-sm-block" />
       <LoginModal ref="loginModal" />
+      <div id="sizer" ref="sizer" class="d-none d-lg-block" />
     </div>
   </client-only>
 </template>
 
 <script>
 import ModMenuItemLeft from '../components/ModMenuItemLeft'
-import ModMenuItemNav from '../components/ModMenuItemNav'
+import waitForRef from '../mixins/waitForRef'
 import LoginModal from '~/components/LoginModal'
 import ModStatus from '~/components/ModStatus'
 
@@ -213,19 +119,19 @@ const ChatPopups = () => import('~/components/ChatPopups')
 
 export default {
   components: {
-    ModMenuItemNav,
     ModMenuItemLeft,
     ChatPopups,
     LoginModal,
     ModStatus
   },
-
+  mixins: [waitForRef],
   data: function() {
     return {
-      logo: require(`@/static/icon_modtools.png`)
+      logo: require(`@/static/icon_modtools.png`),
+      showMenu: false,
+      sliding: false
     }
   },
-
   computed: {
     chatCount() {
       // Don't show so many that the layout breaks.
@@ -236,9 +142,36 @@ export default {
       return discourse
         ? discourse.notifications + discourse.newtopics + discourse.unreadtopics
         : 0
+    },
+    slideclass() {
+      return this.showMenu ? 'slide-in' : 'slide-out'
+    },
+    menuCount() {
+      const counts = [
+        'pending',
+        'spam',
+        'editreview',
+        'pendingmembers',
+        'spammembers',
+        'chatreview',
+        'relatedmembers',
+        'stories',
+        'newsletterstories',
+        'pendingevents',
+        'pendingvolunteeering',
+        'socialactions',
+        'pendingadmins'
+      ]
+
+      if (this.supportOrAdmin) {
+        counts.push(['spammerpendingadd', 'spammerpendingremove'])
+      }
+      return this.getCount(counts)
+    },
+    work() {
+      return this.$store.getters['auth/work']
     }
   },
-
   watch: {
     $route() {
       // Close the dropdown menu when we move around.
@@ -257,12 +190,19 @@ export default {
       }
     }
   },
-
   mounted() {
     console.log('MODTOOLS.VUE mounted')
     if (process.browser) {
       // Add class for screen background.
       document.body.classList.add('modtools')
+
+      this.waitForRef('sizer', () => {
+        const el = document.getElementById('sizer')
+        if (getComputedStyle(el).display === 'block') {
+          // Large screen, show menu by default.
+          this.showMenu = true
+        }
+      })
     }
 
     // Ensure we know whether we're FD or MT.
@@ -278,7 +218,6 @@ export default {
 
     this.updateFavicon()
   },
-
   beforeDestroy() {
     if (this.workTimer) {
       clearTimeout(this.workTimer)
@@ -288,18 +227,23 @@ export default {
       clearTimeout(this.faviconTimer)
     }
   },
-
   methods: {
     updateFavicon() {
       if (process.client) {
         // This is a bit of a hack, but seems necessary to make the favicon stick.
-        const link =
-          document.querySelector("link[rel*='icon']") ||
-          document.createElement('link')
-        link.type = 'image/x-icon'
-        link.rel = 'icon'
-        link.href = require('~/static/icon_modtools.png')
-        document.getElementsByTagName('head')[0].appendChild(link)
+        //
+        // Check if it's ok first, as otherwise we keep fetching the icon.
+        let link = document.querySelector("link[rel*='icon']")
+
+        if (!link) {
+          link = document.createElement('link')
+          link.type = 'image/x-icon'
+          link.rel = 'icon'
+          link.href = require('~/static/icon_modtools.png')
+          document.getElementsByTagName('head')[0].appendChild(link)
+        } else if (link.href.indexOf('icon_modtools.png') === -1) {
+          link.href = require('~/static/icon_modtools.png')
+        }
       }
 
       this.faviconTimer = setTimeout(this.updateFavicon, 100)
@@ -307,6 +251,7 @@ export default {
     async logOut() {
       // Remove all cookies, both client and server.  This seems to be necessary to kill off the PHPSESSID cookie
       // on the server, which would otherwise keep us logged in despite our efforts.
+      console.log('Logout')
       try {
         this.$cookies.removeAll()
       } catch (e) {}
@@ -315,7 +260,7 @@ export default {
       this.$store.dispatch('auth/forceLogin', false)
 
       // Go to the landing page.
-      this.$router.push('/')
+      this.$router.push('/modtools')
     },
     requestLogin() {
       console.log('MODTOOLS.VUE requestLogin')
@@ -347,9 +292,24 @@ export default {
       } else {
         this.$router.push('/modtools')
       }
+    },
+    toggleMenu() {
+      this.showMenu = !this.showMenu
+    },
+    getCount(types) {
+      let total = 0
+
+      if (types) {
+        for (const key in this.work) {
+          if (types.indexOf(key) !== -1) {
+            total += this.work[key]
+          }
+        }
+      }
+
+      return total
     }
   },
-
   head() {
     let totalCount = this.chatCount
 
@@ -494,7 +454,7 @@ body.modal-open {
 }
 
 .leftmenu {
-  min-width: 200px;
+  min-width: 180px;
   padding-top: 68px;
   font-size: 1.2em;
   background-color: $color-modtools-leftmenu-bg;
@@ -525,5 +485,24 @@ body.modal-open {
   position: relative;
   left: 25px;
   top: -39px;
+}
+
+.menu {
+  color: $color-modtools-blue--dark !important;
+  background-color: $color-white;
+}
+
+@include media-breakpoint-down(xs) {
+  .menuCount {
+    right: 7px;
+    top: 5px;
+  }
+}
+
+@include media-breakpoint-up(sm) {
+  .menuCount {
+    right: 15px;
+    top: 5px;
+  }
 }
 </style>
