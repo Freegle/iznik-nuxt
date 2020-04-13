@@ -216,6 +216,7 @@ export default {
       all: true
     })
 
+    if (!process.env.IS_APP)
     this.updateFavicon()
   },
   beforeDestroy() {

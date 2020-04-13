@@ -170,7 +170,7 @@ export default {
               e.preventDefault()
               return false
             })
-          }, 1000)
+          }, 300)
         }
         if (this.browse) {
           // NO: don't show camera automatically: this.takeAppPhoto()
