@@ -108,5 +108,19 @@ export const actions = {
 
   async unbounce({ commit, dispatch }, params) {
     await this.$api.user.unbounce(params.id)
+  },
+
+  async addEmail({ commit, dispatch }, params) {
+    await this.$api.user.addEmail(params.id, params.email)
+    await dispatch('fetch', { id: params.id, info: true })
+  },
+
+  async add({ commit, dispatch }, params) {
+    const ret = await this.$api.user.add(params.email)
+    return ret.id
+  },
+
+  async merge({ commit, dispatch }, params) {
+    await this.$api.user.merge(params.email1, params.email2, params.reason)
   }
 }

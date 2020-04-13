@@ -1,7 +1,14 @@
 <template>
   <b-card v-if="someleft" no-body>
     <b-card-header>
-      Share to community Facebook pages
+      <div class="d-flex justify-content-between">
+        <div>
+          Share to community Facebook pages
+        </div>
+        <div class="small text-muted">
+          {{ item.date | timeago }}
+        </div>
+      </div>
     </b-card-header>
     <!-- eslint-disable-next-line-->
     <b-card-body v-html="item.iframe" />

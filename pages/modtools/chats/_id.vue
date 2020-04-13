@@ -1,12 +1,12 @@
 <template>
   <client-only>
     <b-row class="m-0">
-      <b-col id="chatlist" cols="12" md="3" :class="'chatlist p-0 bg-white ' + (selectedChatId ? 'd-none d-md-block' : '') + ' ' + selectedChatId">
+      <b-col id="chatlist" cols="12" md="4" :class="'chatlist p-0 bg-white ' + (selectedChatId ? 'd-none d-md-block' : '') + ' ' + selectedChatId">
         <b-card class="p-0">
           <b-card-body class="p-0">
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between flex-wrap">
               <b-form-input v-model="search" placeholder="Search chats" class="flex-shrink-1" :disabled="searching !== null" />
-              <b-btn class="float-right" variant="white" @click="markAllRead">
+              <b-btn class="mt-1" variant="white" @click="markAllRead">
                 <v-icon name="check" /> Mark all read
               </b-btn>
             </div>
@@ -31,7 +31,7 @@
           </b-btn>
         </div>
       </b-col>
-      <b-col cols="12" md="9" :class="'chatback ' + (selectedChatId ? 'd-block' : 'd-none d-md-block')">
+      <b-col cols="12" md="8" :class="'chatback ' + (selectedChatId ? 'd-block' : 'd-none d-md-block')">
         <ChatPane v-if="activeChat" :id="activeChat" />
       </b-col>
     </b-row>

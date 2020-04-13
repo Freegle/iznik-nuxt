@@ -314,6 +314,15 @@ export const actions = {
       // Set the time now; this avoids multiple fetches at the start of page loads.
       commit('setFetched', Date.now())
 
+      // Get the current work so we can compare counts.
+      let currentTotal = 0
+
+      for (const key in state.work) {
+        if (typeof state.work[key] === 'number') {
+          currentTotal += state.work[key]
+        }
+      }
+
       const {
         me,
         persistent,
@@ -321,6 +330,34 @@ export const actions = {
         work,
         discourse
       } = await this.$api.session.fetch(params)
+
+      let newTotal = 0
+
+      for (const key in work) {
+        if (typeof work[key] === 'number') {
+          newTotal += work[key]
+        }
+      }
+
+      if (
+        newTotal > currentTotal &&
+        ((state.user && state.user.settings.playbeep) ||
+          !Object.keys(state.user.settings).includes('playbeep'))
+      ) {
+        // Only trigger this when the counts increase.  There's a minor timing
+        // window where a message could arrive as one is deleted, leaving the
+        // counts the same, but this will resolve itself when our current
+        // count drops to zero, or worst case when we refresh.
+        const sound = new Audio('/alert.wav')
+
+        try {
+          // Some browsers prevent us using play unless in response to a
+          // user gesture, so catch any exception.
+          sound.play()
+        } catch (e) {
+          console.log('Failed to play beep', e.message)
+        }
+      }
 
       if (me) {
         // Save the persistent session token.

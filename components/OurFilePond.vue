@@ -16,6 +16,8 @@
       @processfile="processed"
       @processfiles="allProcessed"
     />
+    <!--    :file-validate-type-detect-type="detector", but HEIC files aren't supported on the server side yet -->
+
     <div v-else>
       Sorry, photo uploads aren't supported on this browser.  Maybe it's old?
     </div>
@@ -268,6 +270,19 @@ export default {
     async allProcessed() {
       this.$emit('allProcessed')
       await this.$store.dispatch('compose/setUploading', false)
+    },
+
+    detector(source, type) {
+      // This function is never executed...
+      return new Promise((resolve, reject) => {
+        console.log(source, type)
+        if (source.name.indexOf('.heic') !== -1) {
+          // This is not detected automatically.
+          type = 'image/heic'
+        }
+
+        resolve(type)
+      })
     }
   },
   blockkey(e) {

@@ -31,7 +31,9 @@ export default {
       const items = this.$store.getters['publicity/list']
 
       if (items) {
-        return Object.values(items)
+        return Object.values(items).sort(function(a, b) {
+          return new Date(b.date).getTime() - new Date(a.date).getTime()
+        })
       }
 
       return []

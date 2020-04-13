@@ -36,7 +36,7 @@
     <label>
       To:
     </label>
-    <GroupSelect v-model="groupid" systemwide all />
+    <GroupSelect v-model="groupid" systemwide />
     <NoticeMessage v-if="groupid < 0" variant="danger" class="mt-2 mb-2">
       This will go to all groups.
     </NoticeMessage>
@@ -159,7 +159,7 @@ export default {
   },
   computed: {
     valid() {
-      return this.from && this.groupid > 0 && this.subject && this.text
+      return this.from && this.subject && this.text
     },
     alerts() {
       const alerts = Object.values(this.$store.getters['alert/list'])
@@ -172,15 +172,22 @@ export default {
   },
   methods: {
     async send() {
-      await this.$store.dispatch('alert/add', {
-        groupid: this.groupid,
+      const data = {
         from: this.from,
         subject: this.subject,
         text: this.text,
         html: this.html,
         askclick: this.confirm ? 1 : 0,
         tryhard: this.tryhard ? 1 : 0
-      })
+      }
+
+      if (this.groupid > 0) {
+        data.groupid = this.groupid
+      } else {
+        data.groupid = 'AllFreegle'
+      }
+
+      await this.$store.dispatch('alert/add', data)
     },
     async fetch() {
       this.busy = true
