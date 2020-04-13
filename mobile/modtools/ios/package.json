@@ -21,6 +21,7 @@
     "cordova-plugin-network-information": "^2.0.2",
     "cordova-plugin-splashscreen": "^5.0.3",
     "cordova-plugin-statusbar": "^2.4.3",
+    "cordova-plugin-wkwebview-engine": "^1.2.1",
     "phonegap-plugin-push": "^2.3.0"
   },
   "devDependencies": {
@@ -43,7 +44,8 @@
         "PHOTOLIBRARY_ADD_USAGE_DESCRIPTION": "So you can send a photo in reply to a member chat",
         "PHOTOLIBRARY_USAGE_DESCRIPTION": "So you can save a photo when replying to a member chat"
       },
-      "phonegap-plugin-push": {}
+      "phonegap-plugin-push": {},
+      "cordova-plugin-wkwebview-engine": {}
     },
     "platforms": [
       "ios"
