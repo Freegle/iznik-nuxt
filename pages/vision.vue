@@ -12,28 +12,33 @@
         />
       </div>
       <div class="col-sm">
-        <ul>
+        <ul class="list-unstyled">
           <li
-            v-for="c in captures"
-            :key="c.id"
+            v-for="b in books"
+            :key="b.spine"
           >
             <img
-              :src="c.src"
+              v-if="b.thumb"
+              :src="b.thumb"
               height="50"
             >
-            <pre>{{ c.text }}</pre>
+            <div v-if="b.author">
+              <v-icon name="check" class="text-success" /> {{ b.author }} - {{ b.title }}
+            </div>
+            <div v-else>
+              <v-icon name="times" class="text-danger" /> {{ b.spine }}
+            </div>
           </li>
         </ul>
       </div>
     </div>
     <div>
-      <b-button
-        id="snap"
+      <SpinButton
         variant="primary"
-        @click="capture()"
-      >
-        Snap Photo
-      </b-button>
+        name="camera"
+        label="Take Photo"
+        :handler="capture"
+      />
     </div>
     <canvas
       id="canvas"
@@ -45,6 +50,7 @@
 </template>
 
 <script>
+import SpinButton from '../components/SpinButton'
 const axios = require('axios')
 
 export default {
@@ -59,13 +65,13 @@ export default {
       }
     ]
   },
-  components: {},
+  components: { SpinButton },
   data() {
     return {
       captureDevice: {},
       video: {},
       canvas: {},
-      captures: []
+      books: []
     }
   },
   mounted: function() {
@@ -95,67 +101,58 @@ export default {
     this.stopCamera()
   },
   methods: {
-    capture: function() {
+    readFileAsync(blob) {
+      return new Promise((resolve, reject) => {
+        console.log('Read file')
+        const reader = new FileReader()
+
+        reader.onloadend = () => {
+          console.log('Load end')
+          resolve(reader.result)
+        }
+
+        reader.onerror = reject
+
+        reader.readAsDataURL(blob)
+      })
+    },
+    async capture() {
       const self = this
 
+      this.books = []
+      this.canvas = this.$refs.canvas
+
       if (this.captureDevice) {
-        this.captureDevice
-          .takePhoto()
-          .then(blob => {
-            this.captureDevice
-              .grabFrame()
-              .then(imageBitmap => {
-                const imgsrc = this.canvas.toDataURL('image/png')
+        const blob = await this.captureDevice.takePhoto()
+        await this.captureDevice.grabFrame()
+        const base64data = await this.readFileAsync(blob)
+        console.log('Got base64', base64data)
+        const formData = new FormData()
+        formData.append('photo', base64data)
 
-                const reader = new FileReader()
-                reader.readAsDataURL(blob)
-                reader.onloadend = function() {
-                  const base64data = reader.result
-                  console.log('BASE64', base64data.length, imgsrc.length)
+        const response = await axios.post(
+          'https://iznik.ilovefreegle.org/api/catalogue',
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }
+        )
 
-                  const formData = new FormData()
-                  formData.append('photo', base64data)
+        console.log('Response', response)
+        const rsp = response.data
 
-                  axios
-                    .post(
-                      'https://iznik.ilovefreegle.org/api/catalogue',
-                      formData,
-                      {
-                        headers: {
-                          'Content-Type': 'multipart/form-data'
-                        }
-                      }
-                    )
-                    .then(response => {
-                      console.log('Response', response)
-                      const result = response.data
-                      if (result.ret === 0) {
-                        self.captures.push({
-                          id: self.captures.length,
-                          src: imgsrc,
-                          text: result.authors.join(',')
-                          // result.text[0].description
-                        })
-                      }
-                    })
-                    .catch(self.stopCamera)
-                }
-              })
-              .catch(err => console.log('Recognise failed', err))
-          })
-          .catch(err => {
-            console.error('Failed', err)
-            window.alert('Failed')
-            this.stopCamera()
-          })
+        if (rsp.ret === 0) {
+          self.books = rsp.books
+          console.log('Got books', self.books)
+        }
       } else {
         alert('No device')
       }
-
-      this.canvas = this.$refs.canvas
     },
     stopCamera() {
-      if (this.captureDevice) {
+      if (this.captureDevice && this.captureDevice.stop) {
         this.captureDevice.stop()
       }
     }
