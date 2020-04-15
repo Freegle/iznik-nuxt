@@ -45,6 +45,10 @@
           <b-img src="~/static/signinbuttons/facebook-logo.png" class="social-button__image" />
           <span class="p-2 social-button__text font-weight-bold">Continue with Facebook</span>
         </b-btn>
+        <b-btn v-if="isiOS" class="social-button social-button--apple" :disabled="appleDisabled" @click="loginApple">
+          <b-img src="~/static/signinbuttons/Apple_logo_black.svg" class="social-button__image" />
+          <span class="p-2 social-button__text font-weight-bold">Sign in with Apple</span>
+        </b-btn>
         <b-btn class="social-button social-button--google" :disabled="googleDisabled" @click="loginGoogle">
           <b-img src="~/static/signinbuttons/google-logo.svg" class="social-button__image" />
           <span class="p-2 social-button__text font-weight-bold">Continue with Google</span>
@@ -212,6 +216,8 @@ import { LoginError, SignUpError } from '../api/BaseAPI'
 import { appFacebookLogin } from '../plugins/app-facebook' // CC
 import { appGoogleLogin } from '../plugins/app-google' // CC
 import { appYahooLogin } from '../plugins/app-yahoo' // CC
+import { appAppleLogin } from '../plugins/app-apple' // CC
+import { mobilestate } from '@/plugins/app-init-push' // CC
 
 const NoticeMessage = () => import('~/components/NoticeMessage')
 
@@ -238,6 +244,9 @@ export default {
   },
 
   computed: {
+    isiOS() { // CC
+      return mobilestate.isiOS
+    },
     modtools() {
       return this.$store.getters['misc/get']('modtools')
     },
@@ -246,6 +255,11 @@ export default {
     facebookDisabled() {
       if (process.env.IS_APP) return false // CC
       return this.bump && typeof Vue.FB === 'undefined'
+    },
+
+    appleDisabled() { // CC
+      if (process.env.IS_APP) return false
+      return true
     },
 
     googleDisabled() {
@@ -440,6 +454,23 @@ export default {
               throw e // let others bubble up
             }
           })
+      }
+    },
+    loginApple() {
+      this.socialLoginError = null
+      try {
+        if (process.env.IS_APP) {
+          appAppleLogin(
+            ret => { // arrow so .this. is correct
+              if( ret.error){
+                this.socialLoginError = ret.error
+              } else{
+                this.socialLoginError = 'Hello: ' + ret.fullName.givenName
+              }
+            })
+        }
+      } catch (e) {
+        this.socialLoginError = 'Apple login error: ' + e.message
       }
     },
     async loginFacebook() {
@@ -663,6 +694,7 @@ export default {
 $color-facebook: #4267b2;
 $color-google: #4285f4;
 $color-yahoo: #6b0094;
+$color-apple: #000000;
 
 .signin__section--social {
   flex: 0 1 auto;
@@ -711,6 +743,11 @@ $color-yahoo: #6b0094;
 .social-button--facebook {
   border: 2px solid $color-facebook;
   background-color: $color-facebook;
+}
+
+.social-button--apple {
+  border: 2px solid $color-apple;
+  background-color: $color-apple;
 }
 
 .social-button--google {
