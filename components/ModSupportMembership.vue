@@ -140,7 +140,7 @@ export default {
       const params = {
         userid: this.userid,
         groupid: this.membership.id,
-        emailfrequency: newval.value
+        emailfrequency: newval
       }
 
       await this.$store.dispatch('members/update', params)
@@ -149,7 +149,7 @@ export default {
       const params = {
         userid: this.userid,
         groupid: this.membership.id,
-        ourpostingstatus: newval.value
+        ourpostingstatus: newval
       }
 
       await this.$store.dispatch('members/update', params)
