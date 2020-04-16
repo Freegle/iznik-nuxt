@@ -138,7 +138,7 @@
           <NoticeMessage v-if="referToYahooButton">
             Please use the <em>Continue with Yahoo</em> button to sign in.  That way you don't need to remember a password on this site.
           </NoticeMessage>
-          <PasswordEntry @update-password="setPassword" />
+          <PasswordEntry :password-prop="password" @update:password="setPassword" />
           <b-btn
             v-b-modal.add
             block

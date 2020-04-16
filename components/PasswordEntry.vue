@@ -11,7 +11,7 @@
         :type="showPassword ? 'text' : 'password'"
         placeholder="Your password"
         class="password__input"
-        @input="$emit('update-password', $event)"
+        @input="$emit('update:password', $event)"
       />
       <span class="password__focus-element" />
       <b-input-group-append>
@@ -38,6 +38,11 @@ export default {
     SpinButton
   },
   props: {
+    passwordProp: {
+      type: String,
+      required: false,
+      default: ''
+    },
     showSaveOption: {
       type: Boolean,
       required: false,
@@ -51,6 +56,9 @@ export default {
       savingPassword: false,
       savedPassword: false
     }
+  },
+  mounted() {
+    this.password = this.passwordProp
   },
   methods: {
     togglePassword() {
