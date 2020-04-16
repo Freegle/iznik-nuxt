@@ -20,10 +20,12 @@
                 <v-icon name="brands/discourse" scale="2" class="fw" /><br>
                 Us
               </span>
-              <v-icon name="brands/discourse" class="d-inline d-sm-none ml-2 mr-2 mt-2" scale="2.5" />
-              <b-badge v-show="discourseCount" variant="success">
-                {{ discourseCount }}
-              </b-badge>
+              <div class="position-relative d-inline">
+                <v-icon name="brands/discourse" class="d-inline d-sm-none ml-2 mr-2 mt-2" scale="2.5" />
+                <b-badge v-show="discourseCount" variant="success">
+                  {{ discourseCount }}
+                </b-badge>
+              </div>
             </div>
           </b-nav-item>
           <b-nav-item v-if="loggedIn" id="menu-option-modtools-chat2" class="text-center p-0" to="/modtools/chats">
@@ -32,10 +34,12 @@
                 <v-icon name="comments" scale="2" class="fw" /><br>
                 Chats
               </span>
-              <v-icon name="comments" class="d-inline d-sm-none ml-2 mr-4 mt-2" scale="2.5" />
-              <b-badge v-show="chatCount" variant="danger">
-                {{ chatCount }}
-              </b-badge>
+              <div class="position-relative d-inline">
+                <v-icon name="comments" class="d-inline d-sm-none ml-2 mr-4 mt-2" scale="2.5" />
+                <b-badge v-show="chatCount" variant="danger" class="badge">
+                  {{ chatCount }}
+                </b-badge>
+              </div>
             </div>
           </b-nav-item>
           <b-nav-item v-if="loggedIn">
@@ -494,6 +498,12 @@ body.modal-open {
   .menuCount {
     right: 7px;
     top: 5px;
+  }
+
+  .badge {
+    position: absolute;
+    top: 0px;
+    left: 25px;
   }
 }
 
