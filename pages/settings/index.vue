@@ -188,7 +188,7 @@
               </b-row>
               <b-row>
                 <b-col cols="12" sm="6">
-                  <PasswordEntry show-save-option />
+                  <PasswordEntry :original-password="me.password" show-save-option />
                 </b-col>
               </b-row>
               <b-row>
