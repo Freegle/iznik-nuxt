@@ -38,7 +38,7 @@ export default {
     SpinButton
   },
   props: {
-    passwordProp: {
+    originalPassword: {
       type: String,
       required: false,
       default: ''
@@ -58,7 +58,7 @@ export default {
     }
   },
   mounted() {
-    this.password = this.passwordProp
+    this.password = this.originalPassword
   },
   methods: {
     togglePassword() {

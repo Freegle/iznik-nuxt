@@ -138,7 +138,7 @@
           <NoticeMessage v-if="referToYahooButton">
             Please use the <em>Continue with Yahoo</em> button to sign in.  That way you don't need to remember a password on this site.
           </NoticeMessage>
-          <PasswordEntry :password-prop="password" @update:password="setPassword" />
+          <PasswordEntry :original-password="password" :password.sync="password" />
           <b-btn
             v-b-modal.add
             block
@@ -279,9 +279,6 @@ export default {
     this.loginType = this.$store.getters['auth/loginType']
   },
   methods: {
-    setPassword(pwd) {
-      this.password = pwd
-    },
     tryLater(native) {
       if (native) {
         this.nativeLoginError = 'Something went wrong; please try later.'
