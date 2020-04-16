@@ -7,10 +7,11 @@
     <b-input-group id="input-password">
       <b-input
         id="password"
-        v-model="me.password"
+        v-model="password"
         :type="showPassword ? 'text' : 'password'"
         placeholder="Your password"
         class="password__input"
+        @input="$emit('update-password', $event)"
       />
       <span class="password__focus-element" />
       <b-input-group-append>
@@ -22,7 +23,7 @@
           <v-icon v-else name="eye" class="text-secondary" />
         </b-button>
       </b-input-group-append>
-      <b-input-group-append>
+      <b-input-group-append v-if="showSaveOption">
         <SpinButton variant="white" aria-label="Save password" name="save" label="Save" :handler="savePassword" />
       </b-input-group-append>
     </b-input-group>
@@ -36,8 +37,16 @@ export default {
   components: {
     SpinButton
   },
+  props: {
+    showSaveOption: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
   data: function() {
     return {
+      password: null,
       showPassword: false,
       savingPassword: false,
       savedPassword: false
@@ -50,9 +59,9 @@ export default {
     async savePassword() {
       this.savingPassword = true
 
-      if (this.me.password) {
+      if (this.password) {
         await this.$store.dispatch('auth/saveAndGet', {
-          password: this.me.password
+          password: this.password
         })
       }
 

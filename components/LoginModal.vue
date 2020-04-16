@@ -138,33 +138,7 @@
           <NoticeMessage v-if="referToYahooButton">
             Please use the <em>Continue with Yahoo</em> button to sign in.  That way you don't need to remember a password on this site.
           </NoticeMessage>
-          <b-form-group
-            id="passwordGroup"
-            label="Your password"
-            label-for="password"
-            label-class="mb-0"
-          >
-            <b-input-group class="mb-2">
-              <b-form-input
-                id="password"
-                ref="password"
-                v-model="password"
-                name="password"
-                :type="showPassword ? 'text' : 'password'"
-                autocomplete="current-password"
-              />
-              <b-input-group-append>
-                <!-- TODO RAHUL DESIGN MINOR The shadow on the input field that you get when you're focused ought really to include this append.-->
-                <b-button variant="white" class="transbord" title="Show password" @click="togglePassword">
-                  <v-icon v-if="showPassword" title="Hide password" class="text-secondary" flip="horizontal">
-                    <v-icon name="eye" />
-                    <v-icon name="slash" />
-                  </v-icon>
-                  <v-icon v-else name="eye" class="text-secondary" />
-                </b-button>
-              </b-input-group-append>
-            </b-input-group>
-          </b-form-group>
+          <PasswordEntry @update-password="setPassword" />
           <b-btn
             v-b-modal.add
             block
@@ -206,11 +180,13 @@ import Vue from 'vue'
 import { LoginError, SignUpError } from '../api/BaseAPI'
 
 const NoticeMessage = () => import('~/components/NoticeMessage')
+const PasswordEntry = () => import('~/components/PasswordEntry')
 
 export default {
   name: 'LoginModal',
   components: {
-    NoticeMessage
+    NoticeMessage,
+    PasswordEntry
   },
   data: function() {
     return {
@@ -303,6 +279,9 @@ export default {
     this.loginType = this.$store.getters['auth/loginType']
   },
   methods: {
+    setPassword(pwd) {
+      this.password = pwd
+    },
     tryLater(native) {
       if (native) {
         this.nativeLoginError = 'Something went wrong; please try later.'

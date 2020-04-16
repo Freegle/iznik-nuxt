@@ -188,7 +188,7 @@
               </b-row>
               <b-row>
                 <b-col cols="12" sm="6">
-                  <PasswordEntry />
+                  <PasswordEntry show-save-option />
                 </b-col>
               </b-row>
               <b-row>
