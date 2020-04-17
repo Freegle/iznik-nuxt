@@ -178,20 +178,8 @@ export default {
   },
   watch: {
     $route() {
-      // Close the dropdown menu when we move around.
-      if (
-        this.$refs.nav_collapse &&
-        this.$refs.nav_collapse.$el.classList.contains('show')
-      ) {
-        this.$root.$emit('bv::toggle::collapse', 'nav_collapse')
-      }
-
-      if (
-        this.$refs.nav_collapse_mobile &&
-        this.$refs.nav_collapse_mobile.$el.classList.contains('show')
-      ) {
-        this.$root.$emit('bv::toggle::collapse', 'nav_collapse_mobile')
-      }
+      // Close the menu when we move around.
+      this.showMenu = false
     }
   },
   mounted() {
