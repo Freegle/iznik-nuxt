@@ -52,9 +52,7 @@ export default {
   data: function() {
     return {
       password: null,
-      showPassword: false,
-      savingPassword: false,
-      savedPassword: false
+      showPassword: false
     }
   },
   mounted() {
@@ -65,19 +63,11 @@ export default {
       this.showPassword = !this.showPassword
     },
     async savePassword() {
-      this.savingPassword = true
-
       if (this.password) {
         await this.$store.dispatch('auth/saveAndGet', {
           password: this.password
         })
       }
-
-      this.savingPassword = false
-      this.savedPassword = true
-      setTimeout(() => {
-        this.savedPassword = false
-      }, 2000)
     }
   }
 }
