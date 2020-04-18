@@ -6,7 +6,7 @@
 		Chris Cant, Freegle Ltd</author>
     <content src="index.html" />
     <access origin="*" />
-    <allow-navigation href="https://www.facebook.com/*" />
+    <allow-navigation href="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="tel:*" />
@@ -52,14 +52,18 @@
         <preference name="StatusBarBackgroundColor" value="#000000" />
         <preference name="StatusBarStyle" value="lightcontent" />
     </platform>
+        <platform name="ios">
+        <preference name="deployment-target" value="9.0" />
+        <preference name="enableViewportScale" value="true" />
+    </platform>
     <platform name="ios">
         <resource-file src="GoogleService-Info.plist" />
     </platform>
-  <platform name="ios">
-    <preference name="WKWebViewOnly" value="true" />
-    <feature name="CDVWKWebViewEngine">
-      <param name="ios-package" value="CDVWKWebViewEngine" />
-    </feature>
-    <preference name="CordovaWebViewEngine" value="CDVWKWebViewEngine" />
-  </platform>
+    <platform name="ios">
+      <preference name="WKWebViewOnly" value="true" />
+        <feature name="CDVWKWebViewEngine">
+        <param name="ios-package" value="CDVWKWebViewEngine" />
+      </feature>
+      <preference name="CordovaWebViewEngine" value="CDVWKWebViewEngine" />
+    </platform>
 </widget>
