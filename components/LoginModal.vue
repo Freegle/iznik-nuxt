@@ -45,7 +45,7 @@
           <b-img src="~/static/signinbuttons/facebook-logo.png" class="social-button__image" />
           <span class="p-2 social-button__text font-weight-bold">Continue with Facebook</span>
         </b-btn>
-        <b-btn v-if="isiOS" class="social-button social-button--apple" :disabled="appleDisabled" @click="loginApple">
+        <b-btn v-if="isiOSapp" class="social-button social-button--apple" :disabled="appleDisabled" @click="loginApple">
           <b-img src="~/static/signinbuttons/Apple_logo_black.svg" class="social-button__image" style="padding: 10px;" />
           <span class="p-2 social-button__text font-weight-bold">Sign in with Apple</span>
         </b-btn>
@@ -217,7 +217,6 @@ import { appFacebookLogin } from '../plugins/app-facebook' // CC
 import { appGoogleLogin } from '../plugins/app-google' // CC
 import { appYahooLogin } from '../plugins/app-yahoo' // CC
 import { appAppleLogin } from '../plugins/app-apple' // CC
-import { mobilestate } from '@/plugins/app-init-push' // CC
 
 const NoticeMessage = () => import('~/components/NoticeMessage')
 
@@ -244,8 +243,11 @@ export default {
   },
 
   computed: {
-    isiOS() { // CC
-      return mobilestate.isiOS
+    isiOSapp() { // CC
+      if (process.env.IS_APP) {
+        return (window.device.platform === 'iOS')
+      }
+      return false
     },
     modtools() {
       return this.$store.getters['misc/get']('modtools')
