@@ -195,7 +195,8 @@ module.exports = {
     { src: '~/plugins/google-sdk', ssr: false },
     { src: '~/plugins/vue-social-sharing', ssr: false },
     { src: '~/plugins/vue-lazy-youtube-video', ssr: false },
-    { src: '~/plugins/inspectlet', ssr: false }
+    { src: '~/plugins/inspectlet', ssr: false },
+    { src: "@/plugins/vue-fabric-wrapper", ssr: false }
   ],
 
   redirect: [
