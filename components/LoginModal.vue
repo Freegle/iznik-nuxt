@@ -258,7 +258,10 @@ export default {
     },
 
     appleDisabled() { // CC
-      if (process.env.IS_APP) return false
+      if (process.env.IS_APP) { // Sign in with Apple only supported for iOS 13+
+        if (parseFloat(window.device.version)>=13)
+          return false
+      }
       return true
     },
 
