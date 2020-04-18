@@ -99,6 +99,7 @@
     </platform>
     <platform name="ios">
         <resource-file src="GoogleService-Info.plist" />
+        <preference name="BackupWebStorage" value="none" />
     </platform>
     <platform name="ios">
       <preference name="WKWebViewOnly" value="true" />
