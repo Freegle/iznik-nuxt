@@ -28,9 +28,6 @@
           </NoticeMessage>
         </b-card-body>
       </b-card>
-      <b-btn v-if="result" variant="white" class="mt-2 mb-2" size="lg" @click="again">
-        Try Again
-      </b-btn>
       <div class="d-flex justify-content-between flex-wrap">
         <SpinButton
           variant="primary"
@@ -65,6 +62,9 @@
         @processfile="processed"
       />
     </div>
+    <b-btn v-if="result" variant="white" class="mt-2 mb-2" size="lg" @click="again">
+      Try Again
+    </b-btn>
     <client-only>
       <BooktasticResult v-if="result" :photo="photo" :result="result" :width="width" :height="height" />
     </client-only>
@@ -263,6 +263,7 @@ export default {
     },
     again() {
       this.photo = null
+      this.result = null
     },
     startUpload() {
       this.uploading = true
