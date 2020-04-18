@@ -178,8 +178,13 @@ export default {
   },
   watch: {
     $route() {
-      // Close the menu when we move around.
-      this.showMenu = false
+      this.waitForRef('sizer', () => {
+        const el = document.getElementById('sizer')
+        if (getComputedStyle(el).display !== 'block') {
+          // Not large screen, hide menu on move.
+          this.showMenu = false
+        }
+      })
     }
   },
   mounted() {
