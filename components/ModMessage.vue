@@ -45,12 +45,11 @@
             </NoticeMessage>
             <div v-if="message.heldby">
               <NoticeMessage v-if="me.id === message.heldby.id" variant="warning" class="mb-2">
-                You held this {{ message.heldby.timestamp | timeago }}.  Other people will see a warning to check with
+                You held this.  Other people will see a warning to check with
                 you before releasing it.
               </NoticeMessage>
               <NoticeMessage v-else variant="warning" class="mb-2">
-                Held by <b>{{ message.heldby.displayname }}</b>
-                {{ message.heldby.timestamp | timeago }}.  Please check with them before releasing it.
+                Held by <b>{{ message.heldby.displayname }}</b>.  Please check with them before releasing it.
               </NoticeMessage>
             </div>
             <ModComments :user="message.fromuser" />
