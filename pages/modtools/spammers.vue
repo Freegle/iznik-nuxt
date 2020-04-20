@@ -40,7 +40,7 @@
             </template>
           </b-tab>
         </b-tabs>
-        <ModMember v-for="spammer in visibleSpammers" :key="'spammer-' + tabIndex + '-' + spammer.id" :member="spammer.user" />
+        <ModMember v-for="spammer in visibleSpammers" :key="'spammer-' + tabIndex + '-' + spammer.id" :member="spammer.user" class="mb-1" />
         <b-img v-if="busy" src="~/static/loader.gif" alt="Loading" />
         <div v-else-if="!spammers.length">
           Nothing to show just now.
