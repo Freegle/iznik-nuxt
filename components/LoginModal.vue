@@ -638,9 +638,4 @@ $color-yahoo: #6b0094;
     margin: 7px 0 7px 0;
   }
 }
-
-.transbord {
-  border-color: $color-gray-4;
-  border-left: none;
-}
 </style>
