@@ -32,7 +32,7 @@
         <preference name="Orientation" value="all" />
     </platform>
     <platform name="ios">
-        <preference name="deployment-target" value="10.0" />
+        <not-set-preference name="deployment-target" value="10.0" />
         <preference name="enableViewportScale" value="true" />
     </platform>
     <preference name="SplashScreenDelay" value="1000" />
