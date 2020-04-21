@@ -15,58 +15,16 @@
             </div>
           </div>
           <NoticeMessage v-else-if="result.spines.length" variant="info">
-            Click on one of the rectangles to see what we identified.
+            <h3>We found {{ books.length | pluralize('book', { includeNumber: true }) }}</h3>
+            <p>
+              Click on one of the rectangles to see what we identified.
+            </p>
           </NoticeMessage>
           <NoticeMessage v-else variant="warning">
             We couldn't find any books in this picture.
           </NoticeMessage>
         </b-card-body>
       </b-card>
-      <div id="container" :style="'width: ' + width + 'px; height: ' + height + 'px'" class="position-relative">
-        <b-img v-if="photo" :src="photo" :style="'width: ' + width + 'px; height: ' + height + 'px'" class="position-absolute img" />
-        <fabric-canvas
-          ref="canvas"
-          background-color="transparent"
-          class="position-absolute canvas"
-          :width="width"
-          :height="height"
-        >
-          <fabric-rectangle
-            v-for="(fragment, index) in books"
-            :id="'book-' + fragment.spineindex"
-            :key="'book-' + index"
-            fill="transparent"
-            :top="fragment.top"
-            :left="fragment.left"
-            :height="fragment.height"
-            :width="fragment.width"
-            stroke="green"
-            :stroke-width="3"
-            lock-movement-x
-            lock-movement-y
-            lock-scaling-x
-            lock-scaling-y
-            @selected="selectUsed"
-          />
-          <fabric-rectangle
-            v-for="(fragment, index) in unusedFragments"
-            :id="'fragment-' + index"
-            :key="'fragment-' + index"
-            fill="transparent"
-            :top="fragment.top"
-            :left="fragment.left"
-            :height="fragment.height"
-            :width="fragment.width"
-            stroke="orange"
-            :stroke-width="3"
-            lock-movement-x
-            lock-movement-y
-            lock-scaling-x
-            lock-scaling-y
-            @selected="selectUnused"
-          />
-        </fabric-canvas>
-      </div>
       <div v-if="showSpines">
         <b-btn variant="white" size="lg" @click="showSpines = false">
           Hide text
@@ -87,9 +45,54 @@
           </li>
         </ul>
       </div>
-      <b-btn v-else variant="white" size="lg" @click="showSpines = true">
+      <b-btn v-else variant="white" size="lg" class="mt-1 mb-1" @click="showSpines = true">
         Show text
       </b-btn>
+      <div id="container" class="position-relative bg-white">
+        <b-img v-if="photo" ref="img" :src="photo" class="position-absolute img" :style="'zoom: ' + zoom" />
+        <fabric-canvas
+          ref="canvas"
+          background-color="transparent"
+          class="position-absolute canvas"
+          :width="naturalWidth"
+          :height="naturalHeight"
+        >
+          <fabric-rectangle
+            v-for="(fragment, index) in books"
+            :id="'book-' + fragment.spineindex"
+            :key="'book-' + index"
+            fill="transparent"
+            :top="fragment.top"
+            :left="fragment.left"
+            :height="fragment.height"
+            :width="fragment.width"
+            stroke="green"
+            :stroke-width="3 / zoom"
+            lock-movement-x
+            lock-movement-y
+            lock-scaling-x
+            lock-scaling-y
+            @selected="selectUsed"
+          />
+          <fabric-rectangle
+            v-for="(fragment, index) in unusedFragments"
+            :id="'fragment-' + index"
+            :key="'fragment-' + index"
+            fill="transparent"
+            :top="fragment.top"
+            :left="fragment.left"
+            :height="fragment.height"
+            :width="fragment.width"
+            stroke="orange"
+            :stroke-width="3 / zoom"
+            lock-movement-x
+            lock-movement-y
+            lock-scaling-x
+            lock-scaling-y
+            @selected="selectUnused"
+          />
+        </fabric-canvas>
+      </div>
     </client-only>
   </div>
 </template>
@@ -121,7 +124,9 @@ export default {
   data: function() {
     return {
       selectedSpine: null,
-      showSpines: false
+      showSpines: false,
+      naturalHeight: 1,
+      naturalWidth: 1
     }
   },
   computed: {
@@ -143,6 +148,15 @@ export default {
 
       return null
     },
+    requiredWidth() {
+      return Math.min(this.naturalWidth, this.width)
+    },
+    zoom() {
+      return Math.min(
+        this.width / this.naturalWidth,
+        this.height / this.naturalHeight
+      )
+    },
     fragments() {
       const ret = []
 
@@ -151,10 +165,19 @@ export default {
           // Set top, left, height, width.
           const poly = f.boundingPoly
           const vs = poly.vertices
-          const top = Math.min(vs[0].y, vs[1].y, vs[2].y, vs[3].y)
-          const bottom = Math.max(vs[0].y, vs[1].y, vs[2].y, vs[3].y)
-          const left = Math.min(vs[0].x, vs[1].x, vs[2].x, vs[3].x)
-          const right = Math.max(vs[0].x, vs[1].x, vs[2].x, vs[3].x)
+          let top = Math.min(vs[0].y, vs[1].y, vs[2].y, vs[3].y)
+          let bottom = Math.max(vs[0].y, vs[1].y, vs[2].y, vs[3].y)
+          let left = Math.min(vs[0].x, vs[1].x, vs[2].x, vs[3].x)
+          let right = Math.max(vs[0].x, vs[1].x, vs[2].x, vs[3].x)
+
+          // Need to scale - the values above relate to the natural size of the image, whereas we show a scaled
+          // version
+          const x = this.naturalWidth
+          const y = this.naturalHeight
+          top = Math.round((top * this.height) / y)
+          bottom = Math.round((bottom * this.height) / y)
+          left = Math.round((left * this.width) / x)
+          right = Math.round((right * this.width) / x)
 
           f.top = top
           f.left = left
@@ -163,6 +186,8 @@ export default {
           ret.push(f)
         })
       }
+
+      console.log('Fragments', ret)
 
       return ret
     },
@@ -224,15 +249,24 @@ export default {
   watch: {
     image() {
       this.sendImageToBack()
+    },
+    zoom(newval) {
+      if (this.$refs.canvas) {
+        console.log(this.$refs.canvas)
+        this.$refs.canvas.canvas.setZoom(newval)
+      }
     }
   },
   mounted() {
     this.sendImageToBack()
+    this.waitForRef('img', () => {
+      this.naturalHeight = this.$refs.img.naturalHeight
+      this.naturalWidth = this.$refs.img.naturalWidth
+    })
   },
   methods: {
     sendImageToBack() {
       this.waitForRef('image', () => {
-        console.log('Back', this.$refs.image)
         this.$refs.image.sendToBack()
       })
     },
@@ -243,6 +277,7 @@ export default {
       ]
     },
     selectUsed(e) {
+      console.log('Selected', e)
       const id = e.id.substring(e.id.indexOf('-') + 1)
       this.selectedSpine = this.result.spines[id]
     }

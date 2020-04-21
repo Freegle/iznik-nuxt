@@ -19,7 +19,8 @@
                 We won't get them all - right now around half is pretty good going.
               </li>
               <li>
-                It's slow - around 30 seconds to process after upload.
+                It's <b>very</b> slow - around 60 seconds to process after upload.  Don't worry about that - it'll
+                get usably fast later.
               </li>
               <li>
                 This won't look good on mobile yet.
@@ -69,8 +70,16 @@
     <client-only>
       <BooktasticResult v-if="result" :photo="photo" :result="result" :width="width" :height="height" />
     </client-only>
+    <div v-if="processing" class="w-100 d-flex justify-content-center">
+      <div class="d-flex flex-column">
+        <h4>Crunching...</h4>
+        <div>
+          <b-img-lazy src="~/static/loader.gif" alt="Loading" />
+        </div>
+      </div>
+    </div>
     <video
-      v-if="!uploading && !result"
+      v-if="!uploading && !processing && !result"
       id="video"
       ref="video"
       class="mt-2"
@@ -101,7 +110,10 @@ import BooktasticResult from '../components/BooktasticResult'
 import NoticeMessage from '../components/NoticeMessage'
 import waitForRef from '@/mixins/waitForRef'
 
-const axios = require('axios')
+const a = require('axios')
+const axios = a.create({
+  timeout: 300000
+})
 
 const FilePond = vueFilePond(
   FilePondPluginFileValidateType,
@@ -135,7 +147,10 @@ export default {
       myFiles: [],
       photo: null,
       result: null,
-      uploading: false
+      uploading: false,
+      processing: false,
+      timeout: 3000,
+      requestId: null
     }
   },
   mounted: function() {
@@ -182,8 +197,10 @@ export default {
       const base64data = await this.readFileAsync(file)
       const formData = new FormData()
       formData.append('photo', base64data)
+      let response = null
+      this.photo = base64data
 
-      const response = await axios.post(
+      response = await axios.post(
         'https://iznik.ilovefreegle.org/api/catalogue',
         formData,
         {
@@ -193,12 +210,38 @@ export default {
         }
       )
 
-      console.log('Response', response)
+      this.processing = true
       const rsp = response.data
+      console.log('Response', rsp)
 
       if (rsp.ret === 0) {
-        this.photo = base64data
+        this.requestId = rsp.id
+        console.log('Queued as', this.requestId)
+        this.checkResult()
+      }
+    },
+    async checkResult() {
+      console.log('Check request', this.requestId)
+      const response = await axios.get(
+        'https://iznik.ilovefreegle.org/api/catalogue',
+        {
+          params: {
+            id: this.requestId
+          }
+        }
+      )
+
+      const rsp = response.data
+
+      if (rsp.ret === 0 && rsp.spines && rsp.spines.length) {
+        this.processing = false
         this.result = rsp
+      } else {
+        this.timeout--
+
+        if (--this.timeout > 0) {
+          setTimeout(this.checkResult, 1000)
+        }
       }
     },
     async capture() {
@@ -267,6 +310,9 @@ export default {
     again() {
       this.photo = null
       this.result = null
+      this.timeout = 300
+      this.uploading = false
+      this.processing = false
     },
     startUpload() {
       this.uploading = true
