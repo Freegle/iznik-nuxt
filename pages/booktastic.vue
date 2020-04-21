@@ -53,14 +53,15 @@
         :allow-multiple="false"
         accepted-file-types="image/jpeg, image/png, image/gif, image/jpg"
         :files="myFiles"
-        :image-resize-target-width="width"
-        :image-resize-target-height="height"
         image-crop-aspect-ratio="1"
         label-idle="<span class=&quot;btn btn-success&quot;>&nbsp;Upload&nbsp;Photo </span>"
         :server="{ process, revert, restore, load, fetch }"
         @init="photoInit"
         @processfile="processed"
       />
+      <!--      Don't resize as we need all the resolution we can get for better OCR-->
+      <!--        :image-resize-target-width="width"-->
+      <!--        :image-resize-target-height="height"-->
     </div>
     <b-btn v-if="result" variant="white" class="mt-2 mb-2" size="lg" @click="again">
       Try Again
@@ -204,6 +205,8 @@ export default {
       this.canvas = this.$refs.canvas
 
       if (this.captureDevice) {
+        const capabilities = await this.captureDevice.getPhotoCapabilities()
+        console.log('Capabilities', capabilities)
         const blob = await this.captureDevice.takePhoto()
         await this.captureDevice.grabFrame()
         this.upload(blob)
