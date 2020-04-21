@@ -3,7 +3,7 @@
     <div class="chatMessage chatMessage__owner">
       <span>
         <span v-if="messageIsNew" class="prewrap"><b>{{ emessage }}</b></span>
-        <span v-else class="prewrap forcebreak">{{ emessage }}</span>
+        <span v-else class="preline forcebreak">{{ emessage }}</span>
         <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
       </span>
     </div>

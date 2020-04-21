@@ -126,6 +126,7 @@ export default {
     },
     onEnter() {
       this.search = this.results[this.arrowCounter]
+      this.$emit('input', this.search)
       this.isOpen = false
       this.arrowCounter = -1
     },

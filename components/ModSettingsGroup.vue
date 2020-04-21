@@ -547,20 +547,14 @@
             </b-form-text>
 
             <div v-if="group.facebook && group.facebook.length">
-              <div v-for="facebook in group.facebook" :key="'facebook-' + facebook.id">
-                <v-icon name="check" class="text-success" /> Linked to
-                <a :href="'https://facebook.com/' + facebook.id">{{ facebook.name }}</a>
-                <span class="text-muted small">
-                  {{ facebook.authdate | dateshort }}
-                </span>
-              </div>
+              <ModSettingsGroupFacebook v-for="facebook in group.facebook" :key="'facebook-' + facebook.id" :groupid="group.id" :facebook="facebook" />
             </div>
             <NoticeMessage v-else variant="warning">
-              This group is not linked to Facebook.  Please link it to get more publicity.
+              <p>This group is not linked to Facebook.  Please link it to get more publicity.</p>
+              <b-btn variant="white" class="mt-2" :href="'https://modtools.org/facebook/facebook_request.php?type=Page&groupid=' + group.id" target="_blank" rel="noopener noreferrer">
+                Link to Facebook
+              </b-btn>
             </NoticeMessage>
-            <b-btn variant="white" class="mt-2" :href="'https://modtools.org/facebook/facebook_request.php?type=Page&groupid=' + group.id" target="_blank" rel="noopener noreferrer">
-              Link to Facebook
-            </b-btn>
           </b-card-body>
         </b-collapse>
       </b-card>
@@ -647,6 +641,7 @@ import OurFilePond from './OurFilePond'
 import ModGroupSetting from './ModGroupSetting'
 import SpinButton from './SpinButton'
 import NoticeMessage from './NoticeMessage'
+import ModSettingsGroupFacebook from './ModSettingsGroupFacebook'
 
 const OurToggle = () => import('@/components/OurToggle')
 
@@ -661,6 +656,7 @@ if (process.client) {
 
 export default {
   components: {
+    ModSettingsGroupFacebook,
     NoticeMessage,
     SpinButton,
     ModGroupSetting,

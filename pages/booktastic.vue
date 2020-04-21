@@ -3,83 +3,86 @@
     <h1>
       Booktastic Proof of Concept
     </h1>
-    <b-card no-body>
-      <b-card-body>
-        <p>
-          Take a photo of your bookshelf, or upload one.  You're aiming for something like this:
-        </p>
-        <b-img src="~/static/booktastic.jpg" thumbnail class="smallimg mb-2" />
-        <p>
-          We'll try to identify the books.  We won't get them all - right now around half is pretty good going.
-        </p>
-      </b-card-body>
-    </b-card>
-    <b-row>
-      <b-col cols="6">
+    <div v-if="!result">
+      <b-card no-body>
+        <b-card-body>
+          <p>
+            Take a closeup of a bookshelf.  You're aiming for something like this:
+          </p>
+          <b-img src="~/static/booktastic.jpg" thumbnail class="smallimg mb-2" />
+          <p>
+            We'll try to identify the books.
+          </p>
+          <NoticeMessage variant="info">
+            <ul>
+              <li>
+                We won't get them all - right now around half is pretty good going.
+              </li>
+              <li>
+                It's slow - around 30 seconds to process after upload.
+              </li>
+              <li>
+                This won't look good on mobile yet.
+              </li>
+            </ul>
+          </NoticeMessage>
+        </b-card-body>
+      </b-card>
+      <div class="d-flex justify-content-between flex-wrap">
         <SpinButton
           variant="primary"
           name="camera"
           label="Take Photo"
           :handler="capture"
+          size="lg"
           class="mt-2"
         />
-      </b-col>
-      <b-col cols="6">
-        <file-pond
-          v-if="!books.length"
-          ref="pond"
-          name="photo"
-          :allow-multiple="false"
-          accepted-file-types="image/jpeg, image/png, image/gif, image/jpg"
-          :files="myFiles"
-          image-resize-target-width="1024"
-          image-resize-target-height="768"
-          image-crop-aspect-ratio="1"
-          label-idle="<span class=&quot;btn btn-success&quot;>&nbsp;Upload&nbsp;Photo </span>"
-          :server="{ process, revert, restore, load, fetch }"
-          @init="photoInit"
-          @processfile="processed"
-        />
-      </b-col>
-    </b-row>
-    <video
-      v-if="!books.length"
-      id="video"
-      ref="video"
-      width="1024"
-      height="768"
-      autoplay
-    />
-    <b-row>
-      <b-col cols="12" lg="6">
-        <b-img v-if="photo" :src="photo" class="mt-2" thumbnail />
-      </b-col>
-      <b-col cols="12" lg="6">
-        <ul class="list-unstyled mt-2">
-          <li v-for="b in books" :key="b.spine">
-            <b-img
-              v-if="b.thumb"
-              :src="b.thumb"
-              height="50"
-            />
-            <div v-if="b.author">
-              <v-icon name="check" class="text-success" /> {{ b.author }} - {{ b.title }}
-            </div>
-            <div v-else>
-              <v-icon name="times" class="text-danger" /> {{ b.spine }}
-            </div>
-          </li>
-        </ul>
-      </b-col>
-    </b-row>
-    <b-btn variant="white" class="mt-2" size="lg" @click="again">
+        <b-btn
+          variant="success"
+          size="lg"
+          class="mt-2"
+          @click="startUpload"
+        >
+          <v-icon name="camera" />&nbsp;Add photo
+        </b-btn>
+      </div>
+      <file-pond
+        v-if="uploading"
+        ref="pond"
+        name="photo"
+        :allow-multiple="false"
+        accepted-file-types="image/jpeg, image/png, image/gif, image/jpg"
+        :files="myFiles"
+        image-crop-aspect-ratio="1"
+        label-idle="<span class=&quot;btn btn-success&quot;>&nbsp;Upload&nbsp;Photo </span>"
+        :server="{ process, revert, restore, load, fetch }"
+        @init="photoInit"
+        @processfile="processed"
+      />
+      <!--      Don't resize as we need all the resolution we can get for better OCR-->
+      <!--        :image-resize-target-width="width"-->
+      <!--        :image-resize-target-height="height"-->
+    </div>
+    <b-btn v-if="result" variant="white" class="mt-2 mb-2" size="lg" @click="again">
       Try Again
     </b-btn>
+    <client-only>
+      <BooktasticResult v-if="result" :photo="photo" :result="result" :width="width" :height="height" />
+    </client-only>
+    <video
+      v-if="!uploading && !result"
+      id="video"
+      ref="video"
+      class="mt-2"
+      :width="width"
+      :height="height"
+      autoplay
+    />
     <canvas
       id="canvas"
       ref="canvas"
-      width="640"
-      height="480"
+      :width="width"
+      :height="height"
     />
   </div>
 </template>
@@ -94,6 +97,10 @@ import FilePondPluginImageTransform from 'filepond-plugin-image-transform'
 import FilePondPluginImageResize from 'filepond-plugin-image-resize'
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation'
 import SpinButton from '../components/SpinButton'
+import BooktasticResult from '../components/BooktasticResult'
+import NoticeMessage from '../components/NoticeMessage'
+import waitForRef from '@/mixins/waitForRef'
+
 const axios = require('axios')
 
 const FilePond = vueFilePond(
@@ -116,15 +123,19 @@ export default {
       }
     ]
   },
-  components: { SpinButton, FilePond },
+  components: { NoticeMessage, BooktasticResult, SpinButton, FilePond },
+  mixins: [waitForRef],
   data() {
     return {
+      width: 1024,
+      height: 768,
       captureDevice: {},
       video: {},
       canvas: {},
-      books: [],
       myFiles: [],
-      photo: null
+      photo: null,
+      result: null,
+      uploading: false
     }
   },
   mounted: function() {
@@ -156,11 +167,9 @@ export default {
   methods: {
     readFileAsync(blob) {
       return new Promise((resolve, reject) => {
-        console.log('Read file')
         const reader = new FileReader()
 
         reader.onloadend = () => {
-          console.log('Load end')
           resolve(reader.result)
         }
 
@@ -189,15 +198,15 @@ export default {
 
       if (rsp.ret === 0) {
         this.photo = base64data
-        this.books = rsp.books
-        console.log('Got books', this.books)
+        this.result = rsp
       }
     },
     async capture() {
-      this.books = []
       this.canvas = this.$refs.canvas
 
       if (this.captureDevice) {
+        const capabilities = await this.captureDevice.getPhotoCapabilities()
+        console.log('Capabilities', capabilities)
         const blob = await this.captureDevice.takePhoto()
         await this.captureDevice.grabFrame()
         this.upload(blob)
@@ -222,7 +231,9 @@ export default {
       }
     },
     process(fieldName, file, metadata, load, error, progress, abort) {
-      this.upload(file)
+      this.upload(file).then(() => {
+        this.uploading = false
+      })
 
       return {
         abort: () => {
@@ -254,8 +265,14 @@ export default {
       })
     },
     again() {
-      this.books = []
       this.photo = null
+      this.result = null
+    },
+    startUpload() {
+      this.uploading = true
+      this.waitForRef('pond', () => {
+        this.$refs.pond.browse()
+      })
     }
   }
 }

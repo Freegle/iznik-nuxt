@@ -334,7 +334,7 @@ export const actions = {
       let newTotal = 0
 
       for (const key in work) {
-        if (typeof work[key] === 'number') {
+        if (typeof work[key] === 'number' && key.indexOf('Spammer') === -1) {
           newTotal += work[key]
         }
       }

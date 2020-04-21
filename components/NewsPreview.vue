@@ -13,10 +13,10 @@
           <h5 v-if="preview.title && size === 'sm'">
             {{ preview.title }}
           </h5>
-          <p v-if="preview.description && size === 'md'" class="prewrap forcebreak mb-0">
+          <p v-if="preview.description && size === 'md'" class="preline forcebreak mb-0">
             <read-more :text="preview.description" :max-chars="200" class="nopara" />
           </p>
-          <p v-if="preview.description && size === 'sm'" class="prewrap forcebreak mb-0 small">
+          <p v-if="preview.description && size === 'sm'" class="preline forcebreak mb-0 small">
             <read-more :text="preview.description" :max-chars="200" class="nopara" />
           </p>
           <span class="small text-muted">

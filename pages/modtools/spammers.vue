@@ -40,7 +40,7 @@
             </template>
           </b-tab>
         </b-tabs>
-        <ModMember v-for="spammer in visibleSpammers" :key="'spammer-' + tabIndex + '-' + spammer.id" :member="spammer.user" />
+        <ModMember v-for="spammer in visibleSpammers" :key="'spammer-' + tabIndex + '-' + spammer.id" :member="spammer.user" class="mb-1" />
         <b-img v-if="busy" src="~/static/loader.gif" alt="Loading" />
         <div v-else-if="!spammers.length">
           Nothing to show just now.
@@ -136,10 +136,11 @@ export default {
   },
   mounted() {
     // Start in Pending Add if they have rights to see it.
+    console.log('Mounted', this.supportOrAdmin)
     if (this.supportOrAdmin) {
-      this.tabIndex = 0
-    } else {
       this.tabIndex = 1
+    } else {
+      this.tabIndex = 0
     }
   },
   layout: 'modtools',

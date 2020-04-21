@@ -118,5 +118,12 @@ export const actions = {
     })
 
     return id
+  },
+
+  async removeFacebook({ commit, dispatch }, params) {
+    await this.$api.group.removeFacebook(params.groupid, params.uid)
+    await dispatch('fetch', {
+      id: params.groupid
+    })
   }
 }
