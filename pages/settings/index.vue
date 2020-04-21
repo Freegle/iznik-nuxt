@@ -188,31 +188,7 @@
               </b-row>
               <b-row>
                 <b-col cols="12" sm="6">
-                  <b-form-group
-                    label="Your password:"
-                  >
-                    <b-input-group id="input-password">
-                      <b-input v-model="me.password" :type="showPassword ? 'text' : 'password'" placeholder="Your password" label="Your password" />
-                      <b-input-group-append>
-                        <!-- TODO RAHUL DESIGN MINOR The shadow on the input field that you get when you're focused ought really to include this append.-->
-                        <b-button variant="white" class="transbord" title="Show password" @click="togglePassword">
-                          <v-icon v-if="showPassword" title="Hide password" class="text-secondary" flip="horizontal">
-                            <v-icon name="eye" />
-                            <v-icon name="slash" />
-                          </v-icon>
-                          <v-icon v-else name="eye" class="text-secondary" />
-                        </b-button>
-                      </b-input-group-append>
-                      <b-input-group-append>
-                        <b-button variant="white" @click="savePassword">
-                          <v-icon v-if="savingPassword" name="sync" class="text-success fa-spin" />
-                          <v-icon v-else-if="savedPassword" name="check" class="text-success" />
-                          <v-icon v-else name="save" />&nbsp;
-                          Save
-                        </b-button>
-                      </b-input-group-append>
-                    </b-input-group>
-                  </b-form-group>
+                  <PasswordEntry :original-password="me.password" show-save-option />
                 </b-col>
               </b-row>
               <b-row>
@@ -532,6 +508,7 @@ const OurFilePond = () => import('~/components/OurFilePond')
 const OurToggle = () => import('~/components/OurToggle')
 const DatePicker = () => import('vue2-datepicker')
 const DonationButton = () => import('~/components/DonationButton')
+const PasswordEntry = () => import('~/components/PasswordEntry')
 
 export default {
   components: {
@@ -548,7 +525,8 @@ export default {
     NoticeMessage,
     ProfileImage,
     OurFilePond,
-    DonationButton
+    DonationButton,
+    PasswordEntry
   },
   mixins: [loginRequired, buildHead, waitForRef],
   data: function() {
@@ -560,16 +538,13 @@ export default {
       savedPostcode: false,
       savingEmail: false,
       savedEmail: false,
-      savingPassword: false,
-      savedPassword: false,
       savingPhone: false,
       savedPhone: false,
       removingPhone: false,
       removedPhone: false,
       unbouncing: false,
       unbounced: false,
-      uploading: false,
-      showPassword: false
+      uploading: false
     }
   },
   computed: {
@@ -747,21 +722,6 @@ export default {
     selectPostcode(pc) {
       this.pc = pc
     },
-    async savePassword() {
-      this.savingPassword = true
-
-      if (this.me.password) {
-        await this.$store.dispatch('auth/saveAndGet', {
-          password: this.me.password
-        })
-      }
-
-      this.savingPassword = false
-      this.savedPassword = true
-      setTimeout(() => {
-        this.savedPassword = false
-      }, 2000)
-    },
     async saveEmail() {
       this.savingEmail = true
 
@@ -931,9 +891,6 @@ export default {
     },
     uploadProfile() {
       this.uploading = true
-    },
-    togglePassword() {
-      this.showPassword = !this.showPassword
     }
   },
   head() {
