@@ -234,6 +234,7 @@ export default {
       const rsp = response.data
 
       if (rsp.ret === 0 && rsp.spines && rsp.spines.length) {
+        console.log('Completed')
         this.processing = false
         this.result = rsp
       } else {
@@ -241,6 +242,8 @@ export default {
 
         if (--this.timeout > 0) {
           setTimeout(this.checkResult, 1000)
+        } else {
+          console.log('Gave up')
         }
       }
     },

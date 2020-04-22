@@ -51,6 +51,7 @@
       <div id="container" class="position-relative bg-white">
         <b-img v-if="photo" ref="img" :src="photo" class="position-absolute img" :style="'zoom: ' + zoom" />
         <fabric-canvas
+          v-if="bump"
           ref="canvas"
           background-color="transparent"
           class="position-absolute canvas"
@@ -59,8 +60,8 @@
         >
           <fabric-rectangle
             v-for="(fragment, index) in books"
-            :id="'book-' + fragment.spineindex"
-            :key="'book-' + index"
+            :id="'book-' + index"
+            :key="'book-' + index + '-' + bump"
             fill="transparent"
             :top="fragment.top"
             :left="fragment.left"
@@ -75,9 +76,9 @@
             @selected="selectUsed"
           />
           <fabric-rectangle
-            v-for="(fragment, index) in unusedFragments"
+            v-for="(fragment, index) in nobooks"
             :id="'fragment-' + index"
-            :key="'fragment-' + index"
+            :key="'fragment2-' + index + '-' + bump"
             fill="transparent"
             :top="fragment.top"
             :left="fragment.left"
@@ -126,7 +127,8 @@ export default {
       selectedSpine: null,
       showSpines: false,
       naturalHeight: 1,
-      naturalWidth: 1
+      naturalWidth: 1,
+      bump: 0
     }
   },
   computed: {
@@ -165,24 +167,34 @@ export default {
           // Set top, left, height, width.
           const poly = f.boundingPoly
           const vs = poly.vertices
-          let top = Math.min(vs[0].y, vs[1].y, vs[2].y, vs[3].y)
-          let bottom = Math.max(vs[0].y, vs[1].y, vs[2].y, vs[3].y)
-          let left = Math.min(vs[0].x, vs[1].x, vs[2].x, vs[3].x)
-          let right = Math.max(vs[0].x, vs[1].x, vs[2].x, vs[3].x)
+
+          let minx = 1000000
+          let miny = 1000000
+          let maxx = -1000000
+          let maxy = -1000000
+
+          vs.forEach(v => {
+            minx = Math.min(minx, v.x)
+            miny = Math.min(miny, v.y)
+            maxx = Math.max(maxx, v.x)
+            maxy = Math.max(maxy, v.y)
+          })
 
           // Need to scale - the values above relate to the natural size of the image, whereas we show a scaled
           // version
           const x = this.naturalWidth
           const y = this.naturalHeight
-          top = Math.round((top * this.height) / y)
-          bottom = Math.round((bottom * this.height) / y)
-          left = Math.round((left * this.width) / x)
-          right = Math.round((right * this.width) / x)
 
-          f.top = top
-          f.left = left
-          f.width = right - left
-          f.height = bottom - top
+          maxy = Math.round((maxy * this.height) / y)
+          miny = Math.round((miny * this.height) / y)
+          minx = Math.round((minx * this.width) / x)
+          maxx = Math.round((maxx * this.width) / x)
+
+          f.top = miny
+          f.left = minx
+          f.width = maxx - minx
+          f.height = maxy - miny
+
           ret.push(f)
         })
       }
@@ -192,12 +204,6 @@ export default {
       return ret
     },
     unusedFragments() {
-      console.log(
-        'Unusued',
-        this.fragments.filter(f => {
-          return !Object.keys(f).includes('used')
-        })
-      )
       return this.fragments.filter(f => {
         return !f.used
       })
@@ -206,6 +212,44 @@ export default {
       return this.fragments.filter(f => {
         return f.used
       })
+    },
+    nobooks() {
+      const ret = []
+
+      if (this.result && this.result.spines) {
+        for (let i = 0; i < this.result.spines.length; i++) {
+          if (!this.result.spines[i].author) {
+            let minx = 1000000
+            let miny = 1000000
+            let maxx = -1000000
+            let maxy = -1000000
+
+            this.unusedFragments.forEach(f => {
+              if (f.spineindex === i) {
+                const poly = f.boundingPoly
+                const vs = poly.vertices
+                vs.forEach(v => {
+                  minx = Math.min(minx, v.x)
+                  miny = Math.min(miny, v.y)
+                  maxx = Math.max(maxx, v.x)
+                  maxy = Math.max(maxy, v.y)
+                })
+              }
+            })
+
+            ret.push({
+              top: miny,
+              left: minx,
+              width: maxx - minx,
+              height: maxy - miny,
+              spineindex: i
+            })
+          }
+        }
+      }
+
+      console.log('Books', ret)
+      return ret
     },
     books() {
       const ret = []
@@ -247,14 +291,10 @@ export default {
     }
   },
   watch: {
-    image() {
-      this.sendImageToBack()
-    },
     zoom(newval) {
-      if (this.$refs.canvas) {
-        console.log(this.$refs.canvas)
+      this.waitForRef('canvas', () => {
         this.$refs.canvas.canvas.setZoom(newval)
-      }
+      })
     }
   },
   mounted() {
@@ -262,6 +302,10 @@ export default {
     this.waitForRef('img', () => {
       this.naturalHeight = this.$refs.img.naturalHeight
       this.naturalWidth = this.$refs.img.naturalWidth
+      setTimeout(() => {
+        this.sendImageToBack()
+        this.bump++
+      }, 500)
     })
   },
   methods: {
@@ -271,15 +315,16 @@ export default {
       })
     },
     selectUnused(e) {
+      console.log('Selected unused', e)
       const id = e.id.substring(e.id.indexOf('-') + 1)
-      this.selectedSpine = this.result.spines[
-        this.unusedFragments[id].spineindex
-      ]
+      this.selectedSpine = this.result.spines[this.nobooks[id].spineindex]
+      console.log('Selected spine', this.selectedSpine)
     },
     selectUsed(e) {
-      console.log('Selected', e)
+      console.log('Selected used', e)
       const id = e.id.substring(e.id.indexOf('-') + 1)
-      this.selectedSpine = this.result.spines[id]
+      this.selectedSpine = this.result.spines[this.books[id].spineindex]
+      console.log('Selected spine', this.selectedSpine)
     }
   }
 }
