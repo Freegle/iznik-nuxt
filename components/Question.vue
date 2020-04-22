@@ -24,6 +24,7 @@ export default {
 
 <style scoped>
 .question__button {
+  /* Override the default button styling from global.scss */
   white-space: normal;
   text-align: left;
 }
