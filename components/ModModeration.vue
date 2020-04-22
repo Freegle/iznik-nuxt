@@ -40,6 +40,10 @@ export default {
         {
           value: 'DEFAULT',
           text: 'Group Settings'
+        },
+        {
+          value: 'PROHIBITED',
+          text: "Can't Post"
         }
       ]
     }
