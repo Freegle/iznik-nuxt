@@ -50,6 +50,7 @@ export default {
   },
   methods: {
     async changed(newval) {
+      console.log('Set posting status to ', newval)
       await this.$store.dispatch('user/edit', {
         id: this.user.id,
         groupid: this.membership.id,

@@ -164,10 +164,10 @@
             </div>
             <ModMemberActions v-if="showActions" :userid="message.fromuser.id" :groupid="message.groups[0].groupid" />
           </b-col>
-        </b-row>
+        </b-row>mod
       </b-card-body>
       <b-card-footer v-if="!noactions">
-        <ModMessageButtons v-if="!editing" :message="message" :modconfig="modconfig" :editreview="editreview" />
+        <ModMessageButtons v-if="!editing" :message="message" :modconfig="modconfig" :editreview="editreview" :cantpost="membership.ourpostingstatus === 'PROHIBITED'" />
         <b-btn v-if="editing" variant="white" @click="editing = false">
           <v-icon name="times" /> Cancel
         </b-btn>
