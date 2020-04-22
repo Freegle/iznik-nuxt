@@ -6,16 +6,12 @@
           <h1>Volunteer Opportunities</h1>
           <CovidWarning />
           <p>Are you a charity or good cause that needs volunteers? Ask our lovely community of freeglers to help.</p>
-          <b-row class="mb-3">
-            <b-col>
-              <groupSelect v-if="me" v-model="groupid" class="float-left" all />
-            </b-col>
-            <b-col>
-              <b-btn variant="success" class="float-right" @click="showEventModal">
-                <v-icon name="plus" /> Add an opportunity
-              </b-btn>
-            </b-col>
-          </b-row>
+          <div class="d-flex justify-content-between mb-3">
+            <groupSelect v-if="me" v-model="groupid" class="pr-2" all />
+            <b-btn variant="success" class="float-right" @click="showEventModal">
+              <v-icon name="plus" /> Add an opportunity
+            </b-btn>
+          </div>
         </div>
         <div v-for="volunteering in volunteerings" :key="'volunteering-' + volunteering.id" class="mt-2">
           <VolunteerOpportunity v-if="!volunteering.pending" :summary="false" :volunteering="volunteering" />

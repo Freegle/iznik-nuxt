@@ -172,7 +172,6 @@
                   v-model="sendmessage"
                   placeholder="Type here..."
                   rows="3"
-                  max-rows="8"
                   autocapitalize="none"
                   @keydown.enter.exact.prevent
                   @keyup.enter.exact="send"

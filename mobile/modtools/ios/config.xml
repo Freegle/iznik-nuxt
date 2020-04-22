@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="org.ilovefreegle.modtools" ios-CFBundleVersion="307" version="0.3.7" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="org.ilovefreegle.modtools" ios-CFBundleVersion="308" version="0.3.8" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>ModTools</name>
     <description>Tool to help moderators of Freegle and similar groups</description>
     <author email="geeks@ilovefreegle.org" href="https://ilovefreegle.org">
 		Chris Cant, Freegle Ltd</author>
     <content src="index.html" />
     <access origin="*" />
-    <allow-navigation href="https://www.facebook.com/*" />
+    <allow-navigation href="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="tel:*" />
@@ -52,14 +52,19 @@
         <preference name="StatusBarBackgroundColor" value="#000000" />
         <preference name="StatusBarStyle" value="lightcontent" />
     </platform>
+        <platform name="ios">
+        <not-set-preference name="deployment-target" value="10.0" />
+        <preference name="enableViewportScale" value="true" />
+    </platform>
     <platform name="ios">
         <resource-file src="GoogleService-Info.plist" />
+        <preference name="BackupWebStorage" value="none" />
     </platform>
-  <platform name="ios">
-    <preference name="WKWebViewOnly" value="true" />
-    <feature name="CDVWKWebViewEngine">
-      <param name="ios-package" value="CDVWKWebViewEngine" />
-    </feature>
-    <preference name="CordovaWebViewEngine" value="CDVWKWebViewEngine" />
-  </platform>
+    <platform name="ios">
+      <preference name="WKWebViewOnly" value="true" />
+      <feature name="CDVWKWebViewEngine">
+        <param name="ios-package" value="CDVWKWebViewEngine" />
+      </feature>
+      <preference name="CordovaWebViewEngine" value="CDVWKWebViewEngine" />
+    </platform>
 </widget>

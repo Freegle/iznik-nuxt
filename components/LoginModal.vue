@@ -45,7 +45,7 @@
           <b-img src="~/static/signinbuttons/facebook-logo.png" class="social-button__image" />
           <span class="p-2 social-button__text font-weight-bold">Continue with Facebook</span>
         </b-btn>
-        <b-btn v-if="isiOS" class="social-button social-button--apple" :disabled="appleDisabled" @click="loginApple">
+        <b-btn v-if="isiOSapp" class="social-button social-button--apple" :disabled="appleDisabled" @click="loginApple">
           <b-img src="~/static/signinbuttons/Apple_logo_black.svg" class="social-button__image" style="padding: 10px;" />
           <span class="p-2 social-button__text font-weight-bold">Sign in with Apple</span>
         </b-btn>
@@ -147,33 +147,7 @@
           <NoticeMessage v-if="referToYahooButton">
             Please use the <em>Continue with Yahoo</em> button to sign in.  That way you don't need to remember a password on this site.
           </NoticeMessage>
-          <b-form-group
-            id="passwordGroup"
-            label="Your password"
-            label-for="password"
-            label-class="mb-0"
-          >
-            <b-input-group class="mb-2">
-              <b-form-input
-                id="password"
-                ref="password"
-                v-model="password"
-                name="password"
-                :type="showPassword ? 'text' : 'password'"
-                autocomplete="current-password"
-              />
-              <b-input-group-append>
-                <!-- TODO RAHUL DESIGN MINOR The shadow on the input field that you get when you're focused ought really to include this append.-->
-                <b-button variant="white" class="transbord" title="Show password" @click="togglePassword">
-                  <v-icon v-if="showPassword" title="Hide password" class="text-secondary" flip="horizontal">
-                    <v-icon name="eye" />
-                    <v-icon name="slash" />
-                  </v-icon>
-                  <v-icon v-else name="eye" class="text-secondary" />
-                </b-button>
-              </b-input-group-append>
-            </b-input-group>
-          </b-form-group>
+          <PasswordEntry :original-password="password" :password.sync="password" />
           <b-btn
             v-b-modal.add
             block
@@ -217,14 +191,15 @@ import { appFacebookLogin } from '../plugins/app-facebook' // CC
 import { appGoogleLogin } from '../plugins/app-google' // CC
 import { appYahooLogin } from '../plugins/app-yahoo' // CC
 import { appAppleLogin } from '../plugins/app-apple' // CC
-import { mobilestate } from '@/plugins/app-init-push' // CC
 
 const NoticeMessage = () => import('~/components/NoticeMessage')
+const PasswordEntry = () => import('~/components/PasswordEntry')
 
 export default {
   name: 'LoginModal',
   components: {
-    NoticeMessage
+    NoticeMessage,
+    PasswordEntry
   },
   data: function() {
     return {
@@ -244,8 +219,12 @@ export default {
   },
 
   computed: {
-    isiOS() { // CC
-      return mobilestate.isiOS
+    isiOSapp() { // CC
+      if (process.env.IS_APP) {
+        return false
+        return (window.device.platform === 'iOS')
+      }
+      return false
     },
     modtools() {
       return this.$store.getters['misc/get']('modtools')
@@ -258,7 +237,10 @@ export default {
     },
 
     appleDisabled() { // CC
-      if (process.env.IS_APP) return false
+      if (process.env.IS_APP) { // Sign in with Apple only supported for iOS 13+
+        if (parseFloat(window.device.version)>=13)
+          return false
+      }
       return true
     },
 
@@ -800,10 +782,5 @@ $color-apple: #000000;
   @include media-breakpoint-up(lg) {
     margin: 7px 0 7px 0;
   }
-}
-
-.transbord {
-  border-color: $color-gray-4;
-  border-left: none;
 }
 </style>

@@ -6,6 +6,7 @@
       class="max"
       size="40"
       placeholder="Start typing a group name..."
+      :disabled="loading"
     />
     <div v-if="group">
       <h3 class="mt-2">
@@ -138,6 +139,7 @@ export default {
   },
   data: function() {
     return {
+      loading: false,
       searchgroup: null,
       fetchingVolunteers: false
     }
@@ -216,6 +218,7 @@ export default {
   watch: {
     async groupid(id) {
       // Get the full group info
+      console.log('fetch group', id)
       await this.$store.dispatch('group/fetch', {
         id: id,
         polygon: true
@@ -239,9 +242,13 @@ export default {
   },
   async mounted() {
     // Grab the list of groups
+    this.loading = true
+
     await this.$store.dispatch('group/list', {
       grouptype: 'Freegle'
     })
+
+    this.loading = false
   },
   methods: {
     canonGroupName(name) {

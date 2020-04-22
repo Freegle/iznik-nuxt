@@ -27,7 +27,7 @@
               <div :class="emessage ? 'media-body chatMessage' : 'media-body'">
                 <span>
                   <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap"><b>{{ emessage }}</b></span>
-                  <span v-else class="prewrap forcebreak">{{ emessage }}</span>
+                  <span v-else class="preline forcebreak">{{ emessage }}</span>
                   <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
                 </span>
               </div>
@@ -59,7 +59,7 @@
               <div :class="emessage ? 'media-body chatMessage' : 'media-body'">
                 <span>
                   <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap"><b>{{ emessage }}</b></span>
-                  <span v-else class="prewrap forcebreak">{{ emessage }}</span>
+                  <span v-else class="preline forcebreak">{{ emessage }}</span>
                   <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
                 </span>
               </div>

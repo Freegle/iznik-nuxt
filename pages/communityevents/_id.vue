@@ -10,16 +10,12 @@
             events, do please add them here so that other people can get involved.
           </NoticeMessage>
           <p>These are local events, posted by other freeglers like you.</p>
-          <b-row class="mb-3">
-            <b-col>
-              <groupSelect v-if="me" v-model="groupid" class="float-left" all />
-            </b-col>
-            <b-col>
-              <b-btn variant="success" class="float-right" @click="showEventModal">
-                <v-icon name="plus" /> Add an event
-              </b-btn>
-            </b-col>
-          </b-row>
+          <div class="d-flex justify-content-between mb-3">
+            <groupSelect v-if="me" v-model="groupid" class="pr-2" all />
+            <b-btn variant="success" class="float-right" @click="showEventModal">
+              <v-icon name="plus" /> Add an event
+            </b-btn>
+          </div>
         </div>
         <div v-for="event in events" :key="'event-' + event.id" class="mt-2">
           <CommunityEvent v-if="!event.pending" :summary="false" :event="event" />

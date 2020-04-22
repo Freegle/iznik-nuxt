@@ -12,7 +12,7 @@
         </span>
       </div>
     </div>
-    <span v-if="newsfeed.message" class="font-weight-bold prewrap forcebreak">{{ emessage }}</span>
+    <span v-if="newsfeed.message" class="font-weight-bold preline forcebreak">{{ emessage }}</span>
     <div>
       <b-img
         v-if="newsfeed.image"

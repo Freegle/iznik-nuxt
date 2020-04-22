@@ -84,7 +84,7 @@
                   Posted on {{ event.groups[0].namedisplay }}
                 </div>
               </div>
-              <read-more v-if="description" :text="description" :max-chars="300" class="ml-1 font-weight-bold prewrap forcebreak nopara" />
+              <read-more v-if="description" :text="description" :max-chars="300" class="ml-1 font-weight-bold preline forcebreak nopara" />
               <div class="mt-2 mb-2 ml-1">
                 <b-btn variant="white" @click="showEventModal">
                   <v-icon name="info-circle" /> More info
