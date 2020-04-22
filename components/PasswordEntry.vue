@@ -15,12 +15,11 @@
       />
       <span class="password__focus-element" />
       <b-input-group-append>
-        <b-button variant="white" class="transbord" title="Show password" :aria-label="showPassword ? 'hide password' : 'show password'" @click="togglePassword">
-          <v-icon v-if="showPassword" title="Hide password" class="text-secondary" flip="horizontal">
+        <b-button variant="white" class="showpassword__button" :title="showPassword ? 'hide password' : 'show password'" :aria-label="showPassword ? 'hide password' : 'show password'" @click="togglePassword">
+          <v-icon class="text-secondary" flip="horizontal">
             <v-icon name="eye" />
-            <v-icon name="slash" />
+            <v-icon v-if="showPassword" name="slash" />
           </v-icon>
-          <v-icon v-else name="eye" class="text-secondary" />
         </b-button>
       </b-input-group-append>
       <b-input-group-append v-if="showSaveOption">
@@ -82,7 +81,7 @@ export default {
 .password__input:focus {
   /* Get rid of any default focus on the password input element added by bootstrap */
   box-shadow: none;
-  border-right-color: $color-black;
+  border-right-color: $color-gray-4;
 }
 
 .password__input:focus + .password__focus-element {
@@ -93,5 +92,9 @@ export default {
   width: 100%;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
   border-radius: 3px;
+}
+
+.showpassword__button {
+  border-color: $color-gray-4;
 }
 </style>
