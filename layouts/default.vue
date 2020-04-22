@@ -18,35 +18,35 @@
           <b-navbar-nav>
             <b-nav-item id="menu-option-mygroups" class="text-center small p-0" to="/communities" @mousedown="maybeReload('/communities')">
               <v-icon name="users" scale="2" class="ml-2" /><br>
-              Communities
+              <span class="nav-item__text">Communities</span>
             </b-nav-item>
             <b-nav-item v-if="!simple" id="menu-option-chitchat" class="text-center small p-0" to="/chitchat" @mousedown="maybeReload('/chitchat')">
               <v-icon name="coffee" scale="2" /><br>
-              ChitChat
+              <span class="nav-item__text">ChitChat</span>
             </b-nav-item>
             <b-nav-item id="menu-option-myposts" class="text-center small p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
               <v-icon name="home" scale="2" /><br>
-              My Posts
+              <span class="nav-item__text">My Posts</span>
             </b-nav-item>
             <b-nav-item id="menu-option-give" class="text-center small p-0" to="/give" @mousedown="maybeReload('/give')">
               <v-icon name="gift" scale="2" /><br>
-              Give
+              <span class="nav-item__text">Give</span>
             </b-nav-item>
             <b-nav-item id="menu-option-find" class="text-center small p-0" to="/find" @mousedown="maybeReload('/find')">
               <v-icon name="search" scale="2" /><br>
-              Find
+              <span class="nav-item__text">Find</span>
             </b-nav-item>
             <b-nav-item id="menu-option-explore" class="text-center small p-0" to="/explore" @mousedown="maybeReload('/explore')">
               <v-icon name="map-marker-alt" scale="2" /><br>
-              Explore
+              <span class="nav-item__text">Explore</span>
             </b-nav-item>
             <b-nav-item v-if="!simple" id="menu-option-communityevents" class="text-center small p-0" to="/communityevents" @mousedown="maybeReload('/communityevents')">
               <v-icon name="calendar-alt" scale="2" /><br>
-              Events
+              <span class="nav-item__text">Events</span>
             </b-nav-item>
             <b-nav-item v-if="!simple" id="menu-option-volunteering" class="text-center small p-0" to="/volunteerings" @mousedown="maybeReload('/volunteerings')">
               <v-icon name="hands-helping" scale="2" /><br>
-              Volunteer
+              <span class="nav-item__text">Volunteer</span>
             </b-nav-item>
           </b-navbar-nav>
           <client-only>
@@ -62,7 +62,7 @@
                   <b-badge v-if="notificationCount" variant="danger" class="ml-3 notifbadge">
                     {{ notificationCount }}
                   </b-badge><br>
-                  Notifications
+                  <span class="nav-item__text">Notifications</span>
                 </div>
               </template>
               <b-dropdown-item class="text-right">
@@ -85,7 +85,7 @@
             <b-nav-item id="menu-option-chat" class="text-center small p-0" to="/chats" @mousedown="maybeReload('/chats')">
               <div class="notifwrapper">
                 <v-icon name="comments" scale="2" /><br>
-                Chats
+                <span class="nav-item__text">Chats</span>
                 <b-badge v-if="chatCount" variant="danger" class="ml-3 chatbadge">
                   {{ chatCount }}
                 </b-badge>
@@ -94,7 +94,7 @@
             <b-nav-item v-if="!simple" id="menu-option-spread" class="text-center small p-0" to="/spread" @mousedown="maybeReload('/spread')">
               <div class="notifwrapper">
                 <v-icon name="bullhorn" scale="2" /><br>
-                Spread
+                <span class="nav-item__text">Spread</span>
                 <b-badge v-if="spreadCount" variant="info" class="ml-3 chatbadge">
                   {{ spreadCount }}
                 </b-badge>
@@ -102,15 +102,15 @@
             </b-nav-item>
             <b-nav-item id="menu-option-help" class="text-center small p-0" to="/help" @mousedown="maybeReload('/help')">
               <v-icon name="question-circle" scale="2" /><br>
-              Help
+              <span class="nav-item__text">Help</span>
             </b-nav-item>
             <b-nav-item id="menu-option-settings" class="text-center small p-0" to="/settings" @mousedown="maybeReload('/settings')">
               <v-icon name="cog" scale="2" /><br>
-              Settings
+              <span class="nav-item__text">Settings</span>
             </b-nav-item>
             <b-nav-item id="menu-option-logout" class="text-center p-0 small" @click="logOut">
               <v-icon name="sign-out-alt" scale="2" /><br>
-              Logout
+              <span class="nav-item__text">Logout</span>
             </b-nav-item>
           </b-navbar-nav>
         </b-collapse>
@@ -201,51 +201,51 @@
         <b-navbar-nav class="ml-auto flex-row flex-wrap small">
           <b-nav-item class="text-center p-0" to="/communities" @mousedown="maybeReload('/communities')">
             <v-icon name="users" scale="2" /><br>
-            Communities
+            <span class="nav-item__text">Communities</span>
           </b-nav-item>
           <b-nav-item v-if="!simple" class="text-center p-0 white" to="/chitchat" @mousedown="maybeReload('/chitchat')">
             <v-icon name="coffee" scale="2" /><br>
-            ChitChat
+            <span class="nav-item__text">ChitChat</span>
           </b-nav-item>
           <b-nav-item class="text-center p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
             <v-icon name="home" scale="2" /><br>
-            My Posts
+            <span class="nav-item__text">My Posts</span>
           </b-nav-item>
           <b-nav-item class="text-center p-0" to="/give" @mousedown="maybeReload('/give')">
             <v-icon name="gift" scale="2" /><br>
-            Give
+            <span class="nav-item__text">Give</span>
           </b-nav-item>
           <b-nav-item class="text-center p-0" to="/find" @mousedown="maybeReload('/find')">
             <v-icon name="search" scale="2" /><br>
-            Find
+            <span class="nav-item__text">Find</span>
           </b-nav-item>
           <b-nav-item class="text-center p-0" to="/explore" @mousedown="maybeReload('/explore')">
             <v-icon name="map-marker-alt" scale="2" /><br>
-            Explore
+            <span class="nav-item__text">Explore</span>
           </b-nav-item>
           <b-nav-item v-if="!simple" class="text-center p-0" to="/communityevents" @mousedown="maybeReload('/communityevents')">
             <v-icon name="calendar-alt" scale="2" /><br>
-            Events
+            <span class="nav-item__text">Events</span>
           </b-nav-item>
           <b-nav-item v-if="!simple" class="text-center p-0" to="/volunteerings" @mousedown="maybeReload('/volunteerings')">
             <v-icon name="hands-helping" scale="2" /><br>
-            Volunteer
+            <span class="nav-item__text">Volunteer</span>
           </b-nav-item>
           <b-nav-item v-if="!simple" class="text-center p-0" to="/spread" @mousedown="maybeReload('/spread')">
             <v-icon name="bullhorn" scale="2" /><br>
-            Spread
+            <span class="nav-item__text">Spread</span>
           </b-nav-item>
           <b-nav-item class="text-center p-0" to="/help" @mousedown="maybeReload('/help')">
             <v-icon name="question-circle" scale="2" /><br>
-            Help
+            <span class="nav-item__text">Help</span>
           </b-nav-item>
           <b-nav-item class="text-center p-0" to="/settings" @mousedown="maybeReload('/settings')">
             <v-icon name="cog" scale="2" /><br>
-            Settings
+            <span class="nav-item__text">Settings</span>
           </b-nav-item>
           <b-nav-item class="text-center p-0" @click="logOut">
             <v-icon name="sign-out-alt" scale="2" /><br>
-            Logout
+            <span class="nav-item__text">Logout</span>
           </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
@@ -777,6 +777,11 @@ nav .navbar-nav li a {
 
 nav .navbar-nav li a.nuxt-link-active {
   color: $color-white !important;
+}
+
+.nuxt-link-active .nav-item__text {
+  border-bottom: 1px solid white;
+  padding: 2px;
 }
 
 .navbar-brand a {
