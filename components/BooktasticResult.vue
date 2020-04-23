@@ -73,7 +73,7 @@
             lock-movement-y
             lock-scaling-x
             lock-scaling-y
-            @selected="selectUsed"
+            @selected="selectBook"
           />
           <fabric-rectangle
             v-for="(fragment, index) in nobooks"
@@ -154,10 +154,11 @@ export default {
       return Math.min(this.naturalWidth, this.width)
     },
     zoom() {
-      return Math.min(
-        this.width / this.naturalWidth,
-        this.height / this.naturalHeight
-      )
+      return 1
+      // return Math.min(
+      //   this.width / this.naturalWidth,
+      //   this.height / this.naturalHeight
+      // )
     },
     fragments() {
       const ret = []
@@ -223,6 +224,7 @@ export default {
             let miny = 1000000
             let maxx = -1000000
             let maxy = -1000000
+            let found = false
 
             this.unusedFragments.forEach(f => {
               if (f.spineindex === i) {
@@ -233,22 +235,25 @@ export default {
                   miny = Math.min(miny, v.y)
                   maxx = Math.max(maxx, v.x)
                   maxy = Math.max(maxy, v.y)
+                  found = true
                 })
               }
             })
 
-            ret.push({
-              top: miny,
-              left: minx,
-              width: maxx - minx,
-              height: maxy - miny,
-              spineindex: i
-            })
+            if (found) {
+              ret.push({
+                top: miny,
+                left: minx,
+                width: maxx - minx,
+                height: maxy - miny,
+                spineindex: i
+              })
+            }
           }
         }
       }
 
-      console.log('Books', ret)
+      console.log('No books', ret)
       return ret
     },
     books() {
@@ -275,13 +280,14 @@ export default {
               }
             })
 
-            ret.push({
-              top: miny,
-              left: minx,
-              width: maxx - minx,
-              height: maxy - miny,
-              spineindex: i
-            })
+            const thisone = this.result.spines[i]
+
+            thisone.top = miny
+            thisone.left = minx
+            thisone.width = maxx - minx
+            thisone.height = maxy - miny
+
+            ret.push(thisone)
           }
         }
       }
@@ -320,10 +326,10 @@ export default {
       this.selectedSpine = this.result.spines[this.nobooks[id].spineindex]
       console.log('Selected spine', this.selectedSpine)
     },
-    selectUsed(e) {
-      console.log('Selected used', e)
+    selectBook(e) {
+      console.log('Selected book', e)
       const id = e.id.substring(e.id.indexOf('-') + 1)
-      this.selectedSpine = this.result.spines[this.books[id].spineindex]
+      this.selectedSpine = this.books[id]
       console.log('Selected spine', this.selectedSpine)
     }
   }
