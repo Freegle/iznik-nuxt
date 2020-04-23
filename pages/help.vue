@@ -219,7 +219,7 @@
                   </p>
                 </template>
               </Question>
-              <Question id="mobile">
+              <Question v-if="!isApp" id="mobile">
                 <template slot="title">
                   <b>Do you have a mobile app?</b>
                 </template>
@@ -236,7 +236,7 @@
                     </a>
                   </div>
                   <p class="mt-2">
-                    The app is only available in the UK app stores. We support Android 4.4/iOS 9 or later.
+                    The app is only available in the UK app stores. We support Android 4.4/iOS 10 or later.
                   </p>
                 </template>
               </Question>
