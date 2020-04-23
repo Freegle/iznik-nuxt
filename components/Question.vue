@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-btn v-b-toggle="'question-' + id" variant="link" class="m-1">
+    <b-btn v-b-toggle="'question-' + id" variant="link" class="m-1 question__button">
       <slot name="title" />
     </b-btn>
     <b-collapse :id="'question-' + id">
@@ -10,6 +10,7 @@
     </b-collapse>
   </div>
 </template>
+
 <script>
 export default {
   props: {
@@ -20,3 +21,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.question__button {
+  /* Override the default button styling from global.scss */
+  white-space: normal;
+  text-align: left;
+}
+</style>
