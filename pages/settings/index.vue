@@ -433,7 +433,9 @@
               <h5>Other Alerts</h5>
               <p>
                 Apps for your
+                <span v-if="!isiOSapp">
                 <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" target="_blank">Android</a> or
+                </span>
                 <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&mt=8" target="_blank">IOS</a> phone/tablet.
               </p>
               <OurToggle
@@ -692,6 +694,12 @@ export default {
   },
 
   methods: {
+    isiOSapp() { // CC
+      if (process.env.IS_APP) {
+        return (window.device.platform === 'iOS')
+      }
+      return false
+    },
     async update() {
       await this.$store.dispatch('auth/fetchUser', {
         components: ['me', 'groups', 'aboutme', 'notifications'],
