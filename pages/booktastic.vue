@@ -68,7 +68,14 @@
       Try Again
     </b-btn>
     <client-only>
-      <BooktasticResult v-if="result" :photo="photo" :result="result" :width="width" :height="height" />
+      <BooktasticResult
+        v-if="result"
+        :id="requestId"
+        :photo="photo"
+        :result="result"
+        :width="width"
+        :height="height"
+      />
     </client-only>
     <div v-if="processing" class="w-100 d-flex justify-content-center">
       <div class="d-flex flex-column">

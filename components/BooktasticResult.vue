@@ -16,7 +16,20 @@
           </div>
           <NoticeMessage v-else-if="result.spines.length" variant="info">
             <h3>We found {{ books.length | pluralize('book', { includeNumber: true }) }}</h3>
+            <ul>
+              <li v-for="(book, index) in books" :key="'book-' + index">
+                {{ book.author }} - {{ book.title }}
+              </li>
+            </ul>
             <p>
+              Please rate this:
+            </p>
+            <div class="d-flex">
+              <SpinButton variant="success" name="smile" label="Most or all" :handler="most" />
+              <SpinButton variant="white" name="meh" label="About half" :handler="some" />
+              <SpinButton variant="warning" name="frown" label="Few or none" :handler="few" />
+            </div>
+            <p class="mt-2">
               Click on one of the rectangles to see what we identified.
             </p>
           </NoticeMessage>
@@ -99,10 +112,16 @@
 </template>
 <script>
 import NoticeMessage from './NoticeMessage'
+import SpinButton from './SpinButton'
 import waitForRef from '@/mixins/waitForRef'
 
+const a = require('axios')
+const axios = a.create({
+  timeout: 300000
+})
+
 export default {
-  components: { NoticeMessage },
+  components: { SpinButton, NoticeMessage },
   mixins: [waitForRef],
   props: {
     photo: {
@@ -118,6 +137,10 @@ export default {
       required: true
     },
     height: {
+      type: Number,
+      required: true
+    },
+    id: {
       type: Number,
       required: true
     }
@@ -154,11 +177,11 @@ export default {
       return Math.min(this.naturalWidth, this.width)
     },
     zoom() {
-      return 1
-      // return Math.min(
-      //   this.width / this.naturalWidth,
-      //   this.height / this.naturalHeight
-      // )
+      // return 1
+      return Math.min(
+        this.width / this.naturalWidth,
+        this.height / this.naturalHeight
+      )
     },
     fragments() {
       const ret = []
@@ -331,6 +354,31 @@ export default {
       const id = e.id.substring(e.id.indexOf('-') + 1)
       this.selectedSpine = this.books[id]
       console.log('Selected spine', this.selectedSpine)
+    },
+    most() {
+      this.rate(3)
+    },
+    some() {
+      this.rate(2)
+    },
+    few() {
+      this.rate(1)
+    },
+    async rate(rating) {
+      const formData = new FormData()
+      formData.append('id', this.id)
+      formData.append('rating', rating)
+      formData.append('action', 'Rate')
+
+      await axios.post(
+        'https://iznik.ilovefreegle.org/api/catalogue',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      )
     }
   }
 }
