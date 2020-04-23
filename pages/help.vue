@@ -219,7 +219,7 @@
                   </p>
                 </template>
               </Question>
-              <Question id="mobile">
+              <Question v-if="!isApp" id="mobile">
                 <template slot="title">
                   <b>Do you have a mobile app?</b>
                 </template>
