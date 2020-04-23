@@ -612,10 +612,10 @@
             <ModGroupSetting
               :groupid="groupid"
               name="mentored"
-              label="Mentor Caretakers?"
-              description="Whether this community is being run by Mentor Caretakers."
+              label="Caretakers?"
+              description="Whether this community is being run by Caretakers."
               type="toggle"
-              toggle-checked="Mentors"
+              toggle-checked="Caretakers"
               toggle-unchecked="Local volunteers"
             />
             <p v-if="group.affiliationconfirmed">

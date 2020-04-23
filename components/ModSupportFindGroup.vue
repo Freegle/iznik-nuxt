@@ -115,7 +115,7 @@
         :height="36"
         :width="170"
         :font-size="14"
-        :labels="{checked: 'Local Volunteers', unchecked: 'Mentor Caretakers'}"
+        :labels="{checked: 'Local Volunteers', unchecked: 'Caretakers'}"
         readonly
         class="mr-2"
       />
