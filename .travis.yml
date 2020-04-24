@@ -91,7 +91,8 @@ script:
 # Build release build
 ##- sed -i '' "s/Freegle adhoc 0420/Freegle 0420/" platforms/ios/Freegle.xcodeproj/project.pbxproj
 # https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
-- cordova build --release --device --buildFlag="-UseModernBuildSystem=0" --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile="Freegle 0420"  >buildlogrelease.txt
+- cordova build --release --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile="Freegle 0420"  >buildlogrelease.txt
+##- cordova build --release --device --buildFlag="-UseModernBuildSystem=0" --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile="Freegle 0420"  >buildlogrelease.txt
 ### Sign properly: export and then upload
 ##- cp ../iznik-nuxt/mobile/ExportOptionsFreegleRelease.plist .
 ##- cd platforms/ios
@@ -143,7 +144,8 @@ script:
 ##- sed -i '' "s/ModTools adhoc 0420/ModTools 0420/" platforms/ios/ModTools.xcodeproj/project.pbxproj
 ##- cat platforms/ios/ModTools.xcodeproj/project.pbxproj
 # https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
-- cordova build --release --device --buildFlag="-UseModernBuildSystem=0" --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile="ModTools 0420"  >buildlogrelease.txt
+- cordova build --release --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile="ModTools 0420"  >buildlogrelease.txt
+##- cordova build --release --device --buildFlag="-UseModernBuildSystem=0" --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile="ModTools 0420"  >buildlogrelease.txt
 ### Sign properly: export and then upload
 ##- cp ../iznik-nuxt/mobile/ExportOptionsModToolsRelease.plist .
 ##- cd platforms/ios
