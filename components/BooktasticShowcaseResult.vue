@@ -3,7 +3,16 @@
     <client-only>
       <b-card no-body>
         <b-card-header>
-          {{ result.books.length | pluralize('book', { includeNumber: true }) }}
+          <div class="d-flex justify-content-between">
+            <div>
+              {{ result.books.length | pluralize('book', { includeNumber: true }) }}
+            </div>
+            <div>
+              <v-icon v-if="rating === 'Good'" name="smile" class="text-success" title="Probably a good effort" />
+              <v-icon v-if="rating === 'OK'" name="meh" class="light text-faded" title="Probably did ok" />
+              <v-icon v-if="rating === 'Bad'" name="frown" class="text-warning" title="Probably didn't do very well" />
+            </div>
+          </div>
         </b-card-header>
         <b-card-body>
           <b-row>
@@ -37,6 +46,20 @@ export default {
   data: function() {
     return {
       showModal: false
+    }
+  },
+  computed: {
+    ratio() {
+      return this.result.books.length / this.result.fragments.length
+    },
+    rating() {
+      if (this.ratio > 0.25) {
+        return 'Good'
+      } else if (this.ratio < 0.15) {
+        return 'Bad'
+      } else {
+        return 'OK'
+      }
     }
   },
   methods: {}

@@ -37,6 +37,9 @@
             Take a close-up of just one shelf.
           </li>
           <li>
+            Straight - not at an angle.
+          </li>
+          <li>
             Aim for about 10 books.  If it's more than that, go closer.
           </li>
           <li>
