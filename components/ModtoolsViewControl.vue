@@ -1,10 +1,10 @@
 <template>
   <div>
     <b-btn v-if="summary" variant="white" @click="toggleView">
-      <v-icon name="th-list" /> Summary View
+      <v-icon name="th-list" /> Details View
     </b-btn>
     <b-btn v-else variant="white" @click="toggleView">
-      <v-icon name="th-list" /> Details View
+      <v-icon name="th-list" /> Summary View
     </b-btn>
   </div>
 </template>
