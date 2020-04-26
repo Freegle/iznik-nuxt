@@ -1,56 +1,70 @@
 <template>
   <div>
     <b-card bg-variant="white" no-body>
-      <b-card-header class="d-flex justify-content-between p-1 p-md-2">
-        <div>
-          <div v-if="editing">
-            <div v-if="message.location" class="d-flex justify-content-start">
-              <b-select v-model="message.type" :options="typeOptions" class="type mr-1" size="lg" />
-              <b-input v-model="message.item.name" size="lg" class="mr-1" />
-              <b-input-group>
-                <Postcode :value="message.location.name" :find="false" @selected="postcodeSelect" />
-              </b-input-group>
+      <b-card-header class="p-1 p-md-2">
+        <div class="d-flex justify-content-between">
+          <div>
+            <div v-if="editing">
+              <div v-if="message.location" class="d-flex justify-content-start">
+                <b-select v-model="message.type" :options="typeOptions" class="type mr-1" size="lg" />
+                <b-input v-model="message.item.name" size="lg" class="mr-1" />
+                <b-input-group>
+                  <Postcode :value="message.location.name" :find="false" @selected="postcodeSelect" />
+                </b-input-group>
+              </div>
+              <div v-else>
+                <b-input-group>
+                  <b-input v-model="message.subject" />
+                </b-input-group>
+              </div>
             </div>
-            <div v-else>
-              <b-input-group>
-                <b-input v-model="message.subject" />
-              </b-input-group>
+            <Diff v-else-if="editreview" :old="oldSubject" :new="newSubject" class="font-weight-bold" />
+            <div v-else :class="subjectClass + ' font-weight-bold'">
+              {{ eSubject }}
+            </div>
+            <MessageHistory :message="message" modinfo display-message-link />
+            <ModMessageDuplicate v-for="duplicate in duplicates" :key="'duplicate-' + duplicate.id" :message="duplicate" />
+            <ModMessageCrosspost v-for="crosspost in crossposts" :key="'crosspost-' + crosspost.id" :message="crosspost" />
+            <div v-if="expanded">
+              <ModMessageRelated v-for="related in message.related" :key="'related-' + related.id" :message="related" />
             </div>
           </div>
-          <Diff v-else-if="editreview" :old="oldSubject" :new="newSubject" class="font-weight-bold" />
-          <div v-else :class="subjectClass + ' font-weight-bold'">
-            {{ eSubject }}
+          <div>
+            <div v-if="expanded">
+              <b-btn v-if="message.source === 'Email'" variant="white" @click="viewSource">
+                <v-icon name="book-open" /><span class="d-none d-sm-inline"> View Email Source</span>
+              </b-btn>
+              <b-btn v-if="!editing" variant="white" @click="editing = true">
+                <v-icon name="pen" /><span class="d-none d-sm-inline"> Edit</span>
+              </b-btn>
+              <b-btn v-if="summary" variant="white" @click="expanded = !expanded">
+                <v-icon name="caret-up" />
+              </b-btn>
+            </div>
+            <b-btn v-else variant="white" @click="expanded = !expanded">
+              <v-icon name="caret-down" />
+            </b-btn>
           </div>
-          <MessageHistory :message="message" modinfo display-message-link />
-          <ModMessageDuplicate v-for="duplicate in duplicates" :key="'duplicate-' + duplicate.id" :message="duplicate" />
-          <ModMessageCrosspost v-for="crosspost in crossposts" :key="'crosspost-' + crosspost.id" :message="crosspost" />
-          <ModMessageRelated v-for="related in message.related" :key="'related-' + related.id" :message="related" />
-        </div>
-        <div>
-          <b-btn v-if="message.source === 'Email'" variant="white" @click="viewSource">
-            <v-icon name="book-open" /><span class="d-none d-sm-inline"> View Email Source</span>
-          </b-btn>
-          <b-btn v-if="!editing" variant="white" @click="editing = true">
-            <v-icon name="pen" /><span class="d-none d-sm-inline"> Edit</span>
-          </b-btn>
         </div>
       </b-card-header>
-      <b-card-body class="p-1 p-md-2">
+      <b-card-body v-if="expanded" class="p-1 p-md-2">
         <b-row>
           <b-col cols="12" lg="8">
-            <NoticeMessage v-if="message.outcomes && message.outcomes.length" class="mb-1">
-              {{ message.outcomes[0].outcome.toUpperCase() }}
-              at
-              {{ message.outcomes[0].timestamp | datetimeshort }}
-            </NoticeMessage>
-            <div v-if="message.heldby">
-              <NoticeMessage v-if="me.id === message.heldby.id" variant="warning" class="mb-2">
-                You held this.  Other people will see a warning to check with
-                you before releasing it.
+            <div v-if="expanded">
+              <NoticeMessage v-if="message.outcomes && message.outcomes.length" class="mb-1">
+                {{ message.outcomes[0].outcome.toUpperCase() }}
+                at
+                {{ message.outcomes[0].timestamp | datetimeshort }}
               </NoticeMessage>
-              <NoticeMessage v-else variant="warning" class="mb-2">
-                Held by <b>{{ message.heldby.displayname }}</b>.  Please check with them before releasing it.
-              </NoticeMessage>
+              <div v-if="message.heldby">
+                <NoticeMessage v-if="me.id === message.heldby.id" variant="warning" class="mb-2">
+                  You held this.  Other people will see a warning to check with
+                  you before releasing it.
+                </NoticeMessage>
+                <NoticeMessage v-else variant="warning" class="mb-2">
+                  Held by <b>{{ message.heldby.displayname }}</b>.  Please check with them before releasing it.
+                </NoticeMessage>
+              </div>
             </div>
             <ModComments :user="message.fromuser" />
             <ModSpammer v-if="message.fromuser.spammer" :user="message.fromuser" />
@@ -64,22 +78,24 @@
               We think this message might be spam.
             </NoticeMessage>
             <ModMessageWorry v-if="message.worry" :message="message" />
-            <b-form-textarea
-              v-if="editing"
-              v-model="message.textbody"
-              rows="8"
-              class="mb-3"
-            />
-            <!-- eslint-disable-next-line -->
-            <Diff v-else-if="editreview" class="mb-3 rounded border p-2 preline forcebreak font-weight-bold" :old="oldBody" :new="newBody" />
-            <!-- eslint-disable-next-line -->
-            <div v-else-if="!eBody" class="mb-3 rounded border p-2 preline forcebreak font-weight-bold"><em>This message is blank.</em></div>
-            <!-- eslint-disable-next-line -->
-            <div v-else class="mb-3 rounded border p-2 preline forcebreak font-weight-bold">{{ eBody }}</div>
-            <div v-if="message.attachments && message.attachments.length" class="d-flex">
-              <ModPhoto v-for="attachment in message.attachments" :key="'attachment-' + attachment.id" :message="message" :attachment="attachment" class="d-inline pr-1" />
+            <div v-if="expanded">
+              <b-form-textarea
+                v-if="editing"
+                v-model="message.textbody"
+                rows="8"
+                class="mb-3"
+              />
+              <!-- eslint-disable-next-line -->
+              <Diff v-else-if="editreview" class="mb-3 rounded border p-2 preline forcebreak font-weight-bold" :old="oldBody" :new="newBody" />
+              <!-- eslint-disable-next-line -->
+              <div v-else-if="!eBody" class="mb-3 rounded border p-2 preline forcebreak font-weight-bold"><em>This message is blank.</em></div>
+              <!-- eslint-disable-next-line -->
+              <div v-else class="mb-3 rounded border p-2 preline forcebreak font-weight-bold">{{ eBody }}</div>
+              <div v-if="message.attachments && message.attachments.length" class="d-flex">
+                <ModPhoto v-for="attachment in message.attachments" :key="'attachment-' + attachment.id" :message="message" :attachment="attachment" class="d-inline pr-1" />
+              </div>
+              <MessageReplyInfo v-if="!pending || message.replies && message.replies.length" :message="message" class="d-inline" />
             </div>
-            <MessageReplyInfo v-if="!pending || message.replies && message.replies.length" :message="message" class="d-inline" />
           </b-col>
           <b-col cols="12" lg="4">
             <div class="rounded border border-info p-2 d-flex justify-content-between flex-wrap">
@@ -166,7 +182,7 @@
           </b-col>
         </b-row>mod
       </b-card-body>
-      <b-card-footer v-if="!noactions">
+      <b-card-footer v-if="!noactions && expanded">
         <ModMessageButtons v-if="!editing" :message="message" :modconfig="modconfig" :editreview="editreview" :cantpost="membership.ourpostingstatus === 'PROHIBITED'" />
         <b-btn v-if="editing" variant="white" @click="editing = false">
           <v-icon name="times" /> Cancel
@@ -239,6 +255,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    summary: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
@@ -248,7 +269,8 @@ export default {
       showMailSettings: false,
       showActions: false,
       showEmails: false,
-      editing: false
+      editing: false,
+      expanded: false
     }
   },
   computed: {
@@ -429,6 +451,18 @@ export default {
     duplicates() {
       return this.checkHistory(true)
     }
+  },
+  watch: {
+    summary(newVal) {
+      if (newVal && this.expanded) {
+        this.expanded = false
+      } else if (!newVal && !this.expanded) {
+        this.expanded = true
+      }
+    }
+  },
+  mounted() {
+    this.expanded = !this.summary
   },
   methods: {
     hasCollection(coll) {
