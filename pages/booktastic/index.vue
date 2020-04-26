@@ -10,8 +10,31 @@
             Take a closeup of a bookshelf.  You're aiming for something like this:
           </p>
           <b-img src="~/static/booktastic.jpg" thumbnail class="smallimg mb-2" />
+          <p class="text-danger">
+            Please read these tips:
+          </p>
+          <ul>
+            <li>
+              Take a close-up of just one shelf.
+            </li>
+            <li>
+              Aim for about 10 books.  If it's more than that, go closer.
+            </li>
+            <li>
+              Avoid glare/reflections.
+            </li>
+            <li>
+              Squidge the books up so they're not slanted.
+            </li>
+            <li>
+              Paperbacks work better than hardbacks.
+            </li>
+            <li>
+              Fiction works better than non-fiction.
+            </li>
+          </ul>
           <p>
-            We'll try to identify the books.
+            We'll try to identify them.
           </p>
           <NoticeMessage variant="info">
             <ul>
@@ -20,10 +43,10 @@
               </li>
               <li>
                 It's <b>very</b> slow - around 60 seconds to process after upload.  Don't worry about that - it'll
-                get usably fast later.
+                get faster later.
               </li>
               <li>
-                This won't look good on mobile yet.
+                This page won't look good on mobile yet.
               </li>
             </ul>
           </NoticeMessage>
@@ -112,9 +135,9 @@ import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 import FilePondPluginImageTransform from 'filepond-plugin-image-transform'
 import FilePondPluginImageResize from 'filepond-plugin-image-resize'
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation'
-import SpinButton from '../components/SpinButton'
-import BooktasticResult from '../components/BooktasticResult'
-import NoticeMessage from '../components/NoticeMessage'
+import SpinButton from '@/components/SpinButton'
+import BooktasticResult from '@/components/BooktasticResult'
+import NoticeMessage from '@/components/NoticeMessage'
 import waitForRef from '@/mixins/waitForRef'
 
 const a = require('axios')
