@@ -183,7 +183,7 @@
         </b-row>mod
       </b-card-body>
       <b-card-footer v-if="!noactions && expanded">
-        <ModMessageButtons v-if="!editing && membership" :message="message" :modconfig="modconfig" :editreview="editreview" :cantpost="membership.ourpostingstatus === 'PROHIBITED'" />
+        <ModMessageButtons v-if="!editing" :message="message" :modconfig="modconfig" :editreview="editreview" :cantpost="membership && membership.ourpostingstatus === 'PROHIBITED'" />
         <b-btn v-if="editing" variant="white" @click="editing = false">
           <v-icon name="times" /> Cancel
         </b-btn>
