@@ -436,7 +436,7 @@
                 <span v-if="!isiOSapp">
                 <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" target="_blank">Android</a> or
                 </span>
-                <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&mt=8" target="_blank">IOS</a> phone/tablet.
+                <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&mt=8" target="_blank">iOS</a> phone/tablet.
               </p>
               <OurToggle
                 v-model="me.settings.notifications.app"
@@ -550,6 +550,15 @@ export default {
     }
   },
   computed: {
+    isiOSapp() { // CC
+      console.log("isiOSapp")
+      if (process.env.IS_APP) {
+        console.log(window.device.platform === 'iOS')
+        return (window.device.platform === 'iOS')
+      }
+      console.log("isiOSapp false")
+      return false
+    },
     relevantallowed: {
       // This is 1/0 in the model whereas we want Boolean.
       set(val) {
@@ -694,12 +703,6 @@ export default {
   },
 
   methods: {
-    isiOSapp() { // CC
-      if (process.env.IS_APP) {
-        return (window.device.platform === 'iOS')
-      }
-      return false
-    },
     async update() {
       await this.$store.dispatch('auth/fetchUser', {
         components: ['me', 'groups', 'aboutme', 'notifications'],
