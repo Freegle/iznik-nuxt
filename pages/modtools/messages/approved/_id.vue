@@ -64,7 +64,7 @@ export default {
       const ret = this.$store.getters['misc/get'](
         'modtoolsMessagesApprovedSummary'
       )
-      return ret === undefined ? true : ret
+      return ret === undefined ? false : ret
     }
   },
   watch: {
