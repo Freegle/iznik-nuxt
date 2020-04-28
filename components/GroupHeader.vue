@@ -1,87 +1,51 @@
 <template>
   <b-card bg-light>
-    <b-row class="mt-1">
-      <b-col cols="5" md="2" lg="3" xl="2">
+    <div class="group">
+      <div class="group__image">
         <b-img-lazy rounded thumbnail alt="Community profile picture" :src="group.profile ? group.profile : '/icon.png'" class="js-pageimage" />
-      </b-col>
-      <b-col cols="7" md="6" lg="9" class="group-header-description">
+      </div>
+      <div class="group__title">
         <b-card-title>
           {{ group.namedisplay }}
           <v-icon v-if="amAMember === 'Owner' || amAMember === 'Moderator'" name="crown" class="text-success" :title="'You have role ' + amAMember" />
         </b-card-title>
         <b-card-sub-title>{{ group.tagline }}</b-card-sub-title>
-        <p v-if="group.membercount" class="text-muted small">
+        <div v-if="group.membercount" class="text-muted small">
           Founded {{ group.founded | dateonly }}. {{ group.membercount.toLocaleString() }} current freeglers.
-          <br>
-          <span class="d-none d-sm-block d-lg-none d-xl-block">
-            See
-            <nuxt-link :to="{ path: '/communityevents/' + group.id }">
-              community events
-            </nuxt-link>,
-            <nuxt-link :to="{ path: '/volunteerings/' + group.id }">
-              volunteer opportunities
-            </nuxt-link>,
-            <nuxt-link :to="{ path: '/stories/' + group.id }">
-              stories
-            </nuxt-link>, or
-            <nuxt-link :to="{ path: '/stats/' + group.nameshort }">
-              stats
-            </nuxt-link>
-          </span>
-          <span class="group-header-buttons-small d-none d-sm-block d-md-none">
-            <b-link :href="'mailto:' + modsemail">
-              <b-button class="mb-1" variant="white">
-                <v-icon name="question-circle" />&nbsp;Contact&nbsp;volunteers
-              </b-button>
-            </b-link>
-            <b-button v-if="!amAMember" class="mb-1" variant="success" @click="join">
-              <v-icon v-if="joiningOrLeaving" name="sync" class="fa-spin" />
-              <v-icon v-else name="plus" />&nbsp;
-              Join
-            </b-button>
-            <b-button v-else-if="amAMember === 'Member'" class="mb-1" variant="white" @click="leave">
-              <v-icon v-if="joiningOrLeaving" name="sync" class="fa-spin" />
-              <v-icon v-else name="trash-alt" />&nbsp;Leave
-            </b-button>
-          </span>
-        </p>
-      </b-col>
-      <b-col cols="12" md="4" lg="12" class="group-header-buttons">
-        <p v-if="group.membercount" class="text-muted small">
-          <span class="d-lg-block d-sm-none d-xl-none">
-            See
-            <nuxt-link :to="{ path: '/communityevents/' + group.id }">
-              community events
-            </nuxt-link>,
-            <nuxt-link :to="{ path: '/volunteerings/' + group.id }">
-              volunteer opportunities
-            </nuxt-link>,
-            <nuxt-link :to="{ path: '/stories/' + group.id }">
-              stories
-            </nuxt-link>, or
-            <nuxt-link :to="{ path: '/stats/' + group.nameshort }">
-              stats
-            </nuxt-link>
-          </span>
-        </p>
-        <span class="d-sm-none d-md-block">
-          <b-link :href="'mailto:' + modsemail">
-            <b-button class="ml-1 mb-1" variant="white">
-              <v-icon name="question-circle" />&nbsp;Contact&nbsp;volunteers
-            </b-button>
-          </b-link>
-          <b-button v-if="!amAMember" class="ml-1 mb-1" variant="success" @click="join">
+        </div>
+      </div>
+      <div class="group__links text-muted small">
+        See
+        <nuxt-link :to="{ path: '/communityevents/' + group.id }">
+          community events
+        </nuxt-link>,
+        <nuxt-link :to="{ path: '/volunteerings/' + group.id }">
+          volunteer opportunities
+        </nuxt-link>,
+        <nuxt-link :to="{ path: '/stories/' + group.id }">
+          stories
+        </nuxt-link>, or
+        <nuxt-link :to="{ path: '/stats/' + group.nameshort }">
+          stats
+        </nuxt-link>
+      </div>
+      <div class="mt-2 group__buttons">
+        <div class="button__items">
+          <b-button class="mb-1" variant="white" :href="'mailto:' + modsemail">
+            <v-icon name="question-circle" />&nbsp;Contact&nbsp;volunteers
+          </b-button>
+          <b-button v-if="!amAMember" class="mb-1 ml-1" variant="success" @click="join">
             <v-icon v-if="joiningOrLeaving" name="sync" class="fa-spin" />
             <v-icon v-else name="plus" />&nbsp;
             Join
           </b-button>
-          <b-button v-else-if="amAMember === 'Member'" class="ml-1 mb-1" variant="white" @click="leave">
+          <b-button v-else-if="amAMember === 'Member'" class="mb-1 ml-1" variant="white" @click="leave">
             <v-icon v-if="joiningOrLeaving" name="sync" class="fa-spin" />
             <v-icon v-else name="trash-alt" />&nbsp;Leave
           </b-button>
-        </span>
-      </b-col>
-    </b-row>
+        </div>
+      </div>
+    </div>
     <b-row>
       <b-col class="group-description">
         <p v-if="!group.description">
@@ -160,46 +124,6 @@ export default {
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins/_breakpoints';
 
-.group-header-buttons {
-  margin-bottom: 20px;
-  text-align: right;
-
-  @include media-breakpoint-up(md) {
-    text-align: right;
-  }
-
-  @include media-breakpoint-up(lg) {
-    text-align: left;
-  }
-
-  // md, md is intentional. The way bootstrap 'between' mixin works is to take
-  // the second argument and find the next breakpoint. So this is effectively
-  // active between 768px and 991px.
-  @include media-breakpoint-between(md, md) {
-    flex: 0 0 33%;
-    max-width: 33%;
-  }
-
-  @include media-breakpoint-up(xl) {
-    flex: 0 0 36%;
-    max-width: 36%;
-    padding-left: 0;
-    text-align: right;
-  }
-}
-
-.group-header-buttons-small {
-  margin-top: 10px;
-}
-
-.group-header-description {
-  @include media-breakpoint-up(xl) {
-    padding-left: 0;
-    max-width: 47%;
-    flex: 0 0 47%;
-  }
-}
-
 .img-thumbnail {
   margin-bottom: 20px;
 }
@@ -207,5 +131,130 @@ export default {
 .group-description {
   max-height: 300px;
   overflow-y: auto;
+}
+
+.group {
+  display: grid;
+
+  grid-template-columns: 40% auto;
+
+  @include media-breakpoint-up(sm) {
+    grid-template-columns: 30% auto;
+  }
+
+  @include media-breakpoint-up(md) {
+    grid-template-columns: 15% auto 36%;
+  }
+
+  @include media-breakpoint-up(lg) {
+    grid-template-columns: 25% auto;
+  }
+
+  @include media-breakpoint-up(xl) {
+    grid-template-columns: 15% auto 36%;
+  }
+}
+
+.group__image {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+
+  padding-right: 15px;
+
+  @include media-breakpoint-up(sm) {
+    grid-row: 1 / 4;
+  }
+
+  @include media-breakpoint-up(md) {
+    grid-row: 1 / 3;
+  }
+
+  @include media-breakpoint-up(lg) {
+    grid-row: 1 / 2;
+  }
+
+  @include media-breakpoint-up(xl) {
+    grid-row: 1 / 3;
+  }
+}
+
+.group__title {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+}
+
+.group__links {
+  grid-column: 1 / 3;
+  grid-row: 2 / 3;
+
+  @include media-breakpoint-up(sm) {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+  }
+
+  @include media-breakpoint-up(lg) {
+    grid-column: 1 / 3;
+    grid-row: 2 / 3;
+  }
+
+  @include media-breakpoint-up(xl) {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+  }
+}
+
+.group__buttons {
+  grid-column: 1 / 3;
+  grid-row: 3 / 4;
+  justify-self: start;
+
+  @include media-breakpoint-up(sm) {
+    grid-column: 2 / 3;
+    justify-self: start;
+  }
+
+  @include media-breakpoint-up(md) {
+    grid-column: 3 / 4;
+    grid-row: 1 / 3;
+    justify-self: end;
+  }
+
+  @include media-breakpoint-up(lg) {
+    grid-column: 1 / 3;
+    grid-row: 3 / 4;
+    justify-self: start;
+  }
+
+  @include media-breakpoint-up(xl) {
+    grid-column: 3 / 4;
+    grid-row: 1 / 2;
+    justify-self: end;
+  }
+}
+
+.button__items {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+
+  @include media-breakpoint-up(sm) {
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+  @include media-breakpoint-up(md) {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+
+  @include media-breakpoint-up(lg) {
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+  @include media-breakpoint-up(xl) {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
 }
 </style>
