@@ -6,13 +6,18 @@
         <SpinButton variant="success" name="search" label="Search" :handler="search" :disabled="!term" />
       </b-input-group-append>
     </b-input-group>
+    <NoticeMessage v-if="error" class="mt-2" variant="warning">
+      Couldn't fetch that message.  Almost always this is because the message doesn't exist (or has been very deleted).
+    </NoticeMessage>
   </div>
 </template>
 <script>
 import SpinButton from './SpinButton'
+import NoticeMessage from './NoticeMessage'
 
 export default {
   components: {
+    NoticeMessage,
     SpinButton
   },
   props: {
@@ -25,12 +30,14 @@ export default {
   data: function() {
     return {
       term: null,
-      busy: false
+      busy: false,
+      error: false
     }
   },
   methods: {
     async search() {
       this.busy = true
+      this.error = false
       const term = this.term.trim()
 
       await this.$store.dispatch('messages/clear')
@@ -48,16 +55,31 @@ export default {
       this.busy = false
     },
     async searchById(id) {
-      await this.$store.dispatch('messages/fetch', {
-        id: id,
-        messagehistory: true
-      })
+      this.busy = true
+      this.error = false
+
+      try {
+        await this.$store.dispatch('messages/fetch', {
+          id: id,
+          messagehistory: true
+        })
+      } catch (e) {
+        console.log("Couldn't fetch", e)
+        this.error = true
+      }
+
+      this.busy = false
     },
     async searchBySubject(subj) {
+      this.busy = true
+      this.error = false
+
       await this.$store.dispatch('messages/search', {
         term: subj,
         groupid: this.groupid
       })
+
+      this.busy = false
     }
   }
 }
