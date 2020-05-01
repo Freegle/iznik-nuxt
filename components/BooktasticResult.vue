@@ -39,7 +39,7 @@
         </b-card-body>
       </b-card>
       <div v-if="showSpines">
-        <b-btn variant="white" size="lg" @click="showSpines = false">
+        <b-btn variant="white" size="lg" class="mt-1 mb-1" @click="showSpines = false">
           Hide text
         </b-btn>
         <ul v-if="result && result.spines" class="list-unstyled mt-2">
