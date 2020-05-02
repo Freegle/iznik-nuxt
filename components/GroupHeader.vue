@@ -29,11 +29,9 @@
             </nuxt-link>
           </span>
           <span class="group-header-buttons-small d-none d-sm-block d-md-none">
-            <b-link :href="'mailto:' + modsemail">
-              <b-button class="mb-1" variant="white">
-                <v-icon name="question-circle" />&nbsp;Contact&nbsp;volunteers
-              </b-button>
-            </b-link>
+            <b-button class="mb-1" variant="white" :href="'mailto:' + modsemail">
+              <v-icon name="question-circle" />&nbsp;Contact&nbsp;volunteers
+            </b-button>
             <b-button v-if="!amAMember" class="mb-1" variant="success" @click="join">
               <v-icon v-if="joiningOrLeaving" name="sync" class="fa-spin" />
               <v-icon v-else name="plus" />&nbsp;
@@ -65,11 +63,9 @@
           </span>
         </p>
         <span class="d-sm-none d-md-block">
-          <b-link :href="'mailto:' + modsemail">
-            <b-button class="ml-1 mb-1" variant="white">
-              <v-icon name="question-circle" />&nbsp;Contact&nbsp;volunteers
-            </b-button>
-          </b-link>
+          <b-button class="ml-1 mb-1" variant="white" :href="'mailto:' + modsemail">
+            <v-icon name="question-circle" />&nbsp;Contact&nbsp;volunteers
+          </b-button>
           <b-button v-if="!amAMember" class="ml-1 mb-1" variant="success" @click="join">
             <v-icon v-if="joiningOrLeaving" name="sync" class="fa-spin" />
             <v-icon v-else name="plus" />&nbsp;
