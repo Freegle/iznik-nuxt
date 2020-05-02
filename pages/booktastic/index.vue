@@ -36,12 +36,9 @@
               <li>
                 Fiction works better than non-fiction.
               </li>
-              <li>
-                Translated books don't work well (we don't recognise the English title).
-              </li>
             </ul>
             <p>
-              We'll try to identify them.  See some sample results <nuxt-link to="/booktastic/results">
+              We'll try to identify them.  See some sample results and background info <nuxt-link to="/booktastic/results">
                 here
               </nuxt-link>.
             </p>
@@ -66,9 +63,6 @@
             <v-icon name="camera" />&nbsp;Upload photo
           </b-btn>
         </div>
-        <!--      Don't resize as we need all the resolution we can get for better OCR-->
-        <!--        :image-resize-target-width="width"-->
-        <!--        :image-resize-target-height="height"-->
       </div>
       <b-btn v-if="result" variant="white" class="mt-2 mb-2" size="lg" @click="again">
         Try Again
