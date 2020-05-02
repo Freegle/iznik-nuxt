@@ -1,7 +1,7 @@
 <template>
   <div>
     <client-only>
-      <b-card no-body>
+      <b-card v-if="result.books" no-body>
         <b-card-header>
           <div class="d-flex justify-content-between">
             <div>
@@ -17,8 +17,9 @@
         <b-card-body>
           <b-row>
             <b-col cols="12" md="6">
-              <div v-for="(book) in result.books" :key="book.author + book.title">
-                {{ book.author }} - {{ book.title }}
+              <!--              Bit of nonsense to handle an old result format-->
+              <div v-for="(book) in result.books" :key="book.author + book.title + book.Author + book.Title">
+                {{ book.author }}{{ book.Author }} - {{ book.title }}{{ book.Title }}
               </div>
             </b-col>
             <b-col cols="12" md="6">

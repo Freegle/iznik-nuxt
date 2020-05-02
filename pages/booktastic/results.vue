@@ -31,7 +31,7 @@
       </b-card-body>
     </b-card>
     <div v-if="results">
-      <BooktasticShowcaseResult v-for="(result) in results" :key="result.img" :result="result" />
+      <BooktasticShowcaseResult v-for="(result, i) in results" :key="i + '-' + result.img" :result="result" />
     </div>
   </div>
 </template>
