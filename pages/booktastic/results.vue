@@ -26,35 +26,8 @@
           get the occasional book wrong then people can correct it.
         </p>
         <p>
-          So the key thing is whether we can identify enough books.  Here's the kind of photo we want to work with:
+          So the key thing is whether we can identify enough books.  Here are some sample results:
         </p>
-        <b-img src="~/static/booktastic.jpg" thumbnail class="smallimg mb-2" />
-        <p>
-          So far these are the tips we'd give people:
-        </p>
-        <ul>
-          <li>
-            Take a close-up of just one shelf.
-          </li>
-          <li>
-            Straight - not at an angle.
-          </li>
-          <li>
-            Aim for about 10 books.  If it's more than that, go closer.
-          </li>
-          <li>
-            Avoid glare/reflections.
-          </li>
-          <li>
-            Squidge the books up so they're not slanted.
-          </li>
-          <li>
-            Paperbacks work better than hardbacks.
-          </li>
-          <li>
-            Fiction works better than non-fiction.
-          </li>
-        </ul>
       </b-card-body>
     </b-card>
     <div v-if="results">

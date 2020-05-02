@@ -41,7 +41,9 @@
               </li>
             </ul>
             <p>
-              We'll try to identify them.
+              We'll try to identify them.  See some sample results <nuxt-link to="/booktastic/results">
+                here
+              </nuxt-link>.
             </p>
           </b-card-body>
         </b-card>
