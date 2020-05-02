@@ -63,7 +63,7 @@ export default {
 }
 
 .square {
-  /*object-fit: cover;*/
+  object-fit: cover;
   margin: auto;
   width: 100px;
   height: 100px;
