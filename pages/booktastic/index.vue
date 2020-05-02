@@ -1,130 +1,147 @@
 <template>
   <div>
-    <h1>
-      Booktastic Proof of Concept
-    </h1>
-    <div v-if="!result">
-      <b-card no-body>
-        <b-card-body>
-          <p>
-            Take a closeup of a bookshelf.  You're aiming for something like this:
-          </p>
-          <b-img src="~/static/booktastic.jpg" thumbnail class="smallimg mb-2" />
-          <p class="text-danger">
-            Please read these tips:
-          </p>
-          <ul>
-            <li>
-              Take a close-up of just one shelf.
-            </li>
-            <li>
-              Straight - not at an angle.
-            </li>
-            <li>
-              Aim for about 10 books.  If it's more than that, go closer.
-            </li>
-            <li>
-              Avoid glare/reflections.
-            </li>
-            <li>
-              Squidge the books up so they're not slanted.
-            </li>
-            <li>
-              Paperbacks work better than hardbacks.
-            </li>
-            <li>
-              Fiction works better than non-fiction.
-            </li>
-          </ul>
-          <p>
-            We'll try to identify them.
-          </p>
-          <NoticeMessage variant="info">
+    <div v-if="!showVideo">
+      <div v-if="!result && !processing && !uploading">
+        <h1>
+          Booktastic Proof of Concept
+        </h1>
+        <b-card no-body>
+          <b-card-body>
+            <p>
+              Take a closeup of a bookshelf.  You're aiming for something like this:
+            </p>
+            <b-img src="~/static/booktastic.jpg" thumbnail class="smallimg mb-2" />
+            <p class="text-danger">
+              Please read these tips:
+            </p>
             <ul>
               <li>
-                We won't get them all - right now around half is pretty good going.
+                Take a close-up of just one shelf.
               </li>
               <li>
-                It's <b>very</b> slow - around 60 seconds to process after upload.  Don't worry about that - it'll
-                get faster later.
+                Straight - not at an angle.
               </li>
               <li>
-                This page won't look good on mobile yet.
+                Aim for about 10 books.  If it's more than that, go closer.
+              </li>
+              <li>
+                Avoid glare/reflections.
+              </li>
+              <li>
+                Squidge the books up so they're not slanted.
+              </li>
+              <li>
+                Paperbacks work better than hardbacks.
+              </li>
+              <li>
+                Fiction works better than non-fiction.
+              </li>
+              <li>
+                Translated books don't work well (we don't recognise the English title).
               </li>
             </ul>
-          </NoticeMessage>
-        </b-card-body>
-      </b-card>
-      <div class="d-flex justify-content-between flex-wrap">
-        <SpinButton
-          variant="primary"
-          name="camera"
-          label="Take Photo"
-          :handler="capture"
-          size="lg"
-          class="mt-2"
-        />
-        <b-btn
-          variant="success"
-          size="lg"
-          class="mt-2"
-          @click="startUpload"
-        >
-          <v-icon name="camera" />&nbsp;Add photo
-        </b-btn>
+            <p>
+              We'll try to identify them.
+            </p>
+          </b-card-body>
+        </b-card>
+        <div class="d-flex justify-content-between flex-wrap">
+          <b-btn
+            v-if="!showVideo"
+            variant="primary"
+            size="lg"
+            class="mt-2"
+            @click="takePhoto"
+          >
+            <v-icon name="camera" />&nbsp;Take photo
+          </b-btn>
+          <b-btn
+            variant="success"
+            size="lg"
+            class="mt-2"
+            @click="startUpload"
+          >
+            <v-icon name="camera" />&nbsp;Upload photo
+          </b-btn>
+        </div>
+        <!--      Don't resize as we need all the resolution we can get for better OCR-->
+        <!--        :image-resize-target-width="width"-->
+        <!--        :image-resize-target-height="height"-->
       </div>
-      <file-pond
-        v-if="uploading"
-        ref="pond"
-        name="photo"
-        :allow-multiple="false"
-        accepted-file-types="image/jpeg, image/png, image/gif, image/jpg"
-        :files="myFiles"
-        image-crop-aspect-ratio="1"
-        label-idle="<span class=&quot;btn btn-success&quot;>&nbsp;Upload&nbsp;Photo </span>"
-        :server="{ process, revert, restore, load, fetch }"
-        @init="photoInit"
-        @processfile="processed"
-      />
-      <!--      Don't resize as we need all the resolution we can get for better OCR-->
-      <!--        :image-resize-target-width="width"-->
-      <!--        :image-resize-target-height="height"-->
+      <b-btn v-if="result" variant="white" class="mt-2 mb-2" size="lg" @click="again">
+        Try Again
+      </b-btn>
+      <client-only>
+        <BooktasticResult
+          v-if="result"
+          :id="requestId"
+          :photo="photo"
+          :result="result"
+          :width="width"
+          :height="height"
+        />
+      </client-only>
+      <b-row v-if="processing">
+        <b-col cols="12" lg="4" offset-lg="4">
+          <NoticeMessage variant="info">
+            <div class="w-100 d-flex justify-content-center text-center">
+              <div class="d-flex flex-column">
+                <p>
+                  We won't get them all - right now around half is pretty good going.
+                </p>
+                <p>
+                  It's quite slow - upto 60 seconds to process.  Don't worry about that - it'll
+                  get faster later.
+                </p>
+                <h4>Crunching...</h4>
+                <div>
+                  <b-img-lazy src="~/static/loader.gif" alt="Loading" />
+                </div>
+              </div>
+            </div>
+          </NoticeMessage>
+        </b-col>
+      </b-row>
     </div>
-    <b-btn v-if="result" variant="white" class="mt-2 mb-2" size="lg" @click="again">
-      Try Again
-    </b-btn>
-    <client-only>
-      <BooktasticResult
-        v-if="result"
-        :id="requestId"
-        :photo="photo"
-        :result="result"
+    <div v-else>
+      <SpinButton
+        v-if="showVideo"
+        variant="primary"
+        name="camera"
+        label="Take Photo"
+        :handler="capture"
+        size="lg"
+        class="mt-2"
+      />
+      <video
+        v-show="showVideo"
+        v-if="!uploading && !processing && !result"
+        id="video"
+        ref="video"
+        class="mt-2"
+        :width="width"
+        :height="height"
+        autoplay
+      />
+      <canvas
+        id="canvas"
+        ref="canvas"
         :width="width"
         :height="height"
       />
-    </client-only>
-    <div v-if="processing" class="w-100 d-flex justify-content-center">
-      <div class="d-flex flex-column">
-        <h4>Crunching...</h4>
-        <div>
-          <b-img-lazy src="~/static/loader.gif" alt="Loading" />
-        </div>
-      </div>
     </div>
-    <video
-      v-if="!uploading && !processing && !result"
-      id="video"
-      ref="video"
-      class="mt-2"
-      :width="width"
-      :height="height"
-      autoplay
-    />
-    <canvas
-      id="canvas"
-      ref="canvas"
-      :width="width"
-      :height="height"
+    <file-pond
+      v-if="uploading"
+      ref="pond"
+      name="photo"
+      :allow-multiple="false"
+      accepted-file-types="image/jpeg, image/png, image/gif, image/jpg"
+      :files="myFiles"
+      image-crop-aspect-ratio="1"
+      label-idle="<span class=&quot;btn btn-success&quot;>&nbsp;Upload&nbsp;Photo </span>"
+      :server="{ process, revert, restore, load, fetch }"
+      @init="photoInit"
+      @processfile="processed"
     />
   </div>
 </template>
@@ -183,31 +200,9 @@ export default {
       uploading: false,
       processing: false,
       timeout: 3000,
-      requestId: null
+      requestId: null,
+      showVideo: false
     }
-  },
-  mounted: function() {
-    let videoDevice
-    this.video = this.$refs.video
-
-    navigator.mediaDevices
-      .getUserMedia({
-        video: {
-          facingMode: 'environment'
-        }
-      })
-      .then(mediaStream => {
-        // Set it playing onscreen.
-        this.video.srcObject = mediaStream
-        this.video.play()
-
-        // Extract video track.
-        videoDevice = mediaStream.getVideoTracks()[0]
-
-        // Check if this device supports a picture mode...
-        this.captureDevice = new ImageCapture(videoDevice)
-      })
-      .catch(err => this.stopCamera(err))
   },
   beforeDestroy() {
     this.stopCamera()
@@ -280,6 +275,35 @@ export default {
         }
       }
     },
+    takePhoto() {
+      this.showVideo = true
+      this.height = window.innerHeight - 100
+      this.width = window.innerWidth
+
+      this.waitForRef('video', () => {
+        let videoDevice
+        this.video = this.$refs.video
+
+        navigator.mediaDevices
+          .getUserMedia({
+            video: {
+              facingMode: 'environment'
+            }
+          })
+          .then(mediaStream => {
+            // Set it playing onscreen.
+            this.video.srcObject = mediaStream
+            this.video.play()
+
+            // Extract video track.
+            videoDevice = mediaStream.getVideoTracks()[0]
+
+            // Check if this device supports a picture mode...
+            this.captureDevice = new ImageCapture(videoDevice)
+          })
+          .catch(err => this.stopCamera(err))
+      })
+    },
     async capture() {
       this.canvas = this.$refs.canvas
 
@@ -288,6 +312,8 @@ export default {
         console.log('Capabilities', capabilities)
         const blob = await this.captureDevice.takePhoto()
         await this.captureDevice.grabFrame()
+        this.showVideo = false
+        console.log('Upload', blob)
         this.upload(blob)
       } else {
         alert('No device')
