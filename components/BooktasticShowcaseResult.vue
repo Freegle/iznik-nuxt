@@ -8,9 +8,9 @@
               {{ result.books.length | pluralize('book', { includeNumber: true }) }}
             </div>
             <div>
-              <v-icon v-if="rating === 'Good'" name="smile" class="text-success" title="Probably a good effort" />
-              <v-icon v-if="rating === 'OK'" name="meh" class="light text-faded" title="Probably did ok" />
-              <v-icon v-if="rating === 'Bad'" name="frown" class="text-warning" title="Probably didn't do very well" />
+              <v-icon v-if="rating === 'Good'" name="smile" class="text-success" title="Probably a good effort" scale="2" />
+              <v-icon v-if="rating === 'OK'" name="meh" class="light text-faded" title="Probably did ok" scale="2" />
+              <v-icon v-if="rating === 'Bad'" name="frown" class="text-warning" title="Probably didn't do very well" scale="2" />
             </div>
           </div>
         </b-card-header>
@@ -54,9 +54,9 @@ export default {
       return this.result.books.length / this.result.fragments.length
     },
     rating() {
-      if (this.ratio > 0.25) {
+      if (this.result.books.length > 7) {
         return 'Good'
-      } else if (this.ratio < 0.15) {
+      } else if (this.result.books.length < 4) {
         return 'Bad'
       } else {
         return 'OK'
