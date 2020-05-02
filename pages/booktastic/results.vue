@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <h1>
       Booktastic Proof of Concept
     </h1>
