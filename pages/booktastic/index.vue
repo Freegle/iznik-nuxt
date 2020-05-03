@@ -99,22 +99,24 @@
         </b-col>
       </b-row>
     </div>
-    <div v-else>
-      <SpinButton
-        v-if="showVideo"
-        variant="primary"
-        name="camera"
-        label="Take Photo"
-        :handler="capture"
-        size="lg"
-        class="mt-2"
-      />
+    <div v-else class="video-container">
+      <div class="w-100 d-flex justify-content-around video-content">
+        <SpinButton
+          v-if="showVideo"
+          variant="primary"
+          name="camera"
+          label="Take Photo"
+          :handler="capture"
+          size="lg"
+          class="mt-2 top"
+        />
+      </div>
       <video
         v-show="showVideo"
         v-if="!uploading && !processing && !result"
         id="video"
         ref="video"
-        class="mt-2"
+        class="video-content"
         :width="width"
         :height="height"
         autoplay
@@ -124,6 +126,7 @@
         ref="canvas"
         :width="width"
         :height="height"
+        class="video-content"
       />
     </div>
     <file-pond
@@ -396,5 +399,23 @@ body {
 
 .smallimg {
   max-width: 200px;
+}
+
+.video-container {
+  width: 100vw;
+  height: calc(100vh - 100px);
+  position: relative;
+}
+
+.video-content {
+  width: 100%;
+  /*height: 100%;*/
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.top {
+  z-index: 2000;
 }
 </style>

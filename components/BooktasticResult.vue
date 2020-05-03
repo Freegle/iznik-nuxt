@@ -26,6 +26,11 @@
                 <SpinButton variant="warning" name="frown" label="Few or none" :handler="few" />
               </div>
             </div>
+            <p>
+              See other results and background info <nuxt-link to="/booktastic/results">
+                here
+              </nuxt-link>.
+            </p>
             <p class="text-muted mt-2">
               The images are illustrative only and may be for a different editions.
             </p>
