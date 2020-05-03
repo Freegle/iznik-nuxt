@@ -106,8 +106,16 @@
     </div>
     <div v-else-if="approved" class="d-inline">
       <ModMemberButton
+        v-if="spamignore"
         :member="member"
         variant="success"
+        icon="check"
+        spamignore
+        label="Ignore"
+      />
+      <ModMemberButton
+        :member="member"
+        variant="white"
         icon="envelope"
         leave
         label="Mail"
@@ -164,6 +172,11 @@ export default {
       type: Object,
       required: false,
       default: null
+    },
+    spamignore: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {

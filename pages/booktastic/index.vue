@@ -100,8 +100,6 @@
       </b-row>
     </div>
     <div v-else class="video-container">
-      {{ JSON.stringify(photoCapabilities )}}
-      {{ JSON.stringify(mediaSettings) }}
       <div class="w-100 d-flex justify-content-around video-content">
         <SpinButton
           v-if="showVideo"
@@ -194,7 +192,7 @@ export default {
       height: 768,
       captureDevice: {},
       photoCapabilities: null,
-      mediaSettings: null
+      mediaSettings: null,
       video: {},
       canvas: {},
       myFiles: [],
@@ -293,19 +291,51 @@ export default {
           audio: false
         })
 
-        // Set it playing onscreen.
-        this.video.srcObject = mediaStream
-        this.video.play()
-
         // Extract video track.
         const videoDevice = mediaStream.getVideoTracks()[0]
 
         // Check if this device supports a picture mode...
         this.captureDevice = new ImageCapture(videoDevice)
 
-        this.photoCapabilities = await this.captureDevice.getPhotoCapabilities()
-        const track = mediaStream.getVideoTracks()[0]
-        this.mediaSettings = track.getSettings()
+        try {
+          // Try to set the focus so that we are close enough to get a good image.
+          console.log(
+            'Supported constraints',
+            navigator.mediaDevices.getSupportedConstraints()
+          )
+          this.photoCapabilities = await this.captureDevice.getPhotoCapabilities()
+          console.log('Photo capabilities', this.photoCapabilities)
+          const trackCapabilities = videoDevice.getCapabilities()
+          console.log('Track capabilities', trackCapabilities)
+          this.mediaSettings = videoDevice.getSettings()
+          console.log('Media settings', this.mediaSettings)
+
+          if (trackCapabilities && trackCapabilities.focusDistance) {
+            console.log(
+              'Can control focus distance',
+              trackCapabilities.focusDistance
+            )
+
+            const step = trackCapabilities.focusDistance.step
+
+            console.log('Turn on mode')
+            videoDevice.applyConstraints({
+              advanced: [{ focusMode: 'manual' }]
+            })
+
+            console.log('Turn on dist')
+            videoDevice.applyConstraints({
+              advanced: [{ focusDistance: 30 * step }]
+            })
+            console.log('Media settings now', videoDevice.getSettings())
+          }
+        } catch (e) {
+          console.log('Force focus failed', e)
+        }
+
+        // Set it playing onscreen.
+        this.video.srcObject = mediaStream
+        this.video.play()
       })
     },
     async capture() {
