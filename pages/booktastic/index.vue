@@ -287,7 +287,8 @@ export default {
           .getUserMedia({
             video: {
               facingMode: 'environment'
-            }
+            },
+            audio: false
           })
           .then(mediaStream => {
             // Set it playing onscreen.
@@ -310,7 +311,6 @@ export default {
         const capabilities = await this.captureDevice.getPhotoCapabilities()
         console.log('Capabilities', capabilities)
         const blob = await this.captureDevice.takePhoto()
-        await this.captureDevice.grabFrame()
         this.showVideo = false
         console.log('Upload', blob)
         this.upload(blob)
