@@ -171,7 +171,7 @@ export default {
       if (this.supportOrAdmin) {
         counts.push(['spammerpendingadd', 'spammerpendingremove'])
       }
-      if (process.env.IS_APP) setBadgeCount(this.getCount(counts)) // CC
+      if (process.env.IS_APP) setBadgeCount(this.chatCount + this.getCount(counts)) // CC
       return this.getCount(counts)
     },
     work() {
