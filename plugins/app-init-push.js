@@ -155,7 +155,10 @@ function handleNotification(notificationType, data) {
   if (!('count' in data)) {
     data.count = 0
   }
-  data.count = parseInt(data.count)
+  if (!('modtools' in data)) {
+    data.modtools = 0
+  }
+  data.count = parseInt(process.env.IS_MTAPP ? data.modtools : data.count)
   console.log('foreground ' + foreground + ' double ' + doubleEvent + ' msgid: ' + msgid + ' count: ' + data.count)
   if (data.count === 0) {
     mobilePush.clearAllNotifications() // no success and error fns given
@@ -234,7 +237,7 @@ export function logoutPushId() {
 }
 
 // Set home screen badge count
-let lastBadgeCount = -1;
+let lastBadgeCount = -1
 export function setBadgeCount(badgeCount) {
   if (badgeCount !== lastBadgeCount) {
     if (process.env.IS_APP) {
