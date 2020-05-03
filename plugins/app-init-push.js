@@ -55,7 +55,7 @@ const cordovaApp = {
         $('.showclicked').removeClass('showclicked');
         window.hideHeaderWait();
       });
-  
+
       $(document).ajaxStart(function () {
         $('#spinner').show();
         window.showHeaderWait();
@@ -70,7 +70,7 @@ const cordovaApp = {
         // Enable pinch zoom on Android
         cordova.plugins.ZoomControl.ZoomControl('true') // enabling zoom control: setBuiltInZoomControls(true), setDefaultZoom(ZoomDensity.MEDIUM), setSupportZoom(true)
         cordova.plugins.ZoomControl.setBuiltInZoomControls('true') // Sets whether the WebView should use its built-in zoom mechanisms
-        cordova.plugins.ZoomControl.setDisplayZoomControls('false') // Sets whether the WebView should display on-screen zoom controls when using the built-in zoom mechanisms. 
+        cordova.plugins.ZoomControl.setDisplayZoomControls('false') // Sets whether the WebView should display on-screen zoom controls when using the built-in zoom mechanisms.
         cordova.plugins.ZoomControl.setUseWideViewPort('true') // Sets whether the WebView should enable support for the "viewport" HTML meta tag or should use a wide viewport.
       }
 
@@ -158,7 +158,8 @@ function handleNotification(notificationType, data) {
   if (!('modtools' in data.additionalData)) {
     data.additionalData.modtools = 0
   }
-  data.count = parseInt(process.env.IS_MTAPP ? data.additionalData.modtools : data.count)
+  const modtools = data.additionalData.modtools=='1'
+  data.count = parseInt(data.count)
   console.log('foreground ' + foreground + ' double ' + doubleEvent + ' msgid: ' + msgid + ' count: ' + data.count)
   if (data.count === 0) {
     mobilePush.clearAllNotifications() // no success and error fns given
@@ -239,6 +240,7 @@ export function logoutPushId() {
 // Set home screen badge count
 let lastBadgeCount = -1
 export function setBadgeCount(badgeCount) {
+console.log('setBadgeCount X', badgeCount)
   if (badgeCount !== lastBadgeCount) {
     if (process.env.IS_APP) {
       console.log('setBadgeCount', badgeCount)
