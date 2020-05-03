@@ -100,6 +100,8 @@
       </b-row>
     </div>
     <div v-else class="video-container">
+      {{ JSON.stringify(photoCapabilities )}}
+      {{ JSON.stringify(mediaSettings) }}
       <div class="w-100 d-flex justify-content-around video-content">
         <SpinButton
           v-if="showVideo"
@@ -191,6 +193,8 @@ export default {
       width: 1024,
       height: 768,
       captureDevice: {},
+      photoCapabilities: null,
+      mediaSettings: null
       video: {},
       canvas: {},
       myFiles: [],
@@ -279,37 +283,35 @@ export default {
       this.height = window.innerHeight - 100
       this.width = window.innerWidth
 
-      this.waitForRef('video', () => {
-        let videoDevice
+      this.waitForRef('video', async () => {
         this.video = this.$refs.video
 
-        navigator.mediaDevices
-          .getUserMedia({
-            video: {
-              facingMode: 'environment'
-            },
-            audio: false
-          })
-          .then(mediaStream => {
-            // Set it playing onscreen.
-            this.video.srcObject = mediaStream
-            this.video.play()
+        const mediaStream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: 'environment'
+          },
+          audio: false
+        })
 
-            // Extract video track.
-            videoDevice = mediaStream.getVideoTracks()[0]
+        // Set it playing onscreen.
+        this.video.srcObject = mediaStream
+        this.video.play()
 
-            // Check if this device supports a picture mode...
-            this.captureDevice = new ImageCapture(videoDevice)
-          })
-          .catch(err => this.stopCamera(err))
+        // Extract video track.
+        const videoDevice = mediaStream.getVideoTracks()[0]
+
+        // Check if this device supports a picture mode...
+        this.captureDevice = new ImageCapture(videoDevice)
+
+        this.photoCapabilities = await this.captureDevice.getPhotoCapabilities()
+        const track = mediaStream.getVideoTracks()[0]
+        this.mediaSettings = track.getSettings()
       })
     },
     async capture() {
       this.canvas = this.$refs.canvas
 
       if (this.captureDevice) {
-        const capabilities = await this.captureDevice.getPhotoCapabilities()
-        console.log('Capabilities', capabilities)
         const blob = await this.captureDevice.takePhoto()
         this.showVideo = false
         console.log('Upload', blob)
