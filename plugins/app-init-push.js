@@ -155,10 +155,10 @@ function handleNotification(notificationType, data) {
   if (!('count' in data)) {
     data.count = 0
   }
-  if (!('modtools' in data)) {
-    data.modtools = 0
+  if (!('modtools' in data.additionalData)) {
+    data.additionalData.modtools = 0
   }
-  data.count = parseInt(process.env.IS_MTAPP ? data.modtools : data.count)
+  data.count = parseInt(process.env.IS_MTAPP ? data.additionalData.modtools : data.count)
   console.log('foreground ' + foreground + ' double ' + doubleEvent + ' msgid: ' + msgid + ' count: ' + data.count)
   if (data.count === 0) {
     mobilePush.clearAllNotifications() // no success and error fns given
