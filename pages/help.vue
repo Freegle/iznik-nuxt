@@ -403,11 +403,12 @@
         </h1>
         <p>If your question isn't answered above, or you wish to compliment or complain, then you can <b>contact your volunteer team</b>, who will be happy to hear whether Freegle is doing a great job or needs changing.</p>
         <h5>Which Freegle community do you need help with?</h5>
-        <div v-if="loggedIn">
-          <GroupRememberSelect v-model="contactGroupId" remember="contactmods" class="mt-2 mb-2" />
-          <br>
-          <ChatButton :groupid="contactGroupId" size="lg" title="Contact community volunteers" variant="success" class="mt-2 mb-2" />
-        </div>
+        <b-card v-if="loggedIn" no-body>
+          <b-card-body class="p-3">
+            <GroupRememberSelect v-model="contactGroupId" remember="contactmods" class="mb-3" />
+            <ChatButton :groupid="contactGroupId" size="md" title="Contact community volunteers" variant="success" class="mb-2" />
+          </b-card-body>
+        </b-card>
         <div class="text-muted">
           <hr>
           <p>

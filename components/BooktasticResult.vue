@@ -14,19 +14,36 @@
               <b>{{ selectedSpine.spine }}</b>
             </div>
           </div>
-          <NoticeMessage v-else-if="result.spines.length" variant="info">
+          <div v-else-if="result.spines.length" variant="info">
             <h3>We found {{ books.length | pluralize('book', { includeNumber: true }) }}</h3>
-            <p>
-              Click on one of the rectangles to see what we identified.
+            <div>
+              <p>
+                Please rate how many we found:
+              </p>
+              <div class="d-flex">
+                <SpinButton variant="success" name="smile" label="Most or all" :handler="most" />
+                <SpinButton variant="white" name="meh" label="About half" :handler="some" />
+                <SpinButton variant="warning" name="frown" label="Few or none" :handler="few" />
+              </div>
+            </div>
+            <p class="text-muted mt-2">
+              The images are illustrative only and may be for a different editions.
             </p>
-          </NoticeMessage>
+            <div class="d-flex flex-wrap">
+              <BooktasticBook v-for="(book, index) in books" :key="'book-' + index" :book="book" class="mr-2" />
+            </div>
+          </div>
           <NoticeMessage v-else variant="warning">
             We couldn't find any books in this picture.
           </NoticeMessage>
         </b-card-body>
       </b-card>
+      <h3>Debugging Info</h3>
       <div v-if="showSpines">
-        <b-btn variant="white" size="lg" @click="showSpines = false">
+        <p class="mt-2">
+          Click on one of the rectangles to see what we identified.
+        </p>
+        <b-btn variant="white" size="lg" class="mt-1 mb-1" @click="showSpines = false">
           Hide text
         </b-btn>
         <ul v-if="result && result.spines" class="list-unstyled mt-2">
@@ -73,7 +90,7 @@
             lock-movement-y
             lock-scaling-x
             lock-scaling-y
-            @selected="selectUsed"
+            @selected="selectBook"
           />
           <fabric-rectangle
             v-for="(fragment, index) in nobooks"
@@ -99,10 +116,17 @@
 </template>
 <script>
 import NoticeMessage from './NoticeMessage'
+import SpinButton from './SpinButton'
+import BooktasticBook from './BooktasticBook'
 import waitForRef from '@/mixins/waitForRef'
 
+const a = require('axios')
+const axios = a.create({
+  timeout: 300000
+})
+
 export default {
-  components: { NoticeMessage },
+  components: { BooktasticBook, SpinButton, NoticeMessage },
   mixins: [waitForRef],
   props: {
     photo: {
@@ -118,6 +142,10 @@ export default {
       required: true
     },
     height: {
+      type: Number,
+      required: true
+    },
+    id: {
       type: Number,
       required: true
     }
@@ -154,6 +182,7 @@ export default {
       return Math.min(this.naturalWidth, this.width)
     },
     zoom() {
+      // return 1
       return Math.min(
         this.width / this.naturalWidth,
         this.height / this.naturalHeight
@@ -223,6 +252,7 @@ export default {
             let miny = 1000000
             let maxx = -1000000
             let maxy = -1000000
+            let found = false
 
             this.unusedFragments.forEach(f => {
               if (f.spineindex === i) {
@@ -233,22 +263,25 @@ export default {
                   miny = Math.min(miny, v.y)
                   maxx = Math.max(maxx, v.x)
                   maxy = Math.max(maxy, v.y)
+                  found = true
                 })
               }
             })
 
-            ret.push({
-              top: miny,
-              left: minx,
-              width: maxx - minx,
-              height: maxy - miny,
-              spineindex: i
-            })
+            if (found) {
+              ret.push({
+                top: miny,
+                left: minx,
+                width: maxx - minx,
+                height: maxy - miny,
+                spineindex: i
+              })
+            }
           }
         }
       }
 
-      console.log('Books', ret)
+      console.log('No books', ret)
       return ret
     },
     books() {
@@ -275,13 +308,14 @@ export default {
               }
             })
 
-            ret.push({
-              top: miny,
-              left: minx,
-              width: maxx - minx,
-              height: maxy - miny,
-              spineindex: i
-            })
+            const thisone = this.result.spines[i]
+
+            thisone.top = miny
+            thisone.left = minx
+            thisone.width = maxx - minx
+            thisone.height = maxy - miny
+
+            ret.push(thisone)
           }
         }
       }
@@ -320,11 +354,36 @@ export default {
       this.selectedSpine = this.result.spines[this.nobooks[id].spineindex]
       console.log('Selected spine', this.selectedSpine)
     },
-    selectUsed(e) {
-      console.log('Selected used', e)
+    selectBook(e) {
+      console.log('Selected book', e)
       const id = e.id.substring(e.id.indexOf('-') + 1)
-      this.selectedSpine = this.result.spines[this.books[id].spineindex]
+      this.selectedSpine = this.books[id]
       console.log('Selected spine', this.selectedSpine)
+    },
+    most() {
+      this.rate(3)
+    },
+    some() {
+      this.rate(2)
+    },
+    few() {
+      this.rate(1)
+    },
+    async rate(rating) {
+      const formData = new FormData()
+      formData.append('id', this.id)
+      formData.append('rating', rating)
+      formData.append('action', 'Rate')
+
+      await axios.post(
+        'https://iznik.ilovefreegle.org/api/catalogue',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      )
     }
   }
 }

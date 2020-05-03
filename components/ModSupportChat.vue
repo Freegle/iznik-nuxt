@@ -1,7 +1,7 @@
 <template>
   <b-row class="m-0">
     <b-col cols="3" md="2" class="p-0 order-3 text-muted">
-      <v-icon name="hashtag" scale="0.5" class="text-muted" />{{ chat.id }}
+      Chat <v-icon name="hashtag" scale="0.5" class="text-muted" />{{ chat.id }}
     </b-col>
     <b-col cols="1" class="order-2 p-0">
       <v-icon v-if="chat.chattype === 'User2User'" class="text-success pr-1" name="user" />

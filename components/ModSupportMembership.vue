@@ -67,6 +67,9 @@
               <option value="DEFAULT">
                 Group Settings
               </option>
+              <option value="PROHIBITED">
+                Can't Post
+              </option>
             </b-form-select>
           </b-form-group>
           <b-form-group label="Community Event mails:" class="mr-5">

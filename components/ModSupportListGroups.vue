@@ -7,7 +7,7 @@
         arrow to filter.
       </p>
       <p>
-        Groups with the ID in light blue are mentor caretaker groups.
+        Groups with the ID in light blue are caretaker groups.
       </p>
       <hot-table
         ref="hot"

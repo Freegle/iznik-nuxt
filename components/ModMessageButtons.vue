@@ -25,7 +25,7 @@
     </div>
     <div v-else-if="pending" class="d-inline">
       <ModMessageButton
-        v-if="!message.heldby"
+        v-if="!message.heldby && !cantpost"
         :message="message"
         variant="success"
         icon="check"
@@ -154,6 +154,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    cantpost: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
@@ -174,7 +179,11 @@ export default {
     validActions() {
       // The standard messages we show depend on the valid ones for this type of message.
       if (this.pending) {
-        return ['Approve', 'Reject', 'Leave', 'Delete', 'Edit']
+        const ret = ['Reject', 'Leave', 'Delete', 'Edit']
+        if (!this.cantpost) {
+          ret.push('Approve')
+        }
+        return ret
       } else if (this.approved) {
         return ['Leave Approved Message', 'Delete Approved Message', 'Edit']
       }
