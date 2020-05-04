@@ -64,7 +64,12 @@
                 This person has been reported as a spammer or scammer.  Please do not talk to them and under no circumstances
                 send them any money.
               </p>
-              <ModComments v-if="mod && chat && chat.chattype === 'User2Mod' && otheruser" :user="otheruser" class="mt-1" />
+              <div v-if="showNotices">
+                <span class="float-right mr-2 mt-2 clickme" title="Hide warnings" @click="showNotices = false">
+                  <v-icon name="times-circle" scale="1.5" />
+                </span>
+                <ModComments v-if="mod && chat && chat.chattype === 'User2Mod' && otheruser" :user="otheruser" class="mt-1" />
+              </div>
               <b-form-textarea
                 v-if="!spammer"
                 ref="chatarea"
