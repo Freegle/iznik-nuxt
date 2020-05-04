@@ -1,6 +1,6 @@
 <template>
   <b-card bg-light>
-    <div class="group">
+    <div class="group mb-3">
       <div class="group__image">
         <b-img-lazy rounded thumbnail alt="Community profile picture" :src="group.profile ? group.profile : '/icon.png'" class="js-pageimage" />
       </div>
