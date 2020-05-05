@@ -14,32 +14,41 @@
               <b>{{ selectedSpine.spine }}</b>
             </div>
           </div>
-          <NoticeMessage v-else-if="result.spines.length" variant="info">
+          <div v-else-if="result.spines.length" variant="info">
             <h3>We found {{ books.length | pluralize('book', { includeNumber: true }) }}</h3>
-            <ul>
-              <li v-for="(book, index) in books" :key="'book-' + index">
-                {{ book.author }} - {{ book.title }}
-              </li>
-            </ul>
-            <p>
-              Please rate this:
-            </p>
-            <div class="d-flex">
-              <SpinButton variant="success" name="smile" label="Most or all" :handler="most" />
-              <SpinButton variant="white" name="meh" label="About half" :handler="some" />
-              <SpinButton variant="warning" name="frown" label="Few or none" :handler="few" />
+            <div>
+              <p>
+                Please rate how many we found:
+              </p>
+              <div class="d-flex">
+                <SpinButton variant="success" name="smile" label="Most or all" :handler="most" />
+                <SpinButton variant="white" name="meh" label="About half" :handler="some" />
+                <SpinButton variant="warning" name="frown" label="Few or none" :handler="few" />
+              </div>
             </div>
-            <p class="mt-2">
-              Click on one of the rectangles to see what we identified.
+            <p>
+              See other results and background info <nuxt-link to="/booktastic/results">
+                here
+              </nuxt-link>.
             </p>
-          </NoticeMessage>
+            <p class="text-muted mt-2">
+              The images are illustrative only and may be for a different editions.
+            </p>
+            <div class="d-flex flex-wrap">
+              <BooktasticBook v-for="(book, index) in books" :key="'book-' + index" :book="book" class="mr-2" />
+            </div>
+          </div>
           <NoticeMessage v-else variant="warning">
             We couldn't find any books in this picture.
           </NoticeMessage>
         </b-card-body>
       </b-card>
+      <h3>Debugging Info</h3>
       <div v-if="showSpines">
-        <b-btn variant="white" size="lg" @click="showSpines = false">
+        <p class="mt-2">
+          Click on one of the rectangles to see what we identified.
+        </p>
+        <b-btn variant="white" size="lg" class="mt-1 mb-1" @click="showSpines = false">
           Hide text
         </b-btn>
         <ul v-if="result && result.spines" class="list-unstyled mt-2">
@@ -113,6 +122,7 @@
 <script>
 import NoticeMessage from './NoticeMessage'
 import SpinButton from './SpinButton'
+import BooktasticBook from './BooktasticBook'
 import waitForRef from '@/mixins/waitForRef'
 
 const a = require('axios')
@@ -121,7 +131,7 @@ const axios = a.create({
 })
 
 export default {
-  components: { SpinButton, NoticeMessage },
+  components: { BooktasticBook, SpinButton, NoticeMessage },
   mixins: [waitForRef],
   props: {
     photo: {

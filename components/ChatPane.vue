@@ -143,6 +143,9 @@
             <b-row>
               <b-col class="p-0">
                 <div v-if="showNotices">
+                  <span class="float-right mr-2 mt-2 clickme" title="Hide warnings" @click="showNotices = false">
+                    <v-icon name="times-circle" scale="1.5" />
+                  </span>
                   <notice-message v-if="badratings" variant="warning" class="clickme" @click.native="showInfo">
                     <p>
                       <v-icon name="exclamation-triangle" />&nbsp;This freegler has a lot of thumbs down ratings.

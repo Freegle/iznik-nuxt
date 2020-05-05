@@ -455,5 +455,10 @@ export const actions = {
       happinessid: params.happinessid,
       action: 'HappinessReviewed'
     })
+  },
+
+  async add({ commit, dispatch }, params) {
+    const ret = await this.$api.memberships.put(params)
+    return ret.id
   }
 }
