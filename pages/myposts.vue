@@ -8,7 +8,7 @@
         <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" :chats="me.expectedchats" />
         <JobsTopBar />
         <b-card
-          v-if="!simple && false"
+          v-if="!simple"
           class="mt-2"
           border-variant="info"
           header="info"
@@ -31,6 +31,7 @@
           </b-card-body>
         </b-card>
         <b-card
+          v-if="queued.length > 0"
           class="mt-2"
           border-variant="info"
           header="info"
@@ -45,13 +46,14 @@
           </template>
           <b-card-body class="p-1 p-lg-3">
             <b-card-text class="text-center">
-              <p v-if="offers.length > 0" class="text-muted">
-                These are queued up for when Freegle fully reopens.
-              </p>
+              <NoticeMessage v-if="queued.length > 0" variant="danger" class="text-muted">
+                These were queued up while Freegle was suspending for COVID-19.  Please submit them, or if they
+                no longer apply then withdraw them.
+              </NoticeMessage>
               <b-img-lazy v-if="busy && queued.length === 0" src="~/static/loader.gif" alt="Loading..." />
               <div v-if="busy || queuedCount > 0">
                 <div v-for="message in queued" :key="'message-' + message.id" class="p-0 text-left mt-1">
-                  <MyMessage :message="message" :messages="messages" :show-old="false" />
+                  <MyMessage :message="message" :messages="messages" :show-old="false" queued />
                 </div>
               </div>
               <div v-else>
@@ -175,7 +177,7 @@
           </b-card-body>
         </b-card>
         <b-card
-          v-if="!simple && false"
+          v-if="!simple"
           class="mt-2"
           border-variant="info"
           header="info"
@@ -233,6 +235,7 @@
 </template>
 
 <script>
+import NoticeMessage from '../components/NoticeMessage'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
 import waitForRef from '@/mixins/waitForRef'
@@ -247,6 +250,7 @@ const ExpectedRepliesWarning = () =>
 
 export default {
   components: {
+    NoticeMessage,
     JobsTopBar,
     MyMessage,
     SidebarLeft,

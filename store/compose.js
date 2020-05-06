@@ -426,5 +426,11 @@ export const actions = {
     commit('clear')
 
     return results
+  },
+
+  async submitQueued({ dispatch, commit, state, store }, params) {
+    const { id } = await submitDraft.call(this, params.id, state.email, commit)
+
+    return id
   }
 }
