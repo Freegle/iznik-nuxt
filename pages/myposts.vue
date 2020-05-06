@@ -2,13 +2,11 @@
   <b-container fluid>
     <b-row class="m-0">
       <b-col cols="0" lg="3" class="d-none d-lg-block p-0 pr-1">
-        <!--        COVID-->
-        <SidebarLeft v-if="false" :show-community-events="true" :show-bot-left="true" />
+        <SidebarLeft :show-community-events="true" :show-bot-left="true" />
       </b-col>
       <b-col cols="12" lg="6" class="p-0">
         <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" :chats="me.expectedchats" />
         <JobsTopBar />
-        <CovidQueue />
         <b-card
           v-if="!simple && false"
           class="mt-2"
@@ -226,8 +224,7 @@
         </b-card>
       </b-col>
       <b-col cols="0" lg="3" class="d-none d-lg-block p-0 pl-1">
-        <!--        COVID-->
-        <sidebar-right v-if="false" show-volunteer-opportunities />
+        <sidebar-right show-volunteer-opportunities />
       </b-col>
     </b-row>
     <AvailabilityModal v-if="me" ref="availabilitymodal" :thisuid="me.id" />
@@ -236,7 +233,6 @@
 </template>
 
 <script>
-import CovidQueue from '../components/CovidQueue'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
 import waitForRef from '@/mixins/waitForRef'
@@ -251,7 +247,6 @@ const ExpectedRepliesWarning = () =>
 
 export default {
   components: {
-    CovidQueue,
     JobsTopBar,
     MyMessage,
     SidebarLeft,

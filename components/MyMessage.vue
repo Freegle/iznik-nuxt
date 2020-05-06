@@ -118,7 +118,6 @@
             </b-card-body>
             <b-card-footer class="p-1">
               <div class="d-flex justify-content-start flex-wrap">
-                <!--                COVID-->
                 <b-btn v-if="rejected && false" variant="warning" class="m-1" @click="repost">
                   <v-icon name="pen" /> Edit and Resend
                 </b-btn>
@@ -137,13 +136,13 @@
                 <b-btn v-if="!rejected && message.canedit" variant="primary" class="m-1" @click="edit">
                   <v-icon name="pen" /> Edit
                 </b-btn>
-                <b-btn v-if="false && !rejected && message.canrepost" variant="white" class="m-1" @click="repost">
+                <b-btn v-if="!rejected && message.canrepost" variant="white" class="m-1" @click="repost">
                   <v-icon name="sync" /> Repost
                 </b-btn>
-                <b-btn v-else-if="false && !rejected && !taken && !received && message.canrepostat" variant="white" disabled class="m-1" title="You will be able to repost this soon">
+                <b-btn v-else-if="!rejected && !taken && !received && message.canrepostat" variant="white" disabled class="m-1" title="You will be able to repost this soon">
                   <v-icon name="sync" /> Repost <span class="small">{{ message.canrepostat | timeago }}</span>
                 </b-btn>
-                <b-btn v-if="false && !rejected && !simple" variant="white" title="Share" class="m-1 text-faded" @click="share">
+                <b-btn v-if="!rejected && !simple" variant="white" title="Share" class="m-1 text-faded" @click="share">
                   <v-icon name="share-alt" /> Share
                 </b-btn>
                 <div class="align-self-end">

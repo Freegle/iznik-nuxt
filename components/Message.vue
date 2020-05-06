@@ -47,12 +47,9 @@
             <div v-if="(!eSnippet || eSnippet === 'null') && !expanded">
               <i>There's no description.</i>
             </div>
-            <div class="text-danger">
-              Replies disabled during COVID-19.
-            </div>
-            <!--            <b-button v-if="!expanded" variant="white" class="mt-1" @click="expand">-->
-            <!--              See details and reply <v-icon name="angle-double-right" />-->
-            <!--            </b-button>-->
+            <b-button v-if="!expanded" variant="white" class="mt-1" @click="expand">
+              See details and reply <v-icon name="angle-double-right" />
+            </b-button>
           </div>
         </b-card-title>
         <b-card-title class="msgsubj mb-0 d-none d-sm-block">
@@ -84,12 +81,9 @@
                 <div v-if="(!eSnippet || eSnippet === 'null') && !expanded">
                   <i>There's no description.</i>
                 </div>
-                <div class="text-danger">
-                  Replies disabled during COVID-19.
-                </div>
-                <!--                <b-button v-if="!expanded" variant="white" class="mt-1" @click="expand">-->
-                <!--                  See details and reply <v-icon name="angle-double-right" />-->
-                <!--                </b-button>-->
+                <b-button v-if="!expanded" variant="white" class="mt-1" @click="expand">
+                  See details and reply <v-icon name="angle-double-right" />
+                </b-button>
               </div>
               <div v-if="!simple" class="d-flex justify-content-between">
                 <b-button v-if="expanded && !hideClose" size="sm" variant="link" class="grey" @click="contract">

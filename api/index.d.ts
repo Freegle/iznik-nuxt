@@ -19,7 +19,6 @@ import BanditAPI from './BanditAPI.js'
 import ChatAPI from './ChatAPI.js'
 import CommentAPI from './CommentAPI.js'
 import CommunityEventAPI from './CommunityEventAPI.js'
-import CovidAPI from './CovidAPI.js'
 import DashboardAPI from './DashboardAPI.js'
 import DonationsAPI from './DonationsAPI.js'
 import GroupAPI from './GroupAPI.js'
@@ -56,7 +55,6 @@ interface API {
   chat: ChatAPI;
   comment: CommentAPI;
   communityevent: CommunityEventAPI;
-  covid: CovidAPI;
   dashboard: DashboardAPI;
   donations: DonationsAPI;
   group: GroupAPI;

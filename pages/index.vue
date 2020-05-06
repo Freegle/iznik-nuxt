@@ -18,25 +18,25 @@
           All completely free. Freegle: it's like online dating for stuff.
         </h5>
         <CovidWarning />
-        <!--        <b-row class="mt-4">-->
-        <!--          <b-col class="half-pad-col-right" cols="6" md="5">-->
-        <!--            <b-btn block variant="success" class="float-left" size="lg" to="/give">-->
-        <!--              <v-icon name="gift" />&nbsp;Give Stuff-->
-        <!--            </b-btn>-->
-        <!--          </b-col>-->
-        <!--          <b-col class="half-pad-col-left" offset="0" offset-md="2" cols="6" md="5">-->
-        <!--            <b-btn block variant="primary" class="float-right" size="lg" to="/find">-->
-        <!--              <v-icon name="search" />&nbsp;Find Stuff-->
-        <!--            </b-btn>-->
-        <!--          </b-col>-->
-        <!--        </b-row>-->
-        <!--        <b-row class="mt-4">-->
-        <!--          <b-col cols="12" xl="8" offset-xl="2">-->
-        <!--            <b-btn block variant="white" size="lg" to="/explore">-->
-        <!--              <v-icon name="eye" />&nbsp;Or just click here to Explore Freegle!-->
-        <!--            </b-btn>-->
-        <!--          </b-col>-->
-        <!--        </b-row>-->
+        <b-row class="mt-4">
+          <b-col class="half-pad-col-right" cols="6" md="5">
+            <b-btn block variant="success" class="float-left" size="lg" to="/give">
+              <v-icon name="gift" />&nbsp;Give Stuff
+            </b-btn>
+          </b-col>
+          <b-col class="half-pad-col-left" offset="0" offset-md="2" cols="6" md="5">
+            <b-btn block variant="primary" class="float-right" size="lg" to="/find">
+              <v-icon name="search" />&nbsp;Find Stuff
+            </b-btn>
+          </b-col>
+        </b-row>
+        <b-row class="mt-4">
+          <b-col cols="12" xl="8" offset-xl="2">
+            <b-btn block variant="white" size="lg" to="/explore">
+              <v-icon name="eye" />&nbsp;Or just click here to Explore Freegle!
+            </b-btn>
+          </b-col>
+        </b-row>
         <b-row class="mt-4">
           <b-col>
             <client-only>
