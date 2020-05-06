@@ -14,7 +14,7 @@
           <div v-if="message.location">
             <b-row>
               <b-col cols="6" md="3">
-                <b-form-select v-model="message.type">
+                <b-form-select v-model="type">
                   <option value="Offer">
                     OFFER
                   </option>
@@ -111,6 +111,7 @@ export default {
       uploading: false,
       myFiles: [],
       image: null,
+      type: null,
       item: null,
       postcode: null,
       saving: null
@@ -121,13 +122,14 @@ export default {
       return this.$store.getters['compose/getUploading']
     },
     placeholder() {
-      return this.message && this.message.type === 'Offer'
+      return this.message && this.type === 'Offer'
         ? 'Please give a few details, e.g. colour, condition, size etc.'
         : "Please give a few more details about what you're looking for, and why you'd like it."
     }
   },
   mounted() {
     this.attachments = this.message.attachments
+    this.type = this.message.type
     this.item = this.message.item ? this.message.item.name : null
     this.postcode = this.message.location ? this.message.location : null
   },
@@ -139,6 +141,7 @@ export default {
       this.showModal = false
     },
     async save() {
+      console.log('Saving')
       if (this.item && (this.message.textbody || this.attachments.length)) {
         const attids = []
         this.saving = true
@@ -149,7 +152,7 @@ export default {
 
         await this.$store.dispatch('messages/patch', {
           id: this.message.id,
-          msgtype: this.message.type,
+          msgtype: this.type,
           item: this.item,
           location: this.postcode.name,
           textbody: this.message.textbody,

@@ -127,7 +127,6 @@
           </b-card-body>
         </b-card>
         <b-card
-          v-if="false"
           class="mt-2"
           border-variant="info"
           header="info"
@@ -355,7 +354,9 @@ export default {
     },
 
     queued() {
-      const ret = this.messages.filter(m => m.isdraft)
+      const ret = this.messages.filter(
+        m => m.isdraft && (!m.outcomes || m.outcomes.length === 0)
+      )
       ret.sort(this.postSort)
       return ret
     },
