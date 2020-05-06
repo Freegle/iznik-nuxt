@@ -438,13 +438,13 @@ export default {
         try {
           const blob = await this.captureDevice.takePhoto()
           await this.showCapture(blob)
+          this.showVideo = false
+          this.upload(blob)
         } catch (e) {
           console.log('Capture error', e)
         }
 
-        this.showVideo = false
-        this.upload(blob)
-        this.previewTimer = setTimeout(this.capture, 1000)
+        // this.previewTimer = setTimeout(this.capture, 1000)
       } else {
         alert('No device')
       }
