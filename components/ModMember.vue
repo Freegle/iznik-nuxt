@@ -9,7 +9,7 @@
           <ProfileImage :image="member.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="sm" />
           {{ member.displayname }}
         </div>
-        <div>
+        <div v-if="member.joined">
           <v-icon name="calendar-alt" /> {{ member.joined | datetimeshort }}
         </div>
         <div>
