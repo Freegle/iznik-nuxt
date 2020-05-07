@@ -63,7 +63,7 @@
       Stay safe everyone!
     </p>
     <p>
-      P.S. If you're super-happy we're back, any small donations would be super-helpful right now - thank you!
+      P.S. If you're happy we're back, any small donations would be super-helpful right now - thank you!
     </p>
     <DonationButton link="paypal1510" class="mt-2" />
   </div>
