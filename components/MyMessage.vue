@@ -385,8 +385,13 @@ export default {
       this.$refs.editModal.show()
     },
     async submitQueued() {
+      await this.$store.dispatch('auth/fetchUser', {
+        components: ['me']
+      })
+      const me = this.$store.getters['auth/user']
       await this.$store.dispatch('compose/submitQueued', {
-        id: this.message.id
+        id: this.message.id,
+        email: me.email
       })
 
       this.hide = true
