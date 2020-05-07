@@ -2,7 +2,9 @@
   <div>
     <p>
       As tips and recycling centres start to re-open to varying degrees around the UK, we think it's a good time
-      to reboot Freegle. We know freegling will be immensely useful right now.
+      to reboot Freegle. We know freegling will be immensely useful right now, and
+      <a href="https://www.gov.uk/government/publications/coronavirus-covid-19-advice-to-local-authorities-on-prioritising-waste-collections/managing-household-waste-and-recycling-centres-hwrcs-in-england-during-the-coronavirus-covid-19-pandemic#annex---communications-to-residents">government advice</a> is to
+      use online platforms such as ours rather than go to tips or recycling centres.
     </p>
     <p>
       We do not want to encourage unnecessary travel and we'd like everyone to stay safe - so please
