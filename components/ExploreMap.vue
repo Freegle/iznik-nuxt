@@ -353,16 +353,38 @@ export default {
     idle() {
       const google = gmapApi()
 
-      if ((this.swlat || this.swlng) && !this.initialBounds) {
-        // We've been asked to set the bounds of the map.
-        this.initialBounds = true
-        this.$refs.gmap.$mapObject.fitBounds(
-          new google.maps.LatLngBounds(
-            new google.maps.LatLng(this.swlat, this.swlng),
-            new google.maps.LatLng(this.nelat, this.nelng)
-          ),
-          0
-        )
+      // The focus and zoom on the map should only be set on it's inital load.
+      // The initialBounds property controls that
+      if (!this.initialBounds) {
+        if (this.swlat || this.swlng) {
+          // Specific bounds have been passed in so use them
+          this.initialBounds = true
+
+          this.$refs.gmap.$mapObject.fitBounds(
+            new google.maps.LatLngBounds(
+              new google.maps.LatLng(this.swlat, this.swlng),
+              new google.maps.LatLng(this.nelat, this.nelng)
+            ),
+            0
+          )
+        } else if (this.region && this.groupsInBounds) {
+          // We are displaying a specific region so zoom to it
+          this.initialBounds = true
+
+          const latlngbounds = new google.maps.LatLngBounds()
+
+          if (this.groupsInBounds) {
+            this.groupsInBounds.forEach(group => {
+              if (group.onmap) {
+                latlngbounds.extend(
+                  new google.maps.LatLng(group.lat, group.lng)
+                )
+              }
+            })
+
+            this.$refs.gmap.$mapObject.fitBounds(latlngbounds)
+          }
+        }
       }
     }
   }
