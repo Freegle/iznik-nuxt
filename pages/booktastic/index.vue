@@ -372,7 +372,7 @@ export default {
       this.videoDevice = videoTracks[0]
       this.captureDevice = new ImageCapture(this.videoDevice)
       this.setFocusRange()
-      this.previewTimer = setTimeout(this.capture, 1)
+      // this.previewTimer = setTimeout(this.capture, 1)
 
       // Set it playing onscreen.
       this.video = this.$refs.video
