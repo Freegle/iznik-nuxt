@@ -14,7 +14,8 @@
     <p>
       Initially we'd like to encourage OFFERs and WANTEDs for <b>essential</b> items only.  We know that will vary
       for different people and circumstances.  Please use your common sense &#x1F642;.  Many communities will have
-      restrictions on what is and isn't OK to freegle, so please respect this.
+      restrictions on what is and isn't OK to freegle.  Some communities may still be closed based on
+      local conditions.  If your local volunteers say this, please respect it - we're just trying to keep you safe.
     </p>
     <h4>Keep it LOCAL</h4>
     <p>
