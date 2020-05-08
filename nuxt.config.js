@@ -421,6 +421,11 @@ module.exports = {
       }
 
       config.resolve.alias['color-vars'] = 'assets/css/_color-vars.scss'
+
+      // Pretend we have fs - needed for OpenCV.
+      config.node = {
+        fs: 'empty'
+      }
     },
 
     optimization: {

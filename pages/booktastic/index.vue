@@ -114,7 +114,7 @@
         </div>
         <video
           v-show="showVideo"
-          v-if="!uploading && !processing && !result"
+          v-if="false && !uploading && !processing && !result"
           id="video"
           ref="video"
           class="video-content"
@@ -146,7 +146,7 @@
             lock-scaling-y
           />
         </fabric-canvas>
-        <b-img v-if="false" ref="preview" :src="preview" fluid class="video-content" />
+        <b-img ref="preview" :src="preview" fluid class="video-content" />
       </div>
       <div>
         <b-form-input
@@ -191,6 +191,12 @@ import BooktasticResult from '@/components/BooktasticResult'
 import NoticeMessage from '@/components/NoticeMessage'
 import waitForRef from '@/mixins/waitForRef'
 
+let cv
+
+if (process.client) {
+  cv = require('opencv.js')
+}
+
 const a = require('axios')
 const axios = a.create({
   timeout: 300000
@@ -220,6 +226,7 @@ export default {
   mixins: [waitForRef],
   data() {
     return {
+      $cv: null,
       mediaStream: null,
       captureDevice: {},
       videoDevice: null,
@@ -283,7 +290,85 @@ export default {
       clearTimeout(this.previewTimer)
     }
   },
+  mounted() {
+    this.$cv = cv
+    console.log('Get CV build info')
+    const info = cv.getBuildInformation()
+    console.log('CV info', info)
+    console.log('Load model')
+    this.createFileFromURL(
+      'east_text_detection.pb',
+      'frozen_east_text_detection',
+      () => {
+        console.log('Loaded text model')
+        const classifier = new cv.CascadeClassifier()
+        console.log('Now load file')
+        const rtn = classifier.load('east_text_detection')
+        console.log('Loaded', rtn)
+      }
+    )
+  },
   methods: {
+    createFileFromURL(file, url, cb) {
+      axios
+        .get(url)
+        .then(resp => {
+          this.$cv.FS_createDataFile('/', file, resp.data, true, false, false)
+          cb()
+        })
+        .catch(err => {
+          // eslint-disable-next-line
+          console.log('ERR',err);
+        })
+    },
+    createFileFromURL3(path, url, callback) {
+      let request = new XMLHttpRequest()
+      request.open('GET', url, true)
+      request.responseType = 'arraybuffer'
+      request.onload = function(ev) {
+        request = this
+        if (request.readyState === 4) {
+          if (request.status === 200) {
+            const data = new Uint8Array(request.response)
+            cv.FS_createDataFile('/', path, data, true, false, false)
+            callback()
+          } else {
+            console.error(
+              'Failed to load ' + url + ' status: ' + request.status
+            )
+          }
+        }
+      }
+      request.send()
+    },
+    createFileFromURL2(file, url, cb) {
+      console.log('createFileFromUrl', file, url)
+      axios
+        .get('/booktastic/' + url)
+        .then(resp => {
+          console.log('Got response', resp)
+          let rtn = cv.FS_createDataFile(
+            '/',
+            file,
+            resp.data,
+            true,
+            false,
+            false
+          )
+          console.log('Created data file2', rtn)
+          if (!rtn) return cb(null)
+          const classifier = new cv.CascadeClassifier()
+          rtn = classifier.load(file)
+          if (!rtn) return cb(null)
+          cb(classifier)
+          // eslint-disable-next-line
+          console.log('loaded', rtn, classifier.empty(), this.faceClass)
+        })
+        .catch(err => {
+          // eslint-disable-next-line
+          console.log('ERR',err);
+        })
+    },
     readFileAsync(blob) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader()
@@ -372,7 +457,7 @@ export default {
       this.videoDevice = videoTracks[0]
       this.captureDevice = new ImageCapture(this.videoDevice)
       this.setFocusRange()
-      // this.previewTimer = setTimeout(this.capture, 1)
+      this.previewTimer = setTimeout(this.capture, 1)
 
       // Set it playing onscreen.
       this.video = this.$refs.video
@@ -432,6 +517,10 @@ export default {
     async showCapture(blob) {
       const base64data = await this.readFileAsync(blob)
       this.preview = base64data
+
+      console.log('Read into CV2')
+      cv.imread(this.$refs.preview.$el)
+      console.log('Load EAST detector')
     },
     async capture() {
       if (this.captureDevice) {
@@ -439,12 +528,12 @@ export default {
           const blob = await this.captureDevice.takePhoto()
           await this.showCapture(blob)
           this.showVideo = false
-          this.upload(blob)
+          // this.upload(blob)
         } catch (e) {
           console.log('Capture error', e)
         }
 
-        // this.previewTimer = setTimeout(this.capture, 1000)
+        this.previewTimer = setTimeout(this.capture, 10000)
       } else {
         alert('No device')
       }
