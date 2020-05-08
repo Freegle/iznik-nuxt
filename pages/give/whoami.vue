@@ -23,7 +23,7 @@
         <transition name="fadein">
           <b-row v-if="email && !submitting">
             <b-col cols="12" md="6" offset-md="3" class="text-center pt-2 mt-2">
-              <b-btn variant="success" size="lg" block @click="queue">
+              <b-btn variant="success" size="lg" block @click="next">
                 Freegle it!
               </b-btn>
             </b-col>
@@ -83,21 +83,6 @@ export default {
     }
   },
   methods: {
-    async queue() {
-      this.submitting = true
-
-      const email = this.$refs.email.value
-      console.log('Queue with', email)
-      await this.$store.dispatch('compose/setEmail', email)
-
-      // COVID
-      await this.$store.dispatch('compose/saveDraft', {
-        type: 'Offer',
-        email: email
-      })
-
-      this.$router.push('/give/queued')
-    },
     async next() {
       this.submitting = true
 

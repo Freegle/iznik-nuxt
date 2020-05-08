@@ -24,7 +24,12 @@
             </b-col>
             <b-col cols="12" md="6">
               <div @click="showModal = !showModal">
-                <b-img-lazy fluid :src="result.img" class="book float-right clickme" />
+                <div class="float-right text-center">
+                  <b-img-lazy fluid :src="result.timg" class="book float-right clickme" thumbnail />
+                  <p class="text-muted small">
+                    Click to view
+                  </p>
+                </div>
               </div>
             </b-col>
           </b-row>
@@ -68,6 +73,6 @@ export default {
 </script>
 <style scoped>
 .book {
-  height: 200px;
+  height: 100px;
 }
 </style>

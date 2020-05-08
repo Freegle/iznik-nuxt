@@ -180,7 +180,7 @@
             </div>
             <ModMemberActions v-if="showActions" :userid="message.fromuser.id" :groupid="message.groups[0].groupid" />
           </b-col>
-        </b-row>mod
+        </b-row>
       </b-card-body>
       <b-card-footer v-if="!noactions && expanded">
         <ModMessageButtons v-if="!editing" :message="message" :modconfig="modconfig" :editreview="editreview" :cantpost="membership && membership.ourpostingstatus === 'PROHIBITED'" />

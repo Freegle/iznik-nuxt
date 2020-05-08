@@ -100,31 +100,66 @@
       </b-row>
     </div>
     <div v-else>
-      <SpinButton
-        v-if="showVideo"
-        variant="primary"
-        name="camera"
-        label="Take Photo"
-        :handler="capture"
-        size="lg"
-        class="mt-2"
-      />
-      <video
-        v-show="showVideo"
-        v-if="!uploading && !processing && !result"
-        id="video"
-        ref="video"
-        class="mt-2"
-        :width="width"
-        :height="height"
-        autoplay
-      />
-      <canvas
-        id="canvas"
-        ref="canvas"
-        :width="width"
-        :height="height"
-      />
+      <div class="video-container">
+        <div class="w-100 d-flex justify-content-around video-content">
+          <SpinButton
+            v-if="showVideo"
+            variant="primary"
+            name="camera"
+            label="Take Photo"
+            :handler="capture"
+            size="lg"
+            class="mt-2 top"
+          />
+        </div>
+        <video
+          v-show="showVideo"
+          v-if="!uploading && !processing && !result"
+          id="video"
+          ref="video"
+          class="video-content"
+          :width="width"
+          :height="height"
+          autoplay
+        />
+        <fabric-canvas
+          ref="canvas"
+          background-color="transparent"
+          class="position-absolute canvas"
+          :width="width"
+          :height="height"
+        >
+          <fabric-rectangle
+            v-for="(guideline, index) in guidelines"
+            :id="'guideline-' + index"
+            :key="'guideline-' + index + '-' + bump"
+            fill="transparent"
+            :top="guideline.top"
+            :left="guideline.left"
+            :height="guideline.height"
+            :width="guideline.width"
+            stroke="green"
+            :stroke-width="3"
+            lock-movement-x
+            lock-movement-y
+            lock-scaling-x
+            lock-scaling-y
+          />
+        </fabric-canvas>
+        <b-img v-if="false" ref="preview" :src="preview" fluid class="video-content" />
+      </div>
+      <div>
+        <b-form-input
+          ref="range"
+          v-model="rangeVal"
+          type="range"
+          :min="rangeMin"
+          :max="rangeMax"
+          :step="rangeStep"
+          class="top"
+          @change="setFocus"
+        />
+      </div>
     </div>
     <file-pond
       v-if="uploading"
@@ -185,11 +220,16 @@ export default {
   mixins: [waitForRef],
   data() {
     return {
-      width: 1024,
-      height: 768,
+      mediaStream: null,
       captureDevice: {},
+      videoDevice: null,
+      photoCapabilities: null,
+      mediaSettings: null,
+      rangeVal: null,
+      rangeStep: null,
+      rangeMin: null,
+      rangeMax: null,
       video: {},
-      canvas: {},
       myFiles: [],
       photo: null,
       result: null,
@@ -197,11 +237,51 @@ export default {
       processing: false,
       timeout: 3000,
       requestId: null,
-      showVideo: false
+      showVideo: false,
+      preview: null,
+      previewTimer: null,
+      bump: 1
+    }
+  },
+  computed: {
+    guidelines() {
+      const ret = []
+
+      if (this.bump) {
+        if (this.mediaStream) {
+          const top = this.height * 0.1
+          const left = this.width * 0.1
+          const gap = (this.width - 2 * left) / 10
+
+          for (let i = 0; i < 10; i++) {
+            const thisone = {
+              top: top,
+              left: left + i * gap,
+              height: this.height - top * 2,
+              width: gap
+            }
+
+            ret.push(thisone)
+          }
+        }
+      }
+
+      console.log('Guidelines', ret)
+      return ret
+    },
+    width() {
+      return this.bump ? window.innerWidth : 0
+    },
+    height() {
+      return this.bump ? window.innerHeight - 100 : 0
     }
   },
   beforeDestroy() {
     this.stopCamera()
+
+    if (this.previewTimer) {
+      clearTimeout(this.previewTimer)
+    }
   },
   methods: {
     readFileAsync(blob) {
@@ -271,46 +351,100 @@ export default {
         }
       }
     },
-    takePhoto() {
+    async takePhoto() {
       this.showVideo = true
-      this.height = window.innerHeight - 100
-      this.width = window.innerWidth
 
-      this.waitForRef('video', () => {
-        let videoDevice
-        this.video = this.$refs.video
-
-        navigator.mediaDevices
-          .getUserMedia({
-            video: {
-              facingMode: 'environment'
-            }
-          })
-          .then(mediaStream => {
-            // Set it playing onscreen.
-            this.video.srcObject = mediaStream
-            this.video.play()
-
-            // Extract video track.
-            videoDevice = mediaStream.getVideoTracks()[0]
-
-            // Check if this device supports a picture mode...
-            this.captureDevice = new ImageCapture(videoDevice)
-          })
-          .catch(err => this.stopCamera(err))
+      window.addEventListener('resize', () => {
+        // This keeps our guidelines right.
+        console.log('Resized')
+        this.bump++
       })
+
+      this.mediaStream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: 'environment'
+        },
+        audio: false
+      })
+
+      const videoTracks = this.mediaStream.getVideoTracks()
+      console.log('Video tracks', videoTracks)
+      this.videoDevice = videoTracks[0]
+      this.captureDevice = new ImageCapture(this.videoDevice)
+      this.setFocusRange()
+      // this.previewTimer = setTimeout(this.capture, 1)
+
+      // Set it playing onscreen.
+      this.video = this.$refs.video
+      this.video.srcObject = this.mediaStream
+      this.video.play()
+    },
+    async setFocusRange() {
+      try {
+        // Try to set the focus so that we are close enough to get a good image.
+        console.log(
+          'Supported constraints',
+          navigator.mediaDevices.getSupportedConstraints()
+        )
+
+        this.photoCapabilities = await this.captureDevice.getPhotoCapabilities()
+        console.log('Photo capabilities', this.photoCapabilities)
+        const trackCapabilities = this.videoDevice.getCapabilities()
+        console.log('Track capabilities', trackCapabilities)
+
+        if (trackCapabilities && trackCapabilities.focusDistance) {
+          console.log(
+            'Can control focus distance',
+            trackCapabilities.focusDistance
+          )
+
+          this.rangeStep = trackCapabilities.focusDistance.step
+          this.rangeMin = trackCapabilities.focusDistance.min
+          this.rangeMax = trackCapabilities.focusDistance.max
+        }
+      } catch (e) {
+        console.log('Force focus failed', e)
+      }
+    },
+    async setFocus() {
+      console.log('Set focus', this.rangeVal)
+      try {
+        this.photoCapabilities = await this.captureDevice.getPhotoCapabilities()
+        const trackCapabilities = this.videoDevice.getCapabilities()
+
+        if (trackCapabilities && trackCapabilities.focusDistance) {
+          this.videoDevice.applyConstraints({
+            advanced: [
+              {
+                focusMode: 'manual',
+                focusDistance: this.rangeVal
+              }
+            ]
+          })
+          console.log('Set ok')
+          this.mediaSettings = this.videoDevice.getSettings()
+          console.log('Media settings', this.mediaSettings)
+        }
+      } catch (e) {
+        console.log('Force focus failed', e)
+      }
+    },
+    async showCapture(blob) {
+      const base64data = await this.readFileAsync(blob)
+      this.preview = base64data
     },
     async capture() {
-      this.canvas = this.$refs.canvas
-
       if (this.captureDevice) {
-        const capabilities = await this.captureDevice.getPhotoCapabilities()
-        console.log('Capabilities', capabilities)
-        const blob = await this.captureDevice.takePhoto()
-        await this.captureDevice.grabFrame()
-        this.showVideo = false
-        console.log('Upload', blob)
-        this.upload(blob)
+        try {
+          const blob = await this.captureDevice.takePhoto()
+          await this.showCapture(blob)
+          this.showVideo = false
+          this.upload(blob)
+        } catch (e) {
+          console.log('Capture error', e)
+        }
+
+        // this.previewTimer = setTimeout(this.capture, 1000)
       } else {
         alert('No device')
       }
@@ -390,11 +524,25 @@ body {
   background-color: #000000;
 }
 
-#canvas {
-  display: none;
-}
-
 .smallimg {
   max-width: 200px;
+}
+
+.video-container {
+  width: 100vw;
+  height: calc(100vh - 100px);
+  position: relative;
+}
+
+.video-content {
+  width: 100%;
+  /*height: 100%;*/
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.top {
+  z-index: 2000;
 }
 </style>

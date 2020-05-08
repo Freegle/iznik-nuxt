@@ -2,15 +2,13 @@
   <b-container fluid>
     <b-row class="m-0">
       <b-col cols="0" lg="3" class="d-none d-lg-block p-0 pr-1">
-        <!--        COVID-->
-        <SidebarLeft v-if="false" :show-community-events="true" :show-bot-left="true" />
+        <SidebarLeft :show-community-events="true" :show-bot-left="true" />
       </b-col>
       <b-col cols="12" lg="6" class="p-0">
         <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" :chats="me.expectedchats" />
         <JobsTopBar />
-        <CovidQueue />
         <b-card
-          v-if="!simple && false"
+          v-if="!simple"
           class="mt-2"
           border-variant="info"
           header="info"
@@ -33,6 +31,7 @@
           </b-card-body>
         </b-card>
         <b-card
+          v-if="queued.length > 0"
           class="mt-2"
           border-variant="info"
           header="info"
@@ -47,13 +46,14 @@
           </template>
           <b-card-body class="p-1 p-lg-3">
             <b-card-text class="text-center">
-              <p v-if="offers.length > 0" class="text-muted">
-                These are queued up for when Freegle fully reopens.
-              </p>
+              <NoticeMessage v-if="queued.length > 0" variant="danger" class="text-muted">
+                These were queued up while Freegle was suspending for COVID-19.  Please submit them, or if they
+                no longer apply then withdraw them.
+              </NoticeMessage>
               <b-img-lazy v-if="busy && queued.length === 0" src="~/static/loader.gif" alt="Loading..." />
               <div v-if="busy || queuedCount > 0">
                 <div v-for="message in queued" :key="'message-' + message.id" class="p-0 text-left mt-1">
-                  <MyMessage :message="message" :messages="messages" :show-old="false" />
+                  <MyMessage :message="message" :messages="messages" :show-old="false" queued />
                 </div>
               </div>
               <div v-else>
@@ -127,7 +127,6 @@
           </b-card-body>
         </b-card>
         <b-card
-          v-if="false"
           class="mt-2"
           border-variant="info"
           header="info"
@@ -177,7 +176,7 @@
           </b-card-body>
         </b-card>
         <b-card
-          v-if="!simple && false"
+          v-if="!simple"
           class="mt-2"
           border-variant="info"
           header="info"
@@ -226,8 +225,7 @@
         </b-card>
       </b-col>
       <b-col cols="0" lg="3" class="d-none d-lg-block p-0 pl-1">
-        <!--        COVID-->
-        <sidebar-right v-if="false" show-volunteer-opportunities />
+        <sidebar-right show-volunteer-opportunities />
       </b-col>
     </b-row>
     <AvailabilityModal v-if="me" ref="availabilitymodal" :thisuid="me.id" />
@@ -237,7 +235,7 @@
 </template>
 
 <script>
-import CovidQueue from '../components/CovidQueue'
+import NoticeMessage from '../components/NoticeMessage'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
 import waitForRef from '@/mixins/waitForRef'
@@ -253,7 +251,7 @@ const ExpectedRepliesWarning = () =>
 
 export default {
   components: {
-    CovidQueue,
+    NoticeMessage,
     JobsTopBar,
     MyMessage,
     SidebarLeft,
@@ -360,7 +358,9 @@ export default {
     },
 
     queued() {
-      const ret = this.messages.filter(m => m.isdraft)
+      const ret = this.messages.filter(
+        m => m.isdraft && (!m.outcomes || m.outcomes.length === 0)
+      )
       ret.sort(this.postSort)
       return ret
     },

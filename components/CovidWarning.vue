@@ -1,45 +1,21 @@
 <template>
   <NoticeMessage v-if="show" variant="danger">
-    <b-btn variant="link" class="float-right" @click="hideit">
-      Hide this
+    <!--    <b-btn variant="link" class="float-right" @click="hideit">-->
+    <!--      Hide this-->
+    <!--    </b-btn>-->
+    <p>
+      We're back!  Tips and recycling centres are re-opening, but the <a rel="noopener noreferrer" target="_blank" href="https://www.gov.uk/government/publications/coronavirus-covid-19-advice-to-local-authorities-on-prioritising-waste-collections/managing-household-waste-and-recycling-centres-hwrcs-in-england-during-the-coronavirus-covid-19-pandemic#annex---communications-to-residents">government advice</a>
+      encourages you to use online platforms such as ours instead.
+    </p>
+    <p>
+      We hope you and yours are safe.  Please freegle responsibly and help keep it that way.
+    </p>
+    <b-btn variant="primary" @click="showModal = true">
+      Read our advice on safe freegling
     </b-btn>
-    <p>
-      <b>Very sadly, Freegle has suspended people collecting items due to COVID-19.</b>
-    </p>
-    <p>
-      But you can still offer your stuff and we'll let people know about it when we re-open.  That way you can declutter
-      while you're stuck at home.  Don't mope and mutter, just de-clutter!
-    </p>
-    <b-btn variant="success" size="lg" to="/give" class="mb-2">
-      <v-icon name="gift" />&nbsp;Give Stuff
-    </b-btn>
-    <p>
-      We’ll email you
-      when we’re back.  There will be
-      a lot of people who are struggling and will need things then.
-    </p>
-    <p>
-      Freegle also needs your help.  We are funded mostly from donations given by freeglers - no freegling means we
-      won’t be getting donations.  Lots of charities and businesses will be struggling, but if you want us to
-      be here for you in six months’ time then please set up a regular donation:
-
-      <DonationButton link="paypal1" show="£1/month" monthly class="mt-2" />
-    </p>
-    <div v-if="$route.path !== '/chitchat'">
-      <p>
-        Our <nuxt-link to="/chitchat">
-          ChitChat section
-        </nuxt-link> is staying open.  Join us here to swap hints,
-        tips and tell others how you’re filling your day.  Share your knowledge and questions on upcycling, reuse,
-        crafts, gardening, cooking, hobbies etc.
-      </p>
-      <b-btn to="/chitchat" variant="white" size="lg" class="mb-2">
-        Join us on ChitChat <v-icon name="angle-double-right" />
-      </b-btn>
-    </div>
-    <p>
-      See you on the other side!
-    </p>
+    <b-modal v-model="showModal" ok-only size="lg" title="Safe Freegling" ok-title="Close">
+      <CovidSafeFreegling />
+    </b-modal>
   </NoticeMessage>
   <div v-else class="text-danger text-right clickme" @click="showit">
     Show COVID-19 warning.
@@ -47,9 +23,15 @@
 </template>
 <script>
 import NoticeMessage from './NoticeMessage'
-import DonationButton from './DonationButton'
+import CovidSafeFreegling from './CovidSafeFreegling'
+
 export default {
-  components: { DonationButton, NoticeMessage },
+  components: { CovidSafeFreegling, NoticeMessage },
+  data: function() {
+    return {
+      showModal: false
+    }
+  },
   computed: {
     show() {
       return !this.$store.getters['misc/get']('hidecovidwarning')

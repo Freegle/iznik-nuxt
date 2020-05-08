@@ -49,7 +49,8 @@ export default {
       showModal: false,
       email1: null,
       email2: null,
-      reason: null
+      reason: null,
+      merged: false
     }
   },
   methods: {

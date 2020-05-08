@@ -17,7 +17,6 @@ import BanditAPI from './BanditAPI.js'
 import ChatAPI from './ChatAPI.js'
 import CommentAPI from './CommentAPI.js'
 import CommunityEventAPI from './CommunityEventAPI.js'
-import CovidAPI from './CovidAPI.js'
 import DashboardAPI from './DashboardAPI.js'
 import DonationsAPI from './DonationsAPI.js'
 import GroupAPI from './GroupAPI.js'
@@ -56,7 +55,6 @@ export default ({ $axios, store }) => {
     chat: new ChatAPI(options),
     comment: new CommentAPI(options),
     communityevent: new CommunityEventAPI(options),
-    covid: new CovidAPI(options),
     dashboard: new DashboardAPI(options),
     donations: new DonationsAPI(options),
     group: new GroupAPI(options),

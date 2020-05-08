@@ -9,7 +9,7 @@
           <ProfileImage :image="member.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="sm" />
           {{ member.displayname }}
         </div>
-        <div>
+        <div v-if="member.joined">
           <v-icon name="calendar-alt" /> {{ member.joined | datetimeshort }}
         </div>
         <div>
@@ -167,7 +167,7 @@
         </div>
       </b-card-body>
       <b-card-footer class="d-flex justify-content-between">
-        <ModMemberButtons :member="member" :modconfig="modconfig" />
+        <ModMemberButtons :member="member" :modconfig="modconfig" spamignore />
         <div class="d-flex">
           <ModRole v-if="groupid" :userid="member.userid" :groupid="groupid" :role="member.role" />
           <ChatButton
