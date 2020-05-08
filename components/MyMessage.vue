@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div v-if="!hide">
     <div v-if="showOld || !message.outcomes || !message.outcomes.length">
-      <b-card no-body class="mb-1 border" :border-variant="expanded ? 'primary' : 'success'">
+      <b-card no-body class="mb-1 bnuorder" :border-variant="expanded ? 'primary' : 'success'">
         <b-card-header header-tag="header" class="p-1" role="tab">
           <b-button
             :v-b-toggle="'mypost-' + message.id"
@@ -118,32 +118,34 @@
             </b-card-body>
             <b-card-footer class="p-1">
               <div class="d-flex justify-content-start flex-wrap">
-                <!--                COVID-->
-                <b-btn v-if="rejected && false" variant="warning" class="m-1" @click="repost">
+                <b-btn v-if="queued" variant="success" class="m-1" @click="submitQueued">
+                  <v-icon name="check" /> Still applies - Submit
+                </b-btn>
+                <b-btn v-if="rejected" variant="warning" class="m-1" @click="repost">
                   <v-icon name="pen" /> Edit and Resend
                 </b-btn>
                 <b-btn v-if="rejected && !withdrawn" variant="white" class="m-1" @click="outcome('Withdrawn')">
                   <v-icon name="trash-alt" /> Withdraw
                 </b-btn>
-                <b-btn v-if="!rejected && message.type === 'Offer' && !taken" variant="success" class="m-1" @click="outcome('Taken')">
+                <b-btn v-if="!rejected && !queued && message.type === 'Offer' && !taken" variant="success" class="m-1" @click="outcome('Taken')">
                   <v-icon name="check" /> Mark as TAKEN
                 </b-btn>
-                <b-btn v-if="!rejected && message.type === 'Wanted' && !received" variant="success" class="m-1" @click="outcome('Received')">
+                <b-btn v-if="!rejected && !queued && message.type === 'Wanted' && !received" variant="success" class="m-1" @click="outcome('Received')">
                   <v-icon name="check" /> Mark as RECEIVED
                 </b-btn>
                 <b-btn v-if="!rejected && !taken && !received && !withdrawn" variant="white" class="m-1" @click="outcome('Withdrawn')">
                   <v-icon name="trash-alt" /> Withdraw
                 </b-btn>
-                <b-btn v-if="!rejected && message.canedit" variant="primary" class="m-1" @click="edit">
+                <b-btn v-if="!rejected && !queued && message.canedit" variant="primary" class="m-1" @click="edit">
                   <v-icon name="pen" /> Edit
                 </b-btn>
-                <b-btn v-if="false && !rejected && message.canrepost" variant="white" class="m-1" @click="repost">
+                <b-btn v-if="!rejected && message.canrepost" variant="white" class="m-1" @click="repost">
                   <v-icon name="sync" /> Repost
                 </b-btn>
-                <b-btn v-else-if="false && !rejected && !taken && !received && message.canrepostat" variant="white" disabled class="m-1" title="You will be able to repost this soon">
+                <b-btn v-else-if="!rejected && !taken && !received && message.canrepostat" variant="white" disabled class="m-1" title="You will be able to repost this soon">
                   <v-icon name="sync" /> Repost <span class="small">{{ message.canrepostat | timeago }}</span>
                 </b-btn>
-                <b-btn v-if="false && !rejected && !simple" variant="white" title="Share" class="m-1 text-faded" @click="share">
+                <b-btn v-if="!rejected && !queued && !simple" variant="white" title="Share" class="m-1" @click="share">
                   <v-icon name="share-alt" /> Share
                 </b-btn>
                 <div class="align-self-end">
@@ -170,7 +172,7 @@
         </template>
       </b-modal>
     </div>
-    <OutcomeModal ref="outcomeModal" :message="message" :users="replyusers" />
+    <OutcomeModal ref="outcomeModal" :message="message" :users="replyusers" @outcome="hide = true" />
     <ShareModal ref="shareModal" :message="message" />
     <MessageEditModal ref="editModal" :message="message" />
   </div>
@@ -211,18 +213,25 @@ export default {
     },
     expand: {
       type: Boolean,
-      required: false
+      required: false,
+      default: false
     },
     action: {
       type: String,
       required: false,
       default: null
+    },
+    queued: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
     return {
       maxChars: 60,
-      expanded: false
+      expanded: false,
+      hide: false
     }
   },
   computed: {
@@ -401,6 +410,18 @@ export default {
     },
     edit() {
       this.$refs.editModal.show()
+    },
+    async submitQueued() {
+      await this.$store.dispatch('auth/fetchUser', {
+        components: ['me']
+      })
+      const me = this.$store.getters['auth/user']
+      await this.$store.dispatch('compose/submitQueued', {
+        id: this.message.id,
+        email: me.email
+      })
+
+      this.hide = true
     },
     async repost() {
       // Remove any partially composed messages we currently have, because they'll be confusing.

@@ -3,7 +3,6 @@
     <b-row class="m-0">
       <b-col cols="12" lg="6" offset-lg="3">
         <WizardProgress :active-stage="1" class="d-none " />
-        <CovidQueue />
         <h1 class="text-center">
           First, tell us where you are
         </h1>
@@ -80,7 +79,6 @@ select {
 
 <script>
 import NoticeMessage from '../../components/NoticeMessage'
-import CovidQueue from '../../components/CovidQueue'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 
@@ -91,7 +89,6 @@ const WizardProgress = () => import('~/components/WizardProgress')
 export default {
   options: () => {},
   components: {
-    CovidQueue,
     NoticeMessage,
     Postcode,
     ComposeGroup,

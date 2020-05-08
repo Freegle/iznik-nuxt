@@ -5,10 +5,6 @@
         <div>
           <h1>Community Events</h1>
           <CovidWarning />
-          <NoticeMessage class="mt-2 mb-2" variant="danger">
-            All physical events are likely to be cancelled because of COVID-19.  But if you know of virtual
-            events, do please add them here so that other people can get involved.
-          </NoticeMessage>
           <p>These are local events, posted by other freeglers like you.</p>
           <div class="d-flex justify-content-between mb-3">
             <groupSelect v-if="me" v-model="groupid" class="pr-2" all />

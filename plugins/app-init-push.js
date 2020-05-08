@@ -7,6 +7,7 @@ export const mobilestate = {
 const pushstate = Vue.observable({
   pushed: false, // Set to true to handle push in Vue context
   route: false,
+  modtools: false,
   mobilePushId: false, // Note: mobilePushId is the same regardless of which user is logged in
   inlineReply: false,
   chatid: false
@@ -55,7 +56,7 @@ const cordovaApp = {
         $('.showclicked').removeClass('showclicked');
         window.hideHeaderWait();
       });
-  
+
       $(document).ajaxStart(function () {
         $('#spinner').show();
         window.showHeaderWait();
@@ -70,7 +71,7 @@ const cordovaApp = {
         // Enable pinch zoom on Android
         cordova.plugins.ZoomControl.ZoomControl('true') // enabling zoom control: setBuiltInZoomControls(true), setDefaultZoom(ZoomDensity.MEDIUM), setSupportZoom(true)
         cordova.plugins.ZoomControl.setBuiltInZoomControls('true') // Sets whether the WebView should use its built-in zoom mechanisms
-        cordova.plugins.ZoomControl.setDisplayZoomControls('false') // Sets whether the WebView should display on-screen zoom controls when using the built-in zoom mechanisms. 
+        cordova.plugins.ZoomControl.setDisplayZoomControls('false') // Sets whether the WebView should display on-screen zoom controls when using the built-in zoom mechanisms.
         cordova.plugins.ZoomControl.setUseWideViewPort('true') // Sets whether the WebView should enable support for the "viewport" HTML meta tag or should use a wide viewport.
       }
 
@@ -155,8 +156,13 @@ function handleNotification(notificationType, data) {
   if (!('count' in data)) {
     data.count = 0
   }
+  if (!('modtools' in data.additionalData)) {
+    data.additionalData.modtools = 0
+  }
+  const modtools = data.additionalData.modtools == '1'
+  pushstate.modtools = modtools
   data.count = parseInt(data.count)
-  console.log('foreground ' + foreground + ' double ' + doubleEvent + ' msgid: ' + msgid + ' count: ' + data.count)
+  console.log('foreground ' + foreground + ' double ' + doubleEvent + ' msgid: ' + msgid + ' count: ' + data.count + ' modtools: ' + modtools)
   if (data.count === 0) {
     mobilePush.clearAllNotifications() // no success and error fns given
     console.log('clearAllNotifications')
@@ -234,8 +240,9 @@ export function logoutPushId() {
 }
 
 // Set home screen badge count
-let lastBadgeCount = -1;
+let lastBadgeCount = -1
 export function setBadgeCount(badgeCount) {
+console.log('setBadgeCount X', badgeCount)
   if (badgeCount !== lastBadgeCount) {
     if (process.env.IS_APP) {
       console.log('setBadgeCount', badgeCount)
@@ -280,6 +287,12 @@ export default ({ app, store }) => { // route
 
           store.dispatch('notifications/count')
           store.dispatch('chats/listChats')
+          if (pushstate.modtools) {
+            store.dispatch('auth/fetchUser', {
+              components: ['work'],
+              force: true
+            })
+          }
 
           if (pushstate.route) {
             pushstate.route = pushstate.route.replace('/chat/', '/chats/') // Match redirects in nuxt.config.js

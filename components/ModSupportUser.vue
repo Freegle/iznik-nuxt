@@ -121,6 +121,15 @@
         </b-input-group>
       </div>
       <h3 class="mt-2">
+        Notifications
+      </h3>
+      <div v-if="user.lastpush">
+        Last push notification: {{ user.lastpush | timeago }}
+      </div>
+      <div v-else>
+        No push notifications sent.
+      </div>
+      <h3 class="mt-2">
         Memberships
       </h3>
       <!--      TODO MT POSTLAUNCH Show if banned-->

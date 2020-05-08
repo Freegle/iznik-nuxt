@@ -72,15 +72,16 @@ export default {
     async updateComments() {
       // The server API doesn't make it easy to refresh comments on memberships, because we can't refetch a
       // specific membership id.  Instead fetch the user and then pass any comments to the store to update there.
+      const userid = this.user.userid ? this.user.userid : this.user.id
       await this.$store.dispatch('user/fetch', {
-        id: this.user.id,
+        id: userid,
         info: true
       })
 
-      const user = this.$store.getters['user/get'](this.user.id)
+      const user = this.$store.getters['user/get'](userid)
 
       await this.$store.dispatch('members/updateComments', {
-        userid: user.id,
+        userid: userid,
         comments: user.comments
       })
 

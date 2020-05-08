@@ -13,6 +13,8 @@ export function appAppleLogin(callback) {
       { requestedScopes: [0, 1] },
       function (succ) {
         console.log(succ)
+        console.log(succ.identityToken)
+
         completeLoginCallback(succ)
       },
       function (err) {

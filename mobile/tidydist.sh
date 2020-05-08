@@ -17,6 +17,6 @@ node ./node_modules/replace/bin/replace.js '<title>' '<meta name="viewport" cont
 node ./node_modules/replace/bin/replace.js '<\/body>' '<script type="text/javascript" src="cordova.js"></script></body>' dist/index.html --quiet
 
 cd dist
-rm booktastic.jpg js/img/17bac1f.jpg
+#rm booktastic.jpg js/img/17bac1f.jpg
 rm -r councils
 cd ..

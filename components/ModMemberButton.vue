@@ -85,6 +85,11 @@ export default {
       required: false,
       default: false
     },
+    spamignore: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     hold: {
       type: Boolean,
       required: false,
@@ -140,6 +145,8 @@ export default {
         this.spamRemove()
       } else if (this.spamwhitelist) {
         this.spamWhitelist()
+      } else if (this.spamignore) {
+        this.spamIgnore()
       } else if (this.hold) {
         // Standard hold button - no modal.
         this.holdIt()
@@ -216,6 +223,16 @@ export default {
       await this.$store.dispatch('spammers/whitelist', {
         id: this.member.spammer.id,
         userid: this.member.userid
+      })
+      this.done = true
+    },
+    async spamIgnore() {
+      this.doing = true
+      await this.$store.dispatch('user/edit', {
+        id: this.member.userid,
+        groupid: this.groupid,
+        suspectcount: 0,
+        suspectreason: null
       })
       this.done = true
     },

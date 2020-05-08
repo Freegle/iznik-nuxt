@@ -26,6 +26,19 @@
               </p>
               <p>Click on a question to expand the answer.</p>
 
+              <Question id="COVID-19">
+                <template slot="title">
+                  <b>COVID-19</b>
+                </template>
+                <template slot="content">
+                  <p>
+                    The Government has
+                    advised local authorities that Household Waste Recycling Centres (HWRCs) can be open, but says
+                    you should consider using on-line reuse platforms such as ours first.  You can read their advice
+                    <a href="https://www.gov.uk/government/publications/coronavirus-covid-19-advice-to-local-authorities-on-prioritising-waste-collections/managing-household-waste-and-recycling-centres-hwrcs-in-england-during-the-coronavirus-covid-19-pandemic" target="_blank" rel="noopener noreferrer">here</a>.
+                  </p>
+                </template>
+              </Question>
               <Question id="wanted">
                 <template slot="title">
                   <b>How do I post a WANTED?</b>
@@ -403,11 +416,12 @@
         </h1>
         <p>If your question isn't answered above, or you wish to compliment or complain, then you can <b>contact your volunteer team</b>, who will be happy to hear whether Freegle is doing a great job or needs changing.</p>
         <h5>Which Freegle community do you need help with?</h5>
-        <div v-if="loggedIn">
-          <GroupRememberSelect v-model="contactGroupId" remember="contactmods" class="mt-2 mb-2" />
-          <br>
-          <ChatButton :groupid="contactGroupId" size="lg" title="Contact community volunteers" variant="success" class="mt-2 mb-2" />
-        </div>
+        <b-card v-if="loggedIn" no-body>
+          <b-card-body class="p-3">
+            <GroupRememberSelect v-model="contactGroupId" remember="contactmods" class="mb-3" />
+            <ChatButton :groupid="contactGroupId" size="md" title="Contact community volunteers" variant="success" class="mb-2" />
+          </b-card-body>
+        </b-card>
         <div class="text-muted">
           <hr>
           <p>

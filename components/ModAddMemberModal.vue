@@ -43,6 +43,12 @@ import NoticeMessage from './NoticeMessage'
 
 export default {
   components: { NoticeMessage },
+  props: {
+    groupid: {
+      type: Number,
+      required: true
+    }
+  },
   data: function() {
     return {
       showModal: false,
@@ -62,6 +68,13 @@ export default {
       this.addedId = await this.$store.dispatch('user/add', {
         email: this.email
       })
+
+      if (this.addedId) {
+        await this.$store.dispatch('members/add', {
+          userid: this.addedId,
+          groupid: this.groupid
+        })
+      }
     }
   }
 }

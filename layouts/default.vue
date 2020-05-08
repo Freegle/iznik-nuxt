@@ -704,11 +704,16 @@ html {
   padding-bottom: 0px !important;
 }
 
-nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
+nav .navbar-nav li a.nuxt-link-active {
   color: $color-white-opacity-50 !important;
 }
 
-.navbar-dark .navbar-nav .nav-link {
+.nuxt-link-active .nav-item__text {
+  border-bottom: 1px solid white;
+  padding: 2px;
+}
+
+::v-deep .nav-link {
   color: $color-white !important;
 
   &:hover,
@@ -790,19 +795,6 @@ nav .navbar-nav li a.nuxt-link-active[data-v-314f53c6] {
 
 .ourBack {
   background-color: $colour-success !important;
-}
-
-nav .navbar-nav li a {
-  color: $color-gray--light !important;
-}
-
-nav .navbar-nav li a.nuxt-link-active {
-  color: $color-white !important;
-}
-
-.nuxt-link-active .nav-item__text {
-  border-bottom: 1px solid white;
-  padding: 2px;
 }
 
 .navbar-brand a {
