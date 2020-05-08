@@ -76,6 +76,13 @@
               </h2>
             </template>
             <GroupSelect v-model="groupidprevious" class="mb-2" />
+            <p>
+              If an ADMIN shows as queued for send, it usually takes a few minutes.  If we are sending a lot of
+              ADMINs it can take a few hours.
+            </p>
+            <p>
+              If a suggested ADMIN doesn't show here it will be because you deleted it.
+            </p>
             <div v-if="previous.length">
               <ModAdmin v-for="admin in previous" :id="admin.id" :key="'pendingadmin-' + admin.id" :open="previous.length === 1" />
             </div>
