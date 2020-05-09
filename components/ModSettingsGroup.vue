@@ -259,6 +259,13 @@
             />
             <ModGroupSetting
               :groupid="groupid"
+              name="settings.maxagetoshow"
+              label="Expire posts"
+              description="Posts will be considered as expired (i.e. no longer available) after this number of days.  Set to 0 to use the default of 30 days."
+              class="mr-2"
+            />
+            <ModGroupSetting
+              :groupid="groupid"
               name="settings.reposts.chaseups"
               label="Chaseup"
               description="Ask what's happening with the item this number of days after the last reply (0 to disable)"
