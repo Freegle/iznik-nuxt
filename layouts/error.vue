@@ -24,12 +24,20 @@
       <p>
         Having problems? <a href="mailto:support@ilovefreegle.org">Contact us</a>
       </p>
+      <p>
+        Request page was: {{url}}
+      </p>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  computed: {
+    url() {
+      return
+    }
+  },
   props: {
     error: {
       type: Object,
