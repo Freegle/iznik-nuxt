@@ -188,7 +188,10 @@ export default {
         if (p === -1) {
           // Got there.
           if (this.type === 'toggle') {
-            this.value = Boolean(parseInt(obj[name]))
+            this.value =
+              typeof obj[name] === 'boolean'
+                ? obj[name]
+                : Boolean(parseInt(obj[name]))
           } else {
             this.value = obj[name]
           }
