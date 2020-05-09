@@ -342,8 +342,8 @@ export const actions = {
 
         try {
           // Some browsers prevent us using play unless in response to a
-          // user gesture, so catch any exception.
-          sound.play()
+          // user gesture, so catch any exception.  This returns a promise so we need to await.
+          await sound.play()
         } catch (e) {
           console.log('Failed to play beep', e.message)
         }
