@@ -75,7 +75,7 @@
                 Previous
               </h2>
             </template>
-            <GroupSelect v-model="groupidprevious" class="mb-2" />
+            <GroupSelect v-model="groupidprevious" modonly class="mb-2" />
             <p>
               If an ADMIN shows as queued for send, it usually takes a few minutes.  If we are sending a lot of
               ADMINs it can take a few hours.
