@@ -324,7 +324,10 @@ export default {
       let ret = null
 
       if (this.groupid) {
-        ret = this.message.fromuser.memberof.find(g => g.id === this.groupid)
+        ret =
+          this.message.fromuser &&
+          this.message.fromuser.memberof &&
+          this.message.fromuser.memberof.find(g => g.id === this.groupid)
       }
 
       return ret
