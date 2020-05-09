@@ -35,7 +35,7 @@
 export default {
   computed: {
     url() {
-      return
+      return this.$route.path
     }
   },
   props: {
