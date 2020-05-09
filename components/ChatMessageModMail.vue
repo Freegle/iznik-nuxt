@@ -3,7 +3,7 @@
     <b-row class="pb-1">
       <b-col>
         <div class="media">
-          <b-card border-variant="success">
+          <b-card border-variant="success" :class="{ 'ml-auto': !amUser } ">
             <b-card-title>
               <div v-if="group">
                 <h4>
@@ -53,6 +53,10 @@ export default {
   computed: {
     group() {
       return this.chat && this.chat.group ? this.chat.group : null
+    },
+    amUser() {
+      console.log('amUSer', this.chat)
+      return this.chat && this.chat.user && this.chat.user.id === this.myid
     }
   },
   methods: {

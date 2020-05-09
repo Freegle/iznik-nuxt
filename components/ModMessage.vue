@@ -21,6 +21,7 @@
             <Diff v-else-if="editreview" :old="oldSubject" :new="newSubject" class="font-weight-bold" />
             <div v-else :class="subjectClass + ' font-weight-bold'">
               {{ eSubject }}
+              <span v-if="message.location" class="text-muted small">{{ message.location.name }}</span>
             </div>
             <MessageHistory :message="message" modinfo display-message-link />
             <ModMessageDuplicate v-for="duplicate in duplicates" :key="'duplicate-' + duplicate.id" :message="duplicate" />
@@ -323,7 +324,10 @@ export default {
       let ret = null
 
       if (this.groupid) {
-        ret = this.message.fromuser.memberof.find(g => g.id === this.groupid)
+        ret =
+          this.message.fromuser &&
+          this.message.fromuser.memberof &&
+          this.message.fromuser.memberof.find(g => g.id === this.groupid)
       }
 
       return ret

@@ -2,7 +2,7 @@
   <NoticeMessage variant="danger">
     <p>
       <b-form-checkbox v-model="currentCovid" size="lg" :class="'d-inline ' + pulse" @change="$emit('update:covid', $event)" />
-      I consider this item essential and will follow the guidance on safe freegling during COVID-19.
+      &lt;--- Click here to say you consider this item essential and will follow the guidance on safe freegling during COVID-19.
     </p>
     <b-btn variant="primary" @click="showModal = true">
       Read guidance on safe freegling

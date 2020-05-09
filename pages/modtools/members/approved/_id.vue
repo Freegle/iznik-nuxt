@@ -1,14 +1,14 @@
 <template>
   <div>
     <client-only>
-      <div class="d-flex justify-content-between">
+      <div class="d-flex justify-content-between flex-wrap">
         <GroupSelect v-model="groupid" modonly />
-        <div class="d-flex">
+        <div v-if="groupid" class="d-flex">
           <ModMemberTypeSelect v-model="filter" />
           <b-btn v-if="groupid" variant="white" class="ml-2" @click="addMember">
             <v-icon name="plus" /> Add
           </b-btn>
-          <ModAddMemberModal ref="addmodal" :groupid="groupid" />
+          <ModAddMemberModal v-if="groupid" ref="addmodal" :groupid="groupid" />
           <b-btn variant="white" class="ml-2" @click="mergeMember">
             <v-icon name="equals" /> Merge
           </b-btn>

@@ -74,11 +74,11 @@ export default {
         popup
       )
 
+      const modtools = this.$store.getters['misc/get']('modtools')
+
       if (this.groupid > 0) {
         // Open a chat to the mods.  If we are in FD then we just pass the group id and the chat opens from us to the
         // mods; if we're in MT we pass the groupid and userid and it opens from us mods to the user.
-        const modtools = this.$store.getters['misc/get']('modtools')
-
         const chatid = await this.$store.dispatch('chats/openChatToMods', {
           userid: modtools ? this.userid : null,
           groupid: this.groupid
@@ -89,7 +89,9 @@ export default {
             id: chatid
           })
         } else {
-          this.$router.go('/chats/' + chatid)
+          this.$router.push(
+            (modtools ? '/modtools/chats/' : '/chats/') + chatid
+          )
         }
       } else if (this.userid > 0) {
         const chatid = await this.$store.dispatch('chats/openChatToUser', {
@@ -114,7 +116,9 @@ export default {
             id: chatid
           })
         } else if (route) {
-          this.$router.push('/chats/' + chatid)
+          this.$router.push(
+            (modtools ? '/modtools/chats/' : '/chats/') + chatid
+          )
         }
       }
     }
