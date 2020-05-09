@@ -38,7 +38,7 @@
         </div>
         <CovidPostWarning class="mt-2" :covid.sync="covid" />
         <transition name="fade">
-          <b-row v-if="valid">
+          <b-row v-if="valid && covid">
             <b-col cols="12" md="6" offset-md="3" class="text-center pt-2">
               <b-btn variant="success" size="lg" block :disabled="uploadingPhoto" @click="next">
                 Next <v-icon name="angle-double-right" />
