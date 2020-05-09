@@ -21,6 +21,7 @@
             <Diff v-else-if="editreview" :old="oldSubject" :new="newSubject" class="font-weight-bold" />
             <div v-else :class="subjectClass + ' font-weight-bold'">
               {{ eSubject }}
+              <span v-if="message.location" class="text-muted small">{{ message.location.name }}</span>
             </div>
             <MessageHistory :message="message" modinfo display-message-link />
             <ModMessageDuplicate v-for="duplicate in duplicates" :key="'duplicate-' + duplicate.id" :message="duplicate" />
