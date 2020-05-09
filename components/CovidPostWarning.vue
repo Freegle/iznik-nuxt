@@ -1,7 +1,7 @@
 <template>
   <NoticeMessage variant="danger">
     <p>
-      <b-form-checkbox v-model="currentCovid" size="lg" class="d-inline" @change="$emit('update:covid', $event)" />
+      <b-form-checkbox v-model="currentCovid" size="lg" :class="'d-inline ' + pulse" @change="$emit('update:covid', $event)" />
       I consider this item essential and will follow the guidance on safe freegling during COVID-19.
     </p>
     <b-btn variant="primary" @click="showModal = true">
@@ -10,6 +10,7 @@
     <b-modal v-model="showModal" ok-only size="lg" title="Safe Freegling" ok-title="Close">
       <CovidSafeFreegling />
     </b-modal>
+    <span class="d-none custom-control-label" />
   </NoticeMessage>
 </template>
 <script>
@@ -29,8 +30,22 @@ export default {
       showModal: false,
       currentCovid: false
     }
+  },
+  computed: {
+    pulse() {
+      return this.currentCovid
+        ? ''
+        : 'pulsate check border border-success rounded '
+    }
   }
 }
 </script>
 <style scoped>
+.check {
+  border-width: 3px !important;
+}
+
+::v-deep .check .custom-control-label::before {
+  left: -1.6rem !important;
+}
 </style>
