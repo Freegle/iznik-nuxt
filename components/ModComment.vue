@@ -11,12 +11,14 @@
       <span v-if="savedComment.groupid">
         on {{ groupname }}
       </span>
-      <b-btn v-if="canEdit" variant="link" size="sm" @click="editIt">
-        <v-icon name="pen" /> Edit
-      </b-btn>
-      <b-btn v-if="canEdit" variant="link" size="sm" @click="deleteIt">
-        <v-icon name="trash-alt" /> Delete
-      </b-btn>
+      <span v-if="amAModOn(savedComment.groupid)">
+        <b-btn v-if="canEdit" variant="link" size="sm" @click="editIt">
+          <v-icon name="pen" /> Edit
+        </b-btn>
+        <b-btn v-if="canEdit" variant="link" size="sm" @click="deleteIt">
+          <v-icon name="trash-alt" /> Delete
+        </b-btn>
+      </span>
     </div>
     <ConfirmModal ref="confirm" @confirm="deleteConfirmed" />
     <ModCommentEditModal v-if="canEdit" ref="editComment" :user="user" :comment="comment" @edited="updateComments" />
