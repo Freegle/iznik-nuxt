@@ -3,7 +3,7 @@
     <client-only>
       <div class="d-flex justify-content-between flex-wrap">
         <GroupSelect v-model="groupid" modonly />
-        <div class="d-flex">
+        <div v-if="groupid" class="d-flex">
           <ModMemberTypeSelect v-model="filter" />
           <b-btn v-if="groupid" variant="white" class="ml-2" @click="addMember">
             <v-icon name="plus" /> Add

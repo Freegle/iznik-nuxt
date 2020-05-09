@@ -45,7 +45,7 @@ export const getters = {
       })
     } else {
       // Not - scan for match
-      const lower = idOrName.toLowerCase()
+      const lower = (idOrName + '').toLowerCase()
 
       Object.keys(state.list).forEach(key => {
         const group = state.list[key]
