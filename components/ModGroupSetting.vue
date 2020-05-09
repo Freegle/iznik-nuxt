@@ -165,7 +165,13 @@ export default {
         // Lower down - we send the top one but we need to modify it wherever it is.
         const top = this.name.substring(0, p)
         const topobj = this.$store.getters['group/get'](this.groupid)
-        this.setDeep(topobj, this.name.split('.'), this.value ? 1 : 0)
+        let val = this.value
+
+        if (typeof val === 'boolean') {
+          val = val ? 1 : 0
+        }
+
+        this.setDeep(topobj, this.name.split('.'), val)
         data[top] = topobj[top]
       }
 

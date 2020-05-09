@@ -1,7 +1,8 @@
 export default {
   data: function() {
     return {
-      postType: null
+      postType: null,
+      covid: false
     }
   },
   computed: {
@@ -45,7 +46,7 @@ export default {
       const messages = Object.values(this.$store.getters['compose/getMessages'])
       let valid = false
 
-      if (messages && messages.length && this.ids) {
+      if (this.covid && messages && messages.length && this.ids) {
         valid = true
 
         for (const message of messages) {

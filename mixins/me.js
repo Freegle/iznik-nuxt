@@ -71,6 +71,10 @@ Vue.mixin({
     hasPermission(perm) {
       const perms = this.me ? this.me.permissions : null
       return perms && perms.indexOf(perm) !== -1
+    },
+    amAModOn(groupid) {
+      const member = this.$store.getters['auth/member'](groupid)
+      return member === 'Moderated' || member === 'Owner'
     }
   }
 })

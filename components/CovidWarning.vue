@@ -1,8 +1,5 @@
 <template>
-  <NoticeMessage v-if="show" variant="danger">
-    <!--    <b-btn variant="link" class="float-right" @click="hideit">-->
-    <!--      Hide this-->
-    <!--    </b-btn>-->
+  <NoticeMessage variant="danger">
     <p>
       Tips and recycling centres are re-opening, but the
       <a rel="noopener noreferrer" target="_blank" href="https://www.gov.uk/government/publications/coronavirus-covid-19-advice-to-local-authorities-on-prioritising-waste-collections/managing-household-waste-and-recycling-centres-hwrcs-in-england-during-the-coronavirus-covid-19-pandemic#annex---communications-to-residents">government advice</a>
@@ -19,9 +16,6 @@
       <CovidSafeFreegling />
     </b-modal>
   </NoticeMessage>
-  <div v-else class="text-danger text-right clickme" @click="showit">
-    Show COVID-19 warning.
-  </div>
 </template>
 <script>
 import NoticeMessage from './NoticeMessage'
@@ -32,25 +26,6 @@ export default {
   data: function() {
     return {
       showModal: false
-    }
-  },
-  computed: {
-    show() {
-      return !this.$store.getters['misc/get']('hidecovidwarning')
-    }
-  },
-  methods: {
-    hideit() {
-      this.$store.dispatch('misc/set', {
-        key: 'hidecovidwarning',
-        value: true
-      })
-    },
-    showit() {
-      this.$store.dispatch('misc/set', {
-        key: 'hidecovidwarning',
-        value: false
-      })
     }
   }
 }

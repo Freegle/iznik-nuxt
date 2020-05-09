@@ -66,11 +66,13 @@
                 </NoticeMessage>
               </div>
             </div>
-            <ModComments :user="message.fromuser" />
-            <ModSpammer v-if="message.fromuser.spammer" :user="message.fromuser" />
-            <NoticeMessage v-if="message.fromuser && message.fromuser.activedistance > 50" variant="warning" class="mb-2">
-              This freegler is active on groups {{ message.fromuser.activedistance }} miles apart.
-            </NoticeMessage>
+            <div v-if="message.fromuser">
+              <ModComments :user="message.fromuser" />
+              <ModSpammer v-if="message.fromuser.spammer" :user="message.fromuser" />
+              <NoticeMessage v-if="message.fromuser && message.fromuser.activedistance > 50" variant="warning" class="mb-2">
+                This freegler is active on groups {{ message.fromuser.activedistance }} miles apart.
+              </NoticeMessage>
+            </div>
             <NoticeMessage v-if="message.spamreason" variant="warning" class="mb-2">
               {{ message.spamreason }}
             </NoticeMessage>
