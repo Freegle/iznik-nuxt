@@ -1,7 +1,7 @@
 <template>
   <div>
     <client-only>
-      <div class="d-flex justify-content-between">
+      <div class="d-flex justify-content-between flex-wrap">
         <GroupSelect v-model="groupid" modonly />
         <div class="d-flex">
           <ModMemberTypeSelect v-model="filter" />
