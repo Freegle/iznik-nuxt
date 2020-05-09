@@ -340,6 +340,7 @@ export const actions = {
       }
 
       if (
+        !process.env.IS_APP &&
         newTotal > currentTotal &&
         ((state.user && state.user.settings.playbeep) ||
           !Object.keys(state.user.settings).includes('playbeep'))
@@ -348,7 +349,7 @@ export const actions = {
         // window where a message could arrive as one is deleted, leaving the
         // counts the same, but this will resolve itself when our current
         // count drops to zero, or worst case when we refresh.
-        const sound = new Audio(window.iznikroot+'/alert.wav')
+        const sound = new Audio('/alert.wav')
 
         try {
           // Some browsers prevent us using play unless in response to a
