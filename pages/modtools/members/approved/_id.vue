@@ -8,7 +8,7 @@
           <b-btn v-if="groupid" variant="white" class="ml-2" @click="addMember">
             <v-icon name="plus" /> Add
           </b-btn>
-          <ModAddMemberModal ref="addmodal" :groupid="groupid" />
+          <ModAddMemberModal v-if="groupid" ref="addmodal" :groupid="groupid" />
           <b-btn variant="white" class="ml-2" @click="mergeMember">
             <v-icon name="equals" /> Merge
           </b-btn>
