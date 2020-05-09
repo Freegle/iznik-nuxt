@@ -45,7 +45,7 @@
               </b-btn>
             </b-col>
           </b-row>
-          <b-row v-else>
+          <b-row v-else-if="covid">
             <b-col cols="12" md="6" offset-md="3" class="text-center pt-2">
               <NoticeMessage variant="info">
                 Please add the item name, and either a description or a photo.
