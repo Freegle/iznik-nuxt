@@ -1,7 +1,7 @@
 <template>
   <NoticeMessage v-if="savedComment" variant="danger" class="mb-2">
     <div v-for="n in 10" :key="'modcomments-' + user.id + '-' + savedComment.id + '-' + n">
-      <b>{{ savedComment['user' + n] }}</b>
+      <read-more v-if="savedComment['user' + n]" :text="savedComment['user' + n]" :max-chars="80" class="font-weight-bold nopara" />
     </div>
     <div class="small">
       <span v-if="savedComment.byuser">
