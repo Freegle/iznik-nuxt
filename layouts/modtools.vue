@@ -92,7 +92,7 @@
           <ModMenuItemLeft link="/modtools/spammers" name="Spammers" :count="supportOrAdmin ? ['spammerpendingadd', 'spammerpendingremove'] : []" />
           <hr>
           <ModMenuItemLeft link="/modtools/logs" name="Logs" />
-          <ModMenuItemLeft link="/modtools/support" name="Support" />
+          <ModMenuItemLeft v-if="supportOrAdmin" link="/modtools/support" name="Support" />
           <ModMenuItemLeft link="/modtools/settings" name="Settings" />
           <ModMenuItemLeft link="/modtools/teams" name="Teams" />
           <div>
