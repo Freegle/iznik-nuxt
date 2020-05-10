@@ -24,7 +24,14 @@ export default {
   extends: ChatBase,
   computed: {
     messageIsFromCurrentUser() {
-      return this.chatmessage.userid === this.me.id
+      if (this.chat.chattype === 'User2Mod') {
+        return (
+          this.chatmessage.userid === this.me.id ||
+          (this.chat.user1 && this.chatmessage.userid === this.chat.user1.id)
+        )
+      } else {
+        return this.chatmessage.userid === this.me.id
+      }
     },
     messageIsNew() {
       return (
