@@ -277,6 +277,7 @@ export default {
 
       // Calculate initial body
       let msg = this.message ? this.message.textbody : ''
+      msg = msg || ''
 
       if (msg || this.member) {
         if (msg) {
@@ -354,7 +355,7 @@ export default {
         }
       } else if (this.stdmsg) {
         // No existing body
-        msg = '\n\n' + this.stdmsg.body
+        msg = '\n\n' + (this.stdmsg.body ? this.stdmsg.body : '')
       }
 
       this.body = this.substitutionStrings(msg)
