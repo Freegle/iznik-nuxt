@@ -27,7 +27,7 @@
             {{ message.message }}
           </div>
           <div v-else>
-            <ChatMessage :chat="message.chatroom" :chatmessage="message" :otheruser="message.userid === message.fromuser.id ? message.touser : message.fromuser" last />
+            <ChatMessage :chat="message.chatroom" :chatmessage="message" :otheruser="message.fromuser" last />
           </div>
         </div>
         <div class="d-flex justify-content-between flex-wrap">
@@ -49,7 +49,7 @@
         <div class="d-flex flex-wrap justify-content-start">
           <ModChatViewButton
             :id="message.chatid"
-            :pov="message.userid"
+            :pov="message.touser.id"
           />
           <b-btn
             v-if="

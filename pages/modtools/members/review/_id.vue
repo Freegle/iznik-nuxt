@@ -2,7 +2,7 @@
   <div>
     <client-only>
       <div class="d-flex justify-content-between">
-        <GroupSelect v-model="groupid" modonly />
+        <GroupSelect v-model="groupid" modonly :work="['spammembers', 'spammembersother']" />
       </div>
       <div v-for="member in visibleMembers" :key="'memberlist-' + member.id" class="p-0 mt-2">
         <ModMember :member="member" />

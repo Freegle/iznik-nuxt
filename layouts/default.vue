@@ -316,7 +316,18 @@ export default {
 
   head() {
     const totalCount = this.notificationCount + this.chatCount
-    return {
+    const head = { titleTemplate: totalCount > 0 ? `(${totalCount}) %s` : '%s' }
+    if (!process.env.IS_APP) {
+      head.link = [
+        {
+          rel: 'icon',
+          type: 'image/x-icon',
+          href: '/icon.png'
+        }
+      ]
+    }
+    return head
+    /*return {
       titleTemplate: totalCount > 0 ? `(${totalCount}) %s` : '%s',
       link: [
         {
@@ -325,7 +336,7 @@ export default {
           href: '/icon.png'
         }
       ]
-    }
+    }*/
   },
 
   computed: {

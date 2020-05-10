@@ -49,7 +49,7 @@
       <h4 class="mt-2">
         Group Info
       </h4>
-      Group id <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ group.id }}.
+      Group id <v-icon name="hashtag" class="text-muted" scale="0.75" /><b>{{ group.id }}</b>.
       <br>
       <br>
       Explore page:

@@ -194,7 +194,7 @@ import waitForRef from '@/mixins/waitForRef'
 let cv
 
 if (process.client) {
-  cv = require('opencv.js')
+  // cv = require('opencv.js')
 }
 
 const a = require('axios')

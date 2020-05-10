@@ -1,7 +1,7 @@
 <template>
   <NoticeMessage v-if="savedComment" variant="danger" class="mb-2">
     <div v-for="n in 10" :key="'modcomments-' + user.id + '-' + savedComment.id + '-' + n">
-      <b>{{ savedComment['user' + n] }}</b>
+      <read-more v-if="savedComment['user' + n]" :text="savedComment['user' + n]" :max-chars="80" class="font-weight-bold nopara" />
     </div>
     <div class="small">
       <span v-if="savedComment.byuser">
@@ -11,12 +11,14 @@
       <span v-if="savedComment.groupid">
         on {{ groupname }}
       </span>
-      <b-btn v-if="canEdit" variant="link" size="sm" @click="editIt">
-        <v-icon name="pen" /> Edit
-      </b-btn>
-      <b-btn v-if="canEdit" variant="link" size="sm" @click="deleteIt">
-        <v-icon name="trash-alt" /> Delete
-      </b-btn>
+      <span v-if="amAModOn(savedComment.groupid)">
+        <b-btn v-if="canEdit" variant="link" size="sm" @click="editIt">
+          <v-icon name="pen" /> Edit
+        </b-btn>
+        <b-btn v-if="canEdit" variant="link" size="sm" @click="deleteIt">
+          <v-icon name="trash-alt" /> Delete
+        </b-btn>
+      </span>
     </div>
     <ConfirmModal ref="confirm" @confirm="deleteConfirmed" />
     <ModCommentEditModal v-if="canEdit" ref="editComment" :user="user" :comment="comment" @edited="updateComments" />

@@ -7,7 +7,15 @@
             <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ admin.id }}
           </b-col>
           <b-col cols="6" md="3">
-            {{ admin.created | timeago }}
+            Created {{ admin.created | timeago }}
+            <span v-if="!pending">
+              <span v-if="admin.complete">
+                Sent {{ admin.complete | timeago }}
+              </span>
+              <span v-else>
+                Queued for send
+              </span>
+            </span>
           </b-col>
           <b-col cols="12" md="4">
             <span v-if="admin.parentid">
@@ -84,7 +92,7 @@
           />
         </b-form-group>
       </b-card-body>
-      <b-card-footer v-if="expanded && !admin.complete">
+      <b-card-footer v-if="expanded && admin.pending">
         <b-btn v-if="!admin.heldby" variant="warning" @click="deleteIt">
           <v-icon name="trash-alt" /> Delete
         </b-btn>

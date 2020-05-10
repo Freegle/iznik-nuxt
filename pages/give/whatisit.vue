@@ -36,15 +36,16 @@
             <v-icon name="plus" />&nbsp;Add another item
           </b-btn>
         </div>
+        <CovidPostWarning class="mt-2" :covid.sync="covid" />
         <transition name="fade">
-          <b-row v-if="valid">
+          <b-row v-if="valid && covid">
             <b-col cols="12" md="6" offset-md="3" class="text-center pt-2">
               <b-btn variant="success" size="lg" block :disabled="uploadingPhoto" @click="next">
                 Next <v-icon name="angle-double-right" />
               </b-btn>
             </b-col>
           </b-row>
-          <b-row v-else>
+          <b-row v-else-if="covid">
             <b-col cols="12" md="6" offset-md="3" class="text-center pt-2">
               <NoticeMessage variant="info">
                 Please add the item name, and either a description or a photo.
@@ -65,6 +66,7 @@
 </template>
 <script>
 import NoticeMessage from '../../components/NoticeMessage'
+import CovidPostWarning from '../../components/CovidPostWarning'
 import loginOptional from '@/mixins/loginOptional.js'
 import compose from '@/mixins/compose.js'
 import buildHead from '@/mixins/buildHead.js'
@@ -76,6 +78,7 @@ const WizardProgress = () => import('~/components/WizardProgress')
 
 export default {
   components: {
+    CovidPostWarning,
     NoticeMessage,
     PostMessage,
     Postcode,

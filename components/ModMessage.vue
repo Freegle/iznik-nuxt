@@ -21,6 +21,7 @@
             <Diff v-else-if="editreview" :old="oldSubject" :new="newSubject" class="font-weight-bold" />
             <div v-else :class="subjectClass + ' font-weight-bold'">
               {{ eSubject }}
+              <span v-if="message.location" class="text-muted small">{{ message.location.name }}</span>
             </div>
             <MessageHistory :message="message" modinfo display-message-link />
             <ModMessageDuplicate v-for="duplicate in duplicates" :key="'duplicate-' + duplicate.id" :message="duplicate" />
@@ -66,11 +67,13 @@
                 </NoticeMessage>
               </div>
             </div>
-            <ModComments :user="message.fromuser" />
-            <ModSpammer v-if="message.fromuser.spammer" :user="message.fromuser" />
-            <NoticeMessage v-if="message.fromuser && message.fromuser.activedistance > 50" variant="warning" class="mb-2">
-              This freegler is active on groups {{ message.fromuser.activedistance }} miles apart.
-            </NoticeMessage>
+            <div v-if="message.fromuser">
+              <ModComments :user="message.fromuser" />
+              <ModSpammer v-if="message.fromuser.spammer" :user="message.fromuser" />
+              <NoticeMessage v-if="message.fromuser && message.fromuser.activedistance > 50" variant="warning" class="mb-2">
+                This freegler is active on groups {{ message.fromuser.activedistance }} miles apart.
+              </NoticeMessage>
+            </div>
             <NoticeMessage v-if="message.spamreason" variant="warning" class="mb-2">
               {{ message.spamreason }}
             </NoticeMessage>
@@ -321,7 +324,10 @@ export default {
       let ret = null
 
       if (this.groupid) {
-        ret = this.message.fromuser.memberof.find(g => g.id === this.groupid)
+        ret =
+          this.message.fromuser &&
+          this.message.fromuser.memberof &&
+          this.message.fromuser.memberof.find(g => g.id === this.groupid)
       }
 
       return ret
