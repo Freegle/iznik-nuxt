@@ -8,7 +8,14 @@
     <template slot="default">
       <b-row>
         <b-col>
-          We've cleared all your data.  You're welcome back in the future if you change your mind.
+          <p>
+            We've cleared all your data.  You're welcome back in the future if you change your mind.
+          </p>
+          <p>
+            Occasionally you may receive emails for upto a few more hours - emails may have been sent to you but
+            not yet reached your mailbox.  If you receive any more emails after 24 hours please forward the entire
+            mail to support@ilovefreegle.org.
+          </p>
         </b-col>
       </b-row>
     </template>
