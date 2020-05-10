@@ -1,10 +1,13 @@
 <template>
   <div class="d-inline">
-    <b-btn :variant="variant" class="mb-1" :disabled="disabled" @click="click">
-      <v-icon v-if="done" name="check" />
-      <v-icon v-else-if="doing" name="sync" class="fa-spin" />
-      <v-icon v-else :name="icon" /> {{ label }}
-    </b-btn>
+    <SpinButton
+      :variant="variant"
+      :name="icon"
+      :label="label"
+      class="mb-1"
+      :disabled="disabled"
+      :handler="click"
+    />
     <ConfirmModal v-if="showDeleteModal" ref="deleteConfirm" :title="'Delete: ' + member.displayname" @confirm="deleteConfirmed" />
     <ModSpammerReport v-if="showSpamModal" ref="spamConfirm" :user="member" />
     <ModStdMessageModal v-if="showStdMsgModal" ref="stdmodal" :stdmsg="stdmsg" :member="member" />
@@ -13,11 +16,13 @@
 <script>
 import ConfirmModal from './ConfirmModal'
 import ModSpammerReport from './ModSpammerReport'
+import SpinButton from './SpinButton'
 import waitForRef from '@/mixins/waitForRef'
 const ModStdMessageModal = () => import('./ModStdMessageModal')
 
 export default {
   components: {
+    SpinButton,
     ModSpammerReport,
     ModStdMessageModal,
     ConfirmModal
@@ -116,8 +121,6 @@ export default {
       showDeleteModal: false,
       showStdMsgModal: false,
       showSpamModal: false,
-      doing: false,
-      done: false,
       stdmsg: null
     }
   },
