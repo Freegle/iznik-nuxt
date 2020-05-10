@@ -72,6 +72,10 @@ export const getters = {
     return state.users[chatid] ? Object.values(state.users[chatid]) : []
   },
 
+  getUser: state => (chatid, userid) => {
+    return state.users[chatid][userid]
+  },
+
   getContext: state => id => {
     return state.contexts[id]
   }

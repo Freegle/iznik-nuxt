@@ -23,18 +23,6 @@ export default {
   },
   extends: ChatBase,
   computed: {
-    messageIsFromCurrentUser() {
-      if (this.chat.chattype === 'User2Mod') {
-        return (
-          this.chatmessage.userid === this.me.id ||
-          (this.chat.user1 &&
-            this.myid !== this.chat.user1.id &&
-            this.chatmessage.userid !== this.chat.user1.id)
-        )
-      } else {
-        return this.chatmessage.userid === this.me.id
-      }
-    },
     messageIsNew() {
       return (
         this.chatmessage.secondsago < 60 ||
