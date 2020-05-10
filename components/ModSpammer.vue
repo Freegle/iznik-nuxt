@@ -13,7 +13,7 @@
       <span v-if="user.spammer.byuser">
         by
         {{ user.spammer.byuser.displayname }}
-        (<a href="'mailto:' + user.spammer.byuser.email">{{ user.spammer.byuser.email }}</a>)
+        (<a :href="'mailto:' + user.spammer.byuser.email">{{ user.spammer.byuser.email }}</a>)
       </span>
       #{{ user.spammer.byuserid }} {{ user.spammer.added | timeago }}
     </div>

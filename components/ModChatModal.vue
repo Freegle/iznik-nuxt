@@ -7,18 +7,34 @@
       no-stacking
     >
       <template slot="modal-title" class="w-100">
-        <div class="d-flex justify-content-between">
-          <div v-if="user1">
-            {{ user1.displayname }}
-            <span class="text-muted small">
-              <v-icon name="hashtag" class="text-muted" scale="0.8" />{{ user1.id }}
-            </span>
+        <div>
+          <div v-if="user1 && pov == user1.id" class="d-flex justify-content-between">
+            <div v-if="user2">
+              {{ user2.displayname }}
+              <span class="text-muted small">
+                <v-icon name="hashtag" class="text-muted" scale="0.8" />{{ user2.id }}
+              </span>
+            </div>
+            <div v-if="user1">
+              {{ user1.displayname }}
+              <span class="text-muted small">
+                <v-icon name="hashtag" class="text-muted" scale="0.8" />{{ user1.id }}
+              </span>
+            </div>
           </div>
-          <div v-if="user2">
-            {{ user2.displayname }}
-            <span class="text-muted small">
-              <v-icon name="hashtag" class="text-muted" scale="0.8" />{{ user2.id }}
-            </span>
+          <div v-else class="d-flex justify-content-between">
+            <div v-if="user1">
+              {{ user1.displayname }}
+              <span class="text-muted small">
+                <v-icon name="hashtag" class="text-muted" scale="0.8" />{{ user1.id }}
+              </span>
+            </div>
+            <div v-if="user2">
+              {{ user2.displayname }}
+              <span class="text-muted small">
+                <v-icon name="hashtag" class="text-muted" scale="0.8" />{{ user2.id }}
+              </span>
+            </div>
           </div>
         </div>
       </template>
@@ -37,7 +53,7 @@
                 :key="'chatmessage-' + chatmessage.id"
                 :chatmessage="chatmessage"
                 :chat="chat"
-                :otheruser="chat.user1.id === chatmessage.userid ? chat.user2 : chat.user1"
+                :otheruser="pov === chat.user1.id ? chat.user2 : chat.user1"
                 :last="chatmessage.id === chatmessages[chatmessages.length - 1].id"
                 :pov="pov"
               />
