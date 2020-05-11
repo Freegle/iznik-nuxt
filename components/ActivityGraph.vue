@@ -31,6 +31,9 @@
       <p v-if="graphType === 'Outcomes'">
         These are the posts marked as TAKEN/RECEIVED.
       </p>
+      <p v-if="graphType === 'Donations'">
+        These are donations received via PayPal.
+      </p>
       <div v-if="loading" class="height text-muted pulsate align-middle d-flex flex-column">
         Loading...
       </div>
@@ -91,6 +94,11 @@ export default {
       required: false,
       default: false
     },
+    donations: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     systemwide: {
       type: Boolean,
       required: false,
@@ -100,13 +108,14 @@ export default {
   data: function() {
     const ret = {
       loading: true,
-      askfor: ['ApprovedMessageCount', 'Activity', 'Replies'],
+      askfor: ['ApprovedMessageCount', 'Activity', 'Replies', 'Donations'],
       MessageBreakdown: null,
       ApprovedMessageCount: null,
       Activity: null,
       Replies: null,
       Weight: null,
       Outcomes: null,
+      Donations: null,
       graphType: 'Activity',
       graphTypes: [],
       graphTitles: {
@@ -116,7 +125,8 @@ export default {
         Offers: 'OFFERs only',
         Wanteds: 'WANTEDs only',
         Weight: 'Weights',
-        Outcomes: 'Successful'
+        Outcomes: 'Successful',
+        Donations: 'PayPal Donations'
       },
       units: 'year',
       unitOptions: [
@@ -160,6 +170,10 @@ export default {
 
     if (this.weights) {
       ret.graphTypes.push({ value: 'Weight', text: 'Weight estimates' })
+    }
+
+    if (this.donations) {
+      ret.graphTypes.push({ value: 'Donations', text: 'PayPal Donations' })
     }
 
     ret.graphTypes.push({ value: 'Replies', text: 'Replies' })
@@ -294,8 +308,9 @@ export default {
         start: this.start.toISOString(),
         end: this.end.toISOString(),
         allgroups: !this.systemwide && !this.groupid,
-        group: this.groupid,
-        systemwide: this.systemwide
+        group: this.groupid > 0 ? this.groupid : null,
+        systemwide: this.systemwide,
+        suppliedgroup: this.groupid
       })
 
       Object.keys(res).forEach(comp => {

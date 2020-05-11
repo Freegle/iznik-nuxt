@@ -8,7 +8,14 @@
     <div class="d-flex mb-2 mt-2 flex-wrap">
       <div class="borderit d-flex flex-column">
         <label for="dashboardgroup">Choose community:</label>
-        <GroupSelect id="dashboardgroup" v-model="groupidi" all modonly active />
+        <GroupSelect
+          id="dashboardgroup"
+          v-model="groupidi"
+          all
+          modonly
+          :systemwide="admin"
+          active
+        />
       </div>
       <div class="borderit d-flex flex-column">
         <label for="showInfo">Show info from:</label>
@@ -82,7 +89,9 @@
         offers
         wanteds
         weights
+        donations
         successful
+        :systemwide="groupid < 0"
       />
       <!--      TODO MT POSTLAUNCH TN vs email vs web stats-->
     </div>
@@ -174,7 +183,9 @@ export default {
       }
     },
     groupName() {
-      if (!this.groupid) {
+      if (this.groupid < 0) {
+        return 'all Freegle communities'
+      } else if (!this.groupid) {
         return 'all my communities'
       } else {
         const group = this.$store.getters['group/get'](this.groupid)
