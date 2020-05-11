@@ -135,7 +135,7 @@ export default {
       return this.buildHead(
         message.subject,
         snip,
-        message.attachments && message.attachments.length > 1
+        message.attachments && message.attachments.length > 0
           ? message.attachments[0].path
           : null
       )
