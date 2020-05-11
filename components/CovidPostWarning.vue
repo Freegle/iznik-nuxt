@@ -1,9 +1,12 @@
 <template>
   <NoticeMessage variant="danger">
-    <p>
-      <b-form-checkbox v-model="currentCovid" size="lg" class="d-inline blah" @change="$emit('update:covid', $event)" />
-      &lt;--- Click here to say you consider this item essential and will follow the guidance on safe freegling during COVID-19.
-    </p>
+    <div class="mb-3">
+      <b-form-checkbox v-model="currentCovid" size="lg" class="d-inline" @change="$emit('update:covid', $event)" />
+      <span class="warning-text">
+        <v-icon name="arrow-left" />
+        Click here to say you consider this item essential and will follow the guidance on safe freegling during COVID-19.
+      </span>
+    </div>
     <b-btn variant="primary" @click="showModal = true">
       Read guidance on safe freegling
     </b-btn>
@@ -13,6 +16,7 @@
     <span class="d-none custom-control-label" />
   </NoticeMessage>
 </template>
+
 <script>
 import NoticeMessage from './NoticeMessage'
 import CovidSafeFreegling from './CovidSafeFreegling'
@@ -40,6 +44,7 @@ export default {
   }
 }
 </script>
+
 <style scoped>
 .check {
   border-width: 3px !important;
@@ -49,17 +54,7 @@ export default {
   left: -1.6rem !important;
 }
 
-::v-deep .custom-control-label::before {
-  width: 2rem !important;
-  height: 2rem !important;
-}
-
-::v-deep .custom-control-label::after {
-  width: 2rem !important;
-  height: 2rem !important;
-}
-
-::v-deep .custom-checkbox.b-custom-control-lg {
-  line-height: 2.3;
+.warning-text {
+  vertical-align: text-bottom;
 }
 </style>
