@@ -65,7 +65,7 @@ export default {
       return total
     },
     click(e) {
-      if (this.link) {
+      if (this.link && e.button === 0) {
         if (this.$route.fullPath === this.link) {
           // Click on current route.  Reload.
           e.stopPropagation()
