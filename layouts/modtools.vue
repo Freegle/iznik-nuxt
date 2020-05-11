@@ -311,10 +311,8 @@ export default {
     const work = this.$store.getters['auth/work']
 
     // All the types of work which are worth nagging about.
-    for (const key of [
+    const worktypes = [
       'pendingvolunteering',
-      'spammerpendingadd',
-      'spammerpendingremove',
       'socialactions',
       'chatreview',
       'relatedmembers',
@@ -327,7 +325,14 @@ export default {
       'spammembers',
       'editreview',
       'pendingadmins'
-    ]) {
+    ]
+
+    if (this.supportOrAdmin) {
+      worktypes.push('spammerpendingadd')
+      worktypes.push('spammerpendingremove')
+    }
+
+    for (const key of worktypes) {
       if (work[key]) {
         totalCount += work[key]
       }
