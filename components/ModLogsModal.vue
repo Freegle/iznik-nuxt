@@ -4,7 +4,7 @@
       :id="'modLogsModal-' + userid"
       v-model="showModal"
       :title="title"
-      size="lg"
+      size="xl"
       no-stacking
     >
       <template slot="default">
