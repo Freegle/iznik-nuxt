@@ -1,7 +1,7 @@
 <template>
   <NoticeMessage variant="danger">
     <p>
-      <b-form-checkbox v-model="currentCovid" size="lg" :class="'d-inline ' + pulse" @change="$emit('update:covid', $event)" />
+      <b-form-checkbox v-model="currentCovid" size="lg" class="d-inline blah" @change="$emit('update:covid', $event)" />
       &lt;--- Click here to say you consider this item essential and will follow the guidance on safe freegling during COVID-19.
     </p>
     <b-btn variant="primary" @click="showModal = true">
@@ -47,5 +47,19 @@ export default {
 
 ::v-deep .check .custom-control-label::before {
   left: -1.6rem !important;
+}
+
+::v-deep .custom-control-label::before {
+  width: 2rem !important;
+  height: 2rem !important;
+}
+
+::v-deep .custom-control-label::after {
+  width: 2rem !important;
+  height: 2rem !important;
+}
+
+::v-deep .custom-checkbox.b-custom-control-lg {
+  line-height: 2.3;
 }
 </style>
