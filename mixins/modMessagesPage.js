@@ -31,6 +31,18 @@ export default {
         messages = this.$store.getters['messages/getAll']
       }
 
+      // We need to sort as otherwise new messages may appear at the end.
+      messages.sort((a, b) => {
+        if (a.groups && b.groups) {
+          return (
+            new Date(b.groups[0].arrival).getTime() -
+            new Date(a.groups[0].arrival).getTime()
+          )
+        } else {
+          return new Date(b.arrival).getTime() - new Date(a.arrival).getTime()
+        }
+      })
+
       return messages
     },
     work() {
