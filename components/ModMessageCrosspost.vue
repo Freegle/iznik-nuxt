@@ -1,8 +1,9 @@
 <template>
   <div class="text-danger small">
-    Crosspost <v-icon name="hashtag" class="text-muted" scale="0.5" />{{ message.id }}
-    <em>{{ message.subject }}</em>
-    {{ message.arrival | timeago }} on <em>{{ groupname }}</em>
+    Crosspost <v-icon name="hashtag" class="text-muted" scale="0.5" /><nuxt-link :to="'/modtools/message/' + message.id">
+      <em>{{ message.subject }}</em>
+      {{ message.arrival | timeago }} on <em>{{ groupname }}</em>
+    </nuxt-link>
   </div>
 </template>
 <script>
