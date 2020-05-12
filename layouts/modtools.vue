@@ -139,7 +139,7 @@ export default {
   computed: {
     chatCount() {
       // Don't show so many that the layout breaks.
-      return Math.min(999, this.$store.getters['chats/unseenCount'])
+      return Math.min(99, this.$store.getters['chats/unseenCount'])
     },
     discourseCount() {
       const discourse = this.$store.getters['auth/discourse']
