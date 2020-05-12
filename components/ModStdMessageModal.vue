@@ -107,6 +107,16 @@ export default {
     user() {
       return this.message ? this.message.fromuser : this.member
     },
+    userid() {
+      // Because of server inconsistencies we need to be a bit careful about how we get the user id.
+      let ret = null
+
+      if (this.user) {
+        ret = this.user.userid ? this.user.userid : this.user.id
+      }
+
+      return ret
+    },
     fromName() {
       return this.me.displayname
     },
@@ -277,6 +287,7 @@ export default {
 
       // Calculate initial body
       let msg = this.message ? this.message.textbody : ''
+      msg = msg || ''
 
       if (msg || this.member) {
         if (msg) {
@@ -354,10 +365,10 @@ export default {
         }
       } else if (this.stdmsg) {
         // No existing body
-        msg = '\n\n' + this.stdmsg.body
+        msg = '\n\n' + (this.stdmsg.body ? this.stdmsg.body : '')
       }
 
-      this.body = this.substitutionStrings(msg)
+      this.body = this.substitutionStrings(msg).trim()
 
       this.showModal = true
     },
@@ -496,7 +507,7 @@ export default {
       ) {
         this.changingNewDelStatus = true
         await this.$store.dispatch('user/edit', {
-          id: this.memberid,
+          id: this.userid,
           groupid: this.groupid,
           emailfrequency: this.emailfrequency
         })
@@ -510,7 +521,7 @@ export default {
       ) {
         this.changingNewModStatus = true
         await this.$store.dispatch('user/edit', {
-          id: this.memberid,
+          id: this.userid,
           groupid: this.groupid,
           ourPostingStatus: this.stdmsg.newmodstatus
         })
@@ -518,14 +529,23 @@ export default {
         this.changedNewModStatus = true
       }
 
-      console.log('Action', this.stdmsg.action)
+      // People sometimes set up standard messages to automate the action without the intentiond of
+      // actually sending a message to the member.
+      let subj = this.subject.trim()
+      let body = this.body.trim()
+
+      if (!body) {
+        subj = null
+        body = null
+      }
+
       switch (this.stdmsg.action) {
         case 'Approve':
           await this.$store.dispatch('messages/approve', {
             id: this.message.id,
             groupid: this.groupid,
-            subject: this.subject,
-            body: this.body,
+            subject: subj,
+            body: body,
             stdmsgid: this.stdmsg.id
           })
           break
@@ -533,8 +553,8 @@ export default {
           await this.$store.dispatch('members/approve', {
             id: this.member.userid,
             groupid: this.groupid,
-            subject: this.subject,
-            body: this.body,
+            subject: subj,
+            body: body,
             stdmsgid: this.stdmsg.id
           })
           break
@@ -543,8 +563,8 @@ export default {
           await this.$store.dispatch('messages/reply', {
             id: this.message.id,
             groupid: this.groupid,
-            subject: this.subject,
-            body: this.body,
+            subject: subj,
+            body: body,
             stdmsgid: this.stdmsg.id
           })
           break
@@ -553,8 +573,8 @@ export default {
           await this.$store.dispatch('members/reply', {
             id: this.member.userid,
             groupid: this.groupid,
-            subject: this.subject,
-            body: this.body,
+            subject: subj,
+            body: body,
             stdmsgid: this.stdmsg.id
           })
           break
@@ -562,8 +582,8 @@ export default {
           await this.$store.dispatch('messages/reject', {
             id: this.message.id,
             groupid: this.groupid,
-            subject: this.subject,
-            body: this.body,
+            subject: subj,
+            body: body,
             stdmsgid: this.stdmsg.id
           })
           break
@@ -571,8 +591,8 @@ export default {
           await this.$store.dispatch('members/reject', {
             id: this.member.userid,
             groupid: this.groupid,
-            subject: this.subject,
-            body: this.body,
+            subject: subj,
+            body: body,
             stdmsgid: this.stdmsg.id
           })
           break
@@ -581,8 +601,8 @@ export default {
           await this.$store.dispatch('messages/delete', {
             id: this.message.id,
             groupid: this.groupid,
-            subject: this.subject,
-            body: this.body,
+            subject: subj,
+            body: body,
             stdmsgid: this.stdmsg.id
           })
           break
@@ -591,8 +611,8 @@ export default {
           await this.$store.dispatch('members/delete', {
             id: this.member.userid,
             groupid: this.groupid,
-            subject: this.subject,
-            body: this.body,
+            subject: subj,
+            body: body,
             stdmsgid: this.stdmsg.id
           })
           break
@@ -604,14 +624,14 @@ export default {
               msgtype: this.message.type,
               item: this.message.item.name,
               location: this.message.location.name,
-              textbody: this.body
+              textbody: body
             })
           } else {
             // Not
             await this.$store.dispatch('messages/patch', {
               id: this.message.id,
-              subject: this.subject,
-              textbody: this.body
+              subject: subj,
+              textbody: body
             })
           }
           break

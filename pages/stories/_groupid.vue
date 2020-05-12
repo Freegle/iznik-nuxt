@@ -96,7 +96,6 @@ export default {
     }
   },
   async asyncData({ app, params, store }) {
-    await store.dispatch('stories/clear')
     await store.dispatch('stories/fetch', {
       groupid: params.groupid > 0 ? params.groupid : null
     })

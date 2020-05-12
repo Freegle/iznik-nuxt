@@ -35,7 +35,7 @@ export default {
       let stories = this.$store.getters['stories/list']
 
       if (stories) {
-        stories = Object.values(stories)
+        stories = Object.values(stories).slice(0, 3)
         return stories.sort(function(a, b) {
           return new Date(b.date).getTime() - new Date(a.date).getTime()
         })

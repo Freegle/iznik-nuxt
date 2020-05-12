@@ -16,7 +16,7 @@
           IP unavailable.
         </span>
       </span>
-      <span v-if="group.approvedby">
+      <span v-if="group.approvedby && group.approvedby.displayname">
         Approved by {{ group.approvedby.displayname }}
       </span>
     </div>

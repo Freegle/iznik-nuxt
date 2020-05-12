@@ -37,7 +37,6 @@ export default {
     }
   },
   async mounted() {
-    await this.$store.dispatch('stories/clear')
     await this.$store.dispatch('stories/fetch', {
       reviewnewsletter: true
     })

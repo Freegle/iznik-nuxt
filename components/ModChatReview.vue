@@ -2,11 +2,13 @@
   <div>
     <b-card no-body>
       <b-card-header>
-        <div class="d-flex justify-content-start flex-wrap">
-          <ModChatReviewUser :user="message.fromuser" class="mr-2" tag="From: " :groupid="message.group.id" />
-          <v-icon name="arrow-circle-right" scale="2" class="mt-1 text-info" />
-          <ModChatReviewUser :user="message.touser" class="ml-2" tag="To: " :groupid="message.group.id" />
-          <b-btn v-if="message.msgid" variant="white" @click="viewOriginal">
+        <div class="d-flex justify-content-between flex-wrap">
+          <div class="d-flex justify-content-start flex-wrap">
+            <ModChatReviewUser :user="message.fromuser" class="mr-2" tag="From: " :groupid="message.group.id" />
+            <v-icon name="arrow-circle-right" scale="2" class="mt-1 text-info" />
+            <ModChatReviewUser :user="message.touser" class="ml-2" tag="To: " :groupid="message.group.id" />
+          </div>
+          <b-btn v-if="message.bymailid" size="lg" variant="white" @click="viewOriginal">
             <v-icon name="info-circle" /> View original email
           </b-btn>
         </div>
@@ -82,7 +84,7 @@
       </b-card-footer>
     </b-card>
     <ModChatNoteModal v-if="message" ref="modnote" :chatid="message.chatid" />
-    <ModMessageEmailModal v-if="showOriginal" :id="chatmessage.bymailid" ref="original" />
+    <ModMessageEmailModal v-if="showOriginal" :id="message.bymailid" ref="original" />
   </div>
 </template>
 <script>

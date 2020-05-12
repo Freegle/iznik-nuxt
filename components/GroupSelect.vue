@@ -33,6 +33,12 @@ export default {
       required: false,
       default: false
     },
+    // Whether to list all Freegle groups.
+    listall: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     // Whether to show the systemwide option.  This will only show if we're an system admin.
     systemwide: {
       type: Boolean,
@@ -75,6 +81,18 @@ export default {
       }
     },
 
+    groups() {
+      let ret = []
+      if (this.listall) {
+        ret = Object.values(this.$store.getters['group/list'])
+      } else {
+        ret = this.$store.getters['auth/groups']
+      }
+
+      ret = ret || []
+      return ret
+    },
+
     groupOptions() {
       const groups = []
 
@@ -105,14 +123,13 @@ export default {
         }
       }
 
-      const myGroups = this.$store.getters['auth/groups']
-
-      for (const group of myGroups) {
+      for (const group of this.groups) {
         if (
-          group.type === 'Freegle' &&
-          (!this.modonly ||
-            group.role === 'Owner' ||
-            group.role === 'Moderator')
+          this.listall ||
+          (group.type === 'Freegle' &&
+            (!this.modonly ||
+              group.role === 'Owner' ||
+              group.role === 'Moderator'))
         ) {
           let text = group.namedisplay
 
@@ -155,6 +172,13 @@ export default {
       handler(val) {
         if (val) this.selectedGroup = null
       }
+    }
+  },
+  async mounted() {
+    if (this.listall) {
+      await this.$store.dispatch('group/list', {
+        grouptype: 'Freegle'
+      })
     }
   }
 }

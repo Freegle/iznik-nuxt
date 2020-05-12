@@ -25,7 +25,7 @@
           </a>
         </div>
         <p class="mt-2">
-          The app is only available in the UK app stores. We support Android 4.4/iOS 9 or later.
+          The app is only available in the UK app stores. We support Android 5/iOS 10 or later.
         </p>
         <p>
           Please report any issues to <a href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</a>.

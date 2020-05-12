@@ -1,6 +1,6 @@
 <template>
   <b-row v-if="!chatmessage.sameasnext || last || chatmessage.bymailid" class="text-muted small">
-    <b-col v-if="chatmessage.userid !== me.id">
+    <b-col v-if="!messageIsFromCurrentUser">
       <span class="chat__dateread--theirs" :title="chatmessage.date | datetimeshort">
         {{ chatmessage.date | timeago }}
         <span v-if="chatmessage.bymailid" class="clickme" :title="'Received by email #' + chatmessage.bymailid + ' click to view'" @click="viewOriginal">
@@ -24,6 +24,18 @@
         </span>
         <span v-else title="This message has been delivered in Chat.  Depending on the other freegler's settings it may also be sent out by email soon - then this would turn into a little envelope.">
           <v-icon name="check" class="text-muted" />
+        </span>
+        <span v-if="chat.chattype === 'User2Mod'">
+          <span v-if="chatmessage.userid === me.id">
+            You
+          </span>
+          <span v-else-if="othermodname">
+            {{ othermodname }}
+          </span>
+          <span v-else>
+            <v-icon name="hashtag" class="text-muted" scale="0.5" />{{ chatmessage.userid }}
+          </span>
+          sent this
         </span>
         {{ chatmessage.date | timeago }}
         <span v-if="chatmessage.bymailid" class="clickme" :title="'Received by email #' + chatmessage.bymailid + ' click to view'" @click="viewOriginal">
@@ -52,6 +64,16 @@ export default {
   data: function() {
     return {
       showOriginal: false
+    }
+  },
+  computed: {
+    othermodname() {
+      const user = this.$store.getters['chatmessages/getUser'](
+        this.chatmessage.chatid,
+        this.chatmessage.userid
+      )
+
+      return user ? user.displayname : null
     }
   },
   methods: {

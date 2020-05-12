@@ -78,6 +78,23 @@ export default {
       } else {
         return this.$store.getters['auth/user']
       }
+    },
+    messageIsFromCurrentUser() {
+      if (this.chat.chattype === 'User2Mod') {
+        // For User2Mod chats we want it on the right hand side we sent it, or if we're in MT and the sender of this
+        // message is not the user with whom the chat is (i.e. it's a mod).
+        const modtools = this.$store.getters['misc/get']('modtools')
+
+        return (
+          this.chatmessage.userid === this.me.id ||
+          (modtools &&
+            this.chat &&
+            this.chat.user1 &&
+            this.chat.user1.id !== this.chatmessage.userid)
+        )
+      } else {
+        return this.chatmessage.userid === this.me.id
+      }
     }
   },
   methods: {

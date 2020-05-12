@@ -157,19 +157,19 @@ export default {
       }
 
       const p = this.name.indexOf('.')
+      let val = this.value
+
+      if (typeof val === 'boolean') {
+        val = val ? 1 : 0
+      }
 
       if (p === -1) {
         // Top level property
-        data[this.name] = this.value ? 1 : 0
+        data[this.name] = val
       } else {
         // Lower down - we send the top one but we need to modify it wherever it is.
         const top = this.name.substring(0, p)
         const topobj = this.$store.getters['group/get'](this.groupid)
-        let val = this.value
-
-        if (typeof val === 'boolean') {
-          val = val ? 1 : 0
-        }
 
         this.setDeep(topobj, this.name.split('.'), val)
         data[top] = topobj[top]

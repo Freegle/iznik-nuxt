@@ -74,10 +74,13 @@ export const actions = {
     commit('setList', await this.$api.group.list(params))
   },
 
-  async fetch({ commit }, { id, polygon }) {
+  async fetch({ commit }, { id, polygon, sponsors }) {
+    polygon = Object.is(polygon, undefined) ? false : polygon
+    sponsors = Object.is(sponsors, undefined) ? false : sponsors
+
     commit(
       'add',
-      await this.$api.group.fetch(id, polygon, function(data) {
+      await this.$api.group.fetch(id, polygon, sponsors, function(data) {
         if (data && data.ret === 2) {
           // Not hosting a group isn't worth logging.
           return false

@@ -96,17 +96,12 @@
         CGA
       </h4>
       <b-textarea v-model="group.cga" rows="4" class="mb-2" />
-      <p>TODO MT Save updates to CGA and DPA</p>
-      <b-btn variant="white" disabled>
-        Save Update
-      </b-btn>
+      <SpinButton variant="white" name="save" label="Save Update" :handler="saveCGA" />
       <h4 class="mt-2">
         DPA
       </h4>
       <b-textarea v-model="group.dpa" rows="4" class="mb-2" />
-      <b-btn variant="white" disabled>
-        Save Update
-      </b-btn>
+      <SpinButton variant="white" name="save" label="Save Update" :handler="saveDPA" />
       <h4 class="mt-2">
         Volunteers
       </h4>
@@ -126,12 +121,14 @@
 </template>
 <script>
 import ModSupportFindGroupVolunteer from './ModSupportFindGroupVolunteer'
+import SpinButton from './SpinButton'
 import AutocompleteLocal from '@/components/AutocompleteLocal'
 import GroupHeader from '@/components/GroupHeader'
 const OurToggle = () => import('@/components/OurToggle')
 
 export default {
   components: {
+    SpinButton,
     ModSupportFindGroupVolunteer,
     OurToggle,
     AutocompleteLocal,
@@ -218,7 +215,6 @@ export default {
   watch: {
     async groupid(id) {
       // Get the full group info
-      console.log('fetch group', id)
       await this.$store.dispatch('group/fetch', {
         id: id,
         polygon: true
@@ -253,6 +249,18 @@ export default {
   methods: {
     canonGroupName(name) {
       return name ? name.toLowerCase().replace(/-|_| /g, '') : null
+    },
+    async saveCGA() {
+      await this.$store.dispatch('group/update', {
+        id: this.groupid,
+        polyofficial: this.group.cga
+      })
+    },
+    async saveDPA() {
+      await this.$store.dispatch('group/update', {
+        id: this.groupid,
+        poly: this.group.dpa
+      })
     }
   }
 }
