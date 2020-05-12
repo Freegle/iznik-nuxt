@@ -161,11 +161,11 @@ export default {
       this.$store.dispatch('messages/clear')
     },
     async group(newValue, oldValue) {
-      // We have this watch because we may need to fetch a group that we have remembered.  The mounted()
-      // call may happen before we have restored the persisted state, so we can't initiate the fetch there.
+      // We need both this and the mounted version in case we change group.
       if (oldValue === null || oldValue.id !== this.groupid) {
         await this.$store.dispatch('group/fetch', {
-          id: this.groupid
+          id: this.groupid,
+          sponsors: true
         })
       }
     }
@@ -189,7 +189,8 @@ export default {
     if (process.client && this.groupid) {
       // Fetch this group for header info.
       this.$store.dispatch('group/fetch', {
-        id: this.groupid
+        id: this.groupid,
+        sponsors: true
       })
     }
 

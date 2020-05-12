@@ -350,7 +350,7 @@ export default {
     },
     chatCount() {
       // Don't show so many that the layout breaks.
-      const chatcount = Math.min(999, this.$store.getters['chats/unseenCount']) // CC
+      const chatcount = Math.min(99, this.$store.getters['chats/unseenCount']) // CC
       setBadgeCount(chatcount) // CC
       return chatcount 
     },

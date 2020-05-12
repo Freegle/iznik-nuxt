@@ -4,7 +4,7 @@
       <div class="d-flex justify-content-between flex-wrap">
         <GroupSelect v-model="groupid" all modonly />
         <ModFindMessagesFromMember />
-        <ModFindMessage />
+        <ModFindMessage v-if="groupid" />
         <ModtoolsViewControl />
       </div>
       <div>

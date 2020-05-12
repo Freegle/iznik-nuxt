@@ -92,7 +92,7 @@
           <ModMenuItemLeft link="/modtools/spammers" name="Spammers" :count="supportOrAdmin ? ['spammerpendingadd', 'spammerpendingremove'] : []" />
           <hr>
           <ModMenuItemLeft link="/modtools/logs" name="Logs" />
-          <ModMenuItemLeft link="/modtools/support" name="Support" />
+          <ModMenuItemLeft v-if="supportOrAdmin" link="/modtools/support" name="Support" />
           <ModMenuItemLeft link="/modtools/settings" name="Settings" />
           <ModMenuItemLeft link="/modtools/teams" name="Teams" />
           <div>
@@ -140,7 +140,7 @@ export default {
   computed: {
     chatCount() {
       // Don't show so many that the layout breaks.
-      return Math.min(999, this.$store.getters['chats/unseenCount'])
+      return Math.min(99, this.$store.getters['chats/unseenCount'])
     },
     discourseCount() {
       const discourse = this.$store.getters['auth/discourse']
@@ -316,10 +316,8 @@ export default {
     const work = this.$store.getters['auth/work']
 
     // All the types of work which are worth nagging about.
-    for (const key of [
+    const worktypes = [
       'pendingvolunteering',
-      'spammerpendingadd',
-      'spammerpendingremove',
       'socialactions',
       'chatreview',
       'relatedmembers',
@@ -332,7 +330,14 @@ export default {
       'spammembers',
       'editreview',
       'pendingadmins'
-    ]) {
+    ]
+
+    if (this.supportOrAdmin) {
+      worktypes.push('spammerpendingadd')
+      worktypes.push('spammerpendingremove')
+    }
+
+    for (const key of worktypes) {
       if (work[key]) {
         totalCount += work[key]
       }

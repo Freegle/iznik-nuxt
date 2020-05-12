@@ -56,7 +56,8 @@ export default {
           start: this.start.toISOString(),
           end: this.end.toISOString(),
           allgroups: !this.groupid,
-          group: this.groupid
+          group: this.groupid > 0 ? this.groupid : null,
+          systemwide: this.groupid < 0
         })
 
         Object.keys(res).forEach(comp => {

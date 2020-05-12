@@ -33,7 +33,6 @@ export default {
     }
   },
   async asyncData({ app, params, store }) {
-    await store.dispatch('stories/clear')
     await store.dispatch('stories/fetch', {
       reviewed: 0
     })

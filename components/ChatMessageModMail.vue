@@ -55,7 +55,6 @@ export default {
       return this.chat && this.chat.group ? this.chat.group : null
     },
     amUser() {
-      console.log('amUSer', this.chat)
       return this.chat && this.chat.user && this.chat.user.id === this.myid
     }
   },

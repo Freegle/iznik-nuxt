@@ -27,7 +27,7 @@
         </b-row>
         <div v-if="dataready">
           <Impact range="the last 12 months" :total-benefit="totalBenefit" :total-c-o2="totalCO2" :total-weight="totalWeight" class="mt-2" />
-          <ActivityGraph :groupid="group ? group.id : null" :systemwide="!group" :start="start.toDate()" :end="end.toDate()" />
+          <ActivityGraph :groupid="group ? group.id : null" :systemwide="group <= 0" :start="start.toDate()" :end="end.toDate()" />
           <b-row class="mt-2 chart-wrapper">
             <b-col>
               <b-card variant="white" class="chart">

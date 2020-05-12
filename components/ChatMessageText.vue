@@ -23,9 +23,6 @@ export default {
   },
   extends: ChatBase,
   computed: {
-    messageIsFromCurrentUser() {
-      return this.chatmessage.userid === this.me.id
-    },
     messageIsNew() {
       return (
         this.chatmessage.secondsago < 60 ||

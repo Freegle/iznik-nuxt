@@ -1,8 +1,13 @@
 <template>
   <div class="d-inline">
-    <b-btn :variant="variant" class="mb-1" :disabled="disabled" @click="click">
-      <v-icon :name="icon" /> {{ label }}
-    </b-btn>
+    <SpinButton
+      :variant="variant"
+      :name="icon"
+      :label="label"
+      class="mb-1"
+      :disabled="disabled"
+      :handler="click"
+    />
     <ConfirmModal v-if="showDeleteModal" ref="deleteConfirm" :title="'Delete: ' + message.subject" @confirm="deleteConfirmed" />
     <ConfirmModal v-if="showSpamModal" ref="spamConfirm" :title="'Mark as Spam: ' + message.subject" @confirm="spamConfirmed" />
     <ModStdMessageModal v-if="showStdMsgModal" ref="stdmodal" :stdmsg="stdmsg" :message="message" />
@@ -10,11 +15,13 @@
 </template>
 <script>
 import ConfirmModal from './ConfirmModal'
+import SpinButton from './SpinButton'
 import waitForRef from '@/mixins/waitForRef'
 const ModStdMessageModal = () => import('./ModStdMessageModal')
 
 export default {
   components: {
+    SpinButton,
     ModStdMessageModal,
     ConfirmModal
   },

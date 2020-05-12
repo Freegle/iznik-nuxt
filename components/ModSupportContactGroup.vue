@@ -36,7 +36,7 @@
     <label>
       To:
     </label>
-    <GroupSelect v-model="groupid" systemwide />
+    <GroupSelect v-model="groupid" systemwide listall />
     <NoticeMessage v-if="groupid < 0" variant="danger" class="mt-2 mb-2">
       This will go to all groups.
     </NoticeMessage>

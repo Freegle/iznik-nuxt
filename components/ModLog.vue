@@ -47,6 +47,9 @@
               <span v-if="sourceheader" class="text-muted small">
                 via {{ sourceheader }}
               </span>
+              <span v-if="log.message.groups && log.message.groups[0].collection === 'Pending'" class="text-warning">
+                currently {{ log.message.groups[0].collection }}
+              </span>
             </span>
             <span v-else-if="log.message">
               Emailed <em>{{ log.message.subject }}</em> to <em>{{ log.message.envelopeto }}</em>
