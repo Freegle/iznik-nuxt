@@ -4,7 +4,7 @@
       {{ message.id }}
     </nuxt-link>
     <em>{{ message.subject }}</em>
-    {{ message.timeago | timeago }}
+    {{ message.arrival | timeago }}
   </div>
 </template>
 <script>
