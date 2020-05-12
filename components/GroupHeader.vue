@@ -55,11 +55,29 @@
         <span v-if="group.description" v-html="group.description"/>
       </b-col>
     </b-row>
+    <div v-if="group.sponsors" class="d-flex flex-wrap justify-content-between">
+      <b-card v-for="sponsor in group.sponsors" :key="'sponsor-' + sponsor.id" no-body>
+        <b-card-body class="d-flex p-1">
+          <SponsorLogo :image="sponsor.imageurl" :alt-text="'Sponsor logo for ' + sponsor.name" />
+          <div class="ml-2">
+            <p class="small text-muted">
+              This community is kindly sponsored by:
+            </p>
+            <a target="_blank" rel="noopener noreferrer" href="sponsor.linkurl">{{ sponsor.name }}</a>
+            <div v-if="sponsor.tagline" class="font-weight-bold">
+              {{ sponsor.tagline }}
+            </div>
+          </div>
+        </b-card-body>
+      </b-card>
+    </div>
   </b-card>
 </template>
 
 <script>
+import SponsorLogo from './SponsorLogo'
 export default {
+  components: { SponsorLogo },
   props: {
     group: {
       type: Object,
