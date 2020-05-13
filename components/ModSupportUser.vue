@@ -46,6 +46,16 @@
         <b-btn variant="white" class="mr-2 mb-1" :href="user.loginlink" target="_blank" rel="noopener noreferrer">
           <v-icon name="user" /> Impersonate
         </b-btn>
+        <b-btn
+          v-if="admin"
+          variant="white"
+          class="mr-2 mb-1"
+          :href="user.loginlink.replace(/http.*\?u/, 'http://localhost:3000/?u')"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <v-icon name="user" /> Impersonate (localhost:3000)
+        </b-btn>
         <b-btn variant="white" disabled class="mr-2 mb-1">
           <v-icon name="equals" /> Merge
         </b-btn>
