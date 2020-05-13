@@ -154,7 +154,10 @@ export default {
         }
       }
 
-      groups.sort((a, b) => a.text.localeCompare(b.text))
+      groups.sort((a, b) => {
+        console.log('Text', a)
+        a.text.localeCompare(b.text)
+      })
 
       return groups
     },

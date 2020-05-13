@@ -7,6 +7,9 @@
       </b-btn>
     </div>
     <div v-if="group && group.mysettings" class="mt-2">
+      <NoticeMessage v-if="group.settings.closed" variant="danger" class="mb-1">
+        Your community is currently closed.  You can change this in <i>Features for Members</i>.
+      </NoticeMessage>
       <b-card no-body class="mb-2">
         <b-card-header>
           <b-btn v-b-toggle.accordion-addresses block href="#" variant="primary">
@@ -185,6 +188,15 @@
             <p v-if="readonly" class="text-info">
               Only owners can change these settings.
             </p>
+            <ModGroupSetting
+              :groupid="groupid"
+              name="settings.closed"
+              label="Closed for COVID-19"
+              description="Whether members can post on your community or whether they will see a COVID-19 warning."
+              type="toggle"
+              toggle-checked="Closed"
+              toggle-unchecked="Open"
+            />
             <ModGroupSetting
               :groupid="groupid"
               name="settings.communityevents"
