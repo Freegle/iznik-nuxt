@@ -21,7 +21,7 @@
                 Please rate how many we found:
               </p>
               <div class="d-flex">
-                <SpinButton variant="success" name="smile" label="Most or all" :handler="most" />
+                <SpinButton variant="success" name="smile" label="Most or all" spinclass="text-white" :handler="most" />
                 <SpinButton variant="white" name="meh" label="About half" :handler="some" />
                 <SpinButton variant="warning" name="frown" label="Few or none" :handler="few" />
               </div>

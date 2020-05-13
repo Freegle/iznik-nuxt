@@ -45,7 +45,14 @@
       </b-form-text>
       <b-textarea v-model="dpa" rows="5" placeholder="Default Posting Area (WKT format)" />
     </b-form-group>
-    <SpinButton variant="success" name="save" label="Add Group" :handler="add" :disabled="!valid" />
+    <SpinButton
+      variant="success"
+      name="save"
+      label="Add Group"
+      spinclass="text-white"
+      :handler="add"
+      :disabled="!valid"
+    />
   </div>
 </template>
 <script>
