@@ -688,7 +688,7 @@ nav .navbar-nav li a.nuxt-link-active {
 
 .nuxt-link-active .nav-item__text {
   border-bottom: 1px solid white;
-  padding: 2px;
+  padding-top: 2px;
 }
 
 ::v-deep .nav-link {
@@ -871,7 +871,7 @@ svg.fa-icon {
 
 .mainnav--left {
   width: 50%;
-  max-width: 500px;
+  max-width: 520px;
 }
 
 .mainnav--right {
