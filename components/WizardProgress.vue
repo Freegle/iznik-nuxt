@@ -1,7 +1,7 @@
 <template>
-  <b-row class="wizard">
-    <b-col cols="4" class="wizard__step" :class="{'active': activeStage===1}">
-      <div class="wizard__stepnum">
+  <div class="wizard">
+    <div class="wizard__step" :class="{'active': activeStage===1}">
+      <div>
       &nbsp;
       </div>
       <div class="wizard__progress">
@@ -11,9 +11,9 @@
       <div class="wizard__info text-center">
         Where are you?
       </div>
-    </b-col>
-    <b-col cols="4" class="wizard__step" :class="{active : activeStage===2}">
-      <div class="wizard__stepnum">
+    </div>
+    <div class="wizard__step" :class="{active : activeStage===2}">
+      <div>
         &nbsp;
       </div>
       <div class="wizard__progress">
@@ -23,9 +23,9 @@
       <div class="wizard__info text-center">
         What is it?
       </div>
-    </b-col>
-    <b-col cols="4" class="wizard__step" :class="{active : activeStage===3}">
-      <div class="wizard__stepnum">
+    </div>
+    <div class="wizard__step" :class="{active : activeStage===3}">
+      <div>
         &nbsp;
       </div>
       <div class="wizard__progress">
@@ -35,8 +35,8 @@
       <div class="wizard__info text-center">
         Who are you?
       </div>
-    </b-col>
-  </b-row>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -61,11 +61,13 @@ export default {
   margin-top: 20px;
   border-bottom: solid 1px $color-gray--light;
   padding: 0 0 10px 0;
+  display: flex;
 }
 
 .wizard__step {
   padding: 0;
   position: relative;
+  flex-grow: 1;
 }
 
 .wizard__progress {
@@ -122,11 +124,6 @@ export default {
 
 .active .wizard__dot::after {
   background: $color-green--light-alt;
-}
-
-.wizard__stepnum {
-  font-size: 16px;
-  margin-bottom: 5px;
 }
 
 .wizard__info {
