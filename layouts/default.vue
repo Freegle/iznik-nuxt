@@ -59,7 +59,7 @@
               <template slot="button-content">
                 <div class="notifwrapper text-center small">
                   <v-icon name="bell" scale="2" />
-                  <b-badge v-if="notificationCount" variant="danger" class="ml-3 notifbadge">
+                  <b-badge v-if="notificationCount" variant="danger" class="notifbadge">
                     {{ notificationCount }}
                   </b-badge><br>
                   <span class="nav-item__text">Notifications</span>
@@ -86,7 +86,7 @@
               <div class="notifwrapper">
                 <v-icon name="comments" scale="2" /><br>
                 <span class="nav-item__text">Chats</span>
-                <b-badge v-if="chatCount" variant="danger" class="ml-3 chatbadge">
+                <b-badge v-if="chatCount" variant="danger" class="chatbadge">
                   {{ chatCount }}
                 </b-badge>
               </div>
@@ -95,7 +95,7 @@
               <div class="notifwrapper">
                 <v-icon name="bullhorn" scale="2" /><br>
                 <span class="nav-item__text">Spread</span>
-                <b-badge v-if="spreadCount" variant="info" class="ml-3 chatbadge">
+                <b-badge v-if="spreadCount" variant="info" class="chatbadge">
                   {{ spreadCount }}
                 </b-badge>
               </div>
