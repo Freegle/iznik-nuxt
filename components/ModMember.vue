@@ -236,7 +236,7 @@ export default {
       required: false,
       default: false
     },
-    spammerignore: {
+    spamignore: {
       type: Boolean,
       required: false,
       default: false
