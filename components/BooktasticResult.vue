@@ -380,15 +380,11 @@ export default {
       formData.append('rating', rating)
       formData.append('action', 'Rate')
 
-      await axios.post(
-        'https://iznik.ilovefreegle.org/api/catalogue',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
+      await axios.post(process.env.API + '/catalogue', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
         }
-      )
+      })
     }
   }
 }

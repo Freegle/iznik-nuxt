@@ -62,9 +62,7 @@ export default {
     }
   },
   async mounted() {
-    const response = await axios.get(
-      'https://iznik.ilovefreegle.org/api/catalogue'
-    )
+    const response = await axios.get(process.env.API + '/catalogue')
 
     const rsp = response.data
 
