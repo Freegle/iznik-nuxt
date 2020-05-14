@@ -3,43 +3,46 @@
     <b-row class="m-0">
       <b-col cols="12" lg="6" offset-lg="3">
         <groupHeader v-if="group" :id="group.id" :key="'group-' + (group ? group.id : null)" :group="group" :show-join="true" />
-        <b-card variant="default">
-          <b-card-body class="p-0 mb-2">
-            <p class="text-center text-muted">
-              Offer stuff you don't need, or find stuff you want.
-            </p>
-            <b-row>
-              <b-col cols="5">
-                <b-button to="/give" class="mt-1" size="lg" block variant="success">
-                  <v-icon name="gift" />&nbsp;Give stuff
-                </b-button>
-              </b-col>
-              <b-col cols="2" />
-              <b-col cols="5">
-                <b-button to="/find" class="mt-1" size="lg" block variant="primary">
-                  <v-icon name="search" />&nbsp;Find stuff
-                </b-button>
-              </b-col>
-            </b-row>
-          </b-card-body>
-        </b-card>
+        <CovidClosed v-if="closed" />
+        <div v-else>
+          <b-card variant="default">
+            <b-card-body class="p-0 mb-2">
+              <p class="text-center text-muted">
+                Offer stuff you don't need, or find stuff you want.
+              </p>
+              <b-row>
+                <b-col cols="5">
+                  <b-button to="/give" class="mt-1" size="lg" block variant="success">
+                    <v-icon name="gift" />&nbsp;Give stuff
+                  </b-button>
+                </b-col>
+                <b-col cols="2" />
+                <b-col cols="5">
+                  <b-button to="/find" class="mt-1" size="lg" block variant="primary">
+                    <v-icon name="search" />&nbsp;Find stuff
+                  </b-button>
+                </b-col>
+              </b-row>
+            </b-card-body>
+          </b-card>
 
-        <div v-for="message in filteredMessages" :key="'message-' + message.id" class="p-0">
-          <Message v-bind="message" />
+          <div v-for="message in filteredMessages" :key="'message-' + message.id" class="p-0">
+            <Message v-bind="message" />
+          </div>
+
+          <client-only>
+            <NoticeMessage v-if="!busy && !filteredMessages.length" variant="info" class="mt-2">
+              There are no messages on this group yet.
+            </NoticeMessage>
+            <infinite-loading :distance="distance" @infinite="loadMoreMessages">
+              <span slot="no-results" />
+              <span slot="no-more" />
+              <span slot="spinner">
+                <b-img-lazy src="~/static/loader.gif" alt="Loading" />
+              </span>
+            </infinite-loading>
+          </client-only>
         </div>
-
-        <client-only>
-          <NoticeMessage v-if="!busy && !filteredMessages.length" variant="info" class="mt-2">
-            There are no messages on this group yet.
-          </NoticeMessage>
-          <infinite-loading :distance="distance" @infinite="loadMoreMessages">
-            <span slot="no-results" />
-            <span slot="no-more" />
-            <span slot="spinner">
-              <b-img-lazy src="~/static/loader.gif" alt="Loading" />
-            </span>
-          </infinite-loading>
-        </client-only>
       </b-col>
     </b-row>
   </div>
@@ -47,11 +50,13 @@
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
 import NoticeMessage from './NoticeMessage'
+import CovidClosed from './CovidClosed'
 const groupHeader = () => import('~/components/GroupHeader.vue')
 const Message = () => import('~/components/Message.vue')
 
 export default {
   components: {
+    CovidClosed,
     NoticeMessage,
     InfiniteLoading,
     groupHeader,
@@ -94,6 +99,16 @@ export default {
 
     group() {
       return this.$store.getters['group/get'](this.id)
+    },
+
+    closed() {
+      let ret = false
+
+      if (this.group && this.group.settings && this.group.settings.closed) {
+        ret = true
+      }
+
+      return ret
     }
   },
 
