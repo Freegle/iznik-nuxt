@@ -17,6 +17,9 @@
         </div>
       </b-card-header>
       <b-card-body>
+        <h3 v-if="pending && group" class="mb-2">
+          Pending on {{ group.namedisplay }}
+        </h3>
         <div v-if="member.heldby">
           <NoticeMessage v-if="me.id === member.heldby.id" variant="warning" class="mb-2">
             You held this member.  Other people will see a warning to check with
@@ -272,6 +275,9 @@ export default {
     },
     groupid() {
       return this.member.groupid
+    },
+    group() {
+      return this.$store.getters['auth/groupById'](this.groupid)
     },
     offers() {
       return this.countType('Offer')
