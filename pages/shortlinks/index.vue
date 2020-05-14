@@ -16,8 +16,11 @@
                 short (less typing) and memorable (less forgetting).
               </p>
               <div class="d-flex justify-content-between flex-wrap">
-                <b-select v-model="groupid" :options="groupOptions" />
-                <b-form-input v-model="name" placeholder="Enter your shortlink name" maxlength="30" />
+                <b-select v-model="groupid" :options="groupOptions" class="select" />
+                <div class="d-flex">
+                  <b class="mt-2">freegle.in/</b>
+                  <b-form-input v-model="name" placeholder="Enter your shortlink name" maxlength="30" />
+                </div>
                 <b-btn variant="white" @click="create">
                   <v-icon v-if="created" name="check" class="text-success" />
                   <v-icon v-else-if="saving" name="sync" class="fa-spin" />
@@ -37,27 +40,7 @@
           </b-col>
           <b-col cols="2" />
         </b-row>
-        <div v-for="shortlink in sortedLinks" :key="'shortlink-' + shortlink.id" class="bg-white m-0">
-          <div v-if="shortlink.type === 'Group'">
-            <b-row class="m-0">
-              <b-col cols="3">
-                <a :href="shortlink.url" target="_blank">
-                  {{ shortlink.nameshort }}
-                </a>
-              </b-col>
-              <b-col cols="7">
-                <a :href="'https://freegle.in/' + shortlink.name">
-                  {{ 'https://freegle.in/' + shortlink.name }}
-                </a>
-              </b-col>
-              <b-col cols="2">
-                <b-btn variant="white" class="mb-1" :to="'/shortlinks/' + shortlink.id">
-                  View Stats
-                </b-btn>
-              </b-col>
-            </b-row>
-          </div>
-        </div>
+        <Shortlinks :shortlinks="sortedLinks" />
       </b-col>
       <b-col cols="0" md="3" class="d-none d-md-block" />
     </b-row>
@@ -67,8 +50,10 @@
 </style>
 <script>
 import loginRequired from '../../mixins/loginRequired'
+import Shortlinks from '../../components/Shortlinks'
 
 export default {
+  components: { Shortlinks },
   mixins: [loginRequired],
   data: function() {
     return {
@@ -164,3 +149,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+.select {
+  max-width: 300px;
+}
+</style>
