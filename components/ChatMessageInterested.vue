@@ -24,8 +24,7 @@
                   about:
                 </span>
               </div>
-              <br>
-              <h4>
+              <h4 class="mt-1">
                 {{ refmsg.subject }}
               </h4>
             </b-card-title>
@@ -65,8 +64,7 @@
               />
               <ProfileImage :image="me.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
               <span class="small black">You asked about:</span>
-              <br>
-              <h4>
+              <h4 class="mt-1">
                 {{ refmsg.subject }}
               </h4>
             </b-card-title>
