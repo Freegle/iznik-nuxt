@@ -15,7 +15,7 @@
       <client-only>
         <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
         <b-collapse v-if="loggedIn" id="nav_collapse" ref="nav_collapse" is-nav class="flex-nowrap justify-content-between">
-          <b-navbar-nav>
+          <b-navbar-nav class="mainnav mainnav--left">
             <b-nav-item id="menu-option-mygroups" class="text-center small p-0" to="/communities" @mousedown="maybeReload('/communities')">
               <v-icon name="users" scale="2" class="ml-2" /><br>
               <span class="nav-item__text">Communities</span>
@@ -54,7 +54,7 @@
               <SimpleView :key="'simpleview-' + simple" navbar />
             </div>
           </client-only>
-          <b-navbar-nav>
+          <b-navbar-nav class="mainnav mainnav--right">
             <b-nav-item-dropdown v-if="!simple" class="white text-center notiflist" lazy right @shown="loadLatestNotifications">
               <template slot="button-content">
                 <div class="notifwrapper text-center small">
@@ -671,7 +671,6 @@ html {
 }
 
 #navbar_large .nav-item {
-  width: 70px;
   text-align: center;
 }
 
@@ -689,7 +688,7 @@ nav .navbar-nav li a.nuxt-link-active {
 
 .nuxt-link-active .nav-item__text {
   border-bottom: 1px solid white;
-  padding: 2px;
+  padding-top: 2px;
 }
 
 ::v-deep .nav-link {
@@ -863,5 +862,20 @@ svg.fa-icon {
 
 .simplewrapper {
   width: 150px;
+}
+
+.mainnav {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mainnav--left {
+  width: 50%;
+  max-width: 520px;
+}
+
+.mainnav--right {
+  width: 40%;
+  max-width: 400px;
 }
 </style>

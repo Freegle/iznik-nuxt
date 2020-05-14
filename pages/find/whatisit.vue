@@ -26,13 +26,13 @@
           </li>
         </ul>
         <div class="d-flex justify-content-end ml-1 mr-1">
-          <b-btn v-if="ids.length === 1 && notblank" variant="white" class="mr-1" @click="deleteItem">
+          <b-btn v-if="ids.length === 1 && notblank" variant="white" size="sm" class="mr-1" @click="deleteItem">
             <v-icon name="trash-alt" />&nbsp;Clear item
           </b-btn>
-          <b-btn v-if="ids.length > 1" variant="white" class="mr-1" @click="deleteItem">
+          <b-btn v-if="ids.length > 1" variant="white" size="sm" class="mr-1" @click="deleteItem">
             <v-icon name="trash-alt" />&nbsp;Delete item
           </b-btn>
-          <b-btn v-if="ids.length < 6" variant="primary" class="" @click="addItem">
+          <b-btn v-if="ids.length < 6" variant="primary" size="sm" class="" @click="addItem">
             <v-icon name="plus" />&nbsp;Add another item
           </b-btn>
         </div>
@@ -53,12 +53,10 @@
             </b-col>
           </b-row>
         </transition>
-        <b-row>
-          <b-col class="text-muted small pl-0 pt-1 text-center">
-            We may show this post, but not your email address, to people who are not yet members of Freegle.
-            This helps the community grow by showing people what's happening and encouraging them to join.
-          </b-col>
-        </b-row>
+        <div class="text-muted small pl-0 pt-1 text-center">
+          We may show this post, but not your email address, to people who are not yet members of Freegle.
+          This helps the community grow by showing people what's happening and encouraging them to join.
+        </div>
       </b-col>
       <b-col cols="0" md="3" />
     </b-row>
