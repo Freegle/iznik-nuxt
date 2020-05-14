@@ -28,6 +28,9 @@
     </p>
     <h4>PROTECT each other</h4>
     <p>
+      If you have recently had COVID-19, please don't use Freegle for at least 7 days after you are free of symptoms.
+    </p>
+    <p>
       Make sure anything you offer is clean.
     </p>
     <ul>
