@@ -180,7 +180,8 @@ export default {
       if (oldValue === null || oldValue.id !== this.groupid) {
         await this.$store.dispatch('group/fetch', {
           id: this.groupid,
-          sponsors: true
+          sponsors: true,
+          showmods: true
         })
       }
     }
@@ -205,7 +206,8 @@ export default {
       // Fetch this group for header info.
       this.$store.dispatch('group/fetch', {
         id: this.groupid,
-        sponsors: true
+        sponsors: true,
+        showmods: true
       })
     }
 

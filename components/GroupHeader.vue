@@ -34,6 +34,9 @@
           <b-button class="mb-1" variant="white" :href="'mailto:' + modsemail">
             <v-icon name="question-circle" />&nbsp;Contact&nbsp;volunteers
           </b-button>
+          <div v-if="group.showmods && group.showmods.length" class="d-flex flex-wrap justify-content-start">
+            <GroupShowMod v-for="mod in group.showmods" :key="'showmod-' + mod.id" :modtoshow="mod" class="ml-1" />
+          </div>
           <b-button v-if="!amAMember" class="mb-1 ml-1" variant="success" @click="join">
             <v-icon v-if="joiningOrLeaving" name="sync" class="fa-spin" />
             <v-icon v-else name="plus" />&nbsp;
@@ -76,8 +79,9 @@
 
 <script>
 import SponsorLogo from './SponsorLogo'
+import GroupShowMod from './GroupShowMod'
 export default {
-  components: { SponsorLogo },
+  components: { GroupShowMod, SponsorLogo },
   props: {
     group: {
       type: Object,
