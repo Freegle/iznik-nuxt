@@ -54,8 +54,7 @@
             :pov="message.touser.id"
           />
           <b-btn
-            v-if="
-              message.held"
+            v-if="message.held"
             variant="warning"
             class="mr-2 mb-1"
             @click="release"
@@ -69,54 +68,49 @@
             variant="primary"
             class="mr-2 mb-1"
             :handler="modnote"
-          >
-            <SpinButton
-              v-if="!message.held"
-              name="check"
-              label="Approve - Not Spam"
-              spinclass="text-white"
-              variant="success"
-              class="mr-2 mb-1"
-              :handler="approve"
-            >
-              <SpinButton
-                v-if="!message.held"
-                name="check"
-                label="Approve and whitelist"
-                spinclass="text-white"
-                variant="success"
-                class="mr-2 mb-1"
-                :handler="whitelist"
-              >
-                <SpinButton
-                  v-if="!message.held"
-                  name="pause"
-                  label="Hold"
-                  variant="warning"
-                  class="mr-2 mb-1"
-                  :handler="hold"
-                >
-                  <SpinButton
-                    v-if="!message.held"
-                    name="trash-alt"
-                    label="Delete"
-                    variant="danger"
-                    class="mr-2 mb-1"
-                    :handler="reject"
-                  >
-                    <SpinButton
-                      v-if="!message.held"
-                      name="ban"
-                      label="Spam"
-                      variant="danger"
-                      class="mr-2 mb-1"
-                      :handler="reject"
-                    />
-                  </spinbutton>
-                </spinbutton>
-              </spinbutton>
-            </spinbutton>
-          </spinbutton>
+          />
+          <SpinButton
+            v-if="!message.held"
+            name="check"
+            label="Approve - Not Spam"
+            spinclass="text-white"
+            variant="success"
+            class="mr-2 mb-1"
+            :handler="approve"
+          />
+          <SpinButton
+            v-if="!message.held"
+            name="check"
+            label="Approve and whitelist"
+            spinclass="text-white"
+            variant="success"
+            class="mr-2 mb-1"
+            :handler="whitelist"
+          />
+          <SpinButton
+            v-if="!message.held"
+            name="pause"
+            label="Hold"
+            variant="warning"
+            class="mr-2 mb-1"
+            :handler="hold"
+          />
+          <SpinButton
+            v-if="!message.held"
+            name="trash-alt"
+            label="Delete"
+            variant="danger"
+            class="mr-2 mb-1"
+            :handler="reject"
+          />
+          <SpinButton
+            v-if="!message.held"
+            name="ban"
+            label="Spam"
+            variant="danger"
+            class="mr-2 mb-1"
+            :handler="reject"
+          />
         </div>
       </b-card-footer>
     </b-card>
