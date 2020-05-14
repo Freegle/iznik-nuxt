@@ -20,7 +20,7 @@
             you before releasing it.
           </span>
           <span v-else>
-            Held by <b>{{ message.held.name }}</b>
+            Held by <b><a :href="'mailto:' + message.held.email">{{ message.held.name }}</a></b>
             {{ message.held.timestamp | timeago }}.  Please check with them before releasing it.
           </span>
         </NoticeMessage>
