@@ -167,7 +167,7 @@
         </div>
       </b-card-body>
       <b-card-footer class="d-flex justify-content-between">
-        <ModMemberButtons :member="member" :modconfig="modconfig" spamignore />
+        <ModMemberButtons :member="member" :modconfig="modconfig" :spamignore="spamignore" />
         <div class="d-flex flex-wrap">
           <ModRole v-if="groupid" :userid="member.userid" :groupid="groupid" :role="member.role" />
           <ChatButton
@@ -232,6 +232,11 @@ export default {
       required: true
     },
     spammerlist: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    spammerignore: {
       type: Boolean,
       required: false,
       default: false
