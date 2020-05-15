@@ -171,7 +171,7 @@
       </b-card-body>
       <b-card-footer class="d-flex justify-content-between">
         <ModMemberButtons :member="member" :modconfig="modconfig" :spamignore="spamignore" />
-        <div class="d-flex flex-wrap">
+        <div class="d-flex flex-wrap w-25 justify-content-end">
           <ModRole v-if="groupid" :userid="member.userid" :groupid="groupid" :role="member.role" />
           <ChatButton
             :userid="member.userid"
