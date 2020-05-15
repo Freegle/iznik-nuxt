@@ -117,6 +117,8 @@ export default {
       const fn = file.name.toLowerCase()
 
       if (fn.indexOf('.heic') !== -1) {
+        // If we have an HEIC file, then the server can't cope with it as it will fail imagecreatefromstring, so
+        // convert it to a PNG file on the client before upload.
         const blob = file.slice(0, file.size, 'image/heic')
         const png = await heic2any({ blob })
         data.append('photo', png, 'photo')
@@ -218,6 +220,7 @@ export default {
     },
     validateType(source, type) {
       const p = new Promise((resolve, reject) => {
+        // Not all browsers set the MIME type correctly, so we have a custom validator to force it from the filename.
         if (source.name.toLowerCase().indexOf('.heic') !== -1) {
           resolve('image/heic')
         } else {
