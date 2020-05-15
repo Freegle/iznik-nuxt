@@ -231,11 +231,9 @@ export default {
     },
     async spamIgnore() {
       this.doing = true
-      await this.$store.dispatch('user/edit', {
-        id: this.member.userid,
-        groupid: this.groupid,
-        suspectcount: 0,
-        suspectreason: null
+      await this.$store.dispatch('members/spamignore', {
+        userid: this.member.userid,
+        groupid: this.groupid
       })
       this.done = true
     },

@@ -51,6 +51,14 @@
       />
     </div>
     <div v-else-if="spam" class="d-inline">
+      <ModMemberButton
+        v-if="spamignore"
+        :member="member"
+        variant="success"
+        icon="check"
+        spamignore
+        label="Ignore"
+      />
       <div v-if="member.spammer.collection === 'PendingAdd'" class="d-inline">
         <ModMemberButton
           v-if="supportOrAdmin"
@@ -105,14 +113,6 @@
       </div>
     </div>
     <div v-else-if="approved" class="d-inline">
-      <ModMemberButton
-        v-if="spamignore"
-        :member="member"
-        variant="success"
-        icon="check"
-        spamignore
-        label="Ignore"
-      />
       <ModMemberButton
         :member="member"
         variant="white"

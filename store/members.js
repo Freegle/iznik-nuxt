@@ -334,6 +334,25 @@ export const actions = {
     )
   },
 
+  async spamignore({ commit, dispatch }, params) {
+    await dispatch(
+      'user/edit',
+      {
+        id: params.userid,
+        groupid: params.groupid,
+        suspectcount: 0,
+        suspectreason: null
+      },
+      {
+        root: true
+      }
+    )
+
+    commit('remove', {
+      userid: params.userid
+    })
+  },
+
   async remove({ commit, dispatch }, params) {
     // Remove approved  member.
 
