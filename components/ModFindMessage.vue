@@ -3,7 +3,14 @@
     <b-input-group>
       <b-input v-model="term" placeholder="Message id/subject" @keyup.native.enter="search" />
       <b-input-group-append>
-        <SpinButton variant="success" name="search" label="Search" :handler="search" :disabled="!term" />
+        <SpinButton
+          variant="success"
+          name="search"
+          label="Search"
+          spinclass="text-white"
+          :handler="search"
+          :disabled="!term"
+        />
       </b-input-group-append>
     </b-input-group>
     <NoticeMessage v-if="error" class="mt-2" variant="warning">

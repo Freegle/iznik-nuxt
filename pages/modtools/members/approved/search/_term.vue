@@ -3,6 +3,7 @@
     <client-only>
       <div class="d-flex justify-content-between">
         <GroupSelect v-model="groupid" modonly />
+        <ModMergeButton class="ml-2" />
         <ModMemberSearchbox v-model="search" />
       </div>
       <div>
@@ -26,6 +27,7 @@
   </div>
 </template>
 <script>
+import ModMergeButton from '../../../../../components/ModMergeButton'
 import ModMember from '@/components/ModMember'
 import NoticeMessage from '@/components/NoticeMessage'
 import loginRequired from '@/mixins/loginRequired'
@@ -33,7 +35,7 @@ import modMembersPage from '@/mixins/modMembersPage'
 import ModMemberSearchbox from '@/components/ModMemberSearchbox'
 
 export default {
-  components: { ModMemberSearchbox, NoticeMessage, ModMember },
+  components: { ModMergeButton, ModMemberSearchbox, NoticeMessage, ModMember },
   layout: 'modtools',
   mixins: [loginRequired, modMembersPage],
   data: function() {

@@ -21,7 +21,7 @@
                 Please rate how many we found:
               </p>
               <div class="d-flex">
-                <SpinButton variant="success" name="smile" label="Most or all" :handler="most" />
+                <SpinButton variant="success" name="smile" label="Most or all" spinclass="text-white" :handler="most" />
                 <SpinButton variant="white" name="meh" label="About half" :handler="some" />
                 <SpinButton variant="warning" name="frown" label="Few or none" :handler="few" />
               </div>
@@ -380,15 +380,11 @@ export default {
       formData.append('rating', rating)
       formData.append('action', 'Rate')
 
-      await axios.post(
-        'https://iznik.ilovefreegle.org/api/catalogue',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
+      await axios.post(process.env.API + '/catalogue', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
         }
-      )
+      })
     }
   }
 }

@@ -84,6 +84,24 @@
         color="#61AE24"
       />
     </b-form-group>
+    <b-form-group label="Enter send vs newline">
+      <b-form-text class="mb-2">
+        Normally enter/return sends chat messages, rather than add a new line.  This is the best compromise option
+        given the limitations of what is technically possible for websites when used from mobiles.  If you prefer
+        it to add a new line, then you can change the setting on this device.  If you have problems with this
+        setting, then please change it back.
+      </b-form-text>
+      <OurToggle
+        v-model="enterAddsNewLine"
+        class="mt-2"
+        :height="30"
+        :width="150"
+        :font-size="14"
+        :sync="true"
+        :labels="{checked: 'Insert new line', unchecked: 'Send message'}"
+        color="#61AE24"
+      />
+    </b-form-group>
   </div>
 </template>
 <script>
@@ -154,6 +172,17 @@ export default {
       },
       set(newval) {
         this.saveSetting('backupmodnotifs', newval)
+      }
+    },
+    enterAddsNewLine: {
+      get() {
+        return this.$store.getters['misc/get']('enternewline')
+      },
+      set(newval) {
+        this.$store.dispatch('misc/set', {
+          key: 'enternewline',
+          value: newval
+        })
       }
     }
   },

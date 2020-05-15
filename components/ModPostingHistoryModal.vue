@@ -64,18 +64,22 @@ export default {
   },
   computed: {
     messages() {
-      const ret = this.user.messagehistory.filter(message => {
-        return !this.type || this.type === message.type
-      })
+      const ret = []
 
-      ret.forEach(message => {
-        const group = this.$store.getters['auth/groupById'](message.groupid)
-        message.groupname = group ? group.namedisplay : '#' + message.groupid
-      })
+      if (this.user && this.user.messagehistory) {
+        const ret = this.user.messagehistory.filter(message => {
+          return !this.type || this.type === message.type
+        })
 
-      ret.sort((a, b) => {
-        return new Date(b.arrival).getTime() - new Date(a.arrival).getTime()
-      })
+        ret.forEach(message => {
+          const group = this.$store.getters['auth/groupById'](message.groupid)
+          message.groupname = group ? group.namedisplay : '#' + message.groupid
+        })
+
+        ret.sort((a, b) => {
+          return new Date(b.arrival).getTime() - new Date(a.arrival).getTime()
+        })
+      }
 
       return ret
     }

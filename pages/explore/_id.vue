@@ -55,10 +55,12 @@ export default {
       try {
         let group = store.getters['group/get'](params.id)
 
-        if (!group) {
+        if (!group || !group.showmods) {
           // Not fetched yet.
           await store.dispatch('group/fetch', {
-            id: params.id
+            id: params.id,
+            showmods: true,
+            sponsors: true
           })
 
           group = store.getters['group/get'](params.id)

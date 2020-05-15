@@ -37,19 +37,22 @@
               <b-form-select v-model="selectedType" class="m-3 typeSelect" value="All" :options="typeOptions" @change="typeChange" />
             </div>
             <groupHeader v-if="group" :key="'groupheader-' + groupid" :group="group" :show-join="true" />
-            <div v-for="message in filteredMessages" :key="'messagelist-' + message.id" class="p-0">
-              <message v-if="(selectedType === 'All' || message.type == selectedType) && (!message.outcomes || message.outcomes.length === 0)" v-bind="message" />
-            </div>
+            <CovidClosed v-if="closed" />
+            <div v-else>
+              <div v-for="message in filteredMessages" :key="'messagelist-' + message.id" class="p-0">
+                <message v-if="(selectedType === 'All' || message.type == selectedType) && (!message.outcomes || message.outcomes.length === 0)" v-bind="message" />
+              </div>
 
-            <client-only>
-              <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
-                <span slot="no-results" />
-                <span slot="no-more" />
-                <span slot="spinner">
-                  <b-img-lazy src="~/static/loader.gif" alt="Loading" />
-                </span>
-              </infinite-loading>
-            </client-only>
+              <client-only>
+                <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
+                  <span slot="no-results" />
+                  <span slot="no-more" />
+                  <span slot="spinner">
+                    <b-img-lazy src="~/static/loader.gif" alt="Loading" />
+                  </span>
+                </infinite-loading>
+              </client-only>
+            </div>
           </div>
         </div>
       </b-col>
@@ -65,6 +68,7 @@ import InfiniteLoading from 'vue-infinite-loading'
 import GroupSelect from '../../components/GroupSelect'
 import Viewed from '../../components/Viewed'
 import CovidWarning from '../../components/CovidWarning'
+import CovidClosed from '../../components/CovidClosed'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
 import createGroupRoute from '@/mixins/createGroupRoute'
@@ -79,6 +83,7 @@ const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
+    CovidClosed,
     CovidWarning,
     NoticeMessage,
     Viewed,
@@ -126,6 +131,16 @@ export default {
       return ret
     },
 
+    closed() {
+      let ret = false
+
+      if (this.group && this.group.settings && this.group.settings.closed) {
+        ret = true
+      }
+
+      return ret
+    },
+
     messageCount: function() {
       const count = this.messages ? this.messages.length : 0
       return count
@@ -165,7 +180,8 @@ export default {
       if (oldValue === null || oldValue.id !== this.groupid) {
         await this.$store.dispatch('group/fetch', {
           id: this.groupid,
-          sponsors: true
+          sponsors: true,
+          showmods: true
         })
       }
     }
@@ -190,7 +206,8 @@ export default {
       // Fetch this group for header info.
       this.$store.dispatch('group/fetch', {
         id: this.groupid,
-        sponsors: true
+        sponsors: true,
+        showmods: true
       })
     }
 

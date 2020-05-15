@@ -36,7 +36,10 @@ export const mutations = {
           id: group.id,
           nameshort: group.nameshort,
           namedisplay: group.namedisplay,
-          type: group.type
+          type: group.type,
+          settings: {
+            closed: group.settings.closed
+          }
         })
       }
     }

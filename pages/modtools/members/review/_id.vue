@@ -5,7 +5,7 @@
         <GroupSelect v-model="groupid" modonly :work="['spammembers', 'spammembersother']" />
       </div>
       <div v-for="member in visibleMembers" :key="'memberlist-' + member.id" class="p-0 mt-2">
-        <ModMember :member="member" />
+        <ModMember :member="member" spamignore />
       </div>
 
       <NoticeMessage v-if="!members.length && !busy" class="mt-2">

@@ -6,6 +6,54 @@ export default {
     }
   },
   computed: {
+    group: {
+      set(group) {
+        this.$store.dispatch('compose/setGroup', group)
+      },
+      get() {
+        // The group could be in the ones nearby to this postcode.
+        const pc = this.$store.getters['compose/getPostcode']
+        const groupid = this.$store.getters['compose/getGroup']
+        let group = null
+
+        if (pc && pc.groupsnear) {
+          for (const groupnear of pc.groupsnear) {
+            if (groupnear.id === groupid) {
+              group = groupnear
+            }
+          }
+        }
+
+        if (!group && this.myid) {
+          // Or it could be in our own groups if we're logged in.
+          group = this.$store.getters['auth/groupById'](groupid)
+        }
+
+        return group
+      }
+    },
+    closed() {
+      let ret = false
+
+      if (this.group && this.group.settings && this.group.settings.closed) {
+        ret = true
+      }
+
+      return ret
+    },
+    extgroup() {
+      const groupid = this.$store.getters['compose/getGroup']
+
+      if (this.postcode && this.postcode.groupsnear) {
+        for (const group of this.postcode.groupsnear) {
+          if (group.id === groupid) {
+            return group.external
+          }
+        }
+      }
+
+      return null
+    },
     ids() {
       const messages = Object.values(this.$store.getters['compose/getMessages'])
 
@@ -22,7 +70,6 @@ export default {
 
       return ids
     },
-
     notblank() {
       let ret = false
       const messages = Object.values(this.$store.getters['compose/getMessages'])
@@ -41,7 +88,6 @@ export default {
 
       return ret
     },
-
     valid() {
       const messages = Object.values(this.$store.getters['compose/getMessages'])
       let valid = false
@@ -70,12 +116,16 @@ export default {
 
       return valid
     },
-
     uploadingPhoto() {
       return this.$store.getters['compose/getUploading']
     },
-    postcode() {
-      return this.$store.getters['compose/getPostcode']
+    postcode: {
+      get() {
+        return this.$store.getters['compose/getPostcode']
+      },
+      set(pc) {
+        this.$store.dispatch('compose/setPostcode', pc)
+      }
     },
     email: {
       get() {
@@ -106,6 +156,10 @@ export default {
         id: this.ids[this.ids.length - 1]
       })
     },
+    postcodeClear() {
+      this.postcode = null
+      this.group = null
+    },
     postcodeSelect(pc) {
       const currentpc = this.$store.getters['compose/getPostcode']
 
@@ -132,8 +186,6 @@ export default {
           } else {
             this.group = groupid
           }
-
-          this.$store.dispatch('compose/setGroup', this.group)
         }
       }
     },

@@ -20,7 +20,7 @@
             you before releasing it.
           </span>
           <span v-else>
-            Held by <b>{{ message.held.name }}</b>
+            Held by <b><a :href="'mailto:' + message.held.email">{{ message.held.name }}</a></b>
             {{ message.held.timestamp | timeago }}.  Please check with them before releasing it.
           </span>
         </NoticeMessage>
@@ -54,32 +54,63 @@
             :pov="message.touser.id"
           />
           <b-btn
-            v-if="
-              message.held"
+            v-if="message.held"
             variant="warning"
             class="mr-2 mb-1"
             @click="release"
           >
             <v-icon name="play" /> Release
           </b-btn>
-          <b-btn v-if="!message.held" variant="primary" class="mr-2 mb-1" @click="modnote">
-            <v-icon name="exclamation-triangle" /> Add Mod Message
-          </b-btn>
-          <b-btn v-if="!message.held" variant="success" class="mr-2 mb-1" @click="approve">
-            <v-icon name="check" /> Approve - Not Spam
-          </b-btn>
-          <b-btn v-if="!message.held" variant="success" class="mr-2 mb-1" @click="whitelist">
-            <v-icon name="check" /> Approve and whitelist
-          </b-btn>
-          <b-btn v-if="!message.held" variant="warning" class="mr-2 mb-1" @click="hold">
-            <v-icon name="pause" /> Hold
-          </b-btn>
-          <b-btn v-if="!message.held" variant="danger" class="mr-2 mb-1" @click="reject">
-            <v-icon name="trash-alt" /> Delete
-          </b-btn>
-          <b-btn v-if="!message.held" variant="danger" class="mr-2 mb-1" @click="reject">
-            <v-icon name="ban" /> Spam
-          </b-btn>
+          <SpinButton
+            v-if="!message.held"
+            name="exclamation-triangle"
+            label="Add Mod Message"
+            variant="primary"
+            class="mr-2 mb-1"
+            :handler="modnote"
+          />
+          <SpinButton
+            v-if="!message.held"
+            name="check"
+            label="Approve - Not Spam"
+            spinclass="text-white"
+            variant="success"
+            class="mr-2 mb-1"
+            :handler="approve"
+          />
+          <SpinButton
+            v-if="!message.held"
+            name="check"
+            label="Approve and whitelist"
+            spinclass="text-white"
+            variant="success"
+            class="mr-2 mb-1"
+            :handler="whitelist"
+          />
+          <SpinButton
+            v-if="!message.held"
+            name="pause"
+            label="Hold"
+            variant="warning"
+            class="mr-2 mb-1"
+            :handler="hold"
+          />
+          <SpinButton
+            v-if="!message.held"
+            name="trash-alt"
+            label="Delete"
+            variant="danger"
+            class="mr-2 mb-1"
+            :handler="reject"
+          />
+          <SpinButton
+            v-if="!message.held"
+            name="ban"
+            label="Spam"
+            variant="danger"
+            class="mr-2 mb-1"
+            :handler="reject"
+          />
         </div>
       </b-card-footer>
     </b-card>
@@ -94,10 +125,12 @@ import ModChatReviewUser from './ModChatReviewUser'
 import ChatMessage from './ChatMessage'
 import ModChatNoteModal from './ModChatNoteModal'
 import ModChatViewButton from './ModChatViewButton'
+import SpinButton from './SpinButton'
 const ModMessageEmailModal = () => import('~/components/ModMessageEmailModal')
 
 export default {
   components: {
+    SpinButton,
     ModChatViewButton,
     ModChatNoteModal,
     ChatMessage,

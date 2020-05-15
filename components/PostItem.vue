@@ -1,16 +1,12 @@
 <template>
   <div>
-    <b-row>
-      <b-col>
-        <b-form-input
-          :value="value"
-          placeholder="In a single word or phrase, what is it?"
-          maxlength="60"
-          spellcheck="true"
-          @input="input"
-        />
-      </b-col>
-    </b-row>
+    <b-form-input
+      :value="value"
+      placeholder="In a single word or phrase, what is it?"
+      maxlength="60"
+      spellcheck="true"
+      @input="input"
+    />
   </div>
 </template>
 <script>
