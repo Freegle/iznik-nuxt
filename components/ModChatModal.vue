@@ -4,6 +4,8 @@
       :id="'messageReportModal-' + id"
       v-model="showModal"
       size="lg"
+      hide-header-close
+      no-close-on-esc
     >
       <template slot="modal-title" class="w-100">
         <div>
