@@ -78,10 +78,8 @@ export default {
   },
   methods: {
     viewOriginal() {
-      console.log('View')
       this.showOriginal = true
       this.waitForRef('original', () => {
-        console.log('Got ref')
         this.$refs.original.show()
       })
     }

@@ -4,7 +4,6 @@
       :id="'messageReportModal-' + id"
       v-model="showModal"
       size="lg"
-      no-stacking
     >
       <template slot="modal-title" class="w-100">
         <div>

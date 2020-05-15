@@ -102,7 +102,7 @@
           </b-col>
           <b-col cols="12" lg="4">
             <div class="rounded border border-info p-2 d-flex justify-content-between flex-wrap">
-              <MessageUserInfo v-if="message.fromuser" :message="message" :user="message.fromuser" modinfo :groupid="message.groups[0].groupid" />
+              <MessageUserInfo v-if="message.fromuser && message.groups && message.groups.length" :message="message" :user="message.fromuser" modinfo :groupid="message.groups[0].groupid" />
               <NoticeMessage v-else variant="danger">
                 Can't identify sender.  Probably a bug.
               </NoticeMessage>
@@ -167,7 +167,7 @@
               </b-btn>
             </div>
             <SettingsGroup
-              v-if="showMailSettings && membership"
+              v-if="showMailSettings && membership && message.groups && message.groups.length"
               :groupid="message.groups[0].groupid"
               :emailfrequency="membership.emailfrequency"
               :volunteeringallowed="Boolean(membership.volunteeringallowed)"
@@ -181,7 +181,7 @@
                 {{ email.email }} <v-icon v-if="email.preferred" name="start" />
               </div>
             </div>
-            <ModMemberActions v-if="showActions" :userid="message.fromuser.id" :groupid="message.groups[0].groupid" />
+            <ModMemberActions v-if="showActions && message.groups && message.groups.length" :userid="message.fromuser.id" :groupid="message.groups[0].groupid" />
           </b-col>
         </b-row>
       </b-card-body>
