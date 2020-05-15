@@ -17,6 +17,11 @@
               <b>{{ groupname }}</b> is a charity that's free to use, but not free to run.
             </p>
             <p>
+              The COVID-19 lockdown has been difficult for us because we rely on
+              donations to keep going, and we had to shut down for a while.  It's been difficult for a lot of
+              other people, charities, and businesses too.
+            </p>
+            <p>
               This month we're trying to raise <b>&pound;{{ target }}</b><span v-if="groupid && !targetMet"> for this community</span>.
               If you can, <b>
                 <span v-if="variant === 'whatyoucan'">

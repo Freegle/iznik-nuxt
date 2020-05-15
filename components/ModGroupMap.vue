@@ -61,7 +61,14 @@
               </div>
             </b-card-body>
             <b-card-footer class="d-flex justify-content-between flex-wrap">
-              <SpinButton variant="success" name="save" label="Save" :handler="saveArea" :disabled="!selectedName || !selectedWKT" />
+              <SpinButton
+                variant="success"
+                name="save"
+                label="Save"
+                spinclass="text-white"
+                :handler="saveArea"
+                :disabled="!selectedName || !selectedWKT"
+              />
               <SpinButton variant="white" name="times" label="Cancel" :handler="cancelArea" />
               <SpinButton v-if="selectedId" variant="danger" name="trash-alt" label="Delete" :handler="deleteArea" />
             </b-card-footer>

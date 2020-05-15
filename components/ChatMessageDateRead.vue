@@ -37,7 +37,7 @@
           </span>
           sent this
         </span>
-        {{ chatmessage.date | timeago }}
+        <span :title="chatmessage.date | datetimeshort">{{ chatmessage.date | timeago }}</span>
         <span v-if="chatmessage.bymailid" class="clickme" :title="'Received by email #' + chatmessage.bymailid + ' click to view'" @click="viewOriginal">
           <v-icon name="info-circle" />
         </span>

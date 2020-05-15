@@ -529,12 +529,12 @@ export default {
         this.changedNewModStatus = true
       }
 
-      // People sometimes set up standard messages to automate the action without the intentiond of
+      // People sometimes set up standard messages to automate the action without the intention of
       // actually sending a message to the member.
       let subj = this.subject.trim()
       let body = this.body.trim()
 
-      if (!body) {
+      if (!this.stdmsg.subjpref) {
         subj = null
         body = null
       }

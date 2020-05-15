@@ -170,7 +170,16 @@
                   <ModComments v-if="mod && chat && chat.chattype === 'User2Mod' && otheruser" :user="otheruser" class="mt-1" />
                 </div>
                 <b-form-textarea
-                  v-if="!spammer"
+                  v-if="enterNewLine && !spammer"
+                  ref="chatarea"
+                  v-model="sendmessage"
+                  placeholder="Type here..."
+                  rows="3"
+                  max-rows="8"
+                  @focus="markRead"
+                />
+                <b-form-textarea
+                  v-else-if="!spammer"
                   ref="chatarea"
                   v-model="sendmessage"
                   placeholder="Type here..."
@@ -345,6 +354,11 @@ export default {
     ChatRSVPModal
   },
   mixins: [chatCollate, waitForRef, chat],
+  computed: {
+    enterNewLine() {
+      return this.$store.getters['misc/get']('enternewline')
+    }
+  },
   watch: {
     me(newVal, oldVal) {
       if (!oldVal && newVal) {
@@ -355,7 +369,6 @@ export default {
   created() {
     this.urlid = this.$route.query.u
   },
-
   methods: {
     popup() {
       this.$store.dispatch('popupchats/popup', { id: this.chat.id })

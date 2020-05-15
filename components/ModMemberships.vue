@@ -3,6 +3,9 @@
     <div v-if="memberof && memberof.length">
       <div v-for="m in memberof" :key="'membership-' + m.membershipid" class="p-1 mr-1">
         <b>{{ m.namedisplay.length > 32 ? (m.namedisplay.substring(0, 32) + '...') : m.namedisplay }}</b>
+        <span v-if="m.collection === 'Pending'" class="text-warning">
+          (Pending)
+        </span>
         <span :class="'small ' + (daysago(m.added) < 31 ? 'text-danger font-weight-bold' : 'text-muted')">{{ m.added | timeago }}</span>
       </div>
     </div>
@@ -48,7 +51,13 @@ export default {
       const ms = this.user.memberof
 
       ms.sort(function(a, b) {
-        return new Date(b.added).getTime() - new Date(a.added).getTime()
+        if (a.collection === 'Pending' && b.collection !== 'Pending') {
+          return -1
+        } else if (b.collection === 'Pending' && a.collection !== 'Pending') {
+          return 1
+        } else {
+          return new Date(b.added).getTime() - new Date(a.added).getTime()
+        }
       })
 
       if (this.allmemberships) {

@@ -3,6 +3,7 @@
     <b-row class="m-0">
       <b-col cols="12" lg="6" offset-lg="3">
         <WizardProgress :active-stage="1" class="d-none " />
+        <CovidWarning class="mt-2" />
         <h1 class="text-center">
           First, tell us where you are
         </h1>
@@ -14,7 +15,7 @@
             <postcode class="justify-content-center" @selected="postcodeSelect" @cleared="postcodeClear" />
           </b-col>
         </b-row>
-        <transition name="fade">
+        <transition v-if="!closed" name="fade">
           <b-row v-if="postcode">
             <b-col class="text-center">
               <a v-if="extgroup" :href="extgroup">
@@ -26,7 +27,10 @@
             </b-col>
           </b-row>
         </transition>
-        <div v-if="!extgroup">
+        <transition v-if="closed" name="fade">
+          <CovidClosed class="mt-2" />
+        </transition>
+        <div v-else-if="!extgroup">
           <b-row v-if="postcode" class="mt-1">
             <b-col class="text-center">
               Freegle has local communities for each area.  We'll show your offer on this community first:
@@ -43,7 +47,7 @@
             </b-col>
           </b-row>
         </div>
-        <transition name="fade">
+        <transition v-if="!closed" name="fade">
           <div v-if="extgroup">
             <notice-message variant="info" class="mt-1">
               This community is on a separate site. You can proceed or choose a different community using the dropdown
@@ -79,8 +83,11 @@ select {
 
 <script>
 import NoticeMessage from '../../components/NoticeMessage'
+import CovidWarning from '../../components/CovidWarning'
+import CovidClosed from '../../components/CovidClosed'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
+import compose from '@/mixins/compose.js'
 
 const Postcode = () => import('~/components/Postcode')
 const ComposeGroup = () => import('~/components/ComposeGroup')
@@ -89,79 +96,20 @@ const WizardProgress = () => import('~/components/WizardProgress')
 export default {
   options: () => {},
   components: {
+    CovidClosed,
+    CovidWarning,
     NoticeMessage,
     Postcode,
     ComposeGroup,
     WizardProgress
   },
-  mixins: [loginOptional, buildHead],
-  props: {},
+  mixins: [loginOptional, buildHead, compose],
   data() {
     return {
       id: null,
-      postcode: null,
       source: process.env.API + '/locations?typeahead='
     }
   },
-  computed: {
-    extgroup() {
-      const groupid = this.$store.getters['compose/getGroup']
-
-      if (this.postcode && this.postcode.groupsnear) {
-        for (const group of this.postcode.groupsnear) {
-          if (group.id === groupid) {
-            return group.external
-          }
-        }
-      }
-
-      return null
-    }
-  },
-  async asyncData({ app, params, store }) {},
-  methods: {
-    getLocation() {},
-    postcodeSelect(pc) {
-      this.postcode = pc
-      const currentpc = this.$store.getters['compose/getPostcode']
-
-      if (!currentpc || currentpc.id !== pc.id) {
-        // The postcode has genuinely changed or been set for the first time.  We don't want to go through this code
-        // if the postcode is the same, otherwise we'll reset the group (which might have been changed from the first,
-        // for example in the give flow if you choose a different group.
-        this.$store.dispatch('compose/setPostcode', this.postcode)
-
-        // If we don't have a group currently which is in the list near this postcode, choose the closest.  That
-        // allows people to select further away groups if they wish.
-        const groupid = this.$store.getters['compose/getGroup']
-
-        if (pc && pc.groupsnear) {
-          let found = false
-          for (const group of pc.groupsnear) {
-            if (parseInt(group.id) === parseInt(groupid)) {
-              found = true
-            }
-          }
-
-          let group
-
-          if (!found) {
-            group = parseInt(pc.groupsnear[0].id)
-          } else {
-            group = groupid
-          }
-
-          this.$store.dispatch('compose/setGroup', group)
-        }
-      }
-    },
-    postcodeClear() {
-      this.postcode = null
-      this.$store.dispatch('compose/setPostcode', null)
-      this.$store.dispatch('compose/setGroup', null)
-    }
-  },
-
   head() {
     return this.buildHead(
       'Give something',

@@ -389,15 +389,11 @@ export default {
       let response = null
       this.photo = base64data
 
-      response = await axios.post(
-        'https://iznik.ilovefreegle.org/api/catalogue',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
+      response = await axios.post(process.env.API + '/catalogue', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
         }
-      )
+      })
 
       this.processing = true
       const rsp = response.data
@@ -411,14 +407,11 @@ export default {
     },
     async checkResult() {
       console.log('Check request', this.requestId)
-      const response = await axios.get(
-        'https://iznik.ilovefreegle.org/api/catalogue',
-        {
-          params: {
-            id: this.requestId
-          }
+      const response = await axios.get(process.env.API + '/catalogue', {
+        params: {
+          id: this.requestId
         }
-      )
+      })
 
       const rsp = response.data
 

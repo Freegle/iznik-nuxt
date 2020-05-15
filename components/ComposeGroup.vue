@@ -27,7 +27,7 @@ export default {
       const ret = []
       const ids = []
 
-      if (this.postcode) {
+      if (this.postcode && this.postcode.groupsnear) {
         for (const group of this.postcode.groupsnear) {
           if (group.type === 'Freegle') {
             ret.push({

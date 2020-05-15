@@ -17,6 +17,9 @@
         </div>
       </b-card-header>
       <b-card-body>
+        <h3 v-if="pending && group" class="mb-2">
+          Pending on {{ group.namedisplay }}
+        </h3>
         <div v-if="member.heldby">
           <NoticeMessage v-if="me.id === member.heldby.id" variant="warning" class="mb-2">
             You held this member.  Other people will see a warning to check with
@@ -167,8 +170,8 @@
         </div>
       </b-card-body>
       <b-card-footer class="d-flex justify-content-between">
-        <ModMemberButtons :member="member" :modconfig="modconfig" spamignore />
-        <div class="d-flex">
+        <ModMemberButtons :member="member" :modconfig="modconfig" :spamignore="spamignore" />
+        <div class="d-flex flex-wrap">
           <ModRole v-if="groupid" :userid="member.userid" :groupid="groupid" :role="member.role" />
           <ChatButton
             :userid="member.userid"
@@ -235,6 +238,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    spamignore: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
@@ -267,6 +275,9 @@ export default {
     },
     groupid() {
       return this.member.groupid
+    },
+    group() {
+      return this.$store.getters['auth/groupById'](this.groupid)
     },
     offers() {
       return this.countType('Offer')

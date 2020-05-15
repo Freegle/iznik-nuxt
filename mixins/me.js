@@ -74,7 +74,7 @@ Vue.mixin({
     },
     amAModOn(groupid) {
       const member = this.$store.getters['auth/member'](groupid)
-      return member === 'Moderated' || member === 'Owner'
+      return member === 'Moderator' || member === 'Owner'
     }
   }
 })

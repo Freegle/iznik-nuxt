@@ -476,6 +476,31 @@
               />
             </b-card-body>
           </b-card>
+          <b-card v-if="!simple" border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
+            <template v-slot:header>
+              <v-icon name="cog" /> Other
+            </template>
+            <b-card-body class="p-0 pt-1">
+              <b-form-group>
+                <h5>What the enter key does</h5>
+                <p>
+                  Normally hitting enter/return sends chat messages, rather than add a new line.  If you prefer
+                  it to add a new line, then you can change the setting on this device.  This can cause problems
+                  on some devices, so if you have problems with this setting, then please change it back.
+                </p>
+                <OurToggle
+                  v-model="enterAddsNewLine"
+                  class="mt-2"
+                  :height="30"
+                  :width="150"
+                  :font-size="14"
+                  :sync="true"
+                  :labels="{checked: 'Insert new line', unchecked: 'Send message'}"
+                  color="#61AE24"
+                />
+              </b-form-group>
+            </b-card-body>
+          </b-card>
           <br class="mb-4">
         </b-col>
         <b-col cols="0" xl="3" />
@@ -683,6 +708,18 @@ export default {
       },
       set: function(newValue) {
         this.changeAllGroups('eventsallowed', newValue)
+      }
+    },
+
+    enterAddsNewLine: {
+      get() {
+        return this.$store.getters['misc/get']('enternewline')
+      },
+      set(newval) {
+        this.$store.dispatch('misc/set', {
+          key: 'enternewline',
+          value: newval
+        })
       }
     }
   },

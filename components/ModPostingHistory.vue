@@ -79,11 +79,13 @@ export default {
     countType(type) {
       let count = 0
 
-      this.user.messagehistory.forEach(entry => {
-        if (entry.type === type) {
-          count++
-        }
-      })
+      if (this.user && this.user.messagehistory) {
+        this.user.messagehistory.forEach(entry => {
+          if (entry.type === type) {
+            count++
+          }
+        })
+      }
 
       return count
     },
