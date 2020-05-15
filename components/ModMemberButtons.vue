@@ -57,7 +57,7 @@
         variant="success"
         icon="check"
         spamignore
-        label="Ignore"
+        label="Approve"
       />
       <div v-if="member.spammer.collection === 'PendingAdd'" class="d-inline">
         <ModMemberButton
