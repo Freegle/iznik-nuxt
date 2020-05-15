@@ -76,7 +76,6 @@ export default {
         }
       }
 
-      console.log('Returning', ret, this.log)
       return ret
     }
   }
