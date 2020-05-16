@@ -33,7 +33,12 @@ import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 import FilePondPluginImageTransform from 'filepond-plugin-image-transform'
 import FilePondPluginImageResize from 'filepond-plugin-image-resize'
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation'
-import heic2any from 'heic2any'
+
+let heic2any = null
+
+if (process.client) {
+  heic2any = require('heic2any')
+}
 
 const FilePond = vueFilePond(
   FilePondPluginFileValidateType,
