@@ -2,6 +2,14 @@
   <div>
     <div v-if="pending" class="d-inline">
       <ModMemberButton
+        v-if="spamignore && member.suspectreason"
+        :member="member"
+        variant="success"
+        icon="check"
+        spamignore
+        label="Approve"
+      />
+      <ModMemberButton
         v-if="!member.heldby"
         :member="member"
         variant="success"
@@ -113,6 +121,14 @@
       </div>
     </div>
     <div v-else-if="approved" class="d-inline">
+      <ModMemberButton
+        v-if="spamignore && member.suspectreason"
+        :member="member"
+        variant="success"
+        icon="check"
+        spamignore
+        label="Approve"
+      />
       <ModMemberButton
         :member="member"
         variant="white"
