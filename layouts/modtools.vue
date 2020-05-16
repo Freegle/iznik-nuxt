@@ -78,7 +78,7 @@
           <ModMenuItemLeft link="/modtools/members/pending" name="Pending" :count="['pendingmembers']" :othercount="['pendingmembersother']" indent />
           <ModMenuItemLeft link="/modtools/members/approved" name="Approved" indent />
           <ModMenuItemLeft link="/modtools/members/review" name="Member Review" :count="['spammembers']" :othercount="['spammembersother']" indent />
-          <ModMenuItemLeft link="/modtools/chats/review" name="Chat Review" :count="['chatreview']" indent />
+          <ModMenuItemLeft link="/modtools/chats/review" name="Chat Review" :count="['chatreview']" :othercount="['chatreviewother']" indent />
           <ModMenuItemLeft link="/modtools/members/related" name="Related" :count="['relatedmembers']" indent />
           <ModMenuItemLeft link="/modtools/members/stories" name="Stories" indent :count="['stories']" />
           <ModMenuItemLeft v-if="hasPermissionNewsletter" link="/modtools/members/newsletter" name="Newsletter" indent :count="['newsletterstories']" />
