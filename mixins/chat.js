@@ -275,7 +275,9 @@ export default {
           this.chatmessages.length &&
           this.chatmessages[this.chatmessages.length - 1].type ===
             'Interested' &&
-          this.chatmessages[this.chatmessages.length - 1].userid !== this.myid
+          this.chatmessages[this.chatmessages.length - 1].userid !==
+            this.myid &&
+          this.chat.chattype === 'User2User'
 
         // Encode up any emojis.
         msg = twem.untwem(msg)
