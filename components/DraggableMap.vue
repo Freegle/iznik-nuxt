@@ -172,7 +172,11 @@ export default {
     },
 
     getAddressData: function(addressData, placeResultData, id) {
-      if (addressData) {
+      if (
+        addressData &&
+        addressData.geometry &&
+        addressData.geometry.location
+      ) {
         this.lat = addressData.geometry.location.lat()
         this.lng = addressData.geometry.location.lng()
         this.zoom = 16

@@ -297,7 +297,11 @@ export default {
 
   methods: {
     getAddressData: function(addressData, placeResultData, id) {
-      if (addressData) {
+      if (
+        addressData &&
+        addressData.geometry &&
+        addressData.geometry.location
+      ) {
         this.$refs.gmap.$mapObject.setCenter(addressData.geometry.location)
         this.$refs.gmap.$mapObject.setZoom(11)
       }
