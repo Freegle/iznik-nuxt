@@ -8,8 +8,10 @@ export default {
   methods: {
     openInBrowser() {
       if (process.env.IS_APP) {
-        console.log(openInBrowser)
+        cordova.InAppBrowser.open(this.href,'_system')
+        return false;
       }
+      return true;
     }
   },
   props: {
