@@ -19,9 +19,19 @@
     </p>
     <h4>Keep it LOCAL</h4>
     <p>
-      Avoid special or extra journeys for freegling - see Government advice on
+      Avoid special or extra journeys for freegling - see Government advice in
       <ExternalLink href="https://www.gov.uk/government/publications/full-guidance-on-staying-at-home-and-away-from-others/full-guidance-on-staying-at-home-and-away-from-others">
-        when you can leave the house.
+        Engalnd,
+      </ExternalLink>
+      <ExternalLink href="https://www.gov.uk/guidance/coronavirus-covid-19-information-for-individuals-and-businesses-in-scotland">
+        Scotland,
+      </ExternalLink>
+      <ExternalLink href="https://gov.wales/coronavirus">
+        Wales
+      </ExternalLink>
+      and
+      <ExternalLink href="https://www.nidirect.gov.uk/campaigns/coronavirus-covid-19">
+        Northern Ireland.
       </ExternalLink>
       Could you collect on foot or cycle while doing daily exercise?
     </p>

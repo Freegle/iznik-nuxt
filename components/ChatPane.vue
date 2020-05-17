@@ -142,7 +142,7 @@
             </b-row>
             <b-row>
               <b-col class="p-0">
-                <div v-if="showNotices">
+                <div v-if="showNotices && (badratings || expectedreply || otheruser && otheruser.hasReneged || !spammer && replytime || spammer && spammer.collection !== 'Whitelisted' || mod && chat && chat.chattype === 'User2Mod' && otheruser)">
                   <span class="float-right mr-2 mt-2 clickme" title="Hide warnings" @click="showNotices = false">
                     <v-icon name="times-circle" scale="1.5" />
                   </span>

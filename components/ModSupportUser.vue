@@ -56,9 +56,7 @@
         >
           <v-icon name="user" /> Impersonate (localhost:3000)
         </b-btn>
-        <b-btn variant="white" disabled class="mr-2 mb-1">
-          <v-icon name="equals" /> Merge
-        </b-btn>
+        <ModMergeButton class="mr-2 mb-1" />
         <b-btn variant="white" class="mr-2 mb-1" @click="logs">
           <v-icon name="book-open" /> Logs
         </b-btn>
@@ -274,12 +272,14 @@ import ModComments from './ModComments'
 import ModSpammerReport from './ModSpammerReport'
 import SpinButton from './SpinButton'
 import NoticeMessage from './NoticeMessage'
+import ModMergeButton from './ModMergeButton'
 const ExternalLink = () => import('~/components/ExternalLink')
 
 const SHOW = 3
 
 export default {
   components: {
+    ModMergeButton,
     NoticeMessage,
     SpinButton,
     ModSpammerReport,

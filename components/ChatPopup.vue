@@ -64,7 +64,7 @@
                 This person has been reported as a spammer or scammer.  Please do not talk to them and under no circumstances
                 send them any money.
               </p>
-              <div v-if="showNotices">
+              <div v-if="showNotices && mod && chat && chat.chattype === 'User2Mod' && otheruser">
                 <span class="float-right mr-2 mt-2 clickme" title="Hide warnings" @click="showNotices = false">
                   <v-icon name="times-circle" scale="1.5" />
                 </span>
