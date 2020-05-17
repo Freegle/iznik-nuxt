@@ -19,8 +19,11 @@
     </p>
     <h4>Keep it LOCAL</h4>
     <p>
-      Avoid special or extra journeys for freegling - see Government advice on
-      <a href="https://www.gov.uk/government/publications/staying-alert-and-safe-social-distancing/staying-alert-and-safe-social-distancing" target="_blank" rel="noopener noreferrer">social distancing</a>.
+      Avoid special or extra journeys for freegling - see Government advice on social distancing in
+      <a href="https://www.gov.uk/government/publications/staying-alert-and-safe-social-distancing/staying-alert-and-safe-social-distancing" target="_blank" rel="noopener noreferrer">England</a>,
+      <a href="https://www.gov.uk/guidance/coronavirus-covid-19-information-for-individuals-and-businesses-in-scotland" target="_blank" rel="noopener noreferrer">Scotland</a>,
+      <a href="https://gov.wales/coronavirus" target="_blank" rel="noopener noreferrer">Wales</a>
+      and <a href="https://www.nidirect.gov.uk/campaigns/coronavirus-covid-19" target="_blank" rel="noopener noreferrer">Northern Ireland</a>.
       Could you collect on foot or cycle while doing daily exercise?
     </p>
     <p>
