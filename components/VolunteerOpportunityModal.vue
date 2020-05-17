@@ -108,7 +108,9 @@
               Website
             </b-col>
             <b-col cols="8" md="9" class="forcebreak">
-              <a :href="volunteering.contacturl" target="_blank" rel="noopener noreferrer">{{ volunteering.contacturl }}</a>
+              <ExternalLink :href="volunteering.contacturl">
+                {{ volunteering.contacturl }}
+              </ExternalLink>
             </b-col>
           </b-row>
 

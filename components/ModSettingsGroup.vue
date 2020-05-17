@@ -489,7 +489,10 @@
               :rows="3"
             />
             <b-form-text class="mb-2">
-              You can visualise these areas by cutting and pasting the data into <a href="https://arthur-e.github.io/Wicket/sandbox-gmaps3.html" target="_blank" rel="noopener noreferrer">this tool</a>.
+              You can visualise these areas by cutting and pasting the data into
+              <ExternalLink href="https://arthur-e.github.io/Wicket/sandbox-gmaps3.html">
+                this tool.
+              </ExternalLink>
               You can also view all community areas
               <!-- eslint-disable-next-line -->
               <nuxt-link to="/modtools/map">here</nuxt-link>.
@@ -557,9 +560,9 @@
                 {{ group.twitter.authdate | dateshort }}
               </span>
             </div>
-            <b-btn variant="white" class="mt-2" :href="'https://modtools.org/twitter/twitter_request.php?groupid=' + group.id" target="_blank" rel="noopener noreferrer">
+            <ExternalLink class="btn btn-white mt-2" :href="'https://modtools.org/twitter/twitter_request.php?groupid=' + group.id">
               Link to Twitter
-            </b-btn>
+            </ExternalLink>
 
             <b-form-text class="mb-2">
               You can link to a group Facebook page to attract more people to your group.
@@ -570,9 +573,9 @@
             </div>
             <NoticeMessage v-else variant="warning">
               <p>This group is not linked to Facebook.  Please link it to get more publicity.</p>
-              <b-btn variant="white" class="mt-2" :href="'https://modtools.org/facebook/facebook_request.php?type=Page&groupid=' + group.id" target="_blank" rel="noopener noreferrer">
+              <ExternalLink class="btn btn-white mt-2" :href="'https://modtools.org/facebook/facebook_request.php?type=Page&groupid=' + group.id">
                 Link to Facebook
-              </b-btn>
+              </ExternalLink>
             </NoticeMessage>
           </b-card-body>
         </b-collapse>
@@ -661,6 +664,7 @@ import ModGroupSetting from './ModGroupSetting'
 import SpinButton from './SpinButton'
 import NoticeMessage from './NoticeMessage'
 import ModSettingsGroupFacebook from './ModSettingsGroupFacebook'
+const ExternalLink = () => import('~/components/ExternalLink')
 
 const OurToggle = () => import('@/components/OurToggle')
 
@@ -684,7 +688,8 @@ export default {
     OurToggle,
     ModSettingShortlink,
     GroupSelect,
-    VueEditor
+    VueEditor,
+    ExternalLink
   },
   props: {
     initialGroup: {

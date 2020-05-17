@@ -14,9 +14,9 @@
             for community
             <b>{{ inv.group.namedisplay }}</b>
           </p>
-          <b-btn class="mb-2" variant="white" :href="'https://modtools.org/facebook/facebook_request.php?type=Page&groupid=' + inv.group.id" target="_blank" rel="noopener noreferrer">
+          <ExternalLink class="btn btn-white mb-2" :href="'https://modtools.org/facebook/facebook_request.php?type=Page&groupid=' + inv.group.id">
             Relink
-          </b-btn>
+          </ExternalLink>
         </div>
       </div>
     </NoticeMessage>
@@ -41,8 +41,9 @@
 </template>
 <script>
 import NoticeMessage from './NoticeMessage'
+const ExternalLink = () => import('~/components/ExternalLink')
 export default {
-  components: { NoticeMessage },
+  components: { NoticeMessage, ExternalLink },
   data: function() {
     return {
       summary: true
