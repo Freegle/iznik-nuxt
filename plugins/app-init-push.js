@@ -39,33 +39,14 @@ const cordovaApp = {
       console.log('cordovaApp: onDeviceReady')
 
       mobilestate.isiOS = window.device.platform === 'iOS'
-      // if (!window.initialURL) {
-      //   window.initialURL = window.location.href
-      // }
-      // $.ajaxSetup({
-      //   mobileapp: 1
-      // });
 
-      // document.addEventListener("offline", function () { window.isOnline = false; console.log("offline"); window.showNetworkStatus() }, false);
-      // document.addEventListener("online", function () { window.isOnline = true; console.log("online"); window.showNetworkStatus() }, false);
-
-      // We have a busy indicator
-      /* $(document).ajaxStop(function() {
-        $('#spinner').hide();
-        // We might have added a class to indicate that we were waiting for an AJAX call to complete.
-        $('.showclicked').removeClass('showclicked');
-        window.hideHeaderWait();
-      });
-
-      $(document).ajaxStart(function () {
-        $('#spinner').show();
-        window.showHeaderWait();
-        if ((navigator.connection.type != Connection.NONE) && !window.isOnline) { // Remove red cloud if we are now actually online
-          console.log("ajaxStart fire online");
-          var event = new Event('online');
-          document.dispatchEvent(event);
-        }
-      }); */
+      // Make window.open work in iOS app
+      const prevwindowopener = window.open
+      window.open = (url) => {
+        console.log('App window.open',url)
+        // eslint-disable-next-line no-undef
+        cordova.InAppBrowser.open(url, '_system')
+      }
 
       if (!mobilestate.isiOS) {
         // Enable pinch zoom on Android

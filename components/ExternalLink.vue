@@ -5,15 +5,6 @@
 </template>
 <script>
 export default {
-  methods: {
-    openInBrowser() {
-      if (process.env.IS_APP) {
-        cordova.InAppBrowser.open(this.href,'_system')
-        return false;
-      }
-      return true;
-    }
-  },
   props: {
     href: {
       type: String,
