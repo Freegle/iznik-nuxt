@@ -35,7 +35,9 @@
                     The Government has
                     advised local authorities that Household Waste Recycling Centres (HWRCs) can be open, but says
                     you should consider using on-line reuse platforms such as ours first.  You can read their advice
-                    <a href="https://www.gov.uk/government/publications/coronavirus-covid-19-advice-to-local-authorities-on-prioritising-waste-collections/managing-household-waste-and-recycling-centres-hwrcs-in-england-during-the-coronavirus-covid-19-pandemic" target="_blank" rel="noopener noreferrer">here</a>.
+                    <ExternalLink href="https://www.gov.uk/government/publications/coronavirus-covid-19-advice-to-local-authorities-on-prioritising-waste-collections/managing-household-waste-and-recycling-centres-hwrcs-in-england-during-the-coronavirus-covid-19-pandemic">
+                      here.
+                    </ExternalLink>
                   </p>
                 </template>
               </Question>
@@ -471,6 +473,7 @@ const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
 const ChatButton = () => import('~/components/ChatButton.vue')
 const NoticeMessage = () => import('~/components/NoticeMessage')
 const DonationButton = () => import('~/components/DonationButton')
+const ExternalLink = () => import('~/components/ExternalLink')
 
 Vue.use(TabsPlugin)
 const RateAppModal = () => import('~/components/RateAppModal') // CC
@@ -482,7 +485,8 @@ export default {
     ChatButton,
     NoticeMessage,
     RateAppModal,
-    DonationButton
+    DonationButton,
+    ExternalLink
   },
   mixins: [buildHead],
   data() {
