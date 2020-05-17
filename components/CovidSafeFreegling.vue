@@ -21,7 +21,7 @@
     <p>
       Avoid special or extra journeys for freegling - see Government advice in
       <ExternalLink href="https://www.gov.uk/government/publications/full-guidance-on-staying-at-home-and-away-from-others/full-guidance-on-staying-at-home-and-away-from-others">
-        Engalnd,
+        England,
       </ExternalLink>
       <ExternalLink href="https://www.gov.uk/guidance/coronavirus-covid-19-information-for-individuals-and-businesses-in-scotland">
         Scotland,
