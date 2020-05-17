@@ -20,7 +20,7 @@
     <h4>Keep it LOCAL</h4>
     <p>
       Avoid special or extra journeys for freegling - see Government advice on
-      <a href="https://www.gov.uk/government/publications/full-guidance-on-staying-at-home-and-away-from-others/full-guidance-on-staying-at-home-and-away-from-others" target="_blank" rel="noopener noreferrer">when you can leave the house</a>.
+      <a href="https://www.gov.uk/government/publications/staying-alert-and-safe-social-distancing/staying-alert-and-safe-social-distancing" target="_blank" rel="noopener noreferrer">social distancing</a>.
       Could you collect on foot or cycle while doing daily exercise?
     </p>
     <p>
