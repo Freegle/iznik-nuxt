@@ -35,7 +35,10 @@
     </b-form-group>
     <b-form-group>
       <b-form-text>
-        Core Group Area.  Draw with <a href="arthur-e.github.io/Wicket/sandbox-gmaps3.html" target="_blank" rel="noopener noreferrer">this</a>.
+        Core Group Area.  Draw with
+        <ExternalLink href="https://arthur-e.github.io/Wicket/sandbox-gmaps3.html">
+          this.
+        </ExternalLink>
       </b-form-text>
       <b-textarea v-model="cga" rows="5" placeholder="Core Group Area (WKT format)" />
     </b-form-group>
@@ -58,11 +61,13 @@
 <script>
 import SpinButton from './SpinButton'
 import NoticeMessage from './NoticeMessage'
+const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
   components: {
     NoticeMessage,
-    SpinButton
+    SpinButton,
+    ExternalLink
   },
   data: function() {
     return {

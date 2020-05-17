@@ -17,7 +17,9 @@
     </p>
     <p>
       We can't do this automatically - as per
-      <a href="https://developers.facebook.com/docs/facebook-login/permissions#reference-manage_pages" target="_blank" rel="noopener noreferrer">Facebook's guidelines</a>
+      <ExternalLink href="https://developers.facebook.com/docs/facebook-login/permissions#reference-manage_pages">
+        Facebook's guidelines
+      </ExternalLink>
       you need to explicitly decide to publish content on pages that you manage.
     </p>
   </NoticeMessage>
@@ -28,9 +30,10 @@
 <script>
 import NoticeMessage from './NoticeMessage'
 import helpBox from '@/mixins/helpBox'
+const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
-  components: { NoticeMessage },
+  components: { NoticeMessage, ExternalLink },
   mixins: [helpBox],
   data: function() {
     return {

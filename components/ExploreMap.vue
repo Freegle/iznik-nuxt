@@ -85,14 +85,12 @@
                 </div>
                 <div class="media-body">
                   <div v-if="g.external">
-                    <a :href="g.external" target="_blank" rel="noopener noreferrer">
+                    <ExternalLink :href="g.external">
                       <b-btn variant="success" class="float-right mr-2">
                         Explore
                       </b-btn>
-                      <a target="_blank" rel="noopener noreferrer" :href="g.external">
-                        {{ g.namedisplay }}
-                      </a>
-                    </a>
+                      {{ g.namedisplay }}
+                    </ExternalLink>
                   </div>
                   <div v-else>
                     <b-btn variant="success" class="float-right mr-2" :to="'/explore/' + g.nameshort">
@@ -150,12 +148,14 @@ import InfiniteLoading from 'vue-infinite-loading'
 import { gmapApi } from 'vue2-google-maps'
 import GroupMarker from '~/components/GroupMarker.vue'
 import GroupProfileImage from '~/components/GroupProfileImage'
+const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
   components: {
     InfiniteLoading,
     GroupMarker,
-    GroupProfileImage
+    GroupProfileImage,
+    ExternalLink
   },
   props: {
     region: {

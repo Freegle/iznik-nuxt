@@ -20,9 +20,9 @@
         <b-card-body>
           <b-row v-for="msg in PopularPosts" :key="'popular-' + msg.id">
             <b-col cols="4" sm="2">
-              <a target="_blank" rel="noopener noreferrer" :href="msg.url">
+              <ExternalLink :href="msg.url">
                 <v-icon name="hashtag" scale="0.75" class="text-muted" />{{ msg.id }}
-              </a>
+              </ExternalLink>
             </b-col>
             <b-col cols="8" sm="6" class="text-success font-weight-bold">
               {{ msg.subject }}
@@ -45,8 +45,10 @@
 </template>
 <script>
 import ModDashboardBase from '@/components/ModDashboardBase'
+const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
+  components: { ExternalLink },
   extends: ModDashboardBase,
   data: function() {
     return {
