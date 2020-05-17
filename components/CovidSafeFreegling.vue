@@ -19,7 +19,7 @@
     </p>
     <h4>Keep it LOCAL</h4>
     <p>
-      Avoid special or extra journeys for freegling - see Government advice on social distancing in
+      Avoid special or extra journeys for freegling - see Government advice in
       <a href="https://www.gov.uk/government/publications/staying-alert-and-safe-social-distancing/staying-alert-and-safe-social-distancing" target="_blank" rel="noopener noreferrer">England</a>,
       <a href="https://www.gov.uk/guidance/coronavirus-covid-19-information-for-individuals-and-businesses-in-scotland" target="_blank" rel="noopener noreferrer">Scotland</a>,
       <a href="https://gov.wales/coronavirus" target="_blank" rel="noopener noreferrer">Wales</a>
