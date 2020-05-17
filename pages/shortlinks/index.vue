@@ -15,6 +15,9 @@
                 community in a particular way, and then see how effective that promotion was. Keep them
                 short (less typing) and memorable (less forgetting).
               </p>
+              <NoticeMessage v-if="error" variant="danger" class="mb-2">
+                {{ error }}
+              </NoticeMessage>
               <div class="d-flex justify-content-between flex-wrap">
                 <b-select v-model="groupid" :options="groupOptions" class="select" />
                 <div class="d-flex">
@@ -51,9 +54,10 @@
 <script>
 import loginRequired from '../../mixins/loginRequired'
 import Shortlinks from '../../components/Shortlinks'
+import NoticeMessage from '../../components/NoticeMessage'
 
 export default {
-  components: { Shortlinks },
+  components: { NoticeMessage, Shortlinks },
   mixins: [loginRequired],
   data: function() {
     return {
@@ -61,7 +65,8 @@ export default {
       name: null,
       saving: false,
       created: false,
-      groups: []
+      groups: [],
+      error: null
     }
   },
   computed: {
@@ -130,13 +135,24 @@ export default {
     async create() {
       if (this.groupid && this.name) {
         this.saving = true
-        const id = await this.$store.dispatch('shortlinks/add', {
-          groupid: this.groupid,
-          name: this.name
-        })
-        await this.$store.dispatch('shortlinks/fetch', {
-          id: id
-        })
+
+        try {
+          const id = await this.$store.dispatch('shortlinks/add', {
+            groupid: this.groupid,
+            name: this.name
+          })
+
+          await this.$store.dispatch('shortlinks/fetch', {
+            id: id
+          })
+        } catch (e) {
+          if (e.response && e.response.data) {
+            // Duplicate
+            this.error = e.response.data.status
+          }
+
+          console.log('Failed', e.response)
+        }
 
         this.saving = false
         this.created = true

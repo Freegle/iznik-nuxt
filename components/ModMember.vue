@@ -31,6 +31,9 @@
         </div>
         <ModComments :user="member" />
         <ModSpammer v-if="member.spammer" :user="member" />
+        <NoticeMessage v-if="member.suspectreason" variant="danger" class="mb-2">
+          This freegler is flagged as suspicious: {{ member.suspectreason }}
+        </NoticeMessage>
         <NoticeMessage v-if="member.activedistance > 50" variant="warning" class="mb-2">
           This freegler is active on groups {{ member.activedistance }} miles apart.
         </NoticeMessage>
@@ -171,7 +174,7 @@
       </b-card-body>
       <b-card-footer class="d-flex justify-content-between">
         <ModMemberButtons :member="member" :modconfig="modconfig" :spamignore="spamignore" />
-        <div class="d-flex flex-wrap">
+        <div class="d-flex flex-wrap w-25 justify-content-end">
           <ModRole v-if="groupid" :userid="member.userid" :groupid="groupid" :role="member.role" />
           <ChatButton
             :userid="member.userid"

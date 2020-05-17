@@ -127,6 +127,9 @@ export default {
         this.$store.dispatch('compose/setPostcode', pc)
       }
     },
+    postcodeValid() {
+      return this.postcode && this.postcode.name
+    },
     email: {
       get() {
         let email = null

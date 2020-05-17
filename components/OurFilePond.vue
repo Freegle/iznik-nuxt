@@ -6,6 +6,7 @@
       name="photo"
       :allow-multiple="multiple"
       accepted-file-types="image/*"
+      :file-validate-type-detect-type="validateType"
       :files="myFiles"
       image-resize-target-width="800"
       image-resize-target-height="800"
@@ -34,6 +35,12 @@ import FilePondPluginImageTransform from 'filepond-plugin-image-transform'
 import FilePondPluginImageResize from 'filepond-plugin-image-resize'
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation'
 import { mobilestate } from '@/plugins/app-init-push' // CC
+
+let heic2any = null
+
+if (process.client) {
+  heic2any = require('heic2any')
+}
 
 const FilePond = vueFilePond(
   FilePondPluginFileValidateType,
@@ -190,7 +197,18 @@ export default {
       await this.$store.dispatch('compose/setUploading', true)
 
       const data = new FormData()
-      data.append('photo', file, 'photo')
+      const fn = file.name.toLowerCase()
+
+      if (fn.indexOf('.heic') !== -1) {
+        // If we have an HEIC file, then the server can't cope with it as it will fail imagecreatefromstring, so
+        // convert it to a PNG file on the client before upload.
+        const blob = file.slice(0, file.size, 'image/heic')
+        const png = await heic2any({ blob })
+        data.append('photo', png, 'photo')
+      } else {
+        data.append('photo', file, 'photo')
+      }
+
       data.append(this.imgflag, true)
       data.append('imgtype', this.imgtype)
       data.append('ocr', this.ocr)
@@ -283,6 +301,18 @@ export default {
 
         resolve(type)
       })
+    },
+    validateType(source, type) {
+      const p = new Promise((resolve, reject) => {
+        // Not all browsers set the MIME type correctly, so we have a custom validator to force it from the filename.
+        if (source.name.toLowerCase().indexOf('.heic') !== -1) {
+          resolve('image/heic')
+        } else {
+          resolve(type)
+        }
+      })
+
+      return p
     }
   },
   blockkey(e) {

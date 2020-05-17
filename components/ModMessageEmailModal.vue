@@ -5,7 +5,6 @@
       id="modEmailMessageModal"
       v-model="showModal"
       size="lg"
-      no-stacking
     >
       <template slot="modal-title" class="w-100">
         Message received by email

@@ -44,7 +44,7 @@
         </b-form-group>
       </b-col>
     </b-row>
-    <b-row v-if="!simple">
+    <b-row v-if="!simple || modtools">
       <b-col cols="12" sm="6">
         <b-form-group label="Community Event mails:">
           <OurToggle
@@ -127,6 +127,9 @@ export default {
     }
   },
   computed: {
+    modtools() {
+      return this.$store.getters['misc/get']('modtools')
+    },
     user() {
       return this.userid ? this.$store.getters['user/get'](this.userid) : null
     },
