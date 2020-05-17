@@ -2,9 +2,6 @@
   <div>
     <div class="d-flex justify-content-between flex-wrap">
       <GroupSelect v-model="groupid" modonly />
-      <b-btn variant="white">
-        <v-icon name="plus" /> Add Group TODO
-      </b-btn>
     </div>
     <div v-if="group && group.mysettings" class="mt-2">
       <NoticeMessage v-if="group.settings.closed" variant="danger" class="mb-1">
