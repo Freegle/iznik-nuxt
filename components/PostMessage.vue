@@ -86,6 +86,7 @@
 </template>
 
 <script>
+import waitForRef from '@/mixins/waitForRef'
 const OurFilePond = () => import('~/components/OurFilePond')
 const PostPhoto = () => import('~/components/PostPhoto')
 const PostItem = () => import('~/components/PostItem')
@@ -96,6 +97,7 @@ export default {
     PostPhoto,
     PostItem
   },
+  mixins: [waitForRef],
   props: {
     id: {
       type: Number,
@@ -221,11 +223,11 @@ export default {
       this.pondBrowse = false
 
       // Give pond time to render.
-      setTimeout(() => {
+      this.waitForRef('filepond', () => {
         ;[...droppedFiles].forEach(f => {
           this.$refs.filepond.addFile(f)
         })
-      }, 500)
+      })
     }
   }
 }
