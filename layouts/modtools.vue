@@ -315,37 +315,8 @@ export default {
     }
   },
   head() {
-    let totalCount = this.chatCount
-
     const work = this.$store.getters['auth/work']
-
-    // All the types of work which are worth nagging about.
-    const worktypes = [
-      'pendingvolunteering',
-      'socialactions',
-      'chatreview',
-      'relatedmembers',
-      'stories',
-      'newsletterstories',
-      'pending',
-      'spam',
-      'pendingmembers',
-      'pendingevents',
-      'spammembers',
-      'editreview',
-      'pendingadmins'
-    ]
-
-    if (this.supportOrAdmin) {
-      worktypes.push('spammerpendingadd')
-      worktypes.push('spammerpendingremove')
-    }
-
-    for (const key of worktypes) {
-      if (work[key]) {
-        totalCount += work[key]
-      }
-    }
+    const totalCount = work.total
 
     const ret = {
       titleTemplate: totalCount > 0 ? `(${totalCount}) ModTools` : 'ModTools'
