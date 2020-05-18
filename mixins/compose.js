@@ -1,8 +1,7 @@
 export default {
   data: function() {
     return {
-      postType: null,
-      covid: false
+      postType: null
     }
   },
   computed: {

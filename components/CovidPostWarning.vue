@@ -1,19 +1,13 @@
 <template>
   <NoticeMessage variant="danger">
-    <div class="mb-3">
-      <b-form-checkbox v-model="currentCovid" size="lg" class="d-inline" @change="$emit('update:covid', $event)" />
-      <span class="warning-text">
-        <v-icon name="arrow-left" />
-        Click here to say you consider this item essential and will follow the guidance on safe freegling during COVID-19.
-      </span>
-    </div>
-    <b-btn variant="primary" @click="showModal = true">
-      Read guidance on safe freegling
+    Please read our guidance on
+    <b-btn variant="link" class="p-0 align-top" @click="showModal = true">
+      safe freegling
     </b-btn>
+    during COVID-19.
     <b-modal v-model="showModal" ok-only size="lg" title="Safe Freegling" ok-title="Close">
       <CovidSafeFreegling />
     </b-modal>
-    <span class="d-none custom-control-label" />
   </NoticeMessage>
 </template>
 
@@ -23,38 +17,10 @@ import CovidSafeFreegling from './CovidSafeFreegling'
 
 export default {
   components: { CovidSafeFreegling, NoticeMessage },
-  props: {
-    covid: {
-      type: Boolean,
-      required: true
-    }
-  },
   data: function() {
     return {
-      showModal: false,
-      currentCovid: false
-    }
-  },
-  computed: {
-    pulse() {
-      return this.currentCovid
-        ? ''
-        : 'pulsate check border border-success rounded '
+      showModal: false
     }
   }
 }
 </script>
-
-<style scoped>
-.check {
-  border-width: 3px !important;
-}
-
-::v-deep .check .custom-control-label::before {
-  left: -1.6rem !important;
-}
-
-.warning-text {
-  vertical-align: text-bottom;
-}
-</style>
