@@ -4,7 +4,7 @@
       <div class="d-flex justify-content-between flex-wrap">
         <GroupSelect v-model="groupid" all modonly />
         <ModFindMessagesFromMember />
-        <ModFindMessage v-if="groupid" />
+        <ModFindMessage v-if="groupid" @searched="searched" />
         <ModtoolsViewControl />
       </div>
       <div>
@@ -80,6 +80,12 @@ export default {
   methods: {
     checkLimit() {
       this.limit = this.summary ? 10 : 2
+    },
+    searched(term) {
+      this.term = term
+
+      // Need to rerender the infinite scroll
+      this.bump++
     }
   }
 }

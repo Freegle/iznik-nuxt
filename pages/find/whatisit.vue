@@ -36,16 +36,16 @@
             <v-icon name="plus" />&nbsp;Add another item
           </b-btn>
         </div>
-        <CovidPostWarning class="mt-2" :covid.sync="covid" />
+        <CovidPostWarning class="mt-2" />
         <transition name="fade">
-          <b-row v-if="valid && covid">
+          <b-row v-if="valid">
             <b-col cols="12" md="6" offset-md="3" class="text-center pt-2">
               <b-btn variant="success" size="lg" block :disabled="uploadingPhoto" @click="next">
                 Next <v-icon name="angle-double-right" />
               </b-btn>
             </b-col>
           </b-row>
-          <b-row v-else-if="covid">
+          <b-row>
             <b-col cols="12" md="6" offset-md="3" class="text-center pt-2">
               <NoticeMessage variant="info">
                 Please add the item name, and either a description or a photo.

@@ -640,6 +640,9 @@ export default {
       }
 
       this.hide()
+    },
+    postcodeSelect(newpc) {
+      this.message.location = newpc
     }
   }
 }
