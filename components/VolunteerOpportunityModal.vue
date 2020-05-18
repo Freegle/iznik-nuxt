@@ -522,9 +522,10 @@ export default {
           })
         }
 
-        const oldgroupid = this.volunteering.groups
-          ? this.volunteering.groups[0].id
-          : null
+        const oldgroupid =
+          this.volunteering.groups && this.volunteering.groups.length
+            ? this.volunteering.groups[0].id
+            : null
 
         if (this.groupid !== oldgroupid) {
           // Save the new group, then remove the old group, so it won't get stranded.
