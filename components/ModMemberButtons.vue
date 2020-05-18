@@ -42,14 +42,6 @@
         label="Hold"
       />
       <ModMemberButton
-        v-if="member.heldby"
-        :member="member"
-        variant="warning"
-        icon="play"
-        release
-        label="Release"
-      />
-      <ModMemberButton
         v-if="!member.heldby"
         :member="member"
         variant="danger"

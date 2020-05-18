@@ -58,12 +58,21 @@
                 {{ message.outcomes[0].timestamp | datetimeshort }}
               </NoticeMessage>
               <div v-if="message.heldby">
-                <NoticeMessage v-if="me.id === message.heldby.id" variant="warning" class="mb-2">
-                  You held this.  Other people will see a warning to check with
-                  you before releasing it.
-                </NoticeMessage>
-                <NoticeMessage v-else variant="warning" class="mb-2">
-                  Held by <b>{{ message.heldby.displayname }}</b>.  Please check with them before releasing it.
+                <NoticeMessage variant="warning" class="mb-2">
+                  <p v-if="me.id === message.heldby.id">
+                    You held this.  Other people will see a warning to check with
+                    you before releasing it.
+                  </p>
+                  <p v-else>
+                    Held by <b>{{ message.heldby.displayname }}</b>.  Please check with them before releasing it.
+                  </p>
+                  <ModMessageButton
+                    :message="message"
+                    variant="warning"
+                    icon="play"
+                    release
+                    label="Release"
+                  />
                 </NoticeMessage>
               </div>
             </div>
@@ -219,12 +228,14 @@ import ModMessageEmailModal from './ModMessageEmailModal'
 import ModMessageDuplicate from './ModMessageDuplicate'
 import ModMessageCrosspost from './ModMessageCrosspost'
 import ModMessageRelated from './ModMessageRelated'
+import ModMessageButton from './ModMessageButton'
 import twem from '~/assets/js/twem'
 import waitForRef from '@/mixins/waitForRef'
 
 export default {
   name: 'ModMessage',
   components: {
+    ModMessageButton,
     ModMessageRelated,
     ModMessageCrosspost,
     ModMessageDuplicate,

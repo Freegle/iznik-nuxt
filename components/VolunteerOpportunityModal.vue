@@ -577,10 +577,12 @@ export default {
           }
 
           // Save the group.
-          await this.$store.dispatch('volunteerops/addGroup', {
-            id,
-            groupid: this.groupid
-          })
+          if (this.groupid > 0) {
+            await this.$store.dispatch('volunteerops/addGroup', {
+              id,
+              groupid: this.groupid
+            })
+          }
 
           if (dates && dates.length) {
             await this.$store.dispatch('volunteerops/setDates', {

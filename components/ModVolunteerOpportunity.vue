@@ -13,7 +13,9 @@
             </span>
           </b-col>
           <b-col cols="12" md="4">
-            on {{ volunteering.groups[0].nameshort }}
+            <span v-if="volunteering.groups && volunteering.groups.length">
+              on {{ volunteering.groups[0].nameshort }}
+            </span>
           </b-col>
         </b-row>
       </b-card-header>
@@ -31,6 +33,7 @@
           <v-icon name="trash-alt" /> Delete
         </b-btn>
         <ChatButton
+          v-if="volunteering.groups && volunteering.groups.length"
           :userid="volunteering.user.id"
           :groupid="volunteering.groups[0].id"
           title="Chat"

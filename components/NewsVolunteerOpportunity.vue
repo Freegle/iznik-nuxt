@@ -16,7 +16,9 @@
         <span class="text-muted small">
           {{ newsfeed.added | timeago }}
         </span>
-        on {{ newsfeed.volunteering.groups[0].namedisplay }}
+        <span v-if="newsfeed.volunteering.groups && newsfeed.volunteering.groups.length">
+          on {{ newsfeed.volunteering.groups[0].namedisplay }}
+        </span>
       </div>
     </div>
     <div class="volunteering__container">
