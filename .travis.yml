@@ -73,6 +73,7 @@ script:
 - ln -s ../iznik-nuxt/dist www
 - cordova platform rm android
 - cordova platform add android
+- cat package.json
 # Build debug build
 - cordova build --debug -- --keystore="../iznik-nuxt/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
 - cp platforms/android/app/build/outputs/apk/debug/app-debug.apk ../iznik-nuxt/releases/Freegle-android-app-$MOBILE_VERSION-debug-$(date +'%Y%m%d%H%M%S').apk
