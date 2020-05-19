@@ -12,6 +12,7 @@ export default {
   },
   methods: {
     openInBrowser() {
+      console.log("openInBrowser")
       if (process.env.IS_APP) {
         // eslint-disable-next-line no-undef
         cordova.InAppBrowser.open(this.href, '_system')
