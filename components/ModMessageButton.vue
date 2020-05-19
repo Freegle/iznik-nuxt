@@ -2,6 +2,7 @@
   <div class="d-inline">
     <SpinButton
       :variant="variant"
+      :spinclass="variant === 'success' ? 'white' : null"
       :name="icon"
       :label="label"
       class="mb-1"
