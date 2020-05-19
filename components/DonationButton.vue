@@ -49,9 +49,10 @@ export default {
   },
   methods: {
     clicked() {
+    console.log("Donation clicked", this.donationLink)
       if (process.env.IS_APP) {
         // eslint-disable-next-line no-undef
-        cordova.InAppBrowser.open(this.href, '_system')
+        cordova.InAppBrowser.open(this.donationLink, '_system')
         return false
       }
       this.$emit('clicked')
