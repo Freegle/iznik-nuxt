@@ -805,7 +805,7 @@ svg.fa-icon {
 .notifbadge {
   position: absolute;
   top: 0px;
-  left: 24px;
+  left: 40px;
 }
 
 .notifbadgesm {
