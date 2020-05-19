@@ -156,27 +156,9 @@ export default {
       return this.showMenu ? 'slide-in' : 'slide-out'
     },
     menuCount() {
-      const counts = [
-        'pending',
-        'spam',
-        'editreview',
-        'pendingmembers',
-        'spammembers',
-        'chatreview',
-        'relatedmembers',
-        'stories',
-        'newsletterstories',
-        'pendingevents',
-        'pendingvolunteeering',
-        'socialactions',
-        'pendingadmins'
-      ]
-
-      if (this.supportOrAdmin) {
-        counts.push(['spammerpendingadd', 'spammerpendingremove'])
-      }
-      if (process.env.IS_APP) setBadgeCount(this.chatCount + this.getCount(counts)) // CC
-      return this.getCount(counts)
+      const work = this.$store.getters['auth/work']
+      if (process.env.IS_APP) setBadgeCount(this.chatCount + work.total) // CC
+      return work.total
     },
     work() {
       return this.$store.getters['auth/work']
@@ -299,24 +281,10 @@ export default {
     },
     toggleMenu() {
       this.showMenu = !this.showMenu
-    },
-    getCount(types) {
-      let total = 0
-
-      if (types) {
-        for (const key in this.work) {
-          if (types.indexOf(key) !== -1) {
-            total += this.work[key]
-          }
-        }
-      }
-
-      return total
     }
   },
   head() {
-    const work = this.$store.getters['auth/work']
-    const totalCount = work.total
+    const totalCount = this.menuCount + this.chatCount
 
     const ret = {
       titleTemplate: totalCount > 0 ? `(${totalCount}) ModTools` : 'ModTools'

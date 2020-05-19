@@ -231,6 +231,7 @@ import ModMessageRelated from './ModMessageRelated'
 import ModMessageButton from './ModMessageButton'
 import twem from '~/assets/js/twem'
 import waitForRef from '@/mixins/waitForRef'
+import keywords from '@/mixins/keywords.js'
 
 export default {
   name: 'ModMessage',
@@ -254,7 +255,7 @@ export default {
     MessageUserInfo,
     MessageHistory
   },
-  mixins: [waitForRef],
+  mixins: [waitForRef, keywords],
   props: {
     message: {
       type: Object,
@@ -297,39 +298,11 @@ export default {
     spam() {
       return this.hasCollection('Spam')
     },
-    typeOptions() {
-      return [
-        {
-          value: 'Offer',
-          text:
-            this.group && this.group.settings && this.group.settings.keywords
-              ? this.group.settings.keywords.offer
-              : 'OFFER'
-        },
-        {
-          value:
-            this.group && this.group.settings && this.group.settings.keywords
-              ? this.group.settings.keywords.wanted
-              : 'Wanted',
-          text: 'WANTED'
-        }
-      ]
-    },
     eSubject() {
       return twem.twem(this.$twemoji, this.message.subject)
     },
     eBody() {
       return twem.twem(this.$twemoji, this.message.textbody)
-    },
-    group() {
-      return this.groupid
-        ? this.$store.getters['auth/groupById'](this.groupid)
-        : null
-    },
-    groupid() {
-      return this.message.groups && this.message.groups.length > 0
-        ? this.message.groups[0].groupid
-        : null
     },
     membership() {
       let ret = null

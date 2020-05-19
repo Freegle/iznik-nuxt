@@ -14,14 +14,7 @@
           <div v-if="message.location">
             <b-row>
               <b-col cols="6" md="3">
-                <b-form-select v-model="type">
-                  <option value="Offer">
-                    OFFER
-                  </option>
-                  <option value="Wanted">
-                    WANTED
-                  </option>
-                </b-form-select>
+                <b-form-select v-model="type" @options="typeOptions" />
               </b-col>
               <b-col cols="6">
                 <PostItem ref="item" v-model="item" />
@@ -86,6 +79,7 @@
   </div>
 </template>
 <script>
+import keywords from '@/mixins/keywords.js'
 const OurFilePond = () => import('~/components/OurFilePond')
 const Postcode = () => import('./Postcode')
 const PostItem = () => import('./PostItem')
@@ -98,6 +92,7 @@ export default {
     PostItem,
     PostPhoto
   },
+  mixins: [keywords],
   props: {
     message: {
       type: Object,
@@ -141,7 +136,6 @@ export default {
       this.showModal = false
     },
     async save() {
-      console.log('Saving')
       if (this.item && (this.message.textbody || this.attachments.length)) {
         const attids = []
         this.saving = true
