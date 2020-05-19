@@ -1,24 +1,28 @@
 <template>
   <div>
     <client-only>
-      <div v-for="message in visibleMessages" :key="'messagelist-' + message.id" class="p-0 mt-2">
-        <ModChatReview :message="message" />
+      <GroupSelect v-model="groupid" modonly all active :work="['chatreview', 'chatreviewother']" />
+      <div :key="bump">
+        <div v-for="message in visibleMessages" :key="'messagelist-' + message.id" class="p-0 mt-2">
+          <ModChatReview :message="message" />
+        </div>
+        <infinite-loading force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
+          <span slot="no-results">
+            There are no chat messages to review at the moment.
+          </span>
+          <span slot="no-more" />
+          <span slot="spinner">
+            <b-img-lazy src="~/static/loader.gif" alt="Loading" />
+          </span>
+        </infinite-loading>
       </div>
-      <infinite-loading force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
-        <span slot="no-results">
-          There are no chat messages to review at the moment.
-        </span>
-        <span slot="no-more" />
-        <span slot="spinner">
-          <b-img-lazy src="~/static/loader.gif" alt="Loading" />
-        </span>
-      </infinite-loading>
     </client-only>
   </div>
 </template>
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
 import ModChatReview from '../../../components/ModChatReview'
+import GroupSelect from '../../../components/GroupSelect'
 import loginRequired from '@/mixins/loginRequired.js'
 
 // We need an id for the store.  The null value is a special case used just for retrieving chat review messages.
@@ -27,6 +31,7 @@ const REVIEWCHAT = null
 export default {
   layout: 'modtools',
   components: {
+    GroupSelect,
     ModChatReview,
     InfiniteLoading
   },
@@ -39,7 +44,9 @@ export default {
       // we increase how fast it feels.
       distance: 1000,
       limit: 5,
-      show: 0
+      show: 0,
+      groupid: null,
+      bump: 0
     }
   },
   computed: {
@@ -56,34 +63,25 @@ export default {
       // Count for the type of work we're interested in.
       const work = this.$store.getters['auth/work']
       return work.chatreview
+    },
+    group() {
+      console.log('Compute group')
+      return this.$store.getters['group/get'](this.groupid)
     }
   },
   watch: {
     work(newVal, oldVal) {
       if (newVal > oldVal) {
-        // There's new stuff to do.  Reload.
-        this.$store.dispatch('chatmessages/clearContext', {
-          id: REVIEWCHAT
-        })
-
-        this.$store.dispatch('chatmessages/clearMessages')
+        this.clearAndLoad()
       }
+    },
+    groupid(newVal, oldVal) {
+      console.log('Groupid wathc')
+      this.clearAndLoad()
     }
   },
   async mounted() {
-    // We don't want to pick up any real chat messages.
-    this.$store.dispatch('chatmessages/clearContext', {
-      id: REVIEWCHAT
-    })
-    this.$store.dispatch('chatmessages/clearMessages')
-
-    await this.$store.dispatch('chatmessages/fetch', {
-      chatid: REVIEWCHAT,
-      limit: this.limit
-    })
-
-    const msgs = this.$store.getters['chatmessages/getMessages'](REVIEWCHAT)
-    this.show = msgs.length
+    await this.clearAndLoad()
   },
   methods: {
     loadMore: function($state) {
@@ -117,6 +115,26 @@ export default {
             console.log('Complete on error', e)
           })
       }
+    },
+    async clearAndLoad() {
+      // There's new stuff to do.  Reload.
+      console.log('Clear and load')
+      // We don't want to pick up any real chat messages.
+      await this.$store.dispatch('chatmessages/clearContext', {
+        chatid: REVIEWCHAT
+      })
+
+      await this.$store.dispatch('chatmessages/clearMessages', {
+        chatid: REVIEWCHAT
+      })
+
+      await this.$store.dispatch('chatmessages/fetch', {
+        chatid: REVIEWCHAT,
+        limit: this.limit,
+        groupid: this.groupid
+      })
+
+      this.bump++
     }
   }
 }
