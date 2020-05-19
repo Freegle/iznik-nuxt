@@ -71,9 +71,11 @@
 <script>
 import Postcode from './Postcode'
 import NoticeMessage from './NoticeMessage'
+import keywords from '@/mixins/keywords.js'
 
 export default {
   components: { NoticeMessage, Postcode },
+  mixins: [keywords],
   props: {
     message: {
       type: Object,
@@ -134,44 +136,6 @@ export default {
             ret = email.email
           }
         })
-      }
-
-      return ret
-    },
-    typeOptions() {
-      return [
-        {
-          value: 'Offer',
-          text:
-            this.group && this.group.settings && this.group.settings.keywords
-              ? this.group.settings.keywords.offer
-              : 'OFFER'
-        },
-        {
-          value:
-            this.group && this.group.settings && this.group.settings.keywords
-              ? this.group.settings.keywords.wanted
-              : 'Wanted',
-          text: 'WANTED'
-        }
-      ]
-    },
-    group() {
-      return this.groupid
-        ? this.$store.getters['auth/groupById'](this.groupid)
-        : null
-    },
-    groupid() {
-      let ret = null
-
-      if (this.member) {
-        ret = this.member.groupid
-      } else if (
-        this.message &&
-        this.message.groups &&
-        this.message.groups.length
-      ) {
-        ret = this.message.groups[0].groupid
       }
 
       return ret
@@ -640,6 +604,9 @@ export default {
       }
 
       this.hide()
+    },
+    postcodeSelect(newpc) {
+      this.message.location = newpc
     }
   }
 }

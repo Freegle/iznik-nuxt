@@ -353,7 +353,6 @@ export default {
         })
       })
 
-      console.log('Returning', ret)
       return ret
     },
     defaultUnits() {

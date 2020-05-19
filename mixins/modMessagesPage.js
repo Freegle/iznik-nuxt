@@ -15,7 +15,8 @@ export default {
       limit: 2,
       workType: null,
       show: 0,
-      busy: false
+      busy: false,
+      term: null
     }
   },
   computed: {
@@ -120,15 +121,31 @@ export default {
       } else {
         const currentCount = this.messages.length
 
-        this.$store
-          .dispatch('messages/fetchMessages', {
+        let params
+
+        if (this.term) {
+          params = {
+            subaction: 'searchall',
+            search: this.term,
+            exactonly: true,
+            groupid: this.groupid
+          }
+        } else {
+          params = {
             groupid: this.groupid,
             collection: this.collection,
             modtools: true,
-            summary: false,
-            context: this.context,
-            limit: this.limit
-          })
+            summary: false
+          }
+        }
+
+        params.context = this.context
+        params.limit = this.limit
+
+        console.log('Load more', params)
+
+        this.$store
+          .dispatch('messages/fetchMessages', params)
           .then(() => {
             this.context = this.$store.getters['messages/getContext']
 

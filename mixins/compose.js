@@ -1,8 +1,7 @@
 export default {
   data: function() {
     return {
-      postType: null,
-      covid: false
+      postType: null
     }
   },
   computed: {
@@ -126,6 +125,9 @@ export default {
       set(pc) {
         this.$store.dispatch('compose/setPostcode', pc)
       }
+    },
+    postcodeValid() {
+      return this.postcode && this.postcode.name
     },
     email: {
       get() {

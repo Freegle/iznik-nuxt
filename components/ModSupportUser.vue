@@ -56,9 +56,7 @@
         >
           <v-icon name="user" /> Impersonate (localhost:3000)
         </b-btn>
-        <b-btn variant="white" disabled class="mr-2 mb-1">
-          <v-icon name="equals" /> Merge
-        </b-btn>
+        <ModMergeButton class="mr-2 mb-1" />
         <b-btn variant="white" class="mr-2 mb-1" @click="logs">
           <v-icon name="book-open" /> Logs
         </b-btn>
@@ -209,9 +207,9 @@
             {{ message.arrival | datetimeshort }}
           </b-col>
           <b-col cols="4" md="2" class="order-3 order-md-2 p-1 small">
-            <a target="_blank" :href="'https://www.ilovefreegle.org/message/' + message.id" rel="noopener noreferrer">
+            <ExternalLink :href="'https://www.ilovefreegle.org/message/' + message.id">
               <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ message.id }}
-            </a>
+            </ExternalLink>
             <span :class="message.collection != 'Approved' ? 'text-danger' : 'text-muted'">{{ message.collection }}</span>
           </b-col>
           <b-col cols="8" md="6" class="order-2 order-md-3 p-1">
@@ -274,11 +272,14 @@ import ModComments from './ModComments'
 import ModSpammerReport from './ModSpammerReport'
 import SpinButton from './SpinButton'
 import NoticeMessage from './NoticeMessage'
+import ModMergeButton from './ModMergeButton'
+const ExternalLink = () => import('~/components/ExternalLink')
 
 const SHOW = 3
 
 export default {
   components: {
+    ModMergeButton,
     NoticeMessage,
     SpinButton,
     ModSpammerReport,
@@ -289,7 +290,8 @@ export default {
     ProfileModal,
     ConfirmModal,
     ModLogsModal,
-    ModSupportMembership
+    ModSupportMembership,
+    ExternalLink
   },
   mixins: [waitForRef],
   props: {

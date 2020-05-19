@@ -5,12 +5,15 @@
       id="modEmailMessageModal"
       v-model="showModal"
       size="lg"
-      no-stacking
     >
       <template slot="modal-title" class="w-100">
         Message received by email
       </template>
       <template slot="default">
+        <NoticeMessage variant="info" class="mb-1">
+          This is the raw email we received.  It may have had large attachments removed for space reasons.  The body
+          of the email is sometimes encoded, and you might not be able to read it.  If you need help, ask on Tech.
+        </NoticeMessage>
         <!-- eslint-disable-next-line-->
         <pre>{{ message.message }}</pre>
       </template>
@@ -23,7 +26,9 @@
   </div>
 </template>
 <script>
+import NoticeMessage from './NoticeMessage'
 export default {
+  components: { NoticeMessage },
   props: {
     id: {
       type: Number,

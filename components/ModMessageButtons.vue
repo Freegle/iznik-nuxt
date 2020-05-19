@@ -57,14 +57,6 @@
         label="Hold"
       />
       <ModMessageButton
-        v-if="message.heldby"
-        :message="message"
-        variant="warning"
-        icon="play"
-        release
-        label="Release"
-      />
-      <ModMessageButton
         v-if="!message.heldby"
         :message="message"
         variant="danger"

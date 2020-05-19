@@ -66,7 +66,9 @@
             <p class="small text-muted">
               This community is kindly sponsored by:
             </p>
-            <a target="_blank" rel="noopener noreferrer" href="sponsor.linkurl">{{ sponsor.name }}</a>
+            <ExternalLink :href="sponsor.linkurl">
+              {{ sponsor.name }}
+            </ExternalLink>
             <div v-if="sponsor.tagline" class="font-weight-bold">
               {{ sponsor.tagline }}
             </div>
@@ -80,8 +82,9 @@
 <script>
 import SponsorLogo from './SponsorLogo'
 import GroupShowMod from './GroupShowMod'
+const ExternalLink = () => import('~/components/ExternalLink')
 export default {
-  components: { GroupShowMod, SponsorLogo },
+  components: { GroupShowMod, SponsorLogo, ExternalLink },
   props: {
     group: {
       type: Object,

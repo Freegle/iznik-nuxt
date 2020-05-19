@@ -47,6 +47,8 @@ export default {
       this.error = false
       const term = this.term.trim()
 
+      this.$emit('searched', term)
+
       await this.$store.dispatch('messages/clear')
 
       if (!isNaN(term)) {

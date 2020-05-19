@@ -16,7 +16,7 @@
           </b-col>
         </b-row>
         <transition name="fade">
-          <b-row v-if="postcode && !closed">
+          <b-row v-if="postcodeValid && !closed">
             <b-col class="text-center">
               <a v-if="extgroup" :href="extgroup">
                 <v-icon name="check-circle" class="text-success mt-2 fa-bh" scale="5" />
@@ -27,17 +27,17 @@
             </b-col>
           </b-row>
         </transition>
-        <b-row v-if="postcode && !closed" class="mt-1">
+        <b-row v-if="postcodeValid && !closed" class="mt-1">
           <b-col class="text-center">
             Freegle has local communities for each area. We'll put anything you post on here, and search this community and others nearby.
           </b-col>
         </b-row>
-        <b-row v-if="postcode && !closed" class="mt-1">
+        <b-row v-if="postcodeValid && !closed" class="mt-1">
           <b-col class="text-center">
             <ComposeGroup />
           </b-col>
         </b-row>
-        <b-row v-if="postcode && !closed" class="mt-1">
+        <b-row v-if="postcodeValid && !closed" class="mt-1">
           <b-col class="text-center text-muted">
             Click on the name above to choose a different community.
           </b-col>
@@ -59,7 +59,7 @@
               </b-col>
             </b-row>
           </div>
-          <b-row v-else-if="postcode" class="mt-1">
+          <b-row v-else-if="postcodeValid" class="mt-1">
             <b-col class="text-center mt-4" cols="12" md="6" offset-md="3">
               <nuxt-link to="/find/search" class="decornone">
                 <b-btn variant="success" size="lg" block>

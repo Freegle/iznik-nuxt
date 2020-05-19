@@ -2,6 +2,14 @@
   <div>
     <div v-if="pending" class="d-inline">
       <ModMemberButton
+        v-if="spamignore && member.suspectreason"
+        :member="member"
+        variant="success"
+        icon="check"
+        spamignore
+        label="Approve"
+      />
+      <ModMemberButton
         v-if="!member.heldby"
         :member="member"
         variant="success"
@@ -34,14 +42,6 @@
         label="Hold"
       />
       <ModMemberButton
-        v-if="member.heldby"
-        :member="member"
-        variant="warning"
-        icon="play"
-        release
-        label="Release"
-      />
-      <ModMemberButton
         v-if="!member.heldby"
         :member="member"
         variant="danger"
@@ -51,6 +51,14 @@
       />
     </div>
     <div v-else-if="spam" class="d-inline">
+      <ModMemberButton
+        v-if="spamignore"
+        :member="member"
+        variant="success"
+        icon="check"
+        spamignore
+        label="Approve"
+      />
       <div v-if="member.spammer.collection === 'PendingAdd'" class="d-inline">
         <ModMemberButton
           v-if="supportOrAdmin"
@@ -106,12 +114,12 @@
     </div>
     <div v-else-if="approved" class="d-inline">
       <ModMemberButton
-        v-if="spamignore"
+        v-if="spamignore && member.suspectreason"
         :member="member"
         variant="success"
         icon="check"
         spamignore
-        label="Ignore"
+        label="Approve"
       />
       <ModMemberButton
         :member="member"

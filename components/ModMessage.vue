@@ -24,7 +24,7 @@
               <span v-if="message.location" class="text-muted small">{{ message.location.name }}</span>
             </div>
             <MessageHistory :message="message" modinfo display-message-link />
-            <ModMessageDuplicate v-for="duplicate in duplicates" :key="'duplicate-' + duplicate.id" :message="duplicate" />
+            <ModMessageDuplicate v-for="(duplicate, index) in duplicates" :key="'duplicate-' + duplicate.id + '-' + index" :message="duplicate" />
             <ModMessageCrosspost v-for="crosspost in crossposts" :key="'crosspost-' + crosspost.id" :message="crosspost" />
             <div v-if="expanded">
               <ModMessageRelated v-for="related in message.related" :key="'related-' + related.id" :message="related" />
@@ -58,12 +58,21 @@
                 {{ message.outcomes[0].timestamp | datetimeshort }}
               </NoticeMessage>
               <div v-if="message.heldby">
-                <NoticeMessage v-if="me.id === message.heldby.id" variant="warning" class="mb-2">
-                  You held this.  Other people will see a warning to check with
-                  you before releasing it.
-                </NoticeMessage>
-                <NoticeMessage v-else variant="warning" class="mb-2">
-                  Held by <b>{{ message.heldby.displayname }}</b>.  Please check with them before releasing it.
+                <NoticeMessage variant="warning" class="mb-2">
+                  <p v-if="me.id === message.heldby.id">
+                    You held this.  Other people will see a warning to check with
+                    you before releasing it.
+                  </p>
+                  <p v-else>
+                    Held by <b>{{ message.heldby.displayname }}</b>.  Please check with them before releasing it.
+                  </p>
+                  <ModMessageButton
+                    :message="message"
+                    variant="warning"
+                    icon="play"
+                    release
+                    label="Release"
+                  />
                 </NoticeMessage>
               </div>
             </div>
@@ -102,7 +111,7 @@
           </b-col>
           <b-col cols="12" lg="4">
             <div class="rounded border border-info p-2 d-flex justify-content-between flex-wrap">
-              <MessageUserInfo v-if="message.fromuser" :message="message" :user="message.fromuser" modinfo :groupid="message.groups[0].groupid" />
+              <MessageUserInfo v-if="message.fromuser && message.groups && message.groups.length" :message="message" :user="message.fromuser" modinfo :groupid="message.groups[0].groupid" />
               <NoticeMessage v-else variant="danger">
                 Can't identify sender.  Probably a bug.
               </NoticeMessage>
@@ -167,7 +176,7 @@
               </b-btn>
             </div>
             <SettingsGroup
-              v-if="showMailSettings && membership"
+              v-if="showMailSettings && membership && message.groups && message.groups.length"
               :groupid="message.groups[0].groupid"
               :emailfrequency="membership.emailfrequency"
               :volunteeringallowed="Boolean(membership.volunteeringallowed)"
@@ -181,7 +190,7 @@
                 {{ email.email }} <v-icon v-if="email.preferred" name="start" />
               </div>
             </div>
-            <ModMemberActions v-if="showActions" :userid="message.fromuser.id" :groupid="message.groups[0].groupid" />
+            <ModMemberActions v-if="showActions && message.groups && message.groups.length" :userid="message.fromuser.id" :groupid="message.groups[0].groupid" />
           </b-col>
         </b-row>
       </b-card-body>
@@ -219,12 +228,15 @@ import ModMessageEmailModal from './ModMessageEmailModal'
 import ModMessageDuplicate from './ModMessageDuplicate'
 import ModMessageCrosspost from './ModMessageCrosspost'
 import ModMessageRelated from './ModMessageRelated'
+import ModMessageButton from './ModMessageButton'
 import twem from '~/assets/js/twem'
 import waitForRef from '@/mixins/waitForRef'
+import keywords from '@/mixins/keywords.js'
 
 export default {
   name: 'ModMessage',
   components: {
+    ModMessageButton,
     ModMessageRelated,
     ModMessageCrosspost,
     ModMessageDuplicate,
@@ -243,7 +255,7 @@ export default {
     MessageUserInfo,
     MessageHistory
   },
-  mixins: [waitForRef],
+  mixins: [waitForRef, keywords],
   props: {
     message: {
       type: Object,
@@ -286,39 +298,11 @@ export default {
     spam() {
       return this.hasCollection('Spam')
     },
-    typeOptions() {
-      return [
-        {
-          value: 'Offer',
-          text:
-            this.group && this.group.settings && this.group.settings.keywords
-              ? this.group.settings.keywords.offer
-              : 'OFFER'
-        },
-        {
-          value:
-            this.group && this.group.settings && this.group.settings.keywords
-              ? this.group.settings.keywords.wanted
-              : 'Wanted',
-          text: 'WANTED'
-        }
-      ]
-    },
     eSubject() {
       return twem.twem(this.$twemoji, this.message.subject)
     },
     eBody() {
       return twem.twem(this.$twemoji, this.message.textbody)
-    },
-    group() {
-      return this.groupid
-        ? this.$store.getters['auth/groupById'](this.groupid)
-        : null
-    },
-    groupid() {
-      return this.message.groups && this.message.groups.length > 0
-        ? this.message.groups[0].groupid
-        : null
     },
     membership() {
       let ret = null

@@ -64,10 +64,10 @@ export default {
   },
   computed: {
     messages() {
-      const ret = []
+      let ret = []
 
       if (this.user && this.user.messagehistory) {
-        const ret = this.user.messagehistory.filter(message => {
+        ret = this.user.messagehistory.filter(message => {
           return !this.type || this.type === message.type
         })
 

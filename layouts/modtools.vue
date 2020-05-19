@@ -78,7 +78,7 @@
           <ModMenuItemLeft link="/modtools/members/pending" name="Pending" :count="['pendingmembers']" :othercount="['pendingmembersother']" indent />
           <ModMenuItemLeft link="/modtools/members/approved" name="Approved" indent />
           <ModMenuItemLeft link="/modtools/members/review" name="Member Review" :count="['spammembers']" :othercount="['spammembersother']" indent />
-          <ModMenuItemLeft link="/modtools/chats/review" name="Chat Review" :count="['chatreview']" indent />
+          <ModMenuItemLeft link="/modtools/chats/review" name="Chat Review" :count="['chatreview']" :othercount="['chatreviewother']" indent />
           <ModMenuItemLeft link="/modtools/members/related" name="Related" :count="['relatedmembers']" indent />
           <ModMenuItemLeft link="/modtools/members/stories" name="Stories" indent :count="['stories']" />
           <ModMenuItemLeft v-if="hasPermissionNewsletter" link="/modtools/members/newsletter" name="Newsletter" indent :count="['newsletterstories']" />
@@ -96,7 +96,9 @@
           <ModMenuItemLeft link="/modtools/settings" name="Settings" />
           <ModMenuItemLeft link="/modtools/teams" name="Teams" />
           <div>
-            <a href="https://discourse.ilovefreegle.org" rel="noopener noreferrer" target="_blank" class="pl-1">Help</a>
+            <ExternalLink href="https://discourse.ilovefreegle.org" class="pl-1">
+              Help
+            </ExternalLink>
           </div>
           <div>
             <a href="#" class="pl-1" @click="logOut">
@@ -118,6 +120,7 @@ import ModMenuItemLeft from '../components/ModMenuItemLeft'
 import waitForRef from '../mixins/waitForRef'
 import LoginModal from '~/components/LoginModal'
 import ModStatus from '~/components/ModStatus'
+const ExternalLink = () => import('~/components/ExternalLink')
 import { setBadgeCount } from '../plugins/app-init-push' // CC
 
 const ChatPopups = () => import('~/components/ChatPopups')
@@ -127,7 +130,8 @@ export default {
     ModMenuItemLeft,
     ChatPopups,
     LoginModal,
-    ModStatus
+    ModStatus,
+    ExternalLink
   },
   mixins: [waitForRef],
   data: function() {
@@ -152,27 +156,9 @@ export default {
       return this.showMenu ? 'slide-in' : 'slide-out'
     },
     menuCount() {
-      const counts = [
-        'pending',
-        'spam',
-        'editreview',
-        'pendingmembers',
-        'spammembers',
-        'chatreview',
-        'relatedmembers',
-        'stories',
-        'newsletterstories',
-        'pendingevents',
-        'pendingvolunteeering',
-        'socialactions',
-        'pendingadmins'
-      ]
-
-      if (this.supportOrAdmin) {
-        counts.push(['spammerpendingadd', 'spammerpendingremove'])
-      }
-      if (process.env.IS_APP) setBadgeCount(this.chatCount + this.getCount(counts)) // CC
-      return this.getCount(counts)
+      const work = this.$store.getters['auth/work']
+      if (process.env.IS_APP) setBadgeCount(this.chatCount + work.total) // CC
+      return work.total
     },
     work() {
       return this.$store.getters['auth/work']
@@ -295,53 +281,10 @@ export default {
     },
     toggleMenu() {
       this.showMenu = !this.showMenu
-    },
-    getCount(types) {
-      let total = 0
-
-      if (types) {
-        for (const key in this.work) {
-          if (types.indexOf(key) !== -1) {
-            total += this.work[key]
-          }
-        }
-      }
-
-      return total
     }
   },
   head() {
-    let totalCount = this.chatCount
-
-    const work = this.$store.getters['auth/work']
-
-    // All the types of work which are worth nagging about.
-    const worktypes = [
-      'pendingvolunteering',
-      'socialactions',
-      'chatreview',
-      'relatedmembers',
-      'stories',
-      'newsletterstories',
-      'pending',
-      'spam',
-      'pendingmembers',
-      'pendingevents',
-      'spammembers',
-      'editreview',
-      'pendingadmins'
-    ]
-
-    if (this.supportOrAdmin) {
-      worktypes.push('spammerpendingadd')
-      worktypes.push('spammerpendingremove')
-    }
-
-    for (const key of worktypes) {
-      if (work[key]) {
-        totalCount += work[key]
-      }
-    }
+    const totalCount = this.menuCount + this.chatCount
 
     const ret = {
       titleTemplate: totalCount > 0 ? `(${totalCount}) ModTools` : 'ModTools'

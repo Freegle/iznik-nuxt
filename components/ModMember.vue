@@ -21,16 +21,29 @@
           Pending on {{ group.namedisplay }}
         </h3>
         <div v-if="member.heldby">
-          <NoticeMessage v-if="me.id === member.heldby.id" variant="warning" class="mb-2">
-            You held this member.  Other people will see a warning to check with
-            you before releasing them.
-          </NoticeMessage>
-          <NoticeMessage v-else variant="warning" class="mb-2">
-            Held by <b>{{ member.heldby.displayname }}</b>.  Please check before releasing them.
+          <NoticeMessage variant="warning" class="mb-2">
+            <p v-if="me.id === member.heldby.id">
+              You held this member.  Other people will see a warning to check with
+              you before releasing them.
+            </p>
+            <p v-else>
+              Held by <b>{{ member.heldby.displayname }}</b>.  Please check before releasing them.
+            </p>
+            <ModMemberButton
+              v-if="member.heldby"
+              :member="member"
+              variant="warning"
+              icon="play"
+              release
+              label="Release"
+            />
           </NoticeMessage>
         </div>
         <ModComments :user="member" />
         <ModSpammer v-if="member.spammer" :user="member" />
+        <NoticeMessage v-if="member.suspectreason" variant="danger" class="mb-2">
+          This freegler is flagged as suspicious: {{ member.suspectreason }}
+        </NoticeMessage>
         <NoticeMessage v-if="member.activedistance > 50" variant="warning" class="mb-2">
           This freegler is active on groups {{ member.activedistance }} miles apart.
         </NoticeMessage>
@@ -171,7 +184,7 @@
       </b-card-body>
       <b-card-footer class="d-flex justify-content-between">
         <ModMemberButtons :member="member" :modconfig="modconfig" :spamignore="spamignore" />
-        <div class="d-flex flex-wrap">
+        <div class="d-flex flex-wrap w-25 justify-content-end">
           <ModRole v-if="groupid" :userid="member.userid" :groupid="groupid" :role="member.role" />
           <ChatButton
             :userid="member.userid"
@@ -205,11 +218,13 @@ import ModMemberLogins from './ModMemberLogins'
 import ModRole from './ModRole'
 import ChatButton from './ChatButton'
 import ProfileModal from './ProfileModal'
+import ModMemberButton from './ModMemberButton'
 const OurToggle = () => import('@/components/OurToggle')
 
 export default {
   name: 'ModMember',
   components: {
+    ModMemberButton,
     ProfileModal,
     ChatButton,
     OurToggle,

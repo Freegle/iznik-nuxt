@@ -108,7 +108,9 @@
               Website
             </b-col>
             <b-col cols="8" md="9" class="forcebreak">
-              <a :href="volunteering.contacturl" target="_blank" rel="noopener noreferrer">{{ volunteering.contacturl }}</a>
+              <ExternalLink :href="volunteering.contacturl">
+                {{ volunteering.contacturl }}
+              </ExternalLink>
             </b-col>
           </b-row>
 
@@ -522,9 +524,10 @@ export default {
           })
         }
 
-        const oldgroupid = this.volunteering.groups
-          ? this.volunteering.groups[0].id
-          : null
+        const oldgroupid =
+          this.volunteering.groups && this.volunteering.groups.length
+            ? this.volunteering.groups[0].id
+            : null
 
         if (this.groupid !== oldgroupid) {
           // Save the new group, then remove the old group, so it won't get stranded.
@@ -575,10 +578,12 @@ export default {
           }
 
           // Save the group.
-          await this.$store.dispatch('volunteerops/addGroup', {
-            id,
-            groupid: this.groupid
-          })
+          if (this.groupid > 0) {
+            await this.$store.dispatch('volunteerops/addGroup', {
+              id,
+              groupid: this.groupid
+            })
+          }
 
           if (dates && dates.length) {
             await this.$store.dispatch('volunteerops/setDates', {
