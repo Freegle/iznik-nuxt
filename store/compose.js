@@ -101,9 +101,6 @@ export const mutations = {
   setAttachmentsForMessage(state, params) {
     state.attachments[params.id] = params.attachments
   },
-  setAttachments(state, params) {
-    state.attachments = params
-  },
   setUploading(state, value) {
     state.uploading = value
   }
@@ -207,7 +204,10 @@ function markSubmitted(id, commit) {
     description: null
   })
 
-  commit('setAttachments', [])
+  commit('setAttachmentsForMessage', {
+    id: id,
+    attachments: []
+  })
 }
 
 async function backToDraft(id, dispatch, commit) {
