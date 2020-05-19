@@ -20,10 +20,16 @@
     <h4>Keep it LOCAL</h4>
     <p>
       Avoid special or extra journeys for freegling - see Government advice in
-      <a href="https://www.gov.uk/government/publications/staying-alert-and-safe-social-distancing/staying-alert-and-safe-social-distancing" target="_blank" rel="noopener noreferrer">England</a>,
-      <a href="https://www.gov.uk/guidance/coronavirus-covid-19-information-for-individuals-and-businesses-in-scotland" target="_blank" rel="noopener noreferrer">Scotland</a>,
-      <a href="https://gov.wales/coronavirus" target="_blank" rel="noopener noreferrer">Wales</a>
-      and <a href="https://www.nidirect.gov.uk/campaigns/coronavirus-covid-19" target="_blank" rel="noopener noreferrer">Northern Ireland</a>.
+      <!-- eslint-disable-next-line -->
+      <ExternalLink href="https://www.gov.uk/government/publications/full-guidance-on-staying-at-home-and-away-from-others/full-guidance-on-staying-at-home-and-away-from-others">England</ExternalLink>,
+      <!-- eslint-disable-next-line -->
+      <ExternalLink href="https://www.gov.uk/guidance/coronavirus-covid-19-information-for-individuals-and-businesses-in-scotland">Scotland</ExternalLink>,
+      <ExternalLink href="https://gov.wales/coronavirus">
+        Wales
+      </ExternalLink>
+      and
+      <!-- eslint-disable-next-line -->
+      <ExternalLink href="https://www.nidirect.gov.uk/campaigns/coronavirus-covid-19">Northern Ireland</ExternalLink>.
       Could you collect on foot or cycle while doing daily exercise?
     </p>
     <p>

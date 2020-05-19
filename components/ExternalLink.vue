@@ -1,7 +1,6 @@
 <template>
-  <a :href="href" target="_blank" rel="noopener noreferrer" @click="openInBrowser">
-    <slot />
-  </a>
+  <!-- eslint-disable-next-line -->
+  <a :href="href" target="_blank" rel="noopener noreferrer" @click="openInBrowser"><slot /></a>
 </template>
 <script>
 export default {

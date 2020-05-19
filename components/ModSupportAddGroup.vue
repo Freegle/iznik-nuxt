@@ -36,9 +36,8 @@
     <b-form-group>
       <b-form-text>
         Core Group Area.  Draw with
-        <ExternalLink href="https://arthur-e.github.io/Wicket/sandbox-gmaps3.html">
-          this.
-        </ExternalLink>
+        <!-- eslint-disable-next-line -->
+        <ExternalLink href="https://arthur-e.github.io/Wicket/sandbox-gmaps3.html">this</ExternalLink>.
       </b-form-text>
       <b-textarea v-model="cga" rows="5" placeholder="Core Group Area (WKT format)" />
     </b-form-group>
