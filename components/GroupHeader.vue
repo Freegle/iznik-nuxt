@@ -60,21 +60,10 @@
         <span v-if="group.description" v-html="group.description"/>
       </b-col>
     </b-row>
-    <b-card>
-      <h2 style="font-size:16px">
-        You can contact our lovely local volunteers here
-      </h2>
-      <b-button class="mb-2" variant="white" :href="'mailto:' + modsemail">
-        <v-icon name="question-circle" />&nbsp;Contact&nbsp;volunteers
-      </b-button>
-      <div v-if="group.showmods && group.showmods.length" class="d-flex flex-wrap justify-content-start">
-        <GroupShowMod v-for="mod in group.showmods" :key="'showmod-' + mod.id" :modtoshow="mod" class="ml-1" />
-      </div>
-    </b-card>
     <div class="">
       <hr>
       <h2 style="font-size:16px">
-        You can contact our lovely local volunteers here
+        You can contact our lovely local volunteers here:
       </h2>
       <b-button class="mb-2" variant="white" :href="'mailto:' + modsemail">
         <v-icon name="question-circle" />&nbsp;Contact&nbsp;volunteers
