@@ -83,11 +83,13 @@ export default {
           userid: modtools ? this.userid : null,
           groupid: this.groupid
         })
+        console.log('Got chat', chatid)
 
         if (popup) {
           await this.$store.dispatch('popupchats/popup', {
             id: chatid
           })
+          console.log('Popped up')
         } else {
           this.$router.push(
             (modtools ? '/modtools/chats/' : '/chats/') + chatid

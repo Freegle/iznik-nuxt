@@ -73,10 +73,15 @@ export default {
     work(newVal, oldVal) {
       if (newVal > oldVal) {
         this.clearAndLoad()
+      } else {
+        const visible = this.$store.getters['misc/get']('visible')
+
+        if (!visible) {
+          this.clearAndLoad()
+        }
       }
     },
     groupid(newVal, oldVal) {
-      console.log('Groupid wathc')
       this.clearAndLoad()
     }
   },

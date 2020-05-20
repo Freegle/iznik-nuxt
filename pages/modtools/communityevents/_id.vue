@@ -52,6 +52,12 @@ export default {
       if (newVal > oldVal) {
         // There's new stuff to do.  Reload.
         this.$store.dispatch('communityevents/clear')
+      } else {
+        const visible = this.$store.getters['misc/get']('visible')
+
+        if (!visible) {
+          this.$store.dispatch('communityevents/clear')
+        }
       }
     }
   },
