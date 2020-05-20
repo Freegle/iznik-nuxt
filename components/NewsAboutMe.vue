@@ -19,8 +19,8 @@
     <div class="mt-2">
       <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
       <span class="float-right d-inline-block">
-        <b-btn variant="primary" size="sm" @click="showModal">
-          <v-icon name="user" /> Introduce yourself
+        <b-btn variant="white" size="sm" @click="showModal">
+          <v-icon name="user" /> Introduce yourself to everyone
         </b-btn>
         <AboutMeModal ref="modal" />
       </span>
