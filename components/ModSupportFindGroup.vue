@@ -45,7 +45,6 @@
         />
       </div>
       <group-header :id="group.id" :key="'group-' + group.id" :group="group" :show-join="false" />
-
       <h4 class="mt-2">
         Group Info
       </h4>
@@ -53,7 +52,9 @@
       <br>
       <br>
       Explore page:
-      <a target="_blank" rel="noopener noreferrer" :href="group.url">{{ group.url }}</a>
+      <ExternalLink :href="group.url">
+        {{ group.url }}
+      </ExternalLink>
       <br>
       Volunteers email:
       <a :href="'mailto:' + group.modsemail">{{ group.modsemail }}</a>
@@ -63,7 +64,9 @@
       <br>
       Twitter:
       <span v-if="group.twitter">
-        <a :href="'https://twitter.com/' + group.twitter.name" target="_blank" rel="noopener noreferrer">{{ group.twitter.name }}</a>
+        <ExternalLink :href="'https://twitter.com/' + group.twitter.name">
+          {{ group.twitter.name }}
+        </ExternalLink>
         <span v-if="!group.twitter.valid" class="text-danger">
           Invalid
         </span>
@@ -81,7 +84,9 @@
         <div v-for="facebook in group.facebook" :key="'facebook-' + facebook.id">
           <div v-if="facebook.type === 'Page'">
             Facebook:
-            <a :href="'https://facebook.com/' + facebook.name" target="_blank" rel="noopener noreferrer">{{ facebook.name }}</a>
+            <ExternalLink :href="'https://facebook.com/pg/' + facebook.id">
+              {{ facebook.name }}
+            </ExternalLink>
             <span v-if="!facebook.valid" class="text-danger">
               Invalid
             </span>
@@ -125,6 +130,7 @@ import SpinButton from './SpinButton'
 import AutocompleteLocal from '@/components/AutocompleteLocal'
 import GroupHeader from '@/components/GroupHeader'
 const OurToggle = () => import('@/components/OurToggle')
+const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
   components: {
@@ -132,7 +138,8 @@ export default {
     ModSupportFindGroupVolunteer,
     OurToggle,
     AutocompleteLocal,
-    GroupHeader
+    GroupHeader,
+    ExternalLink
   },
   data: function() {
     return {

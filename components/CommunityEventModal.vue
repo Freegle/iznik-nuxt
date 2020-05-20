@@ -104,7 +104,9 @@
               Website
             </b-col>
             <b-col cols="8" md="9" class="forcebreak">
-              <a :href="event.contacturl" target="_blank" rel="noopener noreferrer">{{ event.contacturl }}</a>
+              <ExternalLink :href="event.contacturl">
+                {{ event.contacturl }}
+              </ExternalLink>
             </b-col>
           </b-row>
 
@@ -350,6 +352,7 @@ const OurFilePond = () => import('~/components/OurFilePond')
 const StartEndCollection = () => import('~/components/StartEndCollection')
 const NoticeMessage = () => import('~/components/NoticeMessage')
 const DonationButton = () => import('~/components/DonationButton')
+const ExternalLink = () => import('~/components/ExternalLink')
 
 function initialEvent() {
   return {
@@ -404,7 +407,8 @@ export default {
     OurFilePond,
     StartEndCollection,
     NoticeMessage,
-    DonationButton
+    DonationButton,
+    ExternalLink
   },
   mixins: [validationMixin, validationHelpers],
   props: {
