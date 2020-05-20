@@ -133,14 +133,12 @@ body.modtools {
   left: 0;
 }
 
-// Brought in from style.css
 button {
   white-space: nowrap;
-}
 
-.btn {
   // Override the bootstrap default. The cursor on a button shouldn't be a pointer
   cursor: auto !important;
+
 }
 
 .clickme {
