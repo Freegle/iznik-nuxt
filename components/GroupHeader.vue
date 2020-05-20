@@ -31,12 +31,6 @@
       </div>
       <div class="mt-2 group__buttons">
         <div class="button__items">
-          <b-button class="mb-1" variant="white" :href="'mailto:' + modsemail">
-            <v-icon name="question-circle" />&nbsp;Contact&nbsp;volunteers
-          </b-button>
-          <div v-if="group.showmods && group.showmods.length" class="d-flex flex-wrap justify-content-start">
-            <GroupShowMod v-for="mod in group.showmods" :key="'showmod-' + mod.id" :modtoshow="mod" class="ml-1" />
-          </div>
           <b-button v-if="!amAMember" class="mb-1 ml-1" variant="success" @click="join">
             <v-icon v-if="joiningOrLeaving" name="sync" class="fa-spin" />
             <v-icon v-else name="plus" />&nbsp;
@@ -49,7 +43,7 @@
         </div>
       </div>
     </div>
-    <b-row>
+    <b-row class="mb-4">
       <b-col class="group-description">
         <p v-if="!group.description">
           Give and get stuff for free with {{ group.namedisplay }}.  Offer things you don't need, and ask for things you'd like.  Don't just recycle - reuse with Freegle!
@@ -58,6 +52,18 @@
         <span v-if="group.description" v-html="group.description"/>
       </b-col>
     </b-row>
+    <div>
+      <hr>
+      <h2 class="group-volunteers mb-3">
+        You can contact our lovely local volunteers here:
+      </h2>
+      <b-button class="mb-3" variant="white" :href="'mailto:' + modsemail">
+        <v-icon name="question-circle" />&nbsp;Contact&nbsp;volunteers
+      </b-button>
+      <div v-if="group.showmods && group.showmods.length" class="d-flex flex-wrap justify-content-start">
+        <GroupShowMod v-for="mod in group.showmods" :key="'showmod-' + mod.id" :modtoshow="mod" class="ml-1" />
+      </div>
+    </div>
     <div v-if="group.sponsors" class="d-flex flex-wrap justify-content-between">
       <b-card v-for="sponsor in group.sponsors" :key="'sponsor-' + sponsor.id" no-body>
         <b-card-body class="d-flex p-1">
@@ -260,23 +266,23 @@ export default {
   flex-direction: row;
 
   @include media-breakpoint-up(sm) {
-    flex-direction: row;
     justify-content: flex-start;
   }
 
   @include media-breakpoint-up(md) {
-    flex-direction: row;
     justify-content: flex-end;
   }
 
   @include media-breakpoint-up(lg) {
-    flex-direction: row;
     justify-content: flex-start;
   }
 
   @include media-breakpoint-up(xl) {
-    flex-direction: row;
     justify-content: flex-end;
   }
+}
+
+.group-volunteers {
+  font-size: 16px;
 }
 </style>
