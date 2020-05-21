@@ -59,9 +59,7 @@
       </NoticeMessage>
     </template>
     <template slot="modal-footer" slot-scope="{ cancel }">
-      <b-btn variant="success" @click="process">
-        {{ processLabel }}
-      </b-btn>
+      <SpinButton :label="processLabel" variant="success" :handler="process" />
       <b-button variant="white" @click="cancel">
         Cancel
       </b-button>
@@ -71,10 +69,11 @@
 <script>
 import Postcode from './Postcode'
 import NoticeMessage from './NoticeMessage'
+import SpinButton from './SpinButton'
 import keywords from '@/mixins/keywords.js'
 
 export default {
-  components: { NoticeMessage, Postcode },
+  components: { SpinButton, NoticeMessage, Postcode },
   mixins: [keywords],
   props: {
     message: {
@@ -348,13 +347,14 @@ export default {
       if (text) {
         if (this.modconfig) {
           text = text.replace(/\$networkname/g, this.modconfig.network)
+          const re = new RegExp(this.modconfig.network, 'ig')
           text = text.replace(
             /\$groupnonetwork/g,
-            group.nameshort.replace(this.modconfig.network, '')
+            group.namedisplay.replace(re, '')
           )
         }
 
-        text = text.replace(/\$groupname/g, group.nameshort)
+        text = text.replace(/\$groupname/g, group.namedisplay)
         text = text.replace(/\$owneremail/g, group.modsemail)
         text = text.replace(/\$volunteersemail/g, group.modsemail)
         text = text.replace(/\$volunteeremail/g, group.modsemail)

@@ -173,7 +173,7 @@
       </b-modal>
     </div>
     <OutcomeModal ref="outcomeModal" :message="message" :users="replyusers" @outcome="hide = true" />
-    <ShareModal ref="shareModal" :message="message" />
+    <ShareModal :id="message.id" ref="shareModal" />
     <MessageEditModal ref="editModal" :message="message" />
   </div>
 </template>

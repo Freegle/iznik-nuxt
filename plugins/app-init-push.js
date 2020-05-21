@@ -158,7 +158,7 @@ function handleNotification(notificationType, data) {
       pushstate.chatid = parseInt(data.additionalData.chatids)
       // Trigger event handler
       pushstate.pushed = true
-      return
+      // DON'T DO THIS return
     }
   }
 

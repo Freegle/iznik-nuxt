@@ -5,6 +5,11 @@ export default ({ store }) => {
     const me = store.getters['auth/user']
     const modtools = store.getters['misc/get']('modtools')
 
+    store.dispatch('misc/set', {
+      key: 'visible',
+      value: visible
+    })
+
     if (me && visible) {
       // We have become visible.  Refetch our notification count and chat count, which are the two key things which
       // produce red badges people should click on.

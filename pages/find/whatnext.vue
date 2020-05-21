@@ -50,6 +50,7 @@
       You'll also get them by email.  <span class="text-danger font-weight-bold">Check your spam!</span>
     </b-tooltip>
     <AvailabilityModal v-if="me" ref="availabilitymodal" :thisuid="me.id" />
+    <ShareModal :id="lastSubmitted" ref="share" />
   </div>
 </template>
 
@@ -71,6 +72,8 @@
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import AvailabilityModal from '../../components/AvailabilityModal'
+import ShareModal from '../../components/ShareModal'
+import waitForRef from '../../mixins/waitForRef'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 Vue.use(TooltipPlugin)
@@ -80,11 +83,12 @@ const NewUser = () => import('~/components/NewUser.vue')
 
 export default {
   components: {
+    ShareModal,
     AvailabilityModal,
     GroupHeader,
     NewUser
   },
-  mixins: [loginOptional, buildHead],
+  mixins: [loginOptional, buildHead, waitForRef],
   data: function() {
     return {
       show: true,
@@ -97,6 +101,9 @@ export default {
       const groupid = this.$store.getters['compose/getGroup']
       const group = this.$store.getters['group/get'](groupid)
       return group
+    },
+    lastSubmitted() {
+      return this.$store.getters['compose/lastSubmitted']
     }
   },
   mounted: function() {
@@ -104,6 +111,12 @@ export default {
     setTimeout(() => (this.show = false), 10000)
     this.newuser = this.$route.params.newuser
     this.newpassword = this.$route.params.newpassword
+
+    if (this.lastSubmitted) {
+      this.waitForRef('share', () => {
+        this.$refs.share.show()
+      })
+    }
   },
   methods: {
     availability() {

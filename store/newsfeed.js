@@ -194,8 +194,11 @@ export const actions = {
     }
 
     // Ensure the context has the correct distance we want to see.
-    params.context = params.context ? params.context : {}
-    params.context.distance = state.area
+    if (!params.context) {
+      params.context = {
+        distance: state.area
+      }
+    }
 
     params.types = [
       'Message',
