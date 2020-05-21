@@ -11,6 +11,7 @@
                 :search-words="[matchedon.word]"
                 :text-to-highlight="eSubject"
                 highlight-class-name="highlight"
+                auto-escape
               />
               <span v-else>
                 {{ eSubject }}
@@ -39,6 +40,7 @@
                   :search-words="[matchedon.word]"
                   :text-to-highlight="eSnippet"
                   highlight-class-name="highlight"
+                  auto-escape
                 />
                 <span v-else>{{ eSnippet }}</span>
                 ...
@@ -60,6 +62,7 @@
                 :search-words="[matchedon.word]"
                 :text-to-highlight="eSubject"
                 highlight-class-name="highlight"
+                auto-escape
               />
               <span v-else>
                 {{ eSubject }}
@@ -73,6 +76,7 @@
                       :search-words="[matchedon.word]"
                       :text-to-highlight="eSnippet"
                       highlight-class-name="highlight"
+                      auto-escape
                     />
                     <span v-else>{{ eSnippet }}</span>
                     ...
@@ -166,6 +170,7 @@
             :search-words="[matchedon.word]"
             :text-to-highlight="expanded.textbody"
             highlight-class-name="highlight"
+            auto-escape
           /><span v-else>{{ expanded.textbody }}</span>
         </p>
 
