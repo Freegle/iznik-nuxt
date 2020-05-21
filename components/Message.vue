@@ -237,7 +237,7 @@
         </b-button>
       </template>
     </b-modal>
-    <ShareModal v-if="expanded && expanded.url" ref="shareModal" :message="expanded" />
+    <ShareModal v-if="expanded && expanded.url" :id="expanded.id" ref="shareModal" />
     <ChatButton ref="chatbutton" :userid="replyToUser" class="d-none" @sent="sentReply" />
     <MessageReportModal v-if="expanded" ref="reportModal" :message="$props" />
   </div>
