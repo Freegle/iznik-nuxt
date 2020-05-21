@@ -59,7 +59,7 @@
       </NoticeMessage>
     </template>
     <template slot="modal-footer" slot-scope="{ cancel }">
-      <SpinButton :label="processLabel" variant="success" :handler="process" />
+      <SpinButton :label="processLabel" icon="envelope" spinclass="white" variant="success" :handler="process" />
       <b-button variant="white" @click="cancel">
         Cancel
       </b-button>
