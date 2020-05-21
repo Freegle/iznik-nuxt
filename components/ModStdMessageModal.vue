@@ -59,9 +59,7 @@
       </NoticeMessage>
     </template>
     <template slot="modal-footer" slot-scope="{ cancel }">
-      <b-btn variant="success" @click="process">
-        {{ processLabel }}
-      </b-btn>
+      <SpinButton :label="processLabel" variant="success" :handler="process" />
       <b-button variant="white" @click="cancel">
         Cancel
       </b-button>
@@ -71,10 +69,11 @@
 <script>
 import Postcode from './Postcode'
 import NoticeMessage from './NoticeMessage'
+import SpinButton from './SpinButton'
 import keywords from '@/mixins/keywords.js'
 
 export default {
-  components: { NoticeMessage, Postcode },
+  components: { SpinButton, NoticeMessage, Postcode },
   mixins: [keywords],
   props: {
     message: {
