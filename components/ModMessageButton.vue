@@ -2,6 +2,7 @@
   <div class="d-inline">
     <SpinButton
       :variant="variant"
+      :spinclass="spinclass"
       :name="icon"
       :label="label"
       class="mb-1"
@@ -121,32 +122,39 @@ export default {
       }
 
       return ret
+    },
+    spinclass() {
+      if (this.variant === 'success') {
+        return 'success'
+      }
+
+      return null
     }
   },
   methods: {
     async click() {
       if (this.approve) {
         // Standard approve button - no modal.
-        this.approveIt()
+        await this.approveIt()
       } else if (this.delete) {
         // Standard delete button - no modal.
-        this.deleteIt()
+        await this.deleteIt()
       } else if (this.spam) {
         // Standard spam button - no modal.
-        this.spamIt()
+        await this.spamIt()
       } else if (this.notspam) {
         // Standard notspam button - no modal.
-        this.notSpamIt()
+        await this.notSpamIt()
       } else if (this.hold) {
         // Standard hold button - no modal.
-        this.holdIt()
+        await this.holdIt()
       } else if (this.release) {
         // Standard release button - no modal.
-        this.releaseIt()
+        await this.releaseIt()
       } else if (this.approveedits) {
-        this.approveEdits()
+        await this.approveEdits()
       } else if (this.revertedits) {
-        this.revertEdits()
+        await this.revertEdits()
       } else {
         // We want to show a modal.
         if (this.reject) {
@@ -170,8 +178,8 @@ export default {
         })
       }
     },
-    approveIt() {
-      this.$store.dispatch('messages/approve', {
+    async approveIt() {
+      await this.$store.dispatch('messages/approve', {
         id: this.message.id,
         groupid: this.groupid
       })
@@ -188,41 +196,41 @@ export default {
         this.$refs.spamConfirm.show()
       })
     },
-    notSpamIt() {
-      this.$store.dispatch('messages/notspam', {
+    async notSpamIt() {
+      await this.$store.dispatch('messages/notspam', {
         id: this.message.id,
         groupid: this.groupid
       })
     },
-    deleteConfirmed() {
-      this.$store.dispatch('messages/delete', {
+    async deleteConfirmed() {
+      await this.$store.dispatch('messages/delete', {
         id: this.message.id,
         groupid: this.groupid
       })
     },
-    spamConfirmed() {
-      this.$store.dispatch('messages/spam', {
+    async spamConfirmed() {
+      await this.$store.dispatch('messages/spam', {
         id: this.message.id,
         groupid: this.groupid
       })
     },
-    holdIt() {
-      this.$store.dispatch('messages/hold', {
+    async holdIt() {
+      await this.$store.dispatch('messages/hold', {
         id: this.message.id
       })
     },
-    releaseIt() {
-      this.$store.dispatch('messages/release', {
+    async releaseIt() {
+      await this.$store.dispatch('messages/release', {
         id: this.message.id
       })
     },
-    approveEdits() {
-      this.$store.dispatch('messages/approveedits', {
+    async approveEdits() {
+      await this.$store.dispatch('messages/approveedits', {
         id: this.message.id
       })
     },
-    revertEdits() {
-      this.$store.dispatch('messages/revertedits', {
+    async revertEdits() {
+      await this.$store.dispatch('messages/revertedits', {
         id: this.message.id
       })
     }

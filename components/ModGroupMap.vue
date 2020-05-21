@@ -9,7 +9,6 @@
             class="form-control max"
             placeholder="Enter a location"
             :options="gb"
-            :types="['(cities)']"
             @place_changed="getAddressData"
           />
           <v-icon name="sync" :class="busy ? 'text-success fa-spin ml-4 mt-1' : 'text-faded ml-4 mt-1'" scale="2" />
