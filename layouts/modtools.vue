@@ -96,7 +96,9 @@
           <ModMenuItemLeft link="/modtools/settings" name="Settings" />
           <ModMenuItemLeft link="/modtools/teams" name="Teams" />
           <div>
-            <a href="https://discourse.ilovefreegle.org" rel="noopener noreferrer" target="_blank" class="pl-1">Help</a>
+            <ExternalLink href="https://discourse.ilovefreegle.org" class="pl-1">
+              Help
+            </ExternalLink>
           </div>
           <div>
             <a href="#" class="pl-1" @click="logOut">
@@ -118,6 +120,7 @@ import ModMenuItemLeft from '../components/ModMenuItemLeft'
 import waitForRef from '../mixins/waitForRef'
 import LoginModal from '~/components/LoginModal'
 import ModStatus from '~/components/ModStatus'
+const ExternalLink = () => import('~/components/ExternalLink')
 
 const ChatPopups = () => import('~/components/ChatPopups')
 
@@ -126,7 +129,8 @@ export default {
     ModMenuItemLeft,
     ChatPopups,
     LoginModal,
-    ModStatus
+    ModStatus,
+    ExternalLink
   },
   mixins: [waitForRef],
   data: function() {
