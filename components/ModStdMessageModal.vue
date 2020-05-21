@@ -348,13 +348,14 @@ export default {
       if (text) {
         if (this.modconfig) {
           text = text.replace(/\$networkname/g, this.modconfig.network)
+          const re = new RegExp(this.modconfig.network, 'ig')
           text = text.replace(
             /\$groupnonetwork/g,
-            group.nameshort.replace(this.modconfig.network, '')
+            group.namedisplay.replace(re, '')
           )
         }
 
-        text = text.replace(/\$groupname/g, group.nameshort)
+        text = text.replace(/\$groupname/g, group.namedisplay)
         text = text.replace(/\$owneremail/g, group.modsemail)
         text = text.replace(/\$volunteersemail/g, group.modsemail)
         text = text.replace(/\$volunteeremail/g, group.modsemail)
