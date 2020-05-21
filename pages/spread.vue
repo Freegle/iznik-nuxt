@@ -30,7 +30,7 @@
         You can help even more by letting us know where you put up posters. Once we know where it is, then
         we can encourage other freeglers to put one up there in future. <b>Please do this!</b>
       </p>
-      <b-btn variant="info" size="lg" class="mb-1" @click="added">
+      <b-btn variant="primary" size="lg" class="mb-1" @click="added">
         I put up a poster!
       </b-btn>
       <p>

@@ -167,7 +167,7 @@
                   <b-button to="/find" class="mt-1" size="lg" variant="primary">
                     <v-icon name="search" />&nbsp;Find stuff
                   </b-button>
-                  <b-button to="/find/whatisit" class="mt-1" size="lg" variant="info">
+                  <b-button to="/find/whatisit" class="mt-1" size="lg" variant="primary">
                     <v-icon name="gift" />&nbsp;Post a WANTED
                   </b-button>
                 </div>
