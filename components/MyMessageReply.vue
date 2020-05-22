@@ -41,7 +41,7 @@
           </v-icon>
           Unpromise
         </b-btn>
-        <b-btn v-else-if="message.type === 'Offer' && !taken && !withdrawn" variant="success" class="align-middle mt-1 mb-1" @click="promise">
+        <b-btn v-else-if="message.type === 'Offer' && !taken && !withdrawn" variant="primary" class="align-middle mt-1 mb-1" @click="promise">
           <v-icon name="handshake" /> Promise
         </b-btn>
         <b-btn variant="secondary" class="d-none d-sm-inline-block align-middle mt-1 mb-1 mr-1" @click="chat(true)">

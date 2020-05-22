@@ -35,7 +35,7 @@
                 </b-btn>
               </network>
               <network network="whatsapp">
-                <b-btn variant="success" size="lg" class="whatsapp">
+                <b-btn variant="primary" size="lg" class="whatsapp">
                   <v-icon name="brands/whatsapp" /> Whatsapp
                 </b-btn>
               </network>
@@ -45,7 +45,7 @@
                 </b-btn>
               </network>
               <network network="email">
-                <b-btn variant="success" size="lg" class="gmail">
+                <b-btn variant="primary" size="lg" class="gmail">
                   <v-icon name="envelope" /> Email
                 </b-btn>
               </network>

@@ -205,7 +205,7 @@
               class="flex-shrink-2"
             />
             <div class="flex-grow-1 text-right ml-2 d-none d-md-block">
-              <b-btn variant="success" :disabled="replying" @click="sendReply">
+              <b-btn variant="primary" :disabled="replying" @click="sendReply">
                 Send
                 <v-icon v-if="replying" name="sync" class="fa-spin" />
                 <v-icon v-else name="angle-double-right" />&nbsp;
@@ -215,7 +215,7 @@
         </b-row>
         <b-row class="d-block d-md-none mt-2">
           <b-col>
-            <b-btn variant="success" block :disabled="replying" @click="sendReply">
+            <b-btn variant="primary" block :disabled="replying" @click="sendReply">
               Send
               <v-icon v-if="replying" name="sync" class="fa-spin" />
               <v-icon v-else name="angle-double-right" />&nbsp;

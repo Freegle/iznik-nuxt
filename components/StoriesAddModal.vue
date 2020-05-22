@@ -96,7 +96,7 @@
         <b-button variant="white" :disabled="uploadingPhoto" @click="cancel">
           Cancel
         </b-button>
-        <b-button variant="success" :disabled="uploadingPhoto" @click="submit">
+        <b-button variant="primary" :disabled="uploadingPhoto" @click="submit">
           Add Your Story
         </b-button>
       </div>

@@ -88,7 +88,7 @@
             <b-button variant="white" @click="cancel">
               Cancel
             </b-button>
-            <b-button variant="success" :disabled="!selectedAddress" @click="chooseIt">
+            <b-button variant="primary" :disabled="!selectedAddress" @click="chooseIt">
               Send this Address
             </b-button>
           </div>

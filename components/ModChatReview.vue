@@ -74,7 +74,7 @@
             name="check"
             label="Approve - Not Spam"
             spinclass="text-white"
-            variant="success"
+            variant="primary"
             class="mr-2 mb-1"
             :handler="approve"
           />
@@ -83,7 +83,7 @@
             name="check"
             label="Approve and whitelist"
             spinclass="text-white"
-            variant="success"
+            variant="primary"
             class="mr-2 mb-1"
             :handler="whitelist"
           />

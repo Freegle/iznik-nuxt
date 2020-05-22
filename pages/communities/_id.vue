@@ -10,17 +10,17 @@
         <Viewed v-if="!simple" class="mb-1" />
         <JobsTopBar />
         <div>
-          <NoticeMessage v-if="!anyGroups" variant="success" class="mt-2 text-center font-weight-bold">
+          <NoticeMessage v-if="!anyGroups" variant="primary" class="mt-2 text-center font-weight-bold">
             <p>You're not a member of any communities yet.  Why not explore to find one?</p>
             <div class="d-flex justify-content-around mb-2">
-              <b-btn size="lg" variant="success" to="/explore" class="mb-2">
+              <b-btn size="lg" variant="primary" to="/explore" class="mb-2">
                 <v-icon name="map-marker-alt" /> Explore communities
               </b-btn>
             </div>
             <p>Or get freegling:</p>
             <b-row class="mt-2">
               <b-col class="half-pad-col-right" cols="6" md="5">
-                <b-btn block variant="success" class="float-left" size="lg" to="/give">
+                <b-btn block variant="primary" class="float-left" size="lg" to="/give">
                   <v-icon name="gift" />&nbsp;Give Stuff
                 </b-btn>
               </b-col>

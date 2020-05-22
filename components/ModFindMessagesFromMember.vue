@@ -4,7 +4,7 @@
       <b-input v-model="term" placeholder="Email address/name" @keyup.native.enter="search" />
       <b-input-group-append>
         <SpinButton
-          variant="success"
+          variant="primary"
           name="search"
           label="Search"
           spinclass="text-white"

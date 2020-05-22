@@ -15,7 +15,7 @@
           </nuxt-link> and adjust your Mail Settings.
         </notice-message>
         <div v-if="loggedIn">
-          <b-btn size="lg" variant="success" class="mb-2" @click="unsubscribe">
+          <b-btn size="lg" variant="primary" class="mb-2" @click="unsubscribe">
             Unsubscribe completely
           </b-btn>
           <div v-if="groupCount" class="mt-2">
@@ -53,7 +53,7 @@
               </validating-form>
             </b-col>
             <b-col cols="6">
-              <b-btn size="lg" variant="success" class="mb-2" @click="emailConfirm">
+              <b-btn size="lg" variant="primary" class="mb-2" @click="emailConfirm">
                 <v-icon v-if="leaving" name="sync" class="fa-spin" />
                 <v-icon v-else-if="emailSent" name="check" />
                 <v-icon v-else-if="emailProblem" name="exclamation-triangle" />
@@ -62,7 +62,7 @@
               </b-btn>
             </b-col>
           </b-row>
-          <NoticeMessage v-if="emailSent" variant="success" class="mt-2 mb-2">
+          <NoticeMessage v-if="emailSent" variant="primary" class="mt-2 mb-2">
             We've sent you an email to confirm.  Please check your email, including your spam folder.
           </NoticeMessage>
           <NoticeMessage v-else-if="emailProblem" variant="warning" class="mt-2 mb-2">

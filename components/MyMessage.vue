@@ -118,7 +118,7 @@
             </b-card-body>
             <b-card-footer class="p-1">
               <div class="d-flex justify-content-start flex-wrap">
-                <b-btn v-if="queued" variant="success" class="m-1" @click="submitQueued">
+                <b-btn v-if="queued" variant="primary" class="m-1" @click="submitQueued">
                   <v-icon name="check" /> Still applies - Submit
                 </b-btn>
                 <b-btn v-if="rejected" variant="warning" class="m-1" @click="repost">
@@ -127,10 +127,10 @@
                 <b-btn v-if="rejected && !withdrawn" variant="white" class="m-1" @click="outcome('Withdrawn')">
                   <v-icon name="trash-alt" /> Withdraw
                 </b-btn>
-                <b-btn v-if="!rejected && !queued && message.type === 'Offer' && !taken" variant="success" class="m-1" @click="outcome('Taken')">
+                <b-btn v-if="!rejected && !queued && message.type === 'Offer' && !taken" variant="primary" class="m-1" @click="outcome('Taken')">
                   <v-icon name="check" /> Mark as TAKEN
                 </b-btn>
-                <b-btn v-if="!rejected && !queued && message.type === 'Wanted' && !received" variant="success" class="m-1" @click="outcome('Received')">
+                <b-btn v-if="!rejected && !queued && message.type === 'Wanted' && !received" variant="primary" class="m-1" @click="outcome('Received')">
                   <v-icon name="check" /> Mark as RECEIVED
                 </b-btn>
                 <b-btn v-if="!rejected && !taken && !received && !withdrawn" variant="white" class="m-1" @click="outcome('Withdrawn')">

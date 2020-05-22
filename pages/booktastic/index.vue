@@ -55,7 +55,7 @@
             <v-icon name="camera" />&nbsp;Take photo
           </b-btn>
           <b-btn
-            variant="success"
+            variant="primary"
             size="lg"
             class="mt-2"
             @click="startUpload"

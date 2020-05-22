@@ -86,7 +86,7 @@
       <b-button variant="white" @click="cancel">
         Close
       </b-button>
-      <b-btn variant="success" :to="'/profile/' + user.id">
+      <b-btn variant="primary" :to="'/profile/' + user.id">
         View full profile
       </b-btn>
     </template>

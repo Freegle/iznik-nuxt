@@ -11,7 +11,7 @@
           </div>
           <b-row>
             <b-col cols="5" class="mt-1">
-              <b-button to="/give" class="mt-1" size="lg" block variant="success">
+              <b-button to="/give" class="mt-1" size="lg" block variant="primary">
                 <v-icon name="gift" />&nbsp;Give stuff
               </b-button>
             </b-col>
@@ -30,7 +30,7 @@
           </NoticeMessage>
           <b-row>
             <b-col cols="5" class="mt-1">
-              <b-button to="/give" class="mt-1" size="lg" block variant="success">
+              <b-button to="/give" class="mt-1" size="lg" block variant="primary">
                 <v-icon name="gift" />&nbsp;Give stuff
               </b-button>
             </b-col>

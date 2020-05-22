@@ -68,7 +68,7 @@
           <b-button variant="white" :disabled="uploadingPhoto" @click="cancel">
             Cancel
           </b-button>
-          <b-button variant="success" :disabled="saving || uploadingPhoto" @click="save">
+          <b-button variant="primary" :disabled="saving || uploadingPhoto" @click="save">
             <v-icon v-if="saving" name="sync" class="fa-spin" />
             <v-icon v-else name="save" />
             Save

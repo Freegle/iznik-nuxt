@@ -25,7 +25,7 @@
       </b-row>
       <b-row class="text-center">
         <b-col cols="12" class="mt-2">
-          <b-btn size="lg" variant="success" to="/give/whatisit">
+          <b-btn size="lg" variant="primary" to="/give/whatisit">
             <v-icon name="gift" />&nbsp;Give something else
           </b-btn>
         </b-col>

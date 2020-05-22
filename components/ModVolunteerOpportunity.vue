@@ -23,7 +23,7 @@
         <VolunteerOpportunity :volunteering="volunteering" :summary="false" />
       </b-card-body>
       <b-card-footer>
-        <b-btn variant="success" class="mr-1" @click="approve">
+        <b-btn variant="primary" class="mr-1" @click="approve">
           <v-icon name="check" /> Approve
         </b-btn>
         <b-btn variant="white" class="mr-1" @click="edit">

@@ -22,7 +22,7 @@
               </nuxt-link>
             </h5>
             <div class="d-flex justify-content-between">
-              <b-btn id="givebutton" ref="givebutton" to="/give" variant="success" class="post__button">
+              <b-btn id="givebutton" ref="givebutton" to="/give" variant="primary" class="post__button">
                 <v-icon name="gift" class="mr-1" />
                 Give stuff
               </b-btn>
@@ -57,7 +57,7 @@
               <b-btn variant="secondary" class="mr-2" @click="photoAdd">
                 Add photo
               </b-btn>
-              <b-btn variant="success" class="mr-2" @click="postIt">
+              <b-btn variant="primary" class="mr-2" @click="postIt">
                 Post it!
               </b-btn>
             </div>

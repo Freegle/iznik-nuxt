@@ -110,7 +110,7 @@
               <b-button variant="white" class="mr-2" @click="cancel">
                 Cancel
               </b-button>
-              <b-button variant="success" @click="save">
+              <b-button variant="primary" @click="save">
                 <span v-if="id">Save</span>
                 <span v-else>Add</span>
               </b-button>

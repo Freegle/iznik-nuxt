@@ -106,7 +106,7 @@
               </b-row>
               <b-row>
                 <b-col>
-                  <b-btn variant="success" class="mt-2" @click="viewProfile">
+                  <b-btn variant="primary" class="mt-2" @click="viewProfile">
                     <v-icon name="eye" /> View Your Profile
                   </b-btn>
                 </b-col>

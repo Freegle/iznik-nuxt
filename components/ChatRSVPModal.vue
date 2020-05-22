@@ -26,7 +26,7 @@
         <b-button variant="secondary" @click="no">
           No thanks
         </b-button>
-        <b-button variant="success" @click="yes">
+        <b-button variant="primary" @click="yes">
           Yes please
         </b-button>
       </div>
@@ -34,7 +34,7 @@
         <b-button variant="secondary" @click="no">
           No reply expected
         </b-button>
-        <b-button variant="success" @click="yes">
+        <b-button variant="primary" @click="yes">
           Yes, I expect a reply
         </b-button>
       </div>

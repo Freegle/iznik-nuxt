@@ -108,7 +108,7 @@
         <b-btn v-else variant="secondary" @click="release">
           <v-icon name="play" /> Release
         </b-btn>
-        <b-btn v-if="!admin.heldby" variant="success" @click="approve">
+        <b-btn v-if="!admin.heldby" variant="primary" @click="approve">
           <v-icon name="check" /> Approve and Send
         </b-btn>
       </b-card-footer>

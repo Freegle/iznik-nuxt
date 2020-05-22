@@ -28,7 +28,7 @@
         <b-btn v-if="groupsInCommon" variant="secondary" class="mr-1">
           Groups in common
         </b-btn>
-        <b-btn v-if="probablySame" variant="success" class="mr-1">
+        <b-btn v-if="probablySame" variant="primary" class="mr-1">
           Probably the same
         </b-btn>
       </div>

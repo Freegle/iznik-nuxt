@@ -31,7 +31,7 @@
         <b-button variant="white" @click="cancel">
           Close
         </b-button>
-        <b-button v-if="!addedId" variant="success" :disabled="!email || !reason" @click="add">
+        <b-button v-if="!addedId" variant="primary" :disabled="!email || !reason" @click="add">
           Add
         </b-button>
       </template>

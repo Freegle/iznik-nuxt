@@ -28,7 +28,7 @@
               placeholder="Where are you looking?  Use a postcode or town name"
             />
             <b-input-group-append>
-              <b-button variant="success" size="lg" @click="search">
+              <b-button variant="primary" size="lg" @click="search">
                 <v-icon name="search" />&nbsp;Search
               </b-button>
             </b-input-group-append>

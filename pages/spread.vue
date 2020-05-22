@@ -22,7 +22,7 @@
       <a href="https://freegle.in/A4Poster" target="_blank">
         <b-img-lazy src="~static/posters/A4.png" class="poster border border-dark mb-2" />
         <br>
-        <b-btn variant="success" size="lg" class="mt-2 mb-2">
+        <b-btn variant="primary" size="lg" class="mt-2 mb-2">
           Download poster
         </b-btn>
       </a>
@@ -62,7 +62,7 @@
                 }"
               />
               <b-input-group-append>
-                <b-button v-if="!validationEnabled || !$v.invitemail.$invalid" variant="success" size="lg" @click="invite">
+                <b-button v-if="!validationEnabled || !$v.invitemail.$invalid" variant="primary" size="lg" @click="invite">
                   <v-icon name="envelope" />&nbsp;Invite a friend
                 </b-button>
               </b-input-group-append>

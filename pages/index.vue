@@ -20,7 +20,7 @@
         <CovidWarning />
         <b-row class="mt-4">
           <b-col class="half-pad-col-right" cols="6" md="5">
-            <b-btn block variant="success" class="float-left" size="lg" to="/give">
+            <b-btn block variant="primary" class="float-left" size="lg" to="/give">
               <v-icon name="gift" />&nbsp;Give Stuff
             </b-btn>
           </b-col>

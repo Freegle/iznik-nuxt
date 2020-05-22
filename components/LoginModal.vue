@@ -148,7 +148,7 @@
             v-b-modal.add
             block
             size="lg"
-            variant="success"
+            variant="primary"
             class="mb-2 mt-2"
             type="submit"
             value="login"
