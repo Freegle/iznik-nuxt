@@ -30,7 +30,7 @@
           <div>
             <div class="d-flex flex-wrap justify-content-around mt-3">
               <network network="facebook">
-                <b-btn variant="primary" size="lg" class="facebook">
+                <b-btn variant="secondary" size="lg" class="facebook">
                   <v-icon name="brands/facebook" /> Facebook
                 </b-btn>
               </network>
@@ -40,7 +40,7 @@
                 </b-btn>
               </network>
               <network network="twitter">
-                <b-btn variant="primary" size="lg" class="twitter">
+                <b-btn variant="secondary" size="lg" class="twitter">
                   <v-icon name="brands/twitter" /> Twitter
                 </b-btn>
               </network>

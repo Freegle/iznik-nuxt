@@ -40,15 +40,15 @@
 }
 
 // This is the secondary CTA
-.btn-primary {
-  background-color: $colour-primary;
+.btn-secondary {
+  background-color: $colour-secondary;
   border-color: $color-blue--dark;
   color: $color-white;
   text-shadow: 0 - 1 px 0 $color-black-opacity-59;
   -webkit-font-smoothing: antialiased;
 }
 
-.btn-primary:hover {
+.btn-secondary:hover {
   color: $color-black;
   background-color: $color-white;
   border-color: $color-blue--2;

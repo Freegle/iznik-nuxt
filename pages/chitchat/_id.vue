@@ -26,7 +26,7 @@
                 <v-icon name="gift" class="mr-1" />
                 Give stuff
               </b-btn>
-              <b-btn id="findbutton" ref="findbutton" to="/find" variant="primary" class="post__button">
+              <b-btn id="findbutton" ref="findbutton" to="/find" variant="secondary" class="post__button">
                 <v-icon name="search" class="mr-1" />
                 Find stuff
               </b-btn>
@@ -54,7 +54,7 @@
               @photoProcessed="photoProcessed"
             />
             <div class="pb-1 d-flex justify-content-end">
-              <b-btn variant="primary" class="mr-2" @click="photoAdd">
+              <b-btn variant="secondary" class="mr-2" @click="photoAdd">
                 Add photo
               </b-btn>
               <b-btn variant="success" class="mr-2" @click="postIt">

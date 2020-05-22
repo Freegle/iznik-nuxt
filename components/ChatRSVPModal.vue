@@ -23,7 +23,7 @@
     </template>
     <template slot="modal-footer">
       <div v-if="chaseup" class="d-flex justify-content-between w-100">
-        <b-button variant="primary" @click="no">
+        <b-button variant="secondary" @click="no">
           No thanks
         </b-button>
         <b-button variant="success" @click="yes">
@@ -31,7 +31,7 @@
         </b-button>
       </div>
       <div v-else class="d-flex justify-content-between w-100">
-        <b-button variant="primary" @click="no">
+        <b-button variant="secondary" @click="no">
           No reply expected
         </b-button>
         <b-button variant="success" @click="yes">

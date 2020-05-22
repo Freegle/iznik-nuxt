@@ -27,7 +27,7 @@
     <b-row class="mt-2">
       <b-col>
         <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
-        <b-btn variant="primary" size="sm" class="float-right" @click="showAddModal">
+        <b-btn variant="secondary" size="sm" class="float-right" @click="showAddModal">
           <v-icon name="book-open" />
           <span class="d-none d-inline-block-md">Tell your story!</span>
           <span class="d-inline-block d-none-md">Tell yours</span>

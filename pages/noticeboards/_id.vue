@@ -19,7 +19,7 @@
                   Download poster
                 </b-btn>
               </a>
-              <b-btn variant="primary" size="lg" class="float-right" @click="added">
+              <b-btn variant="secondary" size="lg" class="float-right" @click="added">
                 I put up a poster!
               </b-btn>
             </b-col>

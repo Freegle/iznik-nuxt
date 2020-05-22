@@ -164,10 +164,10 @@
               <div v-else>
                 <p>Nothing here yet.  Why not...</p>
                 <div class="d-flex justify-content-around mb-2">
-                  <b-button to="/find" class="mt-1" size="lg" variant="primary">
+                  <b-button to="/find" class="mt-1" size="lg" variant="secondary">
                     <v-icon name="search" />&nbsp;Find stuff
                   </b-button>
-                  <b-button to="/find/whatisit" class="mt-1" size="lg" variant="primary">
+                  <b-button to="/find/whatisit" class="mt-1" size="lg" variant="secondary">
                     <v-icon name="gift" />&nbsp;Post a WANTED
                   </b-button>
                 </div>
@@ -214,7 +214,7 @@
                 </b-row>
                 <b-row>
                   <b-col class="text-center">
-                    <b-button to="/find" class="mt-1" size="lg" variant="primary">
+                    <b-button to="/find" class="mt-1" size="lg" variant="secondary">
                       <v-icon name="search" />&nbsp;Find stuff
                     </b-button>
                   </b-col>

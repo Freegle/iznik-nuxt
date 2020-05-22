@@ -44,7 +44,7 @@
         <b-btn v-else-if="message.type === 'Offer' && !taken && !withdrawn" variant="success" class="align-middle mt-1 mb-1" @click="promise">
           <v-icon name="handshake" /> Promise
         </b-btn>
-        <b-btn variant="primary" class="d-none d-sm-inline-block align-middle mt-1 mb-1 mr-1" @click="chat(true)">
+        <b-btn variant="secondary" class="d-none d-sm-inline-block align-middle mt-1 mb-1 mr-1" @click="chat(true)">
           <b-badge v-if="unseen > 0" variant="danger">
             {{ unseen }}
           </b-badge>
@@ -53,7 +53,7 @@
           </span>
           Chat
         </b-btn>
-        <b-btn variant="primary" class="d-inline-block d-sm-none align-middle mt-1 mb-1 mr-1" @click="chat(false)">
+        <b-btn variant="secondary" class="d-inline-block d-sm-none align-middle mt-1 mb-1 mr-1" @click="chat(false)">
           <b-badge v-if="unseen > 0" variant="danger">
             {{ unseen }}
           </b-badge>

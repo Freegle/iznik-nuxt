@@ -30,7 +30,7 @@
           </b-btn>
         </b-col>
         <b-col cols="12" class="mt-2">
-          <b-btn size="lg" variant="primary" to="/find/search">
+          <b-btn size="lg" variant="secondary" to="/find/search">
             <v-icon name="search" />&nbsp;Find something
           </b-btn>
         </b-col>
