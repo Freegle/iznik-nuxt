@@ -223,7 +223,7 @@
                     </b-btn>
                     <ModSpammerReport v-if="showSpamModal" ref="spamConfirm" :user="otheruser" />
                   </span>
-                  <b-btn variant="secondary" class="float-right ml-1" @click="send">
+                  <b-btn variant="primary" class="float-right ml-1" @click="send">
                     Send&nbsp;
                     <v-icon v-if="sending" name="sync" class="fa-spin" title="Sending..." />
                     <v-icon v-else name="angle-double-right" title="Send" />

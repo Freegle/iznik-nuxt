@@ -109,7 +109,7 @@
                 <b-btn v-if="!simple" v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
                   <v-icon name="bell" />
                 </b-btn>
-                <b-btn variant="secondary" class="float-right mr-1" @click="send">
+                <b-btn variant="primary" class="float-right mr-1" @click="send">
                   <v-icon v-if="sending" name="sync" class="fa-spin" title="Sending..." />
                   <v-icon v-else name="angle-double-right" title="Send" />
                 </b-btn>
