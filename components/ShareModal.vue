@@ -85,7 +85,7 @@
       </div>
     </template>
     <template slot="modal-footer" slot-scope="{ ok, cancel }">
-      <b-button variant="white" @click="cancel">
+      <b-button variant="primary" @click="cancel">
         Close
       </b-button>
     </template>
