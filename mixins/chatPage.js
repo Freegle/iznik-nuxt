@@ -123,16 +123,6 @@ export default {
   created() {
     this.selectedChatId = parseInt(this.$route.params.id) || null
 
-    if (!this.selectedChatId) {
-      // None explicitly selected.  See if we have one remembered.
-      this.selectedChatId = this.$store.getters['chats/currentChat']
-    }
-
-    if (!this.selectedChatId && this.sortedChats && this.sortedChats[0]) {
-      // None selected - use the first if we have some.
-      this.selectedChatId = this.sortedChats[0].id
-    }
-
     if (this.selectedChatId) {
       // Save it so that it sticks at the top.
       this.$store.dispatch('chats/currentChat', {
