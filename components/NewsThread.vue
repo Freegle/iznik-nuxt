@@ -339,8 +339,11 @@ export default {
     focusedComment: function() {
       this.replyingTo = this.newsfeed.id
     },
-    async sendComment() {
-      console.log('Send', this.threadcomment)
+    async sendComment(e) {
+      e.preventDefault()
+      e.stopPropagation()
+      e.stopImmediatePropagation()
+
       if (this.threadcomment && this.threadcomment.trim()) {
         // Encode up any emojis.
         const msg = twem.untwem(this.threadcomment)

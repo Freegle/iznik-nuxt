@@ -176,7 +176,7 @@
                   placeholder="Type here..."
                   rows="3"
                   max-rows="8"
-                  @blur="markRead"
+                  @focus="markRead"
                 />
                 <b-form-textarea
                   v-else-if="!spammer"
@@ -189,7 +189,7 @@
                   @keyup.enter.exact="send"
                   @keydown.enter.shift.exact.prevent="newline"
                   @keydown.alt.shift.exact.prevent="newline"
-                  @blur="markRead"
+                  @focus="markRead"
                 />
               </b-col>
             </b-row>

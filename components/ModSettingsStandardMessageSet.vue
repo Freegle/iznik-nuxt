@@ -16,11 +16,32 @@
       description="This is the address to BCC messages to."
     />
     <p>
-      Click on a button to edit the message. Drag and drop to change the order that they'll show in on the relevant
+      Click on a button to edit the message.  You can also drag and drop to change the order that they'll show in on the relevant
       pages (e.g. put the ones you use most first).
     </p>
-    <draggable :key="'list-' + bump" v-model="stdmsgscopy" group="buttons" class="d-flex justify-content-center flex-wrap" @end="updateOrder">
-      <div
+    <b-form-checkbox
+      id="dragbox"
+      v-model="dragging"
+      class="mb-2"
+      name="dragbox"
+    >
+      <v-icon name="arrow-left" /> Click to enable dragging
+    </b-form-checkbox>
+    <div v-if="dragging">
+      <draggable :key="'list-' + bump" v-model="stdmsgscopy" group="buttons" class="d-flex justify-content-center flex-wrap" @end="updateOrder">
+        <div
+          v-for="stdmsg in stdmsgscopy"
+          :key="'stdmsg-' + stdmsg.id"
+        >
+          <ModSettingsStandardMessageButton
+            v-if="visible(stdmsg)"
+            :stdmsg="stdmsg"
+          />
+        </div>
+      </draggable>
+    </div>
+    <div v-else class="d-flex justify-content-center flex-wrap">
+      <span
         v-for="stdmsg in stdmsgscopy"
         :key="'stdmsg-' + stdmsg.id"
       >
@@ -28,8 +49,9 @@
           v-if="visible(stdmsg)"
           :stdmsg="stdmsg"
         />
-      </div>
-    </draggable>
+      </span>
+    </div>
+    <hr>
     <b-btn variant="white" @click="add">
       <v-icon name="plus" /> Add new standard message
     </b-btn>
@@ -75,7 +97,8 @@ export default {
       ],
       stdmsgscopy: null,
       showModal: false,
-      bump: 0
+      bump: 0,
+      dragging: false
     }
   },
   computed: {
