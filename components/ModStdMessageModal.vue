@@ -74,10 +74,11 @@ import Postcode from './Postcode'
 import NoticeMessage from './NoticeMessage'
 import SpinButton from './SpinButton'
 import keywords from '@/mixins/keywords.js'
+import waitForRef from '@/mixins/waitForRef'
 
 export default {
   components: { SpinButton, NoticeMessage, Postcode },
-  mixins: [keywords],
+  mixins: [keywords, waitForRef],
   props: {
     message: {
       type: Object,
