@@ -30,22 +30,22 @@
           <div>
             <div class="d-flex flex-wrap justify-content-around mt-3">
               <network network="facebook">
-                <b-btn variant="primary" size="lg" class="facebook">
+                <b-btn variant="primary" size="lg" class="facebook m-1">
                   <v-icon name="brands/facebook" /> Facebook
                 </b-btn>
               </network>
               <network network="whatsapp">
-                <b-btn variant="success" size="lg" class="whatsapp">
+                <b-btn variant="success" size="lg" class="whatsapp m-1">
                   <v-icon name="brands/whatsapp" /> Whatsapp
                 </b-btn>
               </network>
               <network network="twitter">
-                <b-btn variant="primary" size="lg" class="twitter">
+                <b-btn variant="primary" size="lg" class="twitter m-1">
                   <v-icon name="brands/twitter" /> Twitter
                 </b-btn>
               </network>
               <network network="email">
-                <b-btn variant="success" size="lg" class="gmail">
+                <b-btn variant="success" size="lg" class="gmail m-1">
                   <v-icon name="envelope" /> Email
                 </b-btn>
               </network>
