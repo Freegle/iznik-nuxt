@@ -1,12 +1,12 @@
-# iOS TRAVIS SCRIPT - exists on app-ios branch which otherwise should be an exact copy of the app branch (for Android)
-# Based on https://dev.to/geojow/deploying-an-ios-app-with-travisci--testflight-1naa and others - thanks
-language: objective-c
-os: osx
-osx_image: xcode11.3
+# Android TRAVIS SCRIPT - exists on app branch for trigger build only.  Note that the iOS Travis script is on app-ios branch
+dist: trusty
 branches:
-  only: app-ios
+  only: app
 env:
   global:
+  - ANDROID_API_LEVEL=28
+  - ANDROID_BUILD_TOOLS_VERSION=28.0.3
+  - TERM=dumb
   # gitusername
   - secure: tAFeuO4fqT+S+Vv+TcdXk4LRlcbsDEZbkShzxnzw3b0QFgQyaotzzQrDaW9S6KPO8knGy7RQoHEavS7wXSgis5h/fRnNiLWo3MoykdKvjx0TwTt7yTaDbgvI2H/xo8zE6DFU8jqH4KVwBq5LFikUJd0hx7uqw86IrR9kYj5R563UZqEacfsR5BWrYWqX5WwZInMnCY6SesKyL3q6F60D6z6Blwdq0evsj05oHWfxmZeSbzboOUg/Is6IBtUGMQRrWGsAdR4x73SiZ9APDfIB4C7oeput+GfOZPjTDoDt8defL6+IyLhw7kqcgQUhA9Lu+Ke2H/0KgHqBk7W1WDeh36s3DIv7MwkhQU+3ks1jdbs0dFWVmdm/yF+GCWy/sEdtFEzCfBh0o0kKfujauJx+T0A/GugaHlTN2fhFXvJ0XHrkoNjsQnNlzWyz/2gmiHLpK9ASFovrrNioq2achgisOlym3Kq10CdaGkfYNN8jHzzXaWVaS00ugMPIcAE4KbQmwav0AN+C9DwplO/yan4bai7/y5roYGRsR8z/MiZJAXH40bFGl8oI0Xl+1zTURR1J0/qKp8DJgZG8XLFWAWfoZOWouvZDNQqHWQU6JLWQgL5GFdhI0PcYZD7OSUEwAzbg19Ko4Lj+S3DhoJCpqP4/7tAmkd8FofCAmdAKXyToa7c=
   # gitemail
@@ -25,32 +25,37 @@ env:
   - secure: qdl34Gubayu7mYGRNKer1VhS2NggqSfb7q0WnMGFNXCUHkuXSrr/UH+2rWaK4bNXeHJs9MpqX9bCBd9XqOKpF2EOadgip7f8ItgfrgLUFQxV+HdOzHucph4OSI/kDfikh15xDCIlfG8yHzwJvKOX/2Mx/vGDLLiAojhJ5k7lwdSoPIn0W0xLFvwYgWQgS+xHXpOAXEhLlz4s62J1ORyURpGxoLpN0gGLVQ4kFMV0qu0xPTSlx1ZYeTFiP3Ic+4jwuh153xFQ4DBcOuBqOi9Why9JETJLZFNrUKy0PnYbXHdYDc+TspnX5p5xV4HuaghsAdnrPHdPD3Xfmvot+WtTMZT7tfQvhOlQ2puywj7i3wJvwh96Re8aBPWpnJVUCZfTawXHIHOc2iec2Yff5wrPL6Udg9GtgfkGaAQwCFRJlbQgNdKnlUvFAwam08IkwNrkR23MTDikQrfCrKb3Pzh2j+1qU04ECAcZrO2ZvtkZ7650pFueEfkAJE8Ukrmmi/svZaLaAarN86vCLLhl8dIyRTTWCiC5Jx+sPwx3jf6U7c3VL37tclB3ZrgE2F6r1haxR3Y+rD0nQNZoGpTAQJCK+vsgvr7lRR9wQuIYQDygHmHrRfMp15ONIOfA8Y8+2JBbJWtB8e9D+7xgz6kGmSiEb9Zt8oqXqFp3jzO6jXAAf6g=
   matrix:
   - nodejs_version=12
+language: android
 jdk:
 - oraclejdk8
+android:
+  components:
+  - tools
+  - build-tools-$ANDROID_BUILD_TOOLS_VERSION
+  - android-$ANDROID_API_LEVEL
+  - extra
+  licenses:
+  - android-sdk-preview-license-.+
+  - android-sdk-license-.+
+  - google-gdk-license-.+
+
+################
 before_install:
 - openssl aes-256-cbc -K $encrypted_a57fb8741d35_key -iv $encrypted_a57fb8741d35_iv
   -in mobile/app-secrets.tar.enc -out mobile/app-secrets.tar -d
 - tar xvf mobile/app-secrets.tar
-
-## No longer needed
-##- sed -i '' "s,iosDeveloper,$iosDeveloper,g" mobile/ExportOptionsFreegleDebug.plist
-##- sed -i '' "s,iosDeveloper,$iosDeveloper,g" mobile/ExportOptionsFreegleRelease.plist
-##- sed -i '' "s,iosDeveloper,$iosDeveloper,g" mobile/ExportOptionsModToolsDebug.plist
-##- sed -i '' "s,iosDeveloper,$iosDeveloper,g" mobile/ExportOptionsModToolsRelease.plist
-
-- chmod +x mobile/add-key.sh
-- ./mobile/add-key.sh
-
+#- keytool -exportcert -list -v -keystore android-chrisphdcccom.new.keystore -storepass "$storepass"
 - nvm install $nodejs_version
 - npm install -g cordova
 - node --version
 - npm --version
+- gradle --version
 - npm install
+
+################
 script:
 - export MOBILE_VERSION=$(grep -o "MOBILE_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MOBILE_VERSION = '//; s/'.*//")
 - export MODTOOLS_VERSION=$(grep -o "MODTOOLS_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MODTOOLS_VERSION = '//; s/'.*//")
-#- env | grep '^MOBILE_VERSION='
-#- env | grep '^MODTOOLS_VERSION='
 
 - mkdir releases
 
@@ -58,50 +63,29 @@ script:
 - npm run fdapp
 - mkdir ../iznik-nuxt-app
 - cd ../iznik-nuxt-app
-- ln -s ../iznik-nuxt/mobile/freegle/ios/config.xml config.xml
-- ln -s ../iznik-nuxt/mobile/freegle/ios/package.json package.json
+- ln -s ../iznik-nuxt/mobile/freegle/android/config.xml config.xml
+- ln -s ../iznik-nuxt/mobile/freegle/android/package.json package.json
 - ln -s ../iznik-nuxt/mobile/freegle/icons icons
 - ln -s ../iznik-nuxt/mobile/freegle/package-assets package-assets
 - ln -s ../iznik-nuxt/mobile/freegle/scripts scripts
-- cp ../iznik-nuxt/GoogleService-Info.plist GoogleService-Info.plist
+- chmod +x scripts/before_build.sh
+- cp ../iznik-nuxt/google-services.json google-services.json
 - ln -s ../iznik-nuxt/dist www
-- cordova platform rm ios
-- cordova platform add ios
-
-# Fix cordova-ios
-- sed -i '' "s/PROVISIONING_PROFILE =/PROVISIONING_PROFILE_SPECIFIER =/" platforms/ios/cordova/lib/build.js
-
+- cordova platform rm android
+- cordova platform add android
 # Build debug build
-##- sed -i '' "s/ProvisioningStyle = Automatic;/& DevelopmentTeam = GMYU3K9D84;/" platforms/ios/Freegle.xcodeproj/project.pbxproj
-##- sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& CODE_SIGN_IDENTITY = 'iPhone Distribution';/" platforms/ios/Freegle.xcodeproj/project.pbxproj
-##- sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& CODE_SIGN_STYLE = Manual;/" platforms/ios/Freegle.xcodeproj/project.pbxproj
-##- sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& PROVISIONING_PROFILE_SPECIFIER = 'Freegle adhoc 0420';/" platforms/ios/Freegle.xcodeproj/project.pbxproj
-##- sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& DEVELOPMENT_TEAM = GMYU3K9D84;/" platforms/ios/Freegle.xcodeproj/project.pbxproj
-# https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
-- cordova build --debug --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="ad-hoc" --automaticProvisioning="false" --provisioningProfile="Freegle adhoc 0420" >buildlogdebug.txt
-###- cordova build --debug --device --buildFlag="-UseModernBuildSystem=0" --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="ad-hoc" --automaticProvisioning="false" --provisioningProfile="Freegle adhoc 0420" >buildlogdebug.txt
-### Sign properly: export as ipa
-##- cp ../iznik-nuxt/mobile/ExportOptionsFreegleDebug.plist .
-##- cd platforms/ios
-##- xcodebuild -exportArchive -archivePath Freegle.xcarchive -exportOptionsPlist ../../ExportOptionsFreegleDebug.plist -exportPath build/device -allowProvisioningUpdates
-##- cp build/device/Freegle.ipa ../../../iznik-nuxt/releases/Freegle-ios-app-$MOBILE_VERSION-debug-$(date +'%Y%m%d%H%M%S').ipa
-##- cd ../..
-- cp platforms/ios/build/device/Freegle.ipa ../iznik-nuxt/releases/Freegle-ios-app-$MOBILE_VERSION-debug-$(date +'%Y%m%d%H%M%S').ipa
-
+- cordova build --debug -- --keystore="../iznik-nuxt/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
+- cp platforms/android/app/build/outputs/apk/debug/app-debug.apk ../iznik-nuxt/releases/Freegle-android-app-$MOBILE_VERSION-debug-$(date +'%Y%m%d%H%M%S').apk
 # Build release build
-##- sed -i '' "s/Freegle adhoc 0420/Freegle 0420/" platforms/ios/Freegle.xcodeproj/project.pbxproj
-# https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
-- cordova build --release --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile="Freegle 0420"  >buildlogrelease.txt
-##- cordova build --release --device --buildFlag="-UseModernBuildSystem=0" --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile="Freegle 0420"  >buildlogrelease.txt
-### Sign properly: export and then upload
-##- cp ../iznik-nuxt/mobile/ExportOptionsFreegleRelease.plist .
-##- cd platforms/ios
-##- xcodebuild -exportArchive -archivePath Freegle.xcarchive -exportOptionsPlist ../../ExportOptionsFreegleRelease.plist -exportPath build/device -allowProvisioningUpdates
-##- cp build/device/Freegle.ipa ../../../iznik-nuxt/releases/Freegle-ios-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').ipa
-##- xcrun altool --upload-app --type ios --file "build/device/Freegle.ipa" --username $AppleUserId --password "$AppleAppSpecificPwd" || true
-##- cd ../..
-- cp platforms/ios/build/device/Freegle.ipa ../iznik-nuxt/releases/Freegle-ios-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').ipa
-- xcrun altool --upload-app --type ios --file "platforms/ios/build/device/Freegle.ipa" --username $AppleUserId --password "$AppleAppSpecificPwd" || true
+- cordova build --release -- --keystore="../iznik-nuxt/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
+- cp platforms/android/app/build/outputs/apk/release/app-release.apk ../iznik-nuxt/releases/Freegle-android-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').apk
+# Publish to Google Play beta track
+- sed -i "/3.3.0'/aclasspath 'com.github.triplet.gradle:play-publisher:2.0.0-rc1'" platforms/android/build.gradle
+- cp ../iznik-nuxt/mobile/build-extras.gradle platforms/android/app
+- cp ../iznik-nuxt/api-freegle-google-play-deployment.json platforms/android/app
+- cd platforms/android
+- ./gradlew app:publishReleaseApk || true # Ignore errors
+- cd ../..
 
 - cd ../iznik-nuxt
 
@@ -109,75 +93,60 @@ script:
 - npm run mtapp
 - mkdir ../iznik-nuxt-mt
 - cd ../iznik-nuxt-mt
-- ln -s ../iznik-nuxt/mobile/modtools/ios/config.xml config.xml
-- ln -s ../iznik-nuxt/mobile/modtools/ios/package.json package.json
+- ln -s ../iznik-nuxt/mobile/modtools/android/config.xml config.xml
+- ln -s ../iznik-nuxt/mobile/modtools/android/package.json package.json
 - ln -s ../iznik-nuxt/mobile/modtools/icons icons
 - ln -s ../iznik-nuxt/mobile/modtools/package-assets package-assets
 - ln -s ../iznik-nuxt/mobile/modtools/scripts scripts
-- cp ../iznik-nuxt/GoogleService-Info.plist GoogleService-Info.plist
+- chmod +x scripts/before_build.sh
+- cp ../iznik-nuxt/google-services.json google-services.json
 - ln -s ../iznik-nuxt/dist www
-- cordova platform rm ios
-- cordova platform add ios
-
-# Fix cordova-ios
-- sed -i '' "s/PROVISIONING_PROFILE =/PROVISIONING_PROFILE_SPECIFIER =/" platforms/ios/cordova/lib/build.js
-
+- cordova platform rm android
+- cordova platform add android
 # Build debug build
-##- sed -i '' "s/ProvisioningStyle = Automatic;/& DevelopmentTeam = GMYU3K9D84;/" platforms/ios/ModTools.xcodeproj/project.pbxproj
-##- sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& CODE_SIGN_IDENTITY = 'iPhone Distribution';/" platforms/ios/ModTools.xcodeproj/project.pbxproj
-##- sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& CODE_SIGN_STYLE = Manual;/" platforms/ios/ModTools.xcodeproj/project.pbxproj
-##- sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& PROVISIONING_PROFILE_SPECIFIER = 'ModTools adhoc 0420';/" platforms/ios/ModTools.xcodeproj/project.pbxproj
-##- sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& DEVELOPMENT_TEAM = GMYU3K9D84;/" platforms/ios/ModTools.xcodeproj/project.pbxproj
-##- cat platforms/ios/ModTools.xcodeproj/project.pbxproj
-# https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
-- cordova build --debug --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="ad-hoc" --automaticProvisioning="false" --provisioningProfile="ModTools adhoc 0420" >buildlogdebug.txt
-###- cordova build --debug --device --buildFlag="-UseModernBuildSystem=0" --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="ad-hoc" --automaticProvisioning="false" --provisioningProfile="ModTools adhoc 0420" >buildlogdebug.txt
-### Sign properly: export as ipa
-##- cp ../iznik-nuxt/mobile/ExportOptionsModToolsDebug.plist .
-##- cd platforms/ios
-##- xcodebuild -exportArchive -archivePath ModTools.xcarchive -exportOptionsPlist ../../ExportOptionsModToolsDebug.plist -exportPath build/device -allowProvisioningUpdates
-##- cp build/device/ModTools.ipa ../../../iznik-nuxt/releases/ModTools-ios-app-$MODTOOLS_VERSION-debug-$(date +'%Y%m%d%H%M%S').ipa
-##- cd ../..
-- cp platforms/ios/build/device/ModTools.ipa ../iznik-nuxt/releases/ModTools-ios-app-$MODTOOLS_VERSION-debug-$(date +'%Y%m%d%H%M%S').ipa
-
+- cordova build --debug -- --keystore="../iznik-nuxt/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
+- cp platforms/android/app/build/outputs/apk/debug/app-debug.apk ../iznik-nuxt/releases/ModTools-android-app-$MODTOOLS_VERSION-debug-$(date +'%Y%m%d%H%M%S').apk
 # Build release build
-##- sed -i '' "s/ModTools adhoc 0420/ModTools 0420/" platforms/ios/ModTools.xcodeproj/project.pbxproj
-##- cat platforms/ios/ModTools.xcodeproj/project.pbxproj
-# https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
-- cordova build --release --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile="ModTools 0420"  >buildlogrelease.txt
-##- cordova build --release --device --buildFlag="-UseModernBuildSystem=0" --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile="ModTools 0420"  >buildlogrelease.txt
-### Sign properly: export and then upload
-##- cp ../iznik-nuxt/mobile/ExportOptionsModToolsRelease.plist .
-##- cd platforms/ios
-##- xcodebuild -exportArchive -archivePath ModTools.xcarchive -exportOptionsPlist ../../ExportOptionsModToolsRelease.plist -exportPath build/device -allowProvisioningUpdates
-##- cp build/device/ModTools.ipa ../../../iznik-nuxt/releases/ModTools-ios-app-$MODTOOLS_VERSION-release-$(date +'%Y%m%d%H%M%S').ipa
-##- xcrun altool --upload-app --type ios --file "build/device/ModTools.ipa" --username $AppleUserId --password "$AppleAppSpecificPwd" || true
-##- cd ../..
-- cp platforms/ios/build/device/ModTools.ipa ../iznik-nuxt/releases/ModTools-ios-app-$MODTOOLS_VERSION-release-$(date +'%Y%m%d%H%M%S').ipa
-- xcrun altool --upload-app --type ios --file "platforms/ios/build/device/ModTools.ipa" --username $AppleUserId --password "$AppleAppSpecificPwd" || true
+- cordova build --release -- --keystore="../iznik-nuxt/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
+- cp platforms/android/app/build/outputs/apk/release/app-release.apk ../iznik-nuxt/releases/ModTools-android-app-$MODTOOLS_VERSION-release-$(date +'%Y%m%d%H%M%S').apk
+# Publish to Google Play beta track
+- sed -i "/3.3.0'/aclasspath 'com.github.triplet.gradle:play-publisher:2.0.0-rc1'" platforms/android/build.gradle
+- cp ../iznik-nuxt/mobile/build-extras.gradle platforms/android/app
+- cp ../iznik-nuxt/api-freegle-google-play-deployment.json platforms/android/app
+- cd platforms/android
+- ./gradlew app:publishReleaseApk || true # Ignore errors
+- cd ../..
 
-# DONE
 - cd ../iznik-nuxt
-- ls -l releases
 
-after_script:
-- security delete-keychain ios-build.keychain
-- rm -f "~/Library/MobileDevice/Provisioning Profiles/*.mobileprovision"
+- rm mobile/app-secrets.tar android-chrisphdcccom.new.keystore google-services.json GoogleService-Info.plist
 
+################
+before_cache:
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
+  - "$HOME/.android/build-cache"
+
+################
 before_deploy:
 - git config --local user.name "$gitusername"
 - git config --local user.email "$gitemail"
-- export TRAVIS_TAG=Travis-ios-builds-$MOBILE_VERSION-$MODTOOLS_VERSION-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)
+- export TRAVIS_TAG=Travis-android-builds-$MOBILE_VERSION-$MODTOOLS_VERSION-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)
 - env | grep '^TRAVIS_TAG='
 - git tag $TRAVIS_TAG
 
+################
 deploy:
   provider: releases
   api_key:
     secure: S+1f7ZdQf6C/dH8Cx0i/gtX1hko6xRE9my5j4Kvp9vc5K/frbQGWEM8eqKOmVAvVs+eoN6sFO+tv6mUyRZ4pFzOxxLlVSd0taEgf9NuIxrmclMbAa9f6TpA0g5QTZH0ARYZg5pr9gX4HpKlYlkoO0Roac8VK6d1yO2FFK5eN+KO3+NPCvSA0vIJip4BYTBKCzmDC/AmZWhlBaQSZUVpv5kiItiPO8jM5a5FE+KmDZ0bPBr6t41CFHTivJ5iKt+AfIkALa8er4WMteXCLI8yRt6T7jut8oIDGx5awCtve4v5LL+gTh39XSTdSsEyUCmP395W1CxXT6HjvIIVc4yvqmZ+3KEdM6MuayZZsHbcooqtEC5hht/OQ147eEpV0MZ+Ebn2as0wFcy4783KF9HxX3RppyA4ptVj91baBl99s1c8i11pti7i45dT82l5D71CDhwAfhtMG9CDfPvkHcb9q9J1jN8pYmi39h9iDJS7O7a1XbePJIM33yUrO9uq2w5Id9aIWBlyECMiPNZe1PqTlJlUzGbeSkvoKvj1TzUyiBCYMrJMQoRwAaaeZbR2NkeXGgKwCmMAAsQGHs0hbEDnIrRyp/0L+jyvkiZEiC0ffKYRdu5P2VOGi7DkDu0SCeChUW7dndzXLckMpPE7o92EWXkzXJmzqIt7JuTq08+ngyJU=
   skip_cleanup: true
   file_glob: true
-  file: ./releases/*.ipa
+  file: ./releases/*.apk
   on:
     repo: Freegle/iznik-nuxt
-    branch: app-ios
+    branch: app
