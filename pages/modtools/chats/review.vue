@@ -21,7 +21,7 @@
         variant="white"
         class="mt-2"
         :handler="deleteAll"
-        icon="trash-alt"
+        name="trash-alt"
         label="Delete All"
       />
       <ConfirmModal v-if="showDeleteModal" ref="deleteConfirm" title="Delete all chat messages?" @confirm="deleteConfirmed" />
