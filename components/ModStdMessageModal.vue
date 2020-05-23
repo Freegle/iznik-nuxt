@@ -22,7 +22,7 @@
           </span>
         </div>
       </div>
-      <div v-if="message && stdmsg.action === 'Edit' && message.location" class="d-flex justify-content-start">
+      <div v-if="message && stdmsg.action === 'Edit' && message.item" class="d-flex justify-content-start">
         <b-select v-model="message.type" :options="typeOptions" class="type mr-1" size="lg" />
         <b-input v-model="message.item.name" size="lg" class="mr-1" />
         <b-input-group>
