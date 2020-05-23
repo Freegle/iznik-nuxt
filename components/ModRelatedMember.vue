@@ -35,7 +35,7 @@
     </b-card-body>
     <b-card-footer>
       <div class="mt-2">
-        <b-btn variant="info" @click="ask">
+        <b-btn variant="primary" @click="ask">
           Ask member what they want
         </b-btn>
         <b-btn variant="white" @click="ignore">

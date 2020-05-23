@@ -3,7 +3,8 @@ import Vue from 'vue'
 export const state = () => ({
   // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
   // storage.
-  list: {}
+  list: {},
+  currentChat: null
 })
 
 export const mutations = {
@@ -37,6 +38,10 @@ export const mutations = {
         )
       }
     }
+  },
+
+  currentChat(state, chatid) {
+    state.currentChat = chatid
   }
 }
 
@@ -81,6 +86,10 @@ export const getters = {
       (total, chat) => total + chat.unseen,
       0
     )
+  },
+
+  currentChat: state => {
+    return state.currentChat
   }
 }
 
@@ -176,5 +185,9 @@ export const actions = {
   async unseenCount({ dispatch, commit }) {
     const ret = await this.$api.chat.unseenCount()
     return ret.count
+  },
+
+  currentChat({ commit }, params) {
+    commit('currentChat', params.chatid)
   }
 }

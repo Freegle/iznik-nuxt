@@ -22,69 +22,70 @@
   border-bottom: 1px solid $colour-info-bg;
 }
 
-.pageContent .btn:hover {
-  color: $color-black !important;
-  background-color: $color-white !important;
-  border-color: $color-blue--2 !important;
+// There are six types of button used on the site - success, primary, white, danger, warning and link
+// This is the primary CTA
+.btn-success {
+  background-color: $colour-success;
+  background-image: none;
+  border-color: $color-green--dark;
+  color: $color-white;
+  text-shadow: 0 -1px 0 $color-black-opacity-59;
+  -webkit-font-smoothing: antialiased;
 }
 
-.pageContent .btn-white:hover {
-  color: $color-white !important;
-  background-color: $color-blue--light !important;
-  border-color: $color-blue--2 !important;
+.btn-success:hover {
+  color: $color-black;
+  background-color: $color-white;
+  border-color: $color-blue--2;
 }
 
+// This is the secondary CTA
 .btn-primary {
-  background-color: $colour-primary !important;
+  background-color: $colour-primary;
   border-color: $color-blue--dark;
-  color: $color-white !important;
+  color: $color-white;
   text-shadow: 0 - 1 px 0 $color-black-opacity-59;
   -webkit-font-smoothing: antialiased;
 }
 
-.btn-success {
-  background-color: $colour-success !important;
-  background-image: none;
-  border-color: $color-green--dark;
-  color: $color-white !important;
-  text-shadow: 0 -1px 0 $color-black-opacity-59;
-  -webkit-font-smoothing: antialiased;
+.btn-primary:hover {
+  color: $color-black;
+  background-color: $color-white;
+  border-color: $color-blue--2;
 }
 
-.btn-info {
-  background-color: $colour-info !important;
-  background-image: none;
+// This is the tertiary CTA
+.btn-white {
+  background-color: $color-white;
   border-color: $color-green--dark;
-  color: $color-white !important;
-  text-shadow: 0 -1px 0 $color-black-opacity-59;
+  color: $color-black;
+  text-shadow: none;
   -webkit-font-smoothing: antialiased;
+  border: 1px $color-black solid;
+}
+
+.btn-white:hover {
+  color: $color-white;
+  background-color: $color-blue--light;
+  border-color: $color-blue--2;
 }
 
 .btn-default {
-  background-color: $color-white !important;
+  background-color: $color-white;
   background-image: none;
   border-color: $color-green--dark;
-  color: $color-black !important;
+  color: $color-black;
   text-shadow: 0 -1px 0 $color-black-opacity-33;
   -webkit-font-smoothing: antialiased;
 }
 
 .btn-warning {
-  background-color: $colour-warning !important;
+  background-color: $colour-warning;
   background-image: none;
   border-color: $color-green--dark;
-  color: $color-white !important;
+  color: $color-white;
   text-shadow: 0 -1px 0 $color-black-opacity-33;
   -webkit-font-smoothing: antialiased;
-}
-
-.btn-white {
-  background-color: $color-white !important;
-  border-color: $color-green--dark;
-  color: $color-black !important;
-  text-shadow: none !important;
-  -webkit-font-smoothing: antialiased;
-  border: 1px $color-black solid;
 }
 
 .text-success {
