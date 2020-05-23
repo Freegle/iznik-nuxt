@@ -30,6 +30,9 @@
         Privacy
       </nuxt-link> for details.  Ok?  Now come on in...
     </p>
+    <p v-if="modtools" class="text-center">
+      Need temporary help moderating?  Mail <a href="mailto:mentors@ilovefreegle.org">mentors@ilovefreegle.org</a>.
+    </p>
     <p v-if="loginType" class="text-center font-weight-bold">
       You usually sign in using {{ loginType }}.
     </p>
@@ -257,7 +260,7 @@ export default {
       if (this.forceSignIn) {
         return false
       } else {
-        return !this.loggedInEver || this.showSignUp
+        return !this.loggedInEver || this.showSignUp || this.modtools
       }
     },
 
