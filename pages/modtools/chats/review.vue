@@ -16,6 +16,15 @@
           </span>
         </infinite-loading>
       </div>
+      <SpinButton
+        v-if="visibleMessages && visibleMessages.length > 1"
+        variant="white"
+        class="mt-2"
+        :handler="deleteAll"
+        icon="trash-alt"
+        label="Delete All"
+      />
+      <ConfirmModal v-if="showDeleteModal" ref="deleteConfirm" title="Delete all chat messages?" @confirm="deleteConfirmed" />
     </client-only>
   </div>
 </template>
@@ -23,6 +32,9 @@
 import InfiniteLoading from 'vue-infinite-loading'
 import ModChatReview from '../../../components/ModChatReview'
 import GroupSelect from '../../../components/GroupSelect'
+import ConfirmModal from '../../../components/ConfirmModal'
+import SpinButton from '../../../components/SpinButton'
+import waitForRef from '@/mixins/waitForRef'
 import loginRequired from '@/mixins/loginRequired.js'
 
 // We need an id for the store.  The null value is a special case used just for retrieving chat review messages.
@@ -31,11 +43,13 @@ const REVIEWCHAT = null
 export default {
   layout: 'modtools',
   components: {
+    SpinButton,
+    ConfirmModal,
     GroupSelect,
     ModChatReview,
     InfiniteLoading
   },
-  mixins: [loginRequired],
+  mixins: [loginRequired, waitForRef],
   data: function() {
     return {
       context: null,
@@ -46,7 +60,8 @@ export default {
       limit: 5,
       show: 0,
       groupid: null,
-      bump: 0
+      bump: 0,
+      showDeleteModal: false
     }
   },
   computed: {
@@ -140,6 +155,20 @@ export default {
       })
 
       this.bump++
+    },
+    deleteAll() {
+      this.showDeleteModal = true
+      this.waitForRef('deleteConfirm', () => {
+        this.$refs.deleteConfirm.show()
+      })
+    },
+    async deleteConfirmed() {
+      await this.visibleMessages.forEach(async m => {
+        await this.$store.dispatch('chatmessages/reject', {
+          id: m.id,
+          chatid: null
+        })
+      })
     }
   }
 }
