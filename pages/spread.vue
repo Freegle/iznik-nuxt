@@ -48,29 +48,26 @@
           <p>
             We'll send them an email invitation. It will show your name and email.
           </p>
-          <validating-form>
-            <b-input-group>
-              <validating-form-input
-                v-model.trim="invitemail"
-                type="email"
-                size="lg"
-                placeholder="Enter their email address"
-                :validation="$v.invitemail"
-                :validation-enabled="validationEnabled"
-                :validation-messages="{
-                  required: 'That isn\'t a valid email address - can you check?'
-                }"
-              />
-              <b-input-group-append>
-                <b-button v-if="!validationEnabled || !$v.invitemail.$invalid" variant="success" size="lg" @click="invite">
-                  <v-icon name="envelope" />&nbsp;Invite a friend
-                </b-button>
-              </b-input-group-append>
-            </b-input-group>
-          </validating-form>
-          <span class="small text-muted">
+          <EmailValidator
+            ref="email"
+            size="lg"
+            :email.sync="invitemail"
+            :valid.sync="emailValid"
+            label="Enter their email address"
+          />
+          <SpinButton
+            v-if="emailValid"
+            name="envelope"
+            spinclass="success"
+            variant="success"
+            size="lg"
+            :handler="invite"
+            label="Invite a friend"
+            class="mb-1"
+          />
+          <div class="small text-muted">
             By using this you confirm that you have their consent.  That's a PECR/GDPR thing.
-          </span>
+          </div>
         </b-card>
         <div v-if="invitations && invitations.length">
           <h5>Your recent invitations</h5>
@@ -128,20 +125,19 @@
 </style>
 <script>
 import { required, email } from 'vuelidate/lib/validators'
-import { validationMixin } from 'vuelidate'
 import PosterModal from '../components/PosterModal'
 import buildHead from '../mixins/buildHead'
-import ValidatingForm from '../components/ValidatingForm'
-import ValidatingFormInput from '../components/ValidatingFormInput'
-import validationHelpers from '@/mixins/validationHelpers'
+import EmailValidator from '../components/EmailValidator'
+import SpinButton from '../components/SpinButton'
 import loginRequired from '@/mixins/loginRequired.js'
 
 export default {
-  components: { ValidatingForm, ValidatingFormInput, PosterModal },
-  mixins: [loginRequired, buildHead, validationMixin, validationHelpers],
+  components: { SpinButton, EmailValidator, PosterModal },
+  mixins: [loginRequired, buildHead],
   data: function() {
     return {
-      invitemail: null
+      invitemail: null,
+      emailValid: false
     }
   },
   computed: {
