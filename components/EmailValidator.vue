@@ -8,7 +8,6 @@
         :label-for="'email-' + id"
       >
         <validating-form-input
-          ref="email"
           :value="email"
           type="email"
           :size="size"
@@ -76,7 +75,10 @@ export default {
       if (newVal && newVal.indexOf('@') !== -1) {
         //
       }
-      console.log('Email now', newVal)
+
+      // This check needs to be here rather than in checkState to ensure the vuelidate has got itself sorted out.
+      const valid = !this.$v.email.$invalid
+      this.$emit('update:valid', valid)
     }
   },
   mounted() {
@@ -87,18 +89,13 @@ export default {
       this.checkState(newVal)
     },
     checkState(email) {
-      this.$emit('update:email', email ? email.trim() : null)
-      console.log('Set dirty')
-      this.$v.$touch()
-      console.log('Set ok', this.$v.email.$invalid)
-      this.$nextTick(() => {
-        const valid = !this.$v.email.$invalid
-        console.log('Check state', email, valid)
-        this.$emit('update:valid', valid)
-      })
-    },
-    focus() {
-      this.$refs.email.focus()
+      if (email !== this.email) {
+        this.$emit('update:email', email ? email.trim() : null)
+
+        if (email) {
+          this.$v.$touch()
+        }
+      }
     }
   },
   validations: {
