@@ -186,36 +186,40 @@
             <v-icon name="comments" /> Chats
           </nuxt-link> section.
         </NoticeMessage>
-        <b-row>
-          <b-col class="d-flex">
+        <div class="d-flex">
+          <b-form-group
+            label="Your reply:"
+            :label-for="'replytomessage-' + expanded.id"
+            :description="expanded.type === 'Offer' ? 'Interested?  Please explain why you\'d like it and when you can collect.  Always be polite and helpful.' : 'Can you help?  If you have what they\'re looking for, let them know.'"
+          >
             <b-form-textarea
               v-if="expanded.type == 'Offer'"
+              :id="'replytomessage-' + expanded.id"
               v-model="reply"
-              placeholder="Interested?  Please explain why you'd like it and when you can collect.  Always be polite and helpful."
               rows="3"
               max-rows="8"
-              class="flex-shrink-2"
+              class="flex-shrink-2 border border-success"
             />
             <b-form-textarea
               v-if="expanded.type == 'Wanted'"
+              :id="'replytomessage-' + expanded.id"
               v-model="reply"
-              placeholder="Can you help?  If you have what they're looking for, let them know."
               rows="3"
               max-rows="8"
               class="flex-shrink-2"
             />
-            <div class="flex-grow-1 text-right ml-2 d-none d-md-block">
-              <b-btn variant="success" :disabled="replying" @click="sendReply">
-                Send
-                <v-icon v-if="replying" name="sync" class="fa-spin" />
-                <v-icon v-else name="angle-double-right" />&nbsp;
-              </b-btn>
-            </div>
-          </b-col>
-        </b-row>
+          </b-form-group>
+          <div class="flex-grow-1 text-right ml-2 d-none d-md-block">
+            <b-btn variant="success" :disabled="disableSend" @click="sendReply">
+              Send
+              <v-icon v-if="replying" name="sync" class="fa-spin" />
+              <v-icon v-else name="angle-double-right" />&nbsp;
+            </b-btn>
+          </div>
+        </div>
         <b-row class="d-block d-md-none mt-2">
           <b-col>
-            <b-btn variant="success" block :disabled="replying" @click="sendReply">
+            <b-btn variant="success" block :disabled="disableSend" @click="sendReply">
               Send
               <v-icon v-if="replying" name="sync" class="fa-spin" />
               <v-icon v-else name="angle-double-right" />&nbsp;
@@ -339,6 +343,9 @@ export default {
     }
   },
   computed: {
+    disableSend() {
+      return this.replying || !this.reply
+    },
     eSubject() {
       return twem.twem(this.$twemoji, this.subject)
     },
