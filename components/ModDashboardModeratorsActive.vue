@@ -47,7 +47,8 @@ export default {
   data: function() {
     return {
       askfor: ['ModeratorsActive'],
-      ModeratorsActive: null
+      ModeratorsActive: null,
+      grouprequired: true
     }
   }
 }
