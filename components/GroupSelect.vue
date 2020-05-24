@@ -89,14 +89,6 @@ export default {
         ret = this.$store.getters['auth/groups']
       }
 
-      if (ret) {
-        ret.sort(function(a, b) {
-          return a.namedisplay
-            .toLowerCase()
-            .localeCompare(b.namedisplay.toLowerCase())
-        })
-      }
-
       ret = ret || []
       return ret
     },
@@ -163,8 +155,8 @@ export default {
       }
 
       groups.sort((a, b) => {
-        console.log('Group sort', a, b)
-        a.text.localeCompare(b.text)
+        // console.log('Group sort', a, b)
+        a.text.toLowerCase().localeCompare(b.text.toLowerCase())
       })
 
       return groups
