@@ -428,7 +428,7 @@ export default {
         groupid: e.groupid
       }
       params[e.param] = e.val
-      this.$store.dispatch('members/updateById', params)
+      this.$store.dispatch('members/update', params)
     },
     async changeNotification(e, type) {
       const settings = this.settings

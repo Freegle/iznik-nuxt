@@ -502,7 +502,7 @@ export default {
         groupid: this.groupid
       }
       params[e.param] = e.val
-      this.$store.dispatch('members/updateById', params)
+      this.$store.dispatch('members/update', params)
     },
     async toggleMail() {
       this.showMailSettings = !this.showMailSettings
