@@ -439,6 +439,12 @@ export const actions = {
     console.log('Done')
     commit('clear')
 
+    // We might have done this logged out.  By the time it has completed we will have an account, so we want to make
+    // sure that the login page pops up rather than the signup page.
+    dispatch('auth/loggedInEver', true, {
+      root: true
+    })
+
     return results
   },
 
