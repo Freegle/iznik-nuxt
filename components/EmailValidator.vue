@@ -1,6 +1,8 @@
 <template>
   <div class="d-inline-block w-100">
-    <validating-form>
+    <validating-form
+      :class="{ 'justify-content-around': center, 'd-flex': center }"
+    >
       <b-form-group
         :label="label"
         :label-for="'email-' + id"
@@ -16,6 +18,7 @@
           :validation-messages="{
             email: 'Not a valid email address...yet!'
           }"
+          :center="center"
           @input="input"
         />
       </b-form-group>
@@ -35,11 +38,17 @@ export default {
   props: {
     email: {
       type: String,
-      required: false
+      required: false,
+      defaul: null
     },
     valid: {
       type: Boolean,
       required: true
+    },
+    center: {
+      type: Boolean,
+      required: false,
+      default: false
     },
     size: {
       type: String,
@@ -87,6 +96,9 @@ export default {
         console.log('Check state', email, valid)
         this.$emit('update:valid', valid)
       })
+    },
+    focus() {
+      this.$refs.email.focus()
     }
   },
   validations: {
