@@ -159,21 +159,19 @@
               </p>
               <b-row>
                 <b-col cols="12" sm="6">
-                  <b-form-group
+                  <EmailValidator
+                    ref="email"
+                    size="md"
+                    :email.sync="me.email"
+                    :valid.sync="emailValid"
                     label="Your email address:"
-                  >
-                    <b-input-group id="input-email">
-                      <b-input v-model="me.email" placeholder="Your email" label="Your email address" type="email" />
-                      <b-input-group-append>
-                        <b-button variant="white" @click="saveEmail">
-                          <v-icon v-if="savingEmail" name="sync" class="text-success fa-spin" />
-                          <v-icon v-else-if="savedEmail" name="check" class="text-success" />
-                          <v-icon v-else name="save" />
-                          Save
-                        </b-button>
-                      </b-input-group-append>
-                    </b-input-group>
-                  </b-form-group>
+                  />
+                  <b-button variant="white" class="mb-2" @click="saveEmail">
+                    <v-icon v-if="savingEmail" name="sync" class="text-success fa-spin" />
+                    <v-icon v-else-if="savedEmail" name="check" class="text-success" />
+                    <v-icon v-else name="save" />
+                    Save
+                  </b-button>
                   <NoticeMessage v-if="me.bouncing" variant="danger" class="mb-2">
                     <p>We can't send to your email address.  Please change it to a valid one and press <em>Save</em>.</p>
                     <p>Or if you're sure it's valid:</p>
@@ -515,6 +513,7 @@
 <script>
 import Vue from 'vue'
 import SimpleView from '../../components/SimpleView'
+import EmailValidator from '../../components/EmailValidator'
 import waitForRef from '@/mixins/waitForRef'
 import loginRequired from '@/mixins/loginRequired.js'
 import EmailConfirmModal from '~/components/EmailConfirmModal'
@@ -537,6 +536,7 @@ const PasswordEntry = () => import('~/components/PasswordEntry')
 
 export default {
   components: {
+    EmailValidator,
     SimpleView,
     OurToggle,
     DatePicker,
@@ -569,7 +569,8 @@ export default {
       removedPhone: false,
       unbouncing: false,
       unbounced: false,
-      uploading: false
+      uploading: false,
+      emailValid: false
     }
   },
   computed: {
