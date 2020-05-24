@@ -20,6 +20,7 @@ import ChatAPI from './ChatAPI.js'
 import CommentAPI from './CommentAPI.js'
 import CommunityEventAPI from './CommunityEventAPI.js'
 import DashboardAPI from './DashboardAPI.js'
+import DomainAPI from './DomainAPI.js'
 import DonationsAPI from './DonationsAPI.js'
 import GroupAPI from './GroupAPI.js'
 import InvitationAPI from './InvitationAPI.js'
@@ -56,6 +57,7 @@ interface API {
   comment: CommentAPI;
   communityevent: CommunityEventAPI;
   dashboard: DashboardAPI;
+  domain: DomainAPI;
   donations: DonationsAPI;
   group: GroupAPI;
   invitation: InvitationAPI;

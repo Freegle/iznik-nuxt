@@ -26,6 +26,9 @@
         />
       </b-form-group>
     </validating-form>
+    <div v-if="suggestedDomains && suggestedDomains.length" class="text-info small">
+      Did you mean <b>{{ suggestedDomains[0] }}</b>?
+    </div>
   </div>
 </template>
 <script>
@@ -35,6 +38,11 @@ import ValidatingForm from '../components/ValidatingForm'
 import ValidatingFormInput from '../components/ValidatingFormInput'
 import validationHelpers from '@/mixins/validationHelpers'
 
+const a = require('axios')
+const axios = a.create({
+  timeout: 300000
+})
+
 export default {
   components: { ValidatingForm, ValidatingFormInput },
   mixins: [validationMixin, validationHelpers],
@@ -42,7 +50,7 @@ export default {
     email: {
       type: String,
       required: false,
-      defaul: null
+      default: null
     },
     valid: {
       type: Boolean,
@@ -76,9 +84,24 @@ export default {
     }
   },
   watch: {
-    email(newVal) {
+    async email(newVal) {
       if (newVal && newVal.indexOf('@') !== -1) {
-        //
+        // Ask the server to spot typos in this domain.
+        const domain = newVal.substring(newVal.indexOf('@') + 1)
+
+        // Wait for the first dot, as that will be long enough that we don't thrash the server.
+        if (domain.indexOf('.') !== -1) {
+          this.suggestedDomains = []
+          const ret = await axios.get(process.env.API + '/domains', {
+            params: {
+              domain: domain
+            }
+          })
+
+          if (ret && ret.data && ret.data.ret === 0) {
+            this.suggestedDomains = ret.data.suggestions
+          }
+        }
       }
 
       // This check needs to be here rather than in checkState to ensure the vuelidate has got itself sorted out.
