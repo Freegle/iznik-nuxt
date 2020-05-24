@@ -201,7 +201,6 @@
   </div>
 </template>
 <script>
-// TODO MT POSTLAUNCH View Profile modal
 import waitForRef from '../mixins/waitForRef'
 import SettingsGroup from './SettingsGroup'
 import NoticeMessage from './NoticeMessage'
