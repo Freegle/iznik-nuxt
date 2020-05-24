@@ -22,7 +22,7 @@
     <p>
       Avoid special or extra journeys for freegling - see Government advice in
       <!-- eslint-disable-next-line -->
-      <ExternalLink href="https://www.gov.uk/government/publications/full-guidance-on-staying-at-home-and-away-from-others/full-guidance-on-staying-at-home-and-away-from-others">England</ExternalLink>,
+      <ExternalLink href="https://www.gov.uk/government/publications/staying-alert-and-safe-social-distancing/staying-alert-and-safe-social-distancing">England</ExternalLink>,
       <!-- eslint-disable-next-line -->
       <ExternalLink href="https://www.gov.uk/guidance/coronavirus-covid-19-information-for-individuals-and-businesses-in-scotland">Scotland</ExternalLink>,
       <ExternalLink href="https://gov.wales/coronavirus">

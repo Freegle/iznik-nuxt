@@ -19,7 +19,12 @@
             And lots of people haven't heard of Freegle - so it helps get them freegling too!
           </p>
         </NoticeMessage>
+        <b-button v-if="isApp" variant="white" class="mt-1" @click="shareApp">
+          Share now
+        </b-button>
+
         <social-sharing
+          v-if="!isApp" 
           :url="message.url"
           :title="'Sharing ' + message.subject"
           :description="message.textbody"
@@ -108,6 +113,9 @@ export default {
     }
   },
   computed: {
+    isApp() {
+      return process.env.IS_APP
+    },
     message() {
       return this.$store.getters['messages/get'](this.id)
     }
@@ -152,6 +160,35 @@ export default {
       this.$api.bandit.chosen({
         uid: 'share',
         variant: type
+      })
+    },
+    shareApp(){
+      console.log('shareApp')
+      this.$nextTick(() => {
+        if (process.env.IS_APP) { // CC..
+          console.log('shareApp this.message',this.message)
+          const href = this.message.url
+          const subject = 'Sharing ' + this.message.subject
+          // https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin
+          const options = {
+            message: this.message.textbody + "\n\n",  // not supported on some apps (Facebook, Instagram)
+            subject: subject,                         // for email
+            //files: ['', ''], // an array of filenames either locally or remotely
+            url: href,
+            //chooserTitle: 'Pick an app' // Android only, you can override the default share sheet title
+          }
+
+          const onSuccess = function (result) {
+            console.log("Share completed? " + result.completed)   // On Android apps mostly return false even while it's true
+            console.log("Shared to app: " + result.app)           // On Android result.app is currently empty. On iOS it's empty when sharing is cancelled (result.completed=false)
+          }
+
+          const onError = function (msg) {
+            console.log("Sharing failed with message: " + msg)
+          }
+
+          window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError)
+        }
       })
     }
   }

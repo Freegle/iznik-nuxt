@@ -53,13 +53,16 @@
         <v-icon v-else name="cog" />
         Change moderation status to <em>{{ modstatus }}</em>
       </div>
-      <NoticeMessage v-if="stdmsg.autosend" variant="info">
-        Autosend is disabled while we're still testing this version.  Please review the message to make sure
-        it looks ok and any substitution strings have expanded correctly, before sending it.
-      </NoticeMessage>
     </template>
     <template slot="modal-footer" slot-scope="{ cancel }">
-      <SpinButton :label="processLabel" name="envelope" spinclass="success" variant="success" :handler="process" />
+      <SpinButton
+        ref="process"
+        :label="processLabel"
+        name="envelope"
+        spinclass="success"
+        variant="success"
+        :handler="process"
+      />
       <b-button variant="white" @click="cancel">
         Cancel
       </b-button>
@@ -71,10 +74,11 @@ import Postcode from './Postcode'
 import NoticeMessage from './NoticeMessage'
 import SpinButton from './SpinButton'
 import keywords from '@/mixins/keywords.js'
+import waitForRef from '@/mixins/waitForRef'
 
 export default {
   components: { SpinButton, NoticeMessage, Postcode },
-  mixins: [keywords],
+  mixins: [keywords, waitForRef],
   props: {
     message: {
       type: Object,
@@ -291,7 +295,7 @@ export default {
               this.subject = this.subject.toLowerCase().trim()
             }
 
-            // Now the this.textbody.
+            // Now the textbody.
             msg = msg.toLowerCase()
 
             // Contentious choice of single space
@@ -334,6 +338,13 @@ export default {
       this.body = this.substitutionStrings(msg).trim()
 
       this.showModal = true
+
+      if (this.stdmsg.autosend) {
+        // Start doing stuff.
+        this.waitForRef('process', () => {
+          this.$refs.process.click()
+        })
+      }
     },
 
     hide() {

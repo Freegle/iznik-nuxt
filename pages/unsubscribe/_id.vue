@@ -150,7 +150,7 @@ export default {
         // If we're trying to do this, we must have logged in at some point in the past, even if not on this device
         // and therefore not according to our store.  Set that, which will force us to show the sign in rather than
         // sign up variant of the login modal.
-        this.$store.dispatch('auth/setLoggedInEver', true)
+        this.$store.dispatch('auth/loggedInEver', true)
         this.$store.dispatch('auth/forceLogin', true)
       } else {
         this.$refs.confirm.show()

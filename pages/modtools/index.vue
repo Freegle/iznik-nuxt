@@ -2,6 +2,7 @@
   <div v-if="me">
     <h2>Hello, {{ me.displayname }}</h2>
     <p>Here's your dashboard, where you can see what your communities have been doing recently.</p>
+    <p>Need temporary help moderating?  Mail <a href="mailto:mentors@ilovefreegle.org">mentors@ilovefreegle.org</a>.</p>
     <p v-if="isApp">
       ModTools app version: {{ modtoolsVersion }}.
     </p>
