@@ -10,15 +10,19 @@
         <validating-form-input
           :value="email"
           type="email"
+          name="email"
           :size="size"
           class="email"
           :validation="$v.email"
           validation-enabled
           :validation-messages="{
-            email: 'Not a valid email address...yet!'
+            email: 'Please enter a valid email address.'
           }"
           :center="center"
+          autocomplete="username email"
           @input="input"
+          @focus="focus"
+          @blur="blur"
         />
       </b-form-group>
     </validating-form>
@@ -67,7 +71,8 @@ export default {
   },
   data: function() {
     return {
-      suggestedDomains: []
+      suggestedDomains: [],
+      focused: false
     }
   },
   watch: {
@@ -92,10 +97,18 @@ export default {
       if (email !== this.email) {
         this.$emit('update:email', email ? email.trim() : null)
 
-        if (email) {
+        if (email && !this.focused) {
           this.$v.$touch()
+        } else {
+          this.$v.$reset()
         }
       }
+    },
+    focus() {
+      this.focused = true
+    },
+    blur() {
+      this.focused = false
     }
   },
   validations: {
