@@ -34,7 +34,11 @@ const cordovaApp = {
   // deviceready Event Handler
   //
   // Bind any cordova events here. Common events are: 'pause', 'resume', etc.
-  onDeviceReady: function () {
+  onDeviceReady: function(){
+    setTimeout(cordovaApp.startup,500) // May-20 Now seems to be necessary to stop crash at startup in iOS MT
+  },
+
+  startup: function () {
     try {
       console.log('cordovaApp: onDeviceReady')
 
