@@ -91,6 +91,17 @@ export default {
         }
 
         this.show = messages.length
+      } else {
+        const visible = this.$store.getters['misc/get']('visible')
+
+        if (!visible) {
+          // If we're not visible, then clear what we have in the store.  We don't want to do that under our own
+          // feet, but if we do this then we will pick up changes from other people and avoid confusion.
+          this.$store.dispatch('messages/clearContext')
+          this.context = null
+          this.show = 0
+          this.$store.dispatch('messages/clear')
+        }
       }
     }
   },

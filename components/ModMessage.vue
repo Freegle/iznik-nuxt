@@ -5,7 +5,7 @@
         <div class="d-flex justify-content-between">
           <div>
             <div v-if="editing">
-              <div v-if="message.location" class="d-flex justify-content-start">
+              <div v-if="message.item && message.location" class="d-flex justify-content-start">
                 <b-select v-model="message.type" :options="typeOptions" class="type mr-1" size="lg" />
                 <b-input v-model="message.item.name" size="lg" class="mr-1" />
                 <b-input-group>
@@ -475,7 +475,7 @@ export default {
     async save() {
       this.saving = true
 
-      if (this.message.location) {
+      if (this.message.item) {
         // Well-structured message
         await this.$store.dispatch('messages/patch', {
           id: this.message.id,

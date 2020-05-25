@@ -194,8 +194,11 @@ export const actions = {
     }
 
     // Ensure the context has the correct distance we want to see.
-    params.context = params.context ? params.context : {}
-    params.context.distance = state.area
+    if (!params.context) {
+      params.context = {
+        distance: state.area
+      }
+    }
 
     params.types = [
       'Message',
@@ -262,6 +265,11 @@ export const actions = {
   },
 
   async send({ commit, dispatch }, params) {
+    if (params.message) {
+      // Removing the enter on the end can prevent some duplicates.
+      params.message = params.message.trim()
+    }
+
     const id = await this.$api.news.send(params)
     return dispatch('fetch', { id: params.threadhead || id })
   },

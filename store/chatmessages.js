@@ -9,8 +9,8 @@ export const state = () => ({
 })
 
 export const mutations = {
-  clearMessages(state) {
-    Object.assign(state.messages, {})
+  clearMessages(state, chatid) {
+    Vue.set(state.messages, chatid, {})
   },
 
   clearMessage(state, payload) {
@@ -83,7 +83,7 @@ export const getters = {
 
 export const actions = {
   clearMessages({ commit, state }, params) {
-    commit('clearMessages')
+    commit('clearMessages', params.chatid)
   },
 
   clearContext({ commit, state }, params) {
@@ -94,7 +94,7 @@ export const actions = {
   },
 
   async fetch({ commit, state }, params) {
-    const { chatid, noContext } = params
+    const { chatid, noContext, groupid } = params
 
     let ctx = null
 
@@ -106,6 +106,7 @@ export const actions = {
       chatid,
       {
         limit: 10,
+        groupid: groupid,
         context: ctx
       }
     )

@@ -13,7 +13,7 @@
       </li>
       <li v-if="!newsfeed.closed" class="list-inline-item">
         <b-btn variant="white" size="sm" @click="focusComment">
-          <v-icon name="comment" /><span class="d-none d-sm-inline">&nbsp;Comment</span>
+          <v-icon name="comment" /><span class="d-none d-sm-inline">&nbsp;Reply</span>
         </b-btn>
       </li>
       <li class="list-inline-item clickme" @click="showLove">

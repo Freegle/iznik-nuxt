@@ -11,7 +11,8 @@ export const state = () => ({
   attachments: {},
   progress: 1,
   max: 4,
-  uploading: false
+  uploading: false,
+  lastSubmitted: 0
 })
 
 export const mutations = {
@@ -51,6 +52,13 @@ export const mutations = {
   },
   setMessage(state, message) {
     Vue.set(state.messages, message.id, message)
+
+    if (message && message.submitted) {
+      state.lastSubmitted = Math.max(
+        state.lastSubmitted ? state.lastSubmitted : 0,
+        message.id
+      )
+    }
   },
   clearMessage: (state, params) => {
     Vue.delete(state.messages, params.id)
@@ -133,6 +141,9 @@ export const getters = {
   },
   getProgress: state => {
     return (Math.min(state.progress, state.max - 1) * 100) / state.max
+  },
+  lastSubmitted: state => {
+    return state.lastSubmitted
   }
 }
 
@@ -427,6 +438,12 @@ export const actions = {
 
     console.log('Done')
     commit('clear')
+
+    // We might have done this logged out.  By the time it has completed we will have an account, so we want to make
+    // sure that the login page pops up rather than the signup page.
+    dispatch('auth/loggedInEver', true, {
+      root: true
+    })
 
     return results
   },

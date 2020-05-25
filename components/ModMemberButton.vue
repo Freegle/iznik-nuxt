@@ -5,6 +5,7 @@
       :name="icon"
       :label="label"
       class="mb-1"
+      :spinclass="spinclass"
       :disabled="disabled"
       :handler="click"
     />
@@ -128,34 +129,41 @@ export default {
     groupid() {
       // For member entries this is returned at the top level.
       return this.member.groupid
+    },
+    spinclass() {
+      if (this.variant === 'success') {
+        return 'success'
+      }
+
+      return null
     }
   },
   methods: {
     async click() {
       if (this.approve) {
         // Standard approve button - no modal.
-        this.approveIt()
+        await this.approveIt()
       } else if (this.delete) {
         // Standard delete button - no modal.
-        this.deleteIt()
+        await this.deleteIt()
       } else if (this.spamreport) {
-        this.spamReport()
+        await this.spamReport()
       } else if (this.spamconfirm) {
-        this.spamConfirm()
+        await this.spamConfirm()
       } else if (this.spamrequestremove) {
-        this.spamRequestRemove()
+        await this.spamRequestRemove()
       } else if (this.spamremove) {
-        this.spamRemove()
+        await this.spamRemove()
       } else if (this.spamwhitelist) {
-        this.spamWhitelist()
+        await this.spamWhitelist()
       } else if (this.spamignore) {
-        this.spamIgnore()
+        await this.spamIgnore()
       } else if (this.hold) {
         // Standard hold button - no modal.
-        this.holdIt()
+        await this.holdIt()
       } else if (this.release) {
         // Standard release button - no modal.
-        this.releaseIt()
+        await this.releaseIt()
       } else {
         // We want to show a modal.
         if (this.reject) {
@@ -179,8 +187,8 @@ export default {
         })
       }
     },
-    approveIt() {
-      this.$store.dispatch('members/approve', {
+    async approveIt() {
+      await this.$store.dispatch('members/approve', {
         id: this.member.userid,
         groupid: this.groupid
       })
@@ -198,59 +206,49 @@ export default {
       })
     },
     async spamConfirm() {
-      this.doing = true
       await this.$store.dispatch('spammers/confirm', {
         id: this.member.spammer.id,
         userid: this.member.userid
       })
-      this.done = true
     },
     async spamRequestRemove() {
-      this.doing = true
       await this.$store.dispatch('spammers/requestremove', {
         id: this.member.spammer.id,
         userid: this.member.userid
       })
-      this.done = true
     },
     async spamRemove() {
-      this.doing = true
       await this.$store.dispatch('spammers/remove', {
         id: this.member.spammer.id,
         userid: this.member.userid
       })
-      this.done = true
     },
     async spamWhitelist() {
-      this.doing = true
       await this.$store.dispatch('spammers/whitelist', {
         id: this.member.spammer.id,
         userid: this.member.userid
       })
-      this.done = true
     },
     async spamIgnore() {
-      this.doing = true
       await this.$store.dispatch('members/spamignore', {
         userid: this.member.userid,
         groupid: this.groupid
       })
-      this.done = true
     },
-    deleteConfirmed() {
-      this.$store.dispatch('members/delete', {
+    async deleteConfirmed() {
+      await this.$store.dispatch('members/delete', {
         id: this.member.userid,
         groupid: this.groupid
       })
     },
-    holdIt() {
-      this.$store.dispatch('members/hold', {
+    async holdIt() {
+      await this.$store.dispatch('members/hold', {
         userid: this.member.userid,
         groupid: this.groupid
       })
     },
-    releaseIt() {
-      this.$store.dispatch('members/release', {
+    async releaseIt() {
+      await this.$store.dispatch('members/release', {
         userid: this.member.userid,
         groupid: this.groupid
       })

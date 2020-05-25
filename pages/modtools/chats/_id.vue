@@ -13,7 +13,7 @@
           </b-card-body>
         </b-card>
         <ul v-for="chat in visibleChats" :key="'chat-' + chat.id" class="p-0 pt-1 list-unstyled mb-1">
-          <li :class="{ active: chat && parseInt(activeChat) === parseInt(chat.id) }">
+          <li :class="{ active: chat && selectedChatId === parseInt(chat.id) }">
             <ChatListEntry :id="chat.id" />
           </li>
         </ul>
@@ -32,7 +32,7 @@
         </div>
       </b-col>
       <b-col cols="12" md="8" :class="'chatback ' + (selectedChatId ? 'd-block' : 'd-none d-md-block')">
-        <ChatPane v-if="activeChat" :id="activeChat" />
+        <ChatPane v-if="selectedChatId" :id="selectedChatId" />
       </b-col>
     </b-row>
   </client-only>

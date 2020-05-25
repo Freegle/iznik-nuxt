@@ -6,6 +6,7 @@
       :text-to-highlight="formattedString"
       highlight-class-name="highlight"
       class="nopara"
+      auto-escape
     />
 
     <span v-show="text && text.length > maxChars">

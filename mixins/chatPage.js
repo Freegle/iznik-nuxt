@@ -21,27 +21,32 @@ export default {
 
   computed: {
     sortedChats() {
-      // We sort chats by RSVP first, then unread, then last time.
+      // We sort chats by the currently selected one first, RSVP first, then unread, then last time.
       const chats = Object.values(this.$store.getters['chats/list'])
+      let ret = null
 
-      chats.sort(function(a, b) {
-        const aexpected = a.replyexpected && !a.replyreceived
-        const bexpected = b.replyexpected && !b.replyreceived
-        const aunseen = Math.max(0, a.unseen)
-        const bunseen = Math.max(0, b.unseen)
-
-        let ret = null
-
-        if (aexpected !== bexpected) {
-          ret = bexpected - aexpected
-        } else if (bunseen !== aunseen) {
-          ret = bunseen - aunseen
-        } else if (a.lastdate && !b.lastdate) {
+      chats.sort((a, b) => {
+        if (a.id === this.selectedChatId) {
           ret = -1
-        } else if (b.lastdate && !a.lastdate) {
+        } else if (b.id === this.selectedChatId) {
           ret = 1
         } else {
-          ret = new Date(b.lastdate) - new Date(a.lastdate)
+          const aexpected = a.replyexpected && !a.replyreceived
+          const bexpected = b.replyexpected && !b.replyreceived
+          const aunseen = Math.max(0, a.unseen)
+          const bunseen = Math.max(0, b.unseen)
+
+          if (aexpected !== bexpected) {
+            ret = bexpected - aexpected
+          } else if (bunseen !== aunseen) {
+            ret = bunseen - aunseen
+          } else if (a.lastdate && !b.lastdate) {
+            ret = -1
+          } else if (b.lastdate && !a.lastdate) {
+            ret = 1
+          } else {
+            ret = new Date(b.lastdate) - new Date(a.lastdate)
+          }
         }
 
         return ret
@@ -87,21 +92,6 @@ export default {
         : []
 
       return chats
-    },
-
-    activeChat() {
-      // Selected chat if present, otherwise first chat if we have one.
-      let ret = null
-
-      if (this.selectedChatId) {
-        // We have selected one - try to find it
-        return this.selectedChatId
-      } else if (this.sortedChats && this.sortedChats[0]) {
-        // None selected - use the first if we have some.
-        ret = this.sortedChats[0].id
-      }
-
-      return ret
     }
   },
 
@@ -132,6 +122,13 @@ export default {
 
   created() {
     this.selectedChatId = parseInt(this.$route.params.id) || null
+
+    if (this.selectedChatId) {
+      // Save it so that it sticks at the top.
+      this.$store.dispatch('chats/currentChat', {
+        chatid: this.selectedChatId
+      })
+    }
   },
 
   watch: {
