@@ -93,6 +93,17 @@ export default {
       return ret
     },
 
+    sortedGroups() {
+      let groups = this.groups
+      groups = groups.sort((a, b) => {
+        return a.namedisplay
+          .toLowerCase()
+          .localeCompare(b.namedisplay.toLowerCase())
+      })
+
+      return groups
+    },
+
     groupOptions() {
       const groups = []
 
@@ -123,7 +134,7 @@ export default {
         }
       }
 
-      for (const group of this.groups) {
+      for (const group of this.sortedGroups) {
         if (
           this.listall ||
           (group.type === 'Freegle' &&
@@ -153,11 +164,6 @@ export default {
           })
         }
       }
-
-      groups.sort((a, b) => {
-        // console.log('Group sort', a, b)
-        a.text.toLowerCase().localeCompare(b.text.toLowerCase())
-      })
 
       return groups
     },
