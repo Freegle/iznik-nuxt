@@ -78,26 +78,13 @@ export default {
       focused: false
     }
   },
-  mounted() {
-    this.checkState(this.email)
-  },
-  methods: {
-    input(newVal) {
-      this.checkState(newVal)
-    },
-    async checkState(email) {
-      if (email !== this.email) {
-        this.$emit('update:email', email ? email.trim() : null)
-
-        if (email && !this.focused) {
-          this.$v.$touch()
-        } else {
-          this.$v.$reset()
-        }
-
-        if (email && email.indexOf('@') !== -1) {
+  watch: {
+    email: {
+      immediate: true,
+      async handler(newVal) {
+        if (newVal && newVal.indexOf('@') !== -1) {
           // Ask the server to spot typos in this domain.
-          const domain = email.substring(email.indexOf('@') + 1)
+          const domain = newVal.substring(newVal.indexOf('@') + 1)
 
           // Wait for the first dot, as that will be long enough that we don't thrash the server.
           if (domain.indexOf('.') !== -1) {
@@ -117,6 +104,25 @@ export default {
         // This check needs to be here rather than in checkState to ensure the vuelidate has got itself sorted out.
         const valid = !this.$v.email.$invalid
         this.$emit('update:valid', valid)
+      }
+    }
+  },
+  mounted() {
+    this.checkState(this.email)
+  },
+  methods: {
+    input(newVal) {
+      this.checkState(newVal)
+    },
+    checkState(email) {
+      if (email !== this.email) {
+        this.$emit('update:email', email ? email.trim() : null)
+
+        if (email && !this.focused) {
+          this.$v.$touch()
+        } else {
+          this.$v.$reset()
+        }
       }
     },
     focus() {
