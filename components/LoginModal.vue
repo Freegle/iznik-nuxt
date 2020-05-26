@@ -146,6 +146,7 @@
             class="mb-2 mt-2"
             type="submit"
             value="login"
+            :disabled="!emailValid || !password"
           >
             <span v-if="!signUp">
               Sign in to Freegle
@@ -195,6 +196,7 @@ export default {
       firstname: null,
       lastname: null,
       email: null,
+      emailValid: false,
       password: null,
       pleaseShowModal: false,
       showSignUp: false,
@@ -371,7 +373,7 @@ export default {
               }
             })
         }
-      } else {
+      } else if (this.email && this.password) {
         // Login
         this.$store
           .dispatch('auth/login', {

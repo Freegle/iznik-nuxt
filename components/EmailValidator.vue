@@ -78,32 +78,6 @@ export default {
       focused: false
     }
   },
-  watch: {
-    async email(newVal) {
-      if (newVal && newVal.indexOf('@') !== -1) {
-        // Ask the server to spot typos in this domain.
-        const domain = newVal.substring(newVal.indexOf('@') + 1)
-
-        // Wait for the first dot, as that will be long enough that we don't thrash the server.
-        if (domain.indexOf('.') !== -1) {
-          this.suggestedDomains = []
-          const ret = await this.$axios.get(process.env.API + '/domains', {
-            params: {
-              domain: domain
-            }
-          })
-
-          if (ret && ret.data && ret.data.ret === 0) {
-            this.suggestedDomains = ret.data.suggestions
-          }
-        }
-      }
-
-      // This check needs to be here rather than in checkState to ensure the vuelidate has got itself sorted out.
-      const valid = !this.$v.email.$invalid
-      this.$emit('update:valid', valid)
-    }
-  },
   mounted() {
     this.checkState(this.email)
   },
@@ -111,7 +85,7 @@ export default {
     input(newVal) {
       this.checkState(newVal)
     },
-    checkState(email) {
+    async checkState(email) {
       if (email !== this.email) {
         this.$emit('update:email', email ? email.trim() : null)
 
@@ -120,6 +94,29 @@ export default {
         } else {
           this.$v.$reset()
         }
+
+        if (email && email.indexOf('@') !== -1) {
+          // Ask the server to spot typos in this domain.
+          const domain = email.substring(email.indexOf('@') + 1)
+
+          // Wait for the first dot, as that will be long enough that we don't thrash the server.
+          if (domain.indexOf('.') !== -1) {
+            this.suggestedDomains = []
+            const ret = await this.$axios.get(process.env.API + '/domains', {
+              params: {
+                domain: domain
+              }
+            })
+
+            if (ret && ret.data && ret.data.ret === 0) {
+              this.suggestedDomains = ret.data.suggestions
+            }
+          }
+        }
+
+        // This check needs to be here rather than in checkState to ensure the vuelidate has got itself sorted out.
+        const valid = !this.$v.email.$invalid
+        this.$emit('update:valid', valid)
       }
     },
     focus() {
