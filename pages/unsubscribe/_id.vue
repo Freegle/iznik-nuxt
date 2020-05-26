@@ -36,32 +36,15 @@
         <div v-else>
           <h4>Please enter your email address</h4>
           <p>We'll email you to confirm.</p>
-          <b-row>
-            <b-col cols="6">
-              <validating-form>
-                <validating-form-input
-                  v-model="email"
-                  size="lg"
-                  placeholder="Enter your email address"
-                  :validation="$v.email"
-                  :validation-enabled="true"
-                  :validation-messages="{
-                    required: 'Please enter an email address.',
-                    email: 'Please enter a valid email address.  If you have problems, please mail support@ilovefreegle.org'
-                  }"
-                />
-              </validating-form>
-            </b-col>
-            <b-col cols="6">
-              <b-btn size="lg" variant="primary" class="mb-2" @click="emailConfirm">
-                <v-icon v-if="leaving" name="sync" class="fa-spin" />
-                <v-icon v-else-if="emailSent" name="check" />
-                <v-icon v-else-if="emailProblem" name="exclamation-triangle" />
-                <v-icon v-else name="trash-alt" />
-                Unsubscribe
-              </b-btn>
-            </b-col>
-          </b-row>
+          <EmailValidator :email.sync="email" :valid.sync="emailValid" label="" />
+          <SpinButton
+            size="lg"
+            name="trash-alt"
+            variant="primary"
+            class="mb-2"
+            label="Unsubscribe"
+            @handler="emailConfirm"
+          />
           <NoticeMessage v-if="emailSent" variant="primary" class="mt-2 mb-2">
             We've sent you an email to confirm.  Please check your email, including your spam folder.
           </NoticeMessage>
@@ -85,12 +68,12 @@
 <script>
 import { validationMixin } from 'vuelidate'
 import { required, email } from 'vuelidate/lib/validators'
+import EmailValidator from '../../components/EmailValidator'
+import SpinButton from '../../components/SpinButton'
 import ForgetFailModal from '@/components/ForgetFailModal'
 import ForgetSucceedModal from '@/components/ForgetSucceedModal'
 import buildHead from '@/mixins/buildHead.js'
 import loginOptional from '@/mixins/loginOptional.js'
-import ValidatingForm from '@/components/ValidatingForm'
-import ValidatingFormInput from '@/components/ValidatingFormInput'
 import validationHelpers from '@/mixins/validationHelpers'
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect.vue')
 const ConfirmModal = () => import('~/components/ConfirmModal.vue')
@@ -98,8 +81,8 @@ const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
-    ValidatingForm,
-    ValidatingFormInput,
+    SpinButton,
+    EmailValidator,
     ForgetSucceedModal,
     ForgetFailModal,
     GroupRememberSelect,
@@ -112,6 +95,7 @@ export default {
       groupid: null,
       leaving: false,
       email: null,
+      emailValid: false,
       emailSent: false,
       emailProblem: false,
       userid: null,
