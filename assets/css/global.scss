@@ -316,3 +316,21 @@ legend {
     opacity: 0.25;
   }
 }
+
+form {
+  label,
+  .col-form-label {
+    font-weight: bold;
+    color: $color-black;
+    margin-top: 10px;
+  }
+
+  .is-invalid label,
+  .is-invalid .col-form-label {
+    color: $color-red;
+  }
+
+  .form-group.is-invalid .invalid-feedback {
+    display: block;
+  }
+}

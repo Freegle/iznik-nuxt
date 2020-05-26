@@ -22,7 +22,7 @@
       <a href="https://freegle.in/A4Poster" target="_blank">
         <b-img-lazy src="~static/posters/A4.png" class="poster border border-dark mb-2" />
         <br>
-        <b-btn variant="primary" size="lg" class="mt-2 mb-2">
+        <b-btn variant="success" size="lg" class="mt-2 mb-2">
           Download poster
         </b-btn>
       </a>
@@ -30,7 +30,7 @@
         You can help even more by letting us know where you put up posters. Once we know where it is, then
         we can encourage other freeglers to put one up there in future. <b>Please do this!</b>
       </p>
-      <b-btn variant="secondary" size="lg" class="mb-1" @click="added">
+      <b-btn variant="primary" size="lg" class="mb-1" @click="added">
         I put up a poster!
       </b-btn>
       <p>
@@ -48,29 +48,26 @@
           <p>
             We'll send them an email invitation. It will show your name and email.
           </p>
-          <validating-form>
-            <b-input-group>
-              <validating-form-input
-                v-model.trim="invitemail"
-                type="email"
-                size="lg"
-                placeholder="Enter their email address"
-                :validation="$v.invitemail"
-                :validation-enabled="validationEnabled"
-                :validation-messages="{
-                  required: 'That isn\'t a valid email address - can you check?'
-                }"
-              />
-              <b-input-group-append>
-                <b-button v-if="!validationEnabled || !$v.invitemail.$invalid" variant="primary" size="lg" @click="invite">
-                  <v-icon name="envelope" />&nbsp;Invite a friend
-                </b-button>
-              </b-input-group-append>
-            </b-input-group>
-          </validating-form>
-          <span class="small text-muted">
+          <EmailValidator
+            ref="email"
+            size="lg"
+            :email.sync="invitemail"
+            :valid.sync="emailValid"
+            label="Enter their email address"
+          />
+          <SpinButton
+            v-if="emailValid"
+            name="envelope"
+            spinclass="success"
+            variant="success"
+            size="lg"
+            :handler="invite"
+            label="Invite a friend"
+            class="mb-1"
+          />
+          <div class="small text-muted">
             By using this you confirm that you have their consent.  That's a PECR/GDPR thing.
-          </span>
+          </div>
         </b-card>
         <div v-if="invitations && invitations.length">
           <h5>Your recent invitations</h5>
@@ -105,7 +102,7 @@
       <b-img-lazy src="/businesscards/FreegleBusinessCardSmall.png" class="border border-dark mb-2" />
       <br>
       <a href="https://freegle.in/BusinessCardFront" target="_blank" class="mt-1 mb-1">
-        <b-btn size="lg" variant="secondary">
+        <b-btn size="lg" variant="primary">
           Download business card
         </b-btn>
       </a>
@@ -114,7 +111,7 @@
         Tell your story
       </h3>
       <p>This helps encourage other people to try freegling.</p>
-      <b-btn to="/stories" variant="secondary" size="lg">
+      <b-btn to="/stories" variant="primary" size="lg">
         <v-icon name="book-open" /> Tell your story
       </b-btn>
     </b-col>
@@ -128,20 +125,19 @@
 </style>
 <script>
 import { required, email } from 'vuelidate/lib/validators'
-import { validationMixin } from 'vuelidate'
 import PosterModal from '../components/PosterModal'
 import buildHead from '../mixins/buildHead'
-import ValidatingForm from '../components/ValidatingForm'
-import ValidatingFormInput from '../components/ValidatingFormInput'
-import validationHelpers from '@/mixins/validationHelpers'
+import EmailValidator from '../components/EmailValidator'
+import SpinButton from '../components/SpinButton'
 import loginRequired from '@/mixins/loginRequired.js'
 
 export default {
-  components: { ValidatingForm, ValidatingFormInput, PosterModal },
-  mixins: [loginRequired, buildHead, validationMixin, validationHelpers],
+  components: { SpinButton, EmailValidator, PosterModal },
+  mixins: [loginRequired, buildHead],
   data: function() {
     return {
-      invitemail: null
+      invitemail: null,
+      emailValid: false
     }
   },
   computed: {

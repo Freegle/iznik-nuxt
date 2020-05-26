@@ -18,6 +18,7 @@ import ChatAPI from './ChatAPI.js'
 import CommentAPI from './CommentAPI.js'
 import CommunityEventAPI from './CommunityEventAPI.js'
 import DashboardAPI from './DashboardAPI.js'
+import DomainAPI from './DomainAPI.js'
 import DonationsAPI from './DonationsAPI.js'
 import GroupAPI from './GroupAPI.js'
 import InvitationAPI from './InvitationAPI.js'
@@ -56,6 +57,7 @@ export default ({ $axios, store }) => {
     comment: new CommentAPI(options),
     communityevent: new CommunityEventAPI(options),
     dashboard: new DashboardAPI(options),
+    domain: new DomainAPI(options),
     donations: new DonationsAPI(options),
     group: new GroupAPI(options),
     invitation: new InvitationAPI(options),
