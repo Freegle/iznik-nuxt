@@ -15,7 +15,6 @@ const pushstate = Vue.observable({
 
 let acceptedMobilePushId = false
 let mobilePush = false
-let mobilePushRegistered = false
 let lastPushMsgid = false
 
 window.iznikroot = location.pathname.substring(0, location.pathname.lastIndexOf('/') + 1)
@@ -76,8 +75,11 @@ const cordovaApp = {
             sound: false
           }
         })
+        if( !mobilePush){
+          console.log('MOBILE PUSH RETURNED FALSE')
+          return
+        }
         mobilePush.on('registration', function (data) {
-          mobilePushRegistered = true
           pushstate.mobilePushId = data.registrationId
           console.log('push registration ' + pushstate.mobilePushId)
 
@@ -227,10 +229,11 @@ export function logoutPushId() {
 let lastBadgeCount = -1
 export function setBadgeCount(badgeCount) {
 //console.log('setBadgeCount X', badgeCount)
+  if( isNaN(badgeCount)) badgeCount = 0
   if (badgeCount !== lastBadgeCount) {
     if (process.env.IS_APP) {
 //      console.log('setBadgeCount', badgeCount)
-      if (mobilePush && mobilePushRegistered) {
+      if (mobilePush) {
         mobilePush.setApplicationIconBadgeNumber(function () { }, function () { }, badgeCount)
         lastBadgeCount = badgeCount
       }
