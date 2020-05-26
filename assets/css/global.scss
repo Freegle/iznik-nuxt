@@ -39,6 +39,10 @@
   border-color: $color-blue--2;
 }
 
+.btn-primary:focus {
+  box-shadow: 0 0 0 0.2rem rgba(72,180,97,.5);
+}
+
 // This is the secondary CTA
 .btn-secondary {
   background-color: $colour-secondary;
@@ -52,6 +56,10 @@
   color: $color-black;
   background-color: $color-white;
   border-color: $color-blue--2;
+}
+
+.btn-secondary:focus {
+  box-shadow: 0 0 0 0.2rem rgba(38,143,255,.5)
 }
 
 // This is the tertiary CTA
