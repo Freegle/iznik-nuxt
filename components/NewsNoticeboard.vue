@@ -30,7 +30,7 @@
         <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
         <nuxt-link to="/spread">
           <b-btn
-            variant="primary"
+            variant="secondary"
             size="sm"
             class="float-right d-inline-block"
             @click="share"

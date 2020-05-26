@@ -23,7 +23,7 @@
     <div v-else-if="configid && config">
       <b-card no-body class="mb-2 mt-1">
         <b-card-header>
-          <b-btn v-b-toggle.accordion-general block href="#" variant="primary">
+          <b-btn v-b-toggle.accordion-general block href="#" variant="secondary">
             General Settings
           </b-btn>
         </b-card-header>
@@ -127,7 +127,7 @@
       </b-card>
       <b-card no-body class="mb-2 mt-1">
         <b-card-header>
-          <b-btn v-b-toggle.accordion-pendingmessages block href="#" variant="primary">
+          <b-btn v-b-toggle.accordion-pendingmessages block href="#" variant="secondary">
             Pending Messages
           </b-btn>
         </b-card-header>
@@ -139,7 +139,7 @@
       </b-card>
       <b-card no-body class="mb-2 mt-1">
         <b-card-header>
-          <b-btn v-b-toggle.accordion-approvedmessages block href="#" variant="primary">
+          <b-btn v-b-toggle.accordion-approvedmessages block href="#" variant="secondary">
             Approved Messages
           </b-btn>
         </b-card-header>
@@ -151,7 +151,7 @@
       </b-card>
       <b-card no-body class="mb-2 mt-1">
         <b-card-header>
-          <b-btn v-b-toggle.accordion-pendingmembers block href="#" variant="primary">
+          <b-btn v-b-toggle.accordion-pendingmembers block href="#" variant="secondary">
             Pending Members
           </b-btn>
         </b-card-header>
@@ -163,7 +163,7 @@
       </b-card>
       <b-card no-body class="mb-2 mt-1">
         <b-card-header>
-          <b-btn v-b-toggle.accordion-approvedmembers block href="#" variant="primary">
+          <b-btn v-b-toggle.accordion-approvedmembers block href="#" variant="secondary">
             Approved Members
           </b-btn>
         </b-card-header>

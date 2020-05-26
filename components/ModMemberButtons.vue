@@ -4,7 +4,7 @@
       <ModMemberButton
         v-if="spamignore && member.suspectreason"
         :member="member"
-        variant="success"
+        variant="primary"
         icon="check"
         spamignore
         label="Approve"
@@ -12,7 +12,7 @@
       <ModMemberButton
         v-if="!member.heldby"
         :member="member"
-        variant="success"
+        variant="primary"
         icon="check"
         approve
         label="Approve"
@@ -54,7 +54,7 @@
       <ModMemberButton
         v-if="spamignore"
         :member="member"
-        variant="success"
+        variant="primary"
         icon="check"
         spamignore
         label="Approve"
@@ -63,7 +63,7 @@
         <ModMemberButton
           v-if="supportOrAdmin"
           :member="member"
-          variant="success"
+          variant="primary"
           icon="check"
           spamconfirm
           label="Confirm add to spammer list"
@@ -87,7 +87,7 @@
         <ModMemberButton
           v-else
           :member="member"
-          variant="success"
+          variant="primary"
           icon="times"
           spamrequestremove
           label="Request removal"
@@ -105,7 +105,7 @@
         <ModMemberButton
           v-else
           :member="member"
-          variant="success"
+          variant="primary"
           icon="times"
           spamrequestremove
           label="Request removal"
@@ -116,7 +116,7 @@
       <ModMemberButton
         v-if="spamignore && member.suspectreason"
         :member="member"
-        variant="success"
+        variant="primary"
         icon="check"
         spamignore
         label="Approve"
@@ -257,7 +257,7 @@ export default {
     variant(stdmsg) {
       switch (stdmsg.action) {
         case 'Approve Member':
-          return 'success'
+          return 'primary'
         case 'Reject Member':
           return 'warning'
         case 'Leave Member':

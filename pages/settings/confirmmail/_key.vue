@@ -18,7 +18,7 @@
             </b-row>
           </template>
           <template slot="modal-footer">
-            <b-button variant="success" @click="closed">
+            <b-button variant="primary" @click="closed">
               Close
             </b-button>
           </template>
@@ -43,7 +43,7 @@
             <b-button variant="white" @click="closed">
               Cancel
             </b-button>
-            <b-button variant="success" @click="resend">
+            <b-button variant="primary" @click="resend">
               Resend verification mail
             </b-button>
           </template>
@@ -64,7 +64,7 @@
             </b-row>
           </template>
           <template slot="modal-footer">
-            <b-button variant="success" @click="closed">
+            <b-button variant="primary" @click="closed">
               Close
             </b-button>
           </template>

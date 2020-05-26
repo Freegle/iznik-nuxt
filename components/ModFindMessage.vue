@@ -4,7 +4,7 @@
       <b-input v-model="term" placeholder="Message id/subject" @keyup.native.enter="search" />
       <b-input-group-append>
         <SpinButton
-          variant="success"
+          variant="primary"
           name="search"
           label="Search"
           spinclass="text-white"

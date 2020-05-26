@@ -89,16 +89,19 @@ export default {
         ret = this.$store.getters['auth/groups']
       }
 
-      if (ret) {
-        ret.sort(function(a, b) {
-          return a.namedisplay
-            .toLowerCase()
-            .localeCompare(b.namedisplay.toLowerCase())
-        })
-      }
-
       ret = ret || []
       return ret
+    },
+
+    sortedGroups() {
+      let groups = this.groups
+      groups = groups.sort((a, b) => {
+        return a.namedisplay
+          .toLowerCase()
+          .localeCompare(b.namedisplay.toLowerCase())
+      })
+
+      return groups
     },
 
     groupOptions() {
@@ -131,7 +134,7 @@ export default {
         }
       }
 
-      for (const group of this.groups) {
+      for (const group of this.sortedGroups) {
         if (
           this.listall ||
           (group.type === 'Freegle' &&
@@ -161,11 +164,6 @@ export default {
           })
         }
       }
-
-      groups.sort((a, b) => {
-        console.log('Group sort', a, b)
-        a.text.localeCompare(b.text)
-      })
 
       return groups
     },

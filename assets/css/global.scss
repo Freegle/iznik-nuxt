@@ -22,9 +22,9 @@
   border-bottom: 1px solid $colour-info-bg;
 }
 
-// There are six types of button used on the site - success, primary, white, danger, warning and link
+// There are six types of button used on the site - primary, secondary, white, danger, warning and link
 // This is the primary CTA
-.btn-success {
+.btn-primary {
   background-color: $colour-success;
   background-image: none;
   border-color: $color-green--dark;
@@ -33,25 +33,33 @@
   -webkit-font-smoothing: antialiased;
 }
 
-.btn-success:hover {
+.btn-primary:hover {
   color: $color-black;
   background-color: $color-white;
   border-color: $color-blue--2;
 }
 
+.btn-primary:focus {
+  box-shadow: 0 0 0 0.2rem rgba(72,180,97,.5);
+}
+
 // This is the secondary CTA
-.btn-primary {
-  background-color: $colour-primary;
+.btn-secondary {
+  background-color: $colour-secondary;
   border-color: $color-blue--dark;
   color: $color-white;
   text-shadow: 0 - 1 px 0 $color-black-opacity-59;
   -webkit-font-smoothing: antialiased;
 }
 
-.btn-primary:hover {
+.btn-secondary:hover {
   color: $color-black;
   background-color: $color-white;
   border-color: $color-blue--2;
+}
+
+.btn-secondary:focus {
+  box-shadow: 0 0 0 0.2rem rgba(38,143,255,.5)
 }
 
 // This is the tertiary CTA

@@ -85,7 +85,7 @@
                     and click this:
                   </p>
 
-                  <b-btn variant="success">
+                  <b-btn variant="primary">
                     Mark as TAKEN
                   </b-btn>
 
@@ -96,7 +96,7 @@
                     and click this:
                   </p>
 
-                  <b-btn variant="success">
+                  <b-btn variant="primary">
                     Mark as RECEIVED
                   </b-btn>
 
@@ -191,7 +191,7 @@
                   <p>
                     If you'd like to spread the word you can download a poster or ask for "business cards" to hand out:
                   </p>
-                  <b-btn to="/spread" class="btn-success">
+                  <b-btn to="/spread" variant="primary">
                     Find out more
                   </b-btn>
                   <p>
@@ -420,7 +420,7 @@
         <b-card v-if="loggedIn" no-body>
           <b-card-body class="p-3">
             <GroupRememberSelect v-model="contactGroupId" remember="contactmods" class="mb-3" />
-            <ChatButton :groupid="contactGroupId" size="md" title="Contact community volunteers" variant="success" class="mb-2" />
+            <ChatButton :groupid="contactGroupId" size="md" title="Contact community volunteers" variant="primary" class="mb-2" />
           </b-card-body>
         </b-card>
         <div class="text-muted">

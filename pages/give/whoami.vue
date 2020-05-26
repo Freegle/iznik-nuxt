@@ -23,7 +23,7 @@
         <transition name="fadein">
           <b-row v-if="email && !submitting">
             <b-col cols="12" md="6" offset-md="3" class="text-center pt-2 mt-2">
-              <b-btn variant="success" size="lg" block @click="next">
+              <b-btn variant="primary" size="lg" block @click="next">
                 Freegle it!
               </b-btn>
             </b-col>

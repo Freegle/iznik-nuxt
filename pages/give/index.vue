@@ -55,7 +55,7 @@
             </notice-message>
             <b-row class="mt-1">
               <b-col class="text-center mt-4" cols="12" md="6" offset-md="3">
-                <b-btn variant="success" size="lg" block :href="extgroup">
+                <b-btn variant="primary" size="lg" block :href="extgroup">
                   Proceed <v-icon name="angle-double-right" />
                 </b-btn>
               </b-col>
@@ -63,7 +63,7 @@
           </div>
           <b-row v-else-if="postcodeValid" class="mt-1">
             <b-col class="text-center mt-4" cols="12" md="6" offset-md="3">
-              <b-btn variant="success" size="lg" block to="/give/whatisit">
+              <b-btn variant="primary" size="lg" block to="/give/whatisit">
                 Next <v-icon name="angle-double-right" />
               </b-btn>
             </b-col>

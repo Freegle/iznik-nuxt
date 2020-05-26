@@ -15,7 +15,7 @@
               <groupSelect v-if="loggedIn" v-model="groupid" class="float-left" all />
             </b-col>
             <b-col>
-              <b-btn variant="success" class="float-right" @click="showAddModal">
+              <b-btn variant="primary" class="float-right" @click="showAddModal">
                 <v-icon name="book-open" /> Tell us your story!
               </b-btn>
             </b-col>

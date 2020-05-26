@@ -15,7 +15,7 @@
         <b-button variant="white" @click="cancel">
           Close
         </b-button>
-        <b-button variant="success" @click="report">
+        <b-button variant="primary" @click="report">
           Submit Report
         </b-button>
       </template>

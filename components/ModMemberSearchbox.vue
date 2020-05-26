@@ -10,7 +10,7 @@
     />
     <b-input-group-append>
       <b-button
-        variant="success"
+        variant="primary"
         :disabled="disabled"
         @click="search"
       >

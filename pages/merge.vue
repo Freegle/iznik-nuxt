@@ -34,7 +34,7 @@
             <p>
               You can close this page now, or:
             </p>
-            <b-btn size="lg" to="/" variant="success" class="mb-2">
+            <b-btn size="lg" to="/" variant="primary" class="mb-2">
               Continue
             </b-btn>
           </div>
@@ -42,7 +42,7 @@
             <p>This can cause you to miss messages.</p>
             <p>Would you like to combine them into a single account?</p>
             <div class="d-flex justify-content-between mb-2">
-              <b-btn variant="success" @click="mergeit">
+              <b-btn variant="primary" @click="mergeit">
                 Yes please
               </b-btn>
               <b-btn variant="warning" @click="reject">
@@ -65,7 +65,7 @@
                 {{ merge.user2.email }}
               </option>
             </b-select>
-            <b-btn v-if="preferred" class="mt-2" variant="success" size="lg" @click="combine">
+            <b-btn v-if="preferred" class="mt-2" variant="primary" size="lg" @click="combine">
               Combine my accounts
               <v-icon v-if="mergeInProgress" name="sync" class="fa-spin" />
               <v-icon v-else-if="mergeComplete" name="check" class="text-success" />
@@ -76,7 +76,7 @@
               <p>
                 You can close this page now, or:
               </p>
-              <b-btn size="lg" to="/" variant="success" class="mb-2">
+              <b-btn size="lg" to="/" variant="primary" class="mb-2">
                 Continue
               </b-btn>
             </div>

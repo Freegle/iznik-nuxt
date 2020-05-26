@@ -32,7 +32,7 @@
         <b-button variant="white" @click="cancel">
           Close
         </b-button>
-        <b-button v-if="!merged" variant="success" :disabled="!email1 || !email2 || !reason" @click="merge">
+        <b-button v-if="!merged" variant="primary" :disabled="!email1 || !email2 || !reason" @click="merge">
           Merge
         </b-button>
       </template>

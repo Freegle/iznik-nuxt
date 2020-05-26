@@ -33,7 +33,7 @@
       <b-button variant="white" @click="cancel">
         Close
       </b-button>
-      <b-button variant="success" @click="send">
+      <b-button variant="primary" @click="send">
         Send Report
       </b-button>
     </template>

@@ -22,7 +22,7 @@ export default {
     variant(stdmsg) {
       switch (stdmsg.action) {
         case 'Approve':
-          return 'success'
+          return 'primary'
         case 'Reject':
           return 'warning'
         case 'Leave':
