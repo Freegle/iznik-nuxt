@@ -22,7 +22,7 @@
           </span>
         </div>
       </div>
-      <div v-if="message && stdmsg.action === 'Edit' && message.location" class="d-flex justify-content-start">
+      <div v-if="message && stdmsg.action === 'Edit' && message.item" class="d-flex justify-content-start">
         <b-select v-model="message.type" :options="typeOptions" class="type mr-1" size="lg" />
         <b-input v-model="message.item.name" size="lg" class="mr-1" />
         <b-input-group>
@@ -53,13 +53,16 @@
         <v-icon v-else name="cog" />
         Change moderation status to <em>{{ modstatus }}</em>
       </div>
-      <NoticeMessage v-if="stdmsg.autosend" variant="info">
-        Autosend is disabled while we're still testing this version.  Please review the message to make sure
-        it looks ok and any substitution strings have expanded correctly, before sending it.
-      </NoticeMessage>
     </template>
     <template slot="modal-footer" slot-scope="{ cancel }">
-      <SpinButton :label="processLabel" variant="primary" :handler="process" />
+      <SpinButton
+        ref="process"
+        :label="processLabel"
+        name="envelope"
+        spinclass="success"
+        variant="primary"
+        :handler="process"
+      />
       <b-button variant="white" @click="cancel">
         Cancel
       </b-button>
@@ -71,10 +74,11 @@ import Postcode from './Postcode'
 import NoticeMessage from './NoticeMessage'
 import SpinButton from './SpinButton'
 import keywords from '@/mixins/keywords.js'
+import waitForRef from '@/mixins/waitForRef'
 
 export default {
   components: { SpinButton, NoticeMessage, Postcode },
-  mixins: [keywords],
+  mixins: [keywords, waitForRef],
   props: {
     message: {
       type: Object,
@@ -291,7 +295,7 @@ export default {
               this.subject = this.subject.toLowerCase().trim()
             }
 
-            // Now the this.textbody.
+            // Now the textbody.
             msg = msg.toLowerCase()
 
             // Contentious choice of single space
@@ -334,6 +338,13 @@ export default {
       this.body = this.substitutionStrings(msg).trim()
 
       this.showModal = true
+
+      if (this.stdmsg.autosend) {
+        // Start doing stuff.
+        this.waitForRef('process', () => {
+          this.$refs.process.click()
+        })
+      }
     },
 
     hide() {
@@ -493,15 +504,8 @@ export default {
         this.changedNewModStatus = true
       }
 
-      // People sometimes set up standard messages to automate the action without the intention of
-      // actually sending a message to the member.
-      let subj = this.subject.trim()
-      let body = this.body.trim()
-
-      if (!this.stdmsg.subjpref) {
-        subj = null
-        body = null
-      }
+      const subj = this.subject.trim()
+      const body = this.body.trim()
 
       switch (this.stdmsg.action) {
         case 'Approve':

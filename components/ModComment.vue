@@ -11,7 +11,7 @@
       <span v-if="savedComment.groupid">
         on {{ groupname }}
       </span>
-      <span v-if="amAModOn(savedComment.groupid)">
+      <span v-if="amAModOn(savedComment.groupid) || admin">
         <b-btn v-if="canEdit" variant="link" size="sm" @click="editIt">
           <v-icon name="pen" /> Edit
         </b-btn>
@@ -51,12 +51,23 @@ export default {
   },
   computed: {
     group() {
-      return this.comment.groupid
-        ? this.$store.getters['auth/groupById'](this.comment.groupid)
-        : null
+      let ret = null
+
+      if (this.comment.groupid) {
+        console.log('Compute group', this.comment.groupid)
+        ret = this.$store.getters['auth/groupById'](this.comment.groupid)
+        console.log('Our own', ret)
+
+        if (!ret) {
+          ret = this.$store.getters['group/get'](this.comment.groupid)
+          console.log('Group store', ret)
+        }
+      }
+
+      return ret
     },
     groupname() {
-      return this.group ? this.group.namedisplay : null
+      return this.group ? this.group.namedisplay : '#' + this.comment.groupid
     },
     canEdit() {
       return (
@@ -69,6 +80,14 @@ export default {
   mounted() {
     // To stop it updating on screen when editing in a modal.
     this.savedComment = cloneDeep(this.comment)
+
+    if (this.comment.groupid && !this.group) {
+      // Need to fetch group
+      console.log('Need to fetch group')
+      this.$store.dispatch('group/fetch', {
+        id: this.comment.groupid
+      })
+    }
   },
   methods: {
     async updateComments() {

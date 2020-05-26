@@ -24,7 +24,8 @@ export default {
   data: function() {
     return {
       askfor: null,
-      loading: false
+      loading: false,
+      grouprequired: false
     }
   },
   watch: {
@@ -48,7 +49,8 @@ export default {
         this.start &&
         this.end &&
         this.askfor &&
-        this.askfor.length
+        this.askfor.length &&
+        (this.groupid || !this.grouprequired)
       ) {
         this.loading = true
         const res = await this.$api.dashboard.fetch({

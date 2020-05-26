@@ -5,7 +5,7 @@
         <div class="d-flex justify-content-between">
           <div>
             <div v-if="editing">
-              <div v-if="message.item" class="d-flex justify-content-start">
+              <div v-if="message.item && message.location" class="d-flex justify-content-start">
                 <b-select v-model="message.type" :options="typeOptions" class="type mr-1" size="lg" />
                 <b-input v-model="message.item.name" size="lg" class="mr-1" />
                 <b-input-group>
@@ -502,7 +502,7 @@ export default {
         groupid: this.groupid
       }
       params[e.param] = e.val
-      this.$store.dispatch('members/updateById', params)
+      this.$store.dispatch('members/update', params)
     },
     async toggleMail() {
       this.showMailSettings = !this.showMailSettings

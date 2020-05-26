@@ -422,7 +422,11 @@ export default {
     focusedReply: function() {
       this.replyingTo = this.replyid
     },
-    async sendReply() {
+    async sendReply(e) {
+      e.preventDefault()
+      e.stopPropagation()
+      e.stopImmediatePropagation()
+
       // Encode up any emojis.
       if (this.replybox && this.replybox.trim()) {
         const msg = twem.untwem(this.replybox)

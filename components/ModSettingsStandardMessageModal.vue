@@ -33,7 +33,7 @@
             </option>
           </b-select>
           <label>How often do you use this?</label>
-          <b-select v-model="stdmsg.autosend">
+          <b-select v-model="stdmsg.rarelyused">
             <option :value="0">
               Frequently
             </option>

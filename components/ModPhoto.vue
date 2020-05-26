@@ -46,10 +46,14 @@ export default {
     }
   },
   methods: {
-    removePhoto(id) {
-      this.$store.dispatch('compose/removeAttachment', {
-        id: this.id,
-        photoid: id
+    async removePhoto(id) {
+      const attachments = this.message.attachments.filter(a => {
+        return a.id !== id
+      })
+
+      await this.$store.dispatch('messages/patch', {
+        id: this.message.id,
+        attachments: attachments
       })
     }
   }
