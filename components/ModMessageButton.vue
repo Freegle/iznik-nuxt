@@ -124,7 +124,8 @@ export default {
       return ret
     },
     spinclass() {
-      if (this.variant === 'success') {
+      if (this.variant === 'primary') {
+        // Primary buttons have "success" (green) class.
         return 'success'
       }
 
