@@ -1,7 +1,7 @@
 <template>
   <div class="d-inline-block w-100">
     <validating-form
-      :class="{ 'justify-content-around': center, 'd-flex': center }"
+      :class="{ 'justify-content-around': center, 'd-flex': true }"
     >
       <b-form-group
         :label="label"
@@ -37,11 +37,6 @@ import { validationMixin } from 'vuelidate'
 import ValidatingForm from '../components/ValidatingForm'
 import ValidatingFormInput from '../components/ValidatingFormInput'
 import validationHelpers from '@/mixins/validationHelpers'
-
-const a = require('axios')
-const axios = a.create({
-  timeout: 300000
-})
 
 export default {
   components: { ValidatingForm, ValidatingFormInput },
@@ -92,7 +87,7 @@ export default {
         // Wait for the first dot, as that will be long enough that we don't thrash the server.
         if (domain.indexOf('.') !== -1) {
           this.suggestedDomains = []
-          const ret = await axios.get(process.env.API + '/domains', {
+          const ret = await this.$axios.get(process.env.API + '/domains', {
             params: {
               domain: domain
             }
