@@ -15,6 +15,7 @@ const pushstate = Vue.observable({
 
 let acceptedMobilePushId = false
 let mobilePush = false
+let mobilePushRegistered = false
 let lastPushMsgid = false
 
 window.iznikroot = location.pathname.substring(0, location.pathname.lastIndexOf('/') + 1)
@@ -35,10 +36,6 @@ const cordovaApp = {
   //
   // Bind any cordova events here. Common events are: 'pause', 'resume', etc.
   onDeviceReady: function(){
-  //  setTimeout(cordovaApp.startup,500) // May-20 Now seems to be necessary to stop crash at startup in iOS MT
-  //},
-//
-  //startup: function () {
     try {
       console.log('cordovaApp: onDeviceReady')
 
@@ -61,7 +58,6 @@ const cordovaApp = {
       }
 
       console.log('push init start')
-      alert('push init start')
       if ((typeof window.PushNotification === 'undefined') || (!PushNotification)) {
         console.log('NO PUSH NOTIFICATION SERVICE')
         // alert("No PN");
@@ -80,12 +76,8 @@ const cordovaApp = {
             sound: false
           }
         })
-        if(mobilePush)
-        alert('push init started')
-        else
-        alert('push init failed')
         mobilePush.on('registration', function (data) {
-                  alert('registration')
+          mobilePushRegistered = true
           pushstate.mobilePushId = data.registrationId
           console.log('push registration ' + pushstate.mobilePushId)
 
@@ -94,11 +86,9 @@ const cordovaApp = {
         })
 
         mobilePush.on('notification', function (data) { // Normal notification
-        alert('notification')
           handleNotification('notification', data)
         })
         mobilePush.on('replyToChat', function (data) { // Reply action: reply given or Reply button pressed
-                  alert('replyToChat')
           handleNotification('replyToChat', data)
         })
       }
@@ -240,7 +230,7 @@ export function setBadgeCount(badgeCount) {
   if (badgeCount !== lastBadgeCount) {
     if (process.env.IS_APP) {
 //      console.log('setBadgeCount', badgeCount)
-      if (mobilePush) {
+      if (mobilePush && mobilePushRegistered) {
         mobilePush.setApplicationIconBadgeNumber(function () { }, function () { }, badgeCount)
         lastBadgeCount = badgeCount
       }
