@@ -31,7 +31,7 @@
           <v-icon name="map-marker-alt" class="fa-fw" />
           {{ newsfeed.volunteering.location }}
         </div>
-        <b-btn variant="primary" class="mt-3 mb-2" @click="moreInfo">
+        <b-btn variant="secondary" class="mt-3 mb-2" @click="moreInfo">
           <v-icon name="info-circle" /> More info
         </b-btn>
       </div>

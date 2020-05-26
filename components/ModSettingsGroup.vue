@@ -9,7 +9,7 @@
       </NoticeMessage>
       <b-card no-body class="mb-2">
         <b-card-header>
-          <b-btn v-b-toggle.accordion-addresses block href="#" variant="primary">
+          <b-btn v-b-toggle.accordion-addresses block href="#" variant="secondary">
             Community Addresses
           </b-btn>
         </b-card-header>
@@ -40,7 +40,7 @@
       </b-card>
       <b-card no-body class="mb-2">
         <b-card-header>
-          <b-btn v-b-toggle.accordion-your block href="#" variant="primary">
+          <b-btn v-b-toggle.accordion-your block href="#" variant="secondary">
             Your Settings
           </b-btn>
         </b-card-header>
@@ -76,7 +76,7 @@
       </b-card>
       <b-card no-body class="mb-2">
         <b-card-header>
-          <b-btn v-b-toggle.accordion-appearance block href="#" variant="primary">
+          <b-btn v-b-toggle.accordion-appearance block href="#" variant="secondary">
             How It Looks
           </b-btn>
         </b-card-header>
@@ -96,7 +96,7 @@
                 :image="group.profile ? group.profile : '/placeholder.png'"
                 :alt-text="'Profile picture for ' + group.namedisplay"
               />
-              <b-btn v-if="!readonly" variant="primary" class="mt-2 d-block" @click="uploadProfile">
+              <b-btn v-if="!readonly" variant="secondary" class="mt-2 d-block" @click="uploadProfile">
                 <v-icon name="camera" /> Upload photo
               </b-btn>
               <OurFilePond
@@ -173,7 +173,7 @@
       </b-card>
       <b-card no-body class="mb-2">
         <b-card-header>
-          <b-btn v-b-toggle.accordion-features-members block href="#" variant="primary">
+          <b-btn v-b-toggle.accordion-features-members block href="#" variant="secondary">
             Features for Members
           </b-btn>
         </b-card-header>
@@ -306,7 +306,7 @@
       </b-card>
       <b-card no-body class="mb-2">
         <b-card-header>
-          <b-btn v-b-toggle.accordion-features-mods block href="#" variant="primary">
+          <b-btn v-b-toggle.accordion-features-mods block href="#" variant="secondary">
             Features for Moderators
           </b-btn>
         </b-card-header>
@@ -351,7 +351,7 @@
       </b-card>
       <b-card no-body class="mb-2">
         <b-card-header>
-          <b-btn v-b-toggle.accordion-spam block href="#" variant="primary">
+          <b-btn v-b-toggle.accordion-spam block href="#" variant="secondary">
             Spam Detection
           </b-btn>
         </b-card-header>
@@ -397,7 +397,7 @@
 
       <b-card no-body class="mb-2">
         <b-card-header>
-          <b-btn v-b-toggle.accordion-dups block href="#" variant="primary">
+          <b-btn v-b-toggle.accordion-dups block href="#" variant="secondary">
             Duplicate Detection
           </b-btn>
         </b-card-header>
@@ -449,7 +449,7 @@
       </b-card>
       <b-card no-body class="mb-2">
         <b-card-header>
-          <b-btn v-b-toggle.accordion-maps block href="#" variant="primary">
+          <b-btn v-b-toggle.accordion-maps block href="#" variant="secondary">
             Mapping
           </b-btn>
         </b-card-header>
@@ -532,7 +532,7 @@
       </b-card>
       <b-card no-body class="mb-2">
         <b-card-header>
-          <b-btn v-b-toggle.accordion-social block href="#" variant="primary">
+          <b-btn v-b-toggle.accordion-social block href="#" variant="secondary">
             Social Media
           </b-btn>
         </b-card-header>
@@ -578,7 +578,7 @@
       </b-card>
       <b-card no-body class="mb-2">
         <b-card-header>
-          <b-btn v-b-toggle.accordion-stats block href="#" variant="primary">
+          <b-btn v-b-toggle.accordion-stats block href="#" variant="secondary">
             Status
           </b-btn>
         </b-card-header>

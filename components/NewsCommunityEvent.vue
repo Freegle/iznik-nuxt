@@ -34,7 +34,7 @@
         <div v-if="date">
           <v-icon name="calendar-alt" /> {{ date.start }} - {{ date.end }}
         </div>
-        <b-btn variant="primary" class="mt-3 mb-2" @click="moreInfo">
+        <b-btn variant="secondary" class="mt-3 mb-2" @click="moreInfo">
           <v-icon name="info-circle" /> More info
         </b-btn>
       </div>

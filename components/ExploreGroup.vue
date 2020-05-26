@@ -12,13 +12,13 @@
               </p>
               <b-row>
                 <b-col cols="5">
-                  <b-button to="/give" class="mt-1" size="lg" block variant="success">
+                  <b-button to="/give" class="mt-1" size="lg" block variant="primary">
                     <v-icon name="gift" />&nbsp;Give stuff
                   </b-button>
                 </b-col>
                 <b-col cols="2" />
                 <b-col cols="5">
-                  <b-button to="/find" class="mt-1" size="lg" block variant="primary">
+                  <b-button to="/find" class="mt-1" size="lg" block variant="secondary">
                     <v-icon name="search" />&nbsp;Find stuff
                   </b-button>
                 </b-col>

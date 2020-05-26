@@ -10,7 +10,7 @@
         @keyup.enter.exact="usersearch"
       />
       <b-input-group-append>
-        <b-button variant="success" @click="usersearch">
+        <b-button variant="primary" @click="usersearch">
           <v-icon v-if="searching" name="sync" class="fa-spin" />
           <v-icon v-else name="search" /> Find user
         </b-button>

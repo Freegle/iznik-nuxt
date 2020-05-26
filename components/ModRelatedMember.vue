@@ -19,23 +19,23 @@
         <b-btn variant="white" class="mr-1">
           Joined a group: {{ whichjoined }}
         </b-btn>
-        <b-btn v-if="activeSameDay" variant="primary" class="mr-1">
+        <b-btn v-if="activeSameDay" variant="secondary" class="mr-1">
           Active same day
         </b-btn>
-        <b-btn v-if="similarNameOrEmail" variant="primary" class="mr-1">
+        <b-btn v-if="similarNameOrEmail" variant="secondary" class="mr-1">
           Similar name/email
         </b-btn>
-        <b-btn v-if="groupsInCommon" variant="primary" class="mr-1">
+        <b-btn v-if="groupsInCommon" variant="secondary" class="mr-1">
           Groups in common
         </b-btn>
-        <b-btn v-if="probablySame" variant="success" class="mr-1">
+        <b-btn v-if="probablySame" variant="primary" class="mr-1">
           Probably the same
         </b-btn>
       </div>
     </b-card-body>
     <b-card-footer>
       <div class="mt-2">
-        <b-btn variant="primary" @click="ask">
+        <b-btn variant="secondary" @click="ask">
           Ask member what they want
         </b-btn>
         <b-btn variant="white" @click="ignore">

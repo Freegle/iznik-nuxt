@@ -199,7 +199,7 @@
         <b-btn v-if="editing" variant="white" @click="editing = false">
           <v-icon name="times" /> Cancel
         </b-btn>
-        <b-button v-if="editing" variant="success" @click="save">
+        <b-button v-if="editing" variant="primary" @click="save">
           <v-icon v-if="saving" name="sync" class="text-success fa-spin" />
           <v-icon v-else-if="saved" name="check" class="text-success" />
           <v-icon v-else name="save" />
@@ -502,7 +502,7 @@ export default {
         groupid: this.groupid
       }
       params[e.param] = e.val
-      this.$store.dispatch('members/updateById', params)
+      this.$store.dispatch('members/update', params)
     },
     async toggleMail() {
       this.showMailSettings = !this.showMailSettings

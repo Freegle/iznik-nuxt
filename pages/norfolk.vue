@@ -28,7 +28,7 @@
           If you had an account on Norfolk Freegle,
           you can now use the same details in order to sign in to Freegle.
         </p>
-        <b-btn variant="success" size="lg" to="/chitchat" class="mb-1">
+        <b-btn variant="primary" size="lg" to="/chitchat" class="mb-1">
           Sign in to Freegle
         </b-btn>
         <p>

@@ -34,7 +34,7 @@ const cordovaApp = {
   // deviceready Event Handler
   //
   // Bind any cordova events here. Common events are: 'pause', 'resume', etc.
-  onDeviceReady: function () {
+  onDeviceReady: function(){
     try {
       console.log('cordovaApp: onDeviceReady')
 
@@ -75,9 +75,14 @@ const cordovaApp = {
             sound: false
           }
         })
+        if( !mobilePush){
+          console.log('MOBILE PUSH RETURNED FALSE')
+          return
+        }
         mobilePush.on('registration', function (data) {
           pushstate.mobilePushId = data.registrationId
           console.log('push registration ' + pushstate.mobilePushId)
+
           // mobilePushId reported in to server in savePushId() by store/auth.js fetchUser
           // The watch code below also calls savePushId() in case we've already logged in
         })
@@ -224,6 +229,7 @@ export function logoutPushId() {
 let lastBadgeCount = -1
 export function setBadgeCount(badgeCount) {
 //console.log('setBadgeCount X', badgeCount)
+  if( isNaN(badgeCount)) badgeCount = 0
   if (badgeCount !== lastBadgeCount) {
     if (process.env.IS_APP) {
 //      console.log('setBadgeCount', badgeCount)

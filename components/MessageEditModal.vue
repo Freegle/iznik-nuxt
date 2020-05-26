@@ -62,13 +62,13 @@
           </b-row>
         </template>
         <template slot="modal-footer" slot-scope="{ ok, cancel }">
-          <b-btn variant="primary" class="mr-auto" @click="photoAdd">
+          <b-btn variant="secondary" class="mr-auto" @click="photoAdd">
             <v-icon name="camera" />&nbsp;Add photo
           </b-btn>
           <b-button variant="white" :disabled="uploadingPhoto" @click="cancel">
             Cancel
           </b-button>
-          <b-button variant="success" :disabled="saving || uploadingPhoto" @click="save">
+          <b-button variant="primary" :disabled="saving || uploadingPhoto" @click="save">
             <v-icon v-if="saving" name="sync" class="fa-spin" />
             <v-icon v-else name="save" />
             Save

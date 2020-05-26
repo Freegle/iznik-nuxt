@@ -10,6 +10,7 @@
           </b-btn>
           <ModAddMemberModal v-if="groupid" ref="addmodal" :groupid="groupid" />
           <ModMergeButton class="ml-2" />
+          <ModMemberExportButton v-if="groupid" class="ml-2" :groupid="groupid" />
         </div>
         <ModMemberSearchbox v-model="search" :groupid="groupid" />
       </div>
@@ -22,7 +23,7 @@
         </div>
 
         <NoticeMessage v-if="!members.length && !busy" class="mt-2">
-          There are no members at the moment.
+          There are no members to show at the moment.
         </NoticeMessage>
 
         <infinite-loading :key="'infinite-' + groupid + '-' + filter" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
@@ -46,6 +47,7 @@ import ModMemberSearchbox from '../../../../components/ModMemberSearchbox'
 import ModMemberTypeSelect from '../../../../components/ModMemberTypeSelect'
 import ModAddMemberModal from '../../../../components/ModAddMemberModal'
 import ModMergeButton from '../../../../components/ModMergeButton'
+import ModMemberExportButton from '../../../../components/ModMemberExportButton'
 import loginRequired from '@/mixins/loginRequired'
 import modMembersPage from '@/mixins/modMembersPage'
 import createGroupRoute from '@/mixins/createGroupRoute'
@@ -53,6 +55,7 @@ import waitForRef from '@/mixins/waitForRef'
 
 export default {
   components: {
+    ModMemberExportButton,
     ModMergeButton,
     ModAddMemberModal,
     ModMemberTypeSelect,

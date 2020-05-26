@@ -61,7 +61,7 @@
             </b-card-body>
             <b-card-footer class="d-flex justify-content-between flex-wrap">
               <SpinButton
-                variant="success"
+                variant="primary"
                 name="save"
                 label="Save"
                 spinclass="text-white"

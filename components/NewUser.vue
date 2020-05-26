@@ -34,7 +34,7 @@
               <b-input-group>
                 <b-form-input v-model="newPassword" type="password" />
                 <b-input-group-append>
-                  <b-btn variant="success" @click="setPassword">
+                  <b-btn variant="primary" @click="setPassword">
                     <v-icon v-if="savingPassword" name="sync" class="fa-spin" />
                     <v-icon v-else-if="savedPassword" name="check" />
                     <v-icon v-else name="save" />&nbsp;
@@ -75,7 +75,7 @@
             </nuxt-link>.
           </li>
         </ul>
-        <b-btn variant="success" size="lg" to="/communities">
+        <b-btn variant="primary" size="lg" to="/communities">
           <v-icon name="users" />&nbsp;
           Continue to Communities
         </b-btn>
@@ -105,7 +105,7 @@
       <!-- eslint-disable-next-line-->
       <span v-html="tooltips[showToolTip].content" />
       <br>
-      <b-btn variant="success" class="mt-4" @click="nextTooltip">
+      <b-btn variant="primary" class="mt-4" @click="nextTooltip">
         Next tip <v-icon name="angle-double-right" />
       </b-btn>
     </b-tooltip>

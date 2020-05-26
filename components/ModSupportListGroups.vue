@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SpinButton variant="success" name="users" label="Fetch Groups" spinclass="text-white" :handler="fetchGroups" />
+    <SpinButton variant="primary" name="users" label="Fetch Groups" spinclass="text-white" :handler="fetchGroups" />
     <div v-if="fetched && groups && groups.length" class="mt-2">
       <p>
         Here you can see info about all Freegle groups. Click on the column headings to sort.  Click on the dropdown

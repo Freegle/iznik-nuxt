@@ -24,7 +24,7 @@
         <b-row>
           <b-col>
             <p>If you like, you can add a photo.  It's nice to see people and what they've freegled.  Take a selfie!</p>
-            <b-btn variant="primary" size="lg" class="mt-1 mb-1" @click="photoAdd">
+            <b-btn variant="secondary" size="lg" class="mt-1 mb-1" @click="photoAdd">
               <v-icon name="camera" /> Add a photo
             </b-btn>
           </b-col>
@@ -96,7 +96,7 @@
         <b-button variant="white" :disabled="uploadingPhoto" @click="cancel">
           Cancel
         </b-button>
-        <b-button variant="success" :disabled="uploadingPhoto" @click="submit">
+        <b-button variant="primary" :disabled="uploadingPhoto" @click="submit">
           Add Your Story
         </b-button>
       </div>

@@ -46,10 +46,10 @@
         "PHOTOLIBRARY_ADD_USAGE_DESCRIPTION": "So you can send a photo in reply to a member chat",
         "PHOTOLIBRARY_USAGE_DESCRIPTION": "So you can save a photo when replying to a member chat"
       },
-      "phonegap-plugin-push": {},
       "cordova-plugin-wkwebview-engine": {},
       "cordova-plugin-camera": {},
-      "cordova-plugin-sign-in-with-apple": {}
+      "cordova-plugin-sign-in-with-apple": {},
+      "phonegap-plugin-push": {}
     },
     "platforms": [
       "ios"

@@ -79,7 +79,6 @@
                 <span slot="no-results" />
                 <span slot="no-more" />
                 <span slot="spinner">
-                  <span slot="no-results" />
                   <b-img-lazy src="~/static/loader.gif" alt="Loading" />
                 </span>
               </infinite-loading>
@@ -153,18 +152,23 @@ export default {
     }
   },
   mounted() {
-    this.$refs.autocomplete.setValue(this.term)
+    if (!this.postcode) {
+      // We shouldn't come directly into this page.
+      this.$router.push('/find')
+    } else {
+      this.$refs.autocomplete.setValue(this.term)
 
-    // Ensure we have no cached messages for other searches/groups
-    this.$store.dispatch('messages/clear')
+      // Ensure we have no cached messages for other searches/groups
+      this.$store.dispatch('messages/clear')
 
-    // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
-    // need to render this on the server.
-    this.$nextTick(this.search)
+      // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
+      // need to render this on the server.
+      this.$nextTick(this.search)
 
-    // We need some fettling of the input keystrokes.
-    const input = this.$refs.autocomplete.$refs.input
-    input.addEventListener('keydown', this.keydown, false)
+      // We need some fettling of the input keystrokes.
+      const input = this.$refs.autocomplete.$refs.input
+      input.addEventListener('keydown', this.keydown, false)
+    }
   },
   // async asyncData({ app, params, store }) {
   //   this.loadMessages()
@@ -207,15 +211,8 @@ export default {
       this.$router.push('/find/search/' + term)
     },
     loadMore: function($state) {
-      this.busy = true
-
       const term = this.$refs.autocomplete.$refs.input.value
-      const postcode = this.$store.getters['compose/getPostcode']
-
-      if (!postcode) {
-        // No postcode.  This can happen if we are called before the store has loaded.
-        return
-      }
+      this.busy = true
 
       const currentCount = this.messages.length
 
@@ -227,7 +224,7 @@ export default {
           summary: true,
           messagetype: this.searchtype,
           search: term,
-          nearlocation: postcode ? postcode.id : null,
+          nearlocation: this.postcode ? this.postcode.id : null,
           subaction: 'searchmess'
         }
       } else {
