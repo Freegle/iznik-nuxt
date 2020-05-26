@@ -325,7 +325,7 @@
         <b-button v-if="!editing" variant="white" class="float-right" :disabled="uploadingPhoto" @click="cancel">
           Close
         </b-button>
-        <b-button v-if="editing" variant="success" class="float-right" :disabled="uploadingPhoto" @click="saveIt">
+        <b-button v-if="editing" variant="primary" class="float-right" :disabled="uploadingPhoto" @click="saveIt">
           <v-icon v-if="saving" name="sync" class="fa-spin" />
           <v-icon v-else name="save" />
           <span v-if="isExisting">Save Changes</span>

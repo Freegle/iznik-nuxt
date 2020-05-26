@@ -8,7 +8,7 @@
           <p>Are you a charity or good cause that needs volunteers? Ask our lovely community of freeglers to help.</p>
           <div class="d-flex justify-content-between mb-3">
             <groupSelect v-if="me" v-model="groupid" class="pr-2" all />
-            <b-btn variant="success" class="float-right" @click="showEventModal">
+            <b-btn variant="primary" class="float-right" @click="showEventModal">
               <v-icon name="plus" /> Add an opportunity
             </b-btn>
           </div>

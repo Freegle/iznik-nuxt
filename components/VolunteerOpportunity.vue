@@ -28,7 +28,7 @@
               You created this opportunity.  Please click to let us know if it's still active.
             </span>
           </notice-message>
-          <b-btn variant="success" @click="renew">
+          <b-btn variant="primary" @click="renew">
             <v-icon name="check" /> Yes, it's still active
           </b-btn>
           <b-btn variant="white" @click="expire">

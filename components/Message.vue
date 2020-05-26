@@ -210,7 +210,7 @@
             />
           </b-form-group>
           <div class="flex-grow-1 text-right ml-2 d-none d-md-block">
-            <b-btn variant="success" :disabled="disableSend" @click="sendReply">
+            <b-btn variant="primary" :disabled="disableSend" @click="sendReply">
               Send
               <v-icon v-if="replying" name="sync" class="fa-spin" />
               <v-icon v-else name="angle-double-right" />&nbsp;
@@ -219,7 +219,7 @@
         </div>
         <b-row class="d-block d-md-none mt-2">
           <b-col>
-            <b-btn variant="success" block :disabled="disableSend" @click="sendReply">
+            <b-btn variant="primary" block :disabled="disableSend" @click="sendReply">
               Send
               <v-icon v-if="replying" name="sync" class="fa-spin" />
               <v-icon v-else name="angle-double-right" />&nbsp;

@@ -13,7 +13,7 @@
               :types="['(cities)']"
               @place_changed="getAddressData"
             />
-            <b-button variant="primary" size="lg" class="mb-2 ml-2" title="Find my location" @click="findLoc">
+            <b-button variant="secondary" size="lg" class="mb-2 ml-2" title="Find my location" @click="findLoc">
               <v-icon v-if="locating" name="sync" class="fa-spin" />
               <v-icon v-else-if="locationFailed" name="exclamation-triangle" />
               <v-icon v-else name="map-marker-alt" />

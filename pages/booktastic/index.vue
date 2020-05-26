@@ -47,7 +47,7 @@
         <div class="d-flex justify-content-between flex-wrap">
           <b-btn
             v-if="!showVideo"
-            variant="primary"
+            variant="secondary"
             size="lg"
             class="mt-2"
             @click="takePhoto"
@@ -55,7 +55,7 @@
             <v-icon name="camera" />&nbsp;Take photo
           </b-btn>
           <b-btn
-            variant="success"
+            variant="primary"
             size="lg"
             class="mt-2"
             @click="startUpload"

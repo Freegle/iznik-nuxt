@@ -3,7 +3,7 @@
     <NoticeMessage variant="info">
       <p>Here's a map showing the approximate location of recently active volunteers.  Hello us!</p>
       <p>Fancy a blether? Come and say hi in the Cafe - it's always nice to hear from new folk.</p>
-      <b-btn variant="success" href="https://discourse.ilovefreegle.org/c/cafe" target="_blank">
+      <b-btn variant="primary" href="https://discourse.ilovefreegle.org/c/cafe" target="_blank">
         Visit the Cafe
       </b-btn>
     </NoticeMessage>

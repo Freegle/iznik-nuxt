@@ -56,7 +56,7 @@
               How do you feel about freegling just now?
             </p>
             <b-button-group>
-              <b-button :pressed="happiness === 'Happy'" variant="success" size="lg" class="shadow-none" @click="happiness = 'Happy'">
+              <b-button :pressed="happiness === 'Happy'" variant="primary" size="lg" class="shadow-none" @click="happiness = 'Happy'">
                 <v-icon name="smile" scale="2" /> Happy
               </b-button>
               <b-button :pressed="happiness === 'Fine'" variant="white" size="lg" class="shadow-none" @click="happiness = 'Fine'">
@@ -89,7 +89,7 @@
         <b-button variant="white" @click="hide">
           Cancel
         </b-button>
-        <b-button variant="success" :disabled="submitDisabled" @click="submit">
+        <b-button variant="primary" :disabled="submitDisabled" @click="submit">
           Submit
         </b-button>
       </template>

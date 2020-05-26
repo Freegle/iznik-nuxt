@@ -30,7 +30,7 @@
               <b-btn variant="white" @click="theirAvailability">
                 <v-icon name="eye" /> View theirs
               </b-btn>
-              <b-btn variant="success" @click="myAvailability">
+              <b-btn variant="primary" @click="myAvailability">
                 <v-icon name="pen" /> Edit yours
               </b-btn>
             </div>

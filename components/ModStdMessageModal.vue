@@ -60,7 +60,7 @@
         :label="processLabel"
         name="envelope"
         spinclass="success"
-        variant="success"
+        variant="primary"
         :handler="process"
       />
       <b-button variant="white" @click="cancel">
@@ -504,15 +504,8 @@ export default {
         this.changedNewModStatus = true
       }
 
-      // People sometimes set up standard messages to automate the action without the intention of
-      // actually sending a message to the member.
-      let subj = this.subject.trim()
-      let body = this.body.trim()
-
-      if (!this.stdmsg.subjpref) {
-        subj = null
-        body = null
-      }
+      const subj = this.subject.trim()
+      const body = this.body.trim()
 
       switch (this.stdmsg.action) {
         case 'Approve':

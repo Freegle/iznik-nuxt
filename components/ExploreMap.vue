@@ -86,14 +86,14 @@
                 <div class="media-body">
                   <div v-if="g.external">
                     <ExternalLink :href="g.external">
-                      <b-btn variant="success" class="float-right mr-2">
+                      <b-btn variant="primary" class="float-right mr-2">
                         Explore
                       </b-btn>
                       {{ g.namedisplay }}
                     </ExternalLink>
                   </div>
                   <div v-else>
-                    <b-btn variant="success" class="float-right mr-2" :to="'/explore/' + g.nameshort">
+                    <b-btn variant="primary" class="float-right mr-2" :to="'/explore/' + g.nameshort">
                       Explore
                     </b-btn>
                     <nuxt-link :to="'/explore/' + g.nameshort">

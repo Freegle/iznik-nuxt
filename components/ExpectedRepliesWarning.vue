@@ -8,7 +8,7 @@
         Please don't leave them hanging!  Let them know if you're no longer interested, or other people will see that you haven't replied yet.
       </p>
       <div v-for="chat in chats" :key="'expectedreply-' + chat.id">
-        <b-btn variant="success" size="lg" @click="go(chat.id)">
+        <b-btn variant="primary" size="lg" @click="go(chat.id)">
           Reply to {{ chat.name }} now
         </b-btn>
       </div>

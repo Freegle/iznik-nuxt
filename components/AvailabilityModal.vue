@@ -89,7 +89,7 @@
           <b-button v-if="!mine" variant="white" @click="cancel">
             Close
           </b-button>
-          <b-button v-if="mine" variant="success" @click="save">
+          <b-button v-if="mine" variant="primary" @click="save">
             <v-icon v-if="saving" name="sync" class="fa-spin" />
             <v-icon v-else name="save" />
             Save

@@ -51,7 +51,7 @@
           <p v-else>
             You don't have any addresses yet.
           </p>
-          <b-btn v-if="!showAdd" variant="primary" class="mt-2" @click="addnew">
+          <b-btn v-if="!showAdd" variant="secondary" class="mt-2" @click="addnew">
             <v-icon name="plus" /> Add a new address
           </b-btn>
           <div v-else>
@@ -88,7 +88,7 @@
             <b-button variant="white" @click="cancel">
               Cancel
             </b-button>
-            <b-button variant="success" :disabled="!selectedAddress" @click="chooseIt">
+            <b-button variant="primary" :disabled="!selectedAddress" @click="chooseIt">
               Send this Address
             </b-button>
           </div>

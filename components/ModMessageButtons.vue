@@ -3,7 +3,7 @@
     <div v-if="editreview" class="d-inline">
       <ModMessageButton
         :message="message"
-        variant="success"
+        variant="primary"
         icon="check"
         approveedits
         label="Accept Edit"
@@ -17,7 +17,7 @@
       />
       <ModMessageButton
         :message="message"
-        variant="success"
+        variant="primary"
         icon="envelope"
         leave
         label="Reply"
@@ -27,7 +27,7 @@
       <ModMessageButton
         v-if="!message.heldby && !cantpost"
         :message="message"
-        variant="success"
+        variant="primary"
         icon="check"
         approve
         label="Approve"
@@ -68,7 +68,7 @@
     <div v-else-if="approved" class="d-inline">
       <ModMessageButton
         :message="message"
-        variant="success"
+        variant="primary"
         icon="envelope"
         leave
         label="Reply"
@@ -98,7 +98,7 @@
       />
       <ModMessageButton
         :message="message"
-        variant="success"
+        variant="primary"
         icon="check"
         notspam
         label="Not spam"

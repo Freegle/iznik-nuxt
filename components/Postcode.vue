@@ -20,7 +20,7 @@
     />
 
     <div v-if="find">
-      <b-button variant="primary" :size="size" title="Find my device's location instead of typing a postcode" @click="findLoc">
+      <b-button variant="secondary" :size="size" title="Find my device's location instead of typing a postcode" @click="findLoc">
         <v-icon v-if="locating" name="sync" class="fa-spin" />
         <v-icon v-else-if="locationFailed" name="exclamation-triangle" />
         <v-icon v-else name="map-marker-alt" />

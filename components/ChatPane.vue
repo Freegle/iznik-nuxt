@@ -17,7 +17,7 @@
       <!--        accounts or help you work out what's going on.-->
       <!--      </p>-->
       <!--      <div v-if="me && urlid">-->
-      <!--        <b-btn variant="success" class="mb-2" size="lg" :href="'mailto:support@ilovefreegle.org?subject=I may have two acounts (#' + myid + ' and #' + urlid + ')&body=Please can you help?  My main email address is...'">-->
+      <!--        <b-btn variant="primary" class="mb-2" size="lg" :href="'mailto:support@ilovefreegle.org?subject=I may have two acounts (#' + myid + ' and #' + urlid + ')&body=Please can you help?  My main email address is...'">-->
       <!--          Contact our Support Volunteers-->
       <!--        </b-btn>-->
       <!--        <p>-->
@@ -215,12 +215,15 @@
                     </b-btn>
                   </span>
                   <span v-if="chat && chat.chattype === 'User2Mod'">
-                    <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler" @click="showInfo">
+                    <b-btn v-if="otheruser" v-b-tooltip.hover.top variant="white" title="Info about this freegler" @click="showInfo">
                       <v-icon name="info-circle" />&nbsp;Info
                     </b-btn>
                     <b-btn v-if="mod" variant="white" @click="spamReport">
                       <v-icon name="ban" /> Spammer
                     </b-btn>
+                    <external-link href="https://discourse.ilovefreegle.org/c/central" class="nocolor btn btn-white">
+                      <v-icon name="question-circle" /> Central
+                    </external-link>
                     <ModSpammerReport v-if="showSpamModal" ref="spamConfirm" :user="otheruser" />
                   </span>
                   <b-btn variant="primary" class="float-right ml-1" @click="send">
@@ -258,7 +261,7 @@
                       Available
                     </div>
                   </div>
-                  <div v-if="chat && chat.chattype === 'User2User' && otheruser" v-b-tooltip.hover.top title="Info about this freegler" class="mr-2" @click="showInfo">
+                  <div v-if="otheruser" v-b-tooltip.hover.top title="Info about this freegler" class="mr-2" @click="showInfo">
                     <v-icon scale="2" name="info-circle" class="fa-mob" />
                     <div class="mobtext">
                       Info
@@ -268,6 +271,14 @@
                     <v-icon scale="2" name="ban" class="fa-mob" />
                     <div class="mobtext">
                       Spammer
+                    </div>
+                  </div>
+                  <div v-if="chat && chat.chattype === 'User2Mod' && mod" v-b-tooltip.hover.top title="Ask on Central for help" class="mr-2">
+                    <external-link href="https://discourse.ilovefreegle.org/c/central" class="nocolor">
+                      <v-icon scale="2" name="question-circle" class="fa-mob" />
+                    </external-link>
+                    <div class="mobtext">
+                      Central
                     </div>
                   </div>
                   <div v-if="chat && chat.chattype === 'User2User' && otheruser" v-b-tooltip.hover.top title="Waiting for a reply?  Nudge this freegler." class="mr-2" @click="nudge">
@@ -282,7 +293,7 @@
                       Photo
                     </div>
                   </div>
-                  <b-btn variant="primary" @click="send">
+                  <b-btn variant="secondary" @click="send">
                     Send
                     <v-icon v-if="sending" name="sync" class="fa-spin" title="Sending..." />
                     <v-icon v-else name="angle-double-right" title="Send" />
@@ -318,6 +329,7 @@ import InfiniteLoading from 'vue-infinite-loading'
 import ChatBlockModal from './ChatBlockModal'
 import ChatHideModal from './ChatHideModal'
 import ModComments from './ModComments'
+import ExternalLink from './ExternalLink'
 import chatCollate from '@/mixins/chatCollate.js'
 import chat from '@/mixins/chat.js'
 import waitForRef from '@/mixins/waitForRef'
@@ -338,6 +350,7 @@ const ModSpammerReport = () => import('~/components/ModSpammerReport')
 
 export default {
   components: {
+    ExternalLink,
     ModComments,
     ModSpammerReport,
     InfiniteLoading,
@@ -448,5 +461,9 @@ export default {
 .hidelink a {
   text-decoration: none;
   color: white;
+}
+
+.nocolor {
+  color: initial;
 }
 </style>

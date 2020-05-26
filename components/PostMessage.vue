@@ -13,7 +13,7 @@
       </b-col>
       <b-col cols="6" md="12" class="pl-0">
         <b-btn
-          variant="success"
+          variant="primary"
           size="lg"
           class="mt-2"
           @click="photoAdd"

@@ -157,6 +157,11 @@ export const actions = {
       parms.messagehistory = true
     }
 
+    // Clear from store to ensure no attachments.
+    commit('remove', {
+      id: params.id
+    })
+
     await dispatch('fetch', parms)
     return data
   },
