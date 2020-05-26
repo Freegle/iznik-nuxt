@@ -32,10 +32,10 @@
             <v-icon name="times" /> Hide
           </b-btn>
           <div v-if="story.public">
-            <b-btn v-if="newsletter" variant="success" class="mr-2 mb-1" @click="useForNewsletter">
+            <b-btn v-if="newsletter" variant="primary" class="mr-2 mb-1" @click="useForNewsletter">
               <v-icon name="times" /> Good for newsletter
             </b-btn>
-            <b-btn v-else variant="success" class="mr-2 mb-1" @click="useForPublicity">
+            <b-btn v-else variant="primary" class="mr-2 mb-1" @click="useForPublicity">
               <v-icon name="times" /> Good for publicity
             </b-btn>
           </div>

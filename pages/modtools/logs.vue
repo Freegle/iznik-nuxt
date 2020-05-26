@@ -19,7 +19,7 @@
             />
             <b-input-group-append>
               <b-button
-                variant="success"
+                variant="primary"
                 @click="search"
               >
                 <v-icon name="search" />
@@ -46,7 +46,7 @@
             />
             <b-input-group-append>
               <b-button
-                variant="success"
+                variant="primary"
                 @click="search"
               >
                 <v-icon name="search" />

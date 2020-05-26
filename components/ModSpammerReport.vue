@@ -33,7 +33,7 @@
       <b-button v-if="whitelist" variant="danger" @click="send">
         Request Whitelist
       </b-button>
-      <b-button v-else variant="success" @click="send">
+      <b-button v-else variant="primary" @click="send">
         Send Report
       </b-button>
     </template>

@@ -20,12 +20,12 @@
     </b-row>
     <b-row class="text-center">
       <b-col cols="12" class="mt-2">
-        <b-btn size="lg" variant="success" to="/find/search">
+        <b-btn size="lg" variant="primary" to="/find/search">
           <v-icon name="gift" />&nbsp;Find something else
         </b-btn>
       </b-col>
       <b-col cols="12" class="mt-2">
-        <b-btn size="lg" variant="primary" to="/give/whatisit">
+        <b-btn size="lg" variant="secondary" to="/give/whatisit">
           <v-icon name="search" />&nbsp;Give something
         </b-btn>
       </b-col>

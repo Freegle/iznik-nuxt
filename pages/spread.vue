@@ -22,7 +22,7 @@
       <a href="https://freegle.in/A4Poster" target="_blank">
         <b-img-lazy src="~static/posters/A4.png" class="poster border border-dark mb-2" />
         <br>
-        <b-btn variant="success" size="lg" class="mt-2 mb-2">
+        <b-btn variant="primary" size="lg" class="mt-2 mb-2">
           Download poster
         </b-btn>
       </a>
@@ -30,7 +30,7 @@
         You can help even more by letting us know where you put up posters. Once we know where it is, then
         we can encourage other freeglers to put one up there in future. <b>Please do this!</b>
       </p>
-      <b-btn variant="primary" size="lg" class="mb-1" @click="added">
+      <b-btn variant="secondary" size="lg" class="mb-1" @click="added">
         I put up a poster!
       </b-btn>
       <p>
@@ -62,7 +62,7 @@
                 }"
               />
               <b-input-group-append>
-                <b-button v-if="!validationEnabled || !$v.invitemail.$invalid" variant="success" size="lg" @click="invite">
+                <b-button v-if="!validationEnabled || !$v.invitemail.$invalid" variant="primary" size="lg" @click="invite">
                   <v-icon name="envelope" />&nbsp;Invite a friend
                 </b-button>
               </b-input-group-append>
@@ -105,7 +105,7 @@
       <b-img-lazy src="/businesscards/FreegleBusinessCardSmall.png" class="border border-dark mb-2" />
       <br>
       <a href="https://freegle.in/BusinessCardFront" target="_blank" class="mt-1 mb-1">
-        <b-btn size="lg" variant="primary">
+        <b-btn size="lg" variant="secondary">
           Download business card
         </b-btn>
       </a>
@@ -114,7 +114,7 @@
         Tell your story
       </h3>
       <p>This helps encourage other people to try freegling.</p>
-      <b-btn to="/stories" variant="primary" size="lg">
+      <b-btn to="/stories" variant="secondary" size="lg">
         <v-icon name="book-open" /> Tell your story
       </b-btn>
     </b-col>

@@ -60,7 +60,7 @@
         :label="processLabel"
         name="envelope"
         spinclass="success"
-        variant="success"
+        variant="primary"
         :handler="process"
       />
       <b-button variant="white" @click="cancel">

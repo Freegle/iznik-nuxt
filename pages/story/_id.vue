@@ -17,7 +17,7 @@
           <p>
             So please tell us your story!
           </p>
-          <b-btn variant="success" @click="showAddModal">
+          <b-btn variant="primary" @click="showAddModal">
             <v-icon name="book-open" /> Tell us your story!
           </b-btn>
         </div>

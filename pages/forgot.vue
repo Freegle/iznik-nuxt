@@ -29,7 +29,7 @@
               }"
             />
             <b-input-group-append>
-              <b-button v-if="!validationEnabled || !$v.email.$invalid" variant="success" size="lg" @click="mail">
+              <b-button v-if="!validationEnabled || !$v.email.$invalid" variant="primary" size="lg" @click="mail">
                 <v-icon name="envelope" />&nbsp;Mail login link
               </b-button>
             </b-input-group-append>

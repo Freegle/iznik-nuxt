@@ -25,7 +25,7 @@
             <p>
               Tell us when you're free and it'll make it quicker to arrange collection times.
             </p>
-            <b-btn size="lg" variant="success" @click="availability">
+            <b-btn size="lg" variant="primary" @click="availability">
               <v-icon name="calendar-alt" /> Update your availability
             </b-btn>
           </b-card-body>
@@ -64,7 +64,7 @@
                 </b-row>
                 <b-row>
                   <b-col class="text-center">
-                    <b-button to="/give" class="mt-1" size="lg" variant="success">
+                    <b-button to="/give" class="mt-1" size="lg" variant="primary">
                       <v-icon name="gift" />&nbsp;OFFER something
                     </b-button>
                   </b-col>
@@ -117,7 +117,7 @@
                 </b-row>
                 <b-row>
                   <b-col class="text-center">
-                    <b-button to="/give" class="mt-1" size="lg" variant="success">
+                    <b-button to="/give" class="mt-1" size="lg" variant="primary">
                       <v-icon name="gift" />&nbsp;OFFER something
                     </b-button>
                   </b-col>
@@ -164,10 +164,10 @@
               <div v-else>
                 <p>Nothing here yet.  Why not...</p>
                 <div class="d-flex justify-content-around mb-2">
-                  <b-button to="/find" class="mt-1" size="lg" variant="primary">
+                  <b-button to="/find" class="mt-1" size="lg" variant="secondary">
                     <v-icon name="search" />&nbsp;Find stuff
                   </b-button>
-                  <b-button to="/find/whatisit" class="mt-1" size="lg" variant="primary">
+                  <b-button to="/find/whatisit" class="mt-1" size="lg" variant="secondary">
                     <v-icon name="gift" />&nbsp;Post a WANTED
                   </b-button>
                 </div>
@@ -214,7 +214,7 @@
                 </b-row>
                 <b-row>
                   <b-col class="text-center">
-                    <b-button to="/find" class="mt-1" size="lg" variant="primary">
+                    <b-button to="/find" class="mt-1" size="lg" variant="secondary">
                       <v-icon name="search" />&nbsp;Find stuff
                     </b-button>
                   </b-col>

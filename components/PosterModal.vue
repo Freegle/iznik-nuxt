@@ -26,7 +26,7 @@
       <b-button variant="white" @click="cancel">
         Cancel
       </b-button>
-      <b-button variant="success" @click="submit">
+      <b-button variant="primary" @click="submit">
         Save details
       </b-button>
     </template>

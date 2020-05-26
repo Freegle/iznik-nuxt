@@ -31,7 +31,7 @@
       </div>
       <div class="mt-2 group__buttons">
         <div class="button__items">
-          <b-button v-if="!amAMember" class="mb-1 ml-1" variant="success" @click="join">
+          <b-button v-if="!amAMember" class="mb-1 ml-1" variant="primary" @click="join">
             <v-icon v-if="joiningOrLeaving" name="sync" class="fa-spin" />
             <v-icon v-else name="plus" />&nbsp;
             Join

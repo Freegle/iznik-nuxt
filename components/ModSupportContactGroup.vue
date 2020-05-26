@@ -84,7 +84,7 @@
     />
     <SpinButton
       v-else
-      variant="success"
+      variant="primary"
       label="Send"
       name="envelope"
       spinclass="text-white"

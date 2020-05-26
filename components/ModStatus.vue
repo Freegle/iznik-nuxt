@@ -21,7 +21,7 @@
         <NoticeMessage v-else-if="warning" variant="warning" class="mb-2">
           There's a problem, but the system should still be working.  The Geeks will be on the case.
         </NoticeMessage>
-        <NoticeMessage v-else variant="success">
+        <NoticeMessage v-else variant="primary">
           Everything seems fine.
         </NoticeMessage>
         <div v-if="status && status.info">

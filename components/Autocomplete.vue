@@ -25,7 +25,7 @@
           </b-button>
         </b-input-group-append>
       </b-input-group>
-      <b-button v-if="searchbutton" variant="success" size="lg" class="searchbutton" @click="search">
+      <b-button v-if="searchbutton" variant="primary" size="lg" class="searchbutton" @click="search">
         <v-icon name="search" />&nbsp;Search
       </b-button>
     </div>

@@ -17,7 +17,7 @@
       <!--        accounts or help you work out what's going on.-->
       <!--      </p>-->
       <!--      <div v-if="me && urlid">-->
-      <!--        <b-btn variant="success" class="mb-2" size="lg" :href="'mailto:support@ilovefreegle.org?subject=I may have two acounts (#' + myid + ' and #' + urlid + ')&body=Please can you help?  My main email address is...'">-->
+      <!--        <b-btn variant="primary" class="mb-2" size="lg" :href="'mailto:support@ilovefreegle.org?subject=I may have two acounts (#' + myid + ' and #' + urlid + ')&body=Please can you help?  My main email address is...'">-->
       <!--          Contact our Support Volunteers-->
       <!--        </b-btn>-->
       <!--        <p>-->
@@ -293,7 +293,7 @@
                       Photo
                     </div>
                   </div>
-                  <b-btn variant="primary" @click="send">
+                  <b-btn variant="secondary" @click="send">
                     Send
                     <v-icon v-if="sending" name="sync" class="fa-spin" title="Sending..." />
                     <v-icon v-else name="angle-double-right" title="Send" />

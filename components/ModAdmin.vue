@@ -96,7 +96,7 @@
         <b-btn v-if="!admin.heldby" variant="warning" @click="deleteIt">
           <v-icon name="trash-alt" /> Delete
         </b-btn>
-        <b-btn v-if="!admin.heldby" variant="primary" @click="save">
+        <b-btn v-if="!admin.heldby" variant="secondary" @click="save">
           <v-icon v-if="saving" name="sync" class="text-success fa-spin" />
           <v-icon v-else-if="saved" name="check" class="text-success" />
           <v-icon v-else name="save" />
@@ -105,10 +105,10 @@
         <b-btn v-if="!admin.heldby" variant="white" @click="hold">
           <v-icon name="pause" /> Hold
         </b-btn>
-        <b-btn v-else variant="primary" @click="release">
+        <b-btn v-else variant="secondary" @click="release">
           <v-icon name="play" /> Release
         </b-btn>
-        <b-btn v-if="!admin.heldby" variant="success" @click="approve">
+        <b-btn v-if="!admin.heldby" variant="primary" @click="approve">
           <v-icon name="check" /> Approve and Send
         </b-btn>
       </b-card-footer>

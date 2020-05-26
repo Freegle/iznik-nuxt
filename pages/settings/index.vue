@@ -66,7 +66,7 @@
                         @change="changeUseProfile"
                       />
                       <br>
-                      <b-btn variant="primary" class="mt-2" @click="uploadProfile">
+                      <b-btn variant="secondary" class="mt-2" @click="uploadProfile">
                         <v-icon name="camera" /> Upload photo
                       </b-btn>
                       <b-row v-if="uploading" class="bg-white">
@@ -106,7 +106,7 @@
               </b-row>
               <b-row>
                 <b-col>
-                  <b-btn variant="success" class="mt-2" @click="viewProfile">
+                  <b-btn variant="primary" class="mt-2" @click="viewProfile">
                     <v-icon name="eye" /> View Your Profile
                   </b-btn>
                 </b-col>
@@ -213,7 +213,7 @@
               <b-row>
                 <b-col>
                   <hr>
-                  <b-btn variant="primary" size="lg" to="/unsubscribe">
+                  <b-btn variant="secondary" size="lg" to="/unsubscribe">
                     Unsubscribe
                   </b-btn>
                 </b-col>

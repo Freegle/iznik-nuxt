@@ -11,7 +11,7 @@
     <p>
       We hope you and yours are safe.  Please freegle responsibly and help keep it that way.
     </p>
-    <b-btn variant="primary" @click="showModal = true">
+    <b-btn variant="secondary" @click="showModal = true">
       Read our advice on safe freegling
     </b-btn>
     <b-modal v-model="showModal" ok-only size="lg" title="Safe Freegling" ok-title="Close">
