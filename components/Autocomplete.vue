@@ -718,7 +718,7 @@ input[invalid='true'] {
   outline: none;
   box-shadow: none;
 }
-button.btn.searchbutton.btn-success.btn-lg {
+button.btn.searchbutton.btn-primary.btn-lg {
   border-radius: 0 4px 4px 0;
 }
 .invalid {
