@@ -186,7 +186,7 @@
                   <p>
                     If you'd like to spread the word you can download a poster or ask for "business cards" to hand out:
                   </p>
-                  <b-btn to="/spread" class="btn-success">
+                  <b-btn to="/spread" variant="primary">
                     Find out more
                   </b-btn>
                   <p>
