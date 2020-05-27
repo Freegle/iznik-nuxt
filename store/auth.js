@@ -331,7 +331,8 @@ export const actions = {
 
       if (
         newTotal > currentTotal &&
-        ((state.user && state.user.settings.playbeep) ||
+        state.user &&
+        (state.user.settings.playbeep ||
           !Object.keys(state.user.settings).includes('playbeep'))
       ) {
         // Only trigger this when the counts increase.  There's a minor timing
