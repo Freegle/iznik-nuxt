@@ -718,9 +718,11 @@ input[invalid='true'] {
   outline: none;
   box-shadow: none;
 }
-button.btn.searchbutton.btn-primary.btn-lg {
+
+.searchbutton {
   border-radius: 0 4px 4px 0;
 }
+
 .invalid {
   box-shadow: 0 0 0 0.2rem $color-red;
   border: none;
