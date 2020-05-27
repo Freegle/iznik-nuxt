@@ -25,7 +25,8 @@
 // There are six types of button used on the site - primary, secondary, white, danger, warning and link
 // This is the primary CTA
 .btn-primary {
-  background-color: $colour-success;
+  //background-color: $colour-success;
+  background-color: #00823B;
   background-image: none;
   border-color: $color-green--dark;
   color: $color-white;
@@ -34,8 +35,9 @@
 }
 
 .btn-primary:hover {
-  color: $color-black;
-  background-color: $color-white;
+  //color: $color-black;
+  //background-color: $color-white;
+  background-color: #00703C;
   border-color: $color-blue--2;
 }
 
@@ -45,7 +47,8 @@
 
 // This is the secondary CTA
 .btn-secondary {
-  background-color: $colour-secondary;
+  //background-color: $colour-secondary;
+  background-color: #007E9E;
   border-color: $color-blue--dark;
   color: $color-white;
   text-shadow: 0 - 1 px 0 $color-black-opacity-59;
@@ -53,8 +56,8 @@
 }
 
 .btn-secondary:hover {
-  color: $color-black;
-  background-color: $color-white;
+  //background-color: $color-white;
+  background-color: #006E8A;
   border-color: $color-blue--2;
 }
 
