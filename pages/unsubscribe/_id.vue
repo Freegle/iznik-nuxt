@@ -41,7 +41,7 @@
             size="lg"
             name="trash-alt"
             variant="primary"
-            class="mb-2"
+            class="mt-2 mb-2"
             label="Unsubscribe"
             @handler="emailConfirm"
           />
