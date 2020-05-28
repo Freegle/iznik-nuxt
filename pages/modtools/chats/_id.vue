@@ -12,11 +12,7 @@
             </div>
           </b-card-body>
         </b-card>
-        <ul v-for="chat in visibleChats" :key="'chat-' + chat.id" class="p-0 pt-1 list-unstyled mb-1">
-          <li :class="{ active: chat && selectedChatId === parseInt(chat.id) }">
-            <ChatListEntry :id="chat.id" />
-          </li>
-        </ul>
+        <ChatListEntry v-for="chat in visibleChats" :id="chat.id" :key="'chat-' + chat.id" :class="{ active: chat && selectedChatId === parseInt(chat.id) }" />
         <p v-if="!visibleChats || !visibleChats.length" class="ml-2">
           No chats to show.
         </p>
