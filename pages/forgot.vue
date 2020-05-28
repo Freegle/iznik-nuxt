@@ -15,26 +15,21 @@
         <b-alert v-if="response" variant="warning" show>
           We've sent you a link to log in. Please check your spam folder!
         </b-alert>
-        <validating-form v-else class="mb-2">
-          <b-input-group>
-            <validating-form-input
-              v-model.trim="email"
-              type="email"
-              size="lg"
-              placeholder="Enter your email address"
-              :validation="$v.email"
-              :validation-enabled="validationEnabled"
-              :validation-messages="{
-                required: 'That isn\'t a valid email address - can you check?'
-              }"
-            />
-            <b-input-group-append>
-              <b-button v-if="!validationEnabled || !$v.email.$invalid" variant="primary" size="lg" @click="mail">
-                <v-icon name="envelope" />&nbsp;Mail login link
-              </b-button>
-            </b-input-group-append>
-          </b-input-group>
-        </validating-form>
+        <EmailValidator
+          ref="email"
+          size="lg"
+          :email.sync="email"
+          :valid.sync="emailValid"
+        />
+        <SpinButton
+          v-if="emailValid"
+          name="envelope"
+          spinclass="success"
+          variant="success"
+          size="lg"
+          :handler="mail"
+          label="Mail login link"
+        />
         <p>
           If you have trouble, you can also contact <a href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</a>.
         </p>
@@ -47,21 +42,22 @@
 <script>
 import { email, required } from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
-import ValidatingForm from '../components/ValidatingForm'
-import ValidatingFormInput from '../components/ValidatingFormInput'
+import EmailValidator from '../components/EmailValidator'
+import SpinButton from '../components/SpinButton'
 import validationHelpers from '@/mixins/validationHelpers'
 
 import buildHead from '@/mixins/buildHead.js'
 
 export default {
   components: {
-    ValidatingForm,
-    ValidatingFormInput
+    SpinButton,
+    EmailValidator
   },
   mixins: [buildHead, validationMixin, validationHelpers],
   data() {
     return {
       email: null,
+      emailValid: false,
       response: false
     }
   },

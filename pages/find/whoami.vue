@@ -10,18 +10,11 @@
           <b-col class="text-muted text-center">
             <p>We need your email address to let you know when you have replies.  We won't give your email to anyone else.</p>
             <p>You will get emails from us, which you can control or turn off from Settings.</p>
-            <b-form-input
-              ref="email"
-              v-model="email"
-              type="email"
-              size="lg"
-              class="d-inline-block form-control email"
-              placeholder="What's your email address?"
-            />
+            <EmailValidator :email.sync="email" :valid.sync="emailValid" center />
           </b-col>
         </b-row>
         <transition name="fadein">
-          <b-row v-if="email && !submitting">
+          <b-row v-if="emailValid && !submitting">
             <b-col cols="12" md="6" offset-md="3" class="text-center pt-2 mt-2">
               <b-btn variant="primary" size="lg" block @click="next">
                 Freegle it!
@@ -46,14 +39,8 @@
     </b-row>
   </div>
 </template>
-
-<style scoped>
-.email {
-  max-width: 300px;
-}
-</style>
-
 <script>
+import EmailValidator from '../../components/EmailValidator'
 import loginOptional from '@/mixins/loginOptional.js'
 import compose from '@/mixins/compose.js'
 import buildHead from '@/mixins/buildHead.js'
@@ -62,6 +49,7 @@ const WizardProgress = () => import('~/components/WizardProgress')
 
 export default {
   components: {
+    EmailValidator,
     WizardProgress
   },
   mixins: [loginOptional, buildHead, compose],
@@ -69,7 +57,8 @@ export default {
     return {
       id: null,
       submitting: false,
-      postType: 'Wanted'
+      postType: 'Wanted',
+      emailValid: false
     }
   },
   computed: {
@@ -86,8 +75,6 @@ export default {
   methods: {
     next() {
       this.submitting = true
-
-      this.$store.dispatch('compose/setEmail', this.$refs.email.value)
 
       this.$store
         .dispatch('compose/submit', {

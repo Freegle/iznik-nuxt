@@ -134,15 +134,12 @@ export default {
         let email = null
         const user = this.$store.getters['auth/user']
 
-        if (user && user.email) {
+        // See if we have a local email stored from last time we were logged in.
+        email = this.$store.getters['compose/getEmail']
+
+        if (!email && user && user.email) {
           // If we're logged in, then we have an email from that which takes precedence.
           email = user.email
-
-          // Save it in case we're logged out next time.
-          this.$store.dispatch('compose/setEmail', email)
-        } else {
-          // See if we have a local email stored from last time we were logged in.
-          email = this.$store.getters['compose/getEmail']
         }
 
         return email

@@ -342,7 +342,8 @@ export const actions = {
       if (
         !process.env.IS_APP &&
         newTotal > currentTotal &&
-        ((state.user && state.user.settings.playbeep) ||
+        state.user &&
+        (state.user.settings.playbeep ||
           !Object.keys(state.user.settings).includes('playbeep'))
       ) {
         // Only trigger this when the counts increase.  There's a minor timing
@@ -378,6 +379,12 @@ export const actions = {
         commit('forceLogin', false)
 
         await savePushId(this) // Tell server our mobile push notification id, if available // CC
+
+        // Save off our current email from the account for use in post composing, in case we have changed it since
+        // we last used this device.
+        dispatch('compose/setEmail', me.email, {
+          root: true
+        })
       }
 
       if (work) {

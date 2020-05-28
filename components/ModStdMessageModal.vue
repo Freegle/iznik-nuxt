@@ -585,7 +585,7 @@ export default {
           })
           break
         case 'Edit':
-          if (this.message.location) {
+          if (this.message.item && this.message.location) {
             // Well-structured message
             await this.$store.dispatch('messages/patch', {
               id: this.message.id,

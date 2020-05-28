@@ -128,22 +128,13 @@
               />
             </b-form-group>
           </div>
-          <b-form-group
-            id="emailGroup"
-            label="Your email address"
-            label-for="email"
-            label-class="mb-0"
-          >
-            <b-form-input
-              id="email"
-              ref="email"
-              v-model="email"
-              name="email"
-              class="mb-3"
-              autocomplete="username email"
-              type="email"
-            />
-          </b-form-group>
+          <EmailValidator
+            ref="email"
+            size="md"
+            :email.sync="email"
+            :valid.sync="emailValid"
+            label="Your email address:"
+          />
           <NoticeMessage v-if="referToGoogleButton">
             Please use the <em>Continue with Google</em> button to sign in.  That way you don't need to remember a password on this site.
           </NoticeMessage>
@@ -159,6 +150,7 @@
             class="mb-2 mt-2"
             type="submit"
             value="login"
+            :disabled="!emailValid || !password"
           >
             <span v-if="!signUp">
               Sign in to Freegle
@@ -190,6 +182,7 @@
 <script>
 import Vue from 'vue'
 import { LoginError, SignUpError } from '../api/BaseAPI'
+import EmailValidator from './EmailValidator'
 import { appFacebookLogin } from '../plugins/app-facebook' // CC
 import { appGoogleLogin } from '../plugins/app-google' // CC
 import { appYahooLogin } from '../plugins/app-yahoo' // CC
@@ -201,6 +194,7 @@ const PasswordEntry = () => import('~/components/PasswordEntry')
 export default {
   name: 'LoginModal',
   components: {
+    EmailValidator,
     NoticeMessage,
     PasswordEntry
   },
@@ -210,6 +204,7 @@ export default {
       firstname: null,
       lastname: null,
       email: null,
+      emailValid: false,
       password: null,
       pleaseShowModal: false,
       showSignUp: false,
@@ -403,7 +398,7 @@ export default {
               }
             })
         }
-      } else {
+      } else if (this.email && this.password) {
         // Login
         this.$store
           .dispatch('auth/login', {
