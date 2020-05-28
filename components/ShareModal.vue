@@ -19,7 +19,7 @@
             And lots of people haven't heard of Freegle - so it helps get them freegling too!
           </p>
         </NoticeMessage>
-        <b-button v-if="isApp" variant="white" class="mt-1" @click="shareApp">
+        <b-button v-if="isApp" variant="primary" size="lg" class="m-3" @click="shareApp">
           Share now
         </b-button>
 
