@@ -60,8 +60,8 @@ export default {
 
   methods: {
     click: function() {
-      const modtools = this.$store.getters['misc/get']('modtools')
-      this.$router.push((modtools ? '/modtools' : '') + '/chats/' + this.id)
+      // We don't route to the new chat, because that causes the whole page to re-render, which is slow.
+      this.$emit('click')
     }
   }
 }

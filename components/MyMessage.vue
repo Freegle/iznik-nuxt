@@ -170,6 +170,11 @@
         <template slot="default">
           <ImageCarousel message-id="message.id" :attachments="message.attachments" />
         </template>
+        <template slot="modal-footer" slot-scope="{ ok, cancel }">
+          <b-button variant="white" @click="cancel">
+            Close
+          </b-button>
+        </template>
       </b-modal>
     </div>
     <OutcomeModal ref="outcomeModal" :message="message" :users="replyusers" @outcome="hide = true" />

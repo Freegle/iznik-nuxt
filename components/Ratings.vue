@@ -8,7 +8,7 @@
         <b-btn
           v-b-tooltip.hover.top
           :size="size"
-          :variant="user.info.ratings.Mine === 'Up' ? 'primary' : (user.info.ratings.Up > 0 ? 'success' : 'white')"
+          :variant="user.info.ratings.Mine === 'Up' ? 'info' : (user.info.ratings.Up > 0 ? 'primary' : 'white')"
           :title="uptitle"
           :disabled="((disabled || user.id === myid) ? 'true' : undefined)"
           @click="up"
@@ -18,7 +18,7 @@
         <b-btn
           v-b-tooltip.hover.top
           :size="size"
-          :variant="user.info.ratings.Mine === 'Down' ? 'primary' : (user.info.ratings.Down > 0 ? 'warning' : 'white')"
+          :variant="user.info.ratings.Mine === 'Down' ? 'info' : (user.info.ratings.Down > 0 ? 'warning' : 'white')"
           :title="downtitle"
           :disabled="(disabled || user.id === myid) ? 'true' : undefined"
           @click="down"

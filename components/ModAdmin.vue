@@ -8,7 +8,7 @@
           </b-col>
           <b-col cols="6" md="3">
             Created {{ admin.created | timeago }}
-            <span v-if="!pending">
+            <span v-if="!admin.pending">
               <span v-if="admin.complete">
                 Sent {{ admin.complete | timeago }}
               </span>
