@@ -289,11 +289,13 @@
               label="Contact email:"
               label-for="contactemail"
             >
-              <b-form-input
+              <EmailValidator
                 id="contactemail"
-                v-model="volunteeringEdit.contactemail"
-                type="email"
-                placeholder="Can people reach you by email? (Optional)"
+                ref="email"
+                size="md"
+                :email.sync="volunteeringEdit.contactemail"
+                :valid.sync="emailValid"
+                :label="null"
               />
             </b-form-group>
             <b-form-group
@@ -363,6 +365,7 @@
 import cloneDeep from 'lodash.clonedeep'
 import { validationMixin } from 'vuelidate'
 import { maxLength, required } from 'vuelidate/lib/validators'
+import EmailValidator from './EmailValidator'
 import twem from '~/assets/js/twem'
 import ValidatingForm from '@/components/ValidatingForm'
 import ValidatingFormInput from '@/components/ValidatingFormInput'
@@ -420,12 +423,14 @@ function initialData() {
     groupid: null,
     uploading: false,
     cacheBust: Date.now(),
-    saving: false
+    saving: false,
+    emailValid: false
   }
 }
 
 export default {
   components: {
+    EmailValidator,
     ValidatingForm,
     ValidatingFormInput,
     ValidatingTextarea,
@@ -507,7 +512,11 @@ export default {
     },
     async saveIt() {
       this.$v.$touch()
-      if (this.$v.$anyError) {
+      if (!this.emailValid) {
+        // Would be nice to focus on the email, but that's hard to do without introducing a whole load of focus methods
+        // through several component layers down to the input.
+        return
+      } else if (this.$v.$anyError) {
         this.validationFocusFirstError()
         return
       }

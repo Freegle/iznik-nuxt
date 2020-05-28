@@ -169,7 +169,7 @@
       accepted-file-types="image/jpeg, image/png, image/gif, image/jpg"
       :files="myFiles"
       image-crop-aspect-ratio="1"
-      label-idle="<span class=&quot;btn btn-success&quot;>&nbsp;Upload&nbsp;Photo </span>"
+      label-idle="<span class=&quot;btn btn-primary&quot;>&nbsp;Upload&nbsp;Photo </span>"
       :server="{ process, revert, restore, load, fetch }"
       @init="photoInit"
       @processfile="processed"

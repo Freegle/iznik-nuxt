@@ -43,6 +43,12 @@
   box-shadow: 0 0 0 0.2rem rgba(72,180,97,.5);
 }
 
+.btn-primary:disabled {
+  color: $color-white;
+  background-color: $color-green--bright;
+  border-color: $color-green--bright;
+}
+
 // This is the secondary CTA
 .btn-secondary {
   background-color: $colour-secondary;
@@ -60,6 +66,12 @@
 
 .btn-secondary:focus {
   box-shadow: 0 0 0 0.2rem rgba(38,143,255,.5)
+}
+
+.btn-secondary:disabled {
+  color: $color-white;
+  background-color: $color-blue--bright;
+  border-color: $color-blue--bright;
 }
 
 // This is the tertiary CTA
@@ -314,5 +326,23 @@ legend {
   }
   100% {
     opacity: 0.25;
+  }
+}
+
+form {
+  label,
+  .col-form-label {
+    font-weight: bold;
+    color: $color-black;
+    margin-top: 10px;
+  }
+
+  .is-invalid label,
+  .is-invalid .col-form-label {
+    color: $color-red;
+  }
+
+  .form-group.is-invalid .invalid-feedback {
+    display: block;
   }
 }
