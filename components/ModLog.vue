@@ -206,7 +206,7 @@
             Deleted config {{ log.text }}
           </span>
           <span v-else-if="log.subtype === 'Edit'">
-            Edited config {{ config.name }}
+            Edited config {{ log.config.name }}
           </span>
           <span v-else>
             <span class="text-muted">Unknown log type {{ log.type }} subtype {{ log.subtype }}</span>
@@ -257,8 +257,8 @@ export default {
       switch (this.log.text) {
         case 'UNCHANGED':
           return 'Unchanged'
-        case 'MODERATOED':
-          return 'Moerated'
+        case 'MODERATED':
+          return 'Moderated'
         case 'DEFAULT':
           return 'Group Settings'
         case 'PROHIBITED':

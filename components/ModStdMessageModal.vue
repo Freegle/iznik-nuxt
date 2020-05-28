@@ -170,8 +170,8 @@ export default {
       switch (this.stdmsg.newmodstatus) {
         case 'UNCHANGED':
           return 'Unchanged'
-        case 'MODERATOED':
-          return 'Moerated'
+        case 'MODERATED':
+          return 'Moderated'
         case 'DEFAULT':
           return 'Group Settings'
         case 'PROHIBITED':
