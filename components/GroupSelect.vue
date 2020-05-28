@@ -11,6 +11,8 @@ select {
 }
 </style>
 <script>
+import cloneDeep from 'lodash.clonedeep'
+
 export default {
   props: {
     /**
@@ -94,7 +96,9 @@ export default {
     },
 
     sortedGroups() {
-      let groups = this.groups
+      // We need to clone the groups, because we're about to sort.  Sort is in-place, which means we trigger
+      // reactivity changes and end up with a render loop.
+      let groups = cloneDeep(this.groups)
       groups = groups.sort((a, b) => {
         return a.namedisplay
           .toLowerCase()
