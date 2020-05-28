@@ -220,7 +220,8 @@ export default {
   computed: {
     isiOSapp() { // CC
       if (process.env.IS_APP) {
-        return true
+        return false
+        //return true
         //return (window.device.platform === 'iOS')
       }
       return false
