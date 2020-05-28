@@ -52,6 +52,7 @@
           <b-img src="~/static/signinbuttons/Apple_logo_black.svg" class="social-button__image" style="padding: 10px;" />
           <span class="p-2 social-button__text font-weight-bold">Sign in with Apple</span>
         </b-btn>
+        <div id="appleid-signin" data-color="black" data-border="true" data-type="sign in"></div>
         <b-btn class="social-button social-button--google" :disabled="googleDisabled" @click="loginGoogle">
           <b-img src="~/static/signinbuttons/google-logo.svg" class="social-button__image" />
           <span class="p-2 social-button__text font-weight-bold">Continue with Google</span>
@@ -220,6 +221,7 @@ export default {
     isiOSapp() { // CC
       if (process.env.IS_APP) {
         return false
+        //return true
         //return (window.device.platform === 'iOS')
       }
       return false
@@ -236,8 +238,9 @@ export default {
 
     appleDisabled() { // CC
       if (process.env.IS_APP) { // Sign in with Apple only supported for iOS 13+
-        if (parseFloat(window.device.version)>=13)
-          return false
+        //if (parseFloat(window.device.version)>=13)
+        //  return false
+        return false  // Enable sign in for iOS12- and Android
       }
       return true
     },
@@ -444,8 +447,11 @@ export default {
             ret => { // arrow so .this. is correct
               if( ret.error){
                 this.socialLoginError = ret.error
-              } else{
-                this.socialLoginError = 'Hello: ' + ret.fullName.givenName
+              } else {
+                if( ret.code)
+                  this.socialLoginError = 'Code: ' + ret.code
+                else
+                  this.socialLoginError = 'Hello: ' + ret.fullName.givenName
               }
             })
         }

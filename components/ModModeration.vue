@@ -1,5 +1,5 @@
 <template>
-  <b-select v-model="postingStatus" :options="options" class="d-inline sel" :size="size" @change="changed" />
+  <b-select v-model="postingStatus" :options="options" class="d-inline sel" :size="size" />
 </template>
 <script>
 export default {
@@ -26,7 +26,7 @@ export default {
       async set(val) {
         await this.$store.dispatch('user/edit', {
           id: this.user.id,
-          groupid: this.membership.groupid,
+          groupid: this.membership.id,
           ourPostingStatus: val
         })
       }
@@ -46,16 +46,6 @@ export default {
           text: "Can't Post"
         }
       ]
-    }
-  },
-  methods: {
-    async changed(newval) {
-      console.log('Set posting status to ', newval)
-      await this.$store.dispatch('user/edit', {
-        id: this.user.id,
-        groupid: this.membership.id,
-        ourPostingStatus: newval
-      })
     }
   }
 }

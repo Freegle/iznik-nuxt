@@ -109,10 +109,13 @@
         </span>
         <span v-else-if="log.type === 'User'">
           <span v-if="log.subtype === 'OurPostingStatus'">
-            Set Posting Status to {{ log.text }}
+            <span v-if="log.group">
+              Set Posting Status to {{ postingStatus }} <ModLogGroup :log="log" tag="on" />
+            </span>
+            <span v-else />
           </span>
           <span v-else-if="log.subtype === 'OurEmailFrequency'">
-            Set Email Frequency to {{ log.text }}
+            Set Email Frequency to {{ log.text }} <ModLogGroup :log="log" tag="on" />
           </span>
           <span v-else-if="log.subtype === 'Login'">
             Logged in <em class="text-muted small">{{ log.text }}</em>
@@ -203,7 +206,7 @@
             Deleted config {{ log.text }}
           </span>
           <span v-else-if="log.subtype === 'Edit'">
-            Edited config {{ config.name }}
+            Edited config {{ log.config.name }}
           </span>
           <span v-else>
             <span class="text-muted">Unknown log type {{ log.type }} subtype {{ log.subtype }}</span>
@@ -248,6 +251,20 @@ export default {
         return this.log.message.sourceheader.replace('Yahoo-', '')
       } else {
         return null
+      }
+    },
+    postingStatus() {
+      switch (this.log.text) {
+        case 'UNCHANGED':
+          return 'Unchanged'
+        case 'MODERATED':
+          return 'Moderated'
+        case 'DEFAULT':
+          return 'Group Settings'
+        case 'PROHIBITED':
+          return "Can't Post"
+        default:
+          return null
       }
     }
   }

@@ -27,6 +27,7 @@ import Vue from 'vue'
 
 const state = Vue.observable({ visible: true })
 
+if (!process.env.IS_APP) {
 setupVisiblityListener(visible => {
   state.visible = visible
 })
@@ -34,6 +35,7 @@ setupVisiblityListener(visible => {
 setupTimer(visible => {
   state.visible = visible
 })
+}
 
 export default state
 
