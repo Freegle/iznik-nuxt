@@ -56,7 +56,7 @@
                 rows="15"
               />
             </b-form-group>
-            <b-btn class="mt-2 mb-2" size="lg" :variant="groupidcreate < 0 ? 'danger' : 'success'" :disabled="createinvalid" @click="create">
+            <b-btn class="mt-2 mb-2" size="lg" :variant="groupidcreate < 0 ? 'danger' : 'primary'" :disabled="createinvalid" @click="create">
               <v-icon v-if="created" name="check" />
               <v-icon v-else-if="creating" name="sync" class="fa-spin" />
               <v-icon v-else name="save" />
