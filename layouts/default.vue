@@ -142,7 +142,7 @@
           <b-dropdown
             v-if="loggedIn"
             class="white text-center notiflist mr-2"
-            variant="success"
+            variant="primary"
             lazy
             right
             @shown="loadLatestNotifications"
