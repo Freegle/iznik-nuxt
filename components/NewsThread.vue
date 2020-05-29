@@ -170,7 +170,7 @@
       </template>
     </b-modal>
     <NewsReportModal :id="newsfeed.id" ref="newsreport" />
-    <ConfirmModal v-if="showDeleteModal" ref="deleteConfirm" :title="'Delete thread started by ' + users[newsfeed.userid].displayname" @confirm="deleteConfirmed" />
+    <ConfirmModal v-if="showDeleteModal" ref="deleteConfirm" :title="'Delete thread started by ' + starter" @confirm="deleteConfirmed" />
   </div>
 </template>
 
@@ -360,6 +360,15 @@ export default {
       }
 
       return this.newsfeed.replies.length - INITIAL_NUMBER_OF_REPLIES_TO_SHOW
+    },
+    starter() {
+      if (this.newsfeed.userid === this.myid) {
+        return 'you'
+      } else if (this.users[this.newsfeed.userid]) {
+        return this.users[this.newsfeed.userid].displayname
+      } else {
+        return 'someone'
+      }
     }
   },
   methods: {
