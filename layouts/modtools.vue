@@ -28,7 +28,7 @@
               </div>
             </div>
           </b-nav-item>
-          <b-nav-item v-if="loggedIn" id="menu-option-modtools-chat2" class="text-center p-0" to="/modtools/chats">
+          <b-nav-item v-if="loggedIn" id="menu-option-modtools-chat2" class="text-center p-0" @click="toChats">
             <div>
               <span class="d-none d-sm-inline">
                 <v-icon name="comments" scale="2" class="fw" /><br>
@@ -276,6 +276,20 @@ export default {
     },
     toggleMenu() {
       this.showMenu = !this.showMenu
+    },
+    toChats(e) {
+      if (e) {
+        e.preventDefault()
+        e.stopPropagation()
+        e.stopImmediatePropagation()
+      }
+
+      // Ensure we have no chat selected.  On mobile this will force us to show the chat list.
+      this.$store.dispatch('chats/currentChat', {
+        chatid: null
+      })
+
+      this.$router.push('/modtools/chats')
     }
   },
   head() {

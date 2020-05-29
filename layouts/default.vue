@@ -82,7 +82,7 @@
                 </span>
               </infinite-loading>
             </b-nav-item-dropdown>
-            <b-nav-item id="menu-option-chat" class="text-center small p-0" to="/chats" @mousedown="maybeReload('/chats')">
+            <b-nav-item id="menu-option-chat" class="text-center small p-0" to="/chats" @click="toChats">
               <div class="notifwrapper">
                 <v-icon name="comments" scale="2" /><br>
                 <span class="nav-item__text">Chats</span>
@@ -173,12 +173,12 @@
             </infinite-loading>
           </b-dropdown>
 
-          <nuxt-link v-if="loggedIn" id="menu-option-chat-sm" class="text-white mr-3 position-relative" to="/chats">
+          <a v-if="loggedIn" id="menu-option-chat-sm" href="#" class="text-white mr-3 position-relative" @click="toChats">
             <v-icon name="comments" scale="2" /><br>
             <b-badge v-if="chatCount" variant="danger" class="chatbadge">
               {{ chatCount }}
             </b-badge>
-          </nuxt-link>
+          </a>
         </client-only>
 
         <b-navbar-nav>
@@ -641,6 +641,21 @@ export default {
         // We have clicked to route to the page we're already on.  Force a full refresh.
         window.location.reload(true)
       }
+    },
+
+    toChats(e) {
+      if (e) {
+        e.preventDefault()
+        e.stopPropagation()
+        e.stopImmediatePropagation()
+      }
+
+      // Ensure we have no chat selected.  On mobile this will force us to show the chat list.
+      this.$store.dispatch('chats/currentChat', {
+        chatid: null
+      })
+
+      this.$router.push('/chats')
     },
 
     async markAllRead() {

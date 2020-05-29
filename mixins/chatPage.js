@@ -3,7 +3,6 @@ const requestIdleCallback = () => import('~/assets/js/requestIdleCallback')
 export default {
   data() {
     return {
-      selectedChatId: null,
       search: null,
       searching: null,
       searchlast: null,
@@ -20,6 +19,16 @@ export default {
   },
 
   computed: {
+    selectedChatId: {
+      get() {
+        return this.$store.getters['chats/currentChat']
+      },
+      async set(newVal) {
+        await this.$store.dispatch('chats/currentChat', {
+          chatid: newVal
+        })
+      }
+    },
     sortedChats() {
       // We sort chats by the currently selected one first, RSVP first, then unread, then last time.
       const chats = Object.values(this.$store.getters['chats/list'])
@@ -122,13 +131,6 @@ export default {
 
   created() {
     this.selectedChatId = parseInt(this.$route.params.id) || null
-
-    if (this.selectedChatId) {
-      // Save it so that it sticks at the top.
-      this.$store.dispatch('chats/currentChat', {
-        chatid: this.selectedChatId
-      })
-    }
   },
 
   watch: {

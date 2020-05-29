@@ -29,6 +29,9 @@
       </b-col>
       <b-col cols="12" md="8" xl="6" :class="'chatback ' + (selectedChatId ? 'd-block' : 'd-none d-md-block')">
         <ChatPane v-if="selectedChatId" :id="selectedChatId" />
+        <p v-else class="text-center text-muted mt-2">
+          Please click on a chat in the left pane.
+        </p>
       </b-col>
       <b-col cols="0" xl="3" class="d-none d-xl-block p-0 pl-1">
         <SidebarRight :show-volunteer-opportunities="false" :show-job-opportunities="true" />

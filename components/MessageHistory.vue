@@ -8,7 +8,7 @@
         #{{ message.id }}
       </nuxt-link>
       <span v-if="modinfo">
-        via {{ message.source }}
+        via {{ source }},
         <span v-if="message.fromip">
           from IP {{ message.fromip }} in <span :class="message.fromcountry === 'United Kingdom' ? '' : 'text-danger'">{{ message.fromcountry }}.</span>
         </span>
@@ -56,6 +56,19 @@ export default {
   computed: {
     today() {
       return this.$dayjs(this.message.date).isSame(this.$dayjs(), 'day')
+    },
+    source() {
+      if (
+        this.message.source === 'Email' &&
+        this.message.fromaddr &&
+        this.message.fromaddr.indexOf('trashnothing.com') !== -1
+      ) {
+        return 'TrashNothing'
+      } else if (this.message.source === 'Platform') {
+        return 'website or app'
+      } else {
+        return this.message.source
+      }
     }
   }
 }
