@@ -362,7 +362,10 @@ export default {
       return this.newsfeed.replies.length - INITIAL_NUMBER_OF_REPLIES_TO_SHOW
     },
     starter() {
-      if (this.newsfeed.userid === this.myid) {
+      if (
+        this.newsfeed.userid === this.myid ||
+        (this.newsfeed.user && this.newsfeed.user.id === this.myid)
+      ) {
         return 'you'
       } else if (this.users[this.newsfeed.userid]) {
         return this.users[this.newsfeed.userid].displayname
