@@ -37,12 +37,8 @@ export const getters = {
 
     if (!isNaN(idOrName)) {
       // Numeric - find by id
-      Object.keys(state.list).forEach(key => {
-        const group = state.list[key]
-        if (parseInt(key) === parseInt(idOrName)) {
-          ret = group
-        }
-      })
+      idOrName = parseInt(idOrName)
+      return state.list[idOrName] ? state.list[idOrName] : null
     } else {
       // Not - scan for match
       const lower = (idOrName + '').toLowerCase()
