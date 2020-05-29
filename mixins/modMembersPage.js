@@ -18,7 +18,8 @@ export default {
       busy: false,
       collection: 'Approved',
       search: null,
-      filter: 0
+      filter: 0,
+      modalOpen: false
     }
   },
   computed: {
@@ -67,20 +68,22 @@ export default {
       }
     },
     work(newVal, oldVal) {
-      if (newVal > oldVal) {
-        // There's new stuff to do.  Reload.
-        this.$store.dispatch('members/clear')
-        this.show = 0
-        this.context = null
-      } else {
-        const visible = this.$store.getters['misc/get']('visible')
-
-        if (!visible) {
-          // If we're not visible, then clear what we have in the store.  We don't want to do that under our own
-          // feet, but if we do this then we will pick up changes from other people and avoid confusion.
+      if (!this.modalOpen) {
+        if (newVal > oldVal) {
+          // There's new stuff to do.  Reload.
           this.$store.dispatch('members/clear')
           this.show = 0
           this.context = null
+        } else {
+          const visible = this.$store.getters['misc/get']('visible')
+
+          if (!visible) {
+            // If we're not visible, then clear what we have in the store.  We don't want to do that under our own
+            // feet, but if we do this then we will pick up changes from other people and avoid confusion.
+            this.$store.dispatch('members/clear')
+            this.show = 0
+            this.context = null
+          }
         }
       }
     }
@@ -99,6 +102,15 @@ export default {
         id: this.groupid
       })
     }
+
+    // Keep track of whether we have a modal open, so that we don't clear messages under its feet.
+    this.$root.$on('bv::modal::show', (bvEvent, modalId) => {
+      this.modalOpen = true
+    })
+
+    this.$root.$on('bv::modal::hidden', (bvEvent, modalId) => {
+      this.modalOpen = false
+    })
   },
   methods: {
     loadMore: function($state) {

@@ -16,7 +16,8 @@ export default {
       workType: null,
       show: 0,
       busy: false,
-      term: null
+      term: null,
+      modalOpen: false
     }
   },
   computed: {
@@ -69,38 +70,40 @@ export default {
       }
     },
     work(newVal, oldVal) {
-      if (newVal > oldVal) {
-        // There's new stuff to fetch.
-        this.$store.dispatch('messages/clearContext')
-
-        this.$store.dispatch('messages/fetchMessages', {
-          groupid: this.groupid,
-          collection: this.collection,
-          modtools: true,
-          summary: false,
-          limit: Math.max(this.limit, newVal)
-        })
-
-        // Force them to show.
-        let messages
-
-        if (this.groupid) {
-          messages = this.$store.getters['messages/getByGroup'](this.groupid)
-        } else {
-          messages = this.$store.getters['messages/getAll']
-        }
-
-        this.show = messages.length
-      } else {
-        const visible = this.$store.getters['misc/get']('visible')
-
-        if (!visible) {
-          // If we're not visible, then clear what we have in the store.  We don't want to do that under our own
-          // feet, but if we do this then we will pick up changes from other people and avoid confusion.
+      if (!this.modalOpen) {
+        if (newVal > oldVal) {
+          // There's new stuff to fetch.
           this.$store.dispatch('messages/clearContext')
-          this.context = null
-          this.show = 0
-          this.$store.dispatch('messages/clear')
+
+          this.$store.dispatch('messages/fetchMessages', {
+            groupid: this.groupid,
+            collection: this.collection,
+            modtools: true,
+            summary: false,
+            limit: Math.max(this.limit, newVal)
+          })
+
+          // Force them to show.
+          let messages
+
+          if (this.groupid) {
+            messages = this.$store.getters['messages/getByGroup'](this.groupid)
+          } else {
+            messages = this.$store.getters['messages/getAll']
+          }
+
+          this.show = messages.length
+        } else {
+          const visible = this.$store.getters['misc/get']('visible')
+
+          if (!visible) {
+            // If we're not visible, then clear what we have in the store.  We don't want to do that under our own
+            // feet, but if we do this then we will pick up changes from other people and avoid confusion.
+            this.$store.dispatch('messages/clearContext')
+            this.context = null
+            this.show = 0
+            this.$store.dispatch('messages/clear')
+          }
         }
       }
     }
@@ -119,6 +122,15 @@ export default {
         id: this.groupid
       })
     }
+
+    // Keep track of whether we have a modal open, so that we don't clear messages under its feet.
+    this.$root.$on('bv::modal::show', (bvEvent, modalId) => {
+      this.modalOpen = true
+    })
+
+    this.$root.$on('bv::modal::hidden', (bvEvent, modalId) => {
+      this.modalOpen = false
+    })
   },
   methods: {
     loadMore: function($state) {
