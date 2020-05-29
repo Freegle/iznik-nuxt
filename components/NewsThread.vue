@@ -66,41 +66,69 @@
           </li>
         </ul>
         <span v-if="!newsfeed.closed">
-          <b-row>
-            <b-col>
-              <div
-                class="d-flex"
-                @keyup.enter.exact.prevent
-                @keydown.enter.exact="sendComment"
-              >
-                <at-ta ref="at" :members="tagusers" class="flex-shrink-2 input-group" :filter-match="filterMatch">
-                  <b-input-group-prepend>
-                    <span class="input-group-text pl-1 pr-1">
-                      <ProfileImage v-if="me.profile.turl" :image="me.profile.turl" class="m-0 inline float-left" is-thumbnail size="sm" />
-                    </span>
-                  </b-input-group-prepend>
-                  <b-textarea
-                    ref="threadcomment"
-                    v-model="threadcomment"
-                    size="sm"
-                    rows="1"
-                    max-rows="8"
-                    maxlength="2048"
-                    spellcheck="true"
-                    placeholder="Write a comment on this thread and hit enter..."
-                    class="p-0 pl-1 pt-1"
-                    autocapitalize="none"
-                    @keydown.enter.shift.exact.prevent="newlineComment"
-                    @keydown.alt.shift.exact.prevent="newlineComment"
-                    @focus="focusedComment"
-                  />
-                </at-ta>
-                <b-btn size="sm" variant="white" class="float-right flex-grow-1 ml-1" @click="photoAdd">
-                  <v-icon name="camera" /><span class="d-none d-sm-inline">&nbsp;Photo</span>
-                </b-btn>
-              </div>
-            </b-col>
-          </b-row>
+          <div v-if="enterNewLine">
+            <at-ta ref="at" :members="tagusers" class="flex-shrink-2 input-group" :filter-match="filterMatch">
+              <b-input-group-prepend>
+                <span class="input-group-text pl-1 pr-1">
+                  <ProfileImage v-if="me.profile.turl" :image="me.profile.turl" class="m-0 inline float-left" is-thumbnail size="sm" />
+                </span>
+              </b-input-group-prepend>
+              <b-textarea
+                ref="threadcomment"
+                v-model="threadcomment"
+                size="sm"
+                rows="1"
+                max-rows="8"
+                maxlength="2048"
+                spellcheck="true"
+                placeholder="Write a comment on this thread..."
+                class="p-0 pl-1 pt-1"
+                @focus="focusedComment"
+              />
+            </at-ta>
+          </div>
+          <div
+            v-else
+            @keyup.enter.exact.prevent
+            @keydown.enter.exact="sendComment"
+          >
+            <at-ta ref="at" :members="tagusers" class="flex-shrink-2 input-group" :filter-match="filterMatch">
+              <b-input-group-prepend>
+                <span class="input-group-text pl-1 pr-1">
+                  <ProfileImage v-if="me.profile.turl" :image="me.profile.turl" class="m-0 inline float-left" is-thumbnail size="sm" />
+                </span>
+              </b-input-group-prepend>
+              <b-textarea
+                ref="threadcomment"
+                v-model="threadcomment"
+                size="sm"
+                rows="1"
+                max-rows="8"
+                maxlength="2048"
+                spellcheck="true"
+                placeholder="Write a comment on this thread and hit enter to post..."
+                class="p-0 pl-1 pt-1"
+                autocapitalize="none"
+                @keydown.enter.shift.exact.prevent="newlineComment"
+                @keydown.alt.shift.exact.prevent="newlineComment"
+                @focus="focusedComment"
+              />
+            </at-ta>
+          </div>
+          <div v-if="threadcomment" class="d-flex justify-content-between flex-wrap mt-2">
+            <b-btn variant="white" @click="photoAdd">
+              <v-icon name="camera" /><span class="d-none d-sm-inline">&nbsp;Add Photo</span>
+            </b-btn>
+            <SpinButton
+              v-if="enterNewLine"
+              variant="primary"
+              name="angle-double-right"
+              label="Post"
+              spinclass="text-white"
+              iconlast
+              :handler="sendComment"
+            />
+          </div>
           <b-img v-if="imageid" lazy thumbnail :src="imagethumb" class="mt-1 ml-4 image__uploaded" />
           <OurFilePond
             v-if="uploading"
@@ -150,6 +178,7 @@
 import waitForRef from '../mixins/waitForRef'
 import NewsReportModal from './NewsReportModal'
 import OurFilePond from './OurFilePond'
+import SpinButton from './SpinButton'
 import twem from '~/assets/js/twem'
 
 // Use standard import to avoid screen-flicker
@@ -177,6 +206,7 @@ const INITIAL_NUMBER_OF_REPLIES_TO_SHOW = 10
 export default {
   name: 'NewsThread',
   components: {
+    SpinButton,
     OurFilePond,
     NewsReportModal,
     NewsReply,
@@ -236,6 +266,9 @@ export default {
     }
   },
   computed: {
+    enterNewLine() {
+      return this.$store.getters['misc/get']('enternewline')
+    },
     newsfeed() {
       return this.$store.getters['newsfeed/get'](this.id)
     },
@@ -337,9 +370,11 @@ export default {
       this.replyingTo = this.newsfeed.id
     },
     async sendComment(e) {
-      e.preventDefault()
-      e.stopPropagation()
-      e.stopImmediatePropagation()
+      if (e) {
+        e.preventDefault()
+        e.stopPropagation()
+        e.stopImmediatePropagation()
+      }
 
       if (this.threadcomment && this.threadcomment.trim()) {
         // Encode up any emojis.
