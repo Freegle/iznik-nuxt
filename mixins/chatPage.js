@@ -28,12 +28,14 @@ export default {
           chatid: newVal
         })
 
-        await this.$store.dispatch('chatmessages/clearContext', {
-          chatid: newVal
-        })
-        await this.$store.dispatch('chatmessages/fetch', {
-          chatid: newVal
-        })
+        if (newVal) {
+          await this.$store.dispatch('chatmessages/clearContext', {
+            chatid: newVal
+          })
+          await this.$store.dispatch('chatmessages/fetch', {
+            chatid: newVal
+          })
+        }
 
         this.bump = Date.now()
       }
