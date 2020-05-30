@@ -48,7 +48,7 @@
                     <b-card-body class="text-center p-2">
                       <ProfileImage
                         v-if="me.profile.url"
-                        :image="profileurl"
+                        :image="profileurl + '?' + cacheBust"
                         class="mr-1 mb-1 mt-1 inline"
                         is-thumbnail
                         size="xl"
@@ -66,9 +66,27 @@
                         @change="changeUseProfile"
                       />
                       <br>
+                      <span v-if="me.profile.ours" class="clickme mt-1 align-bottom" @click="rotateLeft">
+                        <v-icon label="Rotate left" title="Rotate left">
+                          <v-icon name="circle" scale="2" class="text-muted" />
+                          <v-icon
+                            name="reply"
+                            class="image__icon"
+                          />
+                        </v-icon>
+                      </span>
                       <b-btn variant="secondary" class="mt-2" @click="uploadProfile">
                         <v-icon name="camera" /> Upload photo
                       </b-btn>
+                      <span v-if="me.profile.ours" class="clickme mt-1 align-bottom" @click="rotateRight">
+                        <v-icon label="Rotate right" title="Rotate right" flip="horizontal">
+                          <v-icon name="circle" scale="2" class="text-muted" />
+                          <v-icon
+                            name="reply"
+                            class="image__icon"
+                          />
+                        </v-icon>
+                      </span>
                       <b-row v-if="uploading" class="bg-white">
                         <b-col class="p-0">
                           <OurFilePond
@@ -570,7 +588,8 @@ export default {
       unbouncing: false,
       unbounced: false,
       uploading: false,
-      emailValid: false
+      emailValid: false,
+      cacheBust: Date.now()
     }
   },
   computed: {
@@ -929,6 +948,29 @@ export default {
     },
     uploadProfile() {
       this.uploading = true
+    },
+    async rotate(deg) {
+      await this.$axios.post(process.env.API + '/image', {
+        id: this.me.profile.id,
+        rotate: deg,
+        bust: Date.now(),
+        user: true
+      })
+
+      await this.$store.dispatch('auth/fetchUser', {
+        components: ['me', 'groups', 'aboutme', 'phone', 'notifications'],
+        force: true
+      })
+
+      this.cacheBust = Date.now()
+    },
+    rotateLeft() {
+      this.rotate(90)
+      this.cacheBust = Date.now()
+    },
+    rotateRight() {
+      this.rotate(-90)
+      this.cacheBust = Date.now()
     }
   },
   head() {
@@ -953,5 +995,9 @@ export default {
 
 h4 a {
   color: $colour-header;
+}
+
+.image__icon {
+  color: $color-white;
 }
 </style>
