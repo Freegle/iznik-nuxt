@@ -28,41 +28,43 @@
             <p>
               This month we're trying to raise <b>&pound;{{ target }}</b><span v-if="groupid && !targetMet"> for this community</span>.
               If you can, <b>
-                <span v-if="variant === 'whatyoucan'">
-                  please donate what you can
-                </span>
                 <span v-if="variant === 'link1' || variant === 'buttons1'">
                   please donate &pound;1
                 </span>
-                <span v-if="variant === 'link3' || variant === 'buttons3'">
+                <span v-else-if="variant === 'link3' || variant === 'buttons3'">
                   please donate &pound;3
                 </span>
-                <span v-if="variant === 'buttons1monthly'">
+                <span v-else-if="variant === 'buttons1monthly'">
                   please set up a monthly &pound;1 donation
                 </span>
-                <span v-if="variant === 'buttons1510' || variant === 'buttons51025'">
+                <span v-else-if="variant === 'buttons1510' || variant === 'buttons51025'">
                   please donate
+                </span>
+                <span v-else>
+                  <!--                  "variant === 'whatyoucan'"-->
+                  please donate what you can
                 </span>
               </b>
               to keep us running.
             </p>
             <donation-button v-if="variant === 'whatyoucanrunning'" link="paypal1510" @clicked="score(5)" />
-            <donation-button v-if="variant === 'whatyoucan'" link="paypal1510" @clicked="score(5)" />
-            <donation-button v-if="variant === 'link1'" link="paypal1" @clicked="score(1)" />
-            <donation-button v-if="variant === 'link3'" link="paypal3" @clicked="score(3)" />
-            <donation-button v-if="variant === 'buttons1'" link="paypal1" show="£1" @clicked="score(1)" />
-            <donation-button v-if="variant === 'buttons3'" link="paypal3" show="£3" @clicked="score(3)" />
-            <donation-button v-if="variant === 'buttons1monthly'" link="paypal1" show="£1/month" monthly @clicked="score(4)" />
-            <div v-if="variant === 'buttons1510'" class="d-flex justify-content-between flex-wrap">
+            <donation-button v-else-if="variant === 'link1'" link="paypal1" @clicked="score(1)" />
+            <donation-button v-else-if="variant === 'link3'" link="paypal3" @clicked="score(3)" />
+            <donation-button v-else-if="variant === 'buttons1'" link="paypal1" show="£1" @clicked="score(1)" />
+            <donation-button v-else-if="variant === 'buttons3'" link="paypal3" show="£3" @clicked="score(3)" />
+            <donation-button v-else-if="variant === 'buttons1monthly'" link="paypal1" show="£1/month" monthly @clicked="score(4)" />
+            <div v-else-if="variant === 'buttons1510'" class="d-flex justify-content-between flex-wrap">
               <donation-button link="paypal1" show="£1" class="mb-1" @clicked="score(1)" />
               <donation-button link="paypal5" show="£5" class="mb-1" @clicked="score(5)" />
               <donation-button link="paypal10" show="£10" class="mb-1" @clicked="score(10)" />
             </div>
-            <div v-if="variant === 'buttons51025'" class="d-flex justify-content-between flex-wrap">
+            <div v-else-if="variant === 'buttons51025'" class="d-flex justify-content-between flex-wrap">
               <donation-button link="paypal5" show="£5" class="mb-1" @clicked="score(5)" />
               <donation-button link="paypal10" show="£10" class="mb-1" @clicked="score(10)" />
               <donation-button link="paypal25" show="£25" class="mb-1" @clicked="score(25)" />
             </div>
+            <!--            if="variant === 'whatyoucan'"-->
+            <donation-button v-else link="paypal1510" @clicked="score(5)" />
             <p class="mt-2">
               <!-- eslint-disable-next-line -->
               Anything you can give is very welcome. You can find other ways to donate (e.g. bank transfer or cheque) <nuxt-link to="/donate">here</nuxt-link>.
