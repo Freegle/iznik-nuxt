@@ -57,6 +57,7 @@
                 :otheruser="pov === chat.user1.id ? chat.user2 : chat.user1"
                 :last="chatmessage.id === chatmessages[chatmessages.length - 1].id"
                 :pov="pov"
+                :chatusers="chatusers"
               />
             </li>
           </ul>
@@ -73,11 +74,12 @@
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
 import chatCollate from '@/mixins/chatCollate.js'
+import chat from '@/mixins/chat.js'
 const ChatMessage = () => import('@/components/ChatMessage')
 
 export default {
   components: { ChatMessage, InfiniteLoading },
-  mixins: [chatCollate],
+  mixins: [chatCollate, chat],
   props: {
     id: {
       type: Number,

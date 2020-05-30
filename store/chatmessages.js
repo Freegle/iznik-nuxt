@@ -46,7 +46,9 @@ export const mutations = {
         : payload.users
 
     if (!state.users[chatid]) {
-      Vue.set(state.users, chatid, [])
+      // Use an object rather than an array so that it's sparse and more efficient.  Surprisingly effective for
+      // performance.
+      Vue.set(state.users, chatid, {})
     }
 
     for (const user of users) {

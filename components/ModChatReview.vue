@@ -29,7 +29,7 @@
             {{ message.message }}
           </div>
           <div v-else>
-            <ChatMessage :chat="message.chatroom" :chatmessage="message" :otheruser="message.fromuser" last />
+            <ChatMessage :chat="message.chatroom" :chatmessage="message" :otheruser="message.fromuser" last :chatusers="chatusers" />
           </div>
         </div>
         <div class="d-flex justify-content-between flex-wrap">
@@ -126,6 +126,7 @@ import ChatMessage from './ChatMessage'
 import ModChatNoteModal from './ModChatNoteModal'
 import ModChatViewButton from './ModChatViewButton'
 import SpinButton from './SpinButton'
+import chat from '@/mixins/chat.js'
 const ModMessageEmailModal = () => import('~/components/ModMessageEmailModal')
 
 export default {
@@ -138,7 +139,7 @@ export default {
     NoticeMessage,
     ModMessageEmailModal
   },
-  mixins: [waitForRef],
+  mixins: [waitForRef, chat],
   props: {
     message: {
       type: Object,

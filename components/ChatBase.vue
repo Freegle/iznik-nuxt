@@ -43,6 +43,10 @@ export default {
       type: Number,
       required: false,
       default: null
+    },
+    chatusers: {
+      type: Array,
+      required: true
     }
   },
   computed: {
