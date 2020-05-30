@@ -87,6 +87,30 @@
         spam
         label="Spam"
       />
+      <SpinButton
+        v-if="message.type === 'Offer' && !message.outcomes.length"
+        variant="white"
+        class="m-1"
+        name="check"
+        label="Mark as TAKEN"
+        :handler="outcome('Taken')"
+      />
+      <SpinButton
+        v-if="message.type === 'Wanted' && !message.outcomes.length"
+        variant="white"
+        class="m-1"
+        name="check"
+        label="Mark as RECEIVED"
+        :handler="outcome('Received')"
+      />
+      <SpinButton
+        v-if="!message.outcomes.length"
+        variant="white"
+        class="m-1"
+        name="trash-alt"
+        label="Mark as Withdrawn"
+        :handler="outcome('Withdrawn')"
+      />
     </div>
     <div v-else-if="spam" class="d-inline">
       <ModMessageButton
@@ -128,9 +152,10 @@
 <script>
 import stdmsgs from '../mixins/stdmsgs'
 import ModMessageButton from './ModMessageButton'
+import SpinButton from './SpinButton'
 
 export default {
-  components: { ModMessageButton },
+  components: { SpinButton, ModMessageButton },
   mixins: [stdmsgs],
   props: {
     message: {
@@ -224,6 +249,18 @@ export default {
       }
 
       return ret
+    },
+    outcome(type) {
+      const self = this
+
+      return async function() {
+        console.log('Outcome', type, self.message.id)
+        await self.$store.dispatch('messages/update', {
+          action: 'Outcome',
+          id: self.message.id,
+          outcome: type
+        })
+      }
     }
   }
 }
