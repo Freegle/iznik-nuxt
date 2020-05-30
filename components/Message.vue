@@ -192,6 +192,7 @@
         <div v-else>
           <div class="d-flex">
             <b-form-group
+              class="flex-grow-1"
               label="Your reply:"
               :label-for="'replytomessage-' + expanded.id"
               :description="expanded.type === 'Offer' ? 'Interested?  Please explain why you\'d like it and when you can collect.  Always be polite and helpful.' : 'Can you help?  If you have what they\'re looking for, let them know.'"
@@ -202,7 +203,7 @@
                 v-model="reply"
                 rows="3"
                 max-rows="8"
-                class="flex-shrink-2 border border-success"
+                class="border border-success"
               />
               <b-form-textarea
                 v-if="expanded.type == 'Wanted'"
@@ -210,10 +211,10 @@
                 v-model="reply"
                 rows="3"
                 max-rows="8"
-                class="flex-shrink-2"
+                class="flex-grow-1"
               />
             </b-form-group>
-            <div class="flex-grow-1 text-right ml-2 d-none d-md-block">
+            <div class="flex-shrink-1 text-right ml-2 d-none d-md-block mt-5">
               <b-btn variant="primary" :disabled="disableSend" @click="sendReply">
                 Send
                 <v-icon v-if="replying" name="sync" class="fa-spin" />
