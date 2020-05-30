@@ -16,7 +16,11 @@
             <p>
               <b>{{ groupname }}</b> is a charity that's free to use, but not free to run.
             </p>
-            <p>
+            <p v-if="variant === 'buttons51025help'">
+              A lot of us are struggling at the moment, and that's probably going to continue for a while.  Can you
+              help us help more people?
+            </p>
+            <p v-else>
               The COVID-19 lockdown has been difficult for us because we rely on
               donations to keep going, and we had to shut down for a while.  It's been difficult for a lot of
               other people, charities, and businesses too.
