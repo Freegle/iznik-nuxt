@@ -19,13 +19,13 @@ export default {
     this.monitorLocalStorage()
   },
   methods: {
-    monitorLocalStorage() {
+    async monitorLocalStorage() {
       // We have trouble on some devices setting info to localStorage, due to quota or security reasons.  This can
       // break us.  Try to set something to local storage so that we can check if it makes it there;
       // if not, then do a toast.
       console.log('Monitor local storage')
       const now = Date.now()
-      this.$store.dispatch('misc/set', {
+      await this.$store.dispatch('misc/set', {
         key: 'localStorageMonitor',
         value: now
       })

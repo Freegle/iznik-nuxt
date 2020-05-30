@@ -22,7 +22,7 @@
           </span>
         </div>
       </div>
-      <div v-if="message && stdmsg.action === 'Edit' && message.item" class="d-flex justify-content-start">
+      <div v-if="message && stdmsg.action === 'Edit' && message.item && message.location" class="d-flex justify-content-start">
         <b-select v-model="message.type" :options="typeOptions" class="type mr-1" size="lg" />
         <b-input v-model="message.item.name" size="lg" class="mr-1" />
         <b-input-group>
@@ -218,7 +218,7 @@ export default {
           messagemaker:
             'The Message Maker is no longer a separate tool; please just refer people to www.ilovefreegle.org.',
           cafe:
-            'The ChitChat area of the site is the please for cafe-type requests now.',
+            'The ChitChat area of the site is the place for cafe-type requests now.',
           newsfeed: 'Newsfeed is now called ChitChat.',
           freegledirect:
             'Freegle Direct is no longer an active term; we just talk about "our website" now.'
