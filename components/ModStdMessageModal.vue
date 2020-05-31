@@ -237,14 +237,16 @@ export default {
   },
   methods: {
     show() {
-      // Calculate initial subject.
+      // Calculate initial subject.  Everything apart from Edits adds a Re:.
+      const defpref = this.stdmsg.action === 'Edit' ? '' : 'Re:'
+
       if (this.member) {
         this.subject =
-          (this.stdmsg.subjpref ? this.stdmsg.subjpref : 'Re:') +
+          (this.stdmsg.subjpref ? this.stdmsg.subjpref : defpref) +
           (this.stdmsg.subjsuff ? this.stdmsg.subjsuff : '')
       } else {
         this.subject =
-          (this.stdmsg.subjpref ? this.stdmsg.subjpref : 'Re') +
+          (this.stdmsg.subjpref ? this.stdmsg.subjpref : defpref) +
           ': ' +
           this.message.subject +
           (this.stdmsg.subjsuff ? this.stdmsg.subjsuff : '')
