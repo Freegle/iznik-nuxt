@@ -1,8 +1,14 @@
 <template>
   <b-button :variant="variant" :disabled="disabled" :size="size" @click="click">
+    <span v-if="iconlast">
+      {{ label }}
+    </span>
     <v-icon v-if="done" name="check" :class="spinclass" />
     <v-icon v-else-if="doing" name="sync" :class="'fa-spin ' + spinclass" />
-    <v-icon v-else :name="name" />&nbsp;{{ label }}
+    <v-icon v-else :name="name" />&nbsp;
+    <span v-if="!iconlast">
+      {{ label }}
+    </span>
   </b-button>
 </template>
 <script>
@@ -44,6 +50,11 @@ export default {
       type: String,
       required: false,
       default: null
+    },
+    iconlast: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {

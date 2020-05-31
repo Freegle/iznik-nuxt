@@ -18,7 +18,9 @@ export default class MessageAPI extends BaseAPI {
   }
 
   joinAndPost(id, email) {
-    return this.$post('/message', { id, email, action: 'JoinAndPost' })
+    const params = { id, email, action: 'JoinAndPost' }
+    if (process.env.IS_APP) params.appVersion = process.env.MOBILE_VERSION
+    return this.$post('/message', params)
   }
 
   del(id) {

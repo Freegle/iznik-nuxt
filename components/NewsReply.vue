@@ -92,43 +92,74 @@
         </li>
       </ul>
     </div>
-    <b-row v-if="showReplyBox" class="mb-2">
-      <b-col class="p-0 pb-1 d-flex ml-4">
-        <div
-          class="d-flex w-100"
-          @keyup.enter.exact.prevent
-          @keydown.enter.exact="sendReply"
-        >
-          <at-ta ref="at" :members="tagusers" class="pl-4 flex-shrink-2 input-group" :filter-match="filterMatch">
-            <b-input-group-prepend>
-              <span class="input-group-text pl-1 pr-1">
-                <ProfileImage v-if="me.profile.turl" :image="me.profile.turl" class="m-0 inline float-left" is-thumbnail size="sm" />
-              </span>
-            </b-input-group-prepend>
-            <b-textarea
-              ref="replybox"
-              v-model="replybox"
-              size="sm"
-              rows="1"
-              max-rows="8"
-              maxlength="2048"
-              spellcheck="true"
-              placeholder="Write a reply to this comment and hit enter..."
-              class="p-0 pl-1 pt-1"
-              autocapitalize="none"
-              @keydown.enter.exact.prevent
-              @keyup.enter.exact="sendReply"
-              @keydown.enter.shift.exact.prevent="newlineReply"
-              @keydown.alt.shift.exact.prevent="newlineReply"
-              @focus="focusedReply"
-            />
-          </at-ta>
-          <b-btn size="sm" variant="white" class="flex-grow-1 float-right ml-1" @click="photoAdd">
-            <v-icon name="camera" />&nbsp;Photo
-          </b-btn>
-        </div>
-      </b-col>
-    </b-row>
+    <div v-if="showReplyBox" class="mb-2 pb-1 ml-4">
+      <div v-if="enterNewLine" class="w-100">
+        <at-ta ref="at" :members="tagusers" class="pl-2 input-group" :filter-match="filterMatch">
+          <b-input-group-prepend>
+            <span class="input-group-text pl-1 pr-1">
+              <ProfileImage v-if="me.profile.turl" :image="me.profile.turl" class="m-0 inline float-left" is-thumbnail size="sm" />
+            </span>
+          </b-input-group-prepend>
+          <b-textarea
+            ref="replybox"
+            v-model="replybox"
+            size="sm"
+            rows="1"
+            max-rows="8"
+            maxlength="2048"
+            spellcheck="true"
+            placeholder="Write a reply to this comment..."
+            class="p-0 pl-1 pt-1"
+            @focus="focusedReply"
+          />
+        </at-ta>
+      </div>
+      <div
+        v-else
+        class="w-100"
+        @keyup.enter.exact.prevent
+        @keydown.enter.exact="sendReply"
+      >
+        <at-ta ref="at" :members="tagusers" class="pl-2 input-group" :filter-match="filterMatch">
+          <b-input-group-prepend>
+            <span class="input-group-text pl-1 pr-1">
+              <ProfileImage v-if="me.profile.turl" :image="me.profile.turl" class="m-0 inline float-left" is-thumbnail size="sm" />
+            </span>
+          </b-input-group-prepend>
+          <b-textarea
+            ref="replybox"
+            v-model="replybox"
+            size="sm"
+            rows="1"
+            max-rows="8"
+            maxlength="2048"
+            spellcheck="true"
+            placeholder="Write a reply to this comment and hit enter to send..."
+            class="p-0 pl-1 pt-1"
+            autocapitalize="none"
+            @keydown.enter.exact.prevent
+            @keyup.enter.exact="sendReply"
+            @keydown.enter.shift.exact.prevent="newlineReply"
+            @keydown.alt.shift.exact.prevent="newlineReply"
+            @focus="focusedReply"
+          />
+        </at-ta>
+      </div>
+      <div class="d-flex justify-content-between flex-wrap mt-1 pl-2">
+        <b-btn size="sm" variant="white" @click="photoAdd">
+          <v-icon name="camera" />&nbsp;Add Photo
+        </b-btn>
+        <SpinButton
+          v-if="enterNewLine"
+          variant="primary"
+          name="angle-double-right"
+          label="Post"
+          iconlast
+          spinclass="text-white"
+          :handler="sendReply"
+        />
+      </div>
+    </div>
     <b-img v-if="imageid" lazy thumbnail :src="imagethumb" class="mt-1 ml-4 image__uploaded" />
     <OurFilePond
       v-if="uploading"
@@ -192,6 +223,7 @@
 import waitForRef from '../mixins/waitForRef'
 import NewsLovesModal from './NewsLovesModal'
 import OurFilePond from './OurFilePond'
+import SpinButton from './SpinButton'
 import twem from '~/assets/js/twem'
 
 import NewsUserInfo from '~/components/NewsUserInfo'
@@ -213,6 +245,7 @@ const INITIAL_NUMBER_OF_REPLIES_TO_SHOW = 5
 export default {
   name: 'NewsReply',
   components: {
+    SpinButton,
     OurFilePond,
     NewsLovesModal,
     NewsUserInfo,
@@ -259,6 +292,9 @@ export default {
     }
   },
   computed: {
+    enterNewLine() {
+      return this.$store.getters['misc/get']('enternewline')
+    },
     userid() {
       // The API can return slightly different things in different places.
       if (this.reply.userid) {
@@ -423,9 +459,11 @@ export default {
       this.replyingTo = this.replyid
     },
     async sendReply(e) {
-      e.preventDefault()
-      e.stopPropagation()
-      e.stopImmediatePropagation()
+      if (e) {
+        e.preventDefault()
+        e.stopPropagation()
+        e.stopImmediatePropagation()
+      }
 
       // Encode up any emojis.
       if (this.replybox && this.replybox.trim()) {

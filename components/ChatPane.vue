@@ -123,6 +123,7 @@
                   :chat="chat"
                   :otheruser="otheruser"
                   :last="chatmessage.id === chatmessages[chatmessages.length - 1].id"
+                  :chatusers="chatusers"
                 />
               </li>
             </ul>

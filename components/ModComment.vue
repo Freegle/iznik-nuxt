@@ -54,13 +54,10 @@ export default {
       let ret = null
 
       if (this.comment.groupid) {
-        console.log('Compute group', this.comment.groupid)
         ret = this.$store.getters['auth/groupById'](this.comment.groupid)
-        console.log('Our own', ret)
 
         if (!ret) {
           ret = this.$store.getters['group/get'](this.comment.groupid)
-          console.log('Group store', ret)
         }
       }
 

@@ -68,11 +68,7 @@ export default {
   },
   computed: {
     othermodname() {
-      const user = this.$store.getters['chatmessages/getUser'](
-        this.chatmessage.chatid,
-        this.chatmessage.userid
-      )
-
+      const user = this.chatusers[this.chatmessage.userid]
       return user ? user.displayname : null
     }
   },
