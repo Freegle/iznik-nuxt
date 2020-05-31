@@ -24,17 +24,18 @@ export default {
         return this.$store.getters['chats/currentChat']
       },
       async set(newVal) {
-        console.log('Set current chat', newVal)
         await this.$store.dispatch('chats/currentChat', {
           chatid: newVal
         })
 
-        await this.$store.dispatch('chatmessages/clearContext', {
-          chatid: newVal
-        })
-        await this.$store.dispatch('chatmessages/fetch', {
-          chatid: newVal
-        })
+        if (newVal) {
+          await this.$store.dispatch('chatmessages/clearContext', {
+            chatid: newVal
+          })
+          await this.$store.dispatch('chatmessages/fetch', {
+            chatid: newVal
+          })
+        }
 
         this.bump = Date.now()
       }

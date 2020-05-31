@@ -80,7 +80,6 @@ export default {
       return work.chatreview
     },
     group() {
-      console.log('Compute group')
       return this.$store.getters['group/get'](this.groupid)
     }
   },

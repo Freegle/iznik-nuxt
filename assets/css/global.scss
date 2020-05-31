@@ -33,10 +33,12 @@
   -webkit-font-smoothing: antialiased;
 }
 
-.btn-primary:hover {
-  color: $color-black;
-  background-color: $color-white;
-  border-color: $color-blue--2;
+.btn-primary:hover,
+.btn-primary:active {
+  // !important is required to override the bootstrap styles
+  color: $color-black !important;
+  background-color: $color-white !important;
+  border-color: $color-blue--2 !important;
 }
 
 .btn-primary:focus {
@@ -58,14 +60,17 @@
   -webkit-font-smoothing: antialiased;
 }
 
-.btn-secondary:hover {
-  color: $color-black;
-  background-color: $color-white;
-  border-color: $color-blue--2;
+.btn-secondary:hover,
+.btn-secondary:active {
+  // !important is required to override the bootstrap styles
+  color: $color-black !important;
+  background-color: $color-white  !important;
+  border-color: $color-blue--2 !important;
 }
 
 .btn-secondary:focus {
-  box-shadow: 0 0 0 0.2rem rgba(38,143,255,.5)
+  // !important is required to override the bootstrap styles
+  box-shadow: 0 0 0 0.2rem rgba(38,143,255,.5) !important;
 }
 
 .btn-secondary:disabled {

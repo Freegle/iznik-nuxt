@@ -12,6 +12,9 @@
     </b-col>
     <b-col cols="12" md="5" class="p-0 order-1 order-md-2">
       {{ chat.name }}
+      <span v-if="otheruser" class="text-muted">
+        <v-icon name="hashtag" class="text-muted" scale="0.5" />{{ otheruser }}
+      </span>
     </b-col>
     <b-col cols="3" md="2" class="p-0 order-5 order-md-4 small text-muted">
       <ModChatViewButton :id="chat.id" :pov="pov" />
@@ -31,6 +34,15 @@ export default {
       type: Number,
       required: false,
       default: null
+    }
+  },
+  computed: {
+    otheruser() {
+      if (!this.chat || this.chat.chattype !== 'User2User') {
+        return null
+      } else {
+        return this.chat.user1 === this.pov ? this.chat.user2 : this.chat.user1
+      }
     }
   }
 }

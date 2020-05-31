@@ -33,7 +33,6 @@ export default {
       const ret = this.$store.getters['chats/get'](this.id)
       return ret
     },
-
     unseen() {
       let unseen = 0
       const chat = this.$store.getters['chats/get'](this.id)
@@ -52,6 +51,8 @@ export default {
     },
 
     chatusers() {
+      // This is a bit expensive in the store, so it's better to get it here and pass it down than potentially to
+      // get it in each message we render.
       return this.$store.getters['chatmessages/getUsers'](this.id)
     },
 

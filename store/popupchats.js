@@ -16,20 +16,6 @@ export const mutations = {
 }
 
 export const getters = {
-  get: state => id => {
-    let ret = null
-
-    Object.keys(state.list).forEach(key => {
-      const chat = state.list[key]
-
-      if (parseInt(key) === parseInt(id)) {
-        ret = chat
-      }
-    })
-
-    return ret
-  },
-
   list: state => {
     return state.list
   }

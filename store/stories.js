@@ -32,17 +32,8 @@ export const mutations = {
 
 export const getters = {
   get: state => id => {
-    let ret = null
-
-    Object.keys(state.list).forEach(key => {
-      const item = state.list[key]
-
-      if (parseInt(key) === parseInt(id)) {
-        ret = item
-      }
-    })
-
-    return ret
+    id = parseInt(id)
+    return state.list[id] ? state.list[id] : null
   },
 
   list: state => {
