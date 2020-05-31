@@ -65,7 +65,7 @@
             v-if="!message.held"
             name="exclamation-triangle"
             label="Add Mod Message"
-            variant="primary"
+            variant="warning"
             class="mr-2 mb-1"
             :handler="modnote"
           />
