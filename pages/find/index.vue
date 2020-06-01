@@ -21,7 +21,7 @@
               <a v-if="extgroup" :href="extgroup">
                 <v-icon name="check-circle" class="text-success mt-2 fa-bh" scale="5" />
               </a>
-              <nuxt-link v-else to="/find/search">
+              <nuxt-link v-else to="/find/whatisit">
                 <v-icon name="check-circle" class="text-success mt-2 fa-bh" scale="5" />
               </nuxt-link>
             </b-col>
@@ -61,7 +61,7 @@
           </div>
           <b-row v-else-if="postcodeValid" class="mt-1">
             <b-col class="text-center mt-4" cols="12" md="6" offset-md="3">
-              <nuxt-link to="/find/search" class="decornone">
+              <nuxt-link to="/find/whatisit" class="decornone">
                 <b-btn variant="primary" size="lg" block>
                   Next <v-icon name="angle-double-right" />
                 </b-btn>
