@@ -190,6 +190,12 @@ export default {
       })
     }
 
+    if (process.env.IS_APP) {
+      this.$store.dispatch('misc/set', {
+        key: 'visible',
+        value: true
+      })
+    }
     // Ensure we know whether we're FD or MT.
     this.$store.dispatch('misc/set', {
       key: 'modtools',
