@@ -64,7 +64,7 @@
         <GroupShowMod v-for="mod in group.showmods" :key="'showmod-' + mod.id" :modtoshow="mod" class="ml-1" />
       </div>
     </div>
-    <div v-if="group.sponsors" class="d-flex flex-wrap justify-content-between">
+    <div v-if="group.sponsors" class="d-flex flex-wrap justify-content-between mt-1">
       <b-card v-for="sponsor in group.sponsors" :key="'sponsor-' + sponsor.id" no-body>
         <b-card-body class="d-flex p-1">
           <SponsorLogo :image="sponsor.imageurl" :alt-text="'Sponsor logo for ' + sponsor.name" />
