@@ -191,7 +191,6 @@ export default {
     }
 
     if (process.env.IS_APP) {
-      console.log('MT mounted ++++++++++++++++++')
       this.$store.dispatch('misc/set', {
         key: 'visible',
         value: true
