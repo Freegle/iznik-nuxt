@@ -35,7 +35,7 @@
             <b-card>
               <b-card-text>
                 <div class="d-flex justify-content-between">
-                  <b-btn to="/find" variant="primary" class="topbutton">
+                  <b-btn to="/find/search" variant="primary" class="topbutton">
                     <v-icon name="search" class="mr-1" />
                     Search for stuff
                   </b-btn>
