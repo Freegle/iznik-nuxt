@@ -143,7 +143,7 @@
         label="Spammer"
       />
     </div>
-    <div v-if="!member.heldby" class="d-inline">
+    <div v-if="!member.heldby || member.heldby.id === myid" class="d-inline">
       <ModMemberButton
         v-for="stdmsg in filtered"
         :key="stdmsg.id"
