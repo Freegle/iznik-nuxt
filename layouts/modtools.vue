@@ -185,6 +185,13 @@ export default {
           this.showMenu = true
         }
       })
+
+      // Assume we're visible.  This will change later if we become invisible, but it avoids a probably bug where we shut down
+      // as not visible, then start up and open as visible, but the visibility plugin doesn't fire.
+      this.$store.dispatch('misc/set', {
+        key: 'visible',
+        value: true
+      })
     }
 
     // Ensure we know whether we're FD or MT.
