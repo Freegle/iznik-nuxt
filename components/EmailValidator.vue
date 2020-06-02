@@ -1,8 +1,6 @@
 <template>
   <div class="d-inline-block w-100">
-    <validating-form
-      :class="{ 'justify-content-around': center, 'd-flex': true }"
-    >
+    <div :class="{ 'justify-content-around': center, 'd-flex': true }">
       <b-form-group
         :label="label"
         :label-for="'email-' + id"
@@ -20,27 +18,26 @@
             email: 'Please enter a valid email address.'
           }"
           :center="center"
-          autocomplete="on"
+          autocomplete="username email"
           @input="input"
           @focus="focus"
           @blur="blur"
         />
       </b-form-group>
-    </validating-form>
-    <div v-if="suggestedDomains && suggestedDomains.length" class="text-info small">
-      Did you mean <b>{{ suggestedDomains[0] }}</b>?
+      <div v-if="suggestedDomains && suggestedDomains.length" class="text-info small">
+        Did you mean <b>{{ suggestedDomains[0] }}</b>?
+      </div>
     </div>
   </div>
 </template>
 <script>
 import { required, email } from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
-import ValidatingForm from '../components/ValidatingForm'
 import ValidatingFormInput from '../components/ValidatingFormInput'
 import validationHelpers from '@/mixins/validationHelpers'
 
 export default {
-  components: { ValidatingForm, ValidatingFormInput },
+  components: { ValidatingFormInput },
   mixins: [validationMixin, validationHelpers],
   props: {
     email: {
