@@ -8,6 +8,7 @@
         :label-for="'email-' + id"
       >
         <validating-form-input
+          :id="id"
           :value="email"
           type="email"
           name="email"
@@ -19,7 +20,7 @@
             email: 'Please enter a valid email address.'
           }"
           :center="center"
-          autocomplete="username email"
+          autocomplete="on"
           @input="input"
           @focus="focus"
           @blur="blur"
