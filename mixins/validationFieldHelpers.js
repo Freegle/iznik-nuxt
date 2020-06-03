@@ -38,6 +38,10 @@ export default {
     validationMessages: {
       type: Object,
       required: true
+    },
+    id: {
+      type: String,
+      required: true
     }
   },
   computed: {
