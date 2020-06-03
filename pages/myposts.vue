@@ -153,7 +153,7 @@
           </template>
           <b-card-body class="p-1 p-lg-3">
             <b-card-text class="text-center">
-              <p v-if="activeWantdCount > 0" class="text-muted">
+              <p v-if="activeWantedCount > 0" class="text-muted">
                 Stuff you're trying to find.
               </p>
               <div v-if="busy || activeWantedCount > 0 || (showOldWanteds && wanteds.length > 0)">
