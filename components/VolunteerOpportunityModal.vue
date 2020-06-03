@@ -286,7 +286,6 @@
               />
             </b-form-group>
             <EmailValidator
-              id="contactemail"
               ref="email"
               size="md"
               :email.sync="volunteeringEdit.contactemail"
