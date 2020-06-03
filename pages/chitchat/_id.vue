@@ -17,7 +17,7 @@
             </h5>
             <h5 class="text-center mb-3">
               Browse OFFERs/WANTEDs
-              <nuxt-link to="/communities">
+              <nuxt-link to="/browse">
                 here
               </nuxt-link>
             </h5>

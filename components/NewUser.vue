@@ -70,14 +70,14 @@
             </nuxt-link>.
           </li>
           <li>
-            4. You can browse other freeglers' posts in <nuxt-link to="/communities">
-              Communities
+            4. You can browse other freeglers' posts in <nuxt-link to="/browse">
+              Browse
             </nuxt-link>.
           </li>
         </ul>
-        <b-btn variant="primary" size="lg" to="/communities">
-          <v-icon name="users" />&nbsp;
-          Continue to Communities
+        <b-btn variant="primary" size="lg" to="/browse">
+          <v-icon name="eye" />&nbsp;
+          Continue to Browse posts
         </b-btn>
       </b-col>
     </b-row>
