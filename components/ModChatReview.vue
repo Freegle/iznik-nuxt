@@ -152,32 +152,32 @@ export default {
     }
   },
   methods: {
-    release() {
-      this.$store.dispatch('chatmessages/release', {
+    async release() {
+      await this.$store.dispatch('chatmessages/release', {
         id: this.message.id,
         chatid: null
       })
     },
-    hold() {
-      this.$store.dispatch('chatmessages/hold', {
+    async hold() {
+      await this.$store.dispatch('chatmessages/hold', {
         id: this.message.id,
         chatid: null
       })
     },
-    approve() {
-      this.$store.dispatch('chatmessages/approve', {
+    async approve() {
+      await this.$store.dispatch('chatmessages/approve', {
         id: this.message.id,
         chatid: null
       })
     },
-    reject() {
-      this.$store.dispatch('chatmessages/reject', {
+    async reject() {
+      await this.$store.dispatch('chatmessages/reject', {
         id: this.message.id,
         chatid: null
       })
     },
-    whitelist() {
-      this.$store.dispatch('chatmessages/whitelist', {
+    async whitelist() {
+      await this.$store.dispatch('chatmessages/whitelist', {
         id: this.message.id,
         chatid: null
       })
