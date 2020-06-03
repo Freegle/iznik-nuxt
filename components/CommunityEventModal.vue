@@ -99,6 +99,14 @@
               <a :href="'mailto:' + event.contactemail">{{ event.contactemail }}</a>
             </b-col>
           </b-row>
+          <b-row v-if="event.contactphone">
+            <b-col cols="4" md="3" class="field">
+              Contact Phone
+            </b-col>
+            <b-col cols="8" md="9">
+              <a :href="'tel:' + event.contactphone">{{ event.contactphone }}</a>
+            </b-col>
+          </b-row>
           <b-row v-if="event.contacturl">
             <b-col cols="4" md="3" class="field">
               Website
