@@ -3,10 +3,10 @@
     <div :class="{ 'justify-content-around': center, 'd-flex': true }">
       <b-form-group
         :label="label"
-        :label-for="'email-' + id"
+        :label-for="'email-' + uniqueid"
       >
         <validating-form-input
-          :id="id"
+          :id="'email-' + uniqueid"
           :value="email"
           type="email"
           name="email"
@@ -30,6 +30,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import { required, email } from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
@@ -73,7 +74,8 @@ export default {
   data: function() {
     return {
       suggestedDomains: [],
-      focused: false
+      focused: false,
+      uniqueid: ''
     }
   },
   watch: {
@@ -105,8 +107,10 @@ export default {
       }
     }
   },
-  mounted() {
+  async mounted() {
     this.checkState(this.email)
+
+    this.uniqueid = await this.$store.dispatch('uniqueid/generate')
   },
   methods: {
     input(newVal) {
@@ -135,6 +139,7 @@ export default {
   }
 }
 </script>
+
 <style scoped>
 .email {
   width: 100%;
