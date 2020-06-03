@@ -263,19 +263,14 @@
                 }"
               />
             </b-form-group>
-            <b-form-group
+            <EmailValidator
+              id="contactemail"
+              ref="email"
+              size="md"
+              :email.sync="eventEdit.contactemail"
+              :valid.sync="emailValid"
               label="Contact email:"
-              label-for="contactemail"
-            >
-              <EmailValidator
-                id="contactemail"
-                ref="email"
-                size="md"
-                :email.sync="eventEdit.contactemail"
-                :valid.sync="emailValid"
-                :label="null"
-              />
-            </b-form-group>
+            />
             <b-form-group
               label="Contact phone:"
               label-for="contactphone"
