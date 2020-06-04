@@ -202,7 +202,8 @@ module.exports = {
   redirect: [
     { from: '^/chat/(.*)$', to: '/chats/$1' },
     { from: '^/modtools/chat/(.*)$', to: '/modtools/chats/$1' },
-    { from: '^/mygroups(.*)$', to: '/communities$1' },
+    { from: '^/mygroups(.*)$', to: '/browse$1' },
+    { from: '^/communities(.*)$', to: '/browse$1' },
     { from: '^/why$', to: '/help' },
     { from: '^/contact$', to: '/help' },
     { from: '^/posters$', to: '/noticeboards' },
