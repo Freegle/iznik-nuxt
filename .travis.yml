@@ -78,7 +78,9 @@ script:
 ##- sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& PROVISIONING_PROFILE_SPECIFIER = 'Freegle adhoc 0420';/" platforms/ios/Freegle.xcodeproj/project.pbxproj
 ##- sed -i '' "s/WK_WEB_VIEW_ONLY = 1;/& DEVELOPMENT_TEAM = GMYU3K9D84;/" platforms/ios/Freegle.xcodeproj/project.pbxproj
 # https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html
-- cordova build --debug --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="ad-hoc" --automaticProvisioning="false" --provisioningProfile="3539d51d-56be-4241-a9b6-b3c0c1a97848" >buildlogdebug.txt
+- cordova build --debug --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="ad-hoc" --automaticProvisioning="false" --provisioningProfile="3539d51d-56be-4241-a9b6-b3c0c1a97848"
+breakingcommand
+###>buildlogdebug.txt
 ###- cordova build --debug --device --buildFlag="-UseModernBuildSystem=0" --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="ad-hoc" --automaticProvisioning="false" --provisioningProfile="Freegle adhoc 0420" >buildlogdebug.txt
 ### Sign properly: export as ipa
 ##- cp ../iznik-nuxt/mobile/ExportOptionsFreegleDebug.plist .
