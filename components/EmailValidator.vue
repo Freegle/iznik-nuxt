@@ -4,6 +4,7 @@
       <b-form-group
         :label="label"
         :label-for="'email-' + uniqueid"
+        label-class="mt-0"
       >
         <validating-form-input
           :id="'email-' + uniqueid"
