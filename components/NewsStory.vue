@@ -7,7 +7,7 @@
           <b-card-header>
             <b>{{ newsfeed.story.headline }}</b>
           </b-card-header>
-          <b-card-text class="p-2">
+          <b-card-text class="p-2 preline">
             <b-img
               v-if="newsfeed.story.photo"
               v-b-modal="'photoModal-' + newsfeed.id"
