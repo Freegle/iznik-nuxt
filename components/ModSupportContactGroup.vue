@@ -159,7 +159,7 @@ export default {
   },
   computed: {
     valid() {
-      return this.from && this.subject && this.text
+      return this.from && this.subject && this.text && this.groupid
     },
     alerts() {
       const alerts = Object.values(this.$store.getters['alert/list'])
