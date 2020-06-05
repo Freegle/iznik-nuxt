@@ -9,7 +9,7 @@
                 <v-icon name="hands-helping" scale="2" /> Volunteer Opportunities
               </nuxt-link>
             </h4>
-            <b-btn variant="white" @click="showVolunteerModal">
+            <b-btn variant="white" aria-label="Add volunteer opportunity" @click="showVolunteerModal">
               <v-icon name="plus" /> Add
             </b-btn>
           </div>
