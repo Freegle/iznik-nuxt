@@ -126,7 +126,6 @@
             </b-form-group>
           </div>
           <EmailValidator
-            id="email"
             ref="email"
             size="md"
             :email.sync="email"
