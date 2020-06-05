@@ -110,7 +110,7 @@ export default {
     SidebarRight,
     ExpectedRepliesWarning
   },
-  mixins: [loginRequired, buildHead, createGroupRoute('communities')],
+  mixins: [loginRequired, buildHead, createGroupRoute('browse')],
   data: function() {
     return {
       id: null,
