@@ -1,6 +1,7 @@
 <template>
   <div>
     <b-textarea
+      :id="id"
       :state="validationState"
       :aria-describedby="feedbackId"
       v-bind="$attrs"
