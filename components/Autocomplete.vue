@@ -491,7 +491,7 @@ export default {
         // Callback Event
         this.onBeforeAjax ? this.onBeforeAjax(val) : null
         // Compose Params
-        const params = this.composeParams(val)
+        const params = this.composeParams(val.trim())
         // Init Ajax
         const ajax = new XMLHttpRequest()
 
