@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-card v-if="events.length" variant="white" no-body>
+    <b-card variant="white" no-body>
       <b-card-body class="p-0">
         <b-btn variant="white" class="float-right m-1" @click="showEventModal">
           <v-icon name="plus" /> Add
@@ -10,12 +10,17 @@
             <v-icon name="calendar-alt" scale="2" /> Community Events
           </h4>
         </nuxt-link>
-        <p class="text-center small">
-          These are local events, posted by other freeglers like you.
-        </p>
-        <div v-for="event in events" :key="'event-' + event.id" class="">
-          <CommunityEvent v-if="!event.pending" :summary="true" :event="event" />
+        <div v-if="events.length">
+          <p class="text-center small">
+            These are local events, posted by other freeglers like you.
+          </p>
+          <div v-for="event in events" :key="'event-' + event.id" class="">
+            <CommunityEvent v-if="!event.pending" :summary="true" :event="event" />
+          </div>
         </div>
+        <p v-else class="text-center p-1">
+          No community events to show yet.  Do you know of any you could add?
+        </p>
       </b-card-body>
     </b-card>
     <CommunityEventModal ref="eventmodal" :start-edit="true" />
