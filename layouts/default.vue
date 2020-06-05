@@ -16,9 +16,9 @@
         <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
         <b-collapse v-if="loggedIn" id="nav_collapse" ref="nav_collapse" is-nav class="flex-nowrap justify-content-between">
           <b-navbar-nav class="mainnav mainnav--left">
-            <b-nav-item id="menu-option-mygroups" class="text-center small p-0" to="/communities" @mousedown="maybeReload('/communities')">
-              <v-icon name="users" scale="2" class="ml-2" /><br>
-              <span class="nav-item__text">Communities</span>
+            <b-nav-item id="menu-option-mygroups" class="text-center small p-0 ml-2" to="/browse" @mousedown="maybeReload('/browse')">
+              <v-icon name="eye" scale="2" /><br>
+              <span class="nav-item__text">Browse</span>
             </b-nav-item>
             <b-nav-item v-if="!simple" id="menu-option-chitchat" class="text-center small p-0" to="/chitchat" @mousedown="maybeReload('/chitchat')">
               <v-icon name="coffee" scale="2" /><br>
@@ -199,9 +199,9 @@
       </div>
       <b-collapse v-if="loggedIn" id="nav_collapse_mobile" ref="nav_collapse_mobile" class="w-100 ourBack">
         <b-navbar-nav class="ml-auto flex-row flex-wrap small">
-          <b-nav-item class="text-center p-0" to="/communities" @mousedown="maybeReload('/communities')">
-            <v-icon name="users" scale="2" /><br>
-            <span class="nav-item__text">Communities</span>
+          <b-nav-item class="text-center p-0" to="/browse" @mousedown="maybeReload('/browse')">
+            <v-icon name="eye" scale="2" /><br>
+            <span class="nav-item__text">Browse</span>
           </b-nav-item>
           <b-nav-item v-if="!simple" class="text-center p-0 white" to="/chitchat" @mousedown="maybeReload('/chitchat')">
             <v-icon name="coffee" scale="2" /><br>

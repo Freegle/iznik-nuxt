@@ -290,10 +290,10 @@
                     <div v-for="group in me.groups" :key="'settingsgroup-' + group.id" class="list-unstyled">
                       <b-card v-if="group.type === 'Freegle'" class="nocardbot">
                         <b-card-title>
-                          <nuxt-link :to="'/communities/' + group.id">
+                          <nuxt-link :to="'/browse/' + group.id">
                             <b-img-lazy rounded thumbnail alt="Community profile picture" :src="group.profile" class="float-right groupprofile" />
                           </nuxt-link>
-                          <nuxt-link :to="'/communities/' + group.id">
+                          <nuxt-link :to="'/browse/' + group.id">
                             {{ group.namedisplay }}
                           </nuxt-link>
                           <span v-if="group.role === 'Moderator' || group.role === 'Owner'">
