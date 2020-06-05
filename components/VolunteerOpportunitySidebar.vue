@@ -2,17 +2,21 @@
   <div class="mb-2">
     <b-card v-if="opportunities.length" variant="white" no-body>
       <b-card-body class="p-0">
-        <b-btn variant="white" class="float-right m-1" @click="showVolunteerModal">
-          <v-icon name="plus" /> Add
-        </b-btn>
-        <nuxt-link to="/volunteerings">
-          <h4 class="pl-1 pt-1">
-            <v-icon name="hands-helping" scale="2" /> Volunteer Opportunities
-          </h4>
-        </nuxt-link>
-        <p class="text-center small">
-          Are you a charity or good cause that needs volunteers?
-        </p>
+        <div class="px-1 pt-1">
+          <div class="d-flex align-items-start">
+            <h4>
+              <nuxt-link to="/volunteerings" class="volunteer__link">
+                <v-icon name="hands-helping" scale="2" /> Volunteer Opportunities
+              </nuxt-link>
+            </h4>
+            <b-btn variant="white" @click="showVolunteerModal">
+              <v-icon name="plus" /> Add
+            </b-btn>
+          </div>
+          <p class="text-center small">
+            Are you a charity or good cause that needs volunteers?
+          </p>
+        </div>
         <div v-for="opportunity in opportunities" :key="'volunteering-' + opportunity.id" class="">
           <VolunteerOpportunity v-if="!opportunity.pending" :summary="true" :volunteering="opportunity" />
         </div>
@@ -54,3 +58,11 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
+.volunteer__link {
+  color: $colour-header;
+}
+</style>
