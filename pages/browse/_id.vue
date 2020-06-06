@@ -289,7 +289,7 @@ export default {
 
   head() {
     return this.buildHead(
-      'Communities',
+      'Browse',
       "See the OFFERs and WANTEDs from communities you've joined"
     )
   }
