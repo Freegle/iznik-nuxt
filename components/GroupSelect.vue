@@ -129,7 +129,10 @@ export default {
 
       if (this.systemwide) {
         // Check we're allowed.
-        if (this.me && this.me.systemrole === 'Admin') {
+        if (
+          this.me &&
+          (this.me.systemrole === 'Admin' || this.me.systemrole === 'Support')
+        ) {
           groups.push({
             value: -2,
             text: '-- Systemwide --',
