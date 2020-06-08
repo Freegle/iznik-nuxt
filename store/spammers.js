@@ -167,9 +167,10 @@ export const actions = {
   },
 
   async whitelist({ commit, dispatch }, params) {
-    await this.$api.spammers.patch({
+    await this.$api.spammers.add({
       id: params.id,
       userid: params.userid,
+      reason: params.reason,
       collection: 'Whitelisted'
     })
 
