@@ -1,44 +1,23 @@
 <template>
-  <div class="mb-2">
-    <b-card variant="white" no-body>
-      <b-card-body class="p-0">
-        <div class="px-1 pt-1">
-          <div class="d-flex align-items-start justify-content-between">
-            <h4>
-              <nuxt-link to="/volunteerings" class="volunteer__link">
-                <v-icon name="hands-helping" scale="2" /> Volunteer Opportunities
-              </nuxt-link>
-            </h4>
-            <b-btn variant="white" aria-label="Add volunteer opportunity" @click="showVolunteerModal">
-              <v-icon name="plus" /> Add
-            </b-btn>
-          </div>
-          <div v-if="opportunities.length">
-            <p class="text-center small">
-              Are you a charity or good cause that needs volunteers?
-            </p>
-            <div v-for="opportunity in opportunities" :key="'volunteering-' + opportunity.id" class="">
-              <VolunteerOpportunity v-if="!opportunity.pending" :summary="true" :volunteering="opportunity" />
-            </div>
-          </div>
-          <p v-else class="text-center p-1">
-            Are you a charity or good cause that needs volunteers?  Why not add your volunteer opportunities here?
-          </p>
-        </div>
-      </b-card-body>
-    </b-card>
-    <VolunteerOpportunityModal ref="volunteermodal" :start-edit="true" />
-  </div>
+  <SidebarSection
+    :events="opportunities"
+    title="Volunteer Opportunities"
+    link="/volunteerings"
+    icon-name="hands-helping"
+    add-button-label="Add volunteer opportunity"
+    event-description="Are you a charity or good cause that needs volunteers?"
+    no-events-message="Are you a charity or good cause that needs volunteers?  Why not add your volunteer opportunities here?"
+    add-event-name="VolunteerOpportunity"
+    add-event-modal-name="VolunteerOpportunityModal"
+  />
 </template>
+
 <script>
-import VolunteerOpportunity from './VolunteerOpportunity'
-const VolunteerOpportunityModal = () =>
-  import('~/components/VolunteerOpportunityModal')
+import SidebarSection from './SidebarSection'
 
 export default {
   components: {
-    VolunteerOpportunity,
-    VolunteerOpportunityModal
+    SidebarSection
   },
   data: function() {
     return {}
@@ -55,11 +34,6 @@ export default {
     setTimeout(() => {
       this.$store.dispatch('volunteerops/fetch')
     }, 1000)
-  },
-  methods: {
-    showVolunteerModal() {
-      this.$refs.volunteermodal.show()
-    }
   }
 }
 </script>
