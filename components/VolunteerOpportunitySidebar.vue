@@ -1,6 +1,6 @@
 <template>
   <div class="mb-2">
-    <b-card v-if="opportunities.length" variant="white" no-body>
+    <b-card variant="white" no-body>
       <b-card-body class="p-0">
         <div class="px-1 pt-1">
           <div class="d-flex align-items-start">
@@ -13,12 +13,17 @@
               <v-icon name="plus" /> Add
             </b-btn>
           </div>
-          <p class="text-center small">
-            Are you a charity or good cause that needs volunteers?
+          <div v-if="opportunities.length">
+            <p class="text-center small">
+              Are you a charity or good cause that needs volunteers?
+            </p>
+            <div v-for="opportunity in opportunities" :key="'volunteering-' + opportunity.id" class="">
+              <VolunteerOpportunity v-if="!opportunity.pending" :summary="true" :volunteering="opportunity" />
+            </div>
+          </div>
+          <p v-else class="text-center p-1">
+            Are you a charity or good cause that needs volunteers?  Why not add your volunteer opportunities here?
           </p>
-        </div>
-        <div v-for="opportunity in opportunities" :key="'volunteering-' + opportunity.id" class="">
-          <VolunteerOpportunity v-if="!opportunity.pending" :summary="true" :volunteering="opportunity" />
         </div>
       </b-card-body>
     </b-card>

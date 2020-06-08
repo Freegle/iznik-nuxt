@@ -110,7 +110,7 @@ export default {
     SidebarRight,
     ExpectedRepliesWarning
   },
-  mixins: [loginRequired, buildHead, createGroupRoute('communities')],
+  mixins: [loginRequired, buildHead, createGroupRoute('browse')],
   data: function() {
     return {
       id: null,
@@ -289,7 +289,7 @@ export default {
 
   head() {
     return this.buildHead(
-      'Communities',
+      'Browse',
       "See the OFFERs and WANTEDs from communities you've joined"
     )
   }

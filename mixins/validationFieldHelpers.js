@@ -38,6 +38,10 @@ export default {
     validationMessages: {
       type: Object,
       required: true
+    },
+    id: {
+      type: String,
+      required: true
     }
   },
   computed: {
@@ -48,7 +52,7 @@ export default {
      * @returns {string}
      */
     feedbackId() {
-      return this.$attrs.id + '-feedback'
+      return this.id + '-feedback'
     },
     /**
      * All the available validation types on this field.
