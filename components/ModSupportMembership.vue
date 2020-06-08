@@ -60,7 +60,7 @@
             label="Moderation status:"
             class="mr-5"
           >
-            <b-form-select :value="membership.ourpostingstatus || 'DEFAULT'" @change="changePostingStatus">
+            <b-form-select :value="membership.ourpostingstatus || 'MODERATED'" @change="changePostingStatus">
               <option value="MODERATED">
                 Moderated
               </option>
