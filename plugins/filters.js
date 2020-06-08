@@ -8,7 +8,7 @@ Vue.filter('datetimeshort', val => dayjs(val).format('Do MMM, YYYY HH:mm'))
 Vue.filter('dateshort', val => dayjs(val).format('MMM DD, YYYY'))
 
 // dayjs pluralises wrongly in some cases - we've seen 1 hours ago.
-const dePlural = new RegExp(/1 (.*)s/)
+const dePlural = new RegExp(/^1 (.*)s/)
 
 Vue.filter('timeago', val => {
   let f = dayjs(val).fromNow()
