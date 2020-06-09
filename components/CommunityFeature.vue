@@ -13,17 +13,17 @@
               <v-icon name="plus" /> Add
             </b-btn>
           </div>
-          <div v-if="events.length">
+          <div v-if="items.length">
             <p class="text-center small">
               {{ eventDescription }}
             </p>
-            <div v-for="event in events" :key="'event-' + event.id" class="">
-              <component :is="addEventName" v-if="!event.pending && addEventName==='VolunteerOpportunity'" :summary="true" :volunteering="event" />
-              <component :is="addEventName" v-if="!event.pending && addEventName==='CommunityEvent'" :summary="true" :event="event" />
+            <div v-for="item in items" :key="'event-' + item.id" class="">
+              <component :is="addEventName" v-if="!item.pending && addEventName==='VolunteerOpportunity'" :summary="true" :volunteering="item" />
+              <component :is="addEventName" v-if="!item.pending && addEventName==='CommunityEvent'" :summary="true" :event="item" />
             </div>
           </div>
           <p v-else class="text-center p-1">
-            {{ noEventsMessage }}
+            {{ noItemsMessage }}
           </p>
         </div>
       </b-card-body>
@@ -48,7 +48,7 @@ export default {
     VolunteerOpportunityModal
   },
   props: {
-    events: {
+    items: {
       type: Array,
       required: true
     },
@@ -72,7 +72,7 @@ export default {
       type: String,
       required: true
     },
-    noEventsMessage: {
+    noItemsMessage: {
       type: String,
       required: true
     },

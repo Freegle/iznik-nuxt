@@ -1,12 +1,12 @@
 <template>
   <CommunityFeature
-    :events="events"
+    :items="events"
     title="Community Events"
     link="/communityevents"
     icon-name="calendar-alt"
     add-button-label="Add community event"
     event-description="These are local events, posted by other freeglers like you."
-    no-events-message="No community events to show yet.  Do you know of any you could add?"
+    no-items-message="No community events to show yet.  Do you know of any you could add?"
     add-event-name="CommunityEvent"
     add-event-modal-name="CommunityEventModal"
   />
