@@ -44,7 +44,7 @@
           <v-icon name="trash-alt" /> Purge
         </b-btn>
         <b-btn variant="white" class="mr-2 mb-1" :href="user.loginlink" target="_blank" rel="noopener noreferrer">
-          <v-icon name="user" /> Impersonate
+          <v-icon name="user" /> Impersonate - must right-click and open in Incognito/Private window
         </b-btn>
         <b-btn
           v-if="admin"
