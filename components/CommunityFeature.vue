@@ -40,6 +40,7 @@ const VolunteerOpportunityModal = () =>
   import('~/components/VolunteerOpportunityModal')
 
 export default {
+  name: 'CommunityFeature',
   components: {
     CommunityEvent,
     VolunteerOpportunity,

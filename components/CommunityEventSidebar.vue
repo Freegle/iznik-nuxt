@@ -1,5 +1,5 @@
 <template>
-  <SidebarSection
+  <CommunityFeature
     :events="events"
     title="Community Events"
     link="/communityevents"
@@ -13,11 +13,11 @@
 </template>
 
 <script>
-import SidebarSection from './SidebarSection'
+import CommunityFeature from './CommunityFeature'
 
 export default {
   components: {
-    SidebarSection
+    CommunityFeature
   },
   data: function() {
     return {}
