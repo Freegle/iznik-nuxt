@@ -164,7 +164,7 @@ export default {
   },
   methods: {
     goHome() {
-      let route = '/communities'
+      let route = '/browse'
 
       // Logged in homepage - on client side we want to load the last page, for logged in users.
       try {

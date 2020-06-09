@@ -4,7 +4,7 @@
       <GroupSelect v-model="groupid" modonly all active :work="['chatreview', 'chatreviewother']" />
       <div :key="bump">
         <div v-for="message in visibleMessages" :key="'messagelist-' + message.id" class="p-0 mt-2">
-          <ModChatReview :message="message" />
+          <ModChatReview :id="message.chatid" :message="message" />
         </div>
         <infinite-loading force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
           <span slot="no-results">

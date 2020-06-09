@@ -17,7 +17,7 @@
             </h5>
             <h5 class="text-center mb-3">
               Browse OFFERs/WANTEDs
-              <nuxt-link to="/communities">
+              <nuxt-link to="/browse">
                 here
               </nuxt-link>
             </h5>
@@ -42,7 +42,7 @@
         <div v-if="!id" class="mt-2">
           <b-card no-body class="mb-2">
             <b-card-text>
-              <b-textarea v-model="startThread" rows="2" max-rows="8" placeholder="Chat to nearby freeglers...ask for advice, recommendations, or just have a good old blether.  If you're looking to give or find stuff, please use the Give/Find buttons.  Everything on here is public." />
+              <b-textarea v-model="startThread" rows="2" max-rows="8" placeholder="Chat to nearby freeglers...ask for advice, recommendations, or have a blether.  To give or find stuff, please use the Give/Find buttons.  Everything here is public.  Be kind to each other; occasionally we may moderate to ensure things stay friendly." />
               <b-img v-if="imageid" lazy thumbnail :src="imagethumb" class="image__uploaded" />
             </b-card-text>
             <hr class="mt-1 mb-1">

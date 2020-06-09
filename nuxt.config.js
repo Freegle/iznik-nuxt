@@ -5,8 +5,8 @@ const FACEBOOK_APPID = '134980666550322'
 const SENTRY_DSN = 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170'
 const YAHOO_CLIENTID =
   'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
-const MOBILE_VERSION = '2.0.38'
-const MODTOOLS_VERSION = '0.3.19'
+const MOBILE_VERSION = '2.0.39'
+const MODTOOLS_VERSION = '0.3.20'
 
 require('dotenv').config()
 
@@ -134,7 +134,7 @@ const config = {
       { hid: 'twitter:site', name: 'twitter:site', content: 'thisisfreegle' }
     ],
     link: [
-      // { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      // Don't put icon in here, as we defined it in the layout.
       { rel: 'preconnect', href: 'https://i.ytimg.com' },
       { rel: 'preconnect', href: 'https://s.ytimg.com' },
       { rel: 'preconnect', href: 'https://www.youtube.com' },
@@ -216,7 +216,8 @@ const config = {
   redirect: [ // In mobile app-init-push route needs updating as per here
     { from: '^/chat/(.*)$', to: '/chats/$1' },
     { from: '^/modtools/chat/(.*)$', to: '/modtools/chats/$1' },
-    { from: '^/mygroups(.*)$', to: '/communities$1' },
+    { from: '^/mygroups(.*)$', to: '/browse$1' },
+    { from: '^/communities(.*)$', to: '/browse$1' },
     { from: '^/why$', to: '/help' },
     { from: '^/contact$', to: '/help' },
     { from: '^/posters$', to: '/noticeboards' },

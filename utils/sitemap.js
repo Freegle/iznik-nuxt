@@ -120,6 +120,7 @@ export default {
   },
 
   excludeRoutes: [
+    '/browse',
     '/communities',
     '/find/**',
     '/give/**',

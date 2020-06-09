@@ -7,7 +7,7 @@
         variant="primary"
         icon="check"
         spamignore
-        label="Approve"
+        label="Ignore"
       />
       <ModMemberButton
         v-if="!member.heldby"
@@ -57,7 +57,7 @@
         variant="primary"
         icon="check"
         spamignore
-        label="Approve"
+        label="Ignore"
       />
       <div v-if="member.spammer.collection === 'PendingAdd'" class="d-inline">
         <ModMemberButton
@@ -119,7 +119,7 @@
         variant="primary"
         icon="check"
         spamignore
-        label="Approve"
+        label="Ignore"
       />
       <ModMemberButton
         :member="member"
@@ -143,7 +143,7 @@
         label="Spammer"
       />
     </div>
-    <div v-if="!member.heldby" class="d-inline">
+    <div v-if="!member.heldby || member.heldby.id === myid" class="d-inline">
       <ModMemberButton
         v-for="stdmsg in filtered"
         :key="stdmsg.id"

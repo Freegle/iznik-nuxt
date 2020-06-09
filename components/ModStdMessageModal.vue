@@ -247,7 +247,7 @@ export default {
       } else {
         this.subject =
           (this.stdmsg.subjpref ? this.stdmsg.subjpref : defpref) +
-          ': ' +
+          (this.stdmsg.action === 'Edit' ? '' : ': ') +
           this.message.subject +
           (this.stdmsg.subjsuff ? this.stdmsg.subjsuff : '')
       }

@@ -8,7 +8,7 @@
       </span>
     </div>
     <div class="chatMessageProfilePic">
-      <ProfileImage :image="messageIsFromCurrentUser ? me.profile.turl : othericon" class="ml-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
+      <ProfileImage :image="chatMessageProfileImage" class="ml-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
     </div>
   </div>
 </template>

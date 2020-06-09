@@ -29,7 +29,7 @@
               {{ message.subject }}
             </div>
             <div class="text-muted">
-              on {{ message.groupname }}
+              on {{ message.groupname }}<span v-if="message.outcome">, now {{ message.outcome }}</span><span v-else>still open</span>
             </div>
           </b-col>
         </b-row>

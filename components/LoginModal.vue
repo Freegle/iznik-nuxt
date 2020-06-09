@@ -90,6 +90,7 @@
             </b-btn>
           </b></span>
         <b-form
+          id="loginform"
           ref="form"
           action="/"
           autocomplete="on"
