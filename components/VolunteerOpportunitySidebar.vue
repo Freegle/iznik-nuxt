@@ -7,8 +7,8 @@
     add-button-label="Add volunteer opportunity"
     item-description="Are you a charity or good cause that needs volunteers?"
     no-items-message="Are you a charity or good cause that needs volunteers?  Why not add your volunteer opportunities here?"
-    add-event-name="VolunteerOpportunity"
-    add-event-modal-name="VolunteerOpportunityModal"
+    feature-component="VolunteerOpportunity"
+    add-event-modal-component="VolunteerOpportunityModal"
   />
 </template>
 

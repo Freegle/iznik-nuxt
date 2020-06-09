@@ -17,14 +17,14 @@
             <p class="text-center small">
               {{ itemDescription }}
             </p>
-            <div v-if="addEventName==='VolunteerOpportunity'">
+            <div v-if="featureComponent==='VolunteerOpportunity'">
               <div v-for="item in items" :key="'volunteering-' + item.id" class="">
-                <component :is="addEventName" v-if="!item.pending" :summary="true" :volunteering="item" />
+                <component :is="featureComponent" v-if="!item.pending" :summary="true" :volunteering="item" />
               </div>
             </div>
-            <div v-if="addEventName==='CommunityEvent'">
+            <div v-if="featureComponent==='CommunityEvent'">
               <div v-for="item in items" :key="'event-' + item.id" class="">
-                <component :is="addEventName" v-if="!item.pending" :summary="true" :event="item" />
+                <component :is="featureComponent" v-if="!item.pending" :summary="true" :event="item" />
               </div>
             </div>
           </div>
@@ -34,7 +34,7 @@
         </div>
       </b-card-body>
     </b-card>
-    <component :is="addEventModalName" ref="eventmodal" :start-edit="true" />
+    <component :is="addEventModalComponent" ref="eventmodal" :start-edit="true" />
   </div>
 </template>
 
@@ -82,11 +82,11 @@ export default {
       type: String,
       required: true
     },
-    addEventName: {
+    featureComponent: {
       type: String,
       required: true
     },
-    addEventModalName: {
+    addEventModalComponent: {
       type: String,
       required: true
     }
