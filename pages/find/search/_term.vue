@@ -51,7 +51,7 @@
         <b-row>
           <b-col class="text-center mt-2 mb-2">
             <em v-if="filteredMessages.length">Or</em>
-            <em v-else-if="!busy">No posts found.</em>
+            <em v-else-if="!busy">No posts to show.</em>
           </b-col>
         </b-row>
         <b-row>

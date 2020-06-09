@@ -1,6 +1,7 @@
 <template>
   <div>
     <b-form-input
+      :id="id"
       :state="validationState"
       :aria-describedby="feedbackId"
       :maxlength="maxLength"

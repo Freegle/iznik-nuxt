@@ -151,7 +151,7 @@ export default {
         })
 
         this.exportList.push({
-          id: member.id,
+          id: member.userid,
           name: member.displayname,
           email: member.email,
           joined: member.joined,

@@ -32,6 +32,20 @@
             </b-row>
           </NoticeMessage>
           <div v-else>
+            <b-card>
+              <b-card-text>
+                <div class="d-flex justify-content-between">
+                  <b-btn to="/find/search" variant="primary" class="topbutton">
+                    <v-icon name="search" class="mr-1" />
+                    Search for stuff
+                  </b-btn>
+                  <b-btn to="/explore" variant="secondary" class="topbutton">
+                    <v-icon name="map-marker-alt" class="mr-1" />
+                    Explore more communities
+                  </b-btn>
+                </div>
+              </b-card-text>
+            </b-card>
             <div class="d-flex mt-2 mb-3 selection__wrapper justify-content-between">
               <GroupSelect v-model="groupid" class="m-3" all />
               <b-form-select v-model="selectedType" class="m-3 typeSelect" value="All" :options="typeOptions" @change="typeChange" />
@@ -96,7 +110,7 @@ export default {
     SidebarRight,
     ExpectedRepliesWarning
   },
-  mixins: [loginRequired, buildHead, createGroupRoute('communities')],
+  mixins: [loginRequired, buildHead, createGroupRoute('browse')],
   data: function() {
     return {
       id: null,
@@ -275,7 +289,7 @@ export default {
 
   head() {
     return this.buildHead(
-      'Communities',
+      'Browse',
       "See the OFFERs and WANTEDs from communities you've joined"
     )
   }
@@ -293,5 +307,9 @@ export default {
 
 .typeSelect {
   max-width: 33%;
+}
+
+.topbutton {
+  width: 40%;
 }
 </style>

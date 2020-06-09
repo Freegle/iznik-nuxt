@@ -99,6 +99,14 @@
               <a :href="'mailto:' + event.contactemail">{{ event.contactemail }}</a>
             </b-col>
           </b-row>
+          <b-row v-if="event.contactphone">
+            <b-col cols="4" md="3" class="field">
+              Contact Phone
+            </b-col>
+            <b-col cols="8" md="9">
+              <a :href="'tel:' + event.contactphone">{{ event.contactphone }}</a>
+            </b-col>
+          </b-row>
           <b-row v-if="event.contacturl">
             <b-col cols="4" md="3" class="field">
               Website
@@ -263,19 +271,13 @@
                 }"
               />
             </b-form-group>
-            <b-form-group
+            <EmailValidator
+              ref="email"
+              size="md"
+              :email.sync="eventEdit.contactemail"
+              :valid.sync="emailValid"
               label="Contact email:"
-              label-for="contactemail"
-            >
-              <EmailValidator
-                id="contactemail"
-                ref="email"
-                size="md"
-                :email.sync="eventEdit.contactemail"
-                :valid.sync="emailValid"
-                :label="null"
-              />
-            </b-form-group>
+            />
             <b-form-group
               label="Contact phone:"
               label-for="contactphone"

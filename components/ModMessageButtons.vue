@@ -128,7 +128,7 @@
         label="Not spam"
       />
     </div>
-    <div v-if="!editreview && !message.heldby" class="d-lg-inline">
+    <div v-if="!editreview && (!message.heldby || message.heldby.id === myid)" class="d-lg-inline">
       <ModMessageButton
         v-for="stdmsg in filtered"
         :key="stdmsg.id"

@@ -2,14 +2,14 @@
   <b-modal
     id="spamreportmodal"
     v-model="showModal"
-    :title="(whitelist ? 'Request Whitelist ' : 'Report Spammer ') + user.displayname"
+    :title="(whitelist ? 'Add to Whitelist ' : 'Report Spammer ') + user.displayname"
     size="lg"
     no-stacking
   >
     <template slot="default">
       <div v-if="whitelist">
         <p>
-          We will only whitelist people who have a legitimate reason to join many communities.  Usually this is
+          You should only whitelist people who have a legitimate reason to join many communities.  Usually this is
           because they are doing something for Freegle across the UK.
         </p>
       </div>
@@ -31,7 +31,7 @@
         Cancel
       </b-button>
       <b-button v-if="whitelist" variant="danger" @click="send">
-        Request Whitelist
+        Add to Whitelist
       </b-button>
       <b-button v-else variant="primary" @click="send">
         Send Report

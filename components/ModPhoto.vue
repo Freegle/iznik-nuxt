@@ -47,8 +47,12 @@ export default {
   },
   methods: {
     async removePhoto(id) {
-      const attachments = this.message.attachments.filter(a => {
-        return a.id !== id
+      const attachments = []
+
+      this.message.attachments.forEach(a => {
+        if (a.id !== id) {
+          attachments.push(a.id)
+        }
       })
 
       await this.$store.dispatch('messages/patch', {

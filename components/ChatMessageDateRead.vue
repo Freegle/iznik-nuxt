@@ -68,8 +68,7 @@ export default {
   },
   computed: {
     othermodname() {
-      const user = this.chatusers[this.chatmessage.userid]
-      return user ? user.displayname : null
+      return this.chatMessageUser ? this.chatMessageUser.displayname : null
     }
   },
   methods: {

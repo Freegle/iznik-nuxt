@@ -53,16 +53,15 @@ export default {
     emessage() {
       return twem.twem(this.$twemoji, this.chatmessage.message).trim()
     },
-    othericon() {
-      let ret = null
-
-      if (this.chatmessage.userid === this.me.id) {
-        ret = this.me.profile.turl
-      } else {
-        ret = this.chat.icon
-      }
-
-      return ret
+    chatMessageUser() {
+      return this.chatusers.find(u => {
+        return u.id === this.chatmessage.userid
+      })
+    },
+    chatMessageProfileImage() {
+      return this.chatMessageUser
+        ? this.chatMessageUser.profile.turl
+        : this.chat.icon
     },
     refmsg() {
       return this.chatmessage.refmsg
