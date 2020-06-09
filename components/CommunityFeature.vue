@@ -17,9 +17,15 @@
             <p class="text-center small">
               {{ itemDescription }}
             </p>
-            <div v-for="item in items" :key="'event-' + item.id" class="">
-              <component :is="addEventName" v-if="!item.pending && addEventName==='VolunteerOpportunity'" :summary="true" :volunteering="item" />
-              <component :is="addEventName" v-if="!item.pending && addEventName==='CommunityEvent'" :summary="true" :event="item" />
+            <div v-if="addEventName==='VolunteerOpportunity'">
+              <div v-for="item in items" :key="'volunteering-' + item.id" class="">
+                <component :is="addEventName" v-if="!item.pending" :summary="true" :volunteering="item" />
+              </div>
+            </div>
+            <div v-if="addEventName==='CommunityEvent'">
+              <div v-for="item in items" :key="'event-' + item.id" class="">
+                <component :is="addEventName" v-if="!item.pending" :summary="true" :event="item" />
+              </div>
             </div>
           </div>
           <p v-else class="text-center p-1">
