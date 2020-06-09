@@ -332,8 +332,9 @@ export const actions = {
       if (
         newTotal > currentTotal &&
         state.user &&
-        (state.user.settings.playbeep ||
-          !Object.keys(state.user.settings).includes('playbeep'))
+        (!state.user.settings ||
+          !Object.keys(state.user.settings).includes('playbeep') ||
+          state.user.settings.playbeep)
       ) {
         // Only trigger this when the counts increase.  There's a minor timing
         // window where a message could arrive as one is deleted, leaving the
