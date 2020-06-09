@@ -2,25 +2,29 @@
   <div class="mb-2">
     <b-card variant="white" no-body>
       <b-card-body class="p-0">
-        <b-btn variant="white" class="float-right m-1" @click="showVolunteerModal">
-          <v-icon name="plus" /> Add
-        </b-btn>
-        <nuxt-link to="/volunteerings">
-          <h4 class="pl-1 pt-1">
-            <v-icon name="hands-helping" scale="2" /> Volunteer Opportunities
-          </h4>
-        </nuxt-link>
-        <div v-if="opportunities.length">
-          <p class="text-center small">
-            Are you a charity or good cause that needs volunteers?
-          </p>
-          <div v-for="opportunity in opportunities" :key="'volunteering-' + opportunity.id" class="">
-            <VolunteerOpportunity v-if="!opportunity.pending" :summary="true" :volunteering="opportunity" />
+        <div class="px-1 pt-1">
+          <div class="d-flex align-items-start justify-content-between">
+            <h4>
+              <nuxt-link to="/volunteerings" class="volunteer__link">
+                <v-icon name="hands-helping" scale="2" /> Volunteer Opportunities
+              </nuxt-link>
+            </h4>
+            <b-btn variant="white" aria-label="Add volunteer opportunity" @click="showVolunteerModal">
+              <v-icon name="plus" /> Add
+            </b-btn>
           </div>
+          <div v-if="opportunities.length">
+            <p class="text-center small">
+              Are you a charity or good cause that needs volunteers?
+            </p>
+            <div v-for="opportunity in opportunities" :key="'volunteering-' + opportunity.id" class="">
+              <VolunteerOpportunity v-if="!opportunity.pending" :summary="true" :volunteering="opportunity" />
+            </div>
+          </div>
+          <p v-else class="text-center p-1">
+            Are you a charity or good cause that needs volunteers?  Why not add your volunteer opportunities here?
+          </p>
         </div>
-        <p v-else class="text-center p-1">
-          Are you a charity or good cause that needs volunteers?  Why not add your volunteer opportunities here?
-        </p>
       </b-card-body>
     </b-card>
     <VolunteerOpportunityModal ref="volunteermodal" :start-edit="true" />
@@ -59,3 +63,11 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
+.volunteer__link {
+  color: $colour-header;
+}
+</style>
