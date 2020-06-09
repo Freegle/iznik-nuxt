@@ -15,7 +15,7 @@
           </div>
           <div v-if="items.length">
             <p class="text-center small">
-              {{ eventDescription }}
+              {{ itemDescription }}
             </p>
             <div v-for="item in items" :key="'event-' + item.id" class="">
               <component :is="addEventName" v-if="!item.pending && addEventName==='VolunteerOpportunity'" :summary="true" :volunteering="item" />
@@ -68,7 +68,7 @@ export default {
       type: String,
       required: true
     },
-    eventDescription: {
+    itemDescription: {
       type: String,
       required: true
     },

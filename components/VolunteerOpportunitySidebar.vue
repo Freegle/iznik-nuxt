@@ -5,7 +5,7 @@
     link="/volunteerings"
     icon-name="hands-helping"
     add-button-label="Add volunteer opportunity"
-    event-description="Are you a charity or good cause that needs volunteers?"
+    item-description="Are you a charity or good cause that needs volunteers?"
     no-items-message="Are you a charity or good cause that needs volunteers?  Why not add your volunteer opportunities here?"
     add-event-name="VolunteerOpportunity"
     add-event-modal-name="VolunteerOpportunityModal"
