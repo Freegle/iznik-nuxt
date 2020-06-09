@@ -65,7 +65,12 @@
             </div>
           </div>
           <div class="text-center mt-2 mb-2">
-            <b-btn variant="white" size="sm" @click="showOpportunityModal">
+            <b-btn
+              variant="white"
+              size="sm"
+              :aria-label="'More info about ' + volunteering.title + ' volunteering opportunity'"
+              @click="showOpportunityModal"
+            >
               <v-icon name="info-circle" /> More info
             </b-btn>
           </div>
@@ -109,7 +114,7 @@
               </div>
               <read-more v-if="description" :text="description" :max-chars="300" class="ml-1 font-weight-bold preline forcebreak nopara" />
               <div class="mt-2 mb-2 ml-1">
-                <b-btn variant="white" @click="showOpportunityModal">
+                <b-btn variant="white" :aria-label="'More info about ' + volunteering.title + ' volunteering opportunity'" @click="showOpportunityModal">
                   <v-icon name="info-circle" /> More info
                 </b-btn>
               </div>
