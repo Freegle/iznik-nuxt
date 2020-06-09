@@ -2,12 +2,10 @@
   <div>
     <b-card variant="success" no-body>
       <b-card-title class="bg-info pl-2 mb-0 pt-2 pb-2 text-truncate">
-        <nuxt-link :to="'/volunteering/' + volunteering.id">
-          <span v-if="!summary" class="float-right small text-muted">
-            #{{ volunteering.id }}
-          </span>
-        </nuxt-link>
-        {{ volunteering.title }}
+        <span v-if="!summary" class="float-right small text-muted">
+          #{{ volunteering.id }}
+        </span>
+        <span v-else>{{ volunteering.title }}</span>
       </b-card-title>
       <b-card-body class="p-1 pt-0">
         <div v-if="mine && !renewed && !summary">
@@ -36,7 +34,7 @@
           </b-btn>
         </div>
         <div v-if="summary">
-          <div class="media clickme">
+          <div class="media">
             <div class="media-left">
               <div class="media-object pl-1 text-muted">
                 <v-icon name="info-circle" class="fa-fw" />
@@ -46,7 +44,7 @@
               {{ volunteering.description }}
             </div>
           </div>
-          <div v-if="volunteering.earliestDate" class="media clickme">
+          <div v-if="volunteering.earliestDate" class="media">
             <div class="media-left">
               <div class="media-object pl-1 text-muted">
                 <v-icon name="clock" class="fa-fw" />
@@ -56,7 +54,7 @@
               {{ volunteering.earliestDate.string.start }} - {{ volunteering.earliestDate.string.end }}
             </div>
           </div>
-          <div class="media clickme">
+          <div class="media">
             <div class="media-left">
               <div class="media-object pl-1 text-muted">
                 <v-icon name="map-marker-alt" class="fa-fw" />
@@ -79,7 +77,7 @@
         <div v-else>
           <b-row>
             <b-col cols="12" :md="volunteering.photo ? 6 : 12">
-              <div v-if="volunteering.earliestDate" class="media clickme">
+              <div v-if="volunteering.earliestDate" class="media">
                 <div class="media-left">
                   <div class="media-object pl-1 text-muted">
                     <v-icon name="clock" class="fa-fw" />
@@ -89,7 +87,7 @@
                   {{ volunteering.earliestDate.string.start }} - {{ volunteering.earliestDate.string.end }}
                 </div>
               </div>
-              <div class="media clickme">
+              <div class="media">
                 <div class="media-left">
                   <div class="media-object pl-1 text-muted">
                     <v-icon name="map-marker-alt" class="fa-fw" />
@@ -99,7 +97,7 @@
                   {{ volunteering.location }}
                 </div>
               </div>
-              <div v-if="volunteering.groups && volunteering.groups.length > 0" class="media clickme">
+              <div v-if="volunteering.groups && volunteering.groups.length > 0" class="media">
                 <div class="media-left">
                   <div class="media-object pl-1 text-muted">
                     <v-icon name="users" class="fa-fw" />
