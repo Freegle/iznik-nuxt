@@ -9,6 +9,7 @@
     no-items-message="No community events to show yet.  Do you know of any you could add?"
     feature-component="CommunityEvent"
     add-event-modal-component="CommunityEventModal"
+    item-key="event-"
   />
 </template>
 

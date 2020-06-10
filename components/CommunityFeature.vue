@@ -18,12 +18,12 @@
               {{ itemDescription }}
             </p>
             <div v-if="featureComponent==='VolunteerOpportunity'">
-              <div v-for="item in items" :key="'volunteering-' + item.id" class="">
+              <div v-for="item in items" :key="itemKey + item.id" class="">
                 <component :is="featureComponent" v-if="!item.pending" :summary="true" :volunteering="item" />
               </div>
             </div>
             <div v-if="featureComponent==='CommunityEvent'">
-              <div v-for="item in items" :key="'event-' + item.id" class="">
+              <div v-for="item in items" :key="itemKey + item.id" class="">
                 <component :is="featureComponent" v-if="!item.pending" :summary="true" :event="item" />
               </div>
             </div>
@@ -87,6 +87,10 @@ export default {
       required: true
     },
     addEventModalComponent: {
+      type: String,
+      required: true
+    },
+    itemKey: {
       type: String,
       required: true
     }

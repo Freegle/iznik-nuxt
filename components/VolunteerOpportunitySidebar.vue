@@ -9,6 +9,7 @@
     no-items-message="Are you a charity or good cause that needs volunteers?  Why not add your volunteer opportunities here?"
     feature-component="VolunteerOpportunity"
     add-event-modal-component="VolunteerOpportunityModal"
+    item-key="volunteering-"
   />
 </template>
 
