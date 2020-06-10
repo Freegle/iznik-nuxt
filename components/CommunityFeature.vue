@@ -2,7 +2,7 @@
   <div>
     <b-card variant="white" no-body>
       <b-card-body class="p-0">
-        <div class="px-1 pt-1">
+        <div class="p-1">
           <div class="d-flex align-items-start justify-content-between">
             <h4>
               <nuxt-link :to="link" class="title__link">
