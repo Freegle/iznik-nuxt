@@ -2,12 +2,14 @@
   <div>
     <b-card variant="success" no-body>
       <b-card-title class="bg-info pl-2 mb-0 pt-2 pb-2 text-truncate">
-        <nuxt-link :to="'/communityevent/' + event.id">
+        <nuxt-link :to="'/communityevent/' + event.id" class="event__link">
           <span v-if="!summary" class="float-right small text-muted">
             #{{ event.id }}
           </span>
+          <span v-else>
+            {{ event.title }}
+          </span>
         </nuxt-link>
-        {{ event.title }}
       </b-card-title>
       <b-card-body class="p-1 pt-0">
         <div v-if="summary">
@@ -145,10 +147,16 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style scoped lang="scss">
+@import 'color-vars';
+
 .square {
   object-fit: cover;
   width: 200px;
   height: 200px;
+}
+
+.event__link {
+  color: $color-blue--2;
 }
 </style>
