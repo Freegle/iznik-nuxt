@@ -17,15 +17,8 @@
             <p class="text-center small">
               {{ itemDescription }}
             </p>
-            <div v-if="featureComponent==='VolunteerOpportunity'">
-              <div v-for="item in items" :key="itemKey + item.id" class="">
-                <component :is="featureComponent" v-if="!item.pending" :summary="true" :volunteering="item" />
-              </div>
-            </div>
-            <div v-if="featureComponent==='CommunityEvent'">
-              <div v-for="item in items" :key="itemKey + item.id" class="">
-                <component :is="featureComponent" v-if="!item.pending" :summary="true" :event="item" />
-              </div>
+            <div v-for="item in items" :key="itemKey + item.id" class="">
+              <component :is="featureComponent" v-if="!item.pending" :summary="true" :item="item" />
             </div>
           </div>
           <p v-else class="text-center p-1">

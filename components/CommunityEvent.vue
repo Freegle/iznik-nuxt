@@ -2,12 +2,12 @@
   <div>
     <b-card variant="success" no-body>
       <b-card-title class="bg-info pl-2 mb-0 pt-2 pb-2 text-truncate">
-        <nuxt-link :to="'/communityevent/' + event.id" class="event__link">
+        <nuxt-link :to="'/communityevent/' + item.id" class="event__link">
           <span v-if="!summary" class="float-right small text-muted">
-            #{{ event.id }}
+            #{{ item.id }}
           </span>
           <span v-else>
-            {{ event.title }}
+            {{ item.title }}
           </span>
         </nuxt-link>
       </b-card-title>
@@ -20,17 +20,17 @@
               </div>
             </div>
             <div class="media-body ml-2 text-truncate">
-              {{ event.description }}
+              {{ item.description }}
             </div>
           </div>
-          <div v-if="event.earliestDate" class="media clickme">
+          <div v-if="item.earliestDate" class="media clickme">
             <div class="media-left">
               <div class="media-object pl-1 text-muted">
                 <v-icon name="clock" class="fa-fw" />
               </div>
             </div>
             <div class="media-body ml-2">
-              {{ event.earliestDate.string.start }} - {{ event.earliestDate.string.end }}
+              {{ item.earliestDate.string.start }} - {{ item.earliestDate.string.end }}
             </div>
           </div>
           <div class="media clickme">
@@ -40,7 +40,7 @@
               </div>
             </div>
             <div class="media-body ml-2 small">
-              {{ event.location }}
+              {{ item.location }}
             </div>
           </div>
           <div class="text-center mt-2 mb-2">
@@ -48,22 +48,22 @@
               <v-icon name="info-circle" /> More info
             </b-btn>
           </div>
-          <b-img-lazy v-if="event.photo" class="w-100" :src="event.photo.path" />
-          <div v-if="event.groups && event.groups.length > 0" class="small text-muted text-center">
-            Posted on {{ event.groups[0].namedisplay }}
+          <b-img-lazy v-if="item.photo" class="w-100" :src="item.photo.path" />
+          <div v-if="item.groups && item.groups.length > 0" class="small text-muted text-center">
+            Posted on {{ item.groups[0].namedisplay }}
           </div>
         </div>
         <div v-else>
           <b-row>
-            <b-col cols="12" :md="event.photo ? 6 : 12">
-              <div v-if="event.earliestDate" class="media clickme">
+            <b-col cols="12" :md="item.photo ? 6 : 12">
+              <div v-if="item.earliestDate" class="media clickme">
                 <div class="media-left">
                   <div class="media-object pl-1 text-muted">
                     <v-icon name="clock" class="fa-fw" />
                   </div>
                 </div>
                 <div class="media-body ml-2">
-                  {{ event.earliestDate.string.start }} - {{ event.earliestDate.string.end }}
+                  {{ item.earliestDate.string.start }} - {{ item.earliestDate.string.end }}
                 </div>
               </div>
               <div class="media clickme">
@@ -73,7 +73,7 @@
                   </div>
                 </div>
                 <div class="media-body ml-2 small">
-                  {{ event.location }}
+                  {{ item.location }}
                 </div>
               </div>
               <div class="media clickme">
@@ -82,8 +82,8 @@
                     <v-icon name="users" class="fa-fw" />
                   </div>
                 </div>
-                <div v-if="event.groups && event.groups.length > 0" class="media-body ml-2 small">
-                  Posted on {{ event.groups[0].namedisplay }}
+                <div v-if="item.groups && item.groups.length > 0" class="media-body ml-2 small">
+                  Posted on {{ item.groups[0].namedisplay }}
                 </div>
               </div>
               <read-more v-if="description" :text="description" :max-chars="300" class="ml-1 font-weight-bold preline forcebreak nopara" />
@@ -95,8 +95,8 @@
             </b-col>
             <b-col>
               <b-img-lazy
-                v-if="event.photo"
-                :src="event.photo.path"
+                v-if="item.photo"
+                :src="item.photo.path"
                 rounded
                 thumbnail
                 class="square float-right"
@@ -108,7 +108,7 @@
         </div>
       </b-card-body>
     </b-card>
-    <CommunityEventModal ref="eventmodal" :event="event" />
+    <CommunityEventModal ref="eventmodal" :event="item" />
   </div>
 </template>
 <script>
@@ -124,7 +124,7 @@ export default {
       type: Boolean,
       required: true
     },
-    event: {
+    item: {
       type: Object,
       required: true
     }
@@ -134,7 +134,7 @@ export default {
   },
   computed: {
     description() {
-      let desc = this.event.description
+      let desc = this.item.description
       desc = desc ? twem.twem(this.$twemoji, desc) : ''
       desc = desc.trim()
       return desc
