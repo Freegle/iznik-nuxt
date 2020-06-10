@@ -331,9 +331,18 @@ export default {
           break
         case ENTER:
           e.preventDefault()
-          this.selectList(this.json[this.focusList])
-          this.showList = false
-          this.clearTimer()
+
+          if (this.ajaxInProgress) {
+            // Wait until the ajax call has completed. Not in the most elegant way.
+            let self = this
+            setTimeout(() => {
+              self.handleKeyDown.apply(self, [e])
+            }, 100)
+          } else {
+            this.selectList(this.json[this.focusList])
+            this.showList = false
+            this.clearTimer()
+          }
           break
         case ESC:
           this.showList = false
