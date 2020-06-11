@@ -5,7 +5,7 @@
         <b-form-group
           label="OFFER and WANTED posts:"
         >
-          <b-form-select :value="emailfrequency" @change="(newval) => outcast('emailfrequency', newval)">
+          <b-form-select :value="emailfrequency" :class="emailfrequency===0 ? 'email-frequency__dropdown--off': 'email-frequency__dropdown--on'" @change="(newval) => outcast('emailfrequency', newval)">
             <option value="-1">
               Immediately
             </option>
@@ -171,3 +171,15 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
+.email-frequency__dropdown--on {
+  border: 2px solid $colour-success;
+}
+
+.email-frequency__dropdown--off {
+  border: 2px solid $color-gray-4;
+}
+</style>
