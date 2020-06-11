@@ -29,12 +29,17 @@ export default {
         })
 
         if (newVal) {
-          await this.$store.dispatch('chatmessages/clearContext', {
-            chatid: newVal
-          })
-          await this.$store.dispatch('chatmessages/fetch', {
-            chatid: newVal
-          })
+          const chat = this.$store.getters['chats/get'](newVal)
+
+          // We can only fetch the messages if this is one of our chats, otherwise we'll get an error.
+          if (chat) {
+            await this.$store.dispatch('chatmessages/clearContext', {
+              chatid: newVal
+            })
+            await this.$store.dispatch('chatmessages/fetch', {
+              chatid: newVal
+            })
+          }
         }
 
         this.bump = Date.now()

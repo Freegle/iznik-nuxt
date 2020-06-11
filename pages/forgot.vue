@@ -12,6 +12,9 @@
           But if you log in with your email address and a password you set up for Freegle, then enter your email
           address and we'll mail you a link so that you can log in.
         </p>
+        <b-alert v-if="error" variant="danger" show>
+          {{ error }}
+        </b-alert>
         <b-alert v-if="response" variant="warning" show>
           We've sent you a link to log in. Please check your spam folder!
         </b-alert>
@@ -56,6 +59,7 @@ export default {
   mixins: [buildHead, validationMixin, validationHelpers],
   data() {
     return {
+      error: null,
       email: null,
       emailValid: false,
       response: false
@@ -69,11 +73,15 @@ export default {
   },
   methods: {
     async mail() {
-      await this.$store.dispatch('auth/lostPassword', {
+      const res = await this.$store.dispatch('auth/lostPassword', {
         email: this.email
       })
 
-      this.response = true
+      if (res.data.ret === 0) {
+        this.response = true
+      } else {
+        this.error = res.data.status
+      }
     }
   },
   head() {

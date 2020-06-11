@@ -13,7 +13,7 @@
       </b-card-title>
       <b-card-body class="p-1 pt-0">
         <div v-if="summary">
-          <div class="media clickme">
+          <div class="media">
             <div class="media-left">
               <div class="media-object pl-1 text-muted">
                 <v-icon name="info-circle" class="fa-fw" />
@@ -23,7 +23,7 @@
               {{ item.description }}
             </div>
           </div>
-          <div v-if="item.earliestDate" class="media clickme">
+          <div v-if="item.earliestDate" class="media">
             <div class="media-left">
               <div class="media-object pl-1 text-muted">
                 <v-icon name="clock" class="fa-fw" />
@@ -33,7 +33,7 @@
               {{ item.earliestDate.string.start }} - {{ item.earliestDate.string.end }}
             </div>
           </div>
-          <div class="media clickme">
+          <div class="media">
             <div class="media-left">
               <div class="media-object pl-1 text-muted">
                 <v-icon name="map-marker-alt" class="fa-fw" />
@@ -44,7 +44,7 @@
             </div>
           </div>
           <div class="text-center mt-2 mb-2">
-            <b-btn variant="white" size="sm" @click="showEventModal">
+            <b-btn variant="white" size="sm" :aria-label="'More info about ' + item.title + ' event'" @click="showEventModal">
               <v-icon name="info-circle" /> More info
             </b-btn>
           </div>
@@ -56,7 +56,7 @@
         <div v-else>
           <b-row>
             <b-col cols="12" :md="item.photo ? 6 : 12">
-              <div v-if="item.earliestDate" class="media clickme">
+              <div v-if="item.earliestDate" class="media">
                 <div class="media-left">
                   <div class="media-object pl-1 text-muted">
                     <v-icon name="clock" class="fa-fw" />
@@ -66,7 +66,7 @@
                   {{ item.earliestDate.string.start }} - {{ item.earliestDate.string.end }}
                 </div>
               </div>
-              <div class="media clickme">
+              <div class="media">
                 <div class="media-left">
                   <div class="media-object pl-1 text-muted">
                     <v-icon name="map-marker-alt" class="fa-fw" />
@@ -76,7 +76,7 @@
                   {{ item.location }}
                 </div>
               </div>
-              <div class="media clickme">
+              <div class="media">
                 <div class="media-left">
                   <div class="media-object pl-1 text-muted">
                     <v-icon name="users" class="fa-fw" />
@@ -88,7 +88,7 @@
               </div>
               <read-more v-if="description" :text="description" :max-chars="300" class="ml-1 font-weight-bold preline forcebreak nopara" />
               <div class="mt-2 mb-2 ml-1">
-                <b-btn variant="white" @click="showEventModal">
+                <b-btn variant="white" :aria-label="'More info about ' + item.title + ' event'" @click="showEventModal">
                   <v-icon name="info-circle" /> More info
                 </b-btn>
               </div>
@@ -111,6 +111,7 @@
     <CommunityEventModal ref="eventmodal" :event="item" />
   </div>
 </template>
+
 <script>
 import CommunityEventModal from './CommunityEventModal'
 import twem from '~/assets/js/twem'
@@ -147,6 +148,7 @@ export default {
   }
 }
 </script>
+
 <style scoped lang="scss">
 @import 'color-vars';
 

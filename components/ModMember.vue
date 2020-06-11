@@ -109,7 +109,7 @@
                 </span>
               </span>
             </b-btn>
-            <b-btn variant="link" @click="showHistory">
+            <b-btn variant="link" @click="showHistory(null)">
               View posts
             </b-btn>
             <b-btn variant="link" @click="showLogs">

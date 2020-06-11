@@ -98,9 +98,10 @@ export default {
   },
   methods: {
     loadMore($state) {
-      // We use an infinite load for the list because it's a lot of DOM to add at initial page load.
+      // We use an infinite load for the list because it's a lot of DOM to add at initial page load.  Can't step up
+      // one at a time though, as we trigger an infinite loop test in the plugin.
       if (this.show < this.jobs.length) {
-        this.show++
+        this.show += 3
         $state.loaded()
       } else {
         $state.complete()
