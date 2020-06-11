@@ -103,7 +103,7 @@
               <div v-else-if="!eBody" class="mb-3 rounded border p-2 preline forcebreak font-weight-bold"><em>This message is blank.</em></div>
               <!-- eslint-disable-next-line -->
               <div v-else class="mb-3 rounded border p-2 preline forcebreak font-weight-bold">{{ eBody }}</div>
-              <div v-if="message.attachments && message.attachments.length" class="d-flex">
+              <div v-if="message.attachments && message.attachments.length" class="d-flex flex-wrap">
                 <ModPhoto v-for="attachment in message.attachments" :key="'attachment-' + attachment.id" :message="message" :attachment="attachment" class="d-inline pr-1" />
               </div>
               <MessageReplyInfo v-if="!pending || message.replies && message.replies.length" :message="message" class="d-inline" />
