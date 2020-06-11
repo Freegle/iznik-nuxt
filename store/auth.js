@@ -237,10 +237,12 @@ export const actions = {
   },
 
   async lostPassword({ commit, dispatch }, params) {
-    await this.$axios.post(process.env.API + '/session', {
+    const res = await this.$axios.post(process.env.API + '/session', {
       action: 'LostPassword',
       email: params.email
     })
+
+    return res
   },
 
   async unsubscribe({ commit, dispatch }, params) {
