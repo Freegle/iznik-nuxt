@@ -6,9 +6,7 @@
           <span v-if="!summary" class="float-right small text-muted">
             #{{ item.id }}
           </span>
-          <span v-else>
-            {{ item.title }}
-          </span>
+          {{ item.title }}
         </nuxt-link>
       </b-card-title>
       <b-card-body class="p-1 pt-0">

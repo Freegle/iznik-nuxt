@@ -14,7 +14,7 @@
           </div>
         </div>
         <div v-for="volunteering in volunteerings" :key="'volunteering-' + volunteering.id" class="mt-2">
-          <VolunteerOpportunity v-if="!volunteering.pending" :summary="false" :volunteering="volunteering" />
+          <VolunteerOpportunity v-if="!volunteering.pending" :summary="false" :item="volunteering" />
         </div>
         <client-only>
           <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" force-use-infinite-wrapper="body" @infinite="loadMore">
