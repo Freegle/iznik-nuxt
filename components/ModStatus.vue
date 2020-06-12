@@ -2,8 +2,8 @@
   <span title="Platform Status - click for more info" class="clickme" @click="clicked">
     <span v-if="!tried" class="trying" />
     <span v-else-if="error" class="error" />
-    <span v-else-if="warning" class="warning" />
-    <span v-else-if="fine" class="fine" />
+    <span v-else-if="warning && supportOrAdmin" class="warning" />
+    <span v-else class="fine" />
     <b-modal
       id="statusmmodal"
       v-model="show"
@@ -12,8 +12,8 @@
     >
       <template slot="default">
         <NoticeMessage v-if="(warning || error) && supportOrAdmin" variant="warning" class="mb-2">
-          There is a problem. Please alert geeks@ilovefreegle.org if this persists for more than an hour,
-          unless it just mentions security patches.
+          There is a problem. If this just mentions security patches or reboots, you can ignore it,
+          but if it's something please alert geeks@ilovefreegle.org if this persists for more than an hour.
         </NoticeMessage>
         <NoticeMessage v-else-if="error" variant="warning" class="mb-2">
           There's a problem, and parts of the system may not be working.  The Geeks will be on the case.
