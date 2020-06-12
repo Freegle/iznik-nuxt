@@ -1,6 +1,6 @@
 <template>
   <span>
-    <ul v-if="newsfeed" class="list-unstyled list-inline d-inline-block">
+    <ul v-if="newsfeed" class="list-unstyled list-inline d-flex align-items-center">
       <li class="list-inline-item">
         <b-btn v-if="!newsfeed.loved" variant="white" size="sm" @click="love">
           <v-icon v-if="loving" name="sync" class="fa-spin text-success" />
@@ -16,8 +16,8 @@
           <v-icon name="comment" /><span class="d-none d-sm-inline">&nbsp;Reply</span>
         </b-btn>
       </li>
-      <li class="list-inline-item clickme" @click="showLove">
-        <span v-if="newsfeed.loves">
+      <li class="list-inline-item clickme">
+        <span v-if="newsfeed.loves" tabindex="0" class="showlove" @click="showLove">
           <v-icon name="heart" class="text-danger" />&nbsp;{{ newsfeed.loves }}
         </span>
       </li>
@@ -73,3 +73,23 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
+.showlove {
+  padding: 3px;
+
+  &:hover {
+    border-radius: 0.2rem;
+    background-color: $color-blue--light;
+    color: white;
+  }
+
+  &:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    border-radius: 0.2rem;
+  }
+}
+</style>
