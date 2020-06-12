@@ -537,6 +537,8 @@ export default {
     checkHistory(duplicateCheck) {
       const ret = []
       const subj = this.canonSubj(this.message.subject)
+      const dupids = []
+      const crossids = []
 
       if (
         this.message &&
@@ -554,12 +556,20 @@ export default {
                 .map(g => g.groupid)
                 .filter(g => g === message.groupid).length
 
+              const key = message.id + '-' + message.arrival
+
               if (duplicateCheck && groupsInCommon) {
                 // Same group - so this is a duplicate
-                ret.push(message)
+                if (!dupids[key]) {
+                  dupids[key] = true
+                  ret.push(message)
+                }
               } else if (!duplicateCheck && !groupsInCommon) {
                 // Different group - so this is a crosspost.
-                ret.push(message)
+                if (!crossids[key]) {
+                  crossids[key] = true
+                  ret.push(message)
+                }
               }
             }
           }
