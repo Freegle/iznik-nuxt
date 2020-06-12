@@ -16,10 +16,10 @@
           <v-icon name="comment" /><span class="d-none d-sm-inline">&nbsp;Reply</span>
         </b-btn>
       </li>
-      <li class="list-inline-item clickme">
-        <span v-if="newsfeed.loves" tabindex="0" class="showlove" @click="showLove">
+      <li class="list-inline-item">
+        <b-btn v-if="newsfeed.loves" variant="white" class="showlove" :aria-label="getShowLovesLabel" @click="showLove">
           <v-icon name="heart" class="text-danger" />&nbsp;{{ newsfeed.loves }}
-        </span>
+        </b-btn>
       </li>
     </ul>
     <NewsLovesModal :id="newsfeed.id" ref="loveModal" />
@@ -41,6 +41,21 @@ export default {
   data: function() {
     return {
       loving: false
+    }
+  },
+  computed: {
+    getShowLovesLabel() {
+      return (
+        'This comment has ' +
+        this.$options.filters.pluralize(
+          this.newsfeed.loves,
+          ['love', 'loves'],
+          {
+            includeNumber: true
+          }
+        ) +
+        '. Who loves this?'
+      )
     }
   },
   methods: {
@@ -78,18 +93,7 @@ export default {
 @import 'color-vars';
 
 .showlove {
+  border: none;
   padding: 3px;
-
-  &:hover {
-    border-radius: 0.2rem;
-    background-color: $color-blue--light;
-    color: white;
-  }
-
-  &:focus {
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-    border-radius: 0.2rem;
-  }
 }
 </style>
