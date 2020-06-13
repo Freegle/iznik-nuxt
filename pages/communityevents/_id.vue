@@ -14,7 +14,7 @@
           </div>
         </div>
         <div v-for="event in events" :key="'event-' + event.id" class="mt-2">
-          <CommunityEvent v-if="!event.pending" :summary="false" :event="event" />
+          <CommunityEvent v-if="!event.pending" :summary="false" :item="event" />
         </div>
         <client-only>
           <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" force-use-infinite-wrapper="body" @infinite="loadMore">

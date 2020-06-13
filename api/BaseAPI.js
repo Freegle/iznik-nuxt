@@ -36,7 +36,12 @@ export default class BaseAPI {
   async $request(method, path, config, logError = true) {
     let status = null
     let data = null
-    const modtools = this.store.getters['misc/get']('modtools')
+    let modtools
+    if (process.env.IS_APP) {
+      modtools = process.env.IS_MTAPP
+    } else {
+      modtools = this.store.getters['misc/get']('modtools')
+    }
 
     // Ensure we tell the API whether we are FD or MT.  Doing it here avoids all the calling code needing to know.
     if (method !== 'POST') {

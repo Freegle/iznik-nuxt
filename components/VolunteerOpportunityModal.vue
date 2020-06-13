@@ -506,11 +506,14 @@ export default {
     },
     async saveIt() {
       this.$v.$touch()
-      if (!this.emailValid) {
+
+      if (this.volunteeringEdit.email && !this.emailValid) {
         // Would be nice to focus on the email, but that's hard to do without introducing a whole load of focus methods
         // through several component layers down to the input.
         return
-      } else if (this.$v.$anyError) {
+      }
+
+      if (this.$v.$anyError) {
         this.validationFocusFirstError()
         return
       }

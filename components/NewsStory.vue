@@ -17,8 +17,7 @@
               :src="newsfeed.story.photo.paththumb"
               class="clickme float-right ml-2"
               @click="showPhotoModal"
-            />
-            {{ story }}
+            />{{ story }}
           </b-card-text>
         </b-card>
         <read-more v-if="emessage" :text="emessage" :max-chars="500" class="font-weight-bold preline forcebreak nopara" />

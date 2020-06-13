@@ -35,6 +35,9 @@
           All the old bulk operations were to do with Yahoo.  We will need to do some new ones for native groups.
           TODO
         </p>
+        <ul>
+          <li>Taking new members off moderation based on rules.</li>
+        </ul>
       </b-tab>
     </b-tabs>
   </div>

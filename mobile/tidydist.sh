@@ -20,5 +20,7 @@ node ./node_modules/replace/bin/replace.js '<\/body>' '<script type="text/javasc
 
 cd dist
 #rm booktastic.jpg js/img/17bac1f.jpg
+rm -r logos
 rm -r councils
+rm -r sponsors
 cd ..

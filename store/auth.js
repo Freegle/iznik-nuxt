@@ -247,10 +247,12 @@ export const actions = {
   },
 
   async lostPassword({ commit, dispatch }, params) {
-    await this.$axios.post(process.env.API + '/session', {
+    const res = await this.$axios.post(process.env.API + '/session', {
       action: 'LostPassword',
       email: params.email
     })
+
+    return res
   },
 
   async unsubscribe({ commit, dispatch }, params) {
@@ -343,8 +345,9 @@ export const actions = {
         !process.env.IS_APP &&
         newTotal > currentTotal &&
         state.user &&
-        (state.user.settings.playbeep ||
-          !Object.keys(state.user.settings).includes('playbeep'))
+        (!state.user.settings ||
+          !Object.keys(state.user.settings).includes('playbeep') ||
+          state.user.settings.playbeep)
       ) {
         // Only trigger this when the counts increase.  There's a minor timing
         // window where a message could arrive as one is deleted, leaving the

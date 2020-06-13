@@ -20,7 +20,7 @@
         </b-row>
       </b-card-header>
       <b-card-body>
-        <VolunteerOpportunity :volunteering="volunteering" :summary="false" />
+        <VolunteerOpportunity :item="volunteering" :summary="false" />
       </b-card-body>
       <b-card-footer>
         <b-btn variant="primary" class="mr-1" @click="approve">

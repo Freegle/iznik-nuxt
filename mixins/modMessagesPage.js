@@ -16,7 +16,8 @@ export default {
       workType: null,
       show: 0,
       busy: false,
-      term: null,
+      messageTerm: null,
+      memberTerm: null,
       modalOpen: false
     }
   },
@@ -146,11 +147,17 @@ export default {
 
         let params
 
-        if (this.term) {
+        if (this.messageTerm) {
           params = {
             subaction: 'searchall',
-            search: this.term,
+            search: this.messageTerm,
             exactonly: true,
+            groupid: this.groupid
+          }
+        } else if (this.memberTerm) {
+          params = {
+            subaction: 'searchmemb',
+            search: this.memberTerm,
             groupid: this.groupid
           }
         } else {
@@ -164,8 +171,6 @@ export default {
 
         params.context = this.context
         params.limit = this.limit
-
-        console.log('Load more', params)
 
         this.$store
           .dispatch('messages/fetchMessages', params)
