@@ -7,6 +7,11 @@
       <NoticeMessage v-if="group.settings.closed" variant="danger" class="mb-1">
         Your community is currently closed.  You can change this in <i>Features for Members</i>.
       </NoticeMessage>
+      <NoticeMessage v-if="group.ontn && group.tnsettings" variant="info" class="mt-1 mb-1">
+        You can also find your TrashNothing settings
+        <!-- eslint-disable-next-line -->
+        <ExternalLink :href="group.tnsettings">here</ExternalLink>.
+      </NoticeMessage>
       <b-card no-body class="mb-2">
         <b-card-header>
           <b-btn v-b-toggle.accordion-addresses block href="#" variant="secondary">
