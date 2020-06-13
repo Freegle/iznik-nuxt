@@ -18,7 +18,7 @@
         </b-row>
       </b-card-header>
       <b-card-body>
-        <CommunityEvent :event="event" :summary="false" />
+        <CommunityEvent :item="event" :summary="false" />
       </b-card-body>
       <b-card-footer>
         <b-btn variant="primary" class="mr-1" @click="approve">
