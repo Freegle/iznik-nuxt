@@ -14,7 +14,7 @@
           <div v-if="message.location">
             <b-row>
               <b-col cols="6" md="3">
-                <b-form-select v-model="type" @options="typeOptions" />
+                <b-form-select v-model="type" :options="typeOptions" />
               </b-col>
               <b-col cols="6">
                 <PostItem ref="item" v-model="item" />
@@ -125,6 +125,7 @@ export default {
   mounted() {
     this.attachments = this.message.attachments
     this.type = this.message.type
+    console.log('Edit type', this.type, this.typeOptions)
     this.item = this.message.item ? this.message.item.name : null
     this.postcode = this.message.location ? this.message.location : null
   },

@@ -39,6 +39,7 @@ export default {
     async search() {
       this.busy = true
       const term = this.term.trim()
+      this.$emit('searched', term)
 
       await this.$store.dispatch('messages/clear')
 

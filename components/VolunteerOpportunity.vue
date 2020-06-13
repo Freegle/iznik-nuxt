@@ -2,17 +2,17 @@
   <div>
     <b-card variant="success" no-body>
       <b-card-title class="bg-info pl-2 mb-0 pt-2 pb-2 text-truncate">
-        <nuxt-link :to="'/volunteering/' + volunteering.id">
+        <nuxt-link :to="'/volunteering/' + item.id" class="volunteerop__link">
           <span v-if="!summary" class="float-right small text-muted">
-            #{{ volunteering.id }}
+            #{{ item.id }}
           </span>
+          {{ item.title }}
         </nuxt-link>
-        {{ volunteering.title }}
       </b-card-title>
       <b-card-body class="p-1 pt-0">
         <div v-if="mine && !renewed && !summary">
           <notice-message v-if="warning" variant="warning" class="mb-1">
-            <span v-if="volunteering.expired">
+            <span v-if="item.expired">
               We've stopped showing this opportunity, but you can reactivate it.
             </span>
             <span v-else>
@@ -21,7 +21,7 @@
             </span>
           </notice-message>
           <notice-message v-else class="mb-1">
-            <span v-if="volunteering.expired">
+            <span v-if="item.expired">
               We've stopped showing this opportunity, but you can reactivate it.
             </span>
             <span v-else>
@@ -36,90 +36,95 @@
           </b-btn>
         </div>
         <div v-if="summary">
-          <div class="media clickme">
+          <div class="media">
             <div class="media-left">
               <div class="media-object pl-1 text-muted">
                 <v-icon name="info-circle" class="fa-fw" />
               </div>
             </div>
             <div class="media-body ml-2 text-truncate">
-              {{ volunteering.description }}
+              {{ item.description }}
             </div>
           </div>
-          <div v-if="volunteering.earliestDate" class="media clickme">
+          <div v-if="item.earliestDate" class="media">
             <div class="media-left">
               <div class="media-object pl-1 text-muted">
                 <v-icon name="clock" class="fa-fw" />
               </div>
             </div>
             <div class="media-body ml-2">
-              {{ volunteering.earliestDate.string.start }} - {{ volunteering.earliestDate.string.end }}
+              {{ item.earliestDate.string.start }} - {{ item.earliestDate.string.end }}
             </div>
           </div>
-          <div class="media clickme">
+          <div class="media">
             <div class="media-left">
               <div class="media-object pl-1 text-muted">
                 <v-icon name="map-marker-alt" class="fa-fw" />
               </div>
             </div>
             <div class="media-body ml-2 small">
-              {{ volunteering.location }}
+              {{ item.location }}
             </div>
           </div>
           <div class="text-center mt-2 mb-2">
-            <b-btn variant="white" size="sm" @click="showOpportunityModal">
+            <b-btn
+              variant="white"
+              size="sm"
+              :aria-label="'More info about ' + item.title + ' volunteering opportunity'"
+              @click="showOpportunityModal"
+            >
               <v-icon name="info-circle" /> More info
             </b-btn>
           </div>
-          <b-img-lazy v-if="volunteering.photo" class="w-100" :src="volunteering.photo.path" />
-          <div v-if="volunteering.groups && volunteering.groups.length > 0" class="small text-muted text-center">
-            Posted on {{ volunteering.groups[0].namedisplay }}
+          <b-img-lazy v-if="item.photo" class="w-100" :src="item.photo.path" />
+          <div v-if="item.groups && item.groups.length > 0" class="small text-muted text-center">
+            Posted on {{ item.groups[0].namedisplay }}
           </div>
         </div>
         <div v-else>
           <b-row>
-            <b-col cols="12" :md="volunteering.photo ? 6 : 12">
-              <div v-if="volunteering.earliestDate" class="media clickme">
+            <b-col cols="12" :md="item.photo ? 6 : 12">
+              <div v-if="item.earliestDate" class="media">
                 <div class="media-left">
                   <div class="media-object pl-1 text-muted">
                     <v-icon name="clock" class="fa-fw" />
                   </div>
                 </div>
                 <div class="media-body ml-2">
-                  {{ volunteering.earliestDate.string.start }} - {{ volunteering.earliestDate.string.end }}
+                  {{ item.earliestDate.string.start }} - {{ item.earliestDate.string.end }}
                 </div>
               </div>
-              <div class="media clickme">
+              <div class="media">
                 <div class="media-left">
                   <div class="media-object pl-1 text-muted">
                     <v-icon name="map-marker-alt" class="fa-fw" />
                   </div>
                 </div>
                 <div class="media-body ml-2 small">
-                  {{ volunteering.location }}
+                  {{ item.location }}
                 </div>
               </div>
-              <div v-if="volunteering.groups && volunteering.groups.length > 0" class="media clickme">
+              <div v-if="item.groups && item.groups.length > 0" class="media">
                 <div class="media-left">
                   <div class="media-object pl-1 text-muted">
                     <v-icon name="users" class="fa-fw" />
                   </div>
                 </div>
                 <div class="media-body ml-2 small">
-                  Posted on {{ volunteering.groups[0].namedisplay }}
+                  Posted on {{ item.groups[0].namedisplay }}
                 </div>
               </div>
               <read-more v-if="description" :text="description" :max-chars="300" class="ml-1 font-weight-bold preline forcebreak nopara" />
               <div class="mt-2 mb-2 ml-1">
-                <b-btn variant="white" @click="showOpportunityModal">
+                <b-btn variant="white" :aria-label="'More info about ' + item.title + ' volunteering opportunity'" @click="showOpportunityModal">
                   <v-icon name="info-circle" /> More info
                 </b-btn>
               </div>
             </b-col>
             <b-col>
               <b-img-lazy
-                v-if="volunteering.photo"
-                :src="volunteering.photo.path"
+                v-if="item.photo"
+                :src="item.photo.path"
                 rounded
                 thumbnail
                 class="square float-right"
@@ -131,9 +136,10 @@
         </div>
       </b-card-body>
     </b-card>
-    <VolunteerOpportunityModal ref="opportunitymodal" :volunteering="volunteering" />
+    <VolunteerOpportunityModal ref="opportunitymodal" :volunteering="item" />
   </div>
 </template>
+
 <script>
 import VolunteerOpportunityModal from './VolunteerOpportunityModal'
 import NoticeMessage from './NoticeMessage'
@@ -149,7 +155,7 @@ export default {
       type: Boolean,
       required: true
     },
-    volunteering: {
+    item: {
       type: Object,
       required: true
     }
@@ -161,14 +167,14 @@ export default {
   },
   computed: {
     description() {
-      let desc = this.volunteering.description
+      let desc = this.item.description
       desc = desc ? twem.twem(this.$twemoji, desc) : ''
       desc = desc.trim()
       return desc
     },
     warning() {
-      const added = new Date(this.volunteering.added).getTime()
-      const renewed = new Date(this.volunteering.renewed).getTime()
+      const added = new Date(this.item.added).getTime()
+      const renewed = new Date(this.item.renewed).getTime()
       const now = Date.now()
 
       let warn = false
@@ -183,7 +189,7 @@ export default {
     },
     mine() {
       const me = this.$store.getters['auth/user']
-      return me && this.volunteering.user.id === me.id
+      return me && this.item.user.id === me.id
     }
   },
   methods: {
@@ -192,22 +198,29 @@ export default {
     },
     async renew() {
       await this.$store.dispatch('volunteerops/renew', {
-        id: this.volunteering.id
+        id: this.item.id
       })
       this.renewed = true
     },
     expire() {
       this.$store.dispatch('volunteerops/expire', {
-        id: this.volunteering.id
+        id: this.item.id
       })
     }
   }
 }
 </script>
-<style scoped>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
 .square {
   object-fit: cover;
   width: 200px;
   height: 200px;
+}
+
+.volunteerop__link {
+  color: $color-blue--2;
 }
 </style>

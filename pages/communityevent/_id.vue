@@ -10,7 +10,7 @@
     <b-row class="m-0">
       <b-col cols="0" md="3" class="d-none d-md-block" />
       <b-col cols="12" md="6" class="p-0">
-        <CommunityEvent v-if="!event.pending" :summary="false" :event="event" class="mt-1" />
+        <CommunityEvent v-if="!event.pending" :summary="false" :item="event" class="mt-1" />
         <NoticeMessage v-else>
           Sorry, that event hasn't been approved yet.
         </NoticeMessage>

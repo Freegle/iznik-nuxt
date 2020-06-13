@@ -191,11 +191,11 @@ export default {
           })
       }
     },
-    async closeit() {
+    closeit() {
       // We have loaded this chat into store, but it's probably not ours.  So update the list, otherwise next
-      // time we go into chats we'll see weirdness.
+      // time we go into chats we'll see weirdness.  No need to await though, and that makes closing chats sluggish.
       const modtools = this.$store.getters['misc/get']('modtools')
-      await this.$store.dispatch('chats/listChats', {
+      this.$store.dispatch('chats/listChats', {
         chattypes: modtools
           ? ['User2Mod', 'Mod2Mod']
           : ['User2User', 'User2Mod']

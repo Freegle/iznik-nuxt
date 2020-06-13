@@ -1,6 +1,6 @@
 <template>
   <span>
-    <ul v-if="newsfeed" class="list-unstyled list-inline d-inline-block">
+    <ul v-if="newsfeed" class="list-unstyled list-inline d-flex align-items-center">
       <li class="list-inline-item">
         <b-btn v-if="!newsfeed.loved" variant="white" size="sm" @click="love">
           <v-icon v-if="loving" name="sync" class="fa-spin text-success" />
@@ -16,10 +16,10 @@
           <v-icon name="comment" /><span class="d-none d-sm-inline">&nbsp;Reply</span>
         </b-btn>
       </li>
-      <li class="list-inline-item clickme" @click="showLove">
-        <span v-if="newsfeed.loves">
+      <li class="list-inline-item">
+        <b-btn v-if="newsfeed.loves" variant="white" class="showlove" :aria-label="getShowLovesLabel" @click="showLove">
           <v-icon name="heart" class="text-danger" />&nbsp;{{ newsfeed.loves }}
-        </span>
+        </b-btn>
       </li>
     </ul>
     <NewsLovesModal :id="newsfeed.id" ref="loveModal" />
@@ -41,6 +41,21 @@ export default {
   data: function() {
     return {
       loving: false
+    }
+  },
+  computed: {
+    getShowLovesLabel() {
+      return (
+        'This comment has ' +
+        this.$options.filters.pluralize(
+          this.newsfeed.loves,
+          ['love', 'loves'],
+          {
+            includeNumber: true
+          }
+        ) +
+        '. Who loves this?'
+      )
     }
   },
   methods: {
@@ -73,3 +88,12 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
+.showlove {
+  border: none;
+  padding: 3px;
+}
+</style>
