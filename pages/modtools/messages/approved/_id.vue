@@ -3,8 +3,8 @@
     <client-only>
       <div class="d-flex justify-content-between flex-wrap">
         <GroupSelect v-model="groupid" all modonly />
-        <ModFindMessagesFromMember />
-        <ModFindMessage v-if="groupid" @searched="searched" />
+        <ModFindMessagesFromMember @searched="searchedMember" />
+        <ModFindMessage v-if="groupid" @searched="searchedMessage" />
         <ModtoolsViewControl />
       </div>
       <div>
@@ -81,8 +81,16 @@ export default {
     checkLimit() {
       this.limit = this.summary ? 10 : 2
     },
-    searched(term) {
-      this.term = term
+    searchedMessage(term) {
+      this.messageTerm = term
+      this.memberTerm = null
+
+      // Need to rerender the infinite scroll
+      this.bump++
+    },
+    searchedMember(term) {
+      this.messageTerm = null
+      this.memberTerm = term
 
       // Need to rerender the infinite scroll
       this.bump++
