@@ -7,6 +7,7 @@
         class="max"
         :disabled="searching"
         autocapitalize="none"
+        @keyup="searched = false"
         @keyup.enter.exact="usersearch"
       />
       <b-input-group-append>
