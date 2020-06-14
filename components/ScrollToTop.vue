@@ -28,11 +28,9 @@ export default {
   },
   methods: {
     handleScroll(e) {
-      console.log('Scroll', window.scrollY)
       this.scrollY = window.scrollY
     },
     scrollToTop() {
-      console.log('SCroll')
       window.scrollTo(0, 0)
     }
   }
