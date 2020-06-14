@@ -1,5 +1,11 @@
 @import 'color-vars';
 
+.strike {
+  text-decoration: line-through;
+  text-decoration-style: double;
+  font-weight: normal;
+}
+
 .bg-success {
   background-color: $colour-success-bg !important;
   color: $colour-success-fg !important;
