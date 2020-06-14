@@ -1,5 +1,6 @@
 <template>
   <div>
+    <ScrollToTop />
     <NoticeMessage v-if="!stories || !stories.length" variant="info" class="mt-2">
       There are no stories to review at the moment.
     </NoticeMessage>
@@ -10,6 +11,7 @@
 </template>
 <script>
 import NoticeMessage from '../../../components/NoticeMessage'
+import ScrollToTop from '../../../components/ScrollToTop'
 import loginRequired from '@/mixins/loginRequired.js'
 
 const ModStoryReview = () => import('~/components/ModStoryReview')
@@ -17,6 +19,7 @@ const ModStoryReview = () => import('~/components/ModStoryReview')
 export default {
   layout: 'modtools',
   components: {
+    ScrollToTop,
     NoticeMessage,
     ModStoryReview
   },

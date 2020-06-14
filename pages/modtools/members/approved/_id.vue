@@ -1,6 +1,7 @@
 <template>
   <div>
     <client-only>
+      <ScrollToTop />
       <div class="d-flex justify-content-between flex-wrap">
         <GroupSelect v-model="groupid" modonly />
         <div v-if="groupid" class="d-flex">
@@ -48,6 +49,7 @@ import ModMemberTypeSelect from '../../../../components/ModMemberTypeSelect'
 import ModAddMemberModal from '../../../../components/ModAddMemberModal'
 import ModMergeButton from '../../../../components/ModMergeButton'
 import ModMemberExportButton from '../../../../components/ModMemberExportButton'
+import ScrollToTop from '../../../../components/ScrollToTop'
 import loginRequired from '@/mixins/loginRequired'
 import modMembersPage from '@/mixins/modMembersPage'
 import createGroupRoute from '@/mixins/createGroupRoute'
@@ -55,6 +57,7 @@ import waitForRef from '@/mixins/waitForRef'
 
 export default {
   components: {
+    ScrollToTop,
     ModMemberExportButton,
     ModMergeButton,
     ModAddMemberModal,
