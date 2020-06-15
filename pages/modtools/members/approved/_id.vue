@@ -1,6 +1,7 @@
 <template>
   <div>
     <client-only>
+      <ScrollToTop />
       <div class="d-flex justify-content-between flex-wrap">
         <GroupSelect v-model="groupid" modonly />
         <div v-if="groupid" class="d-flex">
@@ -48,6 +49,7 @@ import ModMemberTypeSelect from '../../../../components/ModMemberTypeSelect'
 import ModAddMemberModal from '../../../../components/ModAddMemberModal'
 import ModMergeButton from '../../../../components/ModMergeButton'
 import ModMemberExportButton from '../../../../components/ModMemberExportButton'
+import ScrollToTop from '../../../../components/ScrollToTop'
 import loginRequired from '@/mixins/loginRequired'
 import modMembersPage from '@/mixins/modMembersPage'
 import createGroupRoute from '@/mixins/createGroupRoute'
@@ -55,6 +57,7 @@ import waitForRef from '@/mixins/waitForRef'
 
 export default {
   components: {
+    ScrollToTop,
     ModMemberExportButton,
     ModMergeButton,
     ModAddMemberModal,
@@ -82,6 +85,26 @@ export default {
       if (!newVal) {
         // Cleared box.
         this.$router.push('/modtools/members/approved/' + this.groupid)
+      }
+    }
+  },
+  mounted() {
+    if (!this.groupid) {
+      // If we have not selected a group, check if we are only a mod on one.  If so, then go to that group so that
+      // we don't need to bother selecting it.  We do this here because the interaction with createGroupRoute would
+      // be complex.
+      const groups = this.$store.getters['auth/groups']
+      let countmod = 0
+      let lastmod = null
+      groups.forEach(g => {
+        if (g.role === 'Moderator' || g.role === 'Owner') {
+          countmod++
+          lastmod = g.id
+        }
+      })
+
+      if (countmod === 1) {
+        this.$router.push('/modtools/members/approved/' + lastmod)
       }
     }
   },

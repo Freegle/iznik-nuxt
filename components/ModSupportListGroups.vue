@@ -205,7 +205,7 @@ export default {
     colourMentor(hotInstance, td, row, column, prop, value, cellProperties) {
       const group = this.$store.getters['group/get'](value)
 
-      if (group.mentored) {
+      if (group && group.mentored) {
         td.style.backgroundColor = 'lightblue'
       }
 
