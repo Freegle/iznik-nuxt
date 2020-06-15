@@ -1,6 +1,7 @@
 <template>
   <div>
     <client-only>
+      <ScrollToTop />
       <GroupSelect v-model="groupid" all modonly :work="['spam', 'spamother']" />
       <NoticeMessage v-if="!messages.length && !busy" class="mt-2">
         There are no messages at the moment.  This will refresh automatically.
@@ -22,12 +23,13 @@
 <script>
 import NoticeMessage from '../../../../components/NoticeMessage'
 import GroupSelect from '../../../../components/GroupSelect'
+import ScrollToTop from '../../../../components/ScrollToTop'
 import loginRequired from '@/mixins/loginRequired'
 import modMessagesPage from '@/mixins/modMessagesPage'
 import createGroupRoute from '@/mixins/createGroupRoute'
 
 export default {
-  components: { GroupSelect, NoticeMessage },
+  components: { ScrollToTop, GroupSelect, NoticeMessage },
   layout: 'modtools',
   mixins: [
     loginRequired,

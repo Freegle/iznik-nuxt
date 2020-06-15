@@ -15,7 +15,7 @@ export default {
       if (this.part.added) {
         return 'text-warning'
       } else if (this.part.removed) {
-        return 'text-strikethrough text-danger'
+        return 'strike text-danger text-muted'
       } else {
         return 'text-black'
       }
@@ -32,8 +32,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-.strike {
-  text-decoration: line-through;
-}
-</style>

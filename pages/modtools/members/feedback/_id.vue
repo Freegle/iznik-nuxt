@@ -1,6 +1,7 @@
 <template>
   <div>
     <client-only>
+      <ScrollToTop />
       <ModHelpFeedback />
       <div class="d-flex justify-content-between">
         <GroupSelect v-model="groupid" modonly all />
@@ -39,6 +40,7 @@
 </template>
 <script>
 import ModHelpFeedback from '../../../../components/ModHelpFeedback'
+import ScrollToTop from '../../../../components/ScrollToTop'
 import NoticeMessage from '@/components/NoticeMessage'
 import loginRequired from '@/mixins/loginRequired'
 import modMembersPage from '@/mixins/modMembersPage'
@@ -46,7 +48,12 @@ import createGroupRoute from '@/mixins/createGroupRoute'
 import ModMemberHappiness from '@/components/ModMemberHappiness'
 
 export default {
-  components: { ModHelpFeedback, ModMemberHappiness, NoticeMessage },
+  components: {
+    ScrollToTop,
+    ModHelpFeedback,
+    ModMemberHappiness,
+    NoticeMessage
+  },
   layout: 'modtools',
   mixins: [
     loginRequired,

@@ -207,7 +207,6 @@ export default {
   mixins: [waitForRef],
   data: function() {
     return {
-      configid: null,
       loading: false,
       showUsing: false,
       newconfigname: null,
@@ -216,6 +215,18 @@ export default {
     }
   },
   computed: {
+    configid: {
+      get() {
+        const config = this.$store.getters['misc/get']('settingsconfig')
+        return config || null
+      },
+      async set(newval) {
+        await this.$store.dispatch('misc/set', {
+          key: 'settingsconfig',
+          value: newval
+        })
+      }
+    },
     configOptions() {
       const ret = [
         {
@@ -240,18 +251,21 @@ export default {
     }
   },
   watch: {
-    async configid(newval) {
-      this.loading = true
-      this.showUsing = false
+    configid: {
+      immediate: true,
+      handler: async function(newval) {
+        this.loading = true
+        this.showUsing = false
 
-      if (newval) {
-        await this.$store.dispatch('modconfigs/fetchConfig', {
-          id: newval,
-          configuring: true
-        })
+        if (newval) {
+          await this.$store.dispatch('modconfigs/fetchConfig', {
+            id: newval,
+            configuring: true
+          })
+        }
+
+        this.loading = false
       }
-
-      this.loading = false
     }
   },
   beforeDestroy() {

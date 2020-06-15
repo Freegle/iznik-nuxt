@@ -1,6 +1,7 @@
 <template>
   <div>
     <client-only>
+      <ScrollToTop />
       <ModHelpRelated />
       <GroupSelect v-model="groupid" all modonly systemwide :work="['relatedmembers']" />
       <div v-for="member in visibleMembers" :key="'memberlist-' + member.id" class="p-0 mt-2">
@@ -22,6 +23,7 @@
   </div>
 </template>
 <script>
+import ScrollToTop from '../../../../components/ScrollToTop'
 import NoticeMessage from '@/components/NoticeMessage'
 import ModHelpRelated from '@/components/ModHelpRelated'
 import loginRequired from '@/mixins/loginRequired'
@@ -29,7 +31,7 @@ import modMembersPage from '@/mixins/modMembersPage'
 import ModRelatedMember from '@/components/ModRelatedMember'
 
 export default {
-  components: { ModHelpRelated, ModRelatedMember, NoticeMessage },
+  components: { ScrollToTop, ModHelpRelated, ModRelatedMember, NoticeMessage },
   layout: 'modtools',
   mixins: [loginRequired, modMembersPage],
   data: function() {

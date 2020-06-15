@@ -1,6 +1,7 @@
 <template>
   <div>
     <client-only>
+      <ScrollToTop />
       <div class="d-flex justify-content-between flex-wrap">
         <GroupSelect v-model="groupid" all modonly />
         <ModFindMessagesFromMember @searched="searchedMember" />
@@ -34,12 +35,14 @@ import GroupSelect from '../../../../components/GroupSelect'
 import ModFindMessage from '../../../../components/ModFindMessage'
 import ModFindMessagesFromMember from '../../../../components/ModFindMessagesFromMember'
 import ModtoolsViewControl from '../../../../components/ModtoolsViewControl'
+import ScrollToTop from '../../../../components/ScrollToTop'
 import loginRequired from '@/mixins/loginRequired'
 import modMessagesPage from '@/mixins/modMessagesPage'
 import createGroupRoute from '@/mixins/createGroupRoute'
 
 export default {
   components: {
+    ScrollToTop,
     ModtoolsViewControl,
     ModFindMessagesFromMember,
     ModFindMessage,

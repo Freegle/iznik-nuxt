@@ -17,7 +17,8 @@
         </b-btn>
       </div>
       <div v-else>
-        <p>You can't unbounce - you can only do this to members, and their role is {{ user.role }}.</p>
+        <!-- eslint-disable-next-line-->
+        <p>You can't unbounce - you can only do this to members<span v-if="user.role">, and their role is {{ user.role }}</span>.</p>
       </div>
     </NoticeMessage>
   </div>
