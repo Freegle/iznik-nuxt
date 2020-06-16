@@ -16,7 +16,7 @@
             <li><a target="_blank" href="/councils/PosterA4.png">A4 poster</a></li>
             <li><a target="_blank" href="/councils/PosterA5.png">A5 poster</a></li>
             <li><a target="_blank" href="/councils/PosterA5Space.png">A5 poster with space for council logo</a></li>
-            <li><a target="_blank" href="/councils/PosterA4Tearoffs.png">Poster with tear-offs</a> (great for libraries, leisure centres and other council-owned buildings)</li>
+            <li><a target="_blank" href="/posters/A4.png">Poster with tear-offs</a> (great for libraries, leisure centres and other council-owned buildings)</li>
           </ul>
 
           <p>
