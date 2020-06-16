@@ -14,6 +14,7 @@
         </b-card-body>
       </b-card>
       <div v-else-if="ModeratorsActive && ModeratorsActive.length">
+        <p>This shows when the volunteers on this community last approved a message (on any community).</p>
         <b-card no-body>
           <b-card-body>
             <b-row v-for="user in ModeratorsActive" :key="'popular-' + user.id">
