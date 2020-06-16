@@ -71,23 +71,23 @@ export const mutations = {
     state.progress++
   },
   setItem(state, params) {
-    Vue.set(
-      state.messages,
-      params.id,
-      state.messages[params.id] ? state.messages[params.id] : {}
-    )
+    if (!state.messages[params.id]) {
+      Vue.set(state.messages, params.id, {
+        id: params.id
+      })
+    }
+
     Vue.set(state.messages[params.id], 'item', params.item)
     Vue.set(state.messages[params.id], 'type', params.type)
-    Vue.set(state.messages[params.id], 'id', params.id)
   },
   setDescription(state, params) {
-    Vue.set(
-      state.messages,
-      params.id,
-      state.messages[params.id] ? state.messages[params.id] : {}
-    )
+    if (!state.messages[params.id]) {
+      Vue.set(state.messages, params.id, {
+        id: params.id
+      })
+    }
+
     Vue.set(state.messages[params.id], 'description', params.description)
-    Vue.set(state.messages[params.id], 'id', params.id)
   },
   addAttachment(state, params) {
     Vue.set(
