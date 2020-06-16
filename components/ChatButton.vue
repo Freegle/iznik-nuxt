@@ -1,12 +1,12 @@
 <template>
   <span>
-    <span v-if="size === 'naked'">
-      <span class="d-none d-sm-inline-block" @click="gotoChat(true)">
+    <span v-if="naked">
+      <b-btn :variant="variant" :size="size" class="d-none d-sm-inline-block" @click="gotoChat(true)">
         {{ title }}
-      </span>
-      <span class="d-inline-block d-sm-none" @click="gotoChat(false)">
+      </b-btn>
+      <b-btn :variant="variant" :size="size" class="d-inline-block d-sm-none" @click="gotoChat(false)">
         {{ title }}
-      </span>
+      </b-btn>
     </span>
     <span v-else>
       <b-btn :size="size" :variant="variant" class="d-none d-sm-inline" @click="gotoChat(true)">
@@ -56,6 +56,11 @@ export default {
       type: String,
       required: false,
       default: null
+    },
+    naked: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   methods: {
