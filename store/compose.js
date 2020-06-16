@@ -88,6 +88,7 @@ export const mutations = {
     }
 
     Vue.set(state.messages[params.id], 'description', params.description)
+    Vue.set(state.messages[params.id], 'type', params.type)
   },
   addAttachment(state, params) {
     Vue.set(

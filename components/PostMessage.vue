@@ -139,6 +139,7 @@ export default {
       set: function(newValue) {
         this.$store.dispatch('compose/setDescription', {
           id: this.id,
+          type: this.type,
           description: newValue
         })
       }
