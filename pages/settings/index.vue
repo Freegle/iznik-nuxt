@@ -190,6 +190,12 @@
                     <v-icon v-else name="save" />
                     Save
                   </b-button>
+                  <div v-if="otheremails.length" class="mt-1 mb-3">
+                    <p class="m-0">
+                      Other emails:
+                    </p>
+                    <EmailOwn v-for="email in otheremails" :key="'ownemail-' + email.id" :email="email" />
+                  </div>
                   <NoticeMessage v-if="me.bouncing" variant="danger" class="mb-2">
                     <p>We can't send to your email address.  Please change it to a valid one and press <em>Save</em>.</p>
                     <p>Or if you're sure it's valid:</p>
@@ -532,6 +538,7 @@
 import Vue from 'vue'
 import SimpleView from '../../components/SimpleView'
 import EmailValidator from '../../components/EmailValidator'
+import EmailOwn from '../../components/EmailOwn'
 import waitForRef from '@/mixins/waitForRef'
 import loginRequired from '@/mixins/loginRequired.js'
 import EmailConfirmModal from '~/components/EmailConfirmModal'
@@ -554,6 +561,7 @@ const PasswordEntry = () => import('~/components/PasswordEntry')
 
 export default {
   components: {
+    EmailOwn,
     EmailValidator,
     SimpleView,
     OurToggle,
@@ -730,6 +738,14 @@ export default {
           value: newval
         })
       }
+    },
+
+    otheremails() {
+      return this.me.emails
+        ? this.me.emails.filter(e => {
+            return !e.ourdomain && e.email !== this.me.email
+          })
+        : []
     }
   },
 
