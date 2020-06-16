@@ -63,7 +63,7 @@
                     size="sm"
                     title="Message"
                     variant="light"
-                    naked="true"
+                    :show-icon="false"
                   />
                 </span>
                 <NewsPreview v-if="reply.preview" :preview="reply.preview" class="mt-1" size="sm" />

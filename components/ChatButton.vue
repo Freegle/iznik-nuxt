@@ -1,29 +1,20 @@
 <template>
   <span>
-    <span v-if="naked">
-      <b-btn :variant="variant" :size="size" class="d-none d-sm-inline-block" @click="gotoChat(true)">
+    <b-btn :size="size" :variant="variant" class="d-none d-sm-inline" @click="gotoChat(true)">
+      <v-icon v-if="showIcon" name="comments" />
+      <span v-if="title">
         {{ title }}
-      </b-btn>
-      <b-btn :variant="variant" :size="size" class="d-inline-block d-sm-none" @click="gotoChat(false)">
+      </span>
+    </b-btn>
+    <b-btn :size="size" :variant="variant" class="d-inline-block d-sm-none" @click="gotoChat(false)">
+      <v-icon v-if="showIcon" name="comments" />
+      <span v-if="title">
         {{ title }}
-      </b-btn>
-    </span>
-    <span v-else>
-      <b-btn :size="size" :variant="variant" class="d-none d-sm-inline" @click="gotoChat(true)">
-        <v-icon name="comments" />
-        <span v-if="title">
-          {{ title }}
-        </span>
-      </b-btn>
-      <b-btn :size="size" :variant="variant" class="d-inline-block d-sm-none" @click="gotoChat(false)">
-        <v-icon name="comments" />
-        <span v-if="title">
-          {{ title }}
-        </span>
-      </b-btn>
-    </span>
+      </span>
+    </b-btn>
   </span>
 </template>
+
 <script>
 export default {
   props: {
@@ -57,10 +48,10 @@ export default {
       required: false,
       default: null
     },
-    naked: {
+    showIcon: {
       type: Boolean,
       required: false,
-      default: false
+      default: true
     }
   },
   methods: {
