@@ -33,7 +33,7 @@
                     @error.native="brokenImage"
                   />
                 </div>
-                <span v-if="userid && users[userid]" class="text-muted d-flex flex-row flex-wrap align-items-center">
+                <span v-if="userid && users[userid]" class="text-muted d-flex flex-row flex-wrap align-items-center options-section">
                   <span class="text-muted small mr-1">
                     {{ reply.added | timeago }}
                   </span>
@@ -607,7 +607,7 @@ export default {
   margin-bottom: 1px;
 }
 
-::v-deep .btn {
+.options-section ::v-deep .btn {
   font-size: 12.8px;
   color: #6c757d;
   padding: 0 2px 0 2px;
