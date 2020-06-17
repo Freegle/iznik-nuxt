@@ -60,8 +60,10 @@
                     v-if="parseInt(me.id) !== parseInt(userid)"
                     class="reply__button text-muted"
                     :userid="userid"
-                    size="naked"
+                    size="sm"
                     title="Message"
+                    variant="light"
+                    :show-icon="false"
                   />
                 </span>
                 <NewsPreview v-if="reply.preview" :preview="reply.preview" class="mt-1" size="sm" />
