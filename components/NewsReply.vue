@@ -50,10 +50,10 @@
                   <b-btn v-if="reply.loves" variant="light" class="mr-1 small text-muted showlove" @click="showLove">
                     <v-icon name="heart" class="text-danger" />&nbsp;{{ reply.loves }}
                   </b-btn>
-                  <b-btn v-if="parseInt(me.id) === parseInt(userid)" v-b-modal="'newsEdit-' + replyid" class="reply__button">
+                  <b-btn v-if="parseInt(me.id) === parseInt(userid)" v-b-modal="'newsEdit-' + replyid" variant="light" class="reply__button">
                     Edit
                   </b-btn>
-                  <b-btn v-if="parseInt(me.id) === parseInt(userid) || mod" class="reply__button" @click="deleteReply">
+                  <b-btn v-if="parseInt(me.id) === parseInt(userid) || mod" variant="light" class="reply__button" @click="deleteReply">
                     Delete
                   </b-btn>
                   <ChatButton
