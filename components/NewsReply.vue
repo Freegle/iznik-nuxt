@@ -33,7 +33,7 @@
                     @error.native="brokenImage"
                   />
                 </div>
-                <span v-if="userid && users[userid]" class="text-muted d-flex flex-row flex-wrap align-items-center options-section">
+                <span v-if="userid && users[userid]" class="text-muted d-flex flex-row flex-wrap align-items-center">
                   <span class="text-muted small mr-1">
                     {{ reply.added | timeago }}
                   </span>
@@ -58,7 +58,7 @@
                   </b-btn>
                   <ChatButton
                     v-if="parseInt(me.id) !== parseInt(userid)"
-                    class="reply__button text-muted"
+                    class="reply__button text-muted d-flex align-items-center"
                     :userid="userid"
                     size="sm"
                     title="Message"
@@ -585,9 +585,6 @@ export default {
 }
 
 .reply__button {
-  border: none;
-  padding: 0 2px 0 2px;
-  font-size: 12.8px;
   margin-left: 3px;
   margin-right: 3px;
 
@@ -600,16 +597,10 @@ export default {
 .showlove {
   border: none;
   padding: 3px;
-  font-size: 12.8px;
+  font-size: 0.8rem;
 }
 
 ::v-deep .fa-icon {
   margin-bottom: 1px;
-}
-
-.options-section ::v-deep .btn {
-  font-size: 12.8px;
-  color: #6c757d;
-  padding: 0 2px 0 2px;
 }
 </style>
