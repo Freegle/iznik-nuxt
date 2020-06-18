@@ -47,7 +47,7 @@
                   <b-btn v-if="reply.loved" variant="light" class="reply__button text-muted" @click="unlove">
                     Unlove this
                   </b-btn>
-                  <b-btn v-if="reply.loves" variant="light" class="mr-1 small text-muted showlove" @click="showLove">
+                  <b-btn v-if="reply.loves" variant="light" class="mr-1 small text-muted showlove" :aria-label="getShowLovesLabel" @click="showLove">
                     <v-icon name="heart" class="text-danger" />&nbsp;{{ reply.loves }}
                   </b-btn>
                   <b-btn v-if="parseInt(me.id) === parseInt(userid)" v-b-modal="'newsEdit-' + replyid" variant="light" class="reply__button">
@@ -422,6 +422,15 @@ export default {
     },
     scrollToThis() {
       return parseInt(this.scrollTo) === this.replyid
+    },
+    getShowLovesLabel() {
+      return (
+        'This comment has ' +
+        this.$options.filters.pluralize(this.reply.loves, ['love', 'loves'], {
+          includeNumber: true
+        }) +
+        '. Who loves this?'
+      )
     }
   },
   mounted() {
