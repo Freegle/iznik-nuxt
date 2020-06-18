@@ -24,9 +24,9 @@
         class="clickme"
       />
     </div>
-    <div class="mt-2">
+    <div class="mt-2 d-flex flex-wrap justify-content-between">
       <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
-      <b-btn variant="white" size="sm" class="float-right d-inline-block" @click="share">
+      <b-btn variant="white" size="sm" class="d-inline-block" @click="share">
         <v-icon name="share-alt" /> Share
       </b-btn>
     </div>

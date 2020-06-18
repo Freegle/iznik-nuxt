@@ -16,14 +16,14 @@
         </b-col>
       </b-row>
     </div>
-    <div class="mt-2">
+    <div class="mt-2 d-flex flex-wrap justify-content-between">
       <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
-      <span class="float-right d-inline-block">
+      <div>
         <b-btn variant="white" size="sm" @click="showModal">
           <v-icon name="user" /> Introduce yourself to everyone
         </b-btn>
         <AboutMeModal ref="modal" />
-      </span>
+      </div>
     </div>
     <b-modal
       v-if="newsfeed.image"
