@@ -2,6 +2,7 @@
   <div>
     <client-only>
       <ScrollToTop />
+      <ModHelpMemberReview />
       <div class="d-flex justify-content-between">
         <GroupSelect v-model="groupid" modonly :work="['spammembers', 'spammembersother']" />
       </div>
@@ -25,6 +26,7 @@
 </template>
 <script>
 import ScrollToTop from '../../../../components/ScrollToTop'
+import ModHelpMemberReview from '../../../../components/ModHelpMemberReview'
 import ModMember from '@/components/ModMember'
 import NoticeMessage from '@/components/NoticeMessage'
 import loginRequired from '@/mixins/loginRequired'
@@ -32,7 +34,7 @@ import modMembersPage from '@/mixins/modMembersPage'
 import createGroupRoute from '@/mixins/createGroupRoute'
 
 export default {
-  components: { ScrollToTop, NoticeMessage, ModMember },
+  components: { ModHelpMemberReview, ScrollToTop, NoticeMessage, ModMember },
   layout: 'modtools',
   mixins: [
     loginRequired,
