@@ -15,7 +15,11 @@
       ok-only
     >
       <template slot="default">
-        <b-img fluid :src="attachment.path" />
+        <PostPhoto
+          v-bind="attachment"
+          :thumbnail="false"
+          @remove="removePhoto"
+        />
       </template>
       <template slot="modal-footer" slot-scope="{ ok, cancel }">
         <b-button variant="white" @click="cancel">
@@ -68,5 +72,9 @@ export default {
   object-fit: cover;
   width: 200px;
   height: 200px;
+}
+
+::v-deep img {
+  width: 100%;
 }
 </style>
