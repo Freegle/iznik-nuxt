@@ -21,6 +21,8 @@ export default class SessionAPI extends BaseAPI {
     googleauthcode,
     mobile, // CC
     appversion, // CC
+    applecredentials, // CC
+    applelogin, // CC
     u,
     k
   }) {
@@ -33,6 +35,8 @@ export default class SessionAPI extends BaseAPI {
       googleauthcode,
       mobile, // CC
       appversion, // CC
+      applecredentials, // CC
+      applelogin, // CC
       u,
       k
     })

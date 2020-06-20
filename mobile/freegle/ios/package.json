@@ -18,6 +18,7 @@
     "cordova-plugin-inappbrowser": "^3.2.0",
     "cordova-plugin-ios-camera-permissions": "1.2.0",
     "cordova-plugin-network-information": "^2.0.2",
+    "cordova-plugin-sign-in-with-apple": "^0.1.1",
     "cordova-plugin-splashscreen": "^5.0.3",
     "cordova-plugin-statusbar": "^2.4.3",
     "cordova-plugin-wkwebview-engine": "^1.2.1",
@@ -53,7 +54,8 @@
       },
       "cordova-plugin-googleplus": {
         "REVERSED_CLIENT_ID": "com.googleusercontent.apps.423761283916-mfrb9i0ntt1omq2knit8j49agnhje648"
-      }
+      },
+      "cordova-plugin-sign-in-with-apple": {}
     },
     "platforms": [
       "ios"

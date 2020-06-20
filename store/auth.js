@@ -2,6 +2,7 @@ import Vue from 'vue'
 import { LoginError, SignUpError } from '../api/BaseAPI'
 import { savePushId, logoutPushId } from '@/plugins/app-init-push' // CC
 import { appGoogleLogout } from '@/plugins/app-google' // CC
+import { appAppleLogout } from '@/plugins/app-apple' // CC
 
 let first = true
 
@@ -179,6 +180,7 @@ export const actions = {
 
   logout({ commit }) {
     appGoogleLogout() // CC
+    appAppleLogout() // CC
     logoutPushId() // CC
     commit('setUser', null)
     this.$api.session.logout()

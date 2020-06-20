@@ -12,8 +12,9 @@ export function appAppleLogin(callback) {
     window.cordova.plugins.SignInWithApple.signin(
       { requestedScopes: [0, 1] },
       function (succ) {
-        console.log(succ)
-        console.log(succ.identityToken)
+        console.log('SignInWithApple succeeded')
+        //console.log(succ)
+        //console.log(succ.identityToken)
 
         completeLoginCallback(succ)
       },
