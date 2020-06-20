@@ -48,13 +48,13 @@
       </div>
     </div>
     <hr>
-    <div class="mt-2">
+    <div class="mt-2d-flex flex-wrap justify-content-between">
       <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
-      <span class="float-right d-inline-block">
+      <div>
         <b-btn variant="white" size="sm" @click="addOpportunity">
           <v-icon name="plus" /> Add your opportunity
         </b-btn>
-      </span>
+      </div>
     </div>
     <VolunteerOpportunityModal ref="addOpportunity" :start-edit="true" />
     <VolunteerOpportunityModal ref="moreInfo" :volunteering="newsfeed.volunteering" />

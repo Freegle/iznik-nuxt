@@ -115,6 +115,11 @@ export const actions = {
     await dispatch('fetch', { id: params.id, info: true })
   },
 
+  async removeEmail({ commit, dispatch }, params) {
+    await this.$api.user.removeEmail(params.id, params.email)
+    await dispatch('fetch', { id: params.id, info: true })
+  },
+
   async add({ commit, dispatch }, params) {
     const ret = await this.$api.user.add(params.email)
     return ret.id

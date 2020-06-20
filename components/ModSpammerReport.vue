@@ -21,7 +21,10 @@
           <li>Members may join many groups because they are over-enthusiastic or have relatives in different places.</li>
           <li>Mail can be spoofed or accounts can be hacked - so a member can appear to send spam but not be a spammer.</li>
         </ul>
-        <p>Spammers must have <strong>clear intent to deliberately spam/scam</strong>, or be a massive multijoiner.</p>
+        <p>
+          Spammers must have <strong>clear intent to deliberately spam/scam</strong>, or be a multijoiner across
+          communities a long way apart, without a good reason.
+        </p>
       </div>
       <p>This reason will be visible to other moderators, so please make sure it's helpful.</p>
       <b-textarea v-model="reason" placeholder="Enter a reason" />

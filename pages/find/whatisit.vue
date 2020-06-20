@@ -45,6 +45,8 @@
               </b-btn>
             </b-col>
           </b-row>
+        </transition>
+        <transition name="fade">
           <b-row>
             <b-col cols="12" md="6" offset-md="3" class="text-center pt-2">
               <NoticeMessage variant="info">

@@ -58,17 +58,33 @@
           <span v-else-if="log.subtype === 'Autoreposted'">
             Autoreposted <ModLogMessage :log="log" />
             repost {{ log.text }}
+            <span v-if="log.user">
+              from
+              <ModLogUser :user="log.user" />
+            </span>
           </span>
           <span v-else-if="log.subtype === 'Approved'">
             Approved message
             <ModLogMessage :log="log" />
+            <span v-if="log.user">
+              from
+              <ModLogUser :user="log.user" />
+            </span>
           </span>
           <span v-else-if="log.subtype === 'ClassifiedSpam'">
             Sent spam <ModLogMessage :log="log" tag="to" notext />
+            <span v-if="log.user">
+              from
+              <ModLogUser :user="log.user" />
+            </span>
           </span>
           <span v-else-if="log.subtype === 'Rejected'" class="text-danger">
             Rejected
             <ModLogMessage :log="log" />
+            <span v-if="log.user">
+              from
+              <ModLogUser :user="log.user" />
+            </span>
           </span>
           <span v-else-if="log.subtype === 'Replied'" class="text-danger">
             Modmail sent
@@ -82,20 +98,40 @@
           </span>
           <span v-else-if="log.subtype === 'Deleted'" class="text-danger">
             Deleted <ModLogMessage :log="log" />
+            <span v-if="log.user">
+              from
+              <ModLogUser :user="log.user" />
+            </span>
           </span>
           <span v-else-if="log.subtype === 'Hold'">
             Held <ModLogMessage :log="log" />
+            <span v-if="log.user">
+              from
+              <ModLogUser :user="log.user" />
+            </span>
           </span>
           <span v-else-if="log.subtype === 'Release'">
             Released <ModLogMessage :log="log" />
+            <span v-if="log.user">
+              from
+              <ModLogUser :user="log.user" />
+            </span>
           </span>
           <span v-else-if="log.subtype === 'Edit'">
             Edited <ModLogMessage :log="log" notext />
             Details:
             {{ log.text }}
+            <span v-if="log.user">
+              from
+              <ModLogUser :user="log.user" />
+            </span>
           </span>
           <span v-else-if="log.subtype === 'Outcome'">
             Marked <ModLogMessage :log="log" notext /> as <em>{{ log.text }}</em>
+            <span v-if="log.user">
+              from
+              <ModLogUser :user="log.user" />
+            </span>
           </span>
           <span v-else-if="log.subtype === 'Autoapproved'">
             Auto-approved <ModLogMessage :log="log" />

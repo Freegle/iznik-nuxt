@@ -24,6 +24,10 @@ export default class UserAPI extends BaseAPI {
     return this.$post('/user', { id: id, action: 'AddEmail', email: email })
   }
 
+  removeEmail(id, email) {
+    return this.$post('/user', { id: id, action: 'RemoveEmail', email: email })
+  }
+
   add(email) {
     return this.$put('/user', { email: email })
   }
