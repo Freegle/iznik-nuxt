@@ -221,7 +221,9 @@ export default {
   computed: {
     isiOSapp() { // CC
       if (process.env.IS_APP) {
-        return false
+        if( window.device.platform === 'iOS' && parseFloat(window.device.version)>=13)
+          return true
+        //return false
         //return true
         //return (window.device.platform === 'iOS')
       }
@@ -239,9 +241,9 @@ export default {
 
     appleDisabled() { // CC
       if (process.env.IS_APP) { // Sign in with Apple only supported for iOS 13+
-        //if (parseFloat(window.device.version)>=13)
-        //  return false
-        return false  // Enable sign in for iOS12- and Android
+        if (parseFloat(window.device.version)>=13)
+          return false
+        //return false  // Enable sign in for iOS12- and Android
       }
       return true
     },
@@ -440,23 +442,37 @@ export default {
           })
       }
     },
-    loginApple() {
+    async loginApple() {
       this.socialLoginError = null
       try {
         if (process.env.IS_APP) {
-          appAppleLogin(
-            ret => { // arrow so .this. is correct
+          let authResult = { status: 'init' }
+          await new Promise(function (resolve,reject) {
+            appAppleLogin( function (ret) {
               if( ret.error){
-                this.socialLoginError = ret.error
+                reject(new Error(ret.error))
               } else {
-                if( ret.code)
-                  this.socialLoginError = 'Code: ' + ret.code
-                else
-                  this.socialLoginError = 'Hello: ' + ret.fullName.givenName
+                //console.log('GOT',ret)
+                authResult = ret
+                resolve()
               }
             })
+          })
+          if (authResult.identityToken) { // identityToken, user, etc
+            await this.$store.dispatch('auth/login', {
+              applecredentials: authResult,
+              applelogin: true
+            })
+            // We are now logged in.
+            console.log('Logged in apple')
+            self.pleaseShowModal = false
+          } else {
+            console.log('NO identityToken')
+            this.socialLoginError = 'Apple login fail: no token'
+          }
         }
       } catch (e) {
+      console.log('CATCH',e)
         this.socialLoginError = 'Apple login error: ' + e.message
       }
     },

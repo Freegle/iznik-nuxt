@@ -23,24 +23,24 @@
         <read-more v-if="emessage" :text="emessage" :max-chars="500" class="font-weight-bold preline forcebreak nopara" />
       </b-col>
     </b-row>
-    <b-row class="mt-2">
-      <b-col>
-        <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
-        <b-btn variant="secondary" size="sm" class="float-right" @click="showAddModal">
-          <v-icon name="book-open" />
-          <span class="d-none d-inline-block-md">Tell your story!</span>
-          <span class="d-inline-block d-none-md">Tell yours</span>
+    <div class="mt-2 d-flex flex-wrap justify-content-between">
+      <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
+      <div>
+        <b-btn variant="white" size="sm" class="d-inline-block mr-1" @click="shareStory">
+          <v-icon name="share-alt" /><span class="d-none d-inline-block-md"> Share</span>
         </b-btn>
-        <b-btn variant="white" to="/stories" size="sm" class="float-right mr-1">
+        <b-btn variant="white" to="/stories" size="sm" class="mr-1">
           <v-icon name="book-open" />
           <span class="d-none d-inline-block-md">More stories</span>
           <span class="d-inline-block d-none-md">More</span>
         </b-btn>
-        <b-btn variant="white" size="sm" class="float-right d-inline-block mr-1" @click="shareStory">
-          <v-icon name="share-alt" /><span class="d-none d-inline-block-md"> Share</span>
+        <b-btn variant="secondary" size="sm" @click="showAddModal">
+          <v-icon name="book-open" />
+          <span class="d-none d-inline-block-md">Tell your story!</span>
+          <span class="d-inline-block d-none-md">Tell yours</span>
         </b-btn>
-      </b-col>
-    </b-row>
+      </div>
+    </div>
     <NewsPhotoModal
       v-if="newsfeed.story.photo"
       :id="newsfeed.story.photo.id"

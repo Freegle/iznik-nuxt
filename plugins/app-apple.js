@@ -12,14 +12,18 @@ export function appAppleLogin(callback) {
     window.cordova.plugins.SignInWithApple.signin(
       { requestedScopes: [0, 1] },
       function (succ) {
-        console.log(succ)
-        console.log(succ.identityToken)
+        console.log('SignInWithApple succeeded')
+        //console.log(succ)
+        //console.log(succ.identityToken)
 
         completeLoginCallback(succ)
       },
       function (err) {
         console.error(err)
-        completeLoginCallback({ error: err.error+' '+err.code+' '+err.localizedDescription+' '+err.localizedFailureReason})
+        if( err.code==='1001')
+          completeLoginCallback({ error: 'Cancelled'})
+        else
+          completeLoginCallback({ error: err.error+' '+err.code+' '+err.localizedDescription+' '+err.localizedFailureReason})
       }
     )
   } catch (e) {

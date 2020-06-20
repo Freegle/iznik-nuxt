@@ -28,16 +28,75 @@
       </v-icon>
     </span>
     <b-img
+      v-if="thumbnail"
       lazy
       :src="paththumb + '?' + cacheBust"
       rounded
       thumbnail
-      class="square imagepreview"
+      class="square"
+      @click="$emit('click') "
+    />
+    <b-img
+      v-else
+      lazy
+      :src="path+ '?' + cacheBust"
+      rounded
       @click="$emit('click') "
     />
   </div>
 </template>
-
+<script>
+export default {
+  props: {
+    id: {
+      type: Number,
+      required: true
+    },
+    path: {
+      type: String,
+      required: true
+    },
+    paththumb: {
+      type: String,
+      required: true
+    },
+    thumbnail: {
+      type: Boolean,
+      required: false,
+      default: true
+    }
+  },
+  data: function() {
+    return {
+      cacheBust: Date.now()
+    }
+  },
+  methods: {
+    remove() {
+      this.$emit('remove', this.id)
+    },
+    rotate(deg) {
+      this.$axios
+        .post(process.env.API + '/image', {
+          id: this.id,
+          rotate: deg,
+          bust: Date.now()
+        })
+        .then(() => {
+          this.cacheBust = Date.now()
+        })
+    },
+    rotateLeft() {
+      this.rotate(90)
+      this.cacheBust = Date.now()
+    },
+    rotateRight() {
+      this.rotate(-90)
+      this.cacheBust = Date.now()
+    }
+  }
+}
+</script>
 <style scoped lang="scss">
 @import 'color-vars';
 
@@ -73,51 +132,3 @@
   height: 200px;
 }
 </style>
-
-<script>
-export default {
-  props: {
-    id: {
-      type: Number,
-      required: true
-    },
-    path: {
-      type: String,
-      required: true
-    },
-    paththumb: {
-      type: String,
-      required: true
-    }
-  },
-  data: function() {
-    return {
-      cacheBust: Date.now()
-    }
-  },
-  methods: {
-    remove() {
-      this.$emit('remove', this.id)
-    },
-    rotate(deg) {
-      this.$axios
-        .post(process.env.API + '/image', {
-          id: this.id,
-          rotate: deg,
-          bust: Date.now()
-        })
-        .then(() => {
-          this.cacheBust = Date.now()
-        })
-    },
-    rotateLeft() {
-      this.rotate(90)
-      this.cacheBust = Date.now()
-    },
-    rotateRight() {
-      this.rotate(-90)
-      this.cacheBust = Date.now()
-    }
-  }
-}
-</script>

@@ -17,7 +17,7 @@
       :chatusers="chatusers"
     />
     <chat-message-interested
-      v-else-if="chatmessage.type === 'Interested'"
+      v-else-if="chatmessage.type === 'Interested' && otheruser"
       :chat="chat"
       :chatmessage="chatmessage"
       :otheruser="otheruser"
@@ -25,7 +25,7 @@
       :chatusers="chatusers"
     />
     <chat-message-completed
-      v-else-if="chatmessage.type === 'Completed'"
+      v-else-if="chatmessage.type === 'Completed' && otheruser"
       :chat="chat"
       :chatmessage="chatmessage"
       :otheruser="otheruser"
@@ -33,7 +33,7 @@
       :chatusers="chatusers"
     />
     <chat-message-promised
-      v-else-if="chatmessage.type === 'Promised'"
+      v-else-if="chatmessage.type === 'Promised' && otheruser"
       :chat="chat"
       :chatmessage="chatmessage"
       :otheruser="otheruser"
@@ -41,7 +41,7 @@
       :chatusers="chatusers"
     />
     <chat-message-reneged
-      v-else-if="chatmessage.type === 'Reneged'"
+      v-else-if="chatmessage.type === 'Reneged' && otheruser"
       :chat="chat"
       :chatmessage="chatmessage"
       :otheruser="otheruser"
@@ -49,7 +49,7 @@
       :chatusers="chatusers"
     />
     <chat-message-address
-      v-else-if="chatmessage.type === 'Address'"
+      v-else-if="chatmessage.type === 'Address' && otheruser"
       :chat="chat"
       :chatmessage="chatmessage"
       :otheruser="otheruser"
@@ -57,7 +57,7 @@
       :chatusers="chatusers"
     />
     <chat-message-nudge
-      v-else-if="chatmessage.type === 'Nudge'"
+      v-else-if="chatmessage.type === 'Nudge' && otheruser"
       :chat="chat"
       :chatmessage="chatmessage"
       :otheruser="otheruser"
@@ -73,7 +73,7 @@
       :chatusers="chatusers"
     />
     <chat-message-schedule
-      v-else-if="chatmessage.type === 'Schedule'"
+      v-else-if="chatmessage.type === 'Schedule' && otheruser"
       :chat="chat"
       :chatmessage="chatmessage"
       :otheruser="otheruser"
@@ -81,7 +81,7 @@
       :chatusers="chatusers"
     />
     <chat-message-schedule
-      v-else-if="chatmessage.type === 'ScheduleUpdated'"
+      v-else-if="chatmessage.type === 'ScheduleUpdated' && otheruser"
       :chat="chat"
       :chatmessage="chatmessage"
       :otheruser="otheruser"
@@ -89,7 +89,7 @@
       :chatusers="chatusers"
     />
     <chat-message-report
-      v-else-if="chatmessage.type === 'ReportedUser'"
+      v-else-if="chatmessage.type === 'ReportedUser' && otheruser"
       :chat="chat"
       :chatmessage="chatmessage"
       :otheruser="otheruser"

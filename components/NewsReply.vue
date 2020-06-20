@@ -33,39 +33,38 @@
                     @error.native="brokenImage"
                   />
                 </div>
-                <span v-if="userid && users[userid]">
-                  <span class="text-muted small">
+                <span v-if="userid && users[userid]" class="text-muted d-flex flex-row flex-wrap align-items-center">
+                  <span class="text-muted small mr-1">
                     {{ reply.added | timeago }}
                   </span>
-                  <NewsUserInfo :user="users[userid]" />
-                  <span>
-                    &bull;<span class="text-muted small clickme" @click="replyReply">&nbsp;Reply</span>
-                  </span>
-                  <span class="text-muted small clickme">
-                    <span v-if="!reply.loved" @click="love">
-                      &bull;&nbsp;Love this
-                    </span>
-                    <span v-if="reply.loved" @click="unlove">
-                      &bull;&nbsp;Unlove this
-                    </span>
-                    <span v-if="reply.loves" class="clickme" @click="showLove">
-                      <v-icon name="heart" class="text-danger" />&nbsp;{{ reply.loves }}
-                    </span>
-                    <span v-if="parseInt(me.id) === parseInt(userid)" v-b-modal="'newsEdit-' + replyid">
-                      &bull;&nbsp;Edit
-                    </span>
-                    <span v-if="parseInt(me.id) === parseInt(userid) || mod" @click="deleteReply">
-                      &bull;&nbsp;Delete
-                    </span>
-                    <span v-if="parseInt(me.id) !== parseInt(userid)">
-                      &bull;&nbsp;
-                      <ChatButton
-                        :userid="userid"
-                        size="naked"
-                        title="Message"
-                      />
-                    </span>
-                  </span>
+                  <NewsUserInfo :user="users[userid]" class="px-1" />
+                  <b-btn variant="light" class="reply__button text-muted" @click="replyReply">
+                    Reply
+                  </b-btn>
+                  <b-btn v-if="!reply.loved" variant="light" class="reply__button text-muted" @click="love">
+                    Love this
+                  </b-btn>
+                  <b-btn v-if="reply.loved" variant="light" class="reply__button text-muted" @click="unlove">
+                    Unlove this
+                  </b-btn>
+                  <b-btn v-if="reply.loves" variant="light" class="mr-1 small text-muted showlove" :aria-label="getShowLovesLabel" @click="showLove">
+                    <v-icon name="heart" class="text-danger" />&nbsp;{{ reply.loves }}
+                  </b-btn>
+                  <b-btn v-if="parseInt(me.id) === parseInt(userid)" v-b-modal="'newsEdit-' + replyid" variant="light" class="reply__button">
+                    Edit
+                  </b-btn>
+                  <b-btn v-if="parseInt(me.id) === parseInt(userid) || mod" variant="light" class="reply__button" @click="deleteReply">
+                    Delete
+                  </b-btn>
+                  <ChatButton
+                    v-if="parseInt(me.id) !== parseInt(userid)"
+                    class="reply__button text-muted d-flex align-items-center"
+                    :userid="userid"
+                    size="sm"
+                    title="Message"
+                    variant="light"
+                    :show-icon="false"
+                  />
                 </span>
                 <NewsPreview v-if="reply.preview" :preview="reply.preview" class="mt-1" size="sm" />
                 <div v-if="reply.hidden" class="text-danger small">
@@ -423,6 +422,15 @@ export default {
     },
     scrollToThis() {
       return parseInt(this.scrollTo) === this.replyid
+    },
+    getShowLovesLabel() {
+      return (
+        'This comment has ' +
+        this.$options.filters.pluralize(this.reply.loves, ['love', 'loves'], {
+          includeNumber: true
+        }) +
+        '. Who loves this?'
+      )
     }
   },
   mounted() {
@@ -583,5 +591,25 @@ export default {
 
 .image__uploaded {
   width: 100px;
+}
+
+.reply__button {
+  margin-left: 3px;
+  margin-right: 3px;
+
+  &:before {
+    content: '\2022';
+    padding-right: 2px;
+  }
+}
+
+.showlove {
+  border: none;
+  padding: 3px;
+  font-size: 0.8rem;
+}
+
+::v-deep .fa-icon {
+  margin-bottom: 1px;
 }
 </style>
