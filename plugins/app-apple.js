@@ -20,7 +20,10 @@ export function appAppleLogin(callback) {
       },
       function (err) {
         console.error(err)
-        completeLoginCallback({ error: err.error+' '+err.code+' '+err.localizedDescription+' '+err.localizedFailureReason})
+        if( err.code==='1001')
+          completeLoginCallback({ error: 'Cancelled'})
+        else
+          completeLoginCallback({ error: err.error+' '+err.code+' '+err.localizedDescription+' '+err.localizedFailureReason})
       }
     )
   } catch (e) {
