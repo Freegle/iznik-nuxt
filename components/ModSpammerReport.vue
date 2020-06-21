@@ -25,6 +25,10 @@
           Spammers must have <strong>clear intent to deliberately spam/scam</strong>, or be a multijoiner across
           communities a long way apart, without a good reason.
         </p>
+        <p>
+          Spammer reports will be reviewed before they're added to the list.  They'll only be added if they meet those
+          criteria.
+        </p>
       </div>
       <p>This reason will be visible to other moderators, so please make sure it's helpful.</p>
       <b-textarea v-model="reason" placeholder="Enter a reason" />
