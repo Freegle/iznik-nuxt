@@ -6,7 +6,7 @@
           <v-icon name="hashtag" class="text-muted" scale="0.75" />
           {{ spammer.id}}
         </b-col>
-        <b-col cols=""
+        <b-col cols="" />
       </b-row>
     </b-card-header>
   </b-card>
