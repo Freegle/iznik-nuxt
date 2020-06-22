@@ -642,31 +642,33 @@ export default {
       this.busy = false
     },
     cancelArea() {
-      // Delete the currently selected area from the map.
-      this.selectedObj.setMap(null)
+      if (this.selectedWKT !== this.savedWKT) {
+        // Delete the currently selected area from the map.
+        this.selectedObj.setMap(null)
 
-      // Restore data
-      this.selectedName = this.savedName
-      this.selectedWKT = this.savedWKT
+        // Restore data
+        this.selectedName = this.savedName
+        this.selectedWKT = this.savedWKT
 
-      if (this.selectedWKT) {
-        // Remap the restored data
-        const obj = this.mapPoly(this.selectedWKT, {
-          strokeColor: AREA_BOUNDARY_COLOUR,
-          fillColor: AREA_FILL_COLOUR,
-          fillOpacity: FILL_OPACITY
-        })
+        if (this.selectedWKT) {
+          // Remap the restored data
+          const obj = this.mapPoly(this.selectedWKT, {
+            strokeColor: AREA_BOUNDARY_COLOUR,
+            fillColor: AREA_FILL_COLOUR,
+            fillOpacity: FILL_OPACITY
+          })
 
-        const google = this.google()
-        google.maps.event.addListener(obj, 'click', () => {
-          this.selectArea(
-            this.selectedId,
-            obj,
-            this.selectedName,
-            '',
-            this.selectedWKT
-          )
-        })
+          const google = this.google()
+          google.maps.event.addListener(obj, 'click', () => {
+            this.selectArea(
+              this.selectedId,
+              obj,
+              this.selectedName,
+              '',
+              this.selectedWKT
+            )
+          })
+        }
       }
     }
   }
