@@ -670,6 +670,7 @@ export default {
           })
         }
       } else {
+        this.selectedObj.setOptions({ strokeColor: AREA_BOUNDARY_COLOUR })
         this.selectedObj.setOptions({ editable: false })
       }
     }
