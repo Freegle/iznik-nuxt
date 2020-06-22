@@ -651,7 +651,22 @@ export default {
 
       if (this.selectedWKT) {
         // Remap the restored data
-        this.mapPoly(this.selectedWKT)
+        const obj = this.mapPoly(this.selectedWKT, {
+          strokeColor: AREA_BOUNDARY_COLOUR,
+          fillColor: AREA_FILL_COLOUR,
+          fillOpacity: FILL_OPACITY
+        })
+
+        const google = this.google()
+        google.maps.event.addListener(obj, 'click', () => {
+          this.selectArea(
+            this.selectedId,
+            obj,
+            this.selectedName,
+            '',
+            this.selectedWKT
+          )
+        })
       }
     }
   }
