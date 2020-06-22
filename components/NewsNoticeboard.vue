@@ -25,21 +25,19 @@
       :src="'https://www.google.com/maps/embed/v1/place?key=AIzaSyArVxoX781qdcbmQZi1PKHX-qa0bPbboH4&q=' + info.lat + ',' + info.lng"
       allowfullscreen
     />
-    <b-row class="mt-2 d-flex flex-wrap justify-content-between">
-      <b-col>
-        <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
-        <nuxt-link to="/spread">
-          <b-btn
-            variant="secondary"
-            size="sm"
-            class="d-inline-block"
-            @click="share"
-          >
-            <v-icon name="bullhorn" /> Put up a poster
-          </b-btn>
-        </nuxt-link>
-      </b-col>
-    </b-row>
+    <div class="mt-2 d-flex flex-wrap justify-content-between">
+      <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
+      <nuxt-link to="/spread">
+        <b-btn
+          variant="secondary"
+          size="sm"
+          class="d-inline-block"
+          @click="share"
+        >
+          <v-icon name="bullhorn" /> Put up a poster
+        </b-btn>
+      </nuxt-link>
+    </div>
   </div>
 </template>
 <script>
