@@ -83,6 +83,7 @@
           <ModMenuItemLeft link="/modtools/members/stories" name="Stories" indent :count="['stories']" />
           <ModMenuItemLeft v-if="hasPermissionNewsletter" link="/modtools/members/newsletter" name="Newsletter" indent :count="['newsletterstories']" />
           <ModMenuItemLeft link="/modtools/members/feedback" name="Feedback" indent :othercount="['happiness']" />
+          <ModMenuItemLeft link="/modtools/members/notes" name="Notes" indent />
           <hr>
           <hr>
           <ModMenuItemLeft link="/modtools/communityevents" name="Events" :count="['pendingevents']" />
