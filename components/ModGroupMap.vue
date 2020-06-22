@@ -659,7 +659,7 @@ export default {
           })
 
           const google = this.google()
-          google.maps.event.addListener(obj, 'click', () => {
+          google.maps.event.addListener(this.selectedObj, 'click', () => {
             this.selectArea(
               this.selectedId,
               this.selectedObj,
