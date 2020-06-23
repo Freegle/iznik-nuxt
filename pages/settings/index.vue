@@ -297,7 +297,14 @@
                       <b-card v-if="group.type === 'Freegle'" class="nocardbot">
                         <b-card-title>
                           <nuxt-link :to="'/browse/' + group.id">
-                            <b-img-lazy rounded thumbnail alt="Community profile picture" :src="group.profile" class="float-right groupprofile" />
+                            <b-img-lazy
+                              v-if="group.profile"
+                              rounded
+                              thumbnail
+                              alt="Community profile picture"
+                              :src="group.profile"
+                              class="float-right groupprofile"
+                            />
                           </nuxt-link>
                           <nuxt-link :to="'/browse/' + group.id">
                             {{ group.namedisplay }}
