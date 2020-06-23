@@ -118,9 +118,14 @@
           <b-col cols="12" lg="4">
             <div class="rounded border border-info p-2 d-flex justify-content-between flex-wrap">
               <MessageUserInfo v-if="message.fromuser && message.groups && message.groups.length" :message="message" :user="message.fromuser" modinfo :groupid="message.groups[0].groupid" />
-              <NoticeMessage v-else variant="danger">
-                Can't identify sender.  Probably a bug.
-              </NoticeMessage>
+              <div v-else>
+                <NoticeMessage v-if="message.myrole === 'Non-member' || message.myrole === 'Member'" variant="danger">
+                  Sender only available to mods.
+                </NoticeMessage>
+                <NoticeMessage v-else variant="danger">
+                  Can't identify sender.  Could have been purged but probably a bug.
+                </NoticeMessage>
+              </div>
             </div>
             <div class="d-flex justify-content-between flex-wrap">
               <b-btn variant="link" @click="toggleMail">
