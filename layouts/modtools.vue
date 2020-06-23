@@ -229,8 +229,8 @@ export default {
     requestLogin() {
       this.$refs.loginModal.show()
     },
-    checkWork() {
-      this.$store.dispatch('auth/fetchUser', {
+    async checkWork() {
+      await this.$store.dispatch('auth/fetchUser', {
         components: ['work'],
         force: true
       })
