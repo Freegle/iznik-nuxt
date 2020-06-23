@@ -1,33 +1,31 @@
 <template>
-  <div class="d-inline-block w-100">
-    <div :class="{ 'justify-content-around': center, 'd-flex': true }">
-      <b-form-group
-        :label="label"
-        :label-for="'email-' + uniqueid"
-        label-class="mt-0"
-      >
-        <validating-form-input
-          :id="'email-' + uniqueid"
-          :value="email"
-          type="email"
-          name="email"
-          :size="size"
-          class="email"
-          :validation="$v.email"
-          validation-enabled
-          :validation-messages="{
-            email: 'Please enter a valid email address.'
-          }"
-          :center="center"
-          autocomplete="username email"
-          @input="input"
-          @focus="focus"
-          @blur="blur"
-        />
-      </b-form-group>
-      <div v-if="suggestedDomains && suggestedDomains.length" class="text-info small">
-        Did you mean <b>{{ suggestedDomains[0] }}</b>?
-      </div>
+  <div class="d-flex flex-column">
+    <b-form-group
+      :label="label"
+      :label-for="'email-' + uniqueid"
+      label-class="mt-0"
+    >
+      <validating-form-input
+        :id="'email-' + uniqueid"
+        :value="email"
+        type="email"
+        name="email"
+        :size="size"
+        class="email"
+        :validation="$v.email"
+        validation-enabled
+        :validation-messages="{
+          email: 'Please enter a valid email address.'
+        }"
+        :center="center"
+        autocomplete="username email"
+        @input="input"
+        @focus="focus"
+        @blur="blur"
+      />
+    </b-form-group>
+    <div v-if="suggestedDomains && suggestedDomains.length" class="text-info small mb-2">
+      Did you mean <b>{{ suggestedDomains[0] }}</b>?
     </div>
   </div>
 </template>
