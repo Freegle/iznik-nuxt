@@ -18,7 +18,7 @@
                 </b-input-group>
               </div>
             </div>
-            <Diff v-else-if="editreview" :old="oldSubject" :new="newSubject" class="font-weight-bold" />
+            <Diff v-else-if="editreview && oldSubject && newSubject" :old="oldSubject" :new="newSubject" class="font-weight-bold" />
             <div v-else :class="subjectClass + ' font-weight-bold'">
               {{ eSubject }}
               <span v-if="message.location" class="text-muted small">{{ message.location.name }}</span>
@@ -98,7 +98,13 @@
                 class="mb-3"
               />
               <!-- eslint-disable-next-line -->
-              <Diff v-else-if="editreview" class="mb-3 rounded border p-2 preline forcebreak font-weight-bold" :old="oldBody" :new="newBody" />
+              <div v-else-if="editreview">
+                <h4>Differences:</h4>
+                <Diff class="mb-3 rounded border border-warning p-2 preline forcebreak font-weight-bold" :old="oldBody" :new="newBody" />
+                <h4>New version:</h4>
+                <!-- eslint-disable-next-line -->
+                <div class="mb-3 rounded border border-success p-2 preline forcebreak font-weight-bold">{{ newBody }}</div>
+              </div>
               <!-- eslint-disable-next-line -->
               <div v-else-if="!eBody" class="mb-3 rounded border p-2 preline forcebreak font-weight-bold"><em>This message is blank.</em></div>
               <!-- eslint-disable-next-line -->
