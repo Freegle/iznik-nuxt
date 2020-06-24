@@ -1,12 +1,12 @@
 <template>
   <div>
     <b-card variant="success" no-body>
-      <b-card-title class="bg-info pl-2 mb-0 pt-2 pb-2 text-truncate">
+      <b-card-title class="bg-info px-2 mb-0 pt-2 pb-2 text-truncate d-flex justify-content-between">
         <nuxt-link :to="'/volunteering/' + item.id" class="volunteerop__link">
-          <span v-if="!summary" class="float-right small text-muted">
-            #{{ item.id }}
-          </span>
           {{ item.title }}
+        </nuxt-link>
+        <nuxt-link v-if="!summary" :to="'/volunteering/' + item.id" class="volunteerop__link small text-muted">
+          #{{ item.id }}
         </nuxt-link>
       </b-card-title>
       <b-card-body class="p-1 pt-0">
