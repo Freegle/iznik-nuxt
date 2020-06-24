@@ -1,7 +1,11 @@
 <template>
   <div class="bg-white">
-    <ModGroupMap v-if="groupid" :groupid="groupid" />
-    <ModGroupMap v-else :groups="true" />
+    Sorry, we've had to disable the map temporarily for cost reasons.
+    <div v-if="false">
+      <!--      TODO MAP-->
+      <ModGroupMap v-if="groupid" :groupid="groupid" />
+      <ModGroupMap v-else :groups="true" />
+    </div>
   </div>
 </template>
 <script>

@@ -156,7 +156,10 @@
               <br>
               <v-icon name="globe-europe" /> www.iLoveFreegle.org  <v-icon name="brands/twitter" /> @thisisfreegle  <v-icon name="brands/facebook" /> facebook.com/Freegle
             </div>
+            Sorry, we've had to disable the map temporarily for cost reasons.
+            <!--            TODO MAP-->
             <GmapMap
+              v-if="false"
               ref="gmap"
               :center="{lat:53.9450, lng:-2.5209}"
               :zoom="5"

@@ -8,7 +8,10 @@
       </b-btn>
     </NoticeMessage>
     <client-only>
+      Sorry, we've had to disable the map temporarily for cost reasons.
+      <!--      TODO MAP-->
       <GmapMap
+        v-if="false"
         ref="gmap"
         :center="{lat:53.9450, lng:-2.5209}"
         :zoom="zoom"

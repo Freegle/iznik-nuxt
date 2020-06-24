@@ -16,7 +16,9 @@
     <b-row v-if="!region" class="m-0">
       <b-col cols="12" lg="2" offset-lg="5" class="text-center">
         <client-only>
+          <!--          TODO MAP-->
           <gmap-autocomplete
+            v-if="false"
             id="autocomplete"
             v-focus
             class="form-control"
@@ -31,7 +33,8 @@
     <b-row v-if="!region && regions.length" class="m-0">
       <b-col cols="12" lg="6" offset-lg="3" class="mt-2">
         <h5 class="text-center">
-          Or choose a region:
+          <!--          TODO MAP or-->
+          Choose a region:
         </h5>
         <b-list-group horizontal class="flex flex-wrap justify-content-center">
           <b-list-group-item v-for="r in regions" :key="r" class="p-0 mt-2 ml-2 mr-2">
@@ -45,7 +48,9 @@
     <b-row class="m-0">
       <b-col ref="mapcont" cols="12" lg="6" offset-lg="3" class="mt-4">
         <client-only>
+          <!--          TODO MAP-->
           <GmapMap
+            v-if="false"
             ref="gmap"
             :center="{lat:53.9450, lng:-2.5209}"
             :zoom="5"
@@ -75,7 +80,8 @@
       <b-col v-if="groupsInBounds.length" cols="12" lg="6" offset-lg="3" class="mt-4">
         <b-card header-bg-variant="success" header-text-variant="white" header="Here's a list of communities:">
           <b-card-body style="height: 500px; overflow-y: scroll" class="p-0">
-            <p>This list will change as you zoom or move around the map.</p>
+            <!--            TODO MAP-->
+            <!--            <p>This list will change as you zoom or move around the map.</p>-->
             <div v-for="g in groupsInList" :key="'groupsInBounds-' + g.id">
               <div v-if="g.onmap" class="media clickme">
                 <div class="media-left">
@@ -254,27 +260,28 @@ export default {
       const groups = this.groups
       const ret = []
 
-      if (!process.browser) {
-        // SSR - return all for SRO.
-        for (const ix in groups) {
-          const group = groups[ix]
-          ret.push(group)
-        }
-      } else if (this.bounds) {
-        for (const ix in groups) {
-          const group = groups[ix]
-
-          if (
-            group.lat >= this.bounds.sw.lat &&
-            group.lng >= this.bounds.sw.lng &&
-            group.lat <= this.bounds.ne.lat &&
-            group.lng <= this.bounds.ne.lng &&
-            (this.region === null || this.region === group.region)
-          ) {
-            ret.push(group)
-          }
-        }
+      // TODO MAPS
+      // if (!process.browser) {
+      // SSR - return all for SRO.
+      for (const ix in groups) {
+        const group = groups[ix]
+        ret.push(group)
       }
+      // } else if (this.bounds) {
+      //   for (const ix in groups) {
+      //     const group = groups[ix]
+      //
+      //     if (
+      //       group.lat >= this.bounds.sw.lat &&
+      //       group.lng >= this.bounds.sw.lng &&
+      //       group.lat <= this.bounds.ne.lat &&
+      //       group.lng <= this.bounds.ne.lng &&
+      //       (this.region === null || this.region === group.region)
+      //     ) {
+      //       ret.push(group)
+      //     }
+      //   }
+      // }
 
       const sorted = ret.sort((a, b) => {
         return a.namedisplay
@@ -285,13 +292,14 @@ export default {
       return sorted
     },
     groupsInList() {
-      if (process.browser) {
-        // We have an infinite scroll - return as many as we're currently showing.
-        return this.groupsInBounds.slice(0, this.showList)
-      } else {
-        // SSR - return all for SEO.
-        return this.groupsInBounds
-      }
+      // TODO MAPS
+      // if (process.browser) {
+      //   // We have an infinite scroll - return as many as we're currently showing.
+      //   return this.groupsInBounds.slice(0, this.showList)
+      // } else {
+      // SSR - return all for SEO.
+      return this.groupsInBounds
+      // }
     }
   },
 

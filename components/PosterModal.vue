@@ -9,9 +9,11 @@
     size="lg"
   >
     <notice-message class="mb-3">
-      Please drag the map until the marker shows where the poster is.
+      Sorry, we've had to disable the map temporarily for cost reasons.
+      <!--      Please drag the map until the marker shows where the poster is.-->
     </notice-message>
-    <DraggableMap ref="map" :initial-zoom="7" class="mb-2" />
+    <!--    TODO MAPS-->
+    <DraggableMap v-if="false" ref="map" :initial-zoom="7" class="mb-2" />
     <h4>Please add more info</h4>
     <b-input
       v-model="name"
