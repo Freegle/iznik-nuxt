@@ -17,6 +17,7 @@
     <p class="mt-1">
       <b>We need your help to get more people freegling</b>.  Could you put one up too?
     </p>
+    <!--    TODO MAPS-->
     <iframe
       width="100%"
       height="200"

@@ -90,6 +90,7 @@
             </div>
             <div v-if="user.privateposition">
               {{ Math.round(user.privateposition.lat * 100) / 100 }}, {{ Math.round(user.privateposition.lng * 100) / 100 }}
+              <!--              TODO MAPS-->
               <a :href="'https://www.google.com/maps?q=' + user.privateposition.lat + ',' + user.privateposition.lng" target="_blank" rel="noopener">Show on map</a>
             </div>
             <div v-else>

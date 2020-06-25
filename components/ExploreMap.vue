@@ -139,6 +139,7 @@ import L from 'leaflet'
 import InfiniteLoading from 'vue-infinite-loading'
 import GroupMarker from '~/components/GroupMarker.vue'
 import GroupProfileImage from '~/components/GroupProfileImage'
+import map from '@/mixins/map.js'
 const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
@@ -148,6 +149,7 @@ export default {
     GroupProfileImage,
     ExternalLink
   },
+  mixins: [map],
   props: {
     region: {
       type: String,
@@ -182,29 +184,20 @@ export default {
   },
   data: function() {
     return {
-      zoom: 5,
       showList: 0,
       distance: 1000,
+      // TODO MAPS
       gb: {
         componentRestrictions: {
           country: ['gb']
         }
       },
-      initialBounds: false,
-      map: null,
-      bounds: null,
-      center: [53.945, -2.5209]
+      initialBounds: false
     }
   },
   computed: {
     browser() {
       return process.browser
-    },
-    osmtile() {
-      return process.env.OSM_TILE
-    },
-    attribution() {
-      return 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
     },
     largeMarkers() {
       // Show small markers unless we are zoomed in to a small number of groups.
@@ -309,25 +302,6 @@ export default {
         this.$refs.gmap.$mapObject.setZoom(11)
       }
     },
-    zoomChanged: function(zoom) {
-      this.zoom = zoom
-    },
-    boundsChanged: function() {
-      const bounds = this.$refs.map.mapObject.getBounds()
-
-      this.bounds = {
-        ne: {
-          lat: bounds.getNorthEast().lat,
-          lng: bounds.getNorthEast().lng
-        },
-        sw: {
-          lat: bounds.getSouthWest().lat,
-          lng: bounds.getSouthWest().lng
-        }
-      }
-
-      this.setUrl()
-    },
     setUrl: function() {
       if (this.track) {
         // We've been asked to update the URL as we move around the map.
@@ -386,9 +360,7 @@ export default {
 
             // eslint-disable-next-line new-cap
             const fg = new L.featureGroup(markers)
-            console.log('fg', fg)
             const bounds = fg.getBounds()
-            console.log('Bounds', bounds)
 
             if (bounds) {
               map.fitBounds(bounds)

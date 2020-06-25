@@ -19,6 +19,7 @@
               </b-row>
               <b-row>
                 <b-col>
+                  <!--                  TODO MAPS-->
                   <b-embed type="iframe" aspect="1by1" allowfullscreen :src="'https://www.google.com/maps/embed/v1/place?key=AIzaSyArVxoX781qdcbmQZi1PKHX-qa0bPbboH4&q=' + chatmessage.address.postcode.lat + ',' + chatmessage.address.postcode.lng" />
                 </b-col>
               </b-row>
@@ -42,6 +43,7 @@
               </b-row>
               <b-row>
                 <b-col>
+                  <!--                  TODO MAPS-->
                   <b-embed type="iframe" aspect="1by1" allowfullscreen :src="'https://www.google.com/maps/embed/v1/place?key=AIzaSyArVxoX781qdcbmQZi1PKHX-qa0bPbboH4&q=' + chatmessage.address.postcode.lat + ',' + chatmessage.address.postcode.lng" />
                 </b-col>
               </b-row>
