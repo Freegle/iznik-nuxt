@@ -5,14 +5,20 @@ export default {
         {
           value: 'Offer',
           text:
-            this.group && this.group.settings && this.group.settings.keywords
+            this.group &&
+            this.group.settings &&
+            this.group.settings.keywords &&
+            this.group.settings.keywords.offer
               ? this.group.settings.keywords.offer
               : 'OFFER'
         },
         {
           value: 'Wanted',
           text:
-            this.group && this.group.settings && this.group.settings.keywords
+            this.group &&
+            this.group.settings &&
+            this.group.settings.keywords &&
+            this.group.settings.keywords.wanted
               ? this.group.settings.keywords.wanted
               : 'WANTED'
         }
