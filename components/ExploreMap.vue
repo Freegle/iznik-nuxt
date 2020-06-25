@@ -33,7 +33,6 @@
     <b-row v-if="!region && regions.length" class="m-0">
       <b-col cols="12" lg="6" offset-lg="3" class="mt-2">
         <h5 class="text-center">
-          <!--          TODO MAP or-->
           Choose a region:
         </h5>
         <b-list-group horizontal class="flex flex-wrap justify-content-center">
@@ -48,31 +47,18 @@
     <b-row class="m-0">
       <b-col ref="mapcont" cols="12" lg="6" offset-lg="3" class="mt-4">
         <client-only>
-          <!--          TODO MAP-->
-          <GmapMap
-            v-if="false"
-            ref="gmap"
-            :center="{lat:53.9450, lng:-2.5209}"
+          <l-map
+            ref="map"
             :zoom="5"
+            :center="center"
             :style="'width: ' + mapWidth + '; height: ' + mapWidth + 'px'"
-            :options="{
-              zoomControl: true,
-              mapTypeControl: false,
-              scaleControl: false,
-              streetViewControl: false,
-              rotateControl: false,
-              fullscreenControl: true,
-              disableDefaultUi: false,
-              gestureHandling: 'greedy'
-            }"
-            @zoom_changed="zoomChanged"
-            @bounds_changed="boundsChanged"
-            @idle="idle"
+            @update:bounds="boundsChanged"
+            @update:zoom="zoomChanged"
+            @ready="idle"
           >
-            <div v-for="g in groupsInBounds" :key="'marker-' + g.id + '-' + zoom">
-              <GroupMarker v-if="g.onmap" :group="g" :size="largeMarkers ? 'rich' : 'poor'" />
-            </div>
-          </GmapMap>
+            <l-tile-layer :url="osmtile" :attribution="attribution" />
+            <GroupMarker v-for="g in groupsInBounds" :key="'marker-' + g.id + '-' + zoom" :group="g" :size="largeMarkers ? 'rich' : 'poor'" />
+          </l-map>
         </client-only>
       </b-col>
     </b-row>
@@ -80,8 +66,7 @@
       <b-col v-if="groupsInBounds.length" cols="12" lg="6" offset-lg="3" class="mt-4">
         <b-card header-bg-variant="success" header-text-variant="white" header="Here's a list of communities:">
           <b-card-body style="height: 500px; overflow-y: scroll" class="p-0">
-            <!--            TODO MAP-->
-            <!--            <p>This list will change as you zoom or move around the map.</p>-->
+            <p>This list will change as you zoom or move around the map.</p>
             <div v-for="g in groupsInList" :key="'groupsInBounds-' + g.id">
               <div v-if="g.onmap" class="media clickme">
                 <div class="media-left">
@@ -150,8 +135,8 @@
 </template>
 
 <script>
+import L from 'leaflet'
 import InfiniteLoading from 'vue-infinite-loading'
-import { gmapApi } from 'vue2-google-maps'
 import GroupMarker from '~/components/GroupMarker.vue'
 import GroupProfileImage from '~/components/GroupProfileImage'
 const ExternalLink = () => import('~/components/ExternalLink')
@@ -198,7 +183,6 @@ export default {
   data: function() {
     return {
       zoom: 5,
-      bounds: null,
       showList: 0,
       distance: 1000,
       gb: {
@@ -206,12 +190,21 @@ export default {
           country: ['gb']
         }
       },
-      initialBounds: false
+      initialBounds: false,
+      map: null,
+      bounds: null,
+      center: [53.945, -2.5209]
     }
   },
   computed: {
     browser() {
       return process.browser
+    },
+    osmtile() {
+      return process.env.OSM_TILE
+    },
+    attribution() {
+      return 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
     },
     largeMarkers() {
       // Show small markers unless we are zoomed in to a small number of groups.
@@ -260,28 +253,31 @@ export default {
       const groups = this.groups
       const ret = []
 
-      // TODO MAPS
-      // if (!process.browser) {
-      // SSR - return all for SRO.
-      for (const ix in groups) {
-        const group = groups[ix]
-        ret.push(group)
+      if (!process.browser) {
+        // SSR - return all for SRO.
+        for (const ix in groups) {
+          const group = groups[ix]
+
+          if (group.onmap) {
+            ret.push(group)
+          }
+        }
+      } else if (this.bounds) {
+        for (const ix in groups) {
+          const group = groups[ix]
+
+          if (
+            group.onmap &&
+            group.lat >= this.bounds.sw.lat &&
+            group.lng >= this.bounds.sw.lng &&
+            group.lat <= this.bounds.ne.lat &&
+            group.lng <= this.bounds.ne.lng &&
+            (this.region === null || this.region === group.region)
+          ) {
+            ret.push(group)
+          }
+        }
       }
-      // } else if (this.bounds) {
-      //   for (const ix in groups) {
-      //     const group = groups[ix]
-      //
-      //     if (
-      //       group.lat >= this.bounds.sw.lat &&
-      //       group.lng >= this.bounds.sw.lng &&
-      //       group.lat <= this.bounds.ne.lat &&
-      //       group.lng <= this.bounds.ne.lng &&
-      //       (this.region === null || this.region === group.region)
-      //     ) {
-      //       ret.push(group)
-      //     }
-      //   }
-      // }
 
       const sorted = ret.sort((a, b) => {
         return a.namedisplay
@@ -292,14 +288,13 @@ export default {
       return sorted
     },
     groupsInList() {
-      // TODO MAPS
-      // if (process.browser) {
-      //   // We have an infinite scroll - return as many as we're currently showing.
-      //   return this.groupsInBounds.slice(0, this.showList)
-      // } else {
-      // SSR - return all for SEO.
-      return this.groupsInBounds
-      // }
+      if (process.browser) {
+        // We have an infinite scroll - return as many as we're currently showing.
+        return this.groupsInBounds.slice(0, this.showList)
+      } else {
+        // SSR - return all for SEO.
+        return this.groupsInBounds
+      }
     }
   },
 
@@ -317,21 +312,21 @@ export default {
     zoomChanged: function(zoom) {
       this.zoom = zoom
     },
-    boundsChanged: function(bounds) {
-      if (bounds) {
-        this.bounds = {
-          ne: {
-            lat: bounds.getNorthEast().lat(),
-            lng: bounds.getNorthEast().lng()
-          },
-          sw: {
-            lat: bounds.getSouthWest().lat(),
-            lng: bounds.getSouthWest().lng()
-          }
-        }
+    boundsChanged: function() {
+      const bounds = this.$refs.map.mapObject.getBounds()
 
-        this.setUrl()
+      this.bounds = {
+        ne: {
+          lat: bounds.getNorthEast().lat,
+          lng: bounds.getNorthEast().lng
+        },
+        sw: {
+          lat: bounds.getSouthWest().lat,
+          lng: bounds.getSouthWest().lng
+        }
       }
+
+      this.setUrl()
     },
     setUrl: function() {
       if (this.track) {
@@ -362,39 +357,46 @@ export default {
         $state.complete()
       }
     },
-    idle() {
-      const google = gmapApi()
+    idle(map) {
+      // The focus and zoom on the map should only be set on its initial load.  The initialBounds property controls
+      // that.
+      this.boundsChanged()
 
-      // The focus and zoom on the map should only be set on it's inital load.
-      // The initialBounds property controls that
       if (!this.initialBounds) {
         if (this.swlat || this.swlng) {
           // Specific bounds have been passed in so use them
           this.initialBounds = true
-
-          this.$refs.gmap.$mapObject.fitBounds(
-            new google.maps.LatLngBounds(
-              new google.maps.LatLng(this.swlat, this.swlng),
-              new google.maps.LatLng(this.nelat, this.nelng)
-            ),
-            0
-          )
+          map.fitBounds([[this.swlat, this.swlng], [this.nelat, this.nelng]])
+          this.center = [
+            (this.swlat + this.nelat) / 2,
+            (this.swlng + this.nelng) / 2
+          ]
         } else if (this.region && this.groupsInBounds) {
           // We are displaying a specific region so zoom to it
           this.initialBounds = true
 
-          const latlngbounds = new google.maps.LatLngBounds()
-
           if (this.groupsInBounds) {
+            const markers = []
             this.groupsInBounds.forEach(group => {
               if (group.onmap) {
-                latlngbounds.extend(
-                  new google.maps.LatLng(group.lat, group.lng)
-                )
+                // eslint-disable-next-line new-cap
+                markers.push(new L.marker([group.lat, group.lng]))
               }
             })
 
-            this.$refs.gmap.$mapObject.fitBounds(latlngbounds)
+            // eslint-disable-next-line new-cap
+            const fg = new L.featureGroup(markers)
+            console.log('fg', fg)
+            const bounds = fg.getBounds()
+            console.log('Bounds', bounds)
+
+            if (bounds) {
+              map.fitBounds(bounds)
+              this.center = [
+                (this.swlat + this.nelat) / 2,
+                (this.swlng + this.nelng) / 2
+              ]
+            }
           }
         }
       }

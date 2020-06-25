@@ -1,5 +1,5 @@
 <template>
-  <b-img-lazy
+  <b-img
     thumbnail
     :class="profileClass"
     :alt="altText"
@@ -12,6 +12,9 @@
 // This component should be imported, rather than using async require.  This is because async requires result in more
 // Vue DOM patching overall, and this component is used in places like chat where it appears many times.  Testing shows
 // this has a significant performance benefit.
+//
+// We can't use b-img-lazy as this component is used to render off document in GroupMarkerRich, and that doesn't
+// work.
 export default {
   name: 'GroupProfileImage',
   props: {

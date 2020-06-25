@@ -36,6 +36,10 @@ const IMAGE_SITE = 'https://images.ilovefreegle.org'
 // Long polls interact badly with per-host connection limits so send to here instead.
 const CHAT_HOST = 'https://users.ilovefreegle.org:555'
 
+// OpenStreetMap Tile Server
+const OSM_TILE =
+  process.env.OSM_TILE || 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+
 // Allow disabling of eslint autofix by setting "DISABLE_ESLINT_AUTOFIX=true" in env (e.g. .env file)
 // defaults to enabling autofixing
 const DISABLE_ESLINT_AUTOFIX =
@@ -44,7 +48,7 @@ const DISABLE_ESLINT_AUTOFIX =
 const ESLINT_AUTOFIX = !DISABLE_ESLINT_AUTOFIX
 
 module.exports = {
-  mode: 'universal',
+  mode: 'spa',
 
   /*
   ** Headers.  Include default meta tags that will apply unless overridden by individual pages.  Every page that
@@ -88,9 +92,17 @@ module.exports = {
         content: USER_SITE + '/icon.png'
       },
       { hid: 'og:locale', property: 'og:locale', content: 'en_GB' },
-      { hid: 'og:title', property: 'og:title', content: 'Freegle - Don\'t throw it away, give it away!' },
+      {
+        hid: 'og:title',
+        property: 'og:title',
+        content: "Freegle - Don't throw it away, give it away!"
+      },
       { hid: 'og:site_name', property: 'og:site_name', content: 'Freegle' },
-      { hid: 'og:url', property: 'og:url', content: 'https://www.ilovefreegle.org' },
+      {
+        hid: 'og:url',
+        property: 'og:url',
+        content: 'https://www.ilovefreegle.org'
+      },
       { hid: 'fb:app_id', property: 'fb:app_id', content: FACEBOOK_APPID },
       {
         hid: 'og:description',
@@ -100,7 +112,11 @@ module.exports = {
       },
       { hid: 'fb:app_id', property: 'og:site_name', content: FACEBOOK_APPID },
 
-      { hid: 'twitter:title', name: 'twitter:title', content: 'Freegle - Don\'t throw it away, give it away!' },
+      {
+        hid: 'twitter:title',
+        name: 'twitter:title',
+        content: "Freegle - Don't throw it away, give it away!"
+      },
       {
         hid: 'twitter:description',
         name: 'twitter:description',
@@ -196,7 +212,8 @@ module.exports = {
     { src: '~/plugins/vue-social-sharing', ssr: false },
     { src: '~/plugins/vue-lazy-youtube-video', ssr: false },
     { src: '~/plugins/inspectlet', ssr: false },
-    { src: "@/plugins/vue-fabric-wrapper", ssr: false }
+    { src: '@/plugins/vue-fabric-wrapper', ssr: false },
+    { src: '@/plugins/vue2-leaflet', ssr: false }
   ],
 
   redirect: [
@@ -372,9 +389,7 @@ module.exports = {
     render: {
       resourcesLoaded(resources) {
         const path =
-          process.env.CDN === undefined
-            ? '/_nuxt'
-            : (process.env.CDN + '/_nuxt')
+          process.env.CDN === undefined ? '/_nuxt' : process.env.CDN + '/_nuxt'
         resources.clientManifest && (resources.clientManifest.publicPath = path)
       }
     }
@@ -503,6 +518,7 @@ module.exports = {
     IZNIK_API: IZNIK_API,
     CDN: CDN,
     CHAT_HOST: CHAT_HOST,
+    OSM_TILE: OSM_TILE,
     FACEBOOK_APPID: FACEBOOK_APPID,
     YAHOO_CLIENTID: YAHOO_CLIENTID,
     GOOGLE_MAPS_KEY: 'AIzaSyCdTSJKGWJUOx2pq1Y0f5in5g4kKAO5dgg',
