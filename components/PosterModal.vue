@@ -9,11 +9,11 @@
     size="lg"
   >
     <notice-message class="mb-3">
-      Sorry, we've had to disable the map temporarily for cost reasons.
-      <!--      Please drag the map until the marker shows where the poster is.-->
+      Please drag the map until the marker shows where the poster is.
     </notice-message>
-    <!--    TODO MAPS-->
-    <DraggableMap v-if="false" ref="map" :initial-zoom="7" class="mb-2" />
+    <client-only>
+      <DraggableMap ref="map" :initial-zoom="7" class="mb-2" />
+    </client-only>
     <h4>Please add more info</h4>
     <b-input
       v-model="name"
@@ -36,8 +36,8 @@
 </template>
 
 <script>
-import DraggableMap from './DraggableMap'
 const NoticeMessage = () => import('~/components/NoticeMessage')
+const DraggableMap = () => import('~/components/DraggableMap')
 
 export default {
   components: {
@@ -65,8 +65,8 @@ export default {
 
         // There's a server oddity which means we need to add this and then edit in the name/description.
         const id = await this.$store.dispatch('noticeboards/add', {
-          lat: cent.lat(),
-          lng: cent.lng()
+          lat: cent[0],
+          lng: cent[1]
         })
 
         if (id) {

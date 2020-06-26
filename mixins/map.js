@@ -5,7 +5,8 @@ export default {
       lng: null,
       map: null,
       bounds: null,
-      zoom: 5
+      zoom: 5,
+      bump: 1
     }
   },
   computed: {
@@ -30,7 +31,8 @@ export default {
       return height
     },
     center() {
-      let ret = [53.945, -2.5209]
+      // Make this dependent on bump so that we can force re-evaluation.
+      let ret = [53.945, -2.5209 + this.bump / 1000]
 
       const bounds = this.$refs.map
         ? this.$refs.map.mapObject.getBounds()
@@ -71,6 +73,9 @@ export default {
     },
     idle: function(map) {
       this.boundsChanged()
+    },
+    bumpIt: function() {
+      this.bump++
     }
   }
 }

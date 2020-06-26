@@ -4,15 +4,16 @@
       <b-col ref="mapcont" class="p-0">
         <client-only>
           <div class="d-flex justify-content-between">
-            <gmap-autocomplete
-              id="autocomplete"
-              class="form-control form-control-lg"
-              placeholder="Enter a location"
-              :options="gb"
-              size="lg"
-              :types="['(cities)']"
-              @place_changed="getAddressData"
-            />
+            <!--            TODO MAPS-->
+            <!--            <gmap-autocomplete-->
+            <!--              id="autocomplete"-->
+            <!--              class="form-control form-control-lg"-->
+            <!--              placeholder="Enter a location"-->
+            <!--              :options="gb"-->
+            <!--              size="lg"-->
+            <!--              :types="['(cities)']"-->
+            <!--              @place_changed="getAddressData"-->
+            <!--            />-->
             <b-button variant="secondary" size="lg" class="mb-2 ml-2" title="Find my location" @click="findLoc">
               <v-icon v-if="locating" name="sync" class="fa-spin" />
               <v-icon v-else-if="locationFailed" name="exclamation-triangle" />
@@ -20,42 +21,29 @@
               <span class="d-none d-sm-inline-block">&nbsp;Find my location</span>
             </b-button>
           </div>
-          <GmapMap
-            v-if="center"
-            ref="gmap"
+          <l-map
+            ref="map"
+            :zoom="14"
             :center="center"
-            :zoom="zoom"
             :style="'width: ' + mapWidth + '; height: ' + mapWidth + 'px'"
-            :options="{
-              zoomControl: true,
-              mapTypeControl: false,
-              scaleControl: false,
-              streetViewControl: false,
-              rotateControl: false,
-              fullscreenControl: true,
-              disableDefaultUi: false,
-              gestureHandling: 'greedy'
-            }"
-            @zoom_changed="zoomChanged"
-            @bounds_changed="boundsChanged"
+            @update:bounds="boundsChanged"
+            @update:zoom="zoomChanged"
           >
-            <GmapMarker
-              :position="center"
-              :clickable="false"
-              :draggable="false"
-              icon="/mapmarker.gif"
-            />
-          </GmapMap>
+            <l-tile-layer :url="osmtile" :attribution="attribution" />
+            <l-marker :lat-lng="center" :interactive="false" />
+          </l-map>
         </client-only>
       </b-col>
     </b-row>
   </div>
 </template>
 <script>
-import { gmapApi } from 'vue2-google-maps'
+import L from 'leaflet'
+import map from '@/mixins/map.js'
 
 export default {
   components: {},
+  mixins: [map],
   props: {
     initialZoom: {
       type: Number,
@@ -65,12 +53,9 @@ export default {
   },
   data: function() {
     return {
-      zoom: 5,
-      bounds: null,
-      lat: 53.945,
-      lng: -2.5209,
       locating: false,
       locationFailed: false,
+      // TODO MAP
       gb: {
         componentRestrictions: {
           country: ['gb']
@@ -79,70 +64,22 @@ export default {
     }
   },
   computed: {
-    google: {
-      get() {
-        return process.browser ? gmapApi : []
-      }
-    },
-    center() {
-      const google = this.google()
-
-      if (google) {
-        return new google.maps.LatLng(this.lat, this.lng)
-      }
-
-      return null
-    },
-    mapHeight() {
-      const contWidth = this.$refs.mapcont ? this.$refs.mapcont.$el.width : 0
-
-      return contWidth
-    },
-    mapWidth() {
-      let height = 0
-
-      if (process.browser) {
-        height = Math.floor(window.innerHeight / 2)
-        height = height < 200 ? 200 : height
-      }
-
-      return height
+    icon() {
+      return new L.Icon({
+        iconUrl: require('static/mapmarker.gif')
+      })
     }
   },
   created() {
     this.zoom = this.initialZoom
   },
-  mounted() {
-    setTimeout(() => {
-      // This fixes a problem where the map displays grey when you reopen the modal.
-      window.google.maps.event.trigger(this.$refs.gmap.$mapObject, 'resize')
-    }, 1000)
-  },
-
   methods: {
-    zoomChanged: function(zoom) {
-      this.zoom = zoom
-    },
-    boundsChanged: function(bounds) {
-      if (bounds) {
-        this.bounds = {
-          ne: {
-            lat: bounds.getNorthEast().lat(),
-            lng: bounds.getNorthEast().lng()
-          },
-          sw: {
-            lat: bounds.getSouthWest().lat(),
-            lng: bounds.getSouthWest().lng()
-          }
-        }
-
-        const center = this.$refs.gmap.$mapObject.getCenter()
-        this.lat = center.lat()
-        this.lng = center.lng()
-      }
-    },
     getCenter() {
       return this.center
+    },
+    boundsChanged: function() {
+      // Force centre to be recalculated
+      this.bumpIt()
     },
     findLoc() {
       try {
@@ -153,11 +90,14 @@ export default {
         ) {
           this.locating = true
           navigator.geolocation.getCurrentPosition(position => {
-            this.lat = position.coords.latitude
-            this.lng = position.coords.longitude
-
             // Show close to where we think they are.
-            this.zoom = 16
+            this.$refs.map.mapObject.flyTo(
+              [position.coords.latitude, position.coords.longitude],
+              16
+            )
+
+            // Force centre to be recalculated.
+            this.bumpIt()
           })
         } else {
           console.log('Navigation not supported.  ')
@@ -172,6 +112,7 @@ export default {
     },
 
     getAddressData: function(addressData, placeResultData, id) {
+      // TODO MAPS
       if (
         addressData &&
         addressData.geometry &&
