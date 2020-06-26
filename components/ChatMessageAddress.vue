@@ -43,8 +43,18 @@
               </b-row>
               <b-row>
                 <b-col>
-                  <!--                  TODO MAPS-->
-                  <b-embed type="iframe" aspect="1by1" allowfullscreen :src="'https://www.google.com/maps/embed/v1/place?key=AIzaSyArVxoX781qdcbmQZi1PKHX-qa0bPbboH4&q=' + chatmessage.address.postcode.lat + ',' + chatmessage.address.postcode.lng" />
+                  <l-map
+                    ref="map"
+                    :zoom="16"
+                    :center="[chatmessage.address.postcode.lat, chatmessage.address.postcode.lng]"
+                    :style="'width: 100%; height: 200px'"
+                  >
+                    <l-tile-layer :url="osmtile" :attribution="attribution" />
+                    <l-marker :lat-lng="[chatmessage.address.postcode.lat, chatmessage.address.postcode.lng]" :interactive="false" />
+                  </l-map>
+                  <ExternalLink :href="'https://maps.google.com/?q=' + chatmessage.address.postcode.lat + ',' + chatmessage.address.postcode.lng + '&z=16'" class="mt-1">
+                    View in Google Maps
+                  </ExternalLink>
                 </b-col>
               </b-row>
             </b-card-text>
@@ -55,10 +65,14 @@
   </div>
 </template>
 <script>
+import ExternalLink from './ExternalLink'
 import ChatBase from '~/components/ChatBase'
+import map from '@/mixins/map.js'
 
 export default {
-  extends: ChatBase
+  components: { ExternalLink },
+  extends: ChatBase,
+  mixins: [map]
 }
 </script>
 <style scoped>
