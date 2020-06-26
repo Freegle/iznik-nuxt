@@ -16,7 +16,7 @@
     <b-row v-if="!region" class="m-0">
       <b-col cols="12" lg="2" offset-lg="5" class="text-center">
         <client-only>
-          <!--          TODO MAP-->
+          <!--          TODO MAPS -->
           <gmap-autocomplete
             v-if="false"
             id="autocomplete"

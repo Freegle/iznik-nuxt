@@ -2,7 +2,7 @@
   <div class="bg-white">
     Sorry, we've had to disable the map temporarily for cost reasons.
     <div v-if="false">
-      <!--      TODO MAP-->
+      <!--      TODO MAPS MT -->
       <ModGroupMap v-if="groupid" :groupid="groupid" />
       <ModGroupMap v-else :groups="true" />
     </div>

@@ -9,7 +9,7 @@
     </NoticeMessage>
     <client-only>
       Sorry, we've had to disable the map temporarily for cost reasons.
-      <!--      TODO MAP-->
+      <!--      TODO MAPS MT -->
       <GmapMap
         v-if="false"
         ref="gmap"
