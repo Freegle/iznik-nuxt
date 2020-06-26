@@ -3,7 +3,7 @@
     <b-row class="text-center m-0">
       <b-col cols="12" lg="6" offset-lg="3">
         <div v-if="region">
-          <h1>Freegle communities in {{ region }}</h1>
+          <h1>Freegle communities in {{ region }} zoom {{ zoom }}</h1>
         </div>
         <div v-else>
           <h1>Explore Freegle communities across the UK!</h1>
@@ -52,8 +52,8 @@
             :zoom="5"
             :center="center"
             :style="'width: ' + mapWidth + '; height: ' + mapWidth + 'px'"
-            min-zoom="5"
-            max-zoom="16"
+            :min-zoom="5"
+            :max-zoom="13"
             @update:bounds="boundsChanged"
             @update:zoom="zoomChanged"
             @ready="idle"
@@ -329,10 +329,6 @@ export default {
           // Specific bounds have been passed in so use them
           this.initialBounds = true
           map.fitBounds([[this.swlat, this.swlng], [this.nelat, this.nelng]])
-          this.center = [
-            (this.swlat + this.nelat) / 2,
-            (this.swlng + this.nelng) / 2
-          ]
         } else if (this.region && this.groupsInBounds) {
           // We are displaying a specific region so zoom to it
           this.initialBounds = true
@@ -352,10 +348,6 @@ export default {
 
             if (bounds) {
               map.fitBounds(bounds)
-              this.center = [
-                (this.swlat + this.nelat) / 2,
-                (this.swlng + this.nelng) / 2
-              ]
             }
           }
         }

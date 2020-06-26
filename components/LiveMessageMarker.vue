@@ -40,7 +40,9 @@ export default {
   },
   methods: {
     openIt(id) {
-      window.open(process.env.USER_SITE + '/message/' + id)
+      if (process.browser) {
+        window.open(process.env.USER_SITE + '/message/' + id)
+      }
     }
   }
 }

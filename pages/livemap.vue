@@ -14,6 +14,8 @@
           <l-map
             ref="map"
             :zoom="5"
+            :min-zoom="5"
+            :max-zoom="13"
             :center="center"
             :style="'width: ' + mapWidth + '; height: ' + mapWidth + 'px'"
             :zoom-control="false"
@@ -29,10 +31,10 @@
   </div>
 </template>
 <script>
-import LiveMessageMarker from '../components/LiveMessageMarker'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 import map from '@/mixins/map.js'
+const LiveMessageMarker = () => import('../components/LiveMessageMarker')
 
 export default {
   components: {

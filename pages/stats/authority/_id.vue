@@ -174,7 +174,7 @@
                 disableDefaultUi: false,
                 gestureHandling: 'greedy'
               }"
-              @idle="mapIdle"
+              @idle="idle"
             >
               <GmapMarker
                 v-for="(m, index) in markers"
@@ -876,7 +876,7 @@ export default {
 
       return bounds
     },
-    mapIdle() {
+    idle() {
       if (!this.addedPolygons) {
         const google = gmapApi()
         this.addedPolygons = true

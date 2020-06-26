@@ -28,7 +28,7 @@
               disableDefaultUi: false,
               gestureHandling: 'greedy'
             }"
-            @idle="mapIdle"
+            @idle="idle"
           />
         </client-only>
       </b-col>
@@ -72,7 +72,7 @@ export default {
     }
   },
   methods: {
-    async mapIdle() {
+    async idle() {
       // Do this in idle rather than mount because Google doesn't like it if we mess with the map too early.
       const google = gmapApi()
 

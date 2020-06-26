@@ -5,7 +5,6 @@ export default {
       lng: null,
       map: null,
       bounds: null,
-      center: [53.945, -2.5209],
       zoom: 5
     }
   },
@@ -31,14 +30,20 @@ export default {
       return height
     },
     center() {
-      return this.bounds
-        ? [
-            (this.bounds.getNorthEast().lat + this.bounds.getSouthWest().lat) /
-              2,
-            (this.bounds.getNorthEast().lng + this.bounds.getSouthWest().lng) /
-              2
-          ]
+      let ret = [53.945, -2.5209]
+
+      const bounds = this.$refs.map
+        ? this.$refs.map.mapObject.getBounds()
         : null
+
+      if (bounds) {
+        ret = [
+          (bounds.getNorthEast().lat + bounds.getSouthWest().lat) / 2,
+          (bounds.getNorthEast().lng + bounds.getSouthWest().lng) / 2
+        ]
+      }
+
+      return ret
     }
   },
   methods: {

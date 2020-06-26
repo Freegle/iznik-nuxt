@@ -8,15 +8,17 @@
       </b-col>
     </b-row>
     <div v-else>
-      <ExploreGroup v-if="id" :id="id" />
-      <ExploreMap
-        v-else
-        :swlat="swlat"
-        :swlng="swlng"
-        :nelat="nelat"
-        :nelng="nelng"
-        track
-      />
+      <client-only>
+        <ExploreGroup v-if="id" :id="id" />
+        <ExploreMap
+          v-else
+          :swlat="swlat"
+          :swlng="swlng"
+          :nelat="nelat"
+          :nelng="nelng"
+          track
+        />
+      </client-only>
     </div>
   </div>
 </template>
