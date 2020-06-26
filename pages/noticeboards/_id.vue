@@ -27,34 +27,17 @@
           <b-row class="m-0">
             <b-col ref="mapcont" class="mt-4 p-0">
               <client-only>
-                Sorry, we've had to disable the map temporarily for cost reasons.
-                <!--      TODO MAP-->
-                <GmapMap
-                  v-if="false"
-                  ref="gmap"
-                  :center="{lat:53.9450, lng:-2.5209}"
+                <l-map
+                  ref="map"
                   :zoom="5"
+                  :center="center"
                   :style="'width: ' + mapWidth + '; height: ' + mapWidth + 'px'"
-                  :options="{
-                    zoomControl: true,
-                    mapTypeControl: false,
-                    scaleControl: false,
-                    streetViewControl: false,
-                    rotateControl: false,
-                    fullscreenControl: true,
-                    disableDefaultUi: false,
-                    gestureHandling: 'greedy'
-                  }"
+                  :min-zoom="5"
+                  :max-zoom="13"
                 >
-                  <div v-for="noticeboard in noticeboards" :key="'marker-' + noticeboard.id + '-' + noticeboards.length">
-                    <GmapMarker
-                      :position="google && new (google()).maps.LatLng(noticeboard.lat, noticeboard.lng)"
-                      :clickable="false"
-                      :draggable="false"
-                      icon="/mapmarker.gif"
-                    />
-                  </div>
-                </GmapMap>
+                  <l-tile-layer :url="osmtile" :attribution="attribution" />
+                  <NoticeboardMarker v-for="noticeboard in noticeboards" :key="'marker-' + noticeboard.id" :noticeboard="noticeboard" />
+                </l-map>
               </client-only>
             </b-col>
           </b-row>
@@ -71,14 +54,17 @@
 import { gmapApi } from 'vue2-google-maps'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
+import map from '@/mixins/map.js'
 
+const NoticeboardMarker = () => import('~/components/NoticeboardMarker')
 const PosterModal = () => import('~/components/PosterModal')
 
 export default {
   components: {
+    NoticeboardMarker,
     PosterModal
   },
-  mixins: [loginOptional, buildHead],
+  mixins: [loginOptional, buildHead, map],
   data: function() {
     return {
       groupid: null,
