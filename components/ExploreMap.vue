@@ -52,6 +52,8 @@
             :zoom="5"
             :center="center"
             :style="'width: ' + mapWidth + '; height: ' + mapWidth + 'px'"
+            min-zoom="5"
+            max-zoom="16"
             @update:bounds="boundsChanged"
             @update:zoom="zoomChanged"
             @ready="idle"
@@ -205,20 +207,6 @@ export default {
     },
     groupCount() {
       return this.groups ? Object.keys(this.groups).length : 0
-    },
-    mapHeight() {
-      const contWidth = this.$refs.mapcont ? this.$refs.mapcont.$el.width : 0
-      return contWidth
-    },
-    mapWidth() {
-      let height = 0
-
-      if (process.browser) {
-        height = Math.floor(window.innerHeight / 2)
-        height = height < 200 ? 200 : height
-      }
-
-      return height
     },
     groups() {
       return this.$store.getters['group/list']

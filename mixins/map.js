@@ -16,6 +16,20 @@ export default {
     attribution() {
       return 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
     },
+    mapHeight() {
+      const contWidth = this.$refs.mapcont ? this.$refs.mapcont.$el.width : 0
+      return contWidth
+    },
+    mapWidth() {
+      let height = 0
+
+      if (process.browser) {
+        height = Math.floor(window.innerHeight / 2)
+        height = height < 200 ? 200 : height
+      }
+
+      return height
+    },
     center() {
       return this.bounds
         ? [

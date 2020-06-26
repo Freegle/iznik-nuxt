@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-row class="text-center m-0">
-      <b-col cols="12" md="6" offset-md="3">
+      <b-col ref="mapcont" cols="12" md="6" offset-md="3">
         <h1>Live Map</h1>
         <h3>See freegling happen across the UK.</h3>
         <p>This shows posts as freeglers make them. There'll usually be something along in a minute or two.</p>
@@ -11,54 +11,34 @@
           </nuxt-link> showing where people freegle.
         </p>
         <client-only>
-          Sorry, we've had to disable the map temporarily for cost reasons.
-          <!--      TODO MAP-->
-          <GmapMap
-            v-if="false"
-            ref="gmap"
-            :center="{lat:53.9450, lng:-2.5209}"
+          <l-map
+            ref="map"
             :zoom="5"
+            :center="center"
             :style="'width: ' + mapWidth + '; height: ' + mapWidth + 'px'"
-            :options="{
-              zoomControl: true,
-              mapTypeControl: false,
-              scaleControl: false,
-              streetViewControl: false,
-              rotateControl: false,
-              fullscreenControl: true,
-              disableDefaultUi: false,
-              gestureHandling: 'greedy'
-            }"
-            @idle="mapIdle"
+            :zoom-control="false"
+            :scroll-wheel-zoom="false"
+            @ready="idle"
           >
-            <div v-for="m in messagesToShow" :key="'marker-' + m.id">
-              <RichMarker v-if="m.group.lat || m.group.lng" :position="{ lat: m.group.lat, lng: m.group.lng }">
-                <b-card variant="white" class="text-left" style="max-width: 300px" @click="openIt(m.message.id)">
-                  <b-card-title>
-                    <span class="small">{{ m.message.subject }}</span>
-                  </b-card-title>
-                  <b-card-sub-title>
-                    On {{ m.group.namedisplay }}
-                  </b-card-sub-title>
-                </b-card>
-              </RichMarker>
-            </div>
-          </GmapMap>
+            <l-tile-layer :url="osmtile" :attribution="attribution" />
+            <LiveMessageMarker v-for="m in messagesToShow" :key="'marker-' + m.id" :message="m" />
+          </l-map>
         </client-only>
       </b-col>
     </b-row>
   </div>
 </template>
 <script>
-import RichMarker from '~/components/RichMarker.vue'
+import LiveMessageMarker from '../components/LiveMessageMarker'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
+import map from '@/mixins/map.js'
 
 export default {
   components: {
-    RichMarker
+    LiveMessageMarker
   },
-  mixins: [loginOptional, buildHead],
+  mixins: [loginOptional, buildHead, map],
   data: function() {
     return {
       startTime: null,
@@ -69,20 +49,6 @@ export default {
     }
   },
   computed: {
-    mapHeight() {
-      const contWidth = this.$refs.mapcont ? this.$refs.mapcont.$el.width : 0
-      return contWidth
-    },
-    mapWidth() {
-      let height = 0
-
-      if (process.browser) {
-        height = Math.floor(window.innerHeight - 250)
-        height = height < 200 ? 200 : height
-      }
-
-      return height
-    },
     messagesToShow() {
       const messages = this.$store.getters['activity/listRecentMessages']
       const ret = []
@@ -109,7 +75,7 @@ export default {
     this.poll()
   },
   methods: {
-    mapIdle() {
+    idle() {
       if (!this.messagesToShow.length) {
         // Fetch the first set of activity.
         this.poll()
@@ -159,10 +125,6 @@ export default {
         clearTimeout(this.pollTimer)
         this.pollTimer = null
       }
-    },
-
-    openIt(id) {
-      window.open(process.env.USER_SITE + '/message/' + id)
     }
   },
 

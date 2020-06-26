@@ -38,7 +38,7 @@ const CHAT_HOST = 'https://users.ilovefreegle.org:555'
 
 // OpenStreetMap Tile Server
 const OSM_TILE =
-  process.env.OSM_TILE || 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+  process.env.OSM_TILE || 'https://tiles.ilovefreegle.org/tile/{z}/{x}/{y}.png'
 
 // Allow disabling of eslint autofix by setting "DISABLE_ESLINT_AUTOFIX=true" in env (e.g. .env file)
 // defaults to enabling autofixing
@@ -48,7 +48,7 @@ const DISABLE_ESLINT_AUTOFIX =
 const ESLINT_AUTOFIX = !DISABLE_ESLINT_AUTOFIX
 
 module.exports = {
-  mode: 'spa',
+  mode: 'universal',
 
   /*
   ** Headers.  Include default meta tags that will apply unless overridden by individual pages.  Every page that
