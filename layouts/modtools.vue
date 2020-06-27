@@ -235,6 +235,17 @@ export default {
         force: true
       })
 
+      const currentCount = this.$store.getters['chats/unseenCount']
+      const newCount = await this.$store.dispatch('chats/unseenCount')
+
+      if (newCount !== currentCount) {
+        await this.$store.dispatch('chats/listChats', {
+          chattypes: ['User2User', 'User2Mod'],
+          summary: true,
+          noerror: true
+        })
+      }
+
       setTimeout(this.checkWork, 30000)
     },
     discourse(e) {
