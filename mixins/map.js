@@ -52,23 +52,10 @@ export default {
     setUrl: function() {
       // Override.
     },
-    zoomChanged: function(zoom) {
-      this.zoom = zoom
-    },
     boundsChanged: function() {
-      const bounds = this.$refs.map.mapObject.getBounds()
-
-      this.bounds = {
-        ne: {
-          lat: bounds.getNorthEast().lat,
-          lng: bounds.getNorthEast().lng
-        },
-        sw: {
-          lat: bounds.getSouthWest().lat,
-          lng: bounds.getSouthWest().lng
-        }
-      }
-
+      this.bounds = this.$refs.map.mapObject.getBounds()
+      this.zoom = this.$refs.map.mapObject.getZoom()
+      console.log('Bounds changed', this.bounds, this.zoom)
       this.setUrl()
     },
     idle: function(map) {

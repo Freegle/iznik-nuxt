@@ -55,7 +55,6 @@
             :min-zoom="5"
             :max-zoom="13"
             @update:bounds="boundsChanged"
-            @update:zoom="zoomChanged"
             @ready="idle"
           >
             <l-tile-layer :url="osmtile" :attribution="attribution" />
@@ -249,10 +248,7 @@ export default {
 
           if (
             group.onmap &&
-            group.lat >= this.bounds.sw.lat &&
-            group.lng >= this.bounds.sw.lng &&
-            group.lat <= this.bounds.ne.lat &&
-            group.lng <= this.bounds.ne.lng &&
+            this.bounds.contains([group.lat, group.lng]) &&
             (this.region === null || this.region === group.region)
           ) {
             ret.push(group)
@@ -300,13 +296,13 @@ export default {
         url =
           url +
           '?bounds=' +
-          Math.round(this.bounds.sw.lat * precis) / precis +
+          Math.round(this.bounds.getSouthWest().lat * precis) / precis +
           ',' +
-          Math.round(this.bounds.sw.lng * precis) / precis +
+          Math.round(this.bounds.getSouthWest().lng * precis) / precis +
           ',' +
-          Math.round(this.bounds.ne.lat * precis) / precis +
+          Math.round(this.bounds.getNorthEast().lat * precis) / precis +
           ',' +
-          Math.round(this.bounds.ne.lng * precis) / precis
+          Math.round(this.bounds.getNorthEast().lng * precis) / precis
         this.$router.replace(url)
       }
     },

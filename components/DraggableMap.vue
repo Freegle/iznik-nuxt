@@ -27,7 +27,6 @@
             :center="center"
             :style="'width: ' + mapWidth + '; height: ' + mapWidth + 'px'"
             @update:bounds="boundsChanged"
-            @update:zoom="zoomChanged"
           >
             <l-tile-layer :url="osmtile" :attribution="attribution" />
             <l-marker :lat-lng="center" :interactive="false" />

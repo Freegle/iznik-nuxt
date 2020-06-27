@@ -11,7 +11,7 @@
             This shows where the most items have been freegled. It might take a little while to load.
           </p>
           <p class="text-center">
-            The locations are approximate for privacy.  The colours are relative to the area currently shown.
+            The locations are approximate for privacy. The colours are relative to the area currently shown.
           </p>
         </div>
         <client-only>
@@ -23,12 +23,14 @@
             :min-zoom="5"
             :max-zoom="13"
             @ready="idle"
+            @moveend="boundsChanged"
           >
             <l-tile-layer :url="osmtile" :attribution="attribution" />
             <LeafletHeatmap
               v-if="fetched"
+              :key="'heatmap-' + weightedData.length"
               :lat-lngs="weightedData"
-              :gradient="{0.4: 'blue', 0.65: 'lime', 1: 'red'}"
+              :radius="zoom*6"
             />
           </l-map>
         </client-only>
@@ -54,7 +56,6 @@ export default {
     return {
       fetched: false,
       heatmap: null,
-      weightedData: [],
       max: 0
     }
   },
@@ -72,53 +73,58 @@ export default {
       }
 
       return height
+    },
+    heatMapData() {
+      const heatmap = this.$store.getters['stats/get']('Heatmap')
+
+      const data = []
+      heatmap.forEach(loc => {
+        data.push([loc.lat, loc.lng, loc.count])
+      })
+
+      return data
+    },
+    weightedData() {
+      const weighted = []
+
+      // We want to ensure that whatever level we're zoomed into, we show something useful.  So we need to weight
+      // the data based on what the max value is in the current bounds.  If the max is too high then everything
+      // else looks idle, so use a logarithmic scale.
+      let max = 0
+
+      if (this.bounds) {
+        // If the max is too high, then everything else looks idle.  So use a logarithmic scale.
+        const data = []
+        this.heatMapData.forEach(d => {
+          if (this.bounds.contains([d[0], d[1]])) {
+            max = Math.max(d[2], max)
+            data.push(d)
+          }
+        })
+
+        const minlog = Math.log10(1)
+        const maxlog = Math.log10(max)
+        const range = maxlog - minlog
+        const lineartolog = function(n) {
+          return (Math.log10(n) - minlog) / range
+        }
+
+        data.forEach(d => {
+          if (this.bounds.contains([d[0], d[1]])) {
+            weighted.push([d[0], d[1], lineartolog(d[2])])
+          }
+        })
+      }
+
+      return weighted
     }
   },
   methods: {
     async idle() {
       if (!this.fetched) {
         await this.$store.dispatch('stats/fetchHeatmap')
-
-        const heatmap = this.$store.getters['stats/get']('Heatmap')
-
-        const data = []
-        heatmap.forEach(loc => {
-          data.push([loc.lat, loc.lng, loc.count])
-        })
-
-        // We want to ensure that whatever level we're zoomed into, we show something useful.  So we need to weight
-        // the data based on what the max value is in the current bounds.  If the max is too high then everything
-        // else looks idle, so use a logarithmic scale.
-        const bounds = this.$refs.map
-          ? this.$refs.map.mapObject.getBounds()
-          : null
-
-        console.log('Bounds', bounds)
-
-        if (bounds) {
-          // If the max is too high, then everything else looks idle.  So use a logarithmic scale.
-          let max = 0
-          data.forEach(function(d) {
-            max = Math.max(d[2], max)
-          })
-
-          const minlog = Math.log10(1)
-          const maxlog = Math.log10(max)
-          const range = maxlog - minlog
-          const lineartolog = function(n) {
-            return (Math.log10(n) - minlog) / range
-          }
-
-          const weighted = []
-
-          data.forEach(d => {
-            weighted.push([d[0], d[1], lineartolog(d[2])])
-          })
-
-          this.weightedData = weighted
-
-          this.fetched = true
-        }
+        this.fetched = true
+        this.boundsChanged()
       }
     }
   },
