@@ -236,7 +236,7 @@
                 <b-col>
                   <hr>
                   <b-btn variant="secondary" size="lg" to="/unsubscribe">
-                    Unsubscribe
+                    Unsubscribe or Leave Communities
                   </b-btn>
                 </b-col>
               </b-row>
