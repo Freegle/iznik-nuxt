@@ -15,18 +15,18 @@
             <postcode class="justify-content-center" @selected="postcodeSelect" @cleared="postcodeClear" />
           </b-col>
         </b-row>
-        <transition name="fade">
-          <b-row v-if="postcodeValid && !closed">
-            <b-col class="text-center">
+        <b-row v-if="postcodeValid && !closed">
+          <b-col class="text-center">
+            <transition name="fade">
               <a v-if="extgroup" :href="extgroup">
                 <v-icon name="check-circle" class="text-success mt-2 fa-bh" scale="5" />
               </a>
               <nuxt-link v-else to="/find/whatisit">
                 <v-icon name="check-circle" class="text-success mt-2 fa-bh" scale="5" />
               </nuxt-link>
-            </b-col>
-          </b-row>
-        </transition>
+            </transition>
+          </b-col>
+        </b-row>
         <b-row v-if="postcodeValid && !closed" class="mt-1">
           <b-col class="text-center">
             Freegle has local communities for each area. We'll put anything you post on here, and search this community and others nearby.
@@ -42,11 +42,9 @@
             Click on the name above to choose a different community.
           </b-col>
         </b-row>
-        <transition name="fade">
-          <transition v-if="closed" name="fade">
-            <CovidClosed class="mt-2" />
-          </transition>
-          <div v-else-if="extgroup">
+        <CovidClosed v-if="closed" class="mt-2" />
+        <div v-else-if="extgroup">
+          <transition name="fade">
             <notice-message variant="info" class="mt-1">
               This community is on a separate site. You can proceed or choose a different community using the dropdown
               above.
@@ -58,15 +56,15 @@
                 </b-btn>
               </b-col>
             </b-row>
-          </div>
-          <b-row v-else-if="postcodeValid" class="mt-1">
-            <b-col class="text-center mt-4" cols="12" md="6" offset-md="3">
-              <b-btn variant="primary" size="lg" block to="/find/whatisit">
-                Next <v-icon name="angle-double-right" />
-              </b-btn>
-            </b-col>
-          </b-row>
-        </transition>
+          </transition>
+        </div>
+        <b-row v-else-if="postcodeValid" class="mt-1">
+          <b-col class="text-center mt-4" cols="12" md="6" offset-md="3">
+            <b-btn variant="primary" size="lg" block to="/find/whatisit">
+              Next <v-icon name="angle-double-right" />
+            </b-btn>
+          </b-col>
+        </b-row>
       </b-col>
       <b-col cols="0" md="3" />
     </b-row>

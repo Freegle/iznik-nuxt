@@ -15,21 +15,19 @@
             <postcode class="justify-content-center" @selected="postcodeSelect" @cleared="postcodeClear" />
           </b-col>
         </b-row>
-        <transition v-if="!closed" name="fade">
-          <b-row v-if="postcodeValid">
-            <b-col class="text-center">
+        <b-row v-if="!closed && postcodeValid">
+          <b-col class="text-center">
+            <transition name="fade">
               <a v-if="extgroup" :href="extgroup">
                 <v-icon name="check-circle" class="text-success mt-2 fa-bh" scale="5" />
               </a>
               <nuxt-link v-else to="/give/whatisit">
                 <v-icon name="check-circle" class="text-success mt-2 fa-bh" scale="5" />
               </nuxt-link>
-            </b-col>
-          </b-row>
-        </transition>
-        <transition v-if="closed" name="fade">
-          <CovidClosed class="mt-2" />
-        </transition>
+            </transition>
+          </b-col>
+        </b-row>
+        <CovidClosed v-if="closed" class="mt-2" />
         <div v-else-if="!extgroup">
           <b-row v-if="postcodeValid" class="mt-1">
             <b-col class="text-center">
@@ -47,8 +45,8 @@
             </b-col>
           </b-row>
         </div>
-        <transition v-if="!closed" name="fade">
-          <div v-if="extgroup">
+        <div v-if="!closed && extgroup">
+          <transition name="fade">
             <notice-message variant="info" class="mt-1">
               This community is on a separate site. You can proceed or choose a different community using the dropdown
               above.
@@ -60,15 +58,15 @@
                 </b-btn>
               </b-col>
             </b-row>
-          </div>
-          <b-row v-else-if="postcodeValid" class="mt-1">
-            <b-col class="text-center mt-4" cols="12" md="6" offset-md="3">
-              <b-btn variant="primary" size="lg" block to="/give/whatisit">
-                Next <v-icon name="angle-double-right" />
-              </b-btn>
-            </b-col>
-          </b-row>
-        </transition>
+          </transition>
+        </div>
+        <b-row v-else-if="postcodeValid" class="mt-1">
+          <b-col class="text-center mt-4" cols="12" md="6" offset-md="3">
+            <b-btn variant="primary" size="lg" block to="/give/whatisit">
+              Next <v-icon name="angle-double-right" />
+            </b-btn>
+          </b-col>
+        </b-row>
       </b-col>
       <b-col cols="0" md="3" />
     </b-row>
