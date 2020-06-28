@@ -4,25 +4,42 @@
       Hide Help
     </b-btn>
     <p>
-      These are members who have used the same device for different users.  By merging members who are
+      These are members who have <b>used the same device for different members</b>.  By merging members who are
       really the same person, we can help them avoid confusion and missing messages.
     </p>
-    <p>It suggests they're probably the same person if:</p>
+    <p>
+      It suggests they're probably the same person if they have a similar name or email, and:
+    </p>
     <ul>
-      <li>
-        They have a similar name or email, and
-      </li>
-      <ul>
-        <li>they have groups in common, or</li>
-        <li>they are both active on the same device on the same day</li>
-      </ul>
+      <li>they have groups in common, or</li>
+      <li>they are both active on the same device on the same day</li>
     </ul>
     <p>
-      If you think they're probably the same person, you can ask them what they want to do.  This will email them
-      and send them to a page on the site where they can choose how to merge their accounts.
+      If you don't think they're probably the same person, then click <em>Ignore</em>.
     </p>
     <p>
-      If you don't think they're probably the same person, then click <em>Ignore</em>.
+      If you think they're probably the same person, you can ask them what they want to do.  This will email them
+      a mail like this:
+    </p>
+    <em>
+      <p>
+        We think you might have two separate accounts on Freegle, perhaps by mistake?
+      </p>
+      <p>
+        Name1 (email1)<br>
+        Name2 (email2)
+      </p>
+      <p>
+        If these are both you, then you might miss replies or see other confusing things. Shall we combine them for you?
+        If you don't recognise one of them, just ignore this email.
+      </p>
+      <b-btn variant="success" class="mb-2">
+        Click here to let us know
+      </b-btn>
+    </em>
+    <p>
+      This takes them to a page where they can merge the accounts and decide which email address they prefer to use,
+      or leave the two accounts separate.
     </p>
   </NoticeMessage>
   <b-btn v-else variant="link" class="float-right" @click="toggleHelp">

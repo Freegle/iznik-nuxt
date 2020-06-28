@@ -83,6 +83,7 @@
           <ModMenuItemLeft link="/modtools/members/stories" name="Stories" indent :count="['stories']" />
           <ModMenuItemLeft v-if="hasPermissionNewsletter" link="/modtools/members/newsletter" name="Newsletter" indent :count="['newsletterstories']" />
           <ModMenuItemLeft link="/modtools/members/feedback" name="Feedback" indent :othercount="['happiness']" />
+          <ModMenuItemLeft link="/modtools/members/notes" name="Notes" indent />
           <hr>
           <hr>
           <ModMenuItemLeft link="/modtools/communityevents" name="Events" :count="['pendingevents']" />
@@ -238,11 +239,22 @@ export default {
       console.log('MODTOOLS.VUE requestLogin')
       this.$refs.loginModal.show()
     },
-    checkWork() {
-      this.$store.dispatch('auth/fetchUser', {
+    async checkWork() {
+      await this.$store.dispatch('auth/fetchUser', {
         components: ['work'],
         force: true
       })
+
+      const currentCount = this.$store.getters['chats/unseenCount']
+      const newCount = await this.$store.dispatch('chats/unseenCount')
+
+      if (newCount !== currentCount) {
+        await this.$store.dispatch('chats/listChats', {
+          chattypes: ['User2User', 'User2Mod'],
+          summary: true,
+          noerror: true
+        })
+      }
 
       setTimeout(this.checkWork, 30000)
     },

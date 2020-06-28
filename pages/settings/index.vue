@@ -220,11 +220,11 @@
                     class="d-inline"
                   >
                     <b-input-group id="input-postcode">
-                      <postcode @selected="selectPostcode" />
+                      <postcode @selected="selectPostcode" @cleared="clearPostcode" />
                     </b-input-group>
                   </b-form-group>
 
-                  <b-button variant="white" size="lg" class="mb-2 d-inline" @click="savePostcode">
+                  <b-button variant="white" size="lg" class="mb-2 d-inline" :disabled="!pc" @click="savePostcode">
                     <v-icon v-if="savingPostcode" name="sync" class="text-success fa-spin" />
                     <v-icon v-else-if="savedPostcode" name="check" class="text-success" />
                     <v-icon v-else name="save" />&nbsp;
@@ -236,7 +236,7 @@
                 <b-col>
                   <hr>
                   <b-btn variant="secondary" size="lg" to="/unsubscribe">
-                    Unsubscribe
+                    Unsubscribe or Leave Communities
                   </b-btn>
                 </b-col>
               </b-row>
@@ -297,7 +297,14 @@
                       <b-card v-if="group.type === 'Freegle'" class="nocardbot">
                         <b-card-title>
                           <nuxt-link :to="'/browse/' + group.id">
-                            <b-img-lazy rounded thumbnail alt="Community profile picture" :src="group.profile" class="float-right groupprofile" />
+                            <b-img-lazy
+                              v-if="group.profile"
+                              rounded
+                              thumbnail
+                              alt="Community profile picture"
+                              :src="group.profile"
+                              class="float-right groupprofile"
+                            />
                           </nuxt-link>
                           <nuxt-link :to="'/browse/' + group.id">
                             {{ group.namedisplay }}
@@ -805,6 +812,9 @@ export default {
     },
     selectPostcode(pc) {
       this.pc = pc
+    },
+    clearPostcode() {
+      this.pc = null
     },
     async saveEmail() {
       this.savingEmail = true

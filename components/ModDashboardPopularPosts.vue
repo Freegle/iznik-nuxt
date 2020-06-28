@@ -29,7 +29,7 @@
             </b-col>
             <b-col cols="6" sm="2">
               <div>
-                <v-icon name="eye" /> {{ msg.views | pluralize('view', { includeNumber: true }) }}
+                <v-icon name="eye" /> web {{ msg.views | pluralize('view', { includeNumber: true }) }}
               </div>
             </b-col>
             <b-col cols="6" sm="2">

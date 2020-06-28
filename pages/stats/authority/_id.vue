@@ -156,32 +156,20 @@
               <br>
               <v-icon name="globe-europe" /> www.iLoveFreegle.org  <v-icon name="brands/twitter" /> @thisisfreegle  <v-icon name="brands/facebook" /> facebook.com/Freegle
             </div>
-            <GmapMap
-              ref="gmap"
-              :center="{lat:53.9450, lng:-2.5209}"
-              :zoom="5"
-              :style="'width: ' + mapWidth + '; height: ' + mapWidth + 'px'"
-              :options="{
-                zoomControl: true,
-                mapTypeControl: false,
-                scaleControl: false,
-                streetViewControl: false,
-                rotateControl: false,
-                fullscreenControl: true,
-                disableDefaultUi: false,
-                gestureHandling: 'greedy'
-              }"
-              @idle="mapIdle"
-            >
-              <GmapMarker
-                v-for="(m, index) in markers"
-                :key="index"
-                :position="m"
-                :clickable="false"
-                :draggable="false"
-                icon="/mapmarker.gif"
-              />
-            </GmapMap>
+            <client-only>
+              <l-map
+                ref="map"
+                :zoom="5"
+                :center="center"
+                :style="'width: ' + mapWidth + '; height: ' + mapWidth + 'px'"
+                :min-zoom="5"
+                :max-zoom="13"
+                @ready="idle"
+              >
+                <l-tile-layer :url="osmtile" :attribution="attribution" />
+                <GroupMarker v-for="g in markers" :key="'marker-' + g.id + '-' + zoom" :group="g" />
+              </l-map>
+            </client-only>
             <Impact
               :total-weight="totalWeight"
               :total-benefit="totalBenefit"
@@ -271,16 +259,16 @@
 // requiring them in the vue-awesome plugin.  That makes them available everywhere - but
 // increases the bundle size.  Putting them here allows better bundling.
 import { GChart } from 'vue-google-charts'
-import Wkt from 'wicket'
-import 'wicket/wicket-gmap3'
-import { gmapApi } from 'vue2-google-maps'
 import { TablePlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import DatePicker from 'vue2-datepicker'
 import 'vue2-datepicker/index.css'
-import Impact from '../../../components/Impact'
+import Impact from '@/components/Impact'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
+import map from '@/mixins/map.js'
+
+const GroupMarker = () => import('@/components/GroupMarker')
 
 Vue.use(TablePlugin)
 
@@ -292,11 +280,12 @@ const CO2_PER_TONNE = 0.51
 export default {
   layout: 'empty',
   components: {
+    GroupMarker,
     Impact,
     GChart,
     DatePicker
   },
-  mixins: [loginOptional, buildHead],
+  mixins: [loginOptional, buildHead, map],
   data() {
     return {
       tables: false,
@@ -344,30 +333,10 @@ export default {
           key: 'monthly',
           label: 'Average Kgs Reused Monthly'
         }
-      ],
-      addedPolygons: false
+      ]
     }
   },
   computed: {
-    google: {
-      get() {
-        return process.browser ? gmapApi : []
-      }
-    },
-    mapHeight() {
-      const contWidth = this.$refs.mapcont ? this.$refs.mapcont.$el.width : 0
-      return contWidth
-    },
-    mapWidth() {
-      let height = 0
-
-      if (process.browser) {
-        height = Math.floor(window.innerHeight / 2)
-        height = height < 200 ? 200 : height
-      }
-
-      return height
-    },
     totalWeight() {
       let total = 0
 
@@ -552,17 +521,10 @@ export default {
       return ret
     },
     markers() {
-      const google = gmapApi()
       const ret = []
 
-      if (google) {
-        for (const groupid in this.stats) {
-          const marker = new google.maps.LatLng(
-            this.stats[groupid].group.lat,
-            this.stats[groupid].group.lng
-          )
-          ret.push(marker)
-        }
+      for (const groupid in this.stats) {
+        ret.push(this.stats[groupid].group)
       }
 
       return ret
@@ -843,69 +805,24 @@ export default {
 
       return 0
     },
-    mapPoly: function(poly, options) {
-      const google = gmapApi()
-      let bounds = null
-      const wkt = new Wkt.Wkt()
-      wkt.read(poly)
-
-      const mapobj = this.$refs.gmap.$mapObject
-      const obj = wkt.toObject(mapobj.defaults)
-
-      if (obj) {
-        // This might be a multipolygon.
-        bounds = new google.maps.LatLngBounds()
-
-        if (Array.isArray(obj)) {
-          for (const ent of obj) {
-            ent.setMap(mapobj)
-            ent.setOptions(options)
-            const thisbounds = ent.getBounds()
-            bounds.extend(thisbounds.getNorthEast())
-            bounds.extend(thisbounds.getSouthWest())
-          }
-        } else {
-          obj.setMap(mapobj)
-          obj.setOptions(options)
-          bounds = obj.getBounds()
-        }
-      }
-
-      return bounds
-    },
-    mapIdle() {
+    idle() {
       if (!this.addedPolygons) {
-        const google = gmapApi()
         this.addedPolygons = true
-
-        // No getBounds on polygon by default.
-        google.maps.Polygon.prototype.getBounds = function() {
-          const bounds = new google.maps.LatLngBounds()
-          const paths = this.getPaths()
-          let path
-          for (let i = 0; i < paths.getLength(); i++) {
-            path = paths.getAt(i)
-            for (let ii = 0; ii < path.getLength(); ii++) {
-              bounds.extend(path.getAt(ii))
-            }
-          }
-          return bounds
-        }
 
         const bounds = this.mapPoly(this.authority.polygon, {
           fillColor: 'blue',
-          strokeWeight: 0,
+          weight: 0,
           fillOpacity: 0.2
         })
 
-        this.$refs.gmap.$mapObject.fitBounds(bounds)
+        this.$refs.map.mapObject.fitBounds(bounds)
 
         for (const groupid in this.stats) {
           const polygon = this.stats[groupid].group.poly
 
           this.mapPoly(polygon, {
             fillColor: 'grey',
-            strokeWeight: 0,
+            weight: 0,
             fillOpacity: 0.2
           })
         }
@@ -923,7 +840,6 @@ export default {
     },
     toggle() {
       this.tables = !this.tables
-      console.log('Toggled tables', this.tables)
     }
   },
   head() {

@@ -100,6 +100,9 @@ export default {
       // reactivity changes and end up with a render loop.
       let groups = cloneDeep(this.groups)
       groups = groups.sort((a, b) => {
+        if (!a.namedisplay) {
+          console.error('Bad group in GroupSelect', a, b, this.groups)
+        }
         return a.namedisplay
           .toLowerCase()
           .localeCompare(b.namedisplay.toLowerCase())

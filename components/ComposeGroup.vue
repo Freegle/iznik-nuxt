@@ -59,6 +59,22 @@ export default {
       return ret
     }
   },
+  async mounted() {
+    // The postcode we have contains a list of groups.  That list might contain groups which are no longer valid,
+    // for example if they have been merged.  So we want to refetch the postcode so that our store gets updated.
+    if (this.postcode) {
+      await this.$store.dispatch('locations/fetch', {
+        typeahead: this.postcode.name
+      })
+
+      const list = Object.values(this.$store.getters['locations/list'])
+      list.forEach(l => {
+        if (l.id === this.postcode.id) {
+          this.$store.dispatch('compose/setPostcode', l)
+        }
+      })
+    }
+  },
   methods: {
     change(newValue) {
       this.$store.dispatch('compose/setGroup', newValue)

@@ -51,17 +51,21 @@
       Group id <v-icon name="hashtag" class="text-muted" scale="0.75" /><b>{{ group.id }}</b>.
       <br>
       <br>
+      <Clipboard class="mr-3 mb-1" :value="group.url" />
       Explore page:
       <ExternalLink :href="group.url">
         {{ group.url }}
       </ExternalLink>
       <br>
+      <Clipboard class="mr-3 mb-1" :value="group.modsemail" />
       Volunteers email:
       <a :href="'mailto:' + group.modsemail">{{ group.modsemail }}</a>
       <br>
+      <Clipboard class="mr-3 mb-1" :value="group.groupemail" />
       Posting address:
       <a :href="'mailto:' + group.groupemail">{{ group.groupemail }}</a>
       <br>
+      <Clipboard class="mr-3 mb-1" :value="'https://twitter.com/' + group.twitter.name" />
       Twitter:
       <span v-if="group.twitter">
         <ExternalLink :href="'https://twitter.com/' + group.twitter.name">
@@ -83,6 +87,7 @@
       <div v-else>
         <div v-for="facebook in group.facebook" :key="'facebook-' + facebook.id">
           <div v-if="facebook.type === 'Page'">
+            <Clipboard class="mr-3 mb-1" :value="'https://facebook.com/pg/' + facebook.id" />
             Facebook:
             <ExternalLink :href="'https://facebook.com/pg/' + facebook.id">
               {{ facebook.name }}
@@ -127,6 +132,7 @@
 <script>
 import ModSupportFindGroupVolunteer from './ModSupportFindGroupVolunteer'
 import SpinButton from './SpinButton'
+import Clipboard from './Clipboard'
 import AutocompleteLocal from '@/components/AutocompleteLocal'
 import GroupHeader from '@/components/GroupHeader'
 const OurToggle = () => import('@/components/OurToggle')
@@ -134,6 +140,7 @@ const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
   components: {
+    Clipboard,
     SpinButton,
     ModSupportFindGroupVolunteer,
     OurToggle,

@@ -26,13 +26,17 @@
             <b-input v-model="email2" type="email" placeholder="Second email" class="mt-2 mb-2" />
           </div>
           <b-input v-model="reason" placeholder="Enter a reason for the logs" class="mt-2 mb-2" />
+          <NoticeMessage v-if="tn" variant="danger">
+            You can't merge TrashNothing members.  Please either remove the least active of them, or add Notes to each
+            one to say that they're the same real person.
+          </NoticeMessage>
         </div>
       </template>
       <template slot="modal-footer" slot-scope="{ cancel }">
         <b-button variant="white" @click="cancel">
           Close
         </b-button>
-        <b-button v-if="!merged" variant="primary" :disabled="!email1 || !email2 || !reason" @click="merge">
+        <b-button v-if="!merged" variant="primary" :disabled="!email1 || !email2 || !reason || tn" @click="merge">
           Merge
         </b-button>
       </template>
@@ -51,6 +55,14 @@ export default {
       email2: null,
       reason: null,
       merged: false
+    }
+  },
+  computed: {
+    tn() {
+      return (
+        (this.email1 && this.email1.indexOf('trashnothing') !== -1) ||
+        (this.email2 && this.email2.indexOf('trashnothing') !== -1)
+      )
     }
   },
   methods: {

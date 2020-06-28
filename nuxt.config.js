@@ -5,8 +5,8 @@ const FACEBOOK_APPID = '134980666550322'
 const SENTRY_DSN = 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170'
 const YAHOO_CLIENTID =
   'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
-const MOBILE_VERSION = '2.0.40'
-const MODTOOLS_VERSION = '0.3.23'
+const MOBILE_VERSION = '2.0.41'
+const MODTOOLS_VERSION = '0.3.24'
 
 require('dotenv').config()
 
@@ -44,6 +44,10 @@ const IMAGE_SITE = 'https://images.ilovefreegle.org'
 
 // Long polls interact badly with per-host connection limits so send to here instead.
 const CHAT_HOST = 'https://users.ilovefreegle.org:555'
+
+// OpenStreetMap Tile Server
+const OSM_TILE =
+  process.env.OSM_TILE || 'https://tiles.ilovefreegle.org/tile/{z}/{x}/{y}.png'
 
 // Allow disabling of eslint autofix by setting "DISABLE_ESLINT_AUTOFIX=true" in env (e.g. .env file)
 // defaults to enabling autofixing
@@ -97,9 +101,17 @@ const config = {
         content: USER_SITE + '/icon.png'
       },
       { hid: 'og:locale', property: 'og:locale', content: 'en_GB' },
-      { hid: 'og:title', property: 'og:title', content: 'Freegle - Don\'t throw it away, give it away!' },
+      {
+        hid: 'og:title',
+        property: 'og:title',
+        content: "Freegle - Don't throw it away, give it away!"
+      },
       { hid: 'og:site_name', property: 'og:site_name', content: 'Freegle' },
-      { hid: 'og:url', property: 'og:url', content: 'https://www.ilovefreegle.org' },
+      {
+        hid: 'og:url',
+        property: 'og:url',
+        content: 'https://www.ilovefreegle.org'
+      },
       { hid: 'fb:app_id', property: 'fb:app_id', content: FACEBOOK_APPID },
       {
         hid: 'og:description',
@@ -109,7 +121,11 @@ const config = {
       },
       { hid: 'fb:app_id', property: 'og:site_name', content: FACEBOOK_APPID },
 
-      { hid: 'twitter:title', name: 'twitter:title', content: 'Freegle - Don\'t throw it away, give it away!' },
+      {
+        hid: 'twitter:title',
+        name: 'twitter:title',
+        content: "Freegle - Don't throw it away, give it away!"
+      },
       {
         hid: 'twitter:description',
         name: 'twitter:description',
@@ -210,7 +226,8 @@ const config = {
     { src: '~/plugins/app-google.js', mode: 'client' },
     { src: '~/plugins/app-yahoo.js', mode: 'client' },
     { src: '~/plugins/app-apple.js', mode: 'client' },
-    { src: '@/plugins/vue-fabric-wrapper', ssr: false }
+    { src: '@/plugins/vue-fabric-wrapper', ssr: false },
+    { src: '@/plugins/vue2-leaflet', ssr: false }
   ],
 
   redirect: [ // In mobile app-init-push route needs updating as per here
@@ -386,9 +403,7 @@ const config = {
     render: {
       resourcesLoaded(resources) {
         const path =
-          process.env.CDN === undefined
-            ? '/_nuxt'
-            : (process.env.CDN + '/_nuxt')
+          process.env.CDN === undefined ? '/_nuxt' : process.env.CDN + '/_nuxt'
         resources.clientManifest && (resources.clientManifest.publicPath = path)
       }
     }
@@ -517,6 +532,7 @@ const config = {
     IZNIK_API: IZNIK_API,
     CDN: CDN,
     CHAT_HOST: CHAT_HOST,
+    OSM_TILE: OSM_TILE,
     FACEBOOK_APPID: FACEBOOK_APPID,
     YAHOO_CLIENTID: YAHOO_CLIENTID,
     GOOGLE_MAPS_KEY: 'AIzaSyCdTSJKGWJUOx2pq1Y0f5in5g4kKAO5dgg',

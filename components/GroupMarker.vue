@@ -1,29 +1,13 @@
 <template>
-  <div>
-    <RichMarker ref="rich" :key="size" :position="{ lat: group.lat, lng: group.lng }">
-      <div @click="goto">
-        <b-img v-if="size ==='poor'" src="/mapmarker.gif" :title="group.namedisplay" />
-        <div v-if="size === 'rich'" class="text-center">
-          <group-ProfileImage :image="group.profile ? group.profile : '/icon.png'" :alt-text="'Profile picture for ' + group.namedisplay" size="sm" />
-          <br>
-          <h6 class="text-break mt-1 p-2 bg-white text-success border border-success rounded thick">
-            {{ group.namedisplay }}
-          </h6>
-        </div>
-      </div>
-    </RichMarker>
-  </div>
+  <l-marker :key="'groupmarker-' + group.id + '-' + size" :lat-lng="[group.lat, group.lng]" :title="group.namedisplay" :icon="icon" @click="goto" />
 </template>
 
 <script>
-import RichMarker from './RichMarker.vue'
-import GroupProfileImage from '~/components/GroupProfileImage'
+import L from 'leaflet'
+import Vue from 'vue'
+import GroupMarkerRich from './GroupMarkerRich'
 
 export default {
-  components: {
-    RichMarker,
-    GroupProfileImage
-  },
   props: {
     group: {
       type: Object,
@@ -34,8 +18,34 @@ export default {
       required: true
     }
   },
+  computed: {
+    icon() {
+      if (this.size === 'rich') {
+        // Render the component off document.
+        const Mine = Vue.extend(GroupMarkerRich)
+        let re = new Mine({
+          propsData: {
+            group: this.group
+          }
+        })
+        re = re.$mount().$el
+
+        return new L.DivIcon({
+          html: re.outerHTML,
+          iconAnchor: [100, 100],
+          className: 'clear'
+        })
+      } else {
+        // Poor - just use marker
+        return new L.Icon({
+          iconUrl: require('static/mapmarker.gif')
+        })
+      }
+    }
+  },
   methods: {
     goto() {
+      console.log('Goto group')
       if (this.group.external) {
         window.open(this.group.external)
       } else {
@@ -51,5 +61,10 @@ export default {
 
 .thick {
   border: 2px solid $color-green--darker !important;
+}
+
+clear {
+  background: transparent;
+  border: none;
 }
 </style>

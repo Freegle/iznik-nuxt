@@ -7,6 +7,7 @@
       {{ volunteer.displayname }}
     </b-col>
     <b-col cols="12" md="3" class="order-5 order-md-3">
+      <Clipboard class="mr-3" :value="volunteer.email" />
       <a :href="'mailto:' + volunteer.email">{{ volunteer.email }}</a>
     </b-col>
     <b-col cols="4" md="2" class="order-2 order-md-4">
@@ -21,8 +22,9 @@
 </template>
 <script>
 import ModRole from './ModRole'
+import Clipboard from './Clipboard'
 export default {
-  components: { ModRole },
+  components: { Clipboard, ModRole },
   props: {
     volunteer: {
       type: Object,

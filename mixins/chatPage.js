@@ -1,5 +1,3 @@
-const requestIdleCallback = () => import('~/assets/js/requestIdleCallback')
-
 export default {
   data() {
     return {
@@ -124,29 +122,10 @@ export default {
     }
   },
 
-  async asyncData({ app, params, store }) {
-    let chats = Object.values(store.getters['chats/list'])
-
-    if (chats && chats.length) {
-      // Got some - can start rendering.  Fire off an update to refresh us later if they've changed.  No rush, so
-      // wait for idle.
-
-      requestIdleCallback(() => this.listChats)
-    } else {
-      // Not got any - need to get them before we can proceed.
-      const modtools = store.getters['misc/get']('modtools')
-      await store.dispatch('chats/listChats', {
-        chattypes: modtools
-          ? ['User2Mod', 'Mod2Mod']
-          : ['User2User', 'User2Mod']
-      })
-    }
-
-    chats = Object.values(store.getters['chats/list'])
-
-    return {
-      chats: chats
-    }
+  mounted() {
+    // Fetch up to date chats.  We may already have some in store, in which case we'll render them, but we want to
+    // get the up to date ones.
+    this.listChats()
   },
 
   created() {
@@ -172,6 +151,7 @@ export default {
 
   methods: {
     async listChats() {
+      console.log('list chats')
       const modtools = this.$store.getters['misc/get']('modtools')
       await this.$store.dispatch('chats/listChats', {
         chattypes: modtools

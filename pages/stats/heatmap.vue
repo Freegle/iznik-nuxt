@@ -3,56 +3,63 @@
     <b-row class="text-center m-0">
       <b-col cols="12" md="6" offset-md="3">
         <h1>Freegling Heatmap</h1>
-        <p class="text-center">
-          This shows where the most items have been freegled. It might take a little while to load.
-        </p>
-        <p class="text-center">
-          The locations are approximate for privacy.  The colours are relative to the area currently shown.
-        </p>
+        <div v-if="!fetched" class="d-flex justify-content-around">
+          <b-img-lazy src="~/static/loader.gif" alt="Loading" />
+        </div>
+        <div v-else>
+          <p class="text-center">
+            This shows where the most items have been freegled. It might take a little while to load.
+          </p>
+          <p class="text-center">
+            The locations are approximate for privacy. The colours are relative to the area currently shown.
+          </p>
+        </div>
         <client-only>
-          <GmapMap
-            ref="gmap"
-            :center="{lat:53.9450, lng:-2.5209}"
+          <l-map
+            ref="map"
             :zoom="5"
+            :center="center"
             :style="'width: ' + mapWidth + '; height: ' + mapWidth + 'px'"
-            :options="{
-              zoomControl: true,
-              mapTypeControl: false,
-              scaleControl: false,
-              streetViewControl: false,
-              rotateControl: false,
-              fullscreenControl: true,
-              disableDefaultUi: false,
-              gestureHandling: 'greedy'
-            }"
-            @idle="mapIdle"
-          />
+            :min-zoom="5"
+            :max-zoom="13"
+            @ready="idle"
+            @moveend="boundsChanged"
+          >
+            <l-tile-layer :url="osmtile" :attribution="attribution" />
+            <LeafletHeatmap
+              v-if="fetched"
+              :key="'heatmap-' + weightedData.length"
+              :lat-lngs="weightedData"
+              :radius="zoom*6"
+            />
+          </l-map>
         </client-only>
       </b-col>
     </b-row>
   </div>
 </template>
 <script>
-import { gmapApi } from 'vue2-google-maps'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
+import map from '@/mixins/map.js'
+
+let LeafletHeatmap = null
+
+if (process.browser) {
+  LeafletHeatmap = () => import('~/components/Vue2LeaftletHeatmap')
+}
 
 export default {
-  components: {},
-  mixins: [loginOptional, buildHead],
+  components: { LeafletHeatmap },
+  mixins: [loginOptional, buildHead, map],
   data: function() {
     return {
       fetched: false,
-      data: [],
-      heatmap: null
+      heatmap: null,
+      max: 0
     }
   },
   computed: {
-    google: {
-      get() {
-        return process.browser ? gmapApi : []
-      }
-    },
     mapHeight() {
       const contWidth = this.$refs.mapcont ? this.$refs.mapcont.$el.width : 0
       return contWidth
@@ -66,74 +73,59 @@ export default {
       }
 
       return height
-    }
-  },
-  methods: {
-    async mapIdle() {
-      // Do this in idle rather than mount because Google doesn't like it if we mess with the map too early.
-      const google = gmapApi()
-
-      if (!this.fetched) {
-        await this.$store.dispatch('stats/fetchHeatmap')
-        const heatmap = this.$store.getters['stats/get']('Heatmap')
-        this.fetched = true
-
-        this.data = []
-        heatmap.forEach(loc => {
-          this.data.push({
-            lat: loc.lat,
-            lng: loc.lng,
-            weight: loc.count
-          })
-        })
-      }
-
-      if (this.heatmap) {
-        this.heatmap.setMap(null)
-      }
-
-      // Making the radius depend on the map zoom works fairly well.
-      this.heatmap = new google.maps.visualization.HeatmapLayer({
-        data: this.weightedData(),
-        map: this.$refs.gmap.$mapObject,
-        radius: this.$refs.gmap.$mapObject.getZoom()
-      })
     },
-
-    weightedData() {
-      // We want to ensure that whatever level we're zoomed into, we show something useful.  So we need to weight
-      // the data based on what the max value is in the current bounds.  If the max is too high then everything
-      // else looks idle, so use a logarithmic scale.
-      const google = gmapApi()
-      const bounds = this.$refs.gmap.$mapObject.getBounds()
+    heatMapData() {
+      const heatmap = this.$store.getters['stats/get']('Heatmap')
 
       const data = []
-
-      // If the max is too high, then everything else looks idle.  So use a logarithmic scale.
-      let max = 0
-      this.data.forEach(function(d) {
-        max = Math.max(d.weight, max)
-      })
-
-      const minlog = Math.log10(1)
-      const maxlog = Math.log10(max)
-      const range = maxlog - minlog
-      const lineartolog = function(n) {
-        return (Math.log10(n) - minlog) / range
-      }
-
-      this.data.forEach(d => {
-        const p = new google.maps.LatLng(d.lat, d.lng)
-
-        if (bounds.contains(p)) {
-          data.push({
-            location: p,
-            weight: lineartolog(d.weight)
-          })
-        }
+      heatmap.forEach(loc => {
+        data.push([loc.lat, loc.lng, loc.count])
       })
 
       return data
+    },
+    weightedData() {
+      const weighted = []
+
+      // We want to ensure that whatever level we're zoomed into, we show something useful.  So we need to weight
+      // the data based on what the max value is in the current bounds.  If the max is too high then everything
+      // else looks idle, so use a logarithmic scale.
+      let max = 0
+
+      if (this.bounds) {
+        // If the max is too high, then everything else looks idle.  So use a logarithmic scale.
+        const data = []
+        this.heatMapData.forEach(d => {
+          if (this.bounds.contains([d[0], d[1]])) {
+            max = Math.max(d[2], max)
+            data.push(d)
+          }
+        })
+
+        const minlog = Math.log10(1)
+        const maxlog = Math.log10(max)
+        const range = maxlog - minlog
+        const lineartolog = function(n) {
+          return (Math.log10(n) - minlog) / range
+        }
+
+        data.forEach(d => {
+          if (this.bounds.contains([d[0], d[1]])) {
+            weighted.push([d[0], d[1], lineartolog(d[2])])
+          }
+        })
+      }
+
+      return weighted
+    }
+  },
+  methods: {
+    async idle() {
+      if (!this.fetched) {
+        await this.$store.dispatch('stats/fetchHeatmap')
+        this.fetched = true
+        this.boundsChanged()
+      }
     }
   },
   head() {

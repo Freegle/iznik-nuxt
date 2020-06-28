@@ -4,7 +4,7 @@
       <h1 class="text-center">
         About Us
       </h1>
-      <p class="text-left">
+      <p class="text-center font-weight-bold">
         Please click on a section to find out more.
       </p>
       <div role="tablist">

@@ -125,7 +125,6 @@ export default {
   mounted() {
     this.attachments = this.message.attachments
     this.type = this.message.type
-    console.log('Edit type', this.type, this.typeOptions)
     this.item = this.message.item ? this.message.item.name : null
     this.postcode = this.message.location ? this.message.location : null
   },

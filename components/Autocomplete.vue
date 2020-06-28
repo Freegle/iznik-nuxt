@@ -531,7 +531,7 @@ export default {
                 this.invalid = true
               }
             }
-            else if (this.json && this.json.length === 1 && this.json[0].name.toLowerCase().trim() === val.toLowerCase().trim()) {
+            else if (this.json && this.json.length === 1 && this.json[0].name.toLowerCase().replace(' ', '').trim() === val.toLowerCase().replace(' ', '').trim()) {
               // There is only one value, and it matches the value we were searching for.  Autoselect it.
               this.selectList(this.json[0])
             }
