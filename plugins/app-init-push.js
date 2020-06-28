@@ -52,7 +52,7 @@ const cordovaApp = {
         // Enable pinch zoom on Android
         cordova.plugins.ZoomControl.ZoomControl('true') // enabling zoom control: setBuiltInZoomControls(true), setDefaultZoom(ZoomDensity.MEDIUM), setSupportZoom(true)
         cordova.plugins.ZoomControl.setBuiltInZoomControls('true') // Sets whether the WebView should use its built-in zoom mechanisms
-        cordova.plugins.ZoomControl.setDisplayZoomControls('true') // Sets whether the WebView should display on-screen zoom controls when using the built-in zoom mechanisms.
+        cordova.plugins.ZoomControl.setDisplayZoomControls('false') // Sets whether the WebView should display on-screen zoom controls when using the built-in zoom mechanisms.
         cordova.plugins.ZoomControl.setUseWideViewPort('false') // Sets whether the WebView should enable support for the "viewport" HTML meta tag or should use a wide viewport.
       }
 
