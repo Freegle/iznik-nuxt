@@ -4,7 +4,7 @@
       <b-col ref="mapcont" class="p-0">
         <client-only>
           <div class="d-flex justify-content-between">
-            <!--            TODO MAPS-->
+            <!--            TODO MAPS AUTOCOMPLETE -->
             <!--            <gmap-autocomplete-->
             <!--              id="autocomplete"-->
             <!--              class="form-control form-control-lg"-->
@@ -54,7 +54,7 @@ export default {
     return {
       locating: false,
       locationFailed: false,
-      // TODO MAP
+      // TODO MAPS AUTOCOMPLETE
       gb: {
         componentRestrictions: {
           country: ['gb']
@@ -111,7 +111,7 @@ export default {
     },
 
     getAddressData: function(addressData, placeResultData, id) {
-      // TODO MAPS
+      // TODO MAPS AUTOCOMPLETE
       if (
         addressData &&
         addressData.geometry &&

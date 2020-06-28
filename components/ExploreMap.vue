@@ -16,7 +16,7 @@
     <b-row v-if="!region" class="m-0">
       <b-col cols="12" lg="2" offset-lg="5" class="text-center">
         <client-only>
-          <!--          TODO MAPS -->
+          <!--          TODO MAPS AUTOCOMPLETE -->
           <gmap-autocomplete
             v-if="false"
             id="autocomplete"
@@ -187,7 +187,7 @@ export default {
     return {
       showList: 0,
       distance: 1000,
-      // TODO MAPS
+      // TODO MAPS AUTOCOMPLETE
       gb: {
         componentRestrictions: {
           country: ['gb']
@@ -277,6 +277,7 @@ export default {
 
   methods: {
     getAddressData: function(addressData, placeResultData, id) {
+      // TODO MAPS AUTOCOMPLETE
       if (
         addressData &&
         addressData.geometry &&

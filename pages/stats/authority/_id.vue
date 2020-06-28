@@ -268,13 +268,6 @@ import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 import map from '@/mixins/map.js'
 
-let Wkt = null
-
-if (process.browser) {
-  Wkt = require('wicket')
-  require('wicket/wicket-leaflet')
-}
-
 const GroupMarker = () => import('@/components/GroupMarker')
 
 Vue.use(TablePlugin)
@@ -812,33 +805,6 @@ export default {
 
       return 0
     },
-    mapPoly: function(poly, options) {
-      let bounds = null
-      const wkt = new Wkt.Wkt()
-      wkt.read(poly)
-
-      const mapobj = this.$refs.map.mapObject
-      const obj = wkt.toObject(mapobj.defaults)
-
-      if (obj) {
-        // This might be a multipolygon.
-        if (Array.isArray(obj)) {
-          for (const ent of obj) {
-            ent.addTo(mapobj)
-            ent.setStyle(options)
-            const thisbounds = ent.getBounds()
-            bounds.extend(thisbounds.getNorthEast())
-            bounds.extend(thisbounds.getSouthWest())
-          }
-        } else {
-          obj.addTo(mapobj)
-          obj.setStyle(options)
-          bounds = obj.getBounds()
-        }
-      }
-
-      return bounds
-    },
     idle() {
       if (!this.addedPolygons) {
         this.addedPolygons = true
@@ -874,7 +840,6 @@ export default {
     },
     toggle() {
       this.tables = !this.tables
-      console.log('Toggled tables', this.tables)
     }
   },
   head() {

@@ -1,10 +1,11 @@
 <template>
   <div class="bg-white">
-    Sorry, we've had to disable the map temporarily for cost reasons.
-    <div v-if="false">
-      <!--      TODO MAPS MT -->
+    <div v-if="loaded">
       <ModGroupMap v-if="groupid" :groupid="groupid" />
       <ModGroupMap v-else :groups="true" />
+    </div>
+    <div v-else class="d-flex justify-content-around">
+      <b-img-lazy src="~/static/loader.gif" alt="Loading" />
     </div>
   </div>
 </template>
@@ -20,8 +21,29 @@ export default {
   mixins: [loginRequired],
   data: function() {
     return {
-      groupid: null
+      groupid: null,
+      loaded: false
     }
+  },
+  async mounted() {
+    // Get the data before we load the map to avoid timing windows.
+    if (!this.groupid) {
+      // We want to show all groups
+      console.log('List all groups')
+      await this.$store.dispatch('group/list', {
+        grouptype: 'Freegle'
+      })
+    } else {
+      // Areas for a specific group.
+      console.log('Mounted, fetch group')
+      await this.$store.dispatch('group/fetch', {
+        id: this.groupid,
+        polygon: true
+      })
+      console.log('Fetched', this.groupid)
+    }
+
+    this.loaded = true
   },
   created() {
     this.groupid = parseInt(this.$route.params.groupid)

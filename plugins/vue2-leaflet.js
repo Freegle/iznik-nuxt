@@ -1,7 +1,17 @@
 // src/plugins/vue-leaflet.js
 import Vue from 'vue'
 
-import { LMap, LTileLayer, LMarker, LIcon, LPolygon } from 'vue2-leaflet'
+import {
+  LMap,
+  LTileLayer,
+  LMarker,
+  LCircleMarker,
+  LIcon,
+  LPolygon,
+  LGeoJson,
+  LControl,
+  LFeatureGroup
+} from 'vue2-leaflet'
 import 'leaflet/dist/leaflet.css'
 
 const VueLeaflet = {
@@ -11,6 +21,10 @@ const VueLeaflet = {
     Vue.component('l-tile-layer', LTileLayer)
     Vue.component('l-icon', LIcon)
     Vue.component('l-polygon', LPolygon)
+    Vue.component('l-geojson', LGeoJson)
+    Vue.component('l-circle-marker', LCircleMarker)
+    Vue.component('l-control', LControl)
+    Vue.component('l-feature-group', LFeatureGroup)
   }
 }
 
