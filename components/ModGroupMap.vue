@@ -3,7 +3,9 @@
     <client-only>
       <div class="maptools d-flex mb-1 justify-content-between">
         <div class="d-flex">
+          <!--          TODO MAPS AUTOCOMPLETE-->
           <gmap-autocomplete
+            v-if="false"
             id="autocomplete"
             v-focus
             class="form-control max"
@@ -24,28 +26,46 @@
         </b-form-checkbox>
       </div>
       <b-row class="m-0">
-        <b-col cols="12" md="8" lg="9" class="p-0">
-          <GmapMap
-            ref="gmap"
-            :center="{lat:53.9450, lng:-2.5209}"
-            :zoom="zoom"
-            :style="'width: ' + mapWidth + '; height: ' + mapWidth + 'px'"
-            :options="{
-              zoomControl: true,
-              mapTypeControl: false,
-              scaleControl: false,
-              streetViewControl: false,
-              rotateControl: false,
-              fullscreenControl: true,
-              disableDefaultUi: false,
-              gestureHandling: 'greedy'
-            }"
-            @zoom_changed="zoomChanged"
-            @bounds_changed="boundsChanged"
-          />
+        <b-col ref="mapcont" cols="12" md="8" lg="9" class="p-0">
+          <l-map
+            ref="map"
+            :zoom="5"
+            :center="center"
+            :style="'width: ' + mapWidth + '; height: ' + mapHeight + 'px'"
+            :min-zoom="5"
+            :max-zoom="17"
+            @update:bounds="boundsChanged"
+            @update:zoom="boundsChanged"
+            @ready="idle"
+          >
+            <l-tile-layer :url="osmtile" :attribution="attribution" />
+            <l-control position="topright" />
+            <div v-if="cga">
+              <l-geojson v-for="(c, i) in CGAs" :key="'cga-' + i" :geojson="c.json" :options="cgaOptions" @click="selectCGA(c.group)" />
+            </div>
+            <div v-if="dpa">
+              <l-geojson v-for="(d, i) in DPAs" :key="'dpa-' + i" :geojson="d.json" :options="dpaOptions" @click="selectDPA(d.group)" />
+            </div>
+            <div v-if="groupid">
+              <l-feature-group>
+                <ModGroupMapLocation
+                  v-for="l in locationsInBounds"
+                  :key="'location-' + l.id"
+                  :ref="'location-' + l.id"
+                  :location="l"
+                  :selected="selectedObj === l"
+                  :shade="shade"
+                  @click="selectLocation(l)"
+                />
+              </l-feature-group>
+            </div>
+            <div v-if="groups && zoom > 7">
+              <l-circle-marker v-for="g in allgroups" :key="'groupcentre-' + g.id" :lat-lng="[g.lat, g.lng]" :options="{ radius: zoom, color: 'darkgreen', fill: true, fillColor: 'darkgreen', fillOpacity: 1 }" />
+            </div>
+          </l-map>
         </b-col>
         <b-col cols="12" md="4" lg="3">
-          <b-card v-if="selectedObj" class="mb-2" no-body>
+          <b-card v-if="selectedWKT" class="mb-2" no-body>
             <b-card-header class="bg-info">
               Area Details
             </b-card-header>
@@ -59,7 +79,7 @@
                 <b-textarea v-model="selectedWKT" rows="4" readonly />
               </div>
             </b-card-body>
-            <b-card-footer class="d-flex justify-content-between flex-wrap">
+            <b-card-footer v-if="groupid" class="d-flex justify-content-between flex-wrap">
               <SpinButton
                 variant="primary"
                 name="save"
@@ -68,7 +88,7 @@
                 :handler="saveArea"
                 :disabled="!selectedName || !selectedWKT"
               />
-              <SpinButton variant="white" name="times" label="Cancel" :handler="cancelArea" />
+              <SpinButton variant="white" name="times" label="Cancel" :handler="clearSelection" />
               <SpinButton v-if="selectedId" variant="danger" name="trash-alt" label="Delete" :handler="deleteArea" />
             </b-card-footer>
           </b-card>
@@ -111,24 +131,32 @@
 </template>
 
 <script>
-import { gmapApi } from 'vue2-google-maps'
-import Wkt from 'wicket'
-import 'wicket/wicket-gmap3'
 import Postcode from './Postcode'
 import SpinButton from './SpinButton'
+import ModGroupMapLocation from './ModGroupMapLocation'
+import map from '@/mixins/map.js'
 
-const GROUP_FILL_COLOUR = '#EEFFCC'
+let Wkt = null
+let L = null
+
+if (process.browser) {
+  Wkt = require('wicket')
+  require('wicket/wicket-leaflet')
+  L = require('leaflet')
+  require('leaflet-draw')
+}
+
+// const GROUP_FILL_COLOUR = '#EEFFCC'
 const AREA_FILL_COLOUR = 'darkgreen'
 const FILL_OPACITY = 0.6
 const CGA_BOUNDARY_COLOUR = 'darkgreen'
 const DPA_BOUNDARY_COLOUR = 'darkblue'
-const AREA_BOUNDARY_COLOUR = 'darkblue'
-const CENTRE_FILL_COLOUR = 'darkgreen'
-const CENTRE_BORDER_COLOUR = 'darkgrey'
-const SELECTED = '#990000'
+// const CENTRE_FILL_COLOUR = 'darkgreen'
+// const CENTRE_BORDER_COLOUR = 'darkgrey'
 
 export default {
-  components: { SpinButton, Postcode },
+  components: { ModGroupMapLocation, SpinButton, Postcode },
+  mixins: [map],
   props: {
     groups: {
       type: Boolean,
@@ -143,8 +171,11 @@ export default {
   },
   data: function() {
     return {
-      zoom: 8,
-      bounds: null,
+      cgas: [],
+      dpas: [],
+      initialGroupZoomed: false,
+
+      // TODO MAPS AUTOCOMPLETE
       gb: {
         componentRestrictions: {
           country: ['gb']
@@ -173,36 +204,65 @@ export default {
       return process.browser
     },
     mapHeight() {
-      const contWidth = this.$refs.mapcont ? this.$refs.mapcont.$el.width : 0
-      return contWidth
-    },
-    mapWidth() {
       let height = 0
 
       if (process.browser) {
-        height = window.innerHeight - 66 - 100
-        height = height < 200 ? 200 : height
+        height = window.innerHeight - 150
       }
 
       return height
     },
+    allgroups() {
+      return Object.values(this.$store.getters['group/list'])
+    },
+    group() {
+      console.log('Compute group', this.groupid)
+      return this.groupid
+        ? this.$store.getters['group/get'](this.groupid)
+        : null
+    },
     groupsInBounds() {
-      const groups = Object.values(this.$store.getters['group/list'])
       const ret = []
 
       if (this.bounds) {
-        for (const ix in groups) {
-          const group = groups[ix]
-          if (
-            group.lat >= this.bounds.sw.lat &&
-            group.lng >= this.bounds.sw.lng &&
-            group.lat <= this.bounds.ne.lat &&
-            group.lng <= this.bounds.ne.lng
-          ) {
+        for (const group in this.allgroups) {
+          if (this.bounds.contains([group.lat, group.lng])) {
             ret.push(group)
           }
         }
       }
+
+      return ret
+    },
+    CGAs() {
+      const ret = []
+
+      this.allgroups.forEach(g => {
+        if (g.polyofficial) {
+          const wkt = new Wkt.Wkt()
+          wkt.read(g.polyofficial)
+          ret.push({
+            json: wkt.toJson(),
+            group: g
+          })
+        }
+      })
+
+      return ret
+    },
+    DPAs() {
+      const ret = []
+
+      this.allgroups.forEach(g => {
+        if (g.poly) {
+          const wkt = new Wkt.Wkt()
+          wkt.read(g.poly)
+          ret.push({
+            json: wkt.toJson(),
+            group: g
+          })
+        }
+      })
 
       return ret
     },
@@ -213,118 +273,92 @@ export default {
       if (this.bounds) {
         for (const location of locations) {
           if (
-            location.lat >= this.bounds.sw.lat &&
-            location.lng >= this.bounds.sw.lng &&
-            location.lat <= this.bounds.ne.lat &&
-            location.lng <= this.bounds.ne.lng
+            location.polygon &&
+            this.bounds.contains([location.lat, location.lng])
           ) {
-            ret.push(location)
+            const wkt = new Wkt.Wkt()
+            try {
+              wkt.read(location.polygon)
+              location.json = wkt.toJson()
+              ret.push(location)
+            } catch (e) {
+              console.log('WKT error', location)
+            }
           }
         }
       }
 
       return ret
-    }
-  },
-  watch: {
-    cga() {
-      this.addAreas(true)
     },
-    dpa() {
-      this.addAreas(true)
-    },
-    shade(newval) {
-      if (this.groups) {
-        this.addAreas(true)
-      } else {
-        this.areaMapped.forEach(a => {
-          a.obj.setOptions({
-            fillOpacity: newval ? FILL_OPACITY : 0
-          })
-        })
+    cgaOptions() {
+      return {
+        fillColor: AREA_FILL_COLOUR,
+        fillOpacity: this.shade ? FILL_OPACITY : 0,
+        color: CGA_BOUNDARY_COLOUR
       }
     },
-    locationsInBounds(newlocs) {
-      // Map all locations which are new
-      newlocs.forEach(l => {
-        if (!this.areaMapped[l.id] && l.polygon) {
-          const obj = this.mapPoly(l.polygon, {
-            strokeColor: AREA_BOUNDARY_COLOUR,
-            fillColor: AREA_FILL_COLOUR,
-            fillOpacity: FILL_OPACITY
-          })
-
-          this.areaMapped[l.id] = {
-            id: l.id,
-            obj: obj
-          }
-
-          const google = this.google()
-          google.maps.event.addListener(obj, 'click', () => {
-            this.selectArea(l.id, obj, l.name, '', l.polygon)
-          })
-        }
-      })
+    dpaOptions() {
+      return {
+        fillColor: AREA_FILL_COLOUR,
+        fillOpacity: this.shade ? FILL_OPACITY : 0,
+        color: DPA_BOUNDARY_COLOUR
+      }
     }
   },
-  async mounted() {
-    if (this.groups) {
-      // We want to show all groups
-      await this.$store.dispatch('group/list', {
-        grouptype: 'Freegle'
+  mounted() {
+    // Add the draw toolbar as per https://github.com/vue-leaflet/Vue2Leaflet/issues/331
+    this.$nextTick(() => {
+      const map = this.$refs.map.mapObject
+      console.log('L', L)
+
+      // Last layer is drawn items.  Seems to be, anyway.  Need to use this so that we can turn on editing for
+      // the locations we've already got, as well as any new ones we draw.
+      let drawnItems = null
+
+      map.eachLayer(l => {
+        drawnItems = l
       })
 
-      this.addAreas()
-    } else {
-      // Areas for a specific group.
-      await this.$store.dispatch('group/fetch', {
-        id: this.groupid,
-        polygon: true
-      })
+      if (drawnItems) {
+        const drawControl = new L.Control.Draw({
+          edit: {
+            featureGroup: drawnItems,
+            remove: false,
+            edit: false
+          },
+          position: 'topright',
+          draw: {
+            polyline: false,
+            polygon: true,
+            rectangle: false,
+            circle: false,
+            marker: false,
+            circlemarker: false
+          }
+        })
 
-      const group = this.$store.getters['group/get'](this.groupid)
+        map.addControl(drawControl)
 
-      // We want to find the area for this group.  Convert the CGA into an object so that we can get
-      // bounds from it.  Need to wait for the map to be loaded before we can start messing with google.
-      this.$refs.gmap.$mapPromise.then(map => {
-        const google = this.google()
+        map.on(L.Draw.Event.CREATED, e => {
+          // const type = e.layerType;
+          const layer = e.layer
+          layer.editing.enable()
+          layer.addTo(drawnItems)
 
-        // Set up idle handler for map
-        google.maps.event.addListener(map, 'idle', this.idle)
+          const wkt = new Wkt.Wkt()
+          wkt.fromObject(layer)
+          this.selectedWKT = wkt.write()
+          console.log('Created', this.selectedWKT)
+        })
 
-        // Now change the bounds of the map, which will cause that handler to kick in.
-        const wkt = new Wkt.Wkt()
-        wkt.read(group.cga)
-
-        const obj = wkt.toObject()
-        const bounds = obj.getBounds()
-        map.fitBounds(bounds)
-
-        if (this.groupid) {
-          // Can modify areas.
-          this.drawingManager = new google.maps.drawing.DrawingManager({
-            drawingControlOptions: {
-              position: google.maps.ControlPosition.TOP_RIGHT,
-              drawingModes: [google.maps.drawing.OverlayType.POLYGON]
-            },
-            markerOptions: map.defaults,
-            polygonOptions: map.defaults,
-            polylineOptions: map.defaults,
-            rectangleOptions: map.defaults
-          })
-
-          this.drawingManager.setMap(map)
-          google.maps.event.addListener(
-            this.drawingManager,
-            'overlaycomplete',
-            this.shapeAdded
-          )
-        }
-      })
-    }
+        map.on(L.Draw.Event.DRAWVERTEX, this.shapeChanged)
+        map.on(L.Draw.Event.EDITVERTEX, this.shapeChanged)
+      }
+    })
   },
   methods: {
     getAddressData: function(addressData, placeResultData, id) {
+      // TODO MAPS AUTOCOMPLETE
       if (
         addressData &&
         addressData.geometry &&
@@ -334,191 +368,47 @@ export default {
         this.$refs.gmap.$mapObject.setZoom(11)
       }
     },
-    zoomChanged: function(zoom) {
-      this.zoom = zoom
-    },
-    boundsChanged: function(bounds) {
-      if (bounds) {
-        this.bounds = {
-          ne: {
-            lat: bounds.getNorthEast().lat(),
-            lng: bounds.getNorthEast().lng()
-          },
-          sw: {
-            lat: bounds.getSouthWest().lat(),
-            lng: bounds.getSouthWest().lng()
-          }
-        }
-
-        this.addAreas()
-      }
-    },
-    mapPoly: function(poly, options) {
-      const wkt = new Wkt.Wkt()
-      wkt.read(poly)
-
-      const mapobj = this.$refs.gmap.$mapObject
-      const obj = wkt.toObject(mapobj.defaults)
-
-      if (obj) {
-        // This might be a multipolygon.
-        if (Array.isArray(obj)) {
-          for (const ent of obj) {
-            ent.setMap(mapobj)
-            ent.setOptions(options)
-          }
-        } else {
-          obj.setMap(mapobj)
-          obj.setOptions(options)
-        }
-      }
-
-      return obj
-    },
     clearSelection() {
-      if (this.selectedObj) {
-        this.selectedObj.setOptions({
-          strokeColor: AREA_BOUNDARY_COLOUR,
-          editable: false
-        })
-      }
-
       this.selectedObj = null
       this.selectedId = null
       this.selectedName = null
       this.selectedWKT = null
-    },
-    selectArea(id, obj, name, tag, poly) {
-      if (this.selectedObj) {
-        // Remove any colouring or changes to the previous selection.
-        this.cancelArea()
-      }
 
-      this.selectedName = name + ' ' + tag
-      this.selectedWKT = poly
-      this.savedName = name
-      this.savedWKT = poly
-      this.selectedObj = obj
-      this.selectedId = id
-      this.selectOldColour = obj.strokeColor
-
-      obj.setOptions({ strokeColor: SELECTED })
-
-      if (this.groupid) {
-        // Allow them to edit it.
-        obj.setOptions({ editable: true })
-        this.setHandlers()
+      if (this.$refs.map) {
+        // Re-enable map movement.
+        const mapobj = this.$refs.map.mapObject
+        mapobj._handlers.forEach(function(handler) {
+          handler.enable()
+        })
       }
     },
-    google() {
-      const google = gmapApi()
-
-      // No getBounds on polygon by default.
-      google.maps.Polygon.prototype.getBounds = function() {
-        const bounds = new google.maps.LatLngBounds()
-        const paths = this.getPaths()
-        let path
-        for (let i = 0; i < paths.getLength(); i++) {
-          path = paths.getAt(i)
-          for (let ii = 0; ii < path.getLength(); ii++) {
-            bounds.extend(path.getAt(ii))
-          }
-        }
-        return bounds
-      }
-
-      return google
+    selectCGA(g) {
+      this.selectedObj = g
+      this.selectedName = g.nameshort + ' CGA'
+      this.selectedWKT = g.polyofficial
     },
-    addAreas(clear) {
-      const google = gmapApi()
-      const mapobj = this.$refs.gmap.$mapObject
+    selectDPA(g) {
+      this.selectedObj = g
+      this.selectedName = g.nameshort + ' DPA'
+      this.selectedWKT = g.poly
+    },
+    selectLocation(l) {
+      this.selectedId = l.id
+      this.selectedObj = l
+      this.selectedName = l.name
+      this.selectedWKT = l.polygon
 
-      if (clear) {
-        this.cgaMapped.forEach(g => {
-          g.setMap(null)
-        })
-
-        this.dpaMapped.forEach(g => {
-          g.setMap(null)
-        })
-
-        this.groupCentres.forEach(g => {
-          g.setMap(null)
-        })
-
-        this.areaMapped.forEach(g => {
-          g.obj.setMap(null)
-        })
-
-        this.cgaMapped = []
-        this.dpaMapped = []
-        this.groupCentres = []
-        this.areaMapped = []
-      }
-
-      let options
-
-      if (this.groups) {
-        this.groupsInBounds.forEach(g => {
-          if (this.cga && g.polyofficial && !this.cgaMapped[g.id]) {
-            if (this.shade) {
-              options = {
-                strokeColor: CGA_BOUNDARY_COLOUR,
-                fillColor: GROUP_FILL_COLOUR,
-                fillOpacity: FILL_OPACITY
-              }
-            } else {
-              options = {
-                strokeColor: 'darkgreen',
-                fillOpacity: 0
-              }
-            }
-
-            const obj = this.mapPoly(g.polyofficial, options)
-            this.cgaMapped[g.id] = obj
-
-            google.maps.event.addListener(obj, 'click', () => {
-              this.selectArea(g.id, obj, g.namedisplay, 'CGA', g.polyofficial)
-            })
-          }
-
-          if (this.dpa && g.poly && !this.dpaMapped[g.id]) {
-            if (this.shade) {
-              options = {
-                strokeColor: DPA_BOUNDARY_COLOUR,
-                fillColor: GROUP_FILL_COLOUR,
-                fillOpacity: FILL_OPACITY
-              }
-            } else {
-              options = {
-                strokeColor: DPA_BOUNDARY_COLOUR,
-                fillOpacity: 0
-              }
-            }
-
-            const obj = this.mapPoly(g.poly, options)
-            this.dpaMapped[g.id] = obj
-
-            google.maps.event.addListener(obj, 'click', () => {
-              this.selectArea(g.id, obj, g.namedisplay, 'DPA', g.poly)
-            })
-          }
-
-          this.groupCentres[g.id] = new google.maps.Marker({
-            position: new google.maps.LatLng(g.lat, g.lng),
-            map: mapobj,
-            title: g.namedisplay,
-            icon: {
-              path: google.maps.SymbolPath.CIRCLE,
-              fillColor: CENTRE_FILL_COLOUR,
-              fillOpacity: 1,
-              strokeColor: CENTRE_BORDER_COLOUR,
-              strokeOpacity: 1,
-              strokeWeight: 1,
-              scale: 7
-            }
-          })
-        })
+      // Disable map movement to avoid triggering location reload.
+      const mapobj = this.$refs.map.mapObject
+      mapobj._handlers.forEach(function(handler) {
+        handler.disable()
+      })
+    },
+    shapeChanged(e) {
+      if (e.poly) {
+        const wkt = new Wkt.Wkt()
+        wkt.fromObject(e.poly)
+        this.selectedWKT = wkt.write()
       }
     },
     postcodeSelect(pc) {
@@ -528,83 +418,59 @@ export default {
       this.postcode = null
     },
     async idle() {
+      if (this.groupid && this.group) {
+        const group = this.$store.getters['group/get'](this.groupid)
+
+        if (group) {
+          let bounds
+
+          if (!this.initialGroupZoomed) {
+            // Zoom the map to fit the DPA/CGA of the group.  We need to do this before fetching the locations so that
+            // we don't fetch them for the whole country.
+            this.initialGroupZoomed = true
+            const area = this.group.dpa || this.group.cga
+
+            const wkt = new Wkt.Wkt()
+            wkt.read(area)
+            const mapobj = this.$refs.map.mapObject
+            const obj = wkt.toObject(mapobj.defaults)
+            bounds = obj.getBounds()
+            mapobj.fitBounds(bounds)
+          } else {
+            // Get the locations in this area
+            bounds = this.$refs.map.mapObject.getBounds()
+          }
+
+          this.busy = true
+
+          const data = {
+            swlat: bounds.getSouthWest().lat,
+            swlng: bounds.getSouthWest().lng,
+            nelat: bounds.getNorthEast().lat,
+            nelng: bounds.getNorthEast().lng
+          }
+
+          await this.$store.dispatch('locations/fetch', data)
+
+          this.busy = false
+        }
+      }
+    },
+    async boundsChanged() {
+      this.bounds = this.$refs.map.mapObject.getBounds()
+      this.zoom = this.$refs.map.mapObject.getZoom()
       this.busy = true
 
-      if (this.$refs.gmap) {
-        const bounds = this.$refs.gmap.$mapObject.getBounds()
-
-        const data = {
-          swlat: bounds.getSouthWest().lat(),
-          swlng: bounds.getSouthWest().lng(),
-          nelat: bounds.getNorthEast().lat(),
-          nelng: bounds.getNorthEast().lng()
-        }
-
-        await this.$store.dispatch('locations/fetch', data)
+      const data = {
+        swlat: this.bounds.getSouthWest().lat,
+        swlng: this.bounds.getSouthWest().lng,
+        nelat: this.bounds.getNorthEast().lat,
+        nelng: this.bounds.getNorthEast().lng
       }
+
+      await this.$store.dispatch('locations/fetch', data)
 
       this.busy = false
-    },
-    setHandlers() {
-      const google = this.google()
-
-      // New vertex is inserted
-      google.maps.event.addListener(
-        this.selectedObj.getPath(),
-        'insert_at',
-        this.changeHandler
-      )
-
-      // Existing vertex is removed (insertion is undone)
-      google.maps.event.addListener(
-        this.selectedObj.getPath(),
-        'remove_at',
-        this.changeHandler
-      )
-
-      // Existing vertex is moved (set elsewhere)
-      google.maps.event.addListener(
-        this.selectedObj.getPath(),
-        'set_at',
-        this.changeHandler
-      )
-
-      // Allow us to change this object.
-      this.selectedObj.setOptions({ editable: true })
-    },
-    shapeAdded(event) {
-      const google = this.google()
-
-      // We have drawn a new shape.
-      console.log('Shape added', event)
-
-      // Polygon drawn
-      const obj = event.overlay
-
-      // Set the drawing mode to "pan" (the hand) so users can immediately edit
-      this.drawingManager.setDrawingMode(null)
-
-      if (
-        event.type === google.maps.drawing.OverlayType.POLYGON ||
-        event.type === google.maps.drawing.OverlayType.POLYLINE
-      ) {
-        this.selectedObj = obj
-        this.selectedId = null
-        this.selectedName = null
-        this.savedName = null
-        this.savedWKT = null
-        this.setHandlers()
-        this.changeHandler()
-      }
-    },
-    changeHandler() {
-      // Get the data from the object and turn it into WKT.
-      console.log('Change on', this.selectedObj)
-      const wkt = new Wkt.Wkt()
-      wkt.fromObject(this.selectedObj)
-      const newwkt = wkt.write()
-      console.log('Got new WKT', newwkt)
-      this.selectedWKT = newwkt
     },
     async saveArea() {
       this.busy = true
@@ -625,6 +491,8 @@ export default {
       }
 
       this.clearSelection()
+      this.boundsChanged()
+
       this.busy = false
     },
     async deleteArea() {
@@ -635,24 +503,8 @@ export default {
         groupid: this.groupid
       })
 
-      // Remove from map
-      this.selectedObj.setMap(null)
-
       this.clearSelection()
       this.busy = false
-    },
-    cancelArea() {
-      // Delete the currently selected area from the map.
-      this.selectedObj.setMap(null)
-
-      // Restore data
-      this.selectedName = this.savedName
-      this.selectedWKT = this.savedWKT
-
-      if (this.selectedWKT) {
-        // Remap the restored data
-        this.mapPoly(this.selectedWKT)
-      }
     }
   }
 }
@@ -664,5 +516,256 @@ export default {
 
 .max {
   max-width: 300px;
+}
+
+/* Having trouble getting the CSS in here, so inlined.  Also added images. */
+::v-deep .leaflet-draw-section {
+  position: relative;
+}
+::v-deep .leaflet-draw-toolbar {
+  margin-top: 12px;
+}
+::v-deep .leaflet-draw-toolbar-top {
+  margin-top: 0;
+}
+::v-deep .leaflet-draw-toolbar-notop a:first-child {
+  border-top-right-radius: 0;
+}
+::v-deep .leaflet-draw-toolbar-nobottom a:last-child {
+  border-bottom-right-radius: 0;
+}
+::v-deep .leaflet-draw-toolbar a {
+  background-image: url('/drawtoolbar/spritesheet.png');
+  background-image: linear-gradient(transparent, transparent),
+    url('/drawtoolbar/spritesheet.svg');
+  background-repeat: no-repeat;
+  background-size: 300px 30px;
+  background-clip: padding-box;
+}
+::v-deep .leaflet-retina .leaflet-draw-toolbar a {
+  background-image: url('/drawtoolbar/spritesheet-2x.png');
+  background-image: linear-gradient(transparent, transparent),
+    url('/drawtoolbar/spritesheet.svg');
+}
+::v-deep .leaflet-draw a {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+}
+::v-deep .leaflet-draw a .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+::v-deep .leaflet-draw-actions {
+  display: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  left: 26px;
+  top: 0;
+  white-space: nowrap;
+}
+::v-deep .leaflet-touch .leaflet-draw-actions {
+  left: 32px;
+}
+::v-deep .leaflet-right .leaflet-draw-actions {
+  right: 26px;
+  left: auto;
+}
+::v-deep .leaflet-touch .leaflet-right .leaflet-draw-actions {
+  right: 32px;
+  left: auto;
+}
+::v-deep .leaflet-draw-actions li {
+  display: inline-block;
+}
+::v-deep .leaflet-draw-actions li:first-child a {
+  border-left: 0;
+}
+::v-deep .leaflet-draw-actions li:last-child a {
+  -webkit-border-radius: 0 4px 4px 0;
+  border-radius: 0 4px 4px 0;
+}
+::v-deep .leaflet-right .leaflet-draw-actions li:last-child a {
+  -webkit-border-radius: 0;
+  border-radius: 0;
+}
+::v-deep .leaflet-right .leaflet-draw-actions li:first-child a {
+  -webkit-border-radius: 4px 0 0 4px;
+  border-radius: 4px 0 0 4px;
+}
+::v-deep .leaflet-draw-actions a {
+  background-color: #919187;
+  border-left: 1px solid #aaa;
+  color: #fff;
+  font: 11px/19px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  line-height: 28px;
+  text-decoration: none;
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 28px;
+}
+::v-deep .leaflet-touch .leaflet-draw-actions a {
+  font-size: 12px;
+  line-height: 30px;
+  height: 30px;
+}
+::v-deep .leaflet-draw-actions-bottom {
+  margin-top: 0;
+}
+::v-deep .leaflet-draw-actions-top {
+  margin-top: 1px;
+}
+::v-deep .leaflet-draw-actions-top a,
+.leaflet-draw-actions-bottom a {
+  height: 27px;
+  line-height: 27px;
+}
+::v-deep .leaflet-draw-actions a:hover {
+  background-color: #a0a098;
+}
+::v-deep .leaflet-draw-actions-top.leaflet-draw-actions-bottom a {
+  height: 26px;
+  line-height: 26px;
+}
+::v-deep .leaflet-draw-toolbar .leaflet-draw-draw-polyline {
+  background-position: -2px -2px;
+}
+::v-deep .leaflet-touch .leaflet-draw-toolbar .leaflet-draw-draw-polyline {
+  background-position: 0 -1px;
+}
+::v-deep .leaflet-draw-toolbar .leaflet-draw-draw-polygon {
+  background-position: -31px -2px;
+}
+::v-deep .leaflet-touch .leaflet-draw-toolbar .leaflet-draw-draw-polygon {
+  background-position: -29px -1px;
+}
+::v-deep .leaflet-draw-toolbar .leaflet-draw-draw-rectangle {
+  background-position: -62px -2px;
+}
+::v-deep .leaflet-touch .leaflet-draw-toolbar .leaflet-draw-draw-rectangle {
+  background-position: -60px -1px;
+}
+::v-deep .leaflet-draw-toolbar .leaflet-draw-draw-circle {
+  background-position: -92px -2px;
+}
+::v-deep .leaflet-touch .leaflet-draw-toolbar .leaflet-draw-draw-circle {
+  background-position: -90px -1px;
+}
+::v-deep .leaflet-draw-toolbar .leaflet-draw-draw-marker {
+  background-position: -122px -2px;
+}
+::v-deep .leaflet-touch .leaflet-draw-toolbar .leaflet-draw-draw-marker {
+  background-position: -120px -1px;
+}
+::v-deep .leaflet-draw-toolbar .leaflet-draw-draw-circlemarker {
+  background-position: -273px -2px;
+}
+::v-deep .leaflet-touch .leaflet-draw-toolbar .leaflet-draw-draw-circlemarker {
+  background-position: -271px -1px;
+}
+::v-deep .leaflet-draw-toolbar .leaflet-draw-edit-edit {
+  background-position: -152px -2px;
+}
+::v-deep .leaflet-touch .leaflet-draw-toolbar .leaflet-draw-edit-edit {
+  background-position: -150px -1px;
+}
+::v-deep .leaflet-draw-toolbar .leaflet-draw-edit-remove {
+  background-position: -182px -2px;
+}
+::v-deep .leaflet-touch .leaflet-draw-toolbar .leaflet-draw-edit-remove {
+  background-position: -180px -1px;
+}
+::v-deep .leaflet-draw-toolbar .leaflet-draw-edit-edit.leaflet-disabled {
+  background-position: -212px -2px;
+}
+::v-deep
+  .leaflet-touch
+  .leaflet-draw-toolbar
+  .leaflet-draw-edit-edit.leaflet-disabled {
+  background-position: -210px -1px;
+}
+::v-deep .leaflet-draw-toolbar .leaflet-draw-edit-remove.leaflet-disabled {
+  background-position: -242px -2px;
+}
+::v-deep
+  .leaflet-touch
+  .leaflet-draw-toolbar
+  .leaflet-draw-edit-remove.leaflet-disabled {
+  background-position: -240px -2px;
+}
+::v-deep .leaflet-mouse-marker {
+  background-color: #fff;
+  cursor: crosshair;
+}
+::v-deep .leaflet-draw-tooltip {
+  background: #363636;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid transparent;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  color: #fff;
+  font: 12px/18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  margin-left: 20px;
+  margin-top: -21px;
+  padding: 4px 8px;
+  position: absolute;
+  visibility: hidden;
+  white-space: nowrap;
+  z-index: 6;
+}
+::v-deep .leaflet-draw-tooltip:before {
+  border-right: 6px solid black;
+  border-right-color: rgba(0, 0, 0, 0.5);
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  content: '';
+  position: absolute;
+  top: 7px;
+  left: -7px;
+}
+::v-deep .leaflet-error-draw-tooltip {
+  background-color: #f2dede;
+  border: 1px solid #e6b6bd;
+  color: #b94a48;
+}
+::v-deep .leaflet-error-draw-tooltip:before {
+  border-right-color: #e6b6bd;
+}
+::v-deep .leaflet-draw-tooltip-single {
+  margin-top: -12px;
+}
+::v-deep .leaflet-draw-tooltip-subtext {
+  color: #f8d5e4;
+}
+::v-deep .leaflet-draw-guide-dash {
+  font-size: 1%;
+  opacity: 0.6;
+  position: absolute;
+  width: 5px;
+  height: 5px;
+}
+::v-deep .leaflet-edit-marker-selected {
+  background-color: rgba(254, 87, 161, 0.1);
+  border: 4px dashed rgba(254, 87, 161, 0.6);
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  box-sizing: content-box;
+}
+::v-deep .leaflet-edit-move {
+  cursor: move;
+}
+::v-deep .leaflet-edit-resize {
+  cursor: pointer;
+}
+::v-deep .leaflet-oldie .leaflet-draw-toolbar {
+  border: 1px solid #999;
 }
 </style>

@@ -20,6 +20,7 @@ export const mutations = {
   },
 
   setHeatmap(state, heatmap) {
+    console.log('Set heatmap', heatmap)
     state.Heatmap = heatmap
   },
 

@@ -17,29 +17,28 @@
     <p class="mt-1">
       <b>We need your help to get more people freegling</b>.  Could you put one up too?
     </p>
-    <iframe
-      width="100%"
-      height="200"
-      frameborder="0"
-      style="border:0"
-      :src="'https://www.google.com/maps/embed/v1/place?key=AIzaSyArVxoX781qdcbmQZi1PKHX-qa0bPbboH4&q=' + info.lat + ',' + info.lng"
-      allowfullscreen
-    />
-    <b-row class="mt-2 d-flex flex-wrap justify-content-between">
-      <b-col>
-        <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
-        <nuxt-link to="/spread">
-          <b-btn
-            variant="secondary"
-            size="sm"
-            class="d-inline-block"
-            @click="share"
-          >
-            <v-icon name="bullhorn" /> Put up a poster
-          </b-btn>
-        </nuxt-link>
-      </b-col>
-    </b-row>
+    <l-map
+      ref="map"
+      :zoom="14"
+      :center="[info.lat, info.lng]"
+      :style="'width: 100%; height: 200px'"
+    >
+      <l-tile-layer :url="osmtile" :attribution="attribution" />
+      <l-marker :lat-lng="[info.lat, info.lng]" :interactive="false" />
+    </l-map>
+    <div class="mt-2 d-flex flex-wrap justify-content-between">
+      <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
+      <nuxt-link to="/spread">
+        <b-btn
+          variant="secondary"
+          size="sm"
+          class="d-inline-block"
+          @click="share"
+        >
+          <v-icon name="bullhorn" /> Put up a poster
+        </b-btn>
+      </nuxt-link>
+    </div>
   </div>
 </template>
 <script>
@@ -48,6 +47,7 @@ import NewsBase from '~/components/NewsBase'
 import NewsUserIntro from '~/components/NewsUserIntro'
 import NewsLoveComment from '~/components/NewsLoveComment'
 import NoticeMessage from '~/components/NoticeMessage'
+import map from '@/mixins/map.js'
 
 export default {
   components: {
@@ -56,6 +56,7 @@ export default {
     NoticeMessage
   },
   extends: NewsBase,
+  mixins: [map],
   computed: {
     info() {
       let info = {}

@@ -18,7 +18,7 @@
                 </b-input-group>
               </div>
             </div>
-            <Diff v-else-if="editreview" :old="oldSubject" :new="newSubject" class="font-weight-bold" />
+            <Diff v-else-if="editreview && oldSubject && newSubject" :old="oldSubject" :new="newSubject" class="font-weight-bold" />
             <div v-else :class="subjectClass + ' font-weight-bold'">
               {{ eSubject }}
               <span v-if="message.location" class="text-muted small">{{ message.location.name }}</span>
@@ -98,7 +98,13 @@
                 class="mb-3"
               />
               <!-- eslint-disable-next-line -->
-              <Diff v-else-if="editreview" class="mb-3 rounded border p-2 preline forcebreak font-weight-bold" :old="oldBody" :new="newBody" />
+              <div v-else-if="editreview">
+                <h4>Differences:</h4>
+                <Diff class="mb-3 rounded border border-warning p-2 preline forcebreak font-weight-bold" :old="oldBody" :new="newBody" />
+                <h4>New version:</h4>
+                <!-- eslint-disable-next-line -->
+                <div class="mb-3 rounded border border-success p-2 preline forcebreak font-weight-bold">{{ newBody }}</div>
+              </div>
               <!-- eslint-disable-next-line -->
               <div v-else-if="!eBody" class="mb-3 rounded border p-2 preline forcebreak font-weight-bold"><em>This message is blank.</em></div>
               <!-- eslint-disable-next-line -->
@@ -112,9 +118,14 @@
           <b-col cols="12" lg="4">
             <div class="rounded border border-info p-2 d-flex justify-content-between flex-wrap">
               <MessageUserInfo v-if="message.fromuser && message.groups && message.groups.length" :message="message" :user="message.fromuser" modinfo :groupid="message.groups[0].groupid" />
-              <NoticeMessage v-else variant="danger">
-                Can't identify sender.  Probably a bug.
-              </NoticeMessage>
+              <div v-else>
+                <NoticeMessage v-if="message.myrole === 'Non-member' || message.myrole === 'Member'" variant="danger">
+                  Sender only available to mods.
+                </NoticeMessage>
+                <NoticeMessage v-else variant="danger">
+                  Can't identify sender.  Could have been purged but probably a bug.
+                </NoticeMessage>
+              </div>
             </div>
             <div class="d-flex justify-content-between flex-wrap">
               <b-btn variant="link" @click="toggleMail">

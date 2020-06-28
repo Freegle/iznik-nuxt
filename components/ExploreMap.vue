@@ -3,7 +3,7 @@
     <b-row class="text-center m-0">
       <b-col cols="12" lg="6" offset-lg="3">
         <div v-if="region">
-          <h1>Freegle communities in {{ region }}</h1>
+          <h1>Freegle communities in {{ region }} zoom {{ zoom }}</h1>
         </div>
         <div v-else>
           <h1>Explore Freegle communities across the UK!</h1>
@@ -16,7 +16,9 @@
     <b-row v-if="!region" class="m-0">
       <b-col cols="12" lg="2" offset-lg="5" class="text-center">
         <client-only>
+          <!--          TODO MAPS AUTOCOMPLETE -->
           <gmap-autocomplete
+            v-if="false"
             id="autocomplete"
             v-focus
             class="form-control"
@@ -31,7 +33,7 @@
     <b-row v-if="!region && regions.length" class="m-0">
       <b-col cols="12" lg="6" offset-lg="3" class="mt-2">
         <h5 class="text-center">
-          Or choose a region:
+          Choose a region:
         </h5>
         <b-list-group horizontal class="flex flex-wrap justify-content-center">
           <b-list-group-item v-for="r in regions" :key="r" class="p-0 mt-2 ml-2 mr-2">
@@ -45,29 +47,19 @@
     <b-row class="m-0">
       <b-col ref="mapcont" cols="12" lg="6" offset-lg="3" class="mt-4">
         <client-only>
-          <GmapMap
-            ref="gmap"
-            :center="{lat:53.9450, lng:-2.5209}"
+          <l-map
+            ref="map"
             :zoom="5"
+            :center="center"
             :style="'width: ' + mapWidth + '; height: ' + mapWidth + 'px'"
-            :options="{
-              zoomControl: true,
-              mapTypeControl: false,
-              scaleControl: false,
-              streetViewControl: false,
-              rotateControl: false,
-              fullscreenControl: true,
-              disableDefaultUi: false,
-              gestureHandling: 'greedy'
-            }"
-            @zoom_changed="zoomChanged"
-            @bounds_changed="boundsChanged"
-            @idle="idle"
+            :min-zoom="5"
+            :max-zoom="13"
+            @update:bounds="boundsChanged"
+            @ready="idle"
           >
-            <div v-for="g in groupsInBounds" :key="'marker-' + g.id + '-' + zoom">
-              <GroupMarker v-if="g.onmap" :group="g" :size="largeMarkers ? 'rich' : 'poor'" />
-            </div>
-          </GmapMap>
+            <l-tile-layer :url="osmtile" :attribution="attribution" />
+            <GroupMarker v-for="g in groupsInBounds" :key="'marker-' + g.id + '-' + zoom" :group="g" :size="largeMarkers ? 'rich' : 'poor'" />
+          </l-map>
         </client-only>
       </b-col>
     </b-row>
@@ -144,10 +136,11 @@
 </template>
 
 <script>
+import L from 'leaflet'
 import InfiniteLoading from 'vue-infinite-loading'
-import { gmapApi } from 'vue2-google-maps'
 import GroupMarker from '~/components/GroupMarker.vue'
 import GroupProfileImage from '~/components/GroupProfileImage'
+import map from '@/mixins/map.js'
 const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
@@ -157,6 +150,7 @@ export default {
     GroupProfileImage,
     ExternalLink
   },
+  mixins: [map],
   props: {
     region: {
       type: String,
@@ -191,10 +185,9 @@ export default {
   },
   data: function() {
     return {
-      zoom: 5,
-      bounds: null,
       showList: 0,
       distance: 1000,
+      // TODO MAPS AUTOCOMPLETE
       gb: {
         componentRestrictions: {
           country: ['gb']
@@ -213,20 +206,6 @@ export default {
     },
     groupCount() {
       return this.groups ? Object.keys(this.groups).length : 0
-    },
-    mapHeight() {
-      const contWidth = this.$refs.mapcont ? this.$refs.mapcont.$el.width : 0
-      return contWidth
-    },
-    mapWidth() {
-      let height = 0
-
-      if (process.browser) {
-        height = Math.floor(window.innerHeight / 2)
-        height = height < 200 ? 200 : height
-      }
-
-      return height
     },
     groups() {
       return this.$store.getters['group/list']
@@ -258,17 +237,18 @@ export default {
         // SSR - return all for SRO.
         for (const ix in groups) {
           const group = groups[ix]
-          ret.push(group)
+
+          if (group.onmap) {
+            ret.push(group)
+          }
         }
       } else if (this.bounds) {
         for (const ix in groups) {
           const group = groups[ix]
 
           if (
-            group.lat >= this.bounds.sw.lat &&
-            group.lng >= this.bounds.sw.lng &&
-            group.lat <= this.bounds.ne.lat &&
-            group.lng <= this.bounds.ne.lng &&
+            group.onmap &&
+            this.bounds.contains([group.lat, group.lng]) &&
             (this.region === null || this.region === group.region)
           ) {
             ret.push(group)
@@ -297,6 +277,7 @@ export default {
 
   methods: {
     getAddressData: function(addressData, placeResultData, id) {
+      // TODO MAPS AUTOCOMPLETE
       if (
         addressData &&
         addressData.geometry &&
@@ -304,25 +285,6 @@ export default {
       ) {
         this.$refs.gmap.$mapObject.setCenter(addressData.geometry.location)
         this.$refs.gmap.$mapObject.setZoom(11)
-      }
-    },
-    zoomChanged: function(zoom) {
-      this.zoom = zoom
-    },
-    boundsChanged: function(bounds) {
-      if (bounds) {
-        this.bounds = {
-          ne: {
-            lat: bounds.getNorthEast().lat(),
-            lng: bounds.getNorthEast().lng()
-          },
-          sw: {
-            lat: bounds.getSouthWest().lat(),
-            lng: bounds.getSouthWest().lng()
-          }
-        }
-
-        this.setUrl()
       }
     },
     setUrl: function() {
@@ -335,13 +297,13 @@ export default {
         url =
           url +
           '?bounds=' +
-          Math.round(this.bounds.sw.lat * precis) / precis +
+          Math.round(this.bounds.getSouthWest().lat * precis) / precis +
           ',' +
-          Math.round(this.bounds.sw.lng * precis) / precis +
+          Math.round(this.bounds.getSouthWest().lng * precis) / precis +
           ',' +
-          Math.round(this.bounds.ne.lat * precis) / precis +
+          Math.round(this.bounds.getNorthEast().lat * precis) / precis +
           ',' +
-          Math.round(this.bounds.ne.lng * precis) / precis
+          Math.round(this.bounds.getNorthEast().lng * precis) / precis
         this.$router.replace(url)
       }
     },
@@ -354,39 +316,36 @@ export default {
         $state.complete()
       }
     },
-    idle() {
-      const google = gmapApi()
+    idle(map) {
+      // The focus and zoom on the map should only be set on its initial load.  The initialBounds property controls
+      // that.
+      this.boundsChanged()
 
-      // The focus and zoom on the map should only be set on it's inital load.
-      // The initialBounds property controls that
       if (!this.initialBounds) {
         if (this.swlat || this.swlng) {
           // Specific bounds have been passed in so use them
           this.initialBounds = true
-
-          this.$refs.gmap.$mapObject.fitBounds(
-            new google.maps.LatLngBounds(
-              new google.maps.LatLng(this.swlat, this.swlng),
-              new google.maps.LatLng(this.nelat, this.nelng)
-            ),
-            0
-          )
+          map.fitBounds([[this.swlat, this.swlng], [this.nelat, this.nelng]])
         } else if (this.region && this.groupsInBounds) {
           // We are displaying a specific region so zoom to it
           this.initialBounds = true
 
-          const latlngbounds = new google.maps.LatLngBounds()
-
           if (this.groupsInBounds) {
+            const markers = []
             this.groupsInBounds.forEach(group => {
               if (group.onmap) {
-                latlngbounds.extend(
-                  new google.maps.LatLng(group.lat, group.lng)
-                )
+                // eslint-disable-next-line new-cap
+                markers.push(new L.marker([group.lat, group.lng]))
               }
             })
 
-            this.$refs.gmap.$mapObject.fitBounds(latlngbounds)
+            // eslint-disable-next-line new-cap
+            const fg = new L.featureGroup(markers)
+            const bounds = fg.getBounds()
+
+            if (bounds) {
+              map.fitBounds(bounds)
+            }
           }
         }
       }
