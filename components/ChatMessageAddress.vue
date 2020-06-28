@@ -55,7 +55,7 @@
                 <b-col>
                   <l-map
                     ref="map"
-                    :zoom="16"
+                    :zoom="14"
                     :center="[chatmessage.address.postcode.lat, chatmessage.address.postcode.lng]"
                     :style="'width: 100%; height: 200px'"
                   >
