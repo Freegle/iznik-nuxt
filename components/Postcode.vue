@@ -1,37 +1,39 @@
 <template>
   <div class="d-flex">
-    <autocomplete
-      id="postcodeautocomplete"
-      ref="autocomplete"
-      restrict
-      :url="source"
-      param="typeahead"
-      anchor="name"
-      label=""
-      placeholder="Type postcode"
-      :classes="{ input: 'form-control form-control-' + size + ' text-center pcinp', list: 'postcodelist' }"
-      class="mr-1"
-      :min="3"
-      :debounce="200"
-      :process="process"
-      :on-select="select"
-      :size="10"
-      @invalid="invalid"
-    />
+    <client-only>
+      <autocomplete
+        id="postcodeautocomplete"
+        ref="autocomplete"
+        restrict
+        :url="source"
+        param="typeahead"
+        anchor="name"
+        label=""
+        placeholder="Type postcode"
+        :classes="{ input: 'form-control form-control-' + size + ' text-center pcinp', list: 'postcodelist' }"
+        class="mr-1"
+        :min="3"
+        :debounce="200"
+        :process="process"
+        :on-select="select"
+        :size="10"
+        @invalid="invalid"
+      />
 
-    <div v-if="find">
-      <b-button variant="secondary" :size="size" title="Find my device's location instead of typing a postcode" @click="findLoc">
-        <v-icon v-if="locating" name="sync" class="fa-spin" />
-        <v-icon v-else-if="locationFailed" name="exclamation-triangle" />
-        <v-icon v-else name="map-marker-alt" />
-      </b-button>
-    </div>
+      <div v-if="find">
+        <b-button variant="secondary" :size="size" title="Find my device's location instead of typing a postcode" @click="findLoc">
+          <v-icon v-if="locating" name="sync" class="fa-spin" />
+          <v-icon v-else-if="locationFailed" name="exclamation-triangle" />
+          <v-icon v-else name="map-marker-alt" />
+        </b-button>
+      </div>
 
-    <b-tooltip :show.sync="showToolTip" target="postcodeautocomplete" placement="top" variant="primary" triggers="">
-      <b>Your device thinks you're here.<br><br>
+      <b-tooltip :show.sync="showToolTip" target="postcodeautocomplete" placement="top" variant="primary" triggers="">
+        <b>Your device thinks you're here.<br><br>
 
-        If it's wrong, please change it.</b>
-    </b-tooltip>
+          If it's wrong, please change it.</b>
+      </b-tooltip>
+    </client-only>
   </div>
 </template>
 <script>
