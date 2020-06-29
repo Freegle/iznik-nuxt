@@ -1,7 +1,7 @@
 <template>
   <b-row class="m-0">
     <b-col cols="12" lg="6" offset-lg="3">
-      <!--      <WizardProgress :active-stage="1" class="d-none " />-->
+      <WizardProgress :active-stage="1" class="d-none " />
       <CovidWarning class="mt-2" />
       <h1 class="text-center">
         First, tell us where you are
@@ -87,7 +87,7 @@ import compose from '@/mixins/compose.js'
 
 const Postcode = () => import('~/components/Postcode')
 const ComposeGroup = () => import('~/components/ComposeGroup')
-// const WizardProgress = () => import('~/components/WizardProgress')
+const WizardProgress = () => import('~/components/WizardProgress')
 
 export default {
   options: () => {},
@@ -96,8 +96,8 @@ export default {
     CovidWarning,
     NoticeMessage,
     Postcode,
-    ComposeGroup
-    // WizardProgress
+    ComposeGroup,
+    WizardProgress
   },
   mixins: [loginOptional, buildHead, compose],
   data() {
