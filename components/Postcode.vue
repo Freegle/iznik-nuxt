@@ -154,6 +154,7 @@ export default {
     invalid() {
       // Parent might want to know that we don't have a valid postcode any more.
       this.$emit('cleared')
+      this.wip = null
       this.results = []
     },
     keydown(e) {
