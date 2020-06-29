@@ -21,6 +21,9 @@
         <b-form-checkbox v-if="groups" v-model="dpa" class="ml-2">
           <b style="color: darkblue">Show DPAs</b>
         </b-form-checkbox>
+        <b-form-checkbox v-if="groupid" v-model="labels" class="ml-2">
+          <b>Labels</b>
+        </b-form-checkbox>
         <b-form-checkbox v-model="shade" class="ml-2">
           <b>Shade areas</b>
         </b-form-checkbox>
@@ -55,6 +58,7 @@
                   :location="l"
                   :selected="selectedObj === l"
                   :shade="shade"
+                  :labels="labels"
                   @click="selectLocation(l)"
                 />
               </l-feature-group>
@@ -188,6 +192,7 @@ export default {
       dpa: false,
       cga: true,
       shade: true,
+      labels: true,
       selectedName: null,
       selectedWKT: null,
       selectedObj: null,
