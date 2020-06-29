@@ -489,8 +489,7 @@ module.exports = {
             require.resolve('@nuxt/babel-preset-app'),
             {
               targets,
-              corejs: 3,
-              debug: false
+              corejs: 3
               // debug: process.env.NODE_ENV === 'production'
             }
           ]
