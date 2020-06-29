@@ -2,7 +2,7 @@
   <b-row class="m-0">
     <b-col cols="12" lg="6" offset-lg="3">
       <WizardProgress :active-stage="1" class="d-none " />
-      <!--      <CovidWarning class="mt-2" />-->
+      <CovidWarning class="mt-2" />
       <h1 class="text-center">
         First, tell us where you are
       </h1>
@@ -79,7 +79,7 @@ select {
 
 <script>
 import NoticeMessage from '../../components/NoticeMessage'
-// import CovidWarning from '../../components/CovidWarning'
+import CovidWarning from '../../components/CovidWarning'
 import CovidClosed from '../../components/CovidClosed'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
@@ -93,7 +93,7 @@ export default {
   options: () => {},
   components: {
     CovidClosed,
-    // CovidWarning,
+    CovidWarning,
     NoticeMessage,
     Postcode,
     ComposeGroup,
