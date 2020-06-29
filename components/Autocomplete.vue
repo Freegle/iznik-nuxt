@@ -635,6 +635,10 @@ export default {
   right: 48%;
 }
 
+::v-deep .postcodelist.autocomplete ul {
+  position: initial;
+}
+
 /*.autocomplete ul:before{*/
 /*content: "";*/
 /*display: block;*/
