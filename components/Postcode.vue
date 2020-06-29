@@ -6,9 +6,10 @@
       restrict
       :url="source"
       param="typeahead"
+      :custom-params="{ pconly: pconly }"
       anchor="name"
       label=""
-      placeholder="Type postcode"
+      :placeholder="pconly ? 'Type postcode' : 'Type location'"
       :classes="{ input: 'form-control form-control-' + size + ' text-center pcinp', list: 'postcodelist' }"
       class="mr-1"
       :min="3"
@@ -65,6 +66,11 @@ export default {
       type: String,
       required: false,
       default: 'lg'
+    },
+    pconly: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
   data() {
@@ -87,7 +93,7 @@ export default {
     // need to render this on the server.
     let value = this.value
 
-    if (!this.value) {
+    if (this.pconly && !value) {
       // If we are logged in then we may have a known location to use as the default.
       value =
         this.$store.getters['auth/user'] &&
@@ -97,7 +103,7 @@ export default {
           : null
     }
 
-    if (!value) {
+    if (this.pconly && !value) {
       // We might have one we are composing.
       const pc = this.$store.getters['compose/getPostcode']
 
@@ -148,7 +154,18 @@ export default {
       }
     },
     process(results) {
-      const ret = results.locations.slice(0, 5)
+      const names = []
+      const ret = []
+
+      for (let i = 0; i < results.locations.length && names.length < 5; i++) {
+        const loc = results.locations[i]
+
+        if (names.indexOf(loc.name) === -1) {
+          names.push(loc.name)
+          ret.push(loc)
+        }
+      }
+
       this.results = ret
       return ret
     },

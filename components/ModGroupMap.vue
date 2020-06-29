@@ -3,16 +3,6 @@
     <client-only>
       <div class="maptools d-flex mb-1 justify-content-between">
         <div class="d-flex">
-          <!--          TODO MAPS AUTOCOMPLETE-->
-          <gmap-autocomplete
-            v-if="false"
-            id="autocomplete"
-            v-focus
-            class="form-control max"
-            placeholder="Enter a location"
-            :options="gb"
-            @place_changed="getAddressData"
-          />
           <v-icon name="sync" :class="busy ? 'text-success fa-spin ml-4 mt-1' : 'text-faded ml-4 mt-1'" scale="2" />
         </div>
         <b-form-checkbox v-if="groups" v-model="cga" class="ml-2">
@@ -98,6 +88,15 @@
           </b-card>
           <b-card no-body>
             <b-card-header class="bg-info">
+              Search Map
+            </b-card-header>
+            <b-card-body>
+              <p>This search is a bit odd sometimes, but it's free, so don't knock it.</p>
+              <Postcode :find="false" :pconly="false" @selected="flyTo" />
+            </b-card-body>
+          </b-card>
+          <b-card no-body>
+            <b-card-header class="bg-info">
               Postcode Tester
             </b-card-header>
             <b-card-body>
@@ -178,17 +177,6 @@ export default {
       cgas: [],
       dpas: [],
       initialGroupZoomed: false,
-
-      // TODO MAPS AUTOCOMPLETE
-      gb: {
-        componentRestrictions: {
-          country: ['gb']
-        }
-      },
-      cgaMapped: [],
-      dpaMapped: [],
-      groupCentres: [],
-      areaMapped: [],
       dpa: false,
       cga: true,
       shade: true,
@@ -197,9 +185,6 @@ export default {
       selectedWKT: null,
       selectedObj: null,
       selectedId: null,
-      savedName: null,
-      savedWKT: null,
-      selectOldColour: null,
       postcode: null,
       busy: false
     }
@@ -363,17 +348,6 @@ export default {
     })
   },
   methods: {
-    getAddressData: function(addressData, placeResultData, id) {
-      // TODO MAPS AUTOCOMPLETE
-      if (
-        addressData &&
-        addressData.geometry &&
-        addressData.geometry.location
-      ) {
-        this.$refs.gmap.$mapObject.setCenter(addressData.geometry.location)
-        this.$refs.gmap.$mapObject.setZoom(11)
-      }
-    },
     clearSelection() {
       this.selectedObj = null
       this.selectedId = null
@@ -419,7 +393,9 @@ export default {
     },
     postcodeSelect(pc) {
       this.postcode = pc
-      this.$refs.map.mapObject.flyTo([pc.lat, pc.lng, 16])
+    },
+    flyTo(pc) {
+      this.$refs.map.mapObject.flyTo([pc.lat, pc.lng, 15])
     },
     postcodeClear() {
       this.postcode = null
