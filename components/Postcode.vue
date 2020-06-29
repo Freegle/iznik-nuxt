@@ -97,6 +97,15 @@ export default {
           : null
     }
 
+    if (!value) {
+      // We might have one we are composing.
+      const pc = this.$store.getters['compose/getPostcode']
+
+      if (pc && pc.name) {
+        value = pc.name
+      }
+    }
+
     if (value) {
       // Got one Set this as the default in the input.
       this.$refs.autocomplete.setValue(value)
