@@ -3,6 +3,7 @@
     <autocomplete
       id="postcodeautocomplete"
       ref="autocomplete"
+      v-model="wip"
       restrict
       :url="source"
       param="typeahead"
@@ -20,7 +21,7 @@
       @invalid="invalid"
     />
 
-    <div v-if="find">
+    <div v-if="find && !wip">
       <b-button variant="secondary" :size="size" title="Find my device's location instead of typing a postcode" @click="findLoc">
         <v-icon v-if="locating" name="sync" class="fa-spin" />
         <v-icon v-else-if="locationFailed" name="exclamation-triangle" />
@@ -32,6 +33,16 @@
       <b>Your device thinks you're here.<br><br>
 
         If it's wrong, please change it.</b>
+    </b-tooltip>
+    <b-tooltip
+      :show="wip && (!results || !results.length)"
+      target="postcodeautocomplete"
+      placement="top"
+      variant="primary"
+      triggers=""
+      :delay="{ show: 1000 }"
+    >
+      Keep typing your full postcode...
     </b-tooltip>
   </div>
 </template>
@@ -80,7 +91,8 @@ export default {
       mylocation: null,
       locating: false,
       locationFailed: false,
-      showToolTip: false
+      showToolTip: false,
+      wip: null
     }
   },
   async mounted() {
@@ -142,7 +154,7 @@ export default {
     invalid() {
       // Parent might want to know that we don't have a valid postcode any more.
       this.$emit('cleared')
-      this.results = null
+      this.results = []
     },
     keydown(e) {
       if (e.which === 8) {
