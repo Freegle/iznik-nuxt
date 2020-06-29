@@ -278,6 +278,7 @@ export default {
       if (this.bounds) {
         for (const location of locations) {
           if (
+            location &&
             location.polygon &&
             this.bounds.contains([location.lat, location.lng])
           ) {
@@ -418,6 +419,7 @@ export default {
     },
     postcodeSelect(pc) {
       this.postcode = pc
+      this.$refs.map.mapObject.flyTo([pc.lat, pc.lng, 16])
     },
     postcodeClear() {
       this.postcode = null
