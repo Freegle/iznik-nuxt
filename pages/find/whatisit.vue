@@ -46,7 +46,7 @@
             </transition>
           </b-col>
         </b-row>
-        <b-row>
+        <b-row v-if="!valid">
           <b-col cols="12" md="6" offset-md="3" class="text-center pt-2">
             <transition name="fade">
               <NoticeMessage variant="info">
