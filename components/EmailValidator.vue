@@ -123,6 +123,10 @@ export default {
           this.$v.$touch()
         } else {
           this.$v.$reset()
+
+          // Signal that the email is no longer valid.  The watch doesn't get called to make this happen, so you
+          // can end up with an empty email by typing one, then selecting and deleting it.
+          this.$emit('update:valid', false)
         }
       }
     },
