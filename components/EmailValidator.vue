@@ -81,6 +81,7 @@ export default {
     email: {
       immediate: true,
       async handler(newVal) {
+        console.log('Email watch', newVal)
         if (newVal && newVal.indexOf('@') !== -1) {
           // Ask the server to spot typos in this domain.
           const domain = newVal.substring(newVal.indexOf('@') + 1)
@@ -117,7 +118,10 @@ export default {
     },
     checkState(email) {
       if (email !== this.email) {
-        this.$emit('update:email', email ? email.trim() : null)
+        // Emitting a null or '' value does not trigger an update of the prop in the parent.  I don't know whether
+        // this is intentional, but the consequence is that the email appears to remain valid.  By emitting a space
+        // we at least trigger this component to update and notice that the email is not valid.
+        this.$emit('update:email', email ? email.trim() : ' ')
 
         if (email && !this.focused) {
           this.$v.$touch()
