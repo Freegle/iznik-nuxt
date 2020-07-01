@@ -1,7 +1,9 @@
 <template>
   <div v-if="!simple && location" class="mb-2 jobbox bg-light overflow-hidden forcewrap">
     <NoticeMessage v-if="blocked" variant="warning">
-      <h3>Please help keep Freegle running</h3>
+      <h2 class="header--size3">
+        Please help keep Freegle running
+      </h2>
       <p>
         We normally show job ads here.  It looks like you may have an AdBlocker or security software which is blocking those.
         We're not mad on ads either, but please consider donating to help us keep going:
