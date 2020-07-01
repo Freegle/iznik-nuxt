@@ -94,6 +94,7 @@
         name="check"
         label="Mark as TAKEN"
         :handler="outcome('Taken')"
+        confirm
       />
       <SpinButton
         v-if="message.type === 'Wanted' && !message.outcomes.length"
@@ -102,6 +103,7 @@
         name="check"
         label="Mark as RECEIVED"
         :handler="outcome('Received')"
+        confirm
       />
       <SpinButton
         v-if="!message.outcomes.length"
@@ -110,6 +112,7 @@
         name="trash-alt"
         label="Mark as Withdrawn"
         :handler="outcome('Withdrawn')"
+        confirm
       />
     </div>
     <div v-else-if="spam" class="d-inline">

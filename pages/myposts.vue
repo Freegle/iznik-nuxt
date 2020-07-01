@@ -165,10 +165,7 @@
                 <p>Nothing here yet.  Why not...</p>
                 <div class="d-flex justify-content-around mb-2">
                   <b-button to="/find" class="mt-1" size="lg" variant="secondary">
-                    <v-icon name="search" />&nbsp;Find stuff
-                  </b-button>
-                  <b-button to="/find/whatisit" class="mt-1" size="lg" variant="secondary">
-                    <v-icon name="gift" />&nbsp;Post a WANTED
+                    <v-icon name="search" />&nbsp;Ask for something
                   </b-button>
                 </div>
               </div>
@@ -278,6 +275,10 @@ export default {
     }
   },
   computed: {
+    postcode() {
+      return this.$store.getters['compose/getPostcode']
+    },
+
     wanteds() {
       const ret = this.messages.filter(m => m.type === 'Wanted' && !m.isdraft)
       ret.sort(this.postSort)

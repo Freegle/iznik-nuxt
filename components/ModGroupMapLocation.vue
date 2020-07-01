@@ -1,14 +1,19 @@
 <template>
-  <l-geojson
-    :geojson="location.json"
-    :options="locationOptions"
-    :contenteditable="editable"
-    @click="select"
-  />
+  <div>
+    <l-geojson
+      :geojson="location.json"
+      :options="locationOptions"
+      :contenteditable="editable"
+      @click="select"
+    />
+    <l-circle-marker v-if="labels" :lat-lng="[ location.lat, location.lng ]" :radius="1">
+      <l-tooltip :content="location.name" :options="{ permanent: true }" />
+    </l-circle-marker>
+  </div>
 </template>
 <script>
-const AREA_FILL_COLOUR = 'darkgreen'
-const FILL_OPACITY = 0.6
+const AREA_FILL_COLOUR = 'lightgreen'
+const FILL_OPACITY = 0.5
 const AREA_BOUNDARY_COLOUR = 'darkblue'
 const SELECTED = '#990000'
 
@@ -19,6 +24,10 @@ export default {
       required: true
     },
     shade: {
+      type: Boolean,
+      required: false
+    },
+    labels: {
       type: Boolean,
       required: false
     },

@@ -62,7 +62,11 @@ export default class ChatAPI extends BaseAPI {
   }
 
   unseenCount(chatid) {
-    return this.$get('/chatrooms', { count: true })
+    const modtools = this.store.getters['misc/get']('modtools')
+    return this.$get('/chatrooms', {
+      count: true,
+      chattypes: modtools ? ['User2Mod', 'Mod2Mod'] : ['User2User', 'User2Mod']
+    })
   }
 
   hold(msgid) {

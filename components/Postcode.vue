@@ -3,12 +3,14 @@
     <autocomplete
       id="postcodeautocomplete"
       ref="autocomplete"
+      v-model="wip"
       restrict
       :url="source"
       param="typeahead"
+      :custom-params="{ pconly: pconly }"
       anchor="name"
       label=""
-      placeholder="Type postcode"
+      :placeholder="pconly ? 'Type postcode' : 'Type location'"
       :classes="{ input: 'form-control form-control-' + size + ' text-center pcinp', list: 'postcodelist' }"
       class="mr-1"
       :min="3"
@@ -19,7 +21,7 @@
       @invalid="invalid"
     />
 
-    <div v-if="find">
+    <div v-if="find && !wip">
       <b-button variant="secondary" :size="size" title="Find my device's location instead of typing a postcode" @click="findLoc">
         <v-icon v-if="locating" name="sync" class="fa-spin" />
         <v-icon v-else-if="locationFailed" name="exclamation-triangle" />
@@ -31,6 +33,16 @@
       <b>Your device thinks you're here.<br><br>
 
         If it's wrong, please change it.</b>
+    </b-tooltip>
+    <b-tooltip
+      :show="wip && (!results || !results.length)"
+      target="postcodeautocomplete"
+      placement="top"
+      variant="primary"
+      triggers=""
+      :delay="{ show: 1000 }"
+    >
+      Keep typing your full postcode...
     </b-tooltip>
   </div>
 </template>
@@ -65,6 +77,11 @@ export default {
       type: String,
       required: false,
       default: 'lg'
+    },
+    pconly: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
   data() {
@@ -74,7 +91,8 @@ export default {
       mylocation: null,
       locating: false,
       locationFailed: false,
-      showToolTip: false
+      showToolTip: false,
+      wip: null
     }
   },
   async mounted() {
@@ -87,7 +105,7 @@ export default {
     // need to render this on the server.
     let value = this.value
 
-    if (!this.value) {
+    if (this.pconly && !value) {
       // If we are logged in then we may have a known location to use as the default.
       value =
         this.$store.getters['auth/user'] &&
@@ -95,6 +113,15 @@ export default {
         this.$store.getters['auth/user'].settings.mylocation
           ? this.$store.getters['auth/user'].settings.mylocation.name
           : null
+    }
+
+    if (this.pconly && !value) {
+      // We might have one we are composing.
+      const pc = this.$store.getters['compose/getPostcode']
+
+      if (pc && pc.name) {
+        value = pc.name
+      }
     }
 
     if (value) {
@@ -127,7 +154,8 @@ export default {
     invalid() {
       // Parent might want to know that we don't have a valid postcode any more.
       this.$emit('cleared')
-      this.results = null
+      this.wip = null
+      this.results = []
     },
     keydown(e) {
       if (e.which === 8) {
@@ -139,7 +167,18 @@ export default {
       }
     },
     process(results) {
-      const ret = results.locations.slice(0, 5)
+      const names = []
+      const ret = []
+
+      for (let i = 0; i < results.locations.length && names.length < 5; i++) {
+        const loc = results.locations[i]
+
+        if (names.indexOf(loc.name) === -1) {
+          names.push(loc.name)
+          ret.push(loc)
+        }
+      }
+
       this.results = ret
       return ret
     },
@@ -197,8 +236,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-::v-deep .autocomplete ul {
-  position: initial;
-}
-</style>
