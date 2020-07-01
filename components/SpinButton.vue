@@ -1,18 +1,26 @@
 <template>
-  <b-button :variant="variant" :disabled="disabled" :size="size" @click="click">
-    <span v-if="iconlast">
-      {{ label }}
-    </span>
-    <v-icon v-if="done" name="check" :class="spinclass" />
-    <v-icon v-else-if="doing" name="sync" :class="'fa-spin ' + spinclass" />
-    <v-icon v-else :name="name" />&nbsp;
-    <span v-if="!iconlast">
-      {{ label }}
-    </span>
-  </b-button>
+  <div class="d-inline-block">
+    <b-button :variant="variant" :disabled="disabled" :size="size" @click="click">
+      <span v-if="iconlast">
+        {{ label }}
+      </span>
+      <v-icon v-if="done" name="check" :class="spinclass" />
+      <v-icon v-else-if="doing" name="sync" :class="'fa-spin ' + spinclass" />
+      <v-icon v-else :name="name" />&nbsp;
+      <span v-if="!iconlast">
+        {{ label }}
+      </span>
+    </b-button>
+    <ConfirmModal v-if="confirm && showConfirm" ref="modal" @confirm="doIt" />
+  </div>
 </template>
 <script>
+import ConfirmModal from './ConfirmModal'
+import waitForRef from '@/mixins/waitForRef'
+
 export default {
+  components: { ConfirmModal },
+  mixins: [waitForRef],
   props: {
     variant: {
       type: String,
@@ -55,16 +63,32 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    confirm: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
     return {
       doing: false,
-      done: false
+      done: false,
+      showConfirm: false
     }
   },
   methods: {
-    async click() {
+    click() {
+      if (this.confirm) {
+        this.showConfirm = true
+        this.waitForRef('modal', () => {
+          this.$refs.modal.show()
+        })
+      } else {
+        this.doIt()
+      }
+    },
+    async doIt() {
       if (!this.doing) {
         this.done = false
         this.doing = true
