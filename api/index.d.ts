@@ -22,6 +22,7 @@ import CommunityEventAPI from './CommunityEventAPI.js'
 import DashboardAPI from './DashboardAPI.js'
 import DomainAPI from './DomainAPI.js'
 import DonationsAPI from './DonationsAPI.js'
+import GiftAidAPI from './GiftAidAPI.js'
 import GroupAPI from './GroupAPI.js'
 import InvitationAPI from './InvitationAPI.js'
 import JobAPI from './JobAPI.js'
@@ -59,6 +60,7 @@ interface API {
   dashboard: DashboardAPI;
   domain: DomainAPI;
   donations: DonationsAPI;
+  giftaid: GiftAidAPI;
   group: GroupAPI;
   invitation: InvitationAPI;
   job: JobAPI;

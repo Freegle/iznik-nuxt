@@ -20,6 +20,7 @@ import CommunityEventAPI from './CommunityEventAPI.js'
 import DashboardAPI from './DashboardAPI.js'
 import DomainAPI from './DomainAPI.js'
 import DonationsAPI from './DonationsAPI.js'
+import GiftAidAPI from './GiftAidAPI.js'
 import GroupAPI from './GroupAPI.js'
 import InvitationAPI from './InvitationAPI.js'
 import JobAPI from './JobAPI.js'
@@ -59,6 +60,7 @@ export default ({ $axios, store }) => {
     dashboard: new DashboardAPI(options),
     domain: new DomainAPI(options),
     donations: new DonationsAPI(options),
+    giftaid: new GiftAidAPI(options),
     group: new GroupAPI(options),
     invitation: new InvitationAPI(options),
     job: new JobAPI(options),

@@ -222,6 +222,33 @@
               <div v-for="address in status.data.addresses" :key="address.id">
                 {{ address.singleline }}
               </div>
+              <div v-if="status.data.giftaid">
+                <h2>Gift Aid</h2>
+                <div class="row">
+                  <div class="col-sm-6">
+                    Period covered:
+                  </div>
+                  <div class="col-sm-6">
+                    {{ status.data.giftaid.period }}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    Full name:
+                  </div>
+                  <div class="col-sm-6">
+                    {{ status.data.giftaid.fullname }}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    Home address:
+                  </div>
+                  <div class="col-sm-6">
+                    {{ status.data.giftaid.homeaddress }}
+                  </div>
+                </div>
+              </div>
               <h2>Notifications</h2>
               <div class="row">
                 <div class="col-sm-6">
