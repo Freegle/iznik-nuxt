@@ -42,7 +42,7 @@ export default {
       } else {
         // Poor - just use marker
         return new L.Icon({
-          iconUrl: require('static/mapmarker.gif')
+          iconUrl: '/mapmarker.gif'
         })
       }
     }

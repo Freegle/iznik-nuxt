@@ -65,7 +65,7 @@ export default {
   computed: {
     icon() {
       return new L.Icon({
-        iconUrl: require('static/mapmarker.gif')
+        iconUrl: '/mapmarker.gif'
       })
     }
   },
