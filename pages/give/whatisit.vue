@@ -37,24 +37,24 @@
           </b-btn>
         </div>
         <CovidPostWarning class="mt-2" />
-        <transition name="fade">
-          <b-row v-if="valid">
-            <b-col cols="12" md="6" offset-md="3" class="text-center pt-2">
+        <b-row v-if="valid">
+          <b-col cols="12" md="6" offset-md="3" class="text-center pt-2">
+            <transition name="fade">
               <b-btn variant="primary" size="lg" block :disabled="uploadingPhoto" @click="next">
                 Next <v-icon name="angle-double-right" />
               </b-btn>
-            </b-col>
-          </b-row>
-        </transition>
-        <transition name="fade">
-          <b-row>
-            <b-col cols="12" md="6" offset-md="3" class="text-center pt-2">
+            </transition>
+          </b-col>
+        </b-row>
+        <b-row v-if="!valid">
+          <b-col cols="12" md="6" offset-md="3" class="text-center pt-2">
+            <transition name="fade">
               <NoticeMessage variant="info">
                 Please add the item name, and either a description or a photo.
               </NoticeMessage>
-            </b-col>
-          </b-row>
-        </transition>
+            </transition>
+          </b-col>
+        </b-row>
         <div class="text-muted small pl-0 pt-1 text-center">
           We may show this post, but not your email address, to people who are not yet members of Freegle.
           This helps the community grow by showing people what's happening and encouraging them to join.

@@ -3,7 +3,7 @@
     <b-row class="text-center m-0">
       <b-col cols="12" lg="6" offset-lg="3">
         <div v-if="region">
-          <h1>Freegle communities in {{ region }} zoom {{ zoom }}</h1>
+          <h1>Freegle communities in: {{ regionName }}</h1>
         </div>
         <div v-else>
           <h1>Explore Freegle communities across the UK!</h1>
@@ -136,12 +136,17 @@
 </template>
 
 <script>
-import L from 'leaflet'
-import InfiniteLoading from 'vue-infinite-loading'
-import GroupMarker from '~/components/GroupMarker.vue'
 import GroupProfileImage from '~/components/GroupProfileImage'
 import map from '@/mixins/map.js'
 const ExternalLink = () => import('~/components/ExternalLink')
+const GroupMarker = () => import('@/components/GroupMarker')
+const InfiniteLoading = () => import('vue-infinite-loading')
+
+let L = null
+
+if (process.browser) {
+  L = require('leaflet')
+}
 
 export default {
   components: {
@@ -197,6 +202,15 @@ export default {
     }
   },
   computed: {
+    regionName() {
+      let ret = null
+
+      if (this.region) {
+        ret = this.region.charAt(0).toUpperCase() + this.region.substring(1)
+      }
+
+      return ret
+    },
     browser() {
       return process.browser
     },
@@ -249,7 +263,8 @@ export default {
           if (
             group.onmap &&
             this.bounds.contains([group.lat, group.lng]) &&
-            (this.region === null || this.region === group.region)
+            (this.region === null ||
+              this.region.toLowerCase() === group.region.toLowerCase())
           ) {
             ret.push(group)
           }
@@ -339,12 +354,14 @@ export default {
               }
             })
 
-            // eslint-disable-next-line new-cap
-            const fg = new L.featureGroup(markers)
-            const bounds = fg.getBounds()
+            if (markers.length) {
+              // eslint-disable-next-line new-cap
+              const fg = new L.featureGroup(markers)
+              const bounds = fg.getBounds()
 
-            if (bounds) {
-              map.fitBounds(bounds)
+              if (bounds) {
+                map.fitBounds(bounds)
+              }
             }
           }
         }

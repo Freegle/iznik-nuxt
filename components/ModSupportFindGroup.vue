@@ -65,7 +65,7 @@
       Posting address:
       <a :href="'mailto:' + group.groupemail">{{ group.groupemail }}</a>
       <br>
-      <Clipboard class="mr-3 mb-1" :value="'https://twitter.com/' + group.twitter.name" />
+      <Clipboard v-if="group.twitter" class="mr-3 mb-1" :value="'https://twitter.com/' + group.twitter.name" />
       Twitter:
       <span v-if="group.twitter">
         <ExternalLink :href="'https://twitter.com/' + group.twitter.name">

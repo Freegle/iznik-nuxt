@@ -89,9 +89,10 @@ export default {
     },
     valid() {
       const messages = Object.values(this.$store.getters['compose/getMessages'])
+      const pc = this.$store.getters['compose/getPostcode']
       let valid = false
 
-      if (messages && messages.length && this.ids) {
+      if (messages && messages.length && this.ids && pc) {
         valid = true
 
         for (const message of messages) {

@@ -21,11 +21,14 @@
       "cordova-plugin-inappbrowser": {},
       "cordova-plugin-geolocation": {},
       "cordova-plugin-googleplus": {},
-      "phonegap-plugin-push": {},
       "cordova-plugin-whitelist": {},
       "cordova-plugin-zoom-control-2": {},
       "cordova-plugin-camera": {
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
+      },
+      "phonegap-plugin-push": {
+        "ANDROID_SUPPORT_V13_VERSION": "27.+",
+        "FCM_VERSION": "17.0.+"
       }
     },
     "platforms": [
@@ -45,7 +48,7 @@
     "cordova-plugin-zoom-control-2": "^0.4.2",
     "cordova-support-google-services": "^1.3.2",
     "phonegap-plugin-multidex": "^1.0.0",
-    "phonegap-plugin-push": "^2.3.0"
+    "phonegap-plugin-push": "2.3.0"
   },
   "devDependencies": {
     "cordova-plugin-whitelist": "1"
