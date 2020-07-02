@@ -25,7 +25,7 @@
     "cordova-support-google-services": "^1.3.2",
     "es6-promise-plugin": "^4.2.2",
     "phonegap-plugin-multidex": "^1.0.0",
-    "phonegap-plugin-push": "git+https://github.com/phonegap/phonegap-plugin-push.git"
+    "phonegap-plugin-push": "2.3.0"
   },
   "devDependencies": {
     "cordova-plugin-whitelist": "^1.3.4"
@@ -34,7 +34,6 @@
     "plugins": {
       "cordova-plugin-whitelist": {},
       "cordova-plugin-splashscreen": {},
-      "phonegap-plugin-push": {},
       "cordova-plugin-device": {},
       "cordova-plugin-network-information": {},
       "cordova-plugin-inappbrowser": {},
@@ -50,6 +49,10 @@
       "cordova-plugin-zoom-control-2": {},
       "cordova-plugin-geolocation": {
         "GPS_REQUIRED": "false"
+      },
+      "phonegap-plugin-push": {
+        "ANDROID_SUPPORT_V13_VERSION": "27.+",
+        "FCM_VERSION": "17.0.+"
       }
     },
     "platforms": [
