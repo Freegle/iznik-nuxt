@@ -63,7 +63,7 @@
           label-class="label"
         >
           <b-form-radio v-model="period" name="period" value="Since">
-            All donations since May 2011
+            All donations in the last five years
           </b-form-radio>
           <b-form-radio v-model="period" name="period" value="This">
             Just this donation
