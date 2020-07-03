@@ -8,6 +8,7 @@
     visible
     size="lg"
     @shown="shown"
+    @hidden="hidden"
   >
     <notice-message class="mb-3">
       Please drag the map until the marker shows where the poster is.
@@ -86,8 +87,10 @@ export default {
       }
     },
     shown() {
-      console.log('Shown')
       this.loaded = true
+    },
+    hidden() {
+      this.loaded = false
     }
   }
 }
