@@ -7,12 +7,13 @@
     no-stacking
     visible
     size="lg"
+    @shown="shown"
   >
     <notice-message class="mb-3">
       Please drag the map until the marker shows where the poster is.
     </notice-message>
     <client-only>
-      <DraggableMap ref="map" :initial-zoom="7" class="mb-2" />
+      <DraggableMap v-if="loaded" ref="map" :initial-zoom="7" class="mb-2" />
     </client-only>
     <h4>Please add more info</h4>
     <b-input
@@ -48,7 +49,8 @@ export default {
     return {
       showModal: false,
       name: null,
-      description: null
+      description: null,
+      loaded: false
     }
   },
 
@@ -82,6 +84,10 @@ export default {
 
         this.hide()
       }
+    },
+    shown() {
+      console.log('Shown')
+      this.loaded = true
     }
   }
 }

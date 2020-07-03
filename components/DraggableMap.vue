@@ -29,7 +29,7 @@
             @update:bounds="boundsChanged"
           >
             <l-tile-layer :url="osmtile" :attribution="attribution" />
-            <l-marker :lat-lng="center" :interactive="false" />
+            <l-marker :lat-lng="center" :interactive="false" :icon="icon" />
           </l-map>
         </client-only>
       </b-col>
