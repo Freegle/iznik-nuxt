@@ -7,7 +7,7 @@
       These are people who have completed gift aid declarations which have not yet been reviewed.
     </p>
     <p>
-      Please check the name and address:
+      Please check the name, address and postcode:
     </p>
     <ul>
       <li>
@@ -15,7 +15,9 @@
         that information later when submitting a Gift Aid claim.
       </li>
       <li>
-        If the name or address is wrong but in an obvious way, please fix it and click <em>Save Changes</em>.
+        It'll try to identify the postcode.  If it's not found it, see if you can figure it out.  If the name or
+        address is wrong but in an obvious way, please fix it.  Then click <em>Save Changes</em>, and if you're happy
+        with it, <em>Looks Good</em>
       </li>
       <li>
         If it's missing key information, then please click on their email address and ask them to provide it.  You

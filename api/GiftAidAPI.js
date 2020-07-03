@@ -18,12 +18,13 @@ export default class GiftAidAPI extends BaseAPI {
     return this.$post('/giftaid', { period, fullname, homeaddress })
   }
 
-  edit(id, period, fullname, homeaddress, reviewed) {
+  edit(id, period, fullname, homeaddress, postcode, reviewed) {
     const data = {
       id,
       period,
       fullname,
       homeaddress,
+      postcode,
       reviewed
     }
     console.log('Dat', data)
