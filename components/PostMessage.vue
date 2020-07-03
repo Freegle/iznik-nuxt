@@ -151,7 +151,9 @@ export default {
         'garden',
         'goods',
         "don't know",
-        'items'
+        'items',
+        'browsing',
+        'browse'
       ]
     }
   },
