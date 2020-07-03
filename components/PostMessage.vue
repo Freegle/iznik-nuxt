@@ -74,6 +74,30 @@
       </b-col>
     </b-row>
     <b-row>
+      <b-col class="pl-0 pr-0">
+        <NoticeMessage v-if="vague" variant="warning" class="mt-1">
+          <p>
+            Please avoid very general terms.  Be precise - you'll get a better response.
+          </p>
+          <p v-if="me">
+            If you just want to see what's happening, please go to
+            <!-- eslint-disable-next-line -->
+            <nuxt-link to="/browse">Browse</nuxt-link>.
+            If you want to search for something specific, please go
+            <!-- eslint-disable-next-line -->
+            <nuxt-link to="/find/search">here</nuxt-link>.
+          </p><p v-else>
+            If you just want to see what's happening, please go to
+            <!-- eslint-disable-next-line -->
+            <nuxt-link to="/explore">Explore</nuxt-link>.
+            If you want to search for something specific, please go
+            <!-- eslint-disable-next-line -->
+            <nuxt-link to="/find/search">here</nuxt-link>.
+          </p>
+        </NoticeMessage>
+      </b-col>
+    </b-row>
+    <b-row>
       <b-col class="pl-0 pt-1 pr-0">
         <b-form-textarea
           v-model="description"
@@ -86,6 +110,7 @@
 </template>
 
 <script>
+import NoticeMessage from './NoticeMessage'
 import waitForRef from '@/mixins/waitForRef'
 const OurFilePond = () => import('~/components/OurFilePond')
 const PostPhoto = () => import('~/components/PostPhoto')
@@ -93,6 +118,7 @@ const PostItem = () => import('~/components/PostItem')
 
 export default {
   components: {
+    NoticeMessage,
     OurFilePond,
     PostPhoto,
     PostItem
@@ -114,7 +140,19 @@ export default {
       uploading: false,
       myFiles: [],
       suggestions: [],
-      pondBrowse: true
+      pondBrowse: true,
+      vagueness: [
+        'furniture',
+        'household',
+        'anything',
+        'stuff',
+        'things',
+        'tools',
+        'garden',
+        'goods',
+        "don't know",
+        'items'
+      ]
     }
   },
   computed: {
@@ -130,6 +168,24 @@ export default {
           type: this.type
         })
       }
+    },
+    vague() {
+      let ret = false
+      let item = this.item
+      console.log('Vaugue', item)
+
+      if (item) {
+        item = item.toLowerCase()
+
+        this.vagueness.forEach(v => {
+          console.log('Compare', item, v)
+          if (item.indexOf(v) !== -1) {
+            ret = true
+          }
+        })
+      }
+
+      return ret
     },
     description: {
       get: function() {
