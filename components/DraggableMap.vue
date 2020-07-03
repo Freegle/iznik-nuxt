@@ -29,7 +29,7 @@
             @update:bounds="boundsChanged"
           >
             <l-tile-layer :url="osmtile" :attribution="attribution" />
-            <l-marker :lat-lng="center" :interactive="false" :icon="icon" />
+            <l-marker :lat-lng="center" :interactive="false" />
           </l-map>
         </client-only>
       </b-col>
@@ -60,13 +60,6 @@ export default {
           country: ['gb']
         }
       }
-    }
-  },
-  computed: {
-    icon() {
-      return new L.Icon({
-        iconUrl: '/mapmarker.gif'
-      })
     }
   },
   created() {
