@@ -37,7 +37,6 @@
   </div>
 </template>
 <script>
-import L from 'leaflet'
 import map from '@/mixins/map.js'
 
 export default {
@@ -60,13 +59,6 @@ export default {
           country: ['gb']
         }
       }
-    }
-  },
-  computed: {
-    icon() {
-      return new L.Icon({
-        iconUrl: '/mapmarker.gif'
-      })
     }
   },
   created() {

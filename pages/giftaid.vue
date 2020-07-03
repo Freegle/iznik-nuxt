@@ -10,11 +10,11 @@
         </p>
         <b-form-group
           id="fullnamelabel"
-          label="Your full name"
+          label="Your full (real) name"
           label-for="fullname"
           label-class="label"
         >
-          <div v-if="me && me.displayname && !fullname ">
+          <div v-if="me && me.displayname && !fullname && me.displayname.indexOf(' ') !== -1">
             <b-btn variant="white" class="mb-2" @click="fullname = me.displayname">
               Click here to use <b>{{ me.displayname }}</b>
             </b-btn>
@@ -63,7 +63,7 @@
           label-class="label"
         >
           <b-form-radio v-model="period" name="period" value="Since">
-            All donations since May 2011
+            All donations in the last five years
           </b-form-radio>
           <b-form-radio v-model="period" name="period" value="This">
             Just this donation

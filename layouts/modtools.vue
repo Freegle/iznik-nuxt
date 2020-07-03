@@ -82,6 +82,7 @@
           <ModMenuItemLeft link="/modtools/members/related" name="Related" :count="['relatedmembers']" indent />
           <ModMenuItemLeft link="/modtools/members/stories" name="Stories" indent :count="['stories']" />
           <ModMenuItemLeft v-if="hasPermissionNewsletter" link="/modtools/members/newsletter" name="Newsletter" indent :count="['newsletterstories']" />
+          <ModMenuItemLeft v-if="hasPermissionGiftAid" link="/modtools/giftaid" name="Gift Aid" indent :count="['giftaid']" />
           <ModMenuItemLeft link="/modtools/members/feedback" name="Feedback" indent :othercount="['happiness']" />
           <ModMenuItemLeft link="/modtools/members/notes" name="Notes" indent />
           <hr>
