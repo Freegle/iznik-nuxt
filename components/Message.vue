@@ -186,38 +186,57 @@
             <v-icon name="comments" /> Chats
           </nuxt-link> section.
         </NoticeMessage>
-        <div class="d-flex">
-          <b-form-group
+        <EmailValidator
+          v-if="!me"
+          ref="email"
+          size="lg"
+          label="Your email address:"
+          :email.sync="email"
+          :valid.sync="emailValid"
+        />
+        <b-form-group
+          class="flex-grow-1"
+          label="Your reply:"
+          :label-for="'replytomessage-' + expanded.id"
+          :description="expanded.type === 'Offer' ? 'Interested?  Please explain why you\'d like it and when you can collect.  Always be polite and helpful.  If appropriate, ask if it\'s working.' : 'Can you help?  If you have what they\'re looking for, let them know.'"
+        >
+          <b-form-textarea
+            v-if="expanded.type == 'Offer'"
+            :id="'replytomessage-' + expanded.id"
+            v-model="reply"
+            rows="3"
+            max-rows="8"
+            class="border border-success"
+          />
+          <b-form-textarea
+            v-if="expanded.type == 'Wanted'"
+            :id="'replytomessage-' + expanded.id"
+            v-model="reply"
+            rows="3"
+            max-rows="8"
             class="flex-grow-1"
-            label="Your reply:"
-            :label-for="'replytomessage-' + expanded.id"
-            :description="expanded.type === 'Offer' ? 'Interested?  Please explain why you\'d like it and when you can collect.  Always be polite and helpful.  If appropriate, ask if it\'s working.' : 'Can you help?  If you have what they\'re looking for, let them know.'"
-          >
-            <b-form-textarea
-              v-if="expanded.type == 'Offer'"
-              :id="'replytomessage-' + expanded.id"
-              v-model="reply"
-              rows="3"
-              max-rows="8"
-              class="border border-success"
-            />
-            <b-form-textarea
-              v-if="expanded.type == 'Wanted'"
-              :id="'replytomessage-' + expanded.id"
-              v-model="reply"
-              rows="3"
-              max-rows="8"
-              class="flex-grow-1"
-            />
-          </b-form-group>
-          <div class="flex-shrink-1 text-right ml-2 d-none d-md-block mt-5">
-            <b-btn variant="primary" :disabled="disableSend" @click="sendReply">
-              Send
-              <v-icon v-if="replying" name="sync" class="fa-spin" />
-              <v-icon v-else name="angle-double-right" />&nbsp;
-            </b-btn>
-          </div>
-        </div>
+          />
+        </b-form-group>
+        <p v-if="!me">
+          If you're a new freegler then welcome!  You'll get emails.  Name, approx. location, and profile picture are public - you
+          can hide your real name and picture from Settings.  This adds cookies and local
+          storage.  Read <nuxt-link target="_blank" to="/terms">
+            Terms of Use
+          </nuxt-link> and
+          <nuxt-link target="_blank" to="/privacy">
+            Privacy
+          </nuxt-link> for details.
+        </p>
+        <b-btn v-if="!me" variant="primary" :disabled="disableSend" @click="registerOrSend">
+          Send your reply
+          <v-icon v-if="replying" name="sync" class="fa-spin" />
+          <v-icon v-else name="angle-double-right" />&nbsp;
+        </b-btn>
+        <b-btn v-else variant="primary" :disabled="disableSend" @click="sendReply">
+          Send your reply
+          <v-icon v-if="replying" name="sync" class="fa-spin" />
+          <v-icon v-else name="angle-double-right" />&nbsp;
+        </b-btn>
         <b-row class="d-block d-md-none mt-2">
           <b-col>
             <b-btn variant="primary" block :disabled="disableSend" @click="sendReply">
@@ -229,6 +248,15 @@
         </b-row>
       </b-card-footer>
     </b-card>
+    <b-modal
+      v-if="showNewUser"
+      id="newUserModal"
+      ref="newUserModal"
+      ok-only
+      title="Welcome to Freegle!"
+    >
+      <NewUserInfo :password="newUserPassword" />
+    </b-modal>
     <b-modal
       v-if="expanded && expanded.attachments && expanded.attachments.length"
       :id="'photoModal-' + id"
@@ -260,7 +288,10 @@ import ShareModal from './ShareModal'
 import MessageReportModal from './MessageReportModal'
 
 import MessageReplyInfo from './MessageReplyInfo'
+import EmailValidator from './EmailValidator'
+import NewUserInfo from './NewUserInfo'
 import twem from '~/assets/js/twem'
+import waitForRef from '@/mixins/waitForRef'
 
 const Highlighter = () => import('vue-highlight-words')
 const MessageUserInfo = () => import('~/components/MessageUserInfo')
@@ -270,6 +301,8 @@ const MessageHistory = () => import('~/components/MessageHistory')
 
 export default {
   components: {
+    NewUserInfo,
+    EmailValidator,
     MessageReplyInfo,
     ChatButton,
     MessageUserInfo,
@@ -280,6 +313,7 @@ export default {
     NoticeMessage,
     MessageHistory
   },
+  mixins: [waitForRef],
   props: {
     id: {
       type: Number,
@@ -340,12 +374,16 @@ export default {
       reply: null,
       expanded: null,
       replying: false,
-      sent: false
+      sent: false,
+      email: null,
+      emailValid: false,
+      showNewUser: false,
+      newUserPassword: null
     }
   },
   computed: {
     disableSend() {
-      return this.replying || !this.reply
+      return this.replying || !this.reply || (!this.me && !this.emailValid)
     },
     eSubject() {
       return twem.twem(this.$twemoji, this.subject)
@@ -446,6 +484,38 @@ export default {
 
     report() {
       this.$refs.reportModal.show()
+    },
+
+    async registerOrSend() {
+      // We've got a reply and an email address.  Maybe the email address is a registered user, maybe it's new.  If
+      // it's a registered user then we want to force them to sign in.
+      //
+      // We attempt to register the user.  If the user already exists, then we'll be told about that as an error.
+      console.log('Register or send', this.email)
+      const ret = await this.$api.user.add(this.email, false)
+
+      console.log('Returned', ret)
+      if (ret.ret === 0 && ret.password) {
+        // We registered a new user and logged in.
+        console.log('New user')
+        await this.$store.dispatch('auth/fetchUser', {
+          components: ['me'],
+          force: true
+        })
+        console.log('Fetched')
+
+        // Show the new user modal.
+        this.newUserPassword = ret.password
+        this.showNewUser = true
+        this.waitForRef('newUserModal', () => {
+          // Now that we are logged in, we can reply.
+          this.$refs.newUserModal.show()
+          this.sendReply()
+        })
+      } else {
+        // If anything else happens, then we call sendReply which will force us to log in.
+        this.sendReply()
+      }
     },
 
     async sendReply() {
