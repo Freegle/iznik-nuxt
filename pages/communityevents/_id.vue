@@ -13,6 +13,9 @@
             </b-btn>
           </div>
         </div>
+        <h2 class="sr-only">
+          List of community events
+        </h2>
         <div v-for="event in events" :key="'event-' + event.id" class="mt-2">
           <CommunityEvent v-if="!event.pending" :summary="false" :item="event" />
         </div>

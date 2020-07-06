@@ -1,5 +1,8 @@
 <template>
   <b-container fluid>
+    <h1 class="sr-only">
+      My posts
+    </h1>
     <b-row class="m-0">
       <b-col cols="0" lg="3" class="d-none d-lg-block p-0 pr-1">
         <SidebarLeft :show-community-events="true" :show-bot-left="true" />
@@ -17,9 +20,9 @@
           no-body
         >
           <template slot="header">
-            <h3 class="d-inline">
+            <h2 class="d-inline header--size3">
               <v-icon name="calendar-alt" scale="2" /> Your Availability
-            </h3>
+            </h2>
           </template>
           <b-card-body>
             <p>
@@ -82,9 +85,9 @@
           no-body
         >
           <template slot="header">
-            <h3 class="d-inline">
+            <h2 class="d-inline header--size3">
               <v-icon name="gift" scale="2" /> Your OFFERs
-            </h3>
+            </h2>
             <span v-if="oldOfferCount > 0">
               <span v-if="showOldOffers" class="float-right">
                 <b-btn variant="white" title="Show old OFFERs" @click="toggleOldOffer">
@@ -135,9 +138,9 @@
           no-body
         >
           <template slot="header">
-            <h3 class="d-inline">
+            <h2 class="d-inline header--size3">
               <v-icon name="search" scale="2" /> Your WANTEDs
-            </h3>
+            </h2>
             <span v-if="oldWantedCount > 0">
               <span v-if="showOldWanteds" class="float-right">
                 <b-btn variant="white" title="Show old WANTEDs" @click="toggleOldWanted">
@@ -182,9 +185,9 @@
           no-body
         >
           <template slot="header">
-            <h3 class="d-inline">
+            <h2 class="d-inline header--size3">
               <v-icon name="search" scale="2" /> Your Searches
-            </h3>
+            </h2>
           </template>
           <b-card-body class="p-1 p-lg-3">
             <b-card-text class="text-center">

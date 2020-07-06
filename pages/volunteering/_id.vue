@@ -10,7 +10,7 @@
     <b-row class="m-0">
       <b-col cols="0" md="3" class="d-none d-md-block" />
       <b-col cols="12" md="6" class="p-0">
-        <VolunteerOpportunity v-if="!volunteering.pending" :summary="false" :item="volunteering" class="mt-1" />
+        <VolunteerOpportunity v-if="!volunteering.pending" :summary="false" :item="volunteering" class="mt-1" title-tag="h1" />
         <NoticeMessage v-else>
           Sorry, that volunteer oppportunity hasn't been approved yet.
         </NoticeMessage>
@@ -19,6 +19,7 @@
     </b-row>
   </div>
 </template>
+
 <script>
 import NoticeMessage from '../../components/NoticeMessage'
 import loginOptional from '@/mixins/loginOptional.js'

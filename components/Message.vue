@@ -3,7 +3,7 @@
     <span ref="breakpoint" class="d-inline d-sm-none" />
     <b-card class="p-0 mb-1" variant="success">
       <b-card-header :class="'pl-2 pr-2 clearfix' + (ispromised ? ' promisedfade' : '')">
-        <b-card-title class="msgsubj mb-0 d-block d-sm-none">
+        <b-card-title class="msgsubj mb-0 d-block d-sm-none header--size4" title-tag="h3">
           <div>
             <div>
               <Highlighter
@@ -54,7 +54,7 @@
             </b-button>
           </div>
         </b-card-title>
-        <b-card-title class="msgsubj mb-0 d-none d-sm-block">
+        <b-card-title class="msgsubj mb-0 d-none d-sm-block header--size4" title-tag="h3">
           <div class="d-flex justify-content-between">
             <div class="d-flex flex-column flex-grow-1">
               <Highlighter
@@ -573,12 +573,12 @@ export default {
   padding: 0px;
 }
 
-h4 {
+.header--size4 {
   color: $colour-info-fg !important;
   font-weight: bold;
 }
 
-h4.snippet {
+.header--size4.snippet {
   color: $color-black !important;
   font-weight: 500;
 }

@@ -4,11 +4,11 @@
       <b-card-body class="p-0">
         <div class="p-1">
           <div class="d-flex align-items-start justify-content-between">
-            <h4>
+            <h2 class="header--size4">
               <nuxt-link :to="link" class="title__link">
                 <v-icon :name="iconName" scale="2" /> {{ title }}
               </nuxt-link>
-            </h4>
+            </h2>
             <b-btn variant="white" :aria-label="addButtonLabel" @click="showEventModal">
               <v-icon name="plus" /> Add
             </b-btn>
