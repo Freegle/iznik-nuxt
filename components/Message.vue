@@ -253,7 +253,9 @@
       id="newUserModal"
       ref="newUserModal"
       ok-only
+      ok-title="Close and Continue"
       title="Welcome to Freegle!"
+      @hide="sendReply"
     >
       <NewUserInfo :password="newUserPassword" />
     </b-modal>
@@ -510,7 +512,8 @@ export default {
         this.waitForRef('newUserModal', () => {
           // Now that we are logged in, we can reply.
           this.$refs.newUserModal.show()
-          this.sendReply()
+
+          // Once the modal is closed, we will send the reply.
         })
       } else {
         // If anything else happens, then we call sendReply which will force us to log in.
