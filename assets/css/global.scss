@@ -137,6 +137,26 @@ h1, h2, h3, h4 {
   color: $colour-header !important;
 }
 
+.header--size1 {
+  font-size: 2.5rem;
+}
+
+.header--size2 {
+  font-size: 2rem;
+}
+
+.header--size3 {
+  font-size: 1.75rem;
+}
+
+.header--size4 {
+  font-size: 1.5rem;
+}
+
+.header--size5 {
+  font-size: 1.25rem;
+}
+
 div[variant="success"] .card-header {
   color: $colour-success-fg;
   background-color: $color-green--light;

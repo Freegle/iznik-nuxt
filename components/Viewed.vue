@@ -1,6 +1,6 @@
 <template>
   <b-card v-if="messages && messages.length" bg-light class="recentviews">
-    <b-card-title>
+    <b-card-title title-tag="h2" class="header--size4">
       Recently Viewed
     </b-card-title>
     <div v-for="(message, index) in messages" :key="'message-' + message.id">

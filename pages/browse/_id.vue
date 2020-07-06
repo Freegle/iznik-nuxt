@@ -1,5 +1,8 @@
 <template>
   <b-container fluid>
+    <h1 class="sr-only">
+      Browse items
+    </h1>
     <b-row class="m-0">
       <b-col cols="0" lg="3" class="d-none d-lg-block p-0 pr-1">
         <SidebarLeft :show-community-events="true" :show-bot-left="true" />
@@ -53,6 +56,9 @@
             <groupHeader v-if="group" :key="'groupheader-' + groupid" :group="group" :show-join="true" />
             <CovidClosed v-if="closed" />
             <div v-else>
+              <h2 class="sr-only">
+                List of wanteds and offers
+              </h2>
               <div v-for="message in filteredMessages" :key="'messagelist-' + message.id" class="p-0">
                 <message v-if="(selectedType === 'All' || message.type == selectedType) && (!message.outcomes || message.outcomes.length === 0)" v-bind="message" />
               </div>
