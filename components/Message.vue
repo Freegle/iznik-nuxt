@@ -494,29 +494,37 @@ export default {
       //
       // We attempt to register the user.  If the user already exists, then we'll be told about that as an error.
       console.log('Register or send', this.email)
-      const ret = await this.$api.user.add(this.email, false)
 
-      console.log('Returned', ret)
-      if (ret.ret === 0 && ret.password) {
-        // We registered a new user and logged in.
-        console.log('New user')
-        await this.$store.dispatch('auth/fetchUser', {
-          components: ['me'],
-          force: true
-        })
-        console.log('Fetched')
+      try {
+        const ret = await this.$api.user.add(this.email, false)
 
-        // Show the new user modal.
-        this.newUserPassword = ret.password
-        this.showNewUser = true
-        this.waitForRef('newUserModal', () => {
-          // Now that we are logged in, we can reply.
-          this.$refs.newUserModal.show()
+        console.log('Returned', ret)
+        if (ret.ret === 0 && ret.password) {
+          // We registered a new user and logged in.
+          console.log('New user')
+          await this.$store.dispatch('auth/fetchUser', {
+            components: ['me'],
+            force: true
+          })
+          console.log('Fetched')
 
-          // Once the modal is closed, we will send the reply.
-        })
-      } else {
-        // If anything else happens, then we call sendReply which will force us to log in.
+          // Show the new user modal.
+          this.newUserPassword = ret.password
+          this.showNewUser = true
+          this.waitForRef('newUserModal', () => {
+            // Now that we are logged in, we can reply.
+            this.$refs.newUserModal.show()
+
+            // Once the modal is closed, we will send the reply.
+          })
+        } else {
+          // If anything else happens, then we call sendReply which will force us to log in.
+          this.$store.dispatch('auth/loggedInEver', true)
+          this.sendReply()
+        }
+      } catch (e) {
+        // Probably an existing user.  Force ourselves to log in.
+        this.$store.dispatch('auth/loggedInEver', true)
         this.sendReply()
       }
     },
