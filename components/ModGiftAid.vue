@@ -16,7 +16,8 @@
       </b-col>
       <b-col cols="6" md="5">
         <b-textarea v-model="giftaid.homeaddress" rows="4" />
-        <b-input v-model="giftaid.postcode" :class="{ 'border-danger': postcodeInvalid, 'mt-1': true }" />
+        <b-input v-model="giftaid.housenameornumber" :class="{ 'border-danger': houseInvalid, 'mt-1': true }" placeholder="House name or number" />
+        <b-input v-model="giftaid.postcode" :class="{ 'border-danger': postcodeInvalid, 'mt-1': true }" placeholder="Postcode" />
       </b-col>
       <b-col cols="6" md="4" class="d-flex justify-content-between">
         <SpinButton variant="white" name="save" label="Save Changes" :handler="save" />
@@ -53,6 +54,9 @@ export default {
     postcodeInvalid() {
       return !this.giftaid.postcode || this.giftaid.postcode.indexOf(' ') === -1
     },
+    houseInvalid() {
+      return !this.giftaid.housenameornumber
+    },
     email() {
       let email = null
 
@@ -69,8 +73,23 @@ export default {
   },
   methods: {
     save() {
-      const { id, period, fullname, homeaddress, postcode } = this.giftaid
-      this.$api.giftaid.edit(id, period, fullname, homeaddress, postcode, false)
+      const {
+        id,
+        period,
+        fullname,
+        homeaddress,
+        postcode,
+        housenameornumber
+      } = this.giftaid
+      this.$api.giftaid.edit(
+        id,
+        period,
+        fullname,
+        homeaddress,
+        postcode,
+        housenameornumber,
+        false
+      )
     },
     reviewed() {
       this.$api.giftaid.edit(this.giftaid.id, null, null, null, null, true)
