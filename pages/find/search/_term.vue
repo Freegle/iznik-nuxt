@@ -152,7 +152,7 @@ export default {
     }
   },
   mounted() {
-    if (!this.postcode) {
+    if (!this.postcode || !this.postcode.id) {
       // We shouldn't come directly into this page.
       this.$router.push('/find')
     } else {
@@ -224,7 +224,8 @@ export default {
           summary: true,
           messagetype: this.searchtype,
           search: term,
-          nearlocation: this.postcode ? this.postcode.id : null,
+          nearlocation:
+            this.postcode && this.postcode.id ? this.postcode.id : null,
           subaction: 'searchmess'
         }
       } else {
