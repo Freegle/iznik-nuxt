@@ -28,6 +28,8 @@ export default class MergeAPI extends BaseAPI {
     return this.$post('/merge', {
       id: params.id,
       uid: params.uid,
+      user1: params.user1,
+      user2: params.user2,
       action: 'Reject'
     })
   }
