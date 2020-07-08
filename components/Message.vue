@@ -227,12 +227,7 @@
             Privacy
           </nuxt-link> for details.
         </p>
-        <b-btn v-if="!me" variant="primary" :disabled="disableSend" @click="registerOrSend">
-          Send your reply
-          <v-icon v-if="replying" name="sync" class="fa-spin" />
-          <v-icon v-else name="angle-double-right" />&nbsp;
-        </b-btn>
-        <b-btn v-else variant="primary" :disabled="disableSend" @click="sendReply">
+        <b-btn variant="primary" :disabled="disableSend" class="d-none d-md-block" @click="!me ? registerOrSend : sendReply">
           Send your reply
           <v-icon v-if="replying" name="sync" class="fa-spin" />
           <v-icon v-else name="angle-double-right" />&nbsp;
