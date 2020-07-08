@@ -227,25 +227,30 @@
             Privacy
           </nuxt-link> for details.
         </p>
-        <b-btn v-if="!me" variant="primary" :disabled="disableSend" @click="registerOrSend">
+        <b-btn v-if="!me" size="lg" variant="primary" :disabled="disableSend" @click="registerOrSend">
           Send your reply
           <v-icon v-if="replying" name="sync" class="fa-spin" />
           <v-icon v-else name="angle-double-right" />&nbsp;
         </b-btn>
-        <b-btn v-else variant="primary" :disabled="disableSend" @click="sendReply">
-          Send your reply
-          <v-icon v-if="replying" name="sync" class="fa-spin" />
-          <v-icon v-else name="angle-double-right" />&nbsp;
-        </b-btn>
-        <b-row class="d-block d-md-none mt-2">
-          <b-col>
-            <b-btn variant="primary" block :disabled="disableSend" @click="sendReply">
-              Send
-              <v-icon v-if="replying" name="sync" class="fa-spin" />
-              <v-icon v-else name="angle-double-right" />&nbsp;
-            </b-btn>
-          </b-col>
-        </b-row>
+        <div v-else>
+          <b-btn size="lg" variant="primary" class="d-none d-md-block" :disabled="disableSend" @click="sendReply">
+            Send your reply
+            <v-icon v-if="replying" name="sync" class="fa-spin" />
+            <v-icon v-else name="angle-double-right" />&nbsp;
+          </b-btn>
+          <b-btn
+            size="lg"
+            variant="primary"
+            class="d-block d-md-none mt-2"
+            block
+            :disabled="disableSend"
+            @click="sendReply"
+          >
+            Send your reply
+            <v-icon v-if="replying" name="sync" class="fa-spin" />
+            <v-icon v-else name="angle-double-right" />&nbsp;
+          </b-btn>
+        </div>
       </b-card-footer>
     </b-card>
     <b-modal
