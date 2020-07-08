@@ -505,6 +505,8 @@ module.exports = {
   sentry: {
     dsn: SENTRY_DSN,
     publishRelease: false,
+    // Some errors seem benign, and so we ignore them on the client side rather than clutter our sentry logs.
+    ignoreErrors: ['ResizeObserver loop limit exceeded'],
     clientIntegrations: function(integrations) {
       // Don't include breadcrumbs as this makes POSTs too large, and they fail.
       return integrations.filter(integration => {
