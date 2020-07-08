@@ -92,7 +92,15 @@ export default {
       )
     },
     reviewed() {
-      this.$api.giftaid.edit(this.giftaid.id, null, null, null, null, true)
+      this.$api.giftaid.edit(
+        this.giftaid.id,
+        null,
+        null,
+        null,
+        null,
+        null,
+        true
+      )
       this.hide = true
     }
   }
