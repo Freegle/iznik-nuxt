@@ -177,6 +177,7 @@ import Vue from 'vue'
 import ModComments from './ModComments'
 import ExternalLink from './ExternalLink'
 import chat from '@/mixins/chat.js'
+import chatCollate from '@/mixins/chatCollate.js'
 import waitForRef from '@/mixins/waitForRef'
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
@@ -205,7 +206,7 @@ export default {
     AddressModal,
     ChatRSVPModal
   },
-  mixins: [waitForRef, chat],
+  mixins: [waitForRef, chat, chatCollate],
   computed: {
     enterNewLine() {
       return this.$store.getters['misc/get']('enternewline')
