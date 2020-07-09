@@ -12,7 +12,7 @@
             </div>
           </b-card-body>
         </b-card>
-        <ChatListEntry v-for="chat in visibleChats" :id="chat.id" :key="'chat-' + chat.id" :class="{ active: chat && selectedChatId === parseInt(chat.id) }" @click="selectedChatId=parseInt(chat.id)" />
+        <ChatListEntry v-for="chat in visibleChats" :id="chat.id" :key="'chat-' + chat.id" :class="{ active: chat && selectedChatId === parseInt(chat.id) }" />
         <p v-if="!visibleChats || !visibleChats.length" class="ml-2">
           No chats to show.
         </p>
@@ -27,7 +27,7 @@
           </b-btn>
         </div>
       </b-col>
-      <b-col cols="12" md="8" :class="'chatback ' + (selectedChatId ? 'd-block' : 'd-none d-md-block')">
+      <b-col cols="12" md="8" :class="'chatback p-0 ' + (selectedChatId ? 'd-block' : 'd-none d-md-block')">
         <ChatPane v-if="selectedChatId" :id="selectedChatId" :key="'chatpane-' + selectedChatId" />
         <p v-else class="text-center text-muted mt-2">
           Please click on a chat in the left pane.

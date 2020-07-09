@@ -180,11 +180,6 @@
   flex-shrink: 0;
 }
 
-.chatWarning {
-  order: 2;
-  justify-content: flex-start;
-}
-
 .chatContent {
   order: 3;
   justify-content: flex-start;
