@@ -105,12 +105,14 @@ export const actions = {
 
       const chats = await this.$api.chat.listChats(params)
 
-      const already = chats.find(c => {
-        return current && parseInt(c.id) === parseInt(current.id)
-      })
+      if (current) {
+        const already = chats.find(c => {
+          return current && parseInt(c.id) === parseInt(current.id)
+        })
 
-      if (!already) {
-        chats.push(current)
+        if (!already) {
+          chats.push(current)
+        }
       }
 
       commit('setList', chats)
