@@ -4,7 +4,8 @@ export const state = () => ({
   // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
   // storage.
   list: {},
-  currentChat: null
+  currentChat: null,
+  fetching: {}
 })
 
 export const mutations = {
@@ -42,6 +43,10 @@ export const mutations = {
 
   currentChat(state, chatid) {
     state.currentChat = chatid
+  },
+
+  fetching(state, params) {
+    state.fetching[params.id] = params.item
   }
 }
 
@@ -160,10 +165,32 @@ export const actions = {
     return id
   },
 
-  async fetch({ commit }, { id: chatid }) {
-    if (!chatid) return
+  async fetch({ commit, state }, params) {
+    // We have an optimisation to spot if we fetch the same user with the same parameters simultaneously.
+    if (
+      !state.fetching[params.id] ||
+      state.fetching[params.id].params !== JSON.stringify(params)
+    ) {
+      // Not already fetching, or different params.
+      const p = JSON.stringify(params)
 
-    const { chatroom } = await this.$api.chat.fetchChat(chatid)
+      commit('fetching', {
+        id: params.id,
+        item: {
+          promise: this.$api.chat.fetchChat(params.id),
+          params: p
+        }
+      })
+    }
+
+    const { chatroom } = await state.fetching[params.id].promise
+
+    if (state.fetching[params.chatid]) {
+      commit('fetching', {
+        id: params.id,
+        item: null
+      })
+    }
 
     if (chatroom) {
       // Valid chatid
