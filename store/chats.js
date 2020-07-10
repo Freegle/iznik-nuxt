@@ -46,7 +46,11 @@ export const mutations = {
   },
 
   fetching(state, params) {
-    state.fetching[params.id] = params.item
+    if (!params) {
+      state.fetching = {}
+    } else {
+      state.fetching[params.id] = params.item
+    }
   }
 }
 
@@ -121,6 +125,9 @@ export const actions = {
       }
 
       commit('setList', chats)
+
+      // This avoids us ever getting stuck with bad stuff in the fetching list.
+      commit('fetching', null)
     } catch (e) {
       // This happens a lot on mobile when the network is flaky.  It's not necessarily an end-user visible error,
       // so there is no point letting it ripple up to Sentry.
@@ -185,7 +192,7 @@ export const actions = {
 
     const { chatroom } = await state.fetching[params.id].promise
 
-    if (state.fetching[params.chatid]) {
+    if (state.fetching[params.id]) {
       commit('fetching', {
         id: params.id,
         item: null

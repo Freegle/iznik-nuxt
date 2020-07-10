@@ -61,7 +61,11 @@ export const mutations = {
   },
 
   fetching(state, params) {
-    state.fetching[params.id] = params.item
+    if (!params) {
+      state.fetching = {}
+    } else {
+      state.fetching[params.id] = params.item
+    }
   }
 }
 
@@ -78,6 +82,7 @@ export const getters = {
 export const actions = {
   clear({ commit }) {
     commit('setList', [])
+    commit('fetching', null)
   },
 
   async fetch({ commit, state }, params) {
