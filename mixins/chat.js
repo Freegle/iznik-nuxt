@@ -407,10 +407,15 @@ export default {
 
         if (this.otheruserid) {
           // Get the user info in case we need to warn about them.
-          await this.$store.dispatch('user/fetch', {
-            id: this.otheruserid,
-            info: true
-          })
+          const user = this.$store.getters['user/get'](this.otheruserid)
+
+          if (!user || !user.info) {
+            console.log('Other chat user not in store yet, need to fetch')
+            await this.$store.dispatch('user/fetch', {
+              id: this.otheruserid,
+              info: true
+            })
+          }
 
           setTimeout(() => {
             this.showNotices = false

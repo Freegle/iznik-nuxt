@@ -85,7 +85,7 @@ export const getters = {
 }
 
 export const actions = {
-  async listChats({ commit, rootGetters }, params) {
+  async listChats({ commit, rootGetters, state }, params) {
     const modtools = rootGetters['misc/get']('modtools')
 
     params = params || {
@@ -96,7 +96,24 @@ export const actions = {
     params.summary = true
 
     try {
-      commit('setList', await this.$api.chat.listChats(params))
+      let current = null
+
+      // We might have a current chat selected.  We want to make sure that we don't lose it.  This can happen if
+      // we search for an old chat that we wouldn't normally return.
+      const chatid = parseInt(state.currentChat)
+      current = state.list[chatid] ? state.list[chatid] : null
+
+      const chats = await this.$api.chat.listChats(params)
+
+      const already = chats.find(c => {
+        return current && parseInt(c.id) === parseInt(current.id)
+      })
+
+      if (!already) {
+        chats.push(current)
+      }
+
+      commit('setList', chats)
     } catch (e) {
       // This happens a lot on mobile when the network is flaky.  It's not necessarily an end-user visible error,
       // so there is no point letting it ripple up to Sentry.
