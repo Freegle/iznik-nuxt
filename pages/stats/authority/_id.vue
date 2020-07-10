@@ -508,10 +508,10 @@ export default {
                   ')</span>'
                 : ''),
             monthly:
-              Math.round(group.avpermonth) +
+              Math.round(group.avpermonth * group.overlap) +
               (group.overlap < 1
                 ? ' (<span class="text-muted small">of ' +
-                  Math.round(group.totalweight) +
+                  Math.round(group.avpermonth) +
                   ')</span>'
                 : '')
           })
