@@ -102,7 +102,7 @@
               </span>
               <span v-else>
                 <span class="d-inline d-sm-none">
-                  <v-icon name="envelope" /> {{ member.emails.length }}
+                  {{ member.emails.length }}
                 </span>
                 <span class="d-none d-sm-inline">
                   Show {{ member.emails.length | pluralize('email', { includeNumber: true }) }}
