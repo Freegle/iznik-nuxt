@@ -33,49 +33,6 @@
             </b-btn>
           </b-card-body>
         </b-card>
-        <!--        <b-card-->
-        <!--          v-if="queued.length > 0"-->
-        <!--          class="mt-2"-->
-        <!--          border-variant="info"-->
-        <!--          header="info"-->
-        <!--          header-bg-variant="info"-->
-        <!--          header-text-variant="white"-->
-        <!--          no-body-->
-        <!--        >-->
-        <!--          <template slot="header">-->
-        <!--            <h3 class="d-inline">-->
-        <!--              <v-icon name="gift" scale="2" /> Your queued OFFERs-->
-        <!--            </h3>-->
-        <!--          </template>-->
-        <!--          <b-card-body class="p-1 p-lg-3">-->
-        <!--            <b-card-text class="text-center">-->
-        <!--              <NoticeMessage v-if="queued.length > 0" variant="danger" class="text-muted">-->
-        <!--                These were queued up while Freegle was suspending for COVID-19.  Please submit them, or if they-->
-        <!--                no longer apply then withdraw them.-->
-        <!--              </NoticeMessage>-->
-        <!--              <b-img-lazy v-if="busy && queued.length === 0" src="~/static/loader.gif" alt="Loading..." />-->
-        <!--              <div v-if="busy || queuedCount > 0">-->
-        <!--                <div v-for="message in queued" :key="'message-' + message.id" class="p-0 text-left mt-1">-->
-        <!--                  <MyMessage :message="message" :messages="messages" :show-old="false" queued />-->
-        <!--                </div>-->
-        <!--              </div>-->
-        <!--              <div v-else>-->
-        <!--                <b-row>-->
-        <!--                  <b-col>-->
-        <!--                    <p>Nothing here yet.  Why not...</p>-->
-        <!--                  </b-col>-->
-        <!--                </b-row>-->
-        <!--                <b-row>-->
-        <!--                  <b-col class="text-center">-->
-        <!--                    <b-button to="/give" class="mt-1" size="lg" variant="primary">-->
-        <!--                      <v-icon name="gift" />&nbsp;OFFER something-->
-        <!--                    </b-button>-->
-        <!--                  </b-col>-->
-        <!--                </b-row>-->
-        <!--              </div>-->
-        <!--            </b-card-text>-->
-        <!--          </b-card-body>-->
-        <!--        </b-card>-->
         <b-card
           class="mt-2"
           border-variant="info"
@@ -413,14 +370,6 @@ export default {
       const currentCount = this.messages.length
 
       try {
-        // COVID - load any queued posts.
-        await this.$store.dispatch('messages/fetchMessages', {
-          collection: 'Draft',
-          types: ['Offer'],
-          fromuser: me.id,
-          limit: 1000
-        })
-
         await this.$store.dispatch('messages/fetchMessages', {
           collection: 'AllUser',
           summary: true,
