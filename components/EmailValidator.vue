@@ -19,6 +19,7 @@
         }"
         :center="center"
         autocomplete="username email"
+        placeholder="Email address"
         @input="input"
         @focus="focus"
         @blur="blur"
@@ -81,7 +82,6 @@ export default {
     email: {
       immediate: true,
       async handler(newVal) {
-        console.log('Email watch', newVal)
         if (newVal && newVal.indexOf('@') !== -1) {
           // Ask the server to spot typos in this domain.
           const domain = newVal.substring(newVal.indexOf('@') + 1)

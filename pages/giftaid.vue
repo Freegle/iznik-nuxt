@@ -26,9 +26,9 @@
             id="fullname"
             v-model="fullname"
             name="fullname"
-            class="mb-3"
             autocomplete="given-name"
             placeholder="Your full name"
+            :class="{ 'border-warning': nameInvalid, 'mb-3': true }"
           />
         </b-form-group>
         <b-form-group
@@ -52,8 +52,8 @@
             v-model="homeaddress"
             rows="4"
             name="homeaddress"
-            class="mb-3"
             placeholder="Your home address"
+            :class="{ 'border-warning': addressInvalid, 'mb-3': true }"
           />
         </b-form-group>
         <b-form-group
@@ -138,6 +138,12 @@ export default {
   computed: {
     valid() {
       return this.period && this.fullname && this.homeaddress
+    },
+    nameInvalid() {
+      return !this.fullname || this.fullname.indexOf(' ') === -1
+    },
+    addressInvalid() {
+      return !this.homeaddress || this.homeaddress.indexOf(' ') === -1
     }
   },
   async mounted() {

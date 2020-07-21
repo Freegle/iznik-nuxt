@@ -8,9 +8,11 @@ export default {
           return 'times'
         case 'Leave':
         case 'Leave Approved Message':
+        case 'Leave Approved Member':
           return 'envelope'
         case 'Delete':
         case 'Delete Approved Message':
+        case 'Delete Approved Member':
           return 'trash-alt'
         case 'Edit':
           return 'pen'
@@ -27,9 +29,11 @@ export default {
           return 'warning'
         case 'Leave':
         case 'Leave Approved Message':
+        case 'Leave Approved Member':
           return 'primary'
         case 'Delete':
         case 'Delete Approved Message':
+        case 'Delete Approved Member':
           return 'danger'
         case 'Edit':
           return 'primary'

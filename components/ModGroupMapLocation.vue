@@ -7,17 +7,20 @@
       @click="select"
     />
     <l-circle-marker v-if="labels" :lat-lng="[ location.lat, location.lng ]" :radius="1">
-      <l-tooltip :content="location.name" :options="{ permanent: true }" />
+      <l-tooltip ref="tooltip" :content="location.name" :options="{ permanent: true, direction: 'center' }" />
     </l-circle-marker>
   </div>
 </template>
 <script>
+import waitForRef from '@/mixins/waitForRef'
+
 const AREA_FILL_COLOUR = 'lightgreen'
 const FILL_OPACITY = 0.5
 const AREA_BOUNDARY_COLOUR = 'darkblue'
 const SELECTED = '#990000'
 
 export default {
+  mixins: [waitForRef],
   props: {
     location: {
       type: Object,

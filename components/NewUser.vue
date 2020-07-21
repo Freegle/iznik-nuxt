@@ -3,51 +3,9 @@
     <h1 class="text-center">
       Welcome to Freegle!
     </h1>
-    <p class="text-center">
-      It looks like this is your first time freegling.  Hello!
-    </p>
     <b-row class="text-center">
       <b-col cols="12" md="6" offset-md="3">
-        <b-card variant="white">
-          <h2 class="text-center">
-            Your Account Password
-          </h2>
-          <p class="text-center">
-            We've emailed a password to you:
-          </p>
-          <b-row class="text-center">
-            <b-col cols="12" md="6" offset-md="3">
-              <b-card variant="white">
-                <h1 class="text-primary">
-                  <span class="large">
-                    {{ password }}
-                  </span>
-                </h1>
-              </b-card>
-            </b-col>
-          </b-row>
-          <p class="text-center mt-2">
-            ...or you can set your own:
-          </p>
-          <b-row>
-            <b-col cols="12" md="4" offset-md="4">
-              <b-input-group>
-                <b-form-input v-model="newPassword" type="password" />
-                <b-input-group-append>
-                  <b-btn variant="primary" @click="setPassword">
-                    <v-icon v-if="savingPassword" name="sync" class="fa-spin" />
-                    <v-icon v-else-if="savedPassword" name="check" />
-                    <v-icon v-else name="save" />&nbsp;
-                    Save
-                  </b-btn>
-                </b-input-group-append>
-              </b-input-group>
-            </b-col>
-          </b-row>
-          <p class="mt-2 text-center">
-            When you come back to us you can also log in your Facebook, Google or Yahoo account for that email address.
-          </p>
-        </b-card>
+        <NewUserInfo :password="password" />
       </b-col>
     </b-row>
     <h3 class="text-center mt-2">
@@ -117,9 +75,11 @@
 <script>
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
+import NewUserInfo from './NewUserInfo'
 Vue.use(TooltipPlugin)
 
 export default {
+  components: { NewUserInfo },
   props: {
     password: {
       type: String,
@@ -130,9 +90,6 @@ export default {
   data: function() {
     return {
       timer: null,
-      savingPassword: false,
-      savedPassword: false,
-      newPassword: null,
       showToolTip: 0,
       tooltips: [
         {
@@ -166,21 +123,6 @@ export default {
     this.timer = setTimeout(this.toolTipTimer, 15000)
   },
   methods: {
-    async setPassword() {
-      this.savingPassword = true
-
-      if (this.newPassword) {
-        this.me = await this.$store.dispatch('auth/saveAndGet', {
-          password: this.newPassword
-        })
-      }
-
-      this.savingPassword = false
-      this.savedPassword = true
-      setTimeout(() => {
-        this.savedPassword = false
-      }, 2000)
-    },
     nextTooltip() {
       if (this.timer) {
         console.log('Timer', this.timer)

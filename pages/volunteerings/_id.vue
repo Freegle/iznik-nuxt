@@ -13,6 +13,9 @@
             </b-btn>
           </div>
         </div>
+        <h2 class="sr-only">
+          List of volunteer opportunities
+        </h2>
         <div v-for="volunteering in volunteerings" :key="'volunteering-' + volunteering.id" class="mt-2">
           <VolunteerOpportunity v-if="!volunteering.pending" :summary="false" :item="volunteering" />
         </div>

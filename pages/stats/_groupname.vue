@@ -312,6 +312,10 @@ export default {
         }
       }
 
+      if (lastmon !== null) {
+        ret.push([new Date(lastmon + '-01'), count])
+      }
+
       return ret
     }
   },

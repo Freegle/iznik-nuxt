@@ -12,92 +12,12 @@
         </nuxt-link> if necessary - we'll
         merge your accounts.
       </p>
-      <!--      <p>-->
-      <!--        This usually happens if you have two different accounts on Freegle.  We can merge your-->
-      <!--        accounts or help you work out what's going on.-->
-      <!--      </p>-->
-      <!--      <div v-if="me && urlid">-->
-      <!--        <b-btn variant="primary" class="mb-2" size="lg" :href="'mailto:support@ilovefreegle.org?subject=I may have two acounts (#' + myid + ' and #' + urlid + ')&body=Please can you help?  My main email address is...'">-->
-      <!--          Contact our Support Volunteers-->
-      <!--        </b-btn>-->
-      <!--        <p>-->
-      <!--          If that button doesn't work then please mail support@ilovefreegle.org.  Please copy and paste this and send it to them:-->
-      <!--        </p>-->
-      <!--        <p>-->
-      <!--          <b>#{{ me.id }} and #{{ urlid }}</b>-->
-      <!--        </p>-->
-      <!--        <p>-->
-      <!--          Please also let them know your main email address.-->
-      <!--        </p>-->
-      <!--      </div>-->
     </b-alert>
     <div v-else-if="me">
       <client-only>
         <div class="chatHolder">
-          <b-row class="chatTitle">
-            <b-col v-if="chat">
-              <b-row>
-                <b-col cols="8" class="p-0 pl-1">
-                  <span v-if="chat.chattype === 'User2Mod' && mod && chat.group" class="d-inline clickme hidelink">
-                    <nuxt-link :to="'/modtools/members/approved/search/' + chat.group.id + '/' + otheruserid">
-                      {{ chat.name }}
-                    </nuxt-link>
-                  </span>
-                  <span v-else-if="(chat.chattype == 'User2User' || chat.chattype == 'User2Mod')" class="d-inline clickme">
-                    <span @click="showInfo">
-                      {{ chat.name }}
-                    </span>
-                  </span>
-                  <span v-else class="d-inline">
-                    {{ chat.name }}
-                  </span>
-                  <span v-if="unseen">
-                    <b-badge variant="danger">{{ unseen }}</b-badge>
-                  </span>
-                  <span class="mr-2 d-none d-sm-inline-block">
-                    <Ratings v-if="otheruser" :id="otheruserid" :key="'otheruser-' + otheruserid" size="sm" />
-                  </span>
-                </b-col>
-                <b-col cols="4" class="p-0">
-                  <b-dropdown v-if="mod && chat.chattype === 'User2Mod' && otheruser" size="sm" variant="transparent" class="float-right" right>
-                    <template slot="button-content" />
-                    <b-dropdown-item @click="showhide">
-                      Hide this chat
-                    </b-dropdown-item>
-                  </b-dropdown>
-                  <b-dropdown v-if="chat.chattype === 'User2User' && otheruser" size="sm" variant="transparent" class="float-right" right>
-                    <template slot="button-content" />
-                    <b-dropdown-item @click="showhide">
-                      Hide this chat
-                    </b-dropdown-item>
-                    <b-dropdown-item @click="showblock">
-                      Block this person
-                    </b-dropdown-item>
-                    <b-dropdown-item @click="report">
-                      Report this person
-                    </b-dropdown-item>
-                  </b-dropdown>
-                  <span class="float-right pl-1 mr-1 clickme d-none d-sm-inline-block" title="Popup chat window" @click="popup">
-                    <v-icon name="window-restore" />
-                  </span>
-                  <b-btn variant="white" size="sm" class="float-right mr-2 d-none d-sm-inline-block" @click="markRead">
-                    Mark read
-                  </b-btn>
-                </b-col>
-              </b-row>
-              <b-row class="d-block d-sm-none">
-                <b-col class="p-0 pl-1 mb-1">
-                  <span>
-                    <b-btn variant="white" size="sm" class="float-right" @click="markRead">
-                      Mark read
-                    </b-btn>
-                    <Ratings v-if="otheruser" :id="otheruserid" :key="'otheruser-' + otheruser.id" size="sm" />
-                  </span>
-                </b-col>
-              </b-row>
-            </b-col>
-          </b-row>
-          <div v-if="chat" class="chatContent row" infinite-wrapper>
+          <ChatHeader v-bind="$props" class="chatTitle" />
+          <div v-if="chat" class="chatContent" infinite-wrapper>
             <infinite-loading
               v-if="otheruser || chat.chattype === 'User2Mod' || chat.chattype === 'Mod2Mod'"
               direction="top"
@@ -114,19 +34,17 @@
                 </div>
               </span>
             </infinite-loading>
-            <ul v-if="otheruser || chat.chattype === 'User2Mod' || chat.chattype === 'Mod2Mod'" class="p-0 pt-1 list-unstyled mb-1 w-100">
-              <li v-for="chatmessage in chatmessages" :key="'chatmessage-' + chatmessage.id">
-                <ChatMessage
-                  v-if="chatmessage"
-                  :key="'chatmessage-' + chatmessage.id"
-                  :chatmessage="chatmessage"
-                  :chat="chat"
-                  :otheruser="otheruser"
-                  :last="chatmessage.id === chatmessages[chatmessages.length - 1].id"
-                  :chatusers="chatusers"
-                />
-              </li>
-            </ul>
+            <div v-if="otheruser || chat.chattype === 'User2Mod' || chat.chattype === 'Mod2Mod'" class="pt-1 mb-1 w-100">
+              <ChatMessage
+                v-for="chatmessage in chatmessages"
+                :key="'chatmessage-' + chatmessage.id"
+                :chatmessage="chatmessage"
+                :chat="chat"
+                :otheruser="otheruser"
+                :last="chatmessage.id === chatmessages[chatmessages.length - 1].id"
+                :chatusers="chatusers"
+              />
+            </div>
             <div v-if="chatBusy" class="text-center">
               <b-img class="float-right" src="~static/loader.gif" />
             </div>
@@ -326,10 +244,8 @@
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import InfiniteLoading from 'vue-infinite-loading'
-import ChatBlockModal from './ChatBlockModal'
-import ChatHideModal from './ChatHideModal'
-import ModComments from './ModComments'
-import ExternalLink from './ExternalLink'
+import ChatFooter from './ChatFooter'
+import ChatHeader from './ChatHeader'
 import chatCollate from '@/mixins/chatCollate.js'
 import chat from '@/mixins/chat.js'
 import waitForRef from '@/mixins/waitForRef'
@@ -337,42 +253,15 @@ import waitForRef from '@/mixins/waitForRef'
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
 import ChatMessage from '~/components/ChatMessage.vue'
 Vue.use(TooltipPlugin)
-const OurFilePond = () => import('~/components/OurFilePond')
-const Ratings = () => import('~/components/Ratings')
-const PromiseModal = () => import('./PromiseModal')
-const ProfileModal = () => import('./ProfileModal')
-const NoticeMessage = () => import('~/components/NoticeMessage')
-const AvailabilityModal = () => import('~/components/AvailabilityModal')
-const AddressModal = () => import('~/components/AddressModal')
-const ChatReportModal = () => import('~/components/ChatReportModal')
-const ChatRSVPModal = () => import('~/components/ChatRSVPModal')
-const ModSpammerReport = () => import('~/components/ModSpammerReport')
 
 export default {
   components: {
-    ExternalLink,
-    ModComments,
-    ModSpammerReport,
+    ChatHeader,
+    ChatFooter,
     InfiniteLoading,
-    Ratings,
-    ChatMessage,
-    OurFilePond,
-    PromiseModal,
-    ProfileModal,
-    AvailabilityModal,
-    AddressModal,
-    NoticeMessage,
-    ChatBlockModal,
-    ChatHideModal,
-    ChatReportModal,
-    ChatRSVPModal
+    ChatMessage
   },
   mixins: [chatCollate, waitForRef, chat],
-  computed: {
-    enterNewLine() {
-      return this.$store.getters['misc/get']('enternewline')
-    }
-  },
   watch: {
     me(newVal, oldVal) {
       if (!oldVal && newVal) {
@@ -384,16 +273,14 @@ export default {
     this.urlid = this.$route.query.u
   },
   methods: {
-    popup() {
-      this.$store.dispatch('popupchats/popup', { id: this.chat.id })
-    },
-    hide() {
-      this.$store.dispatch('chats/hide', {
-        id: this.id
+    scrollBottom() {
+      // Scroll to the bottom so we can see it.
+      this.$nextTick(() => {
+        if (this.$el && this.$el.querySelector) {
+          const container = this.$el.querySelector('.chatContent')
+          container.scrollTop = container.scrollHeight
+        }
       })
-
-      const modtools = this.$store.getters['misc/get']('modtools')
-      this.$router.push((modtools ? '/modtools' : '') + '/chats')
     }
   }
 }
@@ -413,20 +300,8 @@ export default {
 }
 
 .chatTitle {
-  background-color: $color-blue--light;
-  color: $color-white;
-  font-weight: bold;
   order: 1;
   z-index: 1000;
-}
-
-.chatTitle div {
-  background-color: $color-blue--light;
-}
-
-.chatWarning {
-  order: 2;
-  justify-content: flex-start;
 }
 
 .chatContent {
@@ -439,31 +314,5 @@ export default {
 
 .chatFooter {
   order: 4;
-  justify-content: flex-end;
-  background-color: $color-white;
-}
-
-::v-deep .dropdown-toggle {
-  color: $color-white;
-}
-
-.mobtext {
-  font-size: 0.6em;
-  text-align: center !important;
-}
-
-.fa-mob {
-  width: 2rem;
-  height: 2rem;
-  width: 100%;
-}
-
-.hidelink a {
-  text-decoration: none;
-  color: white;
-}
-
-.nocolor {
-  color: initial;
 }
 </style>

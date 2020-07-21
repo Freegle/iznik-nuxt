@@ -1,6 +1,6 @@
 <template>
   <b-card v-if="user" no-body class="p-0">
-    <b-card-header class="clickme p-1" @click="expanded = !expanded">
+    <b-card-header class="clickme p-1" @click="maybeExpand">
       <b-row>
         <b-col cols="10" sm="4" class="order-1 truncate" :title="user.email">
           <v-icon name="envelope" />&nbsp;{{ user.email }}
@@ -476,6 +476,12 @@ export default {
           id: this.user.id,
           email: this.newemail
         })
+      }
+    },
+    maybeExpand() {
+      // Ignore text selection
+      if (!window.getSelection().toString()) {
+        this.expanded = !this.expanded
       }
     }
   }

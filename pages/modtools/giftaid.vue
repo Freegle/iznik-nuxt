@@ -24,7 +24,24 @@ export default {
   },
   methods: {
     async getGiftAid() {
-      this.giftaids = await this.$api.giftaid.list()
+      const giftaid = await this.$api.giftaid.list()
+
+      // Sort so that the easy ones are at the top.
+      this.giftaids = giftaid.sort((a, b) => {
+        if (
+          (a.postcode && !b.postcode) ||
+          (a.fullname.indexOf(' ') !== -1 && b.fullname.indexOf(' ') === -1)
+        ) {
+          return -1
+        } else if (
+          (b.postcode && !a.postcode) ||
+          (b.fullname.indexOf(' ') !== -1 && a.fullname.indexOf(' ') === -1)
+        ) {
+          return 1
+        } else {
+          return 0
+        }
+      })
     }
   }
 }
