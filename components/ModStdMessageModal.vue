@@ -458,7 +458,7 @@ export default {
 
         const fromid = from.substring(0, from.indexOf('@'))
         text = text.replace(/\$memberid/g, fromid)
-        const membername = this.user.displayname | fromid
+        const membername = this.user.displayname || fromid
         text = text.replace(/\$membername/g, membername)
 
         let summ = ''
