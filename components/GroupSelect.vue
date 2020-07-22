@@ -86,7 +86,9 @@ export default {
     groups() {
       let ret = []
       if (this.listall) {
-        ret = Object.values(this.$store.getters['group/list'])
+        ret = Object.values(this.$store.getters['group/list']).filter(g => {
+          return g.id
+        })
       } else {
         ret = this.$store.getters['auth/groups']
       }
