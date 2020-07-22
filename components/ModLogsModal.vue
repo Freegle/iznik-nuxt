@@ -74,7 +74,11 @@ export default {
     }
   },
   methods: {
-    show() {
+    async show() {
+      // Fetch the user.  This will have the effect of clearing the log context - otherwise if we open another modal
+      // for this user then it will get confused and fetch from a previous context and show no logs.
+      await this.$store.dispatch('user/clear')
+
       this.showModal = true
     },
     hide() {
