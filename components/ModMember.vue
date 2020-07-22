@@ -323,7 +323,7 @@ export default {
         this.member &&
         this.member.lastaccess &&
         this.$dayjs().diff(this.$dayjs(this.member.lastaccess), 'days') >=
-          (365 * 24 * 60 * 60) / 2
+          365 / 2
       )
     },
     user() {
