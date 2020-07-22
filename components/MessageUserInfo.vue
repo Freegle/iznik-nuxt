@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex justify-content-between flex-wrap order-0">
-    <nuxt-link :to="'/profile/' + user.id" class="text-success decornone" :title="'Click to view profile for ' + user.displayname">
+    <nuxt-link :to="'/modtools/members/approved/search/' + user.id" class="text-success decornone" :title="'Click to view membership for ' + user.displayname">
       <span class="text-muted small d-flex justify-content-between">
         <ProfileImage :image="user.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="sm" />
         <span class="flex-grow-1">
