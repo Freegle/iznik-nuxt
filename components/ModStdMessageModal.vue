@@ -4,6 +4,7 @@
     v-model="showModal"
     :title="message ? message.subject : ('Message to ' + member.displayname)"
     no-stacking
+    no-close-on-backdrop
     size="lg"
   >
     <template slot="default">
