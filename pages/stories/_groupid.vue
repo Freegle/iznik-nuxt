@@ -12,7 +12,7 @@
           </p>
           <b-row>
             <b-col>
-              <groupSelect v-if="loggedIn" v-model="groupid" class="float-left" all />
+              <groupSelect v-if="loggedIn" v-model="groupid" class="float-left" all :restrict="false" />
             </b-col>
             <b-col>
               <b-btn variant="primary" class="float-right" @click="showAddModal">

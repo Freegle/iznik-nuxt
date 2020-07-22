@@ -71,6 +71,12 @@ export default {
       default: function() {
         return []
       }
+    },
+    // Whether to restrict to our own groups
+    restrict: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
   computed: {
@@ -191,7 +197,7 @@ export default {
     invalidSelection: {
       immediate: true,
       handler(val) {
-        if (val) this.selectedGroup = null
+        if (val && this.restrict) this.selectedGroup = null
       }
     }
   },
