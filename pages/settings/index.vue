@@ -7,24 +7,7 @@
       <b-row class="m-0">
         <b-col cols="0" xl="3" />
         <b-col cols="12" xl="6" class="p-0">
-          <NoticeMessage variant="info" class="mt-2">
-            <div v-if="simple">
-              <p>
-                You are viewing the simple version of the site, so you won't see community features like ChitChat,
-                community events or volunteer opportunities.  Some advanced settings won't show in this page.
-              </p>
-            </div>
-            <div v-else>
-              <p>
-                You are viewing the full version of the site.  If you find this is too "busy", you can choose to view
-                a simplified version.
-              </p>
-            </div>
-            <p>
-              You can toggle which version you see by clicking here:
-            </p>
-            <SimpleView />
-          </NoticeMessage>
+          <SettingsSimple class="mt-2" />
           <b-card border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
             <template v-slot:header>
               <h2 class="bg-info settings__heading mb-0">
@@ -559,7 +542,8 @@
               </b-form-group>
             </b-card-body>
           </b-card>
-          <br class="mb-4">
+          <br class="mb-2">
+          <SettingsSimple class="mb-2" />
         </b-col>
         <b-col cols="0" xl="3" />
       </b-row>
@@ -574,9 +558,9 @@
 
 <script>
 import Vue from 'vue'
-import SimpleView from '../../components/SimpleView'
 import EmailValidator from '../../components/EmailValidator'
 import EmailOwn from '../../components/EmailOwn'
+import SettingsSimple from '../../components/SettingsSimple'
 import waitForRef from '@/mixins/waitForRef'
 import loginRequired from '@/mixins/loginRequired.js'
 import EmailConfirmModal from '~/components/EmailConfirmModal'
@@ -599,9 +583,9 @@ const PasswordEntry = () => import('~/components/PasswordEntry')
 
 export default {
   components: {
+    SettingsSimple,
     EmailOwn,
     EmailValidator,
-    SimpleView,
     OurToggle,
     DatePicker,
     EmailConfirmModal,
