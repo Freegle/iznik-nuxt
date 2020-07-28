@@ -16,17 +16,17 @@
       <span v-if="savedComment.groupid">
         on {{ groupname }}
       </span>
-      <span v-if="amAModOn(savedComment.groupid) || admin">
-        <b-btn v-if="canEdit" variant="link" size="sm" @click="editIt">
+      <span v-if="amAModOn(savedComment.groupid) || supportOrAdmin">
+        <b-btn variant="link" size="sm" @click="editIt">
           <v-icon name="pen" /> Edit
         </b-btn>
-        <b-btn v-if="canEdit" variant="link" size="sm" @click="deleteIt">
+        <b-btn variant="link" size="sm" @click="deleteIt">
           <v-icon name="trash-alt" /> Delete
         </b-btn>
       </span>
     </div>
     <ConfirmModal ref="confirm" @confirm="deleteConfirmed" />
-    <ModCommentEditModal v-if="canEdit" ref="editComment" :user="user" :comment="comment" @edited="updateComments" />
+    <ModCommentEditModal v-if="amAModOn(savedComment.groupid) || supportOrAdmin" ref="editComment" :user="user" :comment="comment" @edited="updateComments" />
   </NoticeMessage>
 </template>
 <script>
@@ -70,13 +70,6 @@ export default {
     },
     groupname() {
       return this.group ? this.group.namedisplay : '#' + this.comment.groupid
-    },
-    canEdit() {
-      return (
-        this.supportOrAdmin ||
-        (this.group &&
-          (this.group.role === 'Owner' || this.group.role === 'Moderator'))
-      )
     }
   },
   mounted() {
