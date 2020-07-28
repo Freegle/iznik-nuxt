@@ -4,7 +4,7 @@
     <div>
       <div>
         <b-tabs v-model="tabIndex" content-class="mt-3" card lazy>
-          <b-tab id="Spammers" :active="!supportOrAdmin">
+          <b-tab id="Spammers" :active="!hasPermissionSpamAdmin">
             <template v-slot:title>
               <h2 class="ml-2 mr-2">
                 Confirmed Spammers
@@ -12,7 +12,7 @@
             </template>
             <!--            TODO Search-->
           </b-tab>
-          <b-tab v-if="supportOrAdmin" id="PendingAdd">
+          <b-tab v-if="hasPermissionSpamAdmin" id="PendingAdd">
             <template v-slot:title>
               <h2 class="ml-2 mr-2">
                 Pending Add
@@ -22,14 +22,14 @@
               </h2>
             </template>
           </b-tab>
-          <b-tab v-if="supportOrAdmin" id="Whitelisted">
+          <b-tab v-if="hasPermissionSpamAdmin" id="Whitelisted">
             <template v-slot:title>
               <h2 class="ml-2 mr-2">
                 Whitelisted
               </h2>
             </template>
           </b-tab>
-          <b-tab v-if="supportOrAdmin" id="PendingRemove">
+          <b-tab v-if="hasPermissionSpamAdmin" id="PendingRemove">
             <template v-slot:title>
               <h2 class="ml-2 mr-2">
                 Pending Remove
@@ -136,8 +136,7 @@ export default {
   },
   mounted() {
     // Start in Pending Add if they have rights to see it.
-    console.log('Mounted', this.supportOrAdmin)
-    if (this.supportOrAdmin) {
+    if (this.hasPermissionSpamAdmin) {
       this.tabIndex = 1
     } else {
       this.tabIndex = 0
