@@ -337,7 +337,7 @@ export default {
     }
   },
   computed: {
-    totalWeight() {
+    totalWeightUnRounded() {
       let total = 0
 
       for (const groupid in this.stats) {
@@ -348,15 +348,18 @@ export default {
         }
       }
 
-      return Math.round(total / 100) / 10
+      return total
+    },
+    totalWeight() {
+      return Math.round(this.totalWeightUnRounded / 100) / 10
     },
     // Benefit of reuse per tonne is £711 and CO2 impact is -0.51tCO2eq based on WRAP figures.
     // http://www.wrap.org.uk/content/monitoring-tools-and-resources
     totalBenefit() {
-      return this.totalWeight * BENEFIT_PER_TONNE
+      return (this.totalWeightUnRounded * BENEFIT_PER_TONNE) / 1000
     },
     totalCO2() {
-      return this.totalWeight * CO2_PER_TONNE
+      return (this.totalWeightUnRounded * CO2_PER_TONNE) / 1000
     },
     totalGifts() {
       let count = 0
@@ -424,7 +427,7 @@ export default {
               dates[a.date] = 0
             }
 
-            dates[a.date] += parseInt(a.count) * overlap
+            dates[a.date] += Math.round(parseInt(a.count) * overlap)
           }
         }
       }
