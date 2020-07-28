@@ -24,9 +24,11 @@
                   about:
                 </span>
               </div>
-              <h4 class="mt-1">
-                {{ refmsg.subject }}
-              </h4>
+              <nuxt-link :to="'/message/' + refmsg.id">
+                <h4 class="mt-1">
+                  {{ refmsg.subject }}
+                </h4>
+              </nuxt-link>
             </b-card-title>
             <b-card-text>
               <notice-message v-if="refmsg.outcomes && refmsg.outcomes.length" class="mb-3">
