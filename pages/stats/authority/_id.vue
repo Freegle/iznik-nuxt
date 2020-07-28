@@ -167,7 +167,7 @@
                 @ready="idle"
               >
                 <l-tile-layer :url="osmtile" :attribution="attribution" />
-                <GroupMarker v-for="g in markers" :key="'marker-' + g.id + '-' + zoom" :group="g" />
+                <GroupMarker v-for="g in markers" :key="'marker-' + g.id + '-' + zoom" :group="g" size="poor" />
               </l-map>
             </client-only>
             <Impact
@@ -178,7 +178,7 @@
               :total-members="totalMembers"
               :group-count="groupcount "
               :range="range"
-              :start="start"
+              :start="startDate"
               :end="end"
               border
             />
@@ -761,8 +761,6 @@ export default {
           force: true
         })
 
-        // Check if the group has a significant overlap. No point cluttering things up with groups which don't really
-        // contribute.
         const overlap = group.overlap
         const weights = store.getters['stats/get']('Weight')
 
