@@ -59,7 +59,7 @@
       </div>
     </div>
     <AvailabilityModal v-if="me" ref="availabilitymodal" :thisuid="me.id" />
-    <ShareModal :id="lastSubmitted" ref="share" />
+    <ShareModal :id="lastSubmitted" ref="share" maybe />
   </div>
 </template>
 

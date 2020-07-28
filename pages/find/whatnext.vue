@@ -50,7 +50,7 @@
       You'll also get them by email.  <span class="text-danger font-weight-bold">Check your spam!</span>
     </b-tooltip>
     <AvailabilityModal v-if="me" ref="availabilitymodal" :thisuid="me.id" />
-    <ShareModal :id="lastSubmitted" ref="share" />
+    <ShareModal :id="lastSubmitted" ref="share" maybe />
   </div>
 </template>
 
