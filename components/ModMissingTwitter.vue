@@ -28,7 +28,7 @@
     </NoticeMessage>
     <NoticeMessage v-if="notlinked.length" variant="warning" class="mt-1">
       <div v-if="summary">
-        <v-icon name="exclamation-triangle" /> {{ notlinked.length | pluralize(['community needs', 'communities need'], { includeNumber: true }) }} need to be linked to a Twitter account.
+        <v-icon name="exclamation-triangle" /> {{ notlinked.length | pluralize(['community needs', 'communities need'], { includeNumber: true }) }} to be linked to a Twitter account.
         <b-btn variant="white" @click="expand">
           Click to view
         </b-btn>
