@@ -457,7 +457,9 @@ export default {
           from = this.member.email
         }
 
-        const fromid = from.substring(0, from.indexOf('@'))
+        const fromid = from
+          ? from.substring(0, from.indexOf('@'))
+          : this.user.displayname
         text = text.replace(/\$memberid/g, fromid)
         const membername = this.user.displayname || fromid
         text = text.replace(/\$membername/g, membername)
