@@ -75,7 +75,6 @@ export default {
         }
       }
 
-      console.log('Invalid', ret)
       return ret
     },
     notlinked() {
@@ -96,7 +95,6 @@ export default {
         }
       }
 
-      console.log('Not linked', ret)
       return ret
     }
   },

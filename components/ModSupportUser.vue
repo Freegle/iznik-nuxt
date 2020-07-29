@@ -253,7 +253,7 @@
       </h3>
       <ModSupportChatList :chats="chatsFiltered" :pov="user.id" />
     </b-card-body>
-    <ModLogsModal ref="logs" :userid="user.id" />
+    <ModLogsModal ref="logs" :userid="user.id" :clearfirst="false" />
     <ConfirmModal v-if="purgeConfirm" ref="purgeConfirm" :title="'Purge ' + user.displayname + ' from the system?'" message="<p><b>This can't be undone.</b></p><p>Are you completely sure you want to do this?</p>" @confirm="purgeConfirmed" />
     <ProfileModal v-if="user && user.info" :id="id" ref="profile" />
     <ModSpammerReport v-if="showSpamModal" ref="spamConfirm" :user="reportUser" />
