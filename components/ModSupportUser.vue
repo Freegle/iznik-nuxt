@@ -50,7 +50,7 @@
           v-if="admin"
           variant="white"
           class="mr-2 mb-1"
-          :href="user.loginlink.replace(/http.*\?u/, 'http://localhost:3000/?u')"
+          :href="user.loginlink ? user.loginlink.replace(/http.*\?u/, 'http://localhost:3000/?u') : null"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -423,10 +423,14 @@ export default {
     },
     chatsFiltered() {
       return this.user.chatrooms
-        .filter(c => c.chattype !== 'Mod2Mod')
-        .sort((a, b) => {
-          return new Date(b.lastdate).getTime() - new Date(a.lastdate).getTime()
-        })
+        ? this.user.chatrooms
+            .filter(c => c.chattype !== 'Mod2Mod')
+            .sort((a, b) => {
+              return (
+                new Date(b.lastdate).getTime() - new Date(a.lastdate).getTime()
+              )
+            })
+        : []
     }
   },
   mounted() {
