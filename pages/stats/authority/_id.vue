@@ -212,6 +212,10 @@
                   Freegle Communities serving {{ authority.name }}
                 </h2>
                 <b-table striped :items="items" :fields="fields">
+                  <template v-slot:cell(location)="data">
+                    <!-- eslint-disable-next-line -->
+                    <span v-html="data.value" />
+                  </template>
                   <template v-slot:cell(members)="data">
                     <!-- eslint-disable-next-line -->
                     <span v-html="data.value" />
@@ -495,7 +499,13 @@ export default {
 
         if (group.ApprovedMemberCount.length > 0) {
           ret.push({
-            location: group.group.namedisplay + (group.overlap < 1 ? ' *' : ''),
+            location:
+              '<a class="black" href="/stories/' +
+              group.group.id +
+              '">' +
+              group.group.namedisplay +
+              (group.overlap < 1 ? ' *' : '') +
+              '</a>',
             members:
               Math.round(
                 group.ApprovedMemberCount[group.ApprovedMemberCount.length - 1]
@@ -875,6 +885,10 @@ export default {
 
 .green {
   color: $color-green--darker !important;
+}
+
+::v-deep .black {
+  color: $color-black !important;
 }
 
 ::v-deep .mx-datepicker {
