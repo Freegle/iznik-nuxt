@@ -681,11 +681,11 @@ export default {
 
 .card-header__options {
   grid-column: 1 / 2;
-  grid-row: 4 / 5;
+  grid-row: 5 / 6;
 
   @include media-breakpoint-up(sm) {
     grid-column: 1 / 2;
-    grid-row: 3 / 4;
+    grid-row: 4 / 5;
   }
 }
 </style>
