@@ -84,6 +84,10 @@ export const mutations = {
     }
   },
 
+  clearRelated(state) {
+    state.userlist = []
+  },
+
   unbounce(state) {
     state.user.bouncing = 0
   },
@@ -171,6 +175,10 @@ export const getters = {
 }
 
 export const actions = {
+  clearRelated({ commit }) {
+    commit('clearRelated')
+  },
+
   forceLogin({ commit }, value) {
     commit('forceLogin', value)
   },
