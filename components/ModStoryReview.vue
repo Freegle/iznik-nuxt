@@ -21,7 +21,10 @@
       <b-card-body>
         <!-- eslint-disable-next-line -->
         <h3>{{ story.headline }}</h3>
-        <b>{{ story.story }}</b>
+        <div class="d-flex">
+          <b>{{ story.story }}</b>
+          <b-img v-if="story.photo" thumbnail :src="story.photo.paththumb" />
+        </div>
         <NoticeMessage v-if="!story.public" variant="info" class="mt-1">
           They've said this story isn't public, so this is just for you to read and then click Hide. You might also like to thank them via Chat.
         </NoticeMessage>
