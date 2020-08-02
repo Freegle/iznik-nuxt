@@ -87,6 +87,10 @@ export const mutations = {
     }
   },
 
+  clearRelated(state) {
+    state.userlist = []
+  },
+
   unbounce(state) {
     state.user.bouncing = 0
   },
@@ -174,6 +178,10 @@ export const getters = {
 }
 
 export const actions = {
+  clearRelated({ commit }) {
+    commit('clearRelated')
+  },
+
   forceLogin({ commit }, value) {
     commit('forceLogin', value)
   },
@@ -357,12 +365,14 @@ export const actions = {
         // count drops to zero, or worst case when we refresh.
         const sound = new Audio('/alert.wav')
 
-        try {
-          // Some browsers prevent us using play unless in response to a
-          // user gesture, so catch any exception.  This returns a promise so we need to await.
-          await sound.play()
-        } catch (e) {
-          console.log('Failed to play beep', e.message)
+        // Some browsers prevent us using play unless in response to a
+        // user gesture, so catch any exception.
+        const prom = sound.play()
+
+        if (prom) {
+          prom.catch(e => {
+            console.log('Failed to play beep', e.message)
+          })
         }
       }
 

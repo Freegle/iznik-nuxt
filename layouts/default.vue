@@ -484,8 +484,12 @@ export default {
 
   async beforeCreate() {
     if (this.$route.query.u && this.$route.query.k) {
-      // Log in using the username and key.
       try {
+        // Clear the related list.  This avoids accidentally flagging members as related if people forget to close
+        // an incognito tab while impersonating.
+        await this.$store.dispatch('auth/clearRelated')
+
+        // Log in using the username and key.
         await this.$store.dispatch('auth/login', {
           u: this.$route.query.u,
           k: this.$route.query.k,

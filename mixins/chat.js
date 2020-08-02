@@ -410,7 +410,10 @@ export default {
           const user = this.$store.getters['user/get'](this.otheruserid)
 
           if (!user || !user.info) {
-            console.log('Other chat user not in store yet, need to fetch')
+            console.log(
+              'Other chat user not in store yet, need to fetch',
+              this.otheruserid
+            )
             await this.$store.dispatch('user/fetch', {
               id: this.otheruserid,
               info: true

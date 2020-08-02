@@ -22,10 +22,10 @@
         <b-col ref="mapcont" cols="12" md="8" lg="9" class="p-0">
           <l-map
             ref="map"
-            :zoom="5"
+            :zoom="13"
             :center="center"
             :style="'width: ' + mapWidth + '; height: ' + mapHeight + 'px'"
-            :min-zoom="5"
+            :min-zoom="13"
             :max-zoom="17"
             @update:bounds="boundsChanged"
             @update:zoom="boundsChanged"

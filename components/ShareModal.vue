@@ -55,33 +55,6 @@
                 </b-btn>
               </network>
             </div>
-            <!--          <div class="d-flex flex-wrap justify-content-around mt-2">-->
-            <!--            <network network="skype">-->
-            <!--              <b-btn variant="white">-->
-            <!--                <v-icon name="brands/skype" /> Skype-->
-            <!--              </b-btn>-->
-            <!--            </network>-->
-            <!--            <network network="sms">-->
-            <!--              <b-btn variant="white">-->
-            <!--                <v-icon name="comment" /> SMS-->
-            <!--              </b-btn>-->
-            <!--            </network>-->
-            <!--            <network network="pinterest">-->
-            <!--              <b-btn variant="white">-->
-            <!--                <v-icon name="brands/pinterest" /> Pinterest-->
-            <!--              </b-btn>-->
-            <!--            </network>-->
-            <!--            <network network="telegram">-->
-            <!--              <b-btn variant="white">-->
-            <!--                <v-icon name="brands/telegram" /> Telegram-->
-            <!--              </b-btn>-->
-            <!--            </network>-->
-            <!--            <network network="googleplus">-->
-            <!--              <b-btn variant="white">-->
-            <!--                <v-icon name="brands/google-plus" /> Google+-->
-            <!--              </b-btn>-->
-            <!--            </network>-->
-            <!--          </div>-->
           </div>
         </social-sharing>
         <p class="mt-3 text-center text-muted">
@@ -89,8 +62,8 @@
         </p>
       </div>
     </template>
-    <template slot="modal-footer" slot-scope="{ ok, cancel }">
-      <b-button variant="primary" @click="cancel">
+    <template slot="modal-footer">
+      <b-button variant="primary" @click="close">
         Close
       </b-button>
     </template>
@@ -105,11 +78,17 @@ export default {
     id: {
       type: Number,
       required: true
+    },
+    maybe: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
     return {
-      showModal: false
+      showModal: false,
+      shared: false
     }
   },
   computed: {
@@ -122,6 +101,13 @@ export default {
   },
   methods: {
     async show() {
+      const last = this.$store.getters['misc/get']('sharemodal')
+
+      if (this.maybe && last && Date.now() - last <= 1000 * 31 * 24 * 60 * 60) {
+        // If we failed to share recently, don't ask again for a while.
+        return
+      }
+
       try {
         await this.$store.dispatch('messages/fetch', {
           id: this.id
@@ -150,11 +136,8 @@ export default {
         })
       } catch (e) {
         // Must no longer exist on server.
-        this.hide()
+        this.close()
       }
-    },
-    hide() {
-      this.showModal = false
     },
     chose(type) {
       this.$api.bandit.chosen({
@@ -190,6 +173,25 @@ export default {
           window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError)
         }
       })
+
+      this.shared = true
+    },
+    close() {
+      if (this.shared) {
+        // We have shared something this time.  Clear the data that says we don't want to share.
+        this.$store.dispatch('misc/set', {
+          key: 'sharemodal',
+          value: null
+        })
+      } else {
+        // We haven't shared.  Save this choice so that we might not show the modal next time.
+        this.$store.dispatch('misc/set', {
+          key: 'sharemodal',
+          value: Date.now()
+        })
+      }
+
+      this.showModal = false
     }
   }
 }

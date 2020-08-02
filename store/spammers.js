@@ -190,6 +190,38 @@ export const actions = {
     })
   },
 
+  async hold({ commit, dispatch }, params) {
+    await this.$api.spammers.patch({
+      id: params.id,
+      userid: params.userid,
+      reason: params.reason,
+      collection: 'PendingAdd',
+      heldby: params.myid
+    })
+
+    commit('setContext', null)
+
+    dispatch('fetch', {
+      collection: 'PendingAdd'
+    })
+  },
+
+  async release({ commit, dispatch }, params) {
+    // Omitting heldby results in NULL on server.
+    await this.$api.spammers.patch({
+      id: params.id,
+      userid: params.userid,
+      reason: params.reason,
+      collection: 'PendingAdd'
+    })
+
+    commit('setContext', null)
+
+    dispatch('fetch', {
+      collection: 'PendingAdd'
+    })
+  },
+
   clear({ commit }) {
     commit('clear')
     commit('setContext', null)

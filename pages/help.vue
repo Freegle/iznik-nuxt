@@ -515,7 +515,7 @@ export default {
   head() {
     return this.buildHead(
       'Help',
-      'Questions?  Promblems?  Our lovely volunteers will be happy to help.'
+      'Questions?  Problems?  Our lovely volunteers will be happy to help.'
     )
   }
 }

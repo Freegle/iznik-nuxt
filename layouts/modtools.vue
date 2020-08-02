@@ -91,7 +91,7 @@
           <ModMenuItemLeft link="/modtools/volunteering" name="Volunteering" :count="['pendingvolunteering']" />
           <ModMenuItemLeft link="/modtools/publicity" name="Publicity" :count="['socialactions']" />
           <ModMenuItemLeft link="/modtools/admins" name="Admins" :count="['pendingadmins']" />
-          <ModMenuItemLeft link="/modtools/spammers" name="Spammers" :count="supportOrAdmin ? ['spammerpendingadd', 'spammerpendingremove'] : []" />
+          <ModMenuItemLeft link="/modtools/spammers" name="Spammers" :count="hasPermissionSpamAdmin ? ['spammerpendingadd', 'spammerpendingremove'] : []" />
           <hr>
           <ModMenuItemLeft link="/modtools/logs" name="Logs" />
           <ModMenuItemLeft v-if="supportOrAdmin" link="/modtools/support" name="Support" />

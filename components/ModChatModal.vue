@@ -40,7 +40,7 @@
         </div>
       </template>
       <template slot="default">
-        <div v-if="chat" ref="chatContent" class="m-0 chatContent" infinite-wrapper>
+        <div v-if="chat2" ref="chatContent" class="m-0 chatContent" infinite-wrapper>
           <infinite-loading direction="top" force-use-infinite-wrapper="true" :distance="distance" @infinite="loadMore">
             <span slot="no-results" />
             <span slot="no-more" />
@@ -53,8 +53,8 @@
               <ChatMessage
                 :key="'chatmessage-' + chatmessage.id"
                 :chatmessage="chatmessage"
-                :chat="chat"
-                :otheruser="pov === chat.user1.id ? chat.user2 : chat.user1"
+                :chat="chat2"
+                :otheruser="pov === chat2.user1.id ? chat2.user2 : chat2.user1"
                 :last="chatmessage.id === chatmessages[chatmessages.length - 1].id"
                 :pov="pov"
                 :chatusers="chatusers"
@@ -96,7 +96,7 @@ export default {
       busy: true,
       complete: false,
       distance: 1000,
-      chat: null,
+      chat2: null,
       scrolledToBottom: false
     }
   },
@@ -105,11 +105,11 @@ export default {
     user1() {
       let ret = null
 
-      if (this.chat) {
-        if (this.chat.user1.id === this.pov) {
-          ret = this.chat.user2
+      if (this.chat2) {
+        if (this.chat2.user1.id === this.pov) {
+          ret = this.chat2.user2
         } else {
-          ret = this.chat.user1
+          ret = this.chat2.user1
         }
       }
 
@@ -118,11 +118,11 @@ export default {
     user2() {
       let ret = null
 
-      if (this.chat) {
-        if (this.chat.user2 && this.chat.user2.id === this.pov) {
-          ret = this.chat.user2
+      if (this.chat2) {
+        if (this.chat2.user2 && this.chat2.user2.id === this.pov) {
+          ret = this.chat2.user2
         } else {
-          ret = this.chat.user1
+          ret = this.chat2.user1
         }
       }
 
@@ -141,7 +141,7 @@ export default {
       })
 
       // Take a copy rather than use computed as it isn't ours and will vanish from the store.
-      this.chat = this.$store.getters['chats/get'](this.id)
+      this.chat2 = this.$store.getters['chats/get'](this.id)
 
       this.showModal = true
     },

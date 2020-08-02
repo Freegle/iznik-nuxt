@@ -4,6 +4,7 @@
     v-model="showModal"
     :title="message ? message.subject : ('Message to ' + member.displayname)"
     no-stacking
+    no-close-on-backdrop
     size="lg"
   >
     <template slot="default">
@@ -456,9 +457,11 @@ export default {
           from = this.member.email
         }
 
-        const fromid = from.substring(0, from.indexOf('@'))
+        const fromid = from
+          ? from.substring(0, from.indexOf('@'))
+          : this.user.displayname
         text = text.replace(/\$memberid/g, fromid)
-        const membername = this.user.displayname | fromid
+        const membername = this.user.displayname || fromid
         text = text.replace(/\$membername/g, membername)
 
         let summ = ''

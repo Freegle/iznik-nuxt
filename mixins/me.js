@@ -66,6 +66,9 @@ Vue.mixin({
     hasPermissionNewsletter() {
       return this.hasPermission('Newsletter')
     },
+    hasPermissionSpamAdmin() {
+      return this.hasPermission('SpamAdmin')
+    },
     hasPermissionGiftAid() {
       return this.hasPermission('GiftAid')
     }

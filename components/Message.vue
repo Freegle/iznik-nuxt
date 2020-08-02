@@ -2,150 +2,67 @@
   <div>
     <span ref="breakpoint" class="d-inline d-sm-none" />
     <b-card class="p-0 mb-1" variant="success">
-      <b-card-header :class="'pl-2 pr-2 clearfix' + (ispromised ? ' promisedfade' : '')">
-        <b-card-title class="msgsubj mb-0 d-block d-sm-none header--size4" title-tag="h3">
-          <div>
-            <div>
+      <b-card-header :class="'pl-2 pr-2 clearfix card-header' + (ispromised ? ' promisedfade' : '')">
+        <b-card-title class="msgsubj mb-0 header--size4 card-header__title" title-tag="h3">
+          <Highlighter
+            v-if="matchedon"
+            :search-words="[matchedon.word]"
+            :text-to-highlight="eSubject"
+            highlight-class-name="highlight"
+            auto-escape
+          />
+          <span v-else>
+            {{ eSubject }}
+          </span>
+        </b-card-title>
+        <MessageHistory :message="$props" class="card-header__history" :display-message-link="sm()" />
+        <div flex-grow-1 class="small card-header__description">
+          <div v-if="eSnippet && eSnippet !== 'null' && !expanded">
+            <b class="snippet black">
               <Highlighter
                 v-if="matchedon"
                 :search-words="[matchedon.word]"
-                :text-to-highlight="eSubject"
+                :text-to-highlight="eSnippet"
                 highlight-class-name="highlight"
                 auto-escape
               />
-              <span v-else>
-                {{ eSubject }}
-              </span>
-            </div>
-            <MessageHistory :message="$props" />
+              <span v-else>{{ eSnippet }}</span>
+              ...
+            </b>
           </div>
-          <div v-if="attachments && attachments.length > 0" class="d-block mt-1 d-sm-none clickme position-relative" @click="showPhotos">
-            <b-badge v-if="attachments.length > 1" class="photobadge" variant="primary">
-              {{ attachments.length }} <v-icon name="camera" />
-            </b-badge>
-            <b-img-lazy
-              rounded
-              fluid-grow
-              class="attachment p-0 square"
-              generator-unable-to-provide-required-alt=""
-              title="Item picture"
-              :src="attachments[0].paththumb"
-            />
+          <div v-if="(!eSnippet || eSnippet === 'null') && !expanded">
+            <i>There's no description.</i>
           </div>
-          <div class="small">
-            <div v-if="eSnippet && eSnippet !== 'null' && !expanded">
-              <b class="snippet black">
-                <Highlighter
-                  v-if="matchedon"
-                  :search-words="[matchedon.word]"
-                  :text-to-highlight="eSnippet"
-                  highlight-class-name="highlight"
-                  auto-escape
-                />
-                <span v-else>{{ eSnippet }}</span>
-                ...
-              </b>
-            </div>
-            <div v-if="(!eSnippet || eSnippet === 'null') && !expanded">
-              <i>There's no description.</i>
-            </div>
-            <b-button v-if="!expanded" variant="white" class="mt-1" @click="expand">
-              See details and reply <v-icon name="angle-double-right" />
-            </b-button>
-          </div>
-        </b-card-title>
-        <b-card-title class="msgsubj mb-0 d-none d-sm-block header--size4" title-tag="h3">
-          <div class="d-flex justify-content-between">
-            <div class="d-flex flex-column flex-grow-1">
-              <Highlighter
-                v-if="matchedon"
-                :search-words="[matchedon.word]"
-                :text-to-highlight="eSubject"
-                highlight-class-name="highlight"
-                auto-escape
-              />
-              <span v-else>
-                {{ eSubject }}
-              </span>
-              <MessageHistory :message="$props" display-message-link />
-              <div flex-grow-1 class="small">
-                <div v-if="eSnippet && eSnippet !== 'null' && !expanded">
-                  <b class="snippet black">
-                    <Highlighter
-                      v-if="matchedon"
-                      :search-words="[matchedon.word]"
-                      :text-to-highlight="eSnippet"
-                      highlight-class-name="highlight"
-                      auto-escape
-                    />
-                    <span v-else>{{ eSnippet }}</span>
-                    ...
-                  </b>
-                </div>
-                <div v-if="(!eSnippet || eSnippet === 'null') && !expanded">
-                  <i>There's no description.</i>
-                </div>
-                <b-button v-if="!expanded" variant="white" class="mt-1" @click="expand">
-                  See details and reply <v-icon name="angle-double-right" />
-                </b-button>
-              </div>
-              <div v-if="!simple" class="d-flex justify-content-between">
-                <b-button v-if="expanded && !hideClose" size="sm" variant="link" class="grey" @click="contract">
-                  Close post
-                </b-button>
-                <b-btn
-                  v-if="expanded && expanded.groups && expanded.groups.length"
-                  variant="link"
-                  class="mr-2 grey"
-                  size="sm"
-                  @click="report"
-                >
-                  Report this post
-                </b-btn>
-                <b-btn
-                  v-if="expanded"
-                  variant="white"
-                  class="mr-4"
-                  title="Share"
-                  size="sm"
-                  @click="share"
-                >
-                  <v-icon name="share-alt" />
-                </b-btn>
-              </div>
-            </div>
-            <div v-if="attachments && attachments.length > 0" class="clickme position-relative" @click="showPhotos">
-              <b-badge v-if="attachments.length > 1" class="photobadge" variant="primary">
-                {{ attachments.length }} <v-icon name="camera" />
-              </b-badge>
-              <b-img-lazy
-                rounded
-                thumbnail
-                class="attachment p-0 square nottoobig"
-                generator-unable-to-provide-required-alt=""
-                title="Item picture"
-                :src="attachments[0].paththumb"
-              />
-            </div>
-          </div>
-        </b-card-title>
-        <div v-if="!simple && expanded" class="d-flex justify-content-between mt-1 d-block d-sm-none">
-          <div class="flex-grow-2 ">
-            <b-button v-if="expanded && !hideClose" size="sm" variant="link" class="grey" @click="contract">
-              Close post
-            </b-button>
-          </div>
-          <div class="flex-grow-1">
-            <b-btn
-              v-if="expanded.groups && expanded.groups.length"
-              variant="link"
-              class="mr-2 grey"
-              size="sm"
-              @click="report"
-            >
-              Report this post
-            </b-btn>
-          </div>
+          <b-button v-if="!expanded" variant="white" class="mt-1" @click="expand">
+            See details and reply <v-icon name="angle-double-right" />
+          </b-button>
+        </div>
+        <div v-if="attachments && attachments.length > 0" class="clickme card-header-image__wrapper" @click="showPhotos">
+          <b-badge v-if="attachments.length > 1" class="photobadge" variant="primary">
+            {{ attachments.length }} <v-icon name="camera" />
+          </b-badge>
+          <b-img-lazy
+            rounded
+            thumbnail
+            class="attachment p-0 card-header__image"
+            generator-unable-to-provide-required-alt=""
+            title="Item picture"
+            :src="attachments[0].paththumb"
+          />
+        </div>
+        <div v-if="!simple && expanded" class="d-flex justify-content-between mt-1 card-header__options">
+          <b-button v-if="expanded && !hideClose" size="sm" variant="link" class="grey" @click="contract">
+            Close post
+          </b-button>
+          <b-btn
+            v-if="expanded.groups && expanded.groups.length"
+            variant="link"
+            class="mr-2 grey"
+            size="sm"
+            @click="report"
+          >
+            Report this post
+          </b-btn>
           <b-btn
             v-if="expanded"
             variant="white"
@@ -681,6 +598,9 @@ export default {
 
 <style scoped lang="scss">
 @import 'color-vars';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
 
 .card-body {
   padding: 0px;
@@ -694,17 +614,6 @@ export default {
 .header--size4.snippet {
   color: $color-black !important;
   font-weight: 500;
-}
-
-.square {
-  object-fit: cover;
-  width: 200px;
-  height: 200px;
-}
-
-.nottoobig {
-  max-height: 150px !important;
-  max-width: 150px !important;
 }
 
 .messagePhoto {
@@ -736,5 +645,74 @@ export default {
 
 .grey {
   color: $color-gray--base;
+}
+
+.card-header {
+  display: grid;
+
+  align-items: start;
+  grid-template-columns: auto;
+
+  @include media-breakpoint-up(sm) {
+    grid-template-columns: auto max-content;
+    grid-template-rows: max-content max-content max-content auto auto;
+  }
+}
+
+.card-header__title {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+}
+
+.card-header__history {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+}
+
+.card-header__description {
+  font-size: 1.2rem;
+  line-height: 1.2;
+
+  grid-column: 1 / 2;
+  grid-row: 4 / 5;
+
+  @include media-breakpoint-up(sm) {
+    grid-column: 1 / 2;
+    grid-row: 3 / 4;
+  }
+}
+
+.card-header-image__wrapper {
+  position: relative;
+
+  grid-column: 1 / 2;
+  grid-row: 3 / 4;
+
+  @include media-breakpoint-up(sm) {
+    grid-column: 2 / 3;
+    grid-row: 1 / 5;
+  }
+}
+
+.card-header__image {
+  object-fit: cover;
+  width: 100%;
+  height: 200px;
+
+  @include media-breakpoint-up(sm) {
+    max-height: 150px !important;
+    max-width: 150px !important;
+    width: 200px;
+  }
+}
+
+.card-header__options {
+  grid-column: 1 / 2;
+  grid-row: 5 / 6;
+
+  @include media-breakpoint-up(sm) {
+    grid-column: 1 / 2;
+    grid-row: 4 / 5;
+  }
 }
 </style>

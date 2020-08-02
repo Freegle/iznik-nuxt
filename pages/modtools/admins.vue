@@ -31,32 +31,47 @@
               This is a suggested ADMIN.  All local communities will get "copies" of this (unless they've opted out),
               and mods can then edit/approve/reject them.  Members won't receive multiple copies.
             </NoticeMessage>
-            <b-form-group
-              label="Subject of ADMIN:"
-              label-for="subject"
-              label-class="mb-0"
-            >
-              <b-form-input
-                id="subject"
-                v-model="subject"
-                class="mb-3"
-                placeholder="Subject (don't include ADMIN - added automatically)"
-              />
-            </b-form-group>
-            <b-form-group
-              label="Body of ADMIN:"
-              label-for="body"
-              label-class="mb-0"
-            >
-              <b-textarea
-                id="body"
-                v-model="body"
-                class="mb-3"
-                placeholder="Put your message in here.  Plain-text only."
-                rows="15"
-              />
-            </b-form-group>
-            <b-btn class="mt-2 mb-2" size="lg" :variant="groupidcreate < 0 ? 'danger' : 'primary'" :disabled="createinvalid" @click="create">
+            <validating-form>
+              <b-form-group
+                label="Subject of ADMIN:"
+                label-for="subject"
+                label-class="mb-0"
+              >
+                <validating-form-input
+                  id="subject"
+                  v-model="subject"
+                  class="mb-3"
+                  type="text"
+                  placeholder="Subject (don't include ADMIN - added automatically)"
+                  :validation="$v.subject"
+                  :validation-enabled="validationEnabled"
+                  :validation-messages="{
+                    required: 'Please add a subject'
+                  }"
+                />
+              </b-form-group>
+              <b-form-group
+                label="Body of ADMIN:"
+                label-for="body"
+                label-class="mb-0"
+              >
+                <validating-textarea
+                  id="body"
+                  v-model="body"
+                  rows="15"
+                  max-rows="8"
+                  spellcheck="true"
+                  placeholder="Put your message in here.  Plain-text only."
+                  class="mb-3"
+                  :validation="$v.body"
+                  :validation-enabled="validationEnabled"
+                  :validation-messages="{
+                    required: 'Please add the message'
+                  }"
+                />
+              </b-form-group>
+            </validating-form>
+            <b-btn class="mt-2 mb-2" size="lg" :variant="groupidcreate < 0 ? 'danger' : 'primary'" :disabled="groupidcreate <= 0" @click="create">
               <v-icon v-if="created" name="check" />
               <v-icon v-else-if="creating" name="sync" class="fa-spin" />
               <v-icon v-else name="save" />
@@ -96,14 +111,31 @@
   </div>
 </template>
 <script>
+import { required } from 'vuelidate/lib/validators'
+import { validationMixin } from 'vuelidate'
 import GroupSelect from '../../components/GroupSelect'
 import ModAdmin from '../../components/ModAdmin'
 import NoticeMessage from '../../components/NoticeMessage'
 import loginRequired from '@/mixins/loginRequired.js'
+import validationHelpers from '@/mixins/validationHelpers'
+import ValidatingForm from '@/components/ValidatingForm'
+import ValidatingFormInput from '@/components/ValidatingFormInput'
+import ValidatingTextarea from '@/components/ValidatingTextarea'
+
+const noAdmin = val => {
+  return !!(val && val.toLowerCase().indexOf('admin') === -1)
+}
 
 export default {
-  components: { NoticeMessage, ModAdmin, GroupSelect },
-  mixins: [loginRequired],
+  components: {
+    NoticeMessage,
+    ModAdmin,
+    GroupSelect,
+    ValidatingForm,
+    ValidatingFormInput,
+    ValidatingTextarea
+  },
+  mixins: [validationMixin, validationHelpers, loginRequired],
   data: function() {
     return {
       groupidshow: null,
@@ -116,14 +148,6 @@ export default {
     }
   },
   computed: {
-    createinvalid() {
-      return (
-        !this.groupidcreate ||
-        !this.subject ||
-        this.subject.toLowerCase().indexOf('admin') !== -1 ||
-        !this.body
-      )
-    },
     pendingcount() {
       const myGroups = this.$store.getters['auth/groups']
       let count = 0
@@ -178,6 +202,13 @@ export default {
       this.fetch(this.groupidprevious)
     },
     async create() {
+      this.$v.$touch()
+
+      if (this.$v.$anyError) {
+        this.validationFocusFirstError()
+        return
+      }
+
       this.creating = true
 
       await this.$api.admins.add({
@@ -203,6 +234,15 @@ export default {
       await this.$store.dispatch('admins/fetch', {
         groupid: groupid
       })
+    }
+  },
+  validations: {
+    body: {
+      required
+    },
+    subject: {
+      required,
+      noAdmin
     }
   }
 }
