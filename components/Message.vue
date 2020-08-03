@@ -580,7 +580,7 @@ export default {
         const el = this.$refs.breakpoint
         if (el) {
           const display = getComputedStyle(el, null).display
-          console.log('Display', display)
+          //console.log('Display', display)
 
           if (display === 'none') {
             ret = true
@@ -588,7 +588,7 @@ export default {
         }
       }
 
-      console.log('>= Small?', ret)
+      //console.log('>= Small?', ret)
 
       return ret
     }
