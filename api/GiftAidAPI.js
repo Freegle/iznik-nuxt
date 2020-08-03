@@ -25,7 +25,8 @@ export default class GiftAidAPI extends BaseAPI {
     homeaddress,
     postcode,
     housenameornumber,
-    reviewed
+    reviewed,
+    deleted
   ) {
     const data = {
       id,
@@ -34,7 +35,8 @@ export default class GiftAidAPI extends BaseAPI {
       homeaddress,
       postcode,
       housenameornumber,
-      reviewed
+      reviewed,
+      deleted
     }
     return this.$patch('/giftaid', data)
   }
