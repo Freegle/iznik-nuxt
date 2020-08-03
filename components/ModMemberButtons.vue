@@ -61,7 +61,7 @@
       />
       <div v-if="member.spammer.collection === 'PendingAdd'" class="d-inline">
         <ModMemberButton
-          v-if="supportOrAdmin"
+          v-if="hasPermissionSpamAdmin && !member.heldby"
           :member="member"
           variant="primary"
           icon="check"
@@ -69,7 +69,7 @@
           label="Confirm add to spammer list"
         />
         <ModMemberButton
-          v-if="supportOrAdmin"
+          v-if="hasPermissionSpamAdmin && !member.heldby"
           :member="member"
           variant="danger"
           icon="trash-alt"
@@ -77,7 +77,7 @@
           label="Reject add to spammer list"
         />
         <ModMemberButton
-          v-if="supportOrAdmin"
+          v-if="hasPermissionSpamAdmin && !member.heldby"
           :member="member"
           variant="primary"
           icon="check"
@@ -85,17 +85,25 @@
           label="Whitelist"
         />
         <ModMemberButton
-          v-else
+          v-else-if="!member.heldby"
           :member="member"
           variant="primary"
           icon="times"
           spamrequestremove
           label="Request removal"
         />
+        <ModMemberButton
+          v-if="hasPermissionSpamAdmin && !member.heldby"
+          :member="member"
+          variant="warning"
+          icon="pause"
+          spamhold
+          label="Hold"
+        />
       </div>
       <div v-else class="d-inline">
         <ModMemberButton
-          v-if="supportOrAdmin"
+          v-if="hasPermissionSpamAdmin"
           :member="member"
           variant="danger"
           icon="trash-alt"

@@ -1,6 +1,6 @@
 <template>
   <b-card v-if="user" no-body class="p-0">
-    <b-card-header class="clickme p-1" @click="expanded = !expanded">
+    <b-card-header class="clickme p-1" @click="maybeExpand">
       <b-row>
         <b-col cols="10" sm="4" class="order-1 truncate" :title="user.email">
           <v-icon name="envelope" />&nbsp;{{ user.email }}
@@ -50,7 +50,7 @@
           v-if="admin"
           variant="white"
           class="mr-2 mb-1"
-          :href="user.loginlink.replace(/http.*\?u/, 'http://localhost:3000/?u')"
+          :href="user.loginlink ? user.loginlink.replace(/http.*\?u/, 'http://localhost:3000/?u') : null"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -253,7 +253,7 @@
       </h3>
       <ModSupportChatList :chats="chatsFiltered" :pov="user.id" />
     </b-card-body>
-    <ModLogsModal ref="logs" :userid="user.id" />
+    <ModLogsModal ref="logs" :userid="user.id" :clearfirst="false" />
     <ConfirmModal v-if="purgeConfirm" ref="purgeConfirm" :title="'Purge ' + user.displayname + ' from the system?'" message="<p><b>This can't be undone.</b></p><p>Are you completely sure you want to do this?</p>" @confirm="purgeConfirmed" />
     <ProfileModal v-if="user && user.info" :id="id" ref="profile" />
     <ModSpammerReport v-if="showSpamModal" ref="spamConfirm" :user="reportUser" />
@@ -423,10 +423,14 @@ export default {
     },
     chatsFiltered() {
       return this.user.chatrooms
-        .filter(c => c.chattype !== 'Mod2Mod')
-        .sort((a, b) => {
-          return new Date(b.lastdate).getTime() - new Date(a.lastdate).getTime()
-        })
+        ? this.user.chatrooms
+            .filter(c => c.chattype !== 'Mod2Mod')
+            .sort((a, b) => {
+              return (
+                new Date(b.lastdate).getTime() - new Date(a.lastdate).getTime()
+              )
+            })
+        : []
     }
   },
   mounted() {
@@ -476,6 +480,12 @@ export default {
           id: this.user.id,
           email: this.newemail
         })
+      }
+    },
+    maybeExpand() {
+      // Ignore text selection
+      if (!window.getSelection().toString()) {
+        this.expanded = !this.expanded
       }
     }
   }

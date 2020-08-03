@@ -46,8 +46,7 @@ export default {
 
     chatmessages() {
       const msgs = this.$store.getters['chatmessages/getMessages'](this.id)
-      const ret = this.chatCollate(msgs)
-      return ret
+      return this.chatCollate(msgs)
     },
 
     chatusers() {
@@ -250,13 +249,7 @@ export default {
       this.sending = false
       this.lastFetched = new Date()
 
-      // Scroll to the bottom so we can see it.
-      this.$nextTick(() => {
-        if (this.$el && this.$el.querySelector) {
-          const container = this.$el.querySelector('.chatContent')
-          container.scrollTop = container.scrollHeight
-        }
-      })
+      this.$emit('scrollbottom')
 
       // We also want to trigger an update in the chat list.
       await this.$store.dispatch('chats/fetch', {
@@ -414,10 +407,18 @@ export default {
 
         if (this.otheruserid) {
           // Get the user info in case we need to warn about them.
-          await this.$store.dispatch('user/fetch', {
-            id: this.otheruserid,
-            info: true
-          })
+          const user = this.$store.getters['user/get'](this.otheruserid)
+
+          if (!user || !user.info) {
+            console.log(
+              'Other chat user not in store yet, need to fetch',
+              this.otheruserid
+            )
+            await this.$store.dispatch('user/fetch', {
+              id: this.otheruserid,
+              info: true
+            })
+          }
 
           setTimeout(() => {
             this.showNotices = false
@@ -465,10 +466,14 @@ export default {
         .then(this._updateAfterSend)
     },
     showhide() {
-      this.$refs.chathide.show()
+      this.waitForRef('chathide', () => {
+        this.$refs.chathide.show()
+      })
     },
     showblock() {
-      this.$refs.chatblock.show()
+      this.waitForRef('chatblock', () => {
+        this.$refs.chatblock.show()
+      })
     }
   },
   watch: {

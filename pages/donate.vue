@@ -30,7 +30,8 @@
             </b-card-header>
             <b-card-text class="p-2">
               <p>
-                You can also donate by bank transfer to sort code 60-83-01, account number 20339094.
+                You can also donate by bank transfer to sort code 60-83-01, account number 20339094.  The name
+                of the account is Freegle Limited, and the bank is Unity Trust Bank.
               </p>
               <p>
                 If you do this, please complete a Gift Aid

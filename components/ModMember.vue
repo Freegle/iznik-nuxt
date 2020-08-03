@@ -102,7 +102,7 @@
               </span>
               <span v-else>
                 <span class="d-inline d-sm-none">
-                  <v-icon name="envelope" /> {{ member.emails.length }}
+                  {{ member.emails.length }}
                 </span>
                 <span class="d-none d-sm-inline">
                   Show {{ member.emails.length | pluralize('email', { includeNumber: true }) }}
@@ -323,7 +323,7 @@ export default {
         this.member &&
         this.member.lastaccess &&
         this.$dayjs().diff(this.$dayjs(this.member.lastaccess), 'days') >=
-          (365 * 24 * 60 * 60) / 2
+          365 / 2
       )
     },
     user() {

@@ -1,5 +1,9 @@
 <template>
-  <l-marker :key="'groupmarker-' + group.id + '-' + size" :lat-lng="[group.lat, group.lng]" :title="group.namedisplay" :icon="icon" @click="goto" />
+  <l-marker :key="'groupmarker-' + group.id + '-' + size" :lat-lng="[group.lat, group.lng]" :icon="icon" @click="goto">
+    <l-tooltip v-if="size === 'poor'">
+      {{ group.namedisplay }}
+    </l-tooltip>
+  </l-marker>
 </template>
 
 <script>
@@ -38,7 +42,7 @@ export default {
       } else {
         // Poor - just use marker
         return new L.Icon({
-          iconUrl: require('static/mapmarker.gif')
+          iconUrl: '/mapmarker.gif'
         })
       }
     }

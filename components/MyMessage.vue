@@ -11,17 +11,24 @@
             @click="toggle"
           >
             <div class="d-flex justify-content-between">
-              <h3 class="text-wrap flex-shrink-2">
-                <span v-if="message.isdraft">
-                  {{ message.type.toUpperCase() }}: {{ message.subject }} ({{ message.area.name }} {{ message.postcode.name }})
-                </span>
-                <span v-else>
-                  {{ message.subject }}
-                </span>
-                <span v-if="rejected" class="text-danger">
-                  <v-icon name="exclamation-triangle" scale="2" />
-                </span>
-              </h3>
+              <div class="d-flex flex-column">
+                <h3 class="text-wrap flex-shrink-2 mr-2 mb-0">
+                  <span v-if="message.isdraft">
+                    {{ message.type.toUpperCase() }}: {{ message.subject }} ({{ message.area.name }} {{ message.postcode.name }})
+                  </span>
+                  <span v-else>
+                    {{ message.subject }}
+                  </span>
+                  <span v-if="rejected" class="text-danger">
+                    <v-icon name="exclamation-triangle" scale="2" />
+                  </span>
+                </h3>
+                <div v-for="group in message.groups" :key="'message-' + message.id + '-' + group.id" class="small text-muted">
+                  {{ group.arrival | timeago }} on {{ group.namedisplay }} <nuxt-link :to="'/message/' + message.id">
+                    <span class="text-muted small">#{{ message.id }}</span>
+                  </nuxt-link>
+                </div>
+              </div>
               <span>
                 <b-btn class="ml-1" variant="white">
                   <v-icon v-if="!expanded" name="caret-down" />
@@ -69,11 +76,6 @@
                 </notice-message>
                 <div class="d-flex justify-content-between">
                   <div>
-                    <p>
-                      <span v-for="group in message.groups" :key="'message-' + message.id + '-' + group.id" class="small text-muted">
-                        {{ group.arrival | timeago }} on {{ group.namedisplay }} <nuxt-link :to="'/message/' + message.id"><span class="text-muted small">#{{ message.id }}</span></nuxt-link>
-                      </span>
-                    </p>
                     <span class="prewrap">
                       <read-more v-if="message && message.textbody" :text="message.textbody" :max-chars="maxChars" class="nopara" />
                     </span>

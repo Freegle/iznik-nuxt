@@ -60,8 +60,9 @@ export default {
 
   methods: {
     click: function() {
-      // We don't route to the new chat, because that causes the whole page to re-render, which is slow.
-      this.$emit('click')
+      // We need to do a full route otherwise the back button doesn't work.
+      const modtools = this.$store.getters['misc/get']('modtools')
+      this.$router.push((modtools ? '/modtools/chats/' : '/chats/') + this.id)
     }
   }
 }

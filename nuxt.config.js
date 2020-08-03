@@ -5,8 +5,8 @@ const FACEBOOK_APPID = '134980666550322'
 const SENTRY_DSN = 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170'
 const YAHOO_CLIENTID =
   'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
-const MOBILE_VERSION = '2.0.41'
-const MODTOOLS_VERSION = '0.3.24'
+const MOBILE_VERSION = '2.0.43'
+const MODTOOLS_VERSION = '0.3.26'
 
 require('dotenv').config()
 
@@ -519,6 +519,11 @@ const config = {
   sentry: {
     dsn: SENTRY_DSN,
     publishRelease: false,
+    // Some errors seem benign, and so we ignore them on the client side rather than clutter our sentry logs.
+    ignoreErrors: [
+      'ResizeObserver loop limit exceeded', // Unclear where this happens.
+      "Cannot read property '_leaflet_pos' of undefined" // This happens if we transition pages while the map is loading.
+    ],
     clientIntegrations: function(integrations) {
       // Don't include breadcrumbs as this makes POSTs too large, and they fail.
       return integrations.filter(integration => {

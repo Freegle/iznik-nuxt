@@ -175,7 +175,12 @@ export default {
 
       this.$api.merge.reject({
         id: this.id,
-        uid: this.uid
+        uid: this.uid,
+        user1: this.preferred,
+        user2:
+          this.preferred === this.merge.user1.id
+            ? this.merge.user2.id
+            : this.merge.user1.id
       })
     },
 

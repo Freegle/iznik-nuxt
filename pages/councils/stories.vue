@@ -37,7 +37,6 @@
             or reply to a plea. Ask for what you need not what you want."
           </b>
           <hr>
-          </p>
 
           <p>
             <b>"There is so much waste in our world and I very much appreciate Freegle's solution to the problem. I've
@@ -48,7 +47,6 @@
               anyone who wants to reduce waste and take a positive step towards improving our world."
             </b>
           </p><hr>
-          </p>
 
           <p>
             <b>

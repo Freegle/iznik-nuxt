@@ -214,5 +214,17 @@ export default {
         $state.loaded()
       }
     }
+  },
+
+  beforeRouteLeave(to, from, next) {
+    console.log('Leave', to, from, this.selectedChatId)
+
+    if (to === '/chats' && this.selectedChatId) {
+      // No longer have a chat selected.  This can happen because of the history element we add above.
+      this.selectedChatId = null
+      next(false)
+    } else {
+      next()
+    }
   }
 }

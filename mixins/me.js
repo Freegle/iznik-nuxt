@@ -65,6 +65,12 @@ Vue.mixin({
     // Permissions. We have these as individual computed properties so they can be cached.
     hasPermissionNewsletter() {
       return this.hasPermission('Newsletter')
+    },
+    hasPermissionSpamAdmin() {
+      return this.hasPermission('SpamAdmin')
+    },
+    hasPermissionGiftAid() {
+      return this.hasPermission('GiftAid')
     }
   },
   methods: {

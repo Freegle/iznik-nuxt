@@ -45,20 +45,11 @@ export default {
       searching: false,
       searchuser: null,
       show: 0,
-      searched: false
+      searched: false,
+      searchresults: []
     }
   },
   computed: {
-    searchresults() {
-      const ret = this.$store.getters['user/list']
-
-      // Show most recent first
-      return Object.values(ret).sort((a, b) => {
-        return (
-          new Date(b.lastaccess).getTime() - new Date(a.lastaccess).getTime()
-        )
-      })
-    },
     expand() {
       return this.searchresults.length === 1
     },
@@ -90,6 +81,17 @@ export default {
 
         this.searching = false
         this.searched = true
+
+        // Get a copy of the results here.  The store might change later if we view a chat and have to fetch another
+        // user.  That can cause us to get confused.
+        const ret = this.$store.getters['user/list']
+
+        // Show most recent first
+        this.searchresults = Object.values(ret).sort((a, b) => {
+          return (
+            new Date(b.lastaccess).getTime() - new Date(a.lastaccess).getTime()
+          )
+        })
       }
     },
     loadMoreUsers: function($state) {

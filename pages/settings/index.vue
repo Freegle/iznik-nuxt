@@ -1,30 +1,19 @@
 <template>
   <div v-if="me && me.settings && me.settings.notifications">
+    <h1 class="sr-only">
+      Settings
+    </h1>
     <client-only>
       <b-row class="m-0">
         <b-col cols="0" xl="3" />
         <b-col cols="12" xl="6" class="p-0">
-          <NoticeMessage variant="info" class="mt-2">
-            <div v-if="simple">
-              <p>
-                You are viewing the simple version of the site, so you won't see community features like ChitChat,
-                community events or volunteer opportunities.  Some advanced settings won't show in this page.
-              </p>
-            </div>
-            <div v-else>
-              <p>
-                You are viewing the full version of the site.  If you find this is too "busy", you can choose to view
-                a simplified version.
-              </p>
-            </div>
-            <p>
-              You can toggle which version you see by clicking here:
-            </p>
-            <SimpleView />
-          </NoticeMessage>
+          <SettingsSimple class="mt-2" />
           <b-card border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
             <template v-slot:header>
-              <v-icon name="globe-europe" /> Your Public Profile
+              <h2 class="bg-info settings__heading mb-0">
+                <v-icon name="globe-europe" />
+                Your Public Profile
+              </h2>
             </template>
             <b-card-body class="p-0 pt-1">
               <p class="text-muted">
@@ -133,7 +122,10 @@
           </b-card>
           <b-card v-if="!simple" border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
             <template v-slot:header>
-              <v-icon name="globe-europe" /> Arranging Collections
+              <h2 class="bg-info settings__heading mb-0">
+                <v-icon name="globe-europe" />
+                Arranging Collections
+              </h2>
             </template>
             <b-card-body class="p-0 pt-1">
               <p class="text-muted">
@@ -141,7 +133,9 @@
               </p>
               <b-row>
                 <b-col>
-                  <h4>Availability</h4>
+                  <h3 class="header--size4">
+                    Availability
+                  </h3>
                   <p class="mt-2">
                     We can help you arrange a collection time if you tell us when you're available over the next
                     few days.
@@ -153,9 +147,9 @@
               </b-row>
               <b-row>
                 <b-col>
-                  <h4 class="mt-2">
+                  <h3 class="header--size4 mt-2">
                     Address Book
-                  </h4>
+                  </h3>
                   <p class="mt-2">
                     You can save your address and send it to other freeglers, then you don't have to type it each
                     time.
@@ -169,7 +163,10 @@
           </b-card>
           <b-card border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
             <template v-slot:header>
-              <v-icon name="lock" /> Your Account Settings
+              <h2 class="bg-info settings__heading mb-0">
+                <v-icon name="lock" />
+                Your Account Settings
+              </h2>
             </template>
             <b-card-body class="p-0 pt-1">
               <p class="text-muted">
@@ -244,7 +241,10 @@
           </b-card>
           <b-card border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
             <template v-slot:header>
-              <v-icon name="envelope" /> Community Mail Settings
+              <h2 class="bg-info settings__heading mb-0">
+                <v-icon name="envelope" />
+                Community Mail Settings
+              </h2>
             </template>
             <div v-if="me.groups && me.groups.length">
               <p>You can pause regular emails for a while, for example if you're on holiday.</p>
@@ -339,7 +339,10 @@
           </b-card>
           <b-card v-if="!simple" border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
             <template v-slot:header>
-              <v-icon name="bell" /> Chat Notifications
+              <h2 class="bg-info settings__heading mb-0">
+                <v-icon name="bell" />
+                Chat Notifications
+              </h2>
             </template>
             <b-card-body class="p-0 pt-1">
               <p class="text-muted">
@@ -353,7 +356,9 @@
                 Email doesn't always get through, so check your spam folders, and check <em><nuxt-link to="/chats">Chats</nuxt-link></em> on here occasionally.
               </notice-message>
               <hr>
-              <h5>Text Alerts</h5>
+              <h3 class="header--size5 header5__color">
+                Text Alerts
+              </h3>
               <p>We can send you SMS alerts to your phone.</p>
               <b-row>
                 <b-col cols="12" md="8">
@@ -392,7 +397,9 @@
                   </b-alert>
                 </b-col>
               </b-row>
-              <h5>Email Alerts</h5>
+              <h3 class="header--size5 header5__color">
+                Email Alerts
+              </h3>
               <p>
                 Mail me chat messages from other freeglers I'm talking to about OFFERs and WANTEDs.
               </p>
@@ -459,7 +466,9 @@
                 color="#61AE24"
                 @change="changeNewsletter"
               />
-              <h5>Other Alerts</h5>
+              <h3 class="header--size5 header5__color">
+                Other Alerts
+              </h3>
               <p>
                 Apps for your
                 <span v-if="!isiOSapp">
@@ -507,11 +516,16 @@
           </b-card>
           <b-card v-if="!simple" border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
             <template v-slot:header>
-              <v-icon name="cog" /> Other
+              <h2 class="bg-info settings__heading mb-0">
+                <v-icon name="cog" />
+                Other
+              </h2>
             </template>
             <b-card-body class="p-0 pt-1">
               <b-form-group>
-                <h5>What the enter key does</h5>
+                <h3 class="header--size5 header5__color">
+                  What the enter key does
+                </h3>
                 <p>
                   Normally hitting enter/return sends chat messages, rather than add a new line.  If you prefer
                   it to add a new line, then you can change the setting on this device.  This can cause problems
@@ -530,7 +544,8 @@
               </b-form-group>
             </b-card-body>
           </b-card>
-          <br class="mb-4">
+          <br class="mb-2">
+          <SettingsSimple class="mb-2" />
         </b-col>
         <b-col cols="0" xl="3" />
       </b-row>
@@ -545,9 +560,9 @@
 
 <script>
 import Vue from 'vue'
-import SimpleView from '../../components/SimpleView'
 import EmailValidator from '../../components/EmailValidator'
 import EmailOwn from '../../components/EmailOwn'
+import SettingsSimple from '../../components/SettingsSimple'
 import waitForRef from '@/mixins/waitForRef'
 import loginRequired from '@/mixins/loginRequired.js'
 import EmailConfirmModal from '~/components/EmailConfirmModal'
@@ -570,9 +585,9 @@ const PasswordEntry = () => import('~/components/PasswordEntry')
 
 export default {
   components: {
+    SettingsSimple,
     EmailOwn,
     EmailValidator,
-    SimpleView,
     OurToggle,
     DatePicker,
     EmailConfirmModal,
@@ -1036,5 +1051,15 @@ h4 a {
 
 .image__icon {
   color: $color-white;
+}
+
+.settings__heading {
+  font-size: 1rem;
+  font-weight: normal;
+}
+
+.header5__color {
+  /* Need to override the h5 as it has higher specificity */
+  color: #212529 !important;
 }
 </style>

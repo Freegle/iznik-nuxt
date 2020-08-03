@@ -91,6 +91,11 @@ export default {
       required: false,
       default: false
     },
+    spamhold: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     spamignore: {
       type: Boolean,
       required: false,
@@ -157,6 +162,8 @@ export default {
         await this.spamRemove()
       } else if (this.spamwhitelist) {
         await this.spamWhitelist()
+      } else if (this.spamhold) {
+        await this.spamHold()
       } else if (this.spamignore) {
         await this.spamIgnore()
       } else if (this.hold) {
@@ -230,6 +237,13 @@ export default {
         userid: this.member.userid
       })
     },
+    async spamHold() {
+      await this.$store.dispatch('spammers/hold', {
+        id: this.member.spammer.id,
+        userid: this.member.userid,
+        myid: this.myid
+      })
+    },
     async spamIgnore() {
       await this.$store.dispatch('members/spamignore', {
         userid: this.member.userid,
@@ -249,10 +263,17 @@ export default {
       })
     },
     async releaseIt() {
-      await this.$store.dispatch('members/release', {
-        userid: this.member.userid,
-        groupid: this.groupid
-      })
+      if (this.member.spammer) {
+        await this.$store.dispatch('spammers/release', {
+          id: this.member.spammer.id,
+          userid: this.member.userid
+        })
+      } else {
+        await this.$store.dispatch('members/release', {
+          userid: this.member.userid,
+          groupid: this.groupid
+        })
+      }
     }
   }
 }

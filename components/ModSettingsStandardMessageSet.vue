@@ -20,7 +20,6 @@
       pages (e.g. put the ones you use most first).
     </p>
     <b-form-checkbox
-      id="dragbox"
       v-model="dragging"
       class="mb-2"
       name="dragbox"

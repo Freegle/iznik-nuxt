@@ -1,5 +1,8 @@
 <template>
   <b-container fluid>
+    <h1 class="sr-only">
+      My posts
+    </h1>
     <b-row class="m-0">
       <b-col cols="0" lg="3" class="d-none d-lg-block p-0 pr-1">
         <SidebarLeft :show-community-events="true" :show-bot-left="true" />
@@ -17,9 +20,9 @@
           no-body
         >
           <template slot="header">
-            <h3 class="d-inline">
+            <h2 class="d-inline header--size3">
               <v-icon name="calendar-alt" scale="2" /> Your Availability
-            </h3>
+            </h2>
           </template>
           <b-card-body>
             <p>
@@ -31,7 +34,6 @@
           </b-card-body>
         </b-card>
         <b-card
-          v-if="queued.length > 0"
           class="mt-2"
           border-variant="info"
           header="info"
@@ -40,51 +42,9 @@
           no-body
         >
           <template slot="header">
-            <h3 class="d-inline">
-              <v-icon name="gift" scale="2" /> Your queued OFFERs
-            </h3>
-          </template>
-          <b-card-body class="p-1 p-lg-3">
-            <b-card-text class="text-center">
-              <NoticeMessage v-if="queued.length > 0" variant="danger" class="text-muted">
-                These were queued up while Freegle was suspending for COVID-19.  Please submit them, or if they
-                no longer apply then withdraw them.
-              </NoticeMessage>
-              <b-img-lazy v-if="busy && queued.length === 0" src="~/static/loader.gif" alt="Loading..." />
-              <div v-if="busy || queuedCount > 0">
-                <div v-for="message in queued" :key="'message-' + message.id" class="p-0 text-left mt-1">
-                  <MyMessage :message="message" :messages="messages" :show-old="false" queued />
-                </div>
-              </div>
-              <div v-else>
-                <b-row>
-                  <b-col>
-                    <p>Nothing here yet.  Why not...</p>
-                  </b-col>
-                </b-row>
-                <b-row>
-                  <b-col class="text-center">
-                    <b-button to="/give" class="mt-1" size="lg" variant="primary">
-                      <v-icon name="gift" />&nbsp;OFFER something
-                    </b-button>
-                  </b-col>
-                </b-row>
-              </div>
-            </b-card-text>
-          </b-card-body>
-        </b-card>
-        <b-card
-          class="mt-2"
-          border-variant="info"
-          header="info"
-          header-bg-variant="info"
-          header-text-variant="white"
-          no-body
-        >
-          <template slot="header">
-            <h3 class="d-inline">
+            <h2 class="d-inline header--size3">
               <v-icon name="gift" scale="2" /> Your OFFERs
-            </h3>
+            </h2>
             <span v-if="oldOfferCount > 0">
               <span v-if="showOldOffers" class="float-right">
                 <b-btn variant="white" title="Show old OFFERs" @click="toggleOldOffer">
@@ -135,9 +95,9 @@
           no-body
         >
           <template slot="header">
-            <h3 class="d-inline">
+            <h2 class="d-inline header--size3">
               <v-icon name="search" scale="2" /> Your WANTEDs
-            </h3>
+            </h2>
             <span v-if="oldWantedCount > 0">
               <span v-if="showOldWanteds" class="float-right">
                 <b-btn variant="white" title="Show old WANTEDs" @click="toggleOldWanted">
@@ -182,9 +142,9 @@
           no-body
         >
           <template slot="header">
-            <h3 class="d-inline">
+            <h2 class="d-inline header--size3">
               <v-icon name="search" scale="2" /> Your Searches
-            </h3>
+            </h2>
           </template>
           <b-card-body class="p-1 p-lg-3">
             <b-card-text class="text-center">
@@ -232,7 +192,6 @@
 </template>
 
 <script>
-import NoticeMessage from '../components/NoticeMessage'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
 import waitForRef from '@/mixins/waitForRef'
@@ -248,7 +207,6 @@ const ExpectedRepliesWarning = () =>
 
 export default {
   components: {
-    NoticeMessage,
     JobsTopBar,
     MyMessage,
     SidebarLeft,
@@ -416,14 +374,6 @@ export default {
       const currentCount = this.messages.length
 
       try {
-        // COVID - load any queued posts.
-        await this.$store.dispatch('messages/fetchMessages', {
-          collection: 'Draft',
-          types: ['Offer'],
-          fromuser: me.id,
-          limit: 1000
-        })
-
         await this.$store.dispatch('messages/fetchMessages', {
           collection: 'AllUser',
           summary: true,

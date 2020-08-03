@@ -2,9 +2,9 @@
   <b-row class="m-0 bg-white">
     <b-col cols="0" md="3" />
     <b-col cols="12" md="6" class="mt-2">
-      <h2>
+      <h1 class="header--size2">
         Spread the word
-      </h2>
+      </h1>
       <p>
         Wouldn't the world be better if more people freegled more often? You can help!
       </p>
@@ -17,7 +17,9 @@
       <p>
         You wouldn't be freegling unless someone had told you about it - can you pay it forward?
       </p>
-      <h3>Put up a poster</h3>
+      <h2 class="header--size3">
+        Put up a poster
+      </h2>
       <p>This is an A4 poster with tear-off strips - good for noticeboards in cafes, community venues, or at work.</p>
       <a href="https://freegle.in/A4Poster" target="_blank">
         <b-img-lazy src="~static/posters/A4.png" class="poster border border-dark mb-2" />
@@ -39,7 +41,9 @@
         </nuxt-link>.
       </p>
       <hr>
-      <h3>Invite your friends</h3>
+      <h2 class="header--size3">
+        Invite your friends
+      </h2>
       <div v-if="me && me.invitesleft > 0">
         <p class="bg-info p-2">
           You have <b>{{ me.invitesleft | pluralize('invitation', { includeNumber: true }) }}</b> left.
@@ -93,7 +97,9 @@
         </p>
       </div>
       <hr>
-      <h3>Business Cards</h3>
+      <h2 class="header--size3">
+        Business Cards
+      </h2>
       <p>
         You can get little "business cards" to hand out to people or put on noticeboards.  They're small, so it's
         easy to always have a few with you.
@@ -107,9 +113,9 @@
         </b-btn>
       </a>
       <hr>
-      <h3>
+      <h2 class="header--size3">
         Tell your story
-      </h3>
+      </h2>
       <p>This helps encourage other people to try freegling.</p>
       <b-btn to="/stories" variant="primary" size="lg">
         <v-icon name="book-open" /> Tell your story

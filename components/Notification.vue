@@ -9,6 +9,7 @@
     <notification-membership-pending v-else-if="notification.type === 'MembershipPending'" :notification="notification" />
     <notification-membership-approved v-else-if="notification.type === 'MembershipApproved'" :notification="notification" />
     <notification-membership-rejected v-else-if="notification.type === 'MembershipRejected'" :notification="notification" />
+    <notification-gift-aid v-else-if="notification.type === 'GiftAid'" :notification="notification" />
     <span v-else-if="notification.type === 'TryFeed'" />
     <span v-else>
       Unknown notification {{ notification.type }}
@@ -19,6 +20,7 @@
 <script>
 // TODO MINOR Some people haven't had Pavlovian training from Facebook to click on red notifications.  Consider a one-off
 //   popup to alert people to go and look at notifications or chat replies the first time they get one.
+import NotificationGiftAid from './NotificationGiftAid'
 const NotificationLovedPost = () => import('~/components/NotificationLovedPost')
 const NotificationLovedComment = () =>
   import('~/components/NotificationLovedComment')
@@ -37,6 +39,7 @@ const NotificationMembershipRejected = () =>
 
 export default {
   components: {
+    NotificationGiftAid,
     NotificationLovedPost,
     NotificationLovedComment,
     NotificationCommentOnPost,

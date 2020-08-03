@@ -28,8 +28,8 @@ export default class UserAPI extends BaseAPI {
     return this.$post('/user', { id: id, action: 'RemoveEmail', email: email })
   }
 
-  add(email) {
-    return this.$put('/user', { email: email })
+  add(email, logError = true) {
+    return this.$put('/user', { email: email }, logError)
   }
 
   merge(email1, email2, reason) {

@@ -126,6 +126,13 @@
               https://www.heart.co.uk/essex/events/essex-county-council-freegle/
             </a>
           </p>
+
+          <h3>Collection Calendars</h3>
+          <p>
+            The London Borough of Croydon promote Freegle on their collection calendar each year. Croydon are one of
+            the UK's busiest Freegle communities with over 26,000 members.
+          </p>
+          <b-img fluid src="/councils/CroydonWasteCalendar.png" />
         </b-card-text>
       </b-card>
     </b-col>

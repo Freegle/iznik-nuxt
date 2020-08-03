@@ -71,6 +71,12 @@ export default {
       default: function() {
         return []
       }
+    },
+    // Whether to restrict to our own groups
+    restrict: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
   computed: {
@@ -86,7 +92,9 @@ export default {
     groups() {
       let ret = []
       if (this.listall) {
-        ret = Object.values(this.$store.getters['group/list'])
+        ret = Object.values(this.$store.getters['group/list']).filter(g => {
+          return g.id
+        })
       } else {
         ret = this.$store.getters['auth/groups']
       }
@@ -189,7 +197,7 @@ export default {
     invalidSelection: {
       immediate: true,
       handler(val) {
-        if (val) this.selectedGroup = null
+        if (val && this.restrict) this.selectedGroup = null
       }
     }
   },

@@ -2,8 +2,8 @@
   <div v-if="localStorageErrors" class="storage w-100 text-center">
     <b-alert show variant="danger">
       <p>We can't access local storage on your browser.</p>
-      <p>Please clear your cache for this site. If you have security software, please disable it for this site.</p>
-      <p>We'll carry on, but things may go wrong...</p>
+      <p>If you see this occasionally, and it goes away, then don't worry.  Just carry on as normal</p>
+      <p>If you see this a lot, then please clear your cache for this site. If you have security software, please disable it for this site.</p>
     </b-alert>
   </div>
 </template>

@@ -3,7 +3,8 @@ import Vue from 'vue'
 export const state = () => ({
   // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
   // storage.
-  list: {}
+  list: {},
+  fetching: {}
 })
 
 function getUserByID(state, id) {
@@ -57,6 +58,14 @@ export const mutations = {
         return true
       }
     })
+  },
+
+  fetching(state, params) {
+    if (!params) {
+      state.fetching = {}
+    } else {
+      state.fetching[params.id] = params.item
+    }
   }
 }
 
@@ -73,10 +82,35 @@ export const getters = {
 export const actions = {
   clear({ commit }) {
     commit('setList', [])
+    commit('fetching', null)
   },
 
-  async fetch({ commit }, params) {
-    const ret = await this.$api.user.fetch(params)
+  async fetch({ commit, state }, params) {
+    // We have an optimisation to spot if we fetch the same user with the same parameters simultaneously.
+    if (
+      !state.fetching[params.id] ||
+      state.fetching[params.id].params !== JSON.stringify(params)
+    ) {
+      // Not already fetching, or different params.
+      const p = JSON.stringify(params)
+
+      commit('fetching', {
+        id: params.id,
+        item: {
+          promise: this.$api.user.fetch(params),
+          params: p
+        }
+      })
+    }
+
+    const ret = await state.fetching[params.id].promise
+
+    if (state.fetching[params.id]) {
+      commit('fetching', {
+        id: params.id,
+        item: null
+      })
+    }
 
     if (params.search) {
       ret.forEach(user => {

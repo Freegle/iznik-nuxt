@@ -4,7 +4,8 @@ export const state = () => ({
   // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
   // storage.
   list: {},
-  currentChat: null
+  currentChat: null,
+  fetching: {}
 })
 
 export const mutations = {
@@ -42,6 +43,14 @@ export const mutations = {
 
   currentChat(state, chatid) {
     state.currentChat = chatid
+  },
+
+  fetching(state, params) {
+    if (!params) {
+      state.fetching = {}
+    } else {
+      state.fetching[params.id] = params.item
+    }
   }
 }
 
@@ -85,7 +94,7 @@ export const getters = {
 }
 
 export const actions = {
-  async listChats({ commit, rootGetters }, params) {
+  async listChats({ commit, rootGetters, state }, params) {
     const modtools = rootGetters['misc/get']('modtools')
 
     params = params || {
@@ -96,7 +105,29 @@ export const actions = {
     params.summary = true
 
     try {
-      commit('setList', await this.$api.chat.listChats(params))
+      let current = null
+
+      // We might have a current chat selected.  We want to make sure that we don't lose it.  This can happen if
+      // we search for an old chat that we wouldn't normally return.
+      const chatid = parseInt(state.currentChat)
+      current = state.list[chatid] ? state.list[chatid] : null
+
+      const chats = await this.$api.chat.listChats(params)
+
+      if (current) {
+        const already = chats.find(c => {
+          return current && parseInt(c.id) === parseInt(current.id)
+        })
+
+        if (!already) {
+          chats.push(current)
+        }
+      }
+
+      commit('setList', chats)
+
+      // This avoids us ever getting stuck with bad stuff in the fetching list.
+      commit('fetching', null)
     } catch (e) {
       // This happens a lot on mobile when the network is flaky.  It's not necessarily an end-user visible error,
       // so there is no point letting it ripple up to Sentry.
@@ -141,10 +172,32 @@ export const actions = {
     return id
   },
 
-  async fetch({ commit }, { id: chatid }) {
-    if (!chatid) return
+  async fetch({ commit, state }, params) {
+    // We have an optimisation to spot if we fetch the same user with the same parameters simultaneously.
+    if (
+      !state.fetching[params.id] ||
+      state.fetching[params.id].params !== JSON.stringify(params)
+    ) {
+      // Not already fetching, or different params.
+      const p = JSON.stringify(params)
 
-    const { chatroom } = await this.$api.chat.fetchChat(chatid)
+      commit('fetching', {
+        id: params.id,
+        item: {
+          promise: this.$api.chat.fetchChat(params.id),
+          params: p
+        }
+      })
+    }
+
+    const { chatroom } = await state.fetching[params.id].promise
+
+    if (state.fetching[params.id]) {
+      commit('fetching', {
+        id: params.id,
+        item: null
+      })
+    }
 
     if (chatroom) {
       // Valid chatid

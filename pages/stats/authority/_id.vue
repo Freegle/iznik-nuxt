@@ -167,7 +167,7 @@
                 @ready="idle"
               >
                 <l-tile-layer :url="osmtile" :attribution="attribution" />
-                <GroupMarker v-for="g in markers" :key="'marker-' + g.id + '-' + zoom" :group="g" />
+                <GroupMarker v-for="g in markers" :key="'marker-' + g.id + '-' + zoom" :group="g" size="poor" />
               </l-map>
             </client-only>
             <Impact
@@ -178,7 +178,7 @@
               :total-members="totalMembers"
               :group-count="groupcount "
               :range="range"
-              :start="start"
+              :start="startDate"
               :end="end"
               border
             />
@@ -212,6 +212,10 @@
                   Freegle Communities serving {{ authority.name }}
                 </h2>
                 <b-table striped :items="items" :fields="fields">
+                  <template v-slot:cell(location)="data">
+                    <!-- eslint-disable-next-line -->
+                    <span v-html="data.value" />
+                  </template>
                   <template v-slot:cell(members)="data">
                     <!-- eslint-disable-next-line -->
                     <span v-html="data.value" />
@@ -337,7 +341,7 @@ export default {
     }
   },
   computed: {
-    totalWeight() {
+    totalWeightUnRounded() {
       let total = 0
 
       for (const groupid in this.stats) {
@@ -348,15 +352,18 @@ export default {
         }
       }
 
-      return Math.round(total / 100) / 10
+      return total
+    },
+    totalWeight() {
+      return Math.round(this.totalWeightUnRounded / 100) / 10
     },
     // Benefit of reuse per tonne is £711 and CO2 impact is -0.51tCO2eq based on WRAP figures.
     // http://www.wrap.org.uk/content/monitoring-tools-and-resources
     totalBenefit() {
-      return this.totalWeight * BENEFIT_PER_TONNE
+      return (this.totalWeightUnRounded * BENEFIT_PER_TONNE) / 1000
     },
     totalCO2() {
-      return this.totalWeight * CO2_PER_TONNE
+      return (this.totalWeightUnRounded * CO2_PER_TONNE) / 1000
     },
     totalGifts() {
       let count = 0
@@ -424,7 +431,7 @@ export default {
               dates[a.date] = 0
             }
 
-            dates[a.date] += parseInt(a.count) * overlap
+            dates[a.date] += Math.round(parseInt(a.count) * overlap)
           }
         }
       }
@@ -492,7 +499,13 @@ export default {
 
         if (group.ApprovedMemberCount.length > 0) {
           ret.push({
-            location: group.group.namedisplay + (group.overlap < 1 ? ' *' : ''),
+            location:
+              '<a class="black" href="/stories/' +
+              group.group.id +
+              '">' +
+              group.group.namedisplay +
+              (group.overlap < 1 ? ' *' : '') +
+              '</a>',
             members:
               Math.round(
                 group.ApprovedMemberCount[group.ApprovedMemberCount.length - 1]
@@ -508,10 +521,10 @@ export default {
                   ')</span>'
                 : ''),
             monthly:
-              Math.round(group.avpermonth) +
+              Math.round(group.avpermonth * group.overlap) +
               (group.overlap < 1
                 ? ' (<span class="text-muted small">of ' +
-                  Math.round(group.totalweight) +
+                  Math.round(group.avpermonth) +
                   ')</span>'
                 : '')
           })
@@ -761,8 +774,6 @@ export default {
           force: true
         })
 
-        // Check if the group has a significant overlap. No point cluttering things up with groups which don't really
-        // contribute.
         const overlap = group.overlap
         const weights = store.getters['stats/get']('Weight')
 
@@ -874,6 +885,10 @@ export default {
 
 .green {
   color: $color-green--darker !important;
+}
+
+::v-deep .black {
+  color: $color-black !important;
 }
 
 ::v-deep .mx-datepicker {

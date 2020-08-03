@@ -7,9 +7,9 @@
         </div>
         <div v-else>
           <h1>Explore Freegle communities across the UK!</h1>
-          <h5 v-if="groupCount">
+          <p v-if="groupCount" class="community__heading">
             There are {{ groupCount }} lovely communities of freeglers across the UK. Shall we see what they're up to?
-          </h5>
+          </p>
         </div>
       </b-col>
     </b-row>
@@ -32,9 +32,9 @@
     </b-row>
     <b-row v-if="!region && regions.length" class="m-0">
       <b-col cols="12" lg="6" offset-lg="3" class="mt-2">
-        <h5 class="text-center">
+        <h2 class="text-center header--size5 community__text">
           Choose a region:
-        </h5>
+        </h2>
         <b-list-group horizontal class="flex flex-wrap justify-content-center">
           <b-list-group-item v-for="r in regions" :key="r" class="p-0 mt-2 ml-2 mr-2">
             <b-btn variant="white" :to="'/explore/region/' + r">
@@ -63,6 +63,9 @@
         </client-only>
       </b-col>
     </b-row>
+    <h2 class="sr-only">
+      List of communities
+    </h2>
     <b-row class="m-0">
       <b-col v-if="groupsInBounds.length" cols="12" lg="6" offset-lg="3" class="mt-4">
         <b-card header-bg-variant="success" header-text-variant="white" header="Here's a list of communities:">
@@ -121,9 +124,9 @@
             </client-only>
           </b-card-body>
         </b-card>
-        <h5 class="text-center mt-2">
+        <p class="text-center mt-2 header--size5 community__heading community__text">
           If there's no community for your area, would you like to start one? <a href="mailto:newgroups@ilovefreegle.org">Mail us!</a>
-        </h5>
+        </p>
         <p class="text-center">
           You can also look at our <nuxt-link to="/livemap">
             live map
@@ -370,3 +373,16 @@ export default {
   }
 }
 </script>
+
+<style>
+.community__heading {
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.community__text {
+  /* Need to override the h2 as it has higher specificity */
+  color: #212529 !important;
+}
+</style>

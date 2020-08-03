@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-card variant="success" no-body>
-      <b-card-title class="bg-info px-2 mb-0 pt-2 pb-2 text-truncate d-flex justify-content-between">
+      <b-card-title class="bg-info px-2 mb-0 pt-2 pb-2 text-truncate d-flex justify-content-between header--size4" :title-tag="titleTag">
         <nuxt-link :to="'/communityevent/' + item.id" class="event__link">
           {{ item.title }}
         </nuxt-link>
@@ -126,6 +126,11 @@ export default {
     item: {
       type: Object,
       required: true
+    },
+    titleTag: {
+      type: String,
+      required: false,
+      default: 'h3'
     }
   },
   data: function() {

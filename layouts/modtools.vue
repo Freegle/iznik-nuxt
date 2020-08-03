@@ -82,6 +82,7 @@
           <ModMenuItemLeft link="/modtools/members/related" name="Related" :count="['relatedmembers']" indent />
           <ModMenuItemLeft link="/modtools/members/stories" name="Stories" indent :count="['stories']" />
           <ModMenuItemLeft v-if="hasPermissionNewsletter" link="/modtools/members/newsletter" name="Newsletter" indent :count="['newsletterstories']" />
+          <ModMenuItemLeft v-if="hasPermissionGiftAid" link="/modtools/giftaid" name="Gift Aid" indent :count="['giftaid']" />
           <ModMenuItemLeft link="/modtools/members/feedback" name="Feedback" indent :othercount="['happiness']" />
           <ModMenuItemLeft link="/modtools/members/notes" name="Notes" indent />
           <hr>
@@ -90,7 +91,7 @@
           <ModMenuItemLeft link="/modtools/volunteering" name="Volunteering" :count="['pendingvolunteering']" />
           <ModMenuItemLeft link="/modtools/publicity" name="Publicity" :count="['socialactions']" />
           <ModMenuItemLeft link="/modtools/admins" name="Admins" :count="['pendingadmins']" />
-          <ModMenuItemLeft link="/modtools/spammers" name="Spammers" :count="supportOrAdmin ? ['spammerpendingadd', 'spammerpendingremove'] : []" />
+          <ModMenuItemLeft link="/modtools/spammers" name="Spammers" :count="hasPermissionSpamAdmin ? ['spammerpendingadd', 'spammerpendingremove'] : []" />
           <hr>
           <ModMenuItemLeft link="/modtools/logs" name="Logs" />
           <ModMenuItemLeft v-if="supportOrAdmin" link="/modtools/support" name="Support" />
