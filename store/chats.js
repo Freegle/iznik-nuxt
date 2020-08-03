@@ -115,7 +115,7 @@ export const actions = {
       const chats = await this.$api.chat.listChats(params)
 
       if (current) {
-        const already = chats.find(c => {
+        const already = chats && chats.find(c => {
           return current && parseInt(c.id) === parseInt(current.id)
         })
 
