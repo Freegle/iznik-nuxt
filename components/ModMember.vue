@@ -121,7 +121,7 @@
             <ProfileModal :id="member.userid" ref="profilemodal" />
             <div v-if="showEmails">
               <div v-for="e in member.emails" :key="e.id">
-                {{ e.email }} <v-icon v-if="e.preferred" name="start" />
+                {{ e.email }} <v-icon v-if="e.preferred" name="star" />
               </div>
             </div>
           </div>

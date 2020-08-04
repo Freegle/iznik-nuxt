@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column justify-content-end bg-white">
+  <div class="cont bg-white">
     <div v-if="uploading" class="bg-white">
       <OurFilePond
         imgtype="ChatMessage"
@@ -230,5 +230,11 @@ export default {
 
 .nocolor {
   color: initial;
+}
+
+.cont {
+  display: grid;
+  grid-template-columns: auto;
+  grid-auto-rows: max-content;
 }
 </style>
