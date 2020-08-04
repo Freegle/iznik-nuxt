@@ -3,7 +3,8 @@
     <name>ModTools</name>
     <description>Tool to help moderators of Freegle and similar groups</description>
     <author email="geeks@ilovefreegle.org" href="https://ilovefreegle.org">
-		Chris Cant, Freegle Ltd</author>
+      Chris Cant, Freegle Ltd
+    </author>
     <content src="index.html" />
     <access origin="*" />
     <allow-navigation href="*" />
@@ -14,13 +15,14 @@
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
     <allow-intent href="wss:*" />
-    <platform name="android">
-        <allow-intent href="market:*" />
-    </platform>
     <platform name="ios">
         <allow-intent href="itmss:*" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
+    </platform>
+    <platform name="ios">
+        <not-set-preference name="deployment-target" value="10.0" />
+        <preference name="enableViewportScale" value="true" />
     </platform>
     <platform name="ios">
         <splash src="package-assets/Default@2x~universal~anyany.png" />
@@ -51,10 +53,6 @@
         <preference name="StatusBarOverlaysWebView" value="false" />
         <preference name="StatusBarBackgroundColor" value="#000000" />
         <preference name="StatusBarStyle" value="lightcontent" />
-    </platform>
-        <platform name="ios">
-        <not-set-preference name="deployment-target" value="10.0" />
-        <preference name="enableViewportScale" value="true" />
     </platform>
     <platform name="ios">
         <resource-file src="GoogleService-Info.plist" />
