@@ -198,7 +198,7 @@
             />
             <div v-if="showEmails">
               <div v-for="email in message.fromuser.emails" :key="email.id">
-                {{ email.email }} <v-icon v-if="email.preferred" name="start" />
+                {{ email.email }} <v-icon v-if="email.preferred" name="star" />
               </div>
             </div>
             <ModMemberActions v-if="showActions && message.groups && message.groups.length" :userid="message.fromuser.id" :groupid="message.groups[0].groupid" />
