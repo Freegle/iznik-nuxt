@@ -164,18 +164,10 @@
                 </li>
               </ul>
               <div v-else>
-                <b-row>
-                  <b-col>
-                    <p>Nothing here yet.  Why not...</p>
-                  </b-col>
-                </b-row>
-                <b-row>
-                  <b-col class="text-center">
-                    <b-button to="/find" class="mt-1" size="lg" variant="secondary">
-                      <v-icon name="search" />&nbsp;Find stuff
-                    </b-button>
-                  </b-col>
-                </b-row>
+                <p>Nothing here yet.  Why not...</p>
+                <b-button to="/find" class="mt-1" size="lg" variant="secondary">
+                  <v-icon name="search" />&nbsp;Find stuff
+                </b-button>
               </div>
             </b-card-text>
           </b-card-body>
