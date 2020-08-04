@@ -39,12 +39,16 @@
               <b-card-text>
                 <div class="d-flex justify-content-between">
                   <b-btn to="/find/search" variant="primary" class="topbutton">
-                    <v-icon name="search" class="mr-1" />
-                    Search for stuff
+                    <v-icon name="search" />
+                    Search<span class="d-none d-md-inline"> for stuff</span>
                   </b-btn>
-                  <b-btn to="/explore" variant="secondary" class="topbutton">
-                    <v-icon name="map-marker-alt" class="mr-1" />
-                    Explore more communities
+                  <b-btn to="/explore" variant="secondary" class="topbutton ml-1 mr-1">
+                    <v-icon name="map-marker-alt" />
+                    Explore<span class="d-none d-md-inline"> communities</span>
+                  </b-btn>
+                  <b-btn to="/give" variant="primary" class="topbutton">
+                    <v-icon name="gift" />
+                    Give<span class="d-none d-md-inline"> something</span>
                   </b-btn>
                 </div>
               </b-card-text>
