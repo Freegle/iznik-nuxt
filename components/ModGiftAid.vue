@@ -21,6 +21,7 @@
       </b-col>
       <b-col cols="6" md="4" class="d-flex justify-content-between">
         <SpinButton variant="white" name="save" label="Save Changes" :handler="save" />
+        <SpinButton variant="warning" name="trash-alt" label="Give Up" :handler="giveup" confirm />
         <SpinButton variant="success" name="check" label="Looks Good" :handler="reviewed" :disabled="houseInvalid || postcodeInvalid || nameInvalid" />
       </b-col>
     </b-row>
@@ -99,6 +100,19 @@ export default {
         null,
         null,
         null,
+        true
+      )
+      this.hide = true
+    },
+    giveup() {
+      this.$api.giftaid.edit(
+        this.giftaid.id,
+        null,
+        null,
+        null,
+        null,
+        null,
+        false,
         true
       )
       this.hide = true
