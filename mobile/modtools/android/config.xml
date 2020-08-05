@@ -1,33 +1,32 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="330" id="org.ilovefreegle.modtools" version="0.3.26" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>ModTools</name>
-    <description>Tool to help moderators of Freegle and similar groups</description>
-    <author email="geeks@ilovefreegle.org" href="https://ilovefreegle.org">
-		Chris Cant, Freegle Ltd</author>
-    <content src="index.html" />
-    <access origin="*" />
-    <allow-intent href="http://*/*" />
-    <allow-intent href="https://*/*" />
-    <allow-intent href="tel:*" />
-    <allow-intent href="sms:*" />
-    <allow-intent href="mailto:*" />
-    <allow-intent href="geo:*" />
-    <allow-intent href="wss:*" />
-    <platform name="android">
-        <allow-intent href="market:*" />
-    </platform>
-    <platform name="ios">
-        <allow-intent href="itms:*" />
-        <allow-intent href="itms-apps:*" />
-    </platform>
-    <splash density="ldpi" height="320" orientation="landscape" platform="android" src="package-assets/Tile426x320.png" width="426" />
-    <splash density="mdpi" height="320" orientation="landscape" platform="android" src="package-assets/Tile470x320.png" width="470" />
-    <splash density="hdpi" height="480" orientation="landscape" platform="android" src="package-assets/Tile640x480.png" width="640" />
-    <splash density="xhdpi" height="720" orientation="landscape" platform="android" src="package-assets/Tile960x720.png" width="960" />
-    <splash density="ldpi" height="426" orientation="portrait" platform="android" src="package-assets/Tile320x426.png" width="320" />
-    <splash density="mdpi" height="470" orientation="portrait" platform="android" src="package-assets/Tile320x470.png" width="320" />
-    <splash density="hdpi" height="640" orientation="portrait" platform="android" src="package-assets/Tile480x640.png" width="480" />
-    <splash density="xhdpi" height="960" orientation="portrait" platform="android" src="package-assets/Tile720x960.png" width="720" />
+<widget android-versionCode="331" id="org.ilovefreegle.modtools" version="0.3.26" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <name>ModTools</name>
+  <description>Tool to help moderators of Freegle and similar groups</description>
+  <author email="geeks@ilovefreegle.org" href="https://ilovefreegle.org">Chris Cant, Freegle Ltd</author>
+  <content src="index.html" />
+  <access origin="*" />
+  <allow-intent href="http://*/*" />
+  <allow-intent href="https://*/*" />
+  <allow-intent href="tel:*" />
+  <allow-intent href="sms:*" />
+  <allow-intent href="mailto:*" />
+  <allow-intent href="geo:*" />
+  <allow-intent href="wss:*" />
+  <platform name="android">
+    <allow-intent href="market:*" />
+  </platform>
+  <platform name="android">
+    <not-set-preference name="android-minSdkVersion" value="22" />
+    <preference name="android-targetSdkVersion" value="29" />
+  </platform>
+  <splash density="ldpi" height="320" orientation="landscape" platform="android" src="package-assets/Tile426x320.png" width="426" />
+  <splash density="mdpi" height="320" orientation="landscape" platform="android" src="package-assets/Tile470x320.png" width="470" />
+  <splash density="hdpi" height="480" orientation="landscape" platform="android" src="package-assets/Tile640x480.png" width="640" />
+  <splash density="xhdpi" height="720" orientation="landscape" platform="android" src="package-assets/Tile960x720.png" width="960" />
+  <splash density="ldpi" height="426" orientation="portrait" platform="android" src="package-assets/Tile320x426.png" width="320" />
+  <splash density="mdpi" height="470" orientation="portrait" platform="android" src="package-assets/Tile320x470.png" width="320" />
+  <splash density="hdpi" height="640" orientation="portrait" platform="android" src="package-assets/Tile480x640.png" width="480" />
+  <splash density="xhdpi" height="960" orientation="portrait" platform="android" src="package-assets/Tile720x960.png" width="720" />
 
   <platform name="android">
     <resource-file src="package-assets/colors.xml" target="/app/src/main/res/values/colors.xml" />
@@ -38,40 +37,14 @@
     <icon background="@color/background" density="xxhdpi" foreground="package-assets/mipmap-xxhdpi/mt_launcher.png" />
     <icon background="@color/background" density="xxxhdpi" foreground="package-assets/mipmap-xxxhdpi/mt_launcher.png" />
   </platform>
-    <icon height="29" platform="ios" src="package-assets/Tile29.png" width="29" />
-    <icon height="58" platform="ios" src="package-assets/Tile58.png" width="58" />
-    <icon height="87" platform="ios" src="package-assets/Tile87.png" width="87" />
-    <icon height="60" platform="ios" src="package-assets/Tile60.png" width="60" />
-    <icon height="120" platform="ios" src="package-assets/Tile120.png" width="120" />
-    <icon height="180" platform="ios" src="package-assets/Tile180.png" width="180" />
-    <icon height="76" platform="ios" src="package-assets/Tile76.png" width="76" />
-    <icon height="152" platform="ios" src="package-assets/Tile152.png" width="152" />
-    <icon height="40" platform="ios" src="package-assets/Tile40.png" width="40" />
-    <icon height="80" platform="ios" src="package-assets/Tile80.png" width="80" />
-    <icon height="57" platform="ios" src="package-assets/Tile57.png" width="57" />
-    <icon height="114" platform="ios" src="package-assets/Tile114.png" width="114" />
-    <icon height="72" platform="ios" src="package-assets/Tile72.png" width="72" />
-    <icon height="144" platform="ios" src="package-assets/Tile144.png" width="144" />
-    <icon height="50" platform="ios" src="package-assets/Tile50.png" width="50" />
-    <icon height="100" platform="ios" src="package-assets/Tile100.png" width="100" />
-    <icon height="187" platform="ios" src="package-assets/Tile187.png" width="187" />
-    <platform name="ios">
-        <preference name="AutoHideSplashScreen" value="true" />
-        <preference name="FadeSplashScreen" value="false" />
-        <preference name="FadeSplashScreenDuration" value="2" />
-        <preference name="ShowSplashScreenSpinner" value="false" />
-        <preference name="StatusBarOverlaysWebView" value="false" />
-        <preference name="StatusBarBackgroundColor" value="#000000" />
-        <preference name="StatusBarStyle" value="lightcontent" />
-    </platform>
-    <platform name="android">
-        <preference name="SplashMaintainAspectRatio" value="true" />
-    </platform>
-    <platform name="android">
-        <resource-file src="google-services.json" target="app/google-services.json" />
-    </platform>
-    <hook src="scripts/before_build.sh" type="before_build" />
-    <platform name="android">
-        <resource-file src="google-services.json" target="app/google-services.json" />
-    </platform>
+  <platform name="android">
+    <preference name="SplashMaintainAspectRatio" value="true" />
+  </platform>
+  <platform name="android">
+    <resource-file src="google-services.json" target="app/google-services.json" />
+  </platform>
+  <hook src="scripts/before_build.sh" type="before_build" />
+  <platform name="android">
+    <resource-file src="google-services.json" target="app/google-services.json" />
+  </platform>
 </widget>

@@ -1,40 +1,23 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="1059" id="org.ilovefreegle.direct" version="2.0.43" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="1060" id="org.ilovefreegle.direct" version="2.0.43" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>Freegle</name>
-    <description>
-      Offer and request free items on your local Freegle reuse group
-    </description>
-  <author email="geeks@ilovefreegle.org" href="https://ilovefreegle.org">
-    Chris Cant, Freegle Ltd
-  </author>
+  <description>Offer and request free items on your local Freegle reuse group</description>
+  <author email="geeks@ilovefreegle.org" href="https://ilovefreegle.org">Chris Cant, Freegle Ltd</author>
   <content src="index.html" />
-    <plugin name="cordova-plugin-whitelist" spec="1" />
-    <access origin="*" />
-    <allow-intent href="http://*/*" />
-    <allow-intent href="https://*/*" />
-    <allow-intent href="tel:*" />
-    <allow-intent href="sms:*" />
-    <allow-intent href="mailto:*" />
-    <allow-intent href="geo:*" />
-    <allow-intent href="wss:*" />
-    <platform name="android">
-        <allow-intent href="market:*" />
-    </platform>
-    <platform name="ios">
-        <allow-intent href="itms:*" />
-        <allow-intent href="itms-apps:*" />
-    </platform>
+  <access origin="*" />
+  <allow-intent href="http://*/*" />
+  <allow-intent href="https://*/*" />
+  <allow-intent href="tel:*" />
+  <allow-intent href="sms:*" />
+  <allow-intent href="mailto:*" />
+  <allow-intent href="geo:*" />
+  <allow-intent href="wss:*" />
   <platform name="android">
-    <preference name="SplashMaintainAspectRatio" value="false" />
+    <allow-intent href="market:*" />
   </platform>
-  <preference name="SplashScreenDelay" value="1000" />
-  <preference name="FadeSplashScreen" value="false" />
   <platform name="android">
-    <preference name="android-minSdkVersion" value="22" />
+    <not-set-preference name="android-minSdkVersion" value="22" />
     <preference name="android-targetSdkVersion" value="29" />
-  </platform>
-  <platform name="ios">
-    <preference name="deployment-target" value="8.0" />
   </platform>
   <splash density="ldpi" height="426" orientation="portrait" platform="android" src="package-assets/FreegleSplash_320x426.png" width="320" />
   <splash density="mdpi" height="470" orientation="portrait" platform="android" src="package-assets/FreegleSplash_320x470.png" width="320" />
@@ -58,7 +41,13 @@
     <icon background="@color/background" density="xxxhdpi" foreground="package-assets/mipmap-xxxhdpi/fr_launcher.png" />
   </platform>
   <platform name="android">
+    <preference name="SplashMaintainAspectRatio" value="false" />
+    <preference name="SplashScreenDelay" value="1000" />
+    <preference name="FadeSplashScreen" value="false" />
+  </platform>
+  <platform name="android">
     <resource-file src="google-services.json" target="app/google-services.json" />
   </platform>
   <hook src="scripts/before_build.sh" type="before_build" />
+  <plugin name="cordova-plugin-whitelist" spec="1" />
 </widget>
