@@ -142,6 +142,7 @@
           <b-dropdown
             v-if="loggedIn"
             class="white text-center notiflist mr-2"
+            variant="transparent"
             lazy
             right
             @shown="loadLatestNotifications"
@@ -897,15 +898,7 @@ svg.fa-icon {
   max-width: 400px;
 }
 
-/* Style the notification dropdown toggle button */
-.notiflist ::v-deep .dropdown-toggle {
-  background: transparent !important;
-
-  &:active,
-  &:hover {
-    background: transparent !important;
-    color: $color-white-opacity-75 !important;
-    box-shadow: none !important;
-  }
+::v-deep .dropdown-toggle {
+  color: $color-white;
 }
 </style>
