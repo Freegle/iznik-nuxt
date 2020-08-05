@@ -66,7 +66,7 @@ script:
 - cp ../iznik-nuxt/GoogleService-Info.plist GoogleService-Info.plist
 - ln -s ../iznik-nuxt/dist www
 - cordova platform rm ios
-- cordova platform add ios
+- cordova platform add ios@5.1.1
 
 # Fix cordova-ios
 - sed -i '' "s/PROVISIONING_PROFILE =/PROVISIONING_PROFILE_SPECIFIER =/" platforms/ios/cordova/lib/build.js
@@ -117,7 +117,7 @@ script:
 - cp ../iznik-nuxt/GoogleService-Info.plist GoogleService-Info.plist
 - ln -s ../iznik-nuxt/dist www
 - cordova platform rm ios
-- cordova platform add ios
+- cordova platform add ios@5.1.1
 
 # Fix cordova-ios
 - sed -i '' "s/PROVISIONING_PROFILE =/PROVISIONING_PROFILE_SPECIFIER =/" platforms/ios/cordova/lib/build.js
