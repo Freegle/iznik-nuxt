@@ -46,7 +46,8 @@ before_install:
 - tar xvf mobile/app-secrets.tar
 #- keytool -exportcert -list -v -keystore android-chrisphdcccom.new.keystore -storepass "$storepass"
 - nvm install $nodejs_version
-- npm install -g cordova
+- npm install -g cordova@9.0.0
+- cordova -v
 - node --version
 - npm --version
 - gradle --version
