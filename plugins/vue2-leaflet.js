@@ -16,6 +16,7 @@ import {
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
+// Without this, the default map marker doesn't appear in production.  Fairly well-known problem.
 // eslint-disable-next-line
 delete L.Icon.Default.prototype._getIconUrl
 // eslint-disable-next-line
