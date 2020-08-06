@@ -23,33 +23,31 @@
           </p>
         </b-col>
       </b-row>
-      <b-row class="text-center">
-        <b-col cols="12" class="mt-2">
+      <div class="text-center">
+        <div class="mt-2">
           <b-btn size="lg" variant="primary" to="/give/whatisit">
             <v-icon name="gift" />&nbsp;Give something else
           </b-btn>
-        </b-col>
-        <b-col cols="12" class="mt-2">
+        </div>
+        <div class="mt-2">
           <b-btn size="lg" variant="secondary" to="/find">
             <v-icon name="search" />&nbsp;Find something
           </b-btn>
-        </b-col>
-        <b-col cols="12" class="mt-2">
+        </div>
+        <div class="mt-2">
           <b-btn variant="white" size="lg" @click="availability">
             <v-icon name="calendar-alt" /> Edit Availability
           </b-btn>
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col cols="0" md="3" />
-        <b-col cols="12" md="6" class="text-center mt-4">
-          <nuxt-link to="/">
-            <b-btn variant="white" size="lg">
-              Continue to Home Page <v-icon name="angle-double-right" />
-            </b-btn>
-          </nuxt-link>
-        </b-col>
-      </b-row>
+        </div>
+      </div>
+      <div class="text-center mt-4">
+        <nuxt-link to="/">
+          <b-btn variant="white" size="lg">
+            Continue to Home Page <v-icon name="angle-double-right" />
+          </b-btn>
+        </nuxt-link>
+      </div>
+
       <div class="d-none d-md-block">
         <b-tooltip :show.sync="show" target="menu-option-chat">
           Replies will appear here<br><br>

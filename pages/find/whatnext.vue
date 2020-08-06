@@ -18,32 +18,31 @@
         </p>
       </b-col>
     </b-row>
-    <b-row class="text-center">
-      <b-col cols="12" class="mt-2">
+    <div class="text-center">
+      <div class="mt-2">
         <b-btn size="lg" variant="primary" to="/find/whatisit">
           <v-icon name="gift" />&nbsp;Find something else
         </b-btn>
-      </b-col>
-      <b-col cols="12" class="mt-2">
+      </div>
+      <div class="mt-2">
         <b-btn size="lg" variant="secondary" to="/give/whatisit">
           <v-icon name="search" />&nbsp;Give something
         </b-btn>
-      </b-col>
-      <b-col cols="12" class="mt-2">
+      </div>
+      <div class="mt-2">
         <b-btn variant="white" size="lg" @click="availability">
           <v-icon name="calendar-alt" /> Edit Availability
         </b-btn>
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col class="text-center mt-4">
-        <nuxt-link to="/">
-          <b-btn variant="white" size="lg">
-            Continue to Home Page <v-icon name="angle-double-right" />
-          </b-btn>
-        </nuxt-link>
-      </b-col>
-    </b-row>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <nuxt-link to="/">
+        <b-btn variant="white" size="lg">
+          Continue to Home Page <v-icon name="angle-double-right" />
+        </b-btn>
+      </nuxt-link>
+    </div>
+
     <b-tooltip :show.sync="show" target="menu-option-chat" class="d-none d-md-block">
       Replies will appear here<br><br>
 
