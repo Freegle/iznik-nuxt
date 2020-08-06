@@ -452,6 +452,14 @@ export const actions = {
     commit('addAll', messages)
   },
 
+  async move({ dispatch, commit }, params) {
+    await this.$api.message.update({
+      id: params.id,
+      groupid: params.groupid,
+      action: 'Move'
+    })
+  },
+
   async searchMember({ dispatch, commit }, params) {
     const { messages } = await this.$api.message.fetchMessages({
       subaction: 'searchmemb',
