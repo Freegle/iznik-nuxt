@@ -40,15 +40,14 @@
           </b-btn>
         </div>
       </div>
-      <div>
-        <div class="text-center mt-4">
-          <nuxt-link to="/">
-            <b-btn variant="white" size="lg">
-              Continue to Home Page <v-icon name="angle-double-right" />
-            </b-btn>
-          </nuxt-link>
-        </div>
+      <div class="text-center mt-4">
+        <nuxt-link to="/">
+          <b-btn variant="white" size="lg">
+            Continue to Home Page <v-icon name="angle-double-right" />
+          </b-btn>
+        </nuxt-link>
       </div>
+
       <div class="d-none d-md-block">
         <b-tooltip :show.sync="show" target="menu-option-chat">
           Replies will appear here<br><br>
