@@ -326,15 +326,6 @@
             </p>
             <ModGroupSetting
               :groupid="groupid"
-              name="settings.approvemembers"
-              label="New Member approval"
-              description="Normally members can join immediately and get freegling. Some communities prefer to approve new members manually, which gives more control but loses potential members."
-              type="toggle"
-              toggle-checked="Yes"
-              toggle-unchecked="No"
-            />
-            <ModGroupSetting
-              :groupid="groupid"
               name="settings.moderated"
               label="All Posts Moderated"
               description="When this setting is No (for most groups), all new members are Moderated and members can be changed to Group Settings (meaning unmoderated) once they have made a valid post. When this setting is Yes, all posts must be moderated no matter what setting the user has."
