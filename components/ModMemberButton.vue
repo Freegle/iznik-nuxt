@@ -56,11 +56,6 @@ export default {
       required: false,
       default: false
     },
-    approve: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
     delete: {
       type: Boolean,
       required: false,
@@ -97,21 +92,6 @@ export default {
       default: false
     },
     spamignore: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    hold: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    release: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    reject: {
       type: Boolean,
       required: false,
       default: false
@@ -166,19 +146,9 @@ export default {
         await this.spamHold()
       } else if (this.spamignore) {
         await this.spamIgnore()
-      } else if (this.hold) {
-        // Standard hold button - no modal.
-        await this.holdIt()
-      } else if (this.release) {
-        // Standard release button - no modal.
-        await this.releaseIt()
       } else {
         // We want to show a modal.
-        if (this.reject) {
-          this.stdmsg = {
-            action: 'Reject Member'
-          }
-        } else if (this.leave) {
+        if (this.leave) {
           this.stdmsg = {
             action: 'Leave Member'
           }
@@ -256,24 +226,11 @@ export default {
         groupid: this.groupid
       })
     },
-    async holdIt() {
-      await this.$store.dispatch('members/hold', {
-        userid: this.member.userid,
-        groupid: this.groupid
-      })
-    },
     async releaseIt() {
-      if (this.member.spammer) {
-        await this.$store.dispatch('spammers/release', {
-          id: this.member.spammer.id,
-          userid: this.member.userid
-        })
-      } else {
-        await this.$store.dispatch('members/release', {
-          userid: this.member.userid,
-          groupid: this.groupid
-        })
-      }
+      await this.$store.dispatch('spammers/release', {
+        id: this.member.spammer.id,
+        userid: this.member.userid
+      })
     }
   }
 }

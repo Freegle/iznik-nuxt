@@ -75,7 +75,6 @@
           <div class="pl-1">
             Members
           </div>
-          <ModMenuItemLeft link="/modtools/members/pending" name="Pending" :count="['pendingmembers']" :othercount="['pendingmembersother']" indent />
           <ModMenuItemLeft link="/modtools/members/approved" name="Approved" indent />
           <ModMenuItemLeft link="/modtools/members/review" name="Member Review" :count="['spammembers']" :othercount="['spammembersother']" indent />
           <ModMenuItemLeft link="/modtools/chats/review" name="Chat Review" :count="['chatreview']" :othercount="['chatreviewother']" indent />

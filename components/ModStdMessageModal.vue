@@ -522,15 +522,6 @@ export default {
             stdmsgid: this.stdmsg.id
           })
           break
-        case 'Approve Member':
-          await this.$store.dispatch('members/approve', {
-            id: this.member.userid,
-            groupid: this.groupid,
-            subject: subj,
-            body: body,
-            stdmsgid: this.stdmsg.id
-          })
-          break
         case 'Leave':
         case 'Leave Approved Message':
           await this.$store.dispatch('messages/reply', {
@@ -554,15 +545,6 @@ export default {
         case 'Reject':
           await this.$store.dispatch('messages/reject', {
             id: this.message.id,
-            groupid: this.groupid,
-            subject: subj,
-            body: body,
-            stdmsgid: this.stdmsg.id
-          })
-          break
-        case 'Reject Member':
-          await this.$store.dispatch('members/reject', {
-            id: this.member.userid,
             groupid: this.groupid,
             subject: subj,
             body: body,
