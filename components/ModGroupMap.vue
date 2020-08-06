@@ -64,6 +64,9 @@
               Area Details
             </b-card-header>
             <b-card-body>
+              <p class="text-danger font-weight-bold">
+                Zoom/pan locked while area selected.  Use Cancel to free.
+              </p>
               <div v-if="groupid">
                 <b-input v-model="selectedName" placeholder="Enter area name" size="lg" class="mb-1" />
                 <b-textarea v-model="selectedWKT" rows="4" />

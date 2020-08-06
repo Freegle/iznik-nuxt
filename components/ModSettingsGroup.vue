@@ -494,7 +494,7 @@
                 Each postcode in a group lies within an area, which is something that a freegler would recognise as a
                 description of a rough location.  You can set these areas up here:
               </b-form-text>
-              <b-btn variant="white" :to="'/modtools/map/' + groupid">
+              <b-btn variant="secondary" :to="'/modtools/map/' + groupid">
                 <v-icon name="map-marker-alt" /> View Areas
               </b-btn>
             </b-form-group>
