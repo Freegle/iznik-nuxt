@@ -458,6 +458,19 @@ export const actions = {
       groupid: params.groupid,
       action: 'Move'
     })
+
+    await dispatch('fetch', { id: params.id })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
   },
 
   async searchMember({ dispatch, commit }, params) {
