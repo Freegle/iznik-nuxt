@@ -49,6 +49,7 @@
                   :selected="selectedObj === l"
                   :shade="shade"
                   :labels="labels"
+                  :map="map"
                   @click="selectLocation(l)"
                 />
               </l-feature-group>
@@ -276,7 +277,7 @@ export default {
               location.json = wkt.toJson()
               ret.push(location)
             } catch (e) {
-              console.log('WKT error', location)
+              console.log('WKT error', location, e)
             }
           }
         }
