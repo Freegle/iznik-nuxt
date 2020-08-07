@@ -3,7 +3,7 @@
     <b-card bg-variant="white" no-body>
       <b-card-header class="p-1 p-md-2">
         <div class="d-flex justify-content-between">
-          <div>
+          <div class="flex-grow-1">
             <div v-if="editing" class="d-flex">
               <GroupSelect v-model="editgroup" modonly class="mt-1 mr-1" />
               <div v-if="message.item && message.location" class="d-flex justify-content-start">
@@ -13,8 +13,8 @@
                   <Postcode :value="message.location.name" :find="false" @selected="postcodeSelect" />
                 </b-input-group>
               </div>
-              <div v-else>
-                <b-input-group>
+              <div v-else class="d-flex flex-grow-1">
+                <b-input-group class="flex-grow-1 mr-1 mt-1">
                   <b-input v-model="message.subject" />
                 </b-input-group>
               </div>
