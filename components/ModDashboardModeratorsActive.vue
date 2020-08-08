@@ -17,7 +17,7 @@
         <p>This shows when the volunteers on this community last visited FD or MT.</p>
         <b-card no-body>
           <b-card-body>
-            <b-row v-for="user in ModeratorsActive" :key="'popular-' + user.id">
+            <b-row v-for="user in ModeratorsActiveVisible" :key="'popular-' + user.id">
               <b-col cols="2" class="text-nowrap">
                 <v-icon name="hashtag" scale="0.75" class="text-muted" />{{ user.id }}
               </b-col>
@@ -29,6 +29,12 @@
                 {{ user.lastactive | timeago }}
               </b-col>
             </b-row>
+            <b-btn v-if="ModeratorsActive.length > 10 && !ModeratorsExpanded" variant="link" @click="ModeratorsExpanded = true">
+              Show more...
+            </b-btn>
+            <b-btn v-if="ModeratorsActive.length > 10 && ModeratorsExpanded" variant="link" @click="ModeratorsExpanded = false">
+              Show fewer...
+            </b-btn>
           </b-card-body>
         </b-card>
       </div>
@@ -49,7 +55,15 @@ export default {
     return {
       askfor: ['ModeratorsActive'],
       ModeratorsActive: null,
-      grouprequired: true
+      grouprequired: true,
+      ModeratorsExpanded: false
+    }
+  },
+  computed: {
+    ModeratorsActiveVisible() {
+      return this.ModeratorsExpanded
+        ? this.ModeratorsActive
+        : this.ModeratorsActive.slice(0, 10)
     }
   }
 }
