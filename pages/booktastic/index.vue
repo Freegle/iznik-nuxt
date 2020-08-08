@@ -114,7 +114,7 @@
         </div>
         <video
           v-show="showVideo"
-          v-if="false && !uploading && !processing && !result"
+          v-if="!uploading && !processing && !result"
           id="video"
           ref="video"
           class="video-content"
@@ -191,12 +191,6 @@ import BooktasticResult from '@/components/BooktasticResult'
 import NoticeMessage from '@/components/NoticeMessage'
 import waitForRef from '@/mixins/waitForRef'
 
-let cv
-
-if (process.client) {
-  // cv = require('opencv.js')
-}
-
 const a = require('axios')
 const axios = a.create({
   timeout: 300000
@@ -226,7 +220,6 @@ export default {
   mixins: [waitForRef],
   data() {
     return {
-      $cv: null,
       mediaStream: null,
       captureDevice: {},
       videoDevice: null,
@@ -247,30 +240,36 @@ export default {
       showVideo: false,
       preview: null,
       previewTimer: null,
-      bump: 1
+      bump: 1,
+      frame: null,
+      boxes: []
     }
   },
   computed: {
     guidelines() {
       const ret = []
 
-      if (this.bump) {
-        if (this.mediaStream) {
-          const top = this.height * 0.1
-          const left = this.width * 0.1
-          const gap = (this.width - 2 * left) / 10
+      if (this.frame) {
+        const hscale = this.height / this.frame.height
+        const wscale = this.width / this.frame.width
+        console.log(
+          this.frame.height,
+          this.frame.width,
+          this.height,
+          this.width,
+          hscale,
+          wscale
+        )
 
-          for (let i = 0; i < 10; i++) {
-            const thisone = {
-              top: top,
-              left: left + i * gap,
-              height: this.height - top * 2,
-              width: gap
-            }
-
-            ret.push(thisone)
-          }
-        }
+        this.boxes.forEach(b => {
+          console.log('Box', b)
+          ret.push({
+            top: Math.round(b.boundingBox.top * hscale),
+            left: Math.round(b.boundingBox.left * wscale),
+            height: Math.round(b.boundingBox.height * hscale),
+            width: Math.round(b.boundingBox.width * wscale)
+          })
+        })
       }
 
       console.log('Guidelines', ret)
@@ -283,6 +282,13 @@ export default {
       return this.bump ? window.innerHeight - 100 : 0
     }
   },
+  mounted() {
+    window.addEventListener('resize', () => {
+      // This keeps our guidelines right.
+      console.log('Resized')
+      this.bump++
+    })
+  },
   beforeDestroy() {
     this.stopCamera()
 
@@ -290,85 +296,7 @@ export default {
       clearTimeout(this.previewTimer)
     }
   },
-  mounted() {
-    this.$cv = cv
-    console.log('Get CV build info')
-    const info = cv.getBuildInformation()
-    console.log('CV info', info)
-    console.log('Load model')
-    this.createFileFromURL(
-      'east_text_detection.pb',
-      'frozen_east_text_detection',
-      () => {
-        console.log('Loaded text model')
-        const classifier = new cv.CascadeClassifier()
-        console.log('Now load file')
-        const rtn = classifier.load('east_text_detection')
-        console.log('Loaded', rtn)
-      }
-    )
-  },
   methods: {
-    createFileFromURL(file, url, cb) {
-      axios
-        .get(url)
-        .then(resp => {
-          this.$cv.FS_createDataFile('/', file, resp.data, true, false, false)
-          cb()
-        })
-        .catch(err => {
-          // eslint-disable-next-line
-          console.log('ERR',err);
-        })
-    },
-    createFileFromURL3(path, url, callback) {
-      let request = new XMLHttpRequest()
-      request.open('GET', url, true)
-      request.responseType = 'arraybuffer'
-      request.onload = function(ev) {
-        request = this
-        if (request.readyState === 4) {
-          if (request.status === 200) {
-            const data = new Uint8Array(request.response)
-            cv.FS_createDataFile('/', path, data, true, false, false)
-            callback()
-          } else {
-            console.error(
-              'Failed to load ' + url + ' status: ' + request.status
-            )
-          }
-        }
-      }
-      request.send()
-    },
-    createFileFromURL2(file, url, cb) {
-      console.log('createFileFromUrl', file, url)
-      axios
-        .get('/booktastic/' + url)
-        .then(resp => {
-          console.log('Got response', resp)
-          let rtn = cv.FS_createDataFile(
-            '/',
-            file,
-            resp.data,
-            true,
-            false,
-            false
-          )
-          console.log('Created data file2', rtn)
-          if (!rtn) return cb(null)
-          const classifier = new cv.CascadeClassifier()
-          rtn = classifier.load(file)
-          if (!rtn) return cb(null)
-          cb(classifier)
-          // eslint-disable-next-line
-          console.log('loaded', rtn, classifier.empty(), this.faceClass)
-        })
-        .catch(err => {
-          // eslint-disable-next-line
-          console.log('ERR',err);
-        })
-    },
     readFileAsync(blob) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader()
@@ -432,12 +360,6 @@ export default {
     async takePhoto() {
       this.showVideo = true
 
-      window.addEventListener('resize', () => {
-        // This keeps our guidelines right.
-        console.log('Resized')
-        this.bump++
-      })
-
       this.mediaStream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: 'environment'
@@ -445,44 +367,14 @@ export default {
         audio: false
       })
 
-      const videoTracks = this.mediaStream.getVideoTracks()
-      console.log('Video tracks', videoTracks)
-      this.videoDevice = videoTracks[0]
-      this.captureDevice = new ImageCapture(this.videoDevice)
-      this.setFocusRange()
       this.previewTimer = setTimeout(this.capture, 1)
 
       // Set it playing onscreen.
+      // this.waitForRef('video', () => {
       this.video = this.$refs.video
       this.video.srcObject = this.mediaStream
       this.video.play()
-    },
-    async setFocusRange() {
-      try {
-        // Try to set the focus so that we are close enough to get a good image.
-        console.log(
-          'Supported constraints',
-          navigator.mediaDevices.getSupportedConstraints()
-        )
-
-        this.photoCapabilities = await this.captureDevice.getPhotoCapabilities()
-        console.log('Photo capabilities', this.photoCapabilities)
-        const trackCapabilities = this.videoDevice.getCapabilities()
-        console.log('Track capabilities', trackCapabilities)
-
-        if (trackCapabilities && trackCapabilities.focusDistance) {
-          console.log(
-            'Can control focus distance',
-            trackCapabilities.focusDistance
-          )
-
-          this.rangeStep = trackCapabilities.focusDistance.step
-          this.rangeMin = trackCapabilities.focusDistance.min
-          this.rangeMax = trackCapabilities.focusDistance.max
-        }
-      } catch (e) {
-        console.log('Force focus failed', e)
-      }
+      // })
     },
     async setFocus() {
       console.log('Set focus', this.rangeVal)
@@ -510,18 +402,23 @@ export default {
     async showCapture(blob) {
       const base64data = await this.readFileAsync(blob)
       this.preview = base64data
-
-      console.log('Read into CV2')
-      cv.imread(this.$refs.preview.$el)
-      console.log('Load EAST detector')
     },
     async capture() {
-      if (this.captureDevice) {
+      if (this.mediaStream) {
         try {
-          const blob = await this.captureDevice.takePhoto()
-          await this.showCapture(blob)
-          this.showVideo = false
-          // this.upload(blob)
+          const videoTracks = this.mediaStream.getVideoTracks()
+          console.log('Video tracks', videoTracks)
+          this.videoDevice = videoTracks[0]
+          console.log('Video device', this.videoDevice)
+          this.captureDevice = new ImageCapture(this.videoDevice)
+          console.log('Capture device', this.captureDevice)
+
+          this.frame = await this.captureDevice.grabFrame()
+          console.log('Frame', this.frame)
+          // eslint-disable-next-line no-undef
+          const textDetector = new TextDetector()
+          this.boxes = await textDetector.detect(this.frame)
+          console.log('Boxes', this.boxes)
         } catch (e) {
           console.log('Capture error', e)
         }
