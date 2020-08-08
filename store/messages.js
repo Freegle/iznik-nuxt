@@ -296,10 +296,11 @@ export const actions = {
     )
   },
 
-  async notspam({ commit, dispatch }, params) {
+  async notspam({ state, commit, dispatch }, params) {
     await this.$api.message.notspam(params.id, params.groupid)
 
-    commit('remove', {
+    // Fetch back so that we know whether it's pending or approved and show appropriate buttons.
+    dispatch('fetch', {
       id: params.id
     })
 
