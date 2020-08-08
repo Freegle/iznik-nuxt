@@ -293,7 +293,7 @@ export default {
                 matches[3] +
                 ')'
 
-              this.message.item.name = this.message.item.name.toLowerCase()
+              this.message.item.name = matches[2].toLowerCase().trim()
             } else {
               this.subject = this.subject.toLowerCase().trim()
             }
