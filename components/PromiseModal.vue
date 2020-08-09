@@ -20,7 +20,7 @@
       <b-button variant="white" @click="cancel">
         Cancel
       </b-button>
-      <b-button variant="primary" :disabled="!messages || messages.length === 0" @click="promise">
+      <b-button variant="primary" :disabled="!messages || messages.length === 0 || !selectedMessage" @click="promise">
         Promise
       </b-button>
     </template>

@@ -28,14 +28,40 @@ export default {
     }
   },
   computed: {
+    sortedComments() {
+      const ret = this.user ? this.user.comments : []
+      const myGroups = this.$store.getters['auth/groups']
+
+      ret.sort((a, b) => {
+        const aone = this.oneOfMine(a.groupid, myGroups)
+        const bone = this.oneOfMine(b.groupid, myGroups)
+
+        if (aone && !bone) {
+          return -1
+        } else if (bone && !aone) {
+          return 1
+        } else {
+          return 0
+        }
+      })
+
+      return ret
+    },
     comments() {
       if (this.showAll) {
-        return this.user.comments
-      } else if (this.user.comments.length) {
-        return [this.user.comments[0]]
+        return this.sortedComments
+      } else if (this.sortedComments.length) {
+        return [this.sortedComments[0]]
       } else {
         return []
       }
+    }
+  },
+  methods: {
+    oneOfMine(groupid, myGroups) {
+      return myGroups.find(g => {
+        return g.id === groupid
+      })
     }
   }
 }

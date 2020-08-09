@@ -35,24 +35,26 @@
             </b-row>
           </NoticeMessage>
           <div v-else>
-            <b-card>
-              <b-card-text>
-                <div class="d-flex justify-content-between">
-                  <b-btn to="/find/search" variant="primary" class="topbutton">
-                    <v-icon name="search" />
-                    Search<span class="d-none d-md-inline"> for stuff</span>
-                  </b-btn>
-                  <b-btn to="/explore" variant="secondary" class="topbutton ml-1 mr-1">
-                    <v-icon name="map-marker-alt" />
-                    Explore<span class="d-none d-md-inline"> communities</span>
-                  </b-btn>
-                  <b-btn to="/give" variant="primary" class="topbutton">
-                    <v-icon name="gift" />
-                    Give<span class="d-none d-md-inline"> something</span>
-                  </b-btn>
-                </div>
-              </b-card-text>
-            </b-card>
+            <div class="bg-white">
+              <div class="d-flex justify-content-between">
+                <b-btn to="/give" variant="primary" class="topbutton ml-1 mr-1">
+                  <v-icon name="gift" />
+                  Give
+                </b-btn>
+                <b-btn to="/find" variant="primary" class="topbutton ml-1 mr-1">
+                  <v-icon name="search" />
+                  Find
+                </b-btn>
+                <b-btn to="/find/search" variant="secondary" class="topbutton ml-1 mr-1">
+                  <v-icon name="search" />
+                  Search
+                </b-btn>
+                <b-btn to="/explore" variant="secondary" class="topbutton ml-1 mr-1">
+                  <v-icon name="map-marker-alt" />
+                  Explore
+                </b-btn>
+              </div>
+            </div>
             <div class="d-flex mt-2 mb-3 selection__wrapper justify-content-between">
               <GroupSelect v-model="groupid" class="m-3" all />
               <b-form-select v-model="selectedType" class="m-3 typeSelect" value="All" :options="typeOptions" @change="typeChange" />

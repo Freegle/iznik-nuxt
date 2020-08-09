@@ -147,7 +147,7 @@
           <b-dropdown
             v-if="loggedIn"
             class="white text-center notiflist mr-2"
-            variant="primary"
+            variant="transparent"
             lazy
             right
             boundary="viewport"
@@ -928,5 +928,9 @@ svg.fa-icon {
 .mainnav--right {
   width: 40%;
   max-width: 400px;
+}
+
+::v-deep .dropdown-toggle {
+  color: $color-white;
 }
 </style>

@@ -176,7 +176,7 @@ export default {
         this.$refs.availabilitymodal.show()
       })
     },
-    loadMore: function($state) {
+    loadMore: async function($state) {
       const currentCount = this.chatmessages.length
 
       if (!this.scrolledToBottom) {
@@ -195,42 +195,42 @@ export default {
         $state.complete()
       } else {
         this.busy = true
-        this.$store
-          .dispatch('chatmessages/fetch', {
+
+        try {
+          await this.$store.dispatch('chatmessages/fetch', {
             chatid: this.id
           })
-          .then(() => {
-            try {
-              this.lastFetched = new Date()
 
-              if (!this.scrolledToBottom) {
-                // First load.  Scroll to the bottom when things have sorted themselves out.
-                this.$nextTick(() => {
-                  if (this.$el && this.$el.querySelector) {
-                    const container = this.$el.querySelector('.chatContent')
-                    container.scrollTop = container.scrollHeight
-                    this.scrolledToBottom = true
-                  }
-                })
-              }
+          try {
+            this.lastFetched = new Date()
 
-              if (currentCount === this.chatmessages.length) {
-                this.complete = true
-                $state.complete()
-              } else {
-                $state.loaded()
-              }
-
-              this.busy = false
-            } catch (e) {
-              console.error(e)
+            if (!this.scrolledToBottom) {
+              // First load.  Scroll to the bottom when things have sorted themselves out.
+              this.$nextTick(() => {
+                if (this.$el && this.$el.querySelector) {
+                  const container = this.$el.querySelector('.chatContent')
+                  container.scrollTop = container.scrollHeight
+                  this.scrolledToBottom = true
+                }
+              })
             }
-          })
-          .catch(e => {
-            console.error(e)
+
+            if (currentCount === this.chatmessages.length) {
+              this.complete = true
+              $state.complete()
+            } else {
+              $state.loaded()
+            }
+
             this.busy = false
-            $state.complete()
-          })
+          } catch (e) {
+            console.error(e)
+          }
+        } catch (e) {
+          console.error(e)
+          this.busy = false
+          $state.complete()
+        }
       }
     },
     newline: function() {

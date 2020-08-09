@@ -181,24 +181,12 @@
     >
       <NewUserInfo :password="newUserPassword" />
     </b-modal>
-    <b-modal
+    <MessagePhotosModal
       v-if="expanded && expanded.attachments && expanded.attachments.length"
-      :id="'photoModal-' + id"
       ref="photoModal"
-      :title="subject"
-      size="lg"
-      no-stacking
-      ok-only
-    >
-      <template slot="default">
-        <ImageCarousel message-id="message.id" :attachments="expanded.attachments" />
-      </template>
-      <template slot="modal-footer" slot-scope="{ ok, cancel }">
-        <b-button variant="white" @click="cancel">
-          Close
-        </b-button>
-      </template>
-    </b-modal>
+      :message="expanded"
+      :subject="subject"
+    />
     <ShareModal v-if="expanded && expanded.url" :id="expanded.id" ref="shareModal" />
     <ChatButton v-if="replyToUser" ref="chatbutton" :userid="replyToUser" class="d-none" @sent="sentReply" />
     <MessageReportModal v-if="expanded" ref="reportModal" :message="$props" />
@@ -214,17 +202,18 @@ import MessageReportModal from './MessageReportModal'
 import MessageReplyInfo from './MessageReplyInfo'
 import EmailValidator from './EmailValidator'
 import NewUserInfo from './NewUserInfo'
+import MessagePhotosModal from './MessagePhotosModal'
 import twem from '~/assets/js/twem'
 import waitForRef from '@/mixins/waitForRef'
 
 const Highlighter = () => import('vue-highlight-words')
 const MessageUserInfo = () => import('~/components/MessageUserInfo')
-const ImageCarousel = () => import('./ImageCarousel')
 const NoticeMessage = () => import('~/components/NoticeMessage')
 const MessageHistory = () => import('~/components/MessageHistory')
 
 export default {
   components: {
+    MessagePhotosModal,
     NewUserInfo,
     EmailValidator,
     MessageReplyInfo,
@@ -233,7 +222,6 @@ export default {
     Highlighter,
     ShareModal,
     MessageReportModal,
-    ImageCarousel,
     NoticeMessage,
     MessageHistory
   },
@@ -398,8 +386,13 @@ export default {
     },
 
     async showPhotos() {
-      await this.expand()
-      this.$bvModal.show('photoModal-' + this.id)
+      if (!this.expanded) {
+        await this.expand()
+      }
+
+      this.waitForRef('photoModal', () => {
+        this.$refs.photoModal.show()
+      })
     },
 
     share() {

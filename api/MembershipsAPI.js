@@ -33,31 +33,9 @@ export default class MembershipsAPI extends BaseAPI {
     return this.$put('/memberships', data)
   }
 
-  approve(userid, groupid, subject = null, stdmsgid = null, body = null) {
-    return this.$post('/memberships', {
-      action: 'Approve Member',
-      userid: userid,
-      groupid: groupid,
-      subject: subject,
-      stdmsgid: stdmsgid,
-      body: body
-    })
-  }
-
   reply(userid, groupid, subject = null, stdmsgid = null, body = null) {
     return this.$post('/memberships', {
       action: 'Leave Approved Member',
-      userid: userid,
-      groupid: groupid,
-      subject: subject,
-      stdmsgid: stdmsgid,
-      body: body
-    })
-  }
-
-  reject(userid, groupid, subject = null, stdmsgid = null, body = null) {
-    return this.$post('/memberships', {
-      action: 'Reject Member',
       userid: userid,
       groupid: groupid,
       subject: subject,

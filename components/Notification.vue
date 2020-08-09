@@ -30,12 +30,6 @@ const NotificationCommentOnComment = () =>
   import('~/components/NotificationCommentOnComment')
 const NotificationExhort = () => import('~/components/NotificationExhort')
 const NotificationAboutMe = () => import('~/components/NotificationAboutMe')
-const NotificationMembershipPending = () =>
-  import('~/components/NotificationMembershipPending')
-const NotificationMembershipApproved = () =>
-  import('~/components/NotificationMembershipApproved')
-const NotificationMembershipRejected = () =>
-  import('~/components/NotificationMembershipRejected')
 
 export default {
   components: {
@@ -45,10 +39,7 @@ export default {
     NotificationCommentOnPost,
     NotificationCommentOnComment,
     NotificationExhort,
-    NotificationAboutMe,
-    NotificationMembershipPending,
-    NotificationMembershipApproved,
-    NotificationMembershipRejected
+    NotificationAboutMe
   },
   inheritAttrs: false,
   props: {

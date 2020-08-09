@@ -151,18 +151,6 @@
       </b-card>
       <b-card no-body class="mb-2 mt-1">
         <b-card-header>
-          <b-btn v-b-toggle.accordion-pendingmembers block href="#" variant="secondary">
-            Pending Members
-          </b-btn>
-        </b-card-header>
-        <b-collapse id="accordion-pendingmembers" accordion="settings-accordion" role="tabpanel">
-          <b-card-body>
-            <ModSettingsStandardMessageSet cc="ccrejmembto" addr="ccrejmembaddr" :types="['Approve Member', 'Reject Member', 'Leave Member']" />
-          </b-card-body>
-        </b-collapse>
-      </b-card>
-      <b-card no-body class="mb-2 mt-1">
-        <b-card-header>
           <b-btn v-b-toggle.accordion-approvedmembers block href="#" variant="secondary">
             Approved Members
           </b-btn>

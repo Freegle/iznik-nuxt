@@ -17,9 +17,6 @@
         </div>
       </b-card-header>
       <b-card-body>
-        <h3 v-if="pending && group" class="mb-2">
-          Pending on {{ group.namedisplay }}
-        </h3>
         <div v-if="member.heldby">
           <NoticeMessage variant="warning" class="mb-2">
             <p v-if="me.id === member.heldby.id">
@@ -283,9 +280,6 @@ export default {
       }
 
       return ret
-    },
-    pending() {
-      return this.member.collection === 'Pending'
     },
     groupid() {
       return this.member.groupid

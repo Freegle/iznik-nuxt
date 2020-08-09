@@ -75,7 +75,6 @@
           <div class="pl-1">
             Members
           </div>
-          <ModMenuItemLeft link="/modtools/members/pending" name="Pending" :count="['pendingmembers']" :othercount="['pendingmembersother']" indent />
           <ModMenuItemLeft link="/modtools/members/approved" name="Approved" indent />
           <ModMenuItemLeft link="/modtools/members/review" name="Member Review" :count="['spammembers']" :othercount="['spammembersother']" indent />
           <ModMenuItemLeft link="/modtools/chats/review" name="Chat Review" :count="['chatreview']" :othercount="['chatreviewother']" indent />
@@ -215,6 +214,8 @@ export default {
     this.$store.dispatch('modconfigs/fetch', {
       all: true
     })
+
+    setTimeout(this.updateFavicon, 1000)
   },
   beforeDestroy() {
     if (this.workTimer) {
@@ -222,6 +223,24 @@ export default {
     }
   },
   methods: {
+    updateFavicon() {
+      if (process.client) {
+        // This is a bit of a hack, but seems necessary to make the favicon stick.
+        //
+        // Check if it's ok first, as otherwise we keep fetching the icon.
+        let link = document.querySelector("link[rel*='icon']")
+
+        if (!link) {
+          link = document.createElement('link')
+          link.type = 'image/x-icon'
+          link.rel = 'icon'
+          link.href = require('~/static/icon_modtools.png')
+          document.getElementsByTagName('head')[0].appendChild(link)
+        } else if (link.href.indexOf('icon_modtools.png') === -1) {
+          link.href = require('~/static/icon_modtools.png')
+        }
+      }
+    },
     async logOut() {
       // Remove all cookies, both client and server.  This seems to be necessary to kill off the PHPSESSID cookie
       // on the server, which would otherwise keep us logged in despite our efforts.
