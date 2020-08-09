@@ -11,7 +11,9 @@
           <p>
             Freegle has artwork for banners that you can print (either yourselves or professionally) to promote Freegle
             at events, at HWRCs or anywhere else!  If you would like the artwork personalised for your council,
-            please email <a href="mailto:media@ilovefreegle.org">media@ilovefreegle.org</a>.
+            please email <ExternalLink href="mailto:media@ilovefreegle.org">
+              media@ilovefreegle.org
+            </ExternalLink>.
           </p>
           <h3>Landscape banner</h3>
           <p>
@@ -37,9 +39,10 @@
 import CouncilsContent from '../../components/CouncilsContent'
 import buildHead from '@/mixins/buildHead.js'
 import sectionScroll from '@/mixins/sectionScroll.js'
+const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
-  components: { CouncilsContent },
+  components: { CouncilsContent, ExternalLink },
   mixins: [buildHead, sectionScroll],
   head() {
     return this.buildHead(

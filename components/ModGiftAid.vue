@@ -6,7 +6,7 @@
           <b-input v-model="giftaid.fullname" :class="{ 'border-danger': nameInvalid }" />
           <div v-if="email">
             <!-- eslint-disable-next-line -->
-            <a :href="'mailto:' + email + '?subject=A question about your Gift Aid declaration'"><v-icon name="envelope" />&nbsp;{{ email }}</a>
+            <ExternalLink :href="'mailto:' + email + '?subject=A question about your Gift Aid declaration'"><v-icon name="envelope" />&nbsp;{{ email }}</ExternalLink>
           </div>
           <span class="small text-muted">
             {{ giftaid.timestamp | timeago }}
@@ -34,9 +34,10 @@
 </template>
 <script>
 import SpinButton from './SpinButton'
+const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
-  components: { SpinButton },
+  components: { SpinButton, ExternalLink },
   props: {
     giftaid: {
       type: Object,

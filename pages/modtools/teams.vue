@@ -21,7 +21,9 @@
         </NoticeMessage>
         <p>{{ team.description }}</p>
         <p v-if="team.email">
-          Contact email: <a :href="'mailto:' + team.email">{{ team.email }}</a>
+          Contact email: <ExternalLink :href="'mailto:' + team.email">
+            {{ team.email }}
+          </ExternalLink>
         </p>
         <ModTeamMember v-for="member in team.members" :key="'member-' + member.id" :member="member" />
       </div>
@@ -32,6 +34,7 @@
 <script>
 import ModTeamMember from '../../components/ModTeamMember'
 import NoticeMessage from '../../components/NoticeMessage'
+const ExternalLink = () => import('~/components/ExternalLink')
 
 // TODO MT POSTLAUNCH Add/delete team members and teams.
 
@@ -39,7 +42,8 @@ export default {
   layout: 'modtools',
   components: {
     NoticeMessage,
-    ModTeamMember
+    ModTeamMember,
+    ExternalLink
   },
   data: function() {
     return {

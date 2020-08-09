@@ -28,7 +28,9 @@
           The app is only available in the UK app stores. We support Android 5/iOS 10 or later.
         </p>
         <p>
-          Please report any issues to <a href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</a>.
+          Please report any issues to <ExternalLink href="mailto:support@ilovefreegle.org">
+            support@ilovefreegle.org
+          </ExternalLink>.
         </p>
       </div>
     </b-col>
@@ -36,8 +38,10 @@
 </template>
 <script>
 import buildHead from '@/mixins/buildHead.js'
+const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
+  components: { ExternalLink },
   mixins: [buildHead],
   head() {
     return this.buildHead(

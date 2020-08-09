@@ -265,7 +265,9 @@
       <p>
         <b>Loading...</b>
         <br>
-        Stuck here? <a href="mailto:support@ilovefreegle.org">Contact us</a>
+        Stuck here? <ExternalLink href="mailto:support@ilovefreegle.org">
+          Contact us
+        </ExternalLink>
         <br>Try refreshing.  Or Chrome.
       </p>
     </div>
@@ -284,6 +286,7 @@ const ChatPopups = () => import('~/components/ChatPopups')
 const Notification = () => import('~/components/Notification')
 const NchanSubscriber = require('nchan')
 const InfiniteLoading = () => import('vue-infinite-loading')
+const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
   components: {
@@ -294,7 +297,8 @@ export default {
     AboutMeModal,
     LoginModal,
     LocalStorageMonitor,
-    BouncingEmail
+    BouncingEmail,
+    ExternalLink
   },
 
   data: function() {

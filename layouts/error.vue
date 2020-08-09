@@ -22,14 +22,18 @@
         </nuxt-link> to go back to the home page
       </p>
       <p>
-        Having problems? <a href="mailto:support@ilovefreegle.org">Contact us</a>
+        Having problems? <ExternalLink href="mailto:support@ilovefreegle.org">
+          Contact us
+        </ExternalLink>
       </p>
     </div>
   </div>
 </template>
 
 <script>
+const ExternalLink = () => import('~/components/ExternalLink')
 export default {
+  components: { ExternalLink },
   props: {
     error: {
       type: Object,

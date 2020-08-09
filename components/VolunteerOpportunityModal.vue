@@ -100,7 +100,9 @@
               Contact email
             </b-col>
             <b-col cols="8" md="9">
-              <a :href="'mailto:' + volunteering.contactemail">{{ volunteering.contactemail }}</a>
+              <ExternalLink :href="'mailto:' + volunteering.contactemail">
+                {{ volunteering.contactemail }}
+              </ExternalLink>
             </b-col>
           </b-row>
           <b-row v-if="volunteering.contacturl">
@@ -371,6 +373,7 @@ const OurFilePond = () => import('~/components/OurFilePond')
 const StartEndCollection = () => import('~/components/StartEndCollection')
 const NoticeMessage = () => import('~/components/NoticeMessage')
 const DonationButton = () => import('~/components/DonationButton')
+const ExternalLink = () => import('~/components/ExternalLink')
 
 function initialVolunteering() {
   return {
@@ -432,7 +435,8 @@ export default {
     OurFilePond,
     StartEndCollection,
     NoticeMessage,
-    DonationButton
+    DonationButton,
+    ExternalLink
   },
   mixins: [validationMixin, validationHelpers],
   props: {

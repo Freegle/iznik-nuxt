@@ -19,9 +19,13 @@
 
           <p>
             If there is anything that you would like and can’t find it here, please just ask. For general enquiries
-            please email <a href="mailto:councils@ilovefreegle.org">councils@ilovefreegle.org</a>.
+            please email <ExternalLink href="mailto:councils@ilovefreegle.org">
+              councils@ilovefreegle.org
+            </ExternalLink>.
             For enquiries relating to graphics and logos please email
-            <a href="mailto:media@ilovefreegle.org">media@ilovefreegle.org</a>.
+            <ExternalLink href="mailto:media@ilovefreegle.org">
+              media@ilovefreegle.org
+            </ExternalLink>.
           </p>
         </b-card-text>
       </b-card>
@@ -32,10 +36,12 @@
 <script>
 import buildHead from '@/mixins/buildHead.js'
 const CouncilsContent = () => import('~/components/CouncilsContent')
+const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
   components: {
-    CouncilsContent
+    CouncilsContent,
+    ExternalLink
   },
   mixins: [buildHead],
   head() {
