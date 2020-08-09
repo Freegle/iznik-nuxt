@@ -4,8 +4,8 @@ branches:
   only: app
 env:
   global:
-  - ANDROID_API_LEVEL=29
-  - ANDROID_BUILD_TOOLS_VERSION=29.0.2
+  - ANDROID_API_LEVEL=28
+  - ANDROID_BUILD_TOOLS_VERSION=28.0.3
   - TERM=dumb
   # gitusername
   - secure: tAFeuO4fqT+S+Vv+TcdXk4LRlcbsDEZbkShzxnzw3b0QFgQyaotzzQrDaW9S6KPO8knGy7RQoHEavS7wXSgis5h/fRnNiLWo3MoykdKvjx0TwTt7yTaDbgvI2H/xo8zE6DFU8jqH4KVwBq5LFikUJd0hx7uqw86IrR9kYj5R563UZqEacfsR5BWrYWqX5WwZInMnCY6SesKyL3q6F60D6z6Blwdq0evsj05oHWfxmZeSbzboOUg/Is6IBtUGMQRrWGsAdR4x73SiZ9APDfIB4C7oeput+GfOZPjTDoDt8defL6+IyLhw7kqcgQUhA9Lu+Ke2H/0KgHqBk7W1WDeh36s3DIv7MwkhQU+3ks1jdbs0dFWVmdm/yF+GCWy/sEdtFEzCfBh0o0kKfujauJx+T0A/GugaHlTN2fhFXvJ0XHrkoNjsQnNlzWyz/2gmiHLpK9ASFovrrNioq2achgisOlym3Kq10CdaGkfYNN8jHzzXaWVaS00ugMPIcAE4KbQmwav0AN+C9DwplO/yan4bai7/y5roYGRsR8z/MiZJAXH40bFGl8oI0Xl+1zTURR1J0/qKp8DJgZG8XLFWAWfoZOWouvZDNQqHWQU6JLWQgL5GFdhI0PcYZD7OSUEwAzbg19Ko4Lj+S3DhoJCpqP4/7tAmkd8FofCAmdAKXyToa7c=
@@ -46,7 +46,8 @@ before_install:
 - tar xvf mobile/app-secrets.tar
 #- keytool -exportcert -list -v -keystore android-chrisphdcccom.new.keystore -storepass "$storepass"
 - nvm install $nodejs_version
-- npm install -g cordova
+- npm install -g cordova@9.0.0
+- cordova -v
 - node --version
 - npm --version
 - gradle --version
@@ -72,7 +73,7 @@ script:
 - cp ../iznik-nuxt/google-services.json google-services.json
 - ln -s ../iznik-nuxt/dist www
 - cordova platform rm android
-- cordova platform add android
+- cordova platform add android@8.1.0
 # Build debug build
 - cordova build --debug -- --keystore="../iznik-nuxt/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
 - cp platforms/android/app/build/outputs/apk/debug/app-debug.apk ../iznik-nuxt/releases/Freegle-android-app-$MOBILE_VERSION-debug-$(date +'%Y%m%d%H%M%S').apk
@@ -102,7 +103,7 @@ script:
 - cp ../iznik-nuxt/google-services.json google-services.json
 - ln -s ../iznik-nuxt/dist www
 - cordova platform rm android
-- cordova platform add android
+- cordova platform add android@8.1.0
 # Build debug build
 - cordova build --debug -- --keystore="../iznik-nuxt/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
 - cp platforms/android/app/build/outputs/apk/debug/app-debug.apk ../iznik-nuxt/releases/ModTools-android-app-$MODTOOLS_VERSION-debug-$(date +'%Y%m%d%H%M%S').apk
