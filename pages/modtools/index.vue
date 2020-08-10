@@ -2,7 +2,9 @@
   <div v-if="me">
     <h2>Hello, {{ me.displayname }}</h2>
     <p>Here's your dashboard, where you can see what your communities have been doing recently.</p>
-    <p>Need temporary help moderating?  Mail <a href="mailto:mentors@ilovefreegle.org">mentors@ilovefreegle.org</a>.</p>
+    <p>
+      Need temporary help moderating?  Mail <ExternalLink href="mailto:mentors@ilovefreegle.org">mentors@ilovefreegle.org</ExternalLink>.
+    </p>
     <ModMissingFacebook />
     <ModMissingTwitter class="mt-1" />
     <ModMissingProfile class="mt-1" />
@@ -112,6 +114,7 @@ import ModMissingProfile from '../../components/ModMissingProfile'
 import ActivityGraph from '../../components/ActivityGraph'
 import ModDashboardImpact from '../../components/ModDashboardImpact'
 import lazyLoadComponent from '@/utils/lazy-load-component'
+const ExternalLink = () => import('~/components/ExternalLink')
 
 // We lazy load these components below, but by importing them here it means they can render their own
 // loading indicators rather than using the lazyload text.
@@ -156,7 +159,8 @@ export default {
         import('@/components/ModDashboardFreeglersPosting.vue'),
       loading: ModDashboardSkeleton
     }),
-    DatePicker
+    DatePicker,
+    ExternalLink
   },
   layout: 'modtools',
   mixins: [loginRequired],

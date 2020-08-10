@@ -8,7 +8,7 @@
     </b-col>
     <b-col cols="12" md="3" class="order-5 order-md-3">
       <Clipboard class="mr-3" :value="volunteer.email" />
-      <a :href="'mailto:' + volunteer.email">{{ volunteer.email }}</a>
+      <ExternalLink :href="'mailto:' + volunteer.email">{{ volunteer.email }}</ExternalLink>
     </b-col>
     <b-col cols="4" md="2" class="order-2 order-md-4">
       <ModRole :userid="volunteer.userid" :groupid="groupid" :role="volunteer.role" />
@@ -23,8 +23,9 @@
 <script>
 import ModRole from './ModRole'
 import Clipboard from './Clipboard'
+const ExternalLink = () => import('~/components/ExternalLink')
 export default {
-  components: { Clipboard, ModRole },
+  components: { Clipboard, ModRole, ExternalLink },
   props: {
     volunteer: {
       type: Object,

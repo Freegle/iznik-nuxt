@@ -215,7 +215,7 @@
                     </li>
                   </ul>
                   <p>
-                    You can reach us at <a href="mailto:volunteers@ilovefreegle.org">volunteers@ilovefreegle.org</a>.
+                    You can reach us at <ExternalLink href="mailto:volunteers@ilovefreegle.org">volunteers@ilovefreegle.org</ExternalLink>.
                   </p>
                   <p>
                     Or if you'd like to donate to our charity, you can do that <nuxt-link to="/donate">
@@ -432,17 +432,17 @@
           <p>But you can also contact:</p>
           <ul>
             <li>
-              Our support volunteers at <a href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</a>. They
+              Our support volunteers at <ExternalLink href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</ExternalLink>. They
               deal with questions about this site, or problems with freegling where your local community volunteers can't help.
             </li>
             <li>
-              Our national mailbox volunteers at <a href="mailto:info@ilovefreegle.org">info@ilovefreegle.org</a>. They
+              Our national mailbox volunteers at <ExternalLink href="mailto:info@ilovefreegle.org">info@ilovefreegle.org</ExternalLink>. They
               deal with more general questions about Freegle which aren't specific to one community, or if you have issues you can't resolve
               with your local team.   Please be aware that we have very limited powers.  Local groups are autonomous, but we can help
               negotiate, explain and make suggestions where appropriate.
             </li>
             <li>
-              Our media volunteers at <a href="mailto:media@ilovefreegle.org">media@ilovefreegle.org</a>. Please use this if
+              Our media volunteers at <ExternalLink href="mailto:media@ilovefreegle.org">media@ilovefreegle.org</ExternalLink>. Please use this if
               you are a member of the media and want to help publicise Freegle.  For urgent press enquiries only, call +44 (0)7962 449573.
             </li>
           </ul>

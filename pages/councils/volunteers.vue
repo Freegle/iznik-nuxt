@@ -22,7 +22,7 @@
             You can find their contact details on <nuxt-link to="/explore">
               your local group pages
             </nuxt-link>, or email
-            <a href="mailto:councils@ilovefreegle.org">councils@ilovefreegle.org</a> and we can provide you with them.
+            <ExternalLink href="mailto:councils@ilovefreegle.org">councils@ilovefreegle.org</ExternalLink> and we can provide you with them.
           </p>
         </b-card-text>
       </b-card>
@@ -35,9 +35,10 @@
 <script>
 import CouncilsContent from '../../components/CouncilsContent'
 import buildHead from '@/mixins/buildHead.js'
+const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
-  components: { CouncilsContent },
+  components: { CouncilsContent, ExternalLink },
   mixins: [buildHead],
   head() {
     return this.buildHead(
