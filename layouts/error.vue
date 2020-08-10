@@ -22,9 +22,7 @@
         </nuxt-link> to go back to the home page
       </p>
       <p>
-        Having problems? <ExternalLink href="mailto:support@ilovefreegle.org">
-          Contact us
-        </ExternalLink>
+        Having problems? <ExternalLink href="mailto:support@ilovefreegle.org">Contact us</ExternalLink>
       </p>
     </div>
   </div>

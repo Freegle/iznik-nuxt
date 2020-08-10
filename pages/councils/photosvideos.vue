@@ -35,18 +35,14 @@
             <LazyYoutubeVideo src="https://www.youtube.com/embed/Gw_wpkbNQY8" />
           </client-only>
           <p>
-            We can provide the video source files <ExternalLink href="mailto:councils@ilovefreegle.org">
-              on request
-            </ExternalLink>.
+            We can provide the video source files <ExternalLink href="mailto:councils@ilovefreegle.org">on request</ExternalLink>.
             If you modify the video, then please preserve the
             Commoners Choir and Saucy Horse credits from the frame at the end of the video.
           </p>
           <p>
             Cumbria County Council made these videos which they are happy to share.  You can add your own logo and use
             them free of charge as long as Cumbria County Council are referenced.  Please
-            email <ExternalLink href="mailto:councils@ilovefreegle.org">
-              councils@ilovefreegle.org
-            </ExternalLink> and we
+            email <ExternalLink href="mailto:councils@ilovefreegle.org">councils@ilovefreegle.org</ExternalLink> and we
             can help you arrange this.
           </p>
           <ul>

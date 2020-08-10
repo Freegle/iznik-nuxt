@@ -265,9 +265,7 @@
       <p>
         <b>Loading...</b>
         <br>
-        Stuck here? <ExternalLink href="mailto:support@ilovefreegle.org">
-          Contact us
-        </ExternalLink>
+        Stuck here? <ExternalLink href="mailto:support@ilovefreegle.org">Contact us</ExternalLink>
         <br>Try refreshing.  Or Chrome.
       </p>
     </div>

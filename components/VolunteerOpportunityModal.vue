@@ -100,9 +100,7 @@
               Contact email
             </b-col>
             <b-col cols="8" md="9">
-              <ExternalLink :href="'mailto:' + volunteering.contactemail">
-                {{ volunteering.contactemail }}
-              </ExternalLink>
+              <ExternalLink :href="'mailto:' + volunteering.contactemail">{{ volunteering.contactemail }}</ExternalLink>
             </b-col>
           </b-row>
           <b-row v-if="volunteering.contacturl">

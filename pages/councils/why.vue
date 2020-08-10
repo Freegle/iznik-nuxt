@@ -122,9 +122,7 @@
             We are trying to find out if and how councils across the UK use Freegle data to measure waste diversion
             and support their waste minimisation campaigns. Please get in touch to let us know if you use our
             data and if not, how we could make it more useful for you at
-            <ExternalLink href="mailto:councils@ilovefreegle.org">
-              councils@ilovefreegle.org
-            </ExternalLink>.
+            <ExternalLink href="mailto:councils@ilovefreegle.org">councils@ilovefreegle.org</ExternalLink>.
           </p>
         </b-card-text>
       </b-card>

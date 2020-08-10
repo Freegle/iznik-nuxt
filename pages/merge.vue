@@ -7,9 +7,7 @@
           <p>That request isn't valid.  Perhaps you've already merged?  Or maybe clicked on the wrong link.</p>
           <p>
             If you continue to have problems, please contact our support volunteers at
-            <ExternalLink href="mailto:support@ilovefreegle.org">
-              support@ilovefreegle.org
-            </ExternalLink>
+            <ExternalLink href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</ExternalLink>
           </p>
         </NoticeMessage>
         <div v-else-if="merge">
@@ -85,9 +83,7 @@
             <hr>
             <p>
               If you have problems or questions, please contact our support volunteers at
-              <ExternalLink href="mailto:geeks@ilovefreegle.org">
-                geeks@ilovefreegle.org
-              </ExternalLink>
+              <ExternalLink href="mailto:geeks@ilovefreegle.org">geeks@ilovefreegle.org</ExternalLink>
             </p>
           </div>
         </div>

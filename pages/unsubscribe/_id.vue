@@ -30,9 +30,7 @@
             </div>
           </div>
           <p>
-            If you need help, please mail <ExternalLink href="mailto:support@ilovefreegle.org">
-              our Support Volunteers
-            </ExternalLink>.
+            If you need help, please mail <ExternalLink href="mailto:support@ilovefreegle.org">our Support Volunteers</ExternalLink>.
           </p>
         </div>
         <div v-else>
@@ -52,9 +50,7 @@
           </NoticeMessage>
           <NoticeMessage v-else-if="emailProblem" variant="warning" class="mt-2 mb-2">
             We don't recognise that email address.  Please email
-            <ExternalLink href="mailto:support@ilovefreegle.org">
-              support@ilovefreegle.org
-            </ExternalLink> and they'll help you out.
+            <ExternalLink href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</ExternalLink> and they'll help you out.
           </NoticeMessage>
         </div>
       </b-col>

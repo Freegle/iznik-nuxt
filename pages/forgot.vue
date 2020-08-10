@@ -34,9 +34,7 @@
           label="Mail login link"
         />
         <p>
-          If you have trouble, you can also contact <ExternalLink href="mailto:support@ilovefreegle.org">
-            support@ilovefreegle.org
-          </ExternalLink>.
+          If you have trouble, you can also contact <ExternalLink href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</ExternalLink>.
         </p>
       </b-col>
       <b-col cols="0" md="3" />

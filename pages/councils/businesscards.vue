@@ -15,9 +15,7 @@
           </p>
           <p>
             A generic Freegle business card graphic is available but If you want another size or a specific
-            design for your council, just email <ExternalLink href="mailto:media@ilovefreegle.org">
-              media@ilovefreegle.org
-            </ExternalLink>.
+            design for your council, just email <ExternalLink href="mailto:media@ilovefreegle.org">media@ilovefreegle.org</ExternalLink>.
           </p>
           <p>Click to download:</p>
           <ul>

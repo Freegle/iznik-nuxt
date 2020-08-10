@@ -11,9 +11,7 @@
           <p>
             Freegle has artwork for banners that you can print (either yourselves or professionally) to promote Freegle
             at events, at HWRCs or anywhere else!  If you would like the artwork personalised for your council,
-            please email <ExternalLink href="mailto:media@ilovefreegle.org">
-              media@ilovefreegle.org
-            </ExternalLink>.
+            please email <ExternalLink href="mailto:media@ilovefreegle.org">media@ilovefreegle.org</ExternalLink>.
           </p>
           <h3>Landscape banner</h3>
           <p>

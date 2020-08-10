@@ -21,9 +21,7 @@
         </NoticeMessage>
         <p>{{ team.description }}</p>
         <p v-if="team.email">
-          Contact email: <ExternalLink :href="'mailto:' + team.email">
-            {{ team.email }}
-          </ExternalLink>
+          Contact email: <ExternalLink :href="'mailto:' + team.email">{{ team.email }}</ExternalLink>
         </p>
         <ModTeamMember v-for="member in team.members" :key="'member-' + member.id" :member="member" />
       </div>

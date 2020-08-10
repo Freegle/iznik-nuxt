@@ -215,9 +215,7 @@
             you can either set one up yourself <nuxt to="/shortlinks">
               here
             </nuxt> or ask us to help
-            <ExternalLink href="mailto:councils@ilovefreegle.org">
-              councils@ilovefreegle.org
-            </ExternalLink>.
+            <ExternalLink href="mailto:councils@ilovefreegle.org">councils@ilovefreegle.org</ExternalLink>.
           </p>
         </b-card-text>
       </b-card>

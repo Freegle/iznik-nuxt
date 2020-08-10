@@ -9,9 +9,7 @@
       <b-row>
         <b-col>
           <p>
-            Please contact <ExternalLink href="mailto:support@ilovefreegle.org">
-              support@ilovefreegle.org
-            </ExternalLink> if you need further help.
+            Please contact <ExternalLink href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</ExternalLink> if you need further help.
           </p>
         </b-col>
       </b-row>

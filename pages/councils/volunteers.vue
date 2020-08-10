@@ -22,9 +22,7 @@
             You can find their contact details on <nuxt-link to="/explore">
               your local group pages
             </nuxt-link>, or email
-            <ExternalLink href="mailto:councils@ilovefreegle.org">
-              councils@ilovefreegle.org
-            </ExternalLink> and we can provide you with them.
+            <ExternalLink href="mailto:councils@ilovefreegle.org">councils@ilovefreegle.org</ExternalLink> and we can provide you with them.
           </p>
         </b-card-text>
       </b-card>

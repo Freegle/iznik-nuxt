@@ -22,15 +22,11 @@
           <b-card-body>
             <p>Here's how your members can reach you by email:</p>
             <p>
-              <ExternalLink :href="'mailto:' + group.modsemail">
-                {{ group.modsemail }}
-              </ExternalLink>
+              <ExternalLink :href="'mailto:' + group.modsemail">{{ group.modsemail }}</ExternalLink>
             </p>
             <p>Members can post by email.  Please only use this for members who really need it:</p>
             <p>
-              <ExternalLink :href="'mailto:' + group.groupemail">
-                {{ group.groupemail }}
-              </ExternalLink>
+              <ExternalLink :href="'mailto:' + group.groupemail">{{ group.groupemail }}</ExternalLink>
             </p>
             <p v-if="!Object.values(shortlinks).length">
               Your community has no shortlinks at the moment.

@@ -11,9 +11,7 @@
           <p>
             We have a full range of graphics, logos and badges available for you to use.  We can also personalise and
             customise these for you for free – please just ask
-            <ExternalLink href="mailto:media@ilovefreegle.org">
-              media@ilovefreegle.org
-            </ExternalLink>.
+            <ExternalLink href="mailto:media@ilovefreegle.org">media@ilovefreegle.org</ExternalLink>.
           </p>
           <a id="guidelines" class="anchor" />
           <h3>Guidelines for using the Freegle logo</h3>
@@ -26,9 +24,7 @@
             Pantone 368. For CMYK use Cyan 55% Magenta 0% Yellow 97% Key 0%.
           </p>
           <p>
-            You can also ask <ExternalLink href="mailto:media@ilovefreegle.org">
-              media@ilovefreegle.org
-            </ExternalLink> for a customised logo for your group.
+            You can also ask <ExternalLink href="mailto:media@ilovefreegle.org">media@ilovefreegle.org</ExternalLink> for a customised logo for your group.
           </p>
           <a id="graphics" class="anchor" />
           <h3>Graphics</h3>
@@ -37,9 +33,7 @@
             <a href="https://twitter.com/thisisfreegle" target="_blank">@ThisIsFreegle</a> on Twitter and
             <a href="https://www.facebook.com/Freegle" target="_blank">Freegle</a> on Facebook -
             we create all the 'Freegle' graphics you see there and they are free to reuse.
-            If you would like any graphics customised, please contact <ExternalLink href="mailto:media@ilovefreegle.org">
-              media@ilovefreegle.org
-            </ExternalLink>.
+            If you would like any graphics customised, please contact <ExternalLink href="mailto:media@ilovefreegle.org">media@ilovefreegle.org</ExternalLink>.
           </p>
           <a id="logos" class="anchor" />
           <h3>
@@ -53,9 +47,7 @@
             <li>
               <a href="/user_logo_vector.svg" target="_blank">Vector graphics logo</a>.
               This is a vector graphics version which can be resized as required without loss of quality. If you are unable to resize this
-              yourself, we can do this for you, please just ask the <ExternalLink href="mailto:media@ilovefreegle.org">
-                media@ilovefreegle.org
-              </ExternalLink>.
+              yourself, we can do this for you, please just ask the <ExternalLink href="mailto:media@ilovefreegle.org">media@ilovefreegle.org</ExternalLink>.
             </li>
           </ul>
           </p>

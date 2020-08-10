@@ -59,15 +59,11 @@
       <br>
       <Clipboard class="mr-3 mb-1" :value="group.modsemail" />
       Volunteers email:
-      <ExternalLink :href="'mailto:' + group.modsemail">
-        {{ group.modsemail }}
-      </ExternalLink>
+      <ExternalLink :href="'mailto:' + group.modsemail">{{ group.modsemail }}</ExternalLink>
       <br>
       <Clipboard class="mr-3 mb-1" :value="group.groupemail" />
       Posting address:
-      <ExternalLink :href="'mailto:' + group.groupemail">
-        {{ group.groupemail }}
-      </ExternalLink>
+      <ExternalLink :href="'mailto:' + group.groupemail">{{ group.groupemail }}</ExternalLink>
       <br>
       <Clipboard v-if="group.twitter" class="mr-3 mb-1" :value="'https://twitter.com/' + group.twitter.name" />
       Twitter:
