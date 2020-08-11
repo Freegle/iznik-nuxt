@@ -100,14 +100,10 @@
                   </div>
                   <br v-else>
                   <span v-if="!g.external" class="text-muted">
-                    <a :href="'mailto:' + g.modsmail">
-                      <v-icon name="envelope" title="Contact volunteers" />
-                    </a>
+                    <ExternalLink :href="'mailto:' + g.modsmail"><v-icon name="envelope" title="Contact volunteers" /></ExternalLink>
                   </span>
                   <span v-else-if="g.contactmail">
-                    <a :href="'mailto:' + g.contactmail">
-                      <v-icon name="envelope" title="Contact volunteers" />
-                    </a>
+                    <ExternalLink :href="'mailto:' + g.contactmail"><v-icon name="envelope" title="Contact volunteers" /></ExternalLink>
                   </span>
                 </div>
               </div>
@@ -125,7 +121,7 @@
           </b-card-body>
         </b-card>
         <p class="text-center mt-2 header--size5 community__heading community__text">
-          If there's no community for your area, would you like to start one? <a href="mailto:newgroups@ilovefreegle.org">Mail us!</a>
+          If there's no community for your area, would you like to start one? <ExternalLink href="mailto:newgroups@ilovefreegle.org">Mail us!</ExternalLink>
         </p>
         <p class="text-center">
           You can also look at our <nuxt-link to="/livemap">

@@ -30,7 +30,7 @@
             </div>
           </div>
           <p>
-            If you need help, please mail <a href="mailto:support@ilovefreegle.org">our Support Volunteers</a>.
+            If you need help, please mail <ExternalLink href="mailto:support@ilovefreegle.org">our Support Volunteers</ExternalLink>.
           </p>
         </div>
         <div v-else>
@@ -50,7 +50,7 @@
           </NoticeMessage>
           <NoticeMessage v-else-if="emailProblem" variant="warning" class="mt-2 mb-2">
             We don't recognise that email address.  Please email
-            <a href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</a> and they'll help you out.
+            <ExternalLink href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</ExternalLink> and they'll help you out.
           </NoticeMessage>
         </div>
       </b-col>
@@ -78,6 +78,7 @@ import validationHelpers from '@/mixins/validationHelpers'
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect.vue')
 const ConfirmModal = () => import('~/components/ConfirmModal.vue')
 const NoticeMessage = () => import('~/components/NoticeMessage')
+const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
   components: {
@@ -87,7 +88,8 @@ export default {
     ForgetFailModal,
     GroupRememberSelect,
     ConfirmModal,
-    NoticeMessage
+    NoticeMessage,
+    ExternalLink
   },
   mixins: [loginOptional, buildHead, validationMixin, validationHelpers],
   data() {

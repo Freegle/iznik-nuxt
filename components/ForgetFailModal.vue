@@ -8,7 +8,9 @@
     <template slot="default">
       <b-row>
         <b-col>
-          <p>Please contact <a href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</a> if you need further help.</p>
+          <p>
+            Please contact <ExternalLink href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</ExternalLink> if you need further help.
+          </p>
         </b-col>
       </b-row>
     </template>
@@ -20,7 +22,9 @@
   </b-modal>
 </template>
 <script>
+const ExternalLink = () => import('~/components/ExternalLink')
 export default {
+  components: { ExternalLink },
   data: function() {
     return {
       showModal: false

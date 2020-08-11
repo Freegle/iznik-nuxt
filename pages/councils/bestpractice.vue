@@ -11,7 +11,7 @@
           <p>
             If you have PR Materials, good stories or a report of a successful promotion you would be happy to share
             with other councils, please email
-            <a href="mailto:councils@ilovefreegle.org">councils@ilovefreegle.org</a>.
+            <ExternalLink href="mailto:councils@ilovefreegle.org">councils@ilovefreegle.org</ExternalLink>.
             We’d love to hear from you and could even turn your good work into a case study.
           </p>
         </b-card-text>
@@ -26,9 +26,10 @@
 import CouncilsContent from '../../components/CouncilsContent'
 import buildHead from '@/mixins/buildHead.js'
 import sectionScroll from '@/mixins/sectionScroll.js'
+const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
-  components: { CouncilsContent },
+  components: { CouncilsContent, ExternalLink },
   mixins: [buildHead, sectionScroll],
   head() {
     return this.buildHead(
