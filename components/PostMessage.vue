@@ -81,6 +81,14 @@
             <nuxt-link to="/find/search">here</nuxt-link>.
           </p>
         </NoticeMessage>
+        <NoticeMessage v-if="warn" variant="warning" class="mt-1">
+          <h1 class="header--size3">
+            <v-icon name="info-circle" scale="1.75" /> {{ warn.type }}
+          </h1>
+          <p>
+            {{ warn.message }}
+          </p>
+        </NoticeMessage>
       </b-col>
     </b-row>
     <b-row>
@@ -140,6 +148,46 @@ export default {
         'items',
         'browsing',
         'browse'
+      ],
+      warnings: [
+        {
+          type: 'Upholstered household items and furniture',
+          message:
+            'There is no requirement for freegled items to have fire labels, but please be honest in your description or make sure you don’t ask for things that aren’t suitable for your use.',
+          keywords: [
+            'sofa',
+            'sofabed',
+            'couch',
+            'settee',
+            'armchair',
+            'headboard',
+            'stool',
+            'futon',
+            'mattress',
+            'mattress',
+            'pillow',
+            'cushion',
+            'seat pad'
+          ]
+        },
+        {
+          type: 'Cot Mattress',
+          message:
+            'To be safe mattresses should be clean, dry and free from fabric tears, fit the cot snugly, with no gaps, firm and with no sagging.',
+          keywords: ['cot mattress']
+        },
+        {
+          type: 'Motorcycle and cycle helmets',
+          message:
+            'Using helmets that have been involved in a crash is not recommended.',
+          keywords: ['helmet']
+        },
+        {
+          type: 'Car seats',
+          message:
+            'These should be undamaged and suitable for the child’s weight and height, and fit securely in the vehicle.',
+          keywords: ['car seat', 'carseat', 'child car']
+        }
       ]
     }
   },
@@ -160,16 +208,32 @@ export default {
     vague() {
       let ret = false
       let item = this.item
-      console.log('Vaugue', item)
 
       if (item) {
         item = item.toLowerCase()
 
         this.vagueness.forEach(v => {
-          console.log('Compare', item, v)
           if (item.indexOf(v) !== -1) {
             ret = true
           }
+        })
+      }
+
+      return ret
+    },
+    warn() {
+      let ret = null
+      let item = this.item
+
+      if (item) {
+        item = item.toLowerCase()
+
+        this.warnings.forEach(k => {
+          k.keywords.forEach(v => {
+            if (item.indexOf(v) !== -1) {
+              ret = k
+            }
+          })
         })
       }
 
