@@ -283,6 +283,16 @@ export const actions = {
     }
   },
 
+  countWork: function(work) {
+    let total = 0
+    for (const key in work) {
+      if (typeof work[key] === 'number' && key.indexOf('other') === -1) {
+        total += work[key]
+      }
+    }
+
+    return total
+  },
   async fetchUser({ commit, store, dispatch, state }, params) {
     const lastfetch = state.userFetched
 
@@ -315,13 +325,7 @@ export const actions = {
       commit('setFetched', Date.now())
 
       // Get the current work so we can compare counts.
-      let currentTotal = 0
-
-      for (const key in state.work) {
-        if (typeof state.work[key] === 'number') {
-          currentTotal += state.work[key]
-        }
-      }
+      const currentTotal = this.countWork(state.work)
 
       const {
         me,
@@ -331,13 +335,7 @@ export const actions = {
         discourse
       } = await this.$api.session.fetch(params)
 
-      let newTotal = 0
-
-      for (const key in work) {
-        if (typeof work[key] === 'number' && key.indexOf('Spammer') === -1) {
-          newTotal += work[key]
-        }
-      }
+      const newTotal = this.countWork(work)
 
       if (
         newTotal > currentTotal &&
