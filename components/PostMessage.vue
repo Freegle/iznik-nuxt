@@ -2,14 +2,7 @@
   <div>
     <b-row class="pr-0 mb-2">
       <b-col cols="6" md="0" class="mt-2 pl-0">
-        <b-form-select v-model="type" size="lg" class="d-inline-block d-md-none">
-          <option value="Offer">
-            OFFER
-          </option>
-          <option value="Wanted">
-            WANTED
-          </option>
-        </b-form-select>
+        <b-input v-model="type" size="lg" disabled class="d-inline-block d-md-none text-uppercase bg-white" />
       </b-col>
       <b-col cols="6" md="12" class="pl-0">
         <b-btn
@@ -60,14 +53,7 @@
     </b-row>
     <b-row>
       <b-col cols="0" md="3" class="pl-0 d-none d-md-inline-block">
-        <b-form-select v-model="type" readonly>
-          <option value="Offer" :disabled="type !== 'Offer'">
-            OFFER
-          </option>
-          <option value="Wanted" :disabled="type !== 'Wanted'">
-            WANTED
-          </option>
-        </b-form-select>
+        <b-input v-model="type" disabled class="text-uppercase bg-white" />
       </b-col>
       <b-col cols="12" md="9" class="pl-0 pr-0">
         <PostItem ref="item" v-model="item" @input="itemType" />
