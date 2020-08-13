@@ -8,6 +8,7 @@
     </b-col>
     <b-col cols="12" md="3" class="order-5 order-md-3">
       <Clipboard class="mr-3" :value="volunteer.email" />
+      <!-- eslint-disable-next-line -->
       <ExternalLink :href="'mailto:' + volunteer.email">{{ volunteer.email }}</ExternalLink>
     </b-col>
     <b-col cols="4" md="2" class="order-2 order-md-4">

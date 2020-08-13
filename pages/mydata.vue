@@ -4,6 +4,7 @@
       <b-col cols="12" md="6" offset-md="3" class="bg-white">
         <h1>Fetching your data</h1>
         <b-alert v-if="error" variant="danger" show>
+          <!-- eslint-disable-next-line -->
           Something went wrong.  Please try again, and if this keeps happening then contact <ExternalLink href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</ExternalLink>.
         </b-alert>
         <div v-else>
@@ -29,6 +30,7 @@
               <p>
                 Freegle volunteers may also have some personal data, predominately in the form of email
                 correspondence about Freegle matters. If you want access to this please request this
+                <!-- eslint-disable-next-line -->
                 formally via the <ExternalLink href="mailto:DPO@ilovefreegle.org">Data Protection Officer (DPO)</ExternalLink>
                 who will organise the return of this additional information.
               </p>

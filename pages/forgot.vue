@@ -34,6 +34,7 @@
           label="Mail login link"
         />
         <p>
+          <!-- eslint-disable-next-line -->
           If you have trouble, you can also contact <ExternalLink href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</ExternalLink>.
         </p>
       </b-col>

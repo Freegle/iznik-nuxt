@@ -52,7 +52,7 @@
           :lat-lng="[item.tolat, item.tolng]"
           :icon="thanksIcon"
         />
-<!--        :options="{ zIndexOffset: 1000 }"-->
+        <!--        :options="{ zIndexOffset: 1000 }"-->
       </l-map>
     </client-only>
   </div>

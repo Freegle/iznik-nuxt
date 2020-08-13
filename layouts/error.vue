@@ -22,6 +22,7 @@
         </nuxt-link> to go back to the home page
       </p>
       <p>
+        <!-- eslint-disable-next-line -->
         Having problems? <ExternalLink href="mailto:support@ilovefreegle.org">Contact us</ExternalLink>
       </p>
     </div>

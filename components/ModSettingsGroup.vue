@@ -22,10 +22,12 @@
           <b-card-body>
             <p>Here's how your members can reach you by email:</p>
             <p>
+              <!-- eslint-disable-next-line -->
               <ExternalLink :href="'mailto:' + group.modsemail">{{ group.modsemail }}</ExternalLink>
             </p>
             <p>Members can post by email.  Please only use this for members who really need it:</p>
             <p>
+              <!-- eslint-disable-next-line -->
               <ExternalLink :href="'mailto:' + group.groupemail">{{ group.groupemail }}</ExternalLink>
             </p>
             <p v-if="!Object.values(shortlinks).length">

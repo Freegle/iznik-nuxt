@@ -265,6 +265,7 @@
       <p>
         <b>Loading...</b>
         <br>
+        <!-- eslint-disable-next-line -->
         Stuck here? <ExternalLink href="mailto:support@ilovefreegle.org">Contact us</ExternalLink>
         <br>Try refreshing.  Or Chrome.
       </p>

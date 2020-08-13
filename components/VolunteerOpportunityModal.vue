@@ -100,6 +100,7 @@
               Contact email
             </b-col>
             <b-col cols="8" md="9">
+              <!-- eslint-disable-next-line -->
               <ExternalLink :href="'mailto:' + volunteering.contactemail">{{ volunteering.contactemail }}</ExternalLink>
             </b-col>
           </b-row>

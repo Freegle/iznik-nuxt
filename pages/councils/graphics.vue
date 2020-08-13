@@ -11,6 +11,7 @@
           <p>
             We have a full range of graphics, logos and badges available for you to use.  We can also personalise and
             customise these for you for free – please just ask
+            <!-- eslint-disable-next-line -->
             <ExternalLink href="mailto:media@ilovefreegle.org">media@ilovefreegle.org</ExternalLink>.
           </p>
           <a id="guidelines" class="anchor" />
@@ -24,6 +25,7 @@
             Pantone 368. For CMYK use Cyan 55% Magenta 0% Yellow 97% Key 0%.
           </p>
           <p>
+            <!-- eslint-disable-next-line -->
             You can also ask <ExternalLink href="mailto:media@ilovefreegle.org">media@ilovefreegle.org</ExternalLink> for a customised logo for your group.
           </p>
           <a id="graphics" class="anchor" />
@@ -33,6 +35,7 @@
             <a href="https://twitter.com/thisisfreegle" target="_blank">@ThisIsFreegle</a> on Twitter and
             <a href="https://www.facebook.com/Freegle" target="_blank">Freegle</a> on Facebook -
             we create all the 'Freegle' graphics you see there and they are free to reuse.
+            <!-- eslint-disable-next-line -->
             If you would like any graphics customised, please contact <ExternalLink href="mailto:media@ilovefreegle.org">media@ilovefreegle.org</ExternalLink>.
           </p>
           <a id="logos" class="anchor" />
@@ -47,10 +50,10 @@
             <li>
               <a href="/user_logo_vector.svg" target="_blank">Vector graphics logo</a>.
               This is a vector graphics version which can be resized as required without loss of quality. If you are unable to resize this
+              <!-- eslint-disable-next-line -->
               yourself, we can do this for you, please just ask the <ExternalLink href="mailto:media@ilovefreegle.org">media@ilovefreegle.org</ExternalLink>.
             </li>
           </ul>
-          </p>
           <a id="badges" class="anchor" />
           <h3>
             Badges

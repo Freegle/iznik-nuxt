@@ -121,6 +121,7 @@
           </b-card-body>
         </b-card>
         <p class="text-center mt-2 header--size5 community__heading community__text">
+          <!-- eslint-disable-next-line -->
           If there's no community for your area, would you like to start one? <ExternalLink href="mailto:newgroups@ilovefreegle.org">Mail us!</ExternalLink>
         </p>
         <p class="text-center">

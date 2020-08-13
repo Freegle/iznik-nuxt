@@ -9,6 +9,7 @@
       <b-row>
         <b-col>
           <p>
+            <!-- eslint-disable-next-line -->
             Please contact <ExternalLink href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</ExternalLink> if you need further help.
           </p>
         </b-col>

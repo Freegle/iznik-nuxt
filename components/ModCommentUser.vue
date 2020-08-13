@@ -2,6 +2,7 @@
   <b-card bg-variant="white" no-body>
     <b-card-header class="d-flex justify-content-between flex-wrap">
       <div>
+        <!-- eslint-disable-next-line -->
         <v-icon name="envelope" /> <ExternalLink :href="'mailto:' + email">{{ email }}</ExternalLink>
       </div>
       <div>

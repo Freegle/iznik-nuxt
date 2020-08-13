@@ -30,6 +30,7 @@
             </div>
           </div>
           <p>
+            <!-- eslint-disable-next-line -->
             If you need help, please mail <ExternalLink href="mailto:support@ilovefreegle.org">our Support Volunteers</ExternalLink>.
           </p>
         </div>
@@ -50,6 +51,7 @@
           </NoticeMessage>
           <NoticeMessage v-else-if="emailProblem" variant="warning" class="mt-2 mb-2">
             We don't recognise that email address.  Please email
+            <!-- eslint-disable-next-line -->
             <ExternalLink href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</ExternalLink> and they'll help you out.
           </NoticeMessage>
         </div>

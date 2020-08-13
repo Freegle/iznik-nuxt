@@ -11,6 +11,7 @@
           <p>
             If you have PR Materials, good stories or a report of a successful promotion you would be happy to share
             with other councils, please email
+            <!-- eslint-disable-next-line -->
             <ExternalLink href="mailto:councils@ilovefreegle.org">councils@ilovefreegle.org</ExternalLink>.
             We’d love to hear from you and could even turn your good work into a case study.
           </p>

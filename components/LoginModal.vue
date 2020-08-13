@@ -31,6 +31,7 @@
       </nuxt-link> for details.  Ok?  Now come on in...
     </p>
     <p v-if="modtools" class="text-center">
+      <!-- eslint-disable-next-line -->
       Need temporary help moderating?  Mail <ExternalLink href="mailto:mentors@ilovefreegle.org">mentors@ilovefreegle.org</ExternalLink>.
     </p>
     <p v-if="loginType" class="text-center font-weight-bold">
