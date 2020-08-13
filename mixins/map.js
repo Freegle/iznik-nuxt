@@ -1,3 +1,5 @@
+import waitForRef from '../mixins/waitForRef'
+
 let Wkt = null
 
 if (process.browser) {
@@ -6,6 +8,7 @@ if (process.browser) {
 }
 
 export default {
+  mixins: [waitForRef],
   data: function() {
     return {
       lat: null,
@@ -23,11 +26,11 @@ export default {
     attribution() {
       return 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
     },
-    mapHeight() {
-      const contWidth = this.$refs.mapcont ? this.$refs.mapcont.$el.width : 0
-      return contWidth
-    },
     mapWidth() {
+      const contWidth = this.$refs.mapcont ? this.$refs.mapcont.clientWidth : 0
+      return contWidth + this.bump - this.bump
+    },
+    mapHeight() {
       let height = 0
 
       if (process.browser) {
@@ -55,6 +58,12 @@ export default {
       return ret
     }
   },
+  mounted() {
+    // We have to wait for the ref to appear and then trigger a recompute of the mapWidth property.
+    this.waitForRef('mapcont', () => {
+      this.bump++
+    })
+  },
   methods: {
     setUrl: function() {
       // Override.
@@ -62,7 +71,6 @@ export default {
     boundsChanged: function() {
       this.bounds = this.$refs.map.mapObject.getBounds()
       this.zoom = this.$refs.map.mapObject.getZoom()
-      console.log('Bounds changed', this.bounds, this.zoom)
       this.setUrl()
     },
     idle: function(map) {
@@ -97,6 +105,26 @@ export default {
       }
 
       return bounds
+    },
+    toRadian: function(degree) {
+      return (degree * Math.PI) / 180
+    },
+    getDistance: function(origin, destination) {
+      // return distance in meters
+      const lon1 = this.toRadian(origin[1])
+      const lat1 = this.toRadian(origin[0])
+      const lon2 = this.toRadian(destination[1])
+      const lat2 = this.toRadian(destination[0])
+
+      const deltaLat = lat2 - lat1
+      const deltaLon = lon2 - lon1
+
+      const a =
+        Math.pow(Math.sin(deltaLat / 2), 2) +
+        Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(deltaLon / 2), 2)
+      const c = 2 * Math.asin(Math.sqrt(a))
+      const EARTH_RADIUS = 6371
+      return c * EARTH_RADIUS * 1000
     }
   }
 }

@@ -1,6 +1,16 @@
 <template>
   <span class="ProfileImage__container">
     <b-img-lazy
+      v-if="lazy"
+      rounded="circle"
+      :thumbnail="isThumbnail"
+      :class="className"
+      :alt="altText"
+      :src="validImage"
+      @error.native="brokenProfileImage"
+    />
+    <b-img
+      v-if="!lazy"
       rounded="circle"
       :thumbnail="isThumbnail"
       :class="className"
@@ -45,6 +55,11 @@ export default {
     border: {
       type: Boolean,
       required: false
+    },
+    lazy: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
   computed: {
