@@ -9,8 +9,13 @@
   />
 </template>
 <script>
-import L from 'leaflet'
 import LMovingMarker from 'vue2-leaflet-movingmarker'
+
+let L = null
+
+if (process.browser) {
+  L = require('leaflet')
+}
 
 export default {
   components: { LMovingMarker },

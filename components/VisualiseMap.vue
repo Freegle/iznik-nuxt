@@ -28,13 +28,7 @@
           :lat="item.tolat"
           :lng="item.tolng"
           :icon="item.to.icon"
-        >
-          <l-popup
-            v-if="showThanks"
-          >
-            Thanks!
-          </l-popup>
-        </VisualiseUser>
+        />
         <div v-if="showOthers">
           <VisualiseUser
             v-for="other in item.others"
@@ -54,33 +48,36 @@
           :lng="item.fromlng"
         />
         <l-marker
-          v-if="item"
+          v-if="item && showThanks"
           :lat-lng="[item.tolat, item.tolng]"
-          :options="{ opacity: 0 }"
-        >
-          <l-popup
-            :options="{ closeButton: false, position: [15,100] }"
-          >
-            Hello!
-          </l-popup>
-        </l-marker>
+          :icon="thanksIcon"
+        />
+<!--        :options="{ zIndexOffset: 1000 }"-->
       </l-map>
     </client-only>
   </div>
 </template>
 
 <script>
-// TODO Make profile images and post image bounce on appearance.
+import Vue from 'vue'
+import VisualiseSpeech from './VisualiseSpeech'
 import map from '@/mixins/map.js'
 
 const VisualiseUser = () => import('./VisualiseUser')
 const VisualiseMessage = () => import('./VisualiseMessage')
+
+let L = null
+
+if (process.browser) {
+  L = require('leaflet')
+}
 
 export default {
   components: { VisualiseMessage, VisualiseUser },
   mixins: [map],
   data: function() {
     return {
+      context: null,
       running: true,
       index: 0,
       list: [],
@@ -110,29 +107,32 @@ export default {
     },
     item() {
       return this.list.length ? this.list[0] : null
+    },
+    thanksIcon() {
+      // Render the component off document.
+      const Mine = Vue.extend(VisualiseSpeech)
+      let re = new Mine({
+        propsData: {
+          text: 'Thanks!'
+        }
+      })
+
+      re = re.$mount().$el
+
+      return new L.DivIcon({
+        html: re.outerHTML,
+        popupAnchor: [-50, -50],
+        className: 'clear'
+      })
     }
   },
   methods: {
-    async idle(map) {
+    idle(map) {
       this.boundsChanged()
 
       if (this.running && this.bounds) {
         if (this.list.length === 0) {
-          // Get some more.
-          const ret = await this.$api.visualise.fetch({
-            swlat: this.bounds.getSouthWest().lat,
-            swlng: this.bounds.getSouthWest().lng,
-            nelat: this.bounds.getNorthEast().lat,
-            nelng: this.bounds.getNorthEast().lng
-          })
-
-          if (ret.ret === 0) {
-            console.log('Fetched more')
-            this.list = ret.list
-            this.flyToFromUser()
-          } else {
-            this.running = false
-          }
+          this.doNext()
         }
       }
     },
@@ -167,6 +167,11 @@ export default {
                     console.log('Thank')
                     this.showMessage = false
                     this.showThanks = true
+                    setTimeout(() => {
+                      console.log('Next')
+                      this.list.shift()
+                      this.doNext()
+                    }, this.delayBeforeNext)
                   }, this.delayBeforeThanks + 2000)
                 }, this.delayBeforeReturn)
               }, this.delayBeforeCollect)
@@ -211,7 +216,43 @@ export default {
       const maxlng = Math.max.apply(null, lngs) + 0.01
 
       return [[minlat, minlng], [maxlat, maxlng]]
+    },
+    async doNext() {
+      this.showFrom = false
+      this.showMessage = false
+      this.showTo = false
+      this.showOthers = false
+      this.showThanks = false
+
+      if (this.list.length === 0) {
+        // Get some more.
+        const ret = await this.$api.visualise.fetch({
+          swlat: this.bounds.getSouthWest().lat,
+          swlng: this.bounds.getSouthWest().lng,
+          nelat: this.bounds.getNorthEast().lat,
+          nelng: this.bounds.getNorthEast().lng,
+          context: this.context
+        })
+
+        if (ret.ret === 0) {
+          console.log('Fetched more')
+          this.context = ret.context
+          this.list = ret.list
+        } else {
+          this.running = false
+        }
+      }
+
+      this.flyToFromUser()
     }
   }
 }
 </script>
+<style scoped lang="scss">
+@import 'color-vars';
+
+.ourpopup {
+  color: $colour-success;
+  font-weight: bold;
+}
+</style>
