@@ -25,8 +25,9 @@ export default {
 }
 
 .wide {
+  position: relative;
   width: 200px;
   left: -80px;
-  top: -130px;
+  top: -55px;
 }
 </style>

@@ -21,6 +21,11 @@
           :lng="item.fromlng"
           :icon="item.from.icon"
         />
+        <l-marker
+          v-if="showReplies"
+          :lat-lng="[item.tolat, item.tolng]"
+          :icon="replyIcon(item.touser)"
+        />
         <VisualiseUser
           v-if="showTo"
           :id="item.to.id"
@@ -37,6 +42,14 @@
             :lat="other.lat"
             :lng="other.lng"
             :icon="other.icon"
+          />
+        </div>
+        <div v-if="showReplies">
+          <l-marker
+            v-for="other in item.others"
+            :key="'otherreply-' + other.id"
+            :lat-lng="[other.lat, other.lng]"
+            :icon="replyIcon(other.id)"
           />
         </div>
         <VisualiseMessage
@@ -82,16 +95,24 @@ export default {
       index: 0,
       list: [],
       delayBeforePost: 1000,
-      delayBeforeReply: 1000,
+      delayBeforeReply: 500,
       delayBeforeCollect: 2000,
       delayBeforeReturn: 2000,
       delayBeforeThanks: 1000,
       delayBeforeNext: 2000,
       showFrom: false,
       showMessage: false,
+      showReplies: false,
       showTo: false,
       showOthers: false,
-      showThanks: true
+      showThanks: true,
+      thanksText: ['Thanks!', 'Cheers!', 'Lovely!', 'So kind!'],
+      replyText: [
+        'Yes please!',
+        "I'd love that!",
+        'Oooh, lovely!',
+        'May I collect?'
+      ]
     }
   },
   computed: {
@@ -113,7 +134,12 @@ export default {
       const Mine = Vue.extend(VisualiseSpeech)
       let re = new Mine({
         propsData: {
-          text: 'Thanks!'
+          text: this.thanksText[
+            // Reference item.id so that we generate a different message each time.
+            Math.floor(Math.random() * this.thanksText.length) +
+              this.item.id -
+              this.item.id
+          ]
         }
       })
 
@@ -147,34 +173,45 @@ export default {
             console.log('Show message')
             this.showMessage = true
             setTimeout(() => {
-              // Show all the replies.
+              // Show all the repliers
               console.log('Show to')
               this.showTo = true
               this.showOthers = true
               setTimeout(() => {
-                // Collect - move the touser to the fromuser's location, stop showing the other replies.
-                console.log('Collect')
-                this.showOthers = false
-                this.$refs.touser.setLatLng(
-                  this.item.fromlat,
-                  this.item.fromlng
-                )
+                // Show the reply text.
+                this.showReplies = true
                 setTimeout(() => {
-                  console.log('Return')
-                  this.$refs.touser.setLatLng(this.item.tolat, this.item.tolng)
-                  this.$refs.message.setLatLng(this.item.tolat, this.item.tolng)
+                  // Collect - move the touser to the fromuser's location, stop showing the other replies.
+                  console.log('Collect')
+                  this.showOthers = false
+                  this.showReplies = false
+                  this.$refs.touser.setLatLng(
+                    this.item.fromlat,
+                    this.item.fromlng
+                  )
                   setTimeout(() => {
-                    console.log('Thank')
-                    this.showMessage = false
-                    this.showThanks = true
+                    console.log('Return')
+                    this.$refs.touser.setLatLng(
+                      this.item.tolat,
+                      this.item.tolng
+                    )
+                    this.$refs.message.setLatLng(
+                      this.item.tolat,
+                      this.item.tolng
+                    )
                     setTimeout(() => {
-                      console.log('Next')
-                      this.list.shift()
-                      this.doNext()
-                    }, this.delayBeforeNext)
-                  }, this.delayBeforeThanks + 2000)
-                }, this.delayBeforeReturn)
-              }, this.delayBeforeCollect)
+                      console.log('Thank')
+                      this.showMessage = false
+                      this.showThanks = true
+                      setTimeout(() => {
+                        console.log('Next')
+                        this.list.shift()
+                        this.doNext()
+                      }, this.delayBeforeNext)
+                    }, this.delayBeforeThanks + 2000)
+                  }, this.delayBeforeReturn)
+                }, this.delayBeforeCollect)
+              }, this.delayBeforeReply)
             }, this.delayBeforeReply)
           }, this.delayBeforePost)
           break
@@ -223,6 +260,7 @@ export default {
       this.showTo = false
       this.showOthers = false
       this.showThanks = false
+      this.showReplies = false
 
       if (this.list.length === 0) {
         // Get some more.
@@ -244,6 +282,26 @@ export default {
       }
 
       this.flyToFromUser()
+    },
+    replyIcon(id) {
+      // Render the component off document.
+      const Mine = Vue.extend(VisualiseSpeech)
+      let re = new Mine({
+        propsData: {
+          text: this.replyText[
+            // Reference id so that we generate a different message each time.
+            (id % this.replyText.length) + this.item.id - this.item.id
+          ]
+        }
+      })
+
+      re = re.$mount().$el
+
+      return new L.DivIcon({
+        html: re.outerHTML,
+        popupAnchor: [-50, -50],
+        className: 'clear'
+      })
     }
   }
 }

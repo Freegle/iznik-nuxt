@@ -79,6 +79,7 @@ export default {
   methods: {
     brokenProfileImage(event) {
       event.target.src = require('~/static/defaultprofile.png')
+      console.log('Broken brofile', event.target.src)
     }
   }
 }
