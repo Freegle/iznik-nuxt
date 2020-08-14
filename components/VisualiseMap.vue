@@ -106,12 +106,22 @@ export default {
       showTo: false,
       showOthers: false,
       showThanks: true,
-      thanksText: ['Thanks!', 'Cheers!', 'Lovely!', 'So kind!'],
+      thanksText: [
+        'Thanks!',
+        'Cheers!',
+        'Lovely!',
+        'So kind!',
+        'Ta very much!',
+        'Nice one!',
+        'Brilliant!'
+      ],
       replyText: [
         'Yes please!',
         "I'd love that!",
         'Oooh, lovely!',
-        'May I collect?'
+        'May I collect?',
+        'Me please!',
+        'Perfect!'
       ]
     }
   },
