@@ -23,7 +23,7 @@
                     <v-icon name="exclamation-triangle" scale="2" />
                   </span>
                 </h3>
-                <div v-for="group in message.groups" :key="'message-' + message.id + '-' + group.id" class="small text-muted">
+                <div v-for="group in message.groups" :key="'message-' + message.id + '-' + group.id" class="small text-muted text-wrap">
                   {{ group.arrival | timeago }} on {{ group.namedisplay }} <nuxt-link :to="'/message/' + message.id">
                     <span class="text-muted small">#{{ message.id }}</span>
                   </nuxt-link>
