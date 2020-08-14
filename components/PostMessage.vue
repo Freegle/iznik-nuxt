@@ -136,6 +136,8 @@ export default {
       suggestions: [],
       pondBrowse: true,
       vagueness: [
+        'eney fink',
+        'eney think',
         'furniture',
         'household',
         'anything',
