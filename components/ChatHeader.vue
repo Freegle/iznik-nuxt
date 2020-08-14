@@ -109,7 +109,7 @@ export default {
   @include media-breakpoint-up(sm) {
     // We want the ratings to use up all the residual space, hence the 1fr.
     grid-template-columns: max-content 1fr max-content 70px;
-    grid-template-rows: auto;
+    grid-template-rows: max-content;
   }
 }
 
