@@ -133,8 +133,6 @@ export const actions = {
     } catch (e) {
       // This happens a lot on mobile when the network is flaky.  It's not necessarily an end-user visible error,
       // so there is no point letting it ripple up to Sentry.
-      console.log('Failed to list chats')
-
       if (!params.noerror) {
         throw e
       }

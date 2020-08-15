@@ -1,56 +1,6 @@
 <template>
   <div>
-    <div v-if="pending" class="d-inline">
-      <ModMemberButton
-        v-if="spamignore && member.suspectreason"
-        :member="member"
-        variant="primary"
-        icon="check"
-        spamignore
-        label="Ignore"
-      />
-      <ModMemberButton
-        v-if="!member.heldby"
-        :member="member"
-        variant="primary"
-        icon="check"
-        approve
-        label="Approve"
-      />
-      <ModMemberButton
-        v-if="!member.heldby"
-        :member="member"
-        variant="warning"
-        icon="times"
-        reject
-        label="Reject"
-      />
-      <ModMemberButton
-        v-if="!member.heldby"
-        :member="member"
-        variant="danger"
-        icon="trash-alt"
-        delete
-        label="Delete"
-      />
-      <ModMemberButton
-        v-if="!member.heldby"
-        :member="member"
-        variant="warning"
-        icon="pause"
-        hold
-        label="Hold"
-      />
-      <ModMemberButton
-        v-if="!member.heldby"
-        :member="member"
-        variant="danger"
-        icon="ban"
-        spamreport
-        label="Spammer"
-      />
-    </div>
-    <div v-else-if="spam" class="d-inline">
+    <div v-if="spam" class="d-inline">
       <ModMemberButton
         v-if="spamignore"
         :member="member"
@@ -151,7 +101,7 @@
         label="Spammer"
       />
     </div>
-    <div v-if="!member.heldby || member.heldby.id === myid" class="d-inline">
+    <div class="d-inline">
       <ModMemberButton
         v-for="stdmsg in filtered"
         :key="stdmsg.id"
@@ -202,9 +152,6 @@ export default {
     }
   },
   computed: {
-    pending() {
-      return this.hasCollection('Pending')
-    },
     approved() {
       return this.hasCollection('Approved')
     },
@@ -213,9 +160,7 @@ export default {
     },
     validActions() {
       // The standard messages we show depend on the valid ones for this type of member.
-      if (this.pending) {
-        return ['Approve Member', 'Reject Member', 'Leave Member']
-      } else if (this.approved) {
+      if (this.approved) {
         return ['Leave Approved Member', 'Delete Approved Member']
       }
 

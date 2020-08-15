@@ -215,7 +215,8 @@
             you can either set one up yourself <nuxt to="/shortlinks">
               here
             </nuxt> or ask us to help
-            <a href="mailto:councils@ilovefreegle.org">councils@ilovefreegle.org</a>.
+            <!-- eslint-disable-next-line -->
+            <ExternalLink href="mailto:councils@ilovefreegle.org">councils@ilovefreegle.org</ExternalLink>.
           </p>
         </b-card-text>
       </b-card>
@@ -229,9 +230,10 @@
 import CouncilsContent from '../../components/CouncilsContent'
 import buildHead from '@/mixins/buildHead.js'
 import sectionScroll from '@/mixins/sectionScroll.js'
+const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
-  components: { CouncilsContent },
+  components: { CouncilsContent, ExternalLink },
   mixins: [buildHead, sectionScroll],
   head() {
     return this.buildHead(

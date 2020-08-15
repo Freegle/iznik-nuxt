@@ -143,10 +143,6 @@ export default {
         { value: null, text: '-- Approved Messages -- ' },
         { value: 'Delete Approved Message', text: 'Delete' },
         { value: 'Leave Approved Message', text: 'Reply' },
-        { value: null, text: '-- Pending Members --' },
-        { value: 'Approve Member', text: 'Approve' },
-        { value: 'Reject Member', text: 'Reject' },
-        { value: 'Leave Member', text: 'Reply' },
         { value: null, text: '-- Approved Members --' },
         { value: 'Delete Approved Member', text: 'Remove' },
         { value: 'Leave Approved Member', text: 'Reply' }

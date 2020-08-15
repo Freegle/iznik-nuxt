@@ -72,28 +72,6 @@ export const mutations = {
   },
   setContext(state, ctx) {
     state.context = ctx
-  },
-  hold(state, params) {
-    // We can't fetch a single membership, so mutate in here rather than refetch.
-    Object.keys(state.list).forEach(key => {
-      if (
-        parseInt(state.list[key].userid) === parseInt(params.userid) &&
-        parseInt(state.list[key].groupid) === parseInt(params.groupid)
-      ) {
-        state.list[key].heldby = params.me
-      }
-    })
-  },
-  release(state, params) {
-    // We can't fetch a single membership, so mutate in here rather than refetch.
-    Object.keys(state.list).forEach(key => {
-      if (
-        parseInt(state.list[key].userid) === parseInt(params.userid) &&
-        parseInt(state.list[key].groupid) === parseInt(params.groupid)
-      ) {
-        state.list[key].heldby = null
-      }
-    })
   }
 }
 
@@ -249,54 +227,6 @@ export const actions = {
     commit('setContext', null)
   },
 
-  async approve({ commit, dispatch }, params) {
-    await this.$api.memberships.approve(
-      params.id,
-      params.groupid,
-      params.subject,
-      params.stdmsgid,
-      params.body
-    )
-    commit('remove', {
-      userid: params.id
-    })
-
-    dispatch(
-      'auth/fetchUser',
-      {
-        components: ['work'],
-        force: true
-      },
-      {
-        root: true
-      }
-    )
-  },
-
-  async reject({ commit, dispatch }, params) {
-    await this.$api.memberships.reject(
-      params.id,
-      params.groupid,
-      params.subject,
-      params.stdmsgid,
-      params.body
-    )
-    commit('remove', {
-      userid: params.id
-    })
-
-    dispatch(
-      'auth/fetchUser',
-      {
-        components: ['work'],
-        force: true
-      },
-      {
-        root: true
-      }
-    )
-  },
-
   async reply({ commit }, params) {
     await this.$api.memberships.reply(
       params.id,
@@ -308,8 +238,6 @@ export const actions = {
   },
 
   async delete({ commit, dispatch }, params) {
-    // Delete pending member.
-
     await this.$api.memberships.delete(
       params.id,
       params.groupid,
@@ -453,18 +381,6 @@ export const actions = {
 
   updateComments({ commit }, params) {
     commit('updateComments', params)
-  },
-
-  async hold({ dispatch, commit, rootGetters }, params) {
-    await this.$api.memberships.hold(params.userid, params.groupid)
-    params.me = rootGetters['auth/user']
-    commit('hold', params)
-  },
-
-  async release({ dispatch, commit, rootGetters }, params) {
-    await this.$api.memberships.release(params.userid, params.groupid)
-    params.me = rootGetters['auth/user']
-    commit('release', params)
   },
 
   async happinessReviewed({ dispatch, commit, rootGetters }, params) {

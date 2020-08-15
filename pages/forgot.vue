@@ -34,7 +34,8 @@
           label="Mail login link"
         />
         <p>
-          If you have trouble, you can also contact <a href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</a>.
+          <!-- eslint-disable-next-line -->
+          If you have trouble, you can also contact <ExternalLink href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</ExternalLink>.
         </p>
       </b-col>
       <b-col cols="0" md="3" />
@@ -50,11 +51,13 @@ import SpinButton from '../components/SpinButton'
 import validationHelpers from '@/mixins/validationHelpers'
 
 import buildHead from '@/mixins/buildHead.js'
+const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
   components: {
     SpinButton,
-    EmailValidator
+    EmailValidator,
+    ExternalLink
   },
   mixins: [buildHead, validationMixin, validationHelpers],
   data() {

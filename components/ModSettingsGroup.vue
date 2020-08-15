@@ -22,11 +22,13 @@
           <b-card-body>
             <p>Here's how your members can reach you by email:</p>
             <p>
-              <a :href="'mailto:' + group.modsemail">{{ group.modsemail }}</a>
+              <!-- eslint-disable-next-line -->
+              <ExternalLink :href="'mailto:' + group.modsemail">{{ group.modsemail }}</ExternalLink>
             </p>
             <p>Members can post by email.  Please only use this for members who really need it:</p>
             <p>
-              <a :href="'mailto:' + group.groupemail">{{ group.groupemail }}</a>
+              <!-- eslint-disable-next-line -->
+              <ExternalLink :href="'mailto:' + group.groupemail">{{ group.groupemail }}</ExternalLink>
             </p>
             <p v-if="!Object.values(shortlinks).length">
               Your community has no shortlinks at the moment.
@@ -326,15 +328,6 @@
             </p>
             <ModGroupSetting
               :groupid="groupid"
-              name="settings.approvemembers"
-              label="New Member approval"
-              description="Normally members can join immediately and get freegling. Some communities prefer to approve new members manually, which gives more control but loses potential members."
-              type="toggle"
-              toggle-checked="Yes"
-              toggle-unchecked="No"
-            />
-            <ModGroupSetting
-              :groupid="groupid"
               name="settings.moderated"
               label="All Posts Moderated"
               description="When this setting is No (for most groups), all new members are Moderated and members can be changed to Group Settings (meaning unmoderated) once they have made a valid post. When this setting is Yes, all posts must be moderated no matter what setting the user has."
@@ -395,6 +388,14 @@
               type="toggle"
               toggle-checked="Yes"
               toggle-unchecked="No"
+            />
+            <ModGroupSetting
+              :groupid="groupid"
+              name="settings.spammers.replydistance"
+              label="Reply distance check?"
+              description="When members reply to messages which are this far apart, in miles, then they may be flagged for review.  Default 50, 0 to disable."
+              type="number"
+              step="5"
             />
           </b-card-body>
         </b-collapse>
@@ -503,7 +504,7 @@
                 Each postcode in a group lies within an area, which is something that a freegler would recognise as a
                 description of a rough location.  You can set these areas up here:
               </b-form-text>
-              <b-btn variant="white" :to="'/modtools/map/' + groupid">
+              <b-btn variant="secondary" :to="'/modtools/map/' + groupid">
                 <v-icon name="map-marker-alt" /> View Areas
               </b-btn>
             </b-form-group>

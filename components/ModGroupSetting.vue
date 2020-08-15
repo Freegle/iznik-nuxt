@@ -9,6 +9,18 @@
         <SpinButton variant="white" name="save" label="Save" :handler="save" :disabled="readonly" />
       </b-input-group-append>
     </b-input-group>
+    <b-input-group v-if="type === 'number'">
+      <b-input v-model="value" type="number" :step="step" />
+      <b-input-group-append>
+        <SpinButton
+          variant="white"
+          name="save"
+          label="Save"
+          :handler="save"
+          :disabled="readonly"
+        />
+      </b-input-group-append>
+    </b-input-group>
     <div v-else-if="type === 'textarea'">
       <b-row>
         <b-col>
@@ -72,6 +84,11 @@ export default {
       type: String,
       required: false,
       default: 'input'
+    },
+    step: {
+      type: Number,
+      required: false,
+      default: 1
     },
     rows: {
       type: Number,

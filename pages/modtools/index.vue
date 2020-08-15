@@ -2,6 +2,7 @@
   <div v-if="me">
     <h2>Hello, {{ me.displayname }}</h2>
     <p>Here's your dashboard, where you can see what your communities have been doing recently.</p>
+    <!-- eslint-disable-next-line -->
     <p>Need temporary help moderating?  Mail <a href="mailto:mentors@ilovefreegle.org">mentors@ilovefreegle.org</a>.</p>
     <p v-if="isApp">
       ModTools app version: {{ modtoolsVersion }}.
@@ -111,6 +112,7 @@ import ModMissingProfile from '../../components/ModMissingProfile'
 import ActivityGraph from '../../components/ActivityGraph'
 import ModDashboardImpact from '../../components/ModDashboardImpact'
 import lazyLoadComponent from '@/utils/lazy-load-component'
+const ExternalLink = () => import('~/components/ExternalLink')
 
 // We lazy load these components below, but by importing them here it means they can render their own
 // loading indicators rather than using the lazyload text.
@@ -155,7 +157,8 @@ export default {
         import('@/components/ModDashboardFreeglersPosting.vue'),
       loading: ModDashboardSkeleton
     }),
-    DatePicker
+    DatePicker,
+    ExternalLink
   },
   layout: 'modtools',
   mixins: [loginRequired],

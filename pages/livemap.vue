@@ -18,8 +18,7 @@
             :max-zoom="13"
             :center="center"
             :style="'width: ' + mapWidth + '; height: ' + mapWidth + 'px'"
-            :zoom-control="false"
-            :scroll-wheel-zoom="false"
+            :options="{ zoomControl: false, scrollWheelZoom: false}"
             @ready="idle"
           >
             <l-tile-layer :url="osmtile" :attribution="attribution" />

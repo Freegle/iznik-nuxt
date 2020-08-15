@@ -43,7 +43,7 @@ export default {
       required: true
     },
     attachments: {
-      type: Object,
+      type: Array,
       required: true
     }
   }

@@ -296,10 +296,11 @@ export const actions = {
     )
   },
 
-  async notspam({ commit, dispatch }, params) {
+  async notspam({ state, commit, dispatch }, params) {
     await this.$api.message.notspam(params.id, params.groupid)
 
-    commit('remove', {
+    // Fetch back so that we know whether it's pending or approved and show appropriate buttons.
+    dispatch('fetch', {
       id: params.id
     })
 
@@ -450,6 +451,27 @@ export const actions = {
       groupid: params.groupid
     })
     commit('addAll', messages)
+  },
+
+  async move({ dispatch, commit }, params) {
+    await this.$api.message.update({
+      id: params.id,
+      groupid: params.groupid,
+      action: 'Move'
+    })
+
+    await dispatch('fetch', { id: params.id })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
   },
 
   async searchMember({ dispatch, commit }, params) {

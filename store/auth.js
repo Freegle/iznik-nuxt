@@ -177,6 +177,17 @@ export const getters = {
   }
 }
 
+function countWork(work) {
+  let total = 0
+  for (const key in work) {
+    if (typeof work[key] === 'number' && key.indexOf('other') === -1) {
+      total += work[key]
+    }
+  }
+
+  return total
+}
+
 export const actions = {
   clearRelated({ commit }) {
     commit('clearRelated')
@@ -327,13 +338,7 @@ export const actions = {
       commit('setFetched', Date.now())
 
       // Get the current work so we can compare counts.
-      let currentTotal = 0
-
-      for (const key in state.work) {
-        if (typeof state.work[key] === 'number') {
-          currentTotal += state.work[key]
-        }
-      }
+      const currentTotal = countWork(state.work)
 
       const {
         me,
@@ -343,13 +348,7 @@ export const actions = {
         discourse
       } = await this.$api.session.fetch(params)
 
-      let newTotal = 0
-
-      for (const key in work) {
-        if (typeof work[key] === 'number' && key.indexOf('Spammer') === -1) {
-          newTotal += work[key]
-        }
-      }
+      const newTotal = countWork(work)
 
       if (
         !process.env.IS_APP &&

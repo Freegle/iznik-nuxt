@@ -44,7 +44,7 @@
             <b-card bg-variant="info">
               <b-card-body>
                 <p>How was this freegler? Please click.</p>
-                <Ratings :id="fetchedUser.id" :key="'user-' + selectedUser" class="" />
+                <Ratings v-if="fetchedUser" :id="fetchedUser.id" :key="'user-' + selectedUser" class="" />
               </b-card-body>
             </b-card>
           </b-col>

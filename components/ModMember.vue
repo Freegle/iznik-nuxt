@@ -3,7 +3,8 @@
     <b-card bg-variant="white" no-body>
       <b-card-header class="d-flex justify-content-between flex-wrap">
         <div>
-          <v-icon name="envelope" /> <a :href="'mailto:' + email">{{ email }}</a>
+          <!-- eslint-disable-next-line -->
+          <v-icon name="envelope" /> <ExternalLink :href="'mailto:' + email">{{ email }}</ExternalLink>
         </div>
         <div>
           <ProfileImage :image="member.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="sm" />
@@ -17,9 +18,6 @@
         </div>
       </b-card-header>
       <b-card-body>
-        <h3 v-if="pending && group" class="mb-2">
-          Pending on {{ group.namedisplay }}
-        </h3>
         <div v-if="member.heldby">
           <NoticeMessage variant="warning" class="mb-2">
             <p v-if="me.id === member.heldby.id">
@@ -219,6 +217,7 @@ import ChatButton from './ChatButton'
 import ProfileModal from './ProfileModal'
 import ModMemberButton from './ModMemberButton'
 const OurToggle = () => import('@/components/OurToggle')
+const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
   name: 'ModMember',
@@ -240,7 +239,8 @@ export default {
     ProfileImage,
     // ModMessageButtons,
     NoticeMessage,
-    SettingsGroup
+    SettingsGroup,
+    ExternalLink
   },
   mixins: [waitForRef],
   props: {
@@ -283,9 +283,6 @@ export default {
       }
 
       return ret
-    },
-    pending() {
-      return this.member.collection === 'Pending'
     },
     groupid() {
       return this.member.groupid

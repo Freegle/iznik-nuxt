@@ -3,8 +3,9 @@
     <b-card bg-variant="white" no-body>
       <b-card-header class="p-1 p-md-2">
         <div class="d-flex justify-content-between">
-          <div>
-            <div v-if="editing">
+          <div class="flex-grow-1">
+            <div v-if="editing" class="d-flex">
+              <GroupSelect v-model="editgroup" modonly class="mt-1 mr-1" />
               <div v-if="message.item && message.location" class="d-flex justify-content-start">
                 <b-select v-model="message.type" :options="typeOptions" class="type mr-1" size="lg" />
                 <b-input v-model="message.item.name" size="lg" class="mr-1" />
@@ -12,8 +13,8 @@
                   <Postcode :value="message.location.name" :find="false" @selected="postcodeSelect" />
                 </b-input-group>
               </div>
-              <div v-else>
-                <b-input-group>
+              <div v-else class="d-flex flex-grow-1">
+                <b-input-group class="flex-grow-1 mr-1 mt-1">
                   <b-input v-model="message.subject" />
                 </b-input-group>
               </div>
@@ -35,7 +36,7 @@
               <b-btn v-if="message.source === 'Email'" variant="white" @click="viewSource">
                 <v-icon name="book-open" /><span class="d-none d-sm-inline"> View Email Source</span>
               </b-btn>
-              <b-btn v-if="!editing" variant="white" @click="editing = true">
+              <b-btn v-if="!editing" variant="white" @click="startEdit">
                 <v-icon name="pen" /><span class="d-none d-sm-inline"> Edit</span>
               </b-btn>
               <b-btn v-if="summary" variant="white" @click="expanded = !expanded">
@@ -240,6 +241,7 @@ import ModMessageDuplicate from './ModMessageDuplicate'
 import ModMessageCrosspost from './ModMessageCrosspost'
 import ModMessageRelated from './ModMessageRelated'
 import ModMessageButton from './ModMessageButton'
+import GroupSelect from './GroupSelect'
 import twem from '~/assets/js/twem'
 import waitForRef from '@/mixins/waitForRef'
 import keywords from '@/mixins/keywords.js'
@@ -247,6 +249,7 @@ import keywords from '@/mixins/keywords.js'
 export default {
   name: 'ModMessage',
   components: {
+    GroupSelect,
     ModMessageButton,
     ModMessageRelated,
     ModMessageCrosspost,
@@ -296,7 +299,8 @@ export default {
       showActions: false,
       showEmails: false,
       editing: false,
-      expanded: false
+      expanded: false,
+      editgroup: null
     }
   },
   computed: {
@@ -480,8 +484,13 @@ export default {
       return ret
     },
     postcodeSelect(pc) {
-      console.log('Selected', pc)
       this.message.location = pc
+    },
+    startEdit() {
+      this.editing = true
+      this.message.groups.forEach(group => {
+        this.editgroup = group.groupid
+      })
     },
     async save() {
       this.saving = true
@@ -501,6 +510,22 @@ export default {
           id: this.message.id,
           subject: this.message.subject,
           textbody: this.message.textbody
+        })
+      }
+
+      let alreadyon = false
+
+      this.message.groups.forEach(g => {
+        if (g.groupid === this.editgroup) {
+          alreadyon = true
+        }
+      })
+
+      if (!alreadyon) {
+        console.log('Need to move to group', this.editgroup)
+        await this.$store.dispatch('messages/move', {
+          id: this.message.id,
+          groupid: this.editgroup
         })
       }
 
@@ -526,9 +551,7 @@ export default {
       }
     },
     viewSource() {
-      console.log('View source')
       this.waitForRef('original', () => {
-        console.log('Now')
         this.$refs.original.show()
       })
     },
