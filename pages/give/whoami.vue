@@ -10,7 +10,15 @@
           <b-row>
             <b-col class="text-muted text-center">
               <p>We need your email address to let you know when you have replies.  We won't give your email to anyone else.</p>
-              <p>You will get emails from us, which you can control or turn off from Settings.</p>
+              <p>
+                You will get emails from us, which you can control or turn off from Settings. Read
+                <nuxt-link target="_blank" to="/terms">
+                  Terms of Use
+                </nuxt-link> and
+                <nuxt-link target="_blank" to="/privacy">
+                  Privacy
+                </nuxt-link> for details.
+              </p>
               <EmailValidator :email.sync="email" :valid.sync="emailValid" center class="align-items-center" />
             </b-col>
           </b-row>

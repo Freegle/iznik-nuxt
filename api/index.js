@@ -43,6 +43,7 @@ import StoriesAPI from './StoriesAPI.js'
 import TeamAPI from './TeamAPI.js'
 import UserAPI from './UserAPI.js'
 import UserSearchAPI from './UserSearchAPI.js'
+import VisualiseAPI from './VisualiseAPI.js'
 import VolunteeringAPI from './VolunteeringAPI.js'
 
 export default ({ $axios, store }) => {
@@ -83,6 +84,7 @@ export default ({ $axios, store }) => {
     team: new TeamAPI(options),
     user: new UserAPI(options),
     usersearch: new UserSearchAPI(options),
+    visualise: new VisualiseAPI(options),
     volunteering: new VolunteeringAPI(options)
   }
 }

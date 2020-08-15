@@ -35,7 +35,10 @@
                 <p>Sorry - we failed to verify your email address.</p>
                 <p> <b>Please try again.</b> Resend verification mail to:</p>
                 <b-form-input v-model="email" placeholder="Enter your email" class="mb-2" />
-                <p>If you keep having trouble, please mail <a href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</a>.</p>
+                <p>
+                  <!-- eslint-disable-next-line -->
+                  If you keep having trouble, please mail <ExternalLink href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</ExternalLink>.
+                </p>
               </b-col>
             </b-row>
           </template>
@@ -59,7 +62,10 @@
               <b-col>
                 <p>We've resent the mail.  Please check your email, including your spam folders</p>
                 <p>If you have multiple verification mails, please click on the most recent.</p>
-                <p>If you keep having trouble, please mail <a href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</a>.</p>
+                <p>
+                  <!-- eslint-disable-next-line -->
+                  If you keep having trouble, please mail <ExternalLink href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</ExternalLink>.
+                </p>
               </b-col>
             </b-row>
           </template>
@@ -80,9 +86,10 @@
 <script>
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead'
+const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
-  components: {},
+  components: { ExternalLink },
   mixins: [loginRequired, buildHead],
   data: function() {
     return {

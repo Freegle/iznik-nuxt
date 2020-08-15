@@ -22,7 +22,8 @@
         </nuxt-link> to go back to the home page
       </p>
       <p>
-        Having problems? <a href="mailto:support@ilovefreegle.org">Contact us</a>
+        <!-- eslint-disable-next-line -->
+        Having problems? <ExternalLink href="mailto:support@ilovefreegle.org">Contact us</ExternalLink>
       </p>
       <p>
         Request page was: {{url}}
@@ -32,7 +33,9 @@
 </template>
 
 <script>
+const ExternalLink = () => import('~/components/ExternalLink')
 export default {
+  components: { ExternalLink },
   computed: {
     url() {
       return this.$route.path

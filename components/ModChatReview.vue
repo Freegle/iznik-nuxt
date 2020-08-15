@@ -20,7 +20,7 @@
             you before releasing it.
           </span>
           <span v-else>
-            Held by <b><a :href="'mailto:' + message.held.email">{{ message.held.name }}</a></b>
+            Held by <b><ExternalLink :href="'mailto:' + message.held.email">{{ message.held.name }}</ExternalLink></b>
             {{ message.held.timestamp | timeago }}.  Please check with them before releasing it.
           </span>
         </NoticeMessage>
@@ -139,6 +139,7 @@ import ModChatViewButton from './ModChatViewButton'
 import SpinButton from './SpinButton'
 import chat from '@/mixins/chat.js'
 const ModMessageEmailModal = () => import('~/components/ModMessageEmailModal')
+const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
   components: {
@@ -148,7 +149,8 @@ export default {
     ChatMessage,
     ModChatReviewUser,
     NoticeMessage,
-    ModMessageEmailModal
+    ModMessageEmailModal,
+    ExternalLink
   },
   mixins: [waitForRef, chat],
   props: {

@@ -4,7 +4,8 @@
       <b-col cols="12" md="6" offset-md="3" class="bg-white">
         <h1>Fetching your data</h1>
         <b-alert v-if="error" variant="danger" show>
-          Something went wrong.  Please try again, and if this keeps happening then contact <a href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</a>.
+          <!-- eslint-disable-next-line -->
+          Something went wrong.  Please try again, and if this keeps happening then contact <ExternalLink href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</ExternalLink>.
         </b-alert>
         <div v-else>
           <div v-if="status">
@@ -29,7 +30,8 @@
               <p>
                 Freegle volunteers may also have some personal data, predominately in the form of email
                 correspondence about Freegle matters. If you want access to this please request this
-                formally via the <a href="mailto:DPO@ilovefreegle.org">Data Protection Officer (DPO)</a>
+                <!-- eslint-disable-next-line -->
+                formally via the <ExternalLink href="mailto:DPO@ilovefreegle.org">Data Protection Officer (DPO)</ExternalLink>
                 who will organise the return of this additional information.
               </p>
               <h2>About you</h2>
@@ -793,6 +795,7 @@ const NoticeMessage = () => import('~/components/NoticeMessage')
 const ExportPost = () => import('~/components/ExportPost')
 const ExportChat = () => import('~/components/ExportChat')
 const Ratings = () => import('~/components/Ratings')
+const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
   components: {
@@ -801,7 +804,8 @@ export default {
     ExportPost,
     ExportChat,
     Ratings,
-    ProfileImage
+    ProfileImage,
+    ExternalLink
   },
   mixins: [loginRequired, buildHead],
   data: function() {

@@ -15,7 +15,8 @@
           </p>
           <p>
             A generic Freegle business card graphic is available but If you want another size or a specific
-            design for your council, just email <a href="mailto:media@ilovefreegle.org">media@ilovefreegle.org</a>.
+            <!-- eslint-disable-next-line -->
+            design for your council, just email <ExternalLink href="mailto:media@ilovefreegle.org">media@ilovefreegle.org</ExternalLink>.
           </p>
           <p>Click to download:</p>
           <ul>
@@ -84,9 +85,10 @@
 import CouncilsContent from '../../components/CouncilsContent'
 import buildHead from '@/mixins/buildHead.js'
 import sectionScroll from '@/mixins/sectionScroll.js'
+const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
-  components: { CouncilsContent },
+  components: { CouncilsContent, ExternalLink },
   mixins: [buildHead, sectionScroll],
   head() {
     return this.buildHead(

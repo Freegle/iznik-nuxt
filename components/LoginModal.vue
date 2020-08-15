@@ -31,7 +31,8 @@
       </nuxt-link> for details.  Ok?  Now come on in...
     </p>
     <p v-if="modtools" class="text-center">
-      Need temporary help moderating?  Mail <a href="mailto:mentors@ilovefreegle.org">mentors@ilovefreegle.org</a>.
+      <!-- eslint-disable-next-line -->
+      Need temporary help moderating?  Mail <ExternalLink href="mailto:mentors@ilovefreegle.org">mentors@ilovefreegle.org</ExternalLink>.
     </p>
     <p v-if="loginType" class="text-center font-weight-bold">
       You usually sign in using {{ loginType }}.
@@ -190,6 +191,7 @@ import { appGoogleLogin } from '../plugins/app-google' // CC
 import { appYahooLogin } from '../plugins/app-yahoo' // CC
 import { appAppleLogin } from '../plugins/app-apple' // CC
 
+const ExternalLink = () => import('~/components/ExternalLink')
 const NoticeMessage = () => import('~/components/NoticeMessage')
 const PasswordEntry = () => import('~/components/PasswordEntry')
 
@@ -197,6 +199,7 @@ export default {
   name: 'LoginModal',
   components: {
     EmailValidator,
+    ExternalLink,
     NoticeMessage,
     PasswordEntry
   },

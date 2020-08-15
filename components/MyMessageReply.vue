@@ -3,7 +3,7 @@
     <div class="d-flex justify-content-between flex-wrap">
       <div class="d-flex align-content-start mb-1 flex-grow-1">
         <ProfileImage :image="reply.user.profile.turl" class="m-1" is-thumbnail size="sm" />
-        <div class="text-truncate">
+        <div>
           <!-- eslint-disable-next-line -->
           <span  class="align-middle" v-if="unseen > 0"><b>{{ reply.user.displayname }}</b></span>
           <!-- eslint-disable-next-line -->

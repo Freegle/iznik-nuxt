@@ -45,6 +45,7 @@ import StoriesAPI from './StoriesAPI.js'
 import TeamAPI from './TeamAPI.js'
 import UserAPI from './UserAPI.js'
 import UserSearchAPI from './UserSearchAPI.js'
+import VisualiseAPI from './VisualiseAPI.js'
 import VolunteeringAPI from './VolunteeringAPI.js'
 
 interface API {
@@ -83,6 +84,7 @@ interface API {
   team: TeamAPI;
   user: UserAPI;
   usersearch: UserSearchAPI;
+  visualise: VisualiseAPI;
   volunteering: VolunteeringAPI;
 }
 

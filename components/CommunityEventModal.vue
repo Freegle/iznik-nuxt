@@ -96,7 +96,8 @@
               Contact email
             </b-col>
             <b-col cols="8" md="9">
-              <a :href="'mailto:' + event.contactemail">{{ event.contactemail }}</a>
+              <!-- eslint-disable-next-line -->
+              <ExternalLink :href="'mailto:' + event.contactemail">{{ event.contactemail }}</ExternalLink>
             </b-col>
           </b-row>
           <b-row v-if="event.contactphone">

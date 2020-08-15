@@ -7,7 +7,8 @@
           <p>That request isn't valid.  Perhaps you've already merged?  Or maybe clicked on the wrong link.</p>
           <p>
             If you continue to have problems, please contact our support volunteers at
-            <a href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</a>
+            <!-- eslint-disable-next-line -->
+            <ExternalLink href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</ExternalLink>
           </p>
         </NoticeMessage>
         <div v-else-if="merge">
@@ -83,7 +84,8 @@
             <hr>
             <p>
               If you have problems or questions, please contact our support volunteers at
-              <a href="mailto:geeks@ilovefreegle.org">geeks@ilovefreegle.org</a>
+              <!-- eslint-disable-next-line -->
+              <ExternalLink href="mailto:geeks@ilovefreegle.org">geeks@ilovefreegle.org</ExternalLink>
             </p>
           </div>
         </div>
@@ -94,10 +96,12 @@
 <script>
 import NoticeMessage from '@/components/NoticeMessage'
 import loginOptional from '@/mixins/loginOptional.js'
+const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
   components: {
-    NoticeMessage
+    NoticeMessage,
+    ExternalLink
   },
   mixins: [loginOptional],
   data: function() {

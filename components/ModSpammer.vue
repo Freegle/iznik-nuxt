@@ -13,7 +13,7 @@
       <span v-if="user.spammer.byuser">
         by
         {{ user.spammer.byuser.displayname }}
-        (<a :href="'mailto:' + user.spammer.byuser.email">{{ user.spammer.byuser.email }}</a>)
+        (<ExternalLink :href="'mailto:' + user.spammer.byuser.email">{{ user.spammer.byuser.email }}</ExternalLink>)
       </span>
       #{{ user.spammer.byuserid }} {{ user.spammer.added | timeago }}
     </div>
@@ -21,8 +21,9 @@
 </template>
 <script>
 import NoticeMessage from './NoticeMessage'
+const ExternalLink = () => import('~/components/ExternalLink')
 export default {
-  components: { NoticeMessage },
+  components: { NoticeMessage, ExternalLink },
   props: {
     user: {
       type: Object,

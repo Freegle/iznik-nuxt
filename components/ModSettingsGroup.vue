@@ -22,11 +22,13 @@
           <b-card-body>
             <p>Here's how your members can reach you by email:</p>
             <p>
-              <a :href="'mailto:' + group.modsemail">{{ group.modsemail }}</a>
+              <!-- eslint-disable-next-line -->
+              <ExternalLink :href="'mailto:' + group.modsemail">{{ group.modsemail }}</ExternalLink>
             </p>
             <p>Members can post by email.  Please only use this for members who really need it:</p>
             <p>
-              <a :href="'mailto:' + group.groupemail">{{ group.groupemail }}</a>
+              <!-- eslint-disable-next-line -->
+              <ExternalLink :href="'mailto:' + group.groupemail">{{ group.groupemail }}</ExternalLink>
             </p>
             <p v-if="!Object.values(shortlinks).length">
               Your community has no shortlinks at the moment.
@@ -386,6 +388,14 @@
               type="toggle"
               toggle-checked="Yes"
               toggle-unchecked="No"
+            />
+            <ModGroupSetting
+              :groupid="groupid"
+              name="settings.spammers.replydistance"
+              label="Reply distance check?"
+              description="When members reply to messages which are this far apart, in miles, then they may be flagged for review.  Default 50, 0 to disable."
+              type="number"
+              step="5"
             />
           </b-card-body>
         </b-collapse>
