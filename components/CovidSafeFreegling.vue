@@ -1,22 +1,9 @@
 <template>
   <div>
     <p>
-      As tips and recycling centres start to re-open to varying degrees around the UK, we think it's a good time
-      to reboot Freegle. We know freegling will be immensely useful right now, and
-      <!-- eslint-disable-next-line -->
-      <ExternalLink href="https://www.gov.uk/government/publications/coronavirus-covid-19-advice-to-local-authorities-on-prioritising-waste-collections/managing-household-waste-and-recycling-centres-hwrcs-in-england-during-the-coronavirus-covid-19-pandemic#annex---communications-to-residents">government advice</ExternalLink> is to
-      use online platforms such as ours rather than go to tips or recycling centres.
-    </p>
-    <p>
-      We do not want to encourage unnecessary travel and we'd like everyone to stay safe - so please
+      Freegle is particularly useful right now, but we do not want to encourage unnecessary travel and we'd like
+      everyone to stay safe - So please
       <b>READ</b> and <b>FOLLOW</b> these updated COVID-19 guidelines for freegling.
-    </p>
-    <h4>Keep it ESSENTIAL</h4>
-    <p>
-      Initially we'd like to encourage OFFERs and WANTEDs for <b>essential</b> items only.  We know that will vary
-      for different people and circumstances.  Please use your common sense &#x1F642;.  Many communities will have
-      restrictions on what is and isn't OK to freegle.  Some communities may still be closed based on
-      local conditions.  If your local volunteers say this, please respect it - we're just trying to keep you safe.
     </p>
     <h4>Keep it LOCAL</h4>
     <p>
@@ -34,11 +21,11 @@
       Could you collect on foot or cycle while doing daily exercise?
     </p>
     <p>
-      Only post to your nearest community - please don't post or reply if it's further away.
+      Where possible, please post to your nearest community and don't post or reply if it's further away.
     </p>
     <h4>PROTECT each other</h4>
     <p>
-      If you have recently had COVID-19, please don't use Freegle for at least 7 days after you are free of symptoms.
+      If you have recently had COVID-19, please don't use Freegle for at least 10 days after you are free of symptoms.
     </p>
     <p>
       Make sure anything you offer is clean.
@@ -79,7 +66,7 @@
       Stay safe everyone!
     </p>
     <p>
-      P.S. If you're happy we're back, any small donations would be super-helpful right now - thank you!
+      Small donations to help us help more people would be super-helpful right now - thank you!
     </p>
     <DonationButton link="paypal1510" class="mt-2" />
   </div>
