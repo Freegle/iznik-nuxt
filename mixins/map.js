@@ -27,7 +27,9 @@ export default {
       return 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
     },
     mapWidth() {
+      console.log('Calculate width', this.$refs.mapcont)
       const contWidth = this.$refs.mapcont ? this.$refs.mapcont.clientWidth : 0
+      console.log('Return', contWidth)
       return contWidth + this.bump - this.bump
     },
     mapHeight() {
@@ -60,9 +62,23 @@ export default {
   },
   mounted() {
     // We have to wait for the ref to appear and then trigger a recompute of the mapWidth property.
+    console.log('Wait for mapcont')
     this.waitForRef('mapcont', () => {
-      this.bump++
+      console.log('Found')
+      this.bumpIt()
     })
+  },
+  watch: {
+    mapWidth() {
+      if (this.$refs.map.mapObject) {
+        this.$refs.map.mapObject.invalidateSize()
+      }
+    },
+    mapHeight() {
+      if (this.$refs.map.mapObject) {
+        this.$refs.map.mapObject.invalidateSize()
+      }
+    }
   },
   methods: {
     setUrl: function() {
