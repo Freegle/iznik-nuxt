@@ -1,8 +1,10 @@
 <template>
   <div>
     <p>
-      Freegle is particularly useful right now, but we do not want to encourage unnecessary travel and we'd like
-      everyone to stay safe - So please
+      Freegle is particularly useful right now, as some people will be particularly in need.  So do please post OFFERs
+      and also keep an eye on WANTEDs in case you can help out.  But we do not want to encourage unnecessary travel and
+      we'd like
+      everyone to stay safe - please
       <b>READ</b> and <b>FOLLOW</b> these updated COVID-19 guidelines for freegling.
     </p>
     <h4>Keep it LOCAL</h4>
@@ -43,7 +45,7 @@
       leave it for a few days before touching it.
     </p>
     <p>
-      Wear a face mask if you can when collecting, and wash your hands afterwards.
+      Wear a face covering if you can when collecting, and wash your hands afterwards.
     </p>
     <h4>SOCIAL DISTANCING</h4>
     <p>
