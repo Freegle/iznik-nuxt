@@ -45,7 +45,7 @@
                   <v-icon name="shopping-cart" />
                   Ask
                 </b-btn>
-                <b-btn to="/find/search" variant="secondary" class="topbutton ml-1 mr-1">
+                <b-btn to="/search" variant="secondary" class="topbutton ml-1 mr-1">
                   <v-icon name="search" />
                   Search
                 </b-btn>

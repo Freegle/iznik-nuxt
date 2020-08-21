@@ -36,6 +36,10 @@
               <v-icon name="shopping-cart" scale="2" /><br>
               <span class="nav-item__text">&nbsp;Ask</span>
             </b-nav-item>
+            <b-nav-item id="menu-option-search" class="text-center small p-0" to="/search" @mousedown="maybeReload('/search')">
+              <v-icon name="search" scale="2" /><br>
+              <span class="nav-item__text">Search</span>
+            </b-nav-item>
             <b-nav-item id="menu-option-explore" class="text-center small p-0" to="/explore" @mousedown="maybeReload('/explore')">
               <v-icon name="map-marker-alt" scale="2" /><br>
               <span class="nav-item__text">Explore</span>
@@ -218,6 +222,10 @@
           <b-nav-item class="text-center p-0" to="/find" @mousedown="maybeReload('/find')">
             <v-icon name="shopping-cart" scale="2" /><br>
             <span class="nav-item__text">Ask</span>
+          </b-nav-item>
+          <b-nav-item class="text-center p-0" to="/search" @mousedown="maybeReload('/search')">
+            <v-icon name="search" scale="2" /><br>
+            <span class="nav-item__text">Search</span>
           </b-nav-item>
           <b-nav-item class="text-center p-0" to="/explore" @mousedown="maybeReload('/explore')">
             <v-icon name="map-marker-alt" scale="2" /><br>

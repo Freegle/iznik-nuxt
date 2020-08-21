@@ -208,7 +208,7 @@ export default {
     },
     search() {
       const term = this.$refs.autocomplete.$refs.input.value
-      this.$router.push('/find/search/' + term)
+      this.$router.push('/search/' + term)
     },
     loadMore: function($state) {
       const term = this.$refs.autocomplete.$refs.input.value
