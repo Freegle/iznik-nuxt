@@ -359,14 +359,12 @@ export default {
       const group = this.$store.getters['auth/groupById'](this.groupid)
 
       if (text) {
-        if (this.modconfig) {
-          text = text.replace(/\$networkname/g, this.modconfig.network)
-          const re = new RegExp(this.modconfig.network, 'ig')
-          text = text.replace(
-            /\$groupnonetwork/g,
-            group.namedisplay.replace(re, '')
-          )
-        }
+        text = text.replace(/\$networkname/g, 'Freegle')
+        const re = new RegExp('Freegle', 'ig')
+        text = text.replace(
+          /\$groupnonetwork/g,
+          group.namedisplay.replace(re, '')
+        )
 
         text = text.replace(/\$groupname/g, group.namedisplay)
         text = text.replace(/\$owneremail/g, group.modsemail)
