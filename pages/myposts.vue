@@ -125,7 +125,7 @@
                 <p>Nothing here yet.  Why not...</p>
                 <div class="d-flex justify-content-around mb-2">
                   <b-button to="/find" class="mt-1" size="lg" variant="secondary">
-                    <v-icon name="search" />&nbsp;Ask for something
+                    <v-icon name="shopping-cart" />&nbsp;Ask for something
                   </b-button>
                 </div>
               </div>
@@ -166,7 +166,7 @@
               <div v-else>
                 <p>Nothing here yet.  Why not...</p>
                 <b-button to="/find" class="mt-1" size="lg" variant="secondary">
-                  <v-icon name="search" />&nbsp;Find stuff
+                  <v-icon name="shopping-cart" />&nbsp;Ask for stuff
                 </b-button>
               </div>
             </b-card-text>

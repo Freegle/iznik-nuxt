@@ -60,7 +60,7 @@
               </span>
             </b-col>
             <b-col cols="12" md="5">
-              <v-icon name="search" /> {{ user.info.wanteds | pluralize([ 'recent WANTED', 'recent WANTEDs' ], { includeNumber: true }) }}
+              <v-icon name="shopping-cart" /> {{ user.info.wanteds | pluralize([ 'recent WANTED', 'recent WANTEDs' ], { includeNumber: true }) }}
               <span v-if="user.info.openwanteds" class="text-success font-weight-bold">
                 ({{ user.info.wanteds }} still active)
               </span>
