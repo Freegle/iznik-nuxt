@@ -62,7 +62,7 @@
                 <NoticeMessage variant="warning" class="mb-2">
                   <p v-if="me.id === message.heldby.id">
                     You held this.  Other people will see a warning to check with
-                    you before releasing it.
+                    you before releasing it.  If you release it, it will stay in Pending.
                   </p>
                   <p v-else>
                     Held by <b>{{ message.heldby.displayname }}</b>.  Please check with them before releasing it.

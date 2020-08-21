@@ -97,7 +97,7 @@
           <ModMenuItemLeft link="/modtools/settings" name="Settings" />
           <ModMenuItemLeft link="/modtools/teams" name="Teams" />
           <div>
-            <ExternalLink href="https://discourse.ilovefreegle.org" class="pl-1">
+            <ExternalLink href="https://wiki.ilovefreegle.org/ModTools" class="pl-1">
               Help
             </ExternalLink>
           </div>
