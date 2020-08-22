@@ -132,6 +132,10 @@ export const actions = {
       collection: 'PendingRemove'
     })
 
+    commit('remove', {
+      id: params.id
+    })
+
     dispatch(
       'auth/fetchUser',
       {
