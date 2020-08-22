@@ -62,7 +62,9 @@ export default {
               this.$router.push('/')
             }
           } else {
+            // Sometimes this fails on the server side.  Force login again.
             console.error('Server login failed', ret)
+            this.$store.dispatch('auth/forceLogin', true)
           }
         })
         .catch(e => {
