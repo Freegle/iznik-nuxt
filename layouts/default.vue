@@ -239,7 +239,7 @@
             <v-icon name="hands-helping" scale="2" /><br>
             <span class="nav-item__text">Volunteer</span>
           </b-nav-item>
-          <b-nav-item v-if="!simple" class="text-center p-0" to="/spread" @mousedown="maybeReload('/spread')">
+          <b-nav-item v-if="!simple" class="text-center p-0" to="/spread" @mousedown="maybeRemodload('/spread')">
             <v-icon name="bullhorn" scale="2" /><br>
             <span class="nav-item__text">Spread</span>
           </b-nav-item>

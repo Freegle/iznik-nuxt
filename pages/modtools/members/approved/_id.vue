@@ -20,7 +20,7 @@
           This group has {{ group.membercount | pluralize('member', { includeNumber: true }) }}.
         </p>
         <div v-for="member in visibleMembers" :key="'memberlist-' + member.id" class="p-0 mt-2">
-          <ModMember :member="member" />
+          <ModMember :member="member" :actions="false" />
         </div>
 
         <NoticeMessage v-if="!members.length && !busy" class="mt-2">
