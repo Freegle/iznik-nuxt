@@ -41,7 +41,7 @@
           >
             Giving something away?  Click the Give button.  Chitchat is for other discussion.
           </b-tooltip>
-          <b-tooltip :show.sync="showToolFind" target="findbutton" placement="bottom" triggers="">
+          <b-tooltip :show="showToolFind" target="findbutton" placement="bottom" triggers="" @hide="showToolFind">
             Looking for an item?  Click the Find button.  Chitchat is for other discussion.
           </b-tooltip>
         </b-card>
