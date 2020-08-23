@@ -231,7 +231,7 @@
       </h3>
       <div v-if="emailHistoriesShown.length">
         <b-row v-for="email in emailHistoriesShown" :key="'emailhistory-' + email.id" class="pl-3">
-          <b-col cols="6" md="3" class="p-1 order-1" :title="email.timestamp | datetime">
+          <b-col cols="6" md="3" class="p-1 order-1" :title="emailtimestamp">
             {{ email.timestamp | timeago }}
           </b-col>
           <b-col cols="12" md="6" class="p-1 order-3 order-md-2">
@@ -431,6 +431,11 @@ export default {
               )
             })
         : []
+    },
+    emailtimestamp() {
+      return this.email && this.email.timestamp
+        ? this.$dayjs(this.email.timestamp).format('Do MMMM, YYYY HH:mm:ss')
+        : null
     }
   },
   mounted() {

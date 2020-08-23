@@ -47,7 +47,7 @@
         </NoticeMessage>
         <ModBouncing v-if="member.bouncing" :user="member" />
         <NoticeMessage v-if="member.bandate">
-          Banned <span :title="member.bandate | datetime">{{ member.bandate | timeago }}</span> <span v-if="member.bannedby">by #{{ member.bannedby }}</span> - check logs for info.
+          Banned <span :title="bandate">{{ member.bandate | timeago }}</span> <span v-if="member.bannedby">by #{{ member.bannedby }}</span> - check logs for info.
         </NoticeMessage>
         <div class="d-flex justify-content-between flex-wrap">
           <SettingsGroup
@@ -379,6 +379,11 @@ export default {
       set(newval) {
         this.user.newslettersallowed = newval
       }
+    },
+    bandate() {
+      return this.member && this.member.bandate
+        ? this.$dajys(this.member.bandate).format('Do MMMM, YYYY HH:mm:ss')
+        : null
     }
   },
   mounted() {

@@ -1,7 +1,7 @@
 <template>
   <b-row v-if="!chatmessage.sameasnext || last || chatmessage.bymailid" class="text-muted small">
     <b-col v-if="!messageIsFromCurrentUser">
-      <span class="chat__dateread--theirs" :title="chatmessage.date | datetimeshort">
+      <span class="chat__dateread--theirs" :title="dateshort">
         {{ chatmessage.date | timeago }}
         <span v-if="chatmessage.bymailid" class="clickme" :title="'Received by email #' + chatmessage.bymailid + ' click to view'" @click="viewOriginal">
           <v-icon name="info-circle" />
@@ -37,7 +37,7 @@
           </span>
           sent this
         </span>
-        <span :title="chatmessage.date | datetimeshort">{{ chatmessage.date | timeago }}</span>
+        <span :title="dateshort">{{ chatmessage.date | timeago }}</span>
         <span v-if="chatmessage.bymailid" class="clickme" :title="'Received by email #' + chatmessage.bymailid + ' click to view'" @click="viewOriginal">
           <v-icon name="info-circle" />
         </span>
@@ -69,6 +69,11 @@ export default {
   computed: {
     othermodname() {
       return this.chatMessageUser ? this.chatMessageUser.displayname : null
+    },
+    dateshort() {
+      return this.chatmessage
+        ? this.$dayjs(this.chatmessage.date).format('Do MMM, YYYY HH:mm')
+        : null
     }
   },
   methods: {

@@ -7,7 +7,7 @@
       <v-icon v-if="chat.chattype === 'User2User'" class="text-success pr-1" name="user" />
       <v-icon v-else-if="chat.chattype === 'User2Mod' || chat.chattype === 'Mod2Mod'" class="text-warning pr-1 mb-2" name="crown" />
     </b-col>
-    <b-col cols="4" md="2" class="p-0 order-4 order-md-3" :title="chat.lastdate | datetime">
+    <b-col cols="4" md="2" class="p-0 order-4 order-md-3" :title="lastdatetime">
       {{ chat.lastdate | timeago }}
     </b-col>
     <b-col cols="12" md="5" class="p-0 order-1 order-md-2">
@@ -43,6 +43,11 @@ export default {
       } else {
         return this.chat.user1 === this.pov ? this.chat.user2 : this.chat.user1
       }
+    },
+    lastdatetime() {
+      return this.chat && this.chat.lastdate
+        ? this.$dayjs(this.chat.lastdate).format('Do MMMM, YYYY HH:mm:ss')
+        : null
     }
   }
 }
