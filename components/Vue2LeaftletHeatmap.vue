@@ -1,6 +1,6 @@
 <template>
   <div style="display: none;">
-    <slot v-if="ready" />
+    <slot v-if="showIt" />
   </div>
 </template>
 
@@ -53,7 +53,7 @@ export default {
   props,
   data() {
     return {
-      ready: false
+      showIt: false
     }
   },
   mounted() {
@@ -76,7 +76,7 @@ export default {
     this.mapObject = L.heatLayer(this.latLngs, options)
     L.DomEvent.on(this.mapObject, this.$listeners)
     propsBinder(this, this.mapObject, props)
-    this.ready = true
+    this.showIt = true
     this.parentContainer = findRealParent(this.$parent)
     this.parentContainer.addLayer(this, !this.visible)
   },
