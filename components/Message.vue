@@ -512,13 +512,15 @@ export default {
 
             // Open the chat.  We don't want to move from this page - either we'll get a popup chat (so we can
             // see the reply went) or we're on mobile and we'll display the sent message notice.
-            this.$refs.chatbutton.openChat(
-              null,
-              this.reply,
-              this.id,
-              popup,
-              false
-            )
+            this.waitForRef('chatbutton', () => {
+              this.$refs.chatbutton.openChat(
+                null,
+                this.reply,
+                this.id,
+                popup,
+                false
+              )
+            })
           })
         } else {
           // We're not logged in yet.  We need to save the reply and force a sign in.
