@@ -37,7 +37,13 @@
         <div v-else>
           <h4>Please enter your email address</h4>
           <p>We'll email you to confirm.</p>
-          <EmailValidator :email.sync="email" :valid.sync="emailValid" label="" />
+          <EmailValidator
+            :valid="emailValid"
+            :email="email"
+            label=""
+            @update:valid="emailValid = $event"
+            @update:email="email = $event"
+          />
           <SpinButton
             size="lg"
             name="trash-alt"

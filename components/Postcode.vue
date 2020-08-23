@@ -29,7 +29,14 @@
       </b-button>
     </div>
 
-    <b-tooltip :show.sync="showToolTip" target="postcodeautocomplete" placement="top" variant="primary" triggers="">
+    <b-tooltip
+      :show="showToolTip"
+      target="postcodeautocomplete"
+      placement="top"
+      variant="primary"
+      triggers=""
+      @hide="showToolTip = false"
+    >
       <b>Your device thinks you're here.<br><br>
 
         If it's wrong, please change it.</b>

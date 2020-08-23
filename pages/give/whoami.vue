@@ -19,7 +19,14 @@
                   Privacy
                 </nuxt-link> for details.
               </p>
-              <EmailValidator :email.sync="email" :valid.sync="emailValid" center class="align-items-center" />
+              <EmailValidator
+                :valid="emailValid"
+                :email="email"
+                center
+                class="align-items-center"
+                @update:valid="emailValid = $event"
+                @update:email="email = $event"
+              />
             </b-col>
           </b-row>
           <transition name="fadein">

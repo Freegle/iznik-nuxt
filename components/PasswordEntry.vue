@@ -11,7 +11,7 @@
         :type="showPassword ? 'text' : 'password'"
         placeholder="Your password"
         class="password__input"
-        @input="$emit('update:password', $event)"
+        @input="$emit('input', $event)"
       />
       <span class="password__focus-element" />
       <b-input-group-append>

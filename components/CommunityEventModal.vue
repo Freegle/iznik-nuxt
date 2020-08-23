@@ -275,9 +275,11 @@
             <EmailValidator
               ref="email"
               size="md"
-              :email.sync="eventEdit.contactemail"
-              :valid.sync="emailValid"
+              :valid="emailValid"
+              :email="eventEdit.contactemail"
               label="Contact email:"
+              @update:valid="emailValid = $event"
+              @update:email="eventEdit.contactemail = $event"
             />
             <b-form-group
               label="Contact phone:"

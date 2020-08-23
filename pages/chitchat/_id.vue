@@ -32,7 +32,13 @@
               </b-btn>
             </div>
           </b-card-text>
-          <b-tooltip :show.sync="showToolGive" target="givebutton" placement="bottom" triggers="">
+          <b-tooltip
+            :show="showToolGive"
+            target="givebutton"
+            placement="bottom"
+            triggers=""
+            @hide="showToolGive = false"
+          >
             Giving something away?  Click the Give button.  Chitchat is for other discussion.
           </b-tooltip>
           <b-tooltip :show.sync="showToolFind" target="findbutton" placement="bottom" triggers="">

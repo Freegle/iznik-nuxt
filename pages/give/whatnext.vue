@@ -49,7 +49,7 @@
       </div>
 
       <div class="d-none d-md-block">
-        <b-tooltip :show.sync="show" target="menu-option-chat">
+        <b-tooltip :show="show" target="menu-option-chat" @hide="show = false">
           Replies will appear here<br><br>
 
           You'll also get them by email.  <span class="text-danger font-weight-bold">Check your spam!</span>

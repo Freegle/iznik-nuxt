@@ -177,9 +177,11 @@
                   <EmailValidator
                     ref="email"
                     size="md"
-                    :email.sync="me.email"
-                    :valid.sync="emailValid"
                     label="Your email address:"
+                    :valid="emailValid"
+                    :email="me.email"
+                    @update:valid="emailValid = $event"
+                    @update:email="me.email = $event"
                   />
                   <b-button variant="white" class="mb-2" @click="saveEmail">
                     <v-icon v-if="savingEmail" name="sync" class="text-success fa-spin" />
@@ -281,7 +283,14 @@
                 </p>
                 <div v-if="simpleSettings && !showAdvanced">
                   <div>
-                    <SettingsGroup :emailfrequency.sync="emailSimple" :volunteeringallowed.sync="volunteeringSimple" :eventsallowed.sync="eventSimple" />
+                    <SettingsGroup
+                      :emailfrequency="emailSimple"
+                      :volunteeringallowed="volunteeringSimple"
+                      :eventsallowed="eventSimple"
+                      @update:emailfrequency="emailfrequency = $event"
+                      @update:volunteeringallowed="volunteeringallowed = $event"
+                      @update:eventsallowed="eventsallowed = $event"
+                    />
                     <p class="text-muted">
                       Occasionally we may also send ADMIN mails about the running of Freegle.
                     </p>

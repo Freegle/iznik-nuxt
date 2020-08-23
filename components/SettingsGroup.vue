@@ -156,8 +156,7 @@ export default {
   },
   methods: {
     outcast: function(param, val) {
-      // The model for two-way props binding is that you emit an update event.  The parent component may use :sync,
-      // in which case it will set the model value.
+      // The model for two-way props binding is that you emit an update event.
       //
       // You can use this in conjunction with computed properties, e.g. in settings.vue, by having a setter on the
       // computed property.

@@ -289,9 +289,11 @@
             <EmailValidator
               ref="email"
               size="md"
-              :email.sync="volunteeringEdit.contactemail"
-              :valid.sync="emailValid"
+              :valid="emailValid"
+              :email="volunteeringEdit.contactemail"
               label="Contact email:"
+              @update:valid="emailValid = $event"
+              @update:email="volunteeringEdit.contactemail = $event"
             />
             <b-form-group
               label="Contact phone:"

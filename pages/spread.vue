@@ -55,9 +55,11 @@
           <EmailValidator
             ref="email"
             size="lg"
-            :email.sync="invitemail"
-            :valid.sync="emailValid"
+            :valid="emailValid"
+            :email="inviteemail"
             label="Enter their email address"
+            @update:valid="emailValid = $event"
+            @update:email="inviteemail = $event"
           />
           <SpinButton
             v-if="emailValid"

@@ -108,8 +108,10 @@
           ref="email"
           size="lg"
           label="Your email address:"
-          :email.sync="email"
-          :valid.sync="emailValid"
+          :valid="emailValid"
+          :email="email"
+          @update:valid="emailValid = $event"
+          @update:email="email = $event"
         />
         <b-form-group
           class="flex-grow-1"

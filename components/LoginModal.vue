@@ -129,9 +129,11 @@
           <EmailValidator
             ref="email"
             size="md"
-            :email.sync="email"
-            :valid.sync="emailValid"
             label="Your email address:"
+            :valid="emailValid"
+            :email="email"
+            @update:valid="emailValid = $event"
+            @update:email="email = $event"
           />
           <NoticeMessage v-if="referToGoogleButton">
             Please use the <em>Continue with Google</em> button to sign in.  That way you don't need to remember a password on this site.
@@ -139,7 +141,7 @@
           <NoticeMessage v-if="referToYahooButton">
             Please use the <em>Continue with Yahoo</em> button to sign in.  That way you don't need to remember a password on this site.
           </NoticeMessage>
-          <PasswordEntry :original-password="password" :password.sync="password" />
+          <PasswordEntry v-model="password" :original-password="password" />
           <b-btn
             v-b-modal.add
             block

@@ -21,8 +21,10 @@
         <EmailValidator
           ref="email"
           size="lg"
-          :email.sync="email"
-          :valid.sync="emailValid"
+          :valid="emailValid"
+          :email="email"
+          @update:valid="emailValid = $event"
+          @update:email="email = $event"
         />
         <SpinButton
           v-if="emailValid"

@@ -104,6 +104,7 @@ export default {
         // This check needs to be here rather than in checkState to ensure the vuelidate has got itself sorted out.
         const valid = !this.$v.email.$invalid
         this.$emit('update:valid', valid)
+        this.$emit('update:email', newVal)
       }
     }
   },
