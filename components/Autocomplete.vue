@@ -610,17 +610,6 @@ export default {
   margin: 0 auto;
 }
 
-.transition,
-.autocomplete,
-.showAll-transition,
-.autocomplete ul,
-.autocomplete ul li a {
-  transition: all 0.3s ease-out;
-  -moz-transition: all 0.3s ease-out;
-  -webkit-transition: all 0.3s ease-out;
-  -o-transition: all 0.3s ease-out;
-}
-
 .autocomplete ul {
   font-family: sans-serif;
   position: absolute;
@@ -685,21 +674,6 @@ export default {
   right: 0px;
   z-index: 2000;
 }
-
-/*.showAll-transition{
-  opacity: 1;
-  height: 50px;
-  overflow: hidden;
-}
-
-.showAll-enter{
-  opacity: 0.3;
-  height: 0;
-}
-
-.showAll-leave{
-  display: none;
-}*/
 
 input[invalid='true'] {
   box-shadow: 0 0 0 0.2rem $color-red;
