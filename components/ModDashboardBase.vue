@@ -25,7 +25,8 @@ export default {
     return {
       askfor: null,
       loading: false,
-      grouprequired: false
+      grouprequired: false,
+      dashboard: []
     }
   },
   watch: {
@@ -64,7 +65,7 @@ export default {
 
         Object.keys(res).forEach(comp => {
           // eslint-disable-next-line
-          Vue.set(this, comp, res[comp])
+          Vue.set(this.dashboard, comp, res[comp])
         })
 
         this.loading = false
