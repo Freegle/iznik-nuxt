@@ -26,7 +26,7 @@
           </b-col>
           <b-col class="half-pad-col-left" offset="0" offset-md="2" cols="6" md="5">
             <b-btn block variant="secondary" class="float-right" size="lg" to="/find">
-              <v-icon name="search" />&nbsp;Find Stuff
+              <v-icon name="shopping-cart" />&nbsp;Ask for Stuff
             </b-btn>
           </b-col>
         </b-row>
@@ -130,7 +130,7 @@ export default {
     console.log('ROOT INDEX MOUNTED')
     if (process.env.IS_MTAPP) {
       console.log('ROOT INDEX MOUNTED MTAPP')
-      this.$router.push('modtools')
+      this.$router.replace('modtools')
       return
     }
     if (process.browser) {
@@ -177,7 +177,7 @@ export default {
         }
 
         if (this.$nuxt.path !== route) {
-          this.$router.push(route)
+          this.$router.replace(route)
         }
       } catch (e) {
         console.log('Exception', e)

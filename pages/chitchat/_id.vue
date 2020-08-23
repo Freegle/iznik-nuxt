@@ -27,8 +27,8 @@
                 Give stuff
               </b-btn>
               <b-btn id="findbutton" ref="findbutton" to="/find" variant="secondary" class="post__button">
-                <v-icon name="search" class="mr-1" />
-                Find stuff
+                <v-icon name="shopping-cart" class="mr-1" />
+                Ask for stuff
               </b-btn>
             </div>
           </b-card-text>
@@ -42,7 +42,7 @@
         <div v-if="!id" class="mt-2">
           <b-card no-body class="mb-2">
             <b-card-text>
-              <b-textarea v-model="startThread" rows="2" max-rows="8" placeholder="Chat to nearby freeglers...ask for advice, recommendations, or have a blether.  To give or find stuff, please use the Give/Find buttons.  Everything here is public.  Be kind to each other; occasionally we may moderate to ensure things stay friendly." />
+              <b-textarea v-model="startThread" rows="2" max-rows="8" placeholder="Chat to nearby freeglers...ask for advice, recommendations, or have a blether.  To give or ask for stuff, please use the Give/Ask buttons.  Everything here is public.  Be kind to each other; occasionally we may moderate to ensure things stay friendly." />
               <b-img v-if="imageid" lazy thumbnail :src="imagethumb" class="image__uploaded" />
             </b-card-text>
             <hr class="mt-1 mb-1">

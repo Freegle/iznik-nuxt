@@ -31,7 +31,7 @@
         </div>
         <div class="mt-2">
           <b-btn size="lg" variant="secondary" to="/find">
-            <v-icon name="search" />&nbsp;Find something
+            <v-icon name="shopping-cart" />&nbsp;Ask for something
           </b-btn>
         </div>
         <div class="mt-2">

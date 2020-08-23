@@ -71,14 +71,14 @@
             <nuxt-link to="/browse">Browse</nuxt-link>.
             If you want to search for something specific, please go
             <!-- eslint-disable-next-line -->
-            <nuxt-link to="/find/search">here</nuxt-link>.
+            <nuxt-link to="/search">here</nuxt-link>.
           </p><p v-else>
             If you just want to see what's happening, please go to
             <!-- eslint-disable-next-line -->
             <nuxt-link to="/explore">Explore</nuxt-link>.
             If you want to search for something specific, please go
             <!-- eslint-disable-next-line -->
-            <nuxt-link to="/find/search">here</nuxt-link>.
+            <nuxt-link to="/search">here</nuxt-link>.
           </p>
         </NoticeMessage>
         <NoticeMessage v-if="warn" variant="warning" class="mt-1">

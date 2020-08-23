@@ -51,12 +51,6 @@ import 'vue2-datepicker/index.css'
 
 import dayjs from 'dayjs'
 
-// Maximum number of days an event can be spread over
-// GOOD : friday, saturday, sunday = 3 days
-// BAD  : friday, saturday, sunday, monday = 4 days
-// (does not take into consideration the time)
-const MAX_DURATION_DAYS = 3
-
 // Minimum length of event (it's rounded to 30 minute intervals anyway)
 const MIN_DURATION_MINUTES = 30
 
@@ -85,6 +79,11 @@ export default {
       type: String,
       required: false,
       default: 'Ends at:'
+    },
+    maxDurationDays: {
+      type: Number,
+      required: false,
+      default: null
     }
   },
   computed: {
@@ -136,17 +135,21 @@ export default {
       return dayjs(date).isBefore(dayjs(), 'day')
     },
     endDateDisabled(date) {
-      return (
+      let invalid =
         // not before today
         dayjs(date).isBefore(dayjs(), 'day') ||
         // not before the start date
-        dayjs(date).isBefore(dayjs(this.value.start), 'day') ||
-        // not more than 3 days long
-        dayjs(date).isAfter(
-          dayjs(this.value.start).add(MAX_DURATION_DAYS - 1, 'day'),
+        dayjs(date).isBefore(dayjs(this.value.start), 'day')
+
+      if (this.maxDurationDays && !invalid) {
+        // not too many days long
+        invalid = dayjs(date).isAfter(
+          dayjs(this.value.start).add(this.maxDurationDays - 1, 'day'),
           'day'
         )
-      )
+      }
+
+      return invalid
     },
     endTimeDisabled(date) {
       // at least 30 minutes after the start time

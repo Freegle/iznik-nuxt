@@ -5,7 +5,7 @@
         <b-card class="p-0">
           <b-card-body class="p-0">
             <div class="d-flex justify-content-between flex-wrap">
-              <b-form-input v-model="search" placeholder="Search chats" class="flex-shrink-1" :disabled="searching !== null" />
+              <b-form-input v-model="search" placeholder="Search chats (e.g. 'Joe' or 'mods')" class="flex-shrink-1" :disabled="searching !== null" />
               <b-btn class="mt-1" variant="white" @click="markAllRead">
                 <v-icon name="check" /> Mark all read
               </b-btn>

@@ -20,21 +20,25 @@
               <v-icon name="eye" scale="2" /><br>
               <span class="nav-item__text">Browse</span>
             </b-nav-item>
-            <b-nav-item v-if="!simple" id="menu-option-chitchat" class="text-center small p-0" to="/chitchat" @mousedown="maybeReload('/chitchat')">
-              <v-icon name="coffee" scale="2" /><br>
-              <span class="nav-item__text">ChitChat</span>
-            </b-nav-item>
-            <b-nav-item id="menu-option-myposts" class="text-center small p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
-              <v-icon name="home" scale="2" /><br>
-              <span class="nav-item__text">My Posts</span>
-            </b-nav-item>
             <b-nav-item id="menu-option-give" class="text-center small p-0" to="/give" @mousedown="maybeReload('/give')">
               <v-icon name="gift" scale="2" /><br>
               <span class="nav-item__text">Give</span>
             </b-nav-item>
             <b-nav-item id="menu-option-find" class="text-center small p-0" to="/find" @mousedown="maybeReload('/find')">
+              <v-icon name="shopping-cart" scale="2" /><br>
+              <span class="nav-item__text">&nbsp;Ask</span>
+            </b-nav-item>
+            <b-nav-item id="menu-option-myposts" class="text-center small p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
+              <v-icon name="home" scale="2" /><br>
+              <span class="nav-item__text">My Posts</span>
+            </b-nav-item>
+            <b-nav-item v-if="!simple" id="menu-option-chitchat" class="text-center small p-0" to="/chitchat" @mousedown="maybeReload('/chitchat')">
+              <v-icon name="coffee" scale="2" /><br>
+              <span class="nav-item__text">ChitChat</span>
+            </b-nav-item>
+            <b-nav-item id="menu-option-search" class="text-center small p-0" to="/search" @mousedown="maybeReload('/search')">
               <v-icon name="search" scale="2" /><br>
-              <span class="nav-item__text">Find</span>
+              <span class="nav-item__text">Search</span>
             </b-nav-item>
             <b-nav-item id="menu-option-explore" class="text-center small p-0" to="/explore" @mousedown="maybeReload('/explore')">
               <v-icon name="map-marker-alt" scale="2" /><br>
@@ -209,21 +213,25 @@
             <v-icon name="eye" scale="2" /><br>
             <span class="nav-item__text">Browse</span>
           </b-nav-item>
-          <b-nav-item v-if="!simple" class="text-center p-0 white" to="/chitchat" @mousedown="maybeReload('/chitchat')">
-            <v-icon name="coffee" scale="2" /><br>
-            <span class="nav-item__text">ChitChat</span>
-          </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
-            <v-icon name="home" scale="2" /><br>
-            <span class="nav-item__text">My Posts</span>
-          </b-nav-item>
           <b-nav-item class="text-center p-0" to="/give" @mousedown="maybeReload('/give')">
             <v-icon name="gift" scale="2" /><br>
             <span class="nav-item__text">Give</span>
           </b-nav-item>
           <b-nav-item class="text-center p-0" to="/find" @mousedown="maybeReload('/find')">
+            <v-icon name="shopping-cart" scale="2" /><br>
+            <span class="nav-item__text">Ask</span>
+          </b-nav-item>
+          <b-nav-item class="text-center p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
+            <v-icon name="home" scale="2" /><br>
+            <span class="nav-item__text">My Posts</span>
+          </b-nav-item>
+          <b-nav-item v-if="!simple" class="text-center p-0 white" to="/chitchat" @mousedown="maybeReload('/chitchat')">
+            <v-icon name="coffee" scale="2" /><br>
+            <span class="nav-item__text">ChitChat</span>
+          </b-nav-item>
+          <b-nav-item class="text-center p-0" to="/search" @mousedown="maybeReload('/search')">
             <v-icon name="search" scale="2" /><br>
-            <span class="nav-item__text">Find</span>
+            <span class="nav-item__text">Search</span>
           </b-nav-item>
           <b-nav-item class="text-center p-0" to="/explore" @mousedown="maybeReload('/explore')">
             <v-icon name="map-marker-alt" scale="2" /><br>
@@ -237,7 +245,7 @@
             <v-icon name="hands-helping" scale="2" /><br>
             <span class="nav-item__text">Volunteer</span>
           </b-nav-item>
-          <b-nav-item v-if="!simple" class="text-center p-0" to="/spread" @mousedown="maybeReload('/spread')">
+          <b-nav-item v-if="!simple" class="text-center p-0" to="/spread" @mousedown="maybeRemodload('/spread')">
             <v-icon name="bullhorn" scale="2" /><br>
             <span class="nav-item__text">Spread</span>
           </b-nav-item>

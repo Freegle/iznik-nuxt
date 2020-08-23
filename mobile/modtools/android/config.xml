@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="332" id="org.ilovefreegle.modtools" version="0.3.27" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="333" id="org.ilovefreegle.modtools" version="0.3.28" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>ModTools</name>
   <description>Tool to help moderators of Freegle and similar groups</description>
   <author email="geeks@ilovefreegle.org" href="https://ilovefreegle.org">Chris Cant, Freegle Ltd</author>
