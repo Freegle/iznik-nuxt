@@ -150,6 +150,14 @@
           <v-icon v-else name="angle-double-right" />&nbsp;
         </b-btn>
         <div v-else>
+          <b-form-group
+            class="flex-grow-1"
+            label="Your postcode:"
+            :label-for="'replytomessage-' + expanded.id"
+            description="So that we know how far away you are.  The closer the better."
+          >
+            <Postcode @selected="savePostcode" />
+          </b-form-group>
           <b-btn size="lg" variant="primary" class="d-none d-md-block" :disabled="disableSend" @click="sendReply">
             Send your reply
             <v-icon v-if="replying" name="sync" class="fa-spin" />
@@ -203,6 +211,7 @@ import MessageReplyInfo from './MessageReplyInfo'
 import EmailValidator from './EmailValidator'
 import NewUserInfo from './NewUserInfo'
 import MessagePhotosModal from './MessagePhotosModal'
+import Postcode from './Postcode'
 import twem from '~/assets/js/twem'
 import waitForRef from '@/mixins/waitForRef'
 
@@ -213,6 +222,7 @@ const MessageHistory = () => import('~/components/MessageHistory')
 
 export default {
   components: {
+    Postcode,
     MessagePhotosModal,
     NewUserInfo,
     EmailValidator,
@@ -546,7 +556,6 @@ export default {
         const el = this.$refs.breakpoint
         if (el) {
           const display = getComputedStyle(el, null).display
-          console.log('Display', display)
 
           if (display === 'none') {
             ret = true
@@ -554,9 +563,17 @@ export default {
         }
       }
 
-      console.log('>= Small?', ret)
-
       return ret
+    },
+    async savePostcode(pc) {
+      const settings = this.me.settings
+
+      if (!settings.mylocation || settings.mylocation.id !== pc.id) {
+        settings.mylocation = pc
+        await this.$store.dispatch('auth/saveAndGet', {
+          settings: settings
+        })
+      }
     }
   }
 }
