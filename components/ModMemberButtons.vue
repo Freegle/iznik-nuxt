@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div v-if="spam" class="d-inline">
+  <div class="d-flex flex-wrap">
+    <div v-if="spam" class="d-inline d-flex">
       <ModMemberButton
         v-if="spamignore"
         :member="member"
@@ -40,7 +40,7 @@
           variant="primary"
           icon="times"
           spamrequestremove
-          label="Request removal"
+          label="Request removal from spammer list"
         />
         <ModMemberButton
           v-if="hasPermissionSpamAdmin && !member.heldby"
@@ -66,11 +66,12 @@
           variant="primary"
           icon="times"
           spamrequestremove
-          label="Request removal"
+          label="Request removal from spammer list"
         />
       </div>
     </div>
-    <div v-else-if="approved" class="d-inline">
+    <div v-else-if="approved" class="d-inline d-flex">
+      <ModMemberActions v-if="actions" :userid="member.userid" :groupid="member.groupid" :banned="(Boolean)(member.bandate)" />
       <ModMemberButton
         v-if="spamignore && member.suspectreason"
         :member="member"
@@ -80,25 +81,12 @@
         label="Ignore"
       />
       <ModMemberButton
+        class="ml-1 mr-1"
         :member="member"
         variant="white"
         icon="envelope"
         leave
         label="Mail"
-      />
-      <ModMemberButton
-        :member="member"
-        variant="danger"
-        icon="trash-alt"
-        delete
-        label="Delete"
-      />
-      <ModMemberButton
-        :member="member"
-        variant="danger"
-        icon="ban"
-        spamreport
-        label="Spammer"
       />
     </div>
     <div class="d-inline">
@@ -124,10 +112,11 @@
 </template>
 <script>
 import ModMemberButton from './ModMemberButton'
+import ModMemberActions from './ModMemberActions'
 import waitForRef from '@/mixins/waitForRef'
 
 export default {
-  components: { ModMemberButton },
+  components: { ModMemberActions, ModMemberButton },
   mixins: [waitForRef],
   props: {
     member: {
@@ -140,6 +129,11 @@ export default {
       default: null
     },
     spamignore: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    actions: {
       type: Boolean,
       required: false,
       default: false

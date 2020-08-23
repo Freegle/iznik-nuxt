@@ -21,12 +21,12 @@
     <div class="text-center">
       <div class="mt-2">
         <b-btn size="lg" variant="primary" to="/find/whatisit">
-          <v-icon name="gift" />&nbsp;Find something else
+          <v-icon name="shopping-cart" />&nbsp;Find something else
         </b-btn>
       </div>
       <div class="mt-2">
         <b-btn size="lg" variant="secondary" to="/give/whatisit">
-          <v-icon name="search" />&nbsp;Give something
+          <v-icon name="gift" />&nbsp;Give something
         </b-btn>
       </div>
       <div class="mt-2">

@@ -47,7 +47,7 @@
               <span v-if="sourceheader" class="text-muted small">
                 via {{ sourceheader }}
               </span>
-              <span v-if="log.message.groups && log.message.groups[0].collection === 'Pending'" class="text-warning">
+              <span v-if="log.message.groups && log.message.groups[0] && log.message.groups[0].collection === 'Pending'" class="text-warning">
                 currently {{ log.message.groups[0].collection }}
               </span>
             </span>

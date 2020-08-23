@@ -5,14 +5,6 @@
         Hide this
       </b-btn>
       <p>
-        Tips and recycling centres are re-opening, but the
-        <ExternalLink href="https://www.gov.uk/government/publications/coronavirus-covid-19-advice-to-local-authorities-on-prioritising-waste-collections/managing-household-waste-and-recycling-centres-hwrcs-in-england-during-the-coronavirus-covid-19-pandemic#annex---communications-to-residents">
-          government advice
-        </ExternalLink>
-        encourages you to use online platforms such as ours instead.  Most Freegle communities are now open - some
-        may have restrictions or remain closed based on the local situation.
-      </p>
-      <p>
         We hope you and yours are safe.  Please freegle responsibly and help keep it that way.
       </p>
       <b-btn variant="secondary" @click="showModal = true">
@@ -30,10 +22,9 @@
 <script>
 import NoticeMessage from './NoticeMessage'
 import CovidSafeFreegling from './CovidSafeFreegling'
-const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
-  components: { CovidSafeFreegling, NoticeMessage, ExternalLink },
+  components: { CovidSafeFreegling, NoticeMessage },
   data: function() {
     return {
       showModal: false

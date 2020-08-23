@@ -85,7 +85,7 @@
                 - won't send mails
               </span>
             </div>
-            <ModMemberActions :userid="member.userid" :groupid="groupid" :banned="(Boolean)(member.bandate)" />
+            <ModMemberActions v-if="!footeractions" :userid="member.userid" :groupid="groupid" :banned="(Boolean)(member.bandate)" />
             <ModMemberships :user="member" />
             <ModMemberLogins :member="member" />
             <b-btn v-if="member.emails && member.emails.length" variant="link" @click="showEmails = !showEmails">
@@ -181,7 +181,7 @@
         </div>
       </b-card-body>
       <b-card-footer class="d-flex justify-content-between">
-        <ModMemberButtons :member="member" :modconfig="modconfig" :spamignore="spamignore" />
+        <ModMemberButtons :member="member" :modconfig="modconfig" :spamignore="spamignore" :actions="footeractions" />
         <div class="d-flex flex-wrap w-25 justify-content-end">
           <ModRole v-if="groupid" :userid="member.userid" :groupid="groupid" :role="member.role" />
           <ChatButton
@@ -257,6 +257,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    footeractions: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
   data: function() {

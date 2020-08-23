@@ -18,7 +18,7 @@
             <b-col cols="2" />
             <b-col cols="5">
               <b-button to="/find" class="mt-1" size="lg" block variant="secondary">
-                <v-icon name="search" />&nbsp;Find stuff
+                <v-icon name="shopping-cart" />&nbsp;Ask for stuff
               </b-button>
             </b-col>
           </b-row>
@@ -37,7 +37,7 @@
             <b-col cols="2" />
             <b-col cols="5">
               <b-button to="/find" class="mt-1" size="lg" block variant="secondary">
-                <v-icon name="search" />&nbsp;Find stuff
+                <v-icon name="shopping-cart" />&nbsp;Ask for stuff
               </b-button>
             </b-col>
           </b-row>

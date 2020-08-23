@@ -61,6 +61,11 @@ export default {
       required: false,
       default: false
     },
+    release: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     spamreport: {
       type: Boolean,
       required: false,
@@ -146,6 +151,9 @@ export default {
         await this.spamHold()
       } else if (this.spamignore) {
         await this.spamIgnore()
+      } else if (this.release) {
+        console.log('Release')
+        await this.releaseIt()
       } else {
         // We want to show a modal.
         if (this.leave) {

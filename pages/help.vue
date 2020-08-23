@@ -47,7 +47,7 @@
                 <template slot="content">
                   <p>
                     If you're looking for something, use the <nuxt-link to="/find">
-                      Find
+                      Ask
                     </nuxt-link> feature.
                   </p>
                   <p>

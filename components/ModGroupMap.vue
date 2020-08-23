@@ -19,12 +19,12 @@
         </b-form-checkbox>
       </div>
       <b-row class="m-0">
-        <b-col ref="mapcont" cols="12" md="8" lg="9" class="p-0">
+        <b-col ref="mapcont" cols="12" md="8" lg="9" class="p-0 w-100">
           <l-map
             ref="map"
             :zoom="groups ? 5 : 13"
             :center="center"
-            :style="'width: ' + mapWidth + '; height: ' + mapHeight + 'px'"
+            :style="'width: ' + mapWidth + 'px; height: ' + mapHeight + 'px'"
             :min-zoom="groups ? 5 : 13"
             :max-zoom="17"
             @update:bounds="boundsChanged"
@@ -456,6 +456,9 @@ export default {
       }
 
       await this.$store.dispatch('locations/fetch', data)
+
+      // Sometimes the map needs a kick to show correctly.
+      this.$refs.map.mapObject.invalidateSize()
 
       this.busy = false
     },

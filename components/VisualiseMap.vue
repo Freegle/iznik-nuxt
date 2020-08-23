@@ -5,7 +5,7 @@
         ref="map"
         :zoom="8"
         :center="center"
-        :style="'width: ' + mapWidth + '; height: ' + mapHeight + 'px'"
+        :style="'width: ' + mapWidth + 'px; height: ' + mapHeight + 'px'"
         :options="{ zoomControl: false, scrollWheelZoom: false}"
         :min-zoom="8"
         :max-zoom="15"

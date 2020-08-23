@@ -4,11 +4,13 @@
       <b-card-header class="p-1 p-md-2">
         <div class="d-flex justify-content-between">
           <div class="flex-grow-1">
-            <div v-if="editing" class="d-flex">
+            <div v-if="editing" class="d-flex flex-wrap">
               <GroupSelect v-model="editgroup" modonly class="mt-1 mr-1" />
               <div v-if="message.item && message.location" class="d-flex justify-content-start">
                 <b-select v-model="message.type" :options="typeOptions" class="type mr-1" size="lg" />
                 <b-input v-model="message.item.name" size="lg" class="mr-1" />
+              </div>
+              <div v-if="message.item && message.location">
                 <b-input-group>
                   <Postcode :value="message.location.name" :find="false" @selected="postcodeSelect" />
                 </b-input-group>
@@ -62,7 +64,7 @@
                 <NoticeMessage variant="warning" class="mb-2">
                   <p v-if="me.id === message.heldby.id">
                     You held this.  Other people will see a warning to check with
-                    you before releasing it.
+                    you before releasing it.  If you release it, it will stay in Pending.
                   </p>
                   <p v-else>
                     Held by <b>{{ message.heldby.displayname }}</b>.  Please check with them before releasing it.

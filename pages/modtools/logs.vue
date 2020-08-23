@@ -20,6 +20,7 @@
             <b-input-group-append>
               <b-button
                 variant="primary"
+                :disabled="busy"
                 @click="search"
               >
                 <v-icon name="search" />
@@ -56,7 +57,15 @@
         </div>
       </b-tab>
     </b-tabs>
-    <ModLogs v-if="groupid" :key="'modlogs-' + bump" class="bg-white" :groupid="groupid" />
+    <ModLogs
+      v-if="groupid"
+      ref="logs"
+      :key="'modlogs-' + bump"
+      class="bg-white"
+      :groupid="groupid"
+      @busy="busy=true"
+      @idle="busy=false"
+    />
   </div>
 </template>
 <script>
@@ -73,7 +82,8 @@ export default {
       bump: 0,
       groupid: null,
       type: 'messages',
-      term: null
+      term: null,
+      busy: false
     }
   },
   watch: {
@@ -95,7 +105,7 @@ export default {
 
       this.$store.dispatch('logs/setParams', {
         type: type,
-        search: this.term
+        search: this.term ? this.term.trim() : null
       })
 
       this.$store.dispatch('logs/clear')

@@ -29,8 +29,9 @@ export default {
     this.$store.dispatch('logs/clear')
   },
   methods: {
-    loadMore: function($state) {
+    loadMore: async function($state) {
       this.busy = true
+      this.$emit('busy')
       const params = this.$store.getters['logs/params']
 
       if (this.show < this.logs.length) {
@@ -39,32 +40,31 @@ export default {
       } else {
         const currentCount = this.logs.length
 
-        this.$store
-          .dispatch('logs/fetch', {
+        try {
+          await this.$store.dispatch('logs/fetch', {
             limit: this.limit,
             groupid: this.groupid,
             logtype: params.type,
             search: params.search
           })
-          .then(() => {
-            const logs = this.$store.getters['logs/list']
 
-            if (currentCount === logs.length) {
-              this.complete = true
-              $state.complete()
-            } else {
-              $state.loaded()
-              this.show++
-            }
-          })
-          .catch(e => {
+          const logs = this.$store.getters['logs/list']
+
+          if (currentCount === logs.length) {
+            this.complete = true
             $state.complete()
-            console.log('Complete on error', e)
-          })
-          .finally(() => {
-            this.busy = false
-          })
+          } else {
+            $state.loaded()
+            this.show++
+          }
+        } catch (e) {
+          $state.complete()
+          console.log('Complete on error', e)
+        }
       }
+
+      this.busy = false
+      this.$emit('idle')
     }
   }
 }
