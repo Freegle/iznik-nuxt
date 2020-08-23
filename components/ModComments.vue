@@ -3,7 +3,7 @@
     <ModComment v-for="comment in comments" :key="'modcomments-' + user.id + '-' + comment.id" :comment="comment" :user="user" />
     <div v-if="user.comments.length > 1" class="mb-1">
       <b-btn v-if="!showAll" variant="white" @click="showAll = true">
-        <v-icon name="tag" /> Show {{ user.comments.length - 1 | pluralize(['more note', 'more notes'], { includeNumber: true }) }}
+        <v-icon name="tag" /> Show {{ $pluralize('more note', user.comments.length - 1, true) }}
       </b-btn>
       <b-btn v-else variant="white" @click="showAll = false">
         <v-icon name="tag" /> Hide notes

@@ -329,7 +329,7 @@
                       <span v-if="s.item.mysettings.emailfrequency === -1">Immediately</span>
                       <span v-else-if="s.item.mysettings.emailfrequency === 0">Never</span>
                       <span v-else>
-                        {{ s.item.mysettings.emailfrequency | pluralize('hour', { includeNumber: true }) }}
+                        {{ $pluralize('hour', s.item.mysettings.emailfrequency, true) }}
                       </span>
                     </b-col>
                     <b-col cols="4">

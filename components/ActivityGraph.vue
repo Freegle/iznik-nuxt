@@ -146,7 +146,8 @@ export default {
           value: 'year',
           text: 'Year'
         }
-      ]
+      ],
+      dashboard: []
     }
 
     ret.graphTypes.push({ value: 'Activity', text: 'Activity' })
@@ -220,7 +221,7 @@ export default {
     },
     graphData() {
       const ret = [['Date', 'Count']]
-      const activity = this[this.graphType]
+      const activity = this.dashboard[this.graphType]
       const data = []
       const startd = this.$dayjs(this.start).startOf('day')
       const endd = this.$dayjs(this.end).endOf('day')
@@ -315,7 +316,7 @@ export default {
 
       Object.keys(res).forEach(comp => {
         // eslint-disable-next-line
-        Vue.set(this, comp, res[comp])
+        Vue.set(this.dashboard, comp, res[comp])
       })
 
       this.loading = false
@@ -334,19 +335,20 @@ export default {
       console.log(
         'Approved split',
         type,
-        this.MessageBreakdown,
-        this.ApprovedMessageCount
+        this.dashboard.MessageBreakdown,
+        this.dashboard.ApprovedMessageCount
       )
 
       type = type.replace('s', '')
 
       const factor =
-        this.MessageBreakdown[type] /
-        (this.MessageBreakdown.Offer + this.MessageBreakdown.Wanted)
+        this.dashboard.MessageBreakdown[type] /
+        (this.dashboard.MessageBreakdown.Offer +
+          this.dashboard.MessageBreakdown.Wanted)
       console.log('Factor', factor)
 
       const ret = []
-      this.ApprovedMessageCount.forEach(ent => {
+      this.dashboard.ApprovedMessageCount.forEach(ent => {
         ret.push({
           date: ent.date,
           count: Math.round(ent.count) * factor

@@ -50,7 +50,7 @@
             <component :is="heading" class="purple">
               {{ totalGifts.toLocaleString() }}
               <br>
-              {{ totalGifts | pluralize(['GIFT', 'GIFTS'], { includeNumber: false }) }}
+              {{ $pluralize('GIFT', totalGifts, false) }}
               <span v-if="range">
                 <br>
                 <span class="text-muted small">
@@ -64,7 +64,7 @@
             <component :is="heading" class="text-primary">
               {{ totalMembers.toLocaleString() }}
               <br>
-              {{ totalMembers | pluralize(['MEMBER', 'MEMBERS'], { includeNumber: false }) }}
+              {{ $pluralize('MEMBER', totalMembers, false) }}
               <span v-if="range">
                 <br>
                 <span class="text-muted small">
@@ -78,10 +78,10 @@
             <component :is="heading" class="green">
               {{ groupCount.toLocaleString() }}
               <br>
-              {{ groupCount | pluralize(['COMMUNITY', 'COMMUNITIES'], { includeNumber: false }) }}
+              {{ $pluralize('COMMUNITY', groupCount, false) }}
               <br>
               <span class="text-muted small">
-                {{ groupCount | pluralize(['SERVES', 'SERVE'], { includeNumber: false }) }} THIS AREA
+                {{ $pluralize('SERVES', groupCount, false) }} THIS AREA
               </span>
             </component>
           </b-col>

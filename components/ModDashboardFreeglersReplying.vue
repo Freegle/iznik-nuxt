@@ -25,7 +25,7 @@
               {{ user.displayname }}
             </b-col>
             <b-col cols="12" md="3">
-              {{ user.replies | pluralize(['reply', 'replies'], { includeNumber: true }) }}
+              {{ $pluralize('reply', user.replies, true) }}
             </b-col>
           </b-row>
         </b-card-body>

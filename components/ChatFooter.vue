@@ -21,7 +21,7 @@
           <Ratings v-if="otheruser" :id="otheruserid" :key="'otheruser-' + otheruserid" />
         </notice-message>
         <notice-message v-else-if="expectedreply" variant="warning" class="clickme" @click.native="showInfo">
-          <v-icon name="exclamation-triangle" />&nbsp;{{ expectedreply | pluralize(['freegler is', 'freeglers are'], { includeNumber: true }) }} still waiting for them to reply.  You might not hear back from them.
+          <v-icon name="exclamation-triangle" />&nbsp;{{ $pluralize('freegler is', expectedreply, true) }} still waiting for them to reply.  You might not hear back from them.
         </notice-message>
         <notice-message v-else-if="otheruser && otheruser.hasReneged" variant="warning" class="clickme" @click.native="showInfo">
           <v-icon name="exclamation-triangle" />&nbsp;Things haven't always worked out for this freegler.  That might not be their fault, but please make very clear arrangements.

@@ -2,7 +2,7 @@
   <div>
     <NoticeMessage v-if="invalid.length" variant="danger">
       <div v-if="summary">
-        <v-icon name="exclamation-triangle" /> {{ invalid.length }} Facebook {{ invalid.length | pluralize(['page has', 'pages have']) }} become unlinked.
+        <v-icon name="exclamation-triangle" /> {{ invalid.length }} Facebook {{ $pluralize('page has', invalid.length) }} become unlinked.
         <b-btn variant="white" @click="expand">
           Click to view
         </b-btn>
@@ -22,7 +22,7 @@
     </NoticeMessage>
     <NoticeMessage v-if="notlinked.length" variant="warning" class="mt-1">
       <div v-if="summary">
-        <v-icon name="exclamation-triangle" /> {{ notlinked.length | pluralize(['community needs', 'communities need'], { includeNumber: true }) }} to be linked to a Facebook page.
+        <v-icon name="exclamation-triangle" /> {{ $pluralize('community needs', notlinked.length, true) }} to be linked to a Facebook page.
         <b-btn variant="white" @click="expand">
           Click to view
         </b-btn>

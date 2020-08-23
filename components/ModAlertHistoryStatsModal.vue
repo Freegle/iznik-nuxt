@@ -21,7 +21,7 @@
             </p>
             <h2>Group Stats</h2>
             <p>
-              Sent to {{ alert.stats.responses.groups.length | pluralize('group', { includeNumber: true }) }}.
+              Sent to {{ $pluralize('group', alert.stats.responses.groups.length, true) }}.
             </p>
             <GChart
               type="PieChart"
@@ -30,8 +30,8 @@
             />
             <h2>Volunteer Stats</h2>
             <p>
-              Sent to {{ alert.stats.sent.mods | pluralize('volunteer', { includeNumber: true }) }}
-              via {{ alert.stats.sent.modemails | pluralize(['email address', 'email addresses'], { includeNumber: true }) }}.
+              Sent to {{ $pluralize('volunteer', alert.stats.sent.mods, true) }}
+              via {{ $pluralize('email address', alert.stats.sent.modemails, true) }}.
             </p>
             <GChart
               type="PieChart"

@@ -157,15 +157,15 @@
                     Hide
                   </span>
                   <span class="d-none d-sm-inline">
-                    Hide {{ message.fromuser.emails.length | pluralize('email', { includeNumber: true }) }}
+                    Hide {{ $pluralize('email', message.fromuser.emails.length, true) }}
                   </span>
                 </span>
                 <span v-else>
                   <span class="d-inline d-sm-none">
-                    <v-icon name="envelope" /> {{ message.fromuser.emails.length | pluralize('email', { includeNumber: true }) }}
+                    <v-icon name="envelope" /> {{ $pluralize('email', message.fromuser.emails.length, true) }}
                   </span>
                   <span class="d-none d-sm-inline">
-                    Show {{ message.fromuser.emails.length | pluralize('email', { includeNumber: true }) }}
+                    Show {{ $pluralize('email', message.fromuser.emails.length, true) }}
                   </span>
                 </span>
               </b-btn>

@@ -17,7 +17,7 @@
       </div>
       <div v-if="groupid">
         <p v-if="group && group.membercount" class="mt-1">
-          This group has {{ group.membercount | pluralize('member', { includeNumber: true }) }}.
+          This group has {{ $pluralize('member', group.membercount, true) }}.
         </p>
         <div v-for="member in visibleMembers" :key="'memberlist-' + member.id" class="p-0 mt-2">
           <ModMember :member="member" :actions="false" />

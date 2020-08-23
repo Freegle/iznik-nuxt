@@ -64,19 +64,19 @@
           <div>
             <h4>
               <b-badge :variant="offers > 0 ? 'success' : 'light'" title="Recent OFFERs" @click="showHistory('Offer')">
-                <v-icon name="gift" class="fa-fw" /> {{ offers | pluralize([ 'OFFER', 'OFFERs' ], { includeNumber: true }) }}
+                <v-icon name="gift" class="fa-fw" /> {{ $pluralize('OFFER', offers, true) }}
               </b-badge>
               <b-badge :variant="wanteds > 0 ? 'success' : 'light'" title="Recent WANTEDs" @click="showHistory('Wanted')">
-                <v-icon name="search" class="fa-fw" /> {{ wanteds | pluralize([ 'WANTED', 'WANTEDs' ], { includeNumber: true }) }}
+                <v-icon name="search" class="fa-fw" /> {{ $pluralize('WANTED', wanteds, true) }}
               </b-badge>
               <b-badge :variant="(member.modmails && member.modmails) > 0 ? 'danger' : 'light'" title="Recent ModMails" @click="showModmails">
-                <v-icon name="exclamation-triangle" class="fa-fw" /> {{ (member.modmails ? member.modmails : 0) | pluralize([ 'Modmail', 'Modmails' ], { includeNumber: true }) }}
+                <v-icon name="exclamation-triangle" class="fa-fw" /> {{ $pluralize('Modmail', (member.modmails ? member.modmails : 0), true) }}
               </b-badge>
               <b-badge v-if="userinfo" :variant="userinfo.replies > 0 ? 'success' : 'light'" title="Recent replies to posts">
-                <v-icon name="reply" class="fa-fw" /> {{ userinfo.replies | pluralize([ 'reply', 'replies' ], { includeNumber: true }) }}
+                <v-icon name="reply" class="fa-fw" /> {{ $pluralize('reply', userinfo.replies, true) }}
               </b-badge>
               <b-badge v-if="userinfo" :variant="userinfo.expectedreplies > 0 ? 'danger' : 'light'" title="Recent outstanding replies requested">
-                <v-icon name="clock" class="fa-fw" /> {{ (userinfo.expectedreplies || 0) | pluralize('RSVP', { includeNumber: true }) }}
+                <v-icon name="clock" class="fa-fw" /> {{ $pluralize('RSVP', (userinfo.expectedreplies || 0), true) }}
               </b-badge>
             </h4>
             <div v-if="member.lastaccess" :class="'mb-1 ' + (inactive ? 'text-danger': '')">
@@ -95,7 +95,7 @@
                   Hide
                 </span>
                 <span class="d-none d-sm-inline">
-                  Show {{ member.emails.length | pluralize('email', { includeNumber: true }) }}
+                  Show {{ $pluralize('email', member.emails.length, true) }}
                 </span>
               </span>
               <span v-else>
@@ -103,7 +103,7 @@
                   {{ member.emails.length }}
                 </span>
                 <span class="d-none d-sm-inline">
-                  Show {{ member.emails.length | pluralize('email', { includeNumber: true }) }}
+                  Show {{ $pluralize('email', member.emails.length, true) }}
                 </span>
               </span>
             </b-btn>

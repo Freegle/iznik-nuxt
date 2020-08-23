@@ -15,7 +15,7 @@
             </div>
           </div>
           <div v-else-if="result.spines.length" variant="info">
-            <h3>We found {{ books.length | pluralize('book', { includeNumber: true }) }}</h3>
+            <h3>We found {{ $pluralize('book', books.length, true) }}</h3>
             <div>
               <p>
                 Please rate how many we found:

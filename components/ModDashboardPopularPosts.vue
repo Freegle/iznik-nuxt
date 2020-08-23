@@ -29,12 +29,12 @@
             </b-col>
             <b-col cols="6" sm="2">
               <div>
-                <v-icon name="eye" /> web {{ msg.views | pluralize('view', { includeNumber: true }) }}
+                <v-icon name="eye" /> web {{ $pluralize('view', msg.views, true) }}
               </div>
             </b-col>
             <b-col cols="6" sm="2">
               <div>
-                <v-icon name="reply" /> {{ msg.replies | pluralize(['reply', 'replies'], { includeNumber: true }) }}
+                <v-icon name="reply" /> {{ $pluralize('reply', msg.replies, true ) }}
               </div>
             </b-col>
           </b-row>

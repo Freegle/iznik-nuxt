@@ -176,6 +176,9 @@ module.exports = {
     // Our template formatting utils.
     '~/plugins/filters',
 
+    // Our special plural rules.
+    '~/plugins/pluralize',
+
     // Our directives
     '~/plugins/directives',
 

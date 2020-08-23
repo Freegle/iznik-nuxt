@@ -8,19 +8,19 @@
             Posted by {{ user.displayname }}
           </span>
           <span v-if="milesaway" class="align-middle">
-            &bull; <b>about {{ milesaway | pluralize('mile', { includeNumber: true }) }} away</b>
+            &bull; <b>about {{ $pluralize('mile', milesaway, true) }} away</b>
           </span>
           <br class="d-block d-sm-none">
           <span v-if="!modinfo && (user.info.openoffers + user.info.openwanteds > 0)" class="align-middle">
             <span class="d-none d-sm-inline">&bull;</span>
             <span v-if="user.info.openoffers" class="text-success">
-              {{ user.info.openoffers | pluralize([ 'open OFFER', 'open OFFERs' ], { includeNumber: true }) }}
+              {{ $pluralize('open OFFER', user.info.openoffers, true) }}
             </span>
             <span v-if="user.info.openoffers && user.info.openwanteds">
               &bull;
             </span>
             <span v-if="user.info.openwanteds" class="text-success">
-              {{ user.info.openwanteds | pluralize([ 'open WANTED', 'open WANTEDs' ], { includeNumber: true }) }}
+              {{ $pluralize('open WANTED', user.info.openwanteds, true) }}
             </span>
           </span>
         </span>

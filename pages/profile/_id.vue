@@ -24,7 +24,7 @@
             <v-icon name="map-marker-alt" class="fa-fw" />
             <span v-if="user.info.publiclocation">
               <span v-if="user.info.publiclocation.location">
-                {{ user.info.publiclocation.location }}, {{ user.info.milesaway | pluralize([ 'mile', 'miles' ], { includeNumber: true }) }} away.
+                {{ user.info.publiclocation.location }}, {{ $pluralize('mile', user.info.milesaway, true) }} away.
               </span>
               <span v-else-if="user.info.publiclocation.groupname">
                 {{ user.info.publiclocation.groupname }}
@@ -40,7 +40,7 @@
       <b-card border-variant="success" header-text-variant="text-success" class="mt-2">
         <template v-slot:header>
           <v-icon name="gift" />
-          {{ activeOffers.length }} active {{ activeOffers.length | pluralize(['OFFER', 'OFFERs']) }}
+          {{ activeOffers.length }} active {{ $pluralize('OFFER', activeOffers.length) }}
         </template>
         <b-card-body class="p-0">
           <div v-if="activeOffers.length">
@@ -56,7 +56,7 @@
       <b-card border-variant="success" header-text-variant="text-info" class="mt-2">
         <template v-slot:header>
           <v-icon name="search" />
-          {{ activeWanteds.length }} active {{ activeWanteds.length | pluralize(['WANTED', 'WANTEDs']) }}
+          {{ activeWanteds.length }} active {{ $pluralize('WANTED', activeWanteds.length) }}
         </template>
         <b-card-body class="p-0">
           <div v-if="activeWanteds.length">
@@ -78,19 +78,19 @@
         <b-card-body class="p-0 pt-1">
           <b-row v-if="user.info.offers + user.info.wanteds + user.info.replies > 0">
             <b-col cols="12" md="4">
-              <v-icon name="gift" /> {{ user.info.offers | pluralize([ 'recent OFFER', 'recent OFFERs' ], { includeNumber: true }) }}.
+              <v-icon name="gift" /> {{ $pluralize( 'recent OFFER', user.info.offers, true) }}.
             </b-col>
             <b-col cols="12" md="4">
-              <v-icon name="search" /> {{ user.info.wanteds | pluralize([ 'recent WANTED', 'recent WANTEDs' ], { includeNumber: true }) }}.
+              <v-icon name="search" /> {{ $pluralize('recent WANTED', user.info.wanteds, true) }}.
             </b-col>
             <b-col cols="12" md="4">
-              <v-icon name="envelope" /> {{ user.info.replies | pluralize([ 'reply', 'replies' ], { includeNumber: true }) }}.
+              <v-icon name="envelope" /> {{ $pluralize('reply', user.info.replies, true) }}.
             </b-col>
           </b-row>
           <b-row>
             <b-col>
               <span v-if="user.info.collected">
-                <v-icon name="check" /> Picked up about {{ user.info.collected | pluralize('item', { includeNumber: true }) }}.
+                <v-icon name="check" /> Picked up about {{ $pluralize('item', user.info.collected, true) }}.
               </span>
               <span v-else>
                 <v-icon name="check" class="text-faded" />&nbsp;Not received any items recently, so far as we know.

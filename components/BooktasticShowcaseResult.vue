@@ -5,7 +5,7 @@
         <b-card-header>
           <div class="d-flex justify-content-between">
             <div>
-              {{ result.books.length | pluralize('book', { includeNumber: true }) }}
+              {{ $pluralize('book', result.books.length, true) }}
             </div>
             <div>
               <v-icon v-if="rating === 'Good'" name="smile" class="text-success" title="Probably a good effort" scale="2" />

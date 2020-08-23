@@ -4,7 +4,7 @@
     <a :href="'https://freegle.in/' + shortlink.name">freegle.in/{{ shortlink.name }}</a>
     <span class="text-muted small">
       created {{ shortlink.created | timeago }}
-      {{ shortlink.clicks | pluralize('click', { includeNumber: true }) }}
+      {{ $pluralize('click', shortlink.clicks, true) }}
     </span>
   </div>
 </template>

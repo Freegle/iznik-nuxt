@@ -46,7 +46,7 @@
       </h2>
       <div v-if="me && me.invitesleft > 0">
         <p class="bg-info p-2">
-          You have <b>{{ me.invitesleft | pluralize('invitation', { includeNumber: true }) }}</b> left.
+          You have <b>{{ $pluralize('invitation', me.invitesleft, true) }}</b> left.
         </p>
         <b-card class="mb-1">
           <p>

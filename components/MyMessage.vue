@@ -40,7 +40,7 @@
             <div>
               <span v-if="message.replycount > 0" class="ml-1">
                 <b-badge variant="info">
-                  <v-icon name="user" class="fa-fw" /> {{ message.replycount | pluralize(['reply', 'replies'], { includeNumber: true }) }}
+                  <v-icon name="user" class="fa-fw" /> {{ $pluralize('reply', message.replycount, true) }}
                 </b-badge>
               </span>
               <span v-if="message.outcomes && message.outcomes.length > 0" class="ml-1">

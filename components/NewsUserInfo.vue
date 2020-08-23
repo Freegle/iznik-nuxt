@@ -7,10 +7,10 @@
       <span v-if="user.activecounts && user.activecounts.offers + user.activecounts.wanteds > 0">
         &bull;
         <span v-if="user.activecounts.offers" class="text-success">
-          {{ user.activecounts.offers | pluralize([ 'OFFER', 'OFFERs' ], { includeNumber: true }) }}&nbsp;
+          {{ $pluralize('OFFER', user.activecounts.offers, true) }}&nbsp;
         </span>
         <span v-if="user.activecounts.wanteds" class="text-success">
-          {{ user.activecounts.wanteds | pluralize([ 'WANTED', 'WANTEDs' ], { includeNumber: true }) }}&nbsp;
+          {{ $pluralize('WANTED', user.activecounts.wanteds, true) }}&nbsp;
         </span>
       </span>
       <span v-if="user.settings.showmod">

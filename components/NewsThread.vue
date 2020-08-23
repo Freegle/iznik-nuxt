@@ -53,7 +53,7 @@
       </b-card-body>
       <div slot="footer">
         <b-button v-if="showEarlierRepliesOption" variant="link" class="pl-0" @click.prevent="showAllReplies = true">
-          Show earlier {{ numberOfRepliesNotShown.length | pluralize(['reply', 'replies']) }} ({{ numberOfRepliesNotShown }})
+          Show earlier {{ $pluralize('reply', numberOfRepliesNotShown.length) }} ({{ numberOfRepliesNotShown }})
         </b-button>
         <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id" class="list-unstyled mb-2">
           <li>

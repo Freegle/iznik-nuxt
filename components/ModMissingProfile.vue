@@ -2,7 +2,7 @@
   <div>
     <NoticeMessage v-if="missing.length" variant="warning" class="mt-1">
       <div v-if="summary">
-        <v-icon name="exclamation-triangle" /> {{ missing.length | pluralize(['group is', 'groups are'], { includeNumber: true }) }} missing taglines or profile pictures.
+        <v-icon name="exclamation-triangle" /> {{ $pluralize('group is', missing.length, true) }} missing taglines or profile pictures.
         <b-btn variant="white" @click="expand">
           Click to view
         </b-btn>

@@ -48,12 +48,12 @@
             <span v-if="oldOfferCount > 0">
               <span v-if="showOldOffers" class="float-right">
                 <b-btn variant="white" title="Show old OFFERs" @click="toggleOldOffer">
-                  Hide {{ oldOfferCount | pluralize([ 'old OFFER', 'old OFFERs' ], { includeNumber: true }) }}
+                  Hide {{ $pluralize('old OFFER', oldOfferCount, true) }}
                 </b-btn>
               </span>
               <span v-else class="float-right">
                 <b-btn variant="white" @click="toggleOldOffer">
-                  +{{ oldOfferCount | pluralize([ 'old OFFER', 'old OFFERs' ], { includeNumber: true }) }}
+                  +{{ $pluralize('old OFFER', oldOfferCount, true) }}
                 </b-btn>
               </span>
             </span>
@@ -101,12 +101,12 @@
             <span v-if="oldWantedCount > 0">
               <span v-if="showOldWanteds" class="float-right">
                 <b-btn variant="white" title="Show old WANTEDs" @click="toggleOldWanted">
-                  Hide {{ oldWantedCount | pluralize([ 'old WANTED', 'old WANTEDs' ], { includeNumber: true }) }}
+                  Hide {{ $pluralize('old WANTED', oldWantedCount, true) }}
                 </b-btn>
               </span>
               <span v-else class="float-right">
                 <b-btn variant="white" @click="toggleOldWanted">
-                  +{{ oldWantedCount | pluralize([ 'old WANTED', 'old WANTEDs' ], { includeNumber: true }) }}
+                  +{{ $pluralize('old WANTED', oldWantedCount, true) }}
                 </b-btn>
               </span>
             </span>
@@ -154,7 +154,7 @@
               <ul v-if="busy || searches && Object.keys(searches).length > 0" class="list-group list-group-horizontal flex-wrap">
                 <li v-for="search in searches" :key="'search-' + search.id" class="text-left mt-1 list-group-item bg-white border text-nowrap mr-2">
                   <b-btn :to="'/search/' + search.term" variant="white d-inline">
-                    <v-icon name="search" /> {{ search.term }} <span class="text-muted small">{{ search.daysago | pluralize(['day ago', 'days ago'], { includeNumber: true }) }}</span>
+                    <v-icon name="search" /> {{ search.term }} <span class="text-muted small">{{ $pluralize('day ago', search.daysago, true) }}</span>
                   </b-btn>
                   <span class="ml-3 d-inline clickme" @click="deleteSearch(search.id)">
                     <v-icon v-if="removingSearch === search.id" name="sync" class="text-success fa-spin" />
