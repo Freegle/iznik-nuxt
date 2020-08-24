@@ -81,6 +81,12 @@ export default {
       return ret
     },
 
+    milesaway() {
+      return this.otheruser && this.otheruser.info
+        ? this.otheruser.info.milesaway
+        : null
+    },
+
     replytime() {
       let ret = null
       let secs = null
