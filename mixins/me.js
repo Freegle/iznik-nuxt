@@ -81,6 +81,24 @@ Vue.mixin({
     amAModOn(groupid) {
       const member = this.$store.getters['auth/member'](groupid)
       return member === 'Moderator' || member === 'Owner'
+    },
+    amActiveModOn(groupid) {
+      const groups = this.$store.getters['auth/groups']
+
+      let ret = false
+
+      groups.forEach(g => {
+        if (g.id === groupid) {
+          console.log('Check', g)
+          ret = true
+
+          if (g.mysettings && 'active' in g.mysettings) {
+            ret = g.mysettings.active
+          }
+        }
+      })
+
+      return ret
     }
   }
 })
