@@ -1,5 +1,8 @@
 <template>
-  <b-card v-if="messages && messages.length" bg-light class="recentviews">
+  <b-card v-if="show && messages && messages.length" bg-light class="recentviews">
+    <b-btn variant="link" class="float-right" @click="hideit">
+      Hide this
+    </b-btn>
     <b-card-title title-tag="h2" class="header--size4">
       Recently Viewed
     </b-card-title>
@@ -14,6 +17,9 @@
       </div>
     </div>
   </b-card>
+  <div v-else class="text-info text-right clickme" @click="showit">
+    Show recently viewed posts.
+  </div>
 </template>
 <script>
 export default {
@@ -21,10 +27,27 @@ export default {
   computed: {
     messages() {
       return this.$store.getters['messages/getViewed']
+    },
+    show() {
+      return !this.$store.getters['misc/get']('hideviewed')
     }
   },
   async mounted() {
     await this.$store.dispatch('messages/fetchViewed')
+  },
+  methods: {
+    hideit() {
+      this.$store.dispatch('misc/set', {
+        key: 'hideviewed',
+        value: true
+      })
+    },
+    showit() {
+      this.$store.dispatch('misc/set', {
+        key: 'hideviewed',
+        value: false
+      })
+    }
   }
 }
 </script>
