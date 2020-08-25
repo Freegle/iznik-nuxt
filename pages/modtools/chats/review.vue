@@ -76,7 +76,7 @@ export default {
       if (!this.groupid) {
         console.log('Filter for active')
         ret = ret.filter(m => {
-          console.log('Filter', m.group)
+          console.log('Filter', m)
           return this.amActiveModOn(m.group.id)
         })
       }
