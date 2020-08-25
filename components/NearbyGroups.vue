@@ -12,7 +12,7 @@
       </p>
       <div v-for="(group, index) in groups" :key="'group-' + group.id">
         <div :class="index > 1 ? 'd-none d-md-block mb-2' : 'mb-2'">
-          <b-button variant="secondary" size="sm" @click="join">
+          <b-button variant="secondary" size="sm" @click="join(group.id)">
             Join {{ group.namedisplay }}
           </b-button>
           <span class="small text-muted">
@@ -94,18 +94,8 @@ export default {
       }
     }
   },
-  async mounted() {
-    const me = this.$store.getters['auth/user']
-    if (
-      me &&
-      me.settings &&
-      me.settings.mylocation &&
-      me.settings.mylocation.name
-    ) {
-      await this.$store.dispatch('locations/fetch', {
-        typeahead: me.settings.mylocation.name
-      })
-    }
+  mounted() {
+    this.fetchNearby()
   },
   methods: {
     hideit() {
@@ -125,11 +115,33 @@ export default {
         value: false
       })
     },
-    join() {
+    async join(groupid) {
       this.$api.bandit.chosen({
         uid: 'nearbygroups',
         variant: 'join'
       })
+
+      const me = this.$store.getters['auth/user']
+
+      await this.$store.dispatch('auth/joinGroup', {
+        userid: me.id,
+        groupid: groupid
+      })
+
+      await this.fetchNearby()
+    },
+    async fetchNearby() {
+      const me = this.$store.getters['auth/user']
+      if (
+        me &&
+        me.settings &&
+        me.settings.mylocation &&
+        me.settings.mylocation.name
+      ) {
+        await this.$store.dispatch('locations/fetch', {
+          typeahead: me.settings.mylocation.name
+        })
+      }
     }
   }
 }
