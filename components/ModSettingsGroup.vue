@@ -344,6 +344,14 @@
               toggle-checked="Yes"
               toggle-unchecked="No"
             />
+            <ModGroupSetting
+              :groupid="groupid"
+              name="settings.nearbygroups"
+              label="Nearby members?"
+              description="Members may live outside your community, but near the boundary.  You can make them aware of your community if they are nearby.  In miles, 0 to disable."
+              type="number"
+              :step="1"
+            />
           </b-card-body>
         </b-collapse>
       </b-card>
@@ -395,7 +403,7 @@
               label="Reply distance check?"
               description="When members reply to messages which are this far apart, in miles, then they may be flagged for review.  Default 50, 0 to disable."
               type="number"
-              step="5"
+              :step="5"
             />
           </b-card-body>
         </b-collapse>

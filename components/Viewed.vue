@@ -1,24 +1,26 @@
 <template>
-  <b-card v-if="show && messages && messages.length" bg-light class="recentviews">
-    <b-btn variant="link" class="float-right" @click="hideit">
-      Hide this
-    </b-btn>
-    <b-card-title title-tag="h2" class="header--size4">
-      Recently Viewed
-    </b-card-title>
-    <div v-for="(message, index) in messages" :key="'message-' + message.id">
-      <div :class="index > 1 ? 'd-none d-md-block' : ''">
-        <nuxt-link :to="'/message/' + message.id">
-          {{ message.subject }}
-        </nuxt-link>
-        <span class="small text-muted">
-          {{ message.viewedat | timeago }}
-        </span>
+  <div v-if="messages && messages.length">
+    <b-card v-if="show" bg-light class="recentviews">
+      <b-btn variant="link" class="float-right" @click="hideit">
+        Hide this
+      </b-btn>
+      <b-card-title title-tag="h2" class="header--size4">
+        Recently Viewed
+      </b-card-title>
+      <div v-for="(message, index) in messages" :key="'message-' + message.id">
+        <div :class="index > 1 ? 'd-none d-md-block' : ''">
+          <nuxt-link :to="'/message/' + message.id">
+            {{ message.subject }}
+          </nuxt-link>
+          <span class="small text-muted">
+            {{ message.viewedat | timeago }}
+          </span>
+        </div>
       </div>
+    </b-card>
+    <div v-else class="text-info text-right clickme" @click="showit">
+      Show recently viewed posts.
     </div>
-  </b-card>
-  <div v-else class="text-info text-right clickme" @click="showit">
-    Show recently viewed posts.
   </div>
 </template>
 <script>
