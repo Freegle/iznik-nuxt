@@ -70,12 +70,12 @@ export default {
   },
   watch: {
     mapWidth() {
-      if (this.$refs.map.mapObject) {
+      if (this.$refs.map && this.$refs.map.mapObject) {
         this.$refs.map.mapObject.invalidateSize()
       }
     },
     mapHeight() {
-      if (this.$refs.map.mapObject) {
+      if (this.$refs.map && this.$refs.map.mapObject) {
         this.$refs.map.mapObject.invalidateSize()
       }
     }
