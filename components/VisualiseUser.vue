@@ -98,6 +98,7 @@ export default {
 
   0% {
     transform: scale(1, 1) translateY(0);
+    opacity: 0.2;
   }
   10% {
     transform: scale(1.1, 0.9) translateY(0);
@@ -107,6 +108,7 @@ export default {
   }
   50% {
     transform: scale(1.05, 0.95) translateY(0);
+    opacity: 0.7;
   }
   57% {
     transform: scale(1, 1) translateY(-5px);
@@ -116,6 +118,7 @@ export default {
   }
   100% {
     transform: scale(1, 1) translateY(0);
+    opacity: 1;
   }
 }
 </style>
