@@ -57,7 +57,7 @@ export default {
 
       return new L.DivIcon({
         html: re.outerHTML,
-        className: 'clear'
+        className: 'clear jason'
       })
     }
   },
@@ -73,3 +73,49 @@ export default {
   }
 }
 </script>
+
+<style>
+.jason .ProfileImage__container .rounded-circle {
+  animation-duration: 1s;
+  animation-iteration-count: 2;
+
+  animation-name: bounce-1;
+  animation-timing-function: ease;
+}
+
+@keyframes bounce-1 {
+  /*
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+*/
+
+  0% {
+    transform: scale(1, 1) translateY(0);
+  }
+  10% {
+    transform: scale(1.1, 0.9) translateY(0);
+  }
+  30% {
+    transform: scale(0.9, 1.1) translateY(-8px);
+  }
+  50% {
+    transform: scale(1.05, 0.95) translateY(0);
+  }
+  57% {
+    transform: scale(1, 1) translateY(-5px);
+  }
+  64% {
+    transform: scale(1, 1) translateY(0);
+  }
+  100% {
+    transform: scale(1, 1) translateY(0);
+  }
+}
+</style>
