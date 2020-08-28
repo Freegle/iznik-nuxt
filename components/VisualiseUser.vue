@@ -77,25 +77,43 @@ export default {
 <style>
 .jason .ProfileImage__container .rounded-circle {
   animation-duration: 1s;
-  animation-iteration-count: 2;
+  animation-iteration-count: 1;
 
   animation-name: bounce-1;
   animation-timing-function: ease;
 }
 
 @keyframes bounce-1 {
-  /*
   0% {
+    transform: translateY(-40px);
+    opacity: 0.1;
+  }
+  20% {
     transform: translateY(0);
+    opacity: 0.3;
+  }
+  30% {
+    transform: translateY(-25px);
+  }
+  40% {
+    transform: translateY(0);
+    opacity: ;
   }
   50% {
-    transform: translateY(-8px);
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(0);
+  }
+  70% {
+    transform: translateY(-5px);
   }
   100% {
     transform: translateY(0);
+    opacity: 1;
   }
-*/
 
+  /*
   0% {
     transform: scale(1, 1) translateY(0);
     opacity: 0.2;
@@ -120,5 +138,6 @@ export default {
     transform: scale(1, 1) translateY(0);
     opacity: 1;
   }
+  */
 }
 </style>
