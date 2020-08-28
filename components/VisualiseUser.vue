@@ -79,37 +79,29 @@ export default {
   animation-duration: 1s;
   animation-iteration-count: 1;
 
-  animation-name: bounce-1;
+  animation-name: bounce-animation;
   animation-timing-function: ease;
 }
 
-@keyframes bounce-1 {
+@keyframes bounce-animation {
   0% {
     transform: translateY(-40px);
     opacity: 0.1;
   }
-  20% {
+  20%,
+  40%,
+  60%,
+  80% {
     transform: translateY(0);
-    opacity: 0.3;
   }
   30% {
     transform: translateY(-25px);
   }
-  40% {
-    transform: translateY(0);
-    opacity: 0.4;
-  }
   50% {
     transform: translateY(-10px);
   }
-  60% {
-    transform: translateY(0);
-  }
   70% {
     transform: translateY(-6px);
-  }
-  80% {
-    transform: translateY(0);
   }
   90% {
     transform: translateY(-3px);
