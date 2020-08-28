@@ -57,7 +57,7 @@ export default {
 
       return new L.DivIcon({
         html: re.outerHTML,
-        className: 'clear jason'
+        className: 'clear map__user-icon'
       })
     }
   },
@@ -75,7 +75,7 @@ export default {
 </script>
 
 <style>
-.jason .ProfileImage__container .rounded-circle {
+.map__user-icon .ProfileImage__container img {
   animation-duration: 1s;
   animation-iteration-count: 1;
 
@@ -97,7 +97,7 @@ export default {
   }
   40% {
     transform: translateY(0);
-    opacity: ;
+    opacity: 0.4;
   }
   50% {
     transform: translateY(-10px);
@@ -106,38 +106,17 @@ export default {
     transform: translateY(0);
   }
   70% {
-    transform: translateY(-5px);
+    transform: translateY(-6px);
+  }
+  80% {
+    transform: translateY(0);
+  }
+  90% {
+    transform: translateY(-3px);
   }
   100% {
     transform: translateY(0);
     opacity: 1;
   }
-
-  /*
-  0% {
-    transform: scale(1, 1) translateY(0);
-    opacity: 0.2;
-  }
-  10% {
-    transform: scale(1.1, 0.9) translateY(0);
-  }
-  30% {
-    transform: scale(0.9, 1.1) translateY(-8px);
-  }
-  50% {
-    transform: scale(1.05, 0.95) translateY(0);
-    opacity: 0.7;
-  }
-  57% {
-    transform: scale(1, 1) translateY(-5px);
-  }
-  64% {
-    transform: scale(1, 1) translateY(0);
-  }
-  100% {
-    transform: scale(1, 1) translateY(0);
-    opacity: 1;
-  }
-  */
 }
 </style>
