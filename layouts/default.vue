@@ -591,9 +591,6 @@ export default {
     },
 
     async logOut() {
-      // Tell the login modal not to show.
-      this.$refs.loginModal.hide()
-
       // Remove all cookies, both client and server.  This seems to be necessary to kill off the PHPSESSID cookie
       // on the server, which would otherwise keep us logged in despite our efforts.
       try {
