@@ -648,9 +648,7 @@ export default {
     },
 
     requestLogin() {
-      console.log('Request login')
       this.$refs.loginModal.show()
-      console.log('Requested login')
     },
 
     maybeReload(route) {
