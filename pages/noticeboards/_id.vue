@@ -33,7 +33,7 @@
                   :center="center"
                   :style="'width: ' + mapWidth + '; height: ' + mapWidth + 'px'"
                   :min-zoom="5"
-                  :max-zoom="13"
+                  :max-zoom="17"
                 >
                   <l-tile-layer :url="osmtile" :attribution="attribution" />
                   <NoticeboardMarker v-for="noticeboard in noticeboards" :key="'marker-' + noticeboard.id" :noticeboard="noticeboard" />
