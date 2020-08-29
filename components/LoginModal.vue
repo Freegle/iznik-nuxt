@@ -240,6 +240,11 @@ export default {
 
     showModal: {
       get() {
+        console.log(
+          'calcShowModal',
+          this.pleaseShowModal,
+          this.$store.getters['auth/forceLogin']
+        )
         return this.pleaseShowModal || this.$store.getters['auth/forceLogin']
       },
       set(value) {
@@ -303,6 +308,7 @@ export default {
       this.bumpTimer = setTimeout(this.bumpIt, 500)
     },
     show() {
+      console.log('Show login modal')
       this.pleaseShowModal = true
       this.nativeLoginError = null
       this.socialLoginError = null
