@@ -57,7 +57,6 @@ export default {
                     'nearbygroups' in g.settings ? g.settings.nearbygroups : 5
 
                   // We want to use polydist because that's the distance to the group area, not to the centre.
-                  console.log(g.nameshort, g.polydist, distallowed)
                   if (g.polydist <= distallowed) {
                     // Make distance pretty.
                     if (g.polydist > 1) {
