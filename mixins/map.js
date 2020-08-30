@@ -27,9 +27,7 @@ export default {
       return 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
     },
     mapWidth() {
-      console.log('Calculate width', this.$refs.mapcont)
       const contWidth = this.$refs.mapcont ? this.$refs.mapcont.clientWidth : 0
-      console.log('Return', contWidth)
       return contWidth + this.bump - this.bump
     },
     mapHeight() {
