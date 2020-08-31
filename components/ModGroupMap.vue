@@ -25,7 +25,7 @@
             :zoom="groups ? 5 : 13"
             :center="center"
             :style="'width: ' + mapWidth + 'px; height: ' + mapHeight + 'px'"
-            :min-zoom="groups ? 5 : 13"
+            :min-zoom="groups ? 5 : 12"
             :max-zoom="17"
             @update:bounds="boundsChanged"
             @update:zoom="boundsChanged"
