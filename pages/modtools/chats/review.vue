@@ -74,10 +74,8 @@ export default {
       let ret = this.$store.getters['chatmessages/getMessages'](REVIEWCHAT)
 
       if (!this.groupid) {
-        console.log('Filter for active')
         ret = ret.filter(m => {
-          console.log('Filter', m)
-          return this.amActiveModOn(m.group.id)
+          return m && this.amActiveModOn(m.group.id)
         })
       }
 
