@@ -47,7 +47,7 @@
             (the example below is for <a href="https://www.ilovefreegle.org/stats/York-Freegle">https://www.ilovefreegle.org/stats/York-Freegle</a>).
             We also use WRAP's Benefits of Reuse tool to generate CO2 and cost savings data.
           </p>
-          <b-img class="mt-1" src="~static/councils/yorkstats.png" />
+          <b-img class="mt-1" fluid src="~static/councils/yorkstats.png" />
           <p>
             You can also search for statistics for specific local authorities from
             <a href="https://www.ilovefreegle.org/stats/authorities">https://www.ilovefreegle.org/stats/authorities</a>
@@ -61,7 +61,7 @@
             showing you where and how much Freegle activity is taking place in a given area (see example below).  You can
             find this at <a href="https://www.ilovefreegle.org/stats/heatmap">https://www.ilovefreegle.org/stats/heatmap</a>.
           </p>
-          <b-img class="mt-1" src="~static/councils/heatmap.png" />
+          <b-img fluid class="mt-1" src="~static/councils/heatmap.png" />
         </b-card-text>
       </b-card>
     </b-col>
