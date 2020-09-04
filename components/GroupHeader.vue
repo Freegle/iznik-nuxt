@@ -57,9 +57,11 @@
       <h2 class="group-volunteers mb-3">
         You can contact our lovely local volunteers here:
       </h2>
-      <b-button class="mb-3" variant="white" :href="'mailto:' + modsemail">
-        <v-icon name="question-circle" />&nbsp;Contact&nbsp;volunteers
-      </b-button>
+      <ExternalLink :href="'mailto:' + modsemail">
+        <span class="btn btn-white mb-3">
+          <v-icon name="question-circle" />&nbsp;Contact&nbsp;volunteers
+        </span>
+      </ExternalLink>
       <div v-if="group.showmods && group.showmods.length" class="d-flex flex-wrap justify-content-start">
         <GroupShowMod v-for="mod in group.showmods" :key="'showmod-' + mod.id" :modtoshow="mod" class="ml-1" />
       </div>
