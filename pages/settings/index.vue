@@ -401,7 +401,7 @@
                 Email Alerts
               </h3>
               <p>
-                Mail me chat messages from other freeglers I'm talking to about OFFERs and WANTEDs.
+                Mail me replies from other freeglers  about OFFERs and WANTEDs.
               </p>
               <OurToggle
                 v-model="me.settings.notifications.email"
@@ -413,8 +413,9 @@
                 color="#61AE24"
                 @change="changeNotification($event, 'email')"
               />
+              <hr>
               <p>
-                We can email you a copy of chat messages you send on here.
+                We can email you a copy of your own chat messages sent on the website.
               </p>
               <OurToggle
                 v-model="me.settings.notifications.emailmine"
@@ -426,6 +427,7 @@
                 color="#61AE24"
                 @change="changeNotification($event, 'emailmine')"
               />
+              <hr>
               <p>
                 We can email you if there's an unread notification on here, or about recent ChitChat posts from nearby
                 freeglers.
@@ -440,8 +442,10 @@
                 color="#61AE24"
                 @change="changeNotifChitchat"
               />
+              <hr>
               <p>
-                We can email you about OFFERs/WANTEDs you might be interested in.
+                We can email you about specific OFFERs/WANTEDs we think you might be interested in, or to
+                remind you that Freegle's would love you to freegle again.
               </p>
               <OurToggle
                 v-model="relevantallowed"
@@ -453,6 +457,7 @@
                 color="#61AE24"
                 @change="changeRelevant"
               />
+              <hr>
               <p>
                 We send occasional newsletters or collections of nice stories from other freeglers..
               </p>
@@ -466,6 +471,7 @@
                 color="#61AE24"
                 @change="changeNewsletter"
               />
+              <hr>
               <h3 class="header--size5 header5__color">
                 Other Alerts
               </h3>
@@ -484,8 +490,9 @@
                 color="#61AE24"
                 @change="changeNotification($event, 'app')"
               />
+              <hr>
               <p>
-                You'll see a popup asking if we can send these. They appear on your taskbar, or on mobile at the top. Also known as "web push" notifications.
+                You'll see a popup asking if we can send "web push" notifications. They appear on your taskbar, or on mobile at the top.
               </p>
               <OurToggle
                 v-model="me.settings.notifications.push"
@@ -497,6 +504,7 @@
                 color="#61AE24"
                 @change="changeNotification($event, 'push')"
               />
+              <hr>
               <p>
                 This is the red bell icon you know and love. They don't show on mobile - Facebook doesn't do that.
               </p>
