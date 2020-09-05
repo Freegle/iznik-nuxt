@@ -63,6 +63,9 @@
         <b-btn variant="white" class="mr-2 mb-1" @click="profile">
           <v-icon name="user" /> Profile
         </b-btn>
+        <b-btn variant="white" class="mr-2 mb-1" @click="addAComment">
+          <v-icon name="tag" /> Add note
+        </b-btn>
       </div>
       <h3 class="mt-2">
         Location
@@ -257,6 +260,7 @@
     <ConfirmModal v-if="purgeConfirm" ref="purgeConfirm" :title="'Purge ' + user.displayname + ' from the system?'" message="<p><b>This can't be undone.</b></p><p>Are you completely sure you want to do this?</p>" @confirm="purgeConfirmed" />
     <ProfileModal v-if="user && user.info" :id="id" ref="profile" />
     <ModSpammerReport v-if="showSpamModal" ref="spamConfirm" :user="reportUser" />
+    <ModCommentAddModal v-if="addComment" ref="addComment" :user="user" @added="updateComments" />
   </b-card>
 </template>
 <script>
@@ -274,6 +278,7 @@ import SpinButton from './SpinButton'
 import NoticeMessage from './NoticeMessage'
 import ModMergeButton from './ModMergeButton'
 const ExternalLink = () => import('~/components/ExternalLink')
+const ModCommentAddModal = () => import('~/components/ModCommentAddModal')
 
 const SHOW = 3
 
@@ -291,7 +296,8 @@ export default {
     ConfirmModal,
     ModLogsModal,
     ModSupportMembership,
-    ExternalLink
+    ExternalLink,
+    ModCommentAddModal
   },
   mixins: [waitForRef],
   props: {
@@ -316,7 +322,8 @@ export default {
       showAllEmailHistories: false,
       showSpamModal: false,
       newpassword: null,
-      newemail: null
+      newemail: null,
+      addComment: false
     }
   },
   computed: {
@@ -487,6 +494,27 @@ export default {
       if (!window.getSelection().toString()) {
         this.expanded = !this.expanded
       }
+    },
+    addAComment() {
+      this.addComment = true
+      this.waitForRef('addComment', () => {
+        this.$refs.addComment.show()
+      })
+    },
+    async updateComments() {
+      // The server API doesn't make it easy to refresh comments on memberships, because we can't refetch a
+      // specific membership id.  Instead fetch the user and then pass any comments to the store to update there.
+      await this.$store.dispatch('user/fetch', {
+        id: this.user.id,
+        info: true
+      })
+
+      const user = this.$store.getters['user/get'](this.user.id)
+
+      await this.$store.dispatch('members/updateComments', {
+        userid: this.user.id,
+        comments: user.comments
+      })
     }
   }
 }

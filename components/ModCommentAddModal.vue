@@ -49,7 +49,8 @@ export default {
     },
     groupid: {
       type: Number,
-      required: true
+      required: false,
+      default: null
     }
   },
   data: function() {
