@@ -9,9 +9,6 @@
           <option value="Comments">
             With Comments
           </option>
-          <option :value="null">
-            All
-          </option>
           <option value="Happy">
             Happy
           </option>
