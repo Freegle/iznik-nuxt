@@ -282,11 +282,6 @@ export default {
     pleaseShowModal: {
       immediate: true,
       handler(newVal) {
-        console.log(
-          'Please show modal changed',
-          newVal,
-          this.$store.getters['auth/forceLogin']
-        )
         this.showModal = newVal || this.$store.getters['auth/forceLogin']
       }
     },
