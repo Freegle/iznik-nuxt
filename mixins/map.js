@@ -95,27 +95,32 @@ export default {
     },
     mapPoly: function(poly, options) {
       let bounds = null
-      const wkt = new Wkt.Wkt()
-      wkt.read(poly)
 
-      const mapobj = this.$refs.map.mapObject
-      const obj = wkt.toObject(mapobj.defaults)
+      try {
+        const wkt = new Wkt.Wkt()
+        wkt.read(poly)
 
-      if (obj) {
-        // This might be a multipolygon.
-        if (Array.isArray(obj)) {
-          for (const ent of obj) {
-            ent.addTo(mapobj)
-            ent.setStyle(options)
-            const thisbounds = ent.getBounds()
-            bounds.extend(thisbounds.getNorthEast())
-            bounds.extend(thisbounds.getSouthWest())
+        const mapobj = this.$refs.map.mapObject
+        const obj = wkt.toObject(mapobj.defaults)
+
+        if (obj) {
+          // This might be a multipolygon.
+          if (Array.isArray(obj)) {
+            for (const ent of obj) {
+              ent.addTo(mapobj)
+              ent.setStyle(options)
+              const thisbounds = ent.getBounds()
+              bounds.extend(thisbounds.getNorthEast())
+              bounds.extend(thisbounds.getSouthWest())
+            }
+          } else {
+            obj.addTo(mapobj)
+            obj.setStyle(options)
+            bounds = obj.getBounds()
           }
-        } else {
-          obj.addTo(mapobj)
-          obj.setStyle(options)
-          bounds = obj.getBounds()
         }
+      } catch (e) {
+        console.log('Map poly failed', poly, e)
       }
 
       return bounds
