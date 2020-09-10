@@ -135,11 +135,11 @@
                 <b-btn v-if="!rejected && !queued && message.type === 'Wanted' && !received" variant="primary" class="m-1" @click="outcome('Received')">
                   <v-icon name="check" /> Mark as RECEIVED
                 </b-btn>
-                <b-btn v-if="!rejected && !taken && !received && !withdrawn" variant="white" class="m-1" @click="outcome('Withdrawn')">
-                  <v-icon name="trash-alt" /> Withdraw
-                </b-btn>
                 <b-btn v-if="!rejected && !queued && message.canedit" variant="secondary" class="m-1" @click="edit">
                   <v-icon name="pen" /> Edit
+                </b-btn>
+                <b-btn v-if="!rejected && !taken && !received && !withdrawn" variant="white" class="m-1" @click="outcome('Withdrawn')">
+                  <v-icon name="trash-alt" /> Withdraw
                 </b-btn>
                 <b-btn v-if="!rejected && message.canrepost" variant="white" class="m-1" @click="repost">
                   <v-icon name="sync" /> Repost
