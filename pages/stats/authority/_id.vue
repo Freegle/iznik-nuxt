@@ -788,19 +788,32 @@ export default {
 
         // If there is only one group in the area we're looking at, or the group is entirely contained within the
         // area, then show it irrespective of activity otherwise it looks silly.
-        if (avpermonth > 1 || authority.groups.length === 1 || overlap === 1) {
-          groupcount++
+        for (let i = 0; i < 2; i++) {
+          if (
+            i === 1 ||
+            avpermonth > 1 ||
+            authority.groups.length === 1 ||
+            overlap === 1
+          ) {
+            groupcount++
 
-          stats[group.id] = {
-            overlap: overlap,
-            avpermonth: avpermonth,
-            totalweight: totalWeight,
-            Weights: weights,
-            ApprovedMemberCount: store.getters['stats/get'](
-              'ApprovedMemberCount'
-            ),
-            OutcomesPerMonth: store.getters['stats/get']('OutcomesPerMonth'),
-            group: group
+            stats[group.id] = {
+              overlap: overlap,
+              avpermonth: avpermonth,
+              totalweight: totalWeight,
+              Weights: weights,
+              ApprovedMemberCount: store.getters['stats/get'](
+                'ApprovedMemberCount'
+              ),
+              OutcomesPerMonth: store.getters['stats/get']('OutcomesPerMonth'),
+              group: group
+            }
+          }
+
+          if (groupcount > 0) {
+            // If we found some data abive our threshold, stop.  Otherwise try again so that we show no activity
+            // but at least which groups overlap.
+            break
           }
         }
       }
