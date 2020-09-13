@@ -1,5 +1,5 @@
 <template>
-  <l-marker :lat-lng="[noticeboard.lat, noticeboard.lng]" :interactive="false" :icon="icon" />
+  <l-marker :lat-lng="[noticeboard.lat, noticeboard.lng]" :interactive="false" :icon="icon" :title="noticeboard.id" />
 </template>
 <script>
 import L from 'leaflet'

@@ -14,6 +14,10 @@ export default class NoticeboardAPI extends BaseAPI {
     return this.$patch('/noticeboard', data)
   }
 
+  action(data) {
+    return this.$post('/noticeboard', data)
+  }
+
   del(id) {
     return this.$del('/noticeboard', { id })
   }
