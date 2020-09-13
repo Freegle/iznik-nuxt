@@ -62,7 +62,7 @@
           </div>
           <div>
             Added
-            <span v-id="noticeboard.addedby">
+            <span v-if="noticeboard.addedby">
               by {{ noticeboard.addedby.displayname }}
             </span>
           </div>

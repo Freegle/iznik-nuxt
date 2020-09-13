@@ -6,7 +6,7 @@
       </div>
       <div>
         Marked as no longer active
-        <span v-id="check.user">
+        <span v-if="check.user">
           by {{ check.user.displayname }}
         </span>
       </div>
@@ -17,7 +17,7 @@
       </div>
       <div>
         Poster put up
-        <span v-id="check.user">
+        <span v-if="check.user">
           by {{ check.user.displayname }}
         </span>
       </div>
@@ -28,7 +28,7 @@
       </div>
       <div>
         <em>"{{ check.comments }}"</em> -
-        <span v-id="check.user">
+        <span v-if="check.user">
           by {{ check.user.displayname }}
         </span>
       </div>
