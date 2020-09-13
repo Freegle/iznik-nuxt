@@ -445,7 +445,7 @@
               <hr>
               <p>
                 We can email you about specific OFFERs/WANTEDs we think you might be interested in, or to
-                remind you that Freegle's would love you to freegle again.
+                remind you that we would love you to freegle again.
               </p>
               <OurToggle
                 v-model="relevantallowed"
