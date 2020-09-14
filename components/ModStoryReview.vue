@@ -39,7 +39,7 @@
               <v-icon name="times" /> Good for newsletter
             </b-btn>
             <b-btn v-else variant="primary" class="mr-2 mb-1" @click="useForPublicity">
-              <v-icon name="times" /> Good for publicity
+              <v-icon name="check" /> Good for publicity
             </b-btn>
           </div>
           <ChatButton
