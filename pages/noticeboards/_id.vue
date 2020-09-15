@@ -42,7 +42,7 @@
                   :max-zoom="17"
                 >
                   <l-tile-layer :url="osmtile" :attribution="attribution" />
-                  <NoticeboardMarker v-for="noticeboard in noticeboards" :key="'marker-' + noticeboard.id" :noticeboard="noticeboard" />
+                  <NoticeboardMarker v-for="n in noticeboards" :key="'marker-' + n.id" :noticeboard="n" />
                 </l-map>
               </client-only>
             </div>
