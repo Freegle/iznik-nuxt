@@ -275,6 +275,15 @@
             />
             <ModGroupSetting
               :groupid="groupid"
+              name="settings.engagement"
+              label="Member engagement?"
+              description="We take various steps to nudge members to become more active freeglers.  This may result in them receiving occasional emails/notifications.  Members can turn this on/off themselves, so you would only turn this off if you want to override their decision."
+              type="toggle"
+              toggle-checked="Yes"
+              toggle-unchecked="No"
+            />
+            <ModGroupSetting
+              :groupid="groupid"
               name="settings.maxagetoshow"
               label="Expire posts"
               description="Posts will be considered as expired (i.e. no longer available) after the greater of this number of days and the maximum duration of autoreposts (i.e. max * repost time).  Set to 0 to use the default of 30 days. Max 90 days."

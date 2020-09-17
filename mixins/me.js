@@ -89,7 +89,6 @@ Vue.mixin({
 
       groups.forEach(g => {
         if (g.id === groupid) {
-          console.log('Check', g)
           ret = true
 
           if (g.mysettings && 'active' in g.mysettings) {

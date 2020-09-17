@@ -1,5 +1,7 @@
 <template>
-  <ExploreMap :region="region" />
+  <client-only>
+    <ExploreMap :region="region" />
+  </client-only>
 </template>
 <script>
 import loginOptional from '@/mixins/loginOptional.js'

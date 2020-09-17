@@ -43,10 +43,16 @@
       rounded
       @click="$emit('click') "
     />
+    <ConfirmModal v-if="confirm" ref="confirm" :title="'Delete this photo?'" @confirm="removeConfirmed" />
   </div>
 </template>
 <script>
+import waitForRef from '@/mixins/waitForRef'
+const ConfirmModal = () => import('./ConfirmModal.vue')
+
 export default {
+  components: { ConfirmModal },
+  mixins: [waitForRef],
   props: {
     id: {
       type: Number,
@@ -68,11 +74,18 @@ export default {
   },
   data: function() {
     return {
-      cacheBust: Date.now()
+      cacheBust: Date.now(),
+      confirm: false
     }
   },
   methods: {
     remove() {
+      this.confirm = true
+      this.waitForRef('confirm', () => {
+        this.$refs.confirm.show()
+      })
+    },
+    removeConfirmed() {
       this.$emit('remove', this.id)
     },
     rotate(deg) {

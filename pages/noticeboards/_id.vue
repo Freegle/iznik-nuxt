@@ -4,17 +4,25 @@
       <b-col cols="0" md="3" class="d-none d-md-block" />
       <b-col cols="12" md="6" class="p-0">
         <div>
-          <h1>Noticeboards</h1>
-          <p>
-            Here's where people have put up posters.  <b>Knowing where these are really helps us</b>, because we can
-            ask other freeglers to keep them up to date.
-          </p>
-          <p>
-            So please put up posters - and let us know where you put them.
-          </p>
-          <b-row>
-            <b-col>
-              <a href="https://freegle.in/A4Poster" target="_blank" class="float-left">
+          <div v-if="id" class="bg-white">
+            <div v-if="noticeboard">
+              <h1 class="text-center">
+                {{ noticeboard.name }}
+              </h1>
+              <NoticeboardDetails :noticeboard="noticeboard" />
+            </div>
+          </div>
+          <div v-else>
+            <h1>Noticeboards</h1>
+            <p>
+              Here's where people have put up posters.  <b>Knowing where these are really helps us</b>, because we can
+              ask other freeglers to keep them up to date.
+            </p>
+            <p>
+              So please put up posters - and let us know where you put them.
+            </p>
+            <div class="d-flex justify-content-between">
+              <a href="https://freegle.in/A4Poster" target="_blank">
                 <b-btn variant="primary" size="lg">
                   Download poster
                 </b-btn>
@@ -22,10 +30,8 @@
               <b-btn variant="secondary" size="lg" class="float-right" @click="added">
                 I put up a poster!
               </b-btn>
-            </b-col>
-          </b-row>
-          <b-row class="m-0">
-            <b-col ref="mapcont" class="mt-4 p-0">
+            </div>
+            <div ref="mapcont" class="mt-4">
               <client-only>
                 <l-map
                   ref="map"
@@ -33,14 +39,14 @@
                   :center="center"
                   :style="'width: ' + mapWidth + '; height: ' + mapWidth + 'px'"
                   :min-zoom="5"
-                  :max-zoom="13"
+                  :max-zoom="17"
                 >
                   <l-tile-layer :url="osmtile" :attribution="attribution" />
                   <NoticeboardMarker v-for="noticeboard in noticeboards" :key="'marker-' + noticeboard.id" :noticeboard="noticeboard" />
                 </l-map>
               </client-only>
-            </b-col>
-          </b-row>
+            </div>
+          </div>
         </div>
       </b-col>
       <b-col cols="0" md="3" class="d-none d-md-block" />
@@ -52,6 +58,7 @@
 </style>
 <script>
 import { gmapApi } from 'vue2-google-maps'
+import NoticeboardDetails from '../../components/NoticeboardDetails'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 import map from '@/mixins/map.js'
@@ -61,6 +68,7 @@ const PosterModal = () => import('~/components/PosterModal')
 
 export default {
   components: {
+    NoticeboardDetails,
     NoticeboardMarker,
     PosterModal
   },
@@ -79,6 +87,9 @@ export default {
       get() {
         return process.browser ? gmapApi : []
       }
+    },
+    noticeboard() {
+      return this.id ? this.$store.getters['noticeboards/get'](this.id) : null
     },
     noticeboards() {
       return this.$store.getters['noticeboards/list']

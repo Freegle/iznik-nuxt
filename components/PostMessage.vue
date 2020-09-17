@@ -44,7 +44,7 @@
     <b-row v-if="suggestions.length && !item.length">
       <b-col>
         <b-card v-if="attachments.length" bg-variant="info" class="mb-1">
-          <p>Based on your photo, here's what we think it might be.  Click to choose.</p>
+          <p>Based on your photo, here are possible suggestions you can click:</p>
           <b-btn v-for="suggestion in suggestions" :key="suggestion.id" variant="white" class="mr-1" @click="chooseSuggestion(suggestion)">
             {{ suggestion.name }}
           </b-btn>

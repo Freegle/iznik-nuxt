@@ -30,7 +30,8 @@
               v-if="fetched"
               :key="'heatmap-' + weightedData.length"
               :lat-lngs="weightedData"
-              :radius="zoom*6"
+              :radius="zoom*3"
+              :gradient="{0.05: 'darkblue', 0.1: 'darkgreen', 0.2: 'yellow', 0.5: 'orange', 0.8: 'red'}"
             />
           </l-map>
         </client-only>
@@ -111,7 +112,7 @@ export default {
 
         data.forEach(d => {
           if (this.bounds.contains([d[0], d[1]])) {
-            weighted.push([d[0], d[1], lineartolog(d[2])])
+            weighted.push([d[0], d[1], 1 - lineartolog(1 - d[2] / max)])
           }
         })
       }

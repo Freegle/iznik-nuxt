@@ -1,7 +1,7 @@
 <template>
   <div>
     <span ref="breakpoint" class="d-inline d-sm-none" />
-    <b-card class="p-0 mb-1" variant="success">
+    <b-card class="p-0" variant="success">
       <b-card-header :class="'pl-2 pr-2 clearfix card-header' + (ispromised ? ' promisedfade' : '')">
         <b-card-title class="msgsubj mb-0 header--size4 card-header__title" title-tag="h3">
           <Highlighter

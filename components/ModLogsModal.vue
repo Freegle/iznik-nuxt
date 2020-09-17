@@ -98,6 +98,7 @@ export default {
       await this.$store.dispatch('user/fetch', {
         id: this.userid,
         logs: true,
+        info: true,
         modmailsonly: this.modmailsonly,
         logcontext:
           this.user && this.user.logcontext ? this.user.logcontext : null

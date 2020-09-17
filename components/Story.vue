@@ -26,6 +26,9 @@
         <div class="text-muted small d-flex justify-content-between">
           <span>
             {{ story.date | timeago }} on {{ story.groupname }}
+            <span v-if="amAModOn(story.groupid)">
+              (by {{ story.user.email }} <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ story.user.id }})
+            </span>
           </span>
           <nuxt-link :to="'/story/' + story.id">
             #{{ story.id }}

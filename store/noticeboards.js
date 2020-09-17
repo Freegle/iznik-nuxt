@@ -25,6 +25,9 @@ export const mutations = {
 export const getters = {
   list: state => {
     return state.list
+  },
+  get: state => id => {
+    return state.list[id]
   }
 }
 
@@ -49,6 +52,39 @@ export const actions = {
 
   async edit({ commit, getters, dispatch }, params) {
     await this.$api.noticeboard.save(params)
+    await dispatch('fetch', { id: params.id })
+  },
+
+  async refresh({ commit, getters, dispatch }, params) {
+    await this.$api.noticeboard.action({
+      action: 'Refreshed',
+      id: params.id
+    })
+    await dispatch('fetch', { id: params.id })
+  },
+
+  async decline({ commit, getters, dispatch }, params) {
+    await this.$api.noticeboard.action({
+      action: 'Declined',
+      id: params.id
+    })
+    await dispatch('fetch', { id: params.id })
+  },
+
+  async inactive({ commit, getters, dispatch }, params) {
+    await this.$api.noticeboard.action({
+      action: 'Inactive',
+      id: params.id
+    })
+    await dispatch('fetch', { id: params.id })
+  },
+
+  async comments({ commit, getters, dispatch }, params) {
+    await this.$api.noticeboard.action({
+      action: 'Comments',
+      id: params.id,
+      comments: params.comments
+    })
     await dispatch('fetch', { id: params.id })
   },
 
