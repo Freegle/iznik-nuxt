@@ -190,8 +190,9 @@ export default {
 
     items() {
       const ret = []
+      console.log('Items', this.schedule)
 
-      if (this.schedule && this.bump) {
+      if (this.schedule !== null && this.bump) {
         // hour in the schedule data structure is misnamed - at the moment it runs from 0..2 and is really a slot
         // of morning/afternoon/evening.
         //
@@ -220,6 +221,7 @@ export default {
             // data get in there because of bugs.  We want to ensure that we can always set it even if the data
             // is bad.
             if (
+              this.schedule &&
               this.schedule.schedule &&
               Array.isArray(this.schedule.schedule)
             ) {
