@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-modal
-      :id="'modLogsModal-' + userid"
+      :id="'modLogsModal-' + userid + '-' + modmailsonly"
       v-model="showModal"
       :title="title"
       size="xl"

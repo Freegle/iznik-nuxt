@@ -62,23 +62,7 @@
             @change="settingsChange"
           />
           <div>
-            <h4>
-              <b-badge :variant="offers > 0 ? 'success' : 'light'" title="Recent OFFERs" @click="showHistory('Offer')">
-                <v-icon name="gift" class="fa-fw" /> {{ offers | pluralize([ 'OFFER', 'OFFERs' ], { includeNumber: true }) }}
-              </b-badge>
-              <b-badge :variant="wanteds > 0 ? 'success' : 'light'" title="Recent WANTEDs" @click="showHistory('Wanted')">
-                <v-icon name="search" class="fa-fw" /> {{ wanteds | pluralize([ 'WANTED', 'WANTEDs' ], { includeNumber: true }) }}
-              </b-badge>
-              <b-badge :variant="(member.modmails && member.modmails) > 0 ? 'danger' : 'light'" title="Recent ModMails" @click="showModmails">
-                <v-icon name="exclamation-triangle" class="fa-fw" /> {{ (member.modmails ? member.modmails : 0) | pluralize([ 'Modmail', 'Modmails' ], { includeNumber: true }) }}
-              </b-badge>
-              <b-badge v-if="userinfo" :variant="userinfo.replies > 0 ? 'success' : 'light'" title="Recent replies to posts">
-                <v-icon name="reply" class="fa-fw" /> {{ userinfo.replies | pluralize([ 'reply', 'replies' ], { includeNumber: true }) }}
-              </b-badge>
-              <b-badge v-if="userinfo" :variant="userinfo.expectedreplies > 0 ? 'danger' : 'light'" title="Recent outstanding replies requested">
-                <v-icon name="clock" class="fa-fw" /> {{ (userinfo.expectedreplies || 0) | pluralize('RSVP', { includeNumber: true }) }}
-              </b-badge>
-            </h4>
+            <ModMemberSummary :member="member" />
             <div v-if="member.lastaccess" :class="'mb-1 ' + (inactive ? 'text-danger': '')">
               Last active: {{ member.lastaccess | timeago }}
               <span v-if="inactive">
@@ -195,7 +179,7 @@
       </b-card-footer>
     </b-card>
     <ModPostingHistoryModal ref="history" :user="member" :type="type" />
-    <ModLogsModal ref="logs" :userid="member.userid" :modmailsonly="modmailsonly" />
+    <ModLogsModal ref="logs" :userid="member.userid" />
   </div>
 </template>
 <script>
@@ -205,6 +189,7 @@ import NoticeMessage from './NoticeMessage'
 import ProfileImage from './ProfileImage'
 import ModPostingHistoryModal from './ModPostingHistoryModal'
 import ModMemberActions from './ModMemberActions'
+import ModMemberSummary from './ModMemberSummary'
 import ModSpammer from './ModSpammer'
 import ModComments from './ModComments'
 import ModMemberButtons from './ModMemberButtons'
@@ -232,6 +217,7 @@ export default {
     ModMemberships,
     ModLogsModal,
     ModMemberButtons,
+    ModMemberSummary,
     ModComments,
     ModSpammer,
     ModMemberActions,
@@ -270,8 +256,7 @@ export default {
       saved: false,
       showEmails: false,
       type: null,
-      allmemberships: false,
-      modmailsonly: false
+      allmemberships: false
     }
   },
   computed: {
@@ -294,12 +279,6 @@ export default {
     },
     group() {
       return this.$store.getters['auth/groupById'](this.groupid)
-    },
-    offers() {
-      return this.countType('Offer')
-    },
-    wanteds() {
-      return this.countType('Wanted')
     },
     modconfig() {
       const groups = this.$store.getters['auth/groups']
@@ -355,15 +334,6 @@ export default {
 
       return ret
     },
-    userinfo() {
-      const user = this.$store.getters['user/get'](this.member.userid)
-
-      if (user && user.info) {
-        return user.info
-      }
-
-      return null
-    },
     relevantallowed: {
       get() {
         return this.user && Boolean(this.user.relevantallowed)
@@ -391,17 +361,6 @@ export default {
     }
   },
   methods: {
-    countType(type) {
-      let count = 0
-
-      this.member.messagehistory.forEach(entry => {
-        if (entry.type === type) {
-          count++
-        }
-      })
-
-      return count
-    },
     showHistory(type = null) {
       this.type = type
       this.waitForRef('history', () => {
@@ -410,14 +369,6 @@ export default {
     },
     showLogs() {
       this.modmailsonly = false
-
-      this.waitForRef('logs', () => {
-        this.$refs.logs.show()
-      })
-    },
-    showModmails() {
-      console.log('Show mod mails')
-      this.modmailsonly = true
 
       this.waitForRef('logs', () => {
         this.$refs.logs.show()

@@ -204,8 +204,16 @@
       <h3 class="mt-2">
         Posting History
       </h3>
+      <ModMemberSummary :member="user" />
       <div v-if="messageHistoriesShown.length">
-        <b-row v-for="message in messageHistoriesShown" :key="'messagehistory-' + message.arrival + '-' + message.id" class="pl-3">
+        <b-row
+          v-for="message in messageHistoriesShown"
+          :key="'messagehistory-' + message.arrival + '-' + message.id"
+          :class="{
+            'pl-3': true,
+            strike: message.deleted
+          }"
+        >
           <b-col cols="4" md="2" class="order-1 p-1 small">
             {{ message.arrival | datetimeshort }}
           </b-col>
@@ -277,6 +285,7 @@ import ModSpammerReport from './ModSpammerReport'
 import SpinButton from './SpinButton'
 import NoticeMessage from './NoticeMessage'
 import ModMergeButton from './ModMergeButton'
+import ModMemberSummary from './ModMemberSummary'
 const ExternalLink = () => import('~/components/ExternalLink')
 const ModCommentAddModal = () => import('~/components/ModCommentAddModal')
 
@@ -284,6 +293,7 @@ const SHOW = 3
 
 export default {
   components: {
+    ModMemberSummary,
     ModMergeButton,
     NoticeMessage,
     SpinButton,
