@@ -41,11 +41,10 @@
       <div class="communityevent__photo">
         <b-img
           v-if="newsfeed.communityevent.photo"
-          thumbnail
           rounded
           lazy
           :src="newsfeed.communityevent.photo.paththumb"
-          class="clickme mt-2 mt-md-0"
+          class="clickme mt-2 mt-md-0 w-100"
           @click="moreInfo"
         />
       </div>
