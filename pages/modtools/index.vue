@@ -95,6 +95,7 @@
         weights
         donations
         successful
+        activeusers
         :systemwide="groupid < 0"
       />
       <!--      TODO MT POSTLAUNCH TN vs email vs web stats-->
