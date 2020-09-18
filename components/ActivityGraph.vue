@@ -35,9 +35,10 @@
         These are donations received via PayPal.
       </p>
       <p v-if="graphType === 'ActiveUsers'">
-        This is the number of users active in the 30 days before each date.  Only available for individual communities
-        at the moment; if you add up across communities you'll get the wrong number because the same user might be active on
-        multiple communities.  Data valid from around the start of September 2020.
+        This is the number of freeglers active in the 30 days before each date.  Only available for individual communities
+        at the moment; if you add up across communities you'll get the wrong number because the same freegler might be active on
+        multiple communities.  Data valid from around the start of September 2020.  Only includes freeglers who logged
+        in.
       </p>
       <div v-if="loading" class="height text-muted pulsate align-middle d-flex flex-column">
         Loading...
@@ -138,7 +139,7 @@ export default {
         Weight: 'Weights',
         Outcomes: 'Successful',
         Donations: 'PayPal Donations',
-        ActiveUsers: 'Active users'
+        ActiveUsers: 'Active freeglers'
       },
       units: 'year',
       unitOptions: [
