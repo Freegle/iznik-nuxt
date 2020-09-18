@@ -191,7 +191,7 @@ export default {
 
     if (this.activeusers && (this.groupid === -2 || this.groupid > 0)) {
       // Only available systemwide or on individual groups.
-      ret.graphTypes.push({ value: 'ActiveUsers', text: 'Active Users' })
+      ret.graphTypes.push({ value: 'ActiveUsers', text: 'Active Freeglers' })
     }
 
     ret.graphTypes.push({ value: 'Replies', text: 'Replies' })
