@@ -129,7 +129,6 @@ export default {
       Donations: null,
       ActiveUsers: null,
       graphType: 'Activity',
-      graphTypes: [],
       graphTitles: {
         Activity: 'Activity',
         ApprovedMessageCount: 'OFFERs and WANTED',
@@ -162,43 +161,48 @@ export default {
       ]
     }
 
-    ret.graphTypes.push({ value: 'Activity', text: 'Activity' })
-
-    ret.graphTypes.push({
-      value: 'ApprovedMessageCount',
-      text: 'OFFERS+WANTEDs'
-    })
-
-    if (this.successful) {
-      ret.graphTypes.push({ value: 'Outcomes', text: 'Successful posts' })
-    }
-
-    if (this.offers) {
-      ret.graphTypes.push({ value: 'Offers', text: 'Just OFFERs' })
-    }
-
-    if (this.wanteds) {
-      ret.graphTypes.push({ value: 'Wanteds', text: 'Just WANTEDs' })
-    }
-
-    if (this.weights) {
-      ret.graphTypes.push({ value: 'Weight', text: 'Weight estimates' })
-    }
-
-    if (this.donations) {
-      ret.graphTypes.push({ value: 'Donations', text: 'PayPal Donations' })
-    }
-
-    if (this.activeusers && (this.groupid === -2 || this.groupid > 0)) {
-      // Only available systemwide or on individual groups.
-      ret.graphTypes.push({ value: 'ActiveUsers', text: 'Active Freeglers' })
-    }
-
-    ret.graphTypes.push({ value: 'Replies', text: 'Replies' })
-
     return ret
   },
   computed: {
+    graphTypes() {
+      const ret = []
+
+      ret.push({ value: 'Activity', text: 'Activity' })
+
+      ret.push({
+        value: 'ApprovedMessageCount',
+        text: 'OFFERS+WANTEDs'
+      })
+
+      if (this.successful) {
+        ret.push({ value: 'Outcomes', text: 'Successful posts' })
+      }
+
+      if (this.offers) {
+        ret.push({ value: 'Offers', text: 'Just OFFERs' })
+      }
+
+      if (this.wanteds) {
+        ret.push({ value: 'Wanteds', text: 'Just WANTEDs' })
+      }
+
+      if (this.weights) {
+        ret.push({ value: 'Weight', text: 'Weight estimates' })
+      }
+
+      if (this.donations) {
+        ret.push({ value: 'Donations', text: 'PayPal Donations' })
+      }
+
+      if (this.activeusers && (this.groupid === -2 || this.groupid > 0)) {
+        // Only available systemwide or on individual groups.
+        ret.push({ value: 'ActiveUsers', text: 'Active Freeglers' })
+      }
+
+      ret.push({ value: 'Replies', text: 'Replies' })
+
+      return ret
+    },
     graphOptions() {
       let hformat
 

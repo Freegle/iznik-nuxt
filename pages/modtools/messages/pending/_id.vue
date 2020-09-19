@@ -23,12 +23,14 @@
 <script>
 import NoticeMessage from '../../../../components/NoticeMessage'
 import ScrollToTop from '../../../../components/ScrollToTop'
+import GroupSelect from '../../../../components/GroupSelect'
+import ModMessage from '../../../../components/ModMessage'
 import loginRequired from '@/mixins/loginRequired'
 import modMessagesPage from '@/mixins/modMessagesPage'
 import createGroupRoute from '@/mixins/createGroupRoute'
 
 export default {
-  components: { ScrollToTop, NoticeMessage },
+  components: { ModMessage, GroupSelect, ScrollToTop, NoticeMessage },
   layout: 'modtools',
   mixins: [
     loginRequired,

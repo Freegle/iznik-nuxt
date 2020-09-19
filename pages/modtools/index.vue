@@ -86,7 +86,7 @@
       </b-row>
       <ModDashboardImpact :groupid="groupid" :start="start" :group-name="groupName" :end="end" class="mt-2" />
       <ActivityGraph
-        :groupid="groupid"
+        :groupid="groupidi"
         :group-name="groupName"
         :start="start"
         :end="end"
@@ -96,7 +96,7 @@
         donations
         successful
         activeusers
-        :systemwide="groupid < 0"
+        :systemwide="groupidi < 0"
       />
       <!--      TODO MT POSTLAUNCH TN vs email vs web stats-->
     </div>
