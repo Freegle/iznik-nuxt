@@ -41,7 +41,7 @@
                     <v-icon name="list" /> View as List
                   </b-btn>
                 </div>
-                <PostMap v-if="viewMap" :messages="nonOverlappingMessages" class="position-absolute" />
+                <PostMap :messages="nonOverlappingMessages" class="position-absolute" />
               </div>
               <div v-else>
                 <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" :chats="me.expectedchats" />
@@ -194,12 +194,13 @@ export default {
       return messages
     },
     filteredMessages() {
-      return this.messages.filter(message => {
+      const ret = this.messages.filter(message => {
         return (
           (!message.outcomes || message.outcomes.length === 0) &&
           (this.selectedType === 'All' || message.type === this.selectedType)
         )
       })
+      return ret
     },
     nonOverlappingMessages() {
       // Ensure that messages don't exactly overlap.
@@ -221,6 +222,7 @@ export default {
         }
       })
 
+      console.log('Non over', ret)
       return ret
     },
 
@@ -234,7 +236,9 @@ export default {
     viewMap: {
       immediate: true,
       handler: function(newval) {
+        console.log('Viewmap', newval)
         if (newval === 'map') {
+          console.log('next tick')
           this.$nextTick(async () => {
             let currentCount
             let messages
@@ -262,12 +266,7 @@ export default {
               } else {
                 messages = this.$store.getters['messages/getAll']
               }
-              console.log(
-                'Fetched',
-                messages.length,
-                this.context,
-                new Date(this.context.Date * 1000)
-              )
+              console.log('Finished', messages.length)
             } while (
               currentCount !== messages.length &&
               new Date().getTime() -

@@ -1,7 +1,6 @@
 <template>
   <div ref="mapcont" class="w-100">
     <client-only>
-      <span style="z-index: 20000;">Zoom {{ zoomLevel }}</span>
       <l-map
         ref="map"
         :zoom="8"
