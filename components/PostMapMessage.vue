@@ -108,7 +108,7 @@ export default {
     },
     flyToPost() {
       // this.map.flyTo(L.latLng(this.message.lat, this.message.lng), 14)
-      this.map.setView([this.message.lat, this.message.lng], 14, {
+      this.map.setView([this.message.lat, this.message.lng], ZOOM_FULL, {
         animate: true,
         duration: 3
       })

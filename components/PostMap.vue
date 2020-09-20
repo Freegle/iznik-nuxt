@@ -94,7 +94,6 @@ export default {
       const ret = this.messages.filter(m => {
         return this.mapBounds.contains([m.lat, m.lng])
       })
-      console.log('Messages in view', ret, this.mapBounds)
       return ret
     },
     messageBounds() {
