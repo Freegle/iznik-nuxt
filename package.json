@@ -97,6 +97,7 @@
     "vue2-filters": "^0.7.0",
     "vue2-google-maps": "^0.10.7",
     "vue2-leaflet": "^2.5.2",
+    "vue2-leaflet-markercluster": "^3.1.0",
     "vue2-leaflet-movingmarker": "^1.1.0",
     "vuedraggable": "^2.23.2",
     "vuejs-thermometer": "0.0.4",

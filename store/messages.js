@@ -28,17 +28,19 @@ export const mutations = {
     }
   },
   addAll(state, items) {
-    items.forEach(item => {
-      const existing = state.list.findIndex(obj => {
-        return parseInt(obj.id) === parseInt(item.id)
-      })
+    if (items) {
+      items.forEach(item => {
+        const existing = state.list.findIndex(obj => {
+          return parseInt(obj.id) === parseInt(item.id)
+        })
 
-      if (existing !== -1) {
-        Vue.set(state.list, existing, item)
-      } else {
-        state.list.push(item)
-      }
-    })
+        if (existing !== -1) {
+          Vue.set(state.list, existing, item)
+        } else {
+          state.list.push(item)
+        }
+      })
+    }
   },
   remove(state, item) {
     state.list = state.list.filter(obj => {
