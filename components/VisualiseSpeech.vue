@@ -56,4 +56,21 @@ export default {
   left: 133px;
   bottom: -13px;
 }
+
+.speech-bubble {
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+
+  animation-name: fadein-animation;
+  animation-timing-function: ease;
+}
+
+@keyframes fadein-animation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 </style>
