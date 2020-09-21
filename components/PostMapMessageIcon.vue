@@ -1,10 +1,10 @@
 <template>
   <div class="zztop">
-    <b-img
-      v-if="size === 'sm'"
-      :src="pin"
-      :title="message.subject"
-    />
+    <div v-if="size === 'sm'" class="marker-cluster marker-cluster-small position-absolute" style="width: 40px; height: 40px;">
+      <div style="top: -10px;">
+        <span>1</span>
+      </div>
+    </div>
     <b-img
       v-else-if="size === 'md'"
       :src="postImage"
