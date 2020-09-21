@@ -27,7 +27,7 @@ export default {
 .wide {
   position: relative;
   width: 200px;
-  left: -80px;
+  left: -95px;
   top: -55px;
 }
 
@@ -36,12 +36,13 @@ export default {
   width: 0px;
   height: 0px;
   position: absolute;
-  border-left: 10px solid $color-green--darker;
-  border-right: 10px solid transparent;
+  border-left: 10px solid transparent;
+  border-right: 10px solid $color-green--darker;
   border-top: 10px solid $color-green--darker;
   border-bottom: 10px solid transparent;
   left: 130px;
   bottom: -20px;
+  border-bottom-right-radius: 18px;
 }
 
 .speech-bubble:after {
@@ -49,12 +50,13 @@ export default {
   width: 0px;
   height: 0px;
   position: absolute;
-  border-left: 10px solid $color-white;
-  border-right: 10px solid transparent;
-  border-top: 10px solid $color-white;
-  border-bottom: 10px solid transparent;
-  left: 133px;
-  bottom: -13px;
+  border-left: 8px solid transparent;
+  border-right: 6px solid $color-white;
+  border-top: 8px solid $color-white;
+  border-bottom: 8px solid transparent;
+  left: 134px;
+  bottom: -16px;
+  border-bottom-right-radius: 15px;
 }
 
 .speech-bubble {
