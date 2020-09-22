@@ -25,7 +25,7 @@
             :zoom="groups ? 5 : 13"
             :center="center"
             :style="'width: ' + mapWidth + 'px; height: ' + mapHeight + 'px'"
-            :min-zoom="groups ? 5 : 13"
+            :min-zoom="groups ? 5 : 12"
             :max-zoom="17"
             @update:bounds="boundsChanged"
             @update:zoom="boundsChanged"
@@ -34,10 +34,10 @@
             <l-tile-layer :url="osmtile" :attribution="attribution" />
             <l-control position="topright" />
             <div v-if="cga">
-              <l-geojson v-for="(c, i) in CGAs" :key="'cga-' + i" :geojson="c.json" :options="cgaOptions" @click="selectCGA(c.group)" />
+              <l-geojson v-for="(c, i) in CGAs" :key="'cga-' + i" :geojson="c.json" :options="cgaOptions" @click="selectCGA($event, c.group)" />
             </div>
             <div v-if="dpa">
-              <l-geojson v-for="(d, i) in DPAs" :key="'dpa-' + i" :geojson="d.json" :options="dpaOptions" @click="selectDPA(d.group)" />
+              <l-geojson v-for="(d, i) in DPAs" :key="'dpa-' + i" :geojson="d.json" :options="dpaOptions" @click="selectDPA($event, d.group)" />
             </div>
             <div v-if="groupid">
               <l-feature-group>
@@ -366,15 +366,23 @@ export default {
         })
       }
     },
-    selectCGA(g) {
+    selectCGA(e, g) {
       this.selectedObj = g
       this.selectedName = g.nameshort + ' CGA'
       this.selectedWKT = g.polyofficial
+
+      if (this.supportOrAdmin) {
+        e.sourceTarget.editing.enable()
+      }
     },
-    selectDPA(g) {
+    selectDPA(e, g) {
       this.selectedObj = g
       this.selectedName = g.nameshort + ' DPA'
       this.selectedWKT = g.poly
+
+      if (this.supportOrAdmin) {
+        e.sourceTarget.editing.enable()
+      }
     },
     selectLocation(l) {
       this.selectedId = l.id

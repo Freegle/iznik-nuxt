@@ -53,7 +53,7 @@
       </b-card-header>
       <b-card-body v-if="expanded" class="p-1 p-md-2">
         <b-row>
-          <b-col cols="12" lg="8">
+          <b-col cols="12" lg="5">
             <div v-if="expanded">
               <NoticeMessage v-if="message.outcomes && message.outcomes.length" class="mb-1">
                 {{ message.outcomes[0].outcome.toUpperCase() }}
@@ -118,7 +118,10 @@
               <MessageReplyInfo v-if="!pending || message.replies && message.replies.length" :message="message" class="d-inline" />
             </div>
           </b-col>
-          <b-col cols="12" lg="4">
+          <b-col cols="12" lg="3">
+            <MessageMap v-if="group && position" :centerat="{ lat: group.lat, lng: group.lng }" :position="{ lat: position.lat, lng: position.lng }" />
+          </b-col>
+          <b-col cols="12" lg="3">
             <div class="rounded border border-info p-2 d-flex justify-content-between flex-wrap">
               <MessageUserInfo v-if="message.fromuser && message.groups && message.groups.length" :message="message" :user="message.fromuser" modinfo :groupid="message.groups[0].groupid" />
               <div v-else>
@@ -244,6 +247,7 @@ import ModMessageCrosspost from './ModMessageCrosspost'
 import ModMessageRelated from './ModMessageRelated'
 import ModMessageButton from './ModMessageButton'
 import GroupSelect from './GroupSelect'
+import MessageMap from './MessageMap'
 import twem from '~/assets/js/twem'
 import waitForRef from '@/mixins/waitForRef'
 import keywords from '@/mixins/keywords.js'
@@ -251,6 +255,7 @@ import keywords from '@/mixins/keywords.js'
 export default {
   name: 'ModMessage',
   components: {
+    MessageMap,
     GroupSelect,
     ModMessageButton,
     ModMessageRelated,
@@ -306,6 +311,35 @@ export default {
     }
   },
   computed: {
+    group() {
+      let ret = null
+
+      if (this.message && this.message.groups && this.message.groups.length) {
+        const groupid = this.message.groups[0].groupid
+        const groups = this.$store.getters['auth/groups']
+        ret = groups.find(g => parseInt(g.id) === groupid)
+      }
+
+      return ret
+    },
+    position() {
+      let ret = null
+
+      if (this.message) {
+        if (this.message.location) {
+          // This is what we put in for message submitted on FD.
+          ret = this.message.location
+        } else if (this.message.lat || this.message.lng) {
+          // This happens for TN messages
+          ret = {
+            lat: this.message.lat,
+            lng: this.message.lng
+          }
+        }
+      }
+
+      return ret
+    },
     pending() {
       return this.hasCollection('Pending')
     },

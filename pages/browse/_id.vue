@@ -11,6 +11,7 @@
         <CovidWarning />
         <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" :chats="me.expectedchats" />
         <Viewed v-if="!simple" class="mb-1" />
+        <NearbyGroups v-if="!simple" class="mb-1" />
         <JobsTopBar />
         <div>
           <NoticeMessage v-if="!anyGroups" variant="primary" class="mt-2 text-center font-weight-bold">
@@ -95,6 +96,7 @@ import GroupSelect from '../../components/GroupSelect'
 import Viewed from '../../components/Viewed'
 import CovidWarning from '../../components/CovidWarning'
 import CovidClosed from '../../components/CovidClosed'
+import NearbyGroups from '../../components/NearbyGroups'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
 import createGroupRoute from '@/mixins/createGroupRoute'
@@ -109,6 +111,7 @@ const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
+    NearbyGroups,
     CovidClosed,
     CovidWarning,
     NoticeMessage,

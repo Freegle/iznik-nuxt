@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-modal
-      :id="'modLogsModal-' + userid"
+      :id="'modLogsModal-' + userid + '-' + modmailsonly"
       v-model="showModal"
       :title="title"
       size="xl"
@@ -98,6 +98,7 @@ export default {
       await this.$store.dispatch('user/fetch', {
         id: this.userid,
         logs: true,
+        info: true,
         modmailsonly: this.modmailsonly,
         logcontext:
           this.user && this.user.logcontext ? this.user.logcontext : null

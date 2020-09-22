@@ -44,7 +44,14 @@
         </div>
         <div v-else>
           <CovidWarning />
-          <message v-if="message" ref="message" v-bind="message" :start-expanded="true" hide-close />
+          <Message
+            v-if="message"
+            ref="message"
+            v-bind="message"
+            :start-expanded="true"
+            hide-close
+            class="botpad"
+          />
         </div>
       </b-col>
       <b-col cols="0" xl="3" class="d-none d-xl-block" />
@@ -163,3 +170,9 @@ export default {
   }
 }
 </script>
+<style scoped>
+/*On Firefox mobile there's a bug where the URL bar covers the bottom of the page.*/
+.botpad {
+  margin-bottom: 4rem;
+}
+</style>

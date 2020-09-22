@@ -10,7 +10,7 @@
       <template slot="default">
         <b-row>
           <b-col class="text-center">
-            <p>Letting us know what happened to a post is really helpful.</p>
+            <p>Please tell us who <span v-if="type === 'Taken'">took</span><span v-else>received</span> this, then we can let other people know.</p>
           </b-col>
         </b-row>
         <b-row>

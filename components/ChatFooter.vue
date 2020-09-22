@@ -8,7 +8,7 @@
       />
     </div>
     <div>
-      <div v-if="showNotices && (badratings || expectedreply || otheruser && otheruser.hasReneged || !spammer && replytime || spammer && spammer.collection !== 'Whitelisted' || mod && chat && chat.chattype === 'User2Mod' && otheruser)">
+      <div v-if="showNotices && (badratings || expectedreply || otheruser && otheruser.hasReneged || !spammer && replytime || spammer && spammer.collection !== 'Whitelisted' || mod && chat && chat.chattype === 'User2Mod' && otheruser)" class="bg-info">
         <span class="float-right mr-2 mt-2 clickme" title="Hide warnings" @click="showNotices = false">
           <v-icon name="times-circle" scale="1.5" />
         </span>
@@ -26,8 +26,14 @@
         <notice-message v-else-if="otheruser && otheruser.hasReneged" variant="warning" class="clickme" @click.native="showInfo">
           <v-icon name="exclamation-triangle" />&nbsp;Things haven't always worked out for this freegler.  That might not be their fault, but please make very clear arrangements.
         </notice-message>
-        <notice-message v-if="!spammer && replytime" class="clickme" @click.native="showInfo">
-          <v-icon name="info-circle" />&nbsp;Typically replies in <b>{{ replytime }}</b>.  Click for more info.
+        <notice-message v-if="!spammer && (replytime || milesaway)" class="clickme d-flex justify-content-between" @click.native="showInfo">
+          <span v-if="milesaway">
+            <v-icon name="map-marker-alt" class="fa-fw" />About <b>{{ milesaway | pluralize('mile', { includeNumber: true }) }} away</b>.
+          </span>
+          <span v-if="replytime">
+            <v-icon name="info-circle" />&nbsp;Typically replies in <b>{{ replytime }}</b>.
+          </span>
+          Click for more info.
         </notice-message>
         <notice-message v-if="spammer && spammer.collection !== 'Whitelisted'" variant="danger">
           This person has been reported as a spammer or scammer.  Please do not talk to them and under no circumstances

@@ -82,7 +82,7 @@ export default {
     membership() {
       let ret = null
 
-      if (this.groupid) {
+      if (this.groupid && this.user && this.user.memberof) {
         ret = this.user.memberof.find(g => g.id === this.groupid)
       }
 

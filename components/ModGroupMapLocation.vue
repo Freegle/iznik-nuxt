@@ -7,7 +7,7 @@
       @click="select"
     />
     <l-circle-marker v-if="labels && centre" :lat-lng="[ centre.lat, centre.lng ]" :radius="1">
-      <l-tooltip ref="tooltip" :content="location.name" :options="{ permanent: true, direction: 'center' }" />
+      <l-tooltip ref="tooltip" :content="location.name + ''" :options="{ permanent: true, direction: 'center' }" />
     </l-circle-marker>
   </div>
 </template>

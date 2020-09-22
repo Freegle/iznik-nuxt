@@ -64,7 +64,7 @@ export default class BaseAPI {
       })
       ;({ status, data } = ret)
 
-      if (!status || !data) {
+      if (!status || !data || !('ret' in data)) {
         // We're investigating some cases, with some evidence of it happening in page unload, where we don't go
         // through the exception handler, but we end up with nothing in status/data.  Throw an exception to trigger
         // a single retry.

@@ -38,11 +38,10 @@
       <div class="volunteering__photo">
         <b-img
           v-if="newsfeed.volunteering.photo"
-          thumbnail
           rounded
           lazy
           :src="newsfeed.volunteering.photo.paththumb"
-          class="clickme mt-2 mt-md-0"
+          class="clickme mt-2 mt-md-0 w-100"
           @click="moreInfo"
         />
       </div>
