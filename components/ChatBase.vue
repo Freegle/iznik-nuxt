@@ -51,7 +51,10 @@ export default {
   },
   computed: {
     emessage() {
-      return twem.twem(this.$twemoji, this.chatmessage.message).trim()
+      const trim = this.chatmessage.message
+        .replace(/(\r\n|\r|\n){2,}/g, '$1\n')
+        .trim()
+      return twem.twem(this.$twemoji, trim)
     },
     chatMessageUser() {
       return this.chatusers.find(u => {
