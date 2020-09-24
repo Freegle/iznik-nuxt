@@ -39,7 +39,7 @@ export default {
     }
   },
   methods: {
-    show(type) {
+    show() {
       this.showModal = true
     },
 

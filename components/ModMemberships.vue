@@ -60,13 +60,15 @@ export default {
     hiddenmemberofs() {
       return this.allmemberships
         ? 0
-        : this.user && this.user.memberof.length > MEMBERSHIPS_SHOW
+        : this.user &&
+          this.user.memberof &&
+          this.user.memberof.length > MEMBERSHIPS_SHOW
           ? this.user.memberof.length - MEMBERSHIPS_SHOW
           : 0
     },
     filteredApplied() {
       if (!this.user || !this.user.applied) {
-        return null
+        return []
       }
 
       // Filter out anything we're already on.

@@ -6,7 +6,7 @@
           {{ graphTitles[graphType] }} <span v-if="groupName" class="text-muted">on {{ groupName }}</span>
         </span>
         <div class="d-flex">
-          <b-form-select v-model="units" :options="unitOptions" class="graphSelect mr-1" />
+          <b-form-select v-if="graphType !== 'ActiveUsers'" v-model="units" :options="unitOptions" class="graphSelect mr-1" />
           <b-form-select v-model="graphType" :options="graphTypes" class="graphSelect" />
         </div>
       </h3>
@@ -34,13 +34,19 @@
       <p v-if="graphType === 'Donations'">
         These are donations received via PayPal.
       </p>
+      <p v-if="graphType === 'ActiveUsers'">
+        This is the number of freeglers active in the 30 days before each date.  Only available for individual communities
+        at the moment; if you add up across communities you'll get the wrong number because the same freegler might be active on
+        multiple communities.  Data valid from around the start of September 2020.  Only includes freeglers who logged
+        in.
+      </p>
       <div v-if="loading" class="height text-muted pulsate align-middle d-flex flex-column">
         Loading...
       </div>
       <GChart
         v-else
         :key="graphType"
-        :type="units === 'day' ? 'LineChart' : 'ColumnChart'"
+        :type="(graphType === 'ActiveUsers' || units === 'day') ? 'LineChart' : 'ColumnChart'"
         :data="graphData"
         :options="graphOptions"
       />
@@ -99,6 +105,11 @@ export default {
       required: false,
       default: false
     },
+    activeusers: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     systemwide: {
       type: Boolean,
       required: false,
@@ -116,8 +127,8 @@ export default {
       Weight: null,
       Outcomes: null,
       Donations: null,
+      ActiveUsers: null,
       graphType: 'Activity',
-      graphTypes: [],
       graphTitles: {
         Activity: 'Activity',
         ApprovedMessageCount: 'OFFERs and WANTED',
@@ -126,7 +137,8 @@ export default {
         Wanteds: 'WANTEDs only',
         Weight: 'Weights',
         Outcomes: 'Successful',
-        Donations: 'PayPal Donations'
+        Donations: 'PayPal Donations',
+        ActiveUsers: 'Active freeglers'
       },
       units: 'year',
       unitOptions: [
@@ -149,46 +161,58 @@ export default {
       ]
     }
 
-    ret.graphTypes.push({ value: 'Activity', text: 'Activity' })
-
-    ret.graphTypes.push({
-      value: 'ApprovedMessageCount',
-      text: 'OFFERS+WANTEDs'
-    })
-
-    if (this.successful) {
-      ret.graphTypes.push({ value: 'Outcomes', text: 'Successful posts' })
-    }
-
-    if (this.offers) {
-      ret.graphTypes.push({ value: 'Offers', text: 'Just OFFERs' })
-    }
-
-    if (this.wanteds) {
-      ret.graphTypes.push({ value: 'Wanteds', text: 'Just WANTEDs' })
-    }
-
-    if (this.weights) {
-      ret.graphTypes.push({ value: 'Weight', text: 'Weight estimates' })
-    }
-
-    if (this.donations) {
-      ret.graphTypes.push({ value: 'Donations', text: 'PayPal Donations' })
-    }
-
-    ret.graphTypes.push({ value: 'Replies', text: 'Replies' })
-
     return ret
   },
   computed: {
+    graphTypes() {
+      const ret = []
+
+      ret.push({ value: 'Activity', text: 'Activity' })
+
+      ret.push({
+        value: 'ApprovedMessageCount',
+        text: 'OFFERS+WANTEDs'
+      })
+
+      if (this.successful) {
+        ret.push({ value: 'Outcomes', text: 'Successful posts' })
+      }
+
+      if (this.offers) {
+        ret.push({ value: 'Offers', text: 'Just OFFERs' })
+      }
+
+      if (this.wanteds) {
+        ret.push({ value: 'Wanteds', text: 'Just WANTEDs' })
+      }
+
+      if (this.weights) {
+        ret.push({ value: 'Weight', text: 'Weight estimates' })
+      }
+
+      if (this.donations) {
+        ret.push({ value: 'Donations', text: 'PayPal Donations' })
+      }
+
+      if (this.activeusers && (this.groupid === -2 || this.groupid > 0)) {
+        // Only available systemwide or on individual groups.
+        ret.push({ value: 'ActiveUsers', text: 'Active Freeglers' })
+      }
+
+      ret.push({ value: 'Replies', text: 'Replies' })
+
+      return ret
+    },
     graphOptions() {
       let hformat
 
-      if (this.units === 'week' || this.units === 'day') {
+      const units = this.graphType === 'ActiveUsers' ? 'day' : this.units
+
+      if (units === 'week' || units === 'day') {
         hformat = 'dd MMM yyyy'
-      } else if (this.units === 'month') {
+      } else if (units === 'month') {
         hformat = 'MMM yyyy'
-      } else if (this.units === 'year') {
+      } else if (units === 'year') {
         hformat = 'yyyy'
       }
 
@@ -225,14 +249,15 @@ export default {
       const startd = this.$dayjs(this.start).startOf('day')
       const endd = this.$dayjs(this.end).endOf('day')
 
+      const units = this.graphType === 'ActiveUsers' ? 'day' : this.units
+
       if (activity) {
-        console.log('Initial data', activity)
         for (const a of activity) {
           // Collect the data according to the unit.
           const thisdate = this.$dayjs(a.date)
 
           if (thisdate.isSameOrAfter(startd) && thisdate.isSameOrBefore(endd)) {
-            const d = thisdate.startOf(this.units)
+            const d = thisdate.startOf(units)
             if (data[d]) {
               data[d] += parseInt(a.count)
             } else {
@@ -243,25 +268,21 @@ export default {
           }
         }
 
-        console.log('collected data', data)
-
         for (const d in data) {
           let lab = null
 
-          if (this.units === 'day') {
+          if (units === 'day') {
             lab = new Date(d)
-          } else if (this.units === 'week') {
+          } else if (units === 'week') {
             lab = 'w/c ' + this.$dayjs(d).format('DD-MMM')
-          } else if (this.units === 'month') {
+          } else if (units === 'month') {
             lab = this.$dayjs(d).format('MMM YYYY')
-          } else if (this.units === 'year') {
+          } else if (units === 'year') {
             lab = this.$dayjs(d).format('YYYY')
           }
 
           ret.push([lab, data[d]])
         }
-
-        console.log('Converted data', ret)
       }
 
       return ret
@@ -331,13 +352,6 @@ export default {
     },
     approvedSplit(type) {
       // We want to return the approved message count, adjusted by the message breakdown for this type.
-      console.log(
-        'Approved split',
-        type,
-        this.MessageBreakdown,
-        this.ApprovedMessageCount
-      )
-
       type = type.replace('s', '')
 
       const factor =

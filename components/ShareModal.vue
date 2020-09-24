@@ -2,7 +2,7 @@
   <b-modal
     id="sharemodal"
     v-model="showModal"
-    title="Share your post"
+    title="Share a post"
     size="lg"
     no-stacking
   >
@@ -58,7 +58,7 @@
           </div>
         </social-sharing>
         <p class="mt-3 text-center text-muted">
-          You can also share later from <em>My Posts</em>.
+          You can also share your own posts later from <em>My Posts</em>.
         </p>
       </div>
     </template>

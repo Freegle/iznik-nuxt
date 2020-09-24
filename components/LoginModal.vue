@@ -211,6 +211,7 @@ export default {
       email: null,
       emailValid: false,
       password: null,
+      showModal: false,
       pleaseShowModal: false,
       showSignUp: false,
       forceSignIn: false,
@@ -268,15 +269,6 @@ export default {
       return ret
     },
 
-    showModal: {
-      get() {
-        return this.pleaseShowModal || this.$store.getters['auth/forceLogin']
-      },
-      set(value) {
-        this.pleaseShowModal = value
-      }
-    },
-
     modalIsForced() {
       return this.$store.getters['auth/forceLogin']
     },
@@ -303,6 +295,32 @@ export default {
 
     referToYahooButton() {
       return this.email && this.email.toLowerCase().indexOf('yahoo') !== -1
+    },
+
+    forceLogin() {
+      return this.$store.getters['auth/forceLogin']
+    }
+  },
+  watch: {
+    showModal: {
+      immediate: true,
+      handler(newVal) {
+        console.log('Show Modal changed', newVal)
+        this.pleaseShowModal = newVal
+      }
+    },
+    pleaseShowModal: {
+      immediate: true,
+      handler(newVal) {
+        this.showModal = newVal || this.$store.getters['auth/forceLogin']
+      }
+    },
+    forceLogin: {
+      immediate: true,
+      handler(newVal) {
+        console.log('Please show modal changed', this.pleaseShowModal, newVal)
+        this.showModal = this.pleaseShowModal || newVal
+      }
     }
   },
   beforeDestroy() {
@@ -333,6 +351,7 @@ export default {
       this.bumpTimer = setTimeout(this.bumpIt, 500)
     },
     show() {
+      console.log('Show login modal')
       this.pleaseShowModal = true
       this.nativeLoginError = null
       this.socialLoginError = null

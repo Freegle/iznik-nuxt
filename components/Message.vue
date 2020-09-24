@@ -1,7 +1,7 @@
 <template>
   <div>
     <span ref="breakpoint" class="d-inline d-sm-none" />
-    <b-card class="p-0 mb-1" variant="success">
+    <b-card class="p-0" variant="success">
       <b-card-header :class="'pl-2 pr-2 clearfix card-header' + (ispromised ? ' promisedfade' : '')">
         <b-card-title class="msgsubj mb-0 header--size4 card-header__title" title-tag="h3">
           <Highlighter
@@ -150,6 +150,14 @@
           <v-icon v-else name="angle-double-right" />&nbsp;
         </b-btn>
         <div v-else>
+          <b-form-group
+            class="flex-grow-1"
+            label="Your postcode:"
+            :label-for="'replytomessage-' + expanded.id"
+            description="So that we know how far away you are.  The closer the better."
+          >
+            <Postcode @selected="savePostcode" />
+          </b-form-group>
           <b-btn size="lg" variant="primary" class="d-none d-md-block" :disabled="disableSend" @click="sendReply">
             Send your reply
             <v-icon v-if="replying" name="sync" class="fa-spin" />
@@ -203,6 +211,7 @@ import MessageReplyInfo from './MessageReplyInfo'
 import EmailValidator from './EmailValidator'
 import NewUserInfo from './NewUserInfo'
 import MessagePhotosModal from './MessagePhotosModal'
+import Postcode from './Postcode'
 import twem from '~/assets/js/twem'
 import waitForRef from '@/mixins/waitForRef'
 
@@ -213,6 +222,7 @@ const MessageHistory = () => import('~/components/MessageHistory')
 
 export default {
   components: {
+    Postcode,
     MessagePhotosModal,
     NewUserInfo,
     EmailValidator,
@@ -529,13 +539,15 @@ export default {
 
             // Open the chat.  We don't want to move from this page - either we'll get a popup chat (so we can
             // see the reply went) or we're on mobile and we'll display the sent message notice.
-            this.$refs.chatbutton.openChat(
-              null,
-              this.reply,
-              this.id,
-              popup,
-              false
-            )
+            this.waitForRef('chatbutton', () => {
+              this.$refs.chatbutton.openChat(
+                null,
+                this.reply,
+                this.id,
+                popup,
+                false
+              )
+            })
           })
         } else {
           // We're not logged in yet.  We need to save the reply and force a sign in.
@@ -573,7 +585,6 @@ export default {
         const el = this.$refs.breakpoint
         if (el) {
           const display = getComputedStyle(el, null).display
-          //console.log('Display', display)
 
           if (display === 'none') {
             ret = true
@@ -581,9 +592,17 @@ export default {
         }
       }
 
-      //console.log('>= Small?', ret)
-
       return ret
+    },
+    async savePostcode(pc) {
+      const settings = this.me.settings
+
+      if (!settings.mylocation || settings.mylocation.id !== pc.id) {
+        settings.mylocation = pc
+        await this.$store.dispatch('auth/saveAndGet', {
+          settings: settings
+        })
+      }
     }
   }
 }

@@ -46,6 +46,11 @@ const props = {
     type: Boolean,
     custom: true,
     default: true
+  },
+  gradient: {
+    type: Object,
+    required: false,
+    default: null
   }
 }
 export default {
@@ -72,6 +77,9 @@ export default {
     }
     if (this.max) {
       options.max = this.max
+    }
+    if (this.gradient) {
+      options.gradient = this.gradient
     }
     this.mapObject = L.heatLayer(this.latLngs, options)
     L.DomEvent.on(this.mapObject, this.$listeners)

@@ -1,9 +1,9 @@
 <template>
   <div>
     <ModComment v-for="comment in comments" :key="'modcomments-' + user.id + '-' + comment.id" :comment="comment" :user="user" />
-    <div v-if="user.comments.length > 1" class="mb-1">
+    <div v-if="sortedComments.length > 1" class="mb-1">
       <b-btn v-if="!showAll" variant="white" @click="showAll = true">
-        <v-icon name="tag" /> Show {{ user.comments.length - 1 | pluralize(['more note', 'more notes'], { includeNumber: true }) }}
+        <v-icon name="tag" /> Show {{ sortedComments.length - 1 | pluralize(['more note', 'more notes'], { includeNumber: true }) }}
       </b-btn>
       <b-btn v-else variant="white" @click="showAll = false">
         <v-icon name="tag" /> Hide notes
@@ -32,20 +32,22 @@ export default {
       const ret = this.user ? this.user.comments : []
       const myGroups = this.$store.getters['auth/groups']
 
-      ret.sort((a, b) => {
-        const aone = this.oneOfMine(a.groupid, myGroups)
-        const bone = this.oneOfMine(b.groupid, myGroups)
+      if (ret) {
+        ret.sort((a, b) => {
+          const aone = this.oneOfMine(a.groupid, myGroups)
+          const bone = this.oneOfMine(b.groupid, myGroups)
 
-        if (aone && !bone) {
-          return -1
-        } else if (bone && !aone) {
-          return 1
-        } else {
-          return 0
-        }
-      })
+          if (aone && !bone) {
+            return -1
+          } else if (bone && !aone) {
+            return 1
+          } else {
+            return 0
+          }
+        })
+      }
 
-      return ret
+      return ret || []
     },
     comments() {
       if (this.showAll) {

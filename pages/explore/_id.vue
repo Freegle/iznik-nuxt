@@ -68,13 +68,15 @@ export default {
           group = store.getters['group/get'](params.id)
         }
 
-        await store.dispatch('messages/fetchMessages', {
-          groupid: group.id,
-          collection: 'Approved',
-          summary: true,
-          types: ['Offer', 'Wanted'],
-          limit: process.browser ? 5 : 100 // During SSR fetch more, for better SEO.
-        })
+        if (group) {
+          await store.dispatch('messages/fetchMessages', {
+            groupid: group.id,
+            collection: 'Approved',
+            summary: true,
+            types: ['Offer', 'Wanted'],
+            limit: process.browser ? 5 : 100 // During SSR fetch more, for better SEO.
+          })
+        }
       } catch (e) {
         console.error('Invalid group', e)
         invalid = true

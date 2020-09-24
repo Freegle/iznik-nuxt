@@ -1,6 +1,13 @@
 <template>
   <div>
-    <div v-if="stats">
+    <b-row v-if="!stats">
+      <b-col class="text-center">
+        <h4>Crunching the numbers...</h4>
+        <p>This may take a minute.</p>
+        <b-img-lazy src="~/static/loader.gif" alt="Loading" />
+      </b-col>
+    </b-row>
+    <div>
       <div v-if="tables">
         <b-row class="m-0">
           <b-col cols="0" md="3" class="d-none d-md-block" />
@@ -121,140 +128,135 @@
       <div v-else>
         <b-row class="m-0">
           <b-col cols="0" md="3" class="d-none d-md-block" />
-          <b-col v-if="authority" cols="12" md="6" class="p-0">
-            <div class="title pl-2">
-              <b-img thumbnail src="/icon.png" class="titlelogo float-right" @click="toggle" />
-              <span class="head">
-                {{ authority.name }}
-              </span>
-              <div class="d-inline-block align-top pt-2">
-                <date-picker
-                  id="startDate"
-                  v-model="startDate"
-                  class="ml-1"
-                  lang="en"
-                  type="date"
-                  append-to-body
-                  format="YYYY-MM"
-                  placeholder=""
-                />
-                <b>-</b>
-                <date-picker
-                  id="endDate"
-                  v-model="endDate"
-                  class=""
-                  lang="en"
-                  type="date"
-                  append-to-body
-                  format="YYYY-MM"
-                  placeholder=""
-                />
-                <span class="clickme" @click="reloadData">
-                  <v-icon name="sync" />
+          <b-col ref="mapcont" cols="12" md="6" class="p-0">
+            <div v-if="authority">
+              <div class="title pl-2">
+                <b-img thumbnail src="/icon.png" class="titlelogo float-right" @click="toggle" />
+                <span class="head">
+                  {{ authority.name }}
                 </span>
-              </div>
-              <br>
-              <v-icon name="globe-europe" /> www.iLoveFreegle.org  <v-icon name="brands/twitter" /> @thisisfreegle  <v-icon name="brands/facebook" /> facebook.com/Freegle
-            </div>
-            <client-only>
-              <l-map
-                ref="map"
-                :zoom="5"
-                :center="center"
-                :style="'width: ' + mapWidth + '; height: ' + mapWidth + 'px'"
-                :min-zoom="5"
-                :max-zoom="13"
-                @ready="idle"
-              >
-                <l-tile-layer :url="osmtile" :attribution="attribution" />
-                <GroupMarker v-for="g in markers" :key="'marker-' + g.id + '-' + zoom" :group="g" size="poor" />
-              </l-map>
-            </client-only>
-            <Impact
-              :total-weight="totalWeight"
-              :total-benefit="totalBenefit"
-              :total-c-o2="totalCO2"
-              :total-gifts="totalGifts"
-              :total-members="totalMembers"
-              :group-count="groupcount "
-              :range="range"
-              :start="startDate"
-              :end="end"
-              border
-            />
-            <b-row class="m-0">
-              <b-col class="border border-white p-0 bg-white text-center pt-1">
-                <H5>WEIGHTS (KG)</H5>
-              </b-col>
-              <b-col class="border border-white p-0 bg-white text-center pt-1">
-                <H5>MEMBERS</H5>
-              </b-col>
-            </b-row>
-            <b-row class="m-0">
-              <b-col class="border border-white p-0 bg-white overflow-hidden">
-                <GChart
-                  type="ColumnChart"
-                  :data="weightData"
-                  :options="weightOptions"
-                />
-              </b-col>
-              <b-col class="border border-white p-0 bg-white overflow-hidden">
-                <GChart
-                  type="LineChart"
-                  :data="memberData"
-                  :options="memberOptions"
-                />
-              </b-col>
-            </b-row>
-            <b-card variant="white" class="border-white">
-              <b-card-text>
-                <h2 class="text-center">
-                  Freegle Communities serving {{ authority.name }}
-                </h2>
-                <b-table striped :items="items" :fields="fields">
-                  <template v-slot:cell(location)="data">
-                    <!-- eslint-disable-next-line -->
-                    <span v-html="data.value" />
-                  </template>
-                  <template v-slot:cell(members)="data">
-                    <!-- eslint-disable-next-line -->
-                    <span v-html="data.value" />
-                  </template>
-                  <template v-slot:cell(monthly)="data">
-                    <!-- eslint-disable-next-line -->
-                    <span v-html="data.value" />
-                  </template>
-                </b-table>
-                <p v-if="someoverlap" class="text-muted small pl-1 mb-0">
-                  * The area for this Freegle community partly overlaps the area you're looking at, so we've added an appropriate percentage.
-                </p>
-              </b-card-text>
-            </b-card>
-            <b-row class="m-0">
-              <b-col class="p-0">
-                <div class="title pl-2">
-                  <b-img thumbnail src="/icon.png" class="titlelogo float-right" />
-                  <span class="head">
-                    {{ totalWeight }} TONNES REUSED
-                  </span>
-                  <br>
-                  <span class="small">
-                    {{ range }}
+                <div class="d-inline-block align-top pt-2">
+                  <date-picker
+                    id="startDate"
+                    v-model="startDate"
+                    class="ml-1"
+                    lang="en"
+                    type="date"
+                    append-to-body
+                    format="YYYY-MM"
+                    placeholder=""
+                  />
+                  <b>-</b>
+                  <date-picker
+                    id="endDate"
+                    v-model="endDate"
+                    class=""
+                    lang="en"
+                    type="date"
+                    append-to-body
+                    format="YYYY-MM"
+                    placeholder=""
+                  />
+                  <span class="clickme" @click="reloadData">
+                    <v-icon name="sync" />
                   </span>
                 </div>
-              </b-col>
-            </b-row>
+                <br>
+                <v-icon name="globe-europe" /> www.iLoveFreegle.org  <v-icon name="brands/twitter" /> @thisisfreegle  <v-icon name="brands/facebook" /> facebook.com/Freegle
+              </div>
+              <client-only>
+                <l-map
+                  ref="map"
+                  :zoom="5"
+                  :center="center"
+                  :style="'width: ' + mapWidth + '; height: ' + mapHeight + 'px'"
+                  :min-zoom="5"
+                  :max-zoom="13"
+                  @ready="idle"
+                >
+                  <l-tile-layer :url="osmtile" :attribution="attribution" />
+                  <GroupMarker v-for="g in markers" :key="'marker-' + g.id + '-' + zoom" :group="g" size="poor" />
+                </l-map>
+              </client-only>
+              <Impact
+                :total-weight="totalWeight"
+                :total-benefit="totalBenefit"
+                :total-c-o2="totalCO2"
+                :total-gifts="totalGifts"
+                :total-members="totalMembers"
+                :group-count="groupcount "
+                :range="range"
+                :start="startDate"
+                :end="end"
+                border
+              />
+              <b-row class="m-0">
+                <b-col class="border border-white p-0 bg-white text-center pt-1">
+                  <H5>WEIGHTS (KG)</H5>
+                </b-col>
+                <b-col class="border border-white p-0 bg-white text-center pt-1">
+                  <H5>MEMBERS</H5>
+                </b-col>
+              </b-row>
+              <b-row class="m-0">
+                <b-col class="border border-white p-0 bg-white overflow-hidden">
+                  <GChart
+                    type="ColumnChart"
+                    :data="weightData"
+                    :options="weightOptions"
+                  />
+                </b-col>
+                <b-col class="border border-white p-0 bg-white overflow-hidden">
+                  <GChart
+                    type="LineChart"
+                    :data="memberData"
+                    :options="memberOptions"
+                  />
+                </b-col>
+              </b-row>
+              <b-card variant="white" class="border-white">
+                <b-card-text>
+                  <h2 class="text-center">
+                    Freegle Communities serving {{ authority.name }}
+                  </h2>
+                  <b-table striped :items="items" :fields="fields">
+                    <template v-slot:cell(location)="data">
+                      <!-- eslint-disable-next-line -->
+                      <span v-html="data.value" />
+                    </template>
+                    <template v-slot:cell(members)="data">
+                      <!-- eslint-disable-next-line -->
+                      <span v-html="data.value" />
+                    </template>
+                    <template v-slot:cell(monthly)="data">
+                      <!-- eslint-disable-next-line -->
+                      <span v-html="data.value" />
+                    </template>
+                  </b-table>
+                  <p v-if="someoverlap" class="text-muted small pl-1 mb-0">
+                    * The area for this Freegle community partly overlaps the area you're looking at, so we've added an appropriate percentage.
+                  </p>
+                </b-card-text>
+              </b-card>
+              <b-row class="m-0">
+                <b-col class="p-0">
+                  <div class="title pl-2">
+                    <b-img thumbnail src="/icon.png" class="titlelogo float-right" />
+                    <span class="head">
+                      {{ totalWeight }} TONNES REUSED
+                    </span>
+                    <br>
+                    <span class="small">
+                      {{ range }}
+                    </span>
+                  </div>
+                </b-col>
+              </b-row>
+            </div>
           </b-col>
         </b-row>
       </div>
     </div>
-    <b-row v-else>
-      <b-col class="text-center">
-        <h4>Crunching the numbers...</h4>
-        <p>This may take a minute.</p>
-        <b-img-lazy src="~/static/loader.gif" alt="Loading" />
-      </b-col>
-    </b-row>
   </div>
 </template>
 
@@ -786,19 +788,32 @@ export default {
 
         // If there is only one group in the area we're looking at, or the group is entirely contained within the
         // area, then show it irrespective of activity otherwise it looks silly.
-        if (avpermonth > 1 || authority.groups.length === 1 || overlap === 1) {
-          groupcount++
+        for (let i = 0; i < 2; i++) {
+          if (
+            i === 1 ||
+            avpermonth > 1 ||
+            authority.groups.length === 1 ||
+            overlap === 1
+          ) {
+            groupcount++
 
-          stats[group.id] = {
-            overlap: overlap,
-            avpermonth: avpermonth,
-            totalweight: totalWeight,
-            Weights: weights,
-            ApprovedMemberCount: store.getters['stats/get'](
-              'ApprovedMemberCount'
-            ),
-            OutcomesPerMonth: store.getters['stats/get']('OutcomesPerMonth'),
-            group: group
+            stats[group.id] = {
+              overlap: overlap,
+              avpermonth: avpermonth,
+              totalweight: totalWeight,
+              Weights: weights,
+              ApprovedMemberCount: store.getters['stats/get'](
+                'ApprovedMemberCount'
+              ),
+              OutcomesPerMonth: store.getters['stats/get']('OutcomesPerMonth'),
+              group: group
+            }
+          }
+
+          if (groupcount > 0) {
+            // If we found some data abive our threshold, stop.  Otherwise try again so that we show no activity
+            // but at least which groups overlap.
+            break
           }
         }
       }
@@ -817,7 +832,7 @@ export default {
       return 0
     },
     idle() {
-      if (!this.addedPolygons) {
+      if (this.stats && this.authority && !this.addedPolygons) {
         this.addedPolygons = true
 
         const bounds = this.mapPoly(this.authority.polygon, {

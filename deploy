@@ -21,6 +21,7 @@ git checkout -- package-lock.json && \
 git checkout -- static/sw.js && \
 git checkout -- nuxt.config.js && \
 npm rebuild node-sass --force && \
+git reset --hard HEAD && \
 git pull && \
 npm install && \
 npx patch-package && \

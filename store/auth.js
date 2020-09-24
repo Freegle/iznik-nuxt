@@ -180,7 +180,11 @@ export const getters = {
 function countWork(work) {
   let total = 0
   for (const key in work) {
-    if (typeof work[key] === 'number' && key.indexOf('other') === -1) {
+    if (
+      typeof work[key] === 'number' &&
+      key.indexOf('other') === -1 &&
+      key.indexOf('happiness') === -1
+    ) {
       total += work[key]
     }
   }

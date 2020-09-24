@@ -275,6 +275,15 @@
             />
             <ModGroupSetting
               :groupid="groupid"
+              name="settings.engagement"
+              label="Member engagement?"
+              description="We take various steps to nudge members to become more active freeglers.  This may result in them receiving occasional emails/notifications.  Members can turn this on/off themselves, so you would only turn this off if you want to override their decision."
+              type="toggle"
+              toggle-checked="Yes"
+              toggle-unchecked="No"
+            />
+            <ModGroupSetting
+              :groupid="groupid"
               name="settings.maxagetoshow"
               label="Expire posts"
               description="Posts will be considered as expired (i.e. no longer available) after the greater of this number of days and the maximum duration of autoreposts (i.e. max * repost time).  Set to 0 to use the default of 30 days. Max 90 days."
@@ -344,6 +353,14 @@
               toggle-checked="Yes"
               toggle-unchecked="No"
             />
+            <ModGroupSetting
+              :groupid="groupid"
+              name="settings.nearbygroups"
+              label="Nearby members?"
+              description="Members may live outside your community, but near the boundary.  You can make them aware of your community if they are nearby.  In miles, 0 to disable."
+              type="number"
+              :step="1"
+            />
           </b-card-body>
         </b-collapse>
       </b-card>
@@ -395,7 +412,7 @@
               label="Reply distance check?"
               description="When members reply to messages which are this far apart, in miles, then they may be flagged for review.  Default 50, 0 to disable."
               type="number"
-              step="5"
+              :step="5"
             />
           </b-card-body>
         </b-collapse>

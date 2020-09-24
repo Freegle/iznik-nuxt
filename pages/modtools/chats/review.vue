@@ -71,7 +71,14 @@ export default {
       })
     },
     messages() {
-      const ret = this.$store.getters['chatmessages/getMessages'](REVIEWCHAT)
+      let ret = this.$store.getters['chatmessages/getMessages'](REVIEWCHAT)
+
+      if (!this.groupid) {
+        ret = ret.filter(m => {
+          return m && this.amActiveModOn(m.group.id)
+        })
+      }
+
       return ret
     },
     work() {

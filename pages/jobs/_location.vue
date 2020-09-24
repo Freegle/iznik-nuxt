@@ -38,7 +38,10 @@
           <div v-for="job in jobs" :key="'job-' + job.onmousedown">
             <Job :job="job" class="mb-1" />
           </div>
-          <div v-if="location && !loading && (!jobs || jobs.length === 0)">
+          <NoticeMessage v-if="blocked" variant="warning">
+            It looks like you may have an AdBlocker or security software which is blocking these job ads.
+          </NoticeMessage>
+          <div v-else-if="location && !loading && (!jobs || jobs.length === 0)">
             We didn't find any jobs here.  Please search somewhere else.
           </div>
         </b-col>
@@ -49,6 +52,7 @@
 <style scoped>
 </style>
 <script>
+import NoticeMessage from '../../components/NoticeMessage'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 
@@ -56,6 +60,7 @@ const Job = () => import('~/components/Job')
 
 export default {
   components: {
+    NoticeMessage,
     Job
   },
   mixins: [loginOptional, buildHead],
@@ -69,6 +74,9 @@ export default {
     jobs() {
       const ret = this.$store.getters['jobs/list']
       return ret
+    },
+    blocked() {
+      return this.$store.getters['jobs/blocked']
     },
     location() {
       let ret = null
