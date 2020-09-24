@@ -75,19 +75,24 @@ export const actions = {
     sponsors = Object.is(sponsors, undefined) ? false : sponsors
     showmods = Object.is(showmods, undefined) ? false : showmods
 
-    commit(
-      'add',
-      await this.$api.group.fetch(id, polygon, showmods, sponsors, function(
-        data
-      ) {
+    const group = await this.$api.group.fetch(
+      id,
+      polygon,
+      showmods,
+      sponsors,
+      function(data) {
         if (data && data.ret === 2) {
           // Not hosting a group isn't worth logging.
           return false
         } else {
           return true
         }
-      })
+      }
     )
+
+    commit('add', group)
+
+    return group
   },
 
   async update({ dispatch }, params) {
