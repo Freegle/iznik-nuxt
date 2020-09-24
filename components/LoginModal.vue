@@ -50,7 +50,7 @@
           <span class="p-2 social-button__text font-weight-bold">Continue with Facebook</span>
         </b-btn>
         <b-btn v-if="isiOSapp" class="social-button social-button--apple" :disabled="appleDisabled" @click="loginApple">
-          <b-img src="~/static/signinbuttons/Apple_logo_black.svg" class="social-button__image" style="padding: 10px;" />
+          <b-img src="~/static/signinbuttons/Apple_logo_white.svg" class="social-button__image" style="padding: 10px;" />
           <span class="p-2 social-button__text font-weight-bold">Sign in with Apple</span>
         </b-btn>
         <div id="appleid-signin" data-color="black" data-border="true" data-type="sign in"></div>
