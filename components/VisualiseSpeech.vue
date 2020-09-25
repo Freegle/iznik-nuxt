@@ -42,7 +42,7 @@ export default {
   border-bottom: 10px solid transparent;
   left: 130px;
   bottom: -20px;
-  border-bottom-right-radius: 18px;
+  border-bottom-right-radius: 20px;
 }
 
 .speech-bubble:after {
@@ -55,7 +55,7 @@ export default {
   border-top: 8px solid $color-white;
   border-bottom: 8px solid transparent;
   left: 134px;
-  bottom: -16px;
+  bottom: -14px;
   border-bottom-right-radius: 15px;
 }
 
