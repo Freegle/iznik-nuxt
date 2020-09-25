@@ -25,6 +25,7 @@
           v-if="showReplies"
           :lat-lng="[item.tolat, item.tolng]"
           :icon="replyIcon(item.touser)"
+          :z-index-offset="1000"
         />
         <VisualiseUser
           v-if="showTo"
