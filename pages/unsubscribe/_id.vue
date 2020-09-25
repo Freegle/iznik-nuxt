@@ -44,7 +44,7 @@
             variant="primary"
             class="mt-2 mb-2"
             label="Unsubscribe"
-            @handler="emailConfirm"
+            :handler="emailConfirm"
           />
           <NoticeMessage v-if="emailSent" variant="primary" class="mt-2 mb-2">
             We've sent you an email to confirm.  Please check your email, including your spam folder.
