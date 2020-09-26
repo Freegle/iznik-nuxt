@@ -190,6 +190,7 @@ import { appFacebookLogin } from '../plugins/app-facebook' // CC
 import { appGoogleLogin } from '../plugins/app-google' // CC
 import { appYahooLogin } from '../plugins/app-yahoo' // CC
 import { appAppleLogin } from '../plugins/app-apple' // CC
+import { mobilestate } from '@/plugins/app-init-push'
 
 const ExternalLink = () => import('~/components/ExternalLink')
 const NoticeMessage = () => import('~/components/NoticeMessage')
@@ -224,13 +225,20 @@ export default {
 
   computed: {
     isiOSapp() { // CC
+      const isiOS = this.$store.getters['mobileapp/isiOS']
+      //console.log('LOGINMODAL isiOSapp', isiOS)
       if (process.env.IS_APP) {
-        if( window.device.platform === 'iOS' && parseFloat(window.device.version)>=13)
-          return true
-        //return false
-        //return true
-        //return (window.device.platform === 'iOS')
+        if( 'device' in window){
+          if (isiOS && parseFloat(window.device.version) >= 13) {
+            //console.log('LOGINMODAL isiOSapp TRUE')
+            return true
+          }
+          //return false
+          //return true
+          //return (window.device.platform === 'iOS')
+        }
       }
+      //console.log('LOGINMODAL isiOSapp FALSE')
       return false
     },
     modtools() {
@@ -245,10 +253,15 @@ export default {
 
     appleDisabled() { // CC
       if (process.env.IS_APP) { // Sign in with Apple only supported for iOS 13+
-        if (parseFloat(window.device.version)>=13)
+        const isiOS = this.$store.getters['mobileapp/isiOS']
+        //console.log('LOGINMODAL appleDisabled', isiOS)
+        if (isiOS && parseFloat(window.device.version) >= 13) {
+          //console.log('LOGINMODAL appleDisabled FALSE')
           return false
+        }
         //return false  // Enable sign in for iOS12- and Android
       }
+      //console.log('LOGINMODAL appleDisabled TRUE')
       return true
     },
 
