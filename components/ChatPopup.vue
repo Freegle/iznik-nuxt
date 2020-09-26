@@ -232,9 +232,6 @@ export default {
   },
   mixins: [chatCollate, waitForRef, chat],
   computed: {
-    enterNewLine() {
-      return this.$store.getters['misc/get']('enternewline')
-    },
     minheight() {
       return Math.min(this.maxheight, HEIGHT)
     },

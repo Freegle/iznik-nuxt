@@ -212,12 +212,7 @@ export default {
     AddressModal,
     ChatRSVPModal
   },
-  mixins: [waitForRef, chat, chatCollate],
-  computed: {
-    enterNewLine() {
-      return this.$store.getters['misc/get']('enternewline')
-    }
-  }
+  mixins: [waitForRef, chat, chatCollate]
 }
 </script>
 <style scoped lang="scss">

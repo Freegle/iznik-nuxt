@@ -86,10 +86,10 @@
     </b-form-group>
     <b-form-group label="Enter send vs newline">
       <b-form-text class="mb-2">
-        Normally enter/return sends chat messages, rather than add a new line.  This is the best compromise option
-        given the limitations of what is technically possible for websites when used from mobiles.  If you prefer
-        it to add a new line, then you can change the setting on this device.  If you have problems with this
-        setting, then please change it back.
+        On ModTools, normally enter/return adds a new line.  This the opposite way round from on the Freegle site,
+        where sending the message is the best compromise option given the limitations of what is technically possible
+        for websites when used from mobiles.  If you prefer enter to send on ModTools too, you can change the setting on
+        this device.
       </b-form-text>
       <OurToggle
         v-model="enterAddsNewLine"
@@ -98,7 +98,7 @@
         :width="150"
         :font-size="14"
         :sync="true"
-        :labels="{checked: 'Insert new line', unchecked: 'Send message'}"
+        :labels="{checked: 'Send message', unchecked: 'Insert new line'}"
         color="#61AE24"
       />
     </b-form-group>
@@ -176,11 +176,11 @@ export default {
     },
     enterAddsNewLine: {
       get() {
-        return this.$store.getters['misc/get']('enternewline')
+        return this.$store.getters['misc/get']('enternewlinemt')
       },
       set(newval) {
         this.$store.dispatch('misc/set', {
-          key: 'enternewline',
+          key: 'enternewlinemt',
           value: newval
         })
       }
