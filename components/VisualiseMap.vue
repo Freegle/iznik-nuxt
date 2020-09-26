@@ -79,6 +79,7 @@
 import Vue from 'vue'
 import VisualiseSpeech from './VisualiseSpeech'
 import map from '@/mixins/map.js'
+import waitForRef from '@/mixins/waitForRef'
 
 const VisualiseUser = () => import('./VisualiseUser')
 const VisualiseMessage = () => import('./VisualiseMessage')
@@ -91,7 +92,7 @@ if (process.browser) {
 
 export default {
   components: { VisualiseMessage, VisualiseUser },
-  mixins: [map],
+  mixins: [map, waitForRef],
   data: function() {
     return {
       context: null,
@@ -199,31 +200,33 @@ export default {
                   console.log('Collect')
                   this.showOthers = false
                   this.showReplies = false
-                  this.$refs.touser.setLatLng(
-                    this.item.fromlat,
-                    this.item.fromlng
-                  )
-                  setTimeout(() => {
-                    console.log('Return')
+                  this.waitForRef('touser', () => {
                     this.$refs.touser.setLatLng(
-                      this.item.tolat,
-                      this.item.tolng
-                    )
-                    this.$refs.message.setLatLng(
-                      this.item.tolat,
-                      this.item.tolng
+                      this.item.fromlat,
+                      this.item.fromlng
                     )
                     setTimeout(() => {
-                      console.log('Thank')
-                      this.showMessage = false
-                      this.showThanks = true
+                      console.log('Return')
+                      this.$refs.touser.setLatLng(
+                        this.item.tolat,
+                        this.item.tolng
+                      )
+                      this.$refs.message.setLatLng(
+                        this.item.tolat,
+                        this.item.tolng
+                      )
                       setTimeout(() => {
-                        console.log('Next')
-                        this.list.shift()
-                        this.doNext()
-                      }, this.delayBeforeNext)
-                    }, this.delayBeforeThanks + 2000)
-                  }, this.delayBeforeReturn)
+                        console.log('Thank')
+                        this.showMessage = false
+                        this.showThanks = true
+                        setTimeout(() => {
+                          console.log('Next')
+                          this.list.shift()
+                          this.doNext()
+                        }, this.delayBeforeNext)
+                      }, this.delayBeforeThanks + 2000)
+                    }, this.delayBeforeReturn)
+                  })
                 }, this.delayBeforeCollect)
               }, this.delayBeforeReply)
             }, this.delayBeforeReply)
