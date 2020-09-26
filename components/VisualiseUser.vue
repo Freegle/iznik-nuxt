@@ -57,7 +57,7 @@ export default {
 
       return new L.DivIcon({
         html: re.outerHTML,
-        className: 'clear'
+        className: 'clear map__user-icon'
       })
     }
   },
@@ -73,3 +73,42 @@ export default {
   }
 }
 </script>
+
+<style>
+.map__user-icon .ProfileImage__container img {
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+
+  animation-name: bounce-animation;
+  animation-timing-function: ease;
+}
+
+@keyframes bounce-animation {
+  0% {
+    transform: translateY(-40px);
+    opacity: 0.1;
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-25px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  70% {
+    transform: translateY(-6px);
+  }
+  90% {
+    transform: translateY(-3px);
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+</style>

@@ -25,6 +25,7 @@
           v-if="showReplies"
           :lat-lng="[item.tolat, item.tolng]"
           :icon="replyIcon(item.touser)"
+          :z-index-offset="1000"
         />
         <VisualiseUser
           v-if="showTo"
@@ -50,6 +51,7 @@
             :key="'otherreply-' + other.id"
             :lat-lng="[other.lat, other.lng]"
             :icon="replyIcon(other.id)"
+            :z-index-offset="1000"
           />
         </div>
         <VisualiseMessage
