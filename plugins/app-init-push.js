@@ -6,6 +6,7 @@ export const mobilestate = {
 
 const pushstate = Vue.observable({
   pushed: false, // Set to true to handle push in Vue context
+  isiOS: false,
   route: false,
   modtools: false,
   mobilePushId: false, // Note: mobilePushId is the same regardless of which user is logged in
@@ -39,6 +40,8 @@ const cordovaApp = {
       console.log('cordovaApp: onDeviceReady')
 
       mobilestate.isiOS = window.device.platform === 'iOS'
+      mobilestate.isiOS = true
+      pushstate.isiOS = mobilestate.isiOS
 
       // Make window.open work in iOS app
       const prevwindowopener = window.open
@@ -245,6 +248,15 @@ export function setBadgeCount(badgeCount) {
 // https://github.com/vuejs/rfcs/blob/function-apis/active-rfcs/0000-function-api.md#watchers
 export default ({ app, store }) => { // route
   if (process.env.IS_APP) {
+
+    // When isiOS changed, tell mobileapp
+    store.watch(
+      () => pushstate.isiOS,
+      isiOS => {
+        store.commit('mobileapp/setisiOS', isiOS)
+      }
+    )
+
     // When mobilePushId changed, tell server our push notification id
     store.watch(
       () => pushstate.mobilePushId,
