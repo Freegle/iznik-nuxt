@@ -306,16 +306,21 @@ export default {
     },
     graphType() {
       this.maybeFetch()
+    },
+    units(newval) {
+      this.maybeFetch(true)
     }
   },
   mounted() {
     this.fetch()
   },
   methods: {
-    async fetch() {
+    async fetch(nodef) {
       this.loading = true
 
-      this.units = this.defaultUnits()
+      if (!nodef) {
+        this.units = this.defaultUnits()
+      }
 
       let comp = [this.graphType]
 
@@ -331,7 +336,8 @@ export default {
         allgroups: !this.systemwide && !this.groupid,
         group: this.groupid > 0 ? this.groupid : null,
         systemwide: this.systemwide,
-        suppliedgroup: this.groupid
+        suppliedgroup: this.groupid,
+        units: this.units
       })
 
       Object.keys(res).forEach(comp => {
@@ -341,12 +347,12 @@ export default {
 
       this.loading = false
     },
-    maybeFetch() {
+    maybeFetch(nodef) {
       if (!this.loading) {
         this.loading = true
 
         this.$nextTick(() => {
-          this.fetch()
+          this.fetch(nodef)
         })
       }
     },
