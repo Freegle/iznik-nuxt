@@ -1,61 +1,47 @@
 <template>
-  <footer class="footer mt-2 mb-2">
+  <div class="footer w-100">
     <div class="d-flex flex-column">
-      <ul class="d-flex flex-column flex-md-row justify-content-between list-unstyled p-0 ml-2 mr-2">
-        <li>
-          <nuxt-link to="/about" class="menu__link">
-            <v-icon name="info-circle" class="link__icon" />
-            About
-          </nuxt-link>
-        </li>
-        <li>
-          <nuxt-link to="/terms" class="menu__link">
-            <v-icon name="book-open" class="link__icon" />
-            Terms
-          </nuxt-link>
-        </li>
-        <li>
-          <nuxt-link to="/privacy" class="menu__link">
-            <v-icon name="lock" class="link__icon" />
-            Privacy
-          </nuxt-link>
-        </li>
-        <li>
-          <nuxt-link to="/disclaimer" class="menu__link">
-            <v-icon name="gavel" class="link__icon" />
-            Disclaimer
-          </nuxt-link>
-        </li>
-        <li>
-          <nuxt-link to="/donate" class="menu__link">
-            <v-icon name="hand-holding-heart" class="link__icon" />
-            Donate
-          </nuxt-link>
-        </li>
-        <li>
-          <nuxt-link to="/help" class="menu__link">
-            <v-icon name="envelope" class="link__icon" />
-            Contact
-          </nuxt-link>
-        </li>
-      </ul>
-
-      <div class="text-muted">
-        <p>Freegle is registered as a charity with HMRC (ref. XT32865).</p>
-        <div>
-          <span class="text-muted">Kindly supported by</span><br>
-          <div class="d-flex flex-wrap justify-content-between">
-            <a target="_blank" rel="noopener" href="https://www.bytemark.co.uk/company/case-studies/freegle/">
-              <img src="/bytemark.png" alt="Bytemark Logo" width="165px">
-            </a>
-            <a target="_blank" rel="noopener" href="https://www.mythic-beasts.com">
-              <img src="/mythic-beasts.png" alt="Mythic Beasts Logo" width="165px">
-            </a>
-          </div>
+      <div class="d-flex justify-content-center mt-4">
+        <a target="_blank" rel="noopener" href="https://www.bytemark.co.uk/company/case-studies/freegle/" class="d-flex justify-content-start flex-column mr-4">
+          <img src="/bytemark.png" alt="Bytemark Logo" class="sponsor">
+        </a>
+        <a target="_blank" rel="noopener" href="https://www.mythic-beasts.com" class="d-flex justify-content-start flex-column ml-4">
+          <img src="/mythic-beasts.png" alt="Mythic Beasts Logo" class="sponsor">
+        </a>
+      </div>
+      <div class="d-flex flex-column justify-content-end pl-2 pr-2">
+        <div class="text-muted text-center mb-1">
+          Freegle is registered as a charity with HMRC (ref. XT32865). Kindly supported by Bytemark and Mythic Beasts.
         </div>
       </div>
+      <div class="d-flex justify-content-between">
+        <nuxt-link to="/about" class="menu__link">
+          <v-icon name="info-circle" class="link__icon" />
+          About
+        </nuxt-link>
+        <nuxt-link to="/terms" class="menu__link">
+          <v-icon name="book-open" class="link__icon" />
+          Terms
+        </nuxt-link>
+        <nuxt-link to="/privacy" class="menu__link">
+          <v-icon name="lock" class="link__icon" />
+          Privacy
+        </nuxt-link>
+        <nuxt-link to="/disclaimer" class="menu__link">
+          <v-icon name="gavel" class="link__icon" />
+          Disclaimer
+        </nuxt-link>
+        <nuxt-link to="/donate" class="menu__link">
+          <v-icon name="hand-holding-heart" class="link__icon" />
+          Donate
+        </nuxt-link>
+        <nuxt-link to="/help" class="menu__link">
+          <v-icon name="envelope" class="link__icon" />
+          Contact
+        </nuxt-link>
+      </div>
     </div>
-  </footer>
+  </div>
 </template>
 
 <script>
@@ -71,27 +57,29 @@ export default {
 @import '~bootstrap/scss/mixins/_breakpoints';
 
 .footer {
-  max-width: map-get($grid-breakpoints, 'md');
+  //max-width: map-get($grid-breakpoints, 'md');
   margin: 0 auto;
 }
 
-@include media-breakpoint-up(md) {
-  .menu__link {
-    border: 1px $color-black solid;
-    border-radius: 0.25rem;
-    background-color: $color-white;
-    padding: 0.375rem 0.75rem;
-    color: $color-black;
-  }
+.menu__link {
+  color: $color-black;
 }
 
 .link__icon {
   display: none;
 }
 
-@include media-breakpoint-up(md) {
+@include media-breakpoint-up(lg) {
   .link__icon {
     display: inline-block;
+  }
+}
+
+.sponsor {
+  width: 165px;
+
+  @include media-breakpoint-down(md) {
+    width: 99px;
   }
 }
 </style>

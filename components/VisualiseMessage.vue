@@ -66,7 +66,11 @@ export default {
 }
 </script>
 
-<style>
+<style scoped lang="scss">
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+
 .item-image {
   animation-duration: 1s;
   animation-iteration-count: 1;

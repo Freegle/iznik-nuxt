@@ -48,7 +48,7 @@ export default {
         propsData: {
           image: this.icon,
           border: true,
-          size: 'lg',
+          size: 'lg-always',
           lazy: false
         }
       })

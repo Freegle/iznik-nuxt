@@ -19,6 +19,9 @@ export default {
 
 <style scoped lang="scss">
 @import 'color-vars';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
 
 .thick {
   border: 2px solid $color-green--darker !important;
