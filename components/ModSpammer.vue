@@ -37,7 +37,7 @@ export default {
           return 'danger'
         }
         case 'Whitelisted': {
-          return 'success'
+          return 'primary'
         }
         default: {
           return 'warning'
