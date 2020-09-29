@@ -270,13 +270,9 @@
     <div class="navbar-toggle" style="display: none" />
     <div id="serverloader" class="bg-white">
       <b-img src="~/static/loader.gif" alt="Loading..." />
-      <p>
-        <b>Loading...</b>
-        <br>
-        <!-- eslint-disable-next-line -->
-        Stuck here? <ExternalLink href="mailto:support@ilovefreegle.org">Contact us</ExternalLink>
-        <br>Try refreshing.  Or Chrome.
-      </p>
+      <!-- Don't allow this to format neatly, otherwise SSR doesn't match and we get a client-side re-render -->
+      <!-- eslint-disable-next-line -->
+      <p><b>Loading...</b><br>Stuck here? <ExternalLink href="mailto:support@ilovefreegle.org">Contact us</ExternalLink><br>Try refreshing.  Or Chrome.</p>
     </div>
   </div>
 </template>

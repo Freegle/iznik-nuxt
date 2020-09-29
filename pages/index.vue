@@ -1,7 +1,19 @@
 <template>
   <div v-if="!me" class="grid m-0 pl-1 pr-1 pl-sm-0 pr-sm-0">
-    <div class="map justify-content-end flex-column d-none d-sm-flex">
-      <VisualiseMap class="shadow flex-grow-1" />
+    <div class="map justify-content-start flex-column d-none d-sm-flex">
+      <VisualiseMap v-if="type === 'Map'" class="shadow flex-grow-1" />
+      <b-embed
+        v-else
+        ref="video"
+        type="video"
+        autoplay
+        controls
+        :muted="true"
+        poster="/songpreview.png"
+        loop
+        class="shadow flex-grow-1"
+        src="/song.mp4"
+      />
     </div>
     <div class="info">
       <h1 class="largest">
@@ -14,11 +26,11 @@
         We'll match you with someone local.  All completely free.
       </p>
       <div class="d-flex buttons">
-        <b-btn variant="primary" size="lg" to="/give" class="medium ml-1 ml-sm-0">
+        <b-btn variant="primary" size="lg" to="/give" class="medium ml-1 ml-sm-0" @click="clicked('give')">
           Give Stuff
         </b-btn>
         <div style="width: 4vw" class="d-none d-lg-block" />
-        <b-btn variant="secondary" size="lg" to="/find" class="medium mr-1 mr-sm-0">
+        <b-btn variant="secondary" size="lg" to="/find" class="medium mr-1 mr-sm-0" @click="clicked('ask')">
           Ask for Stuff
         </b-btn>
       </div>
@@ -28,7 +40,7 @@
       <p class="medium font-weight-bold">
         Just looking?
       </p>
-      <b-btn variant="white" size="lg" to="/explore" class="small mb-3">
+      <b-btn variant="white" size="lg" to="/explore" class="small mb-3" @click="clicked('explore')">
         Explore Freegle!
       </b-btn>
     </div>
@@ -45,6 +57,7 @@
 </template>
 <script>
 import VisualiseMap from '../components/VisualiseMap'
+import waitForRef from '@/mixins/waitForRef'
 const MainFooter = () => import('~/components/MainFooter.vue')
 
 export default {
@@ -52,14 +65,27 @@ export default {
     VisualiseMap,
     MainFooter
   },
-
+  mixins: [waitForRef],
   data: function() {
     return {
       userWatch: null,
       ourBackground: false
     }
   },
+  async asyncData({ store }) {
+    let type = 'Map'
 
+    // Ensure we can still load the page if we get an API error.
+    try {
+      type = await store.$api.bandit.choose({
+        uid: 'landing'
+      })
+    } catch (e) {}
+
+    return {
+      type: type.variant
+    }
+  },
   mounted() {
     if (process.browser) {
       const user = this.$store.getters['auth/user']
@@ -67,6 +93,12 @@ export default {
       if (user) {
         this.goHome()
       } else {
+        // Start the video.
+        this.waitForRef('video', () => {
+          console.log(this.$refs)
+          // this.$refs.video.el.play()
+        })
+
         // Set up a watch on the store.  We do this because initially the store hasn't yet been reloaded from local
         // storage, so we don't know if we're logged in. When it does get loaded, this watch will fire.
         this.userWatch = this.$store.watch(
@@ -83,6 +115,21 @@ export default {
           }
         )
       }
+
+      this.$api.bandit.shown({
+        uid: 'landing',
+        variant: this.type + '-give'
+      })
+
+      this.$api.bandit.shown({
+        uid: 'landing',
+        variant: this.type + '-ask'
+      })
+
+      this.$api.bandit.shown({
+        uid: 'landing',
+        variant: this.type + '-explore'
+      })
     }
   },
   beforeDestroy() {
@@ -110,6 +157,12 @@ export default {
       } catch (e) {
         console.log('Exception', e)
       }
+    },
+    async clicked(button) {
+      await this.$api.bandit.chosen({
+        uid: 'landing',
+        variant: this.type + '-' + button
+      })
     }
   }
 }

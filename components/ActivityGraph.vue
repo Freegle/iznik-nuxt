@@ -226,7 +226,12 @@ export default {
         },
         legend: { position: 'none' },
         chartArea: { width: '80%', height: '80%' },
-        vAxis: { viewWindow: { min: 0 } },
+        vAxis: {
+          viewWindow: {
+            min: 0
+            // max: 250000
+          }
+        },
         hAxis: {
           format: hformat
         },
