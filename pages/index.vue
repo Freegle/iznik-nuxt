@@ -117,17 +117,17 @@ export default {
       }
 
       this.$api.bandit.shown({
-        uid: 'landing',
+        uid: 'landing-button',
         variant: this.type + '-give'
       })
 
       this.$api.bandit.shown({
-        uid: 'landing',
+        uid: 'landing-button',
         variant: this.type + '-ask'
       })
 
       this.$api.bandit.shown({
-        uid: 'landing',
+        uid: 'landing-button',
         variant: this.type + '-explore'
       })
     }
@@ -160,7 +160,7 @@ export default {
     },
     async clicked(button) {
       await this.$api.bandit.chosen({
-        uid: 'landing',
+        uid: 'landing-button',
         variant: this.type + '-' + button
       })
     }
