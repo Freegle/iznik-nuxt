@@ -160,6 +160,11 @@ export default {
     },
     async clicked(button) {
       await this.$api.bandit.chosen({
+        uid: 'landing',
+        variant: this.type
+      })
+
+      await this.$api.bandit.chosen({
         uid: 'landing-button',
         variant: this.type + '-' + button
       })
