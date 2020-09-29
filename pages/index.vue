@@ -117,6 +117,11 @@ export default {
       }
 
       this.$api.bandit.shown({
+        uid: 'landing',
+        variant: this.type
+      })
+
+      this.$api.bandit.shown({
         uid: 'landing-button',
         variant: this.type + '-give'
       })
