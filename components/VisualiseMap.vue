@@ -207,24 +207,26 @@ export default {
                     )
                     setTimeout(() => {
                       console.log('Return')
-                      this.$refs.touser.setLatLng(
-                        this.item.tolat,
-                        this.item.tolng
-                      )
-                      this.$refs.message.setLatLng(
-                        this.item.tolat,
-                        this.item.tolng
-                      )
-                      setTimeout(() => {
-                        console.log('Thank')
-                        this.showMessage = false
-                        this.showThanks = true
+                      if (this.$refs.touser) {
+                        this.$refs.touser.setLatLng(
+                          this.item.tolat,
+                          this.item.tolng
+                        )
+                        this.$refs.message.setLatLng(
+                          this.item.tolat,
+                          this.item.tolng
+                        )
                         setTimeout(() => {
-                          console.log('Next')
-                          this.list.shift()
-                          this.doNext()
-                        }, this.delayBeforeNext)
-                      }, this.delayBeforeThanks + 2000)
+                          console.log('Thank')
+                          this.showMessage = false
+                          this.showThanks = true
+                          setTimeout(() => {
+                            console.log('Next')
+                            this.list.shift()
+                            this.doNext()
+                          }, this.delayBeforeNext)
+                        }, this.delayBeforeThanks + 2000)
+                      }
                     }, this.delayBeforeReturn)
                   })
                 }, this.delayBeforeCollect)
