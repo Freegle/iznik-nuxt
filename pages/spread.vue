@@ -36,12 +36,24 @@
         </b-form-radio-group>
       </div>
       <div v-if="language === 'English'" class="d-flex flex-wrap">
-        <div>
+        <div class="mr-1">
           <h3 class="header--size4">
             A4
           </h3>
           <a href="https://freegle.in/A4Poster" target="_blank" class="mr-2">
             <b-img-lazy src="~static/posters/A4.jpg" class="poster border border-dark mb-2" />
+            <br>
+            <b-btn variant="secondary" size="lg" class="mt-2 mb-2">
+              Download poster
+            </b-btn>
+          </a>
+        </div>
+        <div class="mr-1">
+          <h3 class="header--size4">
+            A5
+          </h3>
+          <a href="~static/posters/A5.jpg" target="_blank" class="mr-2">
+            <b-img-lazy src="~static/posters/A5.jpg" class="poster border border-dark mb-2" />
             <br>
             <b-btn variant="secondary" size="lg" class="mt-2 mb-2">
               Download poster
