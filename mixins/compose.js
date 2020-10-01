@@ -88,7 +88,12 @@ export default {
       return ret
     },
     valid() {
-      const messages = Object.values(this.$store.getters['compose/getMessages'])
+      const messages = Object.values(
+        this.$store.getters['compose/getMessages']
+      ).filter(m => {
+        return m.id && m.type === this.postType
+      })
+
       const pc = this.$store.getters['compose/getPostcode']
       let valid = false
 
@@ -96,20 +101,18 @@ export default {
         valid = true
 
         for (const message of messages) {
-          if (message.id && message.type === this.postType) {
-            const atts = Object.values(
-              this.$store.getters['compose/getAttachments'](message.id)
-            )
+          const atts = Object.values(
+            this.$store.getters['compose/getAttachments'](message.id)
+          )
 
-            // A message is valid if there is an item, and either a description or a photo.
-            if (
-              !message.item ||
-              !message.item.trim() ||
-              ((!message.description || !message.description.trim()) &&
-                !atts.length)
-            ) {
-              valid = false
-            }
+          // A message is valid if there is an item, and either a description or a photo.
+          if (
+            !message.item ||
+            !message.item.trim() ||
+            ((!message.description || !message.description.trim()) &&
+              !atts.length)
+          ) {
+            valid = false
           }
         }
       }
