@@ -29,7 +29,7 @@
             label="I put up a poster!"
             class="mb-2"
           />
-          <b-btn variant="white" size="lg" to="/posters/A4.png" class="mb-2">
+          <b-btn variant="white" size="lg" to="/posters/A4.jpg" class="mb-2">
             <v-icon name="download" /> Download the poster
           </b-btn>
           <SpinButton
