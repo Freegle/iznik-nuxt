@@ -5,7 +5,6 @@
         id="aboutmemodal"
         v-model="showModal"
         size="lg"
-        no-stacking
       >
         <template slot="modal-title">
           Edit <em>{{ message.subject }}</em>

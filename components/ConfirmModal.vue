@@ -3,7 +3,6 @@
     id="confirmmodal"
     v-model="showModal"
     :title="title"
-    no-stacking
   >
     <template slot="default">
       <!-- eslint-disable-next-line -->
