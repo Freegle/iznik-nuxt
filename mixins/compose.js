@@ -1,7 +1,8 @@
 export default {
   data: function() {
     return {
-      postType: null
+      postType: null,
+      submitting: false
     }
   },
   computed: {
@@ -214,6 +215,76 @@ export default {
         description: null,
         type: this.postType
       })
+    },
+    async freegleIt(type) {
+      this.submitting = true
+
+      const results = await this.$store.dispatch('compose/submit', {
+        type: type
+      })
+
+      // The params we pass from the results may crucially include new user information,
+      // and depending on timing this may not appear in the first result, so look for one of those first.
+      const params = {
+        justPosted: [],
+        newuser: null,
+        newpassword: null
+      }
+
+      results.forEach(async res => {
+        if (res.newuser) {
+          params.newuser = res.newuser
+          params.newpassword = res.newpassword
+
+          // Fetch the session so that we know we're logged in, and so that we have permission to fetch messages
+          // below.
+          await this.$store.dispatch('auth/fetchUser', {
+            components: ['me', 'groups'],
+            force: true
+          })
+        }
+      })
+
+      // Fetch the message and group we posted on so that it's in the store for the next page - it might not be if
+      // we weren't a member or logged in.  Do this before we navigate as it looks nicer that way.
+      //
+      // All posts are made to the same group so it's ok to check just the first.  The group should be in store.
+      const promises = []
+
+      if (results.length > 0 && results[0].groupid) {
+        const groupid = results[0].groupid
+        const group = this.$store.getters['group/get'](groupid)
+
+        if (!group) {
+          promises.push(
+            this.$store.dispatch('group/fetch', {
+              id: groupid
+            })
+          )
+        }
+
+        results.forEach(res => {
+          params.justPosted.push(res.id)
+
+          promises.push(
+            this.$store.dispatch('messages/fetch', {
+              id: res.id
+            })
+          )
+        })
+
+        await Promise.allSettled(promises)
+
+        this.$router.push({
+          name: 'myposts',
+          params: params
+        })
+      } else {
+        // Was probably already submitted
+        this.$router.push({
+          name: 'myposts'
+        })
+      }
     }
   }
 }

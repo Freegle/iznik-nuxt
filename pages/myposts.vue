@@ -5,11 +5,14 @@
     </h1>
     <b-row class="m-0">
       <b-col cols="0" lg="3" class="d-none d-lg-block p-0 pr-1">
-        <SidebarLeft :show-community-events="true" :show-bot-left="true" />
+        <SidebarLeft v-if="!justPosted" :show-community-events="true" :show-bot-left="true" />
       </b-col>
       <b-col cols="12" lg="6" class="p-0">
         <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" :chats="me.expectedchats" />
-        <JobsTopBar />
+        <div v-if="justPosted && justPosted.length">
+          <JustPosted :ids="justPosted" :newuser="newuser" :newpassword="newpassword" />
+        </div>
+        <JobsTopBar v-else />
         <b-card
           v-if="!simple"
           class="mt-2"
@@ -174,7 +177,7 @@
         </b-card>
       </b-col>
       <b-col cols="0" lg="3" class="d-none d-lg-block p-0 pl-1">
-        <sidebar-right show-volunteer-opportunities />
+        <sidebar-right v-if="!justPosted" show-volunteer-opportunities />
       </b-col>
     </b-row>
     <AvailabilityModal v-if="me" ref="availabilitymodal" :thisuid="me.id" />
@@ -186,7 +189,8 @@
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
 import waitForRef from '@/mixins/waitForRef'
-const JobsTopBar = () => import('../components/JobsTopBar')
+const JustPosted = () => import('~/components/JustPosted')
+const JobsTopBar = () => import('~/components/JobsTopBar')
 const MyMessage = () => import('~/components/MyMessage.vue')
 const SidebarLeft = () => import('~/components/SidebarLeft')
 const SidebarRight = () => import('~/components/SidebarRight')
@@ -197,6 +201,7 @@ const ExpectedRepliesWarning = () =>
 
 export default {
   components: {
+    JustPosted,
     JobsTopBar,
     MyMessage,
     SidebarLeft,
@@ -208,6 +213,7 @@ export default {
   mixins: [loginRequired, buildHead, waitForRef],
   data() {
     return {
+      justPosted: null,
       id: null,
       messages: [],
       busy: true,
@@ -217,7 +223,9 @@ export default {
       expand: false,
       removingSearch: null,
       removedSearch: null,
-      donationGroup: null
+      donationGroup: null,
+      newuser: false,
+      newpassword: null
     }
   },
   computed: {
@@ -327,6 +335,12 @@ export default {
     }
   },
   async mounted() {
+    // We might have parameters from just having posted.
+    console.log('Mounted', this.justPosted, this.$route)
+    this.justPosted = this.$route.params.justPosted
+    this.newuser = this.$route.params.newuser
+    this.newpassword = this.$route.params.newpassword
+
     // We want this to be our next home page.
     try {
       localStorage.setItem('Iznik>lasthomepage', 'myposts')
