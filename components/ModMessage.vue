@@ -210,6 +210,14 @@
             <ModMemberActions v-if="showActions && message.groups && message.groups.length" :userid="message.fromuser.id" :groupid="message.groups[0].groupid" />
           </b-col>
         </b-row>
+        <div v-if="review && message.groups && message.groups.length" class="mt-1">
+          <b-alert v-if="message.groups[0].collection === 'Pending'" variant="info" show>
+            <v-icon name="info-circle" /> Post now in <em>Pending</em>.
+          </b-alert>
+          <b-alert v-if="message.groups[0].collection === 'Approved'" variant="info" show>
+            <v-icon name="info-circle" /> Post now in <em>Approved</em>.
+          </b-alert>
+        </div>
       </b-card-body>
       <b-card-footer v-if="!noactions && expanded">
         <ModMessageButtons v-if="!editing" :message="message" :modconfig="modconfig" :editreview="editreview" :cantpost="membership && membership.ourpostingstatus === 'PROHIBITED'" />
@@ -293,6 +301,11 @@ export default {
       default: false
     },
     summary: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    review: {
       type: Boolean,
       required: false,
       default: false
