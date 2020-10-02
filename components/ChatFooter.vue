@@ -26,12 +26,12 @@
         <notice-message v-else-if="otheruser && otheruser.hasReneged" variant="warning" class="clickme" @click.native="showInfo">
           <v-icon name="exclamation-triangle" />&nbsp;Things haven't always worked out for this freegler.  That might not be their fault, but please make very clear arrangements.
         </notice-message>
-        <notice-message v-if="!spammer && (replytime || milesaway)" class="clickme d-flex justify-content-between" @click.native="showInfo">
+        <notice-message v-if="!spammer && (replytime || milesaway)" class="clickme d-flex flex-wrap justify-content-between" @click.native="showInfo">
           <span v-if="milesaway">
-            <v-icon name="map-marker-alt" class="fa-fw" />About <b>{{ milesaway | pluralize('mile', { includeNumber: true }) }} away</b>.
+            <v-icon name="map-marker-alt" class="fa-fw" />&nbsp;About <b>{{ milesaway | pluralize('mile', { includeNumber: true }) }} away</b>.
           </span>
           <span v-if="replytime">
-            <v-icon name="info-circle" />&nbsp;Typically replies in <b>{{ replytime }}</b>.
+            <v-icon name="info-circle" class="fa-fw" />&nbsp;Typically replies in <b>{{ replytime }}</b>.
           </span>
           Click for more info.
         </notice-message>
