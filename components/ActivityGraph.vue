@@ -311,10 +311,11 @@ export default {
     },
     graphType() {
       this.maybeFetch()
-    },
-    units(newval) {
-      this.maybeFetch(true)
     }
+    // This is experimental code for if we find a way to fetch stats faster on the server for different units.
+    // units(newval) {
+    //   this.maybeFetch(true)
+    // }
   },
   mounted() {
     this.fetch()
