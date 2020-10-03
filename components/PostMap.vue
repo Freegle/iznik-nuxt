@@ -6,7 +6,7 @@
         :center="center"
         :style="'width: 100%; height: ' + mapHeight + 'px'"
         :min-zoom="10"
-        :max-zoom="16"
+        :max-zoom="15"
         @ready="ready"
         @zoomend="idle"
         @moveend="idle"

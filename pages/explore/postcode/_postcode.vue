@@ -226,19 +226,23 @@ export default {
       this.busy = true
 
       let count = 0
+      const promises = []
+      const fetching = []
 
       for (const m of this.sortedMessagesOnMap) {
-        if (!this.fetched[m.id] && !this.fetching[m.id]) {
+        const message = this.$store.getters['messages/get'](m.id)
+
+        if (!message && !this.fetching[m.id]) {
           this.fetching[m.id] = true
+          fetching.push(m.id)
           console.log('Fetch', m.id)
 
-          await this.$store.dispatch('messages/fetch', {
-            id: m.id,
-            summary: true
-          })
-
-          this.fetched[m.id] = true
-          delete this.fetching[m.id]
+          promises.push(
+            this.$store.dispatch('messages/fetch', {
+              id: m.id,
+              summary: true
+            })
+          )
 
           count++
 
@@ -250,35 +254,24 @@ export default {
         }
       }
 
+      await Promise.allSettled(promises)
+      fetching.forEach(id => {
+        this.fetched[id] = true
+        delete this.fetching[id]
+      })
+
       if (count) {
+        console.log('Loaded')
         $state.loaded()
       } else {
+        console.log('Complete')
         $state.complete()
       }
 
       this.busy = false
     },
     messagesChanged(messages) {
-      // We might be zooming in.  In that case, all the messages which are currently on the map will have been on
-      // the map before.  In that case there is no point in clearing the store and refetching.
-      let subset = true
-      messages.forEach(m => {
-        if (
-          !this.messagesOnMap.some(m2 => {
-            return m.id === m2.id
-          })
-        ) {
-          subset = false
-        }
-      })
-
-      console.log('Subset', subset, messages, this.messagesOnMap)
-      if (!subset) {
-        this.$store.dispatch('messages/clear')
-        this.fetched = []
-        this.infiniteId++
-      }
-
+      this.infiniteId++
       this.messagesOnMap = messages
     }
   },
