@@ -66,11 +66,9 @@ export const mutations = {
 
 export const getters = {
   get: state => id => {
-    console.log('Look in store for ', id)
     const ret = state.list.find(m => {
       return parseInt(m.id) === id
     })
-    console.log('Looked')
 
     return ret
   },

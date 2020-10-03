@@ -111,7 +111,6 @@ export default {
     }
   },
   created() {
-    console.log('Explore postcode created', this.$route.params)
     this.postcode = this.$route.params.postcode
   },
   async mounted() {
@@ -226,27 +225,27 @@ export default {
       // in descending date order.  This avoids flooding the server.
       this.busy = true
 
-      const count = 0
+      let count = 0
 
       for (const m of this.sortedMessagesOnMap) {
         if (!this.fetched[m.id] && !this.fetching[m.id]) {
-          const message = this.$store.getters['messages/get'](m.id)
+          this.fetching[m.id] = true
+          console.log('Fetch', m.id)
 
-          if (!message) {
-            this.fetching[m.id] = true
+          await this.$store.dispatch('messages/fetch', {
+            id: m.id,
+            summary: true
+          })
 
-            await this.$store.dispatch('messages/fetch', {
-              id: m.id,
-              summary: true
-            })
+          this.fetched[m.id] = true
+          delete this.fetching[m.id]
 
-            this.fetched[m.id] = true
-            delete this.fetching[m.id]
+          count++
 
-            if (count > 5) {
-              // Don't fetch too many at once.
-              break
-            }
+          if (count >= 5) {
+            // Don't fetch too many at once.
+            console.log('Stop')
+            break
           }
         }
       }
