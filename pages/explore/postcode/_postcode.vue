@@ -3,28 +3,44 @@
     <b-row class="m-0">
       <b-col cols="0" lg="3" class="d-none d-lg-block p-0 pr-1" />
       <b-col cols="12" lg="6" class="p-0">
-        <div>
-          <h1 class="d-none d-sm-block">
+        <div class="position-relative">
+          <h1 class="d-none d-sm-block heading">
             Freegling near {{ postcode }}
           </h1>
           <client-only>
-            <PostMap v-if="initialBounds" :initial-bounds="initialBounds" :height-fraction="heightFraction" @messages="messagesChanged($event)" />
-            <div v-else :style="mapHeight" />
-          </client-only>
-          <div v-if="filteredMessages && filteredMessages.length">
-            <div v-for="message in filteredMessages" :key="'messagelist-' + message.id" class="p-0">
-              <Message v-bind="message" />
+            <div class="mapbox">
+              <PostMap v-if="initialBounds" :initial-bounds="initialBounds" :height-fraction="heightFraction" @messages="messagesChanged($event)" @groups="groupsChanged($event)" />
+              <div v-else :style="mapHeight" />
             </div>
-          </div>
-          <client-only>
-            <infinite-loading :identifier="infiniteId" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
-              <span slot="no-results" />
-              <span slot="no-more" />
-              <span slot="spinner">
-                <b-img-lazy src="~/static/loader.gif" alt="Loading" />
-              </span>
-            </infinite-loading>
+            <Postcode v-if="filteredMessages && filteredMessages.length" :value="postcode" size="md" class="mt-2 postcode" @selected="selected($event)" />
           </client-only>
+          <div class="rest">
+            <div v-if="closestGroups.length" class="d-flex flex-wrap mb-1 justify-content-between border p-2 bg-white">
+              <b-btn
+                v-for="group in closestGroups"
+                :key="'group-' + group.id"
+                size="md"
+                :to="'/explore/join/' + group.id"
+                variant="primary"
+              >
+                Join {{ group.namedisplay }}
+              </b-btn>
+            </div>
+            <div v-if="filteredMessages && filteredMessages.length">
+              <div v-for="message in filteredMessages" :key="'messagelist-' + message.id" class="p-0">
+                <Message v-bind="message" />
+              </div>
+            </div>
+            <client-only>
+              <infinite-loading :identifier="infiniteId" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
+                <span slot="no-results" />
+                <span slot="no-more" />
+                <span slot="spinner">
+                  <b-img-lazy src="~/static/loader.gif" alt="Loading" />
+                </span>
+              </infinite-loading>
+            </client-only>
+          </div>
         </div>
       </b-col>
       <b-col cols="0" lg="3" class="d-none d-lg-block p-0 pl-1" />
@@ -34,6 +50,8 @@
 
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
+import Postcode from '../../../components/Postcode'
+import map from '@/mixins/map.js'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 const Message = () => import('~/components/Message.vue')
@@ -47,11 +65,12 @@ if (process.browser) {
 
 export default {
   components: {
+    Postcode,
     InfiniteLoading,
     Message,
     PostMap
   },
-  mixins: [loginOptional, buildHead],
+  mixins: [loginOptional, buildHead, map],
   data: function() {
     return {
       heightFraction: 3,
@@ -59,6 +78,8 @@ export default {
       busy: false,
       infiniteId: +new Date(),
       distance: 1000,
+      lat: null,
+      lng: null,
       swlat: null,
       swlng: null,
       nelat: null,
@@ -67,7 +88,8 @@ export default {
       postThreshold: 50,
       messagesOnMap: [],
       fetching: [],
-      fetched: []
+      fetched: [],
+      groupids: []
     }
   },
   computed: {
@@ -108,6 +130,30 @@ export default {
       return this.messagesOnMap.slice().sort((a, b) => {
         return new Date(b.arrival).getTime() - new Date(a.arrival).getTime()
       })
+    },
+    closestGroups() {
+      const ret = []
+
+      this.groupids.forEach(id => {
+        const member =
+          this.$store.getters['auth/user'] &&
+          this.$store.getters['auth/member'](id)
+
+        if (!member) {
+          const group = this.$store.getters['group/get'](id)
+          group.distance = this.getDistance(
+            [this.lat, this.lng],
+            [group.lat, group.lng]
+          )
+          ret.push(group)
+        }
+      })
+
+      ret.sort((a, b) => {
+        return a.distance - b.distance
+      })
+
+      return ret.slice(0, 3)
     }
   },
   created() {
@@ -130,6 +176,8 @@ export default {
 
       const list = Object.values(this.$store.getters['locations/list'])
       list.forEach(l => {
+        this.lat = l.lat
+        this.lng = l.lng
         this.swlat = this.swlat === null ? l.lat : Math.min(this.swlat, l.lat)
         this.swlng = this.swlng === null ? l.lng : Math.min(this.swlng, l.lng)
         this.nelat = this.nelat === null ? l.lat : Math.max(this.nelat, l.lat)
@@ -217,6 +265,11 @@ export default {
           L.latLng(this.nelat, this.nelng)
         )
       }
+
+      // Fetch group list for when we have some to show.
+      this.$store.dispatch('group/list', {
+        grouptype: 'Freegle'
+      })
     }
   },
   methods: {
@@ -235,7 +288,6 @@ export default {
         if (!message && !this.fetching[m.id]) {
           this.fetching[m.id] = true
           fetching.push(m.id)
-          console.log('Fetch', m.id)
 
           promises.push(
             this.$store.dispatch('messages/fetch', {
@@ -248,7 +300,6 @@ export default {
 
           if (count >= 5) {
             // Don't fetch too many at once.
-            console.log('Stop')
             break
           }
         }
@@ -261,10 +312,8 @@ export default {
       })
 
       if (count) {
-        console.log('Loaded')
         $state.loaded()
       } else {
-        console.log('Complete')
         $state.complete()
       }
 
@@ -273,6 +322,17 @@ export default {
     messagesChanged(messages) {
       this.infiniteId++
       this.messagesOnMap = messages
+    },
+    groupsChanged(groupids) {
+      this.groupids = groupids
+    },
+    selected(pc) {
+      this.$router.push({
+        name: 'explore-postcode-postcode',
+        params: {
+          postcode: pc.name
+        }
+      })
     }
   },
   head() {
@@ -287,4 +347,29 @@ export default {
 
 <style scoped lang="scss">
 @import 'color-vars';
+
+.mapbox {
+  width: 100%;
+  position: absolute;
+  top: 50px;
+  left: 0;
+}
+
+.postcode {
+  position: absolute;
+  top: 50px;
+  right: 0px;
+  z-index: 20000;
+}
+
+.heading {
+  position: absolute;
+  top: 0px;
+}
+
+.rest {
+  position: absolute;
+  top: 300px;
+  width: 100%;
+}
 </style>
