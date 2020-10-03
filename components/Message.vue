@@ -196,7 +196,7 @@
       :subject="subject"
     />
     <ShareModal v-if="expanded && expanded.url" :id="expanded.id" ref="shareModal" />
-    <ChatButton v-if="replyToUser" ref="chatbutton" :userid="replyToUser" class="d-none" @sent="sentReply" />
+    <ChatButton v-if="expanded && replyToUser" ref="chatbutton" :userid="replyToUser" class="d-none" @sent="sentReply" />
     <MessageReportModal v-if="expanded" ref="reportModal" :message="$props" />
   </div>
 </template>
