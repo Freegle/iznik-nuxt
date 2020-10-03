@@ -29,6 +29,14 @@ export default {
     }
   },
   computed: {
+    enterNewLine() {
+      const modtools = this.$store.getters['misc/get']('modtools')
+      const val = this.$store.getters['misc/get'](
+        modtools ? 'enternewlinemt' : 'enternewline'
+      )
+
+      return modtools ? !val : val
+    },
     chat() {
       const ret = this.$store.getters['chats/get'](this.id)
       return ret

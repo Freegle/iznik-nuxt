@@ -5,6 +5,7 @@ import Icon from 'vue-awesome/components/Icon.vue'
 require('vue-awesome/icons/address-book')
 require('vue-awesome/icons/arrow-left')
 require('vue-awesome/icons/arrow-circle-right')
+require('vue-awesome/icons/angle-double-left')
 require('vue-awesome/icons/angle-double-right')
 require('vue-awesome/icons/baby-carriage')
 require('vue-awesome/icons/balance-scale-left')

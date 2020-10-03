@@ -133,6 +133,13 @@ export default {
   }
 }
 
+.profile--lg-always {
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
+  min-height: 50px;
+}
+
 .profile--xl {
   width: 75px;
   height: 75px;

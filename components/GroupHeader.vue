@@ -43,19 +43,17 @@
         </div>
       </div>
     </div>
-    <b-row class="mb-4">
-      <b-col class="group-description">
-        <p v-if="!group.description">
-          Give and get stuff for free with {{ group.namedisplay }}.  Offer things you don't need, and ask for things you'd like.  Don't just recycle - reuse with Freegle!
-        </p>
-        <!-- eslint-disable-next-line -->
-        <span v-if="group.description" v-html="group.description"/>
-      </b-col>
-    </b-row>
+    <div class="group-description">
+      <p v-if="!group.description">
+        Give and get stuff for free with {{ group.namedisplay }}.  Offer things you don't need, and ask for things you'd like.  Don't just recycle - reuse with Freegle!
+      </p>
+      <!-- eslint-disable-next-line -->
+      <span v-if="group.description" v-html="group.description"/>
+    </div>
     <div>
-      <hr>
+      <hr class="mt-0">
       <h2 class="group-volunteers mb-3">
-        You can contact our lovely local volunteers here:
+        If you have questions, you can contact our lovely local volunteers here:
       </h2>
       <ExternalLink :href="'mailto:' + modsemail">
         <span class="btn btn-white mb-3">

@@ -7,7 +7,7 @@
         There are no messages at the moment.  This will refresh automatically.
       </NoticeMessage>
       <div v-for="message in visibleMessages" :key="'messagelist-' + message.id" class="p-0 mt-2">
-        <ModMessage :message="message" />
+        <ModMessage :message="message" review />
       </div>
 
       <infinite-loading :key="'infinite-' + groupid + '-' + messages.length" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">

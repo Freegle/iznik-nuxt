@@ -47,6 +47,7 @@ export default {
   },
   async asyncData({ app, params, store }) {
     let invalid = false
+    let groupid = params.id
 
     if (params.id) {
       // We need to populate the store on the server so that SSR works.  We can only do this in asyncData - mounted()
@@ -59,16 +60,15 @@ export default {
 
         if (!group || !group.showmods) {
           // Not fetched yet.
-          await store.dispatch('group/fetch', {
+          group = await store.dispatch('group/fetch', {
             id: params.id,
             showmods: true,
             sponsors: true
           })
-
-          group = store.getters['group/get'](params.id)
         }
 
         if (group) {
+          groupid = group.id
           await store.dispatch('messages/fetchMessages', {
             groupid: group.id,
             collection: 'Approved',
@@ -88,12 +88,12 @@ export default {
     }
 
     return {
-      asyncGroupId: params.id,
+      asyncGroupId: groupid,
       invalid: invalid
     }
   },
   created() {
-    this.id = this.$route.params.id
+    this.id = this.asyncGroupId ? this.asyncGroupId : this.$route.params.id
 
     const re = /(.*),(.*),(.*),(.*)/
     const matches = re.exec(this.$route.query.bounds)
@@ -113,7 +113,7 @@ export default {
     }
 
     if (this.id) {
-      if (this.invalid) {
+      if (this.invalid || !group) {
         return this.buildHead('Explore ' + this.id)
       } else {
         return this.buildHead(group.namedisplay, group.tagline, group.profile)
