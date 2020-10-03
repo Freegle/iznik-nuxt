@@ -16,7 +16,6 @@
           :swlng="swlng"
           :nelat="nelat"
           :nelng="nelng"
-          track
         />
       </client-only>
     </div>
