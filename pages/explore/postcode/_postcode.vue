@@ -3,16 +3,18 @@
     <b-row class="m-0">
       <b-col cols="0" lg="3" class="d-none d-lg-block p-0 pr-1" />
       <b-col cols="12" lg="6" class="p-0">
-        <div class="position-relative">
+        <div>
           <h1 class="d-none d-sm-block heading">
             Freegling near {{ postcode }}
           </h1>
           <client-only>
-            <div class="mapbox">
-              <PostMap v-if="initialBounds" :initial-bounds="initialBounds" :height-fraction="heightFraction" @messages="messagesChanged($event)" @groups="groupsChanged($event)" />
-              <div v-else :style="mapHeight" />
+            <div :style="mapHeight" class="position-relative mb-1">
+              <div class="mapbox">
+                <PostMap v-if="initialBounds" :initial-bounds="initialBounds" :height-fraction="heightFraction" @messages="messagesChanged($event)" @groups="groupsChanged($event)" />
+                <div v-else :style="mapHeight" />
+              </div>
+              <Postcode v-if="filteredMessages && filteredMessages.length" :value="postcode" size="md" class="mt-2 postcode" @selected="selected($event)" />
             </div>
-            <Postcode v-if="filteredMessages && filteredMessages.length" :value="postcode" size="md" class="mt-2 postcode" @selected="selected($event)" />
           </client-only>
           <div class="rest">
             <div v-if="closestGroups.length" class="d-flex flex-wrap mb-1 justify-content-between border p-2 bg-white">
@@ -22,6 +24,7 @@
                 size="md"
                 :to="'/explore/join/' + group.id"
                 variant="primary"
+                class="mb-1"
               >
                 Join {{ group.namedisplay }}
               </b-btn>
@@ -351,25 +354,20 @@ export default {
 .mapbox {
   width: 100%;
   position: absolute;
-  top: 50px;
+  top: 0px;
   left: 0;
 }
 
 .postcode {
   position: absolute;
-  top: 50px;
+  top: 0px;
   right: 0px;
   z-index: 20000;
 }
 
 .heading {
-  position: absolute;
-  top: 0px;
 }
 
 .rest {
-  position: absolute;
-  top: 300px;
-  width: 100%;
 }
 </style>
