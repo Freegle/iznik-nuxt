@@ -162,11 +162,6 @@ export default {
       required: false,
       default: null
     },
-    track: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
     swlat: {
       type: Number,
       required: false,
@@ -300,26 +295,6 @@ export default {
       ) {
         this.$refs.gmap.$mapObject.setCenter(addressData.geometry.location)
         this.$refs.gmap.$mapObject.setZoom(11)
-      }
-    },
-    setUrl: function() {
-      if (this.track) {
-        // We've been asked to update the URL as we move around the map.
-        let url = this.$route.fullPath
-        const p = url.indexOf('?')
-        url = p !== -1 ? url.substring(0, p) : url
-        const precis = 10000
-        url =
-          url +
-          '?bounds=' +
-          Math.round(this.bounds.getSouthWest().lat * precis) / precis +
-          ',' +
-          Math.round(this.bounds.getSouthWest().lng * precis) / precis +
-          ',' +
-          Math.round(this.bounds.getNorthEast().lat * precis) / precis +
-          ',' +
-          Math.round(this.bounds.getNorthEast().lng * precis) / precis
-        this.$router.replace(url)
       }
     },
     loadMoreList($state) {

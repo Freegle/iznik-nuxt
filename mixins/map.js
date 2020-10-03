@@ -79,13 +79,9 @@ export default {
     }
   },
   methods: {
-    setUrl: function() {
-      // Override.
-    },
     boundsChanged: function() {
       this.bounds = this.$refs.map.mapObject.getBounds()
       this.zoom = this.$refs.map.mapObject.getZoom()
-      this.setUrl()
     },
     idle: function(map) {
       this.boundsChanged()
