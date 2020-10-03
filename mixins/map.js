@@ -56,6 +56,9 @@ export default {
       }
 
       return ret
+    },
+    mapObject() {
+      return this.$refs.map ? this.$refs.map.mapObject : null
     }
   },
   mounted() {

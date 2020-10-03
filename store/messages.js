@@ -66,13 +66,11 @@ export const mutations = {
 
 export const getters = {
   get: state => id => {
-    let ret = null
-
-    Object.keys(state.list).forEach(key => {
-      if (parseInt(state.list[key].id) === parseInt(id)) {
-        ret = state.list[key]
-      }
+    console.log('Look in store for ', id)
+    const ret = state.list.find(m => {
+      return parseInt(m.id) === id
     })
+    console.log('Looked')
 
     return ret
   },

@@ -92,6 +92,7 @@ export default {
     }
   },
   created() {
+    console.log('Explore created', this.$route.params)
     this.id = this.asyncGroupId ? this.asyncGroupId : this.$route.params.id
 
     const re = /(.*),(.*),(.*),(.*)/
@@ -119,7 +120,7 @@ export default {
       }
     } else {
       return this.buildHead(
-        'Explore Freegle Groups',
+        'Explore Freegle Communities',
         "There are lots of lovely communities of freeglers across the UK. Shall we see what they're up to?",
         null
       )

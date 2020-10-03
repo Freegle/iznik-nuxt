@@ -40,9 +40,17 @@
       <p class="medium font-weight-bold">
         Just looking?
       </p>
-      <b-btn variant="white" size="lg" to="/explore" class="small mb-3" @click="clicked('explore')">
-        Explore Freegle!
-      </b-btn>
+      <p class="smaller font-weight-bold">
+        Enter your postcode and we'll show you what's being freegled near you.
+      </p>
+      <b-input-group>
+        <Postcode :find="false" size="xl" @selected="explorePostcode($event)" />
+        <b-input-group-addon>
+          <b-btn variant="white" size="lg" to="/explore" class="small mb-3" @click="clicked('explore')">
+            Explore Freegle!
+          </b-btn>
+        </b-input-group-addon>
+      </b-input-group>
     </div>
     <div class="mobile">
       <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" class="mt-2" target="_blank">
@@ -57,11 +65,13 @@
 </template>
 <script>
 import VisualiseMap from '../components/VisualiseMap'
+import Postcode from '../components/Postcode'
 import waitForRef from '@/mixins/waitForRef'
 const MainFooter = () => import('~/components/MainFooter.vue')
 
 export default {
   components: {
+    Postcode,
     VisualiseMap,
     MainFooter
   },
@@ -172,6 +182,24 @@ export default {
       await this.$api.bandit.chosen({
         uid: 'landing-button',
         variant: this.type + '-' + button
+      })
+    },
+    async explorePostcode(pc) {
+      await this.$api.bandit.chosen({
+        uid: 'landing',
+        variant: this.type
+      })
+
+      await this.$api.bandit.chosen({
+        uid: 'landing-button',
+        variant: this.type + '-postcode'
+      })
+
+      this.$router.push({
+        name: 'explore-postcode-postcode',
+        params: {
+          postcode: pc.name
+        }
       })
     }
   }
@@ -300,6 +328,10 @@ export default {
 
   .medium {
     font-size: 2vw;
+  }
+
+  .smaller {
+    font-size: 1.2vw;
   }
 
   .small {

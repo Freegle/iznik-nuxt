@@ -134,7 +134,12 @@
             class="flex-grow-1"
           />
         </b-form-group>
-        <p v-if="!me">
+        <b-btn v-if="!me" size="lg" variant="primary" :disabled="disableSend" @click="registerOrSend">
+          Send your reply
+          <v-icon v-if="replying" name="sync" class="fa-spin" />
+          <v-icon v-else name="angle-double-right" />&nbsp;
+        </b-btn>
+        <p v-if="!me" class="mt-1">
           If you're a new freegler then welcome!  You'll get emails.  Name, approx. location, and profile picture are public - you
           can hide your real name and picture from Settings.  This adds cookies and local
           storage.  Read <nuxt-link target="_blank" to="/terms">
@@ -144,11 +149,6 @@
             Privacy
           </nuxt-link> for details.
         </p>
-        <b-btn v-if="!me" size="lg" variant="primary" :disabled="disableSend" @click="registerOrSend">
-          Send your reply
-          <v-icon v-if="replying" name="sync" class="fa-spin" />
-          <v-icon v-else name="angle-double-right" />&nbsp;
-        </b-btn>
         <div v-else>
           <b-form-group
             class="flex-grow-1"

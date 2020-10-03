@@ -387,3 +387,11 @@ form {
     display: block;
   }
 }
+
+.form-control-xl {
+  height: calc(2em + 0.60rem + 2px);
+  padding: 0.5rem 1rem;
+  font-size: 1.5rem;
+  line-height: 2;
+  border-radius: 0.3rem;
+}

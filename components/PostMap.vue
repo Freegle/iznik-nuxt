@@ -3,23 +3,24 @@
     <client-only>
       <l-map
         ref="map"
-        :zoom="8"
         :center="center"
         :style="'width: 100%; height: ' + mapHeight + 'px'"
-        :max-zoom="zoomFull"
+        :min-zoom="10"
+        :max-zoom="16"
         @ready="ready"
         @zoomend="idle"
+        @moveend="idle"
       >
         <!--        :min-zoom="8"-->
         <l-tile-layer :url="osmtile" :attribution="attribution" />
-        <div v-if="messages && mapobj">
+        <div v-if="nonOverlappingMessages">
           <l-marker-cluster ref="cluster" :options="{ showCoverageOnHover: false, disableClusteringAtZoom: zoomThumb, spiderfyOnMaxZoom: false, singleMarkerMode: true }">
             <PostMapMessage
-              v-for="message in messagesInView"
+              v-for="message in nonOverlappingMessages"
               :key="'message-' + message.id"
               :message="message"
-              :map="mapobj"
-              :bump="bump"
+              :map="mapObject"
+              :bump="zoom"
             />
           </l-marker-cluster>
         </div>
@@ -35,12 +36,6 @@ import waitForRef from '@/mixins/waitForRef'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 
-let L = null
-
-if (process.browser) {
-  L = require('leaflet')
-}
-
 const ZOOM_PIN = 0
 const ZOOM_THUMB = 16
 const ZOOM_FULL = 17
@@ -52,118 +47,129 @@ export default {
   },
   mixins: [map, waitForRef],
   props: {
-    messages: {
-      type: Array,
+    initialBounds: {
+      type: Object,
       required: true
+    },
+    heightFraction: {
+      type: Number,
+      required: false,
+      default: 3
     }
   },
   data: function() {
     return {
       context: null,
-      mapobj: null,
-      bump: 1
+      messageLocations: []
     }
   },
   computed: {
-    zoomLevel() {
-      const zoom = this.mapobj ? this.mapobj.getZoom() : 0
-      console.log('Zoom', zoom)
-      return zoom
-    },
     zoomFull() {
       return ZOOM_FULL
     },
     zoomThumb() {
       return ZOOM_THUMB
     },
+    zoomPin() {
+      return ZOOM_PIN
+    },
     mapHeight() {
       let height = 0
 
       if (process.browser) {
-        height = window.innerHeight - 70
+        height = window.innerHeight / this.heightFraction - 70
         height = height < 200 ? 200 : height
       }
 
       return height
     },
-    mapBounds() {
-      return this.mapobj ? this.mapobj.getBounds() : null
-    },
-    messagesInView() {
-      const ret = this.messages.filter(m => {
-        return this.mapBounds.contains([m.lat, m.lng])
-      })
-      return ret
-    },
-    messageBounds() {
-      // Calculate the bounds which show all the messages
-      if (!this.messages || !this.messages.length) {
-        return null
+    groups() {
+      const ret = []
+
+      if (this.messageLocations) {
+        this.messageLocations.forEach(m => {
+          if (ret.indexOf(m.groupid) === -1) {
+            ret.push(m.groupid)
+          }
+        })
       }
 
-      const lats = []
-      const lngs = []
+      return ret
+    },
+    nonOverlappingMessages() {
+      // Ensure that messages don't exactly overlap.
+      const ret = []
+      const latlngs = []
 
-      this.messages.forEach(m => {
-        lats.push(m.lat)
-        lngs.push(m.lng)
-      })
+      if (this.messageLocations) {
+        this.messageLocations.forEach(message => {
+          if (message.lat || message.lng) {
+            let key = message.lat + '|' + message.lng
 
-      const minlat = Math.min.apply(null, lats) - 0.01
-      const maxlat = Math.max.apply(null, lats) + 0.01
-      const minlng = Math.min.apply(null, lngs) - 0.01
-      const maxlng = Math.max.apply(null, lngs) + 0.01
+            while (latlngs[key]) {
+              message.lat += 0.003
+              message.lng += 0.003
+              key = message.lat + '|' + message.lng
+            }
 
-      return L.latLngBounds(L.latLng(minlat, minlng), L.latLng(maxlat, maxlng))
+            latlngs[key] = true
+            ret.push(message)
+          }
+        })
+      }
+
+      return ret
     }
   },
   watch: {
-    messageBounds: {
+    groups: {
       immediate: true,
       handler(newval) {
-        if (newval && this.mapobj) {
-          this.mapobj.fitBounds(newval, 14)
-        }
+        this.$emit('groups', newval)
       }
     },
-    zoomLevel() {
-      if (this.$refs.cluster) {
-        this.$refs.cluster.mapObject.refreshClusters()
+    nonOverlappingMessages: {
+      immediate: true,
+      handler(newval) {
+        this.$emit('messages', newval)
       }
     }
   },
   mounted() {
-    this.waitForRef('map', () => {
-      this.mapobj = this.$refs.map.mapObject
-
-      if (this.messageBounds) {
-        this.mapobj.fitBounds(this.messageBounds, ZOOM_PIN)
-      }
-    })
+    this.messageLocations = this.initialMessageLocations
   },
   methods: {
     ready() {
-      if (this.messageBounds && this.mapobj) {
-        this.mapobj.fitBounds(this.messageBounds, ZOOM_PIN)
-      }
-
-      this.boundsChanged()
+      this.waitForRef('map', () => {
+        this.mapObject.fitBounds(this.initialBounds)
+      })
     },
-    idle() {
-      // Bump will trigger icon re-render in case size has changed.
-      this.bump++
-      this.boundsChanged()
+    async idle() {
+      if (this.mapObject) {
+        const bounds = this.mapObject.getBounds()
+        const ret = await this.$api.message.fetchMessages({
+          subaction: 'inbounds',
+          swlat: bounds.getSouthWest().lat,
+          swlng: bounds.getSouthWest().lng,
+          nelat: bounds.getNorthEast().lat,
+          nelng: bounds.getNorthEast().lng
+        })
+
+        if (ret.ret === 0 && ret.messages) {
+          this.messageLocations = ret.messages
+          this.$nextTick(() => {
+            if (this.$refs.cluster) {
+              this.$refs.cluster.mapObject.refreshClusters()
+            }
+          })
+        }
+      }
     }
   }
 }
 </script>
 <style scoped lang="scss">
 @import 'color-vars';
-
-.ourpopup {
-  color: $colour-success;
-  font-weight: bold;
-}
 
 ::v-deep .marker-cluster {
   box-shadow: 0 0rem 2rem $color-blue--2 !important;
