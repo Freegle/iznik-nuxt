@@ -10,7 +10,14 @@
           <client-only>
             <div :style="mapHeight" class="position-relative mb-1">
               <div class="mapbox">
-                <PostMap v-if="initialBounds" :initial-bounds="initialBounds" :height-fraction="heightFraction" @messages="messagesChanged($event)" @groups="groupsChanged($event)" />
+                <PostMap
+                  v-if="initialBounds"
+                  :initial-bounds="initialBounds"
+                  :height-fraction="heightFraction"
+                  @messages="messagesChanged($event)"
+                  @groups="groupsChanged($event)"
+                  @centre="centreChanged($event)"
+                />
                 <div v-else :style="mapHeight" />
               </div>
               <Postcode v-if="filteredMessages && filteredMessages.length" :value="postcode" size="md" class="mt-2 postcode" @selected="selected($event)" />
@@ -328,6 +335,10 @@ export default {
     },
     groupsChanged(groupids) {
       this.groupids = groupids
+    },
+    centreChanged(centre) {
+      this.lat = centre.lat
+      this.lng = centre.lng
     },
     selected(pc) {
       this.$router.push({

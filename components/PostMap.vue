@@ -147,6 +147,9 @@ export default {
     async idle() {
       if (this.mapObject) {
         const bounds = this.mapObject.getBounds()
+
+        this.$emit('centre', this.mapObject.getCenter())
+
         const ret = await this.$api.message.fetchMessages({
           subaction: 'inbounds',
           swlat: bounds.getSouthWest().lat,
