@@ -367,6 +367,7 @@ export default {
   position: absolute;
   top: 0px;
   left: 0;
+  border: 1px solid $color-gray--light;
 }
 
 .postcode {
