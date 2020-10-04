@@ -45,9 +45,11 @@
       </p>
       <div class="d-flex centresmall">
         <Postcode :find="false" size="lg" class="postcode mr-2" @selected="explorePostcode($event)" />
-        <b-btn variant="white" size="lg" to="/explore" class="mb-3 explore" @click="clicked('explore')">
-          Explore Freegle!
-        </b-btn>
+        <div>
+          <b-btn variant="white" size="lg" to="/explore" class="mb-3 explore" @click="clicked('explore')">
+            Explore Freegle!
+          </b-btn>
+        </div>
       </div>
     </div>
     <div class="mobile">
