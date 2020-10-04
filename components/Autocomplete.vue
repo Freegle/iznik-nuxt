@@ -193,6 +193,12 @@ export default {
       type: Number,
       required: false,
       default: null
+    },
+
+    variant: {
+      type: String,
+      required: false,
+      default: null
     }
   },
 
@@ -216,7 +222,24 @@ export default {
       return faSearch
     },
     wrapClass() {
-      return 'autocomplete-wrap ' + (this.focused ? ' autocomplete-wrap-focus' : '')
+      let border
+
+      switch (this.variant) {
+        case 'primary': {
+          border = ' border border-primary'
+          break;
+        }
+        case 'success': {
+          border = ' border border-success'
+          break;
+        }
+        default: {
+          border = ''
+          break;
+        }
+      }
+
+      return 'autocomplete-wrap ' + (this.focused ? ' autocomplete-wrap-focus' : '') + ' ' + border
     },
     parentClass() {
       return 'd-flex ' + (this.searchbutton ? 'autocomplete-parent-focus' : '') + (this.invalid ? ' invalid' : '')

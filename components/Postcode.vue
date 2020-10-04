@@ -18,6 +18,7 @@
       :process="process"
       :on-select="select"
       :size="10"
+      :variant="variant"
       @invalid="invalid"
     />
 
@@ -87,6 +88,11 @@ export default {
       type: Boolean,
       required: false,
       default: true
+    },
+    variant: {
+      type: String,
+      required: false,
+      default: null
     }
   },
   data() {

@@ -44,7 +44,14 @@
         Enter your postcode and we'll show you what's being freegled near you.
       </label>
       <div class="d-flex centresmall">
-        <Postcode :find="false" size="lg" class="postcode mr-2" no-store @selected="explorePostcode($event)" />
+        <Postcode
+          :find="false"
+          size="lg"
+          class="postcode mr-2"
+          no-store
+          variant="success"
+          @selected="explorePostcode($event)"
+        />
         <div>
           <b-btn variant="white" size="lg" to="/explore" class="mb-3 explore" @click="clicked('explore')">
             Explore Freegle!
