@@ -259,14 +259,14 @@ export default {
   justify-self: end;
   align-self: end;
 
-  @include media-breakpoint-down(md) {
+  @include media-breakpoint-down(lg) {
     grid-column: 1 / 2;
     grid-row: 6 / 7;
     align-self: center;
     text-align: center;
 
     img {
-      max-height: 30px;
+      max-height: 25px;
     }
   }
 

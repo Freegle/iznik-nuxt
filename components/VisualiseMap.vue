@@ -242,7 +242,13 @@ export default {
 
       if (this.list.length) {
         console.log('Fly to', this.list[0])
-        this.$refs.map.mapObject.flyToBounds(this.itemBounds(this.list[0]), 14)
+
+        if (this.$refs.map) {
+          this.$refs.map.mapObject.flyToBounds(
+            this.itemBounds(this.list[0]),
+            14
+          )
+        }
       }
     },
     itemBounds(item) {

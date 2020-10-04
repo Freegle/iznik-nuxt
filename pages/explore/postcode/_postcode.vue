@@ -151,11 +151,14 @@ export default {
 
         if (!member) {
           const group = this.$store.getters['group/get'](id)
-          group.distance = this.getDistance(
-            [this.lat, this.lng],
-            [group.lat, group.lng]
-          )
-          ret.push(group)
+
+          if (group) {
+            group.distance = this.getDistance(
+              [this.lat, this.lng],
+              [group.lat, group.lng]
+            )
+            ret.push(group)
+          }
         }
       })
 
