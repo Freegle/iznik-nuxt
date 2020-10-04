@@ -146,6 +146,10 @@ export default {
     },
     async idle() {
       if (this.mapObject) {
+        if (this.$refs.cluster) {
+          this.$refs.cluster.mapObject.refreshClusters()
+        }
+
         const bounds = this.mapObject.getBounds()
 
         this.$emit('centre', this.mapObject.getCenter())
