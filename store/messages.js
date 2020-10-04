@@ -67,7 +67,7 @@ export const mutations = {
 export const getters = {
   get: state => id => {
     const ret = state.list.find(m => {
-      return parseInt(m.id) === id
+      return parseInt(m.id) === parseInt(id)
     })
 
     return ret
