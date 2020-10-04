@@ -170,15 +170,33 @@ export default {
     },
     clusterClick(a) {
       // We've clicked on the cluster.  zoomToBoundsOnClick is supposed to zoom to the bounds of this cluster, but
-      // it often results in JS errors.  So don't use it, and instead centre on this marker and zoom in one.
-      this.mapObject.flyTo(
-        [a.latlng.lat, a.latlng.lng],
-        this.mapObject.getZoom() + 1,
-        {
-          animate: true,
-          duration: 0.5
+      // it often results in JS errors.  So don't use that, and carefully do our own thing here.
+      console.log('Cluster', a)
+      if (a) {
+        if (
+          a.layer &&
+          a.layer._bounds &&
+          a.layer._bounds._northEast &&
+          a.layer._bounds._southWest &&
+          (a.layer._bounds._northEast.lat ||
+            a.layer._bounds._northEast.lng ||
+            a.layer._bounds._southWest.lat ||
+            a.layer._bounds._southWest.lng)
+        ) {
+          this.mapObject.flyToBounds(a.layer._bounds)
+        } else if (a.latlng && (a.latlng.lat || a.latlng.lng)) {
+          // Don't trust the bounds.  Just centre and zoom in once, which isn't as good, but shows some
+          // movement.
+          this.mapObject.flyTo(
+            [a.latlng.lat, a.latlng.lng],
+            this.mapObject.getZoom() + 1,
+            {
+              animate: true,
+              duration: 0.5
+            }
+          )
         }
-      )
+      }
     }
   }
 }
