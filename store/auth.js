@@ -355,14 +355,18 @@ export const actions = {
         // count drops to zero, or worst case when we refresh.
         const sound = new Audio('/alert.wav')
 
-        // Some browsers prevent us using play unless in response to a
-        // user gesture, so catch any exception.
-        const prom = sound.play()
+        try {
+          // Some browsers prevent us using play unless in response to a
+          // user gesture, so catch any exception.
+          const prom = sound.play()
 
-        if (prom) {
-          prom.catch(e => {
-            console.log('Failed to play beep', e.message)
-          })
+          if (prom) {
+            prom.catch(e => {
+              console.log('Failed to play beep', e.message)
+            })
+          }
+        } catch (e) {
+          console.log('Failed to play beep', e.message)
         }
       }
 
