@@ -29,6 +29,8 @@
   </div>
 </template>
 <script>
+import 'leaflet-control-geocoder'
+import 'leaflet-control-geocoder/dist/Control.Geocoder.css'
 import Vue2LeafletMarkerCluster from 'vue2-leaflet-markercluster'
 import PostMapMessage from './PostMapMessage'
 import map from '@/mixins/map.js'
@@ -39,6 +41,12 @@ import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 const ZOOM_PIN = 0
 const ZOOM_THUMB = 16
 const ZOOM_FULL = 17
+
+let L = null
+
+if (process.browser) {
+  L = require('leaflet')
+}
 
 export default {
   components: {
@@ -142,6 +150,24 @@ export default {
     ready() {
       this.waitForRef('map', () => {
         this.mapObject.fitBounds(this.initialBounds)
+
+        console.log('Geocoder', L.Control.Geocoder)
+        L.Control.geocoder({
+          geocoder: L.Control.Geocoder.photon({
+            geocodingQueryParams: {
+              bbox: '-7.57216793459, 49.959999905, 1.68153079591, 58.6350001085'
+            },
+            nameProperties: [
+              'name',
+              'street',
+              'suburb',
+              'hamlet',
+              'town',
+              'city'
+            ]
+          }),
+          collapsed: false
+        }).addTo(this.mapObject)
       })
     },
     async idle() {
@@ -233,5 +259,13 @@ export default {
   background-color: white;
   color: black;
   font-weight: bold;
+}
+
+::v-deep .leaflet-control-geocoder-form input {
+  height: calc(1.5em + 1rem + 2px);
+  padding: 0.5rem 1rem;
+  font-size: 1.25rem !important;
+  line-height: 1.5;
+  border-radius: 0.3rem;
 }
 </style>

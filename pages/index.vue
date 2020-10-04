@@ -34,15 +34,15 @@
           Ask for Stuff
         </b-btn>
       </div>
-      <h2 class="medium mt-3 mb-4">
+      <div class="font-weight-bold text-header medium mt-3 mb-4">
         Don't throw it away, give it away!
-      </h2>
-      <p class="medium font-weight-bold">
+      </div>
+      <h2 class="medium font-weight-bold black">
         Just looking?
-      </p>
-      <p class="smaller font-weight-bold">
+      </h2>
+      <label class="smaller font-weight-bold">
         Enter your postcode and we'll show you what's being freegled near you.
-      </p>
+      </label>
       <div class="d-flex centresmall">
         <Postcode :find="false" size="lg" class="postcode mr-2" no-store @selected="explorePostcode($event)" />
         <div>

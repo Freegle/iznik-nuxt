@@ -20,7 +20,7 @@
                 />
                 <div v-else :style="mapHeight" />
               </div>
-              <Postcode v-if="filteredMessages && filteredMessages.length" :value="postcode" size="md" class="mt-2 postcode" @selected="selected($event)" />
+              <Postcode v-if="filteredMessages && filteredMessages.length && false" :value="postcode" size="md" class="mt-2 postcode" @selected="selected($event)" />
             </div>
           </client-only>
           <div class="rest">
