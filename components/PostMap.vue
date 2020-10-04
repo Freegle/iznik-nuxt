@@ -14,7 +14,7 @@
         <!--        :min-zoom="8"-->
         <l-tile-layer :url="osmtile" :attribution="attribution" />
         <div v-if="nonOverlappingMessages && nonOverlappingMessages.length">
-          <l-marker-cluster ref="cluster" :options="{ showCoverageOnHover: false, disableClusteringAtZoom: zoomThumb, spiderfyOnMaxZoom: false, singleMarkerMode: true, zoomToBoundsOnClick: false }" @clusterclick="clusterClick">
+          <l-marker-cluster ref="cluster" :key="'cluster-' + nonOverlappingMessages.length" :options="{ showCoverageOnHover: false, disableClusteringAtZoom: zoomThumb, spiderfyOnMaxZoom: false, singleMarkerMode: true, zoomToBoundsOnClick: false }" @clusterclick="clusterClick">
             <PostMapMessage
               v-for="message in nonOverlappingMessages"
               :key="'message-' + message.id"
