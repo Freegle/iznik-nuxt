@@ -82,6 +82,11 @@ export default {
       type: Boolean,
       required: false,
       default: true
+    },
+    noStore: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
   data() {
@@ -115,7 +120,7 @@ export default {
           : null
     }
 
-    if (this.pconly && !value) {
+    if (this.pconly && !value && !this.noStore) {
       // We might have one we are composing.
       const pc = this.$store.getters['compose/getPostcode']
 
