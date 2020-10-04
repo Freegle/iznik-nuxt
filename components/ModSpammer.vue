@@ -5,7 +5,7 @@
     </div>
     <div class="small">
       <span v-if="user.spammer.collection === 'PendingAdd'">
-        Reported
+        Reported by
       </span>
       <span v-else>
         Added by
