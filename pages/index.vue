@@ -43,14 +43,12 @@
       <p class="smaller font-weight-bold">
         Enter your postcode and we'll show you what's being freegled near you.
       </p>
-      <b-input-group>
-        <Postcode :find="false" size="xl" @selected="explorePostcode($event)" />
-        <b-input-group-addon>
-          <b-btn variant="white" size="lg" to="/explore" class="small mb-3" @click="clicked('explore')">
-            Explore Freegle!
-          </b-btn>
-        </b-input-group-addon>
-      </b-input-group>
+      <div class="d-flex centresmall">
+        <Postcode :find="false" size="lg" class="postcode mr-2" @selected="explorePostcode($event)" />
+        <b-btn variant="white" size="lg" to="/explore" class="mb-3 explore" @click="clicked('explore')">
+          Explore Freegle!
+        </b-btn>
+      </div>
     </div>
     <div class="mobile">
       <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" class="mt-2" target="_blank">
@@ -266,6 +264,10 @@ export default {
     grid-row: 6 / 7;
     align-self: center;
     text-align: center;
+
+    img {
+      max-height: 30px;
+    }
   }
 
   @include media-breakpoint-down(sm) {
@@ -349,5 +351,18 @@ export default {
   @include media-breakpoint-down(md) {
     justify-content: space-between;
   }
+}
+
+.centresmall {
+  justify-content: start !important;
+
+  @include media-breakpoint-down(md) {
+    justify-content: center !important;
+  }
+}
+
+.explore {
+  padding-top: 9px;
+  padding-bottom: 9px;
 }
 </style>
