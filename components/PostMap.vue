@@ -13,8 +13,8 @@
       >
         <!--        :min-zoom="8"-->
         <l-tile-layer :url="osmtile" :attribution="attribution" />
-        <div v-if="nonOverlappingMessages">
-          <l-marker-cluster ref="cluster" :options="{ showCoverageOnHover: false, disableClusteringAtZoom: zoomThumb, spiderfyOnMaxZoom: false, singleMarkerMode: true }">
+        <div v-if="nonOverlappingMessages && nonOverlappingMessages.length">
+          <l-marker-cluster ref="cluster" :options="{ showCoverageOnHover: false, disableClusteringAtZoom: zoomThumb, spiderfyOnMaxZoom: false, singleMarkerMode: true, zoomToBoundsOnClick: false }" @clusterclick="clusterClick">
             <PostMapMessage
               v-for="message in nonOverlappingMessages"
               :key="'message-' + message.id"
@@ -167,6 +167,18 @@ export default {
           })
         }
       }
+    },
+    clusterClick(a) {
+      // We've clicked on the cluster.  zoomToBoundsOnClick is supposed to zoom to the bounds of this cluster, but
+      // it often results in JS errors.  So don't use it, and instead centre on this marker and zoom in one.
+      this.mapObject.flyTo(
+        [a.latlng.lat, a.latlng.lng],
+        this.mapObject.getZoom() + 1,
+        {
+          animate: true,
+          duration: 0.5
+        }
+      )
     }
   }
 }

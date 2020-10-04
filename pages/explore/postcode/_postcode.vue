@@ -42,7 +42,13 @@
               </div>
             </div>
             <client-only>
-              <infinite-loading :identifier="infiniteId" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
+              <infinite-loading
+                v-if="initialBounds"
+                :identifier="infiniteId"
+                force-use-infinite-wrapper="body"
+                :distance="distance"
+                @infinite="loadMore"
+              >
                 <span slot="no-results" />
                 <span slot="no-more" />
                 <span slot="spinner">
