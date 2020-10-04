@@ -324,7 +324,7 @@ export default {
         }
       }
 
-      await Promise.allSettled(promises)
+      await Promise.all(promises)
       fetching.forEach(id => {
         this.fetched[id] = true
         delete this.fetching[id]

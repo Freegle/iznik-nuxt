@@ -104,7 +104,7 @@ export default {
         }
       })
 
-      await Promise.allSettled(promises)
+      await Promise.all(promises)
 
       const message = this.$store.getters['messages/get'](this.ids[0])
 

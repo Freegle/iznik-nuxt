@@ -273,7 +273,7 @@ export default {
           )
         })
 
-        await Promise.allSettled(promises)
+        await Promise.all(promises)
 
         this.$router.push({
           name: 'myposts',
