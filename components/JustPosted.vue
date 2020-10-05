@@ -91,14 +91,13 @@ export default {
 
       // Get the messages into store if not already present.
       this.ids.forEach(id => {
-        const message = this.$store.getters['messages/get'](this.id)
+        const message = this.$store.getters['messages/get'](id)
 
         if (!message) {
           // Not in store - fetch.
-          console.log('Fetch just posted', this.id)
           promises.push(
             this.$store.dispatch('messages/fetch', {
-              id: this.id
+              id: id
             })
           )
         }
