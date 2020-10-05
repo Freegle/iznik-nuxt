@@ -43,11 +43,11 @@
       <label class="smaller font-weight-bold">
         Enter your postcode and we'll show you what's being freegled near you.
       </label>
-      <div class="d-flex centresmall">
+      <div class="d-flex centresmall flex-wrap">
         <Postcode
           :find="false"
           size="lg"
-          class="postcode mr-2"
+          class="postcode mr-0 mr-md-2 mb-2 mb-md-0"
           no-store
           variant="success"
           @selected="explorePostcode($event)"
