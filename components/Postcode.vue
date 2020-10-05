@@ -11,7 +11,7 @@
       anchor="name"
       label=""
       :placeholder="pconly ? 'Type postcode' : 'Type location'"
-      :classes="{ input: 'form-control form-control-' + size + ' text-center pcinp', list: 'postcodelist' }"
+      :classes="{ input: 'form-control form-control-' + size + ' text-center pcinp', list: 'postcodelist', listentry: 'w-100', listentrylist: 'listentry' }"
       class="mr-1"
       :min="3"
       :debounce="200"
@@ -191,6 +191,7 @@ export default {
       }
 
       this.results = ret
+      console.log('Postcode results', ret)
       return ret
     },
     select(pc) {
@@ -247,3 +248,10 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+::v-deep .listentry {
+  width: 100%;
+  right: 0 !important;
+  text-align: center;
+}
+</style>

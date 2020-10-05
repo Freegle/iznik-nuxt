@@ -34,11 +34,11 @@
       :class="`${getClassName('list')} autocomplete autocomplete-list position-relative`"
     >
       <v-icon v-if="closeButton" name="times-circle" class="close mt-1 clickme" scale="2" @click="close" />
-      <ul>
+      <ul :class="`${getClassName('listentrylist')}`">
         <li
           v-for="(data, i) in json"
           :key="'autocomplete' + data.id"
-          :class="activeClass(i) + ' pr-4'"
+          :class="activeClass(i) + ' ' + `${getClassName('listentry')}`"
         >
           <a
             href="#"
@@ -86,7 +86,9 @@ export default {
         wrapper: false,
         input: false,
         list: false,
-        item: false
+        item: false,
+        listentry: false,
+        listentrylist: false
       })
     },
     placeholder: String,
