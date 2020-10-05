@@ -331,6 +331,7 @@ export const actions = {
 
       // Get the current work so we can compare counts.
       const currentTotal = countWork(state.work)
+      const currentData = JSON.stringify(state.work)
 
       const {
         me,
@@ -358,6 +359,13 @@ export const actions = {
         try {
           // Some browsers prevent us using play unless in response to a
           // user gesture, so catch any exception.
+          console.log(
+            'Play beep',
+            newTotal,
+            currentTotal,
+            currentData,
+            JSON.stringify(work)
+          )
           const prom = sound.play()
 
           if (prom) {
