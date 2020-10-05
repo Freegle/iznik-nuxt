@@ -27,7 +27,7 @@
             </div>
           </b-card-text>
         </b-card-body>
-        <b-card-footer class="p-1">
+        <b-card-footer v-if="me" class="p-1">
           <div class="d-flex justify-content-start flex-wrap">
             <b-btn v-if="!rejected && !queued && !simple" variant="primary" title="Share" class="m-1" @click="share">
               <v-icon name="share-alt" /> Share
