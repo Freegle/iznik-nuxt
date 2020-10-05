@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex zindex">
+  <div class="d-flex">
     <autocomplete
       id="postcodeautocomplete"
       ref="autocomplete"
@@ -247,8 +247,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-.zindex {
-  z-index: 20000;
-}
-</style>
