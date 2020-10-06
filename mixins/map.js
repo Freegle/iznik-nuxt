@@ -63,9 +63,7 @@ export default {
   },
   mounted() {
     // We have to wait for the ref to appear and then trigger a recompute of the mapWidth property.
-    console.log('Wait for mapcont')
     this.waitForRef('mapcont', () => {
-      console.log('Found')
       this.bumpIt()
     })
   },

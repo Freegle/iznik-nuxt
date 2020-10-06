@@ -5,15 +5,15 @@
         ref="map"
         :center="center"
         :style="'width: 100%; height: ' + mapHeight + 'px'"
-        :min-zoom="10"
-        :max-zoom="15"
+        :min-zoom="minZoom"
+        :max-zoom="maxZoom"
         @ready="ready"
         @zoomend="idle"
         @moveend="idle"
       >
         <!--        :min-zoom="8"-->
         <l-tile-layer :url="osmtile" :attribution="attribution" />
-        <div v-if="nonOverlappingMessages && nonOverlappingMessages.length">
+        <div v-if="nonOverlappingMessages && nonOverlappingMessages.length && showCluster">
           <l-marker-cluster ref="cluster" :key="'cluster-' + nonOverlappingMessages.length" :options="{ showCoverageOnHover: false, disableClusteringAtZoom: zoomThumb, spiderfyOnMaxZoom: false, singleMarkerMode: true, zoomToBoundsOnClick: false }" @clusterclick="clusterClick">
             <PostMapMessage
               v-for="message in nonOverlappingMessages"
@@ -29,9 +29,11 @@
   </div>
 </template>
 <script>
+// Order of imports may be significant here because of problems with L.DisplayGrid in vue2-leaflet-markercluster
+import L from 'leaflet'
+import Vue2LeafletMarkerCluster from 'vue2-leaflet-markercluster'
 import 'leaflet-control-geocoder'
 import 'leaflet-control-geocoder/dist/Control.Geocoder.css'
-import Vue2LeafletMarkerCluster from 'vue2-leaflet-markercluster'
 import PostMapMessage from './PostMapMessage'
 import map from '@/mixins/map.js'
 import waitForRef from '@/mixins/waitForRef'
@@ -41,12 +43,6 @@ import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 const ZOOM_PIN = 0
 const ZOOM_THUMB = 16
 const ZOOM_FULL = 17
-
-let L = null
-
-if (process.browser) {
-  L = require('leaflet')
-}
 
 export default {
   components: {
@@ -68,7 +64,10 @@ export default {
   data: function() {
     return {
       context: null,
-      messageLocations: []
+      messageLocations: [],
+      minZoom: 10,
+      maxZoom: 15,
+      showCluster: false
     }
   },
   computed: {
@@ -145,11 +144,14 @@ export default {
   },
   mounted() {
     this.messageLocations = this.initialMessageLocations
+    console.log('Distance grid', L, L.DistanceGrid)
   },
   methods: {
     ready() {
       this.waitForRef('map', () => {
         const mapObject = this.mapObject
+        const self = this
+
         this.mapObject.fitBounds(this.initialBounds)
 
         L.Control.geocoder({
@@ -170,11 +172,16 @@ export default {
         })
           .on('markgeocode', function(e) {
             if (e && e.geocode && e.geocode.bbox) {
-              // Move the map to the location we've found.
-              mapObject.fitBounds(e.geocode.bbox)
-
               // Empty out the query box so that the dropdown closes.
               this.setQuery('')
+
+              // Remove the clusters, to avoid weird leaflet errors.
+              self.showCluster = false
+
+              self.$nextTick(() => {
+                // Move the map to the location we've found.
+                mapObject.fitBounds(e.geocode.bbox)
+              })
             }
           })
           .addTo(this.mapObject)
@@ -186,6 +193,11 @@ export default {
 
         this.$emit('centre', this.mapObject.getCenter())
 
+        const swlat = bounds.getSouthWest().lat
+        const swlng = bounds.getSouthWest().lng
+        const nelat = bounds.getNorthEast().lat
+        const nelng = bounds.getNorthEast().lng
+
         const ret = await this.$api.message.fetchMessages({
           subaction: 'inbounds',
           swlat: bounds.getSouthWest().lat,
@@ -196,18 +208,45 @@ export default {
 
         if (ret.ret === 0 && ret.messages) {
           this.messageLocations = ret.messages
+
+          console.log('Got messages', this.messageLocations)
           this.$nextTick(() => {
             if (this.$refs.cluster) {
+              console.log('Refresh')
               this.$refs.cluster.mapObject.refreshClusters()
+            } else {
+              console.log('Show', L.DistanceGrid)
+              this.showCluster = true
             }
           })
+
+          let countInBounds = 0
+
+          ret.messages.forEach(m => {
+            if (
+              swlat <= m.lat &&
+              m.lat <= nelat &&
+              swlng <= m.lng &&
+              m.lng <= nelng
+            ) {
+              countInBounds++
+            }
+          })
+
+          // If we haven't got more than 1 message at this zoom level, zoom out.  That means we'll always show at
+          // least something.
+          if (countInBounds < 2) {
+            const currzoom = this.mapObject.getZoom()
+            if (currzoom > this.minZoom) {
+              this.mapObject.setZoom(currzoom - 1)
+            }
+          }
         }
       }
     },
     clusterClick(a) {
       // We've clicked on the cluster.  zoomToBoundsOnClick is supposed to zoom to the bounds of this cluster, but
       // it often results in JS errors.  So don't use that, and carefully do our own thing here.
-      console.log('Cluster', a)
       if (a) {
         if (
           a.layer &&

@@ -191,7 +191,6 @@ export default {
       }
 
       this.results = ret
-      console.log('Postcode results', ret)
       return ret
     },
     select(pc) {

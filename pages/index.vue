@@ -8,7 +8,7 @@
         type="video"
         autoplay
         controls
-        :muted="true"
+        muted="muted"
         poster="/songpreview.png"
         loop
         class="shadow flex-grow-1"
@@ -41,22 +41,22 @@
         Just looking?
       </h2>
       <label class="smaller font-weight-bold">
-        Enter your postcode and we'll show you what's being freegled near you.
+        <span class="sr-only">
+          Enter your location and
+        </span>
+        See what's being freegled near you.
       </label>
       <div class="d-flex centresmall flex-wrap">
-        <Postcode
-          :find="false"
+        <PlaceAutocomplete @selected="explorePlace($event)" />
+        <b-btn
+          variant="white"
           size="lg"
-          class="postcode mr-0 mr-md-2 mb-2 mb-md-0"
-          no-store
-          variant="success"
-          @selected="explorePostcode($event)"
-        />
-        <div>
-          <b-btn variant="white" size="lg" to="/explore" class="mb-3 explore" @click="clicked('explore')">
-            Explore Freegle!
-          </b-btn>
-        </div>
+          class="ml-2 mb-3 explore"
+          to="/explore"
+          @click="clicked('explore')"
+        >
+          Explore!
+        </b-btn>
       </div>
     </div>
     <div class="mobile">
@@ -72,13 +72,13 @@
 </template>
 <script>
 import VisualiseMap from '../components/VisualiseMap'
-import Postcode from '../components/Postcode'
+import PlaceAutocomplete from '../components/PlaceAutocomplete'
 import waitForRef from '@/mixins/waitForRef'
 const MainFooter = () => import('~/components/MainFooter.vue')
 
 export default {
   components: {
-    Postcode,
+    PlaceAutocomplete,
     VisualiseMap,
     MainFooter
   },
@@ -191,7 +191,7 @@ export default {
         variant: this.type + '-' + button
       })
     },
-    async explorePostcode(pc) {
+    async explorePlace(place) {
       await this.$api.bandit.chosen({
         uid: 'landing',
         variant: this.type
@@ -199,13 +199,13 @@ export default {
 
       await this.$api.bandit.chosen({
         uid: 'landing-button',
-        variant: this.type + '-postcode'
+        variant: this.type + '-place'
       })
 
       this.$router.push({
-        name: 'explore-postcode-postcode',
+        name: 'explore-place-place',
         params: {
-          postcode: pc.name
+          place: JSON.stringify(place)
         }
       })
     }
