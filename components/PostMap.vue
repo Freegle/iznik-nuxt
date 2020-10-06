@@ -149,9 +149,9 @@ export default {
   methods: {
     ready() {
       this.waitForRef('map', () => {
+        const mapObject = this.mapObject
         this.mapObject.fitBounds(this.initialBounds)
 
-        console.log('Geocoder', L.Control.Geocoder)
         L.Control.geocoder({
           geocoder: L.Control.Geocoder.photon({
             geocodingQueryParams: {
@@ -167,7 +167,17 @@ export default {
             ]
           }),
           collapsed: false
-        }).addTo(this.mapObject)
+        })
+          .on('markgeocode', function(e) {
+            if (e && e.geocode && e.geocode.bbox) {
+              // Move the map to the location we've found.
+              mapObject.fitBounds(e.geocode.bbox)
+
+              // Empty out the query box so that the dropdown closes.
+              this.setQuery('')
+            }
+          })
+          .addTo(this.mapObject)
       })
     },
     async idle() {
@@ -229,6 +239,9 @@ export default {
 </script>
 <style scoped lang="scss">
 @import 'color-vars';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
 
 ::v-deep .marker-cluster {
   box-shadow: 0 0rem 2rem $color-blue--2 !important;
@@ -261,11 +274,13 @@ export default {
   font-weight: bold;
 }
 
-::v-deep .leaflet-control-geocoder-form input {
-  height: calc(1.5em + 1rem + 2px);
-  padding: 0.5rem 1rem;
-  font-size: 1.25rem !important;
-  line-height: 1.5;
-  border-radius: 0.3rem;
+@include media-breakpoint-up(md) {
+  ::v-deep .leaflet-control-geocoder-form input {
+    height: calc(1.5em + 1rem + 2px);
+    padding: 0.5rem 1rem;
+    font-size: 1.25rem !important;
+    line-height: 1.5;
+    border-radius: 0.3rem;
+  }
 }
 </style>

@@ -178,18 +178,14 @@ export default {
       }
     },
     moveend() {
-      console.log('Move end', this.state)
       switch (this.state) {
         case 0: {
           // We have flown to the from location.  Show the posting user.
-          console.log('Flown to from')
           this.showFrom = true
           setTimeout(() => {
-            console.log('Show message')
             this.showMessage = true
             setTimeout(() => {
               // Show all the repliers
-              console.log('Show to')
               this.showTo = true
               this.showOthers = true
               setTimeout(() => {
@@ -197,7 +193,6 @@ export default {
                 this.showReplies = true
                 setTimeout(() => {
                   // Collect - move the touser to the fromuser's location, stop showing the other replies.
-                  console.log('Collect')
                   this.showOthers = false
                   this.showReplies = false
                   this.waitForRef('touser', () => {
@@ -206,7 +201,6 @@ export default {
                       this.item.fromlng
                     )
                     setTimeout(() => {
-                      console.log('Return')
                       if (this.$refs.touser) {
                         this.$refs.touser.setLatLng(
                           this.item.tolat,
@@ -217,11 +211,9 @@ export default {
                           this.item.tolng
                         )
                         setTimeout(() => {
-                          console.log('Thank')
                           this.showMessage = false
                           this.showThanks = true
                           setTimeout(() => {
-                            console.log('Next')
                             this.list.shift()
                             this.doNext()
                           }, this.delayBeforeNext)
@@ -241,8 +233,6 @@ export default {
       this.state = 0
 
       if (this.list.length) {
-        console.log('Fly to', this.list[0])
-
         if (this.$refs.map) {
           this.$refs.map.mapObject.flyToBounds(
             this.itemBounds(this.list[0]),
@@ -301,7 +291,6 @@ export default {
         })
 
         if (ret.ret === 0) {
-          console.log('Fetched more')
           this.context = ret.context
           this.list = ret.list
         } else {

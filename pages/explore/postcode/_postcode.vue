@@ -7,172 +7,25 @@
           <h1 class="d-none d-sm-block heading">
             Freegling near {{ postcode }}
           </h1>
-          <client-only>
-            <div :style="mapHeight" class="position-relative mb-1">
-              <div class="mapbox">
-                <PostMap
-                  v-if="initialBounds"
-                  :initial-bounds="initialBounds"
-                  :height-fraction="heightFraction"
-                  @messages="messagesChanged($event)"
-                  @groups="groupsChanged($event)"
-                  @centre="centreChanged($event)"
-                />
-                <div v-else :style="mapHeight" />
-              </div>
-              <Postcode v-if="filteredMessages && filteredMessages.length && false" :value="postcode" size="md" class="mt-2 postcode" @selected="selected($event)" />
-            </div>
-          </client-only>
-          <div class="rest">
-            <div v-if="closestGroups.length" class="d-flex flex-wrap mb-1 justify-content-between border p-2 bg-white">
-              <b-btn
-                v-for="group in closestGroups"
-                :key="'group-' + group.id"
-                size="md"
-                :to="'/explore/join/' + group.id"
-                variant="primary"
-                class="mb-1"
-              >
-                Join {{ group.namedisplay }}
-              </b-btn>
-            </div>
-            <div v-if="filteredMessages && filteredMessages.length">
-              <div v-for="message in filteredMessages" :key="'messagelist-' + message.id" class="p-0">
-                <Message v-bind="message" />
-              </div>
-            </div>
-            <client-only>
-              <infinite-loading
-                v-if="initialBounds"
-                :identifier="infiniteId"
-                force-use-infinite-wrapper="body"
-                :distance="distance"
-                @infinite="loadMore"
-              >
-                <span slot="no-results" />
-                <span slot="no-more" />
-                <span slot="spinner">
-                  <b-img-lazy src="~/static/loader.gif" alt="Loading" />
-                </span>
-              </infinite-loading>
-            </client-only>
-          </div>
+          <AdaptiveMap v-if="initialBounds" :initial-bounds="initialBounds" :groups="groups" />
         </div>
       </b-col>
       <b-col cols="0" lg="3" class="d-none d-lg-block p-0 pl-1" />
     </b-row>
   </b-container>
 </template>
-
 <script>
-import InfiniteLoading from 'vue-infinite-loading'
-import Postcode from '../../../components/Postcode'
-import map from '@/mixins/map.js'
-import loginOptional from '@/mixins/loginOptional.js'
+import AdaptiveMap from '../../../components/AdaptiveMap'
 import buildHead from '@/mixins/buildHead.js'
-const Message = () => import('~/components/Message.vue')
-const PostMap = () => import('~/components/PostMap')
-
-let L = null
-
-if (process.browser) {
-  L = require('leaflet')
-}
+import loginOptional from '@/mixins/loginOptional.js'
 
 export default {
-  components: {
-    Postcode,
-    InfiniteLoading,
-    Message,
-    PostMap
-  },
-  mixins: [loginOptional, buildHead, map],
+  components: { AdaptiveMap },
+  mixins: [loginOptional, buildHead],
   data: function() {
     return {
-      heightFraction: 3,
-      postcode: null,
-      busy: false,
-      infiniteId: +new Date(),
-      distance: 1000,
-      lat: null,
-      lng: null,
-      swlat: null,
-      swlng: null,
-      nelat: null,
-      nelng: null,
       initialBounds: null,
-      postThreshold: 50,
-      messagesOnMap: [],
-      fetching: [],
-      fetched: [],
-      groupids: []
-    }
-  },
-  computed: {
-    messageCount: function() {
-      const count = this.messages ? this.messages.length : 0
-      return count
-    },
-    messages: function() {
-      const ret = this.$store.getters['messages/getAll']
-      return ret
-    },
-    filteredMessages() {
-      // Ensure we only show the messages on the map, and double-check to avoid showing deleted or completed posts.
-      // Remember the map may lag a bit as it's only updated on cron.
-      const ret = this.messages.filter(message => {
-        return (
-          this.messagesOnMap.find(m => {
-            return m.id === message.id
-          }) &&
-          !message.deleted &&
-          (!message.outcomes || message.outcomes.length === 0)
-        )
-      })
-
-      return ret
-    },
-    mapHeight() {
-      let height = 0
-
-      if (process.browser) {
-        height = window.innerHeight / this.heightFraction - 70
-        height = height < 200 ? 200 : height
-      }
-
-      return 'min-height: ' + height + 'px'
-    },
-    sortedMessagesOnMap() {
-      return this.messagesOnMap.slice().sort((a, b) => {
-        return new Date(b.arrival).getTime() - new Date(a.arrival).getTime()
-      })
-    },
-    closestGroups() {
-      const ret = []
-
-      this.groupids.forEach(id => {
-        const member =
-          this.$store.getters['auth/user'] &&
-          this.$store.getters['auth/member'](id)
-
-        if (!member) {
-          const group = this.$store.getters['group/get'](id)
-
-          if (group) {
-            group.distance = this.getDistance(
-              [this.lat, this.lng],
-              [group.lat, group.lng]
-            )
-            ret.push(group)
-          }
-        }
-      })
-
-      ret.sort((a, b) => {
-        return a.distance - b.distance
-      })
-
-      return ret.slice(0, 3)
+      groups: []
     }
   },
   created() {
@@ -184,28 +37,26 @@ export default {
     this.context = null
 
     if (this.postcode) {
-      // Find the groups near this postcode.
+      // Get the postcode.
       await this.$store.dispatch('locations/fetch', {
         typeahead: this.postcode,
         postcount: true,
         groupareas: true
       })
 
-      const groups = []
-
       const list = Object.values(this.$store.getters['locations/list'])
-      list.forEach(l => {
-        this.lat = l.lat
-        this.lng = l.lng
-        this.swlat = this.swlat === null ? l.lat : Math.min(this.swlat, l.lat)
-        this.swlng = this.swlng === null ? l.lng : Math.min(this.swlng, l.lng)
-        this.nelat = this.nelat === null ? l.lat : Math.max(this.nelat, l.lat)
-        this.nelng = this.nelng === null ? l.lng : Math.max(this.nelng, l.lng)
+      const l = list[0]
 
-        l.groupsnear.forEach(g => {
-          groups.push(g)
-        })
+      // get the groups near this postcode.
+      const groups = []
+      l.groupsnear.forEach(g => {
+        groups.push(g)
       })
+
+      let swlat = null
+      let swlng = null
+      let nelat = null
+      let nelng = null
 
       // We want to find enough groups to have at least some posts.  Sort them by closeness first.
       groups.sort((a, b) => {
@@ -217,145 +68,33 @@ export default {
 
       do {
         posttotal += groups[i].postcount
-
-        this.swlat =
-          this.swlat === null
-            ? groups[i].lat
-            : Math.min(this.swlat, groups[i].lat)
-        this.swlng =
-          this.swlng === null
-            ? groups[i].lng
-            : Math.min(this.swlng, groups[i].lng)
-        this.nelat =
-          this.nelat === null
-            ? groups[i].lat
-            : Math.max(this.nelat, groups[i].lat)
-        this.nelng =
-          this.nelng === null
-            ? groups[i].lng
-            : Math.max(this.nelng, groups[i].lng)
+        swlat = swlat === null ? groups[i].lat : Math.min(swlat, groups[i].lat)
+        swlng = swlng === null ? groups[i].lng : Math.min(swlng, groups[i].lng)
+        nelat = nelat === null ? groups[i].lat : Math.max(nelat, groups[i].lat)
+        nelng = nelng === null ? groups[i].lng : Math.max(nelng, groups[i].lng)
         i++
       } while (posttotal < this.postThreshold && i < groups.length)
 
-      if (
-        this.swlat !== null &&
-        this.swlng !== null &&
-        this.nelat !== null &&
-        this.nelng !== null
-      ) {
-        // Now we have a rough bounding box containing some interesting posts.  Get messages within it - just
-        // the positions.
-        const ret = await this.$api.message.fetchMessages({
-          subaction: 'inbounds',
-          swlat: this.swlat,
-          swlng: this.swlng,
-          nelat: this.nelat,
-          nelng: this.nelng
-        })
-
-        if (ret.ret === 0 && ret.messages && ret.messages.length) {
-          // Now find the bounding box containing them.
-          const lats = []
-          const lngs = []
-
-          ret.messages.forEach(m => {
-            lats.push(m.lat)
-            lngs.push(m.lng)
-          })
-
-          const minlat = Math.min.apply(null, lats) - 0.01
-          const maxlat = Math.max.apply(null, lats) + 0.01
-          const minlng = Math.min.apply(null, lngs) - 0.01
-          const maxlng = Math.max.apply(null, lngs) + 0.01
-
-          // Good.  Now we have a bounding box containing interesting posts, as a starting position for the
-          // post map.
-          this.initialBounds = L.latLngBounds(
-            L.latLng(minlat, minlng),
-            L.latLng(maxlat, maxlng)
-          )
-        }
-      }
-
-      if (!this.initialBounds) {
-        // Didn't find messages - just set it near the postcode for lack of anything beter.
-        this.initialBounds = L.latLngBounds(
-          L.latLng(this.swlat, this.swlng),
-          L.latLng(this.nelat, this.nelng)
-        )
-      }
-
-      // Fetch group list for when we have some to show.
-      this.$store.dispatch('group/list', {
-        grouptype: 'Freegle'
-      })
-    }
-  },
-  methods: {
-    loadMore: async function($state) {
-      // We work out which messages that are currently on the map are not in our store, and fetch them serially
-      // in descending date order.  This avoids flooding the server.
-      this.busy = true
-
-      let count = 0
-      const promises = []
-      const fetching = []
-
-      for (const m of this.sortedMessagesOnMap) {
-        const message = this.$store.getters['messages/get'](m.id)
-
-        if (!message && !this.fetching[m.id]) {
-          this.fetching[m.id] = true
-          fetching.push(m.id)
-
-          promises.push(
-            this.$store.dispatch('messages/fetch', {
-              id: m.id,
-              summary: true
-            })
-          )
-
-          count++
-
-          if (count >= 5) {
-            // Don't fetch too many at once.
-            break
-          }
-        }
-      }
-
-      await Promise.all(promises)
-      fetching.forEach(id => {
-        this.fetched[id] = true
-        delete this.fetching[id]
-      })
-
-      if (count) {
-        $state.loaded()
+      if (posttotal) {
+        // We've found groups close to this postcode with an interesting number of posts.  So we have an initial
+        // bound.
+        this.initialBounds = [
+          [
+            this.swlat === null ? l.lat : Math.min(this.swlat, l.lat),
+            this.swlng === null ? l.lng : Math.min(this.swlng, l.lng)
+          ],
+          [
+            this.nelat === null ? l.lat : Math.max(this.nelat, l.lat),
+            this.nelng === null ? l.lng : Math.max(this.nelng, l.lng)
+          ]
+        ]
       } else {
-        $state.complete()
+        // Didn't find any messages.  This is quite unlikely, but just set it near the postcode for lack of anything better.
+        this.initialBounds = [
+          [l.lat - 0.5, l.lng - 0.5],
+          [l.lat + 0.5, l.lng + 0.5]
+        ]
       }
-
-      this.busy = false
-    },
-    messagesChanged(messages) {
-      this.infiniteId++
-      this.messagesOnMap = messages
-    },
-    groupsChanged(groupids) {
-      this.groupids = groupids
-    },
-    centreChanged(centre) {
-      this.lat = centre.lat
-      this.lng = centre.lng
-    },
-    selected(pc) {
-      this.$router.push({
-        name: 'explore-postcode-postcode',
-        params: {
-          postcode: pc.name
-        }
-      })
     }
   },
   head() {
@@ -367,28 +106,3 @@ export default {
   }
 }
 </script>
-
-<style scoped lang="scss">
-@import 'color-vars';
-
-.mapbox {
-  width: 100%;
-  position: absolute;
-  top: 0px;
-  left: 0;
-  border: 1px solid $color-gray--light;
-}
-
-.postcode {
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  z-index: 20000;
-}
-
-.heading {
-}
-
-.rest {
-}
-</style>
