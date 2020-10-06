@@ -190,6 +190,7 @@ export default {
     async idle() {
       if (this.mapObject) {
         const bounds = this.mapObject.getBounds()
+        this.showCluster = true
 
         this.$emit('centre', this.mapObject.getCenter())
 
@@ -258,18 +259,24 @@ export default {
             a.layer._bounds._southWest.lat ||
             a.layer._bounds._southWest.lng)
         ) {
-          this.mapObject.flyToBounds(a.layer._bounds)
+          this.showCluster = false
+          this.$nextTick(() => {
+            this.mapObject.flyToBounds(a.layer._bounds)
+          })
         } else if (a.latlng && (a.latlng.lat || a.latlng.lng)) {
           // Don't trust the bounds.  Just centre and zoom in once, which isn't as good, but shows some
           // movement.
-          this.mapObject.flyTo(
-            [a.latlng.lat, a.latlng.lng],
-            this.mapObject.getZoom() + 1,
-            {
-              animate: true,
-              duration: 0.5
-            }
-          )
+          this.showCluster = false
+          this.$nextTick(() => {
+            this.mapObject.flyTo(
+              [a.latlng.lat, a.latlng.lng],
+              this.mapObject.getZoom() + 1,
+              {
+                animate: true,
+                duration: 0.5
+              }
+            )
+          })
         }
       }
     }
