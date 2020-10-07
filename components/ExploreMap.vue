@@ -255,13 +255,17 @@ export default {
         for (const ix in groups) {
           const group = groups[ix]
 
-          if (
-            group.onmap &&
-            this.bounds.contains([group.lat, group.lng]) &&
-            (this.region === null ||
-              this.region.toLowerCase() === group.region.toLowerCase())
-          ) {
-            ret.push(group)
+          try {
+            if (
+              group.onmap &&
+              this.bounds.contains([group.lat, group.lng]) &&
+              (this.region === null ||
+                this.region.toLowerCase() === group.region.toLowerCase())
+            ) {
+              ret.push(group)
+            }
+          } catch (e) {
+            console.log('Problem group', e)
           }
         }
       }
