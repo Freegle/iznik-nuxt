@@ -904,7 +904,7 @@ svg.fa-icon {
   max-width: 400px;
 }
 
-::v-deep .dropdown-toggle {
+.notiflist ::v-deep .dropdown-toggle {
   color: $color-white;
 }
 </style>
