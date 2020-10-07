@@ -112,7 +112,6 @@ export default {
       return ret
     },
     select(place) {
-      console.log('Selected', place)
       if (place) {
         this.$emit('selected', place)
       } else {

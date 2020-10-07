@@ -41,7 +41,6 @@ export default {
       : null
   },
   mounted() {
-    console.log('Place', this.place)
     this.initialBounds = this.place.bbox
   },
   head() {

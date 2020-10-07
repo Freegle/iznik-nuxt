@@ -47,16 +47,7 @@
         See what's being freegled near you.
       </label>
       <div class="d-flex centresmall flex-wrap">
-        <PlaceAutocomplete @selected="explorePlace($event)" />
-        <b-btn
-          variant="white"
-          size="lg"
-          class="ml-2 mb-3 explore"
-          to="/explore"
-          @click="clicked('explore')"
-        >
-          Explore!
-        </b-btn>
+        <PlaceAutocomplete class="mb-2" @selected="explorePlace($event)" />
       </div>
     </div>
     <div class="mobile">
@@ -373,5 +364,9 @@ export default {
 .explore {
   padding-top: 9px;
   padding-bottom: 9px;
+}
+
+::v-deep .autocomplete-wrap {
+  border: 3px solid $color-green--darker !important;
 }
 </style>

@@ -3,7 +3,6 @@
     <client-only>
       <l-map
         ref="map"
-        :center="center"
         :style="'width: 100%; height: ' + mapHeight + 'px'"
         :min-zoom="minZoom"
         :max-zoom="maxZoom"
@@ -11,43 +10,23 @@
         @zoomend="idle"
         @moveend="idle"
       >
-        <!--        :min-zoom="8"-->
         <l-tile-layer :url="osmtile" :attribution="attribution" />
-        <div v-if="nonOverlappingMessages && nonOverlappingMessages.length && showCluster">
-          <l-marker-cluster ref="cluster" :key="'cluster-' + nonOverlappingMessages.length" :options="{ showCoverageOnHover: false, disableClusteringAtZoom: zoomThumb, spiderfyOnMaxZoom: false, singleMarkerMode: true, zoomToBoundsOnClick: false }" @clusterclick="clusterClick">
-            <PostMapMessage
-              v-for="message in nonOverlappingMessages"
-              :key="'message-' + message.id"
-              :message="message"
-              :map="mapObject"
-              :bump="zoom"
-            />
-          </l-marker-cluster>
-        </div>
+        <ClusterMarker v-if="mapObject" :markers="messageLocations" :map="mapObject" />
       </l-map>
     </client-only>
   </div>
 </template>
 <script>
-// Order of imports may be significant here because of problems with L.DisplayGrid in vue2-leaflet-markercluster
 import L from 'leaflet'
-import Vue2LeafletMarkerCluster from 'vue2-leaflet-markercluster'
 import 'leaflet-control-geocoder'
 import 'leaflet-control-geocoder/dist/Control.Geocoder.css'
-import PostMapMessage from './PostMapMessage'
+import ClusterMarker from './ClusterMarker'
 import map from '@/mixins/map.js'
 import waitForRef from '@/mixins/waitForRef'
-import 'leaflet.markercluster/dist/MarkerCluster.css'
-import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
-
-const ZOOM_PIN = 0
-const ZOOM_THUMB = 16
-const ZOOM_FULL = 17
 
 export default {
   components: {
-    PostMapMessage,
-    'l-marker-cluster': Vue2LeafletMarkerCluster
+    ClusterMarker
   },
   mixins: [map, waitForRef],
   props: {
@@ -67,19 +46,10 @@ export default {
       messageLocations: [],
       minZoom: 10,
       maxZoom: 15,
-      showCluster: false
+      mapObject: null
     }
   },
   computed: {
-    zoomFull() {
-      return ZOOM_FULL
-    },
-    zoomThumb() {
-      return ZOOM_THUMB
-    },
-    zoomPin() {
-      return ZOOM_PIN
-    },
     mapHeight() {
       let height = 0
 
@@ -102,30 +72,6 @@ export default {
       }
 
       return ret
-    },
-    nonOverlappingMessages() {
-      // Ensure that messages don't exactly overlap.
-      const ret = []
-      const latlngs = []
-
-      if (this.messageLocations) {
-        this.messageLocations.forEach(message => {
-          if (message.lat || message.lng) {
-            let key = message.lat + '|' + message.lng
-
-            while (latlngs[key]) {
-              message.lat += 0.003
-              message.lng += 0.003
-              key = message.lat + '|' + message.lng
-            }
-
-            latlngs[key] = true
-            ret.push(message)
-          }
-        })
-      }
-
-      return ret
     }
   },
   watch: {
@@ -134,25 +80,16 @@ export default {
       handler(newval) {
         this.$emit('groups', newval)
       }
-    },
-    nonOverlappingMessages: {
-      immediate: true,
-      handler(newval) {
-        this.$emit('messages', newval)
-      }
     }
   },
   mounted() {
     this.messageLocations = this.initialMessageLocations
-    console.log('Distance grid', L, L.DistanceGrid)
   },
   methods: {
     ready() {
       this.waitForRef('map', () => {
-        const mapObject = this.mapObject
+        this.mapObject = this.$refs.map.mapObject
         const self = this
-
-        this.mapObject.fitBounds(this.initialBounds)
 
         L.Control.geocoder({
           geocoder: L.Control.Geocoder.photon({
@@ -175,22 +112,20 @@ export default {
               // Empty out the query box so that the dropdown closes.
               this.setQuery('')
 
-              // Remove the clusters, to avoid weird leaflet errors.
-              self.showCluster = false
-
               self.$nextTick(() => {
                 // Move the map to the location we've found.
-                mapObject.fitBounds(e.geocode.bbox)
+                self.mapObject.fitBounds(e.geocode.bbox)
               })
             }
           })
           .addTo(this.mapObject)
+
+        this.mapObject.fitBounds(this.initialBounds)
       })
     },
     async idle() {
       if (this.mapObject) {
         const bounds = this.mapObject.getBounds()
-        this.showCluster = true
 
         this.$emit('centre', this.mapObject.getCenter())
 
@@ -209,17 +144,7 @@ export default {
 
         if (ret.ret === 0 && ret.messages) {
           this.messageLocations = ret.messages
-
-          console.log('Got messages', this.messageLocations)
-          this.$nextTick(() => {
-            if (this.$refs.cluster) {
-              console.log('Refresh')
-              this.$refs.cluster.mapObject.refreshClusters()
-            } else {
-              console.log('Show', L.DistanceGrid)
-              this.showCluster = true
-            }
-          })
+          this.$emit('messages', ret.messages)
 
           let countInBounds = 0
 
@@ -244,41 +169,6 @@ export default {
           }
         }
       }
-    },
-    clusterClick(a) {
-      // We've clicked on the cluster.  zoomToBoundsOnClick is supposed to zoom to the bounds of this cluster, but
-      // it often results in JS errors.  So don't use that, and carefully do our own thing here.
-      if (a) {
-        if (
-          a.layer &&
-          a.layer._bounds &&
-          a.layer._bounds._northEast &&
-          a.layer._bounds._southWest &&
-          (a.layer._bounds._northEast.lat ||
-            a.layer._bounds._northEast.lng ||
-            a.layer._bounds._southWest.lat ||
-            a.layer._bounds._southWest.lng)
-        ) {
-          this.showCluster = false
-          this.$nextTick(() => {
-            this.mapObject.flyToBounds(a.layer._bounds)
-          })
-        } else if (a.latlng && (a.latlng.lat || a.latlng.lng)) {
-          // Don't trust the bounds.  Just centre and zoom in once, which isn't as good, but shows some
-          // movement.
-          this.showCluster = false
-          this.$nextTick(() => {
-            this.mapObject.flyTo(
-              [a.latlng.lat, a.latlng.lng],
-              this.mapObject.getZoom() + 1,
-              {
-                animate: true,
-                duration: 0.5
-              }
-            )
-          })
-        }
-      }
     }
   }
 }
@@ -288,37 +178,6 @@ export default {
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins/_breakpoints';
-
-::v-deep .marker-cluster {
-  box-shadow: 0 0rem 2rem $color-blue--2 !important;
-}
-
-::v-deep .marker-cluster-small {
-  background-color: $color-green--darker;
-}
-::v-deep .marker-cluster-small div {
-  background-color: white;
-  color: black;
-  font-weight: bold;
-}
-
-::v-deep .marker-cluster-medium {
-  background-color: $color-blue--bright;
-}
-::v-deep .marker-cluster-medium div {
-  background-color: white;
-  color: black;
-  font-weight: bold;
-}
-
-::v-deep .marker-cluster-large {
-  background-color: $color-red;
-}
-::v-deep .marker-cluster-large div {
-  background-color: white;
-  color: black;
-  font-weight: bold;
-}
 
 @include media-breakpoint-up(md) {
   ::v-deep .leaflet-control-geocoder-form input {
