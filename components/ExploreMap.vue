@@ -259,7 +259,7 @@ export default {
             if (
               group.onmap &&
               this.bounds.contains([group.lat, group.lng]) &&
-              (this.region === null ||
+              (!this.region ||
                 this.region.toLowerCase() === group.region.toLowerCase())
             ) {
               ret.push(group)
