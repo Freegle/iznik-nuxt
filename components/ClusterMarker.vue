@@ -60,6 +60,11 @@ export default {
       type: Number,
       required: false,
       default: 16
+    },
+    minCluster: {
+      type: Number,
+      required: false,
+      default: 10
     }
   },
   computed: {
@@ -67,6 +72,9 @@ export default {
       // Ensure that markers don't exactly overlap.  Simplistic.
       const ret = []
       const latlngs = []
+      const bounds = this.map.getBounds()
+      const nelng = bounds.getNorthWest().lng
+      const nelat = bounds.getNorthWest().lat
 
       if (this.markers) {
         this.markers.forEach(marker => {
@@ -74,8 +82,8 @@ export default {
             let key = marker.lat + '|' + marker.lng
 
             while (latlngs[key]) {
-              marker.lat += 0.003
-              marker.lng += 0.003
+              marker.lat = Math.max(nelat, marker.lat + 0.003)
+              marker.lng = Math.max(nelng, marker.lng + 0.003)
               key = marker.lat + '|' + marker.lng
             }
 
@@ -121,23 +129,32 @@ export default {
 
       try {
         if (this.map) {
-          const bounds = this.map.getBounds()
-          const zoom = Math.round(this.map.getZoom())
-          let bbox = null
+          if (this.markers.length < this.minCluster) {
+            // We've seen some cases where Supercluster excludes some markers from the cluster, so that the sum of
+            // what we get back is less than the number we passed in.  That isn't obvious except for low numbers of
+            // markers, i.e. high zoom levels.  It may be a bug, but we don't much care - for our purposes the
+            // actual numbers don't have to be spot on.  Using a minimum means that we can avoid that becoming
+            // obvious.
+            clusters = this.points
+          } else {
+            const bounds = this.map.getBounds()
+            const zoom = Math.round(this.map.getZoom())
+            let bbox = null
 
-          try {
-            if (bounds) {
-              bbox = [
-                bounds.getNorthWest().lng,
-                bounds.getSouthEast().lat,
-                bounds.getSouthEast().lng,
-                bounds.getNorthWest().lat
-              ]
+            try {
+              if (bounds) {
+                bbox = [
+                  bounds.getNorthWest().lng,
+                  bounds.getSouthEast().lat,
+                  bounds.getSouthEast().lng,
+                  bounds.getNorthWest().lat
+                ]
 
-              clusters = this.index.getClusters(bbox, zoom)
+                clusters = this.index.getClusters(bbox, zoom)
+              }
+            } catch (e) {
+              console.log('Exception 1', e, bounds, zoom, this.index)
             }
-          } catch (e) {
-            console.log('Exception 1', e, bounds, zoom, this.index)
           }
         }
       } catch (e) {

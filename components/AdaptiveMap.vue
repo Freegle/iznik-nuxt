@@ -117,7 +117,6 @@ export default {
           !message.deleted &&
           (!message.outcomes || message.outcomes.length === 0)
 
-        // console.log('Include', message.id, include, message, this.messagesOnMap)
         return include
       })
 
