@@ -109,13 +109,15 @@ export default {
       // Ensure we only show the messages on the map, and double-check to avoid showing deleted or completed posts.
       // Remember the map may lag a bit as it's only updated on cron.
       const ret = this.messages.filter(message => {
-        return (
+        const include =
           this.messagesOnMap.find(m => {
-            return m.id === message.id
+            return parseInt(m.id) === parseInt(message.id)
           }) &&
           !message.deleted &&
           (!message.outcomes || message.outcomes.length === 0)
-        )
+
+        // console.log('Include', message.id, include, message, this.messagesOnMap)
+        return include
       })
 
       return ret

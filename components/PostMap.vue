@@ -11,7 +11,7 @@
         @moveend="idle"
       >
         <l-tile-layer :url="osmtile" :attribution="attribution" />
-        <ClusterMarker v-if="mapObject" :markers="messageLocations" :map="mapObject" />
+        <ClusterMarker v-if="mapObject && messageLocations && messageLocations.length" :markers="messageLocations" :map="mapObject" />
       </l-map>
     </client-only>
   </div>
