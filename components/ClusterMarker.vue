@@ -14,6 +14,7 @@
         :lat-lng="[ cluster.geometry.coordinates[1], cluster.geometry.coordinates[0] ]"
         :interactive="false"
         :icon="icon(cluster)"
+        @click="pointClick(cluster)"
       />
     </div>
   </div>
@@ -160,14 +161,19 @@ export default {
       })
     },
     clusterClick(cluster) {
-      console.log('Clustger click', cluster)
-      if (cluster.properties) {
-        // It's a cluster (rather than a point).
-        const zoom = this.index.getClusterExpansionZoom(
-          cluster.properties.cluster_id
-        )
-        this.map.setZoom(zoom)
-      }
+      const zoom = this.index.getClusterExpansionZoom(
+        cluster.properties.cluster_id
+      )
+      this.map.setZoom(zoom)
+    },
+    pointClick(cluster) {
+      // It's a point. Centre on it, and zoom in if we can so that something happens.
+      this.map.flyTo(
+        [cluster.geometry.coordinates[1], cluster.geometry.coordinates[0]],
+        this.map.getZoom() < this.maxZoom
+          ? this.map.getZoom() + 1
+          : this.map.getZoom()
+      )
     }
   }
 }

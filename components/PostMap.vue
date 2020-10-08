@@ -46,7 +46,9 @@ export default {
       messageLocations: [],
       minZoom: 10,
       maxZoom: 15,
-      mapObject: null
+      mapObject: null,
+      manyToShow: 20,
+      shownMany: false
     }
   },
   computed: {
@@ -163,11 +165,13 @@ export default {
 
           // If we haven't got more than 1 message at this zoom level, zoom out.  That means we'll always show at
           // least something.
-          if (countInBounds < 2) {
+          if (countInBounds < this.manyToShow && !this.shownMany) {
             const currzoom = this.mapObject.getZoom()
             if (currzoom > this.minZoom) {
               this.mapObject.setZoom(currzoom - 1)
             }
+          } else {
+            this.shownMany = true
           }
         }
       }
