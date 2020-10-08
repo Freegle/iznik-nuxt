@@ -40,6 +40,9 @@ const CHAT_HOST = 'https://users.ilovefreegle.org:555'
 const OSM_TILE =
   process.env.OSM_TILE || 'https://tiles.ilovefreegle.org/tile/{z}/{x}/{y}.png'
 
+// Geocode server
+const GEOCODE = process.env.GEOCODE || 'https://geocode.ilovefreegle.org/api'
+
 // Allow disabling of eslint autofix by setting "DISABLE_ESLINT_AUTOFIX=true" in env (e.g. .env file)
 // defaults to enabling autofixing
 const DISABLE_ESLINT_AUTOFIX =
@@ -524,6 +527,7 @@ module.exports = {
     CDN: CDN,
     CHAT_HOST: CHAT_HOST,
     OSM_TILE: OSM_TILE,
+    GEOCODE: GEOCODE,
     FACEBOOK_APPID: FACEBOOK_APPID,
     YAHOO_CLIENTID: YAHOO_CLIENTID,
     GOOGLE_MAPS_KEY: 'AIzaSyCdTSJKGWJUOx2pq1Y0f5in5g4kKAO5dgg',

@@ -44,7 +44,7 @@ export default {
   },
   data() {
     return {
-      source: 'https://photon.komoot.de/api',
+      source: process.env.GEOCODE || 'https://geocode.ilovefreegle.org/api',
       results: [],
       wip: null
     }
