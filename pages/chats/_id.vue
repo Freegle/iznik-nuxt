@@ -1,6 +1,6 @@
 <template>
   <client-only>
-    <b-container>
+    <b-container fluid>
       <b-row>
         <h1 class="sr-only">
           Chats
