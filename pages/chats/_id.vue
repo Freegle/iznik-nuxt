@@ -1,45 +1,49 @@
 <template>
   <client-only>
-    <h1 class="sr-only">
-      Chats
-    </h1>
-    <b-row class="m-0">
-      <b-col id="chatlist" cols="12" md="4" xl="3" :class="'chatlist p-0 bg-white ' + (selectedChatId ? 'd-none d-md-block' : '') + ' ' + selectedChatId">
-        <b-card class="p-0">
-          <b-card-body class="p-0">
-            <div class="d-flex justify-content-between">
-              <b-form-input v-model="search" placeholder="Search chats" class="flex-shrink-1" />
-              <b-btn class="float-right" variant="white" @click="markAllRead">
-                <v-icon name="check" /> Mark all read
-              </b-btn>
-            </div>
-          </b-card-body>
-        </b-card>
-        <ChatListEntry v-for="chat in visibleChats" :id="chat.id" :key="'chat-' + chat.id" :class="{ active: chat && parseInt(selectedChatId) === parseInt(chat.id) }" />
-        <p v-if="!visibleChats || !visibleChats.length" class="ml-2">
-          No chats to show.
-        </p>
-        <infinite-loading :identifier="bump" force-use-infinite-wrapper="#chatlist" :distance="distance" @infinite="loadMore">
-          <span slot="no-results" />
-          <span slot="no-more" />
-        </infinite-loading>
-        <div class="d-flex justify-content-around">
-          <b-btn v-if="search && complete" variant="white" class="mt-2" @click="searchMore">
-            <v-icon v-if="searching" name="sync" class="text-success fa-spin" />
-            <v-icon v-else name="search" /> Search old chats
-          </b-btn>
-        </div>
-      </b-col>
-      <b-col cols="12" md="8" xl="6" :class="'chatback p-0 ' + (selectedChatId ? 'd-block' : 'd-none d-md-block')">
-        <ChatPane v-if="selectedChatId" :id="selectedChatId" :key="'chatpane-' + selectedChatId" />
-        <p v-else class="text-center text-muted mt-2">
-          Please click on a chat in the left pane.
-        </p>
-      </b-col>
-      <b-col cols="0" xl="3" class="d-none d-xl-block p-0 pl-1">
-        <SidebarRight :show-volunteer-opportunities="false" :show-job-opportunities="true" />
-      </b-col>
-    </b-row>
+    <b-container>
+      <b-row>
+        <h1 class="sr-only">
+          Chats
+        </h1>
+      </b-row>
+      <b-row class="m-0">
+        <b-col id="chatlist" cols="12" md="4" xl="3" :class="'chatlist p-0 bg-white ' + (selectedChatId ? 'd-none d-md-block' : '') + ' ' + selectedChatId">
+          <b-card class="p-0">
+            <b-card-body class="p-0">
+              <div class="d-flex justify-content-between">
+                <b-form-input v-model="search" placeholder="Search chats" class="flex-shrink-1" />
+                <b-btn class="float-right" variant="white" @click="markAllRead">
+                  <v-icon name="check" /> Mark all read
+                </b-btn>
+              </div>
+            </b-card-body>
+          </b-card>
+          <ChatListEntry v-for="chat in visibleChats" :id="chat.id" :key="'chat-' + chat.id" :class="{ active: chat && parseInt(selectedChatId) === parseInt(chat.id) }" />
+          <p v-if="!visibleChats || !visibleChats.length" class="ml-2">
+            No chats to show.
+          </p>
+          <infinite-loading :identifier="bump" force-use-infinite-wrapper="#chatlist" :distance="distance" @infinite="loadMore">
+            <span slot="no-results" />
+            <span slot="no-more" />
+          </infinite-loading>
+          <div class="d-flex justify-content-around">
+            <b-btn v-if="search && complete" variant="white" class="mt-2" @click="searchMore">
+              <v-icon v-if="searching" name="sync" class="text-success fa-spin" />
+              <v-icon v-else name="search" /> Search old chats
+            </b-btn>
+          </div>
+        </b-col>
+        <b-col cols="12" md="8" xl="6" :class="'chatback p-0 ' + (selectedChatId ? 'd-block' : 'd-none d-md-block')">
+          <ChatPane v-if="selectedChatId" :id="selectedChatId" :key="'chatpane-' + selectedChatId" />
+          <p v-else class="text-center text-muted mt-2">
+            Please click on a chat in the left pane.
+          </p>
+        </b-col>
+        <b-col cols="0" xl="3" class="d-none d-xl-block p-0 pl-1">
+          <SidebarRight :show-volunteer-opportunities="false" :show-job-opportunities="true" />
+        </b-col>
+      </b-row>
+    </b-container>
   </client-only>
 </template>
 <script>
