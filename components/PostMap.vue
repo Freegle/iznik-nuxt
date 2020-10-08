@@ -103,7 +103,9 @@ export default {
               'hamlet',
               'town',
               'city'
-            ]
+            ],
+            serviceUrl:
+              process.env.GEOCODE || 'https://geocode.ilovefreegle.org/api'
           }),
           collapsed: false
         })

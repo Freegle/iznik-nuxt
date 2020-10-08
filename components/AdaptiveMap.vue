@@ -55,6 +55,7 @@ import InfiniteLoading from 'vue-infinite-loading'
 import map from '@/mixins/map.js'
 const Message = () => import('~/components/Message.vue')
 const PostMap = () => import('~/components/PostMap')
+const allSettled = require('promise.allsettled')
 
 let L = null
 
@@ -223,7 +224,9 @@ export default {
         }
       }
 
-      await Promise.all(promises)
+      // Use all-settled as some might fail.
+      await allSettled(promises)
+
       fetching.forEach(id => {
         this.fetched[id] = true
         delete this.fetching[id]
