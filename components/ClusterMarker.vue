@@ -122,21 +122,26 @@ export default {
       try {
         if (this.map) {
           const bounds = this.map.getBounds()
-          const zoom = this.map.getZoom()
+          const zoom = Math.round(this.map.getZoom())
+          let bbox = null
 
-          if (bounds) {
-            const bbox = [
-              bounds.getNorthWest().lng,
-              bounds.getSouthEast().lat,
-              bounds.getSouthEast().lng,
-              bounds.getNorthWest().lat
-            ]
+          try {
+            if (bounds) {
+              bbox = [
+                bounds.getNorthWest().lng,
+                bounds.getSouthEast().lat,
+                bounds.getSouthEast().lng,
+                bounds.getNorthWest().lat
+              ]
 
-            clusters = this.index.getClusters(bbox, zoom)
+              clusters = this.index.getClusters(bbox, zoom)
+            }
+          } catch (e) {
+            console.log('Exception 1', e, bounds, zoom, this.index)
           }
         }
       } catch (e) {
-        console.log('Excetion', e)
+        console.log('Exception 2', e)
       }
 
       return clusters
