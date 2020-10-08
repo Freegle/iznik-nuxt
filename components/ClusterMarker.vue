@@ -164,7 +164,11 @@ export default {
       const zoom = this.index.getClusterExpansionZoom(
         cluster.properties.cluster_id
       )
-      this.map.setZoom(zoom)
+
+      this.map.flyTo(
+        [cluster.geometry.coordinates[1], cluster.geometry.coordinates[0]],
+        zoom
+      )
     },
     pointClick(cluster) {
       // It's a point. Centre on it, and zoom in if we can so that something happens.
