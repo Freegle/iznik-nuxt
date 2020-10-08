@@ -206,18 +206,20 @@ export default {
                           this.item.tolat,
                           this.item.tolng
                         )
-                        this.$refs.message.setLatLng(
-                          this.item.tolat,
-                          this.item.tolng
-                        )
-                        setTimeout(() => {
-                          this.showMessage = false
-                          this.showThanks = true
+                        this.waitForRef('message', () => {
+                          this.$refs.message.setLatLng(
+                            this.item.tolat,
+                            this.item.tolng
+                          )
                           setTimeout(() => {
-                            this.list.shift()
-                            this.doNext()
-                          }, this.delayBeforeNext)
-                        }, this.delayBeforeThanks + 2000)
+                            this.showMessage = false
+                            this.showThanks = true
+                            setTimeout(() => {
+                              this.list.shift()
+                              this.doNext()
+                            }, this.delayBeforeNext)
+                          }, this.delayBeforeThanks + 2000)
+                        })
                       }
                     }, this.delayBeforeReturn)
                   })
@@ -270,6 +272,7 @@ export default {
       const minlng = Math.min.apply(null, lngs) - 0.01
       const maxlng = Math.max.apply(null, lngs) + 0.01
 
+      console.log('Return bounds', minlat, minlng, maxlat, maxlng)
       return [[minlat, minlng], [maxlat, maxlng]]
     },
     async doNext() {
