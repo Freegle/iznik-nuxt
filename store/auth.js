@@ -176,16 +176,12 @@ export const getters = {
 
 function countWork(work) {
   let total = 0
-  for (const key in work) {
-    if (
-      typeof work[key] === 'number' &&
-      key.indexOf('other') === -1 &&
-      key.indexOf('happiness') === -1
-    ) {
-      total += work[key]
-    }
+
+  if (work && 'total' in work) {
+    total = work.total
   }
 
+  console.log('Return total', total, work)
   return total
 }
 
@@ -344,6 +340,7 @@ export const actions = {
       const newTotal = countWork(work)
 
       if (
+        work &&
         newTotal > currentTotal &&
         state.user &&
         (!state.user.settings ||
