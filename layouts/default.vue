@@ -835,7 +835,6 @@ svg.fa-icon {
   @include media-breakpoint-up(xl) {
     left: 40px;
   }
-
 }
 
 .chatbadge {
