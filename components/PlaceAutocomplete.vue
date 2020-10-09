@@ -1,23 +1,32 @@
 <template>
-  <autocomplete
-    id="placeautocomplete"
-    ref="autocomplete"
-    v-model="wip"
-    restrict
-    :url="source"
-    param="q"
-    :custom-params="{ bbox: '-7.57216793459,49.959999905,1.68153079591,58.6350001085' }"
-    anchor="name"
-    label=""
-    placeholder="Type your location"
-    :classes="{ input: 'form-control form-control-' + size + ' text-center', list: 'locationlist', listentry: 'w-100', listentrylist: 'listentry' }"
-    :min="3"
-    :debounce="200"
-    :process="process"
-    :on-select="select"
-    :size="30"
-    variant="success"
-  />
+  <div>
+    <label for="placeautocomplete" class="smaller font-weight-bold">
+      <span v-if="labeltextSr" class="sr-only">
+        {{ labeltextSr }}
+      </span>
+      {{ labeltext }}
+    </label>
+    <autocomplete
+      id="placeautocomplete"
+      ref="autocomplete"
+      v-model="wip"
+      restrict
+      :url="source"
+      param="q"
+      :custom-params="{ bbox: '-7.57216793459,49.959999905,1.68153079591,58.6350001085' }"
+      anchor="name"
+      label=""
+      placeholder="Type your location"
+      :classes="{ input: 'form-control form-control-' + size + ' text-center', list: 'locationlist', listentry: 'w-100 listentry', listentrylist: 'listentrylist' }"
+      :min="3"
+      :debounce="200"
+      :process="process"
+      :on-select="select"
+      :size="30"
+      variant="success"
+    />
+    <div />
+  </div>
 </template>
 <script>
 import { TooltipPlugin } from 'bootstrap-vue'
@@ -32,6 +41,16 @@ export default {
   },
   props: {
     value: {
+      type: String,
+      required: false,
+      default: null
+    },
+    labeltext: {
+      type: String,
+      required: false,
+      default: null
+    },
+    labeltextSr: {
       type: String,
       required: false,
       default: null
@@ -121,9 +140,15 @@ export default {
   }
 }
 </script>
+
 <style scoped lang="scss">
-::v-deep .listentry {
+@import 'color-vars';
+
+::v-deep .listentrylist {
   width: 100%;
   right: 0 !important;
+  border-color: $color-blue--light;
+  outline: 0;
+  box-shadow: 0 1px 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 </style>

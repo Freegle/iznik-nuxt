@@ -40,14 +40,8 @@
       <h2 class="medium font-weight-bold black">
         Just looking?
       </h2>
-      <label class="smaller font-weight-bold">
-        <span class="sr-only">
-          Enter your location and
-        </span>
-        See what's being freegled near you.
-      </label>
       <div class="d-flex centresmall flex-wrap">
-        <PlaceAutocomplete class="mb-2" @selected="explorePlace($event)" />
+        <PlaceAutocomplete class="mb-2" labeltext="See what's being freegled near you." labeltext-sr="Enter your location and" @selected="explorePlace($event)" />
       </div>
     </div>
     <div class="mobile">
@@ -364,9 +358,5 @@ export default {
 .explore {
   padding-top: 9px;
   padding-bottom: 9px;
-}
-
-::v-deep .autocomplete-wrap {
-  border: 3px solid $color-green--darker !important;
 }
 </style>
