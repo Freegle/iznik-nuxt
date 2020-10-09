@@ -17,7 +17,7 @@
       anchor="name"
       label=""
       placeholder="Type your location"
-      :classes="{ input: 'form-control form-control-' + size + ' text-center', list: 'locationlist', listentry: 'w-100', listentrylist: 'listentry' }"
+      :classes="{ input: 'form-control form-control-' + size + ' text-center', list: 'locationlist', listentry: 'w-100 listentry', listentrylist: 'listentrylist' }"
       :min="3"
       :debounce="200"
       :process="process"
@@ -140,9 +140,15 @@ export default {
   }
 }
 </script>
+
 <style scoped lang="scss">
-::v-deep .listentry {
+@import 'color-vars';
+
+::v-deep .listentrylist {
   width: 100%;
   right: 0 !important;
+  border-color: $color-blue--light;
+  outline: 0;
+  box-shadow: 0 1px 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 </style>

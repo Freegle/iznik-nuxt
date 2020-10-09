@@ -359,8 +359,4 @@ export default {
   padding-top: 9px;
   padding-bottom: 9px;
 }
-
-::v-deep .autocomplete-wrap {
-  border: 3px solid $color-green--darker !important;
-}
 </style>

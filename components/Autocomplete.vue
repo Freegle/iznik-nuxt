@@ -633,7 +633,7 @@ export default {
   font-family: sans-serif;
   position: absolute;
   list-style: none;
-  background: $color-gray--lighter;
+  background: $color-white;
   padding: 0;
   margin: 0;
   display: inline-block;
@@ -641,6 +641,9 @@ export default {
   margin-top: 0px;
   z-index: 1000;
   right: 48%;
+  border: 1px solid $color-gray--light;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
 }
 
 ::v-deep .postcodelist.autocomplete ul {
@@ -664,12 +667,14 @@ export default {
   display: block;
   padding: 5px;
   padding-left: 10px;
+  color: $color-gray--dark;
+  font-size: 13px;
 }
 
 .autocomplete ul li a:hover,
 .autocomplete ul li.focus-list a {
-  color: $color-white;
-  background: $color-blue--lighter;
+  color: $color-gray--dark;
+  background: $color-gray--lighter;
 }
 
 .autocomplete ul li a span, /*backwards compat*/
@@ -713,6 +718,9 @@ input[invalid='true'] {
   box-shadow: 0 0 0 0.2rem $color-red;
   border: 1px solid red;
 }
+.autocomplete-wrap {
+  border: 2px solid $color-gray--normal !important;
+}
 .autocomplete-wrap input:focus {
   outline: none;
   box-shadow: none;
@@ -722,10 +730,12 @@ input[invalid='true'] {
   border-color: $color-blue--light;
   outline: 0;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  border-color: $color-blue--x-light !important;
 }
 .input-group.autocomplete-wrap {
   border: 1px solid $color-gray-4;
-  border-radius: 4px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
 }
 .autocomplete-parent-focus .input-group {
   border: 1px solid $color-gray-4;

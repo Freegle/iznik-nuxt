@@ -247,10 +247,16 @@ export default {
   }
 }
 </script>
+
 <style scoped lang="scss">
+@import 'color-vars';
+
 ::v-deep .listentry {
   width: 100%;
   right: 0 !important;
   text-align: center;
+  border-color: $color-blue--light;
+  outline: 0;
+  box-shadow: 0 1px 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 </style>
