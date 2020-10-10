@@ -272,7 +272,6 @@ export default {
       const minlng = Math.min.apply(null, lngs) - 0.01
       const maxlng = Math.max.apply(null, lngs) + 0.01
 
-      console.log('Return bounds', minlat, minlng, maxlat, maxlng)
       return [[minlat, minlng], [maxlat, maxlng]]
     },
     async doNext() {
