@@ -181,7 +181,6 @@ function countWork(work) {
     total = work.total
   }
 
-  console.log('Return total', total, work)
   return total
 }
 
