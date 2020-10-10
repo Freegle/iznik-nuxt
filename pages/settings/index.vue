@@ -459,7 +459,7 @@
               />
               <hr>
               <p>
-                We send occasional newsletters or collections of nice stories from other freeglers..
+                We send occasional newsletters or collections of nice stories from other freeglers.
               </p>
               <OurToggle
                 v-model="newslettersallowed"
@@ -470,6 +470,20 @@
                 :labels="{checked: 'Send Them', unchecked: 'No Thanks'}"
                 color="#61AE24"
                 @change="changeNewsletter"
+              />
+              <hr>
+              <p>
+                We send occasional mails to encourage you to freegle.
+              </p>
+              <OurToggle
+                v-model="me.settings.engagement"
+                :height="30"
+                :width="150"
+                :font-size="14"
+                :sync="true"
+                :labels="{checked: 'Send Them', unchecked: 'No Thanks'}"
+                color="#61AE24"
+                @change="changeEngagement"
               />
               <hr>
               <h3 class="header--size5 header5__color">
@@ -965,6 +979,13 @@ export default {
     async changeNewsletter(e) {
       await this.$store.dispatch('auth/saveAndGet', {
         newslettersallowed: e.value
+      })
+    },
+    async changeEngagement(e) {
+      const settings = this.me.settings
+      settings.engagement = e.value
+      await this.$store.dispatch('auth/saveAndGet', {
+        settings: settings
       })
     },
     async changeHolidayDate(val) {
