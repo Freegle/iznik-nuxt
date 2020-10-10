@@ -4,20 +4,20 @@
       <l-map
         ref="map"
         :style="'width: 100%; height: ' + mapHeight + 'px'"
-        :min-zoom="minZoom - 1"
-        :max-zoom="maxZoom"
+        :min-zoom="minZoom"
+        :max-zoom="maxZoom + 1"
         @ready="ready"
         @zoomend="idle"
         @moveend="idle"
       >
         <l-tile-layer :url="osmtile" :attribution="attribution" />
-        <ClusterMarker v-if="mapObject && messageLocations && messageLocations.length" :markers="messageLocations" :map="mapObject" />
+        <GroupMarker v-for="g in groupsInBounds" :key="'marker-' + g.id + '-' + zoom" :group="g" :size="largeMarkers ? 'rich' : 'poor'" />
       </l-map>
     </client-only>
   </div>
 </template>
 <script>
-import ClusterMarker from './ClusterMarker'
+import GroupMarker from './GroupMarker'
 import map from '@/mixins/map.js'
 import waitForRef from '@/mixins/waitForRef'
 
@@ -31,7 +31,7 @@ if (process.browser) {
 
 export default {
   components: {
-    ClusterMarker
+    GroupMarker
   },
   mixins: [map, waitForRef],
   props: {
@@ -47,21 +47,23 @@ export default {
     minZoom: {
       type: Number,
       required: false,
-      default: 10
+      default: 4
     },
     maxZoom: {
       type: Number,
       required: false,
-      default: 15
+      default: 9
+    },
+    region: {
+      type: String,
+      required: false,
+      default: null
     }
   },
   data: function() {
     return {
-      context: null,
-      messageLocations: [],
       mapObject: null,
-      manyToShow: 20,
-      shownMany: false
+      bounds: null
     }
   },
   computed: {
@@ -76,29 +78,62 @@ export default {
       return height
     },
     groups() {
+      return this.$store.getters['group/list']
+    },
+    groupsInBounds() {
+      const groups = this.groups
       const ret = []
 
-      if (this.messageLocations) {
-        this.messageLocations.forEach(m => {
-          if (ret.indexOf(m.groupid) === -1) {
-            ret.push(m.groupid)
+      if (!process.browser) {
+        // SSR - return all for SEO.
+        for (const ix in groups) {
+          const group = groups[ix]
+
+          if (
+            group.onmap &&
+            (!this.region ||
+              group.region.trim().toLowerCase() ===
+                this.region.trim().toLowerCase())
+          ) {
+            ret.push(group)
           }
-        })
+        }
+      } else if (this.bounds) {
+        for (const ix in groups) {
+          const group = groups[ix]
+
+          try {
+            if (
+              group.onmap &&
+              this.bounds.contains([group.lat, group.lng]) &&
+              (!this.region ||
+                this.region.toLowerCase() === group.region.toLowerCase())
+            ) {
+              ret.push(group)
+            }
+          } catch (e) {
+            console.log('Problem group', e)
+          }
+        }
       }
 
-      return ret
+      const sorted = ret.sort((a, b) => {
+        return a.namedisplay
+          .toLowerCase()
+          .localeCompare(b.namedisplay.toLowerCase())
+      })
+
+      return sorted
+    },
+    largeMarkers() {
+      // Show small markers unless we are zoomed in to a small number of groups.
+      return this.groupsInBounds.length < 20 && this.zoom > 10
     }
   },
   watch: {
-    groups: {
-      immediate: true,
-      handler(newval) {
-        this.$emit('groups', newval)
-      }
+    groupsInBounds(newval) {
+      this.$emit('groups', this.groupsInBounds.map(g => g.id))
     }
-  },
-  mounted() {
-    this.messageLocations = this.initialMessageLocations
   },
   methods: {
     ready() {
@@ -144,58 +179,16 @@ export default {
         }
       })
     },
-    async idle() {
+    idle() {
       if (this.mapObject) {
-        const bounds = this.mapObject.getBounds()
-        this.$emit('update:bounds', bounds)
+        this.bounds = this.mapObject.getBounds()
+        this.$emit('update:bounds', this.bounds)
         this.$emit('update:zoom', this.mapObject.getZoom())
         this.$emit('update:centre', this.mapObject.getCenter())
 
-        if (this.mapObject.getZoom() < this.minZoom) {
+        if (this.mapObject.getZoom() > this.maxZoom) {
           // The parent will probably replace us with something else at this point.
-          this.$emit('minzoom')
-        } else {
-          const swlat = bounds.getSouthWest().lat
-          const swlng = bounds.getSouthWest().lng
-          const nelat = bounds.getNorthEast().lat
-          const nelng = bounds.getNorthEast().lng
-
-          const ret = await this.$api.message.fetchMessages({
-            subaction: 'inbounds',
-            swlat: bounds.getSouthWest().lat,
-            swlng: bounds.getSouthWest().lng,
-            nelat: bounds.getNorthEast().lat,
-            nelng: bounds.getNorthEast().lng
-          })
-
-          if (ret.ret === 0 && ret.messages) {
-            this.messageLocations = ret.messages
-            this.$emit('messages', ret.messages)
-
-            let countInBounds = 0
-
-            ret.messages.forEach(m => {
-              if (
-                swlat <= m.lat &&
-                m.lat <= nelat &&
-                swlng <= m.lng &&
-                m.lng <= nelng
-              ) {
-                countInBounds++
-              }
-            })
-
-            // If we haven't got more than 1 message at this zoom level, zoom out.  That means we'll always show at
-            // least something.
-            if (countInBounds < this.manyToShow && !this.shownMany) {
-              const currzoom = this.mapObject.getZoom()
-              if (currzoom > this.minZoom) {
-                this.mapObject.setZoom(currzoom - 1)
-              }
-            } else {
-              this.shownMany = true
-            }
-          }
+          this.$emit('maxzoom')
         }
       }
     }

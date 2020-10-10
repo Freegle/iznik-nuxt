@@ -1,15 +1,15 @@
 <template>
   <div>
-    <b-row v-if="invalid" class="m-0">
+    <b-row class="m-0">
       <b-col cols="12" lg="6" class="p-0" offset-lg="3">
-        <NoticeMessage variant="danger" class="mt-2">
+        <NoticeMessage v-if="invalid" variant="danger" class="mt-2">
           That community name is invalid - please check it.
         </NoticeMessage>
+        <div v-else>
+          <ExploreGroup v-if="id" :id="id" />
+        </div>
       </b-col>
     </b-row>
-    <div v-else>
-      <ExploreGroup v-if="id" :id="id" />
-    </div>
   </div>
 </template>
 <script>

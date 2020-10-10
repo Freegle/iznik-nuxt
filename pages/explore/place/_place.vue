@@ -35,6 +35,12 @@ export default {
       place: null
     }
   },
+  async asyncData({ store }) {
+    // Get all the groups in store for the adaptive map.
+    await store.dispatch('group/list', {
+      grouptype: 'Freegle'
+    })
+  },
   created() {
     this.place = this.$route.params.place
       ? JSON.parse(this.$route.params.place)

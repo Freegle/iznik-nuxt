@@ -2,20 +2,37 @@
   <div>
     <client-only>
       <div :style="mapHeight" class="position-relative mb-1">
-        <div class="mapbox">
-          <PostMap
-            v-if="initialMapBounds"
-            :initial-bounds="initialMapBounds"
+        <div v-if="bounds" class="mapbox">
+          <GroupMap
+            v-if="showGroups"
+            :initial-bounds="bounds"
             :height-fraction="heightFraction"
+            :bounds.sync="bounds"
+            :zoom.sync="zoom"
+            :centre.sync="centre"
+            :ready.sync="mapready"
+            :region="region"
+            @groups="groupsChanged($event)"
+            @maxzoom="showGroups = false"
+          />
+          <PostMap
+            v-else
+            :initial-bounds="bounds"
+            :height-fraction="heightFraction"
+            :bounds.sync="bounds"
+            :zoom.sync="zoom"
+            :centre.sync="centre"
+            :ready.sync="mapready"
             @messages="messagesChanged($event)"
             @groups="groupsChanged($event)"
+            @minzoom="showGroups = true"
           />
-          <div v-else :style="mapHeight" />
         </div>
+        <div v-else :style="mapHeight" />
       </div>
     </client-only>
-    <div class="rest">
-      <div v-if="closestGroups.length" class="d-flex flex-wrap mb-1 justify-content-between border p-2 bg-white">
+    <div v-if="mapready" class="rest">
+      <div v-if="showClosestGroups" class="d-flex flex-wrap mb-1 justify-content-between border p-2 bg-white">
         <b-btn
           v-for="group in closestGroups"
           :key="'group-' + group.id"
@@ -27,34 +44,57 @@
           Join {{ group.namedisplay }}
         </b-btn>
       </div>
-      <div v-if="filteredMessages && filteredMessages.length">
-        <div v-for="message in filteredMessages" :key="'messagelist-' + message.id" class="p-0">
-          <Message v-bind="message" />
+      <div v-if="showGroups" class="bg-white pt-3">
+        <div v-if="showRegions">
+          <div class="d-flex flex-wrap justify-content-center pb-4">
+            <div v-for="r in regions" :key="r" class="p-0 mt-2 ml-2 mr-2">
+              <b-btn variant="white" :to="'/explore/region/' + r">
+                {{ r }}
+              </b-btn>
+            </div>
+          </div>
         </div>
+        <div v-if="showGroupList">
+          <AdaptiveMapGroup v-for="groupid in groupids" :id="groupid" :key="'adaptivegroup-' + groupid" />
+        </div>
+        <p class="text-center mt-2 header--size5 community__heading community__text">
+          <!-- eslint-disable-next-line -->
+          If there's no community for your area, would you like to start one? <ExternalLink href="mailto:newgroups@ilovefreegle.org">Get in touch!</ExternalLink>
+        </p>
       </div>
-      <client-only>
-        <infinite-loading
-          v-if="initialBounds"
-          :identifier="infiniteId"
-          force-use-infinite-wrapper="body"
-          :distance="distance"
-          @infinite="loadMore"
-        >
-          <span slot="no-results" />
-          <span slot="no-more" />
-          <span slot="spinner">
-            <b-img-lazy src="~/static/loader.gif" alt="Loading" />
-          </span>
-        </infinite-loading>
-      </client-only>
+      <div v-else>
+        <div v-if="filteredMessages && filteredMessages.length">
+          <div v-for="message in filteredMessages" :key="'messagelist-' + message.id" class="p-0">
+            <Message v-bind="message" />
+          </div>
+        </div>
+        <client-only>
+          <infinite-loading
+            v-if="initialBounds"
+            :identifier="infiniteId"
+            force-use-infinite-wrapper="body"
+            :distance="distance"
+            @infinite="loadMore"
+          >
+            <span slot="no-results" />
+            <span slot="no-more" />
+            <span slot="spinner">
+              <b-img-lazy src="~/static/loader.gif" alt="Loading" />
+            </span>
+          </infinite-loading>
+        </client-only>
+      </div>
     </div>
   </div>
 </template>
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
+import AdaptiveMapGroup from './AdaptiveMapGroup'
+import ExternalLink from './ExternalLink'
 import map from '@/mixins/map.js'
 const Message = () => import('~/components/Message.vue')
 const PostMap = () => import('~/components/PostMap')
+const GroupMap = () => import('~/components/GroupMap')
 const allSettled = require('promise.allsettled')
 
 let L = null
@@ -65,6 +105,9 @@ if (process.browser) {
 
 export default {
   components: {
+    ExternalLink,
+    AdaptiveMapGroup,
+    GroupMap,
     InfiniteLoading,
     Message,
     PostMap
@@ -74,6 +117,23 @@ export default {
     initialBounds: {
       type: Array,
       required: true
+    },
+    startOnGroups: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    initialGroupIds: {
+      type: Array,
+      required: false,
+      default: function() {
+        return []
+      }
+    },
+    region: {
+      type: String,
+      required: false,
+      default: null
     }
   },
   data: function() {
@@ -90,14 +150,39 @@ export default {
       nelat: null,
       nelng: null,
       postThreshold: 50,
+      groupids: [],
       messagesOnMap: [],
       fetching: [],
       fetched: [],
-      groupids: [],
-      initialMapBounds: null
+      bounds: null,
+      zoom: null,
+      centre: null,
+      showGroups: false,
+      mapready: process.server
     }
   },
   computed: {
+    regions() {
+      const regions = []
+
+      try {
+        const allGroups = this.$store.getters['group/list']
+
+        for (const ix in allGroups) {
+          const group = allGroups[ix]
+
+          if (group.region && regions.indexOf(group.region) === -1) {
+            regions.push(group.region)
+          }
+        }
+
+        regions.sort()
+      } catch (e) {
+        console.error('Exception', e)
+      }
+
+      return regions
+    },
     messageCount: function() {
       const count = this.messages ? this.messages.length : 0
       return count
@@ -137,6 +222,22 @@ export default {
         return new Date(b.arrival).getTime() - new Date(a.arrival).getTime()
       })
     },
+    showRegions() {
+      // We want to show the regions if we're zoomed out, or for SSR = SEO.
+      return process.server || this.zoom < 7
+    },
+    showGroupList() {
+      // We want to show the list of groups for SSR = SEO, or if we are not showing the regions (because we're
+      // zoomed out)
+      return process.server || !this.showRegions
+    },
+    showClosestGroups() {
+      // We only want to show the closest groups to join if there aren't too many.  Otherwise they're probably
+      // zoomed way out and would join the wrong ones.
+      return (
+        this.groupids && this.groupids.length < 20 && this.closestGroups.length
+      )
+    },
     closestGroups() {
       const ret = []
 
@@ -165,27 +266,32 @@ export default {
       return ret.slice(0, 3)
     }
   },
-  async mounted() {
+  created() {
+    this.showGroups = this.startOnGroups
+    this.groupids = this.initialGroupIds
     this.swlat = this.initialBounds[0][0]
     this.swlng = this.initialBounds[0][1]
     this.nelat = this.initialBounds[1][0]
     this.nelng = this.initialBounds[1][1]
+  },
+  async mounted() {
+    if (!this.startOnGroups) {
+      // Ensure we have no cached messages for other searches/groups
+      this.$store.dispatch('messages/clear')
+      this.context = null
 
-    // Ensure we have no cached messages for other searches/groups
-    this.$store.dispatch('messages/clear')
-    this.context = null
+      // We have been given a bounding box containing some interesting posts.  Get messages within it - just
+      // the positions.
+      await this.$api.message.fetchMessages({
+        subaction: 'inbounds',
+        swlat: this.swlat,
+        swlng: this.swlng,
+        nelat: this.nelat,
+        nelng: this.nelng
+      })
+    }
 
-    // We have been given a bounding box containing some interesting posts.  Get messages within it - just
-    // the positions.
-    await this.$api.message.fetchMessages({
-      subaction: 'inbounds',
-      swlat: this.swlat,
-      swlng: this.swlng,
-      nelat: this.nelat,
-      nelng: this.nelng
-    })
-
-    this.initialMapBounds = L.latLngBounds(
+    this.bounds = L.latLngBounds(
       L.latLng(this.swlat, this.swlng),
       L.latLng(this.nelat, this.nelng)
     )
@@ -269,5 +375,16 @@ export default {
   top: 0px;
   right: 0px;
   z-index: 20000;
+}
+
+.community__heading {
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.community__text {
+  /* Need to override the h2 as it has higher specificity */
+  color: #212529 !important;
 }
 </style>
