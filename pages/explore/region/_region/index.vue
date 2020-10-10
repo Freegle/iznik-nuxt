@@ -1,7 +1,17 @@
 <template>
   <b-row class="m-0">
     <b-col cols="12" lg="6" class="p-0" offset-lg="3">
-      <AdaptiveMap v-if="initialBounds" :initial-bounds="initialBounds" start-on-groups :initial-group-ids="initialGroupIds" :region="region" />
+      <h1 class="sr-only">
+        Freegling map in {{ region }}
+      </h1>
+      <AdaptiveMap
+        v-if="initialBounds"
+        :initial-bounds="initialBounds"
+        start-on-groups
+        :initial-group-ids="initialGroupIds"
+        :region="region"
+        class="mt-2"
+      />
       <b-alert v-else variant="danger" show>
         That region isn't valid.
       </b-alert>

@@ -10,7 +10,12 @@
     <b-row v-else>
       <b-col cols="12" lg="6" class="p-0" offset-lg="3">
         <ExploreGroup v-if="id" :id="id" />
-        <AdaptiveMap v-else :initial-bounds="[ [49.959999905, -7.57216793459], [58.6350001085, 1.68153079591] ]" start-on-groups :initial-group-ids="initialGroupIds" />
+        <div v-else>
+          <h1 class="sr-only">
+            Freegling map
+          </h1>
+          <AdaptiveMap :initial-bounds="[ [49.959999905, -7.57216793459], [58.6350001085, 1.68153079591] ]" start-on-groups :initial-group-ids="initialGroupIds" class="mt-2" />
+        </div>
       </b-col>
     </b-row>
   </div>

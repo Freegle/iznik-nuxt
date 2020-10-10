@@ -251,7 +251,7 @@ export default {
 
           if (group) {
             group.distance = this.getDistance(
-              [this.lat, this.lng],
+              [this.centre.lat, this.centre.lng],
               [group.lat, group.lng]
             )
             ret.push(group)
@@ -351,10 +351,6 @@ export default {
     },
     groupsChanged(groupids) {
       this.groupids = groupids
-    },
-    centreChanged(centre) {
-      this.lat = centre.lat
-      this.lng = centre.lng
     }
   }
 }

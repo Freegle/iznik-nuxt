@@ -5,9 +5,9 @@
       <b-col cols="12" lg="6" class="p-0">
         <div v-if="place">
           <h1 class="sr-only">
-            Freegling near {{ place.name }}
+            Freegling map near {{ place.name }}
           </h1>
-          <AdaptiveMap v-if="initialBounds" :initial-bounds="initialBounds" />
+          <AdaptiveMap v-if="initialBounds" :initial-bounds="initialBounds" class="mt-2" />
         </div>
         <b-alert v-else show variant="danger">
           Something went wrong.  Please contact us to let us know what you were trying to do.
