@@ -90,6 +90,11 @@ export default {
         priority: 0.1
       },
       {
+        url: '/stats',
+        changefreq: 'monthly',
+        priority: 0.1
+      },
+      {
         url: '/stats/authorities',
         changefreq: 'monthly',
         priority: 0.1
