@@ -1,22 +1,36 @@
 <template>
   <div ref="mapcont" class="w-100">
     <client-only>
-      <l-map
-        ref="map"
-        :style="'width: 100%; height: ' + mapHeight + 'px'"
-        :min-zoom="minZoom"
-        :max-zoom="maxZoom + 1"
-        @ready="ready"
-        @zoomend="idle"
-        @moveend="idle"
+      <vue-draggable-resizable
+        :h="mapHeight"
+        w="auto"
+        :handles="['bl', 'br']"
+        :parent="false"
+        :draggable="false"
+        resizeable
+        resize-axis="y"
+        active
+        prevent-deactivation
+        @resizestop="onResize"
       >
-        <l-tile-layer :url="osmtile" :attribution="attribution" />
-        <GroupMarker v-for="g in groupsInBounds" :key="'marker-' + g.id + '-' + zoom" :group="g" :size="largeMarkers ? 'rich' : 'poor'" />
-      </l-map>
+        <l-map
+          ref="map"
+          :style="'width: 100%; height: ' + mapHeight + 'px'"
+          :min-zoom="minZoom"
+          :max-zoom="maxZoom + 1"
+          @ready="ready"
+          @zoomend="idle"
+          @moveend="idle"
+        >
+          <l-tile-layer :url="osmtile" :attribution="attribution" />
+          <GroupMarker v-for="g in groupsInBounds" :key="'marker-' + g.id + '-' + zoom" :group="g" :size="largeMarkers ? 'rich' : 'poor'" />
+        </l-map>
+      </vue-draggable-resizable>
     </client-only>
   </div>
 </template>
 <script>
+import VueDraggableResizable from 'vue-draggable-resizable/src/components/vue-draggable-resizable'
 import GroupMarker from './GroupMarker'
 import map from '@/mixins/map.js'
 import waitForRef from '@/mixins/waitForRef'
@@ -31,7 +45,8 @@ if (process.browser) {
 
 export default {
   components: {
-    GroupMarker
+    GroupMarker,
+    VueDraggableResizable
   },
   mixins: [map, waitForRef],
   props: {
@@ -63,11 +78,16 @@ export default {
   data: function() {
     return {
       mapObject: null,
-      bounds: null
+      bounds: null,
+      resizedHeight: null
     }
   },
   computed: {
     mapHeight() {
+      if (this.resizedHeight !== null) {
+        return this.resizedHeight
+      }
+
       let height = 0
 
       if (process.browser) {
@@ -191,6 +211,20 @@ export default {
           this.$emit('maxzoom')
         }
       }
+    },
+    onResize(x, y, width, height) {
+      if (this.mapObject) {
+        this.resizedHeight = height
+
+        this.$nextTick(() => {
+          this.mapObject.invalidateSize()
+
+          // For some reason this doesn't always work immediately, so use a fallback too.
+          setTimeout(() => {
+            this.mapObject.invalidateSize()
+          }, 1000)
+        })
+      }
     }
   }
 }
@@ -209,5 +243,9 @@ export default {
     line-height: 1.5;
     border-radius: 0.3rem;
   }
+}
+
+::v-deep .handle {
+  content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAAB3RJTUUH5AoLCyYQDowQNQAAAHRJREFUOMtjYBhMQJ6BgSGLgYHhP5TPzMDA4AXlG0DFuBkYGDKQ1KAAmGZ9KB+muY6BgUEYqjkaKuaAzYD/DAwM6mg212Cx2Z2QV5A1CxBjMwMWP9PXZuQwIMtmGDAj12ZkQJbNyJrJtpmBEpuRA9GBYcgBALMUJBS9QtP6AAAAAElFTkSuQmCC');
 }
 </style>

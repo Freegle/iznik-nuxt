@@ -199,6 +199,24 @@ body.modtools {
   left: 0;
 }
 
+.handle-tr {
+  top: 0;
+  right: 0;
+  rotate: 90deg;
+}
+
+.handle-bl {
+  bottom: 0;
+  left: 0;
+  rotate: 270deg;
+}
+
+.handle-br {
+  bottom: 0;
+  right: 0;
+  rotate: 180deg;
+}
+
 // Brought in from style.css
 button {
   white-space: nowrap;
@@ -386,4 +404,9 @@ form {
   font-size: 1.5rem;
   line-height: 2;
   border-radius: 0.3rem;
+}
+
+// Move the attribution slightly to make way for resizers if present
+.leaflet-container .leaflet-control-attribution {
+  right: 20px;
 }

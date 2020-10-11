@@ -130,6 +130,7 @@
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import InfiniteLoading from 'vue-infinite-loading'
+import VueDraggableResizable from 'vue-draggable-resizable/src/components/vue-draggable-resizable'
 import ModComments from './ModComments'
 import waitForRef from '@/mixins/waitForRef'
 import chat from '@/mixins/chat.js'
@@ -139,7 +140,6 @@ import ChatMessage from '~/components/ChatMessage.vue'
 import chatCollate from '@/mixins/chatCollate.js'
 
 Vue.use(TooltipPlugin)
-const VueDraggableResizable = () => import('vue-draggable-resizable')
 const Ratings = () => import('~/components/Ratings')
 const PromiseModal = () => import('./PromiseModal')
 const ProfileModal = () => import('./ProfileModal')

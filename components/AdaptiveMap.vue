@@ -360,7 +360,6 @@ export default {
 
 .mapbox {
   width: 100%;
-  position: absolute;
   top: 0px;
   left: 0;
   border: 1px solid $color-gray--light;
