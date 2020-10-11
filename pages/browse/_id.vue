@@ -36,7 +36,7 @@
             </b-row>
           </NoticeMessage>
           <div v-else>
-            <div class="bg-white">
+            <div class="bg-white d-block d-xl-none">
               <div class="d-flex justify-content-between">
                 <b-btn to="/give" variant="primary" class="topbutton ml-1 mr-1">
                   <v-icon name="gift" />
