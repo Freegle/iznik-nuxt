@@ -24,10 +24,6 @@
         can then do the correction here.
       </li>
     </ul>
-    <p>
-      We might need something here to remove ones who never reply, but if there are any of those then for now just
-      ask Edward.
-    </p>
   </NoticeMessage>
   <b-btn v-else variant="link" class="float-right" @click="toggleHelp">
     Help
