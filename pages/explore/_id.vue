@@ -7,33 +7,31 @@
         </NoticeMessage>
       </b-col>
     </b-row>
-    <div v-else>
-      <client-only>
+    <b-row v-else>
+      <b-col cols="12" lg="6" class="p-0" offset-lg="3">
         <ExploreGroup v-if="id" :id="id" />
-        <ExploreMap
-          v-else
-          :swlat="swlat"
-          :swlng="swlng"
-          :nelat="nelat"
-          :nelng="nelng"
-          track
-        />
-      </client-only>
-    </div>
+        <div v-else>
+          <h1 class="sr-only">
+            Freegling map
+          </h1>
+          <AdaptiveMap :initial-bounds="[ [49.959999905, -7.57216793459], [58.6350001085, 1.68153079591] ]" start-on-groups :initial-group-ids="initialGroupIds" class="mt-2" />
+        </div>
+      </b-col>
+    </b-row>
   </div>
 </template>
 <script>
 import NoticeMessage from '../../components/NoticeMessage'
+import AdaptiveMap from '../../components/AdaptiveMap'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 const ExploreGroup = () => import('~/components/ExploreGroup.vue')
-const ExploreMap = () => import('~/components/ExploreMap.vue')
 
 export default {
   components: {
+    AdaptiveMap,
     NoticeMessage,
-    ExploreGroup,
-    ExploreMap
+    ExploreGroup
   },
   mixins: [loginOptional, buildHead],
   data: function() {
@@ -47,6 +45,8 @@ export default {
   },
   async asyncData({ app, params, store }) {
     let invalid = false
+    let groupid = params.id
+    const groupids = []
 
     if (params.id) {
       // We need to populate the store on the server so that SSR works.  We can only do this in asyncData - mounted()
@@ -59,16 +59,15 @@ export default {
 
         if (!group || !group.showmods) {
           // Not fetched yet.
-          await store.dispatch('group/fetch', {
+          group = await store.dispatch('group/fetch', {
             id: params.id,
             showmods: true,
             sponsors: true
           })
-
-          group = store.getters['group/get'](params.id)
         }
 
         if (group) {
+          groupid = group.id
           await store.dispatch('messages/fetchMessages', {
             groupid: group.id,
             collection: 'Approved',
@@ -82,18 +81,32 @@ export default {
         invalid = true
       }
     } else {
+      // Get all the groups in store for the adaptive map.
       await store.dispatch('group/list', {
         grouptype: 'Freegle'
       })
+
+      // Calculate the initial bounds for the region.
+      const allGroups = store.getters['group/list']
+
+      for (const ix in allGroups) {
+        const group = allGroups[ix]
+
+        if (group.onmap && group.publish) {
+          groupids.push(group.id)
+        }
+      }
     }
 
     return {
-      asyncGroupId: params.id,
-      invalid: invalid
+      asyncGroupId: groupid,
+      invalid: invalid,
+      initialGroupIds: groupids
     }
   },
   created() {
-    this.id = this.$route.params.id
+    console.log('Explore created', this.$route.params)
+    this.id = this.asyncGroupId ? this.asyncGroupId : this.$route.params.id
 
     const re = /(.*),(.*),(.*),(.*)/
     const matches = re.exec(this.$route.query.bounds)
@@ -113,14 +126,14 @@ export default {
     }
 
     if (this.id) {
-      if (this.invalid) {
+      if (this.invalid || !group) {
         return this.buildHead('Explore ' + this.id)
       } else {
         return this.buildHead(group.namedisplay, group.tagline, group.profile)
       }
     } else {
       return this.buildHead(
-        'Explore Freegle Groups',
+        'Explore Freegle Communities',
         "There are lots of lovely communities of freeglers across the UK. Shall we see what they're up to?",
         null
       )

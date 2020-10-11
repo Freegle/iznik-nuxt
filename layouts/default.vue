@@ -63,7 +63,7 @@
               <template slot="button-content">
                 <div class="notifwrapper text-center small">
                   <v-icon name="bell" scale="2" />
-                  <b-badge v-if="notificationCount" variant="danger" class="notifbadge">
+                  <b-badge v-if="notificationCount" variant="danger" class="notification-badge">
                     {{ notificationCount }}
                   </b-badge><br>
                   <span class="nav-item__text">Notifications</span>
@@ -160,7 +160,7 @@
             <template slot="button-content">
               <div class="notifwrapper">
                 <v-icon name="bell" scale="2" class="" />
-                <b-badge v-if="notificationCount" variant="danger" class="notifbadgesm">
+                <b-badge v-if="notificationCount" variant="danger" class="notification-badge">
                   {{ notificationCount }}
                 </b-badge>
               </div>
@@ -276,13 +276,9 @@
     <div class="navbar-toggle" style="display: none" />
     <div id="serverloader" class="bg-white">
       <b-img src="~/static/loader.gif" alt="Loading..." />
-      <p>
-        <b>Loading...</b>
-        <br>
-        <!-- eslint-disable-next-line -->
-        Stuck here? <ExternalLink href="mailto:support@ilovefreegle.org">Contact us</ExternalLink>
-        <br>Try refreshing.  Or Chrome.
-      </p>
+      <!-- Don't allow this to format neatly, otherwise SSR doesn't match and we get a client-side re-render -->
+      <!-- eslint-disable-next-line -->
+      <p><b>Loading...</b><br>Stuck here? <ExternalLink href="mailto:support@ilovefreegle.org">Contact us</ExternalLink><br>Try refreshing.  Or Chrome.</p>
     </div>
   </div>
 </template>
@@ -863,16 +859,14 @@ svg.fa-icon {
   position: relative;
 }
 
-.notifbadge {
-  position: absolute;
-  top: 0px;
-  left: 40px;
-}
-
-.notifbadgesm {
+.notification-badge {
   position: absolute;
   top: 0px;
   left: 18px;
+
+  @include media-breakpoint-up(xl) {
+    left: 40px;
+  }
 }
 
 .chatbadge {
@@ -940,7 +934,7 @@ svg.fa-icon {
   max-width: 400px;
 }
 
-::v-deep .dropdown-toggle {
+.notiflist ::v-deep .dropdown-toggle {
   color: $color-white;
 }
 </style>

@@ -49,7 +49,7 @@ export default {
         iconUrl: this.icon,
         iconSize: [100, 100],
         iconAnchor: [30, 110],
-        className: 'border border-primary rounded'
+        className: 'border border-primary rounded item-image'
       })
     }
   },
@@ -65,3 +65,26 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+
+.item-image {
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+
+  animation-name: fadein-animation;
+  animation-timing-function: ease;
+}
+
+@keyframes fadein-animation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+</style>

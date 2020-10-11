@@ -126,80 +126,11 @@
     </client-only>
   </div>
 </template>
-
-<style scoped lang="scss">
-@import 'color-vars';
-
-.vdr {
-  position: absolute;
-  top: initial !important;
-  left: initial !important;
-  bottom: 0;
-  z-index: 900;
-  background-color: $color-yellow--base;
-  animation: chatIn 2s;
-  transform-origin: right bottom;
-  background-color: transparent !important;
-  display: flex;
-}
-
-.chatHolder {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border: 1px solid $color-gray--dark;
-}
-
-.chatname {
-  display: inline-block;
-  max-width: 100px;
-  font-weight: bold;
-  color: $color-white;
-}
-
-.shadow {
-  box-shadow: 1px 3px 5px 3px $color-black-opacity-60 !important;
-}
-
-@keyframes chatIn {
-  0% {
-    transform: scale(0.1);
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.chatTitle {
-  background-color: $color-blue--light;
-  color: $color-white;
-  font-weight: bold;
-  order: 1;
-  flex-shrink: 0;
-}
-
-.chatContent {
-  order: 3;
-  justify-content: flex-start;
-  flex-grow: 1;
-  overflow-y: auto;
-  background-color: $color-yellow--base;
-}
-
-.chatFooter {
-  order: 4;
-  justify-content: flex-end;
-  background-color: $color-white;
-  flex-shrink: 0;
-}
-</style>
-
 <script>
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import InfiniteLoading from 'vue-infinite-loading'
+import VueDraggableResizable from 'vue-draggable-resizable/src/components/vue-draggable-resizable'
 import ModComments from './ModComments'
 import waitForRef from '@/mixins/waitForRef'
 import chat from '@/mixins/chat.js'
@@ -209,7 +140,6 @@ import ChatMessage from '~/components/ChatMessage.vue'
 import chatCollate from '@/mixins/chatCollate.js'
 
 Vue.use(TooltipPlugin)
-const VueDraggableResizable = () => import('vue-draggable-resizable')
 const Ratings = () => import('~/components/Ratings')
 const PromiseModal = () => import('./PromiseModal')
 const ProfileModal = () => import('./ProfileModal')
@@ -232,9 +162,6 @@ export default {
   },
   mixins: [chatCollate, waitForRef, chat],
   computed: {
-    enterNewLine() {
-      return this.$store.getters['misc/get']('enternewline')
-    },
     minheight() {
       return Math.min(this.maxheight, HEIGHT)
     },
@@ -319,3 +246,71 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+@import 'color-vars';
+
+.vdr {
+  position: absolute;
+  top: initial !important;
+  left: initial !important;
+  bottom: 0;
+  z-index: 900;
+  background-color: $color-yellow--base;
+  animation: chatIn 2s;
+  transform-origin: right bottom;
+  background-color: transparent !important;
+  display: flex;
+}
+
+.chatHolder {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid $color-gray--dark;
+}
+
+.chatname {
+  display: inline-block;
+  max-width: 100px;
+  font-weight: bold;
+  color: $color-white;
+}
+
+.shadow {
+  box-shadow: 1px 3px 5px 3px $color-black-opacity-60 !important;
+}
+
+@keyframes chatIn {
+  0% {
+    transform: scale(0.1);
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.chatTitle {
+  background-color: $color-blue--light;
+  color: $color-white;
+  font-weight: bold;
+  order: 1;
+  flex-shrink: 0;
+}
+
+.chatContent {
+  order: 3;
+  justify-content: flex-start;
+  flex-grow: 1;
+  overflow-y: auto;
+  background-color: $color-yellow--base;
+}
+
+.chatFooter {
+  order: 4;
+  justify-content: flex-end;
+  background-color: $color-white;
+  flex-shrink: 0;
+}
+</style>

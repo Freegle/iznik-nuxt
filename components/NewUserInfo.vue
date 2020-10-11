@@ -1,8 +1,8 @@
 <template>
   <div>
-    <p class="text-center">
+    <h5 class="text-center">
       It looks like this is your first time freegling.  Hello!
-    </p>
+    </h5>
     <b-card variant="white">
       <h2 class="text-center">
         Your Account Password
@@ -31,7 +31,7 @@
         </b-input-group>
       </div>
       <p class="mt-2 text-center">
-        When you come back to us you can also log in your Facebook, Google or Yahoo account for that email address.
+        You can also log in later with your Facebook, Google or Yahoo account for that email address.
       </p>
     </b-card>
   </div>

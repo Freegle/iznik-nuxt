@@ -502,8 +502,8 @@ export default {
         if (group.ApprovedMemberCount.length > 0) {
           ret.push({
             location:
-              '<a class="black" href="/stories/' +
-              group.group.id +
+              '<a class="black" href="/explore/' +
+              group.group.nameshort +
               '">' +
               group.group.namedisplay +
               (group.overlap < 1 ? ' *' : '') +

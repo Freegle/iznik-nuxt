@@ -34,11 +34,11 @@
       :class="`${getClassName('list')} autocomplete autocomplete-list position-relative`"
     >
       <v-icon v-if="closeButton" name="times-circle" class="close mt-1 clickme" scale="2" @click="close" />
-      <ul>
+      <ul :class="`${getClassName('listentrylist')}`">
         <li
           v-for="(data, i) in json"
           :key="'autocomplete' + data.id"
-          :class="activeClass(i) + ' pr-4'"
+          :class="activeClass(i) + ' ' + `${getClassName('listentry')}`"
         >
           <a
             href="#"
@@ -86,7 +86,9 @@ export default {
         wrapper: false,
         input: false,
         list: false,
-        item: false
+        item: false,
+        listentry: false,
+        listentrylist: false
       })
     },
     placeholder: String,
@@ -193,6 +195,12 @@ export default {
       type: Number,
       required: false,
       default: null
+    },
+
+    variant: {
+      type: String,
+      required: false,
+      default: null
     }
   },
 
@@ -216,7 +224,24 @@ export default {
       return faSearch
     },
     wrapClass() {
-      return 'autocomplete-wrap ' + (this.focused ? ' autocomplete-wrap-focus' : '')
+      let border
+
+      switch (this.variant) {
+        case 'primary': {
+          border = ' border border-primary'
+          break;
+        }
+        case 'success': {
+          border = ' border border-success'
+          break;
+        }
+        default: {
+          border = ''
+          break;
+        }
+      }
+
+      return 'autocomplete-wrap ' + (this.focused ? ' autocomplete-wrap-focus' : '') + ' ' + border
     },
     parentClass() {
       return 'd-flex ' + (this.searchbutton ? 'autocomplete-parent-focus' : '') + (this.invalid ? ' invalid' : '')
@@ -382,13 +407,6 @@ export default {
     handleBlur(e) {
       this.focused = false
 
-      // Reset body height.  Seems to break unless we wait for a bit.
-      setTimeout(() => {
-        let body = document.getElementsByTagName("body")[0];
-        body.classList.remove('forcescroll')
-        body.style.overflowY = ''
-      }, 500)
-
       // Callback Event
       this.onBlur ? this.onBlur(e) : null
       setTimeout(() => {
@@ -402,16 +420,6 @@ export default {
     handleFocus(e) {
       this.focused = true
       this.focusList = 0
-
-      // On mobile, the on screen keyboard can obscure the dropdown.  So:
-      // - make sure we have room to scroll
-      // - scroll this input to the top
-      this.$nextTick(() => {
-        let body = document.getElementsByTagName("body")[0];
-        body.classList.add('forcescroll')
-        this.$refs.input.scrollTop = 0
-        body.style.overflowY = 'hidden'
-      })
 
       // Force the list to show.
       this.showList = true
@@ -625,7 +633,7 @@ export default {
   font-family: sans-serif;
   position: absolute;
   list-style: none;
-  background: $color-gray--lighter;
+  background: $color-white;
   padding: 0;
   margin: 0;
   display: inline-block;
@@ -633,6 +641,9 @@ export default {
   margin-top: 0px;
   z-index: 1000;
   right: 48%;
+  border: 1px solid $color-gray--light;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
 }
 
 ::v-deep .postcodelist.autocomplete ul {
@@ -656,12 +667,14 @@ export default {
   display: block;
   padding: 5px;
   padding-left: 10px;
+  color: $color-gray--dark;
+  font-size: 13px;
 }
 
 .autocomplete ul li a:hover,
 .autocomplete ul li.focus-list a {
-  color: $color-white;
-  background: $color-blue--lighter;
+  color: $color-gray--dark;
+  background: $color-gray--lighter;
 }
 
 .autocomplete ul li a span, /*backwards compat*/
@@ -705,6 +718,9 @@ input[invalid='true'] {
   box-shadow: 0 0 0 0.2rem $color-red;
   border: 1px solid red;
 }
+.autocomplete-wrap {
+  border: 2px solid $color-gray--normal !important;
+}
 .autocomplete-wrap input:focus {
   outline: none;
   box-shadow: none;
@@ -714,10 +730,12 @@ input[invalid='true'] {
   border-color: $color-blue--light;
   outline: 0;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  border-color: $color-blue--x-light !important;
 }
 .input-group.autocomplete-wrap {
   border: 1px solid $color-gray-4;
-  border-radius: 4px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
 }
 .autocomplete-parent-focus .input-group {
   border: 1px solid $color-gray-4;

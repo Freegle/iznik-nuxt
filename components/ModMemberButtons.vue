@@ -51,7 +51,7 @@
           label="Hold"
         />
       </div>
-      <div v-else class="d-inline">
+      <div v-else-if="member.spammer.collection === 'Approved'" class="d-inline">
         <ModMemberButton
           v-if="hasPermissionSpamAdmin"
           :member="member"

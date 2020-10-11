@@ -133,6 +133,10 @@
   color: $colour-success !important;
 }
 
+.text-header {
+  color: $colour-header !important;
+}
+
 h1, h2, h3, h4 {
   color: $colour-header !important;
 }
@@ -188,11 +192,30 @@ body.modtools {
   width: 16px;
   position: absolute;
   z-index: 1000;
+  cursor: pointer;
 }
 
 .handle-tl {
   top: 0;
   left: 0;
+}
+
+.handle-tr {
+  top: 0;
+  right: 0;
+  rotate: 90deg;
+}
+
+.handle-bl {
+  bottom: 0;
+  left: 0;
+  rotate: 270deg;
+}
+
+.handle-br {
+  bottom: 0;
+  right: 0;
+  rotate: 180deg;
 }
 
 // Brought in from style.css
@@ -332,18 +355,6 @@ legend {
   z-index: 10000;
 }
 
-.forcescroll {
-  overflow-y: scroll !important;
-  scrollbar-width: none !important; /* Firefox */
-  -ms-overflow-style: none !important;  /* Internet Explorer 10+ */
-  min-height: 200vh !important;
-}
-
-.forcescroll::-webkit-scrollbar { /* WebKit */
-  width: 0;
-  height: 0;
-}
-
 .sidebar__wrapper {
   height: calc(100vh - 100px);
 
@@ -386,4 +397,17 @@ form {
   .form-group.is-invalid .invalid-feedback {
     display: block;
   }
+}
+
+.form-control-xl {
+  height: calc(2em + 0.60rem + 2px);
+  padding: 0.5rem 1rem;
+  font-size: 1.5rem;
+  line-height: 2;
+  border-radius: 0.3rem;
+}
+
+// Move the attribution slightly to make way for resizers if present
+.leaflet-container .leaflet-control-attribution {
+  right: 20px;
 }

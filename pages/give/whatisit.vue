@@ -36,25 +36,41 @@
             <v-icon name="plus" />&nbsp;Add another item
           </b-btn>
         </div>
-        <CovidPostWarning class="mt-2" />
-        <b-row v-if="valid">
-          <b-col cols="12" md="6" offset-md="3" class="text-center pt-2">
-            <transition name="fade">
-              <b-btn variant="primary" size="lg" block :disabled="uploadingPhoto" @click="next">
-                Next <v-icon name="angle-double-right" />
-              </b-btn>
-            </transition>
-          </b-col>
-        </b-row>
-        <b-row v-if="!valid">
-          <b-col cols="12" md="6" offset-md="3" class="text-center pt-2">
-            <transition name="fade">
-              <NoticeMessage variant="info">
-                Please add the item name, and either a description or a photo.
-              </NoticeMessage>
-            </transition>
-          </b-col>
-        </b-row>
+        <div class="mt-1">
+          <div class="d-block d-md-none">
+            <b-btn
+              v-if="valid"
+              variant="primary"
+              :disabled="uploadingPhoto"
+              size="lg"
+              block
+              @click="next"
+            >
+              Next <v-icon name="angle-double-right" />
+            </b-btn>
+            <NoticeMessage v-if="!valid" variant="info">
+              Please add the item name, and a description or photo (or both).
+            </NoticeMessage>
+          </div>
+          <div class="d-none d-md-flex justify-content-between">
+            <b-btn variant="white" size="lg" to="/give" class="d-none d-md-block">
+              <v-icon name="angle-double-left" /> Back
+            </b-btn>
+            <b-btn
+              v-if="valid"
+              variant="primary"
+              size="lg"
+              :disabled="uploadingPhoto"
+              @click="next"
+            >
+              Next <v-icon name="angle-double-right" />
+            </b-btn>
+            <NoticeMessage v-if="!valid" variant="info">
+              Please add the item name, and a description or photo (or both).
+            </NoticeMessage>
+          </div>
+        </div>
+        <CovidPostWarning class="mt-2 mb-2" />
         <div class="text-muted small pl-0 pt-1 text-center">
           We may show this post, but not your email address, to people who are not yet members of Freegle.
           This helps the community grow by showing people what's happening and encouraging them to join.

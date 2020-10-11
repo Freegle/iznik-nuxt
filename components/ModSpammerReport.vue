@@ -26,6 +26,11 @@
           communities a long way apart, without a good reason.
         </p>
         <p>
+          See <ExternalLink href="https://wiki.ilovefreegle.org/Spammers#SPAM_checking_before_submission">
+            the wiki
+          </ExternalLink> for more details and advice.
+        </p>
+        <p>
           Spammer reports will be reviewed before they're added to the list.  They'll only be added if they meet those
           criteria.
         </p>
@@ -50,7 +55,9 @@
 </style>
 
 <script>
+import ExternalLink from './ExternalLink'
 export default {
+  components: { ExternalLink },
   props: {
     user: {
       type: Object,

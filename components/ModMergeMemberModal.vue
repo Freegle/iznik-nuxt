@@ -3,7 +3,7 @@
     <b-modal
       id="addMemberModal"
       v-model="showModal"
-      title="Add Member"
+      title="Merge Member"
       size="lg"
       no-stacking
     >

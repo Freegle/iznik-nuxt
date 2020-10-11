@@ -20,14 +20,11 @@ fi
 git checkout -- package-lock.json && \
 git checkout -- static/sw.js && \
 git checkout -- nuxt.config.js && \
-npm rebuild node-sass --force && \
 git reset --hard HEAD && \
 git pull && \
 npm install && \
-npx patch-package && \
 npm run build && \
 php ./mungeindex.php > /tmp/a.a && cp /tmp/a.a .nuxt/index.js
 
 # Now deploy.
-pm2 deploy $ENV update --force
-
+pm2 --force deploy $ENV update --force

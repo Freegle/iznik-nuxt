@@ -13,14 +13,14 @@
       <!-- eslint-disable-next-line -->
       <ExternalLink href="https://www.gov.uk/government/publications/staying-alert-and-safe-social-distancing/staying-alert-and-safe-social-distancing">England</ExternalLink>,
       <!-- eslint-disable-next-line -->
-      <ExternalLink href="https://www.gov.uk/guidance/coronavirus-covid-19-information-for-individuals-and-businesses-in-scotland">Scotland</ExternalLink>,
+      <ExternalLink href="https://www.gov.scot/publications/coronavirus-covid-19-what-you-can-and-cannot-do/pages/getting-around/">Scotland</ExternalLink>,
       <ExternalLink href="https://gov.wales/coronavirus">
         Wales
       </ExternalLink>
       and
       <!-- eslint-disable-next-line -->
       <ExternalLink href="https://www.nidirect.gov.uk/campaigns/coronavirus-covid-19">Northern Ireland</ExternalLink>.
-      Could you collect on foot or cycle while doing daily exercise?
+      Please check local restrictions on travel and use of public transport.
     </p>
     <p>
       Where possible, please post to your nearest community and don't post or reply if it's further away.
