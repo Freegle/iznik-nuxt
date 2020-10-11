@@ -241,27 +241,29 @@ export default {
     closestGroups() {
       const ret = []
 
-      this.groupids.forEach(id => {
-        const member =
-          this.$store.getters['auth/user'] &&
-          this.$store.getters['auth/member'](id)
+      if (this.centre) {
+        this.groupids.forEach(id => {
+          const member =
+            this.$store.getters['auth/user'] &&
+            this.$store.getters['auth/member'](id)
 
-        if (!member) {
-          const group = this.$store.getters['group/get'](id)
+          if (!member) {
+            const group = this.$store.getters['group/get'](id)
 
-          if (group) {
-            group.distance = this.getDistance(
-              [this.centre.lat, this.centre.lng],
-              [group.lat, group.lng]
-            )
-            ret.push(group)
+            if (group) {
+              group.distance = this.getDistance(
+                [this.centre.lat, this.centre.lng],
+                [group.lat, group.lng]
+              )
+              ret.push(group)
+            }
           }
-        }
-      })
+        })
 
-      ret.sort((a, b) => {
-        return a.distance - b.distance
-      })
+        ret.sort((a, b) => {
+          return a.distance - b.distance
+        })
+      }
 
       return ret.slice(0, 3)
     }
