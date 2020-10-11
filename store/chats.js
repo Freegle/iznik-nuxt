@@ -114,22 +114,24 @@ export const actions = {
 
       const chats = await this.$api.chat.listChats(params)
 
-      if (current) {
-        const already =
-          chats &&
-          chats.find(c => {
-            return current && parseInt(c.id) === parseInt(current.id)
-          })
+      if (chats) {
+        if (current) {
+          const already =
+            chats &&
+            chats.find(c => {
+              return current && parseInt(c.id) === parseInt(current.id)
+            })
 
-        if (!already) {
-          chats.push(current)
+          if (!already) {
+            chats.push(current)
+          }
         }
+
+        commit('setList', chats)
+
+        // This avoids us ever getting stuck with bad stuff in the fetching list.
+        commit('fetching', null)
       }
-
-      commit('setList', chats)
-
-      // This avoids us ever getting stuck with bad stuff in the fetching list.
-      commit('fetching', null)
     } catch (e) {
       // This happens a lot on mobile when the network is flaky.  It's not necessarily an end-user visible error,
       // so there is no point letting it ripple up to Sentry.

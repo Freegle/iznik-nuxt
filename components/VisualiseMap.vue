@@ -1,71 +1,75 @@
 <template>
-  <div ref="mapcont" class="w-100">
+  <div ref="mapcont" class="d-flex">
     <client-only>
       <l-map
         ref="map"
         :zoom="8"
         :center="center"
-        :style="'width: ' + mapWidth + 'px; height: ' + mapHeight + 'px'"
         :options="{ zoomControl: false, scrollWheelZoom: false}"
         :min-zoom="8"
         :max-zoom="15"
+        class="flex-grow-1"
         @moveend="moveend"
         @ready="idle"
       >
+        <!--        :style="'width: ' + mapWidth + 'px; height: ' + mapWidth + 'px'"-->
         <l-tile-layer :url="osmtile" :attribution="attribution" />
-        <VisualiseUser
-          v-if="showFrom"
-          :id="item.from.id"
-          ref="fromuser"
-          :lat="item.fromlat"
-          :lng="item.fromlng"
-          :icon="item.from.icon"
-        />
-        <l-marker
-          v-if="showReplies"
-          :lat-lng="[item.tolat, item.tolng]"
-          :icon="replyIcon(item.touser)"
-        />
-        <VisualiseUser
-          v-if="showTo"
-          :id="item.to.id"
-          ref="touser"
-          :lat="item.tolat"
-          :lng="item.tolng"
-          :icon="item.to.icon"
-        />
-        <div v-if="showOthers">
+        <div v-if="item">
           <VisualiseUser
-            v-for="other in item.others"
-            :id="other.id"
-            :key="'other-' + other.id"
-            :lat="other.lat"
-            :lng="other.lng"
-            :icon="other.icon"
+            v-if="showFrom"
+            :id="item.from.id"
+            ref="fromuser"
+            :lat="item.fromlat"
+            :lng="item.fromlng"
+            :icon="item.from.icon"
           />
-        </div>
-        <div v-if="showReplies">
           <l-marker
-            v-for="other in item.others"
-            :key="'otherreply-' + other.id"
-            :lat-lng="[other.lat, other.lng]"
-            :icon="replyIcon(other.id)"
+            v-if="showReplies"
+            :lat-lng="[item.tolat, item.tolng]"
+            :icon="replyIcon(item.touser)"
+            :z-index-offset="1000"
+          />
+          <VisualiseUser
+            v-if="showTo"
+            :id="item.to.id"
+            ref="touser"
+            :lat="item.tolat"
+            :lng="item.tolng"
+            :icon="item.to.icon"
+          />
+          <div v-if="showOthers">
+            <VisualiseUser
+              v-for="other in item.others"
+              :id="other.id"
+              :key="'other-' + other.id"
+              :lat="other.lat"
+              :lng="other.lng"
+              :icon="other.icon"
+            />
+          </div>
+          <div v-if="showReplies">
+            <l-marker
+              v-for="other in item.others"
+              :key="'otherreply-' + other.id"
+              :lat-lng="[other.lat, other.lng]"
+              :icon="replyIcon(other.id)"
+              :z-index-offset="1000"
+            />
+          </div>
+          <VisualiseMessage
+            v-if="showMessage"
+            :id="item.msgid"
+            ref="message"
+            :icon="item.attachment.path"
+            :lat="item.fromlat"
+            :lng="item.fromlng"
+          />
+          <l-marker
+            v-if="item && showThanks"
+            :lat-lng="[item.tolat, item.tolng]"
+            :icon="thanksIcon"
           />
         </div>
-        <VisualiseMessage
-          v-if="showMessage"
-          :id="item.msgid"
-          ref="message"
-          :icon="item.attachment.path"
-          :lat="item.fromlat"
-          :lng="item.fromlng"
-        />
-        <l-marker
-          v-if="item && showThanks"
-          :lat-lng="[item.tolat, item.tolng]"
-          :icon="thanksIcon"
-        />
-        <!--        :options="{ zIndexOffset: 1000 }"-->
       </l-map>
     </client-only>
   </div>
@@ -75,6 +79,7 @@
 import Vue from 'vue'
 import VisualiseSpeech from './VisualiseSpeech'
 import map from '@/mixins/map.js'
+import waitForRef from '@/mixins/waitForRef'
 
 const VisualiseUser = () => import('./VisualiseUser')
 const VisualiseMessage = () => import('./VisualiseMessage')
@@ -87,7 +92,7 @@ if (process.browser) {
 
 export default {
   components: { VisualiseMessage, VisualiseUser },
-  mixins: [map],
+  mixins: [map, waitForRef],
   data: function() {
     return {
       context: null,
@@ -173,18 +178,14 @@ export default {
       }
     },
     moveend() {
-      console.log('Move end', this.state)
       switch (this.state) {
         case 0: {
           // We have flown to the from location.  Show the posting user.
-          console.log('Flown to from')
           this.showFrom = true
           setTimeout(() => {
-            console.log('Show message')
             this.showMessage = true
             setTimeout(() => {
               // Show all the repliers
-              console.log('Show to')
               this.showTo = true
               this.showOthers = true
               setTimeout(() => {
@@ -192,34 +193,36 @@ export default {
                 this.showReplies = true
                 setTimeout(() => {
                   // Collect - move the touser to the fromuser's location, stop showing the other replies.
-                  console.log('Collect')
                   this.showOthers = false
                   this.showReplies = false
-                  this.$refs.touser.setLatLng(
-                    this.item.fromlat,
-                    this.item.fromlng
-                  )
-                  setTimeout(() => {
-                    console.log('Return')
+                  this.waitForRef('touser', () => {
                     this.$refs.touser.setLatLng(
-                      this.item.tolat,
-                      this.item.tolng
-                    )
-                    this.$refs.message.setLatLng(
-                      this.item.tolat,
-                      this.item.tolng
+                      this.item.fromlat,
+                      this.item.fromlng
                     )
                     setTimeout(() => {
-                      console.log('Thank')
-                      this.showMessage = false
-                      this.showThanks = true
-                      setTimeout(() => {
-                        console.log('Next')
-                        this.list.shift()
-                        this.doNext()
-                      }, this.delayBeforeNext)
-                    }, this.delayBeforeThanks + 2000)
-                  }, this.delayBeforeReturn)
+                      if (this.$refs.touser) {
+                        this.$refs.touser.setLatLng(
+                          this.item.tolat,
+                          this.item.tolng
+                        )
+                        this.waitForRef('message', () => {
+                          this.$refs.message.setLatLng(
+                            this.item.tolat,
+                            this.item.tolng
+                          )
+                          setTimeout(() => {
+                            this.showMessage = false
+                            this.showThanks = true
+                            setTimeout(() => {
+                              this.list.shift()
+                              this.doNext()
+                            }, this.delayBeforeNext)
+                          }, this.delayBeforeThanks + 2000)
+                        })
+                      }
+                    }, this.delayBeforeReturn)
+                  })
                 }, this.delayBeforeCollect)
               }, this.delayBeforeReply)
             }, this.delayBeforeReply)
@@ -230,8 +233,15 @@ export default {
     },
     flyToFromUser() {
       this.state = 0
-      console.log('Fly to', this.list[0])
-      this.$refs.map.mapObject.flyToBounds(this.itemBounds(this.list[0]), 14)
+
+      if (this.list.length) {
+        if (this.$refs.map) {
+          this.$refs.map.mapObject.flyToBounds(
+            this.itemBounds(this.list[0]),
+            14
+          )
+        }
+      }
     },
     itemBounds(item) {
       // Calculate the bounds which show all the people who replied.
@@ -283,7 +293,6 @@ export default {
         })
 
         if (ret.ret === 0) {
-          console.log('Fetched more')
           this.context = ret.context
           this.list = ret.list
         } else {

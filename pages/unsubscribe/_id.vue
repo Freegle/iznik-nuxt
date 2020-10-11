@@ -3,64 +3,75 @@
     <b-row class="m-0">
       <b-col cols="0" md="3" />
       <b-col cols="12" md="6" class="bg-white">
-        <h1>
-          Want to leave Freegle?
-        </h1>
-        <p>
-          We'd love you to stay, but sometimes if you love someone, you have to let them go.
-        </p>
-        <notice-message class="mb-3">
-          Too many emails? Don't leave! Go to <nuxt-link to="/settings">
-            Settings
-          </nuxt-link> and adjust your Mail Settings.
-        </notice-message>
-        <div v-if="loggedIn">
-          <b-btn size="lg" variant="primary" class="mb-2" @click="unsubscribe">
-            Unsubscribe completely
-          </b-btn>
-          <div v-if="groupCount" class="mt-2">
-            <p>You can also leave communities individually:</p>
-            <div class="mb-2">
-              <GroupRememberSelect v-model="groupid" remember="unsubscribe" size="lg" />
-              <b-btn v-if="groupid" variant="white" :disabled="leaving" @click="leave">
-                <v-icon v-if="leaving" name="sync" class="fa-spin" />
-                <v-icon v-else name="trash-alt" />
-                Leave the community
-              </b-btn>
-            </div>
-          </div>
+        <NoticeMessage v-if="wrongUser">
+          <p>
+            You've tried to unsubscribe from one user, but you're logged in as another.  Please log out and
+            try again.
+          </p>
           <p>
             <!-- eslint-disable-next-line -->
             If you need help, please mail <ExternalLink href="mailto:support@ilovefreegle.org">our Support Volunteers</ExternalLink>.
           </p>
-        </div>
+        </NoticeMessage>
         <div v-else>
-          <h4>Please enter your email address</h4>
-          <p>We'll email you to confirm.</p>
-          <EmailValidator :email.sync="email" :valid.sync="emailValid" label="" />
-          <SpinButton
-            size="lg"
-            name="trash-alt"
-            variant="primary"
-            class="mt-2 mb-2"
-            label="Unsubscribe"
-            @handler="emailConfirm"
-          />
-          <NoticeMessage v-if="emailSent" variant="primary" class="mt-2 mb-2">
-            We've sent you an email to confirm.  Please check your email, including your spam folder.
-          </NoticeMessage>
-          <NoticeMessage v-else-if="emailProblem" variant="warning" class="mt-2 mb-2">
-            We don't recognise that email address.  Please email
-            <!-- eslint-disable-next-line -->
-            <ExternalLink href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</ExternalLink> and they'll help you out.
-          </NoticeMessage>
+          <h1>
+            Want to leave Freegle?
+          </h1>
+          <p>
+            We'd love you to stay, but sometimes if you love someone, you have to let them go.
+          </p>
+          <notice-message class="mb-3">
+            Too many emails? Don't leave! Go to <nuxt-link to="/settings">
+              Settings
+            </nuxt-link> and adjust your Mail Settings.
+          </notice-message>
+          <div v-if="loggedIn">
+            <b-btn size="lg" variant="primary" class="mb-2" @click="unsubscribe">
+              Unsubscribe completely
+            </b-btn>
+            <div v-if="groupCount" class="mt-2">
+              <p>You can also leave communities individually:</p>
+              <div class="mb-2">
+                <GroupRememberSelect v-model="groupid" remember="unsubscribe" size="lg" />
+                <b-btn v-if="groupid" variant="white" :disabled="leaving" @click="leave">
+                  <v-icon v-if="leaving" name="sync" class="fa-spin" />
+                  <v-icon v-else name="trash-alt" />
+                  Leave the community
+                </b-btn>
+              </div>
+            </div>
+            <p>
+              <!-- eslint-disable-next-line -->
+              If you need help, please mail <ExternalLink href="mailto:support@ilovefreegle.org">our Support Volunteers</ExternalLink>.
+            </p>
+          </div>
+          <div v-else>
+            <h4>Please enter your email address</h4>
+            <p>We'll email you to confirm.</p>
+            <EmailValidator :email.sync="email" :valid.sync="emailValid" label="" />
+            <SpinButton
+              size="lg"
+              name="trash-alt"
+              variant="primary"
+              class="mt-2 mb-2"
+              label="Unsubscribe"
+              :handler="emailConfirm"
+            />
+            <NoticeMessage v-if="emailSent" variant="primary" class="mt-2 mb-2">
+              We've sent you an email to confirm.  Please check your email, including your spam folder.
+            </NoticeMessage>
+            <NoticeMessage v-else-if="emailProblem" variant="warning" class="mt-2 mb-2">
+              We don't recognise that email address.  Please email
+              <!-- eslint-disable-next-line -->
+              <ExternalLink href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</ExternalLink> and they'll help you out.
+            </NoticeMessage>
+          </div>
         </div>
       </b-col>
       <b-col cols="0" md="3" />
     </b-row>
     <ConfirmModal ref="confirm" @confirm="forget" />
     <ForgetFailModal ref="forgetfail" />
-    <ForgetSucceedModal ref="forgetsucceed" />
   </div>
 </template>
 
@@ -73,7 +84,6 @@ import { required, email } from 'vuelidate/lib/validators'
 import EmailValidator from '../../components/EmailValidator'
 import SpinButton from '../../components/SpinButton'
 import ForgetFailModal from '@/components/ForgetFailModal'
-import ForgetSucceedModal from '@/components/ForgetSucceedModal'
 import buildHead from '@/mixins/buildHead.js'
 import loginOptional from '@/mixins/loginOptional.js'
 import validationHelpers from '@/mixins/validationHelpers'
@@ -86,7 +96,6 @@ export default {
   components: {
     SpinButton,
     EmailValidator,
-    ForgetSucceedModal,
     ForgetFailModal,
     GroupRememberSelect,
     ConfirmModal,
@@ -103,7 +112,8 @@ export default {
       emailSent: false,
       emailProblem: false,
       userid: null,
-      confirm: false
+      confirm: false,
+      wrongUser: false
     }
   },
   computed: {
@@ -125,9 +135,17 @@ export default {
     this.userid = parseInt(this.$route.params.id)
     this.confirm = parseInt(this.$route.query.confirm)
 
-    if (this.userid === this.myid && this.confirm) {
-      console.log('Trigger unsub on mount')
-      this.forget()
+    if (this.confirm) {
+      if (this.userid === this.myid) {
+        console.log('Trigger unsub on mount')
+        this.forget()
+      } else if (this.myid) {
+        this.wrongUser = true
+      } else {
+        // Almost always this means they've clicked on the same link twice.  Tell them we've removed the account
+        // otherwise they'll get confused.
+        this.$router.push('/unsubscribed')
+      }
     }
   },
   methods: {
@@ -166,7 +184,7 @@ export default {
       if (ret) {
         this.$refs.forgetfail.show()
       } else {
-        this.$refs.forgetsucceed.show()
+        this.$router.push('/unsubscribed')
       }
     },
 

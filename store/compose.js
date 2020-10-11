@@ -448,7 +448,6 @@ export const actions = {
 
     return results
   },
-
   async submitQueued({ dispatch, commit, state, store }, params) {
     const { id } = await submitDraft.call(this, params.id, params.email, commit)
 

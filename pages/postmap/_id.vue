@@ -1,0 +1,406 @@
+<template>
+  <b-container fluid>
+    <h1 class="sr-only">
+      Browse items
+    </h1>
+    <b-row class="m-0">
+      <b-col cols="0" lg="3" class="d-none d-lg-block p-0 pr-1">
+        <SidebarLeft show-community-events show-job-job-opportunities :show-bot-left="true" />
+      </b-col>
+      <b-col cols="12" lg="6" class="p-0">
+        <div>
+          <NoticeMessage v-if="!anyGroups" variant="primary" class="mt-2 text-center font-weight-bold">
+            <p>You're not a member of any communities yet.  Why not explore to find one?</p>
+            <div class="d-flex justify-content-around mb-2">
+              <b-btn size="lg" variant="primary" to="/explore" class="mb-2">
+                <v-icon name="map-marker-alt" /> Explore communities
+              </b-btn>
+            </div>
+            <p>Or get freegling:</p>
+            <b-row class="mt-2">
+              <b-col class="half-pad-col-right" cols="6" md="5">
+                <b-btn block variant="primary" class="float-left" size="lg" to="/give">
+                  <v-icon name="gift" />&nbsp;Give Stuff
+                </b-btn>
+              </b-col>
+              <b-col class="half-pad-col-left" offset="0" offset-md="2" cols="6" md="5">
+                <b-btn block variant="secondary" class="float-right" size="lg" to="/find">
+                  <v-icon name="shopping-cart" />&nbsp;Ask for Stuff
+                </b-btn>
+              </b-col>
+            </b-row>
+          </NoticeMessage>
+          <div v-else>
+            <div>
+              <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" :chats="me.expectedchats" />
+              <div v-if="!viewMap || viewMap === 'map'" class="position-relative">
+                <div class="toolbar p-1 d-flex justify-content-between w-100">
+                  <GroupSelect v-model="groupid" class="ml-2" all />
+                  <b-form-select v-model="selectedType" class="typeSelect" value="All" :options="typeOptions" @change="typeChange" />
+                  <b-btn variant="secondary" @click="viewMap = 'list'">
+                    <v-icon name="list" /> View as List
+                  </b-btn>
+                </div>
+                <PostMap :messages="nonOverlappingMessages" class="position-absolute" />
+              </div>
+              <div v-else>
+                <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" :chats="me.expectedchats" />
+                <groupHeader v-if="group" :key="'groupheader-' + groupid" :group="group" :show-join="true" />
+                <div class="d-flex mt-2 mb-3 selection__wrapper justify-content-between">
+                  <GroupSelect v-model="groupid" class="m-3" all />
+                  <b-form-select v-model="selectedType" class="m-3 typeSelect" value="All" :options="typeOptions" @change="typeChange" />
+                  <div>
+                    <b-btn class="mt-3 mr-2" variant="primary" @click="viewMap = 'map'">
+                      <v-icon name="map-marker-alt" /> View as Map
+                    </b-btn>
+                  </div>
+                </div>
+                <div v-for="message in filteredMessages" :key="'messagelist-' + message.id" class="p-0">
+                  <message v-bind="message" />
+                </div>
+
+                <client-only>
+                  <infinite-loading :key="'infinite-' + groupid" :identifier="infiniteId" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
+                    <span slot="no-results" />
+                    <span slot="no-more" />
+                    <span slot="spinner">
+                      <b-img-lazy src="~/static/loader.gif" alt="Loading" />
+                    </span>
+                  </infinite-loading>
+                </client-only>
+              </div>
+            </div>
+          </div>
+        </div>
+      </b-col>
+      <b-col cols="0" lg="3" class="d-none d-lg-block p-0 pl-1">
+        <sidebar-right show-volunteer-opportunities />
+      </b-col>
+    </b-row>
+  </b-container>
+</template>
+
+<script>
+import InfiniteLoading from 'vue-infinite-loading'
+import GroupSelect from '../../components/GroupSelect'
+import loginRequired from '@/mixins/loginRequired.js'
+import buildHead from '@/mixins/buildHead.js'
+import createGroupRoute from '@/mixins/createGroupRoute'
+const GroupHeader = () => import('~/components/GroupHeader.vue')
+const Message = () => import('~/components/Message.vue')
+const SidebarLeft = () => import('~/components/SidebarLeft')
+const SidebarRight = () => import('~/components/SidebarRight')
+const ExpectedRepliesWarning = () =>
+  import('~/components/ExpectedRepliesWarning')
+const NoticeMessage = () => import('~/components/NoticeMessage')
+const PostMap = () => import('~/components/PostMap')
+
+export default {
+  components: {
+    NoticeMessage,
+    GroupSelect,
+    InfiniteLoading,
+    GroupHeader,
+    Message,
+    SidebarLeft,
+    SidebarRight,
+    ExpectedRepliesWarning,
+    PostMap
+  },
+  mixins: [loginRequired, buildHead, createGroupRoute('postmap')],
+  data: function() {
+    return {
+      id: null,
+      busy: false,
+      context: null,
+      typeOptions: [
+        {
+          value: 'All',
+          text: 'All posts',
+          selected: true
+        },
+        {
+          value: 'Offer',
+          text: 'Just OFFERs'
+        },
+        {
+          value: 'Wanted',
+          text: 'Just WANTEDs'
+        }
+      ],
+      selectedType: 'All',
+      infiniteId: +new Date(),
+      distance: 1000
+    }
+  },
+  computed: {
+    types: function() {
+      let types = []
+
+      switch (this.selectedType) {
+        case 'All':
+          types = ['Offer', 'Wanted']
+          break
+        case 'Offer':
+          types = ['Offer']
+          break
+        case 'Wanted':
+          types = ['Wanted']
+          break
+      }
+
+      return types
+    },
+    viewMap: {
+      get() {
+        return this.$store.getters['misc/get']('viewmap')
+      },
+      set(val) {
+        this.$store.dispatch('misc/set', {
+          key: 'viewmap',
+          value: val
+        })
+      }
+    },
+    group: function() {
+      const ret = this.groupid
+        ? this.$store.getters['group/get'](this.groupid)
+        : null
+
+      return ret
+    },
+    closed() {
+      let ret = false
+
+      if (this.group && this.group.settings && this.group.settings.closed) {
+        ret = true
+      }
+
+      return ret
+    },
+    messageCount: function() {
+      const count = this.messages ? this.messages.length : 0
+      return count
+    },
+    messages: function() {
+      let messages
+
+      if (this.groupid) {
+        messages = this.$store.getters['messages/getByGroup'](this.groupid)
+      } else {
+        messages = this.$store.getters['messages/getAll']
+      }
+
+      return messages
+    },
+    filteredMessages() {
+      const ret = this.messages.filter(message => {
+        return (
+          (!message.outcomes || message.outcomes.length === 0) &&
+          (this.selectedType === 'All' || message.type === this.selectedType)
+        )
+      })
+      return ret
+    },
+    nonOverlappingMessages() {
+      // Ensure that messages don't exactly overlap.
+      const ret = []
+      const latlngs = []
+
+      this.filteredMessages.forEach(message => {
+        if (message.lat || message.lng) {
+          let key = message.lat + '|' + message.lng
+
+          while (latlngs[key]) {
+            message.lat += 0.003
+            message.lng += 0.003
+            key = message.lat + '|' + message.lng
+          }
+
+          latlngs[key] = true
+          ret.push(message)
+        }
+      })
+
+      console.log('Non over', ret)
+      return ret
+    },
+
+    anyGroups() {
+      const groups = this.$store.getters['auth/groups']
+
+      return groups && groups.length
+    }
+  },
+  watch: {
+    viewMap: {
+      immediate: true,
+      handler: function(newval) {
+        console.log('Viewmap', newval)
+        if (newval === 'map') {
+          console.log('next tick')
+          this.$nextTick(async () => {
+            let currentCount
+            let messages
+
+            do {
+              currentCount = this.messages.length
+
+              await this.$store.dispatch('messages/fetchMessages', {
+                groupid: this.groupid,
+                collection: 'Approved',
+                summary: true,
+                types: this.types,
+                hasoutcome: true,
+                context: this.context,
+                limit: 100
+              })
+
+              this.context = this.$store.getters['messages/getContext']
+
+              // See whether we've hit the end.
+              if (this.groupid) {
+                messages = this.$store.getters['messages/getByGroup'](
+                  this.groupid
+                )
+              } else {
+                messages = this.$store.getters['messages/getAll']
+              }
+              console.log('Finished', messages.length)
+            } while (
+              currentCount !== messages.length &&
+              new Date().getTime() -
+                new Date(this.context.Date * 1000).getTime() <=
+                31 * 24 * 60 * 60 * 1000
+            )
+            console.log('Finished', new Date(this.context.Date * 1000))
+          })
+        }
+      }
+    },
+    groupid() {
+      this.context = null
+      this.$store.dispatch('messages/clear')
+    },
+    async group(newValue, oldValue) {
+      // We need both this and the mounted version in case we change group.
+      if (oldValue === null || oldValue.id !== this.groupid) {
+        await this.$store.dispatch('group/fetch', {
+          id: this.groupid,
+          sponsors: true,
+          showmods: true
+        })
+      }
+    }
+  },
+  mounted() {
+    // We want this to be our next home page.
+    try {
+      localStorage.setItem('Iznik>lasthomepage', 'mygroups')
+    } catch (e) {
+      console.log('Save last route failed', e)
+    }
+
+    // Ensure we have no cached messages for other searches/groups
+    this.$store.dispatch('messages/clear')
+
+    // Get our list of groups
+    this.$store.dispatch('auth/fetchUser', {
+      components: ['me', 'groups']
+    })
+
+    if (process.client && this.groupid) {
+      // Fetch this group for header info.
+      this.$store.dispatch('group/fetch', {
+        id: this.groupid,
+        sponsors: true,
+        showmods: true
+      })
+    }
+
+    // We might have a preference for which type of posts we view.
+    const postType = this.$store.getters['misc/get']('postType')
+    if (postType) {
+      this.selectedType = postType
+    }
+  },
+  methods: {
+    typeChange: function() {
+      this.infiniteId++
+      this.$store.dispatch('misc/set', {
+        key: 'postType',
+        value: this.selectedType
+      })
+    },
+
+    loadMore: function($state) {
+      this.busy = true
+
+      const currentCount = this.messages.length
+
+      this.$store
+        .dispatch('messages/fetchMessages', {
+          groupid: this.groupid,
+          collection: 'Approved',
+          summary: true,
+          types: this.types,
+          hasoutcome: false,
+          context: this.context
+        })
+        .then(() => {
+          this.busy = false
+
+          this.context = this.$store.getters['messages/getContext']
+
+          if (currentCount === this.messages.length) {
+            this.complete = true
+
+            $state.complete()
+          } else {
+            $state.loaded()
+          }
+        })
+        .catch(e => {
+          console.log('Complete on error', e)
+          this.busy = false
+          $state.complete()
+        })
+    }
+  },
+
+  head() {
+    return this.buildHead(
+      'Browse',
+      "See the OFFERs and WANTEDs from communities you've joined"
+    )
+  }
+}
+</script>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
+.selection__wrapper {
+  background-color: $color-blue--x-light;
+  border: 1px solid $color-blue-x-light2;
+  border-radius: 3px;
+}
+
+.typeSelect {
+  max-width: 33%;
+}
+
+.topbutton {
+  width: 40%;
+}
+
+.toolbar {
+  position: absolute;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+::v-deep .leaflet-control-zoom {
+  margin-top: 80px;
+}
+</style>

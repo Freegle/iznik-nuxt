@@ -21,13 +21,84 @@
         Put up a poster
       </h2>
       <p>This is an A4 poster with tear-off strips - good for noticeboards in cafes, community venues, or at work.</p>
-      <a href="https://freegle.in/A4Poster" target="_blank">
-        <b-img-lazy src="~static/posters/A4.png" class="poster border border-dark mb-2" />
-        <br>
-        <b-btn variant="primary" size="lg" class="mt-2 mb-2">
-          Download poster
-        </b-btn>
-      </a>
+      <div>
+        <b-form-radio-group
+          v-model="language"
+          buttons
+          class="border border-success rounded mb-2 clickme"
+        >
+          <b-form-radio value="English" button-variant="outline-primary" class="clickme">
+            English
+          </b-form-radio>
+          <b-form-radio value="Welsh" button-variant="outline-danger" class="clickme">
+            Welsh
+          </b-form-radio>
+        </b-form-radio-group>
+      </div>
+      <div v-if="language === 'English'" class="d-flex flex-wrap">
+        <div class="mr-1">
+          <h3 class="header--size4">
+            A4
+          </h3>
+          <a href="https://freegle.in/A4Poster" target="_blank" class="mr-2">
+            <b-img-lazy src="~static/posters/A4.jpg" class="poster border border-dark mb-2" />
+            <br>
+            <b-btn variant="secondary" size="lg" class="mt-2 mb-2">
+              Download poster
+            </b-btn>
+          </a>
+        </div>
+        <div class="mr-1">
+          <h3 class="header--size4">
+            A5
+          </h3>
+          <a href="~static/posters/A5.jpg" target="_blank" class="mr-2">
+            <b-img-lazy src="~static/posters/A5.jpg" class="poster border border-dark mb-2" />
+            <br>
+            <b-btn variant="secondary" size="lg" class="mt-2 mb-2">
+              Download poster
+            </b-btn>
+          </a>
+        </div>
+      </div>
+      <div v-if="language === 'Welsh'" class="d-flex flex-wrap">
+        <div class="mr-1">
+          <h3 class="header--size4">
+            A4
+          </h3>
+          <a href="~static/posters/A4Welsh.jpg" target="_blank">
+            <b-img-lazy src="~static/posters/A4Welsh.jpg" class="poster border border-dark mb-2" />
+            <br>
+            <b-btn variant="secondary" size="lg" class="mt-2 mb-2">
+              Download poster
+            </b-btn>
+          </a>
+        </div>
+        <div class="mr-1">
+          <h3 class="header--size4">
+            A5
+          </h3>
+          <a href="~static/posters/A5Welsh.jpg" target="_blank">
+            <b-img-lazy src="~static/posters/A5Welsh.jpg" class="poster border border-dark mb-2" />
+            <br>
+            <b-btn variant="secondary" size="lg" class="mt-2 mb-2">
+              Download poster
+            </b-btn>
+          </a>
+        </div>
+        <div class="mr-1">
+          <h3 class="header--size4">
+            A5 x 2
+          </h3>
+          <a href="~static/posters/A5x2Welsh.jpg" target="_blank">
+            <b-img-lazy src="~static/posters/A5x2Welsh.jpg" class="poster border border-dark mb-2" />
+            <br>
+            <b-btn variant="secondary" size="lg" class="mt-2 mb-2">
+              Download poster
+            </b-btn>
+          </a>
+        </div>
+      </div>
       <p>
         You can help even more by letting us know where you put up posters. Once we know where it is, then
         we can encourage other freeglers to put one up there in future. <b>Please do this!</b>
@@ -140,7 +211,8 @@ export default {
   data: function() {
     return {
       invitemail: null,
-      emailValid: false
+      emailValid: false,
+      language: 'English'
     }
   },
   computed: {

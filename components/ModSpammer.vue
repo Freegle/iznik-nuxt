@@ -5,13 +5,12 @@
     </div>
     <div class="small">
       <span v-if="user.spammer.collection === 'PendingAdd'">
-        Reported
+        Reported by
       </span>
       <span v-else>
-        Added
+        Added by
       </span>
       <span v-if="user.spammer.byuser">
-        by
         {{ user.spammer.byuser.displayname }}
         (<ExternalLink :href="'mailto:' + user.spammer.byuser.email">{{ user.spammer.byuser.email }}</ExternalLink>)
       </span>
@@ -37,7 +36,7 @@ export default {
           return 'danger'
         }
         case 'Whitelisted': {
-          return 'success'
+          return 'primary'
         }
         default: {
           return 'warning'

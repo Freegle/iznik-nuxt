@@ -89,7 +89,7 @@
       :chatusers="chatusers"
     />
     <chat-message-report
-      v-else-if="chatmessage.type === 'ReportedUser' && otheruser"
+      v-else-if="chatmessage.type === 'ReportedUser'"
       :chat="chat"
       :chatmessage="chatmessage"
       :otheruser="otheruser"

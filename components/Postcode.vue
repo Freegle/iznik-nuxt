@@ -11,13 +11,14 @@
       anchor="name"
       label=""
       :placeholder="pconly ? 'Type postcode' : 'Type location'"
-      :classes="{ input: 'form-control form-control-' + size + ' text-center pcinp', list: 'postcodelist' }"
+      :classes="{ input: 'form-control form-control-' + size + ' text-center pcinp', list: 'postcodelist', listentry: 'w-100', listentrylist: 'listentry' }"
       class="mr-1"
       :min="3"
       :debounce="200"
       :process="process"
       :on-select="select"
       :size="10"
+      :variant="variant"
       @invalid="invalid"
     />
 
@@ -82,6 +83,16 @@ export default {
       type: Boolean,
       required: false,
       default: true
+    },
+    noStore: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
+    variant: {
+      type: String,
+      required: false,
+      default: null
     }
   },
   data() {
@@ -115,7 +126,7 @@ export default {
           : null
     }
 
-    if (this.pconly && !value) {
+    if (this.pconly && !value && !this.noStore) {
       // We might have one we are composing.
       const pc = this.$store.getters['compose/getPostcode']
 
@@ -236,3 +247,16 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+@import 'color-vars';
+
+::v-deep .listentry {
+  width: 100%;
+  right: 0 !important;
+  text-align: center;
+  border-color: $color-blue--light;
+  outline: 0;
+  box-shadow: 0 1px 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+</style>

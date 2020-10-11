@@ -28,17 +28,19 @@ export const mutations = {
     }
   },
   addAll(state, items) {
-    items.forEach(item => {
-      const existing = state.list.findIndex(obj => {
-        return parseInt(obj.id) === parseInt(item.id)
-      })
+    if (items) {
+      items.forEach(item => {
+        const existing = state.list.findIndex(obj => {
+          return parseInt(obj.id) === parseInt(item.id)
+        })
 
-      if (existing !== -1) {
-        Vue.set(state.list, existing, item)
-      } else {
-        state.list.push(item)
-      }
-    })
+        if (existing !== -1) {
+          Vue.set(state.list, existing, item)
+        } else {
+          state.list.push(item)
+        }
+      })
+    }
   },
   remove(state, item) {
     state.list = state.list.filter(obj => {
@@ -64,12 +66,8 @@ export const mutations = {
 
 export const getters = {
   get: state => id => {
-    let ret = null
-
-    Object.keys(state.list).forEach(key => {
-      if (parseInt(state.list[key].id) === parseInt(id)) {
-        ret = state.list[key]
-      }
+    const ret = state.list.find(m => {
+      return parseInt(m.id) === parseInt(id)
     })
 
     return ret

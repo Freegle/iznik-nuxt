@@ -7,9 +7,11 @@
           Finally, your email address
         </h1>
         <b-row>
-          <b-col class="text-muted text-center">
-            <p>We need your email address to let you know when you have replies.  We won't give your email to anyone else.</p>
-            <p>
+          <b-col class="text-center">
+            <p class="text-muted">
+              We need your email address to let you know when you have replies.  We won't give your email to anyone else.
+            </p>
+            <p class="text-muted">
               You will get emails from us, which you can control or turn off from Settings. Read
               <nuxt-link target="_blank" to="/terms">
                 Terms of Use
@@ -18,18 +20,24 @@
                 Privacy
               </nuxt-link> for details.
             </p>
-            <EmailValidator :email.sync="email" :valid.sync="emailValid" center class="align-items-center" />
+            <EmailValidator :email.sync="email" :valid.sync="emailValid" center class="align-items-center font-weight-bold" />
           </b-col>
         </b-row>
-        <transition name="fadein">
-          <b-row v-if="emailValid && !submitting">
-            <b-col cols="12" md="6" offset-md="3" class="text-center pt-2 mt-2">
-              <b-btn variant="primary" size="lg" block @click="next">
-                Freegle it!
-              </b-btn>
-            </b-col>
-          </b-row>
-        </transition>
+        <div class="d-block d-md-none">
+          <b-btn v-if="emailValid && !submitting" variant="primary" size="lg" block @click="next">
+            Freegle it! <v-icon name="angle-double-right" />
+          </b-btn>
+        </div>
+        <div class="d-none d-md-block">
+          <div class="d-flex justify-content-between">
+            <b-btn variant="white" size="lg" to="/give/whatisit" class="d-none d-md-block">
+              <v-icon name="angle-double-left" /> Back
+            </b-btn>
+            <b-btn v-if="emailValid && !submitting" variant="primary" size="lg" @click="next">
+              Freegle it! <v-icon name="angle-double-right" />
+            </b-btn>
+          </div>
+        </div>
         <b-row v-if="submitting">
           <b-col cols="12" md="6" offset-md="3" class="text-center pt-2 mt-2">
             <b-progress
@@ -64,7 +72,6 @@ export default {
   data() {
     return {
       id: null,
-      submitting: false,
       postType: 'Wanted',
       emailValid: false
     }
@@ -82,45 +89,7 @@ export default {
   },
   methods: {
     next() {
-      this.submitting = true
-
-      this.$store
-        .dispatch('compose/submit', {
-          type: 'Wanted'
-        })
-        .then(results => {
-          // Fetch the group we posted on so that it's in the store for the whatsnext page - it might not be if
-          // we weren't a member or logged in.
-          if (results.length > 0 && results[0].groupid) {
-            this.$store
-              .dispatch('group/fetch', {
-                id: results[0].groupid
-              })
-              .then(() => {
-                // Go to the next page.  The params we pass from the results may crucially include new user information,
-                // and depending on timing this may not appear in the first result, so look for one of those first.
-                let params = null
-
-                console.log('Got results', results)
-                results.forEach(res => {
-                  if (params === null || res.newuser) {
-                    console.log('Save params', res)
-                    params = res
-                  }
-                })
-
-                this.$router.push({
-                  name: 'find-whatnext',
-                  params: params
-                })
-              })
-          } else {
-            // Was probably already submitted
-            this.$router.push({
-              name: 'give-whatnext'
-            })
-          }
-        })
+      this.freegleIt('Wanted')
     }
   },
 

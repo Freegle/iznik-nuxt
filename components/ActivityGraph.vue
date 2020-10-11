@@ -226,7 +226,12 @@ export default {
         },
         legend: { position: 'none' },
         chartArea: { width: '80%', height: '80%' },
-        vAxis: { viewWindow: { min: 0 } },
+        vAxis: {
+          viewWindow: {
+            min: 0
+            // max: 250000
+          }
+        },
         hAxis: {
           format: hformat
         },
@@ -307,15 +312,21 @@ export default {
     graphType() {
       this.maybeFetch()
     }
+    // This is experimental code for if we find a way to fetch stats faster on the server for different units.
+    // units(newval) {
+    //   this.maybeFetch(true)
+    // }
   },
   mounted() {
     this.fetch()
   },
   methods: {
-    async fetch() {
+    async fetch(nodef) {
       this.loading = true
 
-      this.units = this.defaultUnits()
+      if (!nodef) {
+        this.units = this.defaultUnits()
+      }
 
       let comp = [this.graphType]
 
@@ -331,7 +342,8 @@ export default {
         allgroups: !this.systemwide && !this.groupid,
         group: this.groupid > 0 ? this.groupid : null,
         systemwide: this.systemwide,
-        suppliedgroup: this.groupid
+        suppliedgroup: this.groupid,
+        units: this.units
       })
 
       Object.keys(res).forEach(comp => {
@@ -341,12 +353,12 @@ export default {
 
       this.loading = false
     },
-    maybeFetch() {
+    maybeFetch(nodef) {
       if (!this.loading) {
         this.loading = true
 
         this.$nextTick(() => {
-          this.fetch()
+          this.fetch(nodef)
         })
       }
     },

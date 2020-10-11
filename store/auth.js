@@ -179,14 +179,9 @@ export const getters = {
 
 function countWork(work) {
   let total = 0
-  for (const key in work) {
-    if (
-      typeof work[key] === 'number' &&
-      key.indexOf('other') === -1 &&
-      key.indexOf('happiness') === -1
-    ) {
-      total += work[key]
-    }
+
+  if (work && 'total' in work) {
+    total = work.total
   }
 
   return total
@@ -343,6 +338,7 @@ export const actions = {
 
       // Get the current work so we can compare counts.
       const currentTotal = countWork(state.work)
+      const currentData = JSON.stringify(state.work)
 
       const {
         me,
@@ -356,6 +352,7 @@ export const actions = {
 
       if (
         !process.env.IS_APP &&
+        work &&
         newTotal > currentTotal &&
         state.user &&
         (!state.user.settings ||
@@ -368,14 +365,25 @@ export const actions = {
         // count drops to zero, or worst case when we refresh.
         const sound = new Audio('/alert.wav')
 
-        // Some browsers prevent us using play unless in response to a
-        // user gesture, so catch any exception.
-        const prom = sound.play()
+        try {
+          // Some browsers prevent us using play unless in response to a
+          // user gesture, so catch any exception.
+          console.log(
+            'Play beep',
+            newTotal,
+            currentTotal,
+            currentData,
+            JSON.stringify(work)
+          )
+          const prom = sound.play()
 
-        if (prom) {
-          prom.catch(e => {
-            console.log('Failed to play beep', e.message)
-          })
+          if (prom) {
+            prom.catch(e => {
+              console.log('Failed to play beep', e.message)
+            })
+          }
+        } catch (e) {
+          console.log('Failed to play beep', e.message)
         }
       }
 

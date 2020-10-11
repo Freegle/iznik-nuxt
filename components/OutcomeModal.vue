@@ -8,85 +8,68 @@
       no-stacking
     >
       <template slot="default">
-        <b-row>
-          <b-col class="text-center">
-            <p>Please tell us who <span v-if="type === 'Taken'">took</span><span v-else>received</span> this, then we can let other people know.</p>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col>
-            <span class="font-weight-bold align-middle">
+        <div v-if="type === 'Taken' || type === 'Received'" class="text-center">
+          <p>Please tell us who <span v-if="type === 'Taken'">took</span><span v-else>received</span> this, then we can let other people know.</p>
+          <div class="d-flex justify-content-center flex-wrap">
+            <label class="font-weight-bold align-middle d-flex flex-column justify-content-center mr-4">
               <span v-if="type === 'Taken'">
                 Taken by:
               </span>
               <span v-if="type === 'Received'">
                 Received from:
               </span>
-              <span v-if="type === 'Withdrawn'">
-                Withdrawn
-              </span>
-            </span>
-          </b-col>
-          <b-col>
+            </label>
             <b-select
-              v-if="type === 'Taken' || type === 'Received'"
               ref="userselect"
               v-model="selectedUser"
               autofocus
               :options="userOptions"
-              :class="'mb-2 font-weight-bold ' + (selectedUser === -1 ? 'text-danger' : '')"
+              size="lg"
+              :class="'width mb-2 font-weight-bold ' + (selectedUser === -1 ? 'text-danger' : '')"
               @change="fetchUser"
             />
-          </b-col>
-        </b-row>
-        <b-row v-if="selectedUser > 0">
-          <b-col class="text-center">
-            <b-card bg-variant="info">
-              <b-card-body>
-                <p>How was this freegler? Please click.</p>
-                <Ratings v-if="fetchedUser" :id="fetchedUser.id" :key="'user-' + selectedUser" class="" />
-              </b-card-body>
-            </b-card>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col class="text-center">
-            <hr>
-            <p class="mt-2">
-              How do you feel about freegling just now?
-            </p>
-            <b-button-group>
-              <b-button :pressed="happiness === 'Happy'" variant="primary" size="lg" class="shadow-none" @click="happiness = 'Happy'">
-                <v-icon name="smile" scale="2" /> Happy
-              </b-button>
-              <b-button :pressed="happiness === 'Fine'" variant="white" size="lg" class="shadow-none" @click="happiness = 'Fine'">
-                <v-icon name="meh" scale="2" color="grey" /> Fine
-              </b-button>
-              <b-button :pressed="happiness === 'Unhappy'" variant="danger" size="lg" class="shadow-none" @click="happiness = 'Unhappy'">
-                <v-icon name="frown" scale="2" /> Sad
-              </b-button>
-            </b-button-group>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col class="text-center">
-            <p class="mt-2">
-              You can add comments:
-            </p>
-            <b-textarea v-model="comments" rows="2" max-rows="6" />
-            <div class="float-right text-muted mt-2">
-              <span v-if="happiness === null || happiness === 'Happy' || happiness === 'Fine'">
-                <v-icon name="globe-europe" /> Your comments may be public
-              </span>
-              <span v-if="happiness === 'Unhappy'">
-                <v-icon name="lock" /> Your comments will only go to our volunteers
-              </span>
-            </div>
-          </b-col>
-        </b-row>
+          </div>
+          <b-card v-if="selectedUser > 0" bg-variant="info">
+            <b-card-body>
+              <p>How was this freegler? Please click.</p>
+              <Ratings v-if="fetchedUser" :id="fetchedUser.id" :key="'user-' + selectedUser" class="" />
+            </b-card-body>
+          </b-card>
+          <hr>
+        </div>
+        <div class="text-center">
+          <p class="mt-2">
+            How do you feel about freegling just now?
+          </p>
+          <b-button-group>
+            <b-button :pressed="happiness === 'Happy'" variant="primary" size="lg" class="shadow-none" @click="happiness = 'Happy'">
+              <v-icon name="smile" scale="2" /> Happy
+            </b-button>
+            <b-button :pressed="happiness === 'Fine'" variant="white" size="lg" class="shadow-none" @click="happiness = 'Fine'">
+              <v-icon name="meh" scale="2" color="grey" /> Fine
+            </b-button>
+            <b-button :pressed="happiness === 'Unhappy'" variant="danger" size="lg" class="shadow-none" @click="happiness = 'Unhappy'">
+              <v-icon name="frown" scale="2" /> Sad
+            </b-button>
+          </b-button-group>
+        </div>
+        <div class="text-center">
+          <p class="mt-2">
+            You can add comments:
+          </p>
+          <b-textarea v-model="comments" rows="2" max-rows="6" />
+          <div class="float-right text-muted mt-2">
+            <span v-if="happiness === null || happiness === 'Happy' || happiness === 'Fine'">
+              <v-icon name="globe-europe" /> Your comments may be public
+            </span>
+            <span v-if="happiness === 'Unhappy'">
+              <v-icon name="lock" /> Your comments will only go to our volunteers
+            </span>
+          </div>
+        </div>
       </template>
       <template slot="modal-footer">
-        <b-button variant="white" @click="hide">
+        <b-button variant="white" @click="cancel">
           Cancel
         </b-button>
         <b-button variant="primary" :disabled="submitDisabled" @click="submit">
@@ -212,6 +195,10 @@ export default {
       this.showModal = false
     },
 
+    cancel() {
+      this.showModal = false
+    },
+
     async fetchUser(userid) {
       if (userid) {
         await this.$store.dispatch('user/fetch', {
@@ -234,5 +221,9 @@ option {
 
 .btn[aria-pressed='true'] {
   box-shadow: 0px 0px 5px 2px $color-blue--base !important;
+}
+
+select {
+  width: auto;
 }
 </style>

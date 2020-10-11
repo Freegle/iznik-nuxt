@@ -284,7 +284,12 @@ export default {
           if (this.stdmsg.edittext === 'Correct Case') {
             // First the subject
             const matches = /(.*?):([^)].*)\((.*)\)/.exec(this.subject)
-            if (matches && matches.length > 0 && matches[0].length > 0) {
+            if (
+              matches &&
+              matches.length > 0 &&
+              matches[0].length > 0 &&
+              this.message.item
+            ) {
               this.subject =
                 matches[1] +
                 ': ' +
