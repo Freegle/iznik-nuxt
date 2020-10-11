@@ -44,7 +44,7 @@ export default {
       }
     },
     sortedChats() {
-      // We sort chats by the currently selected one first, RSVP first, then unread, then last time.
+      // We sort chats by RSVP first, then unread, then last time.
       const chats = Object.values(this.$store.getters['chats/list'])
       let ret = null
 
@@ -53,27 +53,21 @@ export default {
           console.log('Invalid chats', a, b)
         }
 
-        if (a.id === this.selectedChatId) {
+        const aexpected = a.replyexpected && !a.replyreceived
+        const bexpected = b.replyexpected && !b.replyreceived
+        const aunseen = Math.max(0, a.unseen)
+        const bunseen = Math.max(0, b.unseen)
+
+        if (aexpected !== bexpected) {
+          ret = bexpected - aexpected
+        } else if (bunseen !== aunseen) {
+          ret = bunseen - aunseen
+        } else if (a.lastdate && !b.lastdate) {
           ret = -1
-        } else if (b.id === this.selectedChatId) {
+        } else if (b.lastdate && !a.lastdate) {
           ret = 1
         } else {
-          const aexpected = a.replyexpected && !a.replyreceived
-          const bexpected = b.replyexpected && !b.replyreceived
-          const aunseen = Math.max(0, a.unseen)
-          const bunseen = Math.max(0, b.unseen)
-
-          if (aexpected !== bexpected) {
-            ret = bexpected - aexpected
-          } else if (bunseen !== aunseen) {
-            ret = bunseen - aunseen
-          } else if (a.lastdate && !b.lastdate) {
-            ret = -1
-          } else if (b.lastdate && !a.lastdate) {
-            ret = 1
-          } else {
-            ret = new Date(b.lastdate) - new Date(a.lastdate)
-          }
+          ret = new Date(b.lastdate) - new Date(a.lastdate)
         }
 
         return ret
