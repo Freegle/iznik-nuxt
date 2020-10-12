@@ -55,7 +55,6 @@
                 auto-escape
                 class="autocomplete-anchor-text"
               />
-              <!--<span class="autocomplete-anchor-text">{{ deepValue(data, anchor) }}</span>-->
               <span class="autocomplete-anchor-label">{{ deepValue(data, label) }}</span>
             </div>
           </a>
