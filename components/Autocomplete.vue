@@ -48,7 +48,13 @@
             <!-- eslint-disable-next-line -->
             <div v-if="onShouldRenderChild" v-html="onShouldRenderChild(data)" />
             <div v-if="!onShouldRenderChild">
-              <b class="autocomplete-anchor-text">{{ deepValue(data, anchor) }}</b>
+              <Highlighter
+                :text-to-highlight="deepValue(data, anchor)"
+                :search-words="[type]"
+                highlight-class-name="highlight"
+                auto-escape
+              />
+              <!--<span class="autocomplete-anchor-text">{{ deepValue(data, anchor) }}</span>-->
               <span class="autocomplete-anchor-label">{{ deepValue(data, label) }}</span>
             </div>
           </a>
@@ -74,8 +80,12 @@
 /* eslint-disable */
 
 import cloneDeep from 'lodash.clonedeep'
+const Highlighter = () => import('vue-highlight-words')
 
 export default {
+  components: {
+    Highlighter
+  },
   props: {
     id: String,
     name: String,
@@ -677,7 +687,6 @@ export default {
   background: $color-gray--lighter;
 }
 
-.autocomplete ul li a span, /*backwards compat*/
 .autocomplete ul li a .autocomplete-anchor-label {
   display: block;
   margin-top: 3px;
@@ -761,5 +770,10 @@ input[invalid='true'] {
 }
 input[invalid='true'] {
   box-shadow: none;
+}
+
+.highlight {
+  font-weight: bold;
+  background-color: initial;
 }
 </style>
