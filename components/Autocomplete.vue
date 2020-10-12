@@ -53,6 +53,7 @@
                 :search-words="[type]"
                 highlight-class-name="highlight"
                 auto-escape
+                class="autocomplete-anchor-text"
               />
               <!--<span class="autocomplete-anchor-text">{{ deepValue(data, anchor) }}</span>-->
               <span class="autocomplete-anchor-label">{{ deepValue(data, label) }}</span>
@@ -671,6 +672,19 @@ export default {
 /*left: 46%;*/
 /*top: -20px*/
 /*}*/
+
+.autocomplete-anchor-text {
+  color: $color-gray--dark !important;
+}
+
+.autocomplete-anchor-text span {
+  color: $color-gray--dark !important;
+}
+
+.autocomplete-anchor-text:hover {
+  color: $color-gray--dark;
+  background: $color-gray--lighter;
+}
 
 .autocomplete ul li a {
   text-decoration: none;
