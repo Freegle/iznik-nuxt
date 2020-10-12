@@ -11,6 +11,9 @@
       <donation-button />
     </NoticeMessage>
     <div v-else>
+      <h2 class="sr-only">
+        Jobs
+      </h2>
       <div class="mb-1 text-center small text-muted">
         Jobs near you.  Freegle gets a small amount if you click, which helps keep us going.  <nuxt-link to="/jobs">
           See more jobs

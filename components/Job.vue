@@ -1,10 +1,10 @@
 <template>
   <div @click="clicked">
     <div v-if="summary" class="ml-2 mr-2">
-      <h6>
+      <h3 class="header--size6">
         <!-- eslint-disable-next-line -->
         <span v-html="joblinksumm" />
-      </h6>
+      </h3>
       <p class="text-truncate mt-2">
         {{ job.snippet }}
       </p>
