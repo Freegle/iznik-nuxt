@@ -4,9 +4,11 @@
       {{ group.arrival | timeago }} on <nuxt-link :to="'/explore/' + group.groupid">
         {{ group.namedisplay }}
       </nuxt-link>
-      <nuxt-link v-if="displayMessageLink" :to="'/message/' + message.id" :class="modinfo ? '' : 'text-faded'">
-        #{{ message.id }}
-      </nuxt-link>
+      <client-only>
+        <nuxt-link v-if="displayMessageLink" :to="'/message/' + message.id" :class="modinfo ? '' : 'text-faded'">
+          #{{ message.id }}
+        </nuxt-link>
+      </client-only>
       <span v-if="modinfo">
         via {{ source }},
         <span v-if="message.fromip">
@@ -16,7 +18,7 @@
           IP unavailable.
         </span>
       </span>
-      <span v-if="group.approvedby && group.approvedby.displayname">
+      <span v-if="group && group.approvedby && group.approvedby.displayname">
         Approved by {{ group.approvedby.displayname }}
       </span>
     </div>

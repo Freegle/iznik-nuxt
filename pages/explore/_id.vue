@@ -105,7 +105,6 @@ export default {
     }
   },
   created() {
-    console.log('Explore created', this.$route.params)
     this.id = this.asyncGroupId ? this.asyncGroupId : this.$route.params.id
 
     const re = /(.*),(.*),(.*),(.*)/
