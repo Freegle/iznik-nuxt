@@ -32,7 +32,7 @@
       </div>
     </client-only>
     <div v-if="mapready" class="rest">
-      <div v-if="showClosestGroups" class="d-flex flex-wrap mb-1 justify-content-between border p-2 bg-white">
+      <div v-if="showClosestGroups" class="d-none d-md-flex flex-wrap mb-1 justify-content-between border p-2 bg-white">
         <b-btn
           v-for="group in closestGroups"
           :key="'group-' + group.id"
