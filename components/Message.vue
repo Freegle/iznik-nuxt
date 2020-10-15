@@ -189,7 +189,7 @@
               </b-btn>
             </div>
             <div />
-            <MessageMap v-if="showMap" :home="home" :position="{ lat: expanded.lat, lng: expanded.lng }" />
+            <MessageMap v-if="showMap" :home="home" :position="{ lat: expanded.lat, lng: expanded.lng }" class="border border-black rounded" />
           </div>
         </div>
       </b-card-footer>
