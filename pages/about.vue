@@ -177,10 +177,15 @@
                   Freegle Ltd is owned and governed by its members.  Local and national volunteers are eligible for membership.
                 </p>
                 <p>
-                  Charities of this type are slightly unusual in that they do not register with the Charity Commission (see <a href="https://www.gov.uk/government/publications/exempt-charities-cc23/exempt-charities" target="_blank" rel="noopener">here</a>).
-                  Instead they register with the Financial Conduct Authority (our registration number is <a href="https://mutuals.fca.org.uk/Search/Society/9593" target="_blank" rel="noopener">32410R</a>)
-                  and also register with HMRC as charitable (our reference is XT32865).  So we're legally a charity, but of a slightly
-                  different type than you might be used to.
+                  Charities of this type are slightly unusual in that they do not register with the Charity Commission
+                  (see <a href="https://www.gov.uk/government/publications/exempt-charities-cc23/exempt-charities" target="_blank" rel="noopener">here</a>).
+                  Instead they register with the Financial Conduct Authority (our registration number is
+                  <a href="https://mutuals.fca.org.uk/Search/Society/9593" target="_blank" rel="noopener">32410R</a>)
+                  and also register with HMRC as charitable (our reference is XT32865).  So we're legally a charity,
+                  and can claim Gift Aid if you
+                  <!-- eslint-disable-next-line-->
+                  <nuxt-link to="/donate">donate</nuxt-link>,
+                  but of a slightly different type than you might be used to.
                 </p>
               </b-card-text>
             </b-card-body>
