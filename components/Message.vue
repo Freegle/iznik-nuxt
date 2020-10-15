@@ -136,21 +136,29 @@
             class="flex-grow-1"
           />
         </b-form-group>
-        <b-btn v-if="!me" size="lg" variant="primary" :disabled="disableSend" @click="registerOrSend">
-          Send your reply
-          <v-icon v-if="replying" name="sync" class="fa-spin" />
-          <v-icon v-else name="angle-double-right" />&nbsp;
-        </b-btn>
-        <p v-if="!me" class="mt-1">
-          If you're a new freegler then welcome!  You'll get emails.  Name, approx. location, and profile picture are public - you
-          can hide your real name and picture from Settings.  This adds cookies and local
-          storage.  Read <nuxt-link target="_blank" to="/terms">
-            Terms of Use
-          </nuxt-link> and
-          <nuxt-link target="_blank" to="/privacy">
-            Privacy
-          </nuxt-link> for details.
-        </p>
+        <div v-if="!me">
+          <div class="contents">
+            <div>
+              <b-btn size="lg" variant="primary" :disabled="disableSend" @click="registerOrSend">
+                Send your reply
+                <v-icon v-if="replying" name="sync" class="fa-spin" />
+                <v-icon v-else name="angle-double-right" />&nbsp;
+              </b-btn>
+            </div>
+            <div />
+            <MessageMap v-if="showMap" :home="home" :position="{ lat: expanded.lat, lng: expanded.lng }" />
+          </div>
+          <p class="mt-1">
+            If you're a new freegler then welcome!  You'll get emails.  Name, approx. location, and profile picture are public - you
+            can hide your real name and picture from Settings.  This adds cookies and local
+            storage.  Read <nuxt-link target="_blank" to="/terms">
+              Terms of Use
+            </nuxt-link> and
+            <nuxt-link target="_blank" to="/privacy">
+              Privacy
+            </nuxt-link> for details.
+          </p>
+        </div>
         <div v-else>
           <div class="contents">
             <div>
@@ -181,7 +189,7 @@
               </b-btn>
             </div>
             <div />
-            <MessageMap v-if="showMap" :centerat="{ lat: me.settings.mylocation.lat, lng: me.settings.mylocation.lng }" :position="{ lat: expanded.lat, lng: expanded.lng }" centericon />
+            <MessageMap v-if="showMap" :home="home" :position="{ lat: expanded.lat, lng: expanded.lng }" />
           </div>
         </div>
       </b-card-footer>
@@ -315,12 +323,19 @@ export default {
   },
   computed: {
     showMap() {
-      return (
-        this.me &&
-        this.me.settings &&
-        this.me.settings.mylocation &&
-        (this.expanded.lat || this.expanded.lng)
-      )
+      return this.expanded.lat || this.expanded.lng
+    },
+    home() {
+      let ret = null
+
+      if (this.me && this.me.settings && this.me.settings.mylocation) {
+        ret = {
+          lat: this.me.settings.mylocation.lat,
+          lng: this.me.settings.mylocation.lng
+        }
+      }
+
+      return ret
     },
     disableSend() {
       return this.replying || !this.reply || (!this.me && !this.emailValid)
