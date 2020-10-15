@@ -42,27 +42,16 @@
         <ModComments v-if="mod && chat && chat.chattype === 'User2Mod' && otheruser" :user="otheruser" class="mt-1" />
       </div>
       <b-form-textarea
-        v-if="enterNewLine && !spammer"
-        ref="chatarea"
-        v-model="sendmessage"
-        placeholder="Type here..."
-        rows="3"
-        max-rows="8"
-        @focus="markRead"
-      />
-      <b-form-textarea
-        v-else-if="!spammer"
+        v-if="!spammer"
         ref="chatarea"
         v-model="sendmessage"
         placeholder="Type here..."
         rows="3"
         max-rows="8"
         autocapitalize="none"
-        @keydown.enter.exact.prevent
-        @keyup.enter.exact="send"
-        @keydown.enter.shift.exact.prevent="newline"
-        @keydown.alt.shift.exact.prevent="newline"
         @focus="markRead"
+        @[keydownevent].enter.prevent
+        @[keyupevent].enter.prevent
       />
     </div>
     <div v-if="!spammer" class="bg-white pt-1 pb-1">
@@ -224,7 +213,19 @@ export default {
     AddressModal,
     ChatRSVPModal
   },
-  mixins: [waitForRef, chat, chatCollate]
+  mixins: [waitForRef, chat, chatCollate],
+  computed: {
+    keydownevent() {
+      console.log('keydownEvent: ' + this.enterNewLine)
+      return 'keydown'
+      // return this.enterNewLine ? 'keydown' : null
+    },
+    keyupevent() {
+      console.log('keyupevent: ' + this.enterNewLine)
+      return 'keyup'
+      // return this.enterNewLine ? 'keyup' : null
+    }
+  }
 }
 </script>
 <style scoped lang="scss">
