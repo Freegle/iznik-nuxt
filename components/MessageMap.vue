@@ -62,7 +62,11 @@ export default {
         // eslint-disable-next-line new-cap
         new L.marker([this.centerat.lat, this.centerat.lng])
       ])
+
       map.fitBounds(fg.getBounds().pad(0.1))
+
+      const zoomControl = this.$el.querySelector('.leaflet-top.leaflet-left')
+      zoomControl.className = 'leaflet-top leaflet-right'
     }
   }
 }
