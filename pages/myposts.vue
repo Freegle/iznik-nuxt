@@ -18,7 +18,7 @@
           </b-btn>
         </div>
         <div v-else>
-          <JobsTopBar />
+          <JobsTopBar v-if="!justPosted" />
           <b-card
             v-if="!simple"
             class="mt-2"
