@@ -4,10 +4,10 @@
       Browse items
     </h1>
     <b-row class="m-0">
-      <b-col cols="0" lg="3" class="d-none d-lg-block p-0 pr-1">
+      <b-col cols="0" xl="3" class="d-none d-xl-block p-0 pr-1">
         <SidebarLeft :show-community-events="true" :show-bot-left="true" />
       </b-col>
-      <b-col cols="12" lg="6" class="p-0">
+      <b-col cols="12" xl="6" class="p-0">
         <CovidWarning />
         <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" :chats="me.expectedchats" />
         <Viewed v-if="!simple" class="mb-1" />
@@ -79,7 +79,7 @@
           </div>
         </div>
       </b-col>
-      <b-col cols="0" lg="3" class="d-none d-lg-block p-0 pl-1">
+      <b-col cols="0" xl="3" class="d-none d-xl-block p-0 pl-1">
         <sidebar-right show-volunteer-opportunities />
       </b-col>
     </b-row>

@@ -50,14 +50,14 @@
             :src="attachments[0].paththumb"
           />
         </div>
-        <div v-if="!simple && expanded" class="d-flex justify-content-between mt-1 card-header__options">
-          <b-button v-if="expanded && !hideClose" size="sm" variant="link" class="grey" @click="contract">
+        <div v-if="!simple && expanded" class="d-flex mt-1 card-header__options">
+          <b-button v-if="expanded && !hideClose" size="sm" variant="link" class="grey p-0 mr-4" @click="contract">
             Close post
           </b-button>
           <b-btn
             v-if="expanded.groups && expanded.groups.length"
             variant="link"
-            class="mr-2 grey"
+            class="grey p-0 mr-4"
             size="sm"
             @click="report"
           >
@@ -65,13 +65,13 @@
           </b-btn>
           <b-btn
             v-if="expanded"
-            variant="white"
-            class="mr-1"
+            variant="link"
+            class="p-0 grey"
             title="Share"
             size="sm"
             @click="share"
           >
-            <v-icon name="share-alt" />
+            Share
           </b-btn>
         </div>
       </b-card-header>
@@ -81,19 +81,21 @@
           else drops out.
         </notice-message>
 
-        <p class="prewrap pl-1">
-          <Highlighter
-            v-if="matchedon"
-            :search-words="[matchedon.word]"
-            :text-to-highlight="expanded.textbody"
-            highlight-class-name="highlight"
-            auto-escape
-          /><span v-else>{{ expanded.textbody }}</span>
-        </p>
-
-        <div v-if="!simple" class="d-flex justify-content-between">
-          <MessageUserInfo v-if="expanded.fromuser" :user="expanded.fromuser" :milesaway="milesaway" class="flex-grow-1" />
-          <MessageReplyInfo :message="expanded" />
+        <div class="pl-1 d-flex flex-column justify-content-between">
+          <div class="d-flex flex-column">
+            <Highlighter
+              v-if="matchedon"
+              :search-words="[matchedon.word]"
+              :text-to-highlight="expanded.textbody"
+              highlight-class-name="highlight"
+              auto-escape
+              class="prewrap"
+            /><span v-else class="prewrap">{{ expanded.textbody }}</span>
+          </div>
+          <div class="d-flex justify-content-between flex-wrap mt-2">
+            <MessageUserInfo v-if="!simple && expanded.fromuser" :user="expanded.fromuser" :milesaway="milesaway" />
+            <MessageReplyInfo :message="expanded" />
+          </div>
         </div>
       </b-card-body>
       <b-card-footer v-if="expanded" class="p-1 pt-3">
@@ -150,31 +152,37 @@
           </nuxt-link> for details.
         </p>
         <div v-else>
-          <b-form-group
-            class="flex-grow-1"
-            label="Your postcode:"
-            :label-for="'replytomessage-' + expanded.id"
-            description="So that we know how far away you are.  The closer the better."
-          >
-            <Postcode @selected="savePostcode" />
-          </b-form-group>
-          <b-btn size="lg" variant="primary" class="d-none d-md-block" :disabled="disableSend" @click="sendReply">
-            Send your reply
-            <v-icon v-if="replying" name="sync" class="fa-spin" />
-            <v-icon v-else name="angle-double-right" />&nbsp;
-          </b-btn>
-          <b-btn
-            size="lg"
-            variant="primary"
-            class="d-block d-md-none mt-2"
-            block
-            :disabled="disableSend"
-            @click="sendReply"
-          >
-            Send your reply
-            <v-icon v-if="replying" name="sync" class="fa-spin" />
-            <v-icon v-else name="angle-double-right" />&nbsp;
-          </b-btn>
+          <div class="contents">
+            <div>
+              <b-form-group
+                class="flex-grow-1"
+                label="Your postcode:"
+                :label-for="'replytomessage-' + expanded.id"
+                description="So that we know how far away you are.  The closer the better."
+              >
+                <Postcode @selected="savePostcode" />
+              </b-form-group>
+              <b-btn size="lg" variant="primary" class="d-none d-md-block" :disabled="disableSend" @click="sendReply">
+                Send your reply
+                <v-icon v-if="replying" name="sync" class="fa-spin" />
+                <v-icon v-else name="angle-double-right" />&nbsp;
+              </b-btn>
+              <b-btn
+                size="lg"
+                variant="primary"
+                class="d-block d-md-none mt-2"
+                block
+                :disabled="disableSend"
+                @click="sendReply"
+              >
+                Send your reply
+                <v-icon v-if="replying" name="sync" class="fa-spin" />
+                <v-icon v-else name="angle-double-right" />&nbsp;
+              </b-btn>
+            </div>
+            <div />
+            <MessageMap v-if="showMap" :centerat="{ lat: me.settings.mylocation.lat, lng: me.settings.mylocation.lng }" :position="{ lat: expanded.lat, lng: expanded.lng }" centericon />
+          </div>
         </div>
       </b-card-footer>
     </b-card>
@@ -212,6 +220,7 @@ import EmailValidator from './EmailValidator'
 import NewUserInfo from './NewUserInfo'
 import MessagePhotosModal from './MessagePhotosModal'
 import Postcode from './Postcode'
+import MessageMap from './MessageMap'
 import twem from '~/assets/js/twem'
 import waitForRef from '@/mixins/waitForRef'
 
@@ -222,6 +231,7 @@ const MessageHistory = () => import('~/components/MessageHistory')
 
 export default {
   components: {
+    MessageMap,
     Postcode,
     MessagePhotosModal,
     NewUserInfo,
@@ -304,6 +314,14 @@ export default {
     }
   },
   computed: {
+    showMap() {
+      return (
+        this.me &&
+        this.me.settings &&
+        this.me.settings.mylocation &&
+        (this.expanded.lat || this.expanded.lng)
+      )
+    },
     disableSend() {
       return this.replying || !this.reply || (!this.me && !this.emailValid)
     },
@@ -343,6 +361,24 @@ export default {
       }
 
       return null
+    },
+    position() {
+      let ret = null
+
+      if (this.message) {
+        if (this.message.location) {
+          // This is what we put in for message submitted on FD.
+          ret = this.message.location
+        } else if (this.message.lat || this.message.lng) {
+          // This happens for TN messages
+          ret = {
+            lat: this.message.lat,
+            lng: this.message.lng
+          }
+        }
+      }
+
+      return ret
     }
   },
   watch: {
@@ -699,5 +735,14 @@ export default {
     grid-column: 1 / 2;
     grid-row: 4 / 5;
   }
+}
+
+.contents {
+  display: grid;
+  grid-template-columns: 2fr 10px 1fr;
+  //
+  //@include media-breakpoint-down(md) {
+  //  grid-template-columns: 1fr 0px 0px;
+  //}
 }
 </style>

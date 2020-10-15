@@ -2,15 +2,17 @@
   <l-map
     ref="map"
     :zoom="16"
-    :center="[centerat.lat, centerat.lng]"
     :style="'width: 100%; height: 200px'"
     @ready="idle"
   >
     <l-tile-layer :url="osmtile" :attribution="attribution" />
+    <l-marker v-if="centericon" :lat-lng="[centerat.lat, centerat.lng]" :interactive="false" :icon="homeicon" class="bg-none" />
     <l-marker :lat-lng="[position.lat, position.lng]" :interactive="false" />
   </l-map>
 </template>
 <script>
+import Vue from 'vue'
+import HomeIcon from './HomeIcon'
 import map from '@/mixins/map.js'
 
 let L = null
@@ -29,23 +31,38 @@ export default {
     position: {
       type: Object,
       required: true
+    },
+    centericon: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
+  computed: {
+    homeicon() {
+      // Render the component off document.
+      const Mine = Vue.extend(HomeIcon)
+      let re = new Mine()
+
+      re = re.$mount().$el
+
+      return new L.DivIcon({
+        html: re.outerHTML,
+        className: 'bg-none'
+      })
     }
   },
   methods: {
     idle(map) {
-      // We want to centre the map but ensure we show the marker.  So use a fake position on the other side of the
-      // center to get bounds.
+      // We want to show both the centre and the marker.
       // eslint-disable-next-line new-cap
       const fg = new L.featureGroup([
         // eslint-disable-next-line new-cap
         new L.marker([this.position.lat, this.position.lng]),
         // eslint-disable-next-line new-cap
-        new L.marker([
-          this.centerat.lat - (this.position.lat - this.centerat.lat),
-          this.centerat.lng - (this.position.lng - this.centerat.lng)
-        ])
+        new L.marker([this.centerat.lat, this.centerat.lng])
       ])
-      map.fitBounds(fg.getBounds().pad(0.5))
+      map.fitBounds(fg.getBounds().pad(0.1))
     }
   }
 }
