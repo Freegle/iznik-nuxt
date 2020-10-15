@@ -151,4 +151,9 @@ export default {
   outline: 0;
   box-shadow: 0 1px 0 0.2rem rgba(0, 123, 255, 0.25);
 }
+
+::v-deep .listentry mark {
+  padding-left: 0;
+  padding-right: 0;
+}
 </style>
