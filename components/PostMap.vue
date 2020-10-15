@@ -24,7 +24,7 @@
           @moveend="idle"
         >
           <l-tile-layer :url="osmtile" :attribution="attribution" />
-          <ClusterMarker v-if="mapObject && messageLocations && messageLocations.length" :markers="messageLocations" :map="mapObject" />
+          <ClusterMarker v-if="mapObject && messageLocations && messageLocations.length" :markers="messageLocations" :map="mapObject" :tag="['post', 'posts']" />
         </l-map>
       </vue-draggable-resizable>
     </client-only>

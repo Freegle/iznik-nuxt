@@ -65,6 +65,11 @@ export default {
       type: Number,
       required: false,
       default: 10
+    },
+    tag: {
+      type: Array,
+      required: false,
+      default: null
     }
   },
   computed: {
@@ -171,7 +176,8 @@ export default {
 
       let re = new Mine({
         propsData: {
-          count: cluster.properties ? cluster.properties.point_count : 1
+          count: cluster.properties ? cluster.properties.point_count : 1,
+          tag: this.tag
         }
       })
 
