@@ -194,13 +194,23 @@ export default {
     filteredMessages() {
       // Ensure we only show the messages on the map, and double-check to avoid showing deleted or completed posts.
       // Remember the map may lag a bit as it's only updated on cron.
+      const dups = []
+
       const ret = this.messages.filter(message => {
-        const include =
-          this.messagesOnMap.find(m => {
-            return parseInt(m.id) === parseInt(message.id)
-          }) &&
-          !message.deleted &&
-          (!message.outcomes || message.outcomes.length === 0)
+        const key = message.fromuser + '|' + message.subject
+        const already = key in dups
+        let include = false
+
+        if (!already) {
+          dups[key] = true
+
+          include =
+            this.messagesOnMap.find(m => {
+              return parseInt(m.id) === parseInt(message.id)
+            }) &&
+            !message.deleted &&
+            (!message.outcomes || message.outcomes.length === 0)
+        }
 
         return include
       })
