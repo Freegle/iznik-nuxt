@@ -1,5 +1,5 @@
 <template>
-  <div v-if="group.onmap">
+  <div v-if="group && group.onmap">
     <div class="media clickme">
       <div class="media-left">
         <div class="media-object">

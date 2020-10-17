@@ -164,6 +164,7 @@ export default {
 
         if (process.client) {
           L.Control.geocoder({
+            placeholder: 'Search places...',
             geocoder: L.Control.Geocoder.photon({
               geocodingQueryParams: {
                 bbox:

@@ -1,6 +1,9 @@
 <template>
   <div>
     <client-only>
+      <h2 class="sr-only">
+        Map of offers and wanteds
+      </h2>
       <div :style="mapHeight" class="position-relative mb-1">
         <div v-if="bounds" class="mapbox">
           <GroupMap
@@ -23,9 +26,13 @@
             :zoom.sync="zoom"
             :centre.sync="centre"
             :ready.sync="mapready"
+            :groupid="selectedGroup"
+            :type="selectedType"
+            :min-zoom="forceMessages ? 5 : minZoom"
+            :max-zoom="maxZoom"
             @messages="messagesChanged($event)"
             @groups="groupsChanged($event)"
-            @minzoom="showGroups = true"
+            @minzoom="showGroups = true && !forceMessages"
           />
         </div>
         <div v-else :style="mapHeight" />
@@ -33,15 +40,18 @@
     </client-only>
     <div v-if="mapready" class="rest">
       <div v-if="showClosestGroups" class="d-none d-md-flex flex-wrap mb-1 justify-content-between border p-2 bg-white">
+        <h2 class="sr-only">
+          Nearby commmunities
+        </h2>
         <b-btn
-          v-for="group in closestGroups"
-          :key="'group-' + group.id"
+          v-for="g in closestGroups"
+          :key="'group-' + g.id"
           size="md"
-          :to="'/explore/join/' + group.id"
+          :to="'/explore/join/' + g.id"
           variant="primary"
           class="mb-1"
         >
-          Join {{ group.namedisplay }}
+          Join {{ g.namedisplay }}
         </b-btn>
       </div>
       <div v-if="showGroups" class="bg-white pt-3">
@@ -55,14 +65,25 @@
           </div>
         </div>
         <div v-if="showGroupList">
+          <h2 class="sr-only">
+            List of communities
+          </h2>
           <AdaptiveMapGroup v-for="groupid in groupids" :id="groupid" :key="'adaptivegroup-' + groupid" />
         </div>
-        <p class="text-center mt-2 header--size5 community__heading community__text">
+        <p v-if="showStartMessage" class="text-center mt-2 header--size5 community__heading community__text">
           <!-- eslint-disable-next-line -->
           If there's no community for your area, would you like to start one? <ExternalLink href="mailto:newgroups@ilovefreegle.org">Get in touch!</ExternalLink>
         </p>
       </div>
       <div v-else>
+        <h2 class="sr-only">
+          List of WANTEDs and OFFERs
+        </h2>
+        <div v-if="filters" variant="info" class="d-flex justify-content-between p-2 border border-info bg-white">
+          <GroupSelect v-model="selectedGroup" all :all-my="false" />
+          <b-form-select v-model="selectedType" :options="typeOptions" class="shrink" />
+        </div>
+
         <div v-if="filteredMessages && filteredMessages.length">
           <div v-for="message in filteredMessages" :key="'messagelist-' + message.id" class="p-0">
             <Message v-bind="message" />
@@ -91,6 +112,7 @@
 import InfiniteLoading from 'vue-infinite-loading'
 import AdaptiveMapGroup from './AdaptiveMapGroup'
 import ExternalLink from './ExternalLink'
+import GroupSelect from './GroupSelect'
 import map from '@/mixins/map.js'
 const Message = () => import('~/components/Message.vue')
 const PostMap = () => import('~/components/PostMap')
@@ -105,6 +127,7 @@ if (process.browser) {
 
 export default {
   components: {
+    GroupSelect,
     ExternalLink,
     AdaptiveMapGroup,
     GroupMap,
@@ -123,6 +146,11 @@ export default {
       required: false,
       default: false
     },
+    forceMessages: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     initialGroupIds: {
       type: Array,
       required: false,
@@ -134,34 +162,91 @@ export default {
       type: String,
       required: false,
       default: null
+    },
+    showStartMessage: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    filters: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    minZoom: {
+      type: Number,
+      required: false,
+      default: 10
+    },
+    maxZoom: {
+      type: Number,
+      required: false,
+      default: 15
     }
   },
   data: function() {
     return {
+      // Map stuff
       heightFraction: 3,
       postcode: null,
       busy: false,
-      infiniteId: +new Date(),
-      distance: 1000,
       lat: null,
       lng: null,
       swlat: null,
       swlng: null,
       nelat: null,
       nelng: null,
-      postThreshold: 50,
       groupids: [],
-      messagesOnMap: [],
-      fetching: [],
-      fetched: [],
       bounds: null,
       zoom: null,
       centre: null,
       showGroups: false,
-      mapready: process.server
+      mapready: process.server,
+
+      // Infinite message scroll
+      infiniteId: +new Date(),
+      distance: 1000,
+      messagesOnMap: [],
+      fetching: [],
+      fetched: [],
+
+      // Filters
+      selectedType: 'All',
+      selectedGroup: null,
+      typeOptions: [
+        {
+          value: 'All',
+          text: 'All posts',
+          selected: true
+        },
+        {
+          value: 'Offer',
+          text: 'Just OFFERs'
+        },
+        {
+          value: 'Wanted',
+          text: 'Just WANTEDs'
+        }
+      ]
     }
   },
   computed: {
+    group: function() {
+      const ret = this.groupid
+        ? this.$store.getters['group/get'](this.groupid)
+        : null
+
+      return ret
+    },
+    closed() {
+      let ret = false
+
+      if (this.group && this.group.settings && this.group.settings.closed) {
+        ret = true
+      }
+
+      return ret
+    },
     regions() {
       const regions = []
 
@@ -187,32 +272,33 @@ export default {
       const count = this.messages ? this.messages.length : 0
       return count
     },
-    messages: function() {
-      const ret = this.$store.getters['messages/getAll']
-      return ret
-    },
     filteredMessages() {
-      // Ensure we only show the messages on the map, and double-check to avoid showing deleted or completed posts.
-      // Remember the map may lag a bit as it's only updated on cron.
+      // We want to filter by:
+      // - Messages on the map
+      // - Don't deleted or completed posts.  Remember the map may lag a bit as it's only updated on cron, so we
+      //   may be returned some.
+      // - Possibly a message type - but that's handled by the map
+      // - Possibly a group id - but that's handled by the map
+      // - Filter out dups by subject (for crossposting).
+      const ret = []
       const dups = []
 
-      const ret = this.messages.filter(message => {
-        const key = message.fromuser + '|' + message.subject
-        const already = key in dups
-        let include = false
+      this.messagesOnMap.forEach(m => {
+        const message = this.$store.getters['messages/get'](m.id)
 
-        if (!already) {
-          dups[key] = true
+        if (message) {
+          const key = message.fromuser + '|' + message.subject
+          const already = key in dups
 
-          include =
-            this.messagesOnMap.find(m => {
-              return parseInt(m.id) === parseInt(message.id)
-            }) &&
+          if (
+            !already &&
             !message.deleted &&
             (!message.outcomes || message.outcomes.length === 0)
+          ) {
+            dups[key] = true
+            ret.push(message)
+          }
         }
-
-        return include
       })
 
       return ret
@@ -288,8 +374,6 @@ export default {
   },
   async mounted() {
     if (!this.startOnGroups) {
-      // Ensure we have no cached messages for other searches/groups
-      this.$store.dispatch('messages/clear')
       this.context = null
 
       // We have been given a bounding box containing some interesting posts.  Get messages within it - just
@@ -307,8 +391,22 @@ export default {
       L.latLng(this.swlat, this.swlng),
       L.latLng(this.nelat, this.nelng)
     )
+
+    if (this.filters) {
+      // We might have a preference for which type of posts we view.
+      const postType = this.$store.getters['misc/get']('postType')
+      if (postType) {
+        this.selectedType = postType
+      }
+    }
   },
   methods: {
+    typeChange: function() {
+      this.$store.dispatch('misc/set', {
+        key: 'postType',
+        value: this.selectedType
+      })
+    },
     loadMore: async function($state) {
       // We work out which messages that are currently on the map are not in our store, and fetch them serially
       // in descending date order.  This avoids flooding the server.
@@ -318,10 +416,10 @@ export default {
       const promises = []
       const fetching = []
 
-      for (const m of this.sortedMessagesOnMap) {
+      for (const m of this.messagesOnMap) {
         const message = this.$store.getters['messages/get'](m.id)
 
-        if (!message && !this.fetching[m.id]) {
+        if (!message && !this.fetching[m.id] && this.infiniteId) {
           this.fetching[m.id] = true
           fetching.push(m.id)
 
@@ -358,8 +456,23 @@ export default {
       this.busy = false
     },
     messagesChanged(messages) {
-      this.infiniteId++
-      this.messagesOnMap = messages
+      let changed = false
+      if (!messages || !this.messagesOnMap) {
+        changed = true
+      } else {
+        const oldids = this.messagesOnMap.map(m => m.id)
+        const newids = messages.map(m => m.id)
+
+        if (JSON.stringify(oldids) !== JSON.stringify(newids)) {
+          changed = true
+        }
+      }
+
+      if (changed) {
+        this.messagesOnMap = messages
+        this.infiniteId++
+        this.$store.dispatch('messages/clear')
+      }
     },
     groupsChanged(groupids) {
       this.groupids = groupids
@@ -393,5 +506,9 @@ export default {
 .community__text {
   /* Need to override the h2 as it has higher specificity */
   color: #212529 !important;
+}
+
+.shrink {
+  width: unset;
 }
 </style>

@@ -35,6 +35,11 @@ export default {
       required: false,
       default: false
     },
+    allMy: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
     // Whether to list all Freegle groups.
     listall: {
       type: Boolean,
@@ -127,7 +132,9 @@ export default {
           value: null,
           text: this.active
             ? '-- My active communities --'
-            : '-- All my communities --',
+            : this.allMy
+              ? '-- All my communities --'
+              : '-- All communities --',
           selected: this.selectedGroup === null
         })
       } else {
