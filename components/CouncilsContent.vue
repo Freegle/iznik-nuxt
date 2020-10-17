@@ -35,6 +35,11 @@
       <b><nuxt-link to="/councils/workbest">Making Freegle work best for your council</nuxt-link></b>
       <ul>
         <li>
+          <a href="/councils/workbest#reducingflytipping">
+            Reducing fly-tipping
+          </a>
+        </li>
+        <li>
           <a href="/councils/workbest#makingvisible">
             Making Freegle visible on your websites
           </a>
