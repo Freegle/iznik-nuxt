@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-wrap">
-    <div v-if="spam" class="d-inline d-flex">
+    <div v-if="spam" class="d-inline d-flex flex-wrap">
       <ModMemberButton
         v-if="spamignore"
         :member="member"
@@ -51,7 +51,7 @@
           label="Hold"
         />
       </div>
-      <div v-else-if="member.spammer.collection === 'Approved'" class="d-inline">
+      <div v-else-if="member.spammer.collection === 'Approved'" class="d-flex flex-wrap">
         <ModMemberButton
           v-if="hasPermissionSpamAdmin"
           :member="member"
@@ -70,7 +70,7 @@
         />
       </div>
     </div>
-    <div v-else-if="approved" class="d-inline d-flex">
+    <div v-else-if="approved" class="d-flex flex-wrap">
       <ModMemberActions v-if="actions" :userid="member.userid" :groupid="member.groupid" :banned="(Boolean)(member.bandate)" />
       <ModMemberButton
         v-if="spamignore && member.suspectreason"
@@ -89,7 +89,7 @@
         label="Mail"
       />
     </div>
-    <div class="d-inline">
+    <div class="d-flex flex-wrap">
       <ModMemberButton
         v-for="stdmsg in filtered"
         :key="stdmsg.id"
