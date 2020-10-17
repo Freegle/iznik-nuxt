@@ -57,6 +57,28 @@ export default {
       return this.chatCollate(msgs)
     },
 
+    lastfromme() {
+      let last = 0
+
+      this.chatmessages.forEach(m => {
+        console.log('Check message', m)
+
+        if (m.userid === this.myid) {
+          last = Math.max(last, new Date(m.date).getTime())
+        }
+      })
+
+      console.log('Last from me', last)
+      return last
+    },
+
+    tooSoonToNudge() {
+      return (
+        this.lastfromme > 0 &&
+        new Date().getTime() - this.lastfromme < 24 * 60 * 60 * 1000
+      )
+    },
+
     chatusers() {
       // This is a bit expensive in the store, so it's better to get it here and pass it down than potentially to
       // get it in each message we render.
@@ -345,7 +367,17 @@ export default {
         this._updateAfterSend()
       })
     },
-    async nudge() {
+    nudge() {
+      this.waitForRef('nudgewarning', () => {
+        this.$store.dispatch('misc/set', {
+          key: 'nudge',
+          value: true
+        })
+
+        this.$refs.nudgewarning.show()
+      })
+    },
+    async doNudge() {
       await this.$store.dispatch('chatmessages/nudge', {
         roomid: this.id
       })

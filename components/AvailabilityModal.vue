@@ -190,7 +190,6 @@ export default {
 
     items() {
       const ret = []
-      console.log('Items', this.schedule)
 
       if (this.schedule !== null && this.bump) {
         // hour in the schedule data structure is misnamed - at the moment it runs from 0..2 and is really a slot
