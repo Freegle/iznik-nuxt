@@ -85,6 +85,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    showMany: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
   data: function() {
@@ -314,7 +319,11 @@ export default {
 
           // If we haven't got more than 1 message at this zoom level, zoom out.  That means we'll always show at
           // least something.
-          if (countInBounds < this.manyToShow && !this.shownMany) {
+          if (
+            this.showMany &&
+            countInBounds < this.manyToShow &&
+            !this.shownMany
+          ) {
             const currzoom = this.mapObject.getZoom()
             if (currzoom > this.minZoom) {
               this.mapObject.setZoom(currzoom - 1)

@@ -31,6 +31,7 @@
             :min-zoom="forceMessages ? 9 : minZoom"
             :max-zoom="maxZoom"
             :use-store="search !== null && search !== ''"
+            :show-many="showMany"
             @messages="messagesChanged($event)"
             @groups="groupsChanged($event)"
             @minzoom="showGroups = true && !forceMessages"
@@ -236,6 +237,11 @@ export default {
       type: Number,
       required: false,
       default: 15
+    },
+    showMany: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
   data: function() {

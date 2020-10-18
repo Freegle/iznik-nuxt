@@ -199,12 +199,10 @@ export default {
       )
     },
     pointClick(cluster) {
-      // It's a point. Centre on it, and zoom in if we can so that something happens.
+      // It's a point. Centre on it, and zoom right in.
       this.map.flyTo(
         [cluster.geometry.coordinates[1], cluster.geometry.coordinates[0]],
-        this.map.getZoom() < this.maxZoom
-          ? this.map.getZoom() + 1
-          : this.map.getZoom()
+        this.maxZoom
       )
     }
   }

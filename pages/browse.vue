@@ -30,6 +30,7 @@
           filters
           group-info
           jobs
+          :show-many="false"
           @messages="showRest = true"
         />
       </b-col>
