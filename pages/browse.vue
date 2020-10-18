@@ -21,7 +21,14 @@
             </b-btn>
           </div>
         </div>
-        <AdaptiveMap v-if="initialBounds" :initial-bounds="initialBounds" class="mt-2" force-messages filters />
+        <AdaptiveMap
+          v-if="initialBounds"
+          :initial-bounds="initialBounds"
+          class="mt-2"
+          force-messages
+          filters
+          group-info
+        />
       </b-col>
       <b-col cols="0" xl="3" class="d-none d-xl-block p-0 pl-1">
         <sidebar-right show-volunteer-opportunities />
@@ -79,9 +86,9 @@ export default {
 
     const me = this.$store.getters['auth/user']
 
-    if (me && me.settings && me.settings.mylocation) {
-      mylat = me.settings.mylocation.lat
-      mylng = me.settings.mylocation.lng
+    if (me && (me.lat || me.lng)) {
+      mylat = me.lat
+      mylng = me.lng
     }
 
     // Look for groups where we are a member which are within a reasonable distance of our home
@@ -106,6 +113,7 @@ export default {
           swlng = swlng === null ? group.lng : Math.min(swlng, group.lng)
           nelat = nelat === null ? group.lat : Math.max(nelat, group.lat)
           nelng = nelng === null ? group.lng : Math.max(nelng, group.lng)
+          // TODO Group should contain bounding box so that we can work out how to position map initially.
         }
       }
     })

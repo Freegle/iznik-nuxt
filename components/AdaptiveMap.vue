@@ -76,6 +76,10 @@
         </p>
       </div>
       <div v-else>
+        <h2 v-if="group" class="sr-only">
+          Community Information
+        </h2>
+        <GroupHeader v-if="group" :group="group" />
         <h2 class="sr-only">
           List of WANTEDs and OFFERs
         </h2>
@@ -118,6 +122,7 @@ const Message = () => import('~/components/Message.vue')
 const PostMap = () => import('~/components/PostMap')
 const GroupMap = () => import('~/components/GroupMap')
 const allSettled = require('promise.allsettled')
+const GroupHeader = () => import('~/components/GroupHeader.vue')
 
 let L = null
 
@@ -127,6 +132,7 @@ if (process.browser) {
 
 export default {
   components: {
+    GroupHeader,
     GroupSelect,
     ExternalLink,
     AdaptiveMapGroup,
@@ -169,6 +175,11 @@ export default {
       default: false
     },
     filters: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    groupInfo: {
       type: Boolean,
       required: false,
       default: false
@@ -232,8 +243,8 @@ export default {
   },
   computed: {
     group: function() {
-      const ret = this.groupid
-        ? this.$store.getters['group/get'](this.groupid)
+      const ret = this.selectedGroup
+        ? this.$store.getters['group/get'](this.selectedGroup)
         : null
 
       return ret

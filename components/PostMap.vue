@@ -216,7 +216,7 @@ export default {
             })
             .addTo(this.mapObject)
 
-          this.mapObject.flyToBounds(this.initialBounds)
+          this.mapObject.fitBounds(this.initialBounds)
         }
       })
     },
@@ -292,7 +292,6 @@ export default {
 
         // If we haven't got more than 1 message at this zoom level, zoom out.  That means we'll always show at
         // least something.
-        console.log('In bounds', countInBounds)
         if (countInBounds < this.manyToShow && !this.shownMany) {
           const currzoom = this.mapObject.getZoom()
           if (currzoom > this.minZoom) {
