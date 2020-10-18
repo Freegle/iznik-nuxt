@@ -148,11 +148,11 @@
 </template>
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
-import AdaptiveMapGroup from './AdaptiveMapGroup'
-import ExternalLink from './ExternalLink'
-import GroupSelect from './GroupSelect'
-import NoticeMessage from './NoticeMessage'
 import map from '@/mixins/map.js'
+const AdaptiveMapGroup = () => import('./AdaptiveMapGroup')
+const ExternalLink = () => import('./ExternalLink')
+const GroupSelect = () => import('./GroupSelect')
+const NoticeMessage = () => import('./NoticeMessage')
 const Message = () => import('~/components/Message.vue')
 const PostMap = () => import('~/components/PostMap')
 const GroupMap = () => import('~/components/GroupMap')
@@ -611,6 +611,8 @@ export default {
         this.infiniteId++
         this.$store.dispatch('messages/clear')
       }
+
+      this.$emit('messages')
     },
     groupsChanged(groupids) {
       this.groupids = groupids

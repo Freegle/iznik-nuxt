@@ -33,9 +33,10 @@
 <script>
 import VueDraggableResizable from 'vue-draggable-resizable/src/components/vue-draggable-resizable'
 import cloneDeep from 'lodash.clonedeep'
-import ClusterMarker from './ClusterMarker'
 import map from '@/mixins/map.js'
 import waitForRef from '@/mixins/waitForRef'
+const ClusterMarker = () => import('./ClusterMarker')
+
 let L = null
 
 if (process.browser) {

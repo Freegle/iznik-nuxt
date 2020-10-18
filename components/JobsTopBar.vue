@@ -13,7 +13,7 @@
       </p>
       <donation-button />
     </NoticeMessage>
-    <div v-else>
+    <div v-else-if="jobs.length">
       <h2 class="sr-only">
         Jobs
       </h2>
@@ -30,9 +30,9 @@
 </template>
 
 <script>
-import Job from './Job'
-import NoticeMessage from './NoticeMessage'
-import DonationButton from './DonationButton'
+const Job = () => import('./Job')
+const NoticeMessage = () => import('./NoticeMessage')
+const DonationButton = () => import('./DonationButton')
 
 export default {
   components: {

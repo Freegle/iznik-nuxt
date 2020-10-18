@@ -5,19 +5,21 @@
     </h1>
     <b-row class="m-0">
       <b-col cols="0" xl="3" class="d-none d-xl-block p-0 pr-1">
-        <SidebarLeft :show-community-events="true" :show-bot-left="true" />
+        <SidebarLeft v-if="showRest" :show-community-events="true" :show-bot-left="true" />
       </b-col>
       <b-col cols="12" xl="6" class="p-0">
-        <CovidWarning />
-        <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" :chats="me.expectedchats" />
-        <div class="bg-white d-block d-xl-none">
-          <div class="d-flex justify-content-between flex-wrap">
-            <b-btn to="/give" variant="primary" class="topbutton m-1">
-              <v-icon name="gift" />&nbsp;Give
-            </b-btn>
-            <b-btn to="/find" variant="primary" class="topbutton m-1">
-              <v-icon name="shopping-cart" />&nbsp;Ask
-            </b-btn>
+        <div v-if="showRest">
+          <CovidWarning />
+          <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" :chats="me.expectedchats" />
+          <div class="bg-white d-block d-xl-none">
+            <div class="d-flex justify-content-between flex-wrap">
+              <b-btn to="/give" variant="primary" class="topbutton m-1">
+                <v-icon name="gift" />&nbsp;Give
+              </b-btn>
+              <b-btn to="/find" variant="primary" class="topbutton m-1">
+                <v-icon name="shopping-cart" />&nbsp;Ask
+              </b-btn>
+            </div>
           </div>
         </div>
         <AdaptiveMap
@@ -28,21 +30,22 @@
           filters
           group-info
           jobs
+          @messages="showRest = true"
         />
       </b-col>
       <b-col cols="0" xl="3" class="d-none d-xl-block p-0 pl-1">
-        <sidebar-right show-volunteer-opportunities />
+        <sidebar-right v-if="showRest" show-volunteer-opportunities />
       </b-col>
     </b-row>
   </b-container>
 </template>
 
 <script>
-import CovidWarning from '~/components/CovidWarning'
 import AdaptiveMap from '~/components/AdaptiveMap'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
 import map from '@/mixins/map.js'
+const CovidWarning = () => import('~/components/CovidWarning')
 const SidebarLeft = () => import('~/components/SidebarLeft')
 const SidebarRight = () => import('~/components/SidebarRight')
 const ExpectedRepliesWarning = () =>
@@ -59,7 +62,8 @@ export default {
   mixins: [loginRequired, buildHead, map],
   data: function() {
     return {
-      initialBounds: null
+      initialBounds: null,
+      showRest: false
     }
   },
   async mounted() {
