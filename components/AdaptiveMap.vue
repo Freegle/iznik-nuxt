@@ -30,6 +30,7 @@
             :type="selectedType"
             :min-zoom="forceMessages ? 9 : minZoom"
             :max-zoom="maxZoom"
+            :use-store="search !== null && search !== ''"
             @messages="messagesChanged($event)"
             @groups="groupsChanged($event)"
             @minzoom="showGroups = true && !forceMessages"
@@ -93,6 +94,7 @@
               type="text"
               placeholder="Search posts"
               autocomplete="off"
+              @keyup.enter.exact="doSearch"
             />
             <b-input-group-append>
               <b-btn variant="secondary" title="Search" @click="doSearch">
@@ -126,6 +128,19 @@
               <b-img-lazy src="~/static/loader.gif" alt="Loading" />
             </span>
           </infinite-loading>
+          <NoticeMessage v-if="!busy && search && !filteredMessages.length">
+            <p>
+              Sorry, we didn't find anything.  Things come and go quickly, though, so you could try later.  Or you could:
+            </p>
+            <div class="d-flex justify-content-start flex-wrap">
+              <b-btn to="/give" variant="primary" class="topbutton m-1">
+                <v-icon name="gift" />&nbsp;Post an OFFER
+              </b-btn>
+              <b-btn to="/find" variant="primary" class="topbutton m-1">
+                <v-icon name="shopping-cart" />&nbsp;Post a WANTED
+              </b-btn>
+            </div>
+          </NoticeMessage>
         </client-only>
       </div>
     </div>
@@ -136,6 +151,7 @@ import InfiniteLoading from 'vue-infinite-loading'
 import AdaptiveMapGroup from './AdaptiveMapGroup'
 import ExternalLink from './ExternalLink'
 import GroupSelect from './GroupSelect'
+import NoticeMessage from './NoticeMessage'
 import map from '@/mixins/map.js'
 const Message = () => import('~/components/Message.vue')
 const PostMap = () => import('~/components/PostMap')
@@ -152,6 +168,7 @@ if (process.browser) {
 
 export default {
   components: {
+    NoticeMessage,
     GroupHeader,
     GroupSelect,
     ExternalLink,
@@ -265,7 +282,8 @@ export default {
         }
       ],
       selectedGroup: null,
-      search: null
+      search: null,
+      context: null
     }
   },
   computed: {
@@ -549,11 +567,13 @@ export default {
                 this.selectedType !== 'All' ? this.selectedType : null,
               search: this.search,
               nearlocation: res.data.location.id,
-              subaction: 'searchmess'
+              subaction: 'searchmess',
+              context: this.context
             }
 
             await this.$store.dispatch('messages/fetchMessages', params)
             const newmessages = this.$store.getters['messages/getAll']
+            this.context = this.$store.getters['messages/getContext']
 
             if (currentCount === newmessages.length) {
               // Didn't find any more.
@@ -596,8 +616,13 @@ export default {
       this.groupids = groupids
     },
     doSearch() {
-      this.infiniteId++
-      this.$store.dispatch('messages/clear')
+      if (this.busy) {
+        // Try later.  Otherwise we might end up with messages in store not matching our search.
+        setTimeout(this.doSearch, 100)
+      } else {
+        this.infiniteId++
+        this.$store.dispatch('messages/clear')
+      }
     }
   }
 }

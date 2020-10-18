@@ -24,7 +24,7 @@
           @moveend="idle"
         >
           <l-tile-layer :url="osmtile" :attribution="attribution" />
-          <ClusterMarker v-if="mapObject && messageLocations && messageLocations.length" :markers="messageLocations" :map="mapObject" :tag="['post', 'posts']" />
+          <ClusterMarker v-if="messagesForMap.length" :markers="messagesForMap" :map="mapObject" :tag="['post', 'posts']" />
         </l-map>
       </vue-draggable-resizable>
     </client-only>
@@ -79,6 +79,11 @@ export default {
       type: String,
       required: false,
       default: 'All'
+    },
+    useStore: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
@@ -120,6 +125,20 @@ export default {
       }
 
       return ret
+    },
+    storeMessages() {
+      return this.$store.getters['messages/getAll']
+    },
+    messagesForMap() {
+      if (this.useStore) {
+        return this.storeMessages
+      } else {
+        return this.mapObject &&
+          this.messageLocations &&
+          this.messageLocations.length
+          ? this.messageLocations
+          : []
+      }
     }
   },
   watch: {
@@ -231,81 +250,87 @@ export default {
       }
     },
     async getMessages() {
-      const bounds = this.mapObject.getBounds()
-      this.$emit('update:bounds', bounds)
-      this.$emit('update:zoom', this.mapObject.getZoom())
-      this.$emit('update:centre', this.mapObject.getCenter())
-
-      if (this.mapObject.getZoom() < this.minZoom) {
-        // The parent may  replace us with something else at this point, e.g. with a group map.  But maybe not.
-        // Their call.
-        this.$emit('minzoom')
-      }
-
-      const swlat = bounds.getSouthWest().lat
-      const swlng = bounds.getSouthWest().lng
-      const nelat = bounds.getNorthEast().lat
-      const nelng = bounds.getNorthEast().lng
-
-      // Get the messages.  If groupid is null then we will get the ones in the bounding box; otherwise we
-      // will get all the ones on that group.
-      const ret = await this.$api.message.fetchMessages({
-        subaction: 'inbounds',
-        swlat: bounds.getSouthWest().lat,
-        swlng: bounds.getSouthWest().lng,
-        nelat: bounds.getNorthEast().lat,
-        nelng: bounds.getNorthEast().lng,
-        groupid: this.groupid
-      })
-
       let messages = []
 
-      if (ret.ret === 0 && ret.messages) {
-        // Don't really understand why the clone is necessary, but it is - without it we seem to process
-        // old data inside the watch().
-        messages = cloneDeep(ret.messages)
+      if (!this.useStore) {
+        // Get the messages from the server which are in the bounds of the map.
+        const bounds = this.mapObject.getBounds()
+        this.$emit('update:bounds', bounds)
+        this.$emit('update:zoom', this.mapObject.getZoom())
+        this.$emit('update:centre', this.mapObject.getCenter())
 
-        if (this.groupid) {
-          messages = messages.filter(m => {
-            return m.groupid === this.groupid
-          })
+        if (this.mapObject.getZoom() < this.minZoom) {
+          // The parent may  replace us with something else at this point, e.g. with a group map.  But maybe not.
+          // Their call.
+          this.$emit('minzoom')
         }
 
-        if (this.type !== 'All') {
-          messages = messages.filter(m => {
-            return m.type === this.type
-          })
-        }
+        const swlat = bounds.getSouthWest().lat
+        const swlng = bounds.getSouthWest().lng
+        const nelat = bounds.getNorthEast().lat
+        const nelng = bounds.getNorthEast().lng
 
-        let countInBounds = 0
-
-        messages.forEach(m => {
-          if (
-            swlat <= m.lat &&
-            m.lat <= nelat &&
-            swlng <= m.lng &&
-            m.lng <= nelng
-          ) {
-            countInBounds++
-          }
+        // Get the messages.  If groupid is null then we will get the ones in the bounding box; otherwise we
+        // will get all the ones on that group.
+        const ret = await this.$api.message.fetchMessages({
+          subaction: 'inbounds',
+          swlat: bounds.getSouthWest().lat,
+          swlng: bounds.getSouthWest().lng,
+          nelat: bounds.getNorthEast().lat,
+          nelng: bounds.getNorthEast().lng,
+          groupid: this.groupid
         })
 
-        // If we haven't got more than 1 message at this zoom level, zoom out.  That means we'll always show at
-        // least something.
-        if (countInBounds < this.manyToShow && !this.shownMany) {
-          const currzoom = this.mapObject.getZoom()
-          if (currzoom > this.minZoom) {
-            this.mapObject.setZoom(currzoom - 1)
-          } else {
-            this.shownMany = true
+        if (ret.ret === 0 && ret.messages) {
+          // Don't really understand why the clone is necessary, but it is - without it we seem to process
+          // old data inside the watch().
+          messages = cloneDeep(ret.messages)
+
+          if (this.groupid) {
+            messages = messages.filter(m => {
+              return m.groupid === this.groupid
+            })
+          }
+
+          if (this.type !== 'All') {
+            messages = messages.filter(m => {
+              return m.type === this.type
+            })
+          }
+
+          let countInBounds = 0
+
+          messages.forEach(m => {
+            if (
+              swlat <= m.lat &&
+              m.lat <= nelat &&
+              swlng <= m.lng &&
+              m.lng <= nelng
+            ) {
+              countInBounds++
+            }
+          })
+
+          // If we haven't got more than 1 message at this zoom level, zoom out.  That means we'll always show at
+          // least something.
+          if (countInBounds < this.manyToShow && !this.shownMany) {
+            const currzoom = this.mapObject.getZoom()
+            if (currzoom > this.minZoom) {
+              this.mapObject.setZoom(currzoom - 1)
+            } else {
+              this.shownMany = true
+            }
           }
         }
-
-        this.messageLocations = messages
-        this.$emit('messages', messages)
-
-        return cloneDeep(messages)
+      } else {
+        // We've been told to use the store.  The messages must be there.  This is common in search.
+        messages = this.storeMessages
       }
+
+      this.messageLocations = messages
+      this.$emit('messages', messages)
+
+      return cloneDeep(messages)
     },
     onResize(x, y, width, height) {
       if (this.mapObject) {
