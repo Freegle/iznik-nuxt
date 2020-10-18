@@ -687,7 +687,7 @@ export default {
   display: grid;
 
   align-items: start;
-  grid-template-columns: auto;
+  grid-template-columns: minmax(0, 1fr);
 
   @include media-breakpoint-up(sm) {
     grid-template-columns: auto max-content;
