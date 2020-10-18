@@ -79,7 +79,6 @@
         <h2 v-if="group" class="sr-only">
           Community Information
         </h2>
-        <GroupHeader v-if="group" :group="group" />
         <h2 class="sr-only">
           List of WANTEDs and OFFERs
         </h2>
@@ -87,6 +86,8 @@
           <GroupSelect v-model="selectedGroup" all :all-my="false" />
           <b-form-select v-model="selectedType" :options="typeOptions" class="shrink" />
         </div>
+        <GroupHeader v-if="group" :group="group" />
+        <JobsTopBar v-if="jobs" />
 
         <div v-if="filteredMessages && filteredMessages.length">
           <div v-for="message in filteredMessages" :key="'messagelist-' + message.id" class="p-0">
@@ -123,6 +124,7 @@ const PostMap = () => import('~/components/PostMap')
 const GroupMap = () => import('~/components/GroupMap')
 const allSettled = require('promise.allsettled')
 const GroupHeader = () => import('~/components/GroupHeader.vue')
+const JobsTopBar = () => import('~/components/JobsTopBar')
 
 let L = null
 
@@ -139,7 +141,8 @@ export default {
     GroupMap,
     InfiniteLoading,
     Message,
-    PostMap
+    PostMap,
+    JobsTopBar
   },
   mixins: [map],
   props: {
@@ -180,6 +183,11 @@ export default {
       default: false
     },
     groupInfo: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    jobs: {
       type: Boolean,
       required: false,
       default: false

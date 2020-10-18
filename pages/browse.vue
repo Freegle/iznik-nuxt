@@ -9,7 +9,6 @@
       </b-col>
       <b-col cols="12" xl="6" class="p-0">
         <CovidWarning />
-        <JobsTopBar />
         <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" :chats="me.expectedchats" />
         <div class="bg-white d-block d-xl-none">
           <div class="d-flex justify-content-between flex-wrap">
@@ -28,6 +27,7 @@
           force-messages
           filters
           group-info
+          jobs
         />
       </b-col>
       <b-col cols="0" xl="3" class="d-none d-xl-block p-0 pl-1">
@@ -43,7 +43,6 @@ import AdaptiveMap from '~/components/AdaptiveMap'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
 import map from '@/mixins/map.js'
-const JobsTopBar = () => import('~/components/JobsTopBar')
 const SidebarLeft = () => import('~/components/SidebarLeft')
 const SidebarRight = () => import('~/components/SidebarRight')
 const ExpectedRepliesWarning = () =>
@@ -53,7 +52,6 @@ export default {
   components: {
     AdaptiveMap,
     CovidWarning,
-    JobsTopBar,
     SidebarLeft,
     SidebarRight,
     ExpectedRepliesWarning

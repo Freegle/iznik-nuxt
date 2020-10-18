@@ -5,7 +5,7 @@
         <!-- eslint-disable-next-line -->
         <span v-html="joblinksumm" />
       </h3>
-      <p class="text-truncate mt-2">
+      <p class="text-truncate mt-2 d-none d-md-block">
         {{ job.snippet }}
       </p>
     </div>

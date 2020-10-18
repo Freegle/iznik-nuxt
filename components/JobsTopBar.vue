@@ -15,9 +15,10 @@
         Jobs
       </h2>
       <div class="mb-1 text-center small text-muted">
-        Jobs near you.  Freegle gets a small amount if you click, which helps keep us going.  <nuxt-link to="/jobs">
-          See more jobs
-        </nuxt-link>.
+        Jobs near you.  Freegle gets a <span class="d-none d-md-inline">small amount</span><span class="d-inline d-md-none">little</span> if you click<span class="d-none d-md-inline">, which helps keep us going</span>.  <nuxt-link to="/jobs">
+          See more
+          <!-- eslint-disable-next-line -->
+        <span class="d-none d-md-inline">jobs</span></nuxt-link>.
       </div>
       <div v-for="(job, index) in jobs" :key="'job-' + job.onmousedown" class="">
         <Job :summary="true" :job="job" :class="index > 1 ? 'd-none d-md-block' : ''" />
