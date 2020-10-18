@@ -28,7 +28,7 @@
             :ready.sync="mapready"
             :groupid="selectedGroup"
             :type="selectedType"
-            :min-zoom="forceMessages ? 5 : minZoom"
+            :min-zoom="forceMessages ? 9 : minZoom"
             :max-zoom="maxZoom"
             @messages="messagesChanged($event)"
             @groups="groupsChanged($event)"
@@ -80,15 +80,33 @@
           Community Information
         </h2>
         <h2 class="sr-only">
-          List of WANTEDs and OFFERs
+          Search Filters
         </h2>
-        <div v-if="filters" variant="info" class="d-flex justify-content-between p-2 border border-info bg-white">
+        <div v-if="filters" variant="info" class="p-2 border border-info bg-white filters">
           <GroupSelect v-model="selectedGroup" all :all-my="false" />
+          <div />
           <b-form-select v-model="selectedType" :options="typeOptions" class="shrink" />
+          <div />
+          <b-input-group class="shrink mt-1 mt-sm-0 search">
+            <b-input
+              v-model="search"
+              type="text"
+              placeholder="Search posts"
+              autocomplete="off"
+            />
+            <b-input-group-append>
+              <b-btn variant="secondary" title="Search" @click="doSearch">
+                <v-icon name="search" />
+              </b-btn>
+            </b-input-group-append>
+          </b-input-group>
         </div>
         <GroupHeader v-if="group" :group="group" />
         <JobsTopBar v-if="jobs" />
 
+        <h2 class="sr-only">
+          List of WANTEDs and OFFERs
+        </h2>
         <div v-if="filteredMessages && filteredMessages.length">
           <div v-for="message in filteredMessages" :key="'messagelist-' + message.id" class="p-0">
             <Message v-bind="message" />
@@ -231,7 +249,6 @@ export default {
 
       // Filters
       selectedType: 'All',
-      selectedGroup: null,
       typeOptions: [
         {
           value: 'All',
@@ -246,7 +263,9 @@ export default {
           value: 'Wanted',
           text: 'Just WANTEDs'
         }
-      ]
+      ],
+      selectedGroup: null,
+      search: null
     }
   },
   computed: {
@@ -292,33 +311,53 @@ export default {
       return count
     },
     filteredMessages() {
-      // We want to filter by:
-      // - Messages on the map
-      // - Don't deleted or completed posts.  Remember the map may lag a bit as it's only updated on cron, so we
-      //   may be returned some.
-      // - Possibly a message type - but that's handled by the map
-      // - Possibly a group id - but that's handled by the map
-      // - Filter out dups by subject (for crossposting).
       const ret = []
       const dups = []
 
-      this.messagesOnMap.forEach(m => {
-        const message = this.$store.getters['messages/get'](m.id)
+      if (!this.search) {
+        // We want to filter by:
+        // - Messages on the map
+        // - Don't deleted or completed posts.  Remember the map may lag a bit as it's only updated on cron, so we
+        //   may be returned some.
+        // - Possibly a message type - but that's handled by the map
+        // - Possibly a group id - but that's handled by the map
+        // - Filter out dups by subject (for crossposting).
+        this.messagesOnMap.forEach(m => {
+          const message = this.$store.getters['messages/get'](m.id)
 
-        if (message) {
-          const key = message.fromuser + '|' + message.subject
-          const already = key in dups
+          if (message) {
+            const key = message.fromuser + '|' + message.subject
+            const already = key in dups
 
-          if (
-            !already &&
-            !message.deleted &&
-            (!message.outcomes || message.outcomes.length === 0)
-          ) {
-            dups[key] = true
-            ret.push(message)
+            if (
+              !already &&
+              !message.deleted &&
+              (!message.outcomes || message.outcomes.length === 0)
+            ) {
+              dups[key] = true
+              ret.push(message)
+            }
           }
-        }
-      })
+        })
+      } else {
+        // We are searching.  We get the messages from the store.
+        const messages = this.$store.getters['messages/getAll']
+        messages.forEach(message => {
+          if (message) {
+            const key = message.fromuser + '|' + message.subject
+            const already = key in dups
+
+            if (
+              !already &&
+              !message.deleted &&
+              (!message.outcomes || message.outcomes.length === 0)
+            ) {
+              dups[key] = true
+              ret.push(message)
+            }
+          }
+        })
+      }
 
       return ret
     },
@@ -383,6 +422,15 @@ export default {
       return ret.slice(0, 3)
     }
   },
+  watch: {
+    search(newval) {
+      if (!newval) {
+        // Search box cleared.  Revert to map search.
+        this.infiniteId++
+        this.$store.dispatch('messages/clear')
+      }
+    }
+  },
   created() {
     this.showGroups = this.startOnGroups
     this.groupids = this.initialGroupIds
@@ -427,48 +475,99 @@ export default {
       })
     },
     loadMore: async function($state) {
-      // We work out which messages that are currently on the map are not in our store, and fetch them serially
-      // in descending date order.  This avoids flooding the server.
       this.busy = true
 
-      let count = 0
-      const promises = []
-      const fetching = []
+      try {
+        if (!this.search) {
+          // We work out which messages that are currently on the map are not in our store, and fetch them
+          // in descending date order.  We limit to avoid flooding the server.
+          let count = 0
+          const promises = []
+          const fetching = []
 
-      for (const m of this.messagesOnMap) {
-        const message = this.$store.getters['messages/get'](m.id)
+          for (const m of this.messagesOnMap) {
+            const message = this.$store.getters['messages/get'](m.id)
 
-        if (!message && !this.fetching[m.id] && this.infiniteId) {
-          this.fetching[m.id] = true
-          fetching.push(m.id)
+            if (!message && !this.fetching[m.id] && this.infiniteId) {
+              this.fetching[m.id] = true
+              fetching.push(m.id)
 
-          promises.push(
-            this.$store.dispatch('messages/fetch', {
-              id: m.id,
-              summary: true
-            })
-          )
+              promises.push(
+                this.$store.dispatch('messages/fetch', {
+                  id: m.id,
+                  summary: true
+                })
+              )
 
-          count++
+              count++
 
-          if (count >= 5) {
-            // Don't fetch too many at once.
-            break
+              if (count >= 5) {
+                // Don't fetch too many at once.
+                break
+              }
+            }
+          }
+
+          // Use all-settled as some might fail.
+          await allSettled(promises)
+
+          fetching.forEach(id => {
+            this.fetched[id] = true
+            delete this.fetching[id]
+          })
+
+          if (count) {
+            $state.loaded()
+          } else {
+            $state.complete()
+          }
+        } else {
+          // We are searching.  We need to find a location near the centre of the map, because that's the way the
+          // sever works.
+          const res = await this.$axios.get(process.env.API + '/locations', {
+            params: {
+              lat: this.centre.lat,
+              lng: this.centre.lng
+            }
+          })
+
+          if (
+            res.data.ret === 0 &&
+            res.data.location &&
+            res.data.location.name
+          ) {
+            // We found one.
+            const messages = this.$store.getters['messages/getAll']
+            const currentCount = messages.length
+
+            let params = null
+
+            params = {
+              collection: 'Approved',
+              summary: true,
+              messagetype:
+                this.selectedType !== 'All' ? this.selectedType : null,
+              search: this.search,
+              nearlocation: res.data.location.id,
+              subaction: 'searchmess'
+            }
+
+            await this.$store.dispatch('messages/fetchMessages', params)
+            const newmessages = this.$store.getters['messages/getAll']
+
+            if (currentCount === newmessages.length) {
+              // Didn't find any more.
+              $state.complete()
+            } else {
+              // More to find, perhaps.
+              $state.loaded()
+            }
+          } else {
+            // No location found.  Weird, but can't be anything here.
+            $state.complete()
           }
         }
-      }
-
-      // Use all-settled as some might fail.
-      await allSettled(promises)
-
-      fetching.forEach(id => {
-        this.fetched[id] = true
-        delete this.fetching[id]
-      })
-
-      if (count) {
-        $state.loaded()
-      } else {
+      } catch (e) {
         $state.complete()
       }
 
@@ -495,12 +594,19 @@ export default {
     },
     groupsChanged(groupids) {
       this.groupids = groupids
+    },
+    doSearch() {
+      this.infiniteId++
+      this.$store.dispatch('messages/clear')
     }
   }
 }
 </script>
 <style scoped lang="scss">
 @import 'color-vars';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
 
 .mapbox {
   width: 100%;
@@ -529,5 +635,23 @@ export default {
 
 .shrink {
   width: unset;
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 2fr;
+  grid-template-rows: 1fr 0px;
+
+  @include media-breakpoint-down(sm) {
+    grid-template-columns: 2fr 10px 1fr 0px;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .search {
+    @include media-breakpoint-down(sm) {
+      grid-row: 2 / 3;
+      grid-column: 1 / 6;
+    }
+  }
 }
 </style>

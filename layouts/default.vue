@@ -36,10 +36,6 @@
               <v-icon name="coffee" scale="2" /><br>
               <span class="nav-item__text">ChitChat</span>
             </b-nav-item>
-            <b-nav-item id="menu-option-search" class="text-center small p-0" to="/search" @mousedown="maybeReload('/search')">
-              <v-icon name="search" scale="2" /><br>
-              <span class="nav-item__text">Search</span>
-            </b-nav-item>
             <b-nav-item v-if="!simple" id="menu-option-communityevents" class="text-center small p-0" to="/communityevents" @mousedown="maybeReload('/communityevents')">
               <v-icon name="calendar-alt" scale="2" /><br>
               <span class="nav-item__text">Events</span>
@@ -218,10 +214,6 @@
           <b-nav-item v-if="!simple" class="text-center p-0 white" to="/chitchat" @mousedown="maybeReload('/chitchat')">
             <v-icon name="coffee" scale="2" /><br>
             <span class="nav-item__text">ChitChat</span>
-          </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/search" @mousedown="maybeReload('/search')">
-            <v-icon name="search" scale="2" /><br>
-            <span class="nav-item__text">Search</span>
           </b-nav-item>
           <b-nav-item v-if="!simple" class="text-center p-0" to="/communityevents" @mousedown="maybeReload('/communityevents')">
             <v-icon name="calendar-alt" scale="2" /><br>

@@ -12,10 +12,10 @@
         <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" :chats="me.expectedchats" />
         <div class="bg-white d-block d-xl-none">
           <div class="d-flex justify-content-between flex-wrap">
-            <b-btn to="/give" variant="primary" class="topbutton ml-1 mr-1 mb-1">
+            <b-btn to="/give" variant="primary" class="topbutton m-1">
               <v-icon name="gift" />&nbsp;Give
             </b-btn>
-            <b-btn to="/find" variant="primary" class="topbutton ml-1 mr-1 mb-1">
+            <b-btn to="/find" variant="primary" class="topbutton m-1">
               <v-icon name="shopping-cart" />&nbsp;Ask
             </b-btn>
           </div>
