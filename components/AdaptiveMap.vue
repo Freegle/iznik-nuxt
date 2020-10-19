@@ -85,17 +85,20 @@
         <h2 class="sr-only">
           Search Filters
         </h2>
-        <div v-if="filters" variant="info" class="p-2 border border-info bg-white filters">
+        <div variant="info" class="p-2 border border-info bg-white filters">
           <GroupSelect
+            v-if="me"
             v-model="selectedGroup"
             label="Communities to view"
             label-sr-only
             all
             :all-my="false"
           />
-          <div />
+          <div v-if="me" />
           <label for="typeOptions" class="sr-only">Type of posts to view</label>
           <b-form-select id="typeOptions" v-model="selectedType" :options="typeOptions" class="shrink" />
+          <div v-if="!me" />
+          <div v-if="!me" />
           <div />
           <b-input-group class="shrink mt-1 mt-sm-0 search">
             <b-input
@@ -221,7 +224,7 @@ export default {
       required: false,
       default: false
     },
-    filters: {
+    filterGroup: {
       type: Boolean,
       required: false,
       default: false
@@ -492,12 +495,10 @@ export default {
       L.latLng(this.nelat, this.nelng)
     )
 
-    if (this.filters) {
-      // We might have a preference for which type of posts we view.
-      const postType = this.$store.getters['misc/get']('postType')
-      if (postType) {
-        this.selectedType = postType
-      }
+    // We might have a preference for which type of posts we view.
+    const postType = this.$store.getters['misc/get']('postType')
+    if (postType) {
+      this.selectedType = postType
     }
   },
   methods: {

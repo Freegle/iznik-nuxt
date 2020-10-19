@@ -27,7 +27,6 @@
           :initial-bounds="initialBounds"
           class="mt-2"
           force-messages
-          filters
           group-info
           jobs
           :show-many="false"
