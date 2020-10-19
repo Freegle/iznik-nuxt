@@ -96,20 +96,22 @@
           <label for="typeOptions" class="sr-only">Type of posts to view</label>
           <b-form-select id="typeOptions" v-model="selectedType" :options="typeOptions" class="shrink" />
           <div />
-          <b-input-group class="shrink mt-1 mt-sm-0 search">
-            <b-input
-              v-model="search"
-              type="text"
-              placeholder="Search posts"
-              autocomplete="off"
-              @keyup.enter.exact="doSearch"
-            />
-            <b-input-group-append>
-              <b-btn variant="secondary" title="Search" @click="doSearch">
-                <v-icon name="search" />
-              </b-btn>
-            </b-input-group-append>
-          </b-input-group>
+          <div role="search">
+            <b-input-group class="shrink mt-1 mt-sm-0 search">
+              <b-input
+                v-model="search"
+                type="text"
+                placeholder="Search posts"
+                autocomplete="off"
+                @keyup.enter.exact="doSearch"
+              />
+              <b-input-group-append>
+                <b-btn variant="secondary" title="Search" @click="doSearch">
+                  <v-icon name="search" />
+                </b-btn>
+              </b-input-group-append>
+            </b-input-group>
+          </div>
         </div>
         <GroupHeader v-if="group" :group="group" />
         <JobsTopBar v-if="jobs" />
