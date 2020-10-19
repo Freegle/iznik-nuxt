@@ -111,11 +111,22 @@ export default {
             : 0
 
         if (distAway < 50000) {
-          swlat = swlat === null ? group.lat : Math.min(swlat, group.lat)
-          swlng = swlng === null ? group.lng : Math.min(swlng, group.lng)
-          nelat = nelat === null ? group.lat : Math.max(nelat, group.lat)
-          nelng = nelng === null ? group.lng : Math.max(nelng, group.lng)
-          // TODO Group should contain bounding box so that we can work out how to position map initially.
+          swlat =
+            swlat === null
+              ? group.bbox.swlat
+              : Math.min(swlat, group.bbox.swlat)
+          swlng =
+            swlng === null
+              ? group.bbox.swlng
+              : Math.min(swlng, group.bbox.swlng)
+          nelat =
+            nelat === null
+              ? group.bbox.nelat
+              : Math.max(nelat, group.bbox.nelat)
+          nelng =
+            nelng === null
+              ? group.bbox.nelng
+              : Math.max(nelng, group.bbox.nelng)
         }
       }
     })
