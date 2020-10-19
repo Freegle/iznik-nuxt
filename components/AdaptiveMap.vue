@@ -28,9 +28,9 @@
             :ready.sync="mapready"
             :groupid="selectedGroup"
             :type="selectedType"
+            :search="search"
             :min-zoom="forceMessages ? 9 : minZoom"
             :max-zoom="maxZoom"
-            :use-store="search !== null && search !== ''"
             :show-many="showMany"
             @messages="messagesChanged($event)"
             @groups="groupsChanged($event)"
@@ -446,15 +446,6 @@ export default {
       return ret.slice(0, 3)
     }
   },
-  watch: {
-    search(newval) {
-      if (!newval) {
-        // Search box cleared.  Revert to map search.
-        this.infiniteId++
-        this.$store.dispatch('messages/clear')
-      }
-    }
-  },
   created() {
     this.showGroups = this.startOnGroups
     this.groupids = this.initialGroupIds
@@ -502,96 +493,47 @@ export default {
       this.busy = true
 
       try {
-        if (!this.search) {
-          // We work out which messages that are currently on the map are not in our store, and fetch them
-          // in descending date order.  We limit to avoid flooding the server.
-          let count = 0
-          const promises = []
-          const fetching = []
+        // We work out which messages that are currently on the map are not in our store, and fetch them
+        // in descending date order.  We limit to avoid flooding the server.
+        let count = 0
+        const promises = []
+        const fetching = []
 
-          for (const m of this.messagesOnMap) {
-            const message = this.$store.getters['messages/get'](m.id)
+        for (const m of this.messagesOnMap) {
+          const message = this.$store.getters['messages/get'](m.id)
 
-            if (!message && !this.fetching[m.id] && this.infiniteId) {
-              this.fetching[m.id] = true
-              fetching.push(m.id)
+          if (!message && !this.fetching[m.id] && this.infiniteId) {
+            this.fetching[m.id] = true
+            fetching.push(m.id)
 
-              promises.push(
-                this.$store.dispatch('messages/fetch', {
-                  id: m.id,
-                  summary: true
-                })
-              )
+            promises.push(
+              this.$store.dispatch('messages/fetch', {
+                id: m.id,
+                summary: true
+              })
+            )
 
-              count++
+            count++
 
-              if (count >= 5) {
-                // Don't fetch too many at once.
-                break
-              }
+            if (count >= 5) {
+              // Don't fetch too many at once.
+              break
             }
           }
+        }
 
-          // Use all-settled as some might fail.
-          await allSettled(promises)
+        // Use all-settled as some might fail.
+        await allSettled(promises)
 
-          fetching.forEach(id => {
-            this.fetched[id] = true
-            delete this.fetching[id]
-          })
+        fetching.forEach(id => {
+          this.fetched[id] = true
+          delete this.fetching[id]
+        })
 
-          if (count) {
-            $state.loaded()
-          } else {
-            $state.complete()
-          }
+        if (count) {
+          $state.loaded()
         } else {
-          // We are searching.  We need to find a location near the centre of the map, because that's the way the
-          // sever works.
-          const res = await this.$axios.get(process.env.API + '/locations', {
-            params: {
-              lat: this.centre.lat,
-              lng: this.centre.lng
-            }
-          })
-
-          if (
-            res.data.ret === 0 &&
-            res.data.location &&
-            res.data.location.name
-          ) {
-            // We found one.
-            const messages = this.$store.getters['messages/getAll']
-            const currentCount = messages.length
-
-            let params = null
-
-            params = {
-              collection: 'Approved',
-              summary: true,
-              messagetype:
-                this.selectedType !== 'All' ? this.selectedType : null,
-              search: this.search,
-              nearlocation: res.data.location.id,
-              subaction: 'searchmess',
-              context: this.context
-            }
-
-            await this.$store.dispatch('messages/fetchMessages', params)
-            const newmessages = this.$store.getters['messages/getAll']
-            this.context = this.$store.getters['messages/getContext']
-
-            if (currentCount === newmessages.length) {
-              // Didn't find any more.
-              $state.complete()
-            } else {
-              // More to find, perhaps.
-              $state.loaded()
-            }
-          } else {
-            // No location found.  Weird, but can't be anything here.
-            $state.complete()
-          }
+          $state.complete()
         }
       } catch (e) {
         $state.complete()
