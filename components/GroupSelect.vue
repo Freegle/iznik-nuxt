@@ -1,7 +1,7 @@
 <template>
   <client-only>
     <div>
-      <b-form-select v-model="selectedGroup" size=":size" :options="groupOptions" />
+      <b-form-select :id="selectid" v-model="selectedGroup" size=":size" :options="groupOptions" />
     </div>
   </client-only>
 </template>
@@ -25,6 +25,11 @@ export default {
      *
      * (0 is not a valid group number)
      */
+    selectid: {
+      type: String,
+      required: false,
+      default: ''
+    },
     value: {
       type: Number,
       default: null

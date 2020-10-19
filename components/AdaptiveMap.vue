@@ -85,9 +85,11 @@
           Search Filters
         </h2>
         <div v-if="filters" variant="info" class="p-2 border border-info bg-white filters">
-          <GroupSelect v-model="selectedGroup" all :all-my="false" />
+          <label for="communitiesList" class="sr-only">Communities to view</label>
+          <GroupSelect v-model="selectedGroup" selectid="communitiesList" all :all-my="false" />
           <div />
-          <b-form-select v-model="selectedType" :options="typeOptions" class="shrink" />
+          <label for="typeOptions" class="sr-only">Type of posts to view</label>
+          <b-form-select id="typeOptions" v-model="selectedType" :options="typeOptions" class="shrink" />
           <div />
           <b-input-group class="shrink mt-1 mt-sm-0 search">
             <b-input
