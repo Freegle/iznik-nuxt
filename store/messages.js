@@ -127,11 +127,18 @@ export const actions = {
 
   async fetch({ commit }, params) {
     // Don't log errors on fetches of individual messages
+    const instance = state.instance
+
     const { message } = await this.$api.message.fetch(params, data => {
       return data.ret !== 3
     })
 
-    commit('add', message)
+    if (state.instance === instance) {
+      // We might have some extra information to add in for this messages which we obtained earlier when searching.
+      message.matchedon = params.matchedon
+
+      commit('add', message)
+    }
   },
 
   async update({ commit, dispatch }, params) {

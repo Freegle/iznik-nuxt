@@ -28,7 +28,7 @@
             :ready.sync="mapready"
             :groupid="selectedGroup"
             :type="selectedType"
-            :search="search"
+            :search="searchOn"
             :min-zoom="forceMessages ? 9 : minZoom"
             :max-zoom="maxZoom"
             :show-many="showMany"
@@ -296,6 +296,7 @@ export default {
       ],
       selectedGroup: null,
       search: null,
+      searchOn: null,
       context: null
     }
   },
@@ -453,6 +454,14 @@ export default {
       return ret.slice(0, 3)
     }
   },
+  watch: {
+    search(newval) {
+      if (!newval) {
+        // We've cleared the search box, so cancel the search and return the map to normal.
+        this.searchOn = null
+      }
+    }
+  },
   created() {
     this.showGroups = this.startOnGroups
     this.groupids = this.initialGroupIds
@@ -511,12 +520,14 @@ export default {
 
           if (!message && !this.fetching[m.id] && this.infiniteId) {
             this.fetching[m.id] = true
+
             fetching.push(m.id)
 
             promises.push(
               this.$store.dispatch('messages/fetch', {
                 id: m.id,
-                summary: true
+                summary: true,
+                matchedon: m.matchedon ? m.matchedon : null
               })
             )
 
@@ -572,13 +583,15 @@ export default {
     groupsChanged(groupids) {
       this.groupids = groupids
     },
-    doSearch() {
-      if (this.busy) {
-        // Try later.  Otherwise we might end up with messages in store not matching our search.
-        setTimeout(this.doSearch, 100)
-      } else {
-        this.infiniteId++
-        this.$store.dispatch('messages/clear')
+    async doSearch() {
+      if (this.search) {
+        if (this.busy) {
+          // Try later.  Otherwise we might end up with messages in store not matching our search.
+          setTimeout(this.doSearch, 100)
+        } else {
+          this.searchOn = this.search
+          await this.$store.dispatch('messages/clear')
+        }
       }
     }
   }
