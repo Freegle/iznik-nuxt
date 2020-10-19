@@ -61,14 +61,11 @@ export default {
       let last = 0
 
       this.chatmessages.forEach(m => {
-        console.log('Check message', m)
-
         if (m.userid === this.myid) {
           last = Math.max(last, new Date(m.date).getTime())
         }
       })
 
-      console.log('Last from me', last)
       return last
     },
 

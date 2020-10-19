@@ -258,6 +258,7 @@ export default {
     },
     async getMessages() {
       let messages = []
+      this.$emit('update:loading', true)
 
       // Get the messages from the server which are in the bounds of the map.
       const bounds = this.mapObject.getBounds()
@@ -300,7 +301,6 @@ export default {
         }
       }
 
-      console.log('Get messages', this.search, params)
       const ret = await this.$api.message.fetchMessages(params)
 
       if (ret.ret === 0 && ret.messages) {
@@ -352,6 +352,7 @@ export default {
 
       this.messageLocations = messages
       this.$emit('messages', messages)
+      this.$emit('update:loading', false)
 
       return cloneDeep(messages)
     },

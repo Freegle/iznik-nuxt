@@ -26,6 +26,7 @@
             :zoom.sync="zoom"
             :centre.sync="centre"
             :ready.sync="mapready"
+            :loading.sync="loading"
             :groupid="selectedGroup"
             :type="selectedType"
             :search="searchOn"
@@ -136,7 +137,7 @@
               <b-img-lazy src="~/static/loader.gif" alt="Loading" />
             </span>
           </infinite-loading>
-          <NoticeMessage v-if="!busy && search && !filteredMessages.length">
+          <NoticeMessage v-if="!busy && !loading && searchOn && !filteredMessages.length">
             <p>
               Sorry, we didn't find anything.  Things come and go quickly, though, so you could try later.  Or you could:
             </p>
@@ -256,7 +257,7 @@ export default {
       // Map stuff
       heightFraction: 3,
       postcode: null,
-      busy: false,
+      loading: false,
       lat: null,
       lng: null,
       swlat: null,
@@ -271,6 +272,7 @@ export default {
       mapready: process.server,
 
       // Infinite message scroll
+      busy: false,
       infiniteId: +new Date(),
       distance: 1000,
       messagesOnMap: [],
