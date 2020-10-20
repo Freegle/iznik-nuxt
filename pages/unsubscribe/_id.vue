@@ -26,17 +26,17 @@
             </nuxt-link> and adjust your Mail Settings.
           </notice-message>
           <div v-if="loggedIn">
-            <b-btn size="lg" variant="primary" class="mb-2" @click="unsubscribe">
-              Unsubscribe completely
+            <b-btn v-if="!groupid" size="lg" variant="primary" class="mb-2" @click="unsubscribe">
+              Unsubscribe and delete my account
             </b-btn>
             <div v-if="groupCount" class="mt-2">
               <p>You can also leave communities individually:</p>
               <div class="mb-2">
                 <GroupRememberSelect v-model="groupid" remember="unsubscribe" size="lg" />
-                <b-btn v-if="groupid" variant="white" :disabled="leaving" @click="leave">
+                <b-btn v-if="groupid" variant="white" :disabled="leaving" class="mt-2" @click="leave">
                   <v-icon v-if="leaving" name="sync" class="fa-spin" />
                   <v-icon v-else name="trash-alt" />
-                  Leave the community
+                  Leave this community
                 </b-btn>
               </div>
             </div>
