@@ -84,7 +84,7 @@ export default {
           (group.role === 'Moderator' || group.role === 'Owner') &&
           group.publish
         ) {
-          if (!group.facebook) {
+          if (!group.facebook || !group.facebook.valid) {
             ret.push({
               group: group
             })
