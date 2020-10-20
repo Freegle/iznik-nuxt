@@ -122,7 +122,7 @@
         <div v-if="!postsVisible && messagesOnMap && messagesOnMap.length" class="d-flex justify-content-center mt-1 mb-1">
           <NoticeMessage variant="info">
             <v-icon name="angle-double-down" class="pulsate" />
-            Scroll down to see the posts.
+            Scroll down to see <span v-if="searchOn">results for "<b>{{ searchOn }}</b>"</span><span v-else>the posts</span>.
             <v-icon name="angle-double-down" class="pulsate" />
           </NoticeMessage>
         </div>
