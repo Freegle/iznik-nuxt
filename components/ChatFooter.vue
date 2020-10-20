@@ -50,8 +50,10 @@
         max-rows="8"
         autocapitalize="none"
         @focus="markRead"
-        @[keydownevent].enter.prevent
-        @[keyupevent].enter.prevent
+        @[keydownevent].enter.prevent=""
+        @[keyupevent].enter.exact="send"
+        @[keydownevent].enter.shift.exact.prevent="newline"
+        @[keydownevent].alt.shift.exact.prevent="newline"
       />
     </div>
     <div v-if="!spammer" class="bg-white pt-1 pb-1">
@@ -205,13 +207,13 @@ export default {
   computed: {
     keydownevent() {
       console.log('keydownEvent: ' + this.enterNewLine)
-      return 'keydown'
-      // return this.enterNewLine ? 'keydown' : null
+      //return 'keydown'
+      return this.enterNewLine ? 'keydown' : null
     },
     keyupevent() {
       console.log('keyupevent: ' + this.enterNewLine)
-      return 'keyup'
-      // return this.enterNewLine ? 'keyup' : null
+      //return 'keyup'
+      return this.enterNewLine ? 'keyup' : null
     }
   }
 }
