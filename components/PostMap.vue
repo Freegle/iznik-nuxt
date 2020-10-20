@@ -25,6 +25,14 @@
         >
           <l-tile-layer :url="osmtile" :attribution="attribution" />
           <ClusterMarker v-if="messagesForMap.length" :markers="messagesForMap" :map="mapObject" :tag="['post', 'posts']" />
+          <div v-if="mod && !mod">
+            <!--            For mods, show the groups they're in to make it clearer why the map covers the area it does.-->
+            <l-marker v-for="group in mygroups" :key="'groupmarker-' + group.id" :lat-lng="[group.lat, group.lng]" :icon="groupIcon">
+              <l-tooltip>
+                {{ group.namedisplay }}
+              </l-tooltip>
+            </l-marker>
+          </div>
         </l-map>
       </vue-draggable-resizable>
     </client-only>
@@ -132,12 +140,20 @@ export default {
 
       return ret
     },
+    mygroups() {
+      return this.$store.getters['auth/groups']
+    },
     messagesForMap() {
       return this.mapObject &&
         this.messageLocations &&
         this.messageLocations.length
         ? this.messageLocations
         : []
+    },
+    groupIcon() {
+      return new L.Icon({
+        iconUrl: '/mapmarker.gif'
+      })
     }
   },
   watch: {

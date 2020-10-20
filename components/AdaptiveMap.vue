@@ -119,12 +119,20 @@
             </b-input-group>
           </div>
         </div>
+        <div v-if="!postsVisible && messagesOnMap && messagesOnMap.length" class="d-flex justify-content-center mt-1 mb-1">
+          <NoticeMessage variant="info">
+            <v-icon name="angle-double-down" class="pulsate" />
+            Scroll down to see the posts.
+            <v-icon name="angle-double-down" class="pulsate" />
+          </NoticeMessage>
+        </div>
         <GroupHeader v-if="group" :group="group" />
         <JobsTopBar v-if="jobs" />
 
         <h2 class="sr-only">
           List of WANTEDs and OFFERs
         </h2>
+        <div v-observe-visibility="messageVisibilityChanged" />
         <div v-if="filteredMessages && filteredMessages.length">
           <div v-for="message in filteredMessages" :key="'messagelist-' + message.id" class="p-0">
             <Message v-bind="message" />
@@ -164,6 +172,8 @@
 </template>
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
+import Vue from 'vue'
+import VueObserveVisibility from 'vue-observe-visibility'
 import map from '@/mixins/map.js'
 const AdaptiveMapGroup = () => import('./AdaptiveMapGroup')
 const ExternalLink = () => import('./ExternalLink')
@@ -175,6 +185,8 @@ const GroupMap = () => import('~/components/GroupMap')
 const allSettled = require('promise.allsettled')
 const GroupHeader = () => import('~/components/GroupHeader.vue')
 const JobsTopBar = () => import('~/components/JobsTopBar')
+
+Vue.use(VueObserveVisibility)
 
 let L = null
 
@@ -279,6 +291,7 @@ export default {
       mapready: process.server,
 
       // Infinite message scroll
+      postsVisible: true,
       busy: false,
       infiniteId: +new Date(),
       distance: 1000,
@@ -591,6 +604,9 @@ export default {
           await this.$store.dispatch('messages/clear')
         }
       }
+    },
+    messageVisibilityChanged(visible) {
+      this.postsVisible = visible
     }
   }
 }
