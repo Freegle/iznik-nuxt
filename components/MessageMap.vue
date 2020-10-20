@@ -26,7 +26,8 @@ export default {
   props: {
     home: {
       type: Object,
-      required: true
+      required: false,
+      default: null
     },
     position: {
       type: Object,
