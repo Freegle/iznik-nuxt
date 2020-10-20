@@ -129,13 +129,24 @@ export const actions = {
     // Don't log errors on fetches of individual messages
     const instance = state.instance
 
-    const { message } = await this.$api.message.fetch(params, data => {
+    const { message, groups } = await this.$api.message.fetch(params, data => {
       return data.ret !== 3
     })
 
     if (state.instance === instance) {
       // We might have some extra information to add in for this messages which we obtained earlier when searching.
       message.matchedon = params.matchedon
+
+      // Most group info returned on the call we don't care about because it's also in the message.  But whether
+      // or not the group is closed matters.
+      if (groups) {
+        for (const gid in groups) {
+          const g = groups[gid]
+          if (g.settings && g.settings.closed) {
+            message.closed = true
+          }
+        }
+      }
 
       commit('add', message)
     }

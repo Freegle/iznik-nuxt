@@ -99,97 +99,100 @@
         </div>
       </b-card-body>
       <b-card-footer v-if="expanded" class="p-1 pt-3">
-        <NoticeMessage v-if="sent" variant="info" class="d-block d-sm-none mb-1">
-          We've sent your message.  You can see replies in the
-          <nuxt-link to="/chats">
-            <v-icon name="comments" /> Chats
-          </nuxt-link> section.
-        </NoticeMessage>
-        <EmailValidator
-          v-if="!me"
-          ref="email"
-          size="lg"
-          label="Your email address:"
-          :email.sync="email"
-          :valid.sync="emailValid"
-        />
-        <b-form-group
-          class="flex-grow-1"
-          label="Your reply:"
-          :label-for="'replytomessage-' + expanded.id"
-          :description="expanded.type === 'Offer' ? 'Interested?  Please explain why you\'d like it and when you can collect.  Always be polite and helpful.  If appropriate, ask if it\'s working.' : 'Can you help?  If you have what they\'re looking for, let them know.'"
-        >
-          <b-form-textarea
-            v-if="expanded.type == 'Offer'"
-            :id="'replytomessage-' + expanded.id"
-            v-model="reply"
-            rows="3"
-            max-rows="8"
-            class="border border-success"
-          />
-          <b-form-textarea
-            v-if="expanded.type == 'Wanted'"
-            :id="'replytomessage-' + expanded.id"
-            v-model="reply"
-            rows="3"
-            max-rows="8"
-            class="flex-grow-1"
-          />
-        </b-form-group>
-        <div v-if="!me">
-          <div class="contents">
-            <div>
-              <b-btn size="lg" variant="primary" :disabled="disableSend" @click="registerOrSend">
-                Send your reply
-                <v-icon v-if="replying" name="sync" class="fa-spin" />
-                <v-icon v-else name="angle-double-right" />&nbsp;
-              </b-btn>
-            </div>
-            <div />
-            <MessageMap v-if="showMap" :home="home" :position="{ lat: expanded.lat, lng: expanded.lng }" />
-          </div>
-          <p class="mt-1">
-            If you're a new freegler then welcome!  You'll get emails.  Name, approx. location, and profile picture are public - you
-            can hide your real name and picture from Settings.  This adds cookies and local
-            storage.  Read <nuxt-link target="_blank" to="/terms">
-              Terms of Use
-            </nuxt-link> and
-            <nuxt-link target="_blank" to="/privacy">
-              Privacy
-            </nuxt-link> for details.
-          </p>
-        </div>
+        <CovidClosed v-if="expanded && expanded.closed" />
         <div v-else>
-          <div class="contents">
-            <div>
-              <b-form-group
-                class="flex-grow-1"
-                label="Your postcode:"
-                :label-for="'replytomessage-' + expanded.id"
-                description="So that we know how far away you are.  The closer the better."
-              >
-                <Postcode @selected="savePostcode" />
-              </b-form-group>
-              <b-btn size="lg" variant="primary" class="d-none d-md-block" :disabled="disableSend" @click="sendReply">
-                Send your reply
-                <v-icon v-if="replying" name="sync" class="fa-spin" />
-                <v-icon v-else name="angle-double-right" />&nbsp;
-              </b-btn>
-              <b-btn
-                size="lg"
-                variant="primary"
-                class="d-block d-md-none mt-2"
-                block
-                :disabled="disableSend"
-                @click="sendReply"
-              >
-                Send your reply
-                <v-icon v-if="replying" name="sync" class="fa-spin" />
-                <v-icon v-else name="angle-double-right" />&nbsp;
-              </b-btn>
+          <NoticeMessage v-if="sent" variant="info" class="d-block d-sm-none mb-1">
+            We've sent your message.  You can see replies in the
+            <nuxt-link to="/chats">
+              <v-icon name="comments" /> Chats
+            </nuxt-link> section.
+          </NoticeMessage>
+          <EmailValidator
+            v-if="!me"
+            ref="email"
+            size="lg"
+            label="Your email address:"
+            :email.sync="email"
+            :valid.sync="emailValid"
+          />
+          <b-form-group
+            class="flex-grow-1"
+            label="Your reply:"
+            :label-for="'replytomessage-' + expanded.id"
+            :description="expanded.type === 'Offer' ? 'Interested?  Please explain why you\'d like it and when you can collect.  Always be polite and helpful.  If appropriate, ask if it\'s working.' : 'Can you help?  If you have what they\'re looking for, let them know.'"
+          >
+            <b-form-textarea
+              v-if="expanded.type == 'Offer'"
+              :id="'replytomessage-' + expanded.id"
+              v-model="reply"
+              rows="3"
+              max-rows="8"
+              class="border border-success"
+            />
+            <b-form-textarea
+              v-if="expanded.type == 'Wanted'"
+              :id="'replytomessage-' + expanded.id"
+              v-model="reply"
+              rows="3"
+              max-rows="8"
+              class="flex-grow-1"
+            />
+          </b-form-group>
+          <div v-if="!me">
+            <div class="contents">
+              <div>
+                <b-btn size="lg" variant="primary" :disabled="disableSend" @click="registerOrSend">
+                  Send your reply
+                  <v-icon v-if="replying" name="sync" class="fa-spin" />
+                  <v-icon v-else name="angle-double-right" />&nbsp;
+                </b-btn>
+              </div>
+              <div />
+              <MessageMap v-if="showMap" :home="home" :position="{ lat: expanded.lat, lng: expanded.lng }" />
             </div>
-            <div />
-            <MessageMap v-if="showMap" :home="home" :position="{ lat: expanded.lat, lng: expanded.lng }" class="border border-black rounded" />
+            <p class="mt-1">
+              If you're a new freegler then welcome!  You'll get emails.  Name, approx. location, and profile picture are public - you
+              can hide your real name and picture from Settings.  This adds cookies and local
+              storage.  Read <nuxt-link target="_blank" to="/terms">
+                Terms of Use
+              </nuxt-link> and
+              <nuxt-link target="_blank" to="/privacy">
+                Privacy
+              </nuxt-link> for details.
+            </p>
+          </div>
+          <div v-else>
+            <div class="contents">
+              <div>
+                <b-form-group
+                  class="flex-grow-1"
+                  label="Your postcode:"
+                  :label-for="'replytomessage-' + expanded.id"
+                  description="So that we know how far away you are.  The closer the better."
+                >
+                  <Postcode @selected="savePostcode" />
+                </b-form-group>
+                <b-btn size="lg" variant="primary" class="d-none d-md-block" :disabled="disableSend" @click="sendReply">
+                  Send your reply
+                  <v-icon v-if="replying" name="sync" class="fa-spin" />
+                  <v-icon v-else name="angle-double-right" />&nbsp;
+                </b-btn>
+                <b-btn
+                  size="lg"
+                  variant="primary"
+                  class="d-block d-md-none mt-2"
+                  block
+                  :disabled="disableSend"
+                  @click="sendReply"
+                >
+                  Send your reply
+                  <v-icon v-if="replying" name="sync" class="fa-spin" />
+                  <v-icon v-else name="angle-double-right" />&nbsp;
+                </b-btn>
+              </div>
+              <div />
+              <MessageMap v-if="showMap" :home="home" :position="{ lat: expanded.lat, lng: expanded.lng }" class="border border-black rounded" />
+            </div>
           </div>
         </div>
       </b-card-footer>
@@ -229,6 +232,7 @@ import NewUserInfo from './NewUserInfo'
 import MessagePhotosModal from './MessagePhotosModal'
 import Postcode from './Postcode'
 import MessageMap from './MessageMap'
+import CovidClosed from './CovidClosed'
 import twem from '~/assets/js/twem'
 import waitForRef from '@/mixins/waitForRef'
 
@@ -239,6 +243,7 @@ const MessageHistory = () => import('~/components/MessageHistory')
 
 export default {
   components: {
+    CovidClosed,
     MessageMap,
     Postcode,
     MessagePhotosModal,
@@ -411,6 +416,7 @@ export default {
   async mounted() {
     if (this.startExpanded) {
       this.expanded = this.$store.getters['messages/get'](this.id)
+      this.view()
     }
 
     const reply = this.replyToSend
@@ -419,7 +425,6 @@ export default {
       // Because of the way persistent store is restored, we might or might not know that we have a reply to send here.
       this.reply = reply.replyMessage
       await this.expand()
-      console.log('Send it')
       this.sendReply()
     }
   },
@@ -430,9 +435,11 @@ export default {
       })
 
       const message = this.$store.getters['messages/get'](this.id)
-
       this.expanded = message
 
+      this.view()
+    },
+    view() {
       const me = this.$store.getters['auth/user']
 
       if (me) {
@@ -441,11 +448,9 @@ export default {
         })
       }
     },
-
     contract() {
       this.expanded = null
     },
-
     async showPhotos() {
       if (!this.expanded) {
         await this.expand()
@@ -455,15 +460,12 @@ export default {
         this.$refs.photoModal.show()
       })
     },
-
     share() {
       this.$refs.shareModal.show()
     },
-
     report() {
       this.$refs.reportModal.show()
     },
-
     async registerOrSend() {
       // We've got a reply and an email address.  Maybe the email address is a registered user, maybe it's new.  If
       // it's a registered user then we want to force them to sign in.
@@ -504,7 +506,6 @@ export default {
         this.sendReply()
       }
     },
-
     async sendReply() {
       // We have different buttons which display at different screen sizes.  Which of those is visible and hence
       // clicked tells us whether we want to open this chat in a popup or not.
