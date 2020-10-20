@@ -95,13 +95,15 @@
             :all-my="false"
           />
           <div v-if="me" />
-          <label for="typeOptions" class="sr-only">Type of posts to view</label>
-          <b-form-select id="typeOptions" v-model="selectedType" :options="typeOptions" class="shrink" />
+          <div>
+            <label for="typeOptions" class="sr-only">Type of posts to view</label>
+            <b-form-select id="typeOptions" v-model="selectedType" :options="typeOptions" class="shrink" />
+          </div>
           <div v-if="!me" />
           <div v-if="!me" />
           <div />
-          <div role="search">
-            <b-input-group class="shrink mt-1 mt-sm-0 search">
+          <div role="search" class="search">
+            <b-input-group class="shrink mt-1 mt-sm-0">
               <b-input
                 v-model="search"
                 type="text"
