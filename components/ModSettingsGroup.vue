@@ -196,7 +196,7 @@
               :groupid="groupid"
               name="settings.closed"
               label="Closed for COVID-19"
-              description="Whether members can post on your community or whether they will see a COVID-19 warning."
+              description="See https://wiki.ilovefreegle.org/Closed_Groups for information about what this means."
               type="toggle"
               toggle-checked="Closed"
               toggle-unchecked="Open"

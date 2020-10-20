@@ -315,15 +315,6 @@ export default {
 
       return ret
     },
-    closed() {
-      let ret = false
-
-      if (this.group && this.group.settings && this.group.settings.closed) {
-        ret = true
-      }
-
-      return ret
-    },
     regions() {
       const regions = []
 
