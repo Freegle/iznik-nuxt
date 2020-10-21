@@ -604,6 +604,7 @@ export default {
         } else {
           this.searchOn = this.search
           await this.$store.dispatch('messages/clear')
+          this.infiniteId++
         }
       }
     },
