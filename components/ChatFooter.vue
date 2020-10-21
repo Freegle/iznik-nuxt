@@ -48,12 +48,12 @@
         placeholder="Type here..."
         rows="3"
         max-rows="8"
-        autocapitalize="none"
+        :autocapitalize="this.enterNewLine ? 'none' : false"
         @focus="markRead"
-        @[keydownevent].enter.prevent=""
-        @[keydownevent].enter.shift.exact.prevent="newline"
-        @[keydownevent].alt.shift.exact.prevent="newline"
-        @[keyupevent].enter.exact="send"
+        @[keydownEventIfNotEnterForNewLine].enter.prevent=""
+        @[keydownEventIfNotEnterForNewLine].enter.shift.exact.prevent="newline"
+        @[keydownEventIfNotEnterForNewLine].alt.shift.exact.prevent="newline"
+        @[keyupEventIfNotEnterForNewLine].enter.exact="send"
       />
     </div>
     <div v-if="!spammer" class="bg-white pt-1 pb-1">
@@ -217,12 +217,10 @@ export default {
   },
   mixins: [waitForRef, chat, chatCollate],
   computed: {
-    keydownevent() {
-      console.log('keydownEvent: ' + this.enterNewLine)
+    keydownEventIfNotEnterForNewLine() {
       return this.enterNewLine ? null : 'keydown'
     },
-    keyupevent() {
-      console.log('keyupevent: ' + this.enterNewLine)
+    keyupeventIfNotEnterForNewLine() {
       return this.enterNewLine ? null : 'keyup'
     }
   }
