@@ -40,6 +40,7 @@
         </div>
         <div v-else :style="mapHeight" />
       </div>
+      <div v-observe-visibility="mapVisibilityChanged" />
     </client-only>
     <div v-if="mapready" class="rest">
       <div v-if="showClosestGroups" class="d-none d-md-flex flex-wrap mb-1 justify-content-between border p-2 bg-white">
@@ -119,7 +120,7 @@
             </b-input-group>
           </div>
         </div>
-        <div v-if="!postsVisible && messagesOnMap && messagesOnMap.length" class="d-flex justify-content-center mt-1 mb-1">
+        <div v-if="mapVisible && !postsVisible && messagesOnMap && messagesOnMap.length" class="d-flex justify-content-center mt-1 mb-1">
           <NoticeMessage variant="info">
             <v-icon name="angle-double-down" class="pulsate" />
             Scroll down to see <span v-if="searchOn">results for "<b>{{ searchOn }}</b>"</span><span v-else>the posts</span>.
@@ -289,6 +290,7 @@ export default {
       centre: null,
       showGroups: false,
       mapready: process.server,
+      mapVisible: true,
 
       // Infinite message scroll
       postsVisible: true,
@@ -607,6 +609,9 @@ export default {
     },
     messageVisibilityChanged(visible) {
       this.postsVisible = visible
+    },
+    mapVisibilityChanged(visible) {
+      this.mapVisible = visible
     }
   }
 }
