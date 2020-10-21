@@ -127,7 +127,7 @@
             <v-icon name="angle-double-down" class="pulsate" />
           </NoticeMessage>
         </div>
-        <GroupHeader v-if="group" :group="group" />
+        <GroupHeader v-if="group" :group="group" show-join />
         <JobsTopBar v-if="jobs" />
 
         <h2 class="sr-only">
