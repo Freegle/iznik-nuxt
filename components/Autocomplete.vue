@@ -29,7 +29,7 @@
         <v-icon name="search" />&nbsp;Search
       </b-button>
     </div>
-    <div v-if="invalid" class="text-danger">
+    <div v-if="invalid" class="text-danger text-center">
       Sorry, we can't find that.
     </div>
     <div
