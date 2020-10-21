@@ -41,20 +41,24 @@
         </notice-message>
         <ModComments v-if="mod && chat && chat.chattype === 'User2Mod' && otheruser" :user="otheruser" class="mt-1" />
       </div>
-      <b-form-textarea
-        v-if="!spammer"
-        ref="chatarea"
-        v-model="sendmessage"
-        placeholder="Type here..."
-        rows="3"
-        max-rows="8"
-        :autocapitalize="this.enterNewLine ? 'none' : false"
-        @focus="markRead"
-        @[keydownEventIfNotEnterForNewLine].enter.prevent=""
-        @[keydownEventIfNotEnterForNewLine].enter.shift.exact.prevent="newline"
-        @[keydownEventIfNotEnterForNewLine].alt.shift.exact.prevent="newline"
-        @[keyupEventIfNotEnterForNewLine].enter.exact="send"
-      />
+      <div v-if="!spammer">
+        <label for="chatmessage" class="sr-only">Chat message</label>
+        <!-- autocapitalize is set to none because of this - https://github.com/angular/angular/issues/32963 -->
+        <b-form-textarea
+          id="chatmessage"
+          ref="chatarea"
+          v-model="sendmessage"
+          placeholder="Type here..."
+          rows="3"
+          max-rows="8"
+          :autocapitalize="enterNewLine ? 'none' : false"
+          @focus="markRead"
+          @[keydownEventIfNotEnterForNewLine].enter.prevent=""
+          @[keydownEventIfNotEnterForNewLine].enter.shift.exact.prevent="newline"
+          @[keydownEventIfNotEnterForNewLine].alt.shift.exact.prevent="newline"
+          @[keyupEventIfNotEnterForNewLine].enter.exact="send"
+        />
+      </div>
     </div>
     <div v-if="!spammer" class="bg-white pt-1 pb-1">
       <div class="d-none d-lg-block">
