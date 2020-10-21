@@ -29,6 +29,9 @@
         <v-icon name="search" />&nbsp;Search
       </b-button>
     </div>
+    <div v-if="invalid" class="text-danger">
+      Sorry, we can't find that.
+    </div>
     <div
       v-show="showList && json.length"
       :class="`${getClassName('list')} autocomplete autocomplete-list position-relative`"
@@ -234,7 +237,7 @@ export default {
       return faSearch
     },
     wrapClass() {
-      let border
+      let border = ''
 
       switch (this.variant) {
         case 'primary': {
@@ -251,7 +254,8 @@ export default {
         }
       }
 
-      return 'autocomplete-wrap ' + (this.focused ? ' autocomplete-wrap-focus' : '') + ' ' + border
+      return 'autocomplete-wrap ' + (this.focused ? ' autocomplete-wrap-focus' : '') + ' ' + border + ' ' +
+        (this.invalid ? 'autocomplete-wrap-invalid' : '')
     },
     parentClass() {
       return 'd-flex ' + (this.searchbutton ? 'autocomplete-parent-focus' : '') + (this.invalid ? ' invalid' : '')
@@ -754,6 +758,12 @@ input[invalid='true'] {
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
   border-color: $color-blue--x-light !important;
 }
+.autocomplete-wrap-invalid {
+  border-color: transparent !important;
+  outline: 0;
+  box-shadow: none !important;
+}
+
 .input-group.autocomplete-wrap {
   border: 1px solid $color-gray-4;
   border-top-left-radius: 4px;
