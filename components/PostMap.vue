@@ -17,14 +17,19 @@
           ref="map"
           :key="'map-' + bump"
           :style="'width: 100%; height: ' + mapHeight + 'px'"
-          :min-zoom="minZoom - 1"
+          :min-zoom="minZoom"
           :max-zoom="maxZoom"
           @ready="ready"
           @zoomend="idle"
           @moveend="idle"
         >
           <l-tile-layer :url="osmtile" :attribution="attribution" />
-          <ClusterMarker v-if="messagesForMap.length" :markers="messagesForMap" :map="mapObject" :tag="['post', 'posts']" @click="idle" />
+          <div v-if="showMessages">
+            <ClusterMarker v-if="messagesForMap.length" :markers="messagesForMap" :map="mapObject" :tag="['post', 'posts']" @click="idle" />
+          </div>
+          <div v-else>
+            <GroupMarker v-for="g in groupsInBounds" :key="'marker-' + g.id + '-' + zoom" :group="g" :size="largeGroupMarkers ? 'rich' : 'poor'" />
+          </div>
           <div v-if="mod">
             <!--            For mods, show the groups they're in to make it clearer why the map covers the area it does.-->
             <l-marker v-for="group in mygroups" :key="'groupmarker-' + group.id" :lat-lng="[group.lat, group.lng]" :icon="groupIcon">
@@ -46,6 +51,7 @@
 <script>
 import VueDraggableResizable from 'vue-draggable-resizable/src/components/vue-draggable-resizable'
 import cloneDeep from 'lodash.clonedeep'
+import GroupMarker from './GroupMarker'
 import map from '@/mixins/map.js'
 import waitForRef from '@/mixins/waitForRef'
 const ClusterMarker = () => import('./ClusterMarker')
@@ -61,7 +67,8 @@ if (process.browser) {
 export default {
   components: {
     ClusterMarker,
-    VueDraggableResizable
+    VueDraggableResizable,
+    GroupMarker
   },
   mixins: [map, waitForRef],
   props: {
@@ -77,12 +84,22 @@ export default {
     minZoom: {
       type: Number,
       required: false,
-      default: 10
+      default: 5
     },
     maxZoom: {
       type: Number,
       required: false,
       default: 15
+    },
+    postZoom: {
+      type: Number,
+      required: false,
+      default: 10
+    },
+    forceMessages: {
+      type: Boolean,
+      required: false,
+      default: false
     },
     groupid: {
       type: Number,
@@ -103,6 +120,11 @@ export default {
       type: Boolean,
       required: false,
       default: true
+    },
+    region: {
+      type: String,
+      required: false,
+      default: null
     }
   },
   data: function() {
@@ -114,7 +136,8 @@ export default {
       shownMany: false,
       bump: 1,
       resizedHeight: null,
-      lastBounds: null
+      lastBounds: null,
+      zoom: 5
     }
   },
   computed: {
@@ -132,6 +155,12 @@ export default {
 
       return height
     },
+    showMessages() {
+      // We're zoomed in far enough or we're forcing ourselves to show them (but not so that it's silly)
+      return (
+        this.zoom >= this.postZoom || (this.forceMessages && this.zoom >= 7)
+      )
+    },
     groups() {
       const ret = []
 
@@ -144,6 +173,59 @@ export default {
       }
 
       return ret
+    },
+    largeGroupMarkers() {
+      // Can't get this to look sane.
+      return false
+    },
+    allGroups() {
+      return this.$store.getters['group/list']
+    },
+    groupsInBounds() {
+      const groups = this.allGroups
+      const bounds = this.mapObject ? this.mapObject.getBounds() : null
+      const ret = []
+
+      if (!process.browser) {
+        // SSR - return all for SEO.
+        for (const ix in groups) {
+          const group = groups[ix]
+
+          if (
+            group.onmap &&
+            (!this.region ||
+              group.region.trim().toLowerCase() ===
+                this.region.trim().toLowerCase())
+          ) {
+            ret.push(group)
+          }
+        }
+      } else if (bounds) {
+        for (const ix in groups) {
+          const group = groups[ix]
+
+          try {
+            if (
+              group.onmap &&
+              bounds.contains([group.lat, group.lng]) &&
+              (!this.region ||
+                this.region.toLowerCase() === group.region.toLowerCase())
+            ) {
+              ret.push(group)
+            }
+          } catch (e) {
+            console.log('Problem group', e)
+          }
+        }
+      }
+
+      const sorted = ret.sort((a, b) => {
+        return a.namedisplay
+          .toLowerCase()
+          .localeCompare(b.namedisplay.toLowerCase())
+      })
+
+      return sorted
     },
     mygroups() {
       return this.$store.getters['auth/groups']
@@ -170,7 +252,10 @@ export default {
     },
     type() {
       this.lastBounds = null
-      this.getMessages()
+
+      if (this.zoom >= this.postZoom) {
+        this.getMessages()
+      }
     },
     search() {
       this.lastBounds = null
@@ -212,6 +297,9 @@ export default {
 
         this.mapObject.flyToBounds(bounds)
       }
+    },
+    groupsInBounds(newval) {
+      this.$emit('groups', this.groupsInBounds.map(g => g.id))
     }
   },
   mounted() {
@@ -268,6 +356,15 @@ export default {
     },
     idle() {
       if (this.mapObject) {
+        // We need to update the parent about our zoom level and whether we are showing the posts or groups.
+        this.zoom = this.mapObject.getZoom()
+
+        if (this.zoom < this.postZoom && !this.forceMessages) {
+          this.$emit('update:showGroups', true)
+        } else {
+          this.$emit('update:showGroups', false)
+        }
+
         const bounds = this.mapObject.getBounds().toBBoxString()
 
         if (bounds !== this.lastBounds) {
@@ -277,7 +374,10 @@ export default {
           }
 
           this.lastBounds = bounds
-          this.getMessages()
+
+          if (this.showMessages) {
+            this.getMessages()
+          }
         }
 
         this.$emit('update:bounds', this.mapObject.getBounds())
@@ -295,7 +395,8 @@ export default {
       if (this.mapObject.getZoom() < this.minZoom) {
         // The parent may  replace us with something else at this point, e.g. with a group map.  But maybe not.
         // Their call.
-        this.$emit('minzoom')
+        console.log('Min zoom at', this.mapObject.getZoom())
+        this.$emit('minzoom', this.mapObject.getBounds())
       }
 
       const swlat = bounds.getSouthWest().lat

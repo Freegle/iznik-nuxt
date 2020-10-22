@@ -118,7 +118,6 @@ export default {
               ? this.getDistance([group.lat, group.lng], [mylat, mylng])
               : 0
 
-          console.log('Consider group', distAway, group.nameshort, group.bbox)
           if (distAway < 50000) {
             swlat =
               swlat === null
@@ -160,8 +159,6 @@ export default {
         [bounds[1][0] * 1.1, bounds[1][1] * 1.1]
       ]
     }
-
-    console.log('Use bounds', bounds)
 
     // Also get all the groups.  This allows us to suggest other groups to join from within the map.  No rush
     // though, so delay it.

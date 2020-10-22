@@ -6,37 +6,27 @@
       </h2>
       <div :style="mapHeight" class="position-relative mb-1">
         <div v-if="bounds" class="mapbox">
-          <GroupMap
-            v-if="showGroups"
-            :initial-bounds="initialBounds"
-            :height-fraction="heightFraction"
-            :bounds.sync="bounds"
-            :zoom.sync="zoom"
-            :centre.sync="centre"
-            :ready.sync="mapready"
-            :region="region"
-            @groups="groupsChanged($event)"
-            @maxzoom="showGroups = false"
-          />
           <PostMap
-            v-else
-            :initial-bounds="initialBounds"
+            :initial-bounds="postMapInitialBounds"
             :height-fraction="heightFraction"
-            :moved.sync="mapMoved"
             :bounds.sync="bounds"
+            :min-zoom="minZoom"
+            :max-zoom="maxZoom"
+            :post-zoom="10"
+            :force-messages="forceMessages"
+            :type="selectedType"
+            :search="searchOn"
+            :show-many="showMany"
+            :groupid="selectedGroup"
+            :region="region"
+            :show-groups.sync="showGroups"
+            :moved.sync="mapMoved"
             :zoom.sync="zoom"
             :centre.sync="centre"
             :ready.sync="mapready"
             :loading.sync="loading"
-            :groupid="selectedGroup"
-            :type="selectedType"
-            :search="searchOn"
-            :min-zoom="forceMessages ? 9 : minZoom"
-            :max-zoom="maxZoom"
-            :show-many="showMany"
             @messages="messagesChanged($event)"
             @groups="groupsChanged($event)"
-            @minzoom="showGroups = true && !forceMessages"
           />
         </div>
         <div v-else :style="mapHeight" />
@@ -183,7 +173,6 @@ const GroupSelect = () => import('./GroupSelect')
 const NoticeMessage = () => import('./NoticeMessage')
 const Message = () => import('~/components/Message.vue')
 const PostMap = () => import('~/components/PostMap')
-const GroupMap = () => import('~/components/GroupMap')
 const allSettled = require('promise.allsettled')
 const GroupHeader = () => import('~/components/GroupHeader.vue')
 const JobsTopBar = () => import('~/components/JobsTopBar')
@@ -203,7 +192,6 @@ export default {
     GroupSelect,
     ExternalLink,
     AdaptiveMapGroup,
-    GroupMap,
     InfiniteLoading,
     Message,
     PostMap,
@@ -265,7 +253,7 @@ export default {
     minZoom: {
       type: Number,
       required: false,
-      default: 10
+      default: 5
     },
     maxZoom: {
       type: Number,
@@ -280,6 +268,9 @@ export default {
   },
   data: function() {
     return {
+      postMapInitialBounds: null,
+      groupMapInitialBounds: null,
+
       // Map stuff
       heightFraction: 3,
       postcode: null,
@@ -332,20 +323,6 @@ export default {
     }
   },
   computed: {
-    boundsArray() {
-      if (this.bounds) {
-        if (Array.isArray(this.bounds)) {
-          return this.bounds
-        } else {
-          return [
-            [this.bounds.getSouthWest().lat, this.bounds.getSouthWest().lng],
-            [this.bounds.getNorthEast().lat, this.bounds.getNorthEast().lng]
-          ]
-        }
-      } else {
-        return null
-      }
-    },
     group: function() {
       const ret = this.selectedGroup
         ? this.$store.getters['group/get'](this.selectedGroup)
@@ -520,6 +497,8 @@ export default {
     this.swlng = this.initialBounds[0][1]
     this.nelat = this.initialBounds[1][0]
     this.nelng = this.initialBounds[1][1]
+    this.postMapInitialBounds = this.initialBounds
+    this.groupMapInitialBounds = this.initialBounds
   },
   async mounted() {
     if (!this.startOnGroups) {
@@ -555,58 +534,75 @@ export default {
       })
     },
     loadMore: async function($state) {
-      this.busy = true
+      if (!this.busy) {
+        this.busy = true
 
-      try {
-        // We work out which messages that are currently on the map are not in our store, and fetch them
-        // in descending date order.  We limit to avoid flooding the server.
-        let count = 0
-        const promises = []
-        const fetching = []
+        try {
+          // We work out which messages that are currently on the map are not in our store, and fetch them
+          // in descending date order.  We limit to avoid flooding the server.
+          let count = 0
+          const promises = []
+          const fetching = []
 
-        for (const m of this.messagesOnMap) {
-          const message = this.$store.getters['messages/get'](m.id)
+          for (const m of this.messagesOnMap) {
+            // Consider whether we would show this if we fetched it.
+            let show = true
 
-          if (!message && !this.fetching[m.id] && this.infiniteId) {
-            this.fetching[m.id] = true
+            if (this.initialPostBounds !== null && !this.mapMoved) {
+              const initialBounds = new L.LatLngBounds(this.initialBounds).pad(
+                this.initialPostBounds
+              )
 
-            fetching.push(m.id)
+              show = initialBounds.contains([m.lat, m.lng])
+            }
 
-            promises.push(
-              this.$store.dispatch('messages/fetch', {
-                id: m.id,
-                summary: true,
-                matchedon: m.matchedon ? m.matchedon : null
-              })
-            )
+            if (show) {
+              const message = this.$store.getters['messages/get'](m.id)
 
-            count++
+              if (!message && !this.fetching[m.id] && this.infiniteId) {
+                this.fetching[m.id] = true
 
-            if (count >= 5) {
-              // Don't fetch too many at once.
-              break
+                fetching.push(m.id)
+
+                promises.push(
+                  this.$store.dispatch('messages/fetch', {
+                    id: m.id,
+                    summary: true,
+                    matchedon: m.matchedon ? m.matchedon : null
+                  })
+                )
+
+                count++
+
+                if (count >= 5) {
+                  // Don't fetch too many at once.
+                  break
+                }
+              }
             }
           }
-        }
 
-        // Use all-settled as some might fail.
-        await allSettled(promises)
+          // Use all-settled as some might fail.
+          await allSettled(promises)
 
-        fetching.forEach(id => {
-          this.fetched[id] = true
-          delete this.fetching[id]
-        })
+          fetching.forEach(id => {
+            this.fetched[id] = true
+            delete this.fetching[id]
+          })
 
-        if (count) {
-          $state.loaded()
-        } else {
+          if (count) {
+            $state.loaded()
+          } else {
+            $state.complete()
+          }
+        } catch (e) {
           $state.complete()
         }
-      } catch (e) {
-        $state.complete()
-      }
 
-      this.busy = false
+        this.busy = false
+      } else {
+        console.log('Ignore scroll request')
+      }
     },
     messagesChanged(messages) {
       let changed = false
