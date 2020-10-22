@@ -197,6 +197,8 @@ export default {
         [cluster.geometry.coordinates[1], cluster.geometry.coordinates[0]],
         zoom
       )
+
+      this.$emit('click')
     },
     pointClick(cluster) {
       // It's a point. Centre on it, and zoom right in.
@@ -204,6 +206,8 @@ export default {
         [cluster.geometry.coordinates[1], cluster.geometry.coordinates[0]],
         this.maxZoom
       )
+
+      this.$emit('click')
     }
   }
 }

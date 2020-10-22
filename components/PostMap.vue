@@ -24,7 +24,7 @@
           @moveend="idle"
         >
           <l-tile-layer :url="osmtile" :attribution="attribution" />
-          <ClusterMarker v-if="messagesForMap.length" :markers="messagesForMap" :map="mapObject" :tag="['post', 'posts']" />
+          <ClusterMarker v-if="messagesForMap.length" :markers="messagesForMap" :map="mapObject" :tag="['post', 'posts']" @click="idle" />
           <div v-if="mod">
             <!--            For mods, show the groups they're in to make it clearer why the map covers the area it does.-->
             <l-marker v-for="group in mygroups" :key="'groupmarker-' + group.id" :lat-lng="[group.lat, group.lng]" :icon="groupIcon">
@@ -305,15 +305,13 @@ export default {
       let params = null
 
       if (!this.search) {
-        // Get the messages.  If groupid is null then we will get the ones in the bounding box; otherwise we
-        // will get all the ones on that group.
+        // Get the messages in the map view.
         params = {
           subaction: 'inbounds',
           swlat: swlat,
           swlng: swlng,
           nelat: nelat,
-          nelng: nelng,
-          groupid: this.groupid
+          nelng: nelng
         }
       } else {
         // We are searching.  Get the list of messages from the server.
