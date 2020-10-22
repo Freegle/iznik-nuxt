@@ -489,7 +489,10 @@ export default {
                 [this.centre.lat, this.centre.lng],
                 [group.lat, group.lng]
               )
-              ret.push(group)
+
+              if (group.distance <= 50000) {
+                ret.push(group)
+              }
             }
           }
         })
