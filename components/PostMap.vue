@@ -261,40 +261,16 @@ export default {
       this.lastBounds = null
       this.getMessages()
     },
-    async groupid(groupid) {
+    groupid(groupid) {
       this.lastBounds = null
 
-      const messages = await this.getMessages()
-
       if (groupid) {
-        // The messages we have just fetched may or may not match the bounds of the map.  Probably not.  So
-        // work out new bounds and move the map.
-        let bounds = new L.LatLngBounds()
-
-        if (messages.length) {
-          messages.forEach(m => {
-            // eslint-disable-next-line new-cap
-            bounds.extend(new L.LatLng(m.lat, m.lng))
-          })
-        } else {
-          // No messages for this group.  Just position at the group centre and let the map zoom out until it
-          // finds something.
-          const group = this.$store.getters['group/get'](groupid)
-
-          if (group) {
-            bounds = [
-              [group.lat - 0.01, group.lng - 0.01],
-              [group.lat + 0.01, group.lng + 0.01]
-            ]
-          } else {
-            // Shouldn't really get here.
-            bounds = [
-              [49.959999905, -7.57216793459],
-              [58.6350001085, 1.68153079591]
-            ]
-          }
-        }
-
+        // Use the bounding box for the group.
+        const group = this.$store.getters['auth/groupById'](groupid)
+        const bounds = new L.LatLngBounds([
+          [group.bbox.swlat, group.bbox.swlng],
+          [group.bbox.nelat, group.bbox.nelng]
+        ]).pad(0.1)
         this.mapObject.flyToBounds(bounds)
       }
     },
