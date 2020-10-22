@@ -26,7 +26,6 @@
           v-if="initialBounds"
           :key="'map-' + bump"
           :initial-bounds="initialBounds"
-          :initial-post-bounds="0.1"
           class="mt-2"
           force-messages
           group-info
@@ -42,15 +41,25 @@
 </template>
 
 <script>
+import leafletPip from '@mapbox/leaflet-pip'
 import AdaptiveMap from '~/components/AdaptiveMap'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
 import map from '@/mixins/map.js'
+
 const CovidWarning = () => import('~/components/CovidWarning')
 const SidebarLeft = () => import('~/components/SidebarLeft')
 const SidebarRight = () => import('~/components/SidebarRight')
 const ExpectedRepliesWarning = () =>
   import('~/components/ExpectedRepliesWarning')
+
+let Wkt = null
+let L = null
+
+if (process.browser) {
+  Wkt = require('wicket')
+  L = require('leaflet')
+}
 
 export default {
   components: {
@@ -105,26 +114,79 @@ export default {
         components: ['me', 'groups']
       })
 
-      // Get my location.
+      // Find a bounding box which is completely full of the group that our own location is within,
+      // if we can.
       let mylat = null
       let mylng = null
+
+      let swlat = null
+      let swlng = null
+      let nelat = null
+      let nelng = null
 
       const me = this.$store.getters['auth/user']
 
       if (me && (me.lat || me.lng)) {
         mylat = me.lat
         mylng = me.lng
+
+        const groups = this.$store.getters['auth/groups']
+        groups.forEach(g => {
+          if (g.polygon) {
+            try {
+              const wkt = new Wkt.Wkt()
+              wkt.read(g.polygon)
+              // eslint-disable-next-line new-cap
+              const geoJSON = new L.geoJSON(wkt.toJson())
+              const inside = leafletPip.pointInLayer(
+                new L.LatLng(mylat, mylng),
+                geoJSON
+              )
+
+              if (inside.length) {
+                swlat = (g.bbox.swlat + g.bbox.nelat) / 2
+                swlng = g.bbox.swlng
+                nelat = (g.bbox.swlat + g.bbox.nelat) / 2
+                nelng = g.bbox.nelng
+              }
+            } catch (e) {
+              console.log('WKT error', location, e)
+            }
+          }
+        })
       }
 
-      // Look for groups where we are a member which are within a reasonable distance of our home
-      // location (if we know it).
-      const groups = this.$store.getters['auth/groups']
       let bounds = null
 
-      let swlat = null
-      let swlng = null
-      let nelat = null
-      let nelng = null
+      if (
+        swlat !== null &&
+        swlng !== null &&
+        nelat !== null &&
+        nelng !== null
+      ) {
+        bounds = [[swlat, swlng], [nelat, nelng]]
+      } else if (mylat !== null) {
+        // We're not a member of any groups, but at least we know where we are.  Centre there, and then let
+        // the map zoom to somewhere sensible.
+        bounds = [[mylat - 0.01, mylng - 0.01], [mylat + 0.01, mylng + 0.01]]
+      } else {
+        // We aren't a member of any groups and we don't know where we are.  This can happen, but it's rare.
+        // Send them to the explore page to pick somewhere.
+        this.$router.push('/explore')
+      }
+
+      if (bounds) {
+        this.initialBounds = bounds
+      }
+
+      // Now find the bounds for the initial posts we display.  This needs to cover all the groups within a
+      // reasonable distance of our home location.
+      swlat = null
+      swlng = null
+      nelat = null
+      nelng = null
+
+      const groups = this.$store.getters['auth/groups']
 
       groups.forEach(group => {
         if (group.onmap && group.publish) {
@@ -168,22 +230,15 @@ export default {
         nelng !== null
       ) {
         bounds = [[swlat, swlng], [nelat, nelng]]
-      } else if (mylat !== null) {
-        // We're not a member of any groups, but at least we know where we are.  Centre there, and then let
-        // the map zoom to somewhere sensible.
-        bounds = [[mylat - 0.01, mylng - 0.01], [mylat + 0.01, mylng + 0.01]]
-      } else {
-        // We aren't a member of any groups and we don't know where we are.  This can happen, but it's rare.
-        // Send them to the explore page to pick somewhere.
-        this.$router.push('/explore')
       }
 
       if (bounds) {
-        this.initialBounds = bounds
         this.initialPostBounds = [
           [bounds[0][0] * 1.1, bounds[0][1] * 1.1],
           [bounds[1][0] * 1.1, bounds[1][1] * 1.1]
         ]
+      } else {
+        this.initialPostBounds = this.initialBounds
       }
     }
   },

@@ -30,7 +30,7 @@
           <div v-else>
             <GroupMarker v-for="g in groupsInBounds" :key="'marker-' + g.id + '-' + zoom" :group="g" :size="largeGroupMarkers ? 'rich' : 'poor'" />
           </div>
-          <div v-if="mod">
+          <div v-if="mod && !mod">
             <!--            For mods, show the groups they're in to make it clearer why the map covers the area it does.-->
             <l-marker v-for="group in mygroups" :key="'groupmarker-' + group.id" :lat-lng="[group.lat, group.lng]" :icon="groupIcon">
               <l-tooltip>

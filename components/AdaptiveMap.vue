@@ -203,11 +203,6 @@ export default {
       type: Array,
       required: true
     },
-    initialPostBounds: {
-      type: Number,
-      required: false,
-      default: null
-    },
     startOnGroups: {
       type: Boolean,
       required: false,
@@ -291,6 +286,7 @@ export default {
       mapMoved: false,
 
       // Infinite message scroll
+      initialPostBounds: null,
       postsVisible: true,
       busy: false,
       infiniteId: +new Date(),
@@ -386,13 +382,11 @@ export default {
         })
 
         if (this.initialPostBounds !== null && !this.mapMoved) {
-          // If we are logged in and the map is showing its initial view, then we might have a map that shows posts
-          // a long way away from the groups of which we are a member.  We want to show some nearby posts to cope
-          // with the boundary condition, but we don't want to show posts from Carlisle when we live in Scarborough just
-          // because the map is wide.  So we pad the initial bounds a bit and then return the posts which are within
-          // that.  This means we will show posts further away on the map, but not in the list.
-          const initialBounds = new L.LatLngBounds(this.initialBounds).pad(
-            this.initialPostBounds
+          // Until the map moves we show posts within the initial bounds we worked out for the posts.  Once the
+          // map has moved we show the posts corresponding to the map.  This is to handle people who don't engage
+          // with the map at all and just want to see the posts from their groups (which is perfectly reasonable).
+          const initialBounds = new L.LatLngBounds(this.initialPostBounds).pad(
+            0.1
           )
           ret = ret.filter(m => initialBounds.contains([m.lat, m.lng]))
         }
