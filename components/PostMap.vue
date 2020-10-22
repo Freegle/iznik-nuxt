@@ -29,7 +29,7 @@
             <!--            For mods, show the groups they're in to make it clearer why the map covers the area it does.-->
             <l-marker v-for="group in mygroups" :key="'groupmarker-' + group.id" :lat-lng="[group.lat, group.lng]" :icon="groupIcon">
               <l-tooltip>
-                {{ group.namedisplay }}
+                You're a member of {{ group.namedisplay }}.  This only shows for mods.
               </l-tooltip>
             </l-marker>
             <l-rectangle v-if="initialBounds" :bounds="initialBounds" :l-style="{ fillColor: 'grey', fillOpacity: 0.5}">
