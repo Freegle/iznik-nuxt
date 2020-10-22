@@ -251,6 +251,9 @@ export default {
                 // Empty out the query box so that the dropdown closes.
                 this.setQuery('')
 
+                // If we don't find anything at this location we will want to zoom out.
+                self.shownMany = false
+
                 self.$nextTick(() => {
                   // Move the map to the location we've found.
                   self.mapObject.flyToBounds(e.geocode.bbox)
@@ -359,14 +362,17 @@ export default {
           }
         })
 
-        if (
+        if (countInBounds >= this.manyToShow) {
+          // We have seen lots, so we don't need to do the auto zoom out thing now.
+          this.shownMany = true
+        } else if (
           !this.search &&
           this.showMany &&
           countInBounds < this.manyToShow &&
           !this.shownMany
         ) {
           // If we haven't got more than 1 message at this zoom level, zoom out.  That means we'll always show at
-          // least something.
+          // least something.  This is useful when we search for a specific place.
           const currzoom = this.mapObject.getZoom()
           if (currzoom > this.minZoom) {
             this.mapObject.setZoom(currzoom - 1)
