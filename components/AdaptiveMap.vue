@@ -8,7 +8,7 @@
         <div v-if="bounds" class="mapbox">
           <GroupMap
             v-if="showGroups"
-            :initial-bounds="boundsArray"
+            :initial-bounds="initialBounds"
             :height-fraction="heightFraction"
             :bounds.sync="bounds"
             :zoom.sync="zoom"
@@ -20,7 +20,7 @@
           />
           <PostMap
             v-else
-            :initial-bounds="boundsArray"
+            :initial-bounds="initialBounds"
             :height-fraction="heightFraction"
             :moved.sync="mapMoved"
             :bounds.sync="bounds"
