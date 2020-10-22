@@ -67,7 +67,12 @@ export default {
       showRest: false
     }
   },
-  async mounted() {
+  watch: {
+    me() {
+      this.calculateInitialMapBounds()
+    }
+  },
+  mounted() {
     // We want this to be our next home page.
     try {
       localStorage.setItem('Iznik>lasthomepage', 'mygroups')
@@ -78,86 +83,7 @@ export default {
     // Ensure we have no cached messages for other searches/groups
     this.$store.dispatch('messages/clear')
 
-    // Get our list of groups
-    await this.$store.dispatch('auth/fetchUser', {
-      components: ['me', 'groups']
-    })
-
-    // Get my location.
-    let mylat = null
-    let mylng = null
-
-    const me = this.$store.getters['auth/user']
-
-    if (me && (me.lat || me.lng)) {
-      mylat = me.lat
-      mylng = me.lng
-    }
-
-    // Look for groups where we are a member which are within a reasonable distance of our home
-    // location (if we know it).
-    const groups = this.$store.getters['auth/groups']
-    let bounds = null
-
-    let swlat = null
-    let swlng = null
-    let nelat = null
-    let nelng = null
-
-    groups.forEach(group => {
-      if (group.onmap && group.publish) {
-        if (
-          group.role === 'Member' ||
-          (!group.mysettings || group.mysettings.active)
-        ) {
-          // For the purposes of the bounding box, we are interested in groups where we are a member or an active
-          // mod.  This excludes groups where we are a backup mod, which may be further away and of less interest.
-          const distAway =
-            mylat !== null
-              ? this.getDistance([group.lat, group.lng], [mylat, mylng])
-              : 0
-
-          if (distAway < 50000) {
-            swlat =
-              swlat === null
-                ? group.bbox.swlat
-                : Math.min(swlat, group.bbox.swlat)
-            swlng =
-              swlng === null
-                ? group.bbox.swlng
-                : Math.min(swlng, group.bbox.swlng)
-            nelat =
-              nelat === null
-                ? group.bbox.nelat
-                : Math.max(nelat, group.bbox.nelat)
-            nelng =
-              nelng === null
-                ? group.bbox.nelng
-                : Math.max(nelng, group.bbox.nelng)
-          }
-        }
-      }
-    })
-
-    if (swlat !== null && swlng !== null && nelat !== null && nelng !== null) {
-      bounds = [[swlat, swlng], [nelat, nelng]]
-    } else if (mylat !== null) {
-      // We're not a member of any groups, but at least we know where we are.  Centre there, and then let
-      // the map zoom to somewhere sensible.
-      bounds = [[mylat - 0.01, mylng - 0.01], [mylat + 0.01, mylng + 0.01]]
-    } else {
-      // We aren't a member of any groups and we don't know where we are.  This can happen, but it's rare.
-      // Send them to the explore page to pick somewhere.
-      this.$router.push('/explore')
-    }
-
-    if (bounds) {
-      this.initialBounds = bounds
-      this.initialPostBounds = [
-        [bounds[0][0] * 1.1, bounds[0][1] * 1.1],
-        [bounds[1][0] * 1.1, bounds[1][1] * 1.1]
-      ]
-    }
+    this.calculateInitialMapBounds()
 
     // Also get all the groups.  This allows us to suggest other groups to join from within the map.  No rush
     // though, so delay it.
@@ -168,6 +94,95 @@ export default {
 
       this.showRest = true
     }, 5000)
+  },
+  methods: {
+    async calculateInitialMapBounds() {
+      // Get our list of groups
+      await this.$store.dispatch('auth/fetchUser', {
+        components: ['me', 'groups']
+      })
+
+      // Get my location.
+      let mylat = null
+      let mylng = null
+
+      const me = this.$store.getters['auth/user']
+
+      if (me && (me.lat || me.lng)) {
+        mylat = me.lat
+        mylng = me.lng
+      }
+
+      // Look for groups where we are a member which are within a reasonable distance of our home
+      // location (if we know it).
+      const groups = this.$store.getters['auth/groups']
+      let bounds = null
+
+      let swlat = null
+      let swlng = null
+      let nelat = null
+      let nelng = null
+
+      groups.forEach(group => {
+        if (group.onmap && group.publish) {
+          if (
+            group.role === 'Member' ||
+            (!group.mysettings || group.mysettings.active)
+          ) {
+            // For the purposes of the bounding box, we are interested in groups where we are a member or an active
+            // mod.  This excludes groups where we are a backup mod, which may be further away and of less interest.
+            const distAway =
+              mylat !== null
+                ? this.getDistance([group.lat, group.lng], [mylat, mylng])
+                : 0
+
+            if (distAway < 50000) {
+              swlat =
+                swlat === null
+                  ? group.bbox.swlat
+                  : Math.min(swlat, group.bbox.swlat)
+              swlng =
+                swlng === null
+                  ? group.bbox.swlng
+                  : Math.min(swlng, group.bbox.swlng)
+              nelat =
+                nelat === null
+                  ? group.bbox.nelat
+                  : Math.max(nelat, group.bbox.nelat)
+              nelng =
+                nelng === null
+                  ? group.bbox.nelng
+                  : Math.max(nelng, group.bbox.nelng)
+            }
+          }
+        }
+      })
+
+      if (
+        swlat !== null &&
+        swlng !== null &&
+        nelat !== null &&
+        nelng !== null
+      ) {
+        bounds = [[swlat, swlng], [nelat, nelng]]
+      } else if (mylat !== null) {
+        // We're not a member of any groups, but at least we know where we are.  Centre there, and then let
+        // the map zoom to somewhere sensible.
+        bounds = [[mylat - 0.01, mylng - 0.01], [mylat + 0.01, mylng + 0.01]]
+      } else {
+        // We aren't a member of any groups and we don't know where we are.  This can happen, but it's rare.
+        // Send them to the explore page to pick somewhere.
+        this.$router.push('/explore')
+      }
+
+      if (bounds) {
+        this.initialBounds = bounds
+        this.initialPostBounds = [
+          [bounds[0][0] * 1.1, bounds[0][1] * 1.1],
+          [bounds[1][0] * 1.1, bounds[1][1] * 1.1]
+        ]
+      }
+    }
   },
   head() {
     return this.buildHead('Browse', 'See OFFERs and WANTEDs')
