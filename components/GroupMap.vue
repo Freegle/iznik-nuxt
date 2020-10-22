@@ -51,7 +51,7 @@ export default {
   mixins: [map, waitForRef],
   props: {
     initialBounds: {
-      type: Object,
+      type: Array,
       required: true
     },
     heightFraction: {

@@ -8,7 +8,7 @@
         <div v-if="bounds" class="mapbox">
           <GroupMap
             v-if="showGroups"
-            :initial-bounds="initialBounds"
+            :initial-bounds="boundsArray"
             :height-fraction="heightFraction"
             :bounds.sync="bounds"
             :zoom.sync="zoom"
@@ -20,7 +20,7 @@
           />
           <PostMap
             v-else
-            :initial-bounds="initialBounds"
+            :initial-bounds="boundsArray"
             :height-fraction="heightFraction"
             :moved.sync="mapMoved"
             :bounds.sync="bounds"
@@ -332,6 +332,20 @@ export default {
     }
   },
   computed: {
+    boundsArray() {
+      if (this.bounds) {
+        if (Array.isArray(this.bounds)) {
+          return this.bounds
+        } else {
+          return [
+            [this.bounds.getSouthWest().lat, this.bounds.getSouthWest().lng],
+            [this.bounds.getNorthEast().lat, this.bounds.getNorthEast().lng]
+          ]
+        }
+      } else {
+        return null
+      }
+    },
     group: function() {
       const ret = this.selectedGroup
         ? this.$store.getters['group/get'](this.selectedGroup)
