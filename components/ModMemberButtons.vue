@@ -1,7 +1,14 @@
 <template>
   <div class="d-flex flex-wrap">
     <div v-if="spam" class="d-inline d-flex flex-wrap">
-      <ModMemberActions v-if="actions && member.groupid" :userid="member.userid" :groupid="member.groupid" :banned="(Boolean)(member.bandate)" class="mr-1" />
+      <ModMemberActions
+        v-if="actions && member.groupid"
+        :userid="member.userid"
+        :groupid="member.groupid"
+        :banned="(Boolean)(member.bandate)"
+        class="mr-1"
+        :spam="spam"
+      />
       <ModMemberButton
         v-if="spamignore"
         :member="member"
