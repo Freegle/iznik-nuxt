@@ -772,10 +772,10 @@ export default {
 
 .freegled__image {
   position: absolute;
-  width: 250px;
+  width: 225px;
   z-index: 2;
   transform: rotate(20deg);
-  top: 60px;
+  top: 50px;
 
   // Centre the absolute positioned div in it's container
   left: 50%;
