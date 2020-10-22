@@ -24,6 +24,7 @@
         </div>
         <AdaptiveMap
           v-if="initialBounds"
+          :key="'map-' + bump"
           :initial-bounds="initialBounds"
           :initial-post-bounds="0.1"
           class="mt-2"
@@ -64,12 +65,14 @@ export default {
     return {
       initialBounds: null,
       initialPostBounds: null,
-      showRest: false
+      showRest: false,
+      bump: 1
     }
   },
   watch: {
     me() {
       this.calculateInitialMapBounds()
+      this.bump++
     }
   },
   mounted() {

@@ -285,7 +285,7 @@ export default {
       bounds: null,
       zoom: null,
       centre: null,
-      showGroups: false,
+      showGroups: true,
       mapready: process.server,
       mapVisible: true,
       mapMoved: false,
