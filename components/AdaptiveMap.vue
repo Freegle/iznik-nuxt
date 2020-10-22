@@ -622,8 +622,6 @@ export default {
         this.infiniteId++
         this.$store.dispatch('messages/clear')
       }
-
-      this.$emit('messages')
     },
     groupsChanged(groupids) {
       this.groupids = groupids

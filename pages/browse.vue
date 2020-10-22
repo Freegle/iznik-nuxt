@@ -31,7 +31,6 @@
           group-info
           jobs
           :show-many="false"
-          @messages="showRest = true"
         />
       </b-col>
       <b-col cols="0" xl="3" class="d-none d-xl-block p-0 pl-1">
@@ -166,6 +165,8 @@ export default {
       this.$store.dispatch('group/list', {
         grouptype: 'Freegle'
       })
+
+      this.showRest = true
     }, 5000)
   },
   head() {
