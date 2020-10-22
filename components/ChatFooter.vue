@@ -224,7 +224,7 @@ export default {
     keydownEventIfNotEnterForNewLine() {
       return this.enterNewLine ? null : 'keydown'
     },
-    keyupeventIfNotEnterForNewLine() {
+    keyupEventIfNotEnterForNewLine() {
       return this.enterNewLine ? null : 'keyup'
     }
   }
