@@ -30,6 +30,9 @@
           <div v-else>
             <GroupMarker v-for="g in groupsInBounds" :key="'marker-' + g.id + '-' + zoom" :group="g" :size="largeGroupMarkers ? 'rich' : 'poor'" />
           </div>
+          <l-marker v-if="me" :lat-lng="[me.lat, me.lng]" :icon="homeIcon">
+            This is where your postcode is. You can change your postcode from Settings.
+          </l-marker>
           <div v-if="mod && !mod">
             <!--            For mods, show the groups they're in to make it clearer why the map covers the area it does.-->
             <l-marker v-for="group in mygroups" :key="'groupmarker-' + group.id" :lat-lng="[group.lat, group.lng]" :icon="groupIcon">
@@ -51,7 +54,9 @@
 <script>
 import VueDraggableResizable from 'vue-draggable-resizable/src/components/vue-draggable-resizable'
 import cloneDeep from 'lodash.clonedeep'
+import Vue from 'vue'
 import GroupMarker from './GroupMarker'
+import BrowseHomeIcon from './BrowseHomeIcon'
 import map from '@/mixins/map.js'
 import waitForRef from '@/mixins/waitForRef'
 const ClusterMarker = () => import('./ClusterMarker')
@@ -240,6 +245,18 @@ export default {
     groupIcon() {
       return new L.Icon({
         iconUrl: '/mapmarker.gif'
+      })
+    },
+    homeIcon() {
+      // Render the component off document.
+      const Mine = Vue.extend(BrowseHomeIcon)
+      let re = new Mine()
+
+      re = re.$mount().$el
+
+      return new L.DivIcon({
+        html: re.outerHTML,
+        className: 'bg-none top'
       })
     }
   },
@@ -498,5 +515,9 @@ export default {
 
 ::v-deep .handle {
   content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAAB3RJTUUH5AoLCyYQDowQNQAAAHRJREFUOMtjYBhMQJ6BgSGLgYHhP5TPzMDA4AXlG0DFuBkYGDKQ1KAAmGZ9KB+muY6BgUEYqjkaKuaAzYD/DAwM6mg212Cx2Z2QV5A1CxBjMwMWP9PXZuQwIMtmGDAj12ZkQJbNyJrJtpmBEpuRA9GBYcgBALMUJBS9QtP6AAAAAElFTkSuQmCC');
+}
+
+::v-deep .top {
+  z-index: 1000 !important;
 }
 </style>
