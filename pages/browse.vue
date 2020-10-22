@@ -25,6 +25,7 @@
         <AdaptiveMap
           v-if="initialBounds"
           :initial-bounds="initialBounds"
+          :initial-post-bounds="0.1"
           class="mt-2"
           force-messages
           group-info
@@ -63,6 +64,7 @@ export default {
   data: function() {
     return {
       initialBounds: null,
+      initialPostBounds: null,
       showRest: false
     }
   },
@@ -105,28 +107,35 @@ export default {
 
     groups.forEach(group => {
       if (group.onmap && group.publish) {
-        const distAway =
-          mylat !== null
-            ? this.getDistance([group.lat, group.lng], [mylat, mylng])
-            : 0
+        if (
+          group.role === 'Member' ||
+          (!group.mysettings || group.mysettings.active)
+        ) {
+          // For the purposes of the bounding box, we are interested in groups where we are a member or an active
+          // mod.  This excludes groups where we are a backup mod, which may be further away and of less interest.
+          const distAway =
+            mylat !== null
+              ? this.getDistance([group.lat, group.lng], [mylat, mylng])
+              : 0
 
-        if (distAway < 50000) {
-          swlat =
-            swlat === null
-              ? group.bbox.swlat
-              : Math.min(swlat, group.bbox.swlat)
-          swlng =
-            swlng === null
-              ? group.bbox.swlng
-              : Math.min(swlng, group.bbox.swlng)
-          nelat =
-            nelat === null
-              ? group.bbox.nelat
-              : Math.max(nelat, group.bbox.nelat)
-          nelng =
-            nelng === null
-              ? group.bbox.nelng
-              : Math.max(nelng, group.bbox.nelng)
+          if (distAway < 50000) {
+            swlat =
+              swlat === null
+                ? group.bbox.swlat
+                : Math.min(swlat, group.bbox.swlat)
+            swlng =
+              swlng === null
+                ? group.bbox.swlng
+                : Math.min(swlng, group.bbox.swlng)
+            nelat =
+              nelat === null
+                ? group.bbox.nelat
+                : Math.max(nelat, group.bbox.nelat)
+            nelng =
+              nelng === null
+                ? group.bbox.nelng
+                : Math.max(nelng, group.bbox.nelng)
+          }
         }
       }
     })
@@ -143,7 +152,13 @@ export default {
       this.$router.push('/explore')
     }
 
-    this.initialBounds = bounds
+    if (bounds) {
+      this.initialBounds = bounds
+      this.initialPostBounds = [
+        [bounds[0][0] * 1.1, bounds[0][1] * 1.1],
+        [bounds[1][0] * 1.1, bounds[1][1] * 1.1]
+      ]
+    }
 
     // Also get all the groups.  This allows us to suggest other groups to join from within the map.  No rush
     // though, so delay it.

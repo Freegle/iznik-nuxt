@@ -8,7 +8,7 @@
         <div v-if="bounds" class="mapbox">
           <GroupMap
             v-if="showGroups"
-            :initial-bounds="bounds"
+            :initial-bounds="initialBounds"
             :height-fraction="heightFraction"
             :bounds.sync="bounds"
             :zoom.sync="zoom"
@@ -20,8 +20,9 @@
           />
           <PostMap
             v-else
-            :initial-bounds="bounds"
+            :initial-bounds="initialBounds"
             :height-fraction="heightFraction"
+            :moved.sync="mapMoved"
             :bounds.sync="bounds"
             :zoom.sync="zoom"
             :centre.sync="centre"
@@ -214,6 +215,11 @@ export default {
       type: Array,
       required: true
     },
+    initialPostBounds: {
+      type: Number,
+      required: false,
+      default: null
+    },
     startOnGroups: {
       type: Boolean,
       required: false,
@@ -291,6 +297,7 @@ export default {
       showGroups: false,
       mapready: process.server,
       mapVisible: true,
+      mapMoved: false,
 
       // Infinite message scroll
       postsVisible: true,
@@ -358,13 +365,13 @@ export default {
       return count
     },
     filteredMessages() {
-      const ret = []
+      let ret = []
       const dups = []
 
       if (!this.search) {
         // We want to filter by:
         // - Messages on the map
-        // - Don't deleted or completed posts.  Remember the map may lag a bit as it's only updated on cron, so we
+        // - Don't show deleted or completed posts.  Remember the map may lag a bit as it's only updated on cron, so we
         //   may be returned some.
         // - Possibly a message type - but that's handled by the map
         // - Possibly a group id - but that's handled by the map
@@ -386,6 +393,18 @@ export default {
             }
           }
         })
+
+        if (this.initialPostBounds !== null && !this.mapMoved) {
+          // If we are logged in and the map is showing its initial view, then we might have a map that shows posts
+          // a long way away from the groups of which we are a member.  We want to show some nearby posts to cope
+          // with the boundary condition, but we don't want to show posts from Carlisle when we live in Scarborough just
+          // because the map is wide.  So we pad the initial bounds a bit and then return the posts which are within
+          // that.  This means we will show posts further away on the map, but not in the list.
+          const initialBounds = new L.LatLngBounds(this.initialBounds).pad(
+            this.initialPostBounds
+          )
+          ret = ret.filter(m => initialBounds.contains([m.lat, m.lng]))
+        }
       } else {
         // We are searching.  We get the messages from the store.
         const messages = this.$store.getters['messages/getAll']

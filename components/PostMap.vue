@@ -25,13 +25,18 @@
         >
           <l-tile-layer :url="osmtile" :attribution="attribution" />
           <ClusterMarker v-if="messagesForMap.length" :markers="messagesForMap" :map="mapObject" :tag="['post', 'posts']" />
-          <div v-if="mod && !mod">
+          <div v-if="mod">
             <!--            For mods, show the groups they're in to make it clearer why the map covers the area it does.-->
             <l-marker v-for="group in mygroups" :key="'groupmarker-' + group.id" :lat-lng="[group.lat, group.lng]" :icon="groupIcon">
               <l-tooltip>
                 {{ group.namedisplay }}
               </l-tooltip>
             </l-marker>
+            <l-rectangle v-if="initialBounds" :bounds="initialBounds" :l-style="{ fillColor: 'grey', fillOpacity: 0.5}">
+              <l-tooltip>
+                This shaded area and the heart markers are only shown for mods, not members.
+              </l-tooltip>
+            </l-rectangle>
           </div>
         </l-map>
       </vue-draggable-resizable>
@@ -61,7 +66,7 @@ export default {
   mixins: [map, waitForRef],
   props: {
     initialBounds: {
-      type: Object,
+      type: Array,
       required: true
     },
     heightFraction: {
@@ -263,6 +268,11 @@ export default {
         const bounds = this.mapObject.getBounds().toBBoxString()
 
         if (bounds !== this.lastBounds) {
+          if (this.lastBounds !== null) {
+            // The map has now moved from the initial position.
+            this.$emit('update:moved', true)
+          }
+
           this.lastBounds = bounds
           this.getMessages()
         }
