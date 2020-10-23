@@ -99,7 +99,7 @@
               <b-input
                 v-model="search"
                 type="text"
-                placeholder="Search posts"
+                placeholder="Search posts on map"
                 autocomplete="off"
                 @keyup.enter.exact="doSearch"
               />
@@ -380,7 +380,6 @@ export default {
         //
         // Filter out dups by subject (for crossposting).
         this.messagesForList.forEach(m => {
-          console.log('Consider message', m.groupid, m.id)
           if (
             (this.selectedType === 'All' || this.selectedType === m.type) &&
             (!this.selectedGroup ||

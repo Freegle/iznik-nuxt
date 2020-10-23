@@ -296,7 +296,7 @@ export default {
 
         if (process.client) {
           L.Control.geocoder({
-            placeholder: 'Search places...',
+            placeholder: 'Search for a place...',
             defaultMarkGeocode: false,
             geocoder: L.Control.Geocoder.photon({
               geocodingQueryParams: {
