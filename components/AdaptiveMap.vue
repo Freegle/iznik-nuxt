@@ -34,7 +34,7 @@
       <div v-observe-visibility="mapVisibilityChanged" />
     </client-only>
     <div v-if="mapready" class="rest">
-      <div v-if="showClosestGroups" class="d-none d-md-flex flex-wrap mb-1 justify-content-between border p-2 bg-white">
+      <div v-if="showClosestGroups" class="d-flex flex-wrap mb-1 justify-content-between border p-2 bg-white">
         <h2 class="sr-only">
           Nearby commmunities
         </h2>
