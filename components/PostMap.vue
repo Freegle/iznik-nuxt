@@ -332,6 +332,7 @@ export default {
                 self.$nextTick(() => {
                   // Move the map to the location we've found.
                   self.mapObject.flyToBounds(e.geocode.bbox)
+                  self.$emit('searched')
                 })
               }
             })

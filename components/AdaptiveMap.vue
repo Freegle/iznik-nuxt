@@ -26,6 +26,7 @@
             :centre.sync="centre"
             :ready.sync="mapready"
             :loading.sync="loading"
+            @searched="selectedGroup = null"
             @messages="messagesChanged($event)"
             @groups="groupsChanged($event)"
           />
