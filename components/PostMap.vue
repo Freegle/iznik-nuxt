@@ -26,25 +26,14 @@
           <l-tile-layer :url="osmtile" :attribution="attribution" />
           <div v-if="showMessages">
             <ClusterMarker v-if="messagesForMap.length" :markers="messagesForMap" :map="mapObject" :tag="['post', 'posts']" @click="idle" />
+            <l-marker v-if="me && me.settings && me.settings.mylocation" :lat-lng="[me.lat, me.lng]" :icon="homeIcon" @click="goHome">
+              <l-tooltip>
+                This is where your postcode is. You can change your postcode from Settings.
+              </l-tooltip>
+            </l-marker>
           </div>
           <div v-else>
             <GroupMarker v-for="g in groupsInBounds" :key="'marker-' + g.id + '-' + zoom" :group="g" :size="largeGroupMarkers ? 'rich' : 'poor'" />
-          </div>
-          <l-marker v-if="me" :lat-lng="[me.lat, me.lng]" :icon="homeIcon">
-            This is where your postcode is. You can change your postcode from Settings.
-          </l-marker>
-          <div v-if="mod && !mod">
-            <!--            For mods, show the groups they're in to make it clearer why the map covers the area it does.-->
-            <l-marker v-for="group in mygroups" :key="'groupmarker-' + group.id" :lat-lng="[group.lat, group.lng]" :icon="groupIcon">
-              <l-tooltip>
-                You're a member of {{ group.namedisplay }}.  This only shows for mods.
-              </l-tooltip>
-            </l-marker>
-            <l-rectangle v-if="initialBounds" :bounds="initialBounds" :l-style="{ fillColor: 'grey', fillOpacity: 0.5}">
-              <l-tooltip>
-                This shaded area and the heart markers are only shown for mods, not members.
-              </l-tooltip>
-            </l-rectangle>
           </div>
         </l-map>
       </vue-draggable-resizable>
@@ -493,6 +482,9 @@ export default {
           }, 1000)
         })
       }
+    },
+    goHome() {
+      this.mapObject.flyTo(new L.LatLng(this.me.lat, this.me.lng))
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="icon d-flex flex-column justify-content-center">
-    <span :class="normal">
+    <span class="normal">
       <v-icon name="home" />
     </span>
   </div>
