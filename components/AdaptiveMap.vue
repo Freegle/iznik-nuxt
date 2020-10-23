@@ -284,14 +284,14 @@ export default {
       mapready: process.server,
       mapVisible: true,
       mapMoved: false,
+      messagesOnMap: [],
 
       // Infinite message scroll
-      initialPostBounds: null,
       postsVisible: true,
       busy: false,
       infiniteId: +new Date(),
       distance: 1000,
-      messagesOnMap: [],
+      messagesInOwnGroups: [],
       fetching: [],
       fetched: [],
 
@@ -351,45 +351,58 @@ export default {
       const count = this.messages ? this.messages.length : 0
       return count
     },
+    messagesForList() {
+      let msgs = []
+
+      if (!this.mapMoved) {
+        // Until the map moves we show posts from the member's groups.  This is to handle people who don't engage
+        // with the map at all and just want to see the posts from their groups (which is perfectly reasonable).
+        msgs = this.messagesInOwnGroups
+        console.log('Using own groups')
+      } else {
+        // Once the map has moved we show posts from within the map area.
+        msgs = this.messagesOnMap
+        console.log('Using map')
+      }
+
+      return msgs
+    },
     filteredMessages() {
-      let ret = []
+      const ret = []
       const dups = []
 
       if (!this.search) {
         // We want to filter by:
-        // - Messages on the map
+        // - Possibly a message type
+        // - Possibly a group id
         // - Don't show deleted or completed posts.  Remember the map may lag a bit as it's only updated on cron, so we
         //   may be returned some.
-        // - Possibly a message type - but that's handled by the map
-        // - Possibly a group id - but that's handled by the map
-        // - Filter out dups by subject (for crossposting).
-        this.messagesOnMap.forEach(m => {
-          const message = this.$store.getters['messages/get'](m.id)
+        //
+        // Filter out dups by subject (for crossposting).
+        this.messagesForList.forEach(m => {
+          console.log('Consider message', m.groupid, m.id)
+          if (
+            (this.selectedType === 'All' || this.selectedType === m.type) &&
+            (!this.selectedGroup ||
+              parseInt(m.groupid) === parseInt(this.selectedGroup))
+          ) {
+            const message = this.$store.getters['messages/get'](m.id)
 
-          if (message) {
-            const key = message.fromuser + '|' + message.subject
-            const already = key in dups
+            if (message) {
+              const key = message.fromuser + '|' + message.subject
+              const already = key in dups
 
-            if (
-              !already &&
-              !message.deleted &&
-              (!message.outcomes || message.outcomes.length === 0)
-            ) {
-              dups[key] = true
-              ret.push(message)
+              if (
+                !already &&
+                !message.deleted &&
+                (!message.outcomes || message.outcomes.length === 0)
+              ) {
+                dups[key] = true
+                ret.push(message)
+              }
             }
           }
         })
-
-        if (this.initialPostBounds !== null && !this.mapMoved) {
-          // Until the map moves we show posts within the initial bounds we worked out for the posts.  Once the
-          // map has moved we show the posts corresponding to the map.  This is to handle people who don't engage
-          // with the map at all and just want to see the posts from their groups (which is perfectly reasonable).
-          const initialBounds = new L.LatLngBounds(this.initialPostBounds).pad(
-            0.1
-          )
-          ret = ret.filter(m => initialBounds.contains([m.lat, m.lng]))
-        }
       } else {
         // We are searching.  We get the messages from the store.
         const messages = this.$store.getters['messages/getAll']
@@ -498,15 +511,14 @@ export default {
     if (!this.startOnGroups) {
       this.context = null
 
-      // We have been given a bounding box containing some interesting posts.  Get messages within it - just
-      // the positions.
-      await this.$api.message.fetchMessages({
-        subaction: 'inbounds',
-        swlat: this.swlat,
-        swlng: this.swlng,
-        nelat: this.nelat,
-        nelng: this.nelng
+      // Get the messages in our own groups for the initial view.
+      const ret = await this.$api.message.fetchMessages({
+        subaction: 'mygroups'
       })
+
+      if (ret && ret.ret === 0 && ret.messages) {
+        this.messagesInOwnGroups = ret.messages
+      }
     }
 
     this.bounds = L.latLngBounds(
@@ -538,40 +550,27 @@ export default {
           const promises = []
           const fetching = []
 
-          for (const m of this.messagesOnMap) {
-            // Consider whether we would show this if we fetched it.
-            let show = true
+          for (const m of this.messagesForList) {
+            const message = this.$store.getters['messages/get'](m.id)
 
-            if (this.initialPostBounds !== null && !this.mapMoved) {
-              const initialBounds = new L.LatLngBounds(this.initialBounds).pad(
-                this.initialPostBounds
+            if (!message && !this.fetching[m.id] && this.infiniteId) {
+              this.fetching[m.id] = true
+
+              fetching.push(m.id)
+
+              promises.push(
+                this.$store.dispatch('messages/fetch', {
+                  id: m.id,
+                  summary: true,
+                  matchedon: m.matchedon ? m.matchedon : null
+                })
               )
 
-              show = initialBounds.contains([m.lat, m.lng])
-            }
+              count++
 
-            if (show) {
-              const message = this.$store.getters['messages/get'](m.id)
-
-              if (!message && !this.fetching[m.id] && this.infiniteId) {
-                this.fetching[m.id] = true
-
-                fetching.push(m.id)
-
-                promises.push(
-                  this.$store.dispatch('messages/fetch', {
-                    id: m.id,
-                    summary: true,
-                    matchedon: m.matchedon ? m.matchedon : null
-                  })
-                )
-
-                count++
-
-                if (count >= 5) {
-                  // Don't fetch too many at once.
-                  break
-                }
+              if (count >= 5) {
+                // Don't fetch too many at once.
+                break
               }
             }
           }

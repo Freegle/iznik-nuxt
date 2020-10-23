@@ -73,7 +73,6 @@ export default {
   data: function() {
     return {
       initialBounds: null,
-      initialPostBounds: null,
       showRest: false,
       bump: 1
     }
@@ -230,15 +229,6 @@ export default {
         nelng !== null
       ) {
         bounds = [[swlat, swlng], [nelat, nelng]]
-      }
-
-      if (bounds) {
-        this.initialPostBounds = [
-          [bounds[0][0] * 1.1, bounds[0][1] * 1.1],
-          [bounds[1][0] * 1.1, bounds[1][1] * 1.1]
-        ]
-      } else {
-        this.initialPostBounds = this.initialBounds
       }
     }
   },
