@@ -158,7 +158,6 @@ export default {
 
       let bounds = null
 
-      console.log('Got somewhere?', swlat, swlng, nelat, nelng, me)
       if (
         swlat !== null &&
         swlng !== null &&
