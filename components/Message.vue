@@ -37,7 +37,7 @@
             See details and reply <v-icon name="angle-double-right" />
           </b-button>
         </div>
-        <div v-if="attachments && attachments.length > 0" class="clickme card-header-image__wrapper" tabindex="0" @click="showPhotos" @keyup.enter="showPhotos">
+        <button v-if="attachments && attachments.length > 0" class="card-header-image__wrapper p-0 border-0" @click="showPhotos">
           <b-badge v-if="attachments.length > 1" class="photobadge" variant="primary">
             {{ attachments.length }} <v-icon name="camera" />
           </b-badge>
@@ -49,7 +49,7 @@
             title="Item picture"
             :src="attachments[0].paththumb"
           />
-        </div>
+        </button>
         <div v-if="!simple && expanded" class="d-flex mt-1 card-header__options">
           <b-button v-if="expanded && !hideClose" size="sm" variant="link" class="grey p-0 mr-4" @click="contract">
             Close post
