@@ -34,7 +34,7 @@
             Freegle has local communities for each area. We'll put anything you post on here, and search this community and others nearby.
           </b-col>
         </b-row>
-        <b-row v-if="postcodeValid && !closed" class="mt-1">
+        <b-row v-if="postcodeValid" class="mt-1">
           <b-col class="text-center">
             <ComposeGroup />
           </b-col>
