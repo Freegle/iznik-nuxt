@@ -16,6 +16,7 @@
             :force-messages="forceMessages"
             :type="selectedType"
             :search="searchOn"
+            :search-on-groups="!mapMoved"
             :show-many="showMany"
             :groupid="selectedGroup"
             :region="region"
@@ -99,7 +100,7 @@
               <b-input
                 v-model="search"
                 type="text"
-                placeholder="Search posts on map"
+                placeholder="Search posts"
                 autocomplete="off"
                 @keyup.enter.exact="doSearch"
               />
@@ -354,15 +355,16 @@ export default {
     messagesForList() {
       let msgs = []
 
-      if (!this.mapMoved) {
+      if (this.search) {
+        // Whether or not the map has moved, the messages are returned through the map.
+        msgs = this.messagesOnMap
+      } else if (!this.mapMoved) {
         // Until the map moves we show posts from the member's groups.  This is to handle people who don't engage
         // with the map at all and just want to see the posts from their groups (which is perfectly reasonable).
         msgs = this.messagesInOwnGroups
-        console.log('Using own groups')
       } else {
         // Once the map has moved we show posts from within the map area.
         msgs = this.messagesOnMap
-        console.log('Using map')
       }
 
       return msgs
@@ -623,7 +625,9 @@ export default {
         if (this.busy) {
           // Try later.  Otherwise we might end up with messages in store not matching our search.
           setTimeout(this.doSearch, 100)
-        } else {
+        } else if (this.searchOn !== this.search) {
+          // Set some values which will cause the post map to search.
+          this.messagesOnMap = []
           this.searchOn = this.search
           await this.$store.dispatch('messages/clear')
           this.infiniteId++

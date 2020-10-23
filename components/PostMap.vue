@@ -100,6 +100,11 @@ export default {
       required: false,
       default: null
     },
+    searchOnGroups: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     type: {
       type: String,
       required: false,
@@ -398,16 +403,30 @@ export default {
         }
       } else {
         // We are searching.  Get the list of messages from the server.
-        params = {
-          collection: 'Approved',
-          subaction: 'searchmess',
-          messagetype: this.type,
-          search: this.search,
-          groupid: this.groupid,
-          swlat: swlat,
-          swlng: swlng,
-          nelat: nelat,
-          nelng: nelng
+        // eslint-disable-next-line no-lonely-if
+        if (this.searchOnGroups) {
+          // We want the server to search on our own groups.
+          params = {
+            collection: 'Approved',
+            subaction: 'searchmess',
+            messagetype: this.type,
+            search: this.search,
+            groupid: this.groupid,
+            searchmygroups: true
+          }
+        } else {
+          // We want to search within the map area.
+          params = {
+            collection: 'Approved',
+            subaction: 'searchmess',
+            messagetype: this.type,
+            search: this.search,
+            groupid: this.groupid,
+            swlat: swlat,
+            swlng: swlng,
+            nelat: nelat,
+            nelng: nelng
+          }
         }
       }
 
