@@ -3,32 +3,34 @@
     <h2 class="sr-only">
       Map of offers and wanteds
     </h2>
-    <PostMap
-      :initial-bounds="postMapInitialBounds"
-      :height-fraction="heightFraction"
-      :bounds.sync="bounds"
-      :min-zoom="minZoom"
-      :max-zoom="maxZoom"
-      :post-zoom="10"
-      :force-messages="forceMessages"
-      :type="selectedType"
-      :search="searchOn"
-      :search-on-groups="!mapMoved"
-      :show-many="showMany"
-      :groupid="selectedGroup"
-      :region="region"
-      :show-groups.sync="showGroups"
-      :moved.sync="mapMoved"
-      :zoom.sync="zoom"
-      :centre.sync="centre"
-      :ready.sync="mapready"
-      :loading.sync="loading"
-      :can-hide="canHide"
-      @searched="selectedGroup = null"
-      @messages="messagesChanged($event)"
-      @groups="groupsChanged($event)"
-    />
-    <div v-observe-visibility="mapVisibilityChanged" />
+    <client-only>
+      <PostMap
+        :initial-bounds="postMapInitialBounds"
+        :height-fraction="heightFraction"
+        :bounds.sync="bounds"
+        :min-zoom="minZoom"
+        :max-zoom="maxZoom"
+        :post-zoom="10"
+        :force-messages="forceMessages"
+        :type="selectedType"
+        :search="searchOn"
+        :search-on-groups="!mapMoved"
+        :show-many="showMany"
+        :groupid="selectedGroup"
+        :region="region"
+        :show-groups.sync="showGroups"
+        :moved.sync="mapMoved"
+        :zoom.sync="zoom"
+        :centre.sync="centre"
+        :ready.sync="mapready"
+        :loading.sync="loading"
+        :can-hide="canHide"
+        @searched="selectedGroup = null"
+        @messages="messagesChanged($event)"
+        @groups="groupsChanged($event)"
+      />
+      <div v-observe-visibility="mapVisibilityChanged" />
+    </client-only>
     <div v-if="mapready" class="rest">
       <div v-if="showClosestGroups" class="d-flex flex-wrap mb-1 justify-content-between border p-2 bg-white">
         <h2 class="sr-only">
@@ -120,7 +122,9 @@
         <h2 class="sr-only">
           List of WANTEDs and OFFERs
         </h2>
-        <div v-observe-visibility="messageVisibilityChanged" />
+        <client-only>
+          <div v-observe-visibility="messageVisibilityChanged" />
+        </client-only>
         <div v-if="filteredMessages && filteredMessages.length">
           <div v-for="message in filteredMessages" :key="'messagelist-' + message.id" class="p-0">
             <Message v-bind="message" />
@@ -159,10 +163,10 @@
   </div>
 </template>
 <script>
-import InfiniteLoading from 'vue-infinite-loading'
 import Vue from 'vue'
-import VueObserveVisibility from 'vue-observe-visibility'
 import map from '@/mixins/map.js'
+const InfiniteLoading = () => require('vue-infinite-loading')
+const VueObserveVisibility = () => require('vue-observe-visibility')
 const AdaptiveMapGroup = () => import('./AdaptiveMapGroup')
 const ExternalLink = () => import('./ExternalLink')
 const GroupSelect = () => import('./GroupSelect')
@@ -173,11 +177,10 @@ const allSettled = require('promise.allsettled')
 const GroupHeader = () => import('~/components/GroupHeader.vue')
 const JobsTopBar = () => import('~/components/JobsTopBar')
 
-Vue.use(VueObserveVisibility)
-
 let L = null
 
 if (process.browser) {
+  Vue.use(VueObserveVisibility)
   L = require('leaflet')
 }
 

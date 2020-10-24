@@ -8,50 +8,48 @@
     <div v-else>
       <div ref="mapcont" :style="mapHeight" class="w-100 position-relative mb-1">
         <div class="mapbox">
-          <client-only>
-            <vue-draggable-resizable
-              :class="{
-                'd-none': mapHidden
-              }"
-              :h="mapHeight"
-              w="auto"
-              :handles="['bl', 'br']"
-              :parent="false"
-              :draggable="false"
-              resizeable
-              resize-axis="y"
-              active
-              prevent-deactivation
-              @resizestop="onResize"
+          <vue-draggable-resizable
+            :class="{
+              'd-none': mapHidden
+            }"
+            :h="mapHeight"
+            w="auto"
+            :handles="['bl', 'br']"
+            :parent="false"
+            :draggable="false"
+            resizeable
+            resize-axis="y"
+            active
+            prevent-deactivation
+            @resizestop="onResize"
+          >
+            <l-map
+              ref="map"
+              :key="'map-' + bump"
+              :style="'width: 100%; height: ' + mapHeight + 'px'"
+              :min-zoom="minZoom"
+              :max-zoom="maxZoom"
+              @ready="ready"
+              @zoomend="idle"
+              @moveend="idle"
             >
-              <l-map
-                ref="map"
-                :key="'map-' + bump"
-                :style="'width: 100%; height: ' + mapHeight + 'px'"
-                :min-zoom="minZoom"
-                :max-zoom="maxZoom"
-                @ready="ready"
-                @zoomend="idle"
-                @moveend="idle"
-              >
-                <b-btn variant="link" class="leaflet-top leaflet-right pauto black p-1" @click="hideMap">
-                  <v-icon name="times-circle" title="Hide map" />
-                </b-btn>
-                <l-tile-layer :url="osmtile" :attribution="attribution" />
-                <div v-if="showMessages">
-                  <ClusterMarker v-if="messagesForMap.length" :markers="messagesForMap" :map="mapObject" :tag="['post', 'posts']" @click="idle" />
-                  <l-marker v-if="me && me.settings && me.settings.mylocation" :lat-lng="[me.lat, me.lng]" :icon="homeIcon" @click="goHome">
-                    <l-tooltip>
-                      This is where your postcode is. You can change your postcode from Settings.
-                    </l-tooltip>
-                  </l-marker>
-                </div>
-                <div v-else>
-                  <GroupMarker v-for="g in groupsInBounds" :key="'marker-' + g.id + '-' + zoom" :group="g" :size="largeGroupMarkers ? 'rich' : 'poor'" />
-                </div>
-              </l-map>
-            </vue-draggable-resizable>
-          </client-only>
+              <b-btn v-if="canHide" variant="link" class="leaflet-top leaflet-right pauto black p-1" @click="hideMap">
+                <v-icon name="times-circle" title="Hide map" />
+              </b-btn>
+              <l-tile-layer :url="osmtile" :attribution="attribution" />
+              <div v-if="showMessages">
+                <ClusterMarker v-if="messagesForMap.length" :markers="messagesForMap" :map="mapObject" :tag="['post', 'posts']" @click="idle" />
+                <l-marker v-if="me && me.settings && me.settings.mylocation" :lat-lng="[me.lat, me.lng]" :icon="homeIcon" @click="goHome">
+                  <l-tooltip>
+                    This is where your postcode is. You can change your postcode from Settings.
+                  </l-tooltip>
+                </l-marker>
+              </div>
+              <div v-else>
+                <GroupMarker v-for="g in groupsInBounds" :key="'marker-' + g.id + '-' + zoom" :group="g" :size="largeGroupMarkers ? 'rich' : 'poor'" />
+              </div>
+            </l-map>
+          </vue-draggable-resizable>
         </div>
       </div>
     </div>
