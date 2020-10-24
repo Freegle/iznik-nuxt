@@ -1,43 +1,60 @@
 <template>
-  <div ref="mapcont" class="w-100">
-    <client-only>
-      <vue-draggable-resizable
-        :h="mapHeight"
-        w="auto"
-        :handles="['bl', 'br']"
-        :parent="false"
-        :draggable="false"
-        resizeable
-        resize-axis="y"
-        active
-        prevent-deactivation
-        @resizestop="onResize"
-      >
-        <l-map
-          ref="map"
-          :key="'map-' + bump"
-          :style="'width: 100%; height: ' + mapHeight + 'px'"
-          :min-zoom="minZoom"
-          :max-zoom="maxZoom"
-          @ready="ready"
-          @zoomend="idle"
-          @moveend="idle"
-        >
-          <l-tile-layer :url="osmtile" :attribution="attribution" />
-          <div v-if="showMessages">
-            <ClusterMarker v-if="messagesForMap.length" :markers="messagesForMap" :map="mapObject" :tag="['post', 'posts']" @click="idle" />
-            <l-marker v-if="me && me.settings && me.settings.mylocation" :lat-lng="[me.lat, me.lng]" :icon="homeIcon" @click="goHome">
-              <l-tooltip>
-                This is where your postcode is. You can change your postcode from Settings.
-              </l-tooltip>
-            </l-marker>
-          </div>
-          <div v-else>
-            <GroupMarker v-for="g in groupsInBounds" :key="'marker-' + g.id + '-' + zoom" :group="g" :size="largeGroupMarkers ? 'rich' : 'poor'" />
-          </div>
-        </l-map>
-      </vue-draggable-resizable>
-    </client-only>
+  <div>
+    <div v-if="mapHidden" class="d-flex justify-content-end">
+      <b-btn variant="link" @click="showMap">
+        Show map of posts
+      </b-btn>
+    </div>
+    <div v-else>
+      <div ref="mapcont" :style="mapHeight" class="w-100 position-relative mb-1">
+        <div class="mapbox">
+          <client-only>
+            <vue-draggable-resizable
+              :class="{
+                'd-none': mapHidden
+              }"
+              :h="mapHeight"
+              w="auto"
+              :handles="['bl', 'br']"
+              :parent="false"
+              :draggable="false"
+              resizeable
+              resize-axis="y"
+              active
+              prevent-deactivation
+              @resizestop="onResize"
+            >
+              <l-map
+                ref="map"
+                :key="'map-' + bump"
+                :style="'width: 100%; height: ' + mapHeight + 'px'"
+                :min-zoom="minZoom"
+                :max-zoom="maxZoom"
+                @ready="ready"
+                @zoomend="idle"
+                @moveend="idle"
+              >
+                <b-btn variant="link" class="leaflet-top leaflet-right pauto black p-1" @click="hideMap">
+                  <v-icon name="times-circle" title="Hide map" />
+                </b-btn>
+                <l-tile-layer :url="osmtile" :attribution="attribution" />
+                <div v-if="showMessages">
+                  <ClusterMarker v-if="messagesForMap.length" :markers="messagesForMap" :map="mapObject" :tag="['post', 'posts']" @click="idle" />
+                  <l-marker v-if="me && me.settings && me.settings.mylocation" :lat-lng="[me.lat, me.lng]" :icon="homeIcon" @click="goHome">
+                    <l-tooltip>
+                      This is where your postcode is. You can change your postcode from Settings.
+                    </l-tooltip>
+                  </l-marker>
+                </div>
+                <div v-else>
+                  <GroupMarker v-for="g in groupsInBounds" :key="'marker-' + g.id + '-' + zoom" :group="g" :size="largeGroupMarkers ? 'rich' : 'poor'" />
+                </div>
+              </l-map>
+            </vue-draggable-resizable>
+          </client-only>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -124,6 +141,11 @@ export default {
       type: String,
       required: false,
       default: null
+    },
+    canHide: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
@@ -140,6 +162,9 @@ export default {
     }
   },
   computed: {
+    mapHidden() {
+      return this.canHide && this.$store.getters['misc/get']('hidepostmap')
+    },
     mapHeight() {
       if (this.resizedHeight !== null) {
         return this.resizedHeight
@@ -291,6 +316,11 @@ export default {
   },
   mounted() {
     this.messageLocations = this.initialMessageLocations
+
+    if (this.mapHidden) {
+      // Say we're ready so the parent can crack on.
+      this.$emit('update:ready', true)
+    }
   },
   methods: {
     ready() {
@@ -505,6 +535,18 @@ export default {
     },
     goHome() {
       this.mapObject.flyTo(new L.LatLng(this.me.lat, this.me.lng))
+    },
+    hideMap() {
+      this.$store.dispatch('misc/set', {
+        key: 'hidepostmap',
+        value: true
+      })
+    },
+    showMap() {
+      this.$store.dispatch('misc/set', {
+        key: 'hidepostmap',
+        value: false
+      })
     }
   }
 }
@@ -514,6 +556,17 @@ export default {
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins/_breakpoints';
+
+.mapbox {
+  width: 100%;
+  top: 0px;
+  left: 0;
+  border: 1px solid $color-gray--light;
+}
+
+::v-deep .leaflet-control-geocoder {
+  right: 30px;
+}
 
 @include media-breakpoint-up(md) {
   ::v-deep .leaflet-control-geocoder-form input {
@@ -531,5 +584,9 @@ export default {
 
 ::v-deep .top {
   z-index: 1000 !important;
+}
+
+.pauto {
+  pointer-events: auto;
 }
 </style>

@@ -31,6 +31,7 @@
           group-info
           jobs
           :show-many="false"
+          can-hide
         />
       </b-col>
       <b-col cols="0" xl="3" class="d-none d-xl-block p-0 pl-1">

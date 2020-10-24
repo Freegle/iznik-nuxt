@@ -1,40 +1,34 @@
 <template>
   <div>
-    <client-only>
-      <h2 class="sr-only">
-        Map of offers and wanteds
-      </h2>
-      <div :style="mapHeight" class="position-relative mb-1">
-        <div v-if="bounds" class="mapbox">
-          <PostMap
-            :initial-bounds="postMapInitialBounds"
-            :height-fraction="heightFraction"
-            :bounds.sync="bounds"
-            :min-zoom="minZoom"
-            :max-zoom="maxZoom"
-            :post-zoom="10"
-            :force-messages="forceMessages"
-            :type="selectedType"
-            :search="searchOn"
-            :search-on-groups="!mapMoved"
-            :show-many="showMany"
-            :groupid="selectedGroup"
-            :region="region"
-            :show-groups.sync="showGroups"
-            :moved.sync="mapMoved"
-            :zoom.sync="zoom"
-            :centre.sync="centre"
-            :ready.sync="mapready"
-            :loading.sync="loading"
-            @searched="selectedGroup = null"
-            @messages="messagesChanged($event)"
-            @groups="groupsChanged($event)"
-          />
-        </div>
-        <div v-else :style="mapHeight" />
-      </div>
-      <div v-observe-visibility="mapVisibilityChanged" />
-    </client-only>
+    <h2 class="sr-only">
+      Map of offers and wanteds
+    </h2>
+    <PostMap
+      :initial-bounds="postMapInitialBounds"
+      :height-fraction="heightFraction"
+      :bounds.sync="bounds"
+      :min-zoom="minZoom"
+      :max-zoom="maxZoom"
+      :post-zoom="10"
+      :force-messages="forceMessages"
+      :type="selectedType"
+      :search="searchOn"
+      :search-on-groups="!mapMoved"
+      :show-many="showMany"
+      :groupid="selectedGroup"
+      :region="region"
+      :show-groups.sync="showGroups"
+      :moved.sync="mapMoved"
+      :zoom.sync="zoom"
+      :centre.sync="centre"
+      :ready.sync="mapready"
+      :loading.sync="loading"
+      :can-hide="canHide"
+      @searched="selectedGroup = null"
+      @messages="messagesChanged($event)"
+      @groups="groupsChanged($event)"
+    />
+    <div v-observe-visibility="mapVisibilityChanged" />
     <div v-if="mapready" class="rest">
       <div v-if="showClosestGroups" class="d-flex flex-wrap mb-1 justify-content-between border p-2 bg-white">
         <h2 class="sr-only">
@@ -261,6 +255,11 @@ export default {
       type: Boolean,
       required: false,
       default: true
+    },
+    canHide: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
@@ -426,16 +425,6 @@ export default {
       }
 
       return ret
-    },
-    mapHeight() {
-      let height = 0
-
-      if (process.browser) {
-        height = window.innerHeight / this.heightFraction - 70
-        height = height < 200 ? 200 : height
-      }
-
-      return 'min-height: ' + height + 'px'
     },
     sortedMessagesOnMap() {
       return this.messagesOnMap.slice().sort((a, b) => {
@@ -649,13 +638,6 @@ export default {
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins/_breakpoints';
-
-.mapbox {
-  width: 100%;
-  top: 0px;
-  left: 0;
-  border: 1px solid $color-gray--light;
-}
 
 .postcode {
   position: absolute;
