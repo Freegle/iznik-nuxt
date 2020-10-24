@@ -509,6 +509,9 @@ export default {
 
       if (ret && ret.ret === 0 && ret.messages) {
         this.messagesInOwnGroups = ret.messages
+
+        // Kick the infinite scroll to show them.
+        this.infiniteId++
       }
     }
 
@@ -580,6 +583,7 @@ export default {
             $state.complete()
           }
         } catch (e) {
+          console.log('Exception', e)
           $state.complete()
         }
 
