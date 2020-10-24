@@ -208,7 +208,7 @@ export default {
       const bounds = this.mapObject ? this.mapObject.getBounds() : null
       const ret = []
 
-      if (!process.browser) {
+      if (!process.browser && bounds) {
         // SSR - return all for SEO.
         for (const ix in groups) {
           const group = groups[ix]
@@ -229,6 +229,7 @@ export default {
           try {
             if (
               group.onmap &&
+              group.publish &&
               bounds.contains([group.lat, group.lng]) &&
               (!this.region ||
                 this.region.toLowerCase() === group.region.toLowerCase())

@@ -164,9 +164,9 @@
 </template>
 <script>
 import Vue from 'vue'
+import VueObserveVisibility from 'vue-observe-visibility'
+import InfiniteLoading from 'vue-infinite-loading'
 import map from '@/mixins/map.js'
-const InfiniteLoading = () => require('vue-infinite-loading')
-const VueObserveVisibility = () => require('vue-observe-visibility')
 const AdaptiveMapGroup = () => import('./AdaptiveMapGroup')
 const ExternalLink = () => import('./ExternalLink')
 const GroupSelect = () => import('./GroupSelect')
