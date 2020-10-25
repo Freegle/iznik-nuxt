@@ -294,7 +294,8 @@ export default {
       distance: 1000,
       chatPoll: null,
       nchan: null,
-      logo: require(`@/static/icon.png`)
+      logo: require(`@/static/icon.png`),
+      timeTimer: null
     }
   },
 
@@ -369,6 +370,10 @@ export default {
     if (process.browser) {
       // Add class for screen background.
       document.body.classList.add('fd')
+
+      // Start our timer.  Holding the time in the store allows us to update the time regularly and have reactivity
+      // cause displayed fromNow() values to change, rather than starting a timer for each of them.
+      this.updateTime()
     }
 
     // Ensure we know whether we're FD or MT.
@@ -471,6 +476,7 @@ export default {
   beforeDestroy() {
     console.log('Destroy layout')
     clearTimeout(this.chatPoll)
+    clearTimeout(this.timeTimer)
 
     if (this.nchan && this.nchan.running) {
       console.log('Stop NCHAN')
@@ -656,6 +662,11 @@ export default {
       await this.$store.dispatch('notifications/allSeen')
       await this.$store.dispatch('notifications/updateUnreadNotificationCount')
       await this.$store.dispatch('notifications/fetchNextListChunk')
+    },
+
+    updateTime() {
+      this.$store.dispatch('misc/setTime')
+      this.timeTimer = setTimeout(this.updateTime, 10000)
     }
   }
 }
