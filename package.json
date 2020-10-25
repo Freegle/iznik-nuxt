@@ -19,6 +19,7 @@
     "@fortawesome/free-brands-svg-icons": "^5.11.1",
     "@fortawesome/free-solid-svg-icons": "^5.11.1",
     "@handsontable/vue": "^4.1.1",
+    "@mapbox/leaflet-pip": "^1.1.0",
     "@nuxtjs/axios": "^5.9.3",
     "@nuxtjs/component-cache": "^1.1.5",
     "@nuxtjs/pwa": "^3.0.0-beta.19",

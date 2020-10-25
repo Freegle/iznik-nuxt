@@ -11,9 +11,8 @@
           Occasionally you may receive emails for upto a few more hours - emails may have been sent to you but
           not yet reached your mailbox.  If you receive any more emails after 24 hours please forward the entire
           mail to
-          <ExternalLink href="mailto:support@ilovefreegle.org">
-            support@ilovefreegle.org
-          </ExternalLink>.
+          <!-- eslint-disable-next-line -->
+          <ExternalLink href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</ExternalLink>.
         </p>
       </div>
     </b-col>

@@ -1,6 +1,6 @@
 <template>
   <div class="chatMessageWrapper pb-1" :class="{ myChatMessage : messageIsFromCurrentUser }">
-    <div class="chatMessage chatMessage__owner">
+    <div class="chatMessage forcebreak chatMessage__owner">
       <span>
         <span v-if="messageIsNew" class="prewrap"><b>{{ emessage }}</b></span>
         <span v-else class="preline forcebreak">{{ emessage }}</span>

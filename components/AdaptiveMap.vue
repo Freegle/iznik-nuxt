@@ -1,62 +1,53 @@
 <template>
   <div>
+    <h2 class="sr-only">
+      Map of offers and wanteds
+    </h2>
     <client-only>
-      <h2 class="sr-only">
-        Map of offers and wanteds
-      </h2>
-      <div :style="mapHeight" class="position-relative mb-1">
-        <div v-if="bounds" class="mapbox">
-          <GroupMap
-            v-if="showGroups"
-            :initial-bounds="bounds"
-            :height-fraction="heightFraction"
-            :bounds.sync="bounds"
-            :zoom.sync="zoom"
-            :centre.sync="centre"
-            :ready.sync="mapready"
-            :region="region"
-            @groups="groupsChanged($event)"
-            @maxzoom="showGroups = false"
-          />
-          <PostMap
-            v-else
-            :initial-bounds="bounds"
-            :height-fraction="heightFraction"
-            :bounds.sync="bounds"
-            :zoom.sync="zoom"
-            :centre.sync="centre"
-            :ready.sync="mapready"
-            :loading.sync="loading"
-            :groupid="selectedGroup"
-            :type="selectedType"
-            :search="searchOn"
-            :min-zoom="forceMessages ? 9 : minZoom"
-            :max-zoom="maxZoom"
-            :show-many="showMany"
-            @messages="messagesChanged($event)"
-            @groups="groupsChanged($event)"
-            @minzoom="showGroups = true && !forceMessages"
-          />
-        </div>
-        <div v-else :style="mapHeight" />
-      </div>
+      <PostMap
+        :initial-bounds="postMapInitialBounds"
+        :height-fraction="heightFraction"
+        :bounds.sync="bounds"
+        :min-zoom="minZoom"
+        :max-zoom="maxZoom"
+        :post-zoom="10"
+        :force-messages="forceMessages"
+        :type="selectedType"
+        :search="searchOn"
+        :search-on-groups="!mapMoved"
+        :show-many="showMany"
+        :groupid="selectedGroup"
+        :region="region"
+        :show-groups.sync="showGroups"
+        :moved.sync="mapMoved"
+        :zoom.sync="zoom"
+        :centre.sync="centre"
+        :ready.sync="mapready"
+        :loading.sync="loading"
+        :can-hide="canHide"
+        @searched="selectedGroup = null"
+        @messages="messagesChanged($event)"
+        @groups="groupsChanged($event)"
+      />
       <div v-observe-visibility="mapVisibilityChanged" />
     </client-only>
     <div v-if="mapready" class="rest">
-      <div v-if="showClosestGroups" class="d-none d-md-flex flex-wrap mb-1 justify-content-between border p-2 bg-white">
+      <div v-if="showClosestGroups" class="mb-1 border p-2 bg-white">
         <h2 class="sr-only">
           Nearby commmunities
         </h2>
-        <b-btn
-          v-for="g in closestGroups"
-          :key="'group-' + g.id"
-          size="md"
-          :to="'/explore/join/' + g.id"
-          variant="primary"
-          class="mb-1"
-        >
-          Join {{ g.namedisplay }}
-        </b-btn>
+        <div class="dense">
+          <b-btn
+            v-for="g in closestGroups"
+            :key="'group-' + g.id"
+            size="md"
+            :to="'/explore/join/' + g.id"
+            variant="primary"
+            class="m-1"
+          >
+            Join {{ g.namedisplay }}
+          </b-btn>
+        </div>
       </div>
       <div v-if="showGroups" class="bg-white pt-3">
         <div v-if="showRegions">
@@ -133,7 +124,9 @@
         <h2 class="sr-only">
           List of WANTEDs and OFFERs
         </h2>
-        <div v-observe-visibility="messageVisibilityChanged" />
+        <client-only>
+          <div v-observe-visibility="messageVisibilityChanged" />
+        </client-only>
         <div v-if="filteredMessages && filteredMessages.length">
           <div v-for="message in filteredMessages" :key="'messagelist-' + message.id" class="p-0">
             <Message v-bind="message" />
@@ -172,9 +165,9 @@
   </div>
 </template>
 <script>
-import InfiniteLoading from 'vue-infinite-loading'
 import Vue from 'vue'
 import VueObserveVisibility from 'vue-observe-visibility'
+import InfiniteLoading from 'vue-infinite-loading'
 import map from '@/mixins/map.js'
 const AdaptiveMapGroup = () => import('./AdaptiveMapGroup')
 const ExternalLink = () => import('./ExternalLink')
@@ -182,16 +175,14 @@ const GroupSelect = () => import('./GroupSelect')
 const NoticeMessage = () => import('./NoticeMessage')
 const Message = () => import('~/components/Message.vue')
 const PostMap = () => import('~/components/PostMap')
-const GroupMap = () => import('~/components/GroupMap')
 const allSettled = require('promise.allsettled')
 const GroupHeader = () => import('~/components/GroupHeader.vue')
 const JobsTopBar = () => import('~/components/JobsTopBar')
 
-Vue.use(VueObserveVisibility)
-
 let L = null
 
 if (process.browser) {
+  Vue.use(VueObserveVisibility)
   L = require('leaflet')
 }
 
@@ -202,7 +193,6 @@ export default {
     GroupSelect,
     ExternalLink,
     AdaptiveMapGroup,
-    GroupMap,
     InfiniteLoading,
     Message,
     PostMap,
@@ -259,7 +249,7 @@ export default {
     minZoom: {
       type: Number,
       required: false,
-      default: 10
+      default: 5
     },
     maxZoom: {
       type: Number,
@@ -270,10 +260,18 @@ export default {
       type: Boolean,
       required: false,
       default: true
+    },
+    canHide: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
     return {
+      postMapInitialBounds: null,
+      groupMapInitialBounds: null,
+
       // Map stuff
       heightFraction: 3,
       postcode: null,
@@ -288,16 +286,18 @@ export default {
       bounds: null,
       zoom: null,
       centre: null,
-      showGroups: false,
+      showGroups: true,
       mapready: process.server,
       mapVisible: true,
+      mapMoved: false,
+      messagesOnMap: [],
 
       // Infinite message scroll
       postsVisible: true,
       busy: false,
       infiniteId: +new Date(),
       distance: 1000,
-      messagesOnMap: [],
+      messagesInOwnGroups: [],
       fetching: [],
       fetched: [],
 
@@ -357,32 +357,55 @@ export default {
       const count = this.messages ? this.messages.length : 0
       return count
     },
+    messagesForList() {
+      let msgs = []
+
+      if (this.search) {
+        // Whether or not the map has moved, the messages are returned through the map.
+        msgs = this.messagesOnMap
+      } else if (!this.mapMoved) {
+        // Until the map moves we show posts from the member's groups.  This is to handle people who don't engage
+        // with the map at all and just want to see the posts from their groups (which is perfectly reasonable).
+        msgs = this.messagesInOwnGroups
+      } else {
+        // Once the map has moved we show posts from within the map area.
+        msgs = this.messagesOnMap
+      }
+
+      return msgs
+    },
     filteredMessages() {
       const ret = []
       const dups = []
 
       if (!this.search) {
         // We want to filter by:
-        // - Messages on the map
-        // - Don't deleted or completed posts.  Remember the map may lag a bit as it's only updated on cron, so we
+        // - Possibly a message type
+        // - Possibly a group id
+        // - Don't show deleted or completed posts.  Remember the map may lag a bit as it's only updated on cron, so we
         //   may be returned some.
-        // - Possibly a message type - but that's handled by the map
-        // - Possibly a group id - but that's handled by the map
-        // - Filter out dups by subject (for crossposting).
-        this.messagesOnMap.forEach(m => {
-          const message = this.$store.getters['messages/get'](m.id)
+        //
+        // Filter out dups by subject (for crossposting).
+        this.messagesForList.forEach(m => {
+          if (
+            (this.selectedType === 'All' || this.selectedType === m.type) &&
+            (!this.selectedGroup ||
+              parseInt(m.groupid) === parseInt(this.selectedGroup))
+          ) {
+            const message = this.$store.getters['messages/get'](m.id)
 
-          if (message) {
-            const key = message.fromuser + '|' + message.subject
-            const already = key in dups
+            if (message) {
+              const key = message.fromuser + '|' + message.subject
+              const already = key in dups
 
-            if (
-              !already &&
-              !message.deleted &&
-              (!message.outcomes || message.outcomes.length === 0)
-            ) {
-              dups[key] = true
-              ret.push(message)
+              if (
+                !already &&
+                !message.deleted &&
+                (!message.outcomes || message.outcomes.length === 0)
+              ) {
+                dups[key] = true
+                ret.push(message)
+              }
             }
           }
         })
@@ -407,16 +430,6 @@ export default {
       }
 
       return ret
-    },
-    mapHeight() {
-      let height = 0
-
-      if (process.browser) {
-        height = window.innerHeight / this.heightFraction - 70
-        height = height < 200 ? 200 : height
-      }
-
-      return 'min-height: ' + height + 'px'
     },
     sortedMessagesOnMap() {
       return this.messagesOnMap.slice().sort((a, b) => {
@@ -456,7 +469,10 @@ export default {
                 [this.centre.lat, this.centre.lng],
                 [group.lat, group.lng]
               )
-              ret.push(group)
+
+              if (group.distance <= 50000) {
+                ret.push(group)
+              }
             }
           }
         })
@@ -484,20 +500,24 @@ export default {
     this.swlng = this.initialBounds[0][1]
     this.nelat = this.initialBounds[1][0]
     this.nelng = this.initialBounds[1][1]
+    this.postMapInitialBounds = this.initialBounds
+    this.groupMapInitialBounds = this.initialBounds
   },
   async mounted() {
     if (!this.startOnGroups) {
       this.context = null
 
-      // We have been given a bounding box containing some interesting posts.  Get messages within it - just
-      // the positions.
-      await this.$api.message.fetchMessages({
-        subaction: 'inbounds',
-        swlat: this.swlat,
-        swlng: this.swlng,
-        nelat: this.nelat,
-        nelng: this.nelng
+      // Get the messages in our own groups for the initial view.
+      const ret = await this.$api.message.fetchMessages({
+        subaction: 'mygroups'
       })
+
+      if (ret && ret.ret === 0 && ret.messages) {
+        this.messagesInOwnGroups = ret.messages
+
+        // Kick the infinite scroll to show them.
+        this.infiniteId++
+      }
     }
 
     this.bounds = L.latLngBounds(
@@ -519,58 +539,63 @@ export default {
       })
     },
     loadMore: async function($state) {
-      this.busy = true
+      if (!this.busy) {
+        this.busy = true
 
-      try {
-        // We work out which messages that are currently on the map are not in our store, and fetch them
-        // in descending date order.  We limit to avoid flooding the server.
-        let count = 0
-        const promises = []
-        const fetching = []
+        try {
+          // We work out which messages that are currently on the map are not in our store, and fetch them
+          // in descending date order.  We limit to avoid flooding the server.
+          let count = 0
+          const promises = []
+          const fetching = []
 
-        for (const m of this.messagesOnMap) {
-          const message = this.$store.getters['messages/get'](m.id)
+          for (const m of this.messagesForList) {
+            const message = this.$store.getters['messages/get'](m.id)
 
-          if (!message && !this.fetching[m.id] && this.infiniteId) {
-            this.fetching[m.id] = true
+            if (!message && !this.fetching[m.id] && this.infiniteId) {
+              this.fetching[m.id] = true
 
-            fetching.push(m.id)
+              fetching.push(m.id)
 
-            promises.push(
-              this.$store.dispatch('messages/fetch', {
-                id: m.id,
-                summary: true,
-                matchedon: m.matchedon ? m.matchedon : null
-              })
-            )
+              promises.push(
+                this.$store.dispatch('messages/fetch', {
+                  id: m.id,
+                  summary: true,
+                  matchedon: m.matchedon ? m.matchedon : null
+                })
+              )
 
-            count++
+              count++
 
-            if (count >= 5) {
-              // Don't fetch too many at once.
-              break
+              if (count >= 5) {
+                // Don't fetch too many at once.
+                break
+              }
             }
           }
-        }
 
-        // Use all-settled as some might fail.
-        await allSettled(promises)
+          // Use all-settled as some might fail.
+          await allSettled(promises)
 
-        fetching.forEach(id => {
-          this.fetched[id] = true
-          delete this.fetching[id]
-        })
+          fetching.forEach(id => {
+            this.fetched[id] = true
+            delete this.fetching[id]
+          })
 
-        if (count) {
-          $state.loaded()
-        } else {
+          if (count) {
+            $state.loaded()
+          } else {
+            $state.complete()
+          }
+        } catch (e) {
+          console.log('Exception', e)
           $state.complete()
         }
-      } catch (e) {
-        $state.complete()
-      }
 
-      this.busy = false
+        this.busy = false
+      } else {
+        console.log('Ignore scroll request')
+      }
     },
     messagesChanged(messages) {
       let changed = false
@@ -590,8 +615,6 @@ export default {
         this.infiniteId++
         this.$store.dispatch('messages/clear')
       }
-
-      this.$emit('messages')
     },
     groupsChanged(groupids) {
       this.groupids = groupids
@@ -601,9 +624,12 @@ export default {
         if (this.busy) {
           // Try later.  Otherwise we might end up with messages in store not matching our search.
           setTimeout(this.doSearch, 100)
-        } else {
+        } else if (this.searchOn !== this.search) {
+          // Set some values which will cause the post map to search.
+          this.messagesOnMap = []
           this.searchOn = this.search
           await this.$store.dispatch('messages/clear')
+          this.infiniteId++
         }
       }
     },
@@ -621,13 +647,6 @@ export default {
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins/_breakpoints';
-
-.mapbox {
-  width: 100%;
-  top: 0px;
-  left: 0;
-  border: 1px solid $color-gray--light;
-}
 
 .postcode {
   position: absolute;
@@ -666,6 +685,17 @@ export default {
       grid-row: 2 / 3;
       grid-column: 1 / 6;
     }
+  }
+}
+
+.dense {
+  display: grid;
+  grid-auto-flow: column dense;
+  justify-content: center;
+
+  .btn {
+    max-width: 300px;
+    text-overflow: ellipsis;
   }
 }
 </style>

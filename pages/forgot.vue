@@ -48,6 +48,7 @@ import { email, required } from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
 import EmailValidator from '../components/EmailValidator'
 import SpinButton from '../components/SpinButton'
+import loginOptional from '@/mixins/loginOptional.js'
 import validationHelpers from '@/mixins/validationHelpers'
 
 import buildHead from '@/mixins/buildHead.js'
@@ -59,7 +60,7 @@ export default {
     EmailValidator,
     ExternalLink
   },
-  mixins: [buildHead, validationMixin, validationHelpers],
+  mixins: [buildHead, validationMixin, validationHelpers, loginOptional],
   data() {
     return {
       error: null,
@@ -72,6 +73,11 @@ export default {
     email: {
       required,
       email
+    }
+  },
+  mounted() {
+    if (this.me) {
+      this.$router.push('/')
     }
   },
   methods: {

@@ -1,46 +1,66 @@
 <template>
-  <div ref="mapcont" class="w-100">
-    <client-only>
-      <vue-draggable-resizable
-        :h="mapHeight"
-        w="auto"
-        :handles="['bl', 'br']"
-        :parent="false"
-        :draggable="false"
-        resizeable
-        resize-axis="y"
-        active
-        prevent-deactivation
-        @resizestop="onResize"
-      >
-        <l-map
-          ref="map"
-          :key="'map-' + bump"
-          :style="'width: 100%; height: ' + mapHeight + 'px'"
-          :min-zoom="minZoom - 1"
-          :max-zoom="maxZoom"
-          @ready="ready"
-          @zoomend="idle"
-          @moveend="idle"
-        >
-          <l-tile-layer :url="osmtile" :attribution="attribution" />
-          <ClusterMarker v-if="messagesForMap.length" :markers="messagesForMap" :map="mapObject" :tag="['post', 'posts']" />
-          <div v-if="mod && !mod">
-            <!--            For mods, show the groups they're in to make it clearer why the map covers the area it does.-->
-            <l-marker v-for="group in mygroups" :key="'groupmarker-' + group.id" :lat-lng="[group.lat, group.lng]" :icon="groupIcon">
-              <l-tooltip>
-                {{ group.namedisplay }}
-              </l-tooltip>
-            </l-marker>
-          </div>
-        </l-map>
-      </vue-draggable-resizable>
-    </client-only>
+  <div>
+    <div v-if="mapHidden" class="d-flex justify-content-end">
+      <b-btn variant="link" @click="showMap">
+        Show map of posts
+      </b-btn>
+    </div>
+    <div v-else>
+      <div ref="mapcont" :style="mapHeight" class="w-100 position-relative mb-1">
+        <div class="mapbox">
+          <vue-draggable-resizable
+            :class="{
+              'd-none': mapHidden
+            }"
+            :h="mapHeight"
+            w="auto"
+            :handles="['bl', 'br']"
+            :parent="false"
+            :draggable="false"
+            resizeable
+            resize-axis="y"
+            active
+            prevent-deactivation
+            @resizestop="onResize"
+          >
+            <l-map
+              ref="map"
+              :key="'map-' + bump"
+              :style="'width: 100%; height: ' + mapHeight + 'px'"
+              :min-zoom="minZoom"
+              :max-zoom="maxZoom"
+              @ready="ready"
+              @zoomend="idle"
+              @moveend="idle"
+            >
+              <b-btn v-if="canHide" variant="link" class="leaflet-top leaflet-right pauto black p-1" @click="hideMap">
+                <v-icon name="times-circle" title="Hide map" />
+              </b-btn>
+              <l-tile-layer :url="osmtile" :attribution="attribution" />
+              <div v-if="showMessages">
+                <ClusterMarker v-if="messagesForMap.length" :markers="messagesForMap" :map="mapObject" :tag="['post', 'posts']" @click="idle" />
+                <l-marker v-if="me && me.settings && me.settings.mylocation" :lat-lng="[me.lat, me.lng]" :icon="homeIcon" @click="goHome">
+                  <l-tooltip>
+                    This is where your postcode is. You can change your postcode from Settings.
+                  </l-tooltip>
+                </l-marker>
+              </div>
+              <div v-else>
+                <GroupMarker v-for="g in groupsInBounds" :key="'marker-' + g.id + '-' + zoom" :group="g" :size="largeGroupMarkers ? 'rich' : 'poor'" />
+              </div>
+            </l-map>
+          </vue-draggable-resizable>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
 import VueDraggableResizable from 'vue-draggable-resizable/src/components/vue-draggable-resizable'
 import cloneDeep from 'lodash.clonedeep'
+import Vue from 'vue'
+import GroupMarker from './GroupMarker'
+import BrowseHomeIcon from './BrowseHomeIcon'
 import map from '@/mixins/map.js'
 import waitForRef from '@/mixins/waitForRef'
 const ClusterMarker = () => import('./ClusterMarker')
@@ -56,12 +76,13 @@ if (process.browser) {
 export default {
   components: {
     ClusterMarker,
-    VueDraggableResizable
+    VueDraggableResizable,
+    GroupMarker
   },
   mixins: [map, waitForRef],
   props: {
     initialBounds: {
-      type: Object,
+      type: Array,
       required: true
     },
     heightFraction: {
@@ -72,17 +93,32 @@ export default {
     minZoom: {
       type: Number,
       required: false,
-      default: 10
+      default: 5
     },
     maxZoom: {
       type: Number,
       required: false,
       default: 15
     },
+    postZoom: {
+      type: Number,
+      required: false,
+      default: 10
+    },
+    forceMessages: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     groupid: {
       type: Number,
       required: false,
       default: null
+    },
+    searchOnGroups: {
+      type: Boolean,
+      required: false,
+      default: false
     },
     type: {
       type: String,
@@ -98,6 +134,16 @@ export default {
       type: Boolean,
       required: false,
       default: true
+    },
+    region: {
+      type: String,
+      required: false,
+      default: null
+    },
+    canHide: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
@@ -109,10 +155,14 @@ export default {
       shownMany: false,
       bump: 1,
       resizedHeight: null,
-      lastBounds: null
+      lastBounds: null,
+      zoom: 5
     }
   },
   computed: {
+    mapHidden() {
+      return this.canHide && this.$store.getters['misc/get']('hidepostmap')
+    },
     mapHeight() {
       if (this.resizedHeight !== null) {
         return this.resizedHeight
@@ -127,6 +177,12 @@ export default {
 
       return height
     },
+    showMessages() {
+      // We're zoomed in far enough or we're forcing ourselves to show them (but not so that it's silly)
+      return (
+        this.zoom >= this.postZoom || (this.forceMessages && this.zoom >= 7)
+      )
+    },
     groups() {
       const ret = []
 
@@ -139,6 +195,60 @@ export default {
       }
 
       return ret
+    },
+    largeGroupMarkers() {
+      // Can't get this to look sane.
+      return false
+    },
+    allGroups() {
+      return this.$store.getters['group/list']
+    },
+    groupsInBounds() {
+      const groups = this.allGroups
+      const bounds = this.mapObject ? this.mapObject.getBounds() : null
+      const ret = []
+
+      if (!process.browser && bounds) {
+        // SSR - return all for SEO.
+        for (const ix in groups) {
+          const group = groups[ix]
+
+          if (
+            group.onmap &&
+            (!this.region ||
+              group.region.trim().toLowerCase() ===
+                this.region.trim().toLowerCase())
+          ) {
+            ret.push(group)
+          }
+        }
+      } else if (bounds) {
+        for (const ix in groups) {
+          const group = groups[ix]
+
+          try {
+            if (
+              group.onmap &&
+              group.publish &&
+              bounds.contains([group.lat, group.lng]) &&
+              (!this.region ||
+                this.region.toLowerCase() === group.region.toLowerCase())
+            ) {
+              ret.push(group)
+            }
+          } catch (e) {
+            console.log('Problem group', e)
+          }
+        }
+      }
+
+      const sorted = ret.sort((a, b) => {
+        return a.namedisplay
+          .toLowerCase()
+          .localeCompare(b.namedisplay.toLowerCase())
+      })
+
+      return sorted
     },
     mygroups() {
       return this.$store.getters['auth/groups']
@@ -154,6 +264,18 @@ export default {
       return new L.Icon({
         iconUrl: '/mapmarker.gif'
       })
+    },
+    homeIcon() {
+      // Render the component off document.
+      const Mine = Vue.extend(BrowseHomeIcon)
+      let re = new Mine()
+
+      re = re.$mount().$el
+
+      return new L.DivIcon({
+        html: re.outerHTML,
+        className: 'bg-none top'
+      })
     }
   },
   watch: {
@@ -165,52 +287,39 @@ export default {
     },
     type() {
       this.lastBounds = null
-      this.getMessages()
+
+      if (this.zoom >= this.postZoom) {
+        this.getMessages()
+      }
     },
     search() {
       this.lastBounds = null
       this.getMessages()
     },
-    async groupid(groupid) {
+    groupid(groupid) {
       this.lastBounds = null
 
-      const messages = await this.getMessages()
-
       if (groupid) {
-        // The messages we have just fetched may or may not match the bounds of the map.  Probably not.  So
-        // work out new bounds and move the map.
-        let bounds = new L.LatLngBounds()
-
-        if (messages.length) {
-          messages.forEach(m => {
-            // eslint-disable-next-line new-cap
-            bounds.extend(new L.LatLng(m.lat, m.lng))
-          })
-        } else {
-          // No messages for this group.  Just position at the group centre and let the map zoom out until it
-          // finds something.
-          const group = this.$store.getters['group/get'](groupid)
-
-          if (group) {
-            bounds = [
-              [group.lat - 0.01, group.lng - 0.01],
-              [group.lat + 0.01, group.lng + 0.01]
-            ]
-          } else {
-            // Shouldn't really get here.
-            bounds = [
-              [49.959999905, -7.57216793459],
-              [58.6350001085, 1.68153079591]
-            ]
-          }
-        }
-
+        // Use the bounding box for the group.
+        const group = this.$store.getters['auth/groupById'](groupid)
+        const bounds = new L.LatLngBounds([
+          [group.bbox.swlat, group.bbox.swlng],
+          [group.bbox.nelat, group.bbox.nelng]
+        ]).pad(0.1)
         this.mapObject.flyToBounds(bounds)
       }
+    },
+    groupsInBounds(newval) {
+      this.$emit('groups', this.groupsInBounds.map(g => g.id))
     }
   },
   mounted() {
     this.messageLocations = this.initialMessageLocations
+
+    if (this.mapHidden) {
+      // Say we're ready so the parent can crack on.
+      this.$emit('update:ready', true)
+    }
   },
   methods: {
     ready() {
@@ -221,7 +330,7 @@ export default {
 
         if (process.client) {
           L.Control.geocoder({
-            placeholder: 'Search places...',
+            placeholder: 'Search for a place...',
             defaultMarkGeocode: false,
             geocoder: L.Control.Geocoder.photon({
               geocodingQueryParams: {
@@ -246,9 +355,13 @@ export default {
                 // Empty out the query box so that the dropdown closes.
                 this.setQuery('')
 
+                // If we don't find anything at this location we will want to zoom out.
+                self.shownMany = false
+
                 self.$nextTick(() => {
                   // Move the map to the location we've found.
                   self.mapObject.flyToBounds(e.geocode.bbox)
+                  self.$emit('searched')
                 })
               }
             })
@@ -260,11 +373,28 @@ export default {
     },
     idle() {
       if (this.mapObject) {
+        // We need to update the parent about our zoom level and whether we are showing the posts or groups.
+        this.zoom = this.mapObject.getZoom()
+
+        if (this.zoom < this.postZoom && !this.forceMessages) {
+          this.$emit('update:showGroups', true)
+        } else {
+          this.$emit('update:showGroups', false)
+        }
+
         const bounds = this.mapObject.getBounds().toBBoxString()
 
         if (bounds !== this.lastBounds) {
+          if (this.lastBounds !== null) {
+            // The map has now moved from the initial position.
+            this.$emit('update:moved', true)
+          }
+
           this.lastBounds = bounds
-          this.getMessages()
+
+          if (this.showMessages) {
+            this.getMessages()
+          }
         }
 
         this.$emit('update:bounds', this.mapObject.getBounds())
@@ -282,7 +412,8 @@ export default {
       if (this.mapObject.getZoom() < this.minZoom) {
         // The parent may  replace us with something else at this point, e.g. with a group map.  But maybe not.
         // Their call.
-        this.$emit('minzoom')
+        console.log('Min zoom at', this.mapObject.getZoom())
+        this.$emit('minzoom', this.mapObject.getBounds())
       }
 
       const swlat = bounds.getSouthWest().lat
@@ -292,28 +423,40 @@ export default {
       let params = null
 
       if (!this.search) {
-        // Get the messages.  If groupid is null then we will get the ones in the bounding box; otherwise we
-        // will get all the ones on that group.
+        // Get the messages in the map view.
         params = {
           subaction: 'inbounds',
           swlat: swlat,
           swlng: swlng,
           nelat: nelat,
-          nelng: nelng,
-          groupid: this.groupid
+          nelng: nelng
         }
       } else {
         // We are searching.  Get the list of messages from the server.
-        params = {
-          collection: 'Approved',
-          subaction: 'searchmess',
-          messagetype: this.type,
-          search: this.search,
-          groupid: this.groupid,
-          swlat: swlat,
-          swlng: swlng,
-          nelat: nelat,
-          nelng: nelng
+        // eslint-disable-next-line no-lonely-if
+        if (this.searchOnGroups) {
+          // We want the server to search on our own groups.
+          params = {
+            collection: 'Approved',
+            subaction: 'searchmess',
+            messagetype: this.type,
+            search: this.search,
+            groupid: this.groupid,
+            searchmygroups: true
+          }
+        } else {
+          // We want to search within the map area.
+          params = {
+            collection: 'Approved',
+            subaction: 'searchmess',
+            messagetype: this.type,
+            search: this.search,
+            groupid: this.groupid,
+            swlat: swlat,
+            swlng: swlng,
+            nelat: nelat,
+            nelng: nelng
+          }
         }
       }
 
@@ -349,14 +492,17 @@ export default {
           }
         })
 
-        if (
+        if (countInBounds >= this.manyToShow) {
+          // We have seen lots, so we don't need to do the auto zoom out thing now.
+          this.shownMany = true
+        } else if (
           !this.search &&
           this.showMany &&
           countInBounds < this.manyToShow &&
           !this.shownMany
         ) {
           // If we haven't got more than 1 message at this zoom level, zoom out.  That means we'll always show at
-          // least something.
+          // least something.  This is useful when we search for a specific place.
           const currzoom = this.mapObject.getZoom()
           if (currzoom > this.minZoom) {
             this.mapObject.setZoom(currzoom - 1)
@@ -385,6 +531,21 @@ export default {
           }, 1000)
         })
       }
+    },
+    goHome() {
+      this.mapObject.flyTo(new L.LatLng(this.me.lat, this.me.lng))
+    },
+    hideMap() {
+      this.$store.dispatch('misc/set', {
+        key: 'hidepostmap',
+        value: true
+      })
+    },
+    showMap() {
+      this.$store.dispatch('misc/set', {
+        key: 'hidepostmap',
+        value: false
+      })
     }
   }
 }
@@ -394,6 +555,17 @@ export default {
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins/_breakpoints';
+
+.mapbox {
+  width: 100%;
+  top: 0px;
+  left: 0;
+  border: 1px solid $color-gray--light;
+}
+
+::v-deep .leaflet-control-geocoder {
+  right: 30px;
+}
 
 @include media-breakpoint-up(md) {
   ::v-deep .leaflet-control-geocoder-form input {
@@ -407,5 +579,13 @@ export default {
 
 ::v-deep .handle {
   content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAAB3RJTUUH5AoLCyYQDowQNQAAAHRJREFUOMtjYBhMQJ6BgSGLgYHhP5TPzMDA4AXlG0DFuBkYGDKQ1KAAmGZ9KB+muY6BgUEYqjkaKuaAzYD/DAwM6mg212Cx2Z2QV5A1CxBjMwMWP9PXZuQwIMtmGDAj12ZkQJbNyJrJtpmBEpuRA9GBYcgBALMUJBS9QtP6AAAAAElFTkSuQmCC');
+}
+
+::v-deep .top {
+  z-index: 1000 !important;
+}
+
+.pauto {
+  pointer-events: auto;
 }
 </style>

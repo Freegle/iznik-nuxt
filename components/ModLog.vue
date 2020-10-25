@@ -201,7 +201,7 @@
             <ModLogGroup :log="log" tag="on" />
           </span>
           <span v-else-if="log.subtype === 'Suspect'">
-            Detected as suspicious<span v-if="log.text">: {{ log.text }}</span>
+            Detected <ModLogUser :user="log.user" /> as suspicious<span v-if="log.text">: {{ log.text }}</span>
           </span>
           <span v-else-if="log.subtype === 'Split'">
             Split out into two users - {{ log.text }}

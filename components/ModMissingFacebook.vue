@@ -84,10 +84,23 @@ export default {
           (group.role === 'Moderator' || group.role === 'Owner') &&
           group.publish
         ) {
-          if (!group.facebook || !group.facebook.valid) {
+          if (!group.facebook) {
             ret.push({
               group: group
             })
+          } else {
+            let valid = true
+            group.facebook.forEach(f => {
+              if (!f.valid) {
+                valid = false
+              }
+            })
+
+            if (!valid) {
+              ret.push({
+                group: group
+              })
+            }
           }
         }
       }

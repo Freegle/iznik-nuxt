@@ -23,7 +23,16 @@
             </div>
             <Diff v-else-if="editreview && oldSubject && newSubject" :old="oldSubject" :new="newSubject" class="font-weight-bold" />
             <div v-else :class="subjectClass + ' font-weight-bold'">
-              {{ eSubject }}
+              <Highlighter
+                v-if="message.matchedon"
+                :search-words="[message.matchedon.word]"
+                :text-to-highlight="eSubject"
+                highlight-class-name="highlight"
+                auto-escape
+              />
+              <span v-else>
+                {{ eSubject }}
+              </span>
               <span v-if="message.location" class="text-muted small">{{ message.location.name }}</span>
             </div>
             <MessageHistory :message="message" modinfo display-message-link />
@@ -111,7 +120,18 @@
               <!-- eslint-disable-next-line -->
               <div v-else-if="!eBody" class="mb-3 rounded border p-2 preline forcebreak font-weight-bold"><em>This message is blank.</em></div>
               <!-- eslint-disable-next-line -->
-              <div v-else class="mb-3 rounded border p-2 preline forcebreak font-weight-bold">{{ eBody }}</div>
+              <div v-else class="mb-3 rounded border p-2 preline forcebreak font-weight-bold">
+                <Highlighter
+                  v-if="message.matchedon"
+                  :search-words="[message.matchedon.word]"
+                  :text-to-highlight="eBody"
+                  highlight-class-name="highlight"
+                  auto-escape
+                />
+                <span v-else>
+                  {{ eBody }}
+                </span>
+              </div>
               <div v-if="message.attachments && message.attachments.length" class="d-flex flex-wrap">
                 <ModPhoto v-for="attachment in message.attachments" :key="'attachment-' + attachment.id" :message="message" :attachment="attachment" class="d-inline pr-1" />
               </div>
@@ -259,6 +279,7 @@ import MessageMap from './MessageMap'
 import twem from '~/assets/js/twem'
 import waitForRef from '@/mixins/waitForRef'
 import keywords from '@/mixins/keywords.js'
+const Highlighter = () => import('vue-highlight-words')
 
 export default {
   name: 'ModMessage',
@@ -282,7 +303,8 @@ export default {
     SettingsGroup,
     MessageReplyInfo,
     MessageUserInfo,
-    MessageHistory
+    MessageHistory,
+    Highlighter
   },
   mixins: [waitForRef, keywords],
   props: {
@@ -309,6 +331,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    search: {
+      type: String,
+      required: false,
+      default: null
     }
   },
   data: function() {

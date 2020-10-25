@@ -417,7 +417,7 @@ module.exports = {
         process.env.NODE_ENV === 'development' ? '[name].js' : '[chunkhash].js'
     },
 
-    transpile: [/^vue2-google-maps($|\/)/, 'vue-lazy-youtube-video'],
+    transpile: [/^vue2-google-maps($|\/)/, 'vue-lazy-youtube-video', 'vue-draggable-resizable'],
 
     extend(config, ctx) {
       if (process.env.NODE_ENV !== 'production') {

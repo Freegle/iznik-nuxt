@@ -38,7 +38,7 @@
             See details and reply <v-icon name="angle-double-right" />
           </b-button>
         </div>
-        <button v-if="attachments && attachments.length > 0" class="card-header-image__wrapper p-0 border-0" @click="showPhotos">
+        <button v-if="showAttachments && attachments && attachments.length > 0" class="card-header-image__wrapper p-0 border-0" @click="showPhotos">
           <b-badge v-if="attachments.length > 1" class="photobadge" variant="primary">
             {{ attachments.length }} <v-icon name="camera" />
           </b-badge>
@@ -49,6 +49,7 @@
             generator-unable-to-provide-required-alt=""
             title="Item picture"
             :src="attachments[0].paththumb"
+            @error.native="brokenImage"
           />
         </button>
         <div v-if="!simple && expanded" class="d-flex mt-1 card-header__options">
@@ -324,7 +325,8 @@ export default {
       email: null,
       emailValid: false,
       showNewUser: false,
-      newUserPassword: null
+      newUserPassword: null,
+      showAttachments: true
     }
   },
   computed: {
@@ -632,6 +634,10 @@ export default {
           settings: settings
         })
       }
+    },
+    brokenImage() {
+      // If the attachment image is broken, we're best off just hiding it.
+      this.showAttachments = false
     }
   }
 }

@@ -62,7 +62,7 @@
             </b-row>
           </transition>
         </div>
-        <b-row v-else-if="postcodeValid" class="mt-1">
+        <b-row v-else-if="postcodeValid && !closed" class="mt-1">
           <b-col class="text-center mt-4" cols="12" md="6" offset-md="3">
             <b-btn variant="primary" size="lg" block to="/give/whatisit">
               Next <v-icon name="angle-double-right" />

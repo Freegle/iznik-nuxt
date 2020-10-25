@@ -152,6 +152,19 @@ export default {
       set(newValue) {
         this.$store.dispatch('compose/setEmail', newValue)
       }
+    },
+    emailIsntOurs() {
+      let ret = false
+
+      if (this.email && this.me) {
+        ret = !this.me.emails.find(e => {
+          return (
+            this.email.toLowerCase().localeCompare(e.email.toLowerCase()) === 0
+          )
+        })
+      }
+
+      return ret
     }
   },
   methods: {
@@ -285,6 +298,14 @@ export default {
           name: 'myposts'
         })
       }
+    },
+    emailInUse(email) {
+      // If we are logged in, and we have an email address in hand which is not one of our own, then this is
+      // worth knowing because it suggests that the user is confused and has multiple accounts.  Check with the
+      // server whether this email is in use by another account.
+      return this.$store.dispatch('user/emailIsInUse', {
+        email: email
+      })
     }
   }
 }

@@ -1,6 +1,14 @@
 <template>
   <div class="d-flex flex-wrap">
     <div v-if="spam" class="d-inline d-flex flex-wrap">
+      <ModMemberActions
+        v-if="actions && member.groupid"
+        :userid="member.userid"
+        :groupid="member.groupid"
+        :banned="(Boolean)(member.bandate)"
+        class="mr-1"
+        :spam="spam"
+      />
       <ModMemberButton
         v-if="spamignore"
         :member="member"
@@ -71,7 +79,7 @@
       </div>
     </div>
     <div v-else-if="approved" class="d-flex flex-wrap">
-      <ModMemberActions v-if="actions" :userid="member.userid" :groupid="member.groupid" :banned="(Boolean)(member.bandate)" />
+      <ModMemberActions v-if="actions" :userid="member.userid" :groupid="member.groupid" :banned="(Boolean)(member.bandate)" class="mr-1" />
       <ModMemberButton
         v-if="spamignore && member.suspectreason"
         :member="member"
@@ -98,6 +106,7 @@
         :label="stdmsg.title"
         :stdmsgid="stdmsg.id"
         :member="member"
+        class="mr-1"
       />
       <b-btn
         v-if="rareToShow && !showRare"
