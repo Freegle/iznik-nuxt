@@ -1,8 +1,19 @@
 <template>
-  <div class="position-relative">
+  <div :id="'msg-' + id" class="position-relative">
     <span ref="breakpoint" class="d-inline d-sm-none" />
-    <b-img v-if="hasBeenFreegled" src="~/static/freegled.jpg" class="freegled__image" />
-    <b-card class="p-0" variant="success" :class="{ freegled : hasBeenFreegled }">
+    <b-img-lazy v-if="successful" src="~/static/freegled.jpg" class="freegled__image" />
+    <b-tooltip v-if="successful" variant="success" :target="'msg-' + id">
+      <p v-if="type === 'Offer'">
+        Yay, someone took it!
+      </p>
+      <p v-else>
+        Hurray, they got what they were looking for!
+      </p>
+      <p>
+        Don't forget to Mark your posts as TAKEN/RECEIVED from <em>My Posts</em>.
+      </p>
+    </b-tooltip>
+    <b-card class="p-0" variant="success" :class="{ freegled : successful }">
       <b-card-header :class="'pl-2 pr-2 clearfix card-header' + (ispromised ? ' promisedfade' : '')">
         <b-card-title class="msgsubj mb-0 header--size4 card-header__title" title-tag="h3">
           <Highlighter
@@ -34,11 +45,11 @@
           <div v-if="(!eSnippet || eSnippet === 'null') && !expanded">
             <i>There's no description.</i>
           </div>
-          <b-button v-if="!expanded" variant="white" class="mt-1" @click="expand">
+          <b-button v-if="!successful && !expanded" variant="white" class="mt-1" @click="expand">
             See details and reply <v-icon name="angle-double-right" />
           </b-button>
         </div>
-        <button v-if="showAttachments && attachments && attachments.length > 0" class="card-header-image__wrapper p-0 border-0" @click="showPhotos">
+        <button v-if="showAttachments && attachments && attachments.length > 0" class="card-header-image__wrapper p-0 border-0" :disabled="successful" @click="showPhotos">
           <b-badge v-if="attachments.length > 1" class="photobadge" variant="primary">
             {{ attachments.length }} <v-icon name="camera" />
           </b-badge>
@@ -224,6 +235,8 @@
 
 <script>
 // Need to import rather than async otherwise the render doesn't happen and ref isn't set.
+import Vue from 'vue'
+import { TooltipPlugin } from 'bootstrap-vue'
 import ChatButton from './ChatButton'
 import ShareModal from './ShareModal'
 import MessageReportModal from './MessageReportModal'
@@ -242,6 +255,8 @@ const Highlighter = () => import('vue-highlight-words')
 const MessageUserInfo = () => import('~/components/MessageUserInfo')
 const NoticeMessage = () => import('~/components/NoticeMessage')
 const MessageHistory = () => import('~/components/MessageHistory')
+
+Vue.use(TooltipPlugin)
 
 export default {
   components: {
@@ -266,6 +281,11 @@ export default {
       type: Number,
       default: 0
     },
+    type: {
+      type: String,
+      required: false,
+      default: null
+    },
     subject: {
       type: String,
       default: null
@@ -289,6 +309,11 @@ export default {
     matchedon: {
       type: Object,
       default: null
+    },
+    successful: {
+      type: Boolean,
+      required: false,
+      default: false
     },
     promised: {
       type: Boolean,
@@ -330,9 +355,6 @@ export default {
     }
   },
   computed: {
-    hasBeenFreegled() {
-      return true
-    },
     showMap() {
       return this.expanded.lat || this.expanded.lng
     },
@@ -436,14 +458,16 @@ export default {
   },
   methods: {
     async expand() {
-      await this.$store.dispatch('messages/fetch', {
-        id: this.id
-      })
+      if (!this.successful) {
+        await this.$store.dispatch('messages/fetch', {
+          id: this.id
+        })
 
-      const message = this.$store.getters['messages/get'](this.id)
-      this.expanded = message
+        const message = this.$store.getters['messages/get'](this.id)
+        this.expanded = message
 
-      this.view()
+        this.view()
+      }
     },
     view() {
       const me = this.$store.getters['auth/user']

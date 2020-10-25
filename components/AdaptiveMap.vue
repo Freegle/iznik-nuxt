@@ -382,8 +382,9 @@ export default {
         // We want to filter by:
         // - Possibly a message type
         // - Possibly a group id
-        // - Don't show deleted or completed posts.  Remember the map may lag a bit as it's only updated on cron, so we
+        // - Don't show deleted posts.  Remember the map may lag a bit as it's only updated on cron, so we
         //   may be returned some.
+        // - Do show completed posts - makes us look good.
         //
         // Filter out dups by subject (for crossposting).
         this.messagesForList.forEach(m => {
@@ -395,14 +396,13 @@ export default {
             const message = this.$store.getters['messages/get'](m.id)
 
             if (message) {
+              // Pass whether the message has been freegled, which is returned in the summary call.
+              message.successful = !!m.successful
+
               const key = message.fromuser + '|' + message.subject
               const already = key in dups
 
-              if (
-                !already &&
-                !message.deleted &&
-                (!message.outcomes || message.outcomes.length === 0)
-              ) {
+              if (!already && !message.deleted) {
                 dups[key] = true
                 ret.push(message)
               }
@@ -416,6 +416,23 @@ export default {
           if (message) {
             const key = message.fromuser + '|' + message.subject
             const already = key in dups
+
+            // Pass whether the message has been freegled, which in this case is returned as the outcomes in the
+            // message.
+            let successful = false
+
+            if (message.outcomes && message.outcomes.length) {
+              for (const outcome of message.outcomes) {
+                if (
+                  outcome.outcome === 'Taken' ||
+                  outcome.outcome === 'Received'
+                ) {
+                  successful = true
+                }
+              }
+            }
+
+            message.successful = successful
 
             if (
               !already &&
