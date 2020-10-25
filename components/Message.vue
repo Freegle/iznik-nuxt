@@ -1,7 +1,8 @@
 <template>
-  <div>
+  <div class="position-relative">
     <span ref="breakpoint" class="d-inline d-sm-none" />
-    <b-card class="p-0" variant="success">
+    <b-img v-if="hasBeenFreegled" src="~/static/freegled.jpg" class="freegled__image" />
+    <b-card class="p-0" variant="success" :class="{ freegled : hasBeenFreegled }">
       <b-card-header :class="'pl-2 pr-2 clearfix card-header' + (ispromised ? ' promisedfade' : '')">
         <b-card-title class="msgsubj mb-0 header--size4 card-header__title" title-tag="h3">
           <Highlighter
@@ -329,6 +330,9 @@ export default {
     }
   },
   computed: {
+    hasBeenFreegled() {
+      return true
+    },
     showMap() {
       return this.expanded.lat || this.expanded.lng
     },
@@ -766,5 +770,21 @@ export default {
   //@include media-breakpoint-down(md) {
   //  grid-template-columns: 1fr 0px 0px;
   //}
+}
+
+.freegled {
+  filter: contrast(50%);
+}
+
+.freegled__image {
+  position: absolute;
+  width: 225px;
+  z-index: 2;
+  transform: rotate(20deg);
+  top: 50px;
+
+  // Centre the absolute positioned div in it's container
+  left: 50%;
+  margin-left: -125px;
 }
 </style>
