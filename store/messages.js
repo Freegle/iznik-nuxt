@@ -5,6 +5,9 @@ export const state = () => ({
   // Use array because we need to store them in the order returned by the server.
   list: [],
 
+  // But we also want quick access by id.
+  index: {},
+
   viewed: [],
 
   // The context from the last fetch, used for fetchMore.
@@ -16,29 +19,34 @@ export const state = () => ({
 
 export const mutations = {
   add(state, item) {
-    // Overwrite any existing entry.
-    const existing = state.list.findIndex(obj => {
-      return parseInt(obj.id) === parseInt(item.id)
-    })
+    if (state.index[parseInt(item.id)]) {
+      // Overwrite any existing entry.
+      const existing = state.list.findIndex(obj => {
+        return parseInt(obj.id) === parseInt(item.id)
+      })
 
-    if (existing !== -1) {
       Vue.set(state.list, existing, item)
     } else {
+      // We know it doesn't exist - just add to the list.
       state.list.push(item)
     }
+
+    Vue.set(state.index, parseInt(item.id), item)
   },
   addAll(state, items) {
     if (items) {
       items.forEach(item => {
-        const existing = state.list.findIndex(obj => {
-          return parseInt(obj.id) === parseInt(item.id)
-        })
+        if (state.index[parseInt(item.id)]) {
+          const existing = state.list.findIndex(obj => {
+            return parseInt(obj.id) === parseInt(item.id)
+          })
 
-        if (existing !== -1) {
           Vue.set(state.list, existing, item)
         } else {
           state.list.push(item)
         }
+
+        Vue.set(state.index, parseInt(item.id), item)
       })
     }
   },
@@ -46,9 +54,12 @@ export const mutations = {
     state.list = state.list.filter(obj => {
       return parseInt(obj.id) !== parseInt(item.id)
     })
+
+    delete state.index[parseInt(item.id)]
   },
   clear(state) {
     state.list = []
+    state.index = {}
 
     if (state.instance) {
       state.instance++
@@ -66,9 +77,7 @@ export const mutations = {
 
 export const getters = {
   get: state => id => {
-    const ret = state.list.find(m => {
-      return parseInt(m.id) === parseInt(id)
-    })
+    const ret = state.index[parseInt(id)]
 
     return ret
   },
