@@ -32,20 +32,22 @@
       <div v-observe-visibility="mapVisibilityChanged" />
     </client-only>
     <div v-if="mapready" class="rest">
-      <div v-if="showClosestGroups" class="d-flex flex-wrap mb-1 justify-content-between border p-2 bg-white">
+      <div v-if="showClosestGroups" class="mb-1 border p-2 bg-white">
         <h2 class="sr-only">
           Nearby commmunities
         </h2>
-        <b-btn
-          v-for="g in closestGroups"
-          :key="'group-' + g.id"
-          size="md"
-          :to="'/explore/join/' + g.id"
-          variant="primary"
-          class="mb-1"
-        >
-          Join {{ g.namedisplay }}
-        </b-btn>
+        <div class="dense">
+          <b-btn
+            v-for="g in closestGroups"
+            :key="'group-' + g.id"
+            size="md"
+            :to="'/explore/join/' + g.id"
+            variant="primary"
+            class="m-1"
+          >
+            Join {{ g.namedisplay }}
+          </b-btn>
+        </div>
       </div>
       <div v-if="showGroups" class="bg-white pt-3">
         <div v-if="showRegions">
@@ -683,6 +685,17 @@ export default {
       grid-row: 2 / 3;
       grid-column: 1 / 6;
     }
+  }
+}
+
+.dense {
+  display: grid;
+  grid-auto-flow: column dense;
+  justify-content: center;
+
+  .btn {
+    max-width: 300px;
+    text-overflow: ellipsis;
   }
 }
 </style>
