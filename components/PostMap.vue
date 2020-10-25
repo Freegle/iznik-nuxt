@@ -29,13 +29,22 @@
               :style="'width: 100%; height: ' + mapHeight + 'px'"
               :min-zoom="minZoom"
               :max-zoom="maxZoom"
+              :options="mapOptions"
               @ready="ready"
               @zoomend="idle"
               @moveend="idle"
             >
-              <b-btn v-if="canHide" variant="link" class="leaflet-top leaflet-right pauto black p-1" @click="hideMap">
-                <v-icon name="times-circle" title="Hide map" />
-              </b-btn>
+              <div class="leaflet-top leaflet-right d-flex flex-column justify-content-center">
+                <b-btn v-if="canHide" variant="link" class="pauto black p-1" @click="hideMap">
+                  <v-icon name="times-circle" title="Hide map" />
+                </b-btn>
+                <b-btn v-if="!locked" variant="link" class="pauto black p-1" @click="lockMap">
+                  <v-icon name="lock-open" title="Lock the map to this area on this devices" />
+                </b-btn>
+                <b-btn v-else variant="link" class="pauto black p-1" @click="unlockMap">
+                  <v-icon name="lock" title="Unlock the map area" />
+                </b-btn>
+              </div>
               <l-tile-layer :url="osmtile" :attribution="attribution" />
               <div v-if="showMessages">
                 <ClusterMarker v-if="messagesForMap.length" :markers="messagesForMap" :map="mapObject" :tag="['post', 'posts']" @click="idle" />
@@ -53,6 +62,46 @@
         </div>
       </div>
     </div>
+    <b-modal
+      id="postMapLock"
+      v-model="lockModal"
+      title="Map Locked"
+      generator-unable-to-provide-required-alt=""
+      no-stacking
+      ok-only
+    >
+      <template slot="default">
+        <p>
+          The map is now locked to this position.  The posts you see below will only be the ones from this map
+          area.
+        </p>
+        <p>
+          If you want to move the map, or revert to seeing the posts from all your communities when you load this
+          page, then click again to unlock the map.
+        </p>
+      </template>
+    </b-modal>
+    <b-modal
+      id="postMapUnlock"
+      v-model="unlockModal"
+      title="Map Unlocked"
+      generator-unable-to-provide-required-alt=""
+      no-stacking
+      ok-only
+    >
+      <template slot="default">
+        <p>
+          The map is now unlocked.  The posts you see below when you first come to this page will be the ones from
+          your communities.
+        </p>
+        <p>
+          Once you move the map then they will be the ones shown from the map area.
+        </p>
+        <p>
+          If you want to lock the map to a new area, click again to lock it.
+        </p>
+      </template>
+    </b-modal>
   </div>
 </template>
 <script>
@@ -156,10 +205,18 @@ export default {
       bump: 1,
       resizedHeight: null,
       lastBounds: null,
-      zoom: 5
+      zoom: 5,
+      lockModal: false,
+      unlockModal: false
     }
   },
   computed: {
+    mapOptions() {
+      return {
+        zoomControl: !this.locked,
+        dragging: !this.locked
+      }
+    },
     mapHidden() {
       return this.canHide && this.$store.getters['misc/get']('hidepostmap')
     },
@@ -276,6 +333,9 @@ export default {
         html: re.outerHTML,
         className: 'bg-none top'
       })
+    },
+    locked() {
+      return this.$store.getters['misc/get']('postmaparea')
     }
   },
   watch: {
@@ -330,7 +390,9 @@ export default {
 
         if (process.client) {
           L.Control.geocoder({
-            placeholder: 'Search for a place...',
+            placeholder: this.locked
+              ? 'Unlock map and search...'
+              : 'Search for a place...',
             defaultMarkGeocode: false,
             geocoder: L.Control.Geocoder.photon({
               geocodingQueryParams: {
@@ -348,10 +410,16 @@ export default {
               serviceUrl:
                 process.env.GEOCODE || 'https://geocode.ilovefreegle.org/api'
             }),
-            collapsed: false
+            collapsed: this.locked
           })
             .on('markgeocode', function(e) {
               if (e && e.geocode && e.geocode.bbox) {
+                // Searching unlocks the map
+                self.$store.dispatch('misc/set', {
+                  key: 'postmaparea',
+                  value: null
+                })
+
                 // Empty out the query box so that the dropdown closes.
                 this.setQuery('')
 
@@ -546,6 +614,30 @@ export default {
         key: 'hidepostmap',
         value: false
       })
+    },
+    toJSON(bounds) {
+      return [
+        [bounds.getSouthWest().lat, bounds.getSouthWest().lng],
+        [bounds.getNorthEast().lat, bounds.getNorthEast().lng]
+      ]
+    },
+    lockMap() {
+      this.$store.dispatch('misc/set', {
+        key: 'postmaparea',
+        value: this.toJSON(this.mapObject.getBounds())
+      })
+
+      this.lockModal = true
+      this.bump++
+    },
+    unlockMap() {
+      this.$store.dispatch('misc/set', {
+        key: 'postmaparea',
+        value: null
+      })
+
+      this.unlockModal = true
+      this.bump++
     }
   }
 }

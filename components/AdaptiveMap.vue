@@ -270,7 +270,6 @@ export default {
   data: function() {
     return {
       postMapInitialBounds: null,
-      groupMapInitialBounds: null,
 
       // Map stuff
       heightFraction: 3,
@@ -357,10 +356,16 @@ export default {
       const count = this.messages ? this.messages.length : 0
       return count
     },
+    locked() {
+      return this.$store.getters['misc/get']('postmaparea')
+    },
     messagesForList() {
       let msgs = []
 
-      if (this.search) {
+      if (this.locked) {
+        // If the post map is locked to an area, then we always show the posts in that area.
+        msgs = this.messagesOnMap
+      } else if (this.search) {
         // Whether or not the map has moved, the messages are returned through the map.
         msgs = this.messagesOnMap
       } else if (!this.mapMoved) {
@@ -508,6 +513,12 @@ export default {
         // We've cleared the search box, so cancel the search and return the map to normal.
         this.searchOn = null
       }
+    },
+    locked() {
+      // When the post map is locked/unlocked we need to reset the infinite scroll so that we see the appropriate
+      // messages.
+      this.infiniteId++
+      this.$store.dispatch('messages/clear')
     }
   },
   created() {
@@ -517,10 +528,12 @@ export default {
     this.swlng = this.initialBounds[0][1]
     this.nelat = this.initialBounds[1][0]
     this.nelng = this.initialBounds[1][1]
-    this.postMapInitialBounds = this.initialBounds
-    this.groupMapInitialBounds = this.initialBounds
   },
   async mounted() {
+    console.log('Mounted', this.locked)
+    this.postMapInitialBounds = this.locked ? this.locked : this.initialBounds
+    // this.postMapInitialBounds = this.initialBounds
+
     if (!this.startOnGroups) {
       this.context = null
 
