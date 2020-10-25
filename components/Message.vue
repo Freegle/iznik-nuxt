@@ -805,7 +805,7 @@ export default {
   width: 225px;
   z-index: 2;
   transform: rotate(20deg);
-  top: 50px;
+  top: 25%;
 
   // Centre the absolute positioned div in it's container
   left: 50%;
