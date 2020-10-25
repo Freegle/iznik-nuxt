@@ -2,7 +2,8 @@ import Vue from 'vue'
 import cloneDeep from 'lodash.clonedeep'
 
 export const state = () => ({
-  // Use array because we need to store them in the order returned by the server.
+  // Use array because we need to store them in the order returned by the server.  We can't use Map because it's
+  // not supported by Vuex.
   list: [],
 
   // But we also want quick access by id.
