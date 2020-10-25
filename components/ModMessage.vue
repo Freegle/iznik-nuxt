@@ -122,8 +122,8 @@
               <!-- eslint-disable-next-line -->
               <div v-else class="mb-3 rounded border p-2 preline forcebreak font-weight-bold">
                 <Highlighter
-                  v-if="matchedon"
-                  :search-words="[matchedon.word]"
+                  v-if="message.matchedon"
+                  :search-words="[message.matchedon.word]"
                   :text-to-highlight="eBody"
                   highlight-class-name="highlight"
                   auto-escape
