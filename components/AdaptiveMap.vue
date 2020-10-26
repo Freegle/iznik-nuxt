@@ -530,7 +530,6 @@ export default {
     this.nelng = this.initialBounds[1][1]
   },
   async mounted() {
-    console.log('Mounted', this.locked)
     this.postMapInitialBounds = this.locked ? this.locked : this.initialBounds
     // this.postMapInitialBounds = this.initialBounds
 

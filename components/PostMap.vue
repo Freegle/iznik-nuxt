@@ -283,18 +283,20 @@ export default {
         for (const ix in groups) {
           const group = groups[ix]
 
-          try {
-            if (
-              group.onmap &&
-              group.publish &&
-              bounds.contains([group.lat, group.lng]) &&
-              (!this.region ||
-                this.region.toLowerCase() === group.region.toLowerCase())
-            ) {
-              ret.push(group)
+          if (group.lat || group.lng) {
+            try {
+              if (
+                group.onmap &&
+                group.publish &&
+                bounds.contains([group.lat, group.lng]) &&
+                (!this.region ||
+                  this.region.toLowerCase() === group.region.toLowerCase())
+              ) {
+                ret.push(group)
+              }
+            } catch (e) {
+              console.log('Problem group', e)
             }
-          } catch (e) {
-            console.log('Problem group', e)
           }
         }
       }

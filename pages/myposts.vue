@@ -343,7 +343,6 @@ export default {
   },
   async mounted() {
     // We might have parameters from just having posted.
-    console.log('Mounted', this.justPosted, this.$route)
     this.justPosted = this.$route.params.justPosted
     this.newuser = this.$route.params.newuser
     this.newpassword = this.$route.params.newpassword
