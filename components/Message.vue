@@ -15,7 +15,7 @@
     </b-tooltip>
     <b-card class="p-0" variant="success" :class="{ freegled : successful }">
       <b-card-header :class="'pl-2 pr-2 clearfix card-header' + (ispromised ? ' promisedfade' : '')">
-        <b-card-title class="msgsubj mb-0 header--size4 card-header__title" title-tag="h3">
+        <b-card-title class="msgsubj mb-1 header--size4 card-header__title" title-tag="h3">
           <Highlighter
             v-if="matchedon"
             :search-words="[matchedon.word]"
@@ -27,8 +27,8 @@
             {{ eSubject }}
           </span>
         </b-card-title>
-        <MessageHistory :message="$props" class="card-header__history" :display-message-link="sm()" />
-        <div flex-grow-1 class="small card-header__description">
+        <MessageHistory :message="$props" class="mb-1 card-header__history" :display-message-link="sm()" />
+        <div flex-grow-1 class="small mb-1 card-header__description">
           <div v-if="eSnippet && eSnippet !== 'null' && !expanded">
             <b class="snippet black">
               <Highlighter
@@ -45,7 +45,7 @@
           <div v-if="(!eSnippet || eSnippet === 'null') && !expanded">
             <i>There's no description.</i>
           </div>
-          <b-button v-if="!successful && !expanded" variant="white" class="mt-1" @click="expand">
+          <b-button v-if="!successful && !expanded" variant="white" class="mt-2" @click="expand">
             See details and reply <v-icon name="angle-double-right" />
           </b-button>
         </div>
@@ -804,8 +804,8 @@ export default {
   position: absolute;
   width: 225px;
   z-index: 2;
-  transform: rotate(20deg);
-  top: 25%;
+  transform: rotate(15deg);
+  top: 30%;
 
   // Centre the absolute positioned div in it's container
   left: 50%;
