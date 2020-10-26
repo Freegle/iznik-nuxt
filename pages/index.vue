@@ -8,7 +8,6 @@
         type="video"
         autoplay
         controls
-        muted="muted"
         poster="/songpreview.png"
         loop
         class="shadow flex-grow-1"
@@ -90,6 +89,14 @@ export default {
   },
   mounted() {
     if (process.browser) {
+      if (this.type !== 'Map') {
+        // The video plays with sound, wrongly, even if the muted attribute is set.  So set it here.
+        this.waitForRef('video', () => {
+          const videoEl = document.querySelector('video')
+          videoEl.muted = true
+        })
+      }
+
       const user = this.$store.getters['auth/user']
 
       if (user) {
