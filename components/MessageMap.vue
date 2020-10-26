@@ -3,6 +3,7 @@
     ref="map"
     :zoom="12"
     :style="'width: 100%; height: 200px'"
+    :options="mapOptions"
     @ready="idle"
   >
     <l-tile-layer :url="osmtile" :attribution="attribution" />
@@ -41,6 +42,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    locked: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
@@ -50,6 +56,11 @@ export default {
     }
   },
   computed: {
+    mapOptions() {
+      return {
+        dragging: !this.locked
+      }
+    },
     homeicon() {
       // Render the component off document.
       const Mine = Vue.extend(HomeIcon)
