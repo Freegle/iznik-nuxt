@@ -496,6 +496,16 @@ export default {
 
               if (group.distance <= 50000) {
                 ret.push(group)
+              } else if (group.altlat || group.altlng) {
+                // A few groups have two centres because they are large.
+                group.distance = this.getDistance(
+                  [this.centre.lat, this.centre.lng],
+                  [group.altlat, group.altlng]
+                )
+
+                if (group.distance <= 50000) {
+                  ret.push(group)
+                }
               }
             }
           }
