@@ -109,7 +109,7 @@ export default {
 
       this.actioned.push(group.id)
     },
-    async hide(group) {
+    async hide(group, noUpdate) {
       this.busy.push(group.id)
 
       await this.$store.dispatch('publicity/hide', {
@@ -122,13 +122,23 @@ export default {
       })
 
       this.actioned.push(group.id)
+
+      if (!noUpdate) {
+        this.updateWork()
+      }
     },
-    shareAll() {
+    async shareAll() {
+      const promises = []
+
       this.groups.forEach(group => {
         if (this.actioned.indexOf(group.id) === -1) {
-          this.share(group)
+          promises.push(this.share(group, false))
         }
       })
+
+      await Promise.all(promises)
+
+      this.updateWork()
     },
     hideAll() {
       this.groups.forEach(group => {
@@ -142,6 +152,12 @@ export default {
     },
     isBusy(groupid) {
       return this.busy.indexOf(groupid) !== -1
+    },
+    updateWork() {
+      this.$store.dispatch('auth/fetchUser', {
+        components: ['work'],
+        force: true
+      })
     }
   }
 }
