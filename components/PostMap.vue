@@ -661,6 +661,12 @@ export default {
   right: 30px;
 }
 
+@media screen and (max-width: 360px) {
+  ::v-deep .leaflet-control-geocoder-form input {
+    max-width: 200px;
+  }
+}
+
 @include media-breakpoint-up(md) {
   ::v-deep .leaflet-control-geocoder-form input {
     height: calc(1.25em + 1rem + 2px);
