@@ -51,7 +51,7 @@
           placeholder="Type here..."
           rows="3"
           max-rows="8"
-          :autocapitalize="enterNewLine ? 'none' : false"
+          :autocapitalize="enterNewLine ? false : 'none'"
           @focus="markRead"
           @[keydownEventIfNotEnterForNewLine].enter.prevent=""
           @[keydownEventIfNotEnterForNewLine].enter.shift.exact.prevent="newline"
