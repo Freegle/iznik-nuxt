@@ -5,6 +5,7 @@
     </h2>
     <client-only>
       <PostMap
+        :key="'postmap-' + bump"
         :initial-bounds="postMapInitialBounds"
         :height-fraction="heightFraction"
         :bounds.sync="bounds"
@@ -290,6 +291,7 @@ export default {
       mapVisible: true,
       mapMoved: false,
       messagesOnMap: [],
+      bump: 1,
 
       // Infinite message scroll
       postsVisible: true,
@@ -518,6 +520,8 @@ export default {
       // When the post map is locked/unlocked we need to reset the infinite scroll so that we see the appropriate
       // messages.
       this.infiniteId++
+      this.postMapInitialBounds = this.locked
+      this.bump++
       this.$store.dispatch('messages/clear')
     }
   },
