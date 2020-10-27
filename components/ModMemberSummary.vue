@@ -18,7 +18,7 @@
       </b-badge>
     </h4>
     <ModPostingHistoryModal ref="history" :user="member" :type="type" />
-    <ModLogsModal ref="logs" :userid="member.id" modmailsonly :clearfirst="false" />
+    <ModLogsModal ref="logs" :userid="member.id" modmailsonly />
   </div>
 </template>
 <script>

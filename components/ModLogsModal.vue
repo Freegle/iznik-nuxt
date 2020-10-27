@@ -46,11 +46,6 @@ export default {
       type: Boolean,
       required: false,
       default: false
-    },
-    clearfirst: {
-      type: Boolean,
-      required: false,
-      default: true
     }
   },
   data: function() {
@@ -80,11 +75,11 @@ export default {
   },
   methods: {
     async show() {
-      if (this.clearfirst) {
-        // Fetch the user.  This will have the effect of clearing the log context - otherwise if we open another modal
-        // for this user then it will get confused and fetch from a previous context and show no logs.
-        await this.$store.dispatch('user/clear')
-      }
+      // Clear the log context - otherwise if we open another modal for this user then it will get confused and
+      // fetch from a previous context and show no logs.
+      await this.$store.dispatch('user/clearLogContext', {
+        id: this.userid
+      })
 
       this.logs = []
       this.showModal = true
