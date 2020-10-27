@@ -2,7 +2,7 @@
   <b-row v-if="!chatmessage.sameasnext || last || chatmessage.bymailid" class="text-muted small">
     <b-col v-if="!messageIsFromCurrentUser">
       <span class="chat__dateread--theirs" :title="chatmessage.date | datetimeshort">
-        {{ chatmessage.date | timeago }}
+        {{ timeago }}
         <span v-if="chatmessage.bymailid" class="clickme" :title="'Received by email #' + chatmessage.bymailid + ' click to view'" @click="viewOriginal">
           <v-icon name="info-circle" />
         </span>
@@ -37,7 +37,7 @@
           </span>
           sent this
         </span>
-        <span :title="chatmessage.date | datetimeshort">{{ chatmessage.date | timeago }}</span>
+        <span :title="chatmessage.date | datetimeshort">{{ timeago }}</span>
         <span v-if="chatmessage.bymailid" class="clickme" :title="'Received by email #' + chatmessage.bymailid + ' click to view'" @click="viewOriginal">
           <v-icon name="info-circle" />
         </span>
@@ -63,12 +63,27 @@ export default {
   mixins: [waitForRef],
   data: function() {
     return {
-      showOriginal: false
+      showOriginal: false,
+      dePlural: new RegExp(/^1 (.*)s/)
     }
   },
   computed: {
     othermodname() {
       return this.chatMessageUser ? this.chatMessageUser.displayname : null
+    },
+    timeago() {
+      console.log('Compute time')
+      let ret = null
+
+      // Make depend on auth/time so that reactivity updates.
+      if (this.$store.getters['misc/time'] && this.chatmessage) {
+        ret = this.$dayjs(this.chatmessage.date).fromNow()
+
+        // dayjs pluralises wrongly in some cases - we've seen 1 hours ago.
+        ret = ret.replace(this.dePlural, '1 $1')
+      }
+
+      return ret
     }
   },
   methods: {

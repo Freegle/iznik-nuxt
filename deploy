@@ -23,7 +23,7 @@ git checkout -- nuxt.config.js && \
 git reset --hard HEAD && \
 git pull && \
 npm install && \
-npm run build && \
+nice npm run build && \
 php ./mungeindex.php > /tmp/a.a && cp /tmp/a.a .nuxt/index.js
 
 # Now deploy.

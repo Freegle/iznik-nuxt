@@ -107,9 +107,13 @@
                 <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler" @click="showInfo">
                   <v-icon name="info-circle" />
                 </b-btn>
-                <b-btn v-if="!simple" v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
+                <b-btn v-if="!simple && !tooSoonToNudge" v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
                   <v-icon name="bell" />
                 </b-btn>
+                <b-btn v-if="!simple && tooSoonToNudge" v-b-tooltip.hover.top variant="white" title="It's too soon to nudge" disabled>
+                  <v-icon name="bell" />
+                </b-btn>
+
                 <b-btn variant="primary" class="float-right mr-1" @click="send">
                   <v-icon v-if="sending" name="sync" class="fa-spin" title="Sending..." />
                   <v-icon v-else name="angle-double-right" title="Send" />
@@ -122,6 +126,7 @@
         <ProfileModal v-if="otheruser" :id="otheruser ? otheruser.id : null" ref="profile" />
         <AvailabilityModal ref="availabilitymodal" :otheruid="otheruser ? otheruser.id : null" :thisuid="me.id" />
         <AddressModal ref="addressModal" :choose="true" @chosen="sendAddress" />
+        <NudgeWarningModal ref="nudgewarning" @confirm="doNudge" />
       </div>
     </client-only>
   </div>
@@ -145,6 +150,7 @@ const PromiseModal = () => import('./PromiseModal')
 const ProfileModal = () => import('./ProfileModal')
 const AvailabilityModal = () => import('~/components/AvailabilityModal')
 const AddressModal = () => import('~/components/AddressModal')
+const NudgeWarningModal = () => import('~/components/NudgeWarningModal')
 
 const HEIGHT = 400
 
@@ -158,7 +164,8 @@ export default {
     PromiseModal,
     ProfileModal,
     AvailabilityModal,
-    AddressModal
+    AddressModal,
+    NudgeWarningModal
   },
   mixins: [chatCollate, waitForRef, chat],
   computed: {

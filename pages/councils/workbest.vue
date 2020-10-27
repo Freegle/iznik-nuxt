@@ -8,6 +8,18 @@
           </h1>
         </b-card-header>
         <b-card-text class="pl-2 pr-2">
+          <a id="reduceflytipping" class="anchor" />
+          <h3>
+            Reducing fly-tipping
+          </h3>
+          <p>
+            Defra statisticians have recently analysed data from WasteDataFlow, Keep Britain Tidy and Freegle and found
+            that freegling saved councils &pound;167,910 in costs associated with fly-tipping during 2019.
+            You can read the full results and the method statement
+            <!-- eslint-disable-next-line -->
+            <ExternalLink href="/Freegle_fly_tipping_method_statement.docx">here</ExternalLink>.  So it makes sense
+            to encourage your residents to freegle.
+          </p>
           <a id="makingvisible" class="anchor" />
           <h3>
             Making Freegle visible on your council websites

@@ -139,7 +139,8 @@ export default {
     return {
       logo: require(`@/static/icon_modtools.png`),
       showMenu: false,
-      sliding: false
+      sliding: false,
+      timeTimer: null
     }
   },
   computed: {
@@ -181,6 +182,10 @@ export default {
     if (process.browser) {
       // Add class for screen background.
       document.body.classList.add('modtools')
+
+      // Start our timer.  Holding the time in the store allows us to update the time regularly and have reactivity
+      // cause displayed fromNow() values to change, rather than starting a timer for each of them.
+      this.updateTime()
 
       this.waitForRef('sizer', () => {
         const el = document.getElementById('sizer')
@@ -313,6 +318,10 @@ export default {
       })
 
       this.$router.push('/modtools/chats')
+    },
+    updateTime() {
+      this.$store.dispatch('misc/setTime')
+      this.timeTimer = setTimeout(this.updateTime, 30000)
     }
   },
   head() {

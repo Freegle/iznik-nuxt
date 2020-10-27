@@ -66,7 +66,6 @@ export default {
     this.loadGroup = parseInt(this.$route.params.id) || null
   },
   mounted() {
-    console.log('Mounted', this.loadGroup)
     if (this.loadGroup) {
       // We've been asked to load group setting.
       this.$nextTick(() => {

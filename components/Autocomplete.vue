@@ -29,6 +29,9 @@
         <v-icon name="search" />&nbsp;Search
       </b-button>
     </div>
+    <div v-if="invalid" class="text-danger text-center">
+      Sorry, we can't find that.
+    </div>
     <div
       v-show="showList && json.length"
       :class="`${getClassName('list')} autocomplete autocomplete-list position-relative`"
@@ -48,7 +51,13 @@
             <!-- eslint-disable-next-line -->
             <div v-if="onShouldRenderChild" v-html="onShouldRenderChild(data)" />
             <div v-if="!onShouldRenderChild">
-              <b class="autocomplete-anchor-text">{{ deepValue(data, anchor) }}</b>
+              <Highlighter
+                :text-to-highlight="deepValue(data, anchor)"
+                :search-words="[type]"
+                highlight-class-name="highlight"
+                auto-escape
+                class="autocomplete-anchor-text"
+              />
               <span class="autocomplete-anchor-label">{{ deepValue(data, label) }}</span>
             </div>
           </a>
@@ -74,8 +83,12 @@
 /* eslint-disable */
 
 import cloneDeep from 'lodash.clonedeep'
+const Highlighter = () => import('vue-highlight-words')
 
 export default {
+  components: {
+    Highlighter
+  },
   props: {
     id: String,
     name: String,
@@ -224,7 +237,7 @@ export default {
       return faSearch
     },
     wrapClass() {
-      let border
+      let border = ''
 
       switch (this.variant) {
         case 'primary': {
@@ -241,7 +254,8 @@ export default {
         }
       }
 
-      return 'autocomplete-wrap ' + (this.focused ? ' autocomplete-wrap-focus' : '') + ' ' + border
+      return 'autocomplete-wrap ' + (this.focused ? ' autocomplete-wrap-focus' : '') + ' ' + border + ' ' +
+        (this.invalid ? 'autocomplete-wrap-invalid' : '')
     },
     parentClass() {
       return 'd-flex ' + (this.searchbutton ? 'autocomplete-parent-focus' : '') + (this.invalid ? ' invalid' : '')
@@ -662,6 +676,19 @@ export default {
 /*top: -20px*/
 /*}*/
 
+.autocomplete-anchor-text {
+  color: $color-gray--dark !important;
+}
+
+.autocomplete-anchor-text span {
+  color: $color-gray--dark !important;
+}
+
+.autocomplete-anchor-text:hover {
+  color: $color-gray--dark;
+  background: $color-gray--lighter;
+}
+
 .autocomplete ul li a {
   text-decoration: none;
   display: block;
@@ -677,7 +704,6 @@ export default {
   background: $color-gray--lighter;
 }
 
-.autocomplete ul li a span, /*backwards compat*/
 .autocomplete ul li a .autocomplete-anchor-label {
   display: block;
   margin-top: 3px;
@@ -732,6 +758,12 @@ input[invalid='true'] {
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
   border-color: $color-blue--x-light !important;
 }
+.autocomplete-wrap-invalid {
+  border-color: transparent !important;
+  outline: 0;
+  box-shadow: none !important;
+}
+
 .input-group.autocomplete-wrap {
   border: 1px solid $color-gray-4;
   border-top-left-radius: 4px;
@@ -761,5 +793,10 @@ input[invalid='true'] {
 }
 input[invalid='true'] {
   box-shadow: none;
+}
+
+.highlight {
+  font-weight: bold;
+  background-color: initial;
 }
 </style>

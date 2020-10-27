@@ -11,6 +11,7 @@
         :initial-group-ids="initialGroupIds"
         :region="region"
         class="mt-2"
+        show-start-message
       />
       <b-alert v-else variant="danger" show>
         That region isn't valid.

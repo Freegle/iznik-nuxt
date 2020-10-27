@@ -14,9 +14,9 @@
           <v-icon name="search" /> View more
         </b-btn>
         <nuxt-link to="/communityevents">
-          <h4 class="pl-1 pt-1">
+          <h2 class="header--size4 pl-1 pt-1">
             <v-icon name="briefcase" scale="2" /> Jobs
-          </h4>
+          </h2>
         </nuxt-link>
         <p class="text-center small">
           Jobs near you.  Freegle gets a small amount if you click.

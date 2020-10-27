@@ -1,6 +1,14 @@
 <template>
   <div class="d-flex flex-wrap">
-    <div v-if="spam" class="d-inline d-flex">
+    <div v-if="spam" class="d-inline d-flex flex-wrap">
+      <ModMemberActions
+        v-if="actions && member.groupid"
+        :userid="member.userid"
+        :groupid="member.groupid"
+        :banned="(Boolean)(member.bandate)"
+        class="mr-1"
+        :spam="spam"
+      />
       <ModMemberButton
         v-if="spamignore"
         :member="member"
@@ -51,7 +59,7 @@
           label="Hold"
         />
       </div>
-      <div v-else-if="member.spammer.collection === 'Approved'" class="d-inline">
+      <div v-else-if="member.spammer.collection === 'Approved'" class="d-flex flex-wrap">
         <ModMemberButton
           v-if="hasPermissionSpamAdmin"
           :member="member"
@@ -70,8 +78,8 @@
         />
       </div>
     </div>
-    <div v-else-if="approved" class="d-inline d-flex">
-      <ModMemberActions v-if="actions" :userid="member.userid" :groupid="member.groupid" :banned="(Boolean)(member.bandate)" />
+    <div v-else-if="approved" class="d-flex flex-wrap">
+      <ModMemberActions v-if="actions" :userid="member.userid" :groupid="member.groupid" :banned="(Boolean)(member.bandate)" class="mr-1" />
       <ModMemberButton
         v-if="spamignore && member.suspectreason"
         :member="member"
@@ -89,7 +97,7 @@
         label="Mail"
       />
     </div>
-    <div class="d-inline">
+    <div class="d-flex flex-wrap">
       <ModMemberButton
         v-for="stdmsg in filtered"
         :key="stdmsg.id"
@@ -98,6 +106,7 @@
         :label="stdmsg.title"
         :stdmsgid="stdmsg.id"
         :member="member"
+        class="mr-1"
       />
       <b-btn
         v-if="rareToShow && !showRare"

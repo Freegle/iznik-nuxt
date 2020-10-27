@@ -6,7 +6,7 @@
           {{ graphTitles[graphType] }} <span v-if="groupName" class="text-muted">on {{ groupName }}</span>
         </span>
         <div class="d-flex">
-          <b-form-select v-if="graphType !== 'ActiveUsers'" v-model="units" :options="unitOptions" class="graphSelect mr-1" />
+          <b-form-select v-if="(graphType !== 'ActiveUsers' && graphType !== 'ApprovedMemberCount')" v-model="units" :options="unitOptions" class="graphSelect mr-1" />
           <b-form-select v-model="graphType" :options="graphTypes" class="graphSelect" />
         </div>
       </h3>
@@ -15,6 +15,9 @@
       </p>
       <p v-if="graphType === 'ApprovedMessageCount'">
         This includes people OFFERing something or posting a WANTED for something.
+      </p>
+      <p v-if="graphType === 'ApprovedMemberCount'">
+        This is the number of freeglers who were members on that day.
       </p>
       <p v-if="graphType === 'Replies'">
         This includes people replying to an OFFER or a WANTED.
@@ -46,7 +49,7 @@
       <GChart
         v-else
         :key="graphType"
-        :type="(graphType === 'ActiveUsers' || units === 'day') ? 'LineChart' : 'ColumnChart'"
+        :type="(graphType === 'ActiveUsers' || graphType === 'ApprovedMemberCount' || units === 'day') ? 'LineChart' : 'ColumnChart'"
         :data="graphData"
         :options="graphOptions"
       />
@@ -110,6 +113,11 @@ export default {
       required: false,
       default: false
     },
+    approvedmembers: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     systemwide: {
       type: Boolean,
       required: false,
@@ -122,6 +130,7 @@ export default {
       askfor: ['ApprovedMessageCount', 'Activity', 'Replies', 'Donations'],
       MessageBreakdown: null,
       ApprovedMessageCount: null,
+      ApprovedMemberCount: null,
       Activity: null,
       Replies: null,
       Weight: null,
@@ -132,6 +141,7 @@ export default {
       graphTitles: {
         Activity: 'Activity',
         ApprovedMessageCount: 'OFFERs and WANTED',
+        ApprovedMemberCount: 'Freeglers',
         Replies: 'Replies',
         Offers: 'OFFERs only',
         Wanteds: 'WANTEDs only',
@@ -190,8 +200,9 @@ export default {
         ret.push({ value: 'Weight', text: 'Weight estimates' })
       }
 
-      if (this.donations) {
-        ret.push({ value: 'Donations', text: 'PayPal Donations' })
+      if (this.approvedmembers && (this.groupid === -2 || this.groupid > 0)) {
+        // Only available systemwide or on individual groups.
+        ret.push({ value: 'ApprovedMemberCount', text: 'Freeglers' })
       }
 
       if (this.activeusers && (this.groupid === -2 || this.groupid > 0)) {
@@ -201,12 +212,20 @@ export default {
 
       ret.push({ value: 'Replies', text: 'Replies' })
 
+      if (this.donations) {
+        ret.push({ value: 'Donations', text: 'PayPal Donations' })
+      }
+
       return ret
     },
     graphOptions() {
       let hformat
 
-      const units = this.graphType === 'ActiveUsers' ? 'day' : this.units
+      const units =
+        this.graphType === 'ActiveUsers' ||
+        this.graphType === 'ApprovedMemberCount'
+          ? 'day'
+          : this.units
 
       if (units === 'week' || units === 'day') {
         hformat = 'dd MMM yyyy'
@@ -254,7 +273,11 @@ export default {
       const startd = this.$dayjs(this.start).startOf('day')
       const endd = this.$dayjs(this.end).endOf('day')
 
-      const units = this.graphType === 'ActiveUsers' ? 'day' : this.units
+      const units =
+        this.graphType === 'ActiveUsers' ||
+        this.graphType === 'ApprovedMemberCount'
+          ? 'day'
+          : this.units
 
       if (activity) {
         for (const a of activity) {

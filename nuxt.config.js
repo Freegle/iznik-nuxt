@@ -6,8 +6,8 @@ const FACEBOOK_APPID = '134980666550322'
 const SENTRY_DSN = 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170'
 const YAHOO_CLIENTID =
   'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
-const MOBILE_VERSION = '2.0.47'
-const MODTOOLS_VERSION = '0.3.30'
+const MOBILE_VERSION = '2.0.48'
+const MODTOOLS_VERSION = '0.3.31'
 
 require('dotenv').config()
 
@@ -431,7 +431,7 @@ const config = {
         process.env.NODE_ENV === 'development' ? '[name].js' : '[chunkhash].js'
     },
 
-    transpile: [/^vue2-google-maps($|\/)/, 'vue-lazy-youtube-video'],
+    transpile: [/^vue2-google-maps($|\/)/, 'vue-lazy-youtube-video', 'vue-draggable-resizable'],
 
     extend(config, ctx) {
       if (process.env.NODE_ENV !== 'production') {

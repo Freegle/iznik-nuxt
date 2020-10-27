@@ -34,7 +34,7 @@
             Freegle has local communities for each area. We'll put anything you post on here, and search this community and others nearby.
           </b-col>
         </b-row>
-        <b-row v-if="postcodeValid && !closed" class="mt-1">
+        <b-row v-if="postcodeValid" class="mt-1">
           <b-col class="text-center">
             <ComposeGroup />
           </b-col>
@@ -60,7 +60,7 @@
             </b-row>
           </transition>
         </div>
-        <b-row v-else-if="postcodeValid" class="mt-1">
+        <b-row v-else-if="postcodeValid && !closed" class="mt-1">
           <b-col class="text-center mt-4" cols="12" md="6" offset-md="3">
             <b-btn variant="primary" size="lg" block to="/find/whatisit">
               Next <v-icon name="angle-double-right" />

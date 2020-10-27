@@ -113,7 +113,7 @@ export default {
     // We have the group id or name in this.id.  Fetch the group.
     const group = this.$store.getters['group/get'](this.id)
 
-    if (!group.membercount) {
+    if (!group || !group.membercount) {
       // Don't seem to have it all yet.
       this.$store.dispatch('group/fetch', {
         id: this.id

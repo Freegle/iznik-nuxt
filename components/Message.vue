@@ -1,9 +1,21 @@
 <template>
-  <div>
+  <div :id="'msg-' + id" class="position-relative">
     <span ref="breakpoint" class="d-inline d-sm-none" />
-    <b-card class="p-0" variant="success">
+    <b-img-lazy v-if="successful" src="~/static/freegled.jpg" class="freegled__image" />
+    <b-tooltip v-if="successful" variant="success" :target="'msg-' + id">
+      <p v-if="type === 'Offer'">
+        Yay, someone took it!
+      </p>
+      <p v-else>
+        Hurray, they got what they were looking for!
+      </p>
+      <p>
+        Don't forget to Mark your posts as TAKEN/RECEIVED from <em>My Posts</em>.
+      </p>
+    </b-tooltip>
+    <b-card class="p-0" variant="success" :class="{ freegled : successful }">
       <b-card-header :class="'pl-2 pr-2 clearfix card-header' + (ispromised ? ' promisedfade' : '')">
-        <b-card-title class="msgsubj mb-0 header--size4 card-header__title" title-tag="h3">
+        <b-card-title class="msgsubj mb-1 header--size4 card-header__title" title-tag="h3">
           <Highlighter
             v-if="matchedon"
             :search-words="[matchedon.word]"
@@ -15,8 +27,8 @@
             {{ eSubject }}
           </span>
         </b-card-title>
-        <MessageHistory :message="$props" class="card-header__history" :display-message-link="sm()" />
-        <div flex-grow-1 class="small card-header__description">
+        <MessageHistory :message="$props" class="mb-1 card-header__history" :display-message-link="sm()" />
+        <div flex-grow-1 class="small mb-1 card-header__description">
           <div v-if="eSnippet && eSnippet !== 'null' && !expanded">
             <b class="snippet black">
               <Highlighter
@@ -33,11 +45,11 @@
           <div v-if="(!eSnippet || eSnippet === 'null') && !expanded">
             <i>There's no description.</i>
           </div>
-          <b-button v-if="!expanded" variant="white" class="mt-1" @click="expand">
+          <b-button v-if="!successful && !expanded" variant="white" class="mt-2" @click="expand">
             See details and reply <v-icon name="angle-double-right" />
           </b-button>
         </div>
-        <div v-if="attachments && attachments.length > 0" class="clickme card-header-image__wrapper" @click="showPhotos">
+        <button v-if="showAttachments && attachments && attachments.length > 0" class="card-header-image__wrapper p-0 border-0" :disabled="successful" @click="showPhotos">
           <b-badge v-if="attachments.length > 1" class="photobadge" variant="primary">
             {{ attachments.length }} <v-icon name="camera" />
           </b-badge>
@@ -48,16 +60,17 @@
             generator-unable-to-provide-required-alt=""
             title="Item picture"
             :src="attachments[0].paththumb"
+            @error.native="brokenImage"
           />
-        </div>
-        <div v-if="!simple && expanded" class="d-flex justify-content-between mt-1 card-header__options">
-          <b-button v-if="expanded && !hideClose" size="sm" variant="link" class="grey" @click="contract">
+        </button>
+        <div v-if="!simple && expanded" class="d-flex mt-1 card-header__options">
+          <b-button v-if="expanded && !hideClose" size="sm" variant="link" class="grey p-0 mr-4" @click="contract">
             Close post
           </b-button>
           <b-btn
             v-if="expanded.groups && expanded.groups.length"
             variant="link"
-            class="mr-2 grey"
+            class="grey p-0 mr-4"
             size="sm"
             @click="report"
           >
@@ -65,13 +78,13 @@
           </b-btn>
           <b-btn
             v-if="expanded"
-            variant="white"
-            class="mr-1"
+            variant="link"
+            class="p-0 grey"
             title="Share"
             size="sm"
             @click="share"
           >
-            <v-icon name="share-alt" />
+            Share
           </b-btn>
         </div>
       </b-card-header>
@@ -81,100 +94,119 @@
           else drops out.
         </notice-message>
 
-        <p class="prewrap pl-1">
-          <Highlighter
-            v-if="matchedon"
-            :search-words="[matchedon.word]"
-            :text-to-highlight="expanded.textbody"
-            highlight-class-name="highlight"
-            auto-escape
-          /><span v-else>{{ expanded.textbody }}</span>
-        </p>
-
-        <div v-if="!simple" class="d-flex justify-content-between">
-          <MessageUserInfo v-if="expanded.fromuser" :user="expanded.fromuser" :milesaway="milesaway" class="flex-grow-1" />
-          <MessageReplyInfo :message="expanded" />
+        <div class="pl-1 d-flex flex-column justify-content-between">
+          <div class="d-flex flex-column">
+            <Highlighter
+              v-if="matchedon"
+              :search-words="[matchedon.word]"
+              :text-to-highlight="expanded.textbody"
+              highlight-class-name="highlight"
+              auto-escape
+              class="prewrap"
+            /><span v-else class="prewrap">{{ expanded.textbody }}</span>
+          </div>
+          <div class="d-flex justify-content-between flex-wrap mt-2">
+            <MessageUserInfo v-if="!simple && expanded.fromuser" :user="expanded.fromuser" :milesaway="milesaway" />
+            <MessageReplyInfo :message="expanded" />
+          </div>
         </div>
       </b-card-body>
       <b-card-footer v-if="expanded" class="p-1 pt-3">
-        <NoticeMessage v-if="sent" variant="info" class="d-block d-sm-none mb-1">
-          We've sent your message.  You can see replies in the
-          <nuxt-link to="/chats">
-            <v-icon name="comments" /> Chats
-          </nuxt-link> section.
-        </NoticeMessage>
-        <EmailValidator
-          v-if="!me"
-          ref="email"
-          size="lg"
-          label="Your email address:"
-          :email.sync="email"
-          :valid.sync="emailValid"
-        />
-        <b-form-group
-          class="flex-grow-1"
-          label="Your reply:"
-          :label-for="'replytomessage-' + expanded.id"
-          :description="expanded.type === 'Offer' ? 'Interested?  Please explain why you\'d like it and when you can collect.  Always be polite and helpful.  If appropriate, ask if it\'s working.' : 'Can you help?  If you have what they\'re looking for, let them know.'"
-        >
-          <b-form-textarea
-            v-if="expanded.type == 'Offer'"
-            :id="'replytomessage-' + expanded.id"
-            v-model="reply"
-            rows="3"
-            max-rows="8"
-            class="border border-success"
-          />
-          <b-form-textarea
-            v-if="expanded.type == 'Wanted'"
-            :id="'replytomessage-' + expanded.id"
-            v-model="reply"
-            rows="3"
-            max-rows="8"
-            class="flex-grow-1"
-          />
-        </b-form-group>
-        <b-btn v-if="!me" size="lg" variant="primary" :disabled="disableSend" @click="registerOrSend">
-          Send your reply
-          <v-icon v-if="replying" name="sync" class="fa-spin" />
-          <v-icon v-else name="angle-double-right" />&nbsp;
-        </b-btn>
-        <p v-if="!me" class="mt-1">
-          If you're a new freegler then welcome!  You'll get emails.  Name, approx. location, and profile picture are public - you
-          can hide your real name and picture from Settings.  This adds cookies and local
-          storage.  Read <nuxt-link target="_blank" to="/terms">
-            Terms of Use
-          </nuxt-link> and
-          <nuxt-link target="_blank" to="/privacy">
-            Privacy
-          </nuxt-link> for details.
-        </p>
+        <CovidClosed v-if="expanded && expanded.closed" />
         <div v-else>
+          <NoticeMessage v-if="sent" variant="info" class="d-block d-sm-none mb-1">
+            We've sent your message.  You can see replies in the
+            <nuxt-link to="/chats">
+              <v-icon name="comments" /> Chats
+            </nuxt-link> section.
+          </NoticeMessage>
+          <EmailValidator
+            v-if="!me"
+            ref="email"
+            size="lg"
+            label="Your email address:"
+            :email.sync="email"
+            :valid.sync="emailValid"
+          />
           <b-form-group
             class="flex-grow-1"
-            label="Your postcode:"
+            label="Your reply:"
             :label-for="'replytomessage-' + expanded.id"
-            description="So that we know how far away you are.  The closer the better."
+            :description="expanded.type === 'Offer' ? 'Interested?  Please explain why you\'d like it and when you can collect.  Always be polite and helpful.  If appropriate, ask if it\'s working.' : 'Can you help?  If you have what they\'re looking for, let them know.'"
           >
-            <Postcode @selected="savePostcode" />
+            <b-form-textarea
+              v-if="expanded.type == 'Offer'"
+              :id="'replytomessage-' + expanded.id"
+              v-model="reply"
+              rows="3"
+              max-rows="8"
+              class="border border-success"
+            />
+            <b-form-textarea
+              v-if="expanded.type == 'Wanted'"
+              :id="'replytomessage-' + expanded.id"
+              v-model="reply"
+              rows="3"
+              max-rows="8"
+              class="flex-grow-1"
+            />
           </b-form-group>
-          <b-btn size="lg" variant="primary" class="d-none d-md-block" :disabled="disableSend" @click="sendReply">
-            Send your reply
-            <v-icon v-if="replying" name="sync" class="fa-spin" />
-            <v-icon v-else name="angle-double-right" />&nbsp;
-          </b-btn>
-          <b-btn
-            size="lg"
-            variant="primary"
-            class="d-block d-md-none mt-2"
-            block
-            :disabled="disableSend"
-            @click="sendReply"
-          >
-            Send your reply
-            <v-icon v-if="replying" name="sync" class="fa-spin" />
-            <v-icon v-else name="angle-double-right" />&nbsp;
-          </b-btn>
+          <div v-if="!me">
+            <div class="contents">
+              <div>
+                <b-btn size="lg" variant="primary" :disabled="disableSend" @click="registerOrSend">
+                  Send your reply
+                  <v-icon v-if="replying" name="sync" class="fa-spin" />
+                  <v-icon v-else name="angle-double-right" />&nbsp;
+                </b-btn>
+              </div>
+              <div />
+              <MessageMap v-if="showMap" :home="home" :position="{ lat: expanded.lat, lng: expanded.lng }" />
+            </div>
+            <p class="mt-1">
+              If you're a new freegler then welcome!  You'll get emails.  Name, approx. location, and profile picture are public - you
+              can hide your real name and picture from Settings.  This adds cookies and local
+              storage.  Read <nuxt-link target="_blank" to="/terms">
+                Terms of Use
+              </nuxt-link> and
+              <nuxt-link target="_blank" to="/privacy">
+                Privacy
+              </nuxt-link> for details.
+            </p>
+          </div>
+          <div v-else>
+            <div class="contents">
+              <div>
+                <b-form-group
+                  class="flex-grow-1"
+                  label="Your postcode:"
+                  :label-for="'replytomessage-' + expanded.id"
+                  description="So that we know how far away you are.  The closer the better."
+                >
+                  <Postcode @selected="savePostcode" />
+                </b-form-group>
+                <b-btn size="lg" variant="primary" class="d-none d-md-block" :disabled="disableSend" @click="sendReply">
+                  Send your reply
+                  <v-icon v-if="replying" name="sync" class="fa-spin" />
+                  <v-icon v-else name="angle-double-right" />&nbsp;
+                </b-btn>
+                <b-btn
+                  size="lg"
+                  variant="primary"
+                  class="d-block d-md-none mt-2"
+                  block
+                  :disabled="disableSend"
+                  @click="sendReply"
+                >
+                  Send your reply
+                  <v-icon v-if="replying" name="sync" class="fa-spin" />
+                  <v-icon v-else name="angle-double-right" />&nbsp;
+                </b-btn>
+              </div>
+              <div />
+              <MessageMap v-if="showMap" :home="home" :position="{ lat: expanded.lat, lng: expanded.lng }" class="border border-black rounded" />
+            </div>
+          </div>
         </div>
       </b-card-footer>
     </b-card>
@@ -203,6 +235,8 @@
 
 <script>
 // Need to import rather than async otherwise the render doesn't happen and ref isn't set.
+import Vue from 'vue'
+import { TooltipPlugin } from 'bootstrap-vue'
 import ChatButton from './ChatButton'
 import ShareModal from './ShareModal'
 import MessageReportModal from './MessageReportModal'
@@ -212,6 +246,8 @@ import EmailValidator from './EmailValidator'
 import NewUserInfo from './NewUserInfo'
 import MessagePhotosModal from './MessagePhotosModal'
 import Postcode from './Postcode'
+import MessageMap from './MessageMap'
+import CovidClosed from './CovidClosed'
 import twem from '~/assets/js/twem'
 import waitForRef from '@/mixins/waitForRef'
 
@@ -220,8 +256,12 @@ const MessageUserInfo = () => import('~/components/MessageUserInfo')
 const NoticeMessage = () => import('~/components/NoticeMessage')
 const MessageHistory = () => import('~/components/MessageHistory')
 
+Vue.use(TooltipPlugin)
+
 export default {
   components: {
+    CovidClosed,
+    MessageMap,
     Postcode,
     MessagePhotosModal,
     NewUserInfo,
@@ -240,6 +280,11 @@ export default {
     id: {
       type: Number,
       default: 0
+    },
+    type: {
+      type: String,
+      required: false,
+      default: null
     },
     subject: {
       type: String,
@@ -264,6 +309,11 @@ export default {
     matchedon: {
       type: Object,
       default: null
+    },
+    successful: {
+      type: Boolean,
+      required: false,
+      default: false
     },
     promised: {
       type: Boolean,
@@ -300,10 +350,26 @@ export default {
       email: null,
       emailValid: false,
       showNewUser: false,
-      newUserPassword: null
+      newUserPassword: null,
+      showAttachments: true
     }
   },
   computed: {
+    showMap() {
+      return this.expanded.lat || this.expanded.lng
+    },
+    home() {
+      let ret = null
+
+      if (this.me && this.me.settings && this.me.settings.mylocation) {
+        ret = {
+          lat: this.me.settings.mylocation.lat,
+          lng: this.me.settings.mylocation.lng
+        }
+      }
+
+      return ret
+    },
     disableSend() {
       return this.replying || !this.reply || (!this.me && !this.emailValid)
     },
@@ -343,6 +409,24 @@ export default {
       }
 
       return null
+    },
+    position() {
+      let ret = null
+
+      if (this.message) {
+        if (this.message.location) {
+          // This is what we put in for message submitted on FD.
+          ret = this.message.location
+        } else if (this.message.lat || this.message.lng) {
+          // This happens for TN messages
+          ret = {
+            lat: this.message.lat,
+            lng: this.message.lng
+          }
+        }
+      }
+
+      return ret
     }
   },
   watch: {
@@ -360,6 +444,7 @@ export default {
   async mounted() {
     if (this.startExpanded) {
       this.expanded = this.$store.getters['messages/get'](this.id)
+      this.view()
     }
 
     const reply = this.replyToSend
@@ -368,20 +453,23 @@ export default {
       // Because of the way persistent store is restored, we might or might not know that we have a reply to send here.
       this.reply = reply.replyMessage
       await this.expand()
-      console.log('Send it')
       this.sendReply()
     }
   },
   methods: {
     async expand() {
-      await this.$store.dispatch('messages/fetch', {
-        id: this.id
-      })
+      if (!this.successful) {
+        await this.$store.dispatch('messages/fetch', {
+          id: this.id
+        })
 
-      const message = this.$store.getters['messages/get'](this.id)
+        const message = this.$store.getters['messages/get'](this.id)
+        this.expanded = message
 
-      this.expanded = message
-
+        this.view()
+      }
+    },
+    view() {
       const me = this.$store.getters['auth/user']
 
       if (me) {
@@ -390,11 +478,9 @@ export default {
         })
       }
     },
-
     contract() {
       this.expanded = null
     },
-
     async showPhotos() {
       if (!this.expanded) {
         await this.expand()
@@ -404,7 +490,6 @@ export default {
         this.$refs.photoModal.show()
       })
     },
-
     share() {
       if (process.env.IS_APP) { // CC..
         console.log('Message.vue')
@@ -435,11 +520,9 @@ export default {
         this.$refs.shareModal.show()
       }
     },
-
     report() {
       this.$refs.reportModal.show()
     },
-
     async registerOrSend() {
       // We've got a reply and an email address.  Maybe the email address is a registered user, maybe it's new.  If
       // it's a registered user then we want to force them to sign in.
@@ -480,7 +563,6 @@ export default {
         this.sendReply()
       }
     },
-
     async sendReply() {
       // We have different buttons which display at different screen sizes.  Which of those is visible and hence
       // clicked tells us whether we want to open this chat in a popup or not.
@@ -603,6 +685,10 @@ export default {
           settings: settings
         })
       }
+    },
+    brokenImage() {
+      // If the attachment image is broken, we're best off just hiding it.
+      this.showAttachments = false
     }
   }
 }
@@ -663,7 +749,7 @@ export default {
   display: grid;
 
   align-items: start;
-  grid-template-columns: auto;
+  grid-template-columns: minmax(0, 1fr);
 
   @include media-breakpoint-up(sm) {
     grid-template-columns: auto max-content;
@@ -726,5 +812,30 @@ export default {
     grid-column: 1 / 2;
     grid-row: 4 / 5;
   }
+}
+
+.contents {
+  display: grid;
+  grid-template-columns: 2fr 10px 1fr;
+  //
+  //@include media-breakpoint-down(md) {
+  //  grid-template-columns: 1fr 0px 0px;
+  //}
+}
+
+.freegled {
+  filter: contrast(50%);
+}
+
+.freegled__image {
+  position: absolute;
+  width: 225px;
+  z-index: 2;
+  transform: rotate(15deg);
+  top: 30%;
+
+  // Centre the absolute positioned div in it's container
+  left: 50%;
+  margin-left: -125px;
 }
 </style>

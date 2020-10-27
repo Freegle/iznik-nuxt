@@ -25,7 +25,7 @@
             </b-card>
           </li>
         </ul>
-        <div class="d-flex justify-content-end ml-1 mr-1">
+        <div class="d-flex justify-content-between ml-1 mr-1">
           <b-btn v-if="ids.length === 1 && notblank" variant="white" size="sm" class="mr-1" @click="deleteItem">
             <v-icon name="trash-alt" />&nbsp;Clear item
           </b-btn>
@@ -36,7 +36,7 @@
             <v-icon name="plus" />&nbsp;Add another item
           </b-btn>
         </div>
-        <div class="mt-1">
+        <div class="mt-3">
           <div class="d-block d-md-none">
             <b-btn
               v-if="valid"

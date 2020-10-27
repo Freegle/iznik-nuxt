@@ -14,7 +14,13 @@
           <h1 class="sr-only">
             Freegling map
           </h1>
-          <AdaptiveMap :initial-bounds="[ [49.959999905, -7.57216793459], [58.6350001085, 1.68153079591] ]" start-on-groups :initial-group-ids="initialGroupIds" class="mt-2" />
+          <AdaptiveMap
+            :initial-bounds="[ [49.959999905, -7.57216793459], [58.6350001085, 1.68153079591] ]"
+            start-on-groups
+            :initial-group-ids="initialGroupIds"
+            class="mt-2"
+            show-start-message
+          />
         </div>
       </b-col>
     </b-row>
@@ -105,7 +111,6 @@ export default {
     }
   },
   created() {
-    console.log('Explore created', this.$route.params)
     this.id = this.asyncGroupId ? this.asyncGroupId : this.$route.params.id
 
     const re = /(.*),(.*),(.*),(.*)/

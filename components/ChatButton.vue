@@ -1,5 +1,5 @@
 <template>
-  <span>
+  <span v-if="userid !== myid">
     <b-btn :size="size" :variant="variant" class="d-none d-sm-inline" @click="gotoChat(true)">
       <v-icon v-if="showIcon" name="comments" />
       <span v-if="title">

@@ -36,14 +36,6 @@
               <v-icon name="coffee" scale="2" /><br>
               <span class="nav-item__text">ChitChat</span>
             </b-nav-item>
-            <b-nav-item id="menu-option-search" class="text-center small p-0" to="/search" @mousedown="maybeReload('/search')">
-              <v-icon name="search" scale="2" /><br>
-              <span class="nav-item__text">Search</span>
-            </b-nav-item>
-            <b-nav-item id="menu-option-explore" class="text-center small p-0" to="/explore" @mousedown="maybeReload('/explore')">
-              <v-icon name="map-marker-alt" scale="2" /><br>
-              <span class="nav-item__text">Explore</span>
-            </b-nav-item>
             <b-nav-item v-if="!simple" id="menu-option-communityevents" class="text-center small p-0" to="/communityevents" @mousedown="maybeReload('/communityevents')">
               <v-icon name="calendar-alt" scale="2" /><br>
               <span class="nav-item__text">Events</span>
@@ -229,14 +221,6 @@
             <v-icon name="coffee" scale="2" /><br>
             <span class="nav-item__text">ChitChat</span>
           </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/search" @mousedown="maybeReload('/search')">
-            <v-icon name="search" scale="2" /><br>
-            <span class="nav-item__text">Search</span>
-          </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/explore" @mousedown="maybeReload('/explore')">
-            <v-icon name="map-marker-alt" scale="2" /><br>
-            <span class="nav-item__text">Explore</span>
-          </b-nav-item>
           <b-nav-item v-if="!simple" class="text-center p-0" to="/communityevents" @mousedown="maybeReload('/communityevents')">
             <v-icon name="calendar-alt" scale="2" /><br>
             <span class="nav-item__text">Events</span>
@@ -317,7 +301,8 @@ export default {
       distance: 1000,
       chatPoll: null,
       nchan: null,
-      logo: require(`@/static/icon.png`)
+      logo: require(`@/static/icon.png`),
+      timeTimer: null
     }
   },
 
@@ -408,6 +393,10 @@ export default {
     if (process.browser) {
       // Add class for screen background.
       document.body.classList.add('fd')
+
+      // Start our timer.  Holding the time in the store allows us to update the time regularly and have reactivity
+      // cause displayed fromNow() values to change, rather than starting a timer for each of them.
+      this.updateTime()
     }
 
     // Ensure we know whether we're FD or MT.
@@ -512,6 +501,7 @@ export default {
   beforeDestroy() {
     console.log('Destroy layout')
     clearTimeout(this.chatPoll)
+    clearTimeout(this.timeTimer)
 
     if (this.nchan && this.nchan.running) {
       console.log('Stop NCHAN')
@@ -704,6 +694,11 @@ export default {
       await this.$store.dispatch('notifications/allSeen')
       await this.$store.dispatch('notifications/updateUnreadNotificationCount')
       await this.$store.dispatch('notifications/fetchNextListChunk')
+    },
+
+    updateTime() {
+      this.$store.dispatch('misc/setTime')
+      this.timeTimer = setTimeout(this.updateTime, 10000)
     }
   }
 }

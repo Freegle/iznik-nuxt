@@ -121,6 +121,11 @@ export const actions = {
     }
   },
 
+  async emailIsInUse({ commit, state }, params) {
+    const ret = await this.$api.user.fetch(params)
+    return ret && ret.id
+  },
+
   async rate({ commit, dispatch }, { id, rating }) {
     await this.$api.user.rate(id, rating)
 

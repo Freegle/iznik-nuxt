@@ -1,7 +1,8 @@
 <template>
   <client-only>
     <div>
-      <b-form-select v-model="selectedGroup" size=":size" :options="groupOptions" />
+      <label v-if="label" for="communitieslist" :class="labelSrOnly ? 'sr-only' : ''">{{ label }}</label>
+      <b-form-select id="communitieslist" v-model="selectedGroup" size=":size" :options="groupOptions" />
     </div>
   </client-only>
 </template>
@@ -25,6 +26,16 @@ export default {
      *
      * (0 is not a valid group number)
      */
+    label: {
+      type: String,
+      required: false,
+      default: ''
+    },
+    labelSrOnly: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     value: {
       type: Number,
       default: null
@@ -34,6 +45,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    allMy: {
+      type: Boolean,
+      required: false,
+      default: true
     },
     // Whether to list all Freegle groups.
     listall: {
@@ -127,7 +143,9 @@ export default {
           value: null,
           text: this.active
             ? '-- My active communities --'
-            : '-- All my communities --',
+            : this.allMy
+              ? '-- All my communities --'
+              : '-- All communities --',
           selected: this.selectedGroup === null
         })
       } else {
