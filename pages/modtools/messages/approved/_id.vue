@@ -5,12 +5,15 @@
       <div class="d-flex justify-content-between flex-wrap">
         <GroupSelect v-model="groupid" all modonly />
         <ModFindMessagesFromMember @searched="searchedMember" />
-        <ModFindMessage v-if="groupid" @searched="searchedMessage" />
+        <ModFindMessage v-if="groupid" :groupid="groupid" @searched="searchedMessage" />
+        <span v-else class="mt-2">
+          Select a community to search messages.
+        </span>
         <ModtoolsViewControl />
       </div>
       <div>
         <div v-for="message in visibleMessages" :key="'messagelist-' + message.id" class="p-0 mt-2">
-          <ModMessage :message="message" :summary="summary" />
+          <ModMessage :message="message" :summary="summary" :search="messageTerm" />
         </div>
 
         <NoticeMessage v-if="!messages.length && !busy" class="mt-2">

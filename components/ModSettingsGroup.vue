@@ -196,7 +196,7 @@
               :groupid="groupid"
               name="settings.closed"
               label="Closed for COVID-19"
-              description="Whether members can post on your community or whether they will see a COVID-19 warning."
+              description="See https://wiki.ilovefreegle.org/Closed_Groups for information about what this means."
               type="toggle"
               toggle-checked="Closed"
               toggle-unchecked="Open"
@@ -588,6 +588,11 @@
             </b-form-text>
 
             <div v-if="group.facebook && group.facebook.length">
+              <NoticeMessage v-if="!group.facebook.valid" variant="warning">
+                <p>This group is linked to Facebook, but there's an error.  This might help:</p>
+                <p>{{ group.facebook.lasterror }}</p>
+                <p>Depending on the problem, unlinking and relinking might help.</p>
+              </NoticeMessage>
               <ModSettingsGroupFacebook v-for="facebook in group.facebook" :key="'facebook-' + facebook.id" :groupid="group.id" :facebook="facebook" />
             </div>
             <NoticeMessage v-else variant="warning">

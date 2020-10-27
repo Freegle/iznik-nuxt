@@ -164,9 +164,9 @@
           </div>
         </div>
       </b-card-body>
-      <b-card-footer class="d-flex justify-content-between">
+      <b-card-footer class="d-flex justify-content-between flex-wrap">
         <ModMemberButtons :member="member" :modconfig="modconfig" :spamignore="spamignore" :actions="footeractions" />
-        <div class="d-flex flex-wrap w-25 justify-content-end">
+        <div class="d-flex justify-content-between justify-content-md-end flex-grow-1">
           <ModRole v-if="groupid" :userid="member.userid" :groupid="groupid" :role="member.role" />
           <ChatButton
             :userid="member.userid"

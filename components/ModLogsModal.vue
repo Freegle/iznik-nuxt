@@ -86,6 +86,7 @@ export default {
         await this.$store.dispatch('user/clear')
       }
 
+      this.logs = []
       this.showModal = true
     },
     hide() {

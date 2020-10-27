@@ -88,6 +88,19 @@ export default {
             ret.push({
               group: group
             })
+          } else {
+            let valid = true
+            group.facebook.forEach(f => {
+              if (!f.valid) {
+                valid = false
+              }
+            })
+
+            if (!valid) {
+              ret.push({
+                group: group
+              })
+            }
           }
         }
       }

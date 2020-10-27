@@ -38,7 +38,6 @@ export default {
       })
     } else {
       // Areas for a specific group.
-      console.log('Mounted, fetch group')
       await this.$store.dispatch('group/fetch', {
         id: this.groupid,
         polygon: true

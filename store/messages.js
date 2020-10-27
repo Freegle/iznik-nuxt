@@ -2,8 +2,12 @@ import Vue from 'vue'
 import cloneDeep from 'lodash.clonedeep'
 
 export const state = () => ({
-  // Use array because we need to store them in the order returned by the server.
+  // Use array because we need to store them in the order returned by the server.  We can't use Map because it's
+  // not supported by Vuex.
   list: [],
+
+  // But we also want quick access by id.
+  index: {},
 
   viewed: [],
 
@@ -16,29 +20,34 @@ export const state = () => ({
 
 export const mutations = {
   add(state, item) {
-    // Overwrite any existing entry.
-    const existing = state.list.findIndex(obj => {
-      return parseInt(obj.id) === parseInt(item.id)
-    })
+    if (state.index[parseInt(item.id)]) {
+      // Overwrite any existing entry.
+      const existing = state.list.findIndex(obj => {
+        return parseInt(obj.id) === parseInt(item.id)
+      })
 
-    if (existing !== -1) {
       Vue.set(state.list, existing, item)
     } else {
+      // We know it doesn't exist - just add to the list.
       state.list.push(item)
     }
+
+    Vue.set(state.index, parseInt(item.id), item)
   },
   addAll(state, items) {
     if (items) {
       items.forEach(item => {
-        const existing = state.list.findIndex(obj => {
-          return parseInt(obj.id) === parseInt(item.id)
-        })
+        if (state.index[parseInt(item.id)]) {
+          const existing = state.list.findIndex(obj => {
+            return parseInt(obj.id) === parseInt(item.id)
+          })
 
-        if (existing !== -1) {
           Vue.set(state.list, existing, item)
         } else {
           state.list.push(item)
         }
+
+        Vue.set(state.index, parseInt(item.id), item)
       })
     }
   },
@@ -46,9 +55,12 @@ export const mutations = {
     state.list = state.list.filter(obj => {
       return parseInt(obj.id) !== parseInt(item.id)
     })
+
+    delete state.index[parseInt(item.id)]
   },
   clear(state) {
     state.list = []
+    state.index = {}
 
     if (state.instance) {
       state.instance++
@@ -66,9 +78,7 @@ export const mutations = {
 
 export const getters = {
   get: state => id => {
-    const ret = state.list.find(m => {
-      return parseInt(m.id) === parseInt(id)
-    })
+    const ret = state.index[parseInt(id)]
 
     return ret
   },
@@ -127,11 +137,29 @@ export const actions = {
 
   async fetch({ commit }, params) {
     // Don't log errors on fetches of individual messages
-    const { message } = await this.$api.message.fetch(params, data => {
+    const instance = state.instance
+
+    const { message, groups } = await this.$api.message.fetch(params, data => {
       return data.ret !== 3
     })
 
-    commit('add', message)
+    if (state.instance === instance) {
+      // We might have some extra information to add in for this messages which we obtained earlier when searching.
+      message.matchedon = params.matchedon
+
+      // Most group info returned on the call we don't care about because it's also in the message.  But whether
+      // or not the group is closed matters.
+      if (groups) {
+        for (const gid in groups) {
+          const g = groups[gid]
+          if (g.settings && g.settings.closed) {
+            message.closed = true
+          }
+        }
+      }
+
+      commit('add', message)
+    }
   },
 
   async update({ commit, dispatch }, params) {

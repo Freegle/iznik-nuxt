@@ -7,7 +7,7 @@
           <h1 class="sr-only">
             Freegling map near {{ place.name }}
           </h1>
-          <AdaptiveMap v-if="initialBounds" :initial-bounds="initialBounds" class="mt-2" />
+          <AdaptiveMap v-if="initialBounds" :initial-bounds="initialBounds" class="mt-2" show-start-message />
         </div>
         <b-alert v-else show variant="danger">
           Something went wrong.  Please contact us to let us know what you were trying to do.

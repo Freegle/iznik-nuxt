@@ -11,7 +11,8 @@ import {
   LGeoJson,
   LControl,
   LFeatureGroup,
-  LTooltip
+  LTooltip,
+  LRectangle
 } from 'vue2-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -38,6 +39,7 @@ const VueLeaflet = {
     Vue.component('l-control', LControl)
     Vue.component('l-feature-group', LFeatureGroup)
     Vue.component('l-tooltip', LTooltip)
+    Vue.component('l-rectangle', LRectangle)
   }
 }
 

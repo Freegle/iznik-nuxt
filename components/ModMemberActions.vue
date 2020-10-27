@@ -6,7 +6,7 @@
     <b-btn v-if="groupid && !banned" variant="white" @click="ban">
       <v-icon name="trash-alt" /> Ban
     </b-btn>
-    <b-btn variant="white" @click="spamReport">
+    <b-btn v-if="!spam" variant="white" @click="spamReport">
       <v-icon name="ban" /> Spammer
     </b-btn>
     <b-btn v-if="supportOrAdmin" variant="white" @click="spamWhitelist">
@@ -48,6 +48,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    spam: {
+      type: Object,
+      required: false,
+      default: null
     }
   },
   data: function() {

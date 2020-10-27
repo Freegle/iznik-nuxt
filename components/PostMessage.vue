@@ -65,21 +65,6 @@
           <p>
             Please avoid very general terms.  Be precise - you'll get a better response.
           </p>
-          <p v-if="me">
-            If you just want to see what's happening, please go to
-            <!-- eslint-disable-next-line -->
-            <nuxt-link to="/browse">Browse</nuxt-link>.
-            If you want to search for something specific, please go
-            <!-- eslint-disable-next-line -->
-            <nuxt-link to="/search">here</nuxt-link>.
-          </p><p v-else>
-            If you just want to see what's happening, please go to
-            <!-- eslint-disable-next-line -->
-            <nuxt-link to="/explore">Explore</nuxt-link>.
-            If you want to search for something specific, please go
-            <!-- eslint-disable-next-line -->
-            <nuxt-link to="/search">here</nuxt-link>.
-          </p>
         </NoticeMessage>
         <NoticeMessage v-if="warn" variant="warning" class="mt-1">
           <h1 class="header--size3">

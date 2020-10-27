@@ -18,7 +18,7 @@ const keep = {
   auth: {
     // Don't store the forceLogin, as that can result in the login popup on page refresh.
     // Ensure password not saved to local storage.
-    exclude: ['forceLogin']
+    exclude: ['forceLogin', 'groups']
   },
   popupchats: null,
   compose: {
@@ -127,6 +127,23 @@ export default ({ store }) => {
             newstate.user[inc] = state.user[inc]
           }
         }
+      }
+
+      // Auth groups are a special case - prune the polygon.
+      if (state.auth && state.auth.groups) {
+        newstate.auth.groups = []
+
+        state.auth.groups.forEach(g => {
+          const thisg = {}
+
+          for (const ginc in g) {
+            if (ginc !== 'polygon') {
+              thisg[ginc] = g[ginc]
+            }
+          }
+
+          newstate.auth.groups.push(thisg)
+        })
       }
 
       return newstate

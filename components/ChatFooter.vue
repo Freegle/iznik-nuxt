@@ -80,7 +80,10 @@
           <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler" @click="showInfo">
             <v-icon name="info-circle" class="fa-fw" />&nbsp;Info
           </b-btn>
-          <b-btn v-if="!simple" v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
+          <b-btn v-if="!simple && !tooSoonToNudge" v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
+            <v-icon name="bell" class="fa-fw" />&nbsp;Nudge
+          </b-btn>
+          <b-btn v-if="!simple && tooSoonToNudge" v-b-tooltip.hover.top variant="white" title="It's too soon to nudge" disabled>
             <v-icon name="bell" class="fa-fw" />&nbsp;Nudge
           </b-btn>
         </span>
@@ -151,7 +154,13 @@
             Central
           </div>
         </div>
-        <div v-if="chat && chat.chattype === 'User2User' && otheruser" v-b-tooltip.hover.top title="Waiting for a reply?  Nudge this freegler." class="mr-2" @click="nudge">
+        <div v-if="chat && chat.chattype === 'User2User' && otheruser && !tooSoonToNudge" v-b-tooltip.hover.top title="Waiting for a reply?  Nudge this freegler." class="mr-2" @click="nudge">
+          <v-icon scale="2" name="bell" class="fa-mob" />
+          <div class="mobtext">
+            Nudge
+          </div>
+        </div>
+        <div v-if="chat && chat.chattype === 'User2User' && otheruser && tooSoonToNudge" v-b-tooltip.hover.top title="It's too soon to nudge." class="mr-2" disabled>
           <v-icon scale="2" name="bell" class="fa-mob" />
           <div class="mobtext">
             Nudge
@@ -175,6 +184,7 @@
     <AvailabilityModal v-if="me && chat" ref="availabilitymodal" :otheruid="otheruser ? otheruser.id : null" :chatid="chat.id" :thisuid="me.id" />
     <AddressModal ref="addressModal" :choose="true" @chosen="sendAddress" />
     <ChatRSVPModal v-if="RSVP" :id="id" ref="rsvp" :user="otheruser" />
+    <NudgeWarningModal ref="nudgewarning" @confirm="doNudge" />
   </div>
 </template>
 <script>
@@ -197,9 +207,11 @@ const AvailabilityModal = () => import('~/components/AvailabilityModal')
 const AddressModal = () => import('~/components/AddressModal')
 const ModSpammerReport = () => import('~/components/ModSpammerReport')
 const ChatRSVPModal = () => import('~/components/ChatRSVPModal')
+const NudgeWarningModal = () => import('~/components/NudgeWarningModal')
 
 export default {
   components: {
+    NudgeWarningModal,
     AvailabilityModal,
     ExternalLink,
     ModComments,

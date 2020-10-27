@@ -135,6 +135,9 @@ export default {
         title: 'Post Balance',
         chartArea: { width: '80%', height: '80%' },
         colors: ['green', 'blue'],
+        tooltip: {
+          text: 'percentage'
+        },
         slices2: {
           1: { offset: 0.2 },
           2: { offset: 0.2 }
@@ -144,6 +147,9 @@ export default {
         title: 'Offer Outcome',
         chartArea: { width: '80%', height: '80%' },
         colors: ['green', 'blue'],
+        tooltip: {
+          text: 'percentage'
+        },
         slices2: {
           1: { offset: 0.2 },
           2: { offset: 0.2 }
@@ -153,6 +159,9 @@ export default {
         title: 'Wanted Balance',
         chartArea: { width: '80%', height: '80%' },
         colors: ['green', 'blue'],
+        tooltip: {
+          text: 'percentage'
+        },
         slices2: {
           1: { offset: 0.2 },
           2: { offset: 0.2 }

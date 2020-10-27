@@ -21,6 +21,7 @@
               </nuxt-link> for details.
             </p>
             <EmailValidator :email.sync="email" :valid.sync="emailValid" center class="align-items-center font-weight-bold" />
+            <EmailBelongsToSomeoneElse v-if="emailValid && emailBelongsToSomeoneElse" class="mb-2" :ours="me.email" :theirs="email" />
           </b-col>
         </b-row>
         <div class="d-block d-md-none">
@@ -61,19 +62,23 @@ import loginOptional from '@/mixins/loginOptional.js'
 import compose from '@/mixins/compose.js'
 import buildHead from '@/mixins/buildHead.js'
 
+const EmailBelongsToSomeoneElse = () =>
+  import('~/components/EmailBelongsToSomeoneElse')
 const WizardProgress = () => import('~/components/WizardProgress')
 
 export default {
   components: {
     EmailValidator,
-    WizardProgress
+    WizardProgress,
+    EmailBelongsToSomeoneElse
   },
   mixins: [loginOptional, buildHead, compose],
   data() {
     return {
       id: null,
       postType: 'Wanted',
-      emailValid: false
+      emailValid: false,
+      emailBelongsToSomeoneElse: false
     }
   },
   computed: {
@@ -88,8 +93,28 @@ export default {
     }
   },
   methods: {
-    next() {
-      this.freegleIt('Wanted')
+    async next() {
+      this.emailBelongsToSomeoneElse = false
+      console.log('Check email')
+
+      if (this.emailIsntOurs) {
+        // Need to check if it's ok to use.
+        console.log('Not ours')
+        const inuse = await this.emailInUse(this.email)
+
+        if (!inuse) {
+          // Not in use - that's ok.
+          console.log('Not in use')
+          this.freegleIt('Wanted')
+        } else {
+          // We can't proceed.
+          console.log('Belongs to someone else')
+          this.emailBelongsToSomeoneElse = true
+        }
+      } else {
+        console.log('One of ours')
+        this.freegleIt('Wanted')
+      }
     }
   },
 

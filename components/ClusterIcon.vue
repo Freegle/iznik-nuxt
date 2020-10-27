@@ -1,7 +1,10 @@
 <template>
   <div class="icon d-flex flex-column justify-content-center" @click="$emit('click')">
-    <span :class="{ small: count > 1000 }">
+    <span :class="{ small: count >= 1000, normal: count < 1000 }">
       {{ count }}
+    </span>
+    <span v-if="tag" class="text-muted tag">
+      {{ count | pluralize(tag, { includeNumber: false }) }}
     </span>
   </div>
 </template>
@@ -11,6 +14,11 @@ export default {
     count: {
       type: Number,
       required: true
+    },
+    tag: {
+      type: Array,
+      required: false,
+      default: null
     }
   }
 }
@@ -37,6 +45,18 @@ export default {
 
 .small {
   font-size: 14px;
+  line-height: 14px;
   font-weight: bold;
+}
+
+.normal {
+  line-height: 16px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.tag {
+  line-height: 10px;
+  font-size: 10px;
 }
 </style>
