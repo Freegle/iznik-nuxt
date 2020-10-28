@@ -28,6 +28,10 @@
         <NewsUserInfo :user="users[userid]" />
       </div>
     </div>
+    <div v-if="mod" class="text-muted small">
+      (Note to mods: Members are encouraged to introduce themselves, and then their introductions appear automatically on here,
+      and also show to other freeglers in chats.)
+    </div>
     <ProfileModal v-if="infoclick" :id="userid" ref="profilemodal" />
   </div>
 </template>
