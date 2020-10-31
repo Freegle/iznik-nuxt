@@ -374,6 +374,11 @@ export default {
         this.$refs.nudgewarning.show()
       })
     },
+    nudgeTooSoon() {
+      this.waitForRef('nudgetoosoonwarning', () => {
+        this.$refs.nudgetoosoonwarning.show()
+      })
+    },
     async doNudge() {
       await this.$store.dispatch('chatmessages/nudge', {
         roomid: this.id

@@ -5,6 +5,7 @@
     </h2>
     <client-only>
       <PostMap
+        v-if="initialBounds"
         :key="'postmap-' + bump"
         :initial-bounds="postMapInitialBounds"
         :height-fraction="heightFraction"
