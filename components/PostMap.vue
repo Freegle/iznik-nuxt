@@ -364,11 +364,14 @@ export default {
       if (groupid) {
         // Use the bounding box for the group.
         const group = this.$store.getters['auth/groupById'](groupid)
-        const bounds = new L.LatLngBounds([
-          [group.bbox.swlat, group.bbox.swlng],
-          [group.bbox.nelat, group.bbox.nelng]
-        ]).pad(0.1)
-        this.mapObject.flyToBounds(bounds)
+
+        if (group.bbox) {
+          const bounds = new L.LatLngBounds([
+            [group.bbox.swlat, group.bbox.swlng],
+            [group.bbox.nelat, group.bbox.nelng]
+          ]).pad(0.1)
+          this.mapObject.flyToBounds(bounds)
+        }
       }
     },
     groupsInBounds(newval) {
