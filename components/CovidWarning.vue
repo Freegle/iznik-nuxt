@@ -5,7 +5,8 @@
         Hide this
       </b-btn>
       <p>
-        We hope you and yours are safe.  Please freegle responsibly and help keep it that way.
+        We hope you and yours are safe.  Please freegle responsibly and help keep it that way.  Respect local
+        rules and lockdowns.
       </p>
       <b-btn variant="secondary" @click="showModal = true">
         Read our advice on safe freegling
