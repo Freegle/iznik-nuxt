@@ -10,9 +10,7 @@ module.exports = {
       xp_backoff_restart_delay: 100,
       watch: false,
       max_memory_restart: '5G',
-      node_args: [
-        "--max_old_space_size=4096",
-      ],
+      node_args: '--max_old_space_size=4096',
       wait_ready: true,
       listen_timeout: 10000,
 
