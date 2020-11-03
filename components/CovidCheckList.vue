@@ -1,6 +1,6 @@
 <template>
   <NoticeMessage variant="danger">
-    <p>Before we go further, please complete our "COVID checklist" to show that you'll help keep Freegle safe.</p>
+    <p>Before we go further, please complete our "COVID checklist" to show that you'll help keep yourself and others safe.</p>
     <b-form-checkbox v-model="socialdistance" size="lg">
       <label>
         I will respect social distance.
