@@ -1,19 +1,14 @@
 <template>
   <NoticeMessage v-if="show" variant="danger">
     <p>Before we go further, please complete our "COVID checklist" to show that you'll help keep yourself and others safe.</p>
-    <b-form-checkbox v-model="trip" size="lg">
+    <b-form-checkbox v-model="travel" size="lg">
       <label>
-        I will only freegle as part of daily exercise or a pre-existing essential trip.
+        I will follow local rules on permitted and essential travel, leaving my home and travelling between areas.
       </label>
     </b-form-checkbox>
     <b-form-checkbox v-model="socialdistance" size="lg">
       <label>
         I will respect social distance.
-      </label>
-    </b-form-checkbox>
-    <b-form-checkbox v-model="travel" size="lg">
-      <label>
-        I will follow local rules on permitted travel.
       </label>
     </b-form-checkbox>
     <b-form-checkbox v-model="clean" size="lg">
@@ -44,7 +39,6 @@ export default {
       show: false,
       showModal: false,
       socialdistance: false,
-      trip: false,
       travel: false,
       clean: false
     }
@@ -58,14 +52,10 @@ export default {
     },
     clean() {
       this.check()
-    },
-    trip() {
-      this.check()
     }
   },
   mounted() {
     const last = this.$store.getters['misc/get']('covidconfirmed')
-    console.log('LAst', last)
 
     // If we've asked within the last day, just continue.
     if (last && Date.now() - last <= 24 * 60 * 60) {
@@ -76,7 +66,7 @@ export default {
   },
   methods: {
     check() {
-      if (this.socialdistance && this.travel && this.clean && this.trip) {
+      if (this.socialdistance && this.travel && this.clean) {
         this.$store.dispatch('misc/set', {
           key: 'covidconfirmed',
           value: Date.now()
