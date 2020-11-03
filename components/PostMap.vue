@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="initialBounds">
     <div v-if="mapHidden" class="d-flex justify-content-end">
       <b-btn variant="link" @click="showMap">
         Show map of posts
