@@ -17,7 +17,9 @@
       </label>
     </b-form-checkbox>
     <p class="mt-2">
-      If you're not comfortable, don't freegle.  You can also read more advice here:
+      We really really recommend that you only travel to Freegle as part of another journey or permitted exercise, and
+      that you do not enter someone else's home.  If you're not comfortable, don't freegle.  You can also read more
+      advice here:
     </p>
     <b-btn variant="link" class="p-0 align-top" @click="showModal = true">
       Read about safe freegling
