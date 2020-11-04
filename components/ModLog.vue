@@ -52,7 +52,12 @@
               </span>
             </span>
             <span v-else-if="log.message">
-              Emailed <em>{{ log.message.subject }}</em> to <em>{{ log.message.envelopeto }}</em>
+              <span v-if="log.message.deleted">
+                <em>Emailed message #{{ log.message.id }} which has been deleted</em>
+              </span>
+              <span v-else>
+                Emailed <em>{{ log.message.subject }}</em> to <em>{{ log.message.envelopeto }}</em>
+              </span>
             </span>
           </span>
           <span v-else-if="log.subtype === 'Autoreposted'">
@@ -181,7 +186,8 @@
             <ModLogStdMsg :log="log" />
           </span>
           <span v-else-if="log.subtype === 'Deleted'">
-            Rejected member
+            <span v-if="byuser">Rejected member</span>
+            <span v-else>User left platform ({{ log.text }})</span>
             <ModLogUser :user="log.user" />
             <ModLogGroup :log="log" tag="on" />
             <ModLogStdMsg :log="log" />
