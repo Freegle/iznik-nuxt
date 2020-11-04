@@ -60,7 +60,7 @@ export default {
     const last = this.$store.getters['misc/get']('covidconfirmed')
 
     // If we've asked within the last day, just continue.
-    if (last && Date.now() - last <= 0 * 60 * 60) {
+    if (last && Date.now() - last <= 24 * 60 * 60) {
       this.$emit('confirmed')
     } else {
       this.show = true
