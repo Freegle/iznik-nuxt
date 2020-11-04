@@ -2,19 +2,19 @@
   <NoticeMessage v-if="show" variant="danger">
     <p>Before we go further, please complete our "COVID checklist" to show that you'll help keep yourself and others safe.</p>
     <b-form-checkbox v-model="travel" size="lg">
-      <label>
+      <b>
         I will follow local rules on permitted and essential travel, leaving my home and travelling between areas.
-      </label>
+      </b>
     </b-form-checkbox>
     <b-form-checkbox v-model="socialdistance" size="lg">
-      <label>
+      <b>
         I will respect social distance.
-      </label>
+      </b>
     </b-form-checkbox>
     <b-form-checkbox v-model="clean" size="lg">
-      <label>
+      <b>
         I will clean items I give or receive.
-      </label>
+      </b>
     </b-form-checkbox>
     <p class="mt-2">
       We really really recommend that you only travel for freegling as part of another journey or permitted exercise, and
@@ -60,7 +60,7 @@ export default {
     const last = this.$store.getters['misc/get']('covidconfirmed')
 
     // If we've asked within the last day, just continue.
-    if (last && Date.now() - last <= 24 * 60 * 60) {
+    if (last && Date.now() - last <= 0 * 60 * 60) {
       this.$emit('confirmed')
     } else {
       this.show = true
