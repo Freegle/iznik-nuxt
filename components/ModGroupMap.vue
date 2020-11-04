@@ -92,15 +92,6 @@
           </b-card>
           <b-card no-body>
             <b-card-header class="bg-info">
-              Search Map
-            </b-card-header>
-            <b-card-body>
-              <p>This search is a bit odd sometimes, but it's free, so don't knock it.</p>
-              <Postcode :find="false" :pconly="false" @selected="flyTo" />
-            </b-card-body>
-          </b-card>
-          <b-card no-body>
-            <b-card-header class="bg-info">
               Postcode Tester
             </b-card-header>
             <b-card-body>
@@ -151,6 +142,8 @@ if (process.browser) {
   require('wicket/wicket-leaflet')
   L = require('leaflet')
   require('leaflet-draw')
+  require('leaflet-control-geocoder')
+  require('leaflet-control-geocoder/dist/Control.Geocoder.css')
 }
 
 // const GROUP_FILL_COLOUR = '#EEFFCC'
@@ -406,13 +399,42 @@ export default {
     postcodeSelect(pc) {
       this.postcode = pc
     },
-    flyTo(pc) {
-      this.$refs.map.mapObject.flyTo([pc.lat, pc.lng, 15])
-    },
     postcodeClear() {
       this.postcode = null
     },
     async idle() {
+      const self = this
+      L.Control.geocoder({
+        placeholder: 'Search for a place...',
+        defaultMarkGeocode: false,
+        geocoder: L.Control.Geocoder.photon({
+          geocodingQueryParams: {
+            bbox: '-7.57216793459, 49.959999905, 1.68153079591, 58.6350001085'
+          },
+          nameProperties: [
+            'name',
+            'street',
+            'suburb',
+            'hamlet',
+            'town',
+            'city'
+          ],
+          serviceUrl:
+            process.env.GEOCODE || 'https://geocode.ilovefreegle.org/api'
+        }),
+        collapsed: this.locked
+      })
+        .on('markgeocode', function(e) {
+          if (e && e.geocode && e.geocode.bbox) {
+            // Empty out the query box so that the dropdown closes.
+            this.setQuery('')
+
+            // Move the map to the location we've found.
+            self.$refs.map.mapObject.flyToBounds(e.geocode.bbox)
+          }
+        })
+        .addTo(self.$refs.map.mapObject)
+
       if (this.groupid && this.group) {
         const group = this.$store.getters['group/get'](this.groupid)
 
@@ -463,7 +485,9 @@ export default {
         nelng: this.bounds.getNorthEast().lng
       }
 
-      await this.$store.dispatch('locations/fetch', data)
+      if (this.group) {
+        await this.$store.dispatch('locations/fetch', data)
+      }
 
       // Sometimes the map needs a kick to show correctly.
       this.$refs.map.mapObject.invalidateSize()

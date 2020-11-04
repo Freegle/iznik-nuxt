@@ -72,7 +72,6 @@ export default {
       return this.chatMessageUser ? this.chatMessageUser.displayname : null
     },
     timeago() {
-      console.log('Compute time')
       let ret = null
 
       // Make depend on auth/time so that reactivity updates.

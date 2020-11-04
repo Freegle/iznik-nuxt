@@ -241,16 +241,26 @@ export default {
 
       return ret
     },
-    ask() {
-      this.$store.dispatch('members/askMerge', {
+    async ask() {
+      await this.$store.dispatch('members/askMerge', {
         user1: this.user1.id,
         user2: this.user2.id
       })
+
+      this.updateWork()
     },
-    ignore() {
-      this.$store.dispatch('members/ignoreMerge', {
+    async ignore() {
+      await this.$store.dispatch('members/ignoreMerge', {
         user1: this.user1.id,
         user2: this.user2.id
+      })
+
+      this.updateWork()
+    },
+    updateWork() {
+      this.$store.dispatch('auth/fetchUser', {
+        components: ['work'],
+        force: true
       })
     }
   }

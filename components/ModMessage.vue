@@ -95,6 +95,9 @@
                 This freegler is active on groups {{ message.fromuser.activedistance }} miles apart.
               </NoticeMessage>
             </div>
+            <NoticeMessage v-if="outsideUK" variant="warning" class="mb-2">
+              This message may be from outside the UK ({{ position.lat }}, {{ position.lng }}), which means it might be a scam.  Please check carefully.
+            </NoticeMessage>
             <NoticeMessage v-if="message.spamreason" variant="warning" class="mb-2">
               {{ message.spamreason }}
             </NoticeMessage>
@@ -379,6 +382,15 @@ export default {
       }
 
       return ret
+    },
+    outsideUK() {
+      return (
+        this.position &&
+        (this.position.lng < -7.57216793459 ||
+          this.position.lat < 49.959999905 ||
+          this.position.lng > 1.68153079591 ||
+          this.position.lat > 58.6350001085)
+      )
     },
     pending() {
       return this.hasCollection('Pending')

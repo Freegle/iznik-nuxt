@@ -39,6 +39,10 @@ export default class NewsAPI extends BaseAPI {
     await this.$post('/newsfeed', { id, action: 'ReferTo' + type })
   }
 
+  async unhide(id, type) {
+    await this.$post('/newsfeed', { id, action: 'Unhide' })
+  }
+
   del(id) {
     return this.$del('/newsfeed', { id })
   }

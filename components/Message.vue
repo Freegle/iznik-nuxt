@@ -114,97 +114,100 @@
       <b-card-footer v-if="expanded" class="p-1 pt-3">
         <CovidClosed v-if="expanded && expanded.closed" />
         <div v-else>
-          <NoticeMessage v-if="sent" variant="info" class="d-block d-sm-none mb-1">
-            We've sent your message.  You can see replies in the
-            <nuxt-link to="/chats">
-              <v-icon name="comments" /> Chats
-            </nuxt-link> section.
-          </NoticeMessage>
-          <EmailValidator
-            v-if="!me"
-            ref="email"
-            size="lg"
-            label="Your email address:"
-            :email.sync="email"
-            :valid.sync="emailValid"
-          />
-          <b-form-group
-            class="flex-grow-1"
-            label="Your reply:"
-            :label-for="'replytomessage-' + expanded.id"
-            :description="expanded.type === 'Offer' ? 'Interested?  Please explain why you\'d like it and when you can collect.  Always be polite and helpful.  If appropriate, ask if it\'s working.' : 'Can you help?  If you have what they\'re looking for, let them know.'"
-          >
-            <b-form-textarea
-              v-if="expanded.type == 'Offer'"
-              :id="'replytomessage-' + expanded.id"
-              v-model="reply"
-              rows="3"
-              max-rows="8"
-              class="border border-success"
+          <CovidCheckList v-if="!confirmed" class="mt-2" @confirmed="confirmed = true" />
+          <div v-if="confirmed">
+            <NoticeMessage v-if="sent" variant="info" class="d-block d-sm-none mb-1">
+              We've sent your message.  You can see replies in the
+              <nuxt-link to="/chats">
+                <v-icon name="comments" /> Chats
+              </nuxt-link> section.
+            </NoticeMessage>
+            <EmailValidator
+              v-if="!me"
+              ref="email"
+              size="lg"
+              label="Your email address:"
+              :email.sync="email"
+              :valid.sync="emailValid"
             />
-            <b-form-textarea
-              v-if="expanded.type == 'Wanted'"
-              :id="'replytomessage-' + expanded.id"
-              v-model="reply"
-              rows="3"
-              max-rows="8"
+            <b-form-group
               class="flex-grow-1"
-            />
-          </b-form-group>
-          <div v-if="!me">
-            <div class="contents">
-              <div>
-                <b-btn size="lg" variant="primary" :disabled="disableSend" @click="registerOrSend">
-                  Send your reply
-                  <v-icon v-if="replying" name="sync" class="fa-spin" />
-                  <v-icon v-else name="angle-double-right" />&nbsp;
-                </b-btn>
+              label="Your reply:"
+              :label-for="'replytomessage-' + expanded.id"
+              :description="expanded.type === 'Offer' ? 'Interested?  Please explain why you\'d like it and when you can collect.  Always be polite and helpful.  If appropriate, ask if it\'s working.' : 'Can you help?  If you have what they\'re looking for, let them know.'"
+            >
+              <b-form-textarea
+                v-if="expanded.type == 'Offer'"
+                :id="'replytomessage-' + expanded.id"
+                v-model="reply"
+                rows="3"
+                max-rows="8"
+                class="border border-success"
+              />
+              <b-form-textarea
+                v-if="expanded.type == 'Wanted'"
+                :id="'replytomessage-' + expanded.id"
+                v-model="reply"
+                rows="3"
+                max-rows="8"
+                class="flex-grow-1"
+              />
+            </b-form-group>
+            <div v-if="!me">
+              <div class="contents">
+                <div>
+                  <b-btn size="lg" variant="primary" :disabled="disableSend" @click="registerOrSend">
+                    Send your reply
+                    <v-icon v-if="replying" name="sync" class="fa-spin" />
+                    <v-icon v-else name="angle-double-right" />&nbsp;
+                  </b-btn>
+                </div>
+                <div />
+                <MessageMap v-if="showMap" :home="home" :position="{ lat: expanded.lat, lng: expanded.lng }" />
               </div>
-              <div />
-              <MessageMap v-if="showMap" :home="home" :position="{ lat: expanded.lat, lng: expanded.lng }" />
+              <p class="mt-1">
+                If you're a new freegler then welcome!  You'll get emails.  Name, approx. location, and profile picture are public - you
+                can hide your real name and picture from Settings.  This adds cookies and local
+                storage.  Read <nuxt-link target="_blank" to="/terms">
+                  Terms of Use
+                </nuxt-link> and
+                <nuxt-link target="_blank" to="/privacy">
+                  Privacy
+                </nuxt-link> for details.
+              </p>
             </div>
-            <p class="mt-1">
-              If you're a new freegler then welcome!  You'll get emails.  Name, approx. location, and profile picture are public - you
-              can hide your real name and picture from Settings.  This adds cookies and local
-              storage.  Read <nuxt-link target="_blank" to="/terms">
-                Terms of Use
-              </nuxt-link> and
-              <nuxt-link target="_blank" to="/privacy">
-                Privacy
-              </nuxt-link> for details.
-            </p>
-          </div>
-          <div v-else>
-            <div class="contents">
-              <div>
-                <b-form-group
-                  class="flex-grow-1"
-                  label="Your postcode:"
-                  :label-for="'replytomessage-' + expanded.id"
-                  description="So that we know how far away you are.  The closer the better."
-                >
-                  <Postcode @selected="savePostcode" />
-                </b-form-group>
-                <b-btn size="lg" variant="primary" class="d-none d-md-block" :disabled="disableSend" @click="sendReply">
-                  Send your reply
-                  <v-icon v-if="replying" name="sync" class="fa-spin" />
-                  <v-icon v-else name="angle-double-right" />&nbsp;
-                </b-btn>
-                <b-btn
-                  size="lg"
-                  variant="primary"
-                  class="d-block d-md-none mt-2"
-                  block
-                  :disabled="disableSend"
-                  @click="sendReply"
-                >
-                  Send your reply
-                  <v-icon v-if="replying" name="sync" class="fa-spin" />
-                  <v-icon v-else name="angle-double-right" />&nbsp;
-                </b-btn>
+            <div v-else>
+              <div class="contents">
+                <div>
+                  <b-form-group
+                    class="flex-grow-1"
+                    label="Your postcode:"
+                    :label-for="'replytomessage-' + expanded.id"
+                    description="So that we know how far away you are.  The closer the better."
+                  >
+                    <Postcode @selected="savePostcode" />
+                  </b-form-group>
+                  <b-btn size="lg" variant="primary" class="d-none d-md-block" :disabled="disableSend" @click="sendReply">
+                    Send your reply
+                    <v-icon v-if="replying" name="sync" class="fa-spin" />
+                    <v-icon v-else name="angle-double-right" />&nbsp;
+                  </b-btn>
+                  <b-btn
+                    size="lg"
+                    variant="primary"
+                    class="d-block d-md-none mt-2"
+                    block
+                    :disabled="disableSend"
+                    @click="sendReply"
+                  >
+                    Send your reply
+                    <v-icon v-if="replying" name="sync" class="fa-spin" />
+                    <v-icon v-else name="angle-double-right" />&nbsp;
+                  </b-btn>
+                </div>
+                <div />
+                <MessageMap v-if="showMap" :home="home" :position="{ lat: expanded.lat, lng: expanded.lng }" class="border border-black rounded" />
               </div>
-              <div />
-              <MessageMap v-if="showMap" :home="home" :position="{ lat: expanded.lat, lng: expanded.lng }" class="border border-black rounded" />
             </div>
           </div>
         </div>
@@ -248,6 +251,7 @@ import MessagePhotosModal from './MessagePhotosModal'
 import Postcode from './Postcode'
 import MessageMap from './MessageMap'
 import CovidClosed from './CovidClosed'
+import CovidCheckList from './CovidCheckList'
 import twem from '~/assets/js/twem'
 import waitForRef from '@/mixins/waitForRef'
 
@@ -260,6 +264,7 @@ Vue.use(TooltipPlugin)
 
 export default {
   components: {
+    CovidCheckList,
     CovidClosed,
     MessageMap,
     Postcode,
@@ -351,7 +356,8 @@ export default {
       emailValid: false,
       showNewUser: false,
       newUserPassword: null,
-      showAttachments: true
+      showAttachments: true,
+      confirmed: false
     }
   },
   computed: {

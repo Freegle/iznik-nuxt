@@ -143,7 +143,7 @@ export default {
                 geoJSON
               )
 
-              if (inside.length) {
+              if (inside.length && g.bbox) {
                 swlat = (g.bbox.swlat + g.bbox.nelat) / 2
                 swlng = g.bbox.swlng
                 nelat = (g.bbox.swlat + g.bbox.nelat) / 2

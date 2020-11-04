@@ -312,5 +312,9 @@ export const actions = {
 
   async referto({ commit, dispatch }, { id, type }) {
     await this.$api.news.referto(id, type)
+  },
+
+  async unhide({ commit, dispatch }, { id }) {
+    await this.$api.news.unhide(id)
   }
 }

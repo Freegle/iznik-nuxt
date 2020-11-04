@@ -40,7 +40,6 @@ const cordovaApp = {
       console.log('cordovaApp: onDeviceReady')
 
       mobilestate.isiOS = window.device.platform === 'iOS'
-      mobilestate.isiOS = true
       pushstate.isiOS = mobilestate.isiOS
 
       // Make window.open work in iOS app

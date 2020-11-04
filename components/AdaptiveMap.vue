@@ -5,6 +5,8 @@
     </h2>
     <client-only>
       <PostMap
+        v-if="initialBounds"
+        :key="'postmap-' + bump"
         :initial-bounds="postMapInitialBounds"
         :height-fraction="heightFraction"
         :bounds.sync="bounds"
@@ -290,6 +292,7 @@ export default {
       mapVisible: true,
       mapMoved: false,
       messagesOnMap: [],
+      bump: 1,
 
       // Infinite message scroll
       postsVisible: true,
@@ -494,6 +497,16 @@ export default {
 
               if (group.distance <= 50000) {
                 ret.push(group)
+              } else if (group.altlat || group.altlng) {
+                // A few groups have two centres because they are large.
+                group.distance = this.getDistance(
+                  [this.centre.lat, this.centre.lng],
+                  [group.altlat, group.altlng]
+                )
+
+                if (group.distance <= 50000) {
+                  ret.push(group)
+                }
               }
             }
           }
@@ -518,6 +531,8 @@ export default {
       // When the post map is locked/unlocked we need to reset the infinite scroll so that we see the appropriate
       // messages.
       this.infiniteId++
+      this.postMapInitialBounds = this.locked
+      this.bump++
       this.$store.dispatch('messages/clear')
     }
   },
