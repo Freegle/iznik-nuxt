@@ -17,7 +17,7 @@
                   </div>
                 </b-col>
               </b-row>
-              <b-row>
+              <b-row v-if="chatmessage.address && chatmessage.address.postcode">
                 <b-col>
                   <l-map
                     ref="map"
@@ -51,7 +51,7 @@
                   </div>
                 </b-col>
               </b-row>
-              <b-row>
+              <b-row v-if="chatmessage.address && chatmessage.address.postcode">
                 <b-col>
                   <l-map
                     ref="map"

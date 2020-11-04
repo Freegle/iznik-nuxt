@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="initialBounds">
     <div v-if="mapHidden" class="d-flex justify-content-end">
       <b-btn variant="link" @click="showMap">
         Show map of posts
@@ -214,7 +214,8 @@ export default {
     mapOptions() {
       return {
         zoomControl: !this.locked,
-        dragging: !this.locked
+        dragging: !this.locked,
+        scrollWheelZoom: !this.locked
       }
     },
     mapHidden() {
@@ -364,11 +365,14 @@ export default {
       if (groupid) {
         // Use the bounding box for the group.
         const group = this.$store.getters['auth/groupById'](groupid)
-        const bounds = new L.LatLngBounds([
-          [group.bbox.swlat, group.bbox.swlng],
-          [group.bbox.nelat, group.bbox.nelng]
-        ]).pad(0.1)
-        this.mapObject.flyToBounds(bounds)
+
+        if (group.bbox) {
+          const bounds = new L.LatLngBounds([
+            [group.bbox.swlat, group.bbox.swlng],
+            [group.bbox.nelat, group.bbox.nelng]
+          ]).pad(0.1)
+          this.mapObject.flyToBounds(bounds)
+        }
       }
     },
     groupsInBounds(newval) {
@@ -659,6 +663,12 @@ export default {
 
 ::v-deep .leaflet-control-geocoder {
   right: 30px;
+}
+
+@media screen and (max-width: 360px) {
+  ::v-deep .leaflet-control-geocoder-form input {
+    max-width: 200px;
+  }
 }
 
 @include media-breakpoint-up(md) {

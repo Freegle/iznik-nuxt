@@ -110,7 +110,7 @@
                 <b-btn v-if="!simple && !tooSoonToNudge" v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
                   <v-icon name="bell" />
                 </b-btn>
-                <b-btn v-if="!simple && tooSoonToNudge" v-b-tooltip.hover.top variant="white" title="It's too soon to nudge" disabled>
+                <b-btn v-if="!simple && tooSoonToNudge" v-b-tooltip.hover.top variant="white" title="It's too soon to nudge" @click="nudgeTooSoon">
                   <v-icon name="bell" />
                 </b-btn>
 
@@ -126,6 +126,7 @@
         <ProfileModal v-if="otheruser" :id="otheruser ? otheruser.id : null" ref="profile" />
         <AvailabilityModal ref="availabilitymodal" :otheruid="otheruser ? otheruser.id : null" :thisuid="me.id" />
         <AddressModal ref="addressModal" :choose="true" @chosen="sendAddress" />
+        <NudgeTooSoonWarningModal ref="nudgetoosoonwarning" @confirm="doNudge" />
         <NudgeWarningModal ref="nudgewarning" @confirm="doNudge" />
       </div>
     </client-only>
@@ -151,6 +152,8 @@ const ProfileModal = () => import('./ProfileModal')
 const AvailabilityModal = () => import('~/components/AvailabilityModal')
 const AddressModal = () => import('~/components/AddressModal')
 const NudgeWarningModal = () => import('~/components/NudgeWarningModal')
+const NudgeTooSoonWarningModal = () =>
+  import('~/components/NudgeTooSoonWarningModal')
 
 const HEIGHT = 400
 
@@ -165,6 +168,7 @@ export default {
     ProfileModal,
     AvailabilityModal,
     AddressModal,
+    NudgeTooSoonWarningModal,
     NudgeWarningModal
   },
   mixins: [chatCollate, waitForRef, chat],

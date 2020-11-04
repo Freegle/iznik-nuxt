@@ -21,17 +21,20 @@
               <b-dropdown-item v-if="parseInt(me.id) === parseInt(newsfeed.userid) || mod" @click="deleteIt">
                 Delete this thread
               </b-dropdown-item>
-              <b-dropdown-item v-if="mod" @click="referToOffer">
+              <b-dropdown-item v-if="canRefer" @click="referToOffer">
                 Refer to OFFER
               </b-dropdown-item>
-              <b-dropdown-item v-if="mod" @click="referToWanted">
+              <b-dropdown-item v-if="canRefer" @click="referToWanted">
                 Refer to WANTED
               </b-dropdown-item>
-              <b-dropdown-item v-if="mod" @click="referToTaken">
+              <b-dropdown-item v-if="canRefer" @click="referToTaken">
                 Refer to TAKEN
               </b-dropdown-item>
-              <b-dropdown-item v-if="mod" @click="referToReceived">
+              <b-dropdown-item v-if="canRefer" @click="referToReceived">
                 Refer to RECEIVED
+              </b-dropdown-item>
+              <b-dropdown-item v-if="supportOrAdmin" @click="unhide">
+                Unhide post
               </b-dropdown-item>
             </b-dropdown>
             <component
@@ -57,7 +60,12 @@
         </b-button>
         <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id" class="list-unstyled mb-2">
           <li>
-            <NewsRefer v-if="entry.type.indexOf('ReferTo') === 0" :type="entry.type" />
+            <NewsRefer
+              v-if="entry.type.indexOf('ReferTo') === 0"
+              :id="entry.id"
+              :type="entry.type"
+              :threadhead="newsfeed"
+            />
             <NewsReply
               v-else
               :key="'newsfeedreply-' + newsfeed.id + '-reply-' + entry.id"
@@ -269,6 +277,11 @@ export default {
     }
   },
   computed: {
+    canRefer() {
+      return (
+        (this.mod && this.newsfeed.type !== 'AboutMe') || this.supportOrAdmin
+      )
+    },
     enterNewLine() {
       return this.$store.getters['misc/get']('enternewline')
     },
@@ -468,6 +481,14 @@ export default {
     },
     referToReceived() {
       this.referTo('Recived')
+    },
+    async unhide() {
+      await this.$store.dispatch('newsfeed/unhide', {
+        id: this.id
+      })
+      await this.$store.dispatch('newsfeed/fetch', {
+        id: this.id
+      })
     },
     async referTo(type) {
       await this.$store.dispatch('newsfeed/referto', {

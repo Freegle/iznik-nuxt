@@ -11,15 +11,15 @@
     <p>
       Avoid special or extra journeys for freegling - see Government advice in
       <!-- eslint-disable-next-line -->
-      <ExternalLink href="https://www.gov.uk/government/publications/staying-alert-and-safe-social-distancing/staying-alert-and-safe-social-distancing">England</ExternalLink>,
+      <ExternalLink href="https://www.gov.uk/guidance/new-national-restrictions-from-5-november">England</ExternalLink>,
       <!-- eslint-disable-next-line -->
-      <ExternalLink href="https://www.gov.scot/publications/coronavirus-covid-19-what-you-can-and-cannot-do/pages/getting-around/">Scotland</ExternalLink>,
+      <ExternalLink href="https://www.gov.scot/publications/coronavirus-covid-19-protection-levels/">Scotland</ExternalLink>,
       <ExternalLink href="https://gov.wales/coronavirus">
         Wales
       </ExternalLink>
       and
       <!-- eslint-disable-next-line -->
-      <ExternalLink href="https://www.nidirect.gov.uk/campaigns/coronavirus-covid-19">Northern Ireland</ExternalLink>.
+      <ExternalLink href="https://www.nidirect.gov.uk/articles/coronavirus-covid-19-regulations-guidance-what-restrictions-mean-you">Northern Ireland</ExternalLink>.
       Please check local restrictions on travel and use of public transport.
     </p>
     <p>
