@@ -73,17 +73,22 @@
         </span>
       </infinite-loading>
     </b-dropdown>
+    <client-only>
+      <AboutMeModal ref="aboutMeModal" />
+    </client-only>
   </div>
 </template>
 
 <script>
 const Notification = () => import('~/components/Notification')
 const InfiniteLoading = () => import('vue-infinite-loading')
+const AboutMeModal = () => import('~/components/AboutMeModal')
 
 export default {
   components: {
     InfiniteLoading,
-    Notification
+    Notification,
+    AboutMeModal
   },
   props: {
     distance: {
@@ -160,7 +165,7 @@ export default {
       await this.$store.dispatch('notifications/fetchNextListChunk')
     },
     showAboutMe() {
-      this.parentRefs.aboutMeModal.show()
+      this.$refs.aboutMeModal.show()
     }
   }
 }

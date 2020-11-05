@@ -190,7 +190,6 @@
     <client-only>
       <ChatPopups v-if="loggedIn" class="d-none d-sm-block" />
       <LoginModal ref="loginModal" />
-      <AboutMeModal ref="aboutMeModal" />
     </client-only>
     <div class="navbar-toggle" style="display: none" />
     <div id="serverloader" class="bg-white">
@@ -210,7 +209,6 @@ import LocalStorageMonitor from '~/components/LocalStorageMonitor'
 import BouncingEmail from '~/components/BouncingEmail'
 import NotificationOptions from '~/components/NotificationOptions'
 
-const AboutMeModal = () => import('~/components/AboutMeModal')
 const ChatPopups = () => import('~/components/ChatPopups')
 const NchanSubscriber = require('nchan')
 const ExternalLink = () => import('~/components/ExternalLink')
@@ -219,7 +217,6 @@ export default {
   components: {
     SimpleView,
     ChatPopups,
-    AboutMeModal,
     LoginModal,
     LocalStorageMonitor,
     BouncingEmail,
