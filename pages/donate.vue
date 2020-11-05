@@ -19,6 +19,25 @@
           <donation-button :direct-donation="true" />
         </b-card-text>
       </b-card>
+      <b-card no-body variant="success" class="mt-2">
+        <b-card-header>
+          <h2>Please set us as your favourite PayPal charity</h2>
+        </b-card-header>
+        <b-card-text class="p-2">
+          <p>
+            This will make it easier to donate a little to Freegle when you're checking out using PayPal.  Go to our page
+            on PayPal Giving Fund and click the <b>Set as favourite charity</b> link.
+          </p>
+          <b-btn to="https://www.paypal.com/fundraiser/charity/55681" variant="primary" size="lg" class="mb-2">
+            Go to PayPal Giving Fund
+          </b-btn>
+          <p>
+            Here's how it looks:
+          </p>
+          <b-img-lazy fluid src="/PayPalFavourite.gif" />
+        </b-card-text>
+      </b-card>
+      <p />
       <h2 class="mt-2">
         Other ways to Donate
       </h2>
