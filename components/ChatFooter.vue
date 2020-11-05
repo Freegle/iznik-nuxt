@@ -41,8 +41,10 @@
         </notice-message>
         <ModComments v-if="mod && chat && chat.chattype === 'User2Mod' && otheruser" :user="otheruser" class="mt-1" />
       </div>
+      <label for="chatmessage" class="sr-only">Chat message</label>
       <b-form-textarea
         v-if="enterNewLine && !spammer"
+        id="chatmessage"
         ref="chatarea"
         v-model="sendmessage"
         placeholder="Type here..."
@@ -52,6 +54,7 @@
       />
       <b-form-textarea
         v-else-if="!spammer"
+        id="chatmessage"
         ref="chatarea"
         v-model="sendmessage"
         placeholder="Type here..."
