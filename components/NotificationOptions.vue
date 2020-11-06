@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- Notification menu option  for large screens -->
+    <!-- Notification menu option for large screens -->
     <b-nav-item-dropdown
       v-if="!simple"
       class="white text-center notification-list d-none d-xl-block"
