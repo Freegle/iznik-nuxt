@@ -51,7 +51,7 @@
             </div>
           </client-only>
           <b-navbar-nav class="mainnav mainnav--right">
-            <NotificationOptions :distance="distance" :parent-refs="$refs" />
+            <NotificationOptions :distance="distance" @unread-notification-count="unreadNotificationCount=$event" />
             <b-nav-item id="menu-option-chat" class="text-center small p-0" to="/chats" @click="toChats">
               <div class="notifwrapper">
                 <v-icon name="comments" scale="2" /><br>
@@ -109,7 +109,7 @@
       </b-navbar-brand>
       <div class="d-flex align-items-center">
         <client-only>
-          <NotificationOptions :distance="distance" :parent-refs="$refs" />
+          <NotificationOptions :distance="distance" @unread-notification-count="unreadNotificationCount=$event" />
           <a v-if="loggedIn" id="menu-option-chat-sm" href="#" class="text-white mr-3 position-relative" @click="toChats">
             <v-icon name="comments" scale="2" /><br>
             <b-badge v-if="chatCount" variant="danger" class="chatbadge">
@@ -231,7 +231,8 @@ export default {
       chatPoll: null,
       nchan: null,
       logo: require(`@/static/icon.png`),
-      timeTimer: null
+      timeTimer: null,
+      unreadNotificationCount: 0
     }
   },
 
@@ -250,9 +251,6 @@ export default {
   },
 
   computed: {
-    unreadNotificationCount() {
-      return this.$store.getters['notifications/getUnreadCount']
-    },
     chatCount() {
       // Don't show so many that the layout breaks.
       return Math.min(99, this.$store.getters['chats/unseenCount'])

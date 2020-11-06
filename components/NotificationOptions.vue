@@ -94,10 +94,6 @@ export default {
     distance: {
       type: Number,
       required: true
-    },
-    parentRefs: {
-      type: Object,
-      required: true
     }
   },
   computed: {
@@ -108,6 +104,11 @@ export default {
     },
     unreadNotificationCount() {
       return this.$store.getters['notifications/getUnreadCount']
+    }
+  },
+  watch: {
+    unreadNotificationCount: function() {
+      this.$emit('unread-notification-count', this.unreadNotificationCount)
     }
   },
   mounted() {
