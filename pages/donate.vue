@@ -28,9 +28,11 @@
             This will make it easier to donate a little to Freegle when you're checking out using PayPal.  Go to our page
             on PayPal Giving Fund and click the <b>Set as favourite charity</b> link.
           </p>
-          <b-btn to="https://www.paypal.com/fundraiser/charity/55681" variant="primary" size="lg" class="mb-2">
-            Go to PayPal Giving Fund
-          </b-btn>
+          <ExternalLink href="https://www.paypal.com/fundraiser/charity/55681">
+            <b-btn variant="primary" size="lg" class="mb-2">
+              Go to PayPal Giving Fund
+            </b-btn>
+          </ExternalLink>
           <p>
             Here's how it looks:
           </p>
@@ -134,10 +136,12 @@
 <script>
 import DonationThermometer from '../components/DonationThermometer'
 import DonationButton from '../components/DonationButton'
+import ExternalLink from '../components/ExternalLink'
 import buildHead from '@/mixins/buildHead.js'
 
 export default {
   components: {
+    ExternalLink,
     DonationThermometer,
     DonationButton
   },
