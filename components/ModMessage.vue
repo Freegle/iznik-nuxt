@@ -386,10 +386,10 @@ export default {
     outsideUK() {
       return (
         this.position &&
-        (this.position.lng < -7.57216793459 ||
-          this.position.lat < 49.959999905 ||
-          this.position.lng > 1.68153079591 ||
-          this.position.lat > 58.6350001085)
+        (this.position.lng < -16 ||
+          this.position.lat < 49 ||
+          this.position.lng > 4 ||
+          this.position.lat > 64)
       )
     },
     pending() {
