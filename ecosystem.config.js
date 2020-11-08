@@ -9,7 +9,7 @@ module.exports = {
       autorestart: true,
       xp_backoff_restart_delay: 100,
       watch: false,
-      max_memory_restart: '5G',
+      max_memory_restart: '2G',
       node_args: '--max_old_space_size=4096',
       wait_ready: true,
       listen_timeout: 10000,
