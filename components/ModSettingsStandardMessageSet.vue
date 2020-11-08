@@ -7,6 +7,7 @@
       description="You can choose whether standard messages get copied by email."
       type="select"
       :options="ccopts"
+      :disabled="locked"
     />
     <ModConfigSetting
       v-if="config[cc] === 'Specific'"
@@ -14,15 +15,18 @@
       :name="addr"
       label="Specific address:"
       description="This is the address to BCC messages to."
+      :disabled="locked"
     />
     <p>
       Click on a button to edit the message.  You can also drag and drop to change the order that they'll show in on the relevant
       pages (e.g. put the ones you use most first).
     </p>
     <b-form-checkbox
+      v-if="!locked"
       v-model="dragging"
       class="mb-2"
       name="dragbox"
+      :disabled="locked"
     >
       <v-icon name="arrow-left" /> Click to enable dragging
     </b-form-checkbox>
@@ -51,10 +55,10 @@
       </span>
     </div>
     <hr>
-    <b-btn variant="white" @click="add">
+    <b-btn v-if="!locked" variant="white" @click="add">
       <v-icon name="plus" /> Add new standard message
     </b-btn>
-    <ModSettingsStandardMessageModal v-if="showModal" ref="msgmodal" @hide="fetch" />
+    <ModSettingsStandardMessageModal v-if="showModal" ref="msgmodal" :locked="locked" @hide="fetch" />
   </div>
 </template>
 <script>
@@ -85,6 +89,11 @@ export default {
     types: {
       type: Array,
       required: true
+    },
+    locked: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {

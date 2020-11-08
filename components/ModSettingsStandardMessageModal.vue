@@ -5,7 +5,7 @@
         v-if="stdmsg"
         id="stdmsgmodal"
         v-model="showModal"
-        :title="'Edit \'' + stdmsg.title + '\''"
+        :title="(locked ? 'View \'' : 'Edit \'') + stdmsg.title + '\''"
         size="lg"
         no-stacking
       >
@@ -93,16 +93,16 @@
           <label>Message Body</label>
           <b-textarea v-model="stdmsg.body" rows="10" />
 
-          <p class="text-muted mt-2">
-            * These are Yahoo terms, and don't exactly match our settings.  They work fine, but it would be
-            nice to change them to match our terminology.  That needs to wait until this new
-            version has replaced the old version.  TODO
-          </p>
+          <!--          <p class="text-muted mt-2">-->
+          <!--            * These are Yahoo terms, and don't exactly match our settings.  They work fine, but it would be-->
+          <!--            nice to change them to match our terminology.  That needs to wait until this new-->
+          <!--            version has replaced the old version.  TODO-->
+          <!--          </p>-->
         </template>
         <template slot="modal-footer" slot-scope="{ ok, cancel }">
           <div class="d-flex justify-content-between flex-wrap w-100">
             <div>
-              <b-button v-if="id" variant="danger" @click="deleteIt">
+              <b-button v-if="id && !locked" variant="danger" @click="deleteIt">
                 Delete
               </b-button>
             </div>
@@ -110,7 +110,7 @@
               <b-button variant="white" class="mr-2" @click="cancel">
                 Cancel
               </b-button>
-              <b-button variant="primary" @click="save">
+              <b-button v-if="!locked" variant="primary" @click="save">
                 <span v-if="id">Save</span>
                 <span v-else>Add</span>
               </b-button>
@@ -150,6 +150,13 @@ export default {
     }
   },
   computed: {
+    locked() {
+      return (
+        this.config &&
+        this.config.protected &&
+        parseInt(this.config.createdby) !== this.myid
+      )
+    },
     config() {
       return this.$store.getters['modconfigs/current']
     },

@@ -21,6 +21,15 @@
     </div>
     <b-img v-if="loading" src="~static/loader.gif" class="d-block mt-2" />
     <div v-else-if="configid && config">
+      <NoticeMessage v-if="config.protected" variant="info" class="mb-2">
+        <v-icon name="lock" />
+        <span v-if="parseInt(config.createdby) === myid">
+          You have locked this.  Other people can use, view or copy it, but can't change or delete it.
+        </span>
+        <span v-else>
+          This is locked by #{{ config.createdby }}.  You can use, view or copy it, but you can't change or delete it.
+        </span>
+      </NoticeMessage>
       <b-card no-body class="mb-2 mt-1">
         <b-card-header>
           <b-btn v-b-toggle.accordion-general block href="#" variant="secondary">
@@ -29,15 +38,6 @@
         </b-card-header>
         <b-collapse id="accordion-general" accordion="settings-accordion" role="tabpanel">
           <b-card-body>
-            <NoticeMessage v-if="config.protected" variant="info" class="mb-2">
-              <v-icon name="lock" />
-              <span v-if="parseInt(config.createdby) === myid">
-                You have locked this.  Other people can use, view or copy it, but can't change or delete it.
-              </span>
-              <span v-else>
-                This is locked.  You can use, view or copy it, but you can't change or delete it.
-              </span>
-            </NoticeMessage>
             <NoticeMessage v-if="config.using && config.using.length && parseInt(config.createdby) === myid" class="mb-2">
               <p>
                 This config is being used. You won't be able to delete it.
@@ -71,6 +71,7 @@
               name="name"
               label="Name"
               description="This is the name of this collection of standard messages.  It appears when you're choosing which collection to apply to your community."
+              :disabled="locked"
             />
             <ModConfigSetting
               :configid="configid"
@@ -83,6 +84,7 @@
               toggle-checked="Own Name"
               toggle-unchecked="$groupname Moderator"
               :toggle-width="200"
+              :disabled="locked"
             />
             <ModConfigSetting
               :configid="configid"
@@ -92,24 +94,28 @@
               type="toggle"
               toggle-checked="Yes"
               toggle-unchecked="No"
+              :disabled="locked"
             />
             <ModConfigSetting
               :configid="configid"
               name="subjlen"
               label="Subject length warning"
               description="Keeping subject lines short is better for small screens."
+              :disabled="locked"
             />
             <ModConfigSetting
               :configid="configid"
               name="subjreg"
               label="Regular expression for colour-coding"
               description="Regular expressions can be difficult; test changes at http://www.phpliveregex.com"
+              :disabled="locked"
             />
             <ModConfigSetting
               :configid="configid"
               name="network"
               label="$network substitution string"
               description="Normally you'd leave this set to Freegle or blank (same thing)."
+              :disabled="locked"
             />
             <ModConfigSetting
               v-if="config.createdby"
@@ -120,7 +126,7 @@
               type="toggle"
               toggle-checked="Locked"
               toggle-unchecked="Unlocked"
-              :disabled="config.createdby && parseInt(config.createdby) !== myid"
+              :disabled="locked"
             />
           </b-card-body>
         </b-collapse>
@@ -133,7 +139,7 @@
         </b-card-header>
         <b-collapse id="accordion-pendingmessages" accordion="settings-accordion" role="tabpanel">
           <b-card-body>
-            <ModSettingsStandardMessageSet cc="ccrejectto" addr="ccrejectaddr" :types="['Approve', 'Reject', 'Leave', 'Delete', 'Edit']" />
+            <ModSettingsStandardMessageSet cc="ccrejectto" addr="ccrejectaddr" :types="['Approve', 'Reject', 'Leave', 'Delete', 'Edit']" :locked="locked" />
           </b-card-body>
         </b-collapse>
       </b-card>
@@ -145,7 +151,7 @@
         </b-card-header>
         <b-collapse id="accordion-approvedmessages" accordion="settings-accordion" role="tabpanel">
           <b-card-body>
-            <ModSettingsStandardMessageSet cc="ccfollowupto" addr="ccfollowupaddr" :types="['Leave Approved Message', 'Delete Approved Message', 'Edit']" />
+            <ModSettingsStandardMessageSet cc="ccfollowupto" addr="ccfollowupaddr" :types="['Leave Approved Message', 'Delete Approved Message', 'Edit']" :locked="locked" />
           </b-card-body>
         </b-collapse>
       </b-card>
@@ -157,7 +163,7 @@
         </b-card-header>
         <b-collapse id="accordion-approvedmembers" accordion="settings-accordion" role="tabpanel">
           <b-card-body>
-            <ModSettingsStandardMessageSet cc="ccrejmembto" addr="ccrejmembaddr" :types="['Leave Approved Member', 'Delete Approved Member']" />
+            <ModSettingsStandardMessageSet cc="ccrejmembto" addr="ccrejmembaddr" :types="['Leave Approved Member', 'Delete Approved Member']" :locked="locked" />
           </b-card-body>
         </b-collapse>
       </b-card>
@@ -168,7 +174,7 @@
             <SpinButton variant="white" name="plus" label="Copy" :handler="copy" />
           </b-input-group-append>
         </b-input-group>
-        <b-btn variant="white" class="mt-2" @click="deleteIt">
+        <b-btn v-if="!locked" variant="white" class="mt-2" @click="deleteIt">
           <v-icon name="trash-alt" /> Delete
         </b-btn>
       </div>
@@ -214,6 +220,11 @@ export default {
           value: newval
         })
       }
+    },
+    locked() {
+      return (
+        this.config.protected && parseInt(this.config.createdby) !== this.myid
+      )
     },
     configOptions() {
       const ret = [
