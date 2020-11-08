@@ -1,0 +1,107 @@
+<template>
+  <div class="d-flex flex-column text-center border rounded width position-relative pt-2">
+    <label>{{ label }}</label>
+    <b-input-group class="p-1">
+      <b-input-group-prepend class="d-flex flex-column justify-content-center">
+        <b-btn variant="white" class="attendance-button d-grid align-content-center justify-content-center leftbutt" @click="dec">
+          <v-icon name="minus" title="Decrement" />
+        </b-btn>
+      </b-input-group-prepend>
+      <b-input
+        v-model="count"
+        class="text-center count"
+        type="number"
+        min="1"
+        step="1"
+        @keyup="set"
+      />
+      <b-input-group-append class="d-flex flex-column justify-content-center">
+        <b-btn variant="white" class="attendance-button d-grid align-content-center justify-content-center" @click="inc">
+          <v-icon name="plus" title="Decrement" />
+        </b-btn>
+      </b-input-group-append>
+    </b-input-group>
+  </div>
+</template>
+<script>
+export default {
+  props: {
+    count: {
+      type: Number,
+      required: true
+    },
+    label: {
+      type: String,
+      required: false
+    },
+    canedit: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
+  data() {
+    return {
+      current: null
+    }
+  },
+  mounted() {
+    this.current = this.count
+  },
+  methods: {
+    inc() {
+      this.current++
+      this.$emit('update:count', this.current)
+    },
+    dec() {
+      if (this.current > 0) {
+        this.current--
+        this.$emit('update:count', this.current)
+      }
+    },
+    set() {
+      // This is triggered on keyup as the change even doesn't fire while you're still in the field.
+      this.$emit('update:count', this.current)
+    }
+  }
+}
+</script>
+<style scoped lang="scss">
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+
+.count {
+  font-weight: bold;
+}
+
+.count::-webkit-outer-spin-button,
+.count::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+.leftbutt {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.width {
+  width: 170px;
+}
+
+label {
+  position: absolute;
+  top: -18px;
+  left: 40px;
+  background-color: white;
+  z-index: 1000;
+  font-size: 125%;
+}
+
+.border {
+  border: 1px solid black;
+}
+</style>

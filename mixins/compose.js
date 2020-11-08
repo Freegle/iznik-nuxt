@@ -2,7 +2,8 @@ export default {
   data: function() {
     return {
       postType: null,
-      submitting: false
+      submitting: false,
+      invalid: false
     }
   },
   computed: {
