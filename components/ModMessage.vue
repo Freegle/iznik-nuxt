@@ -34,6 +34,14 @@
                 {{ eSubject }}
               </span>
               <span v-if="message.location" class="text-muted small">{{ message.location.name }}</span>
+              <span v-if="message.availableinitially && message.availableinitially > 1" class="small text-info">
+                <span v-if="message.availableinitially === message.availablenow">
+                  x{{ message.availableinitially }} available
+                </span>
+                <span v-else>
+                  x{{ message.availableinitially }} available initially, x{{ message.availablenow }} now
+                </span>
+              </span>
             </div>
             <MessageHistory :message="message" modinfo display-message-link />
             <ModMessageDuplicate v-for="(duplicate, index) in duplicates" :key="'duplicate-' + duplicate.id + '-' + index" :message="duplicate" />

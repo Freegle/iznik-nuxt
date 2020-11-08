@@ -9,62 +9,39 @@
     >
       <template slot="default">
         <div v-if="type === 'Taken' || type === 'Received'" class="text-center">
-          <p>Please tell us who <span v-if="type === 'Taken'">took</span><span v-else>received</span> this, then we can let other people know.</p>
-          <div class="d-flex justify-content-center flex-wrap">
-            <label class="font-weight-bold align-middle d-flex flex-column justify-content-center mr-4">
-              <span v-if="type === 'Taken'">
-                Taken by:
-              </span>
-              <span v-if="type === 'Received'">
-                Received from:
-              </span>
-            </label>
-            <b-select
-              ref="userselect"
-              v-model="selectedUser"
-              autofocus
-              :options="userOptions"
-              size="lg"
-              :class="'width mb-2 font-weight-bold ' + (selectedUser === -1 ? 'text-danger' : '')"
-              @change="fetchUser"
-            />
-          </div>
-          <b-card v-if="selectedUser > 0" bg-variant="info">
-            <b-card-body>
-              <p>How was this freegler? Please click.</p>
-              <Ratings v-if="fetchedUser" :id="fetchedUser.id" :key="'user-' + selectedUser" class="" />
-            </b-card-body>
-          </b-card>
+          <OutcomeBy :users="users" :availablenow="message.availablenow" :type="type" :left.sync="left" />
           <hr>
         </div>
-        <div class="text-center">
-          <p class="mt-2">
-            How do you feel about freegling just now?
-          </p>
-          <b-button-group>
-            <b-button :pressed="happiness === 'Happy'" variant="primary" size="lg" class="shadow-none" @click="happiness = 'Happy'">
-              <v-icon name="smile" scale="2" /> Happy
-            </b-button>
-            <b-button :pressed="happiness === 'Fine'" variant="white" size="lg" class="shadow-none" @click="happiness = 'Fine'">
-              <v-icon name="meh" scale="2" color="grey" /> Fine
-            </b-button>
-            <b-button :pressed="happiness === 'Unhappy'" variant="danger" size="lg" class="shadow-none" @click="happiness = 'Unhappy'">
-              <v-icon name="frown" scale="2" /> Sad
-            </b-button>
-          </b-button-group>
-        </div>
-        <div class="text-center">
-          <p class="mt-2">
-            You can add comments:
-          </p>
-          <b-textarea v-model="comments" rows="2" max-rows="6" />
-          <div class="float-right text-muted mt-2">
-            <span v-if="happiness === null || happiness === 'Happy' || happiness === 'Fine'">
-              <v-icon name="globe-europe" /> Your comments may be public
-            </span>
-            <span v-if="happiness === 'Unhappy'">
-              <v-icon name="lock" /> Your comments will only go to our volunteers
-            </span>
+        <div v-if="showCompletion">
+          <div class="text-center">
+            <p class="mt-2">
+              How do you feel about freegling just now?
+            </p>
+            <b-button-group>
+              <b-button :pressed="happiness === 'Happy'" variant="primary" size="lg" class="shadow-none" @click="happiness = 'Happy'">
+                <v-icon name="smile" scale="2" /> Happy
+              </b-button>
+              <b-button :pressed="happiness === 'Fine'" variant="white" size="lg" class="shadow-none" @click="happiness = 'Fine'">
+                <v-icon name="meh" scale="2" color="grey" /> Fine
+              </b-button>
+              <b-button :pressed="happiness === 'Unhappy'" variant="danger" size="lg" class="shadow-none" @click="happiness = 'Unhappy'">
+                <v-icon name="frown" scale="2" /> Sad
+              </b-button>
+            </b-button-group>
+          </div>
+          <div class="text-center">
+            <p class="mt-2">
+              You can add comments:
+            </p>
+            <b-textarea v-model="comments" rows="2" max-rows="6" />
+            <div class="float-right text-muted mt-2">
+              <span v-if="happiness === null || happiness === 'Happy' || happiness === 'Fine'">
+                <v-icon name="globe-europe" /> Your comments may be public
+              </span>
+              <span v-if="happiness === 'Unhappy'">
+                <v-icon name="lock" /> Your comments will only go to our volunteers
+              </span>
+            </div>
           </div>
         </div>
       </template>
@@ -80,12 +57,10 @@
   </div>
 </template>
 <script>
-import Ratings from './Ratings'
+import OutcomeBy from './OutcomeBy'
 
 export default {
-  components: {
-    Ratings
-  },
+  components: { OutcomeBy },
   props: {
     message: {
       type: Object,
@@ -102,40 +77,23 @@ export default {
       type: null,
       happiness: null,
       comments: null,
-      selectedUser: null,
-      fetchedUser: null
+      left: null
     }
   },
   computed: {
+    showCompletion() {
+      // We show for taken/received only when there are none left.
+      return (
+        this.message.type === 'Withdrawn' ||
+        this.message.availablenow === 1 ||
+        this.left === 0
+      )
+    },
     submitDisabled() {
-      const ret = this.type !== 'Withdrawn' && this.selectedUser < 0
+      const ret =
+        this.type !== 'Withdrawn' && this.message.availablenow === this.left
       return ret
     },
-    userOptions() {
-      const options = []
-
-      if (this.users) {
-        options.push({
-          value: -1,
-          html: "<em>-- Please choose (this isn't public) --</em>"
-        })
-
-        for (const user of this.users) {
-          options.push({
-            value: user.id,
-            text: user.displayname
-          })
-        }
-
-        options.push({
-          value: 0,
-          html: '<em>Someone else</em>'
-        })
-      }
-
-      return options
-    },
-
     groupid() {
       let ret = null
 
@@ -197,33 +155,7 @@ export default {
 
     cancel() {
       this.showModal = false
-    },
-
-    async fetchUser(userid) {
-      if (userid) {
-        await this.$store.dispatch('user/fetch', {
-          id: userid,
-          info: true
-        })
-
-        this.fetchedUser = this.$store.getters['user/get'](userid)
-      }
     }
   }
 }
 </script>
-<style scoped lang="scss">
-@import 'color-vars';
-
-option {
-  color: $color-black !important;
-}
-
-.btn[aria-pressed='true'] {
-  box-shadow: 0px 0px 5px 2px $color-blue--base !important;
-}
-
-select {
-  width: auto;
-}
-</style>

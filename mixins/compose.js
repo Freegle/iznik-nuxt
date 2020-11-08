@@ -227,7 +227,8 @@ export default {
         id: id,
         item: null,
         description: null,
-        type: this.postType
+        type: this.postType,
+        availablenow: 1
       })
     },
     async freegleIt(type) {

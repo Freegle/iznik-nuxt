@@ -26,6 +26,9 @@
           <span v-else>
             {{ eSubject }}
           </span>
+          <b-badge v-if="availablenow > 1" variant="info">
+            {{ availablenow }} available
+          </b-badge>
         </b-card-title>
         <MessageHistory :message="$props" class="mb-1 card-header__history" :display-message-link="sm()" />
         <div flex-grow-1 class="small mb-1 card-header__description">
@@ -344,6 +347,11 @@ export default {
       type: Number,
       required: false,
       default: null
+    },
+    availablenow: {
+      type: Number,
+      required: false,
+      default: 1
     }
   },
   data: function() {

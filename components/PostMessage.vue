@@ -44,7 +44,7 @@
       <PostItem ref="item" v-model="item" class="item pt-1" @input="itemType" />
       <div v-if="type === 'Offer'" class="count d-flex">
         <v-icon name="times" scale="1.5" class="ml-2 mr-2 align-self-center text-faded" />
-        <NumberIncrementDecrement :count.sync="available" label="Available" />
+        <NumberIncrementDecrement :count.sync="availablenow" label="Available" />
       </div>
     </div>
     <div>
@@ -106,7 +106,6 @@ export default {
       myFiles: [],
       suggestions: [],
       pondBrowse: true,
-      available: 1,
       vagueness: [
         'eney fink',
         'eney think',
@@ -166,17 +165,26 @@ export default {
     }
   },
   computed: {
+    availablenow: {
+      get: function() {
+        const msg = this.$store.getters['compose/getMessage'](this.id)
+        return msg &&
+          'availablenow' in msg &&
+          typeof msg.availablenow !== 'undefined'
+          ? msg.availablenow
+          : 1
+      },
+      set: function(newValue) {
+        this.saveItem(this.item, newValue)
+      }
+    },
     item: {
       get: function() {
         const msg = this.$store.getters['compose/getMessage'](this.id)
         return msg && msg.item ? msg.item : ''
       },
       set: function(newValue) {
-        this.$store.dispatch('compose/setItem', {
-          id: this.id,
-          item: newValue,
-          type: this.type
-        })
+        this.saveItem(newValue, this.availablenow)
       }
     },
     vague() {
@@ -237,12 +245,12 @@ export default {
     }
   },
   methods: {
-    save() {
-      this.$store.dispatch('compose/setMessage', {
+    saveItem(item, availablenow) {
+      this.$store.dispatch('compose/setItem', {
         id: this.id,
-        item: this.item,
-        description: this.description,
-        type: 'Offer'
+        item: item,
+        type: this.type,
+        availablenow: availablenow
       })
     },
     photoAdd() {
@@ -279,7 +287,8 @@ export default {
         this.$store.dispatch('compose/setItem', {
           id: this.id,
           item: this.item,
-          type: this.type
+          type: this.type,
+          availablenow: this.availablenow
         })
       } else {
         this.uploading = false
@@ -291,7 +300,8 @@ export default {
       this.$store.dispatch('compose/setItem', {
         id: this.id,
         item: this.item,
-        type: this.type
+        type: this.type,
+        availablenow: this.availablenow
       })
     },
     drop(e) {
