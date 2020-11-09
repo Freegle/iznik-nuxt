@@ -171,7 +171,7 @@
         <b-input-group class="mt-2">
           <b-input v-model="copyconfigname" />
           <b-input-group-append>
-            <SpinButton variant="white" name="plus" label="Copy" :handler="copy" />
+            <SpinButton variant="white" name="plus" label="Copy" :handler="copy" :disabled="!copyconfigname" />
           </b-input-group-append>
         </b-input-group>
         <b-btn v-if="!locked" variant="white" class="mt-2" @click="deleteIt">
