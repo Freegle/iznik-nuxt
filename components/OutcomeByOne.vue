@@ -197,7 +197,7 @@ select {
     padding: 10px;
 
     grid-template-rows: auto;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr 60px 1fr;
   }
 
   .select {

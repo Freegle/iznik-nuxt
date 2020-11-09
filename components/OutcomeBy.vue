@@ -1,9 +1,12 @@
 <template>
   <div>
     <div v-if="availablenow > 1">
-      <p>Split among several freeglers?  No problem - list them all.</p>
       <p>
-        <b>{{ availablenow }} left</b>.  Only some {{ type.toLowerCase() }}?  Record that here, submit and then come back later.
+        <b>{{ availablenow }} left</b>.
+        Split among several freeglers?  No problem - list them all.
+      </p>
+      <p>
+        Only some {{ type.toLowerCase() }}?  Record that here, submit and then come back later.
       </p>
     </div>
     <div v-else>
@@ -123,13 +126,28 @@ export default {
     selected(index, selected) {
       Vue.set(this.selectedUsers, index, selected.user)
       Vue.set(this.usersTook, index, selected.took)
+      this.updateParent()
     },
     removed(index) {
       this.$delete(this.selectedUsers, index)
       this.$delete(this.usersTook, index)
+      this.updateParent()
     },
     took(index, value) {
       Vue.set(this.usersTook, index, value)
+      this.updateParent()
+    },
+    updateParent() {
+      const u = []
+
+      for (let i = 0; i < this.selectedUsers.length; i++) {
+        u.push({
+          userid: this.selectedUsers[i].id,
+          count: this.usersTook[i]
+        })
+      }
+
+      this.$emit('tookUsers', u)
     }
   }
 }

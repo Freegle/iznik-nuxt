@@ -9,7 +9,7 @@
     >
       <template slot="default">
         <div v-if="type === 'Taken' || type === 'Received'" class="text-center">
-          <OutcomeBy :users="users" :availablenow="message.availablenow" :type="type" :left.sync="left" />
+          <OutcomeBy :users="users" :availablenow="message.availablenow" :type="type" :left.sync="left" @tookUsers="tookUsers = $event" />
           <hr>
         </div>
         <div v-if="showCompletion">
@@ -77,7 +77,9 @@ export default {
       type: null,
       happiness: null,
       comments: null,
-      left: null
+      left: null,
+      tookUsers: [],
+      selectedUser: null
     }
   },
   computed: {
@@ -111,16 +113,33 @@ export default {
   },
   methods: {
     async submit() {
-      await this.$store.dispatch('messages/update', {
-        action: 'Outcome',
-        id: this.message.id,
-        outcome: this.type,
-        happiness: this.happiness,
-        comment: this.comments,
-        userid: this.selectedUser
-      })
+      if (this.showCompletion) {
+        // The post is being taken/received.
+        await this.$store.dispatch('messages/update', {
+          action: 'Outcome',
+          id: this.message.id,
+          outcome: this.type,
+          happiness: this.happiness,
+          comment: this.comments,
+          userid: this.selectedUser
+        })
 
-      this.hide()
+        this.hide()
+      } else {
+        // We are recording some partial results for the post.
+        console.log('Took', this.tookUsers)
+        for (const u of this.tookUsers) {
+          console.log('Record take', this.message.id, u.userid, u.count)
+          await this.$store.dispatch('messages/addBy', {
+            id: this.message.id,
+            userid: u.userid,
+            count: u.count
+          })
+        }
+
+        // Don't call hide as that will trigger donation ask.
+        this.showModal = false
+      }
     },
 
     setComments() {
@@ -149,7 +168,11 @@ export default {
 
     hide() {
       // We're having trouble capturing events from this modal, so use root as a bus.
-      this.$root.$emit('outcome', this.groupid)
+      this.$root.$emit('outcome', {
+        groupid: this.groupid,
+        outcome: this.type
+      })
+
       this.showModal = false
     },
 

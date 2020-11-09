@@ -371,17 +371,21 @@ export default {
     })
 
     // For some reason we can't capture emitted events from the outcome modal so use root as a bus.
-    this.$root.$on('outcome', groupid => {
-      const lastask = this.$store.getters['misc/get']('lastdonationask')
+    this.$root.$on('outcome', params => {
+      const { groupid, outcome } = params
 
-      if (!lastask || new Date().getTime() - lastask > 60 * 60 * 1000) {
-        this.donationGroup = groupid
-        this.ask()
+      if (outcome === 'Taken' || outcome === 'Received') {
+        const lastask = this.$store.getters['misc/get']('lastdonationask')
 
-        this.$store.dispatch('misc/set', {
-          key: 'lastdonationask',
-          value: new Date().getTime()
-        })
+        if (!lastask || new Date().getTime() - lastask > 60 * 60 * 1000) {
+          this.donationGroup = groupid
+          this.ask()
+
+          this.$store.dispatch('misc/set', {
+            key: 'lastdonationask',
+            value: new Date().getTime()
+          })
+        }
       }
     })
   },
