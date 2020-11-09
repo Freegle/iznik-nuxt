@@ -169,7 +169,7 @@
       </b-card>
       <div class="d-flex justify-content-between">
         <b-input-group class="mt-2">
-          <b-input v-model="copyconfigname" />
+          <b-input v-model="copyconfigname" placeholder="Copy this whole config to..." />
           <b-input-group-append>
             <SpinButton variant="white" name="plus" label="Copy" :handler="copy" :disabled="!copyconfigname" />
           </b-input-group-append>
