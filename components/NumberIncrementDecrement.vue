@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-column text-center width position-relative">
-    <label :for="'spinbutton-' + id" class="text-muted">{{ label }}</label>
-    <b-spinbutton
+    <label :for="'spinbutton-' + id" class="sr-only">{{ label }}</label>
+    <b-form-spinbutton
       :id="'spinbutton-' + id"
       v-model="current"
       type="number"
@@ -9,6 +9,7 @@
       :max="max"
       step="1"
       size="lg"
+      :formatter-fn="formatter"
     />
   </div>
 </template>
@@ -62,6 +63,12 @@ export default {
   },
   mounted() {
     this.current = this.count
+  },
+  methods: {
+    formatter(val) {
+      console.log('Format', val)
+      return val + ' available'
+    }
   }
 }
 </script>
@@ -72,15 +79,6 @@ export default {
 
 .width {
   width: 170px;
-}
-
-label {
-  position: absolute;
-  top: -27px;
-  left: 40px;
-  background-color: white;
-  z-index: 1000;
-  font-size: 125%;
 }
 
 .border {

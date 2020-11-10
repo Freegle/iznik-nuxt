@@ -331,7 +331,7 @@ export default {
 
 .subject-layout {
   display: grid;
-  grid-template-columns: 1fr 1fr auto;
+  grid-template-columns: 1fr 50px 1fr;
   grid-template-rows: auto auto;
 
   @include media-breakpoint-up(md) {
