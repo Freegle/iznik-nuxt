@@ -503,7 +503,8 @@ export default {
           swlat: swlat,
           swlng: swlng,
           nelat: nelat,
-          nelng: nelng
+          nelng: nelng,
+          groupid: this.groupid
         }
       } else {
         // We are searching.  Get the list of messages from the server.
