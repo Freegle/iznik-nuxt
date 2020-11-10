@@ -22,7 +22,7 @@
                   @selected="postcodeSelect"
                 />
                 <ComposeGroup v-if="editLocationOrGroup" class="cg" />
-                <div v-else-if="postcode && group " class="pl-2">
+                <div v-else-if="postcode && group " class="pl-2 text-muted">
                   {{ postcode.name }} on {{ group.namedisplay }}
                   <b-btn variant="link" class="mb-1 p-0" @click="editLocationOrGroup = true">
                     <span class="small">
