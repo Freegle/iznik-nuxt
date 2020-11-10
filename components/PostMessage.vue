@@ -362,6 +362,7 @@ export default {
   .count {
     grid-column: 3 / 4;
     grid-row: 1 / 2;
+    justify-self: end;
 
     @include media-breakpoint-up(md) {
       grid-column: 3 / 4;
