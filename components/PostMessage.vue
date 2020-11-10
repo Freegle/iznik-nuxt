@@ -350,7 +350,7 @@ export default {
   }
 
   .item {
-    grid-column: 1 / 3;
+    grid-column: 1 / 4;
     grid-row: 2 / 3;
 
     @include media-breakpoint-up(md) {
@@ -361,7 +361,7 @@ export default {
 
   .count {
     grid-column: 3 / 4;
-    grid-row: 2 / 3;
+    grid-row: 1 / 2;
 
     @include media-breakpoint-up(md) {
       grid-column: 3 / 4;
