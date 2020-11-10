@@ -66,7 +66,6 @@ export default {
   },
   methods: {
     formatter(val) {
-      console.log('Format', val)
       return val + ' available'
     }
   }
@@ -76,10 +75,6 @@ export default {
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins/_breakpoints';
-
-.width {
-  width: 170px;
-}
 
 .border {
   border: 1px solid black;
