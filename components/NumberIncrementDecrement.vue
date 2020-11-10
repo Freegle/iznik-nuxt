@@ -1,22 +1,27 @@
 <template>
   <div class="d-flex flex-column text-center border rounded width position-relative pt-2">
-    <label class="text-muted">{{ label }}</label>
+    <label id="incdec-label" class="text-muted">{{ label }}</label>
     <b-input-group class="p-1">
       <b-input-group-prepend class="d-flex flex-column justify-content-center">
-        <b-btn variant="white" class="attendance-button d-grid align-content-center justify-content-center leftbutt" @click="dec">
-          <v-icon name="minus" title="Decrement" />
+        <b-btn variant="white" class="attendance-button d-grid align-content-center justify-content-center leftbutt" tabindex="-1" @click="dec">
+          <v-icon name="minus" title="Increment" />
         </b-btn>
       </b-input-group-prepend>
       <b-input
         v-model="current"
+        role="spinbutton"
         class="text-center count"
         type="number"
         :min="min"
+        :aria-valuemin="min"
         :max="max"
+        :aria-valuemax="max"
+        :aria-valuenow="current"
         step="1"
+        aria-labelledby="incdec-label"
       />
       <b-input-group-append class="d-flex flex-column justify-content-center">
-        <b-btn variant="white" class="attendance-button d-grid align-content-center justify-content-center" @click="inc">
+        <b-btn variant="white" class="attendance-button d-grid align-content-center justify-content-center" tabindex="-1" @click="inc">
           <v-icon name="plus" title="Decrement" />
         </b-btn>
       </b-input-group-append>
