@@ -380,6 +380,10 @@ export default {
         msgs = this.messagesOnMap
       }
 
+      if (this.selectedGroup) {
+        msgs = msgs.filter(m => m.groupid === this.selectedGroup)
+      }
+
       return msgs
     },
     filteredMessages() {
