@@ -1,6 +1,7 @@
 <template>
   <div>
     <p>
+      Locked: {{ locked }}
       Standard Messages (aka ModConfigs) are configurations which can be applied to multiple communities so that
       they behave the same way - mostly so that they have the same set of approval/rejection buttons for
       messages/members.
@@ -222,8 +223,10 @@ export default {
       }
     },
     locked() {
-      return (
-        this.config.protected && parseInt(this.config.createdby) !== this.myid
+      return Boolean(
+        this.config &&
+          this.config.protected &&
+          parseInt(this.config.createdby) !== this.myid
       )
     },
     configOptions() {
