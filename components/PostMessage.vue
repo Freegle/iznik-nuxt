@@ -39,7 +39,6 @@
         </b-btn>
       </b-card>
     </div>
-    {{ availablenow }}
     <div class="subject-layout mb-1">
       <b-input v-model="type" disabled class="type text-uppercase bg-white mt-1" size="lg" />
       <PostItem ref="item" v-model="item" class="item pt-1" @input="itemType" />
