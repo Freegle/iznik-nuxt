@@ -1,82 +1,43 @@
 <template>
-  <div>
-    <!-- Notification menu option for large screens -->
-    <b-nav-item-dropdown
-      v-if="!simple"
-      class="white text-center notification-list d-none d-xl-block"
-      toggle-class="notification-list__dropdown-toggle"
-      menu-class="notification-list__dropdown-menu"
-      lazy
-      right
-      @shown="loadLatestNotifications"
-    >
-      <template slot="button-content">
-        <div class="position-relative text-center small">
-          <v-icon name="bell" scale="2" class="notification-list__icon" />
-          <b-badge v-if="unreadNotificationCount" variant="danger" class="notification-badge">
-            {{ unreadNotificationCount }}
-          </b-badge><br>
-          <span class="nav-item__text">Notifications</span>
-        </div>
-      </template>
-      <b-dropdown-item class="text-right" link-class="notification-list__item">
-        <b-btn variant="white" size="sm" @click="markAllRead">
-          Mark all read
-        </b-btn>
-      </b-dropdown-item>
-      <b-dropdown-divider />
-      <b-dropdown-item v-for="notification in notifications" :key="'notification-' + notification.id" class="p-0 notpad" link-class="notification-list__item">
-        <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
-      </b-dropdown-item>
-      <infinite-loading :distance="distance" @infinite="loadMoreNotifications">
-        <span slot="no-results" />
-        <span slot="no-more" />
-        <span slot="spinner">
-          <b-img-lazy src="~/static/loader.gif" alt="Loading" />
-        </span>
-      </infinite-loading>
-    </b-nav-item-dropdown>
-
-    <!-- Notification menu option for small screens -->
-    <b-dropdown
-      v-if="loggedIn"
-      class="white text-center notification-list mr-2 d-block d-xl-none"
-      variant="transparent"
-      toggle-class="notification-list__dropdown-toggle"
-      menu-class="notification-list__dropdown-menu"
-      lazy
-      right
-      @shown="loadLatestNotifications"
-    >
-      <template slot="button-content">
-        <div class="position-relative">
-          <v-icon name="bell" scale="2" class="notification-list__icon" />
-          <b-badge v-if="unreadNotificationCount" variant="danger" class="notification-badge">
-            {{ unreadNotificationCount }}
-          </b-badge>
-        </div>
-      </template>
-      <b-dropdown-item class="text-right">
-        <b-btn variant="white" size="sm" @click="markAllRead">
-          Mark all read
-        </b-btn>
-      </b-dropdown-item>
-      <b-dropdown-divider />
-      <b-dropdown-item v-for="notification in notifications" :key="'notification-' + notification.id" class="p-0 notpad">
-        <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
-      </b-dropdown-item>
-      <infinite-loading :distance="distance" @infinite="loadMoreNotifications">
-        <span slot="no-results" />
-        <span slot="no-more" />
-        <span slot="spinner">
-          <b-img-lazy src="~/static/loader.gif" alt="Loading" />
-        </span>
-      </infinite-loading>
-    </b-dropdown>
+  <component
+    :is="whatami"
+    v-if="!simple"
+    class="white text-center notification-list"
+    toggle-class="notification-list__dropdown-toggle"
+    menu-class="notification-list__dropdown-menu"
+    lazy
+    right
+    @shown="loadLatestNotifications"
+  >
+    <template slot="button-content">
+      <div class="position-relative text-center small">
+        <v-icon name="bell" scale="2" class="notification-list__icon" />
+        <b-badge v-if="unreadNotificationCount" variant="danger" class="notification-badge">
+          {{ unreadNotificationCount }}
+        </b-badge><br>
+        <span v-if="!smallScreen" class="nav-item__text">Notifications</span>
+      </div>
+    </template>
+    <b-dropdown-item class="text-right" link-class="notification-list__item">
+      <b-btn variant="white" size="sm" @click="markAllRead">
+        Mark all read
+      </b-btn>
+    </b-dropdown-item>
+    <b-dropdown-divider />
+    <b-dropdown-item v-for="notification in notifications" :key="'notification-' + notification.id" class="p-0 notpad" link-class="notification-list__item">
+      <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
+    </b-dropdown-item>
+    <infinite-loading :distance="distance" @infinite="loadMoreNotifications">
+      <span slot="no-results" />
+      <span slot="no-more" />
+      <span slot="spinner">
+        <b-img-lazy src="~/static/loader.gif" alt="Loading" />
+      </span>
+    </infinite-loading>
     <client-only>
       <AboutMeModal ref="aboutMeModal" />
     </client-only>
-  </div>
+  </component>
 </template>
 
 <script>
@@ -94,9 +55,16 @@ export default {
     distance: {
       type: Number,
       required: true
+    },
+    smallScreen: {
+      type: Boolean,
+      required: false
     }
   },
   computed: {
+    whatami() {
+      return this.smallScreen ? 'b-nav-item-dropdown' : 'b-dropdown'
+    },
     notifications() {
       return this.$store.getters[
         'notifications/getCurrentListInDescendingDateOrder'
