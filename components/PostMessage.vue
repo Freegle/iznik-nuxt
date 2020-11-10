@@ -39,13 +39,11 @@
         </b-btn>
       </b-card>
     </div>
+    {{ availablenow }}
     <div class="subject-layout mb-1">
       <b-input v-model="type" disabled class="type text-uppercase bg-white mt-1" size="lg" />
       <PostItem ref="item" v-model="item" class="item pt-1" @input="itemType" />
-      <div v-if="type === 'Offer'" class="count d-flex">
-        <v-icon name="times" scale="1.5" class="ml-2 mr-2 align-self-center text-faded" />
-        <NumberIncrementDecrement :count.sync="availablenow" label="Available" />
-      </div>
+      <NumberIncrementDecrement v-if="type === 'Offer'" :count.sync="availablenow" label="Quantity" class="count" />
     </div>
     <div>
       <NoticeMessage v-if="vague" variant="warning" class="mt-1 mb-1">

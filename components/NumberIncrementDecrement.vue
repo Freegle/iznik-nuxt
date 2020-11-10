@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-column text-center border rounded width position-relative pt-2">
-    <label>{{ label }}</label>
+    <label class="text-muted">{{ label }}</label>
     <b-input-group class="p-1">
       <b-input-group-prepend class="d-flex flex-column justify-content-center">
         <b-btn variant="white" class="attendance-button d-grid align-content-center justify-content-center leftbutt" @click="dec">
@@ -8,12 +8,12 @@
         </b-btn>
       </b-input-group-prepend>
       <b-input
-        v-model="count"
+        v-model="current"
         class="text-center count"
         type="number"
-        min="1"
+        :min="min"
+        :max="max"
         step="1"
-        @keyup="set"
       />
       <b-input-group-append class="d-flex flex-column justify-content-center">
         <b-btn variant="white" class="attendance-button d-grid align-content-center justify-content-center" @click="inc">
@@ -29,6 +29,16 @@ export default {
     count: {
       type: Number,
       required: true
+    },
+    min: {
+      type: Number,
+      required: false,
+      default: 1
+    },
+    max: {
+      type: Number,
+      required: false,
+      default: 999
     },
     label: {
       type: String,
@@ -46,23 +56,30 @@ export default {
       current: null
     }
   },
+  watch: {
+    current(newVal) {
+      if (newVal > this.max) {
+        this.current = this.max
+      }
+
+      this.$emit('update:count', newVal)
+    }
+  },
   mounted() {
     this.current = this.count
   },
   methods: {
     inc() {
-      this.current++
-      this.$emit('update:count', this.current)
-    },
-    dec() {
-      if (this.current > 0) {
-        this.current--
+      if (this.current < this.max) {
+        this.current++
         this.$emit('update:count', this.current)
       }
     },
-    set() {
-      // This is triggered on keyup as the change even doesn't fire while you're still in the field.
-      this.$emit('update:count', this.current)
+    dec() {
+      if (this.current > this.min) {
+        this.current--
+        this.$emit('update:count', this.current)
+      }
     }
   }
 }
