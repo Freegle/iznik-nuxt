@@ -9,7 +9,7 @@
     >
       <template slot="default">
         <div v-if="type === 'Taken' || type === 'Received'" class="text-center">
-          <OutcomeBy :users="users" :availablenow="message.availablenow" :type="type" @tookUsers="tookUsers = $event" />
+          <OutcomeBy :users="users" :availablenow="typeof message.availablenow === 'number' ? message.availablenow : 1" :type="type" @tookUsers="tookUsers = $event" />
           <hr>
         </div>
         <div v-if="showCompletion">
