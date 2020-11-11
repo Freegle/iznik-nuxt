@@ -69,24 +69,6 @@ export default {
     }
   },
   computed: {
-    availableUsers() {
-      // The users available to select are the ones which are not currently selected (unless that's the user for this
-      // one.
-      let ret = []
-
-      if (this.users) {
-        ret = this.users.filter(u => {
-          return (
-            this.user.id === u.id ||
-            !this.selectedUsers.find(u2 => {
-              return u2.id === u.id
-            })
-          )
-        })
-      }
-
-      return ret
-    },
     userOptions() {
       const options = []
 
@@ -111,6 +93,24 @@ export default {
       })
 
       return options
+    },
+    availableUsers() {
+      // The users available to select are the ones which are not currently selected (unless that's the user for this
+      // one.
+      let ret = []
+
+      if (this.users) {
+        ret = this.users.filter(u => {
+          return (
+            this.user.id === u.id ||
+            !this.selectedUsers.find(u2 => {
+              return u2.id === u.id
+            })
+          )
+        })
+      }
+
+      return ret
     }
   },
   watch: {

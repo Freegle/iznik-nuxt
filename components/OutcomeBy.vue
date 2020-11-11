@@ -50,6 +50,10 @@ export default {
     users: {
       validator: prop => typeof prop === 'object' || prop === null,
       required: true
+    },
+    msgid: {
+      type: Number,
+      required: true
     }
   },
   data: function() {
@@ -62,6 +66,13 @@ export default {
     }
   },
   computed: {
+    message() {
+      if (this.msgid) {
+        return this.$store.getters['messages/get'](this.msgid)
+      }
+
+      return null
+    },
     left() {
       let taken = 0
 
@@ -91,6 +102,24 @@ export default {
         this.$emit('update:left', newVal)
       },
       immediate: true
+    }
+  },
+  async created() {
+    // The message may already have some information about people who have taken some.  Fetch it (in non-summary mode)
+    // to find out.
+    const { message } = await this.$api.message.fetch({
+      id: this.message.id
+    })
+
+    if (message && message.by) {
+      message.by.forEach(b => {
+        this.selectedUsers.push({
+          id: b.userid,
+          displayname: b.displayname
+        })
+
+        this.usersTook.push(b.count)
+      })
     }
   },
   methods: {
