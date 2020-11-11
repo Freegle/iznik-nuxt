@@ -113,6 +113,14 @@ export default {
   },
   methods: {
     async submit() {
+      for (const u of this.tookUsers) {
+        await this.$store.dispatch('messages/addBy', {
+          id: this.message.id,
+          userid: u.userid,
+          count: u.count
+        })
+      }
+
       if (this.showCompletion) {
         // The post is being taken/received.
         await this.$store.dispatch('messages/update', {
@@ -120,23 +128,12 @@ export default {
           id: this.message.id,
           outcome: this.type,
           happiness: this.happiness,
-          comment: this.comments,
-          userid: this.selectedUser
+          comment: this.comments
         })
 
         this.hide()
       } else {
         // We are recording some partial results for the post.
-        console.log('Took', this.tookUsers)
-        for (const u of this.tookUsers) {
-          console.log('Record take', this.message.id, u.userid, u.count)
-          await this.$store.dispatch('messages/addBy', {
-            id: this.message.id,
-            userid: u.userid,
-            count: u.count
-          })
-        }
-
         // Don't call hide as that will trigger donation ask.
         this.showModal = false
       }
