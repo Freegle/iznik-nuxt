@@ -125,7 +125,7 @@ export default {
   methods: {
     selected(index, selected) {
       Vue.set(this.selectedUsers, index, selected.user)
-      Vue.set(this.usersTook, index, selected.took)
+      Vue.set(this.usersTook, index, parseInt(selected.took))
       this.updateParent()
     },
     removed(index) {
@@ -134,7 +134,7 @@ export default {
       this.updateParent()
     },
     took(index, value) {
-      Vue.set(this.usersTook, index, value)
+      Vue.set(this.usersTook, index, parseInt(value))
       this.updateParent()
     },
     updateParent() {

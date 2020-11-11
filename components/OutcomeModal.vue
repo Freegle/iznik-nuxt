@@ -9,7 +9,7 @@
     >
       <template slot="default">
         <div v-if="type === 'Taken' || type === 'Received'" class="text-center">
-          <OutcomeBy :users="users" :availablenow="message.availablenow" :type="type" :left.sync="left" @tookUsers="tookUsers = $event" />
+          <OutcomeBy :users="users" :availablenow="message.availablenow" :type="type" @tookUsers="tookUsers = $event" />
           <hr>
         </div>
         <div v-if="showCompletion">
@@ -77,12 +77,20 @@ export default {
       type: null,
       happiness: null,
       comments: null,
-      left: null,
       tookUsers: [],
       selectedUser: null
     }
   },
   computed: {
+    left() {
+      let left = this.message.availablenow
+
+      for (const u of this.tookUsers) {
+        left -= u.count
+      }
+
+      return left
+    },
     showCompletion() {
       // We show for taken/received only when there are none left.
       return (
