@@ -333,6 +333,7 @@ export default {
   display: grid;
   grid-template-columns: 1fr 50px 1fr;
   grid-template-rows: auto auto;
+  grid-column-gap: 5px;
 
   @include media-breakpoint-up(md) {
     grid-template-columns: 1fr 3fr auto;
