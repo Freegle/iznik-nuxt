@@ -10,9 +10,9 @@
       <template slot="default">
         <div v-if="type === 'Taken' || type === 'Received'" class="text-center">
           <OutcomeBy :users="users" :availablenow="typeof message.availablenow === 'number' ? message.availablenow : 1" :type="type" @tookUsers="tookUsers = $event" />
-          <hr>
         </div>
         <div v-if="showCompletion">
+          <hr>
           <div class="text-center">
             <p class="mt-2">
               How do you feel about freegling just now?
@@ -83,7 +83,7 @@ export default {
   },
   computed: {
     left() {
-      let left = this.message.availablenow
+      let left = this.message.availablenow ? this.message.availablenow : 1
 
       for (const u of this.tookUsers) {
         left -= u.count
