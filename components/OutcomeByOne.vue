@@ -9,9 +9,11 @@
         @change="fetchUser"
       />
       <Ratings v-if="selectedUser > 0 && fetchedUser" :id="fetchedUser.id" :key="'user-' + selectedUser" size="lg" class="ratings ml-1" />
-      <span v-if="selectedUser > 0 && fetchedUser" class="d-flex flex-column justify-content-center font-weight-bold tooktext">
-        took
-      </span>
+      <div class="d-flex flex-column justify-content-center font-weight-bold tooktext">
+        <div v-if="showTook && selectedUser > 0 && fetchedUser">
+          took
+        </div>
+      </div>
       <b-input
         v-if="selectedUser > 0 && fetchedUser"
         v-model="currentTook"
@@ -20,7 +22,7 @@
         :max="left + took"
         step="1"
         size="lg"
-        class="width ml-1 took"
+        :class="'width ml-1 took ' + (!showTook ? 'd-none' : '')"
       />
     </div>
   </div>
@@ -53,6 +55,11 @@ export default {
     left: {
       type: Number,
       required: true
+    },
+    showTook: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data() {
