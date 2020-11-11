@@ -35,12 +35,12 @@
               </span>
               <span v-if="message.location" class="text-muted small">{{ message.location.name }}</span>
               <span v-if="message.availableinitially && message.availableinitially > 1" class="small text-info">
-                <span v-if="message.availableinitially === message.availablenow">
-                  x{{ message.availableinitially }} available
-                </span>
-                <span v-else>
-                  x{{ message.availableinitially }} available initially, x{{ message.availablenow }} now
-                </span>
+                <b-badge v-if="message.availableinitially === message.availablenow" variant="info">
+                  {{ message.availablenow }} available
+                </b-badge>
+                <b-badge v-else variant="info">
+                  {{ message.availableinitially }} available initially, {{ message.availablenow }} now
+                </b-badge>
               </span>
             </div>
             <MessageHistory :message="message" modinfo display-message-link />
