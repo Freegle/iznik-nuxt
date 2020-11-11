@@ -1,41 +1,35 @@
 <template>
   <div>
-    <b-row class="pr-0 mb-2">
-      <b-col cols="6" md="0" class="mt-2 pl-0">
-        <b-input v-model="type" size="lg" disabled class="d-inline-block d-md-none text-uppercase bg-white" />
-      </b-col>
-      <b-col cols="6" md="12" class="pl-0">
+    <div class="d-flex flex-wrap">
+      <div class="photoholder bg-light d-flex flex-column align-items-center justify-items-center mr-1">
+        <v-icon name="camera" scale="8.75" class="text-faded" />
         <b-btn
           variant="primary"
           size="lg"
-          class="mt-2"
+          class="ml-3 mr-3"
           @click="photoAdd"
           @drop.prevent="drop"
           @dragover.prevent
         >
-          <v-icon name="camera" />&nbsp;Add photos
+          Add photos
         </b-btn>
-      </b-col>
-    </b-row>
-    <b-row v-if="uploading" class="bg-white">
-      <b-col class="p-0">
-        <OurFilePond
-          ref="filepond"
-          imgtype="Message"
-          imgflag="message"
-          :identify="true"
-          :browse="pondBrowse"
-          :multiple="true"
-          @photoProcessed="photoProcessed"
-          @allProcessed="allProcessed"
-        />
-      </b-col>
-    </b-row>
-    <div class="d-flex flex-wrap">
+      </div>
       <div v-for="att in attachments" :key="'image-' + att.id" class="bg-transparent p-0">
         <PostPhoto v-bind="att" class="mr-1" @remove="removePhoto" />
       </div>
       <hr>
+    </div>
+    <div v-if="uploading" class="bg-white">
+      <OurFilePond
+        ref="filepond"
+        imgtype="Message"
+        imgflag="message"
+        :identify="true"
+        :browse="pondBrowse"
+        :multiple="true"
+        @photoProcessed="photoProcessed"
+        @allProcessed="allProcessed"
+      />
     </div>
     <div v-if="suggestions.length && !item.length">
       <b-card v-if="attachments.length" bg-variant="info" class="mb-1">
