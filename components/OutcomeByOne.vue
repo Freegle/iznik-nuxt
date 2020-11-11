@@ -15,14 +15,13 @@
         </div>
       </div>
       <b-input
-        v-if="selectedUser > 0 && fetchedUser"
         v-model="currentTook"
         type="number"
         :min="0"
         :max="left + took"
         step="1"
         size="lg"
-        :class="'width ml-1 took ' + (!showTook ? 'd-none' : '')"
+        :class="'width ml-1 took ' + ((!showTook || selectedUser < 0) ? 'd-none' : '')"
       />
     </div>
   </div>
@@ -116,21 +115,31 @@ export default {
   },
   watch: {
     async selectedUser(newVal, oldVal) {
+      console.log('Selected user', newVal, oldVal)
       if (newVal <= 0 && oldVal > 0) {
         this.$emit('removed')
-      } else if (newVal > 0 && oldVal !== null) {
-        await this.fetchUser(newVal)
+      } else if (oldVal !== null) {
+        if (newVal > 0) {
+          // Selected a specific person.
+          console.log('Specific user')
+          await this.fetchUser(newVal)
 
-        if (this.fetchedUser) {
+          if (this.fetchedUser) {
+            this.$emit('selected', {
+              user: this.fetchedUser,
+              took: this.currentTook
+            })
+          }
+        } else {
+          // Someone else.
+          console.log('Someone else')
           this.$emit('selected', {
-            user: this.fetchedUser,
-            took: oldVal === -1 ? 1 : this.took
+            user: {
+              id: 0
+            },
+            took: this.currentTook
           })
         }
-      }
-
-      if (newVal > 0) {
-        this.fetchUser(newVal)
       }
     },
     currentTook(newVal) {
@@ -204,7 +213,7 @@ select {
     padding: 10px;
 
     grid-template-rows: auto;
-    grid-template-columns: 2fr 1fr 60px 1fr;
+    grid-template-columns: 2fr 155px 60px 1fr;
   }
 
   .select {
