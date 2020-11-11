@@ -1,31 +1,37 @@
 <template>
   <div>
-    <div class="d-flex flex-wrap">
-      <div class="photoholder bg-light d-flex flex-column align-items-center justify-items-center mr-1">
-        <v-icon name="camera" scale="8.75" class="text-faded" />
+    <b-row class="pr-0 mb-2">
+      <b-col cols="6" md="0" class="mt-2 pl-0">
+        <b-input v-model="type" size="lg" disabled class="d-inline-block d-md-none text-uppercase bg-white" />
+      </b-col>
+      <b-col cols="6" md="12" class="pl-0">
         <b-btn
           variant="primary"
           size="lg"
-          class="ml-3 mr-3"
+          class="mt-2"
           @click="photoAdd"
           @drop.prevent="drop"
           @dragover.prevent
         >
-          Add photos
+          <v-icon name="camera" />&nbsp;Add photos
         </b-btn>
-        <div v-if="uploading" class="bg-white">
-          <OurFilePond
-            ref="filepond"
-            imgtype="Message"
-            imgflag="message"
-            :identify="true"
-            :browse="pondBrowse"
-            :multiple="true"
-            @photoProcessed="photoProcessed"
-            @allProcessed="allProcessed"
-          />
-        </div>
-      </div>
+      </b-col>
+    </b-row>
+    <b-row v-if="uploading" class="bg-white">
+      <b-col class="p-0">
+        <OurFilePond
+          ref="filepond"
+          imgtype="Message"
+          imgflag="message"
+          :identify="true"
+          :browse="pondBrowse"
+          :multiple="true"
+          @photoProcessed="photoProcessed"
+          @allProcessed="allProcessed"
+        />
+      </b-col>
+    </b-row>
+    <div class="d-flex flex-wrap">
       <div v-for="att in attachments" :key="'image-' + att.id" class="bg-transparent p-0">
         <PostPhoto v-bind="att" class="mr-1" @remove="removePhoto" />
       </div>
@@ -42,7 +48,9 @@
     <div class="subject-layout mb-1">
       <b-input v-model="type" disabled class="type text-uppercase bg-white mt-1" size="lg" />
       <PostItem ref="item" v-model="item" class="item pt-1" @input="itemType" />
-      <NumberIncrementDecrement v-if="type === 'Offer'" :count.sync="availablenow" label="Quantity" class="count pt-1" />
+      <div class="count d-none">
+        <NumberIncrementDecrement v-if="type === 'Offer'" :count.sync="availablenow" label="Quantity" class="count pt-1" />
+      </div>
     </div>
     <div>
       <NoticeMessage v-if="vague" variant="warning" class="mt-1 mb-1">
