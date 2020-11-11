@@ -15,58 +15,29 @@
         We'll let anyone else who replied know, and it helps identify reliable freeglers.
       </p>
     </div>
-    <div v-if="availablenow > 1">
-      <OutcomeByOne
-        v-for="(s, ix) in selectedUsersPlusEmpty"
-        :key="'selected-' + ix"
-        :user="s"
-        :took="ix < usersTook.length ? usersTook[ix] : 0"
-        :type="type"
-        :users="users"
-        :selected-users="selectedUsers"
-        :left="left"
-        class="mb-2"
-        @selected="selected(ix, $event)"
-        @removed="removed(ix)"
-        @took="took(ix, $event)"
-      />
-    </div>
-    <div v-else>
-      <div class="d-flex justify-content-center flex-wrap">
-        <label class="font-weight-bold align-middle d-flex flex-column justify-content-center mr-4">
-          <span v-if="type === 'Taken'">
-            Taken by:
-          </span>
-          <span v-if="type === 'Received'">
-            Received from:
-          </span>
-        </label>
-        <b-select
-          ref="userselect"
-          v-model="selectedUser"
-          autofocus
-          :options="userOptions"
-          size="lg"
-          :class="'width mb-2 font-weight-bold ' + (selectedUser === -1 ? 'text-danger' : '')"
-          @change="fetchUser"
-        />
-      </div>
-      <b-card v-if="selectedUser > 0" bg-variant="info">
-        <b-card-body>
-          <p>How was this freegler? Please click.</p>
-          <Ratings v-if="fetchedUser" :id="fetchedUser.id" :key="'user-' + selectedUser" class="" />
-        </b-card-body>
-      </b-card>
-    </div>
+    <OutcomeByOne
+      v-for="(s, ix) in selectedUsersPlusEmpty"
+      :key="'selected-' + ix"
+      :user="s"
+      :took="ix < usersTook.length ? usersTook[ix] : 0"
+      :type="type"
+      :users="users"
+      :selected-users="selectedUsers"
+      :left="left"
+      class="mb-2"
+      :show-took="availablenow > 1"
+      @selected="selected(ix, $event)"
+      @removed="removed(ix)"
+      @took="took(ix, $event)"
+    />
   </div>
 </template>
 <script>
 import Vue from 'vue'
-import Ratings from './Ratings'
 import OutcomeByOne from './OutcomeByOne'
 
 export default {
-  components: { OutcomeByOne, Ratings },
+  components: { OutcomeByOne },
   props: {
     type: {
       type: String,
