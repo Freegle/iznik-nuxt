@@ -74,7 +74,7 @@ export default {
         value: -1,
         html:
           this.selectedUsers.length >= 1
-            ? '<em>-- Add another --</em>'
+            ? '<em>-- Add someone --</em>'
             : "<em>-- Please choose (this isn't public) --</em>"
       })
 
