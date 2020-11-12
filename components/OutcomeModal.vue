@@ -119,7 +119,9 @@ export default {
     },
     submitDisabled() {
       const ret =
-        this.type !== 'Withdrawn' && this.message.availablenow === this.left
+        this.type !== 'Withdrawn' &&
+        this.message.availableinitially === 1 &&
+        this.left === 1
       return ret
     },
     groupid() {
