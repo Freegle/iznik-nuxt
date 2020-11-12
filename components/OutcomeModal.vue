@@ -19,7 +19,7 @@
         <div v-if="type === 'Taken' || type === 'Received'" class="text-center">
           <OutcomeBy
             :users="users"
-            :availablenow="typeof message.availablenow === 'number' ? message.availablenow : 1"
+            :availableinitially="typeof message.availableinitially === 'number' ? message.availableinitially : 1"
             :type="type"
             :msgid="message.id"
             :left="left"
@@ -65,18 +65,17 @@
         <b-button variant="white" @click="cancel">
           Cancel
         </b-button>
-        <b-button variant="primary" :disabled="submitDisabled" @click="submit">
-          {{ buttonLabel }}
-        </b-button>
+        <SpinButton variant="primary" :disabled="submitDisabled" name="save" :label="buttonLabel" :handler="submit" />
       </template>
     </b-modal>
   </div>
 </template>
 <script>
 import OutcomeBy from './OutcomeBy'
+import SpinButton from './SpinButton'
 
 export default {
-  components: { OutcomeBy },
+  components: { SpinButton, OutcomeBy },
   props: {
     message: {
       type: Object,
@@ -113,7 +112,7 @@ export default {
       // We show for taken/received only when there are none left.
       return (
         this.type === 'Withdrawn' ||
-        this.message.availablenow === 1 ||
+        this.message.availableinitially === 1 ||
         this.left === 0
       )
     },
@@ -150,15 +149,17 @@ export default {
   },
   methods: {
     async submit() {
+      const complete = this.left === 0
+
       for (const u of this.tookUsers) {
         await this.$store.dispatch('messages/addBy', {
           id: this.message.id,
-          userid: u.userid,
+          userid: u.userid > 0 ? u.userid : null,
           count: u.count
         })
       }
 
-      if (this.showCompletion) {
+      if (complete) {
         // The post is being taken/received.
         await this.$store.dispatch('messages/update', {
           action: 'Outcome',

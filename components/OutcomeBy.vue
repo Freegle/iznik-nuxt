@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="availablenow > 1">
+    <div v-if="availableinitially > 1">
       <p>
         If you gave these to more than one person, please list each of them here.
       </p>
@@ -24,7 +24,7 @@
       :selected-users="selectedUsers"
       :left="left"
       class="mb-2"
-      :show-took="availablenow > 1"
+      :show-took="availableinitially > 1"
       @selected="selected(ix, $event)"
       @removed="removed(ix)"
       @took="took(ix, $event)"
@@ -42,7 +42,7 @@ export default {
       type: String,
       required: true
     },
-    availablenow: {
+    availableinitially: {
       type: Number,
       required: true
     },
@@ -106,7 +106,7 @@ export default {
     if (message && message.by) {
       message.by.forEach(b => {
         this.selectedUsers.push({
-          id: b.userid,
+          id: b.userid ? b.userid : 0,
           displayname: b.displayname
         })
 
