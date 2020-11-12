@@ -2,11 +2,10 @@
   <div>
     <div v-if="availablenow > 1">
       <p>
-        <b>{{ availablenow }} left</b>.
-        Split among several freeglers?  No problem - list them all.
+        If you gave these to more than one person, please list each of them here.
       </p>
       <p>
-        Only some {{ type.toLowerCase() }}?  Record that here, submit and then come back later.
+        You can save and come back later if you like.
       </p>
     </div>
     <div v-else>
@@ -54,6 +53,10 @@ export default {
     msgid: {
       type: Number,
       required: true
+    },
+    left: {
+      type: Number,
+      required: true
     }
   },
   data: function() {
@@ -72,17 +75,6 @@ export default {
       }
 
       return null
-    },
-    left() {
-      let taken = 0
-
-      this.usersTook.forEach(u => {
-        if (u) {
-          taken += u
-        }
-      })
-
-      return Math.max(0, this.availablenow - taken)
     },
     selectedUsersPlusEmpty() {
       const ret = this.selectedUsers.filter(u => {

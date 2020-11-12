@@ -42,7 +42,7 @@
     <div class="subject-layout mb-1">
       <b-input v-model="type" disabled class="type text-uppercase bg-white mt-1" size="lg" />
       <PostItem ref="item" v-model="item" class="item pt-1" @input="itemType" />
-      <NumberIncrementDecrement v-if="type === 'Offer'" :count.sync="availablenow" label="Quantity" class="count pt-1" />
+      <NumberIncrementDecrement v-if="type === 'Offer'" :count.sync="availablenow" label="Quantity" append-text=" available" class="count pt-1" />
     </div>
     <div>
       <NoticeMessage v-if="vague" variant="warning" class="mt-1 mb-1">

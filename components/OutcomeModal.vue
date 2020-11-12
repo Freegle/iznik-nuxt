@@ -3,13 +3,28 @@
     <b-modal
       id="promisemodal"
       v-model="showModal"
-      :title="message.subject"
       size="lg"
       no-stacking
+      title-class="w-100"
     >
+      <template slot="modal-title">
+        <h3 class="d-flex justify-content-between">
+          {{ message.subject }}
+          <b-badge v-if="message.availableinitially > 1" variant="info" class="lg">
+            {{ left }} left
+          </b-badge>
+        </h3>
+      </template>
       <template slot="default">
         <div v-if="type === 'Taken' || type === 'Received'" class="text-center">
-          <OutcomeBy :users="users" :availablenow="typeof message.availablenow === 'number' ? message.availablenow : 1" :type="type" :msgid="message.id" @tookUsers="tookUsers = $event" />
+          <OutcomeBy
+            :users="users"
+            :availablenow="typeof message.availablenow === 'number' ? message.availablenow : 1"
+            :type="type"
+            :msgid="message.id"
+            :left="left"
+            @tookUsers="tookUsers = $event"
+          />
           <hr>
         </div>
         <div v-if="showCompletion">
@@ -51,7 +66,7 @@
           Cancel
         </b-button>
         <b-button variant="primary" :disabled="submitDisabled" @click="submit">
-          Submit
+          {{ buttonLabel }}
         </b-button>
       </template>
     </b-modal>
@@ -84,7 +99,9 @@ export default {
   },
   computed: {
     left() {
-      let left = this.message.availablenow ? this.message.availablenow : 1
+      let left = this.message.availableinitially
+        ? this.message.availableinitially
+        : 1
 
       for (const u of this.tookUsers) {
         left -= u.count
@@ -113,6 +130,15 @@ export default {
       }
 
       return ret
+    },
+    buttonLabel() {
+      if (!this.type) {
+        return 'Submit'
+      } else if (this.type === 'Withdrawn') {
+        return 'Withdraw'
+      } else {
+        return 'Mark as ' + this.type.toUpperCase()
+      }
     }
   },
   mounted() {

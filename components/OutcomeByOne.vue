@@ -8,28 +8,26 @@
         :class="'select font-weight-bold ' + (selectedUser === -1 && selectedUsers.length < 1 ? 'text-danger' : '')"
         @change="fetchUser"
       />
-      <Ratings v-if="selectedUser > 0 && fetchedUser" :id="fetchedUser.id" :key="'user-' + selectedUser" size="lg" class="ratings ml-1" />
-      <div class="d-flex flex-column justify-content-center font-weight-bold tooktext">
-        <div v-if="showTook && selectedUser > 0 && fetchedUser">
-          took
-        </div>
+      <div>
+        <Ratings v-if="selectedUser > 0 && fetchedUser" :id="fetchedUser.id" :key="'user-' + selectedUser" size="lg" class="ratings ml-1" />
       </div>
-      <b-input
-        v-model="currentTook"
-        type="number"
-        :min="0"
-        :max="left + took"
-        step="1"
-        size="lg"
-        :class="'width ml-1 took ' + ((!showTook || selectedUser < 0) ? 'd-none' : '')"
-      />
+      <div :class="'ml-1 took ' + ((!showTook || selectedUser < 0) ? 'd-none' : '')">
+        <NumberIncrementDecrement
+          :count.sync="currentTook"
+          label="Number taken"
+          append-text=" taken"
+          :min="0"
+          :max="left + took"
+        />
+      </div>
     </div>
   </div>
 </template>
 <script>
 import Ratings from './Ratings'
+import NumberIncrementDecrement from './NumberIncrementDecrement'
 export default {
-  components: { Ratings },
+  components: { NumberIncrementDecrement, Ratings },
   props: {
     type: {
       type: String,
@@ -196,10 +194,6 @@ select {
   width: auto;
 }
 
-.width {
-  width: 80px;
-}
-
 .layout {
   display: grid;
   border: 1px solid $color-gray--faded;
@@ -207,13 +201,14 @@ select {
   padding: 10px;
 
   grid-template-rows: auto auto;
-  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-columns: 2fr 1fr 2fr;
+  grid-column-gap: 5px;
 
   @include media-breakpoint-up(md) {
     padding: 10px;
 
     grid-template-rows: auto;
-    grid-template-columns: 2fr 155px 60px 1fr;
+    grid-template-columns: 1fr 155px 1fr;
   }
 
   .select {
@@ -236,19 +231,6 @@ select {
     @include media-breakpoint-up(md) {
       margin-top: 0;
       grid-column: 2 / 3;
-      grid-row: 1;
-    }
-  }
-
-  .tooktext {
-    justify-self: center;
-    align-self: center;
-
-    grid-column: 2 / 3;
-    grid-row: 2 / 3;
-
-    @include media-breakpoint-up(md) {
-      grid-column: 3 / 4;
       grid-row: 1;
     }
   }

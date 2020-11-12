@@ -40,6 +40,11 @@ export default {
       required: false,
       default: ''
     },
+    appendText: {
+      type: String,
+      required: false,
+      default: ''
+    },
     canedit: {
       type: Boolean,
       required: false,
@@ -54,19 +59,19 @@ export default {
   },
   watch: {
     current(newVal) {
-      if (newVal > this.max) {
-        this.current = this.max
-      }
-
       this.$emit('update:count', newVal)
+    },
+    count(newVal) {
+      this.current = newVal
     }
   },
-  mounted() {
+  created() {
     this.current = this.count
   },
   methods: {
     formatter(val) {
-      return val + ' available'
+      console.log('format', val, this.current)
+      return val + this.appendText
     }
   }
 }
