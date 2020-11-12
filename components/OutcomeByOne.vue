@@ -154,8 +154,12 @@ export default {
       },
       immediate: true
     },
-    took(newVal) {
-      this.currentTook = newVal
+    took: {
+      handler(newVal) {
+        console.log('Took changed', newVal)
+        this.currentTook = newVal
+      },
+      immediate: true
     }
   },
   methods: {
