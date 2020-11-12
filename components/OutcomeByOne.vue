@@ -154,13 +154,12 @@ export default {
       },
       immediate: true
     },
-    took: {
-      handler(newVal) {
-        console.log('Took changed', newVal)
-        this.currentTook = newVal
-      },
-      immediate: true
+    took(newVal) {
+      this.currentTook = newVal
     }
+  },
+  created() {
+    this.currentTook = this.took
   },
   methods: {
     async fetchUser(userid) {

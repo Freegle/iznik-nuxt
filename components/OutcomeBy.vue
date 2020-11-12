@@ -16,7 +16,7 @@
     </div>
     <OutcomeByOne
       v-for="(s, ix) in selectedUsersPlusEmpty"
-      :key="'selected-' + ix"
+      :key="'selected-' + s.id"
       :user="s"
       :took="ix < usersTook.length ? usersTook[ix] : 0"
       :type="type"
@@ -81,7 +81,8 @@ export default {
         return u.id !== -1
       })
 
-      if (this.left) {
+      // Don't add the empty slot if we have already recorded some were taken by someone else.
+      if (this.left && !ret.find(u => !u.id)) {
         ret.push(this.emptyUser)
       }
 
@@ -126,8 +127,10 @@ export default {
       this.updateParent()
     },
     took(index, value) {
-      Vue.set(this.usersTook, index, parseInt(value))
-      this.updateParent()
+      if (index >= 0) {
+        Vue.set(this.usersTook, index, parseInt(value))
+        this.updateParent()
+      }
     },
     updateParent() {
       const u = []

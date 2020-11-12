@@ -70,7 +70,6 @@ export default {
   },
   methods: {
     formatter(val) {
-      console.log('format', val, this.current)
       return val + this.appendText
     }
   }
