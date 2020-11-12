@@ -1,6 +1,6 @@
 <template>
   <component
-    :is="whatami"
+    :is="notificationType"
     v-if="!simple"
     class="white text-center notification-list"
     toggle-class="notification-list__dropdown-toggle"
@@ -62,8 +62,8 @@ export default {
     }
   },
   computed: {
-    whatami() {
-      return this.smallScreen ? 'b-nav-item-dropdown' : 'b-dropdown'
+    notificationType() {
+      return this.smallScreen ? 'b-dropdown' : 'b-nav-item-dropdown'
     },
     notifications() {
       return this.$store.getters[

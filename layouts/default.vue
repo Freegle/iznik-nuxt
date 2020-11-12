@@ -1,6 +1,5 @@
 <template>
   <div>
-    <span id="breakpoint-test-element" class="d-none d-xl-inline" />
     <!-- Navbar for large screens-->
     <b-navbar id="navbar_large" toggleable="xl" type="dark" class="ourBack d-none d-xl-flex pl-1" fixed="top">
       <b-navbar-brand to="/" class="p-0">
@@ -52,7 +51,7 @@
             </div>
           </client-only>
           <b-navbar-nav class="mainnav mainnav--right">
-            <NotificationOptions :distance="distance" :small-screen="sm" @unread-notification-count="unreadNotificationCount=$event" />
+            <NotificationOptions :distance="distance" :small-screen="false" @unread-notification-count="unreadNotificationCount=$event" />
             <b-nav-item id="menu-option-chat" class="text-center small p-0" to="/chats" @click="toChats">
               <div class="notifwrapper">
                 <v-icon name="comments" scale="2" /><br>
@@ -110,7 +109,7 @@
       </b-navbar-brand>
       <div class="d-flex align-items-center">
         <client-only>
-          <NotificationOptions :distance="distance" :small-screen="sm" @unread-notification-count="unreadNotificationCount=$event" />
+          <NotificationOptions :distance="distance" :small-screen="true" @unread-notification-count="unreadNotificationCount=$event" />
           <a v-if="loggedIn" id="menu-option-chat-sm" href="#" class="text-white mr-3 position-relative" @click="toChats">
             <v-icon name="comments" scale="2" /><br>
             <b-badge v-if="chatCount" variant="danger" class="chatbadge">
@@ -258,24 +257,6 @@ export default {
     },
     spreadCount() {
       return this.me && this.me.invitesleft ? this.me.invitesleft : 0
-    },
-    sm() {
-      // Detect breakpoint by checking computing style of an element which uses the bootstrap classes
-      let ret = false
-      console.log('XXXX')
-
-      if (process.client) {
-        const el = document.getElementById('breakpoint-test-element')
-        if (el) {
-          const display = getComputedStyle(el, null).display
-          console.log(display)
-          if (display === 'none') {
-            ret = true
-          }
-        }
-      }
-
-      return ret
     }
   },
 
