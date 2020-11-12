@@ -81,8 +81,14 @@ export default {
         return u.id !== -1
       })
 
-      // Don't add the empty slot if we have already recorded some were taken by someone else.
-      if (this.left && !ret.find(u => !u.id)) {
+      // Don't add the empty slot if there are none left to take, or we have already listed everyone including
+      // someone else.
+      if (
+        this.left &&
+        (!this.message ||
+          !this.message.by ||
+          this.users.length > this.message.by.length)
+      ) {
         ret.push(this.emptyUser)
       }
 
