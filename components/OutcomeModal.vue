@@ -95,7 +95,7 @@ export default {
     showCompletion() {
       // We show for taken/received only when there are none left.
       return (
-        this.message.type === 'Withdrawn' ||
+        this.type === 'Withdrawn' ||
         this.message.availablenow === 1 ||
         this.left === 0
       )
