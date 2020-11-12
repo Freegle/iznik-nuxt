@@ -24,9 +24,12 @@
                   about:
                 </span>
               </div>
-              <nuxt-link :to="'/message/' + refmsg.id">
+              <nuxt-link :to="!messageIsFromCurrentUser ? '/myposts' : ('/message/' + refmsg.id)">
                 <h4 class="mt-1">
                   {{ refmsg.subject }}
+                  <b-badge v-if="refmsg.availableinitially > 1" variant="info">
+                    {{ refmsg.availablenow }} left
+                  </b-badge>
                 </h4>
               </nuxt-link>
             </b-card-title>
