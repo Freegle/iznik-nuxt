@@ -5,7 +5,7 @@
         <div class="d-flex justify-content-between">
           <div class="flex-grow-1">
             <div v-if="editing" class="d-flex flex-wrap">
-              <GroupSelect v-model="editgroup" modonly class="mt-1 mr-1" />
+              <GroupSelect v-model="editgroup" modonly class="mr-1" size="lg" />
               <div v-if="message.item && message.location" class="d-flex justify-content-start">
                 <b-select v-model="message.type" :options="typeOptions" class="type mr-1" size="lg" />
                 <b-input v-model="message.item.name" size="lg" class="mr-1" />
@@ -16,8 +16,9 @@
                 </b-input-group>
               </div>
               <div v-else class="d-flex flex-grow-1">
-                <b-input-group class="flex-grow-1 mr-1 mt-1">
-                  <b-input v-model="message.subject" />
+                <b-select v-model="message.type" :options="typeOptions" class="type mr-1" size="lg" />
+                <b-input-group class="flex-grow-1 mr-1">
+                  <b-input v-model="message.subject" size="lg" />
                 </b-input-group>
               </div>
             </div>
@@ -71,6 +72,9 @@
       <b-card-body v-if="expanded" class="p-1 p-md-2">
         <b-row>
           <b-col cols="12" lg="5">
+            <NoticeMessage v-if="message.type === 'Other'" variant="danger" class="mb-2">
+              This message needs editing so that we know what kind of post it is.
+            </NoticeMessage>
             <div v-if="expanded">
               <NoticeMessage v-if="message.outcomes && message.outcomes.length" class="mb-1">
                 {{ message.outcomes[0].outcome.toUpperCase() }}
@@ -604,6 +608,7 @@ export default {
         // Not
         await this.$store.dispatch('messages/patch', {
           id: this.message.id,
+          msgtype: this.message.type,
           subject: this.message.subject,
           textbody: this.message.textbody
         })
