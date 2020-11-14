@@ -11,7 +11,6 @@
             v-if="message.fromuser && me && message.fromuser.id === me.id"
             :key="bump"
             :message="message"
-            :messages="[ message ]"
             :show-old="true"
             :expand="true"
             :action="action"

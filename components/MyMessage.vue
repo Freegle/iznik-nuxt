@@ -239,13 +239,18 @@
   </div>
 </template>
 <script>
-import ResizeText from 'vue-resize-text'
 import OutcomeModal from './OutcomeModal'
 const MyMessageReply = () => import('./MyMessageReply.vue')
 const ShareModal = () => import('./ShareModal')
 const MessageEditModal = () => import('./MessageEditModal')
 const ImageCarousel = () => import('./ImageCarousel')
 const NoticeMessage = () => import('~/components/NoticeMessage')
+
+let ResizeText = null
+
+if (process.browser) {
+  ResizeText = require('vue-resize-text')
+}
 
 export default {
   directives: {
@@ -262,10 +267,6 @@ export default {
   props: {
     message: {
       type: Object,
-      required: true
-    },
-    messages: {
-      type: Array,
       required: true
     },
     showOld: {
