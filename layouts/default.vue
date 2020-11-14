@@ -87,13 +87,10 @@
                 </b-badge>
               </div>
             </b-nav-item>
-            <b-nav-item v-if="!simple" id="menu-option-spread" class="text-center small p-0" to="/spread" @mousedown="maybeReload('/spread')">
+            <b-nav-item v-if="!simple" id="menu-option-spread" class="text-center small p-0" to="/promote" @mousedown="maybeReload('/promote')">
               <div class="notifwrapper">
                 <v-icon name="bullhorn" scale="2" /><br>
-                <span class="nav-item__text">Spread</span>
-                <b-badge v-if="spreadCount" variant="info" class="chatbadge">
-                  {{ spreadCount }}
-                </b-badge>
+                <span class="nav-item__text">Promote</span>
               </div>
             </b-nav-item>
             <b-nav-item id="menu-option-help" class="text-center small p-0" to="/help" @mousedown="maybeReload('/help')">
@@ -223,9 +220,9 @@
             <v-icon name="hands-helping" scale="2" /><br>
             <span class="nav-item__text">Volunteer</span>
           </b-nav-item>
-          <b-nav-item v-if="!simple" class="text-center p-0" to="/spread" @mousedown="maybeRemodload('/spread')">
+          <b-nav-item v-if="!simple" class="text-center p-0" to="/promote" @mousedown="maybeReload('/promote')">
             <v-icon name="bullhorn" scale="2" /><br>
-            <span class="nav-item__text">Spread</span>
+            <span class="nav-item__text">Promote</span>
           </b-nav-item>
           <b-nav-item class="text-center p-0" to="/help" @mousedown="maybeReload('/help')">
             <v-icon name="question-circle" scale="2" /><br>
@@ -325,9 +322,6 @@ export default {
     chatCount() {
       // Don't show so many that the layout breaks.
       return Math.min(99, this.$store.getters['chats/unseenCount'])
-    },
-    spreadCount() {
-      return this.me && this.me.invitesleft ? this.me.invitesleft : 0
     }
   },
 

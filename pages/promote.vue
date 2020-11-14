@@ -8,18 +8,25 @@
       <p>
         Wouldn't the world be better if more people freegled more often? You can help!
       </p>
-      <ul>
-        <li><b>Tell people!</b> It's easy to forget that lots of people still haven't heard of us.</li>
-        <li><b>Put up a poster.</b></li>
-        <li><b>Invite your friends</b> by email.</li>
-        <li><b>Tell your story</b>.</li>
-      </ul>
+      <div v-if="contactPicker">
+        <Invite />
+        <hr>
+        <h2>
+          Other ways to help
+        </h2>
+      </div>
       <p>
         You wouldn't be freegling unless someone had told you about it - can you pay it forward?
       </p>
-      <h2 class="header--size3">
+      <p>Here are some ways to help:</p>
+      <ul>
+        <li><b>Tell people!</b> It's easy to forget that lots of people still haven't heard of us.</li>
+        <li><b>Put up a poster.</b></li>
+        <li><b>Tell your story</b>.</li>
+      </ul>
+      <h3>
         Put up a poster
-      </h2>
+      </h3>
       <p>This is an A4 poster with tear-off strips - good for noticeboards in cafes, community venues, or at work.</p>
       <div>
         <b-form-radio-group
@@ -113,62 +120,6 @@
       </p>
       <hr>
       <h2 class="header--size3">
-        Invite your friends
-      </h2>
-      <div v-if="me && me.invitesleft > 0">
-        <p class="bg-info p-2">
-          You have <b>{{ me.invitesleft | pluralize('invitation', { includeNumber: true }) }}</b> left.
-        </p>
-        <b-card class="mb-1">
-          <p>
-            We'll send them an email invitation. It will show your name and email.
-          </p>
-          <EmailValidator
-            ref="email"
-            size="lg"
-            :email.sync="invitemail"
-            :valid.sync="emailValid"
-            label="Enter their email address"
-          />
-          <SpinButton
-            v-if="emailValid"
-            name="envelope"
-            spinclass="success"
-            variant="success"
-            size="lg"
-            :handler="invite"
-            label="Invite a friend"
-            class="mb-1"
-          />
-          <div class="small text-muted">
-            By using this you confirm that you have their consent.  That's a PECR/GDPR thing.
-          </div>
-        </b-card>
-        <div v-if="invitations && invitations.length">
-          <h5>Your recent invitations</h5>
-          <div v-for="invitation in invitations" :key="invitation.id">
-            <b-row>
-              <b-col cols="6" sm="4">
-                {{ invitation.email }}
-              </b-col>
-              <b-col cols="6" sm="4">
-                invited {{ invitation.date | timeago }}
-              </b-col>
-              <b-col cols="6" sm="4">
-                {{ invitation.outcome }}
-              </b-col>
-            </b-row>
-          </div>
-        </div>
-      </div>
-      <div v-else>
-        <p class="bg-info p-2">
-          You have no invitations left at the moment.  You'll get more when one of the people you invited accepts, or
-          after a while.
-        </p>
-      </div>
-      <hr>
-      <h2 class="header--size3">
         Business Cards
       </h2>
       <p>
@@ -229,55 +180,39 @@
 }
 </style>
 <script>
-import { required, email } from 'vuelidate/lib/validators'
 import PosterModal from '../components/PosterModal'
 import buildHead from '../mixins/buildHead'
-import EmailValidator from '../components/EmailValidator'
-import SpinButton from '../components/SpinButton'
+import Invite from '../components/Invite'
 import loginRequired from '@/mixins/loginRequired.js'
 
 export default {
-  components: { SpinButton, EmailValidator, PosterModal },
+  components: { Invite, PosterModal },
   mixins: [loginRequired, buildHead],
   data: function() {
     return {
-      invitemail: null,
       emailValid: false,
       language: 'English'
     }
   },
   computed: {
-    invitations() {
-      return Object.values(this.$store.getters['invitations/list'])
+    contactPicker() {
+      if (process.server) {
+        return false
+      } else {
+        const ret =
+          'contacts' in window.navigator && 'ContactsManager' in window
+        return ret
+      }
     }
-  },
-  async mounted() {
-    await this.$store.dispatch('invitations/fetch')
   },
   methods: {
     added() {
       this.$refs.modal.show()
-    },
-    async invite() {
-      if (this.invitemail) {
-        await this.$store.dispatch('invitations/add', {
-          email: this.invitemail
-        })
-
-        this.invitemail = null
-        this.$v.$reset()
-      }
-    }
-  },
-  validations: {
-    invitemail: {
-      required,
-      email
     }
   },
   head() {
     return this.buildHead(
-      'Spread the Word',
+      'Promote Freegle',
       'Can you pass it on? Help us get more people freegling more often...'
     )
   }

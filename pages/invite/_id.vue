@@ -25,7 +25,7 @@ export default {
       this.$router.push('/')
     } else {
       // Probably they're looking for the Spread page.
-      this.$router.push('/spread')
+      this.$router.push('/promote')
     }
   },
   head() {

@@ -12,6 +12,7 @@
         <div v-if="justPosted && justPosted.length">
           <JustPosted :ids="justPosted" :newuser="newuser" :newpassword="newpassword" />
         </div>
+        <Invite />
         <div v-if="!me" class="d-flex justify-content-center mt-4 flex-wrap">
           <b-btn variant="primary" size="lg" @click="forceLogin">
             Sign in to continue <v-icon name="angle-double-right" />
@@ -193,6 +194,7 @@
 </template>
 
 <script>
+import Invite from '../components/Invite'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 import waitForRef from '@/mixins/waitForRef'
@@ -208,6 +210,7 @@ const ExpectedRepliesWarning = () =>
 
 export default {
   components: {
+    Invite,
     JustPosted,
     JobsTopBar,
     MyMessage,

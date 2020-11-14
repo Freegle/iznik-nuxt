@@ -28,7 +28,7 @@
     </l-map>
     <div class="mt-2 d-flex flex-wrap justify-content-between">
       <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
-      <nuxt-link to="/spread">
+      <nuxt-link to="/promote">
         <b-btn
           variant="secondary"
           size="sm"
