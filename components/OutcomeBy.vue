@@ -165,7 +165,6 @@ export default {
   },
   watch: {
     selectedUsers(newVal) {
-      console.log('Selected users changed', newVal)
       this.$emit('tookUsers', newVal)
     }
   },
@@ -192,7 +191,7 @@ export default {
         })
       } else if (userid > 0) {
         const user = this.availableUsers.find(u => u.userid === userid)
-        user.count = 0
+        user.count = 1
         this.selectedUsers.push(user)
       }
 
