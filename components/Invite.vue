@@ -23,16 +23,6 @@
         placeholder="Tell your friends why they should get freegling!"
         class="mt-2 mb-2 border border-primary"
       />
-      <div v-if="emails.length" class="mt-2">
-        <component :is="headingLevel">
-          Invite by email
-        </component>
-        <ExternalLink v-for="email in emails" :key="'email-' + email" :href="'mailto:' + email + '?subject=Have you tried Freegle%3F&body=' + encodeURIComponent(invitation)" class="mb-1 mr-1">
-          <b-btn variant="primary">
-            <v-icon name="envelope" /> {{ email.email }}
-          </b-btn>
-        </ExternalLink>
-      </div>
       <div v-if="phones.length" class="mt-2">
         <component :is="headingLevel">
           Invite by WhatsApp
@@ -48,6 +38,16 @@
         <ExternalLink v-for="phone in phones" :key="'sms-' + phone.phone" :href="'sms://' + phone.phone + '?body=' + encodeURIComponent(invitation)">
           <b-btn variant="primary" class="mb-1 mr-1">
             <v-icon name="sms" /> {{ phone.name }} <span class="small"><span class="small">{{ phone.phone }}</span></span>
+          </b-btn>
+        </ExternalLink>
+      </div>
+      <div v-if="emails.length" class="mt-2">
+        <component :is="headingLevel">
+          Invite by email
+        </component>
+        <ExternalLink v-for="email in emails" :key="'email-' + email" :href="'mailto:' + email + '?subject=Have you tried Freegle%3F&body=' + encodeURIComponent(invitation)" class="mb-1 mr-1">
+          <b-btn variant="primary">
+            <v-icon name="envelope" /> {{ email.email }}
           </b-btn>
         </ExternalLink>
       </div>
