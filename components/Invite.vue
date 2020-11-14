@@ -23,8 +23,8 @@
         placeholder="Tell your friends why they should get freegling!"
         class="mt-2 mb-2 border border-primary"
       />
-      <div v-if="phones.length" class="mt-2">
-        <component :is="headingLevel">
+      <div v-if="phones.length">
+        <component :is="headingLevel" class="mt-2">
           Invite by WhatsApp
         </component>
         <ExternalLink v-for="phone in phones" :key="'phone-' + phone.phone" :href="'whatsapp://send?phone=' + phone.phone + '&text=' + encodeURIComponent(invitation)">
@@ -32,7 +32,7 @@
             <v-icon name="brands/whatsapp" /> {{ phone.name }} <span class="small"><span class="small">{{ phone.phone }}</span></span>
           </b-btn>
         </ExternalLink>
-        <component :is="headingLevel">
+        <component :is="headingLevel" class="mt-2">
           Invite by text (SMS)
         </component>
         <ExternalLink v-for="phone in phones" :key="'sms-' + phone.phone" :href="'sms://' + phone.phone + '?body=' + encodeURIComponent(invitation)">
@@ -41,8 +41,8 @@
           </b-btn>
         </ExternalLink>
       </div>
-      <div v-if="emails.length" class="mt-2">
-        <component :is="headingLevel">
+      <div v-if="emails.length">
+        <component :is="headingLevel" class="mt-2">
           Invite by email
         </component>
         <ExternalLink v-for="email in emails" :key="'email-' + email" :href="'mailto:' + email + '?subject=Have you tried Freegle%3F&body=' + encodeURIComponent(invitation)" class="mb-1 mr-1">
