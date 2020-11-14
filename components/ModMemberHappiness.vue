@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-b-visible="visible">
     <b-card no-body>
       <b-card-header :header-bg-variant="variant">
         <b-row>
@@ -52,7 +52,12 @@
   </div>
 </template>
 <script>
+import Vue from 'vue'
+import { VBVisiblePlugin } from 'bootstrap-vue'
 import ChatButton from './ChatButton'
+
+Vue.use(VBVisiblePlugin)
+
 export default {
   components: { ChatButton },
   props: {
@@ -105,13 +110,18 @@ export default {
       return ret
     }
   },
-  mounted() {
-    // Mark this as reviewed.  They've had a chance to see it.
-    this.$store.dispatch('members/happinessReviewed', {
-      userid: this.member.user.id,
-      groupid: this.member.groupid,
-      happinessid: this.member.id
-    })
+  mounted() {},
+  methods: {
+    visible(val) {
+      if (val && !this.member.reviewed) {
+        // Mark this as reviewed.  They've had a chance to see it.
+        this.$store.dispatch('members/happinessReviewed', {
+          userid: this.member.user.id,
+          groupid: this.member.groupid,
+          happinessid: this.member.id
+        })
+      }
+    }
   }
 }
 </script>
