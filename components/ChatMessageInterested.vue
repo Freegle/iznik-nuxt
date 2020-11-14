@@ -51,7 +51,7 @@
                 </span>
               </div>
             </b-card-text>
-            <div v-if="refmsg && refmsg.type === 'Offer' && (!refmsg.outcomes || !refmsg.outcomes.length)">
+            <div v-if="!modtools && refmsg && refmsg.type === 'Offer' && (!refmsg.outcomes || !refmsg.outcomes.length)">
               <hr>
               <div class="text-center small text-muted">
                 No longer available?
@@ -127,6 +127,9 @@ export default {
   },
   extends: ChatBase,
   computed: {
+    modtools() {
+      return this.$store.getters['misc/get']('modtools')
+    },
     replyusers() {
       const ret = []
       const retids = []
