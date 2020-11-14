@@ -33,7 +33,7 @@
           label="Number taken"
           append-text=" taken"
           :min="0"
-          :max="left + user.took"
+          :max="left + user.count"
           :count.sync="user.count"
         />
       </div>
