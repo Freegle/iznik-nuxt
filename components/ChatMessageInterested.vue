@@ -64,7 +64,7 @@
                   Withdraw
                 </b-btn>
               </div>
-              <OutcomeModal ref="outcomeModal" :message="refmsg" :users="replyusers" />
+              <OutcomeModal ref="outcomeModal" :message="refmsg" />
             </div>
           </b-card>
         </div>

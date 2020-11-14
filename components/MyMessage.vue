@@ -233,7 +233,7 @@
         </template>
       </b-modal>
     </div>
-    <OutcomeModal ref="outcomeModal" :message="message" :users="replyusers" @outcome="hide = true" />
+    <OutcomeModal ref="outcomeModal" :message="message" @outcome="hide = true" />
     <ShareModal :id="message.id" ref="shareModal" />
     <MessageEditModal ref="editModal" :message="message" />
   </div>

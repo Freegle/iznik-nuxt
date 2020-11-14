@@ -10,15 +10,16 @@
       <template slot="modal-title">
         <h3 class="d-flex justify-content-between">
           {{ message.subject }}
-          <b-badge v-if="message.availableinitially > 1" variant="info" class="lg">
-            {{ left }} left
-          </b-badge>
+          <div>
+            <b-badge v-if="message.availableinitially > 1" variant="info" class="lg">
+              {{ left }} left
+            </b-badge>
+          </div>
         </h3>
       </template>
       <template slot="default">
         <div v-if="type === 'Taken' || type === 'Received'" class="text-center">
           <OutcomeBy
-            :users="users"
             :availableinitially="typeof message.availableinitially === 'number' ? message.availableinitially : 1"
             :type="type"
             :msgid="message.id"
@@ -79,10 +80,6 @@ export default {
   props: {
     message: {
       type: Object,
-      required: true
-    },
-    users: {
-      validator: prop => typeof prop === 'object' || prop === null,
       required: true
     }
   },
@@ -152,11 +149,18 @@ export default {
       const complete = this.left === 0
 
       for (const u of this.tookUsers) {
-        await this.$store.dispatch('messages/addBy', {
-          id: this.message.id,
-          userid: u.userid > 0 ? u.userid : null,
-          count: u.count
-        })
+        if (u.count > 0) {
+          await this.$store.dispatch('messages/addBy', {
+            id: this.message.id,
+            userid: u.userid > 0 ? u.userid : null,
+            count: u.count
+          })
+        } else {
+          await this.$store.dispatch('messages/removeBy', {
+            id: this.message.id,
+            userid: u.userid > 0 ? u.userid : null
+          })
+        }
       }
 
       if (complete) {
@@ -198,7 +202,6 @@ export default {
       this.showModal = true
       this.type = type
       this.setComments()
-      this.selectedUser = this.users.length ? -1 : 0
     },
 
     hide() {
