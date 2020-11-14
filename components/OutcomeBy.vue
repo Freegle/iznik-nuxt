@@ -96,6 +96,7 @@ export default {
 
       if (this.message && this.message.replies) {
         this.message.replies.forEach(u => {
+          console.log('Consider reply', u)
           if (u.user && u.user.id) {
             ret.push({
               userid: u.user.id,
@@ -120,6 +121,7 @@ export default {
     },
     userOptions() {
       const options = []
+      console.log('Available', this.availableUsers)
 
       options.push({
         value: -1,
@@ -145,7 +147,11 @@ export default {
     },
     moreUsersToSelect() {
       // We show the choose if there are some left and we have not got all users plus someone else.
-      return this.left && !this.selectedUsers.find(u => !u.userid)
+      return (
+        this.left &&
+        (this.selectedUsers.length <= this.repliers.length ||
+          !this.selectedUsers.find(u => !u.userid))
+      )
     },
     sortedSelectors() {
       // Want Someone Else at the end, and alphabetic otherwise.
