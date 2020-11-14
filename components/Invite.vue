@@ -18,7 +18,8 @@
         id="invitation"
         v-model="invitation"
         maxlength="160"
-        rows="2"
+        rows="3"
+        size="lg"
         placeholder="Tell your friends why they should get freegling!"
         class="mt-2 mb-2 border border-primary"
       />
