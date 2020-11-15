@@ -233,19 +233,24 @@
         </template>
       </b-modal>
     </div>
-    <OutcomeModal ref="outcomeModal" :message="message" :users="replyusers" @outcome="hide = true" />
+    <OutcomeModal ref="outcomeModal" :message="message" @outcome="hide = true" />
     <ShareModal :id="message.id" ref="shareModal" />
     <MessageEditModal ref="editModal" :message="message" />
   </div>
 </template>
 <script>
-import ResizeText from 'vue-resize-text'
 import OutcomeModal from './OutcomeModal'
 const MyMessageReply = () => import('./MyMessageReply.vue')
 const ShareModal = () => import('./ShareModal')
 const MessageEditModal = () => import('./MessageEditModal')
 const ImageCarousel = () => import('./ImageCarousel')
 const NoticeMessage = () => import('~/components/NoticeMessage')
+
+let ResizeText = null
+
+if (process.browser) {
+  ResizeText = require('vue-resize-text')
+}
 
 export default {
   directives: {
@@ -262,10 +267,6 @@ export default {
   props: {
     message: {
       type: Object,
-      required: true
-    },
-    messages: {
-      type: Array,
       required: true
     },
     showOld: {
