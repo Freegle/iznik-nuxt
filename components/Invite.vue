@@ -49,7 +49,7 @@
         <component :is="headingLevel" class="mt-2">
           Invite by email
         </component>
-        <ExternalLink v-for="email in emails" :key="'email-' + email" :href="'mailto:' + email + '?subject=Have you tried Freegle%3F&body=' + encodeURIComponent(invitation)" class="mb-1 mr-1">
+        <ExternalLink v-for="email in emails" :key="'email-' + email" :href="'mailto:' + email.email + '?subject=Have you tried Freegle%3F&body=' + encodeURIComponent(invitation)" class="mb-1 mr-1">
           <b-btn variant="primary">
             <v-icon name="envelope" /> {{ email.name }} {{ email.email }}
           </b-btn>
