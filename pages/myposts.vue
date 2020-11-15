@@ -12,7 +12,6 @@
         <div v-if="justPosted && justPosted.length">
           <JustPosted :ids="justPosted" :newuser="newuser" :newpassword="newpassword" />
         </div>
-        <Invite />
         <div v-if="!me" class="d-flex justify-content-center mt-4 flex-wrap">
           <b-btn variant="primary" size="lg" @click="forceLogin">
             Sign in to continue <v-icon name="angle-double-right" />
@@ -20,28 +19,8 @@
         </div>
         <div v-else>
           <JobsTopBar v-if="!justPosted" />
-          <b-card
-            v-if="!simple"
-            class="mt-2"
-            border-variant="info"
-            header="info"
-            header-bg-variant="info"
-            header-text-variant="white"
-            no-body
-          >
-            <template slot="header">
-              <h2 class="d-inline header--size3">
-                <v-icon name="calendar-alt" scale="2" /> Your Availability
-              </h2>
-            </template>
-            <b-card-body>
-              <p>
-                Tell us when you're free and it'll make it quicker to arrange collection times.
-              </p>
-              <b-btn size="lg" variant="primary" @click="availability">
-                <v-icon name="calendar-alt" /> Update your availability
-              </b-btn>
-            </b-card-body>
+          <b-card v-if="contactPicker" border-variant="info">
+            <Invite class="bg-white" />
           </b-card>
           <b-card
             class="mt-2"
@@ -140,6 +119,29 @@
                   </div>
                 </div>
               </b-card-text>
+            </b-card-body>
+          </b-card>
+          <b-card
+            v-if="!simple"
+            class="mt-2"
+            border-variant="info"
+            header="info"
+            header-bg-variant="info"
+            header-text-variant="white"
+            no-body
+          >
+            <template slot="header">
+              <h2 class="d-inline header--size3">
+                <v-icon name="calendar-alt" scale="2" /> Your Availability
+              </h2>
+            </template>
+            <b-card-body>
+              <p>
+                Tell us when you're free and it'll make it quicker to arrange collection times.
+              </p>
+              <b-btn size="lg" variant="primary" @click="availability">
+                <v-icon name="calendar-alt" /> Update your availability
+              </b-btn>
             </b-card-body>
           </b-card>
           <b-card
@@ -342,6 +344,15 @@ export default {
       ret.sort((a, b) => a.daysago - b.daysago)
 
       return ret
+    },
+    contactPicker() {
+      if (process.server) {
+        return false
+      } else {
+        const ret =
+          'contacts' in window.navigator && 'ContactsManager' in window
+        return ret
+      }
     }
   },
   async mounted() {

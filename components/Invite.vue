@@ -1,14 +1,18 @@
 <template>
   <div>
-    <div v-if="!contacts">
-      <b-btn variant="primary" size="lg" @click="getContacts">
-        Invite your friends
-      </b-btn>
-      <p class="mt-2 small">
-        It'll ask for access to your contacts.  <b>Don't worry</b> - this doesn't mean we can access all of
-        them!  You choose which ones to invite.  We don't pass this information to our servers, we don't
-        store it, and we can't access it in future.  You're in control.
-      </p>
+    <div v-if="!contacts" class="layout">
+      <div>
+        <b-btn variant="primary" size="lg" @click="getContacts">
+          Invite your friends!
+        </b-btn>
+      </div>
+      <div class="d-flex flex-column justify-content-center">
+        <p class="small m-0">
+          It'll ask for access to your contacts.  <b>Don't worry</b> - this doesn't mean we can access all of
+          them!  You choose which ones to invite.  We don't pass this information to our servers, we don't
+          store it, and we can't access it in future.  You're in control.
+        </p>
+      </div>
     </div>
     <div v-else>
       <label for="invitation">
@@ -110,10 +114,18 @@ export default {
       return ret
     }
   },
+  watch: {
+    contacts(newVal) {
+      this.$api.bandit.chosen({
+        uid: 'contacts',
+        variant: 'contacts'
+      })
+    }
+  },
   mounted() {
     this.$api.bandit.shown({
-      uid: 'invitation',
-      variant: 'notice'
+      uid: 'contacts',
+      variant: 'contacts'
     })
   },
   methods: {
@@ -128,3 +140,20 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto;
+  grid-column-gap: 10px;
+
+  @include media-breakpoint-up(md) {
+    grid-template-columns: auto auto;
+    grid-template-rows: auto;
+  }
+}
+</style>
