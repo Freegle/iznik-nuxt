@@ -23,6 +23,13 @@
             </b-col>
           </b-row>
         </div>
+        <div v-else-if="myid && message && message.fromuser && message.fromuser.id === myid">
+          <MyMessage
+            :message="message"
+            :show-old="true"
+            expand
+          />
+        </div>
         <div v-else-if="message && message.outcomes && message.outcomes.length > 0">
           <h1>{{ message.subject }}</h1>
           <NoticeMessage variant="info">
@@ -63,6 +70,7 @@
 <script>
 import NoticeMessage from '../../components/NoticeMessage'
 import CovidWarning from '../../components/CovidWarning'
+import MyMessage from '../../components/MyMessage'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 import twem from '~/assets/js/twem'
@@ -71,6 +79,7 @@ const Message = () => import('~/components/Message.vue')
 
 export default {
   components: {
+    MyMessage,
     CovidWarning,
     NoticeMessage,
     Message

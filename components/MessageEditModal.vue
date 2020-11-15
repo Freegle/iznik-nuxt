@@ -13,7 +13,7 @@
           <div v-if="message.location">
             <b-row>
               <b-col cols="6" md="3">
-                <b-form-select v-model="type" :options="typeOptions" />
+                <b-form-select v-model="type" :options="typeOptions" size="lg" />
               </b-col>
               <b-col cols="6">
                 <PostItem ref="item" v-model="item" />

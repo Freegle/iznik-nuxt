@@ -79,6 +79,7 @@ export const mutations = {
 
     Vue.set(state.messages[params.id], 'item', params.item)
     Vue.set(state.messages[params.id], 'type', params.type)
+    Vue.set(state.messages[params.id], 'availablenow', params.availablenow)
   },
   setDescription(state, params) {
     if (!state.messages[params.id]) {
@@ -187,6 +188,7 @@ async function createDraft(message, email, state, commit) {
     messagetype: message.type,
     item: message.item,
     textbody: message.description,
+    availablenow: message.availablenow,
     attachments: attids,
     groupid: state.group,
     email: email
@@ -213,7 +215,8 @@ function markSubmitted(id, commit) {
     id: id,
     submitted: true,
     item: null,
-    description: null
+    description: null,
+    availablenow: 1
   })
 
   commit('setAttachmentsForMessage', {
@@ -244,6 +247,7 @@ async function updateIt(
   messagetype,
   item,
   textbody,
+  availablenow,
   groupid,
   dispatch,
   commit
@@ -254,7 +258,8 @@ async function updateIt(
     messagetype,
     item,
     textbody,
-    groupid
+    groupid,
+    availablenow
   }
 
   console.log('Update it', data)
@@ -342,6 +347,7 @@ export const actions = {
             message.type,
             message.item,
             message.description,
+            'availablenow' in message ? message.availablenow : 1,
             state.group,
             dispatch,
             commit
@@ -416,6 +422,7 @@ export const actions = {
             message.type,
             message.item,
             message.description,
+            'availablenow' in message ? message.availablenow : 1,
             state.group,
             dispatch,
             commit

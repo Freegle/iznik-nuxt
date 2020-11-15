@@ -5,7 +5,7 @@
     </h2>
     <client-only>
       <PostMap
-        v-if="initialBounds"
+        v-if="postMapInitialBounds"
         :key="'postmap-' + bump"
         :initial-bounds="postMapInitialBounds"
         :height-fraction="heightFraction"
@@ -380,6 +380,10 @@ export default {
         msgs = this.messagesOnMap
       }
 
+      if (this.selectedGroup) {
+        msgs = msgs.filter(m => m.groupid === this.selectedGroup)
+      }
+
       return msgs
     },
     filteredMessages() {
@@ -531,7 +535,13 @@ export default {
       // When the post map is locked/unlocked we need to reset the infinite scroll so that we see the appropriate
       // messages.
       this.infiniteId++
-      this.postMapInitialBounds = this.locked
+
+      if (this.locked) {
+        this.postMapInitialBounds = this.locked
+      } else {
+        this.postMapInitialBounds = this.initialBounds
+      }
+
       this.bump++
       this.$store.dispatch('messages/clear')
     }

@@ -24,9 +24,12 @@
                   about:
                 </span>
               </div>
-              <nuxt-link :to="'/message/' + refmsg.id">
+              <nuxt-link :to="!messageIsFromCurrentUser ? '/myposts' : ('/message/' + refmsg.id)">
                 <h4 class="mt-1">
                   {{ refmsg.subject }}
+                  <b-badge v-if="refmsg.availableinitially > 1" variant="info">
+                    {{ refmsg.availablenow }} left
+                  </b-badge>
                 </h4>
               </nuxt-link>
             </b-card-title>
@@ -48,6 +51,21 @@
                 </span>
               </div>
             </b-card-text>
+            <div v-if="!modtools && refmsg && refmsg.type === 'Offer' && (!refmsg.outcomes || !refmsg.outcomes.length)">
+              <hr>
+              <div class="text-center small text-muted">
+                No longer available?
+              </div>
+              <div class="d-flex justify-content-between">
+                <b-btn variant="primary" size="sm" @click="outcome('Taken')">
+                  Mark as TAKEN
+                </b-btn>
+                <b-btn variant="secondary" size="sm" @click="outcome('Withdrawn')">
+                  Withdraw
+                </b-btn>
+              </div>
+              <OutcomeModal ref="outcomeModal" :message="refmsg" />
+            </div>
           </b-card>
         </div>
         <div v-else class="media float-right">
@@ -99,15 +117,47 @@
 import ChatBase from '~/components/ChatBase'
 import ProfileImage from '~/components/ProfileImage'
 const NoticeMessage = () => import('~/components/NoticeMessage')
+const OutcomeModal = () => import('~/components/OutcomeModal')
 
 export default {
   components: {
     NoticeMessage,
-    ProfileImage
+    ProfileImage,
+    OutcomeModal
   },
-  extends: ChatBase
+  extends: ChatBase,
+  computed: {
+    modtools() {
+      return this.$store.getters['misc/get']('modtools')
+    },
+    replyusers() {
+      const ret = []
+      const retids = []
+
+      const message = this.$store.getters['messages/get'](this.refmsg.id)
+
+      if (message) {
+        if (this.refmsg && message.replies) {
+          for (const reply of message.replies) {
+            if (retids.indexOf(reply.user.id) === -1) {
+              ret.push(reply.user)
+              retids[reply.userid] = true
+            }
+          }
+        }
+      }
+
+      return ret
+    }
+  },
+  methods: {
+    async outcome(type) {
+      await this.$store.dispatch('messages/fetch', {
+        id: this.refmsg.id
+      })
+
+      this.$refs.outcomeModal.show(type)
+    }
+  }
 }
 </script>
-
-<style scoped>
-</style>

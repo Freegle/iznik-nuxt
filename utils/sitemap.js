@@ -133,7 +133,7 @@ export default {
     '/mydata',
     '/settings',
     '/shortlinks',
-    '/spread',
+    '/promote',
     '/stats/heatmap',
     '/stories/fornewsletter',
     '/myposts'

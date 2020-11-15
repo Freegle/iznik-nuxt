@@ -12,7 +12,7 @@
     >
       <template slot="default">
         <NoticeMessage v-if="(warning || error) && supportOrAdmin" variant="warning" class="mb-2">
-          There is a problem. If this just mentions security patches or reboots, you can ignore it,
+          There is a problem. If this just mentions <b>security patches or reboots</b>, you can ignore it,
           but if it's something else please alert geeks@ilovefreegle.org if this persists for more than an hour.
         </NoticeMessage>
         <NoticeMessage v-else-if="error" variant="warning" class="mb-2">

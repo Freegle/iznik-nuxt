@@ -11,7 +11,6 @@
             v-if="message.fromuser && me && message.fromuser.id === me.id"
             :key="bump"
             :message="message"
-            :messages="[ message ]"
             :show-old="true"
             :expand="true"
             :action="action"
@@ -131,9 +130,13 @@ export default {
       await this.$store.dispatch('chats/listChats')
 
       // For some reason we can't capture emitted events from the outcome modal so use root as a bus.
-      this.$root.$on('outcome', groupid => {
-        this.donationGroup = groupid
-        this.ask()
+      this.$root.$on('outcome', params => {
+        const { groupid, outcome } = params
+
+        if (outcome === 'Taken' || outcome === 'Received') {
+          this.donationGroup = groupid
+          this.ask()
+        }
       })
 
       // If they have an intended outcome, then we save that to the server now.  This means that if they never

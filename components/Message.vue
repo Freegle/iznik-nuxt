@@ -26,6 +26,9 @@
           <span v-else>
             {{ eSubject }}
           </span>
+          <b-badge v-if="availablenow > 1" variant="info">
+            {{ availablenow }} left
+          </b-badge>
         </b-card-title>
         <MessageHistory :message="$props" class="mb-1 card-header__history" :display-message-link="sm()" />
         <div flex-grow-1 class="small mb-1 card-header__description">
@@ -116,12 +119,6 @@
         <div v-else>
           <CovidCheckList v-if="!confirmed" class="mt-2" @confirmed="confirmed = true" />
           <div v-if="confirmed">
-            <NoticeMessage v-if="sent" variant="info" class="d-block d-sm-none mb-1">
-              We've sent your message.  You can see replies in the
-              <nuxt-link to="/chats">
-                <v-icon name="comments" /> Chats
-              </nuxt-link> section.
-            </NoticeMessage>
             <EmailValidator
               v-if="!me"
               ref="email"
@@ -153,6 +150,12 @@
                 class="flex-grow-1"
               />
             </b-form-group>
+            <NoticeMessage v-if="sent" variant="info" class="d-block d-sm-none mb-1">
+              We've sent your message.  You can see replies in the
+              <nuxt-link to="/chats">
+                <v-icon name="comments" /> Chats
+              </nuxt-link> section.
+            </NoticeMessage>
             <div v-if="!me">
               <div class="contents">
                 <div>
@@ -344,6 +347,11 @@ export default {
       type: Number,
       required: false,
       default: null
+    },
+    availablenow: {
+      type: Number,
+      required: false,
+      default: 1
     }
   },
   data: function() {

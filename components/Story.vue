@@ -16,7 +16,7 @@
           <v-icon name="share-alt" class="fa-fw" />
         </b-btn>
       </b-card-header>
-      <b-card-text class="pl-2 pr-2">
+      <b-card-text class="pl-4 pr-4">
         <div v-if="story.story" class="preline">
           <div v-if="story.photo" class="float-right">
             <b-img-lazy v-b-modal="'photoModal-' + story.photo.id" :src="story.photo.path" class="storyphoto clickme" thumbnail />

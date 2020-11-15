@@ -76,7 +76,8 @@ export default {
         id: message.id,
         type: message.type,
         item: message.item.name.trim(),
-        description: message.textbody.trim()
+        description: message.textbody.trim(),
+        availablenow: message.availablenow
       })
 
       await this.$store.dispatch('compose/setAttachmentsForMessage', {

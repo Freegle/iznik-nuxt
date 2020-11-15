@@ -17,7 +17,6 @@
       v-for="message in messages"
       :key="'justposted-' + message.id"
       :message="message"
-      :messages="[ message ]"
       just-posted
       :show-old="false"
     />
