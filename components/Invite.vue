@@ -130,6 +130,45 @@ export default {
   },
   methods: {
     async getContacts() {
+      if (process.env.IS_APP) {
+        const that = this
+        function onSuccess(foundcontacts) {
+          console.log('Found ' + foundcontacts.length + ' contacts.')
+          if (foundcontacts.length > 0) {
+            console.log('foundcontacts[0]', foundcontacts[0])
+          }
+          // contact.displayName
+          // contact.emails[] value
+          // contact.phoneNumbers value
+          const contacts = []
+          for (const c of foundcontacts) {
+            const contact = { name: [c.displayName] }
+            if (c.emails) {
+              contact.email = []
+              for (const email of c.emails) {
+                contact.email.push(email.value)
+              }
+            }
+            if (c.phoneNumbers) {
+              contact.tel = []
+              for (const phoneNumber of c.phoneNumbers) {
+                contact.tel.push(phoneNumber.value)
+              }
+            }
+            contacts.push(contact)
+          }
+          console.log('contacts', contacts)
+          that.contacts = contacts
+        }
+        function onError(contactError) {
+          console.log('navigator.contacts.find onError!')
+        }
+        const options = new ContactFindOptions()
+        options.multiple = true;
+        options.desiredFields = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.emails, navigator.contacts.fieldType.phoneNumbers]
+        navigator.contacts.find(['*'], onSuccess, onError, options);
+        return
+      }
       this.contacts = await navigator.contacts.select(
         ['name', 'email', 'tel'],
         {
