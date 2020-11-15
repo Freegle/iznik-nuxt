@@ -23,7 +23,8 @@
         {{ user.displayname }}
       </span>
       <span v-else class="name mt-1 text-left">
-        Someone else
+        <span v-if="availableinitially === 1">Someone else</span>
+        <span v-else>Other people</span>
       </span>
       <div>
         <Ratings v-if="user.userid > 0" :id="user.userid" size="lg" class="ratings ml-1" />
@@ -96,7 +97,6 @@ export default {
 
       if (this.message && this.message.replies) {
         this.message.replies.forEach(u => {
-          console.log('Consider reply', u)
           if (u.user && u.user.id) {
             ret.push({
               userid: u.user.id,
@@ -121,7 +121,6 @@ export default {
     },
     userOptions() {
       const options = []
-      console.log('Available', this.availableUsers)
 
       options.push({
         value: -1,
@@ -138,10 +137,15 @@ export default {
         })
       }
 
-      options.push({
-        value: 0,
-        html: '<em>Someone else</em>'
-      })
+      if (!this.selectedUsers.find(u => u.userid === null)) {
+        options.push({
+          value: 0,
+          html:
+            this.availableinitially === 1
+              ? '<em>Someone else</em>'
+              : '<em>Other people</em>'
+        })
+      }
 
       return options
     },
