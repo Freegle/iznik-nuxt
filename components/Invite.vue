@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="!contacts" class="layout">
+    <div v-if="!contacts || !contacts.length" class="layout">
       <div>
         <b-btn variant="primary" size="lg" @click="getContacts">
           Invite your friends!
