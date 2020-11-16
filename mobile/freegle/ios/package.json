@@ -57,7 +57,9 @@
         "REVERSED_CLIENT_ID": "com.googleusercontent.apps.423761283916-mfrb9i0ntt1omq2knit8j49agnhje648"
       },
       "cordova-plugin-sign-in-with-apple": {},
-      "cordova-plugin-contacts": {}
+      "cordova-plugin-contacts": {
+        "CONTACTS_USAGE_DESCRIPTION": "To invite a friend to use Freegle"
+      }
     },
     "platforms": [
       "ios"

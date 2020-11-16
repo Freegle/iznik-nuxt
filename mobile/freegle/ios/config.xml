@@ -89,6 +89,9 @@
         <config-file overwrite="true" parent="NSLocationWhenInUseUsageDescription" platform="ios" target="*-Info.plist">
             <string>To find your location when offering an item</string>
         </config-file>
+        <config-file overwrite="true" parent="NSContactsUsageDescription" platform="ios" target="*-Info.plist">
+            <string>To invite a friend to use Freegle</string>
+        </config-file>
     </platform>
     <platform name="ios">
         <preference name="SplashScreenDelay" value="1000" />
