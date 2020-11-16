@@ -16,7 +16,7 @@
           looks like to them.)
         </p>
         <p>
-          <b>Would you like to help keep freegling smooth and safe for people?  You can help!</b>
+          <b>Would you like to keep freegling smooth and safe for people?  You can help!</b>
         </p>
         <p>
           If you're up for it, we can show you the occasional thing on Freegle that needs checking over to make sure it's ok.
