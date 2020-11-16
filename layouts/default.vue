@@ -51,33 +51,7 @@
             </div>
           </client-only>
           <b-navbar-nav class="mainnav mainnav--right">
-            <b-nav-item-dropdown v-if="!simple" class="white text-center notiflist" lazy right @shown="loadLatestNotifications">
-              <template slot="button-content">
-                <div class="notifwrapper text-center small">
-                  <v-icon name="bell" scale="2" />
-                  <b-badge v-if="notificationCount" variant="danger" class="notification-badge">
-                    {{ notificationCount }}
-                  </b-badge><br>
-                  <span class="nav-item__text">Notifications</span>
-                </div>
-              </template>
-              <b-dropdown-item class="text-right">
-                <b-btn variant="white" size="sm" @click="markAllRead">
-                  Mark all read
-                </b-btn>
-              </b-dropdown-item>
-              <b-dropdown-divider />
-              <b-dropdown-item v-for="notification in notifications" :key="'notification-' + notification.id" class="p-0 notpad">
-                <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
-              </b-dropdown-item>
-              <infinite-loading :distance="distance" @infinite="loadMoreNotifications">
-                <span slot="no-results" />
-                <span slot="no-more" />
-                <span slot="spinner">
-                  <b-img-lazy src="~/static/loader.gif" alt="Loading" />
-                </span>
-              </infinite-loading>
-            </b-nav-item-dropdown>
+            <NotificationOptions v-if="!simple" :distance="distance" :small-screen="false" @unread-notification-count="unreadNotificationCount=$event" @showAboutMe="showAboutMe" />
             <b-nav-item id="menu-option-chat" class="text-center small p-0" to="/chats" @click="toChats">
               <div class="notifwrapper">
                 <v-icon name="comments" scale="2" /><br>
@@ -132,40 +106,7 @@
       </b-navbar-brand>
       <div class="d-flex align-items-center">
         <client-only>
-          <b-dropdown
-            v-if="loggedIn"
-            class="white text-center notiflist mr-2"
-            variant="transparent"
-            lazy
-            right
-            @shown="loadLatestNotifications"
-          >
-            <template slot="button-content">
-              <div class="notifwrapper">
-                <v-icon name="bell" scale="2" class="" />
-                <b-badge v-if="notificationCount" variant="danger" class="notification-badge">
-                  {{ notificationCount }}
-                </b-badge>
-              </div>
-            </template>
-            <b-dropdown-item class="text-right">
-              <b-btn variant="white" size="sm" @click="markAllRead">
-                Mark all read
-              </b-btn>
-            </b-dropdown-item>
-            <b-dropdown-divider />
-            <b-dropdown-item v-for="notification in notifications" :key="'notification-' + notification.id" class="p-0 notpad">
-              <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
-            </b-dropdown-item>
-            <infinite-loading :distance="distance" @infinite="loadMoreNotifications">
-              <span slot="no-results" />
-              <span slot="no-more" />
-              <span slot="spinner">
-                <b-img-lazy src="~/static/loader.gif" alt="Loading" />
-              </span>
-            </infinite-loading>
-          </b-dropdown>
-
+          <NotificationOptions :distance="distance" :small-screen="true" @unread-notification-count="unreadNotificationCount=$event" @showAboutMe="showAboutMe" />
           <a v-if="loggedIn" id="menu-option-chat-sm" href="#" class="text-white mr-3 position-relative" @click="toChats">
             <v-icon name="comments" scale="2" /><br>
             <b-badge v-if="chatCount" variant="danger" class="chatbadge">
@@ -264,25 +205,23 @@ import SimpleView from '../components/SimpleView'
 import LoginModal from '~/components/LoginModal'
 import LocalStorageMonitor from '~/components/LocalStorageMonitor'
 import BouncingEmail from '~/components/BouncingEmail'
+import NotificationOptions from '~/components/NotificationOptions'
 
 const AboutMeModal = () => import('~/components/AboutMeModal')
 const ChatPopups = () => import('~/components/ChatPopups')
-const Notification = () => import('~/components/Notification')
 const NchanSubscriber = require('nchan')
-const InfiniteLoading = () => import('vue-infinite-loading')
 const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
   components: {
     SimpleView,
-    InfiniteLoading,
     ChatPopups,
-    Notification,
     AboutMeModal,
     LoginModal,
     LocalStorageMonitor,
     BouncingEmail,
-    ExternalLink
+    ExternalLink,
+    NotificationOptions
   },
 
   data: function() {
@@ -311,14 +250,6 @@ export default {
   },
 
   computed: {
-    notifications() {
-      return this.$store.getters[
-        'notifications/getCurrentListInDescendingDateOrder'
-      ]
-    },
-    notificationCount() {
-      return this.$store.getters['notifications/getUnreadCount']
-    },
     chatCount() {
       // Don't show so many that the layout breaks.
       return Math.min(99, this.$store.getters['chats/unseenCount'])
@@ -392,9 +323,8 @@ export default {
       console.log('Start NCHAN from mount')
       this.startNCHAN(me.id)
 
-      // Get notifications and chats and poll regularly for new ones.  Would be nice if this was event driven instead but requires server work.
+      // Get chats and poll regularly for new ones.  Would be nice if this was event driven instead but requires server work.
       this.fetchLatestChats()
-      this.$store.dispatch('notifications/updateNotifications')
     }
 
     // Look for a custom logo.
@@ -584,48 +514,6 @@ export default {
       this.$router.push('/')
     },
 
-    loadMoreNotifications: function($state) {
-      const currentCount = this.notifications.length
-
-      if (this.complete) {
-        $state.complete()
-      } else {
-        this.busy = true
-        this.$store
-          .dispatch('notifications/fetchNextListChunk')
-          .then(() => {
-            try {
-              const notifications = this.$store.getters[
-                'notifications/getCurrentList'
-              ]
-
-              if (currentCount === notifications.length) {
-                this.complete = true
-                $state.complete()
-              } else {
-                $state.loaded()
-              }
-              this.busy = false
-            } catch (e) {
-              console.error(e)
-              console.log('Error')
-            }
-          })
-          .catch(e => {
-            console.error(e)
-            this.busy = false
-            $state.complete()
-          })
-      }
-    },
-
-    loadLatestNotifications() {
-      // We want to make sure we have the most up to date notifications.
-      this.complete = false
-      this.$store.dispatch('notifications/clear')
-      this.$store.dispatch('notifications/fetchNextListChunk')
-    },
-
     requestLogin() {
       this.$refs.loginModal.show()
     },
@@ -650,12 +538,6 @@ export default {
       })
 
       this.$router.push('/chats')
-    },
-
-    async markAllRead() {
-      await this.$store.dispatch('notifications/allSeen')
-      await this.$store.dispatch('notifications/updateUnreadNotificationCount')
-      await this.$store.dispatch('notifications/fetchNextListChunk')
     },
 
     updateTime() {
@@ -816,16 +698,6 @@ svg.fa-icon {
   position: relative;
 }
 
-.notification-badge {
-  position: absolute;
-  top: 0px;
-  left: 18px;
-
-  @include media-breakpoint-up(xl) {
-    left: 40px;
-  }
-}
-
 .chatbadge {
   position: absolute;
   top: 0px;
@@ -889,9 +761,5 @@ svg.fa-icon {
 .mainnav--right {
   width: 40%;
   max-width: 400px;
-}
-
-.notiflist ::v-deep .dropdown-toggle {
-  color: $color-white;
 }
 </style>
