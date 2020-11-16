@@ -73,7 +73,7 @@ export default {
     return {
       contacts: null,
       invitation:
-        "Hi - I'm using Freegle to give and get things for free.  Check it out at https://www.ilovefreegle.org"
+        "Hi - I'm using Freegle to give and get things for free.  Check out their app at https://www.ilovefreegle.org/mobile or on the web at https://www.ilovefreegle.org"
     }
   },
   computed: {
