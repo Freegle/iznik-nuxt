@@ -149,12 +149,9 @@ export default {
     async getContacts() {
       if (process.env.IS_APP) {
         function onError(contactError) {
-          console.log('navigator.contacts.find onError!')
+          console.log('navigator.contacts.pickContact onError!', contactError)
         }
-        const options = new ContactFindOptions()
-        options.multiple = true;
-        options.desiredFields = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.emails, navigator.contacts.fieldType.phoneNumbers]
-        navigator.contacts.find(['*'], contacts => { this.contacts = contacts }, onError, options)
+        navigator.contacts.pickContact(contact => { this.contacts = [contact] }, onError)
         // contact.displayName
         // contact.emails[] value
         // contact.phoneNumbers value

@@ -200,8 +200,8 @@ export default {
       if (process.server) {
         return false
       } else {
-        const ret =
-          'contacts' in window.navigator && 'ContactsManager' in window
+        const ret = process.env.IS_APP ? 'contacts' in window.navigator :
+          ('contacts' in window.navigator && 'ContactsManager' in window)
         return ret
       }
     }
