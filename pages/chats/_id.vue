@@ -4,6 +4,7 @@
       <h1 class="sr-only">
         Chats
       </h1>
+      <MicroVolunteering />
       <b-row class="m-0">
         <b-col id="chatlist" cols="12" md="4" xl="3" :class="'chatlist p-0 bg-white ' + (selectedChatId ? 'd-none d-md-block' : '') + ' ' + selectedChatId">
           <b-card class="p-0">
@@ -49,6 +50,7 @@
 </template>
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
+import MicroVolunteering from '../../components/MicroVolunteering'
 import SidebarRight from '@/components/SidebarRight'
 import buildHead from '@/mixins/buildHead'
 import chatPage from '@/mixins/chatPage'
@@ -61,6 +63,7 @@ const ChatPane = () => import('~/components/ChatPane.vue')
 
 export default {
   components: {
+    MicroVolunteering,
     InfiniteLoading,
     SidebarRight,
     ChatPane,
