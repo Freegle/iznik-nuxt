@@ -2,7 +2,7 @@
   <client-only>
     <div>
       <label v-if="label" for="communitieslist" :class="labelSrOnly ? 'sr-only' : ''">{{ label }}</label>
-      <b-form-select id="communitieslist" v-model="selectedGroup" size=":size" :options="groupOptions" />
+      <b-form-select id="communitieslist" v-model="selectedGroup" :size="size" :options="groupOptions" />
     </div>
   </client-only>
 </template>

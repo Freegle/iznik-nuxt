@@ -58,8 +58,7 @@ export default {
     return {
       showModal: false,
       chaseup: false,
-      dohide: false,
-      variant: null
+      dohide: false
     }
   },
   computed: {
@@ -80,21 +79,6 @@ export default {
       return ret
     }
   },
-  async mounted() {
-    const variant = await this.$api.bandit.choose({
-      uid: 'askrsvp'
-    })
-
-    this.chaseup = variant.variant === 'chaseup'
-    this.dohide = variant.variant === 'expectingreply'
-
-    this.$api.bandit.shown({
-      uid: 'askrsvp',
-      variant: variant.variant
-    })
-
-    this.variant = variant.variant
-  },
   methods: {
     show() {
       this.showModal = true
@@ -114,11 +98,6 @@ export default {
       }
 
       this.hide()
-
-      this.$api.bandit.chosen({
-        uid: 'askrsvp',
-        variant: this.variant
-      })
     },
 
     async no() {
@@ -137,11 +116,6 @@ export default {
       }
 
       this.hide()
-
-      this.$api.bandit.chosen({
-        uid: 'askrsvp',
-        variant: this.variant
-      })
     }
   }
 }

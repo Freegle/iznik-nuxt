@@ -1,95 +1,77 @@
 <template>
   <div>
-    <b-row class="pr-0 mb-2">
-      <b-col cols="6" md="0" class="mt-2 pl-0">
-        <b-input v-model="type" size="lg" disabled class="d-inline-block d-md-none text-uppercase bg-white" />
-      </b-col>
-      <b-col cols="6" md="12" class="pl-0">
+    <div class="d-flex flex-wrap">
+      <div class="photoholder bg-light d-flex flex-column align-items-center justify-items-center mr-1">
+        <v-icon name="camera" scale="8.75" class="text-faded" />
         <b-btn
           variant="primary"
           size="lg"
-          class="mt-2"
+          class="ml-3 mr-3"
           @click="photoAdd"
           @drop.prevent="drop"
           @dragover.prevent
         >
-          <v-icon name="camera" />&nbsp;Add photos
+          Add photos
         </b-btn>
-      </b-col>
-    </b-row>
-    <b-row v-if="uploading" class="bg-white">
-      <b-col class="p-0">
-        <OurFilePond
-          ref="filepond"
-          imgtype="Message"
-          imgflag="message"
-          :identify="true"
-          :browse="pondBrowse"
-          :multiple="true"
-          @photoProcessed="photoProcessed"
-          @allProcessed="allProcessed"
-        />
-      </b-col>
-    </b-row>
-    <b-row v-if="attachments && attachments.length">
-      <b-col class="p-0">
-        <b-list-group horizontal class="mb-1">
-          <b-list-group-item v-for="att in attachments" :key="'image-' + att.id" class="bg-transparent p-0">
-            <PostPhoto v-bind="att" @remove="removePhoto" />
-          </b-list-group-item>
-        </b-list-group>
-        <hr>
-      </b-col>
-    </b-row>
-    <b-row v-if="suggestions.length && !item.length">
-      <b-col>
-        <b-card v-if="attachments.length" bg-variant="info" class="mb-1">
-          <p>Based on your photo, here are possible suggestions you can click:</p>
-          <b-btn v-for="suggestion in suggestions" :key="suggestion.id" variant="white" class="mr-1" @click="chooseSuggestion(suggestion)">
-            {{ suggestion.name }}
-          </b-btn>
-        </b-card>
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col cols="0" md="3" class="pl-0 d-none d-md-inline-block">
-        <b-input v-model="type" disabled class="text-uppercase bg-white" />
-      </b-col>
-      <b-col cols="12" md="9" class="pl-0 pr-0">
-        <PostItem ref="item" v-model="item" @input="itemType" />
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col class="pl-0 pr-0">
-        <NoticeMessage v-if="vague" variant="warning" class="mt-1">
-          <p>
-            Please avoid very general terms.  Be precise - you'll get a better response.
-          </p>
-        </NoticeMessage>
-        <NoticeMessage v-if="warn" variant="warning" class="mt-1">
-          <h1 class="header--size3">
-            <v-icon name="info-circle" scale="1.75" /> {{ warn.type }}
-          </h1>
-          <p>
-            {{ warn.message }}
-          </p>
-        </NoticeMessage>
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col class="pl-0 pt-1 pr-0">
-        <b-form-textarea
-          v-model="description"
-          :placeholder="placeholder"
-          rows="8"
-        />
-      </b-col>
-    </b-row>
+      </div>
+      <div v-for="att in attachments" :key="'image-' + att.id" class="bg-transparent p-0">
+        <PostPhoto v-bind="att" class="mr-1" @remove="removePhoto" />
+      </div>
+      <hr>
+    </div>
+    <div v-if="uploading" class="bg-white">
+      <OurFilePond
+        ref="filepond"
+        imgtype="Message"
+        imgflag="message"
+        :identify="true"
+        :browse="pondBrowse"
+        :multiple="true"
+        @photoProcessed="photoProcessed"
+        @allProcessed="allProcessed"
+      />
+    </div>
+    <div v-if="suggestions.length && !item.length">
+      <b-card v-if="attachments.length" bg-variant="info" class="mb-1">
+        <p>Based on your photo, here are possible suggestions you can click:</p>
+        <b-btn v-for="suggestion in suggestions" :key="suggestion.id" variant="white" class="mr-1" @click="chooseSuggestion(suggestion)">
+          {{ suggestion.name }}
+        </b-btn>
+      </b-card>
+    </div>
+    <div class="subject-layout mb-1">
+      <b-input v-model="type" disabled class="type text-uppercase bg-white mt-1" size="lg" />
+      <PostItem ref="item" v-model="item" class="item pt-1" @input="itemType" />
+      <NumberIncrementDecrement v-if="type === 'Offer'" :count.sync="availablenow" label="Quantity" append-text=" available" class="count pt-1" />
+    </div>
+    <div>
+      <NoticeMessage v-if="vague" variant="warning" class="mt-1 mb-1">
+        <p>
+          Please avoid very general terms.  Be precise - you'll get a better response.
+        </p>
+      </NoticeMessage>
+      <NoticeMessage v-if="warn" variant="warning" class="mt-1">
+        <h1 class="header--size3">
+          <v-icon name="info-circle" scale="1.75" /> {{ warn.type }}
+        </h1>
+        <p>
+          {{ warn.message }}
+        </p>
+      </NoticeMessage>
+    </div>
+    <div>
+      <b-form-textarea
+        v-model="description"
+        :placeholder="placeholder"
+        rows="8"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 import NoticeMessage from './NoticeMessage'
+import NumberIncrementDecrement from './NumberIncrementDecrement'
 import waitForRef from '@/mixins/waitForRef'
 const OurFilePond = () => import('~/components/OurFilePond')
 const PostPhoto = () => import('~/components/PostPhoto')
@@ -97,6 +79,7 @@ const PostItem = () => import('~/components/PostItem')
 
 export default {
   components: {
+    NumberIncrementDecrement,
     NoticeMessage,
     OurFilePond,
     PostPhoto,
@@ -179,17 +162,26 @@ export default {
     }
   },
   computed: {
+    availablenow: {
+      get: function() {
+        const msg = this.$store.getters['compose/getMessage'](this.id)
+        return msg &&
+          'availablenow' in msg &&
+          typeof msg.availablenow !== 'undefined'
+          ? msg.availablenow
+          : 1
+      },
+      set: function(newValue) {
+        this.saveItem(this.item, newValue)
+      }
+    },
     item: {
       get: function() {
         const msg = this.$store.getters['compose/getMessage'](this.id)
         return msg && msg.item ? msg.item : ''
       },
       set: function(newValue) {
-        this.$store.dispatch('compose/setItem', {
-          id: this.id,
-          item: newValue,
-          type: this.type
-        })
+        this.saveItem(newValue, this.availablenow)
       }
     },
     vague() {
@@ -240,7 +232,8 @@ export default {
       }
     },
     attachments() {
-      return this.$store.getters['compose/getAttachments'](this.id)
+      const ret = this.$store.getters['compose/getAttachments'](this.id)
+      return ret || []
     },
     placeholder() {
       return this.type === 'Offer'
@@ -249,12 +242,12 @@ export default {
     }
   },
   methods: {
-    save() {
-      this.$store.dispatch('compose/setMessage', {
+    saveItem(item, availablenow) {
+      this.$store.dispatch('compose/setItem', {
         id: this.id,
-        item: this.item,
-        description: this.description,
-        type: 'Offer'
+        item: item,
+        type: this.type,
+        availablenow: availablenow
       })
     },
     photoAdd() {
@@ -291,7 +284,8 @@ export default {
         this.$store.dispatch('compose/setItem', {
           id: this.id,
           item: this.item,
-          type: this.type
+          type: this.type,
+          availablenow: this.availablenow
         })
       } else {
         this.uploading = false
@@ -303,7 +297,8 @@ export default {
       this.$store.dispatch('compose/setItem', {
         id: this.id,
         item: this.item,
-        type: this.type
+        type: this.type,
+        availablenow: this.availablenow
       })
     },
     drop(e) {
@@ -328,3 +323,57 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+@import 'color-vars';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+
+.subject-layout {
+  display: grid;
+  grid-template-columns: 1fr 50px 1fr;
+  grid-template-rows: auto auto;
+  grid-column-gap: 5px;
+
+  @include media-breakpoint-up(md) {
+    grid-template-columns: 1fr 3fr auto;
+    grid-template-rows: auto;
+  }
+
+  .type {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+
+    @include media-breakpoint-up(md) {
+      grid-column: 1 / 2;
+      grid-row: 1 / 2;
+    }
+  }
+
+  .item {
+    grid-column: 1 / 4;
+    grid-row: 2 / 3;
+
+    @include media-breakpoint-up(md) {
+      grid-column: 2 / 3;
+      grid-row: 1 / 2;
+    }
+  }
+
+  .count {
+    grid-column: 3 / 4;
+    grid-row: 1 / 2;
+    justify-self: end;
+
+    @include media-breakpoint-up(md) {
+      grid-column: 3 / 4;
+      grid-row: 1 / 2;
+    }
+  }
+}
+
+.photoholder {
+  width: 200px;
+  height: 200px;
+}
+</style>

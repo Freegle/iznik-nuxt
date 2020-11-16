@@ -9,37 +9,48 @@
         <ul v-for="(id, index) in ids" :key="'post-' + id" class="p-0 pt-1 list-unstyled">
           <li class="p-0">
             <b-card no-body>
-              <b-card-body class="pt-0 pb-1">
+              <b-card-body class="p-1">
                 <PostMessage :id="id" type="Wanted" />
               </b-card-body>
               <b-card-footer v-if="index === ids.length - 1" class="d-flex justify-content-between p-0 pt-1">
                 <Postcode
+                  v-if="editLocationOrGroup"
+                  :value="postcode ? postcode.name : null"
                   :find="false"
                   size="md"
                   class="d-inline"
-                  :value="postcode ? postcode.name : null"
                   @selected="postcodeSelect"
                 />
-                <ComposeGroup class="cg" />
+                <ComposeGroup v-if="editLocationOrGroup" class="cg" />
+                <div v-else-if="postcode && group " class="pl-2 text-muted">
+                  {{ postcode.name }} on {{ group.namedisplay }}
+                  <b-btn variant="link" class="mb-1 p-0" @click="editLocationOrGroup = true">
+                    <span class="small">
+                      Change
+                    </span>
+                  </b-btn>
+                </div>
+                <div class="d-flex justify-content-between ml-1 mr-1 mb-1">
+                  <b-btn v-if="ids.length === 1 && notblank" variant="white" size="sm" class="mr-1" @click="deleteItem">
+                    <v-icon name="trash-alt" />&nbsp;Clear item
+                  </b-btn>
+                  <b-btn v-if="ids.length > 1" variant="white" size="sm" class="mr-1" @click="deleteItem">
+                    <v-icon name="trash-alt" />&nbsp;Delete item
+                  </b-btn>
+                  <b-btn v-if="ids.length < 6 && valid" variant="secondary" size="sm" class="" @click="addItem">
+                    <v-icon name="plus" />&nbsp;Add another item
+                  </b-btn>
+                </div>
               </b-card-footer>
             </b-card>
           </li>
         </ul>
-        <div class="d-flex justify-content-between ml-1 mr-1">
-          <b-btn v-if="ids.length === 1 && notblank" variant="white" size="sm" class="mr-1" @click="deleteItem">
-            <v-icon name="trash-alt" />&nbsp;Clear item
-          </b-btn>
-          <b-btn v-if="ids.length > 1" variant="white" size="sm" class="mr-1" @click="deleteItem">
-            <v-icon name="trash-alt" />&nbsp;Delete item
-          </b-btn>
-          <b-btn v-if="ids.length < 6" variant="secondary" size="sm" class="" @click="addItem">
-            <v-icon name="plus" />&nbsp;Add another item
-          </b-btn>
-        </div>
+        <NoticeMessage v-if="invalid" variant="info mt-1 mb-2">
+          Please add the item name, and a description or photo (or both).
+        </NoticeMessage>
         <div class="mt-3">
           <div class="d-block d-md-none">
             <b-btn
-              v-if="valid"
               variant="primary"
               :disabled="uploadingPhoto"
               size="lg"
@@ -48,9 +59,6 @@
             >
               Next <v-icon name="angle-double-right" />
             </b-btn>
-            <NoticeMessage v-if="!valid" variant="info">
-              Please add the item name, and a description or photo (or both).
-            </NoticeMessage>
           </div>
           <div class="d-none d-md-flex justify-content-between">
             <b-btn variant="white" size="lg" to="/find" class="d-none d-md-block">
@@ -104,7 +112,8 @@ export default {
   mixins: [loginOptional, buildHead, compose],
   data: function() {
     return {
-      postType: 'Wanted'
+      postType: 'Wanted',
+      editLocationOrGroup: false
     }
   },
   methods: {

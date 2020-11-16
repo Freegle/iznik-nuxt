@@ -133,4 +133,22 @@ export default class MessageAPI extends BaseAPI {
       id: id
     })
   }
+
+  addBy(id, userid, count) {
+    return this.$post('/message', {
+      action: 'AddBy',
+      id,
+      userid,
+      count
+    })
+  }
+
+  removeBy(id, userid, count) {
+    return this.$post('/message', {
+      action: 'RemoveBy',
+      id,
+      userid,
+      count
+    })
+  }
 }

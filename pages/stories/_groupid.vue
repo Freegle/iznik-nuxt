@@ -2,7 +2,7 @@
   <div>
     <b-row class="m-0">
       <b-col cols="12" lg="6" class="p-0" offset-lg="3">
-        <div>
+        <div class="bg-white p-4">
           <h1>Stories from Freeglers<span v-if="groupname"> on {{ groupname }}</span></h1>
           <p>
             We love to hear why people Freegle - it keeps our volunteers volunteering, and it helps show new freeglers what it's all about.

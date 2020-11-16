@@ -7,6 +7,9 @@
             <div>
               <h3 class="text-wrap flex-shrink-2 mr-2 mb-0">
                 {{ message.subject }}
+                <b-badge v-if="message.availableinitially > 1" variant="info">
+                  {{ message.availablenow }} left
+                </b-badge>
               </h3>
               <read-more v-if="message && message.textbody" :text="message.textbody" :max-chars="maxChars" class="nopara" />
             </div>
@@ -67,6 +70,9 @@
                   <span v-else>
                     {{ message.subject }}
                   </span>
+                  <b-badge v-if="message.availableinitially > 1" variant="info">
+                    {{ message.availablenow }} left
+                  </b-badge>
                   <span v-if="rejected" class="text-danger">
                     <v-icon name="exclamation-triangle" scale="2" />
                   </span>
@@ -86,7 +92,7 @@
               </span>
             </div>
             <div>
-              <span v-if="message.replycount > 0" class="ml-1">
+              <span v-if="message.replycount > 0">
                 <b-badge variant="info">
                   <v-icon name="user" class="fa-fw" /> {{ message.replycount | pluralize(['reply', 'replies'], { includeNumber: true }) }}
                 </b-badge>
@@ -227,19 +233,24 @@
         </template>
       </b-modal>
     </div>
-    <OutcomeModal ref="outcomeModal" :message="message" :users="replyusers" @outcome="hide = true" />
+    <OutcomeModal ref="outcomeModal" :message="message" @outcome="hide = true" />
     <ShareModal :id="message.id" ref="shareModal" />
     <MessageEditModal ref="editModal" :message="message" />
   </div>
 </template>
 <script>
-import ResizeText from 'vue-resize-text'
 import OutcomeModal from './OutcomeModal'
 const MyMessageReply = () => import('./MyMessageReply.vue')
 const ShareModal = () => import('./ShareModal')
 const MessageEditModal = () => import('./MessageEditModal')
 const ImageCarousel = () => import('./ImageCarousel')
 const NoticeMessage = () => import('~/components/NoticeMessage')
+
+let ResizeText = null
+
+if (process.browser) {
+  ResizeText = require('vue-resize-text')
+}
 
 export default {
   directives: {
@@ -256,10 +267,6 @@ export default {
   props: {
     message: {
       type: Object,
-      required: true
-    },
-    messages: {
-      type: Array,
       required: true
     },
     showOld: {
@@ -494,6 +501,7 @@ export default {
         description: this.message.textbody
           ? this.message.textbody.trim()
           : null,
+        availablenow: this.message.availablenow,
         type: this.message.type
       })
 

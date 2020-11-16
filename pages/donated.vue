@@ -9,7 +9,7 @@
         <b-card-text class="p-2">
           <p>Thanks very much for donating to us.  We'll use your money wisely.</p>
           <p>
-            You can also support us by putting up posters, inviting people, and more.  See <nuxt-link to="/spread">
+            You can also support us by putting up posters, inviting people, and more.  See <nuxt-link to="/promote">
               here
             </nuxt-link>.
           </p>

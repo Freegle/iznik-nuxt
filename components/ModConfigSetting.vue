@@ -4,20 +4,27 @@
       {{ description }}
     </b-form-text>
     <b-input-group v-if="type === 'input'">
-      <b-input v-model="value" />
-      <b-input-group-append>
+      <b-input v-model="value" :disabled="disabled" />
+      <b-input-group-append v-if="!disabled">
         <SpinButton variant="white" name="save" label="Save" :handler="save" />
       </b-input-group-append>
     </b-input-group>
     <div v-else-if="type === 'textarea'">
       <b-row>
         <b-col>
-          <b-textarea v-model="value" :rows="rows" />
+          <b-textarea v-model="value" :rows="rows" :disabled="disabled" />
         </b-col>
       </b-row>
       <b-row>
         <b-col>
-          <SpinButton variant="white" name="save" label="Save" :handler="save" class="mt-2" />
+          <SpinButton
+            v-if="!disabled"
+            variant="white"
+            name="save"
+            label="Save"
+            :handler="save"
+            class="mt-2"
+          />
         </b-col>
       </b-row>
     </div>
@@ -31,11 +38,12 @@
         :sync="true"
         :labels="{checked: toggleChecked, unchecked: toggleUnchecked}"
         color="#61AE24"
+        :disabled="disabled"
         @change="save"
       />
     </div>
     <div v-else-if="type === 'select'">
-      <b-select v-model="value" :options="options" class="mt-2" @change="save" />
+      <b-select v-model="value" :options="options" class="mt-2" :disabled="disabled" @change="save" />
     </div>
   </b-form-group>
 </template>
@@ -102,6 +110,11 @@ export default {
       type: Array,
       required: false,
       default: () => []
+    },
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {

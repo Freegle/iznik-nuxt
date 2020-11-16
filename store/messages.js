@@ -507,5 +507,24 @@ export const actions = {
       groupid: params.groupid
     })
     commit('addAll', messages)
+  },
+
+  async addBy({ dispatch, commit }, params) {
+    console.log('Add by', params)
+    await this.$api.message.addBy(params.id, params.userid, params.count)
+    const { message } = await this.$api.message.fetch({
+      id: params.id,
+      messagehistory: true
+    })
+    commit('add', message)
+  },
+
+  async removeBy({ dispatch, commit }, params) {
+    await this.$api.message.removeBy(params.id, params.userid, params.count)
+    const { message } = await this.$api.message.fetch({
+      id: params.id,
+      messagehistory: true
+    })
+    commit('add', message)
   }
 }

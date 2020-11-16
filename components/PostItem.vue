@@ -5,6 +5,7 @@
       placeholder="In a single word or phrase, what is it?"
       maxlength="60"
       spellcheck="true"
+      size="lg"
       @input="input"
     />
   </div>

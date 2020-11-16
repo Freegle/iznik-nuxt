@@ -10,7 +10,7 @@
     <b-row v-else class="m-0">
       <b-col cols="0" md="3" class="d-none d-md-block" />
       <b-col cols="12" md="6" class="p-0">
-        <div>
+        <div class="bg-white p-4">
           <p>
             We love to hear why people Freegle - it keeps our volunteers volunteering, and it helps show new freeglers what it's all about.
           </p>

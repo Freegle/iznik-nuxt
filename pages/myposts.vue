@@ -19,28 +19,8 @@
         </div>
         <div v-else>
           <JobsTopBar v-if="!justPosted" />
-          <b-card
-            v-if="!simple"
-            class="mt-2"
-            border-variant="info"
-            header="info"
-            header-bg-variant="info"
-            header-text-variant="white"
-            no-body
-          >
-            <template slot="header">
-              <h2 class="d-inline header--size3">
-                <v-icon name="calendar-alt" scale="2" /> Your Availability
-              </h2>
-            </template>
-            <b-card-body>
-              <p>
-                Tell us when you're free and it'll make it quicker to arrange collection times.
-              </p>
-              <b-btn size="lg" variant="primary" @click="availability">
-                <v-icon name="calendar-alt" /> Update your availability
-              </b-btn>
-            </b-card-body>
+          <b-card v-if="contactPicker" border-variant="info">
+            <Invite class="bg-white" />
           </b-card>
           <b-card
             class="mt-2"
@@ -75,7 +55,7 @@
                 <b-img-lazy v-if="busy && offers.length === 0" src="~/static/loader.gif" alt="Loading..." />
                 <div v-if="busy || activeOfferCount > 0 || (showOldOffers && offers.length > 0)">
                   <div v-for="message in offers" :key="'message-' + message.id" class="p-0 text-left mt-1">
-                    <MyMessage :message="message" :messages="messages" :show-old="showOldOffers" :expand="expand" />
+                    <MyMessage :message="message" :show-old="showOldOffers" :expand="expand" />
                   </div>
                 </div>
                 <div v-else>
@@ -127,7 +107,7 @@
                 </p>
                 <div v-if="busy || activeWantedCount > 0 || (showOldWanteds && wanteds.length > 0)">
                   <div v-for="message in wanteds" :key="'message-' + message.id" class="p-0 text-left mt-1">
-                    <MyMessage :message="message" :messages="messages" :show-old="showOldWanteds" :expand="expand" />
+                    <MyMessage :message="message" :show-old="showOldWanteds" :expand="expand" />
                   </div>
                 </div>
                 <div v-else>
@@ -139,6 +119,29 @@
                   </div>
                 </div>
               </b-card-text>
+            </b-card-body>
+          </b-card>
+          <b-card
+            v-if="!simple"
+            class="mt-2"
+            border-variant="info"
+            header="info"
+            header-bg-variant="info"
+            header-text-variant="white"
+            no-body
+          >
+            <template slot="header">
+              <h2 class="d-inline header--size3">
+                <v-icon name="calendar-alt" scale="2" /> Your Availability
+              </h2>
+            </template>
+            <b-card-body>
+              <p>
+                Tell us when you're free and it'll make it quicker to arrange collection times.
+              </p>
+              <b-btn size="lg" variant="primary" @click="availability">
+                <v-icon name="calendar-alt" /> Update your availability
+              </b-btn>
             </b-card-body>
           </b-card>
           <b-card
@@ -194,6 +197,7 @@
 </template>
 
 <script>
+import Invite from '../components/Invite'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 import waitForRef from '@/mixins/waitForRef'
@@ -210,6 +214,7 @@ const ExpectedRepliesWarning = () =>
 
 export default {
   components: {
+    Invite,
     JustPosted,
     JobsTopBar,
     MyMessage,
@@ -343,6 +348,15 @@ export default {
       ret.sort((a, b) => a.daysago - b.daysago)
 
       return ret
+    },
+    contactPicker() {
+      if (process.server) {
+        return false
+      } else {
+        const ret =
+          'contacts' in window.navigator && 'ContactsManager' in window
+        return ret
+      }
     }
   },
   async mounted() {
@@ -375,17 +389,21 @@ export default {
     })
 
     // For some reason we can't capture emitted events from the outcome modal so use root as a bus.
-    this.$root.$on('outcome', groupid => {
-      const lastask = this.$store.getters['misc/get']('lastdonationask')
+    this.$root.$on('outcome', params => {
+      const { groupid, outcome } = params
 
-      if (!lastask || new Date().getTime() - lastask > 60 * 60 * 1000) {
-        this.donationGroup = groupid
-        this.ask()
+      if (outcome === 'Taken' || outcome === 'Received') {
+        const lastask = this.$store.getters['misc/get']('lastdonationask')
 
-        this.$store.dispatch('misc/set', {
-          key: 'lastdonationask',
-          value: new Date().getTime()
-        })
+        if (!lastask || new Date().getTime() - lastask > 60 * 60 * 1000) {
+          this.donationGroup = groupid
+          this.ask()
+
+          this.$store.dispatch('misc/set', {
+            key: 'lastdonationask',
+            value: new Date().getTime()
+          })
+        }
       }
     })
   },

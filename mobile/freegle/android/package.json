@@ -14,6 +14,7 @@
   "dependencies": {
     "cordova-android": "^8.1.0",
     "cordova-plugin-camera": "^4.1.0",
+    "cordova-plugin-contacts": "3.0.1",
     "cordova-plugin-device": "^2.0.3",
     "cordova-plugin-geolocation": "git+https://github.com/apache/cordova-plugin-geolocation.git",
     "cordova-plugin-googleplus": "^8.2.1",
@@ -53,7 +54,8 @@
       "phonegap-plugin-push": {
         "ANDROID_SUPPORT_V13_VERSION": "27.+",
         "FCM_VERSION": "17.0.+"
-      }
+      },
+      "cordova-plugin-contacts": {}
     },
     "platforms": [
       "android"

@@ -75,8 +75,8 @@ export default {
     },
     walesOptions() {
       return {
-        fillColor: 'red',
-        fillOpacity: 0.5,
+        fillColor: 'green',
+        fillOpacity: 0.1,
         color: 'black'
       }
     },
