@@ -29,6 +29,7 @@ import LogsAPI from './LogsAPI.js'
 import MembershipsAPI from './MembershipsAPI.js'
 import MergeAPI from './MergeAPI.js'
 import MessageAPI from './MessageAPI.js'
+import MicroVolunteeringAPI from './MicroVolunteeringAPI.js'
 import ModConfigsAPI from './ModConfigsAPI.js'
 import NewsAPI from './NewsAPI.js'
 import NoticeboardAPI from './NoticeboardAPI.js'
@@ -70,6 +71,7 @@ export default ({ $axios, store }) => {
     memberships: new MembershipsAPI(options),
     merge: new MergeAPI(options),
     message: new MessageAPI(options),
+    microvolunteering: new MicroVolunteeringAPI(options),
     modconfigs: new ModConfigsAPI(options),
     news: new NewsAPI(options),
     noticeboard: new NoticeboardAPI(options),

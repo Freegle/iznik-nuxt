@@ -49,7 +49,7 @@
             <i>There's no description.</i>
           </div>
           <b-button v-if="!successful && !expanded" variant="white" class="mt-2" @click="expand">
-            See details and reply <v-icon name="angle-double-right" />
+            {{ expandButtonText }} <v-icon name="angle-double-right" />
           </b-button>
         </div>
         <button v-if="showAttachments && attachments && attachments.length > 0" class="card-header-image__wrapper p-0 border-0" :disabled="successful" @click="showPhotos">
@@ -66,7 +66,7 @@
             @error.native="brokenImage"
           />
         </button>
-        <div v-if="!simple && expanded" class="d-flex mt-1 card-header__options">
+        <div v-if="!simple && expanded && actions" class="d-flex mt-1 card-header__options">
           <b-button v-if="expanded && !hideClose" size="sm" variant="link" class="grey p-0 mr-4" @click="contract">
             Close post
           </b-button>
@@ -114,7 +114,7 @@
           </div>
         </div>
       </b-card-body>
-      <b-card-footer v-if="expanded" class="p-1 pt-3">
+      <b-card-footer v-if="expanded && replyable" class="p-1 pt-3">
         <CovidClosed v-if="expanded && expanded.closed" />
         <div v-else>
           <CovidCheckList v-if="!confirmed" class="mt-2" @confirmed="confirmed = true" />
@@ -352,6 +352,21 @@ export default {
       type: Number,
       required: false,
       default: 1
+    },
+    expandButtonText: {
+      type: String,
+      required: false,
+      default: 'See details and reply'
+    },
+    replyable: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
+    actions: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
   data: function() {
