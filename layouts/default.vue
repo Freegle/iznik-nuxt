@@ -231,12 +231,13 @@ export default {
       chatPoll: null,
       nchan: null,
       logo: require(`@/static/icon.png`),
-      timeTimer: null
+      timeTimer: null,
+      unreadNotificationCount: 0
     }
   },
 
   head() {
-    const totalCount = this.notificationCount + this.chatCount
+    const totalCount = this.unreadNotificationCount + this.chatCount
     return {
       titleTemplate: totalCount > 0 ? `(${totalCount}) %s` : '%s',
       link: [
