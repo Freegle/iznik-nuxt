@@ -8,6 +8,7 @@
     menu-class="notification-list__dropdown-menu"
     lazy
     right
+    aria-label="notifications"
     @shown="loadLatestNotifications"
   >
     <template slot="button-content">
