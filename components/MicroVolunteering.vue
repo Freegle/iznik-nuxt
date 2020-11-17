@@ -6,7 +6,10 @@
       size="lg"
     >
       <template v-slot:modal-header>
-        <h1>
+        <h1 class="w-100">
+          <span v-if="!force" class="text-black-50 float-right mr-2 clickme" title="Close" @click="showInvite = false">
+            <v-icon name="times-circle" scale="1.5" />
+          </span>
           Help keep Freegle running smoothly
         </h1>
       </template>
@@ -45,8 +48,14 @@
       :no-close-on-esc="force"
     >
       <template v-slot:modal-header>
-        <div class="d-flex flex-column">
-          <h1 v-if="task && task.type === 'CheckMessage'" class="header--size3">
+        <div class="d-flex flex-column w-100">
+          <h1 v-if="task && task.type === 'CheckMessage'" class="header--size3 w-100">
+            <span v-if="!force" class="text-black-50 float-right mr-2 clickme" title="Close" @click="doneForNow">
+              <span class="small">
+                {{ todo }} left
+              </span>
+              <v-icon name="times-circle" scale="1.5" />
+            </span>
             Does this post look OK?
           </h1>
           <div class="font-weight-bold">
@@ -57,25 +66,42 @@
       <b-card-text>
         <p v-if="mod" class="text-muted small">
           (This is something members see.  You're seeing it too even though you're a mod, so you can see what it
-          looks like to them.)
+          looks like to them.) ,{{ showTask }},
         </p>
         <div v-if="task && task.type === 'CheckMessage'">
           <p>
             This is someone else's post.  Does it look ok to you?
           </p>
           <Message v-bind="message" expand-button-text="See more details" :replyable="false" start-expanded :actions="false" />
+          <div class="d-flex justify-content-between flex-wrap w-100 mt-2">
+            <SpinButton
+              variant="primary"
+              class="mb-1"
+              name="check"
+              label="Yes, that looks ok"
+              :handler="response('Approve')"
+              size="lg"
+              spinclass="text-white"
+            />
+            <SpinButton
+              variant="secondary"
+              class="mb-1"
+              name="times"
+              label="No, something's not right"
+              :handler="response('Reject')"
+              size="lg"
+              spinclass="text-white"
+            />
+          </div>
         </div>
       </b-card-text>
-      <template v-slot:modal-footer>
+      <template v-if="!force" v-slot:modal-footer>
         <div class="d-flex justify-content-between flex-wrap w-100">
-          <b-btn variant="primary" class="mb-1" @click="response('Approve')">
-            Yes, that looks OK
+          <b-btn v-if="inviteAccepted && !force" variant="link" class="mb-1" @click="response('Stop')()">
+            Don't ask me again
           </b-btn>
-          <b-btn v-if="inviteAccepted && !force" variant="white" class="mb-1" @click="response('Stop')">
-            Stop asking me
-          </b-btn>
-          <b-btn variant="secondary" class="mb-1" @click="response('Reject')">
-            No, something's not right
+          <b-btn variant="white" class="mb-1" @click="doneForNow">
+            I'm done for now
           </b-btn>
         </div>
       </template>
@@ -85,8 +111,9 @@
 <script>
 import dayjs from 'dayjs'
 import Message from './Message'
+import SpinButton from './SpinButton'
 export default {
-  components: { Message },
+  components: { SpinButton, Message },
   props: {
     force: {
       type: Boolean,
@@ -100,7 +127,8 @@ export default {
       showInvite: false,
       task: null,
       message: null,
-      debug: false
+      debug: false,
+      todo: 5
     }
   },
   computed: {
@@ -186,8 +214,10 @@ export default {
     async getTask() {
       // Try to get a task.
       this.task = await this.$api.microvolunteering.challenge()
+      console.log('Got task', this.task)
 
       if (this.task) {
+        console.log('Got a task')
         this.$store.dispatch('misc/set', {
           key: 'microvolunteeringlastask',
           value: Date.now()
@@ -204,30 +234,38 @@ export default {
           this.showTask = true
         }
       } else {
+        console.log('No task')
         // Nothing to do.
-        this.$emit('verified')
+        this.doneForNow()
       }
     },
-    async response(verdict) {
-      if (verdict === 'Stop') {
-        this.$store.dispatch('misc/set', {
-          key: 'microvolunteeringinviteaccepted',
-          value: null
-        })
+    response(verdict) {
+      return async () => {
+        if (verdict === 'Stop') {
+          this.$store.dispatch('misc/set', {
+            key: 'microvolunteeringinviteaccepted',
+            value: null
+          })
 
-        this.$store.dispatch('misc/set', {
-          key: 'microvolunteeringinviterejected',
-          value: Date.now()
-        })
-      } else {
-        await this.$api.microvolunteering.response({
-          msgid: this.task.msgid,
-          response: verdict
-        })
+          this.$store.dispatch('misc/set', {
+            key: 'microvolunteeringinviterejected',
+            value: Date.now()
+          })
+        } else {
+          await this.$api.microvolunteering.response({
+            msgid: this.task.msgid,
+            response: verdict
+          })
+        }
+
+        this.todo--
+
+        if (this.todo <= 0) {
+          this.doneForNow()
+        } else {
+          this.getTask()
+        }
       }
-
-      this.showTask = false
-      this.$emit('verified')
     },
     async inviteResponse(response) {
       if (response) {
@@ -242,8 +280,6 @@ export default {
         })
 
         await this.getTask()
-
-        this.showTask = true
       } else {
         this.$store.dispatch('misc/set', {
           key: 'microvolunteeringinviterejected',
@@ -257,6 +293,11 @@ export default {
       }
 
       this.showInvite = false
+    },
+    doneForNow() {
+      console.log('Done for now')
+      this.showTask = false
+      this.$emit('verified')
     }
   }
 }

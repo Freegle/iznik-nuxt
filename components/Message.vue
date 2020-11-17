@@ -14,7 +14,7 @@
       </p>
     </b-tooltip>
     <b-card class="p-0" variant="success" :class="{ freegled : successful }">
-      <b-card-header :class="'pl-2 pr-2 clearfix card-header' + (ispromised ? ' promisedfade' : '')">
+      <b-card-header :class="'pl-2 pr-2 clearfix card-header' + (ispromised && replyable ? ' promisedfade' : '')">
         <b-card-title class="msgsubj mb-1 header--size4 card-header__title" title-tag="h3">
           <Highlighter
             v-if="matchedon"
@@ -92,7 +92,7 @@
         </div>
       </b-card-header>
       <b-card-body v-if="expanded" class="pl-1">
-        <notice-message v-if="ispromised" variant="warning" class="mb-3 mt-1">
+        <notice-message v-if="ispromised && replyable" variant="warning" class="mb-3 mt-1">
           This item has already been promised to someone.  You can still reply - you might get it if someone
           else drops out.
         </notice-message>
@@ -108,7 +108,7 @@
               class="prewrap"
             /><span v-else class="prewrap">{{ expanded.textbody }}</span>
           </div>
-          <div class="d-flex justify-content-between flex-wrap mt-2">
+          <div v-if="replyable" class="d-flex justify-content-between flex-wrap mt-2">
             <MessageUserInfo v-if="!simple && expanded.fromuser" :user="expanded.fromuser" :milesaway="milesaway" />
             <MessageReplyInfo :message="expanded" />
           </div>
