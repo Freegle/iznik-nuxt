@@ -151,7 +151,7 @@ export default {
         function onError(contactError) {
           console.log('navigator.contacts.pickContact onError!', contactError)
           if( contactError==20) alert('Sorry, no permission')
-          else alert('Sorry: error '+contactError)
+          else if (contactError != 6) alert('Sorry: error '+contactError)
         }
         navigator.contacts.pickContact(contact => { this.contacts = [contact] }, onError)
         // contact.displayName
