@@ -45,6 +45,7 @@ const Notification = () => import('~/components/Notification')
 const InfiniteLoading = () => import('vue-infinite-loading')
 
 export default {
+  name: 'NotificationOptions',
   components: {
     InfiniteLoading,
     Notification
