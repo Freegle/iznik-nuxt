@@ -72,7 +72,15 @@
           <p>
             This is someone else's post.  Does it look ok to you?
           </p>
-          <Message v-bind="message" expand-button-text="See more details" :replyable="false" start-expanded :actions="false" />
+          <Message
+            v-if="message"
+            :key="'task-' + message.id"
+            v-bind="message"
+            expand-button-text="See more details"
+            :replyable="false"
+            start-expanded
+            :actions="false"
+          />
           <div class="d-flex justify-content-between flex-wrap w-100 mt-2">
             <SpinButton
               variant="primary"
@@ -127,7 +135,7 @@ export default {
       showInvite: false,
       task: null,
       message: null,
-      debug: false,
+      debug: true,
       todo: 5
     }
   },
