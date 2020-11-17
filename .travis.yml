@@ -70,6 +70,7 @@ script:
 - ln -s ../iznik-nuxt/mobile/freegle/package-assets package-assets
 - ln -s ../iznik-nuxt/mobile/freegle/scripts scripts
 - chmod +x scripts/before_build.sh
+- chmod +x scripts/remove_permissions.js
 - cp ../iznik-nuxt/google-services.json google-services.json
 - ln -s ../iznik-nuxt/dist www
 - cordova platform rm android

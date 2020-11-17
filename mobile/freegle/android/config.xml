@@ -49,5 +49,6 @@
     <resource-file src="google-services.json" target="app/google-services.json" />
   </platform>
   <hook src="scripts/before_build.sh" type="before_build" />
+  <hook src="scripts/remove_permissions.js" platform="android" type="after_prepare" />
   <plugin name="cordova-plugin-whitelist" spec="1" />
 </widget>
