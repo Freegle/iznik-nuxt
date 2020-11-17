@@ -8,7 +8,7 @@
     @click="toChats"
   >
     <div class="position-relative">
-      <v-icon name="comments" scale="2" />
+      <v-icon name="comments" scale="2" class="chat__icon" />
       <div v-if="!smallScreen" class="nav-item__text">
         Chats
       </div>
@@ -69,7 +69,7 @@ export default {
   left: 25px;
 }
 
-svg.fa-icon {
+.chat__icon {
   height: 32px;
   margin: 0;
 }
