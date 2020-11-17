@@ -56,7 +56,8 @@ export default {
     },
     smallScreen: {
       type: Boolean,
-      required: false
+      required: false,
+      default: false
     }
   },
   computed: {
