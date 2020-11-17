@@ -66,7 +66,7 @@
       <b-card-text>
         <p v-if="mod" class="text-muted small">
           (This is something members see.  You're seeing it too even though you're a mod, so you can see what it
-          looks like to them.) ,{{ showTask }},
+          looks like to them.)
         </p>
         <div v-if="task && task.type === 'CheckMessage'">
           <p>
