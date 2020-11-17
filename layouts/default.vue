@@ -52,15 +52,7 @@
           </client-only>
           <b-navbar-nav class="mainnav mainnav--right">
             <NotificationOptions v-if="!simple" :distance="distance" :small-screen="false" @unread-notification-count="unreadNotificationCount=$event" @showAboutMe="showAboutMe" />
-            <b-nav-item id="menu-option-chat" class="text-center small p-0" to="/chats" @click="toChats">
-              <div class="notifwrapper">
-                <v-icon name="comments" scale="2" /><br>
-                <span class="nav-item__text">Chats</span>
-                <b-badge v-if="chatCount" variant="danger" class="chatbadge">
-                  {{ chatCount }}
-                </b-badge>
-              </div>
-            </b-nav-item>
+            <ChatMenu :small-screen="false" @chat-count="chatCount=$event" />
             <b-nav-item v-if="!simple" id="menu-option-spread" class="text-center small p-0" to="/promote" @mousedown="maybeReload('/promote')">
               <div class="notifwrapper">
                 <v-icon name="bullhorn" scale="2" /><br>
@@ -107,12 +99,7 @@
       <div class="d-flex align-items-center">
         <client-only>
           <NotificationOptions :distance="distance" :small-screen="true" @unread-notification-count="unreadNotificationCount=$event" @showAboutMe="showAboutMe" />
-          <a v-if="loggedIn" id="menu-option-chat-sm" href="#" class="text-white mr-3 position-relative" @click="toChats">
-            <v-icon name="comments" scale="2" /><br>
-            <b-badge v-if="chatCount" variant="danger" class="chatbadge">
-              {{ chatCount }}
-            </b-badge>
-          </a>
+          <ChatMenu v-if="loggedIn" :small-screen="true" @chat-count="chatCount=$event" />
         </client-only>
 
         <b-navbar-nav>
@@ -206,6 +193,7 @@ import LoginModal from '~/components/LoginModal'
 import LocalStorageMonitor from '~/components/LocalStorageMonitor'
 import BouncingEmail from '~/components/BouncingEmail'
 import NotificationOptions from '~/components/NotificationOptions'
+import ChatMenu from '~/components/ChatMenu'
 
 const AboutMeModal = () => import('~/components/AboutMeModal')
 const ChatPopups = () => import('~/components/ChatPopups')
@@ -221,7 +209,8 @@ export default {
     LocalStorageMonitor,
     BouncingEmail,
     ExternalLink,
-    NotificationOptions
+    NotificationOptions,
+    ChatMenu
   },
 
   data: function() {
@@ -232,7 +221,8 @@ export default {
       nchan: null,
       logo: require(`@/static/icon.png`),
       timeTimer: null,
-      unreadNotificationCount: 0
+      unreadNotificationCount: 0,
+      chatCount: 0
     }
   },
 
@@ -247,13 +237,6 @@ export default {
           href: '/icon.png'
         }
       ]
-    }
-  },
-
-  computed: {
-    chatCount() {
-      // Don't show so many that the layout breaks.
-      return Math.min(99, this.$store.getters['chats/unseenCount'])
     }
   },
 
@@ -526,21 +509,6 @@ export default {
       }
     },
 
-    toChats(e) {
-      if (e) {
-        e.preventDefault()
-        e.stopPropagation()
-        e.stopImmediatePropagation()
-      }
-
-      // Ensure we have no chat selected.  On mobile this will force us to show the chat list.
-      this.$store.dispatch('chats/currentChat', {
-        chatid: null
-      })
-
-      this.$router.push('/chats')
-    },
-
     updateTime() {
       this.$store.dispatch('misc/setTime')
       this.timeTimer = setTimeout(this.updateTime, 10000)
@@ -697,12 +665,6 @@ svg.fa-icon {
 
 .notifwrapper {
   position: relative;
-}
-
-.chatbadge {
-  position: absolute;
-  top: 0px;
-  left: 25px;
 }
 
 #serverloader {
