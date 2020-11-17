@@ -8,8 +8,10 @@
     @click="toChats"
   >
     <div class="position-relative">
-      <v-icon name="comments" scale="2" /><br>
-      <span v-if="!smallScreen" class="nav-item__text">Chats</span>
+      <v-icon name="comments" scale="2" />
+      <div v-if="!smallScreen" class="nav-item__text">
+        Chats
+      </div>
       <b-badge v-if="chatCount" variant="danger" class="chatbadge">
         {{ chatCount }}
       </b-badge>
@@ -65,5 +67,10 @@ export default {
   position: absolute;
   top: 0px;
   left: 25px;
+}
+
+svg.fa-icon {
+  height: 32px;
+  margin: 0;
 }
 </style>
