@@ -116,6 +116,7 @@
       </b-card-body>
       <b-card-footer v-if="expanded && replyable" class="p-1 pt-3">
         <CovidClosed v-if="expanded && expanded.closed" />
+        <div v-else-if="expanded.fromuser.id === myid" />
         <div v-else>
           <CovidCheckList v-if="!confirmed" class="mt-2" @confirmed="confirmed = true" />
           <div v-if="confirmed">
