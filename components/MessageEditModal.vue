@@ -5,9 +5,20 @@
         id="aboutmemodal"
         v-model="showModal"
         size="lg"
+        title-class="w-100"
       >
         <template slot="modal-title">
-          Edit <em>{{ message.subject }}</em>
+          <div class="d-flex flex-wrap justify-content-between w-100">
+            <em>{{ message.subject }}</em>
+            <NumberIncrementDecrement
+              v-if="message.type === 'Offer'"
+              :count.sync="message.availablenow"
+              label="Quantity"
+              append-text=" available"
+              class="count pt-1"
+              size="md"
+            />
+          </div>
         </template>
         <template slot="default">
           <div v-if="message.location">
@@ -78,6 +89,7 @@
   </div>
 </template>
 <script>
+import NumberIncrementDecrement from './NumberIncrementDecrement'
 import keywords from '@/mixins/keywords.js'
 const OurFilePond = () => import('~/components/OurFilePond')
 const Postcode = () => import('./Postcode')
@@ -86,6 +98,7 @@ const PostPhoto = () => import('./PostPhoto')
 
 export default {
   components: {
+    NumberIncrementDecrement,
     OurFilePond,
     Postcode,
     PostItem,
@@ -149,7 +162,8 @@ export default {
           item: this.item,
           location: this.postcode.name,
           textbody: this.message.textbody,
-          attachments: attids
+          attachments: attids,
+          availablenow: this.message.availablenow
         })
 
         this.saving = null
