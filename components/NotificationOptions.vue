@@ -64,6 +64,7 @@ export default {
   },
   computed: {
     notificationType() {
+      // A different component needs to be created depending on the context in which it's used
       return this.smallScreen ? 'b-dropdown' : 'b-nav-item-dropdown'
     },
     notifications() {
@@ -84,7 +85,7 @@ export default {
     const me = this.$store.getters['auth/user']
 
     if (me && me.id) {
-      // Get notifications and poll regularly for new ones.  Would be nice if this was event driven instead but requires server work.
+      // Get notifications and poll regularly for new ones.
       this.$store.dispatch('notifications/updateNotifications')
     }
   },

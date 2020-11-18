@@ -142,7 +142,7 @@ export const actions = {
       }
     }
 
-    // Continuously check for updated notifications
+    // Continuously check for updated notifications. Would be nice if this was event driven instead but requires server work.
     // No need to clear the timeout
     setTimeout(() => {
       dispatch('updateNotifications')

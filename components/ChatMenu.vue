@@ -31,6 +31,7 @@ export default {
   },
   computed: {
     chatType() {
+      // A different component needs to be created depending on the context in which it's used
       return this.smallScreen ? 'a' : 'b-nav-item'
     },
     chatCount() {
