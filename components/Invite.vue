@@ -39,7 +39,7 @@
         <component :is="headingLevel" class="mt-2">
           Invite by text (SMS)
         </component>
-        <ExternalLink v-for="phone in phones" :key="'sms-' + phone.phone" :href="'sms://' + phone.phone + demarcationchar + 'body=' + encodeURIComponent(invitation)">
+        <ExternalLink v-for="phone in phones" :key="'sms-' + phone.phone" :href="'sms://' + phone.phone + ';?&body=' + encodeURIComponent(invitation)">
           <b-btn variant="primary" class="mb-1 mr-1">
             <v-icon name="sms" /> {{ phone.name }} <span class="small"><span class="small">{{ phone.phone }}</span></span>
           </b-btn>
@@ -102,11 +102,6 @@ export default {
       }
 
       return ret
-    },
-    demarcationchar() {
-      const isiOS = navigator.vendor.match(/apple/i)
-      //return isiOS ? '&' : '?'
-      return ';?&'
     },
     phones() {
       const ret = []
