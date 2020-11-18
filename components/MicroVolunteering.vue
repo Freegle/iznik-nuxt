@@ -170,51 +170,53 @@ export default {
       })
     }
 
-    const now = dayjs()
-    const daysago = now.diff(dayjs(this.me.added), 'days')
+    if (this.me) {
+      const now = dayjs()
+      const daysago = now.diff(dayjs(this.me.added), 'days')
 
-    console.log(
-      'Consider status',
-      this.invited,
-      this.inviteAccepted,
-      this.inviteRejected
-    )
+      console.log(
+        'Consider status',
+        this.invited,
+        this.inviteAccepted,
+        this.inviteRejected
+      )
 
-    if (!this.me.microvolunteering) {
-      // Not on a group with this function enabled.
-      console.log('Not on a group with microvolunteering enabled')
-    } else if (!this.askDue) {
-      // Challenged recently, so return verified.  That's true even for if it's forced - we don't want to bombard
-      // people.
-      console.log('Challenged recently')
-      this.$emit('verified')
-    } else if (this.force) {
-      // Forced and not asked recently.  Do so.
-      console.log('Forced and not recent, ask')
-      this.getTask()
-    } else if (daysago > 7) {
-      // They're not a new member.  We might want to ask them.
-      if (this.inviteRejected) {
-        // We're not forced to do this, and they've said they don't want to.
-        console.log('Invited and said no')
+      if (!this.me.microvolunteering) {
+        // Not on a group with this function enabled.
+        console.log('Not on a group with microvolunteering enabled')
+      } else if (!this.askDue) {
+        // Challenged recently, so return verified.  That's true even for if it's forced - we don't want to bombard
+        // people.
+        console.log('Challenged recently')
         this.$emit('verified')
-      } else if (this.inviteAccepted) {
-        // They're up for this.
-        console.log('Invited and said yes, ask')
+      } else if (this.force) {
+        // Forced and not asked recently.  Do so.
+        console.log('Forced and not recent, ask')
         this.getTask()
-      } else {
-        // We don't know if they want to.  Ask.
-        console.log("Don't know what they want, ask")
-        this.$api.bandit.shown({
-          uid: 'microvolunteering',
-          variant: 'inviteaccepted'
-        })
-        this.$api.bandit.shown({
-          uid: 'microvolunteering',
-          variant: 'inviterejected'
-        })
+      } else if (daysago > 7) {
+        // They're not a new member.  We might want to ask them.
+        if (this.inviteRejected) {
+          // We're not forced to do this, and they've said they don't want to.
+          console.log('Invited and said no')
+          this.$emit('verified')
+        } else if (this.inviteAccepted) {
+          // They're up for this.
+          console.log('Invited and said yes, ask')
+          this.getTask()
+        } else {
+          // We don't know if they want to.  Ask.
+          console.log("Don't know what they want, ask")
+          this.$api.bandit.shown({
+            uid: 'microvolunteering',
+            variant: 'inviteaccepted'
+          })
+          this.$api.bandit.shown({
+            uid: 'microvolunteering',
+            variant: 'inviterejected'
+          })
 
-        this.showInvite = true
+          this.showInvite = true
+        }
       }
     }
   },
