@@ -39,7 +39,7 @@
         <component :is="headingLevel" class="mt-2">
           Invite by text (SMS)
         </component>
-        <ExternalLink v-for="phone in phones" :key="'sms-' + phone.phone" :href="'sms://' + phone.phone + '?body=' + encodeURIComponent(invitation)">
+        <ExternalLink v-for="phone in phones" :key="'sms-' + phone.phone" :href="'sms://' + phone.phone + demarcationchar + 'body=' + encodeURIComponent(invitation)">
           <b-btn variant="primary" class="mb-1 mr-1">
             <v-icon name="sms" /> {{ phone.name }} <span class="small"><span class="small">{{ phone.phone }}</span></span>
           </b-btn>
@@ -103,6 +103,10 @@ export default {
 
       return ret
     },
+    demarcationchar() {
+      const isiOS = navigator.vendor.match(/apple/i)
+      return isiOS ? '&' : '?' 
+    },
     phones() {
       const ret = []
 
@@ -117,11 +121,21 @@ export default {
             })
           }
           if (c.phoneNumbers) { // App
+            let first = false
             c.phoneNumbers.forEach(phone => {
-              ret.push({
-                name: c.displayName ? c.displayName + (phone.type ? ' ' + phone.type : '') : null,
-                phone: phone.value
-              })
+              let phoneno = phone.value.replace(/\s+/g, '')
+              if (phoneno.length > 1) {
+                if (phoneno.charAt(0) === '0' && phoneno.charAt(1) !== '0') {
+                  phoneno = '+44' + phoneno.substring(1)
+                }
+              }
+              if (phoneno !== first) {
+                first = phoneno
+                ret.push({
+                  name: c.displayName ? c.displayName + (phone.type ? ' ' + phone.type : '') : null,
+                  phone: phoneno
+                })
+              }
             })
           }
 

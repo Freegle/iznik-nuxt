@@ -1,3 +1,7 @@
+// Android cordova-plugin-contacts adds WRITE_CONTACTS unnecessarily, so remove
+// https://stackoverflow.com/questions/25265908/cordova-remove-unnecessary-permissions
+// D:\FreeglePenrithEden\iznik-nuxt-app\platforms\android\app\src\main\AndroidManifest.xml
+
 var permissionsToRemove = ["WRITE_CONTACTS"];
 
 var fs = require('fs');
