@@ -105,7 +105,8 @@ export default {
     },
     demarcationchar() {
       const isiOS = navigator.vendor.match(/apple/i)
-      return isiOS ? '&' : '?' 
+      //return isiOS ? '&' : '?'
+      return ';?&'
     },
     phones() {
       const ret = []
