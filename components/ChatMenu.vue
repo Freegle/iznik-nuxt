@@ -41,7 +41,7 @@ export default {
   },
   watch: {
     chatCount: function() {
-      this.$emit('chat-count', this.chatCount)
+      this.$emit('update:chatCount', this.chatCount)
     }
   },
   methods: {

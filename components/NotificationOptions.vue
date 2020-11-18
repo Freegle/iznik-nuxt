@@ -78,7 +78,7 @@ export default {
   },
   watch: {
     unreadNotificationCount: function() {
-      this.$emit('unread-notification-count', this.unreadNotificationCount)
+      this.$emit('update:unreadNotificationCount', this.unreadNotificationCount)
     }
   },
   mounted() {

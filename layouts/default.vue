@@ -51,8 +51,8 @@
             </div>
           </client-only>
           <b-navbar-nav class="mainnav mainnav--right">
-            <NotificationOptions v-if="!simple" :distance="distance" :small-screen="false" @unread-notification-count="unreadNotificationCount=$event" @showAboutMe="showAboutMe" />
-            <ChatMenu :small-screen="false" @chat-count="chatCount=$event" />
+            <NotificationOptions v-if="!simple" :distance="distance" :small-screen="false" :unread-notification-count.sync="unreadNotificationCount" @showAboutMe="showAboutMe" />
+            <ChatMenu :small-screen="false" :chat-count.sync="chatCount" />
             <b-nav-item v-if="!simple" id="menu-option-spread" class="text-center small p-0" to="/promote" @mousedown="maybeReload('/promote')">
               <div class="notifwrapper">
                 <v-icon name="bullhorn" scale="2" /><br>
@@ -98,8 +98,8 @@
       </b-navbar-brand>
       <div class="d-flex align-items-center">
         <client-only>
-          <NotificationOptions :distance="distance" :small-screen="true" @unread-notification-count="unreadNotificationCount=$event" @showAboutMe="showAboutMe" />
-          <ChatMenu v-if="loggedIn" :small-screen="true" @chat-count="chatCount=$event" />
+          <NotificationOptions :distance="distance" :small-screen="true" :unread-notification-count.sync="unreadNotificationCount" @showAboutMe="showAboutMe" />
+          <ChatMenu v-if="loggedIn" :small-screen="true" :chat-count.sync="chatCount" />
         </client-only>
 
         <b-navbar-nav>
