@@ -135,7 +135,7 @@ export default {
       showInvite: false,
       task: null,
       message: null,
-      debug: false,
+      debug: true,
       todo: 5
     }
   },
@@ -144,13 +144,14 @@ export default {
       return this.$store.getters['misc/get']('microvolunteeringlastask')
     },
     invited() {
-      return this.$store.getters['misc/get']('microvolunteeringinvited')
+      return this.me && this.me.trustlevel
     },
     inviteRejected() {
-      return this.$store.getters['misc/get']('microvolunteeringinviterejected')
+      console.log('Rejected?', this.me)
+      return this.me && this.me.trustlevel === 'Declined'
     },
     inviteAccepted() {
-      return this.$store.getters['misc/get']('microvolunteeringinviteaccepted')
+      return this.me && this.me.trustlevel && this.me.trustlevel !== 'Declined'
     },
     askDue() {
       // Ask no more than once per hour.
@@ -167,18 +168,17 @@ export default {
         key: 'microvolunteeringlastask',
         value: null
       })
-      this.$store.dispatch('misc/set', {
-        key: 'microvolunteeringinviterejected',
-        value: null
-      })
-      this.$store.dispatch('misc/set', {
-        key: 'microvolunteeringinviteaccepted',
-        value: null
-      })
     }
 
     const now = dayjs()
     const daysago = now.diff(dayjs(this.me.added), 'days')
+
+    console.log(
+      'Consider status',
+      this.invited,
+      this.inviteAccepted,
+      this.inviteRejected
+    )
 
     if (!this.me.microvolunteering) {
       // Not on a group with this function enabled.
@@ -277,6 +277,7 @@ export default {
     },
     async inviteResponse(response) {
       if (response) {
+        console.log('Accepted')
         this.$store.dispatch('misc/set', {
           key: 'microvolunteeringinviteaccepted',
           value: Date.now()
@@ -287,8 +288,14 @@ export default {
           variant: 'inviteaccepted'
         })
 
+        this.$store.dispatch('user/edit', {
+          id: this.myid,
+          trustlevel: 'Basic'
+        })
+
         await this.getTask()
       } else {
+        console.log('Declined')
         this.$store.dispatch('misc/set', {
           key: 'microvolunteeringinviterejected',
           value: Date.now()
@@ -298,7 +305,17 @@ export default {
           uid: 'microvolunteering',
           variant: 'inviterejected'
         })
+
+        this.$store.dispatch('user/edit', {
+          id: this.myid,
+          trustlevel: 'Declined'
+        })
       }
+
+      await this.$store.dispatch('auth/fetchUser', {
+        components: ['me', 'groups'],
+        force: true
+      })
 
       this.showInvite = false
     },
