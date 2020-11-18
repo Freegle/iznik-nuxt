@@ -96,38 +96,33 @@ export default {
       this.$store.dispatch('notifications/clear')
       this.$store.dispatch('notifications/fetchNextListChunk')
     },
-    loadMoreNotifications: function($state) {
-      const currentCount = this.notifications.length
-
+    loadMoreNotifications: async function($state) {
       if (this.complete) {
         $state.complete()
       } else {
         this.busy = true
-        this.$store
-          .dispatch('notifications/fetchNextListChunk')
-          .then(() => {
-            try {
-              const notifications = this.$store.getters[
-                'notifications/getCurrentList'
-              ]
 
-              if (currentCount === notifications.length) {
-                this.complete = true
-                $state.complete()
-              } else {
-                $state.loaded()
-              }
-              this.busy = false
-            } catch (e) {
-              console.error(e)
-              console.log('Error')
-            }
-          })
-          .catch(e => {
-            console.error(e)
-            this.busy = false
+        try {
+          const currentCount = this.notifications.length
+
+          await this.$store.dispatch('notifications/fetchNextListChunk')
+
+          const notifications = this.$store.getters[
+            'notifications/getCurrentList'
+          ]
+
+          if (currentCount === notifications.length) {
+            this.complete = true
             $state.complete()
-          })
+          } else {
+            $state.loaded()
+          }
+          this.busy = false
+        } catch (e) {
+          console.error(e)
+          this.busy = false
+          $state.complete()
+        }
       }
     },
     async markAllRead() {
