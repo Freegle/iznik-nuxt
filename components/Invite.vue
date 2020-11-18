@@ -123,16 +123,13 @@ export default {
           if (c.phoneNumbers) { // App
             let first = false
             c.phoneNumbers.forEach(phone => {
-              console.log('BEFORE', phone.value)
               let phoneno = phone.value.replace(/\s+/g, '')
               if (phoneno.length > 1) {
                 if (phoneno.charAt(0) === '0' && phoneno.charAt(1) !== '0') {
                   phoneno = '+44' + phoneno.substring(1)
                 }
               }
-              console.log('AFTER', phoneno)
               if (phoneno !== first) {
-                console.log('DIFF')
                 first = phoneno
                 ret.push({
                   name: c.displayName ? c.displayName + (phone.type ? ' ' + phone.type : '') : null,
