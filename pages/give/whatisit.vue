@@ -112,6 +112,10 @@ export default {
       editLocationOrGroup: false
     }
   },
+  async created() {
+    // Make sure we're not wrongly set as being in the middle of an upload
+    await this.$store.dispatch('compose/setUploading', false)
+  },
   methods: {
     next() {
       this.invalid = !this.valid
