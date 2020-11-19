@@ -235,5 +235,28 @@ export const actions = {
 
   currentChat({ commit }, params) {
     commit('currentChat', params.chatid)
+  },
+
+  async fetchLatestChats({ dispatch, rootGetters }, params) {
+    const me = rootGetters['auth/user']
+
+    if (me && me.id) {
+      const currentCount = rootGetters['chats/unseenCount']
+      const newCount = await dispatch('unseenCount')
+
+      if (newCount !== currentCount) {
+        await dispatch('listChats', {
+          chattypes: ['User2User', 'User2Mod'],
+          summary: true,
+          noerror: true
+        })
+      }
+    }
+
+    // Continuously check for updated chats. Would be nice if this was event driven instead but requires server work.
+    // No need to clear the timeout
+    setTimeout(() => {
+      dispatch('fetchLatestChats')
+    }, 30000)
   }
 }
