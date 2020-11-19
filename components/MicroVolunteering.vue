@@ -50,11 +50,14 @@
       <template v-slot:modal-header>
         <div class="d-flex flex-column w-100">
           <h1 v-if="task && task.type === 'CheckMessage'" class="header--size3 w-100">
-            <span v-if="!force" class="text-black-50 float-right mr-2 clickme" title="Close" @click="doneForNow">
-              <span class="small">
-                {{ todo }} left
+            <span class="float-right">
+              <span class="small d-inline-flex justify-content-start">
+                <v-icon v-for="i in done" :key="'hearta-' + i" class="mr-1 text-danger" name="heart" />
+                <v-icon v-for="i in todo" :key="'heartb-' + i" class="mr-1 text-faded" name="heart" />
               </span>
-              <v-icon name="times-circle" scale="1.5" />
+              <span v-if="!force" class="text-black-50 mr-2 clickme" title="Close" @click="doneForNow">
+                <v-icon name="times-circle" scale="1.5" />
+              </span>
             </span>
             Does this post look OK?
           </h1>
@@ -81,7 +84,7 @@
             start-expanded
             :actions="false"
           />
-          <div class="d-flex justify-content-between flex-wrap w-100 mt-2">
+          <div v-if="!showComments" class="d-flex justify-content-between flex-wrap w-100 mt-3">
             <SpinButton
               variant="primary"
               class="mb-1"
@@ -100,6 +103,23 @@
               size="lg"
               spinclass="text-white"
             />
+          </div>
+          <div v-if="showComments" class="mt-2">
+            <b-form-group>
+              <label for="details" class="font-weight-bold text-center">
+                What's wrong?
+              </label>
+              <b-textarea v-model="comments" rows="2" placeholder="Could you give us a quick indication of what's not right?" />
+              <SpinButton
+                variant="secondary"
+                class="mt-2"
+                name="save"
+                label="Send your comments"
+                :handler="response('Comments')"
+                size="lg"
+                spinclass="text-white"
+              />
+            </b-form-group>
           </div>
         </div>
       </b-card-text>
@@ -133,10 +153,13 @@ export default {
     return {
       showTask: false,
       showInvite: false,
+      showComments: false,
+      comments: null,
       task: null,
       message: null,
-      debug: false,
-      todo: 5
+      debug: true,
+      todo: 5,
+      done: 0
     }
   },
   computed: {
@@ -251,31 +274,68 @@ export default {
     },
     response(verdict) {
       return async () => {
-        if (verdict === 'Stop') {
-          this.$store.dispatch('misc/set', {
-            key: 'microvolunteeringinviteaccepted',
-            value: null
-          })
+        switch (verdict) {
+          case 'Stop': {
+            this.$store.dispatch('misc/set', {
+              key: 'microvolunteeringinviterejected',
+              value: Date.now()
+            })
 
-          this.$store.dispatch('misc/set', {
-            key: 'microvolunteeringinviterejected',
-            value: Date.now()
-          })
-        } else {
-          await this.$api.microvolunteering.response({
-            msgid: this.task.msgid,
-            response: verdict
-          })
-        }
+            this.$api.bandit.chosen({
+              uid: 'microvolunteering',
+              variant: 'inviterejected'
+            })
 
-        this.todo--
+            this.$store.dispatch('user/edit', {
+              id: this.myid,
+              trustlevel: 'Declined'
+            })
+            break
+          }
+          case 'Approve': {
+            // Approved -  that's it.
+            await this.$api.microvolunteering.response({
+              msgid: this.task.msgid,
+              response: verdict
+            })
 
-        if (this.todo <= 0) {
-          this.doneForNow()
-        } else {
-          this.getTask()
+            this.considerNext()
+            break
+          }
+          case 'Reject': {
+            // Record the result but give them a chance to say why.
+            await this.$api.microvolunteering.response({
+              msgid: this.task.msgid,
+              response: verdict
+            })
+
+            this.showComments = true
+            break
+          }
+          case 'Comments': {
+            // Record the result with comments.
+            await this.$api.microvolunteering.response({
+              msgid: this.task.msgid,
+              response: 'Reject',
+              comments: this.comments
+            })
+
+            this.considerNext()
+          }
         }
       }
+    },
+    considerNext() {
+      this.todo--
+      this.done++
+
+      if (this.todo <= 0) {
+        this.doneForNow()
+      } else {
+        this.getTask()
+      }
+
+      this.showComments = false
     },
     async inviteResponse(response) {
       if (response) {
