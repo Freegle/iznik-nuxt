@@ -100,8 +100,6 @@ export default {
       if (this.complete) {
         $state.complete()
       } else {
-        this.busy = true
-
         try {
           const currentCount = this.notifications.length
 
@@ -117,10 +115,8 @@ export default {
           } else {
             $state.loaded()
           }
-          this.busy = false
         } catch (e) {
           console.error(e)
-          this.busy = false
           $state.complete()
         }
       }
