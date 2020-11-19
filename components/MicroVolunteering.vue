@@ -135,7 +135,7 @@ export default {
       showInvite: false,
       task: null,
       message: null,
-      debug: true,
+      debug: false,
       todo: 5
     }
   },
