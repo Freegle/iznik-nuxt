@@ -205,8 +205,8 @@ export default {
     },
 
     async allProcessed() {
-      this.$emit('allProcessed')
       await this.$store.dispatch('compose/setUploading', false)
+      this.$emit('allProcessed')
     },
 
     detector(source, type) {

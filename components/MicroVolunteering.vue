@@ -6,7 +6,10 @@
       size="lg"
     >
       <template v-slot:modal-header>
-        <h1>
+        <h1 class="w-100">
+          <span v-if="!force" class="text-black-50 float-right mr-2 clickme" title="Close" @click="showInvite = false">
+            <v-icon name="times-circle" scale="1.5" />
+          </span>
           Help keep Freegle running smoothly
         </h1>
       </template>
@@ -16,7 +19,7 @@
           looks like to them.)
         </p>
         <p>
-          <b>Would you like to help keep freegling smooth and safe for people?  You can help!</b>
+          <b>Would you like to keep freegling smooth and safe for people?  You can help!</b>
         </p>
         <p>
           If you're up for it, we can show you the occasional thing on Freegle that needs checking over to make sure it's ok.
@@ -45,8 +48,17 @@
       :no-close-on-esc="force"
     >
       <template v-slot:modal-header>
-        <div class="d-flex flex-column">
-          <h1 v-if="task && task.type === 'CheckMessage'" class="header--size3">
+        <div class="d-flex flex-column w-100">
+          <h1 v-if="task && task.type === 'CheckMessage'" class="header--size3 w-100">
+            <span class="float-right">
+              <span class="small d-inline-flex justify-content-start">
+                <v-icon v-for="i in done" :key="'hearta-' + i" class="mr-1 text-danger" name="heart" />
+                <v-icon v-for="i in todo" :key="'heartb-' + i" class="mr-1 text-faded" name="heart" />
+              </span>
+              <span v-if="!force" class="text-black-50 mr-2 clickme" title="Close" @click="doneForNow">
+                <v-icon name="times-circle" scale="1.5" />
+              </span>
+            </span>
             Does this post look OK?
           </h1>
           <div class="font-weight-bold">
@@ -63,19 +75,61 @@
           <p>
             This is someone else's post.  Does it look ok to you?
           </p>
-          <Message v-bind="message" expand-button-text="See more details" :replyable="false" start-expanded :actions="false" />
+          <Message
+            v-if="message"
+            :key="'task-' + message.id"
+            v-bind="message"
+            expand-button-text="See more details"
+            :replyable="false"
+            start-expanded
+            :actions="false"
+          />
+          <div v-if="!showComments" class="d-flex justify-content-between flex-wrap w-100 mt-3">
+            <SpinButton
+              variant="primary"
+              class="mb-1"
+              name="check"
+              label="Yes, that looks ok"
+              :handler="response('Approve')"
+              size="lg"
+              spinclass="text-white"
+            />
+            <SpinButton
+              variant="secondary"
+              class="mb-1"
+              name="times"
+              label="No, something's not right"
+              :handler="response('Reject')"
+              size="lg"
+              spinclass="text-white"
+            />
+          </div>
+          <div v-if="showComments" class="mt-2">
+            <b-form-group>
+              <label for="details" class="font-weight-bold text-center">
+                What's wrong?
+              </label>
+              <b-textarea v-model="comments" rows="2" placeholder="Could you give us a quick indication of what's not right?" />
+              <SpinButton
+                variant="secondary"
+                class="mt-2"
+                name="save"
+                label="Send your comments"
+                :handler="response('Comments')"
+                size="lg"
+                spinclass="text-white"
+              />
+            </b-form-group>
+          </div>
         </div>
       </b-card-text>
-      <template v-slot:modal-footer>
+      <template v-if="!force" v-slot:modal-footer>
         <div class="d-flex justify-content-between flex-wrap w-100">
-          <b-btn variant="primary" class="mb-1" @click="response('Approve')">
-            Yes, that looks OK
+          <b-btn v-if="inviteAccepted && !force" variant="link" class="mb-1" @click="response('Stop')()">
+            Don't ask me again
           </b-btn>
-          <b-btn v-if="inviteAccepted && !force" variant="white" class="mb-1" @click="response('Stop')">
-            Stop asking me
-          </b-btn>
-          <b-btn variant="secondary" class="mb-1" @click="response('Reject')">
-            No, something's not right
+          <b-btn variant="white" class="mb-1" @click="doneForNow">
+            I'm done for now
           </b-btn>
         </div>
       </template>
@@ -85,8 +139,9 @@
 <script>
 import dayjs from 'dayjs'
 import Message from './Message'
+import SpinButton from './SpinButton'
 export default {
-  components: { Message },
+  components: { SpinButton, Message },
   props: {
     force: {
       type: Boolean,
@@ -98,9 +153,13 @@ export default {
     return {
       showTask: false,
       showInvite: false,
+      showComments: false,
+      comments: null,
       task: null,
       message: null,
-      debug: false
+      debug: true,
+      todo: 5,
+      done: 0
     }
   },
   computed: {
@@ -108,13 +167,14 @@ export default {
       return this.$store.getters['misc/get']('microvolunteeringlastask')
     },
     invited() {
-      return this.$store.getters['misc/get']('microvolunteeringinvited')
+      return this.me && this.me.trustlevel
     },
     inviteRejected() {
-      return this.$store.getters['misc/get']('microvolunteeringinviterejected')
+      console.log('Rejected?', this.me)
+      return this.me && this.me.trustlevel === 'Declined'
     },
     inviteAccepted() {
-      return this.$store.getters['misc/get']('microvolunteeringinviteaccepted')
+      return this.me && this.me.trustlevel && this.me.trustlevel !== 'Declined'
     },
     askDue() {
       // Ask no more than once per hour.
@@ -131,54 +191,55 @@ export default {
         key: 'microvolunteeringlastask',
         value: null
       })
-      this.$store.dispatch('misc/set', {
-        key: 'microvolunteeringinviterejected',
-        value: null
-      })
-      this.$store.dispatch('misc/set', {
-        key: 'microvolunteeringinviteaccepted',
-        value: null
-      })
     }
 
-    const now = dayjs()
-    const daysago = now.diff(dayjs(this.me.added), 'days')
+    if (this.me) {
+      const now = dayjs()
+      const daysago = now.diff(dayjs(this.me.added), 'days')
 
-    if (!this.me.microvolunteering) {
-      // Not on a group with this function enabled.
-      console.log('Not on a group with microvolunteering enabled')
-    } else if (!this.askDue) {
-      // Challenged recently, so return verified.  That's true even for if it's forced - we don't want to bombard
-      // people.
-      console.log('Challenged recently')
-      this.$emit('verified')
-    } else if (this.force) {
-      // Forced and not asked recently.  Do so.
-      console.log('Forced and not recent, ask')
-      this.getTask()
-    } else if (daysago > 7) {
-      // They're not a new member.  We might want to ask them.
-      if (this.inviteRejected) {
-        // We're not forced to do this, and they've said they don't want to.
-        console.log('Invited and said no')
+      console.log(
+        'Consider status',
+        this.invited,
+        this.inviteAccepted,
+        this.inviteRejected
+      )
+
+      if (!this.me.microvolunteering) {
+        // Not on a group with this function enabled.
+        console.log('Not on a group with microvolunteering enabled')
+      } else if (!this.askDue) {
+        // Challenged recently, so return verified.  That's true even for if it's forced - we don't want to bombard
+        // people.
+        console.log('Challenged recently')
         this.$emit('verified')
-      } else if (this.inviteAccepted) {
-        // They're up for this.
-        console.log('Invited and said yes, ask')
+      } else if (this.force) {
+        // Forced and not asked recently.  Do so.
+        console.log('Forced and not recent, ask')
         this.getTask()
-      } else {
-        // We don't know if they want to.  Ask.
-        console.log("Don't know what they want, ask")
-        this.$api.bandit.shown({
-          uid: 'microvolunteering',
-          variant: 'inviteaccepted'
-        })
-        this.$api.bandit.shown({
-          uid: 'microvolunteering',
-          variant: 'inviterejected'
-        })
+      } else if (daysago > 7) {
+        // They're not a new member.  We might want to ask them.
+        if (this.inviteRejected) {
+          // We're not forced to do this, and they've said they don't want to.
+          console.log('Invited and said no')
+          this.$emit('verified')
+        } else if (this.inviteAccepted) {
+          // They're up for this.
+          console.log('Invited and said yes, ask')
+          this.getTask()
+        } else {
+          // We don't know if they want to.  Ask.
+          console.log("Don't know what they want, ask")
+          this.$api.bandit.shown({
+            uid: 'microvolunteering',
+            variant: 'inviteaccepted'
+          })
+          this.$api.bandit.shown({
+            uid: 'microvolunteering',
+            variant: 'inviterejected'
+          })
 
-        this.showInvite = true
+          this.showInvite = true
+        }
       }
     }
   },
@@ -186,8 +247,10 @@ export default {
     async getTask() {
       // Try to get a task.
       this.task = await this.$api.microvolunteering.challenge()
+      console.log('Got task', this.task)
 
       if (this.task) {
+        console.log('Got a task')
         this.$store.dispatch('misc/set', {
           key: 'microvolunteeringlastask',
           value: Date.now()
@@ -204,33 +267,79 @@ export default {
           this.showTask = true
         }
       } else {
+        console.log('No task')
         // Nothing to do.
-        this.$emit('verified')
+        this.doneForNow()
       }
     },
-    async response(verdict) {
-      if (verdict === 'Stop') {
-        this.$store.dispatch('misc/set', {
-          key: 'microvolunteeringinviteaccepted',
-          value: null
-        })
+    response(verdict) {
+      return async () => {
+        switch (verdict) {
+          case 'Stop': {
+            this.$store.dispatch('misc/set', {
+              key: 'microvolunteeringinviterejected',
+              value: Date.now()
+            })
 
-        this.$store.dispatch('misc/set', {
-          key: 'microvolunteeringinviterejected',
-          value: Date.now()
-        })
+            this.$api.bandit.chosen({
+              uid: 'microvolunteering',
+              variant: 'inviterejected'
+            })
+
+            this.$store.dispatch('user/edit', {
+              id: this.myid,
+              trustlevel: 'Declined'
+            })
+            break
+          }
+          case 'Approve': {
+            // Approved -  that's it.
+            await this.$api.microvolunteering.response({
+              msgid: this.task.msgid,
+              response: verdict
+            })
+
+            this.considerNext()
+            break
+          }
+          case 'Reject': {
+            // Record the result but give them a chance to say why.
+            await this.$api.microvolunteering.response({
+              msgid: this.task.msgid,
+              response: verdict
+            })
+
+            this.showComments = true
+            break
+          }
+          case 'Comments': {
+            // Record the result with comments.
+            await this.$api.microvolunteering.response({
+              msgid: this.task.msgid,
+              response: 'Reject',
+              comments: this.comments
+            })
+
+            this.considerNext()
+          }
+        }
+      }
+    },
+    considerNext() {
+      this.todo--
+      this.done++
+
+      if (this.todo <= 0) {
+        this.doneForNow()
       } else {
-        await this.$api.microvolunteering.response({
-          msgid: this.task.msgid,
-          response: verdict
-        })
+        this.getTask()
       }
 
-      this.showTask = false
-      this.$emit('verified')
+      this.showComments = false
     },
     async inviteResponse(response) {
       if (response) {
+        console.log('Accepted')
         this.$store.dispatch('misc/set', {
           key: 'microvolunteeringinviteaccepted',
           value: Date.now()
@@ -241,10 +350,14 @@ export default {
           variant: 'inviteaccepted'
         })
 
-        await this.getTask()
+        this.$store.dispatch('user/edit', {
+          id: this.myid,
+          trustlevel: 'Basic'
+        })
 
-        this.showTask = true
+        await this.getTask()
       } else {
+        console.log('Declined')
         this.$store.dispatch('misc/set', {
           key: 'microvolunteeringinviterejected',
           value: Date.now()
@@ -254,9 +367,24 @@ export default {
           uid: 'microvolunteering',
           variant: 'inviterejected'
         })
+
+        this.$store.dispatch('user/edit', {
+          id: this.myid,
+          trustlevel: 'Declined'
+        })
       }
 
+      await this.$store.dispatch('auth/fetchUser', {
+        components: ['me', 'groups'],
+        force: true
+      })
+
       this.showInvite = false
+    },
+    doneForNow() {
+      console.log('Done for now')
+      this.showTask = false
+      this.$emit('verified')
     }
   }
 }
