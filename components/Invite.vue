@@ -39,7 +39,7 @@
         <component :is="headingLevel" class="mt-2">
           Invite by text (SMS)
         </component>
-        <ExternalLink v-for="phone in phones" :key="'sms-' + phone.phone" :href="'sms://' + phone.phone + '?body=' + encodeURIComponent(invitation)">
+        <ExternalLink v-for="phone in phones" :key="'sms-' + phone.phone" :href="'sms://' + phone.phone + ';?&body=' + encodeURIComponent(invitation)">
           <b-btn variant="primary" class="mb-1 mr-1">
             <v-icon name="sms" /> {{ phone.name }} <span class="small"><span class="small">{{ phone.phone }}</span></span>
           </b-btn>
@@ -102,10 +102,23 @@ export default {
         this.contacts.forEach(c => {
           if (c.tel) {
             c.tel.forEach(e => {
-              ret.push({
-                name: c.name ? c.name[0] : null,
-                phone: e
-              })
+              // Fix up the formatting a bit, particular for IOS which is picky.
+              let phoneno = e.replace(/\s+/g, '')
+
+              if (phoneno.length > 1) {
+                if (phoneno.charAt(0) === '0' && phoneno.charAt(1) !== '0') {
+                  // Convert to UK prefix.
+                  phoneno = '+44' + phoneno.substring(1)
+                }
+              }
+
+              // Ignore dups.
+              if (!ret.find(p => p.phone === phoneno)) {
+                ret.push({
+                  name: c.name ? c.name[0] : null,
+                  phone: phoneno
+                })
+              }
             })
           }
         })
