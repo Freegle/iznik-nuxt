@@ -132,7 +132,7 @@
               class="flex-grow-1"
               label="Your reply:"
               :label-for="'replytomessage-' + expanded.id"
-              :description="expanded.type === 'Offer' ? 'Interested?  Please explain why you\'d like it and when you can collect.  Always be polite and helpful.  If appropriate, ask if it\'s working.' : 'Can you help?  If you have what they\'re looking for, let them know.'"
+              :description="expanded.type === 'Offer' ? 'Interested?  Please explain why you\'d like it and when you can collect.  Always be polite and helpful, and remember it\'s not always first come first served.  If appropriate, ask if it\'s working.' : 'Can you help?  If you have what they\'re looking for, let them know.'"
             >
               <b-form-textarea
                 v-if="expanded.type == 'Offer'"
