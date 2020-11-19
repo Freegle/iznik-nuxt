@@ -816,13 +816,19 @@ export default {
       })
     },
     addAbout() {
-      this.$refs.aboutmemodal.show()
+      this.waitForRef('aboutmemodal', () => {
+        this.$refs.aboutmemodal.show()
+      })
     },
     viewProfile() {
-      this.$refs.profilemodal.show()
+      this.waitForRef('profilemodal', () => {
+        this.$refs.profilemodal.show()
+      })
     },
     availability() {
-      this.$refs.availabilitymodal.show()
+      this.waitForRef('availabilitymodal', () => {
+        this.$refs.availabilitymodal.show()
+      })
     },
     async changeUseProfile(c, e) {
       const settings = this.me.settings

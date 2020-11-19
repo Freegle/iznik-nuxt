@@ -66,7 +66,7 @@
               </span>
             </b-col>
             <b-col cols="12" md="2">
-              <v-icon name="envelope" /> {{ user.info.replies | pluralize([ 'reply', 'replies' ], { includeNumber: true }) }}
+              <v-icon name="envelope" /> {{ user.info.replies | pluralize([ 'reply', 'replies' ], { includeNumber: true }) }} sent
             </b-col>
           </b-row>
           <b-row>
