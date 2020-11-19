@@ -6,7 +6,7 @@ export default class MicroVolunteeringAPI extends BaseAPI {
     return ret.microvolunteering
   }
 
-  response({ msgid, response, comments }) {
-    return this.$post('/microvolunteering', { msgid, response, comments })
+  response(params) {
+    return this.$post('/microvolunteering', params)
   }
 }
