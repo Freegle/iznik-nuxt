@@ -282,6 +282,8 @@ export default {
   methods: {
     async getTask() {
       // Try to get a task.
+      this.similarTerms = []
+
       this.task = await this.$api.microvolunteering.challenge()
       console.log('Got task', this.task)
 
