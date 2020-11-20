@@ -212,10 +212,12 @@ export default {
       })
 
       this.showModal = false
+      this.tookUsers = []
     },
 
     cancel() {
       this.showModal = false
+      this.tookUsers = []
     }
   }
 }
