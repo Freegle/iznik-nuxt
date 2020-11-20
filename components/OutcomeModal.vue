@@ -213,11 +213,13 @@ export default {
 
       this.showModal = false
       this.tookUsers = []
+      this.happiness = null
     },
 
     cancel() {
       this.showModal = false
       this.tookUsers = []
+      this.happiness = null
     }
   }
 }
