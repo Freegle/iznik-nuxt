@@ -39,9 +39,8 @@ import { setBadgeCount } from '../plugins/app-init-push' // IS_APP
     chatCount() {
       // Don't show so many that the layout breaks.
       const chatcount = Math.min(99, this.$store.getters['chats/unseenCount']) // IS_APP
-      setBadgeCount(chatcount) // IS_APP
+      if (process.env.IS_APP) setBadgeCount(chatcount) // IS_APP
       return chatcount // IS_APP
-      // IS_APP return Math.min(99, this.$store.getters['chats/unseenCount'])
     }
   },
   watch: {

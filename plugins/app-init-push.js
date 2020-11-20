@@ -230,11 +230,9 @@ export function logoutPushId() {
 // Set home screen badge count
 let lastBadgeCount = -1
 export function setBadgeCount(badgeCount) {
-//console.log('setBadgeCount X', badgeCount)
   if( isNaN(badgeCount)) badgeCount = 0
   if (badgeCount !== lastBadgeCount) {
     if (process.env.IS_APP) {
-//      console.log('setBadgeCount', badgeCount)
       if (mobilePush) {
         mobilePush.setApplicationIconBadgeNumber(function () { }, function () { }, badgeCount)
         lastBadgeCount = badgeCount
