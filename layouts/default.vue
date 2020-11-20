@@ -52,7 +52,7 @@
           </client-only>
           <b-navbar-nav class="mainnav mainnav--right">
             <NotificationOptions v-if="!simple" :distance="distance" :small-screen="false" :unread-notification-count.sync="unreadNotificationCount" @showAboutMe="showAboutMe" />
-            <ChatMenu :small-screen="false" :chat-count.sync="chatCount" />
+            <ChatMenu id="menu-option-chat" :is-list-item="true" :chat-count.sync="chatCount" />
             <b-nav-item v-if="!simple" id="menu-option-spread" class="text-center small p-0" to="/promote" @mousedown="maybeReload('/promote')">
               <div class="notifwrapper">
                 <v-icon name="bullhorn" scale="2" /><br>
@@ -99,7 +99,7 @@
       <div class="d-flex align-items-center">
         <client-only>
           <NotificationOptions :distance="distance" :small-screen="true" :unread-notification-count.sync="unreadNotificationCount" @showAboutMe="showAboutMe" />
-          <ChatMenu v-if="loggedIn" :small-screen="true" :chat-count.sync="chatCount" />
+          <ChatMenu v-if="loggedIn" id="menu-option-chat-sm" :is-list-item="false" :chat-count.sync="chatCount" class="mr-3" />
         </client-only>
 
         <b-navbar-nav>
@@ -562,22 +562,6 @@ nav .navbar-nav li a.nuxt-link-active {
   &:hover,
   &:focus {
     color: $color-white-opacity-75 !important;
-  }
-}
-
-#menu-option-chat-sm {
-  &:hover,
-  &:focus {
-    color: $color-white-opacity-75 !important;
-  }
-
-  &.nuxt-link-active {
-    color: $color-white-opacity-50 !important;
-
-    &:hover,
-    &:focus {
-      color: $color-white-opacity-75 !important;
-    }
   }
 }
 

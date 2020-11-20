@@ -1,15 +1,14 @@
 <template>
   <component
     :is="chatType"
-    :id="smallScreen ? 'menu-option-chat-sm' : 'menu-option-chat'"
-    :class="smallScreen ? 'text-white mr-3 position-relative' : 'text-center small p-0'"
+    :class="{'text-white' : !isListItem}"
     href="#"
     aria-label="chats"
     @click="toChats"
   >
-    <div class="position-relative">
+    <div class="position-relative small">
       <v-icon name="comments" scale="2" class="chat__icon" />
-      <div v-if="!smallScreen" class="nav-item__text">
+      <div class="nav-item__text d-none d-xl-block">
         Chats
       </div>
       <b-badge v-if="chatCount" variant="danger" class="chatbadge">
@@ -23,16 +22,16 @@
 export default {
   name: 'ChatMenu',
   props: {
-    smallScreen: {
+    isListItem: {
       type: Boolean,
       required: false,
-      default: false
+      default: true
     }
   },
   computed: {
     chatType() {
       // A different component needs to be created depending on the context in which it's used
-      return this.smallScreen ? 'a' : 'b-nav-item'
+      return this.isListItem ? 'b-nav-item' : 'a'
     },
     chatCount() {
       // Don't show so many that the layout breaks.
@@ -57,7 +56,13 @@ export default {
         chatid: null
       })
 
-      this.$router.push('/chats')
+      const modtools = this.$store.getters['misc/get']('modtools')
+
+      if (modtools) {
+        this.$router.push('/modtools/chats')
+      } else {
+        this.$router.push('/chats')
+      }
     }
   }
 }

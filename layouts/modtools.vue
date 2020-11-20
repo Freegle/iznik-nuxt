@@ -1,7 +1,7 @@
 <template>
   <client-only>
     <div class="pageback">
-      <b-navbar id="navbar" type="dark" class="navback p-0 p-sm-1" fixed="top">
+      <b-navbar id="navbar" type="dark" class="navback p-0 p-sm-1 justify-content-between" fixed="top">
         <b-navbar-brand class="p-0 pr-2 d-flex">
           <b-img
             class="logo clickme"
@@ -13,39 +13,28 @@
           />
           <ModStatus class="status" />
         </b-navbar-brand>
-        <b-navbar-nav class="d-flex w-100 justify-content-end">
-          <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse2" class="text-center p-0" @click="discourse">
+        <b-navbar-nav class="d-flex align-items-center">
+          <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse2" class="text-center small p-0 mr-4" @click="discourse">
             <div>
-              <span class="d-none d-sm-inline">
+              <div class="d-none d-sm-inline">
                 <v-icon name="brands/discourse" scale="2" class="fw" /><br>
-                Us
-              </span>
+                <div class="d-none d-xl-block">
+                  Us
+                </div>
+              </div>
               <div class="position-relative d-inline">
-                <v-icon name="brands/discourse" class="d-inline d-sm-none ml-2 mr-2 mt-2" scale="2.5" />
+                <v-icon name="brands/discourse" class="d-inline d-sm-none" scale="2" />
                 <b-badge v-show="discourseCount" variant="success">
                   {{ discourseCount }}
                 </b-badge>
               </div>
             </div>
           </b-nav-item>
-          <b-nav-item v-if="loggedIn" id="menu-option-modtools-chat2" class="text-center p-0" @click="toChats">
-            <div>
-              <span class="d-none d-sm-inline">
-                <v-icon name="comments" scale="2" class="fw" /><br>
-                Chats
-              </span>
-              <div class="position-relative d-inline">
-                <v-icon name="comments" class="d-inline d-sm-none ml-2 mr-4 mt-2" scale="2.5" />
-                <b-badge v-show="chatCount" variant="danger" class="badge">
-                  {{ chatCount }}
-                </b-badge>
-              </div>
-            </div>
-          </b-nav-item>
+          <ChatMenu v-if="loggedIn" id="menu-option-modtools-chat2" :is-list-item="true" :chat-count.sync="chatCount" class="mr-4" />
           <b-nav-item v-if="loggedIn">
             <div class="position-relative">
               <b-btn variant="white" class="menu" @click="toggleMenu">
-                <v-icon name="bars" class="mb-1" scale="2.2" />
+                <v-icon name="bars" class="" scale="1.5" />
               </b-btn>
               <b-badge v-show="menuCount" v-if="!showMenu" variant="danger" class="menuCount position-absolute">
                 {{ menuCount }}
@@ -121,6 +110,7 @@ import ModMenuItemLeft from '../components/ModMenuItemLeft'
 import waitForRef from '../mixins/waitForRef'
 import LoginModal from '~/components/LoginModal'
 import ModStatus from '~/components/ModStatus'
+import ChatMenu from '~/components/ChatMenu'
 const ExternalLink = () => import('~/components/ExternalLink')
 
 const ChatPopups = () => import('~/components/ChatPopups')
@@ -131,6 +121,7 @@ export default {
     ChatPopups,
     LoginModal,
     ModStatus,
+    ChatMenu,
     ExternalLink
   },
   mixins: [waitForRef],
@@ -139,14 +130,11 @@ export default {
       logo: require(`@/static/icon_modtools.png`),
       showMenu: false,
       sliding: false,
-      timeTimer: null
+      timeTimer: null,
+      chatCount: 0
     }
   },
   computed: {
-    chatCount() {
-      // Don't show so many that the layout breaks.
-      return Math.min(99, this.$store.getters['chats/unseenCount'])
-    },
     discourseCount() {
       const discourse = this.$store.getters['auth/discourse']
       return discourse
@@ -354,7 +342,6 @@ html {
 
 @include media-breakpoint-up(sm) {
   #navbar .nav-item {
-    width: 80px;
     text-align: center;
   }
 }
