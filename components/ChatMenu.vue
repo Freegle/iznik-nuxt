@@ -1,0 +1,81 @@
+<template>
+  <component
+    :is="chatType"
+    :id="smallScreen ? 'menu-option-chat-sm' : 'menu-option-chat'"
+    :class="smallScreen ? 'text-white mr-3 position-relative' : 'text-center small p-0'"
+    href="#"
+    aria-label="chats"
+    @click="toChats"
+  >
+    <div class="position-relative">
+      <v-icon name="comments" scale="2" class="chat__icon" />
+      <div v-if="!smallScreen" class="nav-item__text">
+        Chats
+      </div>
+      <b-badge v-if="chatCount" variant="danger" class="chatbadge">
+        {{ chatCount }}
+      </b-badge>
+    </div>
+  </component>
+</template>
+
+<script>
+import { setBadgeCount } from '../plugins/app-init-push' // IS_APP
+
+  export default {
+  name: 'ChatMenu',
+  props: {
+    smallScreen: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
+  computed: {
+    chatType() {
+      // A different component needs to be created depending on the context in which it's used
+      return this.smallScreen ? 'a' : 'b-nav-item'
+    },
+    chatCount() {
+      // Don't show so many that the layout breaks.
+      const chatcount = Math.min(99, this.$store.getters['chats/unseenCount']) // IS_APP
+      if (process.env.IS_APP) setBadgeCount(chatcount) // IS_APP
+      return chatcount // IS_APP
+    }
+  },
+  watch: {
+    chatCount: function() {
+      this.$emit('update:chatCount', this.chatCount)
+    }
+  },
+  methods: {
+    toChats(e) {
+      if (e) {
+        e.preventDefault()
+        e.stopPropagation()
+        e.stopImmediatePropagation()
+      }
+
+      // Ensure we have no chat selected.  On mobile this will force us to show the chat list.
+      this.$store.dispatch('chats/currentChat', {
+        chatid: null
+      })
+
+      this.$router.push('/chats')
+    }
+  }
+}
+</script>
+
+<style scoped lang="scss">
+.chatbadge {
+  position: absolute;
+  top: 0px;
+  left: 25px;
+}
+
+.chat__icon {
+  height: 32px;
+  margin: 0;
+}
+</style>

@@ -35,13 +35,13 @@
               How do you feel about freegling just now?
             </p>
             <b-button-group>
-              <b-button :pressed="happiness === 'Happy'" variant="primary" size="lg" class="shadow-none" @click="happiness = 'Happy'">
+              <b-button :pressed="happiness === 'Happy'" :variant="happiness === 'Happy' ? 'info': 'primary'" size="lg" class="shadow-none" @click="happiness = 'Happy'">
                 <v-icon name="smile" scale="2" /> Happy
               </b-button>
-              <b-button :pressed="happiness === 'Fine'" variant="white" size="lg" class="shadow-none" @click="happiness = 'Fine'">
+              <b-button :pressed="happiness === 'Fine'" :variant="happiness === 'Fine' ? 'info' : 'white'" size="lg" class="shadow-none" @click="happiness = 'Fine'">
                 <v-icon name="meh" scale="2" color="grey" /> Fine
               </b-button>
-              <b-button :pressed="happiness === 'Unhappy'" variant="danger" size="lg" class="shadow-none" @click="happiness = 'Unhappy'">
+              <b-button :pressed="happiness === 'Unhappy'" :variant="happiness === 'Unhappy' ? 'info' : 'danger'" size="lg" class="shadow-none" @click="happiness = 'Unhappy'">
                 <v-icon name="frown" scale="2" /> Sad
               </b-button>
             </b-button-group>
@@ -146,20 +146,27 @@ export default {
   },
   methods: {
     async submit() {
-      const complete = this.left === 0
+      console.log('Submit', this.left)
+      let complete = false
 
-      for (const u of this.tookUsers) {
-        if (u.count > 0) {
-          await this.$store.dispatch('messages/addBy', {
-            id: this.message.id,
-            userid: u.userid > 0 ? u.userid : null,
-            count: u.count
-          })
-        } else {
-          await this.$store.dispatch('messages/removeBy', {
-            id: this.message.id,
-            userid: u.userid > 0 ? u.userid : null
-          })
+      if (this.type === 'Withdrawn') {
+        complete = true
+      } else {
+        complete = this.left === 0
+
+        for (const u of this.tookUsers) {
+          if (u.count > 0) {
+            await this.$store.dispatch('messages/addBy', {
+              id: this.message.id,
+              userid: u.userid > 0 ? u.userid : null,
+              count: u.count
+            })
+          } else {
+            await this.$store.dispatch('messages/removeBy', {
+              id: this.message.id,
+              userid: u.userid > 0 ? u.userid : null
+            })
+          }
         }
       }
 
@@ -212,10 +219,14 @@ export default {
       })
 
       this.showModal = false
+      this.tookUsers = []
+      this.happiness = null
     },
 
     cancel() {
       this.showModal = false
+      this.tookUsers = []
+      this.happiness = null
     }
   }
 }

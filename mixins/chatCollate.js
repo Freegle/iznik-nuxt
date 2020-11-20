@@ -25,6 +25,8 @@ export default {
           i + 1 < msgs.length &&
           msgs[i].sameasnext &&
           msgs[i].message &&
+          msgs[i].type === 'Default' &&
+          msgs[i + 1].type === 'Default' &&
           !msgs[i].refmsg &&
           !msgs[i + 1].refmsg &&
           msgs[i + 1].message &&

@@ -27,9 +27,9 @@ export const mutations = {
   },
   setPostcode(state, postcode) {
     // Want to make sure we don't store too much data.
-    const pc = { ...postcode }
+    if (postcode && postcode.groupsnear) {
+      const pc = { ...postcode }
 
-    if (postcode) {
       pc.groupsnear = []
 
       for (const group of postcode.groupsnear) {
@@ -43,9 +43,9 @@ export const mutations = {
           }
         })
       }
-    }
 
-    state.postcode = pc
+      state.postcode = pc
+    }
   },
   setGroup(state, group) {
     state.group = group

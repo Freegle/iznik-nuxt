@@ -8,6 +8,7 @@
         <SidebarLeft v-if="showRest" :show-community-events="true" :show-bot-left="true" />
       </b-col>
       <b-col cols="12" xl="6" class="p-0">
+        <MicroVolunteering />
         <div v-if="showRest">
           <CovidWarning />
           <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" :chats="me.expectedchats" />
@@ -43,6 +44,7 @@
 
 <script>
 import leafletPip from '@mapbox/leaflet-pip'
+import MicroVolunteering from '../components/MicroVolunteering'
 import AdaptiveMap from '~/components/AdaptiveMap'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
@@ -64,6 +66,7 @@ if (process.browser) {
 
 export default {
   components: {
+    MicroVolunteering,
     AdaptiveMap,
     CovidWarning,
     SidebarLeft,

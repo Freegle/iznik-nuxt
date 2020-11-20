@@ -13,7 +13,7 @@
     </template>
     <template slot="default">
       <notice-message v-if="user.info.expectedreply" variant="warning">
-        <v-icon name="exclamation-triangle" />&nbsp;{{ user.info.expectedreply | pluralize(['freegler is', 'freeglers are'], { includeNumber: true }) }} still waiting for them to reply.y
+        <v-icon name="exclamation-triangle" />&nbsp;{{ user.info.expectedreply | pluralize(['freegler is', 'freeglers are'], { includeNumber: true }) }} still waiting for them to reply.
       </notice-message>
       <notice-message v-else-if="user.hasReneged" variant="warning">
         <v-icon name="exclamation-triangle" />&nbsp;Things haven't always worked out for this freegler.  That might not be their fault, but please make very clear arrangements.
@@ -66,7 +66,7 @@
               </span>
             </b-col>
             <b-col cols="12" md="2">
-              <v-icon name="envelope" /> {{ user.info.replies | pluralize([ 'reply', 'replies' ], { includeNumber: true }) }}
+              <v-icon name="envelope" /> {{ user.info.replies | pluralize([ 'reply', 'replies' ], { includeNumber: true }) }} sent
             </b-col>
           </b-row>
           <b-row>

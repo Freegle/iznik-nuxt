@@ -51,42 +51,8 @@
             </div>
           </client-only>
           <b-navbar-nav class="mainnav mainnav--right">
-            <b-nav-item-dropdown v-if="!simple" class="white text-center notiflist" lazy right @shown="loadLatestNotifications">
-              <template slot="button-content">
-                <div class="notifwrapper text-center small">
-                  <v-icon name="bell" scale="2" />
-                  <b-badge v-if="notificationCount" variant="danger" class="notification-badge">
-                    {{ notificationCount }}
-                  </b-badge><br>
-                  <span class="nav-item__text">Notifications</span>
-                </div>
-              </template>
-              <b-dropdown-item class="text-right">
-                <b-btn variant="white" size="sm" @click="markAllRead">
-                  Mark all read
-                </b-btn>
-              </b-dropdown-item>
-              <b-dropdown-divider />
-              <b-dropdown-item v-for="notification in notifications" :key="'notification-' + notification.id" class="p-0 notpad">
-                <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
-              </b-dropdown-item>
-              <infinite-loading :distance="distance" @infinite="loadMoreNotifications">
-                <span slot="no-results" />
-                <span slot="no-more" />
-                <span slot="spinner">
-                  <b-img-lazy src="~/static/loader.gif" alt="Loading" />
-                </span>
-              </infinite-loading>
-            </b-nav-item-dropdown>
-            <b-nav-item id="menu-option-chat" class="text-center small p-0" to="/chats" @click="toChats">
-              <div class="notifwrapper">
-                <v-icon name="comments" scale="2" /><br>
-                <span class="nav-item__text">Chats</span>
-                <b-badge v-if="chatCount" variant="danger" class="chatbadge">
-                  {{ chatCount }}
-                </b-badge>
-              </div>
-            </b-nav-item>
+            <NotificationOptions v-if="!simple" :distance="distance" :small-screen="false" :unread-notification-count.sync="unreadNotificationCount" @showAboutMe="showAboutMe" />
+            <ChatMenu :small-screen="false" :chat-count.sync="chatCount" />
             <b-nav-item v-if="!simple" id="menu-option-spread" class="text-center small p-0" to="/promote" @mousedown="maybeReload('/promote')">
               <div class="notifwrapper">
                 <v-icon name="bullhorn" scale="2" /><br>
@@ -137,47 +103,8 @@
               <v-icon name="redo" scale="2" @click="refresh" />
             </div>
           </div>
-          <b-dropdown
-            v-if="loggedIn"
-            class="white text-center notiflist mr-2"
-            variant="transparent"
-            lazy
-            right
-            boundary="viewport"
-            @shown="loadLatestNotifications"
-          >
-            <template slot="button-content">
-              <div class="notifwrapper">
-                <v-icon name="bell" scale="2" class="" />
-                <b-badge v-if="notificationCount" variant="danger" class="notification-badge">
-                  {{ notificationCount }}
-                </b-badge>
-              </div>
-            </template>
-            <b-dropdown-item class="text-right">
-              <b-btn variant="white" size="sm" @click="markAllRead">
-                Mark all read
-              </b-btn>
-            </b-dropdown-item>
-            <b-dropdown-divider />
-            <b-dropdown-item v-for="notification in notifications" :key="'notification-' + notification.id" class="p-0 notpad">
-              <Notification :notification="notification" class="p-0" @showModal="showAboutMe" />
-            </b-dropdown-item>
-            <infinite-loading :distance="distance" @infinite="loadMoreNotifications">
-              <span slot="no-results" />
-              <span slot="no-more" />
-              <span slot="spinner">
-                <b-img-lazy src="~/static/loader.gif" alt="Loading" />
-              </span>
-            </infinite-loading>
-          </b-dropdown>
-
-          <a v-if="loggedIn" id="menu-option-chat-sm" href="#" class="text-white mr-3 position-relative" @click="toChats">
-            <v-icon name="comments" scale="2" /><br>
-            <b-badge v-if="chatCount" variant="danger" class="chatbadge">
-              {{ chatCount }}
-            </b-badge>
-          </a>
+          <NotificationOptions :distance="distance" :small-screen="true" :unread-notification-count.sync="unreadNotificationCount" @showAboutMe="showAboutMe" />
+          <ChatMenu v-if="loggedIn" :small-screen="true" :chat-count.sync="chatCount" />
         </client-only>
 
         <b-navbar-nav>
@@ -270,26 +197,25 @@ import SimpleView from '../components/SimpleView'
 import LoginModal from '~/components/LoginModal'
 import LocalStorageMonitor from '~/components/LocalStorageMonitor'
 import BouncingEmail from '~/components/BouncingEmail'
+import NotificationOptions from '~/components/NotificationOptions'
+import ChatMenu from '~/components/ChatMenu'
 
 const AboutMeModal = () => import('~/components/AboutMeModal')
 const ChatPopups = () => import('~/components/ChatPopups')
-const Notification = () => import('~/components/Notification')
 const NchanSubscriber = require('nchan')
-const InfiniteLoading = () => import('vue-infinite-loading')
-import { setBadgeCount } from '../plugins/app-init-push' // CC
 const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
   components: {
     SimpleView,
-    InfiniteLoading,
     ChatPopups,
-    Notification,
     AboutMeModal,
     LoginModal,
     LocalStorageMonitor,
     BouncingEmail,
-    ExternalLink
+    ExternalLink,
+    NotificationOptions,
+    ChatMenu
   },
 
   data: function() {
@@ -299,12 +225,14 @@ export default {
       chatPoll: null,
       nchan: null,
       logo: require(`@/static/icon.png`),
-      timeTimer: null
+      timeTimer: null,
+      unreadNotificationCount: 0,
+      chatCount: 0
     }
   },
 
   head() {
-    const totalCount = this.notificationCount + this.chatCount
+    const totalCount = this.unreadNotificationCount + this.chatCount
     const head = { titleTemplate: totalCount > 0 ? `(${totalCount}) %s` : '%s' }
     if (!process.env.IS_APP) {
       head.link = [
@@ -316,33 +244,9 @@ export default {
       ]
     }
     return head
-    /*return {
-      titleTemplate: totalCount > 0 ? `(${totalCount}) %s` : '%s',
-      link: [
-        {
-          rel: 'icon',
-          type: 'image/x-icon',
-          href: '/icon.png'
-        }
-      ]
-    }*/
   },
 
   computed: {
-    notifications() {
-      return this.$store.getters[
-        'notifications/getCurrentListInDescendingDateOrder'
-      ]
-    },
-    notificationCount() {
-      return this.$store.getters['notifications/getUnreadCount']
-    },
-    chatCount() {
-      // Don't show so many that the layout breaks.
-      const chatcount = Math.min(99, this.$store.getters['chats/unseenCount']) // CC
-      setBadgeCount(chatcount) // CC
-      return chatcount 
-    },
     isApp() {
       return process.env.IS_APP
     }
@@ -415,9 +319,8 @@ export default {
       console.log('Start NCHAN from mount')
       this.startNCHAN(me.id)
 
-      // Get notifications and chats and poll regularly for new ones.  Would be nice if this was event driven instead but requires server work.
+      // Get chats and poll regularly for new ones.  Would be nice if this was event driven instead but requires server work.
       this.fetchLatestChats()
-      this.$store.dispatch('notifications/updateNotifications')
     }
 
     // Look for a custom logo.
@@ -433,42 +336,42 @@ export default {
       }
     }, 5000)
 
-    try {
-      // Set the build date.  This may get superceded by Sentry releases, but it does little harm to add it in.
-      if (!process.env.IS_APP)
+    if (this.$sentry) {
+      try {
+        // Set the build date.  This may get superceded by Sentry releases, but it does little harm to add it in.
         this.$sentry.setExtra('builddate', process.env.BUILD_DATE)
 
-      if (me) {
-        // Set the context for sentry so that we know which users are having errors.
-        if (!process.env.IS_APP)
+        if (me) {
+          // Set the context for sentry so that we know which users are having errors.
           this.$sentry.setUser({ userid: me.id })
 
-        // eslint-disable-next-line no-undef
-        if (typeof __insp !== 'undefined') {
           // eslint-disable-next-line no-undef
-          __insp.push([
-            'tagSession',
-            {
-              userid: me.id,
-              builddate: process.env.BUILD_DATE
-            }
-          ])
+          if (typeof __insp !== 'undefined') {
+            // eslint-disable-next-line no-undef
+            __insp.push([
+              'tagSession',
+              {
+                userid: me.id,
+                builddate: process.env.BUILD_DATE
+              }
+            ])
+          }
+        } else {
+          // eslint-disable-next-line no-undef,no-lonely-if
+          if (typeof __insp !== 'undefined') {
+            // eslint-disable-next-line no-undef
+            __insp.push([
+              'tagSession',
+              {
+                userid: 'Logged out',
+                builddate: process.env.BUILD_DATE
+              }
+            ])
+          }
         }
-      } else {
-        // eslint-disable-next-line no-undef,no-lonely-if
-        if (typeof __insp !== 'undefined') {
-          // eslint-disable-next-line no-undef
-          __insp.push([
-            'tagSession',
-            {
-              userid: 'Logged out',
-              builddate: process.env.BUILD_DATE
-            }
-          ])
-        }
+      } catch (e) {
+        console.log('Failed to set context', e)
       }
-    } catch (e) {
-      console.log('Failed to set context', e)
     }
   },
 
@@ -509,7 +412,7 @@ export default {
 
   methods: {
     startNCHAN(id) {
-      console.log('NCHAN COMMENTED OUT')
+      console.log('NCHAN COMMENTED OUT IS_APP')
       return
       this.nchan = new NchanSubscriber(
         process.env.CHAT_HOST + '/subscribe?id=' + id,
@@ -611,48 +514,6 @@ export default {
       this.$router.push('/')
     },
 
-    loadMoreNotifications: function($state) {
-      const currentCount = this.notifications.length
-
-      if (this.complete) {
-        $state.complete()
-      } else {
-        this.busy = true
-        this.$store
-          .dispatch('notifications/fetchNextListChunk')
-          .then(() => {
-            try {
-              const notifications = this.$store.getters[
-                'notifications/getCurrentList'
-              ]
-
-              if (currentCount === notifications.length) {
-                this.complete = true
-                $state.complete()
-              } else {
-                $state.loaded()
-              }
-              this.busy = false
-            } catch (e) {
-              console.error(e)
-              console.log('Error')
-            }
-          })
-          .catch(e => {
-            console.error(e)
-            this.busy = false
-            $state.complete()
-          })
-      }
-    },
-
-    loadLatestNotifications() {
-      // We want to make sure we have the most up to date notifications.
-      this.complete = false
-      this.$store.dispatch('notifications/clear')
-      this.$store.dispatch('notifications/fetchNextListChunk')
-    },
-
     requestLogin() {
       this.$refs.loginModal.show()
     },
@@ -660,34 +521,12 @@ export default {
     maybeReload(route) {
       if (this.$router.currentRoute.path === route) {
         // We have clicked to route to the page we're already on.  Force a full refresh.
-        console.log('RELOAD maybeReload')
-        window.location.reload(true)  // Works, but causes a complete reload from scratch. this.$router.go() doesn't work in iOS app
+        window.location.reload(true)
       }
     },
 
-    refresh() {
+    refresh() { // IS_APP
       window.location.reload(true)  // Works, but causes a complete reload from scratch. this.$router.go() doesn't work in iOS app
-    },
-
-    toChats(e) {
-      if (e) {
-        e.preventDefault()
-        e.stopPropagation()
-        e.stopImmediatePropagation()
-      }
-
-      // Ensure we have no chat selected.  On mobile this will force us to show the chat list.
-      this.$store.dispatch('chats/currentChat', {
-        chatid: null
-      })
-
-      this.$router.push('/chats')
-    },
-
-    async markAllRead() {
-      await this.$store.dispatch('notifications/allSeen')
-      await this.$store.dispatch('notifications/updateUnreadNotificationCount')
-      await this.$store.dispatch('notifications/fetchNextListChunk')
     },
 
     updateTime() {
@@ -848,22 +687,6 @@ svg.fa-icon {
   position: relative;
 }
 
-.notification-badge {
-  position: absolute;
-  top: 0px;
-  left: 18px;
-
-  @include media-breakpoint-up(xl) {
-    left: 40px;
-  }
-}
-
-.chatbadge {
-  position: absolute;
-  top: 0px;
-  left: 25px;
-}
-
 #serverloader {
   z-index: 1000;
   text-align: center;
@@ -921,9 +744,5 @@ svg.fa-icon {
 .mainnav--right {
   width: 40%;
   max-width: 400px;
-}
-
-.notiflist ::v-deep .dropdown-toggle {
-  color: $color-white;
 }
 </style>

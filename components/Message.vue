@@ -14,7 +14,7 @@
       </p>
     </b-tooltip>
     <b-card class="p-0" variant="success" :class="{ freegled : successful }">
-      <b-card-header :class="'pl-2 pr-2 clearfix card-header' + (ispromised ? ' promisedfade' : '')">
+      <b-card-header :class="'pl-2 pr-2 clearfix card-header' + (ispromised && replyable ? ' promisedfade' : '')">
         <b-card-title class="msgsubj mb-1 header--size4 card-header__title" title-tag="h3">
           <Highlighter
             v-if="matchedon"
@@ -49,7 +49,7 @@
             <i>There's no description.</i>
           </div>
           <b-button v-if="!successful && !expanded" variant="white" class="mt-2" @click="expand">
-            See details and reply <v-icon name="angle-double-right" />
+            {{ expandButtonText }} <v-icon name="angle-double-right" />
           </b-button>
         </div>
         <button v-if="showAttachments && attachments && attachments.length > 0" class="card-header-image__wrapper p-0 border-0" :disabled="successful" @click="showPhotos">
@@ -66,7 +66,7 @@
             @error.native="brokenImage"
           />
         </button>
-        <div v-if="!simple && expanded" class="d-flex mt-1 card-header__options">
+        <div v-if="!simple && expanded && actions" class="d-flex mt-1 card-header__options">
           <b-button v-if="expanded && !hideClose" size="sm" variant="link" class="grey p-0 mr-4" @click="contract">
             Close post
           </b-button>
@@ -92,7 +92,7 @@
         </div>
       </b-card-header>
       <b-card-body v-if="expanded" class="pl-1">
-        <notice-message v-if="ispromised" variant="warning" class="mb-3 mt-1">
+        <notice-message v-if="ispromised && replyable" variant="warning" class="mb-3 mt-1">
           This item has already been promised to someone.  You can still reply - you might get it if someone
           else drops out.
         </notice-message>
@@ -108,14 +108,15 @@
               class="prewrap"
             /><span v-else class="prewrap">{{ expanded.textbody }}</span>
           </div>
-          <div class="d-flex justify-content-between flex-wrap mt-2">
+          <div v-if="replyable" class="d-flex justify-content-between flex-wrap mt-2">
             <MessageUserInfo v-if="!simple && expanded.fromuser" :user="expanded.fromuser" :milesaway="milesaway" />
             <MessageReplyInfo :message="expanded" />
           </div>
         </div>
       </b-card-body>
-      <b-card-footer v-if="expanded" class="p-1 pt-3">
+      <b-card-footer v-if="expanded && replyable" class="p-1 pt-3">
         <CovidClosed v-if="expanded && expanded.closed" />
+        <div v-else-if="expanded.fromuser && expanded.fromuser.id === myid" />
         <div v-else>
           <CovidCheckList v-if="!confirmed" class="mt-2" @confirmed="confirmed = true" />
           <div v-if="confirmed">
@@ -131,7 +132,7 @@
               class="flex-grow-1"
               label="Your reply:"
               :label-for="'replytomessage-' + expanded.id"
-              :description="expanded.type === 'Offer' ? 'Interested?  Please explain why you\'d like it and when you can collect.  Always be polite and helpful.  If appropriate, ask if it\'s working.' : 'Can you help?  If you have what they\'re looking for, let them know.'"
+              :description="expanded.type === 'Offer' ? 'Interested?  Please explain why you\'d like it and when you can collect.  Always be polite and helpful, and remember it\'s not always first come first served.  If appropriate, ask if it\'s working.' : 'Can you help?  If you have what they\'re looking for, let them know.'"
             >
               <b-form-textarea
                 v-if="expanded.type == 'Offer'"
@@ -352,6 +353,21 @@ export default {
       type: Number,
       required: false,
       default: 1
+    },
+    expandButtonText: {
+      type: String,
+      required: false,
+      default: 'See details and reply'
+    },
+    replyable: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
+    actions: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
   data: function() {

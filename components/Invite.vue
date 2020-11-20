@@ -91,10 +91,10 @@ export default {
             })
           }
           if (c.emails) { // App
-            c.emails.forEach(email => {
+            c.emails.forEach(e => {
               ret.push({
-                name: c.displayName ? c.displayName + (email.type ? ' ' + email.type : '') : null,
-                email: email.value
+                name: c.displayName ? c.displayName + (e.type ? ' ' + e.type : '') : null,
+                email: e.value
               })
             })
           }
@@ -110,25 +110,36 @@ export default {
         this.contacts.forEach(c => {
           if (c.tel) {
             c.tel.forEach(e => {
-              ret.push({
-                name: c.name ? c.name[0] : null,
-                phone: e
-              })
+              // Fix up the formatting a bit, particular for IOS which is picky.
+              let phoneno = e.replace(/\s+/g, '')
+
+              if (phoneno.length > 1) {
+                if (phoneno.charAt(0) === '0' && phoneno.charAt(1) !== '0') {
+                  // Convert to UK prefix.
+                  phoneno = '+44' + phoneno.substring(1)
+                }
+              }
+
+              // Ignore dups.
+              if (!ret.find(p => p.phone === phoneno)) {
+                ret.push({
+                  name: c.name ? c.name[0] : null,
+                  phone: phoneno
+                })
+              }
             })
           }
           if (c.phoneNumbers) { // App
-            let first = false
-            c.phoneNumbers.forEach(phone => {
-              let phoneno = phone.value.replace(/\s+/g, '')
+            c.phoneNumbers.forEach(e => {
+              let phoneno = e.value.replace(/\s+/g, '')
               if (phoneno.length > 1) {
                 if (phoneno.charAt(0) === '0' && phoneno.charAt(1) !== '0') {
                   phoneno = '+44' + phoneno.substring(1)
                 }
               }
-              if (phoneno !== first) {
-                first = phoneno
+              if (!ret.find(p => p.phone === phoneno)) {
                 ret.push({
-                  name: c.displayName ? c.displayName + (phone.type ? ' ' + phone.type : '') : null,
+                  name: c.displayName ? c.displayName + (e.type ? ' ' + e.type : '') : null,
                   phone: phoneno
                 })
               }

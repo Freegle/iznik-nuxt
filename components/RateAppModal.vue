@@ -54,7 +54,8 @@ export default {
 
     confirm() {
       let review_link = "market://details?id=org.ilovefreegle.direct";
-      if (mobilestate.isiOS) review_link = "itmss://itunes.apple.com/us/app/freegle/id970045029?ls=1&mt=8&ign-mscache=1";
+      //if (mobilestate.isiOS) review_link = "itmss://itunes.apple.com/us/app/freegle/id970045029?ls=1&mt=8&ign-mscache=1";
+      if (mobilestate.isiOS) review_link = 'https://apps.apple.com/gb/app/id970045029?action=write-review'
       console.log('rateApp.vue: ', review_link)
       cordova.InAppBrowser.open(review_link, '_system')
       this.hide()

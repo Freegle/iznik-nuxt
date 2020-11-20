@@ -31,6 +31,7 @@ import LogsAPI from './LogsAPI.js'
 import MembershipsAPI from './MembershipsAPI.js'
 import MergeAPI from './MergeAPI.js'
 import MessageAPI from './MessageAPI.js'
+import MicroVolunteeringAPI from './MicroVolunteeringAPI.js'
 import ModConfigsAPI from './ModConfigsAPI.js'
 import NewsAPI from './NewsAPI.js'
 import NoticeboardAPI from './NoticeboardAPI.js'
@@ -70,6 +71,7 @@ interface API {
   memberships: MembershipsAPI;
   merge: MergeAPI;
   message: MessageAPI;
+  microvolunteering: MicroVolunteeringAPI;
   modconfigs: ModConfigsAPI;
   news: NewsAPI;
   noticeboard: NoticeboardAPI;
