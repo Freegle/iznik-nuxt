@@ -8,7 +8,7 @@
       :min="min"
       :max="max"
       step="1"
-      size="lg"
+      :size="size"
       :formatter-fn="formatter"
     />
   </div>
@@ -49,6 +49,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    size: {
+      type: String,
+      required: false,
+      default: 'lg'
     }
   },
   data() {

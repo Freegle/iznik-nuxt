@@ -214,19 +214,19 @@
                 <b-col cols="12">
                   <b-form-group
                     label="Your postcode:"
-                    class="d-inline"
                   >
-                    <b-input-group id="input-postcode">
+                    <div class="d-flex flex-wrap">
                       <postcode @selected="selectPostcode" @cleared="clearPostcode" />
-                    </b-input-group>
+                      <div>
+                        <b-button variant="white" size="lg" class="mb-2 d-inline" :disabled="!pc" @click="savePostcode">
+                          <v-icon v-if="savingPostcode" name="sync" class="text-success fa-spin" />
+                          <v-icon v-else-if="savedPostcode" name="check" class="text-success" />
+                          <v-icon v-else name="save" />&nbsp;
+                          Save
+                        </b-button>
+                      </div>
+                    </div>
                   </b-form-group>
-
-                  <b-button variant="white" size="lg" class="mb-2 d-inline" :disabled="!pc" @click="savePostcode">
-                    <v-icon v-if="savingPostcode" name="sync" class="text-success fa-spin" />
-                    <v-icon v-else-if="savedPostcode" name="check" class="text-success" />
-                    <v-icon v-else name="save" />&nbsp;
-                    Save
-                  </b-button>
                 </b-col>
               </b-row>
               <b-row>
@@ -827,13 +827,19 @@ export default {
       })
     },
     addAbout() {
-      this.$refs.aboutmemodal.show()
+      this.waitForRef('aboutmemodal', () => {
+        this.$refs.aboutmemodal.show()
+      })
     },
     viewProfile() {
-      this.$refs.profilemodal.show()
+      this.waitForRef('profilemodal', () => {
+        this.$refs.profilemodal.show()
+      })
     },
     availability() {
-      this.$refs.availabilitymodal.show()
+      this.waitForRef('availabilitymodal', () => {
+        this.$refs.availabilitymodal.show()
+      })
     },
     async changeUseProfile(c, e) {
       const settings = this.me.settings
