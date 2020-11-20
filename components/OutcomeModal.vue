@@ -146,20 +146,27 @@ export default {
   },
   methods: {
     async submit() {
-      const complete = this.left === 0
+      console.log('Submit', this.left)
+      let complete = false
 
-      for (const u of this.tookUsers) {
-        if (u.count > 0) {
-          await this.$store.dispatch('messages/addBy', {
-            id: this.message.id,
-            userid: u.userid > 0 ? u.userid : null,
-            count: u.count
-          })
-        } else {
-          await this.$store.dispatch('messages/removeBy', {
-            id: this.message.id,
-            userid: u.userid > 0 ? u.userid : null
-          })
+      if (this.type === 'Withdrawn') {
+        complete = true
+      } else {
+        complete = this.left === 0
+
+        for (const u of this.tookUsers) {
+          if (u.count > 0) {
+            await this.$store.dispatch('messages/addBy', {
+              id: this.message.id,
+              userid: u.userid > 0 ? u.userid : null,
+              count: u.count
+            })
+          } else {
+            await this.$store.dispatch('messages/removeBy', {
+              id: this.message.id,
+              userid: u.userid > 0 ? u.userid : null
+            })
+          }
         }
       }
 
