@@ -68,6 +68,18 @@
         </b-btn>
       </div>
       <h3 class="mt-2">
+        Trust Level
+      </h3>
+      <p>
+        This controls whether someone is asked to do micromoderation tasks.
+      </p>
+      <p>
+        <span v-if="!user.trustlevel"><b>None</b> - we've not yet asked them</span>
+        <span v-else-if="user.trustlevel === 'Basic'"><b>Basic</b> - has consented, using information visible to all members</span>
+        <span v-else-if="user.trustlevel === 'Moderate'"><b>Moderate</b> - some information not visible to all members</span>
+        <span v-else-if="user.trustlevel === 'Advanced'"><b>Advanced</b> - significant information not visible to all members</span>
+      </p>
+      <h3 class="mt-2">
         Location
       </h3>
       <b-row>
