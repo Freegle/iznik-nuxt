@@ -217,7 +217,6 @@ export default {
     return {
       complete: false,
       distance: 1000,
-      chatPoll: null,
       nchan: null,
       logo: require(`@/static/icon.png`),
       timeTimer: null,
@@ -307,8 +306,8 @@ export default {
       console.log('Start NCHAN from mount')
       this.startNCHAN(me.id)
 
-      // Get chats and poll regularly for new ones.  Would be nice if this was event driven instead but requires server work.
-      this.fetchLatestChats()
+      // Get chats and poll regularly for new ones
+      this.$store.dispatch('chats/fetchLatestChats')
     }
 
     // Look for a custom logo.
@@ -383,7 +382,6 @@ export default {
 
   beforeDestroy() {
     console.log('Destroy layout')
-    clearTimeout(this.chatPoll)
     clearTimeout(this.timeTimer)
 
     if (this.nchan && this.nchan.running) {
@@ -460,24 +458,6 @@ export default {
           }
         }
       })
-    },
-    async fetchLatestChats() {
-      const me = this.$store.getters['auth/user']
-
-      if (me && me.id) {
-        const currentCount = this.$store.getters['chats/unseenCount']
-        const newCount = await this.$store.dispatch('chats/unseenCount')
-
-        if (newCount !== currentCount) {
-          await this.$store.dispatch('chats/listChats', {
-            chattypes: ['User2User', 'User2Mod'],
-            summary: true,
-            noerror: true
-          })
-        }
-      }
-
-      this.chatPoll = setTimeout(this.fetchLatestChats, 30000)
     },
 
     showAboutMe() {
