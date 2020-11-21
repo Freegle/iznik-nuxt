@@ -3,10 +3,16 @@
     <b-row class="m-0">
       <b-col cols="0" md="3" />
       <b-col cols="12" md="6">
-        <h1>
-          How can we help?
+        <h1 class="d-flex flex-wrap justify-content-between">
+          <span>
+            How can we help?
+          </span>
+          <div>
+            <b-btn variant="white" to="/donate">
+              Donate
+            </b-btn>
+          </div>
         </h1>
-
         <b-card no-body>
           <b-tabs content-class="mt-3" card>
             <b-tab active>
