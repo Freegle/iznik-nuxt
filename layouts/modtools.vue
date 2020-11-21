@@ -199,6 +199,9 @@ export default {
       all: true
     })
 
+    // Get chats and poll regularly for new ones
+    this.$store.dispatch('chats/fetchLatestChats')
+
     setTimeout(this.updateFavicon, 1000)
   },
   beforeDestroy() {
@@ -247,17 +250,6 @@ export default {
         components: ['work'],
         force: true
       })
-
-      const currentCount = this.$store.getters['chats/unseenCount']
-      const newCount = await this.$store.dispatch('chats/unseenCount')
-
-      if (newCount !== currentCount) {
-        await this.$store.dispatch('chats/listChats', {
-          chattypes: ['User2User', 'User2Mod'],
-          summary: true,
-          noerror: true
-        })
-      }
 
       setTimeout(this.checkWork, 30000)
     },
