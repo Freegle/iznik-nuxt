@@ -373,30 +373,14 @@
         <b-collapse id="accordion-spam" accordion="settings-accordion" role="tabpanel">
           <b-card-body>
             <p>
-              These are protection features to stop spammers or scammers targeting freeglers.  It's highly recommended
-              to turn all these on.
+              All groups are checked for now spammers.  If any are found, they and their posts will be removed.
+            </p>
+            <p>
+              It's highly recommended that these settings are turned on.
             </p>
             <p v-if="readonly" class="text-info">
               Only owners can change these settings.
             </p>
-            <ModGroupSetting
-              :groupid="groupid"
-              name="settings.spammers.check"
-              label="Check for spammer members?"
-              description="We can automatically check your membership for known spammers."
-              type="toggle"
-              toggle-checked="Yes"
-              toggle-unchecked="No"
-            />
-            <ModGroupSetting
-              :groupid="groupid"
-              name="settings.spammers.remove"
-              label="Auto-remove spammer members?"
-              description="We can automatically remove known spammers."
-              type="toggle"
-              toggle-checked="Yes"
-              toggle-unchecked="No"
-            />
             <ModGroupSetting
               :groupid="groupid"
               name="settings.spammers.messagereview"
