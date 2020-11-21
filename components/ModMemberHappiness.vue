@@ -30,10 +30,12 @@
             {{ member.message.subject }}
           </b-col>
           <b-col cols="4">
-            <v-icon name="hashtag" scale="0.75" />{{ member.message.id }}
-            <span v-if="groupname">
-              on {{ groupname }}
-            </span>
+            <b-btn :to="'/modtools/members/approved/search/' + member.groupid + '/' + member.user.id" variant="link" class="text-white p-0">
+              <v-icon name="hashtag" scale="0.75" />{{ member.message.id }}
+              <span v-if="groupname">
+                on {{ groupname }}
+              </span>
+            </b-btn>
           </b-col>
         </b-row>
       </b-card-header>
