@@ -535,12 +535,13 @@ export default {
       let check = false
 
       this.message.groups.forEach(g => {
-        const group = this.$store.getters['group/get'](g.groupid)
+        const group = this.$store.getters['auth/groupById'](g.groupid)
 
         if (
-          !group.settings ||
-          !group.settings.duplicates ||
-          group.settings.duplicates.check
+          group &&
+          (!group.settings ||
+            !group.settings.duplicates ||
+            group.settings.duplicates.check)
         ) {
           check = true
           const msgtype = this.message.type.toLowerCase()
@@ -681,7 +682,10 @@ export default {
         this.message.fromuser.messagehistory
       ) {
         this.message.fromuser.messagehistory.forEach(message => {
-          if (message.id !== this.message.id && message.daysago < 60) {
+          if (
+            message.id !== this.message.id &&
+            message.daysago <= this.duplicateAge
+          ) {
             if (this.canonSubj(message.subject) === subj) {
               // No point displaying any group tag in the duplicate.
               message.subject = message.subject.replace(/\[.*\](.*)/, '$1')
