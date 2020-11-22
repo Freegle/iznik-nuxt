@@ -1,0 +1,112 @@
+// There are six types of button used on the site - primary, secondary, white, danger, warning and link
+
+button {
+  white-space: nowrap;
+}
+
+.btn-group-xs > .btn, .btn-xs {
+  padding  : .25rem .4rem;
+  font-size  : .875rem;
+  line-height  : .5;
+  border-radius : .2rem;
+}
+
+// This is the primary CTA
+.btn-primary {
+  background-color: $colour-success;
+  background-image: none;
+  border-color: $color-green--dark;
+  color: $color-white;
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn-primary:hover,
+.btn-primary:active {
+  // !important is required to override the bootstrap styles
+  color: $color-black !important;
+  background-color: $color-white !important;
+  border-color: $color-blue--2 !important;
+}
+
+.btn-primary:focus {
+  box-shadow: 0 0 0 0.2rem rgba(72,180,97,.5);
+}
+
+.btn-primary:disabled {
+  color: $color-white;
+  background-color: $color-green--bright;
+  border-color: $color-green--bright;
+}
+
+// This is the secondary CTA
+.btn-secondary {
+  background-color: $colour-secondary;
+  border-color: $color-blue--dark;
+  color: $color-white;
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn-secondary:hover,
+.btn-secondary:active {
+  // !important is required to override the bootstrap styles
+  color: $color-black !important;
+  background-color: $color-white  !important;
+  border-color: $color-blue--2 !important;
+}
+
+.btn-secondary:focus {
+  // !important is required to override the bootstrap styles
+  box-shadow: 0 0 0 0.2rem rgba(38,143,255,.5) !important;
+}
+
+.btn-secondary:disabled {
+  color: $color-white;
+  background-color: $color-blue--bright;
+  border-color: $color-blue--bright;
+}
+
+// This is the tertiary CTA
+.btn-white {
+  background-color: $color-white;
+  border-color: $color-green--dark;
+  color: $color-black;
+  text-shadow: none;
+  -webkit-font-smoothing: antialiased;
+  border: 1px $color-black solid;
+}
+
+.btn-white:hover {
+  color: $color-white;
+  background-color: $color-blue--light;
+  border-color: $color-blue--2;
+}
+
+.btn-default {
+  background-color: $color-white;
+  background-image: none;
+  border-color: $color-green--dark;
+  color: $color-black;
+  text-shadow: 0 -1px 0 $color-black-opacity-33;
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn-warning {
+  background-color: $colour-warning;
+  background-image: none;
+  border-color: $color-green--dark;
+  color: $color-white;
+  text-shadow: 0 -1px 0 $color-black-opacity-33;
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn-light {
+  color: $color-gray--normal;
+  background-color: inherit;
+  font-size: 0.8rem;
+  padding: 0 2px 0 2px;
+  border: none;
+
+  &:hover {
+    color: $color-gray--normal;
+  }
+}
