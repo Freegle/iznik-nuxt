@@ -255,7 +255,11 @@
         </div>
       </b-card-body>
       <b-card-footer v-if="!noactions && expanded">
-        <ModMessageButtons v-if="!editing" :message="message" :modconfig="modconfig" :editreview="editreview" :cantpost="membership && membership.ourpostingstatus === 'PROHIBITED'" />
+        <div v-if="message.heldby && message.heldby.id !== myid">
+          This message is held by someone else.  The buttons are hidden so you don't click them by accident.  Please
+          check with them before releasing the message.
+        </div>
+        <ModMessageButtons v-else-if="!editing" :message="message" :modconfig="modconfig" :editreview="editreview" :cantpost="membership && membership.ourpostingstatus === 'PROHIBITED'" />
         <b-btn v-if="editing" variant="white" @click="editing = false">
           <v-icon name="times" /> Cancel
         </b-btn>
