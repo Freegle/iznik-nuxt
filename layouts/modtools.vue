@@ -275,20 +275,6 @@ export default {
     toggleMenu() {
       this.showMenu = !this.showMenu
     },
-    toChats(e) {
-      if (e) {
-        e.preventDefault()
-        e.stopPropagation()
-        e.stopImmediatePropagation()
-      }
-
-      // Ensure we have no chat selected.  On mobile this will force us to show the chat list.
-      this.$store.dispatch('chats/currentChat', {
-        chatid: null
-      })
-
-      this.$router.push('/modtools/chats')
-    },
     updateTime() {
       this.$store.dispatch('misc/setTime')
       this.timeTimer = setTimeout(this.updateTime, 30000)
