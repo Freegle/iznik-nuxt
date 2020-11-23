@@ -47,6 +47,7 @@
         label="Delete"
       />
       <ModMessageButton
+        v-if="!message.heldby"
         :message="message"
         variant="warning"
         icon="pause"
