@@ -330,6 +330,8 @@ export default {
               id: this.myid,
               trustlevel: 'Declined'
             })
+
+            this.doneForNow()
             break
           }
           case 'Approve': {
