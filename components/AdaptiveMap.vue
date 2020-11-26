@@ -525,6 +525,12 @@ export default {
     }
   },
   watch: {
+    selectedType: function(newVal) {
+      this.$store.dispatch('misc/set', {
+        key: 'postType',
+        value: newVal
+      })
+    },
     search(newval) {
       if (!newval) {
         // We've cleared the search box, so cancel the search and return the map to normal.
@@ -586,12 +592,6 @@ export default {
     }
   },
   methods: {
-    typeChange: function() {
-      this.$store.dispatch('misc/set', {
-        key: 'postType',
-        value: this.selectedType
-      })
-    },
     loadMore: async function($state) {
       if (!this.busy) {
         this.busy = true
