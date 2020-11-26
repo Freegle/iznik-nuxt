@@ -2,6 +2,7 @@
   <component
     :is="chatType"
     :class="{'text-white' : !isListItem}"
+    class="chat-menu-item"
     href="#"
     aria-label="chats"
     @click="toChats"
@@ -69,6 +70,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import 'color-vars';
+
 .chatbadge {
   position: absolute;
   top: 0px;
@@ -78,5 +81,16 @@ export default {
 .chat__icon {
   height: 32px;
   margin: 0;
+}
+
+// We need to style the anchor but also override the bootstrap nav-link class
+.chat-menu-item,
+::v-deep .nav-link {
+  color: $color-white !important;
+
+  &:hover,
+  &:focus {
+    color: $color-white-opacity-75 !important;
+  }
 }
 </style>
