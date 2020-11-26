@@ -7,7 +7,7 @@ export default {
     }
   },
   watch: {
-    me(newVal, oldVal) {
+    localMe(newVal, oldVal) {
       if (this.nchan && this.nchan.running) {
         // Stop old listen.
         try {
@@ -25,6 +25,7 @@ export default {
     }
   },
   mounted() {
+    // Get me directly as the computed property might not be available
     const me = this.$store.getters['auth/user']
 
     if (me && me.id) {
@@ -43,7 +44,8 @@ export default {
     this.nchan = null
   },
   computed: {
-    me() {
+    // There should also be a global me property but define a local one to make sure it is present
+    localMe() {
       return this.$store.getters['auth/user']
     }
   },
