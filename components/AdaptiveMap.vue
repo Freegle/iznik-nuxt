@@ -493,7 +493,7 @@ export default {
           if (!member) {
             const group = this.$store.getters['group/get'](id)
 
-            if (group) {
+            if (group && group.onmap && group.publish) {
               group.distance = this.getDistance(
                 [this.centre.lat, this.centre.lng],
                 [group.lat, group.lng]
