@@ -121,7 +121,7 @@
           <CovidCheckList v-if="!confirmed" class="mt-2" @confirmed="confirmed = true" />
           <div v-if="confirmed">
             <EmailValidator
-              v-if="!me"
+              v-if="!me && !sent"
               ref="email"
               size="lg"
               label="Your email address:"
@@ -129,6 +129,7 @@
               :valid.sync="emailValid"
             />
             <b-form-group
+              v-if="!sent"
               class="flex-grow-1"
               label="Your reply:"
               :label-for="'replytomessage-' + expanded.id"
@@ -151,66 +152,73 @@
                 class="flex-grow-1"
               />
             </b-form-group>
-            <NoticeMessage v-if="sent" variant="info" class="d-block d-sm-none mb-1">
-              We've sent your message.  You can see replies in the
-              <nuxt-link to="/chats">
-                <v-icon name="comments" /> Chats
-              </nuxt-link> section.
-            </NoticeMessage>
-            <div v-if="!me">
-              <div class="contents">
-                <div>
-                  <b-btn size="lg" variant="primary" :disabled="disableSend" @click="registerOrSend">
-                    Send your reply
-                    <v-icon v-if="replying" name="sync" class="fa-spin" />
-                    <v-icon v-else name="angle-double-right" />&nbsp;
-                  </b-btn>
-                </div>
-                <div />
-                <MessageMap v-if="showMap" :home="home" :position="{ lat: expanded.lat, lng: expanded.lng }" />
-              </div>
-              <p class="mt-1">
-                If you're a new freegler then welcome!  You'll get emails.  Name, approx. location, and profile picture are public - you
-                can hide your real name and picture from Settings.  This adds cookies and local
-                storage.  Read <nuxt-link target="_blank" to="/terms">
-                  Terms of Use
-                </nuxt-link> and
-                <nuxt-link target="_blank" to="/privacy">
-                  Privacy
-                </nuxt-link> for details.
+            <BAlert v-if="sent" show variant="info" class="d-block d-sm-none mb-1">
+              <p class="font-weight-bold">
+                We've sent your message.
               </p>
-            </div>
-            <div v-else>
-              <div class="contents">
-                <div>
-                  <b-form-group
-                    class="flex-grow-1"
-                    label="Your postcode:"
-                    :label-for="'replytomessage-' + expanded.id"
-                    description="So that we know how far away you are.  The closer the better."
-                  >
-                    <Postcode @selected="savePostcode" />
-                  </b-form-group>
-                  <b-btn size="lg" variant="primary" class="d-none d-md-block" :disabled="disableSend" @click="sendReply">
-                    Send your reply
-                    <v-icon v-if="replying" name="sync" class="fa-spin" />
-                    <v-icon v-else name="angle-double-right" />&nbsp;
-                  </b-btn>
-                  <b-btn
-                    size="lg"
-                    variant="primary"
-                    class="d-block d-md-none mt-2"
-                    block
-                    :disabled="disableSend"
-                    @click="sendReply"
-                  >
-                    Send your reply
-                    <v-icon v-if="replying" name="sync" class="fa-spin" />
-                    <v-icon v-else name="angle-double-right" />&nbsp;
-                  </b-btn>
+              <p>
+                When they reply, it'll be in the
+                <nuxt-link to="/chats">
+                  <v-icon name="comments" />&nbsp;Chats
+                </nuxt-link> section, and by email.  Check your spam folder!
+              </p>
+            </BAlert>
+            <div v-if="!sent">
+              <div v-if="!me">
+                <div class="contents">
+                  <div>
+                    <b-btn size="lg" variant="primary" :disabled="disableSend" @click="registerOrSend">
+                      Send your reply
+                      <v-icon v-if="replying" name="sync" class="fa-spin" />
+                      <v-icon v-else name="angle-double-right" />&nbsp;
+                    </b-btn>
+                  </div>
+                  <div />
+                  <MessageMap v-if="showMap" :home="home" :position="{ lat: expanded.lat, lng: expanded.lng }" />
                 </div>
-                <div />
-                <MessageMap v-if="showMap" :home="home" :position="{ lat: expanded.lat, lng: expanded.lng }" class="border border-black rounded" />
+                <p class="mt-1">
+                  If you're a new freegler then welcome!  You'll get emails.  Name, approx. location, and profile picture are public - you
+                  can hide your real name and picture from Settings.  This adds cookies and local
+                  storage.  Read <nuxt-link target="_blank" to="/terms">
+                    Terms of Use
+                  </nuxt-link> and
+                  <nuxt-link target="_blank" to="/privacy">
+                    Privacy
+                  </nuxt-link> for details.
+                </p>
+              </div>
+              <div v-else>
+                <div class="contents">
+                  <div>
+                    <b-form-group
+                      class="flex-grow-1"
+                      label="Your postcode:"
+                      :label-for="'replytomessage-' + expanded.id"
+                      description="So that we know how far away you are.  The closer the better."
+                    >
+                      <Postcode @selected="savePostcode" />
+                    </b-form-group>
+                    <b-btn size="lg" variant="primary" class="d-none d-md-block" :disabled="disableSend" @click="sendReply">
+                      Send your reply
+                      <v-icon v-if="replying" name="sync" class="fa-spin" />
+                      <v-icon v-else name="angle-double-right" />&nbsp;
+                    </b-btn>
+                    <b-btn
+                      size="lg"
+                      variant="primary"
+                      class="d-block d-md-none mt-2"
+                      block
+                      :disabled="disableSend"
+                      @click="sendReply"
+                    >
+                      Send your reply
+                      <v-icon v-if="replying" name="sync" class="fa-spin" />
+                      <v-icon v-else name="angle-double-right" />&nbsp;
+                    </b-btn>
+                  </div>
+                  <div />
+                  <MessageMap v-if="showMap" :home="home" :position="{ lat: expanded.lat, lng: expanded.lng }" class="border border-black rounded" />
+                </div>
               </div>
             </div>
           </div>
