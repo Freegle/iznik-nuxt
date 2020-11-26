@@ -54,7 +54,7 @@
             <NotificationOptions v-if="!simple" :distance="distance" :small-screen="false" :unread-notification-count.sync="unreadNotificationCount" @showAboutMe="showAboutMe" />
             <ChatMenu id="menu-option-chat" :is-list-item="true" :chat-count.sync="chatCount" />
             <b-nav-item v-if="!simple" id="menu-option-spread" class="text-center small p-0" to="/promote" @mousedown="maybeReload('/promote')">
-              <div class="notifwrapper">
+              <div class="position-relative">
                 <v-icon name="bullhorn" scale="2" /><br>
                 <span class="nav-item__text">Promote</span>
               </div>
@@ -625,10 +625,6 @@ body.modal-open {
 
 svg.fa-icon {
   height: 32px;
-}
-
-.notifwrapper {
-  position: relative;
 }
 
 #serverloader {
