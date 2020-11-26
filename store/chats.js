@@ -238,7 +238,10 @@ export const actions = {
   },
 
   async fetchLatestChats({ dispatch, rootGetters }, params) {
+    const chatTypes = ['User2User', 'User2Mod']
+    const modOnlyChatTypes = ['Mod2Mod']
     const me = rootGetters['auth/user']
+    const modtools = rootGetters['misc/get']('modtools')
 
     if (me && me.id) {
       const currentCount = rootGetters['chats/unseenCount']
@@ -246,7 +249,7 @@ export const actions = {
 
       if (newCount !== currentCount) {
         await dispatch('listChats', {
-          chattypes: ['User2User', 'User2Mod'],
+          chattypes: modtools ? [...chatTypes, ...modOnlyChatTypes] : chatTypes,
           summary: true,
           noerror: true
         })
