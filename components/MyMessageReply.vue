@@ -1,20 +1,31 @@
 <template>
   <div class="border border-success rounded mb-1">
-    <div class="d-flex justify-content-between flex-wrap">
-      <div class="d-flex align-content-start mb-1 flex-grow-1">
-        <ProfileImage :image="reply.user.profile.turl" class="m-1" is-thumbnail size="sm" />
+    <div class="layout mb-1">
+      <div class="divider" />
+      <div class="d-flex flex-column justify-content-start user">
+        <div class="d-flex mr-4">
+          <ProfileImage :image="reply.user.profile.turl" class="m-1 d-none d-md-block" is-thumbnail size="sm" />
+          <ProfileImage :image="reply.user.profile.turl" class="m-1 d-block d-md-none" is-thumbnail size="lg" />
+          <!-- eslint-disable-next-line -->
+          <span class="align-middle mt-1" v-if="unseen > 0"><b>{{ reply.user.displayname }}</b></span>
+          <!-- eslint-disable-next-line -->
+          <span v-else class="align-middle mt-1"><b>{{ reply.user.displayname }}</b></span>
+        </div>
+      </div>
+      <ratings :id="reply.user.id" class="pl-1 flex-shrink-1 ratings" />
+      <div class="d-flex flex-column justify-content-center wrote">
         <div>
-          <!-- eslint-disable-next-line -->
-          <span  class="align-middle" v-if="unseen > 0"><b>{{ reply.user.displayname }}</b></span>
-          <!-- eslint-disable-next-line -->
-          <span v-else class="align-middle"><b>{{ reply.user.displayname }}</b></span>
-          <span v-if="reply.lastuserid !== myid" class="align-middle text-muted">
-            last wrote to you:
-          </span>
-          <span v-else class="align-middle text-muted">
-            you last sent:
-          </span>
-          <br>
+          <div class="text-muted small mb-1">
+            <span v-if="reply.lastuserid !== myid">
+              last wrote to you
+            </span>
+            <span v-else>
+              you last sent
+            </span>
+            <span :title="$dayjs(reply.lastdate).toLocaleString()">
+              {{ reply.lastdate | timeago }}
+            </span>
+          </div>
           <span v-if="unseen > 0" class="bg-white snippet text-primary">
             {{ reply.snippet }}...
           </span>
@@ -24,44 +35,42 @@
           <span v-else class="ml-4">
             ...
           </span>
-          <span class="small text-muted align-middle ml-2" :title="$dayjs(reply.lastdate).toLocaleString()">
-            {{ reply.lastdate | timeago }}
-          </span>
         </div>
       </div>
-      <ratings :id="reply.user.id" class="pl-1 pt-1 mt-1 mr-2 flex-shrink-1" />
-      <div class="pt-1 flex-shrink-1 ml-2">
-        <b-btn v-if="promised && !taken && !withdrawn" variant="warning" class="align-middle mt-1 mb-1" @click="unpromise">
-          <v-icon>
-            <v-icon name="handshake" />
-            <v-icon
-              name="slash"
-              class="unpromise__slash"
-            />
-          </v-icon>
-          Unpromise
-        </b-btn>
-        <b-btn v-else-if="message.type === 'Offer' && !taken && !withdrawn" variant="primary" class="align-middle mt-1 mb-1" @click="promise">
-          <v-icon name="handshake" /> Promise
-        </b-btn>
-        <b-btn variant="secondary" class="d-none d-sm-inline-block align-middle mt-1 mb-1 mr-1" @click="chat(true)">
-          <b-badge v-if="unseen > 0" variant="danger">
-            {{ unseen }}
-          </b-badge>
-          <span v-else>
-            <v-icon name="comments" />
-          </span>
-          Chat
-        </b-btn>
-        <b-btn variant="secondary" class="d-inline-block d-sm-none align-middle mt-1 mb-1 mr-1" @click="chat(false)">
-          <b-badge v-if="unseen > 0" variant="danger">
-            {{ unseen }}
-          </b-badge>
-          <span v-else>
-            <v-icon name="comments" />
-          </span>
-          Chat
-        </b-btn>
+      <div class="d-flex flex-column justify-content-center ml-2 buttons">
+        <div>
+          <b-btn v-if="promised && !taken && !withdrawn" variant="warning" class="align-middle mt-1 mb-1" @click="unpromise">
+            <v-icon>
+              <v-icon name="handshake" />
+              <v-icon
+                name="slash"
+                class="unpromise__slash"
+              />
+            </v-icon>
+            Unpromise
+          </b-btn>
+          <b-btn v-else-if="message.type === 'Offer' && !taken && !withdrawn" variant="primary" class="align-middle mt-1 mb-1" @click="promise">
+            <v-icon name="handshake" /> Promise
+          </b-btn>
+          <b-btn variant="secondary" class="d-none d-sm-inline-block align-middle mt-1 mb-1 mr-1" @click="chat(true)">
+            <b-badge v-if="unseen > 0" variant="danger">
+              {{ unseen }}
+            </b-badge>
+            <span v-else>
+              <v-icon name="comments" />
+            </span>
+            Chat
+          </b-btn>
+          <b-btn variant="secondary" class="d-inline-block d-sm-none align-middle mt-1 mb-1 mr-1" @click="chat(false)">
+            <b-badge v-if="unseen > 0" variant="danger">
+              {{ unseen }}
+            </b-badge>
+            <span v-else>
+              <v-icon name="comments" />
+            </span>
+            Chat
+          </b-btn>
+        </div>
       </div>
     </div>
     <PromiseModal ref="promise" :messages="[ message ]" :selected-message="message.id" :users="[ reply.user ]" :selected-user="reply.user.id" />
@@ -174,6 +183,9 @@ export default {
 
 <style scoped lang="scss">
 @import 'color-vars';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
 
 .snippet {
   border: 1px solid $color-gray--light;
@@ -184,10 +196,89 @@ export default {
   padding-right: 4px;
   word-wrap: break-word;
   line-height: 1.75;
+  font-size: 125%;
+  font-weight: bold;
 }
 
 .unpromise__slash {
   transform: rotate(180deg);
   color: $color-red;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto auto auto auto;
+
+  .divider {
+    border-bottom: 1px solid $color-gray--light;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    grid-column: 1 / 4;
+    grid-row: 2 / 3;
+  }
+
+  .user {
+    grid-row: 1 / 2;
+    grid-column: 1 / 2;
+    align-self: start;
+    font-size: 150%;
+  }
+
+  .ratings {
+    grid-row: 1 / 2;
+    grid-column: 2 / 4;
+    justify-self: end;
+    margin-top: 0.5rem;
+    margin-right: 0.5rem;
+  }
+
+  .wrote {
+    grid-row: 4 / 5;
+    grid-column: 1 / 4;
+    margin-top: 0.5rem;
+    margin-left: 0.5rem;
+  }
+
+  .buttons {
+    grid-row: 3 / 4;
+    grid-column: 1 / 4;
+    margin-top: 0.25rem;
+  }
+
+  @include media-breakpoint-up(md) {
+    grid-template-columns: 3fr 1fr;
+    grid-template-rows: auto auto;
+
+    .divider {
+      grid-column: 1 / 4;
+      grid-row: 2 / 3;
+      margin-top: 5px;
+    }
+
+    .user {
+      grid-column: 1 / 2;
+      grid-row: 1 / 2;
+    }
+
+    .ratings {
+      grid-column: 3 / 4;
+      grid-row: 1 / 2;
+    }
+
+    .wrote {
+      grid-row: 3 / 4;
+      grid-column: 1 / 2;
+      border-top: 0;
+    }
+
+    .buttons {
+      grid-column: 2 / 4;
+      grid-row: 3 / 4;
+      border-top: 0;
+      justify-self: end;
+      border-top: 0;
+    }
+  }
 }
 </style>
