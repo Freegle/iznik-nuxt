@@ -305,6 +305,8 @@ module.exports = {
 
   // We only use some of bootstrap-vue, so by listing it explicitly we can reduce our bundle size.
   bootstrapVue: {
+    bootstrapCSS: false,
+    bootstrapVueCSS: false,
     componentPlugins: [
       'AlertPlugin',
       'BadgePlugin',

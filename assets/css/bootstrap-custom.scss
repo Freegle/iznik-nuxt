@@ -1,0 +1,9 @@
+// Custom Bootstrap variable overrides go first
+$primary: $colour-success;
+$secondary: $colour-secondary;
+
+$link-color: $color-blue--base;
+
+// Then include the bootstrap Sass
+@import 'bootstrap/scss/bootstrap.scss';
+@import 'bootstrap-vue/src/index.scss';

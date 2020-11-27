@@ -11,60 +11,6 @@ button {
   border-radius : .2rem;
 }
 
-// This is the primary CTA
-.btn-primary {
-  background-color: $colour-success;
-  background-image: none;
-  border-color: $color-green--dark;
-  color: $color-white;
-  -webkit-font-smoothing: antialiased;
-}
-
-.btn-primary:hover,
-.btn-primary:active {
-  // !important is required to override the bootstrap styles
-  color: $color-black !important;
-  background-color: $color-white !important;
-  border-color: $color-blue--2 !important;
-}
-
-.btn-primary:focus {
-  box-shadow: 0 0 0 0.2rem rgba(72,180,97,.5);
-}
-
-.btn-primary:disabled {
-  color: $color-white;
-  background-color: $color-green--bright;
-  border-color: $color-green--bright;
-}
-
-// This is the secondary CTA
-.btn-secondary {
-  background-color: $colour-secondary;
-  border-color: $color-blue--dark;
-  color: $color-white;
-  -webkit-font-smoothing: antialiased;
-}
-
-.btn-secondary:hover,
-.btn-secondary:active {
-  // !important is required to override the bootstrap styles
-  color: $color-black !important;
-  background-color: $color-white  !important;
-  border-color: $color-blue--2 !important;
-}
-
-.btn-secondary:focus {
-  // !important is required to override the bootstrap styles
-  box-shadow: 0 0 0 0.2rem rgba(38,143,255,.5) !important;
-}
-
-.btn-secondary:disabled {
-  color: $color-white;
-  background-color: $color-blue--bright;
-  border-color: $color-blue--bright;
-}
-
 // This is the tertiary CTA
 .btn-white {
   background-color: $color-white;
