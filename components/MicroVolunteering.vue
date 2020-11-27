@@ -136,7 +136,7 @@
                 Click the <b>two most similar</b> terms - or if there are none, click <em>Skip</em>.
               </p>
               <div class="d-flex flex-wrap justify-content-between">
-                <div v-for="term in task.terms" :key="'term-' + term.id" class="mr-1 mb-2">
+                <div v-for="term in task.terms" :key="'term-' + term.id + '-' + isSimilar(term)" class="mr-1 mb-2">
                   <b-btn :variant="isSimilar(term) ? 'secondary' : 'white'" size="lg" @click="similar(term)">
                     <b>{{ term.term }}</b>
                   </b-btn>
