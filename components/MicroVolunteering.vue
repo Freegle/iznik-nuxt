@@ -326,7 +326,7 @@ export default {
               variant: 'inviterejected'
             })
 
-            this.$store.dispatch('user/edit', {
+            await this.$store.dispatch('user/edit', {
               id: this.myid,
               trustlevel: 'Declined'
             })
