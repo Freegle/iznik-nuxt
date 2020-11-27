@@ -372,16 +372,13 @@
         </b-card-header>
         <b-collapse id="accordion-microvolunteering" accordion="settings-accordion" role="tabpanel">
           <b-card-body>
-            <p>
-              This allows members to perform small and useful tasks.
-            </p>
             <p v-if="readonly" class="text-info">
               Only owners can change these settings.
             </p>
             <ModGroupSetting
               :groupid="groupid"
               name="microvolunteering"
-              label="Microvolunteering enabled"
+              label="Allow members to perform small and useful tasks?"
               description="Is microvolunteering enabled?"
               type="toggle"
               toggle-checked="Enabled"
