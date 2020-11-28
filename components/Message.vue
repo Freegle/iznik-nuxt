@@ -376,6 +376,10 @@ export default {
       type: Boolean,
       required: false,
       default: true
+    },
+    recordView: {
+      type: Boolean,
+      required: true
     }
   },
   data: function() {
@@ -508,12 +512,14 @@ export default {
       }
     },
     view() {
-      const me = this.$store.getters['auth/user']
+      if (this.recordView) {
+        const me = this.$store.getters['auth/user']
 
-      if (me) {
-        this.$store.dispatch('messages/view', {
-          id: this.id
-        })
+        if (me) {
+          this.$store.dispatch('messages/view', {
+            id: this.id
+          })
+        }
       }
     },
     contract() {

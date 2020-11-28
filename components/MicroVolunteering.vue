@@ -92,6 +92,7 @@
                 :replyable="false"
                 start-expanded
                 :actions="false"
+                :record-view="false"
               />
               <div v-if="!showComments" class="d-flex justify-content-between flex-wrap w-100 mt-3">
                 <SpinButton
