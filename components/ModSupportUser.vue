@@ -78,6 +78,7 @@
         <span v-else-if="user.trustlevel === 'Basic'"><b>Basic</b> - has consented, using information visible to all members</span>
         <span v-else-if="user.trustlevel === 'Moderate'"><b>Moderate</b> - some information not visible to all members</span>
         <span v-else-if="user.trustlevel === 'Advanced'"><b>Advanced</b> - significant information not visible to all members</span>
+        <span v-else-if="user.trustlevel === 'Declined'"><b>Declined</b> - said they don't want to do this</span>
       </p>
       <h3 class="mt-2">
         Location
