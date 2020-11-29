@@ -137,11 +137,15 @@
                 Click the <b>two most similar</b> terms - or if there are none, click <em>Skip</em>.
               </p>
               <div class="d-flex flex-wrap justify-content-between">
-                <div v-for="term in task.terms" :key="'term-' + term.id + '-' + isSimilar(term)" class="mr-1 mb-2">
-                  <b-btn :variant="isSimilar(term) ? 'secondary' : 'white'" size="lg" @click="similar(term)">
-                    <b>{{ term.term }}</b>
-                  </b-btn>
-                </div>
+                <MicroVolunteeringSimilarTerm
+                  v-for="term in task.terms"
+                  :key="'term-' + term.id"
+                  :term="term"
+                  :similar-terms="similarTerms"
+                  class="mr-1 mb-2"
+                  @similar="similar(term)"
+                  @not="notSimilar(term)"
+                />
               </div>
               <hr>
               <div class="d-flex flex-wrap justify-content-between">
@@ -176,8 +180,9 @@
 import dayjs from 'dayjs'
 import Message from './Message'
 import SpinButton from './SpinButton'
+import MicroVolunteeringSimilarTerm from './MicroVolunteeringSimilarTerm'
 export default {
-  components: { SpinButton, Message },
+  components: { MicroVolunteeringSimilarTerm, SpinButton, Message },
   props: {
     force: {
       type: Boolean,
@@ -435,11 +440,12 @@ export default {
       return this.similarTerms.find(t => t.id === term.id)
     },
     similar(term) {
-      if (this.isSimilar(term)) {
-        this.similarTerms = this.similarTerms.filter(t => t.id !== term.id)
-      } else if (this.similarTerms.length < 2) {
+      if (this.similarTerms.length < 2) {
         this.similarTerms.push(term)
       }
+    },
+    notSimilar(term) {
+      this.similarTerms = this.similarTerms.filter(t => t.id !== term.id)
     },
     async submitSimilar() {
       await this.$api.microvolunteering.response({
