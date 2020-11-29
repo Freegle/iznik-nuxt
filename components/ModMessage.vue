@@ -40,7 +40,7 @@
                   {{ message.availablenow }} available
                 </b-badge>
                 <b-badge v-else variant="info">
-                  {{ message.availableinitially }} available initially, {{ message.availablenow }} now
+                  {{ message.availableinitially }} available initially, {{ message.availablenow ? message.availablenow : 0 }} now
                 </b-badge>
               </span>
             </div>
@@ -116,6 +116,14 @@
             <NoticeMessage v-else-if="spam" variant="warning" class="mb-2">
               We think this message might be spam.
             </NoticeMessage>
+            <div v-if="message.microvolunteering && message.microvolunteering.length">
+              <ModMessageMicroVolunteering v-for="m in message.microvolunteering" :key="'microvolunteering-' + m.id" :message="message" :microvolunteering="m" class="mb-1" />
+              <p class="text-muted small">
+                At the moment messages will be sent for review if any member thinks they aren't OK, when asked as part
+                of microvolunteering.  Consider whether you (or the original poster) can edit the message to
+                improve it.  You can control whether members can do microvolunteering - click on their user id.
+              </p>
+            </div>
             <ModMessageWorry v-if="message.worry" :message="message" />
             <div v-if="expanded">
               <b-form-textarea
@@ -295,6 +303,7 @@ import ModMessageRelated from './ModMessageRelated'
 import ModMessageButton from './ModMessageButton'
 import GroupSelect from './GroupSelect'
 import MessageMap from './MessageMap'
+import ModMessageMicroVolunteering from './ModMessageMicroVolunteering'
 import twem from '~/assets/js/twem'
 import waitForRef from '@/mixins/waitForRef'
 import keywords from '@/mixins/keywords.js'
@@ -303,6 +312,7 @@ const Highlighter = () => import('vue-highlight-words')
 export default {
   name: 'ModMessage',
   components: {
+    ModMessageMicroVolunteering,
     MessageMap,
     GroupSelect,
     ModMessageButton,

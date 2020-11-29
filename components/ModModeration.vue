@@ -17,6 +17,9 @@
       <option value="Declined">
         Volunteering - declined
       </option>
+      <option value="Excluded">
+        Volunteering - disabled
+      </option>
     </b-select>
   </div>
 </template>
