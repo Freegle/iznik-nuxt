@@ -120,6 +120,11 @@ export default {
       required: true
     }
   },
+  computed: {
+    user() {
+      return this.$store.getters['user/get'](this.userid)
+    }
+  },
   methods: {
     async changeEvents(newval) {
       const params = {

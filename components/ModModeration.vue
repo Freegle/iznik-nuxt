@@ -1,5 +1,24 @@
 <template>
-  <b-select v-model="postingStatus" :options="options" class="d-inline sel" :size="size" />
+  <div class="d-inline d-flex justify-content-start flex-wrap">
+    <b-select v-model="postingStatus" :options="options" class="sel" :size="size" />
+    <b-select v-model="trustlevel" class="sel" :size="size" readyonly>
+      <option :value="null">
+        Volunteering - not asked
+      </option>
+      <option value="Basic">
+        Volunteering - basic
+      </option>
+      <option value="Moderate">
+        Volunteering - moderate
+      </option>
+      <option value="Advanced">
+        Volunteering - advanced
+      </option>
+      <option value="Declined">
+        Volunteering - declined
+      </option>
+    </b-select>
+  </div>
 </template>
 <script>
 export default {
@@ -28,6 +47,18 @@ export default {
           id: this.user.id,
           groupid: this.membership.id,
           ourPostingStatus: val
+        })
+      }
+    },
+    trustlevel: {
+      get() {
+        return this.user.trustlevel
+      },
+      async set(val) {
+        await this.$store.dispatch('user/edit', {
+          id: this.user.id,
+          groupid: this.membership.id,
+          trustlevel: val
         })
       }
     },
