@@ -53,18 +53,31 @@
             </b-card-text>
             <div v-if="!modtools && refmsg && refmsg.type === 'Offer' && (!refmsg.outcomes || !refmsg.outcomes.length)">
               <hr>
-              <div class="text-center small text-muted">
-                No longer available?
-              </div>
-              <div class="d-flex justify-content-between">
-                <b-btn variant="primary" size="sm" @click="outcome('Taken')">
-                  Mark as TAKEN
-                </b-btn>
-                <b-btn variant="secondary" size="sm" @click="outcome('Withdrawn')">
-                  Withdraw
-                </b-btn>
+              <div class="d-flex justify-content-between flex-wrap">
+                <div v-if="!refmsg.promisecount" class="mr-2 border-light border-right flex-grow-1 text-center">
+                  <div class="text-center small text-muted mb-1">
+                    Still available?
+                  </div>
+                  <b-btn variant="primary" size="sm" @click="promise">
+                    <v-icon name="handshake" /> Promise
+                  </b-btn>
+                </div>
+                <div class="flex-grow-1">
+                  <div class="text-center small text-muted mb-1">
+                    No longer available?
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <b-btn variant="white" size="sm" class="mr-1" @click="outcome('Taken')">
+                      Mark as TAKEN
+                    </b-btn>
+                    <b-btn variant="white" size="sm" @click="outcome('Withdrawn')">
+                      Withdraw
+                    </b-btn>
+                  </div>
+                </div>
               </div>
               <OutcomeModal ref="outcomeModal" :message="refmsg" />
+              <PromiseModal ref="promise" :messages="[ refmsg ]" :selected-message="refmsg.id" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
             </div>
           </b-card>
         </div>
@@ -116,16 +129,20 @@
 <script>
 import ChatBase from '~/components/ChatBase'
 import ProfileImage from '~/components/ProfileImage'
+import waitForRef from '@/mixins/waitForRef'
 const NoticeMessage = () => import('~/components/NoticeMessage')
 const OutcomeModal = () => import('~/components/OutcomeModal')
+const PromiseModal = () => import('~/components/PromiseModal')
 
 export default {
   components: {
     NoticeMessage,
     ProfileImage,
-    OutcomeModal
+    OutcomeModal,
+    PromiseModal
   },
   extends: ChatBase,
+  mixins: [waitForRef],
   computed: {
     modtools() {
       return this.$store.getters['misc/get']('modtools')
@@ -151,12 +168,19 @@ export default {
     }
   },
   methods: {
+    promise() {
+      this.waitForRef('promise', () => {
+        this.$refs.promise.show()
+      })
+    },
     async outcome(type) {
       await this.$store.dispatch('messages/fetch', {
         id: this.refmsg.id
       })
 
-      this.$refs.outcomeModal.show(type)
+      this.waitForRef('outcomeModal', () => {
+        this.$refs.outcomeModal.show(type)
+      })
     }
   }
 }

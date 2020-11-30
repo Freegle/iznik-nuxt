@@ -3,14 +3,24 @@
     <b-btn variant="link" class="float-right" @click="hideIt">
       <v-icon name="times-circle" scale="2" />
     </b-btn>
-    <div v-if="newuser">
-      <NewUser :password="newpassword" class="mb-1" />
-    </div>
-    <h1 v-else class="text-center">
+    <b-modal
+      id="newUserModal"
+      ref="newUserModal"
+      v-model="showModal"
+      ok-only
+      ok-title="Close and Continue"
+      title="Welcome to Freegle!"
+      size="lg"
+    >
+      <NewUserInfo :password="newpassword" />
+    </b-modal>
+    <h1 class="text-center">
       Thanks for freegling!
     </h1>
     <h5 class="text-center">
-      Replies will show in <em>Chat</em> on this site.  We'll send you an email too
+      Replies will show in <nuxt-link to="/chats">
+        Chat
+      </nuxt-link> on this site.  We'll send you an email too
       (check your spam!).
     </h5>
     <MyMessage
@@ -33,10 +43,10 @@
 import NoticeMessage from './NoticeMessage'
 const MyMessage = () => import('~/components/MyMessage.vue')
 const GroupHeader = () => import('~/components/GroupHeader.vue')
-const NewUser = () => import('~/components/NewUser.vue')
+const NewUserInfo = () => import('~/components/NewUserInfo.vue')
 
 export default {
-  components: { MyMessage, GroupHeader, NoticeMessage, NewUser },
+  components: { MyMessage, GroupHeader, NoticeMessage, NewUserInfo },
   props: {
     ids: {
       type: Array,
@@ -56,7 +66,8 @@ export default {
   data() {
     return {
       show: false,
-      hidden: false
+      hidden: false,
+      showModal: false
     }
   },
   computed: {
@@ -87,6 +98,7 @@ export default {
   async mounted() {
     if (this.ids.length) {
       const promises = []
+      this.showModal = this.newuser !== 0 && this.newuser !== null
 
       // Get the messages into store if not already present.
       this.ids.forEach(id => {

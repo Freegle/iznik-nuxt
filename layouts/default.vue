@@ -52,9 +52,9 @@
           </client-only>
           <b-navbar-nav class="mainnav mainnav--right">
             <NotificationOptions v-if="!simple" :distance="distance" :small-screen="false" :unread-notification-count.sync="unreadNotificationCount" @showAboutMe="showAboutMe" />
-            <ChatMenu :small-screen="false" :chat-count.sync="chatCount" />
+            <ChatMenu id="menu-option-chat" :is-list-item="true" :chat-count.sync="chatCount" />
             <b-nav-item v-if="!simple" id="menu-option-spread" class="text-center small p-0" to="/promote" @mousedown="maybeReload('/promote')">
-              <div class="notifwrapper">
+              <div class="position-relative">
                 <v-icon name="bullhorn" scale="2" /><br>
                 <span class="nav-item__text">Promote</span>
               </div>
@@ -104,7 +104,7 @@
             </div>
           </div>
           <NotificationOptions :distance="distance" :small-screen="true" :unread-notification-count.sync="unreadNotificationCount" @showAboutMe="showAboutMe" />
-          <ChatMenu v-if="loggedIn" :small-screen="true" :chat-count.sync="chatCount" />
+          <ChatMenu v-if="loggedIn" id="menu-option-chat-sm" :is-list-item="false" :chat-count.sync="chatCount" class="mr-3" />
         </client-only>
 
         <b-navbar-nav>
@@ -222,7 +222,6 @@ export default {
     return {
       complete: false,
       distance: 1000,
-      chatPoll: null,
       nchan: null,
       logo: require(`@/static/icon.png`),
       timeTimer: null,
@@ -319,8 +318,8 @@ export default {
       console.log('Start NCHAN from mount')
       this.startNCHAN(me.id)
 
-      // Get chats and poll regularly for new ones.  Would be nice if this was event driven instead but requires server work.
-      this.fetchLatestChats()
+      // Get chats and poll regularly for new ones
+      this.$store.dispatch('chats/fetchLatestChats')
     }
 
     // Look for a custom logo.
@@ -397,7 +396,6 @@ export default {
 
   beforeDestroy() {
     console.log('Destroy layout')
-    clearTimeout(this.chatPoll)
     clearTimeout(this.timeTimer)
 
     if (this.nchan && this.nchan.running) {
@@ -476,24 +474,6 @@ export default {
           }
         }
       })
-    },
-    async fetchLatestChats() {
-      const me = this.$store.getters['auth/user']
-
-      if (me && me.id) {
-        const currentCount = this.$store.getters['chats/unseenCount']
-        const newCount = await this.$store.dispatch('chats/unseenCount')
-
-        if (newCount !== currentCount) {
-          await this.$store.dispatch('chats/listChats', {
-            chattypes: ['User2User', 'User2Mod'],
-            summary: true,
-            noerror: true
-          })
-        }
-      }
-
-      this.chatPoll = setTimeout(this.fetchLatestChats, 30000)
     },
 
     showAboutMe() {
@@ -585,22 +565,6 @@ nav .navbar-nav li a.nuxt-link-active {
   }
 }
 
-#menu-option-chat-sm {
-  &:hover,
-  &:focus {
-    color: $color-white-opacity-75 !important;
-  }
-
-  &.nuxt-link-active {
-    color: $color-white-opacity-50 !important;
-
-    &:hover,
-    &:focus {
-      color: $color-white-opacity-75 !important;
-    }
-  }
-}
-
 #nav_collapse_mobile {
   margin-top: 5px;
 
@@ -681,10 +645,6 @@ body.modal-open {
 
 svg.fa-icon {
   height: 32px;
-}
-
-.notifwrapper {
-  position: relative;
 }
 
 #serverloader {

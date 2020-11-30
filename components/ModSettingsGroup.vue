@@ -366,6 +366,50 @@
       </b-card>
       <b-card no-body class="mb-2">
         <b-card-header>
+          <b-btn v-b-toggle.accordion-microvolunteering block href="#" variant="secondary">
+            Microvolunteering
+          </b-btn>
+        </b-card-header>
+        <b-collapse id="accordion-microvolunteering" accordion="settings-accordion" role="tabpanel">
+          <b-card-body>
+            <p v-if="readonly" class="text-info">
+              Only owners can change these settings.
+            </p>
+            <ModGroupSetting
+              :groupid="groupid"
+              name="microvolunteering"
+              label="Allow members to perform small and useful tasks?"
+              description="Is microvolunteering enabled?"
+              type="toggle"
+              toggle-checked="Enabled"
+              toggle-unchecked="Disabled"
+            />
+            <NoticeMessage v-if="!group.microvolunteering" variant="info" class="mb-2">
+              None of the following options will be active, as microvolunteering is turned off.
+            </NoticeMessage>
+            <ModGroupSetting
+              :groupid="groupid"
+              name="microvolunteeringoptions.approvedmessages"
+              label="Review approved messages"
+              description="Members will be shown approved messages which haven't been reviewed and asked to say if they're OK or not.  Messages which aren't OK will show in Messages->Review for mods to check."
+              type="toggle"
+              toggle-checked="Enabled"
+              toggle-unchecked="Disabled"
+            />
+            <ModGroupSetting
+              :groupid="groupid"
+              name="microvolunteeringoptions.wordmatch"
+              label="Match similar items"
+              description="Members will be shown popular items and asked to choose two which are similar.  This data will be used to improve our search."
+              type="toggle"
+              toggle-checked="Enabled"
+              toggle-unchecked="Disabled"
+            />
+          </b-card-body>
+        </b-collapse>
+      </b-card>
+      <b-card no-body class="mb-2">
+        <b-card-header>
           <b-btn v-b-toggle.accordion-spam block href="#" variant="secondary">
             Spam Detection
           </b-btn>
@@ -373,30 +417,14 @@
         <b-collapse id="accordion-spam" accordion="settings-accordion" role="tabpanel">
           <b-card-body>
             <p>
-              These are protection features to stop spammers or scammers targeting freeglers.  It's highly recommended
-              to turn all these on.
+              All groups are checked for now spammers.  If any are found, they and their posts will be removed.
+            </p>
+            <p>
+              It's highly recommended that these settings are turned on.
             </p>
             <p v-if="readonly" class="text-info">
               Only owners can change these settings.
             </p>
-            <ModGroupSetting
-              :groupid="groupid"
-              name="settings.spammers.check"
-              label="Check for spammer members?"
-              description="We can automatically check your membership for known spammers."
-              type="toggle"
-              toggle-checked="Yes"
-              toggle-unchecked="No"
-            />
-            <ModGroupSetting
-              :groupid="groupid"
-              name="settings.spammers.remove"
-              label="Auto-remove spammer members?"
-              description="We can automatically remove known spammers."
-              type="toggle"
-              toggle-checked="Yes"
-              toggle-unchecked="No"
-            />
             <ModGroupSetting
               :groupid="groupid"
               name="settings.spammers.messagereview"
