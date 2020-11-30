@@ -204,7 +204,7 @@ export default {
                 ? this.getDistance([group.lat, group.lng], [mylat, mylng])
                 : 0
 
-            if (distAway < 50000) {
+            if (distAway < 50000 && group.bbox) {
               swlat =
                 swlat === null
                   ? group.bbox.swlat

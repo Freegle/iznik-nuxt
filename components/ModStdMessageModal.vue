@@ -8,7 +8,7 @@
     size="lg"
   >
     <template slot="default">
-      <div class="d-flex">
+      <div v-if="stdmsg.action !== 'Edit'" class="d-flex">
         <div>
           From:&nbsp;
           <br>

@@ -59,6 +59,7 @@
             :start-expanded="true"
             hide-close
             class="botpad"
+            record-view
           />
         </div>
       </b-col>
