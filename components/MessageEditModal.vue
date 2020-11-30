@@ -91,8 +91,8 @@
 <script>
 import NumberIncrementDecrement from './NumberIncrementDecrement'
 import keywords from '@/mixins/keywords.js'
+import Postcode from '~/components/Postcode'
 const OurFilePond = () => import('~/components/OurFilePond')
-const Postcode = () => import('./Postcode')
 const PostItem = () => import('./PostItem')
 const PostPhoto = () => import('./PostPhoto')
 

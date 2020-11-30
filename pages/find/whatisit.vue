@@ -94,9 +94,9 @@ import CovidPostWarning from '../../components/CovidPostWarning'
 import loginOptional from '@/mixins/loginOptional.js'
 import compose from '@/mixins/compose.js'
 import buildHead from '@/mixins/buildHead.js'
+import Postcode from '~/components/Postcode'
 
 const PostMessage = () => import('~/components/PostMessage')
-const Postcode = () => import('~/components/Postcode')
 const ComposeGroup = () => import('~/components/ComposeGroup')
 const WizardProgress = () => import('~/components/WizardProgress')
 
