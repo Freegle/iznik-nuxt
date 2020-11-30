@@ -593,4 +593,3 @@ svg.fa-icon {
   max-width: 400px;
 }
 </style>
-
