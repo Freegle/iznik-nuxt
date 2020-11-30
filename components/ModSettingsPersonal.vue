@@ -113,7 +113,7 @@ export default {
   data: function() {
     return {
       modNotifOptions: [
-        { text: 'After 24 hours', value: 24 },
+        { text: 'Daily', value: 24 },
         { text: 'After 12 hours', value: 12 },
         { text: 'After 4 hours', value: 4 },
         { text: 'After 2 hours', value: 2 },

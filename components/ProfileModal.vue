@@ -52,33 +52,31 @@
           <span v-else>No recent activity.</span>
         </template>
         <b-card-body class="p-0 pt-1">
-          <b-row v-if="user.info.offers + user.info.wanteds + user.info.replies > 0">
-            <b-col cols="12" md="5">
+          <div v-if="user.info.offers + user.info.wanteds + user.info.replies > 0" class="d-flex justify-content-between flex-wrap">
+            <div>
               <v-icon name="gift" /> {{ user.info.offers | pluralize([ 'recent OFFER', 'recent OFFERs' ], { includeNumber: true }) }}
               <span v-if="user.info.openoffers" class="text-success font-weight-bold">
                 ({{ user.info.openoffers }} still active)
               </span>
-            </b-col>
-            <b-col cols="12" md="5">
+            </div>
+            <div>
               <v-icon name="shopping-cart" /> {{ user.info.wanteds | pluralize([ 'recent WANTED', 'recent WANTEDs' ], { includeNumber: true }) }}
               <span v-if="user.info.openwanteds" class="text-success font-weight-bold">
                 ({{ user.info.wanteds }} still active)
               </span>
-            </b-col>
-            <b-col cols="12" md="2">
+            </div>
+            <div>
               <v-icon name="envelope" /> {{ user.info.replies | pluralize([ 'reply', 'replies' ], { includeNumber: true }) }} sent
-            </b-col>
-          </b-row>
-          <b-row>
-            <b-col>
-              <span v-if="user.info.collected">
-                <v-icon name="check" /> Picked up about {{ user.info.collected | pluralize('item', { includeNumber: true }) }}
-              </span>
-              <span v-else>
-                <v-icon name="check" class="text-faded" />&nbsp;Not received any items recently, so far as we know.
-              </span>
-            </b-col>
-          </b-row>
+            </div>
+          </div>
+          <div class="mt-2">
+            <span v-if="user.info.collected">
+              <v-icon name="check" /> Picked up about {{ user.info.collected | pluralize('item', { includeNumber: true }) }}
+            </span>
+            <span v-else>
+              <v-icon name="check" class="text-faded" />&nbsp;Not received any items recently, so far as we know.
+            </span>
+          </div>
         </b-card-body>
       </b-card>
     </template>

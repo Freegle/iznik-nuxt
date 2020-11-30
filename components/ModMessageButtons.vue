@@ -25,7 +25,7 @@
     </div>
     <div v-else-if="pending" class="d-inline">
       <ModMessageButton
-        v-if="!message.heldby && !cantpost"
+        v-if="!cantpost"
         :message="message"
         variant="primary"
         icon="check"
@@ -33,7 +33,6 @@
         label="Approve"
       />
       <ModMessageButton
-        v-if="!message.heldby"
         :message="message"
         variant="warning"
         icon="times"
@@ -41,7 +40,6 @@
         label="Reject"
       />
       <ModMessageButton
-        v-if="!message.heldby"
         :message="message"
         variant="danger"
         icon="trash-alt"
@@ -57,7 +55,6 @@
         label="Hold"
       />
       <ModMessageButton
-        v-if="!message.heldby"
         :message="message"
         variant="danger"
         icon="ban"
@@ -121,17 +118,17 @@
         variant="danger"
         icon="trash-alt"
         spam
-        label="Spam"
+        label="Delete Message"
       />
       <ModMessageButton
         :message="message"
         variant="primary"
         icon="check"
         notspam
-        label="Not spam"
+        label="Approve Message"
       />
     </div>
-    <div v-if="!editreview && (!message.heldby || message.heldby.id === myid)" class="d-lg-inline">
+    <div v-if="!editreview" class="d-lg-inline">
       <ModMessageButton
         v-for="stdmsg in filtered"
         :key="stdmsg.id"

@@ -131,7 +131,7 @@
         </client-only>
         <div v-if="filteredMessages && filteredMessages.length">
           <div v-for="message in filteredMessages" :key="'messagelist-' + message.id" class="p-0">
-            <Message v-bind="message" />
+            <Message v-bind="message" record-view />
           </div>
         </div>
         <client-only>
@@ -493,7 +493,7 @@ export default {
           if (!member) {
             const group = this.$store.getters['group/get'](id)
 
-            if (group) {
+            if (group && group.onmap && group.publish) {
               group.distance = this.getDistance(
                 [this.centre.lat, this.centre.lng],
                 [group.lat, group.lng]
@@ -525,6 +525,12 @@ export default {
     }
   },
   watch: {
+    selectedType: function(newVal) {
+      this.$store.dispatch('misc/set', {
+        key: 'postType',
+        value: newVal
+      })
+    },
     search(newval) {
       if (!newval) {
         // We've cleared the search box, so cancel the search and return the map to normal.
@@ -586,12 +592,6 @@ export default {
     }
   },
   methods: {
-    typeChange: function() {
-      this.$store.dispatch('misc/set', {
-        key: 'postType',
-        value: this.selectedType
-      })
-    },
     loadMore: async function($state) {
       if (!this.busy) {
         this.busy = true

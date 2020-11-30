@@ -45,7 +45,7 @@
         <b-card-body class="p-0">
           <div v-if="activeOffers.length">
             <div v-for="message in activeOffers" :key="'message-' + message.id" class="p-0">
-              <Message v-bind="message" />
+              <Message v-bind="message" record-view />
             </div>
           </div>
           <p v-else>
@@ -61,7 +61,7 @@
         <b-card-body class="p-0">
           <div v-if="activeWanteds.length">
             <div v-for="message in activeWanteds" :key="'message-' + message.id" class="p-0">
-              <Message v-bind="message" />
+              <Message v-bind="message" record-view />
             </div>
           </div>
           <p v-else>
