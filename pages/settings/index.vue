@@ -591,12 +591,12 @@ import EmailConfirmModal from '~/components/EmailConfirmModal'
 import buildHead from '@/mixins/buildHead'
 import ProfileImage from '~/components/ProfileImage'
 import 'vue2-datepicker/index.css'
+import Postcode from '~/components/Postcode'
 
 const AboutMeModal = () => import('~/components/AboutMeModal')
 const AvailabilityModal = () => import('~/components/AvailabilityModal')
 const AddressModal = () => import('~/components/AddressModal')
 const ProfileModal = () => import('~/components/ProfileModal')
-const Postcode = () => import('~/components/Postcode')
 const SettingsGroup = () => import('~/components/SettingsGroup')
 const NoticeMessage = () => import('~/components/NoticeMessage')
 const OurFilePond = () => import('~/components/OurFilePond')

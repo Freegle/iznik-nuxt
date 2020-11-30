@@ -98,7 +98,7 @@
   </div>
 </template>
 <script>
-const Postcode = () => import('~/components/Postcode')
+import Postcode from '~/components/Postcode'
 
 export default {
   components: {
