@@ -87,11 +87,11 @@ select {
 import NoticeMessage from '../../components/NoticeMessage'
 import CovidClosed from '../../components/CovidClosed'
 import CovidCheckList from '../../components/CovidCheckList'
+import Postcode from '~/components/Postcode'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 import compose from '@/mixins/compose.js'
 
-const Postcode = () => import('~/components/Postcode')
 const ComposeGroup = () => import('~/components/ComposeGroup')
 const WizardProgress = () => import('~/components/WizardProgress')
 
