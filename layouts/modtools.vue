@@ -14,20 +14,15 @@
           <ModStatus class="status" />
         </b-navbar-brand>
         <b-navbar-nav class="d-flex align-items-center">
-          <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse2" class="text-center small p-0 mr-4" @click="discourse">
-            <div>
-              <div class="d-none d-sm-inline">
-                <v-icon name="brands/discourse" scale="2" class="fw" /><br>
-                <div class="d-none d-xl-block">
-                  Us
-                </div>
+          <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse2" class="text-center p-0 mr-4" @click="discourse">
+            <div class="position-relative small">
+              <v-icon name="brands/discourse" scale="2" class="fw" />
+              <div class="d-none d-xl-block">
+                Us
               </div>
-              <div class="position-relative d-inline">
-                <v-icon name="brands/discourse" class="d-inline d-sm-none" scale="2" />
-                <b-badge v-show="discourseCount" variant="success">
-                  {{ discourseCount }}
-                </b-badge>
-              </div>
+              <b-badge v-show="discourseCount" variant="success" class="discourseBadge">
+                {{ discourseCount }}
+              </b-badge>
             </div>
           </b-nav-item>
           <ChatMenu v-if="loggedIn" id="menu-option-modtools-chat2" :is-list-item="true" :chat-count.sync="chatCount" class="mr-4" />
@@ -450,5 +445,11 @@ body.modal-open {
     right: 15px;
     top: 5px;
   }
+}
+
+.discourseBadge {
+  position: absolute;
+  top: 0px;
+  left: 25px;
 }
 </style>
