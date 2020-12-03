@@ -18,11 +18,19 @@ button {
   &:hover {
     border-color: $colour-success;
   }
+
+  &:disabled {
+    color: $color-white;
+  }
 }
 
 .btn-secondary {
   &:hover {
     border-color: $color-black;
+  }
+
+  &:disabled {
+    border: none;
   }
 }
 
