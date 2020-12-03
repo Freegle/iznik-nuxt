@@ -149,7 +149,7 @@
               </div>
               <hr>
               <div class="d-flex flex-wrap justify-content-between">
-                <b-btn variant="white" size="lg" class="mt-2" @click="getTask">
+                <b-btn variant="white" size="lg" class="mt-2" :disabled="similarTerms.length > 0" @click="getTask">
                   Skip - no similar terms
                 </b-btn>
                 <b-btn variant="primary" size="lg" class="mt-2" :disabled="similarTerms.length < 2" @click="submitSimilar">
