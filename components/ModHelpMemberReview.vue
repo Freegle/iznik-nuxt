@@ -10,7 +10,11 @@
     </p>
     <p>
       Please review their posting history and logs.  If you think they're a scammer/spammer, please use the button
-      to report them.  If you think they are fine, then please add a mod Note so that other mods will see why.
+      to report them.  If you think they are fine, then please add a mod Note so that other mods will see why, then
+      click Ignore.
+    </p>
+    <p>
+      This is a per-member decision.  At some point it will become a decision about just your group.
     </p>
   </NoticeMessage>
   <b-btn v-else variant="link" class="float-right" @click="toggleHelp">
