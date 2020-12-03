@@ -157,6 +157,9 @@
                 </b-btn>
               </div>
             </div>
+            <div v-else-if="task.type === 'Facebook'">
+              <FacebookPostToShare :id="task.facebook.postid" @skipped="facebookSkipped" @done="facebookDone" />
+            </div>
             <div v-else>
               Unknown task {{ task }}
             </div>
@@ -181,8 +184,14 @@ import dayjs from 'dayjs'
 import Message from './Message'
 import SpinButton from './SpinButton'
 import MicroVolunteeringSimilarTerm from './MicroVolunteeringSimilarTerm'
+import FacebookPostToShare from './FacebookPostToShare'
 export default {
-  components: { MicroVolunteeringSimilarTerm, SpinButton, Message },
+  components: {
+    FacebookPostToShare,
+    MicroVolunteeringSimilarTerm,
+    SpinButton,
+    Message
+  },
   props: {
     force: {
       type: Boolean,
@@ -199,7 +208,7 @@ export default {
       task: null,
       message: null,
       similarTerms: [],
-      debug: false,
+      debug: true,
       todo: 5,
       done: 0
     }
@@ -311,6 +320,10 @@ export default {
           this.showTask = true
         } else if (this.task.type === 'SearchTerm') {
           this.showTask = true
+        } else if (this.task.type === 'Facebook') {
+          this.showTask = true
+        } else {
+          this.doneForNow()
         }
       } else {
         console.log('No task')
@@ -451,6 +464,22 @@ export default {
       await this.$api.microvolunteering.response({
         searchterm1: this.similarTerms[0].id,
         searchterm2: this.similarTerms[1].id
+      })
+
+      this.considerNext()
+    },
+    async facebookSkipped() {
+      await this.$api.microvolunteering.response({
+        facebook: this.task.facebook.id,
+        response: 'Reject'
+      })
+
+      this.getTask()
+    },
+    async facebookDone() {
+      await this.$api.microvolunteering.response({
+        facebook: this.task.facebook.id,
+        response: 'Approve'
       })
 
       this.considerNext()
