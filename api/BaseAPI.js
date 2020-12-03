@@ -47,7 +47,7 @@ export default class BaseAPI {
     if (method !== 'POST') {
       if (config.params) {
         config.params.modtools = modtools
-        config.params.app = process.env.IS_APP
+        config.params.app = process.env.IS_APP ? true : false
       }
     } else {
       if (!config.data) {
