@@ -11,17 +11,18 @@ button {
   border-radius : .2rem;
 }
 
+// Override some of the default bootstrap definitions
 .btn-primary {
-  color: white;
+  color: $color-white;
 
   &:hover {
-    border-color: #61C924;
+    border-color: $colour-success;
   }
 }
 
 .btn-secondary {
   &:hover {
-    border-color: #000;
+    border-color: $color-black;
   }
 }
 
