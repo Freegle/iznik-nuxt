@@ -637,7 +637,7 @@ nav .navbar-nav li a.nuxt-link-active {
 }
 
 .ourBack {
-  background-color: $colour-success !important;
+  background-color: $colour-green-background !important;
 }
 
 .navbar-brand a {
