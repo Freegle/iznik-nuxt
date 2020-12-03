@@ -11,6 +11,20 @@ button {
   border-radius : .2rem;
 }
 
+.btn-primary {
+  color: white;
+
+  &:hover {
+    border-color: #61C924;
+  }
+}
+
+.btn-secondary {
+  &:hover {
+    border-color: #000;
+  }
+}
+
 // This is the tertiary CTA
 .btn-white {
   background-color: $color-white;
