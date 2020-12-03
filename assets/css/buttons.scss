@@ -12,6 +12,10 @@ button {
 }
 
 // Override some of the default bootstrap definitions
+.btn {
+  font-weight: 500;
+}
+
 .btn-primary {
   color: $color-white;
 
