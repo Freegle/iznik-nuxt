@@ -9,13 +9,36 @@
       they may just be perfectly good members who just happen to be caught in the net.
     </p>
     <p>
-      Please review their posting history and logs.  If you think they're a scammer/spammer, please use the button
-      to report them.  If you think they are fine, then please add a mod Note so that other mods will see why, then
-      click Ignore.
+      Please review their posting history and logs.
     </p>
     <p>
-      This is a per-member decision.  At some point it will become a decision about just your group.
+      You may or may not want to do something about them on your group:
     </p>
+    <ul>
+      <li>
+        If you do, click the link to go to their membership on your group.
+      </li>
+      <li>
+        From there you can remove them, ban them, send them a message, whatever.
+      </li>
+      <li>
+        You can add a Mod Note to show other mods what you've decided or done.
+      </li>
+      <li>
+        At some point you may be able to do some of that from here - but not yet.
+      </li>
+    </ul>
+    <p>
+      Please also make a decision about them on this page:
+    </p>
+    <ul>
+      <li>
+        If you think they are a spammer/scammer, click the <em>Spammer</em> button to report them.
+      </li>
+      <li>
+        If you don't think they are a spammer/scammer, then click the <em>Not a Spammer</em> button.
+      </li>
+    </ul>
   </NoticeMessage>
   <b-btn v-else variant="link" class="float-right" @click="toggleHelp">
     Help
