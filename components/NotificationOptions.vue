@@ -8,6 +8,7 @@
     menu-class="notification-list__dropdown-menu"
     lazy
     right
+    no-caret
     aria-label="notifications"
     @shown="loadLatestNotifications"
   >
