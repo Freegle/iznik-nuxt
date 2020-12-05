@@ -67,6 +67,9 @@
                 <span v-else-if="task.type === 'SearchTerm'">
                   Word Match
                 </span>
+                <span v-else-if="task.type === 'PhotoRotate'">
+                  Photo Rotate
+                </span>
               </h1>
               <div class="font-weight-bold">
                 These little things help Freegle run smoothly - and earn you heart points <v-icon name="heart" class="text-danger" />.
@@ -79,7 +82,7 @@
             (This is something members see.  You're seeing it too even though you're a mod, so you can see what it
             looks like to them.)
           </p>
-          <div v-if="task">
+          <div v-if="task" :key="bump">
             <div v-if="task.type === 'CheckMessage'">
               <p>
                 This is someone else's post.  Does it look ok to you?
@@ -160,6 +163,9 @@
             <div v-else-if="task.type === 'Facebook'">
               <FacebookPostToShare :id="task.facebook.postid" @skipped="facebookSkipped" @done="facebookDone" />
             </div>
+            <div v-else-if="task.type === 'PhotoRotate'">
+              <MicroVolunteeringPhotosRotate :photos="task.photos" @done="considerNext" />
+            </div>
             <div v-else>
               Unknown task {{ task }}
             </div>
@@ -183,10 +189,15 @@
 import dayjs from 'dayjs'
 import Message from './Message'
 import SpinButton from './SpinButton'
-import MicroVolunteeringSimilarTerm from './MicroVolunteeringSimilarTerm'
-import FacebookPostToShare from './FacebookPostToShare'
+const MicroVolunteeringSimilarTerm = () =>
+  import('./MicroVolunteeringSimilarTerm')
+const FacebookPostToShare = () => import('./FacebookPostToShare')
+const MicroVolunteeringPhotosRotate = () =>
+  import('./MicroVolunteeringPhotosRotate')
+
 export default {
   components: {
+    MicroVolunteeringPhotosRotate,
     FacebookPostToShare,
     MicroVolunteeringSimilarTerm,
     SpinButton,
@@ -208,9 +219,11 @@ export default {
       task: null,
       message: null,
       similarTerms: [],
-      debug: false,
+      debug: true,
       todo: 5,
-      done: 0
+      done: 0,
+      types: ['CheckMessage', 'SearchTerm', 'PhotoRotate'],
+      bump: 1
     }
   },
   computed: {
@@ -221,7 +234,6 @@ export default {
       return this.me && this.me.trustlevel
     },
     inviteRejected() {
-      console.log('Rejected?', this.me)
       return this.me && this.me.trustlevel === 'Declined'
     },
     inviteAccepted() {
@@ -248,38 +260,25 @@ export default {
       const now = dayjs()
       const daysago = now.diff(dayjs(this.me.added), 'days')
 
-      console.log(
-        'Consider status',
-        this.invited,
-        this.inviteAccepted,
-        this.inviteRejected
-      )
-
       if (!this.me.microvolunteering) {
         // Not on a group with this function enabled.
-        console.log('Not on a group with microvolunteering enabled')
       } else if (!this.askDue) {
         // Challenged recently, so return verified.  That's true even for if it's forced - we don't want to bombard
         // people.
-        console.log('Challenged recently')
         this.$emit('verified')
       } else if (this.force) {
         // Forced and not asked recently.  Do so.
-        console.log('Forced and not recent, ask')
         this.getTask()
       } else if (daysago > 7) {
         // They're not a new member.  We might want to ask them.
         if (this.inviteRejected) {
           // We're not forced to do this, and they've said they don't want to.
-          console.log('Invited and said no')
           this.$emit('verified')
         } else if (this.inviteAccepted) {
           // They're up for this.
-          console.log('Invited and said yes, ask')
           this.getTask()
         } else {
           // We don't know if they want to.  Ask.
-          console.log("Don't know what they want, ask")
           this.$api.bandit.shown({
             uid: 'microvolunteering',
             variant: 'inviteaccepted'
@@ -299,11 +298,11 @@ export default {
       // Try to get a task.
       this.similarTerms = []
 
-      this.task = await this.$api.microvolunteering.challenge()
-      console.log('Got task', this.task)
+      this.task = await this.$api.microvolunteering.challenge({
+        types: this.types
+      })
 
       if (this.task) {
-        console.log('Got a task')
         this.$store.dispatch('misc/set', {
           key: 'microvolunteeringlastask',
           value: Date.now()
@@ -322,14 +321,17 @@ export default {
           this.showTask = true
         } else if (this.task.type === 'Facebook') {
           this.showTask = true
+        } else if (this.task.type === 'PhotoRotate') {
+          this.showTask = true
         } else {
           this.doneForNow()
         }
       } else {
-        console.log('No task')
         // Nothing to do.
         this.doneForNow()
       }
+
+      this.bump++
     },
     response(verdict) {
       return async () => {
@@ -402,7 +404,6 @@ export default {
     },
     async inviteResponse(response) {
       if (response) {
-        console.log('Accepted')
         this.$store.dispatch('misc/set', {
           key: 'microvolunteeringinviteaccepted',
           value: Date.now()
@@ -420,7 +421,6 @@ export default {
 
         await this.getTask()
       } else {
-        console.log('Declined')
         this.$store.dispatch('misc/set', {
           key: 'microvolunteeringinviterejected',
           value: Date.now()
@@ -445,7 +445,6 @@ export default {
       this.showInvite = false
     },
     doneForNow() {
-      console.log('Done for now')
       this.showTask = false
       this.$emit('verified')
     },
