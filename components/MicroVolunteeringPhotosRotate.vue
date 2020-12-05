@@ -61,7 +61,7 @@ export default {
         promises.push(
           this.$api.microvolunteering.response({
             photoid: p.id,
-            response: p.rotate === 0 ? 'Accept' : 'Recept',
+            response: p.rotate === 0 ? 'Approve' : 'Reject',
             deg: p.rotate
           })
         )
