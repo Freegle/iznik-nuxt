@@ -167,6 +167,15 @@ export default {
 ::v-deep .notification-list__dropdown-menu {
   height: 500px;
   overflow-y: auto;
+
+  // The offset property of the b-dropdown doesn't function when contained
+  // within a bootstrap nav element.  Therefore we have to manually shuffle
+  // it so it fits on a smaller screen
+  transform: translate(65px);
+
+  @include media-breakpoint-up(sm) {
+    transform: none;
+  }
 }
 
 .notification-list ::v-deep .dropdown-item {
