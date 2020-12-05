@@ -366,12 +366,7 @@ export default {
             break
           }
           case 'Reject': {
-            // Record the result but give them a chance to say why.
-            await this.$api.microvolunteering.response({
-              msgid: this.task.msgid,
-              response: verdict
-            })
-
+            // Don't record the result yet - people who don't give comments seem to have less good judgement.
             this.showComments = true
             break
           }
