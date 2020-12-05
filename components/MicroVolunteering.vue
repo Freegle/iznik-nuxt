@@ -72,7 +72,7 @@
                 </span>
               </h1>
               <div class="font-weight-bold">
-                These little things help Freegle run smoothly - and earn you heart points <v-icon name="heart" class="text-danger" />.
+                These little things help Freegle run smoothly.  Thank you!
               </div>
             </div>
           </div>
