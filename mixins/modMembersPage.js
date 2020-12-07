@@ -35,7 +35,6 @@ export default {
         members = this.$store.getters['members/getAll']
       }
 
-      console.log('Members', members)
       return members
     },
     work() {
