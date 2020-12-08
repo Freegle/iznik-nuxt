@@ -55,7 +55,7 @@ export default {
     },
     trustlevel: {
       get() {
-        return this.user.trustlevel
+        return this.user.trustlevel ? this.user.trustlevel : null
       },
       async set(val) {
         await this.$store.dispatch('user/edit', {

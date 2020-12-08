@@ -1,16 +1,18 @@
 <template>
-  <CommunityFeature
-    :items="events"
-    title="Community Events"
-    link="/communityevents"
-    icon-name="calendar-alt"
-    add-button-label="Add community event"
-    item-description="These are local events, posted by other freeglers like you."
-    no-items-message="No community events to show yet.  Do you know of any you could add?"
-    feature-component="CommunityEvent"
-    add-event-modal-component="CommunityEventModal"
-    item-key="event-"
-  />
+  <aside>
+    <CommunityFeature
+      :items="events"
+      title="Community Events"
+      link="/communityevents"
+      icon-name="calendar-alt"
+      add-button-label="Add community event"
+      item-description="These are local events, posted by other freeglers like you."
+      no-items-message="No community events to show yet.  Do you know of any you could add?"
+      feature-component="CommunityEvent"
+      add-event-modal-component="CommunityEventModal"
+      item-key="event-"
+    />
+  </aside>
 </template>
 
 <script>

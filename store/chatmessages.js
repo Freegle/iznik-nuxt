@@ -220,5 +220,13 @@ export const actions = {
         root: true
       }
     )
+  },
+
+  async redact({ commit, dispatch }, { id, chatid }) {
+    await this.$api.chat.redact(id)
+    await dispatch('fetch', {
+      chatid: chatid,
+      noContext: true
+    })
   }
 }

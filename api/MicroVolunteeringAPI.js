@@ -1,8 +1,8 @@
 import BaseAPI from '@/api/BaseAPI'
 
 export default class MicroVolunteeringAPI extends BaseAPI {
-  async challenge() {
-    const ret = await this.$get('/microvolunteering')
+  async challenge(params) {
+    const ret = await this.$get('/microvolunteering', params)
     return ret.microvolunteering
   }
 

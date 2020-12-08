@@ -7,6 +7,7 @@
       :otheruser="otheruser"
       :pov="pov"
       :chatusers="chatusers"
+      :highlight-emails="highlightEmails"
     />
     <chat-message-image
       v-else-if="chatmessage.type === 'Image'"
@@ -23,6 +24,7 @@
       :otheruser="otheruser"
       :pov="pov"
       :chatusers="chatusers"
+      :highlight-emails="highlightEmails"
     />
     <chat-message-completed
       v-else-if="chatmessage.type === 'Completed' && otheruser"
@@ -169,6 +171,11 @@ export default {
     chatusers: {
       type: Array,
       required: true
+    },
+    highlightEmails: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   }
 }

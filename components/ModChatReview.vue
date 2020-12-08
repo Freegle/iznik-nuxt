@@ -25,12 +25,14 @@
           </span>
         </NoticeMessage>
         <div class="rounded bg-white p-2 font-weight-bold border border-warning mb-2">
-          <div v-if="message.mesage">
-            {{ message.message }}
-          </div>
-          <div v-else>
-            <ChatMessage :chat="message.chatroom" :chatmessage="message" :otheruser="message.fromuser" last :chatusers="chatusers" />
-          </div>
+          <ChatMessage
+            :chat="message.chatroom"
+            :chatmessage="message"
+            :otheruser="message.fromuser"
+            last
+            :chatusers="chatusers"
+            highlight-emails
+          />
         </div>
         <div class="d-flex justify-content-between flex-wrap">
           <span>
@@ -79,6 +81,14 @@
             variant="warning"
             class="mr-2 mb-1"
             :handler="modnote"
+          />
+          <SpinButton
+            v-if="!message.held"
+            name="eraser"
+            label="Remove highlighted emails"
+            variant="warning"
+            class="mr-2 mb-1"
+            :handler="redactEmails"
           />
           <SpinButton
             v-if="!message.held"
@@ -138,6 +148,7 @@ import ModChatNoteModal from './ModChatNoteModal'
 import ModChatViewButton from './ModChatViewButton'
 import SpinButton from './SpinButton'
 import chat from '@/mixins/chat.js'
+
 const ModMessageEmailModal = () => import('~/components/ModMessageEmailModal')
 const ExternalLink = () => import('~/components/ExternalLink')
 
@@ -200,6 +211,12 @@ export default {
         this.$refs.modnote.show()
       })
     },
+    async redactEmails() {
+      await this.$store.dispatch('chatmessages/redact', {
+        id: this.message.id,
+        chatid: null
+      })
+    },
     viewOriginal() {
       this.showOriginal = true
       this.waitForRef('original', () => {
@@ -209,3 +226,11 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+@import 'color-vars';
+
+.highlight {
+  color: $color-blue--base;
+  background-color: initial;
+}
+</style>

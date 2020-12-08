@@ -50,17 +50,6 @@
           Banned <span :title="member.bandate | datetime">{{ member.bandate | timeago }}</span> <span v-if="member.bannedby">by #{{ member.bannedby }}</span> - check logs for info.
         </NoticeMessage>
         <div class="d-flex justify-content-between flex-wrap">
-          <SettingsGroup
-            v-if="groupid"
-            :groupid="groupid"
-            :emailfrequency="member.emailfrequency"
-            :volunteeringallowed="Boolean(member.volunteeringallowed)"
-            :eventsallowed="Boolean(member.eventsallowed)"
-            :moderation="member.ourpostingstatus"
-            :userid="member.userid"
-            class="border border-info p-1 flex-grow-1 mr-1"
-            @change="settingsChange"
-          />
           <div>
             <ModMemberSummary :member="member" />
             <div v-if="member.lastaccess" :class="'mb-1 ' + (inactive ? 'text-danger': '')">
@@ -69,8 +58,6 @@
                 - won't send mails
               </span>
             </div>
-            <ModMemberActions v-if="!footeractions" :userid="member.userid" :groupid="groupid" :banned="(Boolean)(member.bandate)" />
-            <ModMemberships :user="member" />
             <ModMemberLogins :member="member" />
             <b-btn v-if="member.emails && member.emails.length" variant="link" @click="showEmails = !showEmails">
               <v-icon name="envelope" />
@@ -108,124 +95,74 @@
             </div>
           </div>
         </div>
-        <div v-if="user && user.id">
-          <hr>
-          <div class="d-flex justify-content-between flex-wrap">
-            <OurToggle
-              v-model="notifications.email"
-              :height="30"
-              :width="200"
-              :font-size="14"
-              :sync="true"
-              :labels="{checked: 'Chat On', unchecked: 'Chat Off'}"
-              color="#61AE24"
-              @change="changeNotification($event, 'email')"
-            />
-            <OurToggle
-              v-model="notifications.emailmine"
-              :height="30"
-              :width="200"
-              :font-size="14"
-              :sync="true"
-              :labels="{checked: 'Own Chats On', unchecked: 'Own Chats Off'}"
-              color="#61AE24"
-              @change="changeNotification($event, 'emailmine')"
-            />
-            <OurToggle
-              v-model="settings.notificationmails"
-              :height="30"
-              :width="200"
-              :font-size="14"
-              :sync="true"
-              :labels="{checked: 'Notification/ChitChat On', unchecked: 'Notification/ChitChat On'}"
-              color="#61AE24"
-              @change="changeNotifChitchat"
-            />
-            <OurToggle
-              v-model="relevantallowed"
-              :height="30"
-              :width="200"
-              :font-size="14"
-              :sync="true"
-              :labels="{checked: 'Suggestions On', unchecked: 'Suggestions Off'}"
-              color="#61AE24"
-              @change="changeRelevant"
-            />
-            <OurToggle
-              v-model="newslettersallowed"
-              :height="30"
-              :width="200"
-              :font-size="14"
-              :sync="true"
-              :labels="{checked: 'Newsletters On', unchecked: 'Newsletters Off'}"
-              color="#61AE24"
-              @change="changeNewsletter"
-            />
-          </div>
+        <div v-for="m in memberof" :key="'membership-' + m.membershipid" class="p-1 mr-1">
+          <b>{{ m.namedisplay.length > 32 ? (m.namedisplay.substring(0, 32) + '...') : m.namedisplay }}</b>
+          <span :class="'small ' + (daysago(m.added) < 31 ? 'text-danger font-weight-bold' : 'text-muted')">joined {{ m.added | timeago }}</span>
+          <b-btn v-if="amAModOn(m.id)" :to="'/modtools/members/approved/search/' + m.id + '/' + member.userid" variant="link" class="p-0 border-0 align-top">
+            Go to membership
+          </b-btn>
         </div>
+        <b-badge v-if="hiddenmemberofs" variant="info" class="clickme mb-1" @click="allmemberships = !allmemberships">
+          +{{ hiddenmemberofs }} groups
+        </b-badge>
       </b-card-body>
-      <b-card-footer class="d-flex justify-content-between flex-wrap">
-        <ModMemberButtons :member="member" :modconfig="modconfig" :actions="footeractions" />
-        <div class="d-flex justify-content-between justify-content-md-end flex-grow-1">
-          <ModRole v-if="groupid" :userid="member.userid" :groupid="groupid" :role="member.role" />
-          <ChatButton
-            :userid="member.userid"
-            :groupid="member.groupid"
-            title="Chat"
-            variant="white"
-            class="ml-1"
-          />
-        </div>
+      <b-card-footer class="d-flex justify-content-start flex-wrap">
+        <SpinButton
+          variant="danger"
+          name="ban"
+          label="Spammer"
+          class="mr-1"
+          :handler="spamReport"
+        />
+        <ModMemberButton
+          :member="member"
+          variant="primary"
+          icon="check"
+          spamignore
+          label="Not a Spammer"
+        />
       </b-card-footer>
     </b-card>
     <ModPostingHistoryModal ref="history" :user="member" :type="type" />
     <ModLogsModal ref="logs" :userid="member.userid" />
+    <ModSpammerReport v-if="showSpamModal" ref="spamConfirm" :user="reportUser" :whitelist="whitelist" />
   </div>
 </template>
 <script>
 import waitForRef from '../mixins/waitForRef'
-import SettingsGroup from './SettingsGroup'
 import NoticeMessage from './NoticeMessage'
 import ProfileImage from './ProfileImage'
 import ModPostingHistoryModal from './ModPostingHistoryModal'
-import ModMemberActions from './ModMemberActions'
 import ModMemberSummary from './ModMemberSummary'
 import ModSpammer from './ModSpammer'
 import ModComments from './ModComments'
-import ModMemberButtons from './ModMemberButtons'
 import ModLogsModal from './ModLogsModal'
-import ModMemberships from './ModMemberships'
 import ModBouncing from './ModBouncing'
 import ModMemberLogins from './ModMemberLogins'
-import ModRole from './ModRole'
-import ChatButton from './ChatButton'
 import ProfileModal from './ProfileModal'
 import ModMemberButton from './ModMemberButton'
-const OurToggle = () => import('@/components/OurToggle')
+import ModSpammerReport from './ModSpammerReport'
+import SpinButton from './SpinButton'
 const ExternalLink = () => import('~/components/ExternalLink')
+
+const MEMBERSHIPS_SHOW = 3
 
 export default {
   name: 'ModMember',
   components: {
+    SpinButton,
+    ModSpammerReport,
     ModMemberButton,
     ProfileModal,
-    ChatButton,
-    OurToggle,
-    ModRole,
     ModMemberLogins,
     ModBouncing,
-    ModMemberships,
     ModLogsModal,
-    ModMemberButtons,
     ModMemberSummary,
     ModComments,
     ModSpammer,
-    ModMemberActions,
     ModPostingHistoryModal,
     ProfileImage,
-    // ModMessageButtons,
     NoticeMessage,
-    SettingsGroup,
     ExternalLink
   },
   mixins: [waitForRef],
@@ -235,6 +172,11 @@ export default {
       required: true
     },
     spammerlist: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    spamignore: {
       type: Boolean,
       required: false,
       default: false
@@ -251,10 +193,28 @@ export default {
       saved: false,
       showEmails: false,
       type: null,
-      allmemberships: false
+      allmemberships: false,
+      showSpamModal: false
     }
   },
   computed: {
+    memberof() {
+      if (!this.user || !this.user.memberof) {
+        return null
+      }
+
+      const ms = this.user.memberof
+
+      ms.sort(function(a, b) {
+        return new Date(b.added).getTime() - new Date(a.added).getTime()
+      })
+
+      if (this.allmemberships) {
+        return ms
+      } else {
+        return ms.slice(0, MEMBERSHIPS_SHOW)
+      }
+    },
     email() {
       // Depending on which context we're used it, we might or might not have an email returned.
       let ret = this.member.email
@@ -269,29 +229,14 @@ export default {
 
       return ret
     },
-    groupid() {
-      return this.member.groupid
-    },
-    group() {
-      return this.$store.getters['auth/groupById'](this.groupid)
-    },
-    modconfig() {
-      const groups = this.$store.getters['auth/groups']
-      let ret = null
-      let configid = null
-
-      if (groups) {
-        groups.forEach(group => {
-          if (group.id === this.groupid) {
-            configid = group.configid
-          }
-        })
-
-        const configs = this.$store.getters['modconfigs/configs']
-        ret = configs.find(config => config.id === configid)
-      }
-
-      return ret
+    hiddenmemberofs() {
+      return this.allmemberships
+        ? 0
+        : this.user &&
+          this.user.memberof &&
+          this.user.memberof.length > MEMBERSHIPS_SHOW
+          ? this.user.memberof.length - MEMBERSHIPS_SHOW
+          : 0
     },
     inactive() {
       // This code matches server code in sendOurMails.
@@ -304,6 +249,13 @@ export default {
     },
     user() {
       return this.$store.getters['user/get'](this.member.userid)
+    },
+    reportUser() {
+      return {
+        // Due to inconsistencies about userid vs id in objects.
+        userid: this.user.id,
+        displayname: this.user.displayname
+      }
     },
     settings() {
       if (this.user && this.user.settings && this.user.settings) {
@@ -369,14 +321,6 @@ export default {
         this.$refs.logs.show()
       })
     },
-    settingsChange(e) {
-      const params = {
-        userid: this.member.userid,
-        groupid: e.groupid
-      }
-      params[e.param] = e.val
-      this.$store.dispatch('members/update', params)
-    },
     async changeNotification(e, type) {
       const settings = this.settings
       const notifications = this.notifications
@@ -412,6 +356,27 @@ export default {
       this.waitForRef('profilemodal', () => {
         this.$refs.profilemodal.show()
       })
+    },
+    async spamReport() {
+      if (!this.user) {
+        await this.fetchUser()
+      }
+
+      this.whitelist = false
+      this.showSpamModal = true
+
+      this.waitForRef('spamConfirm', () => {
+        this.$refs.spamConfirm.show()
+      })
+    },
+    async spamIgnore() {
+      await this.$store.dispatch('members/spamignore', {
+        userid: this.member.userid,
+        groupid: this.groupid
+      })
+    },
+    daysago(d) {
+      return this.$dayjs().diff(this.$dayjs(d), 'days')
     }
   }
 }
