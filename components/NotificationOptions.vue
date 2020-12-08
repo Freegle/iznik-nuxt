@@ -162,6 +162,10 @@ export default {
 /* These classes style the bootstrap b-nav-item-dropdown component */
 ::v-deep .notification-list__dropdown-toggle {
   color: $color-white !important;
+
+  &:hover {
+    color: $color-white-opacity-75 !important;
+  }
 }
 
 ::v-deep .notification-list__dropdown-menu {
