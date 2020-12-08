@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!me" class="grid m-0 pl-1 pr-1 pl-sm-0 pr-sm-0">
+  <div v-if="!me" class="grid m-0 pl-1 pr-1 pl-sm-0 pr-sm-0 mt-0 mt-lg-5">
     <div class="map justify-content-start flex-column d-none d-sm-flex">
       <VisualiseMap v-if="type === 'Map'" class="shadow flex-grow-1" />
       <b-embed
@@ -217,27 +217,27 @@ export default {
 .grid {
   display: grid;
   grid-template-columns: 30px 1fr 50px 2fr 0px;
-  grid-template-rows: 50px 0.1fr 1.5fr 200px 110px;
+  grid-template-rows: 1.5fr 200px 110px;
   height: 100vh;
 
   @include media-breakpoint-down(md) {
     grid-template-columns: 0.75fr 0.8fr 30px 1.2fr 0.75fr;
-    grid-template-rows: 0px 0fr 0.4fr 0px 1.6fr;
+    grid-template-rows: 0.4fr 0px 1.6fr;
   }
 
   @include media-breakpoint-down(sm) {
     grid-template-columns: 0fr 0.8fr 30px 1.2fr 0fr;
-    grid-template-rows: 0px 0fr 0.4fr 0px 1.6fr;
+    grid-template-rows: 0.4fr 0px 1.6fr;
   }
 }
 
 .map {
   grid-column: 2 / 3;
-  grid-row: 3 / 5;
+  grid-row: 1 / 3;
 
   @include media-breakpoint-down(md) {
     grid-column: 2 / 5;
-    grid-row: 4 / 6;
+    grid-row: 2 / 4;
   }
 }
 
@@ -245,7 +245,7 @@ export default {
   align-self: center;
   justify-self: center;
   grid-column: 4 / 5;
-  grid-row: 3 / 4;
+  grid-row: 1 / 2;
 
   @include media-breakpoint-down(md) {
     grid-column: 2 / 5;
@@ -256,13 +256,13 @@ export default {
 
 .mobile {
   grid-column: 4 / 5;
-  grid-row: 4 / 5;
+  grid-row: 2 / 3;
   justify-self: end;
   align-self: end;
 
   @include media-breakpoint-down(lg) {
     grid-column: 1 / 2;
-    grid-row: 6 / 7;
+    grid-row: 4 / 5;
     align-self: center;
     text-align: center;
 
@@ -273,7 +273,7 @@ export default {
 
   @include media-breakpoint-down(sm) {
     grid-column: 1 / 5;
-    grid-row: 3 / 5;
+    grid-row: 1 / 3;
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -284,7 +284,7 @@ export default {
   }
 
   @include media-breakpoint-down(xs) {
-    grid-row: 4 / 5;
+    grid-row: 2 / 3;
     align-self: initial;
   }
 
@@ -295,7 +295,7 @@ export default {
 
 .thefooter {
   grid-column: 1 / 5;
-  grid-row: 6 / 7;
+  grid-row: 4 / 5;
   justify-self: center;
   align-self: center;
 
