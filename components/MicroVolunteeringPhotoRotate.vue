@@ -37,12 +37,25 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style scoped lang="scss">
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+
 .square {
   object-fit: cover;
   margin: auto;
-  width: 150px;
-  height: 150px;
+  width: 80px;
+  height: 80px;
+
+  @include media-breakpoint-up(md) {
+    width: 120px;
+    height: 120px;
+  }
+  @include media-breakpoint-up(lg) {
+    width: 150px;
+    height: 150px;
+  }
 }
 
 .rotate90 {
