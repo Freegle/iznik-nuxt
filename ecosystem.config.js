@@ -55,10 +55,8 @@ module.exports = {
       user: 'root',
       key: '/root/.ssh/id_rsa',
       host: ['46.43.9.246', '5.28.62.22'],
-      // ref: 'origin/master',
-      // repo: 'git@github.com:Freegle/iznik-nuxt.git',
-      ref: 'feature/theming-bootstrap',
-      repo: 'git@github.com:JayyajGH/iznik-nuxt.git',
+      ref: 'origin/master',
+      repo: 'git@github.com:Freegle/iznik-nuxt.git',
       'pre-setup': 'echo `hostname` && git checkout -- package-lock.json && git checkout -- static/sw.js && git checkout -- nuxt.config.js',
       path: '/var/www/fdnuxt.dev',
       'post-deploy':
