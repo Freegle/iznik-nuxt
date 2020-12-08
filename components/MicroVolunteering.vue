@@ -67,9 +67,12 @@
                 <span v-else-if="task.type === 'SearchTerm'">
                   Word Match
                 </span>
+                <span v-else-if="task.type === 'PhotoRotate'">
+                  Photo Rotate
+                </span>
               </h1>
               <div class="font-weight-bold">
-                These little things help Freegle run smoothly - and earn you heart points <v-icon name="heart" class="text-danger" />.
+                These little things help Freegle run smoothly.  Thank you!
               </div>
             </div>
           </div>
@@ -79,7 +82,7 @@
             (This is something members see.  You're seeing it too even though you're a mod, so you can see what it
             looks like to them.)
           </p>
-          <div v-if="task">
+          <div v-if="task" :key="bump">
             <div v-if="task.type === 'CheckMessage'">
               <p>
                 This is someone else's post.  Does it look ok to you?
@@ -92,6 +95,7 @@
                 :replyable="false"
                 start-expanded
                 :actions="false"
+                :record-view="false"
               />
               <div v-if="!showComments" class="d-flex justify-content-between flex-wrap w-100 mt-3">
                 <SpinButton
@@ -136,21 +140,31 @@
                 Click the <b>two most similar</b> terms - or if there are none, click <em>Skip</em>.
               </p>
               <div class="d-flex flex-wrap justify-content-between">
-                <div v-for="term in task.terms" :key="'term-' + term.id + '-' + isSimilar(term)" class="mr-1 mb-2">
-                  <b-btn :variant="isSimilar(term) ? 'secondary' : 'white'" size="lg" @click="similar(term)">
-                    <b>{{ term.term }}</b>
-                  </b-btn>
-                </div>
+                <MicroVolunteeringSimilarTerm
+                  v-for="term in task.terms"
+                  :key="'term-' + term.id"
+                  :term="term"
+                  :similar-terms="similarTerms"
+                  class="mr-1 mb-2"
+                  @similar="similar(term)"
+                  @not="notSimilar(term)"
+                />
               </div>
               <hr>
               <div class="d-flex flex-wrap justify-content-between">
-                <b-btn variant="white" size="lg" class="mt-2" @click="getTask">
+                <b-btn variant="white" size="lg" class="mt-2" :disabled="similarTerms.length > 0" @click="getTask">
                   Skip - no similar terms
                 </b-btn>
                 <b-btn variant="primary" size="lg" class="mt-2" :disabled="similarTerms.length < 2" @click="submitSimilar">
                   Submit - these terms are similar
                 </b-btn>
               </div>
+            </div>
+            <div v-else-if="task.type === 'Facebook'">
+              <FacebookPostToShare :id="task.facebook.postid" @skipped="facebookSkipped" @done="facebookDone" />
+            </div>
+            <div v-else-if="task.type === 'PhotoRotate'">
+              <MicroVolunteeringPhotosRotate :photos="task.photos" @done="considerNext" />
             </div>
             <div v-else>
               Unknown task {{ task }}
@@ -175,8 +189,20 @@
 import dayjs from 'dayjs'
 import Message from './Message'
 import SpinButton from './SpinButton'
+const MicroVolunteeringSimilarTerm = () =>
+  import('./MicroVolunteeringSimilarTerm')
+const FacebookPostToShare = () => import('./FacebookPostToShare')
+const MicroVolunteeringPhotosRotate = () =>
+  import('./MicroVolunteeringPhotosRotate')
+
 export default {
-  components: { SpinButton, Message },
+  components: {
+    MicroVolunteeringPhotosRotate,
+    FacebookPostToShare,
+    MicroVolunteeringSimilarTerm,
+    SpinButton,
+    Message
+  },
   props: {
     force: {
       type: Boolean,
@@ -195,7 +221,9 @@ export default {
       similarTerms: [],
       debug: false,
       todo: 5,
-      done: 0
+      done: 0,
+      types: ['CheckMessage', 'SearchTerm', 'PhotoRotate'],
+      bump: 1
     }
   },
   computed: {
@@ -206,7 +234,6 @@ export default {
       return this.me && this.me.trustlevel
     },
     inviteRejected() {
-      console.log('Rejected?', this.me)
       return this.me && this.me.trustlevel === 'Declined'
     },
     inviteAccepted() {
@@ -233,38 +260,25 @@ export default {
       const now = dayjs()
       const daysago = now.diff(dayjs(this.me.added), 'days')
 
-      console.log(
-        'Consider status',
-        this.invited,
-        this.inviteAccepted,
-        this.inviteRejected
-      )
-
       if (!this.me.microvolunteering) {
         // Not on a group with this function enabled.
-        console.log('Not on a group with microvolunteering enabled')
       } else if (!this.askDue) {
         // Challenged recently, so return verified.  That's true even for if it's forced - we don't want to bombard
         // people.
-        console.log('Challenged recently')
         this.$emit('verified')
       } else if (this.force) {
         // Forced and not asked recently.  Do so.
-        console.log('Forced and not recent, ask')
         this.getTask()
       } else if (daysago > 7) {
         // They're not a new member.  We might want to ask them.
         if (this.inviteRejected) {
           // We're not forced to do this, and they've said they don't want to.
-          console.log('Invited and said no')
           this.$emit('verified')
         } else if (this.inviteAccepted) {
           // They're up for this.
-          console.log('Invited and said yes, ask')
           this.getTask()
         } else {
           // We don't know if they want to.  Ask.
-          console.log("Don't know what they want, ask")
           this.$api.bandit.shown({
             uid: 'microvolunteering',
             variant: 'inviteaccepted'
@@ -284,11 +298,11 @@ export default {
       // Try to get a task.
       this.similarTerms = []
 
-      this.task = await this.$api.microvolunteering.challenge()
-      console.log('Got task', this.task)
+      this.task = await this.$api.microvolunteering.challenge({
+        types: this.types
+      })
 
       if (this.task) {
-        console.log('Got a task')
         this.$store.dispatch('misc/set', {
           key: 'microvolunteeringlastask',
           value: Date.now()
@@ -305,12 +319,19 @@ export default {
           this.showTask = true
         } else if (this.task.type === 'SearchTerm') {
           this.showTask = true
+        } else if (this.task.type === 'Facebook') {
+          this.showTask = true
+        } else if (this.task.type === 'PhotoRotate') {
+          this.showTask = true
+        } else {
+          this.doneForNow()
         }
       } else {
-        console.log('No task')
         // Nothing to do.
         this.doneForNow()
       }
+
+      this.bump++
     },
     response(verdict) {
       return async () => {
@@ -326,7 +347,7 @@ export default {
               variant: 'inviterejected'
             })
 
-            this.$store.dispatch('user/edit', {
+            await this.$store.dispatch('user/edit', {
               id: this.myid,
               trustlevel: 'Declined'
             })
@@ -345,12 +366,7 @@ export default {
             break
           }
           case 'Reject': {
-            // Record the result but give them a chance to say why.
-            await this.$api.microvolunteering.response({
-              msgid: this.task.msgid,
-              response: verdict
-            })
-
+            // Don't record the result yet - people who don't give comments seem to have less good judgement.
             this.showComments = true
             break
           }
@@ -383,7 +399,6 @@ export default {
     },
     async inviteResponse(response) {
       if (response) {
-        console.log('Accepted')
         this.$store.dispatch('misc/set', {
           key: 'microvolunteeringinviteaccepted',
           value: Date.now()
@@ -401,7 +416,6 @@ export default {
 
         await this.getTask()
       } else {
-        console.log('Declined')
         this.$store.dispatch('misc/set', {
           key: 'microvolunteeringinviterejected',
           value: Date.now()
@@ -426,7 +440,6 @@ export default {
       this.showInvite = false
     },
     doneForNow() {
-      console.log('Done for now')
       this.showTask = false
       this.$emit('verified')
     },
@@ -434,16 +447,33 @@ export default {
       return this.similarTerms.find(t => t.id === term.id)
     },
     similar(term) {
-      if (this.isSimilar(term)) {
-        this.similarTerms = this.similarTerms.filter(t => t.id !== term.id)
-      } else if (this.similarTerms.length < 2) {
+      if (this.similarTerms.length < 2) {
         this.similarTerms.push(term)
       }
+    },
+    notSimilar(term) {
+      this.similarTerms = this.similarTerms.filter(t => t.id !== term.id)
     },
     async submitSimilar() {
       await this.$api.microvolunteering.response({
         searchterm1: this.similarTerms[0].id,
         searchterm2: this.similarTerms[1].id
+      })
+
+      this.considerNext()
+    },
+    async facebookSkipped() {
+      await this.$api.microvolunteering.response({
+        facebook: this.task.facebook.id,
+        response: 'Reject'
+      })
+
+      this.getTask()
+    },
+    async facebookDone() {
+      await this.$api.microvolunteering.response({
+        facebook: this.task.facebook.id,
+        response: 'Approve'
       })
 
       this.considerNext()

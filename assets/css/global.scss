@@ -169,19 +169,6 @@ body.modtools {
     opacity: 0;
 }
 
-.navbar .dropdown-toggle:after {
-  content: none;
-}
-
-nav .dropdown-toggle {
-  border: none;
-
-  &:hover,
-  &:focus {
-    color: $color-white-opacity-75 !important;
-  }
-}
-
 .forcebreak {
   overflow-wrap: break-word;
   word-wrap: break-word;

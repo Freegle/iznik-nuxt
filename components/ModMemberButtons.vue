@@ -150,8 +150,7 @@ export default {
   },
   data: function() {
     return {
-      showRare: false,
-      showSpamModal: false
+      showRare: false
     }
   },
   computed: {

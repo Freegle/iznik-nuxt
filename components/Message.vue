@@ -27,7 +27,7 @@
             {{ eSubject }}
           </span>
           <b-badge v-if="availablenow > 1" variant="info">
-            {{ availablenow }} left
+            {{ availablenow ? availablenow : '0' }} left
           </b-badge>
         </b-card-title>
         <MessageHistory :message="$props" class="mb-1 card-header__history" :display-message-link="sm()" />
@@ -376,6 +376,10 @@ export default {
       type: Boolean,
       required: false,
       default: true
+    },
+    recordView: {
+      type: Boolean,
+      required: true
     }
   },
   data: function() {
@@ -508,12 +512,14 @@ export default {
       }
     },
     view() {
-      const me = this.$store.getters['auth/user']
+      if (this.recordView) {
+        const me = this.$store.getters['auth/user']
 
-      if (me) {
-        this.$store.dispatch('messages/view', {
-          id: this.id
-        })
+        if (me) {
+          this.$store.dispatch('messages/view', {
+            id: this.id
+          })
+        }
       }
     },
     contract() {

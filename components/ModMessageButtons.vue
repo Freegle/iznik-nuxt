@@ -118,14 +118,14 @@
         variant="danger"
         icon="trash-alt"
         spam
-        label="Spam"
+        label="Delete Message"
       />
       <ModMessageButton
         :message="message"
         variant="primary"
         icon="check"
         notspam
-        label="Not spam"
+        label="Approve Message"
       />
     </div>
     <div v-if="!editreview" class="d-lg-inline">

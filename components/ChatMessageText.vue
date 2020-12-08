@@ -1,9 +1,28 @@
 <template>
   <div class="chatMessageWrapper pb-1" :class="{ myChatMessage : messageIsFromCurrentUser }">
     <div class="chatMessage forcebreak chatMessage__owner">
-      <span>
+      <span v-if="!highlightEmails">
         <span v-if="messageIsNew" class="prewrap"><b>{{ emessage }}</b></span>
         <span v-else class="preline forcebreak">{{ emessage }}</span>
+        <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
+      </span>
+      <span v-else>
+        <b v-if="messageIsNew">
+          <Highlighter
+            :text-to-highlight="emessage"
+            :search-words="[regexEmail]"
+            highlight-class-name="highlight"
+            class="prewrap"
+          />
+        </b>
+        <span v-else>
+          <Highlighter
+            :text-to-highlight="emessage"
+            :search-words="[regexEmail]"
+            highlight-class-name="highlight"
+            class="preline forcebreak"
+          />
+        </span>
         <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
       </span>
     </div>
@@ -14,12 +33,14 @@
 </template>
 
 <script>
+import Highlighter from 'vue-highlight-words'
 import ChatBase from '~/components/ChatBase'
 import ProfileImage from '~/components/ProfileImage'
 
 export default {
   components: {
-    ProfileImage
+    ProfileImage,
+    Highlighter
   },
   extends: ChatBase,
   computed: {
@@ -87,5 +108,10 @@ export default {
     padding-left: 10px;
     padding-right: 0;
   }
+}
+
+/deep/ .highlight {
+  color: $color-orange--dark !important;
+  background-color: initial;
 }
 </style>

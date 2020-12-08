@@ -11,7 +11,7 @@
           {{ message.subject }}
         </template>
         <template slot="default">
-          <Message ref="message" v-bind="message" />
+          <Message ref="message" v-bind="message" record-view />
         </template>
         <template slot="modal-footer" slot-scope="{ ok, cancel }">
           <b-button variant="white" @click="cancel">

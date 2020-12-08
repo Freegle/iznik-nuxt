@@ -77,6 +77,10 @@ export default class ChatAPI extends BaseAPI {
     return this.$post('/chatmessages', { id: msgid, action: 'Release' })
   }
 
+  redact(msgid) {
+    return this.$post('/chatmessages', { id: msgid, action: 'Redact' })
+  }
+
   reject(msgid) {
     return this.$post('/chatmessages', { id: msgid, action: 'Reject' })
   }

@@ -1,7 +1,7 @@
 <template>
   <client-only>
     <div class="pageback">
-      <b-navbar id="navbar" type="dark" class="navback p-0 p-sm-1" fixed="top">
+      <b-navbar id="navbar" type="dark" class="navback p-0 p-sm-1 justify-content-between" fixed="top">
         <b-navbar-brand class="p-0 pr-2 d-flex">
           <b-img
             class="logo clickme"
@@ -13,39 +13,23 @@
           />
           <ModStatus class="status" />
         </b-navbar-brand>
-        <b-navbar-nav class="d-flex w-100 justify-content-end">
-          <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse2" class="text-center p-0" @click="discourse">
-            <div>
-              <span class="d-none d-sm-inline">
-                <v-icon name="brands/discourse" scale="2" class="fw" /><br>
+        <b-navbar-nav class="d-flex align-items-center">
+          <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse2" class="text-center p-0 mr-4" @click="discourse">
+            <div class="position-relative small">
+              <v-icon name="brands/discourse" scale="2" class="fw" />
+              <div class="d-none d-xl-block">
                 Us
-              </span>
-              <div class="position-relative d-inline">
-                <v-icon name="brands/discourse" class="d-inline d-sm-none ml-2 mr-2 mt-2" scale="2.5" />
-                <b-badge v-show="discourseCount" variant="success">
-                  {{ discourseCount }}
-                </b-badge>
               </div>
+              <b-badge v-show="discourseCount" variant="success" class="discourseBadge">
+                {{ discourseCount }}
+              </b-badge>
             </div>
           </b-nav-item>
-          <b-nav-item v-if="loggedIn" id="menu-option-modtools-chat2" class="text-center p-0" @click="toChats">
-            <div>
-              <span class="d-none d-sm-inline">
-                <v-icon name="comments" scale="2" class="fw" /><br>
-                Chats
-              </span>
-              <div class="position-relative d-inline">
-                <v-icon name="comments" class="d-inline d-sm-none ml-2 mr-4 mt-2" scale="2.5" />
-                <b-badge v-show="chatCount" variant="danger" class="badge">
-                  {{ chatCount }}
-                </b-badge>
-              </div>
-            </div>
-          </b-nav-item>
+          <ChatMenu v-if="loggedIn" id="menu-option-modtools-chat2" :is-list-item="true" :chat-count.sync="chatCount" class="mr-4" />
           <b-nav-item v-if="loggedIn">
             <div class="position-relative">
               <b-btn variant="white" class="menu" @click="toggleMenu">
-                <v-icon name="bars" class="mb-1" scale="2.2" />
+                <v-icon name="bars" class="" scale="1.5" />
               </b-btn>
               <b-badge v-show="menuCount" v-if="!showMenu" variant="danger" class="menuCount position-absolute">
                 {{ menuCount }}
@@ -76,7 +60,7 @@
             Members
           </div>
           <ModMenuItemLeft link="/modtools/members/approved" name="Approved" indent />
-          <ModMenuItemLeft link="/modtools/members/review" name="Member Review" :count="['spammembers']" :othercount="['spammembersother']" indent />
+          <ModMenuItemLeft link="/modtools/members/review" name="Member Review" :count="['spammembers']" indent />
           <ModMenuItemLeft link="/modtools/chats/review" name="Chat Review" :count="['chatreview']" :othercount="['chatreviewother']" indent />
           <ModMenuItemLeft link="/modtools/members/related" name="Related" :count="['relatedmembers']" indent />
           <ModMenuItemLeft link="/modtools/members/stories" name="Stories" indent :count="['stories']" />
@@ -121,6 +105,7 @@ import ModMenuItemLeft from '../components/ModMenuItemLeft'
 import waitForRef from '../mixins/waitForRef'
 import LoginModal from '~/components/LoginModal'
 import ModStatus from '~/components/ModStatus'
+import ChatMenu from '~/components/ChatMenu'
 const ExternalLink = () => import('~/components/ExternalLink')
 
 const ChatPopups = () => import('~/components/ChatPopups')
@@ -131,6 +116,7 @@ export default {
     ChatPopups,
     LoginModal,
     ModStatus,
+    ChatMenu,
     ExternalLink
   },
   mixins: [waitForRef],
@@ -139,14 +125,11 @@ export default {
       logo: require(`@/static/icon_modtools.png`),
       showMenu: false,
       sliding: false,
-      timeTimer: null
+      timeTimer: null,
+      chatCount: 0
     }
   },
   computed: {
-    chatCount() {
-      // Don't show so many that the layout breaks.
-      return Math.min(99, this.$store.getters['chats/unseenCount'])
-    },
     discourseCount() {
       const discourse = this.$store.getters['auth/discourse']
       return discourse
@@ -211,6 +194,9 @@ export default {
       all: true
     })
 
+    // Get chats and poll regularly for new ones
+    this.$store.dispatch('chats/fetchLatestChats')
+
     setTimeout(this.updateFavicon, 1000)
   },
   beforeDestroy() {
@@ -260,17 +246,6 @@ export default {
         force: true
       })
 
-      const currentCount = this.$store.getters['chats/unseenCount']
-      const newCount = await this.$store.dispatch('chats/unseenCount')
-
-      if (newCount !== currentCount) {
-        await this.$store.dispatch('chats/listChats', {
-          chattypes: ['User2User', 'User2Mod'],
-          summary: true,
-          noerror: true
-        })
-      }
-
       setTimeout(this.checkWork, 30000)
     },
     discourse(e) {
@@ -294,20 +269,6 @@ export default {
     },
     toggleMenu() {
       this.showMenu = !this.showMenu
-    },
-    toChats(e) {
-      if (e) {
-        e.preventDefault()
-        e.stopPropagation()
-        e.stopImmediatePropagation()
-      }
-
-      // Ensure we have no chat selected.  On mobile this will force us to show the chat list.
-      this.$store.dispatch('chats/currentChat', {
-        chatid: null
-      })
-
-      this.$router.push('/modtools/chats')
     },
     updateTime() {
       this.$store.dispatch('misc/setTime')
@@ -354,7 +315,6 @@ html {
 
 @include media-breakpoint-up(sm) {
   #navbar .nav-item {
-    width: 80px;
     text-align: center;
   }
 }
@@ -485,5 +445,11 @@ body.modal-open {
     right: 15px;
     top: 5px;
   }
+}
+
+.discourseBadge {
+  position: absolute;
+  top: 0px;
+  left: 25px;
 }
 </style>
