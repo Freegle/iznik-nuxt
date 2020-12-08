@@ -27,7 +27,7 @@
             {{ eSubject }}
           </span>
           <b-badge v-if="availablenow > 1" variant="info">
-            {{ availablenow }} left
+            {{ availablenow ? availablenow : '0' }} left
           </b-badge>
         </b-card-title>
         <MessageHistory :message="$props" class="mb-1 card-header__history" :display-message-link="sm()" />
