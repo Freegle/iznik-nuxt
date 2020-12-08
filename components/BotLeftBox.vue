@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <nav>
     <b-card class="bg-transparent border-0">
       <div class="flex-wrap d-flex flex-row justify-content-between text-muted small list-unstyled">
         <nuxt-link to="/about" class="p-1">
@@ -33,7 +33,7 @@
         </a>
       </div>
     </b-card>
-  </div>
+  </nav>
 </template>
 <style scoped lang="scss">
 @import 'color-vars';

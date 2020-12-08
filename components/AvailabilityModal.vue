@@ -239,7 +239,11 @@ export default {
               other: false
             }
 
-            if (this.otheruid && this.otherSchedule) {
+            if (
+              this.otheruid &&
+              this.otherSchedule &&
+              Array.isArray(this.otherSchedule.schedule)
+            ) {
               let otherAvailable = false
 
               for (const existing of this.otherSchedule.schedule) {

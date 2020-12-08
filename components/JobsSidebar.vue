@@ -1,5 +1,5 @@
 <template>
-  <div v-if="location">
+  <aside v-if="location">
     <NoticeMessage v-if="blocked" variant="warning">
       <h3>Please help keep Freegle running</h3>
       <p>
@@ -37,7 +37,7 @@
         </client-only>
       </b-card-body>
     </b-card>
-  </div>
+  </aside>
 </template>
 
 <script>

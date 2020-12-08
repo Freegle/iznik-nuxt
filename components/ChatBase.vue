@@ -1,24 +1,9 @@
 <template>
   <div />
 </template>
-
-<style scoped lang="scss">
-@import 'color-vars';
-
-.chatMessage {
-  border: 1px solid $color-gray--light;
-  border-radius: 10px;
-  padding-top: 2px;
-  padding-bottom: 2px;
-  padding-left: 4px;
-  padding-right: 2px;
-  word-wrap: break-word;
-  line-height: 1.75;
-}
-</style>
-
 <script>
 import twem from '~/assets/js/twem'
+import { EMAIL_REGEX } from '~/utils/constants'
 
 export default {
   props: {
@@ -47,9 +32,18 @@ export default {
     chatusers: {
       type: Array,
       required: true
+    },
+    highlightEmails: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   computed: {
+    regexEmail() {
+      console.log('Regex email', EMAIL_REGEX)
+      return EMAIL_REGEX
+    },
     emessage() {
       const trim = this.chatmessage.message
         .replace(/(\r\n|\r|\n){2,}/g, '$1\n')
@@ -110,3 +104,17 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+@import 'color-vars';
+
+.chatMessage {
+  border: 1px solid $color-gray--light;
+  border-radius: 10px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 4px;
+  padding-right: 2px;
+  word-wrap: break-word;
+  line-height: 1.75;
+}
+</style>

@@ -8,7 +8,7 @@
               <h3 class="text-wrap flex-shrink-2 mr-2 mb-0">
                 {{ message.subject }}
                 <b-badge v-if="message.availableinitially > 1" variant="info">
-                  {{ message.availablenow }} left
+                  {{ message.availablenow ? message.availablenow : '0' }} left
                 </b-badge>
               </h3>
               <read-more v-if="message && message.textbody" :text="message.textbody" :max-chars="maxChars" class="nopara" />
@@ -71,7 +71,7 @@
                     {{ message.subject }}
                   </span>
                   <b-badge v-if="message.availableinitially > 1" variant="info">
-                    {{ message.availablenow }} left
+                    {{ message.availablenow ? message.availablenow : '0' }} left
                   </b-badge>
                   <span v-if="rejected" class="text-danger">
                     <v-icon name="exclamation-triangle" scale="2" />

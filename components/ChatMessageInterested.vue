@@ -112,9 +112,28 @@
                 </span>
               </notice-message>
               <div :class="emessage ? 'media-body chatMessage' : 'media-body'">
-                <span>
+                <span v-if="!highlightEmails">
                   <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap"><b>{{ emessage }}</b></span>
                   <span v-else class="preline forcebreak">{{ emessage }}</span>
+                  <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
+                </span>
+                <span v-else>
+                  <b v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)">
+                    <Highlighter
+                      :text-to-highlight="emessage"
+                      :search-words="[regexEmail]"
+                      highlight-class-name="highlight"
+                      class="prewrap"
+                    />
+                  </b>
+                  <span v-else>
+                    <Highlighter
+                      :text-to-highlight="emessage"
+                      :search-words="[regexEmail]"
+                      highlight-class-name="highlight"
+                      class="preline forcebreak"
+                    />
+                  </span>
                   <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
                 </span>
               </div>

@@ -38,7 +38,7 @@ export default class BaseAPI {
     let data = null
     let modtools
     if (process.env.IS_APP) {
-      modtools = process.env.IS_MTAPP
+      modtools = process.env.IS_MTAPP ? true : false
     } else {
       modtools = this.store.getters['misc/get']('modtools')
     }
@@ -47,6 +47,7 @@ export default class BaseAPI {
     if (method !== 'POST') {
       if (config.params) {
         config.params.modtools = modtools
+        config.params.app = process.env.IS_APP ? true : false
       }
     } else {
       if (!config.data) {
@@ -54,6 +55,7 @@ export default class BaseAPI {
       }
 
       config.data.modtools = modtools
+      config.data.app = process.env.IS_APP ? true : false
     }
 
     try {
