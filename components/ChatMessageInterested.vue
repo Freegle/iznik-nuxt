@@ -146,9 +146,9 @@
 </template>
 
 <script>
+import waitForRef from '@/mixins/waitForRef'
 import ChatBase from '~/components/ChatBase'
 import ProfileImage from '~/components/ProfileImage'
-import waitForRef from '@/mixins/waitForRef'
 const NoticeMessage = () => import('~/components/NoticeMessage')
 const OutcomeModal = () => import('~/components/OutcomeModal')
 const PromiseModal = () => import('~/components/PromiseModal')

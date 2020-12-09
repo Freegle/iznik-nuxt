@@ -137,13 +137,13 @@ import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import InfiniteLoading from 'vue-infinite-loading'
 import VueDraggableResizable from 'vue-draggable-resizable/src/components/vue-draggable-resizable'
-import ModComments from './ModComments'
 import waitForRef from '@/mixins/waitForRef'
 import chat from '@/mixins/chat.js'
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
-import ChatMessage from '~/components/ChatMessage.vue'
 import chatCollate from '@/mixins/chatCollate.js'
+import ModComments from './ModComments'
+import ChatMessage from '~/components/ChatMessage.vue'
 
 Vue.use(TooltipPlugin)
 const Ratings = () => import('~/components/Ratings')

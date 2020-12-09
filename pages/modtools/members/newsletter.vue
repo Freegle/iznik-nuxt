@@ -10,9 +10,9 @@
   </div>
 </template>
 <script>
+import loginRequired from '@/mixins/loginRequired.js'
 import NoticeMessage from '../../../components/NoticeMessage'
 import ScrollToTop from '../../../components/ScrollToTop'
-import loginRequired from '@/mixins/loginRequired.js'
 
 const ModStoryReview = () => import('~/components/ModStoryReview')
 

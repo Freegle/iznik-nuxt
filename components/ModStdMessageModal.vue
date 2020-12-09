@@ -71,11 +71,11 @@
   </b-modal>
 </template>
 <script>
+import keywords from '@/mixins/keywords.js'
+import waitForRef from '@/mixins/waitForRef'
 import Postcode from './Postcode'
 import NoticeMessage from './NoticeMessage'
 import SpinButton from './SpinButton'
-import keywords from '@/mixins/keywords.js'
-import waitForRef from '@/mixins/waitForRef'
 
 export default {
   components: { SpinButton, NoticeMessage, Postcode },

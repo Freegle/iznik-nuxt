@@ -69,9 +69,9 @@
   </div>
 </template>
 <script>
-import GroupSelect from '../../components/GroupSelect'
 import ModLogs from '@/components/ModLogs'
 import loginRequired from '@/mixins/loginRequired.js'
+import GroupSelect from '../../components/GroupSelect'
 
 export default {
   layout: 'modtools',

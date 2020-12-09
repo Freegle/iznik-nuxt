@@ -13,8 +13,8 @@
 </template>
 <script>
 import Vue from 'vue'
-import HomeIcon from './HomeIcon'
 import map from '@/mixins/map.js'
+import HomeIcon from './HomeIcon'
 
 let L = null
 

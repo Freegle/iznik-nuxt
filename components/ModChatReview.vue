@@ -140,6 +140,7 @@
   </div>
 </template>
 <script>
+import chat from '@/mixins/chat.js'
 import waitForRef from '../mixins/waitForRef'
 import NoticeMessage from './NoticeMessage'
 import ModChatReviewUser from './ModChatReviewUser'
@@ -147,7 +148,6 @@ import ChatMessage from './ChatMessage'
 import ModChatNoteModal from './ModChatNoteModal'
 import ModChatViewButton from './ModChatViewButton'
 import SpinButton from './SpinButton'
-import chat from '@/mixins/chat.js'
 
 const ModMessageEmailModal = () => import('~/components/ModMessageEmailModal')
 const ExternalLink = () => import('~/components/ExternalLink')

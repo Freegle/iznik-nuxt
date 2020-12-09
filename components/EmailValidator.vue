@@ -34,8 +34,8 @@
 <script>
 import { required, email } from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
-import ValidatingFormInput from '../components/ValidatingFormInput'
 import validationHelpers from '@/mixins/validationHelpers'
+import ValidatingFormInput from '../components/ValidatingFormInput'
 
 export default {
   components: { ValidatingFormInput },

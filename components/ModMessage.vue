@@ -283,6 +283,8 @@
   </div>
 </template>
 <script>
+import waitForRef from '@/mixins/waitForRef'
+import keywords from '@/mixins/keywords.js'
 import MessageHistory from './MessageHistory'
 import MessageUserInfo from './MessageUserInfo'
 import MessageReplyInfo from './MessageReplyInfo'
@@ -305,8 +307,6 @@ import GroupSelect from './GroupSelect'
 import MessageMap from './MessageMap'
 import ModMessageMicroVolunteering from './ModMessageMicroVolunteering'
 import twem from '~/assets/js/twem'
-import waitForRef from '@/mixins/waitForRef'
-import keywords from '@/mixins/keywords.js'
 const Highlighter = () => import('vue-highlight-words')
 
 export default {

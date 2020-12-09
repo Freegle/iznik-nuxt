@@ -42,6 +42,10 @@
   </div>
 </template>
 <script>
+import loginRequired from '@/mixins/loginRequired'
+import modMembersPage from '@/mixins/modMembersPage'
+import createGroupRoute from '@/mixins/createGroupRoute'
+import waitForRef from '@/mixins/waitForRef'
 import ModMember from '../../../../components/ModMember'
 import NoticeMessage from '../../../../components/NoticeMessage'
 import ModMemberSearchbox from '../../../../components/ModMemberSearchbox'
@@ -50,10 +54,6 @@ import ModAddMemberModal from '../../../../components/ModAddMemberModal'
 import ModMergeButton from '../../../../components/ModMergeButton'
 import ModMemberExportButton from '../../../../components/ModMemberExportButton'
 import ScrollToTop from '../../../../components/ScrollToTop'
-import loginRequired from '@/mixins/loginRequired'
-import modMembersPage from '@/mixins/modMembersPage'
-import createGroupRoute from '@/mixins/createGroupRoute'
-import waitForRef from '@/mixins/waitForRef'
 
 export default {
   components: {

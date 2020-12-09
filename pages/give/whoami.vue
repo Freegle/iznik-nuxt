@@ -59,10 +59,10 @@
   </div>
 </template>
 <script>
-import EmailValidator from '../../components/EmailValidator'
 import loginOptional from '@/mixins/loginOptional.js'
 import compose from '@/mixins/compose.js'
 import buildHead from '@/mixins/buildHead.js'
+import EmailValidator from '../../components/EmailValidator'
 
 const EmailBelongsToSomeoneElse = () =>
   import('~/components/EmailBelongsToSomeoneElse')

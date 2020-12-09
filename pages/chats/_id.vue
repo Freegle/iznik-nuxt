@@ -50,11 +50,11 @@
 </template>
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
-import MicroVolunteering from '../../components/MicroVolunteering'
 import SidebarRight from '@/components/SidebarRight'
 import buildHead from '@/mixins/buildHead'
 import chatPage from '@/mixins/chatPage'
 import loginRequired from '@/mixins/loginRequired.js'
+import MicroVolunteering from '../../components/MicroVolunteering'
 
 // We can't use async on ChatListEntry else the infinite scroll kicks in and tries to load everything while we are
 // still waiting for the import to complete.

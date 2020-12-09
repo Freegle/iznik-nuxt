@@ -43,10 +43,10 @@
   </div>
 </template>
 <script>
+import waitForRef from '@/mixins/waitForRef'
 import CommunityEvent from './CommunityEvent'
 import ChatButton from './ChatButton'
 import CommunityEventModal from './CommunityEventModal'
-import waitForRef from '@/mixins/waitForRef'
 
 export default {
   components: { CommunityEventModal, ChatButton, CommunityEvent },

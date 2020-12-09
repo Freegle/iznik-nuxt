@@ -117,9 +117,9 @@
   </div>
 </template>
 <script>
+import waitForRef from '@/mixins/waitForRef'
 import ConfirmModal from './ConfirmModal'
 import NoticeMessage from './NoticeMessage'
-import waitForRef from '@/mixins/waitForRef'
 
 export default {
   components: { NoticeMessage, ConfirmModal },
