@@ -31,8 +31,8 @@
 </template>
 <script>
 import loginOptional from '@/mixins/loginOptional.js'
-import Autocomplete from '~/components/Autocomplete'
 import buildHead from '@/mixins/buildHead.js'
+import Autocomplete from '~/components/Autocomplete'
 
 export default {
   components: {

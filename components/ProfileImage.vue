@@ -16,7 +16,7 @@
       :class="className"
       :alt="altText"
       :src="validImage"
-      @error.native="brokenProfileImage"
+      @error="brokenProfileImage"
     />
     <v-icon v-if="isModerator" name="leaf" class="ProfileImage__moderator mb-0" :class="'ProfileImage__moderator--' + size" />
   </span>

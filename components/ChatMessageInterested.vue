@@ -14,7 +14,7 @@
                 lazy
                 :src="refmsg.attachments[0].paththumb"
                 width="70px"
-                @error.native="brokenImage"
+                @error="brokenImage"
               />
               <div v-if="otheruser">
                 <ProfileImage :image="otheruser.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
@@ -93,7 +93,7 @@
                 lazy
                 :src="refmsg.attachments[0].paththumb"
                 width="70px"
-                @error.native="brokenImage"
+                @error="brokenImage"
               />
               <ProfileImage :image="me.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
               <span class="small black">You asked about:</span>
@@ -146,9 +146,9 @@
 </template>
 
 <script>
+import waitForRef from '@/mixins/waitForRef'
 import ChatBase from '~/components/ChatBase'
 import ProfileImage from '~/components/ProfileImage'
-import waitForRef from '@/mixins/waitForRef'
 const NoticeMessage = () => import('~/components/NoticeMessage')
 const OutcomeModal = () => import('~/components/OutcomeModal')
 const PromiseModal = () => import('~/components/PromiseModal')

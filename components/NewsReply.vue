@@ -30,7 +30,7 @@
                     class="clickme replyphoto"
                     generator-unable-to-provide-required-alt=""
                     :src="reply.image.paththumb"
-                    @error.native="brokenImage"
+                    @error="brokenImage"
                   />
                 </div>
                 <span v-if="userid && users[userid]" class="text-muted d-flex flex-row flex-wrap align-items-center">

@@ -34,9 +34,9 @@
 <style scoped>
 </style>
 <script>
-import NoticeMessage from '../../components/NoticeMessage'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
+import NoticeMessage from '../../components/NoticeMessage'
 
 const StoriesAddModal = () => import('~/components/StoriesAddModal')
 const Story = () => import('~/components/Story')

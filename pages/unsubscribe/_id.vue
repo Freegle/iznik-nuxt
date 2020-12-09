@@ -81,12 +81,12 @@
 <script>
 import { validationMixin } from 'vuelidate'
 import { required, email } from 'vuelidate/lib/validators'
-import EmailValidator from '../../components/EmailValidator'
-import SpinButton from '../../components/SpinButton'
 import ForgetFailModal from '@/components/ForgetFailModal'
 import buildHead from '@/mixins/buildHead.js'
 import loginOptional from '@/mixins/loginOptional.js'
 import validationHelpers from '@/mixins/validationHelpers'
+import SpinButton from '../../components/SpinButton'
+import EmailValidator from '../../components/EmailValidator'
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect.vue')
 const ConfirmModal = () => import('~/components/ConfirmModal.vue')
 const NoticeMessage = () => import('~/components/NoticeMessage')

@@ -7,8 +7,8 @@
   </div>
 </template>
 <script>
-import ModMergeMemberModal from './ModMergeMemberModal'
 import waitForRef from '@/mixins/waitForRef'
+import ModMergeMemberModal from './ModMergeMemberModal'
 
 export default {
   components: { ModMergeMemberModal },

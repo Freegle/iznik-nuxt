@@ -78,12 +78,12 @@ select {
 }
 </style>
 <script>
-import NoticeMessage from '../../components/NoticeMessage'
-import CovidClosed from '../../components/CovidClosed'
-import CovidCheckList from '../../components/CovidCheckList'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 import compose from '@/mixins/compose.js'
+import NoticeMessage from '../../components/NoticeMessage'
+import CovidClosed from '../../components/CovidClosed'
+import CovidCheckList from '../../components/CovidCheckList'
 import Postcode from '~/components/Postcode'
 const ComposeGroup = () => import('~/components/ComposeGroup')
 

@@ -21,10 +21,10 @@
   </b-container>
 </template>
 <script>
-import AdaptiveMap from '../../../components/AdaptiveMap'
-import ExternalLink from '../../../components/ExternalLink'
 import buildHead from '@/mixins/buildHead.js'
 import loginOptional from '@/mixins/loginOptional.js'
+import AdaptiveMap from '../../../components/AdaptiveMap'
+import ExternalLink from '../../../components/ExternalLink'
 
 export default {
   components: { ExternalLink, AdaptiveMap },

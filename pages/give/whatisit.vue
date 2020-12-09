@@ -85,11 +85,11 @@
   </div>
 </template>
 <script>
-import NoticeMessage from '../../components/NoticeMessage'
-import CovidPostWarning from '../../components/CovidPostWarning'
 import loginOptional from '@/mixins/loginOptional.js'
 import compose from '@/mixins/compose.js'
 import buildHead from '@/mixins/buildHead.js'
+import CovidPostWarning from '../../components/CovidPostWarning'
+import NoticeMessage from '../../components/NoticeMessage'
 import Postcode from '~/components/Postcode'
 
 const PostMessage = () => import('~/components/PostMessage')

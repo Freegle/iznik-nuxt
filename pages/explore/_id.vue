@@ -27,10 +27,10 @@
   </div>
 </template>
 <script>
-import NoticeMessage from '../../components/NoticeMessage'
-import AdaptiveMap from '../../components/AdaptiveMap'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
+import NoticeMessage from '../../components/NoticeMessage'
+import AdaptiveMap from '../../components/AdaptiveMap'
 const ExploreGroup = () => import('~/components/ExploreGroup.vue')
 
 export default {

@@ -183,12 +183,12 @@
   </div>
 </template>
 <script>
+import waitForRef from '@/mixins/waitForRef'
 import ModConfigSetting from './ModConfigSetting'
 import NoticeMessage from './NoticeMessage'
 import ModSettingsStandardMessageSet from './ModSettingsStandardMessageSet'
 import SpinButton from './SpinButton'
 import ConfirmModal from './ConfirmModal'
-import waitForRef from '@/mixins/waitForRef'
 
 export default {
   components: {

@@ -252,6 +252,7 @@
 // Need to import rather than async otherwise the render doesn't happen and ref isn't set.
 import Vue from 'vue'
 import { TooltipPlugin } from 'bootstrap-vue'
+import waitForRef from '@/mixins/waitForRef'
 import ChatButton from './ChatButton'
 import ShareModal from './ShareModal'
 import MessageReportModal from './MessageReportModal'
@@ -265,7 +266,6 @@ import MessageMap from './MessageMap'
 import CovidClosed from './CovidClosed'
 import CovidCheckList from './CovidCheckList'
 import twem from '~/assets/js/twem'
-import waitForRef from '@/mixins/waitForRef'
 
 const Highlighter = () => import('vue-highlight-words')
 const MessageUserInfo = () => import('~/components/MessageUserInfo')

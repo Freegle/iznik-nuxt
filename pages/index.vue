@@ -55,9 +55,9 @@
   </div>
 </template>
 <script>
+import waitForRef from '@/mixins/waitForRef'
 import VisualiseMap from '../components/VisualiseMap'
 import PlaceAutocomplete from '../components/PlaceAutocomplete'
-import waitForRef from '@/mixins/waitForRef'
 const MainFooter = () => import('~/components/MainFooter.vue')
 
 export default {

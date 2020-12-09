@@ -23,12 +23,12 @@
   </div>
 </template>
 <script>
-import ScrollToTop from '../../../../components/ScrollToTop'
 import NoticeMessage from '@/components/NoticeMessage'
 import ModHelpRelated from '@/components/ModHelpRelated'
 import loginRequired from '@/mixins/loginRequired'
 import modMembersPage from '@/mixins/modMembersPage'
 import ModRelatedMember from '@/components/ModRelatedMember'
+import ScrollToTop from '../../../../components/ScrollToTop'
 
 export default {
   components: { ScrollToTop, ModHelpRelated, ModRelatedMember, NoticeMessage },

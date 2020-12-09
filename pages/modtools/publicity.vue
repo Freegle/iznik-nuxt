@@ -11,11 +11,11 @@
   </div>
 </template>
 <script>
+import NoticeMessage from '@/components/NoticeMessage'
+import loginRequired from '@/mixins/loginRequired.js'
 import ModSocialAction from '../../api/ModSocialAction'
 import ModHelpPublicity from '../../components/ModHelpPublicity'
 import ModMissingFacebook from '../../components/ModMissingFacebook'
-import NoticeMessage from '@/components/NoticeMessage'
-import loginRequired from '@/mixins/loginRequired.js'
 
 export default {
   layout: 'modtools',
