@@ -229,7 +229,7 @@ export default {
       task: null,
       message: null,
       similarTerms: [],
-      debug: true,
+      debug: false,
       todo: 5,
       done: 0,
       types: ['CheckMessage', 'SearchTerm', 'PhotoRotate'],
