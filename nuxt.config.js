@@ -570,12 +570,10 @@ module.exports = {
 
   generate: {
     async routes(callback) {
-      console.log("Consider extra routes")
       const all = await sitemap.includeRoutes()
       const munged = all.map(r => {
         return r.url
       })
-      console.log("Munged", munged)
 
       callback(null, munged)
     },
