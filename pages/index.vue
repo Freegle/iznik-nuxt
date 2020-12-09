@@ -70,25 +70,21 @@ export default {
   data: function() {
     return {
       userWatch: null,
-      ourBackground: false
+      ourBackground: false,
+      type: 'Map'
     }
   },
-  async asyncData({ store }) {
-    let type = 'Map'
-
-    // Ensure we can still load the page if we get an API error.
-    try {
-      type = await store.$api.bandit.choose({
-        uid: 'landing'
-      })
-    } catch (e) {}
-
-    return {
-      type: type.variant
-    }
-  },
-  mounted() {
+  async mounted() {
     if (process.browser) {
+      // Ensure we can still load the page if we get an API error.
+      try {
+        const type = await this.$store.$api.bandit.choose({
+          uid: 'landing'
+        })
+
+        this.type = type.variant
+      } catch (e) {}
+
       if (this.type !== 'Map') {
         // The video plays with sound, wrongly, even if the muted attribute is set.  So set it here.
         this.waitForRef('video', () => {
