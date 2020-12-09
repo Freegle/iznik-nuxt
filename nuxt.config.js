@@ -52,7 +52,7 @@ const DISABLE_ESLINT_AUTOFIX =
 const ESLINT_AUTOFIX = !DISABLE_ESLINT_AUTOFIX
 
 module.exports = {
-  mode: 'universal',
+  target: 'static',
 
   /*
   ** Headers.  Include default meta tags that will apply unless overridden by individual pages.  Every page that
@@ -564,6 +564,29 @@ module.exports = {
     },
     exclude: sitemap.excludeRoutes,
     path: '/sitemap.xml',
-    gzip: true
+    gzip: true,
+    hostname: 'https://www.ilovefreegle.org'
+  },
+
+  generate: {
+    async routes(callback) {
+      console.log("Consider extra routes")
+      const all = await sitemap.includeRoutes()
+      const munged = all.map(r => {
+        return r.url
+      })
+      console.log("Munged", munged)
+
+      callback(null, munged)
+    },
+    exclude: [
+      /^\/browse/,
+      /^\/story/,
+      /^\/stories\/fornewsletter/,
+      /^\/message/,
+      /^\/modtools/,
+      /^\/booktastic/,
+      /^\/chitchat/
+    ]
   }
 }
