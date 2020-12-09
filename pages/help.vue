@@ -467,8 +467,8 @@
 <script>
 import { TabsPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
-import Question from '../components/Question'
 import buildHead from '@/mixins/buildHead.js'
+import Question from '../components/Question'
 
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
 const ChatButton = () => import('~/components/ChatButton.vue')

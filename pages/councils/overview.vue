@@ -55,9 +55,9 @@
   </b-row>
 </template>
 <script>
+import buildHead from '@/mixins/buildHead.js'
 import NoticeMessage from '../../components/NoticeMessage'
 import CouncilsContent from '../../components/CouncilsContent'
-import buildHead from '@/mixins/buildHead.js'
 
 export default {
   components: { NoticeMessage, CouncilsContent },

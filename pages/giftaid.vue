@@ -117,11 +117,11 @@
 </template>
 
 <script>
-import NoticeMessage from '../components/NoticeMessage'
-import SpinButton from '../components/SpinButton'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
 import waitForRef from '@/mixins/waitForRef'
+import SpinButton from '../components/SpinButton'
+import NoticeMessage from '../components/NoticeMessage'
 
 export default {
   components: { SpinButton, NoticeMessage },

@@ -84,13 +84,13 @@ select {
 </style>
 
 <script>
+import loginOptional from '@/mixins/loginOptional.js'
+import buildHead from '@/mixins/buildHead.js'
+import compose from '@/mixins/compose.js'
 import NoticeMessage from '../../components/NoticeMessage'
 import CovidClosed from '../../components/CovidClosed'
 import CovidCheckList from '../../components/CovidCheckList'
 import Postcode from '~/components/Postcode'
-import loginOptional from '@/mixins/loginOptional.js'
-import buildHead from '@/mixins/buildHead.js'
-import compose from '@/mixins/compose.js'
 
 const ComposeGroup = () => import('~/components/ComposeGroup')
 const WizardProgress = () => import('~/components/WizardProgress')

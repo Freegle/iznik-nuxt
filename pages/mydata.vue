@@ -786,9 +786,9 @@
   </div>
 </template>
 <script>
-import ShowMore from '../components/ShowMore'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
+import ShowMore from '../components/ShowMore'
 import ProfileImage from '~/components/ProfileImage'
 
 const NoticeMessage = () => import('~/components/NoticeMessage')
