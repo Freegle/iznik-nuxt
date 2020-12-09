@@ -1,7 +1,6 @@
 import Vue from 'vue'
 
 export const state = () => ({
-  cdn: process.env.CDN,
   time: null
 })
 
