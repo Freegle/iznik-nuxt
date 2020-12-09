@@ -54,6 +54,9 @@ export default {
     let groupid = params.id
     const groupids = []
 
+    // Ensure we don't have any messages cached from earlier pages.
+    await store.dispatch('messages/clear')
+
     if (params.id) {
       // We need to populate the store on the server so that SSR works.  We can only do this in asyncData - mounted()
       // in the ExploreGroup component is too late.
