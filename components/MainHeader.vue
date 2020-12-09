@@ -232,7 +232,7 @@ export default {
         const ret = res.data
 
         if (ret.ret === 0 && ret.logo) {
-          this.logo = ret.logo.path.replace('/images/logos', '/logos')
+          this.logo = ret.logo.path.replace(/.*logos/, '/logos')
         }
       }
     }, 5000)
