@@ -82,7 +82,7 @@
     "url": "^0.11.0",
     "vue": "^2.6.10",
     "vue-at": "^2.5.0-beta.2",
-    "vue-awesome": "4.0.2",
+    "vue-awesome": "^4.0.2",
     "vue-draggable-resizable": "github:Freegle/vue-draggable-resizable",
     "vue-fabric-wrapper": "^0.3.71",
     "vue-filepond": "^5.1.3",
