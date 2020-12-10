@@ -1,6 +1,6 @@
 <template>
-  <div v-if="!me" class="grid m-0 pl-1 pr-1 pl-sm-0 pr-sm-0 mt-0 mt-lg-5">
-    <div class="map justify-content-start flex-column d-none d-sm-flex">
+  <div v-if="!me" class="grid m-0 pl-1 pr-1 pl-sm-0 pr-sm-0 mt-0 mt-lg-5 ml-4 mr-4">
+    <div class="map justify-content-start flex-column d-none d-lg-flex">
       <VisualiseMap v-if="type === 'Map'" class="shadow flex-grow-1" />
       <b-embed
         v-else
@@ -43,11 +43,11 @@
         <PlaceAutocomplete class="mb-2" labeltext="See what's being freegled near you." labeltext-sr="Enter your location and" @selected="explorePlace($event)" />
       </div>
     </div>
-    <div class="mobile">
-      <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" class="mt-2" target="_blank">
+    <div class="mobile mt-2">
+      <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" target="_blank" class="mr-2">
         <b-img-lazy alt="Freegle Android app on Google Play" title="Freegle Android app on Google Play" class="img-responsive" src="/en-play-badge.png" />
       </a>
-      <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&amp;mt=8" class="mt-2" target="_blank">
+      <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&amp;mt=8" target="_blank">
         <b-img-lazy alt="Freegle app for iPhone, iPad, and iPod touch" title="Freegle app for iPhone, iPad, and iPod Touch" class="img-responsive" src="/app-store-black-sm.png" />
       </a>
     </div>
@@ -216,91 +216,65 @@ export default {
 
 .grid {
   display: grid;
-  grid-template-columns: 30px 1fr 50px 2fr 0px;
-  grid-template-rows: 1.5fr 200px 110px;
-  height: 100vh;
+  grid-template-columns: 1fr 1.2fr;
+  grid-template-rows: 1fr 50px minmax(50px, auto);
 
-  @include media-breakpoint-down(md) {
-    grid-template-columns: 0.75fr 0.8fr 30px 1.2fr 0.75fr;
-    grid-template-rows: 0.4fr 0px 1.6fr;
-  }
-
-  @include media-breakpoint-down(sm) {
-    grid-template-columns: 0fr 0.8fr 30px 1.2fr 0fr;
-    grid-template-rows: 0.4fr 0px 1.6fr;
+  @include media-breakpoint-up(lg) {
+    //height: calc(100vh - 130px);
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: auto auto auto;
+    grid-column-gap: 50px;
+    grid-row-gap: 30px;
   }
 }
 
 .map {
-  grid-column: 2 / 3;
-  grid-row: 1 / 3;
+  grid-row: 2 / 3;
+  grid-column: 1 / 3;
 
-  @include media-breakpoint-down(md) {
-    grid-column: 2 / 5;
-    grid-row: 2 / 4;
+  @include media-breakpoint-up(lg) {
+    grid-row: 1 / 2;
+    grid-column: 1 / 2;
+    // 100vh includes the header and margins etc so they need to be taken off
+    height: calc(100vh - 150px);
   }
 }
 
 .info {
-  align-self: center;
-  justify-self: center;
-  grid-column: 4 / 5;
   grid-row: 1 / 2;
+  grid-column: 1 / 3;
+  text-align: center;
+  justify-self: center;
 
-  @include media-breakpoint-down(md) {
-    grid-column: 2 / 5;
-    align-self: center;
-    text-align: center;
+  @include media-breakpoint-up(lg) {
+    grid-column: 2 / 3;
+    text-align: left;
   }
 }
 
 .mobile {
-  grid-column: 4 / 5;
   grid-row: 2 / 3;
-  justify-self: end;
-  align-self: end;
-
-  @include media-breakpoint-down(lg) {
-    grid-column: 1 / 2;
-    grid-row: 4 / 5;
-    align-self: center;
-    text-align: center;
-
-    img {
-      max-height: 25px;
-    }
-  }
-
-  @include media-breakpoint-down(sm) {
-    grid-column: 1 / 5;
-    grid-row: 1 / 3;
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    padding-right: 10px;
-    padding-left: 10px;
-    align-self: end;
-    padding-bottom: 10px;
-  }
-
-  @include media-breakpoint-down(xs) {
-    grid-row: 2 / 3;
-    align-self: initial;
-  }
+  grid-column: 1 / 3;
+  justify-self: center;
 
   img {
-    height: 40px;
+    max-height: 25px;
+  }
+
+  @include media-breakpoint-up(lg) {
+    grid-row: 2 / 3;
+
+    img {
+      max-height: 40px;
+    }
   }
 }
 
 .thefooter {
-  grid-column: 1 / 5;
-  grid-row: 4 / 5;
-  justify-self: center;
-  align-self: center;
+  grid-column: 1 / 3;
 
-  @include media-breakpoint-down(md) {
-    grid-column: 2 / 5;
+  @include media-breakpoint-up(md) {
+    grid-row: 3 / 4;
   }
 }
 
