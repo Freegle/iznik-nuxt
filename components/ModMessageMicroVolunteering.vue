@@ -10,7 +10,13 @@
           ({{ email }})
         </span>
       </span>
-      thinks this post isn't ok:
+      thinks this post
+      <b v-if="microvolunteering.msgcategory === 'CouldBeBetter'" class="text-warning">
+        Could be better
+      </b>
+      <b v-else-if="microvolunteering.msgcategory === 'ShouldntBeHere'" class="text-danger">
+        shouldn't be here
+      </b>
       <br>
       <b v-if="microvolunteering.comments">"{{ microvolunteering.comments }}"</b>
       <em v-else>No comment supplied.</em>
