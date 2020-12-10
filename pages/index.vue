@@ -43,12 +43,12 @@
         <PlaceAutocomplete class="mb-2" labeltext="See what's being freegled near you." labeltext-sr="Enter your location and" @selected="explorePlace($event)" />
       </div>
     </div>
-    <div class="mobile mt-2">
+    <div class="app-download mt-2">
       <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" target="_blank" class="mr-2">
-        <b-img-lazy alt="Freegle Android app on Google Play" title="Freegle Android app on Google Play" class="img-responsive" src="/en-play-badge.png" />
+        <b-img-lazy alt="Freegle Android app on Google Play" title="Freegle Android app on Google Play" class="app-download__image" src="/en-play-badge.png" />
       </a>
       <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&amp;mt=8" target="_blank">
-        <b-img-lazy alt="Freegle app for iPhone, iPad, and iPod touch" title="Freegle app for iPhone, iPad, and iPod Touch" class="img-responsive" src="/app-store-black-sm.png" />
+        <b-img-lazy alt="Freegle app for iPhone, iPad, and iPod touch" title="Freegle app for iPhone, iPad, and iPod Touch" class="app-download__image" src="/app-store-black-sm.png" />
       </a>
     </div>
     <main-footer class="thefooter" />
@@ -251,21 +251,21 @@ export default {
   }
 }
 
-.mobile {
+.app-download {
   grid-row: 2 / 3;
   grid-column: 1 / 3;
   justify-self: center;
 
-  img {
-    max-height: 25px;
-  }
-
   @include media-breakpoint-up(lg) {
     grid-row: 2 / 3;
+  }
+}
 
-    img {
-      max-height: 40px;
-    }
+.app-download__image {
+  max-height: 25px;
+
+  @include media-breakpoint-up(lg) {
+    max-height: 40px;
   }
 }
 
