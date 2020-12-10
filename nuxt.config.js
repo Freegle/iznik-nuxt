@@ -216,21 +216,7 @@ module.exports = {
     { src: '@/plugins/vue2-leaflet', ssr: false }
   ],
 
-  redirect: [
-    { from: '^/chat/(.*)$', to: '/chats/$1' },
-    { from: '^/modtools/chat/(.*)$', to: '/modtools/chats/$1' },
-    { from: '^/mygroups(.*)$', to: '/browse$1' },
-    { from: '^/communities(.*)$', to: '/browse$1' },
-    { from: '^/why$', to: '/help' },
-    { from: '^/contact$', to: '/help' },
-    { from: '^/posters$', to: '/noticeboards' },
-    { from: '^/groups', to: '/explore' },
-    { from: '^/events', to: '/communityevents' },
-    { from: '^/contact', to: '/help' },
-    { from: '^/newsfeed', to: '/chitchat' },
-    { from: '^/handbook', to: '/help' },
-    { from: '^//$', to: '/' }
-  ],
+  // Can't use redirect as this doesn't work with nuxt generate, so redirects are done as rewrites in nginx config.
 
   polyfill: {
     // This is needed for IE11.
