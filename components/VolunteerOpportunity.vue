@@ -68,7 +68,7 @@
           </div>
           <div class="text-center mt-2 mb-2">
             <b-btn
-              variant="white"
+              variant="secondary"
               size="sm"
               :aria-label="'More info about ' + item.title + ' volunteering opportunity'"
               @click="showOpportunityModal"
