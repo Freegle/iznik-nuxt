@@ -2,22 +2,22 @@
   <span>
     <ul v-if="newsfeed" class="list-unstyled list-inline d-flex align-items-center">
       <li class="list-inline-item">
-        <b-btn v-if="!newsfeed.loved" variant="secondary" size="sm" @click="love">
+        <b-btn v-if="!newsfeed.loved" variant="link" size="sm" @click="love">
           <v-icon v-if="loving" name="sync" class="fa-spin text-success" />
           <v-icon v-else name="heart" />
           <span class="d-none d-sm-inline">Love this</span>
         </b-btn>
-        <b-btn v-if="newsfeed.loved" variant="secondary" size="sm" @click="unlove">
+        <b-btn v-if="newsfeed.loved" variant="link" size="sm" @click="unlove">
           <v-icon name="heart" class="text-danger" /><span class="d-none d-sm-inline">&nbsp;Unlove this</span>
         </b-btn>
       </li>
       <li v-if="!newsfeed.closed" class="list-inline-item">
-        <b-btn variant="secondary" size="sm" @click="focusComment">
+        <b-btn variant="link" size="sm" @click="focusComment">
           <v-icon name="comment" /><span class="d-none d-sm-inline">&nbsp;Reply</span>
         </b-btn>
       </li>
       <li class="list-inline-item">
-        <b-btn v-if="newsfeed.loves" variant="secondary" class="showlove" :aria-label="getShowLovesLabel" @click="showLove">
+        <b-btn v-if="newsfeed.loves" variant="link" class="showlove" :aria-label="getShowLovesLabel" @click="showLove">
           <v-icon name="heart" class="text-danger" />&nbsp;{{ newsfeed.loves }}
         </b-btn>
       </li>

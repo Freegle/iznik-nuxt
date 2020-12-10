@@ -34,7 +34,7 @@
           <span class="d-none d-inline-block-md">More stories</span>
           <span class="d-inline-block d-none-md">More</span>
         </b-btn>
-        <b-btn variant="secondary" size="sm" @click="showAddModal">
+        <b-btn variant="primary" size="sm" @click="showAddModal">
           <v-icon name="book-open" />
           <span class="d-none d-inline-block-md">Tell your story!</span>
           <span class="d-inline-block d-none-md">Tell yours</span>

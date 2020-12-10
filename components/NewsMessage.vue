@@ -20,6 +20,7 @@
           :userid="newsfeed.userid"
           title="Message"
           size="sm"
+          variant="secondary"
         />
         <b-btn variant="secondary" size="sm" class="d-inline-block" @click="share">
           <v-icon name="share-alt" /> Share
