@@ -9,7 +9,12 @@ do
   then
     exit;
   fi
-  time npm run generate
-  rsync -au dist/ app4:/var/www/iznik.fdnuxt.static.live/
-  rsync -au dist/ app1:/var/www/iznik.fdnuxt.static.live/
+  time npm run generate --fail-on-error
+
+  if [ $? -eq 0 ]; then
+    rsync -au dist/ app4:/var/www/iznik.fdnuxt.static.live/
+    rsync -au dist/ app1:/var/www/iznik.fdnuxt.static.live/
+  else
+    echo "Generate failed!"
+  fi
 done
