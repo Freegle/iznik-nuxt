@@ -22,7 +22,7 @@
               </p>
               <div class="d-flex">
                 <SpinButton variant="primary" name="smile" label="Most or all" spinclass="text-white" :handler="most" />
-                <SpinButton variant="white" name="meh" label="About half" :handler="some" />
+                <SpinButton variant="secondary" name="meh" label="About half" :handler="some" />
                 <SpinButton variant="warning" name="frown" label="Few or none" :handler="few" />
               </div>
             </div>
@@ -48,7 +48,7 @@
         <p class="mt-2">
           Click on one of the rectangles to see what we identified.
         </p>
-        <b-btn variant="white" size="lg" class="mt-1 mb-1" @click="showSpines = false">
+        <b-btn variant="secondary" size="lg" class="mt-1 mb-1" @click="showSpines = false">
           Hide text
         </b-btn>
         <ul v-if="result && result.spines" class="list-unstyled mt-2">
@@ -67,7 +67,7 @@
           </li>
         </ul>
       </div>
-      <b-btn v-else variant="white" size="lg" class="mt-1 mb-1" @click="showSpines = true">
+      <b-btn v-else variant="secondary" size="lg" class="mt-1 mb-1" @click="showSpines = true">
         Show text
       </b-btn>
       <div id="container" class="position-relative bg-white">

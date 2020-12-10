@@ -50,7 +50,7 @@
     <div class="mt-2 d-flex flex-wrap justify-content-between">
       <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
       <div>
-        <b-btn variant="white" size="sm" @click="addOpportunity">
+        <b-btn variant="secondary" size="sm" @click="addOpportunity">
           <v-icon name="plus" /> Add your opportunity
         </b-btn>
       </div>

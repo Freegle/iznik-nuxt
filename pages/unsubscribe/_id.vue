@@ -32,8 +32,9 @@
             <div v-if="groupCount" class="mt-2">
               <p>You can also leave communities individually:</p>
               <div class="mb-2">
+                u
                 <GroupRememberSelect v-model="groupid" remember="unsubscribe" size="lg" />
-                <b-btn v-if="groupid" variant="white" :disabled="leaving" class="mt-2" @click="leave">
+                <b-btn v-if="groupid" variant="primary" :disabled="leaving" class="mt-2" @click="leave">
                   <v-icon v-if="leaving" name="sync" class="fa-spin" />
                   <v-icon v-else name="trash-alt" />
                   Leave this community

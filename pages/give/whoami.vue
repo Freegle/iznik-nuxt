@@ -32,7 +32,7 @@
           </div>
           <div class="d-none d-md-block">
             <div class="d-flex justify-content-between">
-              <b-btn variant="white" size="lg" to="/give/whatisit" class="d-none d-md-block">
+              <b-btn variant="secondary" size="lg" to="/give/whatisit" class="d-none d-md-block">
                 <v-icon name="angle-double-left" /> Back
               </b-btn>
               <b-btn v-if="emailValid && !submitting" variant="primary" size="lg" @click="next">

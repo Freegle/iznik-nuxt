@@ -37,7 +37,7 @@
       </div>
     </div>
     <div>
-      <b-btn v-if="removable" variant="white" size="sm" @click="$emit('remove')">
+      <b-btn v-if="removable" variant="secondary" size="sm" @click="$emit('remove')">
         <v-icon name="trash-alt" title="Delete this date" aria-hidden="true" />
         <span class="delete__label">Remove</span>
       </b-btn>

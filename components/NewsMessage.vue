@@ -21,7 +21,7 @@
           title="Message"
           size="sm"
         />
-        <b-btn variant="white" size="sm" class="d-inline-block" @click="share">
+        <b-btn variant="secondary" size="sm" class="d-inline-block" @click="share">
           <v-icon name="share-alt" /> Share
         </b-btn>
       </div>

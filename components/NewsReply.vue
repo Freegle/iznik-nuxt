@@ -148,7 +148,7 @@
         </at-ta>
       </div>
       <div class="d-flex justify-content-between flex-wrap mt-1 pl-2">
-        <b-btn size="sm" variant="white" @click="photoAdd">
+        <b-btn size="sm" variant="secondary" @click="photoAdd">
           <v-icon name="camera" />&nbsp;Add Photo
         </b-btn>
         <SpinButton

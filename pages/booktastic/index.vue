@@ -64,7 +64,7 @@
           </b-btn>
         </div>
       </div>
-      <b-btn v-if="result" variant="white" class="mt-2 mb-2" size="lg" @click="again">
+      <b-btn v-if="result" variant="secondary" class="mt-2 mb-2" size="lg" @click="again">
         Try Again
       </b-btn>
       <client-only>

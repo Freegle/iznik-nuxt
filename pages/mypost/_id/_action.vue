@@ -48,7 +48,7 @@
             wrong?
           </NoticeMessage>
           <div class="text-center">
-            <b-btn variant="white" size="lg" class="mt-2" to="/myposts">
+            <b-btn variant="primary" size="lg" class="mt-2" to="/myposts">
               Go to My Posts <v-icon name="angle-double-right" />
             </b-btn>
           </div>

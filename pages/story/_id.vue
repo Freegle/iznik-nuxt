@@ -22,7 +22,7 @@
           </b-btn>
         </div>
         <Story :id="story.id" class="mt-2" />
-        <b-btn variant="white" to="/stories" class="mt-2">
+        <b-btn variant="secondary" to="/stories" class="mt-2">
           View more stories
         </b-btn>
       </b-col>

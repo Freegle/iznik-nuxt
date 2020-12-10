@@ -24,7 +24,7 @@
       </div>
     </template>
     <b-dropdown-item class="text-right" link-class="notification-list__item">
-      <b-btn variant="white" size="sm" @click="markAllRead">
+      <b-btn variant="secondary" size="sm" @click="markAllRead">
         Mark all read
       </b-btn>
     </b-dropdown-item>

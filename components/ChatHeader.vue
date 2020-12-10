@@ -41,8 +41,8 @@
         </b-dropdown-item>
       </b-dropdown>
     </div>
-    <Ratings v-if="otheruser" :id="otheruserid" :key="'otheruser-' + otheruserid" class="theratings pl-1" size="sm" />
-    <b-btn variant="white" size="sm" class="thebutton mr-1" @click="markRead">
+    <Ratings v-if="otheruser" :id="otheruserid" :key="'otheruser-' + otheruserid" class="theratings pl-1 mt-1" size="sm" />
+    <b-btn variant="primary" size="sm" class="thebutton mr-1 mt-1" @click="markRead">
       Mark read
     </b-btn>
     <ChatBlockModal v-if="chat && chat.chattype === 'User2User' && otheruser" :id="id" ref="chatblock" :user="otheruser" @confirm="block" />

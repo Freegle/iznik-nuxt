@@ -127,7 +127,7 @@
             </at-ta>
           </div>
           <div v-if="threadcomment" class="d-flex justify-content-between flex-wrap mt-2">
-            <b-btn variant="white" @click="photoAdd">
+            <b-btn variant="secondary" @click="photoAdd">
               <v-icon name="camera" /><span class="d-none d-sm-inline">&nbsp;Add Photo</span>
             </b-btn>
             <SpinButton

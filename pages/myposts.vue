@@ -36,12 +36,12 @@
               </h2>
               <span v-if="oldOfferCount > 0">
                 <span v-if="showOldOffers" class="float-right">
-                  <b-btn variant="white" title="Show old OFFERs" @click="toggleOldOffer">
+                  <b-btn variant="secondary" title="Show old OFFERs" @click="toggleOldOffer">
                     Hide {{ oldOfferCount | pluralize([ 'old OFFER', 'old OFFERs' ], { includeNumber: true }) }}
                   </b-btn>
                 </span>
                 <span v-else class="float-right">
-                  <b-btn variant="white" @click="toggleOldOffer">
+                  <b-btn variant="secondary" @click="toggleOldOffer">
                     +{{ oldOfferCount | pluralize([ 'old OFFER', 'old OFFERs' ], { includeNumber: true }) }}
                   </b-btn>
                 </span>
@@ -89,12 +89,12 @@
               </h2>
               <span v-if="oldWantedCount > 0">
                 <span v-if="showOldWanteds" class="float-right">
-                  <b-btn variant="white" title="Show old WANTEDs" @click="toggleOldWanted">
+                  <b-btn variant="secondary" title="Show old WANTEDs" @click="toggleOldWanted">
                     Hide {{ oldWantedCount | pluralize([ 'old WANTED', 'old WANTEDs' ], { includeNumber: true }) }}
                   </b-btn>
                 </span>
                 <span v-else class="float-right">
-                  <b-btn variant="white" @click="toggleOldWanted">
+                  <b-btn variant="secondary" @click="toggleOldWanted">
                     +{{ oldWantedCount | pluralize([ 'old WANTED', 'old WANTEDs' ], { includeNumber: true }) }}
                   </b-btn>
                 </span>

@@ -13,7 +13,7 @@
       />
     </div>
     <div class="d-flex flex-wrap justify-content-around mt-3">
-      <b-btn variant="white" size="lg" @click="skip">
+      <b-btn variant="secondary" size="lg" @click="skip">
         Skip this one
       </b-btn>
       <social-sharing

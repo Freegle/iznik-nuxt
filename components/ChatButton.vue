@@ -31,7 +31,7 @@ export default {
     variant: {
       type: String,
       required: false,
-      default: 'white'
+      default: 'primary'
     },
     groupid: {
       type: Number,

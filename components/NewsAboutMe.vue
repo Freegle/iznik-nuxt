@@ -19,7 +19,7 @@
     <div class="mt-2 d-flex flex-wrap justify-content-between">
       <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
       <div>
-        <b-btn variant="white" size="sm" @click="showModal">
+        <b-btn variant="secondary" size="sm" @click="showModal">
           <v-icon name="user" /> Introduce yourself to everyone
         </b-btn>
         <AboutMeModal ref="modal" />

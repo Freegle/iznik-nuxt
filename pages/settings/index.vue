@@ -64,7 +64,7 @@
                           />
                         </v-icon>
                       </span>
-                      <b-btn variant="secondary" class="mt-2" @click="uploadProfile">
+                      <b-btn variant="primary" class="mt-2" @click="uploadProfile">
                         <v-icon name="camera" /> Upload photo
                       </b-btn>
                       <span v-if="me.profile.ours" class="clickme mt-1 align-bottom" @click="rotateRight">
@@ -95,7 +95,7 @@
                       <div v-if="aboutme">
                         &quot;{{ aboutme }}&quot;
                         <br>
-                        <b-btn variant="white" class="mt-2" @click="addAbout">
+                        <b-btn variant="secondary" class="mt-2" @click="addAbout">
                           <v-icon name="pen" /> Edit
                         </b-btn>
                       </div>
@@ -103,7 +103,7 @@
                         <notice-message>
                           Please write something to let other freeglers know a bit about you. It makes freegling more fun and helps get a better response when you're replying to OFFERs.
                         </notice-message>
-                        <b-btn variant="white" class="mt-2" @click="addAbout">
+                        <b-btn variant="secondary" class="mt-2" @click="addAbout">
                           <v-icon name="pen" /> Introduce yourself
                         </b-btn>
                       </div>
@@ -140,7 +140,7 @@
                     We can help you arrange a collection time if you tell us when you're available over the next
                     few days.
                   </p>
-                  <b-btn variant="white" @click="availability">
+                  <b-btn variant="primary" @click="availability">
                     <v-icon name="calendar-alt" /> Edit Availability
                   </b-btn>
                 </b-col>
@@ -154,7 +154,7 @@
                     You can save your address and send it to other freeglers, then you don't have to type it each
                     time.
                   </p>
-                  <b-btn variant="white" @click="addressBook">
+                  <b-btn variant="primary" @click="addressBook">
                     <v-icon name="address-book" /> Open Address Book
                   </b-btn>
                 </b-col>
@@ -196,7 +196,7 @@
                   <NoticeMessage v-if="me.bouncing" variant="danger" class="mb-2">
                     <p>We can't send to your email address.  Please change it to a valid one and press <em>Save</em>.</p>
                     <p>Or if you're sure it's valid:</p>
-                    <b-button variant="white" @click="unbounce">
+                    <b-button variant="primary" @click="unbounce">
                       <v-icon v-if="unbouncing" name="sync" class="text-success fa-spin" />
                       <v-icon v-else-if="unbounced" name="check" class="text-success" />
                       <v-icon v-else name="check" />
@@ -218,7 +218,7 @@
                     <div class="d-flex flex-wrap">
                       <postcode @selected="selectPostcode" @cleared="clearPostcode" />
                       <div>
-                        <b-button variant="white" size="lg" class="mb-2 d-inline" :disabled="!pc" @click="savePostcode">
+                        <b-button variant="primary" size="lg" class="mb-2 d-inline" :disabled="!pc" @click="savePostcode">
                           <v-icon v-if="savingPostcode" name="sync" class="text-success fa-spin" />
                           <v-icon v-else-if="savedPostcode" name="check" class="text-success" />
                           <v-icon v-else name="save" />&nbsp;
@@ -379,7 +379,7 @@
                   </b-form-group>
                 </b-col>
                 <b-col cols-md="4" class="p-1">
-                  <b-btn v-if="me.phone" variant="white" class="float-right d-inline mt-4 mr-3" @click="removePhone">
+                  <b-btn v-if="me.phone" variant="secondary" class="float-right d-inline mt-4 mr-3" @click="removePhone">
                     <v-icon v-if="removingPhone" name="sync" class="text-success fa-spin" />
                     <v-icon v-else-if="removedPhone" name="check" class="text-success" />
                     <v-icon v-else name="trash-alt" />

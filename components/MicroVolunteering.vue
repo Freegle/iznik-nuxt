@@ -161,7 +161,7 @@
               </div>
               <hr>
               <div class="d-flex flex-wrap justify-content-between">
-                <b-btn variant="white" size="lg" class="mt-2" :disabled="similarTerms.length > 0" @click="getTask">
+                <b-btn variant="secondary" size="lg" class="mt-2" :disabled="similarTerms.length > 0" @click="getTask">
                   Skip - no similar terms
                 </b-btn>
                 <b-btn variant="primary" size="lg" class="mt-2" :disabled="similarTerms.length < 2" @click="submitSimilar">
@@ -185,7 +185,7 @@
             <b-btn v-if="inviteAccepted && !force" variant="link" class="mb-1" @click="response('Stop')()">
               Don't ask me again
             </b-btn>
-            <b-btn variant="white" class="mb-1" @click="doneForNow">
+            <b-btn variant="secondary" class="mb-1" @click="doneForNow">
               I'm done for now
             </b-btn>
           </div>

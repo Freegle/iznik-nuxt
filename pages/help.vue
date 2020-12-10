@@ -8,7 +8,7 @@
             How can we help?
           </span>
           <div>
-            <b-btn variant="white" to="/donate">
+            <b-btn variant="primary" to="/donate">
               Donate
             </b-btn>
           </div>

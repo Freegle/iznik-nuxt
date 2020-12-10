@@ -26,10 +26,10 @@
     <div class="mt-2 d-flex flex-wrap justify-content-between">
       <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
       <div>
-        <b-btn variant="white" size="sm" class="d-inline-block mr-1" @click="shareStory">
+        <b-btn variant="secondary" size="sm" class="d-inline-block mr-1" @click="shareStory">
           <v-icon name="share-alt" /><span class="d-none d-inline-block-md"> Share</span>
         </b-btn>
-        <b-btn variant="white" to="/stories" size="sm" class="mr-1">
+        <b-btn variant="secondary" to="/stories" size="sm" class="mr-1">
           <v-icon name="book-open" />
           <span class="d-none d-inline-block-md">More stories</span>
           <span class="d-inline-block d-none-md">More</span>

@@ -188,7 +188,7 @@
           <span v-if="enabled">
             <b-row>
               <b-col>
-                <b-btn variant="white" class="mt-1 float-right" @click="photoAdd">
+                <b-btn variant="primary" class="mt-1 float-right" @click="photoAdd">
                   <v-icon name="camera" /> Upload photo
                 </b-btn>
               </b-col>
@@ -196,7 +196,7 @@
             <b-row v-if="uploading">
               <b-col>
                 <OurFilePond
-                  class="bg-white"
+                  class="btn-primary"
                   imgtype="CommunityEvent"
                   imgflag="communityevent"
                   :ocr="true"

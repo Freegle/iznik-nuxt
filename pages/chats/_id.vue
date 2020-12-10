@@ -14,7 +14,7 @@
                   <label for="search-bar" class="sr-only">Search chats</label>
                   <b-form-input id="search-bar" v-model="search" placeholder="Search chats" class="flex-shrink-1" />
                 </form>
-                <b-btn class="float-right" variant="white" @click="markAllRead">
+                <b-btn class="float-right" variant="primary" @click="markAllRead">
                   <v-icon name="check" /> Mark all read
                 </b-btn>
               </div>
@@ -29,7 +29,7 @@
             <span slot="no-more" />
           </infinite-loading>
           <div class="d-flex justify-content-around">
-            <b-btn v-if="search && complete" variant="white" class="mt-2" @click="searchMore">
+            <b-btn v-if="search && complete" variant="secondary" class="mt-2" @click="searchMore">
               <v-icon v-if="searching" name="sync" class="text-success fa-spin" />
               <v-icon v-else name="search" /> Search old chats
             </b-btn>
