@@ -48,7 +48,7 @@
           <div v-if="(!eSnippet || eSnippet === 'null') && !expanded">
             <i>There's no description.</i>
           </div>
-          <b-button v-if="!successful && !expanded" variant="white" class="mt-2" @click="expand">
+          <b-button v-if="!successful && !expanded" variant="primary" class="mt-2" @click="expand">
             {{ expandButtonText }} <v-icon name="angle-double-right" />
           </b-button>
         </div>
@@ -854,5 +854,9 @@ export default {
   // Centre the absolute positioned div in it's container
   left: 50%;
   margin-left: -125px;
+}
+
+/deep/ label {
+  font-weight: bold;
 }
 </style>
