@@ -20,9 +20,9 @@
   </b-row>
 </template>
 <script>
-import AdaptiveMap from '../../../../components/AdaptiveMap'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
+import AdaptiveMap from '../../../../components/AdaptiveMap'
 
 export default {
   components: {

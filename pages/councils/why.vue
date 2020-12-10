@@ -134,8 +134,8 @@
   </b-row>
 </template>
 <script>
-import CouncilsContent from '../../components/CouncilsContent'
 import buildHead from '@/mixins/buildHead.js'
+import CouncilsContent from '../../components/CouncilsContent'
 const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {

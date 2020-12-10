@@ -58,10 +58,10 @@
 </style>
 <script>
 import { gmapApi } from 'vue2-google-maps'
-import NoticeboardDetails from '../../components/NoticeboardDetails'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 import map from '@/mixins/map.js'
+import NoticeboardDetails from '../../components/NoticeboardDetails'
 
 const NoticeboardMarker = () => import('~/components/NoticeboardMarker')
 const PosterModal = () => import('~/components/PosterModal')

@@ -118,12 +118,21 @@
                 />
               </div>
               <div v-if="showComments" class="mt-2">
+                <b-form-group label="What's wrong?">
+                  <b-form-radio v-model="msgcategory" value="CouldBeBetter">
+                    This could be better
+                  </b-form-radio>
+                  <b-form-radio v-model="msgcategory" value="ShouldntBeHere">
+                    This shouldn't be on Freegle
+                  </b-form-radio>
+                </b-form-group>
                 <b-form-group>
-                  <label for="details" class="font-weight-bold text-center">
-                    What's wrong?
+                  <label for="comments">
+                    Please explain what's wrong:
                   </label>
-                  <b-textarea v-model="comments" rows="2" placeholder="Could you give us a quick indication of what's not right?" />
+                  <b-textarea id="comments" v-model="comments" rows="2" placeholder="Could you give us a quick indication of what's not right?" />
                   <SpinButton
+                    v-if="msgcategory && comments"
                     variant="secondary"
                     class="mt-2"
                     name="save"
@@ -216,6 +225,7 @@ export default {
       showInvite: false,
       showComments: false,
       comments: null,
+      msgcategory: null,
       task: null,
       message: null,
       similarTerms: [],
@@ -375,7 +385,8 @@ export default {
             await this.$api.microvolunteering.response({
               msgid: this.task.msgid,
               response: 'Reject',
-              comments: this.comments
+              comments: this.comments,
+              msgcategory: this.msgcategory
             })
 
             this.considerNext()
@@ -482,4 +493,7 @@ export default {
 }
 </script>
 <style scoped lang="scss">
+/deep/ label {
+  font-weight: bold;
+}
 </style>

@@ -107,9 +107,9 @@
 </template>
 
 <script>
+import loginOptional from '@/mixins/loginOptional.js'
 import NoticeMessage from '../../components/NoticeMessage'
 import twem from '~/assets/js/twem'
-import loginOptional from '@/mixins/loginOptional.js'
 
 import ReplyTime from '~/components/ReplyTime'
 import Message from '~/components/Message.vue'

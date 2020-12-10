@@ -210,11 +210,11 @@
 <script>
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
-import ModComments from './ModComments'
-import ExternalLink from './ExternalLink'
 import chat from '@/mixins/chat.js'
 import chatCollate from '@/mixins/chatCollate.js'
 import waitForRef from '@/mixins/waitForRef'
+import ExternalLink from './ExternalLink'
+import ModComments from './ModComments'
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
 Vue.use(TooltipPlugin)

@@ -107,6 +107,7 @@
 </style>
 <script>
 import DatePicker from 'vue2-datepicker'
+import lazyLoadComponent from '@/utils/lazy-load-component'
 import loginRequired from '../../mixins/loginRequired'
 import GroupSelect from '../../components/GroupSelect'
 import 'vue2-datepicker/index.css'
@@ -116,7 +117,6 @@ import ModMissingTwitter from '../../components/ModMissingTwitter'
 import ModMissingProfile from '../../components/ModMissingProfile'
 import ActivityGraph from '../../components/ActivityGraph'
 import ModDashboardImpact from '../../components/ModDashboardImpact'
-import lazyLoadComponent from '@/utils/lazy-load-component'
 const ExternalLink = () => import('~/components/ExternalLink')
 
 // We lazy load these components below, but by importing them here it means they can render their own

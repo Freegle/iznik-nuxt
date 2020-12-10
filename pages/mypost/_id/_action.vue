@@ -59,10 +59,10 @@
   </b-container>
 </template>
 <script>
-import CovidWarning from '../../../components/CovidWarning'
-import NoticeMessage from '../../../components/NoticeMessage'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
+import CovidWarning from '../../../components/CovidWarning'
+import NoticeMessage from '../../../components/NoticeMessage'
 const MyMessage = () => import('~/components/MyMessage.vue')
 const DonationAskModal = () => import('~/components/DonationAskModal')
 

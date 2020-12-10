@@ -72,10 +72,10 @@
   </div>
 </template>
 <script>
+import map from '@/mixins/map.js'
 import NoticeMessage from './NoticeMessage'
 import SpinButton from './SpinButton'
 import NoticeboardCheck from './NoticeboardCheck'
-import map from '@/mixins/map.js'
 
 let L = null
 

@@ -21,12 +21,12 @@
   </div>
 </template>
 <script>
-import NoticeMessage from '../../../../components/NoticeMessage'
-import GroupSelect from '../../../../components/GroupSelect'
-import ScrollToTop from '../../../../components/ScrollToTop'
 import loginRequired from '@/mixins/loginRequired'
 import modMessagesPage from '@/mixins/modMessagesPage'
 import createGroupRoute from '@/mixins/createGroupRoute'
+import NoticeMessage from '../../../../components/NoticeMessage'
+import GroupSelect from '../../../../components/GroupSelect'
+import ScrollToTop from '../../../../components/ScrollToTop'
 
 export default {
   components: { ScrollToTop, GroupSelect, NoticeMessage },

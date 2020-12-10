@@ -48,7 +48,7 @@
               <b-img
                 class="float-right"
                 :src="job.logo"
-                @error.native="brokenImage"
+                @error="brokenImage"
               />
             </div>
           </b-col>

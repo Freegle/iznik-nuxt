@@ -70,9 +70,9 @@
 </template>
 
 <script>
+import waitForRef from '@/mixins/waitForRef'
 import NoticeMessage from './NoticeMessage'
 import NumberIncrementDecrement from './NumberIncrementDecrement'
-import waitForRef from '@/mixins/waitForRef'
 const OurFilePond = () => import('~/components/OurFilePond')
 const PostPhoto = () => import('~/components/PostPhoto')
 const PostItem = () => import('~/components/PostItem')

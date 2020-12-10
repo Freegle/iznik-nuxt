@@ -27,12 +27,12 @@
   </div>
 </template>
 <script>
-import ModMergeButton from '../../../../../components/ModMergeButton'
 import ModMember from '@/components/ModMember'
 import NoticeMessage from '@/components/NoticeMessage'
 import loginRequired from '@/mixins/loginRequired'
 import modMembersPage from '@/mixins/modMembersPage'
 import ModMemberSearchbox from '@/components/ModMemberSearchbox'
+import ModMergeButton from '../../../../../components/ModMergeButton'
 
 export default {
   components: { ModMergeButton, ModMemberSearchbox, NoticeMessage, ModMember },

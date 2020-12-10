@@ -20,10 +20,10 @@
 </template>
 
 <script>
+import nchanHelper from '@/mixins/nchanHelper'
 import LocalStorageMonitor from '~/components/LocalStorageMonitor'
 import BouncingEmail from '~/components/BouncingEmail'
 import MainHeader from '~/components/MainHeader'
-import nchanHelper from '@/mixins/nchanHelper'
 
 const ChatPopups = () => import('~/components/ChatPopups')
 const ExternalLink = () => import('~/components/ExternalLink')

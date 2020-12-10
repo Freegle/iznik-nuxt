@@ -120,10 +120,10 @@
   </div>
 </template>
 <script>
+import waitForRef from '@/mixins/waitForRef'
 import NoticeMessage from './NoticeMessage'
 import SpinButton from './SpinButton'
 import BooktasticBook from './BooktasticBook'
-import waitForRef from '@/mixins/waitForRef'
 
 const a = require('axios')
 const axios = a.create({

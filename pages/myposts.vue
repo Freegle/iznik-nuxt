@@ -196,10 +196,10 @@
 </template>
 
 <script>
-import Invite from '../components/Invite'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 import waitForRef from '@/mixins/waitForRef'
+import Invite from '../components/Invite'
 const JustPosted = () => import('~/components/JustPosted')
 const JobsTopBar = () => import('~/components/JobsTopBar')
 const MyMessage = () => import('~/components/MyMessage.vue')

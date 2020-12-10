@@ -120,9 +120,9 @@
   </div>
 </template>
 <script>
+import waitForRef from '@/mixins/waitForRef'
 import ModMemberButton from './ModMemberButton'
 import ModMemberActions from './ModMemberActions'
-import waitForRef from '@/mixins/waitForRef'
 
 export default {
   components: { ModMemberActions, ModMemberButton },

@@ -44,11 +44,11 @@
 
 <script>
 import leafletPip from '@mapbox/leaflet-pip'
-import MicroVolunteering from '../components/MicroVolunteering'
-import AdaptiveMap from '~/components/AdaptiveMap'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
 import map from '@/mixins/map.js'
+import MicroVolunteering from '../components/MicroVolunteering'
+import AdaptiveMap from '~/components/AdaptiveMap'
 
 const CovidWarning = () => import('~/components/CovidWarning')
 const SidebarLeft = () => import('~/components/SidebarLeft')

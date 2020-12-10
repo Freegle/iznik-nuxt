@@ -45,8 +45,8 @@
   </b-btn>
 </template>
 <script>
-import NoticeMessage from './NoticeMessage'
 import helpBox from '@/mixins/helpBox'
+import NoticeMessage from './NoticeMessage'
 
 export default {
   components: { NoticeMessage },

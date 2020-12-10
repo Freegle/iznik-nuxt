@@ -75,9 +75,23 @@ export default {
 }
 </script>
 <style scoped lang="scss">
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+
 .layout {
   display: grid;
-  grid-template-columns: repeat(3, 170px);
-  grid-template-rows: repeat(3, 170px);
+  grid-template-columns: repeat(3, 90px);
+  grid-template-rows: repeat(3, 90px);
+
+  @include media-breakpoint-up(md) {
+    grid-template-columns: repeat(3, 140px);
+    grid-template-rows: repeat(3, 140px);
+  }
+
+  @include media-breakpoint-up(lg) {
+    grid-template-columns: repeat(3, 170px);
+    grid-template-rows: repeat(3, 170px);
+  }
 }
 </style>
