@@ -25,9 +25,6 @@ const API = '/api'
 // hurt client performance).
 const IZNIK_API = process.env.IZNIK_API || 'https://fdapilive.ilovefreegle.org'
 
-// This is the CDN for this site.
-const CDN = process.env.CDN
-
 // This is where the user site is.
 const USER_SITE = 'https://www.ilovefreegle.org'
 
@@ -52,7 +49,7 @@ const DISABLE_ESLINT_AUTOFIX =
 const ESLINT_AUTOFIX = !DISABLE_ESLINT_AUTOFIX
 
 module.exports = {
-  mode: 'universal',
+  target: 'static',
 
   /*
   ** Headers.  Include default meta tags that will apply unless overridden by individual pages.  Every page that
@@ -204,7 +201,6 @@ module.exports = {
     { src: '~/plugins/dayjs' },
 
     // Some plugins are client-side features
-    { src: '~/plugins/cdn', ssr: false },
     { src: '~/plugins/visibility.js', ssr: false },
     { src: '~/plugins/error-toasts.js', ssr: false },
     { src: '~/plugins/vuex-persistedstate', ssr: false },
@@ -382,23 +378,6 @@ module.exports = {
     ]
   ],
 
-  hooks: {
-    // We have a caching CDN in front of our site.  This is particularly useful for old script files which have
-    // been deleted by a new pm2 deploy on the server, but which may be loaded by a client which is open in a
-    // browser but which has not yet loaded all script files.
-    //
-    // Nuxt doesn't allow the publicPath (CDN url) to be overridden at run time - it's baked into the manifest at
-    // build time.  This hook intercepts the VueRenderer when it has loaded the manifest and updates the publicPath
-    // to the current env value.
-    render: {
-      resourcesLoaded(resources) {
-        const path =
-          process.env.CDN === undefined ? '/_nuxt' : process.env.CDN + '/_nuxt'
-        resources.clientManifest && (resources.clientManifest.publicPath = path)
-      }
-    }
-  },
-
   /*
   ** Build configuration
   */
@@ -532,7 +511,6 @@ module.exports = {
   env: {
     API: API,
     IZNIK_API: IZNIK_API,
-    CDN: CDN,
     CHAT_HOST: CHAT_HOST,
     OSM_TILE: OSM_TILE,
     GEOCODE: GEOCODE,
@@ -564,6 +542,38 @@ module.exports = {
     },
     exclude: sitemap.excludeRoutes,
     path: '/sitemap.xml',
-    gzip: true
+    gzip: true,
+    hostname: 'https://www.ilovefreegle.org'
+  },
+
+  generate: {
+    // Don't hit the server too hard.
+    concurrency: 10,
+
+    // Get the list of routes to generate - importantly the group explore pages.
+    async routes(callback) {
+      const all = await sitemap.includeRoutes()
+      const munged = all.map(r => {
+        return r.url
+      })
+
+      callback(null, munged)
+    },
+    exclude: [
+      // We don't want to generate anything too voluminous or logged in.
+      /^\/modtools/,
+      /^\/browse/,
+      /^\/story/,
+      /^\/stories\/fornewsletter/,
+      /^\/message/,
+      /^\/booktastic/,
+      /^\/chitchat/,
+
+      // Excluded for now as slow.
+      /^\/communityevent/,
+      /^\/volunteering/,
+      /^\/stories/,
+      /^\/stats/
+    ]
   }
 }
