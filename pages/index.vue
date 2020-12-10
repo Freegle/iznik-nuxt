@@ -220,7 +220,6 @@ export default {
   grid-template-rows: 1fr 50px minmax(50px, auto);
 
   @include media-breakpoint-up(lg) {
-    //height: calc(100vh - 130px);
     grid-template-columns: 1fr 2fr;
     grid-template-rows: auto auto auto;
     grid-column-gap: 50px;
@@ -271,11 +270,8 @@ export default {
 }
 
 .thefooter {
+  grid-row: 3 / 4;
   grid-column: 1 / 3;
-
-  @include media-breakpoint-up(md) {
-    grid-row: 3 / 4;
-  }
 }
 
 .shadow {
