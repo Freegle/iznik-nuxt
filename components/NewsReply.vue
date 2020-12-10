@@ -57,10 +57,10 @@
                   >
                     <v-icon name="heart" class="text-danger" />&nbsp;{{ reply.loves }}
                   </b-btn>
-                  <b-btn v-if="parseInt(me.id) === parseInt(userid)" v-b-modal="'newsEdit-' + replyid" variant="link" size="sm" class="reply__button">
+                  <b-btn v-if="parseInt(me.id) === parseInt(userid)" v-b-modal="'newsEdit-' + replyid" variant="link" size="sm" class="reply__button text-muted ">
                     Edit
                   </b-btn>
-                  <b-btn v-if="parseInt(me.id) === parseInt(userid) || mod" variant="link" size="sm" class="reply__button" @click="deleteReply">
+                  <b-btn v-if="parseInt(me.id) === parseInt(userid) || mod" variant="link" size="sm" class="reply__button text-muted" @click="deleteReply">
                     Delete
                   </b-btn>
                   <ChatButton
@@ -71,6 +71,7 @@
                     variant="link"
                     size="sm"
                     :show-icon="false"
+                    btn-class="text-muted"
                   />
                 </span>
                 <NewsPreview v-if="reply.preview" :preview="reply.preview" class="mt-1" size="sm" />
