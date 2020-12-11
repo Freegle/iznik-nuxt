@@ -108,10 +108,10 @@
 import VueDraggableResizable from 'vue-draggable-resizable/src/components/vue-draggable-resizable'
 import cloneDeep from 'lodash.clonedeep'
 import Vue from 'vue'
-import GroupMarker from './GroupMarker'
-import BrowseHomeIcon from './BrowseHomeIcon'
 import map from '@/mixins/map.js'
 import waitForRef from '@/mixins/waitForRef'
+import GroupMarker from './GroupMarker'
+import BrowseHomeIcon from './BrowseHomeIcon'
 const ClusterMarker = () => import('./ClusterMarker')
 
 let L = null

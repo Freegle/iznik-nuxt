@@ -31,10 +31,10 @@
                   </b-btn>
                 </div>
                 <div class="d-flex justify-content-between ml-1 mr-1 mb-1">
-                  <b-btn v-if="ids.length === 1 && notblank" variant="white" size="sm" class="mr-1" @click="deleteItem">
+                  <b-btn v-if="ids.length === 1 && notblank" variant="link" size="sm" class="mr-1" @click="deleteItem">
                     <v-icon name="trash-alt" />&nbsp;Clear item
                   </b-btn>
-                  <b-btn v-if="ids.length > 1" variant="white" size="sm" class="mr-1" @click="deleteItem">
+                  <b-btn v-if="ids.length > 1" variant="link" size="sm" class="mr-1" @click="deleteItem">
                     <v-icon name="trash-alt" />&nbsp;Delete last item
                   </b-btn>
                   <b-btn v-if="ids.length < 6 && valid" variant="secondary" size="sm" class="" @click="addItem">
@@ -61,7 +61,7 @@
             </b-btn>
           </div>
           <div class="d-none d-md-flex justify-content-between">
-            <b-btn variant="white" size="lg" to="/give" class="d-none d-md-block">
+            <b-btn variant="secondary" size="lg" to="/give" class="d-none d-md-block">
               <v-icon name="angle-double-left" /> Back
             </b-btn>
             <b-btn
@@ -85,11 +85,11 @@
   </div>
 </template>
 <script>
-import NoticeMessage from '../../components/NoticeMessage'
-import CovidPostWarning from '../../components/CovidPostWarning'
 import loginOptional from '@/mixins/loginOptional.js'
 import compose from '@/mixins/compose.js'
 import buildHead from '@/mixins/buildHead.js'
+import CovidPostWarning from '../../components/CovidPostWarning'
+import NoticeMessage from '../../components/NoticeMessage'
 import Postcode from '~/components/Postcode'
 
 const PostMessage = () => import('~/components/PostMessage')

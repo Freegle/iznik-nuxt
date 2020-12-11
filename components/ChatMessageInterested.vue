@@ -14,7 +14,7 @@
                 lazy
                 :src="refmsg.attachments[0].paththumb"
                 width="70px"
-                @error.native="brokenImage"
+                @error="brokenImage"
               />
               <div v-if="otheruser">
                 <ProfileImage :image="otheruser.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
@@ -67,10 +67,10 @@
                     No longer available?
                   </div>
                   <div class="d-flex justify-content-between">
-                    <b-btn variant="white" size="sm" class="mr-1" @click="outcome('Taken')">
+                    <b-btn variant="secondary" size="sm" class="mr-1" @click="outcome('Taken')">
                       Mark as TAKEN
                     </b-btn>
-                    <b-btn variant="white" size="sm" @click="outcome('Withdrawn')">
+                    <b-btn variant="secondary" size="sm" @click="outcome('Withdrawn')">
                       Withdraw
                     </b-btn>
                   </div>
@@ -93,7 +93,7 @@
                 lazy
                 :src="refmsg.attachments[0].paththumb"
                 width="70px"
-                @error.native="brokenImage"
+                @error="brokenImage"
               />
               <ProfileImage :image="me.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
               <span class="small black">You asked about:</span>
@@ -146,9 +146,9 @@
 </template>
 
 <script>
+import waitForRef from '@/mixins/waitForRef'
 import ChatBase from '~/components/ChatBase'
 import ProfileImage from '~/components/ProfileImage'
-import waitForRef from '@/mixins/waitForRef'
 const NoticeMessage = () => import('~/components/NoticeMessage')
 const OutcomeModal = () => import('~/components/OutcomeModal')
 const PromiseModal = () => import('~/components/PromiseModal')

@@ -1,4 +1,5 @@
 @import 'color-vars';
+@import 'bootstrap-custom.scss';
 @import 'buttons';
 
 .strike {
@@ -190,6 +191,10 @@ body.modtools {
 .fa-icon {
   /* These appear misaligned - fix */
   margin-bottom: 3px;
+
+  /* This is to resolve an issue with icon alignment. */
+  /* It reverts a change made in 4.1.0 of vue-awesome */
+  vertical-align: middle;
 }
 
 .fa-fw {

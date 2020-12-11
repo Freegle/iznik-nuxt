@@ -28,6 +28,7 @@
             size="sm"
             title="Message"
             class="mb-1 order-1 order-lg-0 align-self-lg-center"
+            variant="secondary"
           />
           <ratings :id="user.id" size="sm" class="pt-1 mr-2 mr-lg-0 d-block" />
         </div>

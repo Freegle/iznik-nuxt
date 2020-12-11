@@ -180,10 +180,10 @@
 }
 </style>
 <script>
+import loginRequired from '@/mixins/loginRequired.js'
 import PosterModal from '../components/PosterModal'
 import buildHead from '../mixins/buildHead'
 import Invite from '../components/Invite'
-import loginRequired from '@/mixins/loginRequired.js'
 
 export default {
   components: { Invite, PosterModal },

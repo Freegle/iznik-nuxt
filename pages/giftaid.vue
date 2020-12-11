@@ -15,7 +15,7 @@
           label-class="label"
         >
           <div v-if="me && me.displayname && !fullname && me.displayname.indexOf(' ') !== -1">
-            <b-btn variant="white" class="mb-2" @click="fullname = me.displayname">
+            <b-btn variant="secondary" class="mb-2" @click="fullname = me.displayname">
               Click here to use <b>{{ me.displayname }}</b>
             </b-btn>
           </div>
@@ -39,7 +39,7 @@
         >
           <div v-for="address in addresses" :key="'address-' + address.id">
             <div v-if="!homeaddress">
-              <b-btn variant="white" class="mb-2" @click="homeaddress = address.multiline">
+              <b-btn variant="secondary" class="mb-2" @click="homeaddress = address.multiline">
                 Click here to use <b>{{ address.singleline }}</b>
               </b-btn>
             </div>
@@ -117,11 +117,11 @@
 </template>
 
 <script>
-import NoticeMessage from '../components/NoticeMessage'
-import SpinButton from '../components/SpinButton'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
 import waitForRef from '@/mixins/waitForRef'
+import SpinButton from '../components/SpinButton'
+import NoticeMessage from '../components/NoticeMessage'
 
 export default {
   components: { SpinButton, NoticeMessage },

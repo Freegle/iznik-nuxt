@@ -1,6 +1,6 @@
 <template>
   <div class="pos">
-    <b-btn v-if="scrollY > 50" variant="white" @click="scrollToTop">
+    <b-btn v-if="scrollY > 50" variant="secondary" @click="scrollToTop">
       <v-icon name="caret-up" />
       <span class="d-none d-md-inline">
         Top

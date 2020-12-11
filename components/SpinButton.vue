@@ -15,8 +15,8 @@
   </div>
 </template>
 <script>
-import ConfirmModal from './ConfirmModal'
 import waitForRef from '@/mixins/waitForRef'
+import ConfirmModal from './ConfirmModal'
 
 export default {
   components: { ConfirmModal },

@@ -14,6 +14,7 @@
           size="sm"
           title="Chat"
           chattype="User2User"
+          variant="secondary"
         />
       </div>
     </RichMarker>

@@ -24,7 +24,7 @@
                   <b class="mt-2">freegle.in/</b>
                   <b-form-input v-model="name" placeholder="Enter your shortlink name" maxlength="30" />
                 </div>
-                <b-btn variant="white" @click="create">
+                <b-btn variant="primary" @click="create">
                   <v-icon v-if="created" name="check" class="text-success" />
                   <v-icon v-else-if="saving" name="sync" class="fa-spin" />
                   <v-icon v-else name="save" />

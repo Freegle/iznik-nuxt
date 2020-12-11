@@ -77,9 +77,9 @@
 
 <script>
 import Vue from 'vue'
-import VisualiseSpeech from './VisualiseSpeech'
 import map from '@/mixins/map.js'
 import waitForRef from '@/mixins/waitForRef'
+import VisualiseSpeech from './VisualiseSpeech'
 
 const VisualiseUser = () => import('./VisualiseUser')
 const VisualiseMessage = () => import('./VisualiseMessage')

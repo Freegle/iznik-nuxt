@@ -53,13 +53,13 @@
 </template>
 <script>
 import { GChart } from 'vue-google-charts'
-import ModHelpFeedback from '../../../../components/ModHelpFeedback'
-import ScrollToTop from '../../../../components/ScrollToTop'
 import NoticeMessage from '@/components/NoticeMessage'
 import loginRequired from '@/mixins/loginRequired'
 import modMembersPage from '@/mixins/modMembersPage'
 import createGroupRoute from '@/mixins/createGroupRoute'
 import ModMemberHappiness from '@/components/ModMemberHappiness'
+import ScrollToTop from '../../../../components/ScrollToTop'
+import ModHelpFeedback from '../../../../components/ModHelpFeedback'
 
 export default {
   components: {

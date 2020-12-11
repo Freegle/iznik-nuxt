@@ -187,7 +187,7 @@
           <span v-if="enabled">
             <b-row>
               <b-col>
-                <b-btn variant="white" class="mt-1 float-right" @click="photoAdd">
+                <b-btn variant="primary" class="mt-1 float-right" @click="photoAdd">
                   <v-icon name="camera" /> Upload photo
                 </b-btn>
               </b-col>
@@ -360,12 +360,12 @@
 import cloneDeep from 'lodash.clonedeep'
 import { validationMixin } from 'vuelidate'
 import { maxLength, required } from 'vuelidate/lib/validators'
-import EmailValidator from './EmailValidator'
-import twem from '~/assets/js/twem'
 import ValidatingForm from '@/components/ValidatingForm'
 import ValidatingFormInput from '@/components/ValidatingFormInput'
 import ValidatingTextarea from '@/components/ValidatingTextarea'
 import validationHelpers from '@/mixins/validationHelpers'
+import EmailValidator from './EmailValidator'
+import twem from '~/assets/js/twem'
 
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
 const OurFilePond = () => import('~/components/OurFilePond')

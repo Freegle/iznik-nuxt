@@ -98,7 +98,7 @@
       :pov="pov"
       :chatusers="chatusers"
     />
-    <div v-else>
+    <div v-else-if="supportOrAdmin">
       Unknown chat message type {{ chatmessage.type }}
     </div>
     <chat-message-date-read

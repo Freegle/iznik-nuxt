@@ -38,13 +38,13 @@
             <b-btn v-if="message.canedit" variant="secondary" class="m-1" @click="edit">
               <v-icon name="pen" /> Edit
             </b-btn>
-            <b-btn v-if="!rejected && !queued && message.type === 'Offer' && !taken" variant="white" class="m-1" @click="outcome('Taken')">
+            <b-btn v-if="!rejected && !queued && message.type === 'Offer' && !taken" variant="secondary" class="m-1" @click="outcome('Taken')">
               <v-icon name="check" /> Mark as TAKEN
             </b-btn>
-            <b-btn v-if="!rejected && !queued && message.type === 'Wanted' && !received" variant="white" class="m-1" @click="outcome('Received')">
+            <b-btn v-if="!rejected && !queued && message.type === 'Wanted' && !received" variant="secondary" class="m-1" @click="outcome('Received')">
               <v-icon name="check" /> Mark as RECEIVED
             </b-btn>
-            <b-btn v-if="!rejected && !taken && !received && !withdrawn" variant="white" class="m-1" @click="outcome('Withdrawn')">
+            <b-btn v-if="!rejected && !taken && !received && !withdrawn" variant="secondary" class="m-1" @click="outcome('Withdrawn')">
               <v-icon name="trash-alt" /> Withdraw
             </b-btn>
           </div>
@@ -84,7 +84,7 @@
                 </div>
               </div>
               <span>
-                <b-btn class="ml-1" variant="white">
+                <b-btn class="ml-1" variant="secondary">
                   <v-icon v-if="!expanded" name="caret-down" />
                   <v-icon v-else name="caret-up" />
                   <template slot="button-content" />
@@ -126,7 +126,7 @@
               <b-btn v-if="rejected" variant="warning" class="mr-2 mb-1" @click="repost">
                 <v-icon name="pen" /> Edit and Resend
               </b-btn>
-              <b-btn v-if="rejected && !withdrawn" variant="white" class="mr-2 mb-1" @click="outcome('Withdrawn')">
+              <b-btn v-if="rejected && !withdrawn" variant="secondary" class="mr-2 mb-1" @click="outcome('Withdrawn')">
                 <v-icon name="trash-alt" /> Withdraw
               </b-btn>
               <b-btn v-if="!rejected && !queued && message.type === 'Offer' && !taken" variant="primary" class="mr-2 mb-1" @click="outcome('Taken')">
@@ -138,16 +138,16 @@
               <b-btn v-if="!rejected && !queued && message.canedit" variant="secondary" class="mr-2 mb-1" @click="edit">
                 <v-icon name="pen" /> Edit
               </b-btn>
-              <b-btn v-if="!rejected && !taken && !received && !withdrawn" variant="white" class="mr-2 mb-1" @click="outcome('Withdrawn')">
+              <b-btn v-if="!rejected && !taken && !received && !withdrawn" variant="secondary" class="mr-2 mb-1" @click="outcome('Withdrawn')">
                 <v-icon name="trash-alt" /> Withdraw
               </b-btn>
-              <b-btn v-if="!rejected && message.canrepost" variant="white" class="mr-2 mb-1" @click="repost">
+              <b-btn v-if="!rejected && message.canrepost" variant="secondary" class="mr-2 mb-1" @click="repost">
                 <v-icon name="sync" /> Repost
               </b-btn>
-              <b-btn v-else-if="!rejected && !taken && !received && message.canrepostat" variant="white" disabled class="mr-2 mb-1" title="You will be able to repost this soon">
+              <b-btn v-else-if="!rejected && !taken && !received && message.canrepostat" variant="secondary" disabled class="mr-2 mb-1" title="You will be able to repost this soon">
                 <v-icon name="sync" /> Repost <span class="small">{{ message.canrepostat | timeago }}</span>
               </b-btn>
-              <b-btn v-if="!rejected && !queued && !simple" variant="white" title="Share" class="mr-2 mb-1" @click="share">
+              <b-btn v-if="!rejected && !queued && !simple" variant="secondary" title="Share" class="mr-2 mb-1" @click="share">
                 <v-icon name="share-alt" /> Share
               </b-btn>
             </div>
@@ -220,7 +220,7 @@
           <ImageCarousel message-id="message.id" :attachments="message.attachments" />
         </template>
         <template slot="modal-footer" slot-scope="{ ok, cancel }">
-          <b-button variant="white" @click="cancel">
+          <b-button variant="secondary" @click="cancel">
             Close
           </b-button>
         </template>

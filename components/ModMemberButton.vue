@@ -15,10 +15,10 @@
   </div>
 </template>
 <script>
+import waitForRef from '@/mixins/waitForRef'
 import ConfirmModal from './ConfirmModal'
 import ModSpammerReport from './ModSpammerReport'
 import SpinButton from './SpinButton'
-import waitForRef from '@/mixins/waitForRef'
 const ModStdMessageModal = () => import('./ModStdMessageModal')
 
 export default {

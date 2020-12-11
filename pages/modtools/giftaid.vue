@@ -6,9 +6,9 @@
 </template>
 
 <script>
+import loginRequired from '@/mixins/loginRequired.js'
 import ModGiftAid from '../../components/ModGiftAid'
 import ModHelpGiftAid from '../../components/ModHelpGiftAid'
-import loginRequired from '@/mixins/loginRequired.js'
 
 export default {
   components: { ModHelpGiftAid, ModGiftAid },

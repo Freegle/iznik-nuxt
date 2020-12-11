@@ -46,10 +46,10 @@
   </div>
 </template>
 <script>
+import waitForRef from '@/mixins/waitForRef'
 import VolunteerOpportunity from './VolunteerOpportunity'
 import ChatButton from './ChatButton'
 import VolunteerOpportunityModal from './VolunteerOpportunityModal'
-import waitForRef from '@/mixins/waitForRef'
 
 export default {
   components: { VolunteerOpportunityModal, ChatButton, VolunteerOpportunity },

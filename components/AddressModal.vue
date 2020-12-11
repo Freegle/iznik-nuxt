@@ -26,7 +26,7 @@
                 <b-select v-model="selectedAddress" :options="addressOptions" class="mb-2 font-weight-bold" />
               </b-col>
               <b-col cols="12" sm="4">
-                <b-btn variant="white" @click="deleteIt">
+                <b-btn variant="secondary" @click="deleteIt">
                   <v-icon v-if="deleting" name="sync" class="fa-spin text-success" />
                   <v-icon v-else name="trash-alt" /> Delete
                 </b-btn>
@@ -40,7 +40,7 @@
                   <b-textarea v-model="instructions" rows="2" max-rows="6" class="mb-1" />
                 </b-col>
                 <b-col cols="12" sm="4">
-                  <b-btn variant="white" @click="saveInstructions">
+                  <b-btn variant="primary" @click="saveInstructions">
                     <v-icon v-if="instructing" name="sync" class="fa-spin text-success" />
                     <v-icon v-else name="save" /> Save
                   </b-btn>
@@ -72,7 +72,7 @@
                 <b-select v-model="selectedProperty" :options="propertyOptions" class="mb-2 font-weight-bold" />
               </b-col>
               <b-col cols="12" sm="4">
-                <b-btn v-if="selectedProperty" variant="white" @click="add">
+                <b-btn v-if="selectedProperty" variant="primary" @click="add">
                   <v-icon v-if="adding" name="sync" class="fa-spin text-success" />
                   <v-icon v-else name="plus" /> Add
                 </b-btn>

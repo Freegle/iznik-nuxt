@@ -95,22 +95,22 @@
                 @focus="markRead"
               />
               <div v-if="!spammer" class="pt-1 pb-1">
-                <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person" class="ml-1" @click="promise">
+                <b-btn v-b-tooltip.hover.top variant="secondary" title="Promise an item to this person" class="ml-1" @click="promise">
                   <v-icon name="handshake" />
                 </b-btn>
-                <b-btn v-if="!simple" v-b-tooltip.hover.top variant="white" title="Send your address" @click="addressBook">
+                <b-btn v-if="!simple" v-b-tooltip.hover.top variant="secondary" title="Send your address" @click="addressBook">
                   <v-icon name="address-book" />
                 </b-btn>
-                <b-btn v-if="!simple" v-b-tooltip.hover.top variant="white" title="Update your availability" @click="availability">
+                <b-btn v-if="!simple" v-b-tooltip.hover.top variant="secondary" title="Update your availability" @click="availability">
                   <v-icon name="calendar-alt" />
                 </b-btn>
-                <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler" @click="showInfo">
+                <b-btn v-b-tooltip.hover.top variant="secondary" title="Info about this freegler" @click="showInfo">
                   <v-icon name="info-circle" />
                 </b-btn>
-                <b-btn v-if="!simple && !tooSoonToNudge" v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
+                <b-btn v-if="!simple && !tooSoonToNudge" v-b-tooltip.hover.top variant="secondary" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
                   <v-icon name="bell" />
                 </b-btn>
-                <b-btn v-if="!simple && tooSoonToNudge" v-b-tooltip.hover.top variant="white" title="It's too soon to nudge" @click="nudgeTooSoon">
+                <b-btn v-if="!simple && tooSoonToNudge" v-b-tooltip.hover.top variant="secondary" title="It's too soon to nudge" @click="nudgeTooSoon">
                   <v-icon name="bell" />
                 </b-btn>
 
@@ -137,13 +137,13 @@ import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import InfiniteLoading from 'vue-infinite-loading'
 import VueDraggableResizable from 'vue-draggable-resizable/src/components/vue-draggable-resizable'
-import ModComments from './ModComments'
 import waitForRef from '@/mixins/waitForRef'
 import chat from '@/mixins/chat.js'
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
-import ChatMessage from '~/components/ChatMessage.vue'
 import chatCollate from '@/mixins/chatCollate.js'
+import ModComments from './ModComments'
+import ChatMessage from '~/components/ChatMessage.vue'
 
 Vue.use(TooltipPlugin)
 const Ratings = () => import('~/components/Ratings')

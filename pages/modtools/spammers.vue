@@ -56,9 +56,9 @@
 </template>
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
+import loginRequired from '@/mixins/loginRequired.js'
 import ModHelpSpammers from '../../components/ModHelpSpammers'
 import ModMember from '../../components/ModMember'
-import loginRequired from '@/mixins/loginRequired.js'
 
 export default {
   components: {

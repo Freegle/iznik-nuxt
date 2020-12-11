@@ -30,9 +30,9 @@
   </b-row>
 </template>
 <script>
+import waitForRef from '@/mixins/waitForRef'
 import ModAlertHistoryDetailsModal from './ModAlertHistoryDetailsModal'
 import ModAlertHistoryStatsModal from './ModAlertHistoryStatsModal'
-import waitForRef from '@/mixins/waitForRef'
 
 export default {
   components: { ModAlertHistoryStatsModal, ModAlertHistoryDetailsModal },

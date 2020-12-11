@@ -55,7 +55,7 @@
         <div v-if="showRegions">
           <div class="d-flex flex-wrap justify-content-center pb-4">
             <div v-for="r in regions" :key="r" class="p-0 mt-2 ml-2 mr-2">
-              <b-btn variant="white" :to="'/explore/region/' + r">
+              <b-btn variant="secondary" :to="'/explore/region/' + r">
                 {{ r }}
               </b-btn>
             </div>
@@ -367,17 +367,17 @@ export default {
 
       if (this.locked) {
         // If the post map is locked to an area, then we always show the posts in that area.
-        msgs = this.messagesOnMap
+        msgs = this.sortedMessagesOnMap
       } else if (this.search) {
         // Whether or not the map has moved, the messages are returned through the map.
-        msgs = this.messagesOnMap
+        msgs = this.sortedMessagesOnMap
       } else if (!this.mapMoved) {
         // Until the map moves we show posts from the member's groups.  This is to handle people who don't engage
         // with the map at all and just want to see the posts from their groups (which is perfectly reasonable).
         msgs = this.messagesInOwnGroups
       } else {
         // Once the map has moved we show posts from within the map area.
-        msgs = this.messagesOnMap
+        msgs = this.sortedMessagesOnMap
       }
 
       if (this.selectedGroup) {

@@ -27,8 +27,8 @@
   </div>
 </template>
 <script>
-import Impact from './Impact'
 import ModDashboardBase from '@/components/ModDashboardBase'
+import Impact from './Impact'
 
 export default {
   components: { Impact },

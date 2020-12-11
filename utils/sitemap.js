@@ -45,7 +45,7 @@ export default {
         priority: 0.5
       },
       {
-        url: '/contact',
+        url: '/help',
         changefreq: 'monthly',
         priority: 0.5
       },

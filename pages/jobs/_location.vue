@@ -52,9 +52,9 @@
 <style scoped>
 </style>
 <script>
-import NoticeMessage from '../../components/NoticeMessage'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
+import NoticeMessage from '../../components/NoticeMessage'
 
 const Job = () => import('~/components/Job')
 

@@ -4,7 +4,7 @@
     :class="profileClass"
     :alt="altText"
     :src="image"
-    @error.native="brokenProfileImage"
+    @error="brokenProfileImage"
   />
 </template>
 

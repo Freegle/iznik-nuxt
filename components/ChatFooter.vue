@@ -71,19 +71,19 @@
     <div v-if="!spammer" class="bg-white pt-1 pb-1">
       <div class="d-none d-lg-block">
         <span v-if="chat && chat.chattype === 'User2User' && otheruser">
-          <b-btn v-b-tooltip.hover.top variant="white" title="Promise an item to this person" @click="promise">
+          <b-btn v-b-tooltip.hover.top variant="secondary" title="Promise an item to this person" @click="promise">
             <v-icon name="handshake" class="fa-fw" />&nbsp;Promise
           </b-btn>
-          <b-btn v-if="!simple" v-b-tooltip.hover.top variant="white" title="Send your address" @click="addressBook">
+          <b-btn v-if="!simple" v-b-tooltip.hover.top variant="secondary" title="Send your address" @click="addressBook">
             <v-icon name="address-book" class="fa-fw" />&nbsp;Address
           </b-btn>
-          <b-btn v-if="!simple" v-b-tooltip.hover.top variant="white" title="Update your availability" @click="availability">
+          <b-btn v-if="!simple" v-b-tooltip.hover.top variant="secondary" title="Update your availability" @click="availability">
             <v-icon name="calendar-alt" class="fa-fw" />&nbsp;Availability
           </b-btn>
-          <b-btn v-b-tooltip.hover.top variant="white" title="Info about this freegler" @click="showInfo">
+          <b-btn v-b-tooltip.hover.top variant="secondary" title="Info about this freegler" @click="showInfo">
             <v-icon name="info-circle" class="fa-fw" />&nbsp;Info
           </b-btn>
-          <b-btn v-if="!simple && !tooSoonToNudge" v-b-tooltip.hover.top variant="white" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
+          <b-btn v-if="!simple && !tooSoonToNudge" v-b-tooltip.hover.top variant="secondary" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
             <v-icon name="bell" class="fa-fw" />&nbsp;Nudge
           </b-btn>
           <div
@@ -93,7 +93,7 @@
           >
             <b-btn
               v-b-tooltip.hover.top
-              variant="white"
+              variant="secondary"
               title="It's too soon to nudge"
             >
               <v-icon name="bell" class="fa-fw" />&nbsp;Nudge
@@ -101,13 +101,13 @@
           </div>
         </span>
         <span v-if="chat && chat.chattype === 'User2Mod'">
-          <b-btn v-if="otheruser" v-b-tooltip.hover.top variant="white" title="Info about this freegler" @click="showInfo">
+          <b-btn v-if="otheruser" v-b-tooltip.hover.top variant="secondary" title="Info about this freegler" @click="showInfo">
             <v-icon name="info-circle" />&nbsp;Info
           </b-btn>
-          <b-btn v-if="mod" variant="white" @click="spamReport">
+          <b-btn v-if="mod" variant="secondary" @click="spamReport">
             <v-icon name="ban" /> Spammer
           </b-btn>
-          <external-link href="https://discourse.ilovefreegle.org/c/central" class="nocolor btn btn-white">
+          <external-link href="https://discourse.ilovefreegle.org/c/central" class="nocolor btn btn-secondary">
             <v-icon name="question-circle" /> Central
           </external-link>
           <ModSpammerReport v-if="showSpamModal" ref="spamConfirm" :user="otheruser" />
@@ -117,7 +117,7 @@
           <v-icon v-if="sending" name="sync" class="fa-spin" title="Sending..." />
           <v-icon v-else name="angle-double-right" title="Send" />
         </b-btn>
-        <b-btn variant="white" class="float-right" @click="photoAdd">
+        <b-btn variant="secondary" class="float-right" @click="photoAdd">
           <v-icon name="camera" />
         </b-btn>
       </div>
@@ -210,11 +210,11 @@
 <script>
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
-import ModComments from './ModComments'
-import ExternalLink from './ExternalLink'
 import chat from '@/mixins/chat.js'
 import chatCollate from '@/mixins/chatCollate.js'
 import waitForRef from '@/mixins/waitForRef'
+import ExternalLink from './ExternalLink'
+import ModComments from './ModComments'
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
 Vue.use(TooltipPlugin)
