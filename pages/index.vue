@@ -216,7 +216,7 @@ export default {
   grid-template-rows: 1fr 50px minmax(50px, auto);
 
   @include media-breakpoint-up(sm) {
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 0.4fr 0.6fr;
     grid-template-rows: auto auto auto;
     grid-column-gap: 50px;
     grid-row-gap: 30px;
