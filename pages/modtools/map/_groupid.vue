@@ -11,9 +11,9 @@
   </div>
 </template>
 <script>
+import loginRequired from '@/mixins/loginRequired.js'
 import ModHelpMap from '../../../components/ModHelpMap'
 import ModGroupMap from '~/components/ModGroupMap'
-import loginRequired from '@/mixins/loginRequired.js'
 
 export default {
   layout: 'modtools',

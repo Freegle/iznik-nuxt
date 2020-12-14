@@ -48,7 +48,7 @@
             wrong?
           </NoticeMessage>
           <div class="text-center">
-            <b-btn variant="white" size="lg" class="mt-2" to="/myposts">
+            <b-btn variant="primary" size="lg" class="mt-2" to="/myposts">
               Go to My Posts <v-icon name="angle-double-right" />
             </b-btn>
           </div>
@@ -59,10 +59,10 @@
   </b-container>
 </template>
 <script>
-import CovidWarning from '../../../components/CovidWarning'
-import NoticeMessage from '../../../components/NoticeMessage'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
+import CovidWarning from '../../../components/CovidWarning'
+import NoticeMessage from '../../../components/NoticeMessage'
 const MyMessage = () => import('~/components/MyMessage.vue')
 const DonationAskModal = () => import('~/components/DonationAskModal')
 

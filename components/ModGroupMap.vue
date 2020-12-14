@@ -129,10 +129,10 @@
 </template>
 
 <script>
+import map from '@/mixins/map.js'
 import Postcode from './Postcode'
 import SpinButton from './SpinButton'
 import ModGroupMapLocation from './ModGroupMapLocation'
-import map from '@/mixins/map.js'
 
 let Wkt = null
 let L = null

@@ -32,7 +32,7 @@
           </div>
           <div class="d-none d-md-block">
             <div class="d-flex justify-content-between">
-              <b-btn variant="white" size="lg" to="/give/whatisit" class="d-none d-md-block">
+              <b-btn variant="secondary" size="lg" to="/give/whatisit" class="d-none d-md-block">
                 <v-icon name="angle-double-left" /> Back
               </b-btn>
               <b-btn v-if="emailValid && !submitting" variant="primary" size="lg" @click="next">
@@ -59,10 +59,10 @@
   </div>
 </template>
 <script>
-import EmailValidator from '../../components/EmailValidator'
 import loginOptional from '@/mixins/loginOptional.js'
 import compose from '@/mixins/compose.js'
 import buildHead from '@/mixins/buildHead.js'
+import EmailValidator from '../../components/EmailValidator'
 
 const EmailBelongsToSomeoneElse = () =>
   import('~/components/EmailBelongsToSomeoneElse')

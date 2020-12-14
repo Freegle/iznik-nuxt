@@ -89,8 +89,8 @@
   </div>
 </template>
 <script>
-import NumberIncrementDecrement from './NumberIncrementDecrement'
 import keywords from '@/mixins/keywords.js'
+import NumberIncrementDecrement from './NumberIncrementDecrement'
 import Postcode from '~/components/Postcode'
 const OurFilePond = () => import('~/components/OurFilePond')
 const PostItem = () => import('./PostItem')

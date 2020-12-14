@@ -10,7 +10,7 @@
     </NoticeMessage>
     <b-card v-else-if="jobs.length" variant="white" no-body>
       <b-card-body class="p-0">
-        <b-btn variant="white" class="float-right m-1" size="sm" to="/jobs">
+        <b-btn variant="secondary" class="float-right m-1" size="sm" to="/jobs">
           <v-icon name="search" /> View more
         </b-btn>
         <nuxt-link to="/communityevents">

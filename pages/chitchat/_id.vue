@@ -95,10 +95,10 @@
 import InfiniteLoading from 'vue-infinite-loading'
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
-import NoticeMessage from '../../components/NoticeMessage'
-import CovidWarning from '../../components/CovidWarning'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead'
+import NoticeMessage from '../../components/NoticeMessage'
+import CovidWarning from '../../components/CovidWarning'
 import twem from '~/assets/js/twem'
 import NewsThread from '~/components/NewsThread.vue'
 Vue.use(TooltipPlugin)

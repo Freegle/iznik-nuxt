@@ -22,7 +22,7 @@
           </b-btn>
         </div>
         <Story :id="story.id" class="mt-2" />
-        <b-btn variant="white" to="/stories" class="mt-2">
+        <b-btn variant="secondary" to="/stories" class="mt-2">
           View more stories
         </b-btn>
       </b-col>
@@ -34,9 +34,9 @@
 <style scoped>
 </style>
 <script>
-import NoticeMessage from '../../components/NoticeMessage'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
+import NoticeMessage from '../../components/NoticeMessage'
 
 const StoriesAddModal = () => import('~/components/StoriesAddModal')
 const Story = () => import('~/components/Story')

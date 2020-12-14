@@ -14,7 +14,7 @@
       </div>
       <b-row>
         <b-col class="text-center">
-          <b-btn variant="white" to="/stories" class="mt-2">
+          <b-btn variant="secondary" to="/stories" class="mt-2">
             Discover more stories...
           </b-btn>
         </b-col>

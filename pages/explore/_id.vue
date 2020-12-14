@@ -27,10 +27,10 @@
   </div>
 </template>
 <script>
-import NoticeMessage from '../../components/NoticeMessage'
-import AdaptiveMap from '../../components/AdaptiveMap'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
+import NoticeMessage from '../../components/NoticeMessage'
+import AdaptiveMap from '../../components/AdaptiveMap'
 const ExploreGroup = () => import('~/components/ExploreGroup.vue')
 
 export default {
@@ -53,6 +53,9 @@ export default {
     let invalid = false
     let groupid = params.id
     const groupids = []
+
+    // Ensure we don't have any messages cached from earlier pages.
+    await store.dispatch('messages/clear')
 
     if (params.id) {
       // We need to populate the store on the server so that SSR works.  We can only do this in asyncData - mounted()

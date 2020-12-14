@@ -109,10 +109,10 @@
 <script>
 import dayjs from 'dayjs'
 import { GChart } from 'vue-google-charts'
-import Impact from '../../components/Impact'
-import ActivityGraph from '../../components/ActivityGraph'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
+import Impact from '../../components/Impact'
+import ActivityGraph from '../../components/ActivityGraph'
 
 const GroupHeader = () => import('~/components/GroupHeader.vue')
 

@@ -18,9 +18,9 @@
 </template>
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
+import loginRequired from '@/mixins/loginRequired.js'
 import ModCommunityEvent from '../../../components/ModCommunityEvent'
 import NoticeMessage from '../../../components/NoticeMessage'
-import loginRequired from '@/mixins/loginRequired.js'
 
 export default {
   layout: 'modtools',

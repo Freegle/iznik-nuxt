@@ -6,13 +6,13 @@
         <span v-if="story.likes">
           <v-icon name="heart" class="fa-fw" /> {{ story.likes }}
         </span>
-        <b-btn v-if="loggedIn && !story.liked" variant="white" class="float-right" @click="love">
+        <b-btn v-if="loggedIn && !story.liked" variant="secondary" class="float-right" @click="love">
           <v-icon name="heart" class="fa-fw" /><span class="d-none d-sm-inline">&nbsp;Love this</span>
         </b-btn>
-        <b-btn v-if="loggedIn && story.liked" variant="white" class="float-right" @click="unlove">
+        <b-btn v-if="loggedIn && story.liked" variant="secondary" class="float-right" @click="unlove">
           <v-icon name="heart" class="text-danger fa-fw" /><span class="d-none d-sm-inline">&nbsp;Unlove this</span>
         </b-btn>
-        <b-btn variant="white" class="float-right mr-1" @click="share(story)">
+        <b-btn variant="secondary" class="float-right mr-1" @click="share(story)">
           <v-icon name="share-alt" class="fa-fw" />
         </b-btn>
       </b-card-header>

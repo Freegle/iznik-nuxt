@@ -1,7 +1,7 @@
 <template>
   <div @click="clicked">
     <b-button
-      variant="secondary"
+      variant="primary"
       size="lg"
       :href="donationLink"
       target="_blank"

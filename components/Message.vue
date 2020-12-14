@@ -48,7 +48,7 @@
           <div v-if="(!eSnippet || eSnippet === 'null') && !expanded">
             <i>There's no description.</i>
           </div>
-          <b-button v-if="!successful && !expanded" variant="white" class="mt-2" @click="expand">
+          <b-button v-if="!successful && !expanded" variant="primary" class="mt-2" @click="expand">
             {{ expandButtonText }} <v-icon name="angle-double-right" />
           </b-button>
         </div>
@@ -252,6 +252,7 @@
 // Need to import rather than async otherwise the render doesn't happen and ref isn't set.
 import Vue from 'vue'
 import { TooltipPlugin } from 'bootstrap-vue'
+import waitForRef from '@/mixins/waitForRef'
 import ChatButton from './ChatButton'
 import ShareModal from './ShareModal'
 import MessageReportModal from './MessageReportModal'
@@ -265,7 +266,6 @@ import MessageMap from './MessageMap'
 import CovidClosed from './CovidClosed'
 import CovidCheckList from './CovidCheckList'
 import twem from '~/assets/js/twem'
-import waitForRef from '@/mixins/waitForRef'
 
 const Highlighter = () => import('vue-highlight-words')
 const MessageUserInfo = () => import('~/components/MessageUserInfo')
@@ -854,5 +854,9 @@ export default {
   // Centre the absolute positioned div in it's container
   left: 50%;
   margin-left: -125px;
+}
+
+/deep/ label {
+  font-weight: bold;
 }
 </style>

@@ -42,12 +42,12 @@
   </div>
 </template>
 <script>
+import map from '@/mixins/map.js'
 import twem from '~/assets/js/twem'
 import NewsBase from '~/components/NewsBase'
 import NewsUserIntro from '~/components/NewsUserIntro'
 import NewsLoveComment from '~/components/NewsLoveComment'
 import NoticeMessage from '~/components/NoticeMessage'
-import map from '@/mixins/map.js'
 
 export default {
   components: {

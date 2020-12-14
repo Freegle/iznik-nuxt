@@ -7,9 +7,9 @@
   </div>
 </template>
 <script>
+import waitForRef from '@/mixins/waitForRef'
 import stdmsgs from '../mixins/stdmsgs'
 import ModSettingsStandardMessageModal from './ModSettingsStandardMessageModal'
-import waitForRef from '@/mixins/waitForRef'
 
 export default {
   components: { ModSettingsStandardMessageModal },

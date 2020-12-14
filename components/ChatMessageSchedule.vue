@@ -27,7 +27,7 @@
           </b-card-text>
           <b-card-footer class="pl-0 pr-0">
             <div class="d-flex flex-row justify-content-between">
-              <b-btn variant="white" @click="theirAvailability">
+              <b-btn variant="secondary" @click="theirAvailability">
                 <v-icon name="eye" /> View theirs
               </b-btn>
               <b-btn variant="primary" @click="myAvailability">

@@ -30,7 +30,7 @@
                     class="clickme replyphoto"
                     generator-unable-to-provide-required-alt=""
                     :src="reply.image.paththumb"
-                    @error.native="brokenImage"
+                    @error="brokenImage"
                   />
                 </div>
                 <span v-if="userid && users[userid]" class="text-muted d-flex flex-row flex-wrap align-items-center">
@@ -38,32 +38,40 @@
                     {{ reply.added | timeago }}
                   </span>
                   <NewsUserInfo :user="users[userid]" class="px-1" />
-                  <b-btn variant="light" class="reply__button text-muted" @click="replyReply">
+                  <b-btn variant="link" size="sm" class="reply__button text-muted" @click="replyReply">
                     Reply
                   </b-btn>
-                  <b-btn v-if="!reply.loved" variant="light" class="reply__button text-muted" @click="love">
+                  <b-btn v-if="!reply.loved" variant="link" size="sm" class="reply__button text-muted" @click="love">
                     Love this
                   </b-btn>
-                  <b-btn v-if="reply.loved" variant="light" class="reply__button text-muted" @click="unlove">
+                  <b-btn v-if="reply.loved" variant="link" size="sm" class="reply__button text-muted" @click="unlove">
                     Unlove this
                   </b-btn>
-                  <b-btn v-if="reply.loves" variant="light" class="mr-1 small text-muted showlove" :aria-label="getShowLovesLabel" @click="showLove">
+                  <b-btn
+                    v-if="reply.loves"
+                    variant="link"
+                    size="sm"
+                    class="mr-1 small text-muted showlove"
+                    :aria-label="getShowLovesLabel"
+                    @click="showLove"
+                  >
                     <v-icon name="heart" class="text-danger" />&nbsp;{{ reply.loves }}
                   </b-btn>
-                  <b-btn v-if="parseInt(me.id) === parseInt(userid)" v-b-modal="'newsEdit-' + replyid" variant="light" class="reply__button">
+                  <b-btn v-if="parseInt(me.id) === parseInt(userid)" v-b-modal="'newsEdit-' + replyid" variant="link" size="sm" class="reply__button text-muted ">
                     Edit
                   </b-btn>
-                  <b-btn v-if="parseInt(me.id) === parseInt(userid) || mod" variant="light" class="reply__button" @click="deleteReply">
+                  <b-btn v-if="parseInt(me.id) === parseInt(userid) || mod" variant="link" size="sm" class="reply__button text-muted" @click="deleteReply">
                     Delete
                   </b-btn>
                   <ChatButton
                     v-if="parseInt(me.id) !== parseInt(userid)"
                     class="reply__button text-muted d-flex align-items-center"
                     :userid="userid"
-                    size="sm"
                     title="Message"
-                    variant="light"
+                    variant="link"
+                    size="sm"
                     :show-icon="false"
+                    btn-class="text-muted"
                   />
                 </span>
                 <NewsPreview v-if="reply.preview" :preview="reply.preview" class="mt-1" size="sm" />
@@ -76,7 +84,7 @@
         </table>
       </b-col>
     </b-row>
-    <b-button v-if="showEarlierRepliesOption" variant="link" class="pl-0" @click.prevent="showAllReplies = true">
+    <b-button v-if="showEarlierRepliesOption" variant="link" size="sm" class="pl-0" @click.prevent="showAllReplies = true">
       Show earlier {{ numberOfRepliesNotShown | pluralize(['reply', 'replies']) }} ({{ numberOfRepliesNotShown }})
     </b-button>
     <div v-if="repliestoshow && repliestoshow.length > 0" :class="firstlevel ? 'pl-3' : ''">
@@ -148,7 +156,7 @@
         </at-ta>
       </div>
       <div class="d-flex justify-content-between flex-wrap mt-1 pl-2">
-        <b-btn size="sm" variant="white" @click="photoAdd">
+        <b-btn size="sm" variant="secondary" @click="photoAdd">
           <v-icon name="camera" />&nbsp;Add Photo
         </b-btn>
         <SpinButton
@@ -596,6 +604,7 @@ export default {
 .reply__button {
   margin-left: 3px;
   margin-right: 3px;
+  padding: 0;
 
   &:before {
     content: '\2022';

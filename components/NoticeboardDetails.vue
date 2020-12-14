@@ -29,7 +29,7 @@
             label="I put up a poster!"
             class="mb-2"
           />
-          <b-btn variant="white" size="lg" to="/posters/A4.jpg" class="mb-2">
+          <b-btn variant="secondary" size="lg" to="/posters/A4.jpg" class="mb-2">
             <v-icon name="download" /> Download the poster
           </b-btn>
           <SpinButton
@@ -43,14 +43,14 @@
         </div>
         <b-form>
           <label for="noticeboard-comments">Comments</label>
-          <p>Got new information about how to access this or where it is?</p>
+          <p>Got new information about how to access this or where it is?</p>m
           <b-textarea id="noticeboard-comments" v-model="comments" class="mt-2" placeholder="Please enter any new information or comments about this noticeboard." />
-          <SpinButton variant="white" name="save" :handler="saveComments" label="Save comments" class="mt-2" />
+          <SpinButton variant="secondary" name="save" :handler="saveComments" label="Save comments" class="mt-2" />
         </b-form>
         <p class="mt-3">
           If this noticeboard is no longer active, please let us know:
         </p>
-        <SpinButton variant="white" name="trash-alt" :handler="dead" label="Noticeboard no longer active" />
+        <SpinButton variant="secondary" name="trash-alt" :handler="dead" label="Noticeboard no longer active" />
         <hr>
         <h2 class="mt-2">
           History
@@ -72,10 +72,10 @@
   </div>
 </template>
 <script>
+import map from '@/mixins/map.js'
 import NoticeMessage from './NoticeMessage'
 import SpinButton from './SpinButton'
 import NoticeboardCheck from './NoticeboardCheck'
-import map from '@/mixins/map.js'
 
 let L = null
 

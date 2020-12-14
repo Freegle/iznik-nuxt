@@ -14,7 +14,7 @@
                 lazy
                 :src="refmsg.attachments[0].paththumb"
                 width="70px"
-                @error.native="brokenImage"
+                @error="brokenImage"
               />
               <ProfileImage :image="otheruser.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
               <span class="small black">Sorry...this is no longer promised to you:</span>
@@ -46,7 +46,7 @@
                 lazy
                 :src="refmsg.attachments[0].paththumb"
                 width="70px"
-                @error.native="brokenImage"
+                @error="brokenImage"
               />
               <ProfileImage :image="me.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
               <span class="small black">You cancelled your promise to <b>{{ otheruser.displayname }}</b> for:</span>

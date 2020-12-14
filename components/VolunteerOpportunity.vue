@@ -31,7 +31,7 @@
           <b-btn variant="primary" @click="renew">
             <v-icon name="check" /> Yes, it's still active
           </b-btn>
-          <b-btn variant="white" @click="expire">
+          <b-btn variant="secondary" @click="expire">
             <v-icon name="trash-alt" /> No, please remove it
           </b-btn>
         </div>
@@ -68,7 +68,7 @@
           </div>
           <div class="text-center mt-2 mb-2">
             <b-btn
-              variant="white"
+              variant="secondary"
               size="sm"
               :aria-label="'More info about ' + item.title + ' volunteering opportunity'"
               @click="showOpportunityModal"
@@ -115,7 +115,7 @@
             </div>
             <read-more v-if="description" :text="description" :max-chars="300" class="ml-1 font-weight-bold preline forcebreak nopara" />
             <div class="mt-2 mb-2 ml-1">
-              <b-btn variant="white" :aria-label="'More info about ' + item.title + ' volunteering opportunity'" @click="showOpportunityModal">
+              <b-btn variant="secondary" :aria-label="'More info about ' + item.title + ' volunteering opportunity'" @click="showOpportunityModal">
                 <v-icon name="info-circle" /> More info
               </b-btn>
             </div>
