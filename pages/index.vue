@@ -1,6 +1,6 @@
 <template>
   <div v-if="!me" class="grid m-0 pl-1 pr-1 pl-sm-0 pr-sm-0 mt-0 mt-lg-5 ml-4 mr-4">
-    <div class="map justify-content-start flex-column d-none d-md-flex">
+    <div class="map justify-content-start flex-column d-none d-sm-flex">
       <VisualiseMap v-if="type === 'Map'" class="shadow flex-grow-1" />
       <b-embed
         v-else
@@ -215,7 +215,7 @@ export default {
   grid-template-columns: 1fr 1.2fr;
   grid-template-rows: 1fr 50px minmax(50px, auto);
 
-  @include media-breakpoint-up(md) {
+  @include media-breakpoint-up(sm) {
     grid-template-columns: 1fr 2fr;
     grid-template-rows: auto auto auto;
     grid-column-gap: 50px;
@@ -227,7 +227,7 @@ export default {
   grid-row: 2 / 3;
   grid-column: 1 / 3;
 
-  @include media-breakpoint-up(md) {
+  @include media-breakpoint-up(sm) {
     height: 300px;
   }
 
@@ -257,7 +257,7 @@ export default {
   grid-column: 1 / 3;
   justify-self: center;
 
-  @include media-breakpoint-up(md) {
+  @include media-breakpoint-up(sm) {
     grid-row: 3 / 4;
   }
 
@@ -278,7 +278,7 @@ export default {
   grid-row: 3 / 4;
   grid-column: 1 / 3;
 
-  @include media-breakpoint-up(md) {
+  @include media-breakpoint-up(sm) {
     grid-row: 4 / 5;
   }
 
