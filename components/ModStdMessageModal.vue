@@ -575,22 +575,24 @@ export default {
           })
           break
         case 'Edit':
-          if (this.message.item && this.message.location) {
-            // Well-structured message
-            await this.$store.dispatch('messages/patch', {
-              id: this.message.id,
-              msgtype: this.message.type,
-              item: this.message.item.name,
-              location: this.message.location.name,
-              textbody: body
-            })
-          } else {
-            // Not
-            await this.$store.dispatch('messages/patch', {
-              id: this.message.id,
-              subject: subj,
-              textbody: body
-            })
+          if (this.message) {
+            if (this.message.item && this.message.location) {
+              // Well-structured message
+              await this.$store.dispatch('messages/patch', {
+                id: this.message.id,
+                msgtype: this.message.type,
+                item: this.message.item.name,
+                location: this.message.location.name,
+                textbody: body
+              })
+            } else {
+              // Not
+              await this.$store.dispatch('messages/patch', {
+                id: this.message.id,
+                subject: subj,
+                textbody: body
+              })
+            }
           }
           break
         default:
