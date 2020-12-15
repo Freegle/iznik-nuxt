@@ -19,10 +19,10 @@
       :key="'selected-' + user.userid"
       class="layout mb-2"
     >
-      <span v-if="user.userid > 0" class="name mt-1 text-left">
+      <span v-if="user.userid > 0" class="text--large font-weight-bold mt-1 text-left">
         {{ user.displayname }}
       </span>
-      <span v-else class="name mt-1 text-left">
+      <span v-else class="text--large font-weight-bold mt-1 text-left">
         <span v-if="availableinitially === 1">Someone else</span>
         <span v-else>Other people</span>
       </span>

@@ -66,11 +66,6 @@ h1, h2, h3, h4 {
   font-weight: 500;
 }
 
-.name {
-  font-size: 150%;
-  font-weight: bold;
-}
-
 .largest {
   font-size: 2rem;
 
@@ -97,19 +92,18 @@ h1, h2, h3, h4 {
   line-height: 1.2;
 }
 
-/*
 .text--small {
   font-size: 0.75rem;
 }
-*/
+
 .text--medium {
   font-size: 1rem;
 }
-/*
+
 .text--large {
-  text-size: 2rem;
+  font-size: 1.5rem;
 }
-*/
+
 .text-success {
   color: $colour-success !important;
 }
