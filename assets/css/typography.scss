@@ -1,3 +1,6 @@
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
 
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
@@ -38,6 +41,97 @@ h1, h2, h3, h4 {
   font-size: 1rem;
 }
 
+.fa-bh {
+  font-size: 100px;
+}
+
+.mobtext {
+  font-size: 0.6em;
+}
+
+.signin__header {
+  font-size: 1.1rem;
+}
+
+.card-header__description {
+  font-size: 1.2rem;
+  line-height: 1.2;
+}
+
+.message-history {
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+.replytext {
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.text--highlight {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.name {
+  font-size: 150%;
+  font-weight: bold;
+}
+
+.settings__heading {
+  font-size: 1rem;
+  font-weight: normal;
+}
+
+.largest {
+  font-size: 2rem;
+}
+
+@include media-breakpoint-up(md) {
+  .largest {
+    font-size: 3.5vw;
+  }
+
+  .large {
+    font-size: 3vw;
+  }
+
+  .medium {
+    font-size: 2vw;
+  }
+
+  .smaller {
+    font-size: 1.2vw;
+  }
+
+  .small {
+    font-size: 1.5vw;
+  }
+}
+
+.head {
+  font-size: 2rem;
+}
+
+.community__heading {
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+/*
+.text--small {
+  font-size: 0.75rem;
+}
+*/
+.text--medium {
+  font-size: 1rem;
+}
+/*
+.text--large {
+  text-size: 2rem;
+}
+*/
 .text-success {
   color: $colour-success !important;
 }

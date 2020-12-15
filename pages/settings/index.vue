@@ -1077,11 +1077,6 @@ h4 a {
   color: $color-white;
 }
 
-.settings__heading {
-  font-size: 1rem;
-  font-weight: normal;
-}
-
 .header5__color {
   /* Need to override the h5 as it has higher specificity */
   color: #212529 !important;

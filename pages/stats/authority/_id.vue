@@ -886,10 +886,6 @@ export default {
   width: 72px;
 }
 
-.head {
-  font-size: 2rem;
-}
-
 .purple {
   color: $color-purple !important;
 }

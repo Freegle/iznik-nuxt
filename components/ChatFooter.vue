@@ -254,7 +254,6 @@ export default {
 @import 'color-vars';
 
 .mobtext {
-  font-size: 0.6em;
   text-align: center !important;
 }
 

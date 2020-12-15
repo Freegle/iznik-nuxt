@@ -709,12 +709,6 @@ export default {
   z-index: 20000;
 }
 
-.community__heading {
-  font-size: 1.25rem;
-  font-weight: 500;
-  line-height: 1.2;
-}
-
 .community__text {
   /* Need to override the h2 as it has higher specificity */
   color: #212529 !important;

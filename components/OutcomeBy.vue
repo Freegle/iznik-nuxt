@@ -283,9 +283,4 @@ select {
     }
   }
 }
-
-.name {
-  font-size: 150%;
-  font-weight: bold;
-}
 </style>

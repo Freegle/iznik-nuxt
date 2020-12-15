@@ -312,32 +312,6 @@ export default {
   }
 }
 
-.largest {
-  font-size: 2rem;
-}
-
-@include media-breakpoint-up(md) {
-  .largest {
-    font-size: 3.5vw;
-  }
-
-  .large {
-    font-size: 3vw;
-  }
-
-  .medium {
-    font-size: 2vw;
-  }
-
-  .smaller {
-    font-size: 1.2vw;
-  }
-
-  .small {
-    font-size: 1.5vw;
-  }
-}
-
 .iconlarge {
   min-width: 48px;
 }

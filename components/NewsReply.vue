@@ -588,11 +588,6 @@ export default {
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins/_breakpoints';
 
-.replytext {
-  font-size: 14px;
-  line-height: 1.2;
-}
-
 .replyphoto {
   width: 150px;
 }

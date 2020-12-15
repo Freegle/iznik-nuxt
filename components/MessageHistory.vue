@@ -75,10 +75,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.message-history {
-  font-size: 0.9rem;
-  font-weight: 400;
-}
-</style>

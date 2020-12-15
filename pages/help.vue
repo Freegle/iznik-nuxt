@@ -3,7 +3,7 @@
     <b-row class="m-0">
       <b-col cols="0" md="3" />
       <b-col cols="12" md="6">
-        <h1 class="d-flex flex-wrap justify-content-between">
+        <h1 class="header--size1 d-flex flex-wrap justify-content-between">
           <span>
             How can we help?
           </span>
@@ -17,7 +17,7 @@
           <b-tabs content-class="mt-3" card>
             <b-tab active>
               <template v-slot:title>
-                <h4 class="ml-2 mr-2">
+                <h4 class="header--size4 ml-2 mr-2">
                   Frequently Asked Questions
                 </h4>
               </template>
@@ -260,7 +260,7 @@
 
             <b-tab>
               <template v-slot:title>
-                <h4 class="ml-2 mr-2">
+                <h4 class="header--size4 ml-2 mr-2">
                   Why Freegle?
                 </h4>
               </template>
@@ -280,7 +280,9 @@
                   <b>Go on, convince me!</b>
                 </template>
                 <template slot="content">
-                  <h5>Because it saves money, time and the planet - and it's free.</h5>
+                  <p class="text--highlight">
+                    Because it saves money, time and the planet - and it's free.
+                  </p>
                   <p>What, you need more reasons? Ok!</p>
                   <ul>
                     <li>
@@ -414,11 +416,13 @@
           </b-tabs>
         </b-card>
 
-        <h1>
+        <h1 class="header--size1">
           Something else?
         </h1>
         <p>If your question isn't answered above, or you wish to compliment or complain, then you can <b>contact your volunteer team</b>, who will be happy to hear whether Freegle is doing a great job or needs changing.</p>
-        <h5>Which Freegle community do you need help with?</h5>
+        <h5 class="header--size5">
+          Which Freegle community do you need help with?
+        </h5>
         <b-card v-if="loggedIn" no-body>
           <b-card-body class="p-3">
             <GroupRememberSelect v-model="contactGroupId" remember="contactmods" class="mb-3" />
