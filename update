@@ -1,0 +1,20 @@
+#!/bin/bash
+# We build our code statically using nuxt generate.  This means that we need to update it regularly, so that our explore pages
+# stay fairly up to date.  They don't need to be 100% up to the minute - the Browse page will be for logged in users.
+export API=https://fdapilive.ilovefreegle.org/api
+
+while true
+do
+  if [ -f /tmp/iznik.build.abort ]
+  then
+    exit;
+  fi
+  time npm run generate --fail-on-error
+
+  if [ $? -eq 0 ]; then
+    rsync -au dist/ app4:/var/www/iznik.fdnuxt.static.live/
+    rsync -au dist/ app1:/var/www/iznik.fdnuxt.static.live/
+  else
+    echo "Generate failed!"
+  fi
+done

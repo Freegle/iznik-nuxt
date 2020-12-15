@@ -70,12 +70,12 @@
 <style scoped>
 </style>
 <script>
+import loginOptional from '@/mixins/loginOptional.js'
+import buildHead from '@/mixins/buildHead.js'
 import NoticeMessage from '../../components/NoticeMessage'
 import CovidWarning from '../../components/CovidWarning'
 import MyMessage from '../../components/MyMessage'
 import MicroVolunteering from '../../components/MicroVolunteering'
-import loginOptional from '@/mixins/loginOptional.js'
-import buildHead from '@/mixins/buildHead.js'
 import twem from '~/assets/js/twem'
 
 const Message = () => import('~/components/Message.vue')

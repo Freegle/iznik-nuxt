@@ -1,5 +1,5 @@
 <template>
-  <b-btn variant="white" size="sm" @click="copy">
+  <b-btn variant="secondary" size="sm" @click="copy">
     <v-icon name="copy" />
   </b-btn>
 </template>

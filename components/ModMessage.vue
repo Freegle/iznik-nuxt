@@ -119,8 +119,8 @@
             <div v-if="message.microvolunteering && message.microvolunteering.length">
               <ModMessageMicroVolunteering v-for="m in message.microvolunteering" :key="'microvolunteering-' + m.id" :message="message" :microvolunteering="m" class="mb-1" />
               <p class="text-muted small">
-                At the moment messages will be sent for review if any member thinks they aren't OK, when asked as part
-                of microvolunteering.  Consider whether you (or the original poster) can edit the message to
+                Messages will be sent for review if a couple of members think they shouldn't be on Freegle, when asked
+                as part of microvolunteering.  Consider whether you (or the original poster) can edit the message to
                 improve it.  You can control whether members can do microvolunteering - click on their user id.
               </p>
             </div>
@@ -283,6 +283,8 @@
   </div>
 </template>
 <script>
+import waitForRef from '@/mixins/waitForRef'
+import keywords from '@/mixins/keywords.js'
 import MessageHistory from './MessageHistory'
 import MessageUserInfo from './MessageUserInfo'
 import MessageReplyInfo from './MessageReplyInfo'
@@ -305,8 +307,6 @@ import GroupSelect from './GroupSelect'
 import MessageMap from './MessageMap'
 import ModMessageMicroVolunteering from './ModMessageMicroVolunteering'
 import twem from '~/assets/js/twem'
-import waitForRef from '@/mixins/waitForRef'
-import keywords from '@/mixins/keywords.js'
 const Highlighter = () => import('vue-highlight-words')
 
 export default {

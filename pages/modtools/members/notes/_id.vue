@@ -20,11 +20,11 @@
 </template>
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
+import NoticeMessage from '@/components/NoticeMessage'
+import loginRequired from '@/mixins/loginRequired'
 import ScrollToTop from '../../../../components/ScrollToTop'
 import ModHelpComments from '../../../../components/ModHelpComments'
 import ModCommentUser from '../../../../components/ModCommentUser'
-import NoticeMessage from '@/components/NoticeMessage'
-import loginRequired from '@/mixins/loginRequired'
 
 export default {
   components: {

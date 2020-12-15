@@ -127,7 +127,7 @@ export default {
       this.emailFrequency = frequency
     },
     frequencyChosen(freq) {
-      return this.emailFrequency === freq ? 'secondary' : 'white'
+      return this.emailFrequency === freq ? 'primary' : 'secondary'
     }
   }
 }

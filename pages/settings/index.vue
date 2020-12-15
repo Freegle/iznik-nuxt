@@ -582,13 +582,13 @@
 
 <script>
 import Vue from 'vue'
+import waitForRef from '@/mixins/waitForRef'
+import loginRequired from '@/mixins/loginRequired.js'
+import buildHead from '@/mixins/buildHead'
 import EmailValidator from '../../components/EmailValidator'
 import EmailOwn from '../../components/EmailOwn'
 import SettingsSimple from '../../components/SettingsSimple'
-import waitForRef from '@/mixins/waitForRef'
-import loginRequired from '@/mixins/loginRequired.js'
 import EmailConfirmModal from '~/components/EmailConfirmModal'
-import buildHead from '@/mixins/buildHead'
 import ProfileImage from '~/components/ProfileImage'
 import 'vue2-datepicker/index.css'
 import Postcode from '~/components/Postcode'

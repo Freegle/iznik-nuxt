@@ -1,12 +1,12 @@
 <template>
   <span v-if="userid !== myid">
-    <b-btn :size="size" :variant="variant" class="d-none d-sm-inline" @click="gotoChat(true)">
+    <b-btn :size="size" :variant="variant" :class="btnClass + ' d-none d-sm-inline'" @click="gotoChat(true)">
       <v-icon v-if="showIcon" name="comments" />
       <span v-if="title">
         {{ title }}
       </span>
     </b-btn>
-    <b-btn :size="size" :variant="variant" class="d-inline-block d-sm-none" @click="gotoChat(false)">
+    <b-btn :size="size" :variant="variant" :class="btnClass + ' d-inline-block d-sm-none'" @click="gotoChat(false)">
       <v-icon v-if="showIcon" name="comments" />
       <span v-if="title">
         {{ title }}
@@ -31,7 +31,7 @@ export default {
     variant: {
       type: String,
       required: false,
-      default: 'white'
+      default: 'primary'
     },
     groupid: {
       type: Number,
@@ -52,6 +52,11 @@ export default {
       type: Boolean,
       required: false,
       default: true
+    },
+    btnClass: {
+      type: String,
+      required: false,
+      default: null
     }
   },
   methods: {

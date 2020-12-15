@@ -242,7 +242,7 @@ export default {
         const ret = res.data
 
         if (ret.ret === 0 && ret.logo) {
-          this.logo = ret.logo.path
+          this.logo = ret.logo.path.replace(/.*logos/, '/logos')
         }
       }
     }, 5000)
@@ -291,7 +291,7 @@ export default {
 }
 
 .ourBack {
-  background-color: $colour-success !important;
+  background-color: $colour-green-background !important;
 }
 
 .mainnav {

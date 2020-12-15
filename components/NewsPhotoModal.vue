@@ -42,7 +42,7 @@
           rounded
           fluid
           generator-unable-to-provide-required-alt=""
-          @error.native="brokenImage"
+          @error="brokenImage"
         />
       </div>
     </template>

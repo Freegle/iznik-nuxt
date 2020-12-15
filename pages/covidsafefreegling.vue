@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import CovidSafeFreegling from '../components/CovidSafeFreegling'
 import buildHead from '@/mixins/buildHead.js'
+import CovidSafeFreegling from '../components/CovidSafeFreegling'
 
 export default {
   components: { CovidSafeFreegling },

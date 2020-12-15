@@ -20,10 +20,10 @@
 </template>
 
 <script>
+import nchanHelper from '@/mixins/nchanHelper'
 import LocalStorageMonitor from '~/components/LocalStorageMonitor'
 import BouncingEmail from '~/components/BouncingEmail'
 import MainHeader from '~/components/MainHeader'
-import nchanHelper from '@/mixins/nchanHelper'
 
 const ChatPopups = () => import('~/components/ChatPopups')
 const ExternalLink = () => import('~/components/ExternalLink')
@@ -173,14 +173,6 @@ export default {
 @import '~bootstrap/scss/mixins/_breakpoints';
 
 html {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, sans-serif;
-  font-size: 16px;
-  word-spacing: 1px;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
 }
 

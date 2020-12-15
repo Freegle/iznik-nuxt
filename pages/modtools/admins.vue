@@ -113,14 +113,14 @@
 <script>
 import { required } from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
-import GroupSelect from '../../components/GroupSelect'
-import ModAdmin from '../../components/ModAdmin'
-import NoticeMessage from '../../components/NoticeMessage'
 import loginRequired from '@/mixins/loginRequired.js'
 import validationHelpers from '@/mixins/validationHelpers'
 import ValidatingForm from '@/components/ValidatingForm'
 import ValidatingFormInput from '@/components/ValidatingFormInput'
 import ValidatingTextarea from '@/components/ValidatingTextarea'
+import NoticeMessage from '../../components/NoticeMessage'
+import ModAdmin from '../../components/ModAdmin'
+import GroupSelect from '../../components/GroupSelect'
 
 const noAdmin = val => {
   return !!(val && val.toLowerCase().indexOf('admin') === -1)

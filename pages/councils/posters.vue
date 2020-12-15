@@ -47,9 +47,9 @@
   </b-row>
 </template>
 <script>
-import CouncilsContent from '../../components/CouncilsContent'
 import buildHead from '@/mixins/buildHead.js'
 import sectionScroll from '@/mixins/sectionScroll.js'
+import CouncilsContent from '../../components/CouncilsContent'
 
 export default {
   components: { CouncilsContent },

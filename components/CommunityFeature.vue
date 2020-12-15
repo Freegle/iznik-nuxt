@@ -9,7 +9,7 @@
                 <v-icon :name="iconName" scale="2" /> {{ title }}
               </nuxt-link>
             </h2>
-            <b-btn variant="white" :aria-label="addButtonLabel" @click="showEventModal">
+            <b-btn variant="primary" :aria-label="addButtonLabel" @click="showEventModal">
               <v-icon name="plus" /> Add
             </b-btn>
           </div>

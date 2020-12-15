@@ -40,10 +40,10 @@
 </template>
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
-import CovidWarning from '../../components/CovidWarning'
 import loginOptional from '@/mixins/loginOptional.js'
 import createGroupRoute from '@/mixins/createGroupRoute'
 import buildHead from '@/mixins/buildHead.js'
+import CovidWarning from '../../components/CovidWarning'
 
 const GroupSelect = () => import('~/components/GroupSelect')
 const CommunityEvent = () => import('~/components/CommunityEvent.vue')

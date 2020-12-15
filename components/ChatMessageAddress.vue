@@ -75,9 +75,9 @@
   </div>
 </template>
 <script>
+import map from '@/mixins/map.js'
 import ExternalLink from './ExternalLink'
 import ChatBase from '~/components/ChatBase'
-import map from '@/mixins/map.js'
 
 export default {
   components: { ExternalLink },

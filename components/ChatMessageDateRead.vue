@@ -51,8 +51,8 @@
 </template>
 
 <script>
-import ChatBase from './ChatBase'
 import waitForRef from '@/mixins/waitForRef'
+import ChatBase from './ChatBase'
 const ModMessageEmailModal = () => import('~/components/ModMessageEmailModal')
 
 export default {

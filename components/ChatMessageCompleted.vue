@@ -14,7 +14,7 @@
                 lazy
                 :src="refmsg.attachments[0].paththumb"
                 width="70px"
-                @error.native="brokenImage"
+                @error="brokenImage"
               />
               <h4>
                 {{ refmsg.subject }}
@@ -42,7 +42,7 @@
                 lazy
                 :src="refmsg.attachments[0].paththumb"
                 width="70px"
-                @error.native="brokenImage"
+                @error="brokenImage"
               />
               <h4>
                 {{ refmsg.subject }}

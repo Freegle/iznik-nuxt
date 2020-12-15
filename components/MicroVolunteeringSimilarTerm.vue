@@ -32,7 +32,7 @@ export default {
 
 .selected {
   background-color: $colour-secondary !important;
-  border-color: $color-blue--dark !important;
+  border-color: $color-blue--2 !important;
   color: $color-white !important;
 }
 

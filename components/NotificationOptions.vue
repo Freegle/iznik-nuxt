@@ -24,7 +24,7 @@
       </div>
     </template>
     <b-dropdown-item class="text-right" link-class="notification-list__item">
-      <b-btn variant="white" size="sm" @click="markAllRead">
+      <b-btn variant="secondary" size="sm" @click="markAllRead">
         Mark all read
       </b-btn>
     </b-dropdown-item>
@@ -162,6 +162,10 @@ export default {
 /* These classes style the bootstrap b-nav-item-dropdown component */
 ::v-deep .notification-list__dropdown-toggle {
   color: $color-white !important;
+
+  &:hover {
+    color: $color-white-opacity-75 !important;
+  }
 }
 
 ::v-deep .notification-list__dropdown-menu {

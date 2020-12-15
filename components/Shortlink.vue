@@ -12,7 +12,7 @@
         </a>
       </b-col>
       <b-col cols="2">
-        <b-btn variant="white" class="mb-1" :to="'/shortlinks/' + shortlink.id">
+        <b-btn variant="secondary" class="mb-1" :to="'/shortlinks/' + shortlink.id">
           View Stats
         </b-btn>
       </b-col>

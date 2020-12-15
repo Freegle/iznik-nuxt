@@ -6,8 +6,8 @@ const FACEBOOK_APPID = '134980666550322'
 const SENTRY_DSN = 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170'
 const YAHOO_CLIENTID =
   'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
-const MOBILE_VERSION = '2.0.55'
-const MODTOOLS_VERSION = '0.3.35'
+const MOBILE_VERSION = '2.0.56'
+const MODTOOLS_VERSION = '0.3.36'
 
 require('dotenv').config()
 
@@ -34,9 +34,6 @@ if (process.env.NUXT_BUILD_TYPE === 'mtapp') {
 // hurt client performance).
 const IZNIK_API = process.env.IZNIK_API || 'https://fdapilive.ilovefreegle.org'
 
-// This is the CDN for this site.
-const CDN = process.env.CDN
-
 // This is where the user site is.
 const USER_SITE = 'https://www.ilovefreegle.org'
 
@@ -61,7 +58,7 @@ const DISABLE_ESLINT_AUTOFIX =
 const ESLINT_AUTOFIX = !DISABLE_ESLINT_AUTOFIX
 
 const config = {
-  mode: 'spa',
+  target: 'static',
 
   /*
   ** Headers.  Include default meta tags that will apply unless overridden by individual pages.  Every page that
@@ -213,7 +210,6 @@ const config = {
     { src: '~/plugins/dayjs' },
 
     // Some plugins are client-side features
-    { src: '~/plugins/cdn', ssr: false },
     { src: '~/plugins/visibility.js', ssr: false },
     { src: '~/plugins/error-toasts.js', ssr: false },
     { src: '~/plugins/vuex-persistedstate', ssr: false },
@@ -234,21 +230,7 @@ const config = {
     { src: '@/plugins/vue2-leaflet', ssr: false }
   ],
 
-  redirect: [ // In mobile app-init-push route needs updating as per here
-    { from: '^/chat/(.*)$', to: '/chats/$1' },
-    { from: '^/modtools/chat/(.*)$', to: '/modtools/chats/$1' },
-    { from: '^/mygroups(.*)$', to: '/browse$1' },
-    { from: '^/communities(.*)$', to: '/browse$1' },
-    { from: '^/why$', to: '/help' },
-    { from: '^/contact$', to: '/help' },
-    { from: '^/posters$', to: '/noticeboards' },
-    { from: '^/groups', to: '/explore' },
-    { from: '^/events', to: '/communityevents' },
-    { from: '^/contact', to: '/help' },
-    { from: '^/newsfeed', to: '/chitchat' },
-    { from: '^/handbook', to: '/help' },
-    { from: '^//$', to: '/' }
-  ],
+  // Can't use redirect as this doesn't work with nuxt generate, so redirects are done as rewrites in nginx config.
 
   polyfill: {
     // This is needed for IE11.
@@ -319,6 +301,8 @@ const config = {
 
   // We only use some of bootstrap-vue, so by listing it explicitly we can reduce our bundle size.
   bootstrapVue: {
+    bootstrapCSS: false,
+    bootstrapVueCSS: false,
     componentPlugins: [
       'AlertPlugin',
       'BadgePlugin',
@@ -395,23 +379,6 @@ const config = {
       }
     ]
   ],
-
-  hooks: {
-    // We have a caching CDN in front of our site.  This is particularly useful for old script files which have
-    // been deleted by a new pm2 deploy on the server, but which may be loaded by a client which is open in a
-    // browser but which has not yet loaded all script files.
-    //
-    // Nuxt doesn't allow the publicPath (CDN url) to be overridden at run time - it's baked into the manifest at
-    // build time.  This hook intercepts the VueRenderer when it has loaded the manifest and updates the publicPath
-    // to the current env value.
-    render: {
-      resourcesLoaded(resources) {
-        const path =
-          process.env.CDN === undefined ? '/_nuxt' : process.env.CDN + '/_nuxt'
-        resources.clientManifest && (resources.clientManifest.publicPath = path)
-      }
-    }
-  },
 
   /*
   ** Build configuration
@@ -546,7 +513,6 @@ const config = {
   env: {
     API: API,
     IZNIK_API: IZNIK_API,
-    CDN: CDN,
     CHAT_HOST: CHAT_HOST,
     OSM_TILE: OSM_TILE,
     GEOCODE: GEOCODE,
@@ -578,7 +544,39 @@ const config = {
     },
     exclude: sitemap.excludeRoutes,
     path: '/sitemap.xml',
-    gzip: true
+    gzip: true,
+    hostname: 'https://www.ilovefreegle.org'
+  },
+
+  generate: {
+    // Don't hit the server too hard.
+    concurrency: 10,
+
+    // Get the list of routes to generate - importantly the group explore pages.
+    async routes(callback) {
+      const all = await sitemap.includeRoutes()
+      const munged = all.map(r => {
+        return r.url
+      })
+
+      callback(null, munged)
+    },
+    exclude: [
+      // We don't want to generate anything too voluminous or logged in.
+      /^\/modtools/,
+      /^\/browse/,
+      /^\/story/,
+      /^\/stories\/fornewsletter/,
+      /^\/message/,
+      /^\/booktastic/,
+      /^\/chitchat/,
+
+      // Excluded for now as slow.
+      /^\/communityevent/,
+      /^\/volunteering/,
+      /^\/stories/,
+      /^\/stats/
+    ]
   }
 }
 

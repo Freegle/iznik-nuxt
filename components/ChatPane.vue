@@ -59,11 +59,11 @@
 import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import InfiniteLoading from 'vue-infinite-loading'
-import ChatFooter from './ChatFooter'
-import ChatHeader from './ChatHeader'
 import chatCollate from '@/mixins/chatCollate.js'
 import chat from '@/mixins/chat.js'
 import waitForRef from '@/mixins/waitForRef'
+import ChatHeader from './ChatHeader'
+import ChatFooter from './ChatFooter'
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
 import ChatMessage from '~/components/ChatMessage.vue'

@@ -23,7 +23,7 @@
         </b-button>
       </b-input-group-append>
       <b-input-group-append v-if="showSaveOption">
-        <SpinButton variant="white" aria-label="Save password" name="save" label="Save" :handler="savePassword" />
+        <SpinButton variant="primary" aria-label="Save password" name="save" label="Save" :handler="savePassword" />
       </b-input-group-append>
     </b-input-group>
   </b-form-group>

@@ -1,4 +1,6 @@
 @import 'color-vars';
+@import 'typography';
+@import 'bootstrap-custom.scss';
 @import 'buttons';
 
 .strike {
@@ -27,42 +29,6 @@
 
 .card-header.bg-info {
   border-bottom: 1px solid $colour-info-bg;
-}
-
-.text-success {
-  color: $colour-success !important;
-}
-
-.text-header {
-  color: $colour-header !important;
-}
-
-h1, h2, h3, h4 {
-  color: $colour-header !important;
-}
-
-.header--size1 {
-  font-size: 2.5rem;
-}
-
-.header--size2 {
-  font-size: 2rem;
-}
-
-.header--size3 {
-  font-size: 1.75rem;
-}
-
-.header--size4 {
-  font-size: 1.5rem;
-}
-
-.header--size5 {
-  font-size: 1.25rem;
-}
-
-.header--size6 {
-  font-size: 1rem;
 }
 
 div[variant="success"] .card-header {
@@ -190,6 +156,10 @@ body.modtools {
 .fa-icon {
   /* These appear misaligned - fix */
   margin-bottom: 3px;
+
+  /* This is to resolve an issue with icon alignment. */
+  /* It reverts a change made in 4.1.0 of vue-awesome */
+  vertical-align: middle;
 }
 
 .fa-fw {

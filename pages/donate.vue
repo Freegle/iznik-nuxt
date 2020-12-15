@@ -134,10 +134,10 @@
 </template>
 
 <script>
+import buildHead from '@/mixins/buildHead.js'
 import DonationThermometer from '../components/DonationThermometer'
 import DonationButton from '../components/DonationButton'
 import ExternalLink from '../components/ExternalLink'
-import buildHead from '@/mixins/buildHead.js'
 
 export default {
   components: {

@@ -39,9 +39,9 @@
 
 <script>
 import { gmapApi } from 'vue2-google-maps'
+import loginRequired from '@/mixins/loginRequired.js'
 import UserMarker from '../../components/UserMarker'
 import NoticeMessage from '../../components/NoticeMessage'
-import loginRequired from '@/mixins/loginRequired.js'
 
 export default {
   components: { NoticeMessage, UserMarker },
