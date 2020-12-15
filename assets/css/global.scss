@@ -1,6 +1,9 @@
 @import 'color-vars';
-@import 'typography';
 @import 'bootstrap-custom.scss';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+@import 'typography';
 @import 'buttons';
 
 .strike {
