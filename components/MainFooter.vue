@@ -9,7 +9,7 @@
           <img src="/mythic-beasts.png" alt="Mythic Beasts Logo" class="sponsor">
         </a>
       </div>
-      <div class="d-flex flex-column justify-content-end pl-2 pr-2 mb-2">
+      <div class="d-flex flex-column justify-content-end small pl-2 pr-2 mb-2">
         <div class="text-muted text-center mb-1">
           Freegle is registered as a charity with HMRC (ref. XT32865). Kindly supported by Bytemark and Mythic Beasts.
         </div>
