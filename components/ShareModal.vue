@@ -164,10 +164,12 @@ export default {
 
 ::v-deep .facebook {
   background-color: $color-facebook !important;
+  color: white;
 }
 
 ::v-deep .twitter {
   background-color: $color-twitter !important;
+  color: white;
 }
 
 ::v-deep .whatsapp {
