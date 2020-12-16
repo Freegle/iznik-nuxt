@@ -296,7 +296,7 @@
                     <div v-for="group in me.groups" :key="'settingsgroup-' + group.id" class="list-unstyled">
                       <b-card v-if="group.type === 'Freegle'" class="nocardbot">
                         <b-card-title>
-                          <nuxt-link :to="'/explore/' + group.id">
+                          <nuxt-link :to="'/explore/' + group.nameshort">
                             <b-img-lazy
                               v-if="group.profile"
                               rounded
@@ -306,7 +306,7 @@
                               class="float-right groupprofile"
                             />
                           </nuxt-link>
-                          <nuxt-link :to="'/explore/' + group.id">
+                          <nuxt-link :to="'/explore/' + group.nameshort">
                             {{ group.namedisplay }}
                           </nuxt-link>
                           <span v-if="group.role === 'Moderator' || group.role === 'Owner'">
