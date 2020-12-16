@@ -21,9 +21,11 @@
         <p class="text-center small">
           Jobs near you.  Freegle gets a small amount if you click.
         </p>
-        <div v-for="job in visibleJobs" :key="'job-' + job.onmousedown" class="">
-          <Job :summary="true" :job="job" />
-        </div>
+        <ul class="list-unstyled">
+          <li v-for="job in visibleJobs" :key="'job-' + job.onmousedown" class="">
+            <Job :summary="true" :job="job" />
+          </li>
+        </ul>
         <client-only>
           <infinite-loading key="infinitejobs" @infinite="loadMore">
             <span slot="no-results">
