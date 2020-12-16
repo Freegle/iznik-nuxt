@@ -380,6 +380,8 @@ export default {
         text = text.replace(/\$myname/g, this.me.displayname)
         text = text.replace(/\$nummembers/g, group.membercount)
         text = text.replace(/\$nummods/g, group.modcount)
+        text = text.replace(/\$repostoffer/g, group.settings.reposts.offer)
+        text = text.replace(/\$repostwanted/g, group.settings.reposts.wanted)
 
         text = text.replace(
           /\$origsubj/g,
