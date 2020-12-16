@@ -132,7 +132,7 @@
             <div v-if="authority">
               <div class="title pl-2">
                 <b-img thumbnail src="/icon.png" class="titlelogo float-right" @click="toggle" />
-                <span class="head">
+                <span class="text--largest">
                   {{ authority.name }}
                 </span>
                 <div class="d-inline-block align-top pt-2">
@@ -242,7 +242,7 @@
                 <b-col class="p-0">
                   <div class="title pl-2">
                     <b-img thumbnail src="/icon.png" class="titlelogo float-right" />
-                    <span class="head">
+                    <span class="text--largest">
                       {{ totalWeight }} TONNES REUSED
                     </span>
                     <br>
