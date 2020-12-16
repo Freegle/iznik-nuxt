@@ -66,22 +66,6 @@ h1, h2, h3, h4 {
   font-weight: 500;
 }
 
-.largest {
-  font-size: 2rem;
-
-  @include media-breakpoint-up(md) {
-    font-size: 3.5vw;
-  }
-}
-
-@include media-breakpoint-up(md) {
-  font-size: 1rem;
-
-  .medium {
-    font-size: 1.5rem;
-  }
-}
-
 .community__heading {
   font-size: 1.25rem;
   font-weight: 500;
@@ -102,6 +86,22 @@ h1, h2, h3, h4 {
 
 .text--largest {
   font-size: 2rem;
+}
+
+.text--largest-responsive {
+  font-size: 2rem;
+
+  @include media-breakpoint-up(md) {
+    font-size: 3.5vw;
+  }
+}
+
+.text--medium-responsive {
+    font-size: 1rem;
+
+    @include media-breakpoint-up(md) {
+      font-size: 2vw;
+    }
 }
 
 .text-success {

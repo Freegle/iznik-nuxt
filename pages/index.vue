@@ -15,28 +15,28 @@
       />
     </div>
     <div class="info">
-      <h1 class="largest">
+      <h1 class="text--largest-responsive">
         Freegle - like online dating for stuff.
       </h1>
-      <p class="medium black font-weight-bold">
+      <p class="text--medium-responsive black font-weight-bold">
         Got stuff you don't need? Looking for something?
       </p>
-      <p class="medium black font-weight-bold">
+      <p class="text--medium-responsive black font-weight-bold">
         We'll match you with someone local.  All completely free.
       </p>
       <div class="d-flex buttons">
-        <b-btn variant="primary" size="lg" to="/give" class="medium ml-1 ml-sm-0" @click="clicked('give')">
+        <b-btn variant="primary" size="lg" to="/give" class="text--medium-responsive ml-1 ml-sm-0" @click="clicked('give')">
           Give Stuff
         </b-btn>
         <div style="width: 4vw" class="d-none d-lg-block" />
-        <b-btn variant="secondary" size="lg" to="/find" class="medium mr-1 mr-sm-0" @click="clicked('ask')">
+        <b-btn variant="secondary" size="lg" to="/find" class="text--medium-responsive mr-1 mr-sm-0" @click="clicked('ask')">
           Ask for Stuff
         </b-btn>
       </div>
-      <div class="font-weight-bold text-header medium mt-3 mb-4">
+      <div class="font-weight-bold text-header text--medium-responsive mt-3 mb-4">
         Don't throw it away, give it away!
       </div>
-      <h2 class="medium font-weight-bold black">
+      <h2 class="text--medium-responsive font-weight-bold black">
         Just looking?
       </h2>
       <div class="d-flex centresmall flex-wrap">
