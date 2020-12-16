@@ -13,7 +13,7 @@
         <b-btn variant="secondary" class="float-right m-1" size="sm" to="/jobs">
           <v-icon name="search" /> View more
         </b-btn>
-        <nuxt-link to="/communityevents">
+        <nuxt-link to="/jobs">
           <h2 class="header--size4 pl-1 pt-1">
             <v-icon name="briefcase" scale="2" /> Jobs
           </h2>
