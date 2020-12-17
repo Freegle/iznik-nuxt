@@ -567,9 +567,14 @@ export default {
     if (!this.startOnGroups) {
       this.context = null
 
-      // Get the messages in our own groups for the initial view.
+      // Get the first few messages in our own groups for the initial view.  Makes us look zippy especially if we
+      // are on many groups.
       const ret = await this.$api.message.fetchMessages({
-        subaction: 'mygroups'
+        subaction: 'mygroups',
+        context: {
+          start: true
+        },
+        limit: 5
       })
 
       if (ret && ret.ret === 0 && ret.messages) {
@@ -577,6 +582,15 @@ export default {
 
         // Kick the infinite scroll to show them.
         this.infiniteId++
+
+        // Now get the rest.
+        this.$api.message
+          .fetchMessages({
+            subaction: 'mygroups'
+          })
+          .then(() => {
+            this.messagesInOwnGroups = ret.messages
+          })
       }
     }
 
