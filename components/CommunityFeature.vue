@@ -27,11 +27,12 @@
         </div>
       </b-card-body>
     </b-card>
-    <component :is="addEventModalComponent" ref="eventmodal" :start-edit="true" />
+    <component :is="addEventModalComponent" v-if="showAdd" ref="eventmodal" :start-edit="true" />
   </div>
 </template>
 
 <script>
+import waitForRef from '@/mixins/waitForRef'
 import CommunityEvent from './CommunityEvent'
 import VolunteerOpportunity from './VolunteerOpportunity'
 const CommunityEventModal = () => import('~/components/CommunityEventModal')
@@ -46,6 +47,7 @@ export default {
     CommunityEventModal,
     VolunteerOpportunityModal
   },
+  mixins: [waitForRef],
   props: {
     items: {
       type: Array,
@@ -88,9 +90,17 @@ export default {
       required: true
     }
   },
+  data: function() {
+    return {
+      showAdd: false
+    }
+  },
   methods: {
     showEventModal() {
-      this.$refs.eventmodal.show()
+      this.showAdd = true
+      this.waitForRef('eventmodal', () => {
+        this.$refs.eventmodal.show()
+      })
     }
   }
 }
