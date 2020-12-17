@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="group in message.groups" :key="'message-' + message.id + '-' + group.id" class="message-history">
-      {{ group.arrival | timeago }} on <nuxt-link :to="'/explore/' + group.nameshort">
+      {{ group.arrival | timeago }} on <nuxt-link :to="'/explore/' + group.groupid">
         {{ group.namedisplay }}
       </nuxt-link>
       <client-only>
