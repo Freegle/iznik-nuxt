@@ -275,7 +275,6 @@ export default {
     showModal: {
       immediate: true,
       handler(newVal) {
-        console.log('Show Modal changed', newVal)
         this.pleaseShowModal = newVal
       }
     },
@@ -288,7 +287,6 @@ export default {
     forceLogin: {
       immediate: true,
       handler(newVal) {
-        console.log('Please show modal changed', this.pleaseShowModal, newVal)
         this.showModal = this.pleaseShowModal || newVal
       }
     }
