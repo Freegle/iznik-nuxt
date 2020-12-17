@@ -210,7 +210,7 @@ export default {
     warning() {
       let ret = null
 
-      if (this.body) {
+      if (this.stdmsg && this.stdmsg.body) {
         const checks = {
           yahoo:
             'Yahoo Groups is no longer supported, so any mention of it is probably out of date.',
@@ -225,7 +225,7 @@ export default {
             'Freegle Direct is no longer an active term; we just talk about "our website" now.'
         }
 
-        const trimmed = this.body.replace(/\s/g, '').toLowerCase()
+        const trimmed = this.stdmsg.body.replace(/\s/g, '').toLowerCase()
         for (const keyword in checks) {
           if (trimmed.indexOf(keyword) !== -1) {
             ret = checks[keyword]
