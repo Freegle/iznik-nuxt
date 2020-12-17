@@ -131,9 +131,9 @@
               <p class="text-muted">
                 This is information you can choose to send to other freeglers when arranging collections.
               </p>
-              <b-row>
+              <b-row class="mb-2">
                 <b-col>
-                  <h3 class="header--size4">
+                  <h3 class="header--size5 header5__color">
                     Availability
                   </h3>
                   <p class="mt-2">
@@ -147,7 +147,7 @@
               </b-row>
               <b-row>
                 <b-col>
-                  <h3 class="header--size4 mt-2">
+                  <h3 class="header--size5 header5__color mt-2">
                     Address Book
                   </h3>
                   <p class="mt-2">
