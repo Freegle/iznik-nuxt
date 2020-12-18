@@ -67,7 +67,7 @@
           </h2>
           <AdaptiveMapGroup v-for="groupid in groupids" :id="groupid" :key="'adaptivegroup-' + groupid" />
         </div>
-        <p v-if="showStartMessage" class="text-center mt-2 header--size5 community__heading community__text">
+        <p v-if="showStartMessage" class="text-center mt-2 header--size5 text--medium-large-highlight community__text">
           <!-- eslint-disable-next-line -->
           If there's no community for your area, would you like to start one? <ExternalLink href="mailto:newgroups@ilovefreegle.org">Get in touch!</ExternalLink>
         </p>

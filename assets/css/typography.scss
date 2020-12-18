@@ -38,37 +38,32 @@ h1, h2, h3, h4 {
   font-size: 100px;
 }
 
-.mobtext {
+.text--smallest {
   font-size: 0.6em;
-}
-
-.card-header__description {
-  font-size: 1.2rem;
-  line-height: 1.2;
-}
-
-.replytext {
-  font-size: 14px;
-  line-height: 1.2;
-}
-
-.text--highlight {
-  font-size: 1.25rem;
-  font-weight: 500;
-}
-
-.community__heading {
-  font-size: 1.25rem;
-  font-weight: 500;
-  line-height: 1.2;
 }
 
 .text--small {
   font-size: 0.75rem;
 }
 
+.text--small-medium {
+  font-size: 0.9rem;
+  line-height: 1.2;
+}
+
 .text--medium {
   font-size: 1rem;
+}
+
+.text--medium-large {
+  font-size: 1.2rem;
+  line-height: 1.2;
+}
+
+.text--medium-large-highlight {
+  font-size: 1.2rem;
+  font-weight: 500;
+  line-height: 1.2;
 }
 
 .text--large {

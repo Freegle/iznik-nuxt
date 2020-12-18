@@ -31,7 +31,7 @@
           </b-badge>
         </b-card-title>
         <MessageHistory :message="$props" class="mb-1 card-header__history" :display-message-link="sm()" />
-        <div flex-grow-1 class="mb-1 card-header__description">
+        <div flex-grow-1 class="mb-1 card-header__description text--medium-large">
           <div v-if="eSnippet && eSnippet !== 'null' && !expanded">
             <b class="snippet black">
               <Highlighter

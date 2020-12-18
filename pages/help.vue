@@ -280,7 +280,7 @@
                   <b>Go on, convince me!</b>
                 </template>
                 <template slot="content">
-                  <p class="text--highlight">
+                  <p class="text--medium-large-highlight">
                     Because it saves money, time and the planet - and it's free.
                   </p>
                   <p>What, you need more reasons? Ok!</p>
