@@ -55,6 +55,14 @@ h1, h2, h3, h4 {
   font-size: 1rem;
 }
 
+.text--medium-responsive {
+    font-size: 1rem;
+
+    @include media-breakpoint-up(md) {
+      font-size: 2vw;
+    }
+}
+
 .text--medium-large {
   font-size: 1.2rem;
   line-height: 1.2;
@@ -80,14 +88,6 @@ h1, h2, h3, h4 {
   @include media-breakpoint-up(md) {
     font-size: 3.5vw;
   }
-}
-
-.text--medium-responsive {
-    font-size: 1rem;
-
-    @include media-breakpoint-up(md) {
-      font-size: 2vw;
-    }
 }
 
 .text-success {
