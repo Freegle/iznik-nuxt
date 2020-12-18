@@ -39,7 +39,7 @@
     </p>
     <div class="d-flex flex-column flex-lg-row justify-content-between p-3">
       <div class="signin__section--social">
-        <h3 class="header--size6 pb-3">
+        <h3 class="header--size5 pb-3">
           Continue with your social account
         </h3>
         <p v-if="signUp">
@@ -73,7 +73,7 @@
         <div class="divider" />
       </div>
       <div class="signin__section--freegle">
-        <h3 class="header--size6 pb-0">
+        <h3 class="header--size5 pb-0">
           <span v-if="signUp">
             Create an account on Freegle
           </span>

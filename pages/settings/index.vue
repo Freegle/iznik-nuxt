@@ -10,7 +10,7 @@
           <SettingsSimple class="mt-2" />
           <b-card border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
             <template v-slot:header>
-              <h2 class="bg-info header--size6 mb-0">
+              <h2 class="bg-info header--size5 mb-0">
                 <v-icon name="globe-europe" />
                 Your Public Profile
               </h2>
@@ -122,7 +122,7 @@
           </b-card>
           <b-card v-if="!simple" border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
             <template v-slot:header>
-              <h2 class="bg-info header--size6 mb-0">
+              <h2 class="bg-info header--size5 mb-0">
                 <v-icon name="globe-europe" />
                 Arranging Collections
               </h2>
@@ -163,7 +163,7 @@
           </b-card>
           <b-card border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
             <template v-slot:header>
-              <h2 class="bg-info header--size6 mb-0">
+              <h2 class="bg-info header--size5 mb-0">
                 <v-icon name="lock" />
                 Your Account Settings
               </h2>
@@ -241,7 +241,7 @@
           </b-card>
           <b-card border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
             <template v-slot:header>
-              <h2 class="bg-info header--size6 mb-0">
+              <h2 class="bg-info header--size5 mb-0">
                 <v-icon name="envelope" />
                 Community Mail Settings
               </h2>
@@ -339,7 +339,7 @@
           </b-card>
           <b-card v-if="!simple" border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
             <template v-slot:header>
-              <h2 class="bg-info header--size6 mb-0">
+              <h2 class="bg-info header--size5 mb-0">
                 <v-icon name="bell" />
                 Chat Notifications
               </h2>
@@ -536,7 +536,7 @@
           </b-card>
           <b-card v-if="!simple" border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
             <template v-slot:header>
-              <h2 class="bg-info header--size6 mb-0">
+              <h2 class="bg-info header--size5 mb-0">
                 <v-icon name="cog" />
                 Other
               </h2>

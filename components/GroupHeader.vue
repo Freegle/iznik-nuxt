@@ -52,7 +52,7 @@
     </div>
     <div>
       <hr class="mt-0">
-      <h2 class="header--size6 mb-3">
+      <h2 class="header--size5 mb-3">
         If you have questions, you can contact our lovely local volunteers here:
       </h2>
       <ExternalLink :href="'mailto:' + modsemail">
