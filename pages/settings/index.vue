@@ -131,9 +131,9 @@
               <p class="text-muted">
                 This is information you can choose to send to other freeglers when arranging collections.
               </p>
-              <b-row>
+              <b-row class="mb-2">
                 <b-col>
-                  <h3 class="header--size4">
+                  <h3 class="header--size5 header5__color">
                     Availability
                   </h3>
                   <p class="mt-2">
@@ -147,7 +147,7 @@
               </b-row>
               <b-row>
                 <b-col>
-                  <h3 class="header--size4 mt-2">
+                  <h3 class="header--size5 header5__color mt-2">
                     Address Book
                   </h3>
                   <p class="mt-2">
@@ -295,7 +295,7 @@
                   <div v-if="me.groups">
                     <div v-for="group in me.groups" :key="'settingsgroup-' + group.id" class="list-unstyled">
                       <b-card v-if="group.type === 'Freegle'" class="nocardbot">
-                        <b-card-title>
+                        <b-card-title title-tag="h3" class="header--size4">
                           <nuxt-link :to="'/explore/' + group.id">
                             <b-img-lazy
                               v-if="group.profile"
@@ -306,7 +306,7 @@
                               class="float-right groupprofile"
                             />
                           </nuxt-link>
-                          <nuxt-link :to="'/explore/' + group.id">
+                          <nuxt-link :to="'/explore/' + group.id" class="group__title">
                             {{ group.namedisplay }}
                           </nuxt-link>
                           <span v-if="group.role === 'Moderator' || group.role === 'Owner'">
@@ -1069,7 +1069,7 @@ export default {
   padding-bottom: 0px;
 }
 
-h4 a {
+.group__title {
   color: $colour-header;
 }
 
