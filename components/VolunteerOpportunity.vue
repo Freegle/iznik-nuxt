@@ -132,20 +132,22 @@
         </div>
       </b-card-body>
     </b-card>
-    <VolunteerOpportunityModal ref="opportunitymodal" :volunteering="item" />
+    <VolunteerOpportunityModal v-if="showModal" ref="opportunitymodal" :volunteering="item" />
   </div>
 </template>
 
 <script>
-import VolunteerOpportunityModal from './VolunteerOpportunityModal'
+import waitForRef from '@/mixins/waitForRef'
 import NoticeMessage from './NoticeMessage'
 import twem from '~/assets/js/twem'
+const VolunteerOpportunityModal = () => import('./VolunteerOpportunityModal')
 
 export default {
   components: {
     NoticeMessage,
     VolunteerOpportunityModal
   },
+  mixins: [waitForRef],
   props: {
     summary: {
       type: Boolean,
@@ -163,7 +165,8 @@ export default {
   },
   data: function() {
     return {
-      renewed: false
+      renewed: false,
+      showModal: false
     }
   },
   computed: {
@@ -195,7 +198,10 @@ export default {
   },
   methods: {
     showOpportunityModal() {
-      this.$refs.opportunitymodal.show()
+      this.showModal = true
+      this.waitForRef('opportunitymodal', () => {
+        this.$refs.opportunitymodal.show()
+      })
     },
     async renew() {
       await this.$store.dispatch('volunteerops/renew', {

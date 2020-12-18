@@ -102,18 +102,20 @@
         </div>
       </b-card-body>
     </b-card>
-    <CommunityEventModal ref="eventmodal" :event="item" />
+    <CommunityEventModal v-if="showModal" ref="eventmodal" :event="item" />
   </div>
 </template>
 
 <script>
-import CommunityEventModal from './CommunityEventModal'
+import waitForRef from '@/mixins/waitForRef'
 import twem from '~/assets/js/twem'
+const CommunityEventModal = () => import('./CommunityEventModal')
 
 export default {
   components: {
     CommunityEventModal
   },
+  mixins: [waitForRef],
   props: {
     summary: {
       type: Boolean,
@@ -130,7 +132,9 @@ export default {
     }
   },
   data: function() {
-    return {}
+    return {
+      showModal: false
+    }
   },
   computed: {
     description() {
@@ -142,7 +146,10 @@ export default {
   },
   methods: {
     showEventModal() {
-      this.$refs.eventmodal.show()
+      this.showModal = true
+      this.waitForRef('eventmodal', () => {
+        this.$refs.eventmodal.show()
+      })
     }
   }
 }

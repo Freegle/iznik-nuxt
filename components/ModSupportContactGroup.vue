@@ -126,9 +126,10 @@ import ModAlertHistory from './ModAlertHistory'
 let VueEditor, htmlEditButton
 
 if (process.client) {
+  const Quill = require('vue2-editor').Quill
+  window.Quill = Quill
   htmlEditButton = require('quill-html-edit-button').htmlEditButton
   VueEditor = require('vue2-editor').VueEditor
-  const Quill = require('vue2-editor').Quill
   Quill.register('modules/htmlEditButton', htmlEditButton)
 }
 

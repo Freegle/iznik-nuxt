@@ -106,7 +106,7 @@
           <client-only>
             <b-nav-item v-if="!loggedIn">
               <div class="btn btn-white" @click="requestLogin">
-                Sign in
+                Sign in or Join
               </div>
             </b-nav-item>
           </client-only>

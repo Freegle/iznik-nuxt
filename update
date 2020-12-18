@@ -7,14 +7,15 @@ while true
 do
   if [ -f /tmp/iznik.build.abort ]
   then
-    exit;
-  fi
-  time npm run generate --fail-on-error
-
-  if [ $? -eq 0 ]; then
-    rsync -au dist/ app4:/var/www/iznik.fdnuxt.static.live/
-    rsync -au dist/ app1:/var/www/iznik.fdnuxt.static.live/
+    sleep 30;
   else
-    echo "Generate failed!"
+    time npm run generate --fail-on-error
+
+    if [ $? -eq 0 ]; then
+      rsync -au dist/ app4:/var/www/iznik.fdnuxt.static.live/
+      rsync -au dist/ app1:/var/www/iznik.fdnuxt.static.live/
+    else
+      echo "Generate failed!"
+    fi
   fi
 done
