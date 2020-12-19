@@ -11,7 +11,7 @@
       <div v-if="contactPicker">
         <Invite />
         <hr>
-        <h2>
+        <h2 class="header--size2">
           Other ways to help
         </h2>
       </div>
@@ -24,7 +24,7 @@
         <li><b>Put up a poster.</b></li>
         <li><b>Tell your story</b>.</li>
       </ul>
-      <h3>
+      <h3 class="header--size3">
         Put up a poster
       </h3>
       <p>This is an A4 poster with tear-off strips - good for noticeboards in cafes, community venues, or at work.</p>

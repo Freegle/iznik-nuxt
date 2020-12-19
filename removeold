@@ -1,0 +1,5 @@
+#!/bin/bash
+cd /var/www/iznik.fdnuxt.static.live/_nuxt/static
+find * -maxdepth 0 -type d -not -path "current" -not -path "shared" -printf "%T@ %p\n" | sort -nr | awk 'NR > 5 {print $2}' | xargs rm -rf
+cd /var/www/iznik.fdnuxt.static.dev/_nuxt/static
+find * -maxdepth 0 -type d -not -path "current" -not -path "shared" -printf "%T@ %p\n" | sort -nr | awk 'NR > 5 {print $2}' | xargs rm -rf

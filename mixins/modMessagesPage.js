@@ -18,7 +18,9 @@ export default {
       busy: false,
       messageTerm: null,
       memberTerm: null,
-      modalOpen: false
+      modalOpen: false,
+      scrollHeight: null,
+      scrollTop: null
     }
   },
   computed: {
@@ -193,6 +195,26 @@ export default {
             this.busy = false
           })
       }
+    }
+  },
+  beforeUpdate() {
+    if (process.client) {
+      // If we add stuff at the top of the page we don't want to lose our place.
+      this.scrollHeight = document.body.scrollHeight
+      this.scrollTop = window.pageYOffset
+
+      this.$nextTick(() => {
+        if (
+          this.scrollTop > 0 &&
+          document.body.scrollHeight > this.scrollHeight
+        ) {
+          // We weren't at the top and we've added some data.  Scroll to where we were.
+          window.scrollTo(
+            0,
+            this.scrollTop + document.body.scrollHeight - this.scrollHeight
+          )
+        }
+      })
     }
   }
 }

@@ -69,7 +69,7 @@ export default {
       })
 
       // Route back.
-      this.$router.push('/explore/' + this.id)
+      this.$router.push('/explore/' + group.nameshort)
     }
   }
 }

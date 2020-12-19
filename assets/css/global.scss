@@ -1,6 +1,9 @@
 @import 'color-vars';
-@import 'typography';
 @import 'bootstrap-custom.scss';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+@import 'typography';
 @import 'buttons';
 
 .strike {
@@ -107,10 +110,6 @@ body.modtools {
 
 .preline {
   white-space: pre-line !important;
-}
-
-.fa-bh {
-  font-size: 100px;
 }
 
 .decornone {

@@ -15,12 +15,12 @@
               </td>
               <td class="align-top">
                 <span class="text-success font-weight-bold clickme" title="Click to see their profile" @click="showInfo">{{ users[userid].displayname }}</span>
-                <span class="font-weight-bold preline forcebreak replytext nopara">
+                <span class="font-weight-bold preline forcebreak text--small-medium nopara">
                   <NewsHighlight
                     :search-words="threadUsers"
                     :text="emessage"
                     :max-chars="500"
-                    class="font-weight-bold preline forcebreak replytext d-inline"
+                    class="font-weight-bold preline forcebreak text--small-medium d-inline"
                   /> <br>
                 </span>
                 <div v-if="reply.image">
@@ -587,11 +587,6 @@ export default {
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins/_breakpoints';
-
-.replytext {
-  font-size: 14px;
-  line-height: 1.2;
-}
 
 .replyphoto {
   width: 150px;

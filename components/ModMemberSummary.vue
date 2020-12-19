@@ -76,7 +76,6 @@ export default {
       })
     },
     showModmails() {
-      console.log('Show mod mails')
       this.modmailsonly = true
 
       this.waitForRef('logs', () => {

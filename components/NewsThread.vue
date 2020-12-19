@@ -33,7 +33,7 @@
               <b-dropdown-item v-if="canRefer" @click="referToReceived">
                 Refer to RECEIVED
               </b-dropdown-item>
-              <b-dropdown-item v-if="supportOrAdmin" @click="unhide">
+              <b-dropdown-item v-if="supportOrAdmin && newsfeed.hidden" @click="unhide">
                 Unhide post
               </b-dropdown-item>
             </b-dropdown>

@@ -13,7 +13,7 @@
         <b-btn variant="secondary" class="float-right m-1" size="sm" to="/jobs">
           <v-icon name="search" /> View more
         </b-btn>
-        <nuxt-link to="/communityevents">
+        <nuxt-link to="/jobs">
           <h2 class="header--size4 pl-1 pt-1">
             <v-icon name="briefcase" scale="2" /> Jobs
           </h2>
@@ -21,9 +21,11 @@
         <p class="text-center small">
           Jobs near you.  Freegle gets a small amount if you click.
         </p>
-        <div v-for="job in visibleJobs" :key="'job-' + job.onmousedown" class="">
-          <Job :summary="true" :job="job" />
-        </div>
+        <ul class="list-unstyled">
+          <li v-for="job in visibleJobs" :key="'job-' + job.onmousedown">
+            <Job :summary="true" :job="job" />
+          </li>
+        </ul>
         <client-only>
           <infinite-loading key="infinitejobs" @infinite="loadMore">
             <span slot="no-results">

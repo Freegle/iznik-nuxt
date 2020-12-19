@@ -480,116 +480,117 @@ export default {
       let messages = []
       this.$emit('update:loading', true)
 
-      // Get the messages from the server which are in the bounds of the map.
-      const bounds = this.mapObject.getBounds()
+      if (this.mapObject) {
+        // Get the messages from the server which are in the bounds of the map.
+        const bounds = this.mapObject.getBounds()
 
-      if (this.mapObject.getZoom() < this.minZoom) {
-        // The parent may  replace us with something else at this point, e.g. with a group map.  But maybe not.
-        // Their call.
-        console.log('Min zoom at', this.mapObject.getZoom())
-        this.$emit('minzoom', this.mapObject.getBounds())
-      }
-
-      const swlat = bounds.getSouthWest().lat
-      const swlng = bounds.getSouthWest().lng
-      const nelat = bounds.getNorthEast().lat
-      const nelng = bounds.getNorthEast().lng
-      let params = null
-
-      if (!this.search) {
-        // Get the messages in the map view.
-        params = {
-          subaction: 'inbounds',
-          swlat: swlat,
-          swlng: swlng,
-          nelat: nelat,
-          nelng: nelng,
-          groupid: this.groupid
+        if (this.mapObject.getZoom() < this.minZoom) {
+          // The parent may  replace us with something else at this point, e.g. with a group map.  But maybe not.
+          // Their call.
+          this.$emit('minzoom', this.mapObject.getBounds())
         }
-      } else {
-        // We are searching.  Get the list of messages from the server.
-        // eslint-disable-next-line no-lonely-if
-        if (this.searchOnGroups) {
-          // We want the server to search on our own groups.
+
+        const swlat = bounds.getSouthWest().lat
+        const swlng = bounds.getSouthWest().lng
+        const nelat = bounds.getNorthEast().lat
+        const nelng = bounds.getNorthEast().lng
+        let params = null
+
+        if (!this.search) {
+          // Get the messages in the map view.
           params = {
-            collection: 'Approved',
-            subaction: 'searchmess',
-            messagetype: this.type,
-            search: this.search,
-            groupid: this.groupid,
-            searchmygroups: true
-          }
-        } else {
-          // We want to search within the map area.
-          params = {
-            collection: 'Approved',
-            subaction: 'searchmess',
-            messagetype: this.type,
-            search: this.search,
-            groupid: this.groupid,
+            subaction: 'inbounds',
             swlat: swlat,
             swlng: swlng,
             nelat: nelat,
-            nelng: nelng
+            nelng: nelng,
+            groupid: this.groupid
           }
-        }
-      }
-
-      const ret = await this.$api.message.fetchMessages(params)
-
-      if (ret.ret === 0 && ret.messages) {
-        // Don't really understand why the clone is necessary, but it is - without it we seem to process
-        // old data inside the watch().
-        messages = cloneDeep(ret.messages)
-
-        if (this.groupid) {
-          messages = messages.filter(m => {
-            return m.groupid === this.groupid
-          })
-        }
-
-        if (this.type !== 'All') {
-          messages = messages.filter(m => {
-            return m.type === this.type
-          })
-        }
-
-        let countInBounds = 0
-
-        messages.forEach(m => {
-          if (
-            swlat <= m.lat &&
-            m.lat <= nelat &&
-            swlng <= m.lng &&
-            m.lng <= nelng
-          ) {
-            countInBounds++
-          }
-        })
-
-        if (countInBounds >= this.manyToShow) {
-          // We have seen lots, so we don't need to do the auto zoom out thing now.
-          this.shownMany = true
-        } else if (
-          !this.search &&
-          this.showMany &&
-          countInBounds < this.manyToShow &&
-          !this.shownMany
-        ) {
-          // If we haven't got more than 1 message at this zoom level, zoom out.  That means we'll always show at
-          // least something.  This is useful when we search for a specific place.
-          const currzoom = this.mapObject.getZoom()
-          if (currzoom > this.minZoom) {
-            this.mapObject.setZoom(currzoom - 1)
+        } else {
+          // We are searching.  Get the list of messages from the server.
+          // eslint-disable-next-line no-lonely-if
+          if (this.searchOnGroups) {
+            // We want the server to search on our own groups.
+            params = {
+              collection: 'Approved',
+              subaction: 'searchmess',
+              messagetype: this.type,
+              search: this.search,
+              groupid: this.groupid,
+              searchmygroups: true
+            }
           } else {
-            this.shownMany = true
+            // We want to search within the map area.
+            params = {
+              collection: 'Approved',
+              subaction: 'searchmess',
+              messagetype: this.type,
+              search: this.search,
+              groupid: this.groupid,
+              swlat: swlat,
+              swlng: swlng,
+              nelat: nelat,
+              nelng: nelng
+            }
           }
         }
-      }
 
-      this.messageLocations = messages
-      this.$emit('messages', messages)
-      this.$emit('update:loading', false)
+        const ret = await this.$api.message.fetchMessages(params)
+
+        if (ret.ret === 0 && ret.messages) {
+          // Don't really understand why the clone is necessary, but it is - without it we seem to process
+          // old data inside the watch().
+          messages = cloneDeep(ret.messages)
+
+          if (this.groupid) {
+            messages = messages.filter(m => {
+              return m.groupid === this.groupid
+            })
+          }
+
+          if (this.type !== 'All') {
+            messages = messages.filter(m => {
+              return m.type === this.type
+            })
+          }
+
+          let countInBounds = 0
+
+          messages.forEach(m => {
+            if (
+              swlat <= m.lat &&
+              m.lat <= nelat &&
+              swlng <= m.lng &&
+              m.lng <= nelng
+            ) {
+              countInBounds++
+            }
+          })
+
+          if (countInBounds >= this.manyToShow) {
+            // We have seen lots, so we don't need to do the auto zoom out thing now.
+            this.shownMany = true
+          } else if (
+            !this.search &&
+            this.showMany &&
+            countInBounds < this.manyToShow &&
+            !this.shownMany
+          ) {
+            // If we haven't got more than 1 message at this zoom level, zoom out.  That means we'll always show at
+            // least something.  This is useful when we search for a specific place.
+            const currzoom = this.mapObject.getZoom()
+            if (currzoom > this.minZoom) {
+              this.mapObject.setZoom(currzoom - 1)
+            } else {
+              this.shownMany = true
+            }
+          }
+        }
+
+        this.messageLocations = messages
+        this.$emit('messages', messages)
+        this.$emit('update:loading', false)
+      }
 
       return cloneDeep(messages)
     },

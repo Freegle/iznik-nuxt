@@ -34,8 +34,65 @@ h1, h2, h3, h4 {
   font-size: 1.25rem;
 }
 
-.header--size6 {
+.fa-bh {
+  font-size: 100px;
+}
+
+.text--smallest {
+  font-size: 0.6em;
+}
+
+.text--small {
+  font-size: 0.75rem;
+}
+
+.text--small-medium {
+  font-size: 0.9rem;
+  line-height: 1.2;
+}
+
+.text--medium {
   font-size: 1rem;
+}
+
+.text--medium-responsive {
+    font-size: 1rem;
+
+    @include media-breakpoint-up(md) {
+      font-size: 2vw;
+    }
+}
+
+.text--medium-large {
+  font-size: 1.2rem;
+  line-height: 1.2;
+}
+
+.text--medium-large-spaced {
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+
+.text--medium-large-highlight {
+  font-size: 1.2rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.text--large {
+  font-size: 1.5rem;
+}
+
+.text--largest {
+  font-size: 2rem;
+}
+
+.text--largest-responsive {
+  font-size: 2rem;
+
+  @include media-breakpoint-up(md) {
+    font-size: 3.5vw;
+  }
 }
 
 .text-success {

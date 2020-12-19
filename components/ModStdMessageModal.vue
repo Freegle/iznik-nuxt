@@ -210,7 +210,7 @@ export default {
     warning() {
       let ret = null
 
-      if (this.body) {
+      if (this.stdmsg && this.stdmsg.body) {
         const checks = {
           yahoo:
             'Yahoo Groups is no longer supported, so any mention of it is probably out of date.',
@@ -225,7 +225,7 @@ export default {
             'Freegle Direct is no longer an active term; we just talk about "our website" now.'
         }
 
-        const trimmed = this.body.replace(/\s/g, '').toLowerCase()
+        const trimmed = this.stdmsg.body.replace(/\s/g, '').toLowerCase()
         for (const keyword in checks) {
           if (trimmed.indexOf(keyword) !== -1) {
             ret = checks[keyword]
@@ -380,6 +380,8 @@ export default {
         text = text.replace(/\$myname/g, this.me.displayname)
         text = text.replace(/\$nummembers/g, group.membercount)
         text = text.replace(/\$nummods/g, group.modcount)
+        text = text.replace(/\$repostoffer/g, group.settings.reposts.offer)
+        text = text.replace(/\$repostwanted/g, group.settings.reposts.wanted)
 
         text = text.replace(
           /\$origsubj/g,
@@ -575,22 +577,24 @@ export default {
           })
           break
         case 'Edit':
-          if (this.message.item && this.message.location) {
-            // Well-structured message
-            await this.$store.dispatch('messages/patch', {
-              id: this.message.id,
-              msgtype: this.message.type,
-              item: this.message.item.name,
-              location: this.message.location.name,
-              textbody: body
-            })
-          } else {
-            // Not
-            await this.$store.dispatch('messages/patch', {
-              id: this.message.id,
-              subject: subj,
-              textbody: body
-            })
+          if (this.message) {
+            if (this.message.item && this.message.location) {
+              // Well-structured message
+              await this.$store.dispatch('messages/patch', {
+                id: this.message.id,
+                msgtype: this.message.type,
+                item: this.message.item.name,
+                location: this.message.location.name,
+                textbody: body
+              })
+            } else {
+              // Not
+              await this.$store.dispatch('messages/patch', {
+                id: this.message.id,
+                subject: subj,
+                textbody: body
+              })
+            }
           }
           break
         default:
