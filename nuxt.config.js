@@ -563,5 +563,11 @@ module.exports = {
       /^\/stories/,
       /^\/stats/
     ]
+  },
+  pwa: {
+    manifest: {
+      name: 'Freegle',
+      description: "Don't throw it away, give it away!"
+    }
   }
 }
