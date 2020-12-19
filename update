@@ -7,6 +7,7 @@ while true
 do
   if [ -f /tmp/iznik.build.abort ]
   then
+    echo "Build disabled, sleeping"
     sleep 30;
   else
     time npm run generate --fail-on-error
