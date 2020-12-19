@@ -22,9 +22,11 @@
           <!-- eslint-disable-next-line -->
         See more<span class="d-none d-md-inline"> jobs</span></nuxt-link>.
       </div>
-      <div v-for="(job, index) in jobs" :key="'job-' + job.onmousedown" class="">
-        <Job :summary="true" :job="job" :class="index > 1 ? 'd-none d-md-block' : ''" />
-      </div>
+      <ul class="list-unstyled">
+        <li v-for="(job, index) in jobs" :key="'job-' + job.onmousedown">
+          <Job :summary="true" :job="job" :class="index > 1 ? 'd-none d-md-block' : ''" />
+        </li>
+      </ul>
     </div>
   </div>
 </template>

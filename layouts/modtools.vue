@@ -45,7 +45,7 @@
       </b-navbar>
 
       <div class="d-flex">
-        <div v-if="showMenu" class="leftmenu">
+        <div v-if="showMenu" class="leftmenu text--medium-large-spaced">
           <ModMenuItemLeft link="/modtools" name="Dashboard" />
           <hr>
           <div class="pl-1">
@@ -383,7 +383,6 @@ body.modal-open {
 .leftmenu {
   min-width: 185px;
   padding-top: 68px;
-  font-size: 1.2em;
   background-color: $color-modtools-leftmenu-bg;
 
   a {

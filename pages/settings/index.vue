@@ -10,7 +10,7 @@
           <SettingsSimple class="mt-2" />
           <b-card border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
             <template v-slot:header>
-              <h2 class="bg-info settings__heading mb-0">
+              <h2 class="bg-info header--size5 mb-0">
                 <v-icon name="globe-europe" />
                 Your Public Profile
               </h2>
@@ -122,7 +122,7 @@
           </b-card>
           <b-card v-if="!simple" border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
             <template v-slot:header>
-              <h2 class="bg-info settings__heading mb-0">
+              <h2 class="bg-info header--size5 mb-0">
                 <v-icon name="globe-europe" />
                 Arranging Collections
               </h2>
@@ -131,9 +131,9 @@
               <p class="text-muted">
                 This is information you can choose to send to other freeglers when arranging collections.
               </p>
-              <b-row>
+              <b-row class="mb-2">
                 <b-col>
-                  <h3 class="header--size4">
+                  <h3 class="header--size5 header5__color">
                     Availability
                   </h3>
                   <p class="mt-2">
@@ -147,7 +147,7 @@
               </b-row>
               <b-row>
                 <b-col>
-                  <h3 class="header--size4 mt-2">
+                  <h3 class="header--size5 header5__color mt-2">
                     Address Book
                   </h3>
                   <p class="mt-2">
@@ -163,7 +163,7 @@
           </b-card>
           <b-card border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
             <template v-slot:header>
-              <h2 class="bg-info settings__heading mb-0">
+              <h2 class="bg-info header--size5 mb-0">
                 <v-icon name="lock" />
                 Your Account Settings
               </h2>
@@ -241,7 +241,7 @@
           </b-card>
           <b-card border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
             <template v-slot:header>
-              <h2 class="bg-info settings__heading mb-0">
+              <h2 class="bg-info header--size5 mb-0">
                 <v-icon name="envelope" />
                 Community Mail Settings
               </h2>
@@ -295,7 +295,7 @@
                   <div v-if="me.groups">
                     <div v-for="group in me.groups" :key="'settingsgroup-' + group.id" class="list-unstyled">
                       <b-card v-if="group.type === 'Freegle'" class="nocardbot">
-                        <b-card-title>
+                        <b-card-title title-tag="h3" class="header--size4">
                           <nuxt-link :to="'/explore/' + group.nameshort">
                             <b-img-lazy
                               v-if="group.profile"
@@ -306,7 +306,7 @@
                               class="float-right groupprofile"
                             />
                           </nuxt-link>
-                          <nuxt-link :to="'/explore/' + group.nameshort">
+                          <nuxt-link :to="'/explore/' + group.nameshort" class="group__title">
                             {{ group.namedisplay }}
                           </nuxt-link>
                           <span v-if="group.role === 'Moderator' || group.role === 'Owner'">
@@ -339,7 +339,7 @@
           </b-card>
           <b-card v-if="!simple" border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
             <template v-slot:header>
-              <h2 class="bg-info settings__heading mb-0">
+              <h2 class="bg-info header--size5 mb-0">
                 <v-icon name="bell" />
                 Chat Notifications
               </h2>
@@ -536,7 +536,7 @@
           </b-card>
           <b-card v-if="!simple" border-variant="info" header-bg-variant="info" header-text-variant="white" class="mt-2">
             <template v-slot:header>
-              <h2 class="bg-info settings__heading mb-0">
+              <h2 class="bg-info header--size5 mb-0">
                 <v-icon name="cog" />
                 Other
               </h2>
@@ -1069,17 +1069,12 @@ export default {
   padding-bottom: 0px;
 }
 
-h4 a {
+.group__title {
   color: $colour-header;
 }
 
 .image__icon {
   color: $color-white;
-}
-
-.settings__heading {
-  font-size: 1rem;
-  font-weight: normal;
 }
 
 .header5__color {
