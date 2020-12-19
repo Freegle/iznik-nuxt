@@ -124,7 +124,7 @@
       <div class="d-flex d-lg-none justify-content-between align-middle">
         <div v-if="chat && chat.chattype === 'User2User' && otheruser" v-b-tooltip.hover.top title="Promise an item to this person" class="ml-1 mr-2" @click="promise">
           <v-icon scale="2" name="handshake" class="fa-mob" />
-          <div class="mobtext">
+          <div class="mobtext text--smallest">
             Promise
           </div>
         </div>
@@ -137,25 +137,25 @@
           @click="addressBook"
         >
           <v-icon scale="2" name="address-book" class="fa-mob" />
-          <div class="mobtext">
+          <div class="mobtext text--smallest">
             Address
           </div>
         </div>
         <div v-if="chat && chat.chattype === 'User2User' && otheruser" v-b-tooltip.hover.top title="Update your availability" class="mr-2" @click="availability">
           <v-icon scale="2" name="calendar-alt" class="fa-mob" />
-          <div class="mobtext">
+          <div class="mobtext text--smallest">
             Available
           </div>
         </div>
         <div v-if="otheruser" v-b-tooltip.hover.top title="Info about this freegler" class="mr-2" @click="showInfo">
           <v-icon scale="2" name="info-circle" class="fa-mob" />
-          <div class="mobtext">
+          <div class="mobtext text--smallest">
             Info
           </div>
         </div>
         <div v-if="chat && chat.chattype === 'User2Mod' && mod" v-b-tooltip.hover.top title="Report as spammer" class="mr-2" @click="spamReport">
           <v-icon scale="2" name="ban" class="fa-mob" />
-          <div class="mobtext">
+          <div class="mobtext text--smallest">
             Spammer
           </div>
         </div>
@@ -163,13 +163,13 @@
           <external-link href="https://discourse.ilovefreegle.org/c/central" class="nocolor">
             <v-icon scale="2" name="question-circle" class="fa-mob" />
           </external-link>
-          <div class="mobtext">
+          <div class="mobtext text--smallest">
             Central
           </div>
         </div>
         <div v-if="chat && chat.chattype === 'User2User' && otheruser && !tooSoonToNudge" v-b-tooltip.hover.top title="Waiting for a reply?  Nudge this freegler." class="mr-2" @click="nudge">
           <v-icon scale="2" name="bell" class="fa-mob" />
-          <div class="mobtext">
+          <div class="mobtext text--smallest">
             Nudge
           </div>
         </div>
@@ -181,13 +181,13 @@
           @click="nudgeTooSoon"
         >
           <v-icon scale="2" name="bell" class="fa-mob" />
-          <div class="mobtext">
+          <div class="mobtext text--smallest">
             Nudge
           </div>
         </div>
         <div class="" @click="photoAdd">
           <v-icon scale="2" name="camera" class="fa-mob" />
-          <div class="mobtext">
+          <div class="mobtext text--smallest">
             Photo
           </div>
         </div>
@@ -250,11 +250,11 @@ export default {
   mixins: [waitForRef, chat, chatCollate]
 }
 </script>
+
 <style scoped lang="scss">
 @import 'color-vars';
 
 .mobtext {
-  font-size: 0.6em;
   text-align: center !important;
 }
 

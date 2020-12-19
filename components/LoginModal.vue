@@ -39,7 +39,7 @@
     </p>
     <div class="d-flex flex-column flex-lg-row justify-content-between p-3">
       <div class="signin__section--social">
-        <h3 class="signin__header">
+        <h3 class="header--size5 pb-3">
           Continue with your social account
         </h3>
         <p v-if="signUp">
@@ -47,15 +47,15 @@
         </p>
         <b-btn class="social-button social-button--facebook" :disabled="facebookDisabled" @click="loginFacebook">
           <b-img src="~/static/signinbuttons/facebook-logo.png" class="social-button__image" />
-          <span class="p-2 social-button__text font-weight-bold">Continue with Facebook</span>
+          <span class="p-2 text--medium font-weight-bold">Continue with Facebook</span>
         </b-btn>
         <b-btn class="social-button social-button--google" :disabled="googleDisabled" @click="loginGoogle">
           <b-img src="~/static/signinbuttons/google-logo.svg" class="social-button__image" />
-          <span class="p-2 social-button__text font-weight-bold">Continue with Google</span>
+          <span class="p-2 text--medium font-weight-bold">Continue with Google</span>
         </b-btn>
         <b-btn class="social-button social-button--yahoo" :disabled="yahooDisabled" @click="loginYahoo">
           <b-img src="~/static/signinbuttons/yahoo-logo.svg" class="social-button__image" />
-          <span class="p-2 social-button__text font-weight-bold">Continue with Yahoo</span>
+          <span class="p-2 text--medium font-weight-bold">Continue with Yahoo</span>
         </b-btn>
         <notice-message v-if="socialblocked" variant="warning">
           Social sign in blocked - check your privacy settings, including any ad blockers such as
@@ -73,7 +73,7 @@
         <div class="divider" />
       </div>
       <div class="signin__section--freegle">
-        <h3 class="signin__header pb-0">
+        <h3 class="header--size5 pb-0">
           <span v-if="signUp">
             Create an account on Freegle
           </span>
@@ -605,10 +605,6 @@ $color-yahoo: #6b0094;
   background-color: $color-white;
 }
 
-.social-button__text {
-  font-size: 1rem;
-}
-
 .social-button--facebook {
   border: 2px solid $color-facebook;
   background-color: $color-facebook;
@@ -622,11 +618,6 @@ $color-yahoo: #6b0094;
 .social-button--yahoo {
   border: 2px solid $color-yahoo;
   background-color: $color-yahoo;
-}
-
-.signin__header {
-  font-size: 1.1rem;
-  padding-bottom: 15px;
 }
 
 .divider__wrapper {
