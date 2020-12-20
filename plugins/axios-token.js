@@ -9,6 +9,7 @@ export default function({ $axios, app, store }) {
     ) {
       config.headers.common.Authorization =
         'Iznik ' + JSON.stringify(store.state.auth.user.persistent)
+      $axios.setToken(JSON.stringify(store.state.auth.user.persistent), 'Iznik')
     }
   })
 }

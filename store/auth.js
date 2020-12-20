@@ -197,6 +197,7 @@ export const actions = {
     commit('setUser', null)
     this.$api.session.logout()
     this.$axios.defaults.headers.common.Authorization = null
+    this.$axios.setToken(false)
   },
 
   async forget({ dispatch }) {
@@ -216,6 +217,7 @@ export const actions = {
     this.$axios.defaults.headers.common.Authorization = value
       ? 'Iznik ' + value.persistent
       : null
+    this.$axios.setToken(JSON.stringify(value.persistent), 'Iznik')
   },
 
   async login({ commit, dispatch, state }, params) {
