@@ -95,6 +95,7 @@ export default {
       this.$store.dispatch('chats/fetchLatestChats')
     }
 
+    if (this.$sentry) // IS_APP
     try {
       // Set the build date.  This may get superceded by Sentry releases, but it does little harm to add it in.
       this.$sentry.setExtra('builddate', process.env.BUILD_DATE)
