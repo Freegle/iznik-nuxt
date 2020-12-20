@@ -14,7 +14,7 @@
         <!-- eslint-disable-next-line -->
         <external-link href="https://discourse.ilovefreegle.org/c/central/9">Central</external-link>.
       </NoticeMessage>
-      <NoticeMessage v-if="group.overridemoderation" variant="danger" class="mb-1">
+      <NoticeMessage v-if="group.overridemoderation !== 'None'" variant="danger" class="mb-1">
         Your community is subject to restrictions.  All posts will be moderated.  Your community setting is unaffected
         and will take effect when this restriction is lifted.
         If you have questions, ask on
