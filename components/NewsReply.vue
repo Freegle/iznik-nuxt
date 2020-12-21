@@ -15,12 +15,12 @@
               </td>
               <td class="align-top">
                 <span class="text-success font-weight-bold clickme" title="Click to see their profile" @click="showInfo">{{ users[userid].displayname }}</span>
-                <span class="font-weight-bold preline forcebreak text--small-medium nopara">
+                <span class="font-weight-bold preline forcebreak text--small nopara">
                   <NewsHighlight
                     :search-words="threadUsers"
                     :text="emessage"
                     :max-chars="500"
-                    class="font-weight-bold preline forcebreak text--small-medium d-inline"
+                    class="font-weight-bold preline forcebreak text--small d-inline"
                   /> <br>
                 </span>
                 <div v-if="reply.image">
