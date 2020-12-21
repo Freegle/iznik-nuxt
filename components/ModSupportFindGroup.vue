@@ -8,7 +8,7 @@
       placeholder="Start typing a group name..."
       :disabled="loading"
     />
-    <div v-if="group">
+    <div v-if="group && group.url">
       <h3 class="mt-2">
         {{ group.nameshort }}
       </h3>
@@ -43,6 +43,9 @@
           disabled
           class="mr-2"
         />
+        <b-form-group>
+          <b-select v-model="region" :options="regionOptions" class="font-weight-bold ml-1" />
+        </b-form-group>
       </div>
       <group-header :id="group.id" :key="'group-' + group.id" :group="group" :show-join="false" />
       <h4 class="mt-2">
@@ -51,21 +54,21 @@
       Group id <v-icon name="hashtag" class="text-muted" scale="0.75" /><b>{{ group.id }}</b>.
       <br>
       <br>
-      <Clipboard class="mr-3 mb-1" :value="group.url" />
+      <Clipboard v-if="group.url" class="mr-3 mb-1" :value="group.url" />
       Explore page:
       <ExternalLink :href="group.url">
         {{ group.url }}
       </ExternalLink>
       <br>
-      <Clipboard class="mr-3 mb-1" :value="group.modsemail" />
+      <Clipboard v-if="group.modsemail" class="mr-3 mb-1" :value="group.modsemail" />
       Volunteers email:
       <!-- eslint-disable-next-line -->
       <ExternalLink :href="'mailto:' + group.modsemail">{{ group.modsemail }}</ExternalLink>
       <br>
-      <Clipboard class="mr-3 mb-1" :value="group.groupemail" />
+      <Clipboard v-if="group.groupemail" class="mr-3 mb-1" :value="group.groupemail" />
       Posting address:
       <!-- eslint-disable-next-line -->
-      <ExternalLink :href="'mailto:' + group.groupemail">{{ group.groupemail }}</ExternalLink>
+      <ExternalLink v-if="group.groupemail" :href="'mailto:' + group.groupemail">{{ group.groupemail }}</ExternalLink>
       <br>
       <Clipboard v-if="group.twitter" class="mr-3 mb-1" :value="'https://twitter.com/' + group.twitter.name" />
       Twitter:
@@ -226,6 +229,33 @@ export default {
       })
 
       return r
+    },
+    regionOptions() {
+      return [
+        { text: 'East', value: 'East' },
+        { text: 'London', value: 'London' },
+        { text: 'Midlands West', value: 'West Midlands' },
+        { text: 'Midlands East', value: 'East Midlands' },
+        { text: 'North East', value: 'North East' },
+        { text: 'North West', value: 'North West' },
+        { text: 'Northern Ireland', value: 'Northern Ireland' },
+        { text: 'South East', value: 'South East' },
+        { text: 'South West', value: 'South West' },
+        { text: 'Wales', value: 'Wales' },
+        { text: 'Yorkshire and the Humber', value: 'Yorkshire and the Humber' },
+        { text: 'Scotland', value: 'Scotland' }
+      ]
+    },
+    region: {
+      get() {
+        return this.group.region
+      },
+      set(newval) {
+        this.$store.dispatch('group/update', {
+          id: this.group.id,
+          region: newval
+        })
+      }
     }
   },
   watch: {
