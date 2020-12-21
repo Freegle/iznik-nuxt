@@ -541,7 +541,7 @@
                   <nuxt-link :to="'/explore/region/' + group.region">here</nuxt-link>.
                 </span>
               </b-form-text>
-              <b-select v-model="region" :options="regionOptions" class="font-weight-bold" :disabled="readonly" />
+              <b-select v-model="region" :options="regionOptions" class="font-weight-bold" :disabled="!supportOrAdmin" />
             </b-form-group>
             <ModGroupSetting
               :groupid="groupid"
