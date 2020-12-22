@@ -549,8 +549,8 @@ module.exports = {
       callback(null, munged)
     },
     exclude: [
-      // We don't want to generate anything too voluminous or logged in.
-      /^\/modtools/,
+      // We don't want to generate anything too voluminous or logged in.  But we need to generate modtools because
+      // Facebook scrapes it for app purposes, and the 404 breaks the Graffiti app.
       /^\/browse/,
       /^\/story/,
       /^\/stories\/fornewsletter/,
