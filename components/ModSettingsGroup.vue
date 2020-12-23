@@ -7,6 +7,20 @@
       <NoticeMessage v-if="group.settings.closed" variant="danger" class="mb-1">
         Your community is currently closed.  You can change this in <i>Features for Members</i>.
       </NoticeMessage>
+      <NoticeMessage v-if="group.autofunctionoverride" variant="danger" class="mb-1">
+        Your community is subject to restrictions.  Auto-repost/auto-approve are disabled.  <em>All Posts Moderated</em>
+        will have been set to <em>Yes</em> but you can choose to set this back to <em>No</em> in <em>Features for Moderators</em>.
+        If you have questions, ask on
+        <!-- eslint-disable-next-line -->
+        <external-link href="https://discourse.ilovefreegle.org/c/central/9">Central</external-link>.
+      </NoticeMessage>
+      <NoticeMessage v-if="group.overridemoderation !== 'None'" variant="danger" class="mb-1">
+        Your community is subject to restrictions.  All posts will be moderated.  Your community setting is unaffected
+        and will take effect when this restriction is lifted.
+        If you have questions, ask on
+        <!-- eslint-disable-next-line -->
+        <external-link href="https://discourse.ilovefreegle.org/c/central/9">Central</external-link>.
+      </NoticeMessage>
       <NoticeMessage v-if="group.ontn && group.tnsettings" variant="info" class="mt-1 mb-1">
         You can also find your TrashNothing settings
         <!-- eslint-disable-next-line -->
@@ -527,7 +541,7 @@
                   <nuxt-link :to="'/explore/region/' + group.region">here</nuxt-link>.
                 </span>
               </b-form-text>
-              <b-select v-model="region" :options="regionOptions" class="font-weight-bold" :disabled="readonly" />
+              <b-select v-model="region" :options="regionOptions" class="font-weight-bold" :disabled="!supportOrAdmin" />
             </b-form-group>
             <ModGroupSetting
               :groupid="groupid"

@@ -46,6 +46,14 @@
                   </p>
                 </template>
               </Question>
+              <Question id="rules">
+                <template slot="title">
+                  <b>What are your rules?</b>
+                </template>
+                <template slot="content">
+                  <TermsOfUse />
+                </template>
+              </Question>
               <Question id="wanted">
                 <template slot="title">
                   <b>How do I post a WANTED?</b>
@@ -152,24 +160,6 @@
                   <p>
                     If you'd like to leave Freegle, then go <nuxt-link to="/unsubscribe">
                       here
-                    </nuxt-link>.
-                  </p>
-                </template>
-              </Question>
-              <Question id="termsetc">
-                <template slot="title">
-                  <b>Where are your terms of use etc?</b>
-                </template>
-                <template slot="content">
-                  <p>
-                    Click to read our <nuxt-link to="/terms">
-                      terms of use
-                    </nuxt-link>,
-                    <nuxt-link to="/privacy">
-                      privacy statement
-                    </nuxt-link>, and
-                    <nuxt-link to="/disclaimer">
-                      disclaimer
                     </nuxt-link>.
                   </p>
                 </template>
@@ -480,6 +470,7 @@
 import { TabsPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import buildHead from '@/mixins/buildHead.js'
+import TermsOfUse from '@/components/TermsOfUse'
 import Question from '../components/Question'
 
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
@@ -499,7 +490,8 @@ export default {
     NoticeMessage,
     RateAppModal,
     DonationButton,
-    ExternalLink
+    ExternalLink,
+    TermsOfUse
   },
   mixins: [buildHead],
   data() {

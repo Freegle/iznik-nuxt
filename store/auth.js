@@ -223,9 +223,10 @@ export const actions = {
     this.$axios.defaults.headers.common.Authorization = value
       ? 'Iznik ' + value.persistent
       : null
-    this.$axios.setToken(JSON.stringify(value.persistent),'Iznik')
-
-    console.log('auth.setUser ',value?value.persistent:'null')
+    this.$axios.setToken(
+      value ? JSON.stringify(value.persistent) : null,
+      'Iznik'
+    )
   },
 
   async login({ commit, dispatch, state }, params) {
