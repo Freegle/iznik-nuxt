@@ -204,11 +204,6 @@ export default {
         this.$refs.profile.show()
       })
     },
-    availability() {
-      this.waitForRef('availabilitymodal', () => {
-        this.$refs.availabilitymodal.show()
-      })
-    },
     loadMore: async function($state) {
       const currentCount = this.chatmessages.length
 

@@ -77,9 +77,6 @@
           <b-btn v-if="!simple" v-b-tooltip.hover.top variant="secondary" title="Send your address" @click="addressBook">
             <v-icon name="address-book" class="fa-fw" />&nbsp;Address
           </b-btn>
-          <b-btn v-if="!simple" v-b-tooltip.hover.top variant="secondary" title="Update your availability" @click="availability">
-            <v-icon name="calendar-alt" class="fa-fw" />&nbsp;Availability
-          </b-btn>
           <b-btn v-b-tooltip.hover.top variant="secondary" title="Info about this freegler" @click="showInfo">
             <v-icon name="info-circle" class="fa-fw" />&nbsp;Info
           </b-btn>
@@ -141,12 +138,6 @@
             Address
           </div>
         </div>
-        <div v-if="chat && chat.chattype === 'User2User' && otheruser" v-b-tooltip.hover.top title="Update your availability" class="mr-2" @click="availability">
-          <v-icon scale="2" name="calendar-alt" class="fa-mob" />
-          <div class="mobtext text--smallest">
-            Available
-          </div>
-        </div>
         <div v-if="otheruser" v-b-tooltip.hover.top title="Info about this freegler" class="mr-2" @click="showInfo">
           <v-icon scale="2" name="info-circle" class="fa-mob" />
           <div class="mobtext text--smallest">
@@ -200,7 +191,6 @@
     </div>
     <PromiseModal ref="promise" :messages="ouroffers" :selected-message="likelymsg ? likelymsg : 0" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
     <ProfileModal v-if="otheruser" :id="otheruser ? otheruser.id : null" ref="profile" />
-    <AvailabilityModal v-if="me && chat" ref="availabilitymodal" :otheruid="otheruser ? otheruser.id : null" :chatid="chat.id" :thisuid="me.id" />
     <AddressModal ref="addressModal" :choose="true" @chosen="sendAddress" />
     <ChatRSVPModal v-if="RSVP" :id="id" ref="rsvp" :user="otheruser" />
     <NudgeTooSoonWarningModal ref="nudgetoosoonwarning" @confirm="doNudge" />
@@ -223,7 +213,6 @@ const Ratings = () => import('~/components/Ratings')
 const PromiseModal = () => import('~/components/PromiseModal')
 const ProfileModal = () => import('~/components/ProfileModal')
 const NoticeMessage = () => import('~/components/NoticeMessage')
-const AvailabilityModal = () => import('~/components/AvailabilityModal')
 const AddressModal = () => import('~/components/AddressModal')
 const ModSpammerReport = () => import('~/components/ModSpammerReport')
 const ChatRSVPModal = () => import('~/components/ChatRSVPModal')
@@ -235,7 +224,6 @@ export default {
   components: {
     NudgeTooSoonWarningModal,
     NudgeWarningModal,
-    AvailabilityModal,
     ExternalLink,
     ModComments,
     ModSpammerReport,

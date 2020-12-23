@@ -208,7 +208,11 @@ export default {
       await this.$store.dispatch('address/fetch')
       this.showModal = true
 
-      // See AvailabilityModal for explanation.
+      // Probably because of PEBCAK, I had a problem where if you brought up the modal, changed the data, cancelled, then
+      // brought it up again, the old data was still present despite the fetch that happens above being called again.
+      // So we jump through some hoops with a watcher and a local property.  It'll do for now.
+      // The store was updated but the computed property didn't get called again.  Perhaps it's replacing the whole
+      // array?  But if that was the problem then this watch wouldn't fire.
       if (this.addressWatch) {
         this.addressWatch()
       }

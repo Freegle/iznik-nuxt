@@ -91,13 +91,13 @@
                 </b-btn>
               </span>
             </div>
-            <div>
-              <span v-if="message.replycount > 0 && !expanded">
+            <div class="d-flex flex-wrap">
+              <div v-if="message.replycount > 0 && !expanded">
                 <b-badge variant="info">
                   <v-icon name="user" class="fa-fw" /> {{ message.replycount | pluralize(['reply', 'replies'], { includeNumber: true }) }}
                 </b-badge>
-              </span>
-              <span v-if="message.outcomes && message.outcomes.length > 0" class="ml-1">
+              </div>
+              <div v-if="message.outcomes && message.outcomes.length > 0" class="ml-1">
                 <b-badge v-if="taken" variant="success">
                   <v-icon name="check" class="fa-fw" /> Taken
                 </b-badge>
@@ -107,17 +107,23 @@
                 <b-badge v-if="withdrawn" variant="secondary">
                   <v-icon name="check" class="fa-fw" /> Withdrawn
                 </b-badge>
-              </span>
-              <span v-else-if="message.promisecount > 0" class="ml-1">
-                <b-badge variant="success">
+              </div>
+              <div v-else-if="message.promisecount > 0">
+                <b-badge v-if="promisedTo.length === 0" variant="success">
                   <v-icon name="handshake" class="fa-fw" /> Promised
                 </b-badge>
-              </span>
-              <span v-if="unseen > 0" class="ml-1">
+                <div v-else class="ml-1 d-flex flex-wrap text-success">
+                  <v-icon name="handshake" class="fa-fw mt-1" />&nbsp;Promised&nbsp;
+                  <div v-for="p in promisedTo" :key="'promised-' + p.id">
+                    to {{ p.name }}
+                  </div>
+                </div>
+              </div>
+              <div v-if="unseen > 0" class="ml-1">
                 <b-badge variant="danger">
                   <v-icon name="comments" class="fa-fw" /> {{ unseen }} unread
                 </b-badge>
-              </span>
+              </div>
             </div>
             <div class="d-flex justify-content-start flex-wrap mt-1">
               <b-btn v-if="queued" variant="primary" class="mr-2 mb-1" @click="submitQueued">
@@ -313,19 +319,15 @@ export default {
 
       return unseen
     },
-
     taken() {
       return this.hasOutcome('Taken')
     },
-
     received() {
       return this.hasOutcome('Received')
     },
-
     withdrawn() {
       return this.hasOutcome('Withdrawn')
     },
-
     rejected() {
       let rejected = false
 
@@ -337,7 +339,6 @@ export default {
 
       return rejected
     },
-
     replies() {
       if (this.message.isdraft) {
         return []
@@ -360,7 +361,6 @@ export default {
         })
       }
     },
-
     replyusers() {
       const ret = []
       const retids = []
@@ -376,7 +376,6 @@ export default {
 
       return ret
     },
-
     chats() {
       // We want all the chats which reference this message.  We fetch them in myposts, here we only need to
       // get them from the store
@@ -393,6 +392,55 @@ export default {
       }
 
       return ret
+    },
+    promisedTo() {
+      const ret = []
+
+      if (
+        this.expanded &&
+        this.message.promises &&
+        this.message.promises.length
+      ) {
+        this.message.promises.forEach(p => {
+          const user = this.$store.getters['user/get'](p.userid)
+          console.log('Consider promise', p, user)
+
+          if (user) {
+            ret.push({
+              id: p.userid,
+              name: user.displayname
+            })
+          }
+        })
+      }
+
+      console.log('Promised to', ret)
+
+      return ret
+    }
+  },
+  watch: {
+    message: {
+      immediate: true,
+      handler(newVal) {
+        if (newVal) {
+          // We may need to fetch user info for promises.
+          if (newVal.promises) {
+            newVal.promises.forEach(p => {
+              console.log('Consider promise', p)
+              const user = this.$store.getters['user/get'](p.userid)
+              if (!user) {
+                console.log('Fetch', p.userid)
+                this.$store.dispatch('user/fetch', {
+                  id: p.userid
+                })
+              } else {
+                console.log('Already got user', user)
+              }
+            })
+          }
+        }
+      }
     }
   },
   mounted() {

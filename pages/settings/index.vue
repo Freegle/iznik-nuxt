@@ -131,20 +131,6 @@
               <p class="text-muted">
                 This is information you can choose to send to other freeglers when arranging collections.
               </p>
-              <b-row class="mb-2">
-                <b-col>
-                  <h3 class="header--size5 header5__color">
-                    Availability
-                  </h3>
-                  <p class="mt-2">
-                    We can help you arrange a collection time if you tell us when you're available over the next
-                    few days.
-                  </p>
-                  <b-btn variant="white" @click="availability">
-                    <v-icon name="calendar-alt" /> Edit Availability
-                  </b-btn>
-                </b-col>
-              </b-row>
               <b-row>
                 <b-col>
                   <h3 class="header--size5 header5__color mt-2">
@@ -572,7 +558,6 @@
       <AboutMeModal ref="aboutmemodal" @change="update" />
       <ProfileModal :id="me ? me.id : null" ref="profilemodal" />
       <EmailConfirmModal ref="emailconfirm" />
-      <AvailabilityModal ref="availabilitymodal" :thisuid="me.id" />
       <AddressModal ref="addressModal" />
     </client-only>
   </div>
@@ -592,7 +577,6 @@ import 'vue2-datepicker/index.css'
 import Postcode from '~/components/Postcode'
 
 const AboutMeModal = () => import('~/components/AboutMeModal')
-const AvailabilityModal = () => import('~/components/AvailabilityModal')
 const AddressModal = () => import('~/components/AddressModal')
 const ProfileModal = () => import('~/components/ProfileModal')
 const SettingsGroup = () => import('~/components/SettingsGroup')
@@ -612,7 +596,6 @@ export default {
     DatePicker,
     EmailConfirmModal,
     AboutMeModal,
-    AvailabilityModal,
     AddressModal,
     ProfileModal,
     Postcode,
@@ -823,11 +806,6 @@ export default {
     viewProfile() {
       this.waitForRef('profilemodal', () => {
         this.$refs.profilemodal.show()
-      })
-    },
-    availability() {
-      this.waitForRef('availabilitymodal', () => {
-        this.$refs.availabilitymodal.show()
       })
     },
     async changeUseProfile(c, e) {
