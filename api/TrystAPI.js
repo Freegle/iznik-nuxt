@@ -15,6 +15,6 @@ export default class TrystAPI extends BaseAPI {
   }
 
   delete(data) {
-    return this.$delete('/tryst', data)
+    return this.$del('/tryst', data)
   }
 }

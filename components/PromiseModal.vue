@@ -66,7 +66,7 @@
           />
         </div>
         <div class="d-flex flex-column justify-content-center">
-          <b-btn variant="link" @click="deleteTryst">
+          <b-btn v-if="time" variant="link" @click="deleteTryst">
             Cancel
           </b-btn>
         </div>
