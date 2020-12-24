@@ -112,10 +112,13 @@
                 <b-badge v-if="promisedTo.length === 0" variant="success">
                   <v-icon name="handshake" class="fa-fw" /> Promised
                 </b-badge>
-                <div v-else class="ml-1 d-flex flex-wrap text-success">
+                <div v-else class="ml-1 d-flex flex-wrap text-info">
                   <v-icon name="handshake" class="fa-fw mt-1" />&nbsp;Promised&nbsp;
                   <div v-for="p in promisedTo" :key="'promised-' + p.id">
-                    to {{ p.name }}
+                    to <b>{{ p.name }}</b>
+                    <span v-if="p.trystdate">
+                      , handover arranged for <b>{{ p.trystdate }}</b>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -403,18 +406,22 @@ export default {
       ) {
         this.message.promises.forEach(p => {
           const user = this.$store.getters['user/get'](p.userid)
-          console.log('Consider promise', p, user)
 
           if (user) {
+            const tryst = this.$store.getters['tryst/getByUser'](p.userid)
+            const date = tryst
+              ? this.$dayjs(tryst.arrangedfor).format('dddd Do HH:mm a')
+              : null
+
             ret.push({
               id: p.userid,
-              name: user.displayname
+              name: user.displayname,
+              tryst: tryst,
+              trystdate: date
             })
           }
         })
       }
-
-      console.log('Promised to', ret)
 
       return ret
     }

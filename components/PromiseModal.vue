@@ -88,6 +88,9 @@
 </template>
 
 <script>
+// TODO:
+// - if not handover date arranged, how do you do so from my posts?
+// - prompt to use promise.
 import Vue from 'vue'
 import { FormTimepickerPlugin, FormDatepickerPlugin } from 'bootstrap-vue'
 Vue.use(FormTimepickerPlugin)

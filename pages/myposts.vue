@@ -358,6 +358,9 @@ export default {
       await this.$store.dispatch('chats/listChats')
     })
 
+    // Find any arrangements.
+    this.$store.dispatch('tryst/fetch')
+
     // For some reason we can't capture emitted events from the outcome modal so use root as a bus.
     this.$root.$on('outcome', params => {
       const { groupid, outcome } = params
