@@ -73,7 +73,7 @@
       </div>
       <p class="mt-2 text-muted">
         If you say when the handover is happening we can remind both of you, which makes things go more smoothly.
-        If you've not arranged a time yet, you can come back here later when you have.
+        If you've not arranged a time yet, you can come back here later by clicking on the <em>Promise</em> button again.
       </p>
     </template>
     <template slot="modal-footer" slot-scope="{ ok, cancel }">
