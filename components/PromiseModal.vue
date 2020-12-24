@@ -227,7 +227,9 @@ export default {
       handler(newVal) {
         if (newVal && !this.time) {
           // Default the time.
-          this.time = this.$dayjs().format('HH:mm:ss')
+          this.time = this.$dayjs()
+            .minute(Math.ceil(this.$dayjs().minute() / 15) * 15)
+            .format('HH:mm:ss')
         }
       }
     },
