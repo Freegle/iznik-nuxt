@@ -199,7 +199,8 @@ export default {
           m.refmsg.type === 'Offer' &&
           m.refmsg.fromuser === this.myid &&
           m.refmsg.availablenow &&
-          (!m.refmsg.outcomes || m.refmsg.outcomes.length === 0)
+          (!m.refmsg.outcomes || m.refmsg.outcomes.length === 0) &&
+          !this.promisedToMe(m.refmsg.id)
         ) {
           ret = m.refmsg.id
         }
@@ -641,6 +642,17 @@ export default {
       this.waitForRef('chatblock', () => {
         this.$refs.chatblock.show()
       })
+    },
+    promisedToMe(msgid) {
+      let ret = false
+
+      this.mymessages.forEach(m => {
+        if (m.type === 'Promised' && m.refmsg && m.refmsg.id === msgid) {
+          ret = true
+        }
+      })
+
+      return ret
     }
   },
   watch: {
