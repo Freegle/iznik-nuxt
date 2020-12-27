@@ -9,4 +9,13 @@ export default class MicroVolunteeringAPI extends BaseAPI {
   response(params) {
     return this.$post('/microvolunteering', params)
   }
+
+  async list(context) {
+    const ret = await this.$get('/microvolunteering', {
+      list: true,
+      context: context
+    })
+
+    return ret
+  }
 }

@@ -289,15 +289,6 @@ export default {
           this.getTask()
         } else {
           // We don't know if they want to.  Ask.
-          this.$api.bandit.shown({
-            uid: 'microvolunteering',
-            variant: 'inviteaccepted'
-          })
-          this.$api.bandit.shown({
-            uid: 'microvolunteering',
-            variant: 'inviterejected'
-          })
-
           this.showInvite = true
         }
       }
@@ -308,7 +299,7 @@ export default {
       // Try to get a task.
       this.similarTerms = []
 
-      this.task = await this.$api.microvolunteering.challenge({
+      this.task = await this.$store.dispatch('microvolunteering/challenge', {
         types: this.types
       })
 
@@ -352,11 +343,6 @@ export default {
               value: Date.now()
             })
 
-            this.$api.bandit.chosen({
-              uid: 'microvolunteering',
-              variant: 'inviterejected'
-            })
-
             await this.$store.dispatch('user/edit', {
               id: this.myid,
               trustlevel: 'Declined'
@@ -367,7 +353,7 @@ export default {
           }
           case 'Approve': {
             // Approved -  that's it.
-            await this.$api.microvolunteering.response({
+            await this.$store.dispatch('microvolunteering/respond', {
               msgid: this.task.msgid,
               response: verdict
             })
@@ -382,7 +368,7 @@ export default {
           }
           case 'Comments': {
             // Record the result with comments.
-            await this.$api.microvolunteering.response({
+            await this.$store.dispatch('microvolunteering/respond', {
               msgid: this.task.msgid,
               response: 'Reject',
               comments: this.comments,
@@ -415,11 +401,6 @@ export default {
           value: Date.now()
         })
 
-        this.$api.bandit.chosen({
-          uid: 'microvolunteering',
-          variant: 'inviteaccepted'
-        })
-
         this.$store.dispatch('user/edit', {
           id: this.myid,
           trustlevel: 'Basic'
@@ -430,11 +411,6 @@ export default {
         this.$store.dispatch('misc/set', {
           key: 'microvolunteeringinviterejected',
           value: Date.now()
-        })
-
-        this.$api.bandit.chosen({
-          uid: 'microvolunteering',
-          variant: 'inviterejected'
         })
 
         this.$store.dispatch('user/edit', {
@@ -466,7 +442,7 @@ export default {
       this.similarTerms = this.similarTerms.filter(t => t.id !== term.id)
     },
     async submitSimilar() {
-      await this.$api.microvolunteering.response({
+      await this.$store.dispatch('microvolunteering/respond', {
         searchterm1: this.similarTerms[0].id,
         searchterm2: this.similarTerms[1].id
       })
@@ -474,7 +450,7 @@ export default {
       this.considerNext()
     },
     async facebookSkipped() {
-      await this.$api.microvolunteering.response({
+      await this.$store.dispatch('microvolunteering/respond', {
         facebook: this.task.facebook.id,
         response: 'Reject'
       })
@@ -482,7 +458,7 @@ export default {
       this.getTask()
     },
     async facebookDone() {
-      await this.$api.microvolunteering.response({
+      await this.$store.dispatch('microvolunteering/respond', {
         facebook: this.task.facebook.id,
         response: 'Approve'
       })
