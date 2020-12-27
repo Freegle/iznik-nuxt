@@ -4,7 +4,8 @@
       Hide Help
     </b-btn>
     <p>
-      These are the microvolunteering actions that members have taken on your communities.
+      These are the microvolunteering actions that members have taken on your communities.  You can click to go to
+      the relevant messages.
     </p>
   </NoticeMessage>
   <b-btn v-else variant="link" class="float-right" @click="toggleHelp">
