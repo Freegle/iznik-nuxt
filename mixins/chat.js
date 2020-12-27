@@ -198,6 +198,7 @@ export default {
           m.refmsg &&
           m.refmsg.type === 'Offer' &&
           m.refmsg.fromuser === this.myid &&
+          m.refmsg.availablenow &&
           (!m.refmsg.outcomes || m.refmsg.outcomes.length === 0)
         ) {
           ret = m.refmsg.id
