@@ -229,6 +229,7 @@ export default {
           // Default the time.
           this.time = this.$dayjs()
             .minute(Math.ceil(this.$dayjs().minute() / 15) * 15)
+            .add(1, 'hour')
             .format('HH:mm:ss')
         }
       }
