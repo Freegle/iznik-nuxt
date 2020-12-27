@@ -41,6 +41,17 @@
         </notice-message>
         <ModComments v-if="mod && chat && chat.chattype === 'User2Mod' && otheruser" :user="otheruser" class="mt-1" />
       </div>
+      <notice-message v-if="showHandoverPrompt">
+        Looks like you're agreeing a handover with <b>{{ otheruser.displayname }}</b>, maybe on <b>{{ discussedDay }}</b>?
+        <div class="d-flex mt-2">
+          <b-btn v-b-tooltip.hover.top variant="primary" title="Yes, I'm agreeing a handover" @click="promise(discussedDate)">
+            Yes
+          </b-btn>
+          <b-btn v-b-tooltip.hover.top variant="secondary" title="No, I'm not agreeing a handover" class="ml-3" @click="notHandover">
+            No
+          </b-btn>
+        </div>
+      </notice-message>
       <label for="chatmessage" class="sr-only">Chat message</label>
       <b-form-textarea
         v-if="enterNewLine && !spammer"

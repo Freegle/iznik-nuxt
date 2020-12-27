@@ -1,4 +1,6 @@
+import chatCollate from '@/mixins/chatCollate.js'
 import twem from '~/assets/js/twem'
+import { ADDRESS_WORDS, DAY_WORDS } from '~/utils/constants'
 
 export default {
   props: {
@@ -7,6 +9,7 @@ export default {
       required: true
     }
   },
+  mixins: [chatCollate],
   data: function() {
     return {
       lastFetched: new Date(),
@@ -25,7 +28,8 @@ export default {
       notVisible: false,
       contactGroup: null,
       urlid: null,
-      showSpamModal: false
+      showSpamModal: false,
+      hideHandoverPrompt: false
     }
   },
   computed: {
@@ -51,37 +55,33 @@ export default {
 
       return unseen
     },
-
     chatmessages() {
       const msgs = this.$store.getters['chatmessages/getMessages'](this.id)
       return this.chatCollate(msgs)
     },
-
+    mymessages() {
+      return this.chatmessages.filter(m => m.userid === this.myid)
+    },
     lastfromme() {
       let last = 0
 
-      this.chatmessages.forEach(m => {
-        if (m.userid === this.myid) {
-          last = Math.max(last, new Date(m.date).getTime())
-        }
+      this.mymessages.forEach(m => {
+        last = Math.max(last, new Date(m.date).getTime())
       })
 
       return last
     },
-
     tooSoonToNudge() {
       return (
         this.lastfromme > 0 &&
         new Date().getTime() - this.lastfromme < 24 * 60 * 60 * 1000
       )
     },
-
     chatusers() {
       // This is a bit expensive in the store, so it's better to get it here and pass it down than potentially to
       // get it in each message we render.
       return this.$store.getters['chatmessages/getUsers'](this.id)
     },
-
     badratings() {
       let ret = false
 
@@ -97,7 +97,6 @@ export default {
 
       return ret
     },
-
     expectedreply() {
       let ret = 0
 
@@ -107,13 +106,11 @@ export default {
 
       return ret
     },
-
     milesaway() {
       return this.otheruser && this.otheruser.info
         ? this.otheruser.info.milesaway
         : null
     },
-
     replytime() {
       let ret = null
       let secs = null
@@ -140,7 +137,6 @@ export default {
 
       return ret
     },
-
     otheruserid() {
       // The user who isn't us.
       let ret = null
@@ -163,7 +159,6 @@ export default {
 
       return ret
     },
-
     otheruser() {
       // We get this from the store rather than the chat object, because we fetched it in fetchChat, and
       // that copy has more info, which we need.
@@ -180,7 +175,6 @@ export default {
 
       return user
     },
-
     spammer() {
       let ret = false
 
@@ -193,6 +187,108 @@ export default {
       }
 
       return ret
+    },
+    openInterested() {
+      // Does this chat refer to any messages which belong to us and which are still open?
+      let ret = false
+
+      this.chatmessages.forEach(m => {
+        if (
+          m.type === 'Interested' &&
+          m.refmsg &&
+          m.refmsg.type === 'Offer' &&
+          m.refmsg.fromuser === this.myid &&
+          (!m.refmsg.outcomes || m.refmsg.outcomes.length === 0)
+        ) {
+          ret = m.refmsg.id
+        }
+      })
+
+      return ret
+    },
+    sentAddress() {
+      const ret = this.mymessages.find(m => {
+        // If we've sent an address that's a giveaway.
+        if (m.type === 'Address') {
+          return true
+        }
+
+        // See if we've probably sent an address just by typing.
+        if (
+          ADDRESS_WORDS.find(w => {
+            const re = new RegExp('\\b' + w + '\\b', 'gi')
+            if (m.message && m.message.match(re)) {
+              return true
+            }
+          })
+        ) {
+          return true
+        }
+      })
+
+      return ret
+    },
+    discussedDate() {
+      let ret = null
+
+      // Only look if I've been talking recently to avoid picking up old dates.
+      if (
+        this.lastfromme > 0 &&
+        new Date().getTime() - this.lastfromme < 5 * 24 * 60 * 60 * 1000
+      ) {
+        // Look for a mention of a day.
+        this.chatmessages.forEach(m => {
+          if (
+            new Date().getTime() - new Date(m.date) <
+            5 * 24 * 60 * 60 * 1000
+          ) {
+            const dayword = DAY_WORDS.find(w => {
+              const re = new RegExp('\\b' + w + '\\b', 'gi')
+              if (m.message && m.message.match(re)) {
+                return true
+              }
+            })
+
+            if (dayword) {
+              // We found a day word.  Guess which date it means.
+              switch (dayword) {
+                case 'today':
+                case 'this afternoon':
+                case 'this evening':
+                case 'tonight':
+                  ret = this.$dayjs()
+                  break
+                case 'tomorrow':
+                  ret = this.$dayjs().add(1, 'day')
+                  break
+                default:
+                  for (let i = 0; i < 7; i++) {
+                    const date = this.$dayjs().add(i, 'day')
+                    if (
+                      date.format('dd').toLowerCase() ===
+                      dayword.substring(0, 2).toLowerCase()
+                    ) {
+                      ret = date
+                    }
+                  }
+              }
+            }
+          }
+        })
+      }
+
+      return ret
+    },
+    discussedDay() {
+      return this.discussedDate ? this.discussedDate.format('dddd Do') : null
+    },
+    showHandoverPrompt() {
+      return (
+        this.otheruser &&
+        !this.hideHandoverPrompt &&
+        this.openInterested &&
+        (this.discussedDate || this.sentAddress)
+      )
     }
   },
   async beforeMount() {
@@ -284,7 +380,6 @@ export default {
         id: this.id
       })
     },
-
     send: async function() {
       let msg = this.sendmessage
 
@@ -323,9 +418,41 @@ export default {
         }
       }
     },
-    promise() {
+    notHandover() {
+      this.hideHandoverPrompt = true
+      this.$api.bandit.shown({
+        uid: 'handoverprompt',
+        variant: 'yes'
+      })
+      this.$api.bandit.shown({
+        uid: 'handoverprompt',
+        variant: 'no'
+      })
+
+      this.$api.bandit.chosen({
+        uid: 'handoverprompt',
+        variant: 'no'
+      })
+    },
+    promise(date) {
+      if (this.showHandoverPrompt) {
+        this.$api.bandit.shown({
+          uid: 'handoverprompt',
+          variant: 'yes'
+        })
+        this.$api.bandit.shown({
+          uid: 'handoverprompt',
+          variant: 'no'
+        })
+
+        this.$api.bandit.chosen({
+          uid: 'handoverprompt',
+          variant: 'yes'
+        })
+      }
+
       // Show the modal first, as eye candy.
-      this.$refs.promise.show()
+      this.$refs.promise.show(date)
 
       this.$nextTick(async () => {
         // Get our offers.

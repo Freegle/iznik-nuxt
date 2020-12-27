@@ -222,18 +222,6 @@ export default {
         }
       }
     },
-    date: {
-      immediate: true,
-      handler(newVal) {
-        if (newVal && !this.time) {
-          // Default the time.
-          this.time = this.$dayjs()
-            .minute(Math.ceil(this.$dayjs().minute() / 15) * 15)
-            .add(1, 'hour')
-            .format('HH:mm:ss')
-        }
-      }
-    },
     tryst: {
       immediate: true,
       handler(newVal) {
@@ -274,10 +262,19 @@ export default {
 
       this.hide()
     },
-    show() {
+    async show(date) {
       this.showModal = true
       this.message = this.selectedMessage
-      this.$store.dispatch('tryst/fetch')
+
+      // Fetch any existing tryst.
+      await this.$store.dispatch('tryst/fetch')
+
+      if (date) {
+        // Explicit date -set it (overriding any in the tryst).
+        this.$nextTick(() => {
+          this.date = date.format('YYYY-MM-DD')
+        })
+      }
     },
     hide() {
       this.showModal = false
