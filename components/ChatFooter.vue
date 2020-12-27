@@ -82,7 +82,7 @@
     <div v-if="!spammer" class="bg-white pt-1 pb-1">
       <div class="d-none d-lg-block">
         <span v-if="chat && chat.chattype === 'User2User' && otheruser">
-          <b-btn v-b-tooltip.hover.top variant="secondary" title="Promise an item to this person" @click="promise">
+          <b-btn v-b-tooltip.hover.top variant="secondary" title="Promise an item to this person" @click="promise(null)">
             <v-icon name="handshake" class="fa-fw" />&nbsp;Promise
           </b-btn>
           <b-btn v-if="!simple" v-b-tooltip.hover.top variant="secondary" title="Send your address" @click="addressBook">
@@ -130,7 +130,7 @@
         </b-btn>
       </div>
       <div class="d-flex d-lg-none justify-content-between align-middle">
-        <div v-if="chat && chat.chattype === 'User2User' && otheruser" v-b-tooltip.hover.top title="Promise an item to this person" class="ml-1 mr-2" @click="promise">
+        <div v-if="chat && chat.chattype === 'User2User' && otheruser" v-b-tooltip.hover.top title="Promise an item to this person" class="ml-1 mr-2" @click="promise(null)">
           <v-icon scale="2" name="handshake" class="fa-mob" />
           <div class="mobtext text--smallest">
             Promise

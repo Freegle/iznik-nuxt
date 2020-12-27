@@ -62,7 +62,9 @@
             locale="en"
             placeholder="Choose a time"
             :minutes-step="15"
-            dropleft
+            :offset="-10"
+            menu-class="border-primary shadow-lg"
+            :class="(date && !time) ? 'border-danger' : ''"
           />
         </div>
         <div class="d-flex flex-column justify-content-center">
@@ -80,7 +82,7 @@
       <b-button variant="white" @click="cancel">
         Cancel
       </b-button>
-      <b-button variant="primary" :disabled="!messages || messages.length === 0 || !message" @click="promise">
+      <b-button variant="primary" :disabled="!messages || messages.length === 0 || !message || (date && !time)" @click="promise">
         Promise
       </b-button>
     </template>
