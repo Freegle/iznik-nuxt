@@ -2,6 +2,7 @@
   <l-map
     ref="map"
     :zoom="12"
+    :max-zoom="maxZoom"
     :style="'width: 100%; height: 200px'"
     :options="mapOptions"
     @ready="idle"
@@ -38,6 +39,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    maxZoom: {
+      type: Number,
+      required: false,
+      default: 14
     }
   },
   computed: {
