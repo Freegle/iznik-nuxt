@@ -58,6 +58,7 @@
         <div>
           <label for="time">at:</label>
           <b-form-timepicker
+            id="time"
             v-model="time"
             locale="en"
             placeholder="Choose a time"
