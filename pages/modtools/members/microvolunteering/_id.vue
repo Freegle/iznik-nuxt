@@ -13,7 +13,7 @@
         There are no items to show at the moment.
       </NoticeMessage>
 
-      <infinite-loading :key="'infinite-' + groupid" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
+      <infinite-loading :identifier="infiniteId" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
         <span slot="no-results" />
         <span slot="no-more" />
         <span slot="spinner">
@@ -51,7 +51,8 @@ export default {
     return {
       busy: false,
       context: null,
-      distance: 1000
+      distance: 1000,
+      infiniteId: 0
     }
   },
   computed: {
@@ -68,14 +69,12 @@ export default {
     groupid(newVal) {
       this.context = null
       this.show = 0
+      this.infiniteId++
       this.$store.dispatch('microvolunteering/clear')
-      this.$store.dispatch('microvolunteering/list', {
-        groupid: newVal
-      })
     }
   },
   mounted() {
-    this.loadMore()
+    this.$store.dispatch('microvolunteering/clear')
   },
   methods: {
     loadMore: function($state) {
@@ -86,7 +85,8 @@ export default {
 
       this.$store
         .dispatch('microvolunteering/list', {
-          context: this.context
+          context: this.context,
+          groupid: this.groupid
         })
         .then(context => {
           this.context = context
@@ -97,7 +97,6 @@ export default {
 
           this.busy = false
 
-          console.log('Before', before, after)
           if (before !== after) {
             $state.loaded()
           } else {

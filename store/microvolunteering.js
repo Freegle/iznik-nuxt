@@ -46,7 +46,7 @@ export const actions = {
     const {
       context,
       microvolunteerings
-    } = await this.$api.microvolunteering.list(params.context)
+    } = await this.$api.microvolunteering.list(params.context, params.groupid)
 
     microvolunteerings.forEach(m => {
       commit('add', m)
