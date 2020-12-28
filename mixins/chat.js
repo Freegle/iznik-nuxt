@@ -28,8 +28,7 @@ export default {
       notVisible: false,
       contactGroup: null,
       urlid: null,
-      showSpamModal: false,
-      hideHandoverPrompt: false
+      showSpamModal: false
     }
   },
   computed: {
@@ -285,11 +284,18 @@ export default {
       return this.discussedDate ? this.discussedDate.format('dddd Do') : null
     },
     showHandoverPrompt() {
+      const nothandover = this.$store.getters['misc/get']('nothandover')
+
+      // We want to show it if:
+      // - we've not hidden it
+      // - we've got an offer which is still open
+      // - we're talking about dates or addresses
       return (
         this.otheruser &&
-        !this.hideHandoverPrompt &&
         this.openInterested &&
-        (this.discussedDate || this.sentAddress)
+        (this.discussedDate || this.sentAddress) &&
+        this.chat &&
+        (!nothandover || nothandover.indexOf(this.chat.id) === -1)
       )
     }
   },
@@ -421,7 +427,6 @@ export default {
       }
     },
     notHandover() {
-      this.hideHandoverPrompt = true
       this.$api.bandit.shown({
         uid: 'handoverprompt',
         variant: 'yes'
@@ -431,12 +436,28 @@ export default {
         variant: 'no'
       })
 
-      console.log('No, chat', this.chat)
       this.$api.bandit.chosen({
         uid: 'handoverprompt',
         variant: 'no',
         info: this.chat ? this.chat.id : null
       })
+
+      if (this.chat) {
+        // We don't want to keep asking.  Keep a bounded number of the chat ids in local storage to prevent that.
+        let nothandover = this.$store.getters['misc/get']('nothandover')
+        nothandover = nothandover || []
+
+        if (nothandover.length > 9) {
+          nothandover = nothandover.slice(0, 9)
+        }
+
+        nothandover.push(this.chat.id)
+
+        this.$store.dispatch('misc/set', {
+          key: 'nothandover',
+          value: JSON.stringify(nothandover)
+        })
+      }
     },
     promise(date) {
       if (this.showHandoverPrompt) {
