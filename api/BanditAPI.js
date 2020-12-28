@@ -10,7 +10,7 @@ export default class BanditAPI extends BaseAPI {
     return this.$post('/abtest', { uid, variant, shown: true })
   }
 
-  chosen({ uid, variant, score }) {
-    return this.$post('/abtest', { uid, variant, action: true, score })
+  chosen({ uid, variant, score, info }) {
+    return this.$post('/abtest', { uid, variant, action: true, score, info })
   }
 }

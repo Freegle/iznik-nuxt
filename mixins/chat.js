@@ -430,9 +430,11 @@ export default {
         variant: 'no'
       })
 
+      console.log('No, chat', this.chat)
       this.$api.bandit.chosen({
         uid: 'handoverprompt',
-        variant: 'no'
+        variant: 'no',
+        info: this.chat ? this.chat.id : null
       })
     },
     promise(date) {
