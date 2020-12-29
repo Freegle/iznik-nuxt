@@ -8,9 +8,10 @@ function earliestDate(dates) {
   let earliestDate = null
 
   for (let i = 0; i < dates.length; i++) {
-    const atime = new Date(dates[i].start).getTime()
-    if (atime >= now && (!earliest || atime < earliest)) {
-      earliest = atime
+    const stime = new Date(dates[i].start).getTime()
+    const etime = new Date(dates[i].end).getTime()
+    if (etime >= now && (!earliest || stime < earliest)) {
+      earliest = stime
       earliestDate = dates[i]
     }
   }
