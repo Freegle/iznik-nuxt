@@ -238,7 +238,7 @@ export default {
         new Date().getTime() - this.lastfromme < 5 * 24 * 60 * 60 * 1000
       ) {
         // Look for a mention of a day.
-        this.chatmessages.forEach(m => {
+        this.mymessages.forEach(m => {
           if (
             new Date().getTime() - new Date(m.date) <
             5 * 24 * 60 * 60 * 1000
