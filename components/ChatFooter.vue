@@ -8,7 +8,7 @@
       />
     </div>
     <div>
-      <div v-if="showNotices && (badratings || expectedreply || otheruser && otheruser.hasReneged || !spammer && replytime || spammer && spammer.collection !== 'Whitelisted' || mod && chat && chat.chattype === 'User2Mod' && otheruser)" class="bg-info">
+      <div v-if="showNotices && (badratings || expectedreply || otheruser && otheruser.hasReneged || !spammer && replytime || spammer && spammer.collection !== 'Whitelisted' || mod && chat && chat.chattype === 'User2Mod' && otheruser)" class="bg-info mb-2">
         <span class="float-right mr-2 mt-2 clickme" title="Hide warnings" @click="showNotices = false">
           <v-icon name="times-circle" scale="1.5" />
         </span>
@@ -41,45 +41,54 @@
         </notice-message>
         <ModComments v-if="mod && chat && chat.chattype === 'User2Mod' && otheruser" :user="otheruser" class="mt-1" />
       </div>
-      <notice-message v-if="showHandoverPrompt">
-        Looks like you're agreeing a handover with <b>{{ otheruser.displayname }}</b>, maybe on <b>{{ discussedDay }}</b>?
+      <b-alert v-if="showHandoverPrompt" variant="info" show class="m-0">
+        Looks like you might be agreeing a handover with <b>{{ otheruser.displayname }}</b>?
         <div class="d-flex mt-2">
-          <b-btn v-b-tooltip.hover.top variant="primary" title="Yes, I'm agreeing a handover" @click="promise(discussedDate)">
-            Yes
+          <b-btn v-b-tooltip.hover.top size="lg" variant="primary" title="Yes, I'm agreeing a handover" @click="promise(discussedDate)">
+            Yes, I am
           </b-btn>
-          <b-btn v-b-tooltip.hover.top variant="secondary" title="No, I'm not agreeing a handover" class="ml-3" @click="notHandover">
-            No
+          <b-btn
+            v-b-tooltip.hover.top
+            size="lg"
+            variant="secondary"
+            title="No, I'm not agreeing a handover"
+            class="ml-4"
+            @click="notHandover"
+          >
+            No, I'm not
           </b-btn>
         </div>
-      </notice-message>
-      <label for="chatmessage" class="sr-only">Chat message</label>
-      <b-form-textarea
-        v-if="enterNewLine && !spammer"
-        id="chatmessage"
-        ref="chatarea"
-        v-model="sendmessage"
-        placeholder="Type here..."
-        rows="3"
-        max-rows="8"
-        @focus="markRead"
-      />
-      <b-form-textarea
-        v-else-if="!spammer"
-        id="chatmessage"
-        ref="chatarea"
-        v-model="sendmessage"
-        placeholder="Type here..."
-        rows="3"
-        max-rows="8"
-        autocapitalize="none"
-        @keydown.enter.exact.prevent
-        @keyup.enter.exact="send"
-        @keydown.enter.shift.exact.prevent="newline"
-        @keydown.alt.shift.exact.prevent="newline"
-        @focus="markRead"
-      />
+      </b-alert>
+      <div v-else>
+        <label for="chatmessage" class="sr-only">Chat message</label>
+        <b-form-textarea
+          v-if="enterNewLine && !spammer"
+          id="chatmessage"
+          ref="chatarea"
+          v-model="sendmessage"
+          placeholder="Type here..."
+          rows="3"
+          max-rows="8"
+          @focus="markRead"
+        />
+        <b-form-textarea
+          v-else-if="!spammer"
+          id="chatmessage"
+          ref="chatarea"
+          v-model="sendmessage"
+          placeholder="Type here..."
+          rows="3"
+          max-rows="8"
+          autocapitalize="none"
+          @keydown.enter.exact.prevent
+          @keyup.enter.exact="send"
+          @keydown.enter.shift.exact.prevent="newline"
+          @keydown.alt.shift.exact.prevent="newline"
+          @focus="markRead"
+        />
+      </div>
     </div>
-    <div v-if="!spammer" class="bg-white pt-1 pb-1">
+    <div v-if="!spammer && !showHandoverPrompt" class="bg-white pt-1 pb-1">
       <div class="d-none d-lg-block">
         <span v-if="chat && chat.chattype === 'User2User' && otheruser">
           <b-btn v-b-tooltip.hover.top variant="secondary" title="Promise an item to this person" @click="promise(null)">
