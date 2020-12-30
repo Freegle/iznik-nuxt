@@ -115,6 +115,12 @@ export default {
         await this.fetchUser()
       }
 
+      if (!this.group) {
+        await this.$store.dispatch('group/fetch', {
+          id: this.groupid
+        })
+      }
+
       this.banConfirm = true
 
       this.waitForRef('banConfirm', () => {
