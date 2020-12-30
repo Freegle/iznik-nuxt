@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="me && me.settings && me.settings.notifications && false">
+    <div v-if="me && me.settings && me.settings.notifications">
       <h1 class="sr-only">
         Settings
       </h1>
