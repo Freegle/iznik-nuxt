@@ -209,10 +209,11 @@ export default {
           document.body.scrollHeight > this.scrollHeight
         ) {
           // We weren't at the top and we've added some data.  Scroll to where we were.
-          window.scrollTo(
-            0,
-            this.scrollTop + document.body.scrollHeight - this.scrollHeight
-          )
+          // Disable as misbehaving.
+          // window.scrollTo(
+          //   0,
+          //   this.scrollTop + document.body.scrollHeight - this.scrollHeight
+          // )
         }
       })
     }
