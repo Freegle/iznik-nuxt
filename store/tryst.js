@@ -8,7 +8,11 @@ export const state = () => ({
 
 export const mutations = {
   add(state, item) {
-    Vue.set(state.list, item.id, item)
+    if (item) {
+      Vue.set(state.list, item.id, item)
+    } else {
+      console.log('Ignore add of empty item')
+    }
   },
 
   setList(state, list) {
