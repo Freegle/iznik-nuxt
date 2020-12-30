@@ -61,7 +61,7 @@ export default {
     async group(newValue, oldValue) {
       // We have this watch because we may need to fetch a group that we have remembered.  The mounted()
       // call may happen before we have restored the persisted state, so we can't initiate the fetch there.
-      if (oldValue === null || oldValue.id !== this.groupid) {
+      if (this.groupid && (oldValue === null || oldValue.id !== this.groupid)) {
         await this.$store.dispatch('group/fetch', {
           id: this.groupid
         })
