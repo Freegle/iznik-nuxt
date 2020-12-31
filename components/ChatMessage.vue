@@ -101,6 +101,7 @@
     <div v-else-if="supportOrAdmin">
       Unknown chat message type {{ chatmessage.type }}
     </div>
+    <chat-message-warning :chatmessage="chatmessage" />
     <chat-message-date-read
       :chat="chat"
       :chatmessage="chatmessage"
@@ -115,6 +116,7 @@
 </style>
 <script>
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
+import ChatMessageWarning from '@/components/ChatMessageWarning'
 import ChatMessageText from './ChatMessageText'
 import ChatMessageImage from './ChatMessageImage'
 import ChatMessageInterested from './ChatMessageInterested'
@@ -132,6 +134,7 @@ import ChatMessageReport from './ChatMessageReport'
 
 export default {
   components: {
+    ChatMessageWarning,
     ChatMessageDateRead,
     ChatMessageText,
     ChatMessageImage,
