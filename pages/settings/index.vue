@@ -636,7 +636,8 @@ export default {
       unbounced: false,
       uploading: false,
       emailValid: false,
-      cacheBust: Date.now()
+      cacheBust: Date.now(),
+      userTimer: null
     }
   },
   computed: {
@@ -647,12 +648,6 @@ export default {
         Vue.set(this.me, 'relevantallowed', val ? 1 : 0)
       },
       get() {
-        console.log(
-          'Get relevantallowed',
-          this.me.relevantallowed,
-          this.me,
-          Boolean(this.me.relevantallowed)
-        )
         return Boolean(this.me.relevantallowed)
       }
     },
@@ -787,28 +782,36 @@ export default {
         : []
     }
   },
-
   async mounted() {
-    try {
-      await this.$store.dispatch('auth/fetchUser', {
-        components: ['me', 'groups', 'aboutme', 'phone', 'notifications'],
-        force: true
-      })
-
-      if (this.me) {
-        this.emailsOn = !Object.keys(this.me).includes('onholidaytill')
-      }
-    } catch (e) {
-      console.error('Failed to fetch user', e)
-    }
+    await this.update()
+    setTimeout(this.checkUser, 200)
   },
-
   methods: {
+    checkUser() {
+      // This is a hack.  In the lost password case, we've seen that the login which is driven via the default
+      // layout completes after we have retrieved our user.  The result is that we don't have the right info in "me".
+      // I have discovered a truly marvellous fix for this, which this comment is too short to contain.
+      if (!this.me || !this.me.settings || !this.me.settings.notifications) {
+        this.update()
+      } else {
+        setTimeout(this.checkUser, 200)
+      }
+    },
     async update() {
-      await this.$store.dispatch('auth/fetchUser', {
-        components: ['me', 'groups', 'aboutme', 'notifications'],
-        force: true
-      })
+      try {
+        await this.$store.dispatch('auth/fetchUser', {
+          components: ['me', 'groups', 'aboutme', 'notifications'],
+          force: true
+        })
+
+        this.$nextTick(() => {
+          if (this.me) {
+            this.emailsOn = !Object.keys(this.me).includes('onholidaytill')
+          }
+        })
+      } catch (e) {
+        console.error('Failed to fetch user', e)
+      }
     },
     addAbout() {
       this.waitForRef('aboutmemodal', () => {
