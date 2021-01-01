@@ -14,12 +14,17 @@
       <b-select v-model="selectedMessage" :options="messageOptions" class="mb-2 font-weight-bold" disabled />
       <p>...to:</p>
       <b-select v-model="selectedUser" :options="userOptions" class="mb-2 font-weight-bold" disabled />
+      <div v-if="tryst" class="d-flex flex-wrap">
+        <b-form-checkbox v-model="removeTryst" size="lg">
+          Cancel handover arranged for <b>{{ trystdate }}</b>
+        </b-form-checkbox>
+      </div>
     </template>
     <template slot="modal-footer" slot-scope="{ ok, cancel }">
       <b-button variant="white" @click="cancel">
         Cancel
       </b-button>
-      <b-button variant="warning" @click="promise">
+      <b-button variant="warning" @click="renege">
         Unpromise
       </b-button>
     </template>
@@ -55,7 +60,8 @@ export default {
   },
   data: function() {
     return {
-      showModal: false
+      showModal: false,
+      removeTryst: true
     }
   },
   computed: {
@@ -115,14 +121,30 @@ export default {
       }
 
       return ret
+    },
+    tryst() {
+      return this.selectedUser
+        ? this.$store.getters['tryst/getByUser'](this.selectedUser)
+        : null
+    },
+    trystdate() {
+      return this.tryst
+        ? this.$dayjs(this.tryst.arrangedfor).format('dddd Do HH:mm a')
+        : null
     }
   },
   methods: {
-    promise() {
-      this.$store.dispatch('messages/renege', {
+    async renege() {
+      await this.$store.dispatch('messages/renege', {
         id: this.selectedMessage,
         userid: this.selectedUser
       })
+
+      if (this.tryst && this.removeTryst) {
+        await this.$store.dispatch('tryst/delete', {
+          id: this.tryst.id
+        })
+      }
 
       this.hide()
     },

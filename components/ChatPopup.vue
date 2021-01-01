@@ -101,9 +101,6 @@
                 <b-btn v-if="!simple" v-b-tooltip.hover.top variant="secondary" title="Send your address" @click="addressBook">
                   <v-icon name="address-book" />
                 </b-btn>
-                <b-btn v-if="!simple" v-b-tooltip.hover.top variant="secondary" title="Update your availability" @click="availability">
-                  <v-icon name="calendar-alt" />
-                </b-btn>
                 <b-btn v-b-tooltip.hover.top variant="secondary" title="Info about this freegler" @click="showInfo">
                   <v-icon name="info-circle" />
                 </b-btn>
@@ -124,7 +121,6 @@
         </vue-draggable-resizable>
         <PromiseModal ref="promise" :messages="ouroffers" :selected-message="likelymsg ? likelymsg : 0" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
         <ProfileModal v-if="otheruser" :id="otheruser ? otheruser.id : null" ref="profile" />
-        <AvailabilityModal ref="availabilitymodal" :otheruid="otheruser ? otheruser.id : null" :thisuid="me.id" />
         <AddressModal ref="addressModal" :choose="true" @chosen="sendAddress" />
         <NudgeTooSoonWarningModal ref="nudgetoosoonwarning" @confirm="doNudge" />
         <NudgeWarningModal ref="nudgewarning" @confirm="doNudge" />
@@ -149,7 +145,6 @@ Vue.use(TooltipPlugin)
 const Ratings = () => import('~/components/Ratings')
 const PromiseModal = () => import('./PromiseModal')
 const ProfileModal = () => import('./ProfileModal')
-const AvailabilityModal = () => import('~/components/AvailabilityModal')
 const AddressModal = () => import('~/components/AddressModal')
 const NudgeWarningModal = () => import('~/components/NudgeWarningModal')
 const NudgeTooSoonWarningModal = () =>
@@ -166,7 +161,6 @@ export default {
     ChatMessage,
     PromiseModal,
     ProfileModal,
-    AvailabilityModal,
     AddressModal,
     NudgeTooSoonWarningModal,
     NudgeWarningModal

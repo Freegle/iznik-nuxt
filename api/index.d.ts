@@ -36,7 +36,6 @@ import ModConfigsAPI from './ModConfigsAPI.js'
 import NewsAPI from './NewsAPI.js'
 import NoticeboardAPI from './NoticeboardAPI.js'
 import NotificationAPI from './NotificationAPI.js'
-import ScheduleAPI from './ScheduleAPI.js'
 import SessionAPI from './SessionAPI.js'
 import ShortlinksAPI from './ShortlinksAPI.js'
 import SocialActionsAPI from './SocialActionsAPI.js'
@@ -44,6 +43,7 @@ import SpammersAPI from './SpammersAPI.js'
 import StatusAPI from './StatusAPI.js'
 import StoriesAPI from './StoriesAPI.js'
 import TeamAPI from './TeamAPI.js'
+import TrystAPI from './TrystAPI.js'
 import UserAPI from './UserAPI.js'
 import UserSearchAPI from './UserSearchAPI.js'
 import VisualiseAPI from './VisualiseAPI.js'
@@ -76,7 +76,6 @@ interface API {
   news: NewsAPI;
   noticeboard: NoticeboardAPI;
   notification: NotificationAPI;
-  schedule: ScheduleAPI;
   session: SessionAPI;
   shortlinks: ShortlinksAPI;
   socialactions: SocialActionsAPI;
@@ -84,6 +83,7 @@ interface API {
   status: StatusAPI;
   stories: StoriesAPI;
   team: TeamAPI;
+  tryst: TrystAPI;
   user: UserAPI;
   usersearch: UserSearchAPI;
   visualise: VisualiseAPI;

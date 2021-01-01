@@ -39,9 +39,9 @@ export default {
       return []
     }
   },
-  async asyncData({ app, params, store }) {
-    await store.dispatch('publicity/clear')
-    await store.dispatch('publicity/fetch', {
+  async mounted() {
+    await this.$store.dispatch('publicity/clear')
+    await this.$store.dispatch('publicity/fetch', {
       reviewed: 0
     })
   }

@@ -34,7 +34,6 @@ import ModConfigsAPI from './ModConfigsAPI.js'
 import NewsAPI from './NewsAPI.js'
 import NoticeboardAPI from './NoticeboardAPI.js'
 import NotificationAPI from './NotificationAPI.js'
-import ScheduleAPI from './ScheduleAPI.js'
 import SessionAPI from './SessionAPI.js'
 import ShortlinksAPI from './ShortlinksAPI.js'
 import SocialActionsAPI from './SocialActionsAPI.js'
@@ -42,6 +41,7 @@ import SpammersAPI from './SpammersAPI.js'
 import StatusAPI from './StatusAPI.js'
 import StoriesAPI from './StoriesAPI.js'
 import TeamAPI from './TeamAPI.js'
+import TrystAPI from './TrystAPI.js'
 import UserAPI from './UserAPI.js'
 import UserSearchAPI from './UserSearchAPI.js'
 import VisualiseAPI from './VisualiseAPI.js'
@@ -76,7 +76,6 @@ export default ({ $axios, store }) => {
     news: new NewsAPI(options),
     noticeboard: new NoticeboardAPI(options),
     notification: new NotificationAPI(options),
-    schedule: new ScheduleAPI(options),
     session: new SessionAPI(options),
     shortlinks: new ShortlinksAPI(options),
     socialactions: new SocialActionsAPI(options),
@@ -84,6 +83,7 @@ export default ({ $axios, store }) => {
     status: new StatusAPI(options),
     stories: new StoriesAPI(options),
     team: new TeamAPI(options),
+    tryst: new TrystAPI(options),
     user: new UserAPI(options),
     usersearch: new UserSearchAPI(options),
     visualise: new VisualiseAPI(options),

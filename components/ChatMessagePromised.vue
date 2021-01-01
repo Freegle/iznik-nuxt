@@ -54,6 +54,9 @@
               <h4>
                 {{ refmsg.subject }}
               </h4>
+              <p v-if="trystdate" class="small text-info">
+                Handover arranged for <b>{{ trystdate }}</b>
+              </p>
               <b-btn v-if="refmsg.promisecount && !hasOutcome" variant="warning" class="align-middle mt-1 mb-1" @click="unpromise">
                 <v-icon>
                   <v-icon name="handshake" />
@@ -96,6 +99,16 @@ export default {
   computed: {
     hasOutcome() {
       return this.refmsg && this.refmsg.outcomes && this.refmsg.outcomes.length
+    },
+    tryst() {
+      return this.otheruser
+        ? this.$store.getters['tryst/getByUser'](this.otheruser.id)
+        : null
+    },
+    trystdate() {
+      return this.tryst
+        ? this.$dayjs(this.tryst.arrangedfor).format('dddd Do HH:mm a')
+        : null
     }
   },
   methods: {

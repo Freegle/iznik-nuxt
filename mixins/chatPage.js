@@ -145,7 +145,6 @@ export default {
 
   methods: {
     async listChats() {
-      console.log('list chats')
       const modtools = this.$store.getters['misc/get']('modtools')
       await this.$store.dispatch('chats/listChats', {
         chattypes: modtools

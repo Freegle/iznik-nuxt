@@ -8,7 +8,7 @@
       />
     </div>
     <div>
-      <div v-if="showNotices && (badratings || expectedreply || otheruser && otheruser.hasReneged || !spammer && replytime || spammer && spammer.collection !== 'Whitelisted' || mod && chat && chat.chattype === 'User2Mod' && otheruser)" class="bg-info">
+      <div v-if="showNotices && (badratings || expectedreply || otheruser && otheruser.hasReneged || !spammer && replytime || spammer && spammer.collection !== 'Whitelisted' || mod && chat && chat.chattype === 'User2Mod' && otheruser)" class="bg-info mb-2">
         <span class="float-right mr-2 mt-2 clickme" title="Hide warnings" @click="showNotices = false">
           <v-icon name="times-circle" scale="1.5" />
         </span>
@@ -41,44 +41,61 @@
         </notice-message>
         <ModComments v-if="mod && chat && chat.chattype === 'User2Mod' && otheruser" :user="otheruser" class="mt-1" />
       </div>
-      <label for="chatmessage" class="sr-only">Chat message</label>
-      <b-form-textarea
-        v-if="enterNewLine && !spammer"
-        id="chatmessage"
-        ref="chatarea"
-        v-model="sendmessage"
-        placeholder="Type here..."
-        rows="3"
-        max-rows="8"
-        @focus="markRead"
-      />
-      <b-form-textarea
-        v-else-if="!spammer"
-        id="chatmessage"
-        ref="chatarea"
-        v-model="sendmessage"
-        placeholder="Type here..."
-        rows="3"
-        max-rows="8"
-        autocapitalize="none"
-        @keydown.enter.exact.prevent
-        @keyup.enter.exact="send"
-        @keydown.enter.shift.exact.prevent="newline"
-        @keydown.alt.shift.exact.prevent="newline"
-        @focus="markRead"
-      />
+      <b-alert v-if="showHandoverPrompt" variant="info" show class="m-0">
+        Looks like you might be agreeing a handover with <b>{{ otheruser.displayname }}</b>?
+        <div class="d-flex mt-2">
+          <b-btn v-b-tooltip.hover.top size="lg" variant="primary" title="Yes, I'm agreeing a handover" @click="promise(discussedDate)">
+            Yes, I am
+          </b-btn>
+          <b-btn
+            v-b-tooltip.hover.top
+            size="lg"
+            variant="secondary"
+            title="No, I'm not agreeing a handover"
+            class="ml-4"
+            @click="notHandover"
+          >
+            No, I'm not
+          </b-btn>
+        </div>
+      </b-alert>
+      <div v-else>
+        <label for="chatmessage" class="sr-only">Chat message</label>
+        <b-form-textarea
+          v-if="enterNewLine && !spammer"
+          id="chatmessage"
+          ref="chatarea"
+          v-model="sendmessage"
+          placeholder="Type here..."
+          rows="3"
+          max-rows="8"
+          @focus="markRead"
+        />
+        <b-form-textarea
+          v-else-if="!spammer"
+          id="chatmessage"
+          ref="chatarea"
+          v-model="sendmessage"
+          placeholder="Type here..."
+          rows="3"
+          max-rows="8"
+          autocapitalize="none"
+          @keydown.enter.exact.prevent
+          @keyup.enter.exact="send"
+          @keydown.enter.shift.exact.prevent="newline"
+          @keydown.alt.shift.exact.prevent="newline"
+          @focus="markRead"
+        />
+      </div>
     </div>
-    <div v-if="!spammer" class="bg-white pt-1 pb-1">
+    <div v-if="!spammer && !showHandoverPrompt" class="bg-white pt-1 pb-1">
       <div class="d-none d-lg-block">
         <span v-if="chat && chat.chattype === 'User2User' && otheruser">
-          <b-btn v-b-tooltip.hover.top variant="secondary" title="Promise an item to this person" @click="promise">
+          <b-btn v-b-tooltip.hover.top variant="secondary" title="Promise an item to this person" @click="promise(null)">
             <v-icon name="handshake" class="fa-fw" />&nbsp;Promise
           </b-btn>
           <b-btn v-if="!simple" v-b-tooltip.hover.top variant="secondary" title="Send your address" @click="addressBook">
             <v-icon name="address-book" class="fa-fw" />&nbsp;Address
-          </b-btn>
-          <b-btn v-if="!simple" v-b-tooltip.hover.top variant="secondary" title="Update your availability" @click="availability">
-            <v-icon name="calendar-alt" class="fa-fw" />&nbsp;Availability
           </b-btn>
           <b-btn v-b-tooltip.hover.top variant="secondary" title="Info about this freegler" @click="showInfo">
             <v-icon name="info-circle" class="fa-fw" />&nbsp;Info
@@ -122,7 +139,7 @@
         </b-btn>
       </div>
       <div class="d-flex d-lg-none justify-content-between align-middle">
-        <div v-if="chat && chat.chattype === 'User2User' && otheruser" v-b-tooltip.hover.top title="Promise an item to this person" class="ml-1 mr-2" @click="promise">
+        <div v-if="chat && chat.chattype === 'User2User' && otheruser" v-b-tooltip.hover.top title="Promise an item to this person" class="ml-1 mr-2" @click="promise(null)">
           <v-icon scale="2" name="handshake" class="fa-mob" />
           <div class="mobtext text--smallest">
             Promise
@@ -139,12 +156,6 @@
           <v-icon scale="2" name="address-book" class="fa-mob" />
           <div class="mobtext text--smallest">
             Address
-          </div>
-        </div>
-        <div v-if="chat && chat.chattype === 'User2User' && otheruser" v-b-tooltip.hover.top title="Update your availability" class="mr-2" @click="availability">
-          <v-icon scale="2" name="calendar-alt" class="fa-mob" />
-          <div class="mobtext text--smallest">
-            Available
           </div>
         </div>
         <div v-if="otheruser" v-b-tooltip.hover.top title="Info about this freegler" class="mr-2" @click="showInfo">
@@ -200,7 +211,6 @@
     </div>
     <PromiseModal ref="promise" :messages="ouroffers" :selected-message="likelymsg ? likelymsg : 0" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
     <ProfileModal v-if="otheruser" :id="otheruser ? otheruser.id : null" ref="profile" />
-    <AvailabilityModal v-if="me && chat" ref="availabilitymodal" :otheruid="otheruser ? otheruser.id : null" :chatid="chat.id" :thisuid="me.id" />
     <AddressModal ref="addressModal" :choose="true" @chosen="sendAddress" />
     <ChatRSVPModal v-if="RSVP" :id="id" ref="rsvp" :user="otheruser" />
     <NudgeTooSoonWarningModal ref="nudgetoosoonwarning" @confirm="doNudge" />
@@ -223,7 +233,6 @@ const Ratings = () => import('~/components/Ratings')
 const PromiseModal = () => import('~/components/PromiseModal')
 const ProfileModal = () => import('~/components/ProfileModal')
 const NoticeMessage = () => import('~/components/NoticeMessage')
-const AvailabilityModal = () => import('~/components/AvailabilityModal')
 const AddressModal = () => import('~/components/AddressModal')
 const ModSpammerReport = () => import('~/components/ModSpammerReport')
 const ChatRSVPModal = () => import('~/components/ChatRSVPModal')
@@ -235,7 +244,6 @@ export default {
   components: {
     NudgeTooSoonWarningModal,
     NudgeWarningModal,
-    AvailabilityModal,
     ExternalLink,
     ModComments,
     ModSpammerReport,

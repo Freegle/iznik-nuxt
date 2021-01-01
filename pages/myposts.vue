@@ -132,29 +132,6 @@
           >
             <template slot="header">
               <h2 class="d-inline header--size3">
-                <v-icon name="calendar-alt" scale="2" /> Your Availability
-              </h2>
-            </template>
-            <b-card-body>
-              <p>
-                Tell us when you're free and it'll make it quicker to arrange collection times.
-              </p>
-              <b-btn size="lg" variant="primary" @click="availability">
-                <v-icon name="calendar-alt" /> Update your availability
-              </b-btn>
-            </b-card-body>
-          </b-card>
-          <b-card
-            v-if="!simple"
-            class="mt-2"
-            border-variant="info"
-            header="info"
-            header-bg-variant="info"
-            header-text-variant="white"
-            no-body
-          >
-            <template slot="header">
-              <h2 class="d-inline header--size3">
                 <v-icon name="search" scale="2" /> Your Searches
               </h2>
             </template>
@@ -190,7 +167,6 @@
         <sidebar-right v-if="me && !justPosted" show-volunteer-opportunities />
       </b-col>
     </b-row>
-    <AvailabilityModal v-if="me" ref="availabilitymodal" :thisuid="me.id" />
     <DonationAskModal ref="askmodal" :groupid="donationGroup" />
     <RateAppModal ref="rateappmodal" :groupid="donationGroup" />
   </b-container>
@@ -206,7 +182,6 @@ const JobsTopBar = () => import('~/components/JobsTopBar')
 const MyMessage = () => import('~/components/MyMessage.vue')
 const SidebarLeft = () => import('~/components/SidebarLeft')
 const SidebarRight = () => import('~/components/SidebarRight')
-const AvailabilityModal = () => import('~/components/AvailabilityModal')
 const DonationAskModal = () => import('~/components/DonationAskModal')
 const RateAppModal = () => import('~/components/RateAppModal')
 const ExpectedRepliesWarning = () =>
@@ -221,10 +196,8 @@ export default {
     SidebarLeft,
     SidebarRight,
     DonationAskModal,
-    AvailabilityModal,
     RateAppModal,
-    ExpectedRepliesWarning,
-    AvailabilityModal
+    ExpectedRepliesWarning
   },
   mixins: [loginOptional, buildHead, waitForRef],
   data() {
@@ -388,6 +361,9 @@ export default {
       await this.$store.dispatch('chats/listChats')
     })
 
+    // Find any arrangements.
+    this.$store.dispatch('tryst/fetch')
+
     // For some reason we can't capture emitted events from the outcome modal so use root as a bus.
     this.$root.$on('outcome', params => {
       const { groupid, outcome } = params
@@ -474,9 +450,6 @@ export default {
       setTimeout(() => {
         this.removedSearch = null
       }, 2000)
-    },
-    availability() {
-      this.$refs.availabilitymodal.show()
     },
     ask(groupid) {
       if (process.env.IS_APP && !window.localStorage.getItem('rateappnotagain')) { // CC

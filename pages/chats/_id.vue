@@ -37,7 +37,7 @@
         </b-col>
         <b-col cols="12" md="8" xl="6" :class="'chatback p-0 ' + (selectedChatId ? 'd-block' : 'd-none d-md-block')">
           <ChatPane v-if="selectedChatId" :id="selectedChatId" :key="'chatpane-' + selectedChatId" />
-          <p v-else class="text-center text-muted mt-2">
+          <p v-else class="text-center text-info font-weight-bold mt-2">
             Please click on a chat in the left pane.
           </p>
         </b-col>
