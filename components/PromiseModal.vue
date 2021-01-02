@@ -274,7 +274,7 @@ export default {
       this.showModal = true
       this.message = this.selectedMessage
 
-      // Fetch any existing tryst.
+      // Fetch any existing trysts.
       await this.$store.dispatch('tryst/fetch')
 
       if (date) {
