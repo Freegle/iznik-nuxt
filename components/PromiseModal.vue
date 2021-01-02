@@ -66,6 +66,7 @@
             :offset="-10"
             menu-class="border-primary shadow-lg"
             :class="(date && !time) ? 'border-danger' : ''"
+            @hidden="considerOddTime"
           />
         </div>
         <div class="d-flex flex-column justify-content-center">
@@ -74,6 +75,9 @@
           </b-btn>
         </div>
       </div>
+      <b-alert v-if="showOddTime" show variant="warning">
+        This is an early/late time.  Just saying, in case it's not right.
+      </b-alert>
       <p class="mt-2 text-muted">
         If you say when the handover is happening we can remind both of you, which makes things go more smoothly.
         If you've not arranged a time yet, you can come back here later by clicking on the <em>Promise</em> button again.
@@ -131,7 +135,8 @@ export default {
       message: null,
       date: null,
       time: null,
-      formattedDate: null
+      formattedDate: null,
+      showOddTime: false
     }
   },
   computed: {
@@ -298,6 +303,10 @@ export default {
       this.$store.dispatch('tryst/delete', {
         id: this.tryst.id
       })
+    },
+    considerOddTime() {
+      this.showOddTime =
+        this.time && (this.time < '07:00' || this.time > '21:00')
     }
   }
 }
