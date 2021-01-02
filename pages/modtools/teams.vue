@@ -21,7 +21,7 @@
         </NoticeMessage>
         <p>{{ team.description }}</p>
         <p v-if="team.wikiurl">
-          You can read more about this team
+          You can read more
           <!-- eslint-disable-next-line -->
           <ExternalLink :href="team.wikiurl">on the wiki</ExternalLink>.
         </p>

@@ -19,7 +19,7 @@
         </p>
         <p>
           <!-- eslint-disable-next-line -->
-          Read more <ExternalLink href="https://wiki.ilovefreegle.org/Data_Protection_Guidelines">on the wiki</ExternalLink>.
+          Read more <ExternalLink href="https://wiki.ilovefreegle.org/Member_Notes">on the wiki</ExternalLink>.
         </p>
         <b-input v-model="user1" :placeholder="placeholders[1]" />
         <b-input v-model="user2" :placeholder="placeholders[2]" />
