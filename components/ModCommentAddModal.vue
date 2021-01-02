@@ -17,6 +17,10 @@
           These comments can be seen by moderators, and also by members who choose to download their data under
           GDPR.  So keep them objective, polite and factual please.
         </p>
+        <p>
+          <!-- eslint-disable-next-line -->
+          Read more <ExternalLink href="https://wiki.ilovefreegle.org/Data_Protection_Guidelines">on the wiki</ExternalLink>.
+        </p>
         <b-input v-model="user1" :placeholder="placeholders[1]" />
         <b-input v-model="user2" :placeholder="placeholders[2]" />
         <b-input v-model="user3" :placeholder="placeholders[3]" />
@@ -41,7 +45,9 @@
   </div>
 </template>
 <script>
+import ExternalLink from '@/components/ExternalLink'
 export default {
+  components: { ExternalLink },
   props: {
     user: {
       type: Object,
