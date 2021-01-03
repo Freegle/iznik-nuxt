@@ -14,6 +14,20 @@ export default class TrystAPI extends BaseAPI {
     return this.$get('/tryst', params)
   }
 
+  confirm(id) {
+    return this.$post('/tryst', {
+      id,
+      confirm: true
+    })
+  }
+
+  decline(id) {
+    return this.$post('/tryst', {
+      id,
+      decline: true
+    })
+  }
+
   delete(data) {
     return this.$del('/tryst', data)
   }
