@@ -346,7 +346,7 @@
                 <h3 class="header--size5 header5__color">
                   Text Alerts
                 </h3>
-                <p>We can send you SMS alerts to your phone.</p>
+                <p>We can send SMS alerts to your phone when you have a new message on Freegle or a handover soon.</p>
                 <b-row>
                   <b-col cols="12" md="8">
                     <b-form-group
