@@ -201,7 +201,7 @@
                     <SettingsPhone
                       v-if="me"
                       label="Your mobile:"
-                      description="(Optional)  We'll use this to notify you by text (SMS) so you don't miss replies."
+                      description="(Optional)  We'll use this to notify you by text (SMS) so you don't miss replies.  We won't show it to the other freegler."
                       size="lg"
                       hide-remove
                       auto-save
