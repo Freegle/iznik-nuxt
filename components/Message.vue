@@ -198,6 +198,14 @@
                     >
                       <Postcode @selected="savePostcode" />
                     </b-form-group>
+                    <SettingsPhone
+                      v-if="me"
+                      label="Your mobile:"
+                      description="(Optional)  We'll use this to notify you by text (SMS) so you don't miss replies."
+                      size="lg"
+                      hide-remove
+                      auto-save
+                    />
                     <b-btn size="lg" variant="primary" class="d-none d-md-block" :disabled="disableSend" @click="sendReply">
                       Send your reply
                       <v-icon v-if="replying" name="sync" class="fa-spin" />
@@ -253,6 +261,7 @@
 import Vue from 'vue'
 import { TooltipPlugin } from 'bootstrap-vue'
 import waitForRef from '@/mixins/waitForRef'
+import SettingsPhone from '@/components/SettingsPhone'
 import ChatButton from './ChatButton'
 import ShareModal from './ShareModal'
 import MessageReportModal from './MessageReportModal'
@@ -276,6 +285,7 @@ Vue.use(TooltipPlugin)
 
 export default {
   components: {
+    SettingsPhone,
     CovidCheckList,
     CovidClosed,
     MessageMap,
@@ -516,6 +526,15 @@ export default {
         const me = this.$store.getters['auth/user']
 
         if (me) {
+          this.$api.bandit.shown({
+            uid: 'replybox',
+            variant: 'phonesupplied'
+          })
+          this.$api.bandit.shown({
+            uid: 'replybox',
+            variant: 'phoneabsent'
+          })
+
           this.$store.dispatch('messages/view', {
             id: this.id
           })
@@ -585,69 +604,85 @@ export default {
       // clicked tells us whether we want to open this chat in a popup or not.
       const popup = this.sm()
       console.log('Send reply', this.reply, popup)
+
       if (this.reply) {
         const me = this.$store.getters['auth/user']
+        const phone = me ? me.phone : null
 
         if (me && me.id) {
-          // We have several things to do:
-          // - join a group if need be (doesn't matter which)
-          // - post our reply
-          // - open the popup chat so they see what happened
-          this.replying = true
-          const me = this.$store.getters['auth/user']
-          const myGroups = this.$store.getters['auth/groups']
-          let found = false
-          let tojoin = null
+          if (me.id !== this.replyToUser) {
+            if (phone) {
+              this.$api.bandit.chosen({
+                uid: 'replybox',
+                variant: 'phonesupplied'
+              })
+            } else {
+              this.$api.bandit.shown({
+                uid: 'replybox',
+                variant: 'phoneabsent'
+              })
+            }
 
-          for (const messageGroup of this.groups) {
-            tojoin = messageGroup.groupid
-            Object.keys(myGroups).forEach(key => {
-              const group = myGroups[key]
+            // We have several things to do:
+            // - join a group if need be (doesn't matter which)
+            // - post our reply
+            // - open the popup chat so they see what happened
+            this.replying = true
+            const me = this.$store.getters['auth/user']
+            const myGroups = this.$store.getters['auth/groups']
+            let found = false
+            let tojoin = null
 
-              if (messageGroup.groupid === group.id) {
-                found = true
-              }
-            })
-          }
+            for (const messageGroup of this.groups) {
+              tojoin = messageGroup.groupid
+              Object.keys(myGroups).forEach(key => {
+                const group = myGroups[key]
 
-          if (!found) {
-            // Not currently a member.
-            console.log('Need to join')
-            await this.$store.dispatch('auth/joinGroup', {
-              userid: me.id,
-              groupid: tojoin
-            })
+                if (messageGroup.groupid === group.id) {
+                  found = true
+                }
+              })
+            }
 
-            // Have to get the message back, because as a non-member we couldn't see who sent it, and therefore
-            // who to reply to.
-            await this.$store.dispatch('messages/fetch', {
-              id: this.id
-            })
-          }
+            if (!found) {
+              // Not currently a member.
+              console.log('Need to join')
+              await this.$store.dispatch('auth/joinGroup', {
+                userid: me.id,
+                groupid: tojoin
+              })
 
-          // Now create the chat and send the first message.
-          console.log('Prepare chat', this.reply, this.id, this.replyToUser)
-          this.$nextTick(() => {
-            console.log(
-              'Now open chat',
-              this.reply,
-              this.id,
-              this.replyToUser,
-              popup
-            )
+              // Have to get the message back, because as a non-member we couldn't see who sent it, and therefore
+              // who to reply to.
+              await this.$store.dispatch('messages/fetch', {
+                id: this.id
+              })
+            }
 
-            // Open the chat.  We don't want to move from this page - either we'll get a popup chat (so we can
-            // see the reply went) or we're on mobile and we'll display the sent message notice.
-            this.waitForRef('chatbutton', () => {
-              this.$refs.chatbutton.openChat(
-                null,
+            // Now create the chat and send the first message.
+            console.log('Prepare chat', this.reply, this.id, this.replyToUser)
+            this.$nextTick(() => {
+              console.log(
+                'Now open chat',
                 this.reply,
                 this.id,
-                popup,
-                false
+                this.replyToUser,
+                popup
               )
+
+              // Open the chat.  We don't want to move from this page - either we'll get a popup chat (so we can
+              // see the reply went) or we're on mobile and we'll display the sent message notice.
+              this.waitForRef('chatbutton', () => {
+                this.$refs.chatbutton.openChat(
+                  null,
+                  this.reply,
+                  this.id,
+                  popup,
+                  false
+                )
+              })
             })
-          })
+          }
         } else {
           // We're not logged in yet.  We need to save the reply and force a sign in.
           //

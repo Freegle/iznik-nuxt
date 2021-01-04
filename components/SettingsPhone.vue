@@ -3,10 +3,12 @@
     <div class="d-flex flex-wrap align-content-center">
       <b-form-group
         class="mr-2"
+        :label="label"
+        :description="description"
       >
         <b-input-group>
-          <b-input v-model="me.phone" placeholder="Your mobile number" />
-          <b-input-group-append>
+          <b-input v-model="me.phone" placeholder="Your mobile number" :size="size" lazy />
+          <b-input-group-append v-if="!autoSave">
             <b-button variant="white" @click="savePhone">
               <v-icon v-if="savingPhone" name="sync" class="text-success fa-spin" />
               <v-icon v-else-if="savedPhone" name="check" class="text-success" />
@@ -16,7 +18,7 @@
           </b-input-group-append>
         </b-input-group>
       </b-form-group>
-      <b-btn v-if="me.phone" variant="link" class="align-self-start" @click="removePhone">
+      <b-btn v-if="!hideRemove && me.phone" variant="link" class="align-self-start" @click="removePhone">
         <v-icon v-if="removingPhone" name="sync" class="text-success fa-spin" />
         <v-icon v-else-if="removedPhone" name="check" class="text-success" />
         <v-icon v-else name="trash-alt" />
@@ -30,6 +32,33 @@
 </template>
 <script>
 export default {
+  props: {
+    size: {
+      type: String,
+      required: false,
+      default: 'md'
+    },
+    label: {
+      type: String,
+      required: false,
+      default: null
+    },
+    description: {
+      type: String,
+      required: false,
+      default: null
+    },
+    hideRemove: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    autoSave: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
   data: function() {
     return {
       savingPhone: false,
@@ -41,8 +70,21 @@ export default {
   computed: {
     notMobile() {
       return (
-        this.me && this.me.phone && (this.me.phone + '').indexOf('447') !== 0
+        this.me &&
+        this.me.phone &&
+        (this.me.phone + '').indexOf('447') !== 0 &&
+        (this.me.phone + '').indexOf('07') !== 0
       )
+    },
+    phone() {
+      return this.me && this.me.phone ? this.me.phone : null
+    }
+  },
+  watch: {
+    phone(newVal) {
+      if (this.autoSave) {
+        this.savePhone()
+      }
     }
   },
   methods: {
