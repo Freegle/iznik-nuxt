@@ -347,33 +347,7 @@
                   Text Alerts
                 </h3>
                 <p>We can send SMS alerts to your phone when you have a new message on Freegle or a handover soon.</p>
-                <b-row>
-                  <b-col cols="12" md="8">
-                    <b-form-group
-                      class="d-inline"
-                    >
-                      <b-input-group>
-                        <b-input v-model="me.phone" placeholder="Your mobile number" />
-                        <b-input-group-append>
-                          <b-button variant="white" @click="savePhone">
-                            <v-icon v-if="savingPhone" name="sync" class="text-success fa-spin" />
-                            <v-icon v-else-if="savedPhone" name="check" class="text-success" />
-                            <v-icon v-else name="save" />
-                            Save
-                          </b-button>
-                        </b-input-group-append>
-                      </b-input-group>
-                    </b-form-group>
-                  </b-col>
-                  <b-col cols-md="4" class="p-1">
-                    <b-btn v-if="me.phone" variant="white" class="float-right d-inline mt-4 mr-3" @click="removePhone">
-                      <v-icon v-if="removingPhone" name="sync" class="text-success fa-spin" />
-                      <v-icon v-else-if="removedPhone" name="check" class="text-success" />
-                      <v-icon v-else name="trash-alt" />
-                      Remove
-                    </b-btn>
-                  </b-col>
-                </b-row>
+                <SettingsPhone />
                 <b-row>
                   <b-col>
                     <b-alert v-if="me.phone" show variant="info">
@@ -579,6 +553,7 @@ import waitForRef from '@/mixins/waitForRef'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead'
 import ExternalLink from '@/components/ExternalLink'
+import SettingsPhone from '@/components/SettingsPhone'
 import EmailValidator from '../../components/EmailValidator'
 import EmailOwn from '../../components/EmailOwn'
 import SettingsSimple from '../../components/SettingsSimple'
@@ -600,6 +575,7 @@ const PasswordEntry = () => import('~/components/PasswordEntry')
 
 export default {
   components: {
+    SettingsPhone,
     ExternalLink,
     SettingsSimple,
     EmailOwn,
@@ -628,10 +604,6 @@ export default {
       savedPostcode: false,
       savingEmail: false,
       savedEmail: false,
-      savingPhone: false,
-      savedPhone: false,
-      removingPhone: false,
-      removedPhone: false,
       unbouncing: false,
       unbounced: false,
       uploading: false,
@@ -892,36 +864,6 @@ export default {
       this.savedPostcode = true
       setTimeout(() => {
         this.savedPostcode = false
-      }, 2000)
-    },
-    async savePhone() {
-      this.savingPhone = true
-
-      await this.$store.dispatch('auth/saveAndGet', {
-        phone: this.me.phone
-      })
-
-      this.savingPhone = false
-      this.savedPhone = true
-      setTimeout(() => {
-        this.savedPhone = false
-      }, 2000)
-    },
-    async removePhone() {
-      this.removingPhone = true
-
-      setTimeout(() => {
-        this.me.phone = null
-      }, 1000)
-
-      await this.$store.dispatch('auth/saveAndGet', {
-        phone: ''
-      })
-
-      this.removingPhone = false
-      this.removedPhone = true
-      setTimeout(() => {
-        this.removedPhone = false
       }, 2000)
     },
     toggleAdvanced(e) {
