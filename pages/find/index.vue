@@ -40,7 +40,8 @@
           </b-row>
           <b-row v-if="postcodeValid && !closed" class="mt-1">
             <b-col class="text-center text-muted">
-              Click on the name above to choose a different community.
+              <!--                COVID Lockdown 2-->
+              <!--                Click on the name above to choose a different community.-->
             </b-col>
           </b-row>
           <CovidClosed v-if="closed" class="mt-2" />
