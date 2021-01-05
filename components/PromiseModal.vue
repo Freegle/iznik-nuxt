@@ -268,6 +268,9 @@ export default {
         })
       }
 
+      // Fetch the trysts again, to make sure we show messages correctly on the chat.
+      this.$store.dispatch('tryst/fetch')
+
       this.hide()
     },
     async show(date) {
