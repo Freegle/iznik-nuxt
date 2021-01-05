@@ -14,7 +14,7 @@
         <nuxt-link to="/disclaimer" class="p-1">
           Disclaimer
         </nuxt-link>
-        <nuxt-link v-if="!isiOSapp" to="/donate" class="p-1">
+        <nuxt-link to="/donate" class="p-1">
           Donate
         </nuxt-link>
         <nuxt-link to="/help" class="p-1">
@@ -42,12 +42,3 @@ a {
   color: $color-black !important;
 }
 </style>
-<script>
-  export default {
-    computed: {
-      isiOSapp() { // CC
-        return this.$store.getters['mobileapp/isiOS']
-      }
-    }
-  }
-</script>
