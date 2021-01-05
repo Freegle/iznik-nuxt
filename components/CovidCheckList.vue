@@ -6,7 +6,7 @@
         I will follow rules on leaving my home, essential travel and staying local.
       </b>
     </b-form-checkbox>
-    <p class="mt-2">
+    <p class="mt-3">
       When freegling:
     </p>
     <b-form-checkbox v-model="socialdistance" size="lg">
