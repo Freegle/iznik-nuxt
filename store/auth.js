@@ -496,5 +496,9 @@ export const actions = {
 
   setLoginType({ commit }, value) {
     commit('setLoginType', value)
+  },
+
+  async covidConfirm({ state, commit, dispatch }, params) {
+    await this.$api.session.covidConfirmed()
   }
 }

@@ -50,6 +50,11 @@ export default class SessionAPI extends BaseAPI {
     return this.$post('/session', { action: 'Forget' })
   }
 
+  // COVID lockdown 2
+  covidConfirmed() {
+    return this.$post('/session', { covidconfirmed: true })
+  }
+
   related(userlist) {
     return this.$post('/session', {
       action: 'Related',

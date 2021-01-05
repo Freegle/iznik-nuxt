@@ -22,6 +22,7 @@
               <h4>
                 {{ refmsg.subject }}
               </h4>
+              <AddToCalendar v-if="tryst" :ics="tryst.ics" class="mr-2" />
             </b-card-title>
             <b-card-text>
               <div :class="emessage ? 'media-body chatMessage' : 'media-body'">

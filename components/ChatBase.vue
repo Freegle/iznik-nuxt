@@ -41,7 +41,6 @@ export default {
   },
   computed: {
     regexEmail() {
-      console.log('Regex email', EMAIL_REGEX)
       return EMAIL_REGEX
     },
     emessage() {
