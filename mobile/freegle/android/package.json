@@ -13,6 +13,7 @@
   "author": "Chris Cant",
   "dependencies": {
     "cordova-android": "^8.1.0",
+    "cordova-plugin-calendar": "5.1.5",
     "cordova-plugin-camera": "^4.1.0",
     "cordova-plugin-contacts": "3.0.1",
     "cordova-plugin-device": "^2.0.3",
@@ -55,7 +56,8 @@
         "ANDROID_SUPPORT_V13_VERSION": "27.+",
         "FCM_VERSION": "17.0.+"
       },
-      "cordova-plugin-contacts": {}
+      "cordova-plugin-contacts": {},
+      "cordova-plugin-calendar": {}
     },
     "platforms": [
       "android"
