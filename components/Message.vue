@@ -116,6 +116,9 @@
       </b-card-body>
       <b-card-footer v-if="expanded && replyable" class="p-1 pt-3">
         <CovidClosed v-if="expanded && expanded.closed" />
+        <NoticeMessage v-else-if="milesaway > 25" variant="danger">
+          With current COVID-19 restrictions, this is too far away.  Please keep freegling local and stay safe.
+        </NoticeMessage>
         <div v-else-if="expanded.fromuser && expanded.fromuser.id === myid" />
         <div v-else>
           <CovidCheckList v-if="!confirmed" class="mt-2" @confirmed="confirmed = true" />
@@ -128,6 +131,9 @@
               :email.sync="email"
               :valid.sync="emailValid"
             />
+            <NoticeMessage v-if="milesaway > 3" variant="warning">
+              Remember: essential travel only and stay local. Could you delay the actual collection?
+            </NoticeMessage>
             <b-form-group
               v-if="!sent"
               class="flex-grow-1"
