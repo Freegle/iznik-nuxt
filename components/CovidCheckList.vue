@@ -78,13 +78,14 @@ export default {
     }
   },
   methods: {
-    check() {
+    async check() {
       if (this.socialdistance && this.travel && this.clean && this.enter) {
-        this.$store.dispatch('misc/set', {
+        await this.$store.dispatch('misc/set', {
           key: 'covidconfirmed',
           value: Date.now()
         })
 
+        await this.$store.dispatch('auth/covidConfirm')
         this.$emit('confirmed')
       }
     }
