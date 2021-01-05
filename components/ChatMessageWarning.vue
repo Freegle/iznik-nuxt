@@ -24,7 +24,7 @@ export default {
         if (matches && matches.length > 1) {
           const country = matches[1]
 
-          if (country !== 44) {
+          if (parseInt(country) !== 44) {
             ret = true
           }
         }
