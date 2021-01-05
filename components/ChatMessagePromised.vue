@@ -57,16 +57,19 @@
               <p v-if="trystdate" class="small text-info">
                 Handover arranged for <b>{{ trystdate }}</b>
               </p>
-              <b-btn v-if="refmsg.promisecount && !hasOutcome" variant="warning" class="align-middle mt-1 mb-1" @click="unpromise">
-                <v-icon>
-                  <v-icon name="handshake" />
-                  <v-icon
-                    name="slash"
-                    class="unpromise__slash"
-                  />
-                </v-icon>
-                Unpromise
-              </b-btn>
+              <div class="d-flex mt-1 mb-1">
+                <AddToCalendar v-if="tryst" :ics="tryst.ics" class="mr-2" />
+                <b-btn v-if="refmsg.promisecount && !hasOutcome" variant="warning" class="align-middle" @click="unpromise">
+                  <v-icon>
+                    <v-icon name="handshake" />
+                    <v-icon
+                      name="slash"
+                      class="unpromise__slash"
+                    />
+                  </v-icon>
+                  Unpromise
+                </b-btn>
+              </div>
             </b-card-title>
             <b-card-text>
               <div :class="emessage ? 'media-body chatMessage' : 'media-body'">
@@ -86,12 +89,14 @@
 </template>
 
 <script>
+import AddToCalendar from '@/components/AddToCalendar'
 import ChatBase from '~/components/ChatBase'
 import ProfileImage from '~/components/ProfileImage'
 const RenegeModal = () => import('./RenegeModal')
 
 export default {
   components: {
+    AddToCalendar,
     ProfileImage,
     RenegeModal
   },

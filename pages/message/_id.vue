@@ -142,6 +142,7 @@ export default {
     this.id = this.$route.params.id
   },
   head() {
+    // The code here has to match singlemessage.php on the server for consistency.
     let snip = null
     const message = this.message
 

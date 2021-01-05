@@ -103,7 +103,7 @@
               <v-icon name="redo" scale="2" @click="refresh" />
             </div>
           </div>
-          <NotificationOptions :distance="distance" :small-screen="true" :unread-notification-count.sync="unreadNotificationCount" @showAboutMe="showAboutMe" />
+          <NotificationOptions v-if="loggedIn" :distance="distance" :small-screen="true" :unread-notification-count.sync="unreadNotificationCount" @showAboutMe="showAboutMe" />
           <ChatMenu v-if="loggedIn" id="menu-option-chat-sm" :is-list-item="false" :chat-count.sync="chatCount" class="mr-3" />
         </client-only>
 

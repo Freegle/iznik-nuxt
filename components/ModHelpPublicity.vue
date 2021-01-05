@@ -22,6 +22,14 @@
       </ExternalLink>
       you need to explicitly decide to publish content on pages that you manage.
     </p>
+    <p>
+      Read about more ways to promote your group on the wiki
+      <!-- eslint-disable-next-line -->
+      <ExternalLink href="https://wiki.ilovefreegle.org/Publicity">here</ExternalLink> and
+      <ExternalLink href="https://wiki.ilovefreegle.org/Promotion">
+        here
+      </ExternalLink>.
+    </p>
   </NoticeMessage>
   <b-btn v-else variant="link" class="float-right" @click="toggleHelp">
     Help

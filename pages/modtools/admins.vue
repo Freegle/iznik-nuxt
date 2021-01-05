@@ -2,6 +2,7 @@
   <div>
     <div>
       <div>
+        <ModHelpAdmins />
         <b-tabs content-class="mt-3" card>
           <b-tab active @click="fetchPending">
             <template v-slot:title>
@@ -118,6 +119,7 @@ import validationHelpers from '@/mixins/validationHelpers'
 import ValidatingForm from '@/components/ValidatingForm'
 import ValidatingFormInput from '@/components/ValidatingFormInput'
 import ValidatingTextarea from '@/components/ValidatingTextarea'
+import ModHelpAdmins from '@/components/ModHelpAdmins'
 import NoticeMessage from '../../components/NoticeMessage'
 import ModAdmin from '../../components/ModAdmin'
 import GroupSelect from '../../components/GroupSelect'
@@ -128,6 +130,7 @@ const noAdmin = val => {
 
 export default {
   components: {
+    ModHelpAdmins,
     NoticeMessage,
     ModAdmin,
     GroupSelect,

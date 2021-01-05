@@ -93,6 +93,9 @@ export default {
     if (me && me.id) {
       // Get chats and poll regularly for new ones
       this.$store.dispatch('chats/fetchLatestChats')
+
+      // Get any existing trysts.
+      this.$store.dispatch('tryst/fetch')
     }
 
     if (this.$sentry) // IS_APP

@@ -20,6 +20,11 @@
           This team is not active at the moment.
         </NoticeMessage>
         <p>{{ team.description }}</p>
+        <p v-if="team.wikiurl">
+          You can read more
+          <!-- eslint-disable-next-line -->
+          <ExternalLink :href="team.wikiurl">on the wiki</ExternalLink>.
+        </p>
         <p v-if="team.email">
           <!-- eslint-disable-next-line -->
           Contact email: <ExternalLink :href="'mailto:' + team.email">{{ team.email }}</ExternalLink>

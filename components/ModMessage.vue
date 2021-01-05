@@ -155,8 +155,8 @@
                   {{ eBody }}
                 </span>
               </div>
-              <div v-if="message.attachments && message.attachments.length" class="d-flex flex-wrap">
-                <ModPhoto v-for="attachment in message.attachments" :key="'attachment-' + attachment.id" :message="message" :attachment="attachment" class="d-inline pr-1" />
+              <div v-if="attachments.length" class="d-flex flex-wrap">
+                <ModPhoto v-for="attachment in attachments" :key="'attachment-' + attachment.id" :message="message" :attachment="attachment" class="d-inline pr-1" />
               </div>
               <MessageReplyInfo v-if="!pending || message.replies && message.replies.length" :message="message" class="d-inline" />
             </div>
@@ -261,6 +261,15 @@
             <v-icon name="info-circle" /> Post now in <em>Approved</em>.
           </b-alert>
         </div>
+        <b-row v-if="uploading" class="bg-white">
+          <b-col class="p-0">
+            <OurFilePond
+              imgtype="Message"
+              imgflag="message"
+              @photoProcessed="photoProcessed"
+            />
+          </b-col>
+        </b-row>
       </b-card-body>
       <b-card-footer v-if="!noactions && expanded">
         <div v-if="message.heldby && message.heldby.id !== myid">
@@ -268,6 +277,9 @@
           check with them before releasing the message.
         </div>
         <ModMessageButtons v-else-if="!editing" :message="message" :modconfig="modconfig" :editreview="editreview" :cantpost="membership && membership.ourpostingstatus === 'PROHIBITED'" />
+        <b-btn v-if="editing" variant="secondary" class="mr-auto" @click="photoAdd">
+          <v-icon name="camera" />&nbsp;Add photo
+        </b-btn>
         <b-btn v-if="editing" variant="white" @click="editing = false">
           <v-icon name="times" /> Cancel
         </b-btn>
@@ -308,10 +320,12 @@ import MessageMap from './MessageMap'
 import ModMessageMicroVolunteering from './ModMessageMicroVolunteering'
 import twem from '~/assets/js/twem'
 const Highlighter = () => import('vue-highlight-words')
+const OurFilePond = () => import('~/components/OurFilePond')
 
 export default {
   name: 'ModMessage',
   components: {
+    OurFilePond,
     ModMessageMicroVolunteering,
     MessageMap,
     GroupSelect,
@@ -376,7 +390,9 @@ export default {
       showEmails: false,
       editing: false,
       expanded: false,
-      editgroup: null
+      editgroup: null,
+      uploading: false,
+      attachments: []
     }
   },
   computed: {
@@ -583,6 +599,7 @@ export default {
   },
   mounted() {
     this.expanded = !this.summary
+    this.attachments = this.message.attachments
   },
   methods: {
     hasCollection(coll) {
@@ -610,6 +627,12 @@ export default {
     async save() {
       this.saving = true
 
+      const attids = []
+
+      for (const att of this.attachments) {
+        attids.push(att.id)
+      }
+
       if (this.message.item && this.message.location) {
         // Well-structured message
         await this.$store.dispatch('messages/patch', {
@@ -617,6 +640,7 @@ export default {
           msgtype: this.message.type,
           item: this.message.item.name,
           location: this.message.location.name,
+          attachments: attids,
           textbody: this.message.textbody
         })
       } else {
@@ -625,6 +649,7 @@ export default {
           id: this.message.id,
           msgtype: this.message.type,
           subject: this.message.subject,
+          attachments: attids,
           textbody: this.message.textbody
         })
       }
@@ -730,6 +755,25 @@ export default {
       }
 
       return ret
+    },
+    photoAdd() {
+      // Flag that we're uploading.  This will trigger the render of the filepond instance and subsequently the
+      // init callback below.
+      this.uploading = true
+    },
+    photoProcessed(imageid, imagethumb, image) {
+      // We have uploaded a photo.  Remove the filepond instance.
+      this.uploading = false
+
+      this.attachments.push({
+        id: imageid,
+        paththumb: imagethumb,
+        path: image
+      })
+
+      this.$store.dispatch('messages/fetch', {
+        id: this.message.id
+      })
     }
   }
 }

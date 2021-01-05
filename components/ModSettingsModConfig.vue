@@ -8,6 +8,10 @@
     <p>
       You configure different sets of buttons for different pages, so there's a section for each.
     </p>
+    <p>
+      <!-- eslint-disable-next-line -->
+      Read more <ExternalLink href="https://wiki.ilovefreegle.org/Sample_Messages">on the wiki</ExternalLink>.
+    </p>
     <div class="d-flex justify-content-between flex-wrap">
       <b-select v-model="configid" :options="configOptions" class="mb-2 font-weight-bold" />
       <div>
@@ -184,6 +188,7 @@
 </template>
 <script>
 import waitForRef from '@/mixins/waitForRef'
+import ExternalLink from '@/components/ExternalLink'
 import ModConfigSetting from './ModConfigSetting'
 import NoticeMessage from './NoticeMessage'
 import ModSettingsStandardMessageSet from './ModSettingsStandardMessageSet'
@@ -192,6 +197,7 @@ import ConfirmModal from './ConfirmModal'
 
 export default {
   components: {
+    ExternalLink,
     ConfirmModal,
     SpinButton,
     ModSettingsStandardMessageSet,

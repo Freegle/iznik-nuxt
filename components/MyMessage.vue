@@ -92,12 +92,12 @@
               </span>
             </div>
             <div class="d-flex flex-wrap">
-              <div v-if="message.replycount > 0 && !expanded">
+              <div v-if="message.replycount > 0 && !expanded" class="mr-2">
                 <b-badge variant="info">
                   <v-icon name="user" class="fa-fw" /> {{ message.replycount | pluralize(['reply', 'replies'], { includeNumber: true }) }}
                 </b-badge>
               </div>
-              <div v-if="message.outcomes && message.outcomes.length > 0" class="ml-1">
+              <div v-if="message.outcomes && message.outcomes.length > 0" class="mr-2">
                 <b-badge v-if="taken" variant="success">
                   <v-icon name="check" class="fa-fw" /> Taken
                 </b-badge>
@@ -108,21 +108,25 @@
                   <v-icon name="check" class="fa-fw" /> Withdrawn
                 </b-badge>
               </div>
-              <div v-else-if="message.promisecount > 0">
+              <div v-else-if="message.promisecount > 0" class="mr-2">
                 <b-badge v-if="promisedTo.length === 0" variant="success">
                   <v-icon name="handshake" class="fa-fw" /> Promised
                 </b-badge>
-                <div v-else class="ml-1 d-flex flex-wrap text-info">
-                  <v-icon name="handshake" class="fa-fw mt-1" />&nbsp;Promised&nbsp;
+                <div v-else class="ml-1 text-info">
                   <div v-for="p in promisedTo" :key="'promised-' + p.id">
-                    to <b>{{ p.name }}</b>
-                    <span v-if="p.trystdate">
-                      , handover arranged for <b>{{ p.trystdate }}</b>
-                    </span>
+                    <div class="d-flex flex-wrap">
+                      <div>
+                        <v-icon name="handshake" class="fa-fw mt-1" />&nbsp;Promised to <b>{{ p.name }}</b>
+                      </div>
+                      <div v-if="p.trystdate" class="d-flex">
+                        , handover arranged for<b>&nbsp;{{ p.trystdate }}</b>
+                      </div>
+                    </div>
+                    <AddToCalendar v-if="p.tryst" :ics="p.tryst.ics" variant="link" />
                   </div>
                 </div>
               </div>
-              <div v-if="unseen > 0" class="ml-1">
+              <div v-if="unseen > 0" class="mr-2">
                 <b-badge variant="danger">
                   <v-icon name="comments" class="fa-fw" /> {{ unseen }} unread
                 </b-badge>
@@ -241,6 +245,7 @@
   </div>
 </template>
 <script>
+import AddToCalendar from '@/components/AddToCalendar'
 import OutcomeModal from './OutcomeModal'
 const MyMessageReply = () => import('./MyMessageReply.vue')
 const ShareModal = () => import('./ShareModal')
@@ -259,6 +264,7 @@ export default {
     ResizeText
   },
   components: {
+    AddToCalendar,
     OutcomeModal,
     ShareModal,
     MyMessageReply,
@@ -434,15 +440,11 @@ export default {
           // We may need to fetch user info for promises.
           if (newVal.promises) {
             newVal.promises.forEach(p => {
-              console.log('Consider promise', p)
               const user = this.$store.getters['user/get'](p.userid)
               if (!user) {
-                console.log('Fetch', p.userid)
                 this.$store.dispatch('user/fetch', {
                   id: p.userid
                 })
-              } else {
-                console.log('Already got user', user)
               }
             })
           }

@@ -3,12 +3,15 @@
     <p>Before we go further, please complete our "COVID checklist" to show that you'll help keep yourself and others safe.</p>
     <b-form-checkbox v-model="travel" size="lg">
       <b>
-        I will follow local rules on permitted and essential travel, leaving my home and travelling between areas.
+        I will follow rules on leaving my home, essential travel and staying local.
       </b>
     </b-form-checkbox>
+    <p class="mt-3">
+      When freegling:
+    </p>
     <b-form-checkbox v-model="socialdistance" size="lg">
       <b>
-        I will respect social distance.
+        I will maintain social distance and wear a face covering unless medically exempt.
       </b>
     </b-form-checkbox>
     <b-form-checkbox v-model="clean" size="lg">
@@ -16,9 +19,13 @@
         I will clean items I give or receive.
       </b>
     </b-form-checkbox>
+    <b-form-checkbox v-model="enter" size="lg">
+      <b>
+        I will not enter anyone else's home or allow anyone into mine.
+      </b>
+    </b-form-checkbox>
     <p class="mt-2">
-      We really really recommend that you only travel for freegling as part of another journey or permitted exercise, and
-      that you do not enter someone else's home.  If you're not comfortable, don't freegle.  You can also read more
+      If you're not comfortable, don't freegle - or consider delaying handovers until restrictions ease.  You can also read more
       advice here:
     </p>
     <b-btn variant="link" class="p-0 align-top" @click="showModal = true">
@@ -42,7 +49,8 @@ export default {
       showModal: false,
       socialdistance: false,
       travel: false,
-      clean: false
+      clean: false,
+      enter: false
     }
   },
   watch: {
@@ -53,6 +61,9 @@ export default {
       this.check()
     },
     clean() {
+      this.check()
+    },
+    enter() {
       this.check()
     }
   },
@@ -68,7 +79,7 @@ export default {
   },
   methods: {
     check() {
-      if (this.socialdistance && this.travel && this.clean) {
+      if (this.socialdistance && this.travel && this.clean && this.enter) {
         this.$store.dispatch('misc/set', {
           key: 'covidconfirmed',
           value: Date.now()

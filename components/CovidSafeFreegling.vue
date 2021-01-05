@@ -11,19 +11,19 @@
     <p>
       Avoid special or extra journeys for freegling - see Government advice in
       <!-- eslint-disable-next-line -->
-      <ExternalLink href="https://www.gov.uk/guidance/new-national-restrictions-from-5-november">England</ExternalLink>,
+      <ExternalLink href="https://www.gov.uk/guidance/national-lockdown-stay-at-home">England</ExternalLink>,
       <!-- eslint-disable-next-line -->
-      <ExternalLink href="https://www.gov.scot/publications/coronavirus-covid-19-protection-levels/">Scotland</ExternalLink>,
+      <ExternalLink href="https://www.gov.scot/publications/coronavirus-covid-19-stay-at-home-guidance/">Scotland</ExternalLink>,
       <ExternalLink href="https://gov.wales/coronavirus">
         Wales
       </ExternalLink>
       and
       <!-- eslint-disable-next-line -->
       <ExternalLink href="https://www.nidirect.gov.uk/articles/coronavirus-covid-19-regulations-guidance-what-restrictions-mean-you">Northern Ireland</ExternalLink>.
-      Please check local restrictions on travel and use of public transport.
+      You must comply with restrictions on travel and use of public transport.
     </p>
     <p>
-      Where possible, please post to your nearest community and don't post or reply if it's further away.
+      You must post only to your nearest community, and please do not reply to posts further away.
     </p>
     <h4>PROTECT each other</h4>
     <p>
@@ -45,7 +45,7 @@
       leave it for a few days before touching it.
     </p>
     <p>
-      Wear a face covering if you can when collecting, and wash your hands afterwards.
+      Wear a face covering unless medically exempt, and sanitise your hands afterwards.
     </p>
     <h4>SOCIAL DISTANCING</h4>
     <p>

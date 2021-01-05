@@ -34,7 +34,9 @@
           <div v-else-if="!extgroup">
             <b-row v-if="postcodeValid" class="mt-1">
               <b-col class="text-center">
-                Freegle has local communities for each area.  We'll show your offer on this community first:
+                Freegle has local communities for each area.  We'll show your offer on this community:
+                <!--                COVID Lockdown 2-->
+                <!--                first:-->
               </b-col>
             </b-row>
             <b-row v-if="postcodeValid" class="mt-1">
@@ -44,7 +46,8 @@
             </b-row>
             <b-row v-if="postcodeValid" class="mt-1">
               <b-col class="text-center text-muted">
-                Click on the name above to choose a different community.
+                <!--                COVID Lockdown 2-->
+                <!--                Click on the name above to choose a different community.-->
               </b-col>
             </b-row>
           </div>

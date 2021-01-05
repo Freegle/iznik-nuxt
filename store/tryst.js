@@ -90,5 +90,13 @@ export const actions = {
     dispatch('fetch', {
       id: params.id
     })
+  },
+
+  async confirm({ commit, dispatch }, params) {
+    await this.$api.tryst.confirm(params.id)
+  },
+
+  async decline({ commit, dispatch }, params) {
+    await this.$api.tryst.decline(params.id)
   }
 }
