@@ -11,6 +11,7 @@
   "dependencies": {
     "cordova-custom-config": "^5.1.0",
     "cordova-ios": "5.1.1",
+    "cordova-plugin-calendar": "^5.1.5",
     "cordova-plugin-camera": "^4.1.0",
     "cordova-plugin-contacts": "^3.0.1",
     "cordova-plugin-device": "^2.0.3",
@@ -59,6 +60,10 @@
       "cordova-plugin-sign-in-with-apple": {},
       "cordova-plugin-contacts": {
         "CONTACTS_USAGE_DESCRIPTION": "To invite a friend to use Freegle"
+      },
+      "cordova-plugin-calendar": {
+        "CALENDAR_USAGE_DESCRIPTION": "To save handover appointments",
+        "CONTACTS_USAGE_DESCRIPTION": " "
       }
     },
     "platforms": [
