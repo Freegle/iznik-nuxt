@@ -31,7 +31,7 @@
           <v-icon name="gavel" class="link__icon" />
           Disclaimer
         </nuxt-link>
-        <nuxt-link v-if="!isiOSapp" to="/donate" class="menu__link">
+        <nuxt-link to="/donate" class="menu__link">
           <v-icon name="hand-holding-heart" class="link__icon" />
           Donate
         </nuxt-link>
@@ -47,7 +47,7 @@
 <script>
 export default {
   computed: { // CC
-    isiOSapp() {
+    isiOSapp() { // Donate nuxt-link has this if donation disallowed: v-if="!isiOSapp" 
       return this.$store.getters['mobileapp/isiOS']
     }
   },
