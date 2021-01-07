@@ -58,7 +58,7 @@ export default {
           const mins = parseInt(dtstart.substring(11,13))
           const secs = parseInt(dtstart.substring(13,15))
           const startDate = new Date(year, month, dom, hour, mins, secs)
-          const endDate = false
+          const endDate = startDate
           const title = getCalProp(lines, 'SUMMARY')
           const eventLocation = ''
           const notes = getCalProp(lines, 'DESCRIPTION')
