@@ -485,18 +485,27 @@ export default {
       const ret = []
 
       if (this.centre) {
-        this.groupids.forEach(id => {
+        const allGroups = this.$store.getters['group/list']
+
+        for (const ix in allGroups) {
+          const group = allGroups[ix]
           const member =
             this.$store.getters['auth/user'] &&
-            this.$store.getters['auth/member'](id)
+            this.$store.getters['auth/member'](group.id)
 
           if (!member) {
-            const group = this.$store.getters['group/get'](id)
-
             if (group && group.onmap && group.publish) {
               group.distance = this.getDistance(
                 [this.centre.lat, this.centre.lng],
                 [group.lat, group.lng]
+              )
+
+              console.log(
+                'GRoup',
+                group.nameshort,
+                group.distance,
+                group.lat,
+                group.lng
               )
 
               if (group.distance <= 50000) {
@@ -514,11 +523,13 @@ export default {
               }
             }
           }
-        })
+        }
 
         ret.sort((a, b) => {
           return a.distance - b.distance
         })
+
+        console.log('Sorted groups', ret)
       }
 
       return ret.slice(0, 3)
