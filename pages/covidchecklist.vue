@@ -32,10 +32,10 @@ export default {
   },
   computed: {
     msgid() {
-      return this.$route.params.msgid
+      return this.$route.query.msgid
     },
     tn() {
-      return this.$route.params.tn
+      return this.$route.query.tn
     }
   },
   methods: {
