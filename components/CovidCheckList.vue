@@ -48,6 +48,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    msgid: {
+      type: Number,
+      required: false,
+      default: null
     }
   },
   data: function() {
@@ -92,7 +97,10 @@ export default {
           value: Date.now()
         })
 
-        await this.$store.dispatch('auth/covidConfirm')
+        await this.$store.dispatch('auth/covidConfirm', {
+          msgid: this.msgid
+        })
+
         this.$emit('confirmed')
       }
     }

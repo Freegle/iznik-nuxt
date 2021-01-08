@@ -486,6 +486,6 @@ export const actions = {
   },
 
   async covidConfirm({ state, commit, dispatch }, params) {
-    await this.$api.session.covidConfirmed()
+    await this.$api.session.covidConfirmed(params.msgid)
   }
 }
