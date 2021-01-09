@@ -128,12 +128,18 @@ export default {
     }
   },
   async mounted() {
-    // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
-    // need to render this pane on the server.
-    await this.$store.dispatch('user/fetch', {
-      id: this.id,
-      info: true
-    })
+    if (this.id) {
+      const user = this.$store.getters['user/get'](this.id)
+
+      if (!user || !user.info) {
+        // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
+        // need to render this pane on the server.
+        await this.$store.dispatch('user/fetch', {
+          id: this.id,
+          info: true
+        })
+      }
+    }
   },
   methods: {
     show() {
