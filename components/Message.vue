@@ -15,7 +15,7 @@
     </b-tooltip>
     <b-card class="p-0" variant="success" :class="{ freegled : successful }">
       <b-card-header :class="'pl-2 pr-2 clearfix card-header' + (ispromised && replyable ? ' promisedfade' : '')">
-        <b-card-title class="msgsubj mb-1 header--size4 card-header__title" title-tag="h3">
+        <b-card-title class="msgsubj mb-1 header--size4 card-header__title clickme" title-tag="h3" @click="expand">
           <Highlighter
             v-if="matchedon"
             :search-words="[matchedon.word]"
