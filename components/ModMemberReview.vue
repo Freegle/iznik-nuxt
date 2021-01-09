@@ -356,13 +356,13 @@ export default {
     async showProfile() {
       // Need to fetch the user here.  This is because if we leave it until the modal, then we can get into a weird
       // render loop.
-      const user = this.$store.getters['user/get'](this.id)
+      const user = this.$store.getters['user/get'](this.member.userid)
 
       if (!user || !user.info) {
         // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
         // need to render this pane on the server.
         await this.$store.dispatch('user/fetch', {
-          id: this.id,
+          id: this.member.userid,
           info: true
         })
       }
