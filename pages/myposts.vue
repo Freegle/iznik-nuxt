@@ -85,7 +85,7 @@
           >
             <template slot="header">
               <h2 class="d-inline header--size3">
-                <v-icon name="search" scale="2" /> Your WANTEDs
+                <v-icon name="shopping-cart" scale="2" /> Your WANTEDs
               </h2>
               <span v-if="oldWantedCount > 0">
                 <span v-if="showOldWanteds" class="float-right">
