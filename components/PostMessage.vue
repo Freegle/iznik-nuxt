@@ -44,6 +44,19 @@
       <PostItem ref="item" v-model="item" class="item pt-1" @input="itemType" />
       <NumberIncrementDecrement v-if="type === 'Offer'" :count.sync="availablenow" label="Quantity" append-text=" available" class="count pt-1" />
     </div>
+    <NoticeMessage v-if="duplicate" variant="warning">
+      <p>You already have an open post <b>{{ duplicate.subject }}</b>.</p>
+      <p>
+        If it's the same, please go to <nuxt-link to="/myposts">
+          My Posts
+        </nuxt-link> and use
+        the <em>Repost</em> button.
+      </p>
+      <p>
+        If it's different, please change the name slightly - then it'll be clearer for everyone
+        that it's not the same.
+      </p>
+    </NoticeMessage>
     <div>
       <NoticeMessage v-if="vague" variant="warning" class="mt-1 mb-1">
         <p>
@@ -239,6 +252,29 @@ export default {
       return this.type === 'Offer'
         ? "Please give a few details, e.g. colour, condition, size, whether it's working etc."
         : "Please give a few more details about what you're looking for, and why you'd like it."
+    },
+    duplicate() {
+      let ret = null
+
+      const messages = this.$store.getters['messages/getAll']
+
+      messages.forEach(m => {
+        if (
+          m.fromuser &&
+          m.fromuser.id === this.myid &&
+          m.type === this.type &&
+          m.item &&
+          this.item &&
+          m.item.name.toLowerCase() === this.item.toLowerCase() &&
+          m.id !== this.id &&
+          (!m.outcomes || !m.outcomes.length)
+        ) {
+          // Exactly duplicate of open post.
+          ret = m
+        }
+      })
+
+      return ret
     }
   },
   methods: {
