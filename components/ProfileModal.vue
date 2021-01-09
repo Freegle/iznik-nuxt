@@ -118,7 +118,28 @@ export default {
   },
   computed: {
     user() {
-      const ret = this.id ? this.$store.getters['user/get'](this.id) : null
+      // Look for the user in both the user store (FD) and the members store (MT).  This saves some fetches which can
+      // result in weird render errors.
+      let ret = null
+
+      if (this.id) {
+        let user = this.$store.getters['user/get'](this.id)
+        console.log('Found in user store?', this.id, user)
+
+        if (user && user.info) {
+          console.log('...yes')
+          ret = user
+        } else {
+          user = this.$store.getters['members/getByUserId'](this.id)
+          console.log('Found in member store?', this.id, user)
+
+          if (user && user.info) {
+            console.log('...yes')
+            ret = user
+          }
+        }
+      }
+
       return ret
     },
     aboutme() {
@@ -128,17 +149,13 @@ export default {
     }
   },
   async mounted() {
-    if (this.id) {
-      const user = this.$store.getters['user/get'](this.id)
-
-      if (!user || !user.info) {
-        // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
-        // need to render this pane on the server.
-        await this.$store.dispatch('user/fetch', {
-          id: this.id,
-          info: true
-        })
-      }
+    if (this.id && !this.user) {
+      // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
+      // need to render this pane on the server.
+      await this.$store.dispatch('user/fetch', {
+        id: this.id,
+        info: true
+      })
     }
   },
   methods: {
