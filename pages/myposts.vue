@@ -61,7 +61,7 @@
                 <div v-else>
                   <b-row>
                     <b-col>
-                      <p>Nothing here yet.  Why not...</p>
+                      <p>You have no active OFFERs.</p>
                     </b-col>
                   </b-row>
                   <b-row>
@@ -111,7 +111,7 @@
                   </div>
                 </div>
                 <div v-else>
-                  <p>Nothing here yet.  Why not...</p>
+                  <p>You have no active WANTEDs.</p>
                   <div class="d-flex justify-content-around mb-2">
                     <b-button to="/find" class="mt-1" size="lg" variant="secondary">
                       <v-icon name="shopping-cart" />&nbsp;Ask for something

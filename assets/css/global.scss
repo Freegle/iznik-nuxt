@@ -259,3 +259,9 @@ form {
 .leaflet-container .leaflet-control-attribution {
   right: 20px;
 }
+
+// Bootstrap tooltips appear above modals on mobile even after a modal is shown from a click.  This is confusing.
+// We don't have any tooltips inside modals so move them down.
+.tooltip {
+  z-index: 1030;
+}
