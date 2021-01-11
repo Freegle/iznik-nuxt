@@ -96,7 +96,6 @@
           This item has already been promised to someone.  You can still reply - you might get it if someone
           else drops out.
         </notice-message>
-
         <div class="pl-1 d-flex flex-column justify-content-between">
           <div class="d-flex flex-column">
             <Highlighter
@@ -134,6 +133,11 @@
             <NoticeMessage v-if="milesaway > 3" variant="warning">
               Remember: essential travel only and stay local. Could you delay the actual collection?
             </NoticeMessage>
+            <notice-message v-if="stillAvailable" variant="info" class="mb-1 mt-1">
+              You don't need to ask if things are still available.  People can mark OFFERs as promised or TAKEN, and
+              you'd see that here.  So just write whatever you would have said next - explain why you'd like it and when
+              you could collect.
+            </notice-message>
             <b-form-group
               v-if="!sent"
               class="flex-grow-1"
@@ -458,6 +462,14 @@ export default {
     },
     ispromised() {
       return this.promised || (this.expanded && this.expanded.promised)
+    },
+    stillAvailable() {
+      return (
+        this.expanded.type === 'Offer' &&
+        this.reply &&
+        this.reply.length <= 35 &&
+        this.reply.toLowerCase().indexOf('still available') !== -1
+      )
     },
     replyToUser() {
       const msg = this.$store.getters['messages/get'](this.id)
