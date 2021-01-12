@@ -57,7 +57,24 @@ export default {
   },
   computed: {
     user() {
-      return this.$store.getters['user/get'](this.userid)
+      let ret = null
+      let user = this.$store.getters['user/get'](this.userid)
+      console.log('Found in user store?', this.id, user)
+
+      if (user && user.info) {
+        console.log('...yes')
+        ret = user
+      } else {
+        user = this.$store.getters['members/getByUserId'](this.userid)
+        console.log('Found in member store?', this.id, user)
+
+        if (user && user.info) {
+          console.log('...yes')
+          ret = user
+        }
+      }
+
+      return ret
     },
     title() {
       let ret
