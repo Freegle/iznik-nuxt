@@ -39,8 +39,10 @@ export const actions = {
     if (locations) {
       commit('clear')
       commit('set', locations)
+      return locations
     } else {
       commit('set', [location])
+      return location
     }
   },
 

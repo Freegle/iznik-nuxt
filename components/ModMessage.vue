@@ -45,6 +45,9 @@
               </span>
             </div>
             <MessageHistory :message="message" modinfo display-message-link />
+            <div v-if="homegroup && message && message.groups && message.groups.length && homegroup !== message.groups[0].namedisplay" class="small text-danger">
+              Possibly should be on {{ homegroup }}
+            </div>
             <ModMessageDuplicate v-for="(duplicate, index) in duplicates" :key="'duplicate-' + duplicate.id + '-' + index" :message="duplicate" />
             <ModMessageCrosspost v-for="crosspost in crossposts" :key="'crosspost-' + crosspost.id" :message="crosspost" />
             <div v-if="expanded">
@@ -392,7 +395,8 @@ export default {
       expanded: false,
       editgroup: null,
       uploading: false,
-      attachments: []
+      attachments: [],
+      homegroup: null
     }
   },
   computed: {
@@ -600,6 +604,7 @@ export default {
   mounted() {
     this.expanded = !this.summary
     this.attachments = this.message.attachments
+    this.findHomeGroup()
   },
   methods: {
     hasCollection(coll) {
@@ -774,6 +779,18 @@ export default {
       this.$store.dispatch('messages/fetch', {
         id: this.message.id
       })
+    },
+    async findHomeGroup() {
+      if (this.message && this.message.lat && this.message.lng) {
+        const loc = await this.$store.dispatch('locations/fetch', {
+          lat: this.message.lat,
+          lng: this.message.lng
+        })
+
+        if (loc && loc.groupsnear && loc.groupsnear.length) {
+          this.homegroup = loc.groupsnear[0].namedisplay
+        }
+      }
     }
   }
 }
