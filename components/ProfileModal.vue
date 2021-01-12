@@ -124,17 +124,13 @@ export default {
 
       if (this.id) {
         let user = this.$store.getters['user/get'](this.id)
-        console.log('Found in user store?', this.id, user)
 
         if (user && user.info) {
-          console.log('...yes')
           ret = user
         } else {
           user = this.$store.getters['members/getByUserId'](this.id)
-          console.log('Found in member store?', this.id, user)
 
           if (user && user.info) {
-            console.log('...yes')
             ret = user
           }
         }

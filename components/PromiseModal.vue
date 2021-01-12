@@ -251,7 +251,10 @@ export default {
         userid: this.selectedUser
       })
 
-      const arrangedfor = this.$dayjs(this.date + ' ' + this.time).toISOString()
+      const arrangedfor =
+        this.time && this.date
+          ? this.$dayjs(this.date + ' ' + this.time).toISOString()
+          : null
 
       if (!this.tryst) {
         // No arrangement yet.

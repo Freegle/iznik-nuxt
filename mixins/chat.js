@@ -487,38 +487,40 @@ export default {
       }
 
       // Show the modal first, as eye candy.
-      this.$refs.promise.show(date)
+      this.waitForRef('promise', () => {
+        this.$refs.promise.show(date)
 
-      this.$nextTick(async () => {
-        // Get our offers.
-        const me = this.$store.getters['auth/user']
-        await this.$store.dispatch('messages/clear')
-        await this.$store.dispatch('messages/fetchMessages', {
-          fromuser: me.id,
-          types: ['Offer'],
-          hasoutcome: false,
-          limit: 100,
-          collection: 'AllUser'
-        })
+        this.$nextTick(async () => {
+          // Get our offers.
+          const me = this.$store.getters['auth/user']
+          await this.$store.dispatch('messages/clear')
+          await this.$store.dispatch('messages/fetchMessages', {
+            fromuser: me.id,
+            types: ['Offer'],
+            hasoutcome: false,
+            limit: 100,
+            collection: 'AllUser'
+          })
 
-        this.ouroffers = this.$store.getters['messages/getAll']
+          this.ouroffers = this.$store.getters['messages/getAll']
 
-        // Find the last message referenced in this chat, if any.  That's the most likely one you'd want to promise,
-        // so it should be the default.
-        this.likelymsg = 0
+          // Find the last message referenced in this chat, if any.  That's the most likely one you'd want to promise,
+          // so it should be the default.
+          this.likelymsg = 0
 
-        for (const msg of this.chatmessages) {
-          if (msg.refmsg) {
-            // Check that it's still in our list of messages
-            for (const ours of this.ouroffers) {
-              if (ours.id === msg.refmsg.id) {
-                this.likelymsg = msg.refmsg.id
+          for (const msg of this.chatmessages) {
+            if (msg.refmsg) {
+              // Check that it's still in our list of messages
+              for (const ours of this.ouroffers) {
+                if (ours.id === msg.refmsg.id) {
+                  this.likelymsg = msg.refmsg.id
+                }
               }
             }
           }
-        }
 
-        this._updateAfterSend()
+          this._updateAfterSend()
+        })
       })
     },
     nudge() {
