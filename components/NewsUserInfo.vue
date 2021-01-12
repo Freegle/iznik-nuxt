@@ -1,8 +1,8 @@
 <template>
   <nuxt-link :to="'/profile/' + user.id" class="text-success decornone" :title="'Click to view profile for ' + user.displayname">
     <span class="text-muted small">
-      <span v-if="user.publiclocation" class="pl-0">
-        <v-icon name="map-marker-alt" />&nbsp;{{ user.publiclocation.display }}
+      <span v-if="user.info.publiclocation" class="pl-0">
+        <v-icon name="map-marker-alt" />&nbsp;{{ user.info.publiclocation.display }}
       </span>
       <span v-if="user.activecounts && user.activecounts.offers + user.activecounts.wanteds > 0">
         &bull;
