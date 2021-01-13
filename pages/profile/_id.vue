@@ -3,7 +3,7 @@
     <div v-if="user" class="profile__wrapper">
       <b-card variant="white" border-variant="success" class="mt-1">
         <b-card-body class="p-0">
-          <profile-header :user="user" class="m-0" />
+          <profile-header :id="id" class="m-0" />
         </b-card-body>
       </b-card>
       <b-card v-if="aboutme" variant="white" class="mt-2">

@@ -19,18 +19,18 @@
       </div>
       <div>
         <div class="small text-faded mb-1 text-left text-lg-right">
-          #{{ user.id }}
+          #{{ id }}
         </div>
         <div class="d-flex flex-row flex-lg-column align-items-baseline">
           <ChatButton
-            v-if="user.id !== myid"
-            :userid="user.id"
+            v-if="id !== myid"
+            :userid="id"
             size="sm"
             title="Message"
             class="mb-1 order-1 order-lg-0 align-self-lg-center"
             variant="secondary"
           />
-          <ratings :id="user.id" size="sm" class="pt-1 mr-2 mr-lg-0 d-block" />
+          <ratings :id="id" size="sm" class="pt-1 mr-2 mr-lg-0 d-block" />
         </div>
       </div>
     </b-media-body>
@@ -49,9 +49,32 @@ export default {
     Ratings
   },
   props: {
-    user: {
-      type: Object,
+    id: {
+      type: Number,
       required: true
+    }
+  },
+  computed: {
+    user() {
+      // Look for the user in both the user store (FD) and the members store (MT).  This saves some fetches which can
+      // result in weird render errors.
+      let ret = null
+
+      if (this.id) {
+        let user = this.$store.getters['user/get'](this.id)
+
+        if (user && user.info) {
+          ret = user
+        } else {
+          user = this.$store.getters['members/getByUserId'](this.id)
+
+          if (user && user.info) {
+            ret = user
+          }
+        }
+      }
+
+      return ret
     }
   }
 }

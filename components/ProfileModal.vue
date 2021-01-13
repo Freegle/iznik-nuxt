@@ -8,7 +8,7 @@
   >
     <template slot="modal-header">
       <div class="coverphoto">
-        <profile-header :user="user" class="flex-grow-1 px-3 py-2" />
+        <profile-header :id="id" class="flex-grow-1 px-3 py-2" />
       </div>
     </template>
     <template slot="default">
