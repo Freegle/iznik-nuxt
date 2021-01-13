@@ -120,15 +120,17 @@ export default {
     // Make sure we're not wrongly set as being in the middle of an upload
     await this.$store.dispatch('compose/setUploading', false)
 
-    // Get our own posts so that we can spot duplicates.
-    await this.$store.dispatch('messages/clear')
-    this.$store.dispatch('messages/fetchMessages', {
-      collection: 'AllUser',
-      summary: true,
-      types: ['Wanted'],
-      fromuser: this.me.id,
-      limit: 15
-    })
+    if (this.me) {
+      // Get our own posts so that we can spot duplicates.
+      await this.$store.dispatch('messages/clear')
+      this.$store.dispatch('messages/fetchMessages', {
+        collection: 'AllUser',
+        summary: true,
+        types: ['Wanted'],
+        fromuser: this.me.id,
+        limit: 15
+      })
+    }
   },
   methods: {
     next() {
