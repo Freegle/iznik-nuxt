@@ -127,7 +127,7 @@ export default {
   data: function() {
     return {
       id: null,
-      messages: []
+      invalidUser: false
     }
   },
   computed: {
@@ -145,37 +145,33 @@ export default {
       return this.user && this.user.info && this.user.info.aboutme
         ? twem.twem(this.$twemoji, this.user.info.aboutme.text)
         : null
-    }
-  },
-  async asyncData({ app, params, store }) {
-    // Get the user and their messages.
-    let invalidUser = false
-
-    await store.dispatch('user/fetch', {
-      id: params.id,
-      info: true
-    })
-
-    const user = store.getters['user/get'](params.id)
-
-    if (user) {
-      await store.dispatch('messages/clear')
-      await store.dispatch('messages/fetchMessages', {
-        fromuser: params.id,
-        limit: 1000,
-        age: user.info.openage
-      })
-    } else {
-      invalidUser = true
-    }
-
-    return {
-      messages: store.getters['messages/getAll'],
-      invalidUser: invalidUser
+    },
+    messages() {
+      return this.$store.getters['messages/getAll']
     }
   },
   created() {
     this.id = parseInt(this.$route.params.id)
+  },
+  async mounted() {
+    // Get the user and their messages.
+    await this.$store.dispatch('user/fetch', {
+      id: this.id,
+      info: true
+    })
+
+    const user = this.$store.getters['user/get'](this.id)
+
+    if (user) {
+      await this.$store.dispatch('messages/clear')
+      await this.$store.dispatch('messages/fetchMessages', {
+        fromuser: this.id,
+        limit: 1000,
+        age: user.info.openage
+      })
+    } else {
+      this.invalidUser = true
+    }
   },
   methods: {
     active(type) {
