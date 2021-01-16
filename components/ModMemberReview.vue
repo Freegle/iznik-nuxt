@@ -85,10 +85,9 @@
               <b-btn variant="link" @click="showLogs">
                 View logs
               </b-btn>
-              <b-btn variant="link" @click="showProfile">
+              <b-btn variant="link" :to="'/profile/' + member.userid">
                 View profile
               </b-btn>
-              <ProfileModal v-if="showProfileModal" :id="member.userid" ref="profilemodal" />
               <div v-if="showEmails">
                 <div v-for="e in member.emails" :key="e.id">
                   {{ e.email }} <v-icon v-if="e.preferred" name="star" />
@@ -147,7 +146,6 @@ import ModMemberButton from './ModMemberButton'
 import ModSpammerReport from './ModSpammerReport'
 import SpinButton from './SpinButton'
 const ExternalLink = () => import('~/components/ExternalLink')
-const ProfileModal = () => import('~/components/ProfileModal')
 
 const MEMBERSHIPS_SHOW = 3
 
@@ -158,7 +156,6 @@ export default {
     SpinButton,
     ModSpammerReport,
     ModMemberButton,
-    ProfileModal,
     ModMemberLogins,
     ModBouncing,
     ModLogsModal,
@@ -199,8 +196,7 @@ export default {
       showEmails: false,
       type: null,
       allmemberships: false,
-      showSpamModal: false,
-      showProfileModal: false
+      showSpamModal: false
     }
   },
   computed: {
@@ -356,13 +352,6 @@ export default {
       await this.$store.dispatch('user/edit', {
         id: this.user.id,
         newslettersallowed: e.value
-      })
-    },
-    showProfile() {
-      this.showProfileModal = true
-
-      this.waitForRef('profilemodal', () => {
-        this.$refs.profilemodal.show()
       })
     },
     async spamReport() {
