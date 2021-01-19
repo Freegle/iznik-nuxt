@@ -73,15 +73,6 @@ export const mutations = {
     } else {
       state.fetching[params.id] = params.item
     }
-  },
-  clearLogContext(state, params) {
-    const user = getUserByID(state, params.id)
-
-    // If not in store, then it's already cleared, in effect.
-    if (user) {
-      user.logcontext = null
-      Vue.set(state.list, params.id, user)
-    }
   }
 }
 
@@ -182,9 +173,5 @@ export const actions = {
 
   async merge({ commit, dispatch }, params) {
     await this.$api.user.merge(params.email1, params.email2, params.reason)
-  },
-
-  clearLogContext({ commit, dispatch }, params) {
-    commit('clearLogContext', params)
   }
 }

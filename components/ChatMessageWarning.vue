@@ -1,6 +1,12 @@
 <template>
   <div>
-    <div v-if="phoneNumber" class="text-danger">
+    <div
+      v-if="phoneNumber"
+      :class="{
+        'text-danger': true,
+        'text-right': mine
+      }"
+    >
       This message may contain a phone number outside the UK, which costs more to call.
     </div>
   </div>
@@ -31,6 +37,9 @@ export default {
       }
 
       return ret
+    },
+    mine() {
+      return this.chatmessage.userid === this.me.id
     }
   }
 }

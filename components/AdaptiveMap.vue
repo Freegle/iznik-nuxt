@@ -67,6 +67,10 @@
           </h2>
           <AdaptiveMapGroup v-for="groupid in groupids" :id="groupid" :key="'adaptivegroup-' + groupid" />
         </div>
+        <p class="text-center mt-2 header--size5 text--medium-large-highlight community__text">
+          <!-- eslint-disable-next-line -->
+          Need help?  Go <nuxt-link to="/help">here</nuxt-link>.
+        </p>
         <p v-if="showStartMessage" class="text-center mt-2 header--size5 text--medium-large-highlight community__text">
           <!-- eslint-disable-next-line -->
           If there's no community for your area, would you like to start one? <ExternalLink href="mailto:newgroups@ilovefreegle.org">Get in touch!</ExternalLink>
@@ -485,18 +489,27 @@ export default {
       const ret = []
 
       if (this.centre) {
-        this.groupids.forEach(id => {
+        const allGroups = this.$store.getters['group/list']
+
+        for (const ix in allGroups) {
+          const group = allGroups[ix]
           const member =
             this.$store.getters['auth/user'] &&
-            this.$store.getters['auth/member'](id)
+            this.$store.getters['auth/member'](group.id)
 
           if (!member) {
-            const group = this.$store.getters['group/get'](id)
-
             if (group && group.onmap && group.publish) {
               group.distance = this.getDistance(
                 [this.centre.lat, this.centre.lng],
                 [group.lat, group.lng]
+              )
+
+              console.log(
+                'GRoup',
+                group.nameshort,
+                group.distance,
+                group.lat,
+                group.lng
               )
 
               if (group.distance <= 50000) {
@@ -514,11 +527,13 @@ export default {
               }
             }
           }
-        })
+        }
 
         ret.sort((a, b) => {
           return a.distance - b.distance
         })
+
+        console.log('Sorted groups', ret)
       }
 
       return ret.slice(0, 3)

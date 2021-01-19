@@ -251,25 +251,30 @@ export default {
         userid: this.selectedUser
       })
 
-      const arrangedfor = this.$dayjs(this.date + ' ' + this.time).toISOString()
+      const arrangedfor =
+        this.time && this.date
+          ? this.$dayjs(this.date + ' ' + this.time).toISOString()
+          : null
 
-      if (!this.tryst) {
-        // No arrangement yet.
-        await this.$store.dispatch('tryst/add', {
-          user1: this.myid,
-          user2: this.selectedUser,
-          arrangedfor: arrangedfor
-        })
-      } else {
-        // Update
-        await this.$store.dispatch('tryst/edit', {
-          id: this.tryst.id,
-          arrangedfor: arrangedfor
-        })
+      if (arrangedfor) {
+        if (!this.tryst) {
+          // No arrangement yet.
+          await this.$store.dispatch('tryst/add', {
+            user1: this.myid,
+            user2: this.selectedUser,
+            arrangedfor: arrangedfor
+          })
+        } else {
+          // Update
+          await this.$store.dispatch('tryst/edit', {
+            id: this.tryst.id,
+            arrangedfor: arrangedfor
+          })
+        }
+
+        // Fetch the trysts again, to make sure we show messages correctly on the chat.
+        this.$store.dispatch('tryst/fetch')
       }
-
-      // Fetch the trysts again, to make sure we show messages correctly on the chat.
-      this.$store.dispatch('tryst/fetch')
 
       this.hide()
     },

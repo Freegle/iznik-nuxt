@@ -51,8 +51,11 @@ export default class SessionAPI extends BaseAPI {
   }
 
   // COVID lockdown 2
-  covidConfirmed() {
-    return this.$post('/session', { covidconfirmed: true })
+  covidConfirmed(msgid) {
+    return this.$post('/session', {
+      msgid,
+      covidconfirmed: true
+    })
   }
 
   related(userlist) {

@@ -5,6 +5,9 @@
       <span class="small">
         <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ user.id }}
       </span>
+      <span v-if="email">
+        (<ExternalLink :href="'mailto:' + email">{{ email }}</ExternalLink>)
+      </span>
     </div>
     <b-btn variant="white" size="xs" class="mt-1" @click="addAComment">
       <v-icon name="tag" /> Add note
@@ -16,6 +19,7 @@
   </div>
 </template>
 <script>
+import ExternalLink from '@/components/ExternalLink'
 import waitForRef from '../mixins/waitForRef'
 import ModComment from './ModComment'
 import ModCommentAddModal from './ModCommentAddModal'
@@ -23,7 +27,7 @@ import ModCommentAddModal from './ModCommentAddModal'
 const REVIEWCHAT = null
 
 export default {
-  components: { ModCommentAddModal, ModComment },
+  components: { ExternalLink, ModCommentAddModal, ModComment },
   mixins: [waitForRef],
   props: {
     user: {
@@ -43,6 +47,21 @@ export default {
   data: function() {
     return {
       addComment: false
+    }
+  },
+  computed: {
+    email() {
+      let ret = null
+
+      if (this.user) {
+        this.user.emails.forEach(e => {
+          if (!e.ourdomain && (!ret || e.preferred)) {
+            ret = e.email
+          }
+        })
+      }
+
+      return ret
     }
   },
   methods: {

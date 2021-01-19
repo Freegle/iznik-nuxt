@@ -61,7 +61,7 @@
                 <div v-else>
                   <b-row>
                     <b-col>
-                      <p>Nothing here yet.  Why not...</p>
+                      <p>You have no active OFFERs.</p>
                     </b-col>
                   </b-row>
                   <b-row>
@@ -85,7 +85,7 @@
           >
             <template slot="header">
               <h2 class="d-inline header--size3">
-                <v-icon name="search" scale="2" /> Your WANTEDs
+                <v-icon name="shopping-cart" scale="2" /> Your WANTEDs
               </h2>
               <span v-if="oldWantedCount > 0">
                 <span v-if="showOldWanteds" class="float-right">
@@ -111,7 +111,7 @@
                   </div>
                 </div>
                 <div v-else>
-                  <p>Nothing here yet.  Why not...</p>
+                  <p>You have no active WANTEDs.</p>
                   <div class="d-flex justify-content-around mb-2">
                     <b-button to="/find" class="mt-1" size="lg" variant="secondary">
                       <v-icon name="shopping-cart" />&nbsp;Ask for something

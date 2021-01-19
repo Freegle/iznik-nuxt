@@ -90,8 +90,8 @@
             <div>
               <v-icon class="text-muted" name="globe-europe" /> Location on ChitChat
             </div>
-            <div v-if="user.publiclocation">
-              {{ user.publiclocation.display }}
+            <div v-if="user.info.publiclocation">
+              {{ user.info.publiclocation.display }}
             </div>
             <div v-else>
               Unknown

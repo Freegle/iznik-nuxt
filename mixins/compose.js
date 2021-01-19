@@ -160,7 +160,10 @@ export default {
       if (this.email && this.me) {
         ret = !this.me.emails.find(e => {
           return (
-            this.email.toLowerCase().localeCompare(e.email.toLowerCase()) === 0
+            this.email
+              .toLowerCase()
+              .trim()
+              .localeCompare(e.email.toLowerCase().trim()) === 0
           )
         })
       }

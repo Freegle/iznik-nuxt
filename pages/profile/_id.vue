@@ -3,7 +3,7 @@
     <div v-if="user" class="profile__wrapper">
       <b-card variant="white" border-variant="success" class="mt-1">
         <b-card-body class="p-0">
-          <profile-header :user="user" class="m-0" />
+          <profile-header :id="id" class="m-0" />
         </b-card-body>
       </b-card>
       <b-card v-if="aboutme" variant="white" class="mt-2">
@@ -127,7 +127,7 @@ export default {
   data: function() {
     return {
       id: null,
-      messages: []
+      invalidUser: false
     }
   },
   computed: {
@@ -145,37 +145,33 @@ export default {
       return this.user && this.user.info && this.user.info.aboutme
         ? twem.twem(this.$twemoji, this.user.info.aboutme.text)
         : null
+    },
+    messages() {
+      return this.$store.getters['messages/getAll']
     }
   },
-  async asyncData({ app, params, store }) {
+  created() {
+    this.id = parseInt(this.$route.params.id)
+  },
+  async mounted() {
     // Get the user and their messages.
-    let invalidUser = false
-
-    await store.dispatch('user/fetch', {
-      id: params.id,
+    await this.$store.dispatch('user/fetch', {
+      id: this.id,
       info: true
     })
 
-    const user = store.getters['user/get'](params.id)
+    const user = this.$store.getters['user/get'](this.id)
 
     if (user) {
-      await store.dispatch('messages/clear')
-      await store.dispatch('messages/fetchMessages', {
-        fromuser: params.id,
+      await this.$store.dispatch('messages/clear')
+      await this.$store.dispatch('messages/fetchMessages', {
+        fromuser: this.id,
         limit: 1000,
         age: user.info.openage
       })
     } else {
-      invalidUser = true
+      this.invalidUser = true
     }
-
-    return {
-      messages: store.getters['messages/getAll'],
-      invalidUser: invalidUser
-    }
-  },
-  created() {
-    this.id = this.$route.params.id
   },
   methods: {
     active(type) {

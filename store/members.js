@@ -87,6 +87,17 @@ export const getters = {
 
     return ret
   },
+  getByUserId: state => id => {
+    let ret = null
+
+    Object.keys(state.list).forEach(key => {
+      if (parseInt(state.list[key].userid) === parseInt(id)) {
+        ret = state.list[key]
+      }
+    })
+
+    return ret
+  },
   getContext: state => {
     let ret = null
 

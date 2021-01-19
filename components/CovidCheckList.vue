@@ -43,6 +43,18 @@ import CovidSafeFreegling from './CovidSafeFreegling'
 
 export default {
   components: { CovidSafeFreegling, NoticeMessage },
+  props: {
+    force: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    msgid: {
+      type: Number,
+      required: false,
+      default: null
+    }
+  },
   data: function() {
     return {
       show: false,
@@ -71,7 +83,7 @@ export default {
     const last = this.$store.getters['misc/get']('covidconfirmed')
 
     // If we've asked within the last day, just continue.
-    if (last && Date.now() - last <= 24 * 60 * 60 * 1000) {
+    if (!this.force && last && Date.now() - last <= 24 * 60 * 60 * 1000) {
       this.$emit('confirmed')
     } else {
       this.show = true
@@ -85,7 +97,10 @@ export default {
           value: Date.now()
         })
 
-        await this.$store.dispatch('auth/covidConfirm')
+        await this.$store.dispatch('auth/covidConfirm', {
+          msgid: this.msgid
+        })
+
         this.$emit('confirmed')
       }
     }

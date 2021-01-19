@@ -8,7 +8,7 @@
       no-stacking
     >
       <template slot="default">
-        <NoticeMessage v-if="!busy && (!user || !user.logs || !logs.length)" variant="info">
+        <NoticeMessage v-if="!busy && !logs.length" variant="info">
           There are no logs to show.
         </NoticeMessage>
         <div v-else>
@@ -52,12 +52,28 @@ export default {
     return {
       busy: false,
       showModal: false,
-      logs: []
+      context: null
     }
   },
   computed: {
+    logs() {
+      return this.$store.getters['logs/list']
+    },
     user() {
-      return this.$store.getters['user/get'](this.userid)
+      let ret = null
+      let user = this.$store.getters['user/get'](this.userid)
+
+      if (user && user.info) {
+        ret = user
+      } else {
+        user = this.$store.getters['members/getByUserId'](this.userid)
+
+        if (user && user.info) {
+          ret = user
+        }
+      }
+
+      return ret
     },
     title() {
       let ret
@@ -74,14 +90,10 @@ export default {
     }
   },
   methods: {
-    async show() {
+    show() {
       // Clear the log context - otherwise if we open another modal for this user then it will get confused and
       // fetch from a previous context and show no logs.
-      await this.$store.dispatch('user/clearLogContext', {
-        id: this.userid
-      })
-
-      this.logs = []
+      this.$store.dispatch('logs/clear')
       this.showModal = true
     },
     hide() {
@@ -91,20 +103,13 @@ export default {
       this.busy = true
       const currentCount = this.logs.length
 
-      await this.$store.dispatch('user/fetch', {
-        id: this.userid,
-        logs: true,
-        info: true,
-        modmailsonly: this.modmailsonly,
-        logcontext:
-          this.user && this.user.logcontext ? this.user.logcontext : null
+      this.context = await this.$store.dispatch('logs/fetch', {
+        logtype: 'user',
+        userid: this.userid,
+        context: this.context
       })
 
-      // The logs are returned in chunks - grab the next chunk and append to ours.
-      const logs = this.user && this.user.logs ? this.user.logs : []
-      this.logs = this.logs.concat(logs)
-
-      if (!logs.length || logs.length < currentCount) {
+      if (this.logs.length === currentCount) {
         // We've returned less than a chunk, so we must be done.
         $state.complete()
       } else {

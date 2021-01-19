@@ -39,6 +39,7 @@ export const getters = {
 
 export const actions = {
   async fetch({ state, commit, dispatch }, params) {
+    let ret = null
     params.context = state.context
     const data = await this.$api.logs.fetch(params)
 
@@ -50,7 +51,11 @@ export const actions = {
       commit('setContext', {
         ctx: data.context
       })
+
+      ret = data.context
     }
+
+    return ret
   },
   clear({ commit }) {
     commit('clear')
