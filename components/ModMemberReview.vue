@@ -50,51 +50,48 @@
           Banned <span :title="member.bandate | datetime">{{ member.bandate | timeago }}</span> <span v-if="member.bannedby">by #{{ member.bannedby }}</span> - check logs for info.
         </NoticeMessage>
         <div class="d-flex justify-content-between flex-wrap">
-          <div class="d-flex flex-wrap justify-content-between w-100">
-            <div>
-              <ModMemberSummary :member="member" />
-              <div v-if="member.lastaccess" :class="'mb-1 ' + (inactive ? 'text-danger': '')">
-                Last active: {{ member.lastaccess | timeago }}
-                <span v-if="inactive">
-                  - won't send mails
+          <div>
+            <ModMemberSummary :member="member" />
+            <div v-if="member.lastaccess" :class="'mb-1 ' + (inactive ? 'text-danger': '')">
+              Last active: {{ member.lastaccess | timeago }}
+              <span v-if="inactive">
+                - won't send mails
+              </span>
+            </div>
+            <ModMemberLogins :member="member" />
+            <b-btn v-if="member.emails && member.emails.length" variant="link" @click="showEmails = !showEmails">
+              <v-icon name="envelope" />
+              <span v-if="showEmails">
+                <span class="d-inline d-sm-none">
+                  Hide
                 </span>
-              </div>
-              <ModMemberLogins :member="member" />
-              <b-btn v-if="member.emails && member.emails.length" variant="link" @click="showEmails = !showEmails">
-                <v-icon name="envelope" />
-                <span v-if="showEmails">
-                  <span class="d-inline d-sm-none">
-                    Hide
-                  </span>
-                  <span class="d-none d-sm-inline">
-                    Show {{ member.emails.length | pluralize('email', { includeNumber: true }) }}
-                  </span>
+                <span class="d-none d-sm-inline">
+                  Show {{ member.emails.length | pluralize('email', { includeNumber: true }) }}
                 </span>
-                <span v-else>
-                  <span class="d-inline d-sm-none">
-                    {{ member.emails.length }}
-                  </span>
-                  <span class="d-none d-sm-inline">
-                    Show {{ member.emails.length | pluralize('email', { includeNumber: true }) }}
-                  </span>
+              </span>
+              <span v-else>
+                <span class="d-inline d-sm-none">
+                  {{ member.emails.length }}
                 </span>
-              </b-btn>
-              <b-btn variant="link" @click="showHistory(null)">
-                View posts
-              </b-btn>
-              <b-btn variant="link" @click="showLogs">
-                View logs
-              </b-btn>
-              <b-btn variant="link" :to="'/profile/' + member.userid">
-                View profile
-              </b-btn>
-              <div v-if="showEmails">
-                <div v-for="e in member.emails" :key="e.id">
-                  {{ e.email }} <v-icon v-if="e.preferred" name="star" />
-                </div>
+                <span class="d-none d-sm-inline">
+                  Show {{ member.emails.length | pluralize('email', { includeNumber: true }) }}
+                </span>
+              </span>
+            </b-btn>
+            <b-btn variant="link" @click="showHistory(null)">
+              View posts
+            </b-btn>
+            <b-btn variant="link" @click="showLogs">
+              View logs
+            </b-btn>
+            <b-btn variant="link" :to="'/profile/' + member.userid">
+              View profile
+            </b-btn>
+            <div v-if="showEmails">
+              <div v-for="e in member.emails" :key="e.id">
+                {{ e.email }} <v-icon v-if="e.preferred" name="star" />
               </div>
             </div>
-            <ModMemberships :user="member" />
           </div>
         </div>
         <div v-for="m in memberof" :key="'membership-' + m.membershipid" class="p-1 mr-1">
@@ -131,7 +128,6 @@
   </div>
 </template>
 <script>
-import ModMemberships from '@/components/ModMemberships'
 import waitForRef from '../mixins/waitForRef'
 import NoticeMessage from './NoticeMessage'
 import ProfileImage from './ProfileImage'
@@ -152,7 +148,6 @@ const MEMBERSHIPS_SHOW = 3
 export default {
   name: 'ModMember',
   components: {
-    ModMemberships,
     SpinButton,
     ModSpammerReport,
     ModMemberButton,
@@ -201,11 +196,18 @@ export default {
   },
   computed: {
     memberof() {
-      if (!this.user || !this.user.memberof) {
-        return null
+      let ms = null
+
+      console.log('Memberof', this.user, this.member)
+      if (this.member && this.member.memberof) {
+        ms = this.member.memberof
+      } else if (this.user && this.user.memberof) {
+        ms = this.user.memberof
       }
 
-      const ms = this.user.memberof
+      if (!ms) {
+        return null
+      }
 
       ms.sort(function(a, b) {
         return new Date(b.added).getTime() - new Date(a.added).getTime()
