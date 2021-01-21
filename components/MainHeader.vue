@@ -118,7 +118,7 @@
           </b-btn>
         </b-navbar-nav>
       </div>
-      <b-collapse v-if="loggedIn" id="nav_collapse_mobile" ref="nav_collapse_mobile" class="w-100 ourBack">
+      <b-collapse v-if="loggedIn" id="nav_collapse_mobile" ref="nav_collapse_mobile" class="w-100 ourBack" is-nav>
         <b-navbar-nav class="ml-auto flex-row flex-wrap small">
           <b-nav-item class="text-center p-0" to="/browse" @mousedown="maybeReload('/browse')">
             <v-icon name="eye" scale="2" /><br>
