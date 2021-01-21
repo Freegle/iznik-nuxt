@@ -1,6 +1,6 @@
 <template>
   <div v-if="!simple" class="d-flex flex-column sidebar__wrapper">
-    <CommunityEventSidebar v-if="showCommunityEvents" class="flex-grow-1 sidebar__community-event" />
+    <CommunityEventSidebar v-if="showCommunityEvents && false" class="flex-grow-1 sidebar__community-event" />
     <BotLeftBox v-if="showBotLeft" class="social-media__wrapper flex-shrink-2" />
   </div>
 </template>
