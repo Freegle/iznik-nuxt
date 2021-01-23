@@ -6,11 +6,6 @@
       freegle it on your group - which could be good publicity!
     </p>
     <p>
-      Most of us love cake, but if for any reason you'd prefer us not to send you any, or have specific dietary
-      requirements (e.g. vegan, gluten free,
-      citrus fruit allergy etc.) please let us know here.
-    </p>
-    <p>
       If you haven't signed up as an official member of Freegle Ltd then why not join now?
       You might get cake, and
       you will be able to take part in votes on our future and demonstrate your support.  Find out more
@@ -19,6 +14,10 @@
       or
       <!-- eslint-disable-next-line -->
       <external-link href="http://freegle.in/JoinFreegleLtd">join here</external-link>.
+    </p>
+    <p>
+      If you want cake, please click this button to change it to green.  Most of us love cake, but if for any
+      reason you'd prefer us not to send you any, just ignore this.
     </p>
     <OurToggle
       v-model="modcake"
@@ -30,8 +29,15 @@
       :labels="{checked: 'Cake please', unchecked: 'No cake thanks'}"
       color="#61AE24"
     />
-    <b-textarea v-model="cakenotes" placeholder="Any dietary requirements." rows="3" class="mt-2" />
-    <SpinButton name="save" label="Save notes" variant="primary" class="mt-2" :handler="saveNotes" />
+    <div v-if="modcake">
+      <p>
+        If you have specific dietary
+        requirements (e.g. vegan, gluten free,
+        citrus fruit allergy etc.) please let us know here.
+      </p>
+      <b-textarea v-model="cakenotes" placeholder="Any dietary requirements." rows="3" class="mt-2" />
+      <SpinButton name="save" label="Save notes" variant="primary" class="mt-2" :handler="saveNotes" />
+    </div>
   </div>
 </template>
 <script>
@@ -49,12 +55,12 @@ export default {
   computed: {
     modcake: {
       get() {
-        return Object.keys(this.me.settings).includes('modnocake')
-          ? !this.me.settings.modnocake
-          : true
+        return Object.keys(this.me.settings).includes('modcake')
+          ? this.me.settings.modcake
+          : false
       },
       set(newval) {
-        this.saveSetting('modnocake', !newval)
+        this.saveSetting('modcake', newval)
       }
     },
     cakenotes: {
