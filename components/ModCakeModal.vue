@@ -35,11 +35,6 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch('misc/set', {
-      key: 'cakeasked',
-      value: false
-    })
-
     if (!this.$store.getters['misc/get']('cakeasked')) {
       this.showModal = true
 
