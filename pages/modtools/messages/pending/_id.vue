@@ -3,7 +3,7 @@
     <client-only>
       <ModCakeModal />
       <ScrollToTop />
-      <GroupSelect v-model="groupid" all modonly :work="['pending', 'pendingother']" />
+      <GroupSelect v-model="groupid" all modonly :work="['pending', 'pendingother']" remember="pending" />
       <NoticeMessage v-if="!messages.length && !busy" class="mt-2">
         There are no messages at the moment.  This will refresh automatically.
       </NoticeMessage>

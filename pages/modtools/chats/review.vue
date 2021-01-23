@@ -1,7 +1,14 @@
 <template>
   <div>
     <client-only>
-      <GroupSelect v-model="groupid" modonly all active :work="['chatreview', 'chatreviewother']" />
+      <GroupSelect
+        v-model="groupid"
+        modonly
+        all
+        active
+        :work="['chatreview', 'chatreviewother']"
+        remember="chatreview"
+      />
       <div :key="bump">
         <div v-for="message in visibleMessages" :key="'messagelist-' + message.id" class="p-0 mt-2">
           <ModChatReview :id="message.chatid" :message="message" />
