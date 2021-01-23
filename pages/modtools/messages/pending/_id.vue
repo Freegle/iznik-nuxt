@@ -1,6 +1,7 @@
 <template>
   <div>
     <client-only>
+      <ModCakeModal />
       <ScrollToTop />
       <GroupSelect v-model="groupid" all modonly :work="['pending', 'pendingother']" />
       <NoticeMessage v-if="!messages.length && !busy" class="mt-2">
@@ -24,13 +25,20 @@
 import loginRequired from '@/mixins/loginRequired'
 import modMessagesPage from '@/mixins/modMessagesPage'
 import createGroupRoute from '@/mixins/createGroupRoute'
+import ModCakeModal from '@/components/ModCakeModal'
 import NoticeMessage from '../../../../components/NoticeMessage'
 import ScrollToTop from '../../../../components/ScrollToTop'
 import GroupSelect from '../../../../components/GroupSelect'
 import ModMessage from '../../../../components/ModMessage'
 
 export default {
-  components: { ModMessage, GroupSelect, ScrollToTop, NoticeMessage },
+  components: {
+    ModCakeModal,
+    ModMessage,
+    GroupSelect,
+    ScrollToTop,
+    NoticeMessage
+  },
   layout: 'modtools',
   mixins: [
     loginRequired,
