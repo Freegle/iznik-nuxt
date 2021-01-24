@@ -97,6 +97,7 @@
         <div v-for="m in memberof" :key="'membership-' + m.membershipid" class="p-1 mr-1">
           <b>{{ m.namedisplay.length > 32 ? (m.namedisplay.substring(0, 32) + '...') : m.namedisplay }}</b>
           <span :class="'small ' + (daysago(m.added) < 31 ? 'text-danger font-weight-bold' : 'text-muted')">joined {{ m.added | timeago }}</span>
+          <span v-if="m.reviewreason" class="text-danger ml-1 mr-1">{{ m.reviewreason }}</span>
           <b-btn v-if="amAModOn(m.id)" :to="'/modtools/members/approved/search/' + m.id + '/' + member.userid" variant="link" class="p-0 border-0 align-top">
             Go to membership
           </b-btn>
@@ -109,16 +110,20 @@
         <SpinButton
           variant="danger"
           name="ban"
-          label="Spammer"
+          label="Report Spammer"
           class="mr-1"
           :handler="spamReport"
         />
-        <ModMemberButton
+        <SpinButton
+          v-for="group in reviewgroups"
+          :key="'reviewgroup-' + group.id"
           :member="member"
           variant="primary"
-          icon="check"
-          spamignore
-          label="Not a Spammer"
+          name="check"
+          :label="'Ignore on ' + group.namedisplay"
+          :handler="spamIgnore"
+          :handler-data="group.id"
+          class="mr-1"
         />
       </b-card-footer>
     </b-card>
@@ -167,21 +172,6 @@ export default {
     member: {
       type: Object,
       required: true
-    },
-    spammerlist: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    spamignore: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    footeractions: {
-      type: Boolean,
-      required: false,
-      default: true
     }
   },
   data: function() {
@@ -195,10 +185,24 @@ export default {
     }
   },
   computed: {
+    reviewgroups() {
+      let ms = null
+
+      if (this.member && this.member.memberof) {
+        ms = this.member.memberof
+      } else if (this.user && this.user.memberof) {
+        ms = this.user.memberof
+      }
+
+      if (!ms) {
+        return null
+      }
+
+      return ms.filter(g => 'reviewrequestedat' in g || g.collection === 'Spam')
+    },
     memberof() {
       let ms = null
 
-      console.log('Memberof', this.user, this.member)
       if (this.member && this.member.memberof) {
         ms = this.member.memberof
       } else if (this.user && this.user.memberof) {
@@ -368,10 +372,10 @@ export default {
         this.$refs.spamConfirm.show()
       })
     },
-    async spamIgnore() {
+    async spamIgnore(groupid) {
       await this.$store.dispatch('members/spamignore', {
         userid: this.member.userid,
-        groupid: this.groupid
+        groupid: groupid
       })
     },
     daysago(d) {
