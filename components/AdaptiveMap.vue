@@ -416,10 +416,11 @@ export default {
               message.successful = !!m.successful
 
               const key = message.fromuser + '|' + message.subject
-              const already = key in dups
+              const already =
+                key in dups && message.groups[0].groupid !== dups[key]
 
               if (!already && !message.deleted) {
-                dups[key] = true
+                dups[key] = message.groups[0].groupid
                 ret.push(message)
               }
             }
