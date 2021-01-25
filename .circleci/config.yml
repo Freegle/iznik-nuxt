@@ -29,9 +29,9 @@ jobs:
       #- run: ./gradlew --version
 
       # The next step will download the dependencies.
-      - run:
-          name: Download Dependencies
-          command: ./gradlew androidDependencies
+      # - run:
+      #     name: Download Dependencies
+      #     command: ./gradlew androidDependencies
       # Then lint and run your tests!
       # - run:
       #     name: Run Tests
