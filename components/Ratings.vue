@@ -1,6 +1,6 @@
 <template>
   <client-only>
-    <span class="d-inline">
+    <span :key="bump" class="d-inline">
       <span v-if="user && user.info">
         <span v-if="showName">
           {{ user.displayname }}
@@ -77,7 +77,9 @@ export default {
     }
   },
   data: function() {
-    return {}
+    return {
+      bump: 1
+    }
   },
   computed: {
     user() {
@@ -148,6 +150,8 @@ export default {
         id: this.id,
         rating: rating
       })
+
+      this.bump++
     },
 
     async up() {
