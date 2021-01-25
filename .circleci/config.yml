@@ -25,6 +25,7 @@ jobs:
       - run: npm -v
       - run: node -v
 
+      - run: npm install
       - run: npm install -g cordova@9.0.0
       - run: npm install -g rimraf
       - run: cordova -v
