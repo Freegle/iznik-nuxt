@@ -45,6 +45,7 @@ jobs:
       - run: mkdir ../iznik-nuxt-app
       - run: cd ../iznik-nuxt-app
       - run: ln -s ../iznik-nuxt/mobile/freegle/android/config.xml config.xml
+      - run: pwd; ls -l
       - run: ln -s ../iznik-nuxt/mobile/freegle/android/package.json package.json
       - run: ln -s ../iznik-nuxt/mobile/freegle/icons icons
       - run: ln -s ../iznik-nuxt/mobile/freegle/package-assets package-assets
