@@ -261,6 +261,7 @@ export default ({ app, store }) => { // route
         if (mobilePushId) {
           savePushId(store)
         }
+        store.commit('mobileapp/setmobilePushId', mobilePushId)
       }
     )
     // When push received, refetch notification and chat counts, and go to route if given

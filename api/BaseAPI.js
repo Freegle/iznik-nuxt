@@ -40,14 +40,16 @@ export default class BaseAPI {
     if (process.env.IS_APP) {
       modtools = process.env.IS_MTAPP ? true : false
     } else {
-      modtools = this.store.getters['misc/get']('modtools')
+      modtools = this.store.getters['misc/get']('modtools') // 0=not yet set, 1=no, 2=yes
     }
+    const mobilePushId = this.store.getters['mobileapp/mobilePushId']
 
     // Ensure we tell the API whether we are FD or MT.  Doing it here avoids all the calling code needing to know.
     if (method !== 'POST') {
       if (config.params) {
         config.params.modtools = modtools
         config.params.app = process.env.IS_APP ? true : false
+        if (mobilePushId) config.params.apppushid = mobilePushId == 2
       }
     } else {
       if (!config.data) {
@@ -56,6 +58,7 @@ export default class BaseAPI {
 
       config.data.modtools = modtools
       config.data.app = process.env.IS_APP ? true : false
+      if (mobilePushId) config.data.apppushid = mobilePushId == 2
     }
 
     try {
