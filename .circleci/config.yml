@@ -26,7 +26,7 @@ jobs:
 
       - run: npm install -g cordova@9.0.0
       - run: cordova -v
-      - run: ./gradlew --version
+      #- run: ./gradlew --version
 
       # The next step will download the dependencies.
       - run:
@@ -36,6 +36,24 @@ jobs:
       # - run:
       #     name: Run Tests
       #     command: ./gradlew lint test
+
+      - run: mkdir releases
+      - run: npm run fdapp
+      - run: mkdir ../iznik-nuxt-app
+      - run: cd ../iznik-nuxt-app
+      - run: ln -s ../iznik-nuxt/mobile/freegle/android/config.xml config.xml
+      - run: ln -s ../iznik-nuxt/mobile/freegle/android/package.json package.json
+      - run: ln -s ../iznik-nuxt/mobile/freegle/icons icons
+      - run: ln -s ../iznik-nuxt/mobile/freegle/package-assets package-assets
+      - run: ln -s ../iznik-nuxt/mobile/freegle/scripts scripts
+      - run: chmod +x scripts/before_build.sh
+      - run: chmod +x scripts/remove_permissions.js
+      - run: cp ../iznik-nuxt/google-services.json google-services.json
+      - run: ln -s ../iznik-nuxt/dist www
+      - run: cordova platform rm android
+      - run: cordova platform add android@8.1.0
+      # Build debug build
+      - run: cordova build --debug -- --keystore="../iznik-nuxt/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
 
 
 workflows:
