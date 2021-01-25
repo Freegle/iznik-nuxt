@@ -102,14 +102,18 @@
         color="#61AE24"
       />
     </b-form-group>
+    <b-form-group label="Would you like some cake?">
+      <ModCake />
+    </b-form-group>
   </div>
 </template>
 <script>
+import ModCake from '@/components/ModCake'
 import SpinButton from './SpinButton'
 const OurToggle = () => import('@/components/OurToggle')
 
 export default {
-  components: { SpinButton, OurToggle },
+  components: { SpinButton, OurToggle, ModCake },
   data: function() {
     return {
       modNotifOptions: [
@@ -128,7 +132,7 @@ export default {
       get() {
         return Object.keys(this.me.settings).includes('playbeep')
           ? Boolean(this.me.settings.playbeep)
-          : false
+          : true
       },
       set(newval) {
         this.saveSetting('playbeep', newval)

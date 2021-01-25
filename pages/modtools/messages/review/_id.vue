@@ -2,7 +2,7 @@
   <div>
     <client-only>
       <ScrollToTop />
-      <GroupSelect v-model="groupid" all modonly :work="['spam', 'spamother']" />
+      <GroupSelect v-model="groupid" all modonly :work="['spam', 'spamother']" remember="messagereview" />
       <NoticeMessage v-if="!messages.length && !busy" class="mt-2">
         There are no messages at the moment.  This will refresh automatically.
       </NoticeMessage>

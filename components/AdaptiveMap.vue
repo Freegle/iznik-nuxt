@@ -416,10 +416,11 @@ export default {
               message.successful = !!m.successful
 
               const key = message.fromuser + '|' + message.subject
-              const already = key in dups
+              const already =
+                key in dups && message.groups[0].groupid !== dups[key]
 
               if (!already && !message.deleted) {
-                dups[key] = true
+                dups[key] = message.groups[0].groupid
                 ret.push(message)
               }
             }
@@ -504,14 +505,6 @@ export default {
                 [group.lat, group.lng]
               )
 
-              console.log(
-                'GRoup',
-                group.nameshort,
-                group.distance,
-                group.lat,
-                group.lng
-              )
-
               if (group.distance <= 50000) {
                 ret.push(group)
               } else if (group.altlat || group.altlng) {
@@ -532,8 +525,6 @@ export default {
         ret.sort((a, b) => {
           return a.distance - b.distance
         })
-
-        console.log('Sorted groups', ret)
       }
 
       return ret.slice(0, 3)

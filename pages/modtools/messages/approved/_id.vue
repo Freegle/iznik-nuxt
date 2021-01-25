@@ -3,7 +3,7 @@
     <client-only>
       <ScrollToTop />
       <div class="d-flex justify-content-between flex-wrap">
-        <GroupSelect v-model="groupid" all modonly />
+        <GroupSelect v-model="groupid" all modonly remember="approved" />
         <ModFindMessagesFromMember @searched="searchedMember" />
         <ModFindMessage v-if="groupid" :groupid="groupid" @searched="searchedMessage" />
         <span v-else class="mt-2">

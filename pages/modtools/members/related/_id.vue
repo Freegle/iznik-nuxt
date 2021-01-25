@@ -3,7 +3,14 @@
     <client-only>
       <ScrollToTop />
       <ModHelpRelated />
-      <GroupSelect v-model="groupid" all modonly systemwide :work="['relatedmembers']" />
+      <GroupSelect
+        v-model="groupid"
+        all
+        modonly
+        systemwide
+        :work="['relatedmembers']"
+        remember="membersrelated"
+      />
       <div v-for="member in visibleMembers" :key="'memberlist-' + member.id" class="p-0 mt-2">
         <ModRelatedMember :member="member" />
       </div>

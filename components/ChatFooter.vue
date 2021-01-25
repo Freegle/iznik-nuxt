@@ -41,7 +41,7 @@
         </notice-message>
         <notice-message v-if="spammer && spammer.collection !== 'Whitelisted'" variant="danger">
           This person has been reported as a spammer or scammer.  Please do not talk to them and under no circumstances
-          send them any money.
+          send them any money.  Do not arrange anything by courier.
         </notice-message>
         <ModComments v-if="mod && chat && chat.chattype === 'User2Mod' && otheruser" :user="otheruser" class="mt-1" />
       </div>

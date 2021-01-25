@@ -3,7 +3,7 @@
     <client-only>
       <ScrollToTop />
       <div class="d-flex justify-content-between flex-wrap">
-        <GroupSelect v-model="groupid" modonly />
+        <GroupSelect v-model="groupid" modonly remember="membersapproved" />
         <div v-if="groupid" class="d-flex">
           <ModMemberTypeSelect v-model="filter" />
           <b-btn v-if="groupid" variant="white" class="ml-2" @click="addMember">

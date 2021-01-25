@@ -68,6 +68,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    handlerData: {
+      type: Object,
+      required: false,
+      default: null
     }
   },
   data: function() {
@@ -94,7 +99,7 @@ export default {
         this.doing = true
 
         if (this.handler) {
-          await this.handler()
+          await this.handler(this.handlerData)
 
           this.doing = false
           this.done = true

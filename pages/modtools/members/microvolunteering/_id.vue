@@ -3,7 +3,7 @@
     <client-only>
       <ScrollToTop />
       <ModHelpMicrovolunteering />
-      <GroupSelect v-model="groupid" modonly all />
+      <GroupSelect v-model="groupid" modonly all remember="membersmicrovol" />
 
       <div v-for="item in items" :key="'item-' + item.id" class="p-0 mt-2">
         <ModMicrovolunteering :id="item.id" />

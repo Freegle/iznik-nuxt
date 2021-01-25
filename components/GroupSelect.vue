@@ -93,6 +93,11 @@ export default {
       type: Boolean,
       required: false,
       default: true
+    },
+    remember: {
+      type: String,
+      required: false,
+      default: null
     }
   },
   computed: {
@@ -102,6 +107,13 @@ export default {
       },
       set(val) {
         this.$emit('input', val)
+
+        if (this.remember) {
+          this.$store.dispatch('misc/set', {
+            key: 'groupselect-' + this.remember,
+            value: val
+          })
+        }
       }
     },
 
@@ -224,6 +236,21 @@ export default {
       await this.$store.dispatch('group/list', {
         grouptype: 'Freegle'
       })
+    }
+
+    if (this.remember) {
+      let val = this.$store.getters['misc/get']('groupselect-' + this.remember)
+      console.log('Restore val', this.remember, val)
+
+      if (typeof val !== 'undefined') {
+        val = parseInt(val)
+        this.groups.forEach(g => {
+          if (g.id === val) {
+            console.log('Found')
+            this.selectedGroup = g.id
+          }
+        })
+      }
     }
   }
 }

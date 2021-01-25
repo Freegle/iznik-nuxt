@@ -4,7 +4,7 @@
       <ScrollToTop />
       <ModHelpFeedback />
       <div class="d-flex justify-content-between">
-        <GroupSelect v-model="groupid" modonly all />
+        <GroupSelect v-model="groupid" modonly all remember="membersfeedback" />
         <b-select v-model="filter">
           <option value="Comments">
             With Comments

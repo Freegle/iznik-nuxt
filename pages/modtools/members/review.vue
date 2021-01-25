@@ -4,7 +4,7 @@
       <ScrollToTop />
       <ModHelpMemberReview />
       <div v-for="member in visibleMembers" :key="'memberlist-' + member.id" class="p-0 mt-2">
-        <ModMemberReview :member="member" spamignore />
+        <ModMemberReview :member="member" />
       </div>
 
       <NoticeMessage v-if="!members.length && !busy" class="mt-2">

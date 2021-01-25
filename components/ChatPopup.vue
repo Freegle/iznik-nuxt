@@ -63,7 +63,7 @@
             <div class="chatFooter flex-shrink-0">
               <p v-if="spammer && spammer.collection !== 'Whitelisted'" class="bg-danger white p-2 mb-0">
                 This person has been reported as a spammer or scammer.  Please do not talk to them and under no circumstances
-                send them any money.
+                send them any money. Do not arrange anything by courier.
               </p>
               <div v-if="showNotices && mod && chat && chat.chattype === 'User2Mod' && otheruser">
                 <span class="float-right mr-2 mt-2 clickme" title="Hide warnings" @click="showNotices = false">
