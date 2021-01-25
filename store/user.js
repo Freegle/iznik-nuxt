@@ -27,11 +27,6 @@ function hasReneged(user) {
 
 export const mutations = {
   add(state, item) {
-    console.log('MUTATION A', item.id)
-    if( item.info && item.info.ratings)
-      console.log('MUTATION B', item.info.ratings)
-    else
-      console.log('MUTATION C')
     if (state.list === null) {
       state.list = []
     }
@@ -50,15 +45,8 @@ export const mutations = {
         item.messagehistory = state.list[item.id].messagehistory
       }
 
-      console.log('MUTATION D', item.id)
-      if (state.list[item.id].info && state.list[item.id].info.ratings)
-        console.log('MUTATION E', state.list[item.id].info.ratings)
-      const updated = Object.assign(state.list[item.id], item)
-      if (updated.info && updated.info.ratings)
-        console.log('MUTATION F', updated.info.ratings)
       Vue.set(state.list, item.id, Object.assign(state.list[item.id], item))
     } else {
-      console.log('MUTATION E', item.id)
       Vue.set(state.list, item.id, item)
     }
   },

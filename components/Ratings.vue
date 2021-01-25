@@ -83,7 +83,6 @@ export default {
   },
   computed: {
     user() {
-      console.log('RATINGS user A', this.id)
       // Look for the user in both the user store (FD) and the members store (MT).  This saves some fetches which can
       // result in weird render errors.
       let ret = null
@@ -93,13 +92,10 @@ export default {
 
         if (user && user.info) {
           ret = user
-          console.log('RATINGS user B', this.id)
         } else {
           user = this.$store.getters['members/getByUserId'](this.id)
-          console.log('RATINGS user C', this.id)
 
           if (user && user.info) {
-            console.log('RATINGS user D', this.id)
             ret = user
           }
         }
