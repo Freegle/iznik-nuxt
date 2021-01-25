@@ -48,7 +48,7 @@ jobs:
       - run: cd ../iznik-nuxt-app; ln -s ../iznik-nuxt/mobile/freegle/icons icons
       - run: cd ../iznik-nuxt-app; ln -s ../iznik-nuxt/mobile/freegle/package-assets package-assets
       - run: cd ../iznik-nuxt-app; ln -s ../iznik-nuxt/mobile/freegle/scripts scripts
-      - run: cd ../iznik-nuxt-app; ls -l; ls -l scripts
+      - run: git status; cd ../iznik-nuxt-app; ls -l; ls -l scripts
       - run: cd ../iznik-nuxt-app; chmod +x scripts/before_build.sh
       - run: cd ../iznik-nuxt-app; chmod +x scripts/remove_permissions.js
       - run: cd ../iznik-nuxt-app; cp ../iznik-nuxt/google-services.json google-services.json
