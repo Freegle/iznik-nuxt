@@ -49,17 +49,17 @@ jobs:
       - run: pwd; ls -l mobile/freegle/scripts
       - run: mkdir ../iznik-nuxt-app
       - run: "cd ../iznik-nuxt-app; 
-        ln -s ../project/mobile/freegle/android/config.xml config.xml
-        ln -s ../project/mobile/freegle/android/package.json package.json
-        ln -s ../project/mobile/freegle/icons icons
-        ln -s ../project/mobile/freegle/package-assets package-assets
-        ls -l scripts/
-        ln -s ../project/mobile/freegle/scripts scripts
-        chmod +x scripts/before_build.sh
-        chmod +x scripts/remove_permissions.js
-        cp ../project/mobile/secrets/google-services.json google-services.json
-        ln -s ../project/dist www
-        cordova platform rm android
+        ln -s ../project/mobile/freegle/android/config.xml config.xml;
+        ln -s ../project/mobile/freegle/android/package.json package.json;
+        ln -s ../project/mobile/freegle/icons icons;
+        ln -s ../project/mobile/freegle/package-assets package-assets;
+        ls -l scripts/;
+        ln -s ../project/mobile/freegle/scripts scripts;
+        chmod +x scripts/before_build.sh;
+        chmod +x scripts/remove_permissions.js;
+        cp ../project/mobile/secrets/google-services.json google-services.json;
+        ln -s ../project/dist www;
+        cordova platform rm android;
         cordova platform add android@8.1.0
       "
       # Build debug build
