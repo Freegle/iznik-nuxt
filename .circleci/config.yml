@@ -8,6 +8,7 @@ jobs:
     # These next lines define a docker executor: https://circleci.com/docs/2.0/executor-types/
     # You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # Be sure to update the docker image tag below to android api version of your application.
+    executor: node/default
     docker:
       - image: circleci/android:api-28
     steps:
