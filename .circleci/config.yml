@@ -23,7 +23,7 @@ jobs:
       - run: npm -v
       - run: node -v
 
-      - run: sudo npm install -g cordova@9.0.0
+      - run: npm install -g cordova@9.0.0
       - run: cordova -v
       - run: gradle --version
 
