@@ -13,14 +13,19 @@ jobs:
     steps:
       # Checkout the code as the first step.
       - checkout
+      - node/install:
+          lts: true
+          #node-version: '12.20'
+      - run: npm -v
+      - run: node -v
       # The next step will download the dependencies.
-      - run:
-          name: Download Dependencies
-          command: ./gradlew androidDependencies
+      # - run:
+      #     name: Download Dependencies
+      #     command: ./gradlew androidDependencies
       # Then lint and run your tests!
-      - run:
-          name: Run Tests
-          command: ./gradlew lint test
+      # - run:
+      #     name: Run Tests
+      #     command: ./gradlew lint test
 
 
 workflows:

@@ -8,7 +8,6 @@ export const mutations = {
     state.isiOS = isiOS
   },
   setmobilePushId(state, mobilePushId) {
-    console.log('====', mobilePushId)
     state.mobilePushId = mobilePushId ? 2 : 1
   },
 }
@@ -18,7 +17,6 @@ export const getters = {
     return state.isiOS
   },
   mobilePushId(state) {
-    console.log('----', state.mobilePushId)
     return state.mobilePushId
   },
 }
