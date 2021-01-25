@@ -30,6 +30,9 @@ jobs:
       - run: npm install -g cordova@9.0.0
       - run: npm install -g rimraf
       - run: cordova -v
+
+      - run: cd mobile; openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in circleci-secrets.tar.enc -out circleci-secrets.tar -k $CIRCLE_TAR_PWD
+      - run: cd mobile; tar -xvf circleci-secrets.tar; ls -l secrets
       #- run: ./gradlew --version
 
       # The next step will download the dependencies.
@@ -54,7 +57,7 @@ jobs:
         ln -s ../project/mobile/freegle/scripts scripts
         chmod +x scripts/before_build.sh
         chmod +x scripts/remove_permissions.js
-        cp ../project/google-services.json google-services.json
+        cp ../project/mobile/secrets/google-services.json google-services.json
         ln -s ../project/dist www
         cordova platform rm android
         cordova platform add android@8.1.0
