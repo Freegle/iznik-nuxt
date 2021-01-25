@@ -53,7 +53,6 @@ jobs:
         ln -s ../project/mobile/freegle/android/package.json package.json;
         ln -s ../project/mobile/freegle/icons icons;
         ln -s ../project/mobile/freegle/package-assets package-assets;
-        ls -l scripts/;
         ln -s ../project/mobile/freegle/scripts scripts;
         chmod +x scripts/before_build.sh;
         chmod +x scripts/remove_permissions.js;
