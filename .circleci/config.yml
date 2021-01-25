@@ -4,7 +4,7 @@ version: 2.1
 
 jobs:
   # Below is the definition of your job to build and test your app, you can rename and customize it as you want.
-  build-and-deploy-android:  
+  build-and-deploy-android-master:  
     # These next lines define a docker executor: https://circleci.com/docs/2.0/executor-types/
     # You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # Be sure to update the docker image tag below to android api version of your application.
@@ -13,15 +13,6 @@ jobs:
     steps:
       # Checkout the code as the first step.
       - checkout
-      # The next step will download the dependencies.
-      - run:
-          name: Download Dependencies
-          command: ./gradlew androidDependencies
-      # Then lint and run your tests!
-      - run:
-          name: Run Tests
-          command: ./gradlew lint test
-
 
 workflows:
   # Below is the definition of your workflow.
@@ -31,7 +22,7 @@ workflows:
   version: 2
   android:
     jobs:
-      - build-and-deploy-android:
+      - build-and-deploy-android-master:
           filters:
             branches:
               only:
