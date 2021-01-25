@@ -1,5 +1,6 @@
 # https://circleci.com/developer/orbs/orb/circleci/node
 # https://circleci.com/developer/orbs/orb/circleci/gradle
+# Runs in /home/circleci/project
 version: 2.1
 
 orbs:
@@ -44,21 +45,20 @@ jobs:
       - run: npm run fdapp
       - run: pwd; ls -l mobile/freegle/scripts
       - run: mkdir ../iznik-nuxt-app
-      - run: cd ../iznik-nuxt-app; ln -s ../project/mobile/freegle/android/config.xml config.xml
-      - run: cd ../iznik-nuxt-app; ln -s ../project/mobile/freegle/android/package.json package.json
-      - run: cd ../iznik-nuxt-app; ln -s ../project/mobile/freegle/icons icons
-      - run: cd ../iznik-nuxt-app; ln -s ../project/mobile/freegle/package-assets package-assets
-      - run: cd ../iznik-nuxt-app; ln -s ../project/mobile/freegle/scripts scripts
-      - run: "git status; 
-        cd ../iznik-nuxt-app; 
-        ls -l; 
-        ls -l scripts"
-      - run: cd ../iznik-nuxt-app; chmod +x scripts/before_build.sh
-      - run: cd ../iznik-nuxt-app; chmod +x scripts/remove_permissions.js
-      - run: cd ../iznik-nuxt-app; cp ../project/google-services.json google-services.json
-      - run: cd ../iznik-nuxt-app; ln -s ../project/dist www
-      - run: cd ../iznik-nuxt-app; cordova platform rm android
-      - run: cd ../iznik-nuxt-app; cordova platform add android@8.1.0
+      - run: "cd ../iznik-nuxt-app; 
+        ln -s ../project/mobile/freegle/android/config.xml config.xml
+        ln -s ../project/mobile/freegle/android/package.json package.json
+        ln -s ../project/mobile/freegle/icons icons
+        ln -s ../project/mobile/freegle/package-assets package-assets
+        ls -l scripts/
+        ln -s ../project/mobile/freegle/scripts scripts
+        chmod +x scripts/before_build.sh
+        chmod +x scripts/remove_permissions.js
+        cp ../project/google-services.json google-services.json
+        ln -s ../project/dist www
+        cordova platform rm android
+        cordova platform add android@8.1.0
+      "
       # Build debug build
       - run: cd ../iznik-nuxt-app; cordova build --debug -- --keystore="../project/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
 
