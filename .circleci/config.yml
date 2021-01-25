@@ -22,6 +22,11 @@ jobs:
           #node-version: '12.20'
       - run: npm -v
       - run: node -v
+
+      - run: sudo npm install -g cordova@9.0.0
+      - run: cordova -v
+      - run: gradle --version
+
       # The next step will download the dependencies.
       # - run:
       #     name: Download Dependencies

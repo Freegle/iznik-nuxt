@@ -51,6 +51,9 @@ export const mutations = {
       }
 
       console.log('MUTATION D', item.id)
+      console.log('MUTATION E', state.list[item.id].info.ratings)
+      const updated = Object.assign(state.list[item.id], item)
+      console.log('MUTATION F', updated.info.ratings)
       Vue.set(state.list, item.id, Object.assign(state.list[item.id], item))
     } else {
       console.log('MUTATION E', item.id)
