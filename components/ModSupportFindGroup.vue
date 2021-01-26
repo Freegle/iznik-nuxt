@@ -196,11 +196,7 @@ export default {
             name = g.nameshort + ' / ' + g.namedisplay
           }
 
-          if (name === this.searchgroup) {
-            return true
-          } else {
-            return false
-          }
+          return name === this.searchgroup
         })
 
         ret = ret ? ret.id : null

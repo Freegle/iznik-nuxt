@@ -10,7 +10,7 @@
       <template slot="default">
         <div class="d-flex justify-content-between">
           <div v-if="variant === 'whatyoucanrunning'" style="width:250px" class="mr-4 pt-4 d-none d-sm-block">
-            <b-img-lazy fluid src="/running.gif" />
+            <b-img-lazy fluid src="/running.gif" alt="Keep freegle running" />
           </div>
           <div>
             <p>
@@ -74,7 +74,7 @@
               target, we'll use it to support other communities.
             </p>
             <div v-if="variant === 'whatyoucanrunning'" class="w-100 d-flex justify-content-center">
-              <img src="/running.gif" class="d-block d-sm-none img-fluid " width="200">
+              <img src="/running.gif" alt="Keep freegle running" class="d-block d-sm-none img-fluid " width="200">
             </div>
           </div>
           <DonationThermometer ref="thermo" :groupid="groupid" />

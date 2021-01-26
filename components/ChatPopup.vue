@@ -260,7 +260,6 @@ export default {
   left: initial !important;
   bottom: 0;
   z-index: 900;
-  background-color: $color-yellow--base;
   animation: chatIn 2s;
   transform-origin: right bottom;
   background-color: transparent !important;

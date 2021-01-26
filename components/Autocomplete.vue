@@ -413,7 +413,9 @@ export default {
       this.json = []
       this.getData('')
       // Callback Event
-      this.onShow ? this.onShow() : null
+      if (this.onShow) {
+        this.onShow()
+      }
       this.showList = true
       this.startTimer()
     },
@@ -422,10 +424,14 @@ export default {
       this.focused = false
 
       // Callback Event
-      this.onBlur ? this.onBlur(e) : null
+      if (this.onBlur) {
+        this.onBlur(e)
+      }
       setTimeout(() => {
         // Callback Event
-        this.onHide ? this.onHide() : null
+        if (this.onHide) {
+          this.onHide()
+        }
         this.showList = false
         this.clearTimer()
       }, 250)
@@ -444,7 +450,9 @@ export default {
       }
 
       // Callback Event
-      this.onFocus ? this.onFocus(e) : null
+      if (this.onFocus) {
+        this.onFocus(e)
+      }
     },
 
     mousemove(i) {
@@ -471,7 +479,9 @@ export default {
       this.showList = false
       this.clearTimer()
       // Callback Event
-      this.onSelect ? this.onSelect(clean) : null
+      if (this.onSelect) {
+        this.onSelect(clean)
+      }
     },
 
     deepValue(obj, path) {
@@ -520,7 +530,9 @@ export default {
         }, 100)
       } else {
         // Callback Event
-        this.onBeforeAjax ? this.onBeforeAjax(val) : null
+        if (this.onBeforeAjax) {
+          this.onBeforeAjax(val)
+        }
         // Compose Params
         const params = this.composeParams(val.trim())
         // Init Ajax
@@ -543,7 +555,9 @@ export default {
           if (status === 200) {
             const json = JSON.parse(responseText)
             // Callback Event
-            this.onAjaxLoaded ? this.onAjaxLoaded(json) : null
+            if (this.onAjaxLoaded) {
+              this.onAjaxLoaded(json)
+            }
             this.json = this.process ? this.process(json) : json
 
             if (this.restrict && (!this.json || this.json.length === 0)) {
@@ -753,7 +767,6 @@ input[invalid='true'] {
   border: 1px solid $color-gray-4;
 }
 .autocomplete-wrap-focus {
-  border-color: $color-blue--light;
   outline: 0;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
   border-color: $color-blue--x-light !important;
