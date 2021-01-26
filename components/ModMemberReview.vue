@@ -123,7 +123,7 @@
           :label="'Ignore on ' + group.namedisplay"
           :handler="spamIgnore"
           :handler-data="group.id"
-          class="mr-1"
+          class="mr-1 mt-1"
         />
       </b-card-footer>
     </b-card>

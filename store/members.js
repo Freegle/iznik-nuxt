@@ -286,10 +286,6 @@ export const actions = {
         root: true
       }
     )
-
-    commit('remove', {
-      userid: params.userid
-    })
   },
 
   async remove({ commit, dispatch }, params) {
