@@ -33,7 +33,7 @@ jobs:
     steps:
       # Checkout the code as the first step.
       - checkout
-      - run: ./gradlew dependencies
+      #- run: ./gradlew dependencies
       - android/accept-licenses
       #- run: apt install node
       - run: whereis gradlew
