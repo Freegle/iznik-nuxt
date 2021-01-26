@@ -49,15 +49,15 @@
           and does not require consent.
         </li>
         <li>
-          We use <a href="https://analytics.google.com">Google Analytics</a> to collect traffic statistics.  This is
-          configured in a way that means it <a href="https://law.stackexchange.com/questions/28367/gdpr-whats-classed-as-an-opt-in-for-google-analytics-cookie-and-do-i-need-to">does not require consent</a>.
+          We use <a href="https://analytics.google.com" rel="noopener noreferrer">Google Analytics</a> to collect traffic statistics.  This is
+          configured in a way that means it <a href="https://law.stackexchange.com/questions/28367/gdpr-whats-classed-as-an-opt-in-for-google-analytics-cookie-and-do-i-need-to" rel="noopener noreferrer">does not require consent</a>.
           We have a data processing agreement with Google, we have enabled IP anonymization/masking, disabled
           data sharing, and are not using any other google services in combination with Google Analytics.
         </li>
         <li>
           We use Google and Facebook's code to allow you to log in.  They store a few third-party cookies, of their
           own, but before you've logged in they don't know who you are.  If you are concerned about these, you can
-          install a privacy blocker such as <a href="https://www.ghostery.com/">Ghostery</a> and still use the site.
+          install a privacy blocker such as <a href="https://www.ghostery.com/" rel="noopener noreferrer">Ghostery</a> and still use the site.
         </li>
       </ul>
       <p>Once you log in, you're giving us consent to do the following.</p>
@@ -67,7 +67,7 @@
           and the rest is to speed up the site (it's a cache).
         </li>
         <li>
-          We show jobs ads from <a href="http://adview.online/">AdView</a>, both on the site and in emails.
+          We show jobs ads from <a href="http://adview.online/" rel="noopener noreferrer">AdView</a>, both on the site and in emails.
           We'd prefer not to,
           but we don't raise enough from <nuxt-link to="/donate">
             donations
@@ -78,17 +78,17 @@
       <h2>Sentry</h2>
       <p>
         When something goes wrong on the website, we log it to a third party site call
-        <a href="https://sentry.io">Sentry</a>.  They help organise the logs and make it easier for us to identify
-        and fix problems.  This <a href="https://docs.sentry.io/data-management/sensitive-data/">should not include</a>
+        <a href="https://sentry.io" rel="noopener noreferrer">Sentry</a>.  They help organise the logs and make it easier for us to identify
+        and fix problems.  This <a href="https://docs.sentry.io/data-management/sensitive-data/" rel="noopener noreferrer">should not include</a>
         any of your personal data.
-        You can read their privacy policy <a href="https://sentry.io/privacy/">here</a>.
+        You can read their privacy policy <a href="https://sentry.io/privacy/" rel="noopener noreferrer">here</a>.
       </p>
       <h2>Inspectlet</h2>
       <p>
-        On a small fraction of sessions, we use <a href="https://www.inspectlet.com/" target="_blank">Inspectlet</a>.
+        On a small fraction of sessions, we use <a href="https://www.inspectlet.com/" target="_blank" rel="noopener noreferrer">Inspectlet</a>.
         This helps us work out which bits of the website are working well for freeglers, and which aren't.
-        You can read their privacy policy <a href="https://docs.inspectlet.com/hc/en-us/articles/360002994432-Privacy-Impact-Assessment-under-GDPR">here</a>,
-        and opt out of this <a href="https://www.inspectlet.com/optout" target="_blank">here</a>.
+        You can read their privacy policy <a href="https://docs.inspectlet.com/hc/en-us/articles/360002994432-Privacy-Impact-Assessment-under-GDPR" rel="noopener noreferrer">here</a>,
+        and opt out of this <a href="https://www.inspectlet.com/optout" target="_blank" rel="noopener noreferrer">here</a>.
       </p>
       <h2>Got questions?</h2>
       <p>

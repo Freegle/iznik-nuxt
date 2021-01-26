@@ -16,7 +16,7 @@
                 the personal data you have provided to Freegle (except for some temporary logging
                 information which we keep for upto 7 days), to make accessing this easy for all freeglers.
                 You can also download all this data
-                in a commonly-used machine-readable format (<a href="https://www.json.org/" target="_blank">JSON</a>).
+                in a commonly-used machine-readable format (<a href="https://www.json.org/" target="_blank" rel="noopener noreferrer">JSON</a>).
               </p>
               <b-button :href="downloadlink" download="mydata.json" variant="white">
                 Download in machine-readable format

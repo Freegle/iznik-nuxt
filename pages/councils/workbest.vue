@@ -39,16 +39,16 @@
               they can save money by using Freegle instead of paying for a bulky waste collection.  Here are some good examples from other councils that you can replicate:
               <ul>
                 <li>
-                  <a href="https://www.richmond.gov.uk/book_a_bulky_item_collection" target="_blank">London Borough of Richmond Council</a>
+                  <a href="https://www.richmond.gov.uk/book_a_bulky_item_collection" target="_blank" rel="noopener noreferrer">London Borough of Richmond Council</a>
                 </li>
                 <li>
-                  <a href="http://www.centralbedfordshire.gov.uk/waste/bulky/collection.aspx">Central Bedfordshire Council</a>
+                  <a href="http://www.centralbedfordshire.gov.uk/waste/bulky/collection.aspx" rel="noopener noreferrer">Central Bedfordshire Council</a>
                 </li>
                 <li>
-                  <a href="https://www.eden.gov.uk/bins-and-recycling/household-refuse/special-household-waste-collections/bulky-household-waste-collection/">Eden District Council</a>
+                  <a href="https://www.eden.gov.uk/bins-and-recycling/household-refuse/special-household-waste-collections/bulky-household-waste-collection/" rel="noopener noreferrer">Eden District Council</a>
                 </li>
                 <li>
-                  <a href="https://www.birmingham.gov.uk/info/20009/waste_and_recycling/86/bulky_waste_collections">Birmingham City Council</a>
+                  <a href="https://www.birmingham.gov.uk/info/20009/waste_and_recycling/86/bulky_waste_collections" rel="noopener noreferrer">Birmingham City Council</a>
                 </li>
               </ul>
             </li>
@@ -57,10 +57,10 @@
             </li>
             <li>
               <strong>A-Z</strong> - If you have an A-Z of waste and recycling, please list Freegle as an option.  Brighton & Hove
-              City Council are a great example of how this can be done - see <a href="https://www.brighton-hove.gov.uk/content/environment/recycling-rubbish-and-street-cleaning/recycling-a-z" target="_blank">here</a>.
+              City Council are a great example of how this can be done - see <a href="https://www.brighton-hove.gov.uk/content/environment/recycling-rubbish-and-street-cleaning/recycling-a-z" target="_blank" rel="noopener noreferrer">here</a>.
             </li>
             <li>
-              Oxfordshire County Council have created a <a href="https://www.oxfordshire.gov.uk/residents/environment-and-planning/waste-and-recycling/household-waste/repair-reuse-or-recycle" target="_blank">Waste Wizard</a> which directs residents to repair, reuse and recycling options, including pointing people towards Freegle.
+              Oxfordshire County Council have created a <a href="https://www.oxfordshire.gov.uk/residents/environment-and-planning/waste-and-recycling/household-waste/repair-reuse-or-recycle" target="_blank" rel="noopener noreferrer">Waste Wizard</a> which directs residents to repair, reuse and recycling options, including pointing people towards Freegle.
               This is a really easy way to let people know about Freegle and other similar organisations that help maximise reuse locally.
             </li>
           </ul>
@@ -90,7 +90,7 @@
             may be cheaper and easier for them to try giving away the item using Freegle, other reuse organisations or
             charities.  Providing a 'script' for staff to use is a simple way to do this, but you can also add it to
             the relevant section of your website.  The London Borough of Richmond Council does an excellent job of reminding residents they can save
-            money by using Freegle instead of paying for a bulky waste collection - see <a href="https://www.richmond.gov.uk/book_a_bulky_item_collection" target="_blank">here</a>.
+            money by using Freegle instead of paying for a bulky waste collection - see <a href="https://www.richmond.gov.uk/book_a_bulky_item_collection" target="_blank" rel="noopener noreferrer">here</a>.
           </p>
           <p>
             If you are a county council, you can work with your districts and boroughs to ensure that a consistent

@@ -47,7 +47,7 @@
           <h3 class="header--size4">
             A4
           </h3>
-          <a href="https://freegle.in/A4Poster" target="_blank" class="mr-2">
+          <a href="https://freegle.in/A4Poster" target="_blank" class="mr-2" rel="noopener noreferrer">
             <b-img-lazy src="~static/posters/A4.jpg" class="poster border border-dark mb-2" />
             <br>
             <b-btn variant="secondary" size="lg" class="mt-2 mb-2">
@@ -126,7 +126,7 @@
         You can get little "business cards" to hand out to people or put on noticeboards.  They're small, so it's
         easy to always have a few with you.
       </p>
-      <p>You can order these from firms like <a href="https://www.instantprint.co.uk/business-cards/economy?lamination=no&size=85-x-55-mm&paper=350gsm-silk&sided=single&finish=standard-corners&rangesizeq=0">Instantprint</a> - download our file and upload it to their site when ordering.</p>
+      <p>You can order these from firms like <a href="https://www.instantprint.co.uk/business-cards/economy?lamination=no&size=85-x-55-mm&paper=350gsm-silk&sided=single&finish=standard-corners&rangesizeq=0" rel="noopener noreferrer">Instantprint</a> - download our file and upload it to their site when ordering.</p>
       <div>
         <b-form-radio-group
           v-model="language"
@@ -145,7 +145,7 @@
         <div>
           <b-img-lazy src="/businesscards/FreegleBusinessCardSmall.jpg" class="border border-dark mb-2 mr-2 businesscard" />
         </div>
-        <a href="https://freegle.in/BusinessCard" target="_blank" class="mt-1 mb-1">
+        <a href="https://freegle.in/BusinessCard" target="_blank" class="mt-1 mb-1" rel="noopener noreferrer">
           <b-btn size="lg" variant="primary">
             Download business card
           </b-btn>
@@ -155,7 +155,7 @@
         <div>
           <b-img-lazy src="/businesscards/FreegleBusinessCardSmallWelsh.jpg" class="border border-dark mb-2 businesscard" />
         </div>
-        <a href="https://freegle.in/BusinessCardWelsh" target="_blank" class="mt-1 mb-1">
+        <a href="https://freegle.in/BusinessCardWelsh" target="_blank" class="mt-1 mb-1" rel="noopener noreferrer">
           <b-btn size="lg" variant="primary">
             Download business card
           </b-btn>

@@ -17,10 +17,10 @@
           Freegling is easy on mobiles and tablets, and you get notifications of replies so you don't have to rely on email. Download using these links or search for Freegle in your app store - it's free!
         </p>
         <div class="d-flex justify-content-between">
-          <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" class="mt-2" target="_blank">
+          <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" class="mt-2" target="_blank" rel="noopener noreferrer">
             <img alt="Freegle Android app on Google Play" title="Freegle Android app on Google Play" class="img-responsive" src="/en-play-badge.png">
           </a>
-          <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&amp;mt=8" class="mt-2" target="_blank">
+          <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&amp;mt=8" class="mt-2" target="_blank" rel="noopener noreferrer">
             <img alt="Freegle app for iPhone, iPad, and iPod touch" title="Freegle app for iPhone, iPad, and iPod touch" class="img-responsive" src="/app-store-black-sm.png">
           </a>
         </div>

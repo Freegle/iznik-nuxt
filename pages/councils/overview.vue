@@ -46,7 +46,7 @@
           </p>
           <p>
             We send out newsletters to councils - you can see the archive and sign up
-            <a href="https://us20.campaign-archive.com/home/?u=dd0a44d9aa3f6ba0e4d439318&id=8edc47538e" target="_blank">here</a>.
+            <a href="https://us20.campaign-archive.com/home/?u=dd0a44d9aa3f6ba0e4d439318&id=8edc47538e" target="_blank" rel="noopener noreferrer">here</a>.
           </p>
         </b-card-text>
       </b-card>

@@ -32,8 +32,8 @@
           <h3>Graphics</h3>
           <p>
             You are welcome to take any graphics from our social media streams
-            <a href="https://twitter.com/thisisfreegle" target="_blank">@ThisIsFreegle</a> on Twitter and
-            <a href="https://www.facebook.com/Freegle" target="_blank">Freegle</a> on Facebook -
+            <a href="https://twitter.com/thisisfreegle" target="_blank" rel="noopener noreferrer">@ThisIsFreegle</a> on Twitter and
+            <a href="https://www.facebook.com/Freegle" target="_blank" rel="noopener noreferrer">Freegle</a> on Facebook -
             we create all the 'Freegle' graphics you see there and they are free to reuse.
             <!-- eslint-disable-next-line -->
             If you would like any graphics customised, please contact <ExternalLink href="mailto:media@ilovefreegle.org">media@ilovefreegle.org</ExternalLink>.

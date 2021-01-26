@@ -24,7 +24,7 @@ export default {
       return process.env.OSM_TILE
     },
     attribution() {
-      return 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+      return 'Map data &copy; <a href="https://www.openstreetmap.org/" rel="noopener noreferrer">OpenStreetMap</a> contributors'
     },
     mapWidth() {
       const contWidth = this.$refs.mapcont ? this.$refs.mapcont.clientWidth : 0

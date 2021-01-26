@@ -452,8 +452,8 @@
                 </h3>
                 <p>
                   Apps for your
-                  <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" target="_blank">Android</a> or
-                  <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&mt=8" target="_blank">IOS</a> phone/tablet.
+                  <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" target="_blank" rel="noopener noreferrer">Android</a> or
+                  <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&mt=8" target="_blank" rel="noopener noreferrer">IOS</a> phone/tablet.
                 </p>
                 <OurToggle
                   v-model="me.settings.notifications.app"

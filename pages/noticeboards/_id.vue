@@ -22,7 +22,7 @@
               So please put up posters - and let us know where you put them.
             </p>
             <div class="d-flex justify-content-between">
-              <a href="https://freegle.in/A4Poster" target="_blank">
+              <a href="https://freegle.in/A4Poster" target="_blank" rel="noopener noreferrer">
                 <b-btn variant="primary" size="lg">
                   Download poster
                 </b-btn>

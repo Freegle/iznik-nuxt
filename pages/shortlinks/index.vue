@@ -21,7 +21,7 @@
               <div class="d-flex justify-content-between flex-wrap">
                 <b-select v-model="groupid" :options="groupOptions" class="select" />
                 <div class="d-flex">
-                  <b class="mt-2">freegle.in/</b>
+                  <span class="mt-2 font-weight-bold">freegle.in/</span>
                   <b-form-input v-model="name" placeholder="Enter your shortlink name" maxlength="30" />
                 </div>
                 <b-btn variant="primary" @click="create">
