@@ -34,8 +34,7 @@ jobs:
       # Checkout the code as the first step.
       - checkout
       - run: sudo apt update
-      - run: sudo apt install nodejs
-      - run: sudo apt install npm
+      - run: sudo apt install -y nodejs npm
       #- run: ./gradlew dependencies
       #- android/accept-licenses
       #- run: apt install node
