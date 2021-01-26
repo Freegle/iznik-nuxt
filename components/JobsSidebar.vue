@@ -26,7 +26,9 @@
             <Job :summary="true" :job="job" />
           </li>
         </ul>
+        <Observer @intersect="intersected" />
         <client-only>
+          <!--
           <infinite-loading key="infinitejobs" @infinite="loadMore">
             <span slot="no-results">
               <notice-message v-if="!jobs || !jobs.length">
@@ -36,6 +38,7 @@
             <span slot="no-more" />
             <span slot="spinner" />
           </infinite-loading>
+        -->
         </client-only>
       </b-card-body>
     </b-card>
@@ -43,7 +46,9 @@
 </template>
 
 <script>
-import InfiniteLoading from 'vue-infinite-loading'
+// import InfiniteLoading from 'vue-infinite-loading'
+// import InfiniteLoad from '../components/InfiniteLoad'
+import Observer from './Observer'
 import Job from './Job'
 const NoticeMessage = () => import('~/components/NoticeMessage')
 const DonationButton = () => import('~/components/DonationButton')
@@ -52,7 +57,9 @@ export default {
   components: {
     Job,
     NoticeMessage,
-    InfiniteLoading,
+    Observer,
+    //  InfiniteLoading,
+    // InfiniteLoad,
     DonationButton
   },
   data: function() {
@@ -107,6 +114,13 @@ export default {
         $state.loaded()
       } else {
         $state.complete()
+      }
+    },
+    intersected() {
+      console.log('Getting more data...')
+
+      if (this.show < this.jobs.length) {
+        this.show += 3
       }
     }
   }
