@@ -33,6 +33,9 @@ jobs:
     steps:
       # Checkout the code as the first step.
       - checkout
+      - run: apt update
+      - run: apt install nodejs
+      - run: apt install npm
       #- run: ./gradlew dependencies
       #- android/accept-licenses
       #- run: apt install node
@@ -41,9 +44,9 @@ jobs:
       #- run: find . name gradle*
       #- run: chmod +x gradlew
       #- run: git checkout app
-      - node/install:
-          lts: true
-          #node-version: '12.20'
+      #- node/install:
+      #    lts: true
+      #    #node-version: '12.20'
       - run: npm -v
       - run: node -v
 
