@@ -20,7 +20,7 @@ jobs:
   build-and-deploy-android:  
     #executor: node/default
     executor:
-      name: android
+      name: android/android
       sdk-version: '28'
     docker:
       - image: circleci/android:api-28
