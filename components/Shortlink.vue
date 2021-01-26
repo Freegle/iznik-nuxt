@@ -2,7 +2,7 @@
   <div v-if="shortlink.type === 'Group'">
     <b-row class="m-0">
       <b-col cols="3">
-        <a :href="shortlink.url" target="_blank">
+        <a :href="shortlink.url" target="_blank" rel="noopener noreferrer">
           {{ shortlink.nameshort }}
         </a>
       </b-col>
