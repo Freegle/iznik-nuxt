@@ -23,8 +23,8 @@ jobs:
       name: android/android
       sdk-version: '28'
     docker:
-      #- image: circleci/android:api-28
-      - image: circleci/jdk8:0.1.1
+      - image: circleci/android:api-28
+      #- image: circleci/jdk8:0.1.1
     environment:
       # Customize the JVM maximum heap limit
       JVM_OPTS: -Xmx3200m
@@ -32,23 +32,23 @@ jobs:
       GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
     steps:
       # Checkout the code as the first step.
-      - run: sudo apt update
-      - run: sudo apt install -y curl git openssl tar
+##      - run: sudo apt update
+##      - run: sudo apt install -y curl git openssl tar
       - checkout
-      - run: sudo curl -sL https://deb.nodesource.com/setup_12.x -o nodesource_setup.sh
-      - run: sudo sh ./nodesource_setup.sh
-      - run: sudo apt install -y nodejs
+##      - run: sudo curl -sL https://deb.nodesource.com/setup_12.x -o nodesource_setup.sh
+##      - run: sudo sh ./nodesource_setup.sh
+##      - run: sudo apt install -y nodejs
       #- run: ./gradlew dependencies
-      #- android/accept-licenses
-      #- run: apt install node
+      - android/accept-licenses
+##      - run: apt install node
       - run: sudo whereis gradlew
       - run: sudo whereis gradle
       #- run: find . name gradle*
       #- run: chmod +x gradlew
       #- run: git checkout app
-      #- node/install:
-      #    lts: true
-      #    #node-version: '12.20'
+      - node/install:
+          lts: true
+          #node-version: '12.20'
       - run: npm -v
       - run: nodejs -v
 
