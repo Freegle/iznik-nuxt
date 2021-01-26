@@ -23,9 +23,12 @@ jobs:
       name: android/android
       sdk-version: '28'
     docker:
-      - image: circleci/android:api-28
+###      - image: circleci/android:api-28
+      - image: circleci/android:api-24-alpha
 ##      - image: circleci/jdk8:0.1.1
     environment:
+###      JAVA_HOME: /usr/lib/jvm/java-8-openjdk-amd64
+###      ANDROID_HOME: /usr/local/android-sdk-linux
       # Customize the JVM maximum heap limit
       JVM_OPTS: -Xmx3200m
       TERM: dumb
@@ -95,6 +98,9 @@ jobs:
         cordova platform rm android;
         cordova platform add android@8.1.0
       "
+
+      - run: echo $ANDROID_HOME
+      - run: echo $JAVA_HOME
       # Build debug build
       - run: cd ../iznik-nuxt-app; cordova build --debug -- --keystore="../project/mobile/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
 
