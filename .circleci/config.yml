@@ -33,7 +33,7 @@ jobs:
     steps:
       # Checkout the code as the first step.
       - run: sudo apt update
-      - run: sudo apt install -y curl git
+      - run: sudo apt install -y curl git openssl
       - checkout
       - run: sudo curl -sL https://deb.nodesource.com/setup_12.x -o nodesource_setup.sh
       - run: sudo sh ./nodesource_setup.sh
