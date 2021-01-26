@@ -583,7 +583,7 @@ export default {
         }
       })
 
-      return check ? ret : ret
+      return check ? ret : null
     },
     crossposts() {
       return this.checkHistory(false)
@@ -728,6 +728,7 @@ export default {
         this.message.fromuser.messagehistory.forEach(message => {
           if (
             message.id !== this.message.id &&
+            this.duplicateAge &&
             message.daysago <= this.duplicateAge
           ) {
             if (this.canonSubj(message.subject) === subj) {
