@@ -118,14 +118,14 @@
                   <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
                 </span>
                 <span v-else>
-                  <b v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)">
+                  <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="font-weight-bold">
                     <Highlighter
                       :text-to-highlight="emessage"
                       :search-words="[regexEmail]"
                       highlight-class-name="highlight"
                       class="prewrap"
                     />
-                  </b>
+                  </span>
                   <span v-else>
                     <Highlighter
                       :text-to-highlight="emessage"

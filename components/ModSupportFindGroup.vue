@@ -221,11 +221,12 @@ export default {
           return -1
         } else if (b.lastmoderated && !a.lastmoderated) {
           return 1
-        } else
+        } else {
           return (
             new Date(b.lastmoderated).getTime() -
             new Date(a.lastmoderated).getTime()
           )
+        }
       })
 
       return r

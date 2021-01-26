@@ -11,14 +11,14 @@
         </span>
       </span>
       thinks this post
-      <b v-if="microvolunteering.msgcategory === 'CouldBeBetter'" class="text-warning">
+      <strong v-if="microvolunteering.msgcategory === 'CouldBeBetter'" class="text-warning">
         Could be better
-      </b>
-      <b v-else-if="microvolunteering.msgcategory === 'ShouldntBeHere'" class="text-danger">
+      </strong>
+      <strong v-else-if="microvolunteering.msgcategory === 'ShouldntBeHere'" class="text-danger">
         shouldn't be here
-      </b>
+      </strong>
       <br>
-      <b v-if="microvolunteering.comments">"{{ microvolunteering.comments }}"</b>
+      <span v-if="microvolunteering.comments" class="font-weight-bold">"{{ microvolunteering.comments }}"</span>
       <em v-else>No comment supplied.</em>
     </div>
     <div v-if="microvolunteering.result === 'Approve'" class="border border-success rounded p-2">
