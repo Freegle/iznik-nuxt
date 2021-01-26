@@ -46,7 +46,7 @@
             </b>
           </div>
           <div v-if="(!eSnippet || eSnippet === 'null') && !expanded">
-            <i>There's no description.</i>
+            <em>There's no description.</em>
           </div>
           <b-button v-if="!successful && !expanded" variant="primary" class="mt-2" @click="expand">
             {{ expandButtonText }} <v-icon name="angle-double-right" />

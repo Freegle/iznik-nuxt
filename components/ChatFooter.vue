@@ -271,7 +271,6 @@ export default {
 }
 
 .fa-mob {
-  width: 2rem;
   height: 2rem;
   width: 100%;
 }
