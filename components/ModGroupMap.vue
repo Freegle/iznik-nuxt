@@ -6,10 +6,10 @@
           <v-icon name="sync" :class="busy ? 'text-success fa-spin ml-4 mt-1' : 'text-faded ml-4 mt-1'" scale="2" />
         </div>
         <b-form-checkbox v-if="groups" v-model="cga" class="ml-2">
-          <b style="color: darkgreen">Show CGAs</b>
+          <strong style="color: darkgreen">Show CGAs</strong>
         </b-form-checkbox>
         <b-form-checkbox v-if="groups" v-model="dpa" class="ml-2">
-          <b style="color: darkblue">Show DPAs</b>
+          <strong style="color: darkblue">Show DPAs</strong>
         </b-form-checkbox>
         <b-form-checkbox v-if="groupid" v-model="labels" class="ml-2 font-weight-bold">
           Labels

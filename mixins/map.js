@@ -104,6 +104,7 @@ export default {
               ent.addTo(mapobj)
               ent.setStyle(options)
               const thisbounds = ent.getBounds()
+              bounds = bounds || thisbounds
               bounds.extend(thisbounds.getNorthEast())
               bounds.extend(thisbounds.getSouthWest())
             }
