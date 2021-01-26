@@ -207,7 +207,7 @@
                     </li>
                     <li>
                       IT geeks who know some of these: VueJS/Bootstrap 4/CSS/PHP/Percona/nginx - find us on
-                      <a target="_blank" href="https://github.com/Freegle">GitHub</a>.
+                      <a target="_blank" href="https://github.com/Freegle" rel="noopener noreferrer">GitHub</a>.
                     </li>
                   </ul>
                   <p>

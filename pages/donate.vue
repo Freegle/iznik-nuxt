@@ -58,7 +58,7 @@
               </p>
               <p>
                 If you do this, please complete a Gift Aid
-                Declaration <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfSWQ_hlOflsS6AfwPEmIlYxLuf1u5-iDspZKr20K-yj1hrVQ/viewform">here</a>.
+                Declaration <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfSWQ_hlOflsS6AfwPEmIlYxLuf1u5-iDspZKr20K-yj1hrVQ/viewform" rel="noopener noreferrer">here</a>.
               </p>
             </b-card-text>
           </b-card>
@@ -77,7 +77,7 @@
               </p>
               <p>
                 If you do this, please complete a Gift Aid
-                Declaration <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfSWQ_hlOflsS6AfwPEmIlYxLuf1u5-iDspZKr20K-yj1hrVQ/viewform">here</a>.
+                Declaration <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfSWQ_hlOflsS6AfwPEmIlYxLuf1u5-iDspZKr20K-yj1hrVQ/viewform" rel="noopener noreferrer">here</a>.
               </p>
             </b-card-text>
           </b-card>
