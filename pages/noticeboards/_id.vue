@@ -15,7 +15,7 @@
           <div v-else>
             <h1>Noticeboards</h1>
             <p>
-              Here's where people have put up posters.  <b>Knowing where these are really helps us</b>, because we can
+              Here's where people have put up posters.  <strong>Knowing where these are really helps us</strong>, because we can
               ask other freeglers to keep them up to date.
             </p>
             <p>

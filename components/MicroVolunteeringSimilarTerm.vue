@@ -1,10 +1,10 @@
 <template>
   <div>
-    <b-btn v-if="similar" class="selected" variant="white" size="lg" @click="$emit('not')">
-      <b>{{ term.term }}</b>
+    <b-btn v-if="similar" class="selected font-weight-bold" variant="white" size="lg" @click="$emit('not')">
+      {{ term.term }}
     </b-btn>
-    <b-btn v-else class="unselected" variant="white" size="lg" @click="$emit('similar')">
-      <b>{{ term.term }}</b>
+    <b-btn v-else class="unselected font-weight-bold" variant="white" size="lg" @click="$emit('similar')">
+      {{ term.term }}
     </b-btn>
   </div>
 </template>

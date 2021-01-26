@@ -34,7 +34,7 @@
           Hope you find someone!  Please make sure you get back to everyone who replies, so that they feel good about your organisation
           (and Freegle!).
         </p>
-        <p>Freegle is free to use, but not free to run.  If you can, <b>please donate &pound;1</b> to keep us running - but anything you can give is very welcome.</p>
+        <p>Freegle is free to use, but not free to run.  If you can, <strong>please donate &pound;1</strong> to keep us running - but anything you can give is very welcome.</p>
         <donation-button />
       </div>
       <div v-else>
@@ -50,8 +50,8 @@
             </b-row>
           </div>
           <b-row>
-            <b-col class="mb-2 prewrap">
-              <b>{{ description }}</b>
+            <b-col class="mb-2 prewrap font-weight-bold">
+              {{ description }}
             </b-col>
           </b-row>
           <b-row>

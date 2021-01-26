@@ -8,15 +8,15 @@
       </div>
       <div class="d-flex flex-column justify-content-center">
         <p class="small m-0">
-          It'll ask for access to your contacts.  <b>Don't worry</b> - this doesn't mean we can access all of
+          It'll ask for access to your contacts.  <strong>Don't worry</strong> - this doesn't mean we can access all of
           them!  You choose which ones to invite.  We don't pass this information to our servers, we don't
           store it, and we can't access it in future.  You're in control.
         </p>
       </div>
     </div>
     <div v-else>
-      <label for="invitation">
-        <b>Personalise your invitation message:</b>
+      <label for="invitation" class="font-weight-bold">
+        Personalise your invitation message:
       </label>
       <b-textarea
         id="invitation"

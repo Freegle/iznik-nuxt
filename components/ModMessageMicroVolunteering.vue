@@ -5,7 +5,7 @@
         <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ microvolunteering.userid }}
       </a>
       <span v-if="user">
-        <b>{{ user.displayname }}</b>
+        <strong>{{ user.displayname }}</strong>
         <span v-if="email">
           ({{ email }})
         </span>
@@ -26,7 +26,7 @@
         <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ microvolunteering.userid }}
       </a>
       <span v-if="user">
-        <b>{{ user.displayname }}</b>
+        <strong>{{ user.displayname }}</strong>
         <span v-if="email">
           ({{ email }})
         </span>

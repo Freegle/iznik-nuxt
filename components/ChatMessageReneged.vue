@@ -26,7 +26,7 @@
             <b-card-text>
               <div :class="emessage ? 'media-body chatMessage' : 'media-body'">
                 <span>
-                  <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap"><b>{{ emessage }}</b></span>
+                  <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap font-weight-bold">{{ emessage }}</span>
                   <span v-else class="preline forcebreak">{{ emessage }}</span>
                   <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
                 </span>
@@ -49,7 +49,7 @@
                 @error="brokenImage"
               />
               <ProfileImage :image="me.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
-              <span class="small black">You cancelled your promise to <b>{{ otheruser.displayname }}</b> for:</span>
+              <span class="small black">You cancelled your promise to <strong>{{ otheruser.displayname }}</strong> for:</span>
               <br>
               <h4>
                 {{ refmsg.subject }}
@@ -58,7 +58,7 @@
             <b-card-text>
               <div :class="emessage ? 'media-body chatMessage' : 'media-body'">
                 <span>
-                  <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap"><b>{{ emessage }}</b></span>
+                  <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap font-weight-bold">{{ emessage }}</span>
                   <span v-else class="preline forcebreak">{{ emessage }}</span>
                   <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
                 </span>

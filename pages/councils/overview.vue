@@ -14,7 +14,9 @@
           </p>
 
           <NoticeMessage variant="info">
-            <p><b>Freegle is the UK's biggest and friendliest free online reuse network with over 2.7 million members.</b></p>
+            <p class="font-weight-bold">
+              Freegle is the UK's biggest and friendliest free online reuse network with over 2.7 million members.
+            </p>
 
             <p>Anyone in the country can get access to a local Freegle community.  It's free to join, free to use, and everything on it is free.</p>
 
@@ -35,7 +37,7 @@
 
             <p>You can also search or browse the items offered, or post a request for something that other people might have.</p>
 
-            <p><b>Don't throw it away, give it away!</b></p>
+            <p><strong>Don't throw it away, give it away!</strong></p>
           </NoticeMessage>
           <p>
             If you're interested in how Freegle is structured and why we do it, find out more <nuxt-link to="/about">

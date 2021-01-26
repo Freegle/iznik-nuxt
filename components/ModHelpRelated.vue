@@ -4,7 +4,7 @@
       Hide Help
     </b-btn>
     <p>
-      These are members who have <b>used the same device for different members</b>.  By merging members who are
+      These are members who have <strong>used the same device for different members</strong>.  By merging members who are
       really the same person, we can help them avoid confusion and missing messages.
     </p>
     <p>

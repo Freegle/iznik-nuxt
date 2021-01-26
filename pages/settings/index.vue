@@ -539,7 +539,7 @@
     <div v-else class="text-center">
       <b-img-lazy src="~/static/loader.gif" alt="Loading" />
       <p>
-        <b>Loading...</b><br>Stuck here? <ExternalLink href="mailto:support@ilovefreegle.org">
+        <span class="font-weight-bold">Loading...</span><br>Stuck here? <ExternalLink href="mailto:support@ilovefreegle.org">
           Contact us
         </ExternalLink><br>Try refreshing.  Or Chrome.
       </p>

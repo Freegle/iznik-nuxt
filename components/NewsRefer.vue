@@ -15,13 +15,13 @@
       <p>We'll tell more people about that, so you'll get a better response.  This section is just for chat and recommendations.</p>
     </notice-message>
     <notice-message v-if="type === 'ReferToTaken'">
-      <p>If your item has been taken, please go to My Posts, click on the item, and use the button to <b>Mark as TAKEN</b>.</p>
+      <p>If your item has been taken, please go to My Posts, click on the item, and use the button to <strong>Mark as TAKEN</strong>.</p>
       <b-btn variant="primary" to="/myposts" class="mb-1">
         Go to My Posts
       </b-btn>
     </notice-message>
     <notice-message v-if="type === 'ReferToReceived'">
-      <p>If you've got what you were looking for, please go to My Posts, click on the item, and use the button to <b>Mark as RECEIVED</b>.</p>
+      <p>If you've got what you were looking for, please go to My Posts, click on the item, and use the button to <strong>Mark as RECEIVED</strong>.</p>
       <b-btn variant="primary" to="/myposts" class="mb-1">
         Go to My Posts
       </b-btn>

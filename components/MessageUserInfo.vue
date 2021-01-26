@@ -8,7 +8,7 @@
             Posted by {{ user.displayname }}
           </span>
           <span v-if="milesaway" class="align-middle">
-            &bull; <b>about {{ milesaway | pluralize('mile', { includeNumber: true }) }} away</b>
+            &bull; <strong>about {{ milesaway | pluralize('mile', { includeNumber: true }) }} away</strong>
           </span>
           <br class="d-block d-sm-none">
           <span v-if="!modinfo && (user.info.openoffers + user.info.openwanteds > 0)" class="align-middle">

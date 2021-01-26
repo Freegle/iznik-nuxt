@@ -8,12 +8,12 @@
       </div>
       <div v-if="notification.newsfeed" class="media-body">
         <span v-if="notification.newsfeed.type == 'Noticeboard'" class="notification-title"><span>{{ notification.fromuser.displayname }} loves your poster</span>
-          <span v-if="notification.noticeboard && notification.noticeboard.name">&quot;<b>{{ notification.noticeboard.name }}</b>&quot;</span>
+          <span v-if="notification.noticeboard && notification.noticeboard.name">&quot;<strong>{{ notification.noticeboard.name }}</strong>&quot;</span>
         </span>
         <span v-else>
           <span class="notification-title"><span>{{ notification.fromuser.displayname }} loves your post</span>
-            <span v-if="notification.newsfeed.message" class="forcebreak">
-              <br>"<b>{{ notification.newsfeed.message }}</b>"
+            <span v-if="notification.newsfeed.message" class="forcebreak font-weight-bold">
+              <br>"{{ notification.newsfeed.message }}"
             </span>
           </span>
         </span>

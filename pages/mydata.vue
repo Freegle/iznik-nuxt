@@ -466,7 +466,7 @@
               <p>These are any stories you've told us.</p>
               <ShowMore :items="status.data.stories">
                 <template v-slot:item="s">
-                  <b>{{ s.item.headline }}</b> <br>
+                  <span class="font-weight-bold">{{ s.item.headline }}</span> <br>
                   {{ s.item.story }}
                 </template>
               </ShowMore>
@@ -719,15 +719,15 @@
               </ShowMore>
               <h2>Exports</h2>
               <p>These are any other times you've viewed this data.</p>
-              <b-row>
+              <b-row class="font-weight-bold">
                 <b-col cols="4">
-                  <b>Requested</b>
+                  Requested
                 </b-col>
                 <b-col cols="4">
-                  <b>Started</b>
+                  Started
                 </b-col>
                 <b-col cols="4">
-                  <b>Completed</b>
+                  Completed
                 </b-col>
               </b-row>
               <ShowMore :items="status.data.exports">

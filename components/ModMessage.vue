@@ -91,7 +91,7 @@
                     you before releasing it.  If you release it, it will stay in Pending.
                   </p>
                   <p v-else>
-                    Held by <b>{{ message.heldby.displayname }}</b>.  Please check with them before releasing it.
+                    Held by <strong>{{ message.heldby.displayname }}</strong>.  Please check with them before releasing it.
                   </p>
                   <ModMessageButton
                     :message="message"

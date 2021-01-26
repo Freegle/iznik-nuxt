@@ -15,7 +15,7 @@
             and helps get a better response when you're replying to OFFERs.
           </p>
           <p>
-            <b>No need to say what you're giving/seeking. </b>This is just to introduce yourself to other people, if
+            <strong>No need to say what you're giving/seeking. </strong>This is just to introduce yourself to other people, if
             you want to.  If you want to talk to someone specific, use the <em>Message</em> link on their profile.
           </p>
           <b-form-textarea

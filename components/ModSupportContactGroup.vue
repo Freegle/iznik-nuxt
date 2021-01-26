@@ -94,18 +94,18 @@
       :handler="send"
     />
     <div v-if="alerts && alerts.length">
-      <b-row>
+      <b-row class="font-weight-bold">
         <b-col cols="6" lg="2">
-          <b>Created</b>
+          Created
         </b-col>
         <b-col cols="6" lg="2">
-          <b>Complete</b>
+          Complete
         </b-col>
         <b-col cols="6" lg="2">
-          <b>To</b>
+          To
         </b-col>
         <b-col cols="6" lg="4">
-          <b>Subject</b>
+          Subject
         </b-col>
         <b-col cols="6" lg="2" />
       </b-row>

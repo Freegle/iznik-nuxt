@@ -34,12 +34,12 @@
             </b-card-body>
           </b-card>
         </div>
-        <b-row class="mt-2 bg-white m-0">
+        <b-row class="mt-2 bg-white m-0 font-weight-bold">
           <b-col cols="3">
-            <b>Community</b>
+            Community
           </b-col>
           <b-col cols="7">
-            <b>Shortlink</b>
+            Shortlink
           </b-col>
           <b-col cols="2" />
         </b-row>

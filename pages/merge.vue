@@ -19,12 +19,12 @@
           <ul>
             <li>
               <!-- eslint-disable-next-line-->
-              <b>{{ merge.user1.name }} <span v-if="merge.user1.email">({{ merge.user1.email }})</span></b>.
+              <strong>{{ merge.user1.name }} <span v-if="merge.user1.email">({{ merge.user1.email }})</span></strong>.
               You have signed in to this with {{ u1logins }}.
             </li>
             <li>
               <!-- eslint-disable-next-line-->
-              <b>{{ merge.user2.name }} <span v-if="merge.user2.email">({{ merge.user2.email }})</span></b>.
+              <strong>{{ merge.user2.name }} <span v-if="merge.user2.email">({{ merge.user2.email }})</span></strong>.
               You have signed in to this with {{ u2logins }}.
             </li>
           </ul>

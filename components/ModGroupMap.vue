@@ -11,11 +11,11 @@
         <b-form-checkbox v-if="groups" v-model="dpa" class="ml-2">
           <b style="color: darkblue">Show DPAs</b>
         </b-form-checkbox>
-        <b-form-checkbox v-if="groupid" v-model="labels" class="ml-2">
-          <b>Labels</b>
+        <b-form-checkbox v-if="groupid" v-model="labels" class="ml-2 font-weight-bold">
+          Labels
         </b-form-checkbox>
-        <b-form-checkbox v-model="shade" class="ml-2">
-          <b>Shade areas</b>
+        <b-form-checkbox v-model="shade" class="ml-2 font-weight-bold">
+          Shade areas
         </b-form-checkbox>
       </div>
       <b-row class="m-0">
@@ -101,8 +101,8 @@
               </p>
               <Postcode :find="false" @selected="postcodeSelect" />
               <div v-if="postcode" class="mt-2">
-                <p>
-                  <b>Community:</b>
+                <p class="font-weight-bold">
+                  Community:
                 </p>
                 <p v-if="postcode.groupsnear && postcode.groupsnear.length">
                   {{ postcode.groupsnear[0].namedisplay }}
@@ -110,8 +110,8 @@
                 <p v-else>
                   No community found
                 </p>
-                <p>
-                  <b>Area:</b>
+                <p class="font-weight-bold">
+                  Area:
                 </p>
                 <p v-if="postcode.area">
                   {{ postcode.area.name }}

@@ -20,7 +20,7 @@
             <b-card-text>
               <div :class="emessage ? 'media-body chatMessage' : 'media-body'">
                 <span>
-                  <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap"><b>{{ emessage }}</b></span>
+                  <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap font-weight-bold">{{ emessage }}</span>
                   <span v-else class="preline forcebreak">{{ emessage }}</span>
                   <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
                 </span>

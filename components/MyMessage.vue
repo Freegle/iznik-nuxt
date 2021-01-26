@@ -116,10 +116,10 @@
                   <div v-for="p in promisedTo" :key="'promised-' + p.id">
                     <div class="d-flex flex-wrap">
                       <div>
-                        <v-icon name="handshake" class="fa-fw mt-1" />&nbsp;Promised to <b>{{ p.name }}</b>
+                        <v-icon name="handshake" class="fa-fw mt-1" />&nbsp;Promised to <strong>{{ p.name }}</strong>
                       </div>
                       <div v-if="p.trystdate" class="d-flex">
-                        , handover arranged for<b>&nbsp;{{ p.trystdate }}</b>
+                        , handover arranged for<strong>&nbsp;{{ p.trystdate }}</strong>
                       </div>
                     </div>
                     <AddToCalendar v-if="p.tryst" :ics="p.tryst.ics" variant="link" />

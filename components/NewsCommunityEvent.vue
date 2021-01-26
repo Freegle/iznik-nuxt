@@ -11,7 +11,7 @@
       />
       <div>
         <span class="text-success font-weight-bold">{{ users[userid].displayname }}</span>
-        created an event<span class="d-none d-md-inline-block">:</span><br class="d-block d-md-none"> <b>{{ newsfeed.communityevent.title }}</b>
+        created an event<span class="d-none d-md-inline-block">:</span><br class="d-block d-md-none"> <strong>{{ newsfeed.communityevent.title }}</strong>
         <br>
         <span class="text-muted small">
           {{ newsfeed.added | timeago }}

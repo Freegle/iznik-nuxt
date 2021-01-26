@@ -12,7 +12,7 @@
           <p>
             Facebook page <a :href="'https://facebook.com/' + inv.page.id" target="_blank" rel="noopener nofollower">{{ inv.page.name }}</a>
             for community
-            <b>{{ inv.group.namedisplay }}</b>
+            <strong>{{ inv.group.namedisplay }}</strong>
           </p>
           <ExternalLink class="btn btn-white mb-2" :href="'https://modtools.org/facebook/facebook_request.php?type=Page&groupid=' + inv.group.id">
             Relink

@@ -32,10 +32,10 @@
           </p>
           <ul>
             <li>
-              <b>Household Waste Recycling Centres</b> – A reminder that the tip is not the only option for unwanted items!
+              <strong>Household Waste Recycling Centres</strong> – A reminder that the tip is not the only option for unwanted items!
             </li>
             <li>
-              <b>Bulky waste</b> - Many councils point residents towards Freegle and other reuse organisations on their bulky waste web pages to help reduce the amount of waste disposed of through bulky collections - and reminding residents
+              <strong>Bulky waste</strong> - Many councils point residents towards Freegle and other reuse organisations on their bulky waste web pages to help reduce the amount of waste disposed of through bulky collections - and reminding residents
               they can save money by using Freegle instead of paying for a bulky waste collection.  Here are some good examples from other councils that you can replicate:
               <ul>
                 <li>
@@ -53,10 +53,10 @@
               </ul>
             </li>
             <li>
-              <b>Waste reduction</b> – If you provide information about waste minimisation and reuse, include a quick link to your local Freegle group here.
+              <strong>Waste reduction</strong> – If you provide information about waste minimisation and reuse, include a quick link to your local Freegle group here.
             </li>
             <li>
-              <b>A-Z</b> - If you have an A-Z of waste and recycling, please list Freegle as an option.  Brighton & Hove
+              <strong>A-Z</strong> - If you have an A-Z of waste and recycling, please list Freegle as an option.  Brighton & Hove
               City Council are a great example of how this can be done - see <a href="https://www.brighton-hove.gov.uk/content/environment/recycling-rubbish-and-street-cleaning/recycling-a-z" target="_blank">here</a>.
             </li>
             <li>
@@ -118,20 +118,20 @@
           </p>
           <ul>
             <li>
-              <b>Schools</b> – From furniture to musical instruments, stationery to electrical items and uniform.
+              <strong>Schools</strong> – From furniture to musical instruments, stationery to electrical items and uniform.
               Schools generate a lot of waste, some of which is still in a usable condition and could be reused by
               another school or a member of the community.
             </li>
             <li>
-              <b>Housing</b> – Providing cheap furniture and other items to families in need.
+              <strong>Housing</strong> – Providing cheap furniture and other items to families in need.
               End of tenancy clearances and refurbishments.
             </li>
             <li>
-              <b>Estates</b> – When disposing of or acquiring properties, Freegle could come in useful for getting
+              <strong>Estates</strong> – When disposing of or acquiring properties, Freegle could come in useful for getting
               rid of surplus/unwanted furniture and other items.
             </li>
             <li>
-              <b>Facilities/caretakers</b> – Generally, Facilities/Caretakers form part of the waste disposal
+              <strong>Facilities/caretakers</strong> – Generally, Facilities/Caretakers form part of the waste disposal
               chain at a local authority.  Many items can be reused and save the council money and hassle
               rather than disposing of them.
             </li>

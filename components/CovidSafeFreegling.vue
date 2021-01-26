@@ -5,7 +5,7 @@
       and also keep an eye on WANTEDs in case you can help out.  But we do not want to encourage unnecessary travel and
       we'd like
       everyone to stay safe - please
-      <b>READ</b> and <b>FOLLOW</b> these updated COVID-19 guidelines for freegling.
+      <strong>READ</strong> and <strong>FOLLOW</strong> these updated COVID-19 guidelines for freegling.
     </p>
     <h4>Keep it LOCAL</h4>
     <p>
@@ -41,7 +41,7 @@
       </li>
     </ul>
     <p>
-      Assume anything you collect <b>isn't</b> clean (better safe than sorry).  Clean it yourself, and if possible
+      Assume anything you collect <strong>isn't</strong> clean (better safe than sorry).  Clean it yourself, and if possible
       leave it for a few days before touching it.
     </p>
     <p>

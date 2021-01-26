@@ -45,7 +45,7 @@
       <NumberIncrementDecrement v-if="type === 'Offer'" :count.sync="availablenow" label="Quantity" append-text=" available" class="count pt-1" />
     </div>
     <NoticeMessage v-if="duplicate" variant="warning">
-      <p>You already have an open post <b>{{ duplicate.subject }}</b>.</p>
+      <p>You already have an open post <span class="font-weight-bold">{{ duplicate.subject }}</span>.</p>
       <p>
         If it's the same, please go to <nuxt-link to="/myposts">
           My Posts

@@ -2,7 +2,7 @@
   <div>
     <NoticeMessage variant="warning" class="mb-1">
       <p>
-        <b>{{ count | pluralize(['freegler is', 'freeglers are'], { includeNumber: true }) }} waiting for you to reply.</b>
+        <strong>{{ count | pluralize(['freegler is', 'freeglers are'], { includeNumber: true }) }} waiting for you to reply.</strong>
       </p>
       <p>
         Please don't leave them hanging!  Let them know if you're no longer interested, or other people will see that you haven't replied yet.

@@ -42,8 +42,8 @@
         <h3 class="header--size5 pb-3">
           Continue with your social account
         </h3>
-        <p v-if="signUp">
-          <b>Using one of these buttons is the easiest way to create an account:</b>
+        <p v-if="signUp" class="font-weight-bold">
+          Using one of these buttons is the easiest way to create an account:
         </p>
         <b-btn class="social-button social-button--facebook" :disabled="facebookDisabled" @click="loginFacebook">
           <b-img src="~/static/signinbuttons/facebook-logo.png" class="social-button__image" />
@@ -79,12 +79,12 @@
           </span>
           <span v-else>Continue with your Freegle account</span>
         </h3>
-        <span v-if="signUp" class="text-center">
-          <b>Already a freegler?
-            <b-btn variant="link" class="font-weight-bold pl-1 py-0 border-0 align-top" @click="clickShowSignIn">
-              Sign In
-            </b-btn>
-          </b></span>
+        <span v-if="signUp" class="text-center font-weight-bold">
+          Already a freegler?
+          <b-btn variant="link" class="font-weight-bold pl-1 py-0 border-0 align-top" @click="clickShowSignIn">
+            Sign In
+          </b-btn>
+        </span>
         <b-form
           id="loginform"
           ref="form"

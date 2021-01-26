@@ -38,7 +38,7 @@
       <NoticeMessage v-if="warning" variant="warning" class="mt-1 mb-1">
         <p>Please check your message in case it needs updating:</p>
         <p>
-          <b>{{ warning }}</b>
+          <strong>{{ warning }}</strong>
         </p>
       </NoticeMessage>
       <b-textarea v-model="body" rows="10" class="mt-2" />

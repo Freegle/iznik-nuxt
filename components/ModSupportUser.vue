@@ -74,12 +74,12 @@
         This controls whether someone is asked to do micromoderation tasks.
       </p>
       <p>
-        <span v-if="!user.trustlevel"><b>None</b> - we've not yet asked them</span>
-        <span v-else-if="user.trustlevel === 'Basic'"><b>Basic</b> - has consented, using information visible to all members</span>
-        <span v-else-if="user.trustlevel === 'Moderate'"><b>Moderate</b> - some information not visible to all members</span>
-        <span v-else-if="user.trustlevel === 'Advanced'"><b>Advanced</b> - significant information not visible to all members</span>
-        <span v-else-if="user.trustlevel === 'Declined'"><b>Declined</b> - said they don't want to do this</span>
-        <span v-else-if="user.trustlevel === 'Disabled'"><b>Disabled</b> - prevented by a mod</span>
+        <span v-if="!user.trustlevel"><strong>None</strong> - we've not yet asked them</span>
+        <span v-else-if="user.trustlevel === 'Basic'"><strong>Basic</strong> - has consented, using information visible to all members</span>
+        <span v-else-if="user.trustlevel === 'Moderate'"><strong>Moderate</strong> - some information not visible to all members</span>
+        <span v-else-if="user.trustlevel === 'Advanced'"><strong>Advanced</strong> - significant information not visible to all members</span>
+        <span v-else-if="user.trustlevel === 'Declined'"><strong>Declined</strong> - said they don't want to do this</span>
+        <span v-else-if="user.trustlevel === 'Disabled'"><strong>Disabled</strong> - prevented by a mod</span>
       </p>
       <h3 class="mt-2">
         Location
@@ -279,7 +279,7 @@
       <ModSupportChatList :chats="chatsFiltered" :pov="user.id" />
     </b-card-body>
     <ModLogsModal ref="logs" :userid="user.id" />
-    <ConfirmModal v-if="purgeConfirm" ref="purgeConfirm" :title="'Purge ' + user.displayname + ' from the system?'" message="<p><b>This can't be undone.</b></p><p>Are you completely sure you want to do this?</p>" @confirm="purgeConfirmed" />
+    <ConfirmModal v-if="purgeConfirm" ref="purgeConfirm" :title="'Purge ' + user.displayname + ' from the system?'" message="<p><strong>This can't be undone.</strong></p><p>Are you completely sure you want to do this?</p>" @confirm="purgeConfirmed" />
     <ProfileModal v-if="user && user.info" :id="id" ref="profile" />
     <ModSpammerReport v-if="showSpamModal" ref="spamConfirm" :user="reportUser" />
     <ModCommentAddModal v-if="addComment" ref="addComment" :user="user" @added="updateComments" />

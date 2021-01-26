@@ -20,9 +20,9 @@
       </p>
       <p>Here are some ways to help:</p>
       <ul>
-        <li><b>Tell people!</b> It's easy to forget that lots of people still haven't heard of us.</li>
-        <li><b>Put up a poster.</b></li>
-        <li><b>Tell your story</b>.</li>
+        <li><strong>Tell people!</strong> It's easy to forget that lots of people still haven't heard of us.</li>
+        <li><strong>Put up a poster.</strong></li>
+        <li><strong>Tell your story</strong>.</li>
       </ul>
       <h3 class="header--size3">
         Put up a poster
@@ -108,7 +108,7 @@
       </div>
       <p>
         You can help even more by letting us know where you put up posters. Once we know where it is, then
-        we can encourage other freeglers to put one up there in future. <b>Please do this!</b>
+        we can encourage other freeglers to put one up there in future. <strong>Please do this!</strong>
       </p>
       <b-btn variant="primary" size="lg" class="mb-1" @click="added">
         I put up a poster!

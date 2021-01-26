@@ -85,7 +85,7 @@
                       </div>
                     </div>
                     <div class="media-body">
-                      <b>{{ boardmember.displayname }}</b>
+                      <span class="font-weight-bold">{{ boardmember.displayname }}</span>
                       <p v-if="boardmember.description">
                         {{ boardmember.description }}
                       </p>
@@ -139,7 +139,7 @@
                 </p>
                 <p>
                   Many current donations come from our volunteers, who are already donating their time and may not be able to
-                  donate money as well.  If you can, <b>please donate £3</b> to keep us running - but anything you can give is very welcome.
+                  donate money as well.  If you can, <strong>please donate £3</strong> to keep us running - but anything you can give is very welcome.
                   Regular monthly donations are especially helpful.
                 </p>
                 <p>

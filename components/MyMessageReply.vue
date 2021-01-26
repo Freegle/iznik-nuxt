@@ -7,9 +7,9 @@
           <ProfileImage :image="reply.user.profile.turl" class="m-1 d-none d-md-block" is-thumbnail size="sm" />
           <ProfileImage :image="reply.user.profile.turl" class="m-1 d-block d-md-none" is-thumbnail size="lg" />
           <!-- eslint-disable-next-line -->
-          <span class="align-middle mt-1" v-if="unseen > 0"><b>{{ reply.user.displayname }}</b></span>
+          <span class="align-middle mt-1" v-if="unseen > 0"><strong>{{ reply.user.displayname }}</strong></span>
           <!-- eslint-disable-next-line -->
-          <span v-else class="align-middle mt-1"><b>{{ reply.user.displayname }}</b></span>
+          <span v-else class="align-middle mt-1"><strong>{{ reply.user.displayname }}</strong></span>
         </div>
       </div>
       <ratings :id="reply.user.id" class="pl-1 flex-shrink-1 ratings" />

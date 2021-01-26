@@ -51,7 +51,7 @@
       <h4 class="mt-2">
         Group Info
       </h4>
-      Group id <v-icon name="hashtag" class="text-muted" scale="0.75" /><b>{{ group.id }}</b>.
+      Group id <v-icon name="hashtag" class="text-muted" scale="0.75" /><strong>{{ group.id }}</strong>.
       <br>
       <br>
       <Clipboard v-if="group.url" class="mr-3 mb-1" :value="group.url" />

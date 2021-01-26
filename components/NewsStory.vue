@@ -4,8 +4,8 @@
     <b-row>
       <b-col>
         <b-card variant="success" no-body>
-          <b-card-header>
-            <b>{{ newsfeed.story.headline }}</b>
+          <b-card-header class="font-weight-bold">
+            {{ newsfeed.story.headline }}
           </b-card-header>
           <b-card-text class="p-2 preline">
             <b-img

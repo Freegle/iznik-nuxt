@@ -16,7 +16,7 @@
       <b-select v-model="selectedUser" :options="userOptions" class="mb-2 font-weight-bold" disabled />
       <div v-if="tryst" class="d-flex flex-wrap">
         <b-form-checkbox v-model="removeTryst" size="lg">
-          Cancel handover arranged for <b>{{ trystdate }}</b>
+          Cancel handover arranged for <strong>{{ trystdate }}</strong>
         </b-form-checkbox>
       </div>
     </template>
