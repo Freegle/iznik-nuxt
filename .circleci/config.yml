@@ -13,8 +13,8 @@ jobs:
   build-and-deploy-android:  
     executor: node/default
     docker:
-      - image: circleci/jdk8:0.1.1
-    #  - image: circleci/android:api-28
+      - image: circleci/android:api-28
+      #- image: circleci/jdk8:0.1.1
     environment:
       # Customize the JVM maximum heap limit
       JVM_OPTS: -Xmx3200m
@@ -23,7 +23,7 @@ jobs:
     steps:
       # Checkout the code as the first step.
       - checkout
-      - run: apt install node
+      #- run: apt install node
       - run: whereis gradlew
       - run: whereis gradle
       #- run: find . name gradle*
