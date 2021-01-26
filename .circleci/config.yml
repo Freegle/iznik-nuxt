@@ -53,15 +53,20 @@ jobs:
 ##      - run: nodejs -v
       - run: node -v
 
-      - run: sudo npm install
-      - run: sudo npm install -g cordova@9.0.0
-      - run: sudo npm install -g rimraf
-      - run: sudo cordova -v
+##      - run: sudo npm install
+##      - run: sudo npm install -g cordova@9.0.0
+##      - run: sudo npm install -g rimraf
+##      - run: sudo cordova -v
+      - run: npm install
+      - run: npm install -g cordova@9.0.0
+      - run: npm install -g rimraf
+      - run: cordova -v
 
       - run: openssl version; tar --version
       #- run: cd mobile; openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in circleci-secrets.tar.enc -out circleci-secrets.tar -k $CIRCLE_TAR_PWD
       - run: cd mobile; openssl enc -aes-256-cbc -md sha512 -salt -d -in circleci-secrets.tar.enc -out circleci-secrets.tar -k $CIRCLE_TAR_PWD
-      - run: cd mobile; sudo tar -xvf circleci-secrets.tar --no-same-owner; ls -l secrets
+##      - run: cd mobile; sudo tar -xvf circleci-secrets.tar --no-same-owner; ls -l secrets
+      - run: cd mobile; tar -xvf circleci-secrets.tar --no-same-owner; ls -l secrets
       #- run: ./gradlew --version
 
       # The next step will download the dependencies.
