@@ -33,7 +33,7 @@
         <MessageHistory :message="$props" class="mb-1 card-header__history" :display-message-link="sm()" />
         <div flex-grow-1 class="mb-1 card-header__description text--medium-large">
           <div v-if="eSnippet && eSnippet !== 'null' && !expanded">
-            <b class="snippet black">
+            <span class="font-weight-bold snippet black">
               <Highlighter
                 v-if="matchedon"
                 :search-words="[matchedon.word]"
@@ -43,7 +43,7 @@
               />
               <span v-else>{{ eSnippet }}</span>
               ...
-            </b>
+            </span>
           </div>
           <div v-if="(!eSnippet || eSnippet === 'null') && !expanded">
             <em>There's no description.</em>

@@ -275,7 +275,6 @@ export default {
     .buttons {
       grid-column: 2 / 4;
       grid-row: 3 / 4;
-      border-top: 0;
       justify-self: end;
       border-top: 0;
     }

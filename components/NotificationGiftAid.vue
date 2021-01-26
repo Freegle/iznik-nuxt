@@ -9,7 +9,7 @@
       <div class="media-body">
         <span class="notification-title"><span>Thank you for donating to Freegle!</span>
           <span>
-            <br><b class="introduction">Your kind donation can go even further if you complete a Gift Aid Declaration.  Please click here.</b>
+            <br><strong class="introduction">Your kind donation can go even further if you complete a Gift Aid Declaration.  Please click here.</strong>
           </span>
         </span>
         <div class="notification-meta">

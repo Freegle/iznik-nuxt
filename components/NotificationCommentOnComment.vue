@@ -9,7 +9,7 @@
       <div class="media-body">
         <span class="notification-title"><span>{{ notification.fromuser.displayname }} commented </span>
           <span v-if="notification.newsfeed.message" class="forcebreak">
-            <br>"<b class="notification__message">{{ notification.newsfeed.message }}</b>"
+            <br>"<span class="notification__message font-weight-bold">{{ notification.newsfeed.message }}</span>"
           </span>
         </span>
         <div class="notification-meta">
