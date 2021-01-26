@@ -34,7 +34,7 @@ jobs:
       # Checkout the code as the first step.
       - checkout
       - run: sudo apt update
-      - run: sudo apt install -y nodejs npm
+      - run: sudo apt install -y nodejs
       #- run: ./gradlew dependencies
       #- android/accept-licenses
       #- run: apt install node
@@ -47,7 +47,7 @@ jobs:
       #    lts: true
       #    #node-version: '12.20'
       - run: npm -v
-      - run: node -v
+      - run: nodejs -v
 
       - run: npm install
       - run: npm install -g cordova@9.0.0
