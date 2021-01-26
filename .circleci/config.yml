@@ -24,7 +24,7 @@ jobs:
       sdk-version: '28'
     docker:
       - image: circleci/android:api-28
-      #- image: circleci/jdk8:0.1.1
+##      - image: circleci/jdk8:0.1.1
     environment:
       # Customize the JVM maximum heap limit
       JVM_OPTS: -Xmx3200m
@@ -50,7 +50,8 @@ jobs:
           lts: true
           #node-version: '12.20'
       - run: npm -v
-      - run: nodejs -v
+##      - run: nodejs -v
+      - run: node -v
 
       - run: sudo npm install
       - run: sudo npm install -g cordova@9.0.0
