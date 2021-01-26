@@ -2,16 +2,26 @@
 # https://circleci.com/developer/orbs/orb/circleci/gradle
 # https://flexpoint.tech/2017/08/29/using-oracles-jdk-in-circleci-with-gradle/
 # https://circleci.com/docs/2.0/language-java/
+
+# https://medium.com/tarmac/continuous-delivery-to-test-flight-with-ionic-and-cordova-on-circleci-without-fastlane-58447324f38a
+
+# https://github.com/ngx-rocket/generator-ngx-rocket/issues/162
+# https://github.com/ngx-rocket/generator-ngx-rocket/pull/364/commits/b41a54eb3a465ffe4767412971ec99a7c2ddaf23
+# https://github.com/ngx-rocket/circleci-dockerfiles/blob/master/cordova/images/Dockerfile
 # Runs in /home/circleci/project
 version: 2.1
 
 orbs:
   node: circleci/node@4.1.0
+  android: circleci/android@0.2.3
   gradle: circleci/gradle@2.2.0
 
 jobs:
   build-and-deploy-android:  
-    executor: node/default
+    #executor: node/default
+    executor:
+      name: android
+      sdk-version: '28'
     docker:
       - image: circleci/android:api-28
       #- image: circleci/jdk8:0.1.1
@@ -23,6 +33,7 @@ jobs:
     steps:
       # Checkout the code as the first step.
       - checkout
+      - accept-licenses
       #- run: apt install node
       - run: whereis gradlew
       - run: whereis gradle
