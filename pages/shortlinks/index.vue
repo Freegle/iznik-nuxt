@@ -49,8 +49,6 @@
     </b-row>
   </div>
 </template>
-<style scoped>
-</style>
 <script>
 import loginRequired from '../../mixins/loginRequired'
 import Shortlinks from '../../components/Shortlinks'

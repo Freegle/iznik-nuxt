@@ -82,6 +82,3 @@ export default {
   extends: ChatBase
 }
 </script>
-
-<style scoped>
-</style>

@@ -112,8 +112,6 @@
     />
   </div>
 </template>
-<style scoped>
-</style>
 <script>
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
 import ChatMessageWarning from '@/components/ChatMessageWarning'

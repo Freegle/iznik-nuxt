@@ -103,8 +103,6 @@
     </div>
   </div>
 </template>
-<style scoped>
-</style>
 <script>
 import DatePicker from 'vue2-datepicker'
 import lazyLoadComponent from '@/utils/lazy-load-component'

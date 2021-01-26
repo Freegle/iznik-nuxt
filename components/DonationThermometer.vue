@@ -14,8 +14,6 @@
     </h4>
   </div>
 </template>
-<style scoped>
-</style>
 <script>
 export default {
   props: {

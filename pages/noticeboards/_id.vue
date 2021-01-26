@@ -54,8 +54,6 @@
     <PosterModal ref="modal" />
   </div>
 </template>
-<style scoped>
-</style>
 <script>
 import { gmapApi } from 'vue2-google-maps'
 import loginOptional from '@/mixins/loginOptional.js'

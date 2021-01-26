@@ -16,8 +16,6 @@
     </template>
   </b-modal>
 </template>
-<style scoped>
-</style>
 <script>
 export default {
   data: function() {

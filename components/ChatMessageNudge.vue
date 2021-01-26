@@ -23,8 +23,6 @@
     </b-row>
   </div>
 </template>
-<style scoped>
-</style>
 <script>
 import ChatBase from '~/components/ChatBase'
 
