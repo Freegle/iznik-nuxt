@@ -24,7 +24,7 @@ jobs:
       sdk-version: '28'
     docker:
 ###      - image: circleci/android:api-28
-      - image: circleci/android:api-24-alpha
+      - image: circleci/android:api-24-alpha # brings in suitably old openjdk
 ##      - image: circleci/jdk8:0.1.1
     environment:
 ###      JAVA_HOME: /usr/lib/jvm/java-8-openjdk-amd64
@@ -75,7 +75,7 @@ jobs:
       - run: sudo apt update
       - run: sudo apt-get install unzip
       - run: wget -O ~/gradle-5.4.1-bin.zip https://services.gradle.org/distributions/gradle-5.4.1-bin.zip
-      - run: mkdir /opt/gradle
+      - run: sudo mkdir /opt/gradle
       - run: sudo unzip -d /opt/gradle ~/gradle-5.4.1-bin.zip
       - run: sudo touch /etc/profile.d/gradle.sh
       - run: sudo echo “export GRADLE_HOME=/opt/gradle/gradle-5.4.1” | sudo tee /etc/profile.d/gradle.sh
