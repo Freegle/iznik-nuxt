@@ -80,8 +80,6 @@ jobs:
       - run: sudo echo "export GRADLE_HOME=/opt/gradle/gradle-5.4.1" >> $BASH_ENV
       - run: sudo echo "export PATH=$GRADLE_HOME/bin:$PATH" >> $BASH_ENV
       - run: gradle -v
-      #- run: ./gradlew --version
-      #- run: ./gradlew dependencies
       
 ################
       - run: grep -o "MOBILE_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MOBILE_VERSION = '//; s/'.*//" >MOBILE_VERSION.txt
@@ -93,6 +91,8 @@ jobs:
 
 
       - run: mkdir releases
+################
+# FREEGLE APP
       - run: npm run fdapp
       - run: pwd; ls -l mobile/freegle/scripts
       - run: mkdir ../iznik-nuxt-app
@@ -128,6 +128,44 @@ jobs:
       - run: cd ../iznik-nuxt-app; cp ../project/mobile/build-extras.gradle platforms/android/app
       - run: cd ../iznik-nuxt-app; cp ../project/mobile/secrets/api-freegle-google-play-deployment.json platforms/android/app
       - run: cd ../iznik-nuxt-app/platforms/android; gradle app:publishReleaseApk || true # Ignore errors ie if versionCode already submitted
+
+################
+# MODTOOLS APP
+      - run: npm run mtapp
+      - run: pwd; ls -l mobile/modtools/scripts
+      - run: mkdir ../iznik-nuxt-mt
+      - run: "cd ../iznik-nuxt-mt; 
+        ln -s ../project/mobile/modtools/android/config.xml config.xml;
+        ln -s ../project/mobile/modtools/android/package.json package.json;
+        ln -s ../project/mobile/modtools/icons icons;
+        ln -s ../project/mobile/modtools/package-assets package-assets;
+        ln -s ../project/mobile/modtools/scripts scripts;
+        chmod +x scripts/before_build.sh;
+        chmod +x scripts/remove_permissions.js;
+        cp ../project/mobile/secrets/google-services.json google-services.json;
+        ln -s ../project/dist www;
+        cordova platform rm android;
+        cordova platform add android@8.1.0
+      "
+
+      - run: echo $ANDROID_HOME
+      - run: echo $JAVA_HOME
+      # Build debug build
+      - run: cd ../iznik-nuxt-mt; cordova build --debug -- --keystore="../project/mobile/secrets/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
+      - run: cd ../iznik-nuxt-mt; cp platforms/android/app/build/outputs/apk/debug/app-debug.apk ../project/releases/ModTools-android-app-$MODTOOLS_VERSION-debug-$(date +'%Y%m%d%H%M%S').apk
+
+      # Build release build
+      - run: cd ../iznik-nuxt-mt; cordova build --release -- --keystore="../project/mobile/secrets/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
+      - run: cd ../iznik-nuxt-mt; cp platforms/android/app/build/outputs/apk/release/app-release.apk ../project/releases/ModTools-android-app-$MODTOOLS_VERSION-release-$(date +'%Y%m%d%H%M%S').apk
+
+      - run: ls -l releases
+
+      # Publish to Google Play beta track
+      - run: cd ../iznik-nuxt-mt; sed -i "/3.3.0'/aclasspath 'com.github.triplet.gradle:play-publisher:2.0.0-rc1'" platforms/android/build.gradle
+      - run: cd ../iznik-nuxt-mt; cat platforms/android/build.gradle
+      - run: cd ../iznik-nuxt-mt; cp ../project/mobile/build-extras.gradle platforms/android/app
+      - run: cd ../iznik-nuxt-mt; cp ../project/mobile/secrets/api-freegle-google-play-deployment.json platforms/android/app
+      - run: cd ../iznik-nuxt-mt/platforms/android; gradle app:publishReleaseApk || true # Ignore errors ie if versionCode already submitted
 
 ################
       - run: git config --local user.name "$gitusername"
