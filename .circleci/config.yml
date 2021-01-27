@@ -37,8 +37,8 @@ jobs:
       - image: circleci/android:api-24-alpha # brings in suitably old openjdk
 ##      - image: circleci/jdk8:0.1.1
     environment:
-###      JAVA_HOME: /usr/lib/jvm/java-8-openjdk-amd64
-###      ANDROID_HOME: /usr/local/android-sdk-linux
+      # JAVA_HOME: /usr/lib/jvm/java-8-openjdk-amd64
+      # ANDROID_HOME: /usr/local/android-sdk-linux
       # Customize the JVM maximum heap limit
       JVM_OPTS: -Xmx3g
       _JAVA_OPTIONS: "-Xmx3g"
@@ -56,17 +56,14 @@ jobs:
       - node/install:
           lts: true
           #node-version: '12.20'
-      - run: npm -v
-      - run: node -v
+      - run: npm -v; node -v
 
       - run: npm install
-      - run: npm install -g cordova@9.0.0
-      - run: npm install -g rimraf
+      - run: npm install -g cordova@9.0.0 rimraf
       - run: cordova -v
 
 ################
       - run: sudo apt update
-      #- run: sudo apt-get install tar
       - run: openssl version; tar --version; java -version
       #- run: cd mobile; openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in circleci-secrets.tar.enc -out circleci-secrets.tar -k $CIRCLE_TAR_PWD
       - run: cd mobile; openssl enc -aes-256-cbc -md sha512 -salt -d -in circleci-secrets.tar.enc -out circleci-secrets.tar -k $CIRCLE_TAR_PWD
@@ -88,7 +85,6 @@ jobs:
       - run: grep -o "MODTOOLS_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MODTOOLS_VERSION = '//; s/'.*//" >MODTOOLS_VERSION.txt
       - run: echo "export MODTOOLS_VERSION=$(<MODTOOLS_VERSION.txt)" >> $BASH_ENV
       #- run: echo $MODTOOLS_VERSION
-
 
       - run: mkdir releases
 ################
@@ -141,7 +137,6 @@ jobs:
         ln -s ../project/mobile/modtools/package-assets package-assets;
         ln -s ../project/mobile/modtools/scripts scripts;
         chmod +x scripts/before_build.sh;
-        chmod +x scripts/remove_permissions.js;
         cp ../project/mobile/secrets/google-services.json google-services.json;
         ln -s ../project/dist www;
         cordova platform rm android;
@@ -168,9 +163,10 @@ jobs:
       - run: cd ../iznik-nuxt-mt/platforms/android; gradle app:publishReleaseApk || true # Ignore errors ie if versionCode already submitted
 
 ################
+# UPLOAD TO GITHUB AS NEW TAGGED RELEASE
       - run: git config --local user.name "$gitusername"
       - run: git config --local user.email "$gitemail"
-      - run: echo "export CIRCLECI_TAG=circleci-android-builds-$MOBILE_VERSION-$MODTOOLS_VERSION-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)" >> $BASH_ENV
+      - run: echo "export CIRCLECI_TAG=circleci-android-builds-fd$MOBILE_VERSION-mt$MODTOOLS_VERSION-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)" >> $BASH_ENV
       - run: echo $CIRCLECI_TAG
       - run: git tag $CIRCLECI_TAG
 
@@ -184,5 +180,6 @@ jobs:
       - run: ghr_v0.13.0_linux_386/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${CIRCLECI_TAG} ./releases/
 
 ################
+# STORE RELEASE IN CIRCLE-CI ARTIFACTS
       - store_artifacts:
           path: ./releases
