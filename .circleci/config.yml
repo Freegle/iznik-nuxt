@@ -33,7 +33,6 @@ jobs:
       JVM_OPTS: -Xmx3200m
       TERM: dumb
       GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
-      GRADLE_HOME: /opt/gradle/gradle-5.4.1
     steps:
       # Checkout the code as the first step.
 ##      - run: sudo apt update
@@ -78,17 +77,8 @@ jobs:
       - run: wget -O ~/gradle-5.4.1-bin.zip https://services.gradle.org/distributions/gradle-5.4.1-bin.zip
       - run: sudo mkdir /opt/gradle
       - run: sudo unzip -d /opt/gradle ~/gradle-5.4.1-bin.zip
-      #- run: sudo touch /etc/profile.d/gradle.sh
-      #- run: sudo echo "export GRADLE_HOME=/opt/gradle/gradle-5.4.1" | sudo tee /etc/profile.d/gradle.sh
-      #- run: sudo echo "PATH={GRADLE_HOME}/bin:{PATH}" | sudo tee -a /etc/profile.d/gradle.sh
-      #- run: sudo cat /etc/profile.d/gradle.sh
-      #- run: sudo chmod +x /etc/profile.d/gradle.sh
-      #- run: sudo source /etc/profile.d/gradle.sh
-      - run: sudo echo "$GRADLE_HOME"
-      - run: sudo echo "export GRADLE_HOME2=/opt/gradle/gradle-5.4.1" >> $BASH_ENV
-      - run: sudo echo "$GRADLE_HOME2"
+      - run: sudo echo "export GRADLE_HOME=/opt/gradle/gradle-5.4.1" >> $BASH_ENV
       - run: sudo echo "export PATH=$GRADLE_HOME/bin:$PATH" >> $BASH_ENV
-      - run: sudo echo "$PATH"
       - run: gradle -v
       
 
@@ -123,7 +113,7 @@ jobs:
       - run: echo $ANDROID_HOME
       - run: echo $JAVA_HOME
       # Build debug build
-      - run: cd ../iznik-nuxt-app; cordova build --debug -- --keystore="../project/mobile/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
+      - run: cd ../iznik-nuxt-app; cordova build --debug -- --keystore="../project/mobile/secrets/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
 
 
 workflows:
