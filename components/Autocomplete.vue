@@ -237,7 +237,7 @@ export default {
       return faSearch
     },
     wrapClass() {
-      let border = ''
+      let border
 
       switch (this.variant) {
         case 'primary': {

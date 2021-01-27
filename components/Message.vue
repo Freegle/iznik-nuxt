@@ -646,7 +646,6 @@ export default {
             // - post our reply
             // - open the popup chat so they see what happened
             this.replying = true
-            const me = this.$store.getters['auth/user']
             const myGroups = this.$store.getters['auth/groups']
             let found = false
             let tojoin = null

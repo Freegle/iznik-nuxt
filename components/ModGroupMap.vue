@@ -296,14 +296,14 @@ export default {
   mounted() {
     // Add the draw toolbar as per https://github.com/vue-leaflet/Vue2Leaflet/issues/331
     this.$nextTick(() => {
-      const map = this.$refs.map.mapObject
+      const themap = this.$refs.map.mapObject
       console.log('L', L)
 
       // Last layer is drawn items.  Seems to be, anyway.  Need to use this so that we can turn on editing for
       // the locations we've already got, as well as any new ones we draw.
       let drawnItems = null
 
-      map.eachLayer(l => {
+      themap.eachLayer(l => {
         drawnItems = l
       })
 
@@ -325,9 +325,9 @@ export default {
           }
         })
 
-        map.addControl(drawControl)
+        themap.addControl(drawControl)
 
-        map.on(L.Draw.Event.CREATED, e => {
+        themap.on(L.Draw.Event.CREATED, e => {
           // const type = e.layerType;
           const layer = e.layer
           layer.editing.enable()
@@ -339,8 +339,8 @@ export default {
           console.log('Created', this.selectedWKT)
         })
 
-        map.on(L.Draw.Event.DRAWVERTEX, this.shapeChanged)
-        map.on(L.Draw.Event.EDITVERTEX, this.shapeChanged)
+        themap.on(L.Draw.Event.DRAWVERTEX, this.shapeChanged)
+        themap.on(L.Draw.Event.EDITVERTEX, this.shapeChanged)
       }
     })
   },
