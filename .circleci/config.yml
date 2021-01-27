@@ -84,7 +84,9 @@ jobs:
       #- run: sudo cat /etc/profile.d/gradle.sh
       #- run: sudo chmod +x /etc/profile.d/gradle.sh
       #- run: sudo source /etc/profile.d/gradle.sh
-      - run: sudo echo "export PATH={GRADLE_HOME}/bin/bin:$PATH" >> $BASH_ENV
+      - run: sudo echo "GRADLE_HOME"
+      - run: sudo echo "export PATH={GRADLE_HOME}/bin:$PATH" >> $BASH_ENV
+      - run: sudo echo "$PATH"
       - run: gradle -v
       
 
