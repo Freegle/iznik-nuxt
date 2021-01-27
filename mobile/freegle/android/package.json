@@ -17,7 +17,7 @@
     "cordova-plugin-camera": "^4.1.0",
     "cordova-plugin-contacts": "3.0.1",
     "cordova-plugin-device": "^2.0.3",
-    "cordova-plugin-geolocation": "git+https://github.com/apache/cordova-plugin-geolocation.git",
+    "cordova-plugin-geolocation": "4.1.0",
     "cordova-plugin-googleplus": "^8.2.1",
     "cordova-plugin-inappbrowser": "^3.1.0",
     "cordova-plugin-network-information": "^2.0.2",
@@ -49,15 +49,15 @@
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
       },
       "cordova-plugin-zoom-control-2": {},
-      "cordova-plugin-geolocation": {
-        "GPS_REQUIRED": "false"
-      },
       "phonegap-plugin-push": {
         "ANDROID_SUPPORT_V13_VERSION": "27.+",
         "FCM_VERSION": "17.0.+"
       },
       "cordova-plugin-contacts": {},
-      "cordova-plugin-calendar": {}
+      "cordova-plugin-calendar": {},
+      "cordova-plugin-geolocation": {
+        "GPS_REQUIRED": "true"
+      }
     },
     "platforms": [
       "android"

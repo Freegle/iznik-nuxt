@@ -35,6 +35,11 @@
 
         If it's wrong, please change it.</b>
     </b-tooltip>
+    <b-tooltip :show.sync="showNoLocTooltip" target="postcodeautocomplete" placement="top" variant="primary" triggers="">
+      <b>Sorry, cannot find your location.<br><br>
+
+        Please type in your postcode.</b>
+    </b-tooltip>
     <b-tooltip
       :show="wip && (!results || !results.length)"
       target="postcodeautocomplete"
@@ -103,6 +108,7 @@ export default {
       locating: false,
       locationFailed: false,
       showToolTip: false,
+      showNoLocTooltip: false,
       wip: null
     }
   },
@@ -175,6 +181,7 @@ export default {
       } else {
         // Hide the tooltip in case it's showing from a use of the find button.
         this.showToolTip = false
+        this.showNoLocTooltip = false
       }
     },
     process(results) {
@@ -200,6 +207,12 @@ export default {
         this.$emit('cleared')
       }
     },
+    cannotFindLocation(){
+      this.locating = false
+      this.locationFailed = true
+      this.showNoLocTooltip = true
+      setTimeout(() => (this.showNoLocTooltip = false), 10000)
+    },
     findLoc() {
       try {
         if (
@@ -208,7 +221,10 @@ export default {
           navigator.geolocation.getCurrentPosition
         ) {
           this.locating = true
+          this.showToolTip = false
+          this.showNoLocTooltip = false
           navigator.geolocation.getCurrentPosition(async position => {
+            this.locating = false
             const res = await this.$axios.get(process.env.API + '/locations', {
               params: {
                 lat: position.coords.latitude,
@@ -225,6 +241,7 @@ export default {
               // Got it - put it in the autocomplete input, and indicate that we've selected it.
               this.$refs.autocomplete.setValue(res.data.location.name)
               this.$emit('selected', res.data.location)
+              this.results.push(res.data.location.name) // Make main tooltip go away
 
               // Show the user we've done this, and make them think.
               this.showToolTip = true
@@ -232,21 +249,26 @@ export default {
             } else {
               this.locationFailed = true
             }
-          })
+          },
+          async (PositionError) => {
+            console.log('geolocation error',PositionError)
+            this.cannotFindLocation()
+          },
+          { timeout: 20000 }
+          )
         } else {
           console.log('Navigation not supported.  ')
+          this.cannotFindLocation()
           this.locationFailed = true
         }
       } catch (e) {
         console.error('Find location failed with', e)
+        this.cannotFindLocation()
         this.locationFailed = true
       }
-
-      this.locating = false
     }
   }
-}
-</script>
+}</script>
 
 <style scoped lang="scss">
 @import 'color-vars';
