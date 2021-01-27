@@ -129,9 +129,24 @@ jobs:
       - run: cd ../iznik-nuxt-app; cp ../project/mobile/secrets/api-freegle-google-play-deployment.json platforms/android/app
       - run: cd ../iznik-nuxt-app/platforms/android; gradle app:publishReleaseApk || true # Ignore errors ie if versionCode already submitted
 
+################
       - run: git config --local user.name "$gitusername"
       - run: git config --local user.email "$gitemail"
       - run: echo "export CIRCLECI_TAG=circleci-android-builds-$MOBILE_VERSION-$MODTOOLS_VERSION-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)" >> $BASH_ENV
       #- run: env | grep '^CIRCLECI_TAG='
       - run: echo $CIRCLECI_TAG
       - run: git tag $CIRCLECI_TAG
+
+      # https://circleci.com/blog/publishing-to-github-releases-via-circleci/
+      # https://github.com/tcnksm/ghr
+      - run: wget https://github.com/tcnksm/ghr/releases/download/v0.13.0/ghr_v0.13.0_linux_amd64.tar.gz
+      - run: tar -xvzf ghr_v0.13.0_linux_amd64.tar.gz
+      - run: ls -l
+
+
+      #- run: ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${CIRCLECI_TAG} ./releases/
+
+################
+
+      - store_artifacts:
+        path: releases
