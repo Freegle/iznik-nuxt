@@ -64,16 +64,18 @@ jobs:
 
 ################
       - run:
-          name: Decrypt secrets 
+          name: == Decrypt secrets 
           command: echo "Decrypt secrets"
       - run: sudo apt update
       - run: openssl version; tar --version; java -version
       #- run: cd mobile; openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in circleci-secrets.tar.enc -out circleci-secrets.tar -k $CIRCLE_TAR_PWD
       - run: cd mobile; openssl enc -aes-256-cbc -md sha512 -salt -d -in circleci-secrets.tar.enc -out circleci-secrets.tar -k $CIRCLE_TAR_PWD
       - run: cd mobile; tar -xvf circleci-secrets.tar --no-same-owner; ls -l secrets
-      - run: herbert
 
 ################
+      - run:
+          name: == Install gradle
+          command: echo "Install gradle"
       - run: sudo apt-get install unzip
       - run: wget -O ~/gradle-5.4.1-bin.zip https://services.gradle.org/distributions/gradle-5.4.1-bin.zip
       - run: sudo mkdir /opt/gradle
@@ -83,6 +85,9 @@ jobs:
       - run: gradle -v
       
 ################
+      - run:
+          name: == Extract app version strings
+          command: echo "Extract app version strings"
       - run: grep -o "MOBILE_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MOBILE_VERSION = '//; s/'.*//" >MOBILE_VERSION.txt
       - run: echo "export MOBILE_VERSION=$(<MOBILE_VERSION.txt)" >> $BASH_ENV
       #- run: echo $MOBILE_VERSION
@@ -93,6 +98,9 @@ jobs:
       - run: mkdir releases
 ################
 # FREEGLE APP
+      - run:
+          name: == Make Freegle app debug and release builds and upload to Google Play beta
+          command: echo "Make Freegle app"
       - run: npm run fdapp
       - run: pwd; ls -l mobile/freegle/scripts
       - run: mkdir ../iznik-nuxt-app
@@ -131,6 +139,9 @@ jobs:
 
 ################
 # MODTOOLS APP
+      - run:
+          name: == Make ModTools app debug and release builds and upload to Google Play beta
+          command: echo "Make ModTools app"
       - run: npm run mtapp
       - run: pwd; ls -l mobile/modtools/scripts
       - run: mkdir ../iznik-nuxt-mt
@@ -168,6 +179,9 @@ jobs:
 
 ################
 # UPLOAD TO GITHUB AS NEW TAGGED RELEASE
+      - run:
+          name: == Upload created apks as a tagged github release
+          command: echo "Upload to github"
       - run: git config --local user.name "$gitusername"
       - run: git config --local user.email "$gitemail"
       - run: echo "export CIRCLECI_TAG=circleci-android-builds-fd$MOBILE_VERSION-mt$MODTOOLS_VERSION-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)" >> $BASH_ENV
@@ -185,5 +199,8 @@ jobs:
 
 ################
 # STORE RELEASE IN CIRCLE-CI ARTIFACTS
+      - run:
+          name: == Store built apks as circle-ci artifects
+          command: echo "Store as circle-ci artifects"
       - store_artifacts:
           path: ./releases
