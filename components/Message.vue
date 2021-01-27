@@ -791,6 +791,7 @@ export default {
 .highlight {
   color: $color-orange--dark;
   background-color: initial;
+  padding: 0;
 }
 
 .photobadge {
@@ -801,10 +802,6 @@ export default {
 
 .msgsubj {
   color: $colour-info-fg !important;
-}
-
-.highlight {
-  padding: 0;
 }
 
 .promisedfade {

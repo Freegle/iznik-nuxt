@@ -39,9 +39,6 @@
     </template>
   </b-modal>
 </template>
-<style scoped lang="scss">
-</style>
-
 <script>
 import GroupSelect from './GroupSelect'
 

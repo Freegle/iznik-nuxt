@@ -74,10 +74,6 @@
     <ForgetFailModal ref="forgetfail" />
   </div>
 </template>
-
-<style scoped lang="scss">
-</style>
-
 <script>
 import { validationMixin } from 'vuelidate'
 import { required, email } from 'vuelidate/lib/validators'

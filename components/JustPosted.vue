@@ -100,9 +100,11 @@ export default {
       const promises = []
       this.showModal = this.newuser !== 0 && this.newuser !== null
 
+      let message
+
       // Get the messages into store if not already present.
       this.ids.forEach(id => {
-        const message = this.$store.getters['messages/get'](id)
+        message = this.$store.getters['messages/get'](id)
 
         if (!message) {
           // Not in store - fetch.
@@ -116,13 +118,11 @@ export default {
 
       await Promise.all(promises)
 
-      const message = this.$store.getters['messages/get'](this.ids[0])
+      message = this.$store.getters['messages/get'](this.ids[0])
 
       if (message) {
         const groupid =
-          message && message.id && message.groups
-            ? message.groups[0].groupid
-            : null
+          message.id && message.groups ? message.groups[0].groupid : null
 
         if (groupid) {
           // Get the group into store if not already present.
