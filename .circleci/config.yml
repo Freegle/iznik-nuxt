@@ -18,13 +18,14 @@ orbs:
 
 workflows:
   version: 2
-  android:
+  apple:
     jobs:
       - build-and-deploy-apple:
           filters:
             branches:
               only:
                 - app
+  #android:
       #- build-and-deploy-android:
       #    filters:
       #      branches:
