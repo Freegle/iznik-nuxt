@@ -20,13 +20,43 @@ workflows:
   version: 2
   android:
     jobs:
-      - build-and-deploy-android:
+      - build-and-deploy-apple:
           filters:
             branches:
               only:
                 - app
+      #- build-and-deploy-android:
+      #    filters:
+      #      branches:
+      #        only:
+      #          - app
 
 jobs:
+  build-and-deploy-apple:
+    macos:
+      # https://circleci.com/docs/2.0/testing-ios/#supported-xcode-versions
+      xcode: "11.3.1" # 12.3.0
+    steps:
+      - checkout
+
+################
+      - run:
+          name: == Decrypt secrets 
+          command: echo "Decrypt secrets"
+      - run: sudo apt update
+      - run: openssl version; tar --version; java -version
+      #- run: cd mobile; openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in circleci-secrets.tar.enc -out circleci-secrets.tar -k $CIRCLE_TAR_PWD
+      - run: cd mobile; openssl enc -aes-256-cbc -md sha512 -salt -d -in circleci-secrets.tar.enc -out circleci-secrets.tar -k $CIRCLE_TAR_PWD
+      - run: cd mobile; tar -xvf circleci-secrets.tar --no-same-owner; ls -l secrets
+
+      - run: chmod +x mobile/add-key.sh
+      - run: ./mobile/add-key.sh      
+
+      #- deploy:
+      #    name: Deploy
+      #    command: fastlane release_appstore
+
+
   build-and-deploy-android:  
     #executor: node/default
     executor:
@@ -45,13 +75,10 @@ jobs:
       TERM: dumb
       GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
     steps:
-##      - run: sudo apt update
-##      - run: sudo apt install -y curl git openssl tar
-
+      - run:
+          name: == Install
+          command: echo "Install"
       - checkout
-##      - run: sudo curl -sL https://deb.nodesource.com/setup_12.x -o nodesource_setup.sh
-##      - run: sudo sh ./nodesource_setup.sh
-##      - run: sudo apt install -y nodejs
       - android/accept-licenses
       - node/install:
           lts: true
