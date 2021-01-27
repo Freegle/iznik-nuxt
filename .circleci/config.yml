@@ -66,10 +66,10 @@ jobs:
 
 ################
       - run: sudo apt update
-      - run: sudo apt-get install tar
+      #- run: sudo apt-get install tar
       - run: openssl version; tar --version; java -version
-      #- run: cd mobile; openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in circleci-secrets.tar.enc -out circleci-secrets.tar -k $CIRCLE_TAR_PWD
-      - run: cd mobile; openssl enc -aes-256-cbc -md sha512 -salt -d -in circleci-secrets.tar.enc -out circleci-secrets.tar -k $CIRCLE_TAR_PWD
+      - run: cd mobile; openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in circleci-secrets.tar.enc -out circleci-secrets.tar -k $CIRCLE_TAR_PWD
+      #- run: cd mobile; openssl enc -aes-256-cbc -md sha512 -salt -d -in circleci-secrets.tar.enc -out circleci-secrets.tar -k $CIRCLE_TAR_PWD
 ##      - run: cd mobile; sudo tar -xvf circleci-secrets.tar --no-same-owner; ls -l secrets
       - run: cd mobile; tar -xvf circleci-secrets.tar --no-same-owner; ls -l secrets
 
@@ -85,6 +85,7 @@ jobs:
       #- run: ./gradlew dependencies
       
 ################
+      - run: grep -o "MOBILE_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MOBILE_VERSION = '//; s/'.*//"
       - run: export MOBILE_VERSION=$(grep -o "MOBILE_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MOBILE_VERSION = '//; s/'.*//")
       - run: echo $MOBILE_VERSION
       - run: export MODTOOLS_VERSION=$(grep -o "MODTOOLS_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MODTOOLS_VERSION = '//; s/'.*//")
