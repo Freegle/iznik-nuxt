@@ -65,6 +65,7 @@ jobs:
 ################
       - run:
           name: Decrypt secrets 
+          command: echo "Decrypt secrets"
       - run: sudo apt update
       - run: openssl version; tar --version; java -version
       #- run: cd mobile; openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in circleci-secrets.tar.enc -out circleci-secrets.tar -k $CIRCLE_TAR_PWD
