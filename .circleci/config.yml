@@ -143,7 +143,7 @@ jobs:
       - run: wget https://github.com/tcnksm/ghr/releases/download/v0.13.0/ghr_v0.13.0_linux_386.tar.gz
       - run: tar -xvzf ghr_v0.13.0_linux_386.tar.gz
       - run: ls -l ghr_v0.13.0_linux_386
-      - run chmod +x ghr_v0.13.0_linux_386/ghr
+      - run: chmod +x ghr_v0.13.0_linux_386/ghr
 
       - run: ghr_v0.13.0_linux_386/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${CIRCLECI_TAG} ./releases/
 
