@@ -45,45 +45,35 @@ jobs:
       TERM: dumb
       GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
     steps:
-      # Checkout the code as the first step.
 ##      - run: sudo apt update
 ##      - run: sudo apt install -y curl git openssl tar
+
       - checkout
 ##      - run: sudo curl -sL https://deb.nodesource.com/setup_12.x -o nodesource_setup.sh
 ##      - run: sudo sh ./nodesource_setup.sh
 ##      - run: sudo apt install -y nodejs
-      #- run: ./gradlew dependencies
       - android/accept-licenses
-##      - run: apt install node
-      - run: sudo whereis gradlew
-      - run: sudo whereis gradle
-      #- run: find . name gradle*
-      #- run: chmod +x gradlew
-      #- run: git checkout app
       - node/install:
           lts: true
           #node-version: '12.20'
       - run: npm -v
-##      - run: nodejs -v
       - run: node -v
 
-##      - run: sudo npm install
-##      - run: sudo npm install -g cordova@9.0.0
-##      - run: sudo npm install -g rimraf
-##      - run: sudo cordova -v
       - run: npm install
       - run: npm install -g cordova@9.0.0
       - run: npm install -g rimraf
       - run: cordova -v
 
+################
+      - run: sudo apt update
+      - run: sudo apt-get install tar
       - run: openssl version; tar --version; java -version
       #- run: cd mobile; openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in circleci-secrets.tar.enc -out circleci-secrets.tar -k $CIRCLE_TAR_PWD
       - run: cd mobile; openssl enc -aes-256-cbc -md sha512 -salt -d -in circleci-secrets.tar.enc -out circleci-secrets.tar -k $CIRCLE_TAR_PWD
 ##      - run: cd mobile; sudo tar -xvf circleci-secrets.tar --no-same-owner; ls -l secrets
       - run: cd mobile; tar -xvf circleci-secrets.tar --no-same-owner; ls -l secrets
-      #- run: ./gradlew --version
 
-      - run: sudo apt update
+################
       - run: sudo apt-get install unzip
       - run: wget -O ~/gradle-5.4.1-bin.zip https://services.gradle.org/distributions/gradle-5.4.1-bin.zip
       - run: sudo mkdir /opt/gradle
@@ -91,17 +81,15 @@ jobs:
       - run: sudo echo "export GRADLE_HOME=/opt/gradle/gradle-5.4.1" >> $BASH_ENV
       - run: sudo echo "export PATH=$GRADLE_HOME/bin:$PATH" >> $BASH_ENV
       - run: gradle -v
+      #- run: ./gradlew --version
+      #- run: ./gradlew dependencies
       
+################
+      - run: export MOBILE_VERSION=$(grep -o "MOBILE_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MOBILE_VERSION = '//; s/'.*//")
+      - run: echo $MOBILE_VERSION
+      - run: export MODTOOLS_VERSION=$(grep -o "MODTOOLS_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MODTOOLS_VERSION = '//; s/'.*//")
+      - run: echo $MODTOOLS_VERSION
 
-
-      # The next step will download the dependencies.
-      # - run:
-      #     name: Download Dependencies
-      #     command: ./gradlew androidDependencies
-      # Then lint and run your tests!
-      # - run:
-      #     name: Run Tests
-      #     command: ./gradlew lint test
 
       - run: mkdir releases
       - run: npm run fdapp
@@ -125,5 +113,5 @@ jobs:
       - run: echo $JAVA_HOME
       # Build debug build
       - run: cd ../iznik-nuxt-app; cordova build --debug -- --keystore="../project/mobile/secrets/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
-
+      - run: cd ../iznik-nuxt-app; cp platforms/android/app/build/outputs/apk/debug/app-debug.apk ../project/releases/Freegle-android-app-$MOBILE_VERSION-debug-$(date +'%Y%m%d%H%M%S').apk
 
