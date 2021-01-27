@@ -106,7 +106,7 @@ jobs:
         chmod +x scripts/remove_permissions.js;
         cp ../project/mobile/secrets/google-services.json google-services.json;
         ln -s ../project/dist www;
-        cordova platform rm android;
+        cordova platform rm android
         cordova platform add android@8.1.0
       "
 
@@ -149,4 +149,4 @@ jobs:
 ################
 
       - store_artifacts:
-        path: releases
+        path: ./releases
