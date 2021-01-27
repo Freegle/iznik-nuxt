@@ -68,9 +68,8 @@ jobs:
       - run: sudo apt update
       #- run: sudo apt-get install tar
       - run: openssl version; tar --version; java -version
-      - run: cd mobile; openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in circleci-secrets.tar.enc -out circleci-secrets.tar -k $CIRCLE_TAR_PWD
-      #- run: cd mobile; openssl enc -aes-256-cbc -md sha512 -salt -d -in circleci-secrets.tar.enc -out circleci-secrets.tar -k $CIRCLE_TAR_PWD
-##      - run: cd mobile; sudo tar -xvf circleci-secrets.tar --no-same-owner; ls -l secrets
+      #- run: cd mobile; openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in circleci-secrets.tar.enc -out circleci-secrets.tar -k $CIRCLE_TAR_PWD
+      - run: cd mobile; openssl enc -aes-256-cbc -md sha512 -salt -d -in circleci-secrets.tar.enc -out circleci-secrets.tar -k $CIRCLE_TAR_PWD
       - run: cd mobile; tar -xvf circleci-secrets.tar --no-same-owner; ls -l secrets
 
 ################
@@ -116,3 +115,12 @@ jobs:
       - run: cd ../iznik-nuxt-app; cordova build --debug -- --keystore="../project/mobile/secrets/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
       - run: cd ../iznik-nuxt-app; cp platforms/android/app/build/outputs/apk/debug/app-debug.apk ../project/releases/Freegle-android-app-$MOBILE_VERSION-debug-$(date +'%Y%m%d%H%M%S').apk
 
+      # Build release build
+      - run: cd ../iznik-nuxt-app; cordova build --release -- --keystore="../project/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
+      - run: cd ../iznik-nuxt-app; cp platforms/android/app/build/outputs/apk/release/app-release.apk ../project/releases/Freegle-android-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').apk
+
+      # Publish to Google Play beta track
+      - run: cd ../iznik-nuxt-app; sed -i "/3.3.0'/aclasspath 'com.github.triplet.gradle:play-publisher:2.0.0-rc1'" platforms/android/build.gradle
+      - run: cd ../iznik-nuxt-app; cp ../project/mobile/build-extras.gradle platforms/android/app
+      - run: cd ../iznik-nuxt-app; cp ../project/api-freegle-google-play-deployment.json platforms/android/app
+      - run: cd ../iznik-nuxt-app/platforms/android; gradle app:publishReleaseApk
