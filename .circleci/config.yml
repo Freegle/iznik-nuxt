@@ -73,13 +73,13 @@ jobs:
       #- run: ./gradlew --version
 
       - run: sudo apt update
-      - run: sudo apt-get install unzip
+      - run: sudo apt-get install unzip source
       - run: wget -O ~/gradle-5.4.1-bin.zip https://services.gradle.org/distributions/gradle-5.4.1-bin.zip
       - run: sudo mkdir /opt/gradle
       - run: sudo unzip -d /opt/gradle ~/gradle-5.4.1-bin.zip
       - run: sudo touch /etc/profile.d/gradle.sh
-      - run: sudo echo “export GRADLE_HOME=/opt/gradle/gradle-5.4.1” | sudo tee /etc/profile.d/gradle.sh
-      - run: sudo echo “PATH={GRADLE_HOME}/bin:{PATH}” | sudo tee /etc/profile.d/gradle.sh
+      - run: sudo echo "export GRADLE_HOME=/opt/gradle/gradle-5.4.1" | sudo tee /etc/profile.d/gradle.sh
+      - run: sudo echo "PATH={GRADLE_HOME}/bin:{PATH}" | sudo tee -a /etc/profile.d/gradle.sh
       - run: sudo cat /etc/profile.d/gradle.sh
       - run: sudo chmod +x /etc/profile.d/gradle.sh
       - run: sudo source /etc/profile.d/gradle.sh
