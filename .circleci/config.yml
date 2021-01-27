@@ -106,7 +106,7 @@ jobs:
         chmod +x scripts/remove_permissions.js;
         cp ../project/mobile/secrets/google-services.json google-services.json;
         ln -s ../project/dist www;
-        cordova platform rm android
+        cordova platform rm android;
         cordova platform add android@8.1.0
       "
 
@@ -141,3 +141,9 @@ jobs:
       - run: wget https://github.com/tcnksm/ghr/releases/download/v0.13.0/ghr_v0.13.0_linux_amd64.tar.gz
       - run: tar -xvzf ghr_v0.13.0_linux_amd64.tar.gz
       - run: ls -l
+
+      #- run: ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${CIRCLECI_TAG} ./releases/
+
+################
+      - store_artifacts:
+        path: ./releases
