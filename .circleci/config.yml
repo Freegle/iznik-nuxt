@@ -138,11 +138,14 @@ jobs:
 
       # https://circleci.com/blog/publishing-to-github-releases-via-circleci/
       # https://github.com/tcnksm/ghr
-      - run: wget https://github.com/tcnksm/ghr/releases/download/v0.13.0/ghr_v0.13.0_linux_amd64.tar.gz
-      - run: tar -xvzf ghr_v0.13.0_linux_amd64.tar.gz
-      - run: ls -l
+      # https://github.com/tcnksm/ghr/releases/download/v0.13.0/ghr_v0.13.0_linux_386.tar.gz
+      # https://github.com/tcnksm/ghr/releases/download/v0.13.0/ghr_v0.13.0_linux_amd64.tar.gz
+      - run: wget https://github.com/tcnksm/ghr/releases/download/v0.13.0/ghr_v0.13.0_linux_386.tar.gz
+      - run: tar -xvzf ghr_v0.13.0_linux_386.tar.gz
+      - run: ls -l ghr_v0.13.0_linux_386
+      - run chmod +x ghr_v0.13.0_linux_386/ghr
 
-      #- run: ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${CIRCLECI_TAG} ./releases/
+      - run: ghr_v0.13.0_linux_386/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${CIRCLECI_TAG} ./releases/
 
 ################
       - store_artifacts:
