@@ -146,4 +146,4 @@ jobs:
 
 ################
       - store_artifacts:
-        path: ./releases
+          path: ./releases
