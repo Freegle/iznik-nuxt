@@ -65,12 +65,27 @@ jobs:
       - run: npm install -g rimraf
       - run: cordova -v
 
-      - run: openssl version; tar --version
+      - run: openssl version; tar --version; java -version
       #- run: cd mobile; openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in circleci-secrets.tar.enc -out circleci-secrets.tar -k $CIRCLE_TAR_PWD
       - run: cd mobile; openssl enc -aes-256-cbc -md sha512 -salt -d -in circleci-secrets.tar.enc -out circleci-secrets.tar -k $CIRCLE_TAR_PWD
 ##      - run: cd mobile; sudo tar -xvf circleci-secrets.tar --no-same-owner; ls -l secrets
       - run: cd mobile; tar -xvf circleci-secrets.tar --no-same-owner; ls -l secrets
       #- run: ./gradlew --version
+
+      - run: sudo apt update
+      - run: sudo apt-get install unzip
+      - run: wget -O ~/gradle-5.4.1-bin.zip https://services.gradle.org/distributions/gradle-5.4.1-bin.zip
+      - run: mkdir /opt/gradle
+      - run: sudo unzip -d /opt/gradle ~/gradle-5.4.1-bin.zip
+      - run: sudo touch /etc/profile.d/gradle.sh
+      - run: sudo echo “export GRADLE_HOME=/opt/gradle/gradle-5.4.1” | sudo tee /etc/profile.d/gradle.sh
+      - run: sudo echo “PATH={GRADLE_HOME}/bin:{PATH}” | sudo tee /etc/profile.d/gradle.sh
+      - run: sudo cat /etc/profile.d/gradle.sh
+      - run: sudo chmod +x /etc/profile.d/gradle.sh
+      - run: sudo source /etc/profile.d/gradle.sh
+      - run: gradle -v
+      
+
 
       # The next step will download the dependencies.
       # - run:
