@@ -86,11 +86,11 @@ jobs:
 ################
       - run: grep -o "MOBILE_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MOBILE_VERSION = '//; s/'.*//"
       - run: grep -o "MOBILE_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MOBILE_VERSION = '//; s/'.*//" >MOBILE_VERSION.txt
-      - run: echo "export MOBILE_VERSION=$(MOBILE_VERSION.txt)" >> $BASH_ENV
+      - run: echo "export MOBILE_VERSION=$(<MOBILE_VERSION.txt)" >> $BASH_ENV
       #- run: export MOBILE_VERSION=$(grep -o "MOBILE_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MOBILE_VERSION = '//; s/'.*//")
       - run: echo $MOBILE_VERSION
       - run: grep -o "MODTOOLS_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MODTOOLS_VERSION = '//; s/'.*//" >MODTOOLS_VERSION.txt
-      - run: echo "export MODTOOLS_VERSION=$(MODTOOLS_VERSION.txt)" >> $BASH_ENV
+      - run: echo "export MODTOOLS_VERSION=$(<MODTOOLS_VERSION.txt)" >> $BASH_ENV
       #- run: export MODTOOLS_VERSION=$(grep -o "MODTOOLS_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MODTOOLS_VERSION = '//; s/'.*//")
       - run: echo $MODTOOLS_VERSION
 
