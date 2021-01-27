@@ -2,86 +2,82 @@
   <div v-if="reply && userid && users[userid] && reply.visible">
     <b-row class="p-0" :class="scrollToThis ? 'bg-info' : ''">
       <b-col class="p-0">
-        <table v-if="users[userid].profile">
-          <tbody>
-            <tr>
-              <td class="clickme align-top" title="Click to see their profile" @click="showInfo">
-                <ProfileImage
-                  :image="users[userid].profile.turl"
-                  class="ml-1 mr-2 mt-2 mb-1 inline float-left"
-                  :is-moderator="(Boolean)(users[userid].settings.showmod && reply.replyto === threadhead.id)"
-                  :size="(reply.replyto !== threadhead.id) ? 'sm' : 'md'"
-                />
-              </td>
-              <td class="align-top">
-                <span class="text-success font-weight-bold clickme" title="Click to see their profile" @click="showInfo">{{ users[userid].displayname }}</span>
-                <span class="font-weight-bold preline forcebreak text--small nopara">
-                  <NewsHighlight
-                    :search-words="threadUsers"
-                    :text="emessage"
-                    :max-chars="500"
-                    class="font-weight-bold preline forcebreak text--small d-inline"
-                  /> <br>
-                </span>
-                <div v-if="reply.image">
-                  <b-img
-                    v-b-modal="'photoModal-' + replyid"
-                    rounded
-                    class="clickme replyphoto"
-                    generator-unable-to-provide-required-alt=""
-                    :src="reply.image.paththumb"
-                    @error="brokenImage"
-                  />
-                </div>
-                <span v-if="userid && users[userid]" class="text-muted d-flex flex-row flex-wrap align-items-center">
-                  <span class="text-muted small mr-1">
-                    {{ reply.added | timeago }}
-                  </span>
-                  <NewsUserInfo :user="users[userid]" class="px-1" />
-                  <b-btn variant="link" size="sm" class="reply__button text-muted" @click="replyReply">
-                    Reply
-                  </b-btn>
-                  <b-btn v-if="!reply.loved" variant="link" size="sm" class="reply__button text-muted" @click="love">
-                    Love this
-                  </b-btn>
-                  <b-btn v-if="reply.loved" variant="link" size="sm" class="reply__button text-muted" @click="unlove">
-                    Unlove this
-                  </b-btn>
-                  <b-btn
-                    v-if="reply.loves"
-                    variant="link"
-                    size="sm"
-                    class="mr-1 small text-muted showlove"
-                    :aria-label="getShowLovesLabel"
-                    @click="showLove"
-                  >
-                    <v-icon name="heart" class="text-danger" />&nbsp;{{ reply.loves }}
-                  </b-btn>
-                  <b-btn v-if="parseInt(me.id) === parseInt(userid)" v-b-modal="'newsEdit-' + replyid" variant="link" size="sm" class="reply__button text-muted ">
-                    Edit
-                  </b-btn>
-                  <b-btn v-if="parseInt(me.id) === parseInt(userid) || mod" variant="link" size="sm" class="reply__button text-muted" @click="deleteReply">
-                    Delete
-                  </b-btn>
-                  <ChatButton
-                    v-if="parseInt(me.id) !== parseInt(userid)"
-                    class="reply__button text-muted d-flex align-items-center"
-                    :userid="userid"
-                    title="Message"
-                    variant="link"
-                    size="sm"
-                    :show-icon="false"
-                    btn-class="text-muted"
-                  />
-                </span>
-                <NewsPreview v-if="reply.preview" :preview="reply.preview" class="mt-1" size="sm" />
-                <div v-if="reply.hidden" class="text-danger small">
-                  This has been hidden and is only visible to volunteers and the person who posted it.
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div v-if="users[userid].profile" class="reply">
+          <div class="clickme align-top" title="Click to see their profile" @click="showInfo">
+            <ProfileImage
+              :image="users[userid].profile.turl"
+              class="ml-1 mr-2 mt-2 mb-1 inline float-left"
+              :is-moderator="(Boolean)(users[userid].settings.showmod && reply.replyto === threadhead.id)"
+              :size="(reply.replyto !== threadhead.id) ? 'sm' : 'md'"
+            />
+          </div>
+          <div class="align-top">
+            <span class="text-success font-weight-bold clickme" title="Click to see their profile" @click="showInfo">{{ users[userid].displayname }}</span>
+            <span class="font-weight-bold preline forcebreak text--small nopara">
+              <NewsHighlight
+                :search-words="threadUsers"
+                :text="emessage"
+                :max-chars="500"
+                class="font-weight-bold preline forcebreak text--small d-inline"
+              /> <br>
+            </span>
+            <div v-if="reply.image">
+              <b-img
+                v-b-modal="'photoModal-' + replyid"
+                rounded
+                class="clickme replyphoto"
+                generator-unable-to-provide-required-alt=""
+                :src="reply.image.paththumb"
+                @error="brokenImage"
+              />
+            </div>
+            <span v-if="userid && users[userid]" class="text-muted d-flex flex-row flex-wrap align-items-center">
+              <span class="text-muted small mr-1">
+                {{ reply.added | timeago }}
+              </span>
+              <NewsUserInfo :user="users[userid]" class="px-1" />
+              <b-btn variant="link" size="sm" class="reply__button text-muted" @click="replyReply">
+                Reply
+              </b-btn>
+              <b-btn v-if="!reply.loved" variant="link" size="sm" class="reply__button text-muted" @click="love">
+                Love this
+              </b-btn>
+              <b-btn v-if="reply.loved" variant="link" size="sm" class="reply__button text-muted" @click="unlove">
+                Unlove this
+              </b-btn>
+              <b-btn
+                v-if="reply.loves"
+                variant="link"
+                size="sm"
+                class="mr-1 small text-muted showlove"
+                :aria-label="getShowLovesLabel"
+                @click="showLove"
+              >
+                <v-icon name="heart" class="text-danger" />&nbsp;{{ reply.loves }}
+              </b-btn>
+              <b-btn v-if="parseInt(me.id) === parseInt(userid)" v-b-modal="'newsEdit-' + replyid" variant="link" size="sm" class="reply__button text-muted ">
+                Edit
+              </b-btn>
+              <b-btn v-if="parseInt(me.id) === parseInt(userid) || mod" variant="link" size="sm" class="reply__button text-muted" @click="deleteReply">
+                Delete
+              </b-btn>
+              <ChatButton
+                v-if="parseInt(me.id) !== parseInt(userid)"
+                class="reply__button text-muted d-flex align-items-center"
+                :userid="userid"
+                title="Message"
+                variant="link"
+                size="sm"
+                :show-icon="false"
+                btn-class="text-muted"
+              />
+            </span>
+            <NewsPreview v-if="reply.preview" :preview="reply.preview" class="mt-1" size="sm" />
+            <div v-if="reply.hidden" class="text-danger small">
+              This has been hidden and is only visible to volunteers and the person who posted it.
+            </div>
+          </div>
+        </div>
       </b-col>
     </b-row>
     <b-button v-if="showEarlierRepliesOption" variant="link" size="sm" class="pl-0" @click.prevent="showAllReplies = true">
@@ -587,6 +583,10 @@ export default {
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins/_breakpoints';
+
+.reply {
+  display: flex;
+}
 
 .replyphoto {
   width: 150px;
