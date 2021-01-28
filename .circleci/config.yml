@@ -57,9 +57,6 @@ jobs:
 
       - run: echo $NVM_DIR
       - run: ls -l $NVM_DIR
-      - run: ls -l /Users/distiller/.nvm
-      - run: pwd
-      - run: ls -l .nvm
       - run: which node; which npm
 ################
       - run:
@@ -112,24 +109,24 @@ jobs:
       - run: sudo chown -R $(whoami) ~/Library
       # /Users/distiller/Library/Preferences/insight-nodejs/insight-cordova.json
       - run: ls -al
-      - run: mkdir -p Library/Preferences/insight-nodejs
+      - run: mkdir -p ~/Library/Preferences/insight-nodejs
       - run: sudo chmod -R 777 Library
-      - run: mkdir -p .config/configstore
-      - run: ls -l .config/configstore
-      - run: sudo chmod -R 777 .config
+      - run: mkdir -p ~/.config/configstore
+      - run: ls -l ~/.config/configstore
+      - run: sudo chmod -R 777 ~/.config
 
       - run: cordova -v
-      - run: sudo chown -R $(whoami) ./.config/configstore/
-      - run: mkdir -p .cordova
-      - run: sudo chown -R $(whoami) ./.cordova/
-      - run: echo '{}' >.config/configstore/cordova-config.json
-      - run: ls -l .config/configstore
-      - run: cat .config/configstore/cordova-config.json
+      - run: sudo chown -R $(whoami) ~/.config/configstore/
+      - run: mkdir -p ~/.cordova
+      - run: sudo chown -R $(whoami) ~/.cordova/
+      - run: echo '{}' >~/.config/configstore/cordova-config.json
+      - run: ls -l ~/.config/configstore
+      - run: cat ~/.config/configstore/cordova-config.json
 
       - run: cd ../iznik-nuxt-app; which node; which npm
       - run: ls -l .nvm
       - run: ls -l /Users/distiller/.nvm/
-      #- run: cd ../iznik-nuxt-app; cordova platform rm ios
+      - run: cd ../iznik-nuxt-app; cordova platform rm ios
       #- run: cd ../iznik-nuxt-app; pod install --verbose
       - run: cd ../iznik-nuxt-app; cordova platform add ios@5.1.1
 
