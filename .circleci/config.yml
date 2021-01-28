@@ -8,7 +8,8 @@
 # https://github.com/ngx-rocket/generator-ngx-rocket/issues/162
 # https://github.com/ngx-rocket/generator-ngx-rocket/pull/364/commits/b41a54eb3a465ffe4767412971ec99a7c2ddaf23
 # https://github.com/ngx-rocket/circleci-dockerfiles/blob/master/cordova/images/Dockerfile
-# Runs in /home/circleci/project
+# Android: runs in /home/circleci/project
+# Apple: runs in /Users/distiller/project
 version: 2.1
 
 orbs:
@@ -91,7 +92,6 @@ jobs:
 
 
       - run: mkdir ../iznik-nuxt-app
-      - run: pwd
       - run: cd ../iznik-nuxt-app; ln -s ../project/mobile/freegle/ios/config.xml config.xml
       - run: cd ../iznik-nuxt-app; ln -s ../project/mobile/freegle/ios/package.json package.json
       - run: cd ../iznik-nuxt-app; ln -s ../project/mobile/freegle/icons icons
@@ -99,8 +99,8 @@ jobs:
       - run: cd ../iznik-nuxt-app; ln -s ../project/mobile/freegle/scripts scripts
       - run: cd ../iznik-nuxt-app; cp ../project/mobile/secrets/GoogleService-Info.plist GoogleService-Info.plist
       - run: cd ../iznik-nuxt-app; ln -s ../project/dist www
-      - run: cd ../iznik-nuxt-app; cordova platform rm ios
-      - run: cd ../iznik-nuxt-app; cordova platform add ios@5.1.1
+      - run: cd ../iznik-nuxt-app; sudo cordova platform rm ios
+      - run: cd ../iznik-nuxt-app; sudo cordova platform add ios@5.1.1
 
 
 
