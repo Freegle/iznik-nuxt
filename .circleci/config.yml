@@ -60,7 +60,7 @@ jobs:
       - run: cd mobile; tar -xvf circleci-secrets.tar --no-same-owner; ls -l secrets
 
       - run: chmod +x mobile/add-key.sh
-      - run: ./mobile/add-key.sh      
+      - run: sudo ./mobile/add-key.sh      
 
       # https://circleci.com/docs/2.0/deploying-ios/#section=deployment
       #- deploy:

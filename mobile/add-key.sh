@@ -27,5 +27,5 @@ security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k circleci i
 
 # Put the provisioning profile in place
 mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-cp *.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/
+cp mobile/secrets/*.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/
 ls -l ~/Library/MobileDevice/Provisioning\ Profiles
