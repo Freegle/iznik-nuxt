@@ -115,7 +115,7 @@ jobs:
       - run: sudo chown -R $(whoami) ./.config/configstore/
       - run: mkdir -p .cordova
       - run: sudo chown -R $(whoami) ./.cordova/
-      - run echo '{}' >.config/configstore/cordova-config.json
+      - run: echo '{}' >.config/configstore/cordova-config.json
 
       #- run: cd ../iznik-nuxt-app; cordova platform rm ios
       #- run: cd ../iznik-nuxt-app; pod install --verbose
