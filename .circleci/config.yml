@@ -86,6 +86,7 @@ jobs:
       - run: npm --version # 6.14.11
       - run: npm install
 
+      - run: echo $(whoami)
       - run: sudo chown -R $(whoami) ~/.npm
 
 ################
@@ -101,10 +102,12 @@ jobs:
       - run: cd ../iznik-nuxt-app; ln -s ../project/mobile/freegle/scripts scripts
       - run: cd ../iznik-nuxt-app; cp ../project/mobile/secrets/GoogleService-Info.plist GoogleService-Info.plist
       - run: cd ../iznik-nuxt-app; ln -s ../project/dist www
-      - run: cd ../iznik-nuxt-app; cordova platform rm ios
+      - run: cd ../iznik-nuxt-app; sudo cordova platform rm ios
+      - run: cd ../iznik-nuxt-app; pod install --verbose
       - run: cd ../iznik-nuxt-app; cordova platform add ios@5.1.1
 
       # Fix cordova-ios
+      - run: cd ../iznik-nuxt-app; ls -l; ls -l platforms; 
       - run: cd ../iznik-nuxt-app; sed -i '' "s/PROVISIONING_PROFILE =/PROVISIONING_PROFILE_SPECIFIER =/" platforms/ios/cordova/lib/build.js
 
       # Build debug build
