@@ -16,24 +16,34 @@ orbs:
   android: circleci/android@0.2.3
   gradle: circleci/gradle@2.2.0
 
+################
 workflows:
   version: 2
-  apple:
+  build-and-publish:
     jobs:
-      - build-and-deploy-apple:
+      - hold: # Job needs approval to run
+          type: approval      
+      # https://github.com/CircleCI-Public/circleci-demo-ios/blob/master/.circleci/config.yml
+      # https://github.com/Freegle/iznik-nuxt/blob/app-ios/.travis.yml
+      - build-and-publish-apple:
           filters:
             branches:
               only:
                 - app
-  #android:
-      #- build-and-deploy-android:
+          requires:
+            - hold
+      #- build-and-publish-android:
       #    filters:
       #      branches:
       #        only:
       #          - app
+      #    requires:
+      #      - hold
 
+################
+################ APPLE
 jobs:
-  build-and-deploy-apple:
+  build-and-publish-apple:
     macos:
       # https://circleci.com/docs/2.0/testing-ios/#supported-xcode-versions
       xcode: "11.3.1" # 12.3.0
@@ -53,12 +63,15 @@ jobs:
       - run: chmod +x mobile/add-key.sh
       - run: ./mobile/add-key.sh      
 
+      # https://circleci.com/docs/2.0/deploying-ios/#section=deployment
       #- deploy:
       #    name: Deploy
       #    command: fastlane release_appstore
 
+################
+################ ANDROID
 
-  build-and-deploy-android:  
+  build-and-publish-android:  
     #executor: node/default
     executor:
       name: android/android
