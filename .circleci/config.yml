@@ -21,8 +21,8 @@ workflows:
   version: 2
   build-and-publish:
     jobs:
-      - hold: # Job needs approval to run
-          type: approval      
+      #- hold: # Job needs approval to run
+      #    type: approval      
       # https://github.com/CircleCI-Public/circleci-demo-ios/blob/master/.circleci/config.yml
       # https://github.com/Freegle/iznik-nuxt/blob/app-ios/.travis.yml
       - build-and-publish-apple:
@@ -30,8 +30,8 @@ workflows:
             branches:
               only:
                 - app
-          requires:
-            - hold
+      #    requires:
+      #      - hold
       #- build-and-publish-android:
       #    filters:
       #      branches:
@@ -54,14 +54,15 @@ jobs:
       - run:
           name: == Decrypt secrets 
           command: echo "Decrypt secrets"
-      - run: sudo apt update
-      - run: openssl version; tar --version; java -version
+      #- run: sudo apt update
+      - run: openssl version; tar --version
       #- run: cd mobile; openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in circleci-secrets.tar.enc -out circleci-secrets.tar -k $CIRCLE_TAR_PWD
       - run: cd mobile; openssl enc -aes-256-cbc -md sha512 -salt -d -in circleci-secrets.tar.enc -out circleci-secrets.tar -k $CIRCLE_TAR_PWD
       - run: cd mobile; tar -xvf circleci-secrets.tar --no-same-owner; ls -l secrets
 
       - run: chmod +x mobile/add-key.sh
       - run: ./mobile/add-key.sh      
+      - run: openssl version; tar --version; java -version
 
       # https://circleci.com/docs/2.0/deploying-ios/#section=deployment
       #- deploy:
