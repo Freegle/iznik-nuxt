@@ -106,9 +106,9 @@ jobs:
       # /Users/distiller/Library/Preferences/insight-nodejs/insight-cordova.json
       - run: ls -l
       - run: mkdir -p Library/Preferences/insight-nodejs
-      - run: touch Library/Preferences/insight-nodejs/insight-cordova.json.3789309361
+      - run: sudo chmod -R 777 Library
 
-      - run: cd ../iznik-nuxt-app; sudo cordova platform rm ios
+      - run: cd ../iznik-nuxt-app; cordova platform rm ios
       #- run: cd ../iznik-nuxt-app; pod install --verbose
       - run: cd ../iznik-nuxt-app; cordova platform add ios@5.1.1
 
