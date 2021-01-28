@@ -1,8 +1,6 @@
 #!/bin/sh
 set -x #echo on
 
-echo $TestEnvVar
-
 # Create a custom keychain
 security create-keychain -p circleci ios-build.keychain
 

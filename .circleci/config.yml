@@ -59,10 +59,13 @@ jobs:
       - run: cd mobile; openssl enc -aes-256-cbc -md sha512 -salt -d -in circleci-secrets.tar.enc -out circleci-secrets.tar -k $CIRCLE_TAR_PWD
       - run: cd mobile; tar -xvf circleci-secrets.tar --no-same-owner; ls -l secrets
 
-      - run: echo $TestEnvVar
       - run: chmod +x mobile/add-key.sh
       - run: ./mobile/add-key.sh
 
+################
+      - run:
+          name: == Extract app version strings
+          command: echo "Extract app version strings"
       - run: grep -o "MOBILE_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MOBILE_VERSION = '//; s/'.*//" >MOBILE_VERSION.txt
       - run: echo "export MOBILE_VERSION=$(<MOBILE_VERSION.txt)" >> $BASH_ENV
       - run: echo $MOBILE_VERSION
@@ -72,8 +75,16 @@ jobs:
       - run: echo $MODTOOLS_VERSION
 
       - run: mkdir releases
-#- export MOBILE_VERSION=$(grep -o "MOBILE_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MOBILE_VERSION = '//; s/'.*//")
-#- export MODTOOLS_VERSION=$(grep -o "MODTOOLS_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MODTOOLS_VERSION = '//; s/'.*//")
+
+################
+      - run: npm install -g cordova rimraf
+      - run: node --version
+      - run: npm --version
+      - run: npm install
+
+################
+# FREEGLE app
+      - run: npm run fdapp
 
       # https://circleci.com/docs/2.0/deploying-ios/#section=deployment
       #- deploy:
