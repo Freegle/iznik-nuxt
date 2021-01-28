@@ -54,15 +54,13 @@ jobs:
       - run:
           name: == Decrypt secrets 
           command: echo "Decrypt secrets"
-      #- run: sudo apt update
-      - run: openssl version; tar --version
+      - run: openssl version; tar --version; java -version
       #- run: cd mobile; openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in circleci-secrets.tar.enc -out circleci-secrets.tar -k $CIRCLE_TAR_PWD
       - run: cd mobile; openssl enc -aes-256-cbc -md sha512 -salt -d -in circleci-secrets.tar.enc -out circleci-secrets.tar -k $CIRCLE_TAR_PWD
       - run: cd mobile; tar -xvf circleci-secrets.tar --no-same-owner; ls -l secrets
 
       - run: chmod +x mobile/add-key.sh
       - run: ./mobile/add-key.sh      
-      - run: openssl version; tar --version; java -version
 
       # https://circleci.com/docs/2.0/deploying-ios/#section=deployment
       #- deploy:
