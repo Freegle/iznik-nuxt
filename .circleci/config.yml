@@ -52,7 +52,7 @@ jobs:
 
 ################
       - run:
-          name: == Decrypt secrets 
+          name: == Decrypt secrets and set up signing
           command: echo "Decrypt secrets"
       - run: openssl version; tar --version; java -version
       #- run: cd mobile; openssl enc -aes-256-cbc -md sha512 -pbkdf2 -iter 100000 -salt -d -in circleci-secrets.tar.enc -out circleci-secrets.tar -k $CIRCLE_TAR_PWD
@@ -60,7 +60,19 @@ jobs:
       - run: cd mobile; tar -xvf circleci-secrets.tar --no-same-owner; ls -l secrets
 
       - run: chmod +x mobile/add-key.sh
-      - run: sudo ./mobile/add-key.sh      
+      - run: sudo ./mobile/add-key.sh
+
+      - run: grep -o "MOBILE_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MOBILE_VERSION = '//; s/'.*//" >MOBILE_VERSION.txt
+      - run: echo "export MOBILE_VERSION=$(<MOBILE_VERSION.txt)" >> $BASH_ENV
+      - run: echo $MOBILE_VERSION
+
+      - run: grep -o "MODTOOLS_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MODTOOLS_VERSION = '//; s/'.*//" >MODTOOLS_VERSION.txt
+      - run: echo "export MODTOOLS_VERSION=$(<MODTOOLS_VERSION.txt)" >> $BASH_ENV
+      - run: echo $MODTOOLS_VERSION
+
+      - run: mkdir releases
+#- export MOBILE_VERSION=$(grep -o "MOBILE_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MOBILE_VERSION = '//; s/'.*//")
+#- export MODTOOLS_VERSION=$(grep -o "MODTOOLS_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MODTOOLS_VERSION = '//; s/'.*//")
 
       # https://circleci.com/docs/2.0/deploying-ios/#section=deployment
       #- deploy:
