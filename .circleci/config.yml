@@ -57,7 +57,7 @@ jobs:
 
       - run: echo $NVM_DIR
       - run: ls -l $NVM_DIR
-      - run: /Users/distiller/.nvm
+      - run: ls -l /Users/distiller/.nvm
       - run: pwd
       - run: ls -l .nvm
       - run: which node; which npm
