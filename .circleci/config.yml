@@ -124,6 +124,8 @@ jobs:
       - run: cat .config/configstore/cordova-config.json
 
       - run: cd ../iznik-nuxt-app; which node; which npm
+      - run: ls -l .nvm
+      - run: ls -l /Users/distiller/.nvm/
       #- run: cd ../iznik-nuxt-app; cordova platform rm ios
       #- run: cd ../iznik-nuxt-app; pod install --verbose
       - run: cd ../iznik-nuxt-app; cordova platform add ios@5.1.1
