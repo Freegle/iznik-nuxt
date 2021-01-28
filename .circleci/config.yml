@@ -81,7 +81,7 @@ jobs:
       - run: mkdir releases
 
 ################
-      - run: npm install -g cordova rimraf
+      - run: sudo npm install -g --unsafe-perm=true cordova rimraf
       - run: node --version # v14.15.4
       - run: npm --version # 6.14.11
       - run: npm install
@@ -110,6 +110,11 @@ jobs:
       - run: mkdir -p .config/configstore
       - run: ls -l .config/configstore
       - run: sudo chmod -R 777 .config
+
+      - run: cordova -v
+      - run: sudo chown -R $(whoami) ./.config/configstore/
+      - run: sudo chown -R $(whoami) ./.cordova/
+
 
       - run: cd ../iznik-nuxt-app; cordova platform rm ios
       #- run: cd ../iznik-nuxt-app; pod install --verbose
