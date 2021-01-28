@@ -110,7 +110,7 @@ jobs:
       # /Users/distiller/Library/Preferences/insight-nodejs/insight-cordova.json
       - run: ls -al
       - run: mkdir -p ~/Library/Preferences/insight-nodejs
-      - run: sudo chmod -R 777 Library
+      - run: sudo chmod -R 777 ~/Library
       - run: mkdir -p ~/.config/configstore
       - run: ls -l ~/.config/configstore
       - run: sudo chmod -R 777 ~/.config
