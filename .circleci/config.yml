@@ -57,7 +57,7 @@ jobs:
 
       - run: echo $NVM_DIR
       - run: ls -l $NVM_DIR
-      - run: which node; which npm; which nvm
+      - run: which node; which npm
 ################
       - run:
           name: == Decrypt secrets and set up signing
@@ -123,7 +123,7 @@ jobs:
       - run: ls -l .config/configstore
       - run: cat .config/configstore/cordova-config.json
 
-      - run: cd ../iznik-nuxt-app; which node; which npm; which nvm
+      - run: cd ../iznik-nuxt-app; which node; which npm
       #- run: cd ../iznik-nuxt-app; cordova platform rm ios
       #- run: cd ../iznik-nuxt-app; pod install --verbose
       - run: cd ../iznik-nuxt-app; cordova platform add ios@5.1.1
