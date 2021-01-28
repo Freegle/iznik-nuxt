@@ -9,7 +9,7 @@
 # https://github.com/ngx-rocket/generator-ngx-rocket/pull/364/commits/b41a54eb3a465ffe4767412971ec99a7c2ddaf23
 # https://github.com/ngx-rocket/circleci-dockerfiles/blob/master/cordova/images/Dockerfile
 # Android: runs in /home/circleci/project
-# Apple: runs in /Users/distiller/project
+# Apple: runs in /Users/distiller/project as user distiller
 version: 2.1
 
 orbs:
@@ -88,6 +88,7 @@ jobs:
 
       - run: echo $(whoami)
       - run: sudo chown -R $(whoami) ~/.npm
+      - run: sudo chown -R $(whoami) ~/Library
 
 ################
 # FREEGLE app
