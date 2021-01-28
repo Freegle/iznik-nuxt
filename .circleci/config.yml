@@ -55,9 +55,6 @@ jobs:
           #node-version: "12.20"
       - run: npm -v; node -v # 6.14.11 v14.15.4
 
-      - run: echo $NVM_DIR
-      - run: ls -l $NVM_DIR
-      - run: which node; which npm
 ################
       - run:
           name: == Decrypt secrets and set up signing
@@ -86,14 +83,11 @@ jobs:
 
 ################
       - run: sudo npm install -g --unsafe-perm=true cordova@9.0.0 rimraf
-      - run: node --version # v14.15.4
-      - run: npm --version # 6.14.11
       - run: npm install
 
 ################
 # FREEGLE app
       - run: npm run fdapp
-
 
       - run: mkdir ../iznik-nuxt-app
       - run: cd ../iznik-nuxt-app; ln -s ../project/mobile/freegle/ios/config.xml config.xml
@@ -107,7 +101,6 @@ jobs:
       - run: echo $(whoami)
       - run: sudo chown -R $(whoami) ~/.npm
       - run: sudo chown -R $(whoami) ~/Library
-      # /Users/distiller/Library/Preferences/insight-nodejs/insight-cordova.json
       - run: ls -al ~/
       - run: mkdir -p ~/Library/Preferences/insight-nodejs
       - run: sudo chmod -R 777 ~/Library
@@ -115,16 +108,14 @@ jobs:
       - run: mkdir -p ~/.config/configstore
       - run: ls -l ~/.config/configstore
 
-      - run: cordova -v
-      - run: sudo chown -R $(whoami) ~/.config/configstore/
-      - run: mkdir -p ~/.cordova
-      - run: sudo chown -R $(whoami) ~/.cordova/
-      - run: echo '{}' >~/.config/configstore/cordova-config.json
-      - run: ls -l ~/.config/configstore
-      - run: cat ~/.config/configstore/cordova-config.json
+#      - run: cordova -v
+#      - run: sudo chown -R $(whoami) ~/.config/configstore/
+#      - run: mkdir -p ~/.cordova
+#      - run: sudo chown -R $(whoami) ~/.cordova/
+#      - run: echo '{}' >~/.config/configstore/cordova-config.json
+#      - run: ls -l ~/.config/configstore
+#      - run: cat ~/.config/configstore/cordova-config.json
 
-      - run: cd ../iznik-nuxt-app; which node; which npm
-      - run: ls -l ~/.nvm
       - run: cd ../iznik-nuxt-app; cordova platform rm ios
       #- run: cd ../iznik-nuxt-app; pod install --verbose
       - run: cd ../iznik-nuxt-app; cordova platform add ios@5.1.1
