@@ -103,7 +103,7 @@ jobs:
       - run: cd ../iznik-nuxt-app; cp ../project/mobile/secrets/GoogleService-Info.plist GoogleService-Info.plist
       - run: cd ../iznik-nuxt-app; ln -s ../project/dist www
       - run: cd ../iznik-nuxt-app; sudo cordova platform rm ios
-      - run: cd ../iznik-nuxt-app; pod install --verbose
+      #- run: cd ../iznik-nuxt-app; pod install --verbose
       - run: cd ../iznik-nuxt-app; cordova platform add ios@5.1.1
 
       # Fix cordova-ios
