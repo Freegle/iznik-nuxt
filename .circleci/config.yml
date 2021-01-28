@@ -59,8 +59,9 @@ jobs:
       - run: cd mobile; openssl enc -aes-256-cbc -md sha512 -salt -d -in circleci-secrets.tar.enc -out circleci-secrets.tar -k $CIRCLE_TAR_PWD
       - run: cd mobile; tar -xvf circleci-secrets.tar --no-same-owner; ls -l secrets
 
+      - run: echo $TestEnvVar
       - run: chmod +x mobile/add-key.sh
-      - run: sudo ./mobile/add-key.sh
+      - run: ./mobile/add-key.sh
 
       - run: grep -o "MOBILE_VERSION = '[^']*'" nuxt.config.js | sed -e "s/.*MOBILE_VERSION = '//; s/'.*//" >MOBILE_VERSION.txt
       - run: echo "export MOBILE_VERSION=$(<MOBILE_VERSION.txt)" >> $BASH_ENV
