@@ -103,6 +103,12 @@ jobs:
       - run: echo $(whoami)
       - run: sudo chown -R $(whoami) ~/.npm
       - run: sudo chown -R $(whoami) ~/Library
+      # /Users/distiller/Library/Preferences/insight-nodejs/insight-cordova.json
+      - run: ls -l
+      - run: mkdir Library
+      - run: mkdir Library/Preferences
+      - run: mkdir Library/Preferences/insight-nodejs
+      - run: touch Library/Preferences/insight-nodejs/insight-cordova.json
 
       - run: cd ../iznik-nuxt-app; sudo cordova platform rm ios
       #- run: cd ../iznik-nuxt-app; pod install --verbose
