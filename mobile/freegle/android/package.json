@@ -56,7 +56,7 @@
       "cordova-plugin-contacts": {},
       "cordova-plugin-calendar": {},
       "cordova-plugin-geolocation": {
-        "GPS_REQUIRED": "true"
+        "GPS_REQUIRED": "false"
       }
     },
     "platforms": [
