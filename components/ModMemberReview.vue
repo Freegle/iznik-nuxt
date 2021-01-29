@@ -111,7 +111,7 @@
           variant="danger"
           name="ban"
           label="Report Spammer"
-          class="mr-1"
+          class="mr-1 mt-1"
           :handler="spamReport"
         />
         <SpinButton
@@ -122,7 +122,7 @@
           name="check"
           :label="'Ignore on ' + group.namedisplay"
           :handler="spamIgnore"
-          :handler-data="group.id"
+          :handler-data="{ groupid: group.id }"
           class="mr-1 mt-1"
         />
       </b-card-footer>
@@ -181,7 +181,8 @@ export default {
       showEmails: false,
       type: null,
       allmemberships: false,
-      showSpamModal: false
+      showSpamModal: false,
+      ignored: []
     }
   },
   computed: {
@@ -198,7 +199,13 @@ export default {
         return null
       }
 
-      return ms.filter(g => 'reviewrequestedat' in g || g.collection === 'Spam')
+      return ms.filter(g => {
+        return (
+          this.amAModOn(g.id) &&
+          ('reviewrequestedat' in g || g.collection === 'Spam') &&
+          !this.ignored[g.id]
+        )
+      })
     },
     memberof() {
       let ms = null
@@ -372,11 +379,15 @@ export default {
         this.$refs.spamConfirm.show()
       })
     },
-    async spamIgnore(groupid) {
+    async spamIgnore(data) {
+      const groupid = data.groupid
+
       await this.$store.dispatch('members/spamignore', {
         userid: this.member.userid,
         groupid: groupid
       })
+
+      this.ignored[groupid] = true
     },
     daysago(d) {
       return this.$dayjs().diff(this.$dayjs(d), 'days')
