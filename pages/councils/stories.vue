@@ -24,7 +24,7 @@
           </p>
 
           <p /><hr>
-          <b>"I move frequently and find I have curtains, carpets, curtain rails etc each time I move.
+          <span class="font-weight-bold">"I move frequently and find I have curtains, carpets, curtain rails etc each time I move.
             I have given beds and also requested a double bed. I managed to get a double bed however it came
             from three different sources, base, mattress and headboard. I share if I have excess in my garden
             also love to receive plants from others. I quilt so have managed to receive a very smart steam iron,
@@ -35,27 +35,27 @@
             sharing, repurposing, recycling, call it what you will is a wonderful way of making sure that things
             that have life in them don't get thrown away. Keep up the good work Just be polite when you request
             or reply to a plea. Ask for what you need not what you want."
-          </b>
+          </span>
           <hr>
 
           <p>
-            <b>"There is so much waste in our world and I very much appreciate Freegle's solution to the problem. I've
+            <span class="font-weight-bold">"There is so much waste in our world and I very much appreciate Freegle's solution to the problem. I've
               Freegled things like hardcore, which I had no idea that anyone would want, and perfectly good items that
               I just no longer had a need for.  I've also received a lot of useful things including roof tiles, toilet,
               sink, bathroom cabinet, kitchen cabinets and a heated towel rail, all of which are now part of the
               scullery and downstairs. I've met some lovely people, too and would thoroughly recommend Freegle to
               anyone who wants to reduce waste and take a positive step towards improving our world."
-            </b>
+            </span>
           </p><hr>
 
           <p>
-            <b>
+            <span class="font-weight-bold">
               "The toilets at my local Scout Group HQ left a little to be desired. Through the magic of Freegle I
               managed to source from some amazingly generous folk around the Barnsley area some tiles, a sink,
               grout, a tile cutter, everything we possible needed to refurbish both the ladies and gents toilets.
               No more embarrassment when anyone uses the loos now. In fact we are rather proud of our beautiful loos
               now. Thank you from the bottom of over 75 little hearts and quite a few grown up hearts."
-            </b>
+            </span>
           </p>
         </b-card-text>
       </b-card>

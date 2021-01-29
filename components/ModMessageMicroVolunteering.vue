@@ -5,20 +5,20 @@
         <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ microvolunteering.userid }}
       </a>
       <span v-if="user">
-        <b>{{ user.displayname }}</b>
+        <strong>{{ user.displayname }}</strong>
         <span v-if="email">
           ({{ email }})
         </span>
       </span>
       thinks this post
-      <b v-if="microvolunteering.msgcategory === 'CouldBeBetter'" class="text-warning">
+      <strong v-if="microvolunteering.msgcategory === 'CouldBeBetter'" class="text-warning">
         Could be better
-      </b>
-      <b v-else-if="microvolunteering.msgcategory === 'ShouldntBeHere'" class="text-danger">
+      </strong>
+      <strong v-else-if="microvolunteering.msgcategory === 'ShouldntBeHere'" class="text-danger">
         shouldn't be here
-      </b>
+      </strong>
       <br>
-      <b v-if="microvolunteering.comments">"{{ microvolunteering.comments }}"</b>
+      <span v-if="microvolunteering.comments" class="font-weight-bold">"{{ microvolunteering.comments }}"</span>
       <em v-else>No comment supplied.</em>
     </div>
     <div v-if="microvolunteering.result === 'Approve'" class="border border-success rounded p-2">
@@ -26,7 +26,7 @@
         <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ microvolunteering.userid }}
       </a>
       <span v-if="user">
-        <b>{{ user.displayname }}</b>
+        <strong>{{ user.displayname }}</strong>
         <span v-if="email">
           ({{ email }})
         </span>

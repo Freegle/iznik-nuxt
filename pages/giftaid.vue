@@ -16,7 +16,7 @@
         >
           <div v-if="me && me.displayname && !fullname && me.displayname.indexOf(' ') !== -1">
             <b-btn variant="secondary" class="mb-2" @click="fullname = me.displayname">
-              Click here to use <b>{{ me.displayname }}</b>
+              Click here to use <strong>{{ me.displayname }}</strong>
             </b-btn>
           </div>
           <p>
@@ -40,12 +40,12 @@
           <div v-for="address in addresses" :key="'address-' + address.id">
             <div v-if="!homeaddress">
               <b-btn variant="secondary" class="mb-2" @click="homeaddress = address.multiline">
-                Click here to use <b>{{ address.singleline }}</b>
+                Click here to use <span class="font-weight-bold">{{ address.singleline }}</span>
               </b-btn>
             </div>
           </div>
           <p>
-            Or type here.  <b>Please include a postcode.</b>
+            Or type here.  <strong>Please include a postcode.</strong>
           </p>
           <b-textarea
             id="homeaddress"

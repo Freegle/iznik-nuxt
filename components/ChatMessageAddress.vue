@@ -85,5 +85,3 @@ export default {
   mixins: [map]
 }
 </script>
-<style scoped>
-</style>

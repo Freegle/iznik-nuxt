@@ -11,7 +11,7 @@
       />
       <div>
         <span class="text-success font-weight-bold">{{ users[userid].displayname }}</span>
-        posted a volunteering opportunity<span class="d-none d-md-inline-block">:</span><br class="d-block d-md-none"> <b>{{ newsfeed.volunteering.title }}</b>
+        posted a volunteering opportunity<span class="d-none d-md-inline-block">:</span><br class="d-block d-md-none font-weight-bold"> {{ newsfeed.volunteering.title }}
         <br>
         <span class="text-muted small">
           {{ newsfeed.added | timeago }}

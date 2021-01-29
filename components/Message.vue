@@ -33,7 +33,7 @@
         <MessageHistory :message="$props" class="mb-1 card-header__history" :display-message-link="sm()" />
         <div flex-grow-1 class="mb-1 card-header__description text--medium-large">
           <div v-if="eSnippet && eSnippet !== 'null' && !expanded">
-            <b class="snippet black">
+            <span class="font-weight-bold snippet black">
               <Highlighter
                 v-if="matchedon"
                 :search-words="[matchedon.word]"
@@ -43,10 +43,10 @@
               />
               <span v-else>{{ eSnippet }}</span>
               ...
-            </b>
+            </span>
           </div>
           <div v-if="(!eSnippet || eSnippet === 'null') && !expanded">
-            <i>There's no description.</i>
+            <em>There's no description.</em>
           </div>
           <b-button v-if="!successful && !expanded" variant="primary" class="mt-2" @click="expand">
             {{ expandButtonText }} <v-icon name="angle-double-right" />
@@ -673,7 +673,6 @@ export default {
             // - post our reply
             // - open the popup chat so they see what happened
             this.replying = true
-            const me = this.$store.getters['auth/user']
             const myGroups = this.$store.getters['auth/groups']
             let found = false
             let tojoin = null
@@ -818,6 +817,7 @@ export default {
 .highlight {
   color: $color-orange--dark;
   background-color: initial;
+  padding: 0;
 }
 
 .photobadge {
@@ -828,10 +828,6 @@ export default {
 
 .msgsubj {
   color: $colour-info-fg !important;
-}
-
-.highlight {
-  padding: 0;
 }
 
 .promisedfade {

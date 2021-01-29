@@ -20,7 +20,7 @@
     </b-btn>
     <ConfirmModal v-if="removeConfirm" ref="removeConfirm" :title="'Remove ' + displayname + ' from ' + groupname + '?'" @confirm="removeConfirmed" />
     <ConfirmModal v-if="banConfirm" ref="banConfirm" :title="'Ban ' + displayname + ' from ' + groupname + '?'" @confirm="banConfirmed" />
-    <ConfirmModal v-if="purgeConfirm" ref="purgeConfirm" :title="'Purge ' + displayname + ' from the system?'" message="<p><b>This can't be undone.</b></p><p>Are you completely sure you want to do this?</p>" @confirm="purgeConfirmed" />
+    <ConfirmModal v-if="purgeConfirm" ref="purgeConfirm" :title="'Purge ' + displayname + ' from the system?'" message="<p><strong>This can't be undone.</strong></p><p>Are you completely sure you want to do this?</p>" @confirm="purgeConfirmed" />
     <ModCommentAddModal v-if="addComment" ref="addComment" :user="user" :groupid="groupid" @added="updateComments" />
     <ModSpammerReport v-if="showSpamModal" ref="spamConfirm" :user="reportUser" :whitelist="whitelist" />
   </div>

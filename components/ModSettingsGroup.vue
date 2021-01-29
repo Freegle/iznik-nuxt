@@ -5,7 +5,7 @@
     </div>
     <div v-if="group && group.mysettings" class="mt-2">
       <NoticeMessage v-if="group.settings.closed" variant="danger" class="mb-1">
-        Your community is currently closed.  You can change this in <i>Features for Members</i>.
+        Your community is currently closed.  You can change this in <em>Features for Members</em>.
       </NoticeMessage>
       <NoticeMessage v-if="group.autofunctionoverride" variant="danger" class="mb-1">
         Your community is subject to restrictions.  Auto-repost/auto-approve are disabled.  <em>All Posts Moderated</em>
@@ -21,11 +21,12 @@
         <!-- eslint-disable-next-line -->
         <external-link href="https://discourse.ilovefreegle.org/c/central/9">Central</external-link>.
       </NoticeMessage>
-      <NoticeMessage v-if="group.ontn && group.tnsettings" variant="info" class="mt-1 mb-1">
+      <NoticeMessage v-if="group.ontn && group.tnkey && group.tnkey.url" variant="info" class="mt-1 mb-1">
         You can also find your TrashNothing settings
         <!-- eslint-disable-next-line -->
-        <ExternalLink :href="group.tnsettings">here</ExternalLink>.
+        <ExternalLink :href="group.tnkey.url">here</ExternalLink>.
       </NoticeMessage>
+
       <b-card no-body class="mb-2">
         <b-card-header>
           <b-btn v-b-toggle.accordion-addresses block href="#" variant="secondary">
@@ -872,7 +873,8 @@ export default {
 
       await this.$store.dispatch('group/fetch', {
         id: this.groupid,
-        polygon: true
+        polygon: true,
+        tnkey: true
       })
 
       this.$store.dispatch('shortlinks/fetch', {

@@ -17,7 +17,7 @@
             which were published in the first issue of National Geographic 'Green' December 2009 to illustrate Sarah
             Lonsdale's article on recycling initiatives.  Pictured are Freegle members in Hackney and Waltham Forest.
             If you would like to use these, please ensure that they are referenced.
-            <a href="http://www.inviewphotography.co.uk/freegle.htm" target="_blank">www.inviewphotography.co.uk/freegle.htm</a>
+            <a href="http://www.inviewphotography.co.uk/freegle.htm" target="_blank" rel="noopener noreferrer">www.inviewphotography.co.uk/freegle.htm</a>
           </p>
           <p>
             You may also be able to find willing local Freegle members who would be happy to feature in photographs
@@ -48,14 +48,14 @@
             can help you arrange this.
           </p>
           <ul>
-            <li><a href="https://www.youtube.com/watch?v=xyJuUNH5Xrg">10 tips for Freegling</a></li>
-            <li><a href="https://www.youtube.com/watch?v=YA9dvQQG8hA">How to find stuff on Freegle</a></li>
-            <li><a href="https://www.youtube.com/watch?v=aDUCknGVZiA">How to give stuff away on Freegle</a></li>
+            <li><a href="https://www.youtube.com/watch?v=xyJuUNH5Xrg" rel="noopener noreferrer">10 tips for Freegling</a></li>
+            <li><a href="https://www.youtube.com/watch?v=YA9dvQQG8hA" rel="noopener noreferrer">How to find stuff on Freegle</a></li>
+            <li><a href="https://www.youtube.com/watch?v=aDUCknGVZiA" rel="noopener noreferrer">How to give stuff away on Freegle</a></li>
           </ul>
           <p>
             We also have a YouTube channel on which you can view promotional videos and get some
             inspiration by seeing the work of Cumbria Freegle in action.  Click
-            <a href="https://www.youtube.com/channel/UC47ivQhz3FvrTeuDp3Ov_9w" target="_blank">here</a>.
+            <a href="https://www.youtube.com/channel/UC47ivQhz3FvrTeuDp3Ov_9w" target="_blank" rel="noopener noreferrer">here</a>.
           </p>
         </b-card-text>
       </b-card>

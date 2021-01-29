@@ -6,16 +6,16 @@
           <v-icon name="sync" :class="busy ? 'text-success fa-spin ml-4 mt-1' : 'text-faded ml-4 mt-1'" scale="2" />
         </div>
         <b-form-checkbox v-if="groups" v-model="cga" class="ml-2">
-          <b style="color: darkgreen">Show CGAs</b>
+          <strong style="color: darkgreen">Show CGAs</strong>
         </b-form-checkbox>
         <b-form-checkbox v-if="groups" v-model="dpa" class="ml-2">
-          <b style="color: darkblue">Show DPAs</b>
+          <strong style="color: darkblue">Show DPAs</strong>
         </b-form-checkbox>
-        <b-form-checkbox v-if="groupid" v-model="labels" class="ml-2">
-          <b>Labels</b>
+        <b-form-checkbox v-if="groupid" v-model="labels" class="ml-2 font-weight-bold">
+          Labels
         </b-form-checkbox>
-        <b-form-checkbox v-model="shade" class="ml-2">
-          <b>Shade areas</b>
+        <b-form-checkbox v-model="shade" class="ml-2 font-weight-bold">
+          Shade areas
         </b-form-checkbox>
       </div>
       <b-row class="m-0">
@@ -101,8 +101,8 @@
               </p>
               <Postcode :find="false" @selected="postcodeSelect" />
               <div v-if="postcode" class="mt-2">
-                <p>
-                  <b>Community:</b>
+                <p class="font-weight-bold">
+                  Community:
                 </p>
                 <p v-if="postcode.groupsnear && postcode.groupsnear.length">
                   {{ postcode.groupsnear[0].namedisplay }}
@@ -110,8 +110,8 @@
                 <p v-else>
                   No community found
                 </p>
-                <p>
-                  <b>Area:</b>
+                <p class="font-weight-bold">
+                  Area:
                 </p>
                 <p v-if="postcode.area">
                   {{ postcode.area.name }}
@@ -296,14 +296,14 @@ export default {
   mounted() {
     // Add the draw toolbar as per https://github.com/vue-leaflet/Vue2Leaflet/issues/331
     this.$nextTick(() => {
-      const map = this.$refs.map.mapObject
+      const themap = this.$refs.map.mapObject
       console.log('L', L)
 
       // Last layer is drawn items.  Seems to be, anyway.  Need to use this so that we can turn on editing for
       // the locations we've already got, as well as any new ones we draw.
       let drawnItems = null
 
-      map.eachLayer(l => {
+      themap.eachLayer(l => {
         drawnItems = l
       })
 
@@ -325,9 +325,9 @@ export default {
           }
         })
 
-        map.addControl(drawControl)
+        themap.addControl(drawControl)
 
-        map.on(L.Draw.Event.CREATED, e => {
+        themap.on(L.Draw.Event.CREATED, e => {
           // const type = e.layerType;
           const layer = e.layer
           layer.editing.enable()
@@ -339,8 +339,8 @@ export default {
           console.log('Created', this.selectedWKT)
         })
 
-        map.on(L.Draw.Event.DRAWVERTEX, this.shapeChanged)
-        map.on(L.Draw.Event.EDITVERTEX, this.shapeChanged)
+        themap.on(L.Draw.Event.DRAWVERTEX, this.shapeChanged)
+        themap.on(L.Draw.Event.EDITVERTEX, this.shapeChanged)
       }
     })
   },

@@ -12,7 +12,7 @@
     >
       <template slot="default">
         <NoticeMessage v-if="(warning || error) && supportOrAdmin" variant="warning" class="mb-2">
-          There is a problem. If this just mentions <b>security patches or reboots</b>, you can ignore it,
+          There is a problem. If this just mentions <strong>security patches or reboots</strong>, you can ignore it,
           but if it's something else please alert geeks@ilovefreegle.org if this persists for more than an hour.
         </NoticeMessage>
         <NoticeMessage v-else-if="error" variant="warning" class="mb-2">
@@ -27,11 +27,11 @@
         <div v-if="status && status.info">
           <div v-for="(stat, server) in status.info" :key="server">
             <div v-if="stat.warning" class="d-flex justify-content-between">
-              <b>{{ server }}</b>
+              <strong>{{ server }}</strong>
               <em>{{ stat.warningtext }}</em>
             </div>
             <div v-if="stat.error" class="d-flex justify-content-between">
-              <b>{{ server }}</b>
+              <strong>{{ server }}</strong>
               <em>{{ stat.errortext }}</em>
             </div>
           </div>

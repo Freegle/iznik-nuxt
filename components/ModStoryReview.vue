@@ -5,13 +5,13 @@
         <div class="d-flex justify-content-between flex-wrap w-100">
           <span>
             <ProfileImage :image="story.user.profile.turl" class="mr-1 ml-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
-            <b>{{ story.user.email }}</b>
+            <strong>{{ story.user.email }}</strong>
             <span class="small">
               <v-icon name="hashtag" scale="0.75" class="text-muted" />{{ story.user.id }}
             </span>
           </span>
           <span>
-            member of <b>{{ story.groupname }}</b>, posted {{ story.date | timeago }}
+            member of <strong>{{ story.groupname }}</strong>, posted {{ story.date | timeago }}
           </span>
           <span>
             <v-icon name="hashtag" scale="0.75" class="text-muted" />{{ story.id }}
@@ -21,8 +21,8 @@
       <b-card-body>
         <!-- eslint-disable-next-line -->
         <h3>{{ story.headline }}</h3>
-        <div class="d-flex">
-          <b>{{ story.story }}</b>
+        <div class="d-flex font-weight-bold">
+          {{ story.story }}
           <b-img v-if="story.photo" thumbnail :src="story.photo.paththumb" />
         </div>
         <NoticeMessage v-if="!story.public" variant="info" class="mt-1">

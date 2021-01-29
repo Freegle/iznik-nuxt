@@ -10,11 +10,11 @@
       <template slot="default">
         <div class="d-flex justify-content-between">
           <div v-if="variant === 'whatyoucanrunning'" style="width:250px" class="mr-4 pt-4 d-none d-sm-block">
-            <b-img-lazy fluid src="/running.gif" />
+            <b-img-lazy fluid src="/running.gif" alt="Keep freegle running" />
           </div>
           <div>
             <p>
-              <b>{{ groupname }}</b> is a charity that's free to use, but not free to run.
+              <strong>{{ groupname }}</strong> is a charity that's free to use, but not free to run.
             </p>
             <p v-if="variant === 'buttons51025help'">
               A lot of us are struggling at the moment, and that's probably going to continue for a while.  Can you
@@ -26,8 +26,8 @@
               other people, charities, and businesses too.
             </p>
             <p>
-              This month we're trying to raise <b>&pound;{{ target }}</b><span v-if="groupid && !targetMet"> for this community</span>.
-              If you can, <b>
+              This month we're trying to raise <strong>&pound;{{ target }}</strong><span v-if="groupid && !targetMet"> for this community</span>.
+              If you can, <strong>
                 <span v-if="variant === 'link1' || variant === 'buttons1'">
                   please donate &pound;1
                 </span>
@@ -44,7 +44,7 @@
                   <!--                  "variant === 'whatyoucan'"-->
                   please donate what you can
                 </span>
-              </b>
+              </strong>
               to keep us running.
             </p>
             <donation-button v-if="variant === 'whatyoucanrunning'" link="paypal1510" @clicked="score(5)" />
@@ -74,7 +74,7 @@
               target, we'll use it to support other communities.
             </p>
             <div v-if="variant === 'whatyoucanrunning'" class="w-100 d-flex justify-content-center">
-              <img src="/running.gif" class="d-block d-sm-none img-fluid " width="200">
+              <img src="/running.gif" alt="Keep freegle running" class="d-block d-sm-none img-fluid " width="200">
             </div>
           </div>
           <DonationThermometer ref="thermo" :groupid="groupid" />

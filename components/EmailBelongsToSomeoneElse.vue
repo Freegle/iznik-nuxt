@@ -3,9 +3,9 @@
     <p>
       You are logged in
       <span v-if="ours">
-        with <b>{{ ours }}</b>
+        with <strong>{{ ours }}</strong>
       </span>,
-      but <b>{{ theirs }}</b> belongs to another account.
+      but <strong>{{ theirs }}</strong> belongs to another account.
     </p>
     <p>
       If they are both yours, you can ask the volunteers to merge your accounts from <em>Help</em>.

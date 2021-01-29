@@ -19,8 +19,8 @@
         <v-icon name="exclamation-triangle" />&nbsp;Things haven't always worked out for this freegler.  That might not be their fault, but please make very clear arrangements.
       </notice-message>
       <div v-if="aboutme" class="mb-1">
-        <blockquote>
-          <b>&quot;{{ aboutme }}&quot;</b>
+        <blockquote class="font-weight-bold">
+          &quot;{{ aboutme }}&quot;
         </blockquote>
       </div>
       <b-card border-variant="success" header-bg-variant="success" header-text-variant="white" class="mt-2">

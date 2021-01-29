@@ -49,7 +49,6 @@ export default {
   },
   methods: {
     goto() {
-      console.log('Goto group')
       if (this.group.external) {
         window.open(this.group.external)
       } else {
@@ -67,7 +66,7 @@ export default {
   border: 2px solid $color-green--darker !important;
 }
 
-clear {
+.clear {
   background: transparent;
   border: none;
 }

@@ -9,7 +9,7 @@
       <div class="media-body pl-1">
         <span class="notification-title"><span>{{ notification.title }}</span>
           <span v-if="notification.text">
-            <br>"<b class="notification__message">{{ notification.text }}</b>"
+            <br>"<span class="notification__message font-weight-bold">{{ notification.text }}</span>"
           </span>
         </span>
         <div class="notification-meta">

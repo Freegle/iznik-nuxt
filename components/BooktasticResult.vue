@@ -6,12 +6,12 @@
           <div v-if="selectedSpine">
             <div v-if="selectedSpine.author">
               <p>This is what we think it is:</p>
-              Author: <b>{{ selectedSpine.author }}</b> <br>
-              Title: <b>{{ selectedSpine.title }}</b>
+              Author: <strong>{{ selectedSpine.author }}</strong> <br>
+              Title: <strong>{{ selectedSpine.title }}</strong>
             </div>
             <div v-else>
               <p>We couldn't identify this one.  This is the text we found:</p>
-              <b>{{ selectedSpine.spine }}</b>
+              <string>{{ selectedSpine.spine }}</string>
             </div>
           </div>
           <div v-else-if="result.spines.length" variant="info">

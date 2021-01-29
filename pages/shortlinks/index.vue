@@ -21,7 +21,7 @@
               <div class="d-flex justify-content-between flex-wrap">
                 <b-select v-model="groupid" :options="groupOptions" class="select" />
                 <div class="d-flex">
-                  <b class="mt-2">freegle.in/</b>
+                  <span class="mt-2 font-weight-bold">freegle.in/</span>
                   <b-form-input v-model="name" placeholder="Enter your shortlink name" maxlength="30" />
                 </div>
                 <b-btn variant="primary" @click="create">
@@ -34,12 +34,12 @@
             </b-card-body>
           </b-card>
         </div>
-        <b-row class="mt-2 bg-white m-0">
+        <b-row class="mt-2 bg-white m-0 font-weight-bold">
           <b-col cols="3">
-            <b>Community</b>
+            Community
           </b-col>
           <b-col cols="7">
-            <b>Shortlink</b>
+            Shortlink
           </b-col>
           <b-col cols="2" />
         </b-row>
@@ -49,8 +49,6 @@
     </b-row>
   </div>
 </template>
-<style scoped>
-</style>
 <script>
 import loginRequired from '../../mixins/loginRequired'
 import Shortlinks from '../../components/Shortlinks'

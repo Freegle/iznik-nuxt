@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white rounded border border-info p-2">
     <div>
-      {{ tag }}<b>{{ user.displayname }}</b>
+      {{ tag }}<strong>{{ user.displayname }}</strong>
       <span class="small">
         <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ user.id }}
       </span>

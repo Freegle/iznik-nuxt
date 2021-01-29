@@ -44,10 +44,10 @@
       </div>
     </div>
     <div v-if="!isApp" class="app-download mt-2">
-      <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" target="_blank" class="mr-2">
+      <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" target="_blank" class="mr-2" rel="noopener noreferrer">
         <b-img-lazy alt="Freegle Android app on Google Play" title="Freegle Android app on Google Play" class="app-download__image" src="/en-play-badge.png" />
       </a>
-      <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&amp;mt=8" target="_blank">
+      <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&amp;mt=8" target="_blank" rel="noopener noreferrer">
         <b-img-lazy alt="Freegle app for iPhone, iPad, and iPod touch" title="Freegle app for iPhone, iPad, and iPod Touch" class="app-download__image" src="/app-store-black-sm.png" />
       </a>
     </div>
@@ -114,8 +114,8 @@ export default {
         // storage, so we don't know if we're logged in. When it does get loaded, this watch will fire.
         this.userWatch = this.$store.watch(
           (state, getters) => {
-            const user = this.$store.getters['auth/user']
-            return user
+            const user2 = this.$store.getters['auth/user']
+            return user2
           },
           (newValue, oldValue) => {
             if (newValue) {

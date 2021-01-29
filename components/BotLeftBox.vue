@@ -22,13 +22,13 @@
         </nuxt-link>
       </div>
       <div>
-        <a href="https://www.facebook.com/Freegle/" title="Facebook" target="_blank" class="float-left">
+        <a href="https://www.facebook.com/Freegle/" title="Facebook" target="_blank" class="float-left" rel="noopener noreferrer">
           <img alt="Facebook" src="~/static/facebook.png" width="40">
         </a>
-        <a href="https://twitter.com/thisisfreegle" title="Twitter" target="_blank" class="float-left pl-1">
+        <a href="https://twitter.com/thisisfreegle" title="Twitter" target="_blank" class="float-left pl-1" rel="noopener noreferrer">
           <img alt="Twitter" src="~/static/twitter.png" width="40">
         </a>
-        <a href="https://github.com/Freegle/iznik-nuxt" title="We're open source - find us on GitHub" target="_blank" class="float-right">
+        <a href="https://github.com/Freegle/iznik-nuxt" title="We're open source - find us on GitHub" target="_blank" class="float-right" rel="noopener noreferrer">
           <img alt="GitHub" src="~/static/github.svg" width="40">
         </a>
       </div>

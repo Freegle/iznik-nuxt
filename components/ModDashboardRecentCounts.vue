@@ -5,8 +5,8 @@
     </p>
     <p v-else>
       During this time there have been
-      <b>{{ RecentCounts.newmessages | pluralize('new post', { includeNumber: true }) }}</b> and
-      <b>{{ RecentCounts.newmembers | pluralize('new member', { includeNumber: true }) }}</b>.
+      <strong>{{ RecentCounts.newmessages | pluralize('new post', { includeNumber: true }) }}</strong> and
+      <strong>{{ RecentCounts.newmembers | pluralize('new member', { includeNumber: true }) }}</strong>.
     </p>
   </div>
 </template>

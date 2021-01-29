@@ -31,9 +31,11 @@
     </div>
 
     <b-tooltip :show.sync="showToolTip" target="postcodeautocomplete" placement="top" variant="primary" triggers="">
-      <b>Your device thinks you're here.<br><br>
+      <div class="font-weight-bold">
+        Your device thinks you're here.<br><br>
 
-        If it's wrong, please change it.</b>
+        If it's wrong, please change it.
+      </div>
     </b-tooltip>
     <b-tooltip :show.sync="showNoLocTooltip" target="postcodeautocomplete" placement="top" variant="primary" triggers="">
       <b>Sorry, cannot find your location.<br><br>

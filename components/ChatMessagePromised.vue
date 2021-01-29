@@ -27,7 +27,7 @@
             <b-card-text>
               <div :class="emessage ? 'media-body chatMessage' : 'media-body'">
                 <span>
-                  <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap"><b>{{ emessage }}</b></span>
+                  <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap font-weight-bold">{{ emessage }}</span>
                   <span v-else class="preline forcebreak">{{ emessage }}</span>
                   <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
                 </span>
@@ -50,13 +50,13 @@
                 @error="brokenImage"
               />
               <ProfileImage :image="me.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
-              <span class="small black">You promised <b>{{ otheruser.displayname }}</b>:</span>
+              <span class="small black">You promised <strong>{{ otheruser.displayname }}</strong>:</span>
               <br>
               <h4>
                 {{ refmsg.subject }}
               </h4>
               <p v-if="trystdate" class="small text-info">
-                Handover arranged for <b>{{ trystdate }}</b>
+                Handover arranged for <strong>{{ trystdate }}</strong>
               </p>
               <div class="d-flex mt-1 mb-1">
                 <AddToCalendar v-if="tryst" :ics="tryst.ics" class="mr-2" />
@@ -75,7 +75,7 @@
             <b-card-text>
               <div :class="emessage ? 'media-body chatMessage' : 'media-body'">
                 <span>
-                  <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap"><b>{{ emessage }}</b></span>
+                  <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap font-weight-bold">{{ emessage }}</span>
                   <span v-else class="preline forcebreak">{{ emessage }}</span>
                   <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
                 </span>

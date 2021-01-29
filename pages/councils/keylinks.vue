@@ -16,10 +16,10 @@
             Links to Freegle communities
           </h3>
           <p>
-            <a href="https://www.ilovefreegle.org/explore" target="_blank">
+            <a href="https://www.ilovefreegle.org/explore" target="_blank" rel="noopener noreferrer">
               https://www.ilovefreegle.org/explore</a> - Use this link to find your local Freegle group, then add the
             links to your website.  For example, if you search for York, you can select the York Freegle group
-            <a href="https://www.ilovefreegle.org/explore/York-Freegle" target="_blank">https://www.ilovefreegle.org/explore/York-Freegle</a>.
+            <a href="https://www.ilovefreegle.org/explore/York-Freegle" target="_blank" rel="noopener noreferrer">https://www.ilovefreegle.org/explore/York-Freegle</a>.
           </p>
           <a id="shortlinks" class="anchor" />
           <h3>Shortlinks</h3>
@@ -35,8 +35,8 @@
             </nuxt-link> page for more info.
           </p>
           <p>
-            An example shortlink would be <a href="https://freegle.in/croydon">freegle.in/croydon</a> which redirects to
-            <a href="https://www.ilovefreegle.org/explore/Croydon-Freegle">https://www.ilovefreegle.org/explore/Croydon-Freegle</a>.
+            An example shortlink would be <a href="https://freegle.in/croydon" rel="noopener noreferrer">freegle.in/croydon</a> which redirects to
+            <a href="https://www.ilovefreegle.org/explore/Croydon-Freegle" rel="noopener noreferrer">https://www.ilovefreegle.org/explore/Croydon-Freegle</a>.
           </p>
           <a id="livestats" class="anchor" />
           <h3>
@@ -44,13 +44,13 @@
           </h3>
           <p>
             On each Freegle community’s page you can view live statistics for that particular community
-            (the example below is for <a href="https://www.ilovefreegle.org/stats/York-Freegle">https://www.ilovefreegle.org/stats/York-Freegle</a>).
+            (the example below is for <a href="https://www.ilovefreegle.org/stats/York-Freegle" rel="noopener noreferrer">https://www.ilovefreegle.org/stats/York-Freegle</a>).
             We also use WRAP's Benefits of Reuse tool to generate CO2 and cost savings data.
           </p>
           <b-img class="mt-1" fluid src="~static/councils/yorkstats.png" />
           <p>
             You can also search for statistics for specific local authorities from
-            <a href="https://www.ilovefreegle.org/stats/authorities">https://www.ilovefreegle.org/stats/authorities</a>
+            <a href="https://www.ilovefreegle.org/stats/authorities" rel="noopener noreferrer">https://www.ilovefreegle.org/stats/authorities</a>
           </p>
           <a id="heatmap" class="anchor" />
           <h3>
@@ -59,7 +59,7 @@
           <p>
             We are currently developing a heatmap, which will enable you to better direct your communications by
             showing you where and how much Freegle activity is taking place in a given area (see example below).  You can
-            find this at <a href="https://www.ilovefreegle.org/stats/heatmap">https://www.ilovefreegle.org/stats/heatmap</a>.
+            find this at <a href="https://www.ilovefreegle.org/stats/heatmap" rel="noopener noreferrer">https://www.ilovefreegle.org/stats/heatmap</a>.
           </p>
           <b-img fluid class="mt-1" src="~static/councils/heatmap.png" />
         </b-card-text>

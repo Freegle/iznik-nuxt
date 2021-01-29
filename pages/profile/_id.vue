@@ -9,8 +9,8 @@
       <b-card v-if="aboutme" variant="white" class="mt-2">
         <b-card-body class="p-0">
           <div class="mb-1">
-            <blockquote>
-              <b>&quot;{{ aboutme }}&quot;</b>
+            <blockquote class="font-weight-bold">
+              &quot;{{ aboutme }}&quot;
             </blockquote>
           </div>
         </b-card-body>

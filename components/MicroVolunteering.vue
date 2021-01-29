@@ -20,7 +20,7 @@
             looks like to them.)
           </p>
           <p>
-            <b>Would you like to keep freegling smooth and safe for people?  You can help!</b>
+            <strong>Would you like to keep freegling smooth and safe for people?  You can help!</strong>
           </p>
           <p>
             If you're up for it, we can show you the occasional thing on Freegle that needs checking over to make sure it's ok.
@@ -146,7 +146,7 @@
             </div>
             <div v-else-if="task.type === 'SearchTerm'">
               <p>
-                Click the <b>two most similar</b> terms - or if there are none, click <em>Skip</em>.
+                Click the <strong>two most similar</strong> terms - or if there are none, click <em>Skip</em>.
               </p>
               <div class="d-flex flex-wrap justify-content-between">
                 <MicroVolunteeringSimilarTerm

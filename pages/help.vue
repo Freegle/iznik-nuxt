@@ -34,7 +34,7 @@
 
               <Question id="COVID-19">
                 <template slot="title">
-                  <b>COVID-19</b>
+                  <strong>COVID-19</strong>
                 </template>
                 <template slot="content">
                   <p>
@@ -48,7 +48,7 @@
               </Question>
               <Question id="rules">
                 <template slot="title">
-                  <b>What are your rules?</b>
+                  <strong>What are your rules?</strong>
                 </template>
                 <template slot="content">
                   <TermsOfUse />
@@ -56,7 +56,7 @@
               </Question>
               <Question id="wanted">
                 <template slot="title">
-                  <b>How do I post a WANTED?</b>
+                  <strong>How do I post a WANTED?</strong>
                 </template>
                 <template slot="content">
                   <p>
@@ -72,7 +72,7 @@
               </Question>
               <Question id="toomany">
                 <template slot="title">
-                  <b>I'm getting too many emails</b>
+                  <strong>I'm getting too many emails</strong>
                 </template>
                 <template slot="content">
                   <p>
@@ -88,7 +88,7 @@
               </Question>
               <Question id="offertaken">
                 <template slot="title">
-                  <b>My OFFER has been TAKEN - what do I do?</b>
+                  <strong>My OFFER has been TAKEN - what do I do?</strong>
                 </template>
                 <template slot="content">
                   <p>
@@ -121,7 +121,7 @@
               </Question>
               <Question id="repost">
                 <template slot="title">
-                  <b>How can I repost something?</b>
+                  <strong>How can I repost something?</strong>
                 </template>
                 <template slot="content">
                   <p>
@@ -141,7 +141,7 @@
               </Question>
               <Question id="changeemail">
                 <template slot="title">
-                  <b>How do I change my email address?</b>
+                  <strong>How do I change my email address?</strong>
                 </template>
                 <template slot="content">
                   <p>
@@ -154,7 +154,7 @@
               </Question>
               <Question id="unsubscribe">
                 <template slot="title">
-                  <b>How do I leave/unsubscribe?</b>
+                  <strong>How do I leave/unsubscribe?</strong>
                 </template>
                 <template slot="content">
                   <p>
@@ -166,7 +166,7 @@
               </Question>
               <Question id="whatdata">
                 <template slot="title">
-                  <b>What data do you store about me?</b>
+                  <strong>What data do you store about me?</strong>
                 </template>
                 <template slot="content">
                   <p>
@@ -178,7 +178,7 @@
               </Question>
               <Question id="youcanhelp">
                 <template slot="title">
-                  <b>How you can help!</b>
+                  <strong>How you can help!</strong>
                 </template>
                 <template slot="content">
                   <p>
@@ -212,7 +212,7 @@
                     </li>
                     <li>
                       IT geeks who know some of these: VueJS/Bootstrap 4/CSS/PHP/Percona/nginx - find us on
-                      <a target="_blank" href="https://github.com/Freegle">GitHub</a>.
+                      <a target="_blank" href="https://github.com/Freegle" rel="noopener noreferrer">GitHub</a>.
                     </li>
                   </ul>
                   <p>
@@ -232,17 +232,17 @@
               </Question>
               <Question v-if="!isApp" id="mobile">
                 <template slot="title">
-                  <b>Do you have a mobile app?</b>
+                  <strong>Do you have a mobile app?</strong>
                 </template>
                 <template slot="content">
                   <p>
                     We do! Freegling is easy on mobiles and tablets, and you get notifications of replies so you don't have to rely on email. Download using these links or search for Freegle in your app store - it's free!
                   </p>
                   <div class="d-flex justify-content-between">
-                    <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" class="mt-2" target="_blank">
+                    <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" class="mt-2" target="_blank" rel="noopener noreferrer">
                       <img alt="Freegle Android app on Google Play" title="Freegle Android app on Google Play" class="img-responsive" src="/en-play-badge.png">
                     </a>
-                    <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&amp;mt=8" class="mt-2" target="_blank">
+                    <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&amp;mt=8" class="mt-2" target="_blank" rel="noopener noreferrer">
                       <img alt="Freegle app for iPhone, iPad, and iPod touch" title="Freegle app for iPhone, iPad, and iPod touch" class="img-responsive" src="/app-store-black-sm.png">
                     </a>
                   </div>
@@ -272,7 +272,7 @@
 
               <Question id="convince">
                 <template slot="title">
-                  <b>Go on, convince me!</b>
+                  <strong>Go on, convince me!</strong>
                 </template>
                 <template slot="content">
                   <p class="text--medium-large-highlight">
@@ -306,7 +306,7 @@
               </Question>
               <Question id="surely">
                 <template slot="title">
-                  <b>Surely nobody would want this?</b>
+                  <strong>Surely nobody would want this?</strong>
                 </template>
                 <template slot="content">
                   <p>
@@ -322,7 +322,7 @@
               </Question>
               <Question id="freecycle">
                 <template slot="title">
-                  <b>What about Freecycle?</b>
+                  <strong>What about Freecycle?</strong>
                 </template>
                 <template slot="content">
                   <p>
@@ -335,8 +335,8 @@
                     </li>
                     <li>
                       We have a nice mobile app.  Get it on
-                      <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct">Google Play</a> or
-                      <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&amp;mt=8">iTunes</a>.
+                      <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" rel="noopener noreferrer">Google Play</a> or
+                      <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&amp;mt=8" rel="noopener noreferrer">iTunes</a>.
                     </li>
                     <li>
                       We have lots of lovely, local, friendly volunteers to help you out.
@@ -354,7 +354,7 @@
               </Question>
               <Question id="gumtree">
                 <template slot="title">
-                  <b>What about Gumtree?</b>
+                  <strong>What about Gumtree?</strong>
                 </template>
                 <template slot="content">
                   <p>
@@ -365,7 +365,7 @@
               </Question>
               <Question id="ebay">
                 <template slot="title">
-                  <b>Why not eBay it?</b>
+                  <strong>Why not eBay it?</strong>
                 </template>
                 <template slot="content">
                   <p>
@@ -373,7 +373,7 @@
                     you have to post it off.  Plus people are quite picky about what they're paying for.
                   </p>
                   <p>
-                    You can also help us when you sell on <b>eBay</b>.  Make sure you're signed in to eBay, then click
+                    You can also help us when you sell on <strong>eBay</strong>.  Make sure you're signed in to eBay, then click
                     below and <em>Save as favourite</em>.
                   </p>
                   <a href="http://www.ebay.co.uk/egw/ebay-for-charity/charity-profile/Freegle/74430" target="_blank" rel="noopener">
@@ -383,7 +383,7 @@
               </Question>
               <Question id="trashnothing">
                 <template slot="title">
-                  <b>What about Trash Nothing?</b>
+                  <strong>What about Trash Nothing?</strong>
                 </template>
                 <template slot="content">
                   <p>
@@ -394,7 +394,7 @@
               </Question>
               <Question id="charityshops">
                 <template slot="title">
-                  <b>What about charity shops?</b>
+                  <strong>What about charity shops?</strong>
                 </template>
                 <template slot="content">
                   <p>
@@ -414,7 +414,7 @@
         <h1 class="header--size1">
           Something else?
         </h1>
-        <p>If your question isn't answered above, or you wish to compliment or complain, then you can <b>contact your volunteer team</b>, who will be happy to hear whether Freegle is doing a great job or needs changing.</p>
+        <p>If your question isn't answered above, or you wish to compliment or complain, then you can <strong>contact your volunteer team</strong>, who will be happy to hear whether Freegle is doing a great job or needs changing.</p>
         <h5 class="header--size5">
           Which Freegle community do you need help with?
         </h5>

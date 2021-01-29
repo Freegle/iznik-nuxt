@@ -16,16 +16,16 @@
             </p>
             <ul>
               <li>
-                Take a <b>close-up</b> of <b>just one shelf</b>.  If you can see two shelves, go closer.
+                Take a <strong>close-up</strong> of <strong>just one shelf</strong>.  If you can see two shelves, go closer.
               </li>
               <li>
-                <b>Straight</b> - not at a rakish angle.
+                <strong>Straight</strong> - not at a rakish angle.
               </li>
               <li>
-                Your picture should show <b>about 10 books</b>.  If it's more than that, go closer.
+                Your picture should show <strong>about 10 books</strong>.  If it's more than that, go closer.
               </li>
               <li>
-                <b>Avoid glare</b> / reflections.
+                <strong>Avoid glare</strong> / reflections.
               </li>
               <li>
                 Squidge the books up so they're not slanted.

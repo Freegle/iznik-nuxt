@@ -146,7 +146,7 @@
                     format="YYYY-MM"
                     placeholder=""
                   />
-                  <b>-</b>
+                  <span class="font-weight-bold">-</span>
                   <date-picker
                     id="endDate"
                     v-model="endDate"

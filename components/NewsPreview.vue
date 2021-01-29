@@ -18,7 +18,7 @@
           <p v-if="preview.description && size === 'md'" class="preline forcebreak mb-0">
             <read-more :text="preview.description" :max-chars="200" class="nopara" />
           </p>
-          <p v-if="size === 'sm'" class="preline forcebreak mb-0 small">
+          <p v-if="preview.description && size === 'sm'" class="preline forcebreak mb-0 small">
             <read-more :text="preview.description" :max-chars="200" class="nopara" />
           </p>
         </div>

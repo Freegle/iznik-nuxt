@@ -26,7 +26,7 @@
       />
     </b-form-group>
     <div v-if="suggestedDomains && suggestedDomains.length" class="text-info small mb-2">
-      Did you mean <b>{{ suggestedDomains[0] }}</b>?
+      Did you mean <strong>{{ suggestedDomains[0] }}</strong>?
     </div>
   </div>
 </template>

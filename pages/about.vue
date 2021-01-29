@@ -85,7 +85,7 @@
                       </div>
                     </div>
                     <div class="media-body">
-                      <b>{{ boardmember.displayname }}</b>
+                      <span class="font-weight-bold">{{ boardmember.displayname }}</span>
                       <p v-if="boardmember.description">
                         {{ boardmember.description }}
                       </p>
@@ -124,7 +124,7 @@
                   <strong>Freegle is free to use, but not free to run.</strong>  We provide a free service, and keep costs
                   <em>phenomenally</em> low thanks to our
                   large number of committed volunteers - <strong>our annual budget averages just £40,000 each year</strong>.
-                  You can see our accounts <a target="_blank" href="https://freegle.in/Accounts">here</a>.
+                  You can see our accounts <a target="_blank" href="https://freegle.in/Accounts" rel="noopener noreferrer">here</a>.
                 </p>
                 <p>
                   Nevertheless, there are still costs involved, and if we had more money we could get more people freegling more
@@ -139,7 +139,7 @@
                 </p>
                 <p>
                   Many current donations come from our volunteers, who are already donating their time and may not be able to
-                  donate money as well.  If you can, <b>please donate £3</b> to keep us running - but anything you can give is very welcome.
+                  donate money as well.  If you can, <strong>please donate £3</strong> to keep us running - but anything you can give is very welcome.
                   Regular monthly donations are especially helpful.
                 </p>
                 <p>

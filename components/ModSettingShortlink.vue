@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- eslint-disable-next-line -->
-    <a :href="'https://freegle.in/' + shortlink.name">freegle.in/{{ shortlink.name }}</a>
+    <a :href="'https://freegle.in/' + shortlink.name" rel="noopener noreferrer">freegle.in/{{ shortlink.name }}</a>
     <span class="text-muted small">
       created {{ shortlink.created | timeago }}
       {{ shortlink.clicks | pluralize('click', { includeNumber: true }) }}

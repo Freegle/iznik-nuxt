@@ -71,7 +71,7 @@
               <p>
                 This is an estimate of the weight of items we have diverted from the waste stream. People don't always
                 tell us when things have worked, so it's likely to be an underestimate. Benefit and CO2 are calculated
-                using a <a href="http://www.wrap.org.uk/content/monitoring-tools-and-resources" target="_blank">tool from WRAP</a>.
+                using a <a href="http://www.wrap.org.uk/content/monitoring-tools-and-resources" target="_blank" rel="noopener noreferrer">tool from WRAP</a>.
                 Figures are only available since September 2016 and may change as we improve our estimates.
               </p>
               <GChart

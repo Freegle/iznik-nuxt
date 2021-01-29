@@ -2,19 +2,19 @@
   <div class="chatMessageWrapper pb-1" :class="{ myChatMessage : messageIsFromCurrentUser }">
     <div class="chatMessage forcebreak chatMessage__owner">
       <span v-if="!highlightEmails">
-        <span v-if="messageIsNew" class="prewrap"><b>{{ emessage }}</b></span>
+        <span v-if="messageIsNew" class="prewrap font-weight-bold">{{ emessage }}</span>
         <span v-else class="preline forcebreak">{{ emessage }}</span>
         <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
       </span>
       <span v-else>
-        <b v-if="messageIsNew">
+        <span v-if="messageIsNew" class="font-weight-bold">
           <Highlighter
             :text-to-highlight="emessage"
             :search-words="[regexEmail]"
             highlight-class-name="highlight"
             class="prewrap"
           />
-        </b>
+        </span>
         <span v-else>
           <Highlighter
             :text-to-highlight="emessage"

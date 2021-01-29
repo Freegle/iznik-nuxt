@@ -29,13 +29,13 @@
         <notice-message v-if="!spammer && (replytime || milesaway)" class="clickme d-flex flex-wrap justify-content-between" :variant="milesaway < 3 ? 'info': 'danger'" @click.native="showInfo">
           <span v-if="milesaway">
             <!--            COVID lockdown 2-->
-            <v-icon name="map-marker-alt" class="fa-fw" />&nbsp;About <b>{{ milesaway | pluralize('mile', { includeNumber: true }) }} away</b>.
+            <v-icon name="map-marker-alt" class="fa-fw" />&nbsp;About <strong>{{ milesaway | pluralize('mile', { includeNumber: true }) }} away</strong>.
             <span v-if="milesaway > 3">
               Remember: essential travel only and keep it local.
             </span>
           </span>
           <span v-if="replytime">
-            <v-icon name="info-circle" class="fa-fw" />&nbsp;Typically replies in <b>{{ replytime }}</b>.
+            <v-icon name="info-circle" class="fa-fw" />&nbsp;Typically replies in <strong>{{ replytime }}</strong>.
           </span>
           Click for more info.
         </notice-message>
@@ -46,7 +46,7 @@
         <ModComments v-if="mod && chat && chat.chattype === 'User2Mod' && otheruser" :user="otheruser" class="mt-1" />
       </div>
       <b-alert v-if="showHandoverPrompt" variant="info" show class="m-0">
-        Looks like you might be agreeing a handover with <b>{{ otheruser.displayname }}</b>?
+        Looks like you might be agreeing a handover with <strong>{{ otheruser.displayname }}</strong>?
         <div class="d-flex mt-2">
           <b-btn v-b-tooltip.hover.top size="lg" variant="primary" title="Yes, I'm agreeing a handover" @click="promise(discussedDate)">
             Yes, I am
@@ -271,7 +271,6 @@ export default {
 }
 
 .fa-mob {
-  width: 2rem;
   height: 2rem;
   width: 100%;
 }

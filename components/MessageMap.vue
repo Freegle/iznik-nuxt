@@ -101,7 +101,7 @@ export default {
     }
   },
   methods: {
-    idle(map) {
+    idle(themap) {
       if (this.home) {
         // We want to show both the centre and the marker.
         // eslint-disable-next-line new-cap
@@ -112,7 +112,7 @@ export default {
           new L.marker([this.home.lat, this.home.lng])
         ])
 
-        map.fitBounds(fg.getBounds().pad(0.1))
+        themap.fitBounds(fg.getBounds().pad(0.1))
       } else {
         // eslint-disable-next-line new-cap
         const fg = new L.featureGroup([
@@ -120,8 +120,8 @@ export default {
           new L.marker([this.position.lat, this.position.lng])
         ])
 
-        map.fitBounds(fg.getBounds().pad(0.1))
-        map.setZoom(13)
+        themap.fitBounds(fg.getBounds().pad(0.1))
+        themap.setZoom(13)
       }
 
       const zoomControl = this.$el.querySelector('.leaflet-top.leaflet-left')

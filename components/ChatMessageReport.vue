@@ -25,8 +25,6 @@
     </b-row>
   </div>
 </template>
-<style scoped>
-</style>
 <script>
 import ModChatViewButton from './ModChatViewButton'
 import ChatBase from '~/components/ChatBase'

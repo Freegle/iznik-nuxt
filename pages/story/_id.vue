@@ -31,8 +31,6 @@
     <StoriesAddModal ref="addmodal" />
   </div>
 </template>
-<style scoped>
-</style>
 <script>
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'

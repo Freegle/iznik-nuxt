@@ -33,7 +33,7 @@
             <b-row>
               <b-col>
                 <p>Sorry - we failed to verify your email address.</p>
-                <p> <b>Please try again.</b> Resend verification mail to:</p>
+                <p><strong>Please try again.</strong> Resend verification mail to:</p>
                 <b-form-input v-model="email" placeholder="Enter your email" class="mb-2" />
                 <p>
                   <!-- eslint-disable-next-line -->

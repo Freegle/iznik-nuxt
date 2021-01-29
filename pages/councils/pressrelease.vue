@@ -10,7 +10,7 @@
         <b-card-text class="pl-2 pr-2">
           <p>
             Here is a template press release that you are welcome to use and personalise.  Please note that the
-            sections in <b>BOLD UPPER CASE</b> are for you to add your relevant information.
+            sections in <strong>BOLD UPPER CASE</strong> are for you to add your relevant information.
           </p>
           <h3>Freegle press release</h3>
 
@@ -23,7 +23,7 @@
 
           <p>
             Freegle has over 2.7 million members in a UK-wide network of over 400 communities, each run by
-            dedicated local volunteers. There are <b>NUMBER</b> local members in <b>YOUR AREA</b> already – all busy, giving
+            dedicated local volunteers. There are <strong>NUMBER</strong> local members in <strong>YOUR AREA</strong> already – all busy, giving
             away and getting stuff for free.
           </p>
 
@@ -36,7 +36,7 @@
           </p>
 
           <p>
-            It is really easy to be part of <b>YOUR AREA</b> Freegle – just go to www.ilovefreegle.org or download our app.
+            It is really easy to be part of <strong>YOUR AREA</strong> Freegle – just go to www.ilovefreegle.org or download our app.
             Upon joining the group, you’ll receive simple instructions on how everything works and what to do.  Your
             local group volunteers are helpful and experienced Freeglers who will help you get started if
             you are new to it. Don’t be shy… join up, it really is easy and fun.
@@ -45,7 +45,7 @@
           <p>
             So, whether you are an individual, family, old or young, a local organisation, sports club, charity,
             school or a business you can benefit from joining Freegle and start to offer any unwanted items you
-            have to the members of the <b>YOUR AREA</b> group.  Other members will arrange to collect from you.  If
+            have to the members of the <strong>YOUR AREA</strong> group.  Other members will arrange to collect from you.  If
             there’s something you want then you can ask for that too…someone just may have what you are looking for,
             and no longer need it themselves.  You may even meet neighbours and discover positive initiatives going
             on in your area along the way.
@@ -58,12 +58,12 @@
           </p>
 
           <p>
-            If it’s free and it’s legal, then it can be Freegled! Go to <b>www.ilovefreegle.org</b> to get started.
+            If it’s free and it’s legal, then it can be Freegled! Go to <strong>www.ilovefreegle.org</strong> to get started.
           </p>
 
           <p>
-            Twitter <b>@thisisfreegle</b><br>
-            Facebook <b>@Freegle</b>
+            Twitter <strong>@thisisfreegle</strong><br>
+            Facebook <strong>@Freegle</strong>
           </p>
         </b-card-text>
       </b-card>

@@ -14,43 +14,36 @@
           <div class="row">
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/Its_not_waste_until_you_waste_it_FB.jpg">
-                <img class="img-thumbnail" src="/councils/socialmedia/Its_not_waste_until_you_waste_it_FB.jpg">
-              </a>
+                <b-img fluid thumbnail src="/councils/socialmedia/Its_not_waste_until_you_waste_it_FB.jpg" alt="Publicity image" /></a>
             </div>
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/We reuse. You can too!_FB_clothes.png">
-                <img class="img-thumbnail" src="/councils/socialmedia/We reuse. You can too!_FB_clothes.png">
-              </a>
+                <b-img fluid thumbnail src="/councils/socialmedia/We reuse. You can too!_FB_clothes.png" alt="Publicity image" /></a>
             </div>
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/We reuse. You can too!_FB_desk.png">
-                <img class="img-thumbnail" src="/councils/socialmedia/We reuse. You can too!_FB_desk.png">
-              </a>
+                <b-img fluid thumbnail src="/councils/socialmedia/We reuse. You can too!_FB_desk.png" alt="Publicity image" /></a>
             </div>
           </div>
           <div class="row">
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/We reuse. You can too!_FB_male_clothes.png">
-                <img class="img-thumbnail" src="/councils/socialmedia/We reuse. You can too!_FB_male_clothes.png">
-              </a>
+                <b-img fluid thumbnail src="/councils/socialmedia/We reuse. You can too!_FB_male_clothes.png" alt="Publicity image" /></a>
             </div>
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/We reuse. You can too!_FB_tools.png">
-                <img class="img-thumbnail" src="/councils/socialmedia/We reuse. You can too!_FB_tools.png">
-              </a>
+                <b-img fluid thumbnail src="/councils/socialmedia/We reuse. You can too!_FB_tools.png" alt="Publicity image" /></a>
             </div>
           </div>
           <h4>Twitter</h4>
           <div class="row">
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/FREEGLE_TWITTER_GREEN_FOOD.png">
-                <img class="img-thumbnail" src="/councils/socialmedia/FREEGLE_TWITTER_GREEN_FOOD.png">
-              </a>
+                <b-img fluid thumbnail src="/councils/socialmedia/FREEGLE_TWITTER_GREEN_FOOD.png" alt="Publicity image" /></a>
             </div>
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/freegle_twitter_green_bin.png">
-                <img class="img-thumbnail" src="/councils/socialmedia/freegle_twitter_green_bin.png">
-              </a>
+                <b-img fluid thumbnail src="/councils/socialmedia/freegle_twitter_green_bin.png" alt="Publicity image" /></a>
             </div>
             <div class="col-sm-4" />
           </div>
@@ -60,13 +53,11 @@
           <div class="row">
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/Declutter_twitter_ChooseToReuse.png">
-                <img class="img-thumbnail" src="/councils/socialmedia/Declutter_twitter_ChooseToReuse.png">
-              </a>
+                <b-img fluid thumbnail src="/councils/socialmedia/Declutter_twitter_ChooseToReuse.png" alt="Publicity image" /></a>
             </div>
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/Declutter_weee_twitter.png">
-                <img class="img-thumbnail" src="/councils/socialmedia/Declutter_weee_twitter.png">
-              </a>
+                <b-img fluid thumbnail src="/councils/socialmedia/Declutter_weee_twitter.png" alt="Publicity image" /></a>
             </div>
             <div class="col-sm-4" />
           </div>
@@ -76,7 +67,7 @@
           <div class="row">
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/Moving_stuff_FB.png">
-                <b-img fluid thumbnail src="/councils/socialmedia/Moving_stuff_FB.png" />
+                <b-img fluid thumbnail src="/councils/socialmedia/Moving_stuff_FB.png" alt="Publicity image" />
               </a>
             </div>
             <div class="col-sm-4" />
@@ -88,7 +79,7 @@
           <div class="row">
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/regift_FB.png">
-                <b-img fluid thumbnail src="/councils/socialmedia/regift_FB.png" />
+                <b-img fluid thumbnail src="/councils/socialmedia/regift_FB.png" alt="Publicity image" />
               </a>
             </div>
             <div class="col-sm-4" />
@@ -100,51 +91,51 @@
           <div class="row">
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/flytipping_chair-clothes_twitter.png">
-                <b-img fluid thumbnail src="/councils/socialmedia/flytipping_chair-clothes_twitter.png" />
+                <b-img fluid thumbnail src="/councils/socialmedia/flytipping_chair-clothes_twitter.png" alt="Publicity image" />
               </a>
             </div>
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/flytipping_cupboard_twitter.png">
-                <b-img fluid thumbnail src="/councils/socialmedia/flytipping_cupboard_twitter.png" />
+                <b-img fluid thumbnail src="/councils/socialmedia/flytipping_cupboard_twitter.png" alt="Publicity image" />
               </a>
             </div>
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/flytipping_desk_twitter.png">
-                <b-img fluid thumbnail src="/councils/socialmedia/flytipping_desk_twitter.png" />
+                <b-img fluid thumbnail src="/councils/socialmedia/flytipping_desk_twitter.png" alt="Publicity image" />
               </a>
             </div>
           </div>
           <div class="row">
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/flytipping_drawers_twitter.png">
-                <b-img fluid thumbnail src="/councils/socialmedia/flytipping_drawers_twitter.png" />
+                <b-img fluid thumbnail src="/councils/socialmedia/flytipping_drawers_twitter.png" alt="Publicity image" />
               </a>
             </div>
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/flytipping_sofa_1_twitter.png">
-                <b-img fluid thumbnail src="/councils/socialmedia/flytipping_sofa_1_twitter.png" />
+                <b-img fluid thumbnail src="/councils/socialmedia/flytipping_sofa_1_twitter.png" alt="Publicity image" />
               </a>
             </div>
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/flytipping_sofa_2_twitter.png">
-                <b-img fluid thumbnail src="/councils/socialmedia/flytipping_sofa_2_twitter.png" />
+                <b-img fluid thumbnail src="/councils/socialmedia/flytipping_sofa_2_twitter.png" alt="Publicity image" />
               </a>
             </div>
           </div>
           <div class="row">
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/flytipping_sofa_bookcase_twitter.png">
-                <b-img fluid thumbnail src="/councils/socialmedia/flytipping_sofa_bookcase_twitter.png" />
+                <b-img fluid thumbnail src="/councils/socialmedia/flytipping_sofa_bookcase_twitter.png" alt="Publicity image" />
               </a>
             </div>
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/flytipping_twitter.png">
-                <b-img fluid thumbnail src="/councils/socialmedia/flytipping_twitter.png" />
+                <b-img fluid thumbnail src="/councils/socialmedia/flytipping_twitter.png" alt="Publicity image" />
               </a>
             </div>
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/flytipping_vacuum_twitter.png">
-                <b-img fluid thumbnail src="/councils/socialmedia/flytipping_vacuum_twitter.png" />
+                <b-img fluid thumbnail src="/councils/socialmedia/flytipping_vacuum_twitter.png" alt="Publicity image" />
               </a>
             </div>
           </div>
@@ -154,12 +145,12 @@
           <div class="row">
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/freegle_christmas_advent_tree_SM_post.png">
-                <b-img fluid thumbnail src="/councils/socialmedia/freegle_christmas_advent_tree_SM_post.png" />
+                <b-img fluid thumbnail src="/councils/socialmedia/freegle_christmas_advent_tree_SM_post.png" alt="Publicity image" />
               </a>
             </div>
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/Festive_freegle_FB_reuse_rejoice.png">
-                <b-img fluid thumbnail src="/councils/socialmedia/Festive_freegle_FB_reuse_rejoice.png" />
+                <b-img fluid thumbnail src="/councils/socialmedia/Festive_freegle_FB_reuse_rejoice.png" alt="Publicity image" />
               </a>
             </div>
             <div class="col-sm-4" />
@@ -168,17 +159,17 @@
           <div class="row">
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/regift_twitter.png">
-                <b-img fluid thumbnail src="/councils/socialmedia/regift_twitter.png" />
+                <b-img fluid thumbnail src="/councils/socialmedia/regift_twitter.png" alt="Publicity image" />
               </a>
             </div>
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/twitter_post_freegle_generic_christmas.png">
-                <b-img fluid thumbnail src="/councils/socialmedia/twitter_post_freegle_generic_christmas.png" />
+                <b-img fluid thumbnail src="/councils/socialmedia/twitter_post_freegle_generic_christmas.png" alt="Publicity image" />
               </a>
             </div>
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/freegle_christmas_twitter_loo_rolls_green.png">
-                <b-img fluid thumbnail src="/councils/socialmedia/freegle_christmas_twitter_loo_rolls_green.png" />
+                <b-img fluid thumbnail src="/councils/socialmedia/freegle_christmas_twitter_loo_rolls_green.png" alt="Publicity image" />
               </a>
             </div>
           </div>
@@ -187,17 +178,17 @@
           <div class="row">
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/FB_avatar_valentines.png">
-                <b-img fluid thumbnail src="/councils/socialmedia/FB_avatar_valentines.png" />
+                <b-img fluid thumbnail src="/councils/socialmedia/FB_avatar_valentines.png" alt="Publicity image" />
               </a>
             </div>
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/Valentine_Freegle_online_dating_Facebook.png">
-                <b-img fluid thumbnail src="/councils/socialmedia/Valentine_Freegle_online_dating_Facebook.png" />
+                <b-img fluid thumbnail src="/councils/socialmedia/Valentine_Freegle_online_dating_Facebook.png" alt="Publicity image" />
               </a>
             </div>
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/Valentinefreegle2_200_facebook.png">
-                <b-img fluid thumbnail src="/councils/socialmedia/Valentinefreegle2_200_facebook.png" />
+                <b-img fluid thumbnail src="/councils/socialmedia/Valentinefreegle2_200_facebook.png" alt="Publicity image" />
               </a>
             </div>
             <div class="col-sm-4" />
@@ -206,17 +197,17 @@
           <div class="row">
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/Valentine_Freegle_online_dating_twitter.png">
-                <b-img fluid thumbnail src="/councils/socialmedia/Valentine_Freegle_online_dating_twitter.png" />
+                <b-img fluid thumbnail src="/councils/socialmedia/Valentine_Freegle_online_dating_twitter.png" alt="Publicity image" />
               </a>
             </div>
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/Valentine_Freegle_online_dating_2_twitter.png">
-                <b-img fluid thumbnail src="/councils/socialmedia/Valentine_Freegle_online_dating_2_twitter.png" />
+                <b-img fluid thumbnail src="/councils/socialmedia/Valentine_Freegle_online_dating_2_twitter.png" alt="Publicity image" />
               </a>
             </div>
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/Valentinefreegle2_128_Twitter.png">
-                <b-img fluid thumbnail src="/councils/socialmedia/Valentinefreegle2_128_Twitter.png" />
+                <b-img fluid thumbnail src="/councils/socialmedia/Valentinefreegle2_128_Twitter.png" alt="Publicity image" />
               </a>
             </div>
           </div>
@@ -224,7 +215,7 @@
           <div class="row">
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/Valentine_Freegle_online_dating_IG.png">
-                <b-img fluid thumbnail src="/councils/socialmedia/Valentine_Freegle_online_dating_IG.png" />
+                <b-img fluid thumbnail src="/councils/socialmedia/Valentine_Freegle_online_dating_IG.png" alt="Publicity image" />
               </a>
             </div>
           </div>
@@ -232,24 +223,24 @@
           <div class="row">
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/valentinefreegle2.jpg">
-                <b-img fluid thumbnail src="/councils/socialmedia/valentinefreegle2.jpg" />
+                <b-img fluid thumbnail src="/councils/socialmedia/valentinefreegle2.jpg" alt="Publicity image" />
               </a>
             </div>
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/Valentinefreegle2_160.png">
-                <b-img fluid thumbnail src="/councils/socialmedia/Valentinefreegle2_160.png" />
+                <b-img fluid thumbnail src="/councils/socialmedia/Valentinefreegle2_160.png" alt="Publicity image" />
               </a>
             </div>
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/Valentinefreegle2_250_Yahoo.png">
-                <b-img fluid thumbnail src="/councils/socialmedia/Valentinefreegle2_250_Yahoo.png" />
+                <b-img fluid thumbnail src="/councils/socialmedia/Valentinefreegle2_250_Yahoo.png" alt="Publicity image" />
               </a>
             </div>
           </div>
           <div class="row">
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/Valentinefreegle2_320.png">
-                <b-img fluid thumbnail src="/councils/socialmedia/Valentinefreegle2_320.png" />
+                <b-img fluid thumbnail src="/councils/socialmedia/Valentinefreegle2_320.png" alt="Publicity image" />
               </a>
             </div>
           </div>

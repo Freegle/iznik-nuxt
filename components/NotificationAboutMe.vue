@@ -9,7 +9,7 @@
       <div class="media-body">
         <span class="notification-title"><span>Tell us about yourself!</span>
           <span>
-            <br>"<b class="introduction">Click to introduce yourself to other freeglers by telling us a bit about you.  You'll get a better response and it makes freegling more fun.</b>"
+            <br>"<span class="introduction font-weight-bold">Click to introduce yourself to other freeglers by telling us a bit about you.  You'll get a better response and it makes freegling more fun.</span>"
           </span>
         </span>
         <div class="notification-meta">

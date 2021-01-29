@@ -18,7 +18,7 @@
               />
               <div v-if="otheruser">
                 <ProfileImage :image="otheruser.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
-                <span class="small black"><b>{{ otheruser.displayname }}</b> has
+                <span class="small black"><strong>{{ otheruser.displayname }}</strong> has
                   <span v-if="refmsg && refmsg.type === 'Offer'">asked</span>
                   <span v-else>replied</span>
                   about:
@@ -45,7 +45,7 @@
               </notice-message>
               <div :class="emessage ? 'media-body chatMessage' : 'media-body'">
                 <span>
-                  <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap"><b>{{ emessage }}</b></span>
+                  <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap font-weight-bold">{{ emessage }}</span>
                   <span v-else class="preline forcebreak">{{ emessage }}</span>
                   <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
                 </span>
@@ -113,19 +113,19 @@
               </notice-message>
               <div :class="emessage ? 'media-body chatMessage' : 'media-body'">
                 <span v-if="!highlightEmails">
-                  <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap"><b>{{ emessage }}</b></span>
+                  <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap font-weight-bold">{{ emessage }}</span>
                   <span v-else class="preline forcebreak">{{ emessage }}</span>
                   <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
                 </span>
                 <span v-else>
-                  <b v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)">
+                  <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="font-weight-bold">
                     <Highlighter
                       :text-to-highlight="emessage"
                       :search-words="[regexEmail]"
                       highlight-class-name="highlight"
                       class="prewrap"
                     />
-                  </b>
+                  </span>
                   <span v-else>
                     <Highlighter
                       :text-to-highlight="emessage"

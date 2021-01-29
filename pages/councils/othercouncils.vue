@@ -20,12 +20,12 @@
             The event was a great success with around 650kg of items swapped or repaired.
           </p>
           <p>
-            <i>&quot;Thank you so much once again for your involvement, it’s made such a huge difference and wonderfully raised the profile of the event!&quot;</i> Alexandra Mates, Recycling Promotions Officer for Oxford Direct Services.
+            <span class="font-italic">&quot;Thank you so much once again for your involvement, it’s made such a huge difference and wonderfully raised the profile of the event!&quot;</span> Alexandra Mates, Recycling Promotions Officer for Oxford Direct Services.
           </p>
           <p>
-            <i>&quot;Thank you for all your help with our Oxfordshire Reuses event, it was a huge success and having Cat
+            <span class="font-italic">&quot;Thank you for all your help with our Oxfordshire Reuses event, it was a huge success and having Cat
               there was fantastic. Her talk was really inspirational and it was amazing to hear about all the
-              great work she has done so thank you for helping us get her there!&quot;</i>Becky Kenton Lake, Waste Strategy Projects Officer, Oxfordshire County Council.
+              great work she has done so thank you for helping us get her there!&quot;</span>Becky Kenton Lake, Waste Strategy Projects Officer, Oxfordshire County Council.
           </p>
           <div class="row">
             <div class="col-sm-6">
@@ -50,7 +50,7 @@
             Penrith and Eden Freegle has been working successfully with Cumbria County Council for many years and in
             2015 were together shortlisted for a National Recycling Award.  An interesting summary of their work can
             be found
-            <a href="https://www.penrithedenfreegle.org.uk/2017-02-27-freegle-partnership-cumbria-county-council" target="_blank">here</a>
+            <a href="https://www.penrithedenfreegle.org.uk/2017-02-27-freegle-partnership-cumbria-county-council" target="_blank" rel="noopener noreferrer">here</a>
             and a detailed case study will be available soon.
           </p>
           <h3>Social media</h3>
@@ -61,23 +61,23 @@
           <h3>Websites</h3>
           <p>
             The Love Essex website has a dedicated
-            <a href="http://www.loveessex.org/news-and-ideas/have-items-you-no-longer-want-freegle-can-help/" target="_blank">Freegle page</a>
+            <a href="http://www.loveessex.org/news-and-ideas/have-items-you-no-longer-want-freegle-can-help/" target="_blank" rel="noopener noreferrer">Freegle page</a>
             which you could replicate for your council.
           </p>
           <p>
-            Oxfordshire County Council have created a <a href="https://www.oxfordshire.gov.uk/residents/environment-and-planning/waste-and-recycling/household-waste/repair-reuse-or-recycle" target="_blank">Waste Wizard</a> which directs residents to repair, reuse and recycling options, including pointing people towards Freegle.
+            Oxfordshire County Council have created a <a href="https://www.oxfordshire.gov.uk/residents/environment-and-planning/waste-and-recycling/household-waste/repair-reuse-or-recycle" target="_blank" rel="noopener noreferrer">Waste Wizard</a> which directs residents to repair, reuse and recycling options, including pointing people towards Freegle.
             This is a really easy way to let people know about Freegle and other similar organisations that help maximise reuse locally.
           </p>
 
           <h3>Leaflets</h3>
           <p>This double-sided A5 publicity leaflet designed by Freegle volunteers in Cumbria can be copied and edited in Canva.com:</p>
           <p>
-            <a href="https://www.canva.com/design/DAB4sdNw7yA/crZcKPhzyEH3Yfz0ZaGdxg/view" target="_blank">
+            <a href="https://www.canva.com/design/DAB4sdNw7yA/crZcKPhzyEH3Yfz0ZaGdxg/view" target="_blank" rel="noopener noreferrer">
               https://www.canva.com/design/DAB4sdNw7yA/crZcKPhzyEH3Yfz0ZaGdxg/view
             </a>
           </p><p>
             The Penrith &amp; Eden Freegle website in part of Cumbria has newsletters and articles which can be used as templates by for other councils.
-            <a href="https://www.penrithedenfreegle.org.uk/" target="_blank">https://www.penrithedenfreegle.org.uk/</a>
+            <a href="https://www.penrithedenfreegle.org.uk/" target="_blank" rel="noopener noreferrer">https://www.penrithedenfreegle.org.uk/</a>
           </p>
 
           <h3>Posters</h3>
@@ -122,7 +122,7 @@
           <h3>Radio</h3>
           <p>
             Here is an example of how Essex County Council used its local Heart FM website to promote reuse with Freegle.
-            <a href="https://www.heart.co.uk/essex/events/essex-county-council-freegle/" target="_blank">
+            <a href="https://www.heart.co.uk/essex/events/essex-county-council-freegle/" target="_blank" rel="noopener noreferrer">
               https://www.heart.co.uk/essex/events/essex-county-council-freegle/
             </a>
           </p>

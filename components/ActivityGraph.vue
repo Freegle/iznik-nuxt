@@ -369,9 +369,9 @@ export default {
         units: this.units
       })
 
-      Object.keys(res).forEach(comp => {
+      Object.keys(res).forEach(c => {
         // eslint-disable-next-line
-        Vue.set(this, comp, res[comp])
+        Vue.set(this, c, res[c])
       })
 
       this.loading = false

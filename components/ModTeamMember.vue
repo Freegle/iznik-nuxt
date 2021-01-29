@@ -8,7 +8,7 @@
       />
     </b-col>
     <b-col cols="6">
-      <b>{{ member.displayname }}</b>
+      <strong>{{ member.displayname }}</strong>
     </b-col>
     <b-col>
       <b-btn v-if="admin" size="sm" variant="white">

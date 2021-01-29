@@ -51,7 +51,7 @@
       <h4 class="mt-2">
         Group Info
       </h4>
-      Group id <v-icon name="hashtag" class="text-muted" scale="0.75" /><b>{{ group.id }}</b>.
+      Group id <v-icon name="hashtag" class="text-muted" scale="0.75" /><strong>{{ group.id }}</strong>.
       <br>
       <br>
       <Clipboard v-if="group.url" class="mr-3 mb-1" :value="group.url" />
@@ -196,11 +196,7 @@ export default {
             name = g.nameshort + ' / ' + g.namedisplay
           }
 
-          if (name === this.searchgroup) {
-            return true
-          } else {
-            return false
-          }
+          return name === this.searchgroup
         })
 
         ret = ret ? ret.id : null
@@ -221,11 +217,12 @@ export default {
           return -1
         } else if (b.lastmoderated && !a.lastmoderated) {
           return 1
-        } else
+        } else {
           return (
             new Date(b.lastmoderated).getTime() -
             new Date(a.lastmoderated).getTime()
           )
+        }
       })
 
       return r

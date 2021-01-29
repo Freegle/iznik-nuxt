@@ -51,9 +51,6 @@
     </template>
   </b-modal>
 </template>
-<style scoped lang="scss">
-</style>
-
 <script>
 import ExternalLink from './ExternalLink'
 export default {

@@ -5,7 +5,7 @@
       <div v-if="shortlink">
         <h3>{{ shortlink.name }}</h3>
         <p>
-          <a :href="'https://freegle.in/' + shortlink.name" target="_blank">{{ 'https://freegle.in/' + shortlink.name }}</a>
+          <a :href="'https://freegle.in/' + shortlink.name" target="_blank" rel="noopener noreferrer">{{ 'https://freegle.in/' + shortlink.name }}</a>
           <span v-if="shortlink.nameshort">
             is a shortlink for the community
             <nuxt-link :to="'/explore/' + shortlink.nameshort">

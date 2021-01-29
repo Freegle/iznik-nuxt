@@ -58,7 +58,7 @@
             edit it and <em>Save changes</em>, then <em>Approve and send</em>.
           </p>
           <ul>
-            <li><b>It's always good to put your names at the end.</b></li>
+            <li><strong>It's always good to put your names at the end.</strong></li>
             <li>Any changes you make will only apply to this copy.</li>
             <li>Members on multiple groups will only get one copy of this kind of ADMIN.</li>
           </ul>

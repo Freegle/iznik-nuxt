@@ -25,7 +25,7 @@
               you before releasing them.
             </p>
             <p v-else>
-              Held by <b>{{ member.heldby.displayname }}</b>.  Please check before releasing them.
+              Held by <strong>{{ member.heldby.displayname }}</strong>.  Please check before releasing them.
             </p>
             <ModMemberButton
               v-if="member.heldby"

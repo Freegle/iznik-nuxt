@@ -32,35 +32,35 @@
           </p>
           <ul>
             <li>
-              <b>Household Waste Recycling Centres</b> – A reminder that the tip is not the only option for unwanted items!
+              <strong>Household Waste Recycling Centres</strong> – A reminder that the tip is not the only option for unwanted items!
             </li>
             <li>
-              <b>Bulky waste</b> - Many councils point residents towards Freegle and other reuse organisations on their bulky waste web pages to help reduce the amount of waste disposed of through bulky collections - and reminding residents
+              <strong>Bulky waste</strong> - Many councils point residents towards Freegle and other reuse organisations on their bulky waste web pages to help reduce the amount of waste disposed of through bulky collections - and reminding residents
               they can save money by using Freegle instead of paying for a bulky waste collection.  Here are some good examples from other councils that you can replicate:
               <ul>
                 <li>
-                  <a href="https://www.richmond.gov.uk/book_a_bulky_item_collection" target="_blank">London Borough of Richmond Council</a>
+                  <a href="https://www.richmond.gov.uk/book_a_bulky_item_collection" target="_blank" rel="noopener noreferrer">London Borough of Richmond Council</a>
                 </li>
                 <li>
-                  <a href="http://www.centralbedfordshire.gov.uk/waste/bulky/collection.aspx">Central Bedfordshire Council</a>
+                  <a href="http://www.centralbedfordshire.gov.uk/waste/bulky/collection.aspx" rel="noopener noreferrer">Central Bedfordshire Council</a>
                 </li>
                 <li>
-                  <a href="https://www.eden.gov.uk/bins-and-recycling/household-refuse/special-household-waste-collections/bulky-household-waste-collection/">Eden District Council</a>
+                  <a href="https://www.eden.gov.uk/bins-and-recycling/household-refuse/special-household-waste-collections/bulky-household-waste-collection/" rel="noopener noreferrer">Eden District Council</a>
                 </li>
                 <li>
-                  <a href="https://www.birmingham.gov.uk/info/20009/waste_and_recycling/86/bulky_waste_collections">Birmingham City Council</a>
+                  <a href="https://www.birmingham.gov.uk/info/20009/waste_and_recycling/86/bulky_waste_collections" rel="noopener noreferrer">Birmingham City Council</a>
                 </li>
               </ul>
             </li>
             <li>
-              <b>Waste reduction</b> – If you provide information about waste minimisation and reuse, include a quick link to your local Freegle group here.
+              <strong>Waste reduction</strong> – If you provide information about waste minimisation and reuse, include a quick link to your local Freegle group here.
             </li>
             <li>
-              <b>A-Z</b> - If you have an A-Z of waste and recycling, please list Freegle as an option.  Brighton & Hove
-              City Council are a great example of how this can be done - see <a href="https://www.brighton-hove.gov.uk/content/environment/recycling-rubbish-and-street-cleaning/recycling-a-z" target="_blank">here</a>.
+              <strong>A-Z</strong> - If you have an A-Z of waste and recycling, please list Freegle as an option.  Brighton & Hove
+              City Council are a great example of how this can be done - see <a href="https://www.brighton-hove.gov.uk/content/environment/recycling-rubbish-and-street-cleaning/recycling-a-z" target="_blank" rel="noopener noreferrer">here</a>.
             </li>
             <li>
-              Oxfordshire County Council have created a <a href="https://www.oxfordshire.gov.uk/residents/environment-and-planning/waste-and-recycling/household-waste/repair-reuse-or-recycle" target="_blank">Waste Wizard</a> which directs residents to repair, reuse and recycling options, including pointing people towards Freegle.
+              Oxfordshire County Council have created a <a href="https://www.oxfordshire.gov.uk/residents/environment-and-planning/waste-and-recycling/household-waste/repair-reuse-or-recycle" target="_blank" rel="noopener noreferrer">Waste Wizard</a> which directs residents to repair, reuse and recycling options, including pointing people towards Freegle.
               This is a really easy way to let people know about Freegle and other similar organisations that help maximise reuse locally.
             </li>
           </ul>
@@ -90,7 +90,7 @@
             may be cheaper and easier for them to try giving away the item using Freegle, other reuse organisations or
             charities.  Providing a 'script' for staff to use is a simple way to do this, but you can also add it to
             the relevant section of your website.  The London Borough of Richmond Council does an excellent job of reminding residents they can save
-            money by using Freegle instead of paying for a bulky waste collection - see <a href="https://www.richmond.gov.uk/book_a_bulky_item_collection" target="_blank">here</a>.
+            money by using Freegle instead of paying for a bulky waste collection - see <a href="https://www.richmond.gov.uk/book_a_bulky_item_collection" target="_blank" rel="noopener noreferrer">here</a>.
           </p>
           <p>
             If you are a county council, you can work with your districts and boroughs to ensure that a consistent
@@ -118,20 +118,20 @@
           </p>
           <ul>
             <li>
-              <b>Schools</b> – From furniture to musical instruments, stationery to electrical items and uniform.
+              <strong>Schools</strong> – From furniture to musical instruments, stationery to electrical items and uniform.
               Schools generate a lot of waste, some of which is still in a usable condition and could be reused by
               another school or a member of the community.
             </li>
             <li>
-              <b>Housing</b> – Providing cheap furniture and other items to families in need.
+              <strong>Housing</strong> – Providing cheap furniture and other items to families in need.
               End of tenancy clearances and refurbishments.
             </li>
             <li>
-              <b>Estates</b> – When disposing of or acquiring properties, Freegle could come in useful for getting
+              <strong>Estates</strong> – When disposing of or acquiring properties, Freegle could come in useful for getting
               rid of surplus/unwanted furniture and other items.
             </li>
             <li>
-              <b>Facilities/caretakers</b> – Generally, Facilities/Caretakers form part of the waste disposal
+              <strong>Facilities/caretakers</strong> – Generally, Facilities/Caretakers form part of the waste disposal
               chain at a local authority.  Many items can be reused and save the council money and hassle
               rather than disposing of them.
             </li>

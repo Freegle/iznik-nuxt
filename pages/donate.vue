@@ -13,7 +13,9 @@
             We provide a free service and keep costs <em>phenomenally</em> low thanks to our
             large number of committed volunteers - but there are some things we have to pay for to keep going.
           </p>
-          <p><b>This month we're trying to raise &pound;{{ target }} from donations - can you help?</b></p>
+          <p class="font-weight-bold">
+            This month we're trying to raise &pound;{{ target }} from donations - can you help?
+          </p>
           <h3>If you can, please donate &pound;3.</h3>
           <p>...but anything you can give is very welcome.</p>
           <donation-button :direct-donation="true" />
@@ -26,7 +28,7 @@
         <b-card-text class="p-2">
           <p>
             This will make it easier to donate a little to Freegle when you're checking out using PayPal.  Go to our page
-            on PayPal Giving Fund and click the <b>Set as favourite charity</b> link.
+            on PayPal Giving Fund and click the <strong>Set as favourite charity</strong> link.
           </p>
           <ExternalLink href="https://www.paypal.com/fundraiser/charity/55681">
             <b-btn variant="primary" size="lg" class="mb-2">
@@ -56,7 +58,7 @@
               </p>
               <p>
                 If you do this, please complete a Gift Aid
-                Declaration <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfSWQ_hlOflsS6AfwPEmIlYxLuf1u5-iDspZKr20K-yj1hrVQ/viewform">here</a>.
+                Declaration <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfSWQ_hlOflsS6AfwPEmIlYxLuf1u5-iDspZKr20K-yj1hrVQ/viewform" rel="noopener noreferrer">here</a>.
               </p>
             </b-card-text>
           </b-card>
@@ -75,7 +77,7 @@
               </p>
               <p>
                 If you do this, please complete a Gift Aid
-                Declaration <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfSWQ_hlOflsS6AfwPEmIlYxLuf1u5-iDspZKr20K-yj1hrVQ/viewform">here</a>.
+                Declaration <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfSWQ_hlOflsS6AfwPEmIlYxLuf1u5-iDspZKr20K-yj1hrVQ/viewform" rel="noopener noreferrer">here</a>.
               </p>
             </b-card-text>
           </b-card>
@@ -106,7 +108,7 @@
             </b-card-header>
             <b-card-text class="p-2">
               <p>
-                You can also help us when you sell on <b>eBay</b>.  Make sure you're signed in to eBay, then click
+                You can also help us when you sell on <strong>eBay</strong>.  Make sure you're signed in to eBay, then click
                 below and <em>Save as favourite</em>.
               </p>
               <a href="http://www.ebay.co.uk/egw/ebay-for-charity/charity-profile/Freegle/74430" target="_blank" rel="noopener">

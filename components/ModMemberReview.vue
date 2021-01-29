@@ -25,7 +25,7 @@
               you before releasing them.
             </p>
             <p v-else>
-              Held by <b>{{ member.heldby.displayname }}</b>.  Please check before releasing them.
+              Held by <strong>{{ member.heldby.displayname }}</strong>.  Please check before releasing them.
             </p>
             <ModMemberButton
               v-if="member.heldby"
@@ -95,7 +95,7 @@
           </div>
         </div>
         <div v-for="m in memberof" :key="'membership-' + m.membershipid" class="p-1 mr-1">
-          <b>{{ m.namedisplay.length > 32 ? (m.namedisplay.substring(0, 32) + '...') : m.namedisplay }}</b>
+          <strong>{{ m.namedisplay.length > 32 ? (m.namedisplay.substring(0, 32) + '...') : m.namedisplay }}</strong>
           <span :class="'small ' + (daysago(m.added) < 31 ? 'text-danger font-weight-bold' : 'text-muted')">joined {{ m.added | timeago }}</span>
           <span v-if="m.reviewreason" class="text-danger ml-1 mr-1">{{ m.reviewreason }}</span>
           <b-btn v-if="amAModOn(m.id)" :to="'/modtools/members/approved/search/' + m.id + '/' + member.userid" variant="link" class="p-0 border-0 align-top">
@@ -123,7 +123,7 @@
           :label="'Ignore on ' + group.namedisplay"
           :handler="spamIgnore"
           :handler-data="group.id"
-          class="mr-1"
+          class="mr-1 mt-1"
         />
       </b-card-footer>
     </b-card>

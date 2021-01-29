@@ -2,27 +2,27 @@
   <NoticeMessage v-if="show" variant="danger">
     <p>Before we go further, please complete our "COVID checklist" to show that you'll help keep yourself and others safe.</p>
     <b-form-checkbox v-model="travel" size="lg">
-      <b>
+      <strong>
         I will follow rules on leaving my home, essential travel and staying local.
-      </b>
+      </strong>
     </b-form-checkbox>
     <p class="mt-3">
       When freegling:
     </p>
     <b-form-checkbox v-model="socialdistance" size="lg">
-      <b>
+      <strong>
         I will maintain social distance and wear a face covering unless medically exempt.
-      </b>
+      </strong>
     </b-form-checkbox>
     <b-form-checkbox v-model="clean" size="lg">
-      <b>
+      <strong>
         I will clean items I give or receive.
-      </b>
+      </strong>
     </b-form-checkbox>
     <b-form-checkbox v-model="enter" size="lg">
-      <b>
+      <strong>
         I will not enter anyone else's home or allow anyone into mine.
-      </b>
+      </strong>
     </b-form-checkbox>
     <p class="mt-2">
       If you're not comfortable, don't freegle - or consider delaying handovers until restrictions ease.  You can also read more

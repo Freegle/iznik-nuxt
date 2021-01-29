@@ -20,9 +20,9 @@
       </p>
       <p>Here are some ways to help:</p>
       <ul>
-        <li><b>Tell people!</b> It's easy to forget that lots of people still haven't heard of us.</li>
-        <li><b>Put up a poster.</b></li>
-        <li><b>Tell your story</b>.</li>
+        <li><strong>Tell people!</strong> It's easy to forget that lots of people still haven't heard of us.</li>
+        <li><strong>Put up a poster.</strong></li>
+        <li><strong>Tell your story</strong>.</li>
       </ul>
       <h3 class="header--size3">
         Put up a poster
@@ -47,7 +47,7 @@
           <h3 class="header--size4">
             A4
           </h3>
-          <a href="https://freegle.in/A4Poster" target="_blank" class="mr-2">
+          <a href="https://freegle.in/A4Poster" target="_blank" class="mr-2" rel="noopener noreferrer">
             <b-img-lazy src="~static/posters/A4.jpg" class="poster border border-dark mb-2" />
             <br>
             <b-btn variant="secondary" size="lg" class="mt-2 mb-2">
@@ -108,7 +108,7 @@
       </div>
       <p>
         You can help even more by letting us know where you put up posters. Once we know where it is, then
-        we can encourage other freeglers to put one up there in future. <b>Please do this!</b>
+        we can encourage other freeglers to put one up there in future. <strong>Please do this!</strong>
       </p>
       <b-btn variant="primary" size="lg" class="mb-1" @click="added">
         I put up a poster!
@@ -126,7 +126,7 @@
         You can get little "business cards" to hand out to people or put on noticeboards.  They're small, so it's
         easy to always have a few with you.
       </p>
-      <p>You can order these from firms like <a href="https://www.instantprint.co.uk/business-cards/economy?lamination=no&size=85-x-55-mm&paper=350gsm-silk&sided=single&finish=standard-corners&rangesizeq=0">Instantprint</a> - download our file and upload it to their site when ordering.</p>
+      <p>You can order these from firms like <a href="https://www.instantprint.co.uk/business-cards/economy?lamination=no&size=85-x-55-mm&paper=350gsm-silk&sided=single&finish=standard-corners&rangesizeq=0" rel="noopener noreferrer">Instantprint</a> - download our file and upload it to their site when ordering.</p>
       <div>
         <b-form-radio-group
           v-model="language"
@@ -145,7 +145,7 @@
         <div>
           <b-img-lazy src="/businesscards/FreegleBusinessCardSmall.jpg" class="border border-dark mb-2 mr-2 businesscard" />
         </div>
-        <a href="https://freegle.in/BusinessCard" target="_blank" class="mt-1 mb-1">
+        <a href="https://freegle.in/BusinessCard" target="_blank" class="mt-1 mb-1" rel="noopener noreferrer">
           <b-btn size="lg" variant="primary">
             Download business card
           </b-btn>
@@ -155,7 +155,7 @@
         <div>
           <b-img-lazy src="/businesscards/FreegleBusinessCardSmallWelsh.jpg" class="border border-dark mb-2 businesscard" />
         </div>
-        <a href="https://freegle.in/BusinessCardWelsh" target="_blank" class="mt-1 mb-1">
+        <a href="https://freegle.in/BusinessCardWelsh" target="_blank" class="mt-1 mb-1" rel="noopener noreferrer">
           <b-btn size="lg" variant="primary">
             Download business card
           </b-btn>

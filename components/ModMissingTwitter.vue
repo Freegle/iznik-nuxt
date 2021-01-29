@@ -12,7 +12,7 @@
           <p>
             Twitter account <a :href="'https://twitter.com/' + inv.account.name" target="_blank" rel="noopener nofollower">{{ inv.account.name }}</a>
             for group
-            <b>{{ inv.group.namedisplay }}</b>
+            <strong>{{ inv.group.namedisplay }}</strong>
             <span v-if="inv.account.locked">
               is locked
             </span>
