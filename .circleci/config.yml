@@ -30,14 +30,14 @@ workflows:
           filters:
             branches:
               only:
-                - app
+                - app-publish
       #    requires:
       #      - hold
-      #- build-and-publish-android:
-      #    filters:
-      #      branches:
-      #        only:
-      #          - app
+      - build-and-publish-android:
+          filters:
+            branches:
+              only:
+                - app-publish
       #    requires:
       #      - hold
 
