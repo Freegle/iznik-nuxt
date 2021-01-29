@@ -98,14 +98,13 @@ jobs:
       - run: cd ../iznik-nuxt-app; cp ../project/mobile/secrets/GoogleService-Info.plist GoogleService-Info.plist
       - run: cd ../iznik-nuxt-app; ln -s ../project/dist www
 
-      - run: echo $(whoami)
-      - run: sudo chown -R $(whoami) ~/.npm
-      - run: sudo chown -R $(whoami) ~/Library
-#      - run: mkdir -p ~/Library/Preferences/insight-nodejs
-#      - run: sudo chmod -R 777 ~/Library
-#      - run: sudo chmod -R 777 ~/.config
-#      - run: mkdir -p ~/.config/configstore
-#      - run: ls -l ~/.config/configstore
+#      - run: sudo chown -R $(whoami) ~/.npm
+#      - run: sudo chown -R $(whoami) ~/Library
+      - run: mkdir -p ~/Library/Preferences/insight-nodejs
+      - run: sudo chmod -R 777 ~/Library
+      - run: sudo chmod -R 777 ~/.config
+      - run: mkdir -p ~/.config/configstore
+      - run: ls -l ~/.config/configstore
 
       - run: cd ../iznik-nuxt-app; cordova platform rm ios
       - run: cd ../iznik-nuxt-app; cordova platform add ios@5.1.1
