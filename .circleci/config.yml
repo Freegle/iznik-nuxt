@@ -3,11 +3,6 @@
 # https://flexpoint.tech/2017/08/29/using-oracles-jdk-in-circleci-with-gradle/
 # https://circleci.com/docs/2.0/language-java/
 
-# https://medium.com/tarmac/continuous-delivery-to-test-flight-with-ionic-and-cordova-on-circleci-without-fastlane-58447324f38a
-
-# https://github.com/ngx-rocket/generator-ngx-rocket/issues/162
-# https://github.com/ngx-rocket/generator-ngx-rocket/pull/364/commits/b41a54eb3a465ffe4767412971ec99a7c2ddaf23
-# https://github.com/ngx-rocket/circleci-dockerfiles/blob/master/cordova/images/Dockerfile
 # Android: runs in /home/circleci/project
 # Apple: runs in /Users/distiller/project as user distiller
 version: 2.1
@@ -24,8 +19,6 @@ workflows:
     jobs:
       #- hold: # Job needs approval to run
       #    type: approval      
-      # https://github.com/CircleCI-Public/circleci-demo-ios/blob/master/.circleci/config.yml
-      # https://github.com/Freegle/iznik-nuxt/blob/app-ios/.travis.yml
       - build-and-publish-apple:
           filters:
             branches:
@@ -169,6 +162,14 @@ jobs:
       - run: brew install ghr
 
       - run: ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${CIRCLECI_TAG} ./releases/
+
+################
+# STORE RELEASE IN CIRCLE-CI ARTIFACTS
+      - run:
+          name: == Store built ipas as circle-ci artifacts
+          command: echo "Store as circle-ci artifacts"
+      - store_artifacts:
+          path: ./releases
 
 ################
 ################ ANDROID
@@ -343,7 +344,7 @@ jobs:
 ################
 # STORE RELEASE IN CIRCLE-CI ARTIFACTS
       - run:
-          name: == Store built apks as circle-ci artifects
-          command: echo "Store as circle-ci artifects"
+          name: == Store built apks as circle-ci artifacts
+          command: echo "Store as circle-ci artifacts"
       - store_artifacts:
           path: ./releases
