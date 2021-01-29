@@ -133,27 +133,27 @@ jobs:
           command: echo "Make ModTools app"
       - run: npm run mtapp
       - run: mkdir ../iznik-nuxt-mt
-      - run: cd ../iznik-nuxt-app; ln -s ../project/mobile/modtools/ios/config.xml config.xml
-      - run: cd ../iznik-nuxt-app; ln -s ../project/mobile/modtools/ios/package.json package.json
-      - run: cd ../iznik-nuxt-app; ln -s ../project/mobile/modtools/icons icons
-      - run: cd ../iznik-nuxt-app; ln -s ../project/mobile/modtools/package-assets package-assets
-      - run: cd ../iznik-nuxt-app; ln -s ../project/mobile/modtools/scripts scripts
-      - run: cd ../iznik-nuxt-app; cp ../project/mobile/secrets/GoogleService-Info.plist GoogleService-Info.plist
-      - run: cd ../iznik-nuxt-app; ln -s ../project/dist www
-      - run: cd ../iznik-nuxt-app; cordova platform rm ios
-      - run: cd ../iznik-nuxt-app; cordova platform add ios@5.1.1
+      - run: cd ../iznik-nuxt-mt; ln -s ../project/mobile/modtools/ios/config.xml config.xml
+      - run: cd ../iznik-nuxt-mt; ln -s ../project/mobile/modtools/ios/package.json package.json
+      - run: cd ../iznik-nuxt-mt; ln -s ../project/mobile/modtools/icons icons
+      - run: cd ../iznik-nuxt-mt; ln -s ../project/mobile/modtools/package-assets package-assets
+      - run: cd ../iznik-nuxt-mt; ln -s ../project/mobile/modtools/scripts scripts
+      - run: cd ../iznik-nuxt-mt; cp ../project/mobile/secrets/GoogleService-Info.plist GoogleService-Info.plist
+      - run: cd ../iznik-nuxt-mt; ln -s ../project/dist www
+      - run: cd ../iznik-nuxt-mt; cordova platform rm ios
+      - run: cd ../iznik-nuxt-mt; cordova platform add ios@5.1.1
 
       # Fix cordova-ios
-      - run: cd ../iznik-nuxt-app; sed -i '' "s/PROVISIONING_PROFILE =/PROVISIONING_PROFILE_SPECIFIER =/" platforms/ios/cordova/lib/build.js
+      - run: cd ../iznik-nuxt-mt; sed -i '' "s/PROVISIONING_PROFILE =/PROVISIONING_PROFILE_SPECIFIER =/" platforms/ios/cordova/lib/build.js
 
       # Build debug build
-      - run: cd ../iznik-nuxt-app; cordova build --debug --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="ad-hoc" --automaticProvisioning="false" --provisioningProfile="ModTools adhoc 0420" >buildlogdebug.txt
-      - run: cd ../iznik-nuxt-app; cp platforms/ios/build/device/ModTools.ipa ../project/releases/ModTools-ios-app-$MODTOOLS_VERSION-debug-$(date +'%Y%m%d%H%M%S').ipa
+      - run: cd ../iznik-nuxt-mt; cordova build --debug --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="ad-hoc" --automaticProvisioning="false" --provisioningProfile="ModTools adhoc 0420" >buildlogdebug.txt
+      - run: cd ../iznik-nuxt-mt; cp platforms/ios/build/device/ModTools.ipa ../project/releases/ModTools-ios-app-$MODTOOLS_VERSION-debug-$(date +'%Y%m%d%H%M%S').ipa
 
       # Build release build and publish
-      - run: cd ../iznik-nuxt-app; cordova build --release --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile="ModTools 0420"  >buildlogrelease.txt
-      - run: cd ../iznik-nuxt-app; cp platforms/ios/build/device/ModTools.ipa ../project/releases/ModTools-ios-app-$MODTOOLS_VERSION-release-$(date +'%Y%m%d%H%M%S').ipa
-      - run: cd ../iznik-nuxt-app; xcrun altool --upload-app --type ios --file "platforms/ios/build/device/ModTools.ipa" --username $AppleUserId --password "$AppleAppSpecificPwd" || true
+      - run: cd ../iznik-nuxt-mt; cordova build --release --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile="ModTools 0420"  >buildlogrelease.txt
+      - run: cd ../iznik-nuxt-mt; cp platforms/ios/build/device/ModTools.ipa ../project/releases/ModTools-ios-app-$MODTOOLS_VERSION-release-$(date +'%Y%m%d%H%M%S').ipa
+      - run: cd ../iznik-nuxt-mt; xcrun altool --upload-app --type ios --file "platforms/ios/build/device/ModTools.ipa" --username $AppleUserId --password "$AppleAppSpecificPwd" || true
 
 ################
 # UPLOAD TO GITHUB AS NEW TAGGED RELEASE
