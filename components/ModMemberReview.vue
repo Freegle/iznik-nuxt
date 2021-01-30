@@ -208,7 +208,7 @@ export default {
       })
     },
     allmemberof() {
-      let ms = null
+      let ms = []
 
       if (this.member && this.member.memberof) {
         ms = this.member.memberof
@@ -217,7 +217,7 @@ export default {
       }
 
       if (!ms) {
-        return null
+        return []
       }
 
       ms.sort(function(a, b) {
@@ -230,7 +230,7 @@ export default {
       if (this.allmemberships) {
         return this.allmemberof
       } else {
-        return this.memberof.slice(0, MEMBERSHIPS_SHOW)
+        return this.allmemberof.slice(0, MEMBERSHIPS_SHOW)
       }
     },
     email() {
@@ -250,10 +250,8 @@ export default {
     hiddenmemberofs() {
       return this.allmemberships
         ? 0
-        : this.user &&
-          this.user.memberof &&
-          this.user.memberof.length > MEMBERSHIPS_SHOW
-          ? this.user.memberof.length - MEMBERSHIPS_SHOW
+        : this.allmemberof.length > MEMBERSHIPS_SHOW
+          ? this.allmemberof.length - MEMBERSHIPS_SHOW
           : 0
     },
     inactive() {
