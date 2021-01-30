@@ -207,7 +207,7 @@ export default {
         )
       })
     },
-    memberof() {
+    allmemberof() {
       let ms = null
 
       if (this.member && this.member.memberof) {
@@ -224,10 +224,13 @@ export default {
         return new Date(b.added).getTime() - new Date(a.added).getTime()
       })
 
+      return ms
+    },
+    memberof() {
       if (this.allmemberships) {
-        return ms
+        return this.allmemberof
       } else {
-        return ms.slice(0, MEMBERSHIPS_SHOW)
+        return this.memberof.slice(0, MEMBERSHIPS_SHOW)
       }
     },
     email() {
