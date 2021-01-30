@@ -9,18 +9,6 @@
             <option value="-1">
               Immediately
             </option>
-            <option value="1">
-              Every Hour
-            </option>
-            <option value="2">
-              Every 2 Hours
-            </option>
-            <option value="4">
-              Every 4 Hours
-            </option>
-            <option value="8">
-              Every 8 Hours
-            </option>
             <option value="24">
               Every day
             </option>

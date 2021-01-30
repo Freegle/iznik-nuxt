@@ -45,18 +45,6 @@
         <b-btn :variant="frequencyChosen(24)" @click="emails(24)">
           Daily
         </b-btn>
-        <b-btn :variant="frequencyChosen(12)" @click="emails(12)">
-          12 hours
-        </b-btn>
-        <b-btn :variant="frequencyChosen(4)" @click="emails(4)">
-          4 hours
-        </b-btn>
-        <b-btn :variant="frequencyChosen(2)" @click="emails(2)">
-          2 hours
-        </b-btn>
-        <b-btn :variant="frequencyChosen(1)" @click="emails(1)">
-          1 hour
-        </b-btn>
         <b-btn :variant="frequencyChosen(0)" @click="emails(0)">
           Immediately
         </b-btn>
