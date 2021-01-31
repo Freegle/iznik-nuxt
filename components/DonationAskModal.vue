@@ -8,6 +8,10 @@
       no-stacking
     >
       <template slot="default">
+        <NoticeMessage variant="info">
+          Like many charities (and many freeglers) Freegle is affected by the lockdown. Please help us be there
+          for people when it's over.
+        </NoticeMessage>
         <div class="d-flex justify-content-between">
           <div v-if="variant === 'whatyoucanrunning'" style="width:250px" class="mr-4 pt-4 d-none d-sm-block">
             <b-img-lazy fluid src="/running.gif" alt="Keep freegle running" />
@@ -15,15 +19,6 @@
           <div>
             <p>
               <strong>{{ groupname }}</strong> is a charity that's free to use, but not free to run.
-            </p>
-            <p v-if="variant === 'buttons51025help'">
-              A lot of us are struggling at the moment, and that's probably going to continue for a while.  Can you
-              help us help more people?
-            </p>
-            <p v-else>
-              The COVID-19 lockdown has been difficult for us because we rely on
-              donations to keep going, and we had to shut down for a while.  It's been difficult for a lot of
-              other people, charities, and businesses too.
             </p>
             <p>
               This month we're trying to raise <strong>&pound;{{ target }}</strong><span v-if="groupid && !targetMet"> for this community</span>.
@@ -90,11 +85,13 @@
 </template>
 
 <script>
+import NoticeMessage from '@/components/NoticeMessage'
 import DonationThermometer from './DonationThermometer'
 import DonationButton from './DonationButton'
 
 export default {
   components: {
+    NoticeMessage,
     DonationThermometer,
     DonationButton
   },
