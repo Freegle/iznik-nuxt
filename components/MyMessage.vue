@@ -242,10 +242,12 @@
     <OutcomeModal ref="outcomeModal" :message="message" @outcome="hide = true" />
     <ShareModal :id="message.id" ref="shareModal" />
     <MessageEditModal ref="editModal" :message="message" />
+    <PromiseModal ref="promiseModal" :messages="[ message ]" :selected-message="message.id" :users="replyusers" />
   </div>
 </template>
 <script>
 import AddToCalendar from '@/components/AddToCalendar'
+import PromiseModal from '@/components/PromiseModal'
 import OutcomeModal from './OutcomeModal'
 const MyMessageReply = () => import('./MyMessageReply.vue')
 const ShareModal = () => import('./ShareModal')
@@ -264,6 +266,7 @@ export default {
     ResizeText
   },
   components: {
+    PromiseModal,
     AddToCalendar,
     OutcomeModal,
     ShareModal,
@@ -470,6 +473,9 @@ export default {
           break
         case 'received':
           this.outcome('Received')
+          break
+        case 'promise':
+          this.$refs.promiseModal.show()
           break
       }
     }
