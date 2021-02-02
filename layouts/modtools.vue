@@ -31,7 +31,7 @@
               <b-btn variant="white" class="menu" @click="toggleMenu">
                 <v-icon name="bars" class="" scale="1.5" />
               </b-btn>
-              <b-badge v-show="menuCount" v-if="!showMenu" variant="danger" class="menuCount position-absolute">
+              <b-badge v-show="menuCount" v-if="!showMenu" variant="danger" class="menuCount position-absolute" @click="toggleMenu">
                 {{ menuCount }}
               </b-badge>
             </div>
