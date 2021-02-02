@@ -18,7 +18,7 @@
         </h3>
       </template>
       <template slot="default">
-        <div v-if="type === 'Taken' || type === 'Received'" class="text-center">
+        <div v-if="type === 'Taken'" class="text-center">
           <OutcomeBy
             :availableinitially="typeof message.availableinitially === 'number' ? message.availableinitially : 1"
             :type="type"

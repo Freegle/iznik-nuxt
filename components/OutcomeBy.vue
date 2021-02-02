@@ -10,7 +10,7 @@
     </div>
     <div v-else>
       <p>
-        Please tell us who <span v-if="type === 'Taken'">took</span><span v-else>received</span> this.
+        Please tell us who took this.
         We'll let anyone else who replied know, and it helps identify reliable freeglers.
       </p>
     </div>
