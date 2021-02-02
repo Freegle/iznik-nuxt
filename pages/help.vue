@@ -171,13 +171,48 @@
                   </p>
                 </template>
               </Question>
-              <Question id="youcanhelp">
+              <Question id="mobile">
                 <template slot="title">
-                  <strong>How you can help!</strong>
+                  <strong>Do you have a mobile app?</strong>
                 </template>
                 <template slot="content">
                   <p>
-                    Freegle is run by volunteers - so if you can help, please get in touch!
+                    We do! Freegling is easy on mobiles and tablets, and you get notifications of replies so you don't have to rely on email. Download using these links or search for Freegle in your app store - it's free!
+                  </p>
+                  <div class="d-flex justify-content-between">
+                    <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" class="mt-2" target="_blank" rel="noopener noreferrer">
+                      <img alt="Freegle Android app on Google Play" title="Freegle Android app on Google Play" class="img-responsive" src="/en-play-badge.png">
+                    </a>
+                    <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&amp;mt=8" class="mt-2" target="_blank" rel="noopener noreferrer">
+                      <img alt="Freegle app for iPhone, iPad, and iPod touch" title="Freegle app for iPhone, iPad, and iPod touch" class="img-responsive" src="/app-store-black-sm.png">
+                    </a>
+                  </div>
+                  <p class="mt-2">
+                    The app is only available in the UK app stores. We support Android 4.4/iOS 10 or later.
+                  </p>
+                </template>
+              </Question>
+              <Question id="fairoffer">
+                <template slot="title">
+                  <strong>What's the Fair Offer Policy?</strong>
+                </template>
+                <template slot="content">
+                  <p>
+                    Some freeglers use mention this to indicate that they will wait a while before deciding who to
+                    give an item to.
+                  </p>
+                  <p>
+                    This helps people who aren't online all the time to get a fair chance.
+                  </p>
+                </template>
+              </Question>
+              <Question id="youcanhelp">
+                <template slot="title">
+                  <strong>Can I help?</strong>
+                </template>
+                <template slot="content">
+                  <p>
+                    Yes!  Freegle is run by volunteers - so if you can help, please get in touch!
                   </p>
                   <p>
                     If you'd like to spread the word you can download a poster or ask for "business cards" to hand out:
@@ -222,27 +257,6 @@
                   </p>
                   <p>
                     <donation-button :direct-donation="true" />
-                  </p>
-                </template>
-              </Question>
-              <Question id="mobile">
-                <template slot="title">
-                  <strong>Do you have a mobile app?</strong>
-                </template>
-                <template slot="content">
-                  <p>
-                    We do! Freegling is easy on mobiles and tablets, and you get notifications of replies so you don't have to rely on email. Download using these links or search for Freegle in your app store - it's free!
-                  </p>
-                  <div class="d-flex justify-content-between">
-                    <a href="https://play.google.com/store/apps/details?id=org.ilovefreegle.direct" class="mt-2" target="_blank" rel="noopener noreferrer">
-                      <img alt="Freegle Android app on Google Play" title="Freegle Android app on Google Play" class="img-responsive" src="/en-play-badge.png">
-                    </a>
-                    <a href="https://itunes.apple.com/gb/app/freegle/id970045029?ls=1&amp;mt=8" class="mt-2" target="_blank" rel="noopener noreferrer">
-                      <img alt="Freegle app for iPhone, iPad, and iPod touch" title="Freegle app for iPhone, iPad, and iPod touch" class="img-responsive" src="/app-store-black-sm.png">
-                    </a>
-                  </div>
-                  <p class="mt-2">
-                    The app is only available in the UK app stores. We support Android 4.4/iOS 10 or later.
                   </p>
                 </template>
               </Question>
