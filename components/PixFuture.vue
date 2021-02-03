@@ -5,7 +5,6 @@
 export default {
   mounted() {
     if (process.client) {
-      console.log('Add PixFuture')
       window.corner_video = 'left'
       window.zone_id = 131
       window.mobile_allowed = true
@@ -13,8 +12,7 @@ export default {
 
       const s = document.createElement('script')
       s.setAttribute('src', 'https://serv-vdo.pixfuture.com/vpaid/ads.js')
-      document.head.appendChild(s)
-      console.log('Added PixFuture')
+      document.body.appendChild(s)
     }
   }
 }
