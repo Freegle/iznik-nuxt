@@ -480,6 +480,10 @@ export const actions = {
     )
   },
 
+  async partnerConsent({ dispatch, commit }, params) {
+    await this.$api.message.partnerConsent(params.id, params.partner)
+  },
+
   async search({ dispatch, commit }, params) {
     const { messages } = await this.$api.message.fetchMessages({
       subaction: 'searchall',

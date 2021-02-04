@@ -132,6 +132,14 @@ export default class MessageAPI extends BaseAPI {
     })
   }
 
+  partnerConsent(id, partner) {
+    return this.$post('/message', {
+      action: 'PartnerConsent',
+      id,
+      partner
+    })
+  }
+
   addBy(id, userid, count) {
     return this.$post('/message', {
       action: 'AddBy',

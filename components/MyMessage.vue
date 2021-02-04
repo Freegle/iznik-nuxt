@@ -163,6 +163,9 @@
               <b-btn v-if="!rejected && !queued && !simple" variant="secondary" title="Share" class="mr-2 mb-1" @click="share">
                 <v-icon name="share-alt" /> Share
               </b-btn>
+              <b-btn v-if="mod && message.type === 'Offer' && !rejected && !taken && !received && !withdrawn" variant="secondary" class="mr-2 mb-1" @click="lovejunk">
+                <v-icon name="truck" /> Paid removal
+              </b-btn>
             </div>
           </b-button>
         </b-card-header>
@@ -243,17 +246,20 @@
     <ShareModal :id="message.id" ref="shareModal" />
     <MessageEditModal ref="editModal" :message="message" />
     <PromiseModal ref="promiseModal" :messages="[ message ]" :selected-message="message.id" :users="replyusers" />
+    <LoveJunkModal v-if="showLoveJunk" ref="lovejunk" :message="message" />
   </div>
 </template>
 <script>
 import AddToCalendar from '@/components/AddToCalendar'
 import PromiseModal from '@/components/PromiseModal'
+import waitForRef from '@/mixins/waitForRef'
 import OutcomeModal from './OutcomeModal'
 const MyMessageReply = () => import('./MyMessageReply.vue')
 const ShareModal = () => import('./ShareModal')
 const MessageEditModal = () => import('./MessageEditModal')
 const ImageCarousel = () => import('./ImageCarousel')
 const NoticeMessage = () => import('~/components/NoticeMessage')
+const LoveJunkModal = () => import('~/components/LoveJunkModal')
 
 let ResizeText = null
 
@@ -273,8 +279,10 @@ export default {
     MyMessageReply,
     MessageEditModal,
     ImageCarousel,
-    NoticeMessage
+    NoticeMessage,
+    LoveJunkModal
   },
+  mixins: [waitForRef],
   props: {
     message: {
       type: Object,
@@ -309,7 +317,8 @@ export default {
     return {
       maxChars: 60,
       expanded: false,
-      hide: false
+      hide: false,
+      showLoveJunk: false
     }
   },
   computed: {
@@ -563,6 +572,13 @@ export default {
       }
 
       return ret
+    },
+    lovejunk() {
+      this.showLoveJunk = true
+
+      this.waitForRef('lovejunk', () => {
+        this.$refs.lovejunk.show()
+      })
     }
   }
 }
