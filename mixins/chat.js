@@ -427,21 +427,6 @@ export default {
       }
     },
     notHandover() {
-      this.$api.bandit.shown({
-        uid: 'handoverprompt',
-        variant: 'yes'
-      })
-      this.$api.bandit.shown({
-        uid: 'handoverprompt',
-        variant: 'no'
-      })
-
-      this.$api.bandit.chosen({
-        uid: 'handoverprompt',
-        variant: 'no',
-        info: this.chat ? this.chat.id : null
-      })
-
       if (this.chat) {
         // We don't want to keep asking.  Keep a bounded number of the chat ids in local storage to prevent that.
         let nothandover = this.$store.getters['misc/get']('nothandover')
@@ -460,21 +445,7 @@ export default {
       }
     },
     promise: function(date) {
-      if (this.showHandoverPrompt) {
-        this.$api.bandit.shown({
-          uid: 'handoverprompt',
-          variant: 'yes'
-        })
-        this.$api.bandit.shown({
-          uid: 'handoverprompt',
-          variant: 'no'
-        })
-
-        this.$api.bandit.chosen({
-          uid: 'handoverprompt',
-          variant: 'yes'
-        })
-      } else {
+      if (!this.showHandoverPrompt) {
         // Make sure we're not suppressing the handover prompt - the fact that they have promised now overrides their
         // earlier decision to hide it.
         let nothandover = this.$store.getters['misc/get']('nothandover')

@@ -106,37 +106,12 @@ export default {
         })
 
         this.showModal = true
-
-        this.$api.bandit.shown({
-          uid: 'share',
-          variant: 'facebook'
-        })
-
-        this.$api.bandit.shown({
-          uid: 'share',
-          variant: 'twitter'
-        })
-
-        this.$api.bandit.shown({
-          uid: 'share',
-          variant: 'whatsapp'
-        })
-
-        this.$api.bandit.shown({
-          uid: 'share',
-          variant: 'email'
-        })
       } catch (e) {
         // Must no longer exist on server.
         this.close()
       }
     },
     chose(type) {
-      this.$api.bandit.chosen({
-        uid: 'share',
-        variant: type
-      })
-
       this.shared = true
     },
     close() {
