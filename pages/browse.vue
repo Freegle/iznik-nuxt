@@ -39,7 +39,7 @@
         <sidebar-right v-if="showRest" show-volunteer-opportunities />
       </b-col>
     </b-row>
-    <PixFuture v-if="mod" />
+    <PixFuture />
   </b-container>
 </template>
 
