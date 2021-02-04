@@ -163,7 +163,7 @@
               <b-btn v-if="!rejected && !queued && !simple" variant="secondary" title="Share" class="mr-2 mb-1" @click="share">
                 <v-icon name="share-alt" /> Share
               </b-btn>
-              <b-btn v-if="mod && message.type === 'Offer' && !rejected && !taken && !received && !withdrawn" variant="secondary" class="mr-2 mb-1" @click="lovejunk">
+              <b-btn v-if="mod && message.lovejunkhash && message.type === 'Offer' && !rejected && !taken && !received && !withdrawn" variant="secondary" class="mr-2 mb-1" @click="lovejunk">
                 <v-icon name="truck" /> Paid removal
               </b-btn>
             </div>
