@@ -39,7 +39,6 @@
         <sidebar-right v-if="showRest" show-volunteer-opportunities />
       </b-col>
     </b-row>
-    <PixFuture v-if="false" />
   </b-container>
 </template>
 
@@ -54,7 +53,6 @@ import AdaptiveMap from '~/components/AdaptiveMap'
 const CovidWarning = () => import('~/components/CovidWarning')
 const SidebarLeft = () => import('~/components/SidebarLeft')
 const SidebarRight = () => import('~/components/SidebarRight')
-const PixFuture = () => import('~/components/PixFuture')
 const ExpectedRepliesWarning = () =>
   import('~/components/ExpectedRepliesWarning')
 
@@ -73,8 +71,7 @@ export default {
     CovidWarning,
     SidebarLeft,
     SidebarRight,
-    ExpectedRepliesWarning,
-    PixFuture
+    ExpectedRepliesWarning
   },
   mixins: [loginRequired, buildHead, map],
   data: function() {

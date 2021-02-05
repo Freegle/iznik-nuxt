@@ -80,10 +80,7 @@
         <li>
           We show jobs ads from
           <!-- eslint-disable-next-line -->
-          <ExternalLink href="https://uk.whatjobs.com/">WhatJobs</ExternalLink>, both on the site and in emails,
-          and video ads from
-          <!-- eslint-disable-next-line -->
-          <ExternalLink href="https://www.pixfuture.com/">PixFuture</ExternalLink> on the site.
+          <ExternalLink href="https://uk.whatjobs.com/">WhatJobs</ExternalLink>, both on the site and in emails.
           We'd prefer not to,
           but we don't raise enough from <nuxt-link to="/donate">
             donations
@@ -129,6 +126,9 @@
         Here are the changes to this page.
       </p>
       <ul class>
+        <li>
+          05/02/2021: Updated to remove PixFuture.
+        </li>
         <li>
           04/02/2021: Updated to include PixFuture.
         </li>
