@@ -59,7 +59,7 @@
           <h3 class="header--size4">
             A5
           </h3>
-          <a href="~static/posters/A5.jpg" target="_blank" class="mr-2">
+          <a href="/posters/A5.jpg" target="_blank" class="mr-2">
             <b-img-lazy src="~static/posters/A5.jpg" class="poster border border-dark mb-2" />
             <br>
             <b-btn variant="secondary" size="lg" class="mt-2 mb-2">
