@@ -196,7 +196,8 @@ export default {
           m.type === 'Interested' &&
           m.refmsg &&
           m.refmsg.type === 'Offer' &&
-          m.refmsg.fromuser === this.myid &&
+          typeof m.refmsg === 'object' &&
+          m.refmsg.fromuser.id === this.myid &&
           m.refmsg.availablenow &&
           (!m.refmsg.outcomes || m.refmsg.outcomes.length === 0) &&
           !this.promisedToMe(m.refmsg.id)

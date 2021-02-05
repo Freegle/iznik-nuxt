@@ -616,7 +616,6 @@ export default {
 
       if (this.reply) {
         const me = this.$store.getters['auth/user']
-        const phone = me ? me.phone : null
 
         if (me && me.id) {
           if (me.id !== this.replyToUser) {
