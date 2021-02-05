@@ -26,11 +26,12 @@
     "cordova-plugin-zoom-control-2": "^0.4.2",
     "cordova-support-google-services": "^1.3.2",
     "es6-promise-plugin": "^4.2.2",
-    "phonegap-plugin-multidex": "^1.0.0",
-    "phonegap-plugin-push": "2.3.0"
+    "phonegap-plugin-multidex": "^1.0.0"
   },
   "devDependencies": {
-    "cordova-plugin-whitelist": "^1.3.4"
+    "@havesource/cordova-plugin-push": "1.0.0",
+    "cordova-plugin-whitelist": "^1.3.4",
+    "phonegap-plugin-push": "2.3.0"
   },
   "cordova": {
     "plugins": {
@@ -49,14 +50,14 @@
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
       },
       "cordova-plugin-zoom-control-2": {},
-      "phonegap-plugin-push": {
-        "ANDROID_SUPPORT_V13_VERSION": "27.+",
-        "FCM_VERSION": "17.0.+"
-      },
       "cordova-plugin-contacts": {},
       "cordova-plugin-calendar": {},
       "cordova-plugin-geolocation": {
         "GPS_REQUIRED": "false"
+      },
+      "phonegap-plugin-push": {
+        "ANDROID_SUPPORT_V13_VERSION": "27.+",
+        "FCM_VERSION": "17.0.+"
       }
     },
     "platforms": [
