@@ -79,6 +79,16 @@
             />
             <ModConfigSetting
               :configid="configid"
+              name="chatread"
+              label="Leave chat unread?"
+              description="When you send a standard message it will go in the chat between that member and the group mods.  If this setting is 'Leave as unread' then it will be mailed to other mods and they will see it as unread in chat (i.e. with a red number).  If this setting is 'Mark as read', then they will still be able to see it in the chat, but it won't get mailed and it won't be unread."
+              type="toggle"
+              toggle-checked="Mark as read"
+              toggle-unchecked="Leave as unread"
+              :disabled="locked"
+            />
+            <ModConfigSetting
+              :configid="configid"
               name="fromname"
               label="'From:' name in messages"
               description="You can choose whether the mod's own name is used in standard messages."
