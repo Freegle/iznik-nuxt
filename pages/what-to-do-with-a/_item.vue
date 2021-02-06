@@ -21,7 +21,7 @@
         You don't need to spend hours on the phone to the council, and you don't have to pay.  So why not make
         someone's day and offer up your old <strong>{{ item }}</strong> today?
       </p>
-      <b-btn variant="primary" size="lg" to="/give" class="mt-2 mb-4">
+      <b-btn variant="primary" size="lg" to="/give" class="mt-2 mb-4" @click="record">
         Give away my {{ item }}
       </b-btn>
     </div>
@@ -135,11 +135,23 @@ export default {
   beforeCreate() {
     this.item = this.$route.params.item
   },
+  mounted() {
+    this.$api.bandit.shown({
+      uid: 'what-to-do-with-a',
+      variant: this.item
+    })
+  },
   methods: {
     ready() {
       this.waitForRef('map', () => {
         this.mapObject = this.$refs.map.mapObject
         this.showCluster = true
+      })
+    },
+    record() {
+      this.$api.bandit.chosen({
+        uid: 'what-to-do-with-a',
+        variant: this.item
       })
     }
   },
