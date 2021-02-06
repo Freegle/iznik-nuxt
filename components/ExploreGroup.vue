@@ -11,13 +11,19 @@
           <b-row>
             <b-col cols="5">
               <b-button to="/give" class="mt-1" size="lg" block variant="primary">
-                <v-icon name="gift" />&nbsp;Give stuff
+                <client-only>
+                  <v-icon name="gift" />
+                </client-only>
+                &nbsp;Give stuff
               </b-button>
             </b-col>
             <b-col cols="2" />
             <b-col cols="5">
               <b-button to="/find" class="mt-1" size="lg" block variant="secondary">
-                <v-icon name="search" />&nbsp;Ask for stuff
+                <client-only>
+                  <v-icon name="search" />
+                </client-only>
+                &nbsp;Ask for stuff
               </b-button>
             </b-col>
           </b-row>
