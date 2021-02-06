@@ -488,7 +488,8 @@ module.exports = {
             // Some errors seem benign, and so we ignore them on the client side rather than clutter our sentry logs.
             ignoreErrors: [
               'ResizeObserver loop limit exceeded', // Unclear where this happens.
-              "Cannot read property '_leaflet_pos' of undefined" // This happens if we transition pages while the map is loading.
+              "Cannot read property '_leaflet_pos' of undefined", // This happens if we transition pages while the map is loading.
+              'Navigation cancelled from ' // This can happen if someone clicks twice in quick succession
             ]
           })
         )
