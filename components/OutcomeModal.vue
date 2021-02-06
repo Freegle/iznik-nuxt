@@ -115,7 +115,7 @@ export default {
     },
     submitDisabled() {
       const ret =
-        this.type !== 'Withdrawn' &&
+        this.type === 'Taken' &&
         this.message.availableinitially === 1 &&
         this.left === 1
       return ret
