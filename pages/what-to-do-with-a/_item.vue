@@ -97,7 +97,7 @@ export default {
       await store.dispatch('messages/clear')
       await store.dispatch('messages/fetchMessages', {
         subaction: 'searchmess',
-        search: params.item,
+        search: encodeURIComponent(params.item),
         swlat: 49.959999905,
         swlng: -7.57216793459,
         nelat: 58.6350001085,
