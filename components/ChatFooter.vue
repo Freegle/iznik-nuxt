@@ -62,6 +62,9 @@
             No, I'm not
           </b-btn>
         </div>
+        <p class="mt-1">
+          Tip: if you're not agreeing it just yet, click <em>No</em> and then click <em>Promise</em> later.
+        </p>
       </b-alert>
       <div v-else>
         <label for="chatmessage" class="sr-only">Chat message</label>
