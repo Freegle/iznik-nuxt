@@ -211,6 +211,9 @@
                         :taken="taken"
                         :received="received"
                         :withdrawn="withdrawn"
+                        :closest="reply.user.id === closestUser"
+                        :best="reply.user.id === bestRatedUser"
+                        :quickest="reply.user.id === quickestUser"
                       />
                     </tr>
                   </tbody>
@@ -381,6 +384,65 @@ export default {
           }
         })
       }
+    },
+    closestUser() {
+      let ret = null
+      let dist = null
+
+      if (this.replyusers.length > 1) {
+        this.replyusers.forEach(u => {
+          if (dist === null || (u.info && u.info.milesaway < dist)) {
+            dist = u.info.milesaway
+            ret = u.id
+          }
+        })
+      }
+
+      return ret
+    },
+    bestRatedUser() {
+      let ret = null
+      let rating = null
+
+      if (this.replyusers.length > 1) {
+        this.replyusers.forEach(u => {
+          if (
+            u.info &&
+            u.info.ratings &&
+            u.info.ratings.Up + u.info.ratings.Down > 0
+          ) {
+            const thisrating =
+              u.info.ratings.Up / (u.info.ratings.Up + u.info.ratings.Down)
+
+            if (rating === null || thisrating > rating) {
+              rating = thisrating
+              ret = u.id
+            }
+          }
+        })
+      }
+
+      return ret
+    },
+    quickestUser() {
+      let ret = null
+      let replytime = null
+
+      if (this.replyusers.length > 1) {
+        this.replyusers.forEach(u => {
+          if (
+            u.info &&
+            u.info.replytime &&
+            (replytime === null ||
+              (u.info.replytime && u.info.replytime < replytime))
+          ) {
+            replytime = u.info.replytime
+            ret = u.id
+          }
+        })
+      }
+
+      return ret
     },
     replyusers() {
       const ret = []
