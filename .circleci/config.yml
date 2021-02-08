@@ -99,7 +99,7 @@ jobs:
       - run: cd ../iznik-nuxt-app; ln -s ../project/dist www
 
       - run: cd ../iznik-nuxt-app; cordova platform rm ios
-      - run: cd ../iznik-nuxt-app; cordova platform add ios@5.1.1
+      - run: cd ../iznik-nuxt-app; cordova platform add ios
 
       # Fix cordova-ios
       - run: cd ../iznik-nuxt-app; sed -i '' "s/PROVISIONING_PROFILE =/PROVISIONING_PROFILE_SPECIFIER =/" platforms/ios/cordova/lib/build.js
@@ -128,7 +128,7 @@ jobs:
       - run: cd ../iznik-nuxt-mt; cp ../project/mobile/secrets/GoogleService-Info.plist GoogleService-Info.plist
       - run: cd ../iznik-nuxt-mt; ln -s ../project/dist www
       - run: cd ../iznik-nuxt-mt; cordova platform rm ios
-      - run: cd ../iznik-nuxt-mt; cordova platform add ios@5.1.1
+      - run: cd ../iznik-nuxt-mt; cordova platform add ios
 
       # Fix cordova-ios
       - run: cd ../iznik-nuxt-mt; sed -i '' "s/PROVISIONING_PROFILE =/PROVISIONING_PROFILE_SPECIFIER =/" platforms/ios/cordova/lib/build.js
