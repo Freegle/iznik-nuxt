@@ -25,7 +25,7 @@
         Give away my {{ item }}
       </b-btn>
     </div>
-    <div class="map">
+    <div class="map mb-2">
       <ClientOnly>
         <l-map
           ref="map"

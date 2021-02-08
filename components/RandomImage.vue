@@ -5,7 +5,7 @@
         v-if="image"
         :src="image"
         thumbnail
-        class="image"
+        class="image fade-in"
         generator-unable-to-provide-required-alt=""
         @error.native="brokenImage"
       />
@@ -60,5 +60,20 @@ export default {
   width: 10vw;
   height: 10vw;
   object-fit: cover;
+}
+
+.fade-in {
+  animation: fadeIn linear 1.5s;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 </style>
