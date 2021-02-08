@@ -45,9 +45,12 @@
   </div>
 </template>
 <script>
+import modal from '@/mixins/modal'
 import ExternalLink from '@/components/ExternalLink'
+
 export default {
   components: { ExternalLink },
+  mixins: [modal],
   props: {
     user: {
       type: Object,
@@ -61,7 +64,6 @@ export default {
   },
   data: function() {
     return {
-      showModal: false,
       user1: null,
       user2: null,
       user3: null,
@@ -83,12 +85,6 @@ export default {
     }
   },
   methods: {
-    show() {
-      this.showModal = true
-    },
-    hide() {
-      this.showModal = false
-    },
     async save() {
       // Go direct to API because comments aren't in the Store separately.
       await this.$api.comment.add({

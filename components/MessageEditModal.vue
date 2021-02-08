@@ -89,6 +89,7 @@
   </div>
 </template>
 <script>
+import modal from '@/mixins/modal'
 import keywords from '@/mixins/keywords.js'
 import NumberIncrementDecrement from './NumberIncrementDecrement'
 import Postcode from '~/components/Postcode'
@@ -104,7 +105,7 @@ export default {
     PostItem,
     PostPhoto
   },
-  mixins: [keywords],
+  mixins: [keywords, modal],
   props: {
     message: {
       type: Object,
@@ -114,7 +115,6 @@ export default {
   data: function() {
     return {
       attachments: null,
-      showModal: false,
       uploading: false,
       myFiles: [],
       image: null,
@@ -141,12 +141,6 @@ export default {
     this.postcode = this.message.location ? this.message.location : null
   },
   methods: {
-    show() {
-      this.showModal = true
-    },
-    hide() {
-      this.showModal = false
-    },
     async save() {
       if (this.item && (this.message.textbody || this.attachments.length)) {
         const attids = []

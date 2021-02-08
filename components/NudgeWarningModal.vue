@@ -25,21 +25,11 @@
   </b-modal>
 </template>
 <script>
+import modal from '@/mixins/modal'
+
 export default {
-  data: function() {
-    return {
-      showModal: false
-    }
-  },
+  mixins: [modal],
   methods: {
-    show(type) {
-      this.showModal = true
-    },
-
-    hide() {
-      this.showModal = false
-    },
-
     confirm() {
       this.$emit('confirm')
       this.hide()

@@ -85,6 +85,7 @@
 </template>
 
 <script>
+import modal from '@/mixins/modal'
 import NoticeMessage from '@/components/NoticeMessage'
 import DonationThermometer from './DonationThermometer'
 import DonationButton from './DonationButton'
@@ -95,6 +96,7 @@ export default {
     DonationThermometer,
     DonationButton
   },
+  mixins: [modal],
   props: {
     groupid: {
       type: Number,
@@ -104,7 +106,6 @@ export default {
   },
   data: function() {
     return {
-      showModal: false,
       variant: null
     }
   },
@@ -163,11 +164,6 @@ export default {
         variant: this.variant
       })
     },
-
-    hide() {
-      this.showModal = false
-    },
-
     score(value) {
       this.$api.bandit.chosen({
         uid: 'donation',

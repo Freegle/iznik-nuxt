@@ -41,7 +41,10 @@
   </div>
 </template>
 <script>
+import modal from '@/mixins/modal'
+
 export default {
+  mixins: [modal],
   props: {
     user: {
       type: Object,
@@ -54,7 +57,6 @@ export default {
   },
   data: function() {
     return {
-      showModal: false,
       placeholders: [
         null,
         'Add a comment about this member here',
@@ -65,12 +67,6 @@ export default {
     }
   },
   methods: {
-    show() {
-      this.showModal = true
-    },
-    hide() {
-      this.showModal = false
-    },
     async save() {
       // Go direct to API because comments aren't in the Store separately.
       await this.$api.comment.save(this.comment)

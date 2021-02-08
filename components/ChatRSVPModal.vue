@@ -42,8 +42,11 @@
   </b-modal>
 </template>
 <script>
+import modal from '@/mixins/modal'
+
 export default {
   components: {},
+  mixins: [modal],
   props: {
     id: {
       type: Number,
@@ -56,7 +59,6 @@ export default {
   },
   data: function() {
     return {
-      showModal: false,
       chaseup: false,
       dohide: false
     }
@@ -80,14 +82,6 @@ export default {
     }
   },
   methods: {
-    show() {
-      this.showModal = true
-    },
-
-    hide() {
-      this.showModal = false
-    },
-
     async yes() {
       if (this.mylast) {
         await this.$store.dispatch('chatmessages/rsvp', {

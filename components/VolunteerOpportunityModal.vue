@@ -357,6 +357,7 @@
 </template>
 
 <script>
+import modal from '@/mixins/modal'
 import cloneDeep from 'lodash.clonedeep'
 import { validationMixin } from 'vuelidate'
 import { maxLength, required } from 'vuelidate/lib/validators'
@@ -413,7 +414,6 @@ function initialData() {
 
   return {
     volunteeringEdit: volunteeringEdit,
-    showModal: false,
     editing: false,
     added: false,
     groupid: null,
@@ -437,7 +437,7 @@ export default {
     DonationButton,
     ExternalLink
   },
-  mixins: [validationMixin, validationHelpers],
+  mixins: [validationMixin, validationHelpers, modal],
   props: {
     volunteering: {
       type: Object,

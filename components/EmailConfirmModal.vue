@@ -17,20 +17,9 @@
   </b-modal>
 </template>
 <script>
-export default {
-  data: function() {
-    return {
-      showModal: false
-    }
-  },
+import modal from '@/mixins/modal'
 
-  methods: {
-    show() {
-      this.showModal = true
-    },
-    hide() {
-      this.showModal = false
-    }
-  }
+export default {
+  mixins: [modal]
 }
 </script>

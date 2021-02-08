@@ -26,7 +26,10 @@
   </div>
 </template>
 <script>
+import modal from '@/mixins/modal'
+
 export default {
+  mixins: [modal],
   props: {
     message: {
       type: Object,
@@ -35,17 +38,10 @@ export default {
   },
   data: function() {
     return {
-      showModal: false,
       reason: null
     }
   },
   methods: {
-    show() {
-      this.showModal = true
-    },
-    hide() {
-      this.showModal = false
-    },
     async report() {
       if (this.reason) {
         const chatid = await this.$store.dispatch('chats/openChatToMods', {

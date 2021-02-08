@@ -31,12 +31,14 @@
   </div>
 </template>
 <script>
+import modal from '@/mixins/modal'
 import InfiniteLoading from 'vue-infinite-loading'
 import NoticeMessage from './NoticeMessage'
 import ModLog from './ModLog'
 
 export default {
   components: { ModLog, NoticeMessage, InfiniteLoading },
+  mixins: [modal],
   props: {
     userid: {
       type: Number,
@@ -51,7 +53,6 @@ export default {
   data: function() {
     return {
       busy: false,
-      showModal: false,
       context: null
     }
   },
@@ -95,9 +96,6 @@ export default {
       // fetch from a previous context and show no logs.
       this.$store.dispatch('logs/clear')
       this.showModal = true
-    },
-    hide() {
-      this.showModal = false
     },
     async fetchChunk($state) {
       this.busy = true

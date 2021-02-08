@@ -50,12 +50,14 @@
   </div>
 </template>
 <script>
+import modal from '@/mixins/modal'
 import { GChart } from 'vue-google-charts'
 
 export default {
   components: {
     GChart
   },
+  mixins: [modal],
   props: {
     id: {
       type: Number,
@@ -64,7 +66,6 @@ export default {
   },
   data: function() {
     return {
-      showModal: false,
       chartOptions: {
         chartArea: { width: '80%', height: '80%' },
         slices: {
@@ -119,9 +120,6 @@ export default {
       })
 
       this.showModal = true
-    },
-    hide() {
-      this.showModal = false
     }
   }
 }

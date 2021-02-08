@@ -23,20 +23,17 @@
   </div>
 </template>
 <script>
+import modal from '@/mixins/modal'
 import ModCake from '@/components/ModCake'
 
 export default {
   components: {
     ModCake
   },
-  data: function() {
-    return {
-      showModal: false
-    }
-  },
+  mixins: [modal],
   mounted() {
     if (!this.$store.getters['misc/get']('cakeasked')) {
-      this.showModal = true
+      this.show()
 
       this.$store.dispatch('misc/set', {
         key: 'cakeasked',

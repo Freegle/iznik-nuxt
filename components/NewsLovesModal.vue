@@ -35,6 +35,7 @@
   </span>
 </template>
 <script>
+import modal from '@/mixins/modal'
 import NewsUserInfo from '~/components/NewsUserInfo'
 import ProfileImage from '~/components/ProfileImage'
 
@@ -43,6 +44,7 @@ export default {
     NewsUserInfo,
     ProfileImage
   },
+  mixins: [modal],
   props: {
     id: {
       type: Number,
@@ -51,7 +53,6 @@ export default {
   },
   data: function() {
     return {
-      showModal: false,
       newsfeed: null
     }
   },
@@ -91,9 +92,6 @@ export default {
       })
 
       this.showModal = true
-    },
-    hide() {
-      this.showModal = false
     }
   }
 }

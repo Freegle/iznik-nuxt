@@ -32,12 +32,14 @@
 </template>
 
 <script>
+import modal from '@/mixins/modal'
 const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
     NoticeMessage
   },
+  mixins: [modal],
   props: {
     messages: {
       validator: prop => typeof prop === 'object' || prop === null,
@@ -60,7 +62,6 @@ export default {
   },
   data: function() {
     return {
-      showModal: false,
       removeTryst: true
     }
   },
@@ -147,14 +148,6 @@ export default {
       }
 
       this.hide()
-    },
-
-    show() {
-      this.showModal = true
-    },
-
-    hide() {
-      this.showModal = false
     }
   }
 }

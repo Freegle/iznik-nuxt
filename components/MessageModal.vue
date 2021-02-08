@@ -23,21 +23,17 @@
   </div>
 </template>
 <script>
+import modal from '@/mixins/modal'
 import Message from './Message'
 import waitForRef from '@/mixins/waitForRef'
 
 export default {
   components: { Message },
-  mixins: [waitForRef],
+  mixins: [waitForRef,modal],
   props: {
     message: {
       type: Object,
       required: true
-    }
-  },
-  data: function() {
-    return {
-      showModal: false
     }
   },
   methods: {
@@ -46,9 +42,6 @@ export default {
       this.waitForRef('message', () => {
         this.$refs.message.expand()
       })
-    },
-    hide() {
-      this.showModal = false
     }
   }
 }

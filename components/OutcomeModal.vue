@@ -72,11 +72,13 @@
   </div>
 </template>
 <script>
+import modal from '@/mixins/modal'
 import OutcomeBy from './OutcomeBy'
 import SpinButton from './SpinButton'
 
 export default {
   components: { SpinButton, OutcomeBy },
+  mixins: [modal],
   props: {
     message: {
       type: Object,
@@ -85,7 +87,6 @@ export default {
   },
   data: function() {
     return {
-      showModal: false,
       type: null,
       happiness: null,
       comments: null,

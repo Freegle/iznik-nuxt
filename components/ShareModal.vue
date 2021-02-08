@@ -65,10 +65,12 @@
   </b-modal>
 </template>
 <script>
+import modal from '@/mixins/modal'
 import NoticeMessage from './NoticeMessage'
 
 export default {
   components: { NoticeMessage },
+  mixins: [modal],
   props: {
     id: {
       type: Number,
@@ -82,7 +84,6 @@ export default {
   },
   data: function() {
     return {
-      showModal: false,
       shared: false
     }
   },

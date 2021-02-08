@@ -71,6 +71,7 @@
   </b-modal>
 </template>
 <script>
+import modal from '@/mixins/modal'
 import keywords from '@/mixins/keywords.js'
 import waitForRef from '@/mixins/waitForRef'
 import Postcode from './Postcode'
@@ -79,7 +80,7 @@ import SpinButton from './SpinButton'
 
 export default {
   components: { SpinButton, NoticeMessage, Postcode },
-  mixins: [keywords, waitForRef],
+  mixins: [keywords, waitForRef, modal],
   props: {
     message: {
       type: Object,
@@ -98,7 +99,6 @@ export default {
   },
   data: function() {
     return {
-      showModal: false,
       subject: null,
       body: null,
       keywordList: ['Offer', 'Taken', 'Wanted', 'Received', 'Other'],
@@ -354,11 +354,6 @@ export default {
         })
       }
     },
-
-    hide() {
-      this.showModal = false
-    },
-
     substitutionStrings(text) {
       const self = this
       const group = this.$store.getters['auth/groupById'](this.groupid)

@@ -44,7 +44,10 @@
 </template>
 
 <script>
+import modal from '@/mixins/modal'
+
 export default {
+  mixins: [modal],
   props: {
     message: {
       type: Object,
@@ -58,7 +61,7 @@ export default {
     }
   },
   methods: {
-    show(type) {
+    show() {
       // We need to decide which variant of donation ask to show.
       this.showModal = true
 
@@ -67,9 +70,6 @@ export default {
         uid: 'lovejunk',
         variant: 'modal'
       })
-    },
-    hide() {
-      this.showModal = false
     },
     async listIt() {
       this.$api.bandit.chosen({

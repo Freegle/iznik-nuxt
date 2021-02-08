@@ -44,13 +44,14 @@
   </div>
 </template>
 <script>
+import modal from '@/mixins/modal'
 import NoticeMessage from './NoticeMessage'
 
 export default {
   components: { NoticeMessage },
+  mixins: [modal],
   data: function() {
     return {
-      showModal: false,
       email1: null,
       email2: null,
       reason: null,
@@ -66,12 +67,6 @@ export default {
     }
   },
   methods: {
-    show() {
-      this.showModal = true
-    },
-    hide() {
-      this.showModal = false
-    },
     async merge() {
       await this.$store.dispatch('user/merge', {
         email1: this.email1,

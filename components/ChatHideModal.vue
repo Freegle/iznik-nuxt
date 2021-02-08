@@ -24,7 +24,10 @@
   </b-modal>
 </template>
 <script>
+import modal from '@/mixins/modal'
+
 export default {
+  mixins: [modal],
   props: {
     id: {
       type: Number,
@@ -35,20 +38,7 @@ export default {
       required: true
     }
   },
-  data: function() {
-    return {
-      showModal: false
-    }
-  },
   methods: {
-    show(type) {
-      this.showModal = true
-    },
-
-    hide() {
-      this.showModal = false
-    },
-
     confirm() {
       this.$emit('confirm')
       this.hide()

@@ -49,7 +49,10 @@
   </b-modal>
 </template>
 <script>
+import modal from '@/mixins/modal'
+
 export default {
+  mixins: [modal],
   props: {
     id: {
       type: Number,
@@ -74,8 +77,7 @@ export default {
   },
   data: function() {
     return {
-      cacheBust: Date.now(),
-      showModal: false
+      cacheBust: Date.now()
     }
   },
   computed: {
@@ -90,12 +92,6 @@ export default {
     }
   },
   methods: {
-    show() {
-      this.showModal = true
-    },
-    hide() {
-      this.showModal = false
-    },
     remove() {
       this.$emit('remove', this.id)
     },

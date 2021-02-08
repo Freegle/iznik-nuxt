@@ -19,7 +19,10 @@
   </b-modal>
 </template>
 <script>
+import modal from '@/mixins/modal'
+
 export default {
+  mixins: [modal],
   props: {
     title: {
       type: String,
@@ -38,14 +41,6 @@ export default {
     }
   },
   methods: {
-    show() {
-      this.showModal = true
-    },
-
-    hide() {
-      this.showModal = false
-    },
-
     confirm() {
       this.$emit('confirm')
       this.hide()
