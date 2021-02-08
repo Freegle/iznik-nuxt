@@ -103,6 +103,91 @@
     </template>
   </b-modal>
 </template>
+<script>
+import modal from '@/mixins/modal'
+const OurFilePond = () => import('~/components/OurFilePond')
+
+export default {
+  components: {
+    OurFilePond
+  },
+  mixins: [modal],
+  props: {},
+  data: function() {
+    return {
+      allowpublic: 0,
+      uploading: false,
+      story: {
+        headline: null,
+        story: null,
+        photo: null
+      },
+      cacheBust: Date.now(),
+      thankyou: false
+    }
+  },
+  computed: {
+    uploadingPhoto() {
+      return this.$store.getters['compose/getUploading']
+    }
+  },
+  async mounted() {},
+  methods: {
+    photoAdd() {
+      // Flag that we're uploading.  This will trigger the render of the filepond instance and subsequently the
+      // processed callback below.
+      this.uploading = true
+    },
+    photoProcessed(imageid, imagethumb, image) {
+      // We have uploaded a photo.  Remove the filepond instance.
+      this.uploading = false
+
+      this.story.photo = {
+        id: imageid,
+        path: image,
+        paththumb: imagethumb
+      }
+    },
+    rotate(deg) {
+      this.$axios
+        .post(process.env.API + '/image', {
+          id: this.story.photo.id,
+          rotate: deg,
+          bust: Date.now(),
+          story: true
+        })
+        .then(() => {
+          this.cacheBust = Date.now()
+        })
+    },
+    rotateLeft() {
+      this.rotate(90)
+    },
+    rotateRight() {
+      this.rotate(-90)
+    },
+    show(type) {
+      this.thankyou = false
+      this.story.headline = null
+      this.story.story = null
+      this.story.photo = null
+      this.showModal = true
+    },
+    async submit() {
+      if (this.story.headline && this.story.story) {
+        await this.$store.dispatch('stories/add', {
+          headline: this.story.headline,
+          story: this.story.story,
+          photo: this.story.photo ? this.story.photo.id : null,
+          public: this.allowpublic
+        })
+
+        this.thankyou = true
+      }
+    }
+  }
+}
+</script>
 <style scoped lang="scss">
 @import 'color-vars';
 
@@ -137,94 +222,3 @@ label {
   color: $color-white;
 }
 </style>
-<script>
-const OurFilePond = () => import('~/components/OurFilePond')
-
-export default {
-  components: {
-    OurFilePond
-  },
-  props: {},
-  data: function() {
-    return {
-      showModal: false,
-      allowpublic: 0,
-      uploading: false,
-      story: {
-        headline: null,
-        story: null,
-        photo: null
-      },
-      cacheBust: Date.now(),
-      thankyou: false
-    }
-  },
-  computed: {
-    uploadingPhoto() {
-      return this.$store.getters['compose/getUploading']
-    }
-  },
-  async mounted() {},
-  methods: {
-    photoAdd() {
-      // Flag that we're uploading.  This will trigger the render of the filepond instance and subsequently the
-      // processed callback below.
-      this.uploading = true
-    },
-    photoProcessed(imageid, imagethumb, image) {
-      // We have uploaded a photo.  Remove the filepond instance.
-      this.uploading = false
-
-      this.story.photo = {
-        id: imageid,
-        path: image,
-        paththumb: imagethumb
-      }
-    },
-
-    rotate(deg) {
-      this.$axios
-        .post(process.env.API + '/image', {
-          id: this.story.photo.id,
-          rotate: deg,
-          bust: Date.now(),
-          story: true
-        })
-        .then(() => {
-          this.cacheBust = Date.now()
-        })
-    },
-    rotateLeft() {
-      this.rotate(90)
-    },
-    rotateRight() {
-      this.rotate(-90)
-    },
-
-    show(type) {
-      this.thankyou = false
-      this.story.headline = null
-      this.story.story = null
-      this.story.photo = null
-      this.showModal = true
-    },
-
-    hide() {
-      this.showModal = false
-    },
-
-    async submit() {
-      if (this.story.headline && this.story.story) {
-        await this.$store.dispatch('stories/add', {
-          headline: this.story.headline,
-          story: this.story.story,
-          photo: this.story.photo ? this.story.photo.id : null,
-          public: this.allowpublic
-        })
-
-        this.thankyou = true
-      }
-    }
-  }
-}
-</script>

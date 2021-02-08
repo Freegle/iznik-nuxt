@@ -45,19 +45,30 @@
           We store some information in your browser's local storage, because of the way the site works.  There's not
           much in it except if you're trying to reply to a post.  That's like the "shopping cart" example
           in the Information Commissioner's
-          <a href="https://ico.org.uk/for-organisations/guide-to-pecr/cookies-and-similar-technologies/" target="_blank" rel="noopener">advice</a>
+          <!-- eslint-disable-next-line -->
+          <ExternalLink href="https://ico.org.uk/for-organisations/guide-to-pecr/cookies-and-similar-technologies/">advice</ExternalLink>
           and does not require consent.
         </li>
         <li>
-          We use <a href="https://analytics.google.com" rel="noopener noreferrer">Google Analytics</a> to collect traffic statistics.  This is
-          configured in a way that means it <a href="https://law.stackexchange.com/questions/28367/gdpr-whats-classed-as-an-opt-in-for-google-analytics-cookie-and-do-i-need-to" rel="noopener noreferrer">does not require consent</a>.
+          We use
+          <!-- eslint-disable-next-line -->
+          <ExternalLink href="https://analytics.google.com">Google Analytics</ExternalLink>
+          to collect traffic statistics.  This is
+          configured in a way that means it
+          <!-- eslint-disable-next-line -->
+          <ExternalLink href="https://law.stackexchange.com/questions/28367/gdpr-whats-classed-as-an-opt-in-for-google-analytics-cookie-and-do-i-need-to">does not require consent</ExternalLink>
           We have a data processing agreement with Google, we have enabled IP anonymization/masking, disabled
           data sharing, and are not using any other google services in combination with Google Analytics.
         </li>
         <li>
           We use Google and Facebook's code to allow you to log in.  They store a few third-party cookies, of their
           own, but before you've logged in they don't know who you are.  If you are concerned about these, you can
-          install a privacy blocker such as <a href="https://www.ghostery.com/" rel="noopener noreferrer">Ghostery</a> and still use the site.
+          install a privacy blocker such as
+          <!-- eslint-disable-next-line -->
+          <ExternalLink href="https://www.ghostery.com/">Ghostery</ExternalLink>
+          and still use the site (but it helps if you
+          <!-- eslint-disable-next-line -->
+          <nuxt-link to="/donate">donate</nuxt-link>).
         </li>
       </ul>
       <p>Once you log in, you're giving us consent to do the following.</p>
@@ -67,7 +78,9 @@
           and the rest is to speed up the site (it's a cache).
         </li>
         <li>
-          We show jobs ads from <a href="http://adview.online/" rel="noopener noreferrer">AdView</a>, both on the site and in emails.
+          We show jobs ads from
+          <!-- eslint-disable-next-line -->
+          <ExternalLink href="https://uk.whatjobs.com/">WhatJobs</ExternalLink>, both on the site and in emails.
           We'd prefer not to,
           but we don't raise enough from <nuxt-link to="/donate">
             donations
@@ -78,17 +91,28 @@
       <h2>Sentry</h2>
       <p>
         When something goes wrong on the website, we log it to a third party site call
-        <a href="https://sentry.io" rel="noopener noreferrer">Sentry</a>.  They help organise the logs and make it easier for us to identify
-        and fix problems.  This <a href="https://docs.sentry.io/data-management/sensitive-data/" rel="noopener noreferrer">should not include</a>
+        <!-- eslint-disable-next-line -->
+        <ExternalLink href="https://sentry.io">Sentry</ExternalLink>.  They help organise the logs and make it easier for us to identify
+        and fix problems.  This
+        <!-- eslint-disable-next-line -->
+        <ExternalLink href="https://docs.sentry.io/data-management/sensitive-data/">should not include</ExternalLink>
         any of your personal data.
-        You can read their privacy policy <a href="https://sentry.io/privacy/" rel="noopener noreferrer">here</a>.
+        You can read their privacy policy
+        <!-- eslint-disable-next-line -->
+        <ExternalLink href="https://sentry.io/privacy/">here</ExternalLink>.
       </p>
       <h2>Inspectlet</h2>
       <p>
-        On a small fraction of sessions, we use <a href="https://www.inspectlet.com/" target="_blank" rel="noopener noreferrer">Inspectlet</a>.
+        On a small random fraction of sessions, we use
+        <!-- eslint-disable-next-line -->
+        <ExternalLink href="https://www.inspectlet.com/">Inspectlet</ExternalLink>.
         This helps us work out which bits of the website are working well for freeglers, and which aren't.
-        You can read their privacy policy <a href="https://docs.inspectlet.com/hc/en-us/articles/360002994432-Privacy-Impact-Assessment-under-GDPR" rel="noopener noreferrer">here</a>,
-        and opt out of this <a href="https://www.inspectlet.com/optout" target="_blank" rel="noopener noreferrer">here</a>.
+        You can read their privacy policy
+        <!-- eslint-disable-next-line -->
+        <ExternalLink href="https://docs.inspectlet.com/hc/en-us/articles/360002994432-Privacy-Impact-Assessment-under-GDPR">here</ExternalLink>,
+        and opt out of this
+        <!-- eslint-disable-next-line -->
+        <ExternalLink href="https://www.inspectlet.com/optout">here</ExternalLink>.
       </p>
       <h2>Got questions?</h2>
       <p>
@@ -97,14 +121,40 @@
           contact us.
         </nuxt-link>
       </p>
+      <h3>Change History</h3>
+      <p>
+        Here are the changes to this page.
+      </p>
+      <ul class>
+        <li>
+          05/02/2021: Updated to remove PixFuture.
+        </li>
+        <li>
+          04/02/2021: Updated to include PixFuture.
+        </li>
+        <li>
+          01/03/2020: Updated for Norfolk Freegle, which is now hosted on the main site.
+        </li>
+        <li>
+          06/01/2020: Add use of Inspectlet.
+        </li>
+        <li>
+          31/12/2019: Explain why we don't have or need a cookie popup.
+        </li>
+        <li>
+          29/12/2019: Add use of Sentry.
+        </li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script>
 import buildHead from '@/mixins/buildHead.js'
+import ExternalLink from '@/components/ExternalLink'
 
 export default {
+  components: { ExternalLink },
   mixins: [buildHead],
   head() {
     return this.buildHead('Privacy', 'What data we keep and how we protect it')

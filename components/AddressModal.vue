@@ -98,12 +98,14 @@
   </div>
 </template>
 <script>
+import modal from '@/mixins/modal'
 import Postcode from '~/components/Postcode'
 
 export default {
   components: {
     Postcode
   },
+  mixins: [modal],
   props: {
     choose: {
       type: Boolean,
@@ -113,7 +115,6 @@ export default {
   },
   data: function() {
     return {
-      showModal: false,
       showAdd: false,
       deleting: false,
       adding: false,

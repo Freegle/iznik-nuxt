@@ -18,7 +18,7 @@
         </h3>
       </template>
       <template slot="default">
-        <div v-if="type === 'Taken' || type === 'Received'" class="text-center">
+        <div v-if="type === 'Taken'" class="text-center">
           <OutcomeBy
             :availableinitially="typeof message.availableinitially === 'number' ? message.availableinitially : 1"
             :type="type"
@@ -72,11 +72,13 @@
   </div>
 </template>
 <script>
+import modal from '@/mixins/modal'
 import OutcomeBy from './OutcomeBy'
 import SpinButton from './SpinButton'
 
 export default {
   components: { SpinButton, OutcomeBy },
+  mixins: [modal],
   props: {
     message: {
       type: Object,
@@ -85,7 +87,6 @@ export default {
   },
   data: function() {
     return {
-      showModal: false,
       type: null,
       happiness: null,
       comments: null,
@@ -115,7 +116,7 @@ export default {
     },
     submitDisabled() {
       const ret =
-        this.type !== 'Withdrawn' &&
+        this.type === 'Taken' &&
         this.message.availableinitially === 1 &&
         this.left === 1
       return ret

@@ -133,7 +133,6 @@ export default {
     // need to render this pane on the server.
     if (this.id && (!this.user || !this.user.info)) {
       // Not in the store yet - fetch.
-      console.log('Ratings need to fetch user', this.id, this.user)
       this.$store.dispatch('user/fetch', {
         id: this.id,
         info: true

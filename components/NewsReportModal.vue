@@ -23,7 +23,10 @@
   </div>
 </template>
 <script>
+import modal from '@/mixins/modal'
+
 export default {
+  mixins: [modal],
   props: {
     id: {
       type: Number,
@@ -32,17 +35,10 @@ export default {
   },
   data: function() {
     return {
-      showModal: false,
       reason: null
     }
   },
   methods: {
-    show() {
-      this.showModal = true
-    },
-    hide() {
-      this.showModal = false
-    },
     async report() {
       await this.$store.dispatch('newsfeed/report', {
         id: this.id,

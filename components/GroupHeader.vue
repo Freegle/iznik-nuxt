@@ -65,19 +65,24 @@
       </div>
     </div>
     <div v-if="group.sponsors" class="d-flex flex-wrap justify-content-between mt-1">
-      <b-card v-for="sponsor in group.sponsors" :key="'sponsor-' + sponsor.id" no-body>
-        <b-card-body class="d-flex p-1">
-          <SponsorLogo :image="sponsor.imageurl" :alt-text="'Sponsor logo for ' + sponsor.name" />
-          <div class="ml-2">
-            <p class="small text-muted">
-              This community is kindly sponsored by:
-            </p>
-            <ExternalLink :href="sponsor.linkurl">
-              {{ sponsor.name }}
-            </ExternalLink>
-            <div v-if="sponsor.tagline" class="font-weight-bold">
-              {{ sponsor.tagline }}
+      <b-card v-for="sponsor in group.sponsors" :key="'sponsor-' + sponsor.id" no-body class="max">
+        <b-card-body class="p-1">
+          <div class="d-flex">
+            <SponsorLogo :image="sponsor.imageurl" :alt-text="'Sponsor logo for ' + sponsor.name" />
+            <div class="ml-2">
+              <p class="small text-muted">
+                This community is kindly sponsored by:
+              </p>
+              <ExternalLink :href="sponsor.linkurl">
+                {{ sponsor.name }}
+              </ExternalLink>
+              <div v-if="sponsor.tagline" class="font-weight-bold">
+                {{ sponsor.tagline }}
+              </div>
             </div>
+          </div>
+          <div v-if="sponsor.description" class="small text-wrap">
+            {{ sponsor.description }}
           </div>
         </b-card-body>
       </b-card>
@@ -282,6 +287,14 @@ export default {
 
   @include media-breakpoint-up(xl) {
     justify-content: flex-end;
+  }
+}
+
+.max {
+  max-width: 100%;
+
+  @include media-breakpoint-up(md) {
+    max-width: 400px;
   }
 }
 </style>

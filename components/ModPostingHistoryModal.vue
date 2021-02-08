@@ -43,9 +43,12 @@
   </div>
 </template>
 <script>
+import modal from '@/mixins/modal'
 import NoticeMessage from './NoticeMessage'
+
 export default {
   components: { NoticeMessage },
+  mixins: [modal],
   props: {
     user: {
       type: Object,
@@ -55,11 +58,6 @@ export default {
       type: String,
       required: false,
       default: null
-    }
-  },
-  data: function() {
-    return {
-      showModal: false
     }
   },
   computed: {
@@ -82,14 +80,6 @@ export default {
       }
 
       return ret
-    }
-  },
-  methods: {
-    show() {
-      this.showModal = true
-    },
-    hide() {
-      this.showModal = false
     }
   }
 }

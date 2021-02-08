@@ -72,6 +72,7 @@
   </div>
 </template>
 <script>
+import modal from '@/mixins/modal'
 import InfiniteLoading from 'vue-infinite-loading'
 import chatCollate from '@/mixins/chatCollate.js'
 import chat from '@/mixins/chat.js'
@@ -79,7 +80,7 @@ const ChatMessage = () => import('@/components/ChatMessage')
 
 export default {
   components: { ChatMessage, InfiniteLoading },
-  mixins: [chatCollate, chat],
+  mixins: [chatCollate, chat, modal],
   props: {
     id: {
       type: Number,
@@ -92,7 +93,6 @@ export default {
   },
   data: function() {
     return {
-      showModal: false,
       busy: true,
       complete: false,
       distance: 1000,
@@ -144,9 +144,6 @@ export default {
       this.chat2 = this.$store.getters['chats/get'](this.id)
 
       this.showModal = true
-    },
-    hide() {
-      this.showModal = false
     },
     loadMore: function($state) {
       const currentCount = this.chatmessages.length

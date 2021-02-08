@@ -40,12 +40,14 @@
   </div>
 </template>
 <script>
+import modal from '@/mixins/modal'
 import NoticeMessage from './NoticeMessage'
+
 export default {
   components: { NoticeMessage },
+  mixins: [modal],
   data: function() {
     return {
-      showModal: false,
       text: null
     }
   },
@@ -58,9 +60,6 @@ export default {
       const me = this.$store.getters['auth/user']
       this.text = me.aboutme && me.aboutme.text ? me.aboutme.text : null
       this.showModal = true
-    },
-    hide() {
-      this.showModal = false
     },
     async save() {
       await this.$store.dispatch('auth/saveAboutMe', this.text)

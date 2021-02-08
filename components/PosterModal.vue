@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import modal from '@/mixins/modal'
 const NoticeMessage = () => import('~/components/NoticeMessage')
 const DraggableMap = () => import('~/components/DraggableMap')
 
@@ -46,9 +47,9 @@ export default {
     DraggableMap,
     NoticeMessage
   },
+  mixins: [modal],
   data: function() {
     return {
-      showModal: false,
       name: null,
       description: null,
       loaded: false
@@ -56,12 +57,6 @@ export default {
   },
 
   methods: {
-    show() {
-      this.showModal = true
-    },
-    hide() {
-      this.showModal = false
-    },
     async submit() {
       if (this.name) {
         const cent = this.$refs.map.getCenter()

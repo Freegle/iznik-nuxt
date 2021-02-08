@@ -122,7 +122,10 @@
   </div>
 </template>
 <script>
+import modal from '@/mixins/modal'
+
 export default {
+  mixins: [modal],
   props: {
     id: {
       type: Number,
@@ -132,7 +135,6 @@ export default {
   },
   data: function() {
     return {
-      showModal: false,
       newmsg: [],
       options: [
         { value: null, text: '-- Pending Messages -- ' },

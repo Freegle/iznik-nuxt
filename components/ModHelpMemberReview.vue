@@ -29,16 +29,12 @@
       </li>
     </ul>
     <p>
-      Please also make a decision about them on this page:
+      Otherwise, click the button to <em>Ignore on</em> your group.  They'll only show up again if something
+      has changed which makes them look unusual again.
     </p>
-    <ul>
-      <li>
-        If you think they are a spammer/scammer, click the <em>Spammer</em> button to report them.
-      </li>
-      <li>
-        If you don't think they are a spammer/scammer, then click the <em>Not a Spammer</em> button.
-      </li>
-    </ul>
+    <p>
+      If you think they are a spammer/scammer, click the <em>Spammer</em> button to report them.
+    </p>
   </NoticeMessage>
   <b-btn v-else variant="link" class="float-right" @click="toggleHelp">
     Help

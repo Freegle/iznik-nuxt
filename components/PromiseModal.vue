@@ -95,9 +95,7 @@
 </template>
 
 <script>
-// TODO:
-// - if not handover date arranged, how do you do so from my posts?
-// - prompt to use promise.
+import modal from '@/mixins/modal'
 import Vue from 'vue'
 import { FormTimepickerPlugin, FormDatepickerPlugin } from 'bootstrap-vue'
 Vue.use(FormTimepickerPlugin)
@@ -109,6 +107,7 @@ export default {
   components: {
     NoticeMessage
   },
+  mixins: [modal],
   props: {
     messages: {
       validator: prop => typeof prop === 'object' || prop === null,
@@ -131,7 +130,6 @@ export default {
   },
   data: function() {
     return {
-      showModal: false,
       message: null,
       date: null,
       time: null,
@@ -291,9 +289,6 @@ export default {
           this.date = date.format('YYYY-MM-DD')
         })
       }
-    },
-    hide() {
-      this.showModal = false
     },
     onContext(ctx) {
       if (ctx.selectedYMD) {

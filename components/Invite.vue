@@ -152,20 +152,6 @@ export default {
       return ret
     }
   },
-  watch: {
-    contacts(newVal) {
-      this.$api.bandit.chosen({
-        uid: 'contacts',
-        variant: 'contacts'
-      })
-    }
-  },
-  mounted() {
-    this.$api.bandit.shown({
-      uid: 'contacts',
-      variant: 'contacts'
-    })
-  },
   methods: {
     async getContacts() {
       if (process.env.IS_APP) {

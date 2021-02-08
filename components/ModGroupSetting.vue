@@ -196,29 +196,34 @@ export default {
     },
     getValueFromGroup() {
       let obj = this.$store.getters['group/get'](this.groupid)
-      let name = this.name
-      let p
 
-      do {
-        p = name.indexOf('.')
+      if (obj) {
+        console.log('OBj', obj)
+        let name = this.name
+        let p
 
-        if (p === -1) {
-          // Got there.
-          if (this.type === 'toggle') {
-            this.value =
-              typeof obj[name] === 'boolean'
-                ? obj[name]
-                : Boolean(parseInt(obj[name]))
+        do {
+          p = name.indexOf('.')
+
+          if (p === -1) {
+            // Got there.
+            if (this.type === 'toggle') {
+              this.value =
+                typeof obj[name] === 'boolean'
+                  ? obj[name]
+                  : Boolean(parseInt(obj[name]))
+            } else {
+              console.log('Set', this, obj, name)
+              this.value = obj[name]
+            }
           } else {
-            this.value = obj[name]
+            const l1 = name.substring(0, p)
+            const l2 = name.substring(p + 1)
+            obj = obj[l1]
+            name = l2
           }
-        } else {
-          const l1 = name.substring(0, p)
-          const l2 = name.substring(p + 1)
-          obj = obj[l1]
-          name = l2
-        }
-      } while (p !== -1)
+        } while (p !== -1 && obj)
+      }
     }
   }
 }

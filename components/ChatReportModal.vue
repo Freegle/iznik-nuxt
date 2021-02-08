@@ -40,12 +40,14 @@
   </b-modal>
 </template>
 <script>
+import modal from '@/mixins/modal'
 import GroupSelect from './GroupSelect'
 
 export default {
   components: {
     GroupSelect
   },
+  mixins: [modal],
   props: {
     user: {
       type: Object,
@@ -58,21 +60,12 @@ export default {
   },
   data: function() {
     return {
-      showModal: false,
       groupid: null,
       reason: null,
       comments: null
     }
   },
   methods: {
-    show(type) {
-      this.showModal = true
-    },
-
-    hide() {
-      this.showModal = false
-    },
-
     async send() {
       if (this.groupid && this.reason && this.comments) {
         const chatid = await this.$store.dispatch('chats/openChatToMods', {

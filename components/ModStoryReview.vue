@@ -3,7 +3,7 @@
     <b-card no-body>
       <b-card-header>
         <div class="d-flex justify-content-between flex-wrap w-100">
-          <span>
+          <span v-if="story.user">
             <ProfileImage :image="story.user.profile.turl" class="mr-1 ml-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
             <strong>{{ story.user.email }}</strong>
             <span class="small">
@@ -43,6 +43,7 @@
             </b-btn>
           </div>
           <ChatButton
+            v-if="story.user"
             :userid="story.user.id"
             :groupid="story.groupid"
             title="Chat"

@@ -163,6 +163,9 @@
               <b-btn v-if="!rejected && !queued && !simple" variant="secondary" title="Share" class="mr-2 mb-1" @click="share">
                 <v-icon name="share-alt" /> Share
               </b-btn>
+              <b-btn v-if="mod && message.lovejunkhash && message.type === 'Offer' && !rejected && !taken && !received && !withdrawn" variant="secondary" class="mr-2 mb-1" @click="lovejunk">
+                <v-icon name="truck" /> Paid removal
+              </b-btn>
             </div>
           </b-button>
         </b-card-header>
@@ -208,6 +211,9 @@
                         :taken="taken"
                         :received="received"
                         :withdrawn="withdrawn"
+                        :closest="reply.user.id === closestUser"
+                        :best="reply.user.id === bestRatedUser"
+                        :quickest="reply.user.id === quickestUser"
                       />
                     </tr>
                   </tbody>
@@ -242,16 +248,21 @@
     <OutcomeModal ref="outcomeModal" :message="message" @outcome="hide = true" />
     <ShareModal :id="message.id" ref="shareModal" />
     <MessageEditModal ref="editModal" :message="message" />
+    <PromiseModal ref="promiseModal" :messages="[ message ]" :selected-message="message.id" :users="replyusers" />
+    <LoveJunkModal v-if="showLoveJunk" ref="lovejunk" :message="message" />
   </div>
 </template>
 <script>
 import AddToCalendar from '@/components/AddToCalendar'
+import PromiseModal from '@/components/PromiseModal'
+import waitForRef from '@/mixins/waitForRef'
 import OutcomeModal from './OutcomeModal'
 const MyMessageReply = () => import('./MyMessageReply.vue')
 const ShareModal = () => import('./ShareModal')
 const MessageEditModal = () => import('./MessageEditModal')
 const ImageCarousel = () => import('./ImageCarousel')
 const NoticeMessage = () => import('~/components/NoticeMessage')
+const LoveJunkModal = () => import('~/components/LoveJunkModal')
 
 let ResizeText = null
 
@@ -264,14 +275,17 @@ export default {
     ResizeText
   },
   components: {
+    PromiseModal,
     AddToCalendar,
     OutcomeModal,
     ShareModal,
     MyMessageReply,
     MessageEditModal,
     ImageCarousel,
-    NoticeMessage
+    NoticeMessage,
+    LoveJunkModal
   },
+  mixins: [waitForRef],
   props: {
     message: {
       type: Object,
@@ -306,7 +320,8 @@ export default {
     return {
       maxChars: 60,
       expanded: false,
-      hide: false
+      hide: false,
+      showLoveJunk: false
     }
   },
   computed: {
@@ -369,6 +384,65 @@ export default {
           }
         })
       }
+    },
+    closestUser() {
+      let ret = null
+      let dist = null
+
+      if (this.replyusers.length > 1) {
+        this.replyusers.forEach(u => {
+          if (dist === null || (u.info && u.info.milesaway < dist)) {
+            dist = u.info.milesaway
+            ret = u.id
+          }
+        })
+      }
+
+      return ret
+    },
+    bestRatedUser() {
+      let ret = null
+      let rating = null
+
+      if (this.replyusers.length > 1) {
+        this.replyusers.forEach(u => {
+          if (
+            u.info &&
+            u.info.ratings &&
+            u.info.ratings.Up + u.info.ratings.Down > 0
+          ) {
+            const thisrating =
+              u.info.ratings.Up / (u.info.ratings.Up + u.info.ratings.Down)
+
+            if (rating === null || thisrating > rating) {
+              rating = thisrating
+              ret = u.id
+            }
+          }
+        })
+      }
+
+      return ret
+    },
+    quickestUser() {
+      let ret = null
+      let replytime = null
+
+      if (this.replyusers.length > 1) {
+        this.replyusers.forEach(u => {
+          if (
+            u.info &&
+            u.info.replytime &&
+            (replytime === null ||
+              (u.info.replytime && u.info.replytime < replytime))
+          ) {
+            replytime = u.info.replytime
+            ret = u.id
+          }
+        })
+      }
+
+      return ret
     },
     replyusers() {
       const ret = []
@@ -470,6 +544,9 @@ export default {
           break
         case 'received':
           this.outcome('Received')
+          break
+        case 'promise':
+          this.$refs.promiseModal.show()
           break
       }
     }
@@ -584,6 +661,13 @@ export default {
       }
 
       return ret
+    },
+    lovejunk() {
+      this.showLoveJunk = true
+
+      this.waitForRef('lovejunk', () => {
+        this.$refs.lovejunk.show()
+      })
     }
   }
 }

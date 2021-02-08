@@ -111,7 +111,7 @@
           variant="danger"
           name="ban"
           label="Report Spammer"
-          class="mr-1"
+          class="mr-1 mt-1"
           :handler="spamReport"
         />
         <SpinButton
@@ -122,7 +122,7 @@
           name="check"
           :label="'Ignore on ' + group.namedisplay"
           :handler="spamIgnore"
-          :handler-data="group.id"
+          :handler-data="{ groupid: group.id }"
           class="mr-1 mt-1"
         />
       </b-card-footer>
@@ -181,7 +181,8 @@ export default {
       showEmails: false,
       type: null,
       allmemberships: false,
-      showSpamModal: false
+      showSpamModal: false,
+      ignored: []
     }
   },
   computed: {
@@ -198,10 +199,16 @@ export default {
         return null
       }
 
-      return ms.filter(g => 'reviewrequestedat' in g || g.collection === 'Spam')
+      return ms.filter(g => {
+        return (
+          this.amAModOn(g.id) &&
+          ('reviewrequestedat' in g || g.collection === 'Spam') &&
+          !this.ignored[g.id]
+        )
+      })
     },
-    memberof() {
-      let ms = null
+    allmemberof() {
+      let ms = []
 
       if (this.member && this.member.memberof) {
         ms = this.member.memberof
@@ -210,17 +217,20 @@ export default {
       }
 
       if (!ms) {
-        return null
+        return []
       }
 
       ms.sort(function(a, b) {
         return new Date(b.added).getTime() - new Date(a.added).getTime()
       })
 
+      return ms
+    },
+    memberof() {
       if (this.allmemberships) {
-        return ms
+        return this.allmemberof
       } else {
-        return ms.slice(0, MEMBERSHIPS_SHOW)
+        return this.allmemberof.slice(0, MEMBERSHIPS_SHOW)
       }
     },
     email() {
@@ -240,10 +250,8 @@ export default {
     hiddenmemberofs() {
       return this.allmemberships
         ? 0
-        : this.user &&
-          this.user.memberof &&
-          this.user.memberof.length > MEMBERSHIPS_SHOW
-          ? this.user.memberof.length - MEMBERSHIPS_SHOW
+        : this.allmemberof.length > MEMBERSHIPS_SHOW
+          ? this.allmemberof.length - MEMBERSHIPS_SHOW
           : 0
     },
     inactive() {
@@ -372,11 +380,15 @@ export default {
         this.$refs.spamConfirm.show()
       })
     },
-    async spamIgnore(groupid) {
+    async spamIgnore(data) {
+      const groupid = data.groupid
+
       await this.$store.dispatch('members/spamignore', {
         userid: this.member.userid,
         groupid: groupid
       })
+
+      this.ignored[groupid] = true
     },
     daysago(d) {
       return this.$dayjs().diff(this.$dayjs(d), 'days')

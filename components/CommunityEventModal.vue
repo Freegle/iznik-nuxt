@@ -343,6 +343,7 @@
 </template>
 
 <script>
+import modal from '@/mixins/modal'
 import { required, maxLength } from 'vuelidate/lib/validators'
 import cloneDeep from 'lodash.clonedeep'
 import { validationMixin } from 'vuelidate'
@@ -394,7 +395,6 @@ function initialData() {
 
   return {
     eventEdit: eventEdit,
-    showModal: false,
     editing: false,
     added: false,
     groupid: null,
@@ -418,7 +418,7 @@ export default {
     DonationButton,
     ExternalLink
   },
-  mixins: [validationMixin, validationHelpers],
+  mixins: [validationMixin, validationHelpers, modal],
   props: {
     event: {
       type: Object,
@@ -470,9 +470,6 @@ export default {
       if (this.eventEdit.groups && this.eventEdit.groups.length > 0) {
         this.groupid = this.eventEdit.groups[0].id
       }
-    },
-    hide() {
-      this.showModal = false
     },
     async deleteIt() {
       await this.$store.dispatch('communityevents/delete', {

@@ -7,12 +7,34 @@
           <ProfileImage :image="reply.user.profile.turl" class="m-1 d-none d-md-block" is-thumbnail size="sm" />
           <ProfileImage :image="reply.user.profile.turl" class="m-1 d-block d-md-none" is-thumbnail size="lg" />
           <!-- eslint-disable-next-line -->
-          <span class="align-middle mt-1" v-if="unseen > 0"><strong>{{ reply.user.displayname }}</strong></span>
+            <span class="align-middle mt-1" v-if="unseen > 0"><strong>{{ reply.user.displayname }}</strong></span>
           <!-- eslint-disable-next-line -->
-          <span v-else class="align-middle mt-1"><strong>{{ reply.user.displayname }}</strong></span>
+            <span v-else class="align-middle mt-1"><strong>{{ reply.user.displayname }}</strong></span>
         </div>
       </div>
-      <ratings :id="reply.user.id" class="pl-1 flex-shrink-1 ratings" />
+      <div class="badges d-flex flex-wrap justify-content-end">
+        <div class="mt-1 mr-1 d-flex flex-column justify-content-center">
+          <b-badge v-if="closest" variant="info" pill class="pb-1">
+            Nearby
+          </b-badge>
+        </div>
+        <div class="mt-1 mr-1 d-flex flex-column justify-content-center">
+          <b-badge v-if="best" variant="info" pill class="pb-1">
+            Good rating
+          </b-badge>
+        </div>
+        <div class="mt-1 mr-1 d-flex flex-column justify-content-center">
+          <b-badge v-if="quickest" variant="info" pill class="pb-1">
+            Quick reply
+          </b-badge>
+        </div>
+      </div>
+      <div class="pl-1 flex-shrink-1 ratings d-flex d-md-none justify-content-end">
+        <ratings :id="reply.user.id" size="sm" />
+      </div>
+      <div class="pl-1 flex-shrink-1 ratings d-none d-md-flex justify-content-end w-100 pr-1">
+        <ratings :id="reply.user.id" />
+      </div>
       <div class="d-flex flex-column justify-content-center wrote">
         <div>
           <div class="text-muted small mb-1">
@@ -118,6 +140,21 @@ export default {
     chats: {
       type: Array,
       required: true
+    },
+    closest: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    best: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    quickest: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   computed: {
@@ -207,52 +244,58 @@ export default {
 
 .layout {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: auto auto auto auto;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto auto auto auto;
+
+  .user {
+    grid-row: 1 / 2;
+    grid-column: 1 / 3;
+    align-self: start;
+    font-size: 150%;
+  }
+
+  .badges {
+    grid-row: 2 / 3;
+    grid-column: 2 / 3;
+    align-self: end;
+  }
+
+  .ratings {
+    grid-row: 2 / 3;
+    grid-column: 1 / 2;
+    justify-self: start;
+    margin-top: 0.5rem;
+    margin-right: 0.5rem;
+  }
 
   .divider {
     border-bottom: 1px solid $color-gray--light;
     margin-top: 5px;
     margin-bottom: 5px;
-    grid-column: 1 / 4;
-    grid-row: 2 / 3;
-  }
-
-  .user {
-    grid-row: 1 / 2;
-    grid-column: 1 / 2;
-    align-self: start;
-    font-size: 150%;
-  }
-
-  .ratings {
-    grid-row: 1 / 2;
-    grid-column: 2 / 4;
-    justify-self: end;
-    margin-top: 0.5rem;
-    margin-right: 0.5rem;
+    grid-row: 3 / 4;
+    grid-column: 1 / 3;
   }
 
   .wrote {
     grid-row: 4 / 5;
-    grid-column: 1 / 4;
+    grid-column: 1 / 3;
     margin-top: 0.5rem;
     margin-left: 0.5rem;
   }
 
   .buttons {
-    grid-row: 3 / 4;
-    grid-column: 1 / 4;
+    grid-row: 5 / 6;
+    grid-column: 1 / 3;
     margin-top: 0.25rem;
   }
 
   @include media-breakpoint-up(md) {
     grid-template-columns: 3fr 1fr;
-    grid-template-rows: auto auto;
+    grid-template-rows: auto auto auto;
 
     .divider {
       grid-column: 1 / 4;
-      grid-row: 2 / 3;
+      grid-row: 3 / 4;
       margin-top: 5px;
     }
 
@@ -261,20 +304,25 @@ export default {
       grid-row: 1 / 2;
     }
 
+    .badges {
+      grid-row: 2 / 3;
+      grid-column: 3 / 4;
+    }
+
     .ratings {
       grid-column: 3 / 4;
       grid-row: 1 / 2;
     }
 
     .wrote {
-      grid-row: 3 / 4;
+      grid-row: 4 / 5;
       grid-column: 1 / 2;
       border-top: 0;
     }
 
     .buttons {
       grid-column: 2 / 4;
-      grid-row: 3 / 4;
+      grid-row: 4 / 5;
       justify-self: end;
       border-top: 0;
     }

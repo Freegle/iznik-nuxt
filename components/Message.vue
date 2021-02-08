@@ -544,15 +544,6 @@ export default {
         const me = this.$store.getters['auth/user']
 
         if (me) {
-          this.$api.bandit.shown({
-            uid: 'replybox',
-            variant: 'phonesupplied'
-          })
-          this.$api.bandit.shown({
-            uid: 'replybox',
-            variant: 'phoneabsent'
-          })
-
           this.$store.dispatch('messages/view', {
             id: this.id
           })
@@ -652,22 +643,9 @@ export default {
 
       if (this.reply) {
         const me = this.$store.getters['auth/user']
-        const phone = me ? me.phone : null
 
         if (me && me.id) {
           if (me.id !== this.replyToUser) {
-            if (phone) {
-              this.$api.bandit.chosen({
-                uid: 'replybox',
-                variant: 'phonesupplied'
-              })
-            } else {
-              this.$api.bandit.shown({
-                uid: 'replybox',
-                variant: 'phoneabsent'
-              })
-            }
-
             // We have several things to do:
             // - join a group if need be (doesn't matter which)
             // - post our reply

@@ -27,16 +27,14 @@
   </div>
 </template>
 <script>
+import modal from '@/mixins/modal'
+
 export default {
+  mixins: [modal],
   props: {
     id: {
       type: Number,
       required: true
-    }
-  },
-  data: function() {
-    return {
-      showModal: false
     }
   },
   computed: {
@@ -51,9 +49,6 @@ export default {
       })
 
       this.showModal = true
-    },
-    hide() {
-      this.showModal = false
     }
   }
 }

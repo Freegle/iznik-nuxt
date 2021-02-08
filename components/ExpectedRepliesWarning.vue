@@ -29,20 +29,8 @@ export default {
       required: true
     }
   },
-  mounted() {
-    // Record the show
-    this.$api.bandit.shown({
-      uid: 'rsvp',
-      variant: 'warning'
-    })
-  },
   methods: {
     go(id) {
-      this.$api.bandit.chosen({
-        uid: 'rsvp',
-        variant: 'warning'
-      })
-
       this.$router.push('/chats/' + id)
     }
   }

@@ -19,6 +19,9 @@
             Fine
           </option>
         </b-select>
+        <b-btn variant="white" @click="markAll">
+          Mark all as seen
+        </b-btn>
       </div>
       <b-card v-if="happinessData.length" variant="white" class="mt-1">
         <b-card-text>
@@ -157,6 +160,36 @@ export default {
       }
 
       return false
+    },
+    async markAll() {
+      await this.$store.dispatch('members/clear')
+
+      await this.$store.dispatch('members/fetchMembers', {
+        groupid: this.groupid,
+        collection: this.collection,
+        modtools: true,
+        summary: false,
+        context: null,
+        limit: 1000
+      })
+
+      this.$nextTick(() => {
+        this.members.forEach(async member => {
+          if (!member.reviewed) {
+            // Mark this as reviewed.  They've had a chance to see it.
+            await this.$store.dispatch('members/happinessReviewed', {
+              userid: member.fromuser,
+              groupid: member.groupid,
+              happinessid: member.id
+            })
+          }
+        })
+
+        this.$store.dispatch('auth/fetchUser', {
+          components: ['work'],
+          force: true
+        })
+      })
     }
   }
 }

@@ -27,9 +27,11 @@
   </div>
 </template>
 <script>
+import modal from '@/mixins/modal'
 import twem from '~/assets/js/twem'
 
 export default {
+  mixins: [modal],
   props: {
     chatid: {
       type: Number,
@@ -38,7 +40,6 @@ export default {
   },
   data: function() {
     return {
-      showModal: false,
       chat: null,
       note: null
     }
@@ -61,9 +62,6 @@ export default {
       this.chat = this.$store.getters['chats/get'](this.chatid)
 
       this.showModal = true
-    },
-    hide() {
-      this.showModal = false
     },
     async addit() {
       // Encode up any emojis.

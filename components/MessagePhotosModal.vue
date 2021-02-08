@@ -20,10 +20,12 @@
   </div>
 </template>
 <script>
+import modal from '@/mixins/modal'
 const ImageCarousel = () => import('./ImageCarousel')
 
 export default {
   components: { ImageCarousel },
+  mixins: [modal],
   props: {
     message: {
       type: Object,
@@ -32,19 +34,6 @@ export default {
     subject: {
       type: String,
       required: true
-    }
-  },
-  data: function() {
-    return {
-      showModal: false
-    }
-  },
-  methods: {
-    show() {
-      this.showModal = true
-    },
-    hide() {
-      this.showModal = false
     }
   }
 }

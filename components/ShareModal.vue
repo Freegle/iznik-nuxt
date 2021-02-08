@@ -70,10 +70,12 @@
   </b-modal>
 </template>
 <script>
+import modal from '@/mixins/modal'
 import NoticeMessage from './NoticeMessage'
 
 export default {
   components: { NoticeMessage },
+  mixins: [modal],
   props: {
     id: {
       type: Number,
@@ -87,7 +89,6 @@ export default {
   },
   data: function() {
     return {
-      showModal: false,
       shared: false
     }
   },
@@ -114,26 +115,6 @@ export default {
         })
 
         this.showModal = true
-
-        this.$api.bandit.shown({
-          uid: 'share',
-          variant: 'facebook'
-        })
-
-        this.$api.bandit.shown({
-          uid: 'share',
-          variant: 'twitter'
-        })
-
-        this.$api.bandit.shown({
-          uid: 'share',
-          variant: 'whatsapp'
-        })
-
-        this.$api.bandit.shown({
-          uid: 'share',
-          variant: 'email'
-        })
       } catch (e) {
         // Must no longer exist on server.
         this.close()
@@ -144,6 +125,7 @@ export default {
         uid: 'share',
         variant: type
       })
+      this.shared = true
     },
     shareApp(){
       console.log('shareApp')

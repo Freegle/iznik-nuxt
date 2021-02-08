@@ -39,10 +39,12 @@
   </div>
 </template>
 <script>
+import modal from '@/mixins/modal'
 import NoticeMessage from './NoticeMessage'
 
 export default {
   components: { NoticeMessage },
+  mixins: [modal],
   props: {
     groupid: {
       type: Number,
@@ -51,19 +53,12 @@ export default {
   },
   data: function() {
     return {
-      showModal: false,
       email: null,
       reason: null,
       addedId: null
     }
   },
   methods: {
-    show() {
-      this.showModal = true
-    },
-    hide() {
-      this.showModal = false
-    },
     async add() {
       this.addedId = await this.$store.dispatch('user/add', {
         email: this.email
