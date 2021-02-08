@@ -2,4 +2,4 @@ User-agent: *
 Disallow:
 
 # Sitemap files
-Sitemap: https://ilovefreegle.org/sitemap.xml
+Sitemap: https://www.ilovefreegle.org/sitemap.xml
