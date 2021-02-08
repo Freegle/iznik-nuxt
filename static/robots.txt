@@ -1,0 +1,5 @@
+User-agent: *
+Disallow:
+
+# Sitemap files
+Sitemap: https://ilovefreegle.org/sitemap.xml
