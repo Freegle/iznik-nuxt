@@ -41,9 +41,7 @@
         </l-map>
       </ClientOnly>
     </div>
-    <div class="images">
-      <RandomImage :images="images" />
-    </div>
+    <RandomImage class="images" :images="images" />
   </div>
 </template>
 <script>

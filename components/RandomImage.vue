@@ -1,11 +1,12 @@
 <template>
   <div class="d-flex">
-    <div v-for="image in randomImages" :key="'image-' + image" alt="Random image">
+    <div v-for="image in randomImages" :key="'image-' + image">
       <b-img-lazy
         v-if="image"
         :src="image"
         thumbnail
         class="image"
+        generator-unable-to-provide-required-alt=""
         @error.native="brokenImage"
       />
     </div>
