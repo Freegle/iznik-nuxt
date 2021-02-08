@@ -92,6 +92,7 @@
 </template>
 
 <script>
+import modal from '@/mixins/modal'
 import twem from '~/assets/js/twem'
 import ProfileHeader from '~/components/ProfileHeader'
 
@@ -104,16 +105,12 @@ export default {
     NoticeMessage,
     ProfileHeader
   },
+  mixins: [modal],
   props: {
     id: {
       type: Number,
       required: false,
       default: 0
-    }
-  },
-  data: function() {
-    return {
-      showModal: false
     }
   },
   computed: {
@@ -152,15 +149,6 @@ export default {
         id: this.id,
         info: true
       })
-    }
-  },
-  methods: {
-    show() {
-      this.showModal = true
-    },
-
-    hide() {
-      this.showModal = false
     }
   }
 }
