@@ -801,12 +801,12 @@ export default {
   .header-expand {
     grid-column: 1 / 2;
     grid-row: 5 / 6;
+    align-self: end;
+    justify-self: end;
 
     @include media-breakpoint-up(sm) {
       grid-column: 2 / 3;
       grid-row: 4 / 5;
-      align-self: end;
-      justify-self: end;
     }
   }
 }
