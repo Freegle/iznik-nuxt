@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="group in message.groups" :key="'message-' + message.id + '-' + group.id" class="text--small">
-      {{ group.arrival | timeago }} on <nuxt-link :to="'/explore/' + group.groupid">
+      <span class="time">{{ group.arrival | timeago }} on</span> <nuxt-link :to="'/explore/' + group.groupid">
         {{ group.namedisplay }}
       </nuxt-link>
       <client-only>
@@ -18,7 +18,7 @@
           IP unavailable.
         </span>
       </span>
-      <span v-if="group && group.approvedby && group.approvedby.displayname">
+      <span v-if="group && group.approvedby && group.approvedby.displayname" class="text-faded">
         Approved by {{ group.approvedby.displayname }}
       </span>
     </div>
@@ -75,3 +75,10 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+@import 'color-vars';
+
+.time {
+  color: $colour-success-fg;
+}
+</style>
