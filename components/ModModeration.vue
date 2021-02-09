@@ -47,8 +47,8 @@ export default {
       },
       async set(val) {
         await this.$store.dispatch('user/edit', {
-          id: this.user.id,
-          groupid: this.membership.id,
+          id: this.membership.userid,
+          groupid: this.membership.groupid,
           ourPostingStatus: val
         })
       }
@@ -59,8 +59,8 @@ export default {
       },
       async set(val) {
         await this.$store.dispatch('user/edit', {
-          id: this.user.id,
-          groupid: this.membership.id,
+          id: this.membership.userid,
+          groupid: this.membership.groupid,
           trustlevel: val
         })
       }
