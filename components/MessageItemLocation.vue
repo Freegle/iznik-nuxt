@@ -1,17 +1,19 @@
 <template>
   <div class="item header--size4">
-    <h3 class="m-0 d-flex">
-      <Highlighter
-        v-if="matchedon"
-        :search-words="[matchedon.word]"
-        :text-to-highlight="item"
-        highlight-class-name="highlight"
-        auto-escape
-        class="item"
-      />
-      <span v-else class="item">
-        {{ item }}
-      </span>
+    <h3 class="m-0 d-flex justify-content-between">
+      <div>
+        <Highlighter
+          v-if="matchedon"
+          :search-words="[matchedon.word]"
+          :text-to-highlight="item"
+          highlight-class-name="highlight"
+          auto-escape
+          class="item"
+        />
+        <span v-else class="item">
+          {{ item }}
+        </span>
+      </div>
       <b-badge v-if="message.availablenow > 1" variant="info" class="ml-3">
         {{ message.availablenow ? message.availablenow : '0' }} left
       </b-badge>

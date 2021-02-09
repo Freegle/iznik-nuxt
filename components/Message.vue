@@ -1,5 +1,5 @@
 <template>
-  <div :id="'msg-' + id" class="position-relative">
+  <div :id="'msg-' + id" class="position-relative ml-2 mr-2 ml-sm-0 mr-sm-0">
     <span ref="breakpoint" class="d-inline d-sm-none" />
     <template v-if="successful">
       <MessageFreegled :id="id" />
