@@ -63,6 +63,28 @@ const cordovaApp = {
         console.log('NO PUSH NOTIFICATION SERVICE')
         // alert("No PN");
       } else if (!pushstate.mobilePushId) {
+        if (!mobilestate.isiOS) {
+          // On Android, give the default notification channel a name
+          try {
+            window.PushNotification.createChannel(
+              () => {
+                console.log('default channel success');
+              },
+              () => {
+                console.log('default channel error');
+              },
+              {
+                id: 'PushPluginChannel',
+                description: process.env.IS_MTAPP ? 'Moderation tasks' : 'Chat messages',
+                importance: 3,
+                vibration: false
+              }
+            )
+          } catch (e) {
+          }
+        }
+
+
         mobilePush = window.PushNotification.init({
           android: {
             senderID: '423761283916', // FCM: https://console.firebase.google.com/project/scenic-oxygen-849/settings/general/android:org.ilovefreegle.direct

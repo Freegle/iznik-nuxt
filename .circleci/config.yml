@@ -40,10 +40,8 @@ jobs:
       - node/install:
           lts: true
           #install-npm: false
-          #node-version: "12.20"
           #node-version: "14.15.4"
           npm-version: "6.14.10"
-      #- run: npm install -g npm@6.14.11
       - run: npm -v; node -v # 6.14.11 v14.15.4
 
       ################
@@ -197,8 +195,10 @@ jobs:
       - android/accept-licenses
       - node/install:
           lts: true
-          #node-version: '12.20'
-      - run: npm -v; node -v # 6.14.11 v14.15.4
+          #install-npm: false
+          #node-version: "14.15.4"
+          #npm-version: "6.14.10"
+      - run: npm -v; node -v # OK: 7.5.2 v14.15.4  # 6.14.11 v14.15.4
 
       - run: npm install
       - run: npm install -g cordova rimraf # @9.0.0
