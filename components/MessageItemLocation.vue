@@ -2,6 +2,7 @@
   <div class="item header--size4">
     <h3 class="m-0 d-flex justify-content-between">
       <div>
+        <span class="sr-only">{{ type }}</span>
         <Highlighter
           v-if="matchedon"
           :search-words="[matchedon.word]"
@@ -14,9 +15,10 @@
           {{ item }}
         </span>
       </div>
-      <b-badge v-if="message.availablenow > 1" variant="info" class="ml-3">
-        {{ message.availablenow ? message.availablenow : '0' }} left
-      </b-badge>
+    </h3>
+    <b-badge v-if="message.availablenow > 1" variant="info" class="ml-3">
+      {{ message.availablenow ? message.availablenow : '0' }} left
+    </b-badge>
     </h3>
     <div class="location">
       {{ location }}
@@ -37,6 +39,11 @@ export default {
     },
     matchedon: {
       type: Object,
+      required: false,
+      default: null
+    },
+    type: {
+      type: String,
       required: false,
       default: null
     }
