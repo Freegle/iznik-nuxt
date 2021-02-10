@@ -2,7 +2,9 @@
   <div class="item header--size4">
     <h3 class="m-0 d-flex justify-content-between">
       <div>
-        <span class="sr-only">{{ type }}</span>
+        <div class="sr-only">
+          {{ type }}
+        </div>
         <Highlighter
           v-if="matchedon"
           :search-words="[matchedon.word]"
