@@ -51,5 +51,6 @@ export default {
 
 .textbody {
   font-size: 1.25rem;
+  word-break: break-word !important;
 }
 </style>
