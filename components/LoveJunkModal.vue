@@ -10,9 +10,6 @@
       <template slot="default">
         <div class="text-center">
           <p>
-            Not shown to members yet - still under development.
-          </p>
-          <p>
             Freegling is best.  But if you need it gone, then our friends at LoveJunk
             can arrange a paid pickup.
           </p>
