@@ -2,6 +2,9 @@
   <div class="item header--size4">
     <h3 class="m-0 d-flex justify-content-between">
       <div>
+        <div class="sr-only">
+          {{ type }}
+        </div>
         <Highlighter
           v-if="matchedon"
           :search-words="[matchedon.word]"
@@ -37,6 +40,11 @@ export default {
     },
     matchedon: {
       type: Object,
+      required: false,
+      default: null
+    },
+    type: {
+      type: String,
       required: false,
       default: null
     }
