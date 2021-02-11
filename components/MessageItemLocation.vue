@@ -13,7 +13,7 @@
           auto-escape
           class="item"
         />
-        <span v-else class="item">
+        <span v-else class="item" itemprop="name">
           {{ item }}
         </span>
       </div>

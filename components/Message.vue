@@ -3,7 +3,7 @@
     <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="d-none">
       <meta itemprop="priceCurrency" content="GBP">
       <span itemprop="price">0</span> |
-      <span itemprop="availability">In-stock</span>
+      <span itemprop="availability">Instock</span>
     </div>
     <span ref="breakpoint" class="d-inline d-sm-none" />
     <template v-if="successful">
