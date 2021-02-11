@@ -49,6 +49,7 @@ export default function createGroupRoute(key, options = {}) {
           if (val !== oldVal) {
             // We have changed the groupid away from the one in the route! Redirect...
             this.$router.push(routePath(val))
+
             if (val === DEFAULT_VALUE) {
               this.updateMemory(DEFAULT_VALUE)
             }
@@ -70,8 +71,10 @@ export default function createGroupRoute(key, options = {}) {
           } else if (val !== undefined) {
             if (this.groupid === DEFAULT_VALUE) {
               // We have a remember value, but we're on the general page
-              // Replace the current route
-              this.$router.replace(routePath(val))
+              // Replace the current route.  But delay it, otherwise we get a log about cancelling a route.
+              this.$nextTick(() => {
+                this.$router.replace(routePath(val))
+              })
             } else if (this.groupid !== val) {
               // We've set the groupid to something else now, save it
               this.updateMemory(this.groupid)
