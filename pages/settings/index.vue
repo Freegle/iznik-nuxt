@@ -348,16 +348,29 @@
                 </h3>
                 <p>We can send SMS alerts to your phone when you have a new message on Freegle or a handover soon.</p>
                 <SettingsPhone />
-                <b-row>
-                  <b-col>
-                    <b-alert v-if="me.phone" show variant="info">
-                      <p>
-                        It costs Freegle to send these - if you can, please:
-                      </p>
-                      <donation-button />
-                    </b-alert>
-                  </b-col>
-                </b-row>
+                <div v-if="me.phone">
+                  <NoticeMessage v-if="me.phonelastsent && (!me.phonelastclicked || me.phonelastclicked < me.phonelastsent)" variant="danger" class="mb-2">
+                    <p>
+                      We've stopped sending you SMS alerts, because you don't seem to be clicking on them.  We do this
+                      to save Freegle money.
+                    </p>
+                    <ul>
+                      <li>
+                        If you don't want to get SMS alerts, please click <em>Remove</em> above to remove your number.
+                      </li>
+                      <li>
+                        If you do still want to receive SMS alerts again, please remove and re-add your mobile number,
+                        and we'll start again.
+                      </li>
+                    </ul>
+                  </NoticeMessage>
+                  <NoticeMessage v-else variant="warning" class="mb-2">
+                    <p>
+                      It costs Freegle to send these - if you can, please:
+                    </p>
+                    <donation-button />
+                  </NoticeMessage>
+                </div>
                 <h3 class="header--size5 header5__color">
                   Email Alerts
                 </h3>
@@ -772,7 +785,7 @@ export default {
     async update() {
       try {
         await this.$store.dispatch('auth/fetchUser', {
-          components: ['me', 'groups', 'aboutme', 'notifications'],
+          components: ['me', 'phone', 'groups', 'aboutme', 'notifications'],
           force: true
         })
 
@@ -883,7 +896,7 @@ export default {
       }
 
       await this.$store.dispatch('auth/fetchUser', {
-        components: ['me', 'groups', 'aboutme', 'notifications']
+        components: ['me', 'phone', 'groups', 'aboutme', 'notifications']
       })
     },
     async groupChange(e) {
@@ -895,7 +908,7 @@ export default {
       await this.$store.dispatch('auth/setGroup', params)
 
       await this.$store.dispatch('auth/fetchUser', {
-        components: ['me', 'groups', 'aboutme', 'notifications']
+        components: ['me', 'phone', 'groups', 'aboutme', 'notifications']
       })
     },
     async changeNotification(e, type) {
@@ -969,7 +982,14 @@ export default {
       })
 
       await this.$store.dispatch('auth/fetchUser', {
-        components: ['me', 'groups', 'aboutme', 'phone', 'notifications'],
+        components: [
+          'me',
+          'phone',
+          'groups',
+          'aboutme',
+          'phone',
+          'notifications'
+        ],
         force: true
       })
 
