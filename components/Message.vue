@@ -1,5 +1,10 @@
 <template>
-  <div :id="'msg-' + id" class="position-relative ml-2 mr-2 ml-sm-0 mr-sm-0">
+  <div :id="'msg-' + id" class="position-relative ml-2 mr-2 ml-sm-0 mr-sm-0" itemscope itemtype="http://schema.org/Product">
+    <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="d-none">
+      <meta itemprop="priceCurrency" content="GBP">
+      <span itemprop="price">0</span> |
+      <span itemprop="availability">In-stock</span>
+    </div>
     <span ref="breakpoint" class="d-inline d-sm-none" />
     <template v-if="successful">
       <MessageFreegled :id="id" />

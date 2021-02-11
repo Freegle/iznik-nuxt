@@ -22,6 +22,7 @@
         generator-unable-to-provide-required-alt=""
         title="Item picture"
         :src="attachments[0].paththumb"
+        itemprop="image"
         @error.native="brokenImage"
       />
       <MessagePhotosModal
