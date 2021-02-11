@@ -548,6 +548,9 @@ export default {
         case 'promise':
           this.$refs.promiseModal.show()
           break
+        case 'lovejunk':
+          this.lovejunk()
+          break
       }
     }
   },
