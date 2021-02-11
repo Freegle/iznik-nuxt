@@ -81,7 +81,7 @@ export default {
       })
 
       window.open(
-        'https://bookings-staging.lovejunk.com/freegle/' +
+        'https://bookings.lovejunk.com/freegle/' +
           this.message.id +
           '?signature=' +
           this.message.lovejunkhash
