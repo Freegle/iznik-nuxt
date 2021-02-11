@@ -7,7 +7,7 @@
       highlight-class-name="highlight"
       auto-escape
     />
-    <span v-else itemprop="name" itemprop="description">{{ textbody }}</span>
+    <span v-else itemprop="description">{{ textbody }}</span>
   </div>
 </template>
 <script>
