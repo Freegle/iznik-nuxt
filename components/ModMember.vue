@@ -98,10 +98,9 @@
             <b-btn variant="link" @click="showLogs">
               View logs
             </b-btn>
-            <b-btn variant="link" @click="showProfile">
+            <b-btn variant="link" :to="'/profile/' + member.userid">
               View profile
             </b-btn>
-            <ProfileModal :id="member.userid" ref="profilemodal" />
             <div v-if="showEmails">
               <div v-for="e in member.emails" :key="e.id">
                 {{ e.email }} <v-icon v-if="e.preferred" name="star" />
@@ -201,7 +200,6 @@ import ModBouncing from './ModBouncing'
 import ModMemberLogins from './ModMemberLogins'
 import ModRole from './ModRole'
 import ChatButton from './ChatButton'
-import ProfileModal from './ProfileModal'
 import ModMemberButton from './ModMemberButton'
 const OurToggle = () => import('@/components/OurToggle')
 const ExternalLink = () => import('~/components/ExternalLink')
@@ -211,7 +209,6 @@ export default {
   components: {
     ModModeration,
     ModMemberButton,
-    ProfileModal,
     ChatButton,
     OurToggle,
     ModRole,
@@ -409,11 +406,6 @@ export default {
       await this.$store.dispatch('user/edit', {
         id: this.user.id,
         newslettersallowed: e.value
-      })
-    },
-    showProfile() {
-      this.waitForRef('profilemodal', () => {
-        this.$refs.profilemodal.show()
       })
     }
   }
