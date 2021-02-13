@@ -26,7 +26,8 @@
             If you're up for it, we can show you the occasional thing on Freegle that needs checking over to make sure it's ok.
           </p>
           <p>
-            It'll only take a few seconds to check, and you'll be helping out other people in the Freegle community.
+            It'll only take a few seconds to check, and you'll be helping out other people in the Freegle community.  Plus
+            you'll get a little "Supporter" badge, which other people can see, to say thank you.
           </p>
         </b-card-text>
         <template v-slot:modal-footer>

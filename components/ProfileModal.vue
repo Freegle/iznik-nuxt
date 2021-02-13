@@ -3,7 +3,6 @@
     id="profilemodal"
     v-model="showModal"
     size="lg"
-    no-stacking
   >
     <template slot="modal-header">
       <div class="w-100 coverphoto">

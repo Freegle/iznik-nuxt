@@ -6,6 +6,15 @@
           <profile-header :id="id" class="m-0" />
         </b-card-body>
       </b-card>
+      <NoticeMessage variant="primary" class="supporter d-flex justify-content-between flex-wrap">
+        <span class="align-self-center">
+          <v-icon name="heart" /> Very kindly keeps Freegle running with donations of time or money.
+        </span>
+        <b-btn variant="link" class="align-self-center p-0" @click="supporterInfo">
+          Find out more
+        </b-btn>
+        <SupporterInfoModal v-if="showSupporterInfo" ref="supporterInfoModal" />
+      </NoticeMessage>
       <b-card v-if="aboutme" variant="white" class="mt-2">
         <b-card-body class="p-0">
           <div class="mb-1">
@@ -113,6 +122,8 @@
 </template>
 
 <script>
+import SupporterInfoModal from '@/components/SupporterInfoModal'
+import waitForRef from '@/mixins/waitForRef'
 import NoticeMessage from '~/components/NoticeMessage'
 import twem from '~/assets/js/twem'
 
@@ -122,11 +133,13 @@ import ProfileHeader from '~/components/ProfileHeader'
 
 export default {
   components: {
+    SupporterInfoModal,
     NoticeMessage,
     ReplyTime,
     Message,
     ProfileHeader
   },
+  mixins: [waitForRef],
   props: {
     id: {
       type: Number,
@@ -140,7 +153,8 @@ export default {
   },
   data: function() {
     return {
-      invalidUser: false
+      invalidUser: false,
+      showSupporterInfo: false
     }
   },
   computed: {
@@ -202,6 +216,13 @@ export default {
       }
 
       return ret
+    },
+    supporterInfo() {
+      this.showSupporterInfo = true
+
+      this.waitForRef('supporterInfoModal', () => {
+        this.$refs.supporterInfoModal.show()
+      })
     }
   }
 }
@@ -219,5 +240,10 @@ export default {
   padding-top: 10px;
   padding-left: 10px;
   padding-right: 10px;
+}
+
+.supporter {
+  background-color: $color-gold;
+  color: white;
 }
 </style>

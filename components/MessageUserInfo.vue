@@ -23,6 +23,7 @@
               {{ user.info.openwanteds | pluralize([ 'open WANTED', 'open WANTEDs' ], { includeNumber: true }) }}
             </span>
           </span>
+          <Supporter v-if="user.supporter" class="d-inline" />
         </span>
       </span>
     </nuxt-link>
@@ -41,6 +42,7 @@
 </template>
 
 <script>
+import Supporter from '@/components/Supporter'
 import ModPostingHistory from './ModPostingHistory'
 import ModMemberships from './ModMemberships'
 import ProfileImage from '~/components/ProfileImage'
@@ -48,6 +50,7 @@ const ModModeration = () => import('./ModModeration')
 
 export default {
   components: {
+    Supporter,
     ModMemberships,
     ModPostingHistory,
     ModModeration,

@@ -71,6 +71,16 @@ Vue.mixin({
     },
     hasPermissionGiftAid() {
       return this.hasPermission('GiftAid')
+    },
+    supporter() {
+      return this.me.supporter
+    },
+    amMicroVolunteering() {
+      return (
+        this.me.trustlevel === 'Basic' ||
+        this.me.trustlevel === 'Moderate' ||
+        this.me.trustlevel === 'Advanced'
+      )
     }
   },
   methods: {
