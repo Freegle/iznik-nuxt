@@ -28,6 +28,7 @@
             Quick reply
           </b-badge>
         </div>
+        <Supporter v-if="reply.user.supporter" class="mt-1 mr-1 d-flex flex-column justify-content-center" />
       </div>
       <div class="pl-1 flex-shrink-1 ratings d-flex d-md-none justify-content-end">
         <ratings :id="reply.user.id" size="sm" />
@@ -101,6 +102,7 @@
 </template>
 
 <script>
+import Supporter from '@/components/Supporter'
 import ProfileImage from '~/components/ProfileImage'
 const PromiseModal = () => import('./PromiseModal')
 const RenegeModal = () => import('./RenegeModal')
@@ -108,6 +110,7 @@ const Ratings = () => import('~/components/Ratings')
 
 export default {
   components: {
+    Supporter,
     Ratings,
     PromiseModal,
     RenegeModal,

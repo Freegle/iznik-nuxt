@@ -1,20 +1,20 @@
 <template>
   <div v-if="chat" class="title pb-1">
-    <div class="thename pl-1 pr-1">
-      <span v-if="chat.chattype === 'User2Mod' && mod && chat.group" class="d-inline clickme hidelink align-middle">
+    <div class="thename pl-1 pr-1 d-flex">
+      <span v-if="chat.chattype === 'User2Mod' && mod && chat.group" class="d-inline clickme hidelink align-self-center">
         <nuxt-link :to="'/modtools/members/approved/search/' + chat.group.id + '/' + otheruserid">
           {{ chat.name }}
         </nuxt-link>
       </span>
-      <span v-else-if="(chat.chattype == 'User2User' || chat.chattype == 'User2Mod')" class="d-inline clickme align-middle">
+      <span v-else-if="(chat.chattype == 'User2User' || chat.chattype == 'User2Mod')" class="d-inline clickme align-self-center">
         <span @click="showInfo">
           {{ chat.name }}
         </span>
       </span>
-      <span v-else class="d-inline align-middle">
+      <span v-else class="d-inline align-self-center">
         {{ chat.name }}
       </span>
-      <span v-if="unseen">
+      <span v-if="unseen" class="ml-2 align-self-center">
         <b-badge variant="danger">{{ unseen }}</b-badge>
       </span>
     </div>
@@ -41,7 +41,10 @@
         </b-dropdown-item>
       </b-dropdown>
     </div>
-    <Ratings v-if="otheruser" :id="otheruserid" :key="'otheruser-' + otheruserid" class="theratings pl-1 mt-1" size="sm" />
+    <div v-if="otheruser" class="theratings d-flex">
+      <Ratings :id="otheruserid" :key="'otheruser-' + otheruserid" class="pl-1 mt-1" size="sm" />
+      <Supporter v-if="otheruser.supporter" class="ml-2 align-self-center" />
+    </div>
     <b-btn variant="primary" size="sm" class="thebutton mr-1 mt-1" @click="markRead">
       Mark read
     </b-btn>
@@ -60,6 +63,7 @@
 <script>
 import chat from '@/mixins/chat.js'
 import waitForRef from '@/mixins/waitForRef'
+import Supporter from '@/components/Supporter'
 
 const ChatBlockModal = () => import('./ChatBlockModal')
 const ChatHideModal = () => import('./ChatHideModal')
@@ -68,6 +72,7 @@ const ChatReportModal = () => import('~/components/ChatReportModal')
 
 export default {
   components: {
+    Supporter,
     Ratings,
     ChatBlockModal,
     ChatHideModal,

@@ -7,7 +7,7 @@
       <p>
         <a :href="user.email">{{ user.email }}</a> is bouncing - see logs for details.
       </p>
-      <div v-if="user.role === 'Member'">
+      <div v-if="user.role === 'Member' || supportOrAdmin">
         <p>If you think the email is valid, you can:</p>
         <b-btn variant="white" @click="unbounce">
           <v-icon v-if="unbouncing" name="sync" class="fa-spin text-success" />

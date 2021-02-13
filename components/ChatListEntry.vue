@@ -1,6 +1,6 @@
 <template>
   <div v-if="chat" class="clickme noselect" @click="click">
-    <div class="ml-1 mr-1 d-flex justify-content-start">
+    <div class="ml-1 mr-1 d-flex justify-content-start w-100">
       <div>
         <ProfileImage v-if="chat.icon" :image="chat.icon" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="md" />
         <div v-if="chat.unseen" class="ml-2">
@@ -9,9 +9,9 @@
           </b-badge>
         </div>
       </div>
-      <div>
+      <div class="w-100">
         <!-- eslint-disable-next-line-->
-        <span class="pl-0 mb-0 chatname truncate">{{ chat.name }}</span>
+        <span class="pl-0 mb-0 chatname truncate d-flex justify-content-between">{{ chat.name }} <Supporter v-if="supporter" class="mr-3 small" /></span>
         <!-- eslint-disable-next-line-->
         <div class="small text-muted">{{ chat.lastdate | timeago }}</div>
         <div>
@@ -30,11 +30,13 @@
 </template>
 
 <script>
+import Supporter from '@/components/Supporter'
 import twem from '~/assets/js/twem'
 import ProfileImage from '~/components/ProfileImage'
 
 export default {
   components: {
+    Supporter,
     ProfileImage
   },
   props: {
@@ -48,13 +50,34 @@ export default {
     chat() {
       return this.$store.getters['chats/get'](this.id)
     },
-
     esnippet() {
       let ret = twem.twem(this.$twemoji, this.chat.snippet)
 
       // The way the snippet is constructed might lead to backslashes if we have an emoji.
       ret = ret.replace(/\\*$/, '') + '...'
       return ret
+    },
+    supporter() {
+      // In the summary case, the chat has the supporter flag in it.  If we have fetched the chat, we have to
+      // look at the user.
+      if (this.chat) {
+        if (this.chat.supporter) {
+          return true
+        }
+
+        if (
+          typeof this.chat.user1 === 'object' &&
+          typeof this.chat.user2 === 'object'
+        ) {
+          if (this.chat.user1.id !== this.myid) {
+            return this.chat.user1.supporter
+          } else {
+            return this.chat.user2.supporter
+          }
+        }
+      }
+
+      return false
     }
   },
 
