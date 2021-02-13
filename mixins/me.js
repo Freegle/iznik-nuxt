@@ -77,9 +77,10 @@ Vue.mixin({
     },
     amMicroVolunteering() {
       return (
-        this.me.trustlevel === 'Basic' ||
-        this.me.trustlevel === 'Moderate' ||
-        this.me.trustlevel === 'Advanced'
+        this.me &&
+        (this.me.trustlevel === 'Basic' ||
+          this.me.trustlevel === 'Moderate' ||
+          this.me.trustlevel === 'Advanced')
       )
     }
   },
