@@ -107,7 +107,7 @@
         :stdmsgid="stdmsg.id"
         :member="member"
         class="mr-1"
-        :autosend="stdmsg.autosend"
+        :autosend="(Boolean)(stdmsg.autosend && allowAutoSend)"
       />
       <b-btn
         v-if="rareToShow && !showRare"
@@ -118,6 +118,18 @@
         <v-icon name="caret-down" /> +{{ rareToShow }}...
       </b-btn>
     </div>
+    <client-only>
+      <OurToggle
+        v-model="allowAutoSend"
+        class="mb-1 float-right"
+        :height="30"
+        :width="150"
+        :font-size="14"
+        :sync="true"
+        :labels="{checked: 'Allow autosend', unchecked: 'Autosend off'}"
+        color="#61AE24"
+      />
+    </client-only>
   </div>
 </template>
 <script>
@@ -125,8 +137,10 @@ import waitForRef from '@/mixins/waitForRef'
 import ModMemberButton from './ModMemberButton'
 import ModMemberActions from './ModMemberActions'
 
+const OurToggle = () => import('@/components/OurToggle')
+
 export default {
-  components: { ModMemberActions, ModMemberButton },
+  components: { ModMemberActions, ModMemberButton, OurToggle },
   mixins: [waitForRef],
   props: {
     member: {
@@ -151,7 +165,8 @@ export default {
   },
   data: function() {
     return {
-      showRare: false
+      showRare: false,
+      allowAutoSend: true
     }
   },
   computed: {

@@ -14,7 +14,7 @@
     </div>
     <ConfirmModal v-if="showDeleteModal" ref="deleteConfirm" :title="'Delete: ' + member.displayname" @confirm="deleteConfirmed" />
     <ModSpammerReport v-if="showSpamModal" ref="spamConfirm" :user="member" />
-    <ModStdMessageModal v-if="showStdMsgModal" ref="stdmodal" :stdmsg="stdmsg" :member="member" />
+    <ModStdMessageModal v-if="showStdMsgModal" ref="stdmodal" :stdmsg="stdmsg" :member="member" :allow-auto-send="allowAutoSend" />
   </div>
 </template>
 <script>
@@ -113,6 +113,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    allowAutoSend: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
   data: function() {
