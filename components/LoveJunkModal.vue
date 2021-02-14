@@ -10,9 +10,6 @@
       <template slot="default">
         <div class="text-center">
           <p>
-            Not shown to members yet - still under development.
-          </p>
-          <p>
             Freegling is best.  But if you need it gone, then our friends at LoveJunk
             can arrange a paid pickup.
           </p>
@@ -84,7 +81,7 @@ export default {
       })
 
       window.open(
-        'https://bookings-staging.lovejunk.com/freegle/' +
+        'https://bookings.lovejunk.com/freegle/' +
           this.message.id +
           '?signature=' +
           this.message.lovejunkhash

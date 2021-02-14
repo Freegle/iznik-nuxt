@@ -217,12 +217,17 @@
                 </template>
                 <template slot="content">
                   <p>
-                    Yes!  Freegle is run by volunteers - so if you can help, please get in touch!
+                    Yes!  Freegle is run by volunteers.  The first stage is to become a Freegle Supporter, by
+                    donating time or funds (whichever you're able).
                   </p>
+                  <b-btn variant="primary" class="mb-2" @click="supporterInfo">
+                    Find out more
+                  </b-btn>
+                  <SupporterInfoModal ref="supporterInfoModal" />
                   <p>
                     If you'd like to spread the word you can download a poster or ask for "business cards" to hand out:
                   </p>
-                  <b-btn to="/promote" variant="primary">
+                  <b-btn to="/promote" variant="primary" class="mb-2">
                     Find out more
                   </b-btn>
                   <p>
@@ -485,6 +490,7 @@ import { TabsPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import buildHead from '@/mixins/buildHead.js'
 import TermsOfUse from '@/components/TermsOfUse'
+import SupporterInfoModal from '@/components/SupporterInfoModal'
 import Question from '../components/Question'
 
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
@@ -498,6 +504,7 @@ const RateAppModal = () => import('~/components/RateAppModal') // CC
 
 export default {
   components: {
+    SupporterInfoModal,
     Question,
     GroupRememberSelect,
     ChatButton,
@@ -530,6 +537,11 @@ export default {
       const date = new this.$dayjs(process.env.BUILD_DATE)
 
       return date.format('Do MMMM, YYYY') + ' at ' + date.format('HH:mm')
+    }
+  },
+  methods: {
+    supporterInfo() {
+      this.$refs.supporterInfoModal.show()
     }
   },
   head() {

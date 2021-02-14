@@ -27,6 +27,7 @@
       </b-row>
     </b-card-header>
     <b-card-body v-if="expanded" class="p-1">
+      <ModBouncing v-if="user.bouncing" :user="user" class="mb-2" />
       <NoticeMessage v-if="user.systemrole === 'Admin'" class="mb-2">
         This user has admin rights.
       </NoticeMessage>
@@ -286,6 +287,7 @@
   </b-card>
 </template>
 <script>
+import ModBouncing from '@/components/ModBouncing'
 import waitForRef from '../mixins/waitForRef'
 import ModSupportMembership from './ModSupportMembership'
 import ModLogsModal from './ModLogsModal'
@@ -307,6 +309,7 @@ const SHOW = 3
 
 export default {
   components: {
+    ModBouncing,
     ModMemberSummary,
     ModMergeButton,
     NoticeMessage,

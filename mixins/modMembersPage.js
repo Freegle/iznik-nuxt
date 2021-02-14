@@ -24,7 +24,18 @@ export default {
   },
   computed: {
     visibleMembers() {
-      return this.members.slice(0, this.show)
+      const membs = this.members.slice(0, this.show)
+      const userids = []
+      const ret = []
+
+      membs.forEach(m => {
+        if (!userids[m.userid]) {
+          userids[m.userid] = true
+          ret.push(m)
+        }
+      })
+
+      return ret
     },
     members() {
       let members

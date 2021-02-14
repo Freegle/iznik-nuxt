@@ -13,6 +13,14 @@
         Why use Freegle?  What’s in it for councils?
       </nuxt-link>
     </p>
+    <ul>
+      <li>
+        <nuxt-link to="/councils/casestudies/cumbria">
+          Case study - Cumbria
+        </nuxt-link>
+      </li>
+    </ul>
+
     <p>
       <nuxt-link class="font-weight-bold" to="/councils/volunteers">
         Working with Freegle volunteers

@@ -25,7 +25,7 @@
         Give away my {{ item }}
       </b-btn>
     </div>
-    <div class="map">
+    <div class="map mb-2">
       <ClientOnly>
         <l-map
           ref="map"
@@ -41,9 +41,7 @@
         </l-map>
       </ClientOnly>
     </div>
-    <div class="images">
-      <RandomImage :images="images" />
-    </div>
+    <RandomImage class="images" :images="images" />
   </div>
 </template>
 <script>

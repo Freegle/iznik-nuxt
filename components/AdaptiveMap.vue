@@ -128,7 +128,7 @@
         <JobsTopBar v-if="jobs" />
 
         <h2 class="sr-only">
-          List of WANTEDs and OFFERs
+          List of wanteds and offers
         </h2>
         <client-only>
           <div v-observe-visibility="messageVisibilityChanged" />
