@@ -39,16 +39,19 @@
           Nearby commmunities
         </h2>
         <div class="dense">
-          <b-btn
+          <div
             v-for="g in closestGroups"
             :key="'group-' + g.id"
-            size="md"
-            :to="'/explore/join/' + g.id"
-            variant="primary"
-            class="m-1"
           >
-            Join {{ g.namedisplay }}
-          </b-btn>
+            <b-btn
+              size="md"
+              :to="'/explore/join/' + g.id"
+              variant="primary"
+              class="m-1"
+            >
+              Join {{ g.namedisplay }}
+            </b-btn>
+          </div>
         </div>
       </div>
       <div v-if="showGroups" class="bg-white pt-3">
