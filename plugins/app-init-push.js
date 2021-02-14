@@ -317,13 +317,7 @@ export default ({ app, store }) => { // route
             pushstate.route = pushstate.route.replace('/chat/', '/chats/') // Match redirects in nuxt.config.js
             if (app.router.currentRoute.path !== pushstate.route) {
               console.log('GO TO ', pushstate.route)
-              //setTimeout(() => { console.log('AAAA'); app.router.push({ path: pushstate.route }); console.log('BBBB'); }, 5000)
-              //console.log('TIME A', (new Date()).getTime())
-              app.router.push({ path: pushstate.route })
-              /*console.log('TIME B', (new Date()).getTime())
-              Vue.nextTick(() => {
-                console.log('TIME C', (new Date()).getTime())
-              })*/
+              app.router.push({ path: pushstate.route })  // Often doesn't work as intended when starting app from scratch as this routing is too early. Delaying doesn't seem to help.
             }
           }
 
