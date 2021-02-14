@@ -137,6 +137,7 @@
         :label="stdmsg.title"
         :stdmsgid="stdmsg.id"
         :message="message"
+        :autosend="stdmsg.autosend"
       />
       <b-btn
         v-if="rareToShow && !showRare"

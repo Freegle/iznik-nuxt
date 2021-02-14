@@ -107,6 +107,7 @@
         :stdmsgid="stdmsg.id"
         :member="member"
         class="mr-1"
+        :autosend="stdmsg.autosend"
       />
       <b-btn
         v-if="rareToShow && !showRare"

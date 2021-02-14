@@ -1,14 +1,17 @@
 <template>
   <div class="d-inline">
-    <SpinButton
-      :variant="variant"
-      :name="icon"
-      :label="label"
-      class="mb-1"
-      :spinclass="spinclass"
-      :disabled="disabled"
-      :handler="click"
-    />
+    <div class="position-relative d-inline">
+      <SpinButton
+        :variant="variant"
+        :name="icon"
+        :label="label"
+        class="mb-1"
+        :spinclass="spinclass"
+        :disabled="disabled"
+        :handler="click"
+      />
+      <v-icon v-if="autosend" name="chevron-circle-right" title="Autosend - configured to send immediately without edit" class="autosend" />
+    </div>
     <ConfirmModal v-if="showDeleteModal" ref="deleteConfirm" :title="'Delete: ' + member.displayname" @confirm="deleteConfirmed" />
     <ModSpammerReport v-if="showSpamModal" ref="spamConfirm" :user="member" />
     <ModStdMessageModal v-if="showStdMsgModal" ref="stdmodal" :stdmsg="stdmsg" :member="member" />
@@ -102,6 +105,11 @@ export default {
       default: false
     },
     leave: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    autosend: {
       type: Boolean,
       required: false,
       default: false
@@ -243,3 +251,13 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+@import 'color-vars';
+
+.autosend {
+  right: 4px;
+  bottom: -20px;
+  position: absolute;
+  color: $color-purple;
+}
+</style>
