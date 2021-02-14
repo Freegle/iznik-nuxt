@@ -367,13 +367,8 @@ export const actions = {
             currentData,
             JSON.stringify(work)
           )
-          const prom = sound.play()
 
-          if (prom) {
-            prom.catch(e => {
-              console.log('Failed to play beep', e.message)
-            })
-          }
+          await sound.play()
         } catch (e) {
           console.log('Failed to play beep', e.message)
         }
