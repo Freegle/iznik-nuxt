@@ -96,7 +96,10 @@
                 @error="brokenImage"
               />
               <ProfileImage :image="me.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
-              <span class="small black">You asked about:</span>
+              <span class="small black">You
+                <span v-if="refmsg.type === 'Offer'">asked about:</span>
+                <span v-else>replied to:</span>
+              </span>
               <h4 class="mt-1">
                 {{ refmsg.subject }}
               </h4>
