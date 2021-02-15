@@ -284,19 +284,25 @@ export default {
                 break
               }
 
-              await this.$store.dispatch('newsfeed/clearFeed')
+              // await this.$store.dispatch('newsfeed/clearFeed')
               await this.$store.dispatch('newsfeed/fetch', {
                 id: id
               })
 
               item = this.$store.getters['newsfeed/get'](id)
-              const headid = parseInt(item.threadhead)
 
-              if (id === headid || visited.indexOf(headid) !== -1) {
+              if (!item) {
+                console.error('Failed to get newsfeed', id)
                 break
               } else {
-                visited.push(headid)
-                id = headid
+                const headid = parseInt(item.threadhead)
+
+                if (id === headid || visited.indexOf(headid) !== -1) {
+                  break
+                } else {
+                  visited.push(headid)
+                  id = headid
+                }
               }
             } while (true)
 
