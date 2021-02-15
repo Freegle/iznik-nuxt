@@ -96,10 +96,10 @@ export default {
       type: Object,
       required: true
     },
-    allowAutoSend: {
+    autosend: {
       type: Boolean,
       required: false,
-      default: true
+      default: false
     }
   },
   data: function() {
@@ -352,7 +352,7 @@ export default {
 
       this.showModal = true
 
-      if (this.allowAutoSend) {
+      if (this.autosend) {
         // Start doing stuff.
         this.waitForRef('process', () => {
           this.$refs.process.click()
