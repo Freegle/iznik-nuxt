@@ -236,6 +236,9 @@
           <span v-else-if="log.subtype === 'Unbounce'">
             Reactivated to start sending mail again
           </span>
+          <span v-else-if="log.subtype === 'PostcodeChange'">
+            Postcode set to {{ log.text }}
+          </span>
           <span v-else>
             <span class="text-muted">Unknown log type {{ log.type }} subtype {{ log.subtype }}</span>
           </span>
