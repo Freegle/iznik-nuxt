@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-badge variant="primary rounded supporter" class="clickme" @click="showModal">
+    <b-badge variant="primary rounded supporter" :class="'clickme ' + 'size-' + size" @click="showModal">
       <v-icon name="heart" />
       Supporter
     </b-badge>
@@ -11,7 +11,13 @@
 import SupporterInfoModal from '@/components/SupporterInfoModal'
 export default {
   components: { SupporterInfoModal },
-  props: {},
+  props: {
+    size: {
+      type: String,
+      required: false,
+      default: 'md'
+    }
+  },
   methods: {
     showModal(e) {
       this.$refs.modal.show()
@@ -27,5 +33,9 @@ export default {
 .supporter {
   color: white;
   background-color: $color-gold;
+}
+
+.size-lg {
+  font-size: 1.25rem;
 }
 </style>

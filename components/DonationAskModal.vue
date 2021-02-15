@@ -18,10 +18,10 @@
           </div>
           <div>
             <p>
-              <strong>{{ groupname }}</strong> is a charity that's free to use, but not free to run.
+              <strong>{{ groupname }}</strong> is a charity that's free to use, but not free to run.  This month we're
+              trying to raise <strong>&pound;{{ target }}</strong><span v-if="groupid && !targetMet"> for this community</span><span v-else> across the UK</span>.
             </p>
             <p>
-              This month we're trying to raise <strong>&pound;{{ target }}</strong><span v-if="groupid && !targetMet"> for this community</span>.
               If you can, <strong>
                 <span v-if="variant === 'link1' || variant === 'buttons1'">
                   please donate &pound;1
@@ -42,6 +42,14 @@
               </strong>
               to keep us running.
             </p>
+            <div class="mt-2 mb-4 d-flex border border-secondary rounded p-2">
+              <Supporter size="lg" class="mr-2 align-self-center" />
+              <div>
+                You'll get a cute little badge so that other people can see you're a committed
+                freegler.
+              </div>
+            </div>
+
             <donation-button v-if="variant === 'whatyoucanrunning'" link="paypal1510" @clicked="score(5)" />
             <donation-button v-else-if="variant === 'link1'" link="paypal1" @clicked="score(1)" />
             <donation-button v-else-if="variant === 'link3'" link="paypal3" @clicked="score(3)" />
@@ -87,11 +95,13 @@
 <script>
 import modal from '@/mixins/modal'
 import NoticeMessage from '@/components/NoticeMessage'
+import Supporter from '@/components/Supporter'
 import DonationThermometer from './DonationThermometer'
 import DonationButton from './DonationButton'
 
 export default {
   components: {
+    Supporter,
     NoticeMessage,
     DonationThermometer,
     DonationButton
