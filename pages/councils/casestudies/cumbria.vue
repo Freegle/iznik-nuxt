@@ -208,8 +208,8 @@ export default {
   mixins: [buildHead, sectionScroll],
   head() {
     return this.buildHead(
-      'Councils - Banners',
-      'Freegle has artwork for banners that you can print'
+      'Councils - Cumbria',
+      'Cumbria County Council and Freegle - making reuse count'
     )
   }
 }
