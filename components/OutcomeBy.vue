@@ -19,15 +19,15 @@
       :key="'selected-' + user.userid"
       class="layout mb-2"
     >
-      <span v-if="user.userid > 0" class="text--large font-weight-bold mt-1 text-left">
+      <span v-if="user.userid > 0" class="text--large font-weight-bold mt-1 text-left select">
         {{ user.displayname }}
       </span>
-      <span v-else class="text--large font-weight-bold mt-1 text-left">
+      <span v-else class="text--large font-weight-bold mt-1 text-left select">
         <span v-if="availableinitially === 1">Someone else</span>
         <span v-else>Other people</span>
       </span>
-      <div>
-        <Ratings v-if="user.userid > 0" :id="user.userid" size="lg" class="ratings ml-1" />
+      <div class="ratings">
+        <Ratings v-if="user.userid > 0" :id="user.userid" size="lg" class="ml-1" />
       </div>
       <div :class="'ml-1 took ' + (availableinitially <= 1 ? 'd-none' : '')">
         <NumberIncrementDecrement
@@ -44,7 +44,7 @@
       v-model="selectUser"
       :options="userOptions"
       size="lg"
-      :class="'select font-weight-bold ' + (selectedUsers.length === 0 ? 'text-danger' : '')"
+      :class="'font-weight-bold ' + (selectedUsers.length === 0 ? 'text-danger' : '')"
       @change="selected"
     />
   </div>
@@ -234,8 +234,8 @@ select {
   border-radius: 5px;
   padding: 10px;
 
-  grid-template-rows: auto auto;
-  grid-template-columns: 2fr 1fr 2fr;
+  grid-template-rows: auto auto auto;
+  grid-template-columns: 2fr 2fr;
   grid-column-gap: 5px;
 
   @include media-breakpoint-up(md) {
@@ -246,7 +246,7 @@ select {
   }
 
   .select {
-    grid-column: 1 / 4;
+    grid-column: 1 / 3;
     grid-row: 1 / 2;
 
     @include media-breakpoint-up(md) {
