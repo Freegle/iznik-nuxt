@@ -7,7 +7,7 @@ The development has been funded by [Freegle](https://www.ilovefreegle.org) for u
 but it is an open source platform which can be used or adapted by others.  Other contributors very welcome,
 especially those with design/UX expertise.
 
-It would be very lovely if you sponsored us.
+<span style="color:darkgreen">It would be very lovely if you sponsored us.</span>
 
 [:heart: Sponsor](https://github.com/sponsors/Freegle)
 
