@@ -1,5 +1,9 @@
 <template>
-  <div>
+  <div
+    :class="{
+      hidden: hidden
+    }"
+  >
     <b-badge variant="primary rounded supporter" :class="'clickme ' + 'size-' + size" @click="showModal">
       <v-icon name="heart" />
       Supporter
@@ -16,6 +20,11 @@ export default {
       type: String,
       required: false,
       default: 'md'
+    },
+    hidden: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   methods: {
@@ -37,5 +46,9 @@ export default {
 
 .size-lg {
   font-size: 1.25rem;
+}
+
+.hidden {
+  opacity: 0.5;
 }
 </style>

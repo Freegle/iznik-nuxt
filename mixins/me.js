@@ -73,7 +73,7 @@ Vue.mixin({
       return this.hasPermission('GiftAid')
     },
     supporter() {
-      return this.me.supporter
+      return this.me && this.me.supporter
     },
     amMicroVolunteering() {
       return (
