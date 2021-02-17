@@ -52,18 +52,16 @@ export default {
     }
   },
   methods: {
-    async show() {
-      // Fetch the current value, if any, before opening the modal.
-      await this.$store.dispatch('auth/fetchUser', {
-        components: ['me', 'groups', 'aboutme']
-      })
-      const me = this.$store.getters['auth/user']
-      this.text = me.aboutme && me.aboutme.text ? me.aboutme.text : null
+    show() {
+      this.text =
+        this.me && this.me.aboutme && this.me.aboutme.text
+          ? this.me.aboutme.text
+          : null
       this.showModal = true
     },
     async save() {
       await this.$store.dispatch('auth/saveAboutMe', this.text)
-      this.$emit('change')
+      this.$emit('datachange')
       this.hide()
     }
   }

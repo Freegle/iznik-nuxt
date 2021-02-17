@@ -565,7 +565,7 @@
           </b-col>
           <b-col cols="0" xl="3" />
         </b-row>
-        <AboutMeModal ref="aboutmemodal" @change="update" />
+        <AboutMeModal ref="aboutmemodal" @datachange="update" />
         <ProfileModal :id="me ? me.id : null" ref="profilemodal" />
         <EmailConfirmModal ref="emailconfirm" />
         <AddressModal ref="addressModal" />
@@ -839,7 +839,12 @@ export default {
         console.error('Failed to fetch user', e)
       }
     },
-    addAbout() {
+    async addAbout() {
+      await this.$store.dispatch('auth/fetchUser', {
+        components: ['me', 'phone', 'groups', 'aboutme', 'notifications'],
+        force: true
+      })
+
       this.waitForRef('aboutmemodal', () => {
         this.$refs.aboutmemodal.show()
       })
