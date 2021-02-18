@@ -138,7 +138,7 @@ export default {
     }
 
     if (value) {
-      // Got one Set this as the default in the input.
+      // Got one. Set this as the default in the input.
       this.$refs.autocomplete.setValue(value)
 
       // We want to signal that we have a selected value.  Unfortunately what we have in auth from the session call
