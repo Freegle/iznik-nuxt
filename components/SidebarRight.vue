@@ -1,17 +1,20 @@
 <template>
   <div v-if="!simple" class="d-flex flex-column sidebar__wrapper">
+    <DonationMonthly v-if="supporter && !donor" class="mb-2 w-100" variant="sidebar" />
     <VolunteerOpportunitySidebar v-if="showVolunteerOpportunities && false" :class="itemclass" />
     <JobsSidebar v-if="showJobOpportunities" :class="itemclass" />
   </div>
 </template>
 
 <script>
+import DonationMonthly from '@/components/DonationMonthly'
 import JobsSidebar from './JobsSidebar'
 const VolunteerOpportunitySidebar = () =>
   import('~/components/VolunteerOpportunitySidebar')
 
 export default {
   components: {
+    DonationMonthly,
     JobsSidebar,
     VolunteerOpportunitySidebar
   },

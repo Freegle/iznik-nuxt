@@ -52,6 +52,7 @@ export const mutations = {
           Vue.set(state.user, 'relevantallowed', 0)
           Vue.set(state.user, 'newslettersallowed', 0)
           Vue.set(state.user, 'supporter', false)
+          Vue.set(state.user, 'donor', false)
         }
 
         for (const key in user) {

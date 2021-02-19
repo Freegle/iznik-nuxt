@@ -75,6 +75,9 @@ Vue.mixin({
     supporter() {
       return this.me && this.me.supporter
     },
+    donor() {
+      return this.me && this.me.donor
+    },
     amMicroVolunteering() {
       return (
         this.me &&
