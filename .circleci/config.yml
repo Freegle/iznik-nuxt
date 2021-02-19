@@ -111,9 +111,9 @@ jobs:
       - run: cd ../iznik-nuxt-app; cp platforms/ios/build/device/Freegle.ipa ../project/releases/Freegle-ios-app-$MOBILE_VERSION-debug-$(date +'%Y%m%d%H%M%S').ipa
 
       # Build release build and publish
-      - run: cd ../iznik-nuxt-app; cordova build --release --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile="Freegle 0420"  >buildlogrelease.txt
-      - run: cd ../iznik-nuxt-app; cp platforms/ios/build/device/Freegle.ipa ../project/releases/Freegle-ios-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').ipa
-      - run: cd ../iznik-nuxt-app; xcrun altool --upload-app --type ios --file "platforms/ios/build/device/Freegle.ipa" --username $AppleUserId --password "$AppleAppSpecificPwd" || true
+      #- run: cd ../iznik-nuxt-app; cordova build --release --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile="Freegle 0420"  >buildlogrelease.txt
+      #- run: cd ../iznik-nuxt-app; cp platforms/ios/build/device/Freegle.ipa ../project/releases/Freegle-ios-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').ipa
+      #- run: cd ../iznik-nuxt-app; xcrun altool --upload-app --type ios --file "platforms/ios/build/device/Freegle.ipa" --username $AppleUserId --password "$AppleAppSpecificPwd" || true
 
 ################
 # MODTOOLS app
