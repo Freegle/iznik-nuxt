@@ -370,7 +370,10 @@ export default {
     },
     async spamReport() {
       if (!this.user) {
-        await this.fetchUser()
+        await this.$store.dispatch('user/fetch', {
+          id: this.member.userid,
+          info: true
+        })
       }
 
       this.whitelist = false
